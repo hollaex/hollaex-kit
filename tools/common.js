@@ -44,6 +44,14 @@ const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
 // const { Transform } = require('json2csv');
 
+const getKitVersion = () => {
+	return dbQuery.findOne('status', {
+		raw: true,
+		attributes: ['id', 'kit_version']
+	})
+		.then(({ kit_version }) => kit_version);
+};
+
 /**
  * Checks if url given is a valid url.
  * @param {string} url - Ids of frozen users.
@@ -285,7 +293,10 @@ const sendEmailToSupport = (email, category, subject, description) => {
 };
 
 const getNetworkKeySecret = () => {
-	return dbQuery.findOne('status')
+	return dbQuery.findOne('status', {
+		raw: true,
+		attributes: ['id', 'api_key', 'api_secret']
+	})
 		.then((status) => {
 			return {
 				apiKey: status.api_key,
@@ -359,7 +370,9 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-const getAssetsPrices = (assets = [], quote, amount) => {
+const getAssetsPrices = (assets = [], quote, amount, opts = {
+	additionalHeaders: null
+}) => {
 	for (let asset of assets) {
 		if (!subscribedToCoin(asset)) {
 			return reject(new Error('Invalid asset'));
@@ -370,80 +383,74 @@ const getAssetsPrices = (assets = [], quote, amount) => {
 		return reject(new Error('Amount must be greater than 0'));
 	}
 
-	return getNodeLib().getOraclePrices(assets, { quote, amount });
+	return getNodeLib().getOraclePrices(assets, { quote, amount, ...opts });
 };
 
-const storeImageOnNetwork = async (image, name) => {
-	if (image.mimetype.indexOf('image/') !== 0) {
-		return reject(new Error('Invalid file type'));
-	}
+const storeImageOnNetwork = async (image, name, opts = {
+	additionalHeaders: null
+}) => {
 
-	const { apiKey } = await getNetworkKeySecret();
-	const exchangeId = getNodeLib().exchange_id;
-	const exchangeName = getKitConfig().info.name;
-
-	const options = {
-		method: 'POST',
-		uri: `${HOLLAEX_NETWORK_ENDPOINT}${HOLLAEX_NETWORK_BASE_URL}/exchange/icon`,
-		formData: {
-			exchange_id: exchangeId,
-			exchange_name: exchangeName,
-			file_name: name,
-			file: {
-				value: image.buffer,
-				options: {
-					filename: image.originalname
-				}
-			}
-		},
-		headers: {
-			'api-key': apiKey,
-			'Content-Type': 'multipart/form-data'
-		}
-	};
-
-	return rp(options)
-		.then(JSON.parse);
+	return getNodeLib().uploadIcon(image, name, opts);
 };
 
-const getPublicTrades = (symbol) => {
-	return getNodeLib().getPublicTrades({ symbol });
+const getPublicTrades = (symbol, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getPublicTrades({ symbol, ...opts });
 };
 
-const getOrderbook = (symbol) => {
-	return getNodeLib().getOrderbook(symbol);
+const getOrderbook = (symbol, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getOrderbook(symbol, opts);
 };
 
-const getOrderbooks = () => {
-	return getNodeLib().getOrderbooks();
+const getOrderbooks = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getOrderbooks(opts);
 };
 
-const getChart = (from, to, symbol, resolution) => {
-	return getNodeLib().getChart(from, to, symbol, resolution);
+const getChart = (from, to, symbol, resolution, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getChart(from, to, symbol, resolution, opts);
 };
 
-const getCharts = (from, to, resolution) => {
-	return getNodeLib().getCharts(from, to, resolution);
+const getCharts = (from, to, resolution, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
-const getUdfConfig = () => {
-	return getNodeLib().getUdfConfig();
+const getUdfConfig = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getUdfConfig(opts);
 };
 
-const getUdfHistory = (from, to, symbol, resolution) => {
-	return getNodeLib().getUdfHistory(from, to, symbol, resolution);
+const getUdfHistory = (from, to, symbol, resolution, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getUdfHistory(from, to, symbol, resolution, opts);
 };
 
-const getUdfSymbols = (symbol) => {
-	return getNodeLib().getUdfSymbols(symbol);
+const getUdfSymbols = (symbol, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
-const getTicker = (symbol) => {
-	return getNodeLib().getTicker(symbol);
+const getTicker = (symbol, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getTicker(symbol, opts);
 };
 
-const getTickers = () => {
-	return getNodeLib().getTickers();
+const getTickers = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getTickers(opts);
 };
 
 const getTradesHistory = (
@@ -454,7 +461,10 @@ const getTradesHistory = (
 	orderBy,
 	order,
 	startDate,
-	endDate
+	endDate,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	return getNodeLib().getTradesHistory({
 		symbol,
@@ -464,7 +474,8 @@ const getTradesHistory = (
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
@@ -706,7 +717,16 @@ const getDomain = () => {
 // 	);
 // };
 
+const getNetworkConstants = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getConstants(opts);
+};
+
+const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
+
 module.exports = {
+	getKitVersion,
 	isUrl,
 	getKitConfig,
 	getKitSecrets,
@@ -758,5 +778,7 @@ module.exports = {
 	getDomain,
 	isDatetime,
 	// getCsvParser,
-	emailHtmlBoilerplate
+	emailHtmlBoilerplate,
+	getNetworkConstants,
+	getNetworkEndpoint
 };

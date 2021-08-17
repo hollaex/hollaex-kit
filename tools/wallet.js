@@ -169,7 +169,9 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
+const cancelUserWithdrawalByKitId = (userId, withdrawalId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			if (!user) {
@@ -177,27 +179,32 @@ const cancelUserWithdrawalByKitId = (userId, withdrawalId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId);
+			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId, opts);
 		});
 };
 
-const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId) => {
+const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().cancelWithdrawal(networkId, withdrawalId);
+	return getNodeLib().cancelWithdrawal(networkId, withdrawalId, opts);
 };
 
-const checkTransaction = (currency, transactionId, address, network, isTestnet = false) => {
+const checkTransaction = (currency, transactionId, address, network, isTestnet = false, opts = {
+	additionalHeaders: null
+}) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
 
-	return getNodeLib().checkTransaction(currency, transactionId, address, network, { isTestnet });
+	return getNodeLib().checkTransaction(currency, transactionId, address, network, { isTestnet, ...opts });
 };
 
 const performWithdrawal = (userId, address, currency, amount, opts = {
-	network: null
+	network: null,
+	additionalHeaders: null
 }) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
@@ -225,7 +232,10 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 		});
 };
 
-const performWithdrawalNetwork = (networkId, address, currency, amount, opts) => {
+const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
+	network: null,
+	additionalHeaders: null
+}) => {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
@@ -379,7 +389,9 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	return;
 };
 
-const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
+const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	additionalHeaders: null
+}) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -398,15 +410,19 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 			} else if (!sender.network_id || !receiver.network_id) {
 				throw new Error('User not registered on network');
 			}
-			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email });
+			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email, ...opts });
 		});
 };
 
-const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true) => {
-	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email });
+const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email, ...opts });
 };
 
-const getUserBalanceByKitId = (userKitId) => {
+const getUserBalanceByKitId = (userKitId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -414,7 +430,7 @@ const getUserBalanceByKitId = (userKitId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserBalance(user.network_id);
+			return getNodeLib().getUserBalance(user.network_id, opts);
 		})
 		.then((data) => {
 			return {
@@ -424,15 +440,19 @@ const getUserBalanceByKitId = (userKitId) => {
 		});
 };
 
-const getUserBalanceByNetworkId = (networkId) => {
+const getUserBalanceByNetworkId = (networkId, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserBalance(networkId);
+	return getNodeLib().getUserBalance(networkId, opts);
 };
 
-const getKitBalance = () => {
-	return getNodeLib().getBalance();
+const getKitBalance = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getBalance(opts);
 };
 
 const getUserTransactionsByKitId = (
@@ -452,7 +472,10 @@ const getUserTransactionsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	let promiseQuery;
 	if (kitId) {
@@ -478,7 +501,8 @@ const getUserTransactionsByKitId = (
 						startDate,
 						endDate,
 						transactionId,
-						address
+						address,
+						...opts
 					});
 				});
 		} else if (type === 'withdrawal') {
@@ -503,7 +527,8 @@ const getUserTransactionsByKitId = (
 						startDate,
 						endDate,
 						transactionId,
-						address
+						address,
+						...opts
 					});
 				});
 		}
@@ -523,7 +548,8 @@ const getUserTransactionsByKitId = (
 				startDate,
 				endDate,
 				transactionId,
-				address
+				address,
+				...opts
 			});
 		} else if (type === 'withdrawal') {
 			promiseQuery = getNodeLib().getWithdrawals({
@@ -540,7 +566,8 @@ const getUserTransactionsByKitId = (
 				startDate,
 				endDate,
 				transactionId,
-				address
+				address,
+				...opts
 			});
 		}
 	}
@@ -574,7 +601,10 @@ const getUserDepositsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	return getUserTransactionsByKitId(
 		'deposit',
@@ -593,7 +623,8 @@ const getUserDepositsByKitId = (
 		endDate,
 		transactionId,
 		address,
-		format
+		format,
+		opts
 	);
 };
 
@@ -613,7 +644,10 @@ const getUserWithdrawalsByKitId = (
 	endDate,
 	transactionId,
 	address,
-	format
+	format,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	return getUserTransactionsByKitId(
 		'withdrawal',
@@ -632,7 +666,8 @@ const getUserWithdrawalsByKitId = (
 		endDate,
 		transactionId,
 		address,
-		format
+		format,
+		opts
 	);
 };
 
@@ -650,7 +685,10 @@ const getExchangeDeposits = (
 	startDate,
 	endDate,
 	transactionId,
-	address
+	address,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	return getNodeLib().getDeposits({
 		currency,
@@ -666,7 +704,8 @@ const getExchangeDeposits = (
 		startDate,
 		endDate,
 		transactionId,
-		address
+		address,
+		...opts
 	});
 };
 
@@ -684,7 +723,10 @@ const getExchangeWithdrawals = (
 	startDate,
 	endDate,
 	transactionId,
-	address
+	address,
+	opts = {
+		additionalHeaders: null
+	}
 ) => {
 	return getNodeLib().getWithdrawals({
 		currency,
@@ -700,7 +742,8 @@ const getExchangeWithdrawals = (
 		startDate,
 		endDate,
 		transactionId,
-		address
+		address,
+		...opts
 	});
 };
 
@@ -713,7 +756,8 @@ const mintAssetByKitId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -735,7 +779,8 @@ const mintAssetByNetworkId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: null
 	}) => {
 	return getNodeLib().mintAsset(networkId, currency, amount, opts);
 };
@@ -750,7 +795,8 @@ const updatePendingMint = (
 		waiting: null,
 		updatedTransactionId: null,
 		email: null,
-		updatedDescription: null
+		updatedDescription: null,
+		additionalHeaders: null
 	}
 ) => {
 	return getNodeLib().updatePendingMint(transactionId, opts);
@@ -765,7 +811,8 @@ const burnAssetByKitId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: null
 	}) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -787,7 +834,8 @@ const burnAssetByNetworkId = (
 		transactionId: null,
 		status: null,
 		email: null,
-		fee: null
+		fee: null,
+		additionalHeaders: null
 	}) => {
 	return getNodeLib().burnAsset(networkId, currency, amount, opts);
 };
@@ -802,7 +850,8 @@ const updatePendingBurn = (
 		waiting: null,
 		updatedTransactionId: null,
 		email: null,
-		updatedDescription: null
+		updatedDescription: null,
+		additionalHeaders: null
 	}
 ) => {
 	return getNodeLib().updatePendingBurn(transactionId, opts);

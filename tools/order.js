@@ -11,7 +11,7 @@ const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 
-const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
+const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -35,7 +35,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		});
 };
 
-const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
+const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -59,7 +59,7 @@ const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts
 		});
 };
 
-const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null }) => {
+const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
@@ -84,14 +84,16 @@ const createUserOrderByNetworkId = (networkId, symbol, side, size, type, price =
 		});
 };
 
-const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData = {}, opts = {}) => {
+const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData = {}, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
 	return getNodeLib().createOrder(networkId, symbol, side, size, type, price, feeData, opts);
 };
 
-const getUserOrderByKitId = (userKitId, orderId) => {
+const getUserOrderByKitId = (userKitId, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -99,11 +101,13 @@ const getUserOrderByKitId = (userKitId, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getOrder(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId, opts);
 		});
 };
 
-const getUserOrderByEmail = (email, orderId) => {
+const getUserOrderByEmail = (email, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
@@ -111,18 +115,22 @@ const getUserOrderByEmail = (email, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getOrder(user.network_id, orderId);
+			return getNodeLib().getOrder(user.network_id, orderId, opts);
 		});
 };
 
-const getUserOrderByNetworkId = (networkId, orderId) => {
+const getUserOrderByNetworkId = (networkId, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getOrder(networkId, orderId);
+	return getNodeLib().getOrder(networkId, orderId, opts);
 };
 
-const cancelUserOrderByKitId = (userKitId, orderId) => {
+const cancelUserOrderByKitId = (userKitId, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByKitId(userKitId)
 		.then((user) => {
 			if (!user) {
@@ -130,11 +138,13 @@ const cancelUserOrderByKitId = (userKitId, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelOrder(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId, opts);
 		});
 };
 
-const cancelUserOrderByEmail = (email, orderId) => {
+const cancelUserOrderByEmail = (email, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByEmail(email)
 		.then((user) => {
 			if (!user) {
@@ -142,18 +152,22 @@ const cancelUserOrderByEmail = (email, orderId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelOrder(user.network_id, orderId);
+			return getNodeLib().cancelOrder(user.network_id, orderId, opts);
 		});
 };
 
-const cancelUserOrderByNetworkId = (networkId, orderId) => {
+const cancelUserOrderByNetworkId = (networkId, orderId, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().cancelOrder(networkId, orderId);
+	return getNodeLib().cancelOrder(networkId, orderId, opts);
 };
 
-const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -167,11 +181,14 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
-const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -192,12 +209,15 @@ const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, p
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				...opts
 			});
 		});
 };
 
-const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -218,12 +238,15 @@ const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page,
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				...opts
 			});
 		});
 };
 
-const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate) => {
+const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
@@ -240,11 +263,14 @@ const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limi
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
-const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
+const cancelAllUserOrdersByKitId = (userKitId, symbol, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -255,11 +281,13 @@ const cancelAllUserOrdersByKitId = (userKitId, symbol) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelAllOrders(user.network_id, { symbol });
+			return getNodeLib().cancelAllOrders(user.network_id, { symbol, ...opts });
 		});
 };
 
-const cancelAllUserOrdersByEmail = (email, symbol) => {
+const cancelAllUserOrdersByEmail = (email, symbol, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -270,40 +298,43 @@ const cancelAllUserOrdersByEmail = (email, symbol) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().cancelAllOrders(user.network_id, { symbol });
+			return getNodeLib().cancelAllOrders(user.network_id, { symbol, ...opts });
 		});
 };
 
-const cancelAllUserOrdersByNetworkId = (networkId, symbol) => {
+const cancelAllUserOrdersByNetworkId = (networkId, symbol, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getNodeLib().cancelAllOrders(networkId, { symbol });
+	return getNodeLib().cancelAllOrders(networkId, { symbol, ...opts });
 };
 
-const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate, format) => {
+const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, endDate, format, opts = { additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
 
-	const opts = {
+	const params = {
 		symbol,
 		limit,
 		page,
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	};
 
 	if (format) {
-		opts.format = 'all';
+		params.format = 'all';
 	}
 
-	return getNodeLib().getTrades(opts)
+	return getNodeLib().getTrades(params)
 		.then((trades) => {
 			if (format === 'csv') {
 				if (trades.data.length === 0) {
@@ -317,7 +348,9 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 		});
 };
 
-const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
+const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
+	additionalHeaders: null
+}) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
@@ -329,21 +362,22 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
 
-			const opts = {
+			const params = {
 				symbol,
 				limit,
 				page,
 				orderBy,
 				order,
 				startDate,
-				endDate
+				endDate,
+				...opts
 			};
 
 			if (format) {
-				opts.format = 'all';
+				params.format = 'all';
 			}
 
-			return getNodeLib().getUserTrades(user.network_id, opts);
+			return getNodeLib().getUserTrades(user.network_id, params);
 		})
 		.then((trades) => {
 			if (format === 'csv') {
@@ -493,23 +527,26 @@ const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order,
 // 		});
 // };
 
-const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate, format) => {
+const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
 
-	const opts = {
+	const params = {
 		symbol,
 		limit,
 		page,
 		orderBy,
 		order,
 		startDate,
-		endDate
+		endDate,
+		...opts
 	};
 
 	if (format) {
-		opts.format = 'all';
+		params.format = 'all';
 	}
 
 	return getNodeLib().getUserTrades(networkId, opts)
@@ -526,15 +563,20 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 		});
 };
 
-const getGeneratedFees = (startDate, endDate) => {
+const getGeneratedFees = (startDate, endDate, opts = {
+	additionalHeaders: null
+}) => {
 	return getNodeLib().getGeneratedFees({
 		startDate,
-		endDate
+		endDate,
+		...opts
 	});
 };
 
-const settleFees = () => {
-	return getNodeLib().settleFees();
+const settleFees = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().settleFees(opts);
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {

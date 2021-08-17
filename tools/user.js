@@ -49,7 +49,7 @@ const {
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime, stringIsDate } = require('./common');
+const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
 const { isValidPassword } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
@@ -164,7 +164,8 @@ const createUser = (
 	password,
 	opts = {
 		role: 'user',
-		id: null
+		id: null,
+		additionalHeaders: null
 	}
 ) => {
 	email = email.toLowerCase();
@@ -212,7 +213,7 @@ const createUser = (
 			.then((user) => {
 				return all([
 					user,
-					getNodeLib().createUser(email)
+					getNodeLib().createUser(email, { additionalHeaders: opts.additionalHeaders })
 				]);
 			})
 			.then(([ kitUser, networkUser ]) => {
@@ -242,11 +243,12 @@ const createUser = (
 };
 
 const createUserOnNetwork = (email, opts = {
-	additionalHeaders: {}
+	additionalHeaders: null
 }) => {
 	if (!isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
+
 	return getNodeLib().createUser(email, opts);
 };
 
@@ -433,7 +435,8 @@ const getAllUsersAdmin = (opts = {
 	order: null,
 	start_date: null,
 	end_date: null,
-	format: null
+	format: null,
+	additionalHeaders: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
@@ -526,7 +529,7 @@ const getAllUsersAdmin = (opts = {
 					error.status = 404;
 					throw error;
 				} else if (data[0].verification_level > 0 && data[0].network_id) {
-					const userNetworkData = await getNodeLib().getUser(data[0].network_id);
+					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
 					data[0].balance = userNetworkData.balance;
 					data[0].wallet = userNetworkData.wallet;
 					return { count, data };
@@ -557,18 +560,20 @@ const getAllUsersAdmin = (opts = {
 		});
 };
 
-const getUser = (opts = {}, rawData = true, networkData = false) => {
-	if (!opts.email && !opts.kit_id && !opts.network_id) {
+const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
+	additionalHeaders: null
+}) => {
+	if (!identifier.email && !identifier.kit_id && !identifier.network_id) {
 		return reject(new Error(PROVIDE_USER_CREDENTIALS));
 	}
 
 	const where = {};
-	if (opts.email) {
-		where.email = opts.email;
-	} else if (opts.kit_id) {
-		where.id = opts.kit_id;
+	if (identifier.email) {
+		where.email = identifier.email;
+	} else if (identifier.kit_id) {
+		where.id = identifier.kit_id;
 	} else {
-		where.network_id = opts.network_id;
+		where.network_id = identifier.network_id;
 	}
 
 	return dbQuery.findOne('user', {
@@ -577,7 +582,7 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 	})
 		.then(async (user) => {
 			if (user && networkData) {
-				const networkData = await getNodeLib().getUser(user.network_id);
+				const networkData = await getNodeLib().getUser(user.network_id, opts);
 				user.balance = networkData.balance;
 				user.wallet = networkData.wallet;
 				if (!rawData) {
@@ -589,26 +594,34 @@ const getUser = (opts = {}, rawData = true, networkData = false) => {
 		});
 };
 
-const getUserNetwork = (networkId) => {
-	return getNodeLib().getUser(networkId);
+const getUserNetwork = (networkId, opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getUser(networkId, opts);
 };
 
-const getUsersNetwork = () => {
-	return getNodeLib().getUsers();
+const getUsersNetwork = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().getUsers(opts);
 };
 
-const getUserByEmail = (email, rawData = true, networkData = false) => {
+const getUserByEmail = (email, rawData = true, networkData = false, opts = {
+	additionalHeaders: null
+}) => {
 	if (!email || !isEmail(email)) {
 		return reject(new Error(PROVIDE_VALID_EMAIL));
 	}
-	return getUser({ email }, rawData, networkData);
+	return getUser({ email }, rawData, networkData, opts);
 };
 
-const getUserByKitId = (kit_id, rawData = true, networkData = false) => {
+const getUserByKitId = (kit_id, rawData = true, networkData = false, opts = {
+	additionalHeaders: null
+}) => {
 	if (!kit_id) {
 		return reject(new Error(PROVIDE_KIT_ID));
 	}
-	return getUser({ kit_id }, rawData, networkData);
+	return getUser({ kit_id }, rawData, networkData, opts);
 };
 
 const getUserTier = (user_id) => {
@@ -629,11 +642,13 @@ const getUserTier = (user_id) => {
 		});
 };
 
-const getUserByNetworkId = (network_id, rawData = true, networkData = false) => {
+const getUserByNetworkId = (network_id, rawData = true, networkData = false, opts = {
+	additionalHeaders: null
+}) => {
 	if (!network_id) {
 		return reject(new Error(PROVIDE_NETWORK_ID));
 	}
-	return getUser({ network_id }, rawData, networkData);
+	return getUser({ network_id }, rawData, networkData, opts);
 };
 
 const freezeUserById = (userId) => {
@@ -1259,7 +1274,8 @@ const setUsernameById = (userId, username) => {
 };
 
 const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
-	network: null
+	network: null,
+	additionalHeaders: null
 }) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
@@ -1268,7 +1284,8 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 };
 
 const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
-	network: null
+	network: null,
+	additionalHeaders: null
 }) => {
 	return getUserByKitId(kitId)
 		.then((user) => {
@@ -1281,7 +1298,9 @@ const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
 		});
 };
 
-const getUserStatsByKitId = (userId) => {
+const getUserStatsByKitId = (userId, opts = {
+	additionalHeaders: null
+}) => {
 	return getUserByKitId(userId)
 		.then((user) => {
 			if (!user) {
@@ -1289,15 +1308,17 @@ const getUserStatsByKitId = (userId) => {
 			} else if (!user.network_id) {
 				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 			}
-			return getNodeLib().getUserStats(user.network_id);
+			return getNodeLib().getUserStats(user.network_id, opts);
 		});
 };
 
-const getUserStatsByNetworkId = (networkId) => {
+const getUserStatsByNetworkId = (networkId, opts = {
+	additionalHeaders: null
+}) => {
 	if (!networkId) {
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
-	return getNodeLib().getUserStats(networkId);
+	return getNodeLib().getUserStats(networkId, opts);
 };
 
 const getExchangeOperators = (opts = {
@@ -1327,7 +1348,9 @@ const getExchangeOperators = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', options);
 };
 
-const inviteExchangeOperator = (invitingEmail, email, role) => {
+const inviteExchangeOperator = (invitingEmail, email, role, opts = {
+	additionalHeaders: null
+}) => {
 	const roles = {
 		is_admin: false,
 		is_supervisor: false,
@@ -1368,7 +1391,7 @@ const inviteExchangeOperator = (invitingEmail, email, role) => {
 		})
 			.then(async ([ user, created ]) => {
 				if (created) {
-					const networkUser = await getNodeLib().createUser(email);
+					const networkUser = await getNodeLib().createUser(email, opts);
 					return all([
 						user.update(
 							{ network_id: networkUser.id },
