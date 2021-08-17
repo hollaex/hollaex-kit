@@ -11,7 +11,6 @@ const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
 const toolsLib = require('hollaex-tools-lib');
 const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
-const { confirmChangePassword } = require('./api/controllers/user');
 
 checkStatus()
 	.then(() => {
@@ -75,8 +74,6 @@ checkStatus()
 		app.get('/', (req, res) => {
 			res.redirect('/v2/health');
 		});
-
-		app.get('/v2/confirm-change-password/:code', confirmChangePassword);
 
 		app.use('/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
