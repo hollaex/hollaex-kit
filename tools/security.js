@@ -122,7 +122,7 @@ const confirmChangeUserPassword = (code, domain) => {
 			]);
 		})
 		.then(([user, dataValues]) => {
-			return user.update({ password: dataValues.password }, { fields: ['password'] });
+			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
 		.then((user) => {
 			sendEmail(
