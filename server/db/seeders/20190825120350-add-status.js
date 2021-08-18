@@ -63,11 +63,17 @@ module.exports = {
 
 				if (ADMIN_EMAIL && ADMIN_PASSWORD && ADMIN_NETWORK_ID) {
 					user = generateUserObject(
-						1,
 						ADMIN_EMAIL,
 						ADMIN_PASSWORD,
-						parseInt(ADMIN_NETWORK_ID),
-						true
+						ADMIN_NETWORK_ID,
+						true,
+						false,
+						false,
+						false,
+						false,
+						{
+							id: 1
+						}
 					);
 
 					await queryInterface.bulkInsert('Users', [user], {});
