@@ -218,6 +218,7 @@ class UserContent extends Component {
 			onChangeUserDataSuccess,
 			isConfigure,
 			showConfigure,
+			kycPluginName
 		} = this.props;
 
 		const { showVerifyEmailModal, userTiers } = this.state;
@@ -321,6 +322,7 @@ class UserContent extends Component {
 								flagUser={this.flagUser}
 								freezeAccount={this.freezeAccount}
 								verifyEmail={this.openVerifyEmailModal}
+								kycPluginName={kycPluginName}
 							/>
 						</div>
 					</TabPane>
@@ -377,10 +379,10 @@ class UserContent extends Component {
 									user_id: id,
 								}}
 								queryParams={{
-									status: true,
 									type: 'deposit',
 								}}
 								hideUserColumn={true}
+								showFilters={true}
 							/>
 						</TabPane>
 					)}
@@ -391,10 +393,10 @@ class UserContent extends Component {
 									user_id: id,
 								}}
 								queryParams={{
-									status: true,
 									type: 'withdrawal',
 								}}
 								hideUserColumn={true}
+								showFilters={true}
 							/>
 						</TabPane>
 					)}

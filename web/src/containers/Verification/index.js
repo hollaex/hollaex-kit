@@ -54,6 +54,8 @@ import { EditWrapper } from 'components';
 import { verifyBankData } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
 import { required, maxLength } from 'components/Form/validations';
+import { getCountry } from 'containers/Verification/utils';
+import { getFormatTimestamp } from 'utils/utils';
 
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
@@ -214,14 +216,7 @@ class Verification extends Component {
 			return;
 		}
 		const { icons: ICONS } = this.props;
-		const {
-			email,
-			bank_account,
-			address,
-			id_data,
-			phone_number,
-			email_verified,
-		} = user;
+		const { email, bank_account, id_data, phone_number, email_verified } = user;
 		let bank_status = 0;
 		if (bank_account.length) {
 			if (bank_account.filter((data) => data.status === 3).length) {
@@ -241,11 +236,7 @@ class Verification extends Component {
 				bank_status = 0;
 			}
 		}
-		const identity_status = address.country
-			? id_data.status && id_data.status === 3
-				? 3
-				: 1
-			: 1;
+		const identity_status = id_data.status;
 		const tabUtils = {
 			email: {
 				title: isMobile ? (
@@ -332,12 +323,20 @@ class Verification extends Component {
 					/>
 				),
 				content: (
-					<IdentityVerificationHome
-						activeLanguage={activeLanguage}
-						user={user}
+					<SmartTarget
+						id="REMOTE_COMPONENT__KYC_VERIFICATION_HOME"
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
-					/>
+						getFormatTimestamp={getFormatTimestamp}
+						getCountry={getCountry}
+					>
+						<IdentityVerificationHome
+							activeLanguage={activeLanguage}
+							user={user}
+							handleBack={this.handleBack}
+							setActivePageContent={this.setActivePageContent}
+						/>
+					</SmartTarget>
 				),
 			},
 			sms: {
@@ -500,16 +499,26 @@ class Verification extends Component {
 				);
 			case 'kyc':
 				return (
-					<IdentityVerification
-						icon={ICONS['VERIFICATION_BANK_NEW']}
-						fullName={user.full_name}
-						moveToNextStep={this.goNextTab}
-						activeLanguage={activeLanguage}
-						initialValues={identityInitialValues(user)}
+					<SmartTarget
+						id="REMOTE_COMPONENT__KYC_VERIFICATION"
 						openContactForm={openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
-					/>
+						moveToNextStep={this.goNextTab}
+						initialValues={identityInitialValues(user)}
+						setActiveTab={this.setActiveTab}
+					>
+						<IdentityVerification
+							icon={ICONS['VERIFICATION_BANK_NEW']}
+							fullName={user.full_name}
+							moveToNextStep={this.goNextTab}
+							activeLanguage={activeLanguage}
+							initialValues={identityInitialValues(user)}
+							openContactForm={openContactForm}
+							setActivePageContent={this.setActivePageContent}
+							handleBack={this.handleBack}
+						/>
+					</SmartTarget>
 				);
 			case 'sms':
 				return (
