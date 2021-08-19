@@ -69,6 +69,7 @@ const generateUserObject = (
 		full_name: '',
 		gender: false,
 		email_verified: true,
+		verification_level: 1,
 		nationality: '',
 		phone_number: '',
 		activated: true,
