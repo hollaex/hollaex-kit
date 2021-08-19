@@ -49,7 +49,7 @@ const ADDRESS_DATA_DEFAULT = {
 	postal_code: ''
 };
 
-const generateUserObject = ({
+const generateUserObject = (
 	email,
 	password,
 	network_id,
@@ -58,8 +58,8 @@ const generateUserObject = ({
 	is_support,
 	is_kyc,
 	is_communicator,
-	opts = {}
-}) => {
+	opts = { }
+) => {
 	const now = new Date();
 
 	return {
