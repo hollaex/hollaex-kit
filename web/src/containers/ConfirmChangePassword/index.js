@@ -12,9 +12,9 @@ class ConfirmChangePassword extends Component {
 
 	componentDidMount() {
 		let paramsString = window.location.search.replace('?', '');
-		let paramsData = {}
+		let paramsData = {};
 		if (paramsString.length) {
-			let splitValue = paramsString.split('&')
+			let splitValue = paramsString.split('&');
 			splitValue.forEach((value) => {
 				let temp = value.split('=');
 				paramsData[temp[0]] = temp[1];
@@ -39,7 +39,7 @@ class ConfirmChangePassword extends Component {
 					onCloseDialog={this.onCloseDialog}
 					theme={this.props.activeTheme}
 				>
-					{this.state.showContactForm &&
+					{this.state.showContactForm && (
 						<div className="confirm-change-pwd-wrapper">
 							<ResetPasswordSuccess
 								label={STRINGS['CLOSE_TEXT']}
@@ -47,10 +47,10 @@ class ConfirmChangePassword extends Component {
 								is_loginText={false}
 							/>
 						</div>
-					}
+					)}
 				</Dialog>
 			</div>
-		)
+		);
 	}
 }
 

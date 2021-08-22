@@ -1,6 +1,5 @@
 'use strict';
 
-const { version } = require('../../package.json');
 const { isEmail, isUUID } = require('validator');
 const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
@@ -110,8 +109,7 @@ const signUpUser = (req, res) => {
 						return all([
 							toolsLib.user.createUserOnNetwork(email, {
 								additionalHeaders: {
-									'x-forwarded-for': req.headers['x-forwarded-for'],
-									'kit-version': version
+									'x-forwarded-for': req.headers['x-forwarded-for']
 								}
 							}),
 							user
@@ -231,7 +229,7 @@ const verifyUser = (req, res) => {
 
 	email = email.toLowerCase();
 
-	return toolsLib.database.findOne('user', {
+	toolsLib.database.findOne('user', {
 		where: { email },
 		attributes: ['id', 'email', 'settings', 'network_id']
 	})
@@ -456,7 +454,11 @@ const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
 	const email = req.auth.sub.email;
 
-	toolsLib.user.getUserByEmail(email, true, true)
+	toolsLib.user.getUserByEmail(email, true, true, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
@@ -509,7 +511,7 @@ const changePassword = (req, res) => {
 };
 
 const confirmChangePassword = (req, res) => {
-	const code = req.params.code;
+	const code = req.swagger.params.code.value;
 
 	toolsLib.security.confirmChangeUserPassword(code)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
@@ -610,7 +612,11 @@ const getUserBalance = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserBalance auth', req.auth.sub);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.wallet.getUserBalanceByKitId(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -671,7 +677,10 @@ const createCryptoAddress = (req, res) => {
 	}
 
 	toolsLib.user.createUserCryptoAddressByKitId(id, crypto.value, {
-		network: network.value
+		network: network.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			return res.status(201).json(data);
@@ -762,7 +771,11 @@ const getUserStats = (req, res) => {
 	);
 	const user_id = req.auth.sub.id;
 
-	toolsLib.user.getUserStatsByKitId(user_id)
+	toolsLib.user.getUserStatsByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((stats) => {
 			return res.json(stats);
 		})
@@ -823,7 +836,11 @@ const userCheckTransaction = (req, res) => {
 		return res.status(400).json({ message: 'Invalid network' });
 	}
 
-	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value)
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((transaction) => {
 			return res.json({ message: 'Success', transaction });
 		})

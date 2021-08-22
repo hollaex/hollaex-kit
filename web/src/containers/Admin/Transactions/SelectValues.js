@@ -4,7 +4,13 @@ import classname from 'classnames';
 
 const Option = Select.Option;
 
-export const SelectValue = ({ label, defaultValue, onSelect, options, className }) => (
+export const SelectValue = ({
+	label,
+	defaultValue,
+	onSelect,
+	options,
+	className,
+}) => (
 	<div className={classname('filter-select-wrapper', className)}>
 		<div className="filter-select-label">{label}</div>
 		<Select

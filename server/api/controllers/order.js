@@ -21,7 +21,11 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	let order = req.swagger.params.order.value;
 
-	const opts = {};
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
 
 	if (isPlainObject(order.meta)) {
 		opts.meta = order.meta;
@@ -68,7 +72,11 @@ const getUserOrder = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order id' });
 	}
 
-	toolsLib.order.getUserOrderByKitId(user_id, order_id)
+	toolsLib.order.getUserOrderByKitId(user_id, order_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
@@ -97,7 +105,11 @@ const cancelUserOrder = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order id' });
 	}
 
-	toolsLib.order.cancelUserOrderByKitId(user_id, order_id)
+	toolsLib.order.cancelUserOrderByKitId(user_id, order_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
@@ -123,7 +135,12 @@ const getAllUserOrders = (req, res) => {
 		order_by.value,
 		order.value,
 		start_date.value,
-		end_date.value
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((order) => {
 			return res.json(order);
@@ -139,7 +156,11 @@ const cancelAllUserOrders = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.order.cancelAllUserOrdersByKitId(user_id, symbol)
+	toolsLib.order.cancelAllUserOrdersByKitId(user_id, symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((order) => {
 			return res.json(order);
 		})
@@ -179,7 +200,12 @@ const getAdminOrders = (req, res) => {
 			order_by.value,
 			order.value,
 			start_date.value,
-			end_date.value
+			end_date.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	} else {
 		promiseQuery = toolsLib.order.getAllExchangeOrders(
@@ -192,7 +218,12 @@ const getAdminOrders = (req, res) => {
 			order_by.value,
 			order.value,
 			start_date.value,
-			end_date.value
+			end_date.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	}
 
@@ -212,7 +243,7 @@ const adminCancelOrder = (req, res) => {
 	const userId = req.swagger.params.user_id.value;
 	const order_id = req.swagger.params.order_id.value;
 
-	if (!order_id || typeof orderId !== 'string' || !isUUID(order_id)) {
+	if (!order_id || typeof order_id !== 'string' || !isUUID(order_id)) {
 		loggerUser.error(
 			req.uuid,
 			'controllers/order/adminCancelOrder invalid order_id',
@@ -221,7 +252,11 @@ const adminCancelOrder = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order id' });
 	}
 
-	toolsLib.order.cancelUserOrderByKitId(userId, order_id)
+	toolsLib.order.cancelUserOrderByKitId(userId, order_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})

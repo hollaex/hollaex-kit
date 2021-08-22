@@ -61,7 +61,10 @@ const createInitialAdmin = (req, res) => {
 			}
 			return toolsLib.user.createUser(email, password, {
 				role: 'admin',
-				id: 1
+				id: 1,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
 			});
 		})
 		.then(() => {
@@ -121,7 +124,10 @@ const getUsersAdmin = (req, res) => {
 		order: order.value,
 		start_date: start_date.value,
 		end_date: end_date.value,
-		format: format.value
+		format: format.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			if (format.value) {
@@ -271,7 +277,11 @@ const getAdminUserBalance = (req, res) => {
 	);
 	const user_id = req.swagger.params.user_id.value;
 
-	toolsLib.wallet.getUserBalanceByKitId(user_id)
+	toolsLib.wallet.getUserBalanceByKitId(user_id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -325,7 +335,11 @@ const getAdminBalance = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.wallet.getKitBalance()
+	toolsLib.wallet.getKitBalance({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((balance) => {
 			return res.json(balance);
 		})
@@ -613,7 +627,11 @@ const transferFund = (req, res) => {
 
 	const data = req.swagger.params.data.value;
 
-	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email)
+	toolsLib.wallet.transferAssetByKitIds(data.sender_id, data.receiver_id, data.currency, data.amount, data.description, data.email, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -658,7 +676,11 @@ const uploadImage = (req, res) => {
 	const name = req.swagger.params.name.value;
 	const file = req.swagger.params.file.value;
 
-	toolsLib.storeImageOnNetwork(file, name)
+	toolsLib.storeImageOnNetwork(file.buffer, name, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((result) => {
 			return res.json(result);
 		})
@@ -737,7 +759,11 @@ const inviteNewOperator = (req, res) => {
 		return res.status(400).json({ message: 'Invalid role' });
 	}
 
-	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value)
+	toolsLib.user.inviteExchangeOperator(invitingEmail, email.value, role.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then(() => {
 			return res.json({ message: 'Success' });
 		})
@@ -760,7 +786,11 @@ const getExchangeGeneratedFees = (req, res) => {
 
 	const { start_date, end_date } = req.swagger.params;
 
-	toolsLib.order.getGeneratedFees(start_date.value, end_date.value)
+	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -781,7 +811,11 @@ const settleFees = (req, res) => {
 		req.auth
 	);
 
-	toolsLib.order.settleFees()
+	toolsLib.order.settleFees({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -843,7 +877,10 @@ const mintAsset = (req, res) => {
 					description,
 					transactionId: transaction_id,
 					status,
-					email
+					email,
+					additionalHeaders: {
+						'x-forwarded-for': req.headers['x-forwarded-for']
+					}
 				}
 			);
 		})
@@ -911,7 +948,10 @@ const putMint = (req, res) => {
 		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
-		updatedDescription: updated_description
+		updatedDescription: updated_description,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -978,7 +1018,10 @@ const burnAsset = (req, res) => {
 					transactionId: transaction_id,
 					status,
 					email,
-					fee
+					fee,
+					additionalHeaders: {
+						'x-forwarded-for': req.headers['x-forwarded-for']
+					}
 				}
 			);
 		})
@@ -1046,7 +1089,10 @@ const putBurn = (req, res) => {
 		waiting,
 		updatedTransactionId: updated_transaction_id,
 		email,
-		updatedDescription: updated_description
+		updatedDescription: updated_description,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
 	})
 		.then((data) => {
 			loggerAdmin.info(
@@ -1143,6 +1189,424 @@ const deleteKitUserMeta = (req, res) => {
 		});
 };
 
+const adminCheckTransaction = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/adminCheckTransaction auth',
+		req.auth
+	);
+
+	const {
+		currency,
+		transaction_id,
+		address,
+		network,
+		is_testnet
+	} = req.swagger.params;
+
+	toolsLib.wallet.checkTransaction(currency.value, transaction_id.value, address.value, network.value, is_testnet.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((transaction) => {
+			return res.json({ message: 'Success', transaction });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/adminCheckTransaction catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createPair = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/createPair auth',
+		req.auth
+	);
+
+	const {
+		name,
+		pair_base,
+		pair_2,
+		code,
+		active,
+		min_size: minSize,
+		max_size: maxSize,
+		min_price: minPrice,
+		max_price: maxPrice,
+		increment_size: incrementSize,
+		increment_price: incrementPrice,
+		estimated_price: estimatedPrice,
+		is_public: isPublic
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createPair',
+		'name:',
+		name,
+		'pair_base:',
+		pair_base,
+		'pair_2:',
+		pair_2,
+		'code:',
+		code,
+		'active:',
+		active,
+		'min_size:',
+		minSize,
+		'max_size:',
+		maxSize,
+		'min_price:',
+		minPrice,
+		'max_price:',
+		maxPrice,
+		'increment_size:',
+		incrementSize,
+		'increment_price:',
+		incrementPrice,
+		'estimated_price:',
+		estimatedPrice,
+		'is_public:',
+		isPublic
+	);
+
+	toolsLib.pair.createPair(
+		name,
+		pair_base,
+		pair_2,
+		{
+			code,
+			active,
+			minSize,
+			maxSize,
+			minPrice,
+			maxPrice,
+			incrementSize,
+			incrementPrice,
+			estimatedPrice,
+			isPublic,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createPair catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updatePair = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updatePair auth',
+		req.auth
+	);
+
+	const {
+		name,
+		pair_base,
+		pair_2,
+		code,
+		active,
+		min_size: minSize,
+		max_size: maxSize,
+		min_price: minPrice,
+		max_price: maxPrice,
+		increment_size: incrementSize,
+		increment_price: incrementPrice,
+		estimated_price: estimatedPrice,
+		is_public: isPublic
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/updatePair',
+		'name:',
+		name,
+		'pair_base:',
+		pair_base,
+		'pair_2:',
+		pair_2,
+		'code:',
+		code,
+		'active:',
+		active,
+		'min_size:',
+		minSize,
+		'max_size:',
+		maxSize,
+		'min_price:',
+		minPrice,
+		'max_price:',
+		maxPrice,
+		'increment_size:',
+		incrementSize,
+		'increment_price:',
+		incrementPrice,
+		'estimated_price:',
+		estimatedPrice,
+		'is_public:',
+		isPublic
+	);
+
+	toolsLib.pair.updatePair(
+		name,
+		pair_base,
+		pair_2,
+		{
+			code,
+			active,
+			minSize,
+			maxSize,
+			minPrice,
+			maxPrice,
+			incrementSize,
+			incrementPrice,
+			estimatedPrice,
+			isPublic,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/updatePair catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const createCoin = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/createCoin auth',
+		req.auth
+	);
+
+	const {
+		symbol,
+		fullname,
+		code,
+		withdrawal_fee: withdrawalFee,
+		min,
+		max,
+		increment_unit: incrementUnit,
+		logo,
+		meta,
+		estimated_price: estimatedPrice,
+		type,
+		network,
+		standard,
+		allow_deposit: allowDeposit,
+		allow_withdrawal: allowWithdrawal
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createCoin',
+		'symbol:',
+		symbol,
+		'fullname:',
+		fullname,
+		'withdrawal_fee:',
+		withdrawalFee,
+		'min:',
+		min,
+		'max:',
+		max,
+		'increment_unit:',
+		incrementUnit,
+		'logo:',
+		logo,
+		'meta:',
+		meta,
+		'estimated_price:',
+		estimatedPrice,
+		'type:',
+		type,
+		'network:',
+		network,
+		'standard:',
+		standard,
+		'allow_deposit:',
+		allowDeposit,
+		'allow_withdrawal:',
+		allowWithdrawal
+	);
+
+	toolsLib.coin.createCoin(
+		symbol,
+		fullname,
+		{
+			code,
+			withdrawalFee,
+			min,
+			max,
+			incrementUnit,
+			logo,
+			meta,
+			estimatedPrice,
+			type,
+			network,
+			standard,
+			allowDeposit,
+			allowWithdrawal,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createCoin catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateCoin = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updateCoin auth',
+		req.auth
+	);
+
+	const {
+		symbol,
+		fullname,
+		code,
+		withdrawal_fee: withdrawalFee,
+		min,
+		max,
+		increment_unit: incrementUnit,
+		logo,
+		meta,
+		estimated_price: estimatedPrice,
+		type,
+		network,
+		standard,
+		allow_deposit: allowDeposit,
+		allow_withdrawal: allowWithdrawal
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/updateCoin',
+		'symbol:',
+		symbol,
+		'fullname:',
+		fullname,
+		'withdrawal_fee:',
+		withdrawalFee,
+		'min:',
+		min,
+		'max:',
+		max,
+		'increment_unit:',
+		incrementUnit,
+		'logo:',
+		logo,
+		'meta:',
+		meta,
+		'estimated_price:',
+		estimatedPrice,
+		'type:',
+		type,
+		'network:',
+		network,
+		'standard:',
+		standard,
+		'allow_deposit:',
+		allowDeposit,
+		'allow_withdrawal:',
+		allowWithdrawal
+	);
+
+	toolsLib.coin.updateCoin(
+		symbol,
+		fullname,
+		{
+			code,
+			withdrawalFee,
+			min,
+			max,
+			incrementUnit,
+			logo,
+			meta,
+			estimatedPrice,
+			type,
+			network,
+			standard,
+			allowDeposit,
+			allowWithdrawal,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/updateCoin catch',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getExchange = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getExchange auth',
+		req.auth
+	);
+
+	toolsLib.exchange.getExchangeConfig({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getExchange err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1176,5 +1640,11 @@ module.exports = {
 	deleteKitUserMeta,
 	postKitUserMeta,
 	putKitUserMeta,
-	putUserMeta
+	putUserMeta,
+	adminCheckTransaction,
+	createPair,
+	updatePair,
+	createCoin,
+	updateCoin,
+	getExchange
 };

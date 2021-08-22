@@ -46,7 +46,12 @@ const getAdminDeposits = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
@@ -108,7 +113,12 @@ const getUserDeposits = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
