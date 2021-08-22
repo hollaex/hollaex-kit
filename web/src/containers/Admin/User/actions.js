@@ -234,3 +234,23 @@ export const deleteMeta = (user, name) => {
 	};
 	return requestAuthenticated(`/admin/kit/user-meta?name=${name}`, options);
 };
+
+// export const requestAllPairs = (id) => {
+// 	const options = {
+// 		method: 'GET',
+// 	};
+// 	return requestAuthenticated(`/network/${id}/pair/all`, options);
+// };
+
+export const requestAllPairs = (id) => {
+	let path = `/network/${id}/pair/all`;
+
+	return axios({
+		method: 'GET',
+		url: path,
+	})
+		.then((res) => {
+			console.log("res", res);
+		})
+		.catch((err) => { });
+};

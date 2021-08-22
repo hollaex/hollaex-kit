@@ -7,6 +7,8 @@ const MAILTYPE = {
 	LOGIN: 'login',
 	SIGNUP: 'signup',
 	RESET_PASSWORD: 'resetPassword',
+	CHANGE_PASSWORD: 'changePassword',
+	PASSWORD_CHANGED: 'passwordChanged',
 	USER_VERIFICATION_REJECT: 'userVerificationReject',
 	ACCOUNT_UPGRADE: 'accountUpgrade',
 	ACCOUNT_VERIFY: 'accountVerify',

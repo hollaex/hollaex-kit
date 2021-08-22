@@ -4510,6 +4510,9 @@ table th {
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0; } }
 
+.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--raised:not(:disabled):not(.mdc-ripple-upgraded), .mdc-button--unelevated:not(:disabled):not(.mdc-ripple-upgraded) {
+  margin-top: 2rem !important; }
+
 .sidebar-fit-to-screen {
   height: 100vh !important; }
 

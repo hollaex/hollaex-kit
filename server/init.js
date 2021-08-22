@@ -179,7 +179,8 @@ const checkStatus = () => {
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
-				activation_code: exchange.activation_code
+				activation_code: exchange.activation_code,
+				kit_version: status.kit_version
 			});
 
 			if (!networkNodeLib) {
