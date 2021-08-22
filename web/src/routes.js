@@ -51,6 +51,7 @@ import {
 	Tiers,
 	Roles,
 	Resources,
+	Pairs
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -74,6 +75,7 @@ import {
 import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import PluginConfig from 'containers/Admin/PluginConfig';
+import ConfirmChangePassword from 'containers/ConfirmChangePassword';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -285,6 +287,11 @@ export const generateRoutes = (routes = []) => {
 					/>
 				) : null}
 				<Route
+					path="change-password-confirm/:code"
+					name="Reset Password Request"
+					component={ConfirmChangePassword}
+				/>
+				<Route
 					path="account"
 					name="Account"
 					component={Account}
@@ -405,7 +412,7 @@ export const generateRoutes = (routes = []) => {
 				<Route
 					path="/admin/trade"
 					name="Admin Trade"
-					component={withAdminProps(MoveToDash, 'trade')}
+					component={withAdminProps(Pairs, 'trade')}
 				/>
 				<Route
 					path="/admin/hosting"

@@ -33,6 +33,9 @@
 	margin: 5px 0px;
 	font-size: 13px;
 }
+.admin-content-wrapper .ant-tabs-content {
+	color: #ffffff;
+}
 .file-wrapper {
 	margin: 1rem 0rem;
 }
