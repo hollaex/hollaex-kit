@@ -179,8 +179,13 @@ const checkStatus = () => {
 				apiKey: status.api_key,
 				apiSecret: status.api_secret,
 				exchange_id: exchange.id,
-				activation_code: exchange.activation_code
+				activation_code: exchange.activation_code,
+				kit_version: status.kit_version
 			});
+
+			if (!networkNodeLib) {
+				throw new Error('Node library failed to initialize');
+			}
 
 			nodeLib = networkNodeLib;
 
@@ -209,17 +214,6 @@ const checkStatus = () => {
 			);
 			loggerInit.info('init/checkStatus/activation complete');
 			return networkNodeLib;
-		})
-		.catch((err) => {
-			let message = 'Initialization failed';
-			if (err.message) {
-				message = err.message;
-			}
-			if (err.statusCode && err.statusCode === 402) {
-				message = err.error.message;
-			}
-			loggerInit.error('init/checkStatus Error ', message);
-			setTimeout(() => { process.exit(1); }, 60 * 1000 * 5);
 		});
 };
 

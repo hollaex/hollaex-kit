@@ -715,6 +715,7 @@ export default {
 					'We highly recommend you set up two-factor authentication (2FA). Doing so will greatly increase the security of your funds.',
 				ENABLE: 'Enable Two-Factor Authentication',
 				DISABLE: 'Disable Two-Factor Authentication',
+				INPUT: 'Please enter your OTP',
 			},
 			FORM: {
 				PLACEHOLDER: 'Enter your OTP provided by Google Authenticator.',
@@ -1469,5 +1470,22 @@ export default {
 	FEE_REDUCTION_DESCRIPTION:
 		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
 	CHANGE_PASSWORD_FAILED: 'changing password failed', // new
-	RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key',
+  	MARKET_OPTIONS: [
+		{ value: 'List', label: 'List' }, // new
+		{ value: 'Card', label: 'Card' }, // new
+	],
+	ALL: 'All', //new
+	ASSET_TXT: 'Asset', //new
+	ONE_DAY: '1 day', //new
+	ONE_WEEK: '1 week', //new
+	MONTH: '{0} month', //new
+	START_DATE: 'Start date', //new
+	END_DATE: 'End date', //new
+	REGULAR: 'Regular', //new
+	STOPS: 'Stops', //new
+	VIEW_ALL: 'view all', //new
+	TRIGGER_PRICE: 'Trigger price', //new
+	SPEND_AMOUNT: 'Spend Amount', //new
+	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+  RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key',  //new
 };

@@ -112,7 +112,12 @@ const performWithdrawal = (req, res) => {
 					withdrawal.address,
 					withdrawal.currency,
 					withdrawal.amount,
-					{ network: withdrawal.network }
+					{
+						network: withdrawal.network,
+						additionalHeaders: {
+							'x-forwarded-for': req.headers['x-forwarded-for']
+						}
+					}
 				),
 				withdrawal
 			]);
@@ -176,7 +181,12 @@ const getAdminWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
@@ -238,7 +248,12 @@ const getUserWithdrawals = (req, res) => {
 		end_date.value,
 		transaction_id.value,
 		address.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value) {
@@ -265,7 +280,11 @@ const cancelWithdrawal = (req, res) => {
 	const userId = req.auth.sub.id;
 	const id = req.swagger.params.id.value;
 
-	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id)
+	toolsLib.wallet.cancelUserWithdrawalByKitId(userId, id, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((withdrawal) => {
 			return res.json(withdrawal);
 		})

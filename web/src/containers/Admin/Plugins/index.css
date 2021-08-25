@@ -179,7 +179,7 @@
 	border-radius: 13px;
 	color: #ffffff;
 	cursor: pointer;
-	min-width: 7.5rem;
+	min-width: 10.5rem;
 	text-align: center;
 }
 .plugins-wrapper .ant-breadcrumb {
@@ -456,4 +456,8 @@
 .spinner-container img {
 	width: 35px;
 	height: 35px;
+}
+
+.plugin-list-container .plugin-list .plugin-list-item .premium-plugin {
+	color: #ff8000;
 }

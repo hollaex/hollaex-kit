@@ -248,6 +248,7 @@ const AboutData = ({
 	onChangeSuccess,
 	allIcons = {},
 	userTiers,
+	kycPluginName
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -255,13 +256,6 @@ const AboutData = ({
 	const [modalKey, setModalKey] = useState('');
 	const [isApply, setApply] = useState(false);
 	const [isDiscount, setDiscountApply] = useState(false);
-	const userDocs = {
-		front: userImages.front ? userImages.front : '',
-		back: userImages.back ? userImages.back : '',
-		proof_of_residency: userImages.proof_of_residency
-			? userImages.proof_of_residency
-			: '',
-	};
 	useEffect(() => {
 		if (userData.discount) {
 			setDiscountApply(true);
@@ -558,16 +552,17 @@ const AboutData = ({
 				<div className="d-flex">
 					<div className="about-verification-content">
 						<div className="about-title">User identification files</div>
-						<div className="d-flex justify-content-between">
+						<div className="d-flex justify-content-between verification-wrapper">
 							<div className="d-flex">
 								<Verification
 									isUpload={isUpload}
 									constants={constants}
 									user_id={userData.id}
-									userImages={userDocs}
+									userImages={userImages}
 									userInformation={userData}
 									refreshData={refreshData}
 									closeUpload={() => setUpload(false)}
+									kycPluginName={kycPluginName}
 								/>
 							</div>
 							<div>

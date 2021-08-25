@@ -126,7 +126,7 @@
 	font-size: 14px;
 }
 .ant-layout-sider .ant-layout-sider-children {
-	background-color: #0000ff;
+	background-color: var(--admin_panel_sidebar_background);
 }
 .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
 	background-color: var(--admin_panel_sidebar_background);
