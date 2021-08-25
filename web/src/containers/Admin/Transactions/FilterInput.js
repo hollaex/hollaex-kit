@@ -7,7 +7,13 @@ const onInputChange = (onChange) => (event) => {
 	onChange(value.trim());
 };
 
-export const FilterInput = ({ onChange, label, placeholder, description, className }) => (
+export const FilterInput = ({
+	onChange,
+	label,
+	placeholder,
+	description,
+	className,
+}) => (
 	<div className={classname('filter-input-wrapper', className)}>
 		<div className="filter-input-label">{label}</div>
 		<div className="input-container">

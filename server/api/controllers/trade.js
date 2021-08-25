@@ -60,7 +60,12 @@ const getUserTrades = (req, res) => {
 		order.value,
 		start_date.value,
 		end_date.value,
-		format.value
+		format.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			if (format.value == 'csv') {
@@ -123,7 +128,12 @@ const getAdminTrades = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value
+			format.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	} else {
 		promiseQuery = 	toolsLib.order.getAllTradesNetwork(
@@ -134,7 +144,12 @@ const getAdminTrades = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
-			format.value
+			format.value,
+			{
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			}
 		);
 	}
 
