@@ -1,2 +1,3 @@
-export const generateGlobalId = (pluginName) => (key) =>
-	`RC_${pluginName.toUpperCase()}_${key.toUpperCase()}`;
+export const generateGlobalId = (pluginName = 'UNKNOWN_PLUGIN') => (
+	key = 'UNKNOWN_KEY'
+) => `RC_${pluginName.toUpperCase()}_${key.toUpperCase()}`;
