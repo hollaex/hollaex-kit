@@ -9,6 +9,20 @@ node_modules
 # testing
 web/coverage
 
+#test
+test/node_modules
+test/Onboarding/.log
+test/Onboarding/chatBox.js
+test/Roles/.log
+test/Scenario/.log
+test/Scenario/*.*
+test/Trade/.log
+test/Utils/temp
+test/Utils/scratch
+test/Wallet/.log
+test/Report
+test/.env
+
 # production
 build
 
