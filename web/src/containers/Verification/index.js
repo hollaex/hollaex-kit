@@ -73,6 +73,7 @@ class Verification extends Component {
 		activePage: 'email',
 		showVerificationSentModal: false,
 		bankMeta: {},
+		activeKYCTabKey: 'identity',
 		kycTabs: [
 			{
 				key: 'identity',
@@ -118,6 +119,14 @@ class Verification extends Component {
 				nextProps.activeLanguage,
 				nextState.activeTab
 			);
+		}
+	}
+
+	componentDidUpdate(_, prevState) {
+		const { activeKYCTabKey, user, activeLanguage, activeTab } = this.state;
+
+		if (activeKYCTabKey !== prevState.activeKYCTabKey && activeTab !== -1) {
+			this.updateTabs(user, activeLanguage, activeTab);
 		}
 	}
 
@@ -224,7 +233,7 @@ class Verification extends Component {
 			return;
 		}
 		const { icons: ICONS } = this.props;
-		const { kycTabs } = this.state;
+		const { kycTabs, activeKYCTabKey } = this.state;
 		const { email, bank_account, id_data, phone_number, email_verified } = user;
 		let bank_status = 0;
 		if (bank_account.length) {
@@ -339,7 +348,7 @@ class Verification extends Component {
 						getFormatTimestamp={getFormatTimestamp}
 						getCountry={getCountry}
 					>
-						<Tabs>
+						<Tabs activeKey={activeKYCTabKey} onTabClick={this.setActiveKYCTab}>
 							{kycTabs.map(({ key, title }) => (
 								<TabPane tab={title} key={key}>
 									{this.renderKYCVerificationHomeContent(
@@ -447,6 +456,10 @@ class Verification extends Component {
 
 	renderContent = (tabs, activeTab) => tabs[activeTab].content || <div>c</div>;
 
+	setActiveKYCTab = (activeKYCTabKey) => {
+		this.setState({ activeKYCTabKey });
+	};
+
 	renderKYCVerificationContent = (key) => {
 		const { user } = this.state;
 		const { activeLanguage, icons: ICONS, openContactForm } = this.props;
@@ -508,7 +521,15 @@ class Verification extends Component {
 	};
 
 	renderPageContent = (tabProps) => {
-		const { activePage, activeTab, tabs, user, bankMeta, kycTabs } = this.state;
+		const {
+			activePage,
+			activeTab,
+			tabs,
+			user,
+			bankMeta,
+			kycTabs,
+			activeKYCTabKey,
+		} = this.state;
 		const { activeLanguage, icons: ICONS, openContactForm } = this.props;
 		switch (activePage) {
 			case 'email':
@@ -559,7 +580,7 @@ class Verification extends Component {
 						initialValues={identityInitialValues(user)}
 						setActiveTab={this.setActiveTab}
 					>
-						<Tabs>
+						<Tabs activeKey={activeKYCTabKey} onTabClick={this.setActiveKYCTab}>
 							{kycTabs.map(({ key, title }) => (
 								<TabPane tab={title} key={key}>
 									{this.renderKYCVerificationContent(key)}
