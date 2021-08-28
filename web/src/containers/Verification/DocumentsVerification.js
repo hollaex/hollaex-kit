@@ -216,7 +216,7 @@ class DocumentsVerification extends Component {
 
 	onGoBack = () => {
 		this.props.setActivePageContent('email');
-		this.props.handleBack('document');
+		this.props.handleBack('kyc');
 	};
 
 	render() {
