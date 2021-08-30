@@ -38,7 +38,7 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { generateGlobalId } from 'utils/id';
+import { generateGlobalId, generateDynamicTarget } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -419,11 +419,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			});
 
 			const remoteRoutes = [];
-			allWebViews.forEach(({ target, meta, name }) => {
+			allWebViews.forEach(({ meta, name }) => {
 				if (meta && meta.is_page) {
 					const { icon_id, string_id, ...rest } = meta;
 					remoteRoutes.push({
-						target,
+						target: generateDynamicTarget(name, 'page'),
 						icon_id: generateGlobalId(name)(icon_id),
 						string_id: generateGlobalId(name)(string_id),
 						...rest,
@@ -433,7 +433,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 
 			const CLUSTERED_WEB_VIEWS = {};
 			allWebViews.forEach((plugin) => {
-				const { target } = plugin;
+				const { target: staticTarget, meta, name } = plugin;
+				let target;
+				if (staticTarget) {
+					target = staticTarget;
+				} else if (meta) {
+					const { is_page } = meta;
+					if (is_page) {
+						target = generateDynamicTarget(name, 'page');
+					}
+				}
 				if (!CLUSTERED_WEB_VIEWS[target]) {
 					CLUSTERED_WEB_VIEWS[target] = [plugin];
 				} else {
