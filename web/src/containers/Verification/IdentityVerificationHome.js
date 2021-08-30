@@ -21,7 +21,7 @@ const IdentityVerificationHome = ({
 	if (!address.country) {
 		return (
 			<div className="btn-wrapper">
-				<div className="holla-verification-button">
+				<div className="holla-verification-button static pt-4">
 					<EditWrapper stringId="USER_VERIFICATION.START_IDENTITY_VERIFICATION" />
 					<Button
 						label={STRINGS['USER_VERIFICATION.START_IDENTITY_VERIFICATION']}
@@ -38,7 +38,7 @@ const IdentityVerificationHome = ({
 						STRINGS['USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT'],
 						<span
 							className="verification_link pointer"
-							onClick={(e) => handleBack('document', e)}
+							onClick={(e) => handleBack('kyc', e)}
 						>
 							{STRINGS['USER_VERIFICATION.DOCUMENT_SUBMISSION']}
 						</span>
@@ -156,7 +156,7 @@ const IdentityVerificationHome = ({
 				</div>
 				{id_data.status === 3 ? null : (
 					<div className="btn-wrapper">
-						<div className="holla-verification-button">
+						<div className="holla-verification-button static pt-4">
 							<EditWrapper stringId="USER_VERIFICATION.REVIEW_IDENTITY_VERIFICATION" />
 							<Button
 								label={
