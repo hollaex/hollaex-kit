@@ -1,71 +1,51 @@
-import React, { Component } from 'react';
-// import { requestTrades } from './actions';
-// import { SubmissionError } from 'redux-form';
-// import querystring from 'query-string';
-// import { Spin, notification, Tabs } from 'antd';
-// import { AdminHocForm } from '../../../components';
+import React, { useEffect, useState } from 'react';
+import { Tabs } from 'antd';
 
-// import { requestUser, requestUserBalance } from './actions';
+import Pairs from './Pairs';
+import { getTabParams } from '../AdminFinancials/Assets';
+import './index.css';
 
-// import UserContent from './UserContent';
-// import ListUsers from '../ListUsers/index';
-import UserListTrades from './userListTrades';
-// import { isSupport } from '../../../utils';
-// import UserList from "../Main/userList";
+const TabPane = Tabs.TabPane;
 
-// const INITIAL_STATE = {
-// 	userInformation: {},
-// 	userImages: {},
-// 	loading: false
-// };
+const PairsTab = (props) => {
+	const [hideTabs, setHideTabs] = useState(false);
+	const [activeTab, setActiveTab] = useState('0');
+	const tabParams = getTabParams();
 
-// const Form = AdminHocForm('USER_REQUEST_FORM');
+	useEffect(() => {
+		if (tabParams) {
+			setActiveTab(tabParams.tab);
+		}
+	}, [tabParams]);
 
-class Trades extends Component {
-	componentWillMount() {
-		// requestTrades(1)
-		//
-		// const { search } = this.props.location;
-		// if (search) {
-		//   const qs = querystring.parse(search);
-		//   if (qs.id) {
-		//     this.requestTrades(1);
-		//   }
-		// }
-	}
+	const handleTabChange = (key) => {
+		setActiveTab(key);
+		props.router.replace('/admin/trade');
+	};
 
-	requestTrades(id) {}
+	const handleHide = () => {
+		setHideTabs((v) => !v);
+	};
 
-	render() {
-		return (
-			<div className="app_container-content">
-				{/*<h1>USERS TRADE HISTORY</h1>*/}
-				{/*<h2>SEARCH FOR USER</h2>*/}
-				{/*<Form*/}
-				{/*onSubmit={()=>this.requestTrades(1)}*/}
-				{/*buttonText="Search"*/}
-				{/*fields={{*/}
-				{/*id: {*/}
-				{/*type: 'number',*/}
-				{/*label: 'User Id',*/}
-				{/*min: 1,*/}
-				{/*max: 100000,*/}
-				{/*validate: []*/}
-				{/*},*/}
-				{/*email: {*/}
-				{/*type: 'eamil',*/}
-				{/*label: 'Email',*/}
-				{/*placeholder: 'Email',*/}
-				{/*validate: []*/}
-				{/*}*/}
-				{/*}}*/}
-				{/*initialValues={{ id: '0' }}*/}
-				{/*/>*/}
-				<h2 className="m-top">LIST OF USERS</h2>
-				<UserListTrades />
-			</div>
-		);
-	}
-}
+	const renderTabBar = (props, DefaultTabBar) => {
+		if (hideTabs) return <div></div>;
+		return <DefaultTabBar {...props} />;
+	};
 
-export default Trades;
+	return (
+		<div className="admin-earnings-container w-100">
+			<Tabs
+				defaultActiveKey="0"
+				activeKey={activeTab}
+				onChange={handleTabChange}
+				renderTabBar={renderTabBar}
+			>
+				<TabPane tab="Pairs" key="0">
+					<Pairs location={props.location} handleHide={handleHide} />
+				</TabPane>
+			</Tabs>
+		</div>
+	);
+};
+
+export default PairsTab;

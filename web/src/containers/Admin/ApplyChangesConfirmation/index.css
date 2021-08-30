@@ -1,0 +1,23 @@
+.apply-confirm-container .apply-confirmation {
+	display: flex;
+	align-items: center;
+}
+.apply-confirm-container .apply-confirmation .apply-restart-icon {
+	width: 4rem;
+}
+.apply-confirm-container .apply-confirm-info {
+	margin: 0.5rem;
+}
+.apply-confirm-container .btn-wrapper {
+	display: flex;
+	align-items: center;
+	margin-top: 1rem;
+}
+.apply-confirm-container .btn-wrapper .separator {
+	margin-left: 1rem;
+}
+.apply-confirm-container .btn-wrapper .apply-btn {
+	width: 100%;
+	background-color: #288500 !important;
+	color: #ffffff !important;
+}

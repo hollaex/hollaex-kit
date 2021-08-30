@@ -1487,5 +1487,5 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
-	RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key',
+	RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key', //new
 };
