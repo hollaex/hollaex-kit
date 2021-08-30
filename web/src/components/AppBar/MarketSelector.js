@@ -18,6 +18,7 @@ import {
 import SearchBox from './SearchBox';
 import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
+import EditWrapper from 'components/EditWrapper';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -60,7 +61,7 @@ class MarketSelector extends Component {
 				)}
 				onClick={() => this.onAddTabClick(symbol)}
 			>
-				{symbol.toUpperCase()}
+				{symbol === 'all' ? STRINGS['ALL'] : symbol.toUpperCase()}
 			</div>
 		));
 	};
@@ -231,7 +232,11 @@ class MarketSelector extends Component {
 							handleSearch={handleSearch}
 						/>
 					</div>
-					<div className={classnames({ 'scroll-view': processedTabMenu.length >= 10})}>
+					<div
+						className={classnames({
+							'scroll-view': processedTabMenu.length >= 10,
+						})}
+					>
 						{hasTabMenu ? (
 							processedTabMenu.map(
 								(
@@ -281,7 +286,8 @@ class MarketSelector extends Component {
 														wrapperClassName="app-bar-add-tab-icons"
 													/>
 													<div className="app_bar-pair-font">
-														{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+														{symbol.toUpperCase()}/
+														{pairTwo.symbol.toUpperCase()}:
 													</div>
 													<div className="title-font ml-1 app-bar_add-tab-price">
 														{formatToCurrency(ticker.close, increment_price)}
@@ -301,7 +307,9 @@ class MarketSelector extends Component {
 														className={
 															priceDifference < 0
 																? 'title-font app-price-diff-down'
-																: priceDifference > 0 ? 'title-font app-price-diff-up' : "title-font"
+																: priceDifference > 0
+																? 'title-font app-price-diff-up'
+																: 'title-font'
 														}
 													>
 														{priceDifferencePercent}
@@ -319,11 +327,13 @@ class MarketSelector extends Component {
 						)}
 					</div>
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer">
-						{constants &&
-							constants.features &&
-							constants.features.pro_trade && (
-								<div onClick={this.onViewMarketsClick}>{`view markets`}</div>
-							)}
+						{constants && constants.features && constants.features.pro_trade && (
+							<div onClick={this.onViewMarketsClick}>
+								<EditWrapper stringId="VIEW_MARKET">
+									{STRINGS['VIEW_MARKET']}
+								</EditWrapper>
+							</div>
+						)}
 					</div>
 				</div>
 			</div>

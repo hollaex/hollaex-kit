@@ -18,6 +18,8 @@ const Form = (name, className = '', allowPristine = false) => {
 		buttonClass = '',
 		submitOnKeyDown = false,
 		disableAllFields = false,
+		secondaryBtnTxt = '',
+		onClose = () => {},
 	}) => {
 		return (
 			<form
@@ -37,6 +39,11 @@ const Form = (name, className = '', allowPristine = false) => {
 						<strong>{error}</strong>
 					</div>
 				)}
+				{secondaryBtnTxt ? (
+					<Button type="primary" onClick={onClose} className={'green-btn'}>
+						{secondaryBtnTxt}
+					</Button>
+				) : null}
 				<Button
 					type={buttonType ? buttonType : 'primary'}
 					onClick={handleSubmit(onSubmit)}

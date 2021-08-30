@@ -49,7 +49,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 			<Row gutter={24}>
 				<Form.Item
 					name="status"
-					label="Status"
+					label={STRINGS['STATUS']}
 					rules={[
 						{
 							message: 'Input something!',
@@ -66,7 +66,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>All</Option>
+						<Option value={null}>{STRINGS['ALL']}</Option>
 						{Object.entries(STATUS_OPTIONS).map(([_, { name, value }]) => (
 							<Option key={value} value={value}>
 								{name}
@@ -76,7 +76,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 				</Form.Item>
 				<Form.Item
 					name="currency"
-					label="Asset"
+					label={STRINGS['ASSET_TXT']}
 					rules={[
 						{
 							message: 'Input something!',
@@ -93,7 +93,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>All</Option>
+						<Option value={null}>{STRINGS['ALL']}</Option>
 						{Object.entries(coins).map(([_, { symbol, fullname }]) => (
 							<Option key={symbol} value={symbol}>
 								{fullname}
@@ -108,7 +108,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 						size="small"
 						className={classnames({ active_search_button: isSearchShining })}
 					>
-						Search
+						{STRINGS['SEARCH_TXT']}
 					</Button>
 				</Form.Item>
 			</Row>

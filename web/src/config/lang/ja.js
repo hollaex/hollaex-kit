@@ -29,9 +29,13 @@ export default {
 	ADD_FILES: 'ファイルを追加', // ToDo
 	OR_TEXT: 'または',
 	CONTACT_US_TEXT: 'お問い合わせ',
-	HELPFUL_RESOURCES_TEXT: '有用なリソース',
+	HELPFUL_RESOURCES_TEXT: 'ヘルプ',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'お問い合わせはサポートセンターまでご連絡ください。',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: 'お問い合わせ',
+		TEXT: '詳細や問題については、メールでお気軽に {0} ください。',
+	},
 	HELP_TELEGRAM_TEXT: 'オープンAPIドキュメント：',
 	HELP_TELEGRAM_LINK: 'https://apidocs.HollaEx.com',
 	NEED_HELP_TEXT: 'ヘルプが必要ですか？', // new
@@ -43,7 +47,7 @@ export default {
 	BACK_TEXT: '戻る',
 	NO_OPTIONS: '利用できるオプションがありません。',
 	SECONDS: '秒',
-	VIEW_MARKET: '取引所', // new
+	VIEW_MARKET: 'マーケットを見る', // new
 	GO_TRADE: '取引を始める', // new
 	VIEW_INFO: 'インフォメーション', // new
 	APPLY_HERE: 'Apply Here', // new
@@ -761,8 +765,8 @@ export default {
 		{ value: 'sell', label: '売る' },
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'オン' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'オフ' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIZE: ' 数量',
 	PRICE: '価格',
@@ -829,9 +833,9 @@ export default {
 		'無効なビットコインアドレスです。確認後、もう一度お試しください。',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
 		'無効なイーサリアムアドレスです。確認後、もう一度お試しください。',
-	WITHDRAWALS_BUTTON_TEXT: '送金内容を確認',
+	WITHDRAWALS_BUTTON_TEXT: '出金内容を確認',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: '送金先',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: '送金先のアドレスを入力',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: '出金先のアドレスを入力',
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
@@ -908,7 +912,7 @@ export default {
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: '送金',
 	AVAILABLE_TEXT: 'Available',
 	AVAILABLE_BALANCE_TEXT: '使用可能な {0} 残高 : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'Balance',
+	BALANCE_TEXT: '残高',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: '総額',
@@ -917,7 +921,7 @@ export default {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: '売却',
 	ORDERBOOK_BUYERS: '購入',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'スプレッド {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: '最大',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -933,10 +937,10 @@ export default {
 	ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
 	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
 	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
-	LOGOUT_TITLE: 'You have been logged out',
+	LOGOUT_TITLE: 'ログアウトしました',
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'Token is expired',
 	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
-	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
+	LOGOUT_ERROR_INVALID_TOKEN: '無効なトークン',
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
 	ORDER_ENTRY_BUTTON: '{1} {0}', // 0 -> buy/sell 1 -> btc/..
@@ -970,7 +974,7 @@ export default {
 	ERROR_LOGIN_INVALID_CREDENTIALS: 'メールまたはパスワードが間違っています。',
 	SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
 	SMS_ERROR_SENT_TO:
-		'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
+		'{0}へのSMS送信中にエラーが発生しました。ページを更新してから再度お試しください。', // TODO check msg
 	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
@@ -1100,7 +1104,7 @@ export default {
 	SUCCESFUL_COPY: 'コピーされました！',
 	QUICK_TRADE_MODE: 'クイック取引モード',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair',
+	PAIR: 'ペア',
 	ZERO_ASSET: '資産がありません。',
 	DEPOSIT_ASSETS: '入金する',
 	SEARCH_TXT: '検索',
@@ -1200,7 +1204,7 @@ export default {
 		HAP_ACCOUNT: 'HAPアカウント', // new
 		HAP_ACCOUNT_TXT:
 			'お客様のアカウントは認証済みのHollaEx登録プログラム(HAP)アカウントです。XHTの購入を希望する全員を招待して10％のボーナスを獲得できます。', // new
-		EMAIL_VERIFICATION: 'メールアカウント認証', // new
+		EMAIL_VERIFICATION: 'メール認証', // new
 		DOCUMENTS: 'ドキュメント', // new
 		HAP_TEXT: 'HollaEx登録プログラム(HAP) {0}', // new
 		LOCK_AN_EXCHANGE: '取引所ロック {0}', // new
@@ -1233,6 +1237,7 @@ export default {
 		WAVE_NUMBER: 'ウェーブナンバー', // new
 		DISCOUNT: '( {0}%割引 )', // new
 		MY_FEES_LIMITS: '手数料と限度額', // new
+		VIEW_MORE_MARKETS: 'もっと見る', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'お友達招待', // new
@@ -1349,4 +1354,37 @@ export default {
 	},
 	OPEN_WALLET: 'Open wallet', // new
 	AGO: 'ago', // new
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'すべての資産に対する24時間の入出金限度額（アカウントレベル {0})',
+		HEADER_ROW_AMOUNT: '24時間数量 ({0})',
+	},
+	MARKETS_TABLE: {
+		VIEW_MARKETS: 'もっと見る', //new
+	},
+	MARKET_OPTIONS: [
+		{ value: 'List', label: 'リスト' }, // new
+		{ value: 'Card', label: 'カード' }, // new
+	],
+	ALL: 'すべて', //new
+	ASSET_TXT: '資産', //new
+	ONE_DAY: '1 日', //new
+	ONE_WEEK: '1 週間', //new
+	MONTH: '{0} ヵ月', //new
+	START_DATE: '開始日', //new
+	END_DATE: '終了日', //new
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'選択したネットワークが入金先のウォレットネットワークと互換性があるかを確認してください。', //new
+	WITHDRAWALS_FORM_NETWORK_LABEL: 'ネットワーク', //new
+	CUMULATIVE_AMOUNT_SYMBOL: 'トータル', //new
+	ORDER_MODE: '注文モード', //new
+	REGULAR: '一般', //new
+	STOPS: 'ストップ', //new
+	CLEAR: 'クリア', //new
+	POST_ONLY: 'ポストオンリー', //new
+	POST_ONLY_TOOLTIP: 'ポストオンリー注文は指値', //new
+	ORDER_ENTRY_ADVANCED: 'アドバンス', //new
+	ESTIMATED_PRICE: '推定価格', //new
+	VIEW_ALL: 'すべてを見る', //new
+	TRIGGER_PRICE: 'トリガー価格', //new
 };

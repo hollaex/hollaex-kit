@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { Select, Form, Row, DatePicker, Button, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
+import STRINGS from '../../../config/localizedStrings';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -41,7 +42,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 			<Row gutter={24}>
 				<Form.Item
 					name="symbol"
-					label="Pair"
+					label={STRINGS['PAIR']}
 					rules={[
 						{
 							message: 'Input something!',
@@ -58,7 +59,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						bordered={false}
 						suffixIcon={<CaretDownOutlined />}
 					>
-						<Option value={null}>All</Option>
+						<Option value={null}>{STRINGS['ALL']}</Option>
 						{Object.entries(pairs).map(([_, { name }]) => (
 							<Option key={name} value={name}>
 								{name.toUpperCase()}
@@ -68,7 +69,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 				</Form.Item>
 				<Form.Item name="size">
 					<Radio.Group buttonStyle="outline" size="small">
-						{Object.entries(dateFilters).map(([key, { name }]) => (
+						{Object.entries(dateFilters()).map(([key, { name }]) => (
 							<Radio.Button key={key} value={key}>
 								{name}
 							</Radio.Button>
@@ -80,6 +81,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						allowEmpty={[true, true]}
 						size="small"
 						suffixIcon={false}
+						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
 					/>
 				</Form.Item>
 				<Form.Item>
@@ -89,7 +91,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						size="small"
 						className={classnames({ active_search_button: isSearchShining })}
 					>
-						Search
+						{STRINGS['SEARCH_TXT']}
 					</Button>
 				</Form.Item>
 			</Row>

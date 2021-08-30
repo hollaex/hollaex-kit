@@ -375,6 +375,16 @@ table th {
     .app_container .app_container-content .app_container-main .presentation_container {
       width: 75rem;
       height: inherit; }
+    .app_container .app_container-content .app_container-main .ant-tabs-ink-bar {
+      background: var(--labels_important-active-labels-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-top > .ant-tabs-nav::before {
+      border-color: var(--labels_secondary-inactive-label-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-tab {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-tab-active {
+      color: var(--labels_important-active-labels-text-graphics); }
+      .app_container .app_container-content .app_container-main .ant-tabs-tab-active .ant-tabs-tab-btn {
+        font-weight: bold; }
   .app_container .app_container-sidebar {
     display: flex;
     flex-direction: row;
@@ -2763,6 +2773,8 @@ table th {
         position: absolute;
         top: 60px;
         width: 300px; }
+        .verification_container .inner-content .btn-wrapper .holla-verification-button.static {
+          position: static; }
 
 .verification-form-panel {
   padding: 30px 50px;
@@ -4974,7 +4986,7 @@ table th {
     display: block;
     position: absolute;
     top: 36px;
-    min-width: 10rem;
+    min-width: 11rem;
     min-height: 8rem;
     background-color: var(--base_background);
     z-index: 1052;

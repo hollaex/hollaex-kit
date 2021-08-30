@@ -31,15 +31,15 @@ export const updateNotes = (values) => {
 	};
 	return requestAuthenticated(`/admin/user/note?user_id=${values.id}`, options);
 };
-export const requestUserImages = (values) =>
-	requestAuthenticated(
-		`/plugins/kyc/id?${toQueryString(values)}`,
-		{},
-		null,
-		PLUGIN_URL
-	)
+export const requestUserImages = (values, kyc_name) => {
+	let url = `/plugins/kyc/id?${toQueryString(values)}`;
+	if (kyc_name !== 'kyc') {
+		url = `/plugins/${kyc_name}/admin/files?${toQueryString(values)}`;
+	}
+	return requestAuthenticated(url, {}, null, PLUGIN_URL)
 		.catch(handleError)
 		.then((data) => data);
+};
 
 export const updateUserData = (values) => {
 	const options = {
@@ -112,8 +112,17 @@ export const rejectBank = (values) => {
 	);
 };
 
-export const requestUser = (values) => {
-	const promises = [requestUserData(values), requestUserImages(values)];
+export const requestUser = (values, kyc_name) => {
+	let params = values;
+	if (kyc_name !== 'kyc') {
+		params = {
+			user_id: values.id,
+		};
+	}
+	const promises = [
+		requestUserData(values),
+		requestUserImages(params, kyc_name),
+	];
 	return all(promises);
 };
 
