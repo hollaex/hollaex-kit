@@ -240,6 +240,10 @@ const getConfigs = async () => {
 				allPlugins.push(plugin);
 			}
 		});
+
+		if (!plugins.find(({ name }) => name === pluginName)) {
+			allPlugins.push({ ...pluginObject, name: pluginName });
+		}
 	} else {
 		allPlugins = plugins;
 	}
