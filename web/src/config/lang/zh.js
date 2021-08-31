@@ -658,6 +658,7 @@ export default {
 			ACTIVE: '激活',
 			DIALOG: {
 				SUCCESS: '成功更改密码',
+				EMAIL_CONFIRMATION: '将向您发送一封电子邮件以授权更改密码',
 			},
 			FORM: {
 				BUTTON: '更改密码',

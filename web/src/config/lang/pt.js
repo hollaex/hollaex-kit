@@ -728,6 +728,7 @@ export default {
 			ACTIVE: 'Ativar',
 			DIALOG: {
 				SUCCESS: 'Você mudou sua senha com sucesso',
+				EMAIL_CONFIRMATION: 'Um e-mail é enviado para você para autorizar a alteração da senha.',
 			},
 			FORM: {
 				BUTTON: 'Alterar a senha',
