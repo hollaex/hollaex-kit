@@ -35,6 +35,7 @@ describe('NewUserRequest', function() {
 	it('NewUserRequest', async function() {
 		console.log('Test name: NewUserRequest');
 		console.log(' Step # | name | target | value');
+		
 		console.log('1 | open | https://sandbox.hollaex.com/signup | ');
 		await driver.get('https://sandbox.hollaex.com/signup');
 		const title = await driver.getTitle();
@@ -42,6 +43,7 @@ describe('NewUserRequest', function() {
 		expect(title).to.equal(title);
 		console.log('entring sand box');
 		console.log(' Step # | action | target | value');
+		
 		console.log('2 | setWindowSize | 1050x660 | ');
 		await driver.manage().window().setRect(1050, 660);
      
@@ -107,12 +109,16 @@ describe('NewUserRequest', function() {
      
 		console.log(' 8 | assertText | css=h2 b | sandbox Sign Up');
 		expect(await driver.findElement(By.css('h2 b')).getText()).to.equal('sandbox Sign Up');
+		
 		console.log(' 9 | click | css=button | ');
 		vars['windowHandles'] = await driver.getAllWindowHandles();
+		
 		console.log('10 | selectWindow | handle=${win9509} | ');
 		await driver.findElement(By.css('button')).click();
+		
 		console.log(' 11 | click | css=.icon_title-wrapper | ');
 		vars['win9509'] = await waitForWindow(5000);
+		
 		console.log('12 | assertNotText | css=.icon_title-text | Error');
 		await driver.switchTo().window(vars['win9509']);
 		await driver.findElement(By.css('.icon_title-wrapper')).click();
@@ -158,16 +164,20 @@ describe('NewUserRequest', function() {
 		console.log('7 | click | css=.ts | ');
 		await driver.findElement(By.css('.ts')).click();
 		await driver.findElement(By.css('.h td')).click();
-
 		assert(await driver.findElement(By.css('h2 b')).getText() == 'sandbox Reset Password Request');
+		
 		console.log(' 6 | click | css=.gmail_attr | ');
 		await driver.findElement(By.css('.gmail_attr')).click();
+		
 		console.log(' 7 | click | css=button | ');
 		vars['windowHandles'] = await driver.getAllWindowHandles();
+		
 		console.log(' 8 | selectWindow | handle=${win3601} | ');
 		await driver.findElement(By.css('button')).click();
+		
 		console.log(' 9 | type | name=password | password!');
 		vars['win3601'] = await waitForWindow(2000);
+		
 		console.log(' 10 | type | name=password_repeat | password');
 		await driver.switchTo().window(vars['win3601']);
 	});
