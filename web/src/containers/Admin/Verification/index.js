@@ -310,7 +310,7 @@ class Verification extends Component {
 
 	handleView = () => {
 		this.setState({ isVisible: true });
-	}
+	};
 
 	render() {
 		const {
@@ -324,14 +324,14 @@ class Verification extends Component {
 
 		const { isVisible, isEdit } = this.state;
 		let userImageData = {};
-		Object.keys(userImages).map(key => {
-			return userImageData = {
+		Object.keys(userImages).map((key) => {
+			return (userImageData = {
 				...userImageData,
 				[key]: {
 					icon: userImages[key],
 					onZoom: this.handleZoom,
-				}
-			}
+				},
+			});
 		});
 
 		const { id_data = {} } = userInformation;
@@ -394,10 +394,7 @@ class Verification extends Component {
 							<div className="files-search-icon">
 								<FileSearchOutlined />
 							</div>
-							<Button
-								className="green-btn"
-								onClick={this.handleView}
-							>
+							<Button className="green-btn" onClick={this.handleView}>
 								View data
 							</Button>
 						</div>

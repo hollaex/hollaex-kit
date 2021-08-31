@@ -254,7 +254,7 @@ class Verification extends Component {
 				bank_status = 0;
 			}
 		}
-		const identity_status = id_data.status;
+		const identity_status = id_data.status || 0;
 		const tabUtils = {
 			email: {
 				title: isMobile ? (
