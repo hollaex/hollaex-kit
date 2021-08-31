@@ -5,10 +5,18 @@ const { Builder, By, until } = require('selenium-webdriver');
 const { expect } = require('chai');
 const { Console } = require('console');
 const assert = require('assert');
-const path = require('path');
-const defNewUser = require('./newUser');
+const path = require('path')
+const logPath = path.join(__dirname, './.log',path.basename(__filename,'.js'));
+const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
+const util = require ('../Utils/Utils.js');
+const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
+util.makeReportDir(reportPath);
+util.makeReportDir(logPath);
+require('console-stamp')(console, { 
+    format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+} );
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-let userName = defNewUser.getNewUser();
+let userName = util.getNewUser();
 //userName= 'user1@testsae.com';
 let passWord = process.env.PASSWORD;
 let logInPage = process.env.LOGIN_PAGE;
@@ -31,6 +39,7 @@ describe('Verification', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
+		driver.manage().window().maximize();
 	});
 
 	afterEach(async function() {
@@ -40,77 +49,90 @@ describe('Verification', function() {
 	it('Verify', async function() {
 		var parent = driver.getWindowHandle();
 		var windows = driver.getAllWindowHandles();
-		//Given User's data
+
+	//Given User's data
+
 		console.log(' Test name	: NewUser');
-		console.log(logInPage);
+		console.log(' Step # | action | target | value');
+		console.log(' 1 | open | '+logInPage+'| ')
 		await driver.get(logInPage);
 		await driver.sleep(5000);
-		const title = await driver.getTitle();
-		console.log(title);
-		expect(title).to.equal(title);
-		console.log('entring', logInPage);
-		console.log(' Step # | action | target | value');
     
-		console.log(' 1 | type | name=email |', userName);
+		console.log(' 2 | type | name=email |', userName);
 		await driver.wait(until.elementLocated(By.name('email')), 5000);
 		await driver.findElement(By.name('email')).sendKeys(userName);
     
-		console.log(' 2 | type | name=password | PASSWORD');
+		console.log(' 3 | type | name=password | PASSWORD');
 		await driver.wait(until.elementLocated(By.name('password')), 5000);
 		await driver.findElement(By.name('password')).sendKeys(passWord);
     
-		console.log(' 3 | click | css=.auth_wrapper | ');
+		console.log(' 4 | click | css=.auth_wrapper | ');
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 		await driver.findElement(By.css('.auth_wrapper')).click();
-		console.log(' 4 | verifyElementPresent | css=.holla-button |'); 
+
+		console.log(' 5 | verifyElementPresent | css=.holla-button |'); 
 		{
 			const elements = await driver.findElements(By.css('.holla-button'));
 			// assert(elements.length);
 			expect(elements.length);
 		}
-		console.log(' 5 | click | css=.holla-button | ');
+
+		console.log(' 6 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
-		//when login    
-	    // Test name: a
-		// Step # | name | target | value
-		// 1 | open | /verification | 
 		await sleep(5000);
+		//when login    
+	
+		console.log(' 7 | open | /verification | ')
 		await driver.get(website+'verification');
 		await sleep(5000);
-		// 2 | click | css=.tab_item:nth-child(1) .custom_title-svg #Layer_1 | 
+		
+		console.log(' 8 | click | css=.tab_item:nth-child(1) .custom_title-svg #Layer_1 | ')
 		await driver.findElement(By.css('.tab_item:nth-child(1) .custom_title-svg #Layer_1')).click();
 		await sleep(5000);
-		// 3 | click | css=.panel-information-row | 
+		
+		console.log(' 9 | click | css=.panel-information-row | ')
 		await driver.findElement(By.css('.panel-information-row')).click();
 		await sleep(7000);
-		//4 | assertText | css=.information-content | new user
-
+		
+		console.log(' 10 | assertText | css=.information-content | new user')
 		assert(await driver.findElement(By.css('.information-content')).getText() == userName.toLowerCase());
+		await sleep(5000)
 		//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div/div[4]/div[2]/div/div[1]/span/span
-		// 5 | click | css=.verification-phone | 
+		
+		console.log(' 11 | click | css=.verification-phone | ')
 		// await sleep(5000)
 		// await driver.findElement(By.css(".verification-phone")).click()
 		// await sleep(5000)
-		// 6 | click | css=.holla-button | 
+		console.log('should be fixed');
+		
+		console.log(' 12 | click | css=.holla-button | ')
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(5000);
-		// 7 | click | css=.d-flex > .holla-button | 
+
+		console.log(' 13 | click | css=.d-flex > .holla-button | ')
 		await driver.findElement(By.css('.d-flex > .holla-button')).click();
 		await sleep(5000);
-		// 8 | click | css=.custom_title-img | 
+
+		console.log(' 14 | click | css=.custom_title-img | ')
 		await driver.findElement(By.css('.custom_title-img')).click();
 		await sleep(5000);
-		// 9 | click | css=.holla-button | 
+
+		console.log(' 15 | click | css=.holla-button | ')
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(5000);
-		// 10 | storeWindowHandle | root | 
+		
+		console.log(' 16 | storeWindowHandle | root | ')
 		vars['root'] = await driver.getWindowHandle(windows[1]);
-		// 11 | selectWindow | handle=${win1649} | 
+		
+		console.log(' 17 | selectWindow | handle=${win1649} | ')
 		await driver.switchTo().window(parent);
-		// 12 | assertTitle | iDenfy | 
+
+		console.log(' 18 | assertTitle | iDenfy | ')
 		assert(await driver.getTitle() == 'iDenfy');
-		// 13 | selectWindow | handle=${root} | 
+		
+		console.log(' 19 | selectWindow | handle=${root} | ')
 		await driver.switchTo().window(vars['root']);
 
+		console.log('This is the EndOfTest');
 	});
 });

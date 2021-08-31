@@ -6,6 +6,13 @@ const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
 const path = require('path')
+const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
+const util = require('../Utils/Utils.js');
+const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
+util.makeReportDir(reportPath);
+require('console-stamp')(console, { 
+    format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+} );
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let userName = process.env.USER_NAME;
 let passWord = process.env.PASSWORD;
@@ -27,18 +34,13 @@ describe('BobLogOut', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
+		driver.manage().window().maximize();
 	});
 	afterEach(async function() {
-		// await driver.quit();
+		await driver.quit();
 	});
 	it('Simple log in', async function() {
 //Given The user logged in
-		console.log(' Test name: BobLogIn');
-		await driver.get(logInPage);
-		await driver.sleep(5000);
-		const title = await driver.getTitle();
-		console.log(title);
-		expect(title).to.equal(title);
 		console.log('entring sand box');
 		console.log(' Step # | action | target | value');
     
@@ -53,6 +55,7 @@ describe('BobLogOut', function() {
 		console.log(' 3 | click | css=.auth_wrapper | ');
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 		await driver.findElement(By.css('.auth_wrapper')).click();
+		
 		console.log(' 4 | verifyElementPresent | css=.holla-button |'); 
 		{
 			const elements = await driver.findElements(By.css('.holla-button'));
@@ -72,8 +75,8 @@ describe('BobLogOut', function() {
 		await driver.findElement(By.css('.align-items-center:nth-child(9)')).click();
 		console.log('8 | assertText | css=.icon_title-text | Login');
 		expect(await driver.findElement(By.css('.icon_title-text')).getText()).to.equal( 'Login');
-   		console.log(' 9 | close |  | ');
 		
- 
-	});
+		console.log('This is the EndOfTest');
+		
+ 	});
 });

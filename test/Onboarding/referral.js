@@ -1,14 +1,20 @@
 //testing the login function of Hollaex Kit
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
-
-const scrap = require('./scraper');
-const defNewUser = require('./newUser');
 const { Builder, By, until } = require('selenium-webdriver');
 const assert = require('assert');
 const { expect } = require('chai');
 const { Console } = require('console');
-const path = require('path');
+const path = require('path')
+const logPath = path.join(__dirname, './.log',path.basename(__filename,'.js'));
+const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
+const util = require ('./../Utils/Utils.js');
+const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
+util.makeReportDir(reportPath);
+util.makeReportDir(logPath);
+require('console-stamp')(console, { 
+	format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+} );
 const { hasUncaughtExceptionCaptureCallback } = require('process');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 let User = process.env.NEW_USER;
@@ -19,7 +25,7 @@ let logInPage = process.env.LOGIN_PAGE;
 let userName = process.env.ADMIN_USER;
 let apassWord = process.env.ADMIN_PASS;
 let website = process.env.WEBSITE;
-const newUser = defNewUser.defineNewUser(User,4) ;
+const newUser = util.defineNewUser(User,4) ;
 console.log(newUser);
 
 describe('NewUserRequest', function() {
@@ -34,114 +40,123 @@ describe('NewUserRequest', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
-		
+		driver.manage().window().maximize();
 	});
 	afterEach(async function() {
 		await driver.quit();
    
 	});
 	it('CurrentUser', async function() {
+		console.log(' Step # | action | target | value');
+		
+		console.log('1 | open | ',logInPage);
 		await driver.get(logInPage);
 		await sleep(10000);
-		// 2 | type | name=email | USER@bitholla.com
-		// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 5000);
+
+		console.log(' 2 | type | name=email | USER@bitholla.com')
 		await driver.findElement(By.name('email')).sendKeys(userName);
-		// 3 | type | name=password | bitholla@bitholla.com
-		//await driver.wait(until.elementLocated(await driver.findElement(By.name("password"))),5000);
+		
+		console.log(' 3 | type | name=password | bitholla@bitholla.com')
 		await driver.findElement(By.name('password')).sendKeys(apassWord);
-		// 4 | click | name=email | 
-   
 		await sleep(4000);
-		await driver.findElement(By.name('email')).click();
-		// 5 | click | css=.holla-button | 
+		
+		console.log(' 4 | click | name=email |  ')
+   		await driver.findElement(By.name('email')).click();
+		
+		   console.log(' 5 | click | css=.holla-button |  ')
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 		await driver.findElement(By.css('.holla-button')).click();
-		await driver.manage().window().maximize();
 		await sleep(4000);
+		
+		console.log(' 6 | click | css=.trade-account-link:nth-child(2) > .pointer |  ')
 		await driver.findElement(By.css('.trade-account-link:nth-child(2) > .pointer')).click();
-		// 3 | click | css=.user_refer_info | 
 		await sleep(4000);
+		
+		console.log(' 7 | click | css=.user_refer_info |  ')
 		await driver.findElement(By.css('.user_refer_info')).click();
-		// 4 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber
+		
+		console.log(' 8 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber')
 		vars['currentNumber'] = await driver.findElement(By.css('.user_refer_info > .edit-wrapper__container')).getText();
-		// 5 | pause | 5000 | 
+		
+		console.log(' 9 | pause | 5000 |  ')
 		console.log(vars['currentNumber']);
-	    // 2 | click | css=.mr-5 | 
+	   
+		console.log(' 10 | click | css=.mr-5 |  ')
 		await driver.findElement(By.css('.mr-5')).click();
-		// 4 | click | css=.app-bar-account-content > div:nth-child(2) | 
+		
+		console.log(' 11 | click | css=.app-bar-account-content > div:nth-child(2) |  ')
 		await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
-		// 5 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | 
+		
+		console.log(' 12 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) |  ')
 		await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
 	  
-	    console.log(' 9 | close |  | ');
-		console.log('Test name: NewUserRequest');
-		console.log(' Step # | name | target | value');
-		console.log('1 | open | ',signUpPage);
+	    console.log(' 13 | open | ',signUpPage);
 		await driver.get(signUpPage);
-		const title = await driver.getTitle();
-		console.log(title);
-		expect(title).to.equal(title);
-		console.log('entring sand box');
-		console.log(' Step # | action | target | value');
-		console.log('2 | setWindowSize | 1050x660 | ');
-		await driver.manage().window().setRect(1050, 660);
      
-		console.log('3 | type | name=email |',newUser);
+		console.log(' 14 | type | name=email |',newUser);
 		await driver.wait(until.elementLocated(By.name('email')), 5000);
 		await driver.findElement(By.name('email')).clear();
 		await driver.findElement(By.name('email')).sendKeys(newUser);
      
-		console.log('4 | type | name=password | password!');
+		console.log(' 15 | type | name=password | password!');
 		await driver.findElement(By.name('password')).clear();
 		await driver.findElement(By.name('password')).sendKeys(passWord);
       
       
-		console.log('5 | type | name=password_repeat | your password again!');
+		console.log(' 16 | type | name=password_repeat | your password again!');
 		await driver.findElement(By.name('password_repeat')).clear();
 		await driver.findElement(By.name('password_repeat')).sendKeys(passWord);
 		await sleep(2000);
+		
+		console.log(' 17 |type | referral | https://sandbox.hollaex.com/signup?affiliation_code=KLUTI0')
 		await driver.findElement(By.name('referral')).clear();
-		//https://sandbox.hollaex.com/signup?affiliation_code=KLUTI0
 		await driver.findElement(By.name('referral')).sendKeys('KLUTI0');
-		console.log('6 | click | name=terms |'); 
+		
+		console.log(' 18 | click | name=terms |'); 
 		await driver.findElement(By.name('terms')).click();
 		await sleep(10000);
-		console.log('7 | click | css=.holla-button |'); 
+		
+		console.log(' 19 | click | css=.holla-button |'); 
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 		await driver.findElement(By.css('.holla-button')).click();
 		await driver.executeScript('window.scrollTo(0,0)');
 		await sleep(5000);
-		console.log('Clicked');
-  
+		
 		// there is no need for verification
-		//	defNewUser.adminVerifiesNewUser(driver,userName,apassWord,newUser)
-	
-		// await driver.get(logInPage);
-		// await sleep(10000);
-		// 2 | type | name=email | USER@bitholla.com
-		// await driver.wait(until.elementLocated(await driver.findElement(By.name("email"))), 5000);
+		//	util.adminVerifiesNewUser(driver,userName,apassWord,newUser)
+		
+		console.log(' 20 | type | name=email | USER@bitholla.com ')
 		await driver.findElement(By.name('email')).sendKeys(userName);
-		// 3 | type | name=password | bitholla@bitholla.com
-		//await driver.wait(until.elementLocated(await driver.findElement(By.name("password"))),5000);
+		
+		console.log(' 21 | type | name=password | bitholla@bitholla.com ')
 		await driver.findElement(By.name('password')).sendKeys(apassWord);
-		// 4 | click | name=email | 
-   
 		await sleep(4000);
-		await driver.findElement(By.name('email')).click();
-		// 5 | click | css=.holla-button | 
+		
+		console.log(' 22 | click | name=email |  ')
+   		await driver.findElement(By.name('email')).click();
+		
+		console.log(' 23 | click | css=.holla-button |  ')
 		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 		await driver.findElement(By.css('.holla-button')).click();
-		await driver.manage().window().maximize();
 		await sleep(4000);
+		
+		console.log(' 24 | click | css=.trade-account-link:nth-child(2) > .pointer | ') 
 		await driver.findElement(By.css('.trade-account-link:nth-child(2) > .pointer')).click();
-		// 3 | click | css=.user_refer_info | 
 		await sleep(4000);
+		
+		console.log(' 25 | click | css=.user_refer_info |  ')
 		await driver.findElement(By.css('.user_refer_info')).click();
-		// 4 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber
+		
+		console.log(' 26 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber ')
 		vars['newNumber'] = await driver.findElement(By.css('.user_refer_info > .edit-wrapper__container')).getText();
-		// 5 | pause | 5000 | 
+		
+		console.log(' 27 | assert | newNumber<>currentNumber |  ')
+		
 		console.log(vars['newNumber']);
 		expect(vars['newNumber']).to.not.equal(vars['currentNumber']);
+		
 		console.log(vars['currentNumber']+' became '+vars['newNumber']);
+
+		console.log('This is the EndOfTest');
 	});
 });

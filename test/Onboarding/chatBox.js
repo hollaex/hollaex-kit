@@ -23,7 +23,8 @@ describe('Orders', function() {
 		});
 	} 
 	beforeEach(async function() {
-   
+		driver.manage().window().maximize();
+           
 	});
 	afterEach(async function() {
 	//	await driver.quit();
@@ -36,8 +37,7 @@ describe('Orders', function() {
 
 		//driver = await new RemoteWebDriver(new URL("https://3.37.238.142:4444/wd/hub"), capability);
            
-		driver.manage().window().maximize();
-           
+	
 		vars = {};
            
 		// Test name: Untitled

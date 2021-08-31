@@ -1,7 +1,17 @@
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const assert = require('assert');
 const totp = require('totp-generator');
-const defNewUser = require('./newUser');
+const path = require('path')
+const logPath = path.join(__dirname, './.log',path.basename(__filename,'.js'));
+const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
+const util = require ('./../Utils/Utils.js');
+const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
+util.makeReportDir(reportPath);
+util.makeReportDir(logPath);
+require('console-stamp')(console, { 
+	format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+} );
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 let userName = process.env.BOB;
 let passWord = process.env.PASSWORD;
 let newPass = process.env.NEWPASS;
@@ -19,249 +29,326 @@ describe('OTP', function() {
 	beforeEach(async function() {
 		driver = await new Builder().forBrowser('chrome').build();
 		vars = {};
-		
+		await driver.manage().window().maximize();
 	});
 	afterEach(async function() {
 		//await driver.quit();
 	});
 	it('OTP', async function() {
-// Test name: OTP
-		// Step # | name | target | value
-		// 1 | open | login | 
+		console.log ('  Test name: OTP');
+		console.log ('  Step # | name | target | value ');
+		
+		console.log ('  1 | open | login | ');
 		await driver.get(logInPage);
 		await sleep(4000);
-		// 2 | setWindowSize | 1295x687 | 
-		await driver.manage().window().maximize();
-		// 3 | click | name=email | 
+					
+		console.log ('  2 | click | name=email | ');
 		await driver.findElement(By.name('email')).click();
 		await sleep(4000);
-		// 4 | type | name=password | Holla2021!
+
+		console.log ('  3 | type | name=password | password');
 		await driver.findElement(By.name('password')).sendKeys(passWord);
 		await sleep(4000);
-		// 5 | type | name=email | alicebitholla@gmail.com
+		console.log ('  4 | type | name=email | '+userName);
 		await driver.findElement(By.name('email')).sendKeys(userName);
 		await sleep(4000);
-		// 6 | click | name=password | 
-		// 7 | click | css=.holla-button | 
+		
+		console.log ('  5| click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 8 | click | css=.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container | 
+
+		console.log ('  6 | click | css=.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container | ');
 		await driver.findElement(By.css('.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container')).click();
 		await sleep(4000);
-		// 9 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | 
+		
+		console.log ('  7 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | ');
 		await driver.findElement(By.css('.checkbutton-input-wrapper--label > .edit-wrapper__container')).click();
-		// 10 | click | css=.otp_secret | 
+		
+		console.log ('  8 | click | css=.otp_secret | ');
 		await sleep(4000);
-		await driver.findElement(By.css('.otp_secret')).click();
-		// 11 | storeText | css=.otp_secret | code
-		let code = vars['code'] = await driver.findElement(By.css('.otp_secret')).getText();
-		// 12 | echo | ${code} | 
-		let token = totp(code);
 
- 
+		await driver.findElement(By.css('.otp_secret')).click();
+		console.log ('  9 | storeText | css=.otp_secret | code');
+		let code = vars['code'] = await driver.findElement(By.css('.otp_secret')).getText();
+		
+		console.log ('  10 | echo | ${code} | ');
+		let token = totp(code);
 		console.log(code);
 		console.log(token); 
-		// 13 | click | name=code | 
+		
+		console.log ('  11 | click | name=code | ');
 		await driver.findElement(By.name('code')).click();
-		// 14 | type | name=code | ssssss
+		
+		console.log ('  12 | type | name=code | token');
 		await driver.findElement(By.name('code')).sendKeys(token);
-		// 15 | mouseOver | css=form | 
 		await sleep(4000);
+		
+		console.log ('  13 | mouseOver | css=form | ');
 		{
 			const element = await driver.findElement(By.css('form'));
 			await driver.executeScript('arguments[0].scrollIntoView(true);', element);
 		}
+		await sleep(4000);
+		
+		console.log('  14 | click | css=form |')
 		await driver.findElement(By.css('form')).click();
-		console.log('ready for srcowload');
-      
 		await sleep(4000);
-		// 35 | click | css=.success_display-wrapper | 
-		await driver.findElement(By.css('.success_display-wrapper')).click();
+			
+		console.log ('  15 | click | xpath/div[5]/div/div/div[2]/div[4]/form/button | ');
+		await driver.findElement(By.xpath('//div[5]/div/div/div[2]/div[4]/form/button')).click();
 		await sleep(4000);
-		// 36 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA
+
+		console.log ('  16 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA');
 		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully activated 2FA');
-		// 37 | click | css=.holla-button | 
+		
+		console.log ('  17 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 9 | click | css=.tab_item:nth-child(2) > div | 
+
+		console.log ('  18 | click | css=.tab_item:nth-child(2) > div | ');
 		await driver.findElement(By.css('.tab_item:nth-child(2) > div')).click();
 		await sleep(4000);
-		// 10 | click | name=old_password | 
+		
+		console.log ('  19 | click | name=old_password | ');
 		await driver.findElement(By.name('old_password')).click();
-		// 11 | type | name=old_password | !
+		
+		console.log ('  20 | type | name=old_password | password ');
 		await driver.findElement(By.name('old_password')).sendKeys(passWord);
-		// 12 | type | name=new_password | !changed
+		
+		console.log ('  21 | type | name=new_password | !changed');
 		await driver.findElement(By.name('new_password')).sendKeys(newPass);
-		// 13 | click | name=new_password_confirm | 
+		
+		console.log ('  13 | click | name=new_password_confirm | ');
 		await driver.findElement(By.name('new_password_confirm')).click();
-		// 14 | type | name=new_password_confirm | Holla2021!changed
+		
+		console.log ('  14 | type | name=new_password_confirm | !changed');
 		await driver.findElement(By.name('new_password_confirm')).sendKeys(newPass);
-		// 15 | click | css=.holla-button | 
+		
+		console.log ('  15 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(5000);
-		// 36 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA
-		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully changed your password');
-		// 37 | click | css=.holla-button | 
+
+		console.log ('  16 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA');
+		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'An email is sent to you to authorize the password change.');
+		//The message was 'You have successfully changed your password' in kit 2.1
+
+		console.log ('  17 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.success_display-wrapper > .holla-button')).click();
 		await sleep(4000);
-		// 16 | click | css=.tab_item:nth-child(3) > div | 
+
+		console.log ('  18 | click | css=.tab_item:nth-child(3) > div | ');
 		await driver.findElement(By.css('.tab_item:nth-child(3) > div')).click();
 		await sleep(4000);
-		// 17 | click | css=.mb-4 > .edit-wrapper__container | 
+
+		console.log ('  19 | click | css=.mb-4 > .edit-wrapper__container | ');
 		await driver.findElement(By.css('.mb-4 > .edit-wrapper__container')).click();
+		
 		await sleep(4000);
-		// 18 | click | name=name | 
+		console.log ('  18 | click | name=name | ');
 		await driver.findElement(By.name('name')).click();
-		// 19 | type | name=name | test
+
+		console.log ('  19 | type | name=name | test');
 		await driver.findElement(By.name('name')).sendKeys('test');
-		// 20 | click | css=.w-50:nth-child(3) > .holla-button | 
+		
+		console.log ('  20 | click | css=.w-50:nth-child(3) > .holla-button | ');
 		await driver.findElement(By.css('.w-50:nth-child(3) > .holla-button')).click();
 		await sleep(4000);
-		// 21 | type | name=otp_code | 369391
+		
+		console.log ('  21 | type | name=otp_code | code');
 		token = totp(code);
 		await driver.findElement(By.name('otp_code')).sendKeys(token);
-		// 22 | click | css=.holla-button | 
+		
+		console.log ('  22 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 23 | assertText | css=.popup_info-title > .edit-wrapper__container | Copy your API Key
+		
+		console.log ('  23 | assertText | css=.popup_info-title > .edit-wrapper__container | Copy your API Key');
 		assert(await driver.findElement(By.css('.popup_info-title > .edit-wrapper__container')).getText() == 'Copy your API Key');
-		// 24 | click | css=.holla-button | 
+		
+		console.log ('  24 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await driver.findElement(By.css('.tab_item:nth-child(1) > div')).click();
-		// 26 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | 
+		
+		console.log ('  25 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | ');
 		await driver.findElement(By.css('.checkbutton-input-wrapper--label > .edit-wrapper__container')).click();
-		// 27 | type | name=otp_code | 37328
+		
+		console.log ('  26 | type | name=otp_code | code');
 		token = totp(code);
 		await driver.findElement(By.name('otp_code')).sendKeys(token);
-		// 28 | click | css=.holla-button | 
+		
+		console.log ('  27 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 29 | click | css=.success_display-wrapper | 
+		
+		console.log ('  28 | click | css=.success_display-wrapper | ');
 		await driver.findElement(By.css('.success_display-wrapper')).click();
 		await sleep(4000);
-		// 30 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully deactivated 2FA
+
+		console.log ('  29 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully deactivated 2FA');
 		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully deactivated 2FA');
-		// 31 | click | css=.holla-button | 
+		
+		console.log ('  30 | click | css=.holla-button | ');
 		await driver.findElement(By.css('.holla-button')).click();
+
+		console.log('This is the EndOfTest');
+
 	});
-  it('re OTP', async function() {
-// Test name: OTP
-		// Step # | name | target | value
-		// 1 | open | login | 
+	it('Re_OTP', async function() {
+		console.log ('  Test name: OTP ');
+		console.log ('  Step # | name | target | value ');
+		
+		console.log ('  1 | open | login |  ');
 		await driver.get(logInPage);
 		await sleep(4000);
-		// 2 | setWindowSize | 1295x687 | 
-		await driver.manage().window().maximize();
-		// 3 | click | name=email | 
+
+		console.log ('  2 | click | name=email |  ');
 		await driver.findElement(By.name('email')).click();
 		await sleep(4000);
-		// 4 | type | name=password | Holla2021!
+
+		console.log ('  3 | type | name=password | password ');
 		await driver.findElement(By.name('password')).sendKeys(newPass);
 		await sleep(4000);
-		// 5 | type | name=email | alicebitholla@gmail.com
+
+		console.log ('  4 | type | name=email | '+userName );
 		await driver.findElement(By.name('email')).sendKeys(userName);
 		await sleep(4000);
-		// 6 | click | name=password | 
-		// 7 | click | css=.holla-button | 
+		
+		console.log ('  5 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 8 | click | css=.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container | 
+		
+		console.log ('  6 | click | css=.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container |  ');
 		await driver.findElement(By.css('.d-flex:nth-child(4) > .side-bar-txt > .edit-wrapper__container')).click();
 		await sleep(4000);
-		// 9 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | 
+		
+		console.log ('  7 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container |  ');
 		await driver.findElement(By.css('.checkbutton-input-wrapper--label > .edit-wrapper__container')).click();
-		// 10 | click | css=.otp_secret | 
 		await sleep(4000);
-		await driver.findElement(By.css('.otp_secret')).click();
-		// 11 | storeText | css=.otp_secret | code
-		let code = vars['code'] = await driver.findElement(By.css('.otp_secret')).getText();
-		// 12 | echo | ${code} | 
-		let token = totp(code);
 
- 
+		console.log ('  8 | click | css=.otp_secret |  ');
+		await driver.findElement(By.css('.otp_secret')).click();
+		
+		console.log ('  9 | storeText | css=.otp_secret | code ');
+		let code = vars['code'] = await driver.findElement(By.css('.otp_secret')).getText();
+		
+		console.log ('  10 | echo | ${code} |  ');
+		let token = totp(code);
 		console.log(code);
 		console.log(token); 
-		// 13 | click | name=code | 
+		
+		console.log ('  11 | click | name=code |  ');
 		await driver.findElement(By.name('code')).click();
-		// 14 | type | name=code | ssssss
+		
+		console.log ('  12 | type | name=code | token ');
 		await driver.findElement(By.name('code')).sendKeys(token);
-		// 15 | mouseOver | css=form | 
-		await sleep(4000);
+		await sleep(4000)
+
+		console.log ('  13 | mouseOver | css=form |  ');
 		{
 			const element = await driver.findElement(By.css('form'));
 			await driver.executeScript('arguments[0].scrollIntoView(true);', element);
 		}
-		await driver.findElement(By.css('form')).click();
-		console.log('ready for srcowload');
-      
-		await sleep(4000);
-		// 35 | click | css=.success_display-wrapper | 
+		await sleep(4000)
+		{
+			console.log ('  13.1 | click| css=form |  ');
+			await driver.findElement(By.css('form')).click();
+			await sleep(4000);
+		}
+		console.log ('  14 | click | css=.success_display-wrapper |  ');
 		await driver.findElement(By.css('.success_display-wrapper')).click();
 		await sleep(4000);
-		// 36 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA
+		
+		console.log ('  15 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA ');
 		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully activated 2FA');
-		// 37 | click | css=.holla-button | 
+		
+		console.log ('  16 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 9 | click | css=.tab_item:nth-child(2) > div | 
+
+		console.log ('  17 | click | css=.tab_item:nth-child(2) > div |  ');
 		await driver.findElement(By.css('.tab_item:nth-child(2) > div')).click();
 		await sleep(4000);
-		// 10 | click | name=old_password | 
+
+		console.log ('  18 | click | name=old_password |  ');
 		await driver.findElement(By.name('old_password')).click();
-		// 11 | type | name=old_password | !
+		
+		console.log ('  19 | type | name=old_password | password ');
 		await driver.findElement(By.name('old_password')).sendKeys(newPass);
-		// 12 | type | name=new_password | !changed
+		
+		console.log ('  20 | type | name=new_password | !changed ');
 		await driver.findElement(By.name('new_password')).sendKeys(passWord);
-		// 13 | click | name=new_password_confirm | 
+		
+		console.log ('  21 | click | name=new_password_confirm |  ');
 		await driver.findElement(By.name('new_password_confirm')).click();
-		// 14 | type | name=new_password_confirm | Holla2021!changed
+
+		console.log ('  22 | type | name=new_password_confirm | !changed ');
 		await driver.findElement(By.name('new_password_confirm')).sendKeys(passWord);
-		// 15 | click | css=.holla-button | 
+		
+		console.log ('  23 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(5000);
-		// 36 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA
+
+		console.log ('  24 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA ');
 		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully changed your password');
-		// 37 | click | css=.holla-button | 
+		
+		console.log ('  25 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.success_display-wrapper > .holla-button')).click();
 		await sleep(4000);
-		// 16 | click | css=.tab_item:nth-child(3) > div | 
+		
+		console.log ('  26 | click | css=.tab_item:nth-child(3) > div |  ');
 		await driver.findElement(By.css('.tab_item:nth-child(3) > div')).click();
 		await sleep(4000);
-		// 17 | click | css=.mb-4 > .edit-wrapper__container | 
+		
+		console.log ('  27 | click | css=.mb-4 > .edit-wrapper__container |  ');
 		await driver.findElement(By.css('.mb-4 > .edit-wrapper__container')).click();
 		await sleep(4000);
-		// 18 | click | name=name | 
+
+		console.log ('  28 | click | name=name |  ');
 		await driver.findElement(By.name('name')).click();
-		// 19 | type | name=name | test
+		
+		console.log ('  29 | type | name=name | test ');
 		await driver.findElement(By.name('name')).sendKeys('test');
-		// 20 | click | css=.w-50:nth-child(3) > .holla-button | 
+		
+		console.log ('  30 | click | css=.w-50:nth-child(3) > .holla-button |  ');
 		await driver.findElement(By.css('.w-50:nth-child(3) > .holla-button')).click();
 		await sleep(4000);
-		// 21 | type | name=otp_code | 369391
+		
+		console.log ('  31 | type | name=otp_code | code ');
 		token = totp(code);
 		await driver.findElement(By.name('otp_code')).sendKeys(token);
-		// 22 | click | css=.holla-button | 
+		
+		console.log ('  32 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 23 | assertText | css=.popup_info-title > .edit-wrapper__container | Copy your API Key
+
+		console.log ('  33 | assertText | css=.popup_info-title > .edit-wrapper__container | Copy your API Key ');
 		assert(await driver.findElement(By.css('.popup_info-title > .edit-wrapper__container')).getText() == 'Copy your API Key');
-		// 24 | click | css=.holla-button | 
+		
+		console.log ('  34 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await driver.findElement(By.css('.tab_item:nth-child(1) > div')).click();
-		// 26 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container | 
+		
+		console.log ('  35 | click | css=.checkbutton-input-wrapper--label > .edit-wrapper__container |  ');
 		await driver.findElement(By.css('.checkbutton-input-wrapper--label > .edit-wrapper__container')).click();
-		// 27 | type | name=otp_code | 37328
+		
+		console.log ('  36 | type | name=otp_code | code ');
 		token = totp(code);
 		await driver.findElement(By.name('otp_code')).sendKeys(token);
-		// 28 | click | css=.holla-button | 
+		
+		console.log ('  37 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
 		await sleep(4000);
-		// 29 | click | css=.success_display-wrapper | 
+		
+		console.log ('  38 | click | css=.success_display-wrapper | ');
 		await driver.findElement(By.css('.success_display-wrapper')).click();
 		await sleep(4000);
-		// 30 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully deactivated 2FA
+
+		console.log ('  39 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully deactivated 2FA ');
 		assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully deactivated 2FA');
-		// 31 | click | css=.holla-button | 
+		
+		console.log ('  40 | click | css=.holla-button |  ');
 		await driver.findElement(By.css('.holla-button')).click();
+
+		console.log('This is the EndOfTest');
 	});
 });
