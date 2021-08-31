@@ -1337,7 +1337,8 @@ export default {
 	STOPS: '예약', // new
 	CLEAR: '초기화', // new
 	POST_ONLY: '포스트 온리', // new
-	POST_ONLY_TOOLTIP: '포스트 온리 주문은 오더북에 주문이 추가되지만, 즉시 실행되지는 않습니다.', // new
+	POST_ONLY_TOOLTIP:
+		'포스트 온리 주문은 오더북에 주문이 추가되지만, 즉시 실행되지는 않습니다.', // new
 	ESTIMATED_PRICE: '추정 가격', // new
 	VIEW_ALL: '모두 보기', // new
 	ORDER_ENTRY_ADVANCED: '더 보기', //new
@@ -1352,8 +1353,7 @@ export default {
 		{ value: 'Card', label: '카드' }, // new
 	],
 	LIMITS_BLOCK: {
-		HEADER_ROW_DESCRIPTION:
-			'24시간 입금 및 출금 한도 ({0})', //new
+		HEADER_ROW_DESCRIPTION: '24시간 입금 및 출금 한도 ({0})', //new
 		HEADER_ROW_AMOUNT: '24시간 한도 ({0})', //new
 	},
 };

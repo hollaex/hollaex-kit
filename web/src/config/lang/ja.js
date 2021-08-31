@@ -34,8 +34,7 @@ export default {
 		'お問い合わせはサポートセンターまでご連絡ください。',
 	HELP_RESOURCE_GUIDE: {
 		CONTACT_US: 'お問い合わせ',
-		TEXT:
-			'詳細や問題については、メールでお気軽に {0} ください。',
+		TEXT: '詳細や問題については、メールでお気軽に {0} ください。',
 	},
 	HELP_TELEGRAM_TEXT: 'オープンAPIドキュメント：',
 	HELP_TELEGRAM_LINK: 'https://apidocs.HollaEx.com',

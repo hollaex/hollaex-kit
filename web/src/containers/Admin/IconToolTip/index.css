@@ -1,101 +1,106 @@
 .tooltip-wrapper {
-    position: relative;
+	position: relative;
 }
 .icon-tooltip {
-    display: flex;
-    margin: 0px 5px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    height: 24px;
+	display: flex;
+	margin: 0px 5px;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	height: 24px;
 }
 
 .icon-tooltip .settings,
 .icon-tooltip .warning {
-    position: absolute;
-    left: 6px;
+	position: absolute;
+	left: 6px;
 }
 
 .icon-tooltip .settings {
-    color: #0000FF;
+	color: #0000ff;
 }
 
 .icon-tooltip .warning {
-    color: #F28041;
+	color: #f28041;
 }
 
 .icon-tooltip .warning .icon {
-    font-size: 18px;
+	font-size: 18px;
 }
 
-.icon-tooltip .success  {
-    color: #288500;
+.icon-tooltip .success {
+	color: #288500;
 }
 
-.icon-tooltip .success .icon  {
-    font-size: 18px;
+.icon-tooltip .success .icon {
+	font-size: 18px;
 }
 
 .icon-tooltip .tip-icon {
-    display: flex;
+	display: flex;
 }
 
 .icon-tooltip .tip-icon-show {
-    padding: 5px;
-    margin-right: 5px;
+	padding: 5px;
+	margin-right: 5px;
 }
 .icon-tooltip .tip-icon-show .icon,
 .icon-tooltip .tip-icon-show .settings-icon {
-    animation:spin 0.5s linear 1;
+	animation: spin 0.5s linear 1;
 }
 
 .icon-tooltip .settings-icon {
-    width: 1rem;
-    height: 1rem;
+	width: 1rem;
+	height: 1rem;
 }
 
 .icon-tooltip:hover .success {
-    color: #288500;
-    transition: none;
+	color: #288500;
+	transition: none;
 }
 
 .icon-tooltip:hover .success .icon {
-    font-size: 18px;
+	font-size: 18px;
 }
 
 .icon-tooltip:hover .warning {
-    display: flex;
-    background-color: #F28041;
-    color: #ffffff !important;
-    border-radius: 10px;
-    font-size: 8px !important;
-    overflow: hidden;
-    width: 120px;
-    height: 2.5rem;
-    overflow-y: hidden;
-    transition: width 0.05s linear;
-    padding: 2px;
+	display: flex;
+	background-color: #f28041;
+	color: #ffffff !important;
+	border-radius: 10px;
+	font-size: 8px !important;
+	overflow: hidden;
+	width: 120px;
+	height: 2.5rem;
+	overflow-y: hidden;
+	transition: width 0.05s linear;
+	padding: 2px;
 }
 .icon-tooltip:hover .info {
-    white-space: pre-wrap;
+	white-space: pre-wrap;
 }
 
 .icon-tooltip:hover .warning .icon {
-    font-size: 16px;
+	font-size: 16px;
 }
 
 .icon-tooltip:hover .settings {
-    display: flex;
-    background-color: #0000FF;
-    color: #ffffff !important;
-    border-radius: 10px;
-    font-size: 8px !important;
-    overflow: hidden;
-    width: 120px;
-    height: 2.5rem;
-    overflow-y: hidden;
-    transition: width 0.05s linear;
-    padding: 2px;
+	display: flex;
+	background-color: #0000ff;
+	color: #ffffff !important;
+	border-radius: 10px;
+	font-size: 8px !important;
+	overflow: hidden;
+	width: 120px;
+	height: 2.5rem;
+	overflow-y: hidden;
+	transition: width 0.05s linear;
+	padding: 2px;
 }
 
-@keyframes spin { 100% { -webkit-transform: rotate(-160deg); transform:rotate(-160deg)}};
+@keyframes spin {
+	100% {
+		-webkit-transform: rotate(-160deg);
+		transform: rotate(-160deg);
+	}
+} ;
