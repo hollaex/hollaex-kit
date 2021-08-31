@@ -22,6 +22,7 @@ test/Utils/scratch
 test/Wallet/.log
 test/Report
 test/.env
+test/Dev
 
 # production
 build
