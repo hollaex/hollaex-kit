@@ -732,7 +732,8 @@ export default {
 			ACTIVE: 'KÍCH HOẠT',
 			DIALOG: {
 				SUCCESS: 'Mật khẩu đã được thay đổi thành công.',
-				EMAIL_CONFIRMATION: 'Một email được gửi cho bạn để cho phép thay đổi mật khẩu.',
+				EMAIL_CONFIRMATION:
+					'Một email được gửi cho bạn để cho phép thay đổi mật khẩu.',
 			},
 			FORM: {
 				BUTTON: 'Thay đổi mật khẩu',

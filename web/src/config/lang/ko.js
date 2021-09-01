@@ -690,7 +690,8 @@ export default {
 			ACTIVE: '활성화',
 			DIALOG: {
 				SUCCESS: '비밀번호가 성공적으로 변경되었습니다',
-				EMAIL_CONFIRMATION: '비밀번호 변경을 승인하기 위해 이메일이 전송됩니다.',
+				EMAIL_CONFIRMATION:
+					'비밀번호 변경을 승인하기 위해 이메일이 전송됩니다.',
 			},
 			FORM: {
 				BUTTON: '비밀번호 변경',

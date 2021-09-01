@@ -734,7 +734,8 @@ export default {
 			ACTIVE: 'ACTIVO',
 			DIALOG: {
 				SUCCESS: 'Ha cambiado con éxito su contraseña',
-				EMAIL_CONFIRMATION: 'Se le envía un correo electrónico para autorizar el cambio de contraseña.',
+				EMAIL_CONFIRMATION:
+					'Se le envía un correo electrónico para autorizar el cambio de contraseña.',
 			},
 			FORM: {
 				BUTTON: 'Cambiar Contraseña',

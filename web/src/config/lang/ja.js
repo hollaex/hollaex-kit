@@ -698,7 +698,8 @@ export default {
 			ACTIVE: '設定',
 			DIALOG: {
 				SUCCESS: 'パスワードが正常に変更されました。',
-				EMAIL_CONFIRMATION: 'パスワードの変更を承認するためのメールが送信されます',
+				EMAIL_CONFIRMATION:
+					'パスワードの変更を承認するためのメールが送信されます',
 			},
 			FORM: {
 				BUTTON: 'パスワードを変更する',

@@ -103,7 +103,7 @@ class Verification extends Component {
 		const postData = {
 			id_data: {
 				...id_data,
-				status: values.hasOwnProperty('id_data') ? 2 : bank_account.provided,
+				status: values.hasOwnProperty('id_data') ? bank_account.provided : 2,
 			},
 		};
 		return revokeData(values, this.props.kycPluginName)
@@ -389,14 +389,16 @@ class Verification extends Component {
 						/>
 					</Card> */}
 					<div className="d-flex">{this.renderContent()}</div>
-					{!isVisible && !id_data.status !== 1 ? (
+					{!isVisible && id_data.status !== 1 ? (
 						<div>
 							<div className="files-search-icon">
 								<FileSearchOutlined />
 							</div>
-							<Button className="green-btn" onClick={this.handleView}>
-								View data
-							</Button>
+							{!(id_data.status === 0 || id_data.status === undefined) ? (
+								<Button className="green-btn" onClick={this.handleView}>
+									View data
+								</Button>
+							) : null}
 						</div>
 					) : (
 						<div>
@@ -405,6 +407,43 @@ class Verification extends Component {
 									{isEdit ? (
 										<div className="mb-3">
 											Edit status:
+											{id_data.status === 1 || id_data.status === 3 ? (
+												<Button
+													className="mx-2"
+													onClick={() => this.handleOpen('reject')}
+													type="danger"
+												>
+													Reject
+												</Button>
+											) : null}
+											{id_data.status === 1 || id_data.status === 2 ? (
+												<Button
+													type="primary"
+													onClick={() => this.handleOpen('approve')}
+													className="green-btn mx-2"
+												>
+													Approve
+												</Button>
+											) : null}
+										</div>
+									) : null}
+									<DataDisplay
+										className={'d-flex flex-wrap'}
+										data={userImageData}
+										renderRow={renderRowImages}
+									/>
+								</div>
+							) : (
+								<div>
+									<div>
+										<DataDisplay
+											className={'d-flex flex-wrap'}
+											data={userImageData}
+											renderRow={renderRowImages}
+										/>
+									</div>
+									{id_data.status === 1 ? (
+										<div className="mt-5">
 											<Button
 												className="mx-2"
 												onClick={() => this.handleOpen('reject')}
@@ -423,39 +462,6 @@ class Verification extends Component {
 											</Button>
 										</div>
 									) : null}
-									<DataDisplay
-										className={'d-flex flex-wrap'}
-										data={userImageData}
-										renderRow={renderRowImages}
-									/>
-								</div>
-							) : (
-								<div>
-									<div>
-										<DataDisplay
-											className={'d-flex flex-wrap'}
-											data={userImageData}
-											renderRow={renderRowImages}
-										/>
-									</div>
-									<div className="mt-5">
-										<Button
-											className="mx-2"
-											onClick={() => this.handleOpen('reject')}
-											disabled={id_data.status === 2}
-											type="danger"
-										>
-											Reject
-										</Button>
-										<Button
-											type="primary"
-											onClick={() => this.handleOpen('approve')}
-											disabled={id_data.status === 3}
-											className="green-btn"
-										>
-											Approve
-										</Button>
-									</div>
 								</div>
 							)}
 						</div>
