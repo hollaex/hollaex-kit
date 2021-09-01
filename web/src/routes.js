@@ -51,7 +51,7 @@ import {
 	Tiers,
 	Roles,
 	Resources,
-	Pairs
+	Pairs,
 } from './containers';
 import chat from './containers/Admin/Chat';
 

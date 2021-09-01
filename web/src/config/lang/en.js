@@ -727,6 +727,8 @@ export default {
 			ACTIVE: 'ACTIVE',
 			DIALOG: {
 				SUCCESS: 'You have successfully changed your password',
+				EMAIL_CONFIRMATION:
+					'An email is sent to you to authorize the password change.',
 			},
 			FORM: {
 				BUTTON: 'Change Password',
@@ -1487,4 +1489,5 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+	RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key', //new
 };

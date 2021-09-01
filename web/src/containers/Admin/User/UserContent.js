@@ -218,7 +218,7 @@ class UserContent extends Component {
 			onChangeUserDataSuccess,
 			isConfigure,
 			showConfigure,
-			kycPluginName
+			kycPluginName,
 		} = this.props;
 
 		const { showVerifyEmailModal, userTiers } = this.state;

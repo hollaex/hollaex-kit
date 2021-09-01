@@ -721,6 +721,8 @@ export default {
 			ACTIVE: 'AKTIFKAN',
 			DIALOG: {
 				SUCCESS: 'Kata sandi Anda telah berhasil diubah',
+				EMAIL_CONFIRMATION:
+					'Sebuah email dikirimkan kepada Anda untuk mengotorisasi perubahan kata sandi.',
 			},
 			FORM: {
 				BUTTON: 'Ubah Kata Sandi',
