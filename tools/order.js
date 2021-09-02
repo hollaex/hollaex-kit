@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail, getUserByNetworkId } = require('./user');
+const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
@@ -336,6 +336,21 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 
 	return getNodeLib().getTrades(params)
 		.then((trades) => {
+			if (trades.data.length > 0) {
+				const idDictionary = mapNetworkIdToKitId();
+
+				for (let trade of trades.data) {
+					const maker_kit_id = idDictionary[trade.maker_id] || 0;
+					const taker_kit_id = idDictionary[trades.taker_id] || 0;
+
+					trade.maker_network_id = trade.maker_id;
+					trade.maker_id = maker_kit_id;
+
+					trade.taker_network_id = trade.taker_id;
+					trade.taker_id = taker_kit_id;
+				}
+			}
+
 			if (format === 'csv') {
 				if (trades.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
