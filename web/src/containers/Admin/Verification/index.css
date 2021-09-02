@@ -60,6 +60,7 @@
 	display: flex;
 }
 
+.json_wrapper pre,
 .jsonkey-wrapper pre {
 	padding-left: 8px;
 	color: #ffffff;

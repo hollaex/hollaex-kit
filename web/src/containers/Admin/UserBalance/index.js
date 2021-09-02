@@ -45,7 +45,10 @@ class UserBalance extends Component {
 				if (networks.length) {
 					networks.map((networkKey) => {
 						let temp =
-							wallet.filter((data) => data.network === networkKey)[0] || {};
+							wallet.filter(
+								(data) =>
+									data.network === networkKey && data.currency === value.symbol
+							)[0] || {};
 						return (addressData[`${networkKey}_address`] = temp.address);
 					});
 				} else {
