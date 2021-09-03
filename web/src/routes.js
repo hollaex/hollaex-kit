@@ -51,7 +51,8 @@ import {
 	Tiers,
 	Roles,
 	Resources,
-	Pairs
+	Pairs,
+	CustomNotification,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -521,6 +522,11 @@ export const generateRoutes = (routes = []) => {
 				component={Legal}
 				content="terms"
 				onEnter={requireAuth}
+			/>
+			<Route
+				path="notification"
+				name="notification"
+				component={CustomNotification}
 			/>
 			<Route path="admin-login" name="admin-login" component={AdminLogin} />
 			<Route path="init" name="initWizard" component={Init} />
