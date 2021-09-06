@@ -25,7 +25,7 @@ const INITIAL_STATE = {
 	userImages: {},
 	loading: false,
 	userInformationList: [],
-	kycPluginName: 'kyc'
+	kycPluginName: 'kyc',
 };
 
 const Form = AdminHocForm('USER_REQUEST_FORM');
@@ -50,9 +50,11 @@ class App extends Component {
 		return requestMyPlugins(params)
 			.then((res) => {
 				if (res && res.data) {
-					const filterData = res.data.filter(data => data.type === "kyc");
+					const filterData = res.data.filter((data) => data.type === 'kyc');
 					if (filterData.length) {
-						this.setState({ kycPluginName: _get(filterData, '[0].name', 'kyc') });
+						this.setState({
+							kycPluginName: _get(filterData, '[0].name', 'kyc'),
+						});
 					}
 				}
 			})
@@ -206,7 +208,7 @@ class App extends Component {
 			userBalance,
 			loading,
 			userInformationList,
-			kycPluginName
+			kycPluginName,
 		} = this.state;
 		const { coins, constants, isConfigure, showConfigure } = this.props;
 		const renderBoolean = (value) => (

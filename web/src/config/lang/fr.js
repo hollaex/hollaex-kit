@@ -736,7 +736,8 @@ export default {
 			ACTIVE: 'ACTIF',
 			DIALOG: {
 				SUCCESS: 'vous avez changé votre mot de passe',
-				EMAIL_CONFIRMATION: 'Un email vous est envoyé pour autoriser le changement de mot de passe.',
+				EMAIL_CONFIRMATION:
+					'Un email vous est envoyé pour autoriser le changement de mot de passe.',
 			},
 			FORM: {
 				BUTTON: 'Changer le mot de passe',

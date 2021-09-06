@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { isDate } from 'moment';
 import classnames from 'classnames';
+import _map from 'lodash/map';
 import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
 import { ZoomInOutlined } from '@ant-design/icons';
 export const KEYS_TO_HIDE = [
@@ -12,6 +13,17 @@ export const KEYS_TO_HIDE = [
 	'access_token',
 	'bank_account',
 ];
+
+export const displayNestedValues = (value) => {
+	return typeof value === 'object' && value !== null
+		? _map(value, (nestVal, index) => (
+				<div className="ml-3" key={index}>
+					{' '}
+					{index}: {displayNestedValues(nestVal)}
+				</div>
+		  ))
+		: value;
+};
 
 export const renderRowImages = ([key, value]) => (
 	<div key={key} className="verification_block">
@@ -39,11 +51,46 @@ export const renderJSONKey = (key, value) => {
 	let valueText = '';
 	if (key === 'dob' && isDate(new Date(value))) {
 		valueText = `${formatTimestampGregorian(value, DATETIME_FORMAT)}`;
+	} else if (key === 'wallet') {
+		valueText = _map(value, (wallet, index) => {
+			return (
+				<div key={index}>
+					{index}:
+					{_map(wallet, (walletData, index) => (
+						<div key={index}>
+							{' '}
+							{index}: {walletData}
+						</div>
+					))}
+				</div>
+			);
+		});
 	} else if (key === 'settings') {
 		valueText = Object.entries(value).map(([key, val]) => {
 			return (
 				<div key={`${key}_`}>
-					{key} : {JSON.stringify(val)}
+					{key} :
+					<div>
+						{_map(val, (data, keyItem) => {
+							return typeof data === 'boolean' ? (
+								<div key={`${keyItem}_1`} className="pl-3">
+									{keyItem} : {JSON.stringify(data)}
+								</div>
+							) : (
+								<div key={`${keyItem}_2`} className="pl-3">
+									{keyItem} : {data}
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			);
+		});
+	} else if (key === 'id_data') {
+		valueText = _map(value, (id_val, index) => {
+			return (
+				<div key={index}>
+					{index}: {displayNestedValues(id_val)}
 				</div>
 			);
 		});
@@ -65,7 +112,12 @@ export const renderJSONKey = (key, value) => {
 		valueText = value;
 	}
 	return (
-		<div key={key} className="jsonkey-wrapper">
+		<div
+			key={key}
+			className={
+				typeof valueText === 'object' ? 'json_wrapper' : 'jsonkey-wrapper'
+			}
+		>
 			<strong>{key}</strong>: <pre>{valueText}</pre>
 		</div>
 	);

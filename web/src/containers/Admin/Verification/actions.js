@@ -31,12 +31,7 @@ export const verifyData = (values, kyc_name) => {
 		url = `/plugins/${kyc_name}/verify`;
 	}
 
-	return requestAuthenticated(
-		url,
-		options,
-		null,
-		PLUGIN_URL
-	);
+	return requestAuthenticated(url, options, null, PLUGIN_URL);
 };
 
 export const revokeData = (values, kyc_name) => {
@@ -50,10 +45,5 @@ export const revokeData = (values, kyc_name) => {
 		url = `/plugins/${kyc_name}/revoke`;
 	}
 
-	return requestAuthenticated(
-		url,
-		options,
-		null,
-		PLUGIN_URL
-	);
+	return requestAuthenticated(url, options, null, PLUGIN_URL);
 };

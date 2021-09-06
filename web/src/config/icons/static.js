@@ -99,14 +99,14 @@ const icons = {
 		tusd: '/assets/images/tusd-icon.svg',
 		xlm: '/assets/images/xlm-icon.svg',
 		xmr: '/assets/images/xmr-icon.svg',
-		xrp: '/assets/images/xrp-icon.svg'
+		xrp: '/assets/images/xrp-icon.svg',
 	},
 	MISSING_ICON: '/assets/images/missing-coin.svg',
 	SETTINGS: '/assets/images/noun_settings.svg',
 	CURRENCY_SYMBOL: '/assets/images/noun_currency.svg',
 	BLOCKCHAIN_BACKGROUND: '/assets/images/blockchain-background.svg',
 	FIAT_BACKGROUND: '/assets/images/fiat-background.svg',
-	RESTART_CIRCLE_ICON: '/assets/images/restart-circle.svg'
+	RESTART_CIRCLE_ICON: '/assets/images/restart-circle.svg',
 };
 
 export default icons;
