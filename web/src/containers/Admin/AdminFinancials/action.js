@@ -26,7 +26,7 @@ export const storeMint = (values) => {
 
 export const updateMint = (values) => {
 	const options = {
-		method: 'POST',
+		method: 'PUT',
 		body: JSON.stringify(values),
 	};
 
