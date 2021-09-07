@@ -34,6 +34,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-react": "^7.24.0",
-    "mocha": "8.4.0"
+    "mocha": "8.4.0",
+    "mocha-cakes-2": "^3.3.0"
   }
 }

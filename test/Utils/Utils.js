@@ -274,7 +274,7 @@ function getPromotionRate(){
 }
 
 
-module.exports = {setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
+module.exports = {chunkCleaner,setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
 
 
 
