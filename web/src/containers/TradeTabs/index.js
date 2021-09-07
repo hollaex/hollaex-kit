@@ -231,7 +231,7 @@ class AddTradeTab extends Component {
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-between">
-						<div className="w-50">
+						<div className="w-50 pb-4">
 							<SearchBox
 								name={STRINGS['SEARCH_ASSETS']}
 								className="trade_tabs-search-field"

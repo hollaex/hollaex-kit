@@ -160,7 +160,7 @@ class Markets extends Component {
 			<div>
 				{showSearch && (
 					<div className="d-flex justify-content-end">
-						<div className={isMobile ? '' : 'w-25'}>
+						<div className={isMobile ? '' : 'w-25 pb-4'}>
 							<SearchBox
 								name={STRINGS['SEARCH_ASSETS']}
 								className="trade_tabs-search-field"

@@ -382,7 +382,7 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
-			case 'tech':
+			case 'communicator':
 				return (
 					<div className="role-section bg-orange">
 						<div>
@@ -412,7 +412,7 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
-			default:
+			case 'admin':
 				return (
 					<div className="role-section">
 						<div>
@@ -428,6 +428,8 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
+			default:
+				return <div></div>
 		}
 	};
 
