@@ -11,7 +11,7 @@ import './index.css';
 const TabPane = Tabs.TabPane;
 
 const AdminFinancials = ({ router, location }) => {
-	const [ activeTab, setActiveTab] = useState('0');
+	const [activeTab, setActiveTab] = useState('0');
 
 	const tabParams = getTabParams();
 	useEffect(() => {
@@ -23,7 +23,7 @@ const AdminFinancials = ({ router, location }) => {
 	const handleTabChange = (key) => {
 		setActiveTab(key);
 		router.replace('/admin/financials');
-	}
+	};
 	return (
 		<div className="app_container-content admin-earnings-container w-100">
 			<Tabs
