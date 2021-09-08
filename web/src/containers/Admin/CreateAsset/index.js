@@ -81,7 +81,9 @@ class CreateAsset extends Component {
 
 	setCurrentPageAssets = (activeKey) => {
 		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
+		// const coinKeys = exchangeCoins.map((data) => data.symbol);
 		let coins = this.props.coins.filter(
+			// let coins = allCoins.filter(
 			(val) =>
 				!coinKeys.includes(val.symbol) &&
 				val.verified &&
@@ -311,15 +313,15 @@ class CreateAsset extends Component {
 		if (this.state.currentScreen === 'step1') {
 			if (id) {
 				/* if (this.props.isExchangeWizard) {
-                    this.setState({
-                        coinFormData: {
-                            ...this.state.coinFormData,
-                            ...this.state.selectedCoinData
-                        }
-                    }, () => {
-                        this.handleConfirmation();
-                    });
-                } else { */
+					this.setState({
+						coinFormData: {
+							...this.state.coinFormData,
+							...this.state.selectedCoinData
+						}
+					}, () => {
+						this.handleConfirmation();
+					});
+				} else { */
 				this.handleScreenChange('final');
 				this.setState({
 					coinFormData: {
@@ -398,7 +400,9 @@ class CreateAsset extends Component {
 
 	handleConfirmation = () => {
 		this.props.handleConfirmation(
-			this.state.coinFormData,
+			this.props.isEdit || this.props.isConfigureEdit
+				? this.props.formData
+				: this.state.coinFormData,
 			this.props.isEdit || this.props.isConfigureEdit,
 			false,
 			!!this.state.coinFormData.id
@@ -420,6 +424,7 @@ class CreateAsset extends Component {
 					<Step2
 						coins={coins}
 						exchangeCoins={this.props.exchangeCoins}
+						// exchangeCoins={exchangeCoins}
 						handleSearch={this.handleSearch}
 						handleSelectCoin={this.handleSelectCoin}
 						handleScreenChange={this.handleScreenChange}
@@ -627,19 +632,11 @@ class CreateAsset extends Component {
 	}
 }
 
-const mapStateToProps = (state, ownProps) => {
-	let exchange = {};
-	if (state.exchange && state.exchange.length) {
-		exchange = state.exchange[0];
-	}
-	return {
-		coins: state.coin,
-		exchangeCoins: ownProps.isExchangeWizard
-			? ownProps.exchangeCoins || []
-			: exchange.coins || [],
-		// exchangeData: state.exchange[0]
-	};
-};
+const mapStateToProps = (state) => ({
+	user: state.user,
+	coins: state.asset.allCoins,
+	exchange: state.asset.exchange,
+});
 
 CreateAsset.defaultProps = {
 	handleWidth: () => {},
