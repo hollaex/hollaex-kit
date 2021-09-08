@@ -283,12 +283,14 @@ class CreatePair extends Component {
 			isExchangeWizard,
 			isEdit,
 		} = this.props;
+		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
+		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
 		switch (currentStep) {
 			case 'preview':
 				return (
 					<Preview
 						isExchangeWizard={isExchangeWizard}
-						coins={coins}
+						coins={coinsData}
 						allCoins={allCoins}
 						formData={formData}
 						handleNext={this.handleConfirm}
@@ -313,7 +315,7 @@ class CreatePair extends Component {
 			case 'step2':
 				return (
 					<PairParams
-						coins={coins}
+						coins={coinsData}
 						formData={formData}
 						isEdit={isEdit}
 						handleChange={this.handleChange}
@@ -346,9 +348,9 @@ class CreatePair extends Component {
 					<CreatePairSection
 						isExchangeWizard={isExchangeWizard}
 						allPairs={allPairs}
-						coins={coins}
+						coins={coinsData}
 						coinSecondary={coinSecondary}
-						pairs={pairs}
+						pairs={pairsData}
 						formData={formData}
 						activeTab={activeTab}
 						setPresetPair={this.setPresetPair}
@@ -362,7 +364,7 @@ class CreatePair extends Component {
 					<AddPairTab
 						isExchangeWizard={isExchangeWizard}
 						allCoins={allCoins}
-						pairs={pairs}
+						pairs={pairsData}
 						formData={formData}
 						currentPresetPair={currentPresetPair}
 						onClose={this.handleClose}
@@ -382,16 +384,15 @@ class CreatePair extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-	let exchange = {};
-	if (state.exchange && state.exchange.length) {
-		exchange = state.exchange[0];
-	}
 	return {
-		exchange,
-		coins: exchange.coins || [],
-		pairs: exchange.pairs || [],
-		allPairs: state.pair,
-		allCoins: state.coin,
+		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
+		coins:
+			(state.asset && state.asset.exchange && state.asset.exchange.coins) || [],
+		pairs:
+			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
+		allPairs: state.asset.allPairs,
+		user: state.user,
+		allCoins: state.asset.allCoins,
 	};
 };
 

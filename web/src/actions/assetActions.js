@@ -9,6 +9,9 @@ import {
 } from 'utils/currency';
 
 export const SET_PRICES_AND_ASSET = 'SET_PRICES_AND_ASSET';
+export const SET_ALL_COINS = 'SET_ALL_COINS';
+export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
+export const SET_EXCHANGE = 'SET_EXCHANGE';
 
 export const setPricesAndAsset = (balance, coins) => {
 	return (dispatch) => {
@@ -23,6 +26,39 @@ export const setPricesAndAsset = (balance, coins) => {
 					chartData: generateChartData(balance, prices, coins, totalAsset),
 				},
 			});
+		});
+	};
+};
+
+export const setCoins = (allCoins) => {
+	return (dispatch) => {
+		dispatch({
+			type: SET_ALL_COINS,
+			payload: {
+				allCoins,
+			},
+		});
+	};
+};
+
+export const setAllPairs = (allPairs) => {
+	return (dispatch) => {
+		dispatch({
+			type: SET_ALL_PAIRS,
+			payload: {
+				allPairs,
+			},
+		});
+	};
+};
+
+export const setExchange = (exchange) => {
+	return (dispatch) => {
+		dispatch({
+			type: SET_EXCHANGE,
+			payload: {
+				exchange,
+			},
 		});
 	};
 };

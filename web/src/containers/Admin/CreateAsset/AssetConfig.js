@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
-// import { getCoinInfo, storeAsset } from '../../common/fetch';
+import { /*  getCoinInfo, */ storeAsset } from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
 	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
@@ -43,7 +43,7 @@ const AssetConfig = (props) => {
 
 	const handleSubmit = (values) => {
 		if (values) {
-			if (!props.isEdit) {
+			if (!props.isEdit && !props.isConfigureEdit) {
 				updateAsset();
 			} else {
 				handleNext();
@@ -75,13 +75,13 @@ const AssetConfig = (props) => {
 		}
 		try {
 			// const res = {};
-			// const res = await storeAsset(body);
+			const res = await storeAsset(body);
 			// if (props.getCoins) {
 			//     await props.getCoins();
 			// }
-			// if (res && res.data) {
-			handleNext();
-			// }
+			if (res && res.data) {
+				handleNext();
+			}
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -238,7 +238,12 @@ const AssetConfig = (props) => {
 	return (
 		<Fragment>
 			<div className="title">Create or add a new coin</div>
-			<Form form={form} name="AssetConfigForm" onFinish={handleSubmit}>
+			<Form
+				form={form}
+				initialValues={coinFormData}
+				name="AssetConfigForm"
+				onFinish={handleSubmit}
+			>
 				<div className="section-wrapper">
 					{renderFields()}
 					<div className="sub-title">Naming and color</div>
@@ -284,7 +289,6 @@ const AssetConfig = (props) => {
 												name="fullname"
 												placeholder="Enter long form name"
 												onChange={handleChange}
-												value={coinFormData.fullname}
 											/>
 										</Form.Item>
 									</Fragment>
@@ -337,7 +341,6 @@ const AssetConfig = (props) => {
 												name="symbol"
 												placeholder="Enter short hand name"
 												onChange={handleChange}
-												value={coinFormData.symbol}
 											/>
 										</Form.Item>
 									</Fragment>
