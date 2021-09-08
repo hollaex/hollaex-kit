@@ -10,6 +10,13 @@ import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
 import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
+import {
+	getAllCoins,
+	/* getAllPairs, getConstants, */ getExchange,
+	updateAssetCoins,
+} from './action';
+import { setCoins, setExchange } from 'actions/assetActions';
+import { bindActionCreators } from 'redux';
 
 const { Item } = Breadcrumb;
 
@@ -187,48 +194,59 @@ class Assets extends Component {
 	}
 
 	componentDidMount() {
+		const { exchange, allCoins } = this.props;
+
+		this.getExchange();
 		const { tabParams } = this.state;
+
 		// this.requestExchange(this.props.exchange && this.props.exchange.id);
-		if (this.props.exchange && this.props.exchange.length) {
+		const coins = allCoins.filter((val) => exchange.coins.includes(val.symbol));
+		if (this.props.exchange && this.props.exchange.coins) {
 			this.setState({
-				coins: this.props.exchange[0].coins || [],
-				exchange: this.props.exchange[0],
+				coins: coins || [],
+				exchange: this.props.exchange,
 			});
 		}
 		if (tabParams) {
 			let isAddAsset = tabParams.isAsset === 'true';
 			let isPreview = tabParams.preview === 'true';
 			// let coinData = this.props.exchange[0].coins;
-			// if (coinData.length) {
-			//     let temp = coinData.filter(list => list.symbol === tabParams.symbol)
-			//     let filterCoin = temp.length ? temp[0] : {};
-			//     if (filterCoin.symbol) {
-			//         let filterSymbol = filterCoin.symbol;
-			//         filterCoin = this.props.allCoins.filter(list => list.symbol === filterSymbol)[0] || {};
-			//     }
-			this.setState({
-				isPreview,
-				isOpenAdd: isAddAsset,
-				selectedAsset: {
-					...default_coin_data,
-					// ...filterCoin
-				},
-			});
-			// }
+			// let coinData = exchangeCoins;
+			let coinData = coins;
+			if (coinData.length) {
+				let temp = coinData.filter((list) => list.symbol === tabParams.symbol);
+				let filterCoin = temp.length ? temp[0] : {};
+				if (filterCoin.symbol) {
+					let filterSymbol = filterCoin.symbol;
+					filterCoin =
+						allCoins.filter((list) => list.symbol === filterSymbol)[0] || {};
+				}
+
+				this.setState({
+					isPreview,
+					isOpenAdd: isAddAsset,
+					selectedAsset: {
+						...default_coin_data,
+						...filterCoin,
+					},
+				});
+			}
 		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevProps.exchange) !==
-				JSON.stringify(this.props.exchange) &&
-			this.props.exchange.length
-		) {
+		const { exchange, allCoins } = this.props;
+
+		if (JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange)) {
+			const coins = allCoins.filter((val) =>
+				exchange.coins.includes(val.symbol)
+			);
 			this.setState({
-				coins: this.props.exchange[0].coins || [],
-				exchange: this.props.exchange[0],
+				coins: coins || [],
+				exchange: this.props.exchange,
 			});
 		}
+
 		if (
 			JSON.stringify(this.props.location) !== JSON.stringify(prevProps.location)
 		) {
@@ -320,22 +338,21 @@ class Assets extends Component {
 
 	getExchange = async () => {
 		try {
-			// const res = await getExchange();
-			const res = {};
-			const exchange =
-				res.data &&
-				res.data.data &&
-				res.data.data.sort((a, b) => {
-					const ad = new Date(a.updated_at);
-					const bd = new Date(a.updated_at);
-					if (Math.floor(ad - bd) >= 0) {
-						return a - b;
-					} else {
-						return b - a;
-					}
-				});
+			const res = await getExchange();
+			const exchange = res.data;
+			// const res = {};
+			// const exchange = res.data && res.data.data && res.data.data.sort((a, b) => {
+			//     const ad = new Date(a.updated_at);
+			//     const bd = new Date(a.updated_at);
+			//     if (Math.floor(ad - bd) >= 0) {
+			//         return a - b;
+			//     } else {
+			//         return b - a;
+			//     }
+			// });
 
-			this.props.actions.readData(exchange);
+			// this.props.actions.readData(exchange);
+			this.props.setExchange(exchange);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -345,8 +362,8 @@ class Assets extends Component {
 
 	getCoins = async () => {
 		try {
-			// const res = await getCoins();
-			const res = {};
+			const res = await getAllCoins();
+
 			const coins =
 				(await res.data) &&
 				res.data.data &&
@@ -414,7 +431,7 @@ class Assets extends Component {
 				if (!coinData.max) coinData.max = selectedAsset.max;
 				if (!coinData.increment_unit)
 					coinData.increment_unit = selectedAsset.increment_unit;
-				// await updateAssetCoins(coinData);
+				await updateAssetCoins(coinData);
 				// await this.getCoins();
 				if (isApply) {
 					await this.handleApply();
@@ -449,8 +466,8 @@ class Assets extends Component {
 				//     coins: [...coinList, coinData.symbol]
 				// }
 				if (!coinData.id) {
-					// const res = await updateAssetCoins(coinData);
-					const res = {};
+					const res = await updateAssetCoins(coinData);
+					// const res = {};
 					this.props.addCoin(res.data);
 				}
 				// await putExchange(formProps);
@@ -523,9 +540,14 @@ class Assets extends Component {
 	};
 
 	onClickFilter = () => {
-		const { filterValues, exchange } = this.state;
+		const {
+			filterValues,
+			// exchange
+			coins,
+		} = this.state;
 		const lowercasedValue = filterValues.toLowerCase();
-		let result = exchange.coins.filter((list) => {
+		let result = coins.filter((list) => {
+			// let result = exchangeCoins.filter(list => {
 			return (
 				list.symbol.toLowerCase().includes(lowercasedValue) ||
 				list.fullname.toLowerCase().includes(lowercasedValue)
@@ -695,7 +717,7 @@ class Assets extends Component {
 
 	renderModalContent = () => {
 		const {
-			coins,
+			// coins,
 			isOpenAdd,
 			isEdit,
 			isConfigureEdit,
@@ -704,7 +726,9 @@ class Assets extends Component {
 			isConfirm,
 			exchangeUsers,
 			userEmails,
+			formData,
 		} = this.state;
+		const { allCoins } = this.props;
 		if (isConfirm) {
 			return (
 				<div className="admin-asset-wrapper">
@@ -736,7 +760,8 @@ class Assets extends Component {
 					editAsset={selectedAsset}
 					isConfigureEdit={isConfigureEdit}
 					editConfigureScreen={editConfigureScreen}
-					coins={coins}
+					// coins={coins}
+					coins={allCoins}
 					handleEditDataCallback={this.handleEditData}
 					handleWidth={this.handleWidth}
 					handleConfirmation={this.handleConfirmation}
@@ -745,6 +770,8 @@ class Assets extends Component {
 					userEmails={userEmails}
 					updateFormData={this.updateFormData}
 					getCoins={this.getCoins}
+					formData={formData}
+					exchangeCoins={this.state.coins}
 				/>
 			);
 		}
@@ -763,7 +790,9 @@ class Assets extends Component {
 			isConfirm,
 			isPresetConfirm,
 			exchangeBalance,
+			// exchange
 		} = this.state;
+		const { allCoins, user } = this.props;
 
 		return (
 			<div className="admin-asset-wrapper">
@@ -788,8 +817,8 @@ class Assets extends Component {
 						<div className="table-wrapper">
 							<Table
 								columns={getColumns(
-									this.props.allCoins,
-									this.props.user,
+									allCoins,
+									user,
 									exchangeBalance,
 									this.handleEdit,
 									this.handlePreview
@@ -823,10 +852,15 @@ class Assets extends Component {
 		);
 	}
 }
-
+const mapDispatchToProps = (dispatch) => ({
+	setCoins: bindActionCreators(setCoins, dispatch),
+	setExchange: bindActionCreators(setExchange, dispatch),
+});
 const mapStateToProps = (state) => ({
 	user: state.user,
-	allCoins: state.app.coins,
+	allCoins: state.asset.allCoins,
+	constants: state.app.constants,
+	exchange: state.asset.exchange,
 });
 
-export default connect(mapStateToProps)(Assets);
+export default connect(mapStateToProps, mapDispatchToProps)(Assets);

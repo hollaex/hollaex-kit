@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import { InputNumber, Button, Checkbox } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
@@ -194,8 +193,4 @@ class PairParams extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	coins: state.coin,
-});
-
-export default connect(mapStateToProps)(PairParams);
+export default PairParams;
