@@ -92,7 +92,7 @@ class OperatorControls extends Component {
 			isAllIconsModalOpen: false,
 			selectedThemes,
 			allIconsArray: [],
-			injected_html,
+			injected_html: { head: '', body: '', ...injected_html },
 		};
 	}
 

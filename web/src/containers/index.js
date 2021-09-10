@@ -29,6 +29,7 @@ export { default as AddTradeTabs } from './TradeTabs';
 export { default as ExpiredExchange } from './ExpiredExchange';
 export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
+export { default as CustomNotification } from './Notification';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';
@@ -60,3 +61,4 @@ export { default as General } from './Admin/General';
 export { default as Tiers } from './Admin/Tiers';
 export { default as Roles } from './Admin/Roles';
 export { default as Resources } from './Admin/Resources';
+export { default as Pairs } from './Admin/Trades';

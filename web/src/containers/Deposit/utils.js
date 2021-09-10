@@ -7,7 +7,6 @@ import { EditWrapper, Button } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
 import { getNetworkLabelByKey } from 'utils/wallet';
-import { PLUGIN_URL } from 'config/constants';
 
 import Image from 'components/Image';
 import renderFields from 'components/Form/factoryFields';
@@ -99,10 +98,9 @@ const RenderContentForm = ({
 	formFields,
 	icons: ICONS,
 	selectedNetwork,
-	router,
 }) => {
 	const coinObject = coins[currency];
-	if (coinObject && !coinObject.meta.is_fiat) {
+	if (coinObject && coinObject.type !== 'fiat') {
 		return (
 			<Fragment>
 				<div className="withdraw-form-wrapper">
@@ -166,15 +164,13 @@ const RenderContentForm = ({
 				</div>
 			</Fragment>
 		);
-	} else if (coinObject && coinObject.meta.is_fiat) {
+	} else if (coinObject && coinObject.type === 'fiat') {
 		return (
 			<Fiat
 				id="REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT"
 				titleSection={titleSection}
 				icons={ICONS}
 				currency={currency}
-				router={router}
-				plugin_url={PLUGIN_URL}
 			/>
 		);
 	} else {

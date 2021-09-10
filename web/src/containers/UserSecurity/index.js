@@ -359,8 +359,12 @@ class UserVerification extends Component {
 			.then((res) => {
 				this.setState({
 					dialogIsOpen: true,
-					modalText: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS'],
-					stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.SUCCESS',
+					modalText:
+						STRINGS[
+							'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION'
+						],
+					stringId:
+						'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION',
 				});
 			})
 			.catch((err) => {

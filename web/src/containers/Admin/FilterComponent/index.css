@@ -1,0 +1,48 @@
+.fields-container {
+	display: flex;
+	margin-top: 1rem;
+}
+.fields-container .ant-select {
+	color: #ffffff;
+	width: 140px;
+}
+.fields-container .ant-select .ant-select-selector {
+	border-radius: 0px;
+	border: 2px solid #288500;
+	height: 26px !important;
+}
+.fields-container
+	.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector,
+.fields-container
+	.ant-select:not(.ant-select-disabled):hover
+	.ant-select-selector {
+	border-color: #288500;
+}
+.fields-container .ant-input-number {
+	border-radius: 0px;
+	border-width: 2px 2px 2px 0px;
+	border-color: #288500;
+	width: 145px;
+}
+.fields-container .ant-input {
+	border-radius: 0px;
+	border-width: 2px 2px 2px 0px;
+	border-color: #288500;
+	width: 145px;
+}
+.fields-container .filter-btn {
+	width: 140px;
+	height: 26px !important;
+	background-color: #288500;
+	border-color: #288500;
+	border-radius: 0px;
+}
+.fields-container .ant-calendar-picker-icon {
+	display: none;
+}
+.fields-container .ant-calendar-picker-input {
+	width: 220px;
+	border-width: 2px 2px 2px 0px;
+	border-color: #288500;
+}

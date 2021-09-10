@@ -298,3 +298,11 @@ table th {
 .flex-direction-column {
 	flex-direction: column !important;
 }
+
+.important-text {
+	color: $colors-main-black;
+}
+
+.secondary-text {
+	color: $colors-black;
+}

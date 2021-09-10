@@ -75,7 +75,7 @@ const BankVerificationHome = ({
 						STRINGS['USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT'],
 						<span
 							className="verification_link pointer"
-							onClick={(e) => handleBack('document', e)}
+							onClick={(e) => handleBack('kyc', e)}
 						>
 							{STRINGS['USER_VERIFICATION.DOCUMENT_SUBMISSION']}
 						</span>

@@ -1,0 +1,20 @@
+.asset-tabs .ant-tabs-ink-bar {
+	height: 6px;
+	background-color: #000000;
+}
+.asset-tabs .ant-tabs-nav .ant-tabs-tab {
+	font-size: 15px;
+	font-weight: bold;
+}
+.asset-tabs .ant-tabs-bar {
+	border-bottom: none;
+}
+.asset-tabs .ant-tabs-ink-bar {
+	top: 0px;
+}
+
+@media (max-width: 960px) {
+	.asset-tabs {
+		padding: 0 12px;
+	}
+}

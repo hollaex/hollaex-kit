@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin } from 'antd';
+import { Layout, Menu, Row, Col, Spin, message } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
@@ -47,11 +47,47 @@ import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
 import { requestMyPlugins } from '../Plugins/action';
+import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
+// import { allCoins } from '../AdminFinancials/Assets';
+// import { allPairs } from '../Trades/Pairs';
+import {
+	/* getAllCoins, getAllPairs, */ getConstants,
+	getExchange,
+} from '../AdminFinancials/action';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
 const { Content, Sider } = Layout;
 const { Item } = Menu;
+
+// const ASSET_TYPE_LIST = [
+// 	{ key: 'Bitcoin', value: 'btc' },
+// 	{ key: 'Bitcoin Cash', value: 'bch' },
+// 	{ key: 'Ripple', value: 'xrp' },
+// 	{ key: 'Ethereum', value: 'eth' },
+// 	{ key: 'HollaEx', value: 'hex' },
+// 	{ key: 'HollaEx', value: 'xht' },
+// 	{ key: 'Bitcoin Satoshi Vision', value: 'bsv' },
+// 	{ key: 'USD Tether', value: 'usdt' },
+// 	{ key: 'BNB', value: 'bnb' },
+// 	{ key: 'UNUS SED LEO', value: 'leo' },
+// 	{ key: 'Maker', value: 'mkr' },
+// 	{ key: 'USD Coin', value: 'usdc' },
+// 	{ key: 'BAT', value: 'bat' },
+// 	{ key: 'Monero', value: 'xmr' },
+// 	{ key: 'EOS', value: 'eos' },
+// 	{ key: 'Litecoin', value: 'ltc' },
+// 	{ key: 'Stellar', value: 'xlm' },
+// 	{ key: 'Cardano', value: 'ada' },
+// 	{ key: 'Tron', value: 'trx' },
+// 	{ key: 'NEO', value: 'neo' },
+// 	{ key: 'NEM', value: 'nem' },
+// 	{ key: 'Ethereum Classic', value: 'etc' },
+// 	{ key: 'Dash', value: 'dash' },
+// 	{ key: 'IOTA', value: 'miota' },
+// 	{ key: 'ZRX', value: 'zrx' },
+// 	{ key: 'Gold Tether', value: 'xaut' }
+// ];
 
 class AppWrapper extends React.Component {
 	constructor(prop) {
@@ -77,6 +113,9 @@ class AppWrapper extends React.Component {
 	}
 
 	componentDidMount() {
+		this.getExchange();
+		this.getAssets();
+
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
 		if (!this.props.fetchingAuth) {
 			this.initSocketConnections();
@@ -136,6 +175,55 @@ class AppWrapper extends React.Component {
 			clearTimeout(this.state.idleTimer);
 		}
 	}
+
+	getAssets = async () => {
+		try {
+			const res = await getConstants();
+			const { coins, pairs } = res.data;
+			this.props.setCoins(Object.values(coins));
+
+			this.props.setAllPairs(Object.values(pairs));
+
+			// const coins = await res.data && res.data.data && res.data.data.map((item) => {
+			// 	// NOTE: Monero set disabled
+			// 	if (item.symbol === 'xmr') {
+			// 		return {
+			// 			key: 'Monero',
+			// 			value: 'xmr',
+			// 			disabled: true,
+			// 			...item
+			// 		};
+			// 	}
+			// 	const filter = ASSET_TYPE_LIST.filter((obj) => obj.value === item.symbol);
+			// 	if (filter.length === 0) {
+			// 		return {
+			// 			key: item.fullname,
+			// 			value: item.symbol,
+			// 			...item
+			// 		};
+			// 	} else {
+			// 		return { ...filter[0], ...item };
+			// 	}
+			// });
+
+			// return this.props.setCoins(coins);
+		} catch (error) {
+			throw error;
+		}
+	};
+
+	getExchange = async () => {
+		try {
+			const res = await getExchange();
+			const exchange = res.data;
+
+			this.props.setExchange(exchange);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
 
 	initSocketConnections = () => {
 		this.setPublicWS();
@@ -341,6 +429,8 @@ class AppWrapper extends React.Component {
 			return 'Collateral';
 		} else if (location.pathname.includes('/admin/resources')) {
 			return 'Resources';
+		} else if (location.pathname.includes('/admin/chat')) {
+			return 'Chat';
 		} else if (location.pathname.includes('/admin/plugin/adminView')) {
 			return this.renderCapitalize(router.params.name);
 		} else {
@@ -621,6 +711,9 @@ const mapDispatchToProps = (dispatch) => ({
 	changeTheme: bindActionCreators(changeTheme, dispatch),
 	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	setCoins: bindActionCreators(setCoins, dispatch),
+	setAllPairs: bindActionCreators(setAllPairs, dispatch),
+	setExchange: bindActionCreators(setExchange, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

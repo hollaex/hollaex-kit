@@ -1,7 +1,7 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { API_HOST } = require('../../constants');
+const { API_HOST, HOLLAEX_NETWORK_ENDPOINT } = require('../../constants');
 const { loggerPublic } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -25,12 +25,28 @@ const getConstants = (req, res) => {
 	try {
 		return res.json({
 			coins: toolsLib.getKitCoinsConfig(),
-			pairs: toolsLib.getKitPairsConfig()
+			pairs: toolsLib.getKitPairsConfig(),
+			network: HOLLAEX_NETWORK_ENDPOINT
 		});
 	} catch (err) {
 		loggerPublic.verbose('controller/public/getConstants', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
+};
+
+const getNetworkConstants = (req, res) => {
+	toolsLib.getNetworkConstants({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerPublic.verbose('controller/public/getNetworkConstants', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const getKitConfigurations = (req, res) => {
@@ -44,7 +60,7 @@ const getKitConfigurations = (req, res) => {
 
 const sendSupportEmail = (req, res) => {
 	const { email, category, subject, description }  = req.swagger.params;
-	return toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
+	toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
 		.then(() => {
 			return res.json({ message: 'Email was sent to support' });
 		})
@@ -57,7 +73,11 @@ const sendSupportEmail = (req, res) => {
 const getTopOrderbook = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.getOrderbook(symbol)
+	toolsLib.getOrderbook(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -72,7 +92,11 @@ const getTopOrderbook = (req, res) => {
 };
 
 const getTopOrderbooks = (req, res) => {
-	toolsLib.getOrderbooks()
+	toolsLib.getOrderbooks({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -98,7 +122,11 @@ const getTrades = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getPublicTrades(symbol)
+	toolsLib.getPublicTrades(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -132,7 +160,12 @@ const getTradesHistory = (req, res) => {
 		order_by.value,
 		order.value,
 		start_date.value,
-		end_date.value
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
 	)
 		.then((data) => {
 			return res.json(data);
@@ -150,7 +183,11 @@ const getTradesHistory = (req, res) => {
 const getTicker = (req, res) => {
 	const symbol = req.swagger.params.symbol.value;
 
-	toolsLib.getTicker(symbol)
+	toolsLib.getTicker(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -165,7 +202,11 @@ const getTicker = (req, res) => {
 };
 
 const getAllTicker = (req, res) => {
-	toolsLib.getTickers()
+	toolsLib.getTickers({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -191,7 +232,11 @@ const getChart = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getChart(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getChart(from.value, to.value, symbol.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -208,7 +253,11 @@ const getChart = (req, res) => {
 const getCharts = (req, res) => {
 	const { from, to, resolution } = req.swagger.params;
 
-	toolsLib.getCharts(from.value, to.value, resolution.value)
+	toolsLib.getCharts(from.value, to.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -223,7 +272,11 @@ const getCharts = (req, res) => {
 };
 
 const getConfig = (req, res) => {
-	toolsLib.getUdfConfig()
+	toolsLib.getUdfConfig({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -249,7 +302,11 @@ const getHistory = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getUdfHistory(from.value, to.value, symbol.value, resolution.value)
+	toolsLib.getUdfHistory(from.value, to.value, symbol.value, resolution.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -275,7 +332,11 @@ const getSymbols = (req, res) => {
 		return res.status(400).json({ message: 'Invalid symbol' });
 	}
 
-	toolsLib.getUdfSymbols(symbol)
+	toolsLib.getUdfSymbols(symbol, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -292,9 +353,22 @@ const getSymbols = (req, res) => {
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
+	if(quote.value && typeof quote.value !== 'string'){
+		loggerPublic.error(
+			req.uuid,
+			'controllers/public/getAssetsPrices invalid quote',
+			quote.value
+		);
+		return res.status(400).json({ message: 'Invalid quote' });
+	}
+
 	loggerPublic.info(req.uuid, 'controllers/public/getAssetsPrices assets', assets.value, 'quote', quote.value, 'amount', amount.value);
 
-	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value)
+	toolsLib.getAssetsPrices(assets.value, quote.value, amount.value, {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
 		.then((data) => {
 			return res.json(data);
 		})
@@ -302,6 +376,44 @@ const getAssetsPrices = (req, res) => {
 			loggerPublic.error(
 				req.uuid,
 				'controller/public/getAssetsPrices',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getAllCoins = (req, res) => {
+	toolsLib.coin.getNetworkCoins({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerPublic.error(
+				req.uuid,
+				'controller/public/getAllCoins',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getAllPairs = (req, res) => {
+	toolsLib.pair.getNetworkPairs({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerPublic.error(
+				req.uuid,
+				'controller/public/getAllPairs',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -324,5 +436,8 @@ module.exports = {
 	getHistory,
 	getSymbols,
 	getAssetsPrices,
-	getTradesHistory
+	getTradesHistory,
+	getNetworkConstants,
+	getAllCoins,
+	getAllPairs
 };

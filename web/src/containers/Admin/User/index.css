@@ -373,3 +373,10 @@
 .modal-wrapper .input_field .ant-select {
 	margin-bottom: 1.5rem;
 }
+.admin-user-container .filter-select-wrapper .select-container {
+	width: 100%;
+}
+.verification-wrapper {
+	background-color: #27339d;
+	padding: 10px;
+}

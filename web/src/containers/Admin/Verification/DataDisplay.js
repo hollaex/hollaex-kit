@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 import { isDate } from 'moment';
 import classnames from 'classnames';
+import _map from 'lodash/map';
 import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
+import { ZoomInOutlined } from '@ant-design/icons';
 export const KEYS_TO_HIDE = [
 	// 'email',
 	'id',
@@ -12,19 +14,33 @@ export const KEYS_TO_HIDE = [
 	'bank_account',
 ];
 
+export const displayNestedValues = (value) => {
+	return typeof value === 'object' && value !== null
+		? _map(value, (nestVal, index) => (
+				<div className="ml-3" key={index}>
+					{' '}
+					{index}: {displayNestedValues(nestVal)}
+				</div>
+		  ))
+		: value;
+};
+
 export const renderRowImages = ([key, value]) => (
 	<div key={key} className="verification_block">
 		<div className="block-title">{key}</div>
-		{value ? (
-			<Fragment>
-				{/* <a href={value} target="_blank" rel="noopener noreferrer">
-					{key}
-				</a> */}
-				<img src={value} alt={key} className="verification_img" key={key} />
-			</Fragment>
-		) : (
-			'(No data)'
-		)}
+		<Fragment>
+			{value.icon ? (
+				<div
+					className="verification_img"
+					style={{ backgroundImage: `url(${value.icon})` }}
+					onClick={() => value.onZoom(value.icon)}
+				>
+					<ZoomInOutlined className="search_icon" key={key} />
+				</div>
+			) : (
+				'(No data)'
+			)}
+		</Fragment>
 	</div>
 );
 
@@ -35,11 +51,46 @@ export const renderJSONKey = (key, value) => {
 	let valueText = '';
 	if (key === 'dob' && isDate(new Date(value))) {
 		valueText = `${formatTimestampGregorian(value, DATETIME_FORMAT)}`;
+	} else if (key === 'wallet') {
+		valueText = _map(value, (wallet, index) => {
+			return (
+				<div key={index}>
+					{index}:
+					{_map(wallet, (walletData, index) => (
+						<div key={index}>
+							{' '}
+							{index}: {walletData}
+						</div>
+					))}
+				</div>
+			);
+		});
 	} else if (key === 'settings') {
 		valueText = Object.entries(value).map(([key, val]) => {
 			return (
 				<div key={`${key}_`}>
-					{key} : {JSON.stringify(val)}
+					{key} :
+					<div>
+						{_map(val, (data, keyItem) => {
+							return typeof data === 'boolean' ? (
+								<div key={`${keyItem}_1`} className="pl-3">
+									{keyItem} : {JSON.stringify(data)}
+								</div>
+							) : (
+								<div key={`${keyItem}_2`} className="pl-3">
+									{keyItem} : {data}
+								</div>
+							);
+						})}
+					</div>
+				</div>
+			);
+		});
+	} else if (key === 'id_data') {
+		valueText = _map(value, (id_val, index) => {
+			return (
+				<div key={index}>
+					{index}: {displayNestedValues(id_val)}
 				</div>
 			);
 		});
@@ -61,7 +112,12 @@ export const renderJSONKey = (key, value) => {
 		valueText = value;
 	}
 	return (
-		<div key={key} className="jsonkey-wrapper">
+		<div
+			key={key}
+			className={
+				typeof valueText === 'object' ? 'json_wrapper' : 'jsonkey-wrapper'
+			}
+		>
 			<strong>{key}</strong>: <pre>{valueText}</pre>
 		</div>
 	);
@@ -70,7 +126,7 @@ export default ({ className = '', renderRow, title, data = {} }) => (
 	<div className={classnames('verification_data_container-data', className)}>
 		{title ? <h2>{title}</h2> : null}
 		{data.message ? (
-			<div>{data.message}</div>
+			<div>{JSON.stringify(data.message)}</div>
 		) : (
 			Object.entries(data).map(renderRow)
 		)}

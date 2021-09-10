@@ -95,7 +95,7 @@ const DocumentsVerificationHome = ({
 			)}
 			{id_data.status !== 3 && (
 				<div className="my-2 btn-wrapper">
-					<div className="holla-verification-button">
+					<div className="holla-verification-button static pt-4">
 						<EditWrapper stringId="USER_VERIFICATION.START_DOCUMENTATION_SUBMISSION,USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION" />
 						<Button
 							label={
@@ -105,7 +105,7 @@ const DocumentsVerificationHome = ({
 											'USER_VERIFICATION.START_DOCUMENTATION_RESUBMISSION'
 									  ]
 							}
-							onClick={() => setActivePageContent('document')}
+							onClick={() => setActivePageContent('kyc')}
 						/>
 					</div>
 				</div>

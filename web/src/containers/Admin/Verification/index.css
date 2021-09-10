@@ -1,5 +1,4 @@
 .verification_data_container {
-	display: flex;
 	margin-right: 15px;
 }
 
@@ -22,8 +21,27 @@
 	font-weight: bold;
 }
 
-.verification_img {
-	max-width: 350px;
+.verification_block .verification_img {
+	max-width: 200px;
+	height: 110px;
+	width: 180px;
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	cursor: pointer;
+	margin: 0.4rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.data-display-wrapper .verification_block .verification_img .search_icon,
+.data-display-wrapper .verification_block .verification_img:hover .search_icon,
+.verification_block .verification_img .search_icon {
+	display: none;
+}
+.verification_block .verification_img:hover .search_icon {
+	display: block;
+	font-size: 30px;
 }
 .verified-container {
 	width: 15rem !important;
@@ -42,6 +60,7 @@
 	display: flex;
 }
 
+.json_wrapper pre,
 .jsonkey-wrapper pre {
 	padding-left: 8px;
 	color: #ffffff;
@@ -71,17 +90,32 @@
 .ant-modal-close-icon path {
 	fill: #ffffff;
 }
-.verification-confirm-modal {
+/* .verification-confirm-modal {
 	height: 15rem;
-}
+} */
 .verification-confirm-modal .ant-btn {
-	width: 9rem;
+	width: 18rem;
+	height: 3rem;
+}
+.zoom-image-modal .image-wrapper {
+	height: 50rem;
+}
+.zoom-image-modal .image-wrapper .selected_image {
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	height: 100%;
+	width: 100%;
+}
+.zoom-image-modal .ant-modal-content .ant-modal-body {
+	padding: 0px;
 }
 .green-btn.ant-btn-primary[disabled] {
 	opacity: 0.7;
 }
-.verification-confirm-modal .ant-btn,
-.green-btn {
+.verification-confirm-modal .green-btn,
+.verification-form .green-btn,
+.content-wrapper .green-btn {
 	background-color: #288500 !important;
 	color: #ffffff !important;
 }
@@ -97,4 +131,39 @@
 }
 .verification-form .ant-upload-text-icon path {
 	fill: #ffffff;
+}
+
+.data-display-wrapper .verification_img {
+	width: 100px;
+	height: 70px;
+}
+.data-display-wrapper .verification_block {
+	width: 11rem;
+}
+.data-display-wrapper .verification_img {
+	cursor: default;
+}
+
+.verification_data_container .verification-icon {
+	width: 2rem;
+}
+.verification_data_container .files-search-icon {
+	font-size: 4rem;
+}
+.verification_data_container .rejected-text {
+	color: #ff4d4f;
+}
+.verification_data_container .pending-text {
+	color: #f28041;
+}
+.verification_data_container .approved-text {
+	color: #00a130;
+}
+.verification_data_container .edit-text {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.verification-confirm-modal .title {
+	font-size: 18px;
+	font-weight: bold;
 }

@@ -6,7 +6,7 @@ export default {
 	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
 
 	LOGOUT_CONFIRM_TEXT: '您想要注销吗?',
-	ADD_TRADING_PAIR: '增加货币交易对',
+	ADD_TRADING_PAIR: '行情',
 	ACTIVE_TRADES: '为了实际交易时能够进行使用，请{0}',
 	CANCEL_FIAT_WITHDRAWAL: '{0}取消提现',
 	CANCEL_WITHDRAWAL: '取消提现',
@@ -31,6 +31,10 @@ export default {
 	CONTACT_US_TEXT: '咨询',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
 	HELP_RESOURCE_GUIDE_TEXT: '请通过联系support@hollaex.com进行咨询',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: '与我们取得联系',
+		TEXT: '如有其他咨询事项，请随时通过电子邮件 {0}',
+	},
 	HELP_TELEGRAM_TEXT: '确认HollaEx的开放API:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: '需要帮助吗?', // new
@@ -257,18 +261,18 @@ export default {
 		BUTTON_TEXT: 'Okay',
 	},
 	OTP_FORM: {
-		OTP_FORM_TITLE: '输入验证码继续进行',
-		OTP_LABEL: 'OTP码',
-		OTP_PLACEHOLDER: '输入验证码',
-		OTP_TITLE: '验证码',
+		OTP_FORM_TITLE: '如需解除谷歌验证（2FA），请在下方输入验证码',
+		OTP_LABEL: '谷歌验证码',
+		OTP_PLACEHOLDER: '请输入6位谷歌验证码',
+		OTP_TITLE: '安全验证',
 		OTP_HELP: '帮助',
 		OTP_BUTTON: '提交',
 		ERROR_INVALID: '无效的OTP码',
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: '快速',
+		TITLE: '快速交易',
 		TOTAL_COST: '总费用',
-		BUTTON: '审阅{0}订单',
+		BUTTON: '预览交易结果',
 		INPUT: '{0}{1}',
 		TRADE_TITLE: '{0} {1}', // quick buy
 	},
@@ -619,8 +623,8 @@ export default {
 				TEXT_2: '提款时需要OTP',
 			},
 			DIALOG: {
-				SUCCESS: '成功激活OTP',
-				REVOKE: '成果解除OTP',
+				SUCCESS: '成功激活谷歌验证（2FA）',
+				REVOKE: '成功解除谷歌验证（2FA）',
 			},
 			CONTENT: {
 				TITLE: '激活双因素认证（2FA）',
@@ -630,10 +634,10 @@ export default {
 				MESSAGE_3: '如果在扫描QR码时遇到问题，可以手动输入以下QR码。',
 				MESSAGE_4: '你可以安全地保存该QR码，以便以后更换或丢失手机时恢复2FA。',
 				MESSAGE_5: '指南',
-				INPUT: '输入一次性密码（OTP)',
+				INPUT: '请在下方输入谷歌验证码',
 				WARNING: '强烈建议你设置谷歌验证（2FA），这将大幅提高资金的安全性。 ',
 				ENABLE: '启用谷歌验证（2FA）',
-				DISABLE: '禁用双因素认证（2FA）',
+				DISABLE: '禁用谷歌验证（2FA）',
 				SECRET_1: 'Enter yor secret key',
 				SECRET_2: 'Please enter your secret key to confirm you wrote it down.',
 				SECRET_3:
@@ -645,7 +649,7 @@ export default {
 				INPUT_2: 'One-Time Password (OTP)',
 			},
 			FORM: {
-				PLACEHOLDER: '输入谷歌身份验证器提供的OTP',
+				PLACEHOLDER: '请输入6位谷歌验证码',
 				BUTTON: '启用2FA',
 			},
 		},
@@ -654,6 +658,7 @@ export default {
 			ACTIVE: '激活',
 			DIALOG: {
 				SUCCESS: '成功更改密码',
+				EMAIL_CONFIRMATION: '将向您发送一封电子邮件以授权更改密码',
 			},
 			FORM: {
 				BUTTON: '更改密码',
@@ -721,15 +726,15 @@ export default {
 		{ value: 'sell', label: '卖出' },
 	],
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' },
-		{ value: false, label: 'off' },
+		{ value: true, label: '开启' },
+		{ value: false, label: '关闭' },
 	],
 	SIZE: '数量',
 	PRICE: '价格',
 	FEE: 'Fee',
 	FEES: '手续费',
 	LIMIT: 'Limit',
-	TIME: 'Time',
+	TIME: '时间',
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
@@ -751,10 +756,10 @@ export default {
 	PUBLIC_SALES: '实时成交', // ToDo
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Filled',
-	PRICE_CURRENCY: 'PRICE',
-	AMOUNT_SYMBOL: 'AMOUNT',
+	PRICE_CURRENCY: '价格',
+	AMOUNT_SYMBOL: '数量',
 	MARKET_PRICE: '市场价格',
-	ORDER_PRICE: '订购价格',
+	ORDER_PRICE: '成交金额',
 	TOTAL_ORDER: '订单总数',
 	NO_DATA: '暂无数据',
 	LOADING: 'Loading',
@@ -781,9 +786,9 @@ export default {
 		'The fee is more than {0}% of your total transaction',
 	WITHDRAWALS_BTC_INVALID_ADDRESS: '比特币地址无效，请检查后重新输入',
 	WITHDRAWALS_ETH_INVALID_ADDRESS: '以太坊地址无效，请检查后重新输入',
-	WITHDRAWALS_BUTTON_TEXT: 'review withdrawal',
+	WITHDRAWALS_BUTTON_TEXT: '预览提款详情',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
-	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
+	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: '输入地址',
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
@@ -851,17 +856,17 @@ export default {
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
 	AVAILABLE_TEXT: 'Available',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'Balance',
+	AVAILABLE_BALANCE_TEXT: '可用余额 : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	BALANCE_TEXT: '可用',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: '总计',
 	WALLET_ALL_ASSETS: '全部资产',
 	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
-	ORDERBOOK_SELLERS: 'Sellers',
-	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SELLERS: '买盘',
+	ORDERBOOK_BUYERS: '卖盘',
+	ORDERBOOK_SPREAD: '买卖价差 {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -1034,10 +1039,10 @@ export default {
 	SUCCESFUL_COPY: '成功复制！',
 	QUICK_TRADE_MODE: '快速交易模式',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair',
+	PAIR: '交易对',
 	ZERO_ASSET: '没有任何资产',
 	DEPOSIT_ASSETS: '充值资产',
-	SEARCH_TXT: '搜索',
+	SEARCH_TXT: '查询',
 	SEARCH_ASSETS: '搜索资产',
 	TOTAL_ASSETS_VALUE: '总资产价值在{0}: {1}',
 	SUMMARY: {
@@ -1104,6 +1109,7 @@ export default {
 		ACCOUNT_AGE_OF_MONTHS: '账户年龄为{0}个月',
 		TRADING_VOLUME_EQUIVALENT: '{0} {1}交易量等值',
 		LEVEL_OF_ACCOUNT: '{0}级账户',
+		TITLE_OF_ACCOUNT: '{0} 级账户',
 		LEVEL_TXT_DEFAULT: '在此处添加你的等级描述',
 		LEVEL_1_TXT:
 			'加密交易员的旅程从这里开始！为了获得奖金，你可以验证身份，并获得更高的充值和提款限额、降低交易手续费。', // new
@@ -1159,6 +1165,7 @@ export default {
 		WAVE_NUMBER: '波段号', // new
 		DISCOUNT: '( {0}%折扣 )', // new
 		MY_FEES_LIMITS: ' 我的手续费及限额', // ne
+		VIEW_MORE_MARKETS: '查看更多行情', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: '邀请好友', // new
@@ -1266,5 +1273,39 @@ export default {
 		APPLY_TODAY: '立即申请', // new
 	},
 	OPEN_WALLET: 'Open 钱包', // new
-	AGO: 'ago', // new
+	AGO: 'ago', // new,
+	MARKETS_TABLE: {
+		VIEW_MARKETS: '查看行情', //new
+	},
+	MARKET_OPTIONS: [
+		{ value: 'List', label: '列表' }, // new
+		{ value: 'Card', label: '图表' }, // new
+	],
+	ALL: '全部', //new
+	ASSET_TXT: '资产', //new
+	ONE_DAY: '1 天', //new
+	ONE_WEEK: '1 周', //new
+	MONTH: '{0} 个月', //new
+	START_DATE: '开始日期', //new
+	END_DATE: '截止日期', //new
+	CONVERT: '从', //new
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION: '24小时充值/提款限额（{0} 级账户)', //new
+		HEADER_ROW_AMOUNT: '24小时限额 ({0})', //new
+	},
+	DEPOSIT_FORM_NETWORK_WARNING: '请再次确认充值网络与发送方网络是一致的', //new
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'请再次确认提款网络与目标地址的网络是一致的', //new
+	WITHDRAWALS_FORM_NETWORK_LABEL: '转账网络', //new
+	CUMULATIVE_AMOUNT_SYMBOL: '成交额', // new
+	ORDER_MODE: '订单类型', // new
+	REGULAR: '一般委托', // new
+	STOPS: '止盈止损', // new
+	CLEAR: '重置', // new
+	ORDER_ENTRY_ADVANCED: '高级设置', //new
+	VIEW_ALL: '查看更多', // new
+	ESTIMATED_PRICE: '成交金额', // new
+	TRIGGER_PRICE: '触发价格', // new
+	POST_ONLY: '高级现价委托', // new
+	POST_ONLY_TOOLTIP: '将始终作为挂单方进行的委托方式', // new
 };

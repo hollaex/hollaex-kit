@@ -33,7 +33,12 @@ export default {
 	HELPFUL_RESOURCES_TEXT: 'Các nguồn hỗ trợ',
 	HELP_RESOURCE_GUIDE_TEXT:
 		'Hãy liên hệ tới địa chỉ email của chúng tôi nếu quý khách có bất kỳ thắc mắc hay vấn đề nào.',
-	HELP_TELEGRAM_TEXT: 'Xác nhận tài liệu ứng dụng mở(open API):',
+	HELP_RESOURCE_GUIDE: {
+		CONTACT_US: 'liên hệ với chúng tôi',
+		TEXT:
+			'Vui lòng {0} bằng cách gửi email nếu quý khách có thắc mắc hay gặp phải bất kỳ vấn đề nào',
+	},
+	HELP_TELEGRAM_TEXT: 'Xác nhận tài liệu ứng dụng mở (open API):',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
 	NEED_HELP_TEXT: 'Quý khách cần giúp đỡ?', // new
 	HELP_TEXT: 'Hỗ trợ',
@@ -223,6 +228,7 @@ export default {
 			'Quý khách chưa đồng ý Điều khoản sử dụng và chính sách bảo mật',
 		STEP: 'Giá trị không hợp lệ, step is {0}',
 		ONLY_NUMBERS: 'Chỉ có thể nhập chữ số',
+		MIN_VALUE_NE: 'Giá phải cao hơn {0}.', //new
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
@@ -285,9 +291,9 @@ export default {
 		ERROR_INVALID: 'Mã OTP không hợp lệ',
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Nhanh',
+		TITLE: 'Giao dịch nhanh',
 		TOTAL_COST: 'Tổng chi phí',
-		BUTTON: 'Kiểm tra yêu cầu đặt hàng {0}',
+		BUTTON: 'KIỂM TRA LỆNH ĐẶT HÀNG',
 		INPUT: 'Số lượng {0} muốn {1}',
 		TRADE_TITLE: '{1} {0}', // quick buy
 	},
@@ -640,9 +646,9 @@ export default {
 		AUDIO_CUE_FORM: {
 			// new
 			ALL_AUDIO: 'Bật âm thanh cho tất cả',
-			PUBLIC_TRADE_AUDIO: 'KHi giao dịch công khai được thực hiện',
+			PUBLIC_TRADE_AUDIO: 'Khi giao dịch công khai được thực hiện (DONE)',
 			ORDERS_PARTIAL_AUDIO:
-				'KHi một trong những đơn đặt hàng được tiến hành từng phần',
+				'Khi một trong những đơn đặt hàng được tiến hành từng phần (DONE)',
 			ORDERS_PLACED_AUDIO: 'Khi một đơn đặt hàng được tạo',
 			ORDERS_CANCELED_AUDIO: 'Khi một đơn đặt hàng bị hủy',
 			ORDERS_COMPLETED_AUDIO:
@@ -656,7 +662,7 @@ export default {
 		RISK_MANAGEMENT: {
 			INFO_TEXT:
 				'Tạo một khung cảnh báo khi số lượng giao dịch vượt quá tỷ lệ phần trăm được cài đặt trong danh mục',
-			INFO_TEXT_1: 'Total assets value in {0}: {1}',
+			INFO_TEXT_1: 'Tổng giá trị tài sản {0}: {1}',
 			PORTFOLIO: 'Tỷ lệ phần trăm danh mục',
 			TOMAN_ASSET: 'Giá trị ước chừng',
 			ADJUST: '(ĐIỀU CHỈNH TỶ LỆ)',
@@ -686,7 +692,7 @@ export default {
 				TEXT_2: 'Yeu cầu OTP khi rút tiền',
 			},
 			DIALOG: {
-				SUCCESS: 'Quý khách đã kích hoacjt OTP thành công.',
+				SUCCESS: 'Quý khách đã kích hoạt 2FA thành công',
 				REVOKE: 'Quý khách đã hủy OTP thành công',
 			},
 			CONTENT: {
@@ -726,6 +732,8 @@ export default {
 			ACTIVE: 'KÍCH HOẠT',
 			DIALOG: {
 				SUCCESS: 'Mật khẩu đã được thay đổi thành công.',
+				EMAIL_CONFIRMATION:
+					'Một email được gửi cho bạn để cho phép thay đổi mật khẩu.',
 			},
 			FORM: {
 				BUTTON: 'Thay đổi mật khẩu',
@@ -781,7 +789,7 @@ export default {
 	},
 	TYPES: [
 		{ value: 'market', label: 'Thị trường' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'Giới hạn' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'limit', label: 'CHỈ ĐỊNH' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -793,10 +801,10 @@ export default {
 		{ value: 'sell', label: 'Bán' },
 	], // DO NOT CHANGE value, ONLY TRANSLATE label
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'Bật' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'Tắt' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
-	SIZE: 'Độ lớn',
+	SIZE: 'Số lượng',
 	PRICE: 'Giá',
 	FEE: 'Fee',
 	FEES: 'Phí giao dịch',
@@ -805,7 +813,7 @@ export default {
 	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
-	STATUS: 'Tình trạng',
+	STATUS: 'Trạng thái',
 	AMOUNT: 'Số lượng',
 	COMPLETE: 'Complete',
 	PENDING: 'Pending',
@@ -827,8 +835,8 @@ export default {
 	LOWEST_PRICE: 'Lowest Price ({0})', // new
 	PHASE: 'Phase', // new
 	INCOMING: 'Incoming', // new
-	PRICE_CURRENCY: 'PRICE',
-	AMOUNT_SYMBOL: 'AMOUNT',
+	PRICE_CURRENCY: 'GIÁ',
+	AMOUNT_SYMBOL: 'SỐ LƯỢNG',
 	MARKET_PRICE: 'Giá thị trường',
 	ORDER_PRICE: 'Giá chỉ định',
 	TOTAL_ORDER: 'Tổng',
@@ -941,7 +949,7 @@ export default {
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'Gửi',
 	AVAILABLE_TEXT: 'Available',
 	AVAILABLE_BALANCE_TEXT: 'Số dư {0} khả dụng : {1} {2}', // Available Bitcoin Balance: 2.6 BTC
-	BALANCE_TEXT: 'Balance',
+	BALANCE_TEXT: 'Số dư',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
 	WALLET_TABLE_TOTAL: 'Tổng',
@@ -950,7 +958,7 @@ export default {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Người bán',
 	ORDERBOOK_BUYERS: 'Người Mua',
-	ORDERBOOK_SPREAD: '{0} spread', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'Chênh lệch {0}', // 0 -> 660,000 T
 	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Tối đa',
 	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
@@ -1028,7 +1036,7 @@ export default {
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Vô hiệu hóa rút tiền',
 	VERIFICATION_NO_WITHDRAW_MESSAGE:
 		'Chức năng rút tiền trên tài khoản của quý khách đã bị vô hiệu hóa.',
-	UP_TO_MARKET: 'Up to market',
+	UP_TO_MARKET: 'Tuỳ theo thị trường',
 	VIEW_MY_FEES: 'Xem phí giao dịch của tôi', // new
 	DEVELOPER_SECTION: {
 		TITLE: 'Khóa API',
@@ -1131,7 +1139,7 @@ export default {
 	SUCCESFUL_COPY: 'Đã sao chép thành công!',
 	QUICK_TRADE_MODE: 'Trạng thái giao dịch nhanh',
 	JUST_NOW: 'just now',
-	PAIR: 'Pair',
+	PAIR: 'Cặp giao dịch',
 	ZERO_ASSET: 'Quý khách chưa có tài sản.',
 	DEPOSIT_ASSETS: 'Nạp tiền',
 	SEARCH_TXT: 'Tìm kiếm',
@@ -1183,7 +1191,7 @@ export default {
 		REQUIREMENTS: 'Điều kiện cần thiểt',
 		ONE_REQUIREMENT: 'One Requirement only:', // new
 		REQUEST_ACCOUNT_UPGRADE: 'Yêu cầu nâng cấp tài khoản',
-		FEES_AND_LIMIT: 'Cấu trúc chi phí và hạn mức {0}', // new
+		FEES_AND_LIMIT: 'Cấu Trúc Chi Phí và Hạn Mức Tài Khoản Cấp Độ {0}', // new
 		FEES_AND_LIMIT_TXT_1:
 			'Trở thành một trader tiền điện tử là một khởi đầu mới. Đặt mục tiêu thông minh cùng với ý chí, tốc độ và chấp nhận rủi ro, quý khách sẽ có cơ hội nâng cấp tài khoản của mình.',
 		FEES_AND_LIMIT_TXT_2:
@@ -1231,7 +1239,7 @@ export default {
 		HAP_ACCOUNT: 'Tài khoản HAP', // new
 		HAP_ACCOUNT_TXT:
 			'Tài khoản của quý khách là một tài khoản chương trình tiếp thị liên kết HollaEx đã được xác thực. Giờ đây, quý khách có thể hưởng 10% tiền thưởng cho mỗi người mà quý khách mời mua XHT.', // new
-		EMAIL_VERIFICATION: 'Xác thực Email', // new
+		EMAIL_VERIFICATION: 'Xác minh địa chỉ email', // new
 		DOCUMENTS: 'Hồ sơ', // new
 		HAP_TEXT: 'Chương trình tiếp thị liên kết HollaEx (HAP) {0}', // new
 		LOCK_AN_EXCHANGE: 'Khóa sàn giao dịch {0}', // new
@@ -1265,7 +1273,7 @@ export default {
 		LEARN_MORE_WAVE_AUCTION: 'Tìm hiểu thêm Wave Auction', // new
 		WAVE_NUMBER: 'Số Wave', // new
 		DISCOUNT: '( Khuyến mại {0}% )', // new
-		MY_FEES_LIMITS: 'Phí giao dịch và Hạn mức của tôi', // new
+		MY_FEES_LIMITS: 'PHÍ GIAO DỊCH VÀ HẠN MỨC CỦA TÔI', // new
 	},
 	REFERRAL_LINK: {
 		TITLE: 'Mời bạn', // new
@@ -1382,4 +1390,34 @@ export default {
 	},
 	OPEN_WALLET: 'Ví mở', // new
 	AGO: 'ago', // new
+	ALL: 'TẤT CẢ', //new
+	VIEW_ALL: 'XEM CHI TIẾT', // new
+	MARKET_OPTIONS: [
+		{ value: 'List', label: 'Danh sách' }, // new
+		{ value: 'Card', label: 'Biểu đồ' }, // new
+	],
+	MARKETS_TABLE: {
+		VIEW_MARKETS: 'XEM THỊ TRƯỜNG ', //new
+	},
+	ORDER_MODE: 'Chế độ đặt hàng', //new
+	REGULAR: 'Thông thường', //new
+	STOPS: 'Cắt lỗ', //new
+	CLEAR: 'XÓA', //new
+	TRIGGER_PRICE: 'Giá vào lệnh', //new
+	POST_ONLY_TOOLTIP:
+		'Post only là lệnh đặt hàng được thêm vào sổ lệnh nhưng không được thực thi ngay.', // new
+	ORDER_ENTRY_ADVANCED: 'Xem thêm', //new
+	CUMULATIVE_AMOUNT_SYMBOL: 'TỔNG', //new
+	ASSET_TXT: 'Tài sản', //new
+	ONE_DAY: '1 ngày', //new
+	ONE_WEEK: '1 tuần', //new
+	MONTH: '{0} tháng', //new
+	START_DATE: 'Từ ngày', //new
+	END_DATE: 'Đến ngày', //new
+	LIMITS_BLOCK: {
+		HEADER_ROW_DESCRIPTION:
+			'Hạn mức Nạp Tiền và Rút Tiền trong 24 giờ (Tài Khoản Cấp Độ {0})',
+		HEADER_ROW_AMOUNT: 'Hạn mức 24 giờ ({0})',
+	},
+	ESTIMATED_PRICE: 'Giá ước chừng',
 };

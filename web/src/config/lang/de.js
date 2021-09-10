@@ -724,6 +724,8 @@ export default {
 			ACTIVE: 'AKTIV',
 			DIALOG: {
 				SUCCESS: 'Sie haben Ihr Passwort erfolgreich geändert',
+				EMAIL_CONFIRMATION:
+					'Eine E-Mail wird an Sie gesendet, um die Passwortänderung zu autorisieren.',
 			},
 			FORM: {
 				BUTTON: 'Passwort ändern',

@@ -314,6 +314,12 @@ table th {
 .flex-direction-column {
   flex-direction: column !important; }
 
+.important-text {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.secondary-text {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -369,6 +375,16 @@ table th {
     .app_container .app_container-content .app_container-main .presentation_container {
       width: 75rem;
       height: inherit; }
+    .app_container .app_container-content .app_container-main .ant-tabs-ink-bar {
+      background: var(--labels_important-active-labels-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-top > .ant-tabs-nav::before {
+      border-color: var(--labels_secondary-inactive-label-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-tab {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
+    .app_container .app_container-content .app_container-main .ant-tabs-tab-active {
+      color: var(--labels_important-active-labels-text-graphics); }
+      .app_container .app_container-content .app_container-main .ant-tabs-tab-active .ant-tabs-tab-btn {
+        font-weight: bold; }
   .app_container .app_container-sidebar {
     display: flex;
     flex-direction: row;
@@ -1850,7 +1866,7 @@ table th {
       border-radius: 20px;
       margin-right: 10px; }
   .history_block-wrapper .check-deposit-txt {
-    right: 100px !important; }
+    right: 150px !important; }
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
@@ -2757,6 +2773,8 @@ table th {
         position: absolute;
         top: 60px;
         width: 300px; }
+        .verification_container .inner-content .btn-wrapper .holla-verification-button.static {
+          position: static; }
 
 .verification-form-panel {
   padding: 30px 50px;
@@ -4504,6 +4522,10 @@ table th {
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0; } }
 
+.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--raised:not(:disabled):not(.mdc-ripple-upgraded),
+.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--unelevated:not(:disabled):not(.mdc-ripple-upgraded) {
+  margin-top: 2rem !important; }
+
 .sidebar-fit-to-screen {
   height: 100vh !important; }
 
@@ -4968,7 +4990,7 @@ table th {
     display: block;
     position: absolute;
     top: 36px;
-    min-width: 10rem;
+    min-width: 11rem;
     min-height: 8rem;
     background-color: var(--base_background);
     z-index: 1052;

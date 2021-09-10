@@ -24,7 +24,10 @@ const {
 	NATIVE_CURRENCY,
 	API_KEY,
 	API_SECRET,
-	KIT_VERSION
+	KIT_VERSION,
+	ADMIN_NETWORK_ID,
+	ADMIN_EMAIL,
+	ADMIN_PASSWORD
 } = process.env;
 
 const {
@@ -33,10 +36,13 @@ const {
 	HOLLAEX_NETWORK_PATH_ACTIVATE
 } = require('../../constants');
 
+const { generateUserObject } = require('../seedsHelper');
+
 const checkActivation = (activation_code) => {
 	const body = {
 		activation_code
 	};
+	console.log(HOLLAEX_NETWORK_ENDPOINT, process.env.NETWORK_URL, process.env.NETWORK);
 
 	const options = {
 		method: 'POST',
@@ -52,7 +58,27 @@ const TABLE = 'Statuses';
 module.exports = {
 	up: (queryInterface) => {
 		return checkActivation(ACTIVATION_CODE)
-			.then((exchange) => {
+			.then(async (exchange) => {
+				let user = null;
+
+				if (ADMIN_EMAIL && ADMIN_PASSWORD && ADMIN_NETWORK_ID) {
+					user = generateUserObject(
+						ADMIN_EMAIL,
+						ADMIN_PASSWORD,
+						ADMIN_NETWORK_ID,
+						true,
+						false,
+						false,
+						false,
+						false,
+						{
+							id: 1
+						}
+					);
+
+					await queryInterface.bulkInsert('Users', [user], {});
+				}
+
 				const status = [{
 					kit: JSON.stringify({
 						api_name: API_NAME || '',
@@ -121,12 +147,12 @@ module.exports = {
 						}
 					}),
 					activation_code: ACTIVATION_CODE,
-					initialized: false,
+					initialized: user ? true : false,
 					api_key: API_KEY,
 					api_secret: API_SECRET,
 					kit_version: KIT_VERSION
 				}];
-				queryInterface.bulkInsert(TABLE, status, {});
+				return queryInterface.bulkInsert(TABLE, status, {});
 			});
 	},
 	down: (queryInterface) => {
