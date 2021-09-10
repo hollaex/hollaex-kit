@@ -1,13 +1,12 @@
 {
-  "name": "selenes",
+  "name": "hollaex-kit-test",
   "version": "1.0.0",
-  "description": "Test Selenuim on JS",
-  "main": "index.js",
+  "description": "HollaEx Kit Test Modules",
   "scripts": {
     "test": "mocha index.js"
   },
-  "author": "Mahdi",
-  "license": "MIT",
+  "author": "bitHolla",
+  "license": "bitHolla Inc.",
   "keywords": [],
   "dependencies": {
     "chromedriver": "92.0.0",
