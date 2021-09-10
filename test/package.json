@@ -2,9 +2,6 @@
   "name": "hollaex-kit-test",
   "version": "1.0.0",
   "description": "HollaEx Kit Test Modules",
-  "scripts": {
-    "test": "mocha index.js"
-  },
   "author": "bitHolla",
   "license": "bitHolla Inc.",
   "keywords": [],
@@ -35,5 +32,8 @@
     "eslint-plugin-react": "7.24.0",
     "mocha": "8.4.0",
     "mocha-cakes-2": "3.3.0"
+  },
+  "scripts": {
+    "test-selenium": "mocha selenium/index.js"
   }
 }

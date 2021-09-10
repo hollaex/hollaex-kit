@@ -8,29 +8,29 @@ console.log('****************************************');
 console.log('*****************');
 console.log('Login and log out');
 console.log('****************');
-require('./onboarding/logIn.js');
-require('./onboarding/logOut.js');
+require('./Onboarding/login.js');
+require('./Onboarding/logout.js');
 
 console.log('***************');
 console.log('signUp New user');
 console.log('***************');
-require('./onboarding/signUp.js');
+require('./Onboarding/Signup.js');
 
 console.log('*************');
 console.log('Reset Stories');
 console.log('*************');
-require('./onboarding/resetPassword.js');
-require('./onboarding/resendVerificationEmail.js');
+require('./Onboarding/ResetPassword.js');
+require('./Onboarding/ResendVerificationEmail.js');
 
 console.log('*****');
 console.log('Trade');
 console.log('*****');
-require('./trade/trade.js');
-require('./trade/tradeWithStop.js');
+require('./Trade/Trade.js');
+require('./Trade/TradeWithStop.js');
 //require('./trade/cancelOrders.js');
 
 console.log('******');
 console.log('Wallet');
 console.log('******');
-require('./wallet/DW_flow.js');
-require('./wallet/wallet.js');
+require('./Wallet/TransactionFlow.js');
+require('./Wallet/Wallet.js');
