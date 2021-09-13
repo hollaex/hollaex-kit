@@ -183,11 +183,11 @@ const AppFooter = ({
 				<div className="pt-2">
 					{!links.hide_referral_badge && (
 						<a
-							href={links.referral_link || 'https://bitholla.com'}
+							href={links.referral_link || 'https://hollaex.com'}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<span>{links.referral_label || 'Powered by bitHolla'}</span>
+							<span>{links.referral_label || 'Powered by HollaEx'}</span>
 						</a>
 					)}
 				</div>
