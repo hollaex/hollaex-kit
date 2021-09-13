@@ -24,7 +24,7 @@ SmartTrade : require('../Trade/SmartTrade.js'),
 Trade: require('../Trade/Trade.js'),
 TradeWithStop: require('../Trade/TradeWithStop.js'),
 /*Wallet*/
-DWflow : require('../Wallet/DWflow.js'),
+DWflow : require('../Wallet/TransactionFlow.js'),
 Wallet : require('../Wallet/Wallet.js'),
 /*Utiles*/
 Utils : require ('./../Utils/Utils.js')

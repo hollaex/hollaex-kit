@@ -1,7 +1,7 @@
 //testing the login function of Hollaex Kit
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
-async function DWflow(){
+async function TransactionFlow(){
 	const { Builder, By, Key, until } = require('selenium-webdriver');
 	const assert = require('assert');
 	const { expect } = require('chai');
@@ -292,6 +292,8 @@ async function DWflow(){
 }
 describe('Main Test', function () {
  
-	//DWFlow();
+	//TransactionFlow();
 })
-module.exports.DWflow = DWflow ;
+module.exports = {
+	TransactionFlow
+};
