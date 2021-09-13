@@ -269,6 +269,12 @@
 	text-align: left;
 	width: 22rem;
 }
+.setup-field-content .number_input-wrapper .ant-input-number-handler-wrap,
+.setup-field-content .number_input-wrapper .ant-input-number-handler-wrap .ant-input-number-handler { 
+	-webkit-appearance: none;
+	display: none;
+	margin: 0;
+}
 .ant-input-affix-wrapper,
 .ant-input,
 .ant-input-number,

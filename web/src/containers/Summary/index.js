@@ -144,10 +144,14 @@ class Summary extends Component {
 
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
-		let traderAccTitle = STRINGS.formatString(
-			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
-			verification_level
-		);
+		const level = selectedAccount ? selectedAccount : verification_level;
+		const accountData = config_level[level] || {};
+		const traderAccTitle =
+			accountData.name ||
+			STRINGS.formatString(
+				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
+				verification_level
+			);
 		return (
 			<div className="summary-container">
 				{!isMobile && (
