@@ -7,7 +7,12 @@ import debounce from 'lodash.debounce';
 import classnames from 'classnames';
 import merge from 'lodash.merge';
 import { EditFilled } from '@ant-design/icons';
-import { getStringByKey, getAllStrings } from 'utils/string';
+import {
+	getStringByKey,
+	getAllStrings,
+	EDITABLE_NAME_SEPARATOR,
+	generateInputName,
+} from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button, Divider, Tabs, message } from 'antd';
 import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
@@ -266,7 +271,7 @@ class OperatorControls extends Component {
 	};
 
 	handleInputChange = ({ target: { value, name } }) => {
-		const [key, lang] = name.split('-');
+		const [key, lang] = name.split(EDITABLE_NAME_SEPARATOR);
 		this.updateEditData(value, key, lang);
 	};
 
@@ -1038,7 +1043,7 @@ class OperatorControls extends Component {
 												<div className="d-flex align-items-center">
 													<Input
 														type="text"
-														name={`${key}-${lang}`}
+														name={generateInputName(key, lang)}
 														placeholder="text"
 														className="operator-controls__input mr-2"
 														value={editData[lang][key]}
