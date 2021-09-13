@@ -66,7 +66,7 @@ const AccountAssets = ({
 					<div className="d-flex justify-content-end">
 						<EditWrapper stringId="ZERO_ASSET,DEPOSIT_ASSETS,OPEN_WALLET" />
 					</div>
-					<div className={classnames('w-100 donut-container')}>
+					<div className={classnames('w-100 donut-container mb-4')}>
 						{BASE_CURRENCY && (
 							<DonutChart coins={coins} chartData={chartData} />
 						)}

@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
+import { bindActionCreators } from 'redux';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
@@ -11,6 +12,9 @@ import IconToolTip from '../IconToolTip';
 import { getTabParams } from '../AdminFinancials/Assets';
 import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
+import { getExchange } from '../AdminFinancials/action';
+import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
+import { storePair } from './actions';
 
 const { Item } = Breadcrumb;
 
@@ -127,21 +131,29 @@ class Pairs extends Component {
 			pairs: [],
 			isConfirm: false,
 			isPresetConfirm: false,
+			coins: [],
 		};
 	}
 
 	componentDidMount() {
+		this.getMyExchange();
 		if (this.props.pairs && this.props.pairs.length) {
+			let pairs = this.props.allPairs.filter((data) =>
+				this.props.pairs.includes(data.name)
+			);
 			this.setState({
-				pairs: this.props.pairs,
+				pairs,
 			});
 		}
 	}
 
 	componentDidUpdate(prevProps) {
 		if (JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs)) {
+			let pairs = this.props.allPairs.filter((data) =>
+				this.props.pairs.includes(data.name)
+			);
 			this.setState({
-				pairs: this.props.pairs,
+				pairs,
 			});
 		}
 		if (
@@ -158,18 +170,11 @@ class Pairs extends Component {
 		}
 	}
 
-	getExchange = async () => {
+	getMyExchange = async () => {
 		try {
-			// const res = await getExchange();
-			// const exchange = res.data.data.sort((a, b) => {
-			//     const ad = new Date(a.updated_at);
-			//     const bd = new Date(a.updated_at);
-			//     if (Math.floor(ad - bd) >= 0) {
-			//         return a - b;
-			//     } else {
-			//         return b - a;
-			//     }
-			// });
+			const res = await getExchange();
+			const exchange = res.data;
+			this.props.setExchange(exchange);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -222,10 +227,11 @@ class Pairs extends Component {
 
 	onClickFilter = () => {
 		const { filterValues } = this.state;
-		const { pairs } = this.props;
+		const { allPairs, pairs } = this.props;
+		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
 		const lowercasedValue = filterValues.toLowerCase();
 		if (lowercasedValue) {
-			let result = pairs.filter((list = {}) => {
+			let result = pairsData.filter((list = {}) => {
 				return (
 					(list.name && list.name.toLowerCase().includes(lowercasedValue)) ||
 					(list.pair_2 &&
@@ -236,7 +242,7 @@ class Pairs extends Component {
 			});
 			this.setState({ pairs: result });
 		} else {
-			this.setState({ pairs });
+			this.setState({ pairs: pairsData });
 		}
 	};
 
@@ -327,13 +333,15 @@ class Pairs extends Component {
 				}
 			}
 		} else {
-			const { pairs = [], exchange = {} } = this.props;
+			const { pairs = [], exchange = {}, allPairs } = this.props;
+			let pairsData = allPairs.filter((data) => pairs.includes(data.name));
+			// let coinsData = allCoins.filter(val => coins.includes(val.symbol))
 			try {
 				if (!formData.name) {
 					formData.name = `${formData.pair_base}-${formData.pair_2}`;
 				}
-				// let coins = exchange.coins || [];
-				let pairList = pairs.map((data) =>
+				// let coins = coinsData || [];
+				let pairList = pairsData.map((data) =>
 					data.name ? data.name : data.symbol
 				);
 
@@ -341,7 +349,7 @@ class Pairs extends Component {
 					!this.props.allPairs.filter((data) => data.name === formData.name)
 						.length
 				) {
-					// await storePairs(formData);
+					await storePair(formData);
 				}
 
 				if (pairList.includes(formData.name)) {
@@ -353,7 +361,7 @@ class Pairs extends Component {
 					//     pairs: [...pairList, `${formData.pair_base}-${formData.pair_2}`]
 					// }
 					// await putExchange(formProps);
-					// await this.getExchange();
+					await this.getExchange();
 					// await this.getTradingPairs();
 					if (isPresetAsset && exchange.is_running) {
 						this.handleApplyOpen();
@@ -409,13 +417,14 @@ class Pairs extends Component {
 
 	renderContent = () => {
 		const { coins, allCoins, allPairs, user } = this.props;
+		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		if (this.state.isPreview) {
 			return (
 				<div className="preview-container">
 					{this.renderBreadcrumb()}
 					<div className="d-flex justify-content-between flex-column-rev">
 						<Preview
-							coins={coins}
+							coins={coinsData}
 							allCoins={allCoins}
 							isPreview={this.state.isPreview}
 							formData={this.state.previewData}
@@ -442,7 +451,7 @@ class Pairs extends Component {
 					{this.renderBreadcrumb()}
 					<div className="d-flex justify-content-between flex-column-rev">
 						<Preview
-							coins={coins}
+							coins={coinsData}
 							allCoins={allCoins}
 							user={user}
 							isConfigure={this.state.isConfigure}
@@ -556,18 +565,22 @@ class Pairs extends Component {
 }
 
 const mapStateToProps = (state) => {
-	let exchange = {};
-	if (state.exchange && state.exchange.length) {
-		exchange = state.exchange[0];
-	}
 	return {
-		exchange,
-		// coins: exchange.coins || [],
-		// pairs: exchange.pairs || [],
-		// allPairs: state.pair,
+		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
+		coins:
+			(state.asset && state.asset.exchange && state.asset.exchange.coins) || [],
+		pairs:
+			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
+		allPairs: state.asset.allPairs,
 		user: state.user,
-		// allCoins: state.coin
+		allCoins: state.asset.allCoins,
 	};
 };
 
-export default connect(mapStateToProps)(Pairs);
+const mapDispatchToProps = (dispatch) => ({
+	setExchange: bindActionCreators(setExchange, dispatch),
+	setCoins: bindActionCreators(setCoins, dispatch),
+	setAllPairs: bindActionCreators(setAllPairs, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pairs);

@@ -92,6 +92,7 @@ const AccountSecurity = ({
 									rules={[
 										{ required: true, message: 'Please input your 2FA code!' },
 									]}
+									className="number_input-wrapper"
 								>
 									<InputNumber placeholder="Enter 6-digit code" maxLength={6} />
 								</Item>

@@ -41,7 +41,7 @@ class ConfirmWithdrawal extends Component {
 	};
 
 	handleTransaction = () => {
-		this.props.router.push('/transactions?tab=2');
+		this.props.router.push('/transactions?tab=3');
 	};
 
 	render() {

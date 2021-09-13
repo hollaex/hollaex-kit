@@ -111,7 +111,7 @@ class Description extends Component {
 					Edit the referral badge in the bottom left corner. This space can be
 					repurposed for copyright or other business related data.
 				</p>
-				{isUpgrade
+				{isUpgrade || plan === 'basic'
 					?
 						<div className="d-flex">
 							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
@@ -146,29 +146,6 @@ class Description extends Component {
 							<div className="card-description">
 								This feature is only available for Cloud exchanges
 							</div>
-						</div>
-					</div>
-				) : plan === 'basic' ? (
-					<div
-						style={{ width: '465px' }}
-						className="admin-dash-card flex-menu justify-content-between"
-					>
-						<div>
-							<div className="card-title bold">Fully rebrand your platform</div>
-							<div className="card-description">
-								Replace the badge with your own branding.
-							</div>
-						</div>
-						<div>
-							<a
-								href="https://dash.bitholla.com/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								<Button type="primary" className="green-btn minimal-btn bold">
-									Upgrade Now
-								</Button>
-							</a>
 						</div>
 					</div>
 				) : null}

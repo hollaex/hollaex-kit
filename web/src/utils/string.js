@@ -227,3 +227,7 @@ export const generateRCStrings = (plugins = []) => {
 
 	return allStrings;
 };
+
+export const EDITABLE_NAME_SEPARATOR = '---';
+export const generateInputName = (key, lang) =>
+	`${key}${EDITABLE_NAME_SEPARATOR}${lang}`;
