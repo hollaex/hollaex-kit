@@ -20,7 +20,7 @@ const {
 	INVALID_NETWORK,
 	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
-const { getUserByKitId } = require('./user');
+const { getUserByKitId, mapNetworkIdToKitId } = require('./user');
 const { findTier } = require('./tier');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
@@ -690,6 +690,7 @@ const getExchangeDeposits = (
 		additionalHeaders: null
 	}
 ) => {
+
 	return getNodeLib().getDeposits({
 		currency,
 		status,
@@ -706,7 +707,18 @@ const getExchangeDeposits = (
 		transactionId,
 		address,
 		...opts
-	});
+	})
+		.then((deposits) => {
+			if (deposits.data.length > 0) {
+				const idDictionary = mapNetworkIdToKitId();
+				for (let deposit of deposits.data) {
+					const user_kit_id = idDictionary[trade.user_id];
+					deposit.network_id = deposit.user_id;
+					deposit.user_id = user_kit_id;
+					deposit.User.id = user_kit_id;
+				}
+			}
+		});
 };
 
 const getExchangeWithdrawals = (
@@ -744,7 +756,18 @@ const getExchangeWithdrawals = (
 		transactionId,
 		address,
 		...opts
-	});
+	})
+		.then((withdrawals) => {
+			if (withdrawals.data.length > 0) {
+				const idDictionary = mapNetworkIdToKitId();
+				for (let withdrawal of withdrawals.data) {
+					const user_kit_id = idDictionary[trade.user_id];
+					withdrawal.network_id = withdrawal.user_id;
+					withdrawal.user_id = user_kit_id;
+					withdrawal.User.id = user_kit_id;
+				}
+			}
+		});
 };
 
 const mintAssetByKitId = (
