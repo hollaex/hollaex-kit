@@ -1,8 +1,8 @@
 'use strict';
 
 const {
-	BITHOLLA_DOMAIN,
-	BITHOLLA_LOGO_BLACK,
+	REFERRAL_DOMAIN,
+	LOGO_BLACK,
 } = require('../../constants');
 const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
 const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
@@ -28,24 +28,24 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 				</div>
 				<div style="float: right; font-size: 8px; text-align: right;">
 					${
-						!LINKS().hide_referral_badge
-							? `<div style="${styles.poweredby}">
+	!LINKS().hide_referral_badge
+		? `<div style="${styles.poweredby}">
 							<a href="${
-								LINKS().referral_link && LINKS().referral_label
-									? LINKS().referral_link
-									: BITHOLLA_DOMAIN
-							}">
+	LINKS().referral_link && LINKS().referral_label
+		? LINKS().referral_link
+		: REFERRAL_DOMAIN
+}">
 								${
-									LINKS().referral_label
-										? LINKS().referral_label
-										: `${
-												FOOTER.POWERED_BY
-										  } <img src="${BITHOLLA_LOGO_BLACK}" height="10"/>`
-								}
+	LINKS().referral_label
+		? LINKS().referral_label
+		: `${
+			FOOTER.POWERED_BY
+										  } <img src="${LOGO_BLACK}" height="10"/>`
+}
 							</a>
 						</div>`
-							: ''
-					}
+		: ''
+}
 				</div>
 			</div>
 		`;
