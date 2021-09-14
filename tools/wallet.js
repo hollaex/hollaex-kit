@@ -534,7 +534,7 @@ const getUserTransactionsByKitId = (
 		}
 	} else {
 		if (type === 'deposit') {
-			promiseQuery = getNodeLib().getDeposits({
+			promiseQuery = getExchangeDeposits(
 				currency,
 				status,
 				dismissed,
@@ -549,10 +549,10 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
-				...opts
-			});
+				opts
+			);
 		} else if (type === 'withdrawal') {
-			promiseQuery = getNodeLib().getWithdrawals({
+			promiseQuery = getExchangeWithdrawals(
 				currency,
 				status,
 				dismissed,
@@ -567,8 +567,8 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
-				...opts
-			});
+				opts
+			);
 		}
 	}
 	return promiseQuery
