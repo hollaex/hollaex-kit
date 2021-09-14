@@ -20,7 +20,7 @@ const {
 	INVALID_NETWORK,
 	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
-const { getUserByKitId } = require('./user');
+const { getUserByKitId, mapNetworkIdToKitId } = require('./user');
 const { findTier } = require('./tier');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
@@ -534,7 +534,7 @@ const getUserTransactionsByKitId = (
 		}
 	} else {
 		if (type === 'deposit') {
-			promiseQuery = getNodeLib().getDeposits({
+			promiseQuery = getExchangeDeposits(
 				currency,
 				status,
 				dismissed,
@@ -549,10 +549,10 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
-				...opts
-			});
+				opts
+			);
 		} else if (type === 'withdrawal') {
-			promiseQuery = getNodeLib().getWithdrawals({
+			promiseQuery = getExchangeWithdrawals(
 				currency,
 				status,
 				dismissed,
@@ -567,8 +567,8 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
-				...opts
-			});
+				opts
+			);
 		}
 	}
 	return promiseQuery
@@ -690,6 +690,7 @@ const getExchangeDeposits = (
 		additionalHeaders: null
 	}
 ) => {
+
 	return getNodeLib().getDeposits({
 		currency,
 		status,
@@ -706,7 +707,19 @@ const getExchangeDeposits = (
 		transactionId,
 		address,
 		...opts
-	});
+	})
+		.then(async (deposits) => {
+			if (deposits.data.length > 0) {
+				const idDictionary = await mapNetworkIdToKitId();
+				for (let deposit of deposits.data) {
+						const user_kit_id = idDictionary[deposit.user_id];
+						deposit.network_id = deposit.user_id;
+						deposit.user_id = user_kit_id;
+						deposit.User.id = user_kit_id;
+				}
+				return deposits;
+			}
+		});
 };
 
 const getExchangeWithdrawals = (
@@ -744,7 +757,19 @@ const getExchangeWithdrawals = (
 		transactionId,
 		address,
 		...opts
-	});
+	})
+		.then(async (withdrawals) => {
+			if (withdrawals.data.length > 0) {
+				const idDictionary = await mapNetworkIdToKitId();
+				for (let withdrawal of withdrawals.data) {
+						const user_kit_id = idDictionary[withdrawal.user_id];
+						withdrawal.network_id = withdrawal.user_id;
+						withdrawal.user_id = user_kit_id;
+						withdrawal.User.id = user_kit_id;
+				}
+				return withdrawals;
+			}
+		});
 };
 
 const mintAssetByKitId = (

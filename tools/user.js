@@ -2,7 +2,7 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil } = require('lodash');
+const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil, isArray, isInteger, keyBy } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
@@ -1487,6 +1487,46 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
+const mapNetworkIdToKitId = async (
+	networkIds = []
+) => {
+	if (!isArray(networkIds)) {
+		throw new Error('networkIds must be an array');
+	}
+
+	const opts = {
+		attributes: ['id', 'network_id'],
+		raw: true
+	};
+
+	if (networkIds.length > 0) {
+		if (networkIds.some((id) => !isInteger(id) || id <= 0)) {
+			throw new Error('networkIds can only contain integers greater than 0');
+		} else {
+			opts.where = {
+				network_id: networkIds
+			};
+		}
+	}
+
+	const users = await dbQuery.findAll('user', opts);
+
+	if (users.length === 0) {
+		throw new Error('No users found with given networkIds');
+	}
+
+	const result = users.reduce((data, user) => {
+		if (user.network_id) {
+			return {
+				...data,
+				[user.network_id]: user.id
+			};
+		}
+	}, {});
+
+	return result;
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1533,5 +1573,6 @@ module.exports = {
 	checkAffiliation,
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
-	updateUserMeta
+	updateUserMeta,
+	mapNetworkIdToKitId
 };
