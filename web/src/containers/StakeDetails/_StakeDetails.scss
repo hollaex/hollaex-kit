@@ -1,0 +1,77 @@
+.stake-details {
+	.currency-ball {
+		width: 30px;
+		padding-top: 4px;
+	}
+}
+
+.stake-btn {
+	&.ant-btn-primary {
+		color: $colors-notifications-blue;
+		border-color: $colors-notifications-blue;
+
+		&:hover,
+		&:active,
+		&:focus {
+			color: $colors-main-black;
+			border-color: $colors-black;
+		}
+	}
+
+	&.ant-btn-dangerous {
+		color: $colors-notification-pending;
+		border-color: $colors-notification-pending;
+
+		&:hover,
+		&:active,
+		&:focus {
+			color: $colors-main-black;
+			border-color: $colors-black;
+		}
+	}
+
+	&.ant-btn-primary[disabled] {
+		color: $colors-notifications-blue-disabled;
+		border-color: $colors-notifications-blue-disabled;
+
+		&:hover,
+		&:active,
+		&:focus {
+			color: $colors-notifications-blue-disabled;
+			border-color: $colors-notifications-blue-disabled;
+		}
+	}
+
+	&.ant-btn-dangerous[disabled] {
+		color: $colors-notification-pending-disabled;
+		border-color: $colors-notification-pending-disabled;
+
+		&:hover,
+		&:active,
+		&:focus {
+			color: $colors-notification-pending-disabled;
+			border-color: $colors-notification-pending-disabled;
+		}
+	}
+}
+
+.stake-amount-input {
+	&.ant-input {
+		background-color: $box-fields;
+		border: 1px solid $colors-border;
+		color: $colors-main-black;
+	}
+}
+
+.stake-period-button {
+	&.ant-radio-button-wrapper {
+		color: $colors-black;
+		background-color: transparent;
+	}
+}
+
+.stake {
+	.mdc-button--unelevated {
+		margin-top: 2rem !important;
+	}
+}

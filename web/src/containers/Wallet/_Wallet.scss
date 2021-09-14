@@ -95,6 +95,10 @@ $header-margin: 2rem;
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
 
+	&.no-border {
+		border: none !important;
+	}
+
 	.wallet-header_block {
 		> * {
 			margin-bottom: $header-margin;

@@ -320,6 +320,10 @@ table th {
 .secondary-text {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.kit-divider {
+  margin: 1rem 0;
+  border-bottom: solid 1px var(--labels_secondary-inactive-label-text-graphics); }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1329,6 +1333,8 @@ table th {
 
 .wallet-container {
   border-top: 1px solid var(--labels_important-active-labels-text-graphics); }
+  .wallet-container.no-border {
+    border: none !important; }
   .wallet-container .wallet-header_block > * {
     margin-bottom: 2rem; }
   .wallet-container .wallet-header_block .wallet-header_block-currency_title {
@@ -4522,8 +4528,50 @@ table th {
     transform-origin: 0 0;
     -webkit-transform-origin: 0 0; } }
 
-.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--raised:not(:disabled):not(.mdc-ripple-upgraded),
-.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--unelevated:not(:disabled):not(.mdc-ripple-upgraded) {
+.confirm-change-pwd-wrapper .auth-wrapper .mdc-button--raised:not(:disabled):not(.mdc-ripple-upgraded), .confirm-change-pwd-wrapper .auth-wrapper.mdc-button--unelevated:not(:disabled):not(.mdc-ripple-upgraded) {margin-top: 2rem !important; }
+
+.stake-details .currency-ball {
+  width: 30px;
+  padding-top: 4px; }
+
+.stake-btn.ant-btn-primary {
+  color: var(--specials_buttons-links-and-highlights);
+  border-color: var(--specials_buttons-links-and-highlights); }
+  .stake-btn.ant-btn-primary:hover, .stake-btn.ant-btn-primary:active, .stake-btn.ant-btn-primary:focus {
+    color: var(--labels_important-active-labels-text-graphics);
+    border-color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.stake-btn.ant-btn-dangerous {
+  color: var(--specials_pending-waiting-caution);
+  border-color: var(--specials_pending-waiting-caution); }
+  .stake-btn.ant-btn-dangerous:hover, .stake-btn.ant-btn-dangerous:active, .stake-btn.ant-btn-dangerous:focus {
+    color: var(--labels_important-active-labels-text-graphics);
+    border-color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.stake-btn.ant-btn-primary[disabled] {
+  color: var(--calculated_notifications-blue-disabled);
+  border-color: var(--calculated_notifications-blue-disabled); }
+  .stake-btn.ant-btn-primary[disabled]:hover, .stake-btn.ant-btn-primary[disabled]:active, .stake-btn.ant-btn-primary[disabled]:focus {
+    color: var(--calculated_notifications-blue-disabled);
+    border-color: var(--calculated_notifications-blue-disabled); }
+
+.stake-btn.ant-btn-dangerous[disabled] {
+  color: var(--calculated_notification-pending-disabled);
+  border-color: var(--calculated_notification-pending-disabled); }
+  .stake-btn.ant-btn-dangerous[disabled]:hover, .stake-btn.ant-btn-dangerous[disabled]:active, .stake-btn.ant-btn-dangerous[disabled]:focus {
+    color: var(--calculated_notification-pending-disabled);
+    border-color: var(--calculated_notification-pending-disabled); }
+
+.stake-amount-input.ant-input {
+  background-color: var(--labels_fields);
+  border: 1px solid var(--calculated_secondary-border);
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.stake-period-button.ant-radio-button-wrapper {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: transparent; }
+
+.stake .mdc-button--unelevated {
   margin-top: 2rem !important; }
 
 .sidebar-fit-to-screen {
@@ -9880,6 +9928,29 @@ foreignObject {
 
 .layout-mobile .app-menu-bar-side {
   display: none !important; }
+
+.progressbar {
+  height: 1.1rem;
+  width: 11rem;
+  background-color: var(--labels_important-active-labels-text-graphics); }
+
+.progress-fill {
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 0;
+  background-position: left; }
+
+.progress-fill-completed {
+  background-image: linear-gradient(var(--specials_buttons-links-and-highlights), var(--specials_buttons-links-and-highlights)); }
+
+.progress-fill-in-progress {
+  background-image: linear-gradient(var(--specials_pending-waiting-caution), var(--specials_pending-waiting-caution)); }
+
+.progressbar-icon.in-progress {
+  color: var(--specials_pending-waiting-caution); }
+
+.progressbar-icon.completed {
+  color: var(--specials_buttons-links-and-highlights); }
 
 html {
   font-size: 12px !important;

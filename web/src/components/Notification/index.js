@@ -1,5 +1,5 @@
 import React from 'react';
-import { NOTIFICATIONS } from '../../actions/appActions';
+import { NOTIFICATIONS } from 'actions/appActions';
 
 import Deposit from './Deposit';
 import Withdraw from './Withdraw';
@@ -14,6 +14,9 @@ import InviteFriends from './InviteFriends';
 import StakeToken from './StakeToken';
 import ReferralSuccess from './ReferralSuccess';
 import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
+import StakeContent from 'containers/Stake/components/StakeContent';
+import EarlyUnstakeContent from 'containers/Stake/components/EarlyUnstakeContent';
+import UnstakeContent from 'containers/Stake/components/UnstakeContent';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -46,6 +49,12 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <InviteFriends data={data} {...rest} />;
 		case NOTIFICATIONS.STAKE_TOKEN:
 			return <StakeToken data={data} {...rest} />;
+		case NOTIFICATIONS.STAKE:
+			return <StakeContent {...data} {...rest} />;
+		case NOTIFICATIONS.EARLY_UNSTAKE:
+			return <EarlyUnstakeContent {...data} {...rest} />;
+		case NOTIFICATIONS.UNSTAKE:
+			return <UnstakeContent {...data} {...rest} />;
 		default:
 			break;
 	}
