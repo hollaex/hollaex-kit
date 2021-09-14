@@ -708,11 +708,11 @@ const getExchangeDeposits = (
 		address,
 		...opts
 	})
-		.then((deposits) => {
+		.then(async (deposits) => {
 			if (deposits.data.length > 0) {
-				const idDictionary = mapNetworkIdToKitId();
+				const idDictionary = await mapNetworkIdToKitId();
 				for (let deposit of deposits.data) {
-					const user_kit_id = idDictionary[trade.user_id];
+					const user_kit_id = idDictionary[deposit.user_id];
 					deposit.network_id = deposit.user_id;
 					deposit.user_id = user_kit_id;
 					deposit.User.id = user_kit_id;
@@ -757,11 +757,11 @@ const getExchangeWithdrawals = (
 		address,
 		...opts
 	})
-		.then((withdrawals) => {
+		.then(async (withdrawals) => {
 			if (withdrawals.data.length > 0) {
-				const idDictionary = mapNetworkIdToKitId();
+				const idDictionary = await mapNetworkIdToKitId();
 				for (let withdrawal of withdrawals.data) {
-					const user_kit_id = idDictionary[trade.user_id];
+					const user_kit_id = idDictionary[withdrawal.user_id];
 					withdrawal.network_id = withdrawal.user_id;
 					withdrawal.user_id = user_kit_id;
 					withdrawal.User.id = user_kit_id;
