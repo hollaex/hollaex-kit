@@ -717,8 +717,8 @@ const getExchangeDeposits = (
 						deposit.user_id = user_kit_id;
 						deposit.User.id = user_kit_id;
 				}
-				return deposits;
 			}
+			return deposits;
 		});
 };
 
@@ -767,8 +767,8 @@ const getExchangeWithdrawals = (
 						withdrawal.user_id = user_kit_id;
 						withdrawal.User.id = user_kit_id;
 				}
-				return withdrawals;
 			}
+			return withdrawals;
 		});
 };
 
