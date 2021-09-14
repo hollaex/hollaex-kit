@@ -55,6 +55,7 @@ const INITIAL_STATE = {
 	pairsTradesFetched: false,
 	pairs: {},
 	depth: parseInt(localStorage.getItem('orderbook_depth') || 1, 10),
+	chart_last_close: 0,
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -312,6 +313,11 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				depth: payload,
+			};
+		case ORDERBOOK_CONSTANTS.SET_CHART_LAST_CLOSE:
+			return {
+				...state,
+				chart_last_close: payload,
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;
