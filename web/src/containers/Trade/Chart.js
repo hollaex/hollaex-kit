@@ -144,6 +144,9 @@ class TVChartContainer extends React.PureComponent {
 									volume: bar.volume,
 								};
 							});
+							let res = data[data.length - 1];
+							res = res.close;
+							that.props.setChartHigh(res);
 							if (firstDataRequest) {
 								that.setState({
 									lastBar: bars[bars.length - 1],

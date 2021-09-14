@@ -74,6 +74,7 @@ const getActiveOrders = (state) => state.order.activeOrders;
 const getUserTradesData = (state) => state.wallet.trades.data;
 const getPairs = (state) => state.app.pairs;
 const getDepth = (state) => state.orderbook.depth;
+const getChartClose = (state) => state.orderbook.chart_last_close;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -108,10 +109,10 @@ export const tradeHistorySelector = createSelector(
 );
 
 export const marketPriceSelector = createSelector(
-	[tradeHistorySelector],
-	({ data: tradeHistory }) => {
+	[tradeHistorySelector, getChartClose],
+	({ data: tradeHistory }, chartCloseValue) => {
 		const marketPrice =
-			tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+			tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : chartCloseValue;
 		return marketPrice;
 	}
 );

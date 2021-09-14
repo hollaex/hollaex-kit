@@ -356,7 +356,7 @@ class Orderbook extends Component {
 					>
 						<div className="d-flex align-items-center">
 							<div className="trade_orderbook-market-price">
-								{formatToFixed(lastPrice, increment_price)}
+								{lastPrice ? formatToFixed(lastPrice, increment_price) : null}
 							</div>
 						</div>
 						<div className="d-flex align-items-center">

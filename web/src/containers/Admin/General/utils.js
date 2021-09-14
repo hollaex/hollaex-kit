@@ -89,12 +89,12 @@ export const getGeneralFields = (coins) => ({
 		referral_label: {
 			type: 'input',
 			label: 'Text label',
-			placeholder: 'Powered by bitHolla',
+			placeholder: 'Powered by HollaEx',
 		},
 		referral_link: {
 			type: 'input',
 			label: 'Link',
-			placeholder: 'https://bitholla.com/',
+			placeholder: 'https://hollaex.com/',
 		},
 	},
 	section_9: {
