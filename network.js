@@ -2585,6 +2585,79 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
+	getCoins (
+		opts = {
+			search: null,
+			userId: null,
+			active: null,
+			verified: null,
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/coins?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.userId)) {
+			path += `$user_id=${opts.userId}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
+		}
+
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
+		}
+
+		if (isString(opts.search)) {
+			path += `&search=${opts.symbol}`;
+		}
+
+		if (isBoolean(opts.active)) {
+			path += `&active=${opts.active}`;
+		}
+
+		if (isBoolean(opts.verified)) {
+			path += `&verified=${opts.verified}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
 	updateCoin(
 		symbol,
 		fullname,
@@ -2801,6 +2874,79 @@ class HollaExNetwork {
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	getPairs (
+		opts = {
+			search: null,
+			userId: null,
+			active: null,
+			verified: null,
+			limit: null,
+			page: null,
+			orderBy: null,
+			order: null,
+			startDate: null,
+			endDate: null,
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/pairs?`;
+
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.userId)) {
+			path += `$user_id=${opts.userId}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
+		}
+
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
+		}
+
+		if (isString(opts.search)) {
+			path += `&search=${opts.symbol}`;
+		}
+
+		if (isBoolean(opts.active)) {
+			path += `&active=${opts.active}`;
+		}
+
+		if (isBoolean(opts.verified)) {
+			path += `&verified=${opts.verified}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
 	updatePair(
