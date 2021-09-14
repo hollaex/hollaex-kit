@@ -199,6 +199,7 @@ const AssetsBlock = ({
 													iconId={`${symbol.toUpperCase()}_ICON`}
 													icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
 													wrapperClassName="currency-ball"
+													imageWrapperClassName="currency-ball-image-wrapper"
 												/>
 											</Link>
 											<Link to={`/wallet/${key.toLowerCase()}`}>
