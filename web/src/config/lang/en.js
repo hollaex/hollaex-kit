@@ -150,6 +150,7 @@ export default {
 		TAB_HISTORY: 'History',
 		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout',
+		TAB_STAKE: 'Stake', //new
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
@@ -777,6 +778,63 @@ export default {
 				WARNING_2: 'Do you really want to freeze your account?',
 			},
 		},
+	},
+	STAKE: {
+		TITLE: 'Stake and earn',
+		MODAL_TITLE: 'Stake and earn {0}',
+		REVIEW_MODAL_TITLE: 'Check and confirm stake',
+		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
+		DEFI_TITLE: 'DeFi asset staking',
+		DEFI_TEXT:
+			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
+		NETWORK: 'Network', //new
+		ACCOUNT: 'Account', //new
+		PERIODS: 'Periods', //new
+		STAKES: 'Stakes', //new
+		CONNECT: 'connect', //new
+		PUBLIC_PERIODS: 'Public periods for staking', //new
+		GET_STAKES: 'Get stakes', //new
+		APPROVE: 'Approve', //new
+		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
+		ESTIMATED_STAKED: 'Estimated value of total staked',
+		ESTIMATED_EARNINGS: 'Estimated value of earnings',
+		CONNECT_WALLET: 'Connect wallet',
+		BACK: 'Back',
+		NEXT: 'Next',
+		REVIEW: 'Review',
+		ESTIMATED: 'EST.',
+		BLOCK: 'Block',
+		CANCEL: 'Cancel',
+		PROCEED: 'Proceed',
+	},
+	UNSTAKE: {
+		TITLE: 'Unstake',
+		EARLY_TITLE: 'Unstake early',
+		EARLY_WARNING_TITLE: 'Looks like you are trying to unstake early',
+		EARLY_WARNING_TEXT_1:
+			'This could lead to a percentage of your initial principle stake being deducted and all earnings being forfeited.',
+		EARLY_WARNING_TEXT_2: 'Are you sure you want to proceed?',
+		BACK: 'GO BACK',
+		REVIEW: 'REVIEW STAKE',
+		DURATION: 'EST. maturation duration',
+		CANCEL: 'Cancel',
+		PROCEED: 'Proceed',
+	},
+	STAKE_TABLE: {
+		CURRENCY: 'Currency',
+		AVAILABLE: 'Available to stake',
+		TOTAL: 'Total staked',
+		REWARD_RATE: 'Reward rate',
+		EARNINGS: 'Earnings',
+		STAKE: 'Stake',
+	},
+	STAKE_LIST: {
+		AMOUNT: 'AMOUNTS STAKED',
+		DURATION: 'EST. MATURATION DURATION',
+		START: 'STARTED STAKING',
+		END: 'END STAKE',
+		EARNINGS: 'EARNINGS',
+		STAKE: 'STAKE',
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',

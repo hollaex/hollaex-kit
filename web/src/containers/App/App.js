@@ -480,6 +480,33 @@ class App extends Component {
 				const { gotoWallet, ...rest } = data;
 				return <DepositFunds data={rest} gotoWallet={gotoWallet} />;
 			}
+			case NOTIFICATIONS.STAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.EARLY_UNSTAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.UNSTAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}

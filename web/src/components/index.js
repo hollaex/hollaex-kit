@@ -65,3 +65,4 @@ export { default as ModalForm } from './AdminForm/modal';
 export { default as AppFooter } from './AppFooter';
 export { default as Image } from './Image';
 export { default as SmartTarget } from './SmartTarget';
+export { default as ProgressBar } from './ProgressBar';

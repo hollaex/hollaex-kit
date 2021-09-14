@@ -30,6 +30,11 @@ export const MENU_ITEMS = {
 			string_id: 'ACCOUNTS.TAB_WALLET',
 		},
 		{
+			path: '/stake',
+			icon_id: 'TAB_WALLET',
+			string_id: 'ACCOUNTS.TAB_STAKE',
+		},
+		{
 			path: '/transactions',
 			icon_id: 'TAB_HISTORY',
 			string_id: 'ACCOUNTS.TAB_HISTORY',

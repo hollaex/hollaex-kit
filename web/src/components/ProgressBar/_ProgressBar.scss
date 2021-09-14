@@ -1,0 +1,37 @@
+.progressbar {
+	height: 1.1rem;
+	width: 11rem;
+	background-color: $colors-main-black;
+}
+
+.progress-fill {
+	height: 100%;
+	background-repeat: no-repeat;
+	// background-position: 0 0;
+	background-size: 0;
+	background-position: left;
+}
+
+.progress-fill-completed {
+	background-image: linear-gradient(
+		$colors-notifications-blue,
+		$colors-notifications-blue
+	);
+}
+
+.progress-fill-in-progress {
+	background-image: linear-gradient(
+		$colors-notification-pending,
+		$colors-notification-pending
+	);
+}
+
+.progressbar-icon {
+	&.in-progress {
+		color: $colors-notification-pending;
+	}
+
+	&.completed {
+		color: $colors-notifications-blue;
+	}
+}
