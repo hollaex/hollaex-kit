@@ -711,13 +711,12 @@ const getExchangeDeposits = (
 		.then(async (deposits) => {
 			if (deposits.data.length > 0) {
 				const idDictionary = await mapNetworkIdToKitId();
-				deposits.data = deposits.data.map(async (deposit) => {
-					const user_kit_id = idDictionary[deposit.user_id];
-					deposit.network_id = deposit.user_id;
-					deposit.user_id = user_kit_id;
-					deposit.User.id = user_kit_id;
-					return deposit;
-				})
+				for (let deposit of deposits.data) {
+						const user_kit_id = idDictionary[deposit.user_id];
+						deposit.network_id = deposit.user_id;
+						deposit.user_id = user_kit_id;
+						deposit.User.id = user_kit_id;
+				}
 				return deposits;
 			}
 		});
@@ -762,13 +761,12 @@ const getExchangeWithdrawals = (
 		.then(async (withdrawals) => {
 			if (withdrawals.data.length > 0) {
 				const idDictionary = await mapNetworkIdToKitId();
-				withdrawals.data = withdrawals.data.map(async (withdrawal) => {
-					const user_kit_id = idDictionary[withdrawal.user_id];
-					withdrawal.network_id = withdrawal.user_id;
-					withdrawal.user_id = user_kit_id;
-					withdrawal.User.id = user_kit_id;
-					return withdrawal;
-				})
+				for (let withdrawal of withdrawals.data) {
+						const user_kit_id = idDictionary[withdrawal.user_id];
+						withdrawal.network_id = withdrawal.user_id;
+						withdrawal.user_id = user_kit_id;
+						withdrawal.User.id = user_kit_id;
+				}
 				return withdrawals;
 			}
 		});
