@@ -153,7 +153,9 @@ class Wallet extends Component {
 					iconId: 'PAPER_CLIP',
 					iconPath: STATIC_ICONS['PAPER_CLIP'],
 					allowClick: true,
-					className: isOpen ? 'paper-clip-icon' : 'paper-clip-icon wallet-notification',
+					className: isOpen
+						? 'paper-clip-icon'
+						: 'paper-clip-icon wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');
 					},
@@ -215,7 +217,7 @@ class Wallet extends Component {
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
 							iconPath={ICONS['TAB_WALLET']}
-							iconId={STRINGS['WALLET_TITLE']}
+							iconId="TAB_WALLET"
 							textType="title"
 						/>
 						<div className="wallet-container">
