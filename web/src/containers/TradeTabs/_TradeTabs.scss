@@ -2,6 +2,9 @@ $trade-tab--arrow-size: 0.4rem;
 
 @import './components/_MarketList.scss';
 
+$toggle-size: 14px;
+$toggle-margin: 2px;
+
 .trade_tabs-container {
 	color: $colors-deactivate-color2;
 	height: inherit;
@@ -27,6 +30,23 @@ $trade-tab--arrow-size: 0.4rem;
 	.trade_tabs-content {
 		border-top: 2px solid $colors-main-border;
 		font-size: 0.8rem;
+		.toggle_button-wrapper {
+			.toggle-content {
+				.toggle-action_button {
+					width: $toggle-size * 3 !important;
+					&.left {
+    					opacity: 1 !important;
+						.toggle-action_button-display {
+							$right-pos: $toggle-size + $toggle-margin * 2;
+							right: calc(100% - #{$right-pos}) !important;
+						}
+					}
+					&.right .toggle-action_button-display {
+						right: 0 !important;
+					}
+				}
+			}
+		}
 	}
 
 	.trade_tabs-link {
