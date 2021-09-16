@@ -1346,6 +1346,9 @@ table th {
   .wallet-container .wallet-header_block .with_price-block_amount-value {
     font-size: 4rem;
     line-height: 4rem; }
+  .wallet-container .wallet-header_block .currency-ball-image-wrapper {
+    height: 38px;
+    padding-right: 10px; }
   .wallet-container .paper-clip-icon .action_notification-svg {
     background-color: var(--specials_buttons-links-and-highlights);
     width: 1.2rem;
