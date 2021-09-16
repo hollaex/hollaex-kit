@@ -25,7 +25,15 @@ async function Promotion(){
 	let password = process.env.PASSWORD;
 	const timestamp = require('time-stamp');
 
-
+	
+	const fs = require('fs');
+	// const myConsole = new console.Console(fs.createWriteStream(logPath+'/log.txt'));
+	// myConsole.log('hello world');
+//  function log(message) {
+// 		console.log(message);
+// 		fs.writeFile(logPath+'/log.txt',message);
+// 	 }
+	
 	describe('Trade', function() {
 		this.timeout(300000);
 		let driver;
@@ -52,8 +60,10 @@ async function Promotion(){
 			console.log(' Test name: promo ');
 			console.log(' Step # | name | target | value');
 		
-			console.log(' 1 | open | https:console.log(website/account | ');
+			console.log(' 1 | open | https//website/account | ');
 			console.log(' 2 | click | css=a > .pl-1 | ');
+			// log(' 1 | open | https//website/account | ');
+			// log(' 2 | click | css=a > .pl-1 | ');
 			await driver.findElement(By.css('a > .pl-1')).click();
 			await sleep(3000);
 		
@@ -67,11 +77,12 @@ async function Promotion(){
 		
 			console.log(' 5 | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
-			await sleep(3000);
-		
-			console.log(' 6 | click | css=.info-link:nth-child(2) | ');
-			await driver.findElement(By.css('.info-link:nth-child(2)')).click();
-			await sleep(3000);
+			await sleep(5000);
+			
+			console.log(' 6 | click | xpath=//*[@id="rc-tabs-2-panel-about"]/div/div/div[1]/div/div[1]/div[1]/div[2]| ');
+			await driver.findElement(By.xpath('//*[@id="rc-tabs-2-panel-about"]/div/div/div[1]/div/div[1]/div[1]/div[2]')).click();
+			await sleep(5000);
+			
 		
 			console.log(' 7 | click | id=user-discount-form_feeDiscount | ');
 			await driver.findElement(By.id('user-discount-form_feeDiscount')).click();
@@ -111,52 +122,65 @@ async function Promotion(){
 		
 			console.log(' 15 | type | name=input | leveltest@testsae.com');
 			await driver.findElement(By.name('input')).sendKeys('leveltest@testsae.com');
-		
+			await sleep(5000);
+			
 			console.log(' 16 | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
-			await sleep(4000);
+			await sleep(5000);
 		
-			console.log(' 17 | click | css=.info-link:nth-child(2) | ');
-			await driver.findElement(By.css('.info-link:nth-child(2)')).click();
-			await sleep(4000);
-		
+			console.log(' 17 | click | xpath=//*[@id="rc-tabs-5-panel-about"]/div/div/div[1]/div/div[1]/div[1]/div[2]| ');
+			await driver.findElement(By.xpath('//*[@id="rc-tabs-5-panel-about"]/div/div/div[1]/div/div[1]/div[1]/div[2]')).click();
+			await sleep(5000);
+			
 			console.log(' 18 | click | id=user-discount-form_feeDiscount | ');
 			await driver.findElement(By.id('user-discount-form_feeDiscount')).click();
 		
 			console.log(' 19 | storeValue | id=user-discount-form_feeDiscount | value');
 			vars['value'] = await driver.findElement(By.id('user-discount-form_feeDiscount')).getAttribute('value');
-		
+			
+			{
+				console.log(' 19.1| click | id=user-discount-form_feeDiscount | ');
+				await driver.findElement(By.id('user-discount-form_feeDiscount')).click();
+				await driver.findElement(By.id('user-discount-form_feeDiscount')).sendKeys(Key.BACK_SPACE);
+				await driver.findElement(By.id('user-discount-form_feeDiscount')).sendKeys(Key.BACK_SPACE);
+				await sleep(3000);
+					
+				console.log(' 19.2 | type | id=user-discount-form_feeDiscount | 13');
+				await driver.findElement(By.id('user-discount-form_feeDiscount')).sendKeys((Math.floor(Math.random() * 100)+100));	
+				assert(await driver.findElement(By.xpath('//*[@id="user-discount-form"]/div[3]/div[2]/div/div[2]/div')).getText() == 'Value must be between 0 to 100');
+			}
 			console.log(' 20 | click | css=.ant-modal-close-x | ');
-			console.log(vars['value'] );
+			//console.log(vars['value'] );
 			await driver.findElement(By.css('.ant-modal-close-x')).click();
 		
 			console.log(' 21 | click | css=.top-box-menu:nth-child(1) | ');
 			await driver.findElement(By.css('.top-box-menu:nth-child(1)')).click();
 		
-			console.log(' 22 | click | css=.app-bar-account-content > div:nth-child(2) | ');
-			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
+			console.log(' 22 | click | xpath=//*[@id="trade-nav-container"]/div[3]/div[2]) | ');
+			await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).click();
 		
-			console.log(' 23 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
-			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
-		
+			console.log(' 23 | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] | ');
+			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[11]/div[3]')).click();
+			await sleep(5000);
+
 			console.log(' 24 | click | name=email | ');
+			await driver.findElement(By.name('email')).click();
+			
 			console.log('one day waiting ');
 			//'await sleep(86400000)
 		
-			await driver.findElement(By.name('email')).click();
 			console.log(' 25 | type | name=email | username');
-		
 			await driver.findElement(By.name('email')).sendKeys(username);
+			
 			console.log(' 26 | type | name=password | password');
-		
 			await driver.findElement(By.name('password')).sendKeys(password);
+			
 			console.log(' 27 | click | css=.holla-button | ');
-		
 			await driver.findElement(By.css('.holla-button')).click();
+			
 			console.log(' 28 | runScript | window.scrollTo(0,840) | ');
-		
 			await driver.executeScript('window.scrollTo(0,840)');
-			await sleep(4000);
+			await sleep(5000);
 			const diffInMilliseconds = Math.abs(new Date(timestamp('YYYY/MM/DD HH:mm:ss')) - new Date(util.getHollatimestamp()));
 
 			console.log(diffInMilliseconds); //'86400000
@@ -168,7 +192,8 @@ async function Promotion(){
 		
 			console.log(' 29 | click | css=.trade-account-secondary-txt > .d-flex > div:nth-child(2) | ');
 			await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).click();
-		
+			await sleep(2000);
+
 			console.log(' 30 | assertText | css=.trade-account-secondary-txt > .d-flex > div:nth-child(2) | ${}');
 			console.log(' Fee reduction: ');
 			console.log(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText());

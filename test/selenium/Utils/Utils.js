@@ -77,10 +77,10 @@ async function kitLogIn(driver,userName,passWord){
 	await driver.findElement(By.css('.holla-button')).click();
 	await sleep(5000);
 	//then the username should be as same as entered 		
-	console.log(' 6 | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
-	await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
-	await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
-	expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
+	console.log(' 6 | assertText | xpath=//*[@id="trade-nav-container"]/div[3]/div[2] |',userName);
+	await sleep(5000)//driver.wait(until.elementLocated(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')), 20000);
+	await console.log(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText());
+	expect(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText()).to.equal(userName);
 		 
 	console.log(' you suceccefully logged in ',userName);
 	await sleep(4000);
@@ -274,7 +274,29 @@ function getPromotionRate(){
 }
 
 
-module.exports = {chunkCleaner,setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
+
+function setStep(i){
+	
+
+	if (typeof localStorage === 'undefined' || localStorage === null) {
+		var LocalStorage = require('node-localstorage').LocalStorage;
+		localStorage = new LocalStorage('./../Utils/scratch');
+	}
+  
+	localStorage.setItem('Step', Number(i));
+	return localStorage.getItem('Step');
+}
+function getStep(){
+
+	if (typeof localStorage === 'undefined' || localStorage === null) {
+		var LocalStorage = require('node-localstorage').LocalStorage;
+		localStorage = new LocalStorage('./../Utils/scratch');
+	}
+
+	return localStorage.getItem('Step');
+}
+
+module.exports = {getStep,setStep,chunkCleaner,setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
 
 
 

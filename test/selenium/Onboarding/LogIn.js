@@ -19,12 +19,13 @@ async function LogIn () {
 	let userName = process.env.BOB;
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
+	let step = util.getStep();
 
-	if (process.env.NODE_ENV == 'test') {
+    if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}
 
-	describe('BobLogIn', function() {
+    describe('BobLogIn', function() {
 		this.timeout(30000);
 		let driver;
 		let vars;
@@ -38,9 +39,11 @@ async function LogIn () {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
+			let step = util.getStep()
 		});
 
 		afterEach(async function() {
+			util.setStep(step);
 			await driver.quit();
 		});
 
@@ -56,39 +59,41 @@ async function LogIn () {
 			console.log('entring', logInPage);
 			console.log(' Step # | action | target | value');
     
-			console.log(' 1 | type | name=email |', userName);
+			console.log(step++,' | type | name=email |', userName);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).sendKeys(userName);
     
-			console.log(' 2 | type | name=password | PASSWORD');
+			console.log(step++,' | type | name=password | PASSWORD');
 			await driver.wait(until.elementLocated(By.name('password')), 5000);
 			await driver.findElement(By.name('password')).sendKeys(passWord);
     
-			console.log(' 3 | click | css=.auth_wrapper | ');
+			console.log(step++,' | click | css=.auth_wrapper | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 			await driver.findElement(By.css('.auth_wrapper')).click();
 		
-			console.log(' 4 | verifyElementPresent | css=.holla-button |'); 
+			console.log(step++,' | verifyElementPresent | css=.holla-button |'); 
 			{
 				const elements = await driver.findElements(By.css('.holla-button'));
 				// assert(elements.length);
 				expect(elements.length);
 			}
 			//when login    
-			console.log(' 5 | click | css=.holla-button | ');
+			console.log(step++,' | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
 			//then the username should be as same as entered 		
-			console.log(' 6 | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
+			console.log(step++,' | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 			await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
 			await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
 			expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
 		 
 			console.log('This is the EndOfTest');
-		
- 
+			
+		    
+			
 		});
 	});
+
 }
 describe('Main Test', function () {
  

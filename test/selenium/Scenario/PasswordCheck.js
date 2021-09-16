@@ -1,3 +1,4 @@
+//This scenario check for a new user to reset the password and check changing passwords
 const { LogIn, LogOut, SignUp, ResetPassword, Security, Utils } = require('./Modules')
 const { Builder, By, Key, until } = require('selenium-webdriver')-
 
@@ -13,11 +14,12 @@ describe('Main Test', function () {
 		//await driver.quit();
 	})
 	describe('ResetPassword', function () {
+	
 		it('Given a user SignUp', async function() {
-			SignUp();
+			SignUp.SignUp();
 		})
- 	it('When a new user change the password', async function() {
-			ResetPassword();
+ 		it('When a new user change the password', async function() {
+			ResetPassword.ResetPassword();
     	})
 		it('Then a new user log in',  function() {
 			
@@ -31,8 +33,8 @@ describe('Main Test', function () {
 		})
 	})
 	describe('ChangingPaswword', function () {
-		it('Changing Password', async function() {
-			//Security.Security();
+		it('When a user SignUp', async function() {
+			Security.Security();
 			
 		})
 

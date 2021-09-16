@@ -58,7 +58,7 @@ async function AccountLevel () {
 		
 			console.log(' 5 | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
-			await sleep(5000);
+			await sleep(10000);
 
 			console.log(' 6 | click | css=a > .pl-1 | ');
 			await driver.findElement(By.css('a > .pl-1')).click();
@@ -77,7 +77,7 @@ async function AccountLevel () {
 		
 			console.log(' 10 | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
-			await sleep(3000);
+			await sleep(5000);
 
 			console.log(' 11 | click | css=.ml-4 > .ant-btn > span | ');
 			await driver.findElement(By.css('.ml-4 > .ant-btn > span')).click();
@@ -89,16 +89,17 @@ async function AccountLevel () {
 		
 			console.log(' 13 | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div[4]/div/div/div[2] | ');
 			// /div[4]={1,..9}
-			let level=Math.floor(Math.random() * 9)+1;
+			let level= Math.floor(Math.random() * 9)+1;
 			console.log('level : '+String(level))
-		
+			await sleep(3000);
+
 			if (level > 4){
 				console.log('driver.executeScript("window.scrollBy(0," +10+ ")');
 				{
-					const element = await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2] | '))
+					const element = await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]'))
 					await driver.executeScript('arguments[0].scrollIntoView(true);', element)
 				}
-			
+				
 	        console.log(' 14 | click |xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]  |')
 				await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
 				await sleep(3000);
@@ -119,7 +120,7 @@ async function AccountLevel () {
 	
 			console.log(' 16 | open | website/summary | ');
 			await driver.get(Website+'summary');
-			await sleep(3000);
+			await sleep(5000);
 
 			console.log(' 17 | click | css=.app-bar-account-content > div:nth-child(2) | ');
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();

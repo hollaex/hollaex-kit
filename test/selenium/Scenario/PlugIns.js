@@ -1,3 +1,4 @@
+//this scenario test Plug ins
 const {  AccountLevel, Promotion, Referral } = require('./Modules')
 const { Builder, By, Key, until } = require('selenium-webdriver')-
 
@@ -12,15 +13,16 @@ describe('Main Test', function () {
 		await sleep(5000);
 		//await driver.quit();
 	})
-	describe('Promotion', function () {
-		// it('Promotion', async function() {
-		// 	Promotion.Promotion()
-		// })
-        it('Referral', async function() {
-			//Referral.Referral()
-            AccountLevel()
+	describe('PlugIn', function () {
+		it('Promotion', async function() {
+			Promotion.Promotion()
+		})
+		it('Referral', async function() {
+			
+			Referral.Referral()
+        
 		})
 
 	
-})
+	})
 })

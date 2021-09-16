@@ -22,6 +22,7 @@
     "url-regex-safe": "1.0.2"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "7.3.1",
     "@typescript-eslint/eslint-plugin": "4.27.0",
     "@typescript-eslint/parser": "4.27.0",
     "chai": "4.3.4",
@@ -34,6 +35,7 @@
     "mocha-cakes-2": "3.3.0"
   },
   "scripts": {
-    "test-selenium": "mocha selenium/index.js"
+    "test-selenium": "mocha selenium/index.js",
+    "test": "cucumber-js"
   }
 }
