@@ -21,6 +21,7 @@ async function QuickTrade(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let step = util.getStep();
 
 
 	describe('Trade', function() {
@@ -36,109 +37,110 @@ async function QuickTrade(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
-			util.kitLogIn(driver, userName,passWord);
+			util.kitLogIn(step,driver, userName,passWord);
 	
 		});
 		afterEach(async function() {
+			util.setStep(step)
 	 //await driver.quit();
 		});
 		it('limit buy', async function() {
 
 		
-			console.log(' 7 | open | /summary | ');
+			console.log(step++,'  | open | /summary | ');
 			await driver.get(website  +'summary')
 			await sleep(5000);
       
-			console.log(' 8 | click | css=.app-menu-bar-content:nth-child(3) .edit-wrapper__container | ');
+			console.log(step++,' | click | css=.app-menu-bar-content:nth-child(3) .edit-wrapper__container | ');
 			await driver.findElement(By.css(".app-menu-bar-content:nth-child(3) .edit-wrapper__container")).click()
     
-			console.log(' 9| click | xpath=//div[@id=root]/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div | ');
+			console.log(step++,' | click | xpath=//div[@id=root]/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div | ');
 			await driver.findElement(By.xpath("//div[@id=\'root\']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div")).click()
 			await sleep(5000)
        
-			console.log(' 10 | click | xpath=//div[2]/div/div/div/div/div/div/span | ');
+			console.log(step++,' | click | xpath=//div[2]/div/div/div/div/div/div/span | ');
 			await driver.findElement(By.xpath("//div[2]/div/div/div/div/div/div/span")).click()
 			await sleep(5000)
        
-			console.log(' 11 | click | css=.py-2:nth-child(2) .ant-input | ');
+			console.log(step++,'  | click | css=.py-2:nth-child(2) .ant-input | ');
 			await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).click()
        
-			console.log(' 12 | type | css=.py-2:nth-child(2) .ant-input | 1');
+			console.log(step++,'  | type | css=.py-2:nth-child(2) .ant-input | 1');
 			await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).sendKeys("1")
 			await sleep(5000)
       
-			console.log(' 13 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css(".holla-button")).click()
       
-			console.log(' 14 | click | css=.ReactModal__Content | ');
+			console.log(step++,'  | click | css=.ReactModal__Content | ');
 			await driver.findElement(By.css(".ReactModal__Content")).click()
        
-			console.log(' 15 | assertText | css=.review-block-wrapper:nth-child(1) .with_price-block_amount-value | 1');
+			console.log(step++,'  | assertText | css=.review-block-wrapper:nth-child(1) .with_price-block_amount-value | 1');
 			assert(await driver.findElement(By.css(".review-block-wrapper:nth-child(1) .with_price-block_amount-value")).getText() == "1")
       
-			console.log(' 16 | click | css=.ml-2 | ');
+			console.log(step++,'  | click | css=.ml-2 | ');
 			await driver.findElement(By.css(".ml-2")).click()
 			hollaTime.Hollatimestampe();
 			console.log("Timestamp : "+String(hollaTime.GetHollatimestampe()));
 			await sleep(5000)
        
-			console.log(' 17 | click | css=.quote-success__title | ');
+			console.log(step++,'  | click | css=.quote-success__title | ');
 			await driver.findElement(By.css(".quote-success__title")).click()
        
-			console.log(' 18 | assertText | css=.quote-success__title | SUCCESS!');
+			console.log(step++,'  | assertText | css=.quote-success__title | SUCCESS!');
 			assert(await driver.findElement(By.css(".quote-success__title")).getText() == "SUCCESS!")
        
-			console.log(' 19 | click | css=.ml-2 | ');
+			console.log(step++,'  | click | css=.ml-2 | ');
 			await driver.findElement(By.css(".ml-2")).click()
 		
 			// wallet check
-			console.log(' 20 | open| /transactions | ');
+			console.log(step++,'  | open| /transactions | ');
 			await driver.get(website + 'transactions' );
 			await sleep(10000);
 		   
-			console.log(' 21 | click | css=.table_body-row:nth-child(1) > td:nth-child(7) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > td:nth-child(7) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(7)')).click();
 		
-			console.log(' 22 | storeText | css=.table_body-row:nth-child(1) > td:nth-child(7) | timestamp');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > td:nth-child(7) | timestamp');
 			vars['timestamp'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(7)')).getText();
 		
-			console.log(' 23 | click | css=.table_body-row:nth-child(1) > .text-uppercase | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > .text-uppercase | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > .text-uppercase')).click();
 		
-			console.log(' 24 | storeText | css=.table_body-row:nth-child(1) > .text-uppercase | Pair');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > .text-uppercase | Pair');
 			vars['Pair'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > .text-uppercase')).getText();
 		
-			console.log(' 25 | click | css=.table_body-row:nth-child(1) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1)')).click();
 		
-			console.log(' 26 | storeText | css=.table_body-row:nth-child(1) .buy | side');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) .buy | side');
 			vars['side'] = await driver.findElement(By.css('.table_body-row:nth-child(1) .sell')).getText();
 		
-			console.log(' 27 | click | css=.table_body-row:nth-child(1) > td:nth-child(3) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > td:nth-child(3) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(3)')).click();
 		
-			console.log(' 28 | storeText | css=.table_body-row:nth-child(1) > td:nth-child(3) | size');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > td:nth-child(3) | size');
 			vars['size'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(3)')).getText();
 		
-			console.log(' 29 | click | css=.table_body-row:nth-child(1) > td:nth-child(4) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > td:nth-child(4) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(4)')).click();
 		
-			console.log(' 30 | storeText | css=.table_body-row:nth-child(1) > td:nth-child(4) | price');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > td:nth-child(4) | price');
 			vars['price'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(4)')).getText();
 		
-			console.log(' 31 | click | css=.table_body-row:nth-child(1) > td:nth-child(5) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > td:nth-child(5) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(5)')).click();
 		
-			console.log(' 32 | storeText | css=.table_body-row:nth-child(1) > td:nth-child(5) | amount');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > td:nth-child(5) | amount');
 			vars['amount'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(5)')).getText();
 		
-			console.log(' 32 | click | css=.table_body-row:nth-child(1) | ');
+			console.log(step++,'  | click | css=.table_body-row:nth-child(1) | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1)')).click();
 		
-			console.log(' 33 | storeText | css=.table_body-row:nth-child(1) > td:nth-child(6) | fee');
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) > td:nth-child(6) | fee');
 			vars['fee'] = await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(6)')).getText();
 		
-			console.log(' 34 | echo | ${Pair},${timestamp},${side},${size},${price},${amount},${fee}}} | ');
+			console.log(step++,'  | echo | ${Pair},${timestamp},${side},${size},${price},${amount},${fee}}} | ');
 			console.log(vars['Pair'],vars['timestamp'],vars['side'],vars['size'],vars['price'],vars['amount'],vars['fee']);
 			console.log(vars['timestamp']+" should be "+utile.getHollatimestamp());
 			expect(vars['timestamp']).to.equal(util.getHollatimestamp());

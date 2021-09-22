@@ -24,6 +24,8 @@ async function ResetPassword(){
 	let newPassWord = process.env.NEWPASS
 	let webSite = process.env.WEBSITE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let step = util.getStep();
+
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}
@@ -38,38 +40,40 @@ async function ResetPassword(){
 				setTimeout(resolve, ms);
 			});
 		}
-	
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
+			let step = util.getStep()
 		});
+
 		afterEach(async function() {
-			// await driver.quit();
+			util.setStep(step);
+			await driver.quit();
 		});
 		it('Rest Password', async function() {
 			console.log('// Test name: Reset Password');
 			console.log(' Step # | name | target | value');
 		
-			console.log(' 1 | open | https://website/reset-password | ');
+			console.log(step++,'  | open | https://website/reset-password | ');
 			await driver.get(webSite+'reset-password');
 			await sleep(5000);
 		
-			console.log(' 2 | click | name=email | ');
+			console.log(step++,'  | click | name=email | ');
 			await driver.findElement(By.name('email')).click();
 		
-			console.log(' 3 | type | name=email |'+userName);
+			console.log(step++,'  | type | name=email |'+userName);
 			await driver.findElement(By.name('email')).sendKeys(userName);
 			await sleep(5000);
 		
-			console.log(' 4 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
 		
-			console.log(' 5 | assertText | css=.icon_title-text | Password Reset Sent');
+			console.log(step++,'  | assertText | css=.icon_title-text | Password Reset Sent');
 			assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Password Reset Sent');
 		
-			console.log(' 6 | click | css=.holla-button:nth-child(1) | ');
+			console.log(step++,'   | click | css=.holla-button:nth-child(1) | ');
 			driver.close();
 			await sleep(10000);
 
@@ -84,55 +88,55 @@ async function ResetPassword(){
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 		
-			console.log('9 | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
+			console.log(step++,'   | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 			{
 				const element = await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'));
 				await driver.actions({ bridge: true}).doubleClick(element).perform();
 			}
 			await sleep(5000);
 
-			console.log('10 | selectFrame | index=1 | ');
+			console.log(step++,'   | selectFrame | index=1 | ');
 			await driver.switchTo().frame(1);
 			await sleep(10000);
 		
-			console.log('11 | storeText | xpath=/html/body/pre/a[16] | content');
+			console.log(step++,'   | storeText | xpath=/html/body/pre/a[16] | content');
 			vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[16]')).getText();
 			const emailCont = await driver.findElement(By.css('pre')).getText();
 		
-			console.log('12 | echo | ${content} | ');
+			console.log(step++,'  | echo | ${content} | ');
 			console.log(vars['content']);
 		
-			console.log('13 | assertText | xpath=/html/body/pre/a[16] | ${content}');
+			console.log(step++,'   | assertText | xpath=/html/body/pre/a[16] | ${content}');
 			expect(vars['content']).to.equal(userName.toLowerCase());
      
-			console.log('14 | storeAttribute | yourwebsite/reset-password | mytextlink');
+			console.log(step++,'  | storeAttribute | yourwebsite/reset-password | mytextlink');
 			{
 				const attribute = webSite+'reset-password'
 				vars['mytextlink'] = attribute;
 			}
-			console.log('15 | echo | ${mytextlink} | ');
+			console.log(step++,'  | echo | ${mytextlink} | ');
 			console.log(vars['mytextlink']);
-			console.log('16 |link starts with'+ webSite+'reset-password');
+			console.log(step++,'  |link starts with'+ webSite+'reset-password');
 			console.log(webSite+'reset-password');
-			console.log('17 | open | ${mytextlink} | ');
+			console.log(step++,'  | open | ${mytextlink} | ');
 		
 			const completedLink = await util.addRest(emailCont,vars['mytextlink']);
 			await console.log(completedLink);
 			await driver.get(completedLink);
 			await sleep(10000);
 				
-			console.log(' 18 | type | name=password | password!');
+			console.log(step++,'  | type | name=password | password!');
 			await driver.findElement(By.name('password')).sendKeys(newPassWord);
 		
-			console.log(' 19 | type | name=password_repeat | password');
+			console.log(step++,'  | type | name=password_repeat | password');
 			await driver.findElement(By.name('password_repeat')).sendKeys(newPassWord);
 			await sleep(2000);
 		
-			console.log(' 20 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 		
-			console.log(' 21 | assertText | css=.icon_title-text | Success');
+			console.log(step++,'  | assertText | css=.icon_title-text | Success');
 			assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Success');
 
 			console.log('This is the EndOfTest');

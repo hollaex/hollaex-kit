@@ -6,6 +6,7 @@ async function LogIn () {
 	const { expect } = require('chai');
 	const { Console } = require('console');
 	const path = require('path');
+	const fs = require('fs');
 	const logPath = path.join(__dirname, './.log',path.basename(__filename,'.js'));
 	const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
 	const util = require ('./../Utils/Utils.js');
@@ -13,7 +14,7 @@ async function LogIn () {
 	util.makeReportDir(reportPath);
 	util.makeReportDir(logPath);
 	require('console-stamp')(console, { 
-		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' ,
 	} );
 	require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 	let userName = process.env.BOB;
@@ -24,7 +25,16 @@ async function LogIn () {
     if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}
+// 	const fs = require("fs");
 
+// 	require('console-stamp')(console, {
+// 		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' ,
+//         stdout: fs.createWriteStream(logPath+"/normalStdout.txt"),
+//         stderr: fs.createWriteStream(logPath+"/errStdErr.txt"),
+// });
+
+
+	
     describe('BobLogIn', function() {
 		this.timeout(30000);
 		let driver;

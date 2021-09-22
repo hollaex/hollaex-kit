@@ -25,6 +25,7 @@ async function ResendVerificationEmail(){
 	let webSite = process.env.WEBSITE;
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let step = util.getStep();
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}
@@ -52,39 +53,41 @@ async function ResendVerificationEmail(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
+			let step = util.getStep()
 		});
+
 		afterEach(async function() {
-		//  await driver.quit();
-    
+			util.setStep(step);
+			await driver.quit();
 		});
 		it('NewUserRequestSignUp', async function() {
 			await sleep(5000)
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		
-			console.log('1 | open | ',signUpPage);
+			console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
      
-			console.log('2 | type | name=email |',newUser);
+			console.log(step++,'  | type | name=email |',newUser);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).clear();
 			await driver.findElement(By.name('email')).sendKeys(newUser);
      
-			console.log('3 | type | name=password | password!');
+			console.log(step++,'  | type | name=password | password!');
 			await driver.findElement(By.name('password')).clear();
 			await driver.findElement(By.name('password')).sendKeys(passWord);
       
       
-			console.log('4 | type | name=password_repeat | your password again!');
+			console.log(step++,'  | type | name=password_repeat | your password again!');
 			await driver.findElement(By.name('password_repeat')).clear();
 			await driver.findElement(By.name('password_repeat')).sendKeys(passWord);
 			await sleep(2000);
 
-			console.log('5 | click | name=terms |'); 
+			console.log(step++,'  | click | name=terms |'); 
 			await driver.findElement(By.name('terms')).click();
 			await sleep(10000);
 		
-			console.log('6 | click | css=.holla-button |'); 
+			console.log(step++,'  | click | css=.holla-button |'); 
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await driver.executeScript('window.scrollTo(0,0)');
@@ -97,18 +100,18 @@ async function ResendVerificationEmail(){
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		
-			console.log('1 | open | https://yourwebsite/verify | ');
+			console.log(step++,'  | open | https://yourwebsite/verify | ');
 			await driver.get(webSite+'verify');
 
-			console.log('1| type | name=email |'+reuserName);
+			console.log(step++,'  | type | name=email |'+reuserName);
 			await sleep(4000);
 			await driver.findElement(By.name('email')).sendKeys(reuserName);
 		
-			console.log('2| click | css=.holla-button |');
+			console.log(step++,' | click | css=.holla-button |');
 			await sleep(4000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
-			console.log('3| assertText | css=.icon_title-text | Resent Email');
+			console.log(step++,' | assertText | css=.icon_title-text | Resent Email');
 			expect(await driver.findElement(By.css('.icon_title-text')).getText()).to.equal('Resent Email');
 		
 			console.log('This is the EndOfTest');
@@ -123,50 +126,50 @@ async function ResendVerificationEmail(){
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 		
-			console.log('9 | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
+			console.log(step++,'  | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 			{
 				const element = await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'));
 				await driver.actions({ bridge: true}).doubleClick(element).perform();
 			}
 		
-			console.log('10 | selectFrame | index=1 | ');
+			console.log(step++,'  | selectFrame | index=1 | ');
 			await driver.switchTo().frame(1);
 			await sleep(10000);
 		
-			console.log('11 | storeText | xpath=/html/body/pre/a[22] | content');
+			console.log(step++,'  | storeText | xpath=/html/body/pre/a[22] | content');
 			vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[22]')).getText();
 			const emailCont = await driver.findElement(By.css('pre')).getText();
 		
-			console.log('12 | echo | ${content} | ');
+			console.log(step++,'  | echo | ${content} | ');
 			console.log(vars['content']);
 		
-			console.log('13 | assertText | xpath=/html/body/pre/a[22] | ${content}');
+			console.log(step++,'  | assertText | xpath=/html/body/pre/a[22] | ${content}');
 			expect(vars['content']).to.equal(reuserName.toLowerCase());
      
-			console.log('14 | storeAttribute | xpath=/html/body/pre/a[26]@href | mytextlink');
+			console.log(step++,'  | storeAttribute | xpath=/html/body/pre/a[26]@href | mytextlink');
 			{
 				const attribute = await driver.findElement(By.xpath('/html/body/pre/a[26]')).getAttribute('href');
 				vars['mytextlink'] = attribute;
 			}
 		
-			console.log('15 | echo | ${mytextlink} | ');
+			console.log(step++,'  | echo | ${mytextlink} | ');
 			console.log(vars['mytextlink']);
 			console.log('16 | echo | \'xpath=/html/body/pre/a[26]\' | ');
 			console.log('\'xpath=/html/body/pre/a[26]\'');
-			console.log('17 | open | ${mytextlink} | ');
+			console.log(step++,'  | open | ${mytextlink} | ');
 		
 			const completedLink = await util.addRest(emailCont,vars['mytextlink']);
 			await console.log(completedLink);
 			await driver.get(completedLink);
 		
-			console.log('18 | selectFrame | relative=parent | ');
+			console.log(step++,'  | selectFrame | relative=parent | ');
 			await sleep(1000);
 			await driver.switchTo().defaultContent();
 		
-			console.log('19 | click | css=.icon_title-wrapper | ');
+			console.log(step++,'  | click | css=.icon_title-wrapper | ');
 			await driver.findElement(By.css('.icon_title-wrapper')).click();
 		
-			console.log('20 | assertNotText | css=.icon_title-text | Error');
+			console.log(step++,'  | assertNotText | css=.icon_title-text | Error');
 			{
 				const text = await driver.findElement(By.css('.icon_title-text')).getText();
 				assert(text !== 'Error');

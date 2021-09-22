@@ -23,6 +23,8 @@ async function CancelOrder(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let step = util.getStep();
+
 	describe('g', function() {
 		this.timeout(300000);
 		let driver;
@@ -41,38 +43,40 @@ async function CancelOrder(){
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
+			let step = util.getStep()
 		});
 		afterEach(async function() {
+			util.setStep(step);
 		// await driver.quit();
 		});
 		it('Cancel order', async function() {
 			console.log(' Test name: g');
 			console.log(' Step # | name | target | value');
-			console.log(' 1 | open | https://sandbox.hollaex.com/login | ');
+			console.log(step++,'  | open | https://sandbox.hollaex.com/login | ');
 			await driver.get(logInPage);
-			console.log(' 2 | executeScript | return [] | Users');
-			console.log(' 10 | end |  | ');
+			console.log(step++,'  | executeScript | return [] | Users');
+			console.log(step++,'  | end |  | ');
 			await driver.sleep(5000);
-			console.log(' 11 | type | name=email | user1@testsae.com');
+			console.log(step++,'  | type | name=email | user1@testsae.com');
 			await driver.findElement(By.name('email')).sendKeys(username);
-			console.log(' 12 | type | name=password | password');
+			console.log(step++,'  | type | name=password | password');
 			await driver.findElement(By.name('password')).sendKeys(password);
-			console.log(' 13 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await driver.sleep(5000);
-			console.log(' 17 | open | trade/xht-usdt | ');
+			console.log(step++,'  | open | trade/xht-usdt | ');
 			await driver.get(website+'trade/xht-usdt/');
-			console.log(' 18 | pause | 5000 | ');
+			console.log(step++,' | pause | 5000 | ');
 			await driver.sleep(5000);
-			console.log(' 19 | storeText | css=.trade-col_side_wrapper > .trade_block-wrapper:nth-child(1) | Q');
+			console.log(step++,' | storeText | css=.trade-col_side_wrapper > .trade_block-wrapper:nth-child(1) | Q');
 			let words = vars['Q'] = await driver.findElement(By.css('.trade-col_side_wrapper > .trade_block-wrapper:nth-child(1)')).getText();
-			console.log(' 20 | storeText | css=.trade_orderbook-market-price | the latest price');
+			console.log(step++,'  | storeText | css=.trade_orderbook-market-price | the latest price');
 			vars['the latest price'] = await driver.findElement(By.css('.trade_orderbook-market-price')).getText();
-			console.log(' 21 | echo | ${Q}+"and"+${the latest price} | ');
+			console.log(step++,'  | echo | ${Q}+"and"+${the latest price} | ');
 			console.log(vars['Q']+'and'+vars['the latest price'] );
-			console.log(' 22 | executeScript | return ${Q}.split(" ") | R');
+			console.log(step++,'  | executeScript | return ${Q}.split(" ") | R');
 			vars['R'] = await driver.executeScript('return arguments[0].split(\'Seller\')', vars['Q']);
-			console.log(' 23 | echo | R | ');
+			console.log(step++,'  | echo | R | ');
 			//console.log(vars["R"])
 			let Bwords = words.split('\n');
 			console.log(Bwords.indexOf('spread'));
@@ -102,47 +106,47 @@ async function CancelOrder(){
 			}
 
 			await driver.sleep(4000);
-			console.log(' 24 | click | css=.text-center:nth-child(2) | ');
+			console.log(step++,'  | click | css=.text-center:nth-child(2) | ');
 			// LIMIT
 			await driver.findElement(By.css('.text-center:nth-child(2)')).click();
-			console.log(' 25 | click | css=.holla-button-font:nth-child(2) | ');
+			console.log(step++,' | click | css=.holla-button-font:nth-child(2) | ');
 			// sell
 			await driver.findElement(By.css('.holla-button-font:nth-child(2)')).click();
-			console.log(' 26 | click | css=.holla-button-font:nth-child(1) | ');
+			console.log(step++,' | click | css=.holla-button-font:nth-child(1) | ');
 			// buy
 			//await driver.findElement(By.css(".holla-button-font:nth-child(1)")).click()
 		
 	
-			console.log(' 24 | click | name=price | ');
+			console.log(step++,'  | click | name=price | ');
 			await driver.findElement(By.name('price')).click();
 			await driver.findElement(By.name('price')).clear();
-			console.log(' 25 | type | name=price | newOrderPriceSell');
+			console.log(step++,'  | type | name=price | newOrderPriceSell');
 			await driver.findElement(By.name('price')).sendKeys(newOrderPriceSell);
-			console.log(' 26 | sendKeys | name=price | ${KEY_ENTER}');
-			console.log(' 10 | click | name=size | ');
+			console.log(step++,'  | sendKeys | name=price | ${KEY_ENTER}');
+			console.log(step++,'  | click | name=size | ');
 			await driver.findElement(By.name('size')).click();
-			console.log(' 11 | type | name=size | 1');
+			console.log(step++,'  | type | name=size | 1');
 			await driver.findElement(By.name('size')).sendKeys('1');
-			console.log(' 12 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 
 		
-			console.log(' 11 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 
 
 			await driver.findElement(By.css('.holla-button')).click();
-			console.log(' 13 | click | css=.text-capitalize | ');
+			console.log(step++,'  | click | css=.text-capitalize | ');
 			await driver.findElement(By.css('.text-capitalize')).click();
-			console.log(' 14 | assertText | css=.text-capitalize | Limit Sell');
+			console.log(step++,'  | assertText | css=.text-capitalize | Limit Sell');
 			assert(await driver.findElement(By.css('.text-capitalize')).getText() == 'Limit Sell');
-			console.log(' 15 | click | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | ');
+			console.log(step++,'  | click | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | ');
 			await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2)')).click();
-			console.log(' 16 | assertText | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | 1 XHT');
+			console.log(step++,' | assertText | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | 1 XHT');
 			assert(await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2)')).getText() == '1 XHT');
-			console.log(' 17 | click | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | ');
+			console.log(step++,' | click | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | ');
 			await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2)')).click();
-			console.log(' 18 | assertText | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | 1 USDT');
+			console.log(step++,' | assertText | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | 1 USDT');
 			//assert(await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2)')).getText() == newOrderPriceSell.toFixed(1)+' USDT');
-			console.log(' 19 | click | css=.d-flex > .holla-button:nth-child(3) | ');
+			console.log(step++,' | click | css=.d-flex > .holla-button:nth-child(3) | ');
 			await driver.sleep(1000);
 			await driver.findElement(By.css('.d-flex > .holla-button:nth-child(3)')).click();
 		
@@ -152,49 +156,49 @@ async function CancelOrder(){
 			vars['newPrice'] = await driver.findElement(By.css('.fill-ask:nth-child(1) > .d-flex > .trade_orderbook-cell-price')).getText();
 			expect(Number(vars['newPrice'])).to.equal(Number(newOrderPriceSell));
 			await driver.sleep(4000);
-			console.log(' 20 | click | css=.table_body-row:nth-child(1) .action_notification-text | ');
+			console.log(step++,' | click | css=.table_body-row:nth-child(1) .action_notification-text | ');
 			//	await driver.findElement(By.css('.table_body-row:nth-child(1) .action_notification-text')).click();
 
 	
 			// LIMIT
 			await driver.findElement(By.css('.text-center:nth-child(2)')).click();
-			console.log(' 25 | click | css=.holla-button-font:nth-child(2) | ');
+			console.log(step++,' | click | css=.holla-button-font:nth-child(2) | ');
 			// sell
 			// await driver.findElement(By.css(".holla-button-font:nth-child(2)")).click()
-			console.log(' 26 | click | css=.holla-button-font:nth-child(1) | ');
+			console.log(step++,' | click | css=.holla-button-font:nth-child(1) | ');
 			// buy
 			await driver.findElement(By.css('.holla-button-font:nth-child(1)')).click();
 		
 	
-			console.log(' 24 | click | name=price | ');
+			console.log(step++,'  | click | name=price | ');
 			await driver.findElement(By.name('price')).click();
 			await driver.findElement(By.name('price')).clear();
-			console.log(' 25 | type | name=price | newOrderPriceSell');
+			console.log(step++,'  | type | name=price | newOrderPriceSell');
 			await driver.findElement(By.name('price')).sendKeys(newOrderPriceBuy);
-			console.log(' 26 | sendKeys | name=price | ${KEY_ENTER}');
-			console.log(' 10 | click | name=size | ');
+			console.log(step++,'  | sendKeys | name=price | ${KEY_ENTER}');
+			console.log(step++,'  | click | name=size | ');
 			await driver.findElement(By.name('size')).click();
 			await driver.findElement(By.name('size')).clear();
-			console.log(' 11 | type | name=size | 1');
+			console.log(step++,' | type | name=size | 1');
 			await driver.findElement(By.name('size')).sendKeys('1');
-			console.log(' 12 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 
 		
 
 			await driver.findElement(By.css('.holla-button')).click();
-			console.log(' 13 | click | css=.text-capitalize | ');
+			console.log(step++,'  | click | css=.text-capitalize | ');
 			await driver.findElement(By.css('.text-capitalize')).click();
-			console.log(' 14 | assertText | css=.text-capitalize | Limit Sell');
+			console.log(step++,'  | assertText | css=.text-capitalize | Limit Sell');
 			assert(await driver.findElement(By.css('.text-capitalize')).getText() == 'Limit Buy');
-			console.log(' 15 | click | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | ');
+			console.log(step++,'  | click | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | ');
 			await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2)')).click();
-			console.log(' 16 | assertText | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | 1 XHT');
+			console.log(step++,'  | assertText | css=.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2) | 1 XHT');
 			assert(await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(2) > .f-1:nth-child(2)')).getText() == '1 XHT');
-			console.log(' 17 | click | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | ');
+			console.log(step++,'  | click | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | ');
 			await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2)')).click();
-			console.log(' 18 | assertText | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | 1 USDT');
+			console.log(step++,'  | assertText | css=.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2) | 1 USDT');
 			//assert(await driver.findElement(By.css('.notification-content-information > .d-flex:nth-child(3) > .f-1:nth-child(2)')).getText() == newOrderPriceBuy.toFixed(1)+' USDT');
-			console.log(' 19 | click | css=.d-flex > .holla-button:nth-child(3) | ');
+			console.log(step++,'  | click | css=.d-flex > .holla-button:nth-child(3) | ');
 			await driver.sleep(1000);
 			await driver.findElement(By.css('.d-flex > .holla-button:nth-child(3)')).click();
 		

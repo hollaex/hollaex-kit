@@ -87,28 +87,30 @@ async function kitLogIn(driver,userName,passWord){
 
 
 }
-async function emailLogIn(driver, emailAdmin,passWord){
+async function emailLogIn(step,driver, emailAdmin,passWord){
 	
 	// let driver = await new Builder().forBrowser('chrome').build();
 	console.log('Entering username and password');
 	console.log(emailPage);
 	await driver.get(emailPage);
-	console.log('2 | setWindowSize | 1280x680 |'); 
+	console.log(step++,' | setWindowSize | 1280x680 |'); 
 	await driver.manage().window().setRect(1280, 680);
-	console.log('3 | click | id=wdc_username |');
+	console.log(step++,' | click | id=wdc_username |');
 	await sleep(10000);
 	await driver.findElement(By.id('wdc_username')).click();
-	console.log('4 | type | id=wdc_username | QA');
+	console.log(step++,' | type | id=wdc_username | QA');
 	await driver.findElement(By.id('wdc_username')).sendKeys(emailAdmin);
-	console.log('5 | click | id=wdc_password | ');
+	console.log(step++,' | click | id=wdc_password | ');
 	await driver.findElement(By.id('wdc_password')).click();
-	console.log('6 | type | id=wdc_password | Password!');
+	console.log(step++,' | type | id=wdc_password | Password!');
 	await driver.findElement(By.id('wdc_password')).sendKeys(passWord);
-	console.log('7 | click | id=wdc_login_button | ');
+	console.log(step++,' | click | id=wdc_login_button | ');
 	await driver.findElement(By.id('wdc_login_button')).click();
-	console.log('8 | click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
+	console.log(step++,' | click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 	await driver.manage().window().maximize();
+	await setStep(step);
 	await sleep(10000);
+	
 }
 
 async function adminVerifiesNewUser(driver,aUserName,aPassword,newUserName){
@@ -284,7 +286,7 @@ function setStep(i){
 	}
   
 	localStorage.setItem('Step', Number(i));
-	return localStorage.getItem('Step');
+	//return localStorage.getItem('Step');
 }
 function getStep(){
 

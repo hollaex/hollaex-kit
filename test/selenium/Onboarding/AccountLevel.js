@@ -19,6 +19,7 @@ async function AccountLevel () {
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
+	let step = util.getStep();
 
 
 	describe('AccountLevel', function() {
@@ -43,51 +44,51 @@ async function AccountLevel () {
 			console.log(' Test name: Supervisor');
 			console.log(' Step # | name | target | value');
 		
-			console.log(' 1 | open | /login | ');
+			console.log(step++,' | open | /login | ');
 			await driver.get(logInPage);
 			await sleep(5000);
 		
-			console.log(' 2 | echo | \'Supervisor can access all deposit, withdrawals and approval settings\' |'); 
+			console.log(step++,' | echo | \'Supervisor can access all deposit, withdrawals and approval settings\' |'); 
 			console.log('\'Supervisor can access all deposit, withdrawals and approval settings\'');
 		
-			console.log(' 3 | type | name=email |'+userName);
+			console.log(step++,' | type | name=email |'+userName);
 			await driver.findElement(By.name('email')).sendKeys(userName);
 		
-			console.log(' 4 | type | name=password | password');
+			console.log(step++,' | type | name=password | password');
 			await driver.findElement(By.name('password')).sendKeys(password);
 		
-			console.log(' 5 | click | css=.holla-button | ');
+			console.log(step++,' | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(10000);
 
-			console.log(' 6 | click | css=a > .pl-1 | ');
+			console.log(step++,' | click | css=a > .pl-1 | ');
 			await driver.findElement(By.css('a > .pl-1')).click();
 			await sleep(5000);
 
-			console.log(' 7 | click | linkText=Users | ');
+			console.log(step++,' | click | linkText=Users | ');
 			await driver.findElement(By.linkText('Users')).click();
 			await sleep(3000);
 		
-			console.log(' 8 | click | name=input | ');
+			console.log(step++,' | click | name=input | ');
 			await driver.findElement(By.name('input')).click();
 			await sleep(3000);
 		
-			console.log(' 9 | type | name=input | leveltest');
+			console.log(step++,' | type | name=input | leveltest');
 			await driver.findElement(By.name('input')).sendKeys('leveltest');
 		
-			console.log(' 10 | click | css=.ant-btn | ');
+			console.log(step++,' | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
 			await sleep(5000);
 
-			console.log(' 11 | click | css=.ml-4 > .ant-btn > span | ');
+			console.log(step++,' | click | css=.ml-4 > .ant-btn > span | ');
 			await driver.findElement(By.css('.ml-4 > .ant-btn > span')).click();
 			await sleep(3000);
 		
-			console.log(' 12 | click | css=.ant-select-selector | ');
+			console.log(step++,' | click | css=.ant-select-selector | ');
 			await driver.findElement(By.css('.ant-select-selector')).click();
 			await sleep(3000);
 		
-			console.log(' 13 | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div[4]/div/div/div[2] | ');
+			console.log(step++,' | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div[4]/div/div/div[2] | ');
 			// /div[4]={1,..9}
 			let level= Math.floor(Math.random() * 9)+1;
 			console.log('level : '+String(level))
@@ -100,66 +101,66 @@ async function AccountLevel () {
 					await driver.executeScript('arguments[0].scrollIntoView(true);', element)
 				}
 				
-	        console.log(' 14 | click |xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]  |')
+				console.log(step++,' | click |xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]  |')
 				await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
 				await sleep(3000);
 		
-				console.log(' 15 | click | css=.w-100 > span |');
+				console.log(step++,' | click | css=.w-100 > span |');
 				await driver.findElement(By.css('.w-100 > span')).click();
 				await sleep(3000);
 		
 			}else{
-				console.log(' 14 | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2] |');
+				console.log(step++,' | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2] |');
 				await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
 				await sleep(3000);
 			
-				console.log(' 15 | click | css=.w-100 > span |');
+				console.log(step++,' | click | css=.w-100 > span |');
 				await driver.findElement(By.css('.w-100 > span')).click();
 				await sleep(3000);
 			}
 	
-			console.log(' 16 | open | website/summary | ');
+			console.log(step++,' | open | website/summary | ');
 			await driver.get(Website+'summary');
 			await sleep(5000);
 
-			console.log(' 17 | click | css=.app-bar-account-content > div:nth-child(2) | ');
+			console.log(step++,' | click | css=.app-bar-account-content > div:nth-child(2) | ');
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
 			await sleep(3000);
 
-			console.log(' 18 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+			console.log(step++,' | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
 			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
 			await sleep(3000);
 		
 			console.log(' entering into user account to assert  Level of Account');
 		
-			console.log(' 19 | open | '+logInPage+' | ');
+			console.log(step++,' | open | '+logInPage+' | ');
 			await driver.get(logInPage);
 			await driver.sleep(5000);
 			const title = await driver.getTitle();
 			console.log(title);
 				    
-			console.log(' 15 | type | name=email |'+ username);
+			console.log(step++,' | type | name=email |'+ username);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).sendKeys(username);
     
-			console.log(' 16 | type | name=password | PASSWORD');
+			console.log(step++,' | type | name=password | PASSWORD');
 			await driver.findElement(By.name('password')).sendKeys(passWord);
     
-			console.log(' 17 | click | css=.auth_wrapper | ');
+			console.log(step++,' | click | css=.auth_wrapper | ');
 			await driver.findElement(By.css('.auth_wrapper')).click();
 		
 			//'when login    
-			console.log(' 18 | click | css=.holla-button | ');
+			console.log(step++,' | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
 
-			console.log(' 19 | assert | css=.trader-account-wrapper .summary-block-title |Level '+String(level)+' Account');
+			console.log(step++,' | assert | css=.trader-account-wrapper .summary-block-title |Level '+String(level)+' Account');
 			assert(await driver.findElement(By.css('.trader-account-wrapper .summary-block-title')).getText() == 'Level '+String(level)+' Account');
 		
-			console.log(' 20 | storeText | css=.trader-account-wrapper .summary-block-title | level');
+			console.log(step++,' | storeText | css=.trader-account-wrapper .summary-block-title | level');
 			vars['level'] = await driver.findElement(By.css('.trader-account-wrapper .summary-block-title')).getText();
 		
-			console.log(' 21 | echo | ${level} | ');
+			console.log(step++,' | echo | ${level} | ');
 			console.log(vars['level']);
 
 			console.log('This is the EndOfTest');

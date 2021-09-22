@@ -16,6 +16,7 @@ async function Kyc(){
 	let KYC = process.env.KYC;
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
+	let step = util.getStep();
 
 	describe('KYC', function() {
 		this.timeout(3000000);
@@ -39,114 +40,114 @@ async function Kyc(){
 			console.log(' Test name: KYC');
 			console.log(' Step # | name | target | value');
 		
-			console.log(' 1 | open | /login | ');
+			console.log(step++,'  | open | /login | ');
 			await driver.get(logInPage);
 			await sleep(5000);
 		
-			console.log(' 2 | type | name=email |'+KYC);
+			console.log(step++,'  | type | name=email |'+KYC);
 			await driver.findElement(By.name('email')).sendKeys(KYC);
 		
-			console.log(' 3 | type | name=password | Password');
+			console.log(step++,'  | type | name=password | Password');
 			await driver.findElement(By.name('password')).sendKeys(password);
 		
-			console.log(' 4 | click | css=.holla-button | ');
+			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
 		
-			console.log(' 5 | click | css=a > .pl-1 | ');
+			console.log(step++,'  | click | css=a > .pl-1 | ');
 			await driver.findElement(By.css('a > .pl-1')).click();
 			await sleep(5000);
 		
-			console.log(' 6 | click | css=.role-section > div:nth-child(2) | ');
+			console.log(step++,'  | click | css=.role-section > div:nth-child(2) | ');
 			await driver.findElement(By.css('.role-section > div:nth-child(2)')).click();
 		
-			console.log(' 7 | assertText | css=.sub-label | KYC');
+			console.log(step++,'  | assertText | css=.sub-label | KYC');
 			assert(await driver.findElement(By.css('.sub-label')).getText() == 'KYC');
 
-			console.log(' 8 | click | css=.active-side-menu | ');
+			console.log(step++,'  | click | css=.active-side-menu | ');
 			await sleep(5000);
 			// await driver.findElement(By.css(".active-side-menu")).click()
 			await driver.findElement(By.linkText('Users')).click();
 		
-			console.log(' 9 | click | name=id | ');
+			console.log(step++,'  | click | name=id | ');
 			await driver.findElement(By.name('id')).click();
 		
-			console.log(' 10 | type | name=id | 1');
+			console.log(step++,'  | type | name=id | 1');
 			await driver.findElement(By.name('id')).sendKeys('1');
 		
-			console.log(' 11 | sendKeys | name=id | ${KEY_ENTER}');
+			console.log(step++,'  | sendKeys | name=id | ${KEY_ENTER}');
 			await driver.findElement(By.name('id')).sendKeys(Key.ENTER);
 		
 			console.log(' 12 | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
 		
-			console.log(' 13 | click | id=rc-tabs-8-tab-bank | ');
+			console.log(step++,'  | click | id=rc-tabs-8-tab-bank | ');
 			await sleep(5000);
 			await driver.findElement(By.id('rc-tabs-1-tab-bank')).click();
 		
-			console.log(' 14 | click | css=.ant-col:nth-child(1) .ant-card-head-wrapper | ');
+			console.log(step++,'  | click | css=.ant-col:nth-child(1) .ant-card-head-wrapper | ');
 			await driver.findElement(By.css('.ant-col:nth-child(1) .ant-card-head-wrapper')).click();
 		
-			console.log(' 15 | | assertElementPresent | css=.ant-col:nth-child(1) .ant-card-head-title |  |'); 
+			console.log(step++,'  | assertElementPresent | css=.ant-col:nth-child(1) .ant-card-head-title |  |'); 
 			{
 				const elements = await driver.findElements(By.css('.ant-col:nth-child(1) .ant-card-head-title'));
 				assert(elements.length);
 			}
 
-			console.log(' 16 | click|linkText = Financials | ');
+			console.log(step++,'  | click|linkText = Financials | ');
 			await driver.findElement(By.linkText('Financials')).click();
 			await sleep(5000);
 
-			console.log(' 17 | runScript | window.scrollTo(0,0) | ');
+			console.log(step++,'  | runScript | window.scrollTo(0,0) | ');
 			await driver.executeScript('window.scrollTo(0,0)');
 		
-			console.log(' 18 | click | css=p | ');
+			console.log(step++,'  | click | css=p | ');
 			await sleep(5000);
 			await driver.findElement(By.css('p')).click();
 		
-			console.log(' 19 | assertElementPresent | css=p | ');
+			console.log(step++,'  | assertElementPresent | css=p | ');
 			{
 				const elements = await driver.findElements(By.css('p'));
 				assert(elements.length);
 			}
 		
-			console.log(' 20 | click | css=.ant-card-body > .ant-alert | ');
+			console.log(step++,'  | click | css=.ant-card-body > .ant-alert | ');
 			await driver.findElement(By.css('.ant-card-body > .ant-alert')).click();
 		
-			console.log(' 21 | assertElementPresent | css=.ant-card-body .ant-alert-description | ');
+			console.log(step++,'  | assertElementPresent | css=.ant-card-body .ant-alert-description | ');
 			{
 				const elements = await driver.findElements(By.css('.ant-card-body .ant-alert-description'));
 				assert(elements.length);
 			}
 		
-			console.log(' 22 | click | id=rc-tabs-2-tab-1 | ');
+			console.log(step++,'  | click | id=rc-tabs-2-tab-1 | ');
 			await driver.findElement(By.id('rc-tabs-2-tab-1')).click();
 			await sleep(5000);
 		
-			console.log(' 23 | click | xpath=//*[@id="rc-tabs-2-panel-1"]/div/div[1]/button | ');
+			console.log(step++,' | click | xpath=//*[@id="rc-tabs-2-panel-1"]/div/div[1]/button | ');
 			await driver.findElement(By.xpath('//*[@id="rc-tabs-2-panel-1"]/div/div[1]/button')).click();
 			await sleep(5000);
 			
-			console.log(' 24 | assertText | css=.sub-title | Asset:');
+			console.log(step++,'  | assertText | css=.sub-title | Asset:');
 			assert(await driver.findElement(By.css('.sub-title')).getText() == 'Asset:')
 			
-			console.log(' 25 | click | css=.btn-wrapper > .ant-btn:nth-child(1) |');
+			console.log(step++,'  | click | css=.btn-wrapper > .ant-btn:nth-child(1) |');
 			await driver.findElement(By.css('.btn-wrapper > .ant-btn:nth-child(1)')).click();
 			await sleep(3000);
 				
-			console.log(' 26 | click | id =rc-tabs-2-tab-2 | ');
+			console.log(step++,' | click | id =rc-tabs-2-tab-2 | ');
 			await driver.findElement(By.id('rc-tabs-2-tab-2')).click();
 			await sleep(5000);
 		
-			console.log(' 27 | assertText | css=.ant-alert-closable > .ant-alert-message | Access denied: User is not authorized to access this endpoint');
+			console.log(step++,'  | assertText | css=.ant-alert-closable > .ant-alert-message | Access denied: User is not authorized to access this endpoint');
 			assert(await driver.findElement(By.css('.ant-alert-closable > .ant-alert-message')).getText() == 'Access denied: User is not authorized to access this endpoint');
 		
-			console.log(' 28 | click | id=rc-tabs-2-tab-3 | ');
+			console.log(step++,'  | click | id=rc-tabs-2-tab-3 | ');
 			await driver.findElement(By.id('rc-tabs-2-tab-3')).click();
 			await sleep(4000);
 
 			console.log('should be fixed');
-			console.log(' 29 | assertText | css=#rc-tabs-2-panel-withdrawals .app-wrapper > .ant-alert > .ant-alert-message | Access denied: User is not authorized to access this endpoint');
+			console.log(step++,'  | assertText | css=#rc-tabs-2-panel-withdrawals .app-wrapper > .ant-alert > .ant-alert-message | Access denied: User is not authorized to access this endpoint');
 			console.log(await driver.findElement(By.xpath('//*[@id="rc-tabs-2-panel-3"]/div/div/div/div[2]')).getText());
 			assert(await driver.findElement(By.xpath('//*[@id="rc-tabs-2-panel-3"]/div/div/div/div[2]')).getText() == 'Access denied: User is not authorized to access this endpoint');
 		

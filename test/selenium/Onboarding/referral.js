@@ -28,6 +28,7 @@ async function Referral(){
 	let website = process.env.WEBSITE;
 	const newUser = util.defineNewUser(User,4) ;
 	console.log(newUser);
+	let step = util.getStep();
 
 	describe('NewUserRequest', function() {
 		this.timeout(100000);
@@ -42,47 +43,49 @@ async function Referral(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
+			let step = util.getStep()
 		});
+
 		afterEach(async function() {
+			util.setStep(step);
 			await driver.quit();
-   
 		});
 		it('CurrentUser', async function() {
 			console.log(' Step # | action | target | value');
 		
-			console.log('1 | open | ',logInPage);
+			console.log(step++,'  | open | ',logInPage);
 			await driver.get(logInPage);
 			await sleep(10000);
 
-			console.log(' 2 | type | name=email | USER@bitholla.com')
+			console.log(step++,'  | type | name=email | USER@bitholla.com')
 			await driver.findElement(By.name('email')).sendKeys(userName);
 		
-			console.log(' 3 | type | name=password | bitholla@bitholla.com')
+			console.log(step++,'  | type | name=password | bitholla@bitholla.com')
 			await driver.findElement(By.name('password')).sendKeys(apassWord);
 			await sleep(4000);
 		
-			console.log(' 4 | click | name=email |  ')
+			console.log(step++,'  | click | name=email |  ')
    		await driver.findElement(By.name('email')).click();
 		
-		   console.log(' 5 | click | css=.holla-button |  ')
+		   console.log(step++,'  | click | css=.holla-button |  ')
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 		
-			console.log(' 6 | click | css=.trade-account-link:nth-child(2) > .pointer |  ')
+			console.log(step++,'  | click | css=.trade-account-link:nth-child(2) > .pointer |  ')
 			await driver.findElement(By.css('.trade-account-link:nth-child(2) > .pointer')).click();
 			await sleep(4000);
 		
-			console.log(' 7 | click | css=.user_refer_info |  ')
+			console.log(step++,'   | click | css=.user_refer_info |  ')
 			await driver.findElement(By.css('.user_refer_info')).click();
 		
-			console.log(' 8 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber')
+			console.log(step++,'  | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber')
 			vars['currentNumber'] = await driver.findElement(By.css('.user_refer_info > .edit-wrapper__container')).getText();
 		
-			console.log(' 9 | pause | 5000 |  ')
+			console.log(step++,'  | pause | 5000 |  ')
 			console.log(vars['currentNumber']);
 	   
-			console.log(' 10 | click | css=.mr-5 |  ')
+			console.log(step++,'  | click | css=.mr-5 |  ')
 			await driver.findElement(By.css('.mr-5')).click();
 		
 			console.log(' 11 | click | css=.app-bar-account-content > div:nth-child(2) |  ')
@@ -91,33 +94,33 @@ async function Referral(){
 			console.log(' 12 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) |  ')
 			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
 	  
-	    console.log(' 13 | open | ',signUpPage);
+	    console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
      
-			console.log(' 14 | type | name=email |',newUser);
+			console.log(step++,'  | type | name=email |',newUser);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).clear();
 			await driver.findElement(By.name('email')).sendKeys(newUser);
      
-			console.log(' 15 | type | name=password | password!');
+			console.log(step++,'  | type | name=password | password!');
 			await driver.findElement(By.name('password')).clear();
 			await driver.findElement(By.name('password')).sendKeys(passWord);
       
       
-			console.log(' 16 | type | name=password_repeat | your password again!');
+			console.log(step++,'  | type | name=password_repeat | your password again!');
 			await driver.findElement(By.name('password_repeat')).clear();
 			await driver.findElement(By.name('password_repeat')).sendKeys(passWord);
 			await sleep(2000);
 		
-			console.log(' 17 |type | referral | https://sandbox.hollaex.com/signup?affiliation_code=KLUTI0')
+			console.log(step++,'  |type | referral | https://sandbox.hollaex.com/signup?affiliation_code=KLUTI0')
 			await driver.findElement(By.name('referral')).clear();
 			await driver.findElement(By.name('referral')).sendKeys('KLUTI0');
 		
-			console.log(' 18 | click | name=terms |'); 
+			console.log(step++,'  | click | name=terms |'); 
 			await driver.findElement(By.name('terms')).click();
 			await sleep(10000);
 		
-			console.log(' 19 | click | css=.holla-button |'); 
+			console.log(step++,'  | click | css=.holla-button |'); 
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await driver.executeScript('window.scrollTo(0,0)');
@@ -126,32 +129,32 @@ async function Referral(){
 			// there is no need for verification
 			//	util.adminVerifiesNewUser(driver,userName,apassWord,newUser)
 		
-			console.log(' 20 | type | name=email | USER@bitholla.com ')
+			console.log(step++,'  | type | name=email | USER@bitholla.com ')
 			await driver.findElement(By.name('email')).sendKeys(userName);
 		
-			console.log(' 21 | type | name=password | bitholla@bitholla.com ')
+			console.log(step++,'  | type | name=password | bitholla@bitholla.com ')
 			await driver.findElement(By.name('password')).sendKeys(apassWord);
 			await sleep(4000);
 		
-			console.log(' 22 | click | name=email |  ')
+			console.log(step++,'  | click | name=email |  ')
    		await driver.findElement(By.name('email')).click();
 		
-			console.log(' 23 | click | css=.holla-button |  ')
+			console.log(step++,'  | click | css=.holla-button |  ')
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 		
-			console.log(' 24 | click | css=.trade-account-link:nth-child(2) > .pointer | ') 
+			console.log(step++,'  | click | css=.trade-account-link:nth-child(2) > .pointer | ') 
 			await driver.findElement(By.css('.trade-account-link:nth-child(2) > .pointer')).click();
 			await sleep(4000);
 		
-			console.log(' 25 | click | css=.user_refer_info |  ')
+			console.log(step++,'  | click | css=.user_refer_info |  ')
 			await driver.findElement(By.css('.user_refer_info')).click();
 		
-			console.log(' 26 | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber ')
+			console.log(step++,'  | storeText | css=.user_refer_info > .edit-wrapper__container | currentNumber ')
 			vars['newNumber'] = await driver.findElement(By.css('.user_refer_info > .edit-wrapper__container')).getText();
 		
-			console.log(' 27 | assert | newNumber<>currentNumber |  ')
+			console.log(step++,'  | assert | newNumber<>currentNumber |  ')
 		
 			console.log(vars['newNumber']);
 			expect(vars['newNumber']).to.not.equal(vars['currentNumber']);
