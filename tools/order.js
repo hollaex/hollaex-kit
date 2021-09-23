@@ -3,10 +3,9 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getKitConfig } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -652,7 +651,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 			)
 		);
 
-		const exchangeMinFee = DEFAULT_FEES[getKitConfig().info.collateral_level];
+		const exchangeMinFee = getDefaultFees();
 
 		loggerOrders.verbose(
 			'generateOrderFeeData',

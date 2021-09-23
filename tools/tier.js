@@ -3,11 +3,11 @@
 const { SERVER_PATH } = require('../constants');
 const dbQuery = require('./database/query');
 const { getModel } = require('./database');
-const { getKitTiers, getKitPairs, getKitConfig, subscribedToPair, getTierLevels } = require('./common');
+const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
 const { reject, all } = require('bluebird');
 const { difference, omit, isNumber, each } = require('lodash');
 const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL, DEFAULT_FEES } = require(`${SERVER_PATH}/constants`);
+const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
 
 const findTier = (level) => {
@@ -56,7 +56,7 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 		return reject(new Error('Taker fees includes a symbol that you are not subscribed to'));
 	}
 
-	const minFees = DEFAULT_FEES[getKitConfig().info.collateral_level];
+	const minFees = getDefaultFees();
 
 	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minFees.maker);
 	const invalidTakerFees = Object.values(flatten(fees.taker)).some(fee => fee < minFees.taker);
@@ -164,7 +164,7 @@ const updatePairFees = (pair, fees) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return all(tiersToUpdate.map(async (level) => {
 
-			const minFees = DEFAULT_FEES[getKitConfig().info.collateral_level];
+			const minFees = getDefaultFees();
 
 			if (fees[level].maker < minFees.maker || fees[level].taker < minFees.taker) {
 				throw new Error(`Invalid fee given. Minimum maker fee: ${minFees.maker}. Minimum taker fee: ${minFees.taker}`);
