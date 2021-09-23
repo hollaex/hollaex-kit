@@ -29,7 +29,6 @@ export { default as AddTradeTabs } from './TradeTabs';
 export { default as ExpiredExchange } from './ExpiredExchange';
 export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
-export { default as CustomNotification } from './Notification';
 export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
 
