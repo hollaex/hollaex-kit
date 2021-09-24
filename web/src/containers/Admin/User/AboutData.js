@@ -377,8 +377,7 @@ const AboutData = ({
 		}
 	};
 
-	const automaticKYCPlugins = ['automatic-kyc', 'mati'];
-	const isManualKYC = !automaticKYCPlugins.includes(kycPluginName);
+	const isManualKYC = kycPluginName === 'kyc';
 
 	return (
 		<div>
