@@ -12,14 +12,13 @@ steps:
 - name: previous_hollaex_kit_version
   image: byrnedo/alpine-curl
   commands:
-  -  curl https://github.com/bitholla/hollaex-kit/blob/master/version > .tags_previous
+  -  curl https://raw.githubusercontent.com/bitholla/hollaex-kit/master/version > .tags_previous
   -  echo "The previous master release tag is :" && cat .tags_previous
 
 - name: version_comparison
   image: frolvlad/alpine-bash
   commands:
-  -  echo 'if [[ "$(cat .tags_previous)" ==  "$(cat .tags_current)" ]]; then echo "The versions are same! Blocking the merge..." && exit 1 fi' > version_comparison.sh
-  -  bash version_comparison.sh
+  -  $(if [[ "$(cat .tags_previous)" ==  "$(cat .tags_current)" ]]; then echo "The versions are same! Blocking the merge..." && exit 1; fi)
 
 - name: notify_job_done
   image: bitholla/devops-tools:drone_slack-8a15f61
