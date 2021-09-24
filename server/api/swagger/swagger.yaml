@@ -2454,6 +2454,68 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/pairs/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all pairs in network
+      operationId: getNetworkPairs
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+        - name: active
+          in: query
+          required: false
+          type: boolean
+        - name: verified
+          in: query
+          required: false
+          type: boolean
+        - name: limit
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: page
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: order_by
+          in: query
+          required: false
+          type: string
+        - name: order
+          in: query
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - name: start_date
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: end_date
+          in: query
+          required: false
+          type: string
+          format: date-time
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/pair/fees:
     x-swagger-router-controller: tier
     put:
@@ -2571,6 +2633,68 @@ paths:
           description: Leave blank to get all coins
       responses:
         200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/coins/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all coins in network
+      operationId: getNetworkCoins
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+        - name: active
+          in: query
+          required: false
+          type: boolean
+        - name: verified
+          in: query
+          required: false
+          type: boolean
+        - name: limit
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: page
+          in: query
+          required: false
+          type: number
+          format: int32
+        - name: order_by
+          in: query
+          required: false
+          type: string
+        - name: order
+          in: query
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - name: start_date
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: end_date
+          in: query
+          required: false
+          type: string
+          format: date-time
+      responses:
+        "200":
           description: Success
           schema:
             type: object
