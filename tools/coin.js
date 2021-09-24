@@ -12,7 +12,6 @@ const {
 const getNetworkCoins = (
 	opts = {
 		search: null,
-		userId: null,
 		active: null,
 		verified: null,
 		limit: null,

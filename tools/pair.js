@@ -16,7 +16,6 @@ const {
 const getNetworkPairs = (
 	opts = {
 		search: null,
-		userId: null,
 		active: null,
 		verified: null,
 		limit: null,
