@@ -75,38 +75,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /network/coins/all:
-    x-swagger-router-controller: public
-    get:
-      description: View all coins on network
-      operationId: getAllCoins
-      tags:
-        - Public
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-  /network/pairs/all:
-    x-swagger-router-controller: public
-    get:
-      description: View all pairs on network
-      operationId: getAllPairs
-      tags:
-        - Public
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
   /kit:
     x-swagger-router-controller: public
     get:
