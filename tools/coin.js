@@ -11,10 +11,19 @@ const {
 
 const getNetworkCoins = (
 	opts = {
+		search: null,
+		active: null,
+		verified: null,
+		limit: null,
+		page: null,
+		orderBy: null,
+		order: null,
+		startDate: null,
+		endDate: null,
 		additionalHeaders: null
 	}
 ) => {
-	return getNodeLib().getAllCoins(opts);
+	return getNodeLib().getCoins(opts);
 };
 
 const createCoin = async (

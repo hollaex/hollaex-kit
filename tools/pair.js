@@ -15,10 +15,19 @@ const {
 
 const getNetworkPairs = (
 	opts = {
+		search: null,
+		active: null,
+		verified: null,
+		limit: null,
+		page: null,
+		orderBy: null,
+		order: null,
+		startDate: null,
+		endDate: null,
 		additionalHeaders: null
 	}
 ) => {
-	return getNodeLib().getAllPairs(opts);
+	return getNodeLib().getPairs(opts);
 };
 
 const createPair = async (
