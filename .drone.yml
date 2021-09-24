@@ -20,18 +20,18 @@ steps:
   commands:
   -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
 
-- name: notify_job_done
-  image: bitholla/devops-tools:drone_slack-8a15f61
-  channel: deployment
-  environment:
-    SLACK_WEBHOOK:
+- name: slack_noti_job_end
+  image: plugins/slack
+  settings:
+    channel: deployment
+    webhook:
       from_secret: slack_webhook
   when:
-    status: [ failure ]
+    status: [failure]
   
 trigger:
   branch: 
-    - develop
+    - master
   event:
     - pull_request
 
