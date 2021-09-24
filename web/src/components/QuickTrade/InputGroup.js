@@ -11,6 +11,7 @@ import { translateError } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import EditWrapper from 'components/EditWrapper';
 import STRINGS from 'config/localizedStrings';
+import { Image } from 'components';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -103,9 +104,19 @@ class InputGroup extends React.PureComponent {
 								key={index}
 								className="d-flex"
 							>
-								<div className="d-flex align-items-center">
+								<div className="d-flex align-items-center quick-trade-select-wrapper">
 									<div className="input-group__coin-icons-wrap">
-										<img
+										<Image
+											iconId={`${symbol.toUpperCase()}_ICON`}
+											icon={
+												ICONS[`${symbol.toUpperCase()}_ICON`]
+													? ICONS[`${symbol.toUpperCase()}_ICON`]
+													: ICONS['DEFAULT_ICON']
+											}
+											wrapperClassName="input-group__coin-icons"
+											imageWrapperClassName="currency-ball-image-wrapper"
+										/>
+										{/* <img
 											src={
 												ICONS[`${symbol.toUpperCase()}_ICON`]
 													? ICONS[`${symbol.toUpperCase()}_ICON`]
@@ -113,7 +124,7 @@ class InputGroup extends React.PureComponent {
 											}
 											className="input-group__coin-icons"
 											alt={`${symbol.toUpperCase()}_coin`}
-										/>
+										/> */}
 									</div>
 									<span className="pl-1">{symbol.toUpperCase()}</span>
 								</div>

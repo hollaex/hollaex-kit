@@ -51,7 +51,7 @@ class ToggleField extends Component {
 			meta = { active: false, error: '', touched: false, invalid: false },
 			toggleOnly,
 			disabled,
-			isHideToggleText,
+			// isHideToggleText,
 			...rest
 		} = this.props;
 		const { selected } = this.state;
@@ -64,7 +64,7 @@ class ToggleField extends Component {
 						disabled={disabled}
 						name={input.name}
 						onToogle={this.onToogle}
-						isHideToggleText={isHideToggleText}
+						// isHideToggleText={isHideToggleText}
 					/>
 				) : (
 					<FieldContent
@@ -81,7 +81,7 @@ class ToggleField extends Component {
 								disabled={disabled}
 								name={input.name}
 								onToogle={this.onToogle}
-								isHideToggleText={isHideToggleText}
+								// isHideToggleText={isHideToggleText}
 							/>
 						</div>
 					</FieldContent>
@@ -97,7 +97,7 @@ const Toggle = ({
 	onToogle,
 	disabled,
 	name,
-	isHideToggleText = false,
+	// isHideToggleText = false,
 }) => (
 	<div className={classnames('toggle_button-wrapper', 'd-flex')}>
 		<div
@@ -108,7 +108,7 @@ const Toggle = ({
 				'direction_ltr'
 			)}
 		>
-			{!isHideToggleText ? (
+			{/* {!isHideToggleText ? (
 				<div
 					className={classnames({
 						selected: options[1].value === selected && !disabled,
@@ -116,7 +116,7 @@ const Toggle = ({
 				>
 					{options[1].label}
 				</div>
-			) : null}
+			) : null} */}
 			<div
 				onClick={name === 'all' || !disabled ? onToogle : () => {}}
 				className={classnames('toggle-action_button', {
@@ -125,9 +125,12 @@ const Toggle = ({
 					right: options[0].value === selected,
 				})}
 			>
+				<div className="option-text">
+					{options[1].value === selected ? options[1].label : options[0].label}
+				</div>
 				<div className="toggle-action_button-display" />
 			</div>
-			{!isHideToggleText ? (
+			{/* {!isHideToggleText ? (
 				<div
 					className={classnames({
 						selected: options[0].value === selected && !disabled,
@@ -135,7 +138,7 @@ const Toggle = ({
 				>
 					{options[0].label}
 				</div>
-			) : null}
+			) : null} */}
 		</div>
 	</div>
 );

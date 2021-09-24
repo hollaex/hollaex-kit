@@ -1,5 +1,44 @@
 kind: pipeline
 type: docker
+name: block_duplicated_pr_merged
+
+steps:
+- name: current_hollaex_kit_version
+  image: alpine
+  commands:
+  -  export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags_current
+  -  echo "Current Release tag is :" && cat .tags_current
+
+- name: previous_hollaex_kit_version
+  image: byrnedo/alpine-curl
+  commands:
+  -  curl https://raw.githubusercontent.com/bitholla/hollaex-kit/master/version > .tags_previous
+  -  echo "The previous master release tag is :" && cat .tags_previous
+
+- name: version_comparison
+  image: frolvlad/alpine-bash
+  commands:
+  -  export TAGS_CURRENT=$(cat .tags_current) && export TAGS_PREVIOUS=$(cat .tags_previous) && if [ "$TAGS_PREVIOUS" ==  "$TAGS_CURRENT" ]; then echo "Blocking the merge since the versions are same..." && exit 1; else echo "hi"; fi
+
+- name: slack_noti_job_end
+  image: plugins/slack
+  settings:
+    channel: deployment
+    webhook:
+      from_secret: slack_webhook
+  when:
+    status: [failure]
+  
+trigger:
+  branch: 
+    - master
+  event:
+    - pull_request
+
+---
+
+kind: pipeline
+type: docker
 name: slack_notify
 
 steps:

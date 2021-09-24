@@ -228,6 +228,7 @@ class Stake extends Component {
 															iconId={iconId}
 															icon={ICONS[iconId]}
 															wrapperClassName="currency-ball"
+															imageWrapperClassName="currency-ball-image-wrapper"
 														/>
 													</Link>
 													<Link to={`/stake/details/${symbol.toLowerCase()}`}>

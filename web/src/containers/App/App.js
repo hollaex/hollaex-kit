@@ -99,7 +99,11 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		const { injected_values, injected_html } = this.props;
+		const {
+			injected_values,
+			injected_html,
+			plugins_injected_html,
+		} = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -122,6 +126,7 @@ class App extends Component {
 
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
+		injectHTML(plugins_injected_html, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
