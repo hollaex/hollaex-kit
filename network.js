@@ -2588,7 +2588,6 @@ class HollaExNetwork {
 	getCoins (
 		opts = {
 			search: null,
-			userId: null,
 			active: null,
 			verified: null,
 			limit: null,
@@ -2609,10 +2608,6 @@ class HollaExNetwork {
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.userId)) {
-			path += `$user_id=${opts.userId}`;
 		}
 
 		if (isNumber(opts.page)) {
@@ -2636,7 +2631,7 @@ class HollaExNetwork {
 		}
 
 		if (isString(opts.search)) {
-			path += `&search=${opts.symbol}`;
+			path += `&search=${opts.search}`;
 		}
 
 		if (isBoolean(opts.active)) {
@@ -2879,7 +2874,6 @@ class HollaExNetwork {
 	getPairs (
 		opts = {
 			search: null,
-			userId: null,
 			active: null,
 			verified: null,
 			limit: null,
@@ -2900,10 +2894,6 @@ class HollaExNetwork {
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.userId)) {
-			path += `$user_id=${opts.userId}`;
 		}
 
 		if (isNumber(opts.page)) {
@@ -2927,7 +2917,7 @@ class HollaExNetwork {
 		}
 
 		if (isString(opts.search)) {
-			path += `&search=${opts.symbol}`;
+			path += `&search=${opts.search}`;
 		}
 
 		if (isBoolean(opts.active)) {
