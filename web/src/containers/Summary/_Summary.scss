@@ -324,7 +324,10 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 		.coin-price-container {
 			height: 3.5rem;
-
+			.currency-ball-image-wrapper {
+				height: 26px;
+				margin-bottom: 8px;
+			}
 			.coin-price {
 				width: 3rem;
 
@@ -556,7 +559,7 @@ $trade-tab--arrow-size: 0.4rem;
 	.content-txt {
 		font-size: $font-size-subtext;
 		.fee-reduction-container {
-    		border: 1px solid $colors-border;
+			border: 1px solid $colors-border;
 		}
 	}
 	.content-title {

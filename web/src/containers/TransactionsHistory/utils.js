@@ -587,6 +587,7 @@ export const generateWithdrawalsHeaders = (
 								iconId={`${data.symbol.toUpperCase()}_ICON`}
 								icon={ICONS[`${data.symbol.toUpperCase()}_ICON`]}
 								wrapperClassName="coin-icons"
+								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
 							{data.fullname}
 						</div>

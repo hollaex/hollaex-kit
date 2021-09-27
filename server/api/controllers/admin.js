@@ -1607,6 +1607,98 @@ const getExchange = (req, res) => {
 		});
 };
 
+const getNetworkCoins = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getNetworkCoins auth',
+		req.auth
+	);
+
+	const {
+		search: { value: search },
+		active: { value: active },
+		verified: { value: verified },
+		limit: { value: limit },
+		page: { value: page },
+		order_by: { value: orderBy },
+		order: { value: order },
+		start_date: { value: startDate },
+		end_date: { value: endDate }
+	} = req.swagger.params;
+
+	toolsLib.coin.getNetworkCoins({
+		search,
+		active,
+		verified,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getNetworkCoins err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getNetworkPairs = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getNetworkPairs auth',
+		req.auth
+	);
+
+	const {
+		search: { value: search },
+		active: { value: active },
+		verified: { value: verified },
+		limit: { value: limit },
+		page: { value: page },
+		order_by: { value: orderBy },
+		order: { value: order },
+		start_date: { value: startDate },
+		end_date: { value: endDate }
+	} = req.swagger.params;
+
+	toolsLib.pair.getNetworkPairs({
+		search,
+		active,
+		verified,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getNetworkPairs err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1646,5 +1738,7 @@ module.exports = {
 	updatePair,
 	createCoin,
 	updateCoin,
-	getExchange
+	getExchange,
+	getNetworkCoins,
+	getNetworkPairs
 };
