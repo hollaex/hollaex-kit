@@ -14,7 +14,7 @@ class AssetsBlockForm extends React.Component {
 				onChange: handleCheck,
 				name: 'ZeroBalance',
 				reverse: true,
-				isHideToggleText: true,
+				// isHideToggleText: true,
 			},
 		};
 

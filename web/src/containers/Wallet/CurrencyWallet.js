@@ -74,6 +74,7 @@ class Wallet extends Component {
 						iconId={`${symbol.toUpperCase()}_ICON`}
 						icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
 						wrapperClassName="coin-icons"
+						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
 					<div className="with_price-block_amount-value">
 						{`${formatToCurrency(balanceValue, min)}`}

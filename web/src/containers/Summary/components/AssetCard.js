@@ -22,6 +22,7 @@ const AssetCard = ({ value, currencyBalance, symbol, icons: ICONS }) => {
 							: ICONS['DEFAULT_ICON']
 					}
 					wrapperClassName="coin-price"
+					imageWrapperClassName="currency-ball-image-wrapper"
 				/>
 			</div>
 			<div className="price-text">
