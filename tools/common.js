@@ -21,7 +21,8 @@ const {
 	HOLLAEX_NETWORK_BASE_URL,
 	USER_META_KEYS,
 	VALID_USER_META_TYPES,
-	DOMAIN
+	DOMAIN,
+	DEFAULT_FEES
 } = require(`${SERVER_PATH}/constants`);
 const {
 	COMMUNICATOR_CANNOT_UPDATE,
@@ -725,6 +726,18 @@ const getNetworkConstants = (opts = {
 
 const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
+const getDefaultFees = () => {
+	const { info: { type, collateral_level } } = getKitConfig();
+	if (type === 'Enterprise') {
+		return {
+			maker: 0,
+			taker: 0
+		};
+	} else {
+		return DEFAULT_FEES[collateral_level];
+	}
+};
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -780,5 +793,6 @@ module.exports = {
 	// getCsvParser,
 	emailHtmlBoilerplate,
 	getNetworkConstants,
-	getNetworkEndpoint
+	getNetworkEndpoint,
+	getDefaultFees
 };
