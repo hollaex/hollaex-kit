@@ -1497,9 +1497,8 @@ const updateCoin = (req, res) => {
 	);
 
 	const {
-		symbol,
-		fullname,
 		code,
+		fullname,
 		withdrawal_fee: withdrawalFee,
 		min,
 		max,
@@ -1511,14 +1510,17 @@ const updateCoin = (req, res) => {
 		network,
 		standard,
 		allow_deposit: allowDeposit,
-		allow_withdrawal: allowWithdrawal
+		allow_withdrawal: allowWithdrawal,
+		withdrawal_fees: withdrawalFees,
+		is_public: isPublic,
+		description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/updateCoin',
-		'symbol:',
-		symbol,
+		'code:',
+		code,
 		'fullname:',
 		fullname,
 		'withdrawal_fee:',
@@ -1544,14 +1546,19 @@ const updateCoin = (req, res) => {
 		'allow_deposit:',
 		allowDeposit,
 		'allow_withdrawal:',
-		allowWithdrawal
+		allowWithdrawal,
+		'withdrawal_fees:',
+		withdrawalFees,
+		'is_public:',
+		isPublic,
+		'description:',
+		description
 	);
 
 	toolsLib.coin.updateCoin(
-		symbol,
-		fullname,
+		code,
 		{
-			code,
+			description,
 			withdrawalFee,
 			min,
 			max,
@@ -1564,6 +1571,10 @@ const updateCoin = (req, res) => {
 			standard,
 			allowDeposit,
 			allowWithdrawal,
+			withdrawalFees,
+			isPublic
+		},
+		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}

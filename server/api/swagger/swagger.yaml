@@ -2580,7 +2580,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPostRequest"
       responses:
         200:
           description: Success
@@ -2604,7 +2604,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPutRequest"
       responses:
         200:
           description: Success
@@ -5029,7 +5029,7 @@ definitions:
         type: boolean
       updated_description:
         type: string
-  CoinPutPostRequest:
+  CoinPostRequest:
     type: object
     required:
       - symbol
@@ -5073,6 +5073,51 @@ definitions:
         type: boolean
       allow_withdrawal:
         type: boolean
+  CoinPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      fullname:
+        type: string
+      withdrawal_fee:
+        type: number
+        format: double
+      description:
+        type: ['string', 'null']
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+      withdrawal_fees:
+        type: ['object', 'null']
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: boolean
+      is_public:
+        type: boolean
+      increment_unit:
+        type: number
+        format: double
+      logo:
+        type: ['string', 'null']
+      meta:
+        type: object
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      type:
+        type: string
+        enum: ['blockchain', 'fiat', 'other']
+      network:
+        type: ['string', 'null']
+      standard:
+        type: ['string', 'null']
   PairPutPostRequest:
     type: object
     required:
