@@ -8,7 +8,10 @@ const {
 	isString,
 	isArray,
 	isBuffer,
-	omit
+	omit,
+	isNull,
+	isEmpty,
+	snakeCase
 } = require('lodash');
 const {
 	createRequest,
@@ -2654,13 +2657,15 @@ class HollaExNetwork {
 	}
 
 	updateCoin(
-		symbol,
-		fullname,
-		opts = {
-			code: null,
+		code,
+		fields = {
+			fullname: null,
 			withdrawalFee: null,
+			description: null,
+			withdrawalFees: null,
 			min: null,
 			max: null,
+			isPublic: null,
 			incrementUnit: null,
 			logo: null,
 			meta: null,
@@ -2669,78 +2674,83 @@ class HollaExNetwork {
 			network: null,
 			standard: null,
 			allowDeposit: null,
-			allowWithdrawal: null,
+			allowWithdrawal: null
+		},
+		opts = {
 			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
 
-		if (!isString(symbol)) {
-			return reject(parameterError('symbol', 'cannot be null'));
-		} else if (!isString(fullname)) {
-			return reject(parameterError('fullname', 'cannot be null'));
+		if (!isString(code)) {
+			return reject(parameterError('code', 'cannot be null'));
+		}
+
+		if (isEmpty(fields)) {
+			return reject(parameterError('fields', 'cannot be empty'));
 		}
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/coin`;
-		const data = {
-			symbol,
-			fullname
-		};
+		const data = {};
 
-		if (isString(opts.code)) {
-			data.code = opts.code;
+		for (const field in fields) {
+			const value = fields[field];
+			const formattedField = snakeCase(field);
+
+			switch (field) {
+				case 'type':
+					if (['blockchain', 'fiat', 'other'].includes(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'fullname':
+				case 'description':
+				case 'network':
+				case 'standard':
+					if (isString(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'withdrawalFee':
+				case 'min':
+				case 'max':
+				case 'incrementUnit':
+				case 'estimatedPrice':
+					if (isNumber(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'isPublic':
+				case 'allowDeposit':
+				case 'allowWithdrawal':
+					if (isBoolean(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'logo':
+					if (isBase64(value, { mimeRequired: true })) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'meta':
+				case 'withdrawalFees':
+					if (isPlainObject(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 
-		if (isNumber(opts.withdrawalFee) && opts.withdrawalFee >= 0) {
-			data.withdrawal_fee = opts.withdrawalFee;
+		if (isEmpty(data)) {
+			return reject('No updatable fields given');
 		}
 
-		if (isNumber(opts.min)) {
-			data.min = opts.min;
-		}
-
-		if (isNumber(opts.max)) {
-			data.max = opts.max;
-		}
-
-		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
-			data.increment_unit = opts.incrementUnit;
-		}
-
-		if (isBase64(opts.logo, { mimeRequired: true })) {
-			data.logo = opts.logo;
-		}
-
-		if (isPlainObject(opts.meta)) {
-			data.meta = opts.meta;
-		}
-
-		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
-			data.estimated_price = opts.estimatedPrice;
-		}
-
-		if (isString(opts.type) && ['blockchain', 'fiat', 'other'].includes(opts.type)) {
-			data.type = opts.type;
-		}
-
-		if (isString(opts.network)) {
-			data.network = opts.network;
-		}
-
-		if (isString(opts.standard)) {
-			data.standard = opts.standard;
-		}
-
-		if (isBoolean(opts.allowDeposit)) {
-			data.allow_deposit = opts.allowDeposit;
-		}
-
-		if (isBoolean(opts.allowWithdrawal)) {
-			data.allow_withdrawal = opts.allowWithdrawal;
-		}
+		data.code = code;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2940,12 +2950,8 @@ class HollaExNetwork {
 	}
 
 	updatePair(
-		name,
-		baseCoin,
-		quoteCoin,
-		opts = {
-			code: null,
-			active: null,
+		code,
+		fields = {
 			minSize: null,
 			maxSize: null,
 			minPrice: null,
@@ -2954,72 +2960,60 @@ class HollaExNetwork {
 			incrementPrice: null,
 			estimatedPrice: null,
 			isPublic: null,
+			circuitBreaker: null
+		},
+		opts = {
 			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
 
-		if (!isString(name)) {
-			return reject(parameterError('symbol', 'cannot be null'));
-		} else if (!isString(baseCoin)) {
-			return reject(parameterError('baseCoin', 'cannot be null'));
-		} else if (!isString(quoteCoin)) {
-			return reject(parameterError('quoteCoin', 'cannot be null'));
+		if (!isString(code)) {
+			return reject(parameterError('code', 'cannot be null'));
+		}
+
+		if (isEmpty(fields)) {
+			return reject(parameterError('fields', 'cannot be empty'));
 		}
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/pair`;
-		const data = {
-			name,
-			pair_base: baseCoin,
-			pair_2: quoteCoin
-		};
+		const data = {};
 
-		if (isString(opts.code)) {
-			data.code = opts.code;
+		for (const field in fields) {
+			const value = fields[field];
+			const formattedField = snakeCase(field);
+
+			switch (field) {
+				case 'minSize':
+				case 'maxSize':
+				case 'minPrice':
+				case 'maxPrice':
+				case 'incrementSize':
+				case 'incrementPrice':
+				case 'estimatedPrice':
+					if (isNumber(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'isPublic':
+				case 'circuitBreaker':
+					if (isBoolean(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 
-		if (isBoolean(opts.active)) {
-			data.active = opts.active;
+		if (isEmpty(data)) {
+			return reject('No updatable fields given');
 		}
 
-		if (isNumber(opts.minSize)) {
-			data.min_size = opts.minSize;
-		}
-
-		if (isNumber(opts.maxSize)) {
-			data.max_size = opts.maxSize;
-		}
-
-		if (isNumber(opts.minPrice)) {
-			data.min_price = opts.minPrice;
-		}
-
-		if (isNumber(opts.maxPrice)) {
-			data.max_price = opts.maxPrice;
-		}
-
-		if (isNumber(opts.incrementSize) && opts.incrementSize >= 0) {
-			data.increment_size = opts.incrementSize;
-		}
-
-		if (isNumber(opts.incrementPrice) && opts.incrementPrice >= 0) {
-			data.increment_price = opts.incrementPrice;
-		}
-
-		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
-			data.estimated_price = opts.estimatedPrice;
-		}
-
-		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
-			data.increment_unit = opts.incrementUnit;
-		}
-
-		if (isBoolean(opts.isPublic)) {
-			data.is_public = opts.isPublic;
-		}
+		data.code = code;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
