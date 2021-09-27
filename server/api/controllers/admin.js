@@ -1317,11 +1317,7 @@ const updatePair = (req, res) => {
 	);
 
 	const {
-		name,
-		pair_base,
-		pair_2,
 		code,
-		active,
 		min_size: minSize,
 		max_size: maxSize,
 		min_price: minPrice,
@@ -1329,22 +1325,15 @@ const updatePair = (req, res) => {
 		increment_size: incrementSize,
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
-		is_public: isPublic
+		is_public: isPublic,
+		circuit_breaker: circuitBreaker
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/updatePair',
-		'name:',
-		name,
-		'pair_base:',
-		pair_base,
-		'pair_2:',
-		pair_2,
 		'code:',
 		code,
-		'active:',
-		active,
 		'min_size:',
 		minSize,
 		'max_size:',
@@ -1360,16 +1349,15 @@ const updatePair = (req, res) => {
 		'estimated_price:',
 		estimatedPrice,
 		'is_public:',
-		isPublic
+		isPublic,
+		'circuit_breaker:',
+		circuitBreaker,
+		typeof estimatedPrice
 	);
 
 	toolsLib.pair.updatePair(
-		name,
-		pair_base,
-		pair_2,
+		code,
 		{
-			code,
-			active,
 			minSize,
 			maxSize,
 			minPrice,
@@ -1378,6 +1366,9 @@ const updatePair = (req, res) => {
 			incrementPrice,
 			estimatedPrice,
 			isPublic,
+			circuitBreaker
+		},
+		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}

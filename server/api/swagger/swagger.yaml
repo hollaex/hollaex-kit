@@ -2391,7 +2391,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPostRequest"
       responses:
         200:
           description: Success
@@ -2415,7 +2415,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPutRequest"
       responses:
         200:
           description: Success
@@ -5118,7 +5118,7 @@ definitions:
         type: ['string', 'null']
       standard:
         type: ['string', 'null']
-  PairPutPostRequest:
+  PairPostRequest:
     type: object
     required:
       - name
@@ -5156,6 +5156,38 @@ definitions:
       estimated_price:
         type: number
       is_public:
+        type: boolean
+  PairPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
+      is_public:
+        type: boolean
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      circuit_breaker:
         type: boolean
   CoinResponse:
     type: object
