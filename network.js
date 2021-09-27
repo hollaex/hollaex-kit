@@ -2950,12 +2950,8 @@ class HollaExNetwork {
 	}
 
 	updatePair(
-		name,
-		baseCoin,
-		quoteCoin,
-		opts = {
-			code: null,
-			active: null,
+		code,
+		fields = {
 			minSize: null,
 			maxSize: null,
 			minPrice: null,
@@ -2964,72 +2960,60 @@ class HollaExNetwork {
 			incrementPrice: null,
 			estimatedPrice: null,
 			isPublic: null,
+			circuitBreaker: null
+		},
+		opts = {
 			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
 
-		if (!isString(name)) {
-			return reject(parameterError('symbol', 'cannot be null'));
-		} else if (!isString(baseCoin)) {
-			return reject(parameterError('baseCoin', 'cannot be null'));
-		} else if (!isString(quoteCoin)) {
-			return reject(parameterError('quoteCoin', 'cannot be null'));
+		if (!isString(code)) {
+			return reject(parameterError('code', 'cannot be null'));
+		}
+
+		if (isEmpty(fields)) {
+			return reject(parameterError('fields', 'cannot be empty'));
 		}
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/pair`;
-		const data = {
-			name,
-			pair_base: baseCoin,
-			pair_2: quoteCoin
-		};
+		const data = {};
 
-		if (isString(opts.code)) {
-			data.code = opts.code;
+		for (const field in fields) {
+			const value = fields[field];
+			const formattedField = snakeCase(field);
+
+			switch (field) {
+				case 'minSize':
+				case 'maxSize':
+				case 'minPrice':
+				case 'maxPrice':
+				case 'incrementSize':
+				case 'incrementPrice':
+				case 'estimatedPrice':
+					if (isNumber(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'isPublic':
+				case 'circuitBreaker':
+					if (isBoolean(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				default:
+					break;
+			}
 		}
 
-		if (isBoolean(opts.active)) {
-			data.active = opts.active;
+		if (isEmpty(data)) {
+			return reject('No updatable fields given');
 		}
 
-		if (isNumber(opts.minSize)) {
-			data.min_size = opts.minSize;
-		}
-
-		if (isNumber(opts.maxSize)) {
-			data.max_size = opts.maxSize;
-		}
-
-		if (isNumber(opts.minPrice)) {
-			data.min_price = opts.minPrice;
-		}
-
-		if (isNumber(opts.maxPrice)) {
-			data.max_price = opts.maxPrice;
-		}
-
-		if (isNumber(opts.incrementSize) && opts.incrementSize >= 0) {
-			data.increment_size = opts.incrementSize;
-		}
-
-		if (isNumber(opts.incrementPrice) && opts.incrementPrice >= 0) {
-			data.increment_price = opts.incrementPrice;
-		}
-
-		if (isNumber(opts.estimatedPrice) && opts.estimatedPrice >= 0) {
-			data.estimated_price = opts.estimatedPrice;
-		}
-
-		if (isNumber(opts.incrementUnit) && opts.incrementUnit >= 0) {
-			data.increment_unit = opts.incrementUnit;
-		}
-
-		if (isBoolean(opts.isPublic)) {
-			data.is_public = opts.isPublic;
-		}
+		data.code = code;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
