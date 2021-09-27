@@ -61,12 +61,8 @@ const createPair = async (
 };
 
 const updatePair = async (
-	name,
-	baseCoin,
-	quoteCoin,
-	opts = {
-		code: null,
-		active: null,
+	code,
+	fields = {
 		minSize: null,
 		maxSize: null,
 		minPrice: null,
@@ -75,17 +71,15 @@ const updatePair = async (
 		incrementPrice: null,
 		estimatedPrice: null,
 		isPublic: null,
+		circuitBreaker: null
+	},
+	opts = {
 		additionalHeaders: null
 	}
 ) => {
-	const formattedName = name.trim().toLowerCase();
-	const formattedBaseCoin = baseCoin.trim().toLowerCase();
-	const formattedQuoteCoin = quoteCoin.trim().toLowerCase();
-
 	return getNodeLib().updatePair(
-		formattedName,
-		formattedBaseCoin,
-		formattedQuoteCoin,
+		code,
+		fields,
 		opts
 	);
 };
