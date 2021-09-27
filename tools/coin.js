@@ -52,13 +52,15 @@ const createCoin = async (
 };
 
 const updateCoin = async (
-	symbol,
-	fullname,
-	opts = {
-		code: null,
+	code,
+	fields = {
+		fullname: null,
 		withdrawalFee: null,
+		description: null,
+		withdrawalFees: null,
 		min: null,
 		max: null,
+		isPublic: null,
 		incrementUnit: null,
 		logo: null,
 		meta: null,
@@ -67,13 +69,13 @@ const updateCoin = async (
 		network: null,
 		standard: null,
 		allowDeposit: null,
-		allowWithdrawal: null,
+		allowWithdrawal: null
+	},
+	opts = {
 		additionalHeaders: null
 	}
 ) => {
-	const formattedSymbol = symbol.trim().toLowerCase();
-
-	return getNodeLib().updateCoin(formattedSymbol, fullname, opts);
+	return getNodeLib().updateCoin(code, fields, opts);
 };
 
 module.exports = {
