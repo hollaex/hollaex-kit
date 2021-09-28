@@ -1,27 +1,27 @@
 //this scenario test Plug ins
 //const { util } = require('chai');
 const util = require ('./../Utils/Utils.js');
-const {  AccountLevel, LogIn, Promotion, LogOut } = require('./Modules')
+const {  AccountLevel, LogIn, Promotion, LogOut, Referral, Security } = require('./Modules')
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const { spawn } = require("child_process");
 
-const ls = spawn("ls", ["-la"]);
+// const ls = spawn("ls", ["-la"]);
 
-ls.stdout.on("data", data => {
-    console.log(`stdout: ${data}`);
-});
+// ls.stdout.on("data", data => {
+//     console.log(`stdout: ${data}`);
+// });
 
-ls.stderr.on("data", data => {
-    console.log(`stderr: ${data}`);
-});
+// ls.stderr.on("data", data => {
+//     console.log(`stderr: ${data}`);
+// });
 
-ls.on('error', (error) => {
-    console.log(`error: ${error.message}`);
-});
+// ls.on('error', (error) => {
+//     console.log(`error: ${error.message}`);
+// });
 
-ls.on("close", code => {
-    console.log(`child process exited with code ${code}`);
-});
+// ls.on("close", code => {
+//     console.log(`child process exited with code ${code}`);
+// });
 describe('Main Test', function () {
 	this.timeout(3000000);
 	function sleep(ms) {
@@ -32,6 +32,7 @@ describe('Main Test', function () {
 	afterEach(function() {
 		
 		sleep(5000);
+		util.setStep(1)
 	   //await driver.quit();
    })
    beforeEach(function() {
@@ -54,25 +55,17 @@ describe('Main Test', function () {
 	   //await driver.quit();
 	})
 		
-	it('promotion', function() {
-			//Promotion.Promotion()
+	it('promotion',async function() {
+			await Security.Security();
 			
-			util.setStep(1);
 			
-		LogIn.LogIn();
+		   
 
 			
 			
 	})
 	
-it('promotion', function() {
-		//Promotion.Promotion()
-		
-	 LogOut.LogOut();
-	
-		
-})
-	
+
 		})
 		
 	

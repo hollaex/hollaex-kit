@@ -39,7 +39,7 @@ function getNewUser(){
   
 	return localStorage.getItem('NewUser');
 }
-async function kitLogIn(driver,userName,passWord){
+async function kitLogIn(step,driver,userName,passWord){
 
 	//let driver = await new Builder().forBrowser('chrome').build();
 
@@ -55,34 +55,35 @@ async function kitLogIn(driver,userName,passWord){
 	console.log('entring', logInPage);
 	console.log(' Step # | action | target | value');
     
-	console.log(' 1 | type | name=email |', userName);
+	console.log(step++,' | type | name=email |', userName);
 	await driver.wait(until.elementLocated(By.name('email')), 5000);
 	await driver.findElement(By.name('email')).sendKeys(userName);
     
-	console.log(' 2 | type | name=password | PASSWORD');
+	console.log(step++,'  | type | name=password | PASSWORD');
 	await driver.wait(until.elementLocated(By.name('password')), 5000);
 	await driver.findElement(By.name('password')).sendKeys(passWord);
     
-	console.log(' 3 | click | css=.auth_wrapper | ');
+	console.log(step++,'  | click | css=.auth_wrapper | ');
 	await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 	await driver.findElement(By.css('.auth_wrapper')).click();
-	console.log(' 4 | verifyElementPresent | css=.holla-button |'); 
+	console.log(step++,'  | verifyElementPresent | css=.holla-button |'); 
 	{
 		const elements = await driver.findElements(By.css('.holla-button'));
 		// assert(elements.length);
 		expect(elements.length);
 	}
 	//when login    
-	console.log(' 5 | click | css=.holla-button | ');
+	console.log(step++,'  | click | css=.holla-button | ');
 	await driver.findElement(By.css('.holla-button')).click();
 	await sleep(5000);
 	//then the username should be as same as entered 		
-	console.log(' 6 | assertText | xpath=//*[@id="trade-nav-container"]/div[3]/div[2] |',userName);
+	console.log(step++,'  | assertText | xpath=//*[@id="trade-nav-container"]/div[3]/div[2] |',userName);
 	await sleep(5000)//driver.wait(until.elementLocated(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')), 20000);
 	await console.log(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText());
 	expect(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText()).to.equal(userName);
 		 
 	console.log(' you suceccefully logged in ',userName);
+	await setStep(step);
 	await sleep(4000);
 
 

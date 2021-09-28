@@ -107,7 +107,7 @@ async function Communicator(){
 			await driver.findElement(By.id('rc-tabs-1-tab-1')).click();
 			await sleep(5000);
 
-			console.log(step++,' console.log(' 18 | click | xpath=//*[@id="rc-tabs-1-panel-1"]/div/div[1]/button | ');
+			console.log(step++,' | click | xpath=//*[@id="rc-tabs-1-panel-1"]/div/div[1]/button | ');
 			await driver.findElement(By.xpath('//*[@id="rc-tabs-1-panel-1"]/div/div[1]/button')).click();
 			await sleep(5000);
 			{

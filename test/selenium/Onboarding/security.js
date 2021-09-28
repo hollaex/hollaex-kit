@@ -41,7 +41,7 @@ async function Security(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+		//	await driver.quit();
 		});
 		it('OTP', async function() {
 			console.log ('  Test name: OTP');
@@ -205,7 +205,7 @@ async function Security(){
 		it('Email Confirmation', async function() {
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
-			await util.emailLogIn(driver,emailAdmin,emailPassword);
+			await util.emailLogIn(step,driver,emailAdmin,emailPassword);
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 			
@@ -411,7 +411,7 @@ async function Security(){
 		it('Email Confirmation', async function() {
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
-			await util.emailLogIn(driver,emailAdmin,emailPassword);
+			await util.emailLogIn(step,driver,emailAdmin,emailPassword);
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 			

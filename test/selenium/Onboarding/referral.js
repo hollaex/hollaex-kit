@@ -48,7 +48,7 @@ async function Referral(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+		//	await driver.quit();
 		});
 		it('CurrentUser', async function() {
 			console.log(' Step # | action | target | value');
@@ -88,15 +88,16 @@ async function Referral(){
 			console.log(step++,'  | click | css=.mr-5 |  ')
 			await driver.findElement(By.css('.mr-5')).click();
 		
-			console.log(' 11 | click | css=.app-bar-account-content > div:nth-child(2) |  ')
+			console.log(step++,' | click | css=.app-bar-account-content > div:nth-child(2) |  ')
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
 		
-			console.log(' 12 | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) |  ')
-			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
+			console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
+			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[11]/div[3]')).click();
 	  
-	    console.log(step++,'  | open | ',signUpPage);
+	        console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
-     
+			await sleep(5000);
+
 			console.log(step++,'  | type | name=email |',newUser);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).clear();

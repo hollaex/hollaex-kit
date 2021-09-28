@@ -49,6 +49,7 @@ async function Promotion(){
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
+			await util.kitLogIn(step,driver, userName,passWord);
 		});
 
 		afterEach(async function() {
