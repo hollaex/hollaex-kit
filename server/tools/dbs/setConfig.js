@@ -22,7 +22,8 @@ const {
 	CAPTCHA_SECRET_KEY,
 	CAPTCHA_SITE_KEY,
 	ADMIN_WHITELIST_IP,
-	NATIVE_CURRENCY
+	NATIVE_CURRENCY,
+	DEFAULT_COUNTRY
 } = process.env;
 
 const kit = {
@@ -62,7 +63,8 @@ const kit = {
 	},
 	defaults: {
 		language: NEW_USER_DEFAULT_LANGUAGE || 'en',
-		theme: DEFAULT_THEME || 'white'
+		theme: DEFAULT_THEME || 'white',
+		country: DEFAULT_COUNTRY || null
 	},
 	features: {},
 	meta: {},
