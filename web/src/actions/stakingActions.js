@@ -84,8 +84,12 @@ export const loadBlockchainData = () => {
 			web3.eth.getAccounts(),
 			web3.eth.net.getNetworkType(),
 		]);
-		const balance = await web3.eth.getBalance(account);
-		dispatch(setBlockchainData(account, web3.utils.fromWei(balance), network));
+		let balance = 0;
+		if (account) {
+			const weiBalance = await web3.eth.getBalance(account);
+			balance = web3.utils.fromWei(weiBalance);
+		}
+		dispatch(setBlockchainData(account, balance, network));
 	};
 };
 

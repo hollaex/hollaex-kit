@@ -402,6 +402,7 @@ class Stake extends Component {
 						<Button
 							label={STRINGS['STAKE.CONNECT_WALLET']}
 							onClick={connectWallet}
+							className="my-4"
 						/>
 					</div>
 				)}
