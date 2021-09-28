@@ -115,7 +115,7 @@ class Stake extends Component {
 						iconId="TAB_WALLET"
 						textType="title"
 					/>
-					<Account account={account} balance={balance} />
+					<Account account={account} balance={balance} network={network} />
 				</div>
 				<div className="wallet-container no-border">
 					<div className="wallet-assets_block">
@@ -395,12 +395,6 @@ class Stake extends Component {
 								</tbody>
 							</table>
 						)}
-						<div>
-							{STRINGS['STAKE.NETWORK']}: {network}
-						</div>
-						<div>
-							{STRINGS['STAKE.ACCOUNT']}: {account}
-						</div>
 					</div>
 				</div>
 				{!account && (
