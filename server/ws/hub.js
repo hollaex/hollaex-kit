@@ -124,9 +124,9 @@ const handleHubData = (data) => {
 				}
 			});
 			break;
-		case 'configuration':
+		case 'coin':
+		case 'pair':
 			process.exit();
-			break;
 		default:
 			break;
 	}
