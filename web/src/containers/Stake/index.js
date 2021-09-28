@@ -9,8 +9,7 @@ import {
 	getCurrentBlock,
 	generateTableData,
 	getAllPeriods,
-	getUserStake,
-	removeStake,
+	getAllUserStakes,
 } from 'actions/stakingActions';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
@@ -27,6 +26,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
+import Account from './components/Account';
 
 const ConnectWalletLink = (props) => (
 	<span className="blue-link pointer underline-text" {...props}>
@@ -35,13 +35,6 @@ const ConnectWalletLink = (props) => (
 );
 
 class Stake extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			userStakes: [],
-		};
-	}
-
 	componentWillMount() {
 		const { loadBlockchainData, getAllPeriods, getCurrentBlock } = this.props;
 		loadBlockchainData();
@@ -50,10 +43,10 @@ class Stake extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { account, generateTableData } = this.props;
+		const { account, generateTableData, getAllUserStakes } = this.props;
 		if (!prevProps.account && !!account) {
 			generateTableData(account);
-			this.getUserStake('xht')(account);
+			getAllUserStakes(account);
 		}
 	}
 
@@ -79,13 +72,6 @@ class Stake extends Component {
 		return account ? element : <ConnectWalletLink onClick={connectWallet} />;
 	};
 
-	getUserStake = (token = 'xht') => async (account) => {
-		const userStakes = await getUserStake(token)(account);
-		this.setState({
-			userStakes,
-		});
-	};
-
 	startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { coins, setNotification } = this.props;
@@ -106,7 +92,6 @@ class Stake extends Component {
 	};
 
 	render() {
-		const { userStakes } = this.state;
 		const {
 			icons: ICONS,
 			coins,
@@ -115,18 +100,23 @@ class Stake extends Component {
 			network,
 			currentBlock,
 			stakables,
+			userStakes,
+			balance,
 		} = this.props;
 		const { smartRender } = this;
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
-				<IconTitle
-					stringId="STAKE.TITLE"
-					text={STRINGS['STAKE.TITLE']}
-					iconPath={ICONS['TAB_WALLET']}
-					iconId="TAB_WALLET"
-					textType="title"
-				/>
+				<div className="d-flex align-end justify-content-between">
+					<IconTitle
+						stringId="STAKE.TITLE"
+						text={STRINGS['STAKE.TITLE']}
+						iconPath={ICONS['TAB_WALLET']}
+						iconId="TAB_WALLET"
+						textType="title"
+					/>
+					<Account account={account} balance={balance} network={network} />
+				</div>
 				<div className="wallet-container no-border">
 					<div className="wallet-assets_block">
 						<div className="d-flex justify-content-between align-start">
@@ -296,112 +286,116 @@ class Stake extends Component {
 									</tr>
 								</thead>
 								<tbody>
-									{userStakes
-										.filter((stake) => stake[4] === '0')
-										.map(
-											(
-												[weiAmount, period, startBlock, reward, closeBlock],
-												index
-											) => {
-												const amount = web3.utils.fromWei(weiAmount);
-												const calculatedCloseBlock = mathjs.sum(
+									{Object.entries(userStakes).map(([symbol, stakes]) =>
+										stakes
+											.map((stake, index) => [...stake, index])
+											.filter((stake) => stake[4] === '0')
+											.map(
+												([
+													weiAmount,
+													period,
 													startBlock,
-													period
-												);
-												const remainingBlocks = mathjs.max(
-													mathjs.subtract(calculatedCloseBlock, currentBlock),
-													0
-												);
-												const estimatedLeftover = getEstimatedRemainingTime(
-													remainingBlocks
-												);
-												const isEarly = mathjs.larger(
-													calculatedCloseBlock,
-													currentBlock
-												);
-
-												const partial = mathjs.subtract(
-													currentBlock,
-													startBlock
-												);
-
-												const total = mathjs.number(period);
-
-												const data = {
-													amount,
-													partial,
-													total,
 													reward,
-													symbol: 'xht',
+													closeBlock,
 													index,
-												};
+												]) => {
+													const amount = web3.utils.fromWei(weiAmount);
+													const calculatedCloseBlock = mathjs.sum(
+														startBlock,
+														period
+													);
+													const remainingBlocks = mathjs.max(
+														mathjs.subtract(calculatedCloseBlock, currentBlock),
+														0
+													);
+													const estimatedLeftover = getEstimatedRemainingTime(
+														remainingBlocks
+													);
+													const isEarly = mathjs.larger(
+														calculatedCloseBlock,
+														currentBlock
+													);
 
-												const progressStatusText = remainingBlocks
-													? `~${estimatedLeftover.join(' ')}`
-													: 'Completed';
+													const partial = mathjs.subtract(
+														currentBlock,
+														startBlock
+													);
 
-												const btnProps = {
-													type: 'primary',
-													className: 'stake-btn',
-													ghost: true,
-													danger: !!isEarly,
-													onClick: isEarly
-														? () => this.startEarlyUnstakingProcess(data)
-														: () => this.startUnstakingProcess(data),
-													children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
-												};
-												return (
-													<tr
-														className="table-row table-bottom-border"
-														key={index}
-													>
-														<td />
-														<td>{amount}</td>
-														<td>
-															<div className="d-flex">
-																<ProgressBar partial={partial} total={total} />
-																<div className="px-2 align-center">
-																	{progressStatusText}
+													const total = mathjs.number(period);
+
+													const data = {
+														amount,
+														partial,
+														total,
+														reward,
+														symbol,
+														index,
+													};
+
+													const progressStatusText = remainingBlocks
+														? `~${estimatedLeftover.join(' ')}`
+														: 'Completed';
+
+													const btnProps = {
+														type: 'primary',
+														className: 'stake-btn',
+														ghost: true,
+														danger: !!isEarly,
+														onClick: isEarly
+															? () => this.startEarlyUnstakingProcess(data)
+															: () => this.startUnstakingProcess(data),
+														children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+													};
+													return (
+														<tr
+															className="table-row table-bottom-border"
+															key={`${symbol}_${index}`}
+														>
+															<td />
+															<td>{amount}</td>
+															<td>
+																<div className="d-flex">
+																	<ProgressBar
+																		partial={partial}
+																		total={total}
+																	/>
+																	<div className="px-2 align-center">
+																		{progressStatusText}
+																	</div>
 																</div>
-															</div>
-														</td>
-														<td>
-															<div>{`${STRINGS['STAKE.BLOCK']}: ${startBlock}`}</div>
-															<div className="secondary-text">
-																{calculateEsimatedDate(
-																	startBlock,
-																	currentBlock
-																)}
-															</div>
-														</td>
-														<td>
-															<div>{`${STRINGS['STAKE.BLOCK']}: ${calculatedCloseBlock}`}</div>
-															<div className="secondary-text">
-																{calculateEsimatedDate(
-																	calculatedCloseBlock,
-																	currentBlock
-																)}
-															</div>
-														</td>
-														<td>{reward}</td>
-														<td className="text-align-center">
-															<div className="d-flex content-center">
-																<AntBtn {...btnProps} />
-															</div>
-														</td>
-													</tr>
-												);
-											}
-										)}
+															</td>
+															<td>
+																<div>{`${STRINGS['STAKE.BLOCK']}: ${startBlock}`}</div>
+																<div className="secondary-text">
+																	{calculateEsimatedDate(
+																		startBlock,
+																		currentBlock
+																	)}
+																</div>
+															</td>
+															<td>
+																<div>{`${STRINGS['STAKE.BLOCK']}: ${calculatedCloseBlock}`}</div>
+																<div className="secondary-text">
+																	{calculateEsimatedDate(
+																		calculatedCloseBlock,
+																		currentBlock
+																	)}
+																</div>
+															</td>
+															<td>{reward}</td>
+															<td className="text-align-center">
+																<div className="d-flex content-center">
+																	<AntBtn {...btnProps} />
+																</div>
+															</td>
+														</tr>
+													);
+												}
+											)
+									)}
 								</tbody>
 							</table>
 						)}
-						<div>
-							{STRINGS['STAKE.NETWORK']}: {network}
-						</div>
-						<div>
-							{STRINGS['STAKE.ACCOUNT']}: {account}
-						</div>
 					</div>
 				</div>
 				{!account && (
@@ -409,6 +403,7 @@ class Stake extends Component {
 						<Button
 							label={STRINGS['STAKE.CONNECT_WALLET']}
 							onClick={connectWallet}
+							className="my-4"
 						/>
 					</div>
 				)}
@@ -424,6 +419,8 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	userStakes: store.stake.userStakes,
+	balance: store.stake.balance,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -432,6 +429,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getCurrentBlock: bindActionCreators(getCurrentBlock, dispatch),
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllPeriods: bindActionCreators(getAllPeriods, dispatch),
+	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 });
 
