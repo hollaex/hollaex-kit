@@ -10,18 +10,21 @@ export const SET_CURRENT_BLOCK = 'SET_CURRENT_BLOCK';
 export const SET_BLOCKCHAIN_DATA = 'SET_BLOCKCHAIN_DATA';
 export const SET_STAKABLES = 'SET_STAKABLES';
 export const SET_PERIODS = 'SET_STAKING_PERIODS';
+export const SET_USER_STAKES = 'SET_USER_STAKES';
 
-const setAccount = (account = '') => ({
+const setAccount = (account = '', balance = 0) => ({
 	type: SET_ACCOUNT,
 	payload: {
 		account,
+		balance,
 	},
 });
 
-const setBlockchainData = (account = '', network = '') => ({
+const setBlockchainData = (account = '', balance = 0, network = '') => ({
 	type: SET_BLOCKCHAIN_DATA,
 	payload: {
 		account,
+		balance,
 		network,
 	},
 });
@@ -47,13 +50,21 @@ const setPeriods = (periods = {}) => ({
 	},
 });
 
+const setAllUserStakes = (userStakes = {}) => ({
+	type: SET_USER_STAKES,
+	payload: {
+		userStakes,
+	},
+});
+
 export const connectWallet = () => {
 	return async (dispatch) => {
 		if (window.ethereum) {
 			//check if Metamask is installed
 			try {
 				const [account] = await window.ethereum.enable(); //connect Metamask
-				dispatch(setAccount(account));
+				const balance = await web3.eth.getBalance(account);
+				dispatch(setAccount(account, web3.utils.fromWei(balance)));
 			} catch (error) {
 				// Connect to Metamask using the button on the top right.
 				console.error('Connect to Metamask using the button on the top right.');
@@ -73,7 +84,8 @@ export const loadBlockchainData = () => {
 			web3.eth.getAccounts(),
 			web3.eth.net.getNetworkType(),
 		]);
-		dispatch(setBlockchainData(account, network));
+		const balance = await web3.eth.getBalance(account);
+		dispatch(setBlockchainData(account, web3.utils.fromWei(balance), network));
 	};
 };
 
@@ -114,42 +126,42 @@ export const getAllPeriods = () => {
 	};
 };
 
-export const getUserStake = (token = 'xht') => async (address) => {
+const getUserStake = (token = 'xht') => async (address) => {
 	const stakes = await CONTRACTS[token].main.methods.getStake(address).call();
 	return stakes;
 };
 
-export const approve = (token = 'xht') => async ({ amount, account }) => {
-	try {
-		await CONTRACTS[token].token.methods
-			.approve(
-				CONTRACT_ADDRESSES[token].main,
-				web3.utils.toWei(amount.toString())
-			)
-			.send({
-				...commonConfigs,
-				from: account,
-			});
-	} catch (err) {
-		console.log('err', err);
-	}
+export const getAllUserStakes = (account) => {
+	return async (dispatch) => {
+		const data = {};
+		Object.keys(CONTRACTS).forEach((symbol) => {
+			data[symbol] = getUserStake(symbol)(account);
+		});
+
+		const userStakes = await hash(data);
+		dispatch(setAllUserStakes(userStakes));
+	};
 };
 
-export const addStake = (token = 'xht') => async ({
-	amount,
-	period,
-	account,
-}) => {
-	try {
-		await CONTRACTS[token].main.methods
-			.addStake(web3.utils.toWei(amount.toString()), period)
-			.send({
-				...commonConfigs,
-				from: account,
-			});
-	} catch (err) {
-		console.log('err', err);
-	}
+export const approve = (token = 'xht') => async ({ amount, account }) => {
+	return CONTRACTS[token].token.methods
+		.approve(
+			CONTRACT_ADDRESSES[token].main,
+			web3.utils.toWei(amount.toString())
+		)
+		.send({
+			...commonConfigs,
+			from: account,
+		});
+};
+
+export const addStake = (token = 'xht') => ({ amount, period, account }) => {
+	return CONTRACTS[token].main.methods
+		.addStake(web3.utils.toWei(amount.toString()), period)
+		.send({
+			...commonConfigs,
+			from: account,
+		});
 };
 
 export const removeStake = (token = 'xht') => async ({ account, index }) => {
