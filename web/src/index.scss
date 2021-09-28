@@ -301,6 +301,14 @@ svg {
 		stroke: none;
 	}
 
+	.stake-error-outline {
+		fill: $colors-black;
+	}
+
+	.stake-error-qmark {
+		fill: $colors-notification-pending-disabled;
+	}
+
 	.deposit-bitcoin-1,
 	.withdraw-1,
 	.transaction-history-5,
