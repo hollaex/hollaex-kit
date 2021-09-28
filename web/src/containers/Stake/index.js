@@ -10,7 +10,6 @@ import {
 	generateTableData,
 	getAllPeriods,
 	getAllUserStakes,
-	removeStake,
 } from 'actions/stakingActions';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
@@ -286,14 +285,19 @@ class Stake extends Component {
 									</tr>
 								</thead>
 								<tbody>
-									{Object.entries(userStakes).map(([_, stakes]) =>
+									{Object.entries(userStakes).map(([symbol, stakes]) =>
 										stakes
+											.map((stake, index) => [...stake, index])
 											.filter((stake) => stake[4] === '0')
 											.map(
-												(
-													[weiAmount, period, startBlock, reward, closeBlock],
-													index
-												) => {
+												([
+													weiAmount,
+													period,
+													startBlock,
+													reward,
+													closeBlock,
+													index,
+												]) => {
 													const amount = web3.utils.fromWei(weiAmount);
 													const calculatedCloseBlock = mathjs.sum(
 														startBlock,
@@ -323,7 +327,7 @@ class Stake extends Component {
 														partial,
 														total,
 														reward,
-														symbol: 'xht',
+														symbol,
 														index,
 													};
 
@@ -344,7 +348,7 @@ class Stake extends Component {
 													return (
 														<tr
 															className="table-row table-bottom-border"
-															key={index}
+															key={`${symbol}_${index}`}
 														>
 															<td />
 															<td>{amount}</td>
