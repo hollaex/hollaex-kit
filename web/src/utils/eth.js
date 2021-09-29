@@ -56,3 +56,6 @@ export const calculateEsimatedDate = (block, currentBlock) => {
 		return '';
 	}
 };
+
+export const dotifyAccount = (account) =>
+	`${account.slice(0, 5)}...${account.slice(-4)}`.toUpperCase();

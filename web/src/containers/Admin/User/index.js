@@ -4,7 +4,7 @@ import querystring from 'query-string';
 import { Link } from 'react-router';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { RightOutlined } from '@ant-design/icons';
-import { Table, Spin, Button, notification, Tabs } from 'antd';
+import { Table, Spin, Button, notification, Tabs, message } from 'antd';
 import _get from 'lodash/get';
 
 import './index.css';
@@ -102,6 +102,12 @@ class App extends Component {
 		}
 		return requestUser(values, this.state.kycPluginName)
 			.then(([userInformation, userImages, userBalance]) => {
+				if (userImages.message) {
+					if (values.id === '0') {
+						message.error(userImages.message)
+						userInformation.data = [];
+					}
+				}
 				if (
 					userInformation &&
 					userInformation.data &&
@@ -186,10 +192,12 @@ class App extends Component {
 	};
 
 	searchUser = (values) => {
-		if (values.id) {
+		if (values.id === 0) {
+			this.props.router.replace(`/admin/user?id=${values.id}`);
+		} else if (values.id) {
 			this.requestUserData({ id: values.id });
 		} else {
-			const searchUserdata = values.input.trim();
+			const searchUserdata = values && values.input && values.input.trim();
 			this.requestUserData({ search: searchUserdata });
 		}
 		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -295,7 +303,7 @@ class App extends Component {
 						/>
 						{userInformationList.length ? (
 							<Table
-								className="blue-admin-table"
+								className="mt-4 blue-admin-table admin-user-container"
 								columns={COLUMNS}
 								dataSource={userInformationList}
 								rowKey={(data) => {

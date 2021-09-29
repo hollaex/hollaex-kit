@@ -4,6 +4,7 @@ import {
 	SET_CURRENT_BLOCK,
 	SET_STAKABLES,
 	SET_PERIODS,
+	SET_USER_STAKES,
 } from 'actions/stakingActions';
 
 const initialStakable = {
@@ -20,6 +21,8 @@ const initialState = {
 	currentBlock: '',
 	stakables: [initialStakable],
 	periods: {},
+	userStakes: {},
+	balance: 0,
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -29,6 +32,7 @@ export default (state = initialState, { type, payload }) => {
 		case SET_CURRENT_BLOCK:
 		case SET_STAKABLES:
 		case SET_PERIODS:
+		case SET_USER_STAKES:
 			return { ...state, ...payload };
 
 		default:

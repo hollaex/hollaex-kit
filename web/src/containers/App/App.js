@@ -576,7 +576,11 @@ class App extends Component {
 
 		const shouldCloseOnOverlayClick =
 			activeNotification.type !== CONTACT_FORM &&
-			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR &&
+			activeNotification.type === NOTIFICATIONS.STAKE &&
+			activeNotification.type === NOTIFICATIONS.UNSTAKE &&
+			activeNotification.type === NOTIFICATIONS.EARLY_UNSTAKE;
+
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
@@ -764,6 +768,13 @@ class App extends Component {
 												full:
 													activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR,
+											},
+											{
+												background:
+													activeNotification.type === NOTIFICATIONS.STAKE ||
+													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+													activeNotification.type ===
+														NOTIFICATIONS.EARLY_UNSTAKE,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -771,6 +782,10 @@ class App extends Component {
 										theme={activeTheme}
 										showCloseText={
 											!(
+												activeNotification.type === NOTIFICATIONS.STAKE ||
+												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+												activeNotification.type ===
+													NOTIFICATIONS.EARLY_UNSTAKE ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
