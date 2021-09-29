@@ -39,7 +39,7 @@ const connect = () => {
 				'ws/hub Initializing Network Websocket'
 			);
 			networkNodeLib = nodeLib;
-			networkNodeLib.connect(['orderbook', 'trade', 'configuration']);
+			networkNodeLib.connect(['orderbook', 'trade', "coin", "pair"]);
 
 			networkNodeLib.ws.on('open', () => {
 				wsConnected = true;
