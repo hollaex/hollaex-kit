@@ -1305,6 +1305,54 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+    put:
+      description: Update exchange configuration
+      operationId: updateExchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+              is_public:
+                type: boolean
+              type:
+                type: string
+                enum: ['Cloud', 'DIY', 'Enterprise']
+              name:
+                type: string
+              display_name:
+                type: string
+              url:
+                type: string
+              business_info:
+                type: object
+              pairs:
+                type: array
+                items:
+                  type: string
+              coins:
+                type: array
+                items:
+                  type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/tier:
     x-swagger-router-controller: tier
     post:

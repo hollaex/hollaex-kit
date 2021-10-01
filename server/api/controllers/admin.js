@@ -1609,6 +1609,79 @@ const getExchange = (req, res) => {
 		});
 };
 
+const updateExchange = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updateExchange auth',
+		req.auth
+	);
+
+	const {
+		info,
+		is_public: isPublic,
+		type,
+		name,
+		display_name: displayName,
+		url,
+		business_info: businessInfo,
+		pairs,
+		coins
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updateExchange body',
+		'info:',
+		info,
+		'coins:',
+		coins,
+		'pairs:',
+		pairs,
+		'is_public:',
+		isPublic,
+		'type',
+		type,
+		'name:',
+		name,
+		'display_name:',
+		displayName,
+		'url:',
+		url,
+		'business_info',
+		businessInfo
+	);
+
+	toolsLib.exchange.updateExchangeConfig(
+		{
+			info,
+			isPublic,
+			type,
+			name,
+			displayName,
+			url,
+			businessInfo,
+			pairs,
+			coins
+		},
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/updateExchange err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getNetworkCoins = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
@@ -1742,5 +1815,6 @@ module.exports = {
 	updateCoin,
 	getExchange,
 	getNetworkCoins,
-	getNetworkPairs
+	getNetworkPairs,
+	updateExchange
 };
