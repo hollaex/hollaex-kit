@@ -12,7 +12,7 @@ const getExchangeConfig = (
 };
 
 const updateExchangeConfig = (
-	opts = {
+	fields = {
 		info: null,
 		isPublic: null,
 		type: null,
@@ -21,11 +21,13 @@ const updateExchangeConfig = (
 		url: null,
 		businessInfo: null,
 		pairs: null,
-		coins: null,
+		coins: null
+	},
+	opts = {
 		additionalHeaders: null
 	}
 ) => {
-	return getNodeLib().updateExchange(opts);
+	return getNodeLib().updateExchange(fields, opts);
 };
 
 module.exports = {
