@@ -1549,6 +1549,7 @@ const updateCoin = (req, res) => {
 	toolsLib.coin.updateCoin(
 		code,
 		{
+			fullname,
 			description,
 			withdrawalFee,
 			min,
