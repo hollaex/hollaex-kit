@@ -152,9 +152,7 @@ const INITIAL_STATE = {
 	wave: [],
 	enabledPlugins: [],
 	plugins: [],
-	pluginNames: {
-		bank: 'bank',
-	},
+	pluginNames: {},
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -380,17 +378,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...enabledPluginTypes,
 			]);
 
-			const { name: bank = 'bank' } =
-				payload.enabledPlugins.find(({ type }) => type === 'bank') || {};
+			const pluginNames = {};
+			payload.enabledPlugins.forEach(({ type, name }) => {
+				pluginNames[type ? type : name] = name;
+			});
 
 			return {
 				...state,
 				enabledPlugins,
 				plugins: payload.enabledPlugins,
-				pluginNames: {
-					...state.pluginNames,
-					bank,
-				},
+				pluginNames,
 			};
 		}
 		case SET_HELPDESK_INFO: {
