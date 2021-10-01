@@ -2,8 +2,10 @@
 
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { publisher } = require('./database/redis');
+const { INIT_CHANNEL } = require(`${SERVER_PATH}/constants`);
 
-const getExchangeConfig = (
+const getExchangeConfig = async (
 	opts = {
 		additionalHeaders: null
 	}
@@ -11,7 +13,7 @@ const getExchangeConfig = (
 	return getNodeLib().getExchange(opts);
 };
 
-const updateExchangeConfig = (
+const updateExchangeConfig = async (
 	fields = {
 		info: null,
 		isPublic: null,
@@ -24,10 +26,21 @@ const updateExchangeConfig = (
 		coins: null
 	},
 	opts = {
-		additionalHeaders: null
+		additionalHeaders: null,
+		skip_refresh: null
 	}
 ) => {
-	return getNodeLib().updateExchange(fields, opts);
+	const { additionalHeaders, skip_refresh } = opts;
+	const result = await getNodeLib().updateExchange(fields, { additionalHeaders });
+
+	if (!skip_refresh) {
+		publisher.publish(
+			INIT_CHANNEL,
+			JSON.stringify({ type: 'refreshInit' })
+		);
+	}
+
+	return result;
 };
 
 module.exports = {
