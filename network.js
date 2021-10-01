@@ -2396,18 +2396,22 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	updateExchange(opts = {
-		info: null,
-		isPublic: null,
-		type: null,
-		name: null,
-		displayName: null,
-		url: null,
-		businessInfo: null,
-		pairs: null,
-		coins: null,
-		additionalHeaders: null
-	}) {
+	updateExchange(
+		fields = {
+			info: null,
+			isPublic: null,
+			type: null,
+			name: null,
+			displayName: null,
+			url: null,
+			businessInfo: null,
+			pairs: null,
+			coins: null
+		},
+		opts = {
+			additionalHeaders: null
+		}
+	) {
 		checkKit(this.exchange_id);
 
 		const verb = 'PUT';
@@ -2416,40 +2420,40 @@ class HollaExNetwork {
 			id: this.exchange_id
 		};
 
-		if (isPlainObject(opts.info)) {
-			data.info = opts.info;
+		if (isPlainObject(fields.info)) {
+			data.info = fields.info;
 		}
 
-		if (isBoolean(opts.isPublic)) {
-			data.is_public = opts.isPublic;
+		if (isBoolean(fields.isPublic)) {
+			data.is_public = fields.isPublic;
 		}
 
-		if (isString(opts.type) && ['DIY', 'Cloud', 'Enterprise'].includes(opts.type)) {
-			data.type = opts.type;
+		if (isString(fields.type) && ['DIY', 'Cloud', 'Enterprise'].includes(fields.type)) {
+			data.type = fields.type;
 		}
 
-		if (isString(opts.name)) {
-			data.name = opts.name;
+		if (isString(fields.name)) {
+			data.name = fields.name;
 		}
 
-		if (isString(opts.displayName)) {
-			data.display_name = opts.displayName;
+		if (isString(fields.displayName)) {
+			data.display_name = fields.displayName;
 		}
 
-		if (isString(opts.url)) {
-			data.url = opts.url;
+		if (isString(fields.url)) {
+			data.url = fields.url;
 		}
 
-		if (isPlainObject(opts.businessInfo)) {
-			data.business_info = opts.businessInfo;
+		if (isPlainObject(fields.businessInfo)) {
+			data.business_info = fields.businessInfo;
 		}
 
-		if (isArray(opts.pairs) && !opts.pairs.some((pair) => !isString(pair))) {
-			data.pairs = opts.pairs;
+		if (isArray(fields.pairs) && !fields.pairs.some((pair) => !isString(pair))) {
+			data.pairs = fields.pairs;
 		}
 
-		if (isArray(opts.coins) && !opts.coins.some((coin) => !isString(coin))) {
-			data.coins = opts.coins;
+		if (isArray(fields.coins) && !fields.coins.some((coin) => !isString(coin))) {
+			data.coins = fields.coins;
 		}
 
 		const headers = generateHeaders(
