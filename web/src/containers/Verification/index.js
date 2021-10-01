@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Tabs } from 'antd';
+import querystring from 'query-string';
 // import * as d3 from 'd3-selection';
 import {
 	// AppBar,
@@ -16,6 +17,7 @@ import {
 	PanelInformationRow,
 	Button,
 	SmartTarget,
+	SuccessDisplay
 } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
@@ -84,6 +86,8 @@ class Verification extends Component {
 				title: STRINGS['USER_VERIFICATION.TITLE_ID_DOCUMENTS'],
 			},
 		],
+		paramsData: {},
+		isCustomNotification: false
 	};
 
 	componentDidMount() {
@@ -91,6 +95,17 @@ class Verification extends Component {
 			this.setUserData(this.props.user);
 		}
 		this.getBankData();
+		const qs = querystring.parse(this.props.location.search);
+		if (Object.keys(qs).length) {
+			const { success_alert, error_alert } = qs;
+			let paramsData = {};
+			if (success_alert) {
+				paramsData = { status: true, message: success_alert }
+			} else if (error_alert) {
+				paramsData = { status: false, message: error_alert }
+			}
+			this.setState({ paramsData, isCustomNotification: true })
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -635,6 +650,10 @@ class Verification extends Component {
 
 	onLogout = () => this.props.logout('');
 
+	onCloseNotification = () => {
+		this.setState({ paramsData: {}, isCustomNotification: false });
+	};
+
 	render() {
 		const { activeLanguage, activeTheme, icons: ICONS } = this.props;
 		const {
@@ -643,6 +662,8 @@ class Verification extends Component {
 			dialogIsOpen,
 			dialogType,
 			showVerificationSentModal,
+			paramsData,
+			isCustomNotification
 		} = this.state;
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
@@ -706,6 +727,18 @@ class Verification extends Component {
 						this.setState({ showVerificationSentModal: false });
 					}}
 				/>
+				<Dialog
+					isOpen={isCustomNotification}
+					onCloseDialog={this.onCloseNotification}
+					theme={activeTheme}
+				>
+					<SuccessDisplay
+						onClick={this.onCloseNotification}
+						text={paramsData.message}
+						success={paramsData.status}
+						iconPath={null}
+					/>
+				</Dialog>
 			</div>
 		);
 	}
