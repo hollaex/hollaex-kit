@@ -2751,7 +2751,7 @@ class HollaExNetwork {
 		}
 
 		if (isEmpty(data)) {
-			return reject('No updatable fields given');
+			return reject(new Error('No updatable fields given'));
 		}
 
 		data.code = code;
@@ -3014,7 +3014,7 @@ class HollaExNetwork {
 		}
 
 		if (isEmpty(data)) {
-			return reject('No updatable fields given');
+			return reject(new Error('No updatable fields given'));
 		}
 
 		data.code = code;
