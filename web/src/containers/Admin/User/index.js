@@ -33,7 +33,16 @@ const Form = AdminHocForm('USER_REQUEST_FORM');
 const TabPane = Tabs.TabPane;
 
 class App extends Component {
-	state = INITIAL_STATE;
+	constructor(props) {
+		super(props);
+		const {
+			pluginNames: { kyc: kycPluginName },
+		} = this.props;
+		this.state = {
+			...INITIAL_STATE,
+			kycPluginName,
+		};
+	}
 
 	componentWillMount() {
 		this.getMyPlugins();
@@ -338,6 +347,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	pluginNames: state.app.pluginNames,
 	coins: state.app.coins,
 	constants: state.app.constants,
 });
