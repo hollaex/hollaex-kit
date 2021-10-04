@@ -50,10 +50,11 @@
 		max-height: $max-content-height-double-bar-mobile;
 		.quick_trade-wrapper {
 			flex: 1 1;
-			min-width: 95vw;
-			max-width: 100vw;
-			margin: 1rem;
-			padding: 1rem;
+			min-width: 90vw;
+			max-width: 95vw;
+			margin: 0;
+			flex-direction: column;
+			padding: 0;
 		}
 	}
 	.base_negative_balance,

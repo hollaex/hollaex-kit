@@ -307,6 +307,15 @@ export default {
 		BUTTON: 'Review Order', // updated
 		INPUT: '{0} to {1}',
 		TRADE_TITLE: '{0} {1}', // quick buy
+		INFO: 'Fastest and simplest way to trade your crypto', //new
+		CHANGE_TEXT: 'change', //new
+		HIGH_24H: '24H HIGH', //new
+		LOW_24H: '24H LOW', //new
+		BEST_BID: 'BEST BID', //new
+		BEST_ASK: 'BEST ASK', //new
+		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
+		FOOTER_TEXT_1: 'Sourced from', //new
+		GO_TO_TEXT: 'Go to', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',

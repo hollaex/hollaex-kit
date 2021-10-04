@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import {
 	oneOfType,
 	object,
@@ -11,15 +12,62 @@ import {
 import classnames from 'classnames';
 import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
-import withConfig from 'components/ConfigProvider/withConfig';
+import { Transition } from 'react-transition-group';
+import _get from 'lodash/get';
 
+import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
 import { STATIC_ICONS } from 'config/icons';
+import SparkLine from 'containers/TradeTabs/components/SparkLine';
+import { getSparklines } from 'actions/chartAction';
 
 class QuickTrade extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			tickerDiff: 0,
+			inProp: false,
+			market: {},
+			chartData: {}
+		};
+	}
+
+	componentDidMount() {
+		if (this.props.market) {
+			this.setState({
+				market: this.props.market,
+			});
+		}
+
+		getSparklines(Object.keys(this.props.pairs)).then((chartData) =>
+			this.setState({ chartData })
+		);
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.market !== prevProps.market) {
+			this.setState({ market: this.props.market });
+		}
+
+		if (_get(prevProps, 'market.ticker.close') !== _get(this.props, 'market.ticker.close')) {
+			const tickerDiff = _get(this.props, 'market.ticker.close') - _get(prevProps, 'market.ticker.close');
+			this.setState((prevState) => ({
+				...prevState,
+				tickerDiff,
+				inProp: !prevState.inProp,
+			}));
+		}
+
+		if (this.props.pairs !== prevProps.pairs) {
+			getSparklines(Object.keys(this.props.pairs)).then((chartData) =>
+				this.setState({ chartData })
+			);
+		}
+	}
+
 	render() {
 		const {
 			targetAmount,
@@ -40,12 +88,37 @@ class QuickTrade extends Component {
 			side,
 			icons: ICONS,
 			autoFocus = true,
+			coins,
+			user,
 		} = this.props;
+		const { inProp, market, tickerDiff, chartData } = this.state;
+
+		const {
+			key,
+			priceDifferencePercent,
+			priceDifference,
+			ticker = {}
+		} = market;
+
+		let pairBase_fullName;
+		let pair2_fullName;
+		Object.keys(coins).forEach(data => {
+			if (coins[data].symbol === selectedSource) {
+				pairBase_fullName = coins[data].fullname
+			} else if (coins[data].symbol === selectedTarget) {
+				pair2_fullName = coins[data].fullname
+			}
+		});
+
+		let userBalance;
+		Object.keys(user).forEach(data => {
+			if (data === 'balance') {
+				userBalance = user[data];
+			}
+		});
 
 		return (
-			<div
-				className={classnames('quick_trade-wrapper', 'd-flex', 'flex-column')}
-			>
+			<div className="quick_trade-container">
 				<div
 					className={classnames(
 						'quick_trade-section_wrapper',
@@ -74,48 +147,208 @@ class QuickTrade extends Component {
 					>
 						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
 					</div>
+					<div
+						className={classnames(
+							'info-text',
+							...FLEX_CENTER_CLASSES
+						)}
+					>
+						{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
+					</div>
 				</div>
-				<InputGroup
-					name={STRINGS['CONVERT']}
-					stringId={'CONVERT'}
-					options={sourceOptions}
-					inputValue={sourceAmount}
-					selectValue={selectedSource}
-					onSelect={onSelectSource}
-					onInputChange={onChangeSourceAmount}
-					forwardError={forwardSourceError}
-					limits={side === 'buy' ? PRICE : SIZE}
-					autoFocus={autoFocus}
-				/>
-				<InputGroup
-					name={STRINGS['TO']}
-					stringId={'TO'}
-					options={targetOptions}
-					inputValue={targetAmount}
-					selectValue={selectedTarget}
-					onSelect={onSelectTarget}
-					onInputChange={onChangeTargetAmount}
-					forwardError={forwardTargetError}
-					limits={side === 'buy' ? SIZE : PRICE}
-				/>
 				<div
-					className={classnames(
-						'quick_trade-section_wrapper',
-						'quick_trade-bottom-padded',
-						'my-5',
-						'd-flex',
-						'flex-column',
-						'align-items-end'
-						// ...GROUP_CLASSES
-					)}
+					className={classnames('quick_trade-wrapper', 'd-flex')}
 				>
-					<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />
-					<Button
-						label={STRINGS['QUICK_TRADE_COMPONENT.BUTTON']}
-						onClick={onReviewQuickTrade}
-						disabled={disabled}
-						type="button"
-					/>
+					<div className="trade-details-wrapper">
+						<div className="trade-details-content">
+							<div className="d-flex pb-30">
+								<Image
+									iconId={`${selectedSource.toUpperCase()}_ICON`}
+									icon={
+										ICONS[`${selectedSource.toUpperCase()}_ICON`]
+											? ICONS[`${selectedSource.toUpperCase()}_ICON`]
+											: ICONS['DEFAULT_ICON']
+									}
+									wrapperClassName="coins-icon"
+								/>
+								<div className="pl-2">
+									<div className="pairs">{selectedSource.toUpperCase()}/{selectedTarget.toUpperCase()}</div>
+									<div className="fullname">{pairBase_fullName}/{pair2_fullName}</div>
+								</div>
+							</div>
+							<div className="d-flex">
+								<div>
+									<div className="fullname">
+										<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
+											{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-18 pr-2">{ticker.last}</div>
+										<div className="fullname">{selectedSource.toUpperCase()}</div>
+									</div>
+								</div>
+								<div className="pl-6 trade_tabs-container">
+									<div className="fullname">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
+											{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT'].toUpperCase()}
+										</EditWrapper>
+									</div>
+									<Transition in={inProp} timeout={1000}>
+										{(state) => (
+											<div className="d-flex f-size-18">
+												<div
+													className={classnames(
+														'title-font',
+														priceDifference < 0
+															? 'price-diff-down trade-tab-price_diff_down'
+															: 'price-diff-up trade-tab-price_diff_up',
+														tickerDiff < 0
+															? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
+															: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
+													)}
+												>
+													{priceDifferencePercent}
+												</div>
+											</div>
+										)}
+									</Transition>
+								</div>
+							</div>
+							<div className="chart w-100">
+								<div className="fade-area"></div>
+								<SparkLine
+									data={chartData[key] || []}
+									containerProps={{ style: { height: '100%', width: '100%' } }}
+								/>
+							</div>
+							<div className="d-flex pb-35">
+								<div>
+									<div className="fullname">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
+											{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker.high}</div>
+										<div className="fullname">{selectedSource.toUpperCase()}</div>
+									</div>
+								</div>
+								<div className="pl-6">
+									<div className="fullname">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
+											{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker.low}</div>
+										<div className="fullname">{selectedSource.toUpperCase()}</div>
+									</div>
+								</div>
+							</div>
+							<div className="d-flex pb-35">
+								<div>
+									<div className="fullname">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
+											{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker.open}</div>
+										<div className="fullname">{selectedSource.toUpperCase()}</div>
+									</div>
+								</div>
+								<div className="pl-6">
+									<div className="fullname">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
+											{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker.close}</div>
+										<div className="fullname">{selectedSource.toUpperCase()}</div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div className="fullname">
+									<EditWrapper stringId="SUMMARY.VOLUME_24H">
+										{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
+									</EditWrapper>
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{ticker.volume}</div>
+									<div className="fullname">{selectedSource.toUpperCase()}</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="d-flex flex-column trade-section">
+						<div className="inner-content">
+							<div className="small-text">
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT">
+									<div className="mr-2">{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}</div>
+								</EditWrapper>{' '}
+								<Link to="/wallet"><span><div>{STRINGS['WALLET_TITLE']}</div></span></Link>
+							</div>
+							<div className="small-text">{selectedSource.toUpperCase()} {STRINGS['BALANCE_TEXT']}: <span className="ml-2">{userBalance[`${selectedSource.toLowerCase()}_balance`]}</span></div>
+							<InputGroup
+								name={STRINGS['CONVERT']}
+								stringId={'CONVERT'}
+								options={sourceOptions}
+								inputValue={sourceAmount}
+								selectValue={selectedSource}
+								onSelect={onSelectSource}
+								onInputChange={onChangeSourceAmount}
+								forwardError={forwardSourceError}
+								limits={side === 'buy' ? PRICE : SIZE}
+								autoFocus={autoFocus}
+							/>
+							<InputGroup
+								name={STRINGS['TO']}
+								stringId={'TO'}
+								options={targetOptions}
+								inputValue={targetAmount}
+								selectValue={selectedTarget}
+								onSelect={onSelectTarget}
+								onInputChange={onChangeTargetAmount}
+								forwardError={forwardTargetError}
+								limits={side === 'buy' ? SIZE : PRICE}
+							/>
+							<div className="small-text">{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}: <span className="ml-2">{userBalance[`${selectedTarget.toLowerCase()}_balance`]}</span></div>
+							<div
+								className={classnames(
+									'quick_trade-section_wrapper',
+									// 'quick_trade-bottom-padded',
+									// 'my-5',
+									'd-flex',
+									'flex-column',
+									'align-items-end',
+									'btn-wrapper'
+									// ...GROUP_CLASSES
+								)}
+							>
+								<EditWrapper stringId={'QUICK_TRADE_COMPONENT.BUTTON'} />
+								<Button
+									label={STRINGS['QUICK_TRADE_COMPONENT.BUTTON']}
+									onClick={onReviewQuickTrade}
+									disabled={disabled}
+									type="button"
+									className="w-50"
+								/>
+							</div>
+							<div className="footer-text">
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">
+									<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}</div>
+								</EditWrapper>
+								<div>
+									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
+										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
+									</EditWrapper>: {selectedSource.toUpperCase()}/{selectedTarget.toUpperCase()}
+									{' '}<span>{STRINGS['TYPES_VALUES.market']}</span></div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
@@ -143,7 +376,7 @@ QuickTrade.propTypes = {
 QuickTrade.defaultProps = {
 	targetOptions: [],
 	sourceOptions: [],
-	onReviewQuickTrade: () => {},
+	onReviewQuickTrade: () => { },
 	disabled: false,
 };
 
