@@ -193,7 +193,7 @@ class Home extends Component {
 					market.forEach(data => {
 						const keyData = data.key.split('-');
 						if ((keyData[0] === selectedSource && keyData[1] === selectedTarget) ||
-							keyData[1] === selectedSource && keyData[0] === selectedTarget
+							(keyData[1] === selectedSource && keyData[0] === selectedTarget)
 						) {
 							marketData = data;
 						}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
+import _get from 'lodash/get';
 
 class SparkLine extends Component {
 	constructor(props) {
@@ -68,6 +69,8 @@ class SparkLine extends Component {
 					series: [
 						{
 							...prevState.chartOptions.series,
+							name: _get(nextProps, 'data.name') ? _get(nextProps, 'data.name') : _get(prevState, 'chartOptions.series.name'),
+							type: _get(nextProps, 'data.type') ? _get(nextProps, 'data.type') : _get(prevState, 'chartOptions.series.type'),
 							data: nextProps.data.close,
 							threshold: nextProps.data.open,
 						},
