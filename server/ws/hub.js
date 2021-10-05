@@ -16,7 +16,7 @@ const hubConnected = () => wsConnected;
 subscriber.on('message', (channel, message) => {
 	if (channel === WS_HUB_CHANNEL) {
 		const { action } = JSON.parse(message);
-		switch(action) {
+		switch (action) {
 			case 'restart':
 				if (hubConnected() && networkNodeLib && networkNodeLib.wsConnected()) {
 					networkNodeLib.disconnect();
@@ -39,7 +39,7 @@ const connect = () => {
 				'ws/hub Initializing Network Websocket'
 			);
 			networkNodeLib = nodeLib;
-			networkNodeLib.connect(['orderbook', 'trade']);
+			networkNodeLib.connect(['orderbook', 'trade', "coin", "pair"]);
 
 			networkNodeLib.ws.on('open', () => {
 				wsConnected = true;
@@ -86,7 +86,9 @@ const connect = () => {
 				message = err.error.message;
 			}
 			loggerWebsocket.error('ws/hub/connect/checkStatus Error ', message);
-			setTimeout(() => { process.exit(1); }, 5000);
+			setTimeout(() => {
+				process.exit(1);
+			}, 5000);
 		});
 };
 
@@ -122,6 +124,9 @@ const handleHubData = (data) => {
 				}
 			});
 			break;
+		case 'coin':
+		case 'pair':
+			process.exit();
 		default:
 			break;
 	}
