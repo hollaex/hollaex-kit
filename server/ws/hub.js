@@ -2,8 +2,8 @@
 
 const { loggerWebsocket } = require('../config/logger');
 const { checkStatus } = require('../init');
-const { subscriber } = require('../db/pubsub');
-const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL } = require('../constants');
+const { subscriber, publisher } = require('../db/pubsub');
+const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL, INIT_CHANNEL } = require('../constants');
 const { each } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
@@ -39,7 +39,7 @@ const connect = () => {
 				'ws/hub Initializing Network Websocket'
 			);
 			networkNodeLib = nodeLib;
-			networkNodeLib.connect(['orderbook', 'trade', "coin", "pair"]);
+			networkNodeLib.connect(['orderbook', 'trade', 'coin', 'pair']);
 
 			networkNodeLib.ws.on('open', () => {
 				wsConnected = true;
@@ -126,7 +126,8 @@ const handleHubData = (data) => {
 			break;
 		case 'coin':
 		case 'pair':
-			process.exit();
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			break;
 		default:
 			break;
 	}
