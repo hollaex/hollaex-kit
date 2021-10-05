@@ -4417,6 +4417,8 @@ definitions:
                 type: string
               language:
                 type: string
+              country:
+                type: ['string', 'null']
           color:
             type: object
           links:

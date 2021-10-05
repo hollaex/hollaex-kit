@@ -4591,17 +4591,70 @@ table th {
     color: var(--calculated_notification-pending-disabled);
     border-color: var(--calculated_notification-pending-disabled); }
 
-.stake-amount-input.ant-input {
+.stake-amount-input.ant-input, .stake-amount-input.ant-input-affix-wrapper {
   background-color: var(--labels_fields);
   border: 1px solid var(--calculated_secondary-border);
   color: var(--labels_important-active-labels-text-graphics); }
 
-.stake-period-button.ant-radio-button-wrapper {
-  color: var(--labels_secondary-inactive-label-text-graphics);
-  background-color: transparent; }
+.stake-amount-input.ant-input-affix-wrapper .ant-input {
+  background-color: var(--labels_fields);
+  color: var(--labels_important-active-labels-text-graphics); }
 
-.stake .mdc-button--unelevated {
-  margin-top: 2rem !important; }
+.stake-amount-input .ant-input-prefix .currency-ball {
+  width: 30px;
+  margin-top: 4px; }
+  .stake-amount-input .ant-input-prefix .currency-ball div {
+    height: 30px; }
+
+.stake-period-group.ant-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly; }
+
+.stake-period-button.ant-radio-button-wrapper {
+  margin: 1rem;
+  padding: 0.2rem;
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: transparent;
+  background-size: 100%;
+  background-repeat: repeat-y;
+  height: 10rem;
+  width: 10rem;
+  border: none;
+  font-size: 1rem;
+  line-height: 1.2rem;
+  text-align: center; }
+  .stake-period-button.ant-radio-button-wrapper .period-x {
+    font-weight: bolder;
+    font-size: 4rem;
+    line-height: 5rem; }
+  .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
+    background-color: transparent; }
+
+.stake-period-button.ant-radio-button-wrapper-checked {
+  height: 12rem;
+  width: 12rem; }
+  .stake-period-button.ant-radio-button-wrapper-checked .period-x {
+    font-weight: bolder;
+    font-size: 5rem;
+    line-height: 6rem; }
+
+.staking-account__container {
+  padding: 0 0.5rem;
+  background-color: var(--base_wallet-sidebar-and-popup);
+  border-radius: 0.5rem;
+  margin: 0.5rem 0;
+  font-weight: bold; }
+
+.staking-account__balance {
+  padding: 1rem; }
+
+.staking-account__address {
+  background-color: var(--base_background);
+  margin: 0.5rem 0;
+  padding: 0.5rem;
+  border-radius: 0.5rem; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
@@ -7120,6 +7173,26 @@ table th {
   align-items: center;
   z-index: 100 !important;
   background-color: var(--calculated_base_modal-overlay) !important; }
+
+.background .ReactModal__Content {
+  padding: 0 !important;
+  max-width: 100% !important;
+  max-height: 100% !important; }
+  .background .ReactModal__Content .action_notification-wrapper.close-button {
+    margin: 0 !important; }
+
+.background .icon_title-wrapper {
+  margin-top: 0 !important; }
+
+.dialog-content {
+  padding-right: 2.5rem;
+  padding-left: 2.5rem; }
+  .dialog-content.top {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 30rem; }
+  .dialog-content.bottom {
+    padding-bottom: 2.5rem; }
 
 .ReactModal__Content {
   padding: 2.5rem !important;
@@ -10247,6 +10320,12 @@ svg .transaction-history-4,
 svg .wallet-coins-1,
 svg .quick-trade-3 {
   stroke: none; }
+
+svg .stake-error-outline {
+  fill: var(--labels_secondary-inactive-label-text-graphics); }
+
+svg .stake-error-qmark {
+  fill: var(--calculated_notification-pending-disabled); }
 
 svg .deposit-bitcoin-1,
 svg .withdraw-1,
