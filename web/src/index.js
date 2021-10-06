@@ -228,10 +228,19 @@ const getConfigs = async () => {
 		captcha,
 	});
 
-	return [appConfigs, injected_values, injected_html];
+	const {
+		app: { plugins_injected_html },
+	} = store.getState();
+
+	return [appConfigs, injected_values, injected_html, plugins_injected_html];
 };
 
-const bootstrapApp = (appConfig, injected_values, injected_html) => {
+const bootstrapApp = (
+	appConfig,
+	injected_values,
+	injected_html,
+	plugins_injected_html
+) => {
 	const {
 		icons: {
 			dark: { EXCHANGE_FAV_ICON = '/favicon.ico' },
@@ -239,6 +248,7 @@ const bootstrapApp = (appConfig, injected_values, injected_html) => {
 	} = appConfig;
 	addElements(injected_values, 'head');
 	injectHTML(injected_html, 'head');
+	injectHTML(plugins_injected_html, 'head');
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	// window.appConfig = { ...appConfig }
 	const {
@@ -267,8 +277,18 @@ const bootstrapApp = (appConfig, injected_values, injected_html) => {
 
 const initialize = async () => {
 	try {
-		const [configs, injected_values, injected_html] = await getConfigs();
-		bootstrapApp(configs, injected_values, injected_html);
+		const [
+			configs,
+			injected_values,
+			injected_html,
+			plugins_injected_html,
+		] = await getConfigs();
+		bootstrapApp(
+			configs,
+			injected_values,
+			injected_html,
+			plugins_injected_html
+		);
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);
