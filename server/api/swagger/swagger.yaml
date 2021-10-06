@@ -1305,6 +1305,54 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+    put:
+      description: Update exchange configuration
+      operationId: updateExchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+              is_public:
+                type: boolean
+              type:
+                type: string
+                enum: ['Cloud', 'DIY', 'Enterprise']
+              name:
+                type: string
+              display_name:
+                type: string
+              url:
+                type: string
+              business_info:
+                type: object
+              pairs:
+                type: array
+                items:
+                  type: string
+              coins:
+                type: array
+                items:
+                  type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/tier:
     x-swagger-router-controller: tier
     post:
@@ -2391,7 +2439,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPostRequest"
       responses:
         200:
           description: Success
@@ -2415,7 +2463,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPutRequest"
       responses:
         200:
           description: Success
@@ -2580,7 +2628,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPostRequest"
       responses:
         200:
           description: Success
@@ -2604,7 +2652,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPutRequest"
       responses:
         200:
           description: Success
@@ -5031,7 +5079,7 @@ definitions:
         type: boolean
       updated_description:
         type: string
-  CoinPutPostRequest:
+  CoinPostRequest:
     type: object
     required:
       - symbol
@@ -5075,7 +5123,52 @@ definitions:
         type: boolean
       allow_withdrawal:
         type: boolean
-  PairPutPostRequest:
+  CoinPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      fullname:
+        type: string
+      withdrawal_fee:
+        type: number
+        format: double
+      description:
+        type: ['string', 'null']
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+      withdrawal_fees:
+        type: ['object', 'null']
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: boolean
+      is_public:
+        type: boolean
+      increment_unit:
+        type: number
+        format: double
+      logo:
+        type: ['string', 'null']
+      meta:
+        type: object
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      type:
+        type: string
+        enum: ['blockchain', 'fiat', 'other']
+      network:
+        type: ['string', 'null']
+      standard:
+        type: ['string', 'null']
+  PairPostRequest:
     type: object
     required:
       - name
@@ -5113,6 +5206,38 @@ definitions:
       estimated_price:
         type: number
       is_public:
+        type: boolean
+  PairPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
+      is_public:
+        type: boolean
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      circuit_breaker:
         type: boolean
   CoinResponse:
     type: object
