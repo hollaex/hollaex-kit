@@ -116,7 +116,11 @@ class QuickTrade extends Component {
 				userBalance = user[data];
 			}
 		});
-
+		const lineChartData = {
+			...chartData[key],
+			name: 'Line',
+			type: 'line'
+		}
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -170,6 +174,7 @@ class QuickTrade extends Component {
 											: ICONS['DEFAULT_ICON']
 									}
 									wrapperClassName="coins-icon"
+									imageWrapperClassName="currency-ball-image-wrapper"
 								/>
 								<div className="pl-2">
 									<div className="pairs">{selectedSource.toUpperCase()}/{selectedTarget.toUpperCase()}</div>
@@ -218,7 +223,7 @@ class QuickTrade extends Component {
 							<div className="chart w-100">
 								<div className="fade-area"></div>
 								<SparkLine
-									data={chartData[key] || []}
+									data={lineChartData || []}
 									containerProps={{ style: { height: '100%', width: '100%' } }}
 								/>
 							</div>
