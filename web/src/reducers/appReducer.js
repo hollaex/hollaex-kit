@@ -152,9 +152,7 @@ const INITIAL_STATE = {
 	wave: [],
 	enabledPlugins: [],
 	plugins: [],
-	pluginNames: {
-		bank: 'bank',
-	},
+	pluginNames: {},
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -167,6 +165,7 @@ const INITIAL_STATE = {
 	features: {},
 	injected_values: [],
 	injected_html: {},
+	plugins_injected_html: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -380,17 +379,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...enabledPluginTypes,
 			]);
 
-			const { name: bank = 'bank' } =
-				payload.enabledPlugins.find(({ type }) => type === 'bank') || {};
+			const pluginNames = {};
+			payload.enabledPlugins.forEach(({ type, name }) => {
+				pluginNames[type ? type : name] = name;
+			});
 
 			return {
 				...state,
 				enabledPlugins,
 				plugins: payload.enabledPlugins,
-				pluginNames: {
-					...state.pluginNames,
-					bank,
-				},
+				pluginNames,
 			};
 		}
 		case SET_HELPDESK_INFO: {
@@ -431,6 +429,17 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				}
 			});
 
+			const plugins_injected_html = { head: '', body: '' };
+			allWebViews.forEach(({ injected_html = {} }) => {
+				Object.keys(plugins_injected_html).forEach((key) => {
+					if (injected_html && injected_html[key]) {
+						plugins_injected_html[key] = plugins_injected_html[key].concat(
+							injected_html[key]
+						);
+					}
+				});
+			});
+
 			const CLUSTERED_WEB_VIEWS = {};
 			allWebViews.forEach((plugin) => {
 				const { target } = plugin;
@@ -465,6 +474,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 
 			return {
 				...state,
+				plugins_injected_html,
 				webViews: FILTERED_CLUSTERED_WEB_VIEWS,
 				targets: Object.entries(FILTERED_CLUSTERED_WEB_VIEWS).map(
 					([target]) => target
