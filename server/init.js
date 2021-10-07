@@ -135,15 +135,19 @@ const checkStatus = () => {
 						taker: {}
 					};
 
+					const defaultFees = exchange.type === 'Enterprise'
+						? { maker: 0, taker: 0 }
+						: DEFAULT_FEES[exchange.collateral_level];
+
 					for (let pair of exchangePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {
-							fees.maker[pair] = DEFAULT_FEES[exchange.collateral_level].maker;
+							fees.maker[pair] = defaultFees.maker;
 						} else {
 							fees.maker[pair] = tier.fees.maker[pair];
 						}
 
 						if (!isNumber(tier.fees.taker[pair])) {
-							fees.taker[pair] = DEFAULT_FEES[exchange.collateral_level].taker;
+							fees.taker[pair] = defaultFees.taker;
 						} else {
 							fees.taker[pair] = tier.fees.taker[pair];
 						}
