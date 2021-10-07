@@ -25,8 +25,15 @@ import {
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 
+import { userActiveStakesSelector } from './selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import Account from './components/Account';
+import { formatToCurrency } from 'utils/currency';
+import {
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+} from 'config/constants';
 
 const ConnectWalletLink = (props) => (
 	<span className="blue-link pointer underline-text" {...props}>
@@ -91,6 +98,21 @@ class Stake extends Component {
 		setNotification(NOTIFICATIONS.UNSTAKE, { stakeData });
 	};
 
+	getValue = (balances, prices) => {
+		let value = 0;
+		Object.entries(balances).forEach(([symbol, balance]) => {
+			value = mathjs.sum(
+				mathjs.multiply(
+					balance,
+					!prices[symbol] || prices[symbol] === -1 ? 0 : prices[symbol]
+				),
+				value
+			);
+		});
+
+		return value;
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -100,10 +122,31 @@ class Stake extends Component {
 			network,
 			currentBlock,
 			stakables,
-			userStakes,
+			activeStakes,
+			activeStakesCount,
+			totalUserStakes,
+			totalUserEarnings,
 			balance,
+			prices,
 		} = this.props;
 		const { smartRender } = this;
+
+		const totlStakes = this.getValue(totalUserStakes, prices);
+		const totalEarnings = this.getValue(totalUserEarnings, prices);
+
+		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+
+		const totalStakesString = STRINGS.formatString(
+			CURRENCY_PRICE_FORMAT,
+			symbol.toUpperCase(),
+			formatToCurrency(totlStakes, min)
+		);
+
+		const totalEarningsString = STRINGS.formatString(
+			CURRENCY_PRICE_FORMAT,
+			symbol.toUpperCase(),
+			formatToCurrency(totalEarnings, min)
+		);
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
@@ -151,12 +194,12 @@ class Stake extends Component {
 							>
 								<div>
 									<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
-									<div>{smartRender('___')}</div>
+									<div>{smartRender(totalStakesString)}</div>
 									<div className="kit-divider" />
 								</div>
 								<div>
 									<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
-									<div>{smartRender('___')}</div>
+									<div>{smartRender(totalEarningsString)}</div>
 									<div className="kit-divider" />
 								</div>
 							</div>
@@ -199,13 +242,7 @@ class Stake extends Component {
 							</thead>
 							<tbody>
 								{stakables.map((tokenData, index) => {
-									const {
-										symbol,
-										available,
-										total,
-										rate,
-										earnings,
-									} = tokenData;
+									const { symbol, available } = tokenData;
 									const { fullname } = coins[symbol];
 									const iconId = `${symbol.toUpperCase()}_ICON`;
 									return (
@@ -227,9 +264,9 @@ class Stake extends Component {
 												</div>
 											</td>
 											<td>{smartRender(available)}</td>
-											<td>{smartRender(total)}</td>
-											<td>{smartRender(rate)}</td>
-											<td>{smartRender(earnings)}</td>
+											<td>{smartRender(totalUserStakes[symbol])}</td>
+											<td>{smartRender(STRINGS['STAKE_TABLE.VARIABLE'])}</td>
+											<td>{smartRender(totalUserEarnings[symbol])}</td>
 											<td>
 												<div className="d-flex content-center">
 													<AntBtn
@@ -248,7 +285,7 @@ class Stake extends Component {
 								})}
 							</tbody>
 						</table>
-						{account && (
+						{account && activeStakesCount !== 0 && (
 							<table className="wallet-assets_block-table mt-4">
 								<thead>
 									<tr className="table-bottom-border">
@@ -286,112 +323,106 @@ class Stake extends Component {
 									</tr>
 								</thead>
 								<tbody>
-									{Object.entries(userStakes).map(([symbol, stakes]) =>
-										stakes
-											.map((stake, index) => [...stake, index])
-											.filter((stake) => stake[4] === '0')
-											.map(
-												([
-													weiAmount,
-													period,
+									{Object.entries(activeStakes).map(([symbol, stakes]) =>
+										stakes.map(
+											([
+												weiAmount,
+												period,
+												startBlock,
+												reward,
+												closeBlock,
+												index,
+											]) => {
+												const amount = web3.utils.fromWei(weiAmount);
+												const calculatedCloseBlock = mathjs.sum(
 													startBlock,
+													period
+												);
+												const remainingBlocks = mathjs.max(
+													mathjs.subtract(calculatedCloseBlock, currentBlock),
+													0
+												);
+												const estimatedLeftover = getEstimatedRemainingTime(
+													remainingBlocks
+												);
+												const isEarly = mathjs.larger(
+													calculatedCloseBlock,
+													currentBlock
+												);
+
+												const partial = mathjs.subtract(
+													currentBlock,
+													startBlock
+												);
+
+												const total = mathjs.number(period);
+
+												const data = {
+													amount,
+													partial,
+													total,
 													reward,
-													closeBlock,
+													symbol,
 													index,
-												]) => {
-													const amount = web3.utils.fromWei(weiAmount);
-													const calculatedCloseBlock = mathjs.sum(
-														startBlock,
-														period
-													);
-													const remainingBlocks = mathjs.max(
-														mathjs.subtract(calculatedCloseBlock, currentBlock),
-														0
-													);
-													const estimatedLeftover = getEstimatedRemainingTime(
-														remainingBlocks
-													);
-													const isEarly = mathjs.larger(
-														calculatedCloseBlock,
-														currentBlock
-													);
+												};
 
-													const partial = mathjs.subtract(
-														currentBlock,
-														startBlock
-													);
+												const progressStatusText = remainingBlocks
+													? `~${estimatedLeftover.join(' ')}`
+													: 'Completed';
 
-													const total = mathjs.number(period);
-
-													const data = {
-														amount,
-														partial,
-														total,
-														reward,
-														symbol,
-														index,
-													};
-
-													const progressStatusText = remainingBlocks
-														? `~${estimatedLeftover.join(' ')}`
-														: 'Completed';
-
-													const btnProps = {
-														type: 'primary',
-														className: 'stake-btn',
-														ghost: true,
-														danger: !!isEarly,
-														onClick: isEarly
-															? () => this.startEarlyUnstakingProcess(data)
-															: () => this.startUnstakingProcess(data),
-														children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
-													};
-													return (
-														<tr
-															className="table-row table-bottom-border"
-															key={`${symbol}_${index}`}
-														>
-															<td />
-															<td>{amount}</td>
-															<td>
-																<div className="d-flex">
-																	<ProgressBar
-																		partial={partial}
-																		total={total}
-																	/>
-																	<div className="px-2 align-center">
-																		{progressStatusText}
-																	</div>
+												const btnProps = {
+													type: 'primary',
+													className: 'stake-btn',
+													ghost: true,
+													danger: !!isEarly,
+													onClick: isEarly
+														? () => this.startEarlyUnstakingProcess(data)
+														: () => this.startUnstakingProcess(data),
+													children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+												};
+												return (
+													<tr
+														className="table-row table-bottom-border"
+														key={`${symbol}_${index}`}
+													>
+														<td />
+														<td>{amount}</td>
+														<td>
+															<div className="d-flex">
+																<ProgressBar partial={partial} total={total} />
+																<div className="px-2 align-center">
+																	{progressStatusText}
 																</div>
-															</td>
-															<td>
-																<div>{`${STRINGS['STAKE.BLOCK']}: ${startBlock}`}</div>
-																<div className="secondary-text">
-																	{calculateEsimatedDate(
-																		startBlock,
-																		currentBlock
-																	)}
-																</div>
-															</td>
-															<td>
-																<div>{`${STRINGS['STAKE.BLOCK']}: ${calculatedCloseBlock}`}</div>
-																<div className="secondary-text">
-																	{calculateEsimatedDate(
-																		calculatedCloseBlock,
-																		currentBlock
-																	)}
-																</div>
-															</td>
-															<td>{reward}</td>
-															<td className="text-align-center">
-																<div className="d-flex content-center">
-																	<AntBtn {...btnProps} />
-																</div>
-															</td>
-														</tr>
-													);
-												}
-											)
+															</div>
+														</td>
+														<td>
+															<div>{`${STRINGS['STAKE.BLOCK']}: ${startBlock}`}</div>
+															<div className="secondary-text">
+																{calculateEsimatedDate(
+																	startBlock,
+																	currentBlock
+																)}
+															</div>
+														</td>
+														<td>
+															<div>{`${STRINGS['STAKE.BLOCK']}: ${calculatedCloseBlock}`}</div>
+															<div className="secondary-text">
+																{calculateEsimatedDate(
+																	calculatedCloseBlock,
+																	currentBlock
+																)}
+															</div>
+														</td>
+														<td>{reward}</td>
+														<td className="text-align-center">
+															<div className="d-flex content-center">
+																<AntBtn {...btnProps} />
+															</div>
+														</td>
+													</tr>
+												);
+											}
+										)
 									)}
 								</tbody>
 							</table>
@@ -419,8 +450,9 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
-	userStakes: store.stake.userStakes,
 	balance: store.stake.balance,
+	prices: store.asset.oraclePrices,
+	...userActiveStakesSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

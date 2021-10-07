@@ -864,6 +864,7 @@ export default {
 		REWARD_RATE: 'Reward rate',
 		EARNINGS: 'Earnings',
 		STAKE: 'Stake',
+		VARIABLE: 'Variable',
 	},
 	STAKE_LIST: {
 		AMOUNT: 'AMOUNTS STAKED',

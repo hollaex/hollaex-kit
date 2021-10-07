@@ -107,9 +107,6 @@ export const generateTableData = (account) => {
 			data = {
 				symbol,
 				available: getTokenBalance(symbol)(account),
-				total: getTotalStake(symbol)(account),
-				rate: '',
-				earnings: '',
 			};
 		});
 
@@ -211,10 +208,3 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 		.call();
 	return web3.utils.fromWei(balance);
 };
-
-export const APPROVE = 'APPROVE';
-export const ADD_STAKE = 'ADD_STAKE';
-export const REMOVE_STAKE = 'REMOVE_STAKE';
-export const DISTRIBUTE = 'DISTRIBUTE';
-export const CONNECT_WALLET = 'CONNECT_WALLET';
-export const STAKE = 'STAKE';

@@ -17,6 +17,7 @@ const AmountContent = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
+		height: '509px',
 	};
 
 	const headerContent = {
@@ -29,7 +30,7 @@ const AmountContent = ({
 
 	return (
 		<Fragment>
-			<div className="dialog-content top" style={background}>
+			<div className="dialog-content background" style={background}>
 				<div style={headerContent}>
 					<IconTitle
 						stringId="STAKE.MODAL_TITLE"
@@ -53,7 +54,7 @@ const AmountContent = ({
 					</div>
 				</div>
 			</div>
-			<div className="dialog-content bottom w-100 h-100">
+			<div className="dialog-content bottom w-100">
 				<div className="mt-4 pt-3">
 					<div className="pb-2">
 						<EditWrapper stringId="STAKE.AMOUNT_LABEL">

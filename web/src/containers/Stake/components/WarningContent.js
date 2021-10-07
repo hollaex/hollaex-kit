@@ -28,7 +28,7 @@ const WarningContent = ({ icons: ICONS, onBack, onReview }) => {
 				</div>
 			</div>
 
-			<div className="dialog-content bottom w-100 h-100">
+			<div className="dialog-content bottom w-100">
 				<div className="d-flex mt-4 pt-3">
 					<div className="w-50">
 						<EditWrapper stringId="UNSTAKE.BACK" />

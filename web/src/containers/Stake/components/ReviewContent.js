@@ -19,11 +19,12 @@ const ReviewContent = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
+		height: '376px',
 	};
 
 	return (
 		<Fragment>
-			<div className="dialog-content top" style={background}>
+			<div className="dialog-content background" style={background}>
 				<IconTitle
 					stringId="STAKE.REVIEW_MODAL_TITLE"
 					text={STRINGS['STAKE.REVIEW_MODAL_TITLE']}
@@ -86,7 +87,7 @@ const ReviewContent = ({
 				</div>
 			</div>
 
-			<div className="dialog-content bottom w-100 h-100">
+			<div className="dialog-content bottom w-100">
 				<div>
 					<div>
 						<EditWrapper stringId="STAKE.REVIEW_NOTE">
