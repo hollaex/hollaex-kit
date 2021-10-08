@@ -208,3 +208,13 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 		.call();
 	return web3.utils.fromWei(balance);
 };
+
+export const getPublicInfo = (token = 'xht') => async (account) => {
+	const data = {
+		stakeWeight: CONTRACTS[token].main.methods.getStakeWeight(account).call(),
+		totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
+		getTotalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
+	};
+
+	return await hash(data);
+};

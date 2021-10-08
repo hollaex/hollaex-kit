@@ -874,6 +874,42 @@ export default {
 		EARNINGS: 'EARNINGS',
 		STAKE: 'STAKE',
 	},
+	STAKE_DETAILS: {
+		BACK_SUBTITLE: '{0} to staking page',
+		GO_BACK: 'Go back',
+		CONTRACT_SUBTITLE: 'Token contract: {0}',
+		TABS: {
+			PUBLIC_INFO: 'Public info',
+			DISTRIBUTIONS: 'Distributions',
+			MY_STAKING: 'My staking',
+		},
+		PUBLIC_INFO: {
+			TITLE: 'Staking information',
+			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
+			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings',
+			CLEARED_UNDISTRIBUTED_EARNINGS: 'Cleared undistributed earnings',
+			UNCLEARED_PENDING_EARNINGS: 'Uncleared pending earnings',
+			TOTAL_STAKED: 'Total staked',
+			REWARD_RATE: 'Reward rate',
+			VARIABLE: 'Variable',
+			MY_STAKE: 'My stake ({0}%)',
+			OTHER_STAKE: 'Other staked ({0}%)',
+			RECENT_DISTRIBUTED_REWARDS: 'Recent distributed rewards',
+			TIME_DISTRIBUTED: 'Time distributed',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT_DISTRIBUTED: 'Amount distributed',
+		},
+		DISTRIBUTIONS: {
+			TITLE: 'Distributed {0} rewards',
+			SUBTITLE:
+				'Below is a historical list of distributions made to stakers of {0}.',
+		},
+		MY_STAKING: {
+			TITLE: 'My staking',
+			SUBTITLE:
+				'Below displays information and some historical events related to your {0} staking.',
+		},
+	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
 	TYPES_VALUES: {
