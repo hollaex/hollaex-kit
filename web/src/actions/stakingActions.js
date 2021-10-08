@@ -197,10 +197,10 @@ const getPeriodsForToken = (token = 'xht') => async () => {
 	return periods;
 };
 
-const getTotalStake = (token = 'xht') => async () => {
-	const total = await CONTRACTS[token].main.methods.totalStake().call();
-	return web3.utils.fromWei(total);
-};
+// const getTotalStake = (token = 'xht') => async () => {
+// 	const total = await CONTRACTS[token].main.methods.totalStake().call();
+// 	return web3.utils.fromWei(total);
+// };
 
 const getTokenBalance = (token = 'xht') => async (account) => {
 	const balance = await CONTRACTS[token].token.methods

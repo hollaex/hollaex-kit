@@ -65,9 +65,10 @@ class StakeContent extends Component {
 			await approve(symbol)({ amount, account });
 			this.setState({ action: ACTION_TYPE.STAKE });
 			await addStake(symbol)({ amount, period, account });
-			await Promise.all[
-				(generateTableData(account), getAllUserStakes(account))
-			];
+			await Promise.all([
+				generateTableData(account),
+				getAllUserStakes(account),
+			]);
 			this.setContent(CONTENT_TYPE.SUCCESS);
 		} catch (err) {
 			console.error(err);

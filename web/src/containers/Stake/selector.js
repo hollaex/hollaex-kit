@@ -15,7 +15,7 @@ export const userActiveStakesSelector = createSelector(
 		});
 
 		let activeStakesCount = 0;
-		Object.entries(activeStakes).map(([_, stakes]) => {
+		Object.entries(activeStakes).forEach(([_, stakes]) => {
 			activeStakesCount += stakes.length;
 		});
 

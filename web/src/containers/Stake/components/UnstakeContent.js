@@ -36,9 +36,10 @@ class UnstakeContent extends Component {
 		try {
 			this.setState({ action: ACTION_TYPE.UNSTAKE });
 			await removeStake(symbol)({ account, index });
-			await Promise.all[
-				(generateTableData(account), getAllUserStakes(account))
-			];
+			await Promise.all([
+				generateTableData(account),
+				getAllUserStakes(account),
+			]);
 			this.setContent(CONTENT_TYPE.SUCCESS);
 		} catch (err) {
 			console.error(err);

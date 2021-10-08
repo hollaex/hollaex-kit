@@ -73,10 +73,8 @@ class StakeDetails extends Component {
 				params: { token },
 			},
 			coins,
-			currentBlock,
 			totalUserStakes,
 			totalUserEarnings,
-			balance,
 			prices,
 		} = this.props;
 

@@ -15,7 +15,7 @@ const SuccessfulContent = ({
 	currentBlock,
 	account,
 }) => {
-	const { symbol, fullname, available } = tokenData;
+	const { symbol } = tokenData;
 	const iconId = `${symbol.toUpperCase()}_ICON`;
 
 	const background = {
