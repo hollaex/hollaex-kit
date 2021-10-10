@@ -1,0 +1,41 @@
+{
+  "name": "hollaex-kit-test",
+  "version": "1.0.0",
+  "description": "HollaEx Kit Test Modules",
+  "author": "bitHolla",
+  "license": "bitHolla Inc.",
+  "keywords": [],
+  "dependencies": {
+    "chromedriver": "92.0.0",
+    "console-stamp": "3.0.3",
+    "dotenv": "10.0.0",
+    "get-urls": "10.0.0",
+    "node-localstorage": "2.2.1",
+    "normalize-url": "5.3.1",
+    "otp-generator": "2.0.1",
+    "package.json": "2.0.1",
+    "randomstring": "1.2.1",
+    "selenium-webdriver": "4.0.0-beta.3",
+    "time-stamp": "2.2.0",
+    "tokenize-file": "0.1.7",
+    "totp-generator": "0.0.9",
+    "url-regex-safe": "1.0.2"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "7.3.1",
+    "@typescript-eslint/eslint-plugin": "4.27.0",
+    "@typescript-eslint/parser": "4.27.0",
+    "chai": "4.3.4",
+    "eslint": "7.29.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-config-google": "0.14.0",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-react": "7.24.0",
+    "mocha": "8.4.0",
+    "mocha-cakes-2": "3.3.0"
+  },
+  "scripts": {
+    "test-selenium": "mocha selenium/index.js",
+    "test": "cucumber-js"
+  }
+}

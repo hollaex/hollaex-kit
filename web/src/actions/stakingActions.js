@@ -107,9 +107,6 @@ export const generateTableData = (account) => {
 			data = {
 				symbol,
 				available: getTokenBalance(symbol)(account),
-				total: getTotalStake(symbol)(account),
-				rate: '',
-				earnings: '',
 			};
 		});
 
@@ -200,10 +197,10 @@ const getPeriodsForToken = (token = 'xht') => async () => {
 	return periods;
 };
 
-const getTotalStake = (token = 'xht') => async () => {
-	const total = await CONTRACTS[token].main.methods.totalStake().call();
-	return web3.utils.fromWei(total);
-};
+// const getTotalStake = (token = 'xht') => async () => {
+// 	const total = await CONTRACTS[token].main.methods.totalStake().call();
+// 	return web3.utils.fromWei(total);
+// };
 
 const getTokenBalance = (token = 'xht') => async (account) => {
 	const balance = await CONTRACTS[token].token.methods
@@ -212,9 +209,12 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 	return web3.utils.fromWei(balance);
 };
 
-export const APPROVE = 'APPROVE';
-export const ADD_STAKE = 'ADD_STAKE';
-export const REMOVE_STAKE = 'REMOVE_STAKE';
-export const DISTRIBUTE = 'DISTRIBUTE';
-export const CONNECT_WALLET = 'CONNECT_WALLET';
-export const STAKE = 'STAKE';
+export const getPublicInfo = (token = 'xht') => async (account) => {
+	const data = {
+		stakeWeight: CONTRACTS[token].main.methods.getStakeWeight(account).call(),
+		totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
+		getTotalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
+	};
+
+	return await hash(data);
+};

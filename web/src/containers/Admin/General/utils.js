@@ -4,6 +4,7 @@ import { Select } from 'antd';
 import { CurrencyBall } from '../../../components';
 import { validateRequired } from '../../../components/AdminForm/validations';
 import LANGUAGES from '../../../config/languages';
+import {COUNTRIES_OPTIONS} from '../../../utils/countries'
 
 const renderCoinOptions = (coins = {}) =>
 	Object.keys(coins).map((symbol, index) => {
@@ -114,6 +115,13 @@ export const getGeneralFields = (coins) => ({
 			type: 'password',
 			label: 'Secret key',
 			placeholder: 'Secret key',
+		},
+	},
+	countrySection: {
+		country: {
+			type: 'select',
+			options: COUNTRIES_OPTIONS,
+			validate: [validateRequired],
 		},
 	},
 });
