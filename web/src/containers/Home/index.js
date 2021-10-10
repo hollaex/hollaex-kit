@@ -57,6 +57,7 @@ class Home extends Component {
 			style: {
 				minHeight: MIN_HEIGHT,
 			},
+			market: []
 		};
 		this.goToPair(pair);
 	}
@@ -106,6 +107,12 @@ class Home extends Component {
 		}
 	};
 
+	renderContent = (market) => {
+		if (market) {
+			this.setState({ market });
+		}
+	}
+
 	getSectionByKey = (key) => {
 		switch (key) {
 			case 'heading': {
@@ -153,6 +160,8 @@ class Home extends Component {
 								router={router}
 								showSearch={false}
 								showMarkets={true}
+								isHome={true}
+								renderContent={this.renderContent}
 							/>
 						</div>
 					</div>
@@ -167,6 +176,7 @@ class Home extends Component {
 					pairs,
 					orderLimits,
 					sourceOptions,
+					user
 				} = this.props;
 
 				const {
@@ -176,7 +186,19 @@ class Home extends Component {
 					selectedSource,
 					targetOptions,
 					side,
+					market
 				} = this.state;
+				let marketData;
+				if (market) {
+					market.forEach(data => {
+						const keyData = data.key.split('-');
+						if ((keyData[0] === selectedSource && keyData[1] === selectedTarget) ||
+							(keyData[1] === selectedSource && keyData[0] === selectedTarget)
+						) {
+							marketData = data;
+						}
+					});
+				}
 
 				return (
 					pairs &&
@@ -207,6 +229,8 @@ class Home extends Component {
 								forwardSourceError={this.forwardSourceError}
 								forwardTargetError={this.forwardTargetError}
 								autoFocus={false}
+								user={user}
+								market={marketData}
 							/>
 						</div>
 					)

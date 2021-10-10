@@ -269,10 +269,7 @@ class UserSettings extends Component {
 					/>
 				),
 			},
-		];
-
-		if (features && features.chat) {
-			tabs.push({
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
@@ -294,10 +291,9 @@ class UserSettings extends Component {
 						initialValues={{ username }}
 						ICONS={ICONS}
 					/>
-				),
-			});
-		}
-
+				)
+			}
+		];
 		this.setState({ tabs });
 	};
 

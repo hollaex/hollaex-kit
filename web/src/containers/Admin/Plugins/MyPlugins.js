@@ -146,9 +146,7 @@ class MyPlugins extends Component {
 		if (
 			json &&
 			json.name &&
-			json.script &&
 			json.version &&
-			json.description &&
 			json.author
 		) {
 			return true;

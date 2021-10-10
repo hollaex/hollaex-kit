@@ -19,6 +19,7 @@ import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
 import { clearFileInputById } from 'helpers/vanilla';
+import {COUNTRIES_OPTIONS} from '../../../utils/countries'
 
 import './index.css';
 import { handleUpgrade } from 'utils/utils';
@@ -31,6 +32,7 @@ const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
 const HelpDeskForm = AdminHocForm('HelpDeskForm');
 const APIDocLinkForm = AdminHocForm('APIDocLinkForm');
 const CaptchaForm = AdminHocForm('CaptchaForm');
+const CountryForm = AdminHocForm('CountryForm')
 
 class General extends Component {
 	constructor() {
@@ -42,6 +44,7 @@ class General extends Component {
 			initialNameValues: {},
 			initialLanguageValues: {},
 			initialThemeValues: {},
+			initialCountryValues:{},
 			initialEmailValues: {},
 			initialLinkValues: {},
 			initialEmailVerificationValues: {},
@@ -83,6 +86,7 @@ class General extends Component {
 		let initialNameValues = { ...this.state.initialNameValues };
 		let initialLanguageValues = { ...this.state.initialLanguageValues };
 		let initialThemeValues = { ...this.state.initialThemeValues };
+		let initialCountryValues={...this.state.initialCountryValues}
 		let initialEmailVerificationValues = {
 			...this.state.initialEmailVerificationValues,
 		};
@@ -103,6 +107,10 @@ class General extends Component {
 			language: defaults.language,
 		};
 		initialThemeValues = { ...initialThemeValues, theme: defaults.theme };
+		initialCountryValues = {
+			...initialCountryValues,
+			country: !defaults.country ? COUNTRIES_OPTIONS[0].value : defaults.country
+		};
 		initialEmailVerificationValues = {
 			...initialEmailVerificationValues,
 			email_verification_required,
@@ -125,6 +133,7 @@ class General extends Component {
 			initialNameValues,
 			initialLanguageValues,
 			initialThemeValues,
+			initialCountryValues,
 			initialEmailValues,
 			initialLinkValues,
 			isSignUpActive,
@@ -458,6 +467,7 @@ class General extends Component {
 			initialNameValues,
 			initialLanguageValues,
 			initialThemeValues,
+			initialCountryValues,
 			initialLinkValues,
 			initialEmailVerificationValues,
 			initialCaptchaValues,
@@ -488,6 +498,17 @@ class General extends Component {
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_1}
+						/>
+					</div>
+					<div className="divider"></div>
+					<div>
+						<div className="sub-title">Country</div>
+						<CountryForm
+							initialValues={initialCountryValues}
+							onSubmit={this.handleSubmitDefault}
+							buttonText={'Save'}
+							buttonClass="green-btn minimal-btn"
+							fields={generalFields.countrySection}
 						/>
 					</div>
 					<div className="divider"></div>
