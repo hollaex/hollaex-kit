@@ -110,7 +110,6 @@ class UserSettings extends Component {
 			icons: ICONS,
 			totalAsset,
 			themeOptions,
-			features,
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
@@ -291,8 +290,8 @@ class UserSettings extends Component {
 						initialValues={{ username }}
 						ICONS={ICONS}
 					/>
-				)
-			}
+				),
+			},
 		];
 		this.setState({ tabs });
 	};

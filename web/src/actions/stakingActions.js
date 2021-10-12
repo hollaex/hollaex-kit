@@ -1,4 +1,5 @@
 import { web3, CONTRACT_ADDRESSES, CONTRACTS } from 'config/contracts';
+import { fakeRequest } from 'utils/devUtils';
 import { hash } from 'rsvp';
 
 const commonConfigs = {
@@ -218,3 +219,50 @@ export const getPublicInfo = (token = 'xht') => async (account) => {
 
 	return await hash(data);
 };
+
+export const getStakeEvents = (token = 'xht') => async (account) => {
+	return await fakeRequest(EVENT_DATA);
+};
+
+export const getDistributions = (token = 'xht') => async (account) => {
+	return await fakeRequest(DISTRIBUTION_DATA);
+};
+
+const EVENT_DATA = [
+	{
+		block: '10995771',
+		event: 'stake',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '38',
+	},
+	{
+		block: '11043842',
+		event: 'unstake',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '138',
+	},
+	{
+		block: '11043142',
+		event: 'stake',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '43',
+	},
+];
+
+const DISTRIBUTION_DATA = [
+	{
+		block: '10995771',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '38',
+	},
+	{
+		block: '11043842',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '138',
+	},
+	{
+		block: '11043142',
+		id: '0x4455savefwer34fsdv0x4455',
+		amount: '43',
+	},
+];

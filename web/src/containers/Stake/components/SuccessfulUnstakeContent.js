@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { EditWrapper, Button, IconTitle, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { dotifyAccount } from 'utils/eth';
+import { dotifyString } from 'utils/eth';
 
 const SuccessfulContent = ({
 	stakeData,
@@ -93,9 +93,7 @@ const SuccessfulContent = ({
 							</EditWrapper>
 						</div>
 						<div>
-							<div className="secondary-text px-2">
-								{dotifyAccount(account)}
-							</div>
+							<div className="secondary-text px-2">{dotifyString(account)}</div>
 						</div>
 					</div>
 

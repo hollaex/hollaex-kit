@@ -23,7 +23,7 @@ import {
 } from 'config/constants';
 
 const { TabPane } = Tabs;
-const TABS = {
+export const TABS = {
 	PUBLIC_INFO: {
 		key: 'PUBLIC_INFO',
 		title: STRINGS['STAKE_DETAILS.TABS.PUBLIC_INFO'],
@@ -39,6 +39,10 @@ const TABS = {
 };
 
 class StakeDetails extends Component {
+	state = {
+		activeKey: TABS.PUBLIC_INFO.key,
+	};
+
 	componentWillMount() {
 		const {
 			account,
@@ -99,7 +103,13 @@ class StakeDetails extends Component {
 
 		switch (key) {
 			case TABS.PUBLIC_INFO.key:
-				return <PublicInfo token={token} fullname={fullname} />;
+				return (
+					<PublicInfo
+						token={token}
+						fullname={fullname}
+						setActiveTab={this.setActiveTab}
+					/>
+				);
 			case TABS.DISTRIBUTIONS.key:
 				return <Distributions token={token} />;
 			case TABS.MY_STAKING.key:
@@ -135,6 +145,10 @@ class StakeDetails extends Component {
 		}
 	};
 
+	setActiveTab = (activeKey) => {
+		this.setState({ activeKey });
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -146,6 +160,8 @@ class StakeDetails extends Component {
 			balance,
 			network,
 		} = this.props;
+
+		const { activeKey } = this.state;
 
 		const { fullname } = coins[token];
 		const iconId = `${token.toUpperCase()}_ICON`;
@@ -188,7 +204,10 @@ class StakeDetails extends Component {
 				</div>
 
 				<Fragment>
-					<Tabs>
+					<Tabs
+						activeKey={activeKey}
+						onTabClick={(key) => this.setActiveTab(key)}
+					>
 						{Object.entries(TABS).map(([_, { key, title }]) => {
 							return (
 								<TabPane tab={title} key={key}>
