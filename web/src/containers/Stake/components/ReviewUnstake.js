@@ -13,6 +13,7 @@ const ReviewEarlyUnstake = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
+		height: '292px',
 	};
 
 	const headerContent = {
@@ -25,7 +26,7 @@ const ReviewEarlyUnstake = ({
 
 	return (
 		<Fragment>
-			<div className="dialog-content top" style={background}>
+			<div className="dialog-content background" style={background}>
 				<div style={headerContent}>
 					<IconTitle
 						stringId="UNSTAKE.TITLE"
@@ -41,7 +42,7 @@ const ReviewEarlyUnstake = ({
 				</div>
 			</div>
 
-			<div className="dialog-content bottom w-100 h-100">
+			<div className="dialog-content bottom w-100">
 				<div className="d-flex mt-4 pt-3">
 					<div className="w-50">
 						<EditWrapper stringId="UNSTAKE.CANCEL" />

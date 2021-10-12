@@ -29,10 +29,9 @@ $close-button--margin: 1.5rem;
 	padding-right: $dialog--padding;
 	padding-left: $dialog--padding;
 
-	&.top {
+	&.background {
 		background-size: cover;
 		background-repeat: no-repeat;
-		height: 30rem;
 	}
 
 	&.bottom {
