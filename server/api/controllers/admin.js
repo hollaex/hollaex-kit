@@ -1690,28 +1690,10 @@ const getNetworkCoins = (req, res) => {
 		req.auth
 	);
 
-	const {
-		search: { value: search },
-		active: { value: active },
-		verified: { value: verified },
-		limit: { value: limit },
-		page: { value: page },
-		order_by: { value: orderBy },
-		order: { value: order },
-		start_date: { value: startDate },
-		end_date: { value: endDate }
-	} = req.swagger.params;
+	const search = req.swagger.params.search.value;
 
 	toolsLib.coin.getNetworkCoins({
 		search,
-		active,
-		verified,
-		limit,
-		page,
-		orderBy,
-		order,
-		startDate,
-		endDate,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -1736,28 +1718,10 @@ const getNetworkPairs = (req, res) => {
 		req.auth
 	);
 
-	const {
-		search: { value: search },
-		active: { value: active },
-		verified: { value: verified },
-		limit: { value: limit },
-		page: { value: page },
-		order_by: { value: orderBy },
-		order: { value: order },
-		start_date: { value: startDate },
-		end_date: { value: endDate }
-	} = req.swagger.params;
+	const search = req.swagger.params.search.value;
 
 	toolsLib.pair.getNetworkPairs({
 		search,
-		active,
-		verified,
-		limit,
-		page,
-		orderBy,
-		order,
-		startDate,
-		endDate,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
