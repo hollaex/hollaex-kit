@@ -2595,14 +2595,6 @@ class HollaExNetwork {
 	getCoins (
 		opts = {
 			search: null,
-			active: null,
-			verified: null,
-			limit: null,
-			page: null,
-			orderBy: null,
-			order: null,
-			startDate: null,
-			endDate: null,
 			additionalHeaders: null
 		}
 	) {
@@ -2613,40 +2605,8 @@ class HollaExNetwork {
 			this.exchange_id
 		}/coins?`;
 
-		if (isNumber(opts.limit)) {
-			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.page)) {
-			path += `&page=${opts.page}`;
-		}
-
-		if (isString(opts.orderBy)) {
-			path += `&order_by=${opts.orderBy}`;
-		}
-
-		if (isString(opts.order)) {
-			path += `&order=${opts.order}`;
-		}
-
-		if (isDatetime(opts.startDate)) {
-			path += `&start_date=${sanitizeDate(opts.startDate)}`;
-		}
-
-		if (isDatetime(opts.endDate)) {
-			path += `&end_date=${sanitizeDate(opts.endDate)}`;
-		}
-
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
-		}
-
-		if (isBoolean(opts.active)) {
-			path += `&active=${opts.active}`;
-		}
-
-		if (isBoolean(opts.verified)) {
-			path += `&verified=${opts.verified}`;
 		}
 
 		const headers = generateHeaders(
@@ -2888,14 +2848,6 @@ class HollaExNetwork {
 	getPairs (
 		opts = {
 			search: null,
-			active: null,
-			verified: null,
-			limit: null,
-			page: null,
-			orderBy: null,
-			order: null,
-			startDate: null,
-			endDate: null,
 			additionalHeaders: null
 		}
 	) {
@@ -2906,40 +2858,8 @@ class HollaExNetwork {
 			this.exchange_id
 		}/pairs?`;
 
-		if (isNumber(opts.limit)) {
-			path += `&limit=${opts.limit}`;
-		}
-
-		if (isNumber(opts.page)) {
-			path += `&page=${opts.page}`;
-		}
-
-		if (isString(opts.orderBy)) {
-			path += `&order_by=${opts.orderBy}`;
-		}
-
-		if (isString(opts.order)) {
-			path += `&order=${opts.order}`;
-		}
-
-		if (isDatetime(opts.startDate)) {
-			path += `&start_date=${sanitizeDate(opts.startDate)}`;
-		}
-
-		if (isDatetime(opts.endDate)) {
-			path += `&end_date=${sanitizeDate(opts.endDate)}`;
-		}
-
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
-		}
-
-		if (isBoolean(opts.active)) {
-			path += `&active=${opts.active}`;
-		}
-
-		if (isBoolean(opts.verified)) {
-			path += `&verified=${opts.verified}`;
 		}
 
 		const headers = generateHeaders(
