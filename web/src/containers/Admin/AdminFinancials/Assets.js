@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import _cloneDeep from 'lodash/cloneDeep';
 // import { requestExchange } from './action';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
@@ -12,10 +13,11 @@ import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
 import {
 	getAllCoins,
-	/* getAllPairs, getConstants, */ getExchange,
+	getExchange,
 	updateAssetCoins,
+	updateExchange,
 } from './action';
-import { setCoins, setExchange } from 'actions/assetActions';
+import { addCoins, setCoins, setExchange } from 'actions/assetActions';
 import { bindActionCreators } from 'redux';
 
 const { Item } = Breadcrumb;
@@ -83,7 +85,7 @@ const getColumns = (
 		key: 'symbol',
 		render: (data) => {
 			const selectedAsset =
-				allCoins.filter((list) => list.symbol === data.symbol)[0] || {};
+				_cloneDeep(allCoins.filter((list) => list.symbol === data.symbol)[0]) || {};
 			if (!data.id && selectedAsset.id) {
 				delete selectedAsset.id;
 			}
@@ -194,24 +196,21 @@ class Assets extends Component {
 	}
 
 	componentDidMount() {
+		// this.getMyExchange();
+		// this.getCoins();
 		const { exchange, allCoins } = this.props;
-
-		this.getExchange();
 		const { tabParams } = this.state;
 
-		// this.requestExchange(this.props.exchange && this.props.exchange.id);
-		const coins = allCoins.filter((val) => exchange.coins.includes(val.symbol));
-		if (this.props.exchange && this.props.exchange.coins) {
+		let coins = allCoins.filter((val) => exchange && exchange.coins && exchange.coins.includes(val.symbol));
+		if (exchange && exchange.coins) {
 			this.setState({
 				coins: coins || [],
-				exchange: this.props.exchange,
+				exchange: exchange,
 			});
 		}
-		if (tabParams) {
-			let isAddAsset = tabParams.isAsset === 'true';
-			let isPreview = tabParams.preview === 'true';
-			// let coinData = this.props.exchange[0].coins;
-			// let coinData = exchangeCoins;
+		if (Object.keys(tabParams).length) {
+			let isAddAsset = (tabParams.isAsset === 'true');
+			let isPreview = (tabParams.preview === 'true');
 			let coinData = coins;
 			if (coinData.length) {
 				let temp = coinData.filter((list) => list.symbol === tabParams.symbol);
@@ -221,7 +220,7 @@ class Assets extends Component {
 					filterCoin =
 						allCoins.filter((list) => list.symbol === filterSymbol)[0] || {};
 				}
-
+				this.props.handleHide(isPreview);
 				this.setState({
 					isPreview,
 					isOpenAdd: isAddAsset,
@@ -235,15 +234,15 @@ class Assets extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		const { exchange, allCoins } = this.props;
-
-		if (JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange)) {
+		const { exchange, allCoins } = this.props; 
+		if ((JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange) && exchange && exchange.coins && allCoins) ||
+			(JSON.stringify(prevProps.allCoins) !== JSON.stringify(allCoins) && exchange && exchange.coins && allCoins) ) {
 			const coins = allCoins.filter((val) =>
 				exchange.coins.includes(val.symbol)
 			);
 			this.setState({
 				coins: coins || [],
-				exchange: this.props.exchange,
+				exchange: exchange,
 			});
 		}
 
@@ -252,69 +251,28 @@ class Assets extends Component {
 		) {
 			const tabParams = getTabParams();
 			if (tabParams.isAssetHome === 'true') {
+				this.props.handleHide(false);
 				this.setState({
 					isPreview: false,
 					isConfigure: false,
 				});
 			}
 		}
-		if (
-			JSON.stringify(prevState.exchange) !== JSON.stringify(this.state.exchange)
-		) {
-			this.getAllUsers();
-			this.getExchangeBalance();
-		}
 	}
-
-	// requestExchange = (values) => {
-	//     return requestExchange(values)
-	//         .then((res) => {
-	//             if (res.data) {
-	//                 this.setState({ exchange: res.data });
-	//             }
-	//         })
-	//         .catch((error) => {
-	//             console.log('error', error);
-	//         });
-	// };
 
 	updateFormData = (name, value) => {
 		const { formData } = this.state;
 		if (name === 'color') {
 			formData.meta = { color: value };
+		} else if (name === 'decimal_points') {
+			formData.meta = {
+				...formData.meta,
+				decimal_points: value
+			};
 		} else {
 			formData[name] = value;
 		}
 		this.setState({ formData });
-	};
-	getAllUsers = async () => {
-		try {
-			// const res = await getExchangeUsers(this.state.exchange.id);
-			const res = {};
-			if (res.data && res.data.data) {
-				const exchangeUsers = res.data.data || [];
-				this.setState({
-					exchangeUsers,
-					userEmails: exchangeUsers.map((user) => user.email),
-				});
-			}
-		} catch (error) {
-			console.log('error', error);
-		}
-	};
-
-	getExchangeBalance = async () => {
-		try {
-			// const res = await getExchangeBalance(this.state.exchange.id);
-			const res = {};
-			if (res.data) {
-				this.setState({
-					exchangeBalance: res.data,
-				});
-			}
-		} catch (error) {
-			console.log('error', error);
-		}
 	};
 
 	handleClose = () => {
@@ -336,22 +294,10 @@ class Assets extends Component {
 		this.setState({ width: width ? width : 520 });
 	};
 
-	getExchange = async () => {
+	getMyExchange = async () => {
 		try {
 			const res = await getExchange();
 			const exchange = res.data;
-			// const res = {};
-			// const exchange = res.data && res.data.data && res.data.data.sort((a, b) => {
-			//     const ad = new Date(a.updated_at);
-			//     const bd = new Date(a.updated_at);
-			//     if (Math.floor(ad - bd) >= 0) {
-			//         return a - b;
-			//     } else {
-			//         return b - a;
-			//     }
-			// });
-
-			// this.props.actions.readData(exchange);
 			this.props.setExchange(exchange);
 		} catch (error) {
 			if (error && error.data) {
@@ -391,7 +337,7 @@ class Assets extends Component {
 					}
 				});
 
-			return this.props.setCoin(coins);
+			return this.props.setCoins(coins);
 		} catch (error) {
 			throw error;
 		}
@@ -404,7 +350,7 @@ class Assets extends Component {
 		isPresetAsset = false
 	) => {
 		const {
-			// coins,
+			coins,
 			exchange,
 			isConfigure,
 			selectedAsset,
@@ -417,25 +363,27 @@ class Assets extends Component {
 				delete coinData.key;
 				delete coinData.value;
 				delete coinData.iconName;
-				if (coinData.symbol) {
-					coinData.symbol = coinData.symbol.toLowerCase();
-				}
+				// if (coinData.symbol) {
+				// 	coinData.symbol = coinData.symbol.toLowerCase();
+				// }
 				// if (!coinData.network) coinData.network = '';
 				// if (!coinData.standard) coinData.standard = '';
 				// if (!coinData.estimated_price) {
 				//     coinData.estimated_price = 1;
 				// }
-				if (!coinData.fullname) coinData.fullname = selectedAsset.fullname;
-				if (!coinData.symbol) coinData.symbol = selectedAsset.symbol;
-				if (!coinData.min) coinData.min = selectedAsset.min;
-				if (!coinData.max) coinData.max = selectedAsset.max;
-				if (!coinData.increment_unit)
-					coinData.increment_unit = selectedAsset.increment_unit;
+				// if (!coinData.fullname) coinData.fullname = selectedAsset.fullname;
+				// if (!coinData.symbol) coinData.symbol = selectedAsset.symbol;
+				// if (!coinData.min) coinData.min = selectedAsset.min;
+				// if (!coinData.max) coinData.max = selectedAsset.max;
+				// if (!coinData.increment_unit)
+				// 	coinData.increment_unit = selectedAsset.increment_unit;
+				if (!coinData.code) coinData.code = selectedAsset.code;
 				await updateAssetCoins(coinData);
-				// await this.getCoins();
-				if (isApply) {
-					await this.handleApply();
-				}
+				await this.getCoins();
+				this.setState({ formData: {} });
+				// if (isApply) {
+				// 	await this.handleApply();
+				// }
 				message.success('Assets updated successfully');
 				this.handleClose();
 				if (isConfigure) {
@@ -454,31 +402,30 @@ class Assets extends Component {
 				delete coinData.key;
 				delete coinData.value;
 				delete coinData.iconName;
-				delete coinData.code;
+				// delete coinData.code;
 				if (coinData.symbol) {
 					coinData.symbol = coinData.symbol.toLowerCase();
 				}
 				// let pairs = exchange.pairs || [];
-				// let coinList = coins.map(data => data.symbol);
-				// let formProps = {
-				//     id: exchange.id,
-				//     pairs: pairs.map(data => data.name ? data.name : data.symbol),
-				//     coins: [...coinList, coinData.symbol]
-				// }
+				let coinList = coins.map(data => data.symbol);
+				let formProps = {
+				    id: exchange.id,
+				    // pairs: pairs.map(data => data.name ? data.name : data.symbol),
+				    coins: [...coinList, coinData.symbol]
+				}
 				if (!coinData.id) {
 					const res = await updateAssetCoins(coinData);
-					// const res = {};
-					this.props.addCoin(res.data);
+					this.props.addCoins(res);
 				}
-				// await putExchange(formProps);
-				// await this.getExchange();
-				// await this.getCoins();
+				await updateExchange(formProps);
+				await this.getMyExchange();
+				await this.getCoins();
 				if (isPresetAsset && exchange.is_running) {
 					this.setState({ isPresetConfirm: true });
 				}
-				if (isApply) {
-					// await this.handleApply();
-				}
+				// if (isApply) {
+				// 	await this.handleApply();
+				// }
 				this.handleClose();
 				message.success('Asset created successfully');
 			} catch (error) {
@@ -490,20 +437,19 @@ class Assets extends Component {
 	};
 
 	handleDelete = async (symbol) => {
-		// const { coins, exchange } = this.state;
+		const { coins, exchange } = this.state;
 		try {
-			// let formProps = {
-			//     id: exchange.id,
-			//     coins: coins.filter(data => data.symbol !== symbol).map(data => data.symbol),
-			//     pairs: exchange.pairs.filter(data => {
-			//         let tempPair = data.name ? data.name : data.symbol;
-			//         let pairData = tempPair.split('-');
-			//         return (pairData[0] !== symbol && pairData[1] !== symbol)
-			//     }).map(data => data.name ? data.name : data.symbol)
-			// };
-			// await putExchange(formProps);
-			// await this.getExchange();
-			// await this.getCoins();
+			let formProps = {
+			    id: exchange.id,
+			    coins: coins.filter(data => data.symbol !== symbol).map(data => data.symbol),
+			    pairs: exchange.pairs.filter(data => {
+					let pairData = data.split('-');
+			        return (pairData[0] !== symbol && pairData[1] !== symbol)
+			    })
+			};
+			await updateExchange(formProps);
+			await this.getMyExchange();
+			await this.getCoins();
 			message.success('Asset removed successfully');
 			this.setState({ isConfigure: false, isPreview: false });
 			this.props.handleHide(false);
@@ -523,6 +469,7 @@ class Assets extends Component {
 	};
 
 	handlePreview = (asset) => {
+		this.props.handleHide(true);
 		this.setState({
 			isPreview: true,
 			selectedAsset: asset,
@@ -532,6 +479,7 @@ class Assets extends Component {
 	};
 
 	handleConfigure = () => {
+		// this.props.handleHide(true);
 		this.setState({ isConfigure: true, isPreview: false });
 	};
 
@@ -540,20 +488,23 @@ class Assets extends Component {
 	};
 
 	onClickFilter = () => {
-		const {
-			filterValues,
-			// exchange
-			coins,
-		} = this.state;
+		const { filterValues } = this.state;
+		const { allCoins, exchange } = this.props;
+		const coinData = allCoins.filter((val) =>
+			exchange.coins.includes(val.symbol)
+		);
 		const lowercasedValue = filterValues.toLowerCase();
-		let result = coins.filter((list) => {
-			// let result = exchangeCoins.filter(list => {
-			return (
-				list.symbol.toLowerCase().includes(lowercasedValue) ||
-				list.fullname.toLowerCase().includes(lowercasedValue)
-			);
-		});
-		this.setState({ coins: result });
+		if (lowercasedValue) {
+			let result = coinData.filter((list) => {
+				return (
+					list.symbol.toLowerCase().includes(lowercasedValue) ||
+					list.fullname.toLowerCase().includes(lowercasedValue)
+				);
+			});
+			this.setState({ coins: result });
+		} else {
+			this.setState({ coins: coinData });
+		}
 	};
 
 	handleEditData = (data) => {
@@ -854,13 +805,14 @@ class Assets extends Component {
 }
 const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
+	addCoins: bindActionCreators(addCoins, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
 });
 const mapStateToProps = (state) => ({
 	user: state.user,
 	allCoins: state.asset.allCoins,
 	constants: state.app.constants,
-	exchange: state.asset.exchange,
+	exchange: state.asset && state.asset.exchange,
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Assets);

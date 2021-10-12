@@ -46,7 +46,7 @@ class PairParams extends Component {
 
 		return (
 			<div>
-				<div className="title">Pair parameters</div>
+				<div className="title">Market parameters</div>
 				<div>
 					Values have been preset based on the rough dollar value of the base
 					asset.
@@ -97,14 +97,14 @@ class PairParams extends Component {
 				<div className="field-wrap">
 					<div className="sub-title">Minimum Tradable Amount</div>
 					<div className="description">
-						<div>Minimum - amount that can be traded for this pair.</div>
+						<div>Minimum - amount that can be traded for this market.</div>
 					</div>
 					<div className="full-width">{formData.min_size}</div>
 				</div>
 				<div className="field-wrap">
 					<div className="sub-title">Maximum Tradable Amount</div>
 					<div className="description">
-						<div>Maximum - amount that can be traded for this pair.</div>
+						<div>Maximum - amount that can be traded for this market.</div>
 					</div>
 					<div className="full-width">{formData.max_size}</div>
 				</div>
@@ -112,7 +112,7 @@ class PairParams extends Component {
 					<div className="sub-title">Minimum Tradable Price</div>
 					<div className="description">
 						<div>
-							Minimum - quoted trading price that can be traded for this pair.
+							Minimum - quoted trading price that can be traded for this market.
 						</div>
 					</div>
 					<div className="full-width">{formData.min_price}</div>
@@ -121,7 +121,7 @@ class PairParams extends Component {
 					<div className="sub-title">Maximum Tradable Price</div>
 					<div className="description">
 						<div>
-							Maximum - quoted trading price that can be traded for this pair.
+							Maximum - quoted trading price that can be traded for this market.
 						</div>
 					</div>
 					<div className="full-width">{formData.max_price}</div>

@@ -12,6 +12,7 @@ const TabPane = Tabs.TabPane;
 
 const AdminFinancials = ({ router, location }) => {
 	const [activeTab, setActiveTab] = useState('0');
+	const [hideTabs, setHideTabs] = useState(false);
 
 	const tabParams = getTabParams();
 	useEffect(() => {
@@ -24,18 +25,29 @@ const AdminFinancials = ({ router, location }) => {
 		setActiveTab(key);
 		router.replace('/admin/financials');
 	};
+
+	const handleHide = () => {
+		setHideTabs((v) => !v);
+	};
+
+	const renderTabBar = (props, DefaultTabBar) => {
+		if (hideTabs) return <div></div>;
+		return <DefaultTabBar {...props} />;
+	};
+
 	return (
 		<div className="app_container-content admin-earnings-container w-100">
 			<Tabs
 				defaultActiveKey="0"
 				activeKey={activeTab}
 				onChange={handleTabChange}
+				renderTabBar={renderTabBar}
 			>
 				<TabPane tab="Summary" key="0">
 					<Wallets router={router} />
 				</TabPane>
 				<TabPane tab="Assets" key="1">
-					<Assets location={location} />
+					<Assets location={location} handleHide={handleHide}/>
 				</TabPane>
 				<TabPane tab="Deposits" key="2">
 					<DepositPage type="deposit" showFilters={true} />

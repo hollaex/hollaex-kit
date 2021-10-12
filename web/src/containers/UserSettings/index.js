@@ -110,7 +110,6 @@ class UserSettings extends Component {
 			icons: ICONS,
 			totalAsset,
 			themeOptions,
-			features,
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),

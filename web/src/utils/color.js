@@ -179,6 +179,16 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.3)
 			.string(),
+		'calculated_quick_trade-bg': Color(
+			themeData['base_secondary-navigation-bar']
+		)
+			.alpha(0.5)
+			.string(),
+		'calculated_quick_trade-gradient': Color(
+			themeData['base_secondary-navigation-bar']
+		)
+			.alpha(0.1)
+			.string(),
 	};
 
 	return { ...themeData, ...calculatedColors };
