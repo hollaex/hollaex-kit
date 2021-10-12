@@ -1463,6 +1463,7 @@ export const initialCommonColors = {
 	'colors-main-black': '#212121',
 	'colors-white': 'white',
 	'colors-black': '#000000',
+	'colors-black-full-opacity': '#00000000',
 	'colors-wave-phase-completed': '#808000',
 	'colors-deactivate': '#797779',
 	'colors-deactivate-color1': '#cccbcb',

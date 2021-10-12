@@ -48,7 +48,7 @@ $title-icon--height: 10rem;
 		&.fetching {
 			color: $colors-deactivate-color2;
 		}
-	
+
 		width: 100%;
 		position: relative;
 	}
@@ -68,16 +68,10 @@ $title-icon--height: 10rem;
 		color: $colors-deactivate;
 	}
 }
-.white-theme .quick_trade-wrapper {
-	.trade-details-wrapper {
-    	background-image: linear-gradient(to top, var(--base_top-bar-navigation) -650%, $quick-trade-container);
-	}
-}
-
 .quick_trade-wrapper {
-    min-width: $wrapper--min-width;
-    max-width: $wrapper--max-width;
-	background-color: $quick-trade-container;
+	min-width: $wrapper--min-width;
+	max-width: $wrapper--max-width;
+	background-color: $quick-trade-block-background;
 	// margin: 3rem auto;
 	height: fit-content;
 	height: 550px;
@@ -248,7 +242,7 @@ $title-icon--height: 10rem;
 	}
 	.trade-details-wrapper {
 		width: 400px;
-    	padding: 40px 65px 30px 55px;
+		padding: 40px 65px 30px 55px;
 		font-family: $en--font-family;
 		background-color: $app-background-color;
 		.trade-details-content {
@@ -265,34 +259,38 @@ $title-icon--height: 10rem;
 			}
 			.chart {
 				height: 100px;
-    			margin: 10px 0;
-    			// opacity: 0.4;
+				margin: 10px 0;
+				// opacity: 0.4;
 				div:last-child {
-    				padding-top: 1rem;
+					padding-top: 1rem;
 				}
 				.fade-area {
 					position: relative;
 				}
 				.fade-area::before {
-					content: "";
+					content: '';
 					position: absolute;
 					height: 100px;
 					width: 100%;
-					background-image: linear-gradient(to right, $app-background-color, rgba(0, 0 ,0 ,0));
+					background-image: linear-gradient(
+						to right,
+						$app-background-color,
+						rgba(0, 0, 0, 0)
+					);
 					z-index: 9999;
 				}
 			}
 			.trade_tabs-container {
-    			margin: 0 !important;
-    			width: 100% !important;
+				margin: 0 !important;
+				width: 100% !important;
 			}
 		}
 		.currency-ball-image-wrapper {
-    		height: 5rem;
+			height: 5rem;
 		}
 		.coins-icon {
-    		width: 5rem;
-    		height: 5rem;
+			width: 5rem;
+			height: 5rem;
 		}
 		.f-size-16 {
 			font-size: 16px;
@@ -309,20 +307,26 @@ $title-icon--height: 10rem;
 		.fullname {
 			color: $colors-deactivate;
 			font-size: 11px;
-    		white-space: nowrap;
+			white-space: nowrap;
 		}
 	}
 	.trade-section {
 		width: 600px;
-    	padding-top: 2rem;
-    	background-image: linear-gradient(to top, var(--base_top-bar-navigation) -450%, $quick-trade-container);
+		padding-top: 2rem;
+		background: transparent
+			linear-gradient(
+				180deg,
+				$quick-trade-block-gradient-top 0%,
+				$quick-trade-block-gradient-bottom 100%
+			)
+			0% 0% no-repeat padding-box;
 		.inner-content {
 			width: 400px;
 			height: 390px;
 			display: flex;
 			flex-direction: column;
 			align-items: flex-end;
-    		margin: 55px 105px 0 95px;
+			margin: 55px 105px 0 95px;
 			.btn-wrapper {
 				padding: 40px 0 120px 0;
 			}
@@ -335,7 +339,8 @@ $title-icon--height: 10rem;
 				.ant-input-group {
 					width: 310px;
 					background-color: $app-light-background !important;
-					.ant-select-selector, .input-group__input {
+					.ant-select-selector,
+					.input-group__input {
 						background-color: $app-light-background !important;
 					}
 				}
@@ -362,9 +367,8 @@ $title-icon--height: 10rem;
 				font-family: $en--font-family;
 				color: $colors-deactivate;
 				opacity: 0.5;
-    			text-align: end;
+				text-align: end;
 			}
-
 		}
 	}
 }
@@ -417,7 +421,7 @@ $title-icon--height: 10rem;
 		}
 	}
 	.quick_trade-container {
-    	height: 100%;
+		height: 100%;
 	}
 	.quick_trade-wrapper {
 		.trade-details-wrapper {
@@ -428,7 +432,7 @@ $title-icon--height: 10rem;
 			}
 		}
 		.trade-section .inner-content {
-    		align-items: center !important;
+			align-items: center !important;
 			.py-2 {
 				flex-direction: column;
 				align-items: flex-start;
@@ -437,7 +441,7 @@ $title-icon--height: 10rem;
 				}
 			}
 			.btn-wrapper {
-    			align-items: center !important;
+				align-items: center !important;
 			}
 		}
 	}
@@ -464,13 +468,13 @@ $title-icon--height: 10rem;
 		}
 		.trade-section {
 			width: 100%;
-    		padding: 40px 10px 10px 10px;
+			padding: 40px 10px 10px 10px;
 			.inner-content {
 				width: 100%;
 				height: 100%;
-    			margin: 0;
+				margin: 0;
 				.py-2 .ant-input-group {
-    				width: 250px;
+					width: 250px;
 				}
 			}
 		}
