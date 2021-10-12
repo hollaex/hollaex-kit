@@ -21,12 +21,12 @@ export const PATHS = [
 	},
 	{
 		path: '/admin/financials',
-		label: 'Financials',
+		label: 'Assets',
 		routeKey: 'financials',
 	},
 	{
 		path: '/admin/trade',
-		label: 'Trading',
+		label: 'Markets',
 		routeKey: 'trade',
 	},
 	{

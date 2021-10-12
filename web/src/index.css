@@ -8718,7 +8718,7 @@ foreignObject {
         .quick_trade-wrapper .trade-details-wrapper .trade-details-content .chart .fade-area {
           position: relative; }
         .quick_trade-wrapper .trade-details-wrapper .trade-details-content .chart .fade-area::before {
-          content: "";
+          content: '';
           position: absolute;
           height: 100px;
           width: 100%;
@@ -8766,7 +8766,8 @@ foreignObject {
         .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group {
           width: 310px;
           background-color: var(--base_secondary-navigation-bar) !important; }
-          .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .ant-select-selector, .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .input-group__input {
+          .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .ant-select-selector,
+          .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .input-group__input {
             background-color: var(--base_secondary-navigation-bar) !important; }
       .quick_trade-wrapper .trade-section .inner-content div:nth-child(4) .input-group__container .input-group__input {
         color: var(--labels_important-active-labels-text-graphics) !important; }

@@ -12,6 +12,7 @@ export const SET_PRICES_AND_ASSET = 'SET_PRICES_AND_ASSET';
 export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
+export const ADD_COIN = 'ADD_COIN';
 
 export const setPricesAndAsset = (balance, coins) => {
 	return (dispatch) => {
@@ -37,6 +38,15 @@ export const setCoins = (allCoins) => {
 			payload: {
 				allCoins,
 			},
+		});
+	};
+};
+
+export const addCoins = (coins) => {
+	return (dispatch) => {
+		dispatch({
+			type: ADD_COIN,
+			payload: { coins },
 		});
 	};
 };

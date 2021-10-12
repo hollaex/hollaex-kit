@@ -282,6 +282,7 @@ class CreatePair extends Component {
 			pairs,
 			isExchangeWizard,
 			isEdit,
+			user
 		} = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
@@ -298,6 +299,7 @@ class CreatePair extends Component {
 						isEdit={isEdit}
 						activeTab={activeTab}
 						isCreatePair={true}
+						user={user}
 					/>
 				);
 			case 'pair-selection':
