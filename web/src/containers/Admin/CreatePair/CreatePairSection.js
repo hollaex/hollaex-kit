@@ -32,9 +32,9 @@ const CreatePairSection = ({
 			(pair) => pair.name === `${formData.pair_base}-${formData.pair_2}`
 		);
 		if (!formData.pair_2) {
-			setExistError("Can't create a pair without adding a second asset.");
+			setExistError("Can't create a market without adding a second asset.");
 		} else if (existPair.length) {
-			setExistError('This pair is already exist');
+			setExistError('This market is already exist');
 		} else {
 			setExistError('');
 			handleChange(`${formData.pair_base}-${formData.pair_2}`, 'name');
@@ -49,7 +49,7 @@ const CreatePairSection = ({
 
 	return (
 		<div className="add-pair-wrapper">
-			<div className="title">Add Trading pair</div>
+			<div className="title">Add Market</div>
 			<div className="coin-container">
 				<div className="pair-wrapper">
 					<div className="flex-container">

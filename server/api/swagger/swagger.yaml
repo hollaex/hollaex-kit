@@ -2514,43 +2514,6 @@ paths:
           in: query
           required: false
           type: string
-        - name: active
-          in: query
-          required: false
-          type: boolean
-        - name: verified
-          in: query
-          required: false
-          type: boolean
-        - name: limit
-          in: query
-          required: false
-          type: number
-          format: int32
-        - name: page
-          in: query
-          required: false
-          type: number
-          format: int32
-        - name: order_by
-          in: query
-          required: false
-          type: string
-        - name: order
-          in: query
-          required: false
-          type: string
-          enum: ['asc', 'desc']
-        - name: start_date
-          in: query
-          required: false
-          type: string
-          format: date-time
-        - name: end_date
-          in: query
-          required: false
-          type: string
-          format: date-time
       responses:
         "200":
           description: Success
@@ -2704,43 +2667,6 @@ paths:
           in: query
           required: false
           type: string
-        - name: active
-          in: query
-          required: false
-          type: boolean
-        - name: verified
-          in: query
-          required: false
-          type: boolean
-        - name: limit
-          in: query
-          required: false
-          type: number
-          format: int32
-        - name: page
-          in: query
-          required: false
-          type: number
-          format: int32
-        - name: order_by
-          in: query
-          required: false
-          type: string
-        - name: order
-          in: query
-          required: false
-          type: string
-          enum: ['asc', 'desc']
-        - name: start_date
-          in: query
-          required: false
-          type: string
-          format: date-time
-        - name: end_date
-          in: query
-          required: false
-          type: string
-          format: date-time
       responses:
         "200":
           description: Success

@@ -4,7 +4,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
-import { /*  getCoinInfo, */ storeAsset } from '../AdminFinancials/action';
+import { getCoinInfo, storeAsset } from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
 	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
@@ -74,12 +74,11 @@ const AssetConfig = (props) => {
 			body.decimals = parseInt(body.decimals, 10);
 		}
 		try {
-			// const res = {};
 			const res = await storeAsset(body);
-			// if (props.getCoins) {
-			//     await props.getCoins();
-			// }
-			if (res && res.data) {
+			if (props.getCoins) {
+			    await props.getCoins();
+			}
+			if (res) {
 				handleNext();
 			}
 		} catch (error) {
@@ -101,22 +100,21 @@ const AssetConfig = (props) => {
 		const {
 			handleBulkUpdate,
 			handleMetaChange,
-			// coinFormData
+			coinFormData
 		} = props;
-		// const params = {
-		//     address,
-		//     network: coinFormData.network
-		// }
+		const params = {
+		    address,
+		    network: coinFormData.network
+		}
 		try {
-			// const res = await getCoinInfo(params);
-			const res = {};
-			if (res.data) {
+			const res = await getCoinInfo(params);
+			if (res) {
 				const data = {
-					...res.data,
-					fullname: res.data.name,
-					symbol: res.data.symbol.toLowerCase(),
+					...res,
+					fullname: res.name,
+					symbol: res.symbol.toLowerCase(),
 				};
-				if (res.data && res.data.supply) {
+				if (res && res.supply) {
 					setIsApply(true);
 				} else {
 					setIsApply(false);

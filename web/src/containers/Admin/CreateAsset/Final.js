@@ -194,7 +194,7 @@ const Final = ({
 				<div className="type-wrap">
 					<div className="warning-container">
 						<b>Type: </b>
-						{coinFormData.type}
+						<span className="ml-2">{coinFormData.type}</span>
 						{isPreview &&
 						!coinFormData.verified &&
 						coinFormData.created_by === user.id ? (

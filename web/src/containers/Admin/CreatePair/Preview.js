@@ -27,7 +27,7 @@ const Preview = ({
 		<div>
 			{!isPreview && !isConfigure ? (
 				<Fragment>
-					<div className="title">Review & confirm trading pair</div>
+					<div className="title">Review & confirm market</div>
 					<div className="grey-warning">
 						<div className="warning-text">!</div>
 						<div>
@@ -42,6 +42,10 @@ const Preview = ({
 					</div>
 				</Fragment>
 			) : null}
+			<div className="d-flex">
+				<div className="title">Manage {formData.pair_base}/{formData.pair_2}</div>
+				<div>{renderStatus(pair_base_data, user)}</div>
+			</div>
 			<div
 				className={
 					!isPreview && !isConfigure
@@ -118,9 +122,10 @@ const Preview = ({
 				</div>
 				<div className={!isPreview && !isConfigure ? 'right-container' : ''}>
 					<div className="right-content">
-						{isConfigure ? <div className="title">Pair info</div> : null}
-						<div>Base pair: {formData.pair_base}</div>
-						<div>Price pair: {formData.pair_2}</div>
+						{/* {isConfigure ? <div className="title">Pair info</div> : null} */}
+						<div className="title">Market info</div>
+						<div>Base market pair: {formData.pair_base}</div>
+						<div>Price market pair: {formData.pair_2}</div>
 					</div>
 					<div className="right-content">
 						<div className="title">Parameters</div>
@@ -135,7 +140,11 @@ const Preview = ({
 						<div>Min size: {formData.min_size}</div>
 						{isConfigure ? (
 							<div>
-								<Button type="primary" onClick={onEdit}>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={onEdit}
+								>
 									Edit
 								</Button>
 							</div>
@@ -151,7 +160,7 @@ const Preview = ({
 									</Button>
 									<div className="separator"></div>
 									<div className="description-small remove">
-										Removing this pair will permanently delete this pair from
+										Removing this market will permanently delete this market from
 										your exchange. Use with caution!
 									</div>
 								</div>

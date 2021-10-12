@@ -4,11 +4,11 @@ import { InputNumber, Button } from 'antd';
 export const EditTradable = ({ formData, handleChange, moveToStep }) => {
 	return (
 		<div>
-			<div className="title">Pair parameters</div>
+			<div className="title">Market parameters</div>
 			<div className="field-wrap">
 				<div className="sub-title">Minimum Tradable Amount</div>
 				<div className="description">
-					<div>Minimum - amount that can be traded for this pair.</div>
+					<div>Minimum - amount that can be traded for this market.</div>
 				</div>
 				<div className="full-width">
 					<InputNumber
@@ -21,7 +21,7 @@ export const EditTradable = ({ formData, handleChange, moveToStep }) => {
 			<div className="field-wrap">
 				<div className="sub-title">Maximum Tradable Amount</div>
 				<div className="description">
-					<div>Maximum - amount that can be traded for this pair.</div>
+					<div>Maximum - amount that can be traded for this market.</div>
 				</div>
 				<div className="full-width">
 					<InputNumber
@@ -35,7 +35,7 @@ export const EditTradable = ({ formData, handleChange, moveToStep }) => {
 				<div className="sub-title">Minimum Tradable Price</div>
 				<div className="description">
 					<div>
-						Minimum - quoted trading price that can be traded for this pair.
+						Minimum - quoted trading price that can be traded for this market.
 					</div>
 				</div>
 				<div className="full-width">
@@ -50,7 +50,7 @@ export const EditTradable = ({ formData, handleChange, moveToStep }) => {
 				<div className="sub-title">Maximum Tradable Price</div>
 				<div className="description">
 					<div>
-						Maximum - quoted trading price that can be traded for this pair.
+						Maximum - quoted trading price that can be traded for this market.
 					</div>
 				</div>
 				<div className="full-width">
@@ -77,7 +77,7 @@ export const EditTradable = ({ formData, handleChange, moveToStep }) => {
 export const EditIncrement = ({ formData, handleChange, moveToStep }) => {
 	return (
 		<div>
-			<div className="title">Pair parameters</div>
+			<div className="title">Market parameters</div>
 			<div className="field-wrap">
 				<div className="sub-title">Increment Amount</div>
 				<div className="description">

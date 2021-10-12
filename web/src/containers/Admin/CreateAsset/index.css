@@ -459,3 +459,7 @@
 	background-color: #288500 !important;
 	color: #ffffff !important;
 }
+.create-asset-container .type-wrap .warning-container {
+	position: relative;
+	display: flex;
+}
