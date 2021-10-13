@@ -28,8 +28,8 @@ const PairsTab = (props) => {
 		props.router.replace('/admin/trade');
 	};
 
-	const handleHide = () => {
-		setHideTabs((v) => !v);
+	const handleHide = (value) => {
+		setHideTabs(value);
 	};
 
 	const renderTabBar = (props, DefaultTabBar) => {
@@ -62,19 +62,11 @@ const PairsTab = (props) => {
 				</TabPane>
 				<TabPane tab="OrderBook" key="1">
 					<Pairs
+						router={props.router}
 						location={props.location}
 						handleHide={handleHide}
 						getMyExchange={getMyExchange}
 					/>
-				</TabPane>
-				<TabPane tab="OTC Broker" key="2">
-					<div>OTC Broker</div>
-				</TabPane>
-				<TabPane tab="Volumes" key="3">
-					<div>Volumes</div>
-				</TabPane>
-				<TabPane tab="Active orders" key="4">
-					<div>Active orders</div>
 				</TabPane>
 			</Tabs>
 		</div>
@@ -85,4 +77,4 @@ const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
 });
 
-export default connect(mapDispatchToProps)(PairsTab);
+export default connect(null, mapDispatchToProps)(PairsTab);
