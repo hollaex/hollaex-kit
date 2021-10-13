@@ -538,7 +538,7 @@ export default {
 				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
 				ID_NUMBER_PLACEHOLDER: 'Type your passport Number or national Id number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number or national id number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Tyype your passport or national Id number',
+				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport or national Id number',
 				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
 				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
 				FRONT_LABEL: 'Passport or National Id',
