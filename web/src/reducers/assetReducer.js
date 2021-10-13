@@ -2,8 +2,7 @@ import {
 	SET_PRICES_AND_ASSET,
 	SET_ALL_COINS,
 	SET_ALL_PAIRS,
-	SET_EXCHANGE,
-	ADD_COIN
+	SET_EXCHANGE
 } from 'actions/assetActions';
 
 const INITIAL_STATE = {
@@ -22,12 +21,6 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 
 		case SET_ALL_COINS:
 			return { ...state, ...payload };
-
-		case ADD_COIN:
-			return {
-				...state,
-				allCoins: [...state.allCoins, payload]
-			};
 
 		case SET_ALL_PAIRS:
 			return { ...state, ...payload };

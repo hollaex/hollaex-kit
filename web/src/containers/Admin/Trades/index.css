@@ -202,6 +202,9 @@
 .admin-pairs-container .orderbook-content .box-container .box-content:hover {
 	background-color: var(--admin_panel_table_tbody_hover);
 }
+.admin-pairs-container .orderbook-content .box-container .box-content .small-txt {
+	font-size: 12px;
+}
 .admin-pairs-container .orderbook-content .box-container .grey-text {
     font-size: 13px;
     color: #808080;

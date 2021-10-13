@@ -17,7 +17,7 @@ import {
 	updateAssetCoins,
 	updateExchange,
 } from './action';
-import { addCoins, setCoins, setExchange } from 'actions/assetActions';
+import { setCoins, setExchange } from 'actions/assetActions';
 import { bindActionCreators } from 'redux';
 
 const { Item } = Breadcrumb;
@@ -414,8 +414,7 @@ class Assets extends Component {
 				    coins: [...coinList, coinData.symbol]
 				}
 				if (!coinData.id) {
-					const res = await updateAssetCoins(coinData);
-					this.props.addCoins(res);
+					await updateAssetCoins(coinData);
 				}
 				await updateExchange(formProps);
 				await this.getMyExchange();
@@ -805,7 +804,6 @@ class Assets extends Component {
 }
 const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
-	addCoins: bindActionCreators(addCoins, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
 });
 const mapStateToProps = (state) => ({

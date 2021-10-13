@@ -3,12 +3,14 @@ import { InputNumber, Button, Checkbox } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 class PairParams extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
+			tabParams: getTabParams()
 		};
 	}
 
@@ -24,9 +26,12 @@ class PairParams extends Component {
 	};
 
 	handleBack = () => {
-		const { isEdit, moveToStep, onClose } = this.props;
+		const { isEdit, moveToStep, onClose, router } = this.props;
 		if (isEdit) {
 			onClose();
+		} else if (this.state.tabParams.isOpenPairModal) {
+			onClose();
+			router.replace("/admin/trade?tab=1&isViewTabs=true");
 		} else {
 			moveToStep('pair-init-selection');
 		}
@@ -54,12 +59,12 @@ class PairParams extends Component {
 				<div>Click edit to change these trade values.</div>
 				<div className="d-flex align-items-center coin-container">
 					<div className="d-flex align-items-center">
-						<Coins type={pairBase.symbol} small={true} />
+						<Coins type={pairBase.symbol} small={true} color={pairBase.meta.color}/>
 						<span className="coin-full-name">{pairBase.fullname}</span>
 					</div>
 					<CloseOutlined style={{ fontSize: '24px' }} />
 					<div className="d-flex align-items-center">
-						<Coins type={pair2.symbol} small={true} />
+						<Coins type={pair2.symbol} small={true} color={pair2.meta.color}/>
 						<span className="coin-full-name">{pair2.fullname}</span>
 					</div>
 				</div>

@@ -8,6 +8,7 @@ import Preview from './Preview';
 import { EditIncrement, EditTradable } from './EditParams';
 import CreatePairSection from './CreatePairSection';
 import PairSelection from './PairSelection';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 import './index.css';
 
@@ -59,6 +60,19 @@ class CreatePair extends Component {
 			this.setPresetPair();
 			this.selectBase(false);
 			// this.requestParams();
+		}
+		const tabParams = getTabParams();
+		if (tabParams && tabParams.isOpenPairModal) {
+			this.setState({ currentStep: 'step2' });
+			const pairs = tabParams.pairs.split('-');
+			this.setState({
+				formData: {
+					...this.state.formData,
+					estimated_price: 1,
+					pair_base: pairs[0],
+					pair_2: pairs[1]
+				}
+			});
 		}
 	}
 
@@ -282,7 +296,8 @@ class CreatePair extends Component {
 			pairs,
 			isExchangeWizard,
 			isEdit,
-			user
+			user,
+			router
 		} = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
@@ -325,6 +340,7 @@ class CreatePair extends Component {
 						moveToStep={this.moveToStep}
 						requestParams={this.requestParams}
 						onClose={this.handleClose}
+						router={router}
 					/>
 				);
 			case 'edit-tradable':
@@ -399,8 +415,8 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 CreatePair.defaultProps = {
-	handleWidth: () => {},
-	editDataCallback: () => {},
+	handleWidth: () => { },
+	editDataCallback: () => { },
 };
 
 export default connect(mapStateToProps)(CreatePair);
