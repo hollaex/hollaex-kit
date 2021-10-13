@@ -178,11 +178,15 @@ class Pairs extends Component {
 				pairs,
 			});
 		}
+		const tabParams = getTabParams();
+		if (tabParams.isOpenPairModal) {
+			this.setState({ isOpen: tabParams.isOpenPairModal });
+		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs) && this.props.allPairs) ||
-			(JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs) && this.props.pairs)) {
+		if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs)) ||
+			(JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs))) {
 			let pairs = this.props.allPairs.filter((data) =>
 				this.props.pairs.includes(data.name)
 			);
@@ -202,9 +206,23 @@ class Pairs extends Component {
 					isPreview: false,
 					isConfigure: false,
 				});
+				if (tabParams.isOpenPairModal) {
+					this.setState({ isOpen: tabParams.isOpenPairModal });
+				}
 			}
 		}
 	}
+
+	getPairs = async () => {
+		try {
+			const res = await getAllPairs();
+			this.props.setAllPairs(res.data.data);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
 
 	handleCreateNew = () => {
 		this.setState({ isOpen: true });
@@ -217,6 +235,10 @@ class Pairs extends Component {
 			isEdit: false,
 			isConfirm: false,
 		});
+		const tabParams = getTabParams();
+		if (tabParams.isOpenPairModal) {
+			this.props.router.replace("/admin/trade?tab=1&isViewTabs=true");
+		}
 	};
 
 	handleWidth = (width) => {
@@ -269,18 +291,6 @@ class Pairs extends Component {
 		}
 	};
 
-	getTradingPairs = async () => {
-		const { setAllPairs } = this.props;
-		try {
-			const res = await getAllPairs();
-			if (res.data && res.data.data) {
-				setAllPairs(res.data.data);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	handleDelete = async (formData) => {
 		const { pairs = [], exchange = {} } = this.props;
 		try {
@@ -290,7 +300,7 @@ class Pairs extends Component {
 			}
 			await updateExchange(formProps);
 			await this.props.getMyExchange();
-			await this.getTradingPairs();
+			await this.getPairs();
 			message.success('Pair removed successfully');
 			this.setState({ isPreview: false, isConfigure: false });
 			this.props.handleHide(false);
@@ -336,7 +346,7 @@ class Pairs extends Component {
 				}
 				await updateAssetPairs(formData);
 				await this.props.getMyExchange();
-				await this.getTradingPairs();
+				await this.getPairs();
 				if (isApply) {
 					await this.handleApply();
 				}
@@ -372,7 +382,7 @@ class Pairs extends Component {
 					}
 					await updateExchange(formProps);
 					await this.props.getMyExchange();
-					await this.getTradingPairs();
+					await this.getPairs();
 					// if (isPresetAsset && exchange.is_running) {
 					// 	this.handleApplyOpen();
 					// }
@@ -559,6 +569,7 @@ class Pairs extends Component {
 					handleConfirm={this.handleConfirm}
 					editDataCallback={this.handleEditData}
 					onClose={this.handleClose}
+					router={this.props.router}
 				/>
 			);
 		}

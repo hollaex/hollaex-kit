@@ -26,8 +26,8 @@ const AdminFinancials = ({ router, location }) => {
 		router.replace('/admin/financials');
 	};
 
-	const handleHide = () => {
-		setHideTabs((v) => !v);
+	const handleHide = (isHide) => {
+		setHideTabs(isHide);
 	};
 
 	const renderTabBar = (props, DefaultTabBar) => {

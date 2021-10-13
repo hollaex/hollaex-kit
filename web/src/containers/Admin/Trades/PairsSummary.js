@@ -26,7 +26,6 @@ const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}) => {
             title: 'Markets',
             dataIndex: 'symbol',
             key: 'symbol',
-            width: 400,
             render: (symbol, { fullname = '', verified, basename, name, ...rest }) => {
                 const pairData = symbol ? symbol.split('-') : name.split('-');
                 let pair_base = pairData.length ? pairData[0] : '';
@@ -107,13 +106,6 @@ const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}) => {
         title: <div>Orderbook (<Link to="/admin/trade?tab=1&isViewTabs=true">View</Link>)</div>,
         children,
     });
-    columnData.push({
-        title: <div>OTC Broker (<Link to="/admin/trade?tab=2">View</Link>)</div>,
-        key: 'otcBroker',
-        render: () => (
-            <div className="text-center">(<Link to="/admin/trade?tab=2">View OTC Broker</Link>)</div>
-        )
-    });
     return columnData;
 };
 
@@ -139,8 +131,8 @@ class PairsSummary extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs) && this.props.allPairs.length) ||
-            (JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs) && this.props.pairs.length)) {
+        if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs)) ||
+            (JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs))) {
             let pairs = this.props.allPairs.filter((data) =>
                 this.props.pairs.includes(data.name)
             );
@@ -179,11 +171,87 @@ class PairsSummary extends Component {
         this.setState(prevState => ({ isHovered: !prevState.isHovered, hoveredKey }));
     }
 
+    renderContent = (allCoins, pendingPairs, configurePairs) => {
+        return (
+            <div>
+                {configurePairs.length
+                    ?
+                    <div>
+                        {configurePairs.map((item, key) => {
+                            const pairs = item.split('-');
+                            const pair_base_fullname =
+                                allCoins.filter((data) => data.symbol === pairs[0])[0].fullname || '';
+                            const pair2_fullname =
+                                allCoins.filter((data) => data.symbol === pairs[1])[0].fullname || '';
+                            return <div
+                                className="box-content"
+                                onMouseEnter={() => this.handleHover(key)}
+                                onMouseLeave={() => this.handleHover(key)}
+                            >
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        <Link to={`/admin/trade?tab=1&isViewTabs=true&isOpenPairModal=true&pairs=${pairs[0]}-${pairs[1]}`}>
+                                            <IconToolTip
+                                                type="settings"
+                                                tip="Click to complete the market configuration"
+                                            />
+                                        </Link>
+                                        <div className="ml-4">{pair_base_fullname}/{pair2_fullname}</div>
+                                        <div className="ml-2 grey-text">({pairs[0]}/{pairs[1]})</div>
+                                    </div>
+                                    <div className="text-end">
+                                        <div>(<Link to={`/admin/trade?tab=1&isViewTabs=true&isOpenPairModal=true&pairs=${pairs[0]}-${pairs[1]}`} className="text-underline">Configure</Link>)</div>
+                                        {this.state.isHovered && (this.state.hoveredKey === key)
+                                            ? <div className="small-txt">Click to complete configuration</div>
+                                            : <div className="small-txt">Configuration incomplete</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                    : null
+                }
+                {pendingPairs.length
+                    ?
+                    <div>
+                        {pendingPairs.map((item, key) => {
+                            const pair_base_fullname =
+                                allCoins.filter((data) => data.symbol === item.pair_base)[0].fullname || '';
+                            const pair2_fullname =
+                                allCoins.filter((data) => data.symbol === item.pair_2)[0].fullname || '';
+                            return <div className="box-content">
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-flex align-items-center">
+                                        <Link to="/admin/trade?tab=1&isViewTabs=true">
+                                            <IconToolTip
+                                                type="warning"
+                                                tip="This market is in pending verification"
+                                            />
+                                        </Link>
+                                        <div className="ml-4">{pair_base_fullname}/{pair2_fullname}</div>
+                                        <div className="ml-2 grey-text">({item.pair_base}/{item.pair_2})</div>
+                                    </div>
+                                    <div className="text-end">
+                                        <div>(<Link to="/admin/trade?tab=1&isViewTabs=true" className="text-underline">View</Link>)</div>
+                                        <div className="orange-text small-txt">pending...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        })}
+                    </div>
+                    : null
+                }
+            </div>
+        )
+    }
+
     render() {
-        const { allCoins, allPairs, user, pairs, constants } = this.props;
-        const pairData = allPairs && allPairs.filter(data => pairs && pairs.includes(data.name));
-        const filterData = pairData.filter(data => !data.verified);
-        if (this.state.pairs.length === 0 && filterData.length === 0) {
+        const { allCoins, allPairs, user, pairs = [], constants } = this.props;
+        let allPairSymbols = allPairs.map(item => item.code);
+        let configurePairs = pairs.filter(data => !allPairSymbols.includes(data));
+        const pendingPairs = allPairs && allPairs.filter(data => pairs.includes(data.name) && !data.verified);
+        if (this.state.pairs.length === 0 && pendingPairs.length === 0) {
             return <Spin size="large" className="m-top" />;
         }
         return (
@@ -193,47 +261,10 @@ class PairsSummary extends Component {
                         <div className="title">Pending markets</div>
                         <div>Below is a list of markets that are incomplete and/or pending verification. Complete your market configurations to activate</div>
                         <div className="box-container">
-                            {filterData.length
+                            {pendingPairs.length || configurePairs.length
                                 ?
                                 <div>
-                                    {filterData.map((item, key) => {
-                                        const pair_base_fullname =
-                                            allCoins.filter((data) => data.symbol === item.pair_base)[0].fullname || '';
-                                        const pair2_fullname =
-                                            allCoins.filter((data) => data.symbol === item.pair_2)[0].fullname || '';
-                                        return <div
-                                            className="box-content"
-                                            onMouseEnter={() => this.handleHover(key)}
-                                            onMouseLeave={() => this.handleHover(key)}
-                                        >
-                                            <div className="d-flex justify-content-between">
-                                                <div className="d-flex align-items-center">
-                                                    <IconToolTip
-                                                        type="settings"
-                                                        tip="Click to complete the market configuration"
-                                                    />
-                                                    {/* <IconToolTip
-                                                        type="warning"
-                                                        tip="This market is in pending verification"
-                                                    /> */}
-                                                    <div className="ml-4">{pair_base_fullname}/{pair2_fullname}</div>
-                                                    <div className="ml-2 grey-text">({item.pair_base}/{item.pair_2})</div>
-                                                </div>
-                                                {/* <div className="text-end">
-                                                    <div>(<span className="text-underline">Configure</span>)</div>
-                                                    {this.state.isHovered && (this.state.hoveredKey === key)
-                                                        ? <div>Click to complete configuration</div>
-                                                        : <div>Configuration incomplete</div>
-                                                    }
-                                                </div> */}
-                                                <div className="text-end">
-                                                    <div>(<span className="text-underline">View</span>)</div>
-                                                    <div className="orange-text">pending...</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    })
-                                    }
+                                    {this.renderContent(allCoins, pendingPairs, configurePairs)}
                                 </div>
                                 :
                                 <div className="no-markets">

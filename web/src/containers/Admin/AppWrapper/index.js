@@ -115,13 +115,7 @@ class AppWrapper extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getExchange();
-		setTimeout(() => {
-			this.getCoins();
-		}, 3000);
-		setTimeout(() => {
-			this.getPairs();
-		}, 3000);
+		this.getData();
 		// this.getAssets();
 
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
@@ -195,6 +189,12 @@ class AppWrapper extends React.Component {
 	// 		throw error;
 	// 	}
 	// };
+
+	getData = async () => {
+		await this.getExchange();
+		await this.getCoins();
+		await this.getPairs();
+	}
 
 	getExchange = async () => {
 		try {
