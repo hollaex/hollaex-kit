@@ -6,6 +6,7 @@ import STRINGS from 'config/localizedStrings';
 import { TABS } from '../index';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
+import DonutChart from './DonutChart';
 import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
@@ -128,24 +129,34 @@ const PublicInfo = ({
 					</div>
 				</div>
 				<div>
-					<div className="pt-4">
-						<div className="bold">
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
-								25
-							)}
-						</div>
-						<div className="secondary-text">3,213,321 XHT</div>
+					<div>
+						<DonutChart />
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
-								75
-							)}
+						<div className="d-flex align-center">
+							<div className="stake-chart-legend mine" />
+							<div className="bold">
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
+									25
+								)}
+							</div>
 						</div>
-						<div className="d-flex">
+						<div className="secondary-text ml-4 pl-3">3,213,321 XHT</div>
+					</div>
+
+					<div className="pt-4">
+						<div className="d-flex align-center">
+							<div className="stake-chart-legend others" />
+							<div className="bold">
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
+									75
+								)}
+							</div>
+						</div>
+						<div className="d-flex ml-4 pl-3">
 							<div className="secondary-text">3,213,321 XHT</div>
 							<div className="pl-2">
 								(

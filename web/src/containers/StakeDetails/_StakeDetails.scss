@@ -146,3 +146,30 @@
 	padding: 0.5rem;
 	border-radius: 0.5rem;
 }
+
+.chart_mine {
+	fill-opacity: 0.7;
+	fill: $colors-notifications-blue;
+	stroke: $colors-notifications-blue;
+}
+
+.chart_others {
+	fill-opacity: 0.7;
+	fill: $colors-notification-pending;
+	stroke: $colors-notification-pending;
+}
+
+.stake-chart-legend {
+	width: 2rem !important;
+	height: 2rem !important;
+	margin-right: 0.5rem;
+	border-radius: 50%;
+
+	&.mine {
+		background-color: $colors-notifications-blue;
+	}
+
+	&.others {
+		background-color: $colors-notification-pending;
+	}
+}
