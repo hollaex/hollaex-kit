@@ -23,3 +23,11 @@ export const generateContracts = (contractsObject, web3) => {
 };
 
 export const CONTRACTS = generateContracts(CONTRACT_ADDRESSES, web3);
+
+export const isStakingAvailable = (token) => {
+	return (
+		CONTRACT_ADDRESSES[token] &&
+		CONTRACT_ADDRESSES[token].main &&
+		CONTRACT_ADDRESSES[token].token
+	);
+};

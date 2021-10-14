@@ -789,6 +789,7 @@ export default {
 		},
 	},
 	STAKE: {
+		EARN: 'Earn', //new
 		TITLE: 'Stake and earn',
 		MODAL_TITLE: 'Stake and earn {0}',
 		REVIEW_MODAL_TITLE: 'Check and confirm stake',

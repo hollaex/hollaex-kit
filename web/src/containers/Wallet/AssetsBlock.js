@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { isStakingAvailable } from 'config/contracts';
 
 import {
 	// CurrencyBall,
@@ -32,6 +33,7 @@ const AssetsBlock = ({
 	searchResult,
 	handleCheck,
 	icons: ICONS,
+	hasEarn,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -165,6 +167,13 @@ const AssetsBlock = ({
 								</EditWrapper>
 							</th>
 						)}
+						{hasEarn && (
+							<th>
+								<EditWrapper stringId="STAKE.EARN">
+									{STRINGS['STAKE.EARN']}
+								</EditWrapper>
+							</th>
+						)}
 					</tr>
 				</thead>
 				<tbody>
@@ -261,6 +270,20 @@ const AssetsBlock = ({
 												className="csv-action"
 												showActionText={isMobile}
 												disable={!isMarketAvailable(pair)}
+											/>
+										</td>
+									)}
+									{hasEarn && (
+										<td>
+											<ActionNotification
+												stringId="STAKE.EARN"
+												text={STRINGS['STAKE.EARN']}
+												iconId="BLUE_PLUS"
+												iconPath={ICONS['BLUE_PLUS']}
+												onClick={() => navigate('/stake')}
+												className="csv-action"
+												showActionText={isMobile}
+												disable={!isStakingAvailable(symbol)}
 											/>
 										</td>
 									)}
