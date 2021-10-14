@@ -6,25 +6,27 @@ import withConfig from 'components/ConfigProvider/withConfig';
 const WarningContent = ({ icons: ICONS, onBack, onReview }) => {
 	return (
 		<Fragment>
-			<div className="dialog-content">
+			<div className="dialog-content pt-4">
 				<IconTitle
 					iconPath={ICONS['STAKING_ERROR']}
 					iconId="STAKING_ERROR"
 					stringId="UNSTAKE.EARLY_WARNING_TITLE"
 					text={STRINGS['UNSTAKE.EARLY_WARNING_TITLE']}
-					textType="title"
+					textType="stake_popup__title"
 					underline={false}
-					className="w-100"
+					className="w-100 pt-4"
 				/>
-				<div>
-					<EditWrapper stringId="UNSTAKE.EARLY_WARNING_TEXT_1">
-						{STRINGS['UNSTAKE.EARLY_WARNING_TEXT_1']}
-					</EditWrapper>
-				</div>
-				<div>
-					<EditWrapper stringId="UNSTAKE.EARLY_WARNING_TEXT_2">
-						{STRINGS['UNSTAKE.EARLY_WARNING_TEXT_2']}
-					</EditWrapper>
+				<div className="secondary-text">
+					<div className="text-align-center">
+						<EditWrapper stringId="UNSTAKE.EARLY_WARNING_TEXT_1">
+							{STRINGS['UNSTAKE.EARLY_WARNING_TEXT_1']}
+						</EditWrapper>
+					</div>
+					<div className="text-align-center pt-3">
+						<EditWrapper stringId="UNSTAKE.EARLY_WARNING_TEXT_2">
+							{STRINGS['UNSTAKE.EARLY_WARNING_TEXT_2']}
+						</EditWrapper>
+					</div>
 				</div>
 			</div>
 
