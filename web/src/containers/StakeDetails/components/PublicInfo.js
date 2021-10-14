@@ -6,20 +6,21 @@ import STRINGS from 'config/localizedStrings';
 import { TABS } from '../index';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
+import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
 const PublicInfo = ({
 	fullname,
 	token,
-	account,
 	currentBlock,
 	setActiveTab,
+	network,
 }) => {
 	const [distributions, setDistributions] = useState([]);
 	useEffect(() => {
-		getDistributions(token)(account).then((response) =>
-			setDistributions(response)
+		getDistributions(token).then((response) =>
+			setDistributions(response.reverse())
 		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -28,13 +29,13 @@ const PublicInfo = ({
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
 			label: STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TIME'],
-			key: 'block',
-			renderCell: ({ block }, key, index) => {
+			key: 'blockNumber',
+			renderCell: ({ blockNumber }, key, index) => {
 				return (
 					<td key={index}>
-						<span>{`${STRINGS['STAKE.BLOCK']}: ${block} `}</span>
+						<span>{`${STRINGS['STAKE.BLOCK']}: ${blockNumber} `}</span>
 						<span className="secondary-text">
-							({calculateEsimatedDate(block, currentBlock, false)})
+							({calculateEsimatedDate(blockNumber, currentBlock, false)})
 						</span>
 					</td>
 				);
@@ -43,11 +44,11 @@ const PublicInfo = ({
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TRANSACTION_ID',
 			label: STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TRANSACTION_ID'],
-			key: 'id',
-			renderCell: ({ id }, key, index) => {
+			key: 'transactionHash',
+			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={id} />
+						<Transaction id={transactionHash} network={network} />
 					</td>
 				);
 			},
@@ -56,15 +57,15 @@ const PublicInfo = ({
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.AMOUNT',
 			label: STRINGS['STAKE_DETAILS.DISTRIBUTIONS.AMOUNT'],
 			key: 'amount',
-			renderCell: ({ amount }, key, index) => {
-				return <td key={index}>{amount}</td>;
+			renderCell: ({ returnValues: { _amount } }, key, index) => {
+				return <td key={index}>{web3.utils.fromWei(_amount)}</td>;
 			},
 		},
 	];
 
 	return (
 		<div>
-			<div className="d-flex">
+			<div className="d-flex justify-content-between">
 				<div>
 					<div>
 						<div className="bold">
@@ -144,7 +145,21 @@ const PublicInfo = ({
 								75
 							)}
 						</div>
-						<div className="secondary-text">3,213,321 XHT</div>
+						<div className="d-flex">
+							<div className="secondary-text">3,213,321 XHT</div>
+							<div className="pl-2">
+								(
+								<span
+									className="blue-link underline-text pointer"
+									onClick={() => setActiveTab(TABS.MY_STAKING.key)}
+								>
+									<EditWrapper stringId="STAKE_DETAILS.VIEW">
+										{STRINGS['STAKE_DETAILS.VIEW']}
+									</EditWrapper>
+								</span>
+								)
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -187,7 +202,7 @@ const PublicInfo = ({
 };
 
 const mapStateToProps = (store) => ({
-	account: store.stake.account,
+	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 });
 

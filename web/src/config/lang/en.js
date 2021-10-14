@@ -888,6 +888,7 @@ export default {
 		GO_BACK: 'Go back',
 		CONTRACT_SUBTITLE: 'Token contract: {0}',
 		VIEW_MORE: 'VIEW MORE',
+		VIEW: 'View',
 		TABS: {
 			PUBLIC_INFO: 'Public info',
 			DISTRIBUTIONS: 'Distributions',
@@ -903,7 +904,7 @@ export default {
 			REWARD_RATE: 'Reward rate',
 			VARIABLE: 'Variable',
 			MY_STAKE: 'My stake ({0}%)',
-			OTHER_STAKE: 'Other staked ({0}%)',
+			OTHER_STAKE: 'Others stake ({0}%)',
 			RECENT_DISTRIBUTED_REWARDS: 'Recent distributed rewards',
 			TIME_DISTRIBUTED: 'Time distributed',
 			TRANSACTION_ID: 'Transaction ID',

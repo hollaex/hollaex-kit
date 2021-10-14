@@ -27,10 +27,11 @@ const MyStaking = ({
 	setNotification,
 	activeStakesCount,
 	activeStakes,
+	network,
 }) => {
 	const [events, setEvents] = useState([]);
 	useEffect(() => {
-		getStakeEvents(token)(account).then((response) => setEvents(response));
+		getStakeEvents(token).then((response) => setEvents(response.reverse()));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -54,13 +55,13 @@ const MyStaking = ({
 		{
 			stringId: 'STAKE_DETAILS.MY_STAKING.TIME',
 			label: STRINGS['STAKE_DETAILS.MY_STAKING.TIME'],
-			key: 'block',
-			renderCell: ({ block }, key, index) => {
+			key: 'blockNumber',
+			renderCell: ({ blockNumber }, key, index) => {
 				return (
 					<td key={index}>
-						<span>{`${STRINGS['STAKE.BLOCK']}: ${block} `}</span>
+						<span>{`${STRINGS['STAKE.BLOCK']}: ${blockNumber} `}</span>
 						<span className="secondary-text">
-							({calculateEsimatedDate(block, currentBlock, false)})
+							({calculateEsimatedDate(blockNumber, currentBlock, false)})
 						</span>
 					</td>
 				);
@@ -77,11 +78,11 @@ const MyStaking = ({
 		{
 			stringId: 'STAKE_DETAILS.MY_STAKING.TRANSACTION_ID',
 			label: STRINGS['STAKE_DETAILS.MY_STAKING.TRANSACTION_ID'],
-			key: 'id',
-			renderCell: ({ id }, key, index) => {
+			key: 'transactionHash',
+			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={id} />
+						<Transaction id={transactionHash} network={network} />
 					</td>
 				);
 			},
@@ -362,6 +363,7 @@ const MyStaking = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
+	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	...userActiveStakesSelector(store),

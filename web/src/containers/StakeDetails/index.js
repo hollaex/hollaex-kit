@@ -149,6 +149,16 @@ class StakeDetails extends Component {
 		this.setState({ activeKey });
 	};
 
+	openContract = (address) => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${address}`;
+		if (window) {
+			window.open(url, '_blank');
+		}
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -180,7 +190,12 @@ class StakeDetails extends Component {
 						<div>
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
-								<span className="pointer blue-link">
+								<span
+									className="pointer blue-link"
+									onClick={() =>
+										this.openContract(CONTRACT_ADDRESSES[token].main)
+									}
+								>
 									{CONTRACT_ADDRESSES[token].main}
 								</span>
 							)}
