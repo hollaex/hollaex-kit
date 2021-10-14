@@ -43,6 +43,14 @@ class StakeDetails extends Component {
 		activeKey: TABS.PUBLIC_INFO.key,
 	};
 
+	constructor(props) {
+		super(props);
+		const { account, router } = this.props;
+		if (!account) {
+			router.push('/stake');
+		}
+	}
+
 	componentWillMount() {
 		const {
 			account,
@@ -50,9 +58,12 @@ class StakeDetails extends Component {
 				params: { token },
 			},
 		} = this.props;
-		getPublicInfo(token)(account).then((res) => {
-			console.log('res', res);
-		});
+
+		if (account) {
+			getPublicInfo(token)(account).then((res) => {
+				console.log('response', res);
+			});
+		}
 	}
 
 	getValue = (balances, prices) => {
@@ -170,6 +181,10 @@ class StakeDetails extends Component {
 			balance,
 			network,
 		} = this.props;
+
+		if (!account) {
+			return <div />;
+		}
 
 		const { activeKey } = this.state;
 
