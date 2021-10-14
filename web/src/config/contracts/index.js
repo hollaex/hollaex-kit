@@ -1,10 +1,10 @@
-import Main from 'config/contracts/Main.json';
+import Main from 'config/contracts/XHT.json';
 import Token from 'config/contracts/Token.json';
 import Web3 from 'web3';
 
 export const CONTRACT_ADDRESSES = {
 	xht: {
-		main: '0xa324C864A04c88ABAB2dE0d291B96D3cD9a17153',
+		main: '0x2ac19c641e6453b2fae4bf6bc52f14a5c82eea0f',
 		token: '0xf0D641A2f02cA52ec56d0791BC79f68da2C772A9',
 	},
 };
