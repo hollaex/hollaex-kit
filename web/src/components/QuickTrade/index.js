@@ -31,7 +31,7 @@ class QuickTrade extends Component {
 			tickerDiff: 0,
 			inProp: false,
 			market: {},
-			chartData: {}
+			chartData: {},
 		};
 	}
 
@@ -52,8 +52,13 @@ class QuickTrade extends Component {
 			this.setState({ market: this.props.market });
 		}
 
-		if (_get(prevProps, 'market.ticker.close') !== _get(this.props, 'market.ticker.close')) {
-			const tickerDiff = _get(this.props, 'market.ticker.close') - _get(prevProps, 'market.ticker.close');
+		if (
+			_get(prevProps, 'market.ticker.close') !==
+			_get(this.props, 'market.ticker.close')
+		) {
+			const tickerDiff =
+				_get(this.props, 'market.ticker.close') -
+				_get(prevProps, 'market.ticker.close');
 			this.setState((prevState) => ({
 				...prevState,
 				tickerDiff,
@@ -68,6 +73,23 @@ class QuickTrade extends Component {
 		}
 	}
 
+	handleClick = (pair) => {
+		if (pair && this.props.router) {
+			this.props.router.push(`/trade/${pair}`);
+		}
+	};
+
+	sourceTotalBalance = (value) => {
+		if (value) {
+			this.props.onChangeSourceAmount(value);
+		}
+	};
+
+	targetTotalBalance = (value) => {
+		if (value) {
+			this.props.onChangeTargetAmount(value);
+		}
+	};
 	render() {
 		const {
 			targetAmount,
@@ -97,21 +119,22 @@ class QuickTrade extends Component {
 			key,
 			priceDifferencePercent,
 			priceDifference,
-			ticker = {}
+			ticker = {},
+			increment_size,
 		} = market;
 
 		let pairBase_fullName;
 		let pair2_fullName;
-		Object.keys(coins).forEach(data => {
+		Object.keys(coins).forEach((data) => {
 			if (coins[data].symbol === selectedSource) {
-				pairBase_fullName = coins[data].fullname
+				pairBase_fullName = coins[data].fullname;
 			} else if (coins[data].symbol === selectedTarget) {
-				pair2_fullName = coins[data].fullname
+				pair2_fullName = coins[data].fullname;
 			}
 		});
 
 		let userBalance;
-		Object.keys(user).forEach(data => {
+		Object.keys(user).forEach((data) => {
 			if (data === 'balance') {
 				userBalance = user[data];
 			}
@@ -119,8 +142,12 @@ class QuickTrade extends Component {
 		const lineChartData = {
 			...chartData[key],
 			name: 'Line',
-			type: 'line'
-		}
+			type: 'line',
+		};
+		const selectedSourceBalance =
+			userBalance[`${selectedSource.toLowerCase()}_balance`];
+		const selectedTargetBalance =
+			userBalance[`${selectedTarget.toLowerCase()}_balance`];
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -151,152 +178,185 @@ class QuickTrade extends Component {
 					>
 						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
 					</div>
-					<div
-						className={classnames(
-							'info-text',
-							...FLEX_CENTER_CLASSES
-						)}
-					>
+					<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
 						{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
 					</div>
 				</div>
-				<div
-					className={classnames('quick_trade-wrapper', 'd-flex')}
-				>
-					<div className="trade-details-wrapper">
-						<div className="trade-details-content">
-							<div className="d-flex pb-30">
-								<Image
-									iconId={`${selectedSource.toUpperCase()}_ICON`}
-									icon={
-										ICONS[`${selectedSource.toUpperCase()}_ICON`]
-											? ICONS[`${selectedSource.toUpperCase()}_ICON`]
-											: ICONS['DEFAULT_ICON']
-									}
-									wrapperClassName="coins-icon"
-									imageWrapperClassName="currency-ball-image-wrapper"
-								/>
-								<div className="pl-2">
-									<div className="pairs">{selectedSource.toUpperCase()}/{selectedTarget.toUpperCase()}</div>
-									<div className="fullname">{pairBase_fullName}/{pair2_fullName}</div>
-								</div>
-							</div>
-							<div className="d-flex">
-								<div>
-									<div className="fullname">
-										<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-											{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
-										</EditWrapper>
+				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
+					{!isMobile ? (
+						<div className="trade-details-wrapper">
+							<div className="trade-details-content">
+								<div className="d-flex pb-30">
+									<Image
+										iconId={`${selectedTarget.toUpperCase()}_ICON`}
+										icon={
+											ICONS[`${selectedTarget.toUpperCase()}_ICON`]
+												? ICONS[`${selectedTarget.toUpperCase()}_ICON`]
+												: ICONS['DEFAULT_ICON']
+										}
+										wrapperClassName="coins-icon"
+										imageWrapperClassName="currency-ball-image-wrapper"
+									/>
+									<div className="pl-2">
+										<div
+											className="pairs pointer"
+											onClick={() => this.handleClick(key)}
+										>
+											{selectedTarget.toUpperCase()}/
+											{selectedSource.toUpperCase()}
+										</div>
+										<div className="fullname">
+											{pair2_fullName}/{pairBase_fullName}
+										</div>
 									</div>
-									<div className="d-flex">
-										<div className="f-size-18 pr-2">{ticker.last}</div>
-										<div className="fullname">{selectedSource.toUpperCase()}</div>
-									</div>
-								</div>
-								<div className="pl-6 trade_tabs-container">
-									<div className="fullname">
-										<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-											{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT'].toUpperCase()}
-										</EditWrapper>
-									</div>
-									<Transition in={inProp} timeout={1000}>
-										{(state) => (
-											<div className="d-flex f-size-18">
-												<div
-													className={classnames(
-														'title-font',
-														priceDifference < 0
-															? 'price-diff-down trade-tab-price_diff_down'
-															: 'price-diff-up trade-tab-price_diff_up',
-														tickerDiff < 0
-															? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
-															: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
-													)}
-												>
-													{priceDifferencePercent}
-												</div>
-											</div>
-										)}
-									</Transition>
-								</div>
-							</div>
-							<div className="chart w-100">
-								<div className="fade-area"></div>
-								<SparkLine
-									data={lineChartData || []}
-									containerProps={{ style: { height: '100%', width: '100%' } }}
-								/>
-							</div>
-							<div className="d-flex pb-35">
-								<div>
-									<div className="fullname">
-										<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
-											{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
-										</EditWrapper>
-									</div>
-									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker.high}</div>
-										<div className="fullname">{selectedSource.toUpperCase()}</div>
-									</div>
-								</div>
-								<div className="pl-6">
-									<div className="fullname">
-										<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
-											{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
-										</EditWrapper>
-									</div>
-									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker.low}</div>
-										<div className="fullname">{selectedSource.toUpperCase()}</div>
-									</div>
-								</div>
-							</div>
-							<div className="d-flex pb-35">
-								<div>
-									<div className="fullname">
-										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
-											{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
-										</EditWrapper>
-									</div>
-									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker.open}</div>
-										<div className="fullname">{selectedSource.toUpperCase()}</div>
-									</div>
-								</div>
-								<div className="pl-6">
-									<div className="fullname">
-										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
-											{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
-										</EditWrapper>
-									</div>
-									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker.close}</div>
-										<div className="fullname">{selectedSource.toUpperCase()}</div>
-									</div>
-								</div>
-							</div>
-							<div>
-								<div className="fullname">
-									<EditWrapper stringId="SUMMARY.VOLUME_24H">
-										{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
-									</EditWrapper>
 								</div>
 								<div className="d-flex">
-									<div className="f-size-16 pr-2">{ticker.volume}</div>
-									<div className="fullname">{selectedSource.toUpperCase()}</div>
+									<div>
+										<div className="fullname">
+											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
+												{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
+											</EditWrapper>
+										</div>
+										<div className="d-flex">
+											<div className="f-size-18 pr-2">{ticker.last}</div>
+											<div className="fullname">
+												{selectedSource.toUpperCase()}
+											</div>
+										</div>
+									</div>
+									<div className="pl-6 trade_tabs-container">
+										<div className="fullname">
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
+												{STRINGS[
+													'QUICK_TRADE_COMPONENT.CHANGE_TEXT'
+												].toUpperCase()}
+											</EditWrapper>
+										</div>
+										<Transition in={inProp} timeout={1000}>
+											{(state) => (
+												<div className="d-flex f-size-18">
+													<div
+														className={classnames(
+															'title-font',
+															priceDifference < 0
+																? 'price-diff-down trade-tab-price_diff_down'
+																: 'price-diff-up trade-tab-price_diff_up',
+															tickerDiff < 0
+																? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
+																: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
+														)}
+													>
+														{priceDifferencePercent}
+													</div>
+												</div>
+											)}
+										</Transition>
+									</div>
+								</div>
+								<div className="chart w-100">
+									<div className="fade-area"></div>
+									<SparkLine
+										data={lineChartData || []}
+										containerProps={{
+											style: { height: '100%', width: '100%' },
+										}}
+									/>
+								</div>
+								<div className="d-flex pb-35">
+									<div>
+										<div className="fullname">
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
+												{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
+											</EditWrapper>
+										</div>
+										<div className="d-flex">
+											<div className="f-size-16 pr-2">{ticker.high}</div>
+											<div className="fullname">
+												{selectedSource.toUpperCase()}
+											</div>
+										</div>
+									</div>
+									<div className="pl-6">
+										<div className="fullname">
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
+												{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
+											</EditWrapper>
+										</div>
+										<div className="d-flex">
+											<div className="f-size-16 pr-2">{ticker.low}</div>
+											<div className="fullname">
+												{selectedSource.toUpperCase()}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className="d-flex pb-35">
+									<div>
+										<div className="fullname">
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
+												{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
+											</EditWrapper>
+										</div>
+										<div className="d-flex">
+											<div className="f-size-16 pr-2">{ticker.open}</div>
+											<div className="fullname">
+												{selectedSource.toUpperCase()}
+											</div>
+										</div>
+									</div>
+									<div className="pl-6">
+										<div className="fullname">
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
+												{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
+											</EditWrapper>
+										</div>
+										<div className="d-flex">
+											<div className="f-size-16 pr-2">{ticker.close}</div>
+											<div className="fullname">
+												{selectedSource.toUpperCase()}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div>
+									<div className="fullname">
+										<EditWrapper stringId="SUMMARY.VOLUME_24H">
+											{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker.volume}</div>
+										<div className="fullname">
+											{selectedSource.toUpperCase()}
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					) : null}
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
 							<div className="small-text">
 								<EditWrapper stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT">
-									<div className="mr-2">{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}</div>
+									<div className="mr-2">
+										{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
+									</div>
 								</EditWrapper>{' '}
-								<Link to="/wallet"><span><div>{STRINGS['WALLET_TITLE']}</div></span></Link>
+								<Link to="/wallet">
+									<span>
+										<div>{STRINGS['WALLET_TITLE']}</div>
+									</span>
+								</Link>
 							</div>
-							<div className="small-text">{selectedSource.toUpperCase()} {STRINGS['BALANCE_TEXT']}: <span className="ml-2">{userBalance[`${selectedSource.toLowerCase()}_balance`]}</span></div>
+							<div className="small-text">
+								{selectedSource.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								<span
+									className="ml-2 pointer"
+									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
+								>
+									{selectedSourceBalance}
+								</span>
+							</div>
 							<InputGroup
 								name={STRINGS['CONVERT']}
 								stringId={'CONVERT'}
@@ -308,6 +368,7 @@ class QuickTrade extends Component {
 								forwardError={forwardSourceError}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
+								decimal={increment_size}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -319,8 +380,17 @@ class QuickTrade extends Component {
 								onInputChange={onChangeTargetAmount}
 								forwardError={forwardTargetError}
 								limits={side === 'buy' ? SIZE : PRICE}
+								decimal={increment_size}
 							/>
-							<div className="small-text">{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}: <span className="ml-2">{userBalance[`${selectedTarget.toLowerCase()}_balance`]}</span></div>
+							<div className="small-text">
+								{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								<span
+									className="ml-2 pointer"
+									onClick={() => this.targetTotalBalance(selectedTargetBalance)}
+								>
+									{selectedTargetBalance}
+								</span>
+							</div>
 							<div
 								className={classnames(
 									'quick_trade-section_wrapper',
@@ -349,8 +419,11 @@ class QuickTrade extends Component {
 								<div>
 									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
 										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
-									</EditWrapper>: {selectedSource.toUpperCase()}/{selectedTarget.toUpperCase()}
-									{' '}<span>{STRINGS['TYPES_VALUES.market']}</span></div>
+									</EditWrapper>
+									: {selectedTarget.toUpperCase()}/
+									{selectedSource.toUpperCase()}{' '}
+									<span>{STRINGS['TYPES_VALUES.market']}</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -381,7 +454,7 @@ QuickTrade.propTypes = {
 QuickTrade.defaultProps = {
 	targetOptions: [],
 	sourceOptions: [],
-	onReviewQuickTrade: () => { },
+	onReviewQuickTrade: () => {},
 	disabled: false,
 };
 
