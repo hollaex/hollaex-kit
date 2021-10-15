@@ -30,7 +30,11 @@ export const getEstimatedRemainingTime = (remainingBlock) => {
 	return [estimatedLeftover, leftoverKey];
 };
 
-export const calculateEsimatedDate = (block, currentBlock) => {
+export const calculateEsimatedDate = (
+	block,
+	currentBlock,
+	showEstimatedText = true
+) => {
 	if (block && currentBlock) {
 		const now = moment();
 		const isPassed = mathjs.largerEq(currentBlock, block);
@@ -49,13 +53,23 @@ export const calculateEsimatedDate = (block, currentBlock) => {
 			estimatedDataObject = now.add(duration);
 		}
 
-		return `${STRINGS['STAKE.ESTIMATED']} ${estimatedDataObject.format(
-			DATETIME_FORMAT
-		)}`;
+		return showEstimatedText
+			? `${STRINGS['STAKE.ESTIMATED']} ${estimatedDataObject.format(
+					DATETIME_FORMAT
+			  )}`
+			: estimatedDataObject.format(DATETIME_FORMAT);
 	} else {
 		return '';
 	}
 };
 
-export const dotifyAccount = (account) =>
-	`${account.slice(0, 5)}...${account.slice(-4)}`.toUpperCase();
+export const dotifyString = (account = '', first = 5, last = 4) => {
+	const length = account.length;
+	if (length > first + last) {
+		return `${account.slice(0, first)}...${account.slice(
+			last * -1
+		)}`.toUpperCase();
+	} else {
+		return account;
+	}
+};

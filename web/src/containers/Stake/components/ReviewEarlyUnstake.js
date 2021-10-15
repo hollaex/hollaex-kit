@@ -31,7 +31,7 @@ const ReviewEarlyUnstake = ({
 					<IconTitle
 						stringId="UNSTAKE.EARLY_TITLE"
 						text={STRINGS['UNSTAKE.EARLY_TITLE']}
-						textType="title"
+						textType="stake_popup__title"
 						underline={false}
 						className="w-100"
 					/>

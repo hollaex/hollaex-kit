@@ -789,6 +789,7 @@ export default {
 		},
 	},
 	STAKE: {
+		EARN: 'Earn', //new
 		TITLE: 'Stake and earn',
 		MODAL_TITLE: 'Stake and earn {0}',
 		REVIEW_MODAL_TITLE: 'Check and confirm stake',
@@ -887,6 +888,8 @@ export default {
 		BACK_SUBTITLE: '{0} to staking page',
 		GO_BACK: 'Go back',
 		CONTRACT_SUBTITLE: 'Token contract: {0}',
+		VIEW_MORE: 'VIEW MORE',
+		VIEW: 'View',
 		TABS: {
 			PUBLIC_INFO: 'Public info',
 			DISTRIBUTIONS: 'Distributions',
@@ -902,7 +905,7 @@ export default {
 			REWARD_RATE: 'Reward rate',
 			VARIABLE: 'Variable',
 			MY_STAKE: 'My stake ({0}%)',
-			OTHER_STAKE: 'Other staked ({0}%)',
+			OTHER_STAKE: 'Others stake ({0}%)',
 			RECENT_DISTRIBUTED_REWARDS: 'Recent distributed rewards',
 			TIME_DISTRIBUTED: 'Time distributed',
 			TRANSACTION_ID: 'Transaction ID',
@@ -912,11 +915,20 @@ export default {
 			TITLE: 'Distributed {0} rewards',
 			SUBTITLE:
 				'Below is a historical list of distributions made to stakers of {0}.',
+			TIME: 'Time distributed',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount distributed',
+			DISTRIBUTION_TITLE: 'Recent distributed rewards',
 		},
 		MY_STAKING: {
 			TITLE: 'My staking',
 			SUBTITLE:
 				'Below displays information and some historical events related to your {0} staking.',
+			EVENTS_TITLE: 'Historical stake events',
+			TIME: 'Time',
+			EVENT: 'Event',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount',
 		},
 	},
 	CURRENCY: 'Currency',
