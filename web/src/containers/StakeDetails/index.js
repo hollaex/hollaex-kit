@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import mathjs from 'mathjs';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getDistributions, getStakeEvents } from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
@@ -57,7 +59,12 @@ class StakeDetails extends Component {
 			router: {
 				params: { token },
 			},
+			getDistributions,
+			getStakeEvents,
 		} = this.props;
+
+		getDistributions(token);
+		getStakeEvents(token);
 
 		if (account) {
 			getPublicInfo(token)(account).then((res) => {
@@ -266,4 +273,12 @@ const mapStateToProps = (store) => ({
 	...userActiveStakesSelector(store),
 });
 
-export default connect(mapStateToProps)(withConfig(StakeDetails));
+const mapDispatchToProps = (dispatch) => ({
+	getDistributions: bindActionCreators(getDistributions, dispatch),
+	getStakeEvents: bindActionCreators(getStakeEvents, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(StakeDetails));
