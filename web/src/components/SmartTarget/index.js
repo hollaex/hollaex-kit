@@ -7,6 +7,7 @@ import { getToken } from 'utils/token';
 import { PLUGIN_URL } from 'config/constants';
 import { withRouter } from 'react-router';
 import { generateGlobalId } from 'utils/id';
+import withEdit from 'components/EditProvider/withEdit';
 
 const SmartTarget = (props) => {
 	const { targets, id, children, webViews } = props;
@@ -56,4 +57,6 @@ const mapStateToProps = (store) => ({
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
 });
 
-export default connect(mapStateToProps)(withConfig(withRouter(SmartTarget)));
+export default connect(mapStateToProps)(
+	withEdit(withConfig(withRouter(SmartTarget)))
+);

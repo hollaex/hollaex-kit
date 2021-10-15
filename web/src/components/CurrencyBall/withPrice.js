@@ -10,15 +10,17 @@ const CurrencyBallWithPrice = ({
 	price,
 	size = 'm',
 	coins = {},
+	min,
 }) => {
-	const { name, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	const { name, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	const minValue = min ? min : rest.min;
 	// const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const currencyShortName = rest.symbol ? rest.symbol.toUpperCase() : name;
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">
 			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
-				{`${formatToCurrency(amount, min)}`}
+				{`${formatToCurrency(amount, minValue)}`}
 				{/* {symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(

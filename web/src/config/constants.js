@@ -183,16 +183,22 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 					: 'https://steexp.com/tx/';
 			break;
 		case 'eos':
-			endpoint =
-				NETWORK === 'testnet'
-					? 'https://testnet.steexp.com/tx/'
-					: 'https://steexp.com/tx/';
+			endpoint = 'https://bloks.io/transaction/';
 			break;
 		case 'trx':
 			endpoint =
 				NETWORK === 'testnet'
 					? 'https://shasta.tronscan.org/#/transaction/'
 					: 'https://tronscan.org/#/transaction/';
+			break;
+		case 'doge':
+			endpoint = 'https://blockchair.com/dogecoin/transaction/';
+			break;
+		case 'ltc':
+			endpoint = 'https://blockchair.com/litecoin/transaction/';
+			break;
+		case 'ada':
+			endpoint = 'https://blockchair.com/cardano/transaction/';
 			break;
 		default:
 			endpoint = '';

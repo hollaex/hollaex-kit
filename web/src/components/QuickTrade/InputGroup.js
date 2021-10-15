@@ -12,10 +12,11 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import EditWrapper from 'components/EditWrapper';
 import STRINGS from 'config/localizedStrings';
 import { Image } from 'components';
+import { getDecimals } from '../../utils/utils';
 
 const { Option } = Select;
 const { Group } = Input;
-const DECIMALS = 4;
+// const DECIMALS = 4;
 
 class InputGroup extends React.PureComponent {
 	state = {
@@ -31,10 +32,11 @@ class InputGroup extends React.PureComponent {
 	};
 
 	onInputChange = (newValue) => {
-		const { onInputChange } = this.props;
+		const { onInputChange, decimal } = this.props;
+		const decimalPoint = getDecimals(decimal);
 
 		if (isNumeric(newValue) || isFloat(newValue)) {
-			const value = math.round(newValue, DECIMALS);
+			const value = math.round(newValue, decimalPoint);
 			if (value) {
 				onInputChange(value);
 			} else {

@@ -18,6 +18,7 @@ const AmountContent = ({
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
 		height: '509px',
+		width: '503px',
 	};
 
 	const headerContent = {
@@ -38,7 +39,7 @@ const AmountContent = ({
 							STRINGS['STAKE.MODAL_TITLE'],
 							symbol.toUpperCase()
 						)}
-						textType="title"
+						textType="stake_popup__title"
 						underline={false}
 						className="w-100"
 					/>

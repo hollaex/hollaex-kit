@@ -38,7 +38,7 @@ const PeriodContent = ({
 						STRINGS['STAKE.MODAL_TITLE'],
 						symbol.toUpperCase()
 					)}
-					textType="title"
+					textType="stake_popup__title"
 					underline={false}
 					className="w-100"
 					subtitle={STRINGS['STAKE.PERIOD_SUBTITLE']}

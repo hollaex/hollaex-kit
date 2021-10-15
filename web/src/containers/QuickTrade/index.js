@@ -23,7 +23,7 @@ import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
-const DECIMALS = 4;
+// const DECIMALS = 4;
 
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
@@ -309,7 +309,9 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeTargetAmount = (targetAmount) => {
 		const { tickerClose } = this.state;
-		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 
 		this.setState({
 			targetAmount,
@@ -319,7 +321,9 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeSourceAmount = (sourceAmount) => {
 		const { tickerClose } = this.state;
-		const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 
 		this.setState({
 			sourceAmount,
@@ -382,7 +386,8 @@ class QuickTradeContainer extends PureComponent {
 			coins,
 			sourceOptions,
 			tickers,
-			user
+			user,
+			router,
 		} = this.props;
 		const {
 			order,
@@ -394,7 +399,7 @@ class QuickTradeContainer extends PureComponent {
 			pair,
 			targetOptions,
 			side,
-			data
+			data,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -402,7 +407,7 @@ class QuickTradeContainer extends PureComponent {
 			let { fullname, symbol = '' } =
 				coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 			const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
-			const { increment_price } = pair;
+			const { increment_price, increment_size } = pair;
 			let ticker = tickers[key] || {};
 			const priceDifference =
 				ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
@@ -421,20 +426,23 @@ class QuickTradeContainer extends PureComponent {
 				fullname,
 				ticker,
 				increment_price,
+				increment_size,
 				priceDifference,
 				priceDifferencePercent,
 			};
 		});
 
 		let marketData;
-		market.forEach(data => {
+		market.forEach((data) => {
 			const keyData = data.key.split('-');
-			if ((keyData[0] === selectedSource && keyData[1] === selectedTarget) || 
+			if (
+				(keyData[0] === selectedSource && keyData[1] === selectedTarget) ||
 				(keyData[1] === selectedSource && keyData[0] === selectedTarget)
 			) {
 				marketData = data;
 			}
 		});
+		const decimalPoint = getDecimals(pairData.increment_size);
 
 		if (!pair || pair !== this.props.pair || !pairData) {
 			return <Loader background={false} />;
@@ -445,9 +453,17 @@ class QuickTradeContainer extends PureComponent {
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
-					className={classnames('d-flex', 'f-1', 'quote-container', 'h-100', 'justify-content-center', 'align-items-center',{
-						'flex-column': isMobile,
-					})}
+					className={classnames(
+						'd-flex',
+						'f-1',
+						'quote-container',
+						'h-100',
+						'justify-content-center',
+						'align-items-center',
+						{
+							'flex-column': isMobile,
+						}
+					)}
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}
@@ -467,6 +483,7 @@ class QuickTradeContainer extends PureComponent {
 						selectedTarget={selectedTarget}
 						targetAmount={targetAmount}
 						sourceAmount={sourceAmount}
+						router={router}
 						onChangeTargetAmount={this.onChangeTargetAmount}
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
@@ -489,11 +506,13 @@ class QuickTradeContainer extends PureComponent {
 											symbol={selectedSource}
 											text={STRINGS['SPEND_AMOUNT']}
 											amount={sourceAmount}
+											decimalPoint={decimalPoint}
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
 											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 											amount={targetAmount}
+											decimalPoint={decimalPoint}
 										/>
 										<footer className="d-flex pt-4">
 											<Button

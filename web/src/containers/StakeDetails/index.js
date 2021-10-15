@@ -23,7 +23,7 @@ import {
 } from 'config/constants';
 
 const { TabPane } = Tabs;
-const TABS = {
+export const TABS = {
 	PUBLIC_INFO: {
 		key: 'PUBLIC_INFO',
 		title: STRINGS['STAKE_DETAILS.TABS.PUBLIC_INFO'],
@@ -39,6 +39,18 @@ const TABS = {
 };
 
 class StakeDetails extends Component {
+	state = {
+		activeKey: TABS.PUBLIC_INFO.key,
+	};
+
+	constructor(props) {
+		super(props);
+		const { account, router } = this.props;
+		if (!account) {
+			router.push('/stake');
+		}
+	}
+
 	componentWillMount() {
 		const {
 			account,
@@ -46,9 +58,12 @@ class StakeDetails extends Component {
 				params: { token },
 			},
 		} = this.props;
-		getPublicInfo(token)(account).then((res) => {
-			console.log('res', res);
-		});
+
+		if (account) {
+			getPublicInfo(token)(account).then((res) => {
+				console.log('response', res);
+			});
+		}
 	}
 
 	getValue = (balances, prices) => {
@@ -99,7 +114,13 @@ class StakeDetails extends Component {
 
 		switch (key) {
 			case TABS.PUBLIC_INFO.key:
-				return <PublicInfo token={token} fullname={fullname} />;
+				return (
+					<PublicInfo
+						token={token}
+						fullname={fullname}
+						setActiveTab={this.setActiveTab}
+					/>
+				);
 			case TABS.DISTRIBUTIONS.key:
 				return <Distributions token={token} />;
 			case TABS.MY_STAKING.key:
@@ -135,6 +156,20 @@ class StakeDetails extends Component {
 		}
 	};
 
+	setActiveTab = (activeKey) => {
+		this.setState({ activeKey });
+	};
+
+	openContract = (address) => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${address}`;
+		if (window) {
+			window.open(url, '_blank');
+		}
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -146,6 +181,12 @@ class StakeDetails extends Component {
 			balance,
 			network,
 		} = this.props;
+
+		if (!account) {
+			return <div />;
+		}
+
+		const { activeKey } = this.state;
 
 		const { fullname } = coins[token];
 		const iconId = `${token.toUpperCase()}_ICON`;
@@ -164,7 +205,12 @@ class StakeDetails extends Component {
 						<div>
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
-								<span className="pointer blue-link">
+								<span
+									className="pointer blue-link"
+									onClick={() =>
+										this.openContract(CONTRACT_ADDRESSES[token].main)
+									}
+								>
 									{CONTRACT_ADDRESSES[token].main}
 								</span>
 							)}
@@ -188,7 +234,10 @@ class StakeDetails extends Component {
 				</div>
 
 				<Fragment>
-					<Tabs>
+					<Tabs
+						activeKey={activeKey}
+						onTabClick={(key) => this.setActiveTab(key)}
+					>
 						{Object.entries(TABS).map(([_, { key, title }]) => {
 							return (
 								<TabPane tab={title} key={key}>
