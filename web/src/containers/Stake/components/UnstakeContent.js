@@ -5,6 +5,7 @@ import {
 	removeStake,
 	generateTableData,
 	getAllUserStakes,
+	distribute,
 } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -12,12 +13,14 @@ import ReviewUnstake from './ReviewUnstake';
 import WaitingContent from './WaitingContent';
 import SuccessContent from './SuccessfulUnstakeContent';
 import ErrorContent from './ErrorContent';
+import ClearPendingEarningsContent from './ClearPendingEarningsContent';
 
 const CONTENT_TYPE = {
 	REVIEW: 'REVIEW',
 	WAITING: 'WAITING',
 	SUCCESS: 'SUCCESS',
 	ERROR: 'ERROR',
+	CLEAR: 'CLEAR',
 };
 
 const ACTION_TYPE = {
@@ -47,6 +50,20 @@ class UnstakeContent extends Component {
 		}
 	};
 
+	clearPendingEarnings = (symbol) => async ({ account }) => {
+		this.setContent(CONTENT_TYPE.WAITING);
+		try {
+			await distribute(symbol)({ account });
+			await Promise.all([
+				generateTableData(account),
+				getAllUserStakes(account),
+			]);
+		} catch (err) {
+			console.error(err);
+			this.setContent(CONTENT_TYPE.ERROR);
+		}
+	};
+
 	renderContent = (type) => {
 		const { account, stakeData, onCloseDialog } = this.props;
 		const { action } = this.state;
@@ -60,6 +77,7 @@ class UnstakeContent extends Component {
 						stakeData={stakeData}
 						onCancel={onCloseDialog}
 						onProceed={() => this.approveAndUnstake(symbol)({ account, index })}
+						onClear={() => this.setContent(CONTENT_TYPE.CLEAR)}
 					/>
 				);
 			case CONTENT_TYPE.WAITING:
@@ -79,6 +97,14 @@ class UnstakeContent extends Component {
 				);
 			case CONTENT_TYPE.ERROR:
 				return <ErrorContent action={action} onOkay={onCloseDialog} />;
+			case CONTENT_TYPE.CLEAR:
+				return (
+					<ClearPendingEarningsContent
+						stakeData={stakeData}
+						onProceed={() => this.clearPendingEarnings(symbol)({ account })}
+						onBack={() => this.setContent(CONTENT_TYPE.REVIEW)}
+					/>
+				);
 			default:
 				return <div>No Content</div>;
 		}

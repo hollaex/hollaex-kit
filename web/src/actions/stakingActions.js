@@ -167,7 +167,7 @@ export const getAllUserStakes = (account) => {
 	};
 };
 
-export const approve = (token = 'xht') => async ({ amount, account }) => {
+export const approve = (token = 'xht') => ({ amount, account }) => {
 	return CONTRACTS[token].token.methods
 		.approve(
 			CONTRACT_ADDRESSES[token].main,
@@ -188,26 +188,17 @@ export const addStake = (token = 'xht') => ({ amount, period, account }) => {
 		});
 };
 
-export const removeStake = (token = 'xht') => async ({ account, index }) => {
-	await CONTRACTS[token].main.methods.removeStake(index).send({
+export const removeStake = (token = 'xht') => ({ account, index }) => {
+	return CONTRACTS[token].main.methods.removeStake(index).send({
 		...commonConfigs,
 		from: account,
 	});
 };
 
-export const distribute = (token = 'xht') => async ({ account }) => {
-	await CONTRACTS[token].main.methods
+export const distribute = (token = 'xht') => ({ account }) => {
+	return CONTRACTS[token].main.methods
 		.distribute()
 		.send({ ...commonConfigs, from: account });
-};
-
-export const approveAndStake = (token = 'xht') => async ({
-	amount,
-	period,
-	account,
-}) => {
-	await approve(token)({ amount, account });
-	await addStake(token)({ amount, period, account });
 };
 
 const getPeriodsForToken = (token = 'xht') => async () => {
