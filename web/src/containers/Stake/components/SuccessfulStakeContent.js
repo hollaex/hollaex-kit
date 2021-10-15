@@ -4,7 +4,7 @@ import { EditWrapper, Button, IconTitle, Image } from 'components';
 import { getEstimatedRemainingTime } from 'utils/eth';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { dotifyAccount } from 'utils/eth';
+import { dotifyString } from 'utils/eth';
 
 const SuccessfulContent = ({
 	tokenData,
@@ -90,9 +90,7 @@ const SuccessfulContent = ({
 							</EditWrapper>
 						</div>
 						<div>
-							<div className="secondary-text px-2">
-								{dotifyAccount(account)}
-							</div>
+							<div className="secondary-text px-2">{dotifyString(account)}</div>
 						</div>
 					</div>
 

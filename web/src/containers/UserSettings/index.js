@@ -290,8 +290,8 @@ class UserSettings extends Component {
 						initialValues={{ username }}
 						ICONS={ICONS}
 					/>
-				)
-			}
+				),
+			},
 		];
 		this.setState({ tabs });
 	};

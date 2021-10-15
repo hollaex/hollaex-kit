@@ -3,7 +3,7 @@ HollaEx Kit is a while label crypto software suite with a range of features from
 
 ## Get Started
 
-HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate the exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.bitholla.com) to start your own exchange.
+HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate the exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.hollaex.com) to start your own exchange.
 
 ```
 git clone https://github.com/bitholla/hollaex-kit.git

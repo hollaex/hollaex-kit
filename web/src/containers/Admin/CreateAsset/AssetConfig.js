@@ -176,6 +176,7 @@ const AssetConfig = (props) => {
 					>
 						<Search
 							enterButton="Search"
+							name="contract"
 							onChange={handleChange}
 							onSearch={handleSearch}
 							value={coinFormData.contract}
@@ -223,6 +224,7 @@ const AssetConfig = (props) => {
 					>
 						<Input
 							enterButton="Search"
+							name="contract"
 							onChange={handleChange}
 							onSearch={handleSearch}
 							value={coinFormData.contract}

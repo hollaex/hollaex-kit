@@ -1,13 +1,13 @@
 import React from 'react';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { roundNumber } from 'utils';
-import { dotifyAccount } from 'utils/eth';
+import { dotifyString } from 'utils/eth';
 
 const Account = ({ icons: ICONS, account = '', balance, network }) => {
 	if (!account) {
 		return <div />;
 	} else {
-		const displayAccount = dotifyAccount(account);
+		const displayAccount = dotifyString(account);
 
 		return (
 			<div className="d-flex">

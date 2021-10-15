@@ -638,17 +638,14 @@ export const generateWithdrawalsHeaders = (
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-				return `${formatToCurrency(
-					amount - fee,
-					min
-				)} ${rest.symbol.toUpperCase()}`;
+				return `${formatToCurrency(amount, min)} ${rest.symbol.toUpperCase()}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 				return (
 					<td key={index}>{`${formatToCurrency(
-						amount - fee,
+						amount,
 						min,
 						true
 					)} ${rest.symbol.toUpperCase()}`}</td>

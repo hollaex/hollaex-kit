@@ -5,6 +5,13 @@ const commonConfigs = {
 	type: '0x2',
 };
 
+const CONTRACT_EVENTS = {
+	Reward: 'RewardEvent',
+	Distribute: 'DistributeEvent',
+	Stake: 'StakeEvent',
+	Unstake: 'UnstakeEvent',
+};
+
 export const SET_ACCOUNT = 'SET_ACCOUNT';
 export const SET_CURRENT_BLOCK = 'SET_CURRENT_BLOCK';
 export const SET_BLOCKCHAIN_DATA = 'SET_BLOCKCHAIN_DATA';
@@ -217,4 +224,18 @@ export const getPublicInfo = (token = 'xht') => async (account) => {
 	};
 
 	return await hash(data);
+};
+
+export const getStakeEvents = async (token = 'xht') => {
+	return await CONTRACTS[token].main.getPastEvents('allEvents', {
+		fromBlock: 1,
+		toBlock: 'latest',
+	});
+};
+
+export const getDistributions = async (token = 'xht') => {
+	return await CONTRACTS[token].main.getPastEvents(CONTRACT_EVENTS.Distribute, {
+		fromBlock: 1,
+		toBlock: 'latest',
+	});
 };

@@ -20,6 +20,7 @@ const ReviewContent = ({
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
 		height: '376px',
+		width: '506px',
 	};
 
 	return (
@@ -28,18 +29,18 @@ const ReviewContent = ({
 				<IconTitle
 					stringId="STAKE.REVIEW_MODAL_TITLE"
 					text={STRINGS['STAKE.REVIEW_MODAL_TITLE']}
-					textType="title"
+					textType="stake_popup__title"
 					underline={false}
 					className="w-100"
 				/>
-				<div className="secondary-text">
+				<div className="secondary-text pb-3">
 					{STRINGS.formatString(
 						STRINGS['STAKE.CURRENT_ETH_BLOCK'],
 						currentBlock
 					)}
 				</div>
-				<div>
-					<div className="bold">
+				<div className="pt-4">
+					<div className="bold pb-1">
 						<EditWrapper stringId="STAKE.DURATION">
 							{STRINGS['STAKE.DURATION']}
 						</EditWrapper>
@@ -56,8 +57,8 @@ const ReviewContent = ({
 						({getEstimatedRemainingTime(period).join(' ')})
 					</div>
 				</div>
-				<div>
-					<div>
+				<div className="pt-4">
+					<div className="pb-1">
 						<EditWrapper stringId="STAKE.PREDICTED_EARNINGS">
 							{STRINGS['STAKE.PREDICTED_EARNINGS']}
 						</EditWrapper>
@@ -68,8 +69,8 @@ const ReviewContent = ({
 						</EditWrapper>
 					</div>
 				</div>
-				<div>
-					<div>
+				<div className="pt-4">
+					<div className="pb-1">
 						<EditWrapper stringId="STAKE.SLASHING_TITLE">
 							{STRINGS['STAKE.SLASHING_TITLE']}
 						</EditWrapper>
