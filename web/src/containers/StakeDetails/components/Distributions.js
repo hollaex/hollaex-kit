@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'components';
-import { getDistributions } from 'actions/stakingActions';
 import STRINGS from 'config/localizedStrings';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
@@ -9,15 +8,7 @@ import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
-const Distributions = ({ token, currentBlock, network }) => {
-	const [distributions, setDistributions] = useState([]);
-	useEffect(() => {
-		getDistributions(token).then((response) =>
-			setDistributions(response.reverse())
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
+const Distributions = ({ token, currentBlock, network, distributions }) => {
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -99,6 +90,7 @@ const Distributions = ({ token, currentBlock, network }) => {
 const mapStateToProps = (store) => ({
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
+	distributions: store.stake.distributions,
 });
 
 export default connect(mapStateToProps)(Distributions);

@@ -5,6 +5,8 @@ import {
 	SET_STAKABLES,
 	SET_PERIODS,
 	SET_USER_STAKES,
+	SET_DISTRIBUTIONS,
+	SET_CONTRACT_EVENTS,
 } from 'actions/stakingActions';
 
 const initialStakable = {
@@ -23,6 +25,8 @@ const initialState = {
 	periods: {},
 	userStakes: {},
 	balance: 0,
+	distributions: [],
+	contractEvents: [],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -33,6 +37,8 @@ export default (state = initialState, { type, payload }) => {
 		case SET_STAKABLES:
 		case SET_PERIODS:
 		case SET_USER_STAKES:
+		case SET_DISTRIBUTIONS:
+		case SET_CONTRACT_EVENTS:
 			return { ...state, ...payload };
 
 		default:

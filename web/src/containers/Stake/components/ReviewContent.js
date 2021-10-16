@@ -89,9 +89,9 @@ const ReviewContent = ({
 			</div>
 
 			<div className="dialog-content bottom w-100">
-				<div>
+				<div className="pt-4">
 					<div>
-						<EditWrapper stringId="STAKE.REVIEW_NOTE">
+						<EditWrapper stringId="STAKE.AMOUNT_LABEL">
 							{STRINGS['STAKE.AMOUNT_LABEL']}
 						</EditWrapper>
 					</div>

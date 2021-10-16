@@ -14,17 +14,16 @@ const ErrorContent = ({ onOkay, action, icons: ICONS }) => {
 
 	return (
 		<Fragment>
-			<div className="dialog-content bottom">
+			<div className="dialog-content bottom pt-4">
 				<div style={headerContent}>
 					<IconTitle
 						iconPath={ICONS['STAKING_ERROR']}
 						iconId="STAKING_ERROR"
 						stringId="STAKE.ERROR_TITLE,STAKE.ERROR_SUBTITLE"
 						text={STRINGS.formatString(STRINGS['STAKE.ERROR_TITLE'], action)}
-						textType="title"
+						textType="stake_popup__title"
 						underline={false}
-						className="w-100"
-						subtitle={STRINGS['STAKE.ERROR_SUBTITLE']}
+						className="w-100 py-4"
 					/>
 
 					<div>
