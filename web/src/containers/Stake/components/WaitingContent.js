@@ -2,17 +2,22 @@ import React, { Fragment } from 'react';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const WaitingContent = ({ action, amount, symbol, icons: ICONS }) => {
 	return (
 		<Fragment>
 			<div className="dialog-content">
+				<div
+					className="d-flex content-center pt-4 mt-4"
+					style={{ fontSize: '7rem' }}
+				>
+					<LoadingOutlined />
+				</div>
 				<IconTitle
 					stringId="STAKE.WAITING_TITLE"
 					text={STRINGS['STAKE.WAITING_TITLE']}
-					iconId="EXCHANGE_LOADER"
-					iconPath={ICONS['EXCHANGE_LOADER']}
-					textType="title"
+					textType="stake_popup__title"
 					underline={false}
 					className="w-100"
 				/>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
@@ -9,7 +9,6 @@ import { Button as AntBtn } from 'antd';
 import { userActiveStakesSelector } from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
-import { getStakeEvents } from 'actions/stakingActions';
 import Transaction from './Transaction';
 
 const TABLE_PAGE_SIZE = 10;
@@ -28,13 +27,8 @@ const MyStaking = ({
 	activeStakesCount,
 	activeStakes,
 	network,
+	events,
 }) => {
-	const [events, setEvents] = useState([]);
-	useEffect(() => {
-		getStakeEvents(token).then((response) => setEvents(response.reverse()));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { fullname } = coins[symbol];
@@ -366,6 +360,7 @@ const mapStateToProps = (store) => ({
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
+	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
 });
 

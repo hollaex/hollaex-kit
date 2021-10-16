@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Table, EditWrapper } from 'components';
-import { getDistributions } from 'actions/stakingActions';
 import STRINGS from 'config/localizedStrings';
 import { TABS } from '../index';
 import { calculateEsimatedDate } from 'utils/eth';
@@ -17,15 +16,8 @@ const PublicInfo = ({
 	currentBlock,
 	setActiveTab,
 	network,
+	distributions,
 }) => {
-	const [distributions, setDistributions] = useState([]);
-	useEffect(() => {
-		getDistributions(token).then((response) =>
-			setDistributions(response.reverse())
-		);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
-
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -215,6 +207,7 @@ const PublicInfo = ({
 const mapStateToProps = (store) => ({
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
+	distributions: store.stake.distributions,
 });
 
 export default connect(mapStateToProps)(PublicInfo);

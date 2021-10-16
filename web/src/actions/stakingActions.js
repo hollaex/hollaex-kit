@@ -18,6 +18,8 @@ export const SET_BLOCKCHAIN_DATA = 'SET_BLOCKCHAIN_DATA';
 export const SET_STAKABLES = 'SET_STAKABLES';
 export const SET_PERIODS = 'SET_STAKING_PERIODS';
 export const SET_USER_STAKES = 'SET_USER_STAKES';
+export const SET_CONTRACT_EVENTS = 'SET_CONTRACT_EVENTS';
+export const SET_DISTRIBUTIONS = 'SET_DISTRIBUTIONS';
 
 const setAccount = (account = '', balance = 0) => ({
 	type: SET_ACCOUNT,
@@ -61,6 +63,20 @@ const setAllUserStakes = (userStakes = {}) => ({
 	type: SET_USER_STAKES,
 	payload: {
 		userStakes,
+	},
+});
+
+const setContractEvents = (contractEvents = []) => ({
+	type: SET_CONTRACT_EVENTS,
+	payload: {
+		contractEvents,
+	},
+});
+
+const setDistributions = (distributions = []) => ({
+	type: SET_DISTRIBUTIONS,
+	payload: {
+		distributions,
 	},
 });
 
@@ -151,7 +167,7 @@ export const getAllUserStakes = (account) => {
 	};
 };
 
-export const approve = (token = 'xht') => async ({ amount, account }) => {
+export const approve = (token = 'xht') => ({ amount, account }) => {
 	return CONTRACTS[token].token.methods
 		.approve(
 			CONTRACT_ADDRESSES[token].main,
@@ -172,26 +188,17 @@ export const addStake = (token = 'xht') => ({ amount, period, account }) => {
 		});
 };
 
-export const removeStake = (token = 'xht') => async ({ account, index }) => {
-	await CONTRACTS[token].main.methods.removeStake(index).send({
+export const removeStake = (token = 'xht') => ({ account, index }) => {
+	return CONTRACTS[token].main.methods.removeStake(index).send({
 		...commonConfigs,
 		from: account,
 	});
 };
 
-export const distribute = (token = 'xht') => async ({ account }) => {
-	await CONTRACTS[token].main.methods
+export const distribute = (token = 'xht') => ({ account }) => {
+	return CONTRACTS[token].main.methods
 		.distribute()
 		.send({ ...commonConfigs, from: account });
-};
-
-export const approveAndStake = (token = 'xht') => async ({
-	amount,
-	period,
-	account,
-}) => {
-	await approve(token)({ amount, account });
-	await addStake(token)({ amount, period, account });
 };
 
 const getPeriodsForToken = (token = 'xht') => async () => {
@@ -226,16 +233,25 @@ export const getPublicInfo = (token = 'xht') => async (account) => {
 	return await hash(data);
 };
 
-export const getStakeEvents = async (token = 'xht') => {
-	return await CONTRACTS[token].main.getPastEvents('allEvents', {
-		fromBlock: 1,
-		toBlock: 'latest',
-	});
+export const getStakeEvents = (token = 'xht') => {
+	return async (dispatch) => {
+		const events = await CONTRACTS[token].main.getPastEvents('allEvents', {
+			fromBlock: 1,
+			toBlock: 'latest',
+		});
+		dispatch(setContractEvents(events.reverse()));
+	};
 };
 
-export const getDistributions = async (token = 'xht') => {
-	return await CONTRACTS[token].main.getPastEvents(CONTRACT_EVENTS.Distribute, {
-		fromBlock: 1,
-		toBlock: 'latest',
-	});
+export const getDistributions = (token = 'xht') => {
+	return async (dispatch) => {
+		const events = await CONTRACTS[token].main.getPastEvents(
+			CONTRACT_EVENTS.Distribute,
+			{
+				fromBlock: 1,
+				toBlock: 'latest',
+			}
+		);
+		dispatch(setDistributions(events.reverse()));
+	};
 };
