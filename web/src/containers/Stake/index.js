@@ -357,6 +357,10 @@ class Stake extends Component {
 
 												const total = mathjs.number(period);
 
+												const progressStatusText = remainingBlocks
+													? `~${estimatedLeftover.join(' ')}`
+													: 'Completed';
+
 												const data = {
 													amount,
 													partial,
@@ -364,11 +368,8 @@ class Stake extends Component {
 													reward,
 													symbol,
 													index,
+													progressStatusText,
 												};
-
-												const progressStatusText = remainingBlocks
-													? `~${estimatedLeftover.join(' ')}`
-													: 'Completed';
 
 												const btnProps = {
 													type: 'primary',

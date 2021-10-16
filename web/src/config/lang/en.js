@@ -866,6 +866,23 @@ export default {
 		DURATION: 'EST. maturation duration',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
+		EARNINGS_FORFEITED: 'Earnings forfeited',
+		PRICE_FORMAT: '{0} {1}',
+		EST_PENDING: 'EST. pending: {0}',
+		AMOUNT_SLASHED: 'Amount slashed*',
+		AMOUNT_TO_RECEIVE: 'Amount to receive',
+		SLASH_FOOTNOTE:
+			'*All amounts slashed are distributed to remaining stakers. Please consider the slashed amount from initial principle, the earnings forfeited and duration remaining and determine if the value lost in unstaking early is worth the cost.',
+		AMOUNT_NOTE: 'Amounts will be distributed to your wallet address',
+		TOTAL_EARNT: 'Total earnt',
+		PENDING_EARNINGS: 'Pending earnings*',
+		PENDING_EARNINGS_FOOTNOTE:
+			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount. You can {0} the amount yourself or wait for the next clearing cycle.',
+		CLEAR: 'clear',
+		CLEAR_PENDING_EARNING: 'Clear pending earnings',
+		CLEAR_PENDING_EARNING_SUB:
+			'Clearing requires a blockchain transaction in order to be added to your total receiving amount. You can clear the amount now or wait for the next clearing cycle.',
+		PENDING_AMOUNT: 'Pending amount to clear: {0}',
 	},
 	STAKE_TABLE: {
 		CURRENCY: 'Currency',

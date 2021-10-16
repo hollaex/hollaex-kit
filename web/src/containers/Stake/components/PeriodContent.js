@@ -23,7 +23,7 @@ const PeriodContent = ({
 	};
 
 	const filteredPeriods = periods[symbol]
-		? periods[symbol].filter((period) => period !== '1')
+		? periods[symbol].filter((period) => !!period)
 		: [];
 	const selectedPeriodIndex = filteredPeriods.findIndex(
 		(periodItem) => periodItem === period
