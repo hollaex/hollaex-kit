@@ -3,7 +3,7 @@
 //given, when and then
 
 require('./Scenario/PasswordCheck');
-
+require('console-log-to-file')
 
 // console.log('****************************************');
 // console.log('This E2E test developed for Hollaex-kit"');

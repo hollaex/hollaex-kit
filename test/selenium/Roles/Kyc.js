@@ -17,6 +17,7 @@ async function Kyc(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	describe('KYC', function() {
 		this.timeout(3000000);

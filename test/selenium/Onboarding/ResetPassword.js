@@ -25,6 +25,7 @@ async function ResetPassword(){
 	let webSite = process.env.WEBSITE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');

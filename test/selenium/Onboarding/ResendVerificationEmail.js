@@ -26,6 +26,7 @@ async function ResendVerificationEmail(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}

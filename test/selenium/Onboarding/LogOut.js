@@ -21,6 +21,7 @@ async function LogOut(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailPage = process.env.EMAIL_PAGE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	
 
 	if (process.env.NODE_ENV == 'test') {
