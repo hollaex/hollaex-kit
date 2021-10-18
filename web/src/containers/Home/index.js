@@ -210,7 +210,7 @@ class Home extends Component {
 					selectedTarget &&
 					quick_trade &&
 					isReady && (
-						<div className="home-page_section-wrapper">
+						<div className="home-page_section-wrapper d-flex justify-content-center align-items-center">
 							<QuickTrade
 								onReviewQuickTrade={this.onReviewQuickTrade}
 								onSelectTarget={this.onSelectTarget}

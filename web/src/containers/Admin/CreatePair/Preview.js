@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import { renderStatus } from '../Trades/Pairs';
+import { updateExchange } from '../AdminFinancials/action';
 
 const Preview = ({
 	isExchangeWizard,
@@ -18,11 +19,39 @@ const Preview = ({
 	isEdit,
 	allCoins,
 	user,
+	isExistPair,
+	onClose,
+	exchange,
+	pairs,
+	getMyExchange
 }) => {
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
 	const pair2_data =
 		allCoins.filter((data) => data.symbol === formData.pair_2)[0] || {};
+	
+	const handlePreviewNext = async (previewFormData) => {
+		if (isExistPair) {
+			try {
+				let formProps = {
+					id: exchange.id,
+					pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`]
+				}
+				await updateExchange(formProps);
+				await getMyExchange();
+				onClose();
+				message.success('Pairs added successfully');
+			} catch (error) {
+				let errMsg = error.data && error.data.message
+					? error.data.message
+					: error.message;
+				message.error(errMsg);
+			}
+		} else {
+			handleNext(previewFormData);
+		}
+	}
+
 	return (
 		<div>
 			{!isPreview && !isConfigure ? (
@@ -177,6 +206,8 @@ const Preview = ({
 						onClick={() => {
 							if (formData.id && !isExchangeWizard) {
 								moveToStep('step1');
+							} else if (isExistPair) {
+								moveToStep('pair-init-selection');
 							} else {
 								moveToStep('step2');
 							}
@@ -188,7 +219,7 @@ const Preview = ({
 					<Button
 						className="green-btn"
 						type="primary"
-						onClick={() => handleNext(formData)}
+						onClick={() => handlePreviewNext(formData)}
 					>
 						Next
 					</Button>

@@ -570,6 +570,7 @@ class Pairs extends Component {
 					editDataCallback={this.handleEditData}
 					onClose={this.handleClose}
 					router={this.props.router}
+					getMyExchange={this.props.getMyExchange}
 				/>
 			);
 		}
