@@ -4763,6 +4763,8 @@ definitions:
         type: string
       fee:
         type: number
+      fee_coin:
+        type: string
       description:
         type: string
   ExternalWithdrawalRequest:
@@ -4791,6 +4793,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      fee_coin:
         type: string
       description:
         type: string

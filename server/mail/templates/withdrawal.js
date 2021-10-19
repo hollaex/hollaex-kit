@@ -42,7 +42,7 @@ const html = (email, data, language, domain) => {
 			<p>
 				${WITHDRAWAL.BODY[1](data.amount, data.currency)}
 				${data.fee ? '<br />' : ''}
-				${data.fee ? WITHDRAWAL.BODY[2](data.fee) : ''}
+				${data.fee ? `${WITHDRAWAL.BODY[2](data.fee)} ${data.fee_coin || data.currency}` : ''}
 				<br />
 				${WITHDRAWAL.BODY[3](data.status)}
 				${data.transaction_id && data.address ? '<br />' : ''}
@@ -75,7 +75,7 @@ const text = (email, data, language, domain) => {
 		result += `
 			${WITHDRAWAL.BODY[data.status](data.amount, data.currency.toUpperCase())}
 			${WITHDRAWAL.BODY[1](data.amount, data.currency)}
-			${data.fee ? WITHDRAWAL.BODY[2](data.fee) : ''}
+			${data.fee ? `${WITHDRAWAL.BODY[2](data.fee)} ${data.fee_coin || data.currency}` : ''}
 			${WITHDRAWAL.BODY[3](data.status)}
 			${data.transaction_id && data.address ? WITHDRAWAL.BODY[4](data.address) : ''}
 			${data.transaction_id ? WITHDRAWAL.BODY[5](data.transaction_id) : ''}
