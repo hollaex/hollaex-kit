@@ -286,7 +286,8 @@ const mapStateToForm = (state) => ({
 		'destination_tag',
 		'amount',
 		'fee',
-		'captcha'
+		'captcha',
+		'fee_coin'
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,

@@ -64,9 +64,10 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		label: STRINGS['PRICE'],
 		key: 'price',
 		renderCell: ({ price = 0, symbol }, key, index) => {
+			let pairData = pairs[symbol] || {};
 			return (
 				<td key={index}>
-					{formatToCurrency(price, pairs[symbol].increment_price)}
+					{formatToCurrency(price, pairData.increment_price)}
 				</td>
 			);
 		},
@@ -76,9 +77,10 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		key: 'size',
 		exportToCsv: ({ size = 0 }) => size,
 		renderCell: ({ size = 0, symbol }, key, index) => {
+			let pairData = pairs[symbol] || {};
 			return (
 				<td key={index}>
-					{formatToCurrency(size, pairs[symbol].increment_size)}
+					{formatToCurrency(size, pairData.increment_size)}
 				</td>
 			);
 		},
@@ -87,11 +89,12 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		label: STRINGS['REMAINING'],
 		key: 'remaining',
 		renderCell: ({ size = 0, filled = 0, symbol }, key, index) => {
+			let pairData = pairs[symbol] || {};
 			return (
 				<td key={index}>
 					{formatToCurrency(
 						subtract(size, filled),
-						pairs[symbol].increment_size
+						pairData.increment_size
 					)}
 				</td>
 			);
@@ -122,12 +125,15 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 	{
 		label: STRINGS['TRIGGER_CONDITIONS'],
 		key: 'type',
-		exportToCsv: ({ stop, symbol }) =>
-			stop && formatToCurrency(stop, pairs[symbol].increment_price),
+		exportToCsv: ({ stop, symbol }) => {
+			let pairData = pairs[symbol] || {};
+			return stop && formatToCurrency(stop, pairData.increment_price)
+		},
 		renderCell: ({ stop, symbol }, key, index) => {
+			let pairData = pairs[symbol] || {};
 			return (
 				<td key={index} className="px-2">
-					{stop && formatToCurrency(stop, pairs[symbol].increment_price)}
+					{stop && formatToCurrency(stop, pairData.increment_price)}
 				</td>
 			);
 		},

@@ -230,7 +230,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-22 pr-2">{ticker.last}</div>
 											<div className="fullname white-txt">
-												{selectedSource.toUpperCase()}
+												{selectedTarget.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -282,7 +282,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.high}</div>
 											<div className="fullname">
-												{selectedSource.toUpperCase()}
+												{selectedTarget.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -295,7 +295,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.low}</div>
 											<div className="fullname">
-												{selectedSource.toUpperCase()}
+												{selectedTarget.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -310,7 +310,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.open}</div>
 											<div className="fullname">
-												{selectedSource.toUpperCase()}
+												{selectedTarget.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -323,7 +323,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.close}</div>
 											<div className="fullname">
-												{selectedSource.toUpperCase()}
+												{selectedTarget.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -419,7 +419,7 @@ class QuickTrade extends Component {
 									onClick={onReviewQuickTrade}
 									disabled={disabled}
 									type="button"
-									className="w-50"
+									className={!isMobile ? "w-50" : "w-100"}
 								/>
 							</div>
 							<div className="footer-text">

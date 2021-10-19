@@ -447,12 +447,18 @@ $title-icon--height: 10rem;
 			.py-2 {
 				flex-direction: column;
 				align-items: flex-start;
+				width: 100%;
+				font-size: $font-size-mobile-txt !important;
 				.ant-input-group {
-					width: 280px;
+					width: 100% !important;
 				}
 			}
 			.btn-wrapper {
 				align-items: center !important;
+			}
+			.footer-text,
+			.small-text {
+				font-size: $font-size-mobile-txt !important;
 			}
 		}
 	}

@@ -54,7 +54,7 @@ const html = (email, data, language, domain) => {
 				${data.network ? '<br />' : ''}
 				${data.network ? DEPOSIT.BODY[5](data.network) : ''}
 				${data.fee ? '<br />' : ''}
-				${data.fee ? DEPOSIT.BODY[6](data.fee) : ''}
+				${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
 				${data.description ? '<br />' : ''}
 				${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 			</p>
@@ -90,7 +90,7 @@ const text = (email, data, language, domain) => {
 			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
 			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
 			${data.network ? DEPOSIT.BODY[5](data.network) : ''}
-			${data.fee ? DEPOSIT.BODY[6](data.fee) : ''}
+			${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
 			${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 		`;
 	} else {
