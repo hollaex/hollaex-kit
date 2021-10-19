@@ -43,7 +43,7 @@ $title-icon--height: 10rem;
 	margin: 0 auto;
 }
 .quick_trade-container {
-	margin: 1rem 0 4rem 0;
+	margin: 3rem 0 4rem 0;
 	.quick_trade-section_wrapper {
 		&.fetching {
 			color: $colors-deactivate-color2;
@@ -241,13 +241,12 @@ $title-icon--height: 10rem;
 		}
 	}
 	.trade-details-wrapper {
-		width: 400px;
+		width: 100%;
 		padding: 40px 65px 30px 55px;
 		font-family: $en--font-family;
 		background-color: $app-background-color;
 		.trade-details-content {
 			height: 450px;
-			width: 300px;
 			.pb-30 {
 				padding-bottom: 30px;
 			}
@@ -295,9 +294,11 @@ $title-icon--height: 10rem;
 		.f-size-16 {
 			font-size: 16px;
 			color: $colors-deactivate;
+			font-weight: bold;
 		}
-		.f-size-18 {
-			font-size: 18px;
+		.f-size-22 {
+			font-size: 22px;
+			font-weight: bold;
 		}
 		.pairs {
 			color: $link;
@@ -309,9 +310,19 @@ $title-icon--height: 10rem;
 			font-size: 11px;
 			white-space: nowrap;
 		}
+		.sub-title {
+			color: $colors-deactivate;
+			font: normal normal 300 11px/15px $en--font-family;
+			letter-spacing: 2.2px;
+			opacity: 1;
+			white-space: nowrap;
+		}
+		.white-txt {
+			color: $colors-main-black;
+		}
 	}
 	.trade-section {
-		width: 600px;
+		width: 100%;
 		padding-top: 2rem;
 		background: transparent
 			linear-gradient(
@@ -456,8 +467,8 @@ $title-icon--height: 10rem;
 
 @media (max-width: 1020px) {
 	.quick_trade-wrapper {
-		min-width: 100%;
-		max-width: 100%;
+		min-width: 100% !important;
+		max-width: 100% !important;
 		.trade-details-wrapper {
 			width: 100%;
 			padding: 15px;
@@ -475,6 +486,14 @@ $title-icon--height: 10rem;
 				margin: 0;
 				.py-2 .ant-input-group {
 					width: 250px;
+				}
+				.input-group__container {
+					.quick-trade-select-wrapper {
+						.pl-1 {
+							font-size: 10px;
+
+						}
+					}
 				}
 			}
 		}
