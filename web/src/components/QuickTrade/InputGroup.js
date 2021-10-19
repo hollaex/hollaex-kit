@@ -4,6 +4,7 @@ import { Select, Input } from 'antd';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import { CaretDownOutlined } from '@ant-design/icons';
+import { isMobile } from 'react-device-detect';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
@@ -78,7 +79,7 @@ class InputGroup extends React.PureComponent {
 				<label className="bold caps-first">
 					<EditWrapper stringId={stringId}>{name}</EditWrapper>
 				</label>
-				<div>
+				<div className={isMobile ? "w-100" : ""}>
 					<Group compact className="input-group__container">
 						<Select
 							open={isOpen}

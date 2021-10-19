@@ -187,6 +187,7 @@ class PairsSummary extends Component {
                                 className="box-content"
                                 onMouseEnter={() => this.handleHover(key)}
                                 onMouseLeave={() => this.handleHover(key)}
+                                key={key}
                             >
                                 <div className="d-flex justify-content-between">
                                     <div className="d-flex align-items-center">
@@ -220,7 +221,7 @@ class PairsSummary extends Component {
                                 allCoins.filter((data) => data.symbol === item.pair_base)[0].fullname || '';
                             const pair2_fullname =
                                 allCoins.filter((data) => data.symbol === item.pair_2)[0].fullname || '';
-                            return <div className="box-content">
+                            return <div key={key} className="box-content">
                                 <div className="d-flex justify-content-between">
                                     <div className="d-flex align-items-center">
                                         <Link to="/admin/trade?tab=1&isViewTabs=true">
