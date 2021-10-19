@@ -32,13 +32,18 @@ class QuickTrade extends Component {
 			inProp: false,
 			market: {},
 			chartData: {},
+			pairBase: '',
+			pair_2: ''
 		};
 	}
 
 	componentDidMount() {
 		if (this.props.market) {
+			const keyData = this.props.market.key.split('-');
 			this.setState({
 				market: this.props.market,
+				pairBase: keyData[0],
+				pair_2: keyData[1]
 			});
 		}
 
@@ -49,7 +54,12 @@ class QuickTrade extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.market !== prevProps.market) {
-			this.setState({ market: this.props.market });
+			const keyData = this.props.market.key.split('-');
+			this.setState({
+				market: this.props.market,
+				pairBase: keyData[0],
+				pair_2: keyData[1]
+			});
 		}
 
 		if (
@@ -113,7 +123,7 @@ class QuickTrade extends Component {
 			coins,
 			user,
 		} = this.props;
-		const { inProp, market, tickerDiff, chartData } = this.state;
+		const { inProp, market, tickerDiff, chartData, pairBase, pair_2 } = this.state;
 
 		const {
 			key,
@@ -126,9 +136,9 @@ class QuickTrade extends Component {
 		let pairBase_fullName;
 		let pair2_fullName;
 		Object.keys(coins).forEach((data) => {
-			if (coins[data].symbol === selectedSource) {
+			if (coins[data].symbol === pairBase) {
 				pairBase_fullName = coins[data].fullname;
-			} else if (coins[data].symbol === selectedTarget) {
+			} else if (coins[data].symbol === pair_2) {
 				pair2_fullName = coins[data].fullname;
 			}
 		});
@@ -188,10 +198,10 @@ class QuickTrade extends Component {
 							<div className="trade-details-content">
 								<div className="d-flex pb-30">
 									<Image
-										iconId={`${selectedTarget.toUpperCase()}_ICON`}
+										iconId={`${pairBase.toUpperCase()}_ICON`}
 										icon={
-											ICONS[`${selectedTarget.toUpperCase()}_ICON`]
-												? ICONS[`${selectedTarget.toUpperCase()}_ICON`]
+											ICONS[`${pairBase.toUpperCase()}_ICON`]
+												? ICONS[`${pairBase.toUpperCase()}_ICON`]
 												: ICONS['DEFAULT_ICON']
 										}
 										wrapperClassName="coins-icon"
@@ -202,30 +212,30 @@ class QuickTrade extends Component {
 											className="pairs pointer"
 											onClick={() => this.handleClick(key)}
 										>
-											{selectedTarget.toUpperCase()}/
-											{selectedSource.toUpperCase()}
+											{pairBase.toUpperCase()}/
+											{pair_2.toUpperCase()}
 										</div>
 										<div className="fullname">
-											{pair2_fullName}/{pairBase_fullName}
+											{pairBase_fullName}/{pair2_fullName}
 										</div>
 									</div>
 								</div>
 								<div className="d-flex">
 									<div>
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
 												{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
 											</EditWrapper>
 										</div>
 										<div className="d-flex">
-											<div className="f-size-18 pr-2">{ticker.last}</div>
-											<div className="fullname">
+											<div className="f-size-22 pr-2">{ticker.last}</div>
+											<div className="fullname white-txt">
 												{selectedSource.toUpperCase()}
 											</div>
 										</div>
 									</div>
 									<div className="pl-6 trade_tabs-container">
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
 												{STRINGS[
 													'QUICK_TRADE_COMPONENT.CHANGE_TEXT'
@@ -234,7 +244,7 @@ class QuickTrade extends Component {
 										</div>
 										<Transition in={inProp} timeout={1000}>
 											{(state) => (
-												<div className="d-flex f-size-18">
+												<div className="d-flex f-size-22">
 													<div
 														className={classnames(
 															'title-font',
@@ -264,7 +274,7 @@ class QuickTrade extends Component {
 								</div>
 								<div className="d-flex pb-35">
 									<div>
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
 												{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
 											</EditWrapper>
@@ -277,7 +287,7 @@ class QuickTrade extends Component {
 										</div>
 									</div>
 									<div className="pl-6">
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
 												{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
 											</EditWrapper>
@@ -292,7 +302,7 @@ class QuickTrade extends Component {
 								</div>
 								<div className="d-flex pb-35">
 									<div>
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
 												{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
 											</EditWrapper>
@@ -305,7 +315,7 @@ class QuickTrade extends Component {
 										</div>
 									</div>
 									<div className="pl-6">
-										<div className="fullname">
+										<div className="sub-title">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
 												{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
 											</EditWrapper>
@@ -319,7 +329,7 @@ class QuickTrade extends Component {
 									</div>
 								</div>
 								<div>
-									<div className="fullname">
+									<div className="sub-title">
 										<EditWrapper stringId="SUMMARY.VOLUME_24H">
 											{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
 										</EditWrapper>
@@ -420,8 +430,8 @@ class QuickTrade extends Component {
 									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
 										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
 									</EditWrapper>
-									: {selectedTarget.toUpperCase()}/
-									{selectedSource.toUpperCase()}{' '}
+									: {pairBase.toUpperCase()}/
+									{pair_2.toUpperCase()}{' '}
 									<span>{STRINGS['TYPES_VALUES.market']}</span>
 								</div>
 							</div>

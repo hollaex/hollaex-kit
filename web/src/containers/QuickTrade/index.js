@@ -459,7 +459,6 @@ class QuickTradeContainer extends PureComponent {
 						'quote-container',
 						'h-100',
 						'justify-content-center',
-						'align-items-center',
 						{
 							'flex-column': isMobile,
 						}
