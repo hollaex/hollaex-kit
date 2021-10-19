@@ -1053,6 +1053,8 @@ export default {
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_FEE_WARNING:
+		'{0} ({1}) is a requirement for this asset to be withdrawn',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
 		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
@@ -1066,6 +1068,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN: 'Transaction fee ({0})',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -1111,6 +1114,7 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
+		MESSAGE_FEE_COIN: 'Transactions fee of {0}',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your account.',
