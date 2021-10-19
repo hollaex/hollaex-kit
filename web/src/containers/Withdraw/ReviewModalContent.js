@@ -59,6 +59,23 @@ const ReviewModalContent = ({
 
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
 	const fee = data.fee ? data.fee : 0;
+	const fee_coin = data.fee_coin ? data.fee_coin : '';
+	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
+
+	const withdrawFeeMessage = hasDifferentFeeCoin
+		? STRINGS.formatString(
+				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE_COIN'],
+				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin.toUpperCase())
+		  )
+		: STRINGS.formatString(
+				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
+				fee,
+				STRINGS.formatString(
+					CURRENCY_PRICE_FORMAT,
+					formatToCurrency(feePrice, baseCoin.min),
+					baseCoin.symbol.toUpperCase()
+				)
+		  );
 
 	return (
 		<div className="d-flex flex-column review-wrapper">
@@ -76,16 +93,8 @@ const ReviewModalContent = ({
 				<div className="review-crypto-amount review-crypto-address">
 					<div>{cryptoAmountText}</div>
 					<div className="review-fee_message">
-						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE">
-							{STRINGS.formatString(
-								STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
-								fee,
-								STRINGS.formatString(
-									CURRENCY_PRICE_FORMAT,
-									formatToCurrency(feePrice, baseCoin.min),
-									baseCoin.symbol.toUpperCase()
-								)
-							)}
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_FEE,WITHDRAW_PAGE.MESSAGE_FEE_COIN">
+							{withdrawFeeMessage}
 						</EditWrapper>
 					</div>
 				</div>

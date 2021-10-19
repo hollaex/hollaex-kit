@@ -656,13 +656,14 @@ export const generateWithdrawalsHeaders = (
 			stringId: 'FEE,NO_FEE',
 			label: STRINGS['FEE'],
 			key: 'fee',
-			exportToCsv: ({ fee = 0, fee_coin = '' }) => `${fee} ${fee_coin}`,
-			renderCell: ({ fee = 0, fee_coin = '' }, key, index) => (
+			exportToCsv: ({ fee = 0, fee_coin = '', currency }) =>
+				`${fee} ${fee_coin ? fee_coin : currency}`,
+			renderCell: ({ fee = 0, fee_coin = '', currency }, key, index) => (
 				<td key={index}>
 					{STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(fee, 0, true),
-						fee_coin.toUpperCase()
+						(fee_coin ? fee_coin : currency).toUpperCase()
 					)}
 				</td>
 			),
