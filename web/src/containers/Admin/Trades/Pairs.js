@@ -373,7 +373,7 @@ class Pairs extends Component {
 				}
 
 				if (pairs.includes(formData.name)) {
-					message.warning('Pairs already exists');
+					message.warning('Pair configuration complete is pending verification');
 				} else {
 					let formProps = {
 						id: exchange.id,
@@ -526,7 +526,7 @@ class Pairs extends Component {
 					</div>
 					<div className="orderbook-footer-content">
 						<div>Don't see your market?</div>
-						<div>Check for unfished or pending markets <Link to="/admin/trade?tab=0">here.</Link></div>
+						<div>Check for unfinished or pending markets <Link to="/admin/trade?tab=0">here.</Link></div>
 					</div>
 				</Fragment>
 			);

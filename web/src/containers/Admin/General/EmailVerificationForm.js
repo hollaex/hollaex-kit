@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Checkbox, Form } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
@@ -8,6 +8,13 @@ const EmailVerificationForm = ({
 	initialValues = {},
 	handleSaveEmailVerification,
 }) => {
+	const [form] = Form.useForm();
+	useEffect(() => {
+		if (initialValues.hasOwnProperty('email_verification_required')) {
+			form.setFieldsValue(initialValues);
+		}
+	}, [initialValues, form]);
+
 	const handleSubmit = (values) => {
 		let formValues = {};
 		if (values) {
@@ -21,6 +28,7 @@ const EmailVerificationForm = ({
 		<div className="general-wrapper mb-5 ml-5">
 			<div className="sub-title">Email verification</div>
 			<Form
+				form={form}
 				name="email-verification-form"
 				initialValues={initialValues}
 				onFinish={handleSubmit}

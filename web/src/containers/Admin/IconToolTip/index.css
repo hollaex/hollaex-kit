@@ -18,6 +18,10 @@
 
 .icon-tooltip .settings {
 	color: #0000ff;
+	background-color:#288500 !important;
+	padding: 5px !important;
+	border-radius: 20px !important;
+	margin-right: 2px;
 }
 
 .icon-tooltip .warning {
@@ -86,7 +90,7 @@
 
 .icon-tooltip:hover .settings {
 	display: flex;
-	background-color: #0000ff;
+	background-color: #288500;
 	color: #ffffff !important;
 	border-radius: 10px;
 	font-size: 8px !important;

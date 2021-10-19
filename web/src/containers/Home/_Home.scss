@@ -322,6 +322,12 @@ $trade-tab--arrow-size: 0.4rem;
 	&.main-section-wrapper {
 		padding-bottom: 5rem;
 	}
+	.quick_trade-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+	}
 }
 
 .direction_ltr {

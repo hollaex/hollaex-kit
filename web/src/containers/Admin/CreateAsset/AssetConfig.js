@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
-import { Input, InputNumber, Button, Form, Checkbox, message } from 'antd';
+import { Input, InputNumber, Button, Form, Checkbox, message, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import _toUpper from 'lodash/toUpper';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
@@ -25,9 +26,11 @@ const { Search, TextArea } = Input;
 
 const AssetConfig = (props) => {
 	const [isSupply, setIsApply] = useState(false);
+	const [showPresetAlert, setPresetAlert] = useState(false);
 	const [form] = Form.useForm();
 	const {
 		coinFormData = {},
+		exchangeCoins = [],
 		handleChange,
 		handleCheckChange,
 		handleFileChange,
@@ -44,11 +47,31 @@ const AssetConfig = (props) => {
 	const handleSubmit = (values) => {
 		if (values) {
 			if (!props.isEdit && !props.isConfigureEdit) {
-				updateAsset();
+				const body = {
+					...props.coinFormData,
+				};
+				let coinData = props.coins.filter((coin) => !coin.active).map((coin) => {
+					return coin.symbol;
+				});
+				let presentKeys = exchangeCoins.map((coin) => coin.symbol);
+				if (presentKeys.includes(body.symbol)) {
+					message.error(`${_toUpper(body.symbol)} is already added in the exchange.`);
+				} else if (coinData.includes(body.symbol)) {
+					setPresetAlert(true);
+				} else {
+					updateAsset();
+				}
 			} else {
 				handleNext();
 			}
 		}
+	};
+
+	const handlePresetAdd = async () => {
+		const body = {
+			...props.coinFormData,
+		};
+		props.handlePresetConfirmation(body.symbol);
 	};
 
 	const updateAsset = async () => {
@@ -76,7 +99,10 @@ const AssetConfig = (props) => {
 		try {
 			const res = await storeAsset(body);
 			if (props.getCoins) {
-			    await props.getCoins();
+				await props.getCoins();
+			}
+			if (props.handleRefreshCoin) {
+				await props.handleRefreshCoin(body);
 			}
 			if (res) {
 				handleNext();
@@ -103,8 +129,8 @@ const AssetConfig = (props) => {
 			coinFormData
 		} = props;
 		const params = {
-		    address,
-		    network: coinFormData.network
+			address,
+			network: coinFormData.network
 		}
 		try {
 			const res = await getCoinInfo(params);
@@ -132,11 +158,11 @@ const AssetConfig = (props) => {
 	};
 
 	const checkCoin = (rule, value, callback) => {
-		let coinData = props.coins.map((coin) => {
+		let coinData = props.coins.filter((coin) => coin.active).map((coin) => {
 			return coin.symbol;
 		});
 		if (coinData.includes(value)) {
-			callback('This Asset symbol is already exist');
+			callback('This symbol already exists for this asset');
 		} else {
 			callback();
 		}
@@ -149,6 +175,11 @@ const AssetConfig = (props) => {
 			callback();
 		}
 	};
+
+	const handleCloseAlert = () => {
+		setPresetAlert(false);
+	};
+
 	const renderFields = () => {
 		const { coinFormData = {}, handleChange } = props;
 
@@ -534,6 +565,24 @@ const AssetConfig = (props) => {
 					</Button>
 				</div>
 			</Form>
+			<Modal
+				visible={showPresetAlert}
+				footer={null}
+				onCancel={handleCloseAlert}
+			>
+				<div className="create-asset-container">
+					{`${_toUpper(coinFormData.symbol)} is already created by some one. Do you really want to add it on exchange?`}
+					<div className="btn-wrapper">
+						<Button type="primary" className="green-btn" onClick={handleCloseAlert}>
+							Cancel
+						</Button>
+						<div className="separator"></div>
+						<Button type="primary" className="green-btn" onClick={handlePresetAdd}>
+							Okay
+						</Button>
+					</div>
+				</div>
+			</Modal>
 		</Fragment>
 	);
 };
