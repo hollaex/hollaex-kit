@@ -32,6 +32,24 @@ const math = require('mathjs');
 const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 
+const getWithdrawalFee = (currency, network) => {
+	if (!subscribedToCoin(currency)) {
+		return reject(new Error(INVALID_COIN(currency)));
+	}
+
+	const coinConfiguration = getKitCoin(currency);
+
+	let fee = coinConfiguration.withdrawal_fee;
+	let fee_coin = currency;
+
+	if (network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[network]) {
+		fee = coinConfiguration.withdrawal_fees[network].value;
+		fee_coin = coinConfiguration.withdrawal_fees[network].symbol;
+	}
+
+	return { fee, fee_coin };
+};
+
 const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 	network: null,
 	otpCode: null,
@@ -81,28 +99,48 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 				throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 			}
 
+			const { fee, fee_coin } = getWithdrawalFee(currency, opts.network);
+
 			const balance = await getNodeLib().getUserBalance(user.network_id);
-			if (balance[`${currency}_available`] < amount) {
-				throw new Error('Insufficent balance for withdrawal');
+
+			if (fee_coin === currency) {
+				const totalAmount =
+					fee > 0
+						? math.number(math.add(math.bignumber(fee), math.bignumber(amount)))
+						: amount;
+
+				if (math.compare(totalAmount, balance[`${currency}_available`]) === 1) {
+					throw new Error(
+						`User ${currency} balance is lower than amount "${amount}" + fee "${fee}"`
+					);
+				}
+			} else {
+				if (math.compare(amount, balance[`${currency}_available`]) === 1) {
+					throw new Error(
+						`User ${currency} balance is lower than withdrawal amount "${amount}"`
+					);
+				}
+
+				if (math.compare(fee, balance[`${fee_coin}_available`]) === 1) {
+					throw new Error(
+						`User ${fee_coin} balance is lower than fee amount "${fee}"`
+					);
+				}
 			}
 
 			return all([
 				user,
+				fee,
+				fee_coin,
 				findTier(user.verification_level)
 			]);
 		})
-		.then(async ([ user, tier ]) => {
+		.then(async ([ user, fee, fee_coin, tier ]) => {
 			const limit = tier.withdrawal_limit;
 			if (limit === -1) {
 				throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 			} else if (limit > 0) {
 				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
-			}
-
-			let fee = coinConfiguration.withdrawal_fee;
-
-			if (opts.network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[opts.network]) {
-				fee = coinConfiguration.withdrawal_fees[opts.network];
 			}
 
 			return withdrawalRequestEmail(
@@ -112,6 +150,7 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 					email: user.email,
 					amount,
 					fee,
+					fee_coin,
 					transaction_id: uuid(),
 					address,
 					currency,
@@ -130,13 +169,14 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
-			const { email, amount, fee, currency, address, network } = data;
+			const { email, amount, fee, fee_coin, currency, address, network } = data;
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
 				{
 					amount,
 					fee,
+					fee_coin,
 					currency,
 					transaction_id: token,
 					address,
