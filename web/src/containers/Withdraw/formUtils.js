@@ -227,7 +227,7 @@ export const generateFormValues = (
 		};
 
 		if (coins[symbol]) {
-			const { fullname: feeFullname } = coins[fee_coin];
+			const { fullname: feeFullname } = coins[fee_coin] || coins[symbol];
 
 			// const notification = {
 			//     status: 'information',
