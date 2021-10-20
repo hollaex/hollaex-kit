@@ -523,10 +523,10 @@ export default {
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your passport',
+				FRONT: 'Please upload a scan of your passport or national Id',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note',
+				SELFIE_PHOTO_ID: 'Please upload a selfie with passport or national Id and note',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -535,24 +535,24 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport',
 				},
-				ID_NUMBER_LABEL: 'Passport Number',
-				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'Passport Issue Date',
-				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
-				FRONT_LABEL: 'Passport',
-				FRONT_PLACEHOLDER: 'Add a copy of your passport',
-				BACK_LABEL: 'Back Side of passport',
+				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
+				ID_NUMBER_PLACEHOLDER: 'Type your passport Number or national Id number',
+				ID_PASSPORT_NUMBER_LABEL: 'Passport Number or national id number',
+				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport or national Id number',
+				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
+				FRONT_LABEL: 'Passport or National Id',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport or national id',
+				BACK_LABEL: 'Back Side of passport or national id',
 				BACK_PLACEHOLDER:
 					'Add a copy of the backside of your ID (if applicable)',
-				PASSPORT_LABEL: 'Passport Document',
+				PASSPORT_LABEL: 'Passport or National ID Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
+				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport or national Id and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with passport and Note',
+					'Add a copy of your Selfie with passport or national Id and Note',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
@@ -560,7 +560,7 @@ export default {
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
 					LIST_ITEM_1:
-						'HIGH QUALITY (colour images, 300dpi resolution or higher).',
+						'HIGH QUALITY (color images, 300dpi resolution or higher and Image must be 2MB in size per image or lower) Use a Webtool to resize.',
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
