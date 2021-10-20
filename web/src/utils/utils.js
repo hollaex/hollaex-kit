@@ -280,8 +280,9 @@ export const getChartResolution = () => {
 
 export const handleUpgrade = (info = {}) => {
 	if (
-		_toLower(info.type) === 'diy' ||
-		(_toLower(info.plan) !== 'crypto' && _toLower(info.plan) !== 'fiat')
+		_toLower(info.plan) !== 'crypto' &&
+		_toLower(info.plan) !== 'fiat' &&
+		_toLower(info.type) !== 'enterprise'
 	) {
 		return true;
 	} else {
