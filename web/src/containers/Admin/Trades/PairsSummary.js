@@ -191,7 +191,7 @@ class PairsSummary extends Component {
                             >
                                 <div className="d-flex justify-content-between">
                                     <div className="d-flex align-items-center">
-                                        <Link to={`/admin/trade?tab=1&isViewTabs=true&isOpenPairModal=true&pairs=${pairs[0]}-${pairs[1]}`}>
+                                        <Link to={`/admin/trade?tab=1&isViewTabs=true&isOpenPairModal=true&pairs=${pairs[0]}-${pairs[1]}`} className="mr-1">
                                             <IconToolTip
                                                 type="settings"
                                                 tip="Click to complete the market configuration"

@@ -370,11 +370,10 @@ class Pairs extends Component {
 
 				if (!this.props.allPairs.filter((data) => data.name === formData.name).length) {
 					await storePair(formData);
+					await this.getPairs();
 				}
 
-				if (pairs.includes(formData.name)) {
-					message.warning('Pair configuration complete is pending verification');
-				} else {
+				if (!pairs.includes(formData.name)) {
 					let formProps = {
 						id: exchange.id,
 						coins,
@@ -382,16 +381,15 @@ class Pairs extends Component {
 					}
 					await updateExchange(formProps);
 					await this.props.getMyExchange();
-					await this.getPairs();
-					// if (isPresetAsset && exchange.is_running) {
-					// 	this.handleApplyOpen();
-					// }
-					// if (isApply) {
-					// 	await this.handleApply();
-					// }
-					this.handleClose();
-					message.success('Pairs created successfully');
 				}
+				// if (isPresetAsset && exchange.is_running) {
+				// 	this.handleApplyOpen();
+				// }
+				// if (isApply) {
+				// 	await this.handleApply();
+				// }
+				this.handleClose();
+				message.success('Pairs created successfully');
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
