@@ -1,6 +1,11 @@
 import React from 'react';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { CloseSquareOutlined, ClockCircleOutlined, CheckCircleOutlined, BankOutlined } from '@ant-design/icons';
+import {
+	CloseSquareOutlined,
+	ClockCircleOutlined,
+	CheckCircleOutlined,
+	BankOutlined,
+} from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { formatCurrency, formatDate } from '../../../utils/index';
@@ -88,20 +93,23 @@ const renderContent = (renderData, onOpenModal) => {
 				<CheckCircleOutlined style={{ margin: '5px' }} />
 				Validated
 			</div>
-		)
+		);
 	} else if (renderData.dismissed) {
-		return <div>Dismissed</div>
-	} else if (!renderData.status && !renderData.dismissed && !renderData.rejected && !renderData.processing) {
+		return <div>Dismissed</div>;
+	} else if (
+		!renderData.status &&
+		!renderData.dismissed &&
+		!renderData.rejected &&
+		!renderData.processing
+	) {
 		return (
 			<div className="d-flex validate-wrapper">
-				<ClockCircleOutlined
-					style={{ margin: '5px' }}
-				/>
+				<ClockCircleOutlined style={{ margin: '5px' }} />
 				<Tooltip placement="bottom" title="VALIDATE">
 					<div
 						className="anchor"
 						onClick={(e) => {
-							onOpenModal(renderData, "validate")
+							onOpenModal(renderData, 'validate');
 							e.preventDefault();
 							e.stopPropagation();
 						}}
@@ -110,11 +118,14 @@ const renderContent = (renderData, onOpenModal) => {
 					</div>
 				</Tooltip>
 				<div className="mx-3">/</div>
-				<Tooltip placement="bottom" title={renderData.dismissed ? 'UNDO DISMISS' : 'DISMISS'}>
+				<Tooltip
+					placement="bottom"
+					title={renderData.dismissed ? 'UNDO DISMISS' : 'DISMISS'}
+				>
 					<div
 						className="anchor"
 						onClick={(e) => {
-							onOpenModal(renderData, "dismiss")
+							onOpenModal(renderData, 'dismiss');
 							e.preventDefault();
 							e.stopPropagation();
 						}}
@@ -123,9 +134,9 @@ const renderContent = (renderData, onOpenModal) => {
 					</div>
 				</Tooltip>
 			</div>
-		)
+		);
 	} else {
-		return <ButtonNotAvailable />
+		return <ButtonNotAvailable />;
 	}
 };
 
@@ -159,7 +170,7 @@ export const COLUMNS = (currency, onOpenModal) => {
 		const adminColumns = [
 			{
 				title: 'Validate/dismiss',
-				render: (renderData) => renderContent(renderData, onOpenModal)
+				render: (renderData) => renderContent(renderData, onOpenModal),
 			},
 		];
 		return columns.concat(adminColumns);
@@ -190,7 +201,7 @@ export const renderRowContent = ({
 		<div>
 			{address && <div>Address: {address}</div>}
 			<div>Currency: {currency}</div>
-			<div>Amount: {formatCurrency(amount - fee)}</div>
+			<div>Amount: {formatCurrency(amount)}</div>
 			<div>Fee: {formatCurrency(fee)}</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
