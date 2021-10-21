@@ -18,6 +18,7 @@ async function Supervisor(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	describe('supervisor', function() {
 		this.timeout(3000000);
@@ -198,6 +199,6 @@ async function Supervisor(){
 }
 describe('Main Test', function () {
  
-	//Supervisor();
+	Supervisor();
 })
 module.exports.Supervisor = Supervisor;

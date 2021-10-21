@@ -24,6 +24,7 @@ async function Setting(){
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	describe('Setting', function() {
 		this.timeout(300000);
 		let driver;

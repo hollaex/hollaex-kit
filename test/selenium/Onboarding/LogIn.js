@@ -21,19 +21,7 @@ async function LogIn () {
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let step = util.getStep();
-
-    if (process.env.NODE_ENV == 'test') {
-		console.log('Variables are defined');
-	}
-// 	const fs = require("fs");
-
-// 	require('console-stamp')(console, {
-// 		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' ,
-//         stdout: fs.createWriteStream(logPath+"/normalStdout.txt"),
-//         stderr: fs.createWriteStream(logPath+"/errStdErr.txt"),
-// });
-
-
+	util.logHolla(logPath)
 	
     describe('BobLogIn', function() {
 		this.timeout(30000);
@@ -44,7 +32,7 @@ async function LogIn () {
 				setTimeout(resolve, ms);
 			});
 		}
-
+		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
@@ -72,14 +60,17 @@ async function LogIn () {
 			console.log(step++,' | type | name=email |', userName);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
 			await driver.findElement(By.name('email')).sendKeys(userName);
-    
+			shot();
+
 			console.log(step++,' | type | name=password | PASSWORD');
 			await driver.wait(until.elementLocated(By.name('password')), 5000);
 			await driver.findElement(By.name('password')).sendKeys(passWord);
+			shot();
     
 			console.log(step++,' | click | css=.auth_wrapper | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 			await driver.findElement(By.css('.auth_wrapper')).click();
+			shot();
 		
 			console.log(step++,' | verifyElementPresent | css=.holla-button |'); 
 			{
@@ -91,12 +82,15 @@ async function LogIn () {
 			console.log(step++,' | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
+			shot();
+
 			//then the username should be as same as entered 		
 			console.log(step++,' | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 			await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
 			await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
 			expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
-		 
+			
+			shot();
 			console.log('This is the EndOfTest');
 			
 		    
@@ -107,6 +101,6 @@ async function LogIn () {
 }
 describe('Main Test', function () {
  
-	//LogIn();
+	LogIn();
 })
 module.exports.LogIn = LogIn;

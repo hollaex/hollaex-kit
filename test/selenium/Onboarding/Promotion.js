@@ -25,6 +25,7 @@ async function Promotion(){
 	let password = process.env.PASSWORD;
 	const timestamp = require('time-stamp');
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	
 	const fs = require('fs');

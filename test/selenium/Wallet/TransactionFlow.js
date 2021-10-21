@@ -49,7 +49,7 @@ async function TransactionFlow(){
 		});
 		afterEach(async function() {
 		    util.setStep()
-			await driver.quit();
+		//	await driver.quit();
 		});
 		it('BobLoginFirstTime', async function() {
 			console.log(' Test name: BobLogIn');
@@ -151,6 +151,7 @@ async function TransactionFlow(){
 		
 			console.log(step++,' | type | name=address | 0xe8a3b3a9d72b7b4d7e2f0ae33b23e36fcabfd88f');
 			await driver.findElement(By.name('address')).sendKeys('0xe8a3b3a9d72b7b4d7e2f0ae33b23e36fcabfd88f');
+			
 		
 			console.log(step++,' | click | css=.with-notification .field-label-wrapper:nth-child(1) | ');
 			await driver.findElement(By.css('.with-notification .field-label-wrapper:nth-child(1)')).click();
@@ -187,7 +188,7 @@ async function TransactionFlow(){
 	
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
-			await defNewUser.emailLogIn(driver,admin,passWord);
+			await util.emailLogIn(step,driver,admin,passWord);
 		
 			console.log(step++,' | Click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
@@ -294,7 +295,7 @@ async function TransactionFlow(){
 }
 describe('Main Test', function () {
  
-	//TransactionFlow();
+	TransactionFlow();
 })
 module.exports = {
 	TransactionFlow

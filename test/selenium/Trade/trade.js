@@ -22,6 +22,7 @@ async function Trade(){
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 
 	describe('Trade', function() {
@@ -686,6 +687,6 @@ async function Trade(){
 }
 describe('Main Test', function () {
  
-	//Trade();
+	Trade();
 })
 module.exports.Trade = Trade ;

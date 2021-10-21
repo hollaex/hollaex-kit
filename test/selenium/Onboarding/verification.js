@@ -23,6 +23,7 @@ async function Verification(){
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
@@ -141,6 +142,6 @@ async function Verification(){
 }
 describe('Main Test', function () {
  
-	//Verification();
+	Verification();
 })
 module.exports.Verification = Verification;
