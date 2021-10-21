@@ -278,7 +278,7 @@ function getPromotionRate(){
 
 
 
-function setStep(i){
+ function setStep(i){
 	
 
 	if (typeof localStorage === 'undefined' || localStorage === null) {
@@ -289,7 +289,7 @@ function setStep(i){
 	localStorage.setItem('Step', Number(i));
 	//return localStorage.getItem('Step');
 }
-function getStep(){
+ function getStep(){
 
 	if (typeof localStorage === 'undefined' || localStorage === null) {
 		var LocalStorage = require('node-localstorage').LocalStorage;
@@ -298,8 +298,18 @@ function getStep(){
 
 	return localStorage.getItem('Step');
 }
+async function logHolla(logPath){
+	try {
+		fs.unlinkSync(logPath+"/test.log")
+		//file removed
+	  } catch(err) {
+		console.error(err)
+	  }
+    const { consoleLogToFile } = require("console-log-to-file/dist/index.cjs.js")
+    consoleLogToFile({  logFilePath: logPath+"/test.log",});
+}
 
-module.exports = {getStep,setStep,chunkCleaner,setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
+module.exports = {logHolla,getStep,setStep,chunkCleaner,setPromotionRate,getPromotionRate,hollatimestamp,getHollatimestamp, getHollaTime,printHollatimestamp,defineNewUser,emailLogIn,kitLogIn,getNewUser,adminVerifiesNewUser,toTP,addRest,takeHollashot,makeReportDir};
 
 
 

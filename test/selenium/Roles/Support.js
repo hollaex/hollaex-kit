@@ -17,6 +17,7 @@ async function Support(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	describe('support', function() {
 		this.timeout(300000);
@@ -151,6 +152,6 @@ async function Support(){
 }
 describe('Main Test', function () {
  
-	//Support();
+	Support();
 })
 module.exports.Support = Support;

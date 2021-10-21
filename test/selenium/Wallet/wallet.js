@@ -43,7 +43,7 @@ async function Wallet(){
 		});
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+			// await driver.quit();
 		});
 		it('ETH', async function() {
     
@@ -140,6 +140,6 @@ async function Wallet(){
 }
 describe('Main Test', function () {
  
-	//Wallet();
+	Wallet();
 })
 module.exports.Wallet = Wallet ;

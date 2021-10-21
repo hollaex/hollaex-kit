@@ -22,6 +22,7 @@ async function SignUp(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	const newUser = util.defineNewUser(User,4) ;
 	console.log(newUser);
 
@@ -43,7 +44,7 @@ async function SignUp(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+		//	await driver.quit();
 		});
 
 		it('FillUpNewUserRequest', async function() {
@@ -88,7 +89,7 @@ async function SignUp(){
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
 		
-			await util.emailLogIn(driver,emailAdmin,passWord);
+			await util.emailLogIn(step,driver,emailAdmin,passWord);
 		
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 		
@@ -149,6 +150,6 @@ async function SignUp(){
 }
 describe('Main Test', function () {
  
-	//SignUp();
+	SignUp();
 })
 module.exports.SignUp = SignUp;

@@ -20,6 +20,7 @@ async function AccountLevel () {
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 
 	describe('AccountLevel', function() {

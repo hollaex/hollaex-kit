@@ -26,6 +26,7 @@ async function ResendVerificationEmail(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.Email_ADMIN_USERNAME;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');
 	}
@@ -58,7 +59,7 @@ async function ResendVerificationEmail(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+			//await driver.quit();
 		});
 		it('NewUserRequestSignUp', async function() {
 			await sleep(5000)
@@ -122,7 +123,7 @@ async function ResendVerificationEmail(){
 			let reuserName =  util.getNewUser();
 	
 			console.log('Step # | name | target | value');
-			await util.emailLogIn(driver,emailAdmin,passWord);
+			await util.emailLogIn(step,driver,emailAdmin,passWord);
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 		
@@ -181,6 +182,6 @@ async function ResendVerificationEmail(){
 }
 describe('Main Test', function () {
  
-	//ResendVerificationEmail();
+	ResendVerificationEmail();
 })
 module.exports.ResendVerificationEmail = ResendVerificationEmail

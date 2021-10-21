@@ -21,6 +21,7 @@ async function ReCAPTCHA(){
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 	if (process.env.NODE_ENV == 'test') {
 		console.log('Variables are defined');

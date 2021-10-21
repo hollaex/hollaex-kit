@@ -23,6 +23,7 @@ async function Security(){
 	let apiUrl = process.env.API_WEBSITE;
 	let emailPassword = process.env.PASSWORD;
 	let step = util.getStep();
+	util.logHolla(logPath)
 	describe('OTP', function() {
 		this.timeout(300000);
 		let driver;
@@ -460,6 +461,6 @@ async function Security(){
 }
 describe('Main Test', function () {
  
-	//Security();
+	Security();
 })
 module.exports.Security = Security;

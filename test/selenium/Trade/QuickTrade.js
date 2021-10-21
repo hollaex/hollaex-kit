@@ -22,6 +22,7 @@ async function QuickTrade(){
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
 	let step = util.getStep();
+	util.logHolla(logPath)
 
 
 	describe('Trade', function() {
@@ -151,6 +152,6 @@ async function QuickTrade(){
 }
 describe('Main Test', function () {
  
-	//QuickTrade();
+	QuickTrade();
 })
 module.exports.QuickTrade = QuickTrade;

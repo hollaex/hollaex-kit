@@ -1,9 +1,10 @@
 //this scenario test Plug ins
 //const { util } = require('chai');
 const util = require ('./../Utils/Utils.js');
-const {  AccountLevel, LogIn, Promotion, LogOut, Referral, Security } = require('./Modules')
+const {  AccountLevel, LogIn, Promotion, LogOut, Referral, Security, Trade } = require('./Modules')
 const { Builder, By, Key, until } = require('selenium-webdriver');
 const { spawn } = require("child_process");
+const { TransactionFlow } = require('../Wallet/TransactionFlow.js');
 
 // const ls = spawn("ls", ["-la"]);
 
@@ -56,7 +57,7 @@ describe('Main Test', function () {
 	})
 		
 	it('promotion',async function() {
-			await Security.Security();
+			
 			
 			
 		   
