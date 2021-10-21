@@ -218,6 +218,6 @@ async function CancelOrder(){
 }
 describe('Main Test', function () {
  
-	//CancelOrder();
+	CancelOrder();
 })
 module.exports.CancelOrder = CancelOrder;

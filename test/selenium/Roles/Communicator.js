@@ -146,6 +146,6 @@ async function Communicator(){
 }
 describe('Main Test', function () {
  
-	//Communicator();
+	Communicator();
 })
 module.exports.Communicator = Communicator;

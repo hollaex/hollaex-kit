@@ -152,6 +152,6 @@ async function QuickTrade(){
 }
 describe('Main Test', function () {
  
-	//QuickTrade();
+	QuickTrade();
 })
 module.exports.QuickTrade = QuickTrade;

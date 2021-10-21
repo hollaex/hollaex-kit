@@ -44,7 +44,7 @@ async function SignUp(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+		//	await driver.quit();
 		});
 
 		it('FillUpNewUserRequest', async function() {
@@ -150,6 +150,6 @@ async function SignUp(){
 }
 describe('Main Test', function () {
  
-	//SignUp();
+	SignUp();
 })
 module.exports.SignUp = SignUp;

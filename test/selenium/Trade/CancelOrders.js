@@ -103,6 +103,6 @@ async function CancelOrders(){
 }
 describe('Main Test', function () {
  
-	//CancelOrders();
+	CancelOrders();
 })
 module.exports.CancelOrders = CancelOrders;

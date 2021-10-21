@@ -687,6 +687,6 @@ async function Trade(){
 }
 describe('Main Test', function () {
  
-	//Trade();
+	Trade();
 })
 module.exports.Trade = Trade ;

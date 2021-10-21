@@ -297,7 +297,7 @@ async function SmartTrade(){
 }
 describe('Main Test', function () {
  
-	//SmartTrade();
+	SmartTrade();
 })
 module.exports.SmartTrade = SmartTrade;
 

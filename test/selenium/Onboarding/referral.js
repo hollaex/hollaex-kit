@@ -92,7 +92,7 @@ async function Referral(){
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
 		
 			console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
-			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[11]/div[3]')).click();
+			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
 	        console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);

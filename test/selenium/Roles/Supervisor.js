@@ -199,6 +199,6 @@ async function Supervisor(){
 }
 describe('Main Test', function () {
  
-	//Supervisor();
+	Supervisor();
 })
 module.exports.Supervisor = Supervisor;

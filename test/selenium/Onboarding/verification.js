@@ -142,6 +142,6 @@ async function Verification(){
 }
 describe('Main Test', function () {
  
-	//Verification();
+	Verification();
 })
 module.exports.Verification = Verification;

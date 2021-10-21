@@ -295,7 +295,7 @@ async function TransactionFlow(){
 }
 describe('Main Test', function () {
  
-	//TransactionFlow();
+	TransactionFlow();
 })
 module.exports = {
 	TransactionFlow

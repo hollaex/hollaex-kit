@@ -152,6 +152,6 @@ async function Support(){
 }
 describe('Main Test', function () {
  
-	//Support();
+	Support();
 })
 module.exports.Support = Support;
