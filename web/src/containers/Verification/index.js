@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Tabs } from 'antd';
 import querystring from 'query-string';
+import _get from 'lodash/get';
 // import * as d3 from 'd3-selection';
 import {
 	// AppBar,
@@ -17,7 +18,7 @@ import {
 	PanelInformationRow,
 	Button,
 	SmartTarget,
-	SuccessDisplay
+	SuccessDisplay,
 } from '../../components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from '../../config/localizedStrings';
@@ -87,7 +88,7 @@ class Verification extends Component {
 			},
 		],
 		paramsData: {},
-		isCustomNotification: false
+		isCustomNotification: false,
 	};
 
 	componentDidMount() {
@@ -100,11 +101,11 @@ class Verification extends Component {
 			const { success_alert, error_alert } = qs;
 			let paramsData = {};
 			if (success_alert) {
-				paramsData = { status: true, message: success_alert }
+				paramsData = { status: true, message: success_alert };
 			} else if (error_alert) {
-				paramsData = { status: false, message: error_alert }
+				paramsData = { status: false, message: error_alert };
 			}
-			this.setState({ paramsData, isCustomNotification: true })
+			this.setState({ paramsData, isCustomNotification: true });
 		}
 	}
 
@@ -477,7 +478,12 @@ class Verification extends Component {
 
 	renderKYCVerificationContent = (key) => {
 		const { user } = this.state;
-		const { activeLanguage, icons: ICONS, openContactForm } = this.props;
+		const {
+			activeLanguage,
+			icons: ICONS,
+			openContactForm,
+			constants,
+		} = this.props;
 
 		switch (key) {
 			case 'identity':
@@ -487,7 +493,7 @@ class Verification extends Component {
 						fullName={user.full_name}
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
-						initialValues={identityInitialValues(user)}
+						initialValues={identityInitialValues(user, constants)}
 						openContactForm={openContactForm}
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
@@ -545,7 +551,12 @@ class Verification extends Component {
 			kycTabs,
 			activeKYCTabKey,
 		} = this.state;
-		const { activeLanguage, icons: ICONS, openContactForm } = this.props;
+		const {
+			activeLanguage,
+			icons: ICONS,
+			openContactForm,
+			constants,
+		} = this.props;
 		switch (activePage) {
 			case 'email':
 				return (
@@ -592,7 +603,7 @@ class Verification extends Component {
 						setActivePageContent={this.setActivePageContent}
 						handleBack={this.handleBack}
 						moveToNextStep={this.goNextTab}
-						initialValues={identityInitialValues(user)}
+						initialValues={identityInitialValues(user, constants)}
 						setActiveTab={this.setActiveTab}
 					>
 						<Tabs activeKey={activeKYCTabKey} onTabClick={this.setActiveKYCTab}>
@@ -607,7 +618,10 @@ class Verification extends Component {
 			case 'sms':
 				return (
 					<MobileVerification
-						initialValues={mobileInitialValues(user.address)}
+						initialValues={mobileInitialValues(
+							user.address,
+							_get(constants, 'defaults')
+						)}
 						moveToNextStep={this.goNextTab}
 						activeLanguage={activeLanguage}
 						openContactForm={openContactForm}
@@ -663,7 +677,7 @@ class Verification extends Component {
 			dialogType,
 			showVerificationSentModal,
 			paramsData,
-			isCustomNotification
+			isCustomNotification,
 		} = this.state;
 		if (activeTab === -1 && tabs.length > 0) {
 			return (
