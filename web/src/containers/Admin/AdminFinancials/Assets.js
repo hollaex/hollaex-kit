@@ -441,15 +441,18 @@ class Assets extends Component {
 				}
 				// let pairs = exchange.pairs || [];
 				let coinList = coins.map(data => data.symbol);
-				let formProps = {
-					id: exchange.id,
-					// pairs: pairs.map(data => data.name ? data.name : data.symbol),
-					coins: [...coinList, coinData.symbol]
-				}
+				
 				if (!coinData.id) {
 					await updateAssetCoins(coinData);
 				}
-				await updateExchange(formProps);
+				if (!coinList.includes(coinData.symbol)) {
+					let formProps = {
+						id: exchange.id,
+						// pairs: pairs.map(data => data.name ? data.name : data.symbol),
+						coins: [...coinList, coinData.symbol]
+					}
+					await updateExchange(formProps);
+				}
 				await this.getMyExchange();
 				await this.getCoins();
 				if (isPresetAsset && exchange.is_running) {
