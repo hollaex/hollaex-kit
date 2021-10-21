@@ -37,7 +37,7 @@ const CreatePairSection = ({
 		if (!formData.pair_2) {
 			setExistError("Can't create a market without adding a second asset.");
 		} else if (existExchangePair) {
-			setExistError('The pair has already been added');
+			setExistError('The market has already been added');
 		} else if (existFromPair.length && !existExchangePair) {
 			handleExistPair(true);
 			moveToStep('preview');
