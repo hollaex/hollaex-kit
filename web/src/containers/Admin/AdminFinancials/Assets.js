@@ -3,6 +3,7 @@ import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import _cloneDeep from 'lodash/cloneDeep';
+import { bindActionCreators } from 'redux';
 // import { requestExchange } from './action';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
@@ -18,7 +19,7 @@ import {
 	updateExchange,
 } from './action';
 import { setCoins, setExchange } from 'actions/assetActions';
-import { bindActionCreators } from 'redux';
+import { requestTotalBalance } from '../Wallets/actions';
 
 const { Item } = Breadcrumb;
 
@@ -197,7 +198,7 @@ class Assets extends Component {
 
 	componentDidMount() {
 		// this.getMyExchange();
-		// this.getCoins();
+		this.getBalance();
 		const { exchange, allCoins } = this.props;
 		const { tabParams } = this.state;
 
@@ -257,6 +258,18 @@ class Assets extends Component {
 					isConfigure: false,
 				});
 			}
+		}
+	}
+
+	getBalance = async () => {
+		try {
+			const res = await requestTotalBalance();
+			if (res) {
+				this.setState({ exchangeBalance: res });
+			}
+		} catch (error) {
+			const message = error.data ? error.data.message : error.message;
+			message.error(message);
 		}
 	}
 
@@ -536,7 +549,7 @@ class Assets extends Component {
 				{this.state.isPreview || this.state.isConfigure ? (
 					<Breadcrumb>
 						<Item>
-							<Link to="/admin/financials?tab=1&isAssetHome=true">Assets</Link>
+							<Link to="/admin/financials?tab=0&isAssetHome=true">Assets</Link>
 						</Item>
 						<Item
 							className={

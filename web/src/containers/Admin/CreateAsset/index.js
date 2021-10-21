@@ -38,8 +38,7 @@ export const default_coin_data = {
 		decimal_points: 18,
 		supply: 0,
 	},
-	is_public: true,
-	savePresetAsset: false
+	is_public: true
 };
 
 class CreateAsset extends Component {
@@ -55,6 +54,7 @@ class CreateAsset extends Component {
 			prevCoinData: {},
 			// assetType: 'existing_asset',
 			activeTab: '0',
+			savePresetAsset: false
 		};
 	}
 
