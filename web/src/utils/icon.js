@@ -128,7 +128,7 @@ const sizeLimitInMB = 10;
 
 export const checkFileSize = (file) => {
 	if (file && file.size) {
-		const sizeLimit = sizeLimitInMB * 1024 * 10;
+		const sizeLimit = sizeLimitInMB * 1024 * 1024;
 		return file.size < sizeLimit;
 	}
 };
