@@ -46,7 +46,7 @@ class Description extends Component {
 			ReferralBadgeFields,
 			ReferralBadgeInitialValues,
 			constants: { info: { type, plan } = {} } = {},
-			isUpgrade
+			isUpgrade,
 		} = this.props;
 		return (
 			<div className="description-wrapper">
@@ -111,32 +111,29 @@ class Description extends Component {
 					Edit the referral badge in the bottom left corner. This space can be
 					repurposed for copyright or other business related data.
 				</p>
-				{isUpgrade || plan === 'basic'
-					?
-						<div className="d-flex">
-							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
-								<div>
-									<div className="font-weight-bold">Fully rebrand your platform</div>
-									<div>Replace the badge with your own branding</div>
+				{isUpgrade || plan === 'basic' ? (
+					<div className="d-flex">
+						<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+							<div>
+								<div className="font-weight-bold">
+									Fully rebrand your platform
 								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.bitholla.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Button
-											type="primary"
-											className="w-100"
-										>
-											Upgrade Now
-										</Button>
-									</a>
-								</div>
+								<div>Replace the badge with your own branding</div>
+							</div>
+							<div className="ml-5 button-wrapper">
+								<a
+									href="https://dash.bitholla.com/billing"
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<Button type="primary" className="w-100">
+										Upgrade Now
+									</Button>
+								</a>
 							</div>
 						</div>
-					: null
-				}
+					</div>
+				) : null}
 				{type === 'DIY' ? (
 					<div
 						style={{ width: '465px' }}
@@ -149,14 +146,16 @@ class Description extends Component {
 						</div>
 					</div>
 				) : null}
-				<div className={isUpgrade ? "disable-referral" : ""}>
+				<div className={isUpgrade ? 'disable-referral' : ''}>
 					<ReferralBadgeForm
 						initialValues={ReferralBadgeInitialValues}
 						fields={ReferralBadgeFields}
 						buttonText="Save"
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.props.handleSubmitReferralBadge}
-						disableAllFields={type === 'DIY' || plan === 'basic'}
+						disableAllFields={
+							plan !== 'crypto' && plan !== 'fiat' && type !== 'Enterprise'
+						}
 					/>
 				</div>
 			</div>

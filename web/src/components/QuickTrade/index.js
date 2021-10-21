@@ -364,7 +364,7 @@ class QuickTrade extends Component {
 									className="ml-2 pointer"
 									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
 								>
-									{selectedSourceBalance}
+									{selectedSourceBalance ? selectedSourceBalance : 0}
 								</span>
 							</div>
 							<InputGroup
@@ -398,7 +398,7 @@ class QuickTrade extends Component {
 									className="ml-2 pointer"
 									onClick={() => this.targetTotalBalance(selectedTargetBalance)}
 								>
-									{selectedTargetBalance}
+									{selectedTargetBalance ? selectedTargetBalance : 0}
 								</span>
 							</div>
 							<div
