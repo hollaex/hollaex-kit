@@ -196,13 +196,17 @@ export const renderRowContent = ({
 	fee,
 	created_at,
 	currency,
+	fee_coin,
 }) => {
 	return (
 		<div>
+			<div>
+				Amount: {formatCurrency(amount)} {currency}
+			</div>
+			<div>
+				Fee: {formatCurrency(fee)} {fee_coin}
+			</div>
 			{address && <div>Address: {address}</div>}
-			<div>Currency: {currency}</div>
-			<div>Amount: {formatCurrency(amount)}</div>
-			<div>Fee: {formatCurrency(fee)}</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
 		</div>
