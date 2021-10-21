@@ -206,7 +206,7 @@ $placeholder--font-weight: bold;
 		.toggle-action_button {
 			border: $toggle-border solid $colors-main-border;
 			height: 100%;
-			width: $toggle-size * 3;
+			width: $toggle-size * 4;
 			border-radius: $toggle-size;
 			margin: 0 0.5rem;
 			display: flex;
@@ -214,12 +214,27 @@ $placeholder--font-weight: bold;
 			position: relative;
 			cursor: pointer;
 
-			&.left .toggle-action_button-display {
-				$right-pos: $toggle-size + $toggle-margin * 2;
-				right: calc(100% - #{$right-pos});
+			&.left {
+    			opacity: 0.3;
+				.option-text {
+					position: relative;
+					left: 23px;
+				}
+				.toggle-action_button-display {
+					$right-pos: $toggle-size + $toggle-margin * 2;
+					right: calc(100% - #{$right-pos});
+				}
 			}
-			&.right .toggle-action_button-display {
-				right: 0;
+
+			&.right {
+				.option-text {
+					position: relative;
+					left: 3px;
+					color: $colors-main-black;
+				}
+				.toggle-action_button-display {
+					right: 0;
+				}
 			}
 
 			.toggle-action_button-display {
@@ -286,4 +301,17 @@ $placeholder--font-weight: bold;
 .toggle-disabled {
 	cursor: not-allowed;
 	opacity: 0.35;
+}
+
+.layout-mobile {
+	.toggle_button-wrapper {
+		.toggle-content {
+			.toggle-action_button {
+				width: $toggle-size * 3;
+				&.left .option-text {
+    				left: 20px;
+				}
+			}
+		}
+	}
 }

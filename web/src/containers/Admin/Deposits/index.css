@@ -169,3 +169,7 @@
 .Validate-Dismiss-popup .ant-input {
 	width: 80%;
 }
+
+.admin-deposit-wrapper .blue-admin-table .ant-table {
+	overflow: scroll;
+}

@@ -1,16 +1,17 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.1.20",
+	"version": "2.2.0",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
 		"@ant-design/icons": "4.2.2",
 		"@material/button": "0.7.0",
 		"@paciolan/remote-component": "2.11.0",
+		"@simonwep/pickr": "1.8.1",
 		"antd": "4.6.2",
 		"antd-mobile": "2.2.3",
 		"array-move": "3.0.1",
-		"awesome-phonenumber": "2.43.0",
+		"awesome-phonenumber": "2.64.0",
 		"axios": "0.21.1",
 		"bluebird": "3.5.5",
 		"classnames": "2.2.6",
@@ -85,6 +86,7 @@
 		"universal-cookie": "4.0.2",
 		"validate-color": "2.1.0",
 		"validator": "10.11.0",
+		"web3": "1.5.1",
 		"ws-heartbeat": "1.2.0"
 	},
 	"devDependencies": {
@@ -106,7 +108,7 @@
 		"remove-build": "rimraf ./build",
 		"start-js": "react-scripts --max_old_space_size=3072 start",
 		"start": "npm install && npm-run-all -p watch-css start-js",
-		"dev:plugin": "REACT_APP_PLUGIN_DEV_MODE=true REACT_APP_PLUGIN_WEB_VIEW_TARGET=$npm_config_target npm run start",
+		"dev:plugin": "REACT_APP_PLUGIN_DEV_MODE=true REACT_APP_PLUGIN=$npm_config_plugin npm run start",
 		"build": "npm run build-css && react-scripts --max_old_space_size=3072 build",
 		"pre-build": "npm run remove-build && npm install",
 		"build:demo": "REACT_APP_SERVER_ENDPOINT=https://api.sandbox.hollaex.com npm run build",

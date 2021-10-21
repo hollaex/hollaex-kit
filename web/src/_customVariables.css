@@ -29,6 +29,7 @@
 	--specials_checks-okay-done: #008000;
 	--specials_pending-waiting-caution: #f6921e;
 	--specials_notifications-alerts-warnings: #ed1c24;
+	--specials_quick-trade-gradient: #00000000;
 
 	/*_________________________________*/
 
@@ -57,6 +58,8 @@
 	--calculated_specials_notifications-alerts-text: #ffffff;
 	--calculated_specials_notifications-pending-text: #ffffff;
 	--calculated_specials_notifications-success-text: #ffffff;
+	--calculated_notification-pending-disabled: #f6921e4d;
+	--calculated_notifications-blue-disabled: #0066b44d;
 
 	/*_________________________________*/
 

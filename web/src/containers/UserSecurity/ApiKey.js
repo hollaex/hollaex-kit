@@ -59,6 +59,7 @@ class ApiKey extends Component {
 				const { data } = resp;
 				this.props.tokenRevoked(data);
 				this.onCloseDialog();
+				this.requestTokens();
 			})
 			.catch(errorHandler);
 	};
@@ -67,6 +68,7 @@ class ApiKey extends Component {
 		return generateToken({ otp_code, name })
 			.then(({ data }) => {
 				this.props.tokenGenerated(data);
+				this.requestTokens();
 				return data;
 			})
 			.catch(errorHandler);

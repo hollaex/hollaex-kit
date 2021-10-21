@@ -415,9 +415,9 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		},
 		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/eth/tx'
+			name: 'Ethplorer',
+			baseUrl: 'https://ethplorer.io',
+			txPath: '/tx'
 		}
 	],
 	trx: [
@@ -425,6 +425,58 @@ exports.EXPLORERS = {
 			name: 'Tronscan',
 			baseUrl: 'https://tronscan.org',
 			txPath: '/#/transaction'
+		}
+	],
+	bnb: [
+		{
+			name: 'BSCScan',
+			baseUrl: 'https://bscscan.com',
+			txPath: '/tx'
+		}
+	],
+	doge: [
+		{
+			name: 'DogeChain',
+			baseUrl: 'https://dogechain.info',
+			txPath: '/tx'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/dogecoin/transaction'
+		}
+	],
+	ltc: [
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/litecoin/transaction'
+		}
+	],
+	etn: [
+		{
+			name: 'Electroneum Explorer',
+			baseUrl: 'https://blockexplorer.electroneum.com',
+			txPath: '/tx'
+		}
+	],
+	ada: [
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/cardano/transaction'
+		}
+	],
+	eos: [
+		{
+			name: 'Bloks',
+			baseUrl: 'https://bloks.io',
+			txPath: '/transaction'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/eos/transaction'
 		}
 	]
 };

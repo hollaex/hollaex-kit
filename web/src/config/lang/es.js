@@ -734,6 +734,8 @@ export default {
 			ACTIVE: 'ACTIVO',
 			DIALOG: {
 				SUCCESS: 'Ha cambiado con éxito su contraseña',
+				EMAIL_CONFIRMATION:
+					'Se le envía un correo electrónico para autorizar el cambio de contraseña.',
 			},
 			FORM: {
 				BUTTON: 'Cambiar Contraseña',
@@ -1408,7 +1410,7 @@ export default {
 	START_DATE: 'fecha inicio', //new
 	END_DATE: 'fecha final', //new
 	ORDER_MODE: 'Modo de Orden', //new
-	CLEAR: 'BORRAR',//new
+	CLEAR: 'BORRAR', //new
 	ESTIMATED_PRICE: ' Precio Estimado', //new
 	ORDER_ENTRY_ADVANCED: 'Avanzado', //new
 	TRIGGER_PRICE: 'Stop', //new
@@ -1430,7 +1432,8 @@ export default {
 		CURRENCY_FIELD_LABEL: 'Seleccionar moneda', //new
 		ADDRESS_FIELD_LABEL: 'Pegar la dirección', //new
 	},
-	WITHDRAWALS_FORM_NETWORK_WARNING: 'Asegurarse de que la red seleccionada es compartible con el monedero del destinatario', //new
+	WITHDRAWALS_FORM_NETWORK_WARNING:
+		'Asegurarse de que la red seleccionada es compartible con el monedero del destinatario', //new
 	DEPOSIT_FORM_NETWORK_WARNING:
 		'Asegurarse de que la red seleccionada es compartible con el monedero del remitente', //new
 	WITHDRAWALS_FORM_NETWORK_LABEL: 'Red', //new

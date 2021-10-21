@@ -13,7 +13,7 @@ class PluginList extends Component {
 		this.state = {
 			mobileToggle: false,
 			isLoading: false,
-			is_active: false
+			is_active: false,
 		};
 	}
 
@@ -26,7 +26,7 @@ class PluginList extends Component {
 	handleActivate = (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		const url = 'https://dash.bitholla.com/plugin'
+		const url = 'https://dash.bitholla.com/plugin';
 		const link = document.createElement('a');
 		link.setAttribute('target', '_blank');
 		link.href = url;
@@ -73,22 +73,22 @@ class PluginList extends Component {
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					{item.premium
-						?
+					{item.premium && !item.enabled ? (
 						<div>
-							<div className="add-btn" onClick={this.handleActivate}>Activate</div>
+							<div className="add-btn" onClick={this.handleActivate}>
+								Activate
+							</div>
 							<div className="premium-plugin">
-								<StarFilled />{" "}Premium Plugin
+								<StarFilled /> Premium Plugin
 							</div>
 						</div>
-						: item.enabled ? (
-							<div className="install-icon-content">
-								<CheckCircleFilled className="check-icon-verified" />
-							</div>
-						) : (
-							<div className="add-btn">Add</div>
-						)
-					}
+					) : item.enabled ? (
+						<div className="install-icon-content">
+							<CheckCircleFilled className="check-icon-verified" />
+						</div>
+					) : (
+						<div className="add-btn">Add</div>
+					)}
 				</div>
 			);
 		});

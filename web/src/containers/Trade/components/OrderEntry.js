@@ -36,7 +36,7 @@ import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
 
-const ORDER_OPTIONS = () => ([
+const ORDER_OPTIONS = () => [
 	{
 		label: STRINGS['REGULAR'],
 		value: 'regular',
@@ -45,7 +45,7 @@ const ORDER_OPTIONS = () => ([
 		label: STRINGS['STOPS'],
 		value: 'stops',
 	},
-]);
+];
 
 class OrderEntry extends Component {
 	state = {

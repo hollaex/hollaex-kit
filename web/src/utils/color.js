@@ -169,6 +169,26 @@ const pushCalculatedColors = (themeData) => {
 		).isLight()
 			? 'black'
 			: 'white',
+		'calculated_notification-pending-disabled': Color(
+			themeData['specials_pending-waiting-caution']
+		)
+			.alpha(0.3)
+			.string(),
+		'calculated_notifications-blue-disabled': Color(
+			themeData['specials_buttons-links-and-highlights']
+		)
+			.alpha(0.3)
+			.string(),
+		'calculated_quick_trade-bg': Color(
+			themeData['base_secondary-navigation-bar']
+		)
+			.alpha(0.5)
+			.string(),
+		'calculated_quick_trade-gradient': Color(
+			themeData['base_secondary-navigation-bar']
+		)
+			.alpha(0.1)
+			.string(),
 	};
 
 	return { ...themeData, ...calculatedColors };

@@ -42,6 +42,13 @@ $specials_highlight-box: var(--calculated_specials_highlight-box);
 $chat-own-message--color: var(--specials_my-username-in-chat);
 $favourite-star: var(--specials_my-username-in-chat);
 
+$colors-notifications-blue-disabled: var(
+	--calculated_notifications-blue-disabled
+);
+$colors-notification-pending-disabled: var(
+	--calculated_notification-pending-disabled
+);
+
 //common colors for terms
 $colors-terms-background: $specials_highlight-box;
 
@@ -63,6 +70,9 @@ $app-bar-icon-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 // Quick trade
 $quick-trade-background: $app-background-color;
 $quick-trade-container: var(--base_wallet-sidebar-and-popup);
+$quick-trade-block-background: var(--calculated_quick_trade-bg);
+$quick-trade-block-gradient-top: var(--specials_quick-trade-gradient);
+$quick-trade-block-gradient-bottom: var(--calculated_quick_trade-gradient);
 
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);

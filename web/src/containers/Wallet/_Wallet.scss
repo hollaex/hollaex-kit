@@ -95,6 +95,10 @@ $header-margin: 2rem;
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
 
+	&.no-border {
+		border: none !important;
+	}
+
 	.wallet-header_block {
 		> * {
 			margin-bottom: $header-margin;
@@ -113,6 +117,10 @@ $header-margin: 2rem;
 		.with_price-block_amount-value {
 			font-size: $font-size-headline;
 			line-height: $font-size-headline;
+		}
+		.currency-ball-image-wrapper {
+			height: 38px;
+			padding-right: 10px;
 		}
 	}
 	.paper-clip-icon {
@@ -223,6 +231,10 @@ $header-margin: 2rem;
 		}
 		.search-field {
 			background-color: $app-sidebar-background;
+		}
+		.currency-ball-image-wrapper {
+			height: 24px;
+			padding-right: 4px;
 		}
 		.currency-ball {
 			width: 30px;

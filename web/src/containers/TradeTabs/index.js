@@ -23,7 +23,9 @@ class AddTradeTab extends Component {
 		data: [],
 		count: 0,
 		searchValue: '',
-		selected: isMobile ? STRINGS['MARKET_OPTIONS'][0].value : STRINGS['MARKET_OPTIONS'][1].value,
+		selected: isMobile
+			? STRINGS['MARKET_OPTIONS'][0].value
+			: STRINGS['MARKET_OPTIONS'][1].value,
 		options: STRINGS['MARKET_OPTIONS'],
 		chartData: {},
 	};
@@ -229,7 +231,7 @@ class AddTradeTab extends Component {
 						</div>
 					)}
 					<div className="d-flex align-items-center justify-content-between">
-						<div className="w-50">
+						<div className="w-50 pb-4">
 							<SearchBox
 								name={STRINGS['SEARCH_ASSETS']}
 								className="trade_tabs-search-field"

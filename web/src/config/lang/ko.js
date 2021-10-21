@@ -690,6 +690,8 @@ export default {
 			ACTIVE: '활성화',
 			DIALOG: {
 				SUCCESS: '비밀번호가 성공적으로 변경되었습니다',
+				EMAIL_CONFIRMATION:
+					'비밀번호 변경을 승인하기 위해 이메일이 전송됩니다.',
 			},
 			FORM: {
 				BUTTON: '비밀번호 변경',
@@ -1337,7 +1339,8 @@ export default {
 	STOPS: '예약', // new
 	CLEAR: '초기화', // new
 	POST_ONLY: '포스트 온리', // new
-	POST_ONLY_TOOLTIP: '포스트 온리 주문은 오더북에 주문이 추가되지만, 즉시 실행되지는 않습니다.', // new
+	POST_ONLY_TOOLTIP:
+		'포스트 온리 주문은 오더북에 주문이 추가되지만, 즉시 실행되지는 않습니다.', // new
 	ESTIMATED_PRICE: '추정 가격', // new
 	VIEW_ALL: '모두 보기', // new
 	ORDER_ENTRY_ADVANCED: '더 보기', //new
@@ -1352,8 +1355,7 @@ export default {
 		{ value: 'Card', label: '카드' }, // new
 	],
 	LIMITS_BLOCK: {
-		HEADER_ROW_DESCRIPTION:
-			'24시간 입금 및 출금 한도 ({0})', //new
+		HEADER_ROW_DESCRIPTION: '24시간 입금 및 출금 한도 ({0})', //new
 		HEADER_ROW_AMOUNT: '24시간 한도 ({0})', //new
 	},
 };

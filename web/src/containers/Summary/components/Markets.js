@@ -116,18 +116,14 @@ class Markets extends Component {
 		}
 	};
 
-	render() {
+	renderMarket = (data) => {
 		const {
 			pairs,
 			tickers,
 			coins,
-			showSearch = true,
-			showMarkets = false,
-			router,
+			isHome = false
 		} = this.props;
-		const { data, chartData, page, pageSize, count } = this.state;
-
-		const processedData = data.map((key) => {
+		const marketData = data.map((key) => {
 			let pair = pairs[key] || {};
 			let { fullname, symbol = '' } =
 				coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -155,12 +151,26 @@ class Markets extends Component {
 				priceDifferencePercent,
 			};
 		});
+		if (isHome) {
+			this.props.renderContent(marketData);
+		}
+		return marketData;
+	}
+
+	render() {
+		const {
+			showSearch = true,
+			showMarkets = false,
+			router,
+		} = this.props;
+		const { data, chartData, page, pageSize, count } = this.state;
+		const processedData = this.renderMarket(data);
 
 		return (
 			<div>
 				{showSearch && (
 					<div className="d-flex justify-content-end">
-						<div className={isMobile ? '' : 'w-25'}>
+						<div className={isMobile ? '' : 'w-25 pb-4'}>
 							<SearchBox
 								name={STRINGS['SEARCH_ASSETS']}
 								className="trade_tabs-search-field"

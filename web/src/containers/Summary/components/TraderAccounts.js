@@ -76,7 +76,7 @@ const TraderAccounts = ({
 							<ReactSVG src={ICONS['GREEN_CHECK']} className="currency_ball-wrapper s mr-2" />
 						</div>
 						<div>
-							{STRINGS['FEE_REDUCTION']}: {user.discount}
+							{STRINGS['FEE_REDUCTION']}: {user.discount}%
 						</div>
 					</div>
 					: null

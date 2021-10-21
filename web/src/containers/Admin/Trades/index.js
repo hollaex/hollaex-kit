@@ -1,71 +1,80 @@
-import React, { Component } from 'react';
-// import { requestTrades } from './actions';
-// import { SubmissionError } from 'redux-form';
-// import querystring from 'query-string';
-// import { Spin, notification, Tabs } from 'antd';
-// import { AdminHocForm } from '../../../components';
+import React, { useEffect, useState } from 'react';
+import { Tabs, message } from 'antd';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-// import { requestUser, requestUserBalance } from './actions';
+import Pairs from './Pairs';
+import { getTabParams } from '../AdminFinancials/Assets';
+import PairsSummary from './PairsSummary';
+import { getExchange } from '../AdminFinancials/action';
+import { setExchange } from 'actions/assetActions';
+import './index.css';
 
-// import UserContent from './UserContent';
-// import ListUsers from '../ListUsers/index';
-import UserListTrades from './userListTrades';
-// import { isSupport } from '../../../utils';
-// import UserList from "../Main/userList";
+const TabPane = Tabs.TabPane;
 
-// const INITIAL_STATE = {
-// 	userInformation: {},
-// 	userImages: {},
-// 	loading: false
-// };
+const PairsTab = (props) => {
+	const [hideTabs, setHideTabs] = useState(false);
+	const [activeTab, setActiveTab] = useState('0');
+	const tabParams = getTabParams();
 
-// const Form = AdminHocForm('USER_REQUEST_FORM');
+	useEffect(() => {
+		if (tabParams) {
+			setActiveTab(tabParams.tab);
+		}
+	}, [tabParams]);
 
-class Trades extends Component {
-	componentWillMount() {
-		// requestTrades(1)
-		//
-		// const { search } = this.props.location;
-		// if (search) {
-		//   const qs = querystring.parse(search);
-		//   if (qs.id) {
-		//     this.requestTrades(1);
-		//   }
-		// }
-	}
+	const handleTabChange = (key) => {
+		setActiveTab(key);
+		props.router.replace('/admin/trade');
+	};
 
-	requestTrades(id) {}
+	const handleHide = (value) => {
+		setHideTabs(value);
+	};
 
-	render() {
-		return (
-			<div className="app_container-content">
-				{/*<h1>USERS TRADE HISTORY</h1>*/}
-				{/*<h2>SEARCH FOR USER</h2>*/}
-				{/*<Form*/}
-				{/*onSubmit={()=>this.requestTrades(1)}*/}
-				{/*buttonText="Search"*/}
-				{/*fields={{*/}
-				{/*id: {*/}
-				{/*type: 'number',*/}
-				{/*label: 'User Id',*/}
-				{/*min: 1,*/}
-				{/*max: 100000,*/}
-				{/*validate: []*/}
-				{/*},*/}
-				{/*email: {*/}
-				{/*type: 'eamil',*/}
-				{/*label: 'Email',*/}
-				{/*placeholder: 'Email',*/}
-				{/*validate: []*/}
-				{/*}*/}
-				{/*}}*/}
-				{/*initialValues={{ id: '0' }}*/}
-				{/*/>*/}
-				<h2 className="m-top">LIST OF USERS</h2>
-				<UserListTrades />
-			</div>
-		);
-	}
-}
+	const renderTabBar = (props, DefaultTabBar) => {
+		if (hideTabs) return <div></div>;
+		return <DefaultTabBar {...props} />;
+	};
 
-export default Trades;
+	const getMyExchange = async () => {
+		try {
+			const res = await getExchange();
+			const exchange = res.data;
+			props.setExchange(exchange);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
+
+	return (
+		<div className="admin-earnings-container w-100">
+			<Tabs
+				defaultActiveKey="0"
+				activeKey={activeTab}
+				onChange={handleTabChange}
+				renderTabBar={renderTabBar}
+			>
+				<TabPane tab="Summary" key="0">
+					<PairsSummary getMyExchange={getMyExchange}/>
+				</TabPane>
+				<TabPane tab="OrderBook" key="1">
+					<Pairs
+						router={props.router}
+						location={props.location}
+						handleHide={handleHide}
+						getMyExchange={getMyExchange}
+					/>
+				</TabPane>
+			</Tabs>
+		</div>
+	);
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	setExchange: bindActionCreators(setExchange, dispatch),
+});
+
+export default connect(null, mapDispatchToProps)(PairsTab);

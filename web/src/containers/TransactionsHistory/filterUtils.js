@@ -18,18 +18,12 @@ export const dateFilters = () => {
 			range: [moment(new Date()).subtract(7, 'days'), moment(new Date())],
 		},
 		one_month: {
-			name: STRINGS.formatString (
-					STRINGS['MONTH'],
-					1
-				),
+			name: STRINGS.formatString(STRINGS['MONTH'], 1),
 			range: [moment(new Date()).subtract(1, 'months'), moment(new Date())],
 		},
 		three_month: {
-			name: STRINGS.formatString(
-					STRINGS['MONTH'],
-					3
-				),
+			name: STRINGS.formatString(STRINGS['MONTH'], 3),
 			range: [moment(new Date()).subtract(3, 'months'), moment(new Date())],
 		},
-	}
+	};
 };

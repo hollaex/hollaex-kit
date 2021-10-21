@@ -269,6 +269,12 @@
 	text-align: left;
 	width: 22rem;
 }
+.setup-field-content .number_input-wrapper .ant-input-number-handler-wrap,
+.setup-field-content .number_input-wrapper .ant-input-number-handler-wrap .ant-input-number-handler { 
+	-webkit-appearance: none;
+	display: none;
+	margin: 0;
+}
 .ant-input-affix-wrapper,
 .ant-input,
 .ant-input-number,
@@ -337,10 +343,10 @@
 .margin {
 	margin-left: 3rem;
 }
-.preview-container {
+/* .preview-container {
 	border-top: 1px solid #c4c4c4;
 	border-bottom: 1px solid #c4c4c4;
-}
+} */
 .preview-heading {
 	border-top: 1px solid #c4c4c4;
 	margin-top: 1px;

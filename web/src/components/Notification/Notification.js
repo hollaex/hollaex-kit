@@ -96,6 +96,6 @@ export const InformationRow = ({ label, value, stringId }) => (
 		<div className="f-1 text_disabled">
 			<EditWrapper stringId={stringId}>{label}:</EditWrapper>
 		</div>
-		<div className="f-1">{value}</div>
+		<div className="f-1 text_disabled">{value}</div>
 	</div>
 );

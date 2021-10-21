@@ -36,7 +36,8 @@ class Wallet extends Component {
 			this.props.coins,
 			this.props.pairs,
 			this.props.totalAsset,
-			this.props.oraclePrices
+			this.props.oraclePrices,
+			this.props.constants
 		);
 	}
 
@@ -50,7 +51,8 @@ class Wallet extends Component {
 			nextProps.coins,
 			nextProps.pairs,
 			nextProps.totalAsset,
-			nextProps.oraclePrices
+			nextProps.oraclePrices,
+			nextProps.constants
 		);
 	}
 
@@ -69,7 +71,8 @@ class Wallet extends Component {
 				this.props.coins,
 				this.props.pairs,
 				this.props.totalAsset,
-				this.props.oraclePrices
+				this.props.oraclePrices,
+				this.props.constants
 			);
 		}
 	}
@@ -113,7 +116,8 @@ class Wallet extends Component {
 		coins,
 		pairs,
 		total,
-		oraclePrices
+		oraclePrices,
+		{ features: { stake_page = false } = {} } = {}
 	) => {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -142,6 +146,7 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
+						// hasEarn={stake_page && !isMobile}
 					/>
 				),
 				isOpen: true,
@@ -153,7 +158,9 @@ class Wallet extends Component {
 					iconId: 'PAPER_CLIP',
 					iconPath: STATIC_ICONS['PAPER_CLIP'],
 					allowClick: true,
-					className: isOpen ? 'paper-clip-icon' : 'paper-clip-icon wallet-notification',
+					className: isOpen
+						? 'paper-clip-icon'
+						: 'paper-clip-icon wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');
 					},
@@ -215,7 +222,7 @@ class Wallet extends Component {
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
 							iconPath={ICONS['TAB_WALLET']}
-							iconId={STRINGS['WALLET_TITLE']}
+							iconId="TAB_WALLET"
 							textType="title"
 						/>
 						<div className="wallet-container">

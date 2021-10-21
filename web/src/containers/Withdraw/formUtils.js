@@ -3,6 +3,7 @@ import {
 	minValue,
 	maxValue,
 	checkBalance,
+	checkFee,
 	validAddress,
 	normalizeBTC,
 	normalizeBTCFee,
@@ -26,11 +27,14 @@ export const generateInitialValues = (
 	const initialValues = {};
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		initialValues.fee = withdrawal_fees[network];
+		initialValues.fee = withdrawal_fees[network].value;
+		initialValues.fee_coin = withdrawal_fees[network].symbol;
 	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
+		initialValues.fee_coin = '';
 	} else {
 		initialValues.fee = 0;
+		initialValues.fee_coin = '';
 	}
 
 	if (min) {
@@ -51,7 +55,7 @@ export const generateInitialValues = (
 
 export const generateFormValues = (
 	symbol,
-	available = 0,
+	balance,
 	calculateMax,
 	coins = {},
 	verification_level,
@@ -59,7 +63,8 @@ export const generateFormValues = (
 	icon,
 	iconId,
 	networks,
-	selectedNetwork
+	selectedNetwork,
+	ICONS = ''
 ) => {
 	const {
 		fullname,
@@ -72,10 +77,13 @@ export const generateFormValues = (
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
 	if (withdrawal_limits[verification_level] === -1) MAX = 0;
+	const available = balance[`${symbol}_available`] || 0;
 
 	let fee;
+	let fee_coin;
 	if (withdrawal_fees && selectedNetwork && withdrawal_fees[selectedNetwork]) {
-		fee = withdrawal_fees[selectedNetwork];
+		fee = withdrawal_fees[selectedNetwork].value;
+		fee_coin = withdrawal_fees[selectedNetwork].symbol;
 	} else if (coins[symbol]) {
 		fee = withdrawal_fee;
 	} else {
@@ -161,7 +169,15 @@ export const generateFormValues = (
 		}
 		// FIX add according fee
 		// amountValidate.push(checkBalance(available, STRINGS.formatString(STRINGS["WITHDRAWALS_LOWER_BALANCE"], fullname), fee));
-		amountValidate.push(checkBalance(available, fullname, fee));
+		if (fee_coin && fee_coin !== symbol) {
+			const availableFeeBalance = balance[`${fee_coin}_available`] || 0;
+			const { fullname: feeFullname } = coins[fee_coin];
+
+			amountValidate.push(checkBalance(available, fullname, 0));
+			amountValidate.push(checkFee(availableFeeBalance, feeFullname, fee));
+		} else {
+			amountValidate.push(checkBalance(available, fullname, fee));
+		}
 
 		fields.amount = {
 			type: 'number',
@@ -211,22 +227,45 @@ export const generateFormValues = (
 		};
 
 		if (coins[symbol]) {
+			const { fullname: feeFullname } = coins[fee_coin] || coins[symbol];
+
+			// const notification = {
+			//     status: 'information',
+			//     iconPath: ICONS[`${fee_coin.toUpperCase()}_ICON`],
+			//     className: 'currency-ball',
+			//     useSvg: true,
+			//     onClick: () => {},
+			// }
+
 			fields.fee = {
 				type: 'number',
 				stringId:
 					'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
 				// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 				label: STRINGS.formatString(
-					STRINGS['WITHDRAWALS_FORM_FEE_COMMON_LABEL'],
-					fullname
+					STRINGS[
+						fee_coin && fee_coin !== symbol
+							? 'WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN'
+							: 'WITHDRAWALS_FORM_FEE_COMMON_LABEL'
+					],
+					feeFullname
 				),
 				placeholder: STRINGS.formatString(
 					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
-					fullname
+					feeFullname
 				).join(''),
 				disabled: true,
 				fullWidth: true,
 				ishorizontalfield: true,
+				...(fee_coin && fee_coin !== symbol
+					? {
+							warning: STRINGS.formatString(
+								STRINGS['WITHDRAWALS_FORM_FEE_WARNING'],
+								feeFullname,
+								fee_coin.toUpperCase()
+							),
+					  }
+					: {}),
 			};
 		} else {
 			fields.fee = {
@@ -247,6 +286,14 @@ export const generateFormValues = (
 				ishorizontalfield: true,
 			};
 		}
+
+		fields.fee_coin = {
+			type: 'hidden',
+			label: 'fee coin',
+			disabled: true,
+			fullWidth: true,
+			ishorizontalfield: true,
+		};
 	}
 
 	fields.captcha = {

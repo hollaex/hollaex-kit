@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.1.20"
+  version: "2.2.0"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -48,6 +48,22 @@ paths:
     get:
       operationId: getConstants
       description: Get the system constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /network/constants:
+    x-swagger-router-controller: public
+    get:
+      operationId: getNetworkConstants
+      description: Get network constants such as pairs and currencies
       tags:
         - Public
       responses:
@@ -293,6 +309,29 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /confirm-change-password/{code}:
+    x-swagger-router-controller: user
+    get:
+      produces:
+        - text/html
+      operationId: confirmChangePassword
+      description: Confirm a change password request
+      tags:
+        - Public
+      parameters:
+        - name: code
+          in: path
+          required: true
+          type: string
+      responses:
+        301:
+          description: "301 redirect"
+          schema:
+            type: string
         default:
           description: Error
           schema:
@@ -1246,6 +1285,74 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /admin/exchange:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange info
+      operationId: getExchange
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update exchange configuration
+      operationId: updateExchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+              is_public:
+                type: boolean
+              type:
+                type: string
+                enum: ['Cloud', 'DIY', 'Enterprise']
+              name:
+                type: string
+              display_name:
+                type: string
+              url:
+                type: string
+              business_info:
+                type: object
+              pairs:
+                type: array
+                items:
+                  type: string
+              coins:
+                type: array
+                items:
+                  type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/tier:
     x-swagger-router-controller: tier
     post:
@@ -1298,6 +1405,53 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/check-transaction:
+    x-swagger-router-controller: admin
+    get:
+      operationId: adminCheckTransaction
+      description: Check a blockchain transaction to add create/update deposit
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: currency
+          description: Currency of the transaction
+          required: true
+          type: string
+        - in: query
+          name: transaction_id
+          description: Blockchain transaction id
+          required: true
+          type: string
+        - in: query
+          name: address
+          description: crypto address receiving the deposit
+          required: true
+          type: string
+        - in: query
+          name: network
+          description: Blockchain network of transaction
+          required: true
+          type: string
+        - in: query
+          name: is_testnet
+          description: specify whether or not transaction was on tesntet
+          required: false
+          type: boolean
+          default: false
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /orders:
     x-swagger-router-controller: order
     get:
@@ -1321,6 +1475,7 @@ paths:
           name: status
           description: Order status e.g. pfilled, filled
           required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
           type: string
         - in: query
           name: open
@@ -2272,6 +2427,56 @@ paths:
       x-security-scopes:
         - admin
         - communicator
+  /admin/pair:
+    x-swagger-router-controller: admin
+    post:
+      description: Create pair on network
+      operationId: createPair
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairPostRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PairResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update pair on network
+      operationId: updatePair
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/PairPutRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PairResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/pairs:
     x-swagger-router-controller: admin
     get:
@@ -2286,6 +2491,31 @@ paths:
         - Admin
       responses:
         200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/pairs/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all pairs in network
+      operationId: getNetworkPairs
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+      responses:
+        "200":
           description: Success
           schema:
             type: object
@@ -2349,6 +2579,56 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/coin:
+    x-swagger-router-controller: admin
+    post:
+      description: Create coin on network
+      operationId: createCoin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CoinPostRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CoinResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      description: Update coin on network
+      operationId: updateCoin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/CoinPutRequest"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CoinResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /admin/coins:
     x-swagger-router-controller: admin
     get:
@@ -2364,6 +2644,31 @@ paths:
           description: Leave blank to get all coins
       responses:
         200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/coins/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all coins in network
+      operationId: getNetworkCoins
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+      responses:
+        "200":
           description: Success
           schema:
             type: object
@@ -2837,6 +3142,7 @@ paths:
           name: status
           description: Order status e.g. pfilled, filled
           required: false
+          enum: ['pfilled', 'filled', 'new', 'canceled']
           type: string
         - in: query
           name: open
@@ -3586,6 +3892,13 @@ definitions:
         type: string
       code:
         type: string
+  ConfirmChangePassword:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
   OperatorResponse:
     type: object
     required:
@@ -4030,6 +4343,8 @@ definitions:
                 type: string
               language:
                 type: string
+              country:
+                type: ['string', 'null']
           color:
             type: object
           links:
@@ -4448,6 +4763,8 @@ definitions:
         type: string
       fee:
         type: number
+      fee_coin:
+        type: string
       description:
         type: string
   ExternalWithdrawalRequest:
@@ -4476,6 +4793,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      fee_coin:
         type: string
       description:
         type: string
@@ -4690,3 +5009,232 @@ definitions:
         type: boolean
       updated_description:
         type: string
+  CoinPostRequest:
+    type: object
+    required:
+      - symbol
+      - fullname
+    properties:
+      symbol:
+        type: string
+      code:
+        type: string
+      fullname:
+        type: string
+      withdrawal_fee:
+        type: number
+        format: double
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: double
+      increment_unit:
+        type: number
+        format: double
+      logo:
+        type: string
+      meta:
+        type: object
+      estimated_price:
+        type: number
+      type:
+        type: string
+        enum:
+          - blockchain
+          - fiat
+          - other
+      network:
+        type: string
+      standard:
+        type: string
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+  CoinPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      fullname:
+        type: string
+      withdrawal_fee:
+        type: number
+        format: double
+      description:
+        type: ['string', 'null']
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+      withdrawal_fees:
+        type: ['object', 'null']
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: boolean
+      is_public:
+        type: boolean
+      increment_unit:
+        type: number
+        format: double
+      logo:
+        type: ['string', 'null']
+      meta:
+        type: object
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      type:
+        type: string
+        enum: ['blockchain', 'fiat', 'other']
+      network:
+        type: ['string', 'null']
+      standard:
+        type: ['string', 'null']
+  PairPostRequest:
+    type: object
+    required:
+      - name
+      - pair_base
+      - pair_2
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      pair_base:
+        type: string
+      pair_2:
+        type: string
+      active:
+        type: boolean
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
+      estimated_price:
+        type: number
+      is_public:
+        type: boolean
+  PairPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
+      is_public:
+        type: boolean
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      circuit_breaker:
+        type: boolean
+  CoinResponse:
+    type: object
+    required:
+      - id
+      - symbol
+    properties:
+      id:
+        type: number
+        format: int32
+      fullname:
+        type: string
+      symbol:
+        type: string
+      active:
+        type: boolean
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+      withdrawal_fee:
+        type: number
+        format: double
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: double
+      increment_unit:
+        type: number
+        format: double
+      deposit_limits:
+        type: object
+      withdrawal_limits:
+        type: object
+  PairResponse:
+    type: object
+    required:
+      - name
+    properties:
+      id:
+        type: number
+        format: int32
+      name:
+        type: string
+      pair_base:
+        type: string
+      pair_2:
+        type: string
+      active:
+        type: boolean
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
