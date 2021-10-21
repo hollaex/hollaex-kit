@@ -110,7 +110,7 @@ const Preview = ({
 							<div>
 								(
 								<Link
-									to={`/admin/financials?tab=1&preview=true&symbol=${formData.pair_base}`}
+									to={`/admin/financials?tab=0&preview=true&symbol=${formData.pair_base}`}
 								>
 									View details
 								</Link>
@@ -140,7 +140,7 @@ const Preview = ({
 							<div>
 								(
 								<Link
-									to={`/admin/financials?tab=1&preview=true&symbol=${formData.pair_2}`}
+									to={`/admin/financials?tab=0&preview=true&symbol=${formData.pair_2}`}
 								>
 									View details
 								</Link>
