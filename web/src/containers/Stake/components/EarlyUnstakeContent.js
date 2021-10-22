@@ -26,18 +26,24 @@ const ACTION_TYPE = {
 	UNSTAKE: 'UNSTAKE',
 };
 
-class StakeContent extends Component {
+class EarlyUnstakeContent extends Component {
 	state = {
 		type: CONTENT_TYPE.WARNING,
 		action: ACTION_TYPE.UNSTAKE,
+		isPending: false,
 	};
 
 	approveAndUnstake = (symbol) => async ({ account, index }) => {
 		const { generateTableData, getAllUserStakes } = this.props;
+
+		this.setAction(ACTION_TYPE.UNSTAKE, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
-			this.setState({ action: ACTION_TYPE.UNSTAKE });
-			await removeStake(symbol)({ account, index });
+			await removeStake(symbol)({
+				account,
+				index,
+				cb: () => this.setAction(ACTION_TYPE.UNSTAKE, true),
+			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
@@ -51,7 +57,7 @@ class StakeContent extends Component {
 
 	renderContent = (type) => {
 		const { account, stakeData, onCloseDialog } = this.props;
-		const { action } = this.state;
+		const { action, isPending } = this.state;
 
 		const { index, symbol, amount } = stakeData;
 
@@ -73,7 +79,12 @@ class StakeContent extends Component {
 				);
 			case CONTENT_TYPE.WAITING:
 				return (
-					<WaitingContent action={action} amount={amount} symbol={symbol} />
+					<WaitingContent
+						isPending={isPending}
+						action={action}
+						amount={amount}
+						symbol={symbol}
+					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
 				return (
@@ -99,6 +110,10 @@ class StakeContent extends Component {
 		});
 	};
 
+	setAction = (action, isPending) => {
+		this.setState({ action, isPending });
+	};
+
 	render() {
 		const { type } = this.state;
 
@@ -118,4 +133,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(StakeContent));
+)(withConfig(EarlyUnstakeContent));

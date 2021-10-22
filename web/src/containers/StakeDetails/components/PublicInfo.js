@@ -7,6 +7,15 @@ import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import DonutChart from './DonutChart';
 import { web3 } from 'config/contracts';
+import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
+import { publicInfoSelector } from 'containers/Stake/selector';
+import { formatToCurrency } from 'utils/currency';
+import {
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+} from 'config/constants';
+import Variable from 'containers/Stake/components/Variable';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -17,6 +26,18 @@ const PublicInfo = ({
 	setActiveTab,
 	network,
 	distributions,
+	account,
+	coins,
+	totalDistributedEarnings,
+	totalDistributedEarningsValue,
+	clearedUndistributedEarnings,
+	unclearedPendingEarnings,
+	totalStaked,
+	totalStakedValue,
+	myStake,
+	myStakePercent,
+	othersStake,
+	othersStakePercent,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -55,6 +76,35 @@ const PublicInfo = ({
 			},
 		},
 	];
+	const { min: baseMin, symbol: baseSymbol = '' } =
+		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const { min: tokenMin, symbol: tokenSymbol = '' } =
+		coins[token] || DEFAULT_COIN_DATA;
+
+	const format = (value, symbol, min) =>
+		STRINGS.formatString(
+			CURRENCY_PRICE_FORMAT,
+			formatToCurrency(value, min),
+			symbol.toUpperCase()
+		);
+
+	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
+	const formatBase = (value) => `(~ ${format(value, baseSymbol, baseMin)})`;
+
+	const chartData = [
+		{
+			symbol: 'mine',
+			balancePercentage: myStakePercent,
+			balance: myStake,
+			stringId: 'STAKE_DETAILS.PUBLIC_INFO.MY_STAKE',
+		},
+		{
+			symbol: 'others',
+			balancePercentage: othersStakePercent,
+			balance: othersStake,
+			stringId: 'STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE',
+		},
+	];
 
 	return (
 		<div>
@@ -77,7 +127,12 @@ const PublicInfo = ({
 						<div className="bold">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS']}
 						</div>
-						<div className="secondary-text">383,001 XHT</div>
+						<div className="d-flex">
+							<div>{formatToken(totalDistributedEarnings)}</div>
+							<div className="secondary-text pl-2">
+								{formatBase(totalDistributedEarningsValue)}
+							</div>
+						</div>
 					</div>
 
 					<div className="pt-4 d-flex">
@@ -89,7 +144,7 @@ const PublicInfo = ({
 									]
 								}
 							</div>
-							<div className="secondary-text">31,000 XHT</div>
+							<div>{formatToken(clearedUndistributedEarnings)}</div>
 						</div>
 						<div className="secondary-text px-4">|</div>
 						<div>
@@ -100,7 +155,7 @@ const PublicInfo = ({
 									]
 								}
 							</div>
-							<div className="secondary-text">13,000 XHT</div>
+							<div>{formatToken(unclearedPendingEarnings)}</div>
 						</div>
 					</div>
 
@@ -108,7 +163,12 @@ const PublicInfo = ({
 						<div className="bold">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_STAKED']}
 						</div>
-						<div className="secondary-text">3,213,321 XHT</div>
+						<div className="d-flex">
+							<div>{formatToken(totalStaked)}</div>
+							<div className="secondary-text pl-2">
+								{formatBase(totalStakedValue)}
+							</div>
+						</div>
 					</div>
 
 					<div className="pt-4">
@@ -116,26 +176,32 @@ const PublicInfo = ({
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.REWARD_RATE']}
 						</div>
 						<div className="secondary-text">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.VARIABLE']}
+							<Variable />
 						</div>
 					</div>
 				</div>
 				<div>
 					<div>
-						<DonutChart />
+						<DonutChart chartData={chartData} />
 					</div>
 
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend mine" />
 							<div className="bold">
-								{STRINGS.formatString(
-									STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
-									25
-								)}
+								{account
+									? STRINGS.formatString(
+											STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
+											myStakePercent
+									  )
+									: STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE_PERCENTLESS']}
 							</div>
 						</div>
-						<div className="secondary-text ml-4 pl-3">3,213,321 XHT</div>
+						<div className="ml-4 pl-3">
+							<ConnectWrapper>
+								<div>{formatToken(myStake)}</div>
+							</ConnectWrapper>
+						</div>
 					</div>
 
 					<div className="pt-4">
@@ -144,12 +210,12 @@ const PublicInfo = ({
 							<div className="bold">
 								{STRINGS.formatString(
 									STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
-									75
+									othersStakePercent
 								)}
 							</div>
 						</div>
 						<div className="d-flex ml-4 pl-3">
-							<div className="secondary-text">3,213,321 XHT</div>
+							<div>{formatToken(othersStake)}</div>
 							<div className="pl-2">
 								(
 								<span
@@ -186,6 +252,7 @@ const PublicInfo = ({
 					handleNext={() => {}}
 					jumpToPage={0}
 					displayPaginator={false}
+					showHeaderNoData={true}
 				/>
 			</div>
 			{distributions.length !== 0 && (
@@ -205,9 +272,13 @@ const PublicInfo = ({
 };
 
 const mapStateToProps = (store) => ({
+	coins: store.app.coins,
+	account: store.stake.account,
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
+	publicInfo: store.stake.publicInfo,
+	...publicInfoSelector(store),
 });
 
 export default connect(mapStateToProps)(PublicInfo);

@@ -10,6 +10,9 @@ import { userActiveStakesSelector } from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
 import Transaction from './Transaction';
+import StakesAndEarnings from 'containers/Stake/components/StakesAndEarnings';
+import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
+import Variable from 'containers/Stake/components/Variable';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -18,8 +21,6 @@ const MyStaking = ({
 	token,
 	account,
 	currentBlock,
-	totalEarningsString,
-	totalStakesString,
 	totalUserEarnings,
 	totalUserStakes,
 	stakables,
@@ -114,25 +115,7 @@ const MyStaking = ({
 						)}
 					</div>
 				</div>
-				<div
-					className="secondary-text"
-					style={{
-						minWidth: 'max-content',
-						paddingTop: '0.5rem',
-						textAlign: 'right',
-						marginLeft: '3rem',
-					}}
-				>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
-						<div>{totalStakesString}</div>
-						<div className="kit-divider" />
-					</div>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
-						<div>{totalEarningsString}</div>
-					</div>
-				</div>
+				<StakesAndEarnings />
 			</div>
 			<table className="wallet-assets_block-table">
 				<thead>
@@ -174,10 +157,20 @@ const MyStaking = ({
 							return (
 								<tr className="table-row table-bottom-border" key={index}>
 									<td />
-									<td>{available}</td>
-									<td>{totalUserStakes[token]}</td>
-									<td>{STRINGS['STAKE_TABLE.VARIABLE']}</td>
-									<td>{totalUserEarnings[token]}</td>
+									<td>
+										<ConnectWrapper>{available}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserStakes[token]}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>
+											<Variable className="important-text" />
+										</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserEarnings[token]}</ConnectWrapper>
+									</td>
 									<td>
 										<div className="d-flex content-center">
 											<AntBtn
@@ -348,6 +341,14 @@ const MyStaking = ({
 					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
+					noData={
+						!account &&
+						STRINGS.formatString(
+							STRINGS['STAKE.CONNECT_WALLET_TABLE'],
+							<ConnectWrapper className="pr-2" />
+						)
+					}
+					showHeaderNoData={true}
 				/>
 			</div>
 		</div>

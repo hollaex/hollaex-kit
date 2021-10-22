@@ -23,6 +23,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		font-weight: bold;
 	}
 
+	.border-bottom {
+		border-bottom: 1px solid $colors-border;
+	}
+
 	.table_header-wrapper {
 		color: $colors-black;
 		.action_notification-text {
