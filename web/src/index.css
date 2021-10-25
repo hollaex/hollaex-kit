@@ -216,13 +216,13 @@ table th {
   justify-content: space-between; }
 
 .align-center {
-  align-items: center; }
+  align-items: center !important; }
 
 .align-start {
-  align-items: flex-start; }
+  align-items: flex-start !important; }
 
 .align-end {
-  align-items: flex-end; }
+  align-items: flex-end !important; }
 
 .underline-text {
   text-decoration: underline !important; }
@@ -323,6 +323,12 @@ table th {
 .kit-divider {
   margin: 1rem 0;
   border-bottom: solid 1px var(--labels_secondary-inactive-label-text-graphics); }
+
+.flex-direction-row {
+  flex-direction: row !important; }
+
+.text-align-left {
+  text-align: left !important; }
 
 .app_container {
   min-height: 100vh;
@@ -4670,6 +4676,15 @@ table th {
   padding: 0.5rem;
   border-radius: 0.5rem; }
 
+.staking-account__connect {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  color: var(--specials_buttons-links-and-highlights);
+  background-color: var(--calculated_specials_highlight-box);
+  border-radius: 0.5rem;
+  margin: 1rem 0.5rem;
+  font-weight: bold; }
+
 .chart_mine {
   fill-opacity: 0.7;
   fill: var(--specials_buttons-links-and-highlights);
@@ -4691,7 +4706,31 @@ table th {
     background-color: var(--specials_pending-waiting-caution); }
 
 .stake_popup__title {
-  font-size: 2.4rem !important; }
+  font-size: 2.4rem !important;
+  font-weight: bold; }
+
+.stake-currency-ball {
+  width: 4.75rem; }
+
+.stake-currency-ball-small {
+  width: 2.5rem;
+  padding-top: 0.4rem; }
+
+.stake-variable {
+  width: 1.5rem;
+  padding-top: 0.2rem; }
+
+.stake-unlock-title svg, .stake-unlock-title.icon_title-svg {
+  width: 2.2rem !important;
+  height: 2.2rem !important; }
+
+.stake-amount {
+  font-size: 2rem;
+  line-height: 2rem; }
+
+.staking-loader {
+  font-size: 7rem;
+  color: var(--calculated_specials_highlight-box); }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
@@ -8012,6 +8051,8 @@ table th {
     padding: 0.25rem; }
   .table-wrapper th {
     font-weight: bold; }
+  .table-wrapper .border-bottom {
+    border-bottom: 1px solid var(--calculated_secondary-border); }
   .table-wrapper .table_header-wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .table-wrapper .table_header-wrapper .action_notification-text {
@@ -10491,7 +10532,10 @@ svg .unknown-error-icon,
 svg .cancel-all,
 svg .fiat-page-under-construction,
 svg .generate-reference-number,
-svg .osko-logo {
+svg .osko-logo,
+svg .stake-variable,
+svg .stake-pending,
+svg .staking-unlock {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,

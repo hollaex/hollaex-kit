@@ -25,20 +25,27 @@ const CONTENT_TYPE = {
 
 const ACTION_TYPE = {
 	UNSTAKE: 'UNSTAKE',
+	DISTRIBUTE: 'DISTRIBUTE',
 };
 
 class UnstakeContent extends Component {
 	state = {
 		type: CONTENT_TYPE.REVIEW,
 		action: ACTION_TYPE.UNSTAKE,
+		isPending: false,
 	};
 
 	approveAndUnstake = (symbol) => async ({ account, index }) => {
 		const { generateTableData, getAllUserStakes } = this.props;
+
+		this.setAction(ACTION_TYPE.UNSTAKE, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
-			this.setState({ action: ACTION_TYPE.UNSTAKE });
-			await removeStake(symbol)({ account, index });
+			await removeStake(symbol)({
+				account,
+				index,
+				cb: () => this.setAction(ACTION_TYPE.UNSTAKE, true),
+			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
@@ -51,13 +58,20 @@ class UnstakeContent extends Component {
 	};
 
 	clearPendingEarnings = (symbol) => async ({ account }) => {
+		const { generateTableData, getAllUserStakes } = this.props;
+
+		this.setAction(ACTION_TYPE.DISTRIBUTE, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
-			await distribute(symbol)({ account });
+			await distribute(symbol)({
+				account,
+				cl: () => this.setAction(ACTION_TYPE.DISTRIBUTE, true),
+			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
 			]);
+			this.setContent(CONTENT_TYPE.REVIEW);
 		} catch (err) {
 			console.error(err);
 			this.setContent(CONTENT_TYPE.ERROR);
@@ -66,7 +80,7 @@ class UnstakeContent extends Component {
 
 	renderContent = (type) => {
 		const { account, stakeData, onCloseDialog } = this.props;
-		const { action } = this.state;
+		const { action, isPending } = this.state;
 
 		const { index, symbol, amount } = stakeData;
 
@@ -82,7 +96,12 @@ class UnstakeContent extends Component {
 				);
 			case CONTENT_TYPE.WAITING:
 				return (
-					<WaitingContent action={action} amount={amount} symbol={symbol} />
+					<WaitingContent
+						isPending={isPending}
+						action={action}
+						amount={amount}
+						symbol={symbol}
+					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
 				return (
@@ -114,6 +133,10 @@ class UnstakeContent extends Component {
 		this.setState({
 			type,
 		});
+	};
+
+	setAction = (action, isPending) => {
+		this.setState({ action, isPending });
 	};
 
 	render() {

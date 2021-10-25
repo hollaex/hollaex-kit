@@ -81,6 +81,7 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
+					showHeaderNoData={true}
 				/>
 			</div>
 		</div>

@@ -1,4 +1,5 @@
 import { web3, CONTRACT_ADDRESSES, CONTRACTS } from 'config/contracts';
+import mathjs from 'mathjs';
 import { hash } from 'rsvp';
 
 const commonConfigs = {
@@ -20,6 +21,7 @@ export const SET_PERIODS = 'SET_STAKING_PERIODS';
 export const SET_USER_STAKES = 'SET_USER_STAKES';
 export const SET_CONTRACT_EVENTS = 'SET_CONTRACT_EVENTS';
 export const SET_DISTRIBUTIONS = 'SET_DISTRIBUTIONS';
+export const SET_PUBLIC_INFO = 'SET_PUBLIC_INFO';
 
 const setAccount = (account = '', balance = 0) => ({
 	type: SET_ACCOUNT,
@@ -77,6 +79,13 @@ const setDistributions = (distributions = []) => ({
 	type: SET_DISTRIBUTIONS,
 	payload: {
 		distributions,
+	},
+});
+
+const setPublicInfo = (publicInfo = {}) => ({
+	type: SET_PUBLIC_INFO,
+	payload: {
+		publicInfo,
 	},
 });
 
@@ -167,38 +176,60 @@ export const getAllUserStakes = (account) => {
 	};
 };
 
-export const approve = (token = 'xht') => ({ amount, account }) => {
+export const approve = (token = 'xht') => ({
+	amount,
+	account,
+	cb = () => {},
+}) => {
 	return CONTRACTS[token].token.methods
 		.approve(
 			CONTRACT_ADDRESSES[token].main,
 			web3.utils.toWei(amount.toString())
 		)
-		.send({
-			...commonConfigs,
-			from: account,
-		});
+		.send(
+			{
+				...commonConfigs,
+				from: account,
+			},
+			cb
+		);
 };
 
-export const addStake = (token = 'xht') => ({ amount, period, account }) => {
+export const addStake = (token = 'xht') => ({
+	amount,
+	period,
+	account,
+	cb = () => {},
+}) => {
 	return CONTRACTS[token].main.methods
 		.addStake(web3.utils.toWei(amount.toString()), period)
-		.send({
+		.send(
+			{
+				...commonConfigs,
+				from: account,
+			},
+			cb
+		);
+};
+
+export const removeStake = (token = 'xht') => ({
+	account,
+	index,
+	cb = () => {},
+}) => {
+	return CONTRACTS[token].main.methods.removeStake(index).send(
+		{
 			...commonConfigs,
 			from: account,
-		});
+		},
+		cb
+	);
 };
 
-export const removeStake = (token = 'xht') => ({ account, index }) => {
-	return CONTRACTS[token].main.methods.removeStake(index).send({
-		...commonConfigs,
-		from: account,
-	});
-};
-
-export const distribute = (token = 'xht') => ({ account }) => {
+export const distribute = (token = 'xht') => ({ account, cb = () => {} }) => {
 	return CONTRACTS[token].main.methods
 		.distribute()
-		.send({ ...commonConfigs, from: account });
+		.send({ ...commonConfigs, from: account }, cb);
 };
 
 const getPeriodsForToken = (token = 'xht') => async () => {
@@ -223,22 +254,33 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 	return web3.utils.fromWei(balance);
 };
 
-export const getPublicInfo = (token = 'xht') => async (account) => {
-	const data = {
-		stakeWeight: CONTRACTS[token].main.methods.getStakeWeight(account).call(),
-		totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
-		getTotalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
-	};
+export const getPublicInfo = (token = 'xht') => {
+	return async (dispatch) => {
+		const data = {
+			totalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
+			totalStaked: CONTRACTS[token].main.methods.totalStake().call(),
+			totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
+		};
 
-	return await hash(data);
+		const result = await hash(data);
+		const publicInfo = {};
+		Object.entries(result).forEach(([key, value]) => {
+			publicInfo[key] = mathjs.number(web3.utils.fromWei(value));
+		});
+		dispatch(setPublicInfo(publicInfo));
+	};
 };
 
-export const getStakeEvents = (token = 'xht') => {
+export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents('allEvents', {
-			fromBlock: 1,
-			toBlock: 'latest',
-		});
+		const events = await CONTRACTS[token].main.getPastEvents(
+			'allEvents',
+			{
+				fromBlock: 1,
+				toBlock: 'latest',
+			}
+			// {filter: {_address: account }}
+		);
 		dispatch(setContractEvents(events.reverse()));
 	};
 };

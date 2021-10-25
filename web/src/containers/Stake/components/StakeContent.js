@@ -24,7 +24,7 @@ const CONTENT_TYPE = {
 
 const ACTION_TYPE = {
 	STAKE: 'STAKE',
-	APPROVE: 'APPROVE',
+	WITHDRAW: 'WITHDRAW',
 };
 
 class StakeContent extends Component {
@@ -35,6 +35,7 @@ class StakeContent extends Component {
 			amount: '',
 			period: '',
 			action: ACTION_TYPE.STAKE,
+			pending: false,
 		};
 	}
 
@@ -59,12 +60,22 @@ class StakeContent extends Component {
 
 	approveAndStake = (symbol) => async ({ amount, period, account }) => {
 		const { generateTableData, getAllUserStakes } = this.props;
+
+		this.setAction(ACTION_TYPE.WITHDRAW, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
-			this.setState({ action: ACTION_TYPE.APPROVE });
-			await approve(symbol)({ amount, account });
-			this.setState({ action: ACTION_TYPE.STAKE });
-			await addStake(symbol)({ amount, period, account });
+			await approve(symbol)({
+				amount,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
+			});
+			this.setAction(ACTION_TYPE.STAKE, false);
+			await addStake(symbol)({
+				amount,
+				period,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
@@ -84,7 +95,7 @@ class StakeContent extends Component {
 			onCloseDialog,
 			account,
 		} = this.props;
-		const { period, amount, action } = this.state;
+		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
 			case CONTENT_TYPE.AMOUNT:
@@ -125,7 +136,12 @@ class StakeContent extends Component {
 				);
 			case CONTENT_TYPE.WAITING:
 				return (
-					<WaitingContent action={action} amount={amount} symbol={symbol} />
+					<WaitingContent
+						isPending={isPending}
+						action={action}
+						amount={amount}
+						symbol={symbol}
+					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
 				return (
@@ -151,6 +167,10 @@ class StakeContent extends Component {
 		this.setState({
 			type,
 		});
+	};
+
+	setAction = (action, isPending) => {
+		this.setState({ action, isPending });
 	};
 
 	render() {

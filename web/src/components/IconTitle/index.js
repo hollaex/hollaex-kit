@@ -36,13 +36,18 @@ const BasicIconTitle = ({
 	);
 };
 
-const EnhancedIconTitle = ({ subtitle, actionProps, ...rest }) => (
+const EnhancedIconTitle = ({
+	subtitle,
+	subtitleClass = 'font-weight-bold subtitleClass',
+	actionProps,
+	...rest
+}) => (
 	<div className={classnames('w-100')}>
 		<BasicIconTitle {...rest} />
 		<div
 			className={classnames('d-flex', 'justify-content-between', 'p-relative')}
 		>
-			<div className="font-weight-bold font-small">{subtitle}</div>
+			<div className={subtitleClass}>{subtitle}</div>
 			<div>{actionProps && <ActionNotification {...actionProps} />}</div>
 		</div>
 	</div>

@@ -526,7 +526,8 @@ export default {
 				FRONT: 'Please upload a scan of your passport or national Id',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport or national Id and note',
+				SELFIE_PHOTO_ID:
+					'Please upload a selfie with passport or national Id and note',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -536,9 +537,11 @@ export default {
 					PASSPORT: 'Passport',
 				},
 				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
-				ID_NUMBER_PLACEHOLDER: 'Type your passport Number or national Id number',
+				ID_NUMBER_PLACEHOLDER:
+					'Type your passport Number or national Id number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number or national id number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport or national Id number',
+				ID_PASSPORT_NUMBER_PLACEHOLDER:
+					'Type your passport or national Id number',
 				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
 				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
 				FRONT_LABEL: 'Passport or National Id',
@@ -550,7 +553,8 @@ export default {
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport or national Id and Note',
+				SELFIE_PHOTO_ID_LABEL:
+					'Your Selfie with passport or national Id and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
 					'Add a copy of your Selfie with passport or national Id and Note',
 			},
@@ -837,10 +841,16 @@ export default {
 			'Duration is measured by the timing of the Ethereum blocks. Please check and confirm the details above before you stake as unstaking early will result in a percentage of your stakes principle to be deducted and earnings forfeited.',
 		WAITING_TITLE: 'Waiting for confirmation',
 		WAITING_TEXT: 'Confirm this transaction in your wallet',
+		PENDING_TEXT: 'Transaction pending...',
 		WAITING_PROMPT: '{0} {1} {2}',
-		WAITING_STAKE: 'Staking',
-		WAITING_APPROVE: 'Approving',
-		WAITING_UNSTAKE: 'Unstaking',
+		WAITING_STAKE: 'Stake',
+		WAITING_WITHDRAW: 'Withdraw',
+		WAITING_UNSTAKE: 'Unstake',
+		WAITING_DISTRIBUTE: 'Distribute',
+		WAITING_STAKE_ING: 'Staking',
+		WAITING_WITHDRAW_ING: 'withdrawing',
+		WAITING_UNSTAKE_ING: 'Unstaking',
+		WAITING_DISTRIBUTE_ING: 'Distributing',
 		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
 		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
 		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
@@ -853,6 +863,9 @@ export default {
 		SUCCESSFUL_UNSTAKE_AMOUNT: 'Total to receive',
 		EARNINGS: 'Earnings',
 		ORIGINAL_AMOUNT: 'Original amount staked',
+		CONNECT_A_WALLET: 'Connect to a wallet',
+		CONNECT_WALLET_TABLE: '{0} to see historical stake events',
+		ZERO_STAKES: 'Zero stakes',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -922,6 +935,7 @@ export default {
 			REWARD_RATE: 'Reward rate',
 			VARIABLE: 'Variable',
 			MY_STAKE: 'My stake ({0}%)',
+			MY_STAKE_PERCENTLESS: 'My stake',
 			OTHER_STAKE: 'Others stake ({0}%)',
 			RECENT_DISTRIBUTED_REWARDS: 'Recent distributed rewards',
 			TIME_DISTRIBUTED: 'Time distributed',
