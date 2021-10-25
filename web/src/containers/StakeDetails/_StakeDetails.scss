@@ -147,6 +147,16 @@
 	border-radius: 0.5rem;
 }
 
+.staking-account__connect {
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	color: $colors-notifications-blue;
+	background-color: $specials_highlight-box;
+	border-radius: 0.5rem;
+	margin: 1rem 0.5rem;
+	font-weight: bold;
+}
+
 .chart_mine {
 	fill-opacity: 0.7;
 	fill: $colors-notifications-blue;
@@ -176,4 +186,37 @@
 
 .stake_popup__title {
 	font-size: 2.4rem !important;
+	font-weight: bold;
+}
+
+.stake-currency-ball {
+	width: 4.75rem;
+}
+
+.stake-currency-ball-small {
+	width: 2.5rem;
+	padding-top: 0.4rem;
+}
+
+.stake-variable {
+	width: 1.5rem;
+	padding-top: 0.2rem;
+}
+
+.stake-unlock-title {
+	svg,
+	&.icon_title-svg {
+		width: 2.2rem !important;
+		height: 2.2rem !important;
+	}
+}
+
+.stake-amount {
+	font-size: 2rem;
+	line-height: 2rem;
+}
+
+.staking-loader {
+	font-size: 7rem;
+	color: $specials_highlight-box;
 }

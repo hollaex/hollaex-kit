@@ -17,8 +17,8 @@ const AmountContent = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
-		height: '509px',
-		width: '503px',
+		height: '42.4rem',
+		width: '40rem',
 	};
 
 	const headerContent = {
@@ -41,7 +41,7 @@ const AmountContent = ({
 						)}
 						textType="stake_popup__title"
 						underline={false}
-						className="w-100"
+						className="w-100 pt-4"
 					/>
 					<div className="text-align-center my-4 py-3">
 						<EditWrapper stringId="STAKE.AVAILABLE_TOKEN">

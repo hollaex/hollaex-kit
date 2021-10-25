@@ -4,19 +4,16 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const WaitingContent = ({ action, amount, symbol, icons: ICONS }) => {
+const WaitingContent = ({ action, amount, symbol, isPending }) => {
 	return (
 		<Fragment>
 			<div className="dialog-content">
-				<div
-					className="d-flex content-center pt-4 mt-4"
-					style={{ fontSize: '7rem' }}
-				>
-					<LoadingOutlined />
+				<div className="d-flex content-center pt-4 mt-4 staking-loader">
+					{isPending && <LoadingOutlined />}
 				</div>
 				<IconTitle
 					stringId="STAKE.WAITING_TITLE"
-					text={STRINGS['STAKE.WAITING_TITLE']}
+					text={isPending ? '' : STRINGS['STAKE.WAITING_TITLE']}
 					textType="stake_popup__title"
 					underline={false}
 					className="w-100"
@@ -25,18 +22,31 @@ const WaitingContent = ({ action, amount, symbol, icons: ICONS }) => {
 			<div className="dialog-content bottom">
 				<div className="text-align-center">
 					<EditWrapper stringId="STAKE.WAITING_PROMPT,STAKE.WAITING_APPROVE,STAKE.WAITING_STAKE">
-						{STRINGS.formatString(
-							STRINGS['STAKE.WAITING_PROMPT'],
-							STRINGS[`STAKE.WAITING_${action}`],
-							amount,
-							symbol.toUpperCase()
-						)}
+						{!isPending
+							? STRINGS.formatString(
+									STRINGS['STAKE.WAITING_PROMPT'],
+									STRINGS[`STAKE.WAITING_${action}`],
+									amount,
+									symbol.toUpperCase()
+							  )
+							: STRINGS.formatString(
+									STRINGS['STAKE.WAITING_PROMPT'],
+									STRINGS[`STAKE.WAITING_${action}_ING`],
+									amount,
+									symbol.toUpperCase()
+							  )}
 					</EditWrapper>
 				</div>
 				<div className="text-align-center secondary-text">
-					<EditWrapper stringId="STAKE.WAITING_TEXT">
-						{STRINGS['STAKE.WAITING_TEXT']}
-					</EditWrapper>
+					{!isPending ? (
+						<EditWrapper stringId="STAKE.WAITING_TEXT">
+							{STRINGS['STAKE.WAITING_TEXT']}
+						</EditWrapper>
+					) : (
+						<EditWrapper stringId="STAKE.PENDING_TEXT">
+							{STRINGS['STAKE.PENDING_TEXT']}
+						</EditWrapper>
+					)}
 				</div>
 			</div>
 		</Fragment>

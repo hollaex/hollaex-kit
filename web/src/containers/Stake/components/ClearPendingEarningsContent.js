@@ -16,23 +16,25 @@ const ClearPendingEarningsContent = ({
 		<Fragment>
 			<div className="dialog-content bottom">
 				<IconTitle
+					iconId="STAKING_PENDING"
+					iconPath={ICONS['STAKING_PENDING']}
 					stringId="UNSTAKE.CLEAR_PENDING_EARNING"
 					text={STRINGS['UNSTAKE.CLEAR_PENDING_EARNING']}
-					textType="stake_popup__title"
+					textType="stake_popup__title m-0"
 					underline={false}
-					className="w-100 pt-4"
+					className="w-100 py-4 align-start"
 				/>
 
 				<div className="secondary-text">
 					{STRINGS['UNSTAKE.CLEAR_PENDING_EARNING_SUB']}
 				</div>
 
-				<div className="py-4 my-4 d-flex">
+				<div className="py-4 my-4 d-flex align-center">
 					<div>
 						<Image
 							iconId={iconId}
 							icon={ICONS[iconId]}
-							wrapperClassName="currency-ball"
+							wrapperClassName="stake-currency-ball-small"
 						/>
 					</div>
 					<div className="bold pb-1">

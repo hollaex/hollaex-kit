@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import { Button as AntBtn } from 'antd';
-import { EditWrapper, Button, IconTitle, Image } from 'components';
+import { EditWrapper, Button, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import AmountPreview from './AmountPreview';
 
 const ReviewEarlyUnstake = ({
 	stakeData,
@@ -12,48 +13,36 @@ const ReviewEarlyUnstake = ({
 	icons: ICONS,
 }) => {
 	const { symbol } = stakeData;
-	const iconId = `${symbol.toUpperCase()}_ICON`;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
-		height: '292px',
-		width: '506px',
+		height: '24.3rem',
+		width: '40rem',
 	};
-
-	const headerContent = {};
 
 	return (
 		<Fragment>
 			<div className="dialog-content background" style={background}>
-				<div style={headerContent}>
-					<IconTitle
-						stringId="UNSTAKE.TITLE"
-						text={STRINGS['UNSTAKE.TITLE']}
-						textType="stake_popup__title"
-						underline={false}
-						className="w-100"
+				<IconTitle
+					iconId="STAKING_UNLOCK"
+					iconPath={ICONS['STAKING_UNLOCK']}
+					stringId="UNSTAKE.TITLE"
+					text={STRINGS['UNSTAKE.TITLE']}
+					textType="stake_popup__title m-0 pl-3"
+					underline={false}
+					className="w-100 py-4 flex-direction-row justify-content-start"
+					imageWrapperClassName="stake-unlock-title"
+				/>
+				<div className="pt-4">
+					<AmountPreview
+						amount={0}
+						symbol={symbol}
+						labelId="UNSTAKE.AMOUNT_TO_RECEIVE"
 					/>
-					<div className="pt-4">
-						<div className="bold pb-1">
-							<EditWrapper stringId="UNSTAKE.AMOUNT_TO_RECEIVE">
-								{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<div>
-								<Image
-									iconId={iconId}
-									icon={ICONS[iconId]}
-									wrapperClassName="currency-ball"
-								/>
-							</div>
-							<div className="bold">{`${'?'} ${symbol.toUpperCase()}`}</div>
-						</div>
-						<div className="secondary-text pt-1">
-							<EditWrapper stringId="UNSTAKE.AMOUNT_NOTE">
-								{STRINGS['UNSTAKE.AMOUNT_NOTE']}
-							</EditWrapper>
-						</div>
+					<div className="secondary-text pt-1">
+						<EditWrapper stringId="UNSTAKE.AMOUNT_NOTE">
+							{STRINGS['UNSTAKE.AMOUNT_NOTE']}
+						</EditWrapper>
 					</div>
 				</div>
 			</div>

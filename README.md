@@ -40,7 +40,7 @@ Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.
 
 ## Useful Links
 
-- Exchange Dashboard: https://dash.bitholla.com
+- Exchange Dashboard: https://dash.hollaex.com
 - HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
 - HollaEx Live Exchange: https://hollaex.com
 - Discord Community: https://discord.gg/RkRHU8RbyM

@@ -1,8 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import mathjs from 'mathjs';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { getDistributions, getStakeEvents } from 'actions/stakingActions';
+import {
+	getDistributions,
+	getStakeEvents,
+	loadBlockchainData,
+	getCurrentBlock,
+	generateTableData,
+	getAllUserStakes,
+} from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
@@ -16,13 +22,6 @@ import { userActiveStakesSelector } from 'containers/Stake/selector';
 import PublicInfo from './components/PublicInfo';
 import Distributions from './components/Distributions';
 import MyStaking from './components/MyStaking';
-
-import { formatToCurrency } from 'utils/currency';
-import {
-	BASE_CURRENCY,
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from 'config/constants';
 
 const { TabPane } = Tabs;
 export const TABS = {
@@ -45,14 +44,6 @@ class StakeDetails extends Component {
 		activeKey: TABS.PUBLIC_INFO.key,
 	};
 
-	constructor(props) {
-		super(props);
-		const { account, router } = this.props;
-		if (!account) {
-			router.push('/stake');
-		}
-	}
-
 	componentWillMount() {
 		const {
 			account,
@@ -61,32 +52,42 @@ class StakeDetails extends Component {
 			},
 			getDistributions,
 			getStakeEvents,
+			loadBlockchainData,
+			getCurrentBlock,
+			generateTableData,
+			getAllUserStakes,
+			getPublicInfo,
 		} = this.props;
 
+		loadBlockchainData();
+		getCurrentBlock();
 		getDistributions(token);
-		getStakeEvents(token);
+		getPublicInfo(token);
 
 		if (account) {
-			getPublicInfo(token)(account).then((res) => {
-				console.log('response', res);
-			});
+			getStakeEvents(token, account);
+			generateTableData(account);
+			getAllUserStakes(account);
 		}
 	}
 
-	getValue = (balances, prices) => {
-		let value = 0;
-		Object.entries(balances).forEach(([symbol, balance]) => {
-			value = mathjs.sum(
-				mathjs.multiply(
-					balance,
-					!prices[symbol] || prices[symbol] === -1 ? 0 : prices[symbol]
-				),
-				value
-			);
-		});
+	componentDidUpdate(prevProps) {
+		const {
+			account,
+			generateTableData,
+			getAllUserStakes,
+			getStakeEvents,
+			router: {
+				params: { token },
+			},
+		} = this.props;
 
-		return value;
-	};
+		if (!prevProps.account && !!account) {
+			getStakeEvents(token, account);
+			generateTableData(account);
+			getAllUserStakes(account);
+		}
+	}
 
 	renderTabContent = (key) => {
 		const {
@@ -97,27 +98,9 @@ class StakeDetails extends Component {
 			coins,
 			totalUserStakes,
 			totalUserEarnings,
-			prices,
 		} = this.props;
 
 		const { fullname } = coins[token];
-
-		const totlStakes = this.getValue(totalUserStakes, prices);
-		const totalEarnings = this.getValue(totalUserEarnings, prices);
-
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-
-		const totalStakesString = STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(totlStakes, min)
-		);
-
-		const totalEarningsString = STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(totalEarnings, min)
-		);
 
 		switch (key) {
 			case TABS.PUBLIC_INFO.key:
@@ -134,8 +117,6 @@ class StakeDetails extends Component {
 				return (
 					<MyStaking
 						token={token}
-						totalEarningsString={totalEarningsString}
-						totalStakesString={totalStakesString}
 						totalUserEarnings={totalUserEarnings}
 						totalUserStakes={totalUserStakes}
 					/>
@@ -184,14 +165,7 @@ class StakeDetails extends Component {
 			router: {
 				params: { token },
 			},
-			account,
-			balance,
-			network,
 		} = this.props;
-
-		if (!account) {
-			return <div />;
-		}
 
 		const { activeKey } = this.state;
 
@@ -236,7 +210,7 @@ class StakeDetails extends Component {
 						</div>
 					</div>
 					<div>
-						<Account account={account} balance={balance} network={network} />
+						<Account />
 					</div>
 				</div>
 
@@ -267,15 +241,18 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
 	network: store.stake.network,
-	balance: store.stake.balance,
 	currentBlock: store.stake.currentBlock,
-	prices: store.asset.oraclePrices,
 	...userActiveStakesSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	getDistributions: bindActionCreators(getDistributions, dispatch),
 	getStakeEvents: bindActionCreators(getStakeEvents, dispatch),
+	loadBlockchainData: bindActionCreators(loadBlockchainData, dispatch),
+	getCurrentBlock: bindActionCreators(getCurrentBlock, dispatch),
+	generateTableData: bindActionCreators(generateTableData, dispatch),
+	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPublicInfo: bindActionCreators(getPublicInfo, dispatch),
 });
 
 export default connect(
