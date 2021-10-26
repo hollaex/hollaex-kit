@@ -158,6 +158,6 @@ async function Kyc(){
 }
 describe('Main Test', function () {
  
-	Kyc();
+//	Kyc();
 })
 module.exports.Kyc = Kyc;

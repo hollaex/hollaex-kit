@@ -140,6 +140,6 @@ async function Wallet(){
 }
 describe('Main Test', function () {
  
-	Wallet();
+	//Wallet();
 })
 module.exports.Wallet = Wallet ;
