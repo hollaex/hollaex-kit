@@ -34,16 +34,17 @@ async function CancelOrders(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
-			util.kitLogIn(step,driver, userName,passWord);
+			
 		});
 		afterEach(async function() {
 			util.setStep(step)
-			await driver.quit();
+		//	await driver.quit();
 		});
 		it('Cancel Orders, all orders', async function() {
+			await util.kitLogIn(step,driver, userName,passWord);
 			console.log(step++,'  | click | css=.app-menu-bar-content:nth-child(2) .edit-wrapper__container |  | ');
 			await driver.findElement(By.css('.app-menu-bar-content:nth-child(2) .edit-wrapper__container')).click();
-		
+		    await sleep(5000)
 			console.log(step++,'  | click | name=Search Assets |  | ');
 			await driver.findElement(By.name('Search Assets')).click();
 		
@@ -103,6 +104,6 @@ async function CancelOrders(){
 }
 describe('Main Test', function () {
  
-	CancelOrders();
+//	CancelOrders();
 })
 module.exports.CancelOrders = CancelOrders;

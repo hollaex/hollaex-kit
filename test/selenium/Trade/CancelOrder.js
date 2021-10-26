@@ -43,6 +43,8 @@ async function CancelOrder(){
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
+			driver.manage().window().maximize();
+			util.kitLogIn(step,driver, userName,passWord);
 			let step = util.getStep()
 		});
 		afterEach(async function() {
@@ -218,6 +220,6 @@ async function CancelOrder(){
 }
 describe('Main Test', function () {
  
-	CancelOrder();
+	//CancelOrder();
 })
 module.exports.CancelOrder = CancelOrder;

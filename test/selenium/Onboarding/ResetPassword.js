@@ -146,6 +146,6 @@ async function ResetPassword(){
 }
 describe('Main Test', function () {
  
-	ResetPassword();
+//	ResetPassword();
 })
 module.exports.ResetPassword = ResetPassword;
