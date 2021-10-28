@@ -68,6 +68,11 @@ const sanitizeDate = (date) => {
 	return result;
 };
 
+const isUrl = (url) => {
+	const pattern = /^(^|\s)((http(s)?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/;
+	return pattern.test(url);
+};
+
 module.exports = {
 	createRequest,
 	createSignature,
@@ -75,5 +80,6 @@ module.exports = {
 	checkKit,
 	parameterError,
 	isDatetime,
-	sanitizeDate
+	sanitizeDate,
+	isUrl
 };
