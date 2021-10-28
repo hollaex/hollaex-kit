@@ -20,13 +20,13 @@ const {
 	createSignature,
 	parameterError,
 	isDatetime,
-	sanitizeDate
+	sanitizeDate,
+	isUrl
 } = require('./utils');
 const WebSocket = require('ws');
 const { setWsHeartbeat } = require('ws-heartbeat/client');
 const { reject } = require('bluebird');
 const FileType = require('file-type');
-const isBase64 = require('is-base64');
 
 class HollaExNetwork {
 	constructor(
@@ -2548,7 +2548,7 @@ class HollaExNetwork {
 			data.increment_unit = opts.incrementUnit;
 		}
 
-		if (isBase64(opts.logo, { mimeRequired: true })) {
+		if (isUrl(opts.logo)) {
 			data.logo = opts.logo;
 		}
 
@@ -2695,7 +2695,7 @@ class HollaExNetwork {
 					}
 					break;
 				case 'logo':
-					if (isBase64(value, { mimeRequired: true })) {
+					if (isUrl(value)) {
 						data[formattedField] = value;
 					}
 					break;
