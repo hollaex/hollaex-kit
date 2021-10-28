@@ -99,13 +99,13 @@ class Verification extends Component {
 		const qs = querystring.parse(this.props.location.search);
 		if (Object.keys(qs).length) {
 			const { success_alert, error_alert } = qs;
-			let paramsData = {};
 			if (success_alert) {
-				paramsData = { status: true, message: success_alert };
+				const paramsData = { status: true, message: success_alert };
+				this.setState({ paramsData, isCustomNotification: true });
 			} else if (error_alert) {
-				paramsData = { status: false, message: error_alert };
+				const paramsData = { status: false, message: error_alert };
+				this.setState({ paramsData, isCustomNotification: true });
 			}
-			this.setState({ paramsData, isCustomNotification: true });
 		}
 	}
 
