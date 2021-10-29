@@ -630,6 +630,7 @@ class CreateAsset extends Component {
 			case 'edit-param-values':
 				return (
 					<AssetParams
+						editParams={true}
 						coinFormData={coinFormData}
 						handleCheckChange={this.handleCheckChange}
 						handleChangeNumber={this.handleChangeNumber}

@@ -124,7 +124,13 @@ const AssetParams = ({
 					<Button
 						type="primary"
 						className="green-btn"
-						onClick={() => handleScreenChange('step8')}
+						onClick={() => {
+							if (editParams) {
+								handleScreenChange('edit-params');
+							} else {
+								handleScreenChange('step8')
+							}
+						}}
 					>
 						Back
 					</Button>
