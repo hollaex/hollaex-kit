@@ -22,6 +22,8 @@ export const SET_USER_STAKES = 'SET_USER_STAKES';
 export const SET_CONTRACT_EVENTS = 'SET_CONTRACT_EVENTS';
 export const SET_DISTRIBUTIONS = 'SET_DISTRIBUTIONS';
 export const SET_PUBLIC_INFO = 'SET_PUBLIC_INFO';
+export const SET_PENDING_TRANSACTIONS = 'SET_PENDING_TRANSACTIONS';
+export const RESET_STAKE_STORE = 'RESET_STAKE_STORE';
 
 const setAccount = (account = '', balance = 0) => ({
 	type: SET_ACCOUNT,
@@ -87,6 +89,17 @@ const setPublicInfo = (publicInfo = {}) => ({
 	payload: {
 		publicInfo,
 	},
+});
+
+const setPendingTransactions = (pendingTransactions = []) => ({
+	type: SET_PENDING_TRANSACTIONS,
+	payload: {
+		pendingTransactions,
+	},
+});
+
+const resetStake = () => ({
+	type: RESET_STAKE_STORE,
 });
 
 export const connectWallet = () => {
@@ -295,5 +308,72 @@ export const getDistributions = (token = 'xht') => {
 			}
 		);
 		dispatch(setDistributions(events.reverse()));
+	};
+};
+
+export const getPendingTransactions = (account = '') => {
+	return async (dispatch) => {
+		// Pending Transactions Calculations
+		// const pendingTransactions = await web3.eth.getPendingTransactions();
+		const pendingTransactions = [
+			{
+				hash:
+					'0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b',
+				nonce: 2,
+				blockHash:
+					'0xef95f2f1ed3ca60b048b4bf67cde2195961e0bba6f70bcbea9a2c4e133e34b46',
+				blockNumber: 3,
+				transactionIndex: 0,
+				from: '0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b',
+				to: '0x6295ee1b4f6dd65047762f924ecd367c17eabf8f',
+				value: '123450000000000000',
+				gas: 314159,
+				gasPrice: '2000000000000',
+				input: '0x57cb2fc4',
+				v: '0x3d',
+				r: '0xaabc9ddafffb2ae0bac4107697547d22d9383667d9e97f5409dd6881ce08f13f',
+				s: '0x69e43116be8f842dcd4a0b2f760043737a59534430b762317db21d9ac8c5034',
+			},
+			{
+				hash:
+					'0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b',
+				nonce: 3,
+				blockHash:
+					'0xef95f2f1ed3ca60b048b4bf67cde2195961e0bba6f70bcbea9a2c4e133e34b46',
+				blockNumber: 4,
+				transactionIndex: 0,
+				from: '0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b',
+				to: '0x6295ee1b4f6dd65047762f924ecd367c17eabf8f',
+				value: '123450000000000000',
+				gas: 314159,
+				gasPrice: '2000000000000',
+				input: '0x57cb2fc4',
+				v: '0x3d',
+				r: '0xaabc9ddafffb2ae0bac4107697547d22d9383667d9e97f5409dd6881ce08f13f',
+				s: '0x69e43116be8f842dcd4a0b2f760043737a59534430b762317db21d9ac8c5034',
+			},
+		];
+		dispatch(setPendingTransactions(pendingTransactions));
+	};
+};
+
+export const disconnectWallet = () => {
+	return async (dispatch) => {
+		if (window.ethereum) {
+			try {
+				const accounts = await web3.eth.getAccounts();
+				if (accounts.length) {
+					await window.ethereum._handleDisconnect();
+					dispatch(resetStake());
+				}
+			} catch (error) {
+				console.error('Connect to Metamask using the button on the top right.');
+			}
+		} else {
+			// You must install Metamask into your browser: https://metamask.io/download.html
+			console.error(
+				'You must install Metamask into your browser: https://metamask.io/download.html'
+			);
+		}
 	};
 };

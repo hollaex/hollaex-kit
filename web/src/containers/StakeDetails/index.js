@@ -8,6 +8,7 @@ import {
 	getCurrentBlock,
 	generateTableData,
 	getAllUserStakes,
+	getPendingTransactions,
 } from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
@@ -57,6 +58,7 @@ class StakeDetails extends Component {
 			generateTableData,
 			getAllUserStakes,
 			getPublicInfo,
+			getPendingTransactions,
 		} = this.props;
 
 		loadBlockchainData();
@@ -68,6 +70,7 @@ class StakeDetails extends Component {
 			getStakeEvents(token, account);
 			generateTableData(account);
 			getAllUserStakes(account);
+			getPendingTransactions(account);
 		}
 	}
 
@@ -77,15 +80,17 @@ class StakeDetails extends Component {
 			generateTableData,
 			getAllUserStakes,
 			getStakeEvents,
+			getPendingTransactions,
 			router: {
 				params: { token },
 			},
 		} = this.props;
 
-		if (!prevProps.account && !!account) {
+		if (!!account && account !== prevProps.account) {
 			getStakeEvents(token, account);
 			generateTableData(account);
 			getAllUserStakes(account);
+			getPendingTransactions(account);
 		}
 	}
 
@@ -177,11 +182,14 @@ class StakeDetails extends Component {
 				<div className="d-flex align-end justify-content-between">
 					<div>
 						<IconTitle
-							text={fullname}
+							text={STRINGS.formatString(
+								STRINGS['STAKE_DETAILS.TOKEN'],
+								fullname
+							)}
 							iconPath={ICONS[iconId]}
 							iconId={iconId}
 							textType="title"
-							wrapperClassName="currency-ball pt-2"
+							imageWrapperClassName="currency-ball pt-2"
 						/>
 						<div>
 							{STRINGS.formatString(
@@ -252,6 +260,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getCurrentBlock: bindActionCreators(getCurrentBlock, dispatch),
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	getPublicInfo: bindActionCreators(getPublicInfo, dispatch),
 });
 
