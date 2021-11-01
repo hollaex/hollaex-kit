@@ -292,7 +292,7 @@ const Final = ({
 			) : null}
 			{!isPreview && !isConfigure ? (
 				<div className="btn-wrapper">
-					<Button className="green-btn" type="primary" onClick={handleBack}>
+					<Button className="green-btn" type="primary" onClick={() => handleBack(true)}>
 						Back
 					</Button>
 					<div className="separator"></div>
