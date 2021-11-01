@@ -10,10 +10,11 @@ import {
 } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import _toUpper from 'lodash/toUpper';
+import _get from 'lodash/get';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
-import { getCoinInfo, storeAsset } from '../AdminFinancials/action';
+import { getCoinInfo, storeAsset, uploadCoinLogo } from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
 	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
@@ -87,8 +88,9 @@ const AssetConfig = (props) => {
 	};
 
 	const updateAsset = async () => {
+		const { logoFile, iconName, ...resetFormData } = props.coinFormData;
 		const body = {
-			...props.coinFormData,
+			...resetFormData,
 		};
 		if (!body.estimated_price) {
 			body.estimated_price = 1;
@@ -109,6 +111,15 @@ const AssetConfig = (props) => {
 			body.decimals = parseInt(body.decimals, 10);
 		}
 		try {
+			if (logoFile) {
+				let formData = new FormData();
+				formData.append('name', iconName);
+				formData.append('file_name', iconName);
+				formData.append('file', logoFile);
+				const logo = await uploadCoinLogo(formData);
+				body.logo = _get(logo, 'data.path', '');
+				props.handleBulkUpdate({ logo: body.logo, logoFile: null, iconName: '' });
+			}
 			const res = await storeAsset(body);
 			if (props.getCoins) {
 				await props.getCoins();
