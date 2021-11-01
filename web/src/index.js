@@ -113,6 +113,18 @@ const drawFavIcon = (url) => {
 	head.appendChild(linkEl);
 };
 
+const getLocalBundle = async (pluginName) => {
+	const url = `/${pluginName}.json`;
+	try {
+		const response = await fetch(url);
+		return await response.json();
+	} catch (err) {
+		throw new Error(
+			`Failed to fetch/parse ${pluginName} configs. Please check ${pluginName}.json in the public folder.`
+		);
+	}
+};
+
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
@@ -228,21 +240,21 @@ const getConfigs = async () => {
 		process.env.REACT_APP_PLUGIN
 	) {
 		const pluginName = process.env.REACT_APP_PLUGIN;
-		const url = `/${pluginName}.json`;
-		const response = await fetch(url);
-		const pluginObject = await response.json();
+		const pluginObject = await getLocalBundle(pluginName);
 
-		plugins.forEach((plugin) => {
-			if (plugin.name === pluginName) {
-				const mergedPlugin = merge({}, plugin, pluginObject);
-				allPlugins.push(mergedPlugin);
-			} else {
-				allPlugins.push(plugin);
+		if (pluginObject) {
+			plugins.forEach((plugin) => {
+				if (plugin.name === pluginName) {
+					const mergedPlugin = merge({}, plugin, pluginObject);
+					allPlugins.push(mergedPlugin);
+				} else {
+					allPlugins.push(plugin);
+				}
+			});
+
+			if (!plugins.find(({ name }) => name === pluginName)) {
+				allPlugins.push({ ...pluginObject, name: pluginName });
 			}
-		});
-
-		if (!plugins.find(({ name }) => name === pluginName)) {
-			allPlugins.push({ ...pluginObject, name: pluginName });
 		}
 	} else {
 		allPlugins = plugins;
