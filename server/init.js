@@ -103,8 +103,7 @@ const checkStatus = () => {
 						status.url,
 						status.activation_code,
 						status.kit_version,
-						status.constants,
-						status.kit
+						status.constants
 					),
 					Tier.findAll(),
 					status.dataValues
