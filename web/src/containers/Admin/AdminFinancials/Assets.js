@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 import _cloneDeep from 'lodash/cloneDeep';
 import { bindActionCreators } from 'redux';
 // import { requestExchange } from './action';
+import _get from 'lodash/get';
 
 import CreateAsset, { default_coin_data } from '../CreateAsset';
 import FinalPreview from '../CreateAsset/Final';
@@ -17,6 +18,7 @@ import {
 	getExchange,
 	updateAssetCoins,
 	updateExchange,
+	uploadCoinLogo,
 } from './action';
 import { setCoins, setExchange } from 'actions/assetActions';
 import { requestTotalBalance } from '../Wallets/actions';
@@ -280,8 +282,8 @@ class Assets extends Component {
 				this.setState({ exchangeBalance: res });
 			}
 		} catch (error) {
-			const message = error.data ? error.data.message : error.message;
-			message.error(message);
+			const errMsg = error.data ? error.data.message : error.message;
+			message.error(errMsg);
 		}
 	};
 
@@ -386,12 +388,13 @@ class Assets extends Component {
 	};
 
 	handleConfirmation = async (
-		coinData,
+		coinFormData = {},
 		isEdit = false,
 		isApply = false,
 		isPresetAsset = false
 	) => {
 		const { coins, exchange, isConfigure, selectedAsset } = this.state;
+		const { logoFile, iconName, ...coinData } = coinFormData;
 		if (isEdit) {
 			try {
 				this.setState({ saveLoading: true });
@@ -400,7 +403,7 @@ class Assets extends Component {
 				// }
 				delete coinData.key;
 				delete coinData.value;
-				delete coinData.iconName;
+				// delete coinData.iconName;
 				// if (coinData.symbol) {
 				// 	coinData.symbol = coinData.symbol.toLowerCase();
 				// }
@@ -416,6 +419,15 @@ class Assets extends Component {
 				// if (!coinData.increment_unit)
 				// 	coinData.increment_unit = selectedAsset.increment_unit;
 				if (!coinData.code) coinData.code = selectedAsset.code;
+				if (logoFile) {
+					let formData = new FormData();
+					formData.append('name', iconName);
+					formData.append('file_name', iconName);
+					formData.append('file', logoFile);
+					const logo = await uploadCoinLogo(formData);
+					coinData.logo = _get(logo, 'data.path', '');
+				}
+
 				await updateAssetCoins(coinData);
 				await this.getCoins();
 				this.setState({ formData: {}, saveLoading: false });
@@ -450,6 +462,9 @@ class Assets extends Component {
 				let coinList = coins.map((data) => data.symbol);
 
 				if (!coinData.id) {
+					if (!coinData.code) {
+						coinData.code = coinData.symbol.toLowerCase();
+					}
 					await updateAssetCoins(coinData);
 				}
 				if (!coinList.includes(coinData.symbol)) {
@@ -697,19 +712,22 @@ class Assets extends Component {
 	handleFileChange = async (event, name) => {
 		const file = event.target.files[0];
 		if (file) {
-			const base64Url = await new Promise((resolve, reject) => {
-				const reader = new FileReader();
-				reader.readAsDataURL(file);
-				reader.onload = () => resolve(reader.result);
-				reader.onerror = (error) => reject(error);
-			});
+			// const base64Url = await new Promise((resolve, reject) => {
+			// 	const reader = new FileReader();
+			// 	reader.readAsDataURL(file);
+			// 	reader.onload = () => resolve(reader.result);
+			// 	reader.onerror = (error) => reject(error);
+			// });
 			const coinFormData = {
 				...this.state.selectedAsset,
-				[name]: base64Url,
+				[name]: file,
+				logoFile: file,
 				iconName: file.name,
 			};
 			this.handleEditData(coinFormData);
-			this.updateFormData(name, base64Url);
+			this.updateFormData(name, file);
+			this.updateFormData('logoFile', file);
+			this.updateFormData('iconName', file.name);
 		}
 	};
 

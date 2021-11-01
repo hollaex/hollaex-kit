@@ -89,3 +89,14 @@ export const updateExchange = (values) => {
 
 	return requestAuthenticated('/admin/exchange', options);
 };
+
+export const uploadCoinLogo = (values) => {
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		data: values,
+		url: '/admin/upload',
+		method: 'POST',
+	});
+};
