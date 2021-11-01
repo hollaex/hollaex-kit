@@ -102,15 +102,16 @@ async function Security(){
 		
 			console.log(step++,'  | click | css=form |')
 			await driver.findElement(By.css('form')).click();
-			await sleep(4000);
+			await sleep(5000);
 			
-			console.log(step++,'  | click | xpath/div[5]/div/div/div[2]/div[4]/form/button | ');
-			await driver.findElement(By.xpath('//div[5]/div/div/div[2]/div[4]/form/button')).click();
+			console.log(step++,'  | click | xpath//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div | ');
+			await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div')).click();
 			await sleep(4000);
 
 			console.log ('  16 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA');
 			assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully activated 2FA');
-		
+		    await sleep(5000);
+			
 			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
@@ -461,6 +462,6 @@ async function Security(){
 }
 describe('Main Test', function () {
  
-	Security();
+//Security();
 })
 module.exports.Security = Security;

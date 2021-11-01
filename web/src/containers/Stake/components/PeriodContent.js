@@ -58,7 +58,7 @@ const PeriodContent = ({
 								className="stake-period-button"
 								value={period}
 							>
-								<div>
+								<div className="stake-period-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.PERIOD_OPTION_TEXT'],
 										getEstimatedRemainingTime(period).join(' ')

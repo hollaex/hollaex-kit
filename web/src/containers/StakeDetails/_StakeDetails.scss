@@ -10,9 +10,13 @@
 		color: $colors-notifications-blue;
 		border-color: $colors-notifications-blue;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notifications-blue;
+			border-color: $colors-notifications-blue;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -22,9 +26,13 @@
 		color: $colors-notification-pending;
 		border-color: $colors-notification-pending;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notification-pending;
+			border-color: $colors-notification-pending;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -105,10 +113,16 @@
 		line-height: 1.2rem;
 		text-align: center;
 
+		.stake-period-text {
+			width: 10rem;
+			margin: auto;
+		}
+
 		.period-x {
 			font-weight: bolder;
 			font-size: 4rem;
 			line-height: 5rem;
+			color: $colors-black !important;
 		}
 
 		&:not(:first-child)::before {
@@ -124,6 +138,7 @@
 			font-weight: bolder;
 			font-size: 5rem;
 			line-height: 6rem;
+			color: $colors-main-black !important;
 		}
 	}
 }
@@ -219,4 +234,21 @@
 .staking-loader {
 	font-size: 7rem;
 	color: $specials_highlight-box;
+}
+
+.disconnect-menu {
+	&.ant-dropdown-menu {
+		color: $colors-main-black !important;
+		background-color: $app-background-color;
+	}
+
+	.ant-dropdown-menu-item {
+		color: $colors-black;
+		background-color: $app-background-color;
+
+		&:hover {
+			color: $colors-main-black;
+			background-color: $app-sidebar-background;
+		}
+	}
 }

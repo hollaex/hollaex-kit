@@ -626,6 +626,6 @@ async function TradeWithStop(){
 }
 describe('Main Test', function () {
  
-	TradeWithStop();
+//	TradeWithStop();
 })
 module.exports.TradeWithStop = TradeWithStop ;

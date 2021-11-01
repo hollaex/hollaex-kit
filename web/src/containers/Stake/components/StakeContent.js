@@ -4,7 +4,11 @@ import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { approve, addStake } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { generateTableData, getAllUserStakes } from 'actions/stakingActions';
+import {
+	generateTableData,
+	getAllUserStakes,
+	getPendingTransactions,
+} from 'actions/stakingActions';
 
 import AmountContent from './AmountContent';
 import PeriodContent from './PeriodContent';
@@ -59,7 +63,11 @@ class StakeContent extends Component {
 	};
 
 	approveAndStake = (symbol) => async ({ amount, period, account }) => {
-		const { generateTableData, getAllUserStakes } = this.props;
+		const {
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
 
 		this.setAction(ACTION_TYPE.WITHDRAW, false);
 		this.setContent(CONTENT_TYPE.WAITING);
@@ -79,6 +87,7 @@ class StakeContent extends Component {
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
+				getPendingTransactions(account),
 			]);
 			this.setContent(CONTENT_TYPE.SUCCESS);
 		} catch (err) {
@@ -192,6 +201,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 });
 
 export default connect(

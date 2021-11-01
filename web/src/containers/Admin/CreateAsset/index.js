@@ -4,6 +4,7 @@ import { message } from 'antd';
 import _toLower from 'lodash/toLower';
 import _get from 'lodash/get';
 import _cloneDeep from 'lodash/cloneDeep';
+import _forEach from 'lodash/forEach';
 
 import Step1 from './Step1';
 import Step2 from './Step2';
@@ -29,7 +30,7 @@ export const default_coin_data = {
 	min: 0.001,
 	max: 10000,
 	increment_unit: 0.001,
-	active: true,
+	// active: true,
 	allow_deposit: true,
 	allow_withdrawal: true,
 	estimated_price: 1,
@@ -38,7 +39,7 @@ export const default_coin_data = {
 		decimal_points: 18,
 		supply: 0,
 	},
-	is_public: true
+	is_public: true,
 };
 
 class CreateAsset extends Component {
@@ -54,7 +55,7 @@ class CreateAsset extends Component {
 			prevCoinData: {},
 			// assetType: 'existing_asset',
 			activeTab: '0',
-			savePresetAsset: false
+			savePresetAsset: false,
 		};
 	}
 
@@ -138,7 +139,7 @@ class CreateAsset extends Component {
 			coinFormData,
 		});
 		this.props.handleEditDataCallback(coinFormData);
-		this.props.updateFormData(name, value);
+		this.props.updateFormData('meta', coinFormData.meta);
 	};
 
 	handleCheckChange = (e) => {
@@ -232,6 +233,13 @@ class CreateAsset extends Component {
 		}
 		this.setState({
 			coinFormData,
+		});
+		let formValues = { ...data };
+		if (data.symbol) {
+			formValues = { ...data, code: data.symbol.toLowerCase() };
+		}
+		_forEach(formValues, (formValue, key) => {
+			this.props.updateFormData(key, formValue);
 		});
 		this.props.handleEditDataCallback(coinFormData);
 	};
@@ -404,11 +412,18 @@ class CreateAsset extends Component {
 	};
 
 	handlePresetConfirmation = (symbol) => {
-		const currentCoin = _get(this.props.coins.filter(coin => coin.symbol === symbol), '[0]', {});
+		const currentCoin = _get(
+			this.props.coins.filter((coin) => coin.symbol === symbol),
+			'[0]',
+			{}
+		);
 		if (currentCoin) {
-			this.setState({ coinFormData: { ...currentCoin }, savePresetAsset: true }, () => {
-				this.handleScreenChange('final');
-			});
+			this.setState(
+				{ coinFormData: { ...currentCoin }, savePresetAsset: true },
+				() => {
+					this.handleScreenChange('final');
+				}
+			);
 		}
 	};
 
@@ -417,7 +432,10 @@ class CreateAsset extends Component {
 			await this.props.handleRefreshCoin(this.state.coinFormData);
 			message.success('Asset added successfully');
 			this.props.onClose();
-			this.setState({ coinFormData: _cloneDeep(default_coin_data), savePresetAsset: false });
+			this.setState({
+				coinFormData: _cloneDeep(default_coin_data),
+				savePresetAsset: false,
+			});
 		} else {
 			this.props.handleConfirmation(
 				this.props.isEdit || this.props.isConfigureEdit
@@ -612,6 +630,7 @@ class CreateAsset extends Component {
 			case 'edit-param-values':
 				return (
 					<AssetParams
+						editParams={true}
 						coinFormData={coinFormData}
 						handleCheckChange={this.handleCheckChange}
 						handleChangeNumber={this.handleChangeNumber}
@@ -665,11 +684,11 @@ const mapStateToProps = (state) => ({
 });
 
 CreateAsset.defaultProps = {
-	handleWidth: () => { },
+	handleWidth: () => {},
 	isExchangeWizard: false,
-	handleEditDataCallback: () => { },
-	updateFormData: () => { },
-	getCoins: () => { },
+	handleEditDataCallback: () => {},
+	updateFormData: () => {},
+	getCoins: () => {},
 };
 
 export default connect(mapStateToProps)(CreateAsset);
