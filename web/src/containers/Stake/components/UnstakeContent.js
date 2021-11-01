@@ -6,6 +6,7 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	distribute,
+	getPendingTransactions,
 } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -36,7 +37,11 @@ class UnstakeContent extends Component {
 	};
 
 	approveAndUnstake = (symbol) => async ({ account, index }) => {
-		const { generateTableData, getAllUserStakes } = this.props;
+		const {
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
 
 		this.setAction(ACTION_TYPE.UNSTAKE, false);
 		this.setContent(CONTENT_TYPE.WAITING);
@@ -49,6 +54,7 @@ class UnstakeContent extends Component {
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
+				getPendingTransactions(account),
 			]);
 			this.setContent(CONTENT_TYPE.SUCCESS);
 		} catch (err) {
@@ -58,18 +64,23 @@ class UnstakeContent extends Component {
 	};
 
 	clearPendingEarnings = (symbol) => async ({ account }) => {
-		const { generateTableData, getAllUserStakes } = this.props;
+		const {
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
 
 		this.setAction(ACTION_TYPE.DISTRIBUTE, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
 			await distribute(symbol)({
 				account,
-				cl: () => this.setAction(ACTION_TYPE.DISTRIBUTE, true),
+				cb: () => this.setAction(ACTION_TYPE.DISTRIBUTE, true),
 			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
+				getPendingTransactions(account),
 			]);
 			this.setContent(CONTENT_TYPE.REVIEW);
 		} catch (err) {
@@ -153,6 +164,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 });
 
 export default connect(

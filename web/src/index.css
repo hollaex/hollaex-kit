@@ -4586,14 +4586,20 @@ table th {
 .stake-btn.ant-btn-primary {
   color: var(--specials_buttons-links-and-highlights);
   border-color: var(--specials_buttons-links-and-highlights); }
-  .stake-btn.ant-btn-primary:hover, .stake-btn.ant-btn-primary:active, .stake-btn.ant-btn-primary:focus {
+  .stake-btn.ant-btn-primary:focus {
+    color: var(--specials_buttons-links-and-highlights);
+    border-color: var(--specials_buttons-links-and-highlights); }
+  .stake-btn.ant-btn-primary:hover, .stake-btn.ant-btn-primary:active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .stake-btn.ant-btn-dangerous {
   color: var(--specials_pending-waiting-caution);
   border-color: var(--specials_pending-waiting-caution); }
-  .stake-btn.ant-btn-dangerous:hover, .stake-btn.ant-btn-dangerous:active, .stake-btn.ant-btn-dangerous:focus {
+  .stake-btn.ant-btn-dangerous:focus {
+    color: var(--specials_pending-waiting-caution);
+    border-color: var(--specials_pending-waiting-caution); }
+  .stake-btn.ant-btn-dangerous:hover, .stake-btn.ant-btn-dangerous:active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -4645,10 +4651,14 @@ table th {
   font-size: 1rem;
   line-height: 1.2rem;
   text-align: center; }
+  .stake-period-button.ant-radio-button-wrapper .stake-period-text {
+    width: 10rem;
+    margin: auto; }
   .stake-period-button.ant-radio-button-wrapper .period-x {
     font-weight: bolder;
     font-size: 4rem;
-    line-height: 5rem; }
+    line-height: 5rem;
+    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
     background-color: transparent; }
 
@@ -4658,7 +4668,8 @@ table th {
   .stake-period-button.ant-radio-button-wrapper-checked .period-x {
     font-weight: bolder;
     font-size: 5rem;
-    line-height: 6rem; }
+    line-height: 6rem;
+    color: var(--labels_important-active-labels-text-graphics) !important; }
 
 .staking-account__container {
   padding: 0 0.5rem;
@@ -4731,6 +4742,17 @@ table th {
 .staking-loader {
   font-size: 7rem;
   color: var(--calculated_specials_highlight-box); }
+
+.disconnect-menu.ant-dropdown-menu {
+  color: var(--labels_important-active-labels-text-graphics) !important;
+  background-color: var(--base_background); }
+
+.disconnect-menu .ant-dropdown-menu-item {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: var(--base_background); }
+  .disconnect-menu .ant-dropdown-menu-item:hover {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_wallet-sidebar-and-popup); }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
@@ -7264,7 +7286,7 @@ table th {
   padding-right: 2.5rem;
   padding-left: 2.5rem; }
   .dialog-content.background {
-    background-size: cover;
+    background-size: 100% 100%;
     background-repeat: no-repeat; }
   .dialog-content.bottom {
     padding-bottom: 2.5rem; }
