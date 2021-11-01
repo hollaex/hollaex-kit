@@ -1,5 +1,13 @@
 import React, { Fragment, useState } from 'react';
-import { Input, InputNumber, Button, Form, Checkbox, message, Modal } from 'antd';
+import {
+	Input,
+	InputNumber,
+	Button,
+	Form,
+	Checkbox,
+	message,
+	Modal,
+} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import _toUpper from 'lodash/toUpper';
 
@@ -50,12 +58,16 @@ const AssetConfig = (props) => {
 				const body = {
 					...props.coinFormData,
 				};
-				let coinData = props.coins.filter((coin) => !coin.active).map((coin) => {
-					return coin.symbol;
-				});
+				let coinData = props.coins
+					.filter((coin) => !coin.active)
+					.map((coin) => {
+						return coin.symbol;
+					});
 				let presentKeys = exchangeCoins.map((coin) => coin.symbol);
 				if (presentKeys.includes(body.symbol)) {
-					message.error(`${_toUpper(body.symbol)} is already added in the exchange.`);
+					message.error(
+						`${_toUpper(body.symbol)} is already added in the exchange.`
+					);
 				} else if (coinData.includes(body.symbol)) {
 					setPresetAlert(true);
 				} else {
@@ -123,15 +135,11 @@ const AssetConfig = (props) => {
 	// };
 
 	const handleSearch = async (address) => {
-		const {
-			handleBulkUpdate,
-			handleMetaChange,
-			coinFormData
-		} = props;
+		const { handleBulkUpdate, handleMetaChange, coinFormData } = props;
 		const params = {
 			address,
-			network: coinFormData.network
-		}
+			network: coinFormData.network,
+		};
 		try {
 			const res = await getCoinInfo(params);
 			if (res) {
@@ -158,9 +166,11 @@ const AssetConfig = (props) => {
 	};
 
 	const checkCoin = (rule, value, callback) => {
-		let coinData = props.coins.filter((coin) => coin.active).map((coin) => {
-			return coin.symbol;
-		});
+		let coinData = props.coins
+			.filter((coin) => coin.active)
+			.map((coin) => {
+				return coin.symbol;
+			});
 		if (coinData.includes(value)) {
 			callback('This symbol already exists for this asset');
 		} else {
@@ -181,7 +191,7 @@ const AssetConfig = (props) => {
 	};
 
 	const renderFields = () => {
-		const { coinFormData = {}, handleChange } = props;
+		const { coinFormData = {}, handleMetaChange } = props;
 
 		if (
 			coinFormData.type === 'blockchain' &&
@@ -208,9 +218,11 @@ const AssetConfig = (props) => {
 						<Search
 							enterButton="Search"
 							name="contract"
-							onChange={handleChange}
+							onChange={(e) => {
+								handleMetaChange(e.target.value, 'contract');
+							}}
 							onSearch={handleSearch}
-							value={coinFormData.contract}
+							value={coinFormData.meta ? coinFormData.meta.contract : ''}
 						/>
 					</Form.Item>
 				</div>
@@ -233,7 +245,11 @@ const AssetConfig = (props) => {
 									},
 								]}
 							>
-								<Input onChange={(e) => 'a'} />
+								<Input
+									onChange={(e) => {
+										handleMetaChange(e.target.value, 'blockchainName');
+									}}
+								/>
 							</Form.Item>
 						</div>
 					) : null}
@@ -256,9 +272,11 @@ const AssetConfig = (props) => {
 						<Input
 							enterButton="Search"
 							name="contract"
-							onChange={handleChange}
+							onChange={(e) => {
+								handleMetaChange(e.target.value, 'contract');
+							}}
 							onSearch={handleSearch}
-							value={coinFormData.contract}
+							value={coinFormData.meta ? coinFormData.meta.contract : ''}
 						/>
 					</Form.Item>
 				</div>
@@ -571,13 +589,23 @@ const AssetConfig = (props) => {
 				onCancel={handleCloseAlert}
 			>
 				<div className="create-asset-container">
-					{`${_toUpper(coinFormData.symbol)} is already created by some one. Do you really want to add it on exchange?`}
+					{`${_toUpper(
+						coinFormData.symbol
+					)} is already created by some one. Do you really want to add it on exchange?`}
 					<div className="btn-wrapper">
-						<Button type="primary" className="green-btn" onClick={handleCloseAlert}>
+						<Button
+							type="primary"
+							className="green-btn"
+							onClick={handleCloseAlert}
+						>
 							Cancel
 						</Button>
 						<div className="separator"></div>
-						<Button type="primary" className="green-btn" onClick={handlePresetAdd}>
+						<Button
+							type="primary"
+							className="green-btn"
+							onClick={handlePresetAdd}
+						>
 							Okay
 						</Button>
 					</div>

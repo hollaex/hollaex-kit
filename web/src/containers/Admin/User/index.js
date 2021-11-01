@@ -111,12 +111,6 @@ class App extends Component {
 		}
 		return requestUser(values, this.state.kycPluginName)
 			.then(([userInformation, userImages, userBalance]) => {
-				if (userImages.message) {
-					if (values.id === '0') {
-						message.error(userImages.message)
-						userInformation.data = [];
-					}
-				}
 				if (
 					userInformation &&
 					userInformation.data &&
@@ -202,7 +196,7 @@ class App extends Component {
 
 	searchUser = (values) => {
 		if (values.id === 0) {
-			this.props.router.replace(`/admin/user?id=${values.id}`);
+			message.error('User not found');
 		} else if (values.id) {
 			this.requestUserData({ id: values.id });
 		} else {

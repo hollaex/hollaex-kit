@@ -81,94 +81,95 @@ const getColumns = (
 	handleEdit,
 	handlePreview
 ) => [
-		{
-			title: 'Assets',
-			key: 'symbol',
-			render: (data) => {
-				const selectedAsset =
-					_cloneDeep(allCoins.filter((list) => list.symbol === data.symbol)[0]) || {};
-				if (!data.id && selectedAsset.id) {
-					delete selectedAsset.id;
-				}
-				if (!selectedAsset.symbol) {
-					selectedAsset.symbol = data.symbol;
-				}
-				return (
-					<div
-						className="coin-symbol-wrapper"
-						onClick={() => handlePreview(selectedAsset)}
-					>
-						<div className="currency_ball">
-							<Coins
-								type={data.symbol.toLowerCase()}
-								small={true}
-								color={selectedAsset.meta ? selectedAsset.meta.color : ''}
-								fullname={selectedAsset.fullname}
-								onClick={() => handlePreview(selectedAsset)}
-							/>
-							<div className="fullName">{selectedAsset.fullname}</div>
-						</div>
-						{data.id && data.verified ? (
-							<IconToolTip type="success" tip="" animation={false} />
-						) : data.id && !data.verified ? (
+	{
+		title: 'Assets',
+		key: 'symbol',
+		render: (data) => {
+			const selectedAsset =
+				_cloneDeep(allCoins.filter((list) => list.symbol === data.symbol)[0]) ||
+				{};
+			if (!data.id && selectedAsset.id) {
+				delete selectedAsset.id;
+			}
+			if (!selectedAsset.symbol) {
+				selectedAsset.symbol = data.symbol;
+			}
+			return (
+				<div
+					className="coin-symbol-wrapper"
+					onClick={() => handlePreview(selectedAsset)}
+				>
+					<div className="currency_ball">
+						<Coins
+							type={data.symbol.toLowerCase()}
+							small={true}
+							color={selectedAsset.meta ? selectedAsset.meta.color : ''}
+							fullname={selectedAsset.fullname}
+							onClick={() => handlePreview(selectedAsset)}
+						/>
+						<div className="fullName">{selectedAsset.fullname}</div>
+					</div>
+					{data.id && data.verified ? (
+						<IconToolTip type="success" tip="" animation={false} />
+					) : data.id && !data.verified ? (
+						<IconToolTip
+							type="warning"
+							tip="This asset is in pending verification"
+							onClick={(e) => {
+								if (selectedAsset.created_by === user.id) {
+									handleEdit(selectedAsset, e);
+								}
+							}}
+						/>
+					) : selectedAsset.created_by === user.id ? (
+						<div className="config-content">
+							(
+							<span
+								className="link"
+								onClick={(e) => handleEdit(selectedAsset, e)}
+							>
+								Configure
+							</span>
+							)
 							<IconToolTip
-								type="warning"
-								tip="This asset is in pending verification"
-								onClick={(e) => {
-									if (selectedAsset.created_by === user.id) {
-										handleEdit(selectedAsset, e);
-									}
-								}}
+								type="settings"
+								tip="Click to complete the asset configuration"
+								onClick={(e) => handleEdit(selectedAsset, e)}
 							/>
-						) : selectedAsset.created_by === user.id ? (
-							<div className="config-content">
-								(
-								<span
-									className="link"
-									onClick={(e) => handleEdit(selectedAsset, e)}
-								>
-									Configure
-								</span>
-								)
-								<IconToolTip
-									type="settings"
-									tip="Click to complete the asset configuration"
-									onClick={(e) => handleEdit(selectedAsset, e)}
-								/>
-							</div>
-						) : null}
-					</div>
-				);
-			},
+						</div>
+					) : null}
+				</div>
+			);
 		},
-		{
-			title: 'Status',
-			dataIndex: 'verified',
-			key: 'verified',
-			className: 'balance-column',
-			render: (verified) => {
-				return verified ? <div>verified</div> : <div>pending</div>;
-			},
+	},
+	{
+		title: 'Status',
+		dataIndex: 'verified',
+		key: 'verified',
+		className: 'balance-column',
+		render: (verified) => {
+			return verified ? <div>verified</div> : <div>pending</div>;
 		},
-		{
-			title: 'Balance',
-			dataIndex: 'symbol',
-			key: 'balance',
-			className: 'balance-column',
-			render: (symbol = '', data) => {
-				const selectedAsset =
-					allCoins.filter((list) => list.symbol === data.symbol)[0] || {};
-				return (
-					<div
-						className="coin-symbol-wrapper"
-						onClick={() => handlePreview(selectedAsset)}
-					>
-						{balance[symbol] || 0}
-					</div>
-				);
-			},
+	},
+	{
+		title: 'Balance',
+		dataIndex: 'symbol',
+		key: 'balance',
+		className: 'balance-column',
+		render: (symbol = '', data) => {
+			const selectedAsset =
+				allCoins.filter((list) => list.symbol === data.symbol)[0] || {};
+			return (
+				<div
+					className="coin-symbol-wrapper"
+					onClick={() => handlePreview(selectedAsset)}
+				>
+					{balance[symbol] || 0}
+				</div>
+			);
 		},
-	];
+	},
+];
 
 class Assets extends Component {
 	constructor(props) {
@@ -193,6 +194,7 @@ class Assets extends Component {
 			isPresetConfirm: false,
 			exchangeBalance: {},
 			formData: {},
+			saveLoading: false,
 		};
 	}
 
@@ -202,7 +204,9 @@ class Assets extends Component {
 		const { exchange, allCoins } = this.props;
 		const { tabParams } = this.state;
 
-		let coins = allCoins.filter((val) => exchange && exchange.coins && exchange.coins.includes(val.symbol));
+		let coins = allCoins.filter(
+			(val) => exchange && exchange.coins && exchange.coins.includes(val.symbol)
+		);
 		if (exchange && exchange.coins) {
 			this.setState({
 				coins: coins || [],
@@ -210,8 +214,8 @@ class Assets extends Component {
 			});
 		}
 		if (Object.keys(tabParams).length) {
-			let isAddAsset = (tabParams.isAsset === 'true');
-			let isPreview = (tabParams.preview === 'true');
+			let isAddAsset = tabParams.isAsset === 'true';
+			let isPreview = tabParams.preview === 'true';
 			let coinData = coins;
 			if (coinData.length) {
 				let temp = coinData.filter((list) => list.symbol === tabParams.symbol);
@@ -236,8 +240,16 @@ class Assets extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		const { exchange, allCoins } = this.props;
-		if ((JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange) && exchange && exchange.coins && allCoins) ||
-			(JSON.stringify(prevProps.allCoins) !== JSON.stringify(allCoins) && exchange && exchange.coins && allCoins)) {
+		if (
+			(JSON.stringify(prevProps.exchange) !== JSON.stringify(exchange) &&
+				exchange &&
+				exchange.coins &&
+				allCoins) ||
+			(JSON.stringify(prevProps.allCoins) !== JSON.stringify(allCoins) &&
+				exchange &&
+				exchange.coins &&
+				allCoins)
+		) {
 			const coins = allCoins.filter((val) =>
 				exchange.coins.includes(val.symbol)
 			);
@@ -271,7 +283,7 @@ class Assets extends Component {
 			const message = error.data ? error.data.message : error.message;
 			message.error(message);
 		}
-	}
+	};
 
 	updateFormData = (name, value) => {
 		const { formData } = this.state;
@@ -280,7 +292,7 @@ class Assets extends Component {
 		} else if (name === 'decimal_points') {
 			formData.meta = {
 				...formData.meta,
-				decimal_points: value
+				decimal_points: value,
 			};
 		} else {
 			formData[name] = value;
@@ -357,16 +369,13 @@ class Assets extends Component {
 	};
 
 	handleRefreshCoin = async (coinData) => {
-		const {
-			coins,
-			exchange
-		} = this.state;
+		const { coins, exchange } = this.state;
 		try {
-			let coinList = coins.map(data => data.symbol);
+			let coinList = coins.map((data) => data.symbol);
 			let formProps = {
 				id: exchange.id,
-				coins: [...coinList, coinData.symbol]
-			}
+				coins: [...coinList, coinData.symbol],
+			};
 			await updateExchange(formProps);
 			await this.getMyExchange();
 		} catch (error) {
@@ -382,14 +391,10 @@ class Assets extends Component {
 		isApply = false,
 		isPresetAsset = false
 	) => {
-		const {
-			coins,
-			exchange,
-			isConfigure,
-			selectedAsset,
-		} = this.state;
+		const { coins, exchange, isConfigure, selectedAsset } = this.state;
 		if (isEdit) {
 			try {
+				this.setState({ saveLoading: true });
 				// if (!coinData.logo || selectedAsset.logo) {
 				//     coinData.logo = ''
 				// }
@@ -413,7 +418,7 @@ class Assets extends Component {
 				if (!coinData.code) coinData.code = selectedAsset.code;
 				await updateAssetCoins(coinData);
 				await this.getCoins();
-				this.setState({ formData: {} });
+				this.setState({ formData: {}, saveLoading: false });
 				// if (isApply) {
 				// 	await this.handleApply();
 				// }
@@ -423,12 +428,14 @@ class Assets extends Component {
 					this.setState({ isConfigure: false, isPreview: true, formData: {} });
 				}
 			} catch (error) {
+				this.setState({ saveLoading: false });
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
 			}
 		} else {
 			try {
+				this.setState({ saveLoading: true });
 				if (!coinData.logo) {
 					coinData.logo = '';
 				}
@@ -440,8 +447,8 @@ class Assets extends Component {
 					coinData.symbol = coinData.symbol.toLowerCase();
 				}
 				// let pairs = exchange.pairs || [];
-				let coinList = coins.map(data => data.symbol);
-				
+				let coinList = coins.map((data) => data.symbol);
+
 				if (!coinData.id) {
 					await updateAssetCoins(coinData);
 				}
@@ -449,8 +456,8 @@ class Assets extends Component {
 					let formProps = {
 						id: exchange.id,
 						// pairs: pairs.map(data => data.name ? data.name : data.symbol),
-						coins: [...coinList, coinData.symbol]
-					}
+						coins: [...coinList, coinData.symbol],
+					};
 					await updateExchange(formProps);
 				}
 				await this.getMyExchange();
@@ -462,8 +469,10 @@ class Assets extends Component {
 				// 	await this.handleApply();
 				// }
 				this.handleClose();
+				this.setState({ saveLoading: false, formData: {} });
 				message.success('Asset created successfully');
 			} catch (error) {
+				this.setState({ saveLoading: false });
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
@@ -476,11 +485,13 @@ class Assets extends Component {
 		try {
 			let formProps = {
 				id: exchange.id,
-				coins: coins.filter(data => data.symbol !== symbol).map(data => data.symbol),
-				pairs: exchange.pairs.filter(data => {
+				coins: coins
+					.filter((data) => data.symbol !== symbol)
+					.map((data) => data.symbol),
+				pairs: exchange.pairs.filter((data) => {
 					let pairData = data.split('-');
-					return (pairData[0] !== symbol && pairData[1] !== symbol)
-				})
+					return pairData[0] !== symbol && pairData[1] !== symbol;
+				}),
 			};
 			await updateExchange(formProps);
 			await this.getMyExchange();
@@ -606,6 +617,7 @@ class Assets extends Component {
 							type="primary"
 							className="configure-btn green-btn"
 							onClick={this.applyConfirmation}
+							loading={this.state.saveLoading}
 						>
 							Save
 						</Button>
@@ -713,6 +725,7 @@ class Assets extends Component {
 			exchangeUsers,
 			userEmails,
 			formData,
+			saveLoading,
 		} = this.state;
 		const { allCoins } = this.props;
 		if (isConfirm) {
@@ -724,7 +737,8 @@ class Assets extends Component {
 						<Button
 							type="primary"
 							className="apply-btn"
-							onClick={() => this.handleConfirmation(selectedAsset, true)}
+							onClick={() => this.handleConfirmation(formData, true)}
+							disabled={saveLoading}
 						>
 							Save without applying
 						</Button>
@@ -732,7 +746,8 @@ class Assets extends Component {
 						<Button
 							type="primary"
 							className="apply-btn"
-							onClick={() => this.handleConfirmation(selectedAsset, true, true)}
+							onClick={() => this.handleConfirmation(formData, true, true)}
+							disabled={saveLoading}
 						>
 							Save and apply
 						</Button>
