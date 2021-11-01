@@ -98,13 +98,12 @@ const checkStatus = () => {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				return all([
-					checkActivation( // added kit
+					checkActivation(
 						status.name,
 						status.url,
 						status.activation_code,
 						status.kit_version,
-						status.constants,
-						status.kit
+						status.constants
 					),
 					Tier.findAll(),
 					status.dataValues
