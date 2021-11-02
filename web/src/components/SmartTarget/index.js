@@ -35,7 +35,16 @@ const DefaultChildren = ({ strings: STRINGS, icons: ICONS }) => {
 };
 
 const SmartTarget = (props) => {
-	const { targets, id, children, webViews, icons: ICONS } = props;
+	const {
+		targets,
+		id,
+		children,
+		webViews,
+		showLoader = true,
+		loaderClassName = 'default-remote-component-loader',
+		errorClassName = 'default-remote-component-error',
+		icons: ICONS,
+	} = props;
 
 	return targets.includes(id) ? (
 		<Fragment>
@@ -43,6 +52,9 @@ const SmartTarget = (props) => {
 				<RemoteComponent
 					key={`${name}_${index}`}
 					url={src}
+					showLoader={showLoader}
+					loaderClassName={loaderClassName}
+					errorClassName={errorClassName}
 					generateId={generateGlobalId(name)}
 					strings={STRINGS}
 					plugin_url={PLUGIN_URL}
