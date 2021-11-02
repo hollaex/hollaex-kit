@@ -10,7 +10,15 @@ import { generateGlobalId } from 'utils/id';
 import withEdit from 'components/EditProvider/withEdit';
 
 const SmartTarget = (props) => {
-	const { targets, id, children, webViews } = props;
+	const {
+		targets,
+		id,
+		children,
+		webViews,
+		showLoader = true,
+		loaderClassName = 'default-remote-component-loader',
+		errorClassName = 'default-remote-component-error',
+	} = props;
 
 	return targets.includes(id) ? (
 		<Fragment>
@@ -18,6 +26,9 @@ const SmartTarget = (props) => {
 				<RemoteComponent
 					key={`${name}_${index}`}
 					url={src}
+					showLoader={showLoader}
+					loaderClassName={loaderClassName}
+					errorClassName={errorClassName}
 					generateId={generateGlobalId(name)}
 					strings={STRINGS}
 					plugin_url={PLUGIN_URL}
