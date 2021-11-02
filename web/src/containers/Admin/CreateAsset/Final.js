@@ -16,7 +16,7 @@ const Final = ({
 	handleFileChange = () => {},
 	setConfigEdit,
 	handleDelete = () => {},
-	user,
+	user_id,
 }) => {
 	const { meta = {}, type } = coinFormData;
 	return (
@@ -197,7 +197,7 @@ const Final = ({
 						<span className="ml-2">{coinFormData.type}</span>
 						{isPreview &&
 						!coinFormData.verified &&
-						coinFormData.created_by === user.id ? (
+						coinFormData.created_by === user_id ? (
 							<IconToolTip
 								type="warning"
 								tip="This asset is in pending verification"

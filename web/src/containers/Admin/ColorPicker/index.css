@@ -1,6 +1,7 @@
 .color_picker-container {
 	margin-bottom: 22px;
 	position: relative;
+    color: #ffffff;
 }
 .color_picker-container .picker-wrapper {
 	line-height: 22px;
