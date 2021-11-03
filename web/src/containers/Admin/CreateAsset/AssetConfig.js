@@ -425,7 +425,7 @@ const AssetConfig = (props) => {
 							<div>Write a short description of this asset</div>
 							<TextArea
 								placeholder="Input a message"
-								name="message"
+								name="description"
 								rows={3}
 								onChange={handleChange}
 							/>

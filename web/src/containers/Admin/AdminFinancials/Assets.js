@@ -78,7 +78,7 @@ export const getTabParams = () => {
 
 const getColumns = (
 	allCoins = [],
-	user = {},
+	constants = {},
 	balance = {},
 	handleEdit,
 	handlePreview
@@ -118,12 +118,12 @@ const getColumns = (
 							type="warning"
 							tip="This asset is in pending verification"
 							onClick={(e) => {
-								if (selectedAsset.created_by === user.id) {
+								if (selectedAsset.created_by === _get(constants, 'info.user_id')) {
 									handleEdit(selectedAsset, e);
 								}
 							}}
 						/>
-					) : selectedAsset.created_by === user.id ? (
+						) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
 						<div className="config-content">
 							(
 							<span
@@ -612,7 +612,7 @@ class Assets extends Component {
 	};
 
 	renderPreview = () => {
-		const { user } = this.props;
+		const { constants } = this.props;
 		if (this.state.isConfigure) {
 			return (
 				<div className="overview-wrap">
@@ -621,7 +621,7 @@ class Assets extends Component {
 						<FinalPreview
 							isConfigure
 							coinFormData={this.state.selectedAsset}
-							user={user}
+							user_id={_get(constants, 'info.user_id')}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleDelete={this.handleDelete}
@@ -647,7 +647,7 @@ class Assets extends Component {
 						<FinalPreview
 							isPreview
 							coinFormData={this.state.selectedAsset}
-							user={user}
+							user_id={_get(constants, 'info.user_id')}
 							handleEdit={this.handleEdit}
 							handleDelete={this.handleDelete}
 							setConfigEdit={this.handleConfigureEdit}
@@ -655,7 +655,7 @@ class Assets extends Component {
 							userEmails={this.state.userEmails}
 						/>
 					</div>
-					{this.state.selectedAsset.created_by === user.id ? (
+					{this.state.selectedAsset.created_by === _get(constants, 'info.user_id') ? (
 						<div>
 							<div className="d-flex">
 								<Button
@@ -813,7 +813,7 @@ class Assets extends Component {
 			exchangeBalance,
 			// exchange
 		} = this.state;
-		const { allCoins, user } = this.props;
+		const { allCoins, constants } = this.props;
 
 		return (
 			<div className="admin-asset-wrapper">
@@ -839,7 +839,7 @@ class Assets extends Component {
 							<Table
 								columns={getColumns(
 									allCoins,
-									user,
+									constants,
 									exchangeBalance,
 									this.handleEdit,
 									this.handlePreview
@@ -878,7 +878,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setExchange: bindActionCreators(setExchange, dispatch),
 });
 const mapStateToProps = (state) => ({
-	user: state.user,
 	allCoins: state.asset.allCoins,
 	constants: state.app.constants,
 	exchange: state.asset && state.asset.exchange,

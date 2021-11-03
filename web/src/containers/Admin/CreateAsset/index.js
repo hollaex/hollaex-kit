@@ -641,6 +641,7 @@ class CreateAsset extends Component {
 						handleNext={this.props.onClose}
 						handleScreenChange={this.handleScreenChange}
 						handleBulkUpdate={this.handleBulkUpdate}
+						handleMetaChange={this.handleMetaChange}
 					/>
 				);
 			case 'coin-pro':
