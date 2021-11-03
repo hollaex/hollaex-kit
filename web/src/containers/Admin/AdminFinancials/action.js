@@ -9,7 +9,7 @@ export const storeMint = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/mint`, options);
+	return requestAuthenticated('/admin/mint', options);
 };
 
 export const updateMint = (values) => {
@@ -18,7 +18,7 @@ export const updateMint = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/mint`, options);
+	return requestAuthenticated('/admin/mint', options);
 };
 
 export const storeBurn = (values) => {
@@ -27,7 +27,7 @@ export const storeBurn = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/burn`, options);
+	return requestAuthenticated('/admin/burn', options);
 };
 
 export const updateBurn = (values) => {
@@ -36,7 +36,7 @@ export const updateBurn = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/burn`, options);
+	return requestAuthenticated('/admin/burn', options);
 };
 
 export const getAllCoins = () => {
@@ -88,4 +88,15 @@ export const updateExchange = (values) => {
 	};
 
 	return requestAuthenticated('/admin/exchange', options);
+};
+
+export const uploadCoinLogo = (values) => {
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		data: values,
+		url: '/admin/upload',
+		method: 'POST',
+	});
 };

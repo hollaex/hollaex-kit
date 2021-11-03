@@ -194,25 +194,29 @@ class CreateAsset extends Component {
 		const value = event.target.value;
 		if (
 			value &&
-			(value.split('.')[1].toUpperCase() === 'JPG' ||
-				value.split('.')[1].toUpperCase() === 'JPEG' ||
-				value.split('.')[1].toUpperCase() === 'PNG')
+			((value.split('.')[1].toUpperCase() === 'JPG' || value.toLowerCase().includes('jpg')) ||
+				(value.split('.')[1].toUpperCase() === 'JPEG' || value.toLowerCase().includes('jpeg')) ||
+				(value.split('.')[1].toUpperCase() === 'PNG' || value.toLowerCase().includes('png')))
 		) {
 			const file = event.target.files[0];
 			if (file) {
-				const base64Url = await new Promise((resolve, reject) => {
-					const reader = new FileReader();
-					reader.readAsDataURL(file);
-					reader.onload = () => resolve(reader.result);
-					reader.onerror = (error) => reject(error);
-				});
+				// const base64Url = await new Promise((resolve, reject) => {
+				// 	const reader = new FileReader();
+				// 	reader.readAsDataURL(file);
+				// 	reader.onload = () => resolve(reader.result);
+				// 	reader.onerror = (error) => reject(error);
+				// });
 				const coinFormData = {
 					...this.state.coinFormData,
-					[name]: base64Url,
+					[name]: file,
+					logoFile: file,
 					iconName: file.name,
 				};
+				this.props.updateFormData(name, file);
+				this.props.updateFormData('logoFile', file);
+				this.props.updateFormData('iconName', file.name);
 				this.setState({
-					[name]: base64Url,
+					[name]: file,
 					coinFormData,
 				});
 			}
@@ -265,12 +269,12 @@ class CreateAsset extends Component {
 		this.setState({ searchValue, coins: filteredData });
 	};
 
-	handleBack = () => {
+	handleBack = (isFinalBack = false) => {
 		const { id, type } = this.state.coinFormData || {};
 		if (this.state.currentScreen === 'final') {
-			if (this.state.savePresetAsset) {
+			if (this.state.savePresetAsset && isFinalBack) {
 				this.handleScreenChange('step7');
-			} else if (id) {
+			} else if (id && !isFinalBack) {
 				this.handleScreenChange('step1');
 			} else {
 				this.handleScreenChange('step9');
@@ -637,6 +641,7 @@ class CreateAsset extends Component {
 						handleNext={this.props.onClose}
 						handleScreenChange={this.handleScreenChange}
 						handleBulkUpdate={this.handleBulkUpdate}
+						handleMetaChange={this.handleMetaChange}
 					/>
 				);
 			case 'coin-pro':
