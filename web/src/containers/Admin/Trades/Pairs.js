@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Button, Table, Modal, Breadcrumb, message } from 'antd';
 import { CloseCircleFilled, CloseOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
+import _get from 'lodash/get';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
@@ -19,21 +20,21 @@ import { getAllPairs, updateExchange } from '../AdminFinancials/action';
 
 const { Item } = Breadcrumb;
 
-export const renderStatus = ({ id, verified, created_by }, user) => {
-	if (created_by !== user.id) {
+export const renderStatus = ({ id, verified, created_by }, user_id) => {
+	if (created_by !== user_id) {
 		return null;
 	}
 	return (
 		<div className="settings-toolTip coin-config-align">
 			{!id && !verified ? (
-				<Link to="/admin/financials?tab=1">
+				<Link to="/admin/financials?tab=0">
 					<IconToolTip
 						type="settings"
 						tip="Click to complete the asset configuration"
 					/>
 				</Link>
 			) : !verified ? (
-				<Link to="/admin/financials?tab=1">
+				<Link to="/admin/financials?tab=0">
 					<IconToolTip
 						type="warning"
 						tip="This asset is in pending verification"
@@ -74,7 +75,7 @@ const renderTrade = (isActive) => {
 	)
 }
 
-const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview, constants = {}) => [
+const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
 	{
 		title: 'Markets',
 		dataIndex: 'symbol',
@@ -110,7 +111,7 @@ const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview, constants = {})
 							small={true}
 						/>
 						<div className="icon-wrapper">
-							{renderStatus(pair_base_data, user)}
+							{renderStatus(pair_base_data, _get(constants, 'info.user_id'))}
 						</div>
 					</div>
 					<div className="content-space1">
@@ -122,7 +123,7 @@ const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview, constants = {})
 							type={pair_2.toLowerCase()}
 							small={true}
 						/>
-						<div className="icon-wrapper">{renderStatus(pair2_data, user)}</div>
+						<div className="icon-wrapper">{renderStatus(pair2_data, _get(constants, 'info.user_id'))}</div>
 					</div>
 					<span className="content-space2 pairs">{pair2_data.fullname}</span>
 					{verified ? (
@@ -216,7 +217,9 @@ class Pairs extends Component {
 	getPairs = async () => {
 		try {
 			const res = await getAllPairs();
-			this.props.setAllPairs(res.data.data);
+			if (res && res.data && res.data.data) {
+				this.props.setAllPairs(res.data.data);
+			}
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -434,7 +437,7 @@ class Pairs extends Component {
 	};
 
 	renderContent = () => {
-		const { coins, allCoins, allPairs, user, constants } = this.props;
+		const { coins, allCoins, allPairs, constants } = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		if (this.state.isPreview) {
 			return (
@@ -448,10 +451,10 @@ class Pairs extends Component {
 							formData={this.state.previewData}
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
-							user={user}
+							user_id={_get(constants, 'info.user_id')}
 						/>
 						<div>
-							{this.state.previewData.created_by === user.id ? (
+							{this.state.previewData.created_by === _get(constants, 'info.user_id') ? (
 								<Button
 									type="primary"
 									className="configure-btn green-btn"
@@ -472,7 +475,7 @@ class Pairs extends Component {
 						<Preview
 							coins={coinsData}
 							allCoins={allCoins}
-							user={user}
+							user_id={_get(constants, 'info.user_id')}
 							isConfigure={this.state.isConfigure}
 							formData={this.state.previewData}
 							onEdit={this.handleEdit}
@@ -517,7 +520,7 @@ class Pairs extends Component {
 					</div>
 					<div className="table-wrapper">
 						<Table
-							columns={COLUMNS(allPairs, allCoins, user, this.handlePreview, constants)}
+							columns={COLUMNS(allPairs, allCoins, this.handlePreview, constants)}
 							rowKey={(data, index) => index}
 							dataSource={this.state.pairs}
 						/>
@@ -605,7 +608,6 @@ const mapStateToProps = (state) => {
 		pairs:
 			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
 		allPairs: state.asset.allPairs,
-		user: state.user,
 		allCoins: state.asset.allCoins,
 		constants: state.app.constants,
 	};

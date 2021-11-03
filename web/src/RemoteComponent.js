@@ -1,9 +1,32 @@
-import {
-	createRemoteComponent,
-	createRequires,
-} from '@paciolan/remote-component';
-import { resolve } from 'remote-component.config';
+import React from 'react';
+import { useRemoteComponent } from 'useRemoteComponent';
+import { LoadingOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 
-const requires = createRequires(resolve);
+export const RemoteComponent = ({
+	showLoader,
+	loaderClassName,
+	errorClassName,
+	url,
+	...props
+}) => {
+	const [loading, err, Component] = useRemoteComponent(url);
 
-export const RemoteComponent = createRemoteComponent({ requires });
+	if (showLoader && loading) {
+		return (
+			<div className={loaderClassName}>
+				<LoadingOutlined />
+			</div>
+		);
+	}
+
+	if (err) {
+		return (
+			<div className={errorClassName}>
+				<ExclamationCircleOutlined />
+				<div className="pl-2">{`Unknown Error: ${err.toString()}`}</div>
+			</div>
+		);
+	}
+
+	return <Component {...props} />;
+};

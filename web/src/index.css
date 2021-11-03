@@ -10336,6 +10336,28 @@ foreignObject {
 .progressbar-icon.completed {
   color: var(--specials_buttons-links-and-highlights); }
 
+.default-remote-component-loader {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  color: var(--calculated_specials_highlight-box);
+  padding-top: 3rem;
+  padding-bottom: 3rem; }
+
+.default-remote-component-error {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--specials_notifications-alerts-warnings);
+  padding-top: 3rem;
+  padding-bottom: 3rem; }
+
 html {
   font-size: 12px !important;
   height: 100%; }

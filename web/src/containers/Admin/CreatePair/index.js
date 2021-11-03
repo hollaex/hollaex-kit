@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
+import _get from 'lodash/get';
 
 import AddPairTab from './AddPairTab';
 import PairParams from './PairParams';
@@ -303,11 +304,11 @@ class CreatePair extends Component {
 			pairs,
 			isExchangeWizard,
 			isEdit,
-			user,
 			router,
 			onClose,
 			exchange,
-			getMyExchange
+			getMyExchange,
+			constants
 		} = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
@@ -324,7 +325,7 @@ class CreatePair extends Component {
 						isEdit={isEdit}
 						activeTab={activeTab}
 						isCreatePair={true}
-						user={user}
+						user_id={_get(constants, 'info.user_id')}
 						isExistPair={isExistPair}
 						onClose={onClose}
 						exchange={exchange}
@@ -347,7 +348,7 @@ class CreatePair extends Component {
 			case 'step2':
 				return (
 					<PairParams
-						coins={coinsData}
+						coins={allCoins}
 						formData={formData}
 						isEdit={isEdit}
 						handleChange={this.handleChange}
@@ -425,8 +426,8 @@ const mapStateToProps = (state, ownProps) => {
 		pairs:
 			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
 		allPairs: state.asset.allPairs,
-		user: state.user,
 		allCoins: state.asset.allCoins,
+		constants: state.app.constants,
 	};
 };
 

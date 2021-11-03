@@ -1,0 +1,23 @@
+.default-remote-component-loader {
+	height: 100% !important;
+	width: 100% !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 5rem;
+	color: $specials_highlight-box;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
+
+.default-remote-component-error {
+	height: 100% !important;
+	width: 100% !important;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5rem;
+	color: $colors-notifications-red;
+	padding-top: 3rem;
+	padding-bottom: 3rem;
+}
