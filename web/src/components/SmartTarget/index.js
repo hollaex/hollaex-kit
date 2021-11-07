@@ -8,6 +8,31 @@ import { PLUGIN_URL } from 'config/constants';
 import { withRouter } from 'react-router';
 import { generateGlobalId } from 'utils/id';
 import withEdit from 'components/EditProvider/withEdit';
+import renderFields from 'components/Form/factoryFields';
+import { getErrorLocalized } from 'utils/errors';
+import { IconTitle } from 'components';
+
+const DefaultChildren = ({ strings: STRINGS, icons: ICONS }) => {
+	return (
+		<div
+			style={{
+				height: '28rem',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}
+		>
+			<IconTitle
+				stringId="PAGE_UNDER_CONSTRUCTION"
+				text={STRINGS['PAGE_UNDER_CONSTRUCTION']}
+				iconId="FIAT_UNDER_CONSTRUCTION"
+				iconPath={ICONS['FIAT_UNDER_CONSTRUCTION']}
+				className="flex-direction-column"
+			/>
+		</div>
+	);
+};
 
 const SmartTarget = (props) => {
 	const {
@@ -18,6 +43,7 @@ const SmartTarget = (props) => {
 		showLoader = true,
 		loaderClassName = 'default-remote-component-loader',
 		errorClassName = 'default-remote-component-error',
+		icons: ICONS,
 	} = props;
 
 	return targets.includes(id) ? (
@@ -33,12 +59,16 @@ const SmartTarget = (props) => {
 					strings={STRINGS}
 					plugin_url={PLUGIN_URL}
 					token={getToken()}
+					renderFields={renderFields}
+					getErrorLocalized={getErrorLocalized}
 					{...props}
 				/>
 			))}
 		</Fragment>
-	) : (
+	) : children ? (
 		<Fragment>{children}</Fragment>
+	) : (
+		<DefaultChildren strings={STRINGS} icons={ICONS} />
 	);
 };
 
