@@ -526,7 +526,8 @@ export default {
 				FRONT: 'Please upload a scan of your passport or national Id',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport or national Id and note',
+				SELFIE_PHOTO_ID:
+					'Please upload a selfie with passport or national Id and note',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -536,9 +537,11 @@ export default {
 					PASSPORT: 'Passport',
 				},
 				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
-				ID_NUMBER_PLACEHOLDER: 'Type your passport Number or national Id number',
+				ID_NUMBER_PLACEHOLDER:
+					'Type your passport Number or national Id number',
 				ID_PASSPORT_NUMBER_LABEL: 'Passport Number or national id number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport or national Id number',
+				ID_PASSPORT_NUMBER_PLACEHOLDER:
+					'Type your passport or national Id number',
 				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
 				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
 				FRONT_LABEL: 'Passport or National Id',
@@ -550,7 +553,8 @@ export default {
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport or national Id and Note',
+				SELFIE_PHOTO_ID_LABEL:
+					'Your Selfie with passport or national Id and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
 					'Add a copy of your Selfie with passport or national Id and Note',
 			},
@@ -559,8 +563,8 @@ export default {
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
-					LIST_ITEM_1:
-						'HIGH QUALITY (color images, 300dpi resolution or higher and Image must be 2MB in size per image or lower) Use a Webtool to resize.',
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
+					LIST_ITEM_1: 'Clear high quality color image', // updated
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
@@ -569,6 +573,8 @@ export default {
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
 						'Please do not submit the passport as your proof of residence.',
+					VIOLATION_ERROR:
+						'Total size of all your uploaded documents exceeds the upload limit of {0}mb. Please upload smaller files to proceed.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:

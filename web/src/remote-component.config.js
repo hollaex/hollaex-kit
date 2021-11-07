@@ -19,5 +19,7 @@ module.exports = {
 		'@ant-design/icons': require('@ant-design/icons'),
 		'react-event-listener': require('react-event-listener'),
 		'hollaex-web-lib': require('hollaex-web-lib'),
+		antd: require('antd'),
+		moment: require('moment'),
 	},
 };
