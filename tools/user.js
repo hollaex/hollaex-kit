@@ -1554,7 +1554,7 @@ const updateUserInfo = async (userId, data = {}) => {
 	}
 
 	if (isEmpty(data)) {
-		throw new Error('No data given');
+		throw new Error('No fields to update');
 	}
 
 	const user = await getUserByKitId(userId, false);
