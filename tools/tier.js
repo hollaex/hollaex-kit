@@ -5,7 +5,7 @@ const dbQuery = require('./database/query');
 const { getModel } = require('./database');
 const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
 const { reject, all } = require('bluebird');
-const { difference, omit, isNumber, each } = require('lodash');
+const { difference, omit, isNumber, each, isString } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
@@ -116,23 +116,23 @@ const updateTier = (level, updateData) => {
 		.then((tier) => {
 			const newData = {};
 
-			if (updateData.name) {
+			if (isString(updateData.name)) {
 				newData.name = updateData.name;
 			}
 
-			if (updateData.icon) {
+			if (isString(updateData.icon)) {
 				newData.icon = updateData.icon;
 			}
 
-			if (updateData.note) {
+			if (isString(updateData.note)) {
 				newData.note = updateData.note;
 			}
 
-			if (updateData.description) {
+			if (isString(updateData.description)) {
 				newData.description = updateData.description;
 			}
 
-			return tier.update(newData, { returning: true });
+			return tier.update(newData);
 		})
 		.then((tier) => {
 			publisher.publish(
