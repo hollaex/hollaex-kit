@@ -23,7 +23,7 @@ export const MENU_ITEMS = {
 			hide_from_sidebar: true,
 		},
 		{
-			id: 'stake_page',
+			// id: 'stake_page',
 			path: '/stake',
 			icon_id: 'TAB_WALLET',
 			string_id: 'ACCOUNTS.TAB_STAKE',
