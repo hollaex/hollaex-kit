@@ -2862,6 +2862,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
