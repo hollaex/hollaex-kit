@@ -20,7 +20,7 @@ const filterOptions = [
     },
 ];
 
-const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}) => {
+const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}, handleLinkClick) => {
     const columnData = [
         {
             title: 'Markets',
@@ -37,8 +37,9 @@ const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}) => {
                 return (
                     <div
                         className="coin-symbol-wrapper"
+                        onClick={handleLinkClick}
                     >
-                        <div className="coin-title">{pair_base_data.fullname}</div>
+                        <div className="coin-title pairs">{pair_base_data.fullname}</div>
                         <div className="config-content content-space2">
                             <Coins
                                 color={pair_base_data.meta ? pair_base_data.meta.color : ''}
@@ -56,7 +57,7 @@ const COLUMNS = (pairs, allCoins = [], user = {}, constants = {}) => {
                                 small={true}
                             />
                         </div>
-                        <span className="content-space2">{pair2_data.fullname}</span>
+                        <span className="content-space2 pairs">{pair2_data.fullname}</span>
                     </div>
                 );
             },
@@ -247,6 +248,10 @@ class PairsSummary extends Component {
         )
     }
 
+    handleLinkClick = () => {
+        this.props.router.push("/admin/trade?tab=1&isViewTabs=true");
+    };
+
     render() {
         const { allCoins, allPairs, user, pairs = [], constants } = this.props;
         let allPairSymbols = allPairs.map(item => item.code);
@@ -284,7 +289,7 @@ class PairsSummary extends Component {
                     </div>
                     <div className="summary table-wrapper">
                         <Table
-                            columns={COLUMNS(allPairs, allCoins, user, constants)}
+                            columns={COLUMNS(allPairs, allCoins, user, constants, this.handleLinkClick)}
                             rowKey={(data, index) => index}
                             dataSource={this.state.pairs}
                             bordered

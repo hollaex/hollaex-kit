@@ -58,7 +58,10 @@ const PairsTab = (props) => {
 				renderTabBar={renderTabBar}
 			>
 				<TabPane tab="Summary" key="0">
-					<PairsSummary getMyExchange={getMyExchange}/>
+					<PairsSummary
+						router={props.router}
+						getMyExchange={getMyExchange}
+					/>
 				</TabPane>
 				<TabPane tab="OrderBook" key="1">
 					<Pairs
