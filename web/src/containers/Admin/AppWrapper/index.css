@@ -31,8 +31,8 @@
 }
 .app_container-content .ant-tabs,
 .app_container-content h2,
-.ant-tabs-tab:hover,
-.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+.admin-content-wrapper .ant-tabs-tab:hover,
+.admin-content-wrapper .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
 	color: #ffffff;
 }
 .admin-content-head {
