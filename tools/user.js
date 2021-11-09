@@ -1521,6 +1521,8 @@ const mapNetworkIdToKitId = async (
 				...data,
 				[user.network_id]: user.id
 			};
+		} else {
+			return data;
 		}
 	}, {});
 
