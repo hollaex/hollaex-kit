@@ -29,6 +29,7 @@ import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
+const MANUAL_KYC_PLUGINS = ['kyc', 'kyc-mongol'];
 
 const RenderModalContent = ({
 	modalKey = '',
@@ -377,7 +378,7 @@ const AboutData = ({
 		}
 	};
 
-	const isManualKYC = kycPluginName === 'kyc';
+	const isManualKYC = MANUAL_KYC_PLUGINS.includes(kycPluginName);
 
 	return (
 		<div>
