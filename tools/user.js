@@ -2,7 +2,23 @@
 
 const { getModel } = require('./database/model');
 const dbQuery = require('./database/query');
-const { has, omit, pick, each, differenceWith, isEqual, isString, isNumber, isBoolean, isPlainObject, isNil, isArray, isInteger, keyBy } = require('lodash');
+const {
+	has,
+	omit,
+	pick,
+	each,
+	differenceWith,
+	isEqual,
+	isString,
+	isNumber,
+	isBoolean,
+	isPlainObject,
+	isNil,
+	isArray,
+	isInteger,
+	keyBy,
+	isEmpty
+} = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
 const { SERVER_PATH } = require('../constants');
@@ -1529,6 +1545,82 @@ const mapNetworkIdToKitId = async (
 	return result;
 };
 
+const updateUserInfo = async (userId, data = {}) => {
+	if (!isInteger(userId) || userId <= 0) {
+		throw new Error('UserId must be a positive integer');
+	}
+	if (!isPlainObject(data)) {
+		throw new Error('Update data must be an object');
+	}
+
+	if (isEmpty(data)) {
+		throw new Error('No data given');
+	}
+
+	const user = await getUserByKitId(userId, false);
+
+	if (!user) {
+		throw new Error('User not found');
+	}
+
+	const updateData = {};
+
+	for (const field in data) {
+		const value = data[field];
+
+		switch (field) {
+			case 'full_name':
+			case 'nationality':
+			case 'phone_number':
+				if (isString(value)) {
+					updateData[field] = value;
+				}
+				break;
+			case 'gender':
+				if (isBoolean(value)) {
+					updateData[field] = value;
+				}
+				break;
+			case 'dob':
+				if (isDatetime(value)) {
+					updateData[field] = value;
+				}
+				break;
+			case 'address':
+				if (isPlainObject(value)) {
+					updateData[field] = {
+						...user.address,
+						...pick(value, ['address', 'city', 'country', 'postal_code'])
+					};
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	if (isEmpty(updateData)) {
+		throw new Error('No fields to update');
+	}
+
+	await user.update(
+		updateData,
+		{ fields: Object.keys(updateData) }
+	);
+
+	return omitUserFields(
+		user,
+		[
+			'full_name',
+			'nationality',
+			'phone_number',
+			'gender',
+			'dob',
+			'address'
+		]
+	);
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1576,5 +1668,6 @@ module.exports = {
 	verifyUserEmailByKitId,
 	generateAffiliationCode,
 	updateUserMeta,
-	mapNetworkIdToKitId
+	mapNetworkIdToKitId,
+	updateUserInfo
 };
