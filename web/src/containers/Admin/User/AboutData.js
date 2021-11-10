@@ -29,7 +29,6 @@ import Image from 'components/Image';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const VerificationForm = AdminHocForm('VERIFICATION_FORM');
-const MANUAL_KYC_PLUGINS = ['kyc', 'kyc-mongol'];
 
 const RenderModalContent = ({
 	modalKey = '',
@@ -378,8 +377,6 @@ const AboutData = ({
 		}
 	};
 
-	const isManualKYC = MANUAL_KYC_PLUGINS.includes(kycPluginName);
-
 	return (
 		<div>
 			<div className="d-flex justify-content-end header-section mb-5">
@@ -568,17 +565,15 @@ const AboutData = ({
 									kycPluginName={kycPluginName}
 								/>
 							</div>
-							{isManualKYC && (
-								<div>
-									<Button
-										type="primary"
-										className="green-btn"
-										onClick={() => setUpload(true)}
-									>
-										Upload
-									</Button>
-								</div>
-							)}
+							<div>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={() => setUpload(true)}
+								>
+									Upload
+								</Button>
+							</div>
 						</div>
 					</div>
 					<div className="about-notes-content">
