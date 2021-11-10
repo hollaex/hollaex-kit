@@ -98,13 +98,12 @@ const checkStatus = () => {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				return all([
-					checkActivation( // added kit
+					checkActivation(
 						status.name,
 						status.url,
 						status.activation_code,
 						status.kit_version,
-						status.constants,
-						status.kit
+						status.constants
 					),
 					Tier.findAll(),
 					status.dataValues
@@ -165,6 +164,7 @@ const checkStatus = () => {
 				name: exchange.name,
 				active: exchange.active,
 				exchange_id: exchange.id,
+				user_id: exchange.user_id,
 				url: exchange.url,
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,

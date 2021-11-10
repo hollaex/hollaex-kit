@@ -18,10 +18,10 @@ const AssetParams = ({
 
 	const handleGetParams = async () => {
 		if (coinFormData.estimated_price) {
-		// 	handleBulkUpdate(coinFormData);
-		// 	handleNext('edit-param-values');
-		// } else {
-			handleBulkUpdate(coinFormData);
+			// 	handleBulkUpdate(coinFormData);
+			// 	handleNext('edit-param-values');
+			// } else {
+			handleBulkUpdate({ estimated_price: coinFormData.estimated_price });
 			handleNext('edit-param-values');
 		}
 	};

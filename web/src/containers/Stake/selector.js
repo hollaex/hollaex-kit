@@ -10,6 +10,8 @@ const getOraclePrices = (state) => state.asset.oraclePrices;
 
 const getPublicInfo = (state) => state.stake.publicInfo;
 
+const getPendingTransactions = (state) => state.stake.pendingTransactions;
+
 export const userActiveStakesSelector = createSelector(
 	[getUserStakes],
 	(userStakes = {}) => {
@@ -93,6 +95,22 @@ export const publicInfoSelector = createSelector(
 			othersStake: 321332,
 			myStakePercent: 25,
 			othersStakePercent: 75,
+		};
+	}
+);
+
+export const pendingTransactionsSelector = createSelector(
+	[getPendingTransactions],
+	(pendingTransactions) => {
+		// pending transactions calculations
+
+		let xht = 0;
+		pendingTransactions.forEach(({ value }) => {
+			xht = mathjs.sum(xht, web3.utils.fromWei(value));
+		});
+
+		return {
+			xht,
 		};
 	}
 );

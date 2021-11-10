@@ -5,8 +5,12 @@ import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
 import { Table, EditWrapper, ProgressBar } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
-import { userActiveStakesSelector } from 'containers/Stake/selector';
+import {
+	userActiveStakesSelector,
+	pendingTransactionsSelector,
+} from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
 import Transaction from './Transaction';
@@ -29,6 +33,7 @@ const MyStaking = ({
 	activeStakes,
 	network,
 	events,
+	pending,
 }) => {
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
@@ -172,7 +177,7 @@ const MyStaking = ({
 										<ConnectWrapper>{totalUserEarnings[token]}</ConnectWrapper>
 									</td>
 									<td>
-										<div className="d-flex content-center">
+										<div className="d-flex">
 											<AntBtn
 												className="stake-btn"
 												type="primary"
@@ -310,7 +315,7 @@ const MyStaking = ({
 											</td>
 											<td>{reward}</td>
 											<td className="text-align-center">
-												<div className="d-flex content-center">
+												<div className="d-flex">
 													<AntBtn {...btnProps} />
 												</div>
 											</td>
@@ -318,6 +323,49 @@ const MyStaking = ({
 									);
 								}
 							)
+						)}
+						{Object.entries(pending).map(
+							([token, pendingValue], pendingIndex) => {
+								return (
+									pendingValue !== 0 && (
+										<tr
+											className="table-row table-bottom-border"
+											key={`${token}_${pendingIndex}`}
+										>
+											<td />
+											<td>
+												<div className="d-flex align-center">
+													<div>
+														<ClockCircleOutlined />
+													</div>
+													<div className="pl-4">
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.PENDING_TRANSACTIONS'],
+																pendingValue,
+																token.toUpperCase()
+															)}
+														</div>
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.VIEW_ON'],
+																<span className="underline-text pointer blue-link">
+																	{STRINGS['STAKE.BLOCKCHAIN']}
+																</span>
+															)}
+														</div>
+													</div>
+												</div>
+											</td>
+											<td />
+											<td />
+											<td />
+											<td />
+											<td />
+										</tr>
+									)
+								);
+							}
 						)}
 					</tbody>
 				</table>
@@ -363,6 +411,7 @@ const mapStateToProps = (store) => ({
 	stakables: store.stake.stakables,
 	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
+	pending: pendingTransactionsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

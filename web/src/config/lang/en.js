@@ -563,8 +563,8 @@ export default {
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
-					LIST_ITEM_1:
-						'HIGH QUALITY (color images, 300dpi resolution or higher and Image must be 2MB in size per image or lower) Use a Webtool to resize.',
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
+					LIST_ITEM_1: 'Clear high quality color image', // updated
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
@@ -573,6 +573,8 @@ export default {
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
 						'Please do not submit the passport as your proof of residence.',
+					VIOLATION_ERROR:
+						'Total size of all your uploaded documents exceeds the upload limit of {0}mb. Please upload smaller files to proceed.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -794,7 +796,7 @@ export default {
 	},
 	STAKE: {
 		EARN: 'Earn', //new
-		TITLE: 'Stake and earn',
+		TITLE: 'Stake',
 		MODAL_TITLE: 'Stake and earn {0}',
 		REVIEW_MODAL_TITLE: 'Check and confirm stake',
 		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
@@ -843,14 +845,14 @@ export default {
 		WAITING_TEXT: 'Confirm this transaction in your wallet',
 		PENDING_TEXT: 'Transaction pending...',
 		WAITING_PROMPT: '{0} {1} {2}',
-		WAITING_STAKE: 'Stake',
-		WAITING_WITHDRAW: 'Withdraw',
+		WAITING_STAKE: 'Confirm the stake amount',
+		WAITING_WITHDRAW: 'Allowing spending',
 		WAITING_UNSTAKE: 'Unstake',
-		WAITING_DISTRIBUTE: 'Distribute',
-		WAITING_STAKE_ING: 'Staking',
-		WAITING_WITHDRAW_ING: 'withdrawing',
+		WAITING_DISTRIBUTE: 'Clear pending earnings',
+		WAITING_STAKE_ING: 'Staking pending',
+		WAITING_WITHDRAW_ING: 'Processing of allowing spending',
 		WAITING_UNSTAKE_ING: 'Unstaking',
-		WAITING_DISTRIBUTE_ING: 'Distributing',
+		WAITING_DISTRIBUTE_ING: 'Clearing pending earnings',
 		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
 		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
 		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
@@ -866,6 +868,10 @@ export default {
 		CONNECT_A_WALLET: 'Connect to a wallet',
 		CONNECT_WALLET_TABLE: '{0} to see historical stake events',
 		ZERO_STAKES: 'Zero stakes',
+		PENDING_TRANSACTIONS: 'Pending {0} {1}',
+		VIEW_ON: 'View on the {0}',
+		BLOCKCHAIN: 'blockchain',
+		DISCONNECT: 'Disconnect account',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -920,6 +926,7 @@ export default {
 		CONTRACT_SUBTITLE: 'Token contract: {0}',
 		VIEW_MORE: 'VIEW MORE',
 		VIEW: 'View',
+		TOKEN: '{0} Token',
 		TABS: {
 			PUBLIC_INFO: 'Public info',
 			DISTRIBUTIONS: 'Distributions',

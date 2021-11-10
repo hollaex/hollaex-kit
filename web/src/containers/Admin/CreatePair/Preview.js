@@ -18,7 +18,7 @@ const Preview = ({
 	onDelete,
 	isEdit,
 	allCoins,
-	user,
+	user_id,
 	isExistPair,
 	onClose,
 	exchange,
@@ -71,10 +71,14 @@ const Preview = ({
 					</div>
 				</Fragment>
 			) : null}
-			<div className="d-flex">
-				<div className="title">Manage {formData.pair_base}/{formData.pair_2}</div>
-				<div>{renderStatus(pair_base_data, user)}</div>
-			</div>
+			{isPreview || isConfigure
+				?
+				<div className="d-flex">
+					<div className="title">Manage {formData.pair_base}/{formData.pair_2}</div>
+					<div>{renderStatus(pair_base_data, user_id)}</div>
+				</div>
+				: null
+			}
 			<div
 				className={
 					!isPreview && !isConfigure
@@ -104,7 +108,7 @@ const Preview = ({
 									<ExclamationCircleFilled />
 								</div>
 							) : null}
-							{isConfigure ? renderStatus(pair_base_data, user) : null}
+							{isConfigure ? renderStatus(pair_base_data, user_id) : null}
 						</div>
 						{isPreview || isConfigure ? (
 							<div>
@@ -134,7 +138,7 @@ const Preview = ({
 									<ExclamationCircleFilled />
 								</div>
 							) : null}
-							{isConfigure ? renderStatus(pair2_data, user) : null}
+							{isConfigure ? renderStatus(pair2_data, user_id) : null}
 						</div>
 						{isConfigure || isPreview ? (
 							<div>

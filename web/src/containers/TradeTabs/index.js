@@ -25,7 +25,7 @@ class AddTradeTab extends Component {
 		searchValue: '',
 		selected: isMobile
 			? STRINGS['MARKET_OPTIONS'][0].value
-			: STRINGS['MARKET_OPTIONS'][1].value,
+			: STRINGS['MARKET_OPTIONS'][0].value,
 		options: STRINGS['MARKET_OPTIONS'],
 		chartData: {},
 	};

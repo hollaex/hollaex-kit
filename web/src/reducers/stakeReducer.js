@@ -8,6 +8,8 @@ import {
 	SET_DISTRIBUTIONS,
 	SET_CONTRACT_EVENTS,
 	SET_PUBLIC_INFO,
+	SET_PENDING_TRANSACTIONS,
+	RESET_STAKE_STORE,
 } from 'actions/stakingActions';
 
 const initialStakable = {
@@ -33,6 +35,7 @@ const initialState = {
 		totalStaked: 0,
 		totalStakeWeight: 0,
 	},
+	pendingTransactions: [],
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -46,7 +49,26 @@ export default (state = initialState, { type, payload }) => {
 		case SET_DISTRIBUTIONS:
 		case SET_CONTRACT_EVENTS:
 		case SET_PUBLIC_INFO:
+		case SET_PENDING_TRANSACTIONS:
 			return { ...state, ...payload };
+
+		case RESET_STAKE_STORE: {
+			return {
+				...state,
+				account: '',
+				stakables: [initialStakable],
+				periods: {},
+				userStakes: {},
+				balance: 0,
+				contractEvents: [],
+				publicInfo: {
+					totalReward: 0,
+					totalStaked: 0,
+					totalStakeWeight: 0,
+				},
+				pendingTransactions: [],
+			};
+		}
 
 		default:
 			return state;
