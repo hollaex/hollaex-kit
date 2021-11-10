@@ -194,6 +194,7 @@ class Plugins extends Component {
 			selectedPlugin: {},
 			type: '',
 			isConfigure: false,
+			tabKey: 'explore'
 		});
 	};
 
@@ -247,6 +248,10 @@ class Plugins extends Component {
 		});
 	};
 
+	handleRedirect = () => {
+		this.setState({ type: 'configure', isConfigure: true });
+	};
+
 	render() {
 		const {
 			loading,
@@ -298,6 +303,7 @@ class Plugins extends Component {
 							updatePluginList={this.handleUpdatePluginList}
 							removePlugin={this.removePlugin}
 							restart={this.handleRestart}
+							handleRedirect={this.handleRedirect}
 						/>
 					</div>
 				) : (
