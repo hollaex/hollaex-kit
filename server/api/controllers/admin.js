@@ -2,7 +2,7 @@
 
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
-const { cloneDeep } = require('lodash');
+const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { sendEmail } = require('../../mail');
@@ -1739,6 +1739,48 @@ const getNetworkPairs = (req, res) => {
 		});
 };
 
+const putUserInfo = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserInfo auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const updateData = pick(
+		req.swagger.params.data.value,
+		[
+			'full_name',
+			'gender',
+			'nationality',
+			'phone_number',
+			'dob',
+			'address'
+		]
+	);
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putUserInfo user_id:',
+		user_id,
+		'updateData:',
+		updateData
+	);
+
+	toolsLib.user.updateUserInfo(user_id, updateData)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserInfo err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1781,5 +1823,6 @@ module.exports = {
 	getExchange,
 	getNetworkCoins,
 	getNetworkPairs,
-	updateExchange
+	updateExchange,
+	putUserInfo
 };
