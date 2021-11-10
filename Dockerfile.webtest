@@ -12,8 +12,5 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm install --save chai && \
-    cd /app/test && npm install --loglevel=error
-
 ENTRYPOINT ["mocha"]
 CMD ["test/selenium/Scenario/newUser.js"]
