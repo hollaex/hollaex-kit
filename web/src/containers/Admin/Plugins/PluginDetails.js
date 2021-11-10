@@ -16,6 +16,7 @@ const PluginDetails = ({
 	pluginData,
 	isLoading,
 	restart,
+	handleRedirect
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -35,6 +36,7 @@ const PluginDetails = ({
 				setAddLoading(false);
 				handlePluginList(res);
 				restart(() => message.success('Plugin installed successfully'));
+				handleRedirect();
 			})
 			.catch((err) => {
 				setAddLoading(false);

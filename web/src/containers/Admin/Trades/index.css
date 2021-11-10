@@ -242,7 +242,8 @@
 	margin-right: 5px;
 }
 .admin-pairs-container .table-wrapper.summary thead a,
-.admin-pairs-container .table-wrapper.summary tbody a {
+.admin-pairs-container .table-wrapper.summary tbody a,
+.admin-pairs-container .coin-symbol-wrapper .pairs:hover {
 	text-decoration: underline;
 }
 

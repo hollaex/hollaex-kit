@@ -32,10 +32,7 @@ export const updateNotes = (values) => {
 	return requestAuthenticated(`/admin/user/note?user_id=${values.id}`, options);
 };
 export const requestUserImages = (values, kyc_name) => {
-	let url = `/plugins/kyc/id?${toQueryString(values)}`;
-	if (kyc_name !== 'kyc') {
-		url = `/plugins/${kyc_name}/admin/files?${toQueryString(values)}`;
-	}
+	const url = `/plugins/${kyc_name}/admin/files?${toQueryString(values)}`;
 	return requestAuthenticated(url, {}, null, PLUGIN_URL)
 		.catch(handleError)
 		.then((data) => data);
@@ -46,12 +43,7 @@ export const updateUserData = (values) => {
 		method: 'PUT',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(
-		`/plugins/kyc/admin?user_id=${values.id}`,
-		options,
-		null,
-		PLUGIN_URL
-	);
+	return requestAuthenticated(`/admin/user?user_id=${values.id}`, options);
 };
 
 export const addBankData = (values) => {
@@ -113,12 +105,10 @@ export const rejectBank = (values) => {
 };
 
 export const requestUser = (values, kyc_name) => {
-	let params = values;
-	if (kyc_name !== 'kyc') {
-		params = {
-			user_id: values.id,
-		};
-	}
+	const params = {
+		user_id: values.id,
+	};
+
 	const promises = [
 		requestUserData(values),
 		requestUserImages(params, kyc_name),
