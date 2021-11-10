@@ -12,5 +12,7 @@ COPY . /app
 
 WORKDIR /app
 
+RUN npm install --save chai
+
 ENTRYPOINT ["mocha"]
 CMD ["test/selenium/Scenario/newUser.js"]
