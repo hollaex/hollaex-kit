@@ -1608,17 +1608,7 @@ const updateUserInfo = async (userId, data = {}) => {
 		{ fields: Object.keys(updateData) }
 	);
 
-	return omitUserFields(
-		user,
-		[
-			'full_name',
-			'nationality',
-			'phone_number',
-			'gender',
-			'dob',
-			'address'
-		]
-	);
+	return omitUserFields(user.dataValues);
 };
 
 module.exports = {
