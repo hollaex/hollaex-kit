@@ -164,8 +164,8 @@ class Plugins extends Component {
 		}
 	};
 
-	handleOpenPlugin = (plugin) => {
-		const { pluginData, myPlugins } = this.state;
+	handleOpenPlugin = (plugin, plugin_type = '') => {
+		const { pluginData, myPlugins, isConfigure } = this.state;
 		if (plugin.version === 0) {
 			this.setState({
 				isVisible: true,
@@ -180,6 +180,12 @@ class Plugins extends Component {
 				showSelected: true,
 				selectedPlugin: plugin,
 			});
+			if (plugin_type === 'add_plugin' && !isConfigure) {
+				this.setState({
+					type: 'configure',
+					isConfigure: true
+				});
+			}
 		} else {
 			this.setState({
 				isVisible: true,

@@ -6,7 +6,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin } from './action';
+import { addPlugin, updatePlugins } from './action';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -73,28 +73,62 @@ class MyPlugins extends Component {
 		}
 	};
 
+	handleNavigation = (res) => {
+		message.success('Added third party plugin successfully');
+		this.props.handleOpenPlugin(res, 'add_plugin');
+	}
+
 	handleAddPlugin = async () => {
-		const { restart } = this.props;
+		const { restart, myPlugins } = this.props;
 		const body = {
 			...this.state.thirdParty,
 			enabled: true,
 		};
-		addPlugin(body)
-			.then((res) => {
-				if (res) {
-					this.onCancel();
-					this.props.handlePluginList(res);
-					restart(() =>
-						message.success('Added third party plugin successfully')
-					);
-				}
-			})
-			.catch((err) => {
-				this.onCancel();
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
+		const selectedPlugin = myPlugins.filter(data => data.name === body.name && data.author === body.author && data.version !== body.version);
+		const existPlugin = myPlugins.filter(data => data.name === body.name && data.author === body.author);
+		if (existPlugin.length && !selectedPlugin.length) {
+			message.warning('Plugin is already exist');
+		} else if (selectedPlugin.length) {
+			let temp = {};
+			selectedPlugin.forEach(data => {
+				temp = {
+					...data,
+					version: body.version
+				};
 			});
+			updatePlugins({ name: temp.name }, temp)
+				.then((res) => {
+					this.onCancel();
+					if (res) {
+						restart(() =>
+							message.success('Third party plugin updated successfully')
+						);
+					};
+				})
+				.catch((err) => {
+					this.onCancel();
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					message.error(_error);
+				});
+		} else {
+			addPlugin(body)
+				.then((res) => {
+					if (res) {
+						this.onCancel();
+						this.props.handlePluginList(res);
+						restart(() =>
+							this.handleNavigation(res)
+						);
+					}
+				})
+				.catch((err) => {
+					this.onCancel();
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					message.error(_error);
+				});
+		}
 	};
 
 	handleURL = (e) => {
