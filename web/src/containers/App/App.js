@@ -7,11 +7,13 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
+import querystring from 'query-string';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
 import { addElements, injectHTML } from 'utils/script';
+import { SuccessDisplay } from 'components'
 
 import {
 	NOTIFICATIONS,
@@ -83,6 +85,8 @@ class App extends Component {
 		sidebarFitHeight: false,
 		isSidebarOpen: getSideBarState(),
 		activeMenu: '',
+		paramsData: {},
+		isCustomNotification: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -127,6 +131,20 @@ class App extends Component {
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
 		injectHTML(plugins_injected_html, 'body');
+		const qs = querystring.parse(this.props.location.search);
+		if (Object.keys(qs).length
+			&& !this.props.location.pathname.includes('trade')
+			&& !this.props.location.pathname.includes('quick-trade')
+			&& !this.props.location.pathname.includes('account')) {
+			const { success_alert, error_alert } = qs;
+			if (success_alert) {
+				const paramsData = { status: true, message: success_alert };
+				this.setState({ paramsData, isCustomNotification: true });
+			} else if (error_alert) {
+				const paramsData = { status: false, message: error_alert };
+				this.setState({ paramsData, isCustomNotification: true });
+			}
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -538,6 +556,11 @@ class App extends Component {
 		);
 	};
 
+	onCloseNotification = () => {
+		this.setState({ paramsData: {}, isCustomNotification: false });
+		this.props.location.search = '';
+	};
+
 	render() {
 		const {
 			symbol,
@@ -567,6 +590,8 @@ class App extends Component {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
+			isCustomNotification,
+			paramsData
 			// sidebarFitHeight,
 			// isSidebarOpen,
 		} = this.state;
@@ -593,10 +618,10 @@ class App extends Component {
 
 		const homeBackgroundProps = isHome
 			? {
-					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
-			  }
+				backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+				backgroundSize: '100%',
+				backgroundRepeat: 'repeat-y',
+			}
 			: {};
 
 		return (
@@ -857,6 +882,18 @@ class App extends Component {
 				{isAdmin() && isBrowser && (
 					<OperatorControls initialData={this.props.location} />
 				)}
+				<Dialog
+					isOpen={isCustomNotification}
+					onCloseDialog={this.onCloseNotification}
+					theme={activeTheme}
+				>
+					<SuccessDisplay
+						onClick={this.onCloseNotification}
+						text={paramsData.message}
+						success={paramsData.status}
+						iconPath={null}
+					/>
+				</Dialog>
 			</ThemeProvider>
 		);
 	}
