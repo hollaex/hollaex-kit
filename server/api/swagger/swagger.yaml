@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.2.2"
+  version: "2.2.3"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2809,6 +2809,60 @@ paths:
         - supervisor
         - support
         - kyc
+  /admin/user:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserInfo
+      description: Update a user's info
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: integer
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              gender:
+                type: boolean
+              nationality:
+                type: string
+              phone_number:
+                type: string
+              dob:
+                type: ['string', 'null']
+                format: date-time
+              address:
+                type: object
+                properties:
+                  country:
+                    type: string
+                  address:
+                    type: string
+                  postal_code:
+                    type: string
+                  city:
+                    type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   /admin/user/role:
     x-swagger-router-controller: admin
     put:

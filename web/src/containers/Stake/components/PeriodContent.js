@@ -5,6 +5,7 @@ import { EditWrapper, Button, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { getEstimatedRemainingTime } from 'utils/eth';
 import withConfig from 'components/ConfigProvider/withConfig';
+import Variable from './Variable';
 
 const PeriodContent = ({
 	tokenData,
@@ -38,10 +39,11 @@ const PeriodContent = ({
 						STRINGS['STAKE.MODAL_TITLE'],
 						symbol.toUpperCase()
 					)}
-					textType="stake_popup__title"
+					textType="stake_popup__title m-0"
 					underline={false}
-					className="w-100"
+					className="w-100 pt-4 align-start"
 					subtitle={STRINGS['STAKE.PERIOD_SUBTITLE']}
+					subtitleClass="secondary-text"
 				/>
 				<div>
 					<Radio.Group
@@ -56,7 +58,7 @@ const PeriodContent = ({
 								className="stake-period-button"
 								value={period}
 							>
-								<div>
+								<div className="stake-period-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.PERIOD_OPTION_TEXT'],
 										getEstimatedRemainingTime(period).join(' ')
@@ -99,10 +101,8 @@ const PeriodContent = ({
 						{STRINGS['STAKE.PREDICTED_EARNINGS']}
 					</EditWrapper>
 				</div>
-				<div>
-					<EditWrapper stringId="STAKE.VARIABLE_TITLE">
-						{STRINGS['STAKE.VARIABLE_TITLE']}
-					</EditWrapper>
+				<div className="d-flex">
+					<Variable />*
 				</div>
 				<div>
 					<EditWrapper stringId="STAKE.VARIABLE_TEXT,STAKE.READ_MORE">

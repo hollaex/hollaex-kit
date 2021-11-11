@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import mathjs from 'mathjs';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
 import {
 	connectWallet,
@@ -10,6 +11,7 @@ import {
 	generateTableData,
 	getAllPeriods,
 	getAllUserStakes,
+	getPendingTransactions,
 } from 'actions/stakingActions';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
@@ -25,21 +27,15 @@ import {
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 
-import { userActiveStakesSelector } from './selector';
+import {
+	userActiveStakesSelector,
+	pendingTransactionsSelector,
+} from './selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import Account from './components/Account';
-import { formatToCurrency } from 'utils/currency';
-import {
-	BASE_CURRENCY,
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from 'config/constants';
-
-const ConnectWalletLink = (props) => (
-	<span className="blue-link pointer underline-text" {...props}>
-		{STRINGS['STAKE.CONNECT_WALLET']}
-	</span>
-);
+import ConnectWrapper from './components/ConnectWrapper';
+import StakesAndEarnings from './components/StakesAndEarnings';
+import Variable from './components/Variable';
 
 class Stake extends Component {
 	componentWillMount() {
@@ -50,10 +46,16 @@ class Stake extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { account, generateTableData, getAllUserStakes } = this.props;
-		if (!prevProps.account && !!account) {
+		const {
+			account,
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
+		if (!!account && account !== prevProps.account) {
 			generateTableData(account);
 			getAllUserStakes(account);
+			getPendingTransactions(account);
 		}
 	}
 
@@ -72,11 +74,6 @@ class Stake extends Component {
 
 	clearBlockNumberInterval = () => {
 		clearInterval(this.BlockNumberIntervalHandler);
-	};
-
-	smartRender = (element) => {
-		const { account, connectWallet } = this.props;
-		return account ? element : <ConnectWalletLink onClick={connectWallet} />;
 	};
 
 	startStakingProcess = (tokenData) => {
@@ -98,55 +95,20 @@ class Stake extends Component {
 		setNotification(NOTIFICATIONS.UNSTAKE, { stakeData });
 	};
 
-	getValue = (balances, prices) => {
-		let value = 0;
-		Object.entries(balances).forEach(([symbol, balance]) => {
-			value = mathjs.sum(
-				mathjs.multiply(
-					balance,
-					!prices[symbol] || prices[symbol] === -1 ? 0 : prices[symbol]
-				),
-				value
-			);
-		});
-
-		return value;
-	};
-
 	render() {
 		const {
 			icons: ICONS,
 			coins,
 			connectWallet,
 			account,
-			network,
 			currentBlock,
 			stakables,
 			activeStakes,
 			activeStakesCount,
 			totalUserStakes,
 			totalUserEarnings,
-			balance,
-			prices,
+			pending,
 		} = this.props;
-		const { smartRender } = this;
-
-		const totlStakes = this.getValue(totalUserStakes, prices);
-		const totalEarnings = this.getValue(totalUserEarnings, prices);
-
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-
-		const totalStakesString = STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(totlStakes, min)
-		);
-
-		const totalEarningsString = STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(totalEarnings, min)
-		);
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
@@ -158,7 +120,7 @@ class Stake extends Component {
 						iconId="TAB_WALLET"
 						textType="title"
 					/>
-					<Account account={account} balance={balance} network={network} />
+					<Account />
 				</div>
 				<div className="wallet-container no-border">
 					<div className="wallet-assets_block">
@@ -183,26 +145,7 @@ class Stake extends Component {
 									)}
 								</div>
 							</div>
-							<div
-								className="secondary-text"
-								style={{
-									minWidth: 'max-content',
-									paddingTop: '0.5rem',
-									textAlign: 'right',
-									marginLeft: '3rem',
-								}}
-							>
-								<div>
-									<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
-									<div>{smartRender(totalStakesString)}</div>
-									<div className="kit-divider" />
-								</div>
-								<div>
-									<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
-									<div>{smartRender(totalEarningsString)}</div>
-									<div className="kit-divider" />
-								</div>
-							</div>
+							<StakesAndEarnings />
 						</div>
 						<table className="wallet-assets_block-table">
 							<thead>
@@ -254,7 +197,7 @@ class Stake extends Component {
 														<Image
 															iconId={iconId}
 															icon={ICONS[iconId]}
-															wrapperClassName="currency-ball"
+															wrapperClassName="currency-ball pt-2"
 															imageWrapperClassName="currency-ball-image-wrapper"
 														/>
 													</Link>
@@ -263,12 +206,26 @@ class Stake extends Component {
 													</Link>
 												</div>
 											</td>
-											<td>{smartRender(available)}</td>
-											<td>{smartRender(totalUserStakes[symbol])}</td>
-											<td>{smartRender(STRINGS['STAKE_TABLE.VARIABLE'])}</td>
-											<td>{smartRender(totalUserEarnings[symbol])}</td>
 											<td>
-												<div className="d-flex content-center">
+												<ConnectWrapper>{available}</ConnectWrapper>
+											</td>
+											<td>
+												<ConnectWrapper>
+													{totalUserStakes[symbol]}
+												</ConnectWrapper>
+											</td>
+											<td>
+												<ConnectWrapper>
+													<Variable className="important-text" />
+												</ConnectWrapper>
+											</td>
+											<td>
+												<ConnectWrapper>
+													{totalUserEarnings[symbol]}
+												</ConnectWrapper>
+											</td>
+											<td>
+												<div className="d-flex">
 													<AntBtn
 														className="stake-btn"
 														type="primary"
@@ -416,7 +373,7 @@ class Stake extends Component {
 														</td>
 														<td>{reward}</td>
 														<td className="text-align-center">
-															<div className="d-flex content-center">
+															<div className="d-flex">
 																<AntBtn {...btnProps} />
 															</div>
 														</td>
@@ -424,6 +381,49 @@ class Stake extends Component {
 												);
 											}
 										)
+									)}
+									{Object.entries(pending).map(
+										([token, pendingValue], pendingIndex) => {
+											return (
+												pendingValue !== 0 && (
+													<tr
+														className="table-row table-bottom-border"
+														key={`${token}_${pendingIndex}`}
+													>
+														<td />
+														<td>
+															<div className="d-flex align-center">
+																<div>
+																	<ClockCircleOutlined />
+																</div>
+																<div className="pl-4">
+																	<div>
+																		{STRINGS.formatString(
+																			STRINGS['STAKE.PENDING_TRANSACTIONS'],
+																			pendingValue,
+																			token.toUpperCase()
+																		)}
+																	</div>
+																	<div>
+																		{STRINGS.formatString(
+																			STRINGS['STAKE.VIEW_ON'],
+																			<span className="underline-text pointer blue-link">
+																				{STRINGS['STAKE.BLOCKCHAIN']}
+																			</span>
+																		)}
+																	</div>
+																</div>
+															</div>
+														</td>
+														<td />
+														<td />
+														<td />
+														<td />
+														<td />
+													</tr>
+												)
+											);
+										}
 									)}
 								</tbody>
 							</table>
@@ -447,13 +447,11 @@ class Stake extends Component {
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
-	balance: store.stake.balance,
-	prices: store.asset.oraclePrices,
 	...userActiveStakesSelector(store),
+	pending: pendingTransactionsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -463,6 +461,7 @@ const mapDispatchToProps = (dispatch) => ({
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllPeriods: bindActionCreators(getAllPeriods, dispatch),
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 });
 

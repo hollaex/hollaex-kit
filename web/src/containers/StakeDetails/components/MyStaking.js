@@ -5,11 +5,18 @@ import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
 import { Table, EditWrapper, ProgressBar } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
-import { userActiveStakesSelector } from 'containers/Stake/selector';
+import {
+	userActiveStakesSelector,
+	pendingTransactionsSelector,
+} from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
 import Transaction from './Transaction';
+import StakesAndEarnings from 'containers/Stake/components/StakesAndEarnings';
+import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
+import Variable from 'containers/Stake/components/Variable';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -18,8 +25,6 @@ const MyStaking = ({
 	token,
 	account,
 	currentBlock,
-	totalEarningsString,
-	totalStakesString,
 	totalUserEarnings,
 	totalUserStakes,
 	stakables,
@@ -28,6 +33,7 @@ const MyStaking = ({
 	activeStakes,
 	network,
 	events,
+	pending,
 }) => {
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
@@ -114,25 +120,7 @@ const MyStaking = ({
 						)}
 					</div>
 				</div>
-				<div
-					className="secondary-text"
-					style={{
-						minWidth: 'max-content',
-						paddingTop: '0.5rem',
-						textAlign: 'right',
-						marginLeft: '3rem',
-					}}
-				>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
-						<div>{totalStakesString}</div>
-						<div className="kit-divider" />
-					</div>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
-						<div>{totalEarningsString}</div>
-					</div>
-				</div>
+				<StakesAndEarnings />
 			</div>
 			<table className="wallet-assets_block-table">
 				<thead>
@@ -174,12 +162,22 @@ const MyStaking = ({
 							return (
 								<tr className="table-row table-bottom-border" key={index}>
 									<td />
-									<td>{available}</td>
-									<td>{totalUserStakes[token]}</td>
-									<td>{STRINGS['STAKE_TABLE.VARIABLE']}</td>
-									<td>{totalUserEarnings[token]}</td>
 									<td>
-										<div className="d-flex content-center">
+										<ConnectWrapper>{available}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserStakes[token]}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>
+											<Variable className="important-text" />
+										</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserEarnings[token]}</ConnectWrapper>
+									</td>
+									<td>
+										<div className="d-flex">
 											<AntBtn
 												className="stake-btn"
 												type="primary"
@@ -317,7 +315,7 @@ const MyStaking = ({
 											</td>
 											<td>{reward}</td>
 											<td className="text-align-center">
-												<div className="d-flex content-center">
+												<div className="d-flex">
 													<AntBtn {...btnProps} />
 												</div>
 											</td>
@@ -325,6 +323,49 @@ const MyStaking = ({
 									);
 								}
 							)
+						)}
+						{Object.entries(pending).map(
+							([token, pendingValue], pendingIndex) => {
+								return (
+									pendingValue !== 0 && (
+										<tr
+											className="table-row table-bottom-border"
+											key={`${token}_${pendingIndex}`}
+										>
+											<td />
+											<td>
+												<div className="d-flex align-center">
+													<div>
+														<ClockCircleOutlined />
+													</div>
+													<div className="pl-4">
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.PENDING_TRANSACTIONS'],
+																pendingValue,
+																token.toUpperCase()
+															)}
+														</div>
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.VIEW_ON'],
+																<span className="underline-text pointer blue-link">
+																	{STRINGS['STAKE.BLOCKCHAIN']}
+																</span>
+															)}
+														</div>
+													</div>
+												</div>
+											</td>
+											<td />
+											<td />
+											<td />
+											<td />
+											<td />
+										</tr>
+									)
+								);
+							}
 						)}
 					</tbody>
 				</table>
@@ -348,6 +389,14 @@ const MyStaking = ({
 					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
+					noData={
+						!account &&
+						STRINGS.formatString(
+							STRINGS['STAKE.CONNECT_WALLET_TABLE'],
+							<ConnectWrapper className="pr-2" />
+						)
+					}
+					showHeaderNoData={true}
 				/>
 			</div>
 		</div>
@@ -362,6 +411,7 @@ const mapStateToProps = (store) => ({
 	stakables: store.stake.stakables,
 	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
+	pending: pendingTransactionsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

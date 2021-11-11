@@ -285,6 +285,7 @@
 }
 .create-asset-container .md-field-wrap {
 	padding-top: 1rem;
+    color: #ffffff;
 }
 .create-asset-container .md-field-wrap .ant-upload,
 .create-asset-container .md-field-wrap .ant-input-number,
@@ -384,9 +385,8 @@
 	padding: 1.5rem;
 	border-bottom: 1px solid #a9a9a9;
 }
-.create-asset-container .burn-wrapper .type_wrapper h3 {
+.create-asset-container .burn-wrapper h3 {
 	font-weight: bold;
-	margin-bottom: 0;
 	color: #ffffff !important;
 }
 .create-asset-container .burn-wrapper .ant-btn,

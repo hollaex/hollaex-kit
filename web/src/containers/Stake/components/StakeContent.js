@@ -4,7 +4,11 @@ import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { approve, addStake } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { generateTableData, getAllUserStakes } from 'actions/stakingActions';
+import {
+	generateTableData,
+	getAllUserStakes,
+	getPendingTransactions,
+} from 'actions/stakingActions';
 
 import AmountContent from './AmountContent';
 import PeriodContent from './PeriodContent';
@@ -24,7 +28,7 @@ const CONTENT_TYPE = {
 
 const ACTION_TYPE = {
 	STAKE: 'STAKE',
-	APPROVE: 'APPROVE',
+	WITHDRAW: 'WITHDRAW',
 };
 
 class StakeContent extends Component {
@@ -35,6 +39,7 @@ class StakeContent extends Component {
 			amount: '',
 			period: '',
 			action: ACTION_TYPE.STAKE,
+			pending: false,
 		};
 	}
 
@@ -58,16 +63,31 @@ class StakeContent extends Component {
 	};
 
 	approveAndStake = (symbol) => async ({ amount, period, account }) => {
-		const { generateTableData, getAllUserStakes } = this.props;
+		const {
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
+
+		this.setAction(ACTION_TYPE.WITHDRAW, false);
 		this.setContent(CONTENT_TYPE.WAITING);
 		try {
-			this.setState({ action: ACTION_TYPE.APPROVE });
-			await approve(symbol)({ amount, account });
-			this.setState({ action: ACTION_TYPE.STAKE });
-			await addStake(symbol)({ amount, period, account });
+			await approve(symbol)({
+				amount,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
+			});
+			this.setAction(ACTION_TYPE.STAKE, false);
+			await addStake(symbol)({
+				amount,
+				period,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+			});
 			await Promise.all([
 				generateTableData(account),
 				getAllUserStakes(account),
+				getPendingTransactions(account),
 			]);
 			this.setContent(CONTENT_TYPE.SUCCESS);
 		} catch (err) {
@@ -84,7 +104,7 @@ class StakeContent extends Component {
 			onCloseDialog,
 			account,
 		} = this.props;
-		const { period, amount, action } = this.state;
+		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
 			case CONTENT_TYPE.AMOUNT:
@@ -125,7 +145,12 @@ class StakeContent extends Component {
 				);
 			case CONTENT_TYPE.WAITING:
 				return (
-					<WaitingContent action={action} amount={amount} symbol={symbol} />
+					<WaitingContent
+						isPending={isPending}
+						action={action}
+						amount={amount}
+						symbol={symbol}
+					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
 				return (
@@ -153,6 +178,10 @@ class StakeContent extends Component {
 		});
 	};
 
+	setAction = (action, isPending) => {
+		this.setState({ action, isPending });
+	};
+
 	render() {
 		const { type } = this.state;
 
@@ -172,6 +201,7 @@ const mapStateToProps = (store) => ({
 const mapDispatchToProps = (dispatch) => ({
 	generateTableData: bindActionCreators(generateTableData, dispatch),
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 });
 
 export default connect(

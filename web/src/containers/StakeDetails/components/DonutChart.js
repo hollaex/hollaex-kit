@@ -183,7 +183,7 @@ class DonutChart extends Component {
 						className="donut-label-no-price"
 						textAnchor="middle"
 					>
-						<tspan>{STRINGS['ZERO_ASSET']}</tspan>
+						<tspan>{STRINGS['STAKE.ZERO_STAKES']}</tspan>
 					</text>
 				</g>
 			);
@@ -221,20 +221,7 @@ class DonutChart extends Component {
 
 DonutChart.defaultProps = {
 	id: 'donut-container',
-	chartData: [
-		{
-			symbol: 'mine',
-			balancePercentage: 25,
-			balance: 2500,
-			stringId: 'STAKE_DETAILS.PUBLIC_INFO.MY_STAKE',
-		},
-		{
-			symbol: 'others',
-			balancePercentage: 75,
-			balance: 7500,
-			stringId: 'STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE',
-		},
-	],
+	chartData: [],
 };
 
 export default DonutChart;

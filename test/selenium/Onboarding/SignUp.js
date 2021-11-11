@@ -150,6 +150,6 @@ async function SignUp(){
 }
 describe('Main Test', function () {
  
-	SignUp();
+	//SignUp();
 })
 module.exports.SignUp = SignUp;

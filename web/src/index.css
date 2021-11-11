@@ -216,13 +216,13 @@ table th {
   justify-content: space-between; }
 
 .align-center {
-  align-items: center; }
+  align-items: center !important; }
 
 .align-start {
-  align-items: flex-start; }
+  align-items: flex-start !important; }
 
 .align-end {
-  align-items: flex-end; }
+  align-items: flex-end !important; }
 
 .underline-text {
   text-decoration: underline !important; }
@@ -324,6 +324,12 @@ table th {
   margin: 1rem 0;
   border-bottom: solid 1px var(--labels_secondary-inactive-label-text-graphics); }
 
+.flex-direction-row {
+  flex-direction: row !important; }
+
+.text-align-left {
+  text-align: left !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -352,8 +358,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -366,8 +372,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -2730,8 +2736,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -2882,7 +2888,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -4580,14 +4586,20 @@ table th {
 .stake-btn.ant-btn-primary {
   color: var(--specials_buttons-links-and-highlights);
   border-color: var(--specials_buttons-links-and-highlights); }
-  .stake-btn.ant-btn-primary:hover, .stake-btn.ant-btn-primary:active, .stake-btn.ant-btn-primary:focus {
+  .stake-btn.ant-btn-primary:focus {
+    color: var(--specials_buttons-links-and-highlights);
+    border-color: var(--specials_buttons-links-and-highlights); }
+  .stake-btn.ant-btn-primary:hover, .stake-btn.ant-btn-primary:active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .stake-btn.ant-btn-dangerous {
   color: var(--specials_pending-waiting-caution);
   border-color: var(--specials_pending-waiting-caution); }
-  .stake-btn.ant-btn-dangerous:hover, .stake-btn.ant-btn-dangerous:active, .stake-btn.ant-btn-dangerous:focus {
+  .stake-btn.ant-btn-dangerous:focus {
+    color: var(--specials_pending-waiting-caution);
+    border-color: var(--specials_pending-waiting-caution); }
+  .stake-btn.ant-btn-dangerous:hover, .stake-btn.ant-btn-dangerous:active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -4639,10 +4651,14 @@ table th {
   font-size: 1rem;
   line-height: 1.2rem;
   text-align: center; }
+  .stake-period-button.ant-radio-button-wrapper .stake-period-text {
+    width: 10rem;
+    margin: auto; }
   .stake-period-button.ant-radio-button-wrapper .period-x {
     font-weight: bolder;
     font-size: 4rem;
-    line-height: 5rem; }
+    line-height: 5rem;
+    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
     background-color: transparent; }
 
@@ -4652,7 +4668,8 @@ table th {
   .stake-period-button.ant-radio-button-wrapper-checked .period-x {
     font-weight: bolder;
     font-size: 5rem;
-    line-height: 6rem; }
+    line-height: 6rem;
+    color: var(--labels_important-active-labels-text-graphics) !important; }
 
 .staking-account__container {
   padding: 0 0.5rem;
@@ -4669,6 +4686,15 @@ table th {
   margin: 0.5rem 0;
   padding: 0.5rem;
   border-radius: 0.5rem; }
+
+.staking-account__connect {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  color: var(--specials_buttons-links-and-highlights);
+  background-color: var(--calculated_specials_highlight-box);
+  border-radius: 0.5rem;
+  margin: 1rem 0.5rem;
+  font-weight: bold; }
 
 .chart_mine {
   fill-opacity: 0.7;
@@ -4691,7 +4717,42 @@ table th {
     background-color: var(--specials_pending-waiting-caution); }
 
 .stake_popup__title {
-  font-size: 2.4rem !important; }
+  font-size: 2.4rem !important;
+  font-weight: bold; }
+
+.stake-currency-ball {
+  width: 4.75rem; }
+
+.stake-currency-ball-small {
+  width: 2.5rem;
+  padding-top: 0.4rem; }
+
+.stake-variable {
+  width: 1.5rem;
+  padding-top: 0.2rem; }
+
+.stake-unlock-title svg, .stake-unlock-title.icon_title-svg {
+  width: 2.2rem !important;
+  height: 2.2rem !important; }
+
+.stake-amount {
+  font-size: 2rem;
+  line-height: 2rem; }
+
+.staking-loader {
+  font-size: 7rem;
+  color: var(--calculated_specials_highlight-box); }
+
+.disconnect-menu.ant-dropdown-menu {
+  color: var(--labels_important-active-labels-text-graphics) !important;
+  background-color: var(--base_background); }
+
+.disconnect-menu .ant-dropdown-menu-item {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  background-color: var(--base_background); }
+  .disconnect-menu .ant-dropdown-menu-item:hover {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_wallet-sidebar-and-popup); }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
@@ -7225,7 +7286,7 @@ table th {
   padding-right: 2.5rem;
   padding-left: 2.5rem; }
   .dialog-content.background {
-    background-size: cover;
+    background-size: 100% 100%;
     background-repeat: no-repeat; }
   .dialog-content.bottom {
     padding-bottom: 2.5rem; }
@@ -7296,14 +7357,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -8012,6 +8073,8 @@ table th {
     padding: 0.25rem; }
   .table-wrapper th {
     font-weight: bold; }
+  .table-wrapper .border-bottom {
+    border-bottom: 1px solid var(--calculated_secondary-border); }
   .table-wrapper .table_header-wrapper {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .table-wrapper .table_header-wrapper .action_notification-text {
@@ -10273,6 +10336,28 @@ foreignObject {
 .progressbar-icon.completed {
   color: var(--specials_buttons-links-and-highlights); }
 
+.default-remote-component-loader {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  color: var(--calculated_specials_highlight-box);
+  padding-top: 3rem;
+  padding-bottom: 3rem; }
+
+.default-remote-component-error {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  color: var(--specials_notifications-alerts-warnings);
+  padding-top: 3rem;
+  padding-bottom: 3rem; }
+
 html {
   font-size: 12px !important;
   height: 100%; }
@@ -10491,7 +10576,10 @@ svg .unknown-error-icon,
 svg .cancel-all,
 svg .fiat-page-under-construction,
 svg .generate-reference-number,
-svg .osko-logo {
+svg .osko-logo,
+svg .stake-variable,
+svg .stake-pending,
+svg .staking-unlock {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,

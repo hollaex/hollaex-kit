@@ -182,6 +182,6 @@ async function ResendVerificationEmail(){
 }
 describe('Main Test', function () {
  
-	ResendVerificationEmail();
+	//ResendVerificationEmail();
 })
 module.exports.ResendVerificationEmail = ResendVerificationEmail

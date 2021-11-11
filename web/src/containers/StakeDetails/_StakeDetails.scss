@@ -10,9 +10,13 @@
 		color: $colors-notifications-blue;
 		border-color: $colors-notifications-blue;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notifications-blue;
+			border-color: $colors-notifications-blue;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -22,9 +26,13 @@
 		color: $colors-notification-pending;
 		border-color: $colors-notification-pending;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notification-pending;
+			border-color: $colors-notification-pending;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -105,10 +113,16 @@
 		line-height: 1.2rem;
 		text-align: center;
 
+		.stake-period-text {
+			width: 10rem;
+			margin: auto;
+		}
+
 		.period-x {
 			font-weight: bolder;
 			font-size: 4rem;
 			line-height: 5rem;
+			color: $colors-black !important;
 		}
 
 		&:not(:first-child)::before {
@@ -124,6 +138,7 @@
 			font-weight: bolder;
 			font-size: 5rem;
 			line-height: 6rem;
+			color: $colors-main-black !important;
 		}
 	}
 }
@@ -145,6 +160,16 @@
 	margin: 0.5rem 0;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
+}
+
+.staking-account__connect {
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	color: $colors-notifications-blue;
+	background-color: $specials_highlight-box;
+	border-radius: 0.5rem;
+	margin: 1rem 0.5rem;
+	font-weight: bold;
 }
 
 .chart_mine {
@@ -176,4 +201,54 @@
 
 .stake_popup__title {
 	font-size: 2.4rem !important;
+	font-weight: bold;
+}
+
+.stake-currency-ball {
+	width: 4.75rem;
+}
+
+.stake-currency-ball-small {
+	width: 2.5rem;
+	padding-top: 0.4rem;
+}
+
+.stake-variable {
+	width: 1.5rem;
+	padding-top: 0.2rem;
+}
+
+.stake-unlock-title {
+	svg,
+	&.icon_title-svg {
+		width: 2.2rem !important;
+		height: 2.2rem !important;
+	}
+}
+
+.stake-amount {
+	font-size: 2rem;
+	line-height: 2rem;
+}
+
+.staking-loader {
+	font-size: 7rem;
+	color: $specials_highlight-box;
+}
+
+.disconnect-menu {
+	&.ant-dropdown-menu {
+		color: $colors-main-black !important;
+		background-color: $app-background-color;
+	}
+
+	.ant-dropdown-menu-item {
+		color: $colors-black;
+		background-color: $app-background-color;
+
+		&:hover {
+			color: $colors-main-black;
+			background-color: $app-sidebar-background;
+		}
+	}
 }
