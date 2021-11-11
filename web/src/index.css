@@ -352,8 +352,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.no_bottom_navigation {
@@ -366,8 +366,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -379,15 +379,20 @@ table th {
     .app_container .app_container-content .app_container-main .presentation_container {
       width: 75rem;
       height: inherit; }
+    .app_container .app_container-content .app_container-main .ant-tabs {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-ink-bar {
       background: var(--labels_important-active-labels-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-top > .ant-tabs-nav::before {
       border-color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-tab {
       color: var(--labels_secondary-inactive-label-text-graphics); }
+      .app_container .app_container-content .app_container-main .ant-tabs-tab .ant-tabs-tab-btn {
+        color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-tab-active {
       color: var(--labels_important-active-labels-text-graphics); }
       .app_container .app_container-content .app_container-main .ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: var(--labels_important-active-labels-text-graphics);
         font-weight: bold; }
   .app_container .app_container-sidebar {
     display: flex;
@@ -2730,8 +2735,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -2882,7 +2887,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -7296,14 +7301,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
