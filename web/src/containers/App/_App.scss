@@ -81,6 +81,10 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 				// width: inherit;
 			}
 
+			.ant-tabs {
+				color: $colors-black;
+			}
+
 			.ant-tabs-ink-bar {
 				background: $colors-main-black;
 			}
@@ -91,11 +95,17 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 			.ant-tabs-tab {
 				color: $colors-black;
+
+				.ant-tabs-tab-btn {
+					color: $colors-black;
+				}
 			}
 
 			.ant-tabs-tab-active {
 				color: $colors-main-black;
+
 				.ant-tabs-tab-btn {
+					color: $colors-main-black;
 					font-weight: bold;
 				}
 			}

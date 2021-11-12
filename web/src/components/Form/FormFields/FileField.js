@@ -35,8 +35,10 @@ class FileField extends Component {
 			}
 		} else {
 			const file = ev.target.files[0];
-			this.setState({ filename: file.name });
-			this.props.input.onChange(file);
+			if (file) {
+				this.setState({ filename: file.name });
+				this.props.input.onChange(file);
+			}
 		}
 	};
 
