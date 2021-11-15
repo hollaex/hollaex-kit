@@ -2,7 +2,7 @@
 
 const WebSocket = require('ws');
 const { loggerWebsocket } = require('../config/logger');
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('../utils/toolsLib');
 const { MULTIPLE_API_KEY } = require('../messages');
 const url = require('url');
 const { hubConnected } = require('./hub');
