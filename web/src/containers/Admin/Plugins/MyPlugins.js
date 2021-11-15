@@ -89,14 +89,7 @@ class MyPlugins extends Component {
 		if (existPlugin.length && !selectedPlugin.length) {
 			message.warning('Plugin is already exist');
 		} else if (selectedPlugin.length) {
-			let temp = {};
-			selectedPlugin.forEach(data => {
-				temp = {
-					...data,
-					version: body.version
-				};
-			});
-			updatePlugins({ name: temp.name }, temp)
+			updatePlugins({ name: body.name }, body)
 				.then((res) => {
 					this.onCancel();
 					if (res) {
