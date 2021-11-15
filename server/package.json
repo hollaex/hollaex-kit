@@ -26,6 +26,7 @@
 		"expect-ct": "0.1.0",
 		"express": "4.16.2",
 		"express-validator": "6.7.0",
+		"file-type": "16.5.2",
 		"flat": "5.0.0",
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
