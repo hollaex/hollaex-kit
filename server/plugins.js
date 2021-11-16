@@ -548,7 +548,8 @@ checkStatus()
 					if (lodash.isPlainObject(meta)) {
 						for (let key in plugin.meta) {
 							if (
-								plugin.meta[key].overwrite === false
+								lodash.isPlainObject(plugin.meta)
+								&& plugin.meta[key].overwrite === false
 									&& (!meta[key] || meta[key].overwrite === false)
 							) {
 								meta[key] = plugin.meta[key];
@@ -577,7 +578,8 @@ checkStatus()
 					if (lodash.isPlainObject(public_meta)) {
 						for (let key in plugin.public_meta) {
 							if (
-								plugin.public_meta[key].overwrite === false
+								lodash.isPlainObject(plugin.public_meta)
+								&& plugin.public_meta[key].overwrite === false
 									&& (!public_meta[key] || public_meta[key].overwrite === false)
 							) {
 								public_meta[key] = plugin.public_meta[key];
