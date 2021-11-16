@@ -1,7 +1,7 @@
 'use strict';
 
 const { isEmail, isUUID } = require('validator');
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('../../utils/toolsLib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');

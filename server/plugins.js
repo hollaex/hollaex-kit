@@ -3,7 +3,7 @@
 const _eval = require('eval');
 const lodash = require('lodash');
 const PORT = process.env.PLUGIN_PORT || 10011;
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('./utils/toolsLib');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const { checkSchema } = expressValidator;
