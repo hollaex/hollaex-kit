@@ -2,17 +2,19 @@
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
 async function LogOut(){
-	const { Builder, By, Key, until } = require('selenium-webdriver');
-	const assert = require('assert');
+	const { Builder, By, until } = require('selenium-webdriver');
 	const { expect } = require('chai');
 	const { Console } = require('console');
-	const path = require('path')
+	const path = require('path');
+	const fs = require('fs');
+	const logPath = path.join(__dirname, './.log',path.basename(__filename,'.js'));
 	const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
-	const util = require('../Utils/Utils.js');
+	const util = require ('./../Utils/Utils.js');
 	const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
 	util.makeReportDir(reportPath);
+	util.makeReportDir(logPath);
 	require('console-stamp')(console, { 
-		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
+		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' ,
 	} );
 	require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 	let userName = process.env.BOB;
@@ -20,6 +22,8 @@ async function LogOut(){
 	let logInPage = process.env.LOGIN_PAGE;
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailPage = process.env.EMAIL_PAGE;
+	let emailPass =process.env.EMAIL_PASS ;
+	let emailAdmin = process.env.EMAIL_ADMIN_USERNAME ;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	
@@ -28,7 +32,7 @@ async function LogOut(){
 		console.log('Variables are defined');
 	}
 	describe('BobLogOut', function() {
-		this.timeout(30000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -36,6 +40,7 @@ async function LogOut(){
 				setTimeout(resolve, ms);
 			});
 		} 
+		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
@@ -44,8 +49,8 @@ async function LogOut(){
 			
 		});
 		afterEach(async function() {
-			util.setStep(step);
-			await driver.quit();
+			await util.setStep(step);
+		//	await driver.quit();
 		});
 		it('Simple log in', async function() {
 			//Given The user logged in
@@ -88,16 +93,58 @@ async function LogOut(){
 			await sleep(5000);
 			//Then Log out should happen 		
 			
-			await console.log(step++,' | click | xpath =//*[@id="root"]/div/div[2]/div/div/div[3]/div[1]/div/div[8]/div[2]/div |');
-			await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div/div[3]/div[1]/div/div[8]/div[2]/div')).click();
+		   console.log(step++,' | click | css=.app-bar-account-content > div:nth-child(2) | ');
+           await driver.findElement(By.css(".app-bar-account-content > div:nth-child(2)")).click();
+		   await sleep(5000);
+
+		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
-			
+
 			console.log(step++,' | assertText | css=.icon_title-text | Login');
 			expect(await driver.findElement(By.css('.icon_title-text')).getText()).to.equal( 'Login');
-		
+		    await sleep(2000);
+			shot();
+			await sleep(2000);
+			
 			console.log('This is the EndOfTest');
 		
  	});
+	 it('Email Confirmation', async function() {
+		console.log('Test name: Confirmation');
+		console.log('Step # | name | target | value');
+	
+		await util.emailLogIn(step,driver,emailAdmin,emailPass);
+		await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
+		await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
+	
+		console.log(step++,'   | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
+		{
+			const element = await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'));
+			await driver.actions({ bridge: true}).doubleClick(element).perform();
+		}
+		await sleep(5000);
+
+		console.log(step++,'   | selectFrame | index=1 | ');
+		await driver.switchTo().frame(1);
+		await sleep(10000);
+	
+		console.log(step++,'   | storeText | xpath=/html/body/pre/a[16] | content');
+		vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[16]')).getText();
+		const emailCont = await driver.findElement(By.css('pre')).getText();
+	
+		console.log(step++,'  | echo | ${content} | ');
+		console.log(vars['content']);
+		
+		console.log(step++,'   | assertText | xpath=/html/body/pre/a[16] | ${content}');
+		expect(vars['content']).to.equal(userName.toLowerCase());
+
+		console.log(step++,'   | assertText | email body contains] | We have recorded a login to your account with the following details');
+		expect(util.chunkCleaner(emailCont).includes("We have recorded a login to your account with the following details")).to.be.true
+				
+		console.log('This is the EndOfTest');
+				
+	});
 	});
 }
 describe('Main Test', function () {

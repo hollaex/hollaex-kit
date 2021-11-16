@@ -23,7 +23,8 @@ async function ResetPassword(){
 	let passWord = process.env.PASSWORD;
 	let newPassWord = process.env.NEWPASS
 	let webSite = process.env.WEBSITE;
-	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailPass = process.env.EMAIL_PASS;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -85,7 +86,7 @@ async function ResetPassword(){
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
 		
-			await util.emailLogIn(step,driver,emailAdmin,passWord);
+			await util.emailLogIn(step,driver,emailAdmin,emailPass);
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
 			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
 		

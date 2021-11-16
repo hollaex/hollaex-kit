@@ -93,8 +93,41 @@ async function LogIn () {
 			shot();
 			console.log('This is the EndOfTest');
 			
-		    
+		});
+		it('Email Confirmation', async function() {
+			console.log('Test name: Confirmation');
+			console.log('Step # | name | target | value');
+		
+			await util.emailLogIn(step,driver,emailAdmin,emailPass);
+			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
+			await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)')).click();
+		
+			console.log(step++,'   | doubleClick | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
+			{
+				const element = await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'));
+				await driver.actions({ bridge: true}).doubleClick(element).perform();
+			}
+			await sleep(5000);
+	
+			console.log(step++,'   | selectFrame | index=1 | ');
+			await driver.switchTo().frame(1);
+			await sleep(10000);
+		
+			console.log(step++,'   | storeText | xpath=/html/body/pre/a[16] | content');
+			vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[16]')).getText();
+			const emailCont = await driver.findElement(By.css('pre')).getText();
+		
+			console.log(step++,'  | echo | ${content} | ');
+			console.log(vars['content']);
 			
+			console.log(step++,'   | assertText | xpath=/html/body/pre/a[16] | ${content}');
+			expect(vars['content']).to.equal(userName.toLowerCase());
+	
+			console.log(step++,'   | assertText | email body contains] | We have recorded a login to your account with the following details');
+			expect(util.chunkCleaner(emailCont).includes("We have recorded a login to your account with the following details")).to.be.true
+					
+			console.log('This is the EndOfTest');
+					
 		});
 	});
 
