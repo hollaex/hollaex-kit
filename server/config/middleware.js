@@ -6,7 +6,7 @@ const ALLOWED_DOMAINS = () => toolsLib.getKitSecrets().allowed_domains || (proce
 const helmet = require('helmet');
 const expectCt = require('expect-ct');
 const { apm } = require('./logger');
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('../utils/toolsLib');
 
 const domainMiddleware = (req, res, next) => {
 	logger.verbose(req.uuid, 'origin', req.headers['x-real-origin']);
