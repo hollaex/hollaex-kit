@@ -453,7 +453,7 @@ class AppWrapper extends React.Component {
 						</div>
 						<div>
 							<div className="main-label">Role:</div>
-							<div className="sub-label">SuperVisor</div>
+							<div className="sub-label">Supervisor</div>
 						</div>
 					</div>
 				);
