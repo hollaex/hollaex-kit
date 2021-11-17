@@ -39,7 +39,7 @@ async function Wallet(){
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
-			util.kitLogIn(step,driver,userName,passWord)
+			await util.kitLogIn(step,driver,userName.toLowerCase(),passWord)
 		});
 		afterEach(async function() {
 			util.setStep(step);
@@ -53,19 +53,23 @@ async function Wallet(){
 
 			console.log(step++,' | click | name=search-assets | ');
 			await driver.findElement(By.name('search-assets')).click();
-		
+			await sleep(3000);
+
 			console.log(step++,' | type | name=search-assets | USDT');
 			await driver.findElement(By.name('search-assets')).sendKeys('USDT');
-		
+			await sleep(3000);
+
 			console.log(step++,' | sendKeys | name=search-assets | ${KEY_ENTER}');
 			await driver.findElement(By.name('search-assets')).sendKeys(Key.ENTER);
 		
 			console.log(step++,' | click | css=.action-button-wrapper:nth-child(1) > .action_notification-text | ');
 			await driver.findElement(By.css('.action-button-wrapper:nth-child(1) > .action_notification-text')).click();
-		
+		    await sleep(3000);
+
 			console.log(step++,' | click | css=.dropdown-placeholder | ');
 			await driver.findElement(By.css('.dropdown-placeholder')).click();
-		
+			await sleep(3000);
+			
 			console.log(step++,' | click | id=network-eth-0 |'); 
 			await driver.findElement(By.id('network-eth-0')).click();
 		

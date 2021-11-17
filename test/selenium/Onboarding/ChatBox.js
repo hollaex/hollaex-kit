@@ -14,7 +14,7 @@ let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;
 let Remot = process.env.SELENIUM_REMOTE_URL;
 describe('Orders', function() {
-	this.timeout(300000);
+	this.timeout(30000);
 	let driver;
 	let vars;
 	function sleep(ms) {
@@ -23,7 +23,7 @@ describe('Orders', function() {
 		});
 	} 
 	beforeEach(async function() {
-		driver.manage().window().maximize();
+		//driver.manage().window().maximize();
            
 	});
 	afterEach(async function() {
@@ -31,7 +31,7 @@ describe('Orders', function() {
 	});
   
 	it('firefox', async function() {
-    		// driver = await new Builder().forBrowser('chrome').build();
+    	//	driver = await new Builder().forBrowser('chrome').build();
 		driver = await new Builder().forBrowser('firefox').usingServer(Remot).build();
   
 
@@ -77,7 +77,7 @@ describe('Orders', function() {
            
 		// Test name: Untitled
 		// Step # | name | target | value
-		// 1 | open | /account | 
+		console.log(" 1 | open | /account |") 
 		await driver.get(logInPage);
 		await sleep(10000);
 		// 2 | type | name=email | USER@bitholla.com

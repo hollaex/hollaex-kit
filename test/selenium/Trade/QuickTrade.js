@@ -38,7 +38,7 @@ async function QuickTrade(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
-			util.kitLogIn(step,driver, userName,passWord);
+			await util.kitLogIn(step,driver, userName,passWord);
 	
 		});
 		afterEach(async function() {
@@ -49,36 +49,88 @@ async function QuickTrade(){
 
 		
 			console.log(step++,'  | open | /summary | ');
-			await driver.get(website  +'summary')
+			//await driver.get("https://sandbox.hollaex.com/quick-trade/xht-usdt")//website  +'summary')
 			await sleep(5000);
-      
-			console.log(step++,' | click | css=.app-menu-bar-content:nth-child(3) .edit-wrapper__container | ');
-			await driver.findElement(By.css(".app-menu-bar-content:nth-child(3) .edit-wrapper__container")).click()
+			// Test name: g
+    // Step # | name | target | value
+    // 1 | open | /login | 
     
-			console.log(step++,' | click | xpath=//div[@id=root]/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div | ');
-			await driver.findElement(By.xpath("//div[@id=\'root\']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div")).click()
-			await sleep(5000)
+    // 6 | click | css=.app-menu-bar-content:nth-child(3) .edit-wrapper__container | 
+    await driver.findElement(By.css(".app-menu-bar-content:nth-child(3) .edit-wrapper__container")).click()
+    // 7 | click | xpath=//div[@id='root']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/div[2]/div/div[3]/div/span/div/div | 
+    await driver.findElement(By.xpath("//div[@id=\'root\']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/div[2]/div/div[3]/div/span/div/div")).click()
+    // 8 | click | xpath=(//div[@name='selectedPairBase'])[7] | 
+    await driver.findElement(By.xpath("(//div[@name=\'selectedPairBase\'])[7]")).click()
+    // 9 | click | xpath=//div[@id='root']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/div[2]/div/div[4]/div/span/div/div | 
+    await driver.findElement(By.xpath("//div[@id=\'root\']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/div[2]/div/div[4]/div/span/div/div")).click()
+    // 10 | click | xpath=//span[contains(.,'USDT')] | 
+    await driver.findElement(By.xpath("//span[contains(.,\'USDT\')]")).click()
+    // 11 | click | css=.py-2:nth-child(3) .ant-input | 
+    await driver.findElement(By.css(".py-2:nth-child(3) .ant-input")).click()
+    // 12 | type | css=.py-2:nth-child(3) .ant-input | 4
+    await driver.findElement(By.css(".py-2:nth-child(3) .ant-input")).sendKeys("4")
+    // 13 | verifyEditable | css=.holla-button | 
+    {
+      const element = await driver.findElement(By.css(".holla-button"))
+      assert(await element.isEnabled())
+    }
+			// console.log(step++,' | click | css=.app-menu-bar-content:nth-child(3) .edit-wrapper__container | ');
+			// await driver.findElement(By.css(".app-menu-bar-content:nth-child(3) .edit-wrapper__container")).click()
+			// await sleep(5000);
+
+			// // console.log(step++,' | click | xpath=//div[@id=root]/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div | ');
+			// // await driver.findElement(By.xpath("//div[@id=\'root\']/div/div[2]/div/div/div[3]/div/div/div/div/div[2]/span/div/div/span[2]/div")).click()
+			// // await sleep(5000)
        
-			console.log(step++,' | click | xpath=//div[2]/div/div/div/div/div/div/span | ');
-			await driver.findElement(By.xpath("//div[2]/div/div/div/div/div/div/span")).click()
-			await sleep(5000)
+			// // console.log(step++,' | click | xpath=//div[2]/div/div/div/div/div/div/span | ');
+			// // await driver.findElement(By.xpath("//div[2]/div/div/div/div/div/div/span")).click()
+			// // await sleep(5000)
        
-			console.log(step++,'  | click | css=.py-2:nth-child(2) .ant-input | ');
-			await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).click()
+			// // console.log(step++,'  | click | css=.py-2:nth-child(2) .ant-input | ');
+			// // await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).click()
        
-			console.log(step++,'  | type | css=.py-2:nth-child(2) .ant-input | 1');
-			await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).sendKeys("1")
-			await sleep(5000)
+			// // console.log(step++,'  | type | css=.py-2:nth-child(2) .ant-input | 1');
+			// // await driver.findElement(By.css(".py-2:nth-child(2) .ant-input")).sendKeys("1")
+			// // await sleep(5000)
       
-			console.log(step++,'  | click | css=.holla-button | ');
+			// // console.log(step++,'  | click | css=.holla-button | ');
+			// // await driver.findElement(By.css(".holla-button")).click()
+      
+			// // console.log(step++,'  | click | css=.ReactModal__Content | ');
+			// // await driver.findElement(By.css(".ReactModal__Content")).click()
+       
+			// // console.log(step++,'  | assertText | css=.review-block-wrapper:nth-child(1) .with_price-block_amount-value | 1');
+			// // assert(await driver.findElement(By.css(".review-block-wrapper:nth-child(1) .with_price-block_amount-value")).getText() == "1")
+      
+			// await driver.findElement(By.xpath("//div[2]/div/div/div/div[7]/div/div")).click()
+			// await sleep(5000);
+			// // 3 | click | css=.ant-select-item-option-active .d-flex | 
+			// await driver.findElement(By.css(".ant-select-item-option-active .d-flex")).click()
+			// await sleep(5000);
+			// // 4 | click | css=.py-2:nth-child(4) .ant-select-arrow svg | 
+			// await driver.findElement(By.css(".py-2:nth-child(4) .ant-select-arrow svg")).click()
+			// await sleep(5000);
+			// // 5 | click | css=.ant-select-item-option-active .pl-1 | 
+			// await driver.findElement(By.css(".ant-select-item-option-active .pl-1")).click()
+			// await sleep(5000);
+			// // 6 | click | css=.py-2:nth-child(3) .ant-input | 
+			await driver.findElement(By.css(".py-2:nth-child(3) .ant-input")).click()
+			await sleep(5000);
+			// 7 | type | css=.py-2:nth-child(3) .ant-input | 1
+			await driver.findElement(By.css(".py-2:nth-child(3) .ant-input")).sendKeys("1")
+			await sleep(5000);
+			// 8 | click | css=.holla-button | 
 			await driver.findElement(By.css(".holla-button")).click()
-      
-			console.log(step++,'  | click | css=.ReactModal__Content | ');
-			await driver.findElement(By.css(".ReactModal__Content")).click()
-       
-			console.log(step++,'  | assertText | css=.review-block-wrapper:nth-child(1) .with_price-block_amount-value | 1');
-			assert(await driver.findElement(By.css(".review-block-wrapper:nth-child(1) .with_price-block_amount-value")).getText() == "1")
-      
+			await sleep(5000);
+			// 9 | click | css=.ml-2:nth-child(2) | 
+			await driver.findElement(By.css(".ml-2:nth-child(2)")).click()
+			await sleep(5000);
+			// 10 | click | css=.holla-button:nth-child(4) | 
+			await driver.findElement(By.css(".holla-button:nth-child(4)")).click()
+			await sleep(5000);
+			// 11 | click | css=.ml-2:nth-child(2) | 
+			await driver.findElement(By.css(".ml-2:nth-child(2)")).click()
+			await sleep(5000);
 			console.log(step++,'  | click | css=.ml-2 | ');
 			await driver.findElement(By.css(".ml-2")).click()
 			hollaTime.Hollatimestampe();
