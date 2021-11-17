@@ -60,16 +60,19 @@ async function CancelOrders(){
 
 			console.log(step++,'  | click | css=.active-menu .edit-wrapper__container |  | ');
 			await driver.findElement(By.css('.active-menu .edit-wrapper__container')).click();
-		
+			await sleep(5000);
+
 			console.log(step++,'  | click | css=.tabs-pair-details:nth-child(1) > .market-card__sparkline-wrapper | ');
 			await driver.findElement(By.css('.tabs-pair-details:nth-child(1) > .market-card__sparkline-wrapper')).click();
-		
+		    await sleep(5000);
+
 			console.log(step++,'  | click | css=.table_body-row:nth-child(1) .action_notification-text | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) .action_notification-text')).click();
 		
 			console.log(step++,' | click | css=.table_body-row:nth-child(1) .action_notification-text | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) .action_notification-text')).click();
-		
+		     await sleep(5000);
+			 
 			console.log(step++,' | click | css=.table_body-row:nth-child(1) .action_notification-text | ');
 			await driver.findElement(By.css('.table_body-row:nth-child(1) .action_notification-text')).click();
 		

@@ -11,7 +11,7 @@ const fetchMessage = (email, data, language, domain) => {
 
 const html = (email, data, language, domain) => {
 	const WITHDRAWALREQUEST = require('../strings').getStringObject(language, 'WITHDRAWALREQUEST');
-	const link = `${domain}/confirm-withdraw/${data.transaction_id}`;
+	const link = data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}`;
 	return `
 		<div>
 			<p>
@@ -44,7 +44,7 @@ const html = (email, data, language, domain) => {
 
 const text = (email, data, language, domain) => {
 	const WITHDRAWALREQUEST = require('../strings').getStringObject(language, 'WITHDRAWALREQUEST');
-	const link = `${domain}/confirm-withdraw/${data.transaction_id}`;
+	const link = data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}`;
 	return `
 		${WITHDRAWALREQUEST.GREETING(email)}
 		${WITHDRAWALREQUEST.BODY[1](data.currency, data.amount, data.address)}

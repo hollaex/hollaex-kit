@@ -44,7 +44,7 @@ async function ReCAPTCHA(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+			//await driver.quit();
 		});
 
 		it('ReCHAPTCHA log in', async function() {
@@ -83,19 +83,22 @@ async function ReCAPTCHA(){
 		
 			console.log(step++,'  | switch | defaultContent | ');
 			await driver.switchTo().defaultContent();
-		
-			console.log(step++,'  | type | name=email |', userName);
+			for (let i = 0; i < 100; i++) {
+			console.log(step++,'  | type | name=email | iam@not.com', );
 			await driver.findElement(By.name('email')).click();
-			await driver.findElement(By.name('email')).sendKeys(userName);
+			await driver.findElement(By.name('email')).clear();
+			await driver.findElement(By.name('email')).sendKeys("iam@not.com");
     
 			console.log(step++,'  | type | name=password | PASSWORD');
 			await driver.wait(until.elementLocated(By.name('password')), 5000);
+			await driver.findElement(By.name('password')).click();
+			await driver.findElement(By.name('password')).clear();
 			await driver.findElement(By.name('password')).sendKeys(passWord);
     
 			console.log(step++,'  | click | css=.auth_wrapper | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
 			await driver.findElement(By.css('.auth_wrapper')).click();
-		
+			}
 			console.log(step++,'  | verifyElementPresent | css=.holla-button |'); 
 			{
 				const elements = await driver.findElements(By.css('.holla-button'));
@@ -113,9 +116,9 @@ async function ReCAPTCHA(){
 			await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
 			expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
 		 
-			console.log(step++,'  | ');
-		
+				
 			console.log('This is the EndOfTest');
+			util.takeHollashot(driver,reportPath,step);
 		});
 	});
 }

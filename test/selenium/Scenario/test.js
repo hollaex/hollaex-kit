@@ -1,5 +1,11 @@
 //This scenario check for a new user to reset the password and check changing passwords
-const { LogIn, LogOut, SignUp, ResetPassword, Security, Utils, ResendVerificationEmail,ReCAPTCHA} = require('./Modules')
+const AccountLevel = require('../Onboarding/AccountLevel');
+const { Kyc } = require('../Roles/Kyc');
+const { Supervisor } = require('../Roles/Supervisor');
+const { CancelOrders } = require('../Trade/CancelOrders');
+const { QuickTrade } = require('../Trade/QuickTrade');
+const { TransactionFlow } = require('../Wallet/TransactionFlow');
+const { LogIn, LogOut, SignUp, ResetPassword, Security, Utils, ResendVerificationEmail,ReCAPTCHA, Referral, Setting, Verification, CancelOrder, Promotion, Communicator, Trade, Support, Wallet} = require('./Modules')
 const { Builder, By, Key, until } = require('selenium-webdriver')-
 Utils.setStep(1)
 describe('Main Test', function () {
@@ -13,10 +19,35 @@ describe('Main Test', function () {
 		await sleep(5000);
 		//await driver.quit();
 	})
-	describe('ResetPassword', function () {
-			it('and the user change pasword securely', async function() {
-			Security.Security();
-			
+	describe('test', function () {
+			it('test is..', async function() {
+				// LogIn.LogIn();
+				// LogOut.LogOut();
+				// Promotion()
+				// ReCAPTCHA.ReCAPTCHA()
+				// Referral.Referral()
+				// ResendVerificationEmail.ResendVerificationEmail() 
+				// ResetPassword.ResetPassword()
+				// Security.Security()
+				// Setting.Setting()
+				//  SignUp.SignUp()
+				// Verification.Verification();failed
+				/*Roles*/
+				// Communicator.Communicator()
+				//  Kyc()
+				//Supervisor()
+				// Support.Support()
+				// /*Trade*/
+				// CancelOrder.CancelOrder()
+				// CancelOrders()
+				//QuickTrade()
+				// Trade.Trade()
+				// TradeWithStop.TradeWithStop()
+				// /*Wallet*/
+				// TransactionFlow()
+				Wallet.Wallet();
+				
+				
 		})
 	})
 

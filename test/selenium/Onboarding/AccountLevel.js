@@ -47,6 +47,7 @@ async function AccountLevel () {
 		
 			console.log(step++,' | open | /login | ');
 			await driver.get(logInPage);
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(5000);
 		
 			console.log(step++,' | echo | \'Supervisor can access all deposit, withdrawals and approval settings\' |'); 
@@ -60,18 +61,22 @@ async function AccountLevel () {
 		
 			console.log(step++,' | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(10000);
 
 			console.log(step++,' | click | css=a > .pl-1 | ');
 			await driver.findElement(By.css('a > .pl-1')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(5000);
 
 			console.log(step++,' | click | linkText=Users | ');
 			await driver.findElement(By.linkText('Users')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		
 			console.log(step++,' | click | name=input | ');
 			await driver.findElement(By.name('input')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		
 			console.log(step++,' | type | name=input | leveltest');
@@ -79,31 +84,35 @@ async function AccountLevel () {
 		
 			console.log(step++,' | click | css=.ant-btn | ');
 			await driver.findElement(By.css('.ant-btn')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(5000);
 
 			console.log(step++,' | click | css=.ml-4 > .ant-btn > span | ');
 			await driver.findElement(By.css('.ml-4 > .ant-btn > span')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		
 			console.log(step++,' | click | css=.ant-select-selector | ');
 			await driver.findElement(By.css('.ant-select-selector')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		
-			console.log(step++,' | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div[4]/div/div/div[2] | ');
+			console.log(step++,' | click | xpath=//div[2]/div/div/div/div[2]/div/div/div[2] | ');
 			// /div[4]={1,..9}
-			let level= Math.floor(Math.random() * 9)+1;
+			let level= Math.floor(Math.random() * 10)+1;
 			console.log('level : '+String(level))
 			await sleep(3000);
-
-			if (level > 4){
-				console.log('driver.executeScript("window.scrollBy(0," +10+ ")');
+			level = 9;//5//6789
+			if (level > 4 & level < 10){
+				level = level-4
+				console.log('driver.executeScript("window.scrollBy(0," +300+ ")');
 				{
-					const element = await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]'))
+					const element = await driver.findElement(By.xpath('//div[2]/div/div/div/div[5]/div/div/div[2]'));//'//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]'))
 					await driver.executeScript('arguments[0].scrollIntoView(true);', element)
 				}
-				
-				console.log(step++,' | click |xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]  |')
-				await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
+				await sleep(3000);
+				console.log(step++,' | click |xpath=//div[2]/div/div/div/div['+level+']/div/div/div[2]  |')
+				await driver.findElement(By.xpath('//div[2]/div/div/div/div['+level+']/div/div/div[2]')).click();//('//div[2]/div/div/div/div[3]/div/div/div[2]'));//('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
 				await sleep(3000);
 		
 				console.log(step++,' | click | css=.w-100 > span |');
@@ -111,8 +120,8 @@ async function AccountLevel () {
 				await sleep(3000);
 		
 			}else{
-				console.log(step++,' | click | xpath=//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2] |');
-				await driver.findElement(By.xpath('//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
+				console.log(step++,' | click | xpath=//div[2]/div/div/div/div['+level+']/div/div/div[2] |');
+				await driver.findElement(By.xpath('//div[2]/div/div/div/div['+level+']/div/div/div[2]')).click();//'//div[5]/div/div/div/div[2]/div[1]/div/div/div['+level+']/div/div/div[2]')).click();
 				await sleep(3000);
 			
 				console.log(step++,' | click | css=.w-100 > span |');
@@ -126,10 +135,12 @@ async function AccountLevel () {
 
 			console.log(step++,' | click | css=.app-bar-account-content > div:nth-child(2) | ');
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 
 			console.log(step++,' | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
 			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
+			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		
 			console.log(' entering into user account to assert  Level of Account');
@@ -165,6 +176,7 @@ async function AccountLevel () {
 			console.log(vars['level']);
 
 			console.log('This is the EndOfTest');
+			
 			
 		});
 	});

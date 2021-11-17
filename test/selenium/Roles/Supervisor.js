@@ -7,7 +7,6 @@ async function Supervisor(){
 	const reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
 	const util = require ('../Utils/Utils.js');
 	const { addConsoleHandler } = require('selenium-webdriver/lib/logging');
-	const { Supervisor } = require('../Dev/Modules.js');
 	util.makeReportDir(reportPath);
 	util.makeReportDir(logPath);
 	require('console-stamp')(console, { 
@@ -57,8 +56,12 @@ async function Supervisor(){
 			await sleep(5000);
 
 			console.log(step++,'  | click | css=a > .pl-1 | ');
-			await sleep(5000);
 			await driver.findElement(By.css('a > .pl-1')).click();
+			await sleep(5000);
+
+			console.log(step++,'  | assertText | css=.sub-label |Supervisor');
+			assert(await driver.findElement(By.css('.sub-label')).getText() == 'SuperVisor');
+			await sleep(5000);
 		
 			console.log(step++,'  | click | linkText=Users | ');
 			await driver.findElement(By.linkText('Users')).click();
@@ -146,36 +149,40 @@ async function Supervisor(){
 				assert(elements.length);
 			}
 
-			console.log(' 28 | click | linkText=Financials | ');
-			await driver.findElement(By.linkText('Financials')).click();
-			await sleep(5000);
+			console.log(' 28 | click | linkText=Assets | ');
+			await driver.findElement(By.linkText('Assets')).click();
+			await sleep(1000);
 
-			console.log(step++,'  | click | css=.app_container-content > .ant-alert | ');
-			await driver.findElement(By.css('.app_container-content > .ant-alert')).click();
+			// console.log(step++,'  | click | css=.app_container-content > .ant-alert | ');
+			// await driver.findElement(By.css('.app_container-content > .ant-alert')).click();
+			// await sleep(1000);
+
+			// console.log(step++,'  | assertText | css=.app_container-content > .ant-alert > .ant-alert-description | Access denied: User is not authorized to access this endpoint');
+			// assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
+		
+			// console.log(step++,'  | click | css=.ant-card-body > .ant-alert | ');
+			// await driver.findElement(By.css('.ant-card-body > .ant-alert')).click();
+		
+			// console.log(step++,'  | assertText | css=.ant-card-body .ant-alert-description | Access denied: User is not authorized to access this endpoint');
+			// assert(await driver.findElement(By.css('.ant-card-body .ant-alert-description')).getText() == 'Access denied: User is not authorized to access this endpoint');
+		
+			console.log(step++,'  | click | id=rc-tabs-4-tab-1 | ');
+			await driver.findElement(By.id('rc-tabs-4-tab-1')).click();
 			await sleep(5000);
 
 			console.log(step++,'  | assertText | css=.app_container-content > .ant-alert > .ant-alert-description | Access denied: User is not authorized to access this endpoint');
 			assert(await driver.findElement(By.css('.app_container-content > .ant-alert > .ant-alert-description')).getText() == 'Access denied: User is not authorized to access this endpoint');
-		
-			console.log(step++,'  | click | css=.ant-card-body > .ant-alert | ');
-			await driver.findElement(By.css('.ant-card-body > .ant-alert')).click();
-		
-			console.log(step++,'  | assertText | css=.ant-card-body .ant-alert-description | Access denied: User is not authorized to access this endpoint');
-			assert(await driver.findElement(By.css('.ant-card-body .ant-alert-description')).getText() == 'Access denied: User is not authorized to access this endpoint');
-		
-			console.log(step++,'  | click | id=rc-tabs-4-tab-1 | ');
-			await driver.findElement(By.id('rc-tabs-4-tab-1')).click();
-		
-			console.log(step++,'  | click | xpath=//*[@id="rc-tabs-4-panel-1"]/div/div[1]/button | ');
-			await driver.findElement(By.xpath('//*[@id="rc-tabs-4-panel-1"]/div/div[1]/button')).click();
-			await sleep(5000);
-		
-			console.log(step++,'  | assertText | css=.sub-title | Asset:');
-			assert(await driver.findElement(By.css('.sub-title')).getText() == 'Asset:')
 			
-			console.log(step++,'  | click | css=.btn-wrapper > .ant-btn:nth-child(1) |');
-			await driver.findElement(By.css('.btn-wrapper > .ant-btn:nth-child(1)')).click();
-			await sleep(3000);
+			// console.log(step++,'  | click | xpath=//*[@id="rc-tabs-4-panel-1"]/div/div[1]/button | ');
+			// await driver.findElement(By.xpath('//*[@id="rc-tabs-4-panel-1"]/div/div[1]/button')).click();
+			// await sleep(5000);
+		
+			// console.log(step++,'  | assertText | css=.sub-title | Asset:');
+			// assert(await driver.findElement(By.css('.sub-title')).getText() == 'Asset:')
+			
+			// console.log(step++,'  | click | css=.btn-wrapper > .ant-btn:nth-child(1) |');
+			// await driver.findElement(By.css('.btn-wrapper > .ant-btn:nth-child(1)')).click();
+			// await sleep(3000);
 
 			console.log(step++,' | click | id=rc-tabs-4-tab-2 | ');
 			await driver.findElement(By.id('rc-tabs-4-tab-2')).click();
@@ -189,8 +196,59 @@ async function Supervisor(){
 			assert(await driver.findElement(By.css('.ant-table-row:nth-child(1) .d-flex')).getText() == 'Validated');
 			await sleep(5000);
 
+			console.log("should be fixed")
 			console.log(step++,'  | click | id=rc-tabs-4-tab-3 | ');
 			await driver.findElement(By.id('rc-tabs-4-tab-3')).click();
+			await sleep(5000);
+			
+	     	// console.log(step++,"2 | click | css=.filter-input-wrapper:nth-child(3) .ant-input | ");
+			// await driver.findElement(By.css(".filter-input-wrapper:nth-child(3) .ant-input")).click()
+			// await sleep(5000);	
+
+			// console.log(step++," | type | css=.filter-input-wrapper:nth-child(3) .ant-input | 172");
+			// await driver.findElement(By.css(".filter-input-wrapper:nth-child(3) .ant-input")).sendKeys("172")
+			// await sleep(5000);
+
+			// console.log(step++," | click | css=.ant-btn > span:nth-child(2) | ")
+			// await driver.findElement(By.css(".ant-btn > span:nth-child(2)")).click()
+			// await sleep(5000);
+
+			// console.log(step++," | click | css=.ant-table-cell > .d-flex | ")
+			// await driver.findElement(By.css(".ant-table-cell > .d-flex")).click()
+			// await sleep(5000);
+			// console.log(step++,'  | click | css=.ant-table-row:nth-child(1) .d-flex | ');
+			// await driver.findElement(By.css('.ant-table-cell > .d-flex')).click();
+			// await sleep(5000);
+
+			// console.log(step++," | assertText | css=.ant-table-row:nth-child(1) .d-flex | Validated")
+			// assert(await driver.findElement(By.css('.ant-table-row:nth-child(1) .d-flex')).getText() == "Validated")
+			// await sleep(5000);
+
+			console.log(step++,'  | click | id=rc-tabs-4-tab-4 | ');
+			await driver.findElement(By.id('rc-tabs-4-tab-4')).click();
+			await sleep(5000);
+			
+			console.log(step++,'  | click | css=.button:nth-child(1) > span | ');
+			await driver.findElement(By.css('.button:nth-child(1) > span')).click();
+			await sleep(5000);
+
+			console.log(step++,'  | click | css=.modal-button:nth-child(2) > span| ');
+			await driver.findElement(By.css('.modal-button:nth-child(2) > span')).click();
+			await sleep(1000);
+
+			console.log(step++,'  | assertText | css=.ant-message-custom-content > span:nth-child(2) | Access denied: User is not authorized to access this endpoint');
+			assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
+			util.takeHollashot(driver,reportPath,22);
+			await sleep(5000);
+
+			console.log(step++,'  | assertText | css=.ant-message-custom-content > span:nth-child(2) | Access denied: User is not authorized to access this endpoint');
+			assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
+			util.takeHollashot(driver,reportPath,22);
+			await sleep(5000);
+
+
+			console.log(step++,'  | click | id=rc-tabs-4-tab-5 | ');
+			await driver.findElement(By.id('rc-tabs-4-tab-5')).click();
 			await sleep(5000);
 		
 			console.log('This is the EndOfTest');
