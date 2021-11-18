@@ -1372,6 +1372,15 @@ checkStatus()
 					try {
 						loggerPlugin.verbose('plugin', plugin.name, 'enabling');
 						const context = {
+							configValues: {
+								publicMeta: plugin.public_meta,
+								meta: plugin.meta
+							},
+							pluginLibraries: {
+								app,
+								loggerPlugin,
+								toolsLib
+							},
 							app,
 							toolsLib,
 							lodash,
