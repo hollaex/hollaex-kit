@@ -49,7 +49,7 @@ const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
 
 const getInstalledLibrary = async (name, version) => {
-	const jsonFilePath = path.resolve(__dirname, './node_modules', name, 'package.json');
+	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
 
 	const fileData = fs.readFileSync(jsonFilePath);
 	const parsedFileData = JSON.parse(fileData);
@@ -87,7 +87,7 @@ const installLibrary = async (library) => {
 		);
 
 		await npm.install([`${name}@${version}`], {
-			cwd: path.resolve(__dirname, './'),
+			cwd: path.resolve(__dirname, '../'),
 			save: true,
 			output: true
 		});
