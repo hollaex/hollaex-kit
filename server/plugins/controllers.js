@@ -179,6 +179,16 @@ const postPlugin = async (req, res) => {
 	]);
 
 	try {
+		const sameNamePlugin = await Plugin.findOne({
+			where: { name },
+			raw: true,
+			attributes: ['id', 'name']
+		});
+
+		if (sameNamePlugin) {
+			throw new Error(`Plugin ${name} is already installed`);
+		}
+
 		if (configValues.type) {
 			const sameTypePlugin = await Plugin.findOne({
 				where: { type: configValues.type },
@@ -191,17 +201,7 @@ const postPlugin = async (req, res) => {
 			}
 		}
 
-		const sameNamePlugin = await Plugin.findOne({
-			where: { name },
-			raw: true,
-			attributes: ['id', 'name']
-		});
-
-		if (sameNamePlugin) {
-			throw new Error(`Plugin ${name} is already installed`);
-		}
-
-		const newPlugin = {
+		const pluginConfig = {
 			name,
 			version,
 			author,
@@ -220,7 +220,7 @@ const postPlugin = async (req, res) => {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 						}
 
-						newPlugin[field] =  minifiedScript.code;
+						pluginConfig[field] =  minifiedScript.code;
 					}
 					break;
 				case 'description':
@@ -231,13 +231,13 @@ const postPlugin = async (req, res) => {
 				case 'logo':
 				case 'type':
 					if (isString(value)) {
-						newPlugin[field] = value;
+						pluginConfig[field] = value;
 					}
 					break;
 				case 'web_view':
 				case 'admin_view':
 					if (!isUndefined(value)) {
-						newPlugin[field] = value;
+						pluginConfig[field] = value;
 					}
 					break;
 				case 'prescript':
@@ -245,7 +245,7 @@ const postPlugin = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (isPlainObject(value)) {
-						newPlugin[field] = value;
+						pluginConfig[field] = value;
 					}
 					break;
 				default:
@@ -253,7 +253,7 @@ const postPlugin = async (req, res) => {
 			}
 		}
 
-		const plugin = await Plugin.create(newPlugin);
+		const plugin = await Plugin.create(pluginConfig);
 		const formattedPlugin = cloneDeep(plugin.dataValues);
 
 		loggerPlugin.info(
@@ -264,14 +264,16 @@ const postPlugin = async (req, res) => {
 
 		formattedPlugin.enabled_admin_view = !!formattedPlugin.admin_view;
 
-		res.json(omit(formattedPlugin, [
-			'id',
-			'meta',
-			'admin_view',
-			'script',
-			'prescript',
-			'postscript'
-		]));
+		res.json(
+			omit(formattedPlugin, [
+				'id',
+				'meta',
+				'admin_view',
+				'script',
+				'prescript',
+				'postscript'
+			])
+		);
 
 		if (plugin.enabled && plugin.script) {
 			process.exit();
@@ -287,8 +289,192 @@ const postPlugin = async (req, res) => {
 	}
 };
 
+const putPlugin = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/putPlugin',
+		req.auth.sub
+	);
+
+	const { name, version } = req.body;
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/putPlugin',
+		name,
+		'version:',
+		version
+	);
+
+	const configValues = pick(req.body, [
+		'script',
+		'description',
+		'icon',
+		'bio',
+		'documentation',
+		'web_view',
+		'admin_view',
+		'url',
+		'logo',
+		'prescript',
+		'postscript',
+		'meta',
+		'public_meta',
+		'type'
+	]);
+
+	try {
+		const plugin = await Plugin.findOne({ where: { name }});
+
+		if (!plugin) {
+			throw new Error('Plugin not installed');
+		}
+
+		if (plugin.version === version) {
+			throw new Error('Version is already installed');
+		}
+
+		if (configValues.type) {
+			const sameTypePlugin = Plugin.findOne({
+				where: {
+					type: configValues.type,
+					name: {
+						[sequelize.Op.not]: name
+					}
+				},
+				raw: true,
+				attributes: ['id', 'name', 'type']
+			});
+
+			if (sameTypePlugin) {
+				throw new Error(`${name} version ${version} cannot be ran in parallel with an installed plugin (${sameTypePlugin.name}). Uninstall the plugin ${sameTypePlugin.name} before updating this plugin.`);
+			}
+		}
+
+		const pluginConfig = {
+			version
+		};
+
+		for (const field in configValues) {
+			const value = configValues[field];
+
+			switch (field) {
+				case 'script':
+					if (value) {
+						const minifiedScript = uglifyEs.minify(value);
+
+						if (minifiedScript.error) {
+							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
+						}
+
+						pluginConfig[field] = minifiedScript.code;
+					}
+					break;
+				case 'description':
+				case 'bio':
+				case 'author':
+				case 'type':
+				case 'documentation':
+				case 'icon':
+				case 'url':
+				case 'logo':
+					if (value) {
+						pluginConfig[field] = value;
+					}
+					break;
+				case 'web_view':
+				case 'admin_view':
+					if (!isUndefined(value)) {
+						pluginConfig[field] = value;
+					}
+					break;
+				case 'prescript':
+				case 'postscript':
+					if (isPlainObject(value)) {
+						pluginConfig[field] = value;
+					}
+					break;
+				case 'meta':
+				case 'public_meta':
+					if (isPlainObject(value)) {
+						for (const key in plugin[field]) {
+							if (
+								lodash.isPlainObject(plugin[field])
+								&& plugin[field][key].overwrite === false
+									&& (!value[key] || value[key].overwrite === false)
+							) {
+								value[key] = plugin[field][key];
+							}
+						}
+
+						const existingConfig = pick(plugin[field], Object.keys(value));
+
+						for (const key in value) {
+							if (existingConfig[key] !== undefined) {
+								if (isPlainObject(value[key]) && !isPlainObject(existingConfig[key])) {
+									value[key].value = existingConfig[key];
+								} else if (!isPlainObject(value[key]) && !isPlainObject(existingConfig[key])) {
+									value[key] = existingConfig[key];
+								} else if (!isPlainObject(value[key]) && isPlainObject(existingConfig[key])) {
+									value[key] = existingConfig[key].value;
+								} else if (isPlainObject(value[key]) && isPlainObject(existingConfig[key])) {
+									value[key].value = existingConfig[key].value;
+								}
+							}
+						}
+
+						pluginConfig[field] = value;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
+		const updatedPlugin = await plugin.update(pluginConfig);
+		const formattedPlugin = cloneDeep(updatedPlugin.dataValues);
+
+		loggerPlugin.info(
+			req.uuid,
+			'plugins/controllers/putPlugin plugin updated',
+			name
+		);
+
+		formattedPlugin.enabled_admin_view = !!formattedPlugin.admin_view;
+
+		res.json(
+			omit(formattedPlugin, [
+				'id',
+				'meta',
+				'admin_view',
+				'script',
+				'prescript',
+				'postscript'
+			])
+		);
+
+		if (updatedPlugin.enabled && updatedPlugin.script) {
+			process.exit();
+		}
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/putPlugin err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getPlugins,
 	deletePlugin,
-	postPlugin
+	postPlugin,
+	putPlugin
 };
