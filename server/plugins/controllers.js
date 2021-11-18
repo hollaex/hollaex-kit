@@ -145,7 +145,7 @@ const postPlugin = async (req, res) => {
 
 	loggerPlugin.verbose(
 		req.uuid,
-		'plugins/controllers/postPlugin',
+		'plugins/controllers/postPlugin auth',
 		req.auth.sub
 	);
 
@@ -297,7 +297,7 @@ const putPlugin = async (req, res) => {
 
 	loggerPlugin.verbose(
 		req.uuid,
-		'plugins/controllers/putPlugin',
+		'plugins/controllers/putPlugin auth',
 		req.auth.sub
 	);
 
@@ -480,7 +480,7 @@ const getPluginConfig = async (req, res) => {
 
 	loggerPlugin.verbose(
 		req.uuid,
-		'plugins/controllers/getPluginConfig',
+		'plugins/controllers/getPluginConfig auth',
 		req.auth.sub
 	);
 
@@ -528,7 +528,7 @@ const putPluginConfig = async (req, res) => {
 
 	loggerPlugin.verbose(
 		req.uuid,
-		'plugins/controllers/putPluginConfig',
+		'plugins/controllers/putPluginConfig auth',
 		req.auth.sub
 	);
 
@@ -612,11 +612,62 @@ const putPluginConfig = async (req, res) => {
 	}
 };
 
+const getPluginScript = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/getPluginScript auth',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/getPluginScript name:',
+		name
+	);
+
+	try {
+		const plugin = await Plugin.findOne({
+			where: { name },
+			raw: true,
+			attributes: [
+				'name',
+				'version',
+				'script',
+				'prescript',
+				'postscript',
+				'admin_view'
+			]
+		});
+
+		if (!plugin) {
+			throw new Error('Plugin not found');
+		}
+
+		return res.json(plugin);
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/getPluginScript err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getPlugins,
 	deletePlugin,
 	postPlugin,
 	putPlugin,
 	getPluginConfig,
-	putPluginConfig
+	putPluginConfig,
+	getPluginScript
 };
