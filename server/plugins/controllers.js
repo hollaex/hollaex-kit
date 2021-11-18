@@ -662,6 +662,116 @@ const getPluginScript = async (req, res) => {
 	}
 };
 
+const disablePlugin = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/disablePlugin auth',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/disablePlugin name:',
+		name
+	);
+
+	try {
+		const plugin = await Plugin.findOne({ where: { name }});
+
+		if (!plugin) {
+			throw new Error('Plugin not found');
+		}
+
+		if (!plugin.enabled) {
+			throw new Error('Plugin is already disabled');
+		}
+
+		await plugin.update({ enabled: false }, { fields: ['enabled'] });
+
+		loggerPlugin.verbose(
+			req.uuid,
+			'plugins/controllers/disablePlugin plugin disabled',
+			name
+		);
+
+		res.json({ message: 'Success' });
+
+		if (plugin.script) {
+			process.exit();
+		}
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/disablePlugin err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
+const enablePlugin = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/enablePlugin auth',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/enablePlugin name:',
+		name
+	);
+
+	try {
+		const plugin = await Plugin.findOne({ where: { name }});
+
+		if (!plugin) {
+			throw new Error('Plugin not found');
+		}
+
+		if (plugin.enabled) {
+			throw new Error('Plugin is already enabled');
+		}
+
+		await plugin.update({ enabled: true }, { fields: ['enabled'] });
+
+		loggerPlugin.verbose(
+			req.uuid,
+			'plugins/controllers/enablePlugin plugin enabled',
+			name
+		);
+
+		res.json({ message: 'Success' });
+
+		if (plugin.script) {
+			process.exit();
+		}
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/enablePlugin err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getPlugins,
 	deletePlugin,
@@ -669,5 +779,7 @@ module.exports = {
 	putPlugin,
 	getPluginConfig,
 	putPluginConfig,
-	getPluginScript
+	getPluginScript,
+	disablePlugin,
+	enablePlugin
 };

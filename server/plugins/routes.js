@@ -2,7 +2,17 @@
 
 const express = require('express');
 const router = express.Router();
-const { getPlugins, deletePlugin, postPlugin, putPlugin, getPluginConfig, putPluginConfig, getPluginScript } = require('./controllers');
+const {
+	getPlugins,
+	deletePlugin,
+	postPlugin,
+	putPlugin,
+	getPluginConfig,
+	putPluginConfig,
+	getPluginScript,
+	disablePlugin,
+	enablePlugin
+} = require('./controllers');
 const { checkSchema, query, body } = require('express-validator');
 const toolsLib = require('../utils/toolsLib');
 const lodash = require('lodash');
@@ -237,6 +247,24 @@ router.get(
 		query('name').isString().notEmpty().trim().toLowerCase()
 	],
 	getPluginScript
+);
+
+router.get(
+	'/disable',
+	[
+		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+		query('name').isString().notEmpty().trim().toLowerCase()
+	],
+	disablePlugin
+);
+
+router.get(
+	'/enable',
+	[
+		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+		query('name').isString().notEmpty().trim().toLowerCase()
+	],
+	enablePlugin
 );
 
 module.exports = router;
