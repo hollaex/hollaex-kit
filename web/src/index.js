@@ -114,7 +114,7 @@ const drawFavIcon = (url) => {
 };
 
 const getLocalBundle = async (pluginName) => {
-	const url = `/${pluginName}.json`;
+	const url = `http://localhost:8080/${pluginName}.json`;
 	try {
 		const response = await fetch(url);
 		return await response.json();
