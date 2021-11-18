@@ -16,7 +16,7 @@ const latestVersion = require('latest-version');
 const npm = require('npm-programmatic');
 const sequelize = require('sequelize');
 const _eval = require('eval');
-const { toolsLib } = require('../utils/toolsLib');
+const toolsLib = require('../utils/toolsLib');
 const lodash = require('lodash');
 const expressValidator = require('express-validator');
 const multer = require('multer');
@@ -191,7 +191,7 @@ checkStatus()
 					installedLibraries: {}
 				};
 
-				if (plugin.prescript && plugin.prescript.install) {
+				if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
 					loggerPlugin.verbose(
 						'plugins/index/initialization',
 						`Installing packages for plugin ${plugin.name}`
