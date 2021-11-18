@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { getPlugins, deletePlugin, postPlugin, putPlugin } = require('./controllers');
+const { getPlugins, deletePlugin, postPlugin, putPlugin, getPluginConfig, putPluginConfig } = require('./controllers');
 const { checkSchema, query, body } = require('express-validator');
 const toolsLib = require('../utils/toolsLib');
 const lodash = require('lodash');
@@ -10,7 +10,7 @@ const lodash = require('lodash');
 router.get(
 	'/',
 	[
-		query('name').isString().notEmpty().optional(),
+		query('name').isString().notEmpty().trim().toLowerCase().optional(),
 		query('search').isString().notEmpty().optional(),
 	],
 	getPlugins
@@ -188,6 +188,46 @@ router.put(
 		})
 	],
 	putPlugin
+);
+
+router.get(
+	'/meta',
+	[
+		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+		query('name').isString().notEmpty().trim().toLowerCase(),
+	],
+	getPluginConfig
+);
+
+router.put(
+	'/meta',
+	[
+		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
+		query('name').isString().notEmpty().trim().toLowerCase(),
+		checkSchema({
+			meta: {
+				in: ['body'],
+				custom: {
+					options: (value) => {
+						return lodash.isPlainObject(value);
+					},
+					errorMessage: 'must be an object'
+				},
+				optional: true
+			},
+			public_meta: {
+				in: ['body'],
+				custom: {
+					options: (value) => {
+						return lodash.isPlainObject(value);
+					},
+					errorMessage: 'must be an object'
+				},
+				optional: true
+			}
+		})
+	],
+	putPluginConfig
 );
 
 module.exports = router;

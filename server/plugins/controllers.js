@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const lodash = require('lodash');
 const sequelize = require('sequelize');
 const { loggerPlugin } = require('../config/logger');
-const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString } = require('lodash');
+const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty } = require('lodash');
 const uglifyEs = require('uglify-es');
 
 const getPlugins = async (req, res) => {
@@ -472,9 +472,151 @@ const putPlugin = async (req, res) => {
 	}
 };
 
+const getPluginConfig = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/getPluginConfig',
+		req.auth.sub
+	);
+
+	const { name } = req.query;
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/getPluginConfig name',
+		name
+	);
+
+	try {
+		const plugin = await Plugin.findOne({
+			where: { name },
+			raw: true,
+			attributes: [
+				'name',
+				'version',
+				'meta',
+				'public_meta'
+			]
+		});
+
+		if (!plugin) {
+			throw new Error('Plugin not found');
+		}
+
+		return res.json(plugin);
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/getPluginConfig err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
+const putPluginConfig = async (req, res) => {
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		return res.status(400).json({ errors: errors.array() });
+	}
+
+	loggerPlugin.verbose(
+		req.uuid,
+		'plugins/controllers/putPluginConfig',
+		req.auth.sub
+	);
+
+	const { name } = req.body;
+	const configValues = pick(req.body, ['meta', 'public_meta']);
+
+	loggerPlugin.info(
+		req.uuid,
+		'plugins/controllers/putPluginConfig name:',
+		name
+	);
+
+	try {
+		if (isEmpty(configValues)) {
+			throw new Error('Must provide meta or public_meta to update');
+		}
+
+		const plugin = await Plugin.findOne({ where: { name }});
+
+		if (!plugin) {
+			throw new Error('Plugin not found');
+		}
+
+		const updatedConfig = {};
+
+		for (const field in configValues) {
+			const value = configValues[field];
+
+			switch (field) {
+				case 'meta':
+				case 'public_meta':
+					if (value) {
+						const newConfig = plugin[field];
+
+						for (const key in newConfig) {
+							if (value[key] !== undefined) {
+								if (isPlainObject(newConfig[key])) {
+									newConfig[key].value = value[key];
+								} else {
+									newConfig[key] = value[key];
+								}
+							}
+						}
+
+						updatedConfig[field] = newConfig;
+					}
+					break;
+				default:
+					break;
+			}
+		}
+
+		const updatedPlugin = await plugin.update(updatedConfig, { fields: Object.keys(updatedConfig) });
+
+		loggerPlugin.verbose(
+			req.uuid,
+			'plugins/controllers/putPluginConfig plugin updated',
+			name
+		);
+
+		res.json(
+			pick(updatedPlugin.dataValues, [
+				'name',
+				'version',
+				'public_meta',
+				'meta'
+			])
+		);
+
+		if (plugin.enabled && plugin.script) {
+			process.exit();
+		}
+	} catch (err) {
+		loggerPlugin.error(
+			req.uuid,
+			'plugins/controllers/putPluginConfig err',
+			err.message
+		);
+
+		return res.status(err.status || 400).json({ message: err.message });
+	}
+};
+
 module.exports = {
 	getPlugins,
 	deletePlugin,
 	postPlugin,
-	putPlugin
+	putPlugin,
+	getPluginConfig,
+	putPluginConfig
 };
