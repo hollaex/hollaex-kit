@@ -10,8 +10,8 @@ const convertCountry = (value = {}) => {
 		value: value.alpha2,
 		name: value.name,
 		label: value.name,
-		phoneCode:
-			value.countryCallingCodes.length > 0 ? value.countryCallingCodes[0] : '',
+		phoneCodes: value.countryCallingCodes,
+		phoneCode: '', // Temporarily kept for compatibility purposes
 		flag: (
 			<span
 				className={classnames(
@@ -42,14 +42,26 @@ export const COUNTRIES_OPTIONS = COUNTRIES.map((country) => ({
 	icon: country.flag,
 }));
 
-export const PHONE_OPTIONS = COUNTRIES.map((country) => ({
-	label: STRINGS.formatString(
-		STRINGS[
-			'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_DISPLAY'
-		],
-		country.phoneCode,
-		country.name
-	).join(''),
-	value: country.phoneCode,
-	icon: country.flag,
-}));
+const getPhoneOptions = () => {
+	const phoneOptions = [];
+
+	COUNTRIES.forEach((country) => {
+		country.phoneCodes.forEach((phoneCode) => {
+			phoneOptions.push({
+				label: STRINGS.formatString(
+					STRINGS[
+						'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.PHONE_CODE_DISPLAY'
+					],
+					phoneCode,
+					country.name
+				).join(''),
+				value: phoneCode,
+				icon: country.flag,
+			});
+		});
+	});
+
+	return phoneOptions;
+};
+
+export const PHONE_OPTIONS = getPhoneOptions();
