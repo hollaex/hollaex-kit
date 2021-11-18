@@ -7,9 +7,13 @@ const sequelize = require('sequelize');
 const { loggerPlugin } = require('../config/logger');
 
 const getPlugins = async (req, res) => {
-	try {
-		validationResult(req).throw();
+	const errors = validationResult(req);
+	if (!errors.isEmpty()) {
+		console.log(errors);
+		return res.status(400).json({ errors: errors.array() });
+	}
 
+	try {
 		const { name, search } = req.query;
 
 		loggerPlugin.verbose(
