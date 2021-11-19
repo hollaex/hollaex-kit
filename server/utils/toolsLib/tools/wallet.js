@@ -71,15 +71,14 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	if (
-		coinConfiguration.network
-		&& !coinConfiguration.network.split(',').includes(opts.network)
-	) {
+	if (coinConfiguration.network) {
 		if (!opts.network) {
 			return reject(new Error(NETWORK_REQUIRED(currency, coinConfiguration.network)));
-		} else {
+		} else if (!coinConfiguration.network.split(',').includes(opts.network)) {
 			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
 		}
+	} else if (opts.network)  {
+		return reject(new Error(`Cannot pass network for coin ${currency}`));
 	}
 
 	return verifyOtpBeforeAction(id, opts.otpCode)
@@ -166,6 +165,8 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
 	const token = crypto.randomBytes(60).toString('hex');
+
+	console.log('TOKEN', token);
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
