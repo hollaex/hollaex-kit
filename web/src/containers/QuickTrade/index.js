@@ -114,7 +114,7 @@ class QuickTradeContainer extends PureComponent {
 			this.props.router.push('/account');
 		}
 		if (this.props.sourceOptions && this.props.sourceOptions.length) {
-			this.constructTraget();
+			this.constructTarget();
 		}
 		this.handleMarket(pairs, tickers, this.state.searchValue);
 	}
@@ -131,7 +131,7 @@ class QuickTradeContainer extends PureComponent {
 			JSON.stringify(prevProps.sourceOptions) !==
 				JSON.stringify(this.props.sourceOptions)
 		) {
-			this.constructTraget();
+			this.constructTarget();
 		}
 	}
 
@@ -218,7 +218,7 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onSelectTarget = (selectedTarget) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 		const { selectedSource } = this.state;
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -227,12 +227,12 @@ class QuickTradeContainer extends PureComponent {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
@@ -250,7 +250,7 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const selectedTarget = targetOptions[0];
@@ -260,12 +260,12 @@ class QuickTradeContainer extends PureComponent {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
@@ -285,7 +285,7 @@ class QuickTradeContainer extends PureComponent {
 		this.goToPair(pair);
 	};
 
-	constructTraget = () => {
+	constructTarget = () => {
 		const {
 			sourceOptions,
 			routeParams: { pair = '' },
