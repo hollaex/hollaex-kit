@@ -106,7 +106,7 @@ const deletePlugin = async (req, res) => {
 
 		const restartAfterDelete = plugin.enabled && plugin.script;
 
-		await plugin.destory();
+		await plugin.destroy();
 
 		loggerPlugin.verbose(
 			req.uuid,
