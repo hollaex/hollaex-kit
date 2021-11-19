@@ -166,8 +166,6 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 	let stringData = JSON.stringify(data);
 	const token = crypto.randomBytes(60).toString('hex');
 
-	console.log('TOKEN', token);
-
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
 			const { email, amount, fee, fee_coin, currency, address, network } = data;
