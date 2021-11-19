@@ -28,19 +28,44 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
 		super(props);
-		const {
-			routeParams: { pair },
-			sourceOptions,
-			tickers,
-		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+		const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
+
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair] || {};
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
 
 		this.state = {
 			pair,
-			side: 'buy',
+			side,
 			tickerClose,
 			showQuickTradeModal: false,
 			targetOptions,
@@ -60,6 +85,8 @@ class QuickTradeContainer extends PureComponent {
 			pageSize: 12,
 			searchValue: '',
 		};
+
+		this.goToPair(pair);
 	}
 
 	getSearchPairs = (value) => {
@@ -217,6 +244,11 @@ class QuickTradeContainer extends PureComponent {
 		this.props.router.push(`/trade/${this.state.pair}`);
 	};
 
+	flipPair = (pair) => {
+		const pairArray = pair.split('-');
+		return pairArray.reverse().join('-');
+	};
+
 	onSelectTarget = (selectedTarget) => {
 		const { tickers, pairs } = this.props;
 		const { selectedSource } = this.state;
@@ -286,17 +318,48 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	constructTarget = () => {
-		const {
-			sourceOptions,
-			routeParams: { pair = '' },
-		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+		const { sourceOptions, routeParams, pairs, router, tickers } = this.props;
+
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
 		this.setState({
 			selectedTarget,
 			targetOptions,
+			side,
+			tickerClose,
 		});
+
+		this.goToPair(pair);
 	};
 
 	getTargetOptions = (sourceKey) => {
