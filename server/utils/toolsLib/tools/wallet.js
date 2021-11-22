@@ -31,6 +31,28 @@ const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
+const WAValidator = require('multicoin-address-validator');
+
+const isValidAddress = (currency, address, network) => {
+	if (network === 'eth' || network === 'ethereum') {
+		return WAValidator.validate(address, 'eth');
+	} else if (network === 'stellar' || network === 'xlm') {
+		return WAValidator.validate(address.split(':')[0], 'xlm');
+	} else if (network === 'tron' || network === 'trx') {
+		return WAValidator.validate(address, 'trx');
+	} else if (network === 'bsc' || currency === 'bnb' || network === 'bnb') {
+		return WAValidator.validate(address, 'eth');
+	} else if (currency === 'btc' || currency === 'bch' || currency === 'xmr') {
+		return WAValidator.validate(address, currency);
+	} else if (currency === 'xrp') {
+		return WAValidator.validate(address.split(':')[0], currency);
+	} else if (currency === 'etn') {
+		// skip the validation
+		return true;
+	} else {
+		return WAValidator.validate(address, currency);
+	}
+};
 
 const getWithdrawalFee = (currency, network) => {
 	if (!subscribedToCoin(currency)) {
@@ -71,15 +93,18 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	if (
-		coinConfiguration.network
-		&& !coinConfiguration.network.split(',').includes(opts.network)
-	) {
+	if (coinConfiguration.network) {
 		if (!opts.network) {
 			return reject(new Error(NETWORK_REQUIRED(currency, coinConfiguration.network)));
-		} else {
+		} else if (!coinConfiguration.network.split(',').includes(opts.network)) {
 			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
 		}
+	} else if (opts.network)  {
+		return reject(new Error(`Invalid ${currency} network given: ${opts.network}`));
+	}
+
+	if (!isValidAddress(currency, address, opts.network)) {
+		return reject(new Error(`Invalid ${currency} address: ${address}`));
 	}
 
 	return verifyOtpBeforeAction(id, opts.otpCode)
@@ -944,5 +969,6 @@ module.exports = {
 	burnAssetByNetworkId,
 	getKitBalance,
 	updatePendingMint,
-	updatePendingBurn
+	updatePendingBurn,
+	isValidAddress
 };
