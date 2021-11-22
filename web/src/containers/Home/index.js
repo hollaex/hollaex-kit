@@ -245,7 +245,7 @@ class Home extends Component {
 	};
 
 	onSelectTarget = (selectedTarget) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 		const { selectedSource } = this.state;
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -254,12 +254,12 @@ class Home extends Component {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
@@ -277,7 +277,7 @@ class Home extends Component {
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const selectedTarget = targetOptions[0];
@@ -287,12 +287,12 @@ class Home extends Component {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
