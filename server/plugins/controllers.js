@@ -340,7 +340,7 @@ const putPlugin = async (req, res) => {
 		}
 
 		if (configValues.type) {
-			const sameTypePlugin = Plugin.findOne({
+			const sameTypePlugin = await Plugin.findOne({
 				where: {
 					type: configValues.type,
 					name: {

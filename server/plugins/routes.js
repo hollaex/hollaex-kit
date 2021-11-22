@@ -125,7 +125,7 @@ router.put(
 		body('name').isString().notEmpty().trim().toLowerCase(),
 		body('version').isInt({ min: 1 }),
 		body('type').isString().notEmpty().trim().toLowerCase().optional({ nullable: true }),
-		body('author').isString().optional(),
+		body('author').isString().optional({ nullable: true }),
 		body('script').isString().notEmpty().optional({ nullable: true }),
 		body('description').isString().optional({ nullable: true }),
 		body('bio').isString().optional({ nullable: true }),
@@ -213,7 +213,7 @@ router.put(
 	'/meta',
 	[
 		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
-		query('name').isString().notEmpty().trim().toLowerCase(),
+		body('name').isString().notEmpty().trim().toLowerCase(),
 		checkSchema({
 			meta: {
 				in: ['body'],
