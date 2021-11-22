@@ -33,7 +33,7 @@ const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 const WAValidator = require('multicoin-address-validator');
 
-const checkAddress = (currency, address, network) => {
+const isValidAddress = (currency, address, network) => {
 	if (network === 'eth' || network === 'ethereum') {
 		return WAValidator.validate(address, 'eth');
 	} else if (network === 'stellar' || network === 'xlm') {
@@ -100,10 +100,10 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
 		}
 	} else if (opts.network)  {
-		return reject(new Error(`Cannot pass network for coin ${currency}`));
+		return reject(new Error(`Invalid ${currency} network given: ${opts.network}`));
 	}
 
-	if (!checkAddress(currency, address, opts.network)) {
+	if (!isValidAddress(currency, address, opts.network)) {
 		return reject(new Error(`Invalid ${currency} address: ${address}`));
 	}
 
@@ -970,5 +970,5 @@ module.exports = {
 	getKitBalance,
 	updatePendingMint,
 	updatePendingBurn,
-	checkAddress
+	isValidAddress
 };
