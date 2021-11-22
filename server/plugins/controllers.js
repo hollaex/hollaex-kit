@@ -5,7 +5,7 @@ const { validationResult } = require('express-validator');
 const lodash = require('lodash');
 const sequelize = require('sequelize');
 const { loggerPlugin } = require('../config/logger');
-const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty } = require('lodash');
+const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty, isBoolean } = require('lodash');
 const uglifyEs = require('uglify-es');
 
 const getPlugins = async (req, res) => {
@@ -149,7 +149,12 @@ const postPlugin = async (req, res) => {
 		req.auth.sub
 	);
 
-	const { name, version, author, enabled } = req.body;
+	const { name, version, author } = req.body;
+	let { enabled } = req.body;
+
+	if (!isBoolean(enabled)) {
+		enabled = true;
+	}
 
 	loggerPlugin.info(
 		req.uuid,

@@ -42,7 +42,7 @@ router.post(
 		body('name').isString().notEmpty().trim().toLowerCase(),
 		body('version').isInt({ min: 1 }),
 		body('author').isString(),
-		body('enabled').isBoolean(),
+		body('enabled').isBoolean().optional(),
 		body('type').isString().notEmpty().trim().toLowerCase().optional({ nullable: true }),
 		body('script').isString().notEmpty().optional({ nullable: true }),
 		body('description').isString().optional({ nullable: true }),
