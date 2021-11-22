@@ -17,13 +17,14 @@ import { isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
 import { QuickTrade, EditWrapper, ButtonLink } from 'components';
 import { unique } from 'utils/data';
+import { getDecimals } from 'utils/utils';
 import math from 'mathjs';
 import Image from 'components/Image';
 
 import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const DECIMALS = 4;
+// const DECIMALS = 4;
 const MIN_HEIGHT = 450;
 
 class Home extends Component {
@@ -57,6 +58,7 @@ class Home extends Component {
 			style: {
 				minHeight: MIN_HEIGHT,
 			},
+			market: [],
 		};
 		this.goToPair(pair);
 	}
@@ -103,6 +105,12 @@ class Home extends Component {
 			}
 		} else {
 			return '14rem';
+		}
+	};
+
+	renderContent = (market) => {
+		if (market) {
+			this.setState({ market });
 		}
 	};
 
@@ -153,6 +161,8 @@ class Home extends Component {
 								router={router}
 								showSearch={false}
 								showMarkets={true}
+								isHome={true}
+								renderContent={this.renderContent}
 							/>
 						</div>
 					</div>
@@ -167,6 +177,7 @@ class Home extends Component {
 					pairs,
 					orderLimits,
 					sourceOptions,
+					user,
 				} = this.props;
 
 				const {
@@ -176,7 +187,21 @@ class Home extends Component {
 					selectedSource,
 					targetOptions,
 					side,
+					market,
 				} = this.state;
+				let marketData;
+				if (market) {
+					market.forEach((data) => {
+						const keyData = data.key.split('-');
+						if (
+							(keyData[0] === selectedSource &&
+								keyData[1] === selectedTarget) ||
+							(keyData[1] === selectedSource && keyData[0] === selectedTarget)
+						) {
+							marketData = data;
+						}
+					});
+				}
 
 				return (
 					pairs &&
@@ -207,6 +232,8 @@ class Home extends Component {
 								forwardSourceError={this.forwardSourceError}
 								forwardTargetError={this.forwardTargetError}
 								autoFocus={false}
+								user={user}
+								market={marketData}
 							/>
 						</div>
 					)
@@ -294,7 +321,9 @@ class Home extends Component {
 
 	onChangeTargetAmount = (targetAmount) => {
 		const { tickerClose } = this.state;
-		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 
 		this.setState({
 			targetAmount,
@@ -304,7 +333,9 @@ class Home extends Component {
 
 	onChangeSourceAmount = (sourceAmount) => {
 		const { tickerClose } = this.state;
-		const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 
 		this.setState({
 			sourceAmount,

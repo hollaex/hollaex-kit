@@ -20,7 +20,7 @@ const html = (email, data, language, domain) => {
 			<p>
 				${WITHDRAWALREQUEST.BODY[1](data.currency, data.amount, data.address)}<br /><br />
 				${WITHDRAWALREQUEST.BODY[2](data.amount)}<br />
-				${WITHDRAWALREQUEST.BODY[3](data.fee)}<br />
+				${data.fee ? `${WITHDRAWALREQUEST.BODY[3](data.fee)} ${data.fee_coin || data.currency}<br />` : ''}
 				${WITHDRAWALREQUEST.BODY[4](data.address)}<br />
 				${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}<br /><br />` : '<br />'}
 				${WITHDRAWALREQUEST.BODY[6]}<br />
@@ -49,7 +49,7 @@ const text = (email, data, language, domain) => {
 		${WITHDRAWALREQUEST.GREETING(email)}
 		${WITHDRAWALREQUEST.BODY[1](data.currency, data.amount, data.address)}
 		${WITHDRAWALREQUEST.BODY[2](data.amount)}
-		${WITHDRAWALREQUEST.BODY[3](data.fee)}
+		${data.fee ? `${WITHDRAWALREQUEST.BODY[3](data.fee)} ${data.fee_coin || data.currency}` : ''}
 		${WITHDRAWALREQUEST.BODY[4](data.address)}
 		${data.network ? `${WITHDRAWALREQUEST.BODY[5](data.network)}` : ''}
 		${WITHDRAWALREQUEST.BODY[6]}

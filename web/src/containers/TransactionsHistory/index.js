@@ -132,7 +132,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: false });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: true });
 				break;
 			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);

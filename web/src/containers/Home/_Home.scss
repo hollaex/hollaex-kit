@@ -138,6 +138,11 @@ $trade-tab--arrow-size: 0.4rem;
 			padding-right: 0.5rem !important;
 		}
 	}
+	.home_container {
+		.quick_trade-wrapper {
+			flex-direction: column;
+		}
+	}
 }
 
 .home_container {
@@ -155,8 +160,9 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.quick_trade-wrapper {
-		min-width: 30rem;
+		// min-width: 30rem;
 		max-width: 40rem;
+		background-color: $quick-trade-block-background;
 	}
 
 	.exchange-expired {
@@ -315,6 +321,12 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 	&.main-section-wrapper {
 		padding-bottom: 5rem;
+	}
+	.quick_trade-container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
 	}
 }
 

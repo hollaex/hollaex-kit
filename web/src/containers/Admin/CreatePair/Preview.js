@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Link } from 'react-router';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import Coins from '../Coins';
 import { renderStatus } from '../Trades/Pairs';
+import { updateExchange } from '../AdminFinancials/action';
 
 const Preview = ({
 	isExchangeWizard,
@@ -17,17 +18,45 @@ const Preview = ({
 	onDelete,
 	isEdit,
 	allCoins,
-	user,
+	user_id,
+	isExistPair,
+	onClose,
+	exchange,
+	pairs,
+	getMyExchange
 }) => {
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
 	const pair2_data =
 		allCoins.filter((data) => data.symbol === formData.pair_2)[0] || {};
+	
+	const handlePreviewNext = async (previewFormData) => {
+		if (isExistPair) {
+			try {
+				let formProps = {
+					id: exchange.id,
+					pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`]
+				}
+				await updateExchange(formProps);
+				await getMyExchange();
+				onClose();
+				message.success('Pairs added successfully');
+			} catch (error) {
+				let errMsg = error.data && error.data.message
+					? error.data.message
+					: error.message;
+				message.error(errMsg);
+			}
+		} else {
+			handleNext(previewFormData);
+		}
+	}
+
 	return (
 		<div>
 			{!isPreview && !isConfigure ? (
 				<Fragment>
-					<div className="title">Review & confirm trading pair</div>
+					<div className="title">Review & confirm market</div>
 					<div className="grey-warning">
 						<div className="warning-text">!</div>
 						<div>
@@ -42,6 +71,14 @@ const Preview = ({
 					</div>
 				</Fragment>
 			) : null}
+			{isPreview || isConfigure
+				?
+				<div className="d-flex">
+					<div className="title">Manage {formData.pair_base}/{formData.pair_2}</div>
+					<div>{renderStatus(pair_base_data, user_id)}</div>
+				</div>
+				: null
+			}
 			<div
 				className={
 					!isPreview && !isConfigure
@@ -71,13 +108,13 @@ const Preview = ({
 									<ExclamationCircleFilled />
 								</div>
 							) : null}
-							{isConfigure ? renderStatus(pair_base_data, user) : null}
+							{isConfigure ? renderStatus(pair_base_data, user_id) : null}
 						</div>
 						{isPreview || isConfigure ? (
 							<div>
 								(
 								<Link
-									to={`/admin/financials?tab=1&preview=true&symbol=${formData.pair_base}`}
+									to={`/admin/financials?tab=0&preview=true&symbol=${formData.pair_base}`}
 								>
 									View details
 								</Link>
@@ -101,13 +138,13 @@ const Preview = ({
 									<ExclamationCircleFilled />
 								</div>
 							) : null}
-							{isConfigure ? renderStatus(pair2_data, user) : null}
+							{isConfigure ? renderStatus(pair2_data, user_id) : null}
 						</div>
 						{isConfigure || isPreview ? (
 							<div>
 								(
 								<Link
-									to={`/admin/financials?tab=1&preview=true&symbol=${formData.pair_2}`}
+									to={`/admin/financials?tab=0&preview=true&symbol=${formData.pair_2}`}
 								>
 									View details
 								</Link>
@@ -118,9 +155,10 @@ const Preview = ({
 				</div>
 				<div className={!isPreview && !isConfigure ? 'right-container' : ''}>
 					<div className="right-content">
-						{isConfigure ? <div className="title">Pair info</div> : null}
-						<div>Base pair: {formData.pair_base}</div>
-						<div>Price pair: {formData.pair_2}</div>
+						{/* {isConfigure ? <div className="title">Pair info</div> : null} */}
+						<div className="title">Market info</div>
+						<div>Base market pair: {formData.pair_base}</div>
+						<div>Price market pair: {formData.pair_2}</div>
 					</div>
 					<div className="right-content">
 						<div className="title">Parameters</div>
@@ -135,7 +173,11 @@ const Preview = ({
 						<div>Min size: {formData.min_size}</div>
 						{isConfigure ? (
 							<div>
-								<Button type="primary" onClick={onEdit}>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={onEdit}
+								>
 									Edit
 								</Button>
 							</div>
@@ -151,7 +193,7 @@ const Preview = ({
 									</Button>
 									<div className="separator"></div>
 									<div className="description-small remove">
-										Removing this pair will permanently delete this pair from
+										Removing this market will permanently delete this market from
 										your exchange. Use with caution!
 									</div>
 								</div>
@@ -168,6 +210,8 @@ const Preview = ({
 						onClick={() => {
 							if (formData.id && !isExchangeWizard) {
 								moveToStep('step1');
+							} else if (isExistPair) {
+								moveToStep('pair-init-selection');
 							} else {
 								moveToStep('step2');
 							}
@@ -179,7 +223,7 @@ const Preview = ({
 					<Button
 						className="green-btn"
 						type="primary"
-						onClick={() => handleNext(formData)}
+						onClick={() => handlePreviewNext(formData)}
 					>
 						Next
 					</Button>

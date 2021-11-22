@@ -1,23 +1,25 @@
 import PhoneNumber from 'awesome-phonenumber';
+import _get from 'lodash/get';
 
 import { initialCountry, COUNTRIES } from '../../utils/countries';
 
-export const mobileInitialValues = ({ country }) => {
-	return { phone_country: getCountry(country).phoneCode };
+export const mobileInitialValues = ({ country }, defaults) => {
+	let countryVal = country ? country : _get(defaults, 'country');
+	return { phone_country: getCountry(countryVal).phoneCode };
 };
 
-export const identityInitialValues = ({
-	full_name,
-	gender,
-	nationality,
-	dob,
-	address,
-	userData,
-}) => {
+export const identityInitialValues = (
+	{ full_name, gender, nationality, dob, address, userData },
+	constants
+) => {
 	const initialValues = {
 		full_name: full_name || userData.full_name,
-		country: initialCountry.value,
-		nationality: initialCountry.value,
+		country: getCountry(
+			_get(constants, 'defaults.country', initialCountry.value)
+		).value,
+		nationality: getCountry(
+			_get(constants, 'defaults.country', initialCountry.value)
+		).value,
 	};
 	if (nationality) {
 		initialValues.nationality = getCountry(nationality).value;

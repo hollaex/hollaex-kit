@@ -93,6 +93,7 @@ const Transfer = ({ coins = {} }) => {
 	const [receiverData, setReceiverData] = useState([]);
 	const [isConfirm, setConfirm] = useState(false);
 	const [confirmData, setConfirmData] = useState({});
+	const [isDisableConfirm, setDisableConfirm] = useState(false);
 	// useEffect(() => {
 	// 	// getAllUserData();
 	// }, []);
@@ -148,6 +149,7 @@ const Transfer = ({ coins = {} }) => {
 			receiver_id: parseInt(formProps.receiver_id, 10),
 			amount: parseFloat(formProps.amount),
 		};
+		setDisableConfirm(true);
 		return postTransfer(postValues)
 			.then((res) => {
 				setConfirm(false);
@@ -155,6 +157,7 @@ const Transfer = ({ coins = {} }) => {
 				message.success('Transferred Successfully');
 				setSenderData([]);
 				setReceiverData([]);
+				setDisableConfirm(false);
 			})
 			.catch((error) => {
 				setConfirm(false);
@@ -163,6 +166,7 @@ const Transfer = ({ coins = {} }) => {
 				setSenderData([]);
 				setReceiverData([]);
 				message.error(msg);
+				setDisableConfirm(false);
 			});
 	};
 	const handleClose = () => {
@@ -220,7 +224,11 @@ const Transfer = ({ coins = {} }) => {
 						<Button className="green-btn f-1" onClick={handleClose}>
 							Back
 						</Button>
-						<Button className="green-btn f-1 ml-2" onClick={handleTransfer}>
+						<Button
+							className="green-btn f-1 ml-2"
+							onClick={handleTransfer}
+							disabled={isDisableConfirm}
+						>
 							Confirm
 						</Button>
 					</div>

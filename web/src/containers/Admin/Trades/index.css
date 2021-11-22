@@ -141,7 +141,8 @@
 	position: absolute;
 }
 .admin-pairs-container .right-content {
-	margin-bottom: 1rem;
+    border-top: 1px solid #808080;
+    padding: 2rem 0;
 }
 .admin-pairs-container .right-content .title {
 	color: #ffffff;
@@ -171,6 +172,79 @@
 }
 .admin-pairs-container .btn-wrapper .separator {
 	margin: 5px;
+}
+.admin-pairs-container .orderbook-content .title {
+	font-size: 16px;
+}
+.admin-pairs-container .orderbook-content .info-text {
+	color: #B6B6B6;
+}
+.admin-pairs-container .orderbook-footer-content {
+    text-align: center;
+}
+.admin-pairs-container .orderbook-footer-content a {
+	text-decoration: underline;
+}
+.admin-pairs-container .tooltip-wrapper .icon-tooltip {
+    margin: 5px;
+}
+.admin-pairs-container .orderbook-content .box-container {
+    border: 1px solid #ffffff;
+	padding: 1rem;
+    margin: 1rem 0 2rem 0;
+    width: 60%;
+}
+.admin-pairs-container .orderbook-content .box-container .box-content {
+    width: 100%;
+	padding: 0.5rem 1rem;
+	margin-bottom: 1rem;
+}
+.admin-pairs-container .orderbook-content .box-container .box-content:hover {
+	background-color: var(--admin_panel_table_tbody_hover);
+}
+.admin-pairs-container .orderbook-content .box-container .box-content .small-txt {
+	font-size: 12px;
+}
+.admin-pairs-container .orderbook-content .box-container .grey-text {
+    font-size: 13px;
+    color: #808080;
+}
+.admin-pairs-container .orderbook-content .box-container .orange-text {
+    color: #DA8304;
+}
+.admin-pairs-container .orderbook-content .box-container .text-end {
+	text-align: end;
+}
+.admin-pairs-container .orderbook-content .box-container .text-underline {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.admin-pairs-container .orderbook-content .box-container .no-markets {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 1rem;
+}
+.admin-pairs-container .table-wrapper.summary tbody tr:last-child td {
+    border-bottom: 1px solid #ffffff;
+}
+.admin-pairs-container .table-wrapper.summary thead tr .ant-table-cell,
+.admin-pairs-container .table-wrapper.summary thead tr td .text-center {
+	text-align: center;
+}
+.admin-pairs-container .table-wrapper.summary tbody tr .type-column .active-status {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.admin-pairs-container .table-wrapper tbody tr .active-status-icon {
+	width: 15px;
+	margin-right: 5px;
+}
+.admin-pairs-container .table-wrapper.summary thead a,
+.admin-pairs-container .table-wrapper.summary tbody a,
+.admin-pairs-container .coin-symbol-wrapper .pairs:hover {
+	text-decoration: underline;
 }
 
 @media (max-width: 960px) {

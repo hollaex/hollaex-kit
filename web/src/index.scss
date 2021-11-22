@@ -281,7 +281,10 @@ svg {
 	.cancel-all,
 	.fiat-page-under-construction,
 	.generate-reference-number,
-	.osko-logo {
+	.osko-logo,
+	.stake-variable,
+	.stake-pending,
+	.staking-unlock {
 		fill: $colors-main-black;
 	}
 
@@ -299,6 +302,14 @@ svg {
 	.wallet-coins-1,
 	.quick-trade-3 {
 		stroke: none;
+	}
+
+	.stake-error-outline {
+		fill: $colors-black;
+	}
+
+	.stake-error-qmark {
+		fill: $colors-notification-pending-disabled;
 	}
 
 	.deposit-bitcoin-1,

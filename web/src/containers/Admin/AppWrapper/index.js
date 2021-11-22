@@ -51,7 +51,9 @@ import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
 import {
-	/* getAllCoins, getAllPairs, */ getConstants,
+	getAllCoins,
+	getAllPairs, 
+	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
 
@@ -113,8 +115,8 @@ class AppWrapper extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getExchange();
-		this.getAssets();
+		this.getData();
+		// this.getAssets();
 
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
 		if (!this.props.fetchingAuth) {
@@ -176,48 +178,49 @@ class AppWrapper extends React.Component {
 		}
 	}
 
-	getAssets = async () => {
-		try {
-			const res = await getConstants();
-			const { coins, pairs } = res.data;
-			this.props.setCoins(Object.values(coins));
+	// getAssets = async () => {
+	// 	try {
+	// 		const res = await getConstants();
+	// 		const { coins, pairs } = res.data;
+	// 		this.props.setCoins(Object.values(coins));
 
-			this.props.setAllPairs(Object.values(pairs));
+	// 		this.props.setAllPairs(Object.values(pairs));
+	// 	} catch (error) {
+	// 		throw error;
+	// 	}
+	// };
 
-			// const coins = await res.data && res.data.data && res.data.data.map((item) => {
-			// 	// NOTE: Monero set disabled
-			// 	if (item.symbol === 'xmr') {
-			// 		return {
-			// 			key: 'Monero',
-			// 			value: 'xmr',
-			// 			disabled: true,
-			// 			...item
-			// 		};
-			// 	}
-			// 	const filter = ASSET_TYPE_LIST.filter((obj) => obj.value === item.symbol);
-			// 	if (filter.length === 0) {
-			// 		return {
-			// 			key: item.fullname,
-			// 			value: item.symbol,
-			// 			...item
-			// 		};
-			// 	} else {
-			// 		return { ...filter[0], ...item };
-			// 	}
-			// });
-
-			// return this.props.setCoins(coins);
-		} catch (error) {
-			throw error;
-		}
-	};
+	getData = async () => {
+		await this.getExchange();
+		await this.getCoins();
+		await this.getPairs();
+	}
 
 	getExchange = async () => {
 		try {
 			const res = await getExchange();
 			const exchange = res.data;
-
 			this.props.setExchange(exchange);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
+	getCoins = async () => {
+		try {
+			const res = await getAllCoins();
+			this.props.setCoins(res.data.data);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
+	getPairs = async () => {
+		try {
+			const res = await getAllPairs();
+			this.props.setAllPairs(res.data.data);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -316,7 +319,6 @@ class AppWrapper extends React.Component {
 				}
 			})
 			.catch((err) => {
-				console.log('err', err);
 				let error = err.message;
 				if (err.data && err.data.message) {
 					error = err.data.message;
@@ -410,9 +412,9 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/general')) {
 			return 'General';
 		} else if (location.pathname.includes('/admin/financial')) {
-			return 'Financial';
+			return 'Assets';
 		} else if (location.pathname.includes('/admin/trade')) {
-			return 'Trade';
+			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
 			return 'Plugins';
 		} else if (location.pathname.includes('/admin/tiers')) {
@@ -481,7 +483,7 @@ class AppWrapper extends React.Component {
 						</div>
 						<div>
 							<div className="main-label">Role:</div>
-							<div className="sub-label">Support</div>
+							<div className="sub-label">Communicator</div>
 						</div>
 					</div>
 				);

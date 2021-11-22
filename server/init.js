@@ -98,13 +98,12 @@ const checkStatus = () => {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				return all([
-					checkActivation( // added kit
+					checkActivation(
 						status.name,
 						status.url,
 						status.activation_code,
 						status.kit_version,
-						status.constants,
-						status.kit
+						status.constants
 					),
 					Tier.findAll(),
 					status.dataValues
@@ -135,15 +134,19 @@ const checkStatus = () => {
 						taker: {}
 					};
 
+					const defaultFees = exchange.type === 'Enterprise'
+						? { maker: 0, taker: 0 }
+						: DEFAULT_FEES[exchange.collateral_level];
+
 					for (let pair of exchangePairs) {
 						if (!isNumber(tier.fees.maker[pair])) {
-							fees.maker[pair] = DEFAULT_FEES[exchange.collateral_level].maker;
+							fees.maker[pair] = defaultFees.maker;
 						} else {
 							fees.maker[pair] = tier.fees.maker[pair];
 						}
 
 						if (!isNumber(tier.fees.taker[pair])) {
-							fees.taker[pair] = DEFAULT_FEES[exchange.collateral_level].taker;
+							fees.taker[pair] = defaultFees.taker;
 						} else {
 							fees.taker[pair] = tier.fees.taker[pair];
 						}
@@ -161,6 +164,7 @@ const checkStatus = () => {
 				name: exchange.name,
 				active: exchange.active,
 				exchange_id: exchange.id,
+				user_id: exchange.user_id,
 				url: exchange.url,
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,

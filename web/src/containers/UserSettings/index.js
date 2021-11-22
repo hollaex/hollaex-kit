@@ -110,7 +110,6 @@ class UserSettings extends Component {
 			icons: ICONS,
 			totalAsset,
 			themeOptions,
-			features,
 		} = this.props;
 		const formValues = generateFormValues({
 			options: themeOptions.map(({ value }) => ({ value, label: value })),
@@ -269,10 +268,7 @@ class UserSettings extends Component {
 					/>
 				),
 			},
-		];
-
-		if (features && features.chat) {
-			tabs.push({
+			{
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
@@ -295,9 +291,8 @@ class UserSettings extends Component {
 						ICONS={ICONS}
 					/>
 				),
-			});
-		}
-
+			},
+		];
 		this.setState({ tabs });
 	};
 

@@ -1,28 +1,45 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
-import { approveAndStake } from 'actions/stakingActions';
+import { approve, addStake } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
+import {
+	generateTableData,
+	getAllUserStakes,
+	getPendingTransactions,
+} from 'actions/stakingActions';
 
 import AmountContent from './AmountContent';
 import PeriodContent from './PeriodContent';
 import ReviewContent from './ReviewContent';
+import WaitingContent from './WaitingContent';
+import SuccessfulStakeContent from './SuccessfulStakeContent';
+import ErrorContent from './ErrorContent';
 
 const CONTENT_TYPE = {
-	AMOUNT: 'amount',
-	PERIOD: 'period',
-	REVIEW: 'review',
+	AMOUNT: 'AMOUNT',
+	PERIOD: 'PERIOD',
+	REVIEW: 'REVIEW',
+	WAITING: 'WAITING',
+	SUCCESS: 'SUCCESS',
+	ERROR: 'ERROR',
+};
+
+const ACTION_TYPE = {
+	STAKE: 'STAKE',
+	WITHDRAW: 'WITHDRAW',
 };
 
 class StakeContent extends Component {
 	constructor(props) {
 		super(props);
-		const { periods } = this.props;
 		this.state = {
 			type: CONTENT_TYPE.AMOUNT,
 			amount: '',
 			period: '',
+			action: ACTION_TYPE.STAKE,
+			pending: false,
 		};
 	}
 
@@ -45,6 +62,40 @@ class StakeContent extends Component {
 		this.setState({ amount });
 	};
 
+	approveAndStake = (symbol) => async ({ amount, period, account }) => {
+		const {
+			generateTableData,
+			getAllUserStakes,
+			getPendingTransactions,
+		} = this.props;
+
+		this.setAction(ACTION_TYPE.WITHDRAW, false);
+		this.setContent(CONTENT_TYPE.WAITING);
+		try {
+			await approve(symbol)({
+				amount,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
+			});
+			this.setAction(ACTION_TYPE.STAKE, false);
+			await addStake(symbol)({
+				amount,
+				period,
+				account,
+				cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+			});
+			await Promise.all([
+				generateTableData(account),
+				getAllUserStakes(account),
+				getPendingTransactions(account),
+			]);
+			this.setContent(CONTENT_TYPE.SUCCESS);
+		} catch (err) {
+			console.error(err);
+			this.setContent(CONTENT_TYPE.ERROR);
+		}
+	};
+
 	renderContent = (type) => {
 		const {
 			periods,
@@ -53,7 +104,7 @@ class StakeContent extends Component {
 			onCloseDialog,
 			account,
 		} = this.props;
-		const { period, amount } = this.state;
+		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
 			case CONTENT_TYPE.AMOUNT:
@@ -74,6 +125,7 @@ class StakeContent extends Component {
 						onBack={() => this.setContent(CONTENT_TYPE.AMOUNT)}
 						onReview={() => this.setContent(CONTENT_TYPE.REVIEW)}
 						setPeriod={this.setPeriod}
+						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
 					/>
@@ -84,13 +136,37 @@ class StakeContent extends Component {
 						tokenData={tokenData}
 						onCancel={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						onProceed={() =>
-							approveAndStake(symbol)({ amount, period, account })
+							this.approveAndStake(symbol)({ amount, period, account })
 						}
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
 					/>
 				);
+			case CONTENT_TYPE.WAITING:
+				return (
+					<WaitingContent
+						isPending={isPending}
+						action={action}
+						amount={amount}
+						symbol={symbol}
+					/>
+				);
+			case CONTENT_TYPE.SUCCESS:
+				return (
+					<SuccessfulStakeContent
+						tokenData={tokenData}
+						account={account}
+						action={action}
+						period={period}
+						amount={amount}
+						symbol={symbol}
+						currentBlock={currentBlock}
+						onOkay={onCloseDialog}
+					/>
+				);
+			case CONTENT_TYPE.ERROR:
+				return <ErrorContent action={action} onOkay={onCloseDialog} />;
 			default:
 				return <div>No Content</div>;
 		}
@@ -102,10 +178,14 @@ class StakeContent extends Component {
 		});
 	};
 
+	setAction = (action, isPending) => {
+		this.setState({ action, isPending });
+	};
+
 	render() {
 		const { type } = this.state;
 
-		return <div className="stake">{this.renderContent(type)}</div>;
+		return <div className="w-100">{this.renderContent(type)}</div>;
 	}
 }
 
@@ -118,7 +198,11 @@ const mapStateToProps = (store) => ({
 	periods: store.stake.periods,
 });
 
-const mapDispatchToProps = (dispatch) => ({});
+const mapDispatchToProps = (dispatch) => ({
+	generateTableData: bindActionCreators(generateTableData, dispatch),
+	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
+	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
+});
 
 export default connect(
 	mapStateToProps,

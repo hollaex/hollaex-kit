@@ -15,6 +15,8 @@ const DEVELOPMENT_NETWORK_ENDPOINT =
 
 const API_PATH = '/v2';
 
+export const HOLLAEX_NETWORK_API_URL = `${PRODUCTION_NETWORK_ENDPOINT}${API_PATH}`;
+
 const generateEndpoint = (endpoint, path, networkEndpoint) => ({
 	API_URL: `${endpoint}${path}`,
 	WS_URL:

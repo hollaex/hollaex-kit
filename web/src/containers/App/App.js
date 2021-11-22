@@ -99,7 +99,11 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		const { injected_values, injected_html } = this.props;
+		const {
+			injected_values,
+			injected_html,
+			plugins_injected_html,
+		} = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -122,6 +126,7 @@ class App extends Component {
 
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
+		injectHTML(plugins_injected_html, 'body');
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -571,7 +576,11 @@ class App extends Component {
 
 		const shouldCloseOnOverlayClick =
 			activeNotification.type !== CONTACT_FORM &&
-			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR &&
+			activeNotification.type === NOTIFICATIONS.STAKE &&
+			activeNotification.type === NOTIFICATIONS.UNSTAKE &&
+			activeNotification.type === NOTIFICATIONS.EARLY_UNSTAKE;
+
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
@@ -759,6 +768,13 @@ class App extends Component {
 												full:
 													activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR,
+											},
+											{
+												background:
+													activeNotification.type === NOTIFICATIONS.STAKE ||
+													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+													activeNotification.type ===
+														NOTIFICATIONS.EARLY_UNSTAKE,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -766,6 +782,10 @@ class App extends Component {
 										theme={activeTheme}
 										showCloseText={
 											!(
+												activeNotification.type === NOTIFICATIONS.STAKE ||
+												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+												activeNotification.type ===
+													NOTIFICATIONS.EARLY_UNSTAKE ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||

@@ -36,7 +36,8 @@ class Wallet extends Component {
 			this.props.coins,
 			this.props.pairs,
 			this.props.totalAsset,
-			this.props.oraclePrices
+			this.props.oraclePrices,
+			this.props.constants
 		);
 	}
 
@@ -50,7 +51,8 @@ class Wallet extends Component {
 			nextProps.coins,
 			nextProps.pairs,
 			nextProps.totalAsset,
-			nextProps.oraclePrices
+			nextProps.oraclePrices,
+			nextProps.constants
 		);
 	}
 
@@ -69,7 +71,8 @@ class Wallet extends Component {
 				this.props.coins,
 				this.props.pairs,
 				this.props.totalAsset,
-				this.props.oraclePrices
+				this.props.oraclePrices,
+				this.props.constants
 			);
 		}
 	}
@@ -113,7 +116,8 @@ class Wallet extends Component {
 		coins,
 		pairs,
 		total,
-		oraclePrices
+		oraclePrices,
+		{ features: { stake_page = false } = {} } = {}
 	) => {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -142,6 +146,7 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
+						// hasEarn={stake_page && !isMobile}
 					/>
 				),
 				isOpen: true,

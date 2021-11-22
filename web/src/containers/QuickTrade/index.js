@@ -13,15 +13,17 @@ import STRINGS from 'config/localizedStrings';
 import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
 import ReviewBlock from 'components/QuickTrade/ReviewBlock';
 import { changeSymbol } from 'actions/orderbookAction';
-import { formatNumber } from 'utils/currency';
+import { formatNumber, formatPercentage } from 'utils/currency';
 import { isLoggedIn } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
 import { changePair, setNotification } from 'actions/appActions';
 
 import QuoteResult from './QuoteResult';
+// import { getSparklines } from 'actions/chartAction';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
-const DECIMALS = 4;
+// const DECIMALS = 4;
 
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
@@ -53,8 +55,45 @@ class QuickTradeContainer extends PureComponent {
 			},
 			sourceError: '',
 			targetError: '',
+			data: [],
+			page: 0,
+			pageSize: 12,
+			searchValue: '',
 		};
 	}
+
+	getSearchPairs = (value) => {
+		const { pairs, coins } = this.props;
+		let result = {};
+		let searchValue = value.toLowerCase().trim();
+		Object.keys(pairs).map((key) => {
+			let temp = pairs[key];
+			const { fullname } = coins[temp.pair_base] || DEFAULT_COIN_DATA;
+			let cashName = fullname ? fullname.toLowerCase() : '';
+			if (
+				key.indexOf(searchValue) !== -1 ||
+				temp.pair_base.indexOf(searchValue) !== -1 ||
+				temp.pair_2.indexOf(searchValue) !== -1 ||
+				cashName.indexOf(searchValue) !== -1
+			) {
+				result[key] = temp;
+			}
+			return key;
+		});
+		return result;
+	};
+
+	handleMarket = (pairval, tickers, searchValue) => {
+		const pairs = searchValue ? this.getSearchPairs(searchValue) : pairval;
+		const pairKeys = Object.keys(pairs).sort((a, b) => {
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
+		});
+		this.setState({ data: pairKeys });
+	};
 
 	UNSAFE_componentWillMount() {
 		const { isReady, router, routeParams } = this.props;
@@ -65,6 +104,7 @@ class QuickTradeContainer extends PureComponent {
 	}
 
 	componentDidMount() {
+		const { pairs, tickers } = this.props;
 		if (
 			this.props.constants &&
 			this.props.constants.features &&
@@ -76,6 +116,7 @@ class QuickTradeContainer extends PureComponent {
 		if (this.props.sourceOptions && this.props.sourceOptions.length) {
 			this.constructTraget();
 		}
+		this.handleMarket(pairs, tickers, this.state.searchValue);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -268,7 +309,9 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeTargetAmount = (targetAmount) => {
 		const { tickerClose } = this.state;
-		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 
 		this.setState({
 			targetAmount,
@@ -278,7 +321,9 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeSourceAmount = (sourceAmount) => {
 		const { tickerClose } = this.state;
-		const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 
 		this.setState({
 			sourceAmount,
@@ -340,6 +385,9 @@ class QuickTradeContainer extends PureComponent {
 			pairs,
 			coins,
 			sourceOptions,
+			tickers,
+			user,
+			router,
 		} = this.props;
 		const {
 			order,
@@ -351,7 +399,50 @@ class QuickTradeContainer extends PureComponent {
 			pair,
 			targetOptions,
 			side,
+			data,
 		} = this.state;
+
+		let market = data.map((key) => {
+			let pair = pairs[key] || {};
+			let { fullname, symbol = '' } =
+				coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const pairTwo = coins[pair.pair_2] || DEFAULT_COIN_DATA;
+			const { increment_price, increment_size } = pair;
+			let ticker = tickers[key] || {};
+			const priceDifference =
+				ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
+			const tickerPercent =
+				priceDifference === 0 || ticker.open === 0
+					? 0
+					: (priceDifference / ticker.open) * 100;
+			const priceDifferencePercent = isNaN(tickerPercent)
+				? formatPercentage(0)
+				: formatPercentage(tickerPercent);
+			return {
+				key,
+				pair,
+				symbol,
+				pairTwo,
+				fullname,
+				ticker,
+				increment_price,
+				increment_size,
+				priceDifference,
+				priceDifferencePercent,
+			};
+		});
+
+		let marketData;
+		market.forEach((data) => {
+			const keyData = data.key.split('-');
+			if (
+				(keyData[0] === selectedSource && keyData[1] === selectedTarget) ||
+				(keyData[1] === selectedSource && keyData[0] === selectedTarget)
+			) {
+				marketData = data;
+			}
+		});
+		const decimalPoint = getDecimals(pairData.increment_size);
 
 		if (!pair || pair !== this.props.pair || !pairData) {
 			return <Loader background={false} />;
@@ -362,9 +453,16 @@ class QuickTradeContainer extends PureComponent {
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
-					className={classnames('d-flex', 'f-1', 'quote-container', 'h-100', {
-						'flex-column': isMobile,
-					})}
+					className={classnames(
+						'd-flex',
+						'f-1',
+						'quote-container',
+						'h-100',
+						'justify-content-center',
+						{
+							'flex-column': isMobile,
+						}
+					)}
 				>
 					<QuickTrade
 						onReviewQuickTrade={this.onReviewQuickTrade}
@@ -376,12 +474,15 @@ class QuickTradeContainer extends PureComponent {
 						orderLimits={orderLimits[pair] || {}}
 						pairs={pairs}
 						coins={coins}
+						market={marketData}
+						user={user}
 						sourceOptions={sourceOptions}
 						targetOptions={targetOptions}
 						selectedSource={selectedSource}
 						selectedTarget={selectedTarget}
 						targetAmount={targetAmount}
 						sourceAmount={sourceAmount}
+						router={router}
 						onChangeTargetAmount={this.onChangeTargetAmount}
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
@@ -404,11 +505,13 @@ class QuickTradeContainer extends PureComponent {
 											symbol={selectedSource}
 											text={STRINGS['SPEND_AMOUNT']}
 											amount={sourceAmount}
+											decimalPoint={decimalPoint}
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
 											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 											amount={targetAmount}
+											decimalPoint={decimalPoint}
 										/>
 										<footer className="d-flex pt-4">
 											<Button

@@ -40,7 +40,7 @@ const getCoinPairSelect = (currentPresetPair, pairBase, pair2, moveToStep) => {
 		return (
 			<div className="coin-container">
 				<div className="asset-pairs">
-					<div>No pairs</div>
+					<div>No markets</div>
 					<DownOutlined />
 				</div>
 			</div>
@@ -82,7 +82,7 @@ const AddPairTab = ({
 					<div>
 						Don't see your asset?{' '}
 						<span className="anchor" onClick={handleNavigate}>
-							Create a new pair
+							Create a new market
 						</span>
 					</div>
 				</div>
@@ -93,14 +93,14 @@ const AddPairTab = ({
 	const StepList = [
 		{
 			key: 'hollaexPairs',
-			name: 'HollaEx pairs',
-			description: 'Pairs offered by HollaEx',
+			name: 'HollaEx markets',
+			description: 'Markets offered by HollaEx',
 			content: renderContent(),
 		},
 		{
 			key: 'otherPairs',
-			name: 'Other pairs',
-			description: 'Pairs offered by other providers',
+			name: 'Other markets',
+			description: 'Markets offered by other providers',
 			content: renderContent(),
 		},
 	];
@@ -128,11 +128,11 @@ const AddPairTab = ({
 
 	return (
 		<div className="add-pair-wrapper">
-			<div className="title">Add Trading pair</div>
+			<div className="title">Add Market</div>
 			{isExchangeWizard ? (
 				<div>
-					Trading pair are based on assets selected in the previous step. To see
-					more trading pairs{' '}
+					Markets are based on assets selected in the previous step. To see
+					more markets{' '}
 					<Link onClick={() => moveToParentStep(2)}>go back</Link> and add more
 					assets.
 				</div>

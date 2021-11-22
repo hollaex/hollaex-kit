@@ -33,7 +33,19 @@ const handleCurrencyDeposit = (req, res) => {
 	loggerNotification.verbose('controller/notification/handleCurrencyDeposit ip domain', ip, domain);
 
 	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed, rejected, created_at, network, fee, description } = req.swagger.params.data.value;
+	const {
+		user_id,
+		amount,
+		txid,
+		address,
+		is_confirmed,
+		rejected,
+		created_at,
+		network,
+		fee,
+		description,
+		fee_coin
+	} = req.swagger.params.data.value;
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -66,6 +78,7 @@ const handleCurrencyDeposit = (req, res) => {
 					transaction_id: txid,
 					network,
 					fee,
+					fee_coin,
 					description
 				};
 
@@ -113,7 +126,19 @@ const handleCurrencyWithdrawal = (req, res) => {
 	loggerNotification.verbose('controller/notification/handleCurrencyWithdrawal ip domain', ip, domain);
 
 	const currency = req.swagger.params.currency.value;
-	const { user_id, amount, txid, address, is_confirmed, fee, rejected, created_at, network, description } = req.swagger.params.data.value;
+	const {
+		user_id,
+		amount,
+		txid,
+		address,
+		is_confirmed,
+		fee,
+		rejected,
+		created_at,
+		network,
+		description,
+		fee_coin
+	} = req.swagger.params.data.value;
 
 	toolsLib.security.verifyNetworkHmacToken(req)
 		.then(() => {
@@ -144,6 +169,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 					status: is_confirmed ? 'COMPLETED' : 'PENDING',
 					address,
 					fee,
+					fee_coin,
 					transaction_id: txid,
 					network,
 					description

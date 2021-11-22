@@ -284,6 +284,7 @@ class MarketSelector extends Component {
 																: ICONS.DEFAULT_ICON
 														}
 														wrapperClassName="app-bar-add-tab-icons"
+														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
 													<div className="app_bar-pair-font">
 														{symbol.toUpperCase()}/

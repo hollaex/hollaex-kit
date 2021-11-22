@@ -113,6 +113,18 @@ const drawFavIcon = (url) => {
 	head.appendChild(linkEl);
 };
 
+const getLocalBundle = async (pluginName) => {
+	const url = `/${pluginName}.json`;
+	try {
+		const response = await fetch(url);
+		return await response.json();
+	} catch (err) {
+		throw new Error(
+			`Failed to fetch/parse ${pluginName} configs. Please check ${pluginName}.json in the public folder.`
+		);
+	}
+};
+
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
@@ -228,21 +240,21 @@ const getConfigs = async () => {
 		process.env.REACT_APP_PLUGIN
 	) {
 		const pluginName = process.env.REACT_APP_PLUGIN;
-		const url = `/${pluginName}.json`;
-		const response = await fetch(url);
-		const pluginObject = await response.json();
+		const pluginObject = await getLocalBundle(pluginName);
 
-		plugins.forEach((plugin) => {
-			if (plugin.name === pluginName) {
-				const mergedPlugin = merge({}, plugin, pluginObject);
-				allPlugins.push(mergedPlugin);
-			} else {
-				allPlugins.push(plugin);
+		if (pluginObject) {
+			plugins.forEach((plugin) => {
+				if (plugin.name === pluginName) {
+					const mergedPlugin = merge({}, plugin, pluginObject);
+					allPlugins.push(mergedPlugin);
+				} else {
+					allPlugins.push(plugin);
+				}
+			});
+
+			if (!plugins.find(({ name }) => name === pluginName)) {
+				allPlugins.push({ ...pluginObject, name: pluginName });
 			}
-		});
-
-		if (!plugins.find(({ name }) => name === pluginName)) {
-			allPlugins.push({ ...pluginObject, name: pluginName });
 		}
 	} else {
 		allPlugins = plugins;
@@ -257,10 +269,19 @@ const getConfigs = async () => {
 		captcha,
 	});
 
-	return [appConfigs, injected_values, injected_html];
+	const {
+		app: { plugins_injected_html },
+	} = store.getState();
+
+	return [appConfigs, injected_values, injected_html, plugins_injected_html];
 };
 
-const bootstrapApp = (appConfig, injected_values, injected_html) => {
+const bootstrapApp = (
+	appConfig,
+	injected_values,
+	injected_html,
+	plugins_injected_html
+) => {
 	const {
 		icons: {
 			dark: { EXCHANGE_FAV_ICON = '/favicon.ico' },
@@ -268,6 +289,7 @@ const bootstrapApp = (appConfig, injected_values, injected_html) => {
 	} = appConfig;
 	addElements(injected_values, 'head');
 	injectHTML(injected_html, 'head');
+	injectHTML(plugins_injected_html, 'head');
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	// window.appConfig = { ...appConfig }
 	const {
@@ -296,8 +318,18 @@ const bootstrapApp = (appConfig, injected_values, injected_html) => {
 
 const initialize = async () => {
 	try {
-		const [configs, injected_values, injected_html] = await getConfigs();
-		bootstrapApp(configs, injected_values, injected_html);
+		const [
+			configs,
+			injected_values,
+			injected_html,
+			plugins_injected_html,
+		] = await getConfigs();
+		bootstrapApp(
+			configs,
+			injected_values,
+			injected_html,
+			plugins_injected_html
+		);
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);

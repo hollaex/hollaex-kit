@@ -10,9 +10,13 @@
 		color: $colors-notifications-blue;
 		border-color: $colors-notifications-blue;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notifications-blue;
+			border-color: $colors-notifications-blue;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -22,9 +26,13 @@
 		color: $colors-notification-pending;
 		border-color: $colors-notification-pending;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notification-pending;
+			border-color: $colors-notification-pending;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -56,22 +64,191 @@
 }
 
 .stake-amount-input {
-	&.ant-input {
+	&.ant-input,
+	&.ant-input-affix-wrapper {
 		background-color: $box-fields;
 		border: 1px solid $colors-border;
 		color: $colors-main-black;
+	}
+
+	&.ant-input-affix-wrapper {
+		.ant-input {
+			background-color: $box-fields;
+			color: $colors-main-black;
+		}
+	}
+
+	.ant-input-prefix {
+		.currency-ball {
+			width: 30px;
+			margin-top: 4px;
+			div {
+				height: 30px;
+			}
+		}
+	}
+}
+
+.stake-period-group {
+	&.ant-radio-group {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-evenly;
 	}
 }
 
 .stake-period-button {
 	&.ant-radio-button-wrapper {
+		margin: 1rem;
+		padding: 0.2rem;
 		color: $colors-black;
 		background-color: transparent;
+		background-size: 100%;
+		background-repeat: repeat-y;
+		height: 10rem;
+		width: 10rem;
+		border: none;
+		font-size: 1rem;
+		line-height: 1.2rem;
+		text-align: center;
+
+		.stake-period-text {
+			width: 10rem;
+			margin: auto;
+		}
+
+		.period-x {
+			font-weight: bolder;
+			font-size: 4rem;
+			line-height: 5rem;
+			color: $colors-black !important;
+		}
+
+		&:not(:first-child)::before {
+			background-color: transparent;
+		}
+	}
+
+	&.ant-radio-button-wrapper-checked {
+		height: 12rem;
+		width: 12rem;
+
+		.period-x {
+			font-weight: bolder;
+			font-size: 5rem;
+			line-height: 6rem;
+			color: $colors-main-black !important;
+		}
 	}
 }
 
-.stake {
-	.mdc-button--unelevated {
-		margin-top: 2rem !important;
+.staking-account__container {
+	padding: 0 0.5rem;
+	background-color: $app-sidebar-background;
+	border-radius: 0.5rem;
+	margin: 0.5rem 0;
+	font-weight: bold;
+}
+
+.staking-account__balance {
+	padding: 1rem;
+}
+
+.staking-account__address {
+	background-color: $app-background-color;
+	margin: 0.5rem 0;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+.staking-account__connect {
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	color: $colors-notifications-blue;
+	background-color: $specials_highlight-box;
+	border-radius: 0.5rem;
+	margin: 1rem 0.5rem;
+	font-weight: bold;
+}
+
+.chart_mine {
+	fill-opacity: 0.7;
+	fill: $colors-notifications-blue;
+	stroke: $colors-notifications-blue;
+}
+
+.chart_others {
+	fill-opacity: 0.7;
+	fill: $colors-notification-pending;
+	stroke: $colors-notification-pending;
+}
+
+.stake-chart-legend {
+	width: 2rem !important;
+	height: 2rem !important;
+	margin-right: 0.5rem;
+	border-radius: 50%;
+
+	&.mine {
+		background-color: $colors-notifications-blue;
+	}
+
+	&.others {
+		background-color: $colors-notification-pending;
+	}
+}
+
+.stake_popup__title {
+	font-size: 2.4rem !important;
+	font-weight: bold;
+}
+
+.stake-currency-ball {
+	width: 4.75rem;
+}
+
+.stake-currency-ball-small {
+	width: 2.5rem;
+	padding-top: 0.4rem;
+}
+
+.stake-variable {
+	width: 1.5rem;
+	padding-top: 0.2rem;
+}
+
+.stake-unlock-title {
+	svg,
+	&.icon_title-svg {
+		width: 2.2rem !important;
+		height: 2.2rem !important;
+	}
+}
+
+.stake-amount {
+	font-size: 2rem;
+	line-height: 2rem;
+}
+
+.staking-loader {
+	font-size: 7rem;
+	color: $specials_highlight-box;
+}
+
+.disconnect-menu {
+	&.ant-dropdown-menu {
+		color: $colors-main-black !important;
+		background-color: $app-background-color;
+	}
+
+	.ant-dropdown-menu-item {
+		color: $colors-black;
+		background-color: $app-background-color;
+
+		&:hover {
+			color: $colors-main-black;
+			background-color: $app-sidebar-background;
+		}
 	}
 }

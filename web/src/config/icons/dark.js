@@ -248,6 +248,17 @@ const nestedIcons = {
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
 
+	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background.jpg',
+	STAKING_PERIOD_ITEM: '/assets/stake/staking-pariod-option-background.jpg',
+	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background.png',
+	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_ERROR: '/assets/stake/error.svg',
+	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
+	STAKING_PENDING: '/assets/stake/clear_pending_earnings.svg',
+	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
+	STAKING_ACCOUNT: '',
+	METAMASK: '',
+
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',

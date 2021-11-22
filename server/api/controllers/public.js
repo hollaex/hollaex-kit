@@ -382,44 +382,6 @@ const getAssetsPrices = (req, res) => {
 		});
 };
 
-const getAllCoins = (req, res) => {
-	toolsLib.coin.getNetworkCoins({
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
-	})
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerPublic.error(
-				req.uuid,
-				'controller/public/getAllCoins',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
-const getAllPairs = (req, res) => {
-	toolsLib.pair.getNetworkPairs({
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
-	})
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerPublic.error(
-				req.uuid,
-				'controller/public/getAllPairs',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 module.exports = {
 	getHealth,
 	getConstants,
@@ -437,7 +399,5 @@ module.exports = {
 	getSymbols,
 	getAssetsPrices,
 	getTradesHistory,
-	getNetworkConstants,
-	getAllCoins,
-	getAllPairs
+	getNetworkConstants
 };

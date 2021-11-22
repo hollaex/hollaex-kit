@@ -46,7 +46,8 @@ Status.findOne()
 			},
 			defaults: {
 				language: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.language || process.env.NEW_USER_DEFAULT_LANGUAGE || 'en') : (process.env.NEW_USER_DEFAULT_LANGUAGE || 'en'),
-				theme: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white') : (process.env.DEFAULT_THEME || 'white')
+				theme: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.theme || process.env.DEFAULT_THEME || 'white') : (process.env.DEFAULT_THEME || 'white'),
+				country: existingKitConfigurations.defaults ? (existingKitConfigurations.defaults.country || process.env.DEFAULT_COUNTRY || null) : (process.env.DEFAULT_COUNTRY || null)
 			},
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},

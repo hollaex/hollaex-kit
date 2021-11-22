@@ -63,6 +63,7 @@ class MarketRow extends Component {
 									: ICONS['DEFAULT_ICON']
 							}
 							wrapperClassName="market-list__coin-icons"
+							imageWrapperClassName="currency-ball-image-wrapper"
 						/>
 						<div>
 							{symbol.toUpperCase()}/

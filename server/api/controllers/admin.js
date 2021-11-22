@@ -2,7 +2,7 @@
 
 const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
-const { cloneDeep } = require('lodash');
+const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { sendEmail } = require('../../mail');
@@ -1317,11 +1317,7 @@ const updatePair = (req, res) => {
 	);
 
 	const {
-		name,
-		pair_base,
-		pair_2,
 		code,
-		active,
 		min_size: minSize,
 		max_size: maxSize,
 		min_price: minPrice,
@@ -1329,22 +1325,15 @@ const updatePair = (req, res) => {
 		increment_size: incrementSize,
 		increment_price: incrementPrice,
 		estimated_price: estimatedPrice,
-		is_public: isPublic
+		is_public: isPublic,
+		circuit_breaker: circuitBreaker
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/updatePair',
-		'name:',
-		name,
-		'pair_base:',
-		pair_base,
-		'pair_2:',
-		pair_2,
 		'code:',
 		code,
-		'active:',
-		active,
 		'min_size:',
 		minSize,
 		'max_size:',
@@ -1360,16 +1349,15 @@ const updatePair = (req, res) => {
 		'estimated_price:',
 		estimatedPrice,
 		'is_public:',
-		isPublic
+		isPublic,
+		'circuit_breaker:',
+		circuitBreaker,
+		typeof estimatedPrice
 	);
 
 	toolsLib.pair.updatePair(
-		name,
-		pair_base,
-		pair_2,
+		code,
 		{
-			code,
-			active,
 			minSize,
 			maxSize,
 			minPrice,
@@ -1378,6 +1366,9 @@ const updatePair = (req, res) => {
 			incrementPrice,
 			estimatedPrice,
 			isPublic,
+			circuitBreaker
+		},
+		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
@@ -1497,9 +1488,8 @@ const updateCoin = (req, res) => {
 	);
 
 	const {
-		symbol,
-		fullname,
 		code,
+		fullname,
 		withdrawal_fee: withdrawalFee,
 		min,
 		max,
@@ -1511,14 +1501,17 @@ const updateCoin = (req, res) => {
 		network,
 		standard,
 		allow_deposit: allowDeposit,
-		allow_withdrawal: allowWithdrawal
+		allow_withdrawal: allowWithdrawal,
+		withdrawal_fees: withdrawalFees,
+		is_public: isPublic,
+		description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/updateCoin',
-		'symbol:',
-		symbol,
+		'code:',
+		code,
 		'fullname:',
 		fullname,
 		'withdrawal_fee:',
@@ -1544,14 +1537,20 @@ const updateCoin = (req, res) => {
 		'allow_deposit:',
 		allowDeposit,
 		'allow_withdrawal:',
-		allowWithdrawal
+		allowWithdrawal,
+		'withdrawal_fees:',
+		withdrawalFees,
+		'is_public:',
+		isPublic,
+		'description:',
+		description
 	);
 
 	toolsLib.coin.updateCoin(
-		symbol,
-		fullname,
+		code,
 		{
-			code,
+			fullname,
+			description,
 			withdrawalFee,
 			min,
 			max,
@@ -1564,6 +1563,10 @@ const updateCoin = (req, res) => {
 			standard,
 			allowDeposit,
 			allowWithdrawal,
+			withdrawalFees,
+			isPublic
+		},
+		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
@@ -1601,6 +1604,177 @@ const getExchange = (req, res) => {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/getExchange err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateExchange = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updateExchange auth',
+		req.auth
+	);
+
+	const {
+		info,
+		is_public: isPublic,
+		type,
+		name,
+		display_name: displayName,
+		url,
+		business_info: businessInfo,
+		pairs,
+		coins
+	} = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/updateExchange body',
+		'info:',
+		info,
+		'coins:',
+		coins,
+		'pairs:',
+		pairs,
+		'is_public:',
+		isPublic,
+		'type',
+		type,
+		'name:',
+		name,
+		'display_name:',
+		displayName,
+		'url:',
+		url,
+		'business_info',
+		businessInfo
+	);
+
+	toolsLib.exchange.updateExchangeConfig(
+		{
+			info,
+			isPublic,
+			type,
+			name,
+			displayName,
+			url,
+			businessInfo,
+			pairs,
+			coins
+		},
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/updateExchange err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getNetworkCoins = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getNetworkCoins auth',
+		req.auth
+	);
+
+	const search = req.swagger.params.search.value;
+
+	toolsLib.coin.getNetworkCoins({
+		search,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getNetworkCoins err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getNetworkPairs = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/getNetworkPairs auth',
+		req.auth
+	);
+
+	const search = req.swagger.params.search.value;
+
+	toolsLib.pair.getNetworkPairs({
+		search,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/getNetworkPairs err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const putUserInfo = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/putUserInfo auth',
+		req.auth
+	);
+
+	const user_id = req.swagger.params.user_id.value;
+	const updateData = pick(
+		req.swagger.params.data.value,
+		[
+			'full_name',
+			'gender',
+			'nationality',
+			'phone_number',
+			'dob',
+			'address'
+		]
+	);
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putUserInfo user_id:',
+		user_id,
+		'updateData:',
+		updateData
+	);
+
+	toolsLib.user.updateUserInfo(user_id, updateData)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/putUserInfo err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -1646,5 +1820,9 @@ module.exports = {
 	updatePair,
 	createCoin,
 	updateCoin,
-	getExchange
+	getExchange,
+	getNetworkCoins,
+	getNetworkPairs,
+	updateExchange,
+	putUserInfo
 };

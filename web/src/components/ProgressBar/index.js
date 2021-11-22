@@ -12,7 +12,7 @@ const ProgressBar = ({ partial, total }) => {
 	};
 
 	return (
-		<div className="d-flex">
+		<div className="d-flex align-center">
 			<div className="progressbar mr-2">
 				<div className={fillClassName} style={fillStyle} />
 			</div>

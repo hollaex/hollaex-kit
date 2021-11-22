@@ -307,6 +307,15 @@ export default {
 		BUTTON: 'Review Order', // updated
 		INPUT: '{0} to {1}',
 		TRADE_TITLE: '{0} {1}', // quick buy
+		INFO: 'Fastest and simplest way to trade your crypto', //new
+		CHANGE_TEXT: 'change', //new
+		HIGH_24H: '24H HIGH', //new
+		LOW_24H: '24H LOW', //new
+		BEST_BID: 'BEST BID', //new
+		BEST_ASK: 'BEST ASK', //new
+		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
+		FOOTER_TEXT_1: 'Sourced from', //new
+		GO_TO_TEXT: 'Go to', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
@@ -514,10 +523,11 @@ export default {
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your passport',
+				FRONT: 'Please upload a scan of your passport or national Id',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note',
+				SELFIE_PHOTO_ID:
+					'Please upload a selfie with passport or national Id and note',
 			},
 			FORM_FIELDS: {
 				TYPE_LABEL: 'ID Document Type',
@@ -526,32 +536,35 @@ export default {
 					ID: 'ID',
 					PASSPORT: 'Passport',
 				},
-				ID_NUMBER_LABEL: 'Passport Number',
-				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'Passport Issue Date',
-				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
-				FRONT_LABEL: 'Passport',
-				FRONT_PLACEHOLDER: 'Add a copy of your passport',
-				BACK_LABEL: 'Back Side of passport',
+				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
+				ID_NUMBER_PLACEHOLDER:
+					'Type your passport Number or national Id number',
+				ID_PASSPORT_NUMBER_LABEL: 'Passport Number or national id number',
+				ID_PASSPORT_NUMBER_PLACEHOLDER:
+					'Type your passport or national Id number',
+				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
+				FRONT_LABEL: 'Passport or National Id',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport or national id',
+				BACK_LABEL: 'Back Side of passport or national id',
 				BACK_PLACEHOLDER:
 					'Add a copy of the backside of your ID (if applicable)',
-				PASSPORT_LABEL: 'Passport Document',
+				PASSPORT_LABEL: 'Passport or National ID Document',
 				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
+				SELFIE_PHOTO_ID_LABEL:
+					'Your Selfie with passport or national Id and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with passport and Note',
+					'Add a copy of your Selfie with passport or national Id and Note',
 			},
 			INFORMATION: {
 				IDENTITY_DOCUMENT: 'Identity Document',
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
-					LIST_ITEM_1:
-						'HIGH QUALITY (colour images, 300dpi resolution or higher).',
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
+					LIST_ITEM_1: 'Clear high quality color image', // updated
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
@@ -560,6 +573,8 @@ export default {
 						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
 						'Please do not submit the passport as your proof of residence.',
+					VIOLATION_ERROR:
+						'Total size of all your uploaded documents exceeds the upload limit of {0}mb. Please upload smaller files to proceed.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -780,7 +795,8 @@ export default {
 		},
 	},
 	STAKE: {
-		TITLE: 'Stake and earn',
+		EARN: 'Earn', //new
+		TITLE: 'Stake',
 		MODAL_TITLE: 'Stake and earn {0}',
 		REVIEW_MODAL_TITLE: 'Check and confirm stake',
 		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
@@ -806,6 +822,56 @@ export default {
 		BLOCK: 'Block',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
+		AMOUNT_LABEL: 'Amount to stake',
+		PERIOD_SUBTITLE:
+			'Longer you stake the more you are rewarded. Select the duration of stake below.',
+		PERIOD_OPTION_TEXT: 'Stake for {0} and earn',
+		STAKE_AND_EARN_DETAILS:
+			'Stake for ~{0} and earn {1}x on the amount you stake',
+		PREDICTED_EARNINGS: 'Predicted earnings',
+		VARIABLE_TITLE: 'Variable*',
+		VARIABLE_TEXT: '*{0} about how the variable rate works.',
+		READ_MORE: 'Read more',
+		CURRENT_BLOCK: 'Current block: {0}',
+		END_BLOCK: 'End block: {0}',
+		DURATION: 'Duration',
+		END_ON_BLOCK: 'End on block: {0}',
+		SLASHING_TITLE: 'Slashing (early unstake)',
+		SLASHING_TEXT_1: '10% of your stakes principle',
+		SLASHING_TEXT_2: 'All earnings forfeited',
+		REVIEW_NOTE:
+			'Duration is measured by the timing of the Ethereum blocks. Please check and confirm the details above before you stake as unstaking early will result in a percentage of your stakes principle to be deducted and earnings forfeited.',
+		WAITING_TITLE: 'Waiting for confirmation',
+		WAITING_TEXT: 'Confirm this transaction in your wallet',
+		PENDING_TEXT: 'Transaction pending...',
+		WAITING_PROMPT: '{0} {1} {2}',
+		WAITING_STAKE: 'Confirm the stake amount',
+		WAITING_WITHDRAW: 'Allowing spending',
+		WAITING_UNSTAKE: 'Unstake',
+		WAITING_DISTRIBUTE: 'Clear pending earnings',
+		WAITING_STAKE_ING: 'Staking pending',
+		WAITING_WITHDRAW_ING: 'Processing of allowing spending',
+		WAITING_UNSTAKE_ING: 'Unstaking',
+		WAITING_DISTRIBUTE_ING: 'Clearing pending earnings',
+		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
+		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
+		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
+		SUCCESSFUL_STAKE_DURATION_DEF: 'Ends on block {0} ({1})',
+		SUCCESSFUL_STAKE_DESTINATION: 'Destination',
+		OKAY: 'Okay',
+		ERROR_TITLE: 'Error: {0} was rejected',
+		ERROR_SUBTITLE: 'If this was a mistake you can go back and retry',
+		SUCCESSFUL_UNSTAKE_TITLE: "You've successfully unstaked {0}",
+		SUCCESSFUL_UNSTAKE_AMOUNT: 'Total to receive',
+		EARNINGS: 'Earnings',
+		ORIGINAL_AMOUNT: 'Original amount staked',
+		CONNECT_A_WALLET: 'Connect to a wallet',
+		CONNECT_WALLET_TABLE: '{0} to see historical stake events',
+		ZERO_STAKES: 'Zero stakes',
+		PENDING_TRANSACTIONS: 'Pending {0} {1}',
+		VIEW_ON: 'View on the {0}',
+		BLOCKCHAIN: 'blockchain',
+		DISCONNECT: 'Disconnect account',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -819,6 +885,23 @@ export default {
 		DURATION: 'EST. maturation duration',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
+		EARNINGS_FORFEITED: 'Earnings forfeited',
+		PRICE_FORMAT: '{0} {1}',
+		EST_PENDING: 'EST. pending: {0}',
+		AMOUNT_SLASHED: 'Amount slashed*',
+		AMOUNT_TO_RECEIVE: 'Amount to receive',
+		SLASH_FOOTNOTE:
+			'*All amounts slashed are distributed to remaining stakers. Please consider the slashed amount from initial principle, the earnings forfeited and duration remaining and determine if the value lost in unstaking early is worth the cost.',
+		AMOUNT_NOTE: 'Amounts will be distributed to your wallet address',
+		TOTAL_EARNT: 'Total earnt',
+		PENDING_EARNINGS: 'Pending earnings*',
+		PENDING_EARNINGS_FOOTNOTE:
+			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount. You can {0} the amount yourself or wait for the next clearing cycle.',
+		CLEAR: 'clear',
+		CLEAR_PENDING_EARNING: 'Clear pending earnings',
+		CLEAR_PENDING_EARNING_SUB:
+			'Clearing requires a blockchain transaction in order to be added to your total receiving amount. You can clear the amount now or wait for the next clearing cycle.',
+		PENDING_AMOUNT: 'Pending amount to clear: {0}',
 	},
 	STAKE_TABLE: {
 		CURRENCY: 'Currency',
@@ -827,6 +910,7 @@ export default {
 		REWARD_RATE: 'Reward rate',
 		EARNINGS: 'Earnings',
 		STAKE: 'Stake',
+		VARIABLE: 'Variable',
 	},
 	STAKE_LIST: {
 		AMOUNT: 'AMOUNTS STAKED',
@@ -835,6 +919,55 @@ export default {
 		END: 'END STAKE',
 		EARNINGS: 'EARNINGS',
 		STAKE: 'STAKE',
+	},
+	STAKE_DETAILS: {
+		BACK_SUBTITLE: '{0} to staking page',
+		GO_BACK: 'Go back',
+		CONTRACT_SUBTITLE: 'Token contract: {0}',
+		VIEW_MORE: 'VIEW MORE',
+		VIEW: 'View',
+		TOKEN: '{0} Token',
+		TABS: {
+			PUBLIC_INFO: 'Public info',
+			DISTRIBUTIONS: 'Distributions',
+			MY_STAKING: 'My staking',
+		},
+		PUBLIC_INFO: {
+			TITLE: 'Staking information',
+			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
+			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings',
+			CLEARED_UNDISTRIBUTED_EARNINGS: 'Cleared undistributed earnings',
+			UNCLEARED_PENDING_EARNINGS: 'Uncleared pending earnings',
+			TOTAL_STAKED: 'Total staked',
+			REWARD_RATE: 'Reward rate',
+			VARIABLE: 'Variable',
+			MY_STAKE: 'My stake ({0}%)',
+			MY_STAKE_PERCENTLESS: 'My stake',
+			OTHER_STAKE: 'Others stake ({0}%)',
+			RECENT_DISTRIBUTED_REWARDS: 'Recent distributed rewards',
+			TIME_DISTRIBUTED: 'Time distributed',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT_DISTRIBUTED: 'Amount distributed',
+		},
+		DISTRIBUTIONS: {
+			TITLE: 'Distributed {0} rewards',
+			SUBTITLE:
+				'Below is a historical list of distributions made to stakers of {0}.',
+			TIME: 'Time distributed',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount distributed',
+			DISTRIBUTION_TITLE: 'Recent distributed rewards',
+		},
+		MY_STAKING: {
+			TITLE: 'My staking',
+			SUBTITLE:
+				'Below displays information and some historical events related to your {0} staking.',
+			EVENTS_TITLE: 'Historical stake events',
+			TIME: 'Time',
+			EVENT: 'Event',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount',
+		},
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
@@ -941,6 +1074,8 @@ export default {
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_FEE_WARNING:
+		'{0} ({1}) is a requirement for this asset to be withdrawn',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
 		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
@@ -954,6 +1089,7 @@ export default {
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN: 'Transaction fee ({0})',
 	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
@@ -999,6 +1135,7 @@ export default {
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
 		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
+		MESSAGE_FEE_COIN: 'Transactions fee of {0}',
 		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
 		BASE_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your account.',

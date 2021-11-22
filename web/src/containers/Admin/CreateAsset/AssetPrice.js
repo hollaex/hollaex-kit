@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from 'react';
-import { InputNumber, Button, message } from 'antd';
+import React, { Fragment } from 'react';
+import { InputNumber, Button } from 'antd';
 
 import Coins from '../Coins';
 // import { getCoinParams } from '../../common/fetch';
@@ -14,29 +14,15 @@ const AssetParams = ({
 	handleNext,
 	// handleMetaChange
 }) => {
-	const [loading, setLoading] = useState(false);
+	// const [loading, setLoading] = useState(false);
 
 	const handleGetParams = async () => {
 		if (coinFormData.estimated_price) {
-			try {
-				setLoading(true);
-				// const res = await getCoinParams(coinFormData.estimated_price);
-				const res = {};
-				if (res.data) {
-					setLoading(false);
-					handleBulkUpdate(res.data);
-					handleNext('edit-param-values');
-				}
-			} catch (error) {
-				setLoading(false);
-				if (error.data && error.data.message) {
-					message.error(error.data.message);
-				} else {
-					message.error(error.message);
-				}
-			}
-		} else {
-			handleNext('edit-params');
+			// 	handleBulkUpdate(coinFormData);
+			// 	handleNext('edit-param-values');
+			// } else {
+			handleBulkUpdate({ estimated_price: coinFormData.estimated_price });
+			handleNext('edit-param-values');
 		}
 	};
 
@@ -87,7 +73,7 @@ const AssetParams = ({
 						type="primary"
 						className="green-btn"
 						disabled={!coinFormData.estimated_price}
-						loading={loading}
+						// loading={loading}
 						onClick={handleGetParams}
 					>
 						Next

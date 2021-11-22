@@ -70,6 +70,9 @@ $app-bar-icon-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 // Quick trade
 $quick-trade-background: $app-background-color;
 $quick-trade-container: var(--base_wallet-sidebar-and-popup);
+$quick-trade-block-background: var(--calculated_quick_trade-bg);
+$quick-trade-block-gradient-top: var(--specials_quick-trade-gradient);
+$quick-trade-block-gradient-bottom: var(--calculated_quick_trade-gradient);
 
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);

@@ -1,17 +1,40 @@
+.quick-trade-select-wrapper {
+	.input-group__coin-icons-wrap {
+		display: flex;
+		.currency-ball-image-wrapper {
+			height: 18px;
+			padding-right: 5px;
+		}
+	}
+}
 .input-group__container {
 	border-radius: 4px;
 	border: $colors-black solid 1.5px;
 
 	.ant-select-selection,
 	.ant-input,
-	.ant-select-arrow,
 	.ant-select-selector {
 		text-align: right;
 		background-color: $quick-trade-container !important;
 		color: $colors-black !important;
 	}
+	
+	.ant-select-arrow {
+		svg {
+			fill: $colors-black !important;
+		}
+	}
 	.input-group__coin-icons-wrap {
 		width: 2.5rem;
+		display: flex;
+	}
+	.currency-ball-image-wrapper {
+		height: 15px;
+		padding-right: 5px;
+
+		&:hover {
+			height: 20px;
+		}
 	}
 	&:focus-within {
 		border-color: $link !important;

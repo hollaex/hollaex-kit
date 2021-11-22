@@ -30,15 +30,15 @@ const PairSelection = ({
 	return (
 		<Fragment>
 			<div className="first-title">
-				{activeTab === '0' ? 'HollaEx pairs' : 'Other pairs'}
+				{activeTab === '0' ? 'HollaEx markets' : 'Other markets'}
 			</div>
-			<div className="title">Select a trading pair</div>
+			<div className="title">Select a market</div>
 			<div>
-				Trading pair are based on assets selected in the previous step. To see
-				more trading pairs go back and add more assets.
+				Markets are based on assets selected in the previous step. To see
+				more markets go back and add more assets.
 			</div>
-			<Input placeholder={'Search pair'} onChange={handleSearch} />
-			<div className="sub-title">Pairs:</div>
+			<Input placeholder={'Search market'} onChange={handleSearch} />
+			<div className="sub-title">Markets:</div>
 			<div className="coin-option-wrapper">
 				{pairsRemaining.map((pair, index) => {
 					let pairBase = getCoinData(pair.pair_base);
@@ -70,7 +70,7 @@ const PairSelection = ({
 			<div className="footer">
 				<div>Can't find what your looking for?</div>
 				<div className="anchor" onClick={handleBack}>
-					Create a new pair
+					Create a new market
 				</div>
 			</div>
 		</Fragment>

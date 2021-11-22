@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { message } from 'antd';
+import _get from 'lodash/get';
 
 import AddPairTab from './AddPairTab';
 import PairParams from './PairParams';
@@ -8,6 +9,7 @@ import Preview from './Preview';
 import { EditIncrement, EditTradable } from './EditParams';
 import CreatePairSection from './CreatePairSection';
 import PairSelection from './PairSelection';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 import './index.css';
 
@@ -34,6 +36,7 @@ class CreatePair extends Component {
 			currentPresetPair: {},
 			pairsRemaining: [],
 			activeTab: '0',
+			isExistPair: false
 		};
 	}
 
@@ -59,6 +62,19 @@ class CreatePair extends Component {
 			this.setPresetPair();
 			this.selectBase(false);
 			// this.requestParams();
+		}
+		const tabParams = getTabParams();
+		if (tabParams && tabParams.isOpenPairModal) {
+			this.setState({ currentStep: 'step2' });
+			const pairs = tabParams.pairs.split('-');
+			this.setState({
+				formData: {
+					...this.state.formData,
+					estimated_price: 1,
+					pair_base: pairs[0],
+					pair_2: pairs[1]
+				}
+			});
 		}
 	}
 
@@ -197,13 +213,14 @@ class CreatePair extends Component {
 	};
 
 	handleChange = (value, name) => {
+		let coinsData = this.props.allCoins.filter((val) => this.props.coins.includes(val.symbol));
 		let coinSecondary = this.state.coinSecondary;
 		let formData = {
 			...this.state.formData,
 			[name]: value,
 		};
 		if (name === 'pair_base') {
-			coinSecondary = this.props.coins.filter((data) => {
+			coinSecondary = coinsData.filter((data) => {
 				if (typeof data === 'string') {
 					return data !== value;
 				}
@@ -266,6 +283,10 @@ class CreatePair extends Component {
 		this.setState({ activeTab });
 	};
 
+	handleExistPair = (value) => {
+		this.setState({ isExistPair: value })
+	};
+
 	renderSection = () => {
 		const {
 			currentStep,
@@ -274,6 +295,7 @@ class CreatePair extends Component {
 			currentPresetPair,
 			pairsRemaining,
 			activeTab,
+			isExistPair
 		} = this.state;
 		const {
 			coins,
@@ -282,6 +304,11 @@ class CreatePair extends Component {
 			pairs,
 			isExchangeWizard,
 			isEdit,
+			router,
+			onClose,
+			exchange,
+			getMyExchange,
+			constants
 		} = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		let pairsData = allPairs.filter((data) => pairs.includes(data.name));
@@ -298,6 +325,12 @@ class CreatePair extends Component {
 						isEdit={isEdit}
 						activeTab={activeTab}
 						isCreatePair={true}
+						user_id={_get(constants, 'info.user_id')}
+						isExistPair={isExistPair}
+						onClose={onClose}
+						exchange={exchange}
+						pairs={pairs}
+						getMyExchange={getMyExchange}
 					/>
 				);
 			case 'pair-selection':
@@ -315,7 +348,7 @@ class CreatePair extends Component {
 			case 'step2':
 				return (
 					<PairParams
-						coins={coinsData}
+						coins={allCoins}
 						formData={formData}
 						isEdit={isEdit}
 						handleChange={this.handleChange}
@@ -323,6 +356,7 @@ class CreatePair extends Component {
 						moveToStep={this.moveToStep}
 						requestParams={this.requestParams}
 						onClose={this.handleClose}
+						router={router}
 					/>
 				);
 			case 'edit-tradable':
@@ -350,12 +384,13 @@ class CreatePair extends Component {
 						allPairs={allPairs}
 						coins={coinsData}
 						coinSecondary={coinSecondary}
-						pairs={pairsData}
 						formData={formData}
 						activeTab={activeTab}
 						setPresetPair={this.setPresetPair}
 						handleChange={this.handleChange}
 						moveToStep={this.moveToStep}
+						handleExistPair={this.handleExistPair}
+						pairs={pairs}
 					/>
 				);
 			case 'step1':
@@ -391,14 +426,14 @@ const mapStateToProps = (state, ownProps) => {
 		pairs:
 			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
 		allPairs: state.asset.allPairs,
-		user: state.user,
 		allCoins: state.asset.allCoins,
+		constants: state.app.constants,
 	};
 };
 
 CreatePair.defaultProps = {
-	handleWidth: () => {},
-	editDataCallback: () => {},
+	handleWidth: () => { },
+	editDataCallback: () => { },
 };
 
 export default connect(mapStateToProps)(CreatePair);

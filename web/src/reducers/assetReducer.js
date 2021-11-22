@@ -2,7 +2,7 @@ import {
 	SET_PRICES_AND_ASSET,
 	SET_ALL_COINS,
 	SET_ALL_PAIRS,
-	SET_EXCHANGE,
+	SET_EXCHANGE
 } from 'actions/assetActions';
 
 const INITIAL_STATE = {

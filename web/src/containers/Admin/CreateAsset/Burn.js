@@ -3,6 +3,7 @@ import { Button, InputNumber, Form, Input, Select, message } from 'antd';
 import _debounce from 'lodash/debounce';
 
 import { storeBurn, storeMint } from '../AdminFinancials/action';
+import { requestUsers } from '../ListUsers/actions';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -18,10 +19,9 @@ const Burn = ({
 	const [form] = Form.useForm();
 	const getAllUsers = useCallback(async (params = {}) => {
 		try {
-			// const res = await getExchangeUsers(exchange.id, params);
-			const res = {};
-			if (res.data && res.data.data) {
-				const exchangeUsers = res.data.data || [];
+			const res = await requestUsers (params);
+			if (res && res.data) {
+				const exchangeUsers = res.data || [];
 				setDataSource(exchangeUsers);
 			}
 		} catch (error) {
@@ -55,9 +55,9 @@ const Burn = ({
 	const handleBurn = async (formValues) => {
 		try {
 			const res = await storeBurn(formValues);
-			if (res.data) {
+			if (res) {
 				message.success(
-					`${res.data.amount} ${res.data.currency} successfully burnt`
+					`${res.amount} ${res.currency} successfully burnt`
 				);
 			}
 		} catch (error) {
@@ -70,9 +70,9 @@ const Burn = ({
 	const handleMint = async (formValues) => {
 		try {
 			const res = await storeMint(formValues);
-			if (res.data) {
+			if (res) {
 				message.success(
-					`${res.data.amount} ${res.data.currency} successfully minted and allocated to user`
+					`${res.amount} ${res.currency} successfully minted and allocated to user`
 				);
 			}
 		} catch (error) {
@@ -107,9 +107,9 @@ const Burn = ({
 					: 'Minting will create new supply of the asset into existence.'}
 			</div>
 			<Form form={form} name="EditAssetForm" onFinish={handleSubmit}>
+				<h3>Amount</h3>
 				<Form.Item
 					name="amount"
-					className="type_wrapper"
 					rules={[
 						{
 							required: true,
@@ -117,12 +117,11 @@ const Burn = ({
 						},
 					]}
 				>
-					<h3>Amount</h3>
 					<InputNumber placeholder="Amount" />
 				</Form.Item>
+				<h3>Email</h3>
 				<Form.Item
 					name="user_id"
-					className="type_wrapper"
 					rules={[
 						{
 							required: true,
@@ -133,7 +132,6 @@ const Burn = ({
 						},
 					]}
 				>
-					<h3>Email</h3>
 					<Select
 						showSearch
 						placeholder="Select an user"
@@ -146,8 +144,8 @@ const Burn = ({
 						))}
 					</Select>
 				</Form.Item>
-				<Form.Item className="type_wrapper">
-					<h3>Description</h3>
+				<h3>Description</h3>
+				<Form.Item name="description">
 					<TextArea placeholder="description" rows={3} />
 				</Form.Item>
 				<Button type="primary" className="green-btn" htmlType="submit">

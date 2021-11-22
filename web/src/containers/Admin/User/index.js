@@ -4,7 +4,7 @@ import querystring from 'query-string';
 import { Link } from 'react-router';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { RightOutlined } from '@ant-design/icons';
-import { Table, Spin, Button, notification, Tabs } from 'antd';
+import { Table, Spin, Button, notification, Tabs, message } from 'antd';
 import _get from 'lodash/get';
 
 import './index.css';
@@ -33,7 +33,16 @@ const Form = AdminHocForm('USER_REQUEST_FORM');
 const TabPane = Tabs.TabPane;
 
 class App extends Component {
-	state = INITIAL_STATE;
+	constructor(props) {
+		super(props);
+		const {
+			pluginNames: { kyc: kycPluginName },
+		} = this.props;
+		this.state = {
+			...INITIAL_STATE,
+			kycPluginName,
+		};
+	}
 
 	componentWillMount() {
 		this.getMyPlugins();
@@ -186,10 +195,12 @@ class App extends Component {
 	};
 
 	searchUser = (values) => {
-		if (values.id) {
+		if (values.id === 0) {
+			message.error('User not found');
+		} else if (values.id) {
 			this.requestUserData({ id: values.id });
 		} else {
-			const searchUserdata = values.input.trim();
+			const searchUserdata = values && values.input && values.input.trim();
 			this.requestUserData({ search: searchUserdata });
 		}
 		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;
@@ -295,7 +306,7 @@ class App extends Component {
 						/>
 						{userInformationList.length ? (
 							<Table
-								className="blue-admin-table"
+								className="mt-4 blue-admin-table admin-user-container"
 								columns={COLUMNS}
 								dataSource={userInformationList}
 								rowKey={(data) => {
@@ -330,6 +341,7 @@ class App extends Component {
 }
 
 const mapStateToProps = (state) => ({
+	pluginNames: state.app.pluginNames,
 	coins: state.app.coins,
 	constants: state.app.constants,
 });

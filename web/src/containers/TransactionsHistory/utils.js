@@ -587,6 +587,7 @@ export const generateWithdrawalsHeaders = (
 								iconId={`${data.symbol.toUpperCase()}_ICON`}
 								icon={ICONS[`${data.symbol.toUpperCase()}_ICON`]}
 								wrapperClassName="coin-icons"
+								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
 							{data.fullname}
 						</div>
@@ -637,17 +638,14 @@ export const generateWithdrawalsHeaders = (
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-				return `${formatToCurrency(
-					amount - fee,
-					min
-				)} ${rest.symbol.toUpperCase()}`;
+				return `${formatToCurrency(amount, min)} ${rest.symbol.toUpperCase()}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 				return (
 					<td key={index}>{`${formatToCurrency(
-						amount - fee,
+						amount,
 						min,
 						true
 					)} ${rest.symbol.toUpperCase()}`}</td>
@@ -658,13 +656,14 @@ export const generateWithdrawalsHeaders = (
 			stringId: 'FEE,NO_FEE',
 			label: STRINGS['FEE'],
 			key: 'fee',
-			exportToCsv: ({ fee = 0, fee_coin = '' }) => `${fee} ${fee_coin}`,
-			renderCell: ({ fee = 0, fee_coin = '' }, key, index) => (
+			exportToCsv: ({ fee = 0, fee_coin = '', currency }) =>
+				`${fee} ${fee_coin ? fee_coin : currency}`,
+			renderCell: ({ fee = 0, fee_coin = '', currency }, key, index) => (
 				<td key={index}>
 					{STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(fee, 0, true),
-						fee_coin.toUpperCase()
+						(fee_coin ? fee_coin : currency).toUpperCase()
 					)}
 				</td>
 			),

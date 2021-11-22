@@ -67,6 +67,7 @@ class MarketCard extends Component {
 											: ICONS['DEFAULT_ICON']
 									}
 									wrapperClassName="trade_tab-icons"
+									imageWrapperClassName="currency-ball-image-wrapper"
 								/>
 							</div>
 

@@ -277,6 +277,10 @@
 .pair-container .add-pair-wrapper .ant-tabs-tab-active {
 	border-top: 6px solid;
 }
+.pair-container .ant-tabs-tab:hover,
+.pair-container .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+	color: #ffffff;
+}
 @media (max-width: 960px) {
 	.pair-container .flex-column-rev {
 		flex-direction: column-reverse;
