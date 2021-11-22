@@ -17,7 +17,8 @@ const {
 	isArray,
 	isInteger,
 	keyBy,
-	isEmpty
+	isEmpty,
+	uniq
 } = require('lodash');
 const { isEmail } = require('validator');
 const randomString = require('random-string');
@@ -1520,7 +1521,7 @@ const mapNetworkIdToKitId = async (
 			throw new Error('networkIds can only contain integers greater than 0');
 		} else {
 			opts.where = {
-				network_id: networkIds
+				network_id: uniq(networkIds)
 			};
 		}
 	}
