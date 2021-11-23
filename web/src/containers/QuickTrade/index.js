@@ -451,6 +451,7 @@ class QuickTradeContainer extends PureComponent {
 			tickers,
 			user,
 			router,
+			constants
 		} = this.props;
 		const {
 			order,
@@ -550,6 +551,7 @@ class QuickTradeContainer extends PureComponent {
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
 						forwardTargetError={this.forwardTargetError}
+						constants={constants}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
