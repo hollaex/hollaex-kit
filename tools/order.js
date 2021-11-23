@@ -336,7 +336,13 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 	return getNodeLib().getTrades(params)
 		.then(async (trades) => {
 			if (trades.data.length > 0) {
-				const idDictionary = await mapNetworkIdToKitId();
+				const networkIds = [];
+
+				for (const trade of trades.data) {
+					networkIds.push(trade.maker_id, trade.taker_id);
+				}
+
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
 
 				for (let trade of trades.data) {
 					const maker_kit_id = idDictionary[trade.maker_id] || 0;
