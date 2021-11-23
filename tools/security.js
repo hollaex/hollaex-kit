@@ -70,10 +70,10 @@ const checkIp = async (remoteip = '') => {
 	const dataGeofence = getKitConfig().black_list_countries;
 	if (dataGeofence && dataGeofence.length > 0 && remoteip) {
 		if (dataGeofence.includes(getCountryFromIp(remoteip))) {
-			return reject(new Error('ERROR IP LOCATION'));
+			throw new Error('ERROR IP LOCATION');
 		}
 	}
-	return resolve();
+	return;
 };
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
