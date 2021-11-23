@@ -68,7 +68,8 @@ const kit = {
 	},
 	features: {},
 	meta: {},
-	user_meta: {}
+	user_meta: {},
+	black_list_countries: []
 };
 
 const secrets = {

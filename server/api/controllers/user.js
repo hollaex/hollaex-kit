@@ -75,7 +75,10 @@ const signUpUser = (req, res) => {
 
 	email = email.toLowerCase();
 
-	toolsLib.security.checkCaptcha(captcha, ip)
+	toolsLib.security.checkIp(ip)
+		.then(() => {
+			return toolsLib.security.checkCaptcha(captcha, ip);
+		})
 		.then(() => {
 			if (!toolsLib.getKitConfig().new_user_is_activated) {
 				throw new Error(SIGNUP_NOT_AVAILABLE);
@@ -305,7 +308,10 @@ const loginPost = (req, res) => {
 
 	email = email.toLowerCase();
 
-	toolsLib.user.getUserByEmail(email)
+	toolsLib.security.checkIp(ip)
+		.then(() => {
+			return toolsLib.user.getUserByEmail(email);
+		})
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
