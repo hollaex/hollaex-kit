@@ -1108,5 +1108,6 @@ module.exports = {
 	createHmacSignature,
 	isValidScope,
 	verifyBearerTokenExpressMiddleware,
+	getCountryFromIp,
 	checkIp
 };
