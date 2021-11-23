@@ -56,6 +56,25 @@ const { client } = require('./database/redis');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash } = require(`${SERVER_PATH}/utils/security`);
+const geoip = require('geoip-lite');
+
+const getCountryFromIp = (ip) => {
+	const geo = geoip.lookup(ip);
+	if (!geo) {
+		return '';
+	}
+	return geo.country;
+};
+
+const checkIp = async (remoteip = '') => {
+	const dataGeofence = getKitConfig().black_list_countries;
+	if (dataGeofence && dataGeofence.length > 0 && remoteip) {
+		if (dataGeofence.includes(getCountryFromIp(remoteip))) {
+			throw new Error('ERROR IP LOCATION');
+		}
+	}
+	return;
+};
 
 const checkCaptcha = (captcha = '', remoteip = '') => {
 	if (!captcha) {
@@ -1088,5 +1107,7 @@ module.exports = {
 	checkHmacSignature,
 	createHmacSignature,
 	isValidScope,
-	verifyBearerTokenExpressMiddleware
+	verifyBearerTokenExpressMiddleware,
+	getCountryFromIp,
+	checkIp
 };
