@@ -46,8 +46,8 @@ const isValidAddress = (currency, address, network) => {
 		return WAValidator.validate(address, currency);
 	} else if (currency === 'xrp') {
 		return WAValidator.validate(address.split(':')[0], currency);
-	} else if (currency === 'etn') {
-		// skip the validation
+	} else if (!WAValidator.findCurrency(currency)) {
+		// skip the validation since it can not find the currency
 		return true;
 	} else {
 		return WAValidator.validate(address, currency);
