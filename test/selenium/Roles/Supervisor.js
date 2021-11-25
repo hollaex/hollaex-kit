@@ -60,7 +60,7 @@ async function Supervisor(){
 			await sleep(5000);
 
 			console.log(step++,'  | assertText | css=.sub-label |Supervisor');
-			assert(await driver.findElement(By.css('.sub-label')).getText() == 'SuperVisor');
+			assert(await driver.findElement(By.css('.sub-label')).getText() == 'Supervisor');
 			await sleep(5000);
 		
 			console.log(step++,'  | click | linkText=Users | ');
@@ -240,12 +240,6 @@ async function Supervisor(){
 			assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
 			util.takeHollashot(driver,reportPath,22);
 			await sleep(5000);
-
-			console.log(step++,'  | assertText | css=.ant-message-custom-content > span:nth-child(2) | Access denied: User is not authorized to access this endpoint');
-			assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
-			util.takeHollashot(driver,reportPath,22);
-			await sleep(5000);
-
 
 			console.log(step++,'  | click | id=rc-tabs-4-tab-5 | ');
 			await driver.findElement(By.id('rc-tabs-4-tab-5')).click();

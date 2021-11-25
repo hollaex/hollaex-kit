@@ -14,14 +14,14 @@ async function Security(){
 		format: ':date(yyyy/mm/dd HH:MM:ss.l)|' 
 	} );
 	require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
-	let userName = process.env.BOB;
-	//let userName =  util.getNewUser();
+	// let userName = process.env.BOB;
+	let userName =  util.getNewUser();
 	let passWord = process.env.PASSWORD;
 	let newPass = process.env.NEWPASS;
 	let logInPage = process.env.LOGIN_PAGE;
-	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let apiUrl = process.env.API_WEBSITE;
-	let emailPassword = process.env.PASSWORD;
+	let emailPassword = process.env.EMAIL_PASS;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	describe('OTP', function() {
@@ -104,16 +104,16 @@ async function Security(){
 			await driver.findElement(By.css('form')).click();
 			await sleep(5000);
 			
-			console.log(step++,'  | click | xpath//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div | ');
-			await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div')).click();
-			await sleep(4000);
+			// console.log(step++,'  | click | xpath//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div | ');
+			// await driver.findElement(By.xpath('//*[@id="root"]/div/div[2]/div/div/div[3]/div[2]/div/div/div/div[4]/div[2]/div')).click();
+			// await sleep(4000);
 
 			console.log ('  16 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA');
 			assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully activated 2FA');
 		    await sleep(5000);
 			
-			console.log(step++,'  | click | css=.holla-button | ');
-			await driver.findElement(By.css('.holla-button')).click();
+			console.log(step++,'  | click | xpath=//button[@type="submit"] | ');
+			await driver.findElement(By.xpath('//button[@type="submit"]')).click();
 			await sleep(4000);
 
 			console.log(step++,'   | click | css=.tab_item:nth-child(2) > div | ');
@@ -317,7 +317,7 @@ async function Security(){
 			await driver.findElement(By.css('.success_display-wrapper')).click();
 			await sleep(4000);
 		
-			console.log ('  15 | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA ');
+			console.log (step++,'  | assertText | css=.success_display-content-text > .edit-wrapper__container | You have successfully activated 2FA ');
 			assert(await driver.findElement(By.css('.success_display-content-text > .edit-wrapper__container')).getText() == 'You have successfully activated 2FA');
 		
 			console.log(step++,'  | click | css=.holla-button |  ');
@@ -457,6 +457,8 @@ async function Security(){
 			
 			console.log(step++,'  | assertText | css=.icon_title-text | Success');
 			assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Success')
+
+			console.log('This is the EndOfTest');
 		});
 	});
 }
