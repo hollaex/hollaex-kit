@@ -155,9 +155,9 @@ class QuickTrade extends Component {
 			type: 'line',
 		};
 		const selectedSourceBalance =
-			userBalance[`${selectedSource.toLowerCase()}_balance`];
+			userBalance[`${selectedSource.toLowerCase()}_available`];
 		const selectedTargetBalance =
-			userBalance[`${selectedTarget.toLowerCase()}_balance`];
+			userBalance[`${selectedTarget.toLowerCase()}_available`];
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -375,6 +375,7 @@ class QuickTrade extends Component {
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
 								decimal={increment_size}
+								availableBalance={selectedSourceBalance}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
