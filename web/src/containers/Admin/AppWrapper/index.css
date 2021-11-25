@@ -232,9 +232,10 @@
 	font-weight: bold;
 }
 .sub-label {
-	position: absolute;
-	top: 4rem;
-	left: 11.2rem;
+    position: absolute;
+    top: 6rem;
+    left: 11.2rem;
+    line-height: 20px;
 }
 .sider-icons {
 	width: 85px;
