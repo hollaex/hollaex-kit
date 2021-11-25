@@ -19,7 +19,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 	util.logHolla(logPath)
 let i=0;
 let userName= "mahdi@testsae.com";
-let passWord = "Holla2021!";
+let passWord = "";
 
 
 describe('shot', function() {

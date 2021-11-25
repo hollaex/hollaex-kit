@@ -21,31 +21,33 @@ describe('Main Test', function () {
 	})
 	describe('test', function () {
 			it('test is..', async function() {
-				// LogIn.LogIn();
+				//   await SignUp.SignUp()
+				//  AccountLevel()
+				//  LogIn.LogIn();
 				// LogOut.LogOut();
-				// Promotion()
+				//  Promotion.Promotion()
 				// ReCAPTCHA.ReCAPTCHA()
 				// Referral.Referral()
 				// ResendVerificationEmail.ResendVerificationEmail() 
 				// ResetPassword.ResetPassword()
-				// Security.Security()
-				// Setting.Setting()
-				//  SignUp.SignUp()
-				// Verification.Verification();failed
+				//  Security.Security()
+				//  Setting.Setting()
+				
+				//  Verification.Verification();//failed
 				/*Roles*/
-				// Communicator.Communicator()
+				//  Communicator.Communicator()
 				//  Kyc()
-				//Supervisor()
+				// Supervisor()
 				// Support.Support()
 				// /*Trade*/
 				// CancelOrder.CancelOrder()
 				// CancelOrders()
 				//QuickTrade()
-				// Trade.Trade()
+				//  Trade.Trade()
 				// TradeWithStop.TradeWithStop()
 				// /*Wallet*/
 				// TransactionFlow()
-				Wallet.Wallet();
+				//   Wallet.Wallet();
 				
 				
 		})

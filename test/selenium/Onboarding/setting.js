@@ -69,8 +69,8 @@ async function Setting(){
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 
-			console.log(step++,'  | click | css=.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container | ');
-			await driver.findElement(By.css('.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container')).click();
+			console.log(step++,'  | click | css=.align-items-center:nth-child(6) | ');
+			await driver.findElement(By.css('.align-items-center:nth-child(6)')).click();
 			await sleep(3000);
 
 			console.log(step++,'  | click | css=.tab_item:nth-child(3) > div | ');
