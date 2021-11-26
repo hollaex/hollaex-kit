@@ -26,7 +26,7 @@ async function Wallet(){
 	let webSite = process.env.WEBSITE;
 	let step = util.getStep()
 	describe('Wallet', function() {
-		this.timeout(30000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {

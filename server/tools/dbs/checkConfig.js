@@ -52,6 +52,7 @@ Status.findOne()
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 			user_meta: existingKitConfigurations.user_meta || {},
+			black_list_countries: existingKitConfigurations.black_list_countries || [],
 		};
 
 		const secrets = {

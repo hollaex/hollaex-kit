@@ -20,7 +20,6 @@ import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
-import { STATIC_ICONS } from 'config/icons';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 
@@ -84,8 +83,9 @@ class QuickTrade extends Component {
 	}
 
 	handleClick = (pair) => {
-		if (pair && this.props.router) {
-			this.props.router.push(`/trade/${pair}`);
+		const { router, constants } = this.props;
+		if (pair && router && _get(constants, "features.pro_trade")) {
+			router.push(`/trade/${pair}`);
 		}
 	};
 
@@ -155,9 +155,9 @@ class QuickTrade extends Component {
 			type: 'line',
 		};
 		const selectedSourceBalance =
-			userBalance[`${selectedSource.toLowerCase()}_balance`];
+			userBalance[`${selectedSource.toLowerCase()}_available`];
 		const selectedTargetBalance =
-			userBalance[`${selectedTarget.toLowerCase()}_balance`];
+			userBalance[`${selectedTarget.toLowerCase()}_available`];
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -170,11 +170,7 @@ class QuickTrade extends Component {
 					<div className="d-flex content-center">
 						<Image
 							iconId="SIDEBAR_QUICK_TRADING_INACTIVE,QUICK_TRADE"
-							icon={
-								isMobile
-									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: STATIC_ICONS['QUICK_TRADE']
-							}
+							icon={ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'
 							}
@@ -379,6 +375,7 @@ class QuickTrade extends Component {
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
 								decimal={increment_size}
+								availableBalance={selectedSourceBalance}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}

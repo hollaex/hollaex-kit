@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
 import { Slider } from 'components';
+import _get from 'lodash/get';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
@@ -69,8 +70,13 @@ class PairTabs extends Component {
 	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair) => {
+		const { router, constants } = this.props;
 		if (pair) {
-			this.props.router.push(`/trade/${pair}`);
+			if (_get(constants, "features.pro_trade")) {
+				router.push(`/trade/${pair}`);
+			} else if (_get(constants, "features.quick_trade")) {
+				router.push(`/quick-trade/${pair}`);
+			}
 			this.setState({ activePairTab: pair });
 		}
 	};
@@ -207,7 +213,7 @@ class PairTabs extends Component {
 }
 
 const mapStateToProps = ({
-	app: { language: activeLanguage, pairs, tickers, coins, favourites },
+	app: { language: activeLanguage, pairs, tickers, coins, favourites, constants },
 	orderbook: { prices },
 }) => ({
 	activeLanguage,
@@ -216,6 +222,7 @@ const mapStateToProps = ({
 	coins,
 	prices,
 	favourites,
+	constants,
 });
 
 export default connect(mapStateToProps)(withConfig(PairTabs));

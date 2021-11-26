@@ -94,8 +94,8 @@ async function Referral(){
 			// console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
 			// await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
-			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
+			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 			
 	        console.log(step++,'  | open | ',signUpPage);

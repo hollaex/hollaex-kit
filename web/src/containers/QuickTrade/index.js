@@ -84,6 +84,7 @@ class QuickTradeContainer extends PureComponent {
 			page: 0,
 			pageSize: 12,
 			searchValue: '',
+			isSelectChange: false
 		};
 
 		this.goToPair(pair);
@@ -159,6 +160,56 @@ class QuickTradeContainer extends PureComponent {
 				JSON.stringify(this.props.sourceOptions)
 		) {
 			this.constructTarget();
+		}
+		if (JSON.stringify(prevProps.routeParams.pair) !== JSON.stringify(this.props.routeParams.pair) && !this.state.isSelectChange) {
+			const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
+			const pairKeys = Object.keys(pairs);
+			const flippedPair = this.flipPair(routeParams.pair);
+
+			let pair;
+			let side;
+			let tickerClose;
+			let originalPair;
+			if (pairKeys.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (pairKeys.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.length) {
+				originalPair = pairKeys[0];
+				pair = pairKeys[0];
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else {
+				router.push('/summary');
+			}
+
+			const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
+			const targetOptions = this.getTargetOptions(selectedSource);
+			const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+
+			this.setState({
+				pair,
+				side,
+				tickerClose,
+				targetOptions,
+				selectedSource,
+				selectedTarget,
+				targetAmount: undefined,
+				sourceAmount: undefined,
+			});
+		} else if (this.state.isSelectChange) {
+			this.setState({
+				isSelectChange: false
+			});
 		}
 	}
 
@@ -277,13 +328,15 @@ class QuickTradeContainer extends PureComponent {
 			selectedTarget,
 			targetAmount: undefined,
 			sourceAmount: undefined,
+			isSelectChange: true
 		});
-		this.goToPair(pair);
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
 	onSelectSource = (selectedSource) => {
 		const { tickers, pairs } = this.props;
-
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const selectedTarget = targetOptions[0];
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -313,8 +366,11 @@ class QuickTradeContainer extends PureComponent {
 			targetOptions: targetOptions,
 			targetAmount: undefined,
 			sourceAmount: undefined,
+			isSelectChange: true
 		});
-		this.goToPair(pair);
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
 	constructTarget = () => {
@@ -451,6 +507,7 @@ class QuickTradeContainer extends PureComponent {
 			tickers,
 			user,
 			router,
+			constants
 		} = this.props;
 		const {
 			order,
@@ -550,6 +607,7 @@ class QuickTradeContainer extends PureComponent {
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
 						forwardTargetError={this.forwardTargetError}
+						constants={constants}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
