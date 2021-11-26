@@ -4456,6 +4456,10 @@ definitions:
                   type: string
                 attributes:
                   type: object
+          black_list_countries:
+            type: array
+            items:
+              type: string
       secrets:
         type: object
         properties:
