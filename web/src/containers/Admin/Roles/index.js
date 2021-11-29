@@ -90,7 +90,7 @@ const renderItems = () => {
 					</div>
 				</div>
 			);
-		default:
+		case 'admin':
 			return (
 				<div>
 					<div className="sub-title">Your current role:</div>
@@ -100,6 +100,8 @@ const renderItems = () => {
 					</div>
 				</div>
 			);
+		default:
+			return <div></div>
 	}
 };
 

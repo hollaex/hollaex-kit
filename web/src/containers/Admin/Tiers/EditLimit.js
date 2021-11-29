@@ -89,12 +89,13 @@ class EditLimit extends Component {
 		this.setState({ formData });
 	};
 
-	setLimitField = (type, level, selectData, initialData) => {
+	setLimitField = (type, level, selectData, initialData, isDeposit = false) => {
 		return (
 			<Fragment>
 				<Select
 					onSelect={(value) => this.handleChange(value, level, type)}
 					value={selectData[type]}
+					disabled={isDeposit}
 				>
 					<Select.Option key={1} value={0}>
 						Unlimited
@@ -110,9 +111,10 @@ class EditLimit extends Component {
 					<InputNumber
 						onChange={(value) => this.handleChangeLimit(value, level, type)}
 						value={initialData[type]}
+						disabled={isDeposit}
 					/>
 				) : (
-					<Input value={this.getText(selectData[type])} />
+					<Input value={this.getText(selectData[type])} disabled={isDeposit} />
 				)}
 			</Fragment>
 		);
@@ -176,13 +178,6 @@ class EditLimit extends Component {
 				</div>
 				<div className="d-flex mt-3">
 					<div className="f-1"></div>
-					{/*<div className="d-flex align-items-center f-1 px-2">
-						<Image
-							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
-							wrapperClassName="limit-status-icon"
-						/>
-						<div className="sub-title">Deposit</div>
-					</div>*/}
 					<div className="d-flex align-items-center f-1 px-2">
 						<Image
 							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
@@ -206,20 +201,50 @@ class EditLimit extends Component {
 										{`Tiers ${level}`}
 									</div>
 								</div>
-								{/*<div className="f-2 px-2 d-flex align-items-center">
-									{this.setLimitField(
-										'deposit_limit',
-										level,
-										selectData,
-										initialData
-									)}
-								</div>*/}
 								<div className="f-2 px-2 d-flex align-items-center">
 									{this.setLimitField(
 										'withdrawal_limit',
 										level,
 										selectData,
 										initialData
+									)}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+				<div className="d-flex mt-3">
+					<div className="f-1"></div>
+					<div className="d-flex align-items-center f-1 px-2">
+						<Image
+							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+							wrapperClassName="limit-status-icon"
+						/>
+						<div className="sub-title">Deposit</div>
+					</div>
+				</div>
+				<div className="mb-4">
+					{Object.keys(userTiers).map((level, index) => {
+						const initialData = formData[level] || {};
+						const selectData = selectValues[level] || {};
+						return (
+							<div className="d-flex py-2" key={index}>
+								<div className="f-1">
+									<div className="d-flex align-items-center">
+										<Image
+											icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
+											wrapperClassName="table-tier-icon mr-2"
+										/>
+										{`Tiers ${level}`}
+									</div>
+								</div>
+								<div className="f-2 px-2 d-flex align-items-center">
+									{this.setLimitField(
+										'deposit_limit',
+										level,
+										selectData,
+										initialData,
+										true
 									)}
 								</div>
 							</div>
