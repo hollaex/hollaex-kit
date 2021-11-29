@@ -12,11 +12,16 @@
 	border: $colors-black solid 1.5px;
 
 	.ant-select-selection,
-	.ant-input,
 	.ant-select-selector {
 		text-align: right;
 		background-color: $quick-trade-container !important;
 		color: $colors-black !important;
+	}
+
+	.ant-input {
+		text-align: right;
+		background-color: $quick-trade-container !important;
+		color: $colors-deactivate !important;
 	}
 	
 	.ant-select-arrow {
@@ -38,6 +43,9 @@
 	}
 	&:focus-within {
 		border-color: $link !important;
+		.ant-input {
+			color: $colors-main-black !important;
+		}
 	}
 
 	.input-group__select:hover {

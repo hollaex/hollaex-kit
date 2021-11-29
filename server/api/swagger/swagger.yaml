@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.2.4"
+  version: "2.2.5"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -4456,6 +4456,10 @@ definitions:
                   type: string
                 attributes:
                   type: object
+          black_list_countries:
+            type: array
+            items:
+              type: string
       secrets:
         type: object
         properties:

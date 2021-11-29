@@ -109,7 +109,17 @@ async function ReCAPTCHA(){
 			console.log(step++,'  | click | css=.holla-button | ');
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(5000);
-			//then the username should be as same as entered 		
+			//then the username should be as same as entered 
+			console.log(step++,'  | type | name=email |',userName );
+			await driver.findElement(By.name('email')).click();
+			await driver.findElement(By.name('email')).clear();
+			await driver.findElement(By.name('email')).sendKeys(userName);
+    
+			console.log(step++,'  | type | name=password | PASSWORD');
+			await driver.wait(until.elementLocated(By.name('password')), 5000);
+			await driver.findElement(By.name('password')).click();
+			await driver.findElement(By.name('password')).clear();
+			await driver.findElement(By.name('password')).sendKeys(passWord);		
 		
 			console.log(step++,'  | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 			await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);

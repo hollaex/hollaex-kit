@@ -62,7 +62,8 @@ const checkStatus = () => {
 			meta: {},
 			injected_values: [],
 			injected_html: {},
-			user_meta: {}
+			user_meta: {},
+			black_list_countries: [],
 		}
 	};
 

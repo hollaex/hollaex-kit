@@ -4,6 +4,7 @@ import { formatPercentage } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 import math from 'mathjs';
+import _get from 'lodash/get';
 
 import { SearchBox } from 'components';
 import MarketList from '../../TradeTabs/components/MarketList';
@@ -110,9 +111,13 @@ class Markets extends Component {
 	};
 
 	handleClick = (pair) => {
-		const { router } = this.props;
+		const { router, constants } = this.props;
 		if (pair && router) {
-			router.push(`/trade/${pair}`);
+			if (_get(constants, "features.pro_trade")) {
+				router.push(`/trade/${pair}`);
+			} else if (_get(constants, "features.quick_trade")) {
+				router.push(`/quick-trade/${pair}`);
+			}
 		}
 	};
 
@@ -217,6 +222,7 @@ class Markets extends Component {
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
 	tickers: state.app.tickers,
+	constants: state.app.constants,
 });
 
 const MarketWrapper = withConfig(Markets);
