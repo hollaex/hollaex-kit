@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerOrders, loggerUser } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('../../utils/toolsLib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');

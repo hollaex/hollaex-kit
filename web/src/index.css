@@ -385,15 +385,20 @@ table th {
     .app_container .app_container-content .app_container-main .presentation_container {
       width: 75rem;
       height: inherit; }
+    .app_container .app_container-content .app_container-main .ant-tabs {
+      color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-ink-bar {
       background: var(--labels_important-active-labels-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-top > .ant-tabs-nav::before {
       border-color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-tab {
       color: var(--labels_secondary-inactive-label-text-graphics); }
+      .app_container .app_container-content .app_container-main .ant-tabs-tab .ant-tabs-tab-btn {
+        color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-tab-active {
       color: var(--labels_important-active-labels-text-graphics); }
       .app_container .app_container-content .app_container-main .ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: var(--labels_important-active-labels-text-graphics);
         font-weight: bold; }
   .app_container .app_container-sidebar {
     display: flex;

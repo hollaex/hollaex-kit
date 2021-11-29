@@ -43,7 +43,7 @@ async function Setting(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+			//await driver.quit();
 		});
 		it('Setting', async function() {
 	   console.log(' Test name: Setting');
@@ -69,8 +69,8 @@ async function Setting(){
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 
-			console.log(step++,'  | click | css=.d-flex:nth-child(6) > .side-bar-txt > .edit-wrapper__container | ');
-			await driver.findElement(By.css('.d-flex:nth-child(6) > .side-bar-txt > .edit-wrapper__container')).click();
+			console.log(step++,'  | click | css=.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container | ');
+			await driver.findElement(By.css('.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container')).click();
 			await sleep(3000);
 
 			console.log(step++,'  | click | css=.tab_item:nth-child(3) > div | ');
@@ -282,9 +282,8 @@ async function Setting(){
 			await driver.findElement(By.css('.settings-form')).click();
 			await sleep(3000);
 
-			console.log('should be fixed')
-			console.log(step++,'  | assertText | css=.settings-form | Language\nLanguage preferences (Includes Emails)\nEnglish');
-			assert(await driver.findElement(By.css('.settings-form')).getText() == 'Language preferences (Includes Emails)');
+			console.log(step++,'  | assertText | css=.settings-form | Language preferences (Includes Emails)');
+			assert(await driver.findElement(By.css('.d-flex > .field-label')).getText() == 'Language preferences (Includes Emails)');
 			await sleep(3000);
 		
 			console.log('This is the EndOfTest');

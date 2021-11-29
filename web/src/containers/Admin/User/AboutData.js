@@ -377,8 +377,6 @@ const AboutData = ({
 		}
 	};
 
-	const isManualKYC = kycPluginName === 'kyc';
-
 	return (
 		<div>
 			<div className="d-flex justify-content-end header-section mb-5">
@@ -567,17 +565,15 @@ const AboutData = ({
 									kycPluginName={kycPluginName}
 								/>
 							</div>
-							{isManualKYC && (
-								<div>
-									<Button
-										type="primary"
-										className="green-btn"
-										onClick={() => setUpload(true)}
-									>
-										Upload
-									</Button>
-								</div>
-							)}
+							<div>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={() => setUpload(true)}
+								>
+									Upload
+								</Button>
+							</div>
 						</div>
 					</div>
 					<div className="about-notes-content">

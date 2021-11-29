@@ -65,7 +65,7 @@ async function Referral(){
 			await sleep(4000);
 		
 			console.log(step++,'  | click | name=email |  ')
-   		await driver.findElement(By.name('email')).click();
+   		    await driver.findElement(By.name('email')).click();
 		
 		   console.log(step++,'  | click | css=.holla-button |  ')
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
@@ -91,9 +91,13 @@ async function Referral(){
 			console.log(step++,' | click | css=.app-bar-account-content > div:nth-child(2) |  ')
 			await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).click();
 		
-			console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
-			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
+			// console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
+			// await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
+			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
+			await sleep(5000);
+			
 	        console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
 			await sleep(5000);
@@ -129,7 +133,10 @@ async function Referral(){
 		
 			// there is no need for verification
 			//	util.adminVerifiesNewUser(driver,userName,apassWord,newUser)
-		
+			console.log(step++,'  | open | ',website);
+			await driver.get(website+"login");
+			await sleep(5000);
+
 			console.log(step++,'  | type | name=email | USER@bitholla.com ')
 			await driver.findElement(By.name('email')).sendKeys(userName);
 		
@@ -138,7 +145,7 @@ async function Referral(){
 			await sleep(4000);
 		
 			console.log(step++,'  | click | name=email |  ')
-   		await driver.findElement(By.name('email')).click();
+   		    await driver.findElement(By.name('email')).click();
 		
 			console.log(step++,'  | click | css=.holla-button |  ')
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);

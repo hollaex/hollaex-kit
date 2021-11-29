@@ -54,7 +54,10 @@ class UploadIds extends Component {
 				AntdMessage.success('Files upload successfully', 5);
 			})
 			.catch((err) => {
-				const message = err && err.data ? err.data.message : err.message;
+				let message = err && err.data ? err.data.message : err.message;
+				if (message && message.includes('404')) {
+					message = 'Admin upload is not available';
+				}
 				AntdMessage.error(message, 5);
 				throw new SubmissionError({ _error: message });
 			});

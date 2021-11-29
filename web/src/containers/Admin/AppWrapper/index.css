@@ -29,8 +29,8 @@
 	width: 100%;
 	/* flex: 1; */
 }
-.app_container-content .ant-tabs,
-.app_container-content h2,
+.admin-content-wrapper .ant-tabs,
+.admin-content-wrapper h2,
 .admin-content-wrapper .ant-tabs-tab:hover,
 .admin-content-wrapper .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
 	color: #ffffff;
@@ -232,9 +232,10 @@
 	font-weight: bold;
 }
 .sub-label {
-	position: absolute;
-	top: 4rem;
-	left: 11.2rem;
+    position: absolute;
+    top: 6rem;
+    left: 11.2rem;
+    line-height: 20px;
 }
 .sider-icons {
 	width: 85px;

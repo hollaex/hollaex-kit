@@ -22,11 +22,12 @@ async function TransactionFlow(){
 	let alice = process.env.ALICE;
 	let logInPage = process.env.LOGIN_PAGE;
 	let admin = process.env.Email_ADMIN_USERNAME;
+	let emailPass = process.env.EMAIL_PASS;
     let step = util.getStep()
 	describe('Internal D/W Flow', function() {
 		this.timeout(300000);
 		let driver;
-		let vars;
+		vars = {};
 		function sleep(ms) {
 			return new Promise((resolve) => {
 				setTimeout(resolve, ms);
@@ -43,7 +44,7 @@ async function TransactionFlow(){
 		}
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
-			vars = {};
+			
 			driver.manage().window().maximize();
 			let step = util.getStep()
 		});
@@ -97,12 +98,15 @@ async function TransactionFlow(){
 		
 			console.log(step++,' | storeText | css=.with_price-block_amount-value | before');
 			vars['before'] = await driver.findElement(By.css('.with_price-block_amount-value')).getText()
+			console.log("before:")
 			console.log(vars['before'])
 
 			console.log('This is the EndOfTest');
 		});
 		it('From Alice to Bob', async function() {
-    
+			console.log("before:")
+			console.log(vars['before'])
+
 			console.log(' Test name: BobLogIn');
 			console.log(' Step # | action | target | value');
 			console.log(step++,' | open | '+ logInPage + '| ');
@@ -185,10 +189,10 @@ async function TransactionFlow(){
 		});
   
 		it('CheckMail', async function() {
-	
+
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
-			await util.emailLogIn(step,driver,admin,passWord);
+			await util.emailLogIn(step,driver,admin,emailPass);
 		
 			console.log(step++,' | Click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);
@@ -241,6 +245,7 @@ async function TransactionFlow(){
 		});
 	
 		it('BobLoginSecondTime', async function() {
+
 			console.log(' Test name: BobLogIn');
 			console.log(' Step # | action | target | value');
 		
@@ -278,16 +283,18 @@ async function TransactionFlow(){
 		
 			console.log(step++,' | type | name=search-assets | hollaex');
 			await driver.findElement(By.name('search-assets')).sendKeys('hollaex');
-		
+			await sleep(2000);
+
 			console.log(step++,' | sendKeys | name=search-assets | ${KEY_ENTER}');
 			await driver.findElement(By.name('search-assets')).sendKeys(Key.ENTER);
 		
 			console.log(step++,' | click | css=.td-amount > .d-flex | ');
 			await driver.findElement(By.linkText('HollaEx')).click()
-		
-			console.log(step++,' | storeText | css=.with_price-block_amount-value | before');
+	
+					console.log(step++,' | storeText | css=.with_price-block_amount-value | before');
 			vars['after'] = await driver.findElement(By.css('.with_price-block_amount-value')).getText()
-			expect(parseFloat(vars['after'])- parseFloat(vars['before'])).to.equal(0.0001);
+			let diff = (parseFloat(vars['after']).toFixed(4)- (parseFloat(vars['before'])).toFixed(4))
+			expect(diff).to.equal(0.0001);
 
 			console.log('This is the EndOfTest');
 		});

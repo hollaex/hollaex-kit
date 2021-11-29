@@ -53,7 +53,6 @@ describe('Main Test', function () {
 		describe('Roles', function () {
 			it('َGiven communicator can', async function() {
 				Communicator.Communicator()
-
 			})
 			it('Given KYC can', async function() {
 				Kyc.Kyc();

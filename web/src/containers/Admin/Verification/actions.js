@@ -21,29 +21,21 @@ export const performUserRoleUpdate = (values) => {
 };
 
 export const verifyData = (values, kyc_name) => {
+	const url = `/plugins/${kyc_name}/verify`;
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
-
-	let url = '/plugins/kyc/id/verify';
-	if (kyc_name !== 'kyc') {
-		url = `/plugins/${kyc_name}/verify`;
-	}
 
 	return requestAuthenticated(url, options, null, PLUGIN_URL);
 };
 
 export const revokeData = (values, kyc_name) => {
+	const url = `/plugins/${kyc_name}/revoke`;
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
-
-	let url = '/plugins/kyc/id/revoke';
-	if (kyc_name !== 'kyc') {
-		url = `/plugins/${kyc_name}/revoke`;
-	}
 
 	return requestAuthenticated(url, options, null, PLUGIN_URL);
 };

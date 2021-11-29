@@ -2,7 +2,7 @@
 
 const { INVALID_OTP_CODE } = require('../../messages');
 const { loggerOtp } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
+const toolsLib = require('../../utils/toolsLib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const requestOtp = (req, res) => {

@@ -1,6 +1,6 @@
 'use strict';
 
-const { Network } = require('hollaex-node-lib');
+const Network = require('./utils/nodeLib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
