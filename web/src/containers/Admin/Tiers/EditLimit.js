@@ -13,6 +13,7 @@ class EditLimit extends Component {
 		this.state = {
 			selectValues: {},
 			formData: {},
+			buttonSubmitting: false,
 		};
 	}
 
@@ -122,14 +123,17 @@ class EditLimit extends Component {
 		let formValues = {
 			limits: formData,
 		};
+		this.setState({ buttonSubmitting: true });
 		updateLimits(formValues)
 			.then((res) => {
 				this.props.getTiers();
 				this.props.handleClose();
+				this.setState({ buttonSubmitting: false });
 				message.success('Limits updated successfully');
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
+				this.setState({ buttonSubmitting: false });
 				message.error(error);
 			});
 	};
@@ -227,7 +231,11 @@ class EditLimit extends Component {
 						Back
 					</Button>
 					<div className="mx-2"></div>
-					<Button className="green-btn" onClick={this.handleSave}>
+					<Button
+						className="green-btn"
+						onClick={this.handleSave}
+						disabled={this.state.buttonSubmitting}
+					>
 						Confirm
 					</Button>
 				</div>

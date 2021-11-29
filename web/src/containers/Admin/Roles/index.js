@@ -112,6 +112,7 @@ const Roles = ({ constants }) => {
 	const [editData, setData] = useState([]);
 	const [modalType, setType] = useState('');
 	const [isOpen, setOpen] = useState(false);
+	const [buttonSubmitting, setButtonSubmitting] = useState(false);
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
@@ -136,26 +137,32 @@ const Roles = ({ constants }) => {
 	}, []);
 
 	const handleInvite = (values) => {
+		setButtonSubmitting(true);
 		inviteOperator(values)
 			.then((res) => {
 				requestInitRole();
 				handleClose();
+				setButtonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButtonSubmitting(false);
 			});
 	};
 
 	const handleUpdateRole = (formProps, user_id) => {
+		setButtonSubmitting(true);
 		updateRole(formProps, { user_id })
 			.then((res) => {
 				requestInitRole();
 				handleClose();
+				setButtonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButtonSubmitting(false);
 			});
 	};
 
@@ -163,7 +170,11 @@ const Roles = ({ constants }) => {
 		switch (type) {
 			case 'operator-role':
 				return (
-					<OperatorRole handleInvite={handleInvite} isUpgrade={isUpgrade} />
+					<OperatorRole
+						handleInvite={handleInvite}
+						isUpgrade={isUpgrade}
+						buttonSubmitting={buttonSubmitting}
+					/>
 				);
 			case 'role-access':
 				return <RoleAccess handleClose={handleClose} isUpgrade={isUpgrade} />;
@@ -181,6 +192,7 @@ const Roles = ({ constants }) => {
 						editData={editData}
 						handleClose={handleClose}
 						handleUpdateRole={handleUpdateRole}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				);
 			default:
