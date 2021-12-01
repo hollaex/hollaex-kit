@@ -447,9 +447,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (staticTarget) {
 					target = staticTarget;
 				} else if (meta) {
-					const { is_page } = meta;
+					const { is_page, is_verification_tab, type } = meta;
 					if (is_page) {
 						target = generateDynamicTarget(name, 'page');
+					} else if (is_verification_tab && type) {
+						target = generateDynamicTarget(name, 'verification', type);
 					}
 				}
 				if (!CLUSTERED_WEB_VIEWS[target]) {

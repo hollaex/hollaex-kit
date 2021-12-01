@@ -4,12 +4,17 @@ export const generateGlobalId = (pluginName = 'UNKNOWN_PLUGIN') => (
 
 export const generateDynamicTarget = (
 	pluginName = 'UNKNOWN_PLUGIN',
-	type = 'page'
+	type = 'page',
+	subType = ''
 ) => {
 	const name = pluginName.toUpperCase();
+	const sub = subType.toUpperCase();
 	switch (type) {
+		case 'verification':
+			return `REMOTE_VERIFICATION_TAB__${name}__${sub}`;
 		case 'page':
-		default:
 			return `REMOTE_ROUTE__${name}`;
+		default:
+			return `UNKNOWN_DYNAMIC_TARGET_${name}`;
 	}
 };
