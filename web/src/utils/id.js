@@ -19,6 +19,17 @@ export const generateDynamicTarget = (
 	}
 };
 
+export const generateFiatWalletTarget = (type = '', currency = '') => {
+	switch (type) {
+		case 'deposit':
+			return `REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT__${currency.toUpperCase()}`;
+		case 'withdraw':
+			return `REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW__${currency.toUpperCase()}`;
+		default:
+			return `UNKNOWN_FIAT_WALLET_TARGET_${type.toUpperCase()}`;
+	}
+};
+
 export const globalize = (name) => ({ is_global, id }) => {
 	return is_global ? id : generateGlobalId(name)(id);
 };

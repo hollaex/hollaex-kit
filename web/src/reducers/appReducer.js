@@ -38,7 +38,11 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { globalize, generateDynamicTarget } from 'utils/id';
+import {
+	globalize,
+	generateDynamicTarget,
+	generateFiatWalletTarget,
+} from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -447,11 +451,19 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (staticTarget) {
 					target = staticTarget;
 				} else if (meta) {
-					const { is_page, is_verification_tab, type } = meta;
+					const {
+						is_page,
+						is_verification_tab,
+						is_wallet,
+						type,
+						currency,
+					} = meta;
 					if (is_page) {
 						target = generateDynamicTarget(name, 'page');
 					} else if (is_verification_tab && type) {
 						target = generateDynamicTarget(name, 'verification', type);
+					} else if (is_wallet && type && currency) {
+						target = generateFiatWalletTarget(type, currency);
 					}
 				}
 				if (!CLUSTERED_WEB_VIEWS[target]) {
