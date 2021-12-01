@@ -38,7 +38,7 @@ import { getLanguage } from '../utils/string';
 import { getTheme } from '../utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
-import { generateGlobalId, generateDynamicTarget } from 'utils/id';
+import { globalize, generateDynamicTarget } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
 
 const EMPTY_NOTIFICATION = {
@@ -419,11 +419,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			const remoteRoutes = [];
 			allWebViews.forEach(({ meta, name }) => {
 				if (meta && meta.is_page) {
-					const { icon_id, string_id, ...rest } = meta;
+					const { icon, string, ...rest } = meta;
 					remoteRoutes.push({
 						target: generateDynamicTarget(name, 'page'),
-						icon_id: generateGlobalId(name)(icon_id),
-						string_id: generateGlobalId(name)(string_id),
+						icon_id: globalize(name)(icon),
+						string_id: globalize(name)(string),
 						...rest,
 					});
 				}

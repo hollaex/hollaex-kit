@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { generateGlobalId, generateDynamicTarget } from 'utils/id';
+import { globalize, generateDynamicTarget } from 'utils/id';
 
 const getPlugins = (state) => state.app.plugins;
 
@@ -8,10 +8,6 @@ const getMetaByType = (web_view = [], type) => {
 		({ meta }) => meta && meta.is_verification_tab && meta.type === type
 	);
 	return !!view ? view.meta : {};
-};
-
-const globalize = (name) => ({ is_global, id }) => {
-	return is_global ? id : generateGlobalId(name)(id);
 };
 
 export const verificationTabsSelector = createSelector(

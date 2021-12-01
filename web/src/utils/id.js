@@ -18,3 +18,7 @@ export const generateDynamicTarget = (
 			return `UNKNOWN_DYNAMIC_TARGET_${name}`;
 	}
 };
+
+export const globalize = (name) => ({ is_global, id }) => {
+	return is_global ? id : generateGlobalId(name)(id);
+};
