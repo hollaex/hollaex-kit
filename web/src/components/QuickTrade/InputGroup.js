@@ -49,10 +49,12 @@ class InputGroup extends React.PureComponent {
 	};
 
 	renderErrorMessage = (value) => {
-		const { limits, forwardError } = this.props;
+		const { limits, forwardError, availableBalance } = this.props;
 		let error = '';
 		if (!value) {
 			error = '';
+		} else if (availableBalance) {
+			error = maxValue(availableBalance)(value);
 		} else {
 			error = minValue(limits.MIN)(value) || maxValue(limits.MAX)(value);
 		}

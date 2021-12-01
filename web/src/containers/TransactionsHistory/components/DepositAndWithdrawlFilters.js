@@ -13,7 +13,7 @@ const STATUS_OPTIONS = {
 	},
 	rejected: {
 		name: STRINGS['TRANSACTION_STATUS.REJECTED'],
-		value: 'rejected',
+		value: 'dismissed',
 	},
 	completed: {
 		name: STRINGS['TRANSACTION_STATUS.COMPLETED'],
