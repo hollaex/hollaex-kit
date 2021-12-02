@@ -20,6 +20,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		disableAllFields = false,
 		secondaryBtnTxt = '',
 		onClose = () => {},
+		buttonSubmitting = false,
 	}) => {
 		return (
 			<form
@@ -52,7 +53,8 @@ const Form = (name, className = '', allowPristine = false) => {
 						(allowPristine ? false : fields && pristine) ||
 						submitting ||
 						!valid ||
-						error
+						error ||
+						buttonSubmitting
 					}
 					size={small ? 'small' : 'large'}
 					className={small ? `${buttonClass}` : `w-100 ${buttonClass}`}
