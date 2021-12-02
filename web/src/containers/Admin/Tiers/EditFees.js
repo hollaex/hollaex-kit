@@ -11,6 +11,7 @@ class EditFees extends Component {
 		super(props);
 		this.state = {
 			feeData: {},
+			buttonSubmitting: false,
 		};
 	}
 
@@ -48,15 +49,18 @@ class EditFees extends Component {
 			pair: this.props.selectedPair,
 			fees: this.state.feeData,
 		};
+		this.setState({ buttonSubmitting: true });
 		updateFees(formData)
 			.then((res) => {
 				this.props.getTiers();
 				this.props.handleClose();
+				this.setState({ buttonSubmitting: false });
 				message.success('Fees updated successfully');
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				this.setState({ buttonSubmitting: false });
 			});
 	};
 
@@ -154,7 +158,11 @@ class EditFees extends Component {
 						Back
 					</Button>
 					<div className="mx-2"></div>
-					<Button className="green-btn" onClick={this.handleSave}>
+					<Button
+						className="green-btn"
+						onClick={this.handleSave}
+						disabled={this.state.buttonSubmitting}
+					>
 						Confirm
 					</Button>
 				</div>
