@@ -245,6 +245,7 @@ const getConfigs = async () => {
 		if (pluginObject) {
 			plugins.forEach((plugin) => {
 				if (plugin.name === pluginName) {
+					delete plugin.web_view;
 					const mergedPlugin = merge({}, plugin, pluginObject);
 					allPlugins.push(mergedPlugin);
 				} else {
