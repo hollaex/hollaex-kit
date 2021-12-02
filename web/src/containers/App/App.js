@@ -134,8 +134,7 @@ class App extends Component {
 		const qs = querystring.parse(this.props.location.search);
 		if (Object.keys(qs).length
 			&& !this.props.location.pathname.includes('trade')
-			&& !this.props.location.pathname.includes('quick-trade')
-			&& !this.props.location.pathname.includes('account')) {
+			&& !this.props.location.pathname.includes('quick-trade')) {
 			const { success_alert, error_alert } = qs;
 			if (success_alert) {
 				const paramsData = { status: true, message: success_alert };

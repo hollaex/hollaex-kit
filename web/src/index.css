@@ -2802,8 +2802,11 @@ table th {
     margin: 30px 0px 70px;
     background-color: var(--base_wallet-sidebar-and-popup);
     padding-bottom: 20px; }
-    .verification_container .inner-content .custom-tab-wrapper .tab_item {
-      min-width: 9rem; }
+    .verification_container .inner-content .custom-tab-wrapper {
+      margin: 0 0.5rem;
+      overflow-x: auto; }
+      .verification_container .inner-content .custom-tab-wrapper .tab_item {
+        min-width: 9rem; }
     .verification_container .inner-content .btn-wrapper {
       position: relative;
       display: flex;
