@@ -17,6 +17,7 @@ const Final = ({
 	setConfigEdit,
 	handleDelete = () => {},
 	user_id,
+	submitting = false
 }) => {
 	const { meta = {}, type } = coinFormData;
 	return (
@@ -279,6 +280,7 @@ const Final = ({
 						<Button
 							type="danger"
 							onClick={() => handleDelete(coinFormData.symbol)}
+							disabled={submitting}
 						>
 							Remove
 						</Button>

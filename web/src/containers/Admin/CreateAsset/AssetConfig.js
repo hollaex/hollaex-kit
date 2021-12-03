@@ -36,6 +36,7 @@ const { Search, TextArea } = Input;
 const AssetConfig = (props) => {
 	const [isSupply, setIsApply] = useState(false);
 	const [showPresetAlert, setPresetAlert] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 	const [form] = Form.useForm();
 	const {
 		coinFormData = {},
@@ -110,6 +111,7 @@ const AssetConfig = (props) => {
 		if (body.decimals) {
 			body.decimals = parseInt(body.decimals, 10);
 		}
+		setSubmitting(true);
 		try {
 			if (logoFile) {
 				let formData = new FormData();
@@ -130,10 +132,12 @@ const AssetConfig = (props) => {
 			if (res) {
 				handleNext();
 			}
+			setSubmitting(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			setSubmitting(false);
 		}
 	};
 
@@ -589,7 +593,12 @@ const AssetConfig = (props) => {
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" htmlType="submit">
+					<Button
+						type="primary"
+						className="green-btn"
+						htmlType="submit"
+						disabled={submitting}
+					>
 						Next
 					</Button>
 				</div>
