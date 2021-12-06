@@ -8889,6 +8889,8 @@ foreignObject {
           .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .ant-select-selector,
           .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group .input-group__input {
             background-color: var(--base_secondary-navigation-bar) !important; }
+        .quick_trade-wrapper .trade-section .inner-content .py-2 .input-group__error-wrapper {
+          width: 310px; }
       .quick_trade-wrapper .trade-section .inner-content .small-text {
         font-family: "Open Sans";
         font-size: 11px;
@@ -8949,6 +8951,8 @@ foreignObject {
     font-size: 13px !important; }
     .layout-mobile .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group {
       width: 100% !important; }
+    .layout-mobile .quick_trade-wrapper .trade-section .inner-content .py-2 .input-group__error-wrapper {
+      width: 100% !important; }
   .layout-mobile .quick_trade-wrapper .trade-section .inner-content .btn-wrapper {
     align-items: center !important; }
   .layout-mobile .quick_trade-wrapper .trade-section .inner-content .footer-text,
@@ -8979,6 +8983,8 @@ foreignObject {
         height: 100%;
         margin: 0; }
         .quick_trade-wrapper .trade-section .inner-content .py-2 .ant-input-group {
+          width: 250px; }
+        .quick_trade-wrapper .trade-section .inner-content .py-2 .input-group__error-wrapper {
           width: 250px; }
         .quick_trade-wrapper .trade-section .inner-content .input-group__container .quick-trade-select-wrapper .pl-1 {
           font-size: 10px; } }
