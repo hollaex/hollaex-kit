@@ -5,17 +5,23 @@ import { Button, Divider, Collapse } from 'antd';
 import { KeyOutlined } from '@ant-design/icons';
 import { upload } from 'actions/operatorActions';
 import ImageUpload from './ImageUpload';
+import merge from 'lodash.merge';
 
 class UploadIcon extends Component {
-	constructor(props) {
-		super(props);
-		const { iconsEditData: editData } = this.props;
-		this.state = {
-			selectedFiles: {},
-			loading: false,
-			error: false,
-			editData,
-		};
+	state = {
+		selectedFiles: {},
+		loading: false,
+		error: false,
+		preview: {},
+	};
+
+	componentWillUnmount() {
+		const { preview } = this.state;
+		Object.entries(preview).forEach(([_, icons = {}]) => {
+			Object.entries(icons).forEach(([_, objectUrl]) => {
+				URL.revokeObjectURL(objectUrl);
+			});
+		});
 	}
 
 	onFileChange = ({ target: { name, files } }) => {
@@ -28,6 +34,13 @@ class UploadIcon extends Component {
 				[theme]: {
 					...prevState.selectedFiles[theme],
 					[iconKey]: files[0],
+				},
+			},
+			preview: {
+				...prevState.preview,
+				[theme]: {
+					...prevState.preview[theme],
+					[iconKey]: URL.createObjectURL(files[0]),
 				},
 			},
 		}));
@@ -89,15 +102,17 @@ class UploadIcon extends Component {
 		onSave(icons);
 	};
 
+	getIconPath = (theme, id) => {
+		const { iconsEditData: editData } = this.props;
+		const { preview } = this.state;
+		const icons = merge({}, editData, preview);
+		return icons[theme][id];
+	};
+
 	render() {
-		const {
-			isOpen,
-			onCloseDialog,
-			editId,
-			iconsEditData: editData,
-			themeOptions,
-		} = this.props;
+		const { isOpen, onCloseDialog, editId, themeOptions } = this.props;
 		const { loading, error } = this.state;
+		const { getIconPath } = this;
 
 		return (
 			<Modal
@@ -136,7 +151,7 @@ class UploadIcon extends Component {
 												key={`${theme}-${id}`}
 												iconKey={id}
 												themeKey={theme}
-												iconPath={editData[theme][id]}
+												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
 												onReset={this.onReset}
@@ -159,7 +174,7 @@ class UploadIcon extends Component {
 												key={`${theme}-${id}`}
 												iconKey={id}
 												themeKey={theme}
-												iconPath={editData[theme][id]}
+												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
 												onReset={this.onReset}
