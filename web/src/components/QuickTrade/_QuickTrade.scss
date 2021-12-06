@@ -55,7 +55,7 @@ $title-icon--height: 10rem;
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
-	.quick_trade-icon svg {
+	.quick_trade-icon {
 		width: 7rem;
 		height: 8rem;
 	}
@@ -490,7 +490,6 @@ $title-icon--height: 10rem;
 					.quick-trade-select-wrapper {
 						.pl-1 {
 							font-size: 10px;
-
 						}
 					}
 				}
