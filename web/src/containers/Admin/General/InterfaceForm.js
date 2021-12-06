@@ -11,6 +11,7 @@ const InterfaceForm = ({
 	initialValues = {},
 	handleSaveInterface,
 	isUpgrade,
+	buttonSubmitting,
 }) => {
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -195,7 +196,7 @@ const InterfaceForm = ({
 					</div>
 				) : null}
 				<div>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" htmlType="submit" disabled={buttonSubmitting}>
 						Save
 					</Button>
 				</div>

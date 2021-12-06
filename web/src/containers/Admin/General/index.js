@@ -19,7 +19,7 @@ import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
 import { clearFileInputById } from 'helpers/vanilla';
-import {COUNTRIES_OPTIONS} from '../../../utils/countries'
+import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 
 import './index.css';
 import { handleUpgrade } from 'utils/utils';
@@ -32,7 +32,7 @@ const NativeCurrencyForm = AdminHocForm('NativeCurrencyForm');
 const HelpDeskForm = AdminHocForm('HelpDeskForm');
 const APIDocLinkForm = AdminHocForm('APIDocLinkForm');
 const CaptchaForm = AdminHocForm('CaptchaForm');
-const CountryForm = AdminHocForm('CountryForm')
+const CountryForm = AdminHocForm('CountryForm');
 
 class General extends Component {
 	constructor() {
@@ -44,7 +44,7 @@ class General extends Component {
 			initialNameValues: {},
 			initialLanguageValues: {},
 			initialThemeValues: {},
-			initialCountryValues:{},
+			initialCountryValues: {},
 			initialEmailValues: {},
 			initialLinkValues: {},
 			initialEmailVerificationValues: {},
@@ -54,6 +54,7 @@ class General extends Component {
 			isSignUpActive: true,
 			loading: false,
 			loadingButton: false,
+			buttonSubmitting: false,
 		};
 	}
 
@@ -86,7 +87,7 @@ class General extends Component {
 		let initialNameValues = { ...this.state.initialNameValues };
 		let initialLanguageValues = { ...this.state.initialLanguageValues };
 		let initialThemeValues = { ...this.state.initialThemeValues };
-		let initialCountryValues={...this.state.initialCountryValues}
+		let initialCountryValues = { ...this.state.initialCountryValues };
 		let initialEmailVerificationValues = {
 			...this.state.initialEmailVerificationValues,
 		};
@@ -109,7 +110,9 @@ class General extends Component {
 		initialThemeValues = { ...initialThemeValues, theme: defaults.theme };
 		initialCountryValues = {
 			...initialCountryValues,
-			country: !defaults.country ? COUNTRIES_OPTIONS[0].value : defaults.country
+			country: !defaults.country
+				? COUNTRIES_OPTIONS[0].value
+				: defaults.country,
 		};
 		initialEmailVerificationValues = {
 			...initialEmailVerificationValues,
@@ -232,15 +235,18 @@ class General extends Component {
 	};
 
 	handleSubmitGeneral = (formProps) => {
+		this.setState({ buttonSubmitting: true });
 		updateConstants(formProps)
 			.then((res) => {
 				this.setState({ constants: res });
 				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
+				this.setState({ buttonSubmitting: false });
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				this.setState({ buttonSubmitting: false });
 			});
 	};
 
@@ -475,6 +481,7 @@ class General extends Component {
 			isSignUpActive,
 			showDisableSignUpsConfirmation,
 			loadingButton,
+			buttonSubmitting,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions } = this.props;
@@ -498,6 +505,7 @@ class General extends Component {
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_1}
+							buttonSubmitting={buttonSubmitting}
 						/>
 					</div>
 					<div className="divider"></div>
@@ -509,6 +517,7 @@ class General extends Component {
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.countrySection}
+							buttonSubmitting={buttonSubmitting}
 						/>
 					</div>
 					<div className="divider"></div>
@@ -540,6 +549,7 @@ class General extends Component {
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_2}
+							buttonSubmitting={buttonSubmitting}
 						/>
 					</div>
 					<div className="divider" />
@@ -569,6 +579,7 @@ class General extends Component {
 							buttonText={'Save'}
 							buttonClass="green-btn minimal-btn"
 							fields={generalFields.section_3}
+							buttonSubmitting={buttonSubmitting}
 						/>
 					</div>
 					<div className="divider"></div>
@@ -587,6 +598,7 @@ class General extends Component {
 								buttonText={'Save'}
 								buttonClass="green-btn minimal-btn"
 								fields={generalFields.section_4}
+								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
 					</div>
@@ -819,6 +831,7 @@ class General extends Component {
 						<EmailVerificationForm
 							initialValues={initialEmailVerificationValues}
 							handleSaveEmailVerification={this.handleSubmitEmailVerification}
+							buttonSubmitting={buttonSubmitting}
 						/>
 
 						<DisableSignupsConfirmation
@@ -827,6 +840,7 @@ class General extends Component {
 								this.setState({ showDisableSignUpsConfirmation: false })
 							}
 							onConfirm={this.disableSignUpsConfirmation}
+							buttonSubmitting={buttonSubmitting}
 						/>
 
 						<div className="sub-title mt-5">Onboarding background image</div>
@@ -886,6 +900,7 @@ class General extends Component {
 							<EmailSettingsForm
 								initialValues={initialEmailValues}
 								handleSubmitSettings={this.submitSettings}
+								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
 					</div>
@@ -908,6 +923,7 @@ class General extends Component {
 						handleSubmitFooterText={this.handleSubmitTOSlinks}
 						handleSubmitReferralBadge={this.handleSubmitReferralBadge}
 						isUpgrade={isUpgrade}
+						buttonSubmitting={buttonSubmitting}
 					/>
 					<div className="divider"></div>
 				</div>
@@ -916,6 +932,7 @@ class General extends Component {
 						links={kit.links}
 						initialValues={initialLinkValues}
 						handleSubmitFooter={this.submitSettings}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				</div>
 				<div className="divider"></div>
@@ -939,6 +956,7 @@ class General extends Component {
 						buttonText="Save"
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.handleSubmitHelpDesk}
+						buttonSubmitting={buttonSubmitting}
 					/>
 					<div className="sub-title mt-4 pt-3">API documentation link</div>
 					<div className="description mb-4">
@@ -953,6 +971,7 @@ class General extends Component {
 						buttonText="Save"
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.handleSubmitAPIDocLink}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				</div>
 				<div className="divider"></div>
@@ -960,6 +979,7 @@ class General extends Component {
 					initialValues={kit.features}
 					handleSaveInterface={this.handleSaveInterface}
 					isUpgrade={isUpgrade}
+					buttonSubmitting={buttonSubmitting}
 				/>
 				<div className="divider"></div>
 				<div className="general-wrapper mb-4 pb-4">
@@ -973,6 +993,7 @@ class General extends Component {
 						buttonText="Save"
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.handleSubmitCaptcha}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				</div>
 			</div>

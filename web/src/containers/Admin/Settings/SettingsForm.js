@@ -53,7 +53,11 @@ GeneralSettingsForm.defaultProps = {
 	},
 };
 
-export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
+export const EmailSettingsForm = ({
+	initialValues,
+	handleSubmitSettings,
+	buttonSubmitting,
+}) => {
 	const fields = generateAdminSettings('email');
 	return (
 		<div className="email-config-form mb-4">
@@ -65,6 +69,7 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
 				}
 				buttonText="Save"
 				fields={fields.email_configuration}
+				buttonSubmitting={buttonSubmitting}
 			/>
 			<div className="divider"></div>
 			<div className="mb-4">
@@ -81,6 +86,7 @@ export const EmailSettingsForm = ({ initialValues, handleSubmitSettings }) => {
 					}
 					buttonText="Save"
 					fields={fields.email_distribution_list}
+					buttonSubmitting={buttonSubmitting}
 				/>
 			</div>
 		</div>

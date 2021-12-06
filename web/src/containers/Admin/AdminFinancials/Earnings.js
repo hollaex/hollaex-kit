@@ -83,6 +83,7 @@ class Earnings extends Component {
 			isOpen: false,
 			end_date: moment().format('YYYY-MM-DD'),
 			start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+			buttonSubmitting: false,
 		};
 	}
 
@@ -94,6 +95,7 @@ class Earnings extends Component {
 		const { start_date, end_date } = this.state;
 		this.setState({
 			error: '',
+			buttonSubmitting: true,
 		});
 		return getFees({ start_date, end_date })
 			.then((response) => {
@@ -106,11 +108,13 @@ class Earnings extends Component {
 				if (response) {
 					this.handleData(response);
 				}
+				this.setState({ buttonSubmitting: false });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					error: message,
+					buttonSubmitting: false,
 				});
 			});
 	};
@@ -157,7 +161,7 @@ class Earnings extends Component {
 
 	render() {
 		const { info } = this.props;
-		const { earningsData, isOpen } = this.state;
+		const { earningsData, isOpen, buttonSubmitting } = this.state;
 
 		return (
 			<div className="admin-earnings-container">
@@ -208,6 +212,7 @@ class Earnings extends Component {
 								selectOptions={filterOptions}
 								onChange={this.SetFilterDates}
 								onClickFilter={this.requestFees}
+								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
 						<div>

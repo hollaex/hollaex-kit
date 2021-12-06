@@ -51,6 +51,7 @@ const Preview = ({
 	onTypeChange,
 	handleSave,
 	allIcons = {},
+	buttonSubmitting,
 	...rest
 }) => {
 	return (
@@ -142,7 +143,11 @@ const Preview = ({
 					Back
 				</Button>
 				<div className="mx-2"></div>
-				<Button className="green-btn" onClick={handleSave}>
+				<Button
+					className="green-btn"
+					onClick={handleSave}
+					disabled={buttonSubmitting}
+				>
 					Confirm
 				</Button>
 			</div>
@@ -162,6 +167,7 @@ class NewTierForm extends Component {
 			editorState: EditorState.createEmpty(),
 			loading: false,
 			pendingPublishIcons: {},
+			buttonSubmitting: false,
 		};
 	}
 
@@ -317,12 +323,13 @@ class NewTierForm extends Component {
 
 		const icons = merge({}, iconsOverwrites, published);
 		const configs = { icons };
-
+		this.setState({ buttonSubmitting: true });
 		publish(configs).then(() => {
 			localStorage.setItem('icons', JSON.stringify(icons));
 			this.setState({ pendingPublishIcons: {} });
 			this.props.handleNext(this.state.tierData);
 			this.props.onTypeChange('preview');
+			this.setState({ buttonSubmitting: false });
 		});
 	};
 
@@ -501,6 +508,7 @@ class NewTierForm extends Component {
 					type="primary"
 					className="green-btn my-2"
 					onClick={() => this.saveForm(`LEVEL_ACCOUNT_ICON_${tierData.id}`)}
+					disabled={this.state.buttonSubmitting}
 				>
 					Next
 				</Button>

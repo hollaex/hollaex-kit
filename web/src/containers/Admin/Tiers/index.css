@@ -120,3 +120,10 @@
 .admin-tiers-wrapper .ant-table-container {
 	overflow-x: auto;
 }
+
+.admin-tiers-wrapper .ant-select-disabled.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+.admin-tiers-wrapper .ant-input[disabled] {
+    opacity: 0.5;
+	color: #c4c4c4;
+	background-color: var(--admin_panel_input);
+}
