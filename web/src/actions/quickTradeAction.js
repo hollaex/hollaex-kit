@@ -59,6 +59,16 @@ export const setPriceEssentials = (priceEssentials) => (dispatch, getState) => {
 				estimatedPrice,
 			};
 		}
+	} else if (
+		!priceEssentials.size &&
+		(priceEssentials.sourceAmount !== undefined ||
+			priceEssentials.targetAmount !== undefined)
+	) {
+		priceValues = {
+			...priceValues,
+			sourceAmount: 0,
+			targetAmount: 0,
+		};
 	}
 
 	dispatch({

@@ -177,18 +177,19 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
 const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
 	orders.reduce(
 		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
-			if (math.larger(orderSize, accumulatedSize)) {
+			if (math.larger(orderSize, accumulatedPrice)) {
 				let currentTotal = math.multiply(size, price);
-				const remainingSize = math.subtract(orderSize, accumulatedSize);
+				const remainingSize = math.subtract(orderSize, accumulatedPrice);
 				if (math.largerEq(remainingSize, currentTotal)) {
 					return [
-						math.sum(accumulatedPrice, math.multiply(size, price)),
-						math.sum(accumulatedSize, currentTotal),
+						math.sum(accumulatedPrice, currentTotal),
+						math.sum(accumulatedSize, size),
 					];
 				} else {
+					let remainingBaseSize = math.divide(remainingSize, price);
 					return [
-						math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
-						math.sum(accumulatedSize, remainingSize),
+						math.sum(accumulatedPrice, math.multiply(remainingBaseSize, price)),
+						math.sum(accumulatedSize, remainingBaseSize),
 					];
 				}
 			} else {
