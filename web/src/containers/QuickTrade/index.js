@@ -278,7 +278,6 @@ class QuickTradeContainer extends PureComponent {
 						};
 						delete tempData.data;
 						this.orderCache = { ...this.orderCache, ...tempData };
-						console.log('this.orderCache', this.orderCache);
 						this.storeOrderData(this.orderCache);
 						break;
 
