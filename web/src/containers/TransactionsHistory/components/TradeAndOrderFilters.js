@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
-import { Select, Form, Row, DatePicker, Button, Radio } from 'antd';
+import React from 'react';
+import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
 import STRINGS from '../../../config/localizedStrings';
@@ -10,21 +9,23 @@ const { RangePicker } = DatePicker;
 
 const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
-	const [isSearchShining, setIsSearchShining] = useState(false);
 
-	const onFinish = (values) => {
-		onSearch(values);
-		setIsSearchShining(false);
-	};
-
-	const onValuesChange = ({ size }, _) => {
-		if (size) {
-			const {
-				[size]: { range },
-			} = dateFilters;
-			form.setFieldsValue({ range });
+	const onValuesChange = (values) => {
+		if (values) {
+			if (values.size) {
+				const {
+					[values.size]: { range },
+				} = dateFilters;
+				form.setFieldsValue({ range });
+				values.range = range;
+				onSearch(values);
+			} else if (!values.range) {
+				values.range = [];
+				onSearch(values);
+			} else if (values.range && values.range[0] && values.range[1]) {
+				onSearch(values);
+			}
 		}
-		setIsSearchShining(true);
 	};
 
 	return (
@@ -32,7 +33,6 @@ const Filters = ({ pairs, onSearch, formName }) => {
 			form={form}
 			name={`${formName}-filters`}
 			className="ant-advanced-search-form"
-			onFinish={onFinish}
 			onValuesChange={onValuesChange}
 			initialValues={{
 				symbol: null,
@@ -69,7 +69,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 				</Form.Item>
 				<Form.Item name="size">
 					<Radio.Group buttonStyle="outline" size="small">
-						{Object.entries(dateFilters()).map(([key, { name }]) => (
+						{Object.entries(dateFilters).map(([key, { name }]) => (
 							<Radio.Button key={key} value={key}>
 								{name}
 							</Radio.Button>
@@ -83,16 +83,6 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						suffixIcon={false}
 						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
 					/>
-				</Form.Item>
-				<Form.Item>
-					<Button
-						type="ghost"
-						htmlType="submit"
-						size="small"
-						className={classnames({ active_search_button: isSearchShining })}
-					>
-						{STRINGS['SEARCH_TXT']}
-					</Button>
 				</Form.Item>
 			</Row>
 		</Form>

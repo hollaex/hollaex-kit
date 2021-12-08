@@ -462,6 +462,7 @@ export default {
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
 					LIST_ITEM_1: 'Clear high quality color image', // updated
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
@@ -469,6 +470,8 @@ export default {
 						'Only a valid passport is acceptedt; high quality photos or scanned images of these documents are acceptable:',
 					WARNING_3:
 						'Please do not submit the passport as your proof of residence.',
+					VIOLATION_ERROR:
+						'Total size of all your uploaded documents exceeds the upload limit of {0}mb. Please upload smaller files to proceed.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -1017,7 +1020,7 @@ export default {
 	QUICK_TRADE_QUOTE_INVALID: 'Invalid quote',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'Error calculating the quote',
 	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'The order with the current size can not be filled',
+		'The slippage for the amount selected is too high in the market',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
 	QUICK_TRADE_SUCCESS: 'Success!',
