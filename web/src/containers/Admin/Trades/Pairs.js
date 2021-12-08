@@ -167,6 +167,7 @@ class Pairs extends Component {
 			isPresetConfirm: false,
 			coins: [],
 			buttonSubmitting: false,
+			saveLoading: false,
 		};
 	}
 
@@ -343,6 +344,7 @@ class Pairs extends Component {
 		isApply = false,
 		isPresetAsset = false
 	) => {
+		this.setState({ saveLoading: true });
 		if (isEdit) {
 			try {
 				delete formData.pair_base_data;
@@ -361,10 +363,12 @@ class Pairs extends Component {
 				if (this.state.isConfigure) {
 					this.setState({ isPreview: true });
 				}
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		} else {
 			const { pairs = [], exchange = {} } = this.props;
@@ -396,10 +400,12 @@ class Pairs extends Component {
 				// }
 				this.handleClose();
 				message.success('Pairs created successfully');
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		}
 	};
@@ -491,6 +497,7 @@ class Pairs extends Component {
 								type="primary"
 								className="configure-btn green-btn"
 								onClick={this.handleApplyConfirmation}
+								loading={this.state.saveLoading}
 							>
 								Save
 							</Button>

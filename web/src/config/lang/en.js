@@ -1020,7 +1020,7 @@ export default {
 	QUICK_TRADE_QUOTE_INVALID: 'Invalid quote',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'Error calculating the quote',
 	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'The order with the current size can not be filled',
+		'The slippage for the amount selected is too high in the market',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
 	QUICK_TRADE_SUCCESS: 'Success!',

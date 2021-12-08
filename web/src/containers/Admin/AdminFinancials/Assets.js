@@ -197,6 +197,7 @@ class Assets extends Component {
 			exchangeBalance: {},
 			formData: {},
 			saveLoading: false,
+			submitting: false
 		};
 	}
 
@@ -497,6 +498,7 @@ class Assets extends Component {
 
 	handleDelete = async (symbol) => {
 		const { coins, exchange } = this.state;
+		this.setState({ submitting: true });
 		try {
 			let formProps = {
 				id: exchange.id,
@@ -512,12 +514,13 @@ class Assets extends Component {
 			await this.getMyExchange();
 			await this.getCoins();
 			message.success('Asset removed successfully');
-			this.setState({ isConfigure: false, isPreview: false });
+			this.setState({ isConfigure: false, isPreview: false, submitting: false });
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			this.setState({ submitting: false });
 		}
 	};
 
@@ -625,6 +628,7 @@ class Assets extends Component {
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleDelete={this.handleDelete}
+							submitting={this.state.submitting}
 						/>
 					</div>
 					<div>
@@ -653,6 +657,7 @@ class Assets extends Component {
 							setConfigEdit={this.handleConfigureEdit}
 							exchangeUsers={this.state.exchangeUsers}
 							userEmails={this.state.userEmails}
+							submitting={this.state.submitting}
 						/>
 					</div>
 					{this.state.selectedAsset.created_by === _get(constants, 'info.user_id') ? (

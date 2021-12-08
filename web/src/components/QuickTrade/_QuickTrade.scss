@@ -355,6 +355,9 @@ $title-icon--height: 10rem;
 						background-color: $app-light-background !important;
 					}
 				}
+				.input-group__error-wrapper {
+					width: 310px;
+				}
 			}
 			.small-text {
 				font-family: $en--font-family;
@@ -445,6 +448,9 @@ $title-icon--height: 10rem;
 				.ant-input-group {
 					width: 100% !important;
 				}
+				.input-group__error-wrapper {
+					width: 100% !important;
+				}
 			}
 			.btn-wrapper {
 				align-items: center !important;
@@ -484,6 +490,9 @@ $title-icon--height: 10rem;
 				height: 100%;
 				margin: 0;
 				.py-2 .ant-input-group {
+					width: 250px;
+				}
+				.py-2 .input-group__error-wrapper {
 					width: 250px;
 				}
 				.input-group__container {
