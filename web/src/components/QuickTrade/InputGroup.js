@@ -38,7 +38,9 @@ class InputGroup extends React.PureComponent {
 
 		if (isNumeric(newValue) || isFloat(newValue)) {
 			const value = math.round(newValue, decimalPoint);
-			if (value) {
+			if (isFloat(newValue) && `${newValue}`.endsWith('0')) {
+				onInputChange(newValue);
+			} else if (value) {
 				onInputChange(value);
 			} else {
 				onInputChange(0);
@@ -149,7 +151,7 @@ class InputGroup extends React.PureComponent {
 							placeholder={STRINGS['AMOUNT']}
 							style={isOpen ? { display: 'none' } : { width: '67%' }}
 							className="input-group__input"
-							value={inputValue}
+							value={`${inputValue}`}
 							onChange={this.onChangeEvent}
 							bordered={false}
 							step={limits.MIN}
