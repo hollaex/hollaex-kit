@@ -60,12 +60,12 @@ class InputGroup extends React.PureComponent {
 		let error = '';
 		if (!value) {
 			error = '';
+		} else if (minValue(limits.MIN)(value) || maxValue(limits.MAX)(value)) {
+			error = minValue(limits.MIN)(value) || maxValue(limits.MAX)(value);
 		} else if (availableBalance) {
 			error = maxValue(availableBalance)(value);
 		} else if (!estimatedPrice) {
 			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
-		} else {
-			error = minValue(limits.MIN)(value) || maxValue(limits.MAX)(value);
 		}
 		forwardError(error);
 		return error;

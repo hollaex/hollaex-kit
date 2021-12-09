@@ -444,6 +444,7 @@ class QuickTradeContainer extends PureComponent {
 			sourceAmount: undefined,
 		});
 		this.setState({
+			side,
 			tickerClose,
 			selectedTarget,
 			isSelectChange: true,
@@ -481,6 +482,7 @@ class QuickTradeContainer extends PureComponent {
 			sourceAmount: undefined,
 		});
 		this.setState({
+			side,
 			tickerClose,
 			// pair,
 			selectedSource,
