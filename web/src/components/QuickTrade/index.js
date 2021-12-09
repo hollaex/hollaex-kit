@@ -23,6 +23,8 @@ import InputGroup from './InputGroup';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 
+const PAIR2_STATIC_SIZE = 0.000001;
+
 class QuickTrade extends Component {
 	constructor(props) {
 		super(props);
@@ -381,7 +383,7 @@ class QuickTrade extends Component {
 								forwardError={forwardSourceError}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
-								decimal={increment_size}
+								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_size}
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
 							/>
@@ -395,7 +397,7 @@ class QuickTrade extends Component {
 								onInputChange={onChangeTargetAmount}
 								forwardError={forwardTargetError}
 								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={increment_size}
+								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
 							/>
 							<div className="small-text">
