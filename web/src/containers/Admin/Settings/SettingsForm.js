@@ -60,7 +60,7 @@ export const EmailSettingsForm = ({
 }) => {
 	const fields = generateAdminSettings('email');
 	return (
-		<div className="email-config-form mb-4">
+		<div className="email-config-form mb-5">
 			<h2>Email Configuration</h2>
 			<EmailForm
 				initialValues={initialValues.configuration}
