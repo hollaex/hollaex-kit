@@ -20,7 +20,7 @@ async function SignUp(){
 	let User = process.env.NEW_USER;
 	let passWord = process.env.PASSWORD;
 	let signUpPage = process.env.SIGN_UP_PAGE;
-	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
 	let step = util.getStep();
 	util.logHolla(logPath)
@@ -28,7 +28,7 @@ async function SignUp(){
 	console.log(newUser);
 
 	describe('NewUserRequest', function() {
-		this.timeout(100000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -39,13 +39,13 @@ async function SignUp(){
 		beforeEach(async function() {
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
-			driver.manage().window().maximize();
+			await driver.manage().window().maximize();
 			let step = util.getStep()
 		});
 
 		afterEach(async function() {
 			util.setStep(step);
-		//	await driver.quit();
+			await driver.quit();
 		});
 
 		it('FillUpNewUserRequest', async function() {
@@ -54,13 +54,11 @@ async function SignUp(){
 		
 			console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
-			{	const title = await driver.getTitle();
-				console.log(title);
-				expect(title).to.equal(title);
-			}
-     
+			//driver.manage().window().maximize();
+
+			
 			console.log(step++,'  | type | name=email |',newUser);
-			await driver.wait(until.elementLocated(By.name('email')), 5000);
+			await driver.wait(until.elementLocated(By.name('email')), 10000);
 			await driver.findElement(By.name('email')).clear();
 			await driver.findElement(By.name('email')).sendKeys(newUser);
      
@@ -77,11 +75,13 @@ async function SignUp(){
 			console.log(step++,'  | click | name=terms |'); 
 			await driver.findElement(By.name('terms')).click();
 			await sleep(10000);
+			
 		
 			console.log(step++,'  | click | css=.holla-button |'); 
-			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
+			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 10000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await driver.executeScript('window.scrollTo(0,0)');
+			await sleep(2000);
 
 			console.log('This is the EndOfTest');
 		});
@@ -135,7 +135,8 @@ async function SignUp(){
 		
 			console.log(step++,'  | selectFrame | relative=parent | ');
 			await driver.switchTo().defaultContent();
-		
+			await sleep(5000);
+			
 			console.log(step++,'  | click | css=.icon_title-wrapper | ');
 			await driver.findElement(By.css('.icon_title-wrapper')).click();
 		
