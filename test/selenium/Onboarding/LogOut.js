@@ -97,8 +97,8 @@ async function LogOut(){
            await driver.findElement(By.css(".app-bar-account-content > div:nth-child(2)")).click();
 		   await sleep(5000);
 
-		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3)")).click()
+		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 
 			console.log(step++,' | assertText | css=.icon_title-text | Login');
@@ -149,6 +149,6 @@ async function LogOut(){
 }
 describe('Main Test', function () {
  
-	//LogOut();
+	// LogOut();
 })
 module.exports.LogOut = LogOut;

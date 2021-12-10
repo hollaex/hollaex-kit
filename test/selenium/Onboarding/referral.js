@@ -55,6 +55,7 @@ async function Referral(){
 		
 			console.log(step++,'  | open | ',logInPage);
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await sleep(10000);
 
 			console.log(step++,'  | type | name=email | USER@bitholla.com')
@@ -94,12 +95,13 @@ async function Referral(){
 			// console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
 			// await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
-			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3)")).click()
+			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 			
 	        console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,'  | type | name=email |',newUser);
@@ -135,6 +137,7 @@ async function Referral(){
 			//	util.adminVerifiesNewUser(driver,userName,apassWord,newUser)
 			console.log(step++,'  | open | ',website);
 			await driver.get(website+"login");
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,'  | type | name=email | USER@bitholla.com ')

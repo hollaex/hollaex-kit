@@ -44,6 +44,7 @@ async function Communicator(){
 		
 			console.log(step++,'  | open | /login |');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await sleep(5000);
 		
 

@@ -43,6 +43,7 @@ async function Supervisor(){
 		
 			console.log(step++,'  | open | /login | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await sleep(5000);
 		
 			console.log(step++,'  | type | name=email |'+supervisor);
