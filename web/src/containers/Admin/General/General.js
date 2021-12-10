@@ -614,10 +614,11 @@ class GeneralContent extends Component {
                             onChange={this.handleSearch}
                         />
                         <div className="location-option-wrapper mt-3 mb-5" >
-                            {this.state.countryOptions.map((data) => {
+                            {this.state.countryOptions.map((data, index) => {
                                 return (
                                     <div
                                         className="location-option"
+                                        key={index}
                                         onClick={() => this.selectedCountryOption(data)}
                                     >
                                         <div className={this.state.selectedCountry?.isFocus && this.state.selectedCountry?.label === data.label ? "location-option-active" : ""}>
@@ -1216,10 +1217,10 @@ class GeneralContent extends Component {
                             </div>
                             <div className="geo-display">
                                 {_get(constants, 'kit.black_list_countries', []).length ?
-                                    COUNTRIES_OPTIONS.map(data => {
+                                    COUNTRIES_OPTIONS.map((data, index) => {
                                         return _get(constants, 'kit.black_list_countries', []).map(item => {
                                             if (item === data.value) {
-                                                return <div className="d-flex location-data">
+                                                return <div className="d-flex location-data" key={index}>
                                                     <div>{data.label} (All IPs)</div>
                                                     <div>
                                                         (<span
@@ -1272,7 +1273,7 @@ class GeneralContent extends Component {
                             />
                         </div>
                         <div className="divider"></div>
-                        <div className="general-wrapper">
+                        <div className="general-wrapper mb-5">
                             <div className="sub-title">Operator roles</div>
                             <div className="description">
                                 <span>Invite other exchange operators to help secure your exchange in the </span><Link to="/admin/roles">roles page</Link>.
