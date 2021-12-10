@@ -59,6 +59,7 @@ async function Verification(){
 			console.log(' Step # | action | target | value');
 			console.log(step++,' | open | '+logInPage+'| ')
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
     
 			console.log(step++,'  | type | name=email |', userName);
@@ -87,6 +88,7 @@ async function Verification(){
 	
 			console.log(step++,'  | open | /verification | ')
 			await driver.get(website+'verification');
+			driver.manage().window().maximize();
 			await sleep(5000);
 		
 			console.log(step++,' | click | css=.tab_item:nth-child(1) .custom_title-svg #Layer_1 | ')

@@ -52,6 +52,7 @@ async function LogIn () {
 			console.log(' Test name	: BobLogIn');
 			console.log(logInPage);
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
 			const title = await driver.getTitle();
 			console.log(title);

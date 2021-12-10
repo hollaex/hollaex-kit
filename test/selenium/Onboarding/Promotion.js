@@ -163,8 +163,8 @@ async function Promotion(){
 			console.log(step++,'  | click | xpath=//*[@id="trade-nav-container"]/div[3]/div[2]) | ');
 			await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).click();
 		
-			console.log(step++,'   | click | xpath=//*[@id="tab-account-menu"]/div[9]/div[3] | ');
-			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[9]/div[3]')).click();
+			console.log(step++,'   | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
 			await sleep(5000);
 
 			console.log(step++,'  | click | name=email | ');

@@ -36,7 +36,7 @@ async function TradeWithStop(){
 			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 		
-			await driver.manage().window().maximize();
+			driver.manage().window().maximize();
 			await util.kitLogIn(driver, userName,passWord);
 			await sleep(5000);
 		
