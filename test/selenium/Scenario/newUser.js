@@ -17,7 +17,7 @@ describe('Main Test', function () {
 	})
 	describe('New user', function () {
 		it('Given a ReCAPTCHA works', async function() {
-			ReCAPTCHA.ReCAPTCHA();
+			//ReCAPTCHA.ReCAPTCHA();
 		})
 		it('Given a user SignUp', async function() {
 			SignUp.SignUp();
@@ -65,23 +65,23 @@ describe('Main Test', function () {
 			})
 		})				
 	
-		describe('Trading', function () {
-			it('َGiven a trade can', async function() {
-				Trade.Trade();
-			})
-			it('And trade with the stop option', async function() {
-				TradeWithStop.TradeWithStop();
-			})
-			it('Then can do smart trade', async function() {
-				SmartTrade.SmartTrade();
-			})
-		})	
-		describe('Wallet', function () {
-			it('َGiven a trader can creat wallet', async function() {
-				Wallet.Wallet();
-			})
-			it('Then can deposit and withdraw', async function() {
-				TransactionFlow();
-			})
-		})					
+		// describe('Trading', function () {
+		// 	it('َGiven a trade can', async function() {
+		// 		Trade.Trade();
+		// 	})
+		// 	it('And trade with the stop option', async function() {
+		// 		TradeWithStop.TradeWithStop();
+		// 	})
+		// 	it('Then can do smart trade', async function() {
+		// 		SmartTrade.SmartTrade();
+		// 	})
+		// })	
+		// describe('Wallet', function () {
+		// 	it('َGiven a trader can creat wallet', async function() {
+		// 		Wallet.Wallet();
+		// 	})
+		// 	it('Then can deposit and withdraw', async function() {
+		// 		TransactionFlow();
+		// 	})
+		// })					
 })

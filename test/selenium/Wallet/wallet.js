@@ -49,6 +49,7 @@ async function Wallet(){
     
 			console.log(step++,' | open | wallet |');
 			await driver.get(webSite+'wallet');
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,' | click | name=search-assets | ');
@@ -98,6 +99,7 @@ async function Wallet(){
 		it('TRX', async function() {
 			console.log(step++,' | open | wallet |');
 			await driver.get(webSite+'wallet');
+			driver.manage().window().maximize();
 			await sleep(5000);
 				
 			console.log(step++,' | click | name=search-assets | ');

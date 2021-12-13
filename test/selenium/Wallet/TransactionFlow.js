@@ -57,6 +57,7 @@ async function TransactionFlow(){
 			console.log(' Step # | action | target | value');
 			console.log(step++,' | open |'+ logInPage + '| ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
     
 			console.log(step++,' | type | name=email | bob@gmail.com');
@@ -251,6 +252,7 @@ async function TransactionFlow(){
 		
 			console.log(step++,' | open | ' + logInPage + '| ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
 		   
 			console.log(step++,' | type | name=email | bob@gmail.com');

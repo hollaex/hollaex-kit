@@ -47,6 +47,7 @@ async function AccountLevel () {
 		
 			console.log(step++,' | open | /login | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await util.takeHollashot(driver,reportPath,step);
 			await sleep(5000);
 		
@@ -150,6 +151,7 @@ async function AccountLevel () {
 		
 			console.log(step++,' | open | '+logInPage+' | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
 			const title = await driver.getTitle();
 			console.log(title);
@@ -188,4 +190,4 @@ describe('Main Test', function () {
  
 	//AccountLevel();
 })
-module.exports = AccountLevel;
+module.exports.AccountLevel = AccountLevel;

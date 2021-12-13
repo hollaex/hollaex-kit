@@ -399,6 +399,7 @@ class FooterConfig extends Component {
 					customFields={true}
 					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
+					buttonSubmitting={this.props.buttonSubmitting}
 				/>
 				{/* <p className="bottom-description">
 					Add/change footer description and small text{' '}
