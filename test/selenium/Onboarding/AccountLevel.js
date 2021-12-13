@@ -19,6 +19,7 @@ async function AccountLevel () {
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -33,7 +34,7 @@ async function AccountLevel () {
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			driver.manage().window().maximize();
 			vars = {};
 		});

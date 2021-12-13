@@ -47,7 +47,7 @@ describe('Main Test', function () {
 				// TradeWithStop.TradeWithStop()
 				// /*Wallet*/
 				//  TransactionFlow()
-				Wallet.Wallet();
+				//Wallet.Wallet();
 				
 				
 		})

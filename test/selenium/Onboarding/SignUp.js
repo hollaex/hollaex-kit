@@ -22,6 +22,7 @@ async function SignUp(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	const newUser = util.defineNewUser(User,4) ;
@@ -37,7 +38,7 @@ async function SignUp(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			await driver.manage().window().maximize();
 			let step = util.getStep()

@@ -17,6 +17,7 @@ async function Support(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let webSite = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -30,7 +31,7 @@ async function Support(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			driver.manage().window().maximize();
 			vars = {};
 		});

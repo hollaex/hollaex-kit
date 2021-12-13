@@ -23,8 +23,9 @@ async function ResetPassword(){
 	let passWord = process.env.PASSWORD;
 	let newPassWord = process.env.NEWPASS
 	let webSite = process.env.WEBSITE;
-	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -43,7 +44,7 @@ async function ResetPassword(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

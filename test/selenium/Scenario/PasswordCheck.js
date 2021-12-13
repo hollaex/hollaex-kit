@@ -25,7 +25,7 @@ describe('Main Test', function () {
 			
 			let userName =  Utils.getNewUser();
 			let newPassWord = process.env.NEWPASS;
-			let driver =  new Builder().forBrowser('chrome').build();
+			let driver =  new Builder().forBrowser('browser').build();
 			driver.manage().window().maximize();
 	
 			Utils.kitLogIn(driver,userName,newPassWord);

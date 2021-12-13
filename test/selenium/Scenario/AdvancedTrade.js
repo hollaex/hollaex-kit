@@ -21,6 +21,7 @@ let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;
 let password = process.env.PASSWORD;
 let website = process.env.WEBSITE;
+let browser = process.env.BROWSER;
 describe('g', function() {
 	this.timeout(300000)
 	let driver
@@ -37,7 +38,7 @@ describe('g', function() {
 		return newObject 
 	};
 	beforeEach(async function() {
-		driver = await new Builder().forBrowser('chrome').build()
+		driver = await new Builder().forBrowser('browser').build()
 		vars = {}
 	})
 	afterEach(async function() {

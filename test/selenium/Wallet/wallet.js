@@ -24,6 +24,7 @@ async function Wallet(){
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let webSite = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep()
 	describe('Wallet', function() {
 		this.timeout(300000);
@@ -35,7 +36,7 @@ async function Wallet(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

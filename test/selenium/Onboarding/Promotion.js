@@ -23,6 +23,7 @@ async function Promotion(){
 	let website = process.env.WEBSITE;
 	let username = process.env.LEVEL_NAME;
 	let password = process.env.PASSWORD;
+	let browser = process.env.BROWSER;
 	const timestamp = require('time-stamp');
 	let step = util.getStep();
 	util.logHolla(logPath)
@@ -46,7 +47,7 @@ async function Promotion(){
 			});
 		} 
 				beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

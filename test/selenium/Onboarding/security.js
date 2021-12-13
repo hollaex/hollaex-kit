@@ -23,6 +23,7 @@ async function Security(){
 	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let apiUrl = process.env.API_WEBSITE;
 	let emailPassword = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	describe('OTP', function() {
@@ -35,7 +36,7 @@ async function Security(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

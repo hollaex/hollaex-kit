@@ -24,6 +24,7 @@ async function LogOut(){
 	let emailPage = process.env.EMAIL_PAGE;
 	let emailPass =process.env.EMAIL_PASS ;
 	let emailAdmin = process.env.EMAIL_ADMIN_USERNAME ;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	
@@ -42,7 +43,7 @@ async function LogOut(){
 		} 
 		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

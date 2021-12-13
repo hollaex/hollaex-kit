@@ -24,8 +24,9 @@ async function ResendVerificationEmail(){
 	let passWord = process.env.PASSWORD;
 	let webSite = process.env.WEBSITE;
 	let signUpPage = process.env.SIGN_UP_PAGE;
-	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	if (process.env.NODE_ENV == 'test') {
@@ -52,7 +53,7 @@ async function ResendVerificationEmail(){
 			throw new Error('New window did not appear before timeout');
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser('browser').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
