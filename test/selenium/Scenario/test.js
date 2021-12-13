@@ -17,12 +17,12 @@ describe('Main Test', function () {
 	}
 	afterEach(async function() {
 		await sleep(5000);
-		//await driver.quit();
+		await driver.quit();
 	})
 	describe('test', function () {
 			it('test is..', async function() {
-				//    await SignUp.SignUp()
-				 AccountLevel.AccountLevel();
+				 await SignUp.SignUp()
+				//  AccountLevel.AccountLevel();
 				//  LogIn.LogIn();
 				// LogOut.LogOut();
 				//  Promotion.Promotion()
@@ -47,7 +47,7 @@ describe('Main Test', function () {
 				// TradeWithStop.TradeWithStop()
 				// /*Wallet*/
 				//  TransactionFlow()
-				//Wallet.Wallet();
+				Wallet.Wallet();
 				
 				
 		})

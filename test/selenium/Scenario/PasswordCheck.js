@@ -11,7 +11,7 @@ describe('Main Test', function () {
 	}
 	afterEach(async function() {
 		await sleep(5000);
-		//await driver.quit();
+		await driver.quit();
 	})
 	describe('ResetPassword', function () {
 	
