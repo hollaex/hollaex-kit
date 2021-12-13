@@ -38,7 +38,7 @@ describe('g', function() {
 		return newObject 
 	};
 	beforeEach(async function() {
-		driver = await new Builder().forBrowser('browser').build()
+		driver = await new Builder().forBrowser(browser).build()
 		vars = {}
 	})
 	afterEach(async function() {

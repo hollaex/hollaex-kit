@@ -32,7 +32,7 @@ describe('Orders', function() {
 	});
   
 	it('firefox', async function() {
-    	//	driver = await new Builder().forBrowser('browser').build();
+    	//	driver = await new Builder().forBrowser(browser).build();
 		driver = await new Builder().forBrowser('firefox').usingServer(Remot).build();
   
 
@@ -65,9 +65,9 @@ describe('Orders', function() {
 			assert(elements.length)
 		}
 	})
-	it('browser', async function() {
-    		// driver = await new Builder().forBrowser('browser').build();
-		driver = await new Builder().forBrowser('browser').usingServer(Remot).build();
+	it(browser, async function() {
+    		// driver = await new Builder().forBrowser(browser).build();
+		driver = await new Builder().forBrowser(browser).usingServer(Remot).build();
   
 
 		//driver = await new RemoteWebDriver(new URL("https://3.37.238.142:4444/wd/hub"), capability);
@@ -102,7 +102,7 @@ describe('Orders', function() {
 		}
 	})
 	it('Edge', async function() {
-  		// driver = await new Builder().forBrowser('browser').build();
+  		// driver = await new Builder().forBrowser(browser).build();
 		driver = await new Builder().forBrowser('MicrosoftEdge').usingServer(Remot).build();
   
 

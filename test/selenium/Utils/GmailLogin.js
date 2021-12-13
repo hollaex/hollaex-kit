@@ -24,7 +24,7 @@ describe('NewUserRequest', function() {
 	}
 	
 	beforeEach(async function() {
-		driver = await new Builder().forBrowser('browser').build();
+		driver = await new Builder().forBrowser(browser).build();
 		vars = {};
 	});
 	afterEach(async function() {
@@ -130,7 +130,7 @@ describe('NewUserRequest', function() {
   
 	});
 	it('NewUserRequest', async function() {
-		driver = await new Builder().forBrowser('browser').build();
+		driver = await new Builder().forBrowser(browser).build();
 		await sleep(10000);
 		console.log('Test name: New User Email Confirmation');
 		console.log('Step # | name | target | value');

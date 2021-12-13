@@ -41,7 +41,7 @@ function getNewUser(){
 }
 async function kitLogIn(step,driver,userName,passWord){
 
-	//let driver = await new Builder().forBrowser('browser').build();
+	//let driver = await new Builder().forBrowser(browser).build();
 
 	
 	//Given User's data
@@ -91,7 +91,7 @@ async function kitLogIn(step,driver,userName,passWord){
 }
 async function emailLogIn(step,driver, emailAdmin,passWord){
 	
-	// let driver = await new Builder().forBrowser('browser').build();
+	// let driver = await new Builder().forBrowser(browser).build();
 	console.log('Entering username and password');
 	console.log(emailPage);
 	await driver.get(emailPage);

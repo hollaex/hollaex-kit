@@ -34,7 +34,7 @@ async function AccountLevel () {
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('browser').build();
+			driver = await new Builder().forBrowser(browser).build();
 			driver.manage().window().maximize();
 			vars = {};
 		});

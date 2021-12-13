@@ -32,7 +32,7 @@ describe('shot', function() {
     });
   }
   beforeEach(async function() {
-    driver = await new Builder().forBrowser('browser').build()
+    driver = await new Builder().forBrowser(browser).build()
     vars = {}
     let reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
     console.log(reportPath)

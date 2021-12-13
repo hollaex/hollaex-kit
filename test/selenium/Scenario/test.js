@@ -21,8 +21,8 @@ describe('Main Test', function () {
 	})
 	describe('test', function () {
 			it('test is..', async function() {
-				   await SignUp.SignUp()
-				//  AccountLevel()
+				//    await SignUp.SignUp()
+				 AccountLevel.AccountLevel();
 				//  LogIn.LogIn();
 				// LogOut.LogOut();
 				//  Promotion.Promotion()

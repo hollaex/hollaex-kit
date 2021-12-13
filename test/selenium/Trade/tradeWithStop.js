@@ -34,7 +34,7 @@ async function TradeWithStop(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('browser').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 		
 			driver.manage().window().maximize();
