@@ -6,7 +6,7 @@
   "license": "bitHolla Inc.",
   "keywords": [],
   "dependencies": {
-    "browserdriver": "93.0.0",
+    "chromedriver": "93.0.0",
     "console-log-to-file": "1.0.3",
     "console-stamp": "3.0.3",
     "dotenv": "10.0.0",
