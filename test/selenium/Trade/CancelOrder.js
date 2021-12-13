@@ -55,7 +55,8 @@ async function CancelOrder(){
 			console.log(' Test name: g');
 			console.log(' Step # | name | target | value');
 			console.log(step++,'  | open | https://sandbox.hollaex.com/login | ');
-			await driver.get(logInPage);
+			await driver.get(logInPage)
+			driver.manage().window().maximize();;
 			console.log(step++,'  | executeScript | return [] | Users');
 			console.log(step++,'  | end |  | ');
 			await driver.sleep(5000);

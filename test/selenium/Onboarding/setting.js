@@ -51,6 +51,8 @@ async function Setting(){
 		
 			console.log(step++,'  | open | /account | ');
 			await driver.get(logInPage);
+			//driver.manage().window().maximize();
+			driver.manage().window().fullscreen();
 			await sleep(10000);
 		
 			console.log(step++,'  | type | name=email | USER@bitholla.com');

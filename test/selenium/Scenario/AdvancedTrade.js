@@ -83,6 +83,7 @@ describe('g', function() {
 		console.log(vars["Fee"]+" and "+ vars["Level"] )
 		// 17 | open | trade/xht-usdt | 
 		await driver.get("https://sandbox.hollaex.com/trade/xht-usdt")
+		driver.manage().window().maximize();
 		// 18 | pause | 5000 | 
 		await driver.sleep(5000)
 		// 19 | storeText | css=.trade-col_side_wrapper > .trade_block-wrapper:nth-child(1) | Q
@@ -251,6 +252,7 @@ describe('g', function() {
 		console.log(vars["Fee"]+" and "+ vars["Level"] )
 		// 17 | open | trade/xht-usdt | 
 		await driver.get("https://sandbox.hollaex.com/trade/xht-usdt")
+		driver.manage().window().maximize();
 		// 18 | pause | 5000 | 
   	await driver.sleep(4000);
 		// 24 | click | css=.text-center:nth-child(2) | 

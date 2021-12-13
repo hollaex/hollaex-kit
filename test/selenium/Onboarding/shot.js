@@ -45,12 +45,13 @@ describe('shot', function() {
     console.log(" Step # | name | target | value");
     console.log(" 1 | open | /login | ");
     await driver.get("https://pro.hollaex.com/login")
+    driver.manage().window().maximize();
     await sleep(3000);
     await util.takeHollashot(driver,reportPath,i++)
     await sleep(3000);
 
     console.log(" 2 | setWindowSize | maximize | ");
-    await driver.manage().window().maximize();;
+    driver.manage().window().maximize();;
     await sleep(3000);
     util.takeHollashot(driver,reportPath,i++)
     
