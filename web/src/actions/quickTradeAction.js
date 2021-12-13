@@ -35,10 +35,12 @@ export const setPriceEssentials = (priceEssentials) => (dispatch, getState) => {
 		let sourceAmount = priceEssentials.sourceAmount;
 		let targetAmount = priceEssentials.targetAmount;
 		if (side === 'buy') {
-			if (isSourceChanged) {
-				targetAmount = math.round(sourceAmount / estimatedPrice, decimalPoint);
-			} else {
-				sourceAmount = math.round(targetAmount * estimatedPrice, decimalPoint);
+			if (estimatedPrice) {
+				if (isSourceChanged) {
+					targetAmount = math.round(sourceAmount / estimatedPrice, decimalPoint);
+				} else {
+					sourceAmount = math.round(targetAmount * estimatedPrice, decimalPoint);
+				}
 			}
 			priceValues = {
 				...priceValues,
@@ -47,10 +49,12 @@ export const setPriceEssentials = (priceEssentials) => (dispatch, getState) => {
 				estimatedPrice,
 			};
 		} else {
-			if (isSourceChanged) {
-				targetAmount = math.round(sourceAmount * estimatedPrice, decimalPoint);
-			} else {
-				sourceAmount = math.round(targetAmount / estimatedPrice, decimalPoint);
+			if (estimatedPrice) {
+				if (isSourceChanged) {
+					targetAmount = math.round(sourceAmount * estimatedPrice, decimalPoint);
+				} else {
+					sourceAmount = math.round(targetAmount / estimatedPrice, decimalPoint);
+				}
 			}
 			priceValues = {
 				...priceValues,
