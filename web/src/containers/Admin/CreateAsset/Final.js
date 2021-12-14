@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import _get from 'lodash/get';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
@@ -20,6 +21,23 @@ const Final = ({
 	submitting = false
 }) => {
 	const { meta = {}, type } = coinFormData;
+
+	const renderFees = () => {
+		if (_get(coinFormData, 'withdrawal_fees', {})) {
+			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
+				const key = coinFormData.withdrawal_fees[data];
+				let label;
+				if (data === 'eth') {
+					label = 'ERC20';
+				} else if (data === 'bnb') {
+					label = 'BEP20';
+				} else if (data === 'trx') {
+					label = 'TRC20';
+				}
+				return <div key={index}><b>{label}</b>: {_get(key, 'value')} {_get(key, 'symbol').toUpperCase()}</div>
+			});
+		}
+	}
 	return (
 		<Fragment>
 			<div className="title">
@@ -272,6 +290,30 @@ const Final = ({
 						</Button>
 					</div>
 				) : null}
+			</div>
+			<div className="preview-detail-container">
+				<div className="title">Withdrawal Fee</div>
+				{_get(coinFormData, 'withdrawal_fees', {})
+					?
+						<div>
+							<div>{renderFees()}</div>
+							{isConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => setConfigEdit('edit_withdrawal_fees')}
+									>
+										Edit
+									</Button>
+								</div>
+							) : null}
+						</div>
+					:
+						<div>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						</div>
+				}
 			</div>
 			{isPreview || isConfigure ? (
 				<div className="preview-detail-container">
