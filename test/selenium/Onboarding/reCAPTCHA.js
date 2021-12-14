@@ -54,6 +54,7 @@ async function ReCAPTCHA(){
 			console.log(' Step # | action | target | value');
 			console.log(logInPage);
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(10000);
 		
 			const title = await driver.getTitle();
@@ -94,6 +95,9 @@ async function ReCAPTCHA(){
 			await driver.findElement(By.name('password')).click();
 			await driver.findElement(By.name('password')).clear();
 			await driver.findElement(By.name('password')).sendKeys(passWord);
+			await driver.wait(until.elementIsVisible(driver.findElement(By.css(".holla-button"))), 5000).click()
+			//await driver.findElement(By.css(".holla-button")).click()
+			
     
 			console.log(step++,'  | click | css=.auth_wrapper | ');
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.auth_wrapper'))), 5000);
@@ -119,8 +123,10 @@ async function ReCAPTCHA(){
 			await driver.wait(until.elementLocated(By.name('password')), 5000);
 			await driver.findElement(By.name('password')).click();
 			await driver.findElement(By.name('password')).clear();
-			await driver.findElement(By.name('password')).sendKeys(passWord);		
-		
+			await driver.findElement(By.name('password')).sendKeys(passWord);
+			await driver.findElement(By.css(".holla-button")).click()	
+		    await sleep(5000)
+
 			console.log(step++,'  | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 			await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
 			await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());

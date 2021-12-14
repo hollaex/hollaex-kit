@@ -48,6 +48,7 @@ async function kitLogIn(step,driver,userName,passWord){
 	console.log(' Log in your hollaex Kit	:',userName);
 	console.log(logInPage);
 	await driver.get(logInPage);
+	driver.manage().window().maximize();
 	await driver.sleep(5000);
 	const title = await driver.getTitle();
 	console.log(title);
@@ -94,6 +95,7 @@ async function emailLogIn(step,driver, emailAdmin,passWord){
 	console.log('Entering username and password');
 	console.log(emailPage);
 	await driver.get(emailPage);
+	driver.manage().window().maximize();
 	console.log(step++,' | setWindowSize | 1280x680 |'); 
 	await driver.manage().window().setRect(1280, 680);
 	console.log(step++,' | click | id=wdc_username |');
@@ -108,7 +110,7 @@ async function emailLogIn(step,driver, emailAdmin,passWord){
 	console.log(step++,' | click | id=wdc_login_button | ');
 	await driver.findElement(By.id('wdc_login_button')).click();
 	console.log(step++,' | click | css=.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1) | ');
-	await driver.manage().window().maximize();
+	driver.manage().window().maximize();
 	await setStep(step);
 	await sleep(10000);
 	
@@ -130,7 +132,7 @@ async function adminVerifiesNewUser(driver,aUserName,aPassword,newUserName){
 	// 5 | click | css=.holla-button | 
 	await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.holla-button'))), 50000);
 	await driver.findElement(By.css('.holla-button')).click();
-	await driver.manage().window().maximize();
+	driver.manage().window().maximize();
 	await sleep(5000);
 	// 6 | click | css=a > .pl-1 | 
 	await driver.findElement(By.css('a > .pl-1')).click();

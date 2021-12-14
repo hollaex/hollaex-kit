@@ -44,6 +44,7 @@ async function Support(){
 		
 			console.log(step++,'  | open | /login | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 		
 			console.log(step++,'  | wait 5000 | \'Supervisor can access all deposit, withdrawals and approval settings\' |'); 
 			await sleep(5000);

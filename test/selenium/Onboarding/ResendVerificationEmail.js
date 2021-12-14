@@ -69,6 +69,7 @@ async function ResendVerificationEmail(){
 		
 			console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
+			driver.manage().window().maximize();
      
 			console.log(step++,'  | type | name=email |',newUser);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
@@ -113,8 +114,8 @@ async function ResendVerificationEmail(){
 			await sleep(4000);
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
-			console.log(step++,' | assertText | css=.icon_title-text | Resent Email');
-			expect(await driver.findElement(By.css('.icon_title-text')).getText()).to.equal('Resent Email');
+			console.log(step++,' | assertText | css=.icon_title-text | Resend Email');
+			expect(await driver.findElement(By.css('.icon_title-text')).getText()).to.equal('Resend Email');
 		
 			console.log('This is the EndOfTest');
 		});
