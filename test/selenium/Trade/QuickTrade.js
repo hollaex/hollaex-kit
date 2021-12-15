@@ -21,6 +21,7 @@ async function QuickTrade(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -35,7 +36,7 @@ async function QuickTrade(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			await util.kitLogIn(step,driver, userName,passWord);
@@ -43,7 +44,7 @@ async function QuickTrade(){
 		});
 		afterEach(async function() {
 			util.setStep(step)
-	 //await driver.quit();
+	 await driver.quit();
 		});
 		it('limit buy', async function() {
 
