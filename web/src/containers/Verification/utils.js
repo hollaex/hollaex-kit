@@ -65,20 +65,8 @@ export const getCountry = (country) => {
 };
 
 export const getCountryFromNumber = (phone = '') => {
-	const number = PhoneNumber(phone);
-	const phoneCode = `+${PhoneNumber.getCountryCodeForRegionCode(
-		number.getRegionCode()
-	)}`;
-
-	let filterValue = initialCountry;
-
-	COUNTRIES.forEach((country) => {
-		country.phoneCodes.forEach((code) => {
-			if (code === phoneCode) {
-				filterValue = country;
-			}
-		});
-	});
-
-	return filterValue;
+	const alpha2 = PhoneNumber(phone).getRegionCode();
+	const country =
+		COUNTRIES.find(({ value }) => value === alpha2) || initialCountry;
+	return country;
 };
