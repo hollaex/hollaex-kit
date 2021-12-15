@@ -19,7 +19,8 @@ async function AccountLevel () {
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
-	let browser = process.env.BROWSER;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -39,7 +40,7 @@ async function AccountLevel () {
 			vars = {};
 		});
 		afterEach(async function() {
-		//await driver.quit();
+		await driver.quit();
 		});
 		it('Account Level', async function() {
 			console.log('Supervisor can access all deposit, withdrawals and approval settings');

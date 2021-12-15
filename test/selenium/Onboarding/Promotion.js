@@ -23,7 +23,8 @@ async function Promotion(){
 	let website = process.env.WEBSITE;
 	let username = process.env.LEVEL_NAME;
 	let password = process.env.PASSWORD;
-	let browser = process.env.BROWSER;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	const timestamp = require('time-stamp');
 	let step = util.getStep();
 	util.logHolla(logPath)
@@ -37,7 +38,7 @@ async function Promotion(){
 // 		fs.writeFile(logPath+'/log.txt',message);
 // 	 }
 	
-	describe('Trade', function() {
+	describe('Promotion Feature', function() {
 		this.timeout(300000);
 		let driver;
 		let vars;

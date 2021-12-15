@@ -21,7 +21,7 @@ async function Referral(){
 	let User = process.env.NEW_USER;
 	let passWord = process.env.PASSWORD;
 	let signUpPage = process.env.SIGN_UP_PAGE;
-	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let logInPage = process.env.LOGIN_PAGE;
 	let userName = process.env.ADMIN_USER;
 	let apassWord = process.env.ADMIN_PASS;
@@ -32,7 +32,7 @@ async function Referral(){
 	let step = util.getStep();
 
 	describe('NewUserRequest', function() {
-		this.timeout(100000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {

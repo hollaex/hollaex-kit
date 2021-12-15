@@ -16,7 +16,8 @@ async function Supervisor(){
 	let supervisor = process.env.SUPERVISOR;
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
-	let browser = process.env.BROWSER;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	let step = util.getStep();
 	util.logHolla(logPath)
 

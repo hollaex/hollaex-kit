@@ -17,20 +17,20 @@ describe('Main Test', function () {
 	}
 	afterEach(async function() {
 		await sleep(5000);
-		await driver.quit();
+	//	await driver.quit();
 	})
 	describe('test', function () {
 			it('test is..', async function() {
-				 await SignUp.SignUp()
+				//  await SignUp.SignUp()
 				//  AccountLevel.AccountLevel();
 				//  LogIn.LogIn();
 				// LogOut.LogOut();
 				//  Promotion.Promotion()
 				//  ReCAPTCHA.ReCAPTCHA()
 				// Referral.Referral()
-				// ResendVerificationEmail.ResendVerificationEmail() 
-				// ResetPassword.ResetPassword()
-			  	// await Security.Security()
+				ResendVerificationEmail.ResendVerificationEmail() 
+				//  ResetPassword.ResetPassword()
+			  	//  await Security.Security()
 				//  Setting.Setting()
 				
 				//  Verification.Verification();//failed
@@ -47,7 +47,7 @@ describe('Main Test', function () {
 				// TradeWithStop.TradeWithStop()
 				// /*Wallet*/
 				//  TransactionFlow()
-				Wallet.Wallet();
+				// Wallet.Wallet();
 				
 				
 		})

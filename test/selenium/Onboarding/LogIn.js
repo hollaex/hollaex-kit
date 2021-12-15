@@ -27,7 +27,7 @@ async function LogIn () {
 	util.logHolla(logPath)
 	
     describe('BobLogIn', function() {
-		this.timeout(100000);
+		this.timeout(200000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -45,10 +45,11 @@ async function LogIn () {
 
 		afterEach(async function() {
 			util.setStep(step);
+			await sleep(10000)
 			await driver.quit();
 		});
 
-		it('Simple log in', async function() {
+		it('Bob Simple Log In', async function() {
 			//Given User's data
 			console.log(' Test name	: BobLogIn');
 			console.log(logInPage);
@@ -98,7 +99,7 @@ async function LogIn () {
 			console.log('This is the EndOfTest');
 			
 		});
-		it('Email Confirmation', async function() {
+		it('Email Confirmation For Log In', async function() {
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
 		

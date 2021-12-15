@@ -44,7 +44,7 @@ async function Setting(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await driver.quit();
 		});
 		it('Setting', async function() {
 	   console.log(' Test name: Setting');

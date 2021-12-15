@@ -53,7 +53,7 @@ async function LogOut(){
 			await util.setStep(step);
 		//	await driver.quit();
 		});
-		it('Simple log in', async function() {
+		it('Bob Simple Log In To Log Out Later', async function() {
 			//Given The user logged in
 			console.log(logInPage);
 			await driver.get(logInPage);
@@ -111,7 +111,7 @@ async function LogOut(){
 			console.log('This is the EndOfTest');
 		
  	});
-	 it('Email Confirmation', async function() {
+	 it('Email Confirmation For Log In And Log Out', async function() {
 		console.log('Test name: Confirmation');
 		console.log('Step # | name | target | value');
 	

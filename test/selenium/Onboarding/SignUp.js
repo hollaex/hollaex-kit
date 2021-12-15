@@ -28,7 +28,7 @@ async function SignUp(){
 	const newUser = util.defineNewUser(User,4) ;
 	console.log(newUser);
 
-	describe('NewUserRequest', function() {
+	describe('NewUser Request For Registeration', function() {
 		this.timeout(300000);
 		let driver;
 		let vars;
@@ -49,7 +49,7 @@ async function SignUp(){
 			await driver.quit();
 		});
 
-		it('FillUpNewUserRequest', async function() {
+		it('FillUp The Form By NewUser Request', async function() {
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		

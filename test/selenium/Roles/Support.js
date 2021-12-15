@@ -17,7 +17,8 @@ async function Support(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let webSite = process.env.WEBSITE;
-	let browser = process.env.BROWSER;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	let step = util.getStep();
 	util.logHolla(logPath)
 

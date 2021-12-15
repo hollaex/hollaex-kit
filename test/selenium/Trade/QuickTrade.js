@@ -44,7 +44,7 @@ async function QuickTrade(){
 		});
 		afterEach(async function() {
 			util.setStep(step)
-	 //await driver.quit();
+	 await driver.quit();
 		});
 		it('limit buy', async function() {
 

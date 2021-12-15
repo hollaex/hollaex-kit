@@ -45,7 +45,7 @@ async function ReCAPTCHA(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await driver.quit();
 		});
 
 		it('ReCHAPTCHA log in', async function() {
