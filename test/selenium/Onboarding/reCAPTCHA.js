@@ -20,6 +20,7 @@ async function ReCAPTCHA(){
 	let userName = process.env.BOB;
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -36,7 +37,7 @@ async function ReCAPTCHA(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -44,7 +45,7 @@ async function ReCAPTCHA(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await driver.quit();
 		});
 
 		it('ReCHAPTCHA log in', async function() {

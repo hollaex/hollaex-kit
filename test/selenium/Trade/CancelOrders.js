@@ -19,6 +19,7 @@ async function CancelOrders(){
 	let userName = process.env.ADMIN_USER;
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
+	let browser = process.env.BROWSER;
 	let step= util.getStep()
 
 	describe('Orders', function() {
@@ -31,7 +32,7 @@ async function CancelOrders(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			

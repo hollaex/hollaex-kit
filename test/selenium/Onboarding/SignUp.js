@@ -22,12 +22,13 @@ async function SignUp(){
 	let signUpPage = process.env.SIGN_UP_PAGE;
 	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	const newUser = util.defineNewUser(User,4) ;
 	console.log(newUser);
 
-	describe('NewUserRequest', function() {
+	describe('NewUser Request For Registeration', function() {
 		this.timeout(300000);
 		let driver;
 		let vars;
@@ -37,7 +38,7 @@ async function SignUp(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			await driver.manage().window().maximize();
 			let step = util.getStep()
@@ -48,7 +49,7 @@ async function SignUp(){
 			await driver.quit();
 		});
 
-		it('FillUpNewUserRequest', async function() {
+		it('FillUp The Form By NewUser Request', async function() {
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		

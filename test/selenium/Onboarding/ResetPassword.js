@@ -23,8 +23,9 @@ async function ResetPassword(){
 	let passWord = process.env.PASSWORD;
 	let newPassWord = process.env.NEWPASS
 	let webSite = process.env.WEBSITE;
-	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -33,8 +34,8 @@ async function ResetPassword(){
 	}
 
 
-	describe('NewUserRequest', function() {
-		this.timeout(100000);
+	describe('Reset Passwors Request', function() {
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -43,7 +44,7 @@ async function ResetPassword(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -51,6 +52,7 @@ async function ResetPassword(){
 
 		afterEach(async function() {
 			util.setStep(step);
+			await sleep(10000);
 			await driver.quit();
 		});
 		it('Rest Password', async function() {
@@ -76,13 +78,10 @@ async function ResetPassword(){
 			assert(await driver.findElement(By.css('.icon_title-text')).getText() == 'Password Reset Sent');
 		
 			console.log(step++,'   | click | css=.holla-button:nth-child(1) | ');
-			driver.close();
-			await sleep(10000);
-
 			console.log('This is the EndOfTest');
 		});
 
-		it('Email Confirmation', async function() {
+		it('Email Confirmation For Password Reset', async function() {
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
 		
