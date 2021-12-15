@@ -13,58 +13,62 @@ describe('Main Test', function () {
 	}
 	afterEach(async function() {
 		await sleep(5000);
-		//await driver.quit();
+	//	await driver.quit();
 	})
 	describe('New user', function () {
 		it('Given a ReCAPTCHA works', async function() {
 			//ReCAPTCHA.ReCAPTCHA();
 		})
 		it('Given a user SignUp', async function() {
-			SignUp.SignUp();
+		await	SignUp.SignUp();
 		})
 		it('َAnd the user log in', async function() {
-			LogIn.LogIn();
+		await	LogIn.LogIn();
 		})
 		it('Then the user log out', async function() {
-			LogOut.LogOut();
+		await	LogOut.LogOut();
 		})
 		it('And the user can resend verification', async function() {
-			ResendVerificationEmail.ResendVerificationEmail()
+		await ResendVerificationEmail.ResendVerificationEmail()
 		})
  		it('then the new user change the password', async function() {
-			ResetPassword.ResetPassword();
+		await	ResetPassword.ResetPassword();
     	})
-		it('and the user change pasword securely', async function() {
-			Security.Security();
-			
-		})
 		it('and the user be a referee', async function() {
-			Referral.Referral();
-		})
+			await	Referral.Referral();
+			})
+
+
 	})
-		describe('Admin', function () {
-			it('Given admin can change the userlevel', async function() {
-				AccountLevel.AccountLevel();
-			})
-			it('And can change discount rate', async function() {
-				Promotion.Promotion();
-			})
-		})
-		describe('Roles', function () {
-			it('َGiven communicator can', async function() {
-				Communicator.Communicator()
-			})
-			it('Given KYC can', async function() {
-				Kyc.Kyc();
-			})
-			it('Given supervisor can', async function() {
-				Supervisor.Supervisor();
-			})
-			 it('Given support can', async function() {
-				Support.Support();
-			})
-		})				
-	
+		// describe('Admin', function () {
+		// 	it('Given admin can change the userlevel', async function() {
+		// 	await	AccountLevel.AccountLevel();
+		// 	})
+		// 	it('And can change discount rate', async function() {
+		// 	await	Promotion.Promotion();
+		// 	})
+		// })
+		// describe('Roles', function () {
+		// 	it('َGiven communicator can', async function() {
+		// 		await	Communicator.Communicator()
+		// 	})
+		// 	it('Given KYC can', async function() {
+		// 		await	Kyc.Kyc();
+		// 	})
+		// 	it('Given supervisor can', async function() {
+		// 		await	Supervisor.Supervisor();
+		// 	})
+		// 	 it('Given support can', async function() {
+		// 		await	Support.Support();
+		// 	})
+		// })	
+		// describe('Changing password', function () {			
+		// it('and the user change pasword securely', async function() {
+		// 	await	Security.Security();
+				
+		// 	})
+
+		// })	
 		// describe('Trading', function () {
 		// 	it('َGiven a trade can', async function() {
 		// 		Trade.Trade();

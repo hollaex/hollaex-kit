@@ -22,6 +22,7 @@ async function Verification(){
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -38,7 +39,7 @@ async function Verification(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

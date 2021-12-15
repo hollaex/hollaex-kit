@@ -23,6 +23,7 @@ async function Setting(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	describe('Setting', function() {
@@ -35,7 +36,7 @@ async function Setting(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -43,7 +44,7 @@ async function Setting(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await driver.quit();
 		});
 		it('Setting', async function() {
 	   console.log(' Test name: Setting');
