@@ -10,6 +10,15 @@ const AssetParams = ({
 	handleNext,
 	handleMetaChange,
 }) => {
+
+	const handleMoveNext = () => {
+		if (coinFormData.withdrawal_fees) {
+			handleScreenChange('edit_withdrawal_fees');
+		} else {
+			handleNext();
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className="title">Asset parameters</div>
@@ -56,20 +65,24 @@ const AssetParams = ({
 						</div>
 					</Checkbox>
 				</div>
-				<div className="field-wrap">
-					<div className="sub-title">Fee for withdrawal</div>
-					<div className="description">
-						<div>
-							Enter the fee amount for when this coin is withdraw from your
-							exchange
+				{!coinFormData.withdrawal_fees
+					?
+					<div className="field-wrap">
+						<div className="sub-title">Fee for withdrawal</div>
+						<div className="description">
+							<div>
+								Enter the fee amount for when this coin is withdraw from your
+								exchange
+							</div>
 						</div>
+						<InputNumber
+							name="withdrawal_fee"
+							onChange={(val) => handleChangeNumber(val, 'withdrawal_fee')}
+							value={coinFormData.withdrawal_fee}
+						/>
 					</div>
-					<InputNumber
-						name="withdrawal_fee"
-						onChange={(val) => handleChangeNumber(val, 'withdrawal_fee')}
-						value={coinFormData.withdrawal_fee}
-					/>
-				</div>
+					: null
+				}
 				<div className="field-wrap">
 					<div className="sub-title">Minimum Withdrawal Amount</div>
 					<div className="description">
@@ -135,7 +148,7 @@ const AssetParams = ({
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" onClick={handleNext}>
+					<Button type="primary" className="green-btn" onClick={handleMoveNext}>
 						Confirm
 					</Button>
 				</div>
