@@ -570,6 +570,7 @@ class CreateAsset extends Component {
 						handleBack={this.handleBack}
 						handleConfirmation={this.handleConfirmation}
 						handleFileChange={this.handleFileChange}
+						handleScreenChange={this.handleScreenChange}
 					/>
 				);
 			case 'edit-color':
@@ -660,6 +661,8 @@ class CreateAsset extends Component {
 						updateFormData={this.props.updateFormData}
 						handleClose={this.props.onClose}
 						coins={this.props.coins}
+						handleScreenChange={this.handleScreenChange}
+						isWithdrawalEdit={this.props.isWithdrawalEdit}
 					/>
 				);
 			case 'step1':

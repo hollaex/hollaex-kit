@@ -18,12 +18,14 @@ const Final = ({
 	setConfigEdit,
 	handleDelete = () => {},
 	user_id,
-	submitting = false
+	submitting = false,
+	handleWithdrawalEdit,
+	handleScreenChange
 }) => {
 	const { meta = {}, type } = coinFormData;
 
 	const renderFees = () => {
-		if (_get(coinFormData, 'withdrawal_fees', {})) {
+		if (coinFormData.withdrawal_fees) {
 			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
 				const key = coinFormData.withdrawal_fees[data];
 				let label;
@@ -38,6 +40,15 @@ const Final = ({
 			});
 		}
 	}
+
+	const handleMoveBack = () => {
+		if (coinFormData.withdrawal_fees) {
+			handleScreenChange('edit_withdrawal_fees');
+		} else {
+			handleBack(true);
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className="title">
@@ -293,7 +304,7 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{_get(coinFormData, 'withdrawal_fees', {})
+				{coinFormData.withdrawal_fees
 					?
 						<div>
 							<div>{renderFees()}</div>
@@ -302,7 +313,7 @@ const Final = ({
 									<Button
 										className="green-btn"
 										type="primary"
-										onClick={() => setConfigEdit('edit_withdrawal_fees')}
+										onClick={handleWithdrawalEdit}
 									>
 										Edit
 									</Button>
@@ -336,7 +347,7 @@ const Final = ({
 			) : null}
 			{!isPreview && !isConfigure ? (
 				<div className="btn-wrapper">
-					<Button className="green-btn" type="primary" onClick={() => handleBack(true)}>
+					<Button className="green-btn" type="primary" onClick={handleMoveBack}>
 						Back
 					</Button>
 					<div className="separator"></div>
