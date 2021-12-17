@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import _get from 'lodash/get';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
@@ -17,9 +18,37 @@ const Final = ({
 	setConfigEdit,
 	handleDelete = () => {},
 	user_id,
-	submitting = false
+	submitting = false,
+	handleWithdrawalEdit,
+	handleScreenChange
 }) => {
 	const { meta = {}, type } = coinFormData;
+
+	const renderFees = () => {
+		if (coinFormData.withdrawal_fees) {
+			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
+				const key = coinFormData.withdrawal_fees[data];
+				let label;
+				if (data === 'eth') {
+					label = 'ERC20';
+				} else if (data === 'bnb') {
+					label = 'BEP20';
+				} else if (data === 'trx') {
+					label = 'TRC20';
+				}
+				return <div key={index}><b>{label}</b>: {_get(key, 'value')} {_get(key, 'symbol').toUpperCase()}</div>
+			});
+		}
+	}
+
+	const handleMoveBack = () => {
+		if (coinFormData.withdrawal_fees) {
+			handleScreenChange('edit_withdrawal_fees');
+		} else {
+			handleBack(true);
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className="title">
@@ -273,6 +302,30 @@ const Final = ({
 					</div>
 				) : null}
 			</div>
+			<div className="preview-detail-container">
+				<div className="title">Withdrawal Fee</div>
+				{coinFormData.withdrawal_fees
+					?
+						<div>
+							<div>{renderFees()}</div>
+							{isConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={handleWithdrawalEdit}
+									>
+										Edit
+									</Button>
+								</div>
+							) : null}
+						</div>
+					:
+						<div>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						</div>
+				}
+			</div>
 			{isPreview || isConfigure ? (
 				<div className="preview-detail-container">
 					<div className="title">Manage</div>
@@ -294,7 +347,7 @@ const Final = ({
 			) : null}
 			{!isPreview && !isConfigure ? (
 				<div className="btn-wrapper">
-					<Button className="green-btn" type="primary" onClick={() => handleBack(true)}>
+					<Button className="green-btn" type="primary" onClick={handleMoveBack}>
 						Back
 					</Button>
 					<div className="separator"></div>

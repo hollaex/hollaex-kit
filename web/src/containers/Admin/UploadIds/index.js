@@ -45,7 +45,17 @@ class UploadIds extends Component {
 		return uploadFiles(this.props.user_id, values)
 			.then(({ data }) => {
 				if (data.data) {
-					refreshData(data.data, 'files');
+					const imageFiles = ['back', 'front', 'proof_of_residency'];
+					let updatedData = {};
+					Object.keys(data.data).forEach(item => {
+						if (imageFiles.includes(item)) {
+							updatedData = {
+								...updatedData,
+								[item]: data.data[item]
+							}
+						}
+					});
+					refreshData(updatedData, 'files');
 				}
 				if (data.user) {
 					refreshData(data.user);

@@ -463,3 +463,6 @@
 	position: relative;
 	display: flex;
 }
+.coin-limit-wrap .btn-wrapper .ant-btn {
+	width: 45%;
+}

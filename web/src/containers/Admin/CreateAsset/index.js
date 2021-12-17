@@ -19,6 +19,7 @@ import Final from './Final';
 import EditAsset from './EditAsset';
 import BurnModal from './Burn';
 import CoinLimited from './CoinLimited';
+import WithdrawalFee from './WithdrawalFee';
 
 import './index.css';
 
@@ -569,6 +570,7 @@ class CreateAsset extends Component {
 						handleBack={this.handleBack}
 						handleConfirmation={this.handleConfirmation}
 						handleFileChange={this.handleFileChange}
+						handleScreenChange={this.handleScreenChange}
 					/>
 				);
 			case 'edit-color':
@@ -650,6 +652,17 @@ class CreateAsset extends Component {
 						coinFormData={coinFormData}
 						handleChange={this.handleChange}
 						handleNext={this.handleNext}
+					/>
+				);
+			case 'edit_withdrawal_fees':
+				return (
+					<WithdrawalFee
+						coinFormData={coinFormData}
+						updateFormData={this.props.updateFormData}
+						handleClose={this.props.onClose}
+						coins={this.props.coins}
+						handleScreenChange={this.handleScreenChange}
+						isWithdrawalEdit={this.props.isWithdrawalEdit}
 					/>
 				);
 			case 'step1':
