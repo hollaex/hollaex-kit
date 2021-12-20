@@ -138,14 +138,13 @@ class Earnings extends Component {
 				if (response) {
 					this.handleData(response);
 				}
-				this.setState({ buttonSubmitting: false, userDetails: [] });
+				this.setState({ buttonSubmitting: false });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					error: message,
 					buttonSubmitting: false,
-					userDetails: [],
 				});
 			});
 	};
@@ -181,8 +180,8 @@ class Earnings extends Component {
 			this.setState({
 				isOpen: !this.state.isOpen,
 				currentScreen: '',
-				userDetails: [],
 			});
+			this.getAllUserData();
 		}
 	};
 
@@ -190,8 +189,8 @@ class Earnings extends Component {
 		this.setState({
 			isOpen: !this.state.isOpen,
 			currentScreen: '',
-			userDetails: [],
 		});
+		this.getAllUserData();
 	};
 
 	toggleOpen = () => {
@@ -202,8 +201,8 @@ class Earnings extends Component {
 		this.setState({
 			isOpen: !this.state.isOpen,
 			currentScreen: '',
-			userDetails: [],
 		});
+		this.getAllUserData();
 	};
 
 	handleNext = () => {
@@ -285,6 +284,7 @@ class Earnings extends Component {
 						getAllUserData={this.getAllUserData}
 						isLoading={this.state.isLoading}
 						handleSettle={this.handleSettle}
+						isOpen={isOpen}
 					/>
 				</Modal>
 				<div className="table-container">
