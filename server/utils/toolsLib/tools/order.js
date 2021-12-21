@@ -594,6 +594,7 @@ const getGeneratedFees = (startDate, endDate, opts = {
 };
 
 const settleFees = (opts = {
+	user_id: null,
 	additionalHeaders: null
 }) => {
 	return getNodeLib().settleFees(opts);
