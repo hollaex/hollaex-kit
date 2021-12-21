@@ -202,7 +202,7 @@ export function otpRequest() {
 			.catch((err) => {
 				dispatch({
 					type: 'REQUEST_OTP_REJECTED',
-					payload: err.response.data,
+					payload: err && err.response && err.response.data,
 				});
 			});
 	};
