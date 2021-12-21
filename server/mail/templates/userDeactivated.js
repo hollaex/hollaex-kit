@@ -1,6 +1,8 @@
 'use strict';
 
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
+
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
 	if(emailConfigurations[language] && emailConfigurations[language]['USERDEACTIVATED']) {
@@ -47,7 +49,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 			</p>
 			<p>
 				${stringDynamic.CLOSING[1]}<br />
-				${stringDynamic.CLOSING[2]}
+				${stringDynamic.CLOSING[2].format(API_NAME())}
 			</p>
 		</div>
 	`;
@@ -56,7 +58,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 const textDynamic = (email, data, language, domain, stringDynamic) => {
 	return `
 		${stringDynamic.BODY[data.type.toUpperCase()].format(email)}
-		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}
+		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
 	`;
 };
 

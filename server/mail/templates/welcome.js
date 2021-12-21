@@ -1,6 +1,8 @@
 'use strict';
 
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
+
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
 	if(emailConfigurations[language] && emailConfigurations[language]['WELCOME']) {
@@ -70,7 +72,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
         ${stringDynamic.GREETING.format(email)}
       </p>
       <p>
-        ${stringDynamic.BODY[1]}
+        ${stringDynamic.BODY[1].format(API_NAME())}
       </p>
       <p>
         ${stringDynamic.BODY[2].format(
@@ -83,7 +85,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
       </p>
       <p>
         ${stringDynamic.CLOSING[1]}<br />
-        ${stringDynamic.CLOSING[2]}
+        ${stringDynamic.CLOSING[2].format(API_NAME())}
       </p>
     </div>
   `;
@@ -94,13 +96,13 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const linkDeposit = `${domain}/deposit`;
 	return `
     ${stringDynamic.GREETING.format(email)}
-    ${stringDynamic.BODY[1]}
+    ${stringDynamic.BODY[1].format(API_NAME())}
     ${stringDynamic.BODY[2].format(
 		`${stringDynamic.BODY[3]}(${linkAccount})`,
 		`${stringDynamic.BODY[4]}(${linkDeposit})`
 	)}
     ${stringDynamic.BODY[5]}
-    ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}
+    ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
   `;
 };
 

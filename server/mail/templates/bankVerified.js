@@ -1,5 +1,7 @@
 'use strict';
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
+
 const parseBanks = (bankAccounts) => {
 	let result = '';
 	bankAccounts.forEach((bank) => {
@@ -93,7 +95,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 			</p>
 			<p>
 				${stringDynamic.CLOSING[1]}<br />
-				${stringDynamic.CLOSING[2]}
+				${stringDynamic.CLOSING[2].format(API_NAME())}
 			</p>
 		</div>
 	`;
@@ -104,7 +106,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 		${stringDynamic.GREETING.format(email)}
 		${stringDynamic.BODY[1]}
 		${stringDynamic.BODY[2]}
-		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}
+		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
 	`;
 };
 
