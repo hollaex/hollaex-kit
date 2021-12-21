@@ -1139,6 +1139,41 @@ const postKitUserMeta = (req, res) => {
 		});
 };
 
+const getEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
+	try {
+		const data = cloneDeep({
+			email: toolsLib.getEmail()
+		});
+		return res.json(data);
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+};
+
+const putEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putEmail', req.auth.sub);
+
+	const updateData = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putEmail',
+		'updateData',
+		updateData
+	);
+
+	toolsLib.updateEmail(updateData)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
 
@@ -1824,5 +1859,7 @@ module.exports = {
 	getNetworkCoins,
 	getNetworkPairs,
 	updateExchange,
-	putUserInfo
+	putUserInfo,
+	getEmail,
+	putEmail
 };
