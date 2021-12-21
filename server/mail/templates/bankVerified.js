@@ -1,5 +1,5 @@
 'use strict';
-
+const { GET_EMAIL } = require('../../constants');
 const parseBanks = (bankAccounts) => {
 	let result = '';
 	bankAccounts.forEach((bank) => {
@@ -24,6 +24,14 @@ const parseBanks = (bankAccounts) => {
 };
 
 const fetchMessage = (email, data, language, domain) => {
+	const emailConfigurations = GET_EMAIL();
+	if(emailConfigurations[language] && emailConfigurations[language]['BANKVERIFIED']) {
+		const stringDynamic = emailConfigurations[language]['BANKVERIFIED'];
+		return {
+			html: htmlDynamic(email, data, language, domain, stringDynamic),
+			text: textDynamic(email, data, language, domain, stringDynamic)
+		};
+	}
 	return {
 		html: html(email, data, language, domain),
 		text: text(email, data, language, domain)
@@ -63,6 +71,40 @@ const text = (email, data, language, domain) => {
 		${BANKVERIFIED.BODY[1]}
 		${BANKVERIFIED.BODY[2]}
 		${BANKVERIFIED.CLOSING[1]} ${BANKVERIFIED.CLOSING[2]()}
+	`;
+};
+
+const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const link = `${domain}/verification`;
+	return `
+		<div>
+			<p>
+				${stringDynamic.GREETING.format(email)}
+			</p>
+			<p>
+				${stringDynamic.BODY[1]}
+			</p>
+			<div>
+				<strong>Verified Bank Accounts:</strong>
+				${parseBanks(data.bankAccounts)}
+			</div>
+			<p>
+				<a href=${link}>${stringDynamic.BODY[2]}</a>
+			</p>
+			<p>
+				${stringDynamic.CLOSING[1]}<br />
+				${stringDynamic.CLOSING[2]}
+			</p>
+		</div>
+	`;
+};
+
+const textDynamic = (email, data, language, domain, stringDynamic) => {
+	return `
+		${stringDynamic.GREETING.format(email)}
+		${stringDynamic.BODY[1]}
+		${stringDynamic.BODY[2]}
+		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}
 	`;
 };
 
