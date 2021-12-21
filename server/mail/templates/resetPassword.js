@@ -1,7 +1,8 @@
 'use strict';
 
 const { Button } = require('./helpers/common');
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
@@ -80,7 +81,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
       </p>
       <p>
         ${stringDynamic.CLOSING[1]}<br />
-        ${stringDynamic.CLOSING[2]}
+        ${stringDynamic.CLOSING[2].format(API_NAME())}
       </p>
     </div>
   `;
@@ -96,7 +97,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
     ${stringDynamic.BODY[4]}
     ${stringDynamic.BODY[5].format(data.ip)}
     ${stringDynamic.CLOSING[1]}
-    ${stringDynamic.CLOSING[2]}
+    ${stringDynamic.CLOSING[2].format(API_NAME())}
   `;
 };
 

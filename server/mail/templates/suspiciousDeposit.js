@@ -60,7 +60,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
     ${stringDynamic.BODY[1]}
     ${stringDynamic.BODY[2].format(email, data.currency)}
     ${stringDynamic.BODY[3].format(data.txid)}
-    ${stringDynamic.BODY[4]} ${SUSPICIOUSDEPOSIT.BODY[5].format(data)}
+    ${stringDynamic.BODY[4]} ${stringDynamic.BODY[5].format(data)}
   `;
 };
 

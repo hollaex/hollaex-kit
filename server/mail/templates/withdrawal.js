@@ -1,8 +1,8 @@
 'use strict';
 
-const { GET_COINS, EXPLORERS } = require('../../constants');
+const { GET_COINS, EXPLORERS, GET_KIT_CONFIG, GET_EMAIL } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
 
-const { GET_EMAIL } = require('../../constants');
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
 	if(emailConfigurations[language] && emailConfigurations[language]['WITHDRAWAL']) {
@@ -149,7 +149,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	}
 	result += `<p>
 			${stringDynamic.CLOSING[1]}<br />
-			${stringDynamic.CLOSING[2]}
+			${stringDynamic.CLOSING[2].format(API_NAME())}
 			</p>
 		</div>`;
 	return result;
@@ -171,7 +171,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 	} else {
 		result += '';
 	}
-	result += `${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}`;
+	result += `${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}`;
 	return result;
 };
 

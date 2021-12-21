@@ -1,7 +1,8 @@
 'use strict';
 
 const { CONFIRMATION, EXPLORERS, GET_COINS } = require('../../constants');
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
@@ -139,7 +140,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 
 		result += `
 			<p>
-				${stringDynamic.BODY[data.status].format(data.amount, confirmation, data.currency.toUpperCase())}
+				${stringDynamic.BODY[data.status].format(data.amount, confirmation, data.currency.toUpperCase(), API_NAME())}
 			</p>
 			<p>
 				${stringDynamic.BODY[1].format(data.amount, data.currency.toUpperCase())}
@@ -166,7 +167,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	result += `
 			<p>
 				${stringDynamic.CLOSING[1]}<br />
-				${stringDynamic.CLOSING[2]}
+				${stringDynamic.CLOSING[2].format(API_NAME())}
 			</p>
 		</div>
 		`;
@@ -181,7 +182,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
 		}
 		result += `
-			${stringDynamic.BODY[data.status].format(data.amount, confirmation, data.currency.toUpperCase())}
+			${stringDynamic.BODY[data.status].format(data.amount, confirmation, data.currency.toUpperCase(), API_NAME())}
 			${stringDynamic.BODY[1].format(data.amount, data.currency.toUpperCase())}
 			${stringDynamic.BODY[2].format(data.status)}
 			${data.transaction_id && data.address ? stringDynamic.BODY[3].format(data.address) : ''}
@@ -193,7 +194,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 	} else {
 		result += '';
 	}
-	result += `${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}`;
+	result += `${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}`;
 	return result;
 };
 

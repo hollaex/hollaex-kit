@@ -1,7 +1,9 @@
 'use strict';
 
 const { Button } = require('./helpers/common');
-const { GET_EMAIL } = require('../../constants');
+const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
+const API_NAME = () => GET_KIT_CONFIG().api_name;
+
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
 	if(emailConfigurations[language] && emailConfigurations[language]['ACCOUNTUPGRADE']) {
@@ -61,7 +63,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
             ${Button(link, stringDynamic.BODY[2])}
             <p>
                 ${stringDynamic.CLOSING[1]}<br />
-                ${stringDynamic.CLOSING[2]}
+                ${stringDynamic.CLOSING[2].format(API_NAME())}
             </p>
         </div>
     `;
@@ -73,7 +75,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
         ${stringDynamic.GREETING.format(email)}
         ${stringDynamic.BODY[1].format(data)}
         ${stringDynamic.BODY[2]}(${link})
-        ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2]}
+        ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
     `;
 };
 
