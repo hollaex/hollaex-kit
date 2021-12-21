@@ -4,22 +4,12 @@ import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import { Link } from 'react-router';
 
 import { getFees, getFeesDownload } from '../AdminFees/action';
 import { STATIC_ICONS } from 'config/icons';
 import { SettleModal } from './SettleModal';
 import { requestUsers } from '../ListUsers/actions';
 import Filter from './filter';
-import _groupBy from 'lodash/groupBy';
-
-const renderUser = (id) => (
-	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
-		<Button type="primary" className="green-btn">
-			<Link to={`/admin/user?id=${id}`}>{id}</Link>
-		</Button>
-	</Tooltip>
-);
 
 const earningsColumns = [
 	{
@@ -28,11 +18,6 @@ const earningsColumns = [
 		key: 'date',
 		render: (date) => <div className="table-content">{date}</div>,
 	},
-	{
-		title: 'User Id',
-		dataIndex: 'user_id',
-		render: renderUser,
-	},
 ];
 
 const descriptionColumn = [
@@ -40,6 +25,11 @@ const descriptionColumn = [
 		title: 'Transaction_ID',
 		dataIndex: 'transaction_id',
 		key: 'transaction_id',
+	},
+	{
+		title: 'Network_ID',
+		dataIndex: 'user_id',
+		key: 'user_id',
 	},
 	{
 		title: 'Amount',
@@ -158,16 +148,11 @@ class Earnings extends Component {
 	};
 
 	handleData = () => {
-		const result = [];
-		Object.keys(this.state.feesData).forEach((key) => {
-			let data = _groupBy(this.state.feesData[key], 'user_id');
-			Object.keys(data).forEach((item) => {
-				result.push({
-					date: key,
-					user_id: item,
-					fields: data[item],
-				});
-			});
+		const result = Object.keys(this.state.feesData).map((key) => {
+			return {
+				date: key,
+				fields: this.state.feesData[key],
+			};
 		});
 		this.setState({ earningsData: result });
 	};

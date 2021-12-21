@@ -29,8 +29,8 @@ export class SettleModal extends Component {
 		getSettle()
 			.then((response) => {
 				message.success('Successfully Settled');
-				if (selectedUser && selectedUser.network_id) {
-					requestFees({ user_id: selectedUser.network_id });
+				if (selectedUser && selectedUser.id) {
+					requestFees({ user_id: selectedUser.id });
 				}
 			})
 			.catch((error) => {
@@ -137,7 +137,7 @@ export class SettleModal extends Component {
 							</div>
 							<div className="title-content margin-top-bottom">
 								<div>Receiver user ID:</div>
-								<div>{_get(selectedUser, 'network_id')}</div>
+								<div>{_get(selectedUser, 'id')}</div>
 							</div>
 							<div className="title-content margin-top-bottom">
 								<div>From last settlement:</div>
