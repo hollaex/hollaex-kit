@@ -2066,6 +2066,12 @@ paths:
       description: Settle exchange fees
       tags:
         - Admin
+      parameters:
+        - in: query
+          name: user_id
+          required: false
+          type: number
+          format: int32
       responses:
         200:
           description: Success
