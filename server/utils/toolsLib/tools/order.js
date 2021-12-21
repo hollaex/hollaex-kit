@@ -593,11 +593,25 @@ const getGeneratedFees = (startDate, endDate, opts = {
 	});
 };
 
-const settleFees = (opts = {
-	user_id: null,
+const settleFees = async (opts = {
 	additionalHeaders: null
 }) => {
-	return getNodeLib().settleFees(opts);
+	let network_id = null;
+	if (opts.user_id) {
+		const user = await getUserByKitId(opts.user_id, false);
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!user.network_id) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = user.network_id;
+		}
+	}
+
+	return getNodeLib().settleFees({
+		additionalHeaders: opts.additionalHeaders,
+		user_id: network_id
+	});
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
