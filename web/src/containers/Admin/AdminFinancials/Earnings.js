@@ -4,11 +4,22 @@ import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import { Link } from 'react-router';
 
 import { getFees, getFeesDownload } from '../AdminFees/action';
 import { STATIC_ICONS } from 'config/icons';
 import { SettleModal } from './SettleModal';
+import { requestUsers } from '../ListUsers/actions';
 import Filter from './filter';
+import _groupBy from 'lodash/groupBy';
+
+const renderUser = (id) => (
+	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+		<Button type="primary" className="green-btn">
+			<Link to={`/admin/user?id=${id}`}>{id}</Link>
+		</Button>
+	</Tooltip>
+);
 
 const earningsColumns = [
 	{
@@ -16,6 +27,11 @@ const earningsColumns = [
 		dataIndex: 'date',
 		key: 'date',
 		render: (date) => <div className="table-content">{date}</div>,
+	},
+	{
+		title: 'User Id',
+		dataIndex: 'user_id',
+		render: renderUser,
 	},
 ];
 
@@ -84,6 +100,9 @@ class Earnings extends Component {
 			end_date: moment().format('YYYY-MM-DD'),
 			start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
 			buttonSubmitting: false,
+			currentScreen: '',
+			userDetails: [],
+			isLoading: false,
 		};
 	}
 
@@ -91,13 +110,24 @@ class Earnings extends Component {
 		this.requestFees();
 	}
 
-	requestFees = () => {
+	requestFees = (params) => {
 		const { start_date, end_date } = this.state;
+		let body = {
+			start_date,
+			end_date,
+		};
+		if (params) {
+			body = {
+				...params,
+				start_date,
+				end_date,
+			};
+		}
 		this.setState({
 			error: '',
 			buttonSubmitting: true,
 		});
-		return getFees({ start_date, end_date })
+		return getFees(body)
 			.then((response) => {
 				this.setState({
 					feesData: response,
@@ -128,17 +158,55 @@ class Earnings extends Component {
 	};
 
 	handleData = () => {
-		const result = Object.keys(this.state.feesData).map((key) => {
-			return {
-				date: key,
-				fields: this.state.feesData[key],
-			};
+		const result = [];
+		Object.keys(this.state.feesData).forEach((key) => {
+			let data = _groupBy(this.state.feesData[key], 'user_id');
+			Object.keys(data).forEach((item) => {
+				result.push({
+					date: key,
+					user_id: item,
+					fields: data[item],
+				});
+			});
 		});
 		this.setState({ earningsData: result });
 	};
 
 	toggleVisibility = () => {
-		this.setState({ isOpen: !this.state.isOpen });
+		const { currentScreen } = this.state;
+		if (currentScreen === 'step2') {
+			this.setState({ currentScreen: 'step1' });
+		} else if (currentScreen === 'step1') {
+			this.setState({
+				isOpen: !this.state.isOpen,
+				currentScreen: '',
+			});
+			this.getAllUserData();
+		}
+	};
+
+	handleSettle = () => {
+		this.setState({
+			isOpen: !this.state.isOpen,
+			currentScreen: '',
+		});
+		this.getAllUserData();
+	};
+
+	toggleOpen = () => {
+		this.setState({ isOpen: !this.state.isOpen, currentScreen: 'step1' });
+	};
+
+	handleModalOpen = () => {
+		this.setState({
+			isOpen: !this.state.isOpen,
+			currentScreen: '',
+		});
+		this.getAllUserData();
+	};
+
+	handleNext = () => {
+		this.setState({ currentScreen: 'step2' });
 	};
 
 	handleDownload = () => {
@@ -159,10 +227,21 @@ class Earnings extends Component {
 		}
 	};
 
+	getAllUserData = async (params = { search: '' }) => {
+		this.setState({ isLoading: true });
+		try {
+			const response = await requestUsers(params);
+			if (response.data) {
+				this.setState({ userDetails: response.data, isLoading: false });
+			}
+		} catch (error) {
+			this.setState({ isLoading: false });
+		}
+	};
+
 	render() {
 		const { info } = this.props;
 		const { earningsData, isOpen, buttonSubmitting } = this.state;
-
 		return (
 			<div className="admin-earnings-container">
 				<div>
@@ -184,7 +263,7 @@ class Earnings extends Component {
 					</div>
 					<div>{this.renderMember(info.collateral_level)}</div>
 					<div>
-						<Button onClick={this.toggleVisibility} className=" button">
+						<Button onClick={this.toggleOpen} className=" button">
 							Settle
 						</Button>
 					</div>
@@ -192,13 +271,20 @@ class Earnings extends Component {
 				<Modal
 					visible={isOpen}
 					footer={null}
-					onCancel={this.toggleVisibility}
+					onCancel={this.handleModalOpen}
 					width="37rem"
 				>
 					<SettleModal
 						toggleVisibility={this.toggleVisibility}
 						earningsData={earningsData}
 						requestFees={this.requestFees}
+						currentScreen={this.state.currentScreen}
+						handleNext={this.handleNext}
+						userDetails={this.state.userDetails}
+						getAllUserData={this.getAllUserData}
+						isLoading={this.state.isLoading}
+						handleSettle={this.handleSettle}
+						isOpen={isOpen}
 					/>
 				</Modal>
 				<div className="table-container">
@@ -232,7 +318,7 @@ class Earnings extends Component {
 							dataSource={earningsData.map((data) => {
 								return data;
 							})}
-							rowKey={(data) => data.date}
+							rowKey={(data, index) => index}
 							expandedRowRender={(record) => {
 								return (
 									<Table

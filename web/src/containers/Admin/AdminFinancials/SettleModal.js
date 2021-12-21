@@ -1,67 +1,167 @@
 import React, { Component } from 'react';
-import { Button, message } from 'antd';
+import { Button, message, Select, Form } from 'antd';
 import { getSettle } from '../AdminFees/action';
 import moment from 'moment';
+import _get from 'lodash/get';
+const { Option } = Select;
 
 export class SettleModal extends Component {
-	settleFee = () => {
-		const { toggleVisibility, requestFees } = this.props;
+	constructor(props) {
+		super(props);
+		this.state = {
+			selectedUser: {},
+		};
+	}
 
+	componentDidMount() {
+		this.props.getAllUserData();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.isOpen !== this.props.isOpen) {
+			this.setState({ selectedUser: {} });
+		}
+	}
+
+	settleFee = () => {
+		const { requestFees, handleSettle } = this.props;
+		const { selectedUser } = this.state;
 		getSettle()
 			.then((response) => {
 				message.success('Successfully Settled');
-				requestFees();
+				if (selectedUser && selectedUser.network_id) {
+					requestFees({ user_id: selectedUser.network_id });
+				}
 			})
 			.catch((error) => {
 				const error_msg = error.data ? error.data.message : error.message;
 				message.error(error_msg);
 			});
-		toggleVisibility();
+		handleSettle();
 	};
+
+	handleSearch = (value) => {
+		this.props.getAllUserData({ search: value });
+	};
+
+	handleSubmit = (value) => {
+		const filterData = this.props.userDetails.filter(
+			(data) => value.email === data.email
+		);
+		this.setState({ selectedUser: filterData[0] });
+		this.props.handleNext();
+	};
+
 	render() {
-		const { toggleVisibility, earningsData } = this.props;
+		const {
+			toggleVisibility,
+			earningsData,
+			currentScreen,
+			userDetails,
+		} = this.props;
+		const { selectedUser } = this.state;
 		return (
-			<div className="settle-modal-page">
-				<div className="d-flex align-items-center">
-					<div className="dollar-icon text-center">$</div>
-					<div className="heading">Settle trading fees</div>
-				</div>
-				<div className="margin-top-bottom">
-					Click settle below to calculate the trading fees generated from your
-					users from the last settlement date until today.
-				</div>
-				<div className="margin-top-bottom">
-					The settled earning amounts will be freely accessible to use.
-				</div>
-				<div className="modal-content">
-					<span className="legend title-content text-center">
-						Calculate earning dates
-					</span>
-					<div>
-						<div className="title-content margin-top-bottom">
-							From last settlement:
+			<div>
+				{currentScreen === 'step1' ? (
+					<div className="settle-modal-page">
+						<div className="d-flex align-items-center">
+							<div className="dollar-icon text-center">$</div>
+							<div className="heading">Settle trading fees</div>
+						</div>
+						<div className="margin-top-bottom">
+							Which account would you like to send the earnings to?.
 						</div>
 						<div>
-							{earningsData[0] && earningsData[0].date
-								? moment(earningsData[0].date).format('YYYY-MM-DD')
-								: 'N/A'}
+							<div>Account (input an email)</div>
+							<Form
+								onFinish={this.handleSubmit}
+								initialValues={{ email: this.state.selectedUser.email }}
+							>
+								<Form.Item
+									name="email"
+									rules={[
+										{
+											required: true,
+											message: 'Please input your E-mail!',
+										},
+									]}
+								>
+									<Select
+										showSearch
+										placeholder="Input an email"
+										className="user-search-field"
+										onSearch={(text) => this.handleSearch(text.toLowerCase())}
+										filterOption={() => true}
+										loading={this.props.isLoading}
+									>
+										{this.props.userDetails.map((sender) => (
+											<Option key={sender.email}>{sender.email}</Option>
+										))}
+									</Select>
+								</Form.Item>
+								<div className="btn-wrapper">
+									<Button type="primary" onClick={toggleVisibility}>
+										Cancel
+									</Button>
+									<Button
+										type="primary"
+										htmlType="submit"
+										disabled={userDetails.length ? false : true}
+									>
+										Next
+									</Button>
+								</div>
+							</Form>
 						</div>
 					</div>
-					<div>
-						<div className="title-content margin-top-bottom">
-							Until current todays date:
+				) : currentScreen === 'step2' ? (
+					<div className="settle-modal-page">
+						<div className="d-flex align-items-center">
+							<div className="dollar-icon text-center">$</div>
+							<div className="heading">Settle trading fees</div>
 						</div>
-						<div>{moment().format('YYYY-MM-DD')}</div>
+						<div className="margin-top-bottom">
+							Click settle below to calculate the trading fees generated from
+							your users from the last settlement date until today.
+						</div>
+						<div className="margin-top-bottom">
+							The settled earning amounts will be freely accessible to use.
+						</div>
+						<div className="modal-content">
+							<span className="legend title-content text-center">
+								Calculate earning dates
+							</span>
+							<div className="title-content margin-top-bottom">
+								<div>User account:</div>
+								<div>{_get(selectedUser, 'email')}</div>
+							</div>
+							<div className="title-content margin-top-bottom">
+								<div>Receiver user ID:</div>
+								<div>{_get(selectedUser, 'network_id')}</div>
+							</div>
+							<div className="title-content margin-top-bottom">
+								<div>From last settlement:</div>
+								<div>
+									{earningsData[0] && earningsData[0].date
+										? moment(earningsData[0].date).format('YYYY-MM-DD')
+										: 'N/A'}
+								</div>
+							</div>
+							<div className="title-content margin-top-bottom">
+								<div>Until current todays date:</div>
+								<div>{moment().format('YYYY-MM-DD')}</div>
+							</div>
+						</div>
+						<div className="d-flex justify-content-around">
+							<Button className="modal-button" onClick={toggleVisibility}>
+								Back
+							</Button>
+							<Button className="modal-button" onClick={this.settleFee}>
+								Settle
+							</Button>
+						</div>
 					</div>
-				</div>
-				<div className="d-flex justify-content-around">
-					<Button className="modal-button" onClick={toggleVisibility}>
-						Back
-					</Button>
-					<Button className="modal-button" onClick={this.settleFee}>
-						Settle
-					</Button>
-				</div>
+				) : null}
 			</div>
 		);
 	}
