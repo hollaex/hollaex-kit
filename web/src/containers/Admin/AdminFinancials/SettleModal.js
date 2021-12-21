@@ -13,6 +13,16 @@ export class SettleModal extends Component {
 		};
 	}
 
+	componentDidMount() {
+		this.props.getAllUserData();
+	}
+
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.isOpen !== this.props.isOpen) {
+			this.setState({ selectedUser: {} });
+		}
+	}
+
 	settleFee = () => {
 		const { requestFees, handleSettle } = this.props;
 		const { selectedUser } = this.state;
@@ -63,7 +73,10 @@ export class SettleModal extends Component {
 						</div>
 						<div>
 							<div>Account (input an email)</div>
-							<Form onFinish={this.handleSubmit}>
+							<Form
+								onFinish={this.handleSubmit}
+								initialValues={{ email: this.state.selectedUser.email }}
+							>
 								<Form.Item
 									name="email"
 									rules={[
