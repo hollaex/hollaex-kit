@@ -70,7 +70,7 @@ const filterOptions = [
 		label: 'Date',
 		value: 'date',
 		secondaryType: 'date-range',
-		secondaryDefaultValue: [moment().subtract(30, 'days'), moment()],
+		secondaryDefaultValue: [moment().subtract(90, 'days'), moment()],
 	},
 ];
 
@@ -87,8 +87,8 @@ class Earnings extends Component {
 			earningsData: [],
 			feesData: [],
 			isOpen: false,
-			end_date: moment().format('YYYY-MM-DD'),
-			start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+			end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
+			start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
 			buttonSubmitting: false,
 			currentScreen: '',
 			userDetails: [],
@@ -100,24 +100,13 @@ class Earnings extends Component {
 		this.requestFees();
 	}
 
-	requestFees = (params) => {
+	requestFees = () => {
 		const { start_date, end_date } = this.state;
-		let body = {
-			start_date,
-			end_date,
-		};
-		if (params) {
-			body = {
-				...params,
-				start_date,
-				end_date,
-			};
-		}
 		this.setState({
 			error: '',
 			buttonSubmitting: true,
 		});
-		return getFees(body)
+		return getFees({ start_date, end_date })
 			.then((response) => {
 				this.setState({
 					feesData: response,
@@ -206,8 +195,8 @@ class Earnings extends Component {
 		}
 		if (!value) {
 			this.setState({
-				end_date: moment().format('YYYY-MM-DD'),
-				start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+				end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
+				start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
 			});
 		}
 	};
