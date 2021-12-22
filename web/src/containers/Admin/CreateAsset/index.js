@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import _toLower from 'lodash/toLower';
 import _get from 'lodash/get';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -176,6 +176,31 @@ class CreateAsset extends Component {
 		};
 		this.setState({
 			[name]: value,
+			coinFormData,
+		});
+		this.props.handleEditDataCallback(coinFormData);
+		this.props.updateFormData(name, value);
+	};
+
+	handleWithdrawalFeeChange = (asset, value, key, name) => {
+		const coinFormData = {
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
+		};
+		this.setState({
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
 			coinFormData,
 		});
 		this.props.handleEditDataCallback(coinFormData);
@@ -663,7 +688,24 @@ class CreateAsset extends Component {
 						coins={this.props.coins}
 						handleScreenChange={this.handleScreenChange}
 						isWithdrawalEdit={this.props.isWithdrawalEdit}
+						handleWithdrawalFeeChange={this.handleWithdrawalFeeChange}
 					/>
+				);
+			case 'withdrawal_fee_confirm':
+				return (
+					<div>
+						<div className='title mb-3'>Withdrawal fees confirm</div>
+						<div>
+							To save and apply the changes, you need to click the save button in the top right corner once you close this popup.
+						</div>
+						<Button
+							type='primary'
+							className='green-btn w-100 mt-4'
+							onClick={this.props.onClose}
+						>
+							Close
+						</Button>
+					</div>
 				);
 			case 'step1':
 			default:

@@ -2,8 +2,14 @@ import React from 'react';
 import { Button, Select, InputNumber, Form } from 'antd';
 import _get from 'lodash/get';
 
-const WithdrawalFee = ({ coinFormData = {}, updateFormData, handleClose, coins = [], handleScreenChange, isWithdrawalEdit = false }) => {
-    
+const WithdrawalFee = ({
+    coinFormData = {},
+    updateFormData,
+    coins = [],
+    handleScreenChange,
+    isWithdrawalEdit = false,
+    handleWithdrawalFeeChange
+}) => {
     const [form] = Form.useForm();
     const withdrawal_fees = _get(coinFormData, 'withdrawal_fees', {});
 
@@ -23,7 +29,7 @@ const WithdrawalFee = ({ coinFormData = {}, updateFormData, handleClose, coins =
         }
         updateFormData('withdrawal_fees', formProps);
         if (isWithdrawalEdit) {
-            handleClose();
+            handleScreenChange('withdrawal_fee_confirm');
         } else {
             handleScreenChange('final');
         }
@@ -66,7 +72,7 @@ const WithdrawalFee = ({ coinFormData = {}, updateFormData, handleClose, coins =
                                     },
                                 ]}
                             >
-                                <InputNumber />
+                                <InputNumber onChange={(val) => handleWithdrawalFeeChange(data, val, 'value', 'withdrawal_fees')}/>
                             </Form.Item>
                         </div>
                         <div className="field-wrap last">
@@ -83,6 +89,7 @@ const WithdrawalFee = ({ coinFormData = {}, updateFormData, handleClose, coins =
                                 <Select
                                     size="small"
                                     className="w-100"
+                                    onChange={(val) => handleWithdrawalFeeChange(data, val, 'symbol', 'withdrawal_fees')}
                                 >
                                     {coins.map((option, index) => (
                                         <Select.Option key={index} value={option.symbol}>
