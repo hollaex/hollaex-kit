@@ -49,7 +49,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
         ${stringDynamic.BODY[2].format(email, data.currency)}<br />
         ${stringDynamic.BODY[3].format(data.txid)}
         <h4>${stringDynamic.BODY[4]}</h4>
-        <div>${stringDynamic.BODY[5].format(data)}</div>
+        <div>${JSON.stringify(data)}</div>
       </div>
     </div>
   `;
@@ -60,7 +60,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
     ${stringDynamic.BODY[1]}
     ${stringDynamic.BODY[2].format(email, data.currency)}
     ${stringDynamic.BODY[3].format(data.txid)}
-    ${stringDynamic.BODY[4]} ${stringDynamic.BODY[5].format(data)}
+    ${stringDynamic.BODY[4]} ${JSON.stringify(data)}
   `;
 };
 

@@ -48,7 +48,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
       </h3>
       <div>
         ${stringDynamic.BODY[2].format(email)}<br />
-        ${stringDynamic.BODY[3].format(data)}
+        ${JSON.stringify(data, null, 2)}
       </div>
     </div>
   `;
@@ -58,7 +58,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 	return `
     ${stringDynamic.BODY[1]}
     ${stringDynamic.BODY[2].format(email)}
-    ${stringDynamic.BODY[3].format(data)}
+    ${JSON.stringify(data, null, 2)}
   `;
 };
 
