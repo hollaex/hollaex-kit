@@ -26,18 +26,22 @@ export class SettleModal extends Component {
 	settleFee = () => {
 		const { requestFees, handleSettle } = this.props;
 		const { selectedUser } = this.state;
-		getSettle()
-			.then((response) => {
-				message.success('Successfully Settled');
-				if (selectedUser && selectedUser.id) {
-					requestFees({ user_id: selectedUser.id });
-				}
-			})
-			.catch((error) => {
-				const error_msg = error.data ? error.data.message : error.message;
-				message.error(error_msg);
-			});
-		handleSettle();
+		if (selectedUser && selectedUser.id) {
+			getSettle(selectedUser.id)
+				.then((response) => {
+					message.success('Successfully Settled');
+					requestFees();
+				})
+				.catch((error) => {
+					const error_msg = error.data ? error.data.message : error.message;
+					message.error(error_msg);
+				})
+				.finally(() => {
+					handleSettle();
+				})
+		} else {
+			handleSettle();
+		}
 	};
 
 	handleSearch = (value) => {
