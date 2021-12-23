@@ -142,7 +142,7 @@ const Burn = ({
 						className="user-search-field"
 						onSearch={(text) => handleSearch(text)}
 						filterOption={() => true}
-						autoComplete={true}
+						autoComplete={false}
 					>
 						{dataSource.map((sender) => (
 							<Option key={sender.id}>{sender.email}</Option>
