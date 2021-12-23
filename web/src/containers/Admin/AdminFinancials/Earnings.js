@@ -187,10 +187,10 @@ class Earnings extends Component {
 		return getFeesDownload({ format: 'csv' });
 	};
 
-	SetFilterDates = (value) => {
+	setFilterDates = (value) => {
 		if (value && value.length) {
-			const start_date = value[0].format('YYYY-MM-DD');
-			const end_date = value[1].format('YYYY-MM-DD');
+			const start_date = value[0].format('YYYY-MM-DD hh:mm A');
+			const end_date = value[1].format('YYYY-MM-DD hh:mm A');
 			this.setState({ start_date, end_date });
 		}
 		if (!value) {
@@ -201,7 +201,7 @@ class Earnings extends Component {
 		}
 	};
 
-	getAllUserData = async (params = { search: '' }) => {
+	getAllUserData = async (params = {}) => {
 		this.setState({ isLoading: true });
 		try {
 			const response = await requestUsers(params);
@@ -270,7 +270,7 @@ class Earnings extends Component {
 						<div>
 							<Filter
 								selectOptions={filterOptions}
-								onChange={this.SetFilterDates}
+								onChange={this.setFilterDates}
 								onClickFilter={this.requestFees}
 								buttonSubmitting={buttonSubmitting}
 							/>

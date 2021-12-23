@@ -83,7 +83,11 @@ const Burn = ({
 	};
 
 	const searchUser = (searchText) => {
-		getAllUsers({ search: searchText });
+		if (searchText) {
+			getAllUsers({ search: searchText });
+		} else {
+			getAllUsers();
+		}
 	};
 
 	const handleSearch = _debounce(searchUser, 1000);
@@ -138,6 +142,7 @@ const Burn = ({
 						className="user-search-field"
 						onSearch={(text) => handleSearch(text)}
 						filterOption={() => true}
+						autoComplete={false}
 					>
 						{dataSource.map((sender) => (
 							<Option key={sender.id}>{sender.email}</Option>

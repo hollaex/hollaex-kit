@@ -3,6 +3,8 @@ import { Button, message, Select, Form } from 'antd';
 import { getSettle } from '../AdminFees/action';
 import moment from 'moment';
 import _get from 'lodash/get';
+import _debounce from 'lodash/debounce';
+
 const { Option } = Select;
 
 export class SettleModal extends Component {
@@ -44,7 +46,7 @@ export class SettleModal extends Component {
 		}
 	};
 
-	handleSearch = (value) => {
+	searchUser = (value) => {
 		this.props.getAllUserData({ search: value });
 	};
 
@@ -55,6 +57,8 @@ export class SettleModal extends Component {
 		this.setState({ selectedUser: filterData[0] });
 		this.props.handleNext();
 	};
+
+	handleSearch = _debounce(this.searchUser, 500);
 
 	render() {
 		const {
