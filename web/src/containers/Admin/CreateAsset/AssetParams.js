@@ -12,8 +12,10 @@ const AssetParams = ({
 }) => {
 
 	const handleMoveNext = () => {
-		if (coinFormData.withdrawal_fees) {
+		if (coinFormData.withdrawal_fees && !editParams) {
 			handleScreenChange('edit_withdrawal_fees');
+		} else if (editParams) {
+			handleScreenChange('update_confirm');
 		} else {
 			handleNext();
 		}
@@ -65,7 +67,7 @@ const AssetParams = ({
 						</div>
 					</Checkbox>
 				</div>
-				{!coinFormData.withdrawal_fees
+				{/* {!coinFormData.withdrawal_fees
 					?
 					<div className="field-wrap">
 						<div className="sub-title">Fee for withdrawal</div>
@@ -82,7 +84,7 @@ const AssetParams = ({
 						/>
 					</div>
 					: null
-				}
+				} */}
 				<div className="field-wrap">
 					<div className="sub-title">Minimum Withdrawal Amount</div>
 					<div className="description">
@@ -109,7 +111,7 @@ const AssetParams = ({
 						value={coinFormData.max}
 					/>
 				</div>
-				<div className={editParams ? 'field-wrap' : 'field-wrap last'}>
+				<div className='field-wrap last'>
 					<div className="sub-title">Increment Amount</div>
 					<div className="description">
 						<div>
@@ -123,7 +125,7 @@ const AssetParams = ({
 						value={coinFormData.increment_unit}
 					/>
 				</div>
-				{editParams ? (
+				{/* {editParams ? (
 					<div className="field-wrap last">
 						<div className="sub-title">Decimal points (max 18):</div>
 						<InputNumber
@@ -132,7 +134,7 @@ const AssetParams = ({
 							value={coinFormData.meta.decimal_points}
 						/>
 					</div>
-				) : null}
+				) : null} */}
 				<div className="btn-wrapper">
 					<Button
 						type="primary"
@@ -148,9 +150,16 @@ const AssetParams = ({
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" onClick={handleMoveNext}>
-						Confirm
-					</Button>
+					{editParams
+						?
+						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+							Next
+						</Button>
+						:
+						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+							Confirm
+						</Button>
+					}
 				</div>
 			</div>
 		</Fragment>

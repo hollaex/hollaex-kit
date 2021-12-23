@@ -8,7 +8,8 @@ const WithdrawalFee = ({
     coins = [],
     handleScreenChange,
     isWithdrawalEdit = false,
-    handleWithdrawalFeeChange
+    handleWithdrawalFeeChange,
+    handleSymbolChange
 }) => {
     const [form] = Form.useForm();
     const withdrawal_fees = _get(coinFormData, 'withdrawal_fees', {});
@@ -29,7 +30,7 @@ const WithdrawalFee = ({
         }
         updateFormData('withdrawal_fees', formProps);
         if (isWithdrawalEdit) {
-            handleScreenChange('withdrawal_fee_confirm');
+            handleScreenChange('update_confirm');
         } else {
             handleScreenChange('final');
         }
@@ -37,13 +38,21 @@ const WithdrawalFee = ({
 
     const getInitialValues = () => {
         let initialValues = {};
-        Object.keys(withdrawal_fees).forEach(data => {
+        if (withdrawal_fees) {
+            Object.keys(withdrawal_fees).forEach(data => {
+                initialValues = {
+                    ...initialValues,
+                    [`${data}_value`]: withdrawal_fees[data].value,
+                    [`${data}_symbol`]: withdrawal_fees[data].symbol
+                }
+            });
+        } else {
             initialValues = {
                 ...initialValues,
-                [`${data}_value`]: withdrawal_fees[data].value,
-                [`${data}_symbol`]: withdrawal_fees[data].symbol
+                [`${coinFormData && coinFormData.symbol}_value`]: coinFormData.withdrawal_fee || 0,
+                [`${coinFormData && coinFormData.symbol}_symbol`]: coinFormData.symbol
             }
-        });
+        }
         return initialValues;
     };
 
@@ -56,7 +65,8 @@ const WithdrawalFee = ({
                 name="withdrawalForm"
                 onFinish={handleUpdate}
             >
-                {Object.keys(withdrawal_fees).map((data, key) => {
+                {withdrawal_fees 
+                    ? Object.keys(withdrawal_fees).map((data, key) => {
                     return <div key={key}>
                         <div className="field-wrap">
                             <div className="sub-title">{data.toUpperCase()}</div>
@@ -100,7 +110,52 @@ const WithdrawalFee = ({
                             </Form.Item>
                         </div>
                     </div>
-                })}
+                })
+                : 
+                    <div>
+                        <div className="field-wrap">
+                            <div className="sub-title">{coinFormData && coinFormData.symbol && coinFormData.symbol.toUpperCase()}</div>
+                        </div>
+                        <div className="field-wrap last">
+                            <div className="sub-title">Value</div>
+                            <Form.Item
+                                name={`${coinFormData && coinFormData.symbol}_value`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'This field is required!',
+                                    },
+                                ]}
+                            >
+                                <InputNumber onChange={(val) => handleSymbolChange(coinFormData && coinFormData.symbol, val, 'value', 'withdrawal_fees')} />
+                            </Form.Item>
+                        </div>
+                        <div className="field-wrap last">
+                            <div className="sub-title">Symbol</div>
+                            <Form.Item
+                                name={`${coinFormData && coinFormData.symbol}_symbol`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'This field is required!',
+                                    },
+                                ]}
+                            >
+                                <Select
+                                    size="small"
+                                    className="w-100"
+                                    onChange={(val) => handleSymbolChange(coinFormData && coinFormData.symbol, val, 'symbol', 'withdrawal_fees')}
+                                >
+                                    {coins.map((option, index) => (
+                                        <Select.Option key={index} value={option.symbol}>
+                                            {option.symbol}
+                                        </Select.Option>
+                                    ))}
+                                </Select>
+                            </Form.Item>
+                        </div>
+                    </div>
+            }
                 {isWithdrawalEdit
                     ?
                     <div>

@@ -207,6 +207,30 @@ class CreateAsset extends Component {
 		this.props.updateFormData(name, value);
 	};
 
+	handleSymbolChange = (asset, value, key, name) => {
+		const coinFormData = {
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					[key]: value
+				}
+			},
+		};
+		this.setState({
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					[key]: value
+				}
+			},
+			coinFormData,
+		});
+		this.props.handleEditDataCallback(coinFormData);
+		this.props.updateFormData(name, value);
+	};
+
 	handleScreenChange = (screen) => {
 		if (screen === 'final') {
 			this.props.handleWidth(650);
@@ -689,12 +713,13 @@ class CreateAsset extends Component {
 						handleScreenChange={this.handleScreenChange}
 						isWithdrawalEdit={this.props.isWithdrawalEdit}
 						handleWithdrawalFeeChange={this.handleWithdrawalFeeChange}
+						handleSymbolChange={this.handleSymbolChange}
 					/>
 				);
-			case 'withdrawal_fee_confirm':
+			case 'update_confirm':
 				return (
 					<div>
-						<div className='title mb-3'>Withdrawal fees confirm</div>
+						<div className='title mb-3'>Confirm updates</div>
 						<div>
 							To save and apply the changes, you need to click the save button in the top right corner once you close this popup.
 						</div>
