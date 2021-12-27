@@ -213,6 +213,7 @@ class CreateAsset extends Component {
 			[name]: {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
+					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
 					[key]: value
 				}
 			},
@@ -222,6 +223,7 @@ class CreateAsset extends Component {
 			[name]: {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
+					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
 					[key]: value
 				}
 			},

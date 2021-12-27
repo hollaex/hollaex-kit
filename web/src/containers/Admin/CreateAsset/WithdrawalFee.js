@@ -1,6 +1,5 @@
 import React from 'react';
-import { Button, Select, InputNumber, Form } from 'antd';
-import _get from 'lodash/get';
+import { Button, Select, InputNumber, Form, Input } from 'antd';
 
 const WithdrawalFee = ({
     coinFormData = {},
@@ -12,21 +11,54 @@ const WithdrawalFee = ({
     handleSymbolChange
 }) => {
     const [form] = Form.useForm();
-    const withdrawal_fees = _get(coinFormData, 'withdrawal_fees', {});
+
+    let network = [];
+    if (coinFormData && coinFormData.network) {
+        network.push(coinFormData.network);
+    }
+
+    let withdrawal_fees = {};
+    coins.forEach(data => {
+        if (data.symbol === coinFormData.symbol) {
+            withdrawal_fees = data.withdrawal_fees;
+        }
+    });
+
+    const networkData = network.length && network[0];
+
+    const renderData = () => {
+        if (network.length) {
+            return network[0];
+        } else if (coinFormData && coinFormData.symbol) {
+            return coinFormData.symbol;
+        }
+    }
 
     const handleUpdate = (values) => {
         let formProps = {};
+        let enteredKeys = Object.keys(values);
         if (values) {
-            Object.keys(values).forEach(data => {
-                const temp = data.split('_');
+            if (enteredKeys.length && enteredKeys.includes('option')) {
                 formProps = {
                     ...formProps,
-                    [temp[0]]: {
-                        ...formProps[temp[0]],
-                        [temp[1]]: values[data]
+                    [values['option']]: {
+                        ...formProps[values['symbol']],
+                        'symbol': values['symbol'],
+                        'value': values['value']
                     }
                 }
-            })
+            } else {
+                Object.keys(values).forEach(data => {
+                    const temp = data.split('_');
+                    formProps = {
+                        ...formProps,
+                        [temp[0]]: {
+                            ...formProps[temp[0]],
+                            [temp[1]]: values[data]
+                        }
+                    }
+                })
+            }
         }
         updateFormData('withdrawal_fees', formProps);
         if (isWithdrawalEdit) {
@@ -49,8 +81,9 @@ const WithdrawalFee = ({
         } else {
             initialValues = {
                 ...initialValues,
-                [`${coinFormData && coinFormData.symbol}_value`]: coinFormData.withdrawal_fee || 0,
-                [`${coinFormData && coinFormData.symbol}_symbol`]: coinFormData.symbol
+                'option': network.length ? [] : coinFormData && coinFormData.symbol,
+                'value': coinFormData.withdrawal_fee || 0,
+                'symbol': coinFormData.symbol
             }
         }
         return initialValues;
@@ -65,61 +98,58 @@ const WithdrawalFee = ({
                 name="withdrawalForm"
                 onFinish={handleUpdate}
             >
-                {withdrawal_fees 
+                {withdrawal_fees
                     ? Object.keys(withdrawal_fees).map((data, key) => {
-                    return <div key={key}>
-                        <div className="field-wrap">
-                            <div className="sub-title">{data.toUpperCase()}</div>
-                        </div>
-                        <div className="field-wrap last">
-                            <div className="sub-title">Value</div>
-                            <Form.Item
-                                name={`${data}_value`}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'This field is required!',
-                                    },
-                                ]}
-                            >
-                                <InputNumber onChange={(val) => handleWithdrawalFeeChange(data, val, 'value', 'withdrawal_fees')}/>
-                            </Form.Item>
-                        </div>
-                        <div className="field-wrap last">
-                            <div className="sub-title">Symbol</div>
-                            <Form.Item
-                                name={`${data}_symbol`}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'This field is required!',
-                                    },
-                                ]}
-                            >
-                                <Select
-                                    size="small"
-                                    className="w-100"
-                                    onChange={(val) => handleWithdrawalFeeChange(data, val, 'symbol', 'withdrawal_fees')}
+                        return <div key={key}>
+                            <div className="field-wrap">
+                                <div className="sub-title">{data.toUpperCase()}</div>
+                            </div>
+                            <div className="field-wrap last">
+                                <div className="sub-title">Value</div>
+                                <Form.Item
+                                    name={`${data}_value`}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'This field is required!',
+                                        },
+                                    ]}
                                 >
-                                    {coins.map((option, index) => (
-                                        <Select.Option key={index} value={option.symbol}>
-                                            {option.symbol}
-                                        </Select.Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
+                                    <InputNumber onChange={(val) => handleWithdrawalFeeChange(data, val, 'value', 'withdrawal_fees')} />
+                                </Form.Item>
+                            </div>
+                            <div className="field-wrap last">
+                                <div className="sub-title">Symbol</div>
+                                <Form.Item
+                                    name={`${data}_symbol`}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'This field is required!',
+                                        },
+                                    ]}
+                                >
+                                    <Select
+                                        size="small"
+                                        className="w-100"
+                                        onChange={(val) => handleWithdrawalFeeChange(data, val, 'symbol', 'withdrawal_fees')}
+                                    >
+                                        {coins.map((option, index) => (
+                                            <Select.Option key={index} value={option.symbol}>
+                                                {option.symbol}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                </Form.Item>
+                            </div>
                         </div>
-                    </div>
-                })
-                : 
+                    })
+                    :
                     <div>
-                        <div className="field-wrap">
-                            <div className="sub-title">{coinFormData && coinFormData.symbol && coinFormData.symbol.toUpperCase()}</div>
-                        </div>
                         <div className="field-wrap last">
-                            <div className="sub-title">Value</div>
+                            <div className="sub-title">Option</div>
                             <Form.Item
-                                name={`${coinFormData && coinFormData.symbol}_value`}
+                                name='option'
                                 rules={[
                                     {
                                         required: true,
@@ -127,13 +157,42 @@ const WithdrawalFee = ({
                                     },
                                 ]}
                             >
-                                <InputNumber onChange={(val) => handleSymbolChange(coinFormData && coinFormData.symbol, val, 'value', 'withdrawal_fees')} />
+                                {network.length
+                                    ?
+                                    <Select
+                                        size="small"
+                                        className="w-100"
+                                        onChange={(e) => handleSymbolChange(networkData, e.target && e.target.value, 'option', 'withdrawal_fees')}
+                                    >
+                                        {network && network.map((option, index) => (
+                                            <Select.Option key={index} value={option}>
+                                                {option}
+                                            </Select.Option>
+                                        ))}
+                                    </Select>
+                                    :
+                                    <Input disabled={network && !network.length} />
+                                }
+                            </Form.Item>
+                        </div>
+                        <div className="field-wrap last">
+                            <div className="sub-title">Value</div>
+                            <Form.Item
+                                name='value'
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'This field is required!',
+                                    },
+                                ]}
+                            >
+                                <InputNumber onChange={(val) => handleSymbolChange(renderData(), val, 'value', 'withdrawal_fees')} />
                             </Form.Item>
                         </div>
                         <div className="field-wrap last">
                             <div className="sub-title">Symbol</div>
                             <Form.Item
-                                name={`${coinFormData && coinFormData.symbol}_symbol`}
+                                name='symbol'
                                 rules={[
                                     {
                                         required: true,
@@ -144,7 +203,7 @@ const WithdrawalFee = ({
                                 <Select
                                     size="small"
                                     className="w-100"
-                                    onChange={(val) => handleSymbolChange(coinFormData && coinFormData.symbol, val, 'symbol', 'withdrawal_fees')}
+                                    onChange={(val) => handleSymbolChange(renderData(), val, 'symbol', 'withdrawal_fees')}
                                 >
                                     {coins.map((option, index) => (
                                         <Select.Option key={index} value={option.symbol}>
@@ -155,7 +214,7 @@ const WithdrawalFee = ({
                             </Form.Item>
                         </div>
                     </div>
-            }
+                }
                 {isWithdrawalEdit
                     ?
                     <div>

@@ -44,10 +44,10 @@ const Final = ({
 	}
 
 	const handleMoveBack = () => {
-		if (coinFormData.withdrawal_fees) {
-			handleScreenChange('edit_withdrawal_fees');
-		} else {
+		if (!coinFormData.id) {
 			handleBack(true);
+		} else {
+			handleScreenChange('edit_withdrawal_fees');
 		}
 	};
 

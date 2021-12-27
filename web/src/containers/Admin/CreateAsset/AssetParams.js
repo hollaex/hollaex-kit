@@ -12,12 +12,12 @@ const AssetParams = ({
 }) => {
 
 	const handleMoveNext = () => {
-		if (coinFormData.withdrawal_fees && !editParams) {
-			handleScreenChange('edit_withdrawal_fees');
+		if (!coinFormData.id) {
+			handleNext();
 		} else if (editParams) {
 			handleScreenChange('update_confirm');
 		} else {
-			handleNext();
+			handleScreenChange('edit_withdrawal_fees');
 		}
 	};
 
