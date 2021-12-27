@@ -155,7 +155,6 @@ class Earnings extends Component {
 				isOpen: !this.state.isOpen,
 				currentScreen: '',
 			});
-			this.getAllUserData();
 		}
 	};
 
@@ -164,19 +163,18 @@ class Earnings extends Component {
 			isOpen: !this.state.isOpen,
 			currentScreen: '',
 		});
-		this.getAllUserData();
 	};
 
 	toggleOpen = () => {
 		this.setState({ isOpen: !this.state.isOpen, currentScreen: 'step1' });
+		this.getAllUserData();
 	};
 
-	handleModalOpen = () => {
+	onModalClose = () => {
 		this.setState({
 			isOpen: !this.state.isOpen,
 			currentScreen: '',
 		});
-		this.getAllUserData();
 	};
 
 	handleNext = () => {
@@ -245,7 +243,7 @@ class Earnings extends Component {
 				<Modal
 					visible={isOpen}
 					footer={null}
-					onCancel={this.handleModalOpen}
+					onCancel={this.onModalClose}
 					width="37rem"
 				>
 					<SettleModal

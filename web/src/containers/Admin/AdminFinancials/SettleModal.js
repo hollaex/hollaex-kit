@@ -15,10 +15,6 @@ export class SettleModal extends Component {
 		};
 	}
 
-	componentDidMount() {
-		this.props.getAllUserData();
-	}
-
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.isOpen !== this.props.isOpen) {
 			this.setState({ selectedUser: {} });
@@ -47,7 +43,11 @@ export class SettleModal extends Component {
 	};
 
 	searchUser = (value) => {
-		this.props.getAllUserData({ search: value });
+		if (value) {
+			this.props.getAllUserData({ search: value });
+		} else {
+			this.props.getAllUserData();
+		}
 	};
 
 	handleSubmit = (value) => {

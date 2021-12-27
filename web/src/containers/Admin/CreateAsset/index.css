@@ -466,3 +466,8 @@
 .coin-limit-wrap .btn-wrapper .ant-btn {
 	width: 45%;
 }
+.create-asset-container .coin-limit-wrap .ant-input[disabled] {
+    opacity: 0.5;
+    color: #c4c4c4;
+    background-color: var(--admin_panel_input);
+}
