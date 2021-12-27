@@ -25,7 +25,7 @@ const Final = ({
 	const { meta = {}, type } = coinFormData;
 
 	const renderFees = () => {
-		if (coinFormData.withdrawal_fees) {
+		if (coinFormData && coinFormData.withdrawal_fees) {
 			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
 				const key = coinFormData.withdrawal_fees[data];
 				let label;
@@ -35,17 +35,19 @@ const Final = ({
 					label = 'BEP20';
 				} else if (data === 'trx') {
 					label = 'TRC20';
+				} else {
+					label = data.toUpperCase();
 				}
-				return <div key={index}><b>{label}</b>: {_get(key, 'value')} {_get(key, 'symbol').toUpperCase()}</div>
+				return <div key={index}><b>{label}</b>: {_get(key, 'value', '')} {_get(key, 'symbol', '').toUpperCase()}</div>
 			});
 		}
 	}
 
 	const handleMoveBack = () => {
-		if (coinFormData.withdrawal_fees) {
-			handleScreenChange('edit_withdrawal_fees');
-		} else {
+		if (!coinFormData.id) {
 			handleBack(true);
+		} else {
+			handleScreenChange('edit_withdrawal_fees');
 		}
 	};
 
@@ -275,9 +277,9 @@ const Final = ({
 				<div>
 					<b>Price:</b> {coinFormData.estimated_price}
 				</div>
-				<div>
+				{/* <div>
 					<b>Fee for withdrawal:</b> {coinFormData.withdrawal_fee}
-				</div>
+				</div> */}
 				<div>
 					<b>Minimum withdrawal amount:</b> {coinFormData.min}
 				</div>
@@ -287,9 +289,9 @@ const Final = ({
 				<div>
 					<b>Increment Amount:</b> {coinFormData.increment_unit}
 				</div>
-				<div>
+				{/* <div>
 					<b>Decimal points:</b> {meta.decimal_points}
-				</div>
+				</div> */}
 				{isConfigure ? (
 					<div className="btn-wrapper">
 						<Button
@@ -323,6 +325,17 @@ const Final = ({
 					:
 						<div>
 							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+							{isConfigure ? (
+								<div className="btn-wrapper">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={handleWithdrawalEdit}
+									>
+										Edit
+									</Button>
+								</div>
+							) : null}
 						</div>
 				}
 			</div>
