@@ -1,51 +1,42 @@
 # hollaex-node-lib
 
-Nodejs library for HollaEx Kit enabled exchanges.
-
-**This documentation is specifically for using this library to connect to HollaEx Kit enabled exchanges. If you are an exchange operator and would like to use this library for the HollaEx Network, [click here](NETWORK_README.md)**
+Nodejs library for operators of HollaEx Kit enabled exchanges to connect to the HollaEx Network.
 
 ## Usage
 
 ```javascript
-const { Kit } = require('hollaex-node-lib');
+const { Network } = require('hollaex-node-lib');
 
-const client = new Kit();
-```
-
-You can pass the `apiURL` and `baseURL` of the HollaEx-Enabled exchange to connect to. You can also pass your `apiKey` and `apiSecret` generated from the HollaEx-Enabled exchange.
-
-```javascript
-const client = new Kit({
-	apiURL: '<EXCHANGE_API_URL>',
-	baseURL: '<EXCHANGE_BASE_URL>',
+const client = new Network({
 	apiKey: '<MY_API_KEY>',
 	apiSecret: '<MY_API_SECRET>'
+	activation_code: '<MY_ACTIVATION_CODE>'
 });
 ```
+You must pass your `apiKey`, `apiSecret`, and `activation_code` generated for your HollaEx-Enabled exchange. If you know your exchange's ID, pass the field `exchange_id`.
 
 You can also pass the field `apiExpiresAfter` which is the length of time in seconds each request is valid for. The default value is `60`.
 
 ### Example:
 
 ```javascript
-const client = new Kit({
-	apiURL: '<EXCHANGE_API_URL>',
-	baseURL: '<EXCHANGE_BASE_URL>',
+const client = new Network({
 	apiKey: '<MY_API_KEY>',
 	apiSecret: '<MY_API_SECRET>'
+	activation_code: '<MY_ACTIVATION_CODE>'
 });
 
 client
-	.getTicker('xht-usdt')
+	.init()
 	.then((res) => {
-		console.log('The volume is: ', res.volume);
+		console.log('Exchange info: ', res);
 	})
 	.catch((err) => {
 		console.log(err);
 	});
 
 client
-	.getTrades({ symbol: 'xht-usdt' })
+	.getPublicTrades({ symbol: 'xht-usdt' })
 	.then((res) => {
 		console.log('Public trades: ', res);
 	})
@@ -58,24 +49,49 @@ client
 
 | Command | Parameters | Description |
 | - | - | - |
-| `getKit` | | Get exchange information e.g. name, valid languages, description, etc. |
-| `getConstants` | | Tick size, min price, max price, min size and max size of each symbol pair and coin |
-| `getTicker` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li></ul> | Last, high, low, open and close price and volume within the last 24 hours |
-| `getTickers` | | Last, high, low, open and close price and volume within the last 24 hours for all symbols |
-| `getOrderbook` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li></ul> | Orderbook containing list of bids and asks |
-| `getOrderbooks` | | Orderbook containing list of bids and asks for all symbols |
-| `getTrades` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li></ul> | List of last trades |
-| `getUser` | | User's personal information |
-| `getBalance` | | User's wallet balance |
-| `getDeposits` | <ul><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.dismissed**: (_optional_) Filter data set `dismissed`</li><li>**opts.rejected**: (_optional_) Filter data set `rejected`</li><li>**opts.processing**: (_optional_) Filter data set `processing`</li><li>**opts.waiting**: (_optional_) Filter data set `waiting`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_,  _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li></ul> | User's list of all deposits |
-| `getWithdrawals` | <ul><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.dismissed**: (_optional_) Filter data set `dismissed`</li><li>**opts.rejected**: (_optional_) Filter data set `rejected`</li><li>**opts.processing**: (_optional_) Filter data set `processing`</li><li>**opts.waiting**: (_optional_) Filter data set `waiting`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_,  _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li></ul> | User's list of all withdrawals |
-| `requestWithdrawal` | <ul><li>**currency**: Currency code e.g. `xht`</li><li>**amount**: Withdrawal amount</li><li>**address**: Address to withdrawal to</li><li>**opts**: Object with additional params</li><li>**opts.network**: (_required if asset has multiple networks_) Blockchain network to create address for e.g. `trx`</li><li>**opts.otpCode**: (_required if user has otp enabled_) User otp code</li></ul> | Create a new withdrawal request |
-| `getUserTrades` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_,  _format_=`ISO8601`) End date of data set</li></ul> | User's list of all trades |
-| `getOrder` | <ul><li>**orderId**: HollaEx Network Order ID</li></ul> | Get specific information about a certain order |
-| `getOrders` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.side**: (_optional_, _enum_=[`buy`, `sell`]) Order side</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`])</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_,  _format_=`ISO8601`) End date of data set</li></ul> | Get the list of all user orders. It can be filter by passing the symbol |
-| `createOrder` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**side** (_enum_=[`buy`, `sell`]): Order side</li><li>**size**: Size of order to place</li><li>**type**: (_enum_=[`market`, `limit`] Order type</li><li>**price**: (_required if limit order type_) Order price</li><li>**opts**: Object with additional params</li><li>**opts.stop**: (_optional_) Stop price for order</li><li>**opts.meta**: (_optional_) Object with additional meta configurations</li><li>**opts.meta.post_only**: (_optional_, _default_=`false`) Make post only order </li><li>**opts.meta.note**: (_optional_) Custom note for order</li></ul> | Create a new order |
-| `cancelOrder` | <ul><li>**orderId**: HollaEx Network order ID</li></ul> | Cancel a specific order with its ID |
-| `cancelAllOrders` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li></ul> | Cancel all open order. It can be filter by passing the symbol |
+| `init`| <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Initialize your Kit for HollaEx Network. Must have passed activation_code in constructor |
+| `getTicker` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Last, high, low, open and close price and volume within the last 24 hours |
+| `getTickers` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Last, high, low, open and close price and volume within the last 24 hours for all symbols |
+| `getOrderbook` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Orderbook containing list of bids and asks |
+| `getOrderbooks` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Orderbook containing list of bids and asks for all symbols |
+| `getPublicTrades` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | List of last trades |
+| `getTradesHistory` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.side**: (_optional_, _enum_=[`buy`, `sell`]) Order side</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | List of trades in paginated form |
+| `getGeneratedFees` | <ul><li>**opts**: Object with additional params</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | List of generated fees for the exchange |
+| `settleFees` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Settle exchange's fees |
+| `getUser` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | User's personal information |
+| `getUsers` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get all user's for your exchange |
+| `createUser` | <ul><li>**email**: User email</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Create a user on the Network |
+| `getBalance` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Exchange's wallet balance |
+| `getUserBalance` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | User's wallet balance |
+| `createUserCryptoAddress` | <ul><li>**userId**: User HollaEx Network ID</li><li>**crypto**: Asset to create address for e.g. `xht`</li><li>**opts**: Object with additional params</li><li>**opts.network**: (_required if asset has multiple networks_) Blockchain network to create address for e.g. `trx`</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Create a crypto address for a user |
+| `mintAsset` | <ul><li>**userId**: User HollaEx Network ID</li><li>**currency**: Currency code e.g. `xht`</li><li>**amount**: Asset amount</li><li>**opts**: Object with additional params</li><li>**opts.description**: (_optional_) Custom description</li><li>**opts.transactionId**: (_optional_, _default_=`Server generated TXID`) Custom transaction ID</li><li>**opts.status**: (_optional_, _default_=`true`) Set to `false` to make a pending mint</li><li>**opts.email**: (_optional_, _default_=`true`) Set to `false` to not send notification email to user</li><li>**opts.fee**: (_optional_) Optional fee to display in data</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Mint an asset that is created by the operator for a user |
+| `updatePendingMint` | <ul><li>**transactionId**: TXID of pending mint to update</li><li>**opts**: Object with additional params</li><li>**opts.status**: (_one state update required_) Set to `true` to confirm pending mint</li><li>**opts.dismissed**: (_one state update required_) Set to `true` to dismiss pending mint</li><li>**opts.rejected**: (_one state update required_) Set to `true` to reject pending mint</li><li>**opts.processing**: (_one state update required_) Set to `true` to set state to `processing`</li><li>**opts.waiting**: (_one state update required_) Set to `true` to set state to `waiting`</li><li>**opts.updatedTransactionId**: (_optional_) Custom TXID for updated mint</li><li>**opts.email**: (_optional_, _default_=`true`) Set to `false` to not send notification email to user</li><li>**opts.updatedDescription**: (_optional_) Custom description for updated mint</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Update a pending mint |
+| `burnAsset` | <ul><li>**userId**: User HollaEx Network ID</li><li>**currency**: Currency code e.g. `xht`</li><li>**amount**: Asset amount</li><li>**opts**: Object with additional params</li><li>**opts.description**: (_optional_) Custom description</li><li>**opts.transactionId**: (_optional_, _default_=`Server generated TXID`) Custom transaction ID</li><li>**opts.status**: (_optional_, _default_=`true`) Set to `false` to make a pending burn</li><li>**opts.email**: (_optional_, _default_=`true`) Set to `false` to not send notification email to user</li><li>**opts.fee**: (_optional_) Optional fee to display in data</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Burn an asset that is created by the operator from a user |
+| `updatePendingBurn` | <ul><li>**transactionId**: TXID of pending burn to update</li><li>**opts**: Object with additional params</li><li>**opts.status**: (_one state update required_) Set to `true` to confirm pending burn</li><li>**opts.dismissed**: (_one state update required_) Set to `true` to dismiss pending burn</li><li>**opts.rejected**: (_one state update required_) Set to `true` to reject pending burn</li><li>**opts.processing**: (_one state update required_) Set to `true` to set state to `processing`</li><li>**opts.waiting**: (_one state update required_) Set to `true` to set state to `waiting`</li><li>**opts.updatedTransactionId**: (_optional_) Custom TXID for updated burn</li><li>**opts.email**: (_optional_, _default_=`true`) Set to `false` to not send notification email to user</li><li>**opts.updatedDescription**: (_optional_) Custom description for updated burn</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Update a pending burn |
+| `getDeposits` | <ul><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.dismissed**: (_optional_) Filter data set `dismissed`</li><li>**opts.rejected**: (_optional_) Filter data set `rejected`</li><li>**opts.processing**: (_optional_) Filter data set `processing`</li><li>**opts.waiting**: (_optional_) Filter data set `waiting`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Exchanges's list of all deposits |
+| `getUserDeposits` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.dismissed**: (_optional_) Filter data set `dismissed`</li><li>**opts.rejected**: (_optional_) Filter data set `rejected`</li><li>**opts.processing**: (_optional_) Filter data set `processing`</li><li>**opts.waiting**: (_optional_) Filter data set `waiting`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | User's list of all deposits |
+| `getWithdrawals` | <ul><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.dismissed**: (_optional_) Filter data set `dismissed`</li><li>**opts.rejected**: (_optional_) Filter data set `rejected`</li><li>**opts.processing**: (_optional_) Filter data set `processing`</li><li>**opts.waiting**: (_optional_) Filter data set `waiting`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Exchange's list of all withdrawals |
+| `getUserWithdrawals` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.currency**: (_optional_) Filter data set by asset</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.transactionId**: (_optional_) Filter data set by TXID</li><li>**opts.address**: (_optional_) Filter data set by address</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | User's list of all withdrawals |
+| `performWithdrawal` | <ul><li>**userId**: User HollaEx Network ID</li><li>**address**: Address to withdrawal to</li><li>**currency**: Currency code e.g. `xht`</li><li>**amount**: Withdrawal amount</li><li>**opts**: Object with additional params</li><li>**opts.network**: (_required if asset has multiple networks_) Blockchain network to create address for e.g. `trx`</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Create a withdrawal for an exchange's user on the network |
+| `cancelWithdrawal` | <ul><li>**userId**: User HollaEx Network ID</li><li>**withdrawalId**: HollaEx Network ID of withdrawal to cancel</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Cancel a pending withdrawal |
+| `checkTransaction` | <ul><li>**userId**: User HollaEx Network ID</li><li>**transactionId**: TXID of transaction to check</li><li>**address**: Address of transaction</li><li>**network**: Blockchain network to create address for e.g. `trx`</li><li>**opts**: Object with additional params</li><li>**opts.isTestnet**: (_optional_) Specify transaction was made on testnet blockchain</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Check transaction in network. Will update transaction status on Kit accordingly |
+| `transferAsset` | <ul><li>**senderId**: HollaEx Network ID of sending user</li><li>**receiverId**: HollaEx Network ID of receiving user</li><li>**currency**: Currency code e.g. `xht`</li><li>**amount**: Asset amount to transfer</li><li>**opts**: Object with additional params</li><li>**opts.description**: (_optional_) Custom description</li><li>**opts.email**: (_optional_, _default_=`true`) Set to `false` to not send notification email to user</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Transfer funds between two users |
+| `getTrades` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.format**: (_optional_, _enum_=[`all`]) Custom format of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Exchange's list of all trades |
+| `getUserTrades` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`]) Specify ascending or descending order</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.format**: (_optional_, _enum_=[`all`]) Custom format of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | User's list of all trades |
+| `getUserStats` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get sum of user trades and its stats |
+| `getOrder` | <ul><li>**userId**: User HollaEx Network ID</li><li>**orderId**: HollaEx Network Order ID</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get specific information about a certain order |
+| `getOrders` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.side**: (_optional_, _enum_=[`buy`, `sell`]) Order side</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc`])</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get the list of all orders for the exchange |
+| `getUserOrders` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.side**: (_optional_, _enum_=[`buy`, `sell`]) Order side</li><li>**opts.status**: (_optional_) Filter data set `status`</li><li>**opts.limit**: (_optional_, _default_=`50`, _max_=`50`) Number of items to get</li><li>**opts.page**: (_optional_, _default_=`1`) Page number of data</li><li>**opts.orderBy**: (_optional_) Field to order data by</li><li>**opts.order**: (_optional_, _enum_=[`asc`, `desc]`)</li><li>**opts.startDate**: (_optional_, _format_=`ISO8601`) Start date of data set</li><li>**opts.endDate**: (_optional_, _format_=`ISO8601`) End date of data set</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get the list of all orders for a user |
+| `createOrder` | <ul><li>**userId**: User HollaEx Network ID</li><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**side** (_enum_=[`buy`, `sell`]): Order side</li><li>**size**: Size of order to place</li><li>**type**: (_enum_=[`market`, `limit`] Order type</li><li>**price**: (_required if limit order type_) Order price</li><li>**feeData**: object with fee data</li><li>**feeData.fee_structure**: Object with maker and taker fee</li><li>**feeData.fee_structure.maker**: Maker fee percentage</li><li>**feeData.fee_structure.taker**: Taker fee percentage</li><li>**feeData.fee_coin**: (_optional_) Coin to pay fee with</li><li>**opts**: Object with additional params</li><li>**opts.stop**: (_optional_) Stop price for order</li><li>**opts.meta**: (_optional_) Object with additional meta configurations</li><li>**opts.meta.post_only**: (_optional_) Make post only order </li><li>**opts.meta.note**: (_optional_) Custom note for order</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Create a new order |
+| `cancelOrder` | <ul><li>**userId**: User HollaEx Network ID</li><li>**orderId**: HollaEx Network order ID</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Cancel a specific order with its ID |
+| `cancelAllOrders` | <ul><li>**userId**: User HollaEx Network ID</li><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Cancel all open order. It can be filtered by passing the symbol |
+| `getPublicTrades` | <ul><li>**opts**: Object with additional params</li><li>**opts.symbol**: (_optional_) HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get public trades on Network |
+| `getChart` | <ul><li>**from**: Start date of data set</li><li>**to**: End date of data set</li><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**resolution**: (_enum_=[`1m`, `5m`, `1h`, `1d`, `7d`, `1W`, `30d`, `1M`]) Resolution of data set</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get TradingView trade history HOLCV |
+| `getCharts` | <ul><li>**from**: Start date of data set</li><li>**to**: End date of data set</li><li>**resolution**: (_enum_=[`1m`, `5m`, `1h`, `1d`, `7d`, `1W`, `30d`, `1M`]) Resolution of data set</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get TradingView trade history HOLCV for all pairs |
+| `getUdfConfig` | <ul><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get TradingView udf config |
+| `getUdfHistory` | <ul><li>**from**: Start date of data set</li><li>**to**: End date of data set</li><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**resolution**: (_enum_=[`1m`, `5m`, `1h`, `1d`, `7d`, `1W`, `30d`, `1M`]) Resolution of data set</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get TradingView udf history HOLCV |
+| `getUdfSymbols` | <ul><li>**symbol**: HollaEx trading symbol e.g. `xht-usdt`</li><li>**opts**: Object with additional params</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get TradingView udf symbols |
+| `getOraclePrices` | <ul><li>**assets**: Array of assets to get converted prices for</li><li>**opts**: Object with additional params</li><li>**opts.quote**: (_optional_, _default_=`usdt`) Asset to convert to</li><li>**opts.amount**: (_optional_, _default_=`1`) Convert to specific quote amount</li><li>**opts.additionalHeaders**: (_optional_) Object containing addtional headers to send with request</li></ul> | Get converted quote amount for an asset |
 
 ### Websocket
 
@@ -98,7 +114,7 @@ client.disconnect();
 To subscribe to more channels after connection, use `subscribe`.
 
 ```javascript
-client.subscribe(['order', 'wallet']);
+client.subscribe(['order:1', 'wallet:1']);
 ```
 
 To unsubscribe from channels after connection, use `unsubscribe`.
@@ -113,11 +129,14 @@ Here is the list of channels you can subscribe to:
 
 - `orderbook`
 - `trades`
-- `order` (Only available with authentication. Receive order updates)
-- `wallet` (Only available with authentication. Receive balance updates)
+- `order` (Only available with authentication. Receive order updates for a user of your exchange)
+- `wallet` (Only available with authentication. Receive balance updates for a user of your exchange)
 
 For public channels (`orderbook`, `trade`), you can subscribe to specific symbols as follows:
 `orderbook:xht-usdt`, `trade:xht-usdt`. Not passing a symbol will subscribe to all symbols.
+
+For private channels (`order`, `trade`), you must also pass the user's ID on the HollaEx Network as follows:
+`order:1`, `wallet:23`. Not passing an ID will give an error.
 
 #### Events
 
@@ -309,13 +328,6 @@ These are exapmles of data responses from the server.
 		"time": 1608022610
 	}
 	```
-## Example
-
-You can run the example by going to example folder and running:
-
-```bash
-node example/hollaex.js
-```
 
 ## Documentation
 
