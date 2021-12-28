@@ -46,6 +46,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
 
+			&.chart-embed {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
+
 			&.no_bottom_navigation {
 				height: auto;
 				flex: 1;

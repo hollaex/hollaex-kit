@@ -9,6 +9,11 @@
 			flex: 6;
 			min-height: 25vh;
 			max-height: 60vh;
+
+			&.chart-embed {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
 		}
 
 		.trade-tabs_content {
