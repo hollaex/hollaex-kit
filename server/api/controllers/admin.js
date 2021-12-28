@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerAdmin } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');

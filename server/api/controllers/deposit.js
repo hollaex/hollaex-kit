@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerDeposits } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
 const getAdminDeposits = (req, res) => {

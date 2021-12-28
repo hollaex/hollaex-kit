@@ -1,6 +1,6 @@
 'use strict';
 
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { loggerTier } = require('../../config/logger');
 const { errorMessageConverter } = require('../../utils/conversion');
 

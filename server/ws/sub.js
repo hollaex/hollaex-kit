@@ -4,7 +4,7 @@ const { getPublicData } = require('./publicData');
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
 const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
-const toolsLib = require('../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
 const {
 	WS_AUTHENTICATION_REQUIRED,

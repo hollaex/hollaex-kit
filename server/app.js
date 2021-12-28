@@ -8,7 +8,7 @@ var YAML = require('yamljs');
 var swaggerDoc = YAML.load('./api/swagger/swagger.yaml');
 const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
-const toolsLib = require('./utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
 
