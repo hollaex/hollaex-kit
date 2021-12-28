@@ -17,6 +17,7 @@ import {
 	Withdraw,
 	TransactionsHistory,
 	Trade,
+	ChartEmbed,
 	Legal,
 	AuthContainer,
 	RequestResetPassword,
@@ -280,6 +281,11 @@ export const generateRoutes = (routes = []) => {
 			</Route>
 			<Route component={Container}>
 				<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
+				<Route
+					path="/chart-embed/:pair"
+					name="ChartEmbed"
+					component={ChartEmbed}
+				/>
 				{isMobile ? (
 					<Route
 						path="/home"

@@ -66,6 +66,10 @@ $tabs-title--margin: 2rem;
 	margin: 6px 3px 3px 3px;
 	background-color: $app-sidebar-background;
 
+	&.chart-embed {
+		max-height: 100vh;
+	}
+
 	.trade_block-title {
 		// border-top: $trade_title-border--size solid $trade_title-border--color;
 		text-transform: uppercase;
@@ -218,5 +222,9 @@ $tabs-title--margin: 2rem;
 	}
 	.trade_block-wrapper {
 		max-height: 50vh;
+
+		&.chart-embed {
+			max-height: 100vh;
+		}
 	}
 }

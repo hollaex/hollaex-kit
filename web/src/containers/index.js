@@ -18,6 +18,7 @@ export { default as VerificationEmailRequest } from './VerificationEmailRequest'
 export { default as VerificationEmailCode } from './VerificationEmailCode';
 export { default as Home } from './Home';
 export { default as Trade } from './Trade';
+export { default as ChartEmbed } from './ChartEmbed';
 export { default as Legal } from './Legal';
 export { default as RequestResetPassword } from './RequestResetPassword';
 export { default as ResetPassword } from './ResetPassword';
