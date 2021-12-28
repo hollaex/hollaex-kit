@@ -21,12 +21,13 @@ async function LogIn () {
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let emailPass =process.env.EMAIL_PASS ;
-	let emailAdmin = process.env.EMAIL_ADMIN_USERNAME 
+	let emailAdmin = process.env.EMAIL_ADMIN_USERNAME;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	
     describe('BobLogIn', function() {
-		this.timeout(100000);
+		this.timeout(200000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -36,7 +37,7 @@ async function LogIn () {
 		}
 		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -44,10 +45,11 @@ async function LogIn () {
 
 		afterEach(async function() {
 			util.setStep(step);
+			await sleep(10000)
 			await driver.quit();
 		});
 
-		it('Simple log in', async function() {
+		it('Bob Simple Log In', async function() {
 			//Given User's data
 			console.log(' Test name	: BobLogIn');
 			console.log(logInPage);
@@ -97,7 +99,7 @@ async function LogIn () {
 			console.log('This is the EndOfTest');
 			
 		});
-		it('Email Confirmation', async function() {
+		it('Email Confirmation For Log In', async function() {
 			console.log('Test name: Confirmation');
 			console.log('Step # | name | target | value');
 		

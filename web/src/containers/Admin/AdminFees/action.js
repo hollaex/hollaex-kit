@@ -31,8 +31,8 @@ export const getFeesDownload = (params = {}) => {
 		})
 		.catch((err) => {});
 };
-export const getSettle = () => {
-	let url = '/admin/fees/settle';
+export const getSettle = (user_id) => {
+	let url = `/admin/fees/settle?user_id=${user_id}`;
 
 	return requestAuthenticated(url);
 };

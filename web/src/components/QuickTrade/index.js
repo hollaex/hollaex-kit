@@ -386,6 +386,7 @@ class QuickTrade extends Component {
 								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_size}
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
+								pair={key ? key : ''}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -399,6 +400,7 @@ class QuickTrade extends Component {
 								limits={side === 'buy' ? SIZE : PRICE}
 								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
+								pair={key ? key : ''}
 							/>
 							<div className="small-text">
 								{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
