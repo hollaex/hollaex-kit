@@ -64,9 +64,12 @@ class Resources extends Component {
 								</a>
 							</p>
 							<p>
-								Vault API Explorer:
-								<a href="https://api.hollaex.network/docs" title="site">
-									https://api.hollaex.network/docs
+								HollaEx Node Library:
+								<a
+									href="https://www.npmjs.com/package/hollaex-node-lib"
+									title="site"
+								>
+									https://www.npmjs.com/package/hollaex-node-lib
 								</a>
 							</p>
 						</div>
