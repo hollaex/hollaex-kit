@@ -173,7 +173,7 @@ steps:
     HOLLAEX_PASSWORD:
       from_secret: hollaex_password
   settings:
-    exchange_id: 882
+    exchange_id: 539
     exchange_name: "Next"
 
 - name: slack_noti_job_end
