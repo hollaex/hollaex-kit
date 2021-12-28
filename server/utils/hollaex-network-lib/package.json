@@ -1,5 +1,5 @@
 {
-	"name": "hollaex-node-lib",
+	"name": "hollaex-network-lib",
 	"version": "2.11.0",
 	"description": "hollaex api and websocket library for nodejs",
 	"main": "index.js",
