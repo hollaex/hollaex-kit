@@ -1,0 +1,22 @@
+{
+	"name": "hollaex-tools-lib",
+	"version": "2.15.0",
+	"description": "HollaEx tools library for developers",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prettier": "prettier --config .prettierrc.json --ignore-path .prettierignore.json --write \"./**/*.{js,json,css,scss,md}\"",
+		"eslint": "eslint --config .eslintrc.json ./"
+	},
+	"author": "bitHolla Inc",
+	"license": "ISC",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bitholla/hollaex-tools-lib"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"eslint": "7.0.0",
+		"prettier": "2.0.5"
+	}
+}
