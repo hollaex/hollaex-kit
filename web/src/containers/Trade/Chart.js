@@ -325,6 +325,28 @@ class TVChartContainer extends React.PureComponent {
 			tvWidget.changeTheme(widgetTheme);
 
 			button[0].innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
+
+			const newWindowButton = tvWidget
+				.createButton({ align: 'right' })
+				.attr('title', 'Open the trading view chart in a new tab.')
+				.addClass('apply-common-tooltip screen-button')
+				.on('click', () => {
+					if (window) {
+						window.open(`/chart-embed/${symbol}`, '_blank');
+					}
+				});
+			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
+			tvWidget.changeTheme(widgetTheme);
+
+			newWindowButton[0].innerHTML = `
+      <div class='screen-container'>
+      	<div>
+      		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17">
+      			<path stroke="currentColor" d="M 3 3 L 3 21 L 21 21 L 21 12 L 19 12 L 19 19 L 5 19 L 5 5 L 12 5 L 12 3 L 3 3 z M 14 3 L 14 5 L 17.585938 5 L 8.2929688 14.292969 L 9.7070312 15.707031 L 19 6.4140625 L 19 10 L 21 10 L 21 3 L 14 3 z"></path>
+      		</svg>
+				</div>
+			</div>
+      `;
 		});
 	};
 
