@@ -310,7 +310,8 @@ h2,
 .custom-form-wrapper {
 	display: flex;
 	margin: 1.5rem 0rem;
-	width: 70%;
+    width: 100%;
+    overflow: scroll;
 }
 .section-wrapper {
 	width: 220px;
@@ -340,4 +341,71 @@ h2,
 .general-wrapper .disabled-area {
 	opacity: 0.6;
 	pointer-events: none;
+}
+
+.general-wrapper .description a {
+	text-decoration: underline !important;
+}
+.general-geo-wrapper .title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.general-geo-wrapper .location-option-wrapper {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 18rem;
+	overflow-y: auto;
+}
+
+.general-geo-wrapper .location-option-wrapper .location-option {
+    padding: 0.3rem 0.3rem 0.3rem 1rem;
+    color: #B6B6B6;
+}
+.general-geo-wrapper .location-option-wrapper .location-option:hover,
+.general-geo-wrapper .location-option-wrapper .location-option-active {
+	background: rgba(255,255,255,0.23);
+	color: #ffffff;
+	cursor: pointer;
+}
+.general-geo-wrapper .btn-wrapper {
+	display: flex;
+	margin-top: 1rem;
+}
+.general-geo-wrapper .btn-wrapper .ant-btn {
+	background-color: #288500;
+	flex: 1;
+}
+.general-geo-wrapper .btn-wrapper .separator {
+	margin: 5px;
+}
+.general-geo-wrapper .box-wrapper {
+	border: 1px solid #C8C8C8;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 4rem;
+}
+.general-wrapper .geo-display {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 18rem;
+	overflow-y: auto;
+	width: 300px;
+    height: 7.5rem;
+}
+.general-wrapper .geo-display .location-data {
+    padding: 0.3rem 1rem;
+	color: #ffffff;
+    justify-content: space-between;
+}
+.general-wrapper .geo-display .location-data .anchor {
+    text-decoration: underline;
+	cursor: pointer;
+}
+.general-wrapper .geo-display .placeHolder {
+	color: #c4c4c4;
+	padding: 5px;
+	font-size: 12px;
+	user-select: none;
 }
