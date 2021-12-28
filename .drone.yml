@@ -169,9 +169,9 @@ steps:
   image: bitholla/devops-tools:drone_hollacloud-201007
   environment:
     HOLLAEX_EMAIL:
-      from_secret: hollaex_email
+      from_secret: next_email
     HOLLAEX_PASSWORD:
-      from_secret: hollaex_password
+      from_secret: next_password
   settings:
     exchange_id: 539
     exchange_name: "Next"
