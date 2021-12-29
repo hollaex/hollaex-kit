@@ -390,7 +390,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		'limit',
 		limit,
 		'userId',
-		userId,
+		userId
 	);
 
 	let totalWithdrawalAmount = 0;

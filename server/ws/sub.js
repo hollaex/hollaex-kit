@@ -96,12 +96,12 @@ const terminateTopic = (topic, ws, symbol) => {
 					throw new Error('Invalid symbol');
 				}
 				removeSubscriber(WEBSOCKET_CHANNEL(topic, symbol), ws);
-				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
+				ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}` }));
 			} else {
 				each(toolsLib.getKitPairs(), (pair) => {
 					try {
 						removeSubscriber(WEBSOCKET_CHANNEL(topic, pair), ws);
-						ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}`}));
+						ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${symbol}` }));
 					} catch (err) {
 						ws.send(JSON.stringify({ message: err.message }));
 					}
@@ -117,18 +117,18 @@ const terminateTopic = (topic, ws, symbol) => {
 			if (!getChannels()[WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId)]) {
 				sendNetworkWsMessage('unsubscribe', topic, ws.auth.sub.networkId);
 			}
-			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
 			break;
 		case 'deposit':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
 			removeSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws, 'private');
-			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}`}));
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
 			break;
 		case 'chat':
 			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
-			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}`}));
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));

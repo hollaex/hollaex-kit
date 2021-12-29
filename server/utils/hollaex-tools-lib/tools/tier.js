@@ -58,8 +58,8 @@ const createTier = (level, name, icon, description, deposit_limit, withdrawal_li
 
 	const minFees = getDefaultFees();
 
-	const invalidMakerFees = Object.values(flatten(fees.maker)).some(fee => fee < minFees.maker);
-	const invalidTakerFees = Object.values(flatten(fees.taker)).some(fee => fee < minFees.taker);
+	const invalidMakerFees = Object.values(flatten(fees.maker)).some((fee) => fee < minFees.maker);
+	const invalidTakerFees = Object.values(flatten(fees.taker)).some((fee) => fee < minFees.taker);
 
 	if (invalidMakerFees || invalidTakerFees) {
 		return reject(new Error(`Invalid fee given. Minimum maker fee: ${minFees.maker}. Minimum taker fee: ${minFees.taker}`));
@@ -216,7 +216,7 @@ const updateTiersLimits = (limits) => {
 		return reject(new Error('Invalid tier level given'));
 	}
 
-	if (Object.values(flatten(limits)).some(limit => limit < 0 && limit !== -1)) {
+	if (Object.values(flatten(limits)).some((limit) => limit < 0 && limit !== -1)) {
 		return reject(new Error('Limits can be either -1 or GTE 0'));
 	}
 

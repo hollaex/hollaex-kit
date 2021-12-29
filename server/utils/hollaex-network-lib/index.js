@@ -577,7 +577,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-		/**
+	/**
 	 * Get all deposits for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
 	 * @param {object} opts - Optional parameters.

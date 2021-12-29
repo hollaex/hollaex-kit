@@ -77,7 +77,7 @@ const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 
-	/* Onboarding*/
+/* Onboarding*/
 
 const signUpUser = (email, password, opts = { referral: null }) => {
 	if (!getKitConfig().new_user_is_activated) {
@@ -244,7 +244,7 @@ const createUser = (
 				user,
 				getModel('verification code').update(
 					{ verified: true },
-					{ where: { user_id: user.id }, fields: [ 'verified' ]}
+					{ where: { user_id: user.id }, fields: [ 'verified' ] }
 				)
 			]);
 		})
@@ -349,7 +349,7 @@ const registerUserLogin = (
 	return getModel('login').create(login);
 };
 
-	/* Public Endpoints*/
+/* Public Endpoints*/
 
 
 const getVerificationCodeByUserEmail = (email) => {
@@ -398,19 +398,19 @@ const checkAffiliation = (affiliationCode, user_id) => {
 				return;
 			}
 		});
-		// .then((affiliation) => {
-		// 	return getModel('user').update(
-		// 		{
-		// 			discount
-		// 		},
-		// 		{
-		// 			where: {
-		// 				id: affiliation.user_id
-		// 			},
-		// 			fields: ['discount']
-		// 		}
-		// 	);
-		// });
+	// .then((affiliation) => {
+	// 	return getModel('user').update(
+	// 		{
+	// 			discount
+	// 		},
+	// 		{
+	// 			where: {
+	// 				id: affiliation.user_id
+	// 			},
+	// 			fields: ['discount']
+	// 		}
+	// 	);
+	// });
 };
 
 const getAffiliationCount = (userId) => {
@@ -532,7 +532,7 @@ const getAllUsersAdmin = (opts = {
 	}
 
 	if (!opts.format) {
-		query = {...query, ...pagination};
+		query = { ...query, ...pagination };
 	} else if (isBoolean(opts.pending) && !opts.pending) {
 		query.attributes.exclude.push('settings');
 	}
@@ -683,7 +683,7 @@ const freezeUserById = (userId) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -711,7 +711,7 @@ const freezeUserByEmail = (email) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'freezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -736,7 +736,7 @@ const unfreezeUserById = (userId) => {
 			return user.update({ activated: true }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'unfreezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -761,7 +761,7 @@ const unfreezeUserByEmail = (email) => {
 			return user.update({ activated: true }, { fields: ['activated'], returning: true  });
 		})
 		.then((user) => {
-			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({type: 'unfreezeUser', data: user.id }));
+			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'unfreezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
 				user.email,
@@ -1060,7 +1060,7 @@ const deactivateUserOtpById = (userId) => {
 			}
 			return user.update(
 				{ otp_enabled: false },
-				{ fields: [ 'otp_enabled' ]}
+				{ fields: [ 'otp_enabled' ] }
 			);
 		});
 };
@@ -1101,7 +1101,7 @@ const getUserLogins = (opts = {
 		order: [ordering]
 	};
 	if (!opts.format) {
-		options = { ...options, ...pagination};
+		options = { ...options, ...pagination };
 	}
 
 	if (opts.userId) options.where.user_id = opts.userId;
@@ -1195,7 +1195,7 @@ const createAudit = (adminId, event, ip, opts = {
 		admin_id: adminId,
 		event,
 		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
-		ip,
+		ip
 	};
 	if (opts.domain) {
 		options.domain = opts.domain;
@@ -1250,7 +1250,7 @@ const getUserAudits = (opts = {
 };
 
 const checkUsernameIsTaken = (username) => {
-	return getModel('user').count({ where: { username }})
+	return getModel('user').count({ where: { username } })
 		.then((count) => {
 			if (count > 0) {
 				throw new Error(USERNAME_IS_TAKEN);
@@ -1431,7 +1431,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			if (created) {
 				await getModel('verification code').update(
 					{ verified: true },
-					{ where: { user_id: user.id }, fields: [ 'verified' ]}
+					{ where: { user_id: user.id }, fields: [ 'verified' ] }
 				);
 			}
 			sendEmail(
