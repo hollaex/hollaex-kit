@@ -43,7 +43,7 @@ steps:
   channel: deployment
   settings:
     target: discord
-    release_name: hollaex-node-lib
+    release_name: hollaex-network-lib
   environment:
     WEBHOOK_URL:
       from_secret: discord_webhook_url
