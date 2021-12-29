@@ -41,8 +41,8 @@ Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.
 ## Useful Links
 
 - Exchange Dashboard: https://dash.hollaex.com
-- HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
-- HollaEx Live Exchange: https://hollaex.com
+- HollaEx Whitepaper: https://whitepaper.hollaex.com
+- HollaEx Live Exchange: https://pro.hollaex.com/trade/xht-usdt
 - Discord Community: https://discord.gg/RkRHU8RbyM
 - Forum: https://forum.hollaex.com
 - Docs: https://docs.hollaex.com

@@ -805,13 +805,16 @@ const getExchangeGeneratedFees = (req, res) => {
 };
 
 const settleFees = (req, res) => {
+	const { user_id } = req.swagger.params;
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/settleFees auth',
-		req.auth
+		req.auth,
+		user_id.value
 	);
 
 	toolsLib.order.settleFees({
+		user_id: user_id.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
