@@ -1504,47 +1504,130 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 	return pick(updatedUser, 'id', 'email', 'meta');
 };
 
-const mapNetworkIdToKitId = async (
-	networkIds = []
-) => {
-	if (!isArray(networkIds)) {
-		throw new Error('networkIds must be an array');
-	}
+const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
+	const networkIdToKitId = {};
+	const kitIdToNetworkId = {};
 
-	const opts = {
-		attributes: ['id', 'network_id'],
-		raw: true
-	};
+	return [
+		async (networkIds = []) => {
+			if (!isArray(networkIds)) {
+				throw new Error('networkIds must be an array');
+			}
 
-	if (networkIds.length > 0) {
-		if (networkIds.some((id) => !isInteger(id) || id <= 0)) {
-			throw new Error('networkIds can only contain integers greater than 0');
-		} else {
-			opts.where = {
-				network_id: uniq(networkIds)
+			networkIds = uniq(networkIds);
+
+			const opts = {
+				attributes: ['id', 'network_id'],
+				raw: true
 			};
-		}
-	}
 
-	const users = await dbQuery.findAll('user', opts);
+			const result = {};
 
-	if (users.length === 0) {
-		throw new Error('No users found with given networkIds');
-	}
+			if (networkIds.length > 0) {
+				if (networkIds.some((id) => !isInteger(id) || id <= 0)) {
+					throw new Error('networkIds can only contain integers greater than 0');
+				}
 
-	const result = users.reduce((data, user) => {
-		if (user.network_id) {
-			return {
-				...data,
-				[user.network_id]: user.id
+				networkIds.forEach((nid) => {
+					result[nid] = networkIdToKitId[nid];
+				});
+
+				const cacheMisses = Object.entries(result)
+					.filter(([_, value]) => value === undefined)
+					.map(([key, _]) => key);
+
+				if (cacheMisses.length === 0) {
+					return result;
+				}
+
+				opts.where = {
+					network_id: cacheMisses
+				};
+			}
+
+			const users = await dbQuery.findAll('user', opts);
+
+			users.forEach((user) => {
+				if (user.network_id) {
+					networkIdToKitId[user.network_id] = user.id;
+					kitIdToNetworkId[user.id] = user.network_id;
+
+					result[user.network_id] = user.id;
+				}
+			}, {});
+
+			if (Object.keys(result).length === 0) {
+				throw new Error('No users found with given networkIds');
+			}
+
+			Object.entries(result)
+				.filter(([_, value]) => value === undefined)
+				.forEach(([key, _]) => {
+					delete result[key];
+				});
+
+			return result;
+		},
+		async (kitIds = []) => {
+			let result = {};
+
+			if (!isArray(kitIds)) {
+				throw new Error('kitIds must be an array');
+			}
+
+			kitIds = uniq(kitIds);
+
+			const opts = {
+				attributes: ['id', 'network_id'],
+				raw: true
 			};
-		} else {
-			return data;
-		}
-	}, {});
 
-	return result;
-};
+			if (kitIds.length > 0) {
+				if (kitIds.some((id) => !isInteger(id) || id <= 0)) {
+					throw new Error('kitIds can only contain integers greater than 0');
+				}
+
+				kitIds.forEach((nid) => {
+					result[nid] = kitIdToNetworkId[nid];
+				});
+
+				const cacheMisses = Object.entries(result)
+					.filter(([_, value]) => value === undefined)
+					.map(([key, _]) => key);
+
+				if (cacheMisses.length === 0) {
+					return result;
+				}
+
+				opts.where = {
+					id: cacheMisses
+				};
+			}
+
+			const users = await dbQuery.findAll('user', opts);
+
+			users.forEach((user) => {
+				if (user.network_id) {
+					networkIdToKitId[user.network_id] = user.id;
+					kitIdToNetworkId[user.id] = user.network_id;
+
+					result[user.id] = user.network_id;
+				}
+			}, {});
+
+			if (Object.keys(result).length === 0) {
+				throw new Error('No users found with given kitIds');
+			}
+
+			Object.entries(result)
+				.filter(([_, value]) => value === undefined)
+				.forEach(([key, _]) => {
+					delete result[key];
+				});
+
+			return result;
+		}];
+})();
 
 const updateUserInfo = async (userId, data = {}) => {
 	if (!isInteger(userId) || userId <= 0) {
@@ -1660,5 +1743,6 @@ module.exports = {
 	generateAffiliationCode,
 	updateUserMeta,
 	mapNetworkIdToKitId,
+	mapKitIdToNetworkId,
 	updateUserInfo
 };
