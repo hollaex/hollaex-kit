@@ -19,6 +19,7 @@ async function CancelOrders(){
 	let userName = process.env.ADMIN_USER;
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
+	let browser = process.env.BROWSER;
 	let step= util.getStep()
 
 	describe('Orders', function() {
@@ -31,7 +32,7 @@ async function CancelOrders(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			
@@ -49,14 +50,18 @@ async function CancelOrders(){
 			await driver.findElement(By.name('Search Assets')).click();
 		
 			console.log(step++,'  | type | name=Search Assets | xht | ');
-			await driver.findElement(By.name('Search Assets')).sendKeys('xht');
+			await driver.findElement(By.name('Search Assets')).sendKeys('xht-usdt');
 		
 			console.log(step++,'  | sendKeys | name=Search Assets | ${KEY_ENTER} | ');
 			await driver.findElement(By.name('Search Assets')).sendKeys(Key.ENTER);
-		
-			console.log(step++,'  | click | css=.trade_tab-pair-sub-title |  | ');
-			await driver.findElement(By.css('.trade_tab-pair-sub-title')).click();
+
+			console.log(step++,'  | click | css=.sticky-col > .d-flex > div:nth-child(2) |  |  ')
+			await driver.findElement(By.css('.sticky-col > .d-flex > div:nth-child(2)')).click();
 			await sleep(5000);
+			
+			// console.log(step++,'  | click | css=.trade_tab-pair-sub-title |  | ');
+			// await driver.findElement(By.css('.trade_tab-pair-sub-title')).click();
+			// await sleep(5000);
 
 			console.log(step++,'  | click | css=.active-menu .edit-wrapper__container |  | ');
 			await driver.findElement(By.css('.active-menu .edit-wrapper__container')).click();

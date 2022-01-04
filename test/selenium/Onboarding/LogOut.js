@@ -24,6 +24,7 @@ async function LogOut(){
 	let emailPage = process.env.EMAIL_PAGE;
 	let emailPass =process.env.EMAIL_PASS ;
 	let emailAdmin = process.env.EMAIL_ADMIN_USERNAME ;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	
@@ -42,7 +43,7 @@ async function LogOut(){
 		} 
 		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -52,7 +53,7 @@ async function LogOut(){
 			await util.setStep(step);
 		//	await driver.quit();
 		});
-		it('Simple log in', async function() {
+		it('Bob Simple Log In To Log Out Later', async function() {
 			//Given The user logged in
 			console.log(logInPage);
 			await driver.get(logInPage);
@@ -97,8 +98,8 @@ async function LogOut(){
            await driver.findElement(By.css(".app-bar-account-content > div:nth-child(2)")).click();
 		   await sleep(5000);
 
-		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
+		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 
 			console.log(step++,' | assertText | css=.icon_title-text | Login');
@@ -110,7 +111,7 @@ async function LogOut(){
 			console.log('This is the EndOfTest');
 		
  	});
-	 it('Email Confirmation', async function() {
+	 it('Email Confirmation For Log In And Log Out', async function() {
 		console.log('Test name: Confirmation');
 		console.log('Step # | name | target | value');
 	
@@ -149,6 +150,6 @@ async function LogOut(){
 }
 describe('Main Test', function () {
  
-	//LogOut();
+	// LogOut();
 })
 module.exports.LogOut = LogOut;

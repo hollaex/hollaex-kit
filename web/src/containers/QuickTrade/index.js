@@ -6,6 +6,8 @@ import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import math from 'mathjs';
 import { QuickTradeLimitsSelector } from './utils';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
+import debounce from 'lodash.debounce';
 
 import { submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -14,33 +16,61 @@ import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
 import ReviewBlock from 'components/QuickTrade/ReviewBlock';
 import { changeSymbol } from 'actions/orderbookAction';
 import { formatNumber, formatPercentage } from 'utils/currency';
-import { isLoggedIn } from 'utils/token';
+import { isLoggedIn, getToken } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
 import { changePair, setNotification } from 'actions/appActions';
+import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
+import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
 
 // const DECIMALS = 4;
 
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
 		super(props);
-		const {
-			routeParams: { pair },
-			sourceOptions,
-			tickers,
-		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
-		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair] || {};
+		const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
 
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
+		const targetOptions = this.getTargetOptions(selectedSource);
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+
+		this.props.setPriceEssentials({ side });
 		this.state = {
 			pair,
-			side: 'buy',
+			side,
 			tickerClose,
 			showQuickTradeModal: false,
 			targetOptions,
@@ -59,7 +89,13 @@ class QuickTradeContainer extends PureComponent {
 			page: 0,
 			pageSize: 12,
 			searchValue: '',
+			isSelectChange: false,
+			wsInitialized: false,
+			orderbookWs: null,
+			isSourceChanged: false,
 		};
+
+		this.goToPair(pair);
 	}
 
 	getSearchPairs = (value) => {
@@ -101,6 +137,7 @@ class QuickTradeContainer extends PureComponent {
 		if (!isReady) {
 			router.push('/summary');
 		}
+		this.initializeOrderbookWs(routeParams.pair, getToken());
 	}
 
 	componentDidMount() {
@@ -114,7 +151,7 @@ class QuickTradeContainer extends PureComponent {
 			this.props.router.push('/account');
 		}
 		if (this.props.sourceOptions && this.props.sourceOptions.length) {
-			this.constructTraget();
+			this.constructTarget();
 		}
 		this.handleMarket(pairs, tickers, this.state.searchValue);
 	}
@@ -122,6 +159,8 @@ class QuickTradeContainer extends PureComponent {
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
+			this.subscribe(nextProps.routeParams.pair);
+			this.unsubscribe(this.props.routeParams.pair);
 		}
 	}
 
@@ -131,9 +170,164 @@ class QuickTradeContainer extends PureComponent {
 			JSON.stringify(prevProps.sourceOptions) !==
 				JSON.stringify(this.props.sourceOptions)
 		) {
-			this.constructTraget();
+			this.constructTarget();
+		}
+		if (
+			JSON.stringify(prevProps.routeParams.pair) !==
+				JSON.stringify(this.props.routeParams.pair) &&
+			!this.state.isSelectChange
+		) {
+			const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
+			const pairKeys = Object.keys(pairs);
+			const flippedPair = this.flipPair(routeParams.pair);
+
+			let pair;
+			let side;
+			let tickerClose;
+			let originalPair;
+			if (pairKeys.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (pairKeys.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.length) {
+				originalPair = pairKeys[0];
+				pair = pairKeys[0];
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else {
+				router.push('/summary');
+			}
+
+			const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
+			const targetOptions = this.getTargetOptions(selectedSource);
+			const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+
+			this.props.setPriceEssentials({
+				side,
+				targetAmount: undefined,
+				sourceAmount: undefined,
+			});
+
+			this.setState({
+				pair,
+				side,
+				tickerClose,
+				targetOptions,
+				selectedSource,
+				selectedTarget,
+			});
+		} else if (this.state.isSelectChange) {
+			this.setState({
+				isSelectChange: false,
+			});
 		}
 	}
+
+	componentWillUnmount() {
+		this.closeOrderbookSocket();
+	}
+
+	storeData = (data) => {
+		this.props.setOrderbooks(data);
+		this.orderCache = {};
+	};
+
+	storeOrderData = debounce(this.storeData, 250);
+
+	initializeOrderbookWs = (symbol, token = '') => {
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
+
+		const orderbookWs = new WebSocket(url);
+
+		this.setState({ orderbookWs });
+
+		orderbookWs.onopen = (evt) => {
+			this.setState({ wsInitialized: true }, () => {
+				const {
+					routeParams: { pair },
+				} = this.props;
+				this.subscribe(pair);
+			});
+
+			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
+		};
+
+		orderbookWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			if (data.topic === 'orderbook')
+				switch (data.action) {
+					case 'partial':
+						const tempData = {
+							...data,
+							[data.symbol]: data.data,
+						};
+						delete tempData.data;
+						this.orderCache = { ...this.orderCache, ...tempData };
+						this.storeOrderData(this.orderCache);
+						break;
+
+					default:
+						break;
+				}
+		};
+
+		orderbookWs.onerror = (evt) => {
+			console.error('orderbook socket error', evt);
+		};
+
+		orderbookWs.onclose = (evt) => {
+			this.setState({ wsInitialized: false });
+
+			if (!isIntentionalClosure(evt)) {
+				setTimeout(() => {
+					this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
+				}, 1000);
+			}
+		};
+	};
+
+	subscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+		}
+	};
+
+	unsubscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+			);
+		}
+	};
+
+	closeOrderbookSocket = () => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.close(NORMAL_CLOSURE_CODE);
+		}
+	};
 
 	changePair = (pair) => {
 		this.setState({ pair });
@@ -153,8 +347,8 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onExecuteTrade = () => {
-		const { side, targetAmount, pair, sourceAmount } = this.state;
-		const { pairs } = this.props;
+		const { side, pair } = this.state;
+		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
 		const { increment_size } = pairData;
 
@@ -217,8 +411,13 @@ class QuickTradeContainer extends PureComponent {
 		this.props.router.push(`/trade/${this.state.pair}`);
 	};
 
+	flipPair = (pair) => {
+		const pairArray = pair.split('-');
+		return pairArray.reverse().join('-');
+	};
+
 	onSelectTarget = (selectedTarget) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 		const { selectedSource } = this.state;
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -227,31 +426,36 @@ class QuickTradeContainer extends PureComponent {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
 		}
 
-		this.setState({
-			tickerClose,
+		this.props.setPriceEssentials({
 			side,
-			selectedTarget,
 			targetAmount: undefined,
 			sourceAmount: undefined,
 		});
-		this.goToPair(pair);
+		this.setState({
+			side,
+			tickerClose,
+			selectedTarget,
+			isSelectChange: true,
+		});
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers } = this.props;
-
+		const { tickers, pairs } = this.props;
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const selectedTarget = targetOptions[0];
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -260,43 +464,80 @@ class QuickTradeContainer extends PureComponent {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
 		}
 
-		this.setState({
-			tickerClose,
+		this.props.setPriceEssentials({
 			side,
+			targetAmount: undefined,
+			sourceAmount: undefined,
+		});
+		this.setState({
+			side,
+			tickerClose,
 			// pair,
 			selectedSource,
 			selectedTarget,
 			targetOptions: targetOptions,
-			targetAmount: undefined,
-			sourceAmount: undefined,
+			isSelectChange: true,
 		});
-		this.goToPair(pair);
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
-	constructTraget = () => {
-		const {
-			sourceOptions,
-			routeParams: { pair = '' },
-		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+	constructTarget = () => {
+		const { sourceOptions, routeParams, pairs, router, tickers } = this.props;
+
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
 		this.setState({
 			selectedTarget,
 			targetOptions,
+			side,
+			tickerClose,
 		});
+
+		this.goToPair(pair);
 	};
 
 	getTargetOptions = (sourceKey) => {
@@ -308,38 +549,29 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onChangeTargetAmount = (targetAmount) => {
-		const { tickerClose } = this.state;
-		const { pairData = {} } = this.props;
-		const decimalPoint = getDecimals(pairData.increment_size);
-		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
-
-		this.setState({
+		this.props.setPriceEssentials({
+			size: targetAmount,
 			targetAmount,
-			sourceAmount,
+			isSourceChanged: false,
 		});
 	};
 
 	onChangeSourceAmount = (sourceAmount) => {
-		const { tickerClose } = this.state;
-		const { pairData = {} } = this.props;
-		const decimalPoint = getDecimals(pairData.increment_size);
-		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
-
-		this.setState({
+		this.props.setPriceEssentials({
+			size: sourceAmount,
 			sourceAmount,
-			targetAmount,
+			isSourceChanged: true,
 		});
 	};
 
 	isReviewDisabled = () => {
 		const {
-			targetAmount,
-			sourceAmount,
 			selectedTarget,
 			selectedSource,
 			sourceError,
 			targetError,
 		} = this.state;
+		const { targetAmount, sourceAmount } = this.props;
 		return (
 			!isLoggedIn() ||
 			!selectedTarget ||
@@ -388,11 +620,13 @@ class QuickTradeContainer extends PureComponent {
 			tickers,
 			user,
 			router,
+			constants,
+			estimatedPrice,
+			targetAmount,
+			sourceAmount,
 		} = this.props;
 		const {
 			order,
-			targetAmount,
-			sourceAmount,
 			selectedTarget,
 			selectedSource,
 			showQuickTradeModal,
@@ -487,6 +721,8 @@ class QuickTradeContainer extends PureComponent {
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
 						forwardTargetError={this.forwardTargetError}
+						constants={constants}
+						estimatedPrice={estimatedPrice}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
@@ -576,6 +812,9 @@ const mapStateToProps = (store) => {
 		constants: store.app.constants,
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
+		estimatedPrice: store.quickTrade.estimatedPrice,
+		sourceAmount: store.quickTrade.sourceAmount,
+		targetAmount: store.quickTrade.targetAmount,
 	};
 };
 
@@ -583,6 +822,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
 });
 
 export default connect(

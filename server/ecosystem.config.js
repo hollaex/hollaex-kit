@@ -42,7 +42,7 @@ const ws = {
 const plugins = {
 	// plugins application
 	name      : 'plugins',
-	script    : 'plugins.js',
+	script    : 'plugins/index.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,

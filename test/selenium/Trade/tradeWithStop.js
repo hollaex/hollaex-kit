@@ -22,6 +22,7 @@ async function TradeWithStop(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep()
 	describe('Trade with stop', function() {
 		this.timeout(300000);
@@ -33,10 +34,10 @@ async function TradeWithStop(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 		
-			await driver.manage().window().maximize();
+			driver.manage().window().maximize();
 			await util.kitLogIn(driver, userName,passWord);
 			await sleep(5000);
 		

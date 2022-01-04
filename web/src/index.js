@@ -1,6 +1,5 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import 'whatwg-fetch';
 import React from 'react';
 import { hash } from 'rsvp';
 import { Provider } from 'react-redux';
@@ -33,6 +32,7 @@ import {
 	setSetupCompleted,
 	setBaseCurrency,
 	setDefaultLogo,
+	consoleKitInfo,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -57,73 +57,16 @@ import {
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
+import { LANGUAGE_KEY } from './config/constants';
+import {
+	consolePluginDevModeInfo,
+	mergePlugins,
+	IS_PLUGIN_DEV_MODE,
+} from 'utils/plugin';
+import { drawFavIcon } from 'helpers/vanilla';
 
-import { version, name } from '../package.json';
-import { API_URL, LANGUAGE_KEY } from './config/constants';
-console.info(
-	`%c${name.toUpperCase()} ${version}`,
-	'color: #00509d; font-family:sans-serif; font-size: 20px; font-weight: 800'
-);
-console.info(
-	`%c${API_URL}`,
-	'font-family:sans-serif; font-size: 16px; font-weight: 600'
-);
-
-if (process.env.REACT_APP_PLUGIN_DEV_MODE === 'true') {
-	console.info(
-		'%cPLUGIN DEVELOPMENT MODE',
-		'color: #00509d; font-family:sans-serif; font-size: 14px; font-weight: 600'
-	);
-
-	if (process.env.REACT_APP_PLUGIN) {
-		console.info(
-			`%cPlugin: ${process.env.REACT_APP_PLUGIN}`,
-			'color: #00509d; font-family:sans-serif; font-size: 14px; font-weight: 600'
-		);
-	} else {
-		console.info(
-			'%cYou must pass plugin parameter',
-			'color: #d90429; font-family:sans-serif'
-		);
-		console.info(
-			'%cnpm run dev:plugin --plugin=TEST_PLUGIN',
-			'color: #55a630; background-color: #212529; font-family:sans-serif; line-height: 40px; padding: 10px'
-		);
-		throw new Error('plugin is required');
-	}
-}
-
-const drawFavIcon = (url) => {
-	const head = document.getElementsByTagName('head')[0];
-	const linkEl = document.createElement('link');
-
-	linkEl.type = 'image/x-icon';
-	linkEl.rel = 'icon';
-	linkEl.href = url;
-
-	// remove existing favicons
-	const links = head.getElementsByTagName('link');
-
-	for (let i = links.length; --i >= 0; ) {
-		if (/\bicon\b/i.test(links[i].getAttribute('rel'))) {
-			head.removeChild(links[i]);
-		}
-	}
-
-	head.appendChild(linkEl);
-};
-
-const getLocalBundle = async (pluginName) => {
-	const url = `/${pluginName}.json`;
-	try {
-		const response = await fetch(url);
-		return await response.json();
-	} catch (err) {
-		throw new Error(
-			`Failed to fetch/parse ${pluginName} configs. Please check ${pluginName}.json in the public folder.`
-		);
-	}
-};
+consoleKitInfo();
+consolePluginDevModeInfo();
 
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
@@ -233,32 +176,7 @@ const getConfigs = async () => {
 		data: { data: plugins = [] } = { data: [] },
 	} = await requestPlugins();
 
-	let allPlugins = [];
-
-	if (
-		process.env.REACT_APP_PLUGIN_DEV_MODE === 'true' &&
-		process.env.REACT_APP_PLUGIN
-	) {
-		const pluginName = process.env.REACT_APP_PLUGIN;
-		const pluginObject = await getLocalBundle(pluginName);
-
-		if (pluginObject) {
-			plugins.forEach((plugin) => {
-				if (plugin.name === pluginName) {
-					const mergedPlugin = merge({}, plugin, pluginObject);
-					allPlugins.push(mergedPlugin);
-				} else {
-					allPlugins.push(plugin);
-				}
-			});
-
-			if (!plugins.find(({ name }) => name === pluginName)) {
-				allPlugins.push({ ...pluginObject, name: pluginName });
-			}
-		}
-	} else {
-		allPlugins = plugins;
-	}
+	const allPlugins = IS_PLUGIN_DEV_MODE ? await mergePlugins(plugins) : plugins;
 
 	store.dispatch(setPlugins(allPlugins));
 	store.dispatch(setWebViews(allPlugins));

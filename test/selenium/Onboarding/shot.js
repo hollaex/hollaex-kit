@@ -19,7 +19,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 	util.logHolla(logPath)
 let i=0;
 let userName= "mahdi@testsae.com";
-let passWord = "Holla2021!";
+let passWord = "";
 
 
 describe('shot', function() {
@@ -32,7 +32,7 @@ describe('shot', function() {
     });
   }
   beforeEach(async function() {
-    driver = await new Builder().forBrowser('chrome').build()
+    driver = await new Builder().forBrowser(browser).build()
     vars = {}
     let reportPath = path.join(__dirname, './../Report',path.dirname(__filename).replace(path.dirname(__dirname),''),path.basename(__filename,'.js'));
     console.log(reportPath)
@@ -45,12 +45,13 @@ describe('shot', function() {
     console.log(" Step # | name | target | value");
     console.log(" 1 | open | /login | ");
     await driver.get("https://pro.hollaex.com/login")
+    driver.manage().window().maximize();
     await sleep(3000);
     await util.takeHollashot(driver,reportPath,i++)
     await sleep(3000);
 
     console.log(" 2 | setWindowSize | maximize | ");
-    await driver.manage().window().maximize();;
+    driver.manage().window().maximize();;
     await sleep(3000);
     util.takeHollashot(driver,reportPath,i++)
     

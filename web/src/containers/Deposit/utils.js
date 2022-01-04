@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import QRCode from 'qrcode.react';
 import { ExclamationCircleFilled } from '@ant-design/icons';
@@ -98,8 +99,16 @@ const RenderContentForm = ({
 	formFields,
 	icons: ICONS,
 	selectedNetwork,
+	targets,
 }) => {
 	const coinObject = coins[currency];
+
+	const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
+	const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
+	const id = targets.includes(currencySpecificId)
+		? currencySpecificId
+		: GENERAL_ID;
+
 	if (coinObject && coinObject.type !== 'fiat') {
 		return (
 			<Fragment>
@@ -167,7 +176,7 @@ const RenderContentForm = ({
 	} else if (coinObject && coinObject.type === 'fiat') {
 		return (
 			<Fiat
-				id="REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT"
+				id={id}
 				titleSection={titleSection}
 				icons={ICONS}
 				currency={currency}
@@ -178,7 +187,13 @@ const RenderContentForm = ({
 	}
 };
 
-export default reduxForm({
+const mapStateToProps = ({ app: { targets } }) => ({
+	targets,
+});
+
+const Form = reduxForm({
 	form: 'GenerateWalletForm',
 	enableReinitialize: true,
 })(RenderContentForm);
+
+export default connect(mapStateToProps)(Form);

@@ -31,6 +31,28 @@ const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
+const WAValidator = require('multicoin-address-validator');
+
+const isValidAddress = (currency, address, network) => {
+	if (network === 'eth' || network === 'ethereum') {
+		return WAValidator.validate(address, 'eth');
+	} else if (network === 'stellar' || network === 'xlm') {
+		return WAValidator.validate(address.split(':')[0], 'xlm');
+	} else if (network === 'tron' || network === 'trx') {
+		return WAValidator.validate(address, 'trx');
+	} else if (network === 'bsc' || currency === 'bnb' || network === 'bnb') {
+		return WAValidator.validate(address, 'eth');
+	} else if (currency === 'btc' || currency === 'bch' || currency === 'xmr') {
+		return WAValidator.validate(address, currency);
+	} else if (currency === 'xrp') {
+		return WAValidator.validate(address.split(':')[0], currency);
+	} else if (!WAValidator.findCurrency(currency)) {
+		// skip the validation since it can not find the currency
+		return true;
+	} else {
+		return WAValidator.validate(address, currency);
+	}
+};
 
 const getWithdrawalFee = (currency, network) => {
 	if (!subscribedToCoin(currency)) {
@@ -71,15 +93,18 @@ const sendRequestWithdrawalEmail = (id, address, amount, currency, opts = {
 		return reject(new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency)));
 	}
 
-	if (
-		coinConfiguration.network
-		&& !coinConfiguration.network.split(',').includes(opts.network)
-	) {
+	if (coinConfiguration.network) {
 		if (!opts.network) {
 			return reject(new Error(NETWORK_REQUIRED(currency, coinConfiguration.network)));
-		} else {
+		} else if (!coinConfiguration.network.split(',').includes(opts.network)) {
 			return reject(new Error(INVALID_NETWORK(opts.network, coinConfiguration.network)));
 		}
+	} else if (opts.network)  {
+		return reject(new Error(`Invalid ${currency} network given: ${opts.network}`));
+	}
+
+	if (!isValidAddress(currency, address, opts.network)) {
+		return reject(new Error(`Invalid ${currency} address: ${address}`));
 	}
 
 	return verifyOtpBeforeAction(id, opts.otpCode)
@@ -750,12 +775,13 @@ const getExchangeDeposits = (
 	})
 		.then(async (deposits) => {
 			if (deposits.data.length > 0) {
-				const idDictionary = await mapNetworkIdToKitId();
+				const networkIds = deposits.data.map((deposit) => deposit.user_id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
 				for (let deposit of deposits.data) {
-						const user_kit_id = idDictionary[deposit.user_id];
-						deposit.network_id = deposit.user_id;
-						deposit.user_id = user_kit_id;
-						deposit.User.id = user_kit_id;
+					const user_kit_id = idDictionary[deposit.user_id];
+					deposit.network_id = deposit.user_id;
+					deposit.user_id = user_kit_id;
+					deposit.User.id = user_kit_id;
 				}
 			}
 			return deposits;
@@ -800,12 +826,13 @@ const getExchangeWithdrawals = (
 	})
 		.then(async (withdrawals) => {
 			if (withdrawals.data.length > 0) {
-				const idDictionary = await mapNetworkIdToKitId();
+				const networkIds = withdrawals.data.map((withdrawal) => withdrawal.user_id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
 				for (let withdrawal of withdrawals.data) {
-						const user_kit_id = idDictionary[withdrawal.user_id];
-						withdrawal.network_id = withdrawal.user_id;
-						withdrawal.user_id = user_kit_id;
-						withdrawal.User.id = user_kit_id;
+					const user_kit_id = idDictionary[withdrawal.user_id];
+					withdrawal.network_id = withdrawal.user_id;
+					withdrawal.user_id = user_kit_id;
+					withdrawal.User.id = user_kit_id;
 				}
 			}
 			return withdrawals;
@@ -944,5 +971,6 @@ module.exports = {
 	burnAssetByNetworkId,
 	getKitBalance,
 	updatePendingMint,
-	updatePendingBurn
+	updatePendingBurn,
+	isValidAddress
 };

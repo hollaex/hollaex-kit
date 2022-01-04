@@ -113,7 +113,8 @@ class CreatePair extends Component {
 			if (typeof coin === 'string') return coin;
 			return coin.symbol;
 		});
-		const pairKeys = pairs.map((pair) => pair.name);
+		const pairData = allPairs.filter(data => pairs.includes(data.name));
+		const pairKeys = pairData.map((pair) => pair.name);
 		const totalRemaining = allPairs.filter((pair) => {
 			return (
 				!pairKeys.includes(pair.name) &&

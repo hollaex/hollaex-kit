@@ -25,7 +25,8 @@ const renderContent = (
 	handleNext,
 	handleSave,
 	handleClose,
-	getTiers
+	getTiers,
+	buttonSubmitting
 ) => {
 	switch (type) {
 		case 'new-tier-confirm':
@@ -55,6 +56,7 @@ const renderContent = (
 					tierData={editData}
 					onTypeChange={onTypeChange}
 					handleSave={handleSave}
+					buttonSubmitting={buttonSubmitting}
 				/>
 			);
 		case 'edit-fees':
@@ -86,6 +88,7 @@ const Tiers = () => {
 	const [modalType, setType] = useState('');
 	const [editData, setData] = useState({});
 	const [selectedPair, setPair] = useState('');
+	const [buttonSubmitting, setButttonSubmitting] = useState(false);
 
 	useEffect(() => {
 		getTiers();
@@ -140,27 +143,33 @@ const Tiers = () => {
 	const handleSaveTiers = () => {
 		let formProps = { ...editData };
 		delete formProps.id;
+		setButttonSubmitting(true);
 		addNewTier(formProps)
 			.then((res) => {
 				getTiers();
 				handleClose();
+				setButttonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButttonSubmitting(false);
 			});
 	};
 	const handleUpdateTiers = () => {
 		let formProps = { ...editData };
 		delete formProps.fees;
+		setButttonSubmitting(true);
 		updateTier(editData)
 			.then((res) => {
 				getTiers();
 				handleClose();
+				setButttonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButttonSubmitting(false);
 			});
 	};
 	const handleSubmit = () => {
@@ -227,7 +236,8 @@ const Tiers = () => {
 					handleNext,
 					handleSubmit,
 					handleClose,
-					getTiers
+					getTiers,
+					buttonSubmitting
 				)}
 			</Modal>
 		</div>

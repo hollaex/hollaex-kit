@@ -24,8 +24,10 @@ async function ResendVerificationEmail(){
 	let passWord = process.env.PASSWORD;
 	let webSite = process.env.WEBSITE;
 	let signUpPage = process.env.SIGN_UP_PAGE;
-	let emailAdmin =process.env.EMAIl_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
+	let reuserName =  util.getNewUser();
 	let step = util.getStep();
 	util.logHolla(logPath)
 	if (process.env.NODE_ENV == 'test') {
@@ -34,7 +36,7 @@ async function ResendVerificationEmail(){
 
 
 	describe('NewUserRequest', function() {
-		this.timeout(100000);
+		this.timeout(350000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -52,7 +54,7 @@ async function ResendVerificationEmail(){
 			throw new Error('New window did not appear before timeout');
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -60,15 +62,17 @@ async function ResendVerificationEmail(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await sleep(5000)
+			await driver.quit();
 		});
-		it('NewUserRequestSignUp', async function() {
+		it('NewUser Request SignUp', async function() {
 			await sleep(5000)
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		
 			console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
+			driver.manage().window().maximize();
      
 			console.log(step++,'  | type | name=email |',newUser);
 			await driver.wait(until.elementLocated(By.name('email')), 5000);
@@ -97,8 +101,8 @@ async function ResendVerificationEmail(){
 			console.log('This is the EndOfTest');
   
 		});
-		it('ResendRequest', async function() {
-			let reuserName =  util.getNewUser();
+		it('Resend Request', async function() {
+			
 			console.log('Test name: NewUserRequest');
 			console.log(' Step # | name | target | value');
 		
@@ -119,10 +123,9 @@ async function ResendVerificationEmail(){
 			console.log('This is the EndOfTest');
 		});
 
-		it('Email Confirmation', async function() {
+		it('Email Confirmation For Verification', async function() {
 			console.log('Test name: Confirmation');
-			let reuserName =  util.getNewUser();
-	
+			
 			console.log('Step # | name | target | value');
 			await util.emailLogIn(step,driver,emailAdmin,emailPass);
 			await driver.wait(until.elementIsEnabled(await driver.findElement(By.css('.x-grid3-row:nth-child(1) .subject:nth-child(1) > .grid_compact:nth-child(1)'))), 50000);

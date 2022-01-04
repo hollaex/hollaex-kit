@@ -21,8 +21,9 @@ async function TransactionFlow(){
 	let passWord = process.env.PASSWORD;
 	let alice = process.env.ALICE;
 	let logInPage = process.env.LOGIN_PAGE;
-	let admin = process.env.Email_ADMIN_USERNAME;
+	let admin = process.env.EMAIL_ADMIN_USERNAME;
 	let emailPass = process.env.EMAIL_PASS;
+	let browser = process.env.BROWSER;
     let step = util.getStep()
 	describe('Internal D/W Flow', function() {
 		this.timeout(300000);
@@ -43,7 +44,7 @@ async function TransactionFlow(){
 			throw new Error('New window did not appear before timeout');
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -57,6 +58,7 @@ async function TransactionFlow(){
 			console.log(' Step # | action | target | value');
 			console.log(step++,' | open |'+ logInPage + '| ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
     
 			console.log(step++,' | type | name=email | bob@gmail.com');
@@ -251,6 +253,7 @@ async function TransactionFlow(){
 		
 			console.log(step++,' | open | ' + logInPage + '| ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
 		   
 			console.log(step++,' | type | name=email | bob@gmail.com');

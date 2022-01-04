@@ -1,4 +1,4 @@
-// KYC
+// KYC 
 async function Kyc(){
 	const { Builder, By, Key, until } = require('selenium-webdriver');
 	const assert = require('assert');
@@ -16,6 +16,8 @@ async function Kyc(){
 	let KYC = process.env.KYC;
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -29,7 +31,7 @@ async function Kyc(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			driver.manage().window().maximize();
 			vars = {};
 		});
@@ -43,6 +45,7 @@ async function Kyc(){
 		
 			console.log(step++,'  | open | /login | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await sleep(5000);
 		
 			console.log(step++,'  | type | name=email |'+KYC);

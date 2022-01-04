@@ -17,6 +17,8 @@ async function Support(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let webSite = process.env.WEBSITE;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -30,7 +32,7 @@ async function Support(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			driver.manage().window().maximize();
 			vars = {};
 		});
@@ -44,6 +46,7 @@ async function Support(){
 		
 			console.log(step++,'  | open | /login | ');
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 		
 			console.log(step++,'  | wait 5000 | \'Supervisor can access all deposit, withdrawals and approval settings\' |'); 
 			await sleep(5000);

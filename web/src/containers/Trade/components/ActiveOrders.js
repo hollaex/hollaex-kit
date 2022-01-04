@@ -53,7 +53,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 	//     );
 	//   },
 	// },
-	{
+	!isMobile && {
 		label: STRINGS['TIME'],
 		key: 'created_At',
 		renderCell: ({ created_at = '' }, key, index) => {
@@ -66,9 +66,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		renderCell: ({ price = 0, symbol }, key, index) => {
 			let pairData = pairs[symbol] || {};
 			return (
-				<td key={index}>
-					{formatToCurrency(price, pairData.increment_price)}
-				</td>
+				<td key={index}>{formatToCurrency(price, pairData.increment_price)}</td>
 			);
 		},
 	},
@@ -79,9 +77,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		renderCell: ({ size = 0, symbol }, key, index) => {
 			let pairData = pairs[symbol] || {};
 			return (
-				<td key={index}>
-					{formatToCurrency(size, pairData.increment_size)}
-				</td>
+				<td key={index}>{formatToCurrency(size, pairData.increment_size)}</td>
 			);
 		},
 	},
@@ -92,10 +88,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 			let pairData = pairs[symbol] || {};
 			return (
 				<td key={index}>
-					{formatToCurrency(
-						subtract(size, filled),
-						pairData.increment_size
-					)}
+					{formatToCurrency(subtract(size, filled), pairData.increment_size)}
 				</td>
 			);
 		},
@@ -122,12 +115,12 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 			);
 		},
 	},
-	{
+	!isMobile && {
 		label: STRINGS['TRIGGER_CONDITIONS'],
 		key: 'type',
 		exportToCsv: ({ stop, symbol }) => {
 			let pairData = pairs[symbol] || {};
-			return stop && formatToCurrency(stop, pairData.increment_price)
+			return stop && formatToCurrency(stop, pairData.increment_price);
 		},
 		renderCell: ({ stop, symbol }, key, index) => {
 			let pairData = pairs[symbol] || {};
