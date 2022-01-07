@@ -54,16 +54,10 @@ $tabs-title--margin: 2rem;
 		}
 	}
 }
-.trade_block-column-wrapper {
-	.trade_block-wrapper {
-		max-height: 23rem;
-	}
-}
 .trade_block-wrapper {
-	padding: 1rem;
-	max-height: 50rem;
+	padding: 1.2rem;
+	height: 100%;
 	// border: 1px solid $colors-main-border;
-	margin: 6px 3px 3px 3px;
 	background-color: $app-sidebar-background;
 
 	&.chart-embed {
@@ -201,14 +195,6 @@ $tabs-title--margin: 2rem;
 					);
 				}
 			}
-		}
-	}
-}
-
-@media screen and (max-width: 1060px) {
-	.trade_block-column-wrapper {
-		.trade_block-wrapper {
-			max-height: 20rem;
 		}
 	}
 }

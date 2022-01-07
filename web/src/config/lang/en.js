@@ -1411,4 +1411,15 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+	TOOLS: {
+		ORDERBOOK: 'Orderbook', //new
+		CHART: 'Chart', //new
+		PUBLIC_SALES: 'Public sales', //new
+		ORDER_ENTRY: 'Order entry', //new
+		RECENT_TRADES: 'Recent trades', //new
+		OPEN_ORDERS: 'Open orders', //new
+		WALLET: 'Wallet',
+		DEPTH_CHART: 'Depth chart', //new
+		COMING_SOON: 'coming soon', //new
+	},
 };
