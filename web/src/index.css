@@ -2202,6 +2202,7 @@ table th {
   min-height: 100% !important; }
 
 .layout-mobile .trade_block-wrapper {
+  margin: 6px 3px 3px 3px;
   max-height: 50vh; }
   .layout-mobile .trade_block-wrapper.chart-embed {
     max-height: 100vh; }
