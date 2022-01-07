@@ -266,3 +266,6 @@
 	color: #c4c4c4;
 	opacity: 0.5;
 }
+.admin-top-bar .time-wrapper {
+	cursor: pointer;
+}
