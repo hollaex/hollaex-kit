@@ -35,9 +35,6 @@
 		flex: 0;
 		min-width: $side-column--width;
 		max-width: $side-column--width;
-		.trade_block-wrapper {
-			max-height: calc(49vh + 5rem) !important;
-		}
 
 		> div {
 			flex: 1;
@@ -162,17 +159,6 @@
 		.trade-col_action_wrapper {
 			min-width: $order_entry-column--width-lg;
 			max-width: $order_entry-column--width-lg;
-		}
-	}
-}
-@media screen and (min-width: 1920px) {
-	.trade-container {
-		.trade-col_main_wrapper {
-			.trade-main_content {
-				.trade_block-wrapper {
-					max-height: unset;
-				}
-			}
 		}
 	}
 }

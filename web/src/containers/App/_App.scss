@@ -329,3 +329,9 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 		}
 	}
 }
+
+.react-grid-item > .react-resizable-handle::after {
+	border-color: $colors-black !important;
+	right: 5px;
+	bottom: 5px;
+}
