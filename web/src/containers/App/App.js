@@ -24,6 +24,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import {
@@ -107,6 +108,7 @@ class App extends Component {
 			injected_values,
 			injected_html,
 			plugins_injected_html,
+			initializeTools,
 		} = this.props;
 
 		if (
@@ -128,6 +130,7 @@ class App extends Component {
 			5000
 		);
 
+		initializeTools();
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
 		injectHTML(plugins_injected_html, 'body');
@@ -195,10 +198,14 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		const { tools } = this.props;
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
 			this.setActiveMenu();
+		}
+		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
+			storeTools(tools);
 		}
 	}
 

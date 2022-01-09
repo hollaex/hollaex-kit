@@ -12,8 +12,9 @@ import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getToken } from 'utils/token';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
-import { submitOrder } from '../../actions/orderAction';
-import { getUserTrades } from '../../actions/walletActions';
+import { submitOrder } from 'actions/orderAction';
+import { getUserTrades } from 'actions/walletActions';
+import { storeLayout, getLayout } from 'actions/toolsAction';
 import {
 	changePair,
 	setNotification,
@@ -31,7 +32,9 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import TVChartContainer from './ChartContainer';
-import OrdersWrapper from './components/OrdersWrapper';
+import MobileOrdersWrapper from './components/MobileOrdersWrapper';
+import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
+import RecentTradesWrapper from './components/RecentTradesWrapper';
 import { AddTradeTabs } from 'containers';
 
 import { Loader, MobileBarTabs, SidebarHub } from '../../components';
@@ -39,6 +42,64 @@ import { Loader, MobileBarTabs, SidebarHub } from '../../components';
 import STRINGS from '../../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../../utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
+import RGL, { WidthProvider } from 'react-grid-layout';
+
+const GridLayout = WidthProvider(RGL);
+const defaultLayout = [
+	{
+		w: 3,
+		h: 13,
+		x: 9,
+		y: 0,
+		i: 'orderbook',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 7,
+		h: 13,
+		x: 2,
+		y: 0,
+		i: 'chart',
+	},
+	{
+		w: 3,
+		h: 13,
+		x: 7,
+		y: 13,
+		i: 'public_sales',
+	},
+	{
+		w: 2,
+		h: 13,
+		x: 0,
+		y: 0,
+		i: 'order_entry',
+	},
+	{
+		w: 7,
+		h: 7,
+		x: 0,
+		y: 13,
+		i: 'recent_trades',
+	},
+	{
+		w: 7,
+		h: 6,
+		x: 0,
+		y: 20,
+		i: 'open_orders',
+	},
+	{
+		w: 2,
+		h: 13,
+		x: 10,
+		y: 13,
+		i: 'wallet',
+	},
+];
+const layout = getLayout();
 
 class Trade extends PureComponent {
 	constructor(props) {
@@ -51,6 +112,7 @@ class Trade extends PureComponent {
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
+			layout: layout.length > 0 ? layout : defaultLayout,
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -70,10 +132,26 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { tools } = this.props;
+
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 			this.subscribe(nextProps.routeParams.pair);
 			this.unsubscribe(this.props.routeParams.pair);
+		}
+
+		if (JSON.stringify(tools) !== JSON.stringify(nextProps.tools)) {
+			const { layout } = this.state;
+			const newItemsLayout = [];
+			Object.entries(nextProps.tools)
+				.filter(([, { is_visible }]) => !!is_visible)
+				.forEach(([tool]) => {
+					if (!layout.find(({ i }) => i === tool)) {
+						const defaultItemLayout = defaultLayout.find(({ i }) => i === tool);
+						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
+					}
+				});
+			this.setState({ layout: [...layout, ...newItemsLayout] });
 		}
 	}
 
@@ -285,6 +363,187 @@ class Trade extends PureComponent {
 		}
 	};
 
+	renderTools = () => {
+		const { tools } = this.props;
+
+		return Object.entries(tools)
+			.filter(([, { is_visible }]) => !!is_visible)
+			.map(([key]) => this.getSectionByKey(key));
+	};
+
+	getSectionByKey = (key) => {
+		const {
+			pair,
+			pairData,
+			orderbookReady,
+			balance,
+			activeLanguage,
+			activeTheme,
+			settings,
+			pairs,
+			coins,
+			discount,
+			fees,
+		} = this.props;
+		const { chartHeight, symbol, orderbookFetched } = this.state;
+		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+
+		const orderbookProps = {
+			symbol,
+			pairData,
+			baseSymbol: baseValue.symbol.toUpperCase(),
+			coins,
+			onPriceClick: this.onPriceClick,
+			onAmountClick: this.onAmountClick,
+			orderbookFetched,
+		};
+
+		switch (key) {
+			case 'orderbook': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="ORDERBOOK"
+							isLoggedIn={isLoggedIn()}
+							title={STRINGS['ORDERBOOK']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							{orderbookReady && <Orderbook {...orderbookProps} />}
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'chart': {
+				return (
+					<div
+						className={classnames('trade-main_content', 'flex-auto', 'd-flex')}
+						key={key}
+					>
+						<TradeBlock
+							stringId="CHART"
+							title={STRINGS['CHART']}
+							setRef={this.setChartRef}
+							className="f-1 overflow-x"
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							{pair && chartHeight > 0 && (
+								<TVChartContainer
+									activeTheme={activeTheme}
+									symbol={symbol}
+									// tradeHistory={tradeHistory}
+									pairData={pairData}
+								/>
+							)}
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'public_sales': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="PUBLIC_SALES"
+							title={STRINGS['PUBLIC_SALES']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							<TradeHistory pairData={pairData} language={activeLanguage} />
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'order_entry': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="ORDER_ENTRY"
+							title={STRINGS['ORDER_ENTRY']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							<OrderEntry
+								focusOnSizeInput={this.focusOnSizeInput}
+								submitOrder={this.onSubmitOrder}
+								openCheckOrder={this.openCheckOrder}
+								onRiskyTrade={this.onRiskyTrade}
+								symbol={symbol}
+								balance={balance}
+								fees={fees}
+								showPopup={settings.notification.popup_order_confirmation}
+								setPriceRef={this.setPriceRef}
+								setSizeRef={this.setSizeRef}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'recent_trades': {
+				return (
+					<div key={key}>
+						<RecentTradesWrapper
+							pair={pair}
+							pairData={pairData}
+							discount={discount}
+							pairs={pairs}
+							coins={coins}
+							activeTheme={activeTheme}
+							isLoggedIn={isLoggedIn()}
+							goToTransactionsHistory={this.goToTransactionsHistory}
+							goToPair={this.goToPair}
+							tool={key}
+						/>
+					</div>
+				);
+			}
+			case 'open_orders': {
+				return (
+					<div key={key}>
+						<ActiveOrdersWrapper
+							pair={pair}
+							pairData={pairData}
+							discount={discount}
+							pairs={pairs}
+							coins={coins}
+							activeTheme={activeTheme}
+							isLoggedIn={isLoggedIn()}
+							goToTransactionsHistory={this.goToTransactionsHistory}
+							goToPair={this.goToPair}
+							tool={key}
+						/>
+					</div>
+				);
+			}
+			case 'wallet': {
+				return (
+					<div key={key}>
+						<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1" tool={key}>
+							<SidebarHub
+								isLogged={isLoggedIn()}
+								pair={pair}
+								theme={activeTheme}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'depth_chart':
+			default: {
+				return null;
+			}
+		}
+	};
+
+	onLayoutChange = (layout) => {
+		storeLayout(layout);
+		this.setState({ layout });
+	};
+
 	render() {
 		const {
 			pair,
@@ -297,11 +556,11 @@ class Trade extends PureComponent {
 			orderLimits,
 			pairs,
 			coins,
-			discount,
 			fees,
 			icons,
+			tools,
 		} = this.props;
-		const { chartHeight, symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, activeTab, orderbookFetched } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -355,7 +614,7 @@ class Trade extends PureComponent {
 			{
 				title: STRINGS['TRADE_TAB_ORDERS'],
 				content: (
-					<OrdersWrapper
+					<MobileOrdersWrapper
 						isLoggedIn={isLoggedIn()}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
@@ -397,123 +656,20 @@ class Trade extends PureComponent {
 				) : (
 					<div className={classnames('trade-container', 'd-flex')}>
 						<EventListener target="window" onResize={this.onResize} />
-						<div
-							className={classnames(
-								'trade-col_main_wrapper',
-								'flex-column',
-								'd-flex',
-								'f-1',
-								'overflow-x'
-							)}
+						<GridLayout
+							className="layout w-100"
+							layout={this.state.layout}
+							onLayoutChange={this.onLayoutChange}
+							items={
+								Object.entries(tools).filter(
+									([, { is_visible }]) => !!is_visible
+								).length
+							}
+							rowHeight={30}
+							cols={12}
 						>
-							<div
-								className={classnames(
-									'trade-main_content',
-									'flex-auto',
-									'd-flex'
-								)}
-							>
-								<TradeBlock
-									stringId="CHART"
-									title={STRINGS['CHART']}
-									setRef={this.setChartRef}
-									className="f-1 overflow-x"
-									pairData={pairData}
-									pair={pair}
-								>
-									{pair && chartHeight > 0 && (
-										<TVChartContainer
-											activeTheme={activeTheme}
-											symbol={symbol}
-											// tradeHistory={tradeHistory}
-											pairData={pairData}
-										/>
-									)}
-								</TradeBlock>
-							</div>
-							<div
-								className={classnames(
-									'trade-tabs_content',
-									'd-flex',
-									'flex-column',
-									'apply_rtl'
-								)}
-							>
-								<OrdersWrapper
-									pair={pair}
-									pairData={pairData}
-									discount={discount}
-									pairs={pairs}
-									coins={coins}
-									activeTheme={activeTheme}
-									isLoggedIn={isLoggedIn()}
-									goToTransactionsHistory={this.goToTransactionsHistory}
-									goToPair={this.goToPair}
-								/>
-							</div>
-						</div>
-						<div
-							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDERBOOK"
-								isLoggedIn={isLoggedIn()}
-								title={STRINGS['ORDERBOOK']}
-								pairData={pairData}
-								pair={pair}
-							>
-								{orderbookReady && <Orderbook {...orderbookProps} />}
-							</TradeBlock>
-							<TradeBlock
-								stringId="PUBLIC_SALES"
-								title={STRINGS['PUBLIC_SALES']}
-								pairData={pairData}
-								pair={pair}
-							>
-								<TradeHistory pairData={pairData} language={activeLanguage} />
-							</TradeBlock>
-						</div>
-
-						<div
-							className={classnames(
-								'trade-col_action_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDER_ENTRY"
-								title={STRINGS['ORDER_ENTRY']}
-								pairData={pairData}
-								pair={pair}
-							>
-								<OrderEntry
-									focusOnSizeInput={this.focusOnSizeInput}
-									submitOrder={this.onSubmitOrder}
-									openCheckOrder={this.openCheckOrder}
-									onRiskyTrade={this.onRiskyTrade}
-									symbol={symbol}
-									balance={balance}
-									fees={fees}
-									showPopup={settings.notification.popup_order_confirmation}
-									setPriceRef={this.setPriceRef}
-									setSizeRef={this.setSizeRef}
-								/>
-							</TradeBlock>
-							<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1">
-								<SidebarHub
-									isLogged={isLoggedIn()}
-									pair={pair}
-									theme={activeTheme}
-								/>
-							</TradeBlock>
-						</div>
+							{this.renderTools()}
+						</GridLayout>
 					</div>
 				)}
 			</div>
@@ -565,6 +721,7 @@ const mapStateToProps = (state) => {
 		discount: state.user.discount || 0,
 		isReady: state.app.isReady,
 		constants: state.app.constants,
+		tools: state.tools,
 	};
 };
 

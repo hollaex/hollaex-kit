@@ -8,6 +8,7 @@ import wallet from './walletReducer';
 import asset from './assetReducer';
 import stake from './stakeReducer';
 import quickTrade from './quickTradeReducer';
+import tools from './toolsReducer';
 import { reducer as formReducer } from 'redux-form';
 
 const appReducer = combineReducers({
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
 	wallet,
 	asset,
 	stake,
+	tools,
 	quickTrade,
 	form: formReducer,
 });
