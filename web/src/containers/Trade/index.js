@@ -660,6 +660,7 @@ class Trade extends PureComponent {
 							className="layout w-100"
 							layout={this.state.layout}
 							onLayoutChange={this.onLayoutChange}
+							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
