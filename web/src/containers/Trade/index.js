@@ -97,6 +97,7 @@ const defaultLayout = [
 		x: 19,
 		y: 14,
 		i: 'wallet',
+		isResizable: false,
 	},
 ];
 const layout = getLayout();
