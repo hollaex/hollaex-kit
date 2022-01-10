@@ -1694,6 +1694,11 @@ paths:
                 $ref: '#/definitions/TokenPermissions'
               whitelisted_ips:
                 type: array
+                items:
+                  type: string
+                  format: ipv4
+              enabled_whitelisting:
+                type: boolean
       responses:
         200:
           description: Success

@@ -754,9 +754,9 @@ function updateHmacToken(req, res) {
 
 	const { userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { token_id, otp_code, permissions } = req.swagger.params.data.value;
+	const { token_id, otp_code, permissions, whitelisted_ips, enabled_whitelisting } = req.swagger.params.data.value;
 
-	toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, name, permissions)
+	toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, name, permissions, whitelisted_ips, enabled_whitelisting)
 		.then((token) => {
 			return res.json(token);
 		})

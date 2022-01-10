@@ -934,7 +934,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions) {
+async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions, whitelisted_ips, enabled_whitelisting) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({user_id: userId, name: name});
 
@@ -944,9 +944,13 @@ async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions) {
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	return await token.update(
-		permissions,
-		{ fields: ['can_read', 'can_trade', 'can_withdraw'], returning: true });
+	const values = {
+		...permissions,
+		whitelisted_ips,
+		enabled_whitelisting
+	};
+
+	return await token.update(values, { returning: true });
 }
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
