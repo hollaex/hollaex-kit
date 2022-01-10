@@ -146,7 +146,7 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
-						// hasEarn={stake_page && !isMobile}
+						hasEarn={stake_page && !isMobile}
 					/>
 				),
 				isOpen: true,

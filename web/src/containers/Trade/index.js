@@ -47,9 +47,9 @@ import RGL, { WidthProvider } from 'react-grid-layout';
 const GridLayout = WidthProvider(RGL);
 const defaultLayout = [
 	{
-		w: 3,
-		h: 13,
-		x: 9,
+		w: 5,
+		h: 14,
+		x: 19,
 		y: 0,
 		i: 'orderbook',
 		isDraggable: true,
@@ -57,45 +57,45 @@ const defaultLayout = [
 		resizeHandles: ['se'],
 	},
 	{
-		w: 7,
-		h: 13,
-		x: 2,
+		w: 14,
+		h: 14,
+		x: 0,
 		y: 0,
 		i: 'chart',
 	},
 	{
-		w: 3,
-		h: 13,
-		x: 7,
-		y: 13,
+		w: 5,
+		h: 17,
+		x: 14,
+		y: 14,
 		i: 'public_sales',
 	},
 	{
-		w: 2,
-		h: 13,
-		x: 0,
+		w: 5,
+		h: 14,
+		x: 14,
 		y: 0,
 		i: 'order_entry',
 	},
 	{
-		w: 7,
-		h: 7,
+		w: 14,
+		h: 8,
 		x: 0,
-		y: 13,
+		y: 14,
 		i: 'recent_trades',
 	},
 	{
-		w: 7,
-		h: 6,
+		w: 14,
+		h: 9,
 		x: 0,
-		y: 20,
+		y: 22,
 		i: 'open_orders',
 	},
 	{
-		w: 2,
-		h: 13,
-		x: 10,
-		y: 13,
+		w: 5,
+		h: 17,
+		x: 19,
+		y: 14,
 		i: 'wallet',
 	},
 ];
@@ -660,13 +660,14 @@ class Trade extends PureComponent {
 							className="layout w-100"
 							layout={this.state.layout}
 							onLayoutChange={this.onLayoutChange}
+							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
 								).length
 							}
 							rowHeight={30}
-							cols={12}
+							cols={24}
 						>
 							{this.renderTools()}
 						</GridLayout>
