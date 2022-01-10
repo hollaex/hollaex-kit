@@ -2636,7 +2636,7 @@ const tools = require('hollaex-tools-lib');
   - Create instance of model
   - Returns promise with sequelize db model
 	```javascript
-	tools.database.create('user'. { id: 1, email: 'hello', password: 'password' })
+	tools.database.create('user', { id: 1, email: 'hello', password: 'password' })
 		.then((data) => {
 			// data
 		});
@@ -2645,7 +2645,7 @@ const tools = require('hollaex-tools-lib');
   - Destroy instance of model
   - Returns promise with sequelize object
 	```javascript
-	tools.database.destroy('user'. { where: { id: 1 }})
+	tools.database.destroy('user', { where: { id: 1 }})
 		.then((data) => {
 			// data
 		});
@@ -2654,7 +2654,7 @@ const tools = require('hollaex-tools-lib');
   - Update instance of model
   - Returns promise with sequelize object
 	```javascript
-	tools.database.update('user'. { where: { id: 1 } })
+	tools.database.update('user', { where: { id: 1 } })
 		.then((data) => {
 			// data
 		});
@@ -2663,7 +2663,7 @@ const tools = require('hollaex-tools-lib');
   - Get an instance of model
   - Returns promise with sequelize object
 	```javascript
-	tools.database.findOne('user'. { where: { id: 1 } })
+	tools.database.findOne('user', { where: { id: 1 } })
 		.then((data) => {
 			// data
 		});
@@ -2672,7 +2672,7 @@ const tools = require('hollaex-tools-lib');
   - Get all instance of model
   - Returns promise with sequelize object
 	```javascript
-	tools.database.findAll('user'. { where: { otp_enabled: true } })
+	tools.database.findAll('user', { where: { otp_enabled: true } })
 		.then((data) => {
 			// data
 		});
@@ -2681,7 +2681,7 @@ const tools = require('hollaex-tools-lib');
   - Get all instance of model with count
   - Returns promise with sequelize object
 	```javascript
-	tools.database.findAndCountAll('user'. { where: { otp_enabled: true } })
+	tools.database.findAndCountAll('user', { where: { otp_enabled: true } })
 		.then((data) => {
 			// data
 		});
@@ -2690,7 +2690,7 @@ const tools = require('hollaex-tools-lib');
   - Get all instance of model with count and data
   - Returns promise with sequelize object
 	```javascript
-	tools.database.findAndCountAllWithRows('user'. { where: { otp_enabled: true } })
+	tools.database.findAndCountAllWithRows('user', { where: { otp_enabled: true } })
 		.then((data) => {
 			/*
 				{
