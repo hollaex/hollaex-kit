@@ -2141,8 +2141,7 @@ table th {
     overflow-y: scroll;
     height: 100%; }
     .trade_block-wrapper .trade_block-content .sidebar_hub-content {
-      min-height: 42vh;
-      max-height: 56vh;
+      height: 100%;
       overflow-y: auto; }
 
 .trade_block_tabs-wrapper .trade_block-title {
@@ -2178,7 +2177,7 @@ table th {
   margin-left: 2rem; }
 
 .trade_history-wrapper {
-  height: 49vh; }
+  height: 100%; }
   .trade_history-wrapper .display_table-wrapper .display_table-header :nth-child(2) {
     text-align: center; }
   .trade_history-wrapper .display_table-wrapper .display_table-header .ant-select-arrow {
@@ -2390,7 +2389,7 @@ table th {
   margin: auto; }
 
 .trade_orderbook-wrapper {
-  height: 49vh; }
+  height: 100%; }
   .trade_orderbook-wrapper .trade_orderbook-headers .trade_orderbook-cell {
     font-size: 1rem !important;
     flex-direction: column; }
