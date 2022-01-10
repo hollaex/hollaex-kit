@@ -1,15 +1,9 @@
 import Cookies from 'universal-cookie';
 import math from 'mathjs';
 import numbro from 'numbro';
-import moment from 'moment-timezone';
+import moment from 'moment';
 // import jwtDecode from 'jwt-decode';
 // import { getToken, setToken, removeToken } from './token';
-import {
-	// TOKEN_KEY,
-	// TOKEN_MAX_AGE,
-	// TOKEN_EMAIL,
-	TIME_ZONE,
-} from '../config/constants';
 
 const cookies = new Cookies();
 
@@ -18,7 +12,7 @@ export const getEmail = () => cookies.get('token::email');
 export { default as request, requestAuthenticated } from './request';
 
 export const formatDate = (date) => {
-	return moment(date).tz(TIME_ZONE).format('YYYY/MM/DD HH:mm');
+	return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase()  + new Date(date).toTimeString().slice(9);
 };
 
 export const getFormat = (min = 0, fullFormat) => {

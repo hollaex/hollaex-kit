@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin, message } from 'antd';
+import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
@@ -56,6 +56,7 @@ import {
 	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
+import Timer from './Timer';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -625,6 +626,16 @@ class AppWrapper extends React.Component {
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
+						<div className='mr-2 time-wrapper'>
+							<Tooltip
+								placement="bottom"
+								title={<Timer isHover={true}/>}
+							>
+								<div className='ml-2'>
+									<Timer isHover={false}/>
+								</div>
+							</Tooltip>
+						</div>
 					</div>
 					<Layout>
 						<Sider width={310}>
