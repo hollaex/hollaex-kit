@@ -27,6 +27,8 @@ const {
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
+	API_KEY_NOT_PERMITTED,
+	API_KEY_NOT_WHITELISTED,
 	API_SIGNATURE_INVALID,
 	INVALID_PASSWORD,
 	SAME_PASSWORD,
@@ -537,6 +539,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 
 	// Swagger endpoint scopes
 	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
+	const endpointPermissions = req.swagger.operation['x-token-permissions'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -553,56 +556,24 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	if (has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 		return sendError(MULTIPLE_API_KEY);
 	} else if (has(req.headers, 'api-key') && !has(req.headers, 'authorization')) {
-		if (!apiKey) {
-			loggerAuth.error('helpers/auth/checkHmacKey null key', apiKey);
-			return sendError(API_KEY_NULL);
-		} else if (moment().unix() > apiExpires) {
-			loggerAuth.error('helpers/auth/checkHmacKey expired', apiExpires);
-			return sendError(API_REQUEST_EXPIRED);
-		} else if (!apiSignature) {
-			loggerAuth.error('helpers/auth/checkHmacKey null secret', apiKey);
-			return sendError(API_SIGNATURE_NULL);
-		} else {
-			findTokenByApiKey(apiKey)
-				.then((token) => {
-					if (!endpointScopes.includes(token.type)) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
-							apiKey,
-							token.type
-						);
-						return sendError(API_KEY_OUT_OF_SCOPE);
-					} else if (new Date(token.expiry) < new Date()) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey expired key',
-							apiKey
-						);
-						return sendError(API_KEY_EXPIRED);
-					} else if (!token.active) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey inactive',
-							apiKey
-						);
-						return sendError(API_KEY_INACTIVE);
-					} else {
-						const isSignatureValid = checkHmacSignature(
-							token.secret,
-							req
-						);
-						if (!isSignatureValid) {
-							return sendError(API_SIGNATURE_INVALID);
-						} else {
-							req.auth = {
-								sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
-							};
-							cb();
-						}
-					}
-				})
-				.catch((err) => {
-					loggerAuth.error('helpers/auth/checkApiKey catch', err);
-					return sendError(err.message);
-				});
+		verifyHmacTokenPromise(
+			apiKey,
+			apiSignature,
+			apiExpires,
+			req.method,
+			req.originalUrl,
+			req.body,
+			endpointScopes,
+			endpointPermissions,
+			ip)
+			.then((auth) => {
+				req.auth = auth;
+				cb();
+			})
+			.catch((err) => {
+				loggerAuth.error('helpers/auth/checkApiKey catch', err);
+				return sendError(err.message);
+			});
 		}
 	}
 };
@@ -740,49 +711,60 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES) => {
+const verifyHmacTokenPromise = async (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
 	if (!apiKey) {
-		return reject(new Error(API_KEY_NULL));
+		throw new Error(API_KEY_NULL);
 	} else if (!apiSignature) {
-		return reject(new Error(API_SIGNATURE_NULL));
+		throw new Error(API_SIGNATURE_NULL);
 	} else if (moment().unix() > apiExpires) {
-		return reject(new Error(API_REQUEST_EXPIRED));
+		throw new Error(API_REQUEST_EXPIRED);
 	} else {
-		return findTokenByApiKey(apiKey)
-			.then((token) => {
-				if (!scopes.includes(token.type)) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
-						apiKey,
-						token.type
-					);
-					throw new Error(API_KEY_OUT_OF_SCOPE);
-				} else if (new Date(token.expiry) < new Date()) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey expired key',
-						apiKey
-					);
-					throw new Error(API_KEY_EXPIRED);
-				} else if (!token.active) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey inactive',
-						apiKey
-					);
-					throw new Error(API_KEY_INACTIVE);
-				} else {
-					const isSignatureValid = checkHmacSignature(
-						token.secret,
-						{ body, headers: { 'api-signature': apiSignature, 'api-expires': apiExpires }, method, originalUrl }
-					);
-					if (!isSignatureValid) {
-						throw new Error(API_SIGNATURE_INVALID);
-					} else {
-						return {
-							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
-						};
-					}
-				}
-			});
+		const token = await findTokenByApiKey(apiKey);
+		if (!scopes.includes(token.type)) {
+			loggerAuth.error(
+				'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
+				apiKey,
+				token.type
+			);
+			throw new Error(API_KEY_OUT_OF_SCOPE);
+		} else if (new Date(token.expiry) < new Date()) {
+			loggerAuth.error(
+				'helpers/auth/checkApiKey/findTokenByApiKey expired key',
+				apiKey
+			);
+			throw new Error(API_KEY_EXPIRED);
+		} else if (!token.active) {
+			loggerAuth.error(
+				'helpers/auth/checkApiKey/findTokenByApiKey inactive',
+				apiKey
+			);
+			throw new Error(API_KEY_INACTIVE);
+		} else if (!permissions.all((permission) => token[permission] === true) {
+			loggerAuth.error(
+				'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
+				apiKey
+			);
+			throw new Error(API_KEY_NOT_PERMITTED);
+		} else if (token.whitelisting_enabled && !token.whitelisted_ips.includes(ip)) {
+			loggerAuth.error(
+				'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
+				apiKey,
+				ip
+			);
+			throw new Error(API_KEY_NOT_WHITELISTED);
+		} else {
+			const isSignatureValid = checkHmacSignature(
+				token.secret,
+				{ body, headers: { 'api-signature': apiSignature, 'api-expires': apiExpires }, method, originalUrl }
+			);
+			if (!isSignatureValid) {
+				throw new Error(API_SIGNATURE_INVALID);
+			} else {
+				return {
+					sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
+				};
+			}
+		}
 	}
 };
 
@@ -951,6 +933,21 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 			};
 		});
 };
+
+async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions) {
+	await checkUserOtpActive(userId, otpCode);
+	const token = await findToken({user_id: userId, name: name});
+
+	if (!token) {
+		throw new Error(TOKEN_NOT_FOUND);
+	} else if (token.revoked) {
+		throw new Error(TOKEN_REVOKED);
+	}
+
+	return await token.update(
+		permissions,
+		{ fields: ['can_read', 'can_trade', 'can_withdraw'], returning: true });
+}
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 	return checkUserOtpActive(userId, otpCode)

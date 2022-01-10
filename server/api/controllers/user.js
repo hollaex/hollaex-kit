@@ -745,6 +745,31 @@ const createHmacToken = (req, res) => {
 		});
 };
 
+function updateHmacToken(req, res) {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken auth',
+		req.auth.sub
+	);
+
+	const { userId } = req.auth.sub;
+	const ip = req.headers['x-real-ip'];
+	const { token_id, otp_code, permissions } = req.swagger.params.data.value;
+
+	toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, name, permissions)
+		.then((token) => {
+			return res.json(token);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/updateHmacToken',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const deleteHmacToken = (req, res) => {
 	loggerUser.verbose(
 		req.uuid,
