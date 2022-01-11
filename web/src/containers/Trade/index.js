@@ -62,6 +62,9 @@ const defaultLayout = [
 		x: 0,
 		y: 0,
 		i: 'chart',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
@@ -69,6 +72,9 @@ const defaultLayout = [
 		x: 14,
 		y: 14,
 		i: 'public_sales',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
@@ -76,6 +82,9 @@ const defaultLayout = [
 		x: 14,
 		y: 0,
 		i: 'order_entry',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
@@ -83,6 +92,9 @@ const defaultLayout = [
 		x: 0,
 		y: 14,
 		i: 'recent_trades',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
@@ -90,6 +102,9 @@ const defaultLayout = [
 		x: 0,
 		y: 22,
 		i: 'open_orders',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
@@ -98,9 +113,28 @@ const defaultLayout = [
 		y: 14,
 		i: 'wallet',
 		isResizable: false,
+		isDraggable: true,
+		resizeHandles: ['se'],
 	},
 ];
-const layout = getLayout();
+
+const getDefaultLayoutByTool = (tool) =>
+	defaultLayout.find(({ i }) => i === tool) || {};
+
+const layout = getLayout().map(({ w, h, x, y, i }) => {
+	const defaultItemLayout = getDefaultLayoutByTool(i);
+	const itemLayout = { ...defaultItemLayout };
+	if (defaultItemLayout.isResizable) {
+		itemLayout.w = w;
+		itemLayout.h = h;
+	}
+
+	if (defaultItemLayout.isDraggable) {
+		itemLayout.x = x;
+		itemLayout.y = y;
+	}
+	return itemLayout;
+});
 
 class Trade extends PureComponent {
 	constructor(props) {
@@ -148,7 +182,7 @@ class Trade extends PureComponent {
 				.filter(([, { is_visible }]) => !!is_visible)
 				.forEach(([tool]) => {
 					if (!layout.find(({ i }) => i === tool)) {
-						const defaultItemLayout = defaultLayout.find(({ i }) => i === tool);
+						const defaultItemLayout = getDefaultLayoutByTool(tool);
 						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
 					}
 				});
