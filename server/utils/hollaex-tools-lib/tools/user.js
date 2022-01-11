@@ -1523,7 +1523,9 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 
 			const result = {};
 
-			if (networkIds.length > 0) {
+			if (networkIds.length === 0) {
+				return result;
+			} else if (networkIds.length > 0) {
 				if (networkIds.some((id) => !isInteger(id) || id <= 0)) {
 					throw new Error('networkIds can only contain integers greater than 0');
 				}
@@ -1582,7 +1584,9 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				raw: true
 			};
 
-			if (kitIds.length > 0) {
+			if (kitIds.length === 0) {
+				return result;
+			} else if (kitIds.length > 0) {
 				if (kitIds.some((id) => !isInteger(id) || id <= 0)) {
 					throw new Error('kitIds can only contain integers greater than 0');
 				}
