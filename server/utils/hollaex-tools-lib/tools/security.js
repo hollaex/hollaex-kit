@@ -574,7 +574,6 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 				loggerAuth.error('helpers/auth/checkApiKey catch', err);
 				return sendError(err.message);
 			});
-		}
 	}
 };
 
@@ -739,7 +738,7 @@ const verifyHmacTokenPromise = async (apiKey, apiSignature, apiExpires, method, 
 				apiKey
 			);
 			throw new Error(API_KEY_INACTIVE);
-		} else if (!permissions.all((permission) => token[permission] === true) {
+		} else if (!permissions.all((permission) => token[permission] === true)) {
 			loggerAuth.error(
 				'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
 				apiKey

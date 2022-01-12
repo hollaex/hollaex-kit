@@ -28,7 +28,7 @@ module.exports = {
 			allowNull: false,
 			defaultValue: false
 		});
-	}
+	},
 	async down(queryInterface, Sequelize) {
 		await Promise.all(COLUMNS.map(async (COLUMN) => {
 			await queryInterface.removeColumn(TABLE, COLUMN);
