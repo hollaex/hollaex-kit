@@ -35,6 +35,7 @@ import TVChartContainer from './ChartContainer';
 import MobileOrdersWrapper from './components/MobileOrdersWrapper';
 import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
 import RecentTradesWrapper from './components/RecentTradesWrapper';
+import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
 
 import { Loader, MobileBarTabs, SidebarHub } from '../../components';
@@ -58,17 +59,23 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 14,
+		h: 19,
 		x: 0,
 		y: 0,
 		i: 'chart',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
 		h: 17,
 		x: 14,
-		y: 14,
+		y: 23,
 		i: 'public_sales',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
@@ -76,30 +83,69 @@ const defaultLayout = [
 		x: 14,
 		y: 0,
 		i: 'order_entry',
+		isDraggable: true,
+		isResizable: false,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
-		h: 8,
+		h: 11,
 		x: 0,
-		y: 14,
+		y: 19,
 		i: 'recent_trades',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
-		h: 9,
+		h: 10,
 		x: 0,
-		y: 22,
+		y: 30,
 		i: 'open_orders',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 	{
 		w: 5,
 		h: 17,
 		x: 19,
-		y: 14,
+		y: 23,
 		i: 'wallet',
+		isDraggable: true,
+		isResizable: false,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 10,
+		h: 9,
+		x: 14,
+		y: 14,
+		i: 'depth_chart',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
 	},
 ];
-const layout = getLayout();
+
+const getDefaultLayoutByTool = (tool) =>
+	defaultLayout.find(({ i }) => i === tool) || {};
+
+const layout = getLayout().map(({ w, h, x, y, i }) => {
+	const defaultItemLayout = getDefaultLayoutByTool(i);
+	const itemLayout = { ...defaultItemLayout };
+	if (defaultItemLayout.isResizable) {
+		itemLayout.w = w;
+		itemLayout.h = h;
+	}
+
+	if (defaultItemLayout.isDraggable) {
+		itemLayout.x = x;
+		itemLayout.y = y;
+	}
+	return itemLayout;
+});
 
 class Trade extends PureComponent {
 	constructor(props) {
@@ -147,7 +193,7 @@ class Trade extends PureComponent {
 				.filter(([, { is_visible }]) => !!is_visible)
 				.forEach(([tool]) => {
 					if (!layout.find(({ i }) => i === tool)) {
-						const defaultItemLayout = defaultLayout.find(({ i }) => i === tool);
+						const defaultItemLayout = getDefaultLayoutByTool(tool);
 						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
 					}
 				});
@@ -532,7 +578,17 @@ class Trade extends PureComponent {
 					</div>
 				);
 			}
-			case 'depth_chart':
+			case 'depth_chart': {
+				return (
+					<div key={key}>
+						<TradeBlock title="Depth Chart" className="f-1" tool={key}>
+							<DepthChart
+								containerProps={{ style: { height: '100%', width: '100%' } }}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
 			default: {
 				return null;
 			}
