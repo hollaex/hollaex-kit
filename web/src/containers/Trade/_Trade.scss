@@ -25,6 +25,7 @@ $order_entry-column--width-lg: 20rem;
 @import './components/_TradeBlock.scss';
 @import './components/_OrderEntry.scss';
 @import './components/Orderbook.scss';
+@import './components/DepthChart.scss';
 
 .ask,
 .buy {

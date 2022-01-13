@@ -35,6 +35,7 @@ import TVChartContainer from './ChartContainer';
 import MobileOrdersWrapper from './components/MobileOrdersWrapper';
 import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
 import RecentTradesWrapper from './components/RecentTradesWrapper';
+import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
 
 import { Loader, MobileBarTabs, SidebarHub } from '../../components';
@@ -58,7 +59,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 14,
+		h: 19,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -70,7 +71,7 @@ const defaultLayout = [
 		w: 5,
 		h: 17,
 		x: 14,
-		y: 14,
+		y: 23,
 		i: 'public_sales',
 		isDraggable: true,
 		isResizable: true,
@@ -83,14 +84,14 @@ const defaultLayout = [
 		y: 0,
 		i: 'order_entry',
 		isDraggable: true,
-		isResizable: true,
+		isResizable: false,
 		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
-		h: 8,
+		h: 11,
 		x: 0,
-		y: 14,
+		y: 19,
 		i: 'recent_trades',
 		isDraggable: true,
 		isResizable: true,
@@ -98,9 +99,9 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 9,
+		h: 10,
 		x: 0,
-		y: 22,
+		y: 30,
 		i: 'open_orders',
 		isDraggable: true,
 		isResizable: true,
@@ -110,10 +111,20 @@ const defaultLayout = [
 		w: 5,
 		h: 17,
 		x: 19,
-		y: 14,
+		y: 23,
 		i: 'wallet',
-		isResizable: false,
 		isDraggable: true,
+		isResizable: false,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 10,
+		h: 9,
+		x: 14,
+		y: 14,
+		i: 'depth_chart',
+		isDraggable: true,
+		isResizable: true,
 		resizeHandles: ['se'],
 	},
 ];
@@ -567,7 +578,17 @@ class Trade extends PureComponent {
 					</div>
 				);
 			}
-			case 'depth_chart':
+			case 'depth_chart': {
+				return (
+					<div key={key}>
+						<TradeBlock title="Depth Chart" className="f-1" tool={key}>
+							<DepthChart
+								containerProps={{ style: { height: '100%', width: '100%' } }}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
 			default: {
 				return null;
 			}
