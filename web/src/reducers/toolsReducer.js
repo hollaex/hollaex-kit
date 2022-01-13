@@ -31,17 +31,22 @@ const initialState = {
 		is_visible: true,
 	},
 	depth_chart: {
-		is_enabled: false,
-		is_visible: false,
+		is_enabled: true,
+		is_visible: true,
 	},
 };
 
 export default (state = initialState, { type, payload }) => {
 	switch (type) {
-		case INITIALIZE_TOOLS:
+		case INITIALIZE_TOOLS: {
+			Object.keys(payload).forEach((tool) => {
+				delete payload[tool].is_enabled;
+			});
+
 			return {
 				...merge({}, state, payload),
 			};
+		}
 		case TOGGLE_TOOL: {
 			const { key } = payload;
 			return {

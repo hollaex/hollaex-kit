@@ -2535,6 +2535,29 @@ table th {
 .trade_orderbook-cell .ant-select-selector {
   color: var(--labels_important-active-labels-text-graphics) !important; }
 
+.depth-chart__bids .highcharts-area {
+  fill: var(--calculated_trading_buying-sparkline-fill) !important; }
+
+.depth-chart__bids .highcharts-graph {
+  stroke: var(--trading_buying-related-elements) !important; }
+
+.depth-chart__asks .highcharts-area {
+  fill: var(--calculated_trading_selling-sparkline-fill) !important; }
+
+.depth-chart__asks .highcharts-graph {
+  stroke: var(--trading_selling-related-elements) !important; }
+
+.highcharts-root text {
+  fill: var(--labels_secondary-inactive-label-text-graphics) !important;
+  color: var(--labels_secondary-inactive-label-text-graphics) !important; }
+
+.highcharts-grid-line {
+  stroke: var(--calculated_secondary-border-1) !important; }
+
+.highcharts-axis-line,
+.highcharts-tick {
+  stroke: var(--calculated_secondary-border) !important; }
+
 .ask,
 .buy {
   color: var(--trading_selling-related-elements); }
