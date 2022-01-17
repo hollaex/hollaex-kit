@@ -24,7 +24,7 @@ const OrdersWrapper = ({
 }) => {
 	return (
 		<TradeBlock
-			title={STRINGS['RECENT_TRADES']}
+			title={STRINGS['TOOLS.RECENT_TRADES']}
 			action={
 				isLoggedIn() ? (
 					<ActionNotification
@@ -40,7 +40,7 @@ const OrdersWrapper = ({
 					''
 				)
 			}
-			stringId="RECENT_TRADES"
+			stringId="TOOLS.RECENT_TRADES"
 			tool={tool}
 		>
 			{isLoggedIn() ? (

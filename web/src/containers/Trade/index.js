@@ -449,9 +449,9 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<TradeBlock
-							stringId="ORDERBOOK"
+							stringId="TOOLS.ORDERBOOK"
 							isLoggedIn={isLoggedIn()}
-							title={STRINGS['ORDERBOOK']}
+							title={STRINGS['TOOLS.ORDERBOOK']}
 							pairData={pairData}
 							pair={pair}
 							tool={key}
@@ -468,8 +468,8 @@ class Trade extends PureComponent {
 						key={key}
 					>
 						<TradeBlock
-							stringId="CHART"
-							title={STRINGS['CHART']}
+							stringId="TOOLS.CHART"
+							title={STRINGS['TOOLS.CHART']}
 							setRef={this.setChartRef}
 							className="f-1 overflow-x"
 							pairData={pairData}
@@ -492,8 +492,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<TradeBlock
-							stringId="PUBLIC_SALES"
-							title={STRINGS['PUBLIC_SALES']}
+							stringId="TOOLS.PUBLIC_SALES"
+							title={STRINGS['TOOLS.PUBLIC_SALES']}
 							pairData={pairData}
 							pair={pair}
 							tool={key}
@@ -507,8 +507,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<TradeBlock
-							stringId="ORDER_ENTRY"
-							title={STRINGS['ORDER_ENTRY']}
+							stringId="TOOLS.ORDER_ENTRY"
+							title={STRINGS['TOOLS.ORDER_ENTRY']}
 							pairData={pairData}
 							pair={pair}
 							tool={key}
@@ -568,7 +568,12 @@ class Trade extends PureComponent {
 			case 'wallet': {
 				return (
 					<div key={key}>
-						<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1" tool={key}>
+						<TradeBlock
+							stringId="TOOLS.WALLET"
+							title={STRINGS['TOOLS.WALLET']}
+							className="f-1"
+							tool={key}
+						>
 							<SidebarHub
 								isLogged={isLoggedIn()}
 								pair={pair}
@@ -581,7 +586,12 @@ class Trade extends PureComponent {
 			case 'depth_chart': {
 				return (
 					<div key={key}>
-						<TradeBlock title="Depth Chart" className="f-1" tool={key}>
+						<TradeBlock
+							stringId="TOOLS.DEPTH_CHART"
+							title={STRINGS['TOOLS.DEPTH_CHART']}
+							className="f-1"
+							tool={key}
+						>
 							<DepthChart
 								containerProps={{ style: { height: '100%', width: '100%' } }}
 							/>

@@ -59,7 +59,7 @@ class OrdersWrapper extends Component {
 		return (
 			<Fragment>
 				<TradeBlock
-					title={`${STRINGS['ORDERS']} (${activeOrders.length})`}
+					title={`${STRINGS['TOOLS.OPEN_ORDERS']} (${activeOrders.length})`}
 					action={
 						isLoggedIn() ? (
 							<ActionNotification
@@ -75,7 +75,7 @@ class OrdersWrapper extends Component {
 							''
 						)
 					}
-					stringId="ORDERS"
+					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
 				>
 					{isLoggedIn() ? (
