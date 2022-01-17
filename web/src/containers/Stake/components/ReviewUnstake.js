@@ -1,12 +1,14 @@
 import React, { Fragment } from 'react';
 import { Button as AntBtn } from 'antd';
-import { EditWrapper, Button, IconTitle } from 'components';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AmountPreview from './AmountPreview';
 
 const ReviewEarlyUnstake = ({
 	stakeData,
+	onClose,
 	onCancel,
 	onProceed,
 	onClear,
@@ -22,6 +24,17 @@ const ReviewEarlyUnstake = ({
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content background" style={background}>
 				<IconTitle
 					iconId="STAKING_UNLOCK"

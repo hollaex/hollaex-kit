@@ -59,7 +59,7 @@ class OrdersWrapper extends Component {
 		return (
 			<Fragment>
 				<TradeBlock
-					title={`${STRINGS['ORDERS']} (${activeOrders.length})`}
+					title={`${STRINGS['TOOLS.OPEN_ORDERS']} (${activeOrders.length})`}
 					action={
 						isLoggedIn() ? (
 							<ActionNotification
@@ -69,13 +69,13 @@ class OrdersWrapper extends Component {
 								iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
 								onClick={this.props.goToTransactionsHistory}
 								status="information"
-								className="mt-3"
+								className="trade-wrapper-action"
 							/>
 						) : (
 							''
 						)
 					}
-					stringId="ORDERS"
+					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
 				>
 					{isLoggedIn() ? (

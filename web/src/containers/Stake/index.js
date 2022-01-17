@@ -116,8 +116,8 @@ class Stake extends Component {
 					<IconTitle
 						stringId="STAKE.TITLE"
 						text={STRINGS['STAKE.TITLE']}
-						iconPath={ICONS['TAB_WALLET']}
-						iconId="TAB_WALLET"
+						iconPath={ICONS['TAB_STAKE']}
+						iconId="TAB_STAKE"
 						textType="title"
 					/>
 					<Account />

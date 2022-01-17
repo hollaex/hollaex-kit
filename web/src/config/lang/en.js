@@ -1083,7 +1083,13 @@ export default {
 			'You need to upgrade your verification level to have access this feature', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'Generate API Key',
+		GENERATE_TEXT:
+			'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
+		DELETE_TITLE: 'Delete API Key',
+		DELETE_TEXT:
+			'Deleting your API key is irreversible although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',

@@ -189,6 +189,11 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.1)
 			.string(),
+		'calculated_trade-block_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
 	};
 
 	return { ...themeData, ...calculatedColors };

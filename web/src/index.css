@@ -2102,12 +2102,17 @@ table th {
   font-size: 1.2rem; }
 
 .layout-mobile .trade_block-wrapper .trade_block-content {
+  padding: 0;
   font-size: 1.2rem; }
   .layout-mobile .trade_block-wrapper .trade_block-content .table_body-wrapper {
     font-size: 1.2rem; }
 
-.layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
-  font-size: 13px !important; }
+.layout-mobile .trade_block-wrapper .trade_block-title {
+  cursor: default;
+  background-color: inherit;
+  padding: 0; }
+  .layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
+    font-size: 13px !important; }
 
 .layout-mobile .trade_history-wrapper {
   height: 38vh; }
@@ -2115,12 +2120,21 @@ table th {
     font-size: 13px; }
 
 .trade_block-wrapper {
-  padding: 1.2rem;
   height: 100%;
   background-color: var(--base_wallet-sidebar-and-popup); }
   .trade_block-wrapper.chart-embed {
+    padding: 1.2rem;
     max-height: 100vh; }
+    .trade_block-wrapper.chart-embed .trade_block-title {
+      cursor: default;
+      background-color: inherit;
+      padding: 0; }
+    .trade_block-wrapper.chart-embed .trade_block-content {
+      padding: 0; }
   .trade_block-wrapper .trade_block-title {
+    cursor: move;
+    background-color: var(--calculated_trade-block_highlight);
+    padding: 1.2rem 1.2rem 0.5rem 1.2rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -2137,6 +2151,7 @@ table th {
       margin-top: 0.1rem; }
   .trade_block-wrapper .trade_block-content {
     flex: auto;
+    padding: 0 1.2rem 1.2rem 1.2rem;
     font-size: 1rem;
     overflow-y: scroll;
     height: 100%; }
@@ -2201,10 +2216,15 @@ table th {
   min-height: 100% !important; }
 
 .layout-mobile .trade_block-wrapper {
+  padding: 1.2rem;
   margin: 6px 3px 3px 3px;
   max-height: 50vh; }
   .layout-mobile .trade_block-wrapper.chart-embed {
     max-height: 100vh; }
+
+.trade-wrapper-action {
+  margin-top: 3.5rem;
+  margin-right: 1rem; }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
@@ -5308,7 +5328,8 @@ table th {
       .app_bar .app-bar-account-menu .menu-active svg .tab-verify0,
       .app_bar .app-bar-account-menu .menu-active svg .tab-security0,
       .app_bar .app-bar-account-menu .menu-active svg .tab-api0,
-      .app_bar .app-bar-account-menu .menu-active svg .account-active-1 {
+      .app_bar .app-bar-account-menu .menu-active svg .account-active-1,
+      .app_bar .app-bar-account-menu .menu-active svg .stake-smiley-1 {
         fill: var(--labels_important-active-labels-text-graphics); }
     .app_bar .app-bar-account-menu .notification-content {
       width: 1.2rem; }
@@ -10326,6 +10347,7 @@ foreignObject {
   .app-side-bar .list_active .help-question,
   .app-side-bar .list_active .tab-signout,
   .app-side-bar .list_active .tab-history-st,
+  .app-side-bar .list_active .stake-smiley-1,
   .app-side-bar .app-menu-bar-side_list:hover .tab-summary0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-wallet0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-security0,
@@ -10334,7 +10356,8 @@ foreignObject {
   .app-side-bar .app-menu-bar-side_list:hover .tab-setting0,
   .app-side-bar .app-menu-bar-side_list:hover .help-question,
   .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
-  .app-side-bar .app-menu-bar-side_list:hover .tab-history-st {
+  .app-side-bar .app-menu-bar-side_list:hover .tab-history-st,
+  .app-side-bar .app-menu-bar-side_list:hover .stake-smiley-1 {
     fill: var(--calculated_base_top-bar-navigation_text) !important; }
 
 .app-side-bar .list_active {
@@ -10535,12 +10558,16 @@ svg .copy-notification-0,
 svg .account-svg-1,
 svg .incoming-btc-01,
 svg .incoming-toman-01,
-svg .coin-btc-5 {
+svg .coin-btc-5,
+svg .stake-smiley-1 {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .logout-door,
 svg .account-inactive {
   stroke: var(--labels_secondary-inactive-label-text-graphics); }
+
+svg .stake-smiley-0 {
+  fill: var(--base_wallet-sidebar-and-popup); }
 
 svg .withdraw-2,
 svg .withdraw-3,
@@ -10653,7 +10680,8 @@ svg .trade-history-4,
 svg .trade-history-5,
 svg .transaction-history-4,
 svg .wallet-coins-1,
-svg .quick-trade-3 {
+svg .quick-trade-3,
+svg .stake-smiley-1 {
   stroke: none; }
 
 svg .stake-error-outline {

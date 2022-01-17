@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import { Radio } from 'antd';
 import mathjs from 'mathjs';
-import { EditWrapper, Button, IconTitle } from 'components';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import { getEstimatedRemainingTime } from 'utils/eth';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -9,6 +10,7 @@ import Variable from './Variable';
 
 const PeriodContent = ({
 	tokenData,
+	onClose,
 	onBack,
 	onReview,
 	periods,
@@ -32,6 +34,17 @@ const PeriodContent = ({
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content">
 				<IconTitle
 					stringId="STAKE.MODAL_TITLE"

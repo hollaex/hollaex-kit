@@ -24,7 +24,7 @@ const OrdersWrapper = ({
 }) => {
 	return (
 		<TradeBlock
-			title={STRINGS['RECENT_TRADES']}
+			title={STRINGS['TOOLS.RECENT_TRADES']}
 			action={
 				isLoggedIn() ? (
 					<ActionNotification
@@ -34,13 +34,13 @@ const OrdersWrapper = ({
 						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
 						onClick={goToTransactionsHistory}
 						status="information"
-						className="mt-3"
+						className="trade-wrapper-action"
 					/>
 				) : (
 					''
 				)
 			}
-			stringId="RECENT_TRADES"
+			stringId="TOOLS.RECENT_TRADES"
 			tool={tool}
 		>
 			{isLoggedIn() ? (

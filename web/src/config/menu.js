@@ -25,7 +25,7 @@ export const MENU_ITEMS = {
 		{
 			id: 'stake_page',
 			path: '/stake',
-			icon_id: 'TAB_WALLET',
+			icon_id: 'TAB_STAKE',
 			string_id: 'ACCOUNTS.TAB_STAKE',
 			hide_from_appbar: true,
 		},
