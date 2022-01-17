@@ -79,6 +79,7 @@ class EarlyUnstakeContent extends Component {
 				return (
 					<ReviewEarlyUnstake
 						stakeData={stakeData}
+						onClose={onCloseDialog}
 						onCancel={() => this.setContent(CONTENT_TYPE.WARNING)}
 						onProceed={() => this.approveAndUnstake(symbol)({ account, index })}
 					/>

@@ -1,11 +1,19 @@
 import React, { Fragment } from 'react';
 import { Input } from 'antd';
-import { EditWrapper, Button, IconTitle, Image } from 'components';
+import {
+	EditWrapper,
+	Button,
+	IconTitle,
+	Image,
+	ActionNotification,
+} from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const AmountContent = ({
 	tokenData,
+	onClose,
 	onBack,
 	onNext,
 	amount,
@@ -31,6 +39,17 @@ const AmountContent = ({
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content background" style={background}>
 				<div style={headerContent}>
 					<IconTitle

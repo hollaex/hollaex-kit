@@ -179,13 +179,18 @@ svg {
 	.account-svg-1,
 	.incoming-btc-01,
 	.incoming-toman-01,
-	.coin-btc-5 {
+	.coin-btc-5,
+	.stake-smiley-1 {
 		fill: $colors-black;
 	}
 
 	.logout-door,
 	.account-inactive {
 		stroke: $colors-black;
+	}
+
+	.stake-smiley-0 {
+		fill: $app-sidebar-background;
 	}
 
 	.withdraw-2,
@@ -300,7 +305,8 @@ svg {
 	.trade-history-5,
 	.transaction-history-4,
 	.wallet-coins-1,
-	.quick-trade-3 {
+	.quick-trade-3,
+	.stake-smiley-1 {
 		stroke: none;
 	}
 
