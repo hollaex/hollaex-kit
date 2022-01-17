@@ -69,7 +69,7 @@ class OrdersWrapper extends Component {
 								iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
 								onClick={this.props.goToTransactionsHistory}
 								status="information"
-								className="mt-3"
+								className="trade-wrapper-action"
 							/>
 						) : (
 							''

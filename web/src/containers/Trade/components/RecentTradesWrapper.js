@@ -34,7 +34,7 @@ const OrdersWrapper = ({
 						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
 						onClick={goToTransactionsHistory}
 						status="information"
-						className="mt-3"
+						className="trade-wrapper-action"
 					/>
 				) : (
 					''

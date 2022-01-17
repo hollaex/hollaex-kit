@@ -2102,12 +2102,17 @@ table th {
   font-size: 1.2rem; }
 
 .layout-mobile .trade_block-wrapper .trade_block-content {
+  padding: 0;
   font-size: 1.2rem; }
   .layout-mobile .trade_block-wrapper .trade_block-content .table_body-wrapper {
     font-size: 1.2rem; }
 
-.layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
-  font-size: 13px !important; }
+.layout-mobile .trade_block-wrapper .trade_block-title {
+  cursor: default;
+  background-color: inherit;
+  padding: 0; }
+  .layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
+    font-size: 13px !important; }
 
 .layout-mobile .trade_history-wrapper {
   height: 38vh; }
@@ -2115,12 +2120,21 @@ table th {
     font-size: 13px; }
 
 .trade_block-wrapper {
-  padding: 1.2rem;
   height: 100%;
   background-color: var(--base_wallet-sidebar-and-popup); }
   .trade_block-wrapper.chart-embed {
+    padding: 1.2rem;
     max-height: 100vh; }
+    .trade_block-wrapper.chart-embed .trade_block-title {
+      cursor: default;
+      background-color: inherit;
+      padding: 0; }
+    .trade_block-wrapper.chart-embed .trade_block-content {
+      padding: 0; }
   .trade_block-wrapper .trade_block-title {
+    cursor: move;
+    background-color: var(--calculated_trade-block_highlight);
+    padding: 1.2rem 1.2rem 0.5rem 1.2rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -2137,6 +2151,7 @@ table th {
       margin-top: 0.1rem; }
   .trade_block-wrapper .trade_block-content {
     flex: auto;
+    padding: 0 1.2rem 1.2rem 1.2rem;
     font-size: 1rem;
     overflow-y: scroll;
     height: 100%; }
@@ -2201,10 +2216,15 @@ table th {
   min-height: 100% !important; }
 
 .layout-mobile .trade_block-wrapper {
+  padding: 1.2rem;
   margin: 6px 3px 3px 3px;
   max-height: 50vh; }
   .layout-mobile .trade_block-wrapper.chart-embed {
     max-height: 100vh; }
+
+.trade-wrapper-action {
+  margin-top: 3.5rem;
+  margin-right: 1rem; }
 
 .trade_order_entry-wrapper.order_side-selector-sell {
   flex: 1;
