@@ -104,7 +104,7 @@ module.exports = {
 				is_tech: {
 					type: Sequelize.BOOLEAN,
 					defaultValue: false
-				},
+				}
 			},
 			{
 				timestamps: true,

@@ -48,13 +48,13 @@ module.exports = function(sequelize, DataTypes) {
 			as: 'user',
 			foreignKey: 'user_id',
 			targetKey: 'id',
-			onDelete: 'CASCADE',
+			onDelete: 'CASCADE'
 		});
 		Affiliation.belongsTo(models.User, {
 			as: 'referer',
 			foreignKey: 'referer_id',
 			targetKey: 'id',
-			onDelete: 'CASCADE',
+			onDelete: 'CASCADE'
 		});
 	};
 

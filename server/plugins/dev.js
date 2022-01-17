@@ -124,7 +124,7 @@ const initializeDevPlugin = async () => {
 	const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 	const PORT = 10012;
 	const cors = require('cors');
-	const toolsLib = require('../utils/toolsLib');
+	const toolsLib = require('hollaex-tools-lib');
 	const express = require('express');
 
 	const app = express();
