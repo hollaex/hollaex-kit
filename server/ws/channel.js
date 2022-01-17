@@ -14,7 +14,7 @@ const addSubscriber = (channel, ws) => {
 		channels[channel] = [];
 	}
 
-	const index = findIndex(channels[channel], socket => {
+	const index = findIndex(channels[channel], (socket) => {
 		return socket.id == ws.id;
 	});
 
@@ -27,7 +27,7 @@ const addSubscriber = (channel, ws) => {
 };
 
 const removeSubscriber = (channel, ws, type = undefined) => {
-	const index = findIndex(channels[channel], socket => {
+	const index = findIndex(channels[channel], (socket) => {
 		return socket.id == ws.id;
 	});
 

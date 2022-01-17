@@ -1,0 +1,59 @@
+kind: pipeline
+type: docker
+name: slack_notify
+
+steps:
+- name: partymaker_version_tag_testnet
+  image: alpine
+  commands:
+  - export PACKAGE_VERSION="$(grep version package.json | cut -c 14- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
+  - echo "Current version tag is :" && cat .tags
+  when:
+    branch: master
+
+- name: partymaker_version_tag
+  image: alpine
+  commands:
+  - export PACKAGE_VERSION="$(grep version package.json | cut -c 14- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION-testnet" > .tags
+  - echo "Current version tag is :" && cat .tags
+  when:
+    branch: testnet
+
+- name: create_github_release
+  image: bitholla/devops-tools:drone_github_hub-2004241546
+  environment:
+    GITHUB_TOKEN:
+      from_secret: github_oauth2_token_for_releases
+  commands:
+    - apt-get update && apt-get install -y hub git
+    - hub release create -m "HollaEx Kit v$(cat .tags) Release" -t ${DRONE_BRANCH} $(cat .tags)
+  when:
+    branch: master
+  
+- name: slack_noti_to_releases
+  image: bitholla/devops-tools:drone_partymaker-0.1.4
+  environment:
+    WEBHOOK_URL:
+      from_secret: webhook_url
+  when:
+    status: [success]
+
+- name: notify_to_discord_releases
+  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  channel: deployment
+  settings:
+    target: discord
+    release_name: hollaex-network-lib
+  environment:
+    WEBHOOK_URL:
+      from_secret: discord_webhook_url
+  when:
+    status: [ success, failure ]
+    branch: master
+
+trigger:
+  branch:
+  - master
+  - testnet
+  event:
+  - push

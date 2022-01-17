@@ -57,11 +57,7 @@ class HollaExNetwork {
 
 		this.activation_code = opts.activation_code;
 		this.exchange_id = opts.exchange_id;
-		const [ protocol, endpoint ] = this.apiUrl.split('://');
-		this.wsUrl =
-			protocol === 'https'
-				? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
-				: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
+		this.wsUrl = null;
 		this.ws = null;
 		this.wsEvents = [];
 		this.wsReconnect = true;
@@ -83,9 +79,7 @@ class HollaExNetwork {
 	}) {
 		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/init/${
-			this.activation_code
-		}`;
+		const path = `${this.baseUrl}/network/init/${this.activation_code}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2287,22 +2281,16 @@ class HollaExNetwork {
 	/**
 	 * Settle exchange fees
 	 * @param {object} opts - Optional parameters.
-	 * @param {object} opts.user_id - user id that receives the fee earnings.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with settled fees.
 	 */
 	settleFees(opts = {
-		user_id: null,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle?`;
-
-		if (opts.user_id) {
-			path += `&user_id=${opts.user_id}`;
-		}
+		const path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -3010,6 +2998,13 @@ class HollaExNetwork {
 	 */
 	connect(events = []) {
 		checkKit(this.exchange_id);
+
+		const [ protocol, baseUrl ] = this.apiUrl.split('://');
+		this.wsUrl =
+			protocol === 'https'
+				? `wss://${baseUrl}/stream?exchange_id=${this.exchange_id}`
+				: `ws://${baseUrl}/stream?exchange_id=${this.exchange_id}`;
+
 		this.wsReconnect = true;
 		this.wsEvents = events;
 		const apiExpires = moment().unix() + this.apiExpiresAfter;

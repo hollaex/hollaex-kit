@@ -46,8 +46,8 @@ const isValidAddress = (currency, address, network) => {
 		return WAValidator.validate(address, currency);
 	} else if (currency === 'xrp') {
 		return WAValidator.validate(address.split(':')[0], currency);
-	} else if (!WAValidator.findCurrency(currency)) {
-		// skip the validation since it can not find the currency
+	} else if (currency === 'etn') {
+		// skip the validation
 		return true;
 	} else {
 		return WAValidator.validate(address, currency);
@@ -390,7 +390,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		'limit',
 		limit,
 		'userId',
-		userId,
+		userId
 	);
 
 	let totalWithdrawalAmount = 0;

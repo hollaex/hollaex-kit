@@ -1,6 +1,6 @@
 'use strict';
 
-const Network = require('./utils/nodeLib');
+const Network = require('hollaex-network-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
@@ -63,7 +63,7 @@ const checkStatus = () => {
 			injected_values: [],
 			injected_html: {},
 			user_meta: {},
-			black_list_countries: [],
+			black_list_countries: []
 		}
 	};
 

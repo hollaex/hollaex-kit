@@ -15,7 +15,7 @@ const resetPublicData = () => {
 };
 
 const updateOrderbookData = (data) => {
-	publicData.orderbook[data.symbol] = {...data, action: 'partial'};
+	publicData.orderbook[data.symbol] = { ...data, action: 'partial' };
 };
 
 const updateTradeData = (data) => {
