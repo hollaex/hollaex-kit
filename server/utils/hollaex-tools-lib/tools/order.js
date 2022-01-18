@@ -270,7 +270,7 @@ const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limi
 const cancelAllUserOrdersByKitId = (userKitId, symbol, opts = {
 	additionalHeaders: null
 }) => {
-	if (symbol && !subscribedToPair(symbol)) {
+	if (!symbol || !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
 	return getUserByKitId(userKitId)
