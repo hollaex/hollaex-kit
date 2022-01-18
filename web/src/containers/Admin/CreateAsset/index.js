@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import _toLower from 'lodash/toLower';
 import _get from 'lodash/get';
 import _cloneDeep from 'lodash/cloneDeep';
@@ -19,6 +19,7 @@ import Final from './Final';
 import EditAsset from './EditAsset';
 import BurnModal from './Burn';
 import CoinLimited from './CoinLimited';
+import WithdrawalFee from './WithdrawalFee';
 
 import './index.css';
 
@@ -175,6 +176,57 @@ class CreateAsset extends Component {
 		};
 		this.setState({
 			[name]: value,
+			coinFormData,
+		});
+		this.props.handleEditDataCallback(coinFormData);
+		this.props.updateFormData(name, value);
+	};
+
+	handleWithdrawalFeeChange = (asset, value, key, name) => {
+		const coinFormData = {
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
+		};
+		this.setState({
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
+			coinFormData,
+		});
+		this.props.handleEditDataCallback(coinFormData);
+		this.props.updateFormData(name, value);
+	};
+
+	handleSymbolChange = (asset, value, key, name) => {
+		const coinFormData = {
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
+		};
+		this.setState({
+			...this.state.coinFormData,
+			[name]: {
+				...this.state.coinFormData.withdrawal_fees,
+				[asset]: {
+					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
+					[key]: value
+				}
+			},
 			coinFormData,
 		});
 		this.props.handleEditDataCallback(coinFormData);
@@ -569,6 +621,7 @@ class CreateAsset extends Component {
 						handleBack={this.handleBack}
 						handleConfirmation={this.handleConfirmation}
 						handleFileChange={this.handleFileChange}
+						handleScreenChange={this.handleScreenChange}
 					/>
 				);
 			case 'edit-color':
@@ -651,6 +704,35 @@ class CreateAsset extends Component {
 						handleChange={this.handleChange}
 						handleNext={this.handleNext}
 					/>
+				);
+			case 'edit_withdrawal_fees':
+				return (
+					<WithdrawalFee
+						coinFormData={coinFormData}
+						updateFormData={this.props.updateFormData}
+						handleClose={this.props.onClose}
+						coins={this.props.coins}
+						handleScreenChange={this.handleScreenChange}
+						isWithdrawalEdit={this.props.isWithdrawalEdit}
+						handleWithdrawalFeeChange={this.handleWithdrawalFeeChange}
+						handleSymbolChange={this.handleSymbolChange}
+					/>
+				);
+			case 'update_confirm':
+				return (
+					<div>
+						<div className='title mb-3'>Confirm updates</div>
+						<div>
+							To save and apply the changes, you need to click the save button in the top right corner once you close this popup.
+						</div>
+						<Button
+							type='primary'
+							className='green-btn w-100 mt-4'
+							onClick={this.props.onClose}
+						>
+							Close
+						</Button>
+					</div>
 				);
 			case 'step1':
 			default:

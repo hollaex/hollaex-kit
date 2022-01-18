@@ -46,6 +46,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
 
+			&.chart-embed {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
+
 			&.no_bottom_navigation {
 				height: auto;
 				flex: 1;
@@ -323,4 +328,10 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			margin: 1.3rem !important;
 		}
 	}
+}
+
+.react-grid-item > .react-resizable-handle::after {
+	border-color: $colors-black !important;
+	right: 5px;
+	bottom: 5px;
 }

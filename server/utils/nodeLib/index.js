@@ -577,7 +577,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-		/**
+	/**
 	 * Get all deposits for a user on the network
 	 * @param {number} userId - User id on network. Leave blank to get all deposits for the exchange
 	 * @param {object} opts - Optional parameters.
@@ -2287,16 +2287,22 @@ class HollaExNetwork {
 	/**
 	 * Settle exchange fees
 	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.user_id - user id that receives the fee earnings.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with settled fees.
 	 */
 	settleFees(opts = {
+		user_id: null,
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		const path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle`;
+		let path = `${this.baseUrl}/network/${this.exchange_id}/fees/settle?`;
+
+		if (opts.user_id) {
+			path += `&user_id=${opts.user_id}`;
+		}
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,

@@ -1,10 +1,18 @@
 import React, { Fragment } from 'react';
-import { EditWrapper, Button, IconTitle, Image } from 'components';
+import {
+	EditWrapper,
+	Button,
+	IconTitle,
+	Image,
+	ActionNotification,
+} from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const ClearPendingEarningsContent = ({
 	onProceed,
+	onClose,
 	onBack,
 	icons: ICONS,
 	stakeData,
@@ -14,6 +22,17 @@ const ClearPendingEarningsContent = ({
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content bottom">
 				<IconTitle
 					iconId="STAKING_PENDING"

@@ -17,6 +17,7 @@ import {
 	Withdraw,
 	TransactionsHistory,
 	Trade,
+	ChartEmbed,
 	Legal,
 	AuthContainer,
 	RequestResetPassword,
@@ -25,8 +26,8 @@ import {
 	Chat,
 	WithdrawConfirmation,
 	AddTradeTabs,
-	// Stake,
-	// StakeDetails,
+	Stake,
+	StakeDetails,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -280,6 +281,11 @@ export const generateRoutes = (routes = []) => {
 			</Route>
 			<Route component={Container}>
 				<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
+				<Route
+					path="/chart-embed/:pair"
+					name="ChartEmbed"
+					component={ChartEmbed}
+				/>
 				{isMobile ? (
 					<Route
 						path="/home"
@@ -381,12 +387,12 @@ export const generateRoutes = (routes = []) => {
 					name="ConfirmWithdraw"
 					component={WithdrawConfirmation}
 				/>
-				{/*<Route path="stake" name="Stake" component={Stake} />*/}
-				{/*<Route*/}
-				{/*path="stake/details/:token"*/}
-				{/*name="StakeToken"*/}
-				{/*component={StakeDetails}*/}
-				{/*/>*/}
+				<Route path="stake" name="Stake" component={Stake} />
+				<Route
+					path="stake/details/:token"
+					name="StakeToken"
+					component={StakeDetails}
+				/>
 				<Route path="logout" name="LogOut" onEnter={setLogout} />
 				{remoteRoutes}
 			</Route>

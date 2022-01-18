@@ -100,6 +100,7 @@ class UnstakeContent extends Component {
 				return (
 					<ReviewUnstake
 						stakeData={stakeData}
+						onClose={onCloseDialog}
 						onCancel={onCloseDialog}
 						onProceed={() => this.approveAndUnstake(symbol)({ account, index })}
 						onClear={() => this.setContent(CONTENT_TYPE.CLEAR)}
@@ -131,6 +132,7 @@ class UnstakeContent extends Component {
 				return (
 					<ClearPendingEarningsContent
 						stakeData={stakeData}
+						onClose={onCloseDialog}
 						onProceed={() => this.clearPendingEarnings(symbol)({ account })}
 						onBack={() => this.setContent(CONTENT_TYPE.REVIEW)}
 					/>

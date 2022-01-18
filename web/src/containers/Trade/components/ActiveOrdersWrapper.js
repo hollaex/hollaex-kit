@@ -1,20 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { isMobile } from 'react-device-detect';
 
+import TradeBlock from './TradeBlock';
 import ActiveOrders from './ActiveOrders';
-import UserTrades from './UserTrades';
-import TradeBlockTabs from './TradeBlockTabs';
 import LogoutInfoOrder from './LogoutInfoOrder';
-import LogoutInfoTrade from './LogoutInfoTrade';
-import MobileOrders from '../MobileOrders';
-import { cancelOrder, cancelAllOrders } from '../../../actions/orderAction';
-import { isLoggedIn } from '../../../utils/token';
+import { cancelOrder, cancelAllOrders } from 'actions/orderAction';
+import { isLoggedIn } from 'utils/token';
 import { ActionNotification, Dialog, IconTitle, Button } from 'components';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { userTradesSelector, activeOrdersSelector } from '../utils';
+import { activeOrdersSelector } from '../utils';
 import { EditWrapper } from 'components';
 
 class OrdersWrapper extends Component {
@@ -57,99 +53,43 @@ class OrdersWrapper extends Component {
 	};
 
 	render() {
-		const {
-			pair,
-			pairData,
-			activeOrders,
-			userTrades,
-			activeTheme,
-			pairs,
-			coins,
-			discount,
-			prices,
-			icons: ICONS,
-		} = this.props;
+		const { activeOrders, activeTheme, pairs, icons: ICONS, tool } = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
-		const USER_TABS = [
-			{
-				stringId: 'ORDERS',
-				title: `${STRINGS['ORDERS']} (${activeOrders.length})`,
-				children: isLoggedIn() ? (
-					<ActiveOrders
-						pairs={pairs}
-						cancelDelayData={cancelDelayData}
-						orders={activeOrders}
-						onCancel={this.handleCancelOrders}
-						onCancelAll={this.openConfirm}
-					/>
-				) : (
-					<LogoutInfoOrder activeTheme={activeTheme} />
-				),
-				titleAction: isLoggedIn() ? (
-					<ActionNotification
-						stringId="TRANSACTION_HISTORY.TITLE"
-						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
-						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
-						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-						onClick={this.props.goToTransactionsHistory}
-						status="information"
-					/>
-				) : (
-					''
-				),
-			},
-			{
-				stringId: 'RECENT_TRADES',
-				title: STRINGS['RECENT_TRADES'],
-				children: isLoggedIn() ? (
-					<UserTrades
-						pageSize={10}
-						trades={userTrades}
-						pair={pair}
-						pairData={pairData}
-						pairs={pairs}
-						coins={coins}
-						discount={discount}
-						prices={prices}
-					/>
-				) : (
-					<LogoutInfoTrade />
-				),
-				titleAction: isLoggedIn() ? (
-					<ActionNotification
-						stringId="TRANSACTION_HISTORY.TITLE"
-						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
-						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
-						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-						onClick={this.props.goToTransactionsHistory}
-						status="information"
-					/>
-				) : (
-					''
-				),
-			},
-		];
 
 		return (
 			<Fragment>
-				{isMobile ? (
-					<MobileOrders
-						isLoggedIn={isLoggedIn()}
-						activeOrders={activeOrders}
-						cancelOrder={this.handleCancelOrders}
-						cancelDelayData={cancelDelayData}
-						cancelAllOrders={this.openConfirm}
-						goToTransactionsHistory={this.props.goToTransactionsHistory}
-						pair={pair}
-						pairData={pairData}
-						pairs={pairs}
-						coins={coins}
-						userTrades={userTrades}
-						activeTheme={activeTheme}
-					/>
-				) : (
-					<TradeBlockTabs content={USER_TABS} />
-				)}
+				<TradeBlock
+					title={`${STRINGS['TOOLS.OPEN_ORDERS']} (${activeOrders.length})`}
+					action={
+						isLoggedIn() ? (
+							<ActionNotification
+								stringId="TRANSACTION_HISTORY.TITLE"
+								text={STRINGS['TRANSACTION_HISTORY.TITLE']}
+								iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
+								iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
+								onClick={this.props.goToTransactionsHistory}
+								status="information"
+								className="trade-wrapper-action"
+							/>
+						) : (
+							''
+						)
+					}
+					stringId="TOOLS.OPEN_ORDERS"
+					tool={tool}
+				>
+					{isLoggedIn() ? (
+						<ActiveOrders
+							pairs={pairs}
+							cancelDelayData={cancelDelayData}
+							orders={activeOrders}
+							onCancel={this.handleCancelOrders}
+							onCancelAll={this.openConfirm}
+						/>
+					) : (
+						<LogoutInfoOrder activeTheme={activeTheme} />
+					)}
+				</TradeBlock>
 				<Dialog
 					isOpen={showCancelAllModal}
 					label="token-modal"
@@ -204,13 +144,10 @@ class OrdersWrapper extends Component {
 
 OrdersWrapper.defaultProps = {
 	activeOrders: [],
-	userTrades: [],
 };
 
 const mapStateToProps = (state) => ({
-	prices: state.asset.oraclePrices,
 	activeOrders: activeOrdersSelector(state),
-	userTrades: userTradesSelector(state),
 	settings: state.user.settings,
 });
 

@@ -13,7 +13,7 @@ import querystring from 'query-string';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
 import { addElements, injectHTML } from 'utils/script';
-import { SuccessDisplay } from 'components'
+import { SuccessDisplay } from 'components';
 
 import {
 	NOTIFICATIONS,
@@ -24,6 +24,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import {
@@ -107,6 +108,7 @@ class App extends Component {
 			injected_values,
 			injected_html,
 			plugins_injected_html,
+			initializeTools,
 		} = this.props;
 
 		if (
@@ -128,13 +130,16 @@ class App extends Component {
 			5000
 		);
 
+		initializeTools();
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
 		injectHTML(plugins_injected_html, 'body');
 		const qs = querystring.parse(this.props.location.search);
-		if (Object.keys(qs).length
-			&& !this.props.location.pathname.includes('trade')
-			&& !this.props.location.pathname.includes('quick-trade')) {
+		if (
+			Object.keys(qs).length &&
+			!this.props.location.pathname.includes('trade') &&
+			!this.props.location.pathname.includes('quick-trade')
+		) {
 			const { success_alert, error_alert } = qs;
 			if (success_alert) {
 				const paramsData = { status: true, message: success_alert };
@@ -193,10 +198,14 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		const { tools } = this.props;
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
 			this.setActiveMenu();
+		}
+		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
+			storeTools(tools);
 		}
 	}
 
@@ -351,6 +360,8 @@ class App extends Component {
 			return 'trade';
 		} else if (path.indexOf('/quick-trade/') === 0) {
 			return 'quick-trade';
+		} else if (path.indexOf('/chart-embed') === 0) {
+			return 'chart-embed';
 		}
 
 		return '';
@@ -590,7 +601,7 @@ class App extends Component {
 			appLoaded,
 			chatIsClosed,
 			isCustomNotification,
-			paramsData
+			paramsData,
 			// sidebarFitHeight,
 			// isSidebarOpen,
 		} = this.state;
@@ -610,17 +621,21 @@ class App extends Component {
 			: this.getClassForActivePath(this.props.location.pathname);
 
 		const isHome = this.props.location.pathname === '/';
+		const isChartEmbed = activePath === 'chart-embed';
 		const isMenubar = !isHome;
 		const isMenuSider =
-			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+			activePath !== 'trade' &&
+			activePath !== 'quick-trade' &&
+			activePath !== 'chart-embed' &&
+			!isHome;
 		const showFooter = !isMobile || isHome;
 
 		const homeBackgroundProps = isHome
 			? {
-				backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-				backgroundSize: '100%',
-				backgroundRepeat: 'repeat-y',
-			}
+					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
 			: {};
 
 		return (
@@ -681,7 +696,7 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && (
+								{!isHome && !isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
@@ -697,7 +712,7 @@ class App extends Component {
 										)}
 									</AppBar>
 								)}
-								{isBrowser && !isHome && (
+								{isBrowser && !isHome && !isChartEmbed && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -712,6 +727,7 @@ class App extends Component {
 										{
 											'app_container-secondary-content': isMenubar,
 											no_bottom_navigation: isHome,
+											'chart-embed': isChartEmbed,
 										}
 									)}
 								>
@@ -844,7 +860,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && !isHome && (
+								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
@@ -873,12 +889,12 @@ class App extends Component {
 							}
 						)}
 					>
-						{showFooter && (
+						{showFooter && !isChartEmbed && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && (
+				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog

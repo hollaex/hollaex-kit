@@ -1083,7 +1083,13 @@ export default {
 			'You need to upgrade your verification level to have access this feature', // TODO
 	},
 	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'Generate API Key',
+		GENERATE_TEXT:
+			'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
+		DELETE_TITLE: 'Delete API Key',
+		DELETE_TEXT:
+			'Deleting your API key is irreversible although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
@@ -1364,7 +1370,7 @@ export default {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for all markets.',
+		INFO_1: 'This will cancel your open orders for this market.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
@@ -1411,4 +1417,15 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+	TOOLS: {
+		ORDERBOOK: 'Orderbook', //new
+		CHART: 'Chart', //new
+		PUBLIC_SALES: 'Public sales', //new
+		ORDER_ENTRY: 'Order entry', //new
+		RECENT_TRADES: 'Recent trades', //new
+		OPEN_ORDERS: 'Open orders', //new
+		WALLET: 'Wallet',
+		DEPTH_CHART: 'Depth chart', //new
+		COMING_SOON: 'coming soon', //new
+	},
 };

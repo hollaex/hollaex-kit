@@ -115,9 +115,11 @@ const Roles = ({ constants }) => {
 	const [modalType, setType] = useState('');
 	const [isOpen, setOpen] = useState(false);
 	const [buttonSubmitting, setButtonSubmitting] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
+		setIsLoading(true);
 		requestRole({ pageNo, limit })
 			.then((res) => {
 				let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
@@ -126,10 +128,12 @@ const Roles = ({ constants }) => {
 				let currentPage = pageNo === 1 ? 1 : currentTablePage;
 				setCurrentTablePage(currentPage);
 				setIsRemaining(res.count > pageNo * limit);
+				setIsLoading(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setIsLoading(false);
 			});
 	};
 	useEffect(() => {
@@ -300,6 +304,7 @@ const Roles = ({ constants }) => {
 						current: currentTablePage,
 						onChange: pageChange,
 					}}
+					loading={isLoading}
 				/>
 			</div>
 			<Modal
