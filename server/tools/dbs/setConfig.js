@@ -48,7 +48,7 @@ const kit = {
 		api: API_HOST || '',
 		whitepaper: '',
 		website: '',
-		information: '',
+		information: ''
 	},
 	email_verification_required: false,
 	setup_completed: false,

@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerAdmin } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
@@ -86,7 +86,7 @@ const putAdminKit = (req, res) => {
 	if (data.kit) {
 		if (data.kit.setup_completed) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
+			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint' });
 		}
 	}
 
@@ -890,7 +890,7 @@ const mintAsset = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/mintAsset successful',
+				'controllers/admin/mintAsset successful'
 			);
 			return res.status(201).json(data);
 		})
@@ -959,7 +959,7 @@ const putMint = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/putMint successful',
+				'controllers/admin/putMint successful'
 			);
 			return res.json(data);
 		})
@@ -1031,7 +1031,7 @@ const burnAsset = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/burnAsset successful',
+				'controllers/admin/burnAsset successful'
 			);
 			return res.status(201).json(data);
 		})
@@ -1100,7 +1100,7 @@ const putBurn = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/putBurn successful',
+				'controllers/admin/putBurn successful'
 			);
 			return res.json(data);
 		})

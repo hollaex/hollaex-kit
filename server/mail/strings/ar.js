@@ -55,7 +55,7 @@ const WELCOME = {
 		1: () => `شكرًا لك على الاشتراك في  ${API_NAME()} .`,
 		2: (account, deposit) => `
 		لكي تقوم بالتداول ، يجب عليك أولاً إيداع عملة مشفرة أو تمويل الأموال في حسابك. 
-		من فضلك ، انتقل إلى ${account}  وقم بزيارة صفحة ${Deposit}.`,
+		من فضلك ، انتقل إلى ${account}  وقم بزيارة صفحة ${deposit}.`,
 		3: 'الحساب',
 		4: 'ايداع',
 		5: 'إذا كانت لديك أي أسئلة أو استفسارات ، فيرجى الاتصال بنا ببساطة عن طريق الرد على هذا البريد الإلكتروني.'
@@ -99,8 +99,8 @@ const DEPOSIT = {
 		COMPLETED: (amount, confirmation, currency) =>
 			`Yايداعك لـ
        ${currency.toUpperCase()} ${amount} ${currency.toUpperCase()} قد تم تأكيده و تكميله و موجود في ${
-				currency.toUpperCase()
-			. محفظتك }`,
+	currency.toUpperCase()
+		. محفظتك }`,
 		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
 		2: (status) => `الحالة:  ${status}`,
 		3: (address) => COMMON.ADDRESS(address),
@@ -226,7 +226,7 @@ const USERVERIFICATIONREJECT = {
 };
 
 const USERDEACTIVATED = {
-	TITLE: (type) => `الحساب $ {type}`,
+	TITLE: (type) => 'الحساب $ {type}',
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		ACTIVATED: (email) => `تم تنشيط حسابك ${email}  . أنت الآن قادر على استخدام حسابك.`,

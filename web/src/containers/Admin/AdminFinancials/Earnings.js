@@ -63,6 +63,12 @@ const descriptionColumn = [
 		title: 'Timestamp',
 		dataIndex: 'timestamp',
 		key: 'timestamp',
+		render: (date) => (
+			<div>
+				{moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
+					new Date(date).toTimeString().slice(9)}
+			</div>
+		),
 	},
 ];
 const filterOptions = [

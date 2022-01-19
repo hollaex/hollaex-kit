@@ -6,9 +6,9 @@ const COLUMN = 'web_view';
 module.exports = {
 	up: (queryInterface) => 
 		queryInterface
-			.changeColumn(TABLE, COLUMN, { type: `jsonb USING '[]'::jsonb;` }),
+			.changeColumn(TABLE, COLUMN, { type: 'jsonb USING \'[]\'::jsonb;' }),
 	down: () => {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			resolve();
 		});
 	}

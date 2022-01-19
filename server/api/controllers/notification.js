@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerNotification } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { publisher } = require('../../db/pubsub');
