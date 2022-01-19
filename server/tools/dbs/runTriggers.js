@@ -7,7 +7,7 @@ const functions = [
 	'../../db/functions/create-uuid.js',
 	// triggers
 	'../../db/triggers/create_verification-code_after_user.js',
-	'../../db/triggers/update_userlevel_after_verify.js',
+	'../../db/triggers/update_userlevel_after_verify.js'
 ];
 
 let sql = '';

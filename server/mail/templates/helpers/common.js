@@ -4,20 +4,34 @@ const {
 	REFERRAL_DOMAIN,
 	LOGO_BLACK,
 } = require('../../constants');
-const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
+const { DOMAIN, GET_KIT_CONFIG, GET_EMAIL } = require('../../../constants');
 const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const LINKS = () => GET_KIT_CONFIG().links;
 
-const styles = require('./styles');
+let styles = require('./styles');
 
-exports.Button = (link, text) => `
-  <div style="${styles.buttonWrapper}">
-    <a href="${link}" target="_blank">
-      <Button style="${styles.button}">${text}</Button>
+const checkConfigurationsTemplate = () => {
+	const emailConfigurations = GET_EMAIL();
+	if(emailConfigurations['template']){
+		let arrKeyTemplate = Object.keys(emailConfigurations['template']);
+		arrKeyTemplate.map(key => {
+			styles[key] = emailConfigurations['template'][key];
+		})
+	}
+}
+
+exports.Button = (link, text) => {
+	checkConfigurationsTemplate();
+
+	return `
+  <div style='${styles.buttonWrapper}'>
+    <a href='${link}' target='_blank'>
+      <Button style='${styles.button}'>${text}</Button>
     </a>
   </div>
 `;
+}
 
 const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 	const FOOTER = require('../../strings').getStringObject(language, 'FOOTER');
@@ -67,6 +81,7 @@ exports.TemplateEmail = (
 	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
+	checkConfigurationsTemplate();
 	const bodyStyle = styles.body.concat('');
 
 	return `

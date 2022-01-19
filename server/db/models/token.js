@@ -28,11 +28,11 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: TOKEN_TYPES.HMAC
 		},
 		name: {
-			type: DataTypes.STRING,
+			type: DataTypes.STRING
 		},
 		active: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: false,
+			defaultValue: false
 		},
 		revoked: {
 			type: DataTypes.BOOLEAN,

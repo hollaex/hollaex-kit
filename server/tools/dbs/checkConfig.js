@@ -31,7 +31,7 @@ Status.findOne()
 				api: process.env.API_HOST || '',
 				whitepaper: '',
 				website: '',
-				information: '',
+				information: ''
 			},
 			email_verification_required: isBoolean(existingKitConfigurations.email_verification_required) ? existingKitConfigurations.email_verification_required : false,
 			setup_completed: isBoolean(existingKitConfigurations.setup_completed) ? existingKitConfigurations.setup_completed : false,
@@ -52,7 +52,7 @@ Status.findOne()
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 			user_meta: existingKitConfigurations.user_meta || {},
-			black_list_countries: existingKitConfigurations.black_list_countries || [],
+			black_list_countries: existingKitConfigurations.black_list_countries || []
 		};
 
 		const secrets = {

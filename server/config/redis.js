@@ -28,24 +28,24 @@ const defaultConfig = {
 const productionConfig = {
 	client: REDIS_PASSWORD
 		? {
-				...redisClientConfig,
-				password: REDIS_PASSWORD,
-				auth: REDIS_PASSWORD
-		  }
+			...redisClientConfig,
+			password: REDIS_PASSWORD,
+			auth: REDIS_PASSWORD
+		}
 		: redisClientConfig,
 	redis: REDIS_PASSWORD
 		? {
-				...redisClientConfig,
-				password: REDIS_PASSWORD,
-				auth: REDIS_PASSWORD
-		  }
+			...redisClientConfig,
+			password: REDIS_PASSWORD,
+			auth: REDIS_PASSWORD
+		}
 		: redisClientConfig,
 	pubsub: PUBSUB_PASSWORD
 		? {
-				...redisPubsubConfig,
-				password: PUBSUB_PASSWORD,
-				auth: PUBSUB_PASSWORD
-		  }
+			...redisPubsubConfig,
+			password: PUBSUB_PASSWORD,
+			auth: PUBSUB_PASSWORD
+		}
 		: redisPubsubConfig
 };
 

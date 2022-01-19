@@ -111,6 +111,7 @@ class StakeContent extends Component {
 				return (
 					<AmountContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onBack={onCloseDialog}
 						onNext={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						amount={amount}
@@ -122,6 +123,7 @@ class StakeContent extends Component {
 					<PeriodContent
 						tokenData={tokenData}
 						periods={periods}
+						onClose={onCloseDialog}
 						onBack={() => this.setContent(CONTENT_TYPE.AMOUNT)}
 						onReview={() => this.setContent(CONTENT_TYPE.REVIEW)}
 						setPeriod={this.setPeriod}
@@ -134,6 +136,7 @@ class StakeContent extends Component {
 				return (
 					<ReviewContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onCancel={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						onProceed={() =>
 							this.approveAndStake(symbol)({ amount, period, account })

@@ -1543,7 +1543,7 @@ paths:
         - name: symbol
           in: query
           description: Currency symbol
-          required: false
+          required: true
           type: string
       responses:
         200:
@@ -2220,6 +2220,55 @@ paths:
       x-security-scopes:
         - admin
         - communicator
+  /admin/email:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getEmail
+      description: Get configurations email for admin
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putEmail
+      description: Update configurations email
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: object
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
   /admin/operators:
     x-swagger-router-controller: admin
     get:

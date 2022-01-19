@@ -1,4 +1,8 @@
-import { TOGGLE_TOOL, INITIALIZE_TOOLS } from 'actions/toolsAction';
+import {
+	TOGGLE_TOOL,
+	INITIALIZE_TOOLS,
+	RESET_TOOLS,
+} from 'actions/toolsAction';
 import merge from 'lodash.merge';
 
 const initialState = {
@@ -57,6 +61,10 @@ export default (state = initialState, { type, payload }) => {
 				},
 			};
 		}
+		case RESET_TOOLS:
+			return {
+				...initialState,
+			};
 		default:
 			return state;
 	}

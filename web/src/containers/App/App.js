@@ -894,7 +894,7 @@ class App extends Component {
 						)}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && (
+				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog

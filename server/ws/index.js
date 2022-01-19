@@ -48,13 +48,13 @@ wss.on('connection', (ws, req) => {
 				ws.send(JSON.stringify({ message: 'pong' }));
 			} else if (op === 'subscribe') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach(arg => {
+				args.forEach((arg) => {
 					let [topic, symbol] = arg.split(':');
 					initializeTopic(topic, ws, symbol);
 				});
 			} else if (op === 'unsubscribe') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach(arg => {
+				args.forEach((arg) => {
 					let [topic, symbol] = arg.split(':');
 					terminateTopic(topic, ws, symbol);
 				});
@@ -65,7 +65,7 @@ wss.on('connection', (ws, req) => {
 				authorizeUser(credentials, ws, ip);
 			} else if (op === 'chat') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach(arg => {
+				args.forEach((arg) => {
 					const { action, data } = arg;
 					handleChatData(action, ws, data);
 				});
