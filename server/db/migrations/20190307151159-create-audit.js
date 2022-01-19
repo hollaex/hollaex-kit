@@ -23,11 +23,11 @@ module.exports = {
 			},
 			description: {
 				type: Sequelize.JSONB,
-				defaultValue: {},
+				defaultValue: {}
 			},
 			ip: {
 				type: Sequelize.STRING,
-				allowNull: false,
+				allowNull: false
 			},
 			domain: {
 				type: Sequelize.STRING,
@@ -37,12 +37,12 @@ module.exports = {
 			timestamp: {
 				defaultValue: Sequelize.literal('NOW()'),
 				allowNull: false,
-				type: Sequelize.DATE,
-			},
+				type: Sequelize.DATE
+			}
 		}, {
 			timestamps: false,
 			underscored: true
 		});
 	},
-	down: (queryInterface) => queryInterface.dropTable('Audits'),
+	down: (queryInterface) => queryInterface.dropTable('Audits')
 };

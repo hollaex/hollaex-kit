@@ -1543,7 +1543,7 @@ paths:
         - name: symbol
           in: query
           description: Currency symbol
-          required: false
+          required: true
           type: string
       responses:
         200:

@@ -131,7 +131,8 @@ export const activeOrdersSelector = createSelector(
 	getActiveOrders,
 	getPair,
 	(orders, pair) => {
-		return orders;
+		let count = 0;
+		return orders.filter(({ symbol }) => symbol === pair && count++ < 50);
 	}
 );
 

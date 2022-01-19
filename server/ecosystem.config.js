@@ -19,7 +19,7 @@ const api = {
 	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
-		PORT: process.env.PORT || 10010,
+		PORT: process.env.PORT || 10010
 	}
 };
 
@@ -35,7 +35,7 @@ const ws = {
 	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
-		PORT: process.env.WEBSOCKET_PORT || 10080,
+		PORT: process.env.WEBSOCKET_PORT || 10080
 	}
 };
 
@@ -54,7 +54,7 @@ const plugins = {
 	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
-		PORT: process.env.PLUGIN_PORT || 10011,
+		PORT: process.env.PLUGIN_PORT || 10011
 	}
 };
 

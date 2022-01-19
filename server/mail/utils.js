@@ -60,7 +60,7 @@ const transport = () => {
 			user: SMTP_USER(),
 			pass: SMTP_PASSWORD()
 		},
-		logger: true,
+		logger: true
 	});
 };
 
