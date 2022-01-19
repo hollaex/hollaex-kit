@@ -14,7 +14,7 @@ import { getToken } from 'utils/token';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
 import { submitOrder } from 'actions/orderAction';
 import { getUserTrades } from 'actions/walletActions';
-import { storeLayout, getLayout } from 'actions/toolsAction';
+import { storeLayout, getLayout, resetTools } from 'actions/toolsAction';
 import {
 	changePair,
 	setNotification,
@@ -201,7 +201,18 @@ class Trade extends PureComponent {
 		}
 	}
 
+	componentDidMount() {
+		document.addEventListener('resetlayout', this.onResetLayout);
+	}
+
+	onResetLayout = () => {
+		const { resetTools } = this.props;
+		resetTools();
+		setTimeout(this.onLayoutChange, 1000);
+	};
+
 	componentWillUnmount() {
+		document.removeEventListener('resetlayout');
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
 		this.closeOrderbookSocket();
@@ -605,7 +616,7 @@ class Trade extends PureComponent {
 		}
 	};
 
-	onLayoutChange = (layout) => {
+	onLayoutChange = (layout = defaultLayout) => {
 		storeLayout(layout);
 		this.setState({ layout });
 	};
@@ -798,6 +809,7 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	resetTools: bindActionCreators(resetTools, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

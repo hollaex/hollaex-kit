@@ -2,13 +2,18 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
-import { Checkbox } from 'antd';
+import { Checkbox, Button } from 'antd';
 
 import { toggleTool } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class ToolsSelector extends Component {
+	resetLayout = () => {
+		const event = new Event('resetlayout');
+		document.dispatchEvent(event);
+	};
+
 	render() {
 		const { tools, toggleTool } = this.props;
 
@@ -29,6 +34,11 @@ class ToolsSelector extends Component {
 							</div>
 						);
 					})}
+					<div className="d-flex justify-content-center p-2">
+						<Button className="important-text" onClick={this.resetLayout} ghost>
+							Reset Layout
+						</Button>
+					</div>
 				</div>
 			</div>
 		);
