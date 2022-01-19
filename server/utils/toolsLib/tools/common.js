@@ -11,6 +11,7 @@ const {
 	CONFIGURATION_CHANNEL,
 	INIT_CHANNEL,
 	SEND_CONTACT_US_EMAIL,
+	GET_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
 	GET_TIERS,
@@ -111,6 +112,28 @@ const getKitCoinsConfig = () => {
 const getKitCoins = () => {
 	return Object.keys(getKitCoinsConfig());
 };
+
+const getEmail = () => {
+	return GET_EMAIL();
+};
+
+const updateEmail = async ( data ) => {
+	const status = await dbQuery.findOne('status', {
+		attributes: ['id', 'email']
+	});
+	const updatedStatus = await status.update({
+		email: data.email
+	});
+
+	publisher.publish(
+		CONFIGURATION_CHANNEL,
+		JSON.stringify({
+			type: 'update', data: { email: updatedStatus.email }
+		})
+	);
+	return updatedStatus.email;
+};
+
 
 const getKitPair = (pair) => {
 	return getKitPairsConfig()[pair];
@@ -794,5 +817,7 @@ module.exports = {
 	emailHtmlBoilerplate,
 	getNetworkConstants,
 	getNetworkEndpoint,
-	getDefaultFees
+	getDefaultFees,
+	getEmail,
+	updateEmail
 };

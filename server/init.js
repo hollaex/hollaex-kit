@@ -64,7 +64,8 @@ const checkStatus = () => {
 			injected_html: {},
 			user_meta: {},
 			black_list_countries: [],
-		}
+		},
+		email: {}
 	};
 
 	let secrets = {
@@ -98,6 +99,7 @@ const checkStatus = () => {
 			} else {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
+				configuration.email = status.email;
 				return all([
 					checkActivation(
 						status.name,
