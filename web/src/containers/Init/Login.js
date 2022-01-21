@@ -62,6 +62,12 @@ const Login = (props) => {
 		}
 	};
 
+	const maxLengthCheck = (object) => {
+		if (object.target.value.length > object.target.maxLength) {
+			object.target.value = object.target.value.slice(0, object.target.maxLength)
+		}
+	};
+
 	return (
 		<div className="init-container">
 			<div className="setup-container">
@@ -89,6 +95,8 @@ const Login = (props) => {
 								otp_code: {
 									type: 'number',
 									label: '2FA (if active)',
+									maxLength: "6",
+									onInput: maxLengthCheck
 								},
 								captcha: {
 									type: 'captcha',
