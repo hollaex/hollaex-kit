@@ -46,27 +46,31 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERVERIFICATIONREJECT = require('../strings').getStringObject(language, 'USERVERIFICATIONREJECT');
+
 	return `
     <div>
       <p>
-        ${stringDynamic.GREETING.format(email)}
+        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : USERVERIFICATIONREJECT.GREETING(email)}
       </p>
-      <p>${stringDynamic.BODY[1].format(data.type)}</p>
-      <p>${stringDynamic.BODY[2].format(data.message)}</p>
+      <p>${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.type) : USERVERIFICATIONREJECT.BODY[1](data.type)}</p>
+      <p>${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(data.message) : USERVERIFICATIONREJECT.BODY[2](data.message)}</p>
       <p>
-        ${stringDynamic.CLOSING[1]}<br />
-        ${stringDynamic.CLOSING[2].format(API_NAME())}
+      	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : USERVERIFICATIONREJECT.CLOSING[1]}<br />
+        	${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : USERVERIFICATIONREJECT.CLOSING[2]()}
       </p>
     </div>
   `;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERVERIFICATIONREJECT = require('../strings').getStringObject(language, 'USERVERIFICATIONREJECT');
+
 	return `
-    ${stringDynamic.GREETING.format(email)}
-    ${stringDynamic.BODY[1].format(data.type)}
-    ${stringDynamic.BODY[2].format(data.message)}
-    ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+    ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : USERVERIFICATIONREJECT.GREETING(email)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.type) : USERVERIFICATIONREJECT.BODY[1](data.type)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(data.message) : USERVERIFICATIONREJECT.BODY[2](data.message)}
+	 ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : USERVERIFICATIONREJECT.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : USERVERIFICATIONREJECT.CLOSING[2]()}
   `;
 };
 

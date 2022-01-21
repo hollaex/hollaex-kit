@@ -41,13 +41,14 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const CONTACTFORM = require('../strings').getStringObject(language, 'CONTACTFORM');
 	return `
     <div>
       <h3>
-        ${stringDynamic.BODY[1]}
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : CONTACTFORM.BODY[1]}
       </h3>
       <div>
-        ${stringDynamic.BODY[2].format(email)}<br />
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email) : CONTACTFORM.BODY[2](email)}<br />
         ${JSON.stringify(data, null, 2)}
       </div>
     </div>
@@ -55,9 +56,10 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const CONTACTFORM = require('../strings').getStringObject(language, 'CONTACTFORM');
 	return `
-    ${stringDynamic.BODY[1]}
-    ${stringDynamic.BODY[2].format(email)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : CONTACTFORM.BODY[1]}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email) : CONTACTFORM.BODY[2](email)}
     ${JSON.stringify(data, null, 2)}
   `;
 };
