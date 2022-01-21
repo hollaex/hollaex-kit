@@ -26,6 +26,7 @@ services:
     ports:
       - 10010:10010
       - 10011:10011
+      - 10012:10012
     build:
       context: .
       dockerfile: ./tools/Dockerfile.pm2
@@ -41,7 +42,7 @@ services:
       - ./api:/app/api
       - ./config:/app/config
       - ./db:/app/db
-      - ./plugins.js:/app/plugins.js
+      - ./plugins:/app/plugins
       - ./mail:/app/mail
       - ./ws:/app/ws
       - ./app.js:/app/app.js

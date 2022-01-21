@@ -67,6 +67,7 @@ const HistoryDisplay = (props) => {
 	const onCloseDialog = () => {
 		setDialogOpen(false);
 		setMessage('');
+		setInitialValues({});
 	};
 
 	return (
@@ -123,14 +124,17 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				<CheckDeposit
-					onCloseDialog={onCloseDialog}
-					onSubmit={requestDeposit}
-					message={statusMessage}
-					isLoading={isLoading}
-					initialValues={initialValue}
-					props={props}
-				/>
+				{dialogIsOpen
+					? <CheckDeposit
+						onCloseDialog={onCloseDialog}
+						onSubmit={requestDeposit}
+						message={statusMessage}
+						isLoading={isLoading}
+						initialValues={initialValue}
+						props={props}
+					/>
+					: null
+				}
 			</Dialog>
 		</div>
 	);

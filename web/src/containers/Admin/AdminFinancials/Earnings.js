@@ -8,6 +8,7 @@ import moment from 'moment';
 import { getFees, getFeesDownload } from '../AdminFees/action';
 import { STATIC_ICONS } from 'config/icons';
 import { SettleModal } from './SettleModal';
+import { requestUsers } from '../ListUsers/actions';
 import Filter from './filter';
 
 const earningsColumns = [
@@ -24,6 +25,11 @@ const descriptionColumn = [
 		title: 'Transaction_ID',
 		dataIndex: 'transaction_id',
 		key: 'transaction_id',
+	},
+	{
+		title: 'Network_ID',
+		dataIndex: 'user_id',
+		key: 'user_id',
 	},
 	{
 		title: 'Amount',
@@ -64,7 +70,7 @@ const filterOptions = [
 		label: 'Date',
 		value: 'date',
 		secondaryType: 'date-range',
-		secondaryDefaultValue: [moment().subtract(30, 'days'), moment()],
+		secondaryDefaultValue: [moment().subtract(90, 'days'), moment()],
 	},
 ];
 
@@ -81,8 +87,12 @@ class Earnings extends Component {
 			earningsData: [],
 			feesData: [],
 			isOpen: false,
-			end_date: moment().format('YYYY-MM-DD'),
-			start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+			end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
+			start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
+			buttonSubmitting: false,
+			currentScreen: '',
+			userDetails: [],
+			isLoading: false,
 		};
 	}
 
@@ -94,6 +104,7 @@ class Earnings extends Component {
 		const { start_date, end_date } = this.state;
 		this.setState({
 			error: '',
+			buttonSubmitting: true,
 		});
 		return getFees({ start_date, end_date })
 			.then((response) => {
@@ -106,11 +117,13 @@ class Earnings extends Component {
 				if (response) {
 					this.handleData(response);
 				}
+				this.setState({ buttonSubmitting: false });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					error: message,
+					buttonSubmitting: false,
 				});
 			});
 	};
@@ -134,31 +147,73 @@ class Earnings extends Component {
 	};
 
 	toggleVisibility = () => {
-		this.setState({ isOpen: !this.state.isOpen });
+		const { currentScreen } = this.state;
+		if (currentScreen === 'step2') {
+			this.setState({ currentScreen: 'step1' });
+		} else if (currentScreen === 'step1') {
+			this.setState({
+				isOpen: !this.state.isOpen,
+				currentScreen: '',
+			});
+		}
+	};
+
+	handleSettle = () => {
+		this.setState({
+			isOpen: !this.state.isOpen,
+			currentScreen: '',
+		});
+	};
+
+	toggleOpen = () => {
+		this.setState({ isOpen: !this.state.isOpen, currentScreen: 'step1' });
+		this.getAllUserData();
+	};
+
+	onModalClose = () => {
+		this.setState({
+			isOpen: !this.state.isOpen,
+			currentScreen: '',
+		});
+	};
+
+	handleNext = () => {
+		this.setState({ currentScreen: 'step2' });
 	};
 
 	handleDownload = () => {
 		return getFeesDownload({ format: 'csv' });
 	};
 
-	SetFilterDates = (value) => {
+	setFilterDates = (value) => {
 		if (value && value.length) {
-			const start_date = value[0].format('YYYY-MM-DD');
-			const end_date = value[1].format('YYYY-MM-DD');
+			const start_date = value[0].format('YYYY-MM-DD hh:mm A');
+			const end_date = value[1].format('YYYY-MM-DD hh:mm A');
 			this.setState({ start_date, end_date });
 		}
 		if (!value) {
 			this.setState({
-				end_date: moment().format('YYYY-MM-DD'),
-				start_date: moment().subtract(30, 'days').format('YYYY-MM-DD'),
+				end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
+				start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
 			});
+		}
+	};
+
+	getAllUserData = async (params = {}) => {
+		this.setState({ isLoading: true });
+		try {
+			const response = await requestUsers(params);
+			if (response.data) {
+				this.setState({ userDetails: response.data, isLoading: false });
+			}
+		} catch (error) {
+			this.setState({ isLoading: false });
 		}
 	};
 
 	render() {
 		const { info } = this.props;
-		const { earningsData, isOpen } = this.state;
-
+		const { earningsData, isOpen, buttonSubmitting } = this.state;
 		return (
 			<div className="admin-earnings-container">
 				<div>
@@ -180,7 +235,7 @@ class Earnings extends Component {
 					</div>
 					<div>{this.renderMember(info.collateral_level)}</div>
 					<div>
-						<Button onClick={this.toggleVisibility} className=" button">
+						<Button onClick={this.toggleOpen} className=" button">
 							Settle
 						</Button>
 					</div>
@@ -188,13 +243,20 @@ class Earnings extends Component {
 				<Modal
 					visible={isOpen}
 					footer={null}
-					onCancel={this.toggleVisibility}
+					onCancel={this.onModalClose}
 					width="37rem"
 				>
 					<SettleModal
 						toggleVisibility={this.toggleVisibility}
 						earningsData={earningsData}
 						requestFees={this.requestFees}
+						currentScreen={this.state.currentScreen}
+						handleNext={this.handleNext}
+						userDetails={this.state.userDetails}
+						getAllUserData={this.getAllUserData}
+						isLoading={this.state.isLoading}
+						handleSettle={this.handleSettle}
+						isOpen={isOpen}
 					/>
 				</Modal>
 				<div className="table-container">
@@ -206,8 +268,9 @@ class Earnings extends Component {
 						<div>
 							<Filter
 								selectOptions={filterOptions}
-								onChange={this.SetFilterDates}
+								onChange={this.setFilterDates}
 								onClickFilter={this.requestFees}
+								buttonSubmitting={buttonSubmitting}
 							/>
 						</div>
 						<div>
@@ -227,7 +290,7 @@ class Earnings extends Component {
 							dataSource={earningsData.map((data) => {
 								return data;
 							})}
-							rowKey={(data) => data.date}
+							rowKey={(data, index) => index}
 							expandedRowRender={(record) => {
 								return (
 									<Table

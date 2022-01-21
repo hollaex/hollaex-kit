@@ -17,35 +17,37 @@ describe('Main Test', function () {
 	}
 	afterEach(async function() {
 		await sleep(5000);
-		//await driver.quit();
+	//	await driver.quit();
 	})
 	describe('test', function () {
 			it('test is..', async function() {
-				// LogIn.LogIn();
+				//  await SignUp.SignUp()
+				//  AccountLevel.AccountLevel();
+				//  LogIn.LogIn();
 				// LogOut.LogOut();
-				// Promotion()
-				// ReCAPTCHA.ReCAPTCHA()
+				//  Promotion.Promotion()
+				//  ReCAPTCHA.ReCAPTCHA()
 				// Referral.Referral()
-				// ResendVerificationEmail.ResendVerificationEmail() 
-				// ResetPassword.ResetPassword()
-				// Security.Security()
-				// Setting.Setting()
-				//  SignUp.SignUp()
-				// Verification.Verification();failed
+				ResendVerificationEmail.ResendVerificationEmail() 
+				//  ResetPassword.ResetPassword()
+			  	//  await Security.Security()
+				//  Setting.Setting()
+				
+				//  Verification.Verification();//failed
 				/*Roles*/
 				// Communicator.Communicator()
-				//  Kyc()
-				//Supervisor()
+				// Kyc()
+				// Supervisor()
 				// Support.Support()
 				// /*Trade*/
-				// CancelOrder.CancelOrder()
+				//  CancelOrder.CancelOrder()
 				// CancelOrders()
 				//QuickTrade()
-				// Trade.Trade()
+				//  Trade.Trade()
 				// TradeWithStop.TradeWithStop()
 				// /*Wallet*/
-				// TransactionFlow()
-				Wallet.Wallet();
+				//  TransactionFlow()
+				// Wallet.Wallet();
 				
 				
 		})

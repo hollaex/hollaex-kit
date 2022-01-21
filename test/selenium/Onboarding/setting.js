@@ -23,6 +23,7 @@ async function Setting(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let Website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 	describe('Setting', function() {
@@ -35,7 +36,7 @@ async function Setting(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -43,7 +44,7 @@ async function Setting(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			//await driver.quit();
+			await driver.quit();
 		});
 		it('Setting', async function() {
 	   console.log(' Test name: Setting');
@@ -51,6 +52,8 @@ async function Setting(){
 		
 			console.log(step++,'  | open | /account | ');
 			await driver.get(logInPage);
+			//driver.manage().window().maximize();
+			driver.manage().window().fullscreen();
 			await sleep(10000);
 		
 			console.log(step++,'  | type | name=email | USER@bitholla.com');
@@ -69,8 +72,8 @@ async function Setting(){
 			await driver.findElement(By.css('.holla-button')).click();
 			await sleep(4000);
 
-			console.log(step++,'  | click | css=.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container | ');
-			await driver.findElement(By.css('.d-flex:nth-child(7) > .side-bar-txt > .edit-wrapper__container')).click();
+			console.log(step++,'  | click | css=.align-items-center:nth-child(6) | ');
+			await driver.findElement(By.css('.align-items-center:nth-child(6)')).click();
 			await sleep(3000);
 
 			console.log(step++,'  | click | css=.tab_item:nth-child(3) > div | ');

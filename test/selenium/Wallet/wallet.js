@@ -24,9 +24,10 @@ async function Wallet(){
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let webSite = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep()
 	describe('Wallet', function() {
-		this.timeout(30000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -35,7 +36,7 @@ async function Wallet(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -49,6 +50,7 @@ async function Wallet(){
     
 			console.log(step++,' | open | wallet |');
 			await driver.get(webSite+'wallet');
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,' | click | name=search-assets | ');
@@ -98,6 +100,7 @@ async function Wallet(){
 		it('TRX', async function() {
 			console.log(step++,' | open | wallet |');
 			await driver.get(webSite+'wallet');
+			driver.manage().window().maximize();
 			await sleep(5000);
 				
 			console.log(step++,' | click | name=search-assets | ');

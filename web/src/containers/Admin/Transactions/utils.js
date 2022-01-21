@@ -110,7 +110,9 @@ export const renderRowContent = ({
 			<div>Type: {type}</div>
 			<div>Currency: {currency}</div>
 			<div>Amount: {formatCurrency(amount)}</div>
-			<div>Fee: {formatCurrency(fee)}</div>
+			<div>
+				Fee: {formatCurrency(fee)} {currency}{' '}
+			</div>
 			<div>Timestamp: {formatDate(created_at)}</div>
 			{description && <div>Description: {description}</div>}
 		</div>

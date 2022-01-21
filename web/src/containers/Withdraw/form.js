@@ -195,6 +195,7 @@ class Form extends Component {
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
+			targets,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -202,6 +203,13 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
+
+		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
+		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
+		const id = targets.includes(currencySpecificId)
+			? currencySpecificId
+			: GENERAL_ID;
+
 		if (coinObject && coinObject.type !== 'fiat') {
 			return (
 				<form autoComplete="off" className="withdraw-form-wrapper">
@@ -255,7 +263,7 @@ class Form extends Component {
 		} else if (coinObject && coinObject.type === 'fiat') {
 			return (
 				<Fiat
-					id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW"
+					id={id}
 					icons={ICONS}
 					titleSection={titleSection}
 					currency={currency}
@@ -291,6 +299,7 @@ const mapStateToForm = (state) => ({
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,
+	targets: state.app.targets,
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

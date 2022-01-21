@@ -20,9 +20,10 @@ import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
-import { STATIC_ICONS } from 'config/icons';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
+
+const PAIR2_STATIC_SIZE = 0.000001;
 
 class QuickTrade extends Component {
 	constructor(props) {
@@ -33,7 +34,7 @@ class QuickTrade extends Component {
 			market: {},
 			chartData: {},
 			pairBase: '',
-			pair_2: ''
+			pair_2: '',
 		};
 	}
 
@@ -43,7 +44,7 @@ class QuickTrade extends Component {
 			this.setState({
 				market: this.props.market,
 				pairBase: keyData[0],
-				pair_2: keyData[1]
+				pair_2: keyData[1],
 			});
 		}
 
@@ -58,7 +59,7 @@ class QuickTrade extends Component {
 			this.setState({
 				market: this.props.market,
 				pairBase: keyData[0],
-				pair_2: keyData[1]
+				pair_2: keyData[1],
 			});
 		}
 
@@ -84,8 +85,9 @@ class QuickTrade extends Component {
 	}
 
 	handleClick = (pair) => {
-		if (pair && this.props.router) {
-			this.props.router.push(`/trade/${pair}`);
+		const { router, constants } = this.props;
+		if (pair && router && _get(constants, 'features.pro_trade')) {
+			router.push(`/trade/${pair}`);
 		}
 	};
 
@@ -122,8 +124,16 @@ class QuickTrade extends Component {
 			autoFocus = true,
 			coins,
 			user,
+			estimatedPrice,
 		} = this.props;
-		const { inProp, market, tickerDiff, chartData, pairBase, pair_2 } = this.state;
+		const {
+			inProp,
+			market,
+			tickerDiff,
+			chartData,
+			pairBase,
+			pair_2,
+		} = this.state;
 
 		const {
 			key,
@@ -155,9 +165,9 @@ class QuickTrade extends Component {
 			type: 'line',
 		};
 		const selectedSourceBalance =
-			userBalance[`${selectedSource.toLowerCase()}_balance`];
+			userBalance[`${selectedSource.toLowerCase()}_available`];
 		const selectedTargetBalance =
-			userBalance[`${selectedTarget.toLowerCase()}_balance`];
+			userBalance[`${selectedTarget.toLowerCase()}_available`];
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -170,11 +180,7 @@ class QuickTrade extends Component {
 					<div className="d-flex content-center">
 						<Image
 							iconId="SIDEBAR_QUICK_TRADING_INACTIVE,QUICK_TRADE"
-							icon={
-								isMobile
-									? ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']
-									: STATIC_ICONS['QUICK_TRADE']
-							}
+							icon={ICONS['SIDEBAR_QUICK_TRADING_INACTIVE']}
 							wrapperClassName={
 								isMobile ? 'quick_trade-tab-icon' : 'quick_trade-icon'
 							}
@@ -212,8 +218,7 @@ class QuickTrade extends Component {
 											className="pairs pointer"
 											onClick={() => this.handleClick(key)}
 										>
-											{pairBase.toUpperCase()}/
-											{pair_2.toUpperCase()}
+											{pairBase.toUpperCase()}/{pair_2.toUpperCase()}
 										</div>
 										<div className="fullname">
 											{pairBase_fullName}/{pair2_fullName}
@@ -378,7 +383,10 @@ class QuickTrade extends Component {
 								forwardError={forwardSourceError}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
-								decimal={increment_size}
+								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_size}
+								availableBalance={selectedSourceBalance}
+								estimatedPrice={estimatedPrice}
+								pair={key ? key : ''}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -390,7 +398,9 @@ class QuickTrade extends Component {
 								onInputChange={onChangeTargetAmount}
 								forwardError={forwardTargetError}
 								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={increment_size}
+								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
+								estimatedPrice={estimatedPrice}
+								pair={key ? key : ''}
 							/>
 							<div className="small-text">
 								{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
@@ -419,7 +429,7 @@ class QuickTrade extends Component {
 									onClick={onReviewQuickTrade}
 									disabled={disabled}
 									type="button"
-									className={!isMobile ? "w-50" : "w-100"}
+									className={!isMobile ? 'w-50' : 'w-100'}
 								/>
 							</div>
 							<div className="footer-text">
@@ -430,8 +440,7 @@ class QuickTrade extends Component {
 									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
 										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
 									</EditWrapper>
-									: {pairBase.toUpperCase()}/
-									{pair_2.toUpperCase()}{' '}
+									: {pairBase.toUpperCase()}/{pair_2.toUpperCase()}{' '}
 									<span>{STRINGS['TYPES_VALUES.market']}</span>
 								</div>
 							</div>

@@ -21,6 +21,7 @@ let passWord = process.env.ADMIN_PASS;
 let logInPage = process.env.LOGIN_PAGE;
 let password = process.env.PASSWORD;
 let website = process.env.WEBSITE;
+let browser = process.env.BROWSER;
 describe('g', function() {
 	this.timeout(300000)
 	let driver
@@ -37,7 +38,7 @@ describe('g', function() {
 		return newObject 
 	};
 	beforeEach(async function() {
-		driver = await new Builder().forBrowser('chrome').build()
+		driver = await new Builder().forBrowser(browser).build()
 		vars = {}
 	})
 	afterEach(async function() {
@@ -83,6 +84,7 @@ describe('g', function() {
 		console.log(vars["Fee"]+" and "+ vars["Level"] )
 		// 17 | open | trade/xht-usdt | 
 		await driver.get("https://sandbox.hollaex.com/trade/xht-usdt")
+		driver.manage().window().maximize();
 		// 18 | pause | 5000 | 
 		await driver.sleep(5000)
 		// 19 | storeText | css=.trade-col_side_wrapper > .trade_block-wrapper:nth-child(1) | Q
@@ -251,6 +253,7 @@ describe('g', function() {
 		console.log(vars["Fee"]+" and "+ vars["Level"] )
 		// 17 | open | trade/xht-usdt | 
 		await driver.get("https://sandbox.hollaex.com/trade/xht-usdt")
+		driver.manage().window().maximize();
 		// 18 | pause | 5000 | 
   	await driver.sleep(4000);
 		// 24 | click | css=.text-center:nth-child(2) | 

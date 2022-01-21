@@ -22,6 +22,7 @@ async function Verification(){
 	let passWord = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -38,7 +39,7 @@ async function Verification(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -59,6 +60,7 @@ async function Verification(){
 			console.log(' Step # | action | target | value');
 			console.log(step++,' | open | '+logInPage+'| ')
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await driver.sleep(5000);
     
 			console.log(step++,'  | type | name=email |', userName);
@@ -87,6 +89,7 @@ async function Verification(){
 	
 			console.log(step++,'  | open | /verification | ')
 			await driver.get(website+'verification');
+			driver.manage().window().maximize();
 			await sleep(5000);
 		
 			console.log(step++,' | click | css=.tab_item:nth-child(1) .custom_title-svg #Layer_1 | ')

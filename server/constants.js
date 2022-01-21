@@ -26,7 +26,8 @@ let configuration = {
 		meta: {},
 		user_meta: {},
 		injected_values: [],
-		injected_html: {}
+		injected_html: {},
+		black_list_countries: []
 	}
 };
 
@@ -103,7 +104,8 @@ const resetAllConfig = () => {
 			meta: {},
 			user_meta: {},
 			injected_values: [],
-			injected_html: {}
+			injected_html: {},
+			black_list_countries: []
 		}
 	};
 };
@@ -173,7 +175,8 @@ exports.KIT_CONFIG_KEYS = [
 	'email_verification_required',
 	'injected_values',
 	'injected_html',
-	'user_meta'
+	'user_meta',
+	'black_list_countries'
 ];
 
 exports.KIT_SECRETS_KEYS = [

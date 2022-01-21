@@ -281,7 +281,7 @@ const getParamsByStatus = (status) => {
 		case 'completed':
 			return { status: true };
 		case 'pending':
-			return { waiting: true };
+			return { status: false, dismissed: false, processing: false, rejected: false, waiting: false };
 		default:
 			return {};
 	}

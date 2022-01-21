@@ -23,6 +23,8 @@ async function Promotion(){
 	let website = process.env.WEBSITE;
 	let username = process.env.LEVEL_NAME;
 	let password = process.env.PASSWORD;
+	//let browser = process.env.BROWSER;
+	let browser = 'MicrosoftEdge';
 	const timestamp = require('time-stamp');
 	let step = util.getStep();
 	util.logHolla(logPath)
@@ -36,7 +38,7 @@ async function Promotion(){
 // 		fs.writeFile(logPath+'/log.txt',message);
 // 	 }
 	
-	describe('Trade', function() {
+	describe('Promotion Feature', function() {
 		this.timeout(300000);
 		let driver;
 		let vars;
@@ -46,7 +48,7 @@ async function Promotion(){
 			});
 		} 
 				beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -163,8 +165,8 @@ async function Promotion(){
 			console.log(step++,'  | click | xpath=//*[@id="trade-nav-container"]/div[3]/div[2]) | ');
 			await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).click();
 		
-			console.log(step++,'   | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] | ');
-			await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[11]/div[3]')).click();
+			console.log(step++,'   | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
 			await sleep(5000);
 
 			console.log(step++,'  | click | name=email | ');
@@ -202,7 +204,7 @@ async function Promotion(){
 			console.log(' Fee reduction: ');
 			console.log(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText());
 			console.log(String(util.getPromotionRate()));
-			assert(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText() == String(util.getPromotionRate().replace('discount:','reduction:')));
+			assert(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText().replace("%"," ") == String(util.getPromotionRate().replace('discount:','reduction:')));
 		
 			console.log('This is the EndOfTest');
 		});

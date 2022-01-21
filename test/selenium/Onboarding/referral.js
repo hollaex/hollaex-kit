@@ -21,17 +21,18 @@ async function Referral(){
 	let User = process.env.NEW_USER;
 	let passWord = process.env.PASSWORD;
 	let signUpPage = process.env.SIGN_UP_PAGE;
-	let emailAdmin =process.env.Email_ADMIN_USERNAME;
+	let emailAdmin =process.env.EMAIL_ADMIN_USERNAME;
 	let logInPage = process.env.LOGIN_PAGE;
 	let userName = process.env.ADMIN_USER;
 	let apassWord = process.env.ADMIN_PASS;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	const newUser = util.defineNewUser(User,4) ;
 	console.log(newUser);
 	let step = util.getStep();
 
 	describe('NewUserRequest', function() {
-		this.timeout(100000);
+		this.timeout(300000);
 		let driver;
 		let vars;
 		function sleep(ms) {
@@ -40,7 +41,7 @@ async function Referral(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -55,6 +56,7 @@ async function Referral(){
 		
 			console.log(step++,'  | open | ',logInPage);
 			await driver.get(logInPage);
+			driver.manage().window().maximize();
 			await sleep(10000);
 
 			console.log(step++,'  | type | name=email | USER@bitholla.com')
@@ -94,12 +96,13 @@ async function Referral(){
 			// console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
 			// await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
-			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
+			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 			
 	        console.log(step++,'  | open | ',signUpPage);
 			await driver.get(signUpPage);
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,'  | type | name=email |',newUser);
@@ -135,6 +138,7 @@ async function Referral(){
 			//	util.adminVerifiesNewUser(driver,userName,apassWord,newUser)
 			console.log(step++,'  | open | ',website);
 			await driver.get(website+"login");
+			driver.manage().window().maximize();
 			await sleep(5000);
 
 			console.log(step++,'  | type | name=email | USER@bitholla.com ')

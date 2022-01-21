@@ -336,7 +336,13 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 	return getNodeLib().getTrades(params)
 		.then(async (trades) => {
 			if (trades.data.length > 0) {
-				const idDictionary = await mapNetworkIdToKitId();
+				const networkIds = [];
+
+				for (const trade of trades.data) {
+					networkIds.push(trade.maker_id, trade.taker_id);
+				}
+
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
 
 				for (let trade of trades.data) {
 					const maker_kit_id = idDictionary[trade.maker_id] || 0;
@@ -587,10 +593,25 @@ const getGeneratedFees = (startDate, endDate, opts = {
 	});
 };
 
-const settleFees = (opts = {
+const settleFees = async (opts = {
 	additionalHeaders: null
 }) => {
-	return getNodeLib().settleFees(opts);
+	let network_id = null;
+	if (opts.user_id) {
+		const user = await getUserByKitId(opts.user_id, false);
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!user.network_id) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = user.network_id;
+		}
+	}
+
+	return getNodeLib().settleFees({
+		additionalHeaders: opts.additionalHeaders,
+		user_id: network_id
+	});
 };
 
 const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {

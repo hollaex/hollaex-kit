@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.2.4"
+  version: "2.2.7"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -2066,6 +2066,12 @@ paths:
       description: Settle exchange fees
       tags:
         - Admin
+      parameters:
+        - in: query
+          name: user_id
+          required: false
+          type: number
+          format: int32
       responses:
         200:
           description: Success
@@ -4456,6 +4462,10 @@ definitions:
                   type: string
                 attributes:
                   type: object
+          black_list_countries:
+            type: array
+            items:
+              type: string
       secrets:
         type: object
         properties:

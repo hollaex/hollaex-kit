@@ -23,6 +23,7 @@ async function CancelOrder(){
 	let password = process.env.PASSWORD;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 
 	describe('g', function() {
@@ -41,7 +42,7 @@ async function CancelOrder(){
 			return newObject; 
 		};
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 			util.kitLogIn(step,driver, userName,passWord);
@@ -55,7 +56,8 @@ async function CancelOrder(){
 			console.log(' Test name: g');
 			console.log(' Step # | name | target | value');
 			console.log(step++,'  | open | https://sandbox.hollaex.com/login | ');
-			await driver.get(logInPage);
+			await driver.get(logInPage)
+			driver.manage().window().maximize();;
 			console.log(step++,'  | executeScript | return [] | Users');
 			console.log(step++,'  | end |  | ');
 			await driver.sleep(5000);

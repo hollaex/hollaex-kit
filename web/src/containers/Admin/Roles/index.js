@@ -90,7 +90,7 @@ const renderItems = () => {
 					</div>
 				</div>
 			);
-		default:
+		case 'admin':
 			return (
 				<div>
 					<div className="sub-title">Your current role:</div>
@@ -100,6 +100,8 @@ const renderItems = () => {
 					</div>
 				</div>
 			);
+		default:
+			return <div></div>
 	}
 };
 
@@ -112,9 +114,12 @@ const Roles = ({ constants }) => {
 	const [editData, setData] = useState([]);
 	const [modalType, setType] = useState('');
 	const [isOpen, setOpen] = useState(false);
+	const [buttonSubmitting, setButtonSubmitting] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 
 	const isUpgrade = handleUpgrade(constants.info);
 	const requestInitRole = (pageNo = 1) => {
+		setIsLoading(true);
 		requestRole({ pageNo, limit })
 			.then((res) => {
 				let temp = pageNo === 1 ? res.data : [...operatorList, ...res.data];
@@ -123,10 +128,12 @@ const Roles = ({ constants }) => {
 				let currentPage = pageNo === 1 ? 1 : currentTablePage;
 				setCurrentTablePage(currentPage);
 				setIsRemaining(res.count > pageNo * limit);
+				setIsLoading(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setIsLoading(false);
 			});
 	};
 	useEffect(() => {
@@ -136,26 +143,32 @@ const Roles = ({ constants }) => {
 	}, []);
 
 	const handleInvite = (values) => {
+		setButtonSubmitting(true);
 		inviteOperator(values)
 			.then((res) => {
 				requestInitRole();
 				handleClose();
+				setButtonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButtonSubmitting(false);
 			});
 	};
 
 	const handleUpdateRole = (formProps, user_id) => {
+		setButtonSubmitting(true);
 		updateRole(formProps, { user_id })
 			.then((res) => {
 				requestInitRole();
 				handleClose();
+				setButtonSubmitting(false);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
+				setButtonSubmitting(false);
 			});
 	};
 
@@ -163,7 +176,11 @@ const Roles = ({ constants }) => {
 		switch (type) {
 			case 'operator-role':
 				return (
-					<OperatorRole handleInvite={handleInvite} isUpgrade={isUpgrade} />
+					<OperatorRole
+						handleInvite={handleInvite}
+						isUpgrade={isUpgrade}
+						buttonSubmitting={buttonSubmitting}
+					/>
 				);
 			case 'role-access':
 				return <RoleAccess handleClose={handleClose} isUpgrade={isUpgrade} />;
@@ -181,6 +198,7 @@ const Roles = ({ constants }) => {
 						editData={editData}
 						handleClose={handleClose}
 						handleUpdateRole={handleUpdateRole}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				);
 			default:
@@ -286,6 +304,7 @@ const Roles = ({ constants }) => {
 						current: currentTablePage,
 						onChange: pageChange,
 					}}
+					loading={isLoading}
 				/>
 			</div>
 			<Modal

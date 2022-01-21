@@ -52,7 +52,7 @@ import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allPairs } from '../Trades/Pairs';
 import {
 	getAllCoins,
-	getAllPairs, 
+	getAllPairs,
 	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
@@ -194,7 +194,7 @@ class AppWrapper extends React.Component {
 		await this.getExchange();
 		await this.getCoins();
 		await this.getPairs();
-	}
+	};
 
 	getExchange = async () => {
 		try {
@@ -519,7 +519,7 @@ class AppWrapper extends React.Component {
 					</div>
 				);
 			default:
-				return <div></div>
+				return <div></div>;
 		}
 	};
 
@@ -621,24 +621,10 @@ class AppWrapper extends React.Component {
 						<Link to="/summary">
 							<div className="top-box-menu">
 								<CaretLeftOutlined />
-								Back to Exchange web
+								Back to Website
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className="top-box-menu">
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_LINK}
-								className="link-icon"
-								alt="Link-icon"
-							/>{' '}
-							<a
-								href="https://dash.bitholla.com/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Go to Holla Dash
-							</a>
-						</div>
 					</div>
 					<Layout>
 						<Sider width={310}>

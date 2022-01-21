@@ -1,6 +1,7 @@
 //testing the login function of Hollaex Kit
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
+
 async function Trade(){
 	const { Builder, By, Key, until } = require('selenium-webdriver');
 	const assert = require('assert');
@@ -21,6 +22,7 @@ async function Trade(){
 	let passWord = process.env.ADMIN_PASS;
 	let logInPage = process.env.LOGIN_PAGE;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step = util.getStep();
 	util.logHolla(logPath)
 
@@ -35,9 +37,9 @@ async function Trade(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
-			await driver.manage().window().maximize();
+			driver.manage().window().maximize();
 			await util.kitLogIn(step,driver, userName,passWord);
 	
 		});
@@ -54,13 +56,17 @@ async function Trade(){
 			await driver.findElement(By.name('Search Assets')).click();
 		
 			console.log(step++,'  | type | name=Search Assets | xht | ')
-			await driver.findElement(By.name('Search Assets')).sendKeys('xht');
+			await driver.findElement(By.name('Search Assets')).sendKeys('xht-usdt');
 		
 			console.log(step++,'  | sendKeys | name=Search Assets | ${KEY_ENTER} | ')
 			await driver.findElement(By.name('Search Assets')).sendKeys(Key.ENTER);
-		
-			console.log(step++,'  | click | css=.trade_tab-pair-sub-title |  |  ')
-			await driver.findElement(By.css('.trade_tab-pair-sub-title')).click();
+			
+			console.log(step++,'  | click | css=.sticky-col > .d-flex > div:nth-child(2) |  |  ')
+			await driver.findElement(By.css('.sticky-col > .d-flex > div:nth-child(2)')).click();
+			await sleep(3000);
+			
+			console.log(step++,'  | click | css=.text-center:nth-child(2)|  |  ')
+			await driver.findElement(By.css('.text-center:nth-child(2)')).click();
 			await sleep(3000);
 
 			console.log(step++,'  | click | name=size |  |  ')
@@ -148,8 +154,8 @@ async function Trade(){
 			console.log(step++,'  | click | css=.table_body-row:nth-child(1) | ')
 			await driver.findElement(By.css('.table_body-row:nth-child(1)')).click();
 		
-			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1).buy | side')
-			vars['side'] = await driver.findElement(By.css('.table_body-row:nth-child(1).buy')).getText();
+			console.log(step++,'  | storeText | css=.table_body-row:nth-child(1) .buy| side')
+			vars['side'] = await driver.findElement(By.css('.table_body-row:nth-child(1) .buy')).getText();
 		
 			console.log(step++,'  | click | css=.table_body-row:nth-child(1) > td:nth-child(3) | ')
 			await driver.findElement(By.css('.table_body-row:nth-child(1) > td:nth-child(3)')).click();
@@ -190,7 +196,8 @@ async function Trade(){
 		
 			console.log(step++,'  | click | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4) | ')
 			await driver.findElement(By.css('.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4)')).click();
-		
+		    await sleep (2000);
+			
 			console.log(step++,'  | storeText | css=.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4) | ActivityOrderTime')
 			vars['ActivityOrderTime'] = await driver.findElement(By.css('.trade_block-wrapper:nth-child(1) .table_body-row:nth-child(1) > td:nth-child(4)')).getText();
 			console.log(' Activity order time : '+vars['ActivityOrderTime']+'Live sale time : '+vars['LiveSaleTime'] );
@@ -210,13 +217,16 @@ async function Trade(){
 			await driver.findElement(By.name('Search Assets')).click();
 		
 			console.log(step++,'  | type | name=Search Assets | xht')
-			await driver.findElement(By.name('Search Assets')).sendKeys('xht');
+			await driver.findElement(By.name('Search Assets')).sendKeys('xht-usdt');
 		
 			console.log(step++,'  | sendKeys | name=Search Assets | ${KEY_ENTER}')
 			await driver.findElement(By.name('Search Assets')).sendKeys(Key.ENTER);
-		
-			console.log(step++,'  | click | css=.highcharts-background | ')
-			await driver.findElement(By.css('.trade_tab-pair-sub-title')).click();
+
+			console.log(step++,'  | click | css=.sticky-col > .d-flex > div:nth-child(2) |  |  ')
+			await driver.findElement(By.css('.sticky-col > .d-flex > div:nth-child(2)')).click();
+				
+			console.log(step++,'  | click | css=.text-center:nth-child(1) | ')
+			await driver.findElement(By.css('.text-center:nth-child(2)')).click();
 			await sleep(4000);
 		
 			console.log(step++,' ) | ')
@@ -533,7 +543,7 @@ async function Trade(){
 			await driver.findElement(By.name('Search Assets')).click();
 		
 			console.log(step++,'  | type | name=Search Assets | xht')
-			await driver.findElement(By.name('Search Assets')).sendKeys('xht');
+			await driver.findElement(By.name('Search Assets')).sendKeys('xht-usdt');
 		
 			console.log(step++,'  | sendKeys | name=Search Assets | ${KEY_ENTER}')
 			await driver.findElement(By.name('Search Assets')).sendKeys(Key.ENTER);

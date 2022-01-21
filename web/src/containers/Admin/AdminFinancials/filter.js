@@ -113,7 +113,7 @@ class Filter extends Component {
 	};
 
 	render() {
-		const { selectOptions } = this.props;
+		const { selectOptions, buttonSubmitting } = this.props;
 
 		return (
 			<div className="fields-container">
@@ -133,6 +133,7 @@ class Filter extends Component {
 					className="button"
 					size="small"
 					onClick={this.props.onClickFilter}
+					disabled={buttonSubmitting}
 				>
 					Filter
 				</Button>

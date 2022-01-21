@@ -16,6 +16,7 @@ async function SmartTrade(){
 	let adminUser = process.env.ADMIN_USER;
 	let passWord = process.env.ADMIN_PASS;
 	let website = process.env.WEBSITE;
+	let browser = process.env.BROWSER;
 	let step =util.getStep();
 	describe('smartTrade', function() {
 		this.timeout(300000);
@@ -27,7 +28,7 @@ async function SmartTrade(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser('chrome').build();
+			driver = await new Builder().forBrowser(browser).build();
 			vars = {};
 			driver.manage().window().maximize();
 	        util.kitLogIn(step,driver,adminUser,passWord);
