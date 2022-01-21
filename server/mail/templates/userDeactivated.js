@@ -42,23 +42,27 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERDEACTIVATED = require('../strings').getStringObject(language, 'USERDEACTIVATED');
+
 	return `
 		<div>
 			<p>
-				${stringDynamic.BODY[data.type.toUpperCase()].format(email)}
+				${(stringDynamic.BODY && stringDynamic.BODY[data.type.toUpperCase()]) ? stringDynamic.BODY[data.type.toUpperCase()].format(email) : USERDEACTIVATED.BODY[data.type.toUpperCase()](email)}
 			</p>
 			<p>
-				${stringDynamic.CLOSING[1]}<br />
-				${stringDynamic.CLOSING[2].format(API_NAME())}
-			</p>
+      		${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : USERDEACTIVATED.CLOSING[1]}<br />
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : USERDEACTIVATED.CLOSING[2]()}
+      	</p>
 		</div>
 	`;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERDEACTIVATED = require('../strings').getStringObject(language, 'USERDEACTIVATED');
+
 	return `
-		${stringDynamic.BODY[data.type.toUpperCase()].format(email)}
-		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+		${(stringDynamic.BODY && stringDynamic.BODY[data.type.toUpperCase()]) ? stringDynamic.BODY[data.type.toUpperCase()].format(email) : USERDEACTIVATED.BODY[data.type.toUpperCase()](email)}
+	 	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : USERDEACTIVATED.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : USERDEACTIVATED.CLOSING[2]()}
 	`;
 };
 

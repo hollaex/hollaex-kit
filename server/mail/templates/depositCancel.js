@@ -64,47 +64,58 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const DEPOSITCANCEL = require('../strings').getStringObject(language, 'DEPOSITCANCEL');
 	return `
         <div>
           <p>
-            ${stringDynamic.GREETING.format(email)}
+            ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : DEPOSITCANCEL.GREETING(email)}
           </p>
           <p>
-            ${stringDynamic.BODY[data.type.toUpperCase()].format(
+            ${(stringDynamic.BODY && stringDynamic.BODY[data.type.toUpperCase()]) ? stringDynamic.BODY[data.type.toUpperCase()].format(
 		data.currency,
 		data.date,
 		data.amount,
 		API_NAME()
+	) : DEPOSITCANCEL.BODY[data.type.toUpperCase()](
+		data.currency,
+		data.date,
+		data.amount
 	)}
           </p>
-          <p>${stringDynamic.BODY[1]}</p>
+          <p>${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : DEPOSITCANCEL.BODY[1]}</p>
           <p>
-            ${stringDynamic.BODY[2].format(data.transaction_id)}<br />
-            ${stringDynamic.BODY[3].format(data.amount)}<br />
-            ${stringDynamic.BODY[4]}
+            ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(data.transaction_id) : DEPOSITCANCEL.BODY[2](data.transaction_id)}<br />
+            ${(stringDynamic.BODY && stringDynamic.BODY[3]) ?stringDynamic.BODY[3].format(data.amount) : DEPOSITCANCEL.BODY[3](data.amount)}<br />
+            ${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : DEPOSITCANCEL.BODY[4]}
           </p>
           <p>
-            ${stringDynamic.CLOSING[1]}<br />
-            ${stringDynamic.CLOSING[2].format(API_NAME())}
-          </p>
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : DEPOSITCANCEL.CLOSING[1]}<br />
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : DEPOSITCANCEL.CLOSING[2]()}
+      	</p>
         </div>
       `;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const DEPOSITCANCEL = require('../strings').getStringObject(language, 'DEPOSITCANCEL');
+
 	return `
-    ${stringDynamic.GREETING.format(email)}
-    ${stringDynamic.BODY[data.type.toUpperCase()].format(
+    ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : DEPOSITCANCEL.GREETING(email)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[data.type.toUpperCase()]) ? stringDynamic.BODY[data.type.toUpperCase()].format(
 		data.currency,
 		data.date,
 		data.amount,
 		API_NAME()
+	) : DEPOSITCANCEL.BODY[data.type.toUpperCase()](
+		data.currency,
+		data.date,
+		data.amount
 	)}
-    ${stringDynamic.BODY[1]}
-    ${stringDynamic.BODY[2].format(data.transaction_id)}
-    ${stringDynamic.BODY[3].format(data.amount)}
-    ${stringDynamic.BODY[4]}
-    ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : DEPOSITCANCEL.BODY[1]}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(data.transaction_id) : DEPOSITCANCEL.BODY[2](data.transaction_id)}<br />
+	 ${(stringDynamic.BODY && stringDynamic.BODY[3]) ?stringDynamic.BODY[3].format(data.amount) : DEPOSITCANCEL.BODY[3](data.amount)}<br />
+	 ${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : DEPOSITCANCEL.BODY[4]}
+    ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : DEPOSITCANCEL.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : DEPOSITCANCEL.CLOSING[2]()}
   `;
 };
 

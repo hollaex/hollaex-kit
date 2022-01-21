@@ -6,7 +6,7 @@ const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
-	if(emailConfigurations[language] && emailConfigurations[language]['ACCOUNTUPGRADE']) {
+	if (emailConfigurations[language] && emailConfigurations[language]['ACCOUNTUPGRADE']) {
 		const stringDynamic = emailConfigurations[language]['ACCOUNTUPGRADE'];
 		return {
 			html: htmlDynamic(email, data, language, domain, stringDynamic),
@@ -52,18 +52,19 @@ const text = (email, data, language, domain) => {
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/trade`;
+	const ACCOUNTUPGRADE = require('../strings').getStringObject(language, 'ACCOUNTUPGRADE');
 	return `
         <div>
             <p>
-                ${stringDynamic.GREETING.format(email)}
+                ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : ACCOUNTUPGRADE.GREETING(email)}
             </p>
             <p>
-                ${stringDynamic.BODY[1].format(data)}
+                ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data) : ACCOUNTUPGRADE.BODY[1](data)}
             </p>
-            ${Button(link, stringDynamic.BODY[2])}
+            ${Button(link, (stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : ACCOUNTUPGRADE.BODY[2])}
             <p>
-                ${stringDynamic.CLOSING[1]}<br />
-                ${stringDynamic.CLOSING[2].format(API_NAME())}
+                 	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : ACCOUNTUPGRADE.CLOSING[1]}<br />
+        				${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : ACCOUNTUPGRADE.CLOSING[2]()}
             </p>
         </div>
     `;
@@ -71,11 +72,12 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/trade`;
+	const ACCOUNTUPGRADE = require('../strings').getStringObject(language, 'ACCOUNTUPGRADE');
 	return `
-        ${stringDynamic.GREETING.format(email)}
-        ${stringDynamic.BODY[1].format(data)}
-        ${stringDynamic.BODY[2]}(${link})
-        ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : ACCOUNTUPGRADE.GREETING(email)}
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data) : ACCOUNTUPGRADE.BODY[1](data)}
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : ACCOUNTUPGRADE.BODY[2]}(${link})
+        ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : ACCOUNTUPGRADE.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : ACCOUNTUPGRADE.CLOSING[2]()}
     `;
 };
 

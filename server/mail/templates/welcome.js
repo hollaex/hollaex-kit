@@ -66,26 +66,31 @@ const text = (email, data, language, domain) => {
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const linkAccount = `${domain}/account`;
 	const linkDeposit = `${domain}/deposit`;
+	const WELCOME = require('../strings').getStringObject(language, 'WELCOME');
+
 	return `
     <div>
       <p>
-        ${stringDynamic.GREETING.format(email)}
+        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : WELCOME.GREETING(email)}
       </p>
       <p>
-        ${stringDynamic.BODY[1].format(API_NAME())}
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(API_NAME()) : WELCOME.BODY[1]()}
       </p>
       <p>
-        ${stringDynamic.BODY[2].format(
-		`<a href="${linkAccount}" target="_blank">${stringDynamic.BODY[3]}</a>`,
-		`<a href="${linkDeposit}" target="_blank">${stringDynamic.BODY[4]}</a>`
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(
+		`<a href='${linkAccount}' target='_blank'>${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3] : WELCOME.BODY[3]}</a>`,
+		`<a href='${linkDeposit}' target='_blank'>${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : WELCOME.BODY[4]}</a>`
+	) : WELCOME.BODY[2](
+		`<a href='${linkAccount}' target='_blank'>${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3] : WELCOME.BODY[3]}</a>`,
+		`<a href='${linkDeposit}' target='_blank'>${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : WELCOME.BODY[4]}</a>`
 	)}
       </p>
       <p>
-        ${stringDynamic.BODY[5]}
+        ${(stringDynamic.BODY && stringDynamic.BODY[5]) ? stringDynamic.BODY[5] : WELCOME.BODY[5]}
       </p>
       <p>
-        ${stringDynamic.CLOSING[1]}<br />
-        ${stringDynamic.CLOSING[2].format(API_NAME())}
+      	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : WELCOME.CLOSING[1]}<br />
+        	${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : WELCOME.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -94,15 +99,20 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const linkAccount = `${domain}/account`;
 	const linkDeposit = `${domain}/deposit`;
+	const WELCOME = require('../strings').getStringObject(language, 'WELCOME');
+
 	return `
-    ${stringDynamic.GREETING.format(email)}
-    ${stringDynamic.BODY[1].format(API_NAME())}
-    ${stringDynamic.BODY[2].format(
+    ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : WELCOME.GREETING(email)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(API_NAME()) : WELCOME.BODY[1]()}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(
+		`${stringDynamic.BODY[3]}(${linkAccount})`,
+		`${stringDynamic.BODY[4]}(${linkDeposit})`
+	) : WELCOME.BODY[2](
 		`${stringDynamic.BODY[3]}(${linkAccount})`,
 		`${stringDynamic.BODY[4]}(${linkDeposit})`
 	)}
-    ${stringDynamic.BODY[5]}
-    ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+    ${(stringDynamic.BODY && stringDynamic.BODY[5]) ? stringDynamic.BODY[5] : WELCOME.BODY[5]}
+	 ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : WELCOME.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : WELCOME.CLOSING[2]()}
   `;
 };
 

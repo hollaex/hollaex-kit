@@ -42,13 +42,15 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const SUSPICIOUSDEPOSIT = require('../strings').getStringObject(language, 'SUSPICIOUSDEPOSIT');
+
 	return `
     <div>
-      <h3>${stringDynamic.BODY[1]}</h3>
+      <h3>${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : SUSPICIOUSDEPOSIT.BODY[1]}</h3>
       <div>
-        ${stringDynamic.BODY[2].format(email, data.currency)}<br />
-        ${stringDynamic.BODY[3].format(data.txid)}
-        <h4>${stringDynamic.BODY[4]}</h4>
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email, data.currency) : SUSPICIOUSDEPOSIT.BODY[2](email, data.currency)}<br />
+        ${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3].format(data.txid) : SUSPICIOUSDEPOSIT.BODY[3](data.txid)}
+        <h4>${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : SUSPICIOUSDEPOSIT.BODY[4]}</h4>
         <div>${JSON.stringify(data)}</div>
       </div>
     </div>
@@ -56,11 +58,13 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const SUSPICIOUSDEPOSIT = require('../strings').getStringObject(language, 'SUSPICIOUSDEPOSIT');
+
 	return `
-    ${stringDynamic.BODY[1]}
-    ${stringDynamic.BODY[2].format(email, data.currency)}
-    ${stringDynamic.BODY[3].format(data.txid)}
-    ${stringDynamic.BODY[4]} ${JSON.stringify(data)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : SUSPICIOUSDEPOSIT.BODY[1]}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email, data.currency) : SUSPICIOUSDEPOSIT.BODY[2](email, data.currency)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3].format(data.txid) : SUSPICIOUSDEPOSIT.BODY[3](data.txid)}
+    ${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : SUSPICIOUSDEPOSIT.BODY[4]} ${JSON.stringify(data)}
   `;
 };
 
