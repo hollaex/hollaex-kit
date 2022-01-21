@@ -78,35 +78,37 @@ const text = (email, data, language, domain) => {
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/verification`;
+	const BANKVERIFIED = require('../strings').getStringObject(language, 'BANKVERIFIED');
 	return `
 		<div>
 			<p>
-				${stringDynamic.GREETING.format(email)}
+				${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : BANKVERIFIED.GREETING(email)}
 			</p>
 			<p>
-				${stringDynamic.BODY[1]}
+				${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : BANKVERIFIED.BODY[1]}
 			</p>
 			<div>
 				<strong>Verified Bank Accounts:</strong>
 				${parseBanks(data.bankAccounts)}
 			</div>
 			<p>
-				<a href=${link}>${stringDynamic.BODY[2]}</a>
+				<a href=${link}>${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : BANKVERIFIED.BODY[2]}</a>
 			</p>
 			<p>
-				${stringDynamic.CLOSING[1]}<br />
-				${stringDynamic.CLOSING[2].format(API_NAME())}
+				${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : BANKVERIFIED.CLOSING[1]}<br />
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : BANKVERIFIED.CLOSING[2]()}
 			</p>
 		</div>
 	`;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const BANKVERIFIED = require('../strings').getStringObject(language, 'BANKVERIFIED');
 	return `
-		${stringDynamic.GREETING.format(email)}
-		${stringDynamic.BODY[1]}
-		${stringDynamic.BODY[2]}
-		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+		${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : BANKVERIFIED.GREETING(email)}
+		${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : BANKVERIFIED.BODY[1]}
+		${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : BANKVERIFIED.BODY[2]}
+		${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : BANKVERIFIED.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : BANKVERIFIED.CLOSING[2]()}
 	`;
 };
 

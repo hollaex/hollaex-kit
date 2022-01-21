@@ -37,9 +37,11 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const ALERT = require('../strings').getStringObject(language, 'ALERT');
+
 	return `
 		<div>
-			<h3>${stringDynamic.BODY[1].format(data.type)}</h3>
+			<h3>${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.type) : ALERT.BODY[1](data.type)}</h3>
 			<div>
 				<pre>${JSON.stringify(data.data, undefined, 2)}</pre>
 			</div>
@@ -48,8 +50,10 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const ALERT = require('../strings').getStringObject(language, 'ALERT');
+
 	return `
-		${stringDynamic.BODY[1].format(data.type)}
+		${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.type) : ALERT.BODY[1](data.type)}
 		${data.data}
 	`;
 };

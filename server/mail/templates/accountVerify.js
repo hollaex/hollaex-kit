@@ -6,7 +6,7 @@ const API_NAME = () => GET_KIT_CONFIG().api_name;
 
 const fetchMessage = (email, data, language, domain) => {
 	const emailConfigurations = GET_EMAIL();
-	if(emailConfigurations[language] && emailConfigurations[language]['ACCOUNTVERIFY']) {
+	if (emailConfigurations[language] && emailConfigurations[language]['ACCOUNTVERIFY']) {
 		const stringDynamic = emailConfigurations[language]['ACCOUNTVERIFY'];
 		return {
 			html: htmlDynamic(email, data, language, domain, stringDynamic),
@@ -52,18 +52,20 @@ const text = (email, data, language, domain) => {
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/trade`;
+	const ACCOUNTVERIFY = require('../strings').getStringObject(language, 'ACCOUNTVERIFY');
+
 	return `
         <div>
             <p>
-                ${stringDynamic.GREETING.format(email)}
+               ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : ACCOUNTVERIFY.GREETING(email)}
             </p>
             <p>
-                ${stringDynamic.BODY[1]}
+                ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : ACCOUNTVERIFY.BODY[1]}
             </p>
-            ${Button(link, stringDynamic.BODY[2])}
+                ${Button(link, (stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : ACCOUNTVERIFY.BODY[2])}
             <p>
-                ${stringDynamic.CLOSING[1]}<br />
-                ${stringDynamic.CLOSING[2].format(API_NAME())}
+                 	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : ACCOUNTVERIFY.CLOSING[1]}<br />
+        				${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : ACCOUNTVERIFY.CLOSING[2]()}
             </p>
         </div>
     `;
@@ -71,11 +73,13 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/trade`;
+	const ACCOUNTVERIFY = require('../strings').getStringObject(language, 'ACCOUNTVERIFY');
+
 	return `
-        ${stringDynamic.GREETING.format(email)}
-        ${stringDynamic.BODY[1]}
-        ${stringDynamic.BODY[2]}(${link})
-        ${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : ACCOUNTVERIFY.GREETING(email)}
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : ACCOUNTVERIFY.BODY[1]}
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : ACCOUNTVERIFY.BODY[2]}(${link})
+        ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : ACCOUNTVERIFY.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : ACCOUNTVERIFY.CLOSING[2]()}
     `;
 };
 

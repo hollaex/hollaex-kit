@@ -45,27 +45,29 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
         <div>
           <p>
-            ${stringDynamic.GREETING.format(email)}
+            ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : DISCOUNTUPDATE.GREETING(email)}
           </p>
           <p>
-            ${stringDynamic.BODY[1](data.rate)}
+            ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.rate) : DISCOUNTUPDATE.BODY[1](data.rate)}
           </p>
           <p>
-            ${stringDynamic.CLOSING[1]}<br />
-            ${stringDynamic.CLOSING[2].format(API_NAME())}
-          </p>
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : DISCOUNTUPDATE.CLOSING[1]}<br />
+        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : DISCOUNTUPDATE.CLOSING[2]()}
+      	</p>
         </div>
       `;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
-		${stringDynamic.GREETING.format(email)}
-		${stringDynamic.BODY[1](data.rate)}
-		${stringDynamic.CLOSING[1]} ${stringDynamic.CLOSING[2].format(API_NAME())}
+		${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : DISCOUNTUPDATE.GREETING(email)}
+		${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1].format(data.rate) : DISCOUNTUPDATE.BODY[1](data.rate)}
+    	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : DISCOUNTUPDATE.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : DISCOUNTUPDATE.CLOSING[2]()}
 	`;
 };
 

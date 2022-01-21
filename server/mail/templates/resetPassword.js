@@ -63,25 +63,26 @@ const text = (email, data, language, domain) => {
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/reset-password/${data.code}`;
+	const RESETPASSWORD = require('../strings').getStringObject(language, 'RESETPASSWORD');
 	return `
     <div>
       <p>
-        ${stringDynamic.GREETING.format(email)}
+        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : RESETPASSWORD.GREETING(email)}
       </p>
       <p>
-        ${stringDynamic.BODY[1]}<br />
-        ${stringDynamic.BODY[2]}<br />
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : RESETPASSWORD.BODY[1]}<br />
+        ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : RESETPASSWORD.BODY[2]}<br />        
       </p>
-      ${Button(link, stringDynamic.BODY[3])}
+      ${Button(link, (stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3] : RESETPASSWORD.BODY[3])}
       <p>
-        ${stringDynamic.BODY[4]}
-      </p>
-      <p>
-        ${stringDynamic.BODY[5].format(data.ip)}
+         ${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : RESETPASSWORD.BODY[4]}
       </p>
       <p>
-        ${stringDynamic.CLOSING[1]}<br />
-        ${stringDynamic.CLOSING[2].format(API_NAME())}
+        ${(stringDynamic.BODY && stringDynamic.BODY[5]) ? stringDynamic.BODY[5].format(data.ip) : RESETPASSWORD.BODY[5](data.ip)}
+      </p>
+      <p>
+      	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : RESETPASSWORD.CLOSING[1]}<br />
+        	${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : RESETPASSWORD.CLOSING[2]()}
       </p>
     </div>
   `;
@@ -89,15 +90,15 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const link = `${domain}/reset-password/${data.code}`;
+	const RESETPASSWORD = require('../strings').getStringObject(language, 'RESETPASSWORD');
 	return `
-    ${stringDynamic.GREETING.format(email)}.
-    ${stringDynamic.BODY[1]}
-    ${stringDynamic.BODY[2]}
-    ${stringDynamic.BODY[3]}(${link})
-    ${stringDynamic.BODY[4]}
-    ${stringDynamic.BODY[5].format(data.ip)}
-    ${stringDynamic.CLOSING[1]}
-    ${stringDynamic.CLOSING[2].format(API_NAME())}
+    ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : RESETPASSWORD.GREETING(email)}.
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : RESETPASSWORD.BODY[1]}
+    ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : RESETPASSWORD.BODY[2]}
+    ${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3] : RESETPASSWORD.BODY[3]}(${link})
+	 ${(stringDynamic.BODY && stringDynamic.BODY[4]) ? stringDynamic.BODY[4] : RESETPASSWORD.BODY[4]}
+	 ${(stringDynamic.BODY && stringDynamic.BODY[5]) ? stringDynamic.BODY[5].format(data.ip) : RESETPASSWORD.BODY[5](data.ip)}
+	 ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : RESETPASSWORD.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : RESETPASSWORD.CLOSING[2]()}
   `;
 };
 

@@ -39,22 +39,26 @@ const text = (email, data, language, domain) => {
 };
 
 const htmlDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERVERIFICATION = require('../strings').getStringObject(language, 'USERVERIFICATION');
+
 	return `
 		<div>
 			<h3>
-				${stringDynamic.BODY[1]}
+				${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : USERVERIFICATION.BODY[1]}
 			</h3>
 			<div>
-				${stringDynamic.BODY[2].format(email)}
+				${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email) : USERVERIFICATION.BODY[2](email)}
 			</div>
 		</div>
 	`;
 };
 
 const textDynamic = (email, data, language, domain, stringDynamic) => {
+	const USERVERIFICATION = require('../strings').getStringObject(language, 'USERVERIFICATION');
+
 	return `
-		${stringDynamic.BODY[1]}
-		${stringDynamic.BODY[2].format(email)}
+		${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : USERVERIFICATION.BODY[1]}
+		${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2].format(email) : USERVERIFICATION.BODY[2](email)}
 	`;
 };
 
