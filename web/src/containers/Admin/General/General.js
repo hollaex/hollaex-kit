@@ -15,7 +15,7 @@ import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData, setConfig } from '../../../actions/appActions';
-import { upload, updateConstants } from './action';
+import { upload, updateConstants, getEmailStrings } from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
@@ -63,6 +63,7 @@ class GeneralContent extends Component {
             countryOptions: COUNTRIES_OPTIONS,
             removeCountryLabel: '',
             removeCountryValue: [],
+            emailData: {}
         };
     }
 
@@ -88,7 +89,22 @@ class GeneralContent extends Component {
             .catch((err) => {
                 this.setState({ loading: false });
             });
+            if (this.props.activeTab === 'email') {
+                this.requestEmail();
+            }
     };
+    
+    requestEmail = () => {
+        getEmailStrings()
+            .then((response) => {
+                if (response) {
+                    this.setState({ emailData: response });
+                }
+            })
+            .catch((error) => {
+                console.log("error", error);
+            });
+    }
 
     getSettingsValues = () => {
         let initialNameValues = { ...this.state.initialNameValues };
@@ -1113,6 +1129,8 @@ class GeneralContent extends Component {
                                     initialValues={initialEmailValues}
                                     handleSubmitSettings={this.submitSettings}
                                     buttonSubmitting={buttonSubmitting}
+                                    emailData={this.state.emailData}
+                                    requestEmail={this.requestEmail}
                                 />
                             </div>
                         </div>
