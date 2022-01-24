@@ -334,7 +334,7 @@ const putPlugin = async (req, res) => {
 	]);
 
 	try {
-		const plugin = await Plugin.findOne({ where: { name }});
+		const plugin = await Plugin.findOne({ where: { name } });
 
 		if (!plugin) {
 			throw new Error('Plugin not installed');
@@ -551,7 +551,7 @@ const putPluginConfig = async (req, res) => {
 			throw new Error('Must provide meta or public_meta to update');
 		}
 
-		const plugin = await Plugin.findOne({ where: { name }});
+		const plugin = await Plugin.findOne({ where: { name } });
 
 		if (!plugin) {
 			throw new Error('Plugin not found');
@@ -688,7 +688,7 @@ const disablePlugin = async (req, res) => {
 	);
 
 	try {
-		const plugin = await Plugin.findOne({ where: { name }});
+		const plugin = await Plugin.findOne({ where: { name } });
 
 		if (!plugin) {
 			throw new Error('Plugin not found');
@@ -743,7 +743,7 @@ const enablePlugin = async (req, res) => {
 	);
 
 	try {
-		const plugin = await Plugin.findOne({ where: { name }});
+		const plugin = await Plugin.findOne({ where: { name } });
 
 		if (!plugin) {
 			throw new Error('Plugin not found');

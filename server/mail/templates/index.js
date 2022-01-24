@@ -6,6 +6,14 @@ const API_NAME = () => GET_KIT_CONFIG().api_name;
 const { TemplateEmail } = require('./helpers/common');
 const { MAILTYPE, languageFile } = require('../strings');
 
+String.prototype.format = function() {
+	let a = this;
+	for (let k in arguments) {
+		a = a.replace('{' + k + '}', arguments[k]);
+	}
+	return a;
+};
+
 const generateMessageContent = (
 	type,
 	email,
@@ -13,6 +21,7 @@ const generateMessageContent = (
 	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
+
 	let EMAIL_STRING_OBJECT = languageFile(language)[type.toUpperCase()];
 	if (!EMAIL_STRING_OBJECT) {
 		EMAIL_STRING_OBJECT = languageFile('en')[type.toUpperCase()];
@@ -33,6 +42,7 @@ const generateMessageContent = (
 	}
 	const subject = `${API_NAME()} ${title}`;
 	const message = require(`./${type}`)(email, data, language, domain);
+
 	const result = {
 		subject: subject,
 		html: TemplateEmail({ title }, message.html, language, domain),

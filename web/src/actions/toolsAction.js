@@ -1,5 +1,6 @@
 export const TOGGLE_TOOL = 'TOGGLE_TOOL';
 export const INITIALIZE_TOOLS = 'INITIALIZE_TOOLS';
+export const RESET_TOOLS = 'RESET_TOOLS';
 
 const TOOLS_LS_KEY = 'tools';
 const RGL_LS_KEY = 'rgl-layout';
@@ -23,6 +24,12 @@ export const toggleTool = (key) => {
 		payload: {
 			key,
 		},
+	};
+};
+
+export const resetTools = () => {
+	return {
+		type: RESET_TOOLS,
 	};
 };
 

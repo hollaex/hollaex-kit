@@ -7,7 +7,7 @@ Status.findOne({}).then((status) => {
 		activation_code: ACTIVATION_CODE,
 		activated: true,
 		api_key:  API_KEY,
-		api_secret:  API_SECRET,
+		api_secret:  API_SECRET
 	})
 		.then(() => {
 			console.log('Activation Code and keys are set');

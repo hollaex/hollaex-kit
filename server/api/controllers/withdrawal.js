@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerWithdrawals } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');

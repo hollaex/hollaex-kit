@@ -242,7 +242,7 @@ const CONTACTFORM = {
 	BODY: {
 		1: 'Données du formulaire de contact',
 		2: (email) =>
-			`Le client avec l\'email ${email} a soumis le formulaire de contact.`,
+			`Le client avec l'email ${email} a soumis le formulaire de contact.`,
 		3: (data) => `${JSON.stringify(data, null, 2)}`
 	}
 };
@@ -261,7 +261,7 @@ const SUSPICIOUSDEPOSIT = {
 	BODY: {
 		1: 'Dépôt suspect',
 		2: (email, currency) =>
-			`Le client avec l\'email ${email} a reçu un retrait de ${currency.toUpperCase()} ce qui est suspect.`,
+			`Le client avec l'email ${email} a reçu un retrait de ${currency.toUpperCase()} ce qui est suspect.`,
 		3: (txid) => COMMON.TXID(txid),
 		4: 'Données de la transaction:',
 		5: (data) => `${JSON.stringify(data)}`

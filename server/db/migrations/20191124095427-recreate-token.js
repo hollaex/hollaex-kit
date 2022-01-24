@@ -76,7 +76,7 @@ module.exports = {
 		);
 	},
 	down: (queryInterface, Sequelize) => {
-		return new Promise(resolve => {
+		return new Promise((resolve) => {
 			resolve();
 		});
 	}
