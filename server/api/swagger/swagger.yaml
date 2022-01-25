@@ -2115,6 +2115,50 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+    post:
+      operationId: performDirectWithdrawal
+      description: Make a withdrawal without email confirmation
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - address
+              - amount
+              - currency
+            properties:
+              address:
+                type: string
+                description: Destination address
+              currency:
+                type: string
+                description: Currency to be withdrawn (btc, eth, etc)
+              amount:
+                type: number
+                format: double
+                description: Amount to transfer (in btc, eth, bch)
+              network:
+                type: string
+                description: Blockchain network
+                minLength: 2
+                maxLength: 10
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - hmac
 
 # ADMIN ENDPOINTS
   /admin/fees:
