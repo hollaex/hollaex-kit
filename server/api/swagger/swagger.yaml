@@ -1635,6 +1635,30 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/request-email-confirmation:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestEmailConfirmation
+      description: Generate and send a code for email confirmation
+      tags:
+        - User
+      responses:
+        200:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /user/token:
     x-swagger-router-controller: user
     post:
@@ -1683,9 +1707,12 @@ paths:
           schema:
             type: object
             required:
-              - name
+              - token_id
               - otp_code
             properties:
+              token_id:
+                type: number
+                format: int32
               name:
                 type: string
               otp_code:
@@ -4885,9 +4912,8 @@ definitions:
         format: int32
       data:
         type: array
-          items:
-            schema:
-            $ref: '#/definitions/Token'
+        items:
+          $ref: '#/definitions/Token'
   WithdrawalConfirmation:
     type: object
     required:

@@ -133,6 +133,38 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 		});
 };
 
+async function sendConfirmationEmail(userId, domain) {
+	const user = await dbQuery.findOne('user', { where: { id: userId } });
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const code = crypto.randomBytes(20).toString('hex');
+
+	// If another confirmation is requested within the timeout,
+	// the previous one is invalidated by overwrite
+	await client.setexAsync(`ConfirmationEmail:${userId}`, 60 * 5, code);
+
+	sendEmail(
+		MAILTYPE.CONFIRM_EMAIL,
+		user.email,
+		{ code },
+		user.settings,
+		domain);
+}
+
+async function confirmByEmail(userId, givenCode) {
+	const code = await client.getAsync(`ConfirmationEmail:${userId}`);
+
+	if (!crypto.timingSafeEqual(Buffer.from(code), Buffer.from(givenCode))) {
+		return false;
+	}
+
+	client.delAsync(`ConfirmationEmail:${userId}`);
+	return true;
+}
+
 const confirmChangeUserPassword = (code, domain) => {
 	return getChangePasswordCode(code)
 		.then((data) => {
@@ -738,7 +770,7 @@ const verifyHmacTokenPromise = async (apiKey, apiSignature, apiExpires, method, 
 				apiKey
 			);
 			throw new Error(API_KEY_INACTIVE);
-		} else if (!permissions.all((permission) => token[permission] === true)) {
+		} else if (!permissions.every((permission) => token[permission] === true)) {
 			loggerAuth.error(
 				'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
 				apiKey
@@ -933,9 +965,9 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions, whitelisted_ips, enabled_whitelisting) {
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({user_id: userId, name: name});
+	const token = await findToken({where: {id: token_id}});
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -945,11 +977,28 @@ async function updateUserKitHmacToken(userId, otpCode, ip, name, permissions, wh
 
 	const values = {
 		...permissions,
+		name,
 		whitelisted_ips,
 		enabled_whitelisting
 	};
 
-	return await token.update(values, { returning: true });
+	Object.entries(values).forEach((key, value) => {
+		if (value === undefined) {
+			delete values[key];
+		}
+	});
+
+	return await token.update(values, {
+		returning: true,
+		fields: [
+			'name',
+			'can_read',
+			'can_trade',
+			'can_withdraw',
+			'enabled_whitelisting',
+			'whitelisted_ips'
+		]
+	});
 }
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
@@ -1044,6 +1093,7 @@ const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
 		.createHmac('sha256', secret)
 		.update(verb + path + nonce + stringData)
 		.digest('hex');
+
 	return signature;
 };
 
@@ -1103,11 +1153,15 @@ module.exports = {
 	issueToken,
 	getUserKitHmacTokens,
 	createUserKitHmacToken,
+	updateUserKitHmacToken,
 	deleteUserKitHmacToken,
 	checkHmacSignature,
 	createHmacSignature,
 	isValidScope,
 	verifyBearerTokenExpressMiddleware,
 	getCountryFromIp,
-	checkIp
+	checkIp,
+	sendConfirmationEmail,
+	confirmByEmail,
+	calculateSignature
 };
