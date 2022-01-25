@@ -1,8 +1,16 @@
+const path = require('path');
+
+process.env.NODE_ENV = 'test';
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+
 const chai = require('chai'),
 	chaiHTTP = require('chai-http'),
 	tools = require('hollaex-tools-lib');
 
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 
 chai.use(chaiHTTP);
 chai.should();
@@ -10,26 +18,38 @@ chai.should();
 const testURL = process.env.TEST_URL || 'http://localhost';
 
 const userCredentials = {
-	email: process.env.TEST_EMAIL || 'tester',
-	password: process.env.TEST_PASSWORD || 'hunter2'
+	email: 'tester@holla.tech',
+	password: 'hunter2'
 };
 
 const adminCredentials = {
-	email: process.env.ADMIN_EMAIL || 'admin',
-	password: process.env.ADMIN_PASSWORD || '2retnuh'
+	email: 'admintester@holla.tech',
+	password: '2retnuh'
 };
 
-async function ensureTestAccountsExist() {
-	const user = await tools.user.getUserByEmail(userCredentials.email);
-	const admin = await tools.user.getUserByEmail(adminCredentials.email);
+async function ensureAccountExists(credentials, isAdmin = false) {
+	await tools.checkExchangeStatus();
+	const user = await tools.user.getUserByEmail(credentials.email);
 
 	if (!user) {
-		await tools.user.createUser(userCredentials.email, userCredentials.password);
+		await tools.user.createUser(
+			credentials.email,
+			credentials.password,
+			{ role: isAdmin ? 'admin' : 'user' });
 	}
+}
 
-	if (!admin) {
-		await tools.user.createUser(adminCredentials.email, adminCredentials.password, { role: 'admin' });
-	}
+async function ensureTestAccountsExist() {
+	await ensureAccountExists(userCredentials);
+	await ensureAccountExists(adminCredentials, true);
+}
+
+async function getTestUser() {
+	return await tools.user.getUserByEmail(userCredentials.email);
+}
+
+async function getTestAdmin() {
+	return await tools.user.getUserByEmail(adminCredentials.email);
 }
 
 function loginAs(user) {
@@ -45,37 +65,64 @@ function loginAs(user) {
 		user.is_communicator);
 }
 
-async function loginAsTestUser() {
-	await ensureTestAccountsExist();
-	const user = await tools.user.getUserByEmail(userCredentials.email);
-	return loginAs(user);
-}
-
-async function loginAsAdmin() {
-	await ensureTestAccountsExist();
-	const admin = await tools.user.getUserByEmail(adminCredentials.email);
-	return loginAs(admin);
-}
-
-async function request(token) {
+function request() {
 	const req = chai.request(testURL);
-
-	if (!token) {
-		req = req.set('Authorization', `Bearer ${token}`);
-	}
 
 	return req;
 }
 
+async function otpCodeFor(user, forceEnable = false) {
+	var secret;
+
+	if (!(await tools.security.userHasOtpEnabled(user.id))) {
+		if (!forceEnabled) {
+			throw new Error('Cannot get OTP code for user, OTP not enabled');
+		}
+		secret = await tools.security.createOtp(user.id);
+		await tools.security.setActiveUserOtp(user.id);
+	} else {
+		const otpCode = await tools.database.findOne('otp code', { where: { user_id: user.id }, attributes: ['id', 'secret'] });
+		secret = otpCode.secret;
+	}
+
+	return await tools.security.generateOtp(secret);
+}
+
+async function emailCodeFor(user, bearerToken = undefined) {
+	let emailCode = await tools.database.client.getAsync(`ConfirmationEmail:${user.id}`);
+
+	if (!emailCode && bearerToken) {
+		const response = await request()
+			.get('/v2/user/request-email-confirmation')
+			.set('Authorization', `Bearer ${bearerToken}`);
+
+		emailCode = await tools.database.client.getAsync(`ConfirmationEmail:${user.id}`);
+	}
+
+	return emailCode;
+}
+
+function sleep(msDelay) {
+	return new Promise((resolve) => setTimeout(resolve, msDelay));
+}
+
+before(async function() {
+	this.timeout(10000);
+	await ensureTestAccountsExist();
+});
+
 module.exports = {
-	request,
-	tools,
-	testURL,
 	credentials: {
 		user: userCredentials,
 		admin: adminCredentials
 	},
+	getTestUser,
+	getTestAdmin,
 	loginAs,
-	loginAsTestUser,
-	loginAsAdmin
+	request,
+	tools,
+	testURL,
+	otpCodeFor,
+	emailCodeFor,
+	sleep
 };
