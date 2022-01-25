@@ -170,10 +170,17 @@ class TransactionsHistory extends Component {
 			headers: {
 				orders: isMobile
 					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
-					: generateOrderHistoryHeaders(symbol, pairs, coins, discount, prices),
+					: generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  ),
 				trades: isMobile
 					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
+					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,
