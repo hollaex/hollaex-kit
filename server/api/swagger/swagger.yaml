@@ -2026,6 +2026,41 @@ paths:
         - user
 
 # ADMIN ENDPOINTS
+  /admin/send-email-test:
+    x-swagger-router-controller: admin
+    post:
+      description: Send test email config
+      operationId: emailConfigTest
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - smtp
+              - sender
+            properties:
+              smtp:
+                type: object
+              sender:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+        - tech
   /admin/fees:
     x-swagger-router-controller: admin
     get:
