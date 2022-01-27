@@ -191,6 +191,17 @@
 	.ant-picker-clear {
 		background: none;
 	}
+	.action_notification-wrapper {
+		top: 21px;
+	}
+	.download-icon {
+		.action_notification-svg svg path {
+			fill: $link;
+		}
+	}
+	.loader_background {
+		filter: opacity(0.25) !important;
+	}
 }
 
 .action_notification-svg svg {

@@ -62,6 +62,14 @@ class UserVerification extends Component {
 
 		this.props.getUserLogins(RECORD_LIMIT);
 		this.openLogins();
+		if (window.location.search && window.location.search.includes('password')) {
+			this.setState({ activeTab: 1 });
+		} else if (window.location.search && window.location.search.includes('apiKeys')) {
+			this.setState({ activeTab: 2 });
+		} else {
+			this.setState({ activeTab: 0 });
+		}
+		this.openCurrentTab();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -94,7 +102,22 @@ class UserVerification extends Component {
 		) {
 			this.calculateTabs(this.props.user, this.state.activeTab);
 		}
+		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+			this.openCurrentTab();
+		}
 	}
+
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.activeTab === 1) {
+			currentTab = 'password';
+		} else if (this.state.activeTab === 2) {
+			currentTab = 'apiKeys';
+		} else {
+			currentTab = '2fa';
+		}
+		this.props.router.push(`/security?${currentTab}`);
+	};
 
 	renderLoginsTab = () => {
 		const { logins } = this.props;

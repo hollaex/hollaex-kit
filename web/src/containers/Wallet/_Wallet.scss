@@ -233,12 +233,17 @@ $header-margin: 2rem;
 			background-color: $app-sidebar-background;
 		}
 		.currency-ball-image-wrapper {
-			height: 24px;
-			padding-right: 4px;
+    		height: 24px !important;
+			margin-right: 7px;
+			width: 20px !important;
 		}
 		.currency-ball {
 			width: 30px;
 			padding-top: 4px;
+			svg,
+			div:first-child {
+    			width: 28px;
+			}
 		}
 	}
 

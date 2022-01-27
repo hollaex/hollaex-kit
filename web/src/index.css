@@ -1443,11 +1443,15 @@ table th {
     .wallet-container .wallet-assets_block .search-field {
       background-color: var(--base_wallet-sidebar-and-popup); }
     .wallet-container .wallet-assets_block .currency-ball-image-wrapper {
-      height: 24px;
-      padding-right: 4px; }
+      height: 24px !important;
+      margin-right: 7px;
+      width: 20px !important; }
     .wallet-container .wallet-assets_block .currency-ball {
       width: 30px;
       padding-top: 4px; }
+      .wallet-container .wallet-assets_block .currency-ball svg,
+      .wallet-container .wallet-assets_block .currency-ball div:first-child {
+        width: 28px; }
   .wallet-container .accordion_wrapper .action_notification-wrapper {
     position: relative; }
   .wallet-container .action-button-wrapper {
@@ -1925,6 +1929,12 @@ table th {
     margin-top: 6px; }
   .history_block-wrapper .ant-picker-clear {
     background: none; }
+  .history_block-wrapper .action_notification-wrapper {
+    top: 21px; }
+  .history_block-wrapper .download-icon .action_notification-svg svg path {
+    fill: var(--specials_buttons-links-and-highlights); }
+  .history_block-wrapper .loader_background {
+    filter: opacity(0.25) !important; }
 
 .action_notification-svg svg {
   width: 2rem;
@@ -3281,11 +3291,11 @@ table th {
       color: var(--labels_secondary-inactive-label-text-graphics);
       text-transform: lowercase; }
   .summary-container .account-details-wrapper .account-type-menu-active {
-    border-top: 2px solid var(--calculated_secondary-border);
-    border-bottom: 1px solid var(--calculated_secondary-border);
+    border-top: 2px solid var(--labels_important-active-labels-text-graphics);
+    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
     color: var(--labels_secondary-inactive-label-text-graphics);
     font-size: 1rem;
-    text-transform: capitalize; }
+    text-transform: uppercase; }
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
       color: var(--labels_secondary-inactive-label-text-graphics);
       text-transform: lowercase; }
@@ -10065,6 +10075,8 @@ foreignObject {
         fill: var(--calculated_base_footer_text); }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
         color: #00aeef !important; }
+      .app_footer-container .footer-row-content .footer_separter .footer-content .footer-img-wrapper {
+        height: 4rem; }
     .app_footer-container .footer-row-content .footer-public-texts .footer-public-texts-text {
       line-height: 2rem;
       font-weight: bold; }
