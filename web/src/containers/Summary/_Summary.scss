@@ -435,11 +435,11 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.account-type-menu-active {
-			border-top: 2px solid $colors-border;
-			border-bottom: 1px solid $colors-border;
+			border-top: 2px solid $sidebar-color-active;
+			border-bottom: 1px solid $sidebar-color-active;
 			color: $colors-black;
 			font-size: 1rem;
-			text-transform: capitalize;
+			text-transform: uppercase;
 
 			.account-current {
 				color: $colors-black;

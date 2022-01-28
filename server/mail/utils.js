@@ -75,6 +75,19 @@ const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
 	return DEFAULT_LANGUAGE();
 };
 
+const sendSMTPTestEmail = (params, smtp) => {
+	const transport = nodemailer.createTransport({
+		host: smtp.server,
+		port: smtp.port,
+		auth: {
+			user: smtp.user,
+			pass: smtp.password,
+		},
+		logger: true,
+	})
+	return transport.sendMail(params);
+};
+
 module.exports = {
 	// sendAwsEmail,
 	// sendAwsRawEmail,
@@ -82,5 +95,6 @@ module.exports = {
 	formatTimezone,
 	getCountryFromIp,
 	sendSMTPEmail,
-	getValidLanguage
+	getValidLanguage,
+	sendSMTPTestEmail
 };

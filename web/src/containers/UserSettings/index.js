@@ -62,6 +62,20 @@ class UserSettings extends Component {
 		} else {
 			this.updateTabs(this.props, this.state.activeTab);
 		}
+		if (window.location.search && window.location.search.includes('signals')) {
+			this.setState({ activeTab: 0 });
+		} else if (window.location.search && window.location.search.includes('interface')) {
+			this.setState({ activeTab: 1 });
+		} else if (window.location.search && window.location.search.includes('language')) {
+			this.setState({ activeTab: 2 });
+		} else if (window.location.search && window.location.search.includes('audioCue')) {
+			this.setState({ activeTab: 3 });
+		} else if (window.location.search && window.location.search.includes('manageRisk')) {
+			this.setState({ activeTab: 4 });
+		} else if (window.location.search && window.location.search.includes('chat')) {
+			this.setState({ activeTab: 5 });
+		}
+		this.openCurrentTab();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -96,6 +110,30 @@ class UserSettings extends Component {
 			this.updateTabs(nextProps, nextState.activeTab);
 		}
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+			this.openCurrentTab();
+		}
+	}
+
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.activeTab === 0) {
+			currentTab = 'signals';
+		} if (this.state.activeTab === 1) {
+			currentTab = 'interface';
+		} else if (this.state.activeTab === 2) {
+			currentTab = 'language';
+		} else if (this.state.activeTab === 3) {
+			currentTab = 'audioCue';
+		} else if (this.state.activeTab === 4) {
+			currentTab = 'manageRisk';
+		} else if (this.state.activeTab === 5) {
+			currentTab = 'chat';
+		}
+		this.props.router.push(`/settings?${currentTab}`);
+	};
 
 	onAdjustPortfolio = () => {
 		this.props.openRiskPortfolioOrderWarning({

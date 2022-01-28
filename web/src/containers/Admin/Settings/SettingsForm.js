@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Divider, Button, Tabs, Row } from 'antd';
+import { Divider, Button, Tabs, Row, Spin } from 'antd';
 import { reduxForm, reset } from 'redux-form';
 
 import { AdminHocForm } from '../../../components';
@@ -11,6 +11,8 @@ import {
 } from './Utils';
 import renderFields from '../../../components/AdminForm/utils';
 import ThemeHocForm from './ThemeSettingsForm';
+import CustomizeEmailForm from './CustomizeEmailForm';
+import languages from 'config/languages';
 
 const TabPane = Tabs.TabPane;
 
@@ -57,8 +59,21 @@ export const EmailSettingsForm = ({
 	initialValues,
 	handleSubmitSettings,
 	buttonSubmitting,
+	emailData,
+	requestEmail
 }) => {
 	const fields = generateAdminSettings('email');
+
+	const emailInfo = emailData && emailData.email;
+
+	let languageData = Object.assign({}, ...languages.map(item => ({ [item.value.toLowerCase()]: item })));
+	let selectedLanguages = [];
+	if (emailInfo) {
+		selectedLanguages = Object.keys(emailInfo).filter(data => Object.keys(languageData).includes(data));
+		selectedLanguages = languages.filter(data => selectedLanguages.includes(data.value));
+	}
+
+	const emailType = emailInfo ? Object.keys(emailInfo.format) : [];
 	return (
 		<div className="email-config-form mb-5">
 			<h2>Email Configuration</h2>
@@ -71,6 +86,21 @@ export const EmailSettingsForm = ({
 				fields={fields.email_configuration}
 				buttonSubmitting={buttonSubmitting}
 			/>
+			<div className="divider"></div>
+			<div className="mb-4 width-50">
+				<h2>Customize emails</h2>
+				<p>Select the type of email you'd like to edit below.</p>
+				{Object.keys(emailData).length
+					?
+						<CustomizeEmailForm
+							emailInfo={emailInfo}
+							requestEmail={requestEmail}
+							selectedLanguages={selectedLanguages}
+							emailType={emailType}
+						/>
+					: <Spin />
+				}
+			</div>
 			<div className="divider"></div>
 			<div className="mb-4">
 				<h2>Email Audit</h2>

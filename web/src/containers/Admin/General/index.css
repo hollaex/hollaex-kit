@@ -272,7 +272,8 @@ h2,
 .ant-checkbox-wrapper span,
 .description-wrapper,
 .bottom-description,
-.custom-form-wrapper {
+.custom-form-wrapper,
+.custom-email-wrapper div {
 	color: #ffffff;
 }
 .admin-general-description-tip .ant-tooltip-arrow {
@@ -408,4 +409,133 @@ h2,
 	padding: 5px;
 	font-size: 12px;
 	user-select: none;
+}
+
+.email-config-form .width-50 {
+	width: 50rem;
+}
+.email-config-form .custom-email-wrapper .ant-select,
+.email-config-form .custom-email-wrapper .ant-input {
+    width: 600px !important;
+    margin: 0 !important;
+}
+.email-config-form .custom-email-wrapper .sub-title {
+	color: #ffffff;
+	margin-bottom: 1rem;
+}
+.email-config-form .custom-email-wrapper .text-area .ant-form-item {
+	margin-bottom: 0 !important;
+}
+.email-config-form .custom-email-wrapper .text-area .ant-input[disabled] {
+    opacity: 0.5;
+    color: #c4c4c4;
+    background-color: var(--admin_panel_input);
+}
+.email-config-form .custom-email-wrapper .footer-section {
+	border: 1px solid #ffffff;
+    padding: 10px;
+    margin-bottom: 3rem;
+}
+.email-config-form .custom-email-wrapper .footer-section.border-none {
+    border-top: none;
+}
+.email-config-form .custom-email-wrapper .anchor {
+	text-decoration: underline;
+	cursor: pointer;
+    margin-right: 6px;
+}
+.email-config-form .custom-email-wrapper .option-wrapper {
+    padding: 20px 20px 20px 10px;
+    border: 1px solid #ffffff;
+    background-color: #27339D;
+    position: absolute;
+    z-index: 9999;
+    width: 600px;
+    height: 37.5rem;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .first-title {
+    font-size: 24px;
+    margin: 0.5rem 0rem;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .ant-input {
+	width: 100% !important;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .email-option-wrapper {
+	border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    margin-top: 0.5rem;
+    max-height: 22rem;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .email-option {
+    padding: 1rem;
+    font-size: 12px;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .email-option .preview_text {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .email-option:hover {
+	background-color: var(--admin_panel_input);
+    color: #c4c4c4;
+	cursor: pointer;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .table-header {
+	display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid #ffffff;
+    align-items: center;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .table-header div:first-child {
+    width: 50%;
+    padding-left: 11px;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .overflow {
+    overflow-y: auto;
+    max-height: 18rem;
+}
+
+.confirm_modal_wrapper .heading {
+	font-size: 24px;
+}
+.confirm_modal_wrapper .btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.confirm_modal_wrapper .btn-wrapper .ant-btn {
+    width: 47%;
+    background-color: #288500 !important;
+}
+.confirm_modal_wrapper .ant-input {
+    background-color: transparent !important;
+}
+.email-config-form .custom-email-wrapper .footer-section .small-text {
+	font-size: 12px;
+    margin-left: 20px;
+    padding-left: 20px;
+    border-left: 1px solid #C4C4C4;
+}
+.email-config-form .custom-email-wrapper .footer-section .small-text div {
+    color: #C4C4C4 !important;
+}
+.email-config-form .custom-email-wrapper .footer-section .edit-pen-icon {
+    width: 20px;
+}
+
+.general-wrapper .content-flex {
+	display:flex;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+.general-wrapper .content-flex .arrow-symbol {
+	margin-left: 1rem;
+}
+.general-wrapper .content-flex .arrow-symbol img {
+    width: 22px;
+}
+.confirm_modal_wrapper .box-container {
+	border: 1px solid #ffffff;
+	padding:1rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
 }
