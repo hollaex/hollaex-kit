@@ -2039,9 +2039,6 @@ paths:
           required: true
           schema:
             type: object
-            required:
-              - smtp
-              - sender
             properties:
               smtp:
                 type: object

@@ -96,18 +96,24 @@ const send = (params) => {
 		});
 };
 
-const testSendSMTPEmail  = (sender, smtp) => {
-	// mail admin exchange
-	const to = { ToAddresses: [AUDIT_EMAIL()] };
-	const from = `'${API_NAME()} Support <${sender}>'`;
-
+const testSendSMTPEmail = (sender = "", smtp = {}) => {
+	const to = {ToAddresses: [AUDIT_EMAIL()]};
 	const messageContent = {
 		'subject': 'test email',
 		'html': '<div><p>test content</p></div>',
 		'text': 'test content'
 	};
+	let from = SUPPORT_SOURCE();
+	if (sender) {
+		from = `'${API_NAME()} Support <${sender}>'`;
+	}
 	const payload = payloadTemplate(from, to, messageContent);
-	return sendSMTPTestEmail(payload, smtp);
+
+	if (Object.keys(smtp).length > 0) {
+		return sendSMTPTestEmail(payload, smtp);
+	} else {
+		return send(payload);
+	}
 };
 
 module.exports = {
