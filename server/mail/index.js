@@ -1,6 +1,6 @@
 'use strict';
 
-const { formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
+const { formatDate, getCountryFromIp, sendSMTPEmail, sendSMTPTestEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
@@ -96,6 +96,27 @@ const send = (params) => {
 		});
 };
 
+const testSendSMTPEmail = (sender = "", smtp = {}) => {
+	const to = {ToAddresses: [AUDIT_EMAIL()]};
+	const messageContent = {
+		'subject': 'test email',
+		'html': '<div><p>test content</p></div>',
+		'text': 'test content'
+	};
+	let from = SUPPORT_SOURCE();
+	if (sender) {
+		from = `'${API_NAME()} Support <${sender}>'`;
+	}
+	const payload = payloadTemplate(from, to, messageContent);
+
+	if (Object.keys(smtp).length > 0) {
+		return sendSMTPTestEmail(payload, smtp);
+	} else {
+		return send(payload);
+	}
+};
+
 module.exports = {
-	sendEmail
+	sendEmail,
+	testSendSMTPEmail
 };

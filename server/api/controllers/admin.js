@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
-const { sendEmail } = require('../../mail');
+const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
@@ -1819,6 +1819,23 @@ const putUserInfo = (req, res) => {
 		});
 };
 
+const emailConfigTest = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/emailConfigTest auth',
+		req.auth
+	);
+
+	const { sender, smtp } = req.swagger.params.data.value;
+	try {
+		testSendSMTPEmail(sender, smtp)
+		return res.status(201).json({ message: 'Success' });
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/emailConfigTest', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+}
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1864,5 +1881,6 @@ module.exports = {
 	updateExchange,
 	putUserInfo,
 	getEmail,
-	putEmail
+	putEmail,
+	emailConfigTest
 };
