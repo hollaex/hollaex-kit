@@ -2045,6 +2045,20 @@ paths:
             properties:
               smtp:
                 type: object
+                required:
+                  - password
+                  - port
+                  - user
+                  - server
+                properties:
+                  password:
+                    type: string
+                  port:
+                    type: number
+                  server:
+                    type: string
+                  user:
+                    type: string
               sender:
                 type: string
       responses:
