@@ -37,6 +37,10 @@ class AddTradeTab extends Component {
 		getSparklines(Object.keys(pairs)).then((chartData) =>
 			this.setState({ chartData })
 		);
+		const value = localStorage.getItem("isMarketView");
+		if (value) {
+			this.setState({ selected: value });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -144,6 +148,7 @@ class AddTradeTab extends Component {
 			this.state.selected === options[0].value
 				? options[1].value
 				: options[0].value;
+		localStorage.setItem("isMarketView", selected);
 		this.setState({ selected });
 	};
 

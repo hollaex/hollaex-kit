@@ -1428,4 +1428,5 @@ export default {
 		DEPTH_CHART: 'Depth chart', //new
 		COMING_SOON: 'coming soon', //new
 	},
+	WALLET_BALANCE_LOADING: 'Balance loading...' //new
 };
