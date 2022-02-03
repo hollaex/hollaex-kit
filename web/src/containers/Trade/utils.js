@@ -281,7 +281,21 @@ export const sortedPairKeysSelector = createSelector(
 			const marketCapB = math.multiply(volumeB, closeB);
 			return marketCapB - marketCapA;
 		});
-		return sortedPairKeys;
+
+		const pinnedCoins = ['xht'];
+		const pinnedKeys = [];
+		const filteredKeys = [];
+
+		sortedPairKeys.forEach((key) => {
+			const { pair_base, pair_2 } = pairs[key];
+			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+				pinnedKeys.push(key);
+			} else {
+				filteredKeys.push(key);
+			}
+		});
+
+		return [...pinnedKeys, ...filteredKeys];
 	}
 );
 
