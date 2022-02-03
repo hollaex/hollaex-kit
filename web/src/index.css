@@ -2208,8 +2208,16 @@ table th {
     background-size: 0; }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-buy {
     background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
+    .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-buy .public-sale_zeros {
+      color: var(--calculated_public-sale_buying-zeros); }
+    .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-buy .public-sale_digits {
+      color: var(--trading_buying-related-elements); }
   .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell {
     background-image: linear-gradient(var(--calculated_trading_selling-orderbook-bar), var(--calculated_trading_selling-orderbook-bar)); }
+    .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell .public-sale_zeros {
+      color: var(--calculated_public-sale_selling-zeros); }
+    .trade_history-wrapper .display_table-wrapper .display_table-body .display_table-cell .fill-sell .public-sale_digits {
+      color: var(--trading_selling-related-elements); }
 
 .layout-mobile .trade-container .orderBook-wrapper {
   max-height: 100% !important;

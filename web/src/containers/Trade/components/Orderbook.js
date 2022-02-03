@@ -17,6 +17,7 @@ import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
+import { opacifyNumber } from 'helpers/opacify';
 
 const { Option } = Select;
 
@@ -65,7 +66,7 @@ const PriceRow = (
 					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 					onClick={onAmountClick(amount)}
 				>
-					{formatToCurrency(amount, increment_size)}
+					{opacifyNumber(formatToCurrency(amount, increment_size))}
 				</div>
 				<div
 					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"

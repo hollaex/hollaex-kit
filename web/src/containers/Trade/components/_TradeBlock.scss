@@ -203,6 +203,12 @@ $tabs-title--margin: 2rem;
 						$buying-orderbook-bar,
 						$buying-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-buy;
+					}
+					.public-sale_digits {
+						color: $buy;
+					}
 				}
 
 				.fill-sell {
@@ -210,6 +216,12 @@ $tabs-title--margin: 2rem;
 						$selling-orderbook-bar,
 						$selling-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-sell;
+					}
+					.public-sale_digits {
+						color: $sell;
+					}
 				}
 			}
 		}
