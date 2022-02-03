@@ -292,12 +292,12 @@ class Orderbook extends Component {
 						<div>{STRINGS['PRICE_CURRENCY']}</div>
 						<div>({symbol.toUpperCase()})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
+					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
 						<div>({pairBase})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
-						<div className="d-flex align-items-center">
+					<div className="f-1 trade_orderbook-cell text-align-right">
+						<div className="text-align-right">
 							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						</div>
 						<Select

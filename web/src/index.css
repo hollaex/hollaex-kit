@@ -330,6 +330,9 @@ table th {
 .text-align-left {
   text-align: left !important; }
 
+.text-align-right {
+  text-align: right !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
