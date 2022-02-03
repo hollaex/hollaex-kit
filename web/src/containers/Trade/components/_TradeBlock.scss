@@ -62,6 +62,7 @@ $tabs-title--margin: 2rem;
 	height: 100%;
 	// border: 1px solid $colors-main-border;
 	background-color: $app-sidebar-background;
+	border: 1px solid $colors-super-pale-black;
 
 	&.chart-embed {
 		padding: 1.2rem;
@@ -239,6 +240,7 @@ $tabs-title--margin: 2rem;
 		padding: 1.2rem;
 		margin: 6px 3px 3px 3px;
 		max-height: 50vh;
+		border: none;
 
 		&.chart-embed {
 			max-height: 100vh;

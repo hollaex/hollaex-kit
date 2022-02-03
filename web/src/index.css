@@ -2124,7 +2124,8 @@ table th {
 
 .trade_block-wrapper {
   height: 100%;
-  background-color: var(--base_wallet-sidebar-and-popup); }
+  background-color: var(--base_wallet-sidebar-and-popup);
+  border: 1px solid var(--calculated_super-pale_label-text-graphics); }
   .trade_block-wrapper.chart-embed {
     padding: 1.2rem;
     max-height: 100vh; }
@@ -2229,7 +2230,8 @@ table th {
 .layout-mobile .trade_block-wrapper {
   padding: 1.2rem;
   margin: 6px 3px 3px 3px;
-  max-height: 50vh; }
+  max-height: 50vh;
+  border: none; }
   .layout-mobile .trade_block-wrapper.chart-embed {
     max-height: 100vh; }
 
