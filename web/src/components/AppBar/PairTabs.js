@@ -146,7 +146,7 @@ class PairTabs extends Component {
 								}
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
-								trigger={[isMobile ? 'click' : 'hover']}
+								trigger={['click']}
 								visible={isMarketSelectorVisible}
 								onVisibleChange={(visible) => {
 									this.setState({ isMarketSelectorVisible: visible });

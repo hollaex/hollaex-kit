@@ -6005,7 +6005,7 @@ table th {
   text-transform: uppercase; }
 
 .app-bar_add-tab-price {
-  color: var(--labels_secondary-inactive-label-text-graphics); }
+  color: var(--labels_important-active-labels-text-graphics); }
 
 @media (min-width: 1920px) {
   .app_bar {
