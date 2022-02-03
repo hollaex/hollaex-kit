@@ -2243,8 +2243,15 @@ table th {
   .trade_order_entry-wrapper.order_side-selector-sell > div:not(:last-child) {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector {
-    border-top: 1px solid var(--calculated_important-border);
     position: relative; }
+    .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector :before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      background: var(--labels_important-active-labels-text-graphics);
+      left: 0;
+      width: 100%;
+      height: 1px; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector > div {
       line-height: 2rem; }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-selector .active {
@@ -2255,10 +2262,10 @@ table th {
         content: '';
         position: absolute;
         top: -2px;
-        background: var(--calculated_important-border);
+        background: var(--labels_important-active-labels-text-graphics);
         left: 0;
         width: 100%;
-        height: 5px; }
+        height: 4px; }
   .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector {
     border: 1px solid var(--trading_selling-related-elements); }
     .trade_order_entry-wrapper.order_side-selector-sell .trade_order_entry-action_selector .active {
@@ -2311,8 +2318,15 @@ table th {
   .trade_order_entry-wrapper.order_side-selector-buy > div:not(:last-child) {
     margin-bottom: 0.5rem; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector {
-    border-top: 1px solid var(--calculated_important-border);
     position: relative; }
+    .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector :before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      background: var(--labels_important-active-labels-text-graphics);
+      left: 0;
+      width: 100%;
+      height: 1px; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector > div {
       line-height: 2rem; }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-selector .active {
@@ -2323,10 +2337,10 @@ table th {
         content: '';
         position: absolute;
         top: -2px;
-        background: var(--calculated_important-border);
+        background: var(--labels_important-active-labels-text-graphics);
         left: 0;
         width: 100%;
-        height: 5px; }
+        height: 4px; }
   .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector {
     border: 1px solid var(--trading_buying-related-elements); }
     .trade_order_entry-wrapper.order_side-selector-buy .trade_order_entry-action_selector .active {
