@@ -1082,6 +1082,26 @@ export default {
 		INVALID_LEVEL:
 			'You need to upgrade your verification level to have access this feature', // TODO
 	},
+	DEVELOPERS_TOKEN: {
+		API_KEY: 'API Key',
+		SECRET_KEY: 'Secret Key',
+		ACCESS: 'Access',
+		BASIC_ACCESS: 'Basic access',
+		BASIC_ACCESS_PROMPT: 'Select what this API key can access.',
+		READING_ACCESS: 'Reading (wallets balances, etc)',
+		TRADING_ACCESS: 'Trading',
+		IP_ACCESS: 'IP access',
+		IP_ACCESS_PROMPT: 'Configure what IP address will work with this API key.',
+		ANY_IP_ADDRESS: 'Any IP address',
+		ONLY_TRUSTED_IPS: 'Only trusted IPs',
+		ADD_IP_PH: 'Enter IP address. You can add multiple IPs',
+		ADD_IP: 'Add',
+		ADVANCED_ACCESS: 'Advanced access',
+		ADVANCED_ACCESS_PROMPT: 'Requires trusted IPs be activated.',
+		WITHDRAWAL_ACCESS: 'Withdrawals',
+		SAVE: 'Save',
+		BEWARE: 'Beware, allowing withdrawals comes with certain risks!',
+	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
 		GENERATE_TEXT:

@@ -30,24 +30,44 @@ class ApiKeyModal extends Component {
 		}
 	}
 
-	setTokenKey = (tokenKey) => {
-		this.setState({ tokenKey });
-	};
 	setTokenName = (tokenName) => {
 		this.setState({ tokenName });
 	};
+
 	onClickNext = () => {
 		this.setState({ dialogOtpOpen: true });
 	};
 
+	getSubmitByType = (type) => {
+		const { onRevoke, onGenerate } = this.props;
+
+		switch (type) {
+			case TYPE_REVOKE:
+				return onRevoke;
+			case TYPE_GENERATE:
+			default:
+				return onGenerate;
+		}
+	};
+
+	getAssetByType = (type) => {
+		switch (type) {
+			case TYPE_REVOKE:
+				return ['DEVELOPERS_TOKENS_POPUP.DELETE', 'TOKEN_TRASHED'];
+			case TYPE_GENERATE:
+			default:
+				return ['DEVELOPERS_TOKENS_POPUP.GENERATE', 'TOKEN_GENERATE'];
+		}
+	};
+
 	onSubmit = (values) => {
 		this.setState({ loading: true });
+		const { notificationType } = this.props;
 		const { otp_code } = values;
 		const { tokenName } = this.state;
-		let submit =
-			this.props.notificationType === TYPE_REVOKE
-				? this.props.onRevoke
-				: this.props.onGenerate;
+
+		const submit = this.getSubmitByType(notificationType);
+
 		return submit(otp_code, tokenName).then((res) => {
 			if (typeof res === 'object') {
 				const { apiKey, secret } = res;
@@ -95,28 +115,16 @@ class ApiKeyModal extends Component {
 				</Notification>
 			);
 		} else {
-			const icon =
-				notificationType === TYPE_REVOKE
-					? ICONS['TOKEN_TRASHED']
-					: ICONS['TOKEN_GENERATE'];
-			const iconId =
-				notificationType === TYPE_REVOKE ? 'TOKEN_TRASHED' : 'TOKEN_GENERATE';
-			const nextLabel =
-				notificationType === TYPE_REVOKE
-					? STRINGS['DEVELOPERS_TOKENS_POPUP.DELETE']
-					: STRINGS['DEVELOPERS_TOKENS_POPUP.GENERATE'];
-			const stringId_nextLabel =
-				notificationType === TYPE_REVOKE
-					? 'DEVELOPERS_TOKENS_POPUP.DELETE'
-					: 'DEVELOPERS_TOKENS_POPUP.GENERATE';
+			const [stringId, iconId] = this.getAssetByType(notificationType);
+
 			return (
 				<Notification
 					iconId={iconId}
-					icon={icon}
+					icon={ICONS[iconId]}
 					onBack={this.onCloseDialog}
 					onNext={this.onClickNext}
-					nextLabel={nextLabel}
-					stringId_nextLabel={stringId_nextLabel}
+					nextLabel={STRINGS[stringId]}
+					stringId_nextLabel={stringId}
 					disabledNext={
 						notificationType === TYPE_GENERATE &&
 						!!tokenKeyValidation(tokenName)

@@ -15,6 +15,7 @@ import { openContactForm } from 'actions/appActions';
 import { errorHandler } from '../../components/OtpForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
+import EditToken from './EditToken';
 
 const INITIAL_STATE = {
 	dialogIsOpen: false,
@@ -110,6 +111,10 @@ class ApiKey extends Component {
 									return data.id;
 								}}
 								count={tokens.count}
+								expandable={{
+									rowExpandable: () => true,
+									expandedRowRender: (record) => <EditToken {...record} />,
+								}}
 							/>
 						)
 					) : (
