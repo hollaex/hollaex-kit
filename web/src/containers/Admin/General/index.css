@@ -539,3 +539,43 @@ h2,
 	margin-top: 2rem;
 	margin-bottom: 2rem;
 }
+
+.email-config-form .transaction-form .errTxt {
+    color: red;
+}
+.test-Email-Wrapper .btn-wrapper {
+	display: flex;
+	width: 100%;
+	margin-top: 3rem;
+	justify-content: center;
+}
+.test-Email-Wrapper .btn-wrapper .ant-btn {
+	background-color: #288500;
+	width: 90%;
+}
+.test-Email-Wrapper .content-heading {
+	text-align: left;
+	font-size: 24px;
+}
+.test-Email-Wrapper .sub-heading {
+	margin-bottom: 1rem;
+}
+.test-Email-Wrapper .input-note {
+	margin-top: 1rem;
+}
+.test-Email-Wrapper .btn-width {
+	justify-content: flex-end;
+}
+.test-Email-Wrapper .btn-width .ant-btn {
+	width: 50%;
+}
+.test-Email-Wrapper .content-align {
+	display: flex;
+	justify-content:center;
+}
+.test-Email-Wrapper .content-alignment {
+    background-color: #525CB1;
+}
+.test-Email-Wrapper .content-align .loading-icon {
+	padding-right: 1rem;
+}
