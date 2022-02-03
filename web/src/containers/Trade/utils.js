@@ -311,7 +311,7 @@ export const MarketsSelector = createSelector(
 				symbol,
 				pairTwo,
 				fullname,
-				ticker: tickers[key],
+				ticker: tickers[key] || {},
 				increment_price,
 				priceDifference,
 				priceDifferencePercent,
