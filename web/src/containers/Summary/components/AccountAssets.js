@@ -95,6 +95,7 @@ const AccountAssets = ({
 						items={assetCards()}
 						groupItems={isMobile ? 4 : 7}
 						isActive={true}
+						isPositionChange={true}
 					/>
 				</div>
 			</div>
