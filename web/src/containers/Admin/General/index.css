@@ -311,8 +311,8 @@ h2,
 .custom-form-wrapper {
 	display: flex;
 	margin: 1.5rem 0rem;
-    width: 100%;
-    overflow: scroll;
+	width: 100%;
+	overflow: scroll;
 }
 .section-wrapper {
 	width: 220px;
@@ -360,12 +360,12 @@ h2,
 }
 
 .general-geo-wrapper .location-option-wrapper .location-option {
-    padding: 0.3rem 0.3rem 0.3rem 1rem;
-    color: #B6B6B6;
+	padding: 0.3rem 0.3rem 0.3rem 1rem;
+	color: #b6b6b6;
 }
 .general-geo-wrapper .location-option-wrapper .location-option:hover,
 .general-geo-wrapper .location-option-wrapper .location-option-active {
-	background: rgba(255,255,255,0.23);
+	background: rgba(255, 255, 255, 0.23);
 	color: #ffffff;
 	cursor: pointer;
 }
@@ -381,7 +381,7 @@ h2,
 	margin: 5px;
 }
 .general-geo-wrapper .box-wrapper {
-	border: 1px solid #C8C8C8;
+	border: 1px solid #c8c8c8;
 	padding: 10px;
 	margin-top: 20px;
 	margin-bottom: 4rem;
@@ -393,15 +393,15 @@ h2,
 	max-height: 18rem;
 	overflow-y: auto;
 	width: 300px;
-    height: 7.5rem;
+	height: 7.5rem;
 }
 .general-wrapper .geo-display .location-data {
-    padding: 0.3rem 1rem;
+	padding: 0.3rem 1rem;
 	color: #ffffff;
-    justify-content: space-between;
+	justify-content: space-between;
 }
 .general-wrapper .geo-display .location-data .anchor {
-    text-decoration: underline;
+	text-decoration: underline;
 	cursor: pointer;
 }
 .general-wrapper .geo-display .placeHolder {
@@ -416,8 +416,8 @@ h2,
 }
 .email-config-form .custom-email-wrapper .ant-select,
 .email-config-form .custom-email-wrapper .ant-input {
-    width: 600px !important;
-    margin: 0 !important;
+	width: 600px !important;
+	margin: 0 !important;
 }
 .email-config-form .custom-email-wrapper .sub-title {
 	color: #ffffff;
@@ -427,103 +427,114 @@ h2,
 	margin-bottom: 0 !important;
 }
 .email-config-form .custom-email-wrapper .text-area .ant-input[disabled] {
-    opacity: 0.5;
-    color: #c4c4c4;
-    background-color: var(--admin_panel_input);
+	opacity: 0.5;
+	color: #c4c4c4;
+	background-color: var(--admin_panel_input);
 }
 .email-config-form .custom-email-wrapper .footer-section {
 	border: 1px solid #ffffff;
-    padding: 10px;
-    margin-bottom: 3rem;
+	padding: 10px;
+	margin-bottom: 3rem;
 }
 .email-config-form .custom-email-wrapper .footer-section.border-none {
-    border-top: none;
+	border-top: none;
 }
 .email-config-form .custom-email-wrapper .anchor {
 	text-decoration: underline;
 	cursor: pointer;
-    margin-right: 6px;
+	margin-right: 6px;
 }
 .email-config-form .custom-email-wrapper .option-wrapper {
-    padding: 20px 20px 20px 10px;
-    border: 1px solid #ffffff;
-    background-color: #27339D;
-    position: absolute;
-    z-index: 9999;
-    width: 600px;
-    height: 37.5rem;
+	padding: 20px 20px 20px 10px;
+	border: 1px solid #ffffff;
+	background-color: #27339d;
+	position: absolute;
+	z-index: 9999;
+	width: 600px;
+	height: 37.5rem;
 }
 .email-config-form .custom-email-wrapper .option-wrapper .first-title {
-    font-size: 24px;
-    margin: 0.5rem 0rem;
+	font-size: 24px;
+	margin: 0.5rem 0rem;
 }
 .email-config-form .custom-email-wrapper .option-wrapper .ant-input {
 	width: 100% !important;
 }
 .email-config-form .custom-email-wrapper .option-wrapper .email-option-wrapper {
 	border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    margin-top: 0.5rem;
-    max-height: 22rem;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 22rem;
 }
 .email-config-form .custom-email-wrapper .email-option-wrapper .email-option {
-    padding: 1rem;
-    font-size: 12px;
+	padding: 1rem;
+	font-size: 12px;
 }
-.email-config-form .custom-email-wrapper .email-option-wrapper .email-option .preview_text {
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.email-option
+	.preview_text {
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	overflow: hidden;
 }
-.email-config-form .custom-email-wrapper .email-option-wrapper .email-option:hover {
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.email-option:hover {
 	background-color: var(--admin_panel_input);
-    color: #c4c4c4;
+	color: #c4c4c4;
 	cursor: pointer;
 }
 .email-config-form .custom-email-wrapper .email-option-wrapper .table-header {
 	display: flex;
-    padding: 10px 0;
-    border-bottom: 1px solid #ffffff;
-    align-items: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #ffffff;
+	align-items: center;
 }
-.email-config-form .custom-email-wrapper .email-option-wrapper .table-header div:first-child {
-    width: 50%;
-    padding-left: 11px;
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.table-header
+	div:first-child {
+	width: 50%;
+	padding-left: 11px;
 }
 .email-config-form .custom-email-wrapper .email-option-wrapper .overflow {
-    overflow-y: auto;
-    max-height: 18rem;
+	overflow-y: auto;
+	max-height: 18rem;
 }
 
 .confirm_modal_wrapper .heading {
 	font-size: 24px;
 }
 .confirm_modal_wrapper .btn-wrapper {
-    display: flex;
-    justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 .confirm_modal_wrapper .btn-wrapper .ant-btn {
-    width: 47%;
-    background-color: #288500 !important;
+	width: 47%;
+	background-color: #288500 !important;
 }
 .confirm_modal_wrapper .ant-input {
-    background-color: transparent !important;
+	background-color: transparent !important;
 }
 .email-config-form .custom-email-wrapper .footer-section .small-text {
 	font-size: 12px;
-    margin-left: 20px;
-    padding-left: 20px;
-    border-left: 1px solid #C4C4C4;
+	margin-left: 20px;
+	padding-left: 20px;
+	border-left: 1px solid #c4c4c4;
 }
 .email-config-form .custom-email-wrapper .footer-section .small-text div {
-    color: #C4C4C4 !important;
+	color: #c4c4c4 !important;
 }
 .email-config-form .custom-email-wrapper .footer-section .edit-pen-icon {
-    width: 20px;
+	width: 20px;
 }
 
 .general-wrapper .content-flex {
-	display:flex;
+	display: flex;
 	margin-top: 2rem;
 	cursor: pointer;
 }
@@ -531,17 +542,17 @@ h2,
 	margin-left: 1rem;
 }
 .general-wrapper .content-flex .arrow-symbol img {
-    width: 22px;
+	width: 22px;
 }
 .confirm_modal_wrapper .box-container {
 	border: 1px solid #ffffff;
-	padding:1rem;
+	padding: 1rem;
 	margin-top: 2rem;
 	margin-bottom: 2rem;
 }
 
 .email-config-form .transaction-form .errTxt {
-    color: red;
+	color: red;
 }
 .test-Email-Wrapper .btn-wrapper {
 	display: flex;
@@ -571,11 +582,15 @@ h2,
 }
 .test-Email-Wrapper .content-align {
 	display: flex;
-	justify-content:center;
+	justify-content: center;
 }
 .test-Email-Wrapper .content-alignment {
-    background-color: #525CB1;
+	background-color: #525cb1;
 }
 .test-Email-Wrapper .content-align .loading-icon {
 	padding-right: 1rem;
+}
+.test-Email-Wrapper .errTxt {
+	color: red;
+	padding-top: 1rem;
 }

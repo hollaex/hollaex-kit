@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Divider, Button, Tabs, Row, Spin, Modal, Input } from 'antd';
 import { reduxForm, reset } from 'redux-form';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -17,6 +17,7 @@ import CustomizeEmailForm from './CustomizeEmailForm';
 import languages from 'config/languages';
 import { STATIC_ICONS } from 'config/icons';
 import { updateTestEmail } from './action';
+const { isEmail } = require('validator');
 
 const TabPane = Tabs.TabPane;
 
@@ -64,7 +65,7 @@ export const EmailSettingsForm = ({
 	handleSubmitSettings,
 	buttonSubmitting,
 	emailData,
-	requestEmail
+	requestEmail,
 }) => {
 	const fields = generateAdminSettings('email');
 	const [isOpen, setIsOpen] = useState(false);
@@ -72,10 +73,27 @@ export const EmailSettingsForm = ({
 	const [isErrorMsg, setErrorMsg] = useState(false);
 	const [senderEmail, setSenderEmail] = useState('');
 	const [formValues, setFormValues] = useState({});
+	const [isValidEmail, setIsValidEmail] = useState(true);
+
+	useEffect(() => {
+		if (
+			JSON.stringify(formValues) === JSON.stringify(initialValues.configuration)
+		) {
+			setErrorMsg(false);
+		}
+	}, [formValues, initialValues.configuration]);
 
 	const handleTestEmail = (emailType) => {
-		if (formValues !== initialValues.configuration && formValues.password === _get(initialValues, 'configuration.password')) {
-			setErrorMsg(true);
+		if (
+			JSON.stringify(formValues) !== JSON.stringify(initialValues.configuration)
+		) {
+			if (_get(formValues, 'password').includes('*')) {
+				setErrorMsg(true);
+			} else {
+				setErrorMsg(false);
+				setIsOpen(true);
+				setType(emailType);
+			}
 		} else {
 			setIsOpen(true);
 			setType(emailType);
@@ -85,20 +103,24 @@ export const EmailSettingsForm = ({
 	const handleClose = (val = '') => {
 		setIsOpen(false);
 		setSenderEmail('');
+		setIsValidEmail(true);
 	};
 
 	const handleSenderEmail = (e) => {
-		if (e.target.value) {
-			setSenderEmail(e.target.value);
+		setSenderEmail(e.target.value);
+		if (isEmail(e.target.value)) {
+			setIsValidEmail(true);
+		} else {
+			setIsValidEmail(false);
 		}
 	};
 
 	const updateEmail = (params) => {
-		let body = {}
+		let body = {};
 		if (params === initialValues.configuration) {
 			body = {
-				sender: senderEmail
-			}
+				sender: senderEmail,
+			};
 		} else {
 			body = {
 				sender: senderEmail,
@@ -106,10 +128,10 @@ export const EmailSettingsForm = ({
 					password: params.password,
 					port: params.port,
 					server: params.server,
-					user: params.user
-				}
-			}
-		}	
+					user: params.user,
+				},
+			};
+		}
 		updateTestEmail(body)
 			.then((res) => {
 				if (res) {
@@ -134,20 +156,17 @@ export const EmailSettingsForm = ({
 		if (type === 'edit-email') {
 			return (
 				<div>
-					<div className='content-heading'>Send Test Email</div>
-					<div className='sub-heading'>Send a test to</div>
-					<Input
-						onChange={handleSenderEmail}
-					/>
-					<div className='input-note'>
+					<div className="content-heading">Send Test Email</div>
+					<div className="sub-heading">Send a test to</div>
+					<Input onChange={handleSenderEmail} className="mb-2" />
+					{!isValidEmail && senderEmail.length ? (
+						<span className="errTxt">Please Enter the valid email</span>
+					) : null}
+					<div className="input-note">
 						(Note: default email used is the admin email.)
 					</div>
 					<div className="btn-wrapper">
-						<Button
-							type="primary"
-							className="green-btn"
-							onClick={handleClose}
-						>
+						<Button type="primary" className="green-btn" onClick={handleClose}>
 							Back
 						</Button>
 						<div className="separator"></div>
@@ -155,37 +174,36 @@ export const EmailSettingsForm = ({
 							type="primary"
 							className="green-btn"
 							onClick={() => handleConfirm('edit-confirm', formValues)}
-							disabled={!senderEmail}
+							disabled={!senderEmail || !isValidEmail}
 						>
 							Confirm
 						</Button>
 					</div>
-				</div>)
+				</div>
+			);
 		} else if (type === 'edit-confirm') {
 			return (
 				<div>
-					<div className='content-align'>
-						<div className='loading-icon'><LoadingOutlined style={{ fontSize: '50px' }} /></div>
+					<div className="content-align">
+						<div className="loading-icon">
+							<LoadingOutlined style={{ fontSize: '50px' }} />
+						</div>
 						<div>
-							<div className='content-heading'> Sending test email</div>
+							<div className="content-heading"> Sending test email</div>
 							<div>please wait...</div>
 						</div>
 					</div>
 					<div className="btn-wrapper">
-						<Button
-							type="primary"
-							className="green-btn"
-							onClick={handleClose}
-						>
+						<Button type="primary" className="green-btn" onClick={handleClose}>
 							Cancel
 						</Button>
 					</div>
 				</div>
-			)
+			);
 		} else {
 			return (
 				<div>
-					<div className='content-heading'>Complete</div>
+					<div className="content-heading">Complete</div>
 					<div>Your test email is the way!</div>
 					<div className="btn-wrapper btn-width">
 						<Button
@@ -197,17 +215,24 @@ export const EmailSettingsForm = ({
 						</Button>
 					</div>
 				</div>
-			)
+			);
 		}
 	};
 
 	const emailInfo = emailData && emailData.email;
 
-	let languageData = Object.assign({}, ...languages.map(item => ({ [item.value.toLowerCase()]: item })));
+	let languageData = Object.assign(
+		{},
+		...languages.map((item) => ({ [item.value.toLowerCase()]: item }))
+	);
 	let selectedLanguages = [];
 	if (emailInfo) {
-		selectedLanguages = Object.keys(emailInfo).filter(data => Object.keys(languageData).includes(data));
-		selectedLanguages = languages.filter(data => selectedLanguages.includes(data.value));
+		selectedLanguages = Object.keys(emailInfo).filter((data) =>
+			Object.keys(languageData).includes(data)
+		);
+		selectedLanguages = languages.filter((data) =>
+			selectedLanguages.includes(data.value)
+		);
 	}
 
 	const emailType = emailInfo ? Object.keys(emailInfo.format) : [];
@@ -218,26 +243,25 @@ export const EmailSettingsForm = ({
 		}
 		return (
 			<div>
-				{isErrorMsg && _get(formValues, 'password').includes('*')
-					? <span className='errTxt'>Provide the password again</span>
-					: null
-				}
-				<div className='mb-5'>
-						<div>
-							<span className="underline-text content-flex" onClick={() => handleTestEmail('edit-email')}>
-								<div>SEND ADMIN TEST EMAIL</div>
-								<div className='arrow-symbol'>
-									<img
-										src={STATIC_ICONS.SEND_ARROW_ICON}
-										alt="send_arrow"
-									/>
-								</div>
-							</span>
-						</div>
+				{isErrorMsg && _get(formValues, 'password').includes('*') ? (
+					<span className="errTxt">Provide the password again</span>
+				) : null}
+				<div className="mb-5">
+					<div>
+						<span
+							className="underline-text content-flex"
+							onClick={() => handleTestEmail('edit-email')}
+						>
+							<div>SEND ADMIN TEST EMAIL</div>
+							<div className="arrow-symbol">
+								<img src={STATIC_ICONS.SEND_ARROW_ICON} alt="send_arrow" />
+							</div>
+						</span>
+					</div>
 				</div>
 			</div>
-		)
-	}
+		);
+	};
 
 	return (
 		<div className="email-config-form mb-5">
@@ -256,16 +280,16 @@ export const EmailSettingsForm = ({
 			<div className="mb-4 width-50">
 				<h2>Customize emails</h2>
 				<p>Select the type of email you'd like to edit below.</p>
-				{Object.keys(emailData).length
-					?
+				{Object.keys(emailData).length ? (
 					<CustomizeEmailForm
 						emailInfo={emailInfo}
 						requestEmail={requestEmail}
 						selectedLanguages={selectedLanguages}
 						emailType={emailType}
 					/>
-					: <Spin />
-				}
+				) : (
+					<Spin />
+				)}
 			</div>
 			<div className="divider"></div>
 			<div className="mb-4">
@@ -292,7 +316,7 @@ export const EmailSettingsForm = ({
 				width={type === 'edit-email' ? '500px' : '400px'}
 				closable={false}
 			>
-				<div className='test-Email-Wrapper'>{renderContent()}</div>
+				<div className="test-Email-Wrapper">{renderContent()}</div>
 			</Modal>
 		</div>
 	);
