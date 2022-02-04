@@ -5967,6 +5967,13 @@ table th {
   box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4); }
   .app-bar-add-tab-menu.narrow {
     width: 14rem; }
+  .app-bar-add-tab-menu .ant-checkbox-wrapper span {
+    color: var(--labels_important-active-labels-text-graphics) !important; }
+  .app-bar-add-tab-menu .ant-btn-background-ghost {
+    border-color: var(--labels_secondary-inactive-label-text-graphics); }
+  .app-bar-add-tab-menu .ant-btn:active, .app-bar-add-tab-menu .ant-btn:hover, .app-bar-add-tab-menu .ant-btn:focus {
+    color: var(--labels_important-active-labels-text-graphics);
+    border-color: var(--labels_important-active-labels-text-graphics); }
   .app-bar-add-tab-menu .app-bar-tab-menu-list {
     background-color: var(--base_top-bar-navigation);
     color: var(--labels_secondary-inactive-label-text-graphics);
