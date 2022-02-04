@@ -3714,7 +3714,12 @@ table th {
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
       width: 150px;
-      height: 50px; }
+      height: 50px;
+      padding-top: 6px; }
+      .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container {
+        transform: scale(1.2, 2); }
+        .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container svg {
+          padding-top: 3px; }
   .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .market-list__container .market-list__block .market-list__block-table th {
     position: relative;

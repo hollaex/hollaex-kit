@@ -235,7 +235,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-22 pr-2">{ticker.last}</div>
 											<div className="fullname white-txt">
-												{selectedTarget.toUpperCase()}
+												{pair_2.toUpperCase()}
 											</div>
 										</div>
 									</div>
@@ -342,7 +342,7 @@ class QuickTrade extends Component {
 									<div className="d-flex">
 										<div className="f-size-16 pr-2">{ticker.volume}</div>
 										<div className="fullname">
-											{selectedSource.toUpperCase()}
+											{pairBase.toUpperCase()}
 										</div>
 									</div>
 								</div>
