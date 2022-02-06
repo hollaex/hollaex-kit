@@ -18,6 +18,58 @@ $sections-font--color: $colors-deactivate-color2;
 	}
 }
 
+@keyframes outer-round-anim {
+	0% {
+		transform: scale(0.5, 0.5);
+		background-color: $colors-border;
+		opacity: 0.5;
+	}
+	10% {
+		background-color: $colors-border;
+		opacity: 0.3;
+	}
+	30% {
+		background-color: $colors-border;
+		opacity: 0.2;
+	}
+	50% {
+    	transform: scale(1.5, 1.5);
+		background-color: $colors-border;
+	}
+	70% {
+		background-color: $colors-border;
+		opacity: 0;
+	}
+	100% {
+    	transform: scale(1, 1);
+		background-color: $colors-border;
+		opacity: 0;
+	}
+}
+
+@keyframes mymove {
+	10% {
+		background-color: var(--base_wallet-sidebar-and-popup);
+		opacity: 0.5;
+	}
+	30% {
+		background-color: var(--base_wallet-sidebar-and-popup);
+		opacity: 0.3;
+	}
+	50% {
+		background-color: var(--calculated_secondary-border);
+		opacity: 0.5;
+	}
+	70% {
+		background-color: var(--calculated_secondary-border);
+		opacity: 0.3;
+	}
+	100% {
+		background-color: var(--base_wallet-sidebar-and-popup);
+		opacity: 0.2;
+	}
+}
+
 .wallet-wrapper {
 	.icon_title-wrapper {
 		flex-direction: row;
@@ -27,6 +79,26 @@ $sections-font--color: $colors-deactivate-color2;
 		height: 18rem;
 		.donut-label-pair {
 			font-size: 0.8rem;
+		}
+		.rounded-loading {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			text-align: center;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			border: 1px solid #808080;
+			background-color: $colors-border !important;
+			animation: outer-round-anim 3s ease infinite;
+		}
+		.inner-round {
+			background-color: $app-sidebar-background;
+			width: 60px;
+			height: 60px;
+			border-radius: 50%;
+			margin: 0 auto;
+			border: 1px solid #808080;
 		}
 	}
 }
@@ -101,6 +173,18 @@ $sections-font--color: $colors-deactivate-color2;
 	.icon-title-wrapper {
 		flex-direction: row;
 		justify-content: flex-start;
+	}
+	.loading-txt {
+		color: $sections-font--color !important;
+		margin-bottom: 1rem;
+	}
+	.loading-row-anime {
+		height: 20px;
+		border-radius: 7px;
+		width: 100%;
+		margin-bottom: 1rem;
+		animation: mymove 3s infinite;
+		animation-duration: 2s;
 	}
 }
 

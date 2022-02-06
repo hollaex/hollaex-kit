@@ -1,7 +1,8 @@
 import React from 'react';
 import renderFields from './utils';
-import { reduxForm, reset } from 'redux-form';
+import { reduxForm, reset, getFormValues } from 'redux-form';
 import { Button } from 'antd';
+import { connect } from 'react-redux';
 
 const Form = (name, className = '', allowPristine = false) => {
 	const HocForm = ({
@@ -21,6 +22,8 @@ const Form = (name, className = '', allowPristine = false) => {
 		secondaryBtnTxt = '',
 		onClose = () => {},
 		buttonSubmitting = false,
+		renderCustomFooter = () => {},
+		formValues,
 	}) => {
 		return (
 			<form
@@ -40,6 +43,7 @@ const Form = (name, className = '', allowPristine = false) => {
 						<strong>{error}</strong>
 					</div>
 				)}
+				{renderCustomFooter(formValues)}
 				{secondaryBtnTxt ? (
 					<Button type="primary" onClick={onClose} className={'green-btn'}>
 						{secondaryBtnTxt}
@@ -66,12 +70,17 @@ const Form = (name, className = '', allowPristine = false) => {
 		);
 	};
 
-	return reduxForm({
+	const CommonHocForm = reduxForm({
 		form: name,
 		// onSubmitFail: (result, dispatch) => dispatch(reset(FORM_NAME)),
 		onSubmitSuccess: (result, dispatch) => dispatch(reset(name)),
 		enableReinitialize: true,
 	})(HocForm);
+
+	const mapStateToProps = (state) => ({
+		formValues: getFormValues(name)(state)
+	});
+	return connect(mapStateToProps)(CommonHocForm);
 };
 
 export default Form;

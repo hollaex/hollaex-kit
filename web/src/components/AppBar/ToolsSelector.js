@@ -34,7 +34,7 @@ class ToolsSelector extends Component {
 							</div>
 						);
 					})}
-					<div className="d-flex justify-content-center p-2">
+					<div className="d-flex justify-content-center p-3">
 						<Button className="important-text" onClick={this.resetLayout} ghost>
 							Reset Layout
 						</Button>

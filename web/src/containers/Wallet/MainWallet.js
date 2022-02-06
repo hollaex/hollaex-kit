@@ -105,6 +105,7 @@ class Wallet extends Component {
 
 	handleCheck = (_, value) => {
 		this.setState({ isZeroBalanceHidden: value });
+		localStorage.setItem('isZeroBalanceHidden', value);
 	};
 
 	generateSections = (
