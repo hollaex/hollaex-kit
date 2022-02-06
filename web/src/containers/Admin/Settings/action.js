@@ -12,3 +12,11 @@ export const getConstants = () => requestAuthenticated('/admin/kit');
 
 export const getCompleteSetup = () =>
 	requestAuthenticated('/admin/complete-setup');
+
+export const updateTestEmail = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated('/admin/send-email-test', options);
+};
