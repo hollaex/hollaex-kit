@@ -8,25 +8,25 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-  const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
+	const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
-        <div>
-          <p>
-            ${DISCOUNTUPDATE.GREETING(email)}
-          </p>
-          <p>
-            ${DISCOUNTUPDATE.BODY[1](data.rate)}
-          </p>
-          <p>
-            ${DISCOUNTUPDATE.CLOSING[1]}<br />
-            ${DISCOUNTUPDATE.CLOSING[2]()}
-          </p>
-        </div>
-      `;
+		<div>
+			<p>
+			${DISCOUNTUPDATE.GREETING(email)}
+			</p>
+			<p>
+			${DISCOUNTUPDATE.BODY[1](data.rate)}
+			</p>
+			<p>
+			${DISCOUNTUPDATE.CLOSING[1]}<br />
+			${DISCOUNTUPDATE.CLOSING[2]()}
+			</p>
+		</div>
+		`;
 };
 
 const text = (email, data, language, domain) => {
-  const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
+	const DISCOUNTUPDATE = require('../strings').getStringObject(language, 'DISCOUNTUPDATE');
 	return `
 		${DISCOUNTUPDATE.GREETING(email)}
 		${DISCOUNTUPDATE.BODY[1](data.rate)}

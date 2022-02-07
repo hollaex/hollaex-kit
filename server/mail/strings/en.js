@@ -109,7 +109,7 @@ const PASSWORDCHANGED = {
 	GREETING: (name) => COMMON.GREETING(name),
 	BODY: {
 		1: 'This email confirms that you recently changed the password for your account. No further action is required.',
-		2: 'If you did not authorize this change please contact us immediately.',
+		2: 'If you did not authorize this change please contact us immediately.'
 	},
 	CLOSING: COMMON.CLOSING
 };

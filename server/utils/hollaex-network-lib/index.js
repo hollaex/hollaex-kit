@@ -57,11 +57,7 @@ class HollaExNetwork {
 
 		this.activation_code = opts.activation_code;
 		this.exchange_id = opts.exchange_id;
-		const [ protocol, endpoint ] = this.apiUrl.split('://');
-		this.wsUrl =
-			protocol === 'https'
-				? `wss://${endpoint}/stream?exchange_id=${this.exchange_id}`
-				: `ws://${endpoint}/stream?exchange_id=${this.exchange_id}`;
+		this.wsUrl = null;
 		this.ws = null;
 		this.wsEvents = [];
 		this.wsReconnect = true;
@@ -83,9 +79,7 @@ class HollaExNetwork {
 	}) {
 		checkKit(this.activation_code);
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/init/${
-			this.activation_code
-		}`;
+		const path = `${this.baseUrl}/network/init/${this.activation_code}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -3010,6 +3004,13 @@ class HollaExNetwork {
 	 */
 	connect(events = []) {
 		checkKit(this.exchange_id);
+
+		const [ protocol, baseUrl ] = this.apiUrl.split('://');
+		this.wsUrl =
+			protocol === 'https'
+				? `wss://${baseUrl}/stream?exchange_id=${this.exchange_id}`
+				: `ws://${baseUrl}/stream?exchange_id=${this.exchange_id}`;
+
 		this.wsReconnect = true;
 		this.wsEvents = events;
 		const apiExpires = moment().unix() + this.apiExpiresAfter;

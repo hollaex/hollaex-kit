@@ -144,7 +144,9 @@ class FullListUsers extends Component {
 
 			return (
 				<div>
-					<div>Created at: {moment(created_at).format('YYYY/MM/DD HH:mm')}</div>
+					<div>
+						Created at: {moment(created_at).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() + new Date(created_at).toTimeString().slice(9)}
+					</div>
 				</div>
 			);
 		};
