@@ -1,5 +1,6 @@
 const path = require('path');
 
+// NOTE: __dirname doesn't work with binary building tools for nodejs projects
 module.exports = {
   'config': path.resolve(__dirname, 'server/config', 'db.js'),
   'migrations-path': path.resolve(__dirname, 'server/db', 'migrations'),
