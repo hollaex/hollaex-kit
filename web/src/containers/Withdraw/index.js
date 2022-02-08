@@ -149,8 +149,8 @@ class Withdraw extends Component {
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, network, ...rest } = values;
 
-		let address = rest.address;
-		if (destination_tag) address = `${rest.address}:${destination_tag}`;
+		let address = rest.address.trim();
+		if (destination_tag) address = `${rest.address.trim()}:${destination_tag}`;
 
 		return performWithdraw(currency, {
 			...(network ? { network } : {}),
