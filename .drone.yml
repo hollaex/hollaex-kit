@@ -188,7 +188,7 @@ steps:
 
 trigger:
   branch:
-  - deployment
+  - 2.0-deployment
   event:
   - push
 
