@@ -57,7 +57,7 @@ const otp = require('otp');
 const { client } = require('./database/redis');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
-const { generateHash } = require(`${SERVER_PATH}/utils/security`);
+const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
 
 const getCountryFromIp = (ip) => {
@@ -140,7 +140,7 @@ async function sendConfirmationEmail(userId, domain) {
 		throw new Error(USER_NOT_FOUND);
 	}
 
-	const code = crypto.randomBytes(20).toString('hex');
+	const code = generateRandomString(20);
 
 	// If another confirmation is requested within the timeout,
 	// the previous one is invalidated by overwrite

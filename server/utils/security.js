@@ -3,7 +3,6 @@
 const bcrypt = require('bcryptjs');
 const randomString = require('random-string');
 
-
 const generateHash = (password) => {
 	const { SALT_ROUNDS } = require('../constants');
 	return bcrypt.hash(password, SALT_ROUNDS);
@@ -23,9 +22,24 @@ const generateAffiliationCode = () => {
 	}).toUpperCase();
 };
 
+function generateRandomInteger(min, max) {
+	const length = max - min;
+	const byteLength = Math.ceil(Math.ceil(Math.log2(length)) / 8);
+	const offset = parseInt(crypto.randomBytes(byteLength).toString('hex'), 16) % length;
+
+	return min + offset;
+}
+
+function generateRandomString(length = 20, pool = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789') {
+	return Array(length)
+		.map(() => pool[generateInteger(0, pool.length - 1)])
+		.join("");
+}
 
 module.exports = {
 	generateHash,
 	generateHashSync,
-	generateAffiliationCode
+	generateAffiliationCode,
+	generateRandomInteger,
+	generateRandomString
 };
