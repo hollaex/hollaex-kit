@@ -1,7 +1,7 @@
 {
 	"name": "hollaex-network-lib",
 	"version": "2.11.0",
-	"description": "hollaex api and websocket library for nodejs",
+	"description": "hollaex network api and websocket library for nodejs",
 	"main": "index.js",
 	"dependencies": {
 		"file-type": "16.5.2",
@@ -24,7 +24,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/bitholla/hollaex-node-lib"
+		"url": "https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-network-lib"
 	},
 	"author": "bitHolla Inc",
 	"license": "MIT"
