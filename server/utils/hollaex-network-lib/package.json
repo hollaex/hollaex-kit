@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-network-lib",
-	"version": "2.11.0",
+	"version": "2.2.8",
 	"description": "hollaex network api and websocket library for nodejs",
 	"main": "index.js",
 	"dependencies": {
