@@ -16,7 +16,7 @@
 	border: none;
 }
 
-.admin-pairs-container {
+.preview-container {
 	padding: 1.5rem 1rem;
 }
 .admin-pairs-container .preview-container .ant-breadcrumb {
@@ -161,7 +161,7 @@
 	width: 60%;
 }
 .admin-pairs-container .table-wrapper tr {
-	height: 4rem;
+	height: 6rem;
 }
 .admin-pairs-container .btn-wrapper {
 	display: flex;
@@ -245,6 +245,67 @@
 .admin-pairs-container .table-wrapper.summary tbody a,
 .admin-pairs-container .coin-symbol-wrapper .pairs:hover {
 	text-decoration: underline;
+}
+.admin-pairs-container .orderbook-content .title.align-title {
+    margin-bottom: 0;
+}
+.admin-pairs-container .verify-icon-wrapper .active-status-icon {
+    width: 20px;
+    margin-right: 8px;
+}
+.admin-pairs-container .summary.table-wrapper .custom-column-td {
+    padding: 8px 20px !important;
+}
+.admin-pairs-container .summary.table-wrapper .bg-disable {
+    background-color: #2F2B6E;
+}
+.admin-pairs-container .summary.table-wrapper .disable-txt {
+	color: #E18700;
+    margin-right: 5px;
+}
+.admin-pairs-container .summary.table-wrapper .bg-disable .pad-10 {
+	padding-left: 17px !important;
+}
+.admin-pairs-container .summary.table-wrapper .feature-trade-box {
+	display: flex;
+    width: 25px;
+    height: 20px;
+    background-color: #050596;
+}
+.admin-pairs-container .summary.table-wrapper .feature-trade-box .interface_container {
+	margin-top: 0 !important;
+}
+.admin-pairs-container .summary.table-wrapper .sell {
+    width: 16px;
+    height: 8px;
+    border: 1px solid #fff;
+}
+.admin-pairs-container .summary.table-wrapper .sell .label {
+    color: #fff;
+    font-size: 4px;
+    position: relative;
+    bottom: 12px;
+    left: 2px;
+}
+.admin-pairs-container .summary.table-wrapper .buy {
+    background-color: #fff;
+    width: 16px;
+    height: 8px;
+    border: 1px solid #000;
+}
+.admin-pairs-container .summary.table-wrapper .buy .label {
+	font-size: 4px;
+    position: relative;
+    bottom: 12px;
+    left: 3px;
+    color: #000 !important;
+}
+.admin-pairs-container .summary.table-wrapper .ant-table-container {
+    overflow: unset !important;
+}
+.admin-pairs-container .header-icon-wrapper .active-status-icon {
+    width: 20px;
+    margin-right: 8px;
 }
 
 @media (max-width: 960px) {

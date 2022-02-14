@@ -31,7 +31,7 @@ class PairParams extends Component {
 			onClose();
 		} else if (this.state.tabParams.isOpenPairModal) {
 			onClose();
-			router.replace("/admin/trade?tab=1&isViewTabs=true");
+			router.replace("/admin/trade?tab=0");
 		} else {
 			moveToStep('pair-init-selection');
 		}

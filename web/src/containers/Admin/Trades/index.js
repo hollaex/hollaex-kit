@@ -3,7 +3,7 @@ import { Tabs, message } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Pairs from './Pairs';
+// import Pairs from './Pairs';
 import { getTabParams } from '../AdminFinancials/Assets';
 import PairsSummary from './PairsSummary';
 import { getExchange } from '../AdminFinancials/action';
@@ -57,19 +57,22 @@ const PairsTab = (props) => {
 				onChange={handleTabChange}
 				renderTabBar={renderTabBar}
 			>
-				<TabPane tab="Summary" key="0">
+				<TabPane tab="Public markets" key="0">
 					<PairsSummary
-						router={props.router}
-						getMyExchange={getMyExchange}
-					/>
-				</TabPane>
-				<TabPane tab="OrderBook" key="1">
-					<Pairs
 						router={props.router}
 						location={props.location}
 						handleHide={handleHide}
 						getMyExchange={getMyExchange}
 					/>
+				</TabPane>
+				<TabPane tab="OTC desk" key="1">
+					{/* <Pairs
+						router={props.router}
+						location={props.location}
+						handleHide={handleHide}
+						getMyExchange={getMyExchange}
+					/> */}
+					<div>OTC desk contents</div>
 				</TabPane>
 			</Tabs>
 		</div>
