@@ -684,6 +684,7 @@ class QuickTradeContainer extends PureComponent {
 
 		return (
 			<div className="h-100">
+				<div id="quick-trade-header"></div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
@@ -776,6 +777,7 @@ class QuickTradeContainer extends PureComponent {
 						)}
 					</Dialog>
 				</div>
+				<div id="quick-trade-footer"></div>
 			</div>
 		);
 	}

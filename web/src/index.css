@@ -1230,12 +1230,6 @@ table th {
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
-.home-page_content {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 5rem;
-  max-width: 100rem; }
-
 .live-markets_header {
   font-size: 1.3rem;
   display: flex;
@@ -1248,18 +1242,21 @@ table th {
 .buttons-section-header {
   margin: 0 0.5rem; }
 
-.home-page_section-wrapper:not(.main-section-wrapper) {
-  padding-top: 5rem;
-  padding-bottom: 5rem; }
-
-.home-page_section-wrapper.main-section-wrapper {
-  padding-bottom: 5rem; }
-
-.home-page_section-wrapper .quick_trade-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; }
+.home-page_section-wrapper {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5rem;
+  max-width: 100rem; }
+  .home-page_section-wrapper:not(.main-section-wrapper) {
+    padding-top: 5rem;
+    padding-bottom: 5rem; }
+  .home-page_section-wrapper.main-section-wrapper {
+    padding-bottom: 5rem; }
+  .home-page_section-wrapper .quick_trade-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; }
 
 .direction_ltr .home-card-text-container {
   margin-left: 0.75rem; }
