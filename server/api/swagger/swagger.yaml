@@ -1019,9 +1019,6 @@ paths:
         - HmacKey: []
       x-security-scopes:
         - user
-        - hmac
-      x-token-permissions:
-        - can_withdraw
   /user/confirm-withdrawal:
     x-swagger-router-controller: withdrawal
     post:
@@ -2156,10 +2153,11 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - HmacKey: []
       x-security-scopes:
         - hmac
-
+      x-token-permissions:
+        - can_withdraw
 # ADMIN ENDPOINTS
   /admin/fees:
     x-swagger-router-controller: admin
