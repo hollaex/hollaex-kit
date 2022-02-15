@@ -400,6 +400,42 @@ const verifyToken = (req, res) => {
 	return res.json({ message: 'Valid Token' });
 };
 
+function requestEmailConfirmation(req, res) {
+	loggerUser.debug(req.uuid, 'controllers/user/requestEmailConfirmation', req.auth.sub);
+	let email = req.auth.sub.email;
+	const domain = req.headers['x-real-origin'];
+
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/requestEmailConfirmation invalid email',
+			email
+		);
+		return res.status(400).json({ message: `Invalid email: ${email}` });
+	}
+
+	email = email.toLowerCase();
+
+	toolsLib.security.sendConfirmationEmail(req.auth.sub.id, domain)
+		.then(() => {
+			return res.json({ message: `Confirmation email sent to: ${email}` });
+		})
+		.catch((err) => {
+			let errorMessage = errorMessageConverter(err);
+
+			if (errorMessage === USER_NOT_FOUND) {
+				errorMessage = 'User not found';
+			}
+
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/requestEmailConfirmation',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessage });
+		});
+}
+
 const requestResetPassword = (req, res) => {
 	let email = req.swagger.params.email.value;
 	const ip = req.headers['x-real-ip'];
@@ -745,6 +781,39 @@ const createHmacToken = (req, res) => {
 		});
 };
 
+function updateHmacToken(req, res) {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id: userId } = req.auth.sub;
+	const ip = req.headers['x-real-ip'];
+	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, enabled_whitelisting } = req.swagger.params.data.value;
+
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting)
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then((token) => {
+			return res.json(token);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/updateHmacToken',
+				err.message,
+				err.stack
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const deleteHmacToken = (req, res) => {
 	loggerUser.verbose(
 		req.uuid,
@@ -880,7 +949,9 @@ module.exports = {
 	createCryptoAddress,
 	getHmacToken,
 	createHmacToken,
+	updateHmacToken,
 	deleteHmacToken,
 	getUserStats,
-	userCheckTransaction
+	userCheckTransaction,
+	requestEmailConfirmation
 };

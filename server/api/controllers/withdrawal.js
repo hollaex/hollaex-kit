@@ -139,6 +139,59 @@ const performWithdrawal = (req, res) => {
 		});
 };
 
+function performDirectWithdrawal(req, res) {
+	const { id: userId } = req.auth.sub;
+	const {
+		address,
+		currency,
+		amount,
+		network
+	} = req.swagger.params.data.value;
+
+	const domain = req.headers['x-real-origin'];
+	const ip = req.headers['x-real-ip'];
+
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controller/withdrawal/performDirectWithdrawal auth',
+		'address',
+		address,
+		'amount',
+		amount,
+		'currency',
+		currency,
+		'network',
+		network
+	);
+
+	toolsLib.wallet.performDirectWithdrawal(
+		userId,
+		address,
+		currency,
+		amount,
+		{
+			network,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		})
+		.then(([ { transaction_id }, { fee } ]) => {
+			return res.json({
+				message: 'Withdrawal successful',
+				fee,
+				transaction_id
+			});
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controller/withdrawals/performWithdrawal',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getAdminWithdrawals = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -304,5 +357,6 @@ module.exports = {
 	performWithdrawal,
 	getAdminWithdrawals,
 	getUserWithdrawals,
-	cancelWithdrawal
+	cancelWithdrawal,
+	performDirectWithdrawal
 };
