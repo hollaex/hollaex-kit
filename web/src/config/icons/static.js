@@ -118,6 +118,7 @@ const icons = {
 	RESOURCE_EXPLORER: '/assets/images/hollaex-network-explorer.png',
 	EDIT_PENCIL_ICON: '/assets/images/edit-pencil.svg',
 	SEND_ARROW_ICON: '/assets/images/send-arrow.svg',
+	PENDING_ORANGE_GEAR: '/assets/images/pending-orange-gear.svg',
 };
 
 export default icons;

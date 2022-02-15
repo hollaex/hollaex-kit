@@ -34,6 +34,7 @@ const AssetsBlock = ({
 	handleCheck,
 	icons: ICONS,
 	hasEarn,
+	loading,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -116,8 +117,7 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				{!totalAssets.includes('0')
-					?
+				{totalAssets.length && loading ? (
 					<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
 						<div className="wallet-search-improvement">
 							{BASE_CURRENCY ? (
@@ -128,12 +128,12 @@ const AssetsBlock = ({
 							) : null}
 						</div>
 					</EditWrapper>
-					:
+				) : (
 					<div>
-						<div className='mb-2'>{STRINGS['WALLET_BALANCE_LOADING']}</div>
-						<div className='loading-anime'></div>
+						<div className="mb-2">{STRINGS['WALLET_BALANCE_LOADING']}</div>
+						<div className="loading-anime"></div>
 					</div>
-				}
+				)}
 				<div className="d-flex justify-content-between zero-balance-wrapper">
 					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
 						<SearchBox
@@ -186,7 +186,10 @@ const AssetsBlock = ({
 				</thead>
 				<tbody>
 					{sortedSearchResults.map(
-						([key, { min, allow_deposit, allow_withdrawal, oraclePrice }], index) => {
+						(
+							[key, { min, allow_deposit, allow_withdrawal, oraclePrice }],
+							index
+						) => {
 							const balanceValue = balance[`${key}_balance`];
 							const pair = findPair(key);
 							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
@@ -210,8 +213,7 @@ const AssetsBlock = ({
 										</Link> */}
 									</td>
 									<td className="td-name td-fit">
-										{!totalAssets.includes('0')
-											?
+										{sortedSearchResults && loading ? (
 											<div className="d-flex align-items-center">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
@@ -225,14 +227,17 @@ const AssetsBlock = ({
 													{fullname}
 												</Link>
 											</div>
-											:
-											<div className='loading-row-anime w-half' style={{
-												'animationDelay': `.${index + 1}s`}}></div>
-										}
+										) : (
+											<div
+												className="loading-row-anime w-half"
+												style={{
+													animationDelay: `.${index + 1}s`,
+												}}
+											></div>
+										)}
 									</td>
 									<td className="td-amount">
-										{!totalAssets.includes('0')
-											?
+										{sortedSearchResults && baseCoin && loading ? (
 											<div className="d-flex">
 												<div className="mr-4">
 													{STRINGS.formatString(
@@ -249,10 +254,14 @@ const AssetsBlock = ({
 														</div>
 													)}
 											</div>
-											:
-											<div className='loading-row-anime w-full' style={{
-											'animationDelay': `.${index + 1}s`}}></div>
-										}
+										) : (
+											<div
+												className="loading-row-anime w-full"
+												style={{
+													animationDelay: `.${index + 1}s`,
+												}}
+											></div>
+										)}
 									</td>
 									<th className="td-amount" />
 									<td className="td-wallet">
