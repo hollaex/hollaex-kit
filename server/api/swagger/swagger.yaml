@@ -1016,7 +1016,6 @@ paths:
             $ref: "#/definitions/MessageResponse"
       security:
         - Bearer: []
-        - HmacKey: []
       x-security-scopes:
         - user
   /user/confirm-withdrawal:
