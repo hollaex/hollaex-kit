@@ -282,6 +282,7 @@ export const handleUpgrade = (info = {}) => {
 	if (
 		_toLower(info.plan) !== 'crypto' &&
 		_toLower(info.plan) !== 'fiat' &&
+		_toLower(info.plan) !== 'boost' &&
 		_toLower(info.type) !== 'enterprise'
 	) {
 		return true;
