@@ -103,6 +103,14 @@ class StakeDetails extends Component {
 		open(url);
 	};
 
+	goToBlocks = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/blocks`;
+		open(url);
+	};
+
 	renderTabContent = (key) => {
 		const {
 			icons: ICONS,
@@ -134,6 +142,7 @@ class StakeDetails extends Component {
 						token={token}
 						totalUserEarnings={totalUserEarnings}
 						totalUserStakes={totalUserStakes}
+						goToBlocks={this.goToBlocks}
 					/>
 				);
 			default:

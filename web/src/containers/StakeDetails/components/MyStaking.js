@@ -34,6 +34,7 @@ const MyStaking = ({
 	network,
 	events,
 	pending,
+	goToBlocks,
 }) => {
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
@@ -116,7 +117,12 @@ const MyStaking = ({
 					<div className="pt-4 secondary-text">
 						{STRINGS.formatString(
 							STRINGS['STAKE.CURRENT_ETH_BLOCK'],
-							<span className="blue-link">{currentBlock}</span>
+							<span
+								className="blue-link pointer underline-text"
+								onClick={goToBlocks}
+							>
+								{currentBlock}
+							</span>
 						)}
 					</div>
 				</div>

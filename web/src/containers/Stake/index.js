@@ -128,6 +128,14 @@ class Stake extends Component {
 		open(url);
 	};
 
+	goToBlocks = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/blocks`;
+		open(url);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -174,7 +182,12 @@ class Stake extends Component {
 								<div className="secondary-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.CURRENT_ETH_BLOCK'],
-										<span className="blue-link">{currentBlock}</span>
+										<span
+											className="blue-link pointer underline-text"
+											onClick={this.goToBlocks}
+										>
+											{currentBlock}
+										</span>
 									)}
 								</div>
 								<div className="secondary-text">
