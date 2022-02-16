@@ -730,11 +730,9 @@ export default {
 		WAITING_STAKE: 'Confirm the stake amount',
 		WAITING_WITHDRAW: 'Allowing spending',
 		WAITING_UNSTAKE: 'Unstake',
-		WAITING_DISTRIBUTE: 'Clear pending earnings',
 		WAITING_STAKE_ING: 'Staking pending',
 		WAITING_WITHDRAW_ING: 'Processing of allowing spending',
 		WAITING_UNSTAKE_ING: 'Unstaking',
-		WAITING_DISTRIBUTE_ING: 'Clearing pending earnings',
 		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
 		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
 		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
@@ -778,12 +776,7 @@ export default {
 		TOTAL_EARNT: 'Total earnt',
 		PENDING_EARNINGS: 'Pending earnings*',
 		PENDING_EARNINGS_FOOTNOTE:
-			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount. You can {0} the amount yourself or wait for the next clearing cycle.',
-		CLEAR: 'clear',
-		CLEAR_PENDING_EARNING: 'Clear pending earnings',
-		CLEAR_PENDING_EARNING_SUB:
-			'Clearing requires a blockchain transaction in order to be added to your total receiving amount. You can clear the amount now or wait for the next clearing cycle.',
-		PENDING_AMOUNT: 'Pending amount to clear: {0}',
+			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount.',
 	},
 	STAKE_TABLE: {
 		CURRENCY: 'Currency',

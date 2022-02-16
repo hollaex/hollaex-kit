@@ -239,12 +239,6 @@ export const removeStake = (token = 'xht') => ({
 	);
 };
 
-export const distribute = (token = 'xht') => ({ account, cb = () => {} }) => {
-	return CONTRACTS[token].main.methods
-		.distribute()
-		.send({ ...commonConfigs, from: account }, cb);
-};
-
 const getPeriodsForToken = (token = 'xht') => async () => {
 	const periods = await Promise.all([
 		CONTRACTS[token].main.methods.periods(0).call(),

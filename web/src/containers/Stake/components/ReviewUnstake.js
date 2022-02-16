@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { Button as AntBtn } from 'antd';
 import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
 import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
@@ -75,7 +74,7 @@ const ReviewEarlyUnstake = ({
 						)}
 					</div>
 				</div>
-				<div className="pt-4">
+				<div className="py-4">
 					<div className="bold pb-1">
 						<EditWrapper stringId="UNSTAKE.PENDING_EARNINGS">
 							{STRINGS['UNSTAKE.PENDING_EARNINGS']}
@@ -90,30 +89,11 @@ const ReviewEarlyUnstake = ({
 					</div>
 				</div>
 
-				<div className="py-3">
-					<AntBtn
-						type="primary"
-						className="stake-btn caps"
-						ghost={true}
-						danger={true}
-						onClick={onClear}
-					>
-						{STRINGS['UNSTAKE.CLEAR_PENDING_EARNING']}
-					</AntBtn>
-				</div>
 				<div className="kit-divider" />
 
 				<div className="pt-3 secondary-text">
 					<EditWrapper stringId="UNSTAKE.PENDING_EARNINGS_FOOTNOTE" />
-					{STRINGS.formatString(
-						STRINGS['UNSTAKE.PENDING_EARNINGS_FOOTNOTE'],
-						<span
-							className="blue-link pointer underline-text"
-							onClick={onClear}
-						>
-							{STRINGS['UNSTAKE.CLEAR']}
-						</span>
-					)}
+					{STRINGS['UNSTAKE.PENDING_EARNINGS_FOOTNOTE']}
 				</div>
 
 				<div className="d-flex mt-4 pt-3">
