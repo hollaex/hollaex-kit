@@ -17,6 +17,7 @@ import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
 import { web3 } from 'config/contracts';
 import STRINGS from 'config/localizedStrings';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	IconTitle,
 	HeaderSection,
@@ -32,6 +33,8 @@ import {
 	pendingTransactionsSelector,
 } from './selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
+import { isLoggedIn } from 'utils/token';
+import { formatToCurrency } from 'utils/currency';
 import Account from './components/Account';
 import ConnectWrapper from './components/ConnectWrapper';
 import StakesAndEarnings from './components/StakesAndEarnings';
@@ -95,6 +98,21 @@ class Stake extends Component {
 		setNotification(NOTIFICATIONS.UNSTAKE, { stakeData });
 	};
 
+	moveXHT = () => {
+		const { setNotification, router } = this.props;
+		router.push('/wallet/xht/withdraw');
+		setNotification(NOTIFICATIONS.MOVE_XHT, {});
+	};
+
+	renderAvailableBalance = () => {
+		const { balance, coins } = this.props;
+		const currency = 'xht';
+		const { min } = coins[currency] || DEFAULT_COIN_DATA;
+		const available = formatToCurrency(balance[`${currency}_available`], min);
+
+		return <span className="secondary-text">{available}</span>;
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -142,6 +160,33 @@ class Stake extends Component {
 									{STRINGS.formatString(
 										STRINGS['STAKE.CURRENT_ETH_BLOCK'],
 										<span className="blue-link">{currentBlock}</span>
+									)}
+								</div>
+								<div className="secondary-text">
+									{STRINGS.formatString(
+										STRINGS['STAKE.ON_EXCHANGE_XHT'],
+										isLoggedIn() ? (
+											this.renderAvailableBalance()
+										) : (
+											<Link to="/login">
+												<span className="blue-link pointer underline-text">
+													{STRINGS['STAKE.LOGIN_HERE']}
+												</span>
+											</Link>
+										),
+										isLoggedIn() && account ? (
+											<span onClick={this.moveXHT}>
+												(
+												{
+													<span className="blue-link pointer">
+														{STRINGS['STAKE.MOVE_XHT']}
+													</span>
+												}
+												)
+											</span>
+										) : (
+											''
+										)
 									)}
 								</div>
 							</div>
@@ -446,6 +491,7 @@ class Stake extends Component {
 
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
+	balance: store.user.balance,
 	account: store.stake.account,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,

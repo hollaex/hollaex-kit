@@ -691,6 +691,9 @@ export default {
 			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
 		GET_STAKES: 'Get stakes', //new
 		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
+		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
+		LOGIN_HERE: 'Login here',
+		MOVE_XHT: 'Move XHT',
 		ESTIMATED_STAKED: 'Estimated value of total staked',
 		ESTIMATED_EARNINGS: 'Estimated value of earnings',
 		CONNECT_WALLET: 'Connect wallet',
@@ -841,6 +844,21 @@ export default {
 			TRANSACTION_ID: 'Transaction ID',
 			AMOUNT: 'Amount',
 		},
+	},
+	MOVE_XHT: {
+		TITLE: 'Move XHT',
+		TEXT_1: 'To stake XHT you must first move your XHT into your own wallet.',
+		TEXT_2: 'Your currently connected wallet address is:',
+		LABEL: 'Wallet address',
+		TEXT_3:
+			'It is important to check that the above wallet address is secure. XHT will be moved to the above wallet address.',
+	},
+	MOVE_AMOUNT: {
+		TITLE: 'Input amount',
+		PROMPT: 'Input the amount you would like to move.',
+		BALANCE: '{0} balance: {1}',
+		LABEL: 'Amount to move',
+		FEE: 'Transaction fee: {0} {1}',
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
@@ -1428,5 +1446,5 @@ export default {
 		DEPTH_CHART: 'Depth chart', //new
 		COMING_SOON: 'coming soon', //new
 	},
-	WALLET_BALANCE_LOADING: 'Balance loading...' //new
+	WALLET_BALANCE_LOADING: 'Balance loading...', //new
 };

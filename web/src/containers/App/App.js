@@ -540,6 +540,15 @@ class App extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.MOVE_XHT: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -814,7 +823,8 @@ class App extends Component {
 													activeNotification.type === NOTIFICATIONS.STAKE ||
 													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 													activeNotification.type ===
-														NOTIFICATIONS.EARLY_UNSTAKE,
+														NOTIFICATIONS.EARLY_UNSTAKE ||
+													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -826,6 +836,7 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 												activeNotification.type ===
 													NOTIFICATIONS.EARLY_UNSTAKE ||
+												activeNotification.type === NOTIFICATIONS.MOVE_XHT ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
