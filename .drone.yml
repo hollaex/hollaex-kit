@@ -119,7 +119,7 @@ steps:
   - echo "Current version tag is :" && cat .tags
 
 - name: request_hollacloud_to_run_upgrade
-  image: bitholla/devops-tools:drone_hollacloud-220121
+  image: bitholla/devops-tools:drone_hollacloud-220216
   environment:
     HOLLAEX_EMAIL:
       from_secret: hollaex_email
@@ -166,7 +166,7 @@ steps:
   - echo "Current version tag is :" && cat .tags
 
 - name: request_hollacloud_to_run_upgrade
-  image: bitholla/devops-tools:drone_hollacloud-220208
+  image: bitholla/devops-tools:drone_hollacloud-220216
   environment:
     HOLLAEX_EMAIL:
       from_secret: next_email
