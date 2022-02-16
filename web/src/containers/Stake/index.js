@@ -113,6 +113,11 @@ class Stake extends Component {
 		return <span className="secondary-text">{available}</span>;
 	};
 
+	goToDetails = (symbol) => {
+		const { router } = this.props;
+		router.push(`/stake/details/${symbol.toLowerCase()}`);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -233,38 +238,41 @@ class Stake extends Component {
 									const { symbol, available } = tokenData;
 									const { fullname } = coins[symbol];
 									const iconId = `${symbol.toUpperCase()}_ICON`;
+									const goToSymbol = () => this.goToDetails(symbol);
 									return (
-										<tr className="table-row table-bottom-border" key={index}>
+										<tr
+											className="hoverable pointer table-row table-bottom-border"
+											key={index}
+										>
 											<td />
-											<td className="td-name td-fit">
+											<td onClick={goToSymbol} className="td-name td-fit">
 												<div className="d-flex align-items-center">
-													<Link to={`/stake/details/${symbol.toLowerCase()}`}>
-														<Image
-															iconId={iconId}
-															icon={ICONS[iconId]}
-															wrapperClassName="currency-ball pt-2"
-															imageWrapperClassName="currency-ball-image-wrapper"
-														/>
-													</Link>
-													<Link to={`/stake/details/${symbol.toLowerCase()}`}>
-														{fullname}
-													</Link>
+													<Image
+														iconId={iconId}
+														icon={ICONS[iconId]}
+														wrapperClassName="currency-ball pt-2"
+														imageWrapperClassName="currency-ball-image-wrapper"
+													/>
+													{fullname}
+													<span className="pl-2 secondary-text">
+														{symbol.toUpperCase()}
+													</span>
 												</div>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>{available}</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													{totalUserStakes[symbol]}
 												</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													<Variable className="important-text" />
 												</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													{totalUserEarnings[symbol]}
 												</ConnectWrapper>
