@@ -8,7 +8,13 @@ import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
-const Distributions = ({ token, currentBlock, network, distributions }) => {
+const Distributions = ({
+	token,
+	currentBlock,
+	network,
+	distributions,
+	goToPOT,
+}) => {
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -63,6 +69,14 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.SUBTITLE'],
 								token.toUpperCase()
 							)}
+						</div>
+						<div className="secondary-text">
+							<span
+								className="blue-link pointer underline-text"
+								onClick={goToPOT}
+							>
+								{STRINGS['STAKE.VIEW_POT']}
+							</span>
 						</div>
 					</div>
 				</div>

@@ -9,6 +9,8 @@ export const CONTRACT_ADDRESSES = {
 	},
 };
 
+export const POT_ADDRESS = '';
+
 export const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
 
 export const generateContracts = (contractsObject, web3) => {

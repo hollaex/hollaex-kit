@@ -752,6 +752,7 @@ export default {
 		VIEW_ON: 'View on the {0}',
 		BLOCKCHAIN: 'blockchain',
 		DISCONNECT: 'Disconnect account',
+		VIEW_POT: 'View distribution POT',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -810,7 +811,7 @@ export default {
 		PUBLIC_INFO: {
 			TITLE: 'Staking information',
 			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
-			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings',
+			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings ({0})',
 			CLEARED_UNDISTRIBUTED_EARNINGS: 'Cleared undistributed earnings',
 			UNCLEARED_PENDING_EARNINGS: 'Uncleared pending earnings',
 			TOTAL_STAKED: 'Total staked',

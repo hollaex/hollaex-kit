@@ -38,6 +38,7 @@ const PublicInfo = ({
 	myStakePercent,
 	othersStake,
 	othersStakePercent,
+	goToPOT,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -125,7 +126,15 @@ const PublicInfo = ({
 
 					<div className="pt-4">
 						<div className="bold">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS']}
+							{STRINGS.formatString(
+								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS'],
+								<span
+									className="blue-link pointer underline-text"
+									onClick={goToPOT}
+								>
+									{STRINGS['STAKE.VIEW_POT']}
+								</span>
+							)}
 						</div>
 						<div className="d-flex">
 							<div>{formatToken(totalDistributedEarnings)}</div>

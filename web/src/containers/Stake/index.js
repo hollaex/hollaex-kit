@@ -27,6 +27,8 @@ import {
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
+import { open } from 'helpers/link';
+import { POT_ADDRESS } from 'config/contracts';
 
 import {
 	userActiveStakesSelector,
@@ -118,6 +120,14 @@ class Stake extends Component {
 		router.push(`/stake/details/${symbol.toLowerCase()}`);
 	};
 
+	goToPOT = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${POT_ADDRESS}`;
+		open(url);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -193,6 +203,14 @@ class Stake extends Component {
 											''
 										)
 									)}
+								</div>
+								<div className="secondary-text">
+									<span
+										className="blue-link pointer underline-text"
+										onClick={this.goToPOT}
+									>
+										{STRINGS['STAKE.VIEW_POT']}
+									</span>
 								</div>
 							</div>
 							<StakesAndEarnings />
@@ -501,6 +519,7 @@ const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	balance: store.user.balance,
 	account: store.stake.account,
+	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,

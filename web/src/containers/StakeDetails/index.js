@@ -14,10 +14,11 @@ import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import { IconTitle, EditWrapper } from 'components';
-import { CONTRACT_ADDRESSES } from 'config/contracts';
+import { CONTRACT_ADDRESSES, POT_ADDRESS } from 'config/contracts';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Account from 'containers/Stake/components/Account';
 import { getPublicInfo } from 'actions/stakingActions';
+import { open } from 'helpers/link';
 
 import { userActiveStakesSelector } from 'containers/Stake/selector';
 import PublicInfo from './components/PublicInfo';
@@ -94,6 +95,14 @@ class StakeDetails extends Component {
 		}
 	}
 
+	goToPOT = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${POT_ADDRESS}`;
+		open(url);
+	};
+
 	renderTabContent = (key) => {
 		const {
 			icons: ICONS,
@@ -114,10 +123,11 @@ class StakeDetails extends Component {
 						token={token}
 						fullname={fullname}
 						setActiveTab={this.setActiveTab}
+						goToPOT={this.goToPOT}
 					/>
 				);
 			case TABS.DISTRIBUTIONS.key:
-				return <Distributions token={token} />;
+				return <Distributions token={token} goToPOT={this.goToPOT} />;
 			case TABS.MY_STAKING.key:
 				return (
 					<MyStaking
@@ -153,14 +163,12 @@ class StakeDetails extends Component {
 		this.setState({ activeKey });
 	};
 
-	openContract = (address) => {
+	openContract = (token) => {
 		const { network } = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${address}`;
-		if (window) {
-			window.open(url, '_blank');
-		}
+		}etherscan.io/token/${token}`;
+		open(url);
 	};
 
 	render() {
@@ -197,10 +205,10 @@ class StakeDetails extends Component {
 								<span
 									className="pointer blue-link"
 									onClick={() =>
-										this.openContract(CONTRACT_ADDRESSES[token].main)
+										this.openContract(CONTRACT_ADDRESSES[token].token)
 									}
 								>
-									{CONTRACT_ADDRESSES[token].main}
+									{CONTRACT_ADDRESSES[token].token}
 								</span>
 							)}
 							<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
