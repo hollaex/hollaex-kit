@@ -9,12 +9,6 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { mapKitIdToNetworkId } = require('./user');
 
 function validateBrokerPair(brokerPair) {
-	const pairs = getKitPairs();
-
-	if (!pairs.includes(brokerPair.symbol)) {
-		throw new Error("Kit doesn't support the given pair symbol");
-	}
-
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
 		throw new Error("Broker buy price must be bigger than zero.")
 	} else if (math.compare(brokerPair.sell_price, 0) !== 1) {
@@ -94,12 +88,6 @@ async function executeBrokerDeal(userId, symbol, side, size, price) {
 		throw new Error("Given price doesn't match the stored broker pair price.");
 	}
 
-	const feeData = generateOrderFeeData(
-		user.verification_level,
-		symbol,
-		{ discount: user.discount }
-	);
-
 	const brokerNetworkId = (await mapKitIdToNetworkId([brokerPair.user_id]))[0];
 	const userNetworkId = (await mapKitIdToNetworkId([userId]))[0];
 
@@ -109,7 +97,7 @@ async function executeBrokerDeal(userId, symbol, side, size, price) {
 		size,
 		brokerNetworkId,
 		userNetworkId,
-		feeData
+		{ maker: 0, taker: 0 }
 	);
 }
 
