@@ -166,7 +166,7 @@ const getColumns = (
 					className="coin-symbol-wrapper"
 					onClick={() => handlePreview(selectedAsset)}
 				>
-					{balance[symbol] || 0}
+					{balance[`${symbol}_available`] || 0}
 				</div>
 			);
 		},

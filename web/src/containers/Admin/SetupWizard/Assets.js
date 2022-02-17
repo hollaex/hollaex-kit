@@ -124,8 +124,8 @@ const Assets = ({
 			<div className="coin-wrapper last">
 				{Object.keys(pairs).map((pair, index) => {
 					const { pair_2 = '', pair_base = '' } = pairs[pair] || {};
-					const pairData = coins[pair_2];
-					const pairBaseData = coins[pair_base];
+					const pairData = coins[pair_2] || {};
+					const pairBaseData = coins[pair_base] || {};
 					return (
 						<div className="asset-list" key={index}>
 							<div className="title-text">{pairData.fullname}</div>

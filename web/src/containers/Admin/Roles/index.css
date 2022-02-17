@@ -117,7 +117,7 @@
 	padding: 3px 8px;
 }
 .admin-roles-wrapper .ant-input:focus,
-.ant-input:active {
+.admin-roles-wrapper .ant-input:active {
 	border: 1px solid #c4c4c4;
 }
 .admin-roles-wrapper .ant-form-item {
