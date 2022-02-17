@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import QRCode from 'qrcode.react';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { EditWrapper, Button, SmartTarget } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
 import { getNetworkLabelByKey } from 'utils/wallet';
@@ -111,7 +111,11 @@ const RenderContentForm = ({
 
 	if (coinObject && coinObject.type !== 'fiat') {
 		return (
-			<Fragment>
+			<SmartTarget
+				id={currencySpecificId}
+				titleSection={titleSection}
+				currency={currency}
+			>
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form">
 						<Image
@@ -171,7 +175,7 @@ const RenderContentForm = ({
 						</div>
 					)}
 				</div>
-			</Fragment>
+			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {
 		return (

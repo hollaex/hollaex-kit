@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.2.7",
+	"version": "2.2.9",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",

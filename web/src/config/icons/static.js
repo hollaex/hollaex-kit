@@ -111,7 +111,7 @@ const icons = {
 	RESOURCE_PLUGIN: '/assets/images/plugins.png',
 	RESOURCE_FAQ: '/assets/images/help-faq.png',
 	RESOURCE_VIDEOS: '/assets/images/videos.png',
-	RESOURCE_PRO_EXCHANGE: '/assets/images/hollaEx-pro-exchange.png',
+	RESOURCE_PRO_EXCHANGE: '/assets/images/HollaEx-pro-exchange.png',
 	RESOURCE_OTHER_RESOURCES: '/assets/images/resources.png',
 	RESOURCE_STATUS: '/assets/images/status-page-hollaex.png',
 	RESOURCE_ARTICLES: '/assets/images/hollaex-blogs-articles.png',
