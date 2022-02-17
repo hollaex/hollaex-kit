@@ -1672,10 +1672,13 @@ paths:
             required:
               - name
               - otp_code
+              - email_code
             properties:
               name:
                 type: string
               otp_code:
+                type: string
+              email_code:
                 type: string
       responses:
         200:
@@ -1705,6 +1708,7 @@ paths:
             required:
               - token_id
               - otp_code
+              - email_code
             properties:
               token_id:
                 type: number
@@ -1712,6 +1716,8 @@ paths:
               name:
                 type: string
               otp_code:
+                type: string
+              email_code:
                 type: string
               permissions:
                 $ref: '#/definitions/TokenPermissions'

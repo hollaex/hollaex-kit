@@ -24,7 +24,8 @@ describe('Token Management', async () => {
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({
 				name: 'Test Token',
-				otp_code: await otpCodeFor(user)
+				otp_code: await otpCodeFor(user),
+				email_code: await emailCodeFor(user, bearerToken),
 			});
 
 		response.should.have.status(200);
