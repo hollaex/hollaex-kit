@@ -4,22 +4,24 @@ import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AmountPreview from './AmountPreview';
+import mathjs from 'mathjs';
 
 const ReviewEarlyUnstake = ({
 	stakeData,
 	onClose,
 	onCancel,
 	onProceed,
-	onClear,
 	icons: ICONS,
 }) => {
-	const { symbol } = stakeData;
+	const { symbol, amount, reward } = stakeData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
 		height: '24.3rem',
 		width: '40rem',
 	};
+
+	const totalEarnt = mathjs.add(amount, reward);
 
 	return (
 		<Fragment>
@@ -47,7 +49,7 @@ const ReviewEarlyUnstake = ({
 				/>
 				<div className="pt-4">
 					<AmountPreview
-						amount={0}
+						amount={amount}
 						symbol={symbol}
 						labelId="UNSTAKE.AMOUNT_TO_RECEIVE"
 					/>
@@ -69,7 +71,7 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
+							totalEarnt,
 							symbol.toUpperCase()
 						)}
 					</div>
@@ -83,7 +85,7 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
+							reward,
 							symbol.toUpperCase()
 						)}
 					</div>

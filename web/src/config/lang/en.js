@@ -719,7 +719,7 @@ export default {
 		DURATION: 'Duration',
 		END_ON_BLOCK: 'End on block: {0}',
 		SLASHING_TITLE: 'Slashing (early unstake)',
-		SLASHING_TEXT_1: '10% of your stakes principle',
+		SLASHING_TEXT_1: '{0}% of your stakes principle',
 		SLASHING_TEXT_2: 'All earnings forfeited',
 		REVIEW_NOTE:
 			'Duration is measured by the timing of the Ethereum blocks. Please check and confirm the details above before you stake as unstaking early will result in a percentage of your stakes principle to be deducted and earnings forfeited.',

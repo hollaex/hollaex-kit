@@ -244,11 +244,12 @@ const MyStaking = ({
 									weiAmount,
 									period,
 									startBlock,
-									reward,
+									weiReward,
 									closeBlock,
 									index,
 								]) => {
 									const amount = web3.utils.fromWei(weiAmount);
+									const reward = web3.utils.fromWei(weiReward);
 									const calculatedCloseBlock = mathjs.sum(startBlock, period);
 									const remainingBlocks = mathjs.max(
 										mathjs.subtract(calculatedCloseBlock, currentBlock),

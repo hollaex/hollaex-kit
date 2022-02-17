@@ -8,6 +8,7 @@ import {
 	getPendingTransactions,
 } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
+import mathjs from 'mathjs';
 
 import ReviewUnstake from './ReviewUnstake';
 import WaitingContent from './WaitingContent';
@@ -63,7 +64,8 @@ class UnstakeContent extends Component {
 		const { account, stakeData, onCloseDialog } = this.props;
 		const { action, isPending } = this.state;
 
-		const { index, symbol, amount } = stakeData;
+		const { index, symbol, amount, reward } = stakeData;
+		const amountToReceive = mathjs.add(amount, reward);
 
 		switch (type) {
 			case CONTENT_TYPE.REVIEW:
@@ -90,7 +92,8 @@ class UnstakeContent extends Component {
 						stakeData={stakeData}
 						account={account}
 						action={action}
-						amount={amount}
+						originalAmount={amount}
+						amountToReceive={amountToReceive}
 						symbol={symbol}
 						onOkay={onCloseDialog}
 					/>

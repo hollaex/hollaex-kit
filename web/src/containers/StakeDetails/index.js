@@ -9,12 +9,15 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	getPendingTransactions,
+	getAllPeriods,
+	getAllPenalties,
+	getAllPots,
 } from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import { IconTitle, EditWrapper } from 'components';
-import { CONTRACT_ADDRESSES, POT_ADDRESS } from 'config/contracts';
+import { CONTRACT_ADDRESSES } from 'config/contracts';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Account from 'containers/Stake/components/Account';
 import { getPublicInfo } from 'actions/stakingActions';
@@ -60,10 +63,16 @@ class StakeDetails extends Component {
 			getAllUserStakes,
 			getPublicInfo,
 			getPendingTransactions,
+			getAllPenalties,
+			getAllPeriods,
+			getAllPots,
 		} = this.props;
 
 		loadBlockchainData();
 		getCurrentBlock();
+		getAllPenalties();
+		getAllPeriods();
+		getAllPots();
 		getDistributions(token);
 		getPublicInfo(token);
 
@@ -96,10 +105,11 @@ class StakeDetails extends Component {
 	}
 
 	goToPOT = () => {
-		const { network } = this.props;
+		const { network, pots } = this.props;
+		const symbol = 'xht';
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${POT_ADDRESS}`;
+		}etherscan.io/address/${pots[symbol]}`;
 		open(url);
 	};
 
@@ -267,6 +277,7 @@ const mapStateToProps = (store) => ({
 	account: store.stake.account,
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
+	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
 });
 
@@ -279,6 +290,9 @@ const mapDispatchToProps = (dispatch) => ({
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	getPublicInfo: bindActionCreators(getPublicInfo, dispatch),
+	getAllPeriods: bindActionCreators(getAllPeriods, dispatch),
+	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
+	getAllPots: bindActionCreators(getAllPots, dispatch),
 });
 
 export default connect(

@@ -12,6 +12,8 @@ import {
 	getAllPeriods,
 	getAllUserStakes,
 	getPendingTransactions,
+	getAllPenalties,
+	getAllPots,
 } from 'actions/stakingActions';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
@@ -28,7 +30,6 @@ import {
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import { open } from 'helpers/link';
-import { POT_ADDRESS } from 'config/contracts';
 
 import {
 	userActiveStakesSelector,
@@ -44,10 +45,18 @@ import Variable from './components/Variable';
 
 class Stake extends Component {
 	componentWillMount() {
-		const { loadBlockchainData, getAllPeriods, getCurrentBlock } = this.props;
+		const {
+			loadBlockchainData,
+			getAllPeriods,
+			getCurrentBlock,
+			getAllPenalties,
+			getAllPots,
+		} = this.props;
 		loadBlockchainData();
 		getCurrentBlock();
 		getAllPeriods();
+		getAllPenalties();
+		getAllPots();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -121,10 +130,11 @@ class Stake extends Component {
 	};
 
 	goToPOT = () => {
-		const { network } = this.props;
+		const { network, pots } = this.props;
+		const symbol = 'xht';
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${POT_ADDRESS}`;
+		}etherscan.io/address/${pots[symbol]}`;
 		open(url);
 	};
 
@@ -370,11 +380,12 @@ class Stake extends Component {
 												weiAmount,
 												period,
 												startBlock,
-												reward,
+												weiReward,
 												closeBlock,
 												index,
 											]) => {
 												const amount = web3.utils.fromWei(weiAmount);
+												const reward = web3.utils.fromWei(weiReward);
 												const calculatedCloseBlock = mathjs.sum(
 													startBlock,
 													period
@@ -536,6 +547,7 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
 	pending: pendingTransactionsSelector(store),
 });
@@ -549,6 +561,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
+	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
+	getAllPots: bindActionCreators(getAllPots, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Stake));

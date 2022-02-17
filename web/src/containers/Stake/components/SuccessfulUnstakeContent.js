@@ -7,12 +7,13 @@ import AmountPreview from './AmountPreview';
 
 const SuccessfulContent = ({
 	stakeData,
-	amount,
+	amountToReceive,
+	originalAmount,
 	onOkay,
 	icons: ICONS,
 	account,
 }) => {
-	const { symbol, earning } = stakeData;
+	const { symbol, reward } = stakeData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_SUCCESSFUL_MESSAGE']})`,
@@ -36,7 +37,7 @@ const SuccessfulContent = ({
 				/>
 
 				<AmountPreview
-					amount={amount}
+					amount={amountToReceive}
 					symbol={symbol}
 					labelId="STAKE.SUCCESSFUL_UNSTAKE_AMOUNT"
 				/>
@@ -49,7 +50,7 @@ const SuccessfulContent = ({
 					</div>
 					<div>
 						<div className="secondary-text px-2">
-							{`${earning} ${symbol.toUpperCase()}`}
+							{`${reward} ${symbol.toUpperCase()}`}
 						</div>
 					</div>
 				</div>
@@ -62,7 +63,7 @@ const SuccessfulContent = ({
 					</div>
 					<div>
 						<div className="secondary-text px-2">
-							{`${amount} ${symbol.toUpperCase()}`}
+							{`${originalAmount} ${symbol.toUpperCase()}`}
 						</div>
 					</div>
 				</div>
