@@ -159,7 +159,7 @@ export const evaluateOrder = (
 		}
 	}
 
-	if (available < orderPrice) {
+	if (parseFloat(available) < parseFloat(orderPrice)) {
 		return STRINGS['VALIDATIONS.INSUFFICIENT_BALANCE'];
 	}
 	return '';

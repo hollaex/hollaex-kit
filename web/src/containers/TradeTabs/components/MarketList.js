@@ -71,7 +71,7 @@ const MarketList = ({
 							</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="market-list_tableBody">
 						{markets.map((market, index) => (
 							<MarketRow
 								key={index}

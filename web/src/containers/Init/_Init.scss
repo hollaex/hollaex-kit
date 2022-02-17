@@ -225,6 +225,9 @@ $color-white: #ffffff;
 					border-color: #c4c4c4;
 					box-shadow: #c4c4c4;
 				}
+				.ant-input-number-handler-wrap {
+    				display: none;
+				}
 			}
 			.ant-input-password-icon {
 				color: #c4c4c4;

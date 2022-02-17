@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.2.7"
+  version: "2.2.9"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1583,7 +1583,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/BalanceResponse"
+            $ref: "#/definitions/ObjectResponse"
         403:
           description: Access Denied
           schema:
@@ -3256,7 +3256,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/BalanceResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -4601,21 +4601,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/OrderResponse"
-  BalanceResponse:
-    type: object
-    properties:
-      btc_balance:
-        type: number
-        format: double
-      btc_available:
-        type: number
-        format: double
-      btc_pending:
-        type: number
-        format: double
-      updated_at:
-        type: string
-        format: date-time
   KitPut:
     type: object
     properties:
