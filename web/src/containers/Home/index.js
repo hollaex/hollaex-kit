@@ -66,15 +66,6 @@ class Home extends Component {
 
 	componentDidMount() {
 		const { sections } = this.props;
-		const sectionData = {
-			...sections,
-			'html_tag_section': {
-				is_active: true,
-				name: "Market list",
-				order: 3
-			}
-		}
-		this.setState({ sectionData });
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		this.generateSections(sections);
@@ -165,6 +156,8 @@ class Home extends Component {
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
+							<div id="html_card_section"></div>
+							<div id="injected_code_section"></div>
 							<Markets
 								coins={coins}
 								pairs={pairs}
@@ -177,11 +170,6 @@ class Home extends Component {
 						</div>
 					</div>
 				);
-			}
-			case 'html_tag_section': {
-				return (
-					<div id="html_tag_section"></div>
-				)
 			}
 			case 'quick_trade': {
 				const {
@@ -419,12 +407,12 @@ class Home extends Component {
 	};
 
 	render() {
-		// const {
-		// 	symbol,
-		// 	quickTradeData,
-		// 	requestQuickTrade,
-		// 	sections,
-		// } = this.props;
+		const {
+			// symbol,
+			// quickTradeData,
+			// requestQuickTrade,
+			sections,
+		} = this.props;
 
 		return (
 			<div className="home_container">
@@ -454,7 +442,7 @@ class Home extends Component {
 						style={{ position: 'absolute', right: 10 }}
 					/>
 					<div className="home-page_content">
-						<div className="mx-2 mb-3">{this.generateSections(this.state.sectionData)}</div>
+						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
 					</div>
 				</div>
 			</div>
