@@ -763,11 +763,18 @@ const createHmacToken = (req, res) => {
 		req.auth.sub
 	);
 
-	const { id } = req.auth.sub;
+	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { name, otp_code } = req.swagger.params.data.value;
+	const { name, otp_code, email_code } = req.swagger.params.data.value;
 
-	toolsLib.security.createUserKitHmacToken(id, otp_code, ip, name)
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
 		.then((token) => {
 			return res.json(token);
 		})
