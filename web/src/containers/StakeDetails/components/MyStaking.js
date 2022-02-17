@@ -103,7 +103,7 @@ const MyStaking = ({
 			<div className="d-flex justify-content-between align-start">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.MY_STAKING.TITLE']}
 						</div>
 						<div className="secondary-text">
@@ -129,7 +129,7 @@ const MyStaking = ({
 				<StakesAndEarnings />
 			</div>
 			<table className="wallet-assets_block-table">
-				<thead>
+				<thead className="important-text">
 					<tr className="table-bottom-border">
 						<th />
 						<th>
@@ -202,7 +202,7 @@ const MyStaking = ({
 			</table>
 			{account && activeStakesCount !== 0 && (
 				<table className="wallet-assets_block-table mt-4">
-					<thead>
+					<thead className="important-text">
 						<tr className="table-bottom-border">
 							<th />
 							<th>
@@ -376,14 +376,14 @@ const MyStaking = ({
 					</tbody>
 				</table>
 			)}
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
-			<div>
+			<div className="pt-4">
+				<div className="important-text bold pt-4 mt-2">
+					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+						{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+					</EditWrapper>
+				</div>
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={events}
 					count={events.length}
 					headers={generateStakeEventsHeader()}

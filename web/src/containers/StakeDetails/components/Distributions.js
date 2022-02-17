@@ -58,7 +58,7 @@ const Distributions = ({
 			<div className="d-flex">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TITLE'],
 								token.toUpperCase()
@@ -81,9 +81,9 @@ const Distributions = ({
 					</div>
 				</div>
 			</div>
-			<div>
+			<div className="pt-4">
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={distributions}
 					count={distributions.length}
 					headers={generateDistributionsHeader()}
