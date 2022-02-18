@@ -142,7 +142,7 @@ steps:
 
 trigger:
   branch:
-  - 2.0-deployment
+  - testnet
   event:
   - push
 
