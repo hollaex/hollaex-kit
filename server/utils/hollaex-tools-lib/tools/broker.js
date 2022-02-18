@@ -92,6 +92,7 @@ async function executeBrokerDeal(userId, symbol, side, size, price) {
 	const userNetworkId = (await mapKitIdToNetworkId([userId]))[0];
 
 	return await getNodeLib().createBrokerTrade(
+		symbol,
 		side,
 		price,
 		size,
