@@ -45,6 +45,7 @@ class TableRow extends Component {
 				<tr
 					className={classnames('table_body-row', {
 						'cancel-row-color': !!isRemoveData.length,
+						pointer: isExpandable,
 					})}
 					key={`row_${rowIndex}`}
 					onClick={this.onExpand}

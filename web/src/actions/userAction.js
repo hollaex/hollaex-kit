@@ -221,7 +221,8 @@ export const requestTokens = () => {
 	};
 };
 
-export const generateToken = (values) => axios.post(`/user/token`, values);
+export const generateToken = (values) => axios.post('/user/token', values);
+export const editToken = (values) => axios.put('/user/token', values);
 export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
@@ -239,6 +240,10 @@ export const tokenRevoked = (token) => ({
 		token,
 	},
 });
+
+export const sendEmailCode = async () => {
+	return await axios.get('/user/request-email-confirmation');
+};
 
 export const setUsername = (values) => axios.post('/user/username', values);
 export const setUsernameStore = (username) => ({

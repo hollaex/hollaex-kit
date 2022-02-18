@@ -322,4 +322,44 @@ $padding-input: 4rem;
 	.ant-radio-wrapper {
 		color: $colors-main-black;
 	}
+
+	.holla-button {
+		width: 150px;
+	}
+
+	.ant-input {
+		color: $colors-main-black;
+	}
+
+	.ant-btn-link {
+		color: $link;
+	}
+
+	.ant-btn-link[disabled] {
+		color: $colors-notifications-blue-disabled;
+	}
+}
+
+.small-expandable {
+	.ant-checkbox-wrapper,
+	.ant-radio-wrapper,
+	.ant-input,
+	.ant-btn {
+		font-size: $font-size-small-expandable !important;
+	}
+	.field-label {
+		font-size: 0.9rem;
+	}
+	.field-wrapper {
+		margin: 0;
+	}
+	.field-children {
+		padding: 0;
+	}
+}
+
+.flex-col {
+	flex-basis: 0;
+	flex-grow: 1;
+	padding-right: 1rem;
 }

@@ -237,6 +237,15 @@ export default {
 		OTP_BUTTON: 'submit',
 		ERROR_INVALID: 'Invalid OTP Code',
 	},
+	EMAIL_CODE_FORM: {
+		TITLE: 'Input Verification Code',
+		LABEL: 'Input code',
+		PLACEHOLDER: 'Input the code sent to your email',
+		FORM_TITLE:
+			'A unique code was sent to you email that is required to finish the login process. Please input the code below to proceed.',
+		BUTTON: 'submit',
+		ERROR_INVALID: 'Invalid Email Code',
+	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick Trade', // updated
 		BUTTON: 'Review Order', // updated
@@ -1448,5 +1457,5 @@ export default {
 		DEPTH_CHART: 'Depth chart', //new
 		COMING_SOON: 'coming soon', //new
 	},
-	WALLET_BALANCE_LOADING: 'Balance loading...' //new
+	WALLET_BALANCE_LOADING: 'Balance loading...', //new
 };

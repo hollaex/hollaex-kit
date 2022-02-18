@@ -76,6 +76,7 @@ class EditToken extends Component {
 	};
 
 	onSave = () => {
+		const { onEdit, id } = this.props;
 		const {
 			can_read,
 			can_trade,
@@ -85,6 +86,7 @@ class EditToken extends Component {
 		} = this.state;
 
 		const data = {
+			id,
 			permissions: {
 				can_read,
 				can_trade,
@@ -94,7 +96,7 @@ class EditToken extends Component {
 			whitelisted_ips: enabled_whitelisting ? whitelisted_ips : [],
 		};
 
-		console.log(data);
+		onEdit(data);
 	};
 
 	render() {
@@ -124,11 +126,11 @@ class EditToken extends Component {
 		const IPPermission = enabled_whitelisting ? 'only-trusted' : 'any';
 
 		return (
-			<div className="edit_token d-flex">
+			<div className="edit_token d-flex py-4 small-expandable">
 				<div>QR CODE / ICON</div>
 				<div>
 					<div className="d-flex">
-						<div className="w-50">
+						<div className="w-50 pl-4">
 							<DumbField {...props_api_key} />
 						</div>
 						<div className="w-50 pl-4">
@@ -142,7 +144,7 @@ class EditToken extends Component {
 							{STRINGS['DEVELOPERS_TOKEN.ACCESS']}
 						</div>
 						<div className="d-flex py-4">
-							<div>
+							<div className="flex-col">
 								<div className="important-text">
 									{STRINGS['DEVELOPERS_TOKEN.BASIC_ACCESS']}
 								</div>
@@ -166,7 +168,7 @@ class EditToken extends Component {
 									/>
 								</div>
 							</div>
-							<div>
+							<div className="flex-col">
 								<div className="important-text">
 									{STRINGS['DEVELOPERS_TOKEN.IP_ACCESS']}
 								</div>
@@ -200,7 +202,7 @@ class EditToken extends Component {
 													</Tag>
 												))}
 											</div>
-											<div className="d-flex">
+											<div className="d-flex kit-divider">
 												<Input
 													placeholder={STRINGS['DEVELOPERS_TOKEN.ADD_IP_PH']}
 													bordered={false}
@@ -219,7 +221,7 @@ class EditToken extends Component {
 									)}
 								</div>
 							</div>
-							<div>
+							<div className="flex-col">
 								<div className="important-text">
 									{STRINGS['DEVELOPERS_TOKEN.ADVANCED_ACCESS']}
 								</div>
@@ -242,7 +244,7 @@ class EditToken extends Component {
 						</div>
 						<div>
 							<Button
-								className="w-50"
+								className="holla-button"
 								stringId="DEVELOPERS_TOKEN.SAVE"
 								label={STRINGS['DEVELOPERS_TOKEN.SAVE']}
 								onClick={this.onSave}

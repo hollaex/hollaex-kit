@@ -148,6 +148,7 @@ const nestedIcons = {
 	LETTER: '/assets/acounts/account-icons-24.svg',
 
 	OTP_CODE: '/assets/acounts/account-icons-28.svg',
+	EMAIL_CODE: '/assets/icons/send-email-code.svg',
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
