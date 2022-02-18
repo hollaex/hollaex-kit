@@ -102,11 +102,6 @@ class EditToken extends Component {
 	render() {
 		const { enabled_whitelisting, whitelisted_ips, ip } = this.state;
 		const { apiKey, secret } = this.props;
-		const radioStyle = {
-			display: 'block',
-			height: '30px',
-			lineHeight: '30px',
-		};
 
 		const props_api_key = {
 			stringId: 'DEVELOPERS_TOKEN.API_KEY',
