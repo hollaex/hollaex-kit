@@ -212,7 +212,7 @@ class Trade extends PureComponent {
 	};
 
 	componentWillUnmount() {
-		document.removeEventListener('resetlayout');
+		document.removeEventListener('resetlayout', this.onResetLayout);
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
 		this.closeOrderbookSocket();

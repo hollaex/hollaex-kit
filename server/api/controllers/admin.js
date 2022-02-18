@@ -1,11 +1,11 @@
 'use strict';
 
 const { loggerAdmin } = require('../../config/logger');
-const toolsLib = require('../../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
-const { sendEmail } = require('../../mail');
+const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
@@ -86,7 +86,7 @@ const putAdminKit = (req, res) => {
 	if (data.kit) {
 		if (data.kit.setup_completed) {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putAdminKit', 'Cannot update setup_completed value through this endpoint');
-			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint'});
+			return res.status(400).json({ message: 'Cannot update setup_completed value through this endpoint' });
 		}
 	}
 
@@ -890,7 +890,7 @@ const mintAsset = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/mintAsset successful',
+				'controllers/admin/mintAsset successful'
 			);
 			return res.status(201).json(data);
 		})
@@ -959,7 +959,7 @@ const putMint = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/putMint successful',
+				'controllers/admin/putMint successful'
 			);
 			return res.json(data);
 		})
@@ -1031,7 +1031,7 @@ const burnAsset = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/burnAsset successful',
+				'controllers/admin/burnAsset successful'
 			);
 			return res.status(201).json(data);
 		})
@@ -1100,7 +1100,7 @@ const putBurn = (req, res) => {
 		.then((data) => {
 			loggerAdmin.info(
 				req.uuid,
-				'controllers/admin/putBurn successful',
+				'controllers/admin/putBurn successful'
 			);
 			return res.json(data);
 		})
@@ -1138,6 +1138,41 @@ const postKitUserMeta = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/postKitUserMeta', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
+	try {
+		const data = cloneDeep({
+			email: toolsLib.getEmail()
+		});
+		return res.json(data);
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+};
+
+const putEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putEmail', req.auth.sub);
+
+	const updateData = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putEmail',
+		'updateData',
+		updateData
+	);
+
+	toolsLib.updateEmail(updateData)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -1784,6 +1819,23 @@ const putUserInfo = (req, res) => {
 		});
 };
 
+const emailConfigTest = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/emailConfigTest auth',
+		req.auth
+	);
+
+	const { sender, smtp } = req.swagger.params.data.value;
+	try {
+		testSendSMTPEmail(sender, smtp)
+		return res.status(201).json({ message: 'Success' });
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/emailConfigTest', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+}
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1827,5 +1879,8 @@ module.exports = {
 	getNetworkCoins,
 	getNetworkPairs,
 	updateExchange,
-	putUserInfo
+	putUserInfo,
+	getEmail,
+	putEmail,
+	emailConfigTest
 };

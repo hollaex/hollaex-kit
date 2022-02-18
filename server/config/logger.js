@@ -38,7 +38,7 @@ const all = format((info) => {
 });
 
 // used for filtering specific logs. currently not used.
-const filterOnly = level => {
+const filterOnly = (level) => {
 	return format((info) => {
 		if (info[LEVEL] === level) {
 			return info;
@@ -49,7 +49,7 @@ const filterOnly = level => {
 
 const generateLoggerConfiguration = (name) => {
 	const transportsConfig = [
-		new transports.Console({ level: LOG_LEVEL} )
+		new transports.Console({ level: LOG_LEVEL } )
 	];
 
 	if (APM_ENABLED) {

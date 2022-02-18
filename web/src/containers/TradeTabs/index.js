@@ -37,6 +37,10 @@ class AddTradeTab extends Component {
 		getSparklines(Object.keys(pairs)).then((chartData) =>
 			this.setState({ chartData })
 		);
+		const value = localStorage.getItem("isMarketView");
+		if (value) {
+			this.setState({ selected: value });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -144,6 +148,7 @@ class AddTradeTab extends Component {
 			this.state.selected === options[0].value
 				? options[1].value
 				: options[0].value;
+		localStorage.setItem("isMarketView", selected);
 		this.setState({ selected });
 	};
 
@@ -195,86 +200,90 @@ class AddTradeTab extends Component {
 		});
 
 		return (
-			<div className="trade_tabs-container">
-				{!isMobile && (
-					<div className="mb-5">
-						<Image
-							iconId="EXCHANGE_LOGO"
-							icon={ICONS['EXCHANGE_LOGO']}
-							wrapperClassName="app-icon d-flex"
-						/>
-						<div className="text-center trade-tab-app-title">
-							<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
-								{STRINGS['APP_SUB_TITLE'].toUpperCase()}
-							</EditWrapper>
-						</div>
-					</div>
-				)}
-				<div className="trade_tabs-content">
+			<div>
+				<div id="trade-header-section"></div>
+				<div className="trade_tabs-container">
 					{!isMobile && (
-						<div className="d-flex justify-content-end">
-							{constants &&
-							constants.features &&
-							constants.features.quick_trade ? (
-								<span className="trade_tabs-link link-separator">
-									<Link to={`/quick-trade/${quickPair}`}>
-										{STRINGS['QUICK_TRADE']}
-									</Link>
-								</span>
-							) : null}
-							<span className="trade_tabs-link link-separator">
-								<Link to="/account">{STRINGS['ACCOUNTS.TITLE']}</Link>
-							</span>
-							<span className="trade_tabs-link">
-								<Link to="/wallet">{STRINGS['WALLET_TITLE']}</Link>
-							</span>
+						<div className="mb-5">
+							<Image
+								iconId="EXCHANGE_LOGO"
+								icon={ICONS['EXCHANGE_LOGO']}
+								wrapperClassName="app-icon d-flex"
+							/>
+							<div className="text-center trade-tab-app-title">
+								<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
+									{STRINGS['APP_SUB_TITLE'].toUpperCase()}
+								</EditWrapper>
+							</div>
 						</div>
 					)}
-					<div className="d-flex align-items-center justify-content-between">
-						<div className="w-50 pb-4">
-							<SearchBox
-								name={STRINGS['SEARCH_ASSETS']}
-								className="trade_tabs-search-field"
-								outlineClassName="trade_tabs-search-outline"
-								placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
-								handleSearch={this.handleTabSearch}
-							/>
-						</div>
-						<div className="mt-2">
-							<Toggle
-								selected={selected}
-								options={options}
-								toggle={this.onToggle}
-							/>
-						</div>
-					</div>
-					<Fragment>
-						{selected === options[0].value ? (
-							<MarketList
-								markets={processedData}
-								chartData={chartData}
-								handleClick={handleClick}
-								page={page}
-								pageSize={pageSize}
-								count={count}
-								goToNextPage={goToNextPage}
-								goToPreviousPage={goToPreviousPage}
-								showPaginator={true}
-							/>
-						) : (
-							<MarketCards
-								markets={processedData}
-								chartData={chartData}
-								page={page}
-								pageSize={pageSize}
-								count={count}
-								handleClick={handleClick}
-								goToNextPage={goToNextPage}
-								goToPreviousPage={goToPreviousPage}
-							/>
+					<div className="trade_tabs-content">
+						{!isMobile && (
+							<div className="d-flex justify-content-end">
+								{constants &&
+								constants.features &&
+								constants.features.quick_trade ? (
+									<span className="trade_tabs-link link-separator">
+										<Link to={`/quick-trade/${quickPair}`}>
+											{STRINGS['QUICK_TRADE']}
+										</Link>
+									</span>
+								) : null}
+								<span className="trade_tabs-link link-separator">
+									<Link to="/account">{STRINGS['ACCOUNTS.TITLE']}</Link>
+								</span>
+								<span className="trade_tabs-link">
+									<Link to="/wallet">{STRINGS['WALLET_TITLE']}</Link>
+								</span>
+							</div>
 						)}
-					</Fragment>
+						<div className="d-flex align-items-center justify-content-between">
+							<div className="w-50 pb-4">
+								<SearchBox
+									name={STRINGS['SEARCH_ASSETS']}
+									className="trade_tabs-search-field"
+									outlineClassName="trade_tabs-search-outline"
+									placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
+									handleSearch={this.handleTabSearch}
+								/>
+							</div>
+							<div className="mt-2">
+								<Toggle
+									selected={selected}
+									options={options}
+									toggle={this.onToggle}
+								/>
+							</div>
+						</div>
+						<Fragment>
+							{selected === options[0].value ? (
+								<MarketList
+									markets={processedData}
+									chartData={chartData}
+									handleClick={handleClick}
+									page={page}
+									pageSize={pageSize}
+									count={count}
+									goToNextPage={goToNextPage}
+									goToPreviousPage={goToPreviousPage}
+									showPaginator={true}
+								/>
+							) : (
+								<MarketCards
+									markets={processedData}
+									chartData={chartData}
+									page={page}
+									pageSize={pageSize}
+									count={count}
+									handleClick={handleClick}
+									goToNextPage={goToNextPage}
+									goToPreviousPage={goToPreviousPage}
+								/>
+							)}
+						</Fragment>
+					</div>
 				</div>
+				<div id="trade-footer-section"></div>
 			</div>
 		);
 	}

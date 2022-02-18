@@ -14,7 +14,7 @@ const {
 	enablePlugin
 } = require('./controllers');
 const { checkSchema, query, body } = require('express-validator');
-const toolsLib = require('../utils/toolsLib');
+const toolsLib = require('hollaex-tools-lib');
 const lodash = require('lodash');
 
 router.get(

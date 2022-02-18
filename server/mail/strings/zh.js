@@ -73,7 +73,7 @@ const LOGIN = {
 		3: (country) => COMMON.COUNTRY(country),
 		4: (device) => COMMON.DEVICE(device),
 		5: (ip) => COMMON.IP_ADDRESS(ip),
-		6: `非本人的情况下，请更改你的密码，设置双重身份验证并立即联系我们。`
+		6: '非本人的情况下，请更改你的密码，设置双重身份验证并立即联系我们。'
 	},
 	CLOSING: COMMON.CLOSING
 };

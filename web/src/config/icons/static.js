@@ -111,11 +111,14 @@ const icons = {
 	RESOURCE_PLUGIN: '/assets/images/plugins.png',
 	RESOURCE_FAQ: '/assets/images/help-faq.png',
 	RESOURCE_VIDEOS: '/assets/images/videos.png',
-	RESOURCE_PRO_EXCHANGE: '/assets/images/hollaEx-pro-exchange.png',
+	RESOURCE_PRO_EXCHANGE: '/assets/images/HollaEx-pro-exchange.png',
 	RESOURCE_OTHER_RESOURCES: '/assets/images/resources.png',
 	RESOURCE_STATUS: '/assets/images/status-page-hollaex.png',
 	RESOURCE_ARTICLES: '/assets/images/hollaex-blogs-articles.png',
 	RESOURCE_EXPLORER: '/assets/images/hollaex-network-explorer.png',
+	EDIT_PENCIL_ICON: '/assets/images/edit-pencil.svg',
+	SEND_ARROW_ICON: '/assets/images/send-arrow.svg',
+	PENDING_ORANGE_GEAR: '/assets/images/pending-orange-gear.svg',
 };
 
 export default icons;

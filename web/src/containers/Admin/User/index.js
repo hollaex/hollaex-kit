@@ -200,7 +200,8 @@ class App extends Component {
 		} else if (values.id) {
 			this.requestUserData({ id: values.id });
 		} else {
-			const searchUserdata = values && values.input && values.input.trim();
+			let searchUserdata = values && values.input ? values.input.trim() : '';
+			searchUserdata = searchUserdata.toLowerCase();
 			this.requestUserData({ search: searchUserdata });
 		}
 		// const REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/;

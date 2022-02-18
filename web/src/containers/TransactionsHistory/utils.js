@@ -63,7 +63,8 @@ export const generateOrderHistoryHeaders = (
 	pairs = {},
 	coins,
 	discount,
-	prices = {}
+	prices = {},
+	ICONS
 ) => {
 	return [
 		{
@@ -73,9 +74,19 @@ export const generateOrderHistoryHeaders = (
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
+				const data = symbol.split('-');
+				let pairBaseName = data[0];
 				return (
 					<td key={index} className="text-uppercase sticky-col">
-						{symbol}
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${pairBaseName.toUpperCase()}_ICON`}
+								icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+								wrapperClassName="currency-ball"
+								imageWrapperClassName="currency-ball-image-wrapper"
+							/>
+							<div>{symbol}</div>
+						</div>
 					</td>
 				);
 			},
@@ -308,7 +319,8 @@ export const generateTradeHeaders = (
 	pairs,
 	coins,
 	discount,
-	prices = {}
+	prices = {},
+	ICONS
 ) => {
 	return [
 		{
@@ -318,9 +330,19 @@ export const generateTradeHeaders = (
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			className: 'sticky-col',
 			renderCell: ({ symbol }, key, index) => {
+				const data = symbol.split('-');
+				let pairBaseName = data[0];
 				return (
 					<td key={index} className="text-uppercase sticky-col">
-						{symbol}
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${pairBaseName.toUpperCase()}_ICON`}
+								icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+								wrapperClassName="currency-ball"
+								imageWrapperClassName="currency-ball-image-wrapper"
+							/>
+							<div>{symbol}</div>
+						</div>
 					</td>
 				);
 			},

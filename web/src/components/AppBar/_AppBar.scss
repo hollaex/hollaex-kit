@@ -616,7 +616,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-menu {
 		color: $base_top-bar-navigation_text;
-		border-top: 3px solid $base_top-bar-navigation_text;
+		border-top: 4px solid $link;
 		height: 100%;
 		opacity: 1;
 
@@ -1001,6 +1001,25 @@ $app-menu-notification-size: 1.2rem;
 
 	&.narrow {
 		width: 14rem;
+	}
+
+	.ant-checkbox-wrapper {
+		span {
+			color: $colors-main-black !important;
+		}
+	}
+
+	.ant-btn-background-ghost {
+		border-color: $colors-black;
+	}
+
+	.ant-btn {
+		&:active,
+		&:hover,
+		&:focus {
+			color: $colors-main-black;
+			border-color: $colors-main-black;
+		}
 	}
 
 	.app-bar-tab-menu-list {

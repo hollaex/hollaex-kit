@@ -232,10 +232,10 @@
 	font-weight: bold;
 }
 .sub-label {
-    position: absolute;
-    top: 6rem;
-    left: 11.2rem;
-    line-height: 20px;
+	position: absolute;
+	top: 6rem;
+	left: 11.2rem;
+	line-height: 20px;
 }
 .sider-icons {
 	width: 85px;
@@ -265,4 +265,7 @@
 .admin-content-wrapper .ant-input::placeholder {
 	color: #c4c4c4;
 	opacity: 0.5;
+}
+.admin-top-bar .time-wrapper {
+	cursor: pointer;
 }

@@ -1,0 +1,30 @@
+{
+	"name": "hollaex-network-lib",
+	"version": "2.2.8",
+	"description": "hollaex network api and websocket library for nodejs",
+	"main": "index.js",
+	"dependencies": {
+		"file-type": "16.5.2",
+		"is-base64": "1.1.0",
+		"lodash": "4.17.13",
+		"moment": "2.24.0",
+		"request": "2.88.0",
+		"request-promise": "4.2.2",
+		"ws": "7.4.0",
+		"ws-heartbeat": "1.1.0"
+	},
+	"devDependencies": {
+		"chai": "4.2.0",
+		"dotenv": "6.2.0",
+		"mocha": "5.2.0"
+	},
+	"scripts": {
+		"start": "node index.js",
+		"test": "mocha test/test.js --timeout 10000"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-network-lib"
+	},
+	"author": "bitHolla Inc"
+}

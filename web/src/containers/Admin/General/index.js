@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Tabs } from 'antd';
 
 import GeneralContent from './General';
-import { getTabParams } from '../AdminFinancials/Assets';
 
 import './index.css';
 
 const TabPane = Tabs.TabPane;
 
-const General = ({ router }) => {
+const General = () => {
 	const [activeTab, setActiveTab] = useState('0');
-
-	const tabParams = getTabParams();
-	useEffect(() => {
-		if (tabParams) {
-			setActiveTab(tabParams.tab);
-		}
-	}, [tabParams]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
-		router.replace('/admin/general');
 	};
 
 	const renderTabBar = (props, DefaultTabBar) => {
