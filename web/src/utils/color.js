@@ -194,6 +194,11 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.05)
 			.string(),
+		'calculated_stake-table_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
 	};
 
 	return { ...themeData, ...calculatedColors };

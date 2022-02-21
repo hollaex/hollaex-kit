@@ -1,4 +1,4 @@
-import Main from 'config/contracts/XHT.json';
+import Main from 'config/contracts/Main.json';
 import Token from 'config/contracts/Token.json';
 import Web3 from 'web3';
 

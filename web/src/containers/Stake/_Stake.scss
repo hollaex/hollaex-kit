@@ -1,0 +1,8 @@
+.table-row {
+	&.hoverable {
+		&:hover {
+			background-color: $stake-table-highlight;
+			color: $colors-main-black;
+		}
+	}
+}

@@ -255,8 +255,8 @@ const nestedIcons = {
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
 	STAKING_ERROR: '/assets/stake/error.svg',
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
-	STAKING_PENDING: '/assets/stake/clear_pending_earnings.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
+	STAKING_BACKGROUND: '/assets/dark-background.jpg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
 

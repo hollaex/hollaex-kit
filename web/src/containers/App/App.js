@@ -362,6 +362,8 @@ class App extends Component {
 			return 'quick-trade';
 		} else if (path.indexOf('/chart-embed') === 0) {
 			return 'chart-embed';
+		} else if (path.indexOf('/stake') === 0) {
+			return 'stake';
 		}
 
 		return '';
@@ -540,6 +542,15 @@ class App extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.MOVE_XHT: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -621,6 +632,7 @@ class App extends Component {
 			: this.getClassForActivePath(this.props.location.pathname);
 
 		const isHome = this.props.location.pathname === '/';
+		const isStakePage = activePath === 'stake';
 		const isChartEmbed = activePath === 'chart-embed';
 		const isMenubar = !isHome;
 		const isMenuSider =
@@ -633,6 +645,14 @@ class App extends Component {
 		const homeBackgroundProps = isHome
 			? {
 					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
+		const stakeBackgroundProps = isStakePage
+			? {
+					backgroundImage: `url(${ICONS['STAKING_BACKGROUND']})`,
 					backgroundSize: '100%',
 					backgroundRepeat: 'repeat-y',
 			  }
@@ -749,6 +769,7 @@ class App extends Component {
 												no_bottom_navigation: isHome,
 											}
 										)}
+										style={stakeBackgroundProps}
 									>
 										<Container
 											router={router}
@@ -814,7 +835,8 @@ class App extends Component {
 													activeNotification.type === NOTIFICATIONS.STAKE ||
 													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 													activeNotification.type ===
-														NOTIFICATIONS.EARLY_UNSTAKE,
+														NOTIFICATIONS.EARLY_UNSTAKE ||
+													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -826,6 +848,7 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 												activeNotification.type ===
 													NOTIFICATIONS.EARLY_UNSTAKE ||
+												activeNotification.type === NOTIFICATIONS.MOVE_XHT ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
