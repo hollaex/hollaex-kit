@@ -46,6 +46,7 @@ class MarketRow extends Component {
 
 		return (
 			<tr
+				id={`market-list-row-${key}`}
 				className="table-row table-bottom-border"
 				onClick={() => handleClick(key)}
 			>

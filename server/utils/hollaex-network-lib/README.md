@@ -5,7 +5,7 @@ Nodejs library for operators of HollaEx Kit enabled exchanges to connect to the 
 ## Usage
 
 ```javascript
-const { Network } = require('hollaex-node-lib');
+const Network = require('hollaex-network-lib');
 
 const client = new Network({
 	apiKey: '<MY_API_KEY>',

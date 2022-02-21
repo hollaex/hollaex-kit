@@ -11,14 +11,14 @@
 	width: 10rem !important;
 }
 .wizard-container .sub-title,
-.ant-modal-body .sub-title,
+/* .ant-modal-body .sub-title, */
 .admin-content-wrapper .sub-title {
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: bold;
 }
-.admin-content-wrapper .divider,
-.ant-modal-body .divider {
+/* .ant-modal-body .divider, */
+.admin-content-wrapper .divider {
 	border-top: 1px solid #c4c4c4;
 	margin: 2rem 0;
 	width: 500px;
@@ -26,7 +26,7 @@
 .wizard-container .description {
 	/* width: 550px; */
 }
-.ant-modal-body .description,
+/* .ant-modal-body .description, */
 .admin-content-wrapper .description,
 .wizard-container .description {
 	color: #ffffff;
@@ -228,13 +228,13 @@
 	left: 18px;
 	color: #000000 !important;
 }
-.ant-checkbox-wrapper-checked .buy {
+.general-wrapper .ant-checkbox-wrapper-checked .buy {
 	background-color: #ffffff;
 }
-.ant-checkbox-wrapper-checked .sell {
+.general-wrapper .ant-checkbox-wrapper-checked .sell {
 	border: 1px solid #ffffff;
 }
-.ant-checkbox-wrapper-checked .sell .label {
+.general-wrapper .ant-checkbox-wrapper-checked .sell .label {
 	color: #ffffff;
 }
 .general-wrapper .ant-radio-wrapper {
@@ -269,7 +269,7 @@
 }
 h2,
 .email-config-form,
-.ant-checkbox-wrapper span,
+.input_field .ant-checkbox-wrapper span,
 .description-wrapper,
 .bottom-description,
 .custom-form-wrapper {

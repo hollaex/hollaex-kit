@@ -11,17 +11,17 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
-import { Button, Dialog, OtpForm, Loader } from '../../components';
-import renderFields from '../../components/Form/factoryFields';
+import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
+import renderFields from 'components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY } from 'config/constants';
 import { calculateBaseFee } from './utils';
 import Fiat from 'containers/Deposit/Fiat';
 import Image from 'components/Image';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -212,53 +212,59 @@ class Form extends Component {
 
 		if (coinObject && coinObject.type !== 'fiat') {
 			return (
-				<form autoComplete="off" className="withdraw-form-wrapper">
-					<div className="withdraw-form">
-						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
-							wrapperClassName="form_currency-ball"
-						/>
-						{titleSection}
-						{renderFields(formValues)}
-						{error && <div className="warning_text">{error}</div>}
-					</div>
-					<div className="btn-wrapper">
-						<Button
-							label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-							disabled={pristine || submitting || !valid}
-							onClick={this.onOpenDialog}
-							className="mb-3"
-						/>
-					</div>
-					<Dialog
-						isOpen={dialogIsOpen}
-						label="withdraw-modal"
-						onCloseDialog={this.onCloseDialog}
-						shouldCloseOnOverlayClick={dialogOtpOpen}
-						theme={activeTheme}
-						showCloseText={false}
-					>
-						{dialogOtpOpen ? (
-							<OtpForm
-								onSubmit={this.onSubmitOtp}
-								onClickHelp={openContactForm}
+				<SmartTarget
+					id={currencySpecificId}
+					titleSection={titleSection}
+					currency={currency}
+				>
+					<form autoComplete="off" className="withdraw-form-wrapper">
+						<div className="withdraw-form">
+							<Image
+								iconId={`${currency.toUpperCase()}_ICON`}
+								icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+								wrapperClassName="form_currency-ball"
 							/>
-						) : !submitting ? (
-							<ReviewModalContent
-								coins={coins}
-								currency={currency}
-								data={data}
-								price={currentPrice}
-								onClickAccept={this.onAcceptDialog}
-								onClickCancel={this.onCloseDialog}
-								hasDestinationTag={hasDestinationTag}
+							{titleSection}
+							{renderFields(formValues)}
+							{error && <div className="warning_text">{error}</div>}
+						</div>
+						<div className="btn-wrapper">
+							<Button
+								label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+								disabled={pristine || submitting || !valid}
+								onClick={this.onOpenDialog}
+								className="mb-3"
 							/>
-						) : (
-							<Loader relative={true} background={false} />
-						)}
-					</Dialog>
-				</form>
+						</div>
+						<Dialog
+							isOpen={dialogIsOpen}
+							label="withdraw-modal"
+							onCloseDialog={this.onCloseDialog}
+							shouldCloseOnOverlayClick={dialogOtpOpen}
+							theme={activeTheme}
+							showCloseText={false}
+						>
+							{dialogOtpOpen ? (
+								<OtpForm
+									onSubmit={this.onSubmitOtp}
+									onClickHelp={openContactForm}
+								/>
+							) : !submitting ? (
+								<ReviewModalContent
+									coins={coins}
+									currency={currency}
+									data={data}
+									price={currentPrice}
+									onClickAccept={this.onAcceptDialog}
+									onClickCancel={this.onCloseDialog}
+									hasDestinationTag={hasDestinationTag}
+								/>
+							) : (
+								<Loader relative={true} background={false} />
+							)}
+						</Dialog>
+					</form>
+				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
 			return (
