@@ -59,13 +59,13 @@ const text = (email, data, language, domain) => {
 	`;
 };
 
-const htmlDynamic = async (email, data, language, domain, stringDynamic) => {
+const htmlDynamic = (email, data, language, domain, stringDynamic) => {
 	const LOGIN = require('../strings').getStringObject(language, 'LOGIN');
 
 	return `
     <div>
       <p>
-        ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : LOGIN.GREETING(email)}
+        ${(stringDynamic.GREETING && stringDynamic.GREETING.format(email)) ? stringDynamic.GREETING.format(email) : LOGIN.GREETING(email)}
       </p>
       <p>
         ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : LOGIN.BODY[1]}

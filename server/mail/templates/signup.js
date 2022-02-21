@@ -63,7 +63,7 @@ const htmlDynamic = (email, data, language, domain, stringDynamic) => {
         ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : SIGNUP.GREETING(email)}
       </p>
       <p>
-        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1]() : SIGNUP.BODY[1]()}<br />
+        ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : SIGNUP.BODY[1]()}<br />
       </p>
       <p>
         ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : SIGNUP.BODY[2]}
@@ -82,7 +82,7 @@ const textDynamic = (email, data, language, domain, stringDynamic) => {
 	const SIGNUP = require('../strings').getStringObject(language, 'SIGNUP');
 	return `
     ${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : SIGNUP.GREETING(email)}
-    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1]() : SIGNUP.BODY[1]()}
+    ${(stringDynamic.BODY && stringDynamic.BODY[1]) ? stringDynamic.BODY[1] : SIGNUP.BODY[1]()}
     ${(stringDynamic.BODY && stringDynamic.BODY[2]) ? stringDynamic.BODY[2] : SIGNUP.BODY[2]}
     ${(stringDynamic.BODY && stringDynamic.BODY[3]) ? stringDynamic.BODY[3] : SIGNUP.BODY[3]}(${link})
 	 ${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : SIGNUP.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : SIGNUP.CLOSING[2]()}
