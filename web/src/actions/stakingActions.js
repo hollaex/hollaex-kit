@@ -24,6 +24,8 @@ export const SET_DISTRIBUTIONS = 'SET_DISTRIBUTIONS';
 export const SET_PUBLIC_INFO = 'SET_PUBLIC_INFO';
 export const SET_PENDING_TRANSACTIONS = 'SET_PENDING_TRANSACTIONS';
 export const RESET_STAKE_STORE = 'RESET_STAKE_STORE';
+export const SET_PENALTIES = 'SET_PENALTIES';
+export const SET_POTS = 'SET_POTS';
 
 const setAccount = (account = '', balance = 0) => ({
 	type: SET_ACCOUNT,
@@ -60,6 +62,20 @@ const setPeriods = (periods = {}) => ({
 	type: SET_PERIODS,
 	payload: {
 		periods,
+	},
+});
+
+const setPenalties = (penalties = {}) => ({
+	type: SET_PENALTIES,
+	payload: {
+		penalties,
+	},
+});
+
+const setPots = (pots = {}) => ({
+	type: SET_POTS,
+	payload: {
+		pots,
 	},
 });
 
@@ -172,6 +188,30 @@ export const getAllPeriods = () => {
 	};
 };
 
+export const getAllPenalties = () => {
+	return async (dispatch) => {
+		const data = {};
+		Object.keys(CONTRACTS).forEach((symbol) => {
+			data[symbol] = getPenaltyForToken(symbol)();
+		});
+
+		const penalties = await hash(data);
+		dispatch(setPenalties(penalties));
+	};
+};
+
+export const getAllPots = () => {
+	return async (dispatch) => {
+		const data = {};
+		Object.keys(CONTRACTS).forEach((symbol) => {
+			data[symbol] = getPotForToken(symbol)();
+		});
+
+		const pots = await hash(data);
+		dispatch(setPots(pots));
+	};
+};
+
 const getUserStake = (token = 'xht') => async (address) => {
 	const stakes = await CONTRACTS[token].main.methods.getStake(address).call();
 	return stakes;
@@ -239,12 +279,6 @@ export const removeStake = (token = 'xht') => ({
 	);
 };
 
-export const distribute = (token = 'xht') => ({ account, cb = () => {} }) => {
-	return CONTRACTS[token].main.methods
-		.distribute()
-		.send({ ...commonConfigs, from: account }, cb);
-};
-
 const getPeriodsForToken = (token = 'xht') => async () => {
 	const periods = await Promise.all([
 		CONTRACTS[token].main.methods.periods(0).call(),
@@ -253,6 +287,16 @@ const getPeriodsForToken = (token = 'xht') => async () => {
 		CONTRACTS[token].main.methods.periods(3).call(),
 	]);
 	return periods;
+};
+
+const getPenaltyForToken = (token = 'xht') => async () => {
+	const penalty = await CONTRACTS[token].main.methods.penalty().call();
+	return penalty;
+};
+
+const getPotForToken = (token = 'xht') => async () => {
+	const pot = await CONTRACTS[token].main.methods.pot().call();
+	return pot;
 };
 
 // const getTotalStake = (token = 'xht') => async () => {

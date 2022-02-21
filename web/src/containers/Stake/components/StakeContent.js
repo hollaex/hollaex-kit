@@ -103,6 +103,7 @@ class StakeContent extends Component {
 			tokenData,
 			onCloseDialog,
 			account,
+			penalties,
 		} = this.props;
 		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
@@ -144,6 +145,7 @@ class StakeContent extends Component {
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
+						penalty={penalties[symbol]}
 					/>
 				);
 			case CONTENT_TYPE.WAITING:
@@ -199,6 +201,7 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	penalties: store.stake.penalties,
 });
 
 const mapDispatchToProps = (dispatch) => ({

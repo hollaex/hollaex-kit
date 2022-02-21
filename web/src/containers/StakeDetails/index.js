@@ -9,6 +9,9 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	getPendingTransactions,
+	getAllPeriods,
+	getAllPenalties,
+	getAllPots,
 } from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
@@ -18,6 +21,7 @@ import { CONTRACT_ADDRESSES } from 'config/contracts';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Account from 'containers/Stake/components/Account';
 import { getPublicInfo } from 'actions/stakingActions';
+import { open } from 'helpers/link';
 
 import { userActiveStakesSelector } from 'containers/Stake/selector';
 import PublicInfo from './components/PublicInfo';
@@ -59,10 +63,16 @@ class StakeDetails extends Component {
 			getAllUserStakes,
 			getPublicInfo,
 			getPendingTransactions,
+			getAllPenalties,
+			getAllPeriods,
+			getAllPots,
 		} = this.props;
 
 		loadBlockchainData();
 		getCurrentBlock();
+		getAllPenalties();
+		getAllPeriods();
+		getAllPots();
 		getDistributions(token);
 		getPublicInfo(token);
 
@@ -94,6 +104,23 @@ class StakeDetails extends Component {
 		}
 	}
 
+	goToPOT = () => {
+		const { network, pots } = this.props;
+		const symbol = 'xht';
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${pots[symbol]}`;
+		open(url);
+	};
+
+	goToBlocks = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/blocks`;
+		open(url);
+	};
+
 	renderTabContent = (key) => {
 		const {
 			icons: ICONS,
@@ -114,16 +141,18 @@ class StakeDetails extends Component {
 						token={token}
 						fullname={fullname}
 						setActiveTab={this.setActiveTab}
+						goToPOT={this.goToPOT}
 					/>
 				);
 			case TABS.DISTRIBUTIONS.key:
-				return <Distributions token={token} />;
+				return <Distributions token={token} goToPOT={this.goToPOT} />;
 			case TABS.MY_STAKING.key:
 				return (
 					<MyStaking
 						token={token}
 						totalUserEarnings={totalUserEarnings}
 						totalUserStakes={totalUserStakes}
+						goToBlocks={this.goToBlocks}
 					/>
 				);
 			default:
@@ -153,14 +182,12 @@ class StakeDetails extends Component {
 		this.setState({ activeKey });
 	};
 
-	openContract = (address) => {
+	openContract = (token) => {
 		const { network } = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${address}`;
-		if (window) {
-			window.open(url, '_blank');
-		}
+		}etherscan.io/token/${token}`;
+		open(url);
 	};
 
 	render() {
@@ -197,10 +224,10 @@ class StakeDetails extends Component {
 								<span
 									className="pointer blue-link"
 									onClick={() =>
-										this.openContract(CONTRACT_ADDRESSES[token].main)
+										this.openContract(CONTRACT_ADDRESSES[token].token)
 									}
 								>
-									{CONTRACT_ADDRESSES[token].main}
+									{CONTRACT_ADDRESSES[token].token}
 								</span>
 							)}
 							<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
@@ -250,6 +277,7 @@ const mapStateToProps = (store) => ({
 	account: store.stake.account,
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
+	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
 });
 
@@ -262,6 +290,9 @@ const mapDispatchToProps = (dispatch) => ({
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	getPublicInfo: bindActionCreators(getPublicInfo, dispatch),
+	getAllPeriods: bindActionCreators(getAllPeriods, dispatch),
+	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
+	getAllPots: bindActionCreators(getAllPots, dispatch),
 });
 
 export default connect(
