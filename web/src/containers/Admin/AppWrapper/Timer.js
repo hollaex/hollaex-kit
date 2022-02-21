@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import 'moment-timezone';
 
 class Timer extends React.Component {
 	constructor(prop) {
@@ -24,6 +25,8 @@ class Timer extends React.Component {
 		if (this.props.isHover) {
 			date =
 				moment().format('DD/MMM/YYYY, hh:mm:ssA ').toUpperCase() +
+				moment.tz.guess(true) +
+				' ' +
 				new Date().toTimeString().slice(9);
 		}
 		return date;
