@@ -96,24 +96,22 @@ const send = (params) => {
 		});
 };
 
-const testSendSMTPEmail = (sender = "", smtp = {}) => {
-	const to = {ToAddresses: [AUDIT_EMAIL()]};
+const testSendSMTPEmail = (receiver = "", smtp = {}) => {
+	const to = {ToAddresses: [receiver]};
 	const messageContent = {
-		'subject': 'test email',
-		'html': '<div><p>test content</p></div>',
+		'subject': 'Test Email Config SMTP',
+		'html': '<div><p>Test Content Email</p></div>',
 		'text': 'test content'
 	};
 	let from = SUPPORT_SOURCE();
-	if (sender) {
-		from = `'${API_NAME()} Support <${sender}>'`;
-	}
-	const payload = payloadTemplate(from, to, messageContent);
 
 	if (Object.keys(smtp).length > 0) {
-		return sendSMTPTestEmail(payload, smtp);
-	} else {
-		return send(payload);
+		from = `'SMTP User <${smtp.user}>'`;
 	}
+
+	const payload = payloadTemplate(from, to, messageContent);
+
+	return sendSMTPTestEmail(payload, smtp);
 };
 
 module.exports = {
