@@ -156,7 +156,9 @@ async function sendConfirmationEmail(userId, domain) {
 
 async function confirmByEmail(userId, givenCode) {
 	const code = await client.getAsync(`ConfirmationEmail:${userId}`);
-
+	if (!code || code.length < 2) {
+		return false;
+	}
 	if (!crypto.timingSafeEqual(Buffer.from(code), Buffer.from(givenCode))) {
 		return false;
 	}

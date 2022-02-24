@@ -341,6 +341,17 @@ const BANKVERIFIED = {
 	CLOSING: COMMON.CLOSING
 };
 
+const CONFIRMEMAIL = {
+	TITLE: 'Security Verification',
+	GREETING: (name) => COMMON.GREETING(name),
+	BODY: {
+		1: 'You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.',
+		2: (code) => `${code}`,
+		3: 'If you did not make this request, report this immidiately and proceed to change your crendetials as soon as possible.'
+	},
+	CLOSING: COMMON.CLOSING
+};
+
 module.exports = {
 	FOOTER,
 	COMMON,
@@ -366,5 +377,6 @@ module.exports = {
 	SMS,
 	INVITEDOPERATOR,
 	DISCOUNTUPDATE,
-	BANKVERIFIED
+	BANKVERIFIED,
+	CONFIRMEMAIL
 };

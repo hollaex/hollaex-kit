@@ -24,7 +24,8 @@ const MAILTYPE = {
 	INVITED_OPERATOR: 'invitedOperator',
 	ALERT: 'alert',
 	DISCOUNT_UPDATE: 'discountUpdate',
-	BANK_VERIFIED: 'bankVerified'
+	BANK_VERIFIED: 'bankVerified',
+	CONFIRM_EMAIL: 'confirmEmail'
 };
 
 const languageFile = (lang) => {
