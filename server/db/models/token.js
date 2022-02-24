@@ -40,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		can_read: {
 			type: DataTypes.BOOLEAN,
-			defaultValue: false
+			defaultValue: true
 		},
 		can_trade: {
 			type: DataTypes.BOOLEAN,

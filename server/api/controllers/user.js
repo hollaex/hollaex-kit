@@ -781,6 +781,7 @@ const createHmacToken = (req, res) => {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
+				// TODO check for the name duplication
 				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);

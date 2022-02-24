@@ -971,14 +971,12 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				role: ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
-				active: true
+				active: true,
+				can_read: true
 			});
 		})
-		.then(() => {
-			return {
-				apiKey: key,
-				secret
-			};
+		.then((token) => {
+			return token
 		});
 };
 
