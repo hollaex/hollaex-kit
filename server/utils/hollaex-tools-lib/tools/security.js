@@ -919,7 +919,12 @@ const formatTokenObject = (tokenData) => ({
 	active: tokenData.active,
 	revoked: tokenData.revoked,
 	expiry: tokenData.expiry,
-	created: tokenData.created_at
+	created: tokenData.created_at,
+	whitelisted_ips: tokenData.whitelisted_ips,
+	enabled_whitelisting: tokenData.enabled_whitelisting,
+	can_read: tokenData.can_read,
+	can_trade: tokenData.can_trade,
+	can_withdraw: tokenData.can_withdraw
 });
 
 const getUserKitHmacTokens = (userId) => {
@@ -992,7 +997,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		}
 	});
 
-	return await token.update(values, {
+	token = await token.update(values, {
 		returning: true,
 		fields: [
 			'name',
@@ -1003,6 +1008,8 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'whitelisted_ips'
 		]
 	});
+	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
+	return formatTokenObject(token);
 }
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
@@ -1043,7 +1050,7 @@ const findTokenByApiKey = (apiKey) => {
 	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
 		.then(async (token) => {
 			if (!token) {
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey not found in redis',
 					apiKey
 				);

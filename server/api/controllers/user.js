@@ -810,6 +810,19 @@ function updateHmacToken(req, res) {
 	const ip = req.headers['x-real-ip'];
 	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, enabled_whitelisting } = req.swagger.params.data.value;
 
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken data',
+		token_id,
+		name,
+		otp_code,
+		email_code,
+		permissions,
+		whitelisted_ips,
+		enabled_whitelisting,
+		ip
+	);
+
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
