@@ -330,6 +330,9 @@ table th {
 .text-align-left {
   text-align: left !important; }
 
+.normal {
+  font-weight: normal; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -358,8 +361,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -375,8 +378,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -391,7 +394,7 @@ table th {
     .app_container .app_container-content .app_container-main .ant-tabs {
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-ink-bar {
-      background: var(--labels_important-active-labels-text-graphics); }
+      background: var(--specials_buttons-links-and-highlights); }
     .app_container .app_container-content .app_container-main .ant-tabs-top > .ant-tabs-nav::before {
       border-color: var(--labels_secondary-inactive-label-text-graphics); }
     .app_container .app_container-content .app_container-main .ant-tabs-tab {
@@ -553,6 +556,9 @@ table th {
   border-color: var(--labels_secondary-inactive-label-text-graphics) !important;
   right: 5px;
   bottom: 5px; }
+
+.background-color-layer {
+  box-shadow: inset 0 0 0 1000px var(--calculated_background-overlay); }
 
 .light-auth-body {
   background-repeat: no-repeat;
@@ -2835,8 +2841,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -2990,7 +2996,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -4822,7 +4828,7 @@ table th {
 .stake-period-button.ant-radio-button-wrapper {
   margin: 1rem;
   padding: 0.2rem;
-  color: var(--labels_secondary-inactive-label-text-graphics);
+  color: var(--labels_important-active-labels-text-graphics);
   background-color: transparent;
   background-size: 100%;
   background-repeat: repeat-y;
@@ -4831,7 +4837,8 @@ table th {
   border: none;
   font-size: 1rem;
   line-height: 1.2rem;
-  text-align: center; }
+  text-align: center;
+  opacity: 0.5; }
   .stake-period-button.ant-radio-button-wrapper .stake-period-text {
     width: 10rem;
     margin: auto; }
@@ -4839,18 +4846,21 @@ table th {
     font-weight: bolder;
     font-size: 4rem;
     line-height: 5rem;
-    color: var(--labels_secondary-inactive-label-text-graphics) !important; }
+    color: var(--labels_important-active-labels-text-graphics); }
   .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
     background-color: transparent; }
 
 .stake-period-button.ant-radio-button-wrapper-checked {
   height: 12rem;
-  width: 12rem; }
+  width: 12rem;
+  opacity: 1; }
   .stake-period-button.ant-radio-button-wrapper-checked .period-x {
     font-weight: bolder;
     font-size: 5rem;
-    line-height: 6rem;
-    color: var(--labels_important-active-labels-text-graphics) !important; }
+    line-height: 6rem; }
+
+.stake-period-button.ant-radio-button-wrapper:hover, .stake-period-button.ant-radio-button-wrapper:focus {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .staking-account__container {
   padding: 0 0.5rem;
@@ -4934,6 +4944,38 @@ table th {
   .disconnect-menu .ant-dropdown-menu-item:hover {
     color: var(--labels_important-active-labels-text-graphics);
     background-color: var(--base_wallet-sidebar-and-popup); }
+
+.stake-details-table .table-wrapper {
+  margin: 0.2rem 0 2rem; }
+
+.stake-details-table .table_header-row {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.stake-panel-bg {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+  .stake-panel-bg:before {
+    content: '';
+    background-size: 100% auto;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0.05; }
+  .stake-panel-bg .wallet-assets_block {
+    width: 100%;
+    height: 100%; }
+
+.table-row.hoverable:hover {
+  background-color: var(--calculated_stake-table_highlight);
+  color: var(--labels_important-active-labels-text-graphics); }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
@@ -7630,14 +7672,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -10868,7 +10910,6 @@ svg .fiat-page-under-construction,
 svg .generate-reference-number,
 svg .osko-logo,
 svg .stake-variable,
-svg .stake-pending,
 svg .staking-unlock {
   fill: var(--labels_important-active-labels-text-graphics); }
 

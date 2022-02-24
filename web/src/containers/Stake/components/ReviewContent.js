@@ -17,6 +17,7 @@ const ReviewContent = ({
 	period,
 	amount,
 	icons: ICONS,
+	penalty,
 }) => {
 	const { symbol } = tokenData;
 
@@ -88,7 +89,7 @@ const ReviewContent = ({
 					</div>
 					<div className="secondary-text">
 						<EditWrapper stringId="STAKE.SLASHING_TEXT_1">
-							{STRINGS['STAKE.SLASHING_TEXT_1']}
+							{STRINGS.formatString(STRINGS['STAKE.SLASHING_TEXT_1'], penalty)}
 						</EditWrapper>
 					</div>
 					<div className="secondary-text">

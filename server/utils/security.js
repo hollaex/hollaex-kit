@@ -1,6 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const randomString = require('random-string');
 
 const generateHash = (password) => {

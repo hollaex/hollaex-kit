@@ -91,7 +91,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 
 			.ant-tabs-ink-bar {
-				background: $colors-main-black;
+				background: $link;
 			}
 
 			.ant-tabs-top > .ant-tabs-nav::before {
@@ -334,4 +334,8 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	border-color: $colors-black !important;
 	right: 5px;
 	bottom: 5px;
+}
+
+.background-color-layer {
+	box-shadow: inset 0 0 0 1000px $app-background-overlay;
 }

@@ -12,11 +12,14 @@ import {
 	getAllPeriods,
 	getAllUserStakes,
 	getPendingTransactions,
+	getAllPenalties,
+	getAllPots,
 } from 'actions/stakingActions';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { Link } from 'react-router';
 import { web3 } from 'config/contracts';
 import STRINGS from 'config/localizedStrings';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	IconTitle,
 	HeaderSection,
@@ -26,12 +29,15 @@ import {
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
+import { open } from 'helpers/link';
 
 import {
 	userActiveStakesSelector,
 	pendingTransactionsSelector,
 } from './selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
+import { isLoggedIn } from 'utils/token';
+import { formatToCurrency } from 'utils/currency';
 import Account from './components/Account';
 import ConnectWrapper from './components/ConnectWrapper';
 import StakesAndEarnings from './components/StakesAndEarnings';
@@ -39,10 +45,18 @@ import Variable from './components/Variable';
 
 class Stake extends Component {
 	componentWillMount() {
-		const { loadBlockchainData, getAllPeriods, getCurrentBlock } = this.props;
+		const {
+			loadBlockchainData,
+			getAllPeriods,
+			getCurrentBlock,
+			getAllPenalties,
+			getAllPots,
+		} = this.props;
 		loadBlockchainData();
 		getCurrentBlock();
 		getAllPeriods();
+		getAllPenalties();
+		getAllPots();
 	}
 
 	componentDidUpdate(prevProps) {
@@ -95,6 +109,43 @@ class Stake extends Component {
 		setNotification(NOTIFICATIONS.UNSTAKE, { stakeData });
 	};
 
+	moveXHT = () => {
+		const { setNotification, router } = this.props;
+		router.push('/wallet/xht/withdraw');
+		setNotification(NOTIFICATIONS.MOVE_XHT, {});
+	};
+
+	renderAvailableBalance = () => {
+		const { balance, coins } = this.props;
+		const currency = 'xht';
+		const { min } = coins[currency] || DEFAULT_COIN_DATA;
+		const available = formatToCurrency(balance[`${currency}_available`], min);
+
+		return <span className="secondary-text">{available}</span>;
+	};
+
+	goToDetails = (symbol) => {
+		const { router } = this.props;
+		router.push(`/stake/details/${symbol.toLowerCase()}`);
+	};
+
+	goToPOT = () => {
+		const { network, pots } = this.props;
+		const symbol = 'xht';
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${pots[symbol].address}`;
+		open(url);
+	};
+
+	goToBlocks = () => {
+		const { network } = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/blocks`;
+		open(url);
+	};
+
 	render() {
 		const {
 			icons: ICONS,
@@ -141,8 +192,48 @@ class Stake extends Component {
 								<div className="secondary-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.CURRENT_ETH_BLOCK'],
-										<span className="blue-link">{currentBlock}</span>
+										<span
+											className="blue-link pointer underline-text"
+											onClick={this.goToBlocks}
+										>
+											{currentBlock}
+										</span>
 									)}
+								</div>
+								<div className="secondary-text">
+									{STRINGS.formatString(
+										STRINGS['STAKE.ON_EXCHANGE_XHT'],
+										isLoggedIn() ? (
+											this.renderAvailableBalance()
+										) : (
+											<Link to="/login">
+												<span className="blue-link pointer underline-text">
+													{STRINGS['STAKE.LOGIN_HERE']}
+												</span>
+											</Link>
+										),
+										isLoggedIn() && account ? (
+											<span onClick={this.moveXHT}>
+												(
+												{
+													<span className="blue-link pointer">
+														{STRINGS['STAKE.MOVE_XHT']}
+													</span>
+												}
+												)
+											</span>
+										) : (
+											''
+										)
+									)}
+								</div>
+								<div className="secondary-text">
+									<span
+										className="blue-link pointer underline-text"
+										onClick={this.goToPOT}
+									>
+										{STRINGS['STAKE.VIEW_POT']}
+									</span>
 								</div>
 							</div>
 							<StakesAndEarnings />
@@ -188,38 +279,41 @@ class Stake extends Component {
 									const { symbol, available } = tokenData;
 									const { fullname } = coins[symbol];
 									const iconId = `${symbol.toUpperCase()}_ICON`;
+									const goToSymbol = () => this.goToDetails(symbol);
 									return (
-										<tr className="table-row table-bottom-border" key={index}>
+										<tr
+											className="hoverable pointer table-row table-bottom-border"
+											key={index}
+										>
 											<td />
-											<td className="td-name td-fit">
+											<td onClick={goToSymbol} className="td-name td-fit">
 												<div className="d-flex align-items-center">
-													<Link to={`/stake/details/${symbol.toLowerCase()}`}>
-														<Image
-															iconId={iconId}
-															icon={ICONS[iconId]}
-															wrapperClassName="currency-ball pt-2"
-															imageWrapperClassName="currency-ball-image-wrapper"
-														/>
-													</Link>
-													<Link to={`/stake/details/${symbol.toLowerCase()}`}>
-														{fullname}
-													</Link>
+													<Image
+														iconId={iconId}
+														icon={ICONS[iconId]}
+														wrapperClassName="currency-ball pt-2"
+														imageWrapperClassName="currency-ball-image-wrapper"
+													/>
+													{fullname}
+													<span className="pl-2 secondary-text">
+														{symbol.toUpperCase()}
+													</span>
 												</div>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>{available}</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													{totalUserStakes[symbol]}
 												</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													<Variable className="important-text" />
 												</ConnectWrapper>
 											</td>
-											<td>
+											<td onClick={goToSymbol}>
 												<ConnectWrapper>
 													{totalUserEarnings[symbol]}
 												</ConnectWrapper>
@@ -286,11 +380,12 @@ class Stake extends Component {
 												weiAmount,
 												period,
 												startBlock,
-												reward,
+												weiReward,
 												closeBlock,
 												index,
 											]) => {
 												const amount = web3.utils.fromWei(weiAmount);
+												const reward = web3.utils.fromWei(weiReward);
 												const calculatedCloseBlock = mathjs.sum(
 													startBlock,
 													period
@@ -446,10 +541,13 @@ class Stake extends Component {
 
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
+	balance: store.user.balance,
 	account: store.stake.account,
+	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
 	pending: pendingTransactionsSelector(store),
 });
@@ -463,6 +561,8 @@ const mapDispatchToProps = (dispatch) => ({
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
+	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
+	getAllPots: bindActionCreators(getAllPots, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Stake));

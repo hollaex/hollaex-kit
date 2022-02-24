@@ -28,16 +28,17 @@ const PublicInfo = ({
 	distributions,
 	account,
 	coins,
-	totalDistributedEarnings,
-	totalDistributedEarningsValue,
-	clearedUndistributedEarnings,
-	unclearedPendingEarnings,
+	totalDistributedRewards,
+	totalDistributedRewardsValue,
+	potBalance,
+	unclaimedRewards,
 	totalStaked,
 	totalStakedValue,
 	myStake,
 	myStakePercent,
 	othersStake,
 	othersStakePercent,
+	goToPOT,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -111,7 +112,7 @@ const PublicInfo = ({
 			<div className="d-flex justify-content-between">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TITLE']}
 						</div>
 						<div className="secondary-text">
@@ -124,47 +125,51 @@ const PublicInfo = ({
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS']}
+						<div className="bold important-text">
+							{STRINGS.formatString(
+								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_REWARDS'],
+								<span
+									className="blue-link pointer underline-text normal"
+									onClick={goToPOT}
+								>
+									{STRINGS['STAKE.VIEW_POT']}
+								</span>
+							)}
 						</div>
 						<div className="d-flex">
-							<div>{formatToken(totalDistributedEarnings)}</div>
+							<div className="important-text">
+								{formatToken(totalDistributedRewards)}
+							</div>
 							<div className="secondary-text pl-2">
-								{formatBase(totalDistributedEarningsValue)}
+								{formatBase(totalDistributedRewardsValue)}
 							</div>
 						</div>
 					</div>
 
 					<div className="pt-4 d-flex">
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.CLEARED_UNDISTRIBUTED_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.POT_BALANCE']}
 							</div>
-							<div>{formatToken(clearedUndistributedEarnings)}</div>
+							<div className="important-text">{formatToken(potBalance)}</div>
 						</div>
 						<div className="secondary-text px-4">|</div>
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.UNCLEARED_PENDING_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.UNCLAIMED_REWARDS']}
 							</div>
-							<div>{formatToken(unclearedPendingEarnings)}</div>
+							<div className="important-text">
+								{formatToken(unclaimedRewards)}
+							</div>
 						</div>
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_STAKED']}
 						</div>
 						<div className="d-flex">
-							<div>{formatToken(totalStaked)}</div>
+							<div className="important-text">{formatToken(totalStaked)}</div>
 							<div className="secondary-text pl-2">
 								{formatBase(totalStakedValue)}
 							</div>
@@ -172,11 +177,11 @@ const PublicInfo = ({
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.REWARD_RATE']}
 						</div>
-						<div className="secondary-text">
-							<Variable />
+						<div className="important-text">
+							<Variable className="important-text" />
 						</div>
 					</div>
 				</div>
@@ -188,7 +193,7 @@ const PublicInfo = ({
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend mine" />
-							<div className="bold">
+							<div className="bold important-text">
 								{account
 									? STRINGS.formatString(
 											STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
@@ -199,7 +204,7 @@ const PublicInfo = ({
 						</div>
 						<div className="ml-4 pl-3">
 							<ConnectWrapper>
-								<div>{formatToken(myStake)}</div>
+								<div className="important-text">{formatToken(myStake)}</div>
 							</ConnectWrapper>
 						</div>
 					</div>
@@ -207,7 +212,7 @@ const PublicInfo = ({
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend others" />
-							<div className="bold">
+							<div className="bold important-text">
 								{STRINGS.formatString(
 									STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
 									othersStakePercent
@@ -215,7 +220,7 @@ const PublicInfo = ({
 							</div>
 						</div>
 						<div className="d-flex ml-4 pl-3">
-							<div>{formatToken(othersStake)}</div>
+							<div className="important-text">{formatToken(othersStake)}</div>
 							<div className="pl-2">
 								(
 								<span
@@ -232,14 +237,14 @@ const PublicInfo = ({
 					</div>
 				</div>
 			</div>
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
 			<div>
+				<div className="important-text bold pt-4 mt-2">
+					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+						{STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
+					</EditWrapper>
+				</div>
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={distributions}
 					count={distributions.length}
 					headers={generateDistributionsHeader()}
@@ -248,7 +253,7 @@ const PublicInfo = ({
 					rowKey={(data) => {
 						return data.id;
 					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+					title={STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
 					displayPaginator={false}

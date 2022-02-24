@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { intersection, has } = require('lodash');
 const { isEmail } = require('validator');
+const ipRangeCheck = require('ip-range-check');
 const { SERVER_PATH } = require('../constants');
 const {
 	INVALID_CAPTCHA,
@@ -156,7 +157,9 @@ async function sendConfirmationEmail(userId, domain) {
 
 async function confirmByEmail(userId, givenCode) {
 	const code = await client.getAsync(`ConfirmationEmail:${userId}`);
-
+	if (!code || code.length < 2) {
+		return false;
+	}
 	if (!crypto.timingSafeEqual(Buffer.from(code), Buffer.from(givenCode))) {
 		return false;
 	}
@@ -568,10 +571,9 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
-
 	// Swagger endpoint scopes
 	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
-	const endpointPermissions = req.swagger.operation['x-token-permissions'];
+	const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -752,6 +754,20 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
+					const found = token.whitelisted_ips.find((wlip) => {
+						return ipRangeCheck(ip, wlip);
+					});
+					if (!found) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
+							apiKey,
+							token.whitelisted_ips,
+							ip
+						);
+						throw new Error(API_KEY_NOT_WHITELISTED);
+					}
+				}
 				if (!scopes.includes(token.type)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
@@ -777,13 +793,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						apiKey
 					);
 					throw new Error(API_KEY_NOT_PERMITTED);
-				} else if (token.whitelisting_enabled && !token.whitelisted_ips.includes(ip)) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
-						apiKey,
-						ip
-					);
-					throw new Error(API_KEY_NOT_WHITELISTED);
 				} else {
 					const isSignatureValid = checkHmacSignature(
 						token.secret,
@@ -917,14 +926,20 @@ const formatTokenObject = (tokenData) => ({
 	active: tokenData.active,
 	revoked: tokenData.revoked,
 	expiry: tokenData.expiry,
-	created: tokenData.created_at
+	created: tokenData.created_at,
+	whitelisted_ips: tokenData.whitelisted_ips,
+	whitelisting_enabled: tokenData.whitelisting_enabled,
+	can_read: tokenData.can_read,
+	can_trade: tokenData.can_trade,
+	can_withdraw: tokenData.can_withdraw
 });
 
 const getUserKitHmacTokens = (userId) => {
 	return dbQuery.findAndCountAllWithRows('token', {
 		where: {
 			user_id: userId,
-			type: TOKEN_TYPES.HMAC
+			type: TOKEN_TYPES.HMAC,
+			active: true
 		},
 		attributes: {
 			exclude: ['user_id', 'updated_at']
@@ -956,18 +971,16 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				role: ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
-				active: true
+				active: true,
+				can_read: true
 			});
 		})
-		.then(() => {
-			return {
-				apiKey: key,
-				secret
-			};
+		.then((token) => {
+			return token
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting) {
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({where: {id: token_id}});
 
@@ -981,7 +994,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		...permissions,
 		name,
 		whitelisted_ips,
-		enabled_whitelisting
+		whitelisting_enabled
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -990,17 +1003,19 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		}
 	});
 
-	return await token.update(values, {
+	let newToken = await token.update(values, {
 		returning: true,
 		fields: [
 			'name',
 			'can_read',
 			'can_trade',
 			'can_withdraw',
-			'enabled_whitelisting',
+			'whitelisting_enabled',
 			'whitelisted_ips'
 		]
 	});
+	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
+	return formatTokenObject(newToken);
 }
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
@@ -1041,7 +1056,7 @@ const findTokenByApiKey = (apiKey) => {
 	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
 		.then(async (token) => {
 			if (!token) {
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey not found in redis',
 					apiKey
 				);
@@ -1072,7 +1087,7 @@ const findTokenByApiKey = (apiKey) => {
 
 				client.hsetAsync(HMAC_TOKEN_KEY, apiKey, JSON.stringify(token));
 
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey stored in redis',
 					apiKey
 				);
