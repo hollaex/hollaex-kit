@@ -109,7 +109,7 @@ class StakeDetails extends Component {
 		const symbol = 'xht';
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${pots[symbol]}`;
+		}etherscan.io/address/${pots[symbol].address}`;
 		open(url);
 	};
 
@@ -204,70 +204,75 @@ class StakeDetails extends Component {
 		const { fullname } = coins[token];
 		const iconId = `${token.toUpperCase()}_ICON`;
 
-		return (
-			<div className="stake-details presentation_container apply_rtl wallet-wrapper">
-				<div className="d-flex align-end justify-content-between">
-					<div>
-						<IconTitle
-							text={STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.TOKEN'],
-								fullname
-							)}
-							iconPath={ICONS[iconId]}
-							iconId={iconId}
-							textType="title"
-							imageWrapperClassName="currency-ball pt-2"
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
-								<span
-									className="pointer blue-link"
-									onClick={() =>
-										this.openContract(CONTRACT_ADDRESSES[token].token)
-									}
-								>
-									{CONTRACT_ADDRESSES[token].token}
-								</span>
-							)}
-							<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
-						</div>
-						<div>
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.BACK_SUBTITLE'],
-								<Link to="/stake">
-									<span className="pointer blue-link">
-										{STRINGS['STAKE_DETAILS.GO_BACK']}
-									</span>
-								</Link>
-							)}
-							<EditWrapper stringId="STAKE_DETAILS.BACK_SUBTITLE,STAKE_DETAILS.GO_BACK" />
-						</div>
-					</div>
-					<div>
-						<Account />
-					</div>
-				</div>
+		const __html = `.stake-panel-bg:before { background-image: url(${ICONS['STAKING_PANEL_BACKGROUND']}) }`;
 
-				<Fragment>
-					<Tabs
-						activeKey={activeKey}
-						onTabClick={(key) => this.setActiveTab(key)}
-					>
-						{Object.entries(TABS).map(([_, { key, title }]) => {
-							return (
-								<TabPane tab={title} key={key}>
-									<div className="wallet-container no-border">
-										<div className="wallet-assets_block">
-											{this.renderTabContent(key)}
+		return (
+			<Fragment>
+				<style dangerouslySetInnerHTML={{ __html }} />
+				<div className="stake-details presentation_container apply_rtl wallet-wrapper">
+					<div className="d-flex align-end justify-content-between">
+						<div>
+							<IconTitle
+								text={STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.TOKEN'],
+									fullname
+								)}
+								iconPath={ICONS[iconId]}
+								iconId={iconId}
+								textType="title"
+								imageWrapperClassName="currency-ball pt-2"
+							/>
+							<div>
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
+									<span
+										className="pointer blue-link"
+										onClick={() =>
+											this.openContract(CONTRACT_ADDRESSES[token].token)
+										}
+									>
+										{CONTRACT_ADDRESSES[token].token}
+									</span>
+								)}
+								<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
+							</div>
+							<div>
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.BACK_SUBTITLE'],
+									<Link to="/stake">
+										<span className="pointer blue-link">
+											{STRINGS['STAKE_DETAILS.GO_BACK']}
+										</span>
+									</Link>
+								)}
+								<EditWrapper stringId="STAKE_DETAILS.BACK_SUBTITLE,STAKE_DETAILS.GO_BACK" />
+							</div>
+						</div>
+						<div>
+							<Account />
+						</div>
+					</div>
+
+					<Fragment>
+						<Tabs
+							activeKey={activeKey}
+							onTabClick={(key) => this.setActiveTab(key)}
+						>
+							{Object.entries(TABS).map(([_, { key, title }]) => {
+								return (
+									<TabPane tab={title} key={key}>
+										<div className="wallet-container no-border stake-panel-bg">
+											<div className="wallet-assets_block">
+												{this.renderTabContent(key)}
+											</div>
 										</div>
-									</div>
-								</TabPane>
-							);
-						})}
-					</Tabs>
-				</Fragment>
-			</div>
+									</TabPane>
+								);
+							})}
+						</Tabs>
+					</Fragment>
+				</div>
+			</Fragment>
 		);
 	}
 }

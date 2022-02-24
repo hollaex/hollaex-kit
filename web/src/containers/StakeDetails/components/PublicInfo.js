@@ -28,10 +28,10 @@ const PublicInfo = ({
 	distributions,
 	account,
 	coins,
-	totalDistributedEarnings,
-	totalDistributedEarningsValue,
-	clearedUndistributedEarnings,
-	unclearedPendingEarnings,
+	totalDistributedRewards,
+	totalDistributedRewardsValue,
+	potBalance,
+	unclaimedRewards,
 	totalStaked,
 	totalStakedValue,
 	myStake,
@@ -127,7 +127,7 @@ const PublicInfo = ({
 					<div className="pt-4">
 						<div className="bold important-text">
 							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS'],
+								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_REWARDS'],
 								<span
 									className="blue-link pointer underline-text normal"
 									onClick={goToPOT}
@@ -138,10 +138,10 @@ const PublicInfo = ({
 						</div>
 						<div className="d-flex">
 							<div className="important-text">
-								{formatToken(totalDistributedEarnings)}
+								{formatToken(totalDistributedRewards)}
 							</div>
 							<div className="secondary-text pl-2">
-								{formatBase(totalDistributedEarningsValue)}
+								{formatBase(totalDistributedRewardsValue)}
 							</div>
 						</div>
 					</div>
@@ -149,27 +149,17 @@ const PublicInfo = ({
 					<div className="pt-4 d-flex">
 						<div>
 							<div className="bold important-text">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.CLEARED_UNDISTRIBUTED_EARNINGS'
-									]
-								}
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.POT_BALANCE']}
 							</div>
-							<div className="important-text">
-								{formatToken(clearedUndistributedEarnings)}
-							</div>
+							<div className="important-text">{formatToken(potBalance)}</div>
 						</div>
 						<div className="secondary-text px-4">|</div>
 						<div>
 							<div className="bold important-text">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.UNCLEARED_PENDING_EARNINGS'
-									]
-								}
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.UNCLAIMED_REWARDS']}
 							</div>
 							<div className="important-text">
-								{formatToken(unclearedPendingEarnings)}
+								{formatToken(unclaimedRewards)}
 							</div>
 						</div>
 					</div>
@@ -250,7 +240,7 @@ const PublicInfo = ({
 			<div>
 				<div className="important-text bold pt-4 mt-2">
 					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-						{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						{STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
 					</EditWrapper>
 				</div>
 				<Table
@@ -263,7 +253,7 @@ const PublicInfo = ({
 					rowKey={(data) => {
 						return data.id;
 					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+					title={STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
 					displayPaginator={false}
