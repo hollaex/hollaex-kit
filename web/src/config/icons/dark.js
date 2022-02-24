@@ -253,6 +253,7 @@ const nestedIcons = {
 	STAKING_PERIOD_ITEM: '/assets/stake/staking-period-option-background.jpg',
 	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background.png',
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/success_stake-unstake.png',
 	STAKING_ERROR: '/assets/stake/error.svg',
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',

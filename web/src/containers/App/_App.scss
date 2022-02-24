@@ -335,3 +335,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	right: 5px;
 	bottom: 5px;
 }
+
+.background-color-layer {
+	box-shadow: inset 0 0 0 1000px $app-background-overlay;
+}
