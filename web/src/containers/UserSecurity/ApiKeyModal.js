@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { OtpForm, Loader, Notification, EmailCodeForm } from '../../components';
-import { NOTIFICATIONS } from '../../actions/appActions';
-import STRINGS from '../../config/localizedStrings';
+import { Loader, Notification, EmailCodeForm } from 'components';
+import { NOTIFICATIONS } from 'actions/appActions';
+import STRINGS from 'config/localizedStrings';
 import { PopupInfo, TokenCreatedInfo } from './DeveloperSection';
 import { formValueSelector } from 'redux-form';
 import { TokenForm, generateFormValues, FORM_NAME } from './ApiKeyForm';
-import { tokenKeyValidation } from '../../components/Form/validations';
+import { tokenKeyValidation } from 'components/Form/validations';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 export const TYPE_REVOKE = 'TYPE_REVOKE';
@@ -15,12 +15,10 @@ export const TYPE_GENERATE = 'TYPE_GENERATE';
 class ApiKeyModal extends Component {
 	state = {
 		dialogOtpOpen: false,
-		dialogCodeOpen: false,
 		loading: false,
 		tokenName: '',
 		tokenKey: '',
 		secret: '',
-		otp_code: '',
 	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -62,13 +60,14 @@ class ApiKeyModal extends Component {
 		}
 	};
 
-	onSubmit = ({ email_code }) => {
+	onSubmit = ({ otp_code, email_code }) => {
 		this.setState({ loading: true });
 		const { notificationType } = this.props;
-		const { tokenName, otp_code } = this.state;
+		const { tokenName } = this.state;
 
 		const submit = this.getSubmitByType(notificationType);
-		return submit(otp_code, tokenName, email_code).then((res) => {
+
+		return submit(otp_code, email_code, tokenName).then((res) => {
 			if (typeof res === 'object') {
 				const { apiKey, secret } = res;
 				this.setState({
@@ -76,7 +75,6 @@ class ApiKeyModal extends Component {
 					secret,
 					dialogOtpOpen: false,
 					loading: false,
-					otp_code: '',
 				});
 			} else {
 				this.setState({
@@ -84,45 +82,9 @@ class ApiKeyModal extends Component {
 					secret: '',
 					dialogOtpOpen: false,
 					loading: false,
-					otp_code: '',
 				});
 			}
 		});
-	};
-
-	onSubmitOTP = (values) => {
-		const { notificationType } = this.props;
-		const { otp_code } = values;
-		const { tokenName } = this.state;
-
-		const submit = this.getSubmitByType(notificationType);
-
-		if (TYPE_GENERATE) {
-			this.setState({
-				otp_code,
-				dialogCodeOpen: true,
-			});
-		} else {
-			this.setState({ loading: true });
-			return submit(otp_code, tokenName).then((res) => {
-				if (typeof res === 'object') {
-					const { apiKey, secret } = res;
-					this.setState({
-						tokenKey: apiKey,
-						secret,
-						dialogOtpOpen: false,
-						loading: false,
-					});
-				} else {
-					this.setState({
-						tokenKey: res,
-						secret: '',
-						dialogOtpOpen: false,
-						loading: false,
-					});
-				}
-			});
-		}
 	};
 
 	onCloseDialog = () => {
@@ -130,20 +92,11 @@ class ApiKeyModal extends Component {
 	};
 
 	render() {
-		const {
-			dialogOtpOpen,
-			loading,
-			tokenName,
-			tokenKey,
-			secret,
-			dialogCodeOpen,
-		} = this.state;
+		const { dialogOtpOpen, loading, tokenName, tokenKey, secret } = this.state;
 		const { notificationType, openContactForm, icons: ICONS } = this.props;
-		if (dialogCodeOpen) {
-			return <EmailCodeForm onSubmit={this.onSubmit} />;
-		} else if (dialogOtpOpen) {
+		if (dialogOtpOpen) {
 			return (
-				<OtpForm onSubmit={this.onSubmitOTP} onClickHelp={openContactForm} />
+				<EmailCodeForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />
 			);
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;

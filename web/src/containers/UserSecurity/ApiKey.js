@@ -9,7 +9,7 @@ import {
 	tokenRevoked,
 	editToken,
 } from 'actions/userAction';
-import { Table, Dialog, Loader, EmailCodeForm, OtpForm } from 'components';
+import { Table, Dialog, Loader, EmailCodeForm } from 'components';
 import { generateHeaders } from './ApiKeyHeaders';
 import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
 import { openContactForm } from 'actions/appActions';
@@ -18,16 +18,11 @@ import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 import EditToken from './EditToken';
 
-const OTP = 'OTP';
-const EMAIL = 'EMAIL';
-
 const INITIAL_STATE = {
 	dialogIsOpen: false,
 	dialogType: '',
 	tokenId: -1,
 	isCodeDialog: false,
-	codeType: OTP,
-	otp_code: '',
 	editData: {},
 };
 class ApiKey extends Component {
@@ -62,8 +57,8 @@ class ApiKey extends Component {
 		this.setState({ dialogIsOpen: true, dialogType: TYPE_REVOKE, tokenId });
 	};
 
-	onRevokeToken = (otp_code) => {
-		return revokeToken(this.state.tokenId, otp_code)
+	onRevokeToken = (otp_code, email_code) => {
+		return revokeToken(this.state.tokenId, otp_code, email_code)
 			.then((resp) => {
 				const { data } = resp;
 				this.props.tokenRevoked(data);
@@ -73,7 +68,7 @@ class ApiKey extends Component {
 			.catch(errorHandler);
 	};
 
-	onGenerateToken = (otp_code, name, email_code) => {
+	onGenerateToken = (otp_code, email_code, name) => {
 		return generateToken({ otp_code, name, email_code })
 			.then(({ data }) => {
 				this.props.tokenGenerated(data);
@@ -92,15 +87,8 @@ class ApiKey extends Component {
 			.catch(errorHandler);
 	};
 
-	onSubmitOTP = ({ otp_code }) => {
-		this.setState({
-			otp_code,
-			codeType: EMAIL,
-		});
-	};
-
-	onSubmitEmail = ({ email_code }) => {
-		const { otp_code, editData } = this.state;
+	onSubmitEmail = ({ email_code, otp_code }) => {
+		const { editData } = this.state;
 
 		this.onEditToken({ ...editData, email_code, otp_code }).then(() => {
 			this.onCloseDialog();
@@ -125,7 +113,7 @@ class ApiKey extends Component {
 			icons: ICONS,
 		} = this.props;
 
-		const { dialogIsOpen, dialogType, isCodeDialog, codeType } = this.state;
+		const { dialogIsOpen, dialogType, isCodeDialog } = this.state;
 		return (
 			<div>
 				{otp_enabled ? (
@@ -153,7 +141,11 @@ class ApiKey extends Component {
 								expandable={{
 									rowExpandable: () => true,
 									expandedRowRender: (record) => (
-										<EditToken {...record} onEdit={this.onEdit} />
+										<EditToken
+											{...record}
+											onEdit={this.onEdit}
+											otp_enabled={otp_enabled}
+										/>
 									),
 								}}
 							/>
@@ -182,15 +174,7 @@ class ApiKey extends Component {
 					theme={activeTheme}
 					onCloseDialog={this.onCloseDialog}
 				>
-					{codeType === OTP && (
-						<OtpForm
-							onSubmit={this.onSubmitOTP}
-							onClickHelp={openContactForm}
-						/>
-					)}
-					{codeType === EMAIL && (
-						<EmailCodeForm onSubmit={this.onSubmitEmail} />
-					)}
+					<EmailCodeForm onSubmit={this.onSubmitEmail} />
 				</Dialog>
 			</div>
 		);

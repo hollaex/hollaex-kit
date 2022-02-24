@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { required } from 'components/Form/validations';
+import { required, validateOtp } from 'components/Form/validations';
 import renderFields from 'components/Form/factoryFields';
 import { EditWrapper, Button, IconTitle } from 'components';
 import { sendEmailCode } from 'actions/userAction';
@@ -38,6 +38,18 @@ class Form extends Component {
 				label: STRINGS['EMAIL_CODE_FORM.LABEL'],
 				placeholder: STRINGS['EMAIL_CODE_FORM.PLACEHOLDER'],
 				validate: [required],
+				fullWidth: true,
+			},
+			otp_code: {
+				type: 'number',
+				stringId:
+					'EMAIL_CODE_FORM.OTP_LABEL,EMAIL_CODE_FORM.OTP_PLACEHOLDER,EMAIL_CODE_FORM.ERROR_INVALID',
+				label: STRINGS['EMAIL_CODE_FORM.OTP_LABEL'],
+				placeholder: STRINGS['EMAIL_CODE_FORM.OTP_PLACEHOLDER'],
+				validate: [
+					required,
+					validateOtp(STRINGS['EMAIL_CODE_FORM.ERROR_INVALID']),
+				],
 				fullWidth: true,
 			},
 		};

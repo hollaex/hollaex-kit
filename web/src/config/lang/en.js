@@ -238,13 +238,15 @@ export default {
 		ERROR_INVALID: 'Invalid OTP Code',
 	},
 	EMAIL_CODE_FORM: {
-		TITLE: 'Input Verification Code',
-		LABEL: 'Input code',
+		TITLE: 'Input you security codes',
+		LABEL: 'Input code (please check your email)',
 		PLACEHOLDER: 'Input the code sent to your email',
 		FORM_TITLE:
-			'A unique code was sent to you email that is required to finish the login process. Please input the code below to proceed.',
+			'A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.',
 		BUTTON: 'submit',
-		ERROR_INVALID: 'Invalid Email Code',
+		ERROR_INVALID: "The code you've entered is incorrect. Please try again",
+		OTP_LABEL: '2FA Code (OTP)',
+		OTP_PLACEHOLDER: 'Enter your 6-digit two-factor authentication code',
 	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick Trade', // updated

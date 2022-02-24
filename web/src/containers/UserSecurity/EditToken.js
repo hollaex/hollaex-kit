@@ -101,7 +101,7 @@ class EditToken extends Component {
 
 	render() {
 		const { enabled_whitelisting, whitelisted_ips, ip } = this.state;
-		const { apiKey, secret } = this.props;
+		const { apiKey, secret, otp_enabled } = this.props;
 
 		const props_api_key = {
 			stringId: 'DEVELOPERS_TOKEN.API_KEY',
@@ -243,6 +243,7 @@ class EditToken extends Component {
 								stringId="DEVELOPERS_TOKEN.SAVE"
 								label={STRINGS['DEVELOPERS_TOKEN.SAVE']}
 								onClick={this.onSave}
+								disabled={!otp_enabled}
 							/>
 						</div>
 					</div>

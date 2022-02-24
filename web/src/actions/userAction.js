@@ -230,10 +230,11 @@ export const tokenGenerated = (token) => ({
 	},
 });
 
-export const revokeToken = (id, otp_code = '') =>
+export const revokeToken = (token_id, otp_code = '', email_code = '') =>
 	axios.delete(`/user/token`, {
-		data: { token_id: id, otp_code: otp_code },
+		data: { token_id, otp_code, email_code },
 	});
+
 export const tokenRevoked = (token) => ({
 	type: 'TOKEN_REVOKED',
 	payload: {
