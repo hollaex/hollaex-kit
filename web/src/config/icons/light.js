@@ -239,8 +239,8 @@ const nestedIcons = {
 	STAKING_PERIOD_ITEM:
 		'/assets/stake/staking-period-option-background-light.png',
 	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background_light.png',
-	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
-	STAKING_PANEL_BACKGROUND: '/assets/stake/success_stake-unstake.png',
+	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/stake-unstake-light.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/stake-unstake-light.png',
 	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
 };
 
