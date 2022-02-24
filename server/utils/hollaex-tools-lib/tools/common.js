@@ -761,6 +761,14 @@ const getDefaultFees = () => {
 	}
 };
 
+const validateIp = (ip) => {
+	const regex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/(16|24|32))$/;
+	if (!regex.test(ip)) {
+		return false;
+	}
+	return true;
+};
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -820,5 +828,6 @@ module.exports = {
 	getDefaultFees,
 	getEmail,
 	updateEmail,
-	checkExchangeStatus
+	checkExchangeStatus,
+	validateIp
 };

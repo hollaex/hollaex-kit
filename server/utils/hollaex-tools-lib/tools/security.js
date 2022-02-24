@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { intersection, has } = require('lodash');
 const { isEmail } = require('validator');
+const ipRangeCheck = require('ip-range-check');
 const { SERVER_PATH } = require('../constants');
 const {
 	INVALID_CAPTCHA,
@@ -754,6 +755,20 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
+					const found = token.whitelisted_ips.find((wlip) => {
+						return ipRangeCheck(ip, wlip);
+					});
+					if (!found) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
+							apiKey,
+							token.whitelisted_ips,
+							ip
+						);
+						throw new Error(API_KEY_NOT_WHITELISTED);
+					}
+				}
 				if (!scopes.includes(token.type)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
@@ -779,13 +794,6 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						apiKey
 					);
 					throw new Error(API_KEY_NOT_PERMITTED);
-				} else if (token.whitelisting_enabled && !token.whitelisted_ips.includes(ip)) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
-						apiKey,
-						ip
-					);
-					throw new Error(API_KEY_NOT_WHITELISTED);
 				} else {
 					const isSignatureValid = checkHmacSignature(
 						token.secret,
@@ -1081,7 +1089,7 @@ const findTokenByApiKey = (apiKey) => {
 
 				client.hsetAsync(HMAC_TOKEN_KEY, apiKey, JSON.stringify(token));
 
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey stored in redis',
 					apiKey
 				);
