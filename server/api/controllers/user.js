@@ -401,9 +401,11 @@ const verifyToken = (req, res) => {
 };
 
 function requestEmailConfirmation(req, res) {
-	loggerUser.debug(req.uuid, 'controllers/user/requestEmailConfirmation', req.auth.sub);
+	loggerUser.verbose(req.uuid, 'controllers/user/requestEmailConfirmation auth', req.auth.sub);
 	let email = req.auth.sub.email;
+	const ip = req.headers['x-real-ip'];
 	const domain = req.headers['x-real-origin'];
+	loggerUser.verbose(req.uuid, 'controllers/user/requestEmailConfirmation ip', ip, domain);
 
 	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
@@ -766,6 +768,15 @@ const createHmacToken = (req, res) => {
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
 	const { name, otp_code, email_code } = req.swagger.params.data.value;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createHmacToken data',
+		name,
+		otp_code,
+		email_code,
+		ip
+	);
 
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
