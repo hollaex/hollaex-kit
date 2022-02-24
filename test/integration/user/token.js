@@ -63,7 +63,7 @@ describe('Token Management', async () => {
 					can_trade: true,
 					can_withdraw: true
 				},
-				enabled_whitelisting: false
+				whitelisting_enabled: false
 			});
 
 		response.should.have.status(200);

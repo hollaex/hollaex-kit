@@ -1826,15 +1826,27 @@ const emailConfigTest = (req, res) => {
 		req.auth
 	);
 
-	const { sender, smtp } = req.swagger.params.data.value;
-	try {
-		testSendSMTPEmail(sender, smtp)
-		return res.status(201).json({ message: 'Success' });
-	} catch (err) {
-		loggerAdmin.error(req.uuid, 'controllers/admin/emailConfigTest', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	}
-}
+	const { receiver, smtp } = req.swagger.params.data.value;
+
+	testSendSMTPEmail(receiver, smtp)
+		.then(() => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/emailConfigTest',
+				'Email sent successfully'
+			);
+
+			return res.status(201).json({ message: 'Email sent successfully' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/emailConfigTest err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 module.exports = {
 	createInitialAdmin,

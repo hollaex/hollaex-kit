@@ -148,6 +148,7 @@ const nestedIcons = {
 	LETTER: '/assets/acounts/account-icons-24.svg',
 
 	OTP_CODE: '/assets/acounts/account-icons-28.svg',
+	EMAIL_CODE: '/assets/icons/send-email-code.svg',
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
@@ -250,13 +251,14 @@ const nestedIcons = {
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
 
 	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background.jpg',
-	STAKING_PERIOD_ITEM: '/assets/stake/staking-pariod-option-background.jpg',
+	STAKING_PERIOD_ITEM: '/assets/stake/staking-period-option-background.jpg',
 	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background.png',
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/success_stake-unstake.png',
 	STAKING_ERROR: '/assets/stake/error.svg',
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
-	STAKING_BACKGROUND: '/assets/dark-background.jpg',
+	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
 

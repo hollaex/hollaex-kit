@@ -1725,8 +1725,7 @@ paths:
                 type: array
                 items:
                   type: string
-                  format: ipv4
-              enabled_whitelisting:
+              whitelisting_enabled:
                 type: boolean
       responses:
         200:
@@ -1756,11 +1755,14 @@ paths:
             required:
               - token_id
               - otp_code
+              - email_code
             properties:
               token_id:
                 type: number
                 format: int32
               otp_code:
+                type: string
+              email_code:
                 type: string
       responses:
         200:
@@ -2177,6 +2179,8 @@ paths:
           required: true
           schema:
             type: object
+            required:
+              - receiver
             properties:
               smtp:
                 type: object
@@ -2194,7 +2198,7 @@ paths:
                     type: string
                   user:
                     type: string
-              sender:
+              receiver:
                 type: string
       responses:
         200:

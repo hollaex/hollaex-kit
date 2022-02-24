@@ -781,6 +781,7 @@ const createHmacToken = (req, res) => {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
+				// TODO check for the name duplication
 				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
@@ -808,12 +809,31 @@ function updateHmacToken(req, res) {
 
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, enabled_whitelisting } = req.swagger.params.data.value;
+	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, whitelisting_enabled } = req.swagger.params.data.value;
 
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken data',
+		token_id,
+		name,
+		otp_code,
+		email_code,
+		permissions,
+		whitelisted_ips,
+		whitelisting_enabled,
+		ip
+	);
+
+	whitelisted_ips.forEach((ip) => {
+		if (!toolsLib.validateIp(ip)) {
+			return res.status(400).json({ message: 'IP address is not valid.' });
+		}
+	});
+	
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting)
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -839,10 +859,27 @@ const deleteHmacToken = (req, res) => {
 		req.auth.sub
 	);
 
-	const { id } = req.auth.sub;
-	const { token_id, otp_code } = req.swagger.params.data.value;
+	const { id: userId } = req.auth.sub;
+	const { token_id, otp_code, email_code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
 
-	toolsLib.security.deleteUserKitHmacToken(id, otp_code, token_id)
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deleteHmacToken data',
+		token_id,
+		otp_code,
+		email_code,
+		ip
+	);
+
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.deleteUserKitHmacToken(userId, otp_code, token_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
 		.then(() => {
 			return res.json({ message: TOKEN_REMOVED });
 		})

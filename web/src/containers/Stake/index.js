@@ -134,7 +134,7 @@ class Stake extends Component {
 		const symbol = 'xht';
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${pots[symbol]}`;
+		}etherscan.io/address/${pots[symbol].address}`;
 		open(url);
 	};
 

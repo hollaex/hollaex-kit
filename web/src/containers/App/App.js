@@ -767,6 +767,7 @@ class App extends Component {
 											{
 												'overflow-y': !isMobile,
 												no_bottom_navigation: isHome,
+												'background-color-layer': isStakePage,
 											}
 										)}
 										style={stakeBackgroundProps}
