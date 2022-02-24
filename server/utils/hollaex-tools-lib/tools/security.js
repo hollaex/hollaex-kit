@@ -571,10 +571,9 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
-
 	// Swagger endpoint scopes
 	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
-	const endpointPermissions = req.swagger.operation['x-token-permissions'];
+	const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -939,7 +938,8 @@ const getUserKitHmacTokens = (userId) => {
 	return dbQuery.findAndCountAllWithRows('token', {
 		where: {
 			user_id: userId,
-			type: TOKEN_TYPES.HMAC
+			type: TOKEN_TYPES.HMAC,
+			active: true
 		},
 		attributes: {
 			exclude: ['user_id', 'updated_at']
@@ -1003,7 +1003,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		}
 	});
 
-	token = await token.update(values, {
+	let newToken = await token.update(values, {
 		returning: true,
 		fields: [
 			'name',
@@ -1015,7 +1015,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
-	return formatTokenObject(token);
+	return formatTokenObject(newToken);
 }
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {

@@ -859,10 +859,27 @@ const deleteHmacToken = (req, res) => {
 		req.auth.sub
 	);
 
-	const { id } = req.auth.sub;
-	const { token_id, otp_code } = req.swagger.params.data.value;
+	const { id: userId } = req.auth.sub;
+	const { token_id, otp_code, email_code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
 
-	toolsLib.security.deleteUserKitHmacToken(id, otp_code, token_id)
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deleteHmacToken data',
+		token_id,
+		otp_code,
+		email_code,
+		ip
+	);
+
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.deleteUserKitHmacToken(userId, otp_code, token_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
 		.then(() => {
 			return res.json({ message: TOKEN_REMOVED });
 		})

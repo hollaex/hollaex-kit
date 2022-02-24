@@ -1755,11 +1755,14 @@ paths:
             required:
               - token_id
               - otp_code
+              - email_code
             properties:
               token_id:
                 type: number
                 format: int32
               otp_code:
+                type: string
+              email_code:
                 type: string
       responses:
         200:
