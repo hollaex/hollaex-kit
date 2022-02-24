@@ -234,6 +234,13 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
+
+	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background-light.jpg',
+	STAKING_PERIOD_ITEM:
+		'/assets/stake/staking-period-option-background-light.png',
+	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background_light.png',
+	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
 };
 
 const icons = flatten(nestedIcons, options);
