@@ -808,7 +808,7 @@ function updateHmacToken(req, res) {
 
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, enabled_whitelisting } = req.swagger.params.data.value;
+	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, whitelisting_enabled } = req.swagger.params.data.value;
 
 	loggerUser.verbose(
 		req.uuid,
@@ -819,7 +819,7 @@ function updateHmacToken(req, res) {
 		email_code,
 		permissions,
 		whitelisted_ips,
-		enabled_whitelisting,
+		whitelisting_enabled,
 		ip
 	);
 
@@ -832,7 +832,7 @@ function updateHmacToken(req, res) {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting)
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}

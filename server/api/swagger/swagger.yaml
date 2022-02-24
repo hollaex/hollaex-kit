@@ -1725,7 +1725,7 @@ paths:
                 type: array
                 items:
                   type: string
-              enabled_whitelisting:
+              whitelisting_enabled:
                 type: boolean
       responses:
         200:

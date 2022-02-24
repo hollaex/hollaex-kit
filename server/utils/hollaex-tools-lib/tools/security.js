@@ -929,7 +929,7 @@ const formatTokenObject = (tokenData) => ({
 	expiry: tokenData.expiry,
 	created: tokenData.created_at,
 	whitelisted_ips: tokenData.whitelisted_ips,
-	enabled_whitelisting: tokenData.enabled_whitelisting,
+	whitelisting_enabled: tokenData.whitelisting_enabled,
 	can_read: tokenData.can_read,
 	can_trade: tokenData.can_trade,
 	can_withdraw: tokenData.can_withdraw
@@ -982,7 +982,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, enabled_whitelisting) {
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({where: {id: token_id}});
 
@@ -996,7 +996,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		...permissions,
 		name,
 		whitelisted_ips,
-		enabled_whitelisting
+		whitelisting_enabled
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1012,7 +1012,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_read',
 			'can_trade',
 			'can_withdraw',
-			'enabled_whitelisting',
+			'whitelisting_enabled',
 			'whitelisted_ips'
 		]
 	});
