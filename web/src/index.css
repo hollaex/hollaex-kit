@@ -1016,6 +1016,9 @@ table th {
   .user-security-wrapper .tab_controller-tabs .tab_item {
     font-size: 12px !important; } }
 
+.edit_token .ant-radio-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+
 .signup_success-wrapper {
   text-align: center; }
   .signup_success-wrapper .signup_success-content {

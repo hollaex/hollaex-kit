@@ -237,6 +237,17 @@ export default {
 		OTP_BUTTON: 'submit',
 		ERROR_INVALID: 'Invalid OTP Code',
 	},
+	EMAIL_CODE_FORM: {
+		TITLE: 'Input you security codes',
+		LABEL: 'Input code (please check your email)',
+		PLACEHOLDER: 'Input the code sent to your email',
+		FORM_TITLE:
+			'A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.',
+		BUTTON: 'submit',
+		ERROR_INVALID: "The code you've entered is incorrect. Please try again",
+		OTP_LABEL: '2FA Code (OTP)',
+		OTP_PLACEHOLDER: 'Enter your 6-digit two-factor authentication code',
+	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick Trade', // updated
 		BUTTON: 'Review Order', // updated
@@ -1094,6 +1105,26 @@ export default {
 		INACTIVE: 'Inactive',
 		INVALID_LEVEL:
 			'You need to upgrade your verification level to have access this feature', // TODO
+	},
+	DEVELOPERS_TOKEN: {
+		API_KEY: 'API Key',
+		SECRET_KEY: 'Secret Key',
+		ACCESS: 'Access',
+		BASIC_ACCESS: 'Basic access',
+		BASIC_ACCESS_PROMPT: 'Select what this API key can access.',
+		READING_ACCESS: 'Reading (wallets balances, etc)',
+		TRADING_ACCESS: 'Trading',
+		IP_ACCESS: 'IP access',
+		IP_ACCESS_PROMPT: 'Configure what IP address will work with this API key.',
+		ANY_IP_ADDRESS: 'Any IP address',
+		ONLY_TRUSTED_IPS: 'Only trusted IPs',
+		ADD_IP_PH: 'Enter IP address. You can add multiple IPs',
+		ADD_IP: 'Add',
+		ADVANCED_ACCESS: 'Advanced access',
+		ADVANCED_ACCESS_PROMPT: 'Requires trusted IPs be activated.',
+		WITHDRAWAL_ACCESS: 'Withdrawals',
+		SAVE: 'Save',
+		BEWARE: 'Beware, allowing withdrawals comes with certain risks!',
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',

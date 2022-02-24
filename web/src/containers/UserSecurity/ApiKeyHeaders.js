@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import STRINGS from '../../config/localizedStrings';
 import { getFormatTimestamp } from '../../utils/utils';
 import { Tooltip } from '../../components';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 const NOT_REVOKED = 'pointer blue-link';
 
@@ -30,9 +31,14 @@ export const generateHeaders = (revokeToken, otp_enabled, ICONS) => {
 			label: STRINGS['DEVELOPERS_TOKENS_TABLE.NAME'],
 			key: 'name',
 			className: 'tokens-name',
-			renderCell: ({ id, name }, key, index) => (
+			renderCell: ({ id, name }, key, index, isExpandable, isExpanded) => (
 				<td key={`${key}-${id}-name`} className="tokens-name">
 					{name}
+					{isExpandable && (
+						<span className="ml-2">
+							{isExpanded ? <CaretUpOutlined /> : <CaretDownOutlined />}
+						</span>
+					)}
 				</td>
 			),
 		},
