@@ -811,14 +811,15 @@ export default {
 		PUBLIC_INFO: {
 			TITLE: 'Staking information',
 			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
-			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings ({0})',
-			CLEARED_UNDISTRIBUTED_EARNINGS: 'Cleared undistributed earnings',
-			UNCLEARED_PENDING_EARNINGS: 'Uncleared pending earnings',
+			TOTAL_DISTRIBUTED_REWARDS: 'Total distributed rewards ({0})',
+			POT_BALANCE: 'POT balance',
+			UNCLAIMED_REWARDS: 'Unclaimed rewards',
 			TOTAL_STAKED: 'Total staked',
 			REWARD_RATE: 'Reward rate',
 			MY_STAKE: 'My stake ({0}%)',
 			MY_STAKE_PERCENTLESS: 'My stake',
 			OTHER_STAKE: 'Others stake ({0}%)',
+			EVENTS_TITLE: 'Recent distributed rewards',
 		},
 		DISTRIBUTIONS: {
 			TITLE: 'Distributed {0} rewards',

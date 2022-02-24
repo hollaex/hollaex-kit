@@ -295,8 +295,12 @@ const getPenaltyForToken = (token = 'xht') => async () => {
 };
 
 const getPotForToken = (token = 'xht') => async () => {
-	const pot = await CONTRACTS[token].main.methods.pot().call();
-	return pot;
+	const address = await CONTRACTS[token].main.methods.pot().call();
+	const balance = await getTokenBalance(token)(address);
+	return {
+		address,
+		balance,
+	};
 };
 
 // const getTotalStake = (token = 'xht') => async () => {
