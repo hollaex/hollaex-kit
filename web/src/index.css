@@ -1016,8 +1016,62 @@ table th {
   .user-security-wrapper .tab_controller-tabs .tab_item {
     font-size: 12px !important; } }
 
+.edit_token .qr-code-bg {
+  padding: 0 1.5rem 0 1rem; }
+
+.edit_token .qr-code-bg > *:first-child {
+  width: 8rem !important;
+  height: 8rem !important; }
+
 .edit_token .ant-radio-wrapper {
   color: var(--labels_important-active-labels-text-graphics); }
+
+.edit_token .holla-button {
+  width: 150px; }
+
+.edit_token .ant-input {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.edit_token .ant-btn-link {
+  color: var(--specials_buttons-links-and-highlights); }
+
+.edit_token .ant-btn-link[disabled] {
+  color: var(--calculated_notifications-blue-disabled); }
+
+.small-expandable .ant-checkbox-wrapper,
+.small-expandable .ant-radio-wrapper,
+.small-expandable .ant-input,
+.small-expandable .ant-btn,
+.small-expandable .ant-tag {
+  font-size: 0.84rem !important; }
+
+.small-expandable .field-label {
+  font-size: 0.9rem; }
+
+.small-expandable .field-wrapper {
+  margin: 0; }
+
+.small-expandable .field-children {
+  padding: 0; }
+
+.small-expandable .ant-checkbox-wrapper {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.small-expandable .ant-tag {
+  color: var(--labels_important-active-labels-text-graphics);
+  background: var(--calculated_tag-background);
+  border: none;
+  border-radius: 70px;
+  margin-bottom: 7px; }
+
+.small-expandable .ant-tag-close-icon {
+  color: var(--labels_important-active-labels-text-graphics);
+  margin-left: 0.8rem; }
+
+.flex-col {
+  flex-basis: 0;
+  flex-grow: 1;
+  padding-right: 1rem; }
 
 .signup_success-wrapper {
   text-align: center; }
@@ -10910,7 +10964,9 @@ svg .fiat-page-under-construction,
 svg .generate-reference-number,
 svg .osko-logo,
 svg .stake-variable,
-svg .staking-unlock {
+svg .stake-pending,
+svg .staking-unlock,
+svg .send-email-code {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,

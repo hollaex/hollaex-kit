@@ -13,7 +13,7 @@ import { Table, Dialog, Loader, EmailCodeForm } from 'components';
 import { generateHeaders } from './ApiKeyHeaders';
 import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
 import { openContactForm } from 'actions/appActions';
-import { errorHandler } from '../../components/OtpForm/utils';
+import { errorHandler } from 'components/EmailCodeForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 import EditToken from './EditToken';
@@ -70,10 +70,10 @@ class ApiKey extends Component {
 
 	onGenerateToken = (otp_code, email_code, name) => {
 		return generateToken({ otp_code, name, email_code })
-			.then(({ data }) => {
-				this.props.tokenGenerated(data);
-				this.requestTokens();
-				return data;
+			.then(({ data: { key: apiKey, ...rest } }) => {
+				const response = { apiKey, ...rest };
+				this.props.tokenGenerated(response);
+				return response;
 			})
 			.catch(errorHandler);
 	};
@@ -140,6 +140,7 @@ class ApiKey extends Component {
 								count={tokens.count}
 								expandable={{
 									rowExpandable: () => true,
+									defaultExpanded: (row, index) => index === 0,
 									expandedRowRender: (record) => (
 										<EditToken
 											{...record}

@@ -319,6 +319,14 @@ $padding-input: 4rem;
 }
 
 .edit_token {
+	.qr-code-bg {
+		padding: 0 1.5rem 0 1rem;
+	}
+	.qr-code-bg > *:first-child {
+		width: 8rem !important;
+		height: 8rem !important;
+	}
+
 	.ant-radio-wrapper {
 		color: $colors-main-black;
 	}
@@ -344,7 +352,8 @@ $padding-input: 4rem;
 	.ant-checkbox-wrapper,
 	.ant-radio-wrapper,
 	.ant-input,
-	.ant-btn {
+	.ant-btn,
+	.ant-tag {
 		font-size: $font-size-small-expandable !important;
 	}
 	.field-label {
@@ -355,6 +364,20 @@ $padding-input: 4rem;
 	}
 	.field-children {
 		padding: 0;
+	}
+	.ant-checkbox-wrapper {
+		color: $colors-main-black;
+	}
+	.ant-tag {
+		color: $colors-main-black;
+		background: $tag_background;
+		border: none;
+		border-radius: 70px;
+		margin-bottom: 7px;
+	}
+	.ant-tag-close-icon {
+		color: $colors-main-black;
+		margin-left: 0.8rem;
 	}
 }
 

@@ -337,11 +337,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 			}
 			return { ...state, tokens };
 		}
-		case 'TOKEN_GENERATED':
+		case 'TOKEN_GENERATED': {
+			const tokens = {
+				count: state.tokens.count + 1,
+				data: [action.payload.token, ...state.tokens.data],
+			};
 			return {
 				...state,
-				tokens: [action.payload.token].concat(state.tokens),
+				tokens,
 			};
+		}
 		case 'SET_USERNAME':
 			return {
 				...state,
