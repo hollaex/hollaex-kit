@@ -119,11 +119,11 @@ export const EmailSettingsForm = ({
 		let body = {};
 		if (params === initialValues.configuration) {
 			body = {
-				sender: senderEmail,
+				receiver: senderEmail,
 			};
 		} else {
 			body = {
-				sender: senderEmail,
+				receiver: senderEmail,
 				smtp: {
 					password: params.password,
 					port: params.port,
