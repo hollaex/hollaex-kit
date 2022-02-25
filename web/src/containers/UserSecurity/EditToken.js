@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import classnames from 'classnames';
+import QRCode from 'qrcode.react';
 import { Button } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { Checkbox, Radio, Space, Input, Tag, Button as AntButton } from 'antd';
@@ -11,8 +13,10 @@ class EditToken extends Component {
 	constructor(props) {
 		super(props);
 		const {
-			permissions: { can_read, can_trade, can_withdraw },
-			enabled_whitelisting,
+			can_read,
+			can_trade,
+			can_withdraw,
+			whitelisting_enabled,
 			whitelisted_ips,
 		} = this.props;
 
@@ -20,7 +24,7 @@ class EditToken extends Component {
 			can_read,
 			can_trade,
 			can_withdraw,
-			enabled_whitelisting,
+			whitelisting_enabled,
 			whitelisted_ips,
 			ip: '',
 		};
@@ -46,7 +50,7 @@ class EditToken extends Component {
 
 	onChangeIPAccess = ({ target: { value } }) => {
 		this.setState({
-			enabled_whitelisting: value === 'only-trusted',
+			whitelisting_enabled: value === 'only-trusted',
 		});
 	};
 
@@ -76,31 +80,31 @@ class EditToken extends Component {
 	};
 
 	onSave = () => {
-		const { onEdit, id } = this.props;
+		const { onEdit, id: token_id } = this.props;
 		const {
 			can_read,
 			can_trade,
 			can_withdraw,
-			enabled_whitelisting,
+			whitelisting_enabled,
 			whitelisted_ips,
 		} = this.state;
 
 		const data = {
-			id,
+			token_id,
 			permissions: {
 				can_read,
 				can_trade,
 				can_withdraw,
 			},
-			enabled_whitelisting,
-			whitelisted_ips: enabled_whitelisting ? whitelisted_ips : [],
+			whitelisting_enabled,
+			whitelisted_ips: whitelisting_enabled ? whitelisted_ips : [],
 		};
 
 		onEdit(data);
 	};
 
 	render() {
-		const { enabled_whitelisting, whitelisted_ips, ip } = this.state;
+		const { whitelisting_enabled, whitelisted_ips, ip } = this.state;
 		const { apiKey, secret, otp_enabled } = this.props;
 
 		const props_api_key = {
@@ -112,25 +116,44 @@ class EditToken extends Component {
 			fullWidth: true,
 		};
 
+		const props_secret_key = {
+			stringId: 'DEVELOPERS_TOKENS_POPUP.SECRET_KEY_LABEL',
+			label: STRINGS['DEVELOPERS_TOKENS_POPUP.SECRET_KEY_LABEL'],
+			className: 'pr-2',
+			value: secret,
+			fullWidth: true,
+			allowCopy: true,
+		};
+
+		const isHiddenSecret = secret.includes('*');
+
 		const basicPermissions = BASIC_PERMISSIONS.filter(
 			(value) => this.state[value]
 		);
 		const advancedPermissions = ADVANCED_PERMISSIONS.filter(
 			(value) => this.state[value]
 		);
-		const IPPermission = enabled_whitelisting ? 'only-trusted' : 'any';
+		const IPPermission = whitelisting_enabled ? 'only-trusted' : 'any';
 
 		return (
 			<div className="edit_token d-flex py-4 small-expandable">
-				<div>QR CODE / ICON</div>
+				<div className="qr-code-bg">
+					<QRCode value={apiKey} />
+				</div>
 				<div>
 					<div className="d-flex">
 						<div className="w-50 pl-4">
 							<DumbField {...props_api_key} />
 						</div>
 						<div className="w-50 pl-4">
-							<div>{STRINGS['DEVELOPERS_TOKEN.SECRET_KEY']}</div>
-							<div className="secondary-text">{secret}</div>
+							{isHiddenSecret ? (
+								<Fragment>
+									<div>{STRINGS['DEVELOPERS_TOKEN.SECRET_KEY']}</div>
+									<div className="secondary-text">{secret}</div>
+								</Fragment>
+							) : (
+								<DumbField {...props_secret_key} />
+							)}
 						</div>
 					</div>
 					<div className="kit-divider" />
@@ -184,9 +207,13 @@ class EditToken extends Component {
 											</Radio>
 										</Space>
 									</Radio.Group>
-									{enabled_whitelisting && (
+									{whitelisting_enabled && (
 										<Fragment>
-											<div>
+											<div
+												className={classnames({
+													'pt-3': whitelisted_ips.length,
+												})}
+											>
 												{whitelisted_ips.map((ip) => (
 													<Tag
 														key={ip}
@@ -255,12 +282,12 @@ class EditToken extends Component {
 
 EditToken.defaultProps = {
 	permissions: {
-		can_read: true,
+		can_read: false,
 		can_trade: false,
 		can_withdraw: false,
 	},
 	whitelisted_ips: [],
-	enabled_whitelisting: false,
+	whitelisting_enabled: false,
 	apiKey: '',
 	secret: '',
 };

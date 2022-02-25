@@ -32,7 +32,7 @@ class Form extends Component {
 	setFormValues = () => {
 		const formValues = {
 			email_code: {
-				type: 'number',
+				type: 'text',
 				stringId:
 					'EMAIL_CODE_FORM.LABEL,EMAIL_CODE_FORM.PLACEHOLDER,EMAIL_CODE_FORM.ERROR_INVALID',
 				label: STRINGS['EMAIL_CODE_FORM.LABEL'],

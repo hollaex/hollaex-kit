@@ -184,6 +184,7 @@ Table.defaultProps = {
 	showHeaderNoData: false,
 	expandable: {
 		expandedRowRender: () => <p>No content</p>,
+		defaultExpanded: () => false,
 		rowExpandable: () => false,
 	},
 };

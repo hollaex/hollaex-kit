@@ -76,6 +76,7 @@ class ApiKeyModal extends Component {
 					dialogOtpOpen: false,
 					loading: false,
 				});
+				this.onCloseDialog();
 			} else {
 				this.setState({
 					tokenKey: res,

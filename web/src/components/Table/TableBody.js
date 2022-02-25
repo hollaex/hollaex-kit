@@ -6,9 +6,17 @@ const RENDER_CELL = (row, key, cellIndex) => (
 );
 
 class TableRow extends Component {
-	state = {
-		isExpanded: false,
-	};
+	constructor(props) {
+		super(props);
+		const {
+			expandable: { defaultExpanded },
+			row,
+			rowIndex,
+		} = this.props;
+		this.state = {
+			isExpanded: defaultExpanded(row, rowIndex),
+		};
+	}
 
 	setIsExpanded = () => {
 		this.setState((prevState) => ({
