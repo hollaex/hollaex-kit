@@ -22,6 +22,8 @@ import store from './store';
 import { generateRoutes } from './routes';
 import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 import {
 	setLocalVersions,

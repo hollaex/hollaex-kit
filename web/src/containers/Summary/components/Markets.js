@@ -194,10 +194,10 @@ class Markets extends Component {
 				{!showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
 						<span
-							className="trade-account-link pointer"
+							className="trade-account-link pointer d-flex justify-content-center"
 							onClick={this.handleLoadMore}
 						>
-							{STRINGS['SUMMARY.VIEW_MORE_MARKETS']}
+							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
 						</span>
 					</div>
 				)}

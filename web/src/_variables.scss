@@ -54,6 +54,7 @@ $colors-terms-background: $specials_highlight-box;
 
 // theme colors
 $app-background-color: var(--base_background);
+$app-background-overlay: var(--calculated_background-overlay);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
@@ -61,6 +62,9 @@ $landing_markets_table: var(--calculated_landing_markets_table);
 $market-card_gradient_background: var(
 	--calculated_market-card_gradient_background
 );
+$trade-block_highlight: var(--calculated_trade-block_highlight);
+$stake-table-highlight: var(--calculated_stake-table_highlight);
+$tag_background: var(--calculated_tag-background);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
@@ -341,6 +345,7 @@ $font-size-subtext: 1rem;
 $font-size-mobile-title: 15px;
 $font-size-mobile-txt: 13px;
 $font-size-mobile-innertxt: 11px;
+$font-size-small-expandable: 0.84rem;
 
 $form-width-max: $content-display-width / 2;
 

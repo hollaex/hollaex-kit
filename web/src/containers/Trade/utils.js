@@ -105,6 +105,38 @@ export const orderbookSelector = createSelector(
 	}
 );
 
+export const depthChartSelector = createSelector(
+	[orderbookSelector],
+	({ asks: fullAsks, bids: fullBids }) => {
+		const asks = fullAsks.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		const bids = fullBids.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		return [
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+			},
+			{
+				name: 'Bids',
+				data: bids,
+				className: 'depth-chart__bids',
+				marker: {
+					enabled: false,
+				},
+			},
+		];
+	}
+);
+
 export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,

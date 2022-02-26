@@ -157,7 +157,10 @@ class Description extends Component {
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.props.handleSubmitReferralBadge}
 						disableAllFields={
-							plan !== 'crypto' && plan !== 'fiat' && type !== 'Enterprise'
+							plan !== 'crypto' &&
+							plan !== 'fiat' &&
+							type !== 'Enterprise' &&
+							plan !== 'boost'
 						}
 						buttonSubmitting={buttonSubmitting}
 					/>

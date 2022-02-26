@@ -407,7 +407,8 @@ $app-menu-notification-size: 1.2rem;
 				.tab-verify0,
 				.tab-security0,
 				.tab-api0,
-				.account-active-1 {
+				.account-active-1,
+				.stake-smiley-1 {
 					fill: $colors-main-black;
 				}
 			}
@@ -615,7 +616,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-menu {
 		color: $base_top-bar-navigation_text;
-		border-top: 3px solid $base_top-bar-navigation_text;
+		border-top: 4px solid $link;
 		height: 100%;
 		opacity: 1;
 
@@ -731,6 +732,13 @@ $app-menu-notification-size: 1.2rem;
 	}
 }
 
+.tools-button {
+	border-bottom: 1px solid $dark-app-line-divider;
+	&.border-left {
+		border-left: 1px solid $dark-app-line-divider;
+	}
+}
+
 .market-bar {
 	background: $app-light-background;
 	display: flex;
@@ -757,6 +765,10 @@ $app-menu-notification-size: 1.2rem;
 		&:hover {
 			background-color: $app-light-background;
 			border-radius: 0.2rem;
+		}
+		&.narrow {
+			min-width: 14rem;
+			max-width: 14rem;
 		}
 	}
 
@@ -857,6 +869,11 @@ $app-menu-notification-size: 1.2rem;
 		&.selector-trigger {
 			min-width: 17rem;
 			max-width: 17rem;
+
+			&.narrow {
+				min-width: 14rem;
+				max-width: 14rem;
+			}
 		}
 	}
 
@@ -981,6 +998,29 @@ $app-menu-notification-size: 1.2rem;
 	-webkit-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
+
+	&.narrow {
+		width: 14rem;
+	}
+
+	.ant-checkbox-wrapper {
+		span {
+			color: $colors-main-black !important;
+		}
+	}
+
+	.ant-btn-background-ghost {
+		border-color: $colors-black;
+	}
+
+	.ant-btn {
+		&:active,
+		&:hover,
+		&:focus {
+			color: $colors-main-black;
+			border-color: $colors-main-black;
+		}
+	}
 
 	.app-bar-tab-menu-list {
 		background-color: $app-bar-background-color;
@@ -1177,6 +1217,10 @@ $app-menu-notification-size: 1.2rem;
 	}
 	.app-bar-add-tab-menu {
 		width: 24rem;
+
+		&.narrow {
+			width: 14rem;
+		}
 
 		.app-bar-tab-menu-list {
 			width: 3.6rem;

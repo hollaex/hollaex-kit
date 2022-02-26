@@ -27,13 +27,5 @@ You can build the project by running `npm run build` and the projects builds the
 
 - Build variables in `.env` file:
   - NODE_ENV `['production', 'development']`
-  - REACT_APP_PUBLIC_URL `https://hollaex.com`
-  - REACT_APP_SERVER_ENDPOINT `https://api.hollaex.com` (or your own API server)
 
-### Styles
-
-### Steps to configure white and dark theme
-
-1. Modify colors under `colors for white theme` and `colors for dark theme` text in variables.scss file. there is also some common colors that effect in both dark and white theme.
-2. Coin colors also categorized by theme in variables.scss file.
-3. To apply different colors for chart element outline(slice in dount, bar in bar chart) change the `coin-${symbol}-1` and `dark-coin-${symbol}-1`.
+To change the API URL for `PRODUCTION` or `DEVELOPMENT` you can configure `/web/src/config/index.js`. In development mode it connects to https://api.sandbox.hollaex.com by default.

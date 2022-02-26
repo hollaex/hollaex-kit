@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { intersection, has } = require('lodash');
 const { isEmail } = require('validator');
+const ipRangeCheck = require('ip-range-check');
 const { SERVER_PATH } = require('../constants');
 const {
 	INVALID_CAPTCHA,
@@ -27,6 +28,8 @@ const {
 	API_KEY_INVALID,
 	API_KEY_EXPIRED,
 	API_KEY_OUT_OF_SCOPE,
+	API_KEY_NOT_PERMITTED,
+	API_KEY_NOT_WHITELISTED,
 	API_SIGNATURE_INVALID,
 	INVALID_PASSWORD,
 	SAME_PASSWORD,
@@ -55,7 +58,7 @@ const otp = require('otp');
 const { client } = require('./database/redis');
 const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
-const { generateHash } = require(`${SERVER_PATH}/utils/security`);
+const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
 
 const getCountryFromIp = (ip) => {
@@ -130,6 +133,40 @@ const resetUserPassword = (resetPasswordCode, newPassword) => {
 			return user.update({ password: newPassword }, { fields: ['password'] });
 		});
 };
+
+async function sendConfirmationEmail(userId, domain) {
+	const user = await dbQuery.findOne('user', { where: { id: userId } });
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	const code = generateRandomString(20);
+
+	// If another confirmation is requested within the timeout,
+	// the previous one is invalidated by overwrite
+	await client.setexAsync(`ConfirmationEmail:${userId}`, 60 * 5, code);
+
+	sendEmail(
+		MAILTYPE.CONFIRM_EMAIL,
+		user.email,
+		{ code },
+		user.settings,
+		domain);
+}
+
+async function confirmByEmail(userId, givenCode) {
+	const code = await client.getAsync(`ConfirmationEmail:${userId}`);
+	if (!code || code.length < 2) {
+		return false;
+	}
+	if (!crypto.timingSafeEqual(Buffer.from(code), Buffer.from(givenCode))) {
+		return false;
+	}
+
+	client.delAsync(`ConfirmationEmail:${userId}`);
+	return true;
+}
 
 const confirmChangeUserPassword = (code, domain) => {
 	return getChangePasswordCode(code)
@@ -534,9 +571,9 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
-
 	// Swagger endpoint scopes
 	const endpointScopes = req.swagger ? req.swagger.operation['x-security-scopes'] : BASE_SCOPES;
+	const endpointPermissions = req.swagger ? req.swagger.operation['x-token-permissions'] : ['can_read'];
 
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -553,57 +590,24 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	if (has(req.headers, 'api-key') && has(req.headers, 'authorization')) {
 		return sendError(MULTIPLE_API_KEY);
 	} else if (has(req.headers, 'api-key') && !has(req.headers, 'authorization')) {
-		if (!apiKey) {
-			loggerAuth.error('helpers/auth/checkHmacKey null key', apiKey);
-			return sendError(API_KEY_NULL);
-		} else if (moment().unix() > apiExpires) {
-			loggerAuth.error('helpers/auth/checkHmacKey expired', apiExpires);
-			return sendError(API_REQUEST_EXPIRED);
-		} else if (!apiSignature) {
-			loggerAuth.error('helpers/auth/checkHmacKey null secret', apiKey);
-			return sendError(API_SIGNATURE_NULL);
-		} else {
-			findTokenByApiKey(apiKey)
-				.then((token) => {
-					if (!endpointScopes.includes(token.type)) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
-							apiKey,
-							token.type
-						);
-						return sendError(API_KEY_OUT_OF_SCOPE);
-					} else if (new Date(token.expiry) < new Date()) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey expired key',
-							apiKey
-						);
-						return sendError(API_KEY_EXPIRED);
-					} else if (!token.active) {
-						loggerAuth.error(
-							'helpers/auth/checkApiKey/findTokenByApiKey inactive',
-							apiKey
-						);
-						return sendError(API_KEY_INACTIVE);
-					} else {
-						const isSignatureValid = checkHmacSignature(
-							token.secret,
-							req
-						);
-						if (!isSignatureValid) {
-							return sendError(API_SIGNATURE_INVALID);
-						} else {
-							req.auth = {
-								sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
-							};
-							cb();
-						}
-					}
-				})
-				.catch((err) => {
-					loggerAuth.error('helpers/auth/checkApiKey catch', err);
-					return sendError(err.message);
-				});
-		}
+		verifyHmacTokenPromise(
+			apiKey,
+			apiSignature,
+			apiExpires,
+			req.method,
+			req.originalUrl,
+			req.body,
+			endpointScopes,
+			endpointPermissions,
+			ip)
+			.then((auth) => {
+				req.auth = auth;
+				cb();
+			})
+			.catch((err) => {
+				loggerAuth.error('helpers/auth/checkApiKey catch', err);
+				return sendError(err.message);
+			});
 	}
 };
 
@@ -740,7 +744,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES) => {
+const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {
@@ -750,6 +754,20 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
+					const found = token.whitelisted_ips.find((wlip) => {
+						return ipRangeCheck(ip, wlip);
+					});
+					if (!found) {
+						loggerAuth.error(
+							'helpers/auth/checkApiKey/findTokenByApiKey not whitelisted',
+							apiKey,
+							token.whitelisted_ips,
+							ip
+						);
+						throw new Error(API_KEY_NOT_WHITELISTED);
+					}
+				}
 				if (!scopes.includes(token.type)) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
@@ -769,6 +787,12 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						apiKey
 					);
 					throw new Error(API_KEY_INACTIVE);
+				} else if (!permissions.every((permission) => token[permission] === true)) {
+					loggerAuth.error(
+						'helpers/auth/checkApiKey/findTokenByApiKey not permitted',
+						apiKey
+					);
+					throw new Error(API_KEY_NOT_PERMITTED);
 				} else {
 					const isSignatureValid = checkHmacSignature(
 						token.secret,
@@ -902,14 +926,20 @@ const formatTokenObject = (tokenData) => ({
 	active: tokenData.active,
 	revoked: tokenData.revoked,
 	expiry: tokenData.expiry,
-	created: tokenData.created_at
+	created: tokenData.created_at,
+	whitelisted_ips: tokenData.whitelisted_ips,
+	whitelisting_enabled: tokenData.whitelisting_enabled,
+	can_read: tokenData.can_read,
+	can_trade: tokenData.can_trade,
+	can_withdraw: tokenData.can_withdraw
 });
 
 const getUserKitHmacTokens = (userId) => {
 	return dbQuery.findAndCountAllWithRows('token', {
 		where: {
 			user_id: userId,
-			type: TOKEN_TYPES.HMAC
+			type: TOKEN_TYPES.HMAC,
+			active: true
 		},
 		attributes: {
 			exclude: ['user_id', 'updated_at']
@@ -941,16 +971,52 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				role: ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
-				active: true
+				active: true,
+				can_read: true
 			});
 		})
-		.then(() => {
-			return {
-				apiKey: key,
-				secret
-			};
+		.then((token) => {
+			return token
 		});
 };
+
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
+	await checkUserOtpActive(userId, otpCode);
+	const token = await findToken({where: {id: token_id}});
+
+	if (!token) {
+		throw new Error(TOKEN_NOT_FOUND);
+	} else if (token.revoked) {
+		throw new Error(TOKEN_REVOKED);
+	}
+
+	const values = {
+		...permissions,
+		name,
+		whitelisted_ips,
+		whitelisting_enabled
+	};
+
+	Object.entries(values).forEach((key, value) => {
+		if (value === undefined) {
+			delete values[key];
+		}
+	});
+
+	let newToken = await token.update(values, {
+		returning: true,
+		fields: [
+			'name',
+			'can_read',
+			'can_trade',
+			'can_withdraw',
+			'whitelisting_enabled',
+			'whitelisted_ips'
+		]
+	});
+	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
+	return formatTokenObject(newToken);
+}
 
 const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 	return checkUserOtpActive(userId, otpCode)
@@ -990,7 +1056,7 @@ const findTokenByApiKey = (apiKey) => {
 	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
 		.then(async (token) => {
 			if (!token) {
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey not found in redis',
 					apiKey
 				);
@@ -1021,7 +1087,7 @@ const findTokenByApiKey = (apiKey) => {
 
 				client.hsetAsync(HMAC_TOKEN_KEY, apiKey, JSON.stringify(token));
 
-				loggerAuth.debug(
+				loggerAuth.verbose(
 					'security/findTokenByApiKey apiKey stored in redis',
 					apiKey
 				);
@@ -1044,6 +1110,7 @@ const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
 		.createHmac('sha256', secret)
 		.update(verb + path + nonce + stringData)
 		.digest('hex');
+
 	return signature;
 };
 
@@ -1103,11 +1170,15 @@ module.exports = {
 	issueToken,
 	getUserKitHmacTokens,
 	createUserKitHmacToken,
+	updateUserKitHmacToken,
 	deleteUserKitHmacToken,
 	checkHmacSignature,
 	createHmacSignature,
 	isValidScope,
 	verifyBearerTokenExpressMiddleware,
 	getCountryFromIp,
-	checkIp
+	checkIp,
+	sendConfirmationEmail,
+	confirmByEmail,
+	calculateSignature
 };

@@ -294,10 +294,10 @@ $trade-tab--arrow-size: 0.4rem;
 }
 
 .home-page_content {
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 5rem;
-	max-width: $content-display-width;
+	// margin-left: auto;
+	// margin-right: auto;
+	// margin-top: 5rem;
+	// max-width: $content-display-width;
 }
 
 .live-markets_header {
@@ -315,6 +315,10 @@ $trade-tab--arrow-size: 0.4rem;
 }
 
 .home-page_section-wrapper {
+	margin-left: auto;
+    margin-right: auto;
+    margin-top: 5rem;
+    max-width: 100rem;
 	&:not(.main-section-wrapper) {
 		padding-top: 5rem;
 		padding-bottom: 5rem;

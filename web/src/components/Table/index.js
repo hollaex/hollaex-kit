@@ -103,6 +103,7 @@ class Table extends Component {
 			pageSize,
 			cancelDelayData,
 			className,
+			expandable,
 		} = this.props;
 
 		const count = this.props.count || this.props.data.length;
@@ -149,6 +150,7 @@ class Table extends Component {
 							headers={headers}
 							data={data}
 							withIcon={withIcon}
+							expandable={expandable}
 						/>
 					</table>
 				</div>
@@ -180,6 +182,11 @@ Table.defaultProps = {
 	jumpToPage: 0,
 	noData: '',
 	showHeaderNoData: false,
+	expandable: {
+		expandedRowRender: () => <p>No content</p>,
+		defaultExpanded: () => false,
+		rowExpandable: () => false,
+	},
 };
 
 export default Table;

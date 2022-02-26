@@ -31,6 +31,7 @@ export { default as Accordion } from './Accordion';
 export { default as ActionNotification } from './ActionNotification';
 export { default as IconTitle } from './IconTitle';
 export { default as OtpForm } from './OtpForm';
+export { default as EmailCodeForm } from './EmailCodeForm';
 export { default as Loader } from './Loader';
 export { default as CurrencyBall } from './CurrencyBall';
 export { default as CurrencyBallWithPrice } from './CurrencyBall/withPrice';

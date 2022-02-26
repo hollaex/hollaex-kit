@@ -1,0 +1,31 @@
+.depth-chart__bids {
+	.highcharts-area {
+		fill: $sparkline-fill !important;
+	}
+	.highcharts-graph {
+		stroke: $buy !important;
+	}
+}
+
+.depth-chart__asks {
+	.highcharts-area {
+		fill: $negative-sparkline-fill !important;
+	}
+	.highcharts-graph {
+		stroke: $sell !important;
+	}
+}
+
+.highcharts-root text {
+	fill: $colors-black !important;
+	color: $colors-black !important;
+}
+
+.highcharts-grid-line {
+	stroke: $colors-border-hover !important;
+}
+
+.highcharts-axis-line,
+.highcharts-tick {
+	stroke: $colors-border !important;
+}

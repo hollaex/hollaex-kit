@@ -1,16 +1,34 @@
 import React, { Fragment } from 'react';
-import { EditWrapper, Button, IconTitle, ProgressBar } from 'components';
+import {
+	EditWrapper,
+	Button,
+	IconTitle,
+	ProgressBar,
+	ActionNotification,
+} from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AmountPreview from './AmountPreview';
+import mathjs from 'mathjs';
 
 const ReviewEarlyUnstake = ({
 	stakeData,
+	onClose,
 	onCancel,
 	onProceed,
 	icons: ICONS,
+	penalties,
 }) => {
-	const { partial, total, progressStatusText, reward, symbol } = stakeData;
+	const {
+		amount,
+		partial,
+		total,
+		progressStatusText,
+		reward,
+		symbol,
+	} = stakeData;
+	const penalty = penalties[symbol];
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
@@ -18,8 +36,22 @@ const ReviewEarlyUnstake = ({
 		width: '40rem',
 	};
 
+	const slashedAmount = mathjs.multiply(amount, mathjs.divide(penalty, 100));
+	const amountToReceive = mathjs.subtract(amount, slashedAmount);
+
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content background" style={background}>
 				<IconTitle
 					iconId="STAKING_UNLOCK"
@@ -67,7 +99,7 @@ const ReviewEarlyUnstake = ({
 								STRINGS['UNSTAKE.EST_PENDING'],
 								STRINGS.formatString(
 									STRINGS['UNSTAKE.PRICE_FORMAT'],
-									'?',
+									reward,
 									symbol.toUpperCase()
 								)
 							)}
@@ -86,13 +118,13 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
+							slashedAmount,
 							symbol.toUpperCase()
 						)}
 					</div>
 				</div>
 				<AmountPreview
-					amount={0}
+					amount={amountToReceive}
 					symbol={symbol}
 					labelId="UNSTAKE.AMOUNT_TO_RECEIVE"
 				/>

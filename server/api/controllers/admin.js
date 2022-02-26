@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
-const { sendEmail } = require('../../mail');
+const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
@@ -1142,6 +1142,41 @@ const postKitUserMeta = (req, res) => {
 		});
 };
 
+const getEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
+	try {
+		const data = cloneDeep({
+			email: toolsLib.getEmail()
+		});
+		return res.json(data);
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+};
+
+const putEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putEmail', req.auth.sub);
+
+	const updateData = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/putEmail',
+		'updateData',
+		updateData
+	);
+
+	toolsLib.updateEmail(updateData)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
 
@@ -1784,6 +1819,35 @@ const putUserInfo = (req, res) => {
 		});
 };
 
+const emailConfigTest = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/emailConfigTest auth',
+		req.auth
+	);
+
+	const { receiver, smtp } = req.swagger.params.data.value;
+
+	testSendSMTPEmail(receiver, smtp)
+		.then(() => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/emailConfigTest',
+				'Email sent successfully'
+			);
+
+			return res.status(201).json({ message: 'Email sent successfully' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/emailConfigTest err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1827,5 +1891,8 @@ module.exports = {
 	getNetworkCoins,
 	getNetworkPairs,
 	updateExchange,
-	putUserInfo
+	putUserInfo,
+	getEmail,
+	putEmail,
+	emailConfigTest
 };

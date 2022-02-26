@@ -119,12 +119,14 @@ steps:
   - echo "Current version tag is :" && cat .tags
 
 - name: request_hollacloud_to_run_upgrade
-  image: bitholla/devops-tools:drone_hollacloud-220121
+  image: bitholla/devops-tools:drone_hollacloud-220216
   environment:
     HOLLAEX_EMAIL:
       from_secret: hollaex_email
     HOLLAEX_PASSWORD:
       from_secret: hollaex_password
+    HOLLAEX_LOGIN_KEY:
+      from_secret: hollaex_network_testnet_login_key
   settings:
     exchange_id: 176
     exchange_name: "Sandbox HollaEx"
@@ -166,15 +168,18 @@ steps:
   - echo "Current version tag is :" && cat .tags
 
 - name: request_hollacloud_to_run_upgrade
-  image: bitholla/devops-tools:drone_hollacloud-220121
+  image: bitholla/devops-tools:drone_hollacloud-220216
   environment:
     HOLLAEX_EMAIL:
       from_secret: next_email
     HOLLAEX_PASSWORD:
       from_secret: next_password
+    HOLLAEX_LOGIN_KEY:
+      from_secret: hollaex_network_testnet_login_key
   settings:
     exchange_id: 539
     exchange_name: "Next"
+    kit_branch: "next"
 
 - name: slack_noti_job_end
   image: plugins/slack

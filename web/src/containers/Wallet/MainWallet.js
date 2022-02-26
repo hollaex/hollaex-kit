@@ -105,6 +105,7 @@ class Wallet extends Component {
 
 	handleCheck = (_, value) => {
 		this.setState({ isZeroBalanceHidden: value });
+		localStorage.setItem('isZeroBalanceHidden', value);
 	};
 
 	generateSections = (
@@ -146,7 +147,8 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
-						// hasEarn={stake_page && !isMobile}
+						hasEarn={stake_page && !isMobile}
+						loading={this.props.dataFetched}
 					/>
 				),
 				isOpen: true,
@@ -246,6 +248,7 @@ const mapStateToProps = (store) => ({
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
+	dataFetched: store.asset.dataFetched,
 });
 
 const mapDispatchToProps = (dispatch) => ({

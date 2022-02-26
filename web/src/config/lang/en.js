@@ -237,6 +237,17 @@ export default {
 		OTP_BUTTON: 'submit',
 		ERROR_INVALID: 'Invalid OTP Code',
 	},
+	EMAIL_CODE_FORM: {
+		TITLE: 'Input you security codes',
+		LABEL: 'Input code (please check your email)',
+		PLACEHOLDER: 'Input the code sent to your email',
+		FORM_TITLE:
+			'A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.',
+		BUTTON: 'submit',
+		ERROR_INVALID: "The code you've entered is incorrect. Please try again",
+		OTP_LABEL: '2FA Code (OTP)',
+		OTP_PLACEHOLDER: 'Enter your 6-digit two-factor authentication code',
+	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick Trade', // updated
 		BUTTON: 'Review Order', // updated
@@ -691,6 +702,9 @@ export default {
 			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
 		GET_STAKES: 'Get stakes', //new
 		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
+		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
+		LOGIN_HERE: 'Login here',
+		MOVE_XHT: 'Move XHT',
 		ESTIMATED_STAKED: 'Estimated value of total staked',
 		ESTIMATED_EARNINGS: 'Estimated value of earnings',
 		CONNECT_WALLET: 'Connect wallet',
@@ -716,7 +730,7 @@ export default {
 		DURATION: 'Duration',
 		END_ON_BLOCK: 'End on block: {0}',
 		SLASHING_TITLE: 'Slashing (early unstake)',
-		SLASHING_TEXT_1: '10% of your stakes principle',
+		SLASHING_TEXT_1: '{0}% of your stakes principle',
 		SLASHING_TEXT_2: 'All earnings forfeited',
 		REVIEW_NOTE:
 			'Duration is measured by the timing of the Ethereum blocks. Please check and confirm the details above before you stake as unstaking early will result in a percentage of your stakes principle to be deducted and earnings forfeited.',
@@ -727,11 +741,9 @@ export default {
 		WAITING_STAKE: 'Confirm the stake amount',
 		WAITING_WITHDRAW: 'Allowing spending',
 		WAITING_UNSTAKE: 'Unstake',
-		WAITING_DISTRIBUTE: 'Clear pending earnings',
 		WAITING_STAKE_ING: 'Staking pending',
 		WAITING_WITHDRAW_ING: 'Processing of allowing spending',
 		WAITING_UNSTAKE_ING: 'Unstaking',
-		WAITING_DISTRIBUTE_ING: 'Clearing pending earnings',
 		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
 		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
 		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
@@ -751,6 +763,7 @@ export default {
 		VIEW_ON: 'View on the {0}',
 		BLOCKCHAIN: 'blockchain',
 		DISCONNECT: 'Disconnect account',
+		VIEW_POT: 'View distribution POT',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -775,12 +788,7 @@ export default {
 		TOTAL_EARNT: 'Total earnt',
 		PENDING_EARNINGS: 'Pending earnings*',
 		PENDING_EARNINGS_FOOTNOTE:
-			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount. You can {0} the amount yourself or wait for the next clearing cycle.',
-		CLEAR: 'clear',
-		CLEAR_PENDING_EARNING: 'Clear pending earnings',
-		CLEAR_PENDING_EARNING_SUB:
-			'Clearing requires a blockchain transaction in order to be added to your total receiving amount. You can clear the amount now or wait for the next clearing cycle.',
-		PENDING_AMOUNT: 'Pending amount to clear: {0}',
+			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount.',
 	},
 	STAKE_TABLE: {
 		CURRENCY: 'Currency',
@@ -814,14 +822,15 @@ export default {
 		PUBLIC_INFO: {
 			TITLE: 'Staking information',
 			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
-			TOTAL_DISTRIBUTED_EARNINGS: 'Total distributed earnings',
-			CLEARED_UNDISTRIBUTED_EARNINGS: 'Cleared undistributed earnings',
-			UNCLEARED_PENDING_EARNINGS: 'Uncleared pending earnings',
+			TOTAL_DISTRIBUTED_REWARDS: 'Total distributed rewards ({0})',
+			POT_BALANCE: 'POT balance',
+			UNCLAIMED_REWARDS: 'Unclaimed rewards',
 			TOTAL_STAKED: 'Total staked',
 			REWARD_RATE: 'Reward rate',
 			MY_STAKE: 'My stake ({0}%)',
 			MY_STAKE_PERCENTLESS: 'My stake',
 			OTHER_STAKE: 'Others stake ({0}%)',
+			EVENTS_TITLE: 'Recent distributed rewards',
 		},
 		DISTRIBUTIONS: {
 			TITLE: 'Distributed {0} rewards',
@@ -841,6 +850,21 @@ export default {
 			TRANSACTION_ID: 'Transaction ID',
 			AMOUNT: 'Amount',
 		},
+	},
+	MOVE_XHT: {
+		TITLE: 'Move XHT',
+		TEXT_1: 'To stake XHT you must first move your XHT into your own wallet.',
+		TEXT_2: 'Your currently connected wallet address is:',
+		LABEL: 'Wallet address',
+		TEXT_3:
+			'It is important to check that the above wallet address is secure. XHT will be moved to the above wallet address.',
+	},
+	MOVE_AMOUNT: {
+		TITLE: 'Input amount',
+		PROMPT: 'Input the amount you would like to move.',
+		BALANCE: '{0} balance: {1}',
+		LABEL: 'Amount to move',
+		FEE: 'Transaction fee: {0} {1}',
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
@@ -1082,8 +1106,34 @@ export default {
 		INVALID_LEVEL:
 			'You need to upgrade your verification level to have access this feature', // TODO
 	},
+	DEVELOPERS_TOKEN: {
+		API_KEY: 'API Key',
+		SECRET_KEY: 'Secret Key',
+		ACCESS: 'Access',
+		BASIC_ACCESS: 'Basic access',
+		BASIC_ACCESS_PROMPT: 'Select what this API key can access.',
+		READING_ACCESS: 'Reading (wallets balances, etc)',
+		TRADING_ACCESS: 'Trading',
+		IP_ACCESS: 'IP access',
+		IP_ACCESS_PROMPT: 'Configure what IP address will work with this API key.',
+		ANY_IP_ADDRESS: 'Any IP address',
+		ONLY_TRUSTED_IPS: 'Only trusted IPs',
+		ADD_IP_PH: 'Enter IP address. You can add multiple IPs',
+		ADD_IP: 'Add',
+		ADVANCED_ACCESS: 'Advanced access',
+		ADVANCED_ACCESS_PROMPT: 'Requires trusted IPs be activated.',
+		WITHDRAWAL_ACCESS: 'Withdrawals',
+		SAVE: 'Save',
+		BEWARE: 'Beware, allowing withdrawals comes with certain risks!',
+	},
 	DEVELOPERS_TOKENS_POPUP: {
+		GENERATE_TITLE: 'Generate API Key',
+		GENERATE_TEXT:
+			'Please name your API key and keep it in private after its generated. You wont be able to retrieve it again later.',
 		GENERATE: 'Generate',
+		DELETE_TITLE: 'Delete API Key',
+		DELETE_TEXT:
+			'Deleting your API key is irreversible although you can generate a new API key at anytime. Do you want to delete your API key?',
 		DELETE: 'DELETE',
 		FORM_NAME_LABEL: 'Name',
 		FORM_LABLE_PLACEHOLDER: 'Name for the Api Key',
@@ -1411,4 +1461,16 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+	TOOLS: {
+		ORDERBOOK: 'Orderbook', //new
+		CHART: 'Chart', //new
+		PUBLIC_SALES: 'Public sales', //new
+		ORDER_ENTRY: 'Order entry', //new
+		RECENT_TRADES: 'Recent trades', //new
+		OPEN_ORDERS: 'Open orders', //new
+		WALLET: 'Wallet',
+		DEPTH_CHART: 'Depth chart', //new
+		COMING_SOON: 'coming soon', //new
+	},
+	WALLET_BALANCE_LOADING: 'Balance loading...', //new
 };

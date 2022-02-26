@@ -103,6 +103,7 @@ class StakeContent extends Component {
 			tokenData,
 			onCloseDialog,
 			account,
+			penalties,
 		} = this.props;
 		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
@@ -111,6 +112,7 @@ class StakeContent extends Component {
 				return (
 					<AmountContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onBack={onCloseDialog}
 						onNext={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						amount={amount}
@@ -122,6 +124,7 @@ class StakeContent extends Component {
 					<PeriodContent
 						tokenData={tokenData}
 						periods={periods}
+						onClose={onCloseDialog}
 						onBack={() => this.setContent(CONTENT_TYPE.AMOUNT)}
 						onReview={() => this.setContent(CONTENT_TYPE.REVIEW)}
 						setPeriod={this.setPeriod}
@@ -134,6 +137,7 @@ class StakeContent extends Component {
 				return (
 					<ReviewContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onCancel={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						onProceed={() =>
 							this.approveAndStake(symbol)({ amount, period, account })
@@ -141,6 +145,7 @@ class StakeContent extends Component {
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
+						penalty={penalties[symbol]}
 					/>
 				);
 			case CONTENT_TYPE.WAITING:
@@ -196,6 +201,7 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	penalties: store.stake.penalties,
 });
 
 const mapDispatchToProps = (dispatch) => ({

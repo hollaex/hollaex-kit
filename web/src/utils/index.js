@@ -12,7 +12,10 @@ export const getEmail = () => cookies.get('token::email');
 export { default as request, requestAuthenticated } from './request';
 
 export const formatDate = (date) => {
-	return moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase()  + new Date(date).toTimeString().slice(9);
+	return (
+		moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
+		new Date(date).toTimeString().slice(9)
+	);
 };
 
 export const getFormat = (min = 0, fullFormat) => {

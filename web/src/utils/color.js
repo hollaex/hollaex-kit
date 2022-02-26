@@ -189,6 +189,24 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.1)
 			.string(),
+		'calculated_trade-block_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_stake-table_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_background-overlay': Color(themeData['base_background'])
+			.alpha(0.7)
+			.string(),
+		'calculated_tag-background': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.2)
+			.string(),
 	};
 
 	return { ...themeData, ...calculatedColors };

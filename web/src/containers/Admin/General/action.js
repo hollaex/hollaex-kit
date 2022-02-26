@@ -20,3 +20,16 @@ export const upload = (formData) => {
 
 	return axios('/admin/upload', options);
 };
+
+export const getEmailStrings = () => {
+	let url = '/admin/email';
+	return requestAuthenticated(url);
+};
+
+export const updateEmailStrings = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated('/admin/email', options);
+};
