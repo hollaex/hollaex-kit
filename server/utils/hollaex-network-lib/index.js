@@ -982,6 +982,7 @@ class HollaExNetwork {
 
 	/**
 	 * Create a trade for the exchange on the network
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - Whether this is a buy or a sell trade
 	 * @param {number} price - Price set by the broker
 	 * @param {number} size - Size of the trade
@@ -993,6 +994,7 @@ class HollaExNetwork {
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
 	createBrokerTrade(
+		symbol,
 		side,
 		price,
 		size,
@@ -1002,7 +1004,9 @@ class HollaExNetwork {
 	) {
 		checkKit(this.exchange_id);
 
-		if (!side) {
+		if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!side) {
 			return reject(parameterError('side', 'cannot be null'));
 		} else if (!["buy", "sell"].includes(side)) {
 			return reject(parameterError('side', 'must be buy or sell'));
@@ -1025,6 +1029,7 @@ class HollaExNetwork {
 			this.exchange_id
 		}/trade?side=${side}`;
 
+		path += `&symbol=${symbol}`;
 		path += `&size=${size}`;
 		path += `&maker_id=${makerId}`;
 		path += `&taker_id=${takerId}`;
