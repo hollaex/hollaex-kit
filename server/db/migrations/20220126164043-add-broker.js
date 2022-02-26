@@ -39,15 +39,15 @@ module.exports = {
 					}
 				},
 				min_size: {
-					type: DataTypes.DOUBLE,
+					type: Sequelize.DOUBLE,
 					allowNull: false
 				},
 				max_size: {
-					type: DataTypes.DOUBLE,
+					type: Sequelize.DOUBLE,
 					allowNull: false
 				},
 				increment_size: {
-					type: DataTypes.DOUBLE,
+					type: Sequelize.DOUBLE,
 					allowNull: false
 				},
 				created_at: {

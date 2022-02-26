@@ -2,7 +2,7 @@ const { loggerBroker } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 
 function createBrokerPair(req, res) {
-	loggerAdmin.verbose(
+	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/createBrokerPair auth',
 		req.auth
@@ -33,7 +33,7 @@ function createBrokerPair(req, res) {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/createBrokerPair err',
 				err.message
@@ -43,7 +43,7 @@ function createBrokerPair(req, res) {
 }
 
 function updateBrokerPair(req, res) {
-	loggerAdmin.verbose(
+	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/updateBrokerPair auth',
 		req.auth
@@ -54,7 +54,7 @@ function updateBrokerPair(req, res) {
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/updateBrokerPair err',
 				err.message
@@ -64,7 +64,7 @@ function updateBrokerPair(req, res) {
 }
 
 function deleteBrokerPair(req, res) {
-	loggerAdmin.verbose(
+	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/deleteBrokerPair auth',
 		req.auth
@@ -75,7 +75,7 @@ function deleteBrokerPair(req, res) {
 			return res.json({ message: "Successfully deleted broker pair." });
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/updateBrokerPair err',
 				err.message
@@ -85,7 +85,7 @@ function deleteBrokerPair(req, res) {
 }
 
 function getBrokerPairs(req, res) {
-	loggerAdmin.verbose(
+	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/deleteBrokerPair auth',
 		req.auth
@@ -104,7 +104,7 @@ function getBrokerPairs(req, res) {
 			return res.json(brokerPairs);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/getBrokerDeals err',
 				err.message
@@ -115,14 +115,14 @@ function getBrokerPairs(req, res) {
 }
 
 function executeBrokerDeal(req, res) {
-	loggerAdmin.verbose(
+	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/executeBrokerDeal auth',
 		req.auth
 	);
 
 	const {
-		side
+		side,
 		symbol,
 		price,
 		size,
@@ -135,7 +135,7 @@ function executeBrokerDeal(req, res) {
 			res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(
+			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/executeBrokerDeal err',
 				err.message
