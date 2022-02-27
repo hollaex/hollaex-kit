@@ -5,8 +5,8 @@ const math = require('mathjs');
 const dbQuery = require('./database/query');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { mapKitIdToNetworkId } = require('./user');
-const { validatePair } = require('./common');
+const { getUserByKitId } = require('./user');
+const { validatePair, getKitTier } = require('./common');
 
 const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -98,18 +98,23 @@ const executeBrokerDeal = async (userId, symbol, side, size, price) => {
 		throw new Error(`Given price doesn't match the broker pair price. Price should be ${brokerPrice}`);
 	}
 
-	const networkIds = await mapKitIdToNetworkId([brokerPair.user_id, userId]);
-	const brokerNetworkId = networkIds[brokerPair.user_id];
-	const userNetworkId = networkIds[userId];
+	const broker = await getUserByKitId(brokerPair.user_id);
+	const user = await getUserByKitId(userId);
+
+	const tierBroker = getKitTier(broker.verification_level);
+	const tierUser = getKitTier(user.verification_level);
+
+	const makerFee = tierBroker.fees.maker[symbol];
+	const takerFee = tierUser.fees.taker[symbol];
 
 	return getNodeLib().createBrokerTrade(
 		symbol,
 		side,
 		price,
 		size,
-		brokerNetworkId,
-		userNetworkId,
-		{ maker: 0, taker: 0 }
+		broker.id,
+		user.id,
+		{ maker: makerFee, taker: takerFee }
 	);
 }
 

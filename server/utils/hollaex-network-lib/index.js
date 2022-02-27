@@ -1035,7 +1035,7 @@ class HollaExNetwork {
 		const data = {
 			side,
 			price,
-			// symbol,
+			symbol,
 			size,
 			maker_id: makerId,
 			taker_id: takerId,
