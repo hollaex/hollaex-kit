@@ -46,16 +46,6 @@ module.exports = function(sequelize, DataTypes) {
 			increment_size: {
 				type: DataTypes.DOUBLE,
 				allowNull: false
-			},
-			created_at: {
-				type: DataTypes.DATE,
-				allowNull: false,
-				defaultValue: sequelize.literal('NOW()')
-			},
-			updated_at: {
-				type: DataTypes.DATE,
-				allowNull: false,
-				defaultValue: sequelize.literal('NOW()')
 			}
 		},
 		{

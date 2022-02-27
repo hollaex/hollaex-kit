@@ -50,7 +50,17 @@ function updateBrokerPair(req, res) {
 		req.auth
 	);
 
-	toolsLib.broker.updateBrokerPair(req.swagger.params.data.value)
+	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id } = req.swagger.params.data.value;
+	
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/updateBrokerPair auth',
+		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id
+	);
+
+	toolsLib.broker.updateBrokerPair(id, {
+		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id
+	})
 		.then((data) => {
 			return res.json(data);
 		})
