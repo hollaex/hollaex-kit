@@ -1,14 +1,14 @@
 'use strict';
 
 const { getModel } = require('./database/model');
-const { getKitPairs } = require('./common');
 const math = require('mathjs');
 const dbQuery = require('./database/query');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { mapKitIdToNetworkId } = require('./user');
+const { validatePair } = require('./common');
 
-function validateBrokerPair(brokerPair) {
+const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
 		throw new Error("Broker buy price must be bigger than zero.")
 	} else if (math.compare(brokerPair.sell_price, 0) !== 1) {
@@ -19,17 +19,24 @@ function validateBrokerPair(brokerPair) {
 		throw new Error("Broker maximum order size must be bigger than minimum order size.")
 	} else if (math.compare(brokerPair.increment_size, 0) !== 1) {
 		throw new Error("Broker order price increment must be bigger than zero.")
+	} else if (!validatePair(brokerPair.symbol)) {
+		throw new Error('invalid symbol');
 	}
 }
 
-async function createBrokerPair(brokerPair) {
+const createBrokerPair = (brokerPair) => {
 	validateBrokerPair(brokerPair);
-
-	return await getModel("broker").create(brokerPair);
+	return fetchBrokerPair(brokerPair.symbol)
+		.then((deal) => {
+			if (deal) {
+				throw new Error('A deal for this symbol alreadys exists')
+			}
+			return getModel("broker").create(brokerPair, { raw: true });
+		})
 }
 
-async function fetchBrokerPair(id) {
-	return await getModel("broker").findOne({ where: { id } });
+async function fetchBrokerPair(symbol) {
+	return getModel("broker").findOne({ where: { symbol } });
 }
 
 async function fetchBrokerPairs(attributes) {

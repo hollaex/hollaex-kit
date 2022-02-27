@@ -4166,7 +4166,7 @@ paths:
           schema:
             $ref: "#/definitions/BrokerPairCreate"
       responses:
-        201:
+        200:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"

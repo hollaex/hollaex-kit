@@ -769,6 +769,21 @@ const validateIp = (ip) => {
 	return true;
 };
 
+const validatePair = (pair) => {
+	const regex = /([a-z]){2,8}-([a-z]{2,8})/;
+	if (!regex.test(pair)) {
+		return false;
+	}
+	const [base, quote] = pair.split('-');
+	if (base === quote) {
+		return false;
+	}
+	if (!getKitCoin(base) || !getKitCoin(quote)) {
+		return false;
+	}
+	return true;
+}
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -829,5 +844,6 @@ module.exports = {
 	getEmail,
 	updateEmail,
 	checkExchangeStatus,
-	validateIp
+	validateIp,
+	validatePair
 };

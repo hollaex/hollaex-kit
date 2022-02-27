@@ -1,5 +1,6 @@
 const { loggerBroker } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
+const { errorMessageConverter } = require('../../utils/conversion');
 
 function createBrokerPair(req, res) {
 	loggerBroker.verbose(
