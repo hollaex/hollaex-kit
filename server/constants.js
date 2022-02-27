@@ -148,6 +148,7 @@ exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
+exports.GET_BROKER = () => cloneDeep(configuration.broker);
 
 exports.USER_META_KEYS = [
 	'description',

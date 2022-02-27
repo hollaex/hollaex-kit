@@ -44,6 +44,7 @@ const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
+const { GET_BROKER } = require('../../../constants');
 // const { Transform } = require('json2csv');
 
 const getKitVersion = () => {
@@ -784,6 +785,10 @@ const validatePair = (pair) => {
 	return true;
 }
 
+const getBrokerDeals = () => {
+	return GET_BROKER();
+}; 
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -845,5 +850,6 @@ module.exports = {
 	updateEmail,
 	checkExchangeStatus,
 	validateIp,
-	validatePair
+	validatePair,
+	getBrokerDeals
 };

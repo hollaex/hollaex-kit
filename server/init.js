@@ -128,6 +128,8 @@ const checkStatus = () => {
 				configuration.pairs[pair.name] = pair;
 			}
 
+			configuration.broker = deals;
+
 			for (let tier of tiers) {
 				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
 				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
