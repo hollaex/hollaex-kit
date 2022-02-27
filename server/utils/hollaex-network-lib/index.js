@@ -1000,7 +1000,10 @@ class HollaExNetwork {
 		size,
 		makerId,
 		takerId,
-		feeStructure
+		feeStructure,
+		opts = {
+			additionalHeaders: null
+		}
 	) {
 		checkKit(this.exchange_id);
 
@@ -1018,33 +1021,37 @@ class HollaExNetwork {
 			return reject(parameterError('takerId', 'cannot be null'));
 		} else if (!feeStructure) {
 			return reject(parameterError('feeStructure', 'cannot be null'));
-		} else if (!feeStructure.maker) {
+		} else if (isNull(feeStructure.maker)) {
 			return reject(parameterError('feeStructure.maker', 'cannot be null'));
-		} else if (!feeStructure.taker) {
+		} else if (isNull(feeStructure.taker)) {
 			return reject(parameterError('feeStructure.taker', 'cannot be null'));
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
+		let path = `${this.baseUrl}/network/${
 			this.exchange_id
-		}/trade?side=${side}`;
+		}/trade`;
 
-		path += `&symbol=${symbol}`;
-		path += `&size=${size}`;
-		path += `&maker_id=${makerId}`;
-		path += `&taker_id=${takerId}`;
-		path += `&fee_structure[maker]=${feeStructure.maker}`;
-		path += `&fee_structure[taker]=${feeStructure.taker}`;
+		const data = {
+			side,
+			price,
+			// symbol,
+			size,
+			maker_id: makerId,
+			taker_id: takerId,
+			fee_structure: feeStructure
+		}
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb,
 			path,
-			this.apiExpiresAfter
+			this.apiExpiresAfter,
+			data
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
 	/**

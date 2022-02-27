@@ -149,7 +149,7 @@ function getBrokerPairs(req, res) {
 
 }
 
-function executeBrokerDeal(req, res) {
+const executeBrokerDeal = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/executeBrokerDeal auth',
@@ -165,7 +165,7 @@ function executeBrokerDeal(req, res) {
 
 	const userId = req.auth.sub.id;
 
-	executeBrokerDeal(userId, symbol, side, size, price)
+	toolsLib.broker.executeBrokerDeal(userId, symbol, side, size, price)
 		.then((data) => {
 			res.json(data);
 		})

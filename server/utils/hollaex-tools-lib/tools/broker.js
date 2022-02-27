@@ -19,7 +19,7 @@ const validateBrokerPair = (brokerPair) => {
 		throw new Error("Broker maximum order size must be bigger than minimum order size.")
 	} else if (math.compare(brokerPair.increment_size, 0) !== 1) {
 		throw new Error("Broker order price increment must be bigger than zero.")
-	} else if (!validatePair(brokerPair.symbol)) {
+	} else if (brokerPair.symbol && !validatePair(brokerPair.symbol)) {
 		throw new Error('invalid symbol');
 	}
 }
@@ -35,7 +35,7 @@ const createBrokerPair = (brokerPair) => {
 		})
 }
 
-async function fetchBrokerPair(symbol) {
+const fetchBrokerPair = (symbol) => {
 	return getModel("broker").findOne({ where: { symbol } });
 }
 
@@ -43,8 +43,11 @@ async function fetchBrokerPairs(attributes) {
 	return await getModel("broker").findAll({ attributes });
 }
 
-async function updateBrokerPair(id, data) {
+const updateBrokerPair = async (id, data) => {
 	const brokerPair = await getModel("broker").findOne({ where: { id } });
+	if (!brokerPair) {
+		throw new Error('Pair does not exist');
+	}
 
 	const updatedPair = {
 		...brokerPair,
@@ -52,9 +55,9 @@ async function updateBrokerPair(id, data) {
 	};
 
 	validateBrokerPair(updatedPair);
-
 	return brokerPair.update(data, {
 		fields: [
+			'user_id',
 			"buy_price",
 			"sell_price",
 			"min_size",
@@ -65,7 +68,7 @@ async function updateBrokerPair(id, data) {
 	});
 }
 
-async function deleteBrokerPair(id) {
+const deleteBrokerPair = async (id) => {
 	const brokerPair = await getModel("broker").findOne({ where: { id } });
 
 	if (!brokerPair) {
@@ -74,31 +77,32 @@ async function deleteBrokerPair(id) {
 		throw new Error("Broker pair could not be deleted while unpaused.");
 	}
 
-	await brokerPair.destroy();
+	return brokerPair.destroy();
 }
 
-async function executeBrokerDeal(userId, symbol, side, size, price) {
+const executeBrokerDeal = async (userId, symbol, side, size, price) => {
 	const brokerPair = await getModel("broker").findOne({ where: { symbol } });
 
 	if (!brokerPair) {
 		throw new Error("Broker pair could not be found.");
-	} else if (!brokerPair.paused) {
+	} else if (brokerPair.paused) {
 		throw new Error("Broker pair is paused.");
 	}
 
 	const brokerPrice = {
-		"buy": brokerPair.sell_price,
-		"sell": brokerPair.buy_price
+		'buy': brokerPair.sell_price,
+		'sell': brokerPair.buy_price
 	}[side];
 
 	if (brokerPrice !== price) {
-		throw new Error("Given price doesn't match the stored broker pair price.");
+		throw new Error(`Given price doesn't match the broker pair price. Price should be ${brokerPrice}`);
 	}
 
-	const brokerNetworkId = (await mapKitIdToNetworkId([brokerPair.user_id]))[0];
-	const userNetworkId = (await mapKitIdToNetworkId([userId]))[0];
+	const networkIds = await mapKitIdToNetworkId([brokerPair.user_id, userId]);
+	const brokerNetworkId = networkIds[brokerPair.user_id];
+	const userNetworkId = networkIds[userId];
 
-	return await getNodeLib().createBrokerTrade(
+	return getNodeLib().createBrokerTrade(
 		symbol,
 		side,
 		price,

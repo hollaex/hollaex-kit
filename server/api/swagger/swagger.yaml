@@ -4263,10 +4263,20 @@ paths:
           schema:
             type: object
             properties:
-              id:
-                type: integer
+              symbol:
+                type: string
+              side:
+                type: string
+                enum: ["buy", "sell"]
+              price:
+                type: number
+              size:
+                type: number
             required:
-              - id
+              - symbol
+              - price
+              - side
+              - size
       responses:
         201:
           description: Success
