@@ -4230,6 +4230,12 @@ paths:
       tags:
         - admin
         - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
       responses:
         200:
           description: Success
@@ -5716,3 +5722,10 @@ definitions:
             type: integer
         required:
           - id
+  IdObject:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer

@@ -2,12 +2,13 @@ const { loggerBroker } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
-function createBrokerPair(req, res) {
+const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/createBrokerPair auth',
 		req.auth
 	);
+	const ip = req.headers['x-real-ip'];
 
 	const {
 		symbol,
@@ -19,6 +20,20 @@ function createBrokerPair(req, res) {
 		max_size,
 		increment_size
 	} = req.swagger.params.data.value;
+
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/createBrokerPair data',
+		ip,
+		symbol,
+		buy_price,
+		sell_price,
+		paused,
+		user_id,
+		min_size,
+		max_size,
+		increment_size
+	);
 
 	toolsLib.broker.createBrokerPair({
 		symbol,
@@ -49,13 +64,22 @@ function updateBrokerPair(req, res) {
 		'controllers/broker/updateBrokerPair auth',
 		req.auth
 	);
-
+	
+	const ip = req.headers['x-real-ip'];
 	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id } = req.swagger.params.data.value;
 	
 	loggerBroker.verbose(
 		req.uuid,
-		'controllers/broker/updateBrokerPair auth',
-		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id
+		'controllers/broker/updateBrokerPair data',
+		ip,
+		id,
+		buy_price,
+		sell_price,
+		min_size,
+		max_size,
+		increment_size,
+		paused,
+		user_id
 	);
 
 	toolsLib.broker.updateBrokerPair(id, {
