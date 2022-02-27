@@ -44,6 +44,7 @@ const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
+const { GET_BROKER } = require('../../../constants');
 // const { Transform } = require('json2csv');
 
 const getKitVersion = () => {
@@ -769,6 +770,25 @@ const validateIp = (ip) => {
 	return true;
 };
 
+const validatePair = (pair) => {
+	const regex = /([a-z]){2,8}-([a-z]{2,8})/;
+	if (!regex.test(pair)) {
+		return false;
+	}
+	const [base, quote] = pair.split('-');
+	if (base === quote) {
+		return false;
+	}
+	if (!getKitCoin(base) || !getKitCoin(quote)) {
+		return false;
+	}
+	return true;
+}
+
+const getBrokerDeals = () => {
+	return GET_BROKER();
+}; 
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -829,5 +849,7 @@ module.exports = {
 	getEmail,
 	updateEmail,
 	checkExchangeStatus,
-	validateIp
+	validateIp,
+	validatePair,
+	getBrokerDeals
 };

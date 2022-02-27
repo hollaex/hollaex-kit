@@ -4151,6 +4151,145 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /broker:
+    x-swagger-router-controller: broker
+    post:
+      operationId: createBrokerPair
+      description: Create a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairCreate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: updateBrokerPair
+      description: Edit a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    get:
+      operationId: getBrokerPairs
+      description: Get all broker deals
+      tags:
+        - broker
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/BrokerPair"
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    delete:
+      operationId: deleteBrokerPair
+      description: Delete a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /broker/execute:
+    x-swagger-router-controller: broker
+    post:
+      operationId: executeBrokerDeal
+      description: Execute a broker deal
+      tags:
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              symbol:
+                type: string
+              side:
+                type: string
+                enum: ["buy", "sell"]
+              price:
+                type: number
+              size:
+                type: number
+            required:
+              - symbol
+              - price
+              - side
+              - size
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
 definitions:
   ObjectResponse:
     type: object
@@ -5537,3 +5676,66 @@ definitions:
       increment_price:
         type: number
         format: double
+  BrokerPair:
+    type: object
+    properties:
+      symbol:
+        type: string
+      buy_price:
+        type: number
+      sell_price:
+        type: number
+      paused:
+        type: boolean
+      user_id:
+        type: integer
+      min_size:
+        type: number
+      max_size:
+        type: number
+      increment_size:
+        type: number
+  BrokerPairCreate:
+    type: object
+    required:
+      - symbol
+      - buy_price
+      - sell_price
+      - paused
+      - user_id
+      - min_size
+      - max_size
+      - increment_size
+    properties:
+      symbol:
+        type: string
+      buy_price:
+        type: number
+      sell_price:
+        type: number
+      paused:
+        type: boolean
+      user_id:
+        type: integer
+      min_size:
+        type: number
+      max_size:
+        type: number
+      increment_size:
+        type: number
+  BrokerPairUpdate:
+    allOf:
+      - $ref: "#/definitions/BrokerPair"
+      - type: object
+        properties:
+          id:
+            type: integer
+        required:
+          - id
+  IdObject:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
