@@ -11,6 +11,7 @@ const security = require('./security');
 const coin = require('./coin');
 const pair = require('./pair');
 const exchange = require('./exchange');
+const broker = require('./broker');
 
 module.exports = {
 	...common,
@@ -23,5 +24,6 @@ module.exports = {
 	security,
 	coin,
 	pair,
-	exchange
+	exchange,
+	broker
 };
