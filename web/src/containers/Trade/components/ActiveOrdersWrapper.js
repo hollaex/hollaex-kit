@@ -53,7 +53,7 @@ class OrdersWrapper extends Component {
 	};
 
 	render() {
-		const { activeOrders, activeTheme, pairs, icons: ICONS, tool } = this.props;
+		const { activeOrders, pairs, icons: ICONS, tool } = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
 		return (
