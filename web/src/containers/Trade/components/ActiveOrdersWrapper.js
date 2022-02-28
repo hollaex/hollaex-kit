@@ -87,7 +87,7 @@ class OrdersWrapper extends Component {
 							onCancelAll={this.openConfirm}
 						/>
 					) : (
-						<LogoutInfoOrder activeTheme={activeTheme} />
+						<LogoutInfoOrder />
 					)}
 				</TradeBlock>
 				<Dialog

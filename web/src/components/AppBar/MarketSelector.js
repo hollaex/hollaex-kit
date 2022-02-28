@@ -7,18 +7,15 @@ import classnames from 'classnames';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 
 import { Slider } from 'components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import {
-	donutFormatPercentage,
-	formatToCurrency,
-	calculatePrice,
-} from 'utils/currency';
+import { formatToCurrency } from 'utils/currency';
 import SearchBox from './SearchBox';
 import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import EditWrapper from 'components/EditWrapper';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -32,8 +29,16 @@ class MarketSelector extends Component {
 			symbols,
 			selectedTabMenu,
 			searchValue: '',
-			searchResult: {},
+			searchResult: [],
+			tabResult: [],
 		};
+	}
+
+	componentDidMount() {
+		const { selectedTabMenu, searchValue } = this.state;
+
+		this.onAddTabClick(selectedTabMenu);
+		this.handleSearch(undefined, searchValue);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -76,32 +81,45 @@ class MarketSelector extends Component {
 	};
 
 	onAddTabClick = (symbol) => {
-		this.setState({ selectedTabMenu: symbol });
+		const { pairs } = this.props;
+
+		const tabResult = [];
+		if (symbol === 'all') {
+			this.setState({ tabResult: Object.keys(pairs), selectedTabMenu: symbol });
+		} else {
+			Object.entries(pairs).forEach(([key, { pair_2 }]) => {
+				if (pair_2 === symbol) {
+					tabResult.push(key);
+				}
+			});
+
+			this.setState({ tabResult, selectedTabMenu: symbol });
+		}
 	};
 
-	handleSearch = (_, value) => {
+	handleSearch = (_, value = '') => {
 		const { pairs, coins } = this.props;
-		if (value) {
-			const result = {};
-			const searchValue = value.toLowerCase().trim();
-			Object.keys(pairs).map((key) => {
-				const temp = pairs[key];
-				const { fullname } =
-					coins[temp.pair_base.toLowerCase()] || DEFAULT_COIN_DATA;
-				const cashName = fullname ? fullname.toLowerCase() : '';
+		const result = [];
+		const searchValue = value ? value.toLowerCase().trim() : '';
+
+		if (!value) {
+			this.setState({ searchResult: Object.keys(pairs), searchValue: '' });
+		} else {
+			Object.entries(pairs).forEach(([key, pair]) => {
+				const { pair_base, pair_2 } = pair;
+				const { fullname = '' } = coins[pair_base] || DEFAULT_COIN_DATA;
+
 				if (
 					key.indexOf(searchValue) !== -1 ||
-					temp.pair_base.indexOf(searchValue) !== -1 ||
-					temp.pair_2.indexOf(searchValue) !== -1 ||
-					cashName.indexOf(searchValue) !== -1
+					pair_base.indexOf(searchValue) !== -1 ||
+					pair_2.indexOf(searchValue) !== -1 ||
+					fullname.toLowerCase().indexOf(searchValue) !== -1
 				) {
-					result[key] = temp;
+					result.push(key);
 				}
-				return key;
 			});
-			this.setState({ searchResult: { ...result }, searchValue: value });
-		} else {
-			this.setState({ searchResult: {}, searchValue: '' });
+
+			this.setState({ searchResult: result, searchValue: value });
 		}
 	};
 
@@ -111,10 +129,11 @@ class MarketSelector extends Component {
 	};
 
 	closeAddTabMenu = () => {
+		const { pairs } = this.props;
 		this.setState(
 			{
 				searchValue: '',
-				searchResult: {},
+				searchResult: Object.keys(pairs),
 			},
 			() => {
 				const { closeAddTabMenu = () => {} } = this.props;
@@ -139,84 +158,22 @@ class MarketSelector extends Component {
 
 	render() {
 		const {
-			pairs,
-			coins = {},
-			tickers = {},
 			addTradePairTab,
 			wrapperClassName,
 			icons: ICONS,
 			constants,
+			markets: allMarkets,
 		} = this.props;
 
-		const { selectedTabMenu, searchValue, searchResult } = this.state;
+		const { searchResult, tabResult } = this.state;
 		const { handleSearch } = this;
 
-		let tabMenu = {};
-		if (searchValue) {
-			tabMenu = { ...searchResult };
-		} else if (selectedTabMenu === 'all') {
-			Object.keys(pairs).map((key) => {
-				let temp = pairs[key];
-				if (temp) {
-					tabMenu[key] = temp;
-				}
-				return key;
-			});
-		} else {
-			Object.keys(pairs).map((key) => {
-				let temp = pairs[key];
-				if (temp && temp.pair_2 === selectedTabMenu) {
-					tabMenu[key] = temp;
-				}
-				return key;
-			});
-		}
+		const markets = allMarkets.filter(
+			({ key }) => searchResult.includes(key) && tabResult.includes(key)
+		);
 
-		const tabMenuLength = Object.keys(tabMenu).length;
+		const tabMenuLength = markets.length;
 		const hasTabMenu = tabMenuLength !== 0;
-
-		let processedTabMenu = [];
-		if (hasTabMenu) {
-			processedTabMenu = Object.keys(tabMenu)
-				.map((pair) => {
-					let menu = tabMenu[pair] || {};
-					let ticker = tickers[pair] || {};
-					let { symbol = '' } =
-						coins[menu.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-					let pairTwo =
-						coins[menu.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-					const { increment_price } = menu;
-					const priceDifference =
-						ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
-					const tickerPercent =
-						priceDifference === 0 || ticker.open === 0
-							? 0
-							: (priceDifference / ticker.open) * 100;
-					const priceDifferencePercent = isNaN(tickerPercent)
-						? donutFormatPercentage(0)
-						: donutFormatPercentage(tickerPercent);
-
-					const volumePrice = calculatePrice(ticker.volume, symbol);
-
-					return {
-						pair,
-						symbol,
-						menu,
-						pairTwo,
-						ticker,
-						increment_price,
-						priceDifference,
-						priceDifferencePercent,
-						volumePrice,
-					};
-				})
-				.sort(
-					({ volumePrice: volumePriceA }, { volumePrice: volumePriceB }) => {
-						return volumePriceB - volumePriceA;
-					}
-				)
-				.slice(0, Math.min(tabMenuLength, 10));
-		}
 
 		return (
 			<div className={classnames('app-bar-add-tab-menu', wrapperClassName)}>
@@ -234,93 +191,97 @@ class MarketSelector extends Component {
 					</div>
 					<div
 						className={classnames({
-							'scroll-view': processedTabMenu.length >= 10,
+							'scroll-view': markets.length >= 10,
 						})}
 					>
 						{hasTabMenu ? (
-							processedTabMenu.map(
-								(
-									{
-										pair,
-										symbol,
-										menu,
-										pairTwo,
-										ticker,
-										increment_price,
-										priceDifference,
-										priceDifferencePercent,
-									},
-									index
-								) => {
-									return (
-										<div
-											key={index}
-											className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
-										>
+							markets
+								.slice(0, Math.min(tabMenuLength, 10))
+								.map(
+									(
+										{
+											key,
+											pair,
+											symbol,
+											pairTwo,
+											ticker,
+											increment_price,
+											priceDifference,
+											priceDifferencePercent,
+										},
+										index
+									) => {
+										return (
 											<div
-												className="pl-3 pr-2 pointer"
-												onClick={() => this.toggleFavourite(pair)}
+												key={index}
+												className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
 											>
-												{this.isFavourite(pair) ? (
-													<StarFilled className="stared-market" />
-												) : (
-													<StarOutlined />
-												)}
-											</div>
-											<div
-												className="d-flex align-items-center justify-content-between w-100"
-												onClick={() => addTradePairTab(pair)}
-											>
-												<div className="d-flex align-items-center">
-													<Image
-														iconId={
-															ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-																? `${menu.pair_base.toUpperCase()}_ICON`
-																: 'DEFAULT_ICON'
-														}
-														icon={
-															ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-																? ICONS[`${menu.pair_base.toUpperCase()}_ICON`]
-																: ICONS.DEFAULT_ICON
-														}
-														wrapperClassName="app-bar-add-tab-icons"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
-													<div className="app_bar-pair-font">
-														{symbol.toUpperCase()}/
-														{pairTwo.symbol.toUpperCase()}:
+												<div
+													className="pl-3 pr-2 pointer"
+													onClick={() => this.toggleFavourite(key)}
+												>
+													{this.isFavourite(key) ? (
+														<StarFilled className="stared-market" />
+													) : (
+														<StarOutlined />
+													)}
+												</div>
+												<div
+													className="d-flex align-items-center justify-content-between w-100"
+													onClick={() => addTradePairTab(key)}
+												>
+													<div className="d-flex align-items-center">
+														<Image
+															iconId={
+																ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+																	? `${pair.pair_base.toUpperCase()}_ICON`
+																	: 'DEFAULT_ICON'
+															}
+															icon={
+																ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+																	? ICONS[
+																			`${pair.pair_base.toUpperCase()}_ICON`
+																	  ]
+																	: ICONS.DEFAULT_ICON
+															}
+															wrapperClassName="app-bar-add-tab-icons"
+															imageWrapperClassName="currency-ball-image-wrapper"
+														/>
+														<div className="app_bar-pair-font">
+															{symbol.toUpperCase()}/
+															{pairTwo.symbol.toUpperCase()}:
+														</div>
+														<div className="title-font ml-1 app-bar_add-tab-price">
+															{formatToCurrency(ticker.close, increment_price)}
+														</div>
 													</div>
-													<div className="title-font ml-1 app-bar_add-tab-price">
-														{formatToCurrency(ticker.close, increment_price)}
+													<div className="d-flex align-items-center mr-4">
+														<div
+															className={
+																priceDifference < 0
+																	? 'app-price-diff-down app-bar-price_diff_down'
+																	: 'app-bar-price_diff_up app-price-diff-up'
+															}
+														>
+															{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
+														</div>
+														<div
+															className={
+																priceDifference < 0
+																	? 'title-font app-price-diff-down'
+																	: priceDifference > 0
+																	? 'title-font app-price-diff-up'
+																	: 'title-font'
+															}
+														>
+															{priceDifferencePercent}
+														</div>
 													</div>
 												</div>
-												<div className="d-flex align-items-center mr-4">
-													<div
-														className={
-															priceDifference < 0
-																? 'app-price-diff-down app-bar-price_diff_down'
-																: 'app-bar-price_diff_up app-price-diff-up'
-														}
-													>
-														{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
-													</div>
-													<div
-														className={
-															priceDifference < 0
-																? 'title-font app-price-diff-down'
-																: priceDifference > 0
-																? 'title-font app-price-diff-up'
-																: 'title-font'
-														}
-													>
-														{priceDifferencePercent}
-													</div>
-												</div>
 											</div>
-										</div>
-									);
-								}
-							)
+										);
+									}
+								)
 						) : (
 							<div className="app-bar-add-tab-content-list d-flex align-items-center">
 								No data...
@@ -345,7 +306,6 @@ class MarketSelector extends Component {
 MarketSelector.propTypes = {
 	pairs: object.isRequired,
 	coins: object.isRequired,
-	tickers: object.isRequired,
 	onViewMarketsClick: func,
 	addTradePairTab: func,
 	wrapperClassName: string,
@@ -362,15 +322,19 @@ const mapDispatchToProps = (dispatch) => ({
 	removeFromFavourites: bindActionCreators(removeFromFavourites, dispatch),
 });
 
-const mapStateToProps = ({
-	app: { pairs, tickers, coins, favourites, constants },
-}) => ({
-	pairs,
-	tickers,
-	coins,
-	favourites,
-	constants,
-});
+const mapStateToProps = (store) => {
+	const {
+		app: { pairs, coins, favourites, constants },
+	} = store;
+
+	return {
+		pairs,
+		coins,
+		favourites,
+		constants,
+		markets: MarketsSelector(store),
+	};
+};
 
 export default connect(
 	mapStateToProps,
