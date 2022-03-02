@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Table } from '../../../components';
-import { generateRecentTradeHeaders } from '../../TransactionsHistory/utils';
+import { Table } from 'components';
+import { generateRecentTradeHeaders } from 'containers/TransactionsHistory/utils';
 
-const ActiveOrders = ({
+const RecentTrades = ({
 	trades,
 	pairData,
 	pair,
@@ -13,13 +13,15 @@ const ActiveOrders = ({
 	coins,
 	discount,
 	prices,
+	icons,
 }) => {
 	const headers = generateRecentTradeHeaders(
 		pairData.pair_base,
 		pairs,
 		coins,
 		discount,
-		prices
+		prices,
+		icons
 	);
 	if (!pair) {
 		return <div />;
@@ -40,11 +42,11 @@ const ActiveOrders = ({
 	);
 };
 
-ActiveOrders.defaultProps = {
+RecentTrades.defaultProps = {
 	trades: [],
 	pair: '',
 	pairData: {},
 	pairs: {},
 	coins: {},
 };
-export default ActiveOrders;
+export default RecentTrades;

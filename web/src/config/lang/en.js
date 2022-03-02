@@ -1391,7 +1391,7 @@ export default {
 	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
-	ORDER_TYPE: 'type',
+	ORDER_TYPE: 'Type',
 	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {

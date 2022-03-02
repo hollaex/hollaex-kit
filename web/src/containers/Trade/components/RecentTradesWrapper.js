@@ -53,6 +53,7 @@ const OrdersWrapper = ({
 					coins={coins}
 					discount={discount}
 					prices={prices}
+					icons={ICONS}
 				/>
 			) : (
 				<LogoutInfoTrade />

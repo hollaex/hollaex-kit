@@ -2,23 +2,34 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { Table, ActionNotification } from '../../../components';
-import { getFormatTimestamp } from '../../../utils/utils';
-import { formatBaseAmount, formatToCurrency } from '../../../utils/currency';
+import { Table, ActionNotification, Image } from 'components';
+import { getFormatTimestamp } from 'utils/utils';
+import { formatBaseAmount, formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 	{
+		stringId: 'PAIR',
 		label: STRINGS['PAIR'],
 		key: 'pair',
 		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 		renderCell: ({ symbol }, key, index) => {
+			const data = symbol.split('-');
+			let pairBaseName = data[0];
 			return (
 				<td key={index} className="text-uppercase">
-					{symbol}
+					<div className="d-flex align-items-center">
+						<Image
+							iconId={`${pairBaseName.toUpperCase()}_ICON`}
+							icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+							wrapperClassName="currency-ball"
+							imageWrapperClassName="currency-ball-image-wrapper"
+						/>
+						<div>{symbol}</div>
+					</div>
 				</td>
 			);
 		},

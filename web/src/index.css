@@ -2759,6 +2759,13 @@ table th {
 .trade_active_orders-wrapper {
   overflow-y: auto;
   flex: 1; }
+  .trade_active_orders-wrapper .currency-ball {
+    width: 25px;
+    line-height: 10px;
+    margin-top: 6px; }
+  .trade_active_orders-wrapper .currency-ball-image-wrapper {
+    padding-right: 8px;
+    padding-bottom: 12px; }
   .trade_active_orders-wrapper .cell_box-type {
     padding: 0.1rem; }
     .trade_active_orders-wrapper .cell_box-type > div {
@@ -2788,16 +2795,14 @@ table th {
           bottom: 0;
           background-color: var(--calculated_specials_highlight-box);
           z-index: -1; }
-  .trade_active_orders-wrapper .recent-trades.cell_box-type {
-    display: flex; }
-    .trade_active_orders-wrapper .recent-trades.cell_box-type .buy {
-      min-width: 3rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem; }
-    .trade_active_orders-wrapper .recent-trades.cell_box-type .sell {
-      min-width: 3rem;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem; }
+  .trade_active_orders-wrapper .recent-trades.cell_box-type .buy {
+    min-width: 3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem; }
+  .trade_active_orders-wrapper .recent-trades.cell_box-type .sell {
+    min-width: 3rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem; }
 
 .quick-trade-tab {
   border: 1px solid var(--calculated_secondary-border);
@@ -8479,7 +8484,7 @@ table th {
     font-size: 1rem; }
     .table-wrapper .table_body-wrapper.with_icon tr td:first-child {
       border: none !important; }
-    .table-wrapper .table_body-wrapper tr.table_body-row td {
+    .table-wrapper .table_body-wrapper tr.table_body-row {
       border-top: 1px solid var(--calculated_secondary-border);
       border-bottom: 1px solid var(--calculated_secondary-border); }
     .table-wrapper .table_body-wrapper .cancel-animate, .table-wrapper .table_body-wrapper .cancel-row-color, .table-wrapper .table_body-wrapper .cancel-row-color .cell_box-type .sell,
