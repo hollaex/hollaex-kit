@@ -745,6 +745,7 @@ class Trade extends PureComponent {
 							}
 							rowHeight={30}
 							cols={24}
+							draggableHandle=".drag-handle"
 						>
 							{this.renderTools()}
 						</GridLayout>
