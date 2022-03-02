@@ -125,6 +125,8 @@ steps:
       from_secret: hollaex_email
     HOLLAEX_PASSWORD:
       from_secret: hollaex_password
+    HOLLAEX_LOGIN_KEY:
+      from_secret: hollaex_network_testnet_login_key
   settings:
     exchange_id: 176
     exchange_name: "Sandbox HollaEx"
@@ -172,6 +174,8 @@ steps:
       from_secret: next_email
     HOLLAEX_PASSWORD:
       from_secret: next_password
+    HOLLAEX_LOGIN_KEY:
+      from_secret: hollaex_network_testnet_login_key
   settings:
     exchange_id: 539
     exchange_name: "Next"

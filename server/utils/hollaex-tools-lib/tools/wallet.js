@@ -50,7 +50,12 @@ const isValidAddress = (currency, address, network) => {
 		// skip the validation
 		return true;
 	} else {
-		return WAValidator.validate(address, currency);
+		const supported = WAValidator.findCurrency(currency);
+			if (supported) {
+				return WAValidator.validate(address, currency);
+			} else {
+				return true;
+			}
 	}
 };
 
