@@ -134,6 +134,7 @@ function getBrokerPairs(req, res) {
 	);
 
 	toolsLib.broker.fetchBrokerPairs([
+		'id',
 		'symbol',
 		'buy_price',
 		'sell_price',
