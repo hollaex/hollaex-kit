@@ -5038,12 +5038,16 @@ table th {
   color: var(--labels_important-active-labels-text-graphics); }
 
 .stake-panel-bg {
+  background-color: var(--base_wallet-sidebar-and-popup);
   position: relative;
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center; }
+  .stake-panel-bg .wallet-assets_block {
+    background-color: transparent;
+    z-index: 1; }
   .stake-panel-bg:before {
     content: '';
     background-size: 100% auto;
