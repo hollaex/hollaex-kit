@@ -405,6 +405,14 @@ export const getPendingTransactions = (account = '') => {
 	};
 };
 
+export const getTokenAllowance = (token = 'xht') => async (account) => {
+	const allowance = await CONTRACTS[token].token.methods
+		.allowance(account, CONTRACT_ADDRESSES[token].main)
+		.call();
+
+	return web3.utils.fromWei(allowance);
+};
+
 export const disconnectWallet = () => {
 	return async (dispatch) => {
 		if (window.ethereum) {
