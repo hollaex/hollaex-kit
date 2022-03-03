@@ -181,6 +181,7 @@ class StakeContent extends Component {
 						action={action}
 						amount={amount}
 						symbol={symbol}
+						onClose={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
