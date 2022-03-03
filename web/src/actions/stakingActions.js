@@ -334,14 +334,11 @@ export const getPublicInfo = (token = 'xht') => {
 
 export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents(
-			'allEvents',
-			{
-				fromBlock: 1,
-				toBlock: 'latest',
-			}
-			// {filter: {_address: account }}
-		);
+		const events = await CONTRACTS[token].main.getPastEvents('allEvents', {
+			fromBlock: 1,
+			toBlock: 'latest',
+			//filter: {_address: account }
+		});
 		dispatch(setContractEvents(events.reverse()));
 	};
 };
