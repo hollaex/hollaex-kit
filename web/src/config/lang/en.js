@@ -737,6 +737,7 @@ export default {
 		WAITING_TITLE: 'Waiting for confirmation',
 		WAITING_TEXT: 'Confirm this transaction in your wallet',
 		PENDING_TEXT: 'Transaction pending...',
+		CHECKING_ALLOWANCE: 'Checking {0} allowance...',
 		WAITING_PROMPT: '{0} {1} {2}',
 		WAITING_STAKE: 'Confirm the stake amount',
 		WAITING_WITHDRAW: 'Allowing spending',
