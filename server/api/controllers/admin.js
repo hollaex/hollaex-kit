@@ -1168,8 +1168,8 @@ const putEmail = (req, res) => {
 	);
 
 	toolsLib.updateEmail(updateData)
-		.then((result) => {
-			return res.json(result);
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
@@ -1202,8 +1202,8 @@ const putSpecificEmail = (req, res) => {
 	});
 	data["email"][language][mailtype.toUpperCase()] = {html, title};
 	toolsLib.updateEmail(data)
-		.then((result) => {
-			return res.json(result);
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putSpecificEmail', err.message);
