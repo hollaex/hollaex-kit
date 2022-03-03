@@ -164,7 +164,7 @@ export const getCurrentBlock = () => {
 export const generateTableData = (account) => {
 	return async (dispatch) => {
 		let data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
+		Object.keys(CONTRACTS()).forEach((symbol) => {
 			data = {
 				symbol,
 				available: getTokenBalance(symbol)(account),
@@ -179,7 +179,7 @@ export const generateTableData = (account) => {
 export const getAllPeriods = () => {
 	return async (dispatch) => {
 		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
+		Object.keys(CONTRACTS()).forEach((symbol) => {
 			data[symbol] = getPeriodsForToken(symbol)();
 		});
 
@@ -191,7 +191,7 @@ export const getAllPeriods = () => {
 export const getAllPenalties = () => {
 	return async (dispatch) => {
 		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
+		Object.keys(CONTRACTS()).forEach((symbol) => {
 			data[symbol] = getPenaltyForToken(symbol)();
 		});
 
@@ -203,7 +203,7 @@ export const getAllPenalties = () => {
 export const getAllPots = () => {
 	return async (dispatch) => {
 		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
+		Object.keys(CONTRACTS()).forEach((symbol) => {
 			data[symbol] = getPotForToken(symbol)();
 		});
 
@@ -213,14 +213,14 @@ export const getAllPots = () => {
 };
 
 const getUserStake = (token = 'xht') => async (address) => {
-	const stakes = await CONTRACTS[token].main.methods.getStake(address).call();
+	const stakes = await CONTRACTS()[token].main.methods.getStake(address).call();
 	return stakes;
 };
 
 export const getAllUserStakes = (account) => {
 	return async (dispatch) => {
 		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
+		Object.keys(CONTRACTS()).forEach((symbol) => {
 			data[symbol] = getUserStake(symbol)(account);
 		});
 
@@ -234,9 +234,9 @@ export const approve = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].token.methods
-		.approve(
-			CONTRACT_ADDRESSES[token].main,
+	return CONTRACTS()
+		[token].token.methods.approve(
+			CONTRACT_ADDRESSES()[token].main,
 			web3.utils.toWei(amount.toString())
 		)
 		.send(
@@ -254,8 +254,8 @@ export const addStake = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].main.methods
-		.addStake(web3.utils.toWei(amount.toString()), period)
+	return CONTRACTS()
+		[token].main.methods.addStake(web3.utils.toWei(amount.toString()), period)
 		.send(
 			{
 				...commonConfigs,
@@ -270,32 +270,34 @@ export const removeStake = (token = 'xht') => ({
 	index,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].main.methods.removeStake(index).send(
-		{
-			...commonConfigs,
-			from: account,
-		},
-		cb
-	);
+	return CONTRACTS()
+		[token].main.methods.removeStake(index)
+		.send(
+			{
+				...commonConfigs,
+				from: account,
+			},
+			cb
+		);
 };
 
 const getPeriodsForToken = (token = 'xht') => async () => {
 	const periods = await Promise.all([
-		CONTRACTS[token].main.methods.periods(0).call(),
-		CONTRACTS[token].main.methods.periods(1).call(),
-		CONTRACTS[token].main.methods.periods(2).call(),
-		CONTRACTS[token].main.methods.periods(3).call(),
+		CONTRACTS()[token].main.methods.periods(0).call(),
+		CONTRACTS()[token].main.methods.periods(1).call(),
+		CONTRACTS()[token].main.methods.periods(2).call(),
+		CONTRACTS()[token].main.methods.periods(3).call(),
 	]);
 	return periods;
 };
 
 const getPenaltyForToken = (token = 'xht') => async () => {
-	const penalty = await CONTRACTS[token].main.methods.penalty().call();
+	const penalty = await CONTRACTS()[token].main.methods.penalty().call();
 	return penalty;
 };
 
 const getPotForToken = (token = 'xht') => async () => {
-	const address = await CONTRACTS[token].main.methods.pot().call();
+	const address = await CONTRACTS()[token].main.methods.pot().call();
 	const balance = await getTokenBalance(token)(address);
 	return {
 		address,
@@ -304,13 +306,13 @@ const getPotForToken = (token = 'xht') => async () => {
 };
 
 // const getTotalStake = (token = 'xht') => async () => {
-// 	const total = await CONTRACTS[token].main.methods.totalStake().call();
+// 	const total = await CONTRACTS()[token].main.methods.totalStake().call();
 // 	return web3.utils.fromWei(total);
 // };
 
 const getTokenBalance = (token = 'xht') => async (account) => {
-	const balance = await CONTRACTS[token].token.methods
-		.balanceOf(account)
+	const balance = await CONTRACTS()
+		[token].token.methods.balanceOf(account)
 		.call();
 	return web3.utils.fromWei(balance);
 };
@@ -318,9 +320,11 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 export const getPublicInfo = (token = 'xht') => {
 	return async (dispatch) => {
 		const data = {
-			totalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
-			totalStaked: CONTRACTS[token].main.methods.totalStake().call(),
-			totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
+			totalReward: CONTRACTS()[token].main.methods.getTotalReward().call(),
+			totalStaked: CONTRACTS()[token].main.methods.totalStake().call(),
+			totalStakeWeight: CONTRACTS()
+				[token].main.methods.totalStakeWeight()
+				.call(),
 		};
 
 		const result = await hash(data);
@@ -334,7 +338,7 @@ export const getPublicInfo = (token = 'xht') => {
 
 export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents('allEvents', {
+		const events = await CONTRACTS()[token].main.getPastEvents('allEvents', {
 			fromBlock: 1,
 			toBlock: 'latest',
 			//filter: {_address: account }
@@ -345,7 +349,7 @@ export const getStakeEvents = (token = 'xht', account = '') => {
 
 export const getDistributions = (token = 'xht') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents(
+		const events = await CONTRACTS()[token].main.getPastEvents(
 			CONTRACT_EVENTS.Distribute,
 			{
 				fromBlock: 1,
@@ -366,8 +370,8 @@ export const getPendingTransactions = (account = '') => {
 };
 
 export const getTokenAllowance = (token = 'xht') => async (account) => {
-	const allowance = await CONTRACTS[token].token.methods
-		.allowance(account, CONTRACT_ADDRESSES[token].main)
+	const allowance = await CONTRACTS()
+		[token].token.methods.allowance(account, CONTRACT_ADDRESSES()[token].main)
 		.call();
 
 	return web3.utils.fromWei(allowance);
