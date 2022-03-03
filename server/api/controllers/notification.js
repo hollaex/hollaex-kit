@@ -150,7 +150,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 		.then((user) => {
 			if (rejected) {
 				sendEmail(
-					MAILTYPE.DEPOSIT_CANCEL,
+					MAILTYPE.WITHDRAWAL_CANCEL,
 					user.email,
 					{
 						type: 'withdrawal',

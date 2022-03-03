@@ -738,7 +738,7 @@ const unfreezeUserById = (userId) => {
 		.then((user) => {
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'unfreezeUser', data: user.id }));
 			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+				MAILTYPE.USER_ACTIVATED,
 				user.email,
 				{
 					type: 'activated'
@@ -763,7 +763,7 @@ const unfreezeUserByEmail = (email) => {
 		.then((user) => {
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'unfreezeUser', data: user.id }));
 			sendEmail(
-				MAILTYPE.USER_DEACTIVATED,
+				MAILTYPE.USER_ACTIVATED,
 				user.email,
 				{
 					type: 'activated'
