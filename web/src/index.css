@@ -4241,12 +4241,6 @@ table th {
     .terms_wrapper .download-wrapper .download_pdf-svg svg {
       width: 1rem;
       height: 1rem; }
-    .terms_wrapper .download-wrapper .trans-history-1,
-    .terms_wrapper .download-wrapper .trans-history-2,
-    .terms_wrapper .download-wrapper .trans-history-3 {
-      fill: var(--specials_buttons-links-and-highlights); }
-    .terms_wrapper .download-wrapper .trans-history-4 {
-      stroke: var(--specials_buttons-links-and-highlights); }
   .terms_wrapper .checkfield-wrapper {
     margin: 0.5rem 0; }
 
@@ -7981,12 +7975,9 @@ table th {
   .action_notification-wrapper .icon-copy-1,
   .action_notification-wrapper .icon-tamer-01,
   .action_notification-wrapper .arrow-1,
-  .action_notification-wrapper .trans-history-1,
-  .action_notification-wrapper .trans-history-2,
-  .action_notification-wrapper .trans-history-3,
+  .action_notification-wrapper .trans-history,
   .action_notification-wrapper .cancel-cross-1 {
     fill: var(--specials_buttons-links-and-highlights); }
-  .action_notification-wrapper .trans-history-4,
   .action_notification-wrapper .cancel-cross-3 {
     stroke: var(--specials_buttons-links-and-highlights); }
 
@@ -10963,7 +10954,6 @@ svg .note-kyc,
 svg .partial-fill,
 svg .limit-trade-tick,
 svg .chat-0,
-svg .trans-history-1,
 svg .quick-trade-insufficient-funds,
 svg .quick-trade-success,
 svg .gender-female,
@@ -11044,7 +11034,6 @@ svg .account-inactive {
 
 svg .pending-timer,
 svg .tab-close,
-svg .trans-history-4,
 svg .icon-check-1,
 svg .quick-trade-1,
 svg .success-check-box-0,
