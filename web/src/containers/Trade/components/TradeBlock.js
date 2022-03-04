@@ -47,9 +47,9 @@ const TradeBlock = ({
 								wrapperClassName="trade_block-icon"
 							/>
 						) : null}
-						<EditWrapper stringId={stringId}>
-							<div className="trade_block-title-items">{title}</div>
-						</EditWrapper>
+						<div className="trade_block-title-items">
+							<EditWrapper stringId={stringId}>{title}</EditWrapper>
+						</div>
 					</div>
 					{!!tool && (
 						<div
