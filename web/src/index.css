@@ -6126,7 +6126,7 @@ table th {
     /* (22 -6) / 5 */ }
   .app-bar-add-tab-menu .active-tab {
     background-color: var(--base_background);
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    color: var(--labels_important-active-labels-text-graphics);
     font-weight: bold; }
   .app-bar-add-tab-menu .app-bar-add-tab-content {
     font-size: 0.9rem;
@@ -6350,7 +6350,7 @@ table th {
   fill: var(--specials_my-username-in-chat); }
 
 .active-market-trigger {
-  color: var(--labels_important-active-labels-text-graphics);
+  color: var(--labels_important-active-labels-text-graphics) !important;
   font-weight: bold; }
 
 .market-trigger {

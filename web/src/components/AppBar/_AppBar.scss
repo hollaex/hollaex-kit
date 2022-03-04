@@ -1035,7 +1035,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-tab {
 		background-color: $app-background-color;
-		color: $app-bar-menu-list-color;
+		color: $colors-main-black;
 		font-weight: bold;
 	}
 
@@ -1339,7 +1339,7 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .active-market-trigger {
-	color: $colors-main-black;
+	color: $colors-main-black !important;
 	font-weight: bold;
 }
 
