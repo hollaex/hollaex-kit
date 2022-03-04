@@ -10586,7 +10586,9 @@ foreignObject {
     width: 1rem; }
 
 .edit-wrapper__container {
-  display: inline-flex !important; }
+  display: inline-flex !important;
+  justify-content: center;
+  align-items: center; }
   .edit-wrapper__container.reverse {
     flex-direction: row-reverse !important; }
 

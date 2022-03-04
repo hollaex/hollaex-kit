@@ -3,6 +3,8 @@ $operator-controls__panel-text-color: #ffffff;
 
 .edit-wrapper__container {
 	display: inline-flex !important;
+	justify-content: center;
+	align-items: center;
 
 	&.reverse {
 		flex-direction: row-reverse !important;
