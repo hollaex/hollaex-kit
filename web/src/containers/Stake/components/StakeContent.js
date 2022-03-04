@@ -8,8 +8,10 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	getPendingTransactions,
+	getTokenAllowance,
 } from 'actions/stakingActions';
 
+import AllowanceLoader from './AllowanceLoader';
 import AmountContent from './AmountContent';
 import PeriodContent from './PeriodContent';
 import ReviewContent from './ReviewContent';
@@ -24,6 +26,7 @@ const CONTENT_TYPE = {
 	WAITING: 'WAITING',
 	SUCCESS: 'SUCCESS',
 	ERROR: 'ERROR',
+	LOADING: 'LOADING',
 };
 
 const ACTION_TYPE = {
@@ -69,27 +72,48 @@ class StakeContent extends Component {
 			getPendingTransactions,
 		} = this.props;
 
-		this.setAction(ACTION_TYPE.WITHDRAW, false);
-		this.setContent(CONTENT_TYPE.WAITING);
+		this.setContent(CONTENT_TYPE.LOADING);
+
 		try {
-			await approve(symbol)({
-				amount,
-				account,
-				cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
-			});
-			this.setAction(ACTION_TYPE.STAKE, false);
-			await addStake(symbol)({
-				amount,
-				period,
-				account,
-				cb: () => this.setAction(ACTION_TYPE.STAKE, true),
-			});
-			await Promise.all([
-				generateTableData(account),
-				getAllUserStakes(account),
-				getPendingTransactions(account),
-			]);
-			this.setContent(CONTENT_TYPE.SUCCESS);
+			const allowance = await getTokenAllowance(symbol)(account);
+			if (mathjs.larger(allowance, amount)) {
+				this.setAction(ACTION_TYPE.STAKE, false);
+				this.setContent(CONTENT_TYPE.WAITING);
+				await addStake(symbol)({
+					amount,
+					period,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+				});
+				await Promise.all([
+					generateTableData(account),
+					getAllUserStakes(account),
+					getPendingTransactions(account),
+				]);
+				this.setContent(CONTENT_TYPE.SUCCESS);
+			} else {
+				this.setAction(ACTION_TYPE.WITHDRAW, false);
+				this.setContent(CONTENT_TYPE.WAITING);
+
+				await approve(symbol)({
+					amount,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
+				});
+				this.setAction(ACTION_TYPE.STAKE, false);
+				await addStake(symbol)({
+					amount,
+					period,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+				});
+				await Promise.all([
+					generateTableData(account),
+					getAllUserStakes(account),
+					getPendingTransactions(account),
+				]);
+				this.setContent(CONTENT_TYPE.SUCCESS);
+			}
 		} catch (err) {
 			console.error(err);
 			this.setContent(CONTENT_TYPE.ERROR);
@@ -108,6 +132,8 @@ class StakeContent extends Component {
 		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
+			case CONTENT_TYPE.LOADING:
+				return <AllowanceLoader symbol={symbol} />;
 			case CONTENT_TYPE.AMOUNT:
 				return (
 					<AmountContent
@@ -155,6 +181,7 @@ class StakeContent extends Component {
 						action={action}
 						amount={amount}
 						symbol={symbol}
+						onClose={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.SUCCESS:

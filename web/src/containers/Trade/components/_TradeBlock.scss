@@ -62,6 +62,7 @@ $tabs-title--margin: 2rem;
 	height: 100%;
 	// border: 1px solid $colors-main-border;
 	background-color: $app-sidebar-background;
+	border: 1px solid $colors-super-pale-black;
 
 	&.chart-embed {
 		padding: 1.2rem;
@@ -81,7 +82,7 @@ $tabs-title--margin: 2rem;
 	.trade_block-title {
 		cursor: move;
 		background-color: $trade-block_highlight;
-		padding: 1.2rem 1.2rem 0.5rem 1.2rem;
+		padding: 0.5rem 1.2rem 0.3rem 1.2rem;
 		// border-top: $trade_title-border--size solid $trade_title-border--color;
 		text-transform: uppercase;
 		font-weight: bold;
@@ -203,6 +204,12 @@ $tabs-title--margin: 2rem;
 						$buying-orderbook-bar,
 						$buying-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-buy;
+					}
+					.public-sale_digits {
+						color: $buy;
+					}
 				}
 
 				.fill-sell {
@@ -210,6 +217,12 @@ $tabs-title--margin: 2rem;
 						$selling-orderbook-bar,
 						$selling-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-sell;
+					}
+					.public-sale_digits {
+						color: $sell;
+					}
 				}
 			}
 		}
@@ -227,6 +240,7 @@ $tabs-title--margin: 2rem;
 		padding: 1.2rem;
 		margin: 6px 3px 3px 3px;
 		max-height: 50vh;
+		border: none;
 
 		&.chart-embed {
 			max-height: 100vh;
@@ -235,6 +249,6 @@ $tabs-title--margin: 2rem;
 }
 
 .trade-wrapper-action {
-	margin-top: 3.5rem;
+	margin-top: 2.5rem;
 	margin-right: 1rem;
 }

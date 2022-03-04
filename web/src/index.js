@@ -35,6 +35,7 @@ import {
 	setBaseCurrency,
 	setDefaultLogo,
 	consoleKitInfo,
+	getContracts,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -56,6 +57,7 @@ import {
 	setCurrencies,
 	setOrderLimits,
 	setHelpdeskInfo,
+	setContracts,
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
@@ -146,6 +148,7 @@ const getConfigs = async () => {
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setCurrencies(constants.coins));
+	store.dispatch(setContracts(getContracts(constants.coins)));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {

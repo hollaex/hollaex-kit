@@ -15,7 +15,6 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
 
 class PairTabs extends Component {
 	state = {
@@ -146,7 +145,7 @@ class PairTabs extends Component {
 								}
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
-								trigger={[isMobile ? 'click' : 'hover']}
+								trigger={['click']}
 								visible={isMarketSelectorVisible}
 								onVisibleChange={(visible) => {
 									this.setState({ isMarketSelectorVisible: visible });

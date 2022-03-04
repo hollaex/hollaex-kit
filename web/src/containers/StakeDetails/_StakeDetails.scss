@@ -272,6 +272,12 @@
 }
 
 .stake-panel-bg {
+	.wallet-assets_block {
+		background-color: transparent;
+		z-index: 1;
+	}
+
+	background-color: $app-sidebar-background;
 	position: relative;
 	height: 100%;
 	width: 100%;

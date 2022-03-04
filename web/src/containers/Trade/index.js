@@ -84,7 +84,7 @@ const defaultLayout = [
 		y: 0,
 		i: 'order_entry',
 		isDraggable: true,
-		isResizable: false,
+		isResizable: true,
 		resizeHandles: ['se'],
 	},
 	{
@@ -745,6 +745,7 @@ class Trade extends PureComponent {
 							}
 							rowHeight={30}
 							cols={24}
+							draggableHandle=".drag-handle"
 						>
 							{this.renderTools()}
 						</GridLayout>

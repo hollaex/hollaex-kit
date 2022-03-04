@@ -228,10 +228,10 @@ class StakeDetails extends Component {
 									<span
 										className="pointer blue-link"
 										onClick={() =>
-											this.openContract(CONTRACT_ADDRESSES[token].token)
+											this.openContract(CONTRACT_ADDRESSES()[token].token)
 										}
 									>
-										{CONTRACT_ADDRESSES[token].token}
+										{CONTRACT_ADDRESSES()[token].token}
 									</span>
 								)}
 								<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />

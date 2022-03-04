@@ -101,7 +101,7 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0.2;
 	}
 	50% {
-    	transform: scale(1.5, 1.5);
+		transform: scale(1.5, 1.5);
 		background-color: $colors-border;
 	}
 	70% {
@@ -109,7 +109,7 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0;
 	}
 	100% {
-    	transform: scale(1, 1);
+		transform: scale(1, 1);
 		background-color: $colors-border;
 		opacity: 0;
 	}
@@ -121,7 +121,7 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0.5;
 	}
 	50% {
-		background-color: #34363A;
+		background-color: #34363a;
 		opacity: 0.5;
 	}
 }
@@ -218,7 +218,7 @@ $trade-tab--arrow-size: 0.4rem;
 				align-items: center;
 				border: 1px solid #808080;
 				background-color: $colors-border !important;
-  				animation: outer-round-anim 3s ease infinite;
+				animation: outer-round-anim 3s ease infinite;
 			}
 			.inner-round {
 				background-color: $app-sidebar-background;
@@ -241,7 +241,7 @@ $trade-tab--arrow-size: 0.4rem;
 				.loading-txt {
 					text-align: center;
 					margin-bottom: 1rem;
-    				margin-top: 5rem;
+					margin-top: 5rem;
 				}
 			}
 			.dot-flashing {
@@ -249,8 +249,8 @@ $trade-tab--arrow-size: 0.4rem;
 				width: 30px;
 				height: 30px;
 				border-radius: 50%;
-				background-color: #34363A;
-				color: #34363A;
+				background-color: #34363a;
+				color: #34363a;
 				animation: dotFlashing 3s infinite;
 			}
 		}
@@ -652,7 +652,7 @@ $trade-tab--arrow-size: 0.4rem;
 		margin-top: 1rem;
 
 		.icon_title-svg {
-			height: 11rem;
+			height: 12rem;
 			width: 12rem;
 		}
 		.icon_title-svg svg {

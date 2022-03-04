@@ -122,7 +122,12 @@ class Withdraw extends Component {
 		networks,
 		network
 	) => {
-		const { icons: ICONS } = this.props;
+		const {
+			icons: ICONS,
+			router: {
+				location: { query },
+			},
+		} = this.props;
 		const formValues = generateFormValues(
 			currency,
 			balance,
@@ -140,7 +145,8 @@ class Withdraw extends Component {
 			currency,
 			coins,
 			networks,
-			network
+			network,
+			query
 		);
 
 		this.setState({ formValues, initialValues });

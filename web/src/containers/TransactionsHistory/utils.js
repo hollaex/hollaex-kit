@@ -820,11 +820,18 @@ export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
 	);
 };
 
-export const generateRecentTradeHeaders = (symbol, pairs, coins, discount) => {
-	const KEYS = ['side', 'size', 'price', 'amount'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+export const generateRecentTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
+	const KEYS = ['pair', 'size', 'side', 'price', 'amount'];
+	return generateTradeHeaders(symbol, pairs, coins, discount, prices, icons)
+		.filter(({ key }) => KEYS.indexOf(key) > -1)
+		.sort((a, b) => KEYS.indexOf(a.key) - KEYS.indexOf(b.key));
 };
 
 const getClassNameByStatus = (

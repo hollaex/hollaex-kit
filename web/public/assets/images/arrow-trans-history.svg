@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+	 x="0px" y="0px" viewBox="0 0 21 21" overflow="visible" xml:space="preserve">
+<g>
+	<path class="trans-history" fill="#5D63FF" d="M11.1,15.2H10l4.3-4.2H5.1v-0.8h9.2L10,5.9h1.1l4.6,4.6L11.1,15.2z"/>
+</g>
+<path class="trans-history" fill="#5D63FF" d="M10.4,21C4.7,21,0,16.3,0,10.6C0,4.8,4.7,0.1,10.4,0.1c5.8,0,10.4,4.7,10.4,10.4C20.9,16.3,16.2,21,10.4,21z
+	 M10.4,1.1C5.2,1.1,1,5.3,1,10.6S5.2,20,10.4,20s9.4-4.2,9.4-9.4S15.7,1.1,10.4,1.1z"/>
+</svg>

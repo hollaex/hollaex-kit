@@ -1,6 +1,8 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { getDecimals } from 'utils/utils';
+import { formatPercentage } from 'utils/currency';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -83,6 +85,8 @@ const getUserTradesData = (state) => state.wallet.trades.data;
 const getPairs = (state) => state.app.pairs;
 const getDepth = (state) => state.orderbook.depth;
 const getChartClose = (state) => state.orderbook.chart_last_close;
+const getTickers = (state) => state.app.tickers;
+const getCoins = (state) => state.app.coins;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -264,5 +268,70 @@ export const estimatedQuickTradePriceSelector = createSelector(
 			const [priceValue, sizeValue] = calculateMarketPrice(size, orders);
 			return [priceValue / sizeValue, sizeValue];
 		}
+	}
+);
+
+export const sortedPairKeysSelector = createSelector(
+	[getPairs, getTickers],
+	(pairs, tickers) => {
+		const sortedPairKeys = Object.keys(pairs).sort((a, b) => {
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
+		});
+
+		const pinnedCoins = ['xht'];
+		const pinnedKeys = [];
+		const filteredKeys = [];
+
+		sortedPairKeys.forEach((key) => {
+			const { pair_base, pair_2 } = pairs[key];
+			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+				pinnedKeys.push(key);
+			} else {
+				filteredKeys.push(key);
+			}
+		});
+
+		return [...pinnedKeys, ...filteredKeys];
+	}
+);
+
+export const MarketsSelector = createSelector(
+	[sortedPairKeysSelector, getPairs, getTickers, getCoins],
+	(sortedPairKeys, pairs, tickers, coins) => {
+		const markets = sortedPairKeys.map((key) => {
+			const { pair_base, pair_2, increment_price } = pairs[key] || {};
+			const { fullname, symbol = '' } =
+				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
+			const { open, close } = tickers[key] || {};
+
+			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
+
+			const tickerPercent =
+				priceDifference === 0 || open === 0
+					? 0
+					: (priceDifference / open) * 100;
+
+			const priceDifferencePercent = isNaN(tickerPercent)
+				? formatPercentage(0)
+				: formatPercentage(tickerPercent);
+			return {
+				key,
+				pair: pairs[key],
+				symbol,
+				pairTwo,
+				fullname,
+				ticker: tickers[key] || {},
+				increment_price,
+				priceDifference,
+				priceDifferencePercent,
+			};
+		});
+
+		return markets;
 	}
 );
