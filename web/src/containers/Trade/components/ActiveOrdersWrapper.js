@@ -53,7 +53,7 @@ class OrdersWrapper extends Component {
 	};
 
 	render() {
-		const { activeOrders, activeTheme, pairs, icons: ICONS, tool } = this.props;
+		const { activeOrders, pairs, icons: ICONS, tool } = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
 		return (
@@ -77,6 +77,7 @@ class OrdersWrapper extends Component {
 					}
 					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
+					titleClassName="mb-4"
 				>
 					{isLoggedIn() ? (
 						<ActiveOrders
@@ -87,7 +88,7 @@ class OrdersWrapper extends Component {
 							onCancelAll={this.openConfirm}
 						/>
 					) : (
-						<LogoutInfoOrder activeTheme={activeTheme} />
+						<LogoutInfoOrder />
 					)}
 				</TradeBlock>
 				<Dialog

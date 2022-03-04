@@ -17,6 +17,7 @@ import { formatToFixed, formatToCurrency } from '../../../utils/currency';
 import STRINGS from '../../../config/localizedStrings';
 import { DEFAULT_COIN_DATA } from '../../../config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
+import { opacifyNumber } from 'helpers/opacify';
 
 const { Option } = Select;
 
@@ -65,7 +66,7 @@ const PriceRow = (
 					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
 					onClick={onAmountClick(amount)}
 				>
-					{formatToCurrency(amount, increment_size)}
+					{opacifyNumber(formatToCurrency(amount, increment_size))}
 				</div>
 				<div
 					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
@@ -291,12 +292,12 @@ class Orderbook extends Component {
 						<div>{STRINGS['PRICE_CURRENCY']}</div>
 						<div>({symbol.toUpperCase()})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
+					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
 						<div>({pairBase})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
-						<div className="d-flex align-items-center">
+					<div className="f-1 trade_orderbook-cell text-align-right">
+						<div className="text-align-right">
 							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						</div>
 						<Select

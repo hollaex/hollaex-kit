@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
@@ -36,6 +36,9 @@ const MyStaking = ({
 	pending,
 	goToBlocks,
 }) => {
+	// This line is to temporarily hide the events history table
+	const [showEventsHistory] = useState(false);
+
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { fullname } = coins[symbol];
@@ -377,35 +380,37 @@ const MyStaking = ({
 					</tbody>
 				</table>
 			)}
-			<div className="pt-4">
-				<div className="important-text bold pt-4 mt-2">
-					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-						{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-					</EditWrapper>
+			{showEventsHistory && (
+				<div className="pt-4">
+					<div className="important-text bold pt-4 mt-2">
+						<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+							{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						</EditWrapper>
+					</div>
+					<Table
+						className="transactions-history-table stake-details-table"
+						data={events}
+						count={events.length}
+						headers={generateStakeEventsHeader()}
+						withIcon={false}
+						pageSize={TABLE_PAGE_SIZE}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						handleNext={() => {}}
+						jumpToPage={0}
+						noData={
+							!account &&
+							STRINGS.formatString(
+								STRINGS['STAKE.CONNECT_WALLET_TABLE'],
+								<ConnectWrapper className="pr-2" />
+							)
+						}
+						showHeaderNoData={true}
+					/>
 				</div>
-				<Table
-					className="transactions-history-table stake-details-table"
-					data={events}
-					count={events.length}
-					headers={generateStakeEventsHeader()}
-					withIcon={false}
-					pageSize={TABLE_PAGE_SIZE}
-					rowKey={(data) => {
-						return data.id;
-					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-					handleNext={() => {}}
-					jumpToPage={0}
-					noData={
-						!account &&
-						STRINGS.formatString(
-							STRINGS['STAKE.CONNECT_WALLET_TABLE'],
-							<ConnectWrapper className="pr-2" />
-						)
-					}
-					showHeaderNoData={true}
-				/>
-			</div>
+			)}
 		</div>
 	);
 };

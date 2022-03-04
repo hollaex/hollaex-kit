@@ -10,7 +10,7 @@ const getClassNames = (status) => {
 		case 'warning':
 			return 'notification-warning';
 		case 'information':
-			return 'notification-info';
+			return 'notification-info underline-text';
 		case 'disabled':
 			return 'notification-disabled';
 		case 'loading':

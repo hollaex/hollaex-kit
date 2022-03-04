@@ -24,6 +24,7 @@ const TradeBlock = ({
 	icons: ICONS,
 	tool,
 	toggleTool,
+	titleClassName = '',
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
@@ -38,7 +39,13 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">
+			<div
+				className={classnames(
+					'trade_block-title',
+					'drag-handle',
+					titleClassName
+				)}
+			>
 				<div className="d-flex justify-content-between">
 					<div className="d-flex">
 						{pairs.length ? (
@@ -47,9 +54,9 @@ const TradeBlock = ({
 								wrapperClassName="trade_block-icon"
 							/>
 						) : null}
-						<EditWrapper stringId={stringId}>
-							<div className="trade_block-title-items">{title}</div>
-						</EditWrapper>
+						<div className="trade_block-title-items">
+							<EditWrapper stringId={stringId}>{title}</EditWrapper>
+						</div>
 					</div>
 					{!!tool && (
 						<div

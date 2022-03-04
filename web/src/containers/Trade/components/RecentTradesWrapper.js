@@ -42,6 +42,7 @@ const OrdersWrapper = ({
 			}
 			stringId="TOOLS.RECENT_TRADES"
 			tool={tool}
+			titleClassName="mb-4"
 		>
 			{isLoggedIn() ? (
 				<UserTrades
@@ -53,6 +54,7 @@ const OrdersWrapper = ({
 					coins={coins}
 					discount={discount}
 					prices={prices}
+					icons={ICONS}
 				/>
 			) : (
 				<LogoutInfoTrade />

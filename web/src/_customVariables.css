@@ -8,7 +8,7 @@
 	--base_background: #ffffff;
 	--base_top-bar-navigation: #000000;
 	--base_secondary-navigation-bar: #f2f2f3;
-	--base_wallet-sidebar-and-popup: #ffffff;
+	--base_wallet-sidebar-and-popup: #f3f3f3;
 	--base_footer: #000000;
 
 	--labels_important-active-labels-text-graphics: #000000;
@@ -42,6 +42,8 @@
 	--calculated_stake-table_highlight: #ffffffaa;
 	--calculated_trade-block_highlight: #000000fa;
 	--calculated_market-card_gradient_background: #ffffff;
+	--calculated_public-sale_buying-zeros: #ee403688;
+	--calculated_public-sale_selling-zeros: #00a69c88;
 	--calculated_trading_selling-sparkline-fill: #ee40364d;
 	--calculated_trading_buying-sparkline-fill: #00a69c4d;
 	--calculated_trading_selling-orderbook-bar: #ee40361f;

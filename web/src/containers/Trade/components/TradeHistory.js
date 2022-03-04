@@ -15,6 +15,7 @@ import { calcPercentage } from 'utils/math';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import math from 'mathjs';
+import { opacifyNumber } from 'helpers/opacify';
 
 const { Option } = Select;
 
@@ -158,7 +159,10 @@ class TradeHistory extends Component {
 							style={fillStyle}
 							key={`size-${index}`}
 						>
-							{isBase ? size : sizePrice}
+							{opacifyNumber(isBase ? size : sizePrice, {
+								zerosClassName: 'public-sale_zeros',
+								digitsClassName: 'public-sale_digits',
+							})}
 						</div>
 					);
 				},

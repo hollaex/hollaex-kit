@@ -42,7 +42,7 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
-	VIEW_MARKET: 'view market', // new
+	VIEW_MARKET: 'view markets', // new
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
@@ -737,6 +737,7 @@ export default {
 		WAITING_TITLE: 'Waiting for confirmation',
 		WAITING_TEXT: 'Confirm this transaction in your wallet',
 		PENDING_TEXT: 'Transaction pending...',
+		CHECKING_ALLOWANCE: 'Checking {0} allowance...',
 		WAITING_PROMPT: '{0} {1} {2}',
 		WAITING_STAKE: 'Confirm the stake amount',
 		WAITING_WITHDRAW: 'Allowing spending',
@@ -1391,7 +1392,7 @@ export default {
 	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
-	ORDER_TYPE: 'type',
+	ORDER_TYPE: 'Type',
 	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {

@@ -26,14 +26,6 @@
 				@include size(1rem);
 			}
 		}
-		.trans-history-1,
-		.trans-history-2,
-		.trans-history-3 {
-			fill: $colors-notifications-blue;
-		}
-		.trans-history-4 {
-			stroke: $colors-notifications-blue;
-		}
 	}
 	.checkfield-wrapper {
 		margin: 0.5rem 0;

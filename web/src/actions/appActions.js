@@ -71,6 +71,7 @@ export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
 export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
+export const SET_CONTRACTS = 'SET_CONTRACTS';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -436,5 +437,10 @@ export const setInjectedValues = (payload) => ({
 
 export const setInjectedHTML = (payload) => ({
 	type: SET_INJECTED_HTML,
+	payload,
+});
+
+export const setContracts = (payload) => ({
+	type: SET_CONTRACTS,
 	payload,
 });

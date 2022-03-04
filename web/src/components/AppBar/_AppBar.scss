@@ -1003,6 +1003,17 @@ $app-menu-notification-size: 1.2rem;
 		width: 14rem;
 	}
 
+	.field-wrapper {
+		margin: 0;
+		.field-content-outline {
+			&:before,
+			&:after {
+				height: 0.5px;
+				opacity: 0.7;
+			}
+		}
+	}
+
 	.ant-checkbox-wrapper {
 		span {
 			color: $colors-main-black !important;
@@ -1035,7 +1046,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-tab {
 		background-color: $app-background-color;
-		color: $app-bar-menu-list-color;
+		color: $colors-main-black;
 		font-weight: bold;
 	}
 
@@ -1170,7 +1181,7 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .app-bar_add-tab-price {
-	color: $colors-black;
+	color: $colors-main-black;
 }
 
 @media (min-width: 1920px) {
@@ -1339,7 +1350,7 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .active-market-trigger {
-	color: $colors-main-black;
+	color: $colors-main-black !important;
 	font-weight: bold;
 }
 
