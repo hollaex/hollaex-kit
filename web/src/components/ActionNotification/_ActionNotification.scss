@@ -7,6 +7,10 @@
 	// justify-content: center;
 	align-items: center;
 
+	&:hover {
+		opacity: 0.75;
+	}
+
 	.notification-info {
 		color: $link;
 	}

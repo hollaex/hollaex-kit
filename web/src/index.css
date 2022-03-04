@@ -7935,6 +7935,8 @@ table th {
   top: 0.25rem;
   display: flex;
   align-items: center; }
+  .action_notification-wrapper:hover {
+    opacity: 0.75; }
   .action_notification-wrapper .notification-info {
     color: var(--specials_buttons-links-and-highlights); }
   .action_notification-wrapper .notification-warning {
