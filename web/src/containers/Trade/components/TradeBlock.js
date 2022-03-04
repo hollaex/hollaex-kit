@@ -38,8 +38,8 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">
-				<div className="d-flex justify-content-between drag-handle">
+			<div className="trade_block-title drag-handle">
+				<div className="d-flex justify-content-between">
 					<div className="d-flex">
 						{pairs.length ? (
 							<Image
