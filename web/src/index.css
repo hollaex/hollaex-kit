@@ -2248,7 +2248,7 @@ table th {
   .trade_block-wrapper .trade_block-title {
     cursor: move;
     background-color: var(--calculated_trade-block_highlight);
-    padding: 1.2rem 1.2rem 0.5rem 1.2rem;
+    padding: 0.5rem 1.2rem 0.3rem 1.2rem;
     text-transform: uppercase;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -3229,7 +3229,7 @@ table th {
     background-color: var(--calculated_secondary-border);
     opacity: 0.5; }
   50% {
-    background-color: #34363A;
+    background-color: #34363a;
     opacity: 0.5; } }
 
 .summary-container {
@@ -3317,8 +3317,8 @@ table th {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: #34363A;
-    color: #34363A;
+    background-color: #34363a;
+    color: #34363a;
     animation: dotFlashing 3s infinite; }
   .summary-container .summary-section_2 {
     height: 40rem; }
