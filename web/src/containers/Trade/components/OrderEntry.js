@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { formValueSelector, submit, change } from 'redux-form';
+import { withRouter } from 'react-router';
 import mathjs from 'mathjs';
 
 import Review from './OrderEntryReview';
@@ -559,10 +560,16 @@ class OrderEntry extends Component {
 	};
 
 	onFeeStructureAndLimits = () => {
-		this.props.openFeesStructureandLimits({
-			verification_level: this.props.user.verification_level,
-			discount: this.props.user.discount || 0,
-		});
+		if (isLoggedIn()) {
+			const {
+				openFeesStructureandLimits,
+				user: { verification_level, discount = 0 },
+			} = this.props;
+			openFeesStructureandLimits({ verification_level, discount });
+		} else {
+			const { router } = this.props;
+			router.push('/login');
+		}
 	};
 
 	render() {
@@ -685,4 +692,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderEntry);
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(OrderEntry));
