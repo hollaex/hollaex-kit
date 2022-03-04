@@ -42,6 +42,7 @@ const OrdersWrapper = ({
 			}
 			stringId="TOOLS.RECENT_TRADES"
 			tool={tool}
+			titleClassName="mb-4"
 		>
 			{isLoggedIn() ? (
 				<UserTrades

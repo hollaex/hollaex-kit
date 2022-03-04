@@ -77,6 +77,7 @@ class OrdersWrapper extends Component {
 					}
 					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
+					titleClassName="mb-4"
 				>
 					{isLoggedIn() ? (
 						<ActiveOrders
