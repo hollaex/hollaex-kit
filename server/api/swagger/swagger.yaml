@@ -2457,6 +2457,75 @@ paths:
         - Bearer: [ ]
       x-security-scopes:
         - admin
+  /admin/specific-email:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getSpecificEmail
+      description: Get configurations email for admin
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: language
+          description: "language"
+          required: true
+          type: string
+        - in: query
+          name: mailtype
+          description: "mail type"
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putSpecificEmail
+      description: Update configurations email
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - html
+              - title
+              - language
+              - mailtype
+            properties:
+              html:
+                type: string
+              title:
+                type: string
+              language:
+                type: string
+              mailtype:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
   /admin/operators:
     x-swagger-router-controller: admin
     get:

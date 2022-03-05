@@ -1168,14 +1168,49 @@ const putEmail = (req, res) => {
 	);
 
 	toolsLib.updateEmail(updateData)
-		.then((result) => {
-			return res.json(result);
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/putEmail', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
+const getSpecificEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getSpecificEmail', req.auth.sub);
+	const { language, mailtype} = req.swagger.params;
+
+	try {
+		const data = cloneDeep({
+			email: toolsLib.getEmail()
+		});
+
+		return res.json(data["email"][language.value][mailtype.value.toUpperCase()]);
+	} catch (err) {
+		loggerAdmin.error(req.uuid, 'controllers/admin/getSpecificEmail', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	}
+}
+
+const putSpecificEmail = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/putSpecificEmail', req.auth.sub);
+
+	const { language, mailtype, html, title } = req.swagger.params.data.value;
+	const data = cloneDeep({
+		email: toolsLib.getEmail()
+	});
+	data["email"][language][mailtype.toUpperCase()] = {html, title};
+	toolsLib.updateEmail(data)
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/putSpecificEmail', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+
+}
 
 const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
@@ -1894,5 +1929,7 @@ module.exports = {
 	putUserInfo,
 	getEmail,
 	putEmail,
-	emailConfigTest
+	emailConfigTest,
+	getSpecificEmail,
+	putSpecificEmail
 };
