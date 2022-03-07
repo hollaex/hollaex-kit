@@ -59,7 +59,7 @@ class Home extends Component {
 				minHeight: MIN_HEIGHT,
 			},
 			market: [],
-			sectionData: {}
+			sectionData: {},
 		};
 		this.goToPair(pair);
 	}
@@ -69,6 +69,9 @@ class Home extends Component {
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		this.generateSections(sections);
+		if (window.customRenderCardSection) {
+			window.customRenderCardSection();
+		}
 	}
 
 	goTo = (path) => () => {
