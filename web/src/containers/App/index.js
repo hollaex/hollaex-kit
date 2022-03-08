@@ -43,6 +43,7 @@ import {
 } from '../../actions/appActions';
 
 import { setPricesAndAsset } from 'actions/assetActions';
+import { loadBlockchainData } from 'actions/stakingActions';
 
 const mapStateToProps = (store) => ({
 	menuItems: menuItemsSelector(store),
@@ -111,6 +112,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 	setIsReady: bindActionCreators(setIsReady, dispatch),
 	initializeTools: bindActionCreators(initializeTools, dispatch),
+	loadBlockchainData: bindActionCreators(loadBlockchainData, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -10,6 +10,7 @@ import { Button as AntBtn } from 'antd';
 import {
 	userActiveStakesSelector,
 	pendingTransactionsSelector,
+	networksMismatchSelector,
 } from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
@@ -31,10 +32,10 @@ const MyStaking = ({
 	setNotification,
 	activeStakesCount,
 	activeStakes,
-	network,
 	events,
 	pending,
 	goToBlocks,
+	networksMismatch,
 }) => {
 	// This line is to temporarily hide the events history table
 	const [showEventsHistory] = useState(false);
@@ -86,7 +87,7 @@ const MyStaking = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -192,7 +193,7 @@ const MyStaking = ({
 												type="primary"
 												ghost
 												onClick={() => startStakingProcess(tokenData)}
-												disabled={!account}
+												disabled={!account || networksMismatch}
 											>
 												{STRINGS['STAKE_TABLE.STAKE']}
 											</AntBtn>
@@ -292,6 +293,7 @@ const MyStaking = ({
 											? () => startEarlyUnstakingProcess(data)
 											: () => startUnstakingProcess(data),
 										children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+										disabled: networksMismatch,
 									};
 									return (
 										<tr
@@ -418,12 +420,12 @@ const MyStaking = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
 	pending: pendingTransactionsSelector(store),
+	networksMismatch: networksMismatchSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

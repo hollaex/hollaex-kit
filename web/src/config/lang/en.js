@@ -692,6 +692,7 @@ export default {
 		},
 	},
 	STAKE: {
+		NETWORK_WARNING: 'Incompatible network. Please change your network to {0}',
 		EARN: 'Earn', //new
 		TITLE: 'Stake',
 		MODAL_TITLE: 'Stake and earn {0}',

@@ -13,6 +13,11 @@ const CONTRACT_EVENTS = {
 	Unstake: 'UnstakeEvent',
 };
 
+export const ETHEREUM_EVENTS = {
+	NETWORK_CHANGE: 'networkChanged',
+	ACCOUNT_CHANGE: 'accountsChanged',
+};
+
 export const SET_ACCOUNT = 'SET_ACCOUNT';
 export const SET_CURRENT_BLOCK = 'SET_CURRENT_BLOCK';
 export const SET_BLOCKCHAIN_DATA = 'SET_BLOCKCHAIN_DATA';
@@ -141,74 +146,98 @@ export const connectWallet = () => {
 
 export const loadBlockchainData = () => {
 	return async (dispatch) => {
-		const [[account], network] = await Promise.all([
-			web3.eth.getAccounts(),
-			web3.eth.net.getNetworkType(),
-		]);
-		let balance = 0;
-		if (account) {
-			const weiBalance = await web3.eth.getBalance(account);
-			balance = web3.utils.fromWei(weiBalance);
+		try {
+			const [[account], network] = await Promise.all([
+				web3.eth.getAccounts(),
+				web3.eth.net.getNetworkType(),
+			]);
+			let balance = 0;
+			if (account) {
+				const weiBalance = await web3.eth.getBalance(account);
+				balance = web3.utils.fromWei(weiBalance);
+			}
+			dispatch(setBlockchainData(account, balance, network));
+		} catch (err) {
+			console.error(err);
 		}
-		dispatch(setBlockchainData(account, balance, network));
 	};
 };
 
 export const getCurrentBlock = () => {
 	return async (dispatch) => {
-		const currentBlock = await web3.eth.getBlockNumber();
-		dispatch(setCurrentBlock(currentBlock));
+		try {
+			const currentBlock = await web3.eth.getBlockNumber();
+			dispatch(setCurrentBlock(currentBlock));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const generateTableData = (account) => {
 	return async (dispatch) => {
-		let data = {};
-		Object.keys(CONTRACTS()).forEach((symbol) => {
-			data = {
-				symbol,
-				available: getTokenBalance(symbol)(account),
-			};
-		});
+		try {
+			let data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data = {
+					symbol,
+					available: getTokenBalance(symbol)(account),
+				};
+			});
 
-		const stakables = await hash(data);
-		dispatch(setStakables([stakables]));
+			const stakables = await hash(data);
+			dispatch(setStakables([stakables]));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPeriods = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS()).forEach((symbol) => {
-			data[symbol] = getPeriodsForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getPeriodsForToken(symbol)();
+			});
 
-		const periods = await hash(data);
-		dispatch(setPeriods(periods));
+			const periods = await hash(data);
+			dispatch(setPeriods(periods));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPenalties = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS()).forEach((symbol) => {
-			data[symbol] = getPenaltyForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getPenaltyForToken(symbol)();
+			});
 
-		const penalties = await hash(data);
-		dispatch(setPenalties(penalties));
+			const penalties = await hash(data);
+			dispatch(setPenalties(penalties));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPots = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS()).forEach((symbol) => {
-			data[symbol] = getPotForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getPotForToken(symbol)();
+			});
 
-		const pots = await hash(data);
-		dispatch(setPots(pots));
+			const pots = await hash(data);
+			dispatch(setPots(pots));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
@@ -219,13 +248,17 @@ const getUserStake = (token = 'xht') => async (address) => {
 
 export const getAllUserStakes = (account) => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS()).forEach((symbol) => {
-			data[symbol] = getUserStake(symbol)(account);
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getUserStake(symbol)(account);
+			});
 
-		const userStakes = await hash(data);
-		dispatch(setAllUserStakes(userStakes));
+			const userStakes = await hash(data);
+			dispatch(setAllUserStakes(userStakes));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
@@ -319,53 +352,69 @@ const getTokenBalance = (token = 'xht') => async (account) => {
 
 export const getPublicInfo = (token = 'xht') => {
 	return async (dispatch) => {
-		const data = {
-			totalReward: CONTRACTS()[token].main.methods.getTotalReward().call(),
-			totalStaked: CONTRACTS()[token].main.methods.totalStake().call(),
-			totalStakeWeight: CONTRACTS()
-				[token].main.methods.totalStakeWeight()
-				.call(),
-		};
+		try {
+			const data = {
+				totalReward: CONTRACTS()[token].main.methods.getTotalReward().call(),
+				totalStaked: CONTRACTS()[token].main.methods.totalStake().call(),
+				totalStakeWeight: CONTRACTS()
+					[token].main.methods.totalStakeWeight()
+					.call(),
+			};
 
-		const result = await hash(data);
-		const publicInfo = {};
-		Object.entries(result).forEach(([key, value]) => {
-			publicInfo[key] = mathjs.number(web3.utils.fromWei(value));
-		});
-		dispatch(setPublicInfo(publicInfo));
+			const result = await hash(data);
+			const publicInfo = {};
+			Object.entries(result).forEach(([key, value]) => {
+				publicInfo[key] = mathjs.number(web3.utils.fromWei(value));
+			});
+			dispatch(setPublicInfo(publicInfo));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS()[token].main.getPastEvents('allEvents', {
-			fromBlock: 1,
-			toBlock: 'latest',
-			//filter: {_address: account }
-		});
-		dispatch(setContractEvents(events.reverse()));
+		try {
+			const events = await CONTRACTS()[token].main.getPastEvents('allEvents', {
+				fromBlock: 1,
+				toBlock: 'latest',
+				//filter: {_address: account }
+			});
+			dispatch(setContractEvents(events.reverse()));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getDistributions = (token = 'xht') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS()[token].main.getPastEvents(
-			CONTRACT_EVENTS.Distribute,
-			{
-				fromBlock: 1,
-				toBlock: 'latest',
-			}
-		);
-		dispatch(setDistributions(events.reverse()));
+		try {
+			const events = await CONTRACTS()[token].main.getPastEvents(
+				CONTRACT_EVENTS.Distribute,
+				{
+					fromBlock: 1,
+					toBlock: 'latest',
+				}
+			);
+			dispatch(setDistributions(events.reverse()));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getPendingTransactions = (account = '') => {
 	return async (dispatch) => {
-		// Pending Transactions Calculations
-		// const pendingTransactions = await web3.eth.getPendingTransactions();
-		const pendingTransactions = [];
-		dispatch(setPendingTransactions(pendingTransactions));
+		try {
+			// Pending Transactions Calculations
+			// const pendingTransactions = await web3.eth.getPendingTransactions();
+			const pendingTransactions = [];
+			dispatch(setPendingTransactions(pendingTransactions));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
