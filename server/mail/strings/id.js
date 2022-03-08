@@ -64,57 +64,10 @@ const SMS = {
 		`Penarikan ${currency.toUpperCase()} Anda dengan jumlah ${amount} telah dikonfirmasi`
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation, currency) =>
-			`Ada deposit baru untuk ${amount} ${currency.toUpperCase()} yang sedang dalam proses di dompet ${API_NAME()} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda.${confirmation ? ` Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.` : ''}`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`Deposit ${
-				currency.toUpperCase()
-			} Anda untuk ${amount} ${currency.toUpperCase()} telah dikonfirmasi dan berhasil dibuat dan tersedia di dompet ${
-				currency.toUpperCase()
-			} Anda.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `Status: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency, address = '') =>
-			`Anda telah membuat permintaan penarikan untuk ${amount} ${currency.toUpperCase()} ke alamat ${address}. Penarikan Anda sedang dalam proses dan akan segera diproses.`,
-		COMPLETED: (amount, currency, address = '') =>
-			`Permintaan penarikan Anda untuk ${amount} ${currency.toUpperCase()} telah diproses dan ditransfer ke alamat ${address}.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `Status: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 module.exports = {
 	FOOTER,
 	COMMON,
 	ALERT,
 	SMS,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };

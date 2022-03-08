@@ -83,55 +83,12 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation = 1, currency) =>
-			` Você tem um novo depósito de ${amount} ${currency.toUpperCase ()} pendente em sua carteira ${API_NAME ()}. Aguarde até que a transação seja confirmada e seus fundos estejam disponíveis em sua carteira. Sua transação requer ${confirmation} confirmação ou confirmações no blockchain.`,
-		COMPLETED: (amount, confirmation, currency) =>
-			` Seu ${currency.toUpperCase ()} O depósito de ${amount} ${currency.toUpperCase ()} foi confirmado e concluído e está disponível em sua ${currency.toUpperCase ()} carteira.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `Status: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, address, currency) =>
-			`Você fez uma solicitação de saque de $ amount} ${currency.toUpperCase()} para o endereço $ {address}. Seu status de retirada está pendente e será processado em breve.`,
-		COMPLETED: (amount, address, currency) =>
-			`Sua solicitação de saque de ${amount} ${currency.toUpperCase()} foi processada e transferida para o endereço $ {address}.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `Status: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 module.exports = {
 	FOOTER,
 	COMMON,
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };
 
