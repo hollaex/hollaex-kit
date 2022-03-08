@@ -26,3 +26,31 @@ export const storePair = (values) => {
 
 	return requestAuthenticated('/admin/pair', options);
 };
+
+export const getBroker = () => requestAuthenticated('/broker');
+
+export const createBroker = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker', options);
+};
+
+export const updateBroker = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker', options);
+};
+
+export const deleteBroker = (id) => {
+	const options = {
+		method: 'DELETE',
+		body: JSON.stringify(id),
+	};
+	return requestAuthenticated('/broker', options);
+};

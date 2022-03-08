@@ -119,6 +119,7 @@ const icons = {
 	EDIT_PENCIL_ICON: '/assets/images/edit-pencil.svg',
 	SEND_ARROW_ICON: '/assets/images/send-arrow.svg',
 	PENDING_ORANGE_GEAR: '/assets/images/pending-orange-gear.svg',
+	BROKER_DESK_ICON: '/assets/images/broker-desk-otc-deal.svg',
 };
 
 export default icons;
