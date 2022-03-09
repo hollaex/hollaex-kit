@@ -24,7 +24,6 @@ const PublicInfo = ({
 	token,
 	currentBlock,
 	setActiveTab,
-	network,
 	distributions,
 	account,
 	coins,
@@ -63,7 +62,7 @@ const PublicInfo = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -279,7 +278,6 @@ const PublicInfo = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 	publicInfo: store.stake.publicInfo,

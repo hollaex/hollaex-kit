@@ -32,6 +32,7 @@ import {
 	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
+	SET_CONTRACTS,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -170,6 +171,7 @@ const INITIAL_STATE = {
 	injected_values: [],
 	injected_html: {},
 	plugins_injected_html: {},
+	contracts: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -558,6 +560,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_html: payload,
+			};
+		}
+		case SET_CONTRACTS: {
+			return {
+				...state,
+				contracts: payload,
 			};
 		}
 		default:

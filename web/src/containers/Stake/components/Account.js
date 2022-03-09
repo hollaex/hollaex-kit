@@ -7,6 +7,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { roundNumber } from 'utils';
 import { dotifyString } from 'utils/eth';
 import STRINGS from 'config/localizedStrings';
+import { networksMismatchSelector } from '../selector';
 
 const Account = ({
 	account = '',
@@ -14,6 +15,8 @@ const Account = ({
 	network,
 	connectWallet,
 	disconnectWallet,
+	contracts,
+	networksMismatch,
 }) => {
 	if (!account) {
 		return (
@@ -26,6 +29,14 @@ const Account = ({
 
 		return (
 			<div className="d-flex">
+				{networksMismatch && (
+					<div className="d-flex align-center warning_text">
+						{STRINGS.formatString(
+							STRINGS['STAKE.NETWORK_WARNING'],
+							contracts['xht'].network.toUpperCase()
+						)}
+					</div>
+				)}
 				<div className="d-flex align-center staking-account__container mx-2">
 					{network}
 				</div>
@@ -59,6 +70,8 @@ const mapStateToProps = (store) => ({
 	account: store.stake.account,
 	network: store.stake.network,
 	balance: store.stake.balance,
+	contracts: store.app.contracts,
+	networksMismatch: networksMismatchSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

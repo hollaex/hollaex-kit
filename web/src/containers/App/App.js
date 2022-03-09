@@ -72,6 +72,7 @@ import Container from './Container';
 import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 
 class App extends Component {
 	state = {
@@ -109,6 +110,7 @@ class App extends Component {
 			injected_html,
 			plugins_injected_html,
 			initializeTools,
+			loadBlockchainData,
 		} = this.props;
 
 		if (
@@ -148,6 +150,16 @@ class App extends Component {
 				const paramsData = { status: false, message: error_alert };
 				this.setState({ paramsData, isCustomNotification: true });
 			}
+		}
+
+		if (window.ethereum) {
+			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
+				loadBlockchainData();
+			});
+
+			window.ethereum.on(ETHEREUM_EVENTS.NETWORK_CHANGE, () => {
+				window.location.reload();
+			});
 		}
 	}
 

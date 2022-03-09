@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import mathjs from 'mathjs';
+import classnames from 'classnames';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
 import {
@@ -20,6 +21,7 @@ import { Link } from 'react-router';
 import { web3 } from 'config/contracts';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
+import { STAKING_INDEX_COIN } from 'config/contracts';
 import {
 	IconTitle,
 	HeaderSection,
@@ -34,6 +36,7 @@ import { open } from 'helpers/link';
 import {
 	userActiveStakesSelector,
 	pendingTransactionsSelector,
+	networksMismatchSelector,
 } from './selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { isLoggedIn } from 'utils/token';
@@ -62,11 +65,15 @@ class Stake extends Component {
 	componentDidUpdate(prevProps) {
 		const {
 			account,
+			network,
 			generateTableData,
 			getAllUserStakes,
 			getPendingTransactions,
 		} = this.props;
-		if (!!account && account !== prevProps.account) {
+		if (
+			(!!account && account !== prevProps.account) ||
+			(!!network && network !== prevProps.network)
+		) {
 			generateTableData(account);
 			getAllUserStakes(account);
 			getPendingTransactions(account);
@@ -117,9 +124,11 @@ class Stake extends Component {
 
 	renderAvailableBalance = () => {
 		const { balance, coins } = this.props;
-		const currency = 'xht';
-		const { min } = coins[currency] || DEFAULT_COIN_DATA;
-		const available = formatToCurrency(balance[`${currency}_available`], min);
+		const { min } = coins[STAKING_INDEX_COIN] || DEFAULT_COIN_DATA;
+		const available = formatToCurrency(
+			balance[`${STAKING_INDEX_COIN}_available`],
+			min
+		);
 
 		return <span className="secondary-text">{available}</span>;
 	};
@@ -130,16 +139,28 @@ class Stake extends Component {
 	};
 
 	goToPOT = () => {
-		const { network, pots } = this.props;
-		const symbol = 'xht';
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+			pots,
+		} = this.props;
+		const address = pots[STAKING_INDEX_COIN]
+			? pots[STAKING_INDEX_COIN].address
+			: '';
+
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${pots[symbol].address}`;
+		}etherscan.io/address/${address}`;
 		open(url);
 	};
 
 	goToBlocks = () => {
-		const { network } = this.props;
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+		} = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
 		}etherscan.io/blocks`;
@@ -159,6 +180,7 @@ class Stake extends Component {
 			totalUserStakes,
 			totalUserEarnings,
 			pending,
+			networksMismatch,
 		} = this.props;
 
 		return (
@@ -173,7 +195,11 @@ class Stake extends Component {
 					/>
 					<Account />
 				</div>
-				<div className="wallet-container no-border">
+				<div
+					className={classnames('wallet-container', 'no-border', {
+						'area-disabled': networksMismatch,
+					})}
+				>
 					<div className="wallet-assets_block">
 						<div className="d-flex justify-content-between align-start">
 							<div>
@@ -325,7 +351,7 @@ class Stake extends Component {
 														type="primary"
 														ghost
 														onClick={() => this.startStakingProcess(tokenData)}
-														disabled={!account}
+														disabled={!account || networksMismatch}
 													>
 														{STRINGS['STAKE_TABLE.STAKE']}
 													</AntBtn>
@@ -432,6 +458,7 @@ class Stake extends Component {
 														? () => this.startEarlyUnstakingProcess(data)
 														: () => this.startUnstakingProcess(data),
 													children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+													disabled: networksMismatch,
 												};
 												return (
 													<tr
@@ -550,6 +577,8 @@ const mapStateToProps = (store) => ({
 	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
 	pending: pendingTransactionsSelector(store),
+	networksMismatch: networksMismatchSelector(store),
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

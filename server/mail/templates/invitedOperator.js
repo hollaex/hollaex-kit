@@ -1,18 +1,8 @@
 'use strict';
 
-const { Button } = require('./helpers/common');
-const { GET_EMAIL, GET_KIT_CONFIG } = require('../../constants');
-const API_NAME = () => GET_KIT_CONFIG().api_name;
+const { CONFIRMATION, EXPLORERS, GET_COINS } = require('../../constants');
 
 const fetchMessage = (email, data, language, domain) => {
-	const emailConfigurations = GET_EMAIL();
-	if(emailConfigurations[language] && emailConfigurations[language]['INVITEDOPERATOR']) {
-		const stringDynamic = emailConfigurations[language]['INVITEDOPERATOR'];
-		return {
-			html: htmlDynamic(email, data, language, domain, stringDynamic),
-			text: textDynamic(email, data, language, domain, stringDynamic)
-		};
-	}
 	return {
 		html: html(email, data, language, domain),
 		text: text(email, data, language, domain)
@@ -20,146 +10,94 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const link = `${domain}/login`;
-	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
-	const { invitingEmail, created, password, role } = data;
-	let body;
-	if (created) {
-		body = `
+	const DEPOSIT = require('../strings').getStringObject(language, 'DEPOSIT');
+	let result = `
+        <div>
+            <p>
+                ${DEPOSIT.GREETING(email)}
+			</p>
+		`;
+
+	if (Object.keys(GET_COINS()).includes(data.currency)) {
+		let explorers = '';
+		let confirmation = undefined;
+
+		if (data.transaction_id && !data.transaction_id.includes('-')) {
+			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
+			if (EXPLORERS[data.currency]) {
+				EXPLORERS[data.currency].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			} else if (EXPLORERS[data.network]) {
+				EXPLORERS[data.network].forEach((explorer) => {
+					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
+						data.transaction_id
+					}>${explorer.name}</a></li>`;
+				});
+			}
+		}
+
+		result += `
 			<p>
-				${INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}<br />
+				${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
 			</p>
 			<p>
-				${INVITEDOPERATOR.BODY.CREATED[2]}<br />
+				${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
+				<br />
+				${DEPOSIT.BODY[2](data.status)}
+				${data.transaction_id && data.address ? '<br />' : ''}
+				${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
+				${data.transaction_id ? '<br />' : ''}
+				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+				${data.network ? '<br />' : ''}
+				${data.network ? DEPOSIT.BODY[5](data.network) : ''}
+				${data.fee ? '<br />' : ''}
+				${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
+				${data.description ? '<br />' : ''}
+				${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 			</p>
-				<div>
-					<div>${INVITEDOPERATOR.BODY.CREATED[3](email)}</div>
-					<div>${INVITEDOPERATOR.BODY.CREATED[4](password)}</div>
-				</div>
-			</p>
-			${Button(link, INVITEDOPERATOR.BODY.CREATED[5])}
+			${explorers.length > 0 ? DEPOSIT.BODY[8] : ''}
+			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
 		`;
 	} else {
-		body = `
-			<p>
-				${INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}<br />
-			</p>
-			${Button(link, INVITEDOPERATOR.BODY.EXISTING[2])}
-		`;
+		result += '';
 	}
 
-	return `
-		<div>
+	result += `
 			<p>
-				${INVITEDOPERATOR.GREETING(email)}
-			</p>
-			${body}
-			<p>
-				${INVITEDOPERATOR.CLOSING[1]}<br />
-				${INVITEDOPERATOR.CLOSING[2]()}
+				${DEPOSIT.CLOSING[1]}<br />
+				${DEPOSIT.CLOSING[2]()}
 			</p>
 		</div>
-	`;
+		`;
+	return result;
 };
 
 const text = (email, data, language, domain) => {
-	const link = `${domain}/login`;
-	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
-	const { invitingEmail, created, password, role } = data;
-	let body;
-
-	if (created) {
-		body = `
-			${INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}
-			${INVITEDOPERATOR.BODY.CREATED[2]}
-			${INVITEDOPERATOR.BODY.CREATED[3](email)}
-			${INVITEDOPERATOR.BODY.CREATED[4](password)}
-			${INVITEDOPERATOR.BODY.CREATED[5]}(${link})
+	const DEPOSIT = require('../strings').getStringObject(language, 'DEPOSIT');
+	let result = `${DEPOSIT.GREETING(email)}`;
+	if (Object.keys(GET_COINS()).includes(data.currency)) {
+		let confirmation = undefined;
+		if (data.transaction_id && !data.transaction_id.includes('-')) {
+			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
+		}
+		result += `
+			${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
+			${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
+			${DEPOSIT.BODY[2](data.status)}
+			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
+			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
+			${data.network ? DEPOSIT.BODY[5](data.network) : ''}
+			${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
+			${data.description ? DEPOSIT.BODY[7](data.description) : ''}
 		`;
 	} else {
-		body = `
-			${INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}
-			${INVITEDOPERATOR.BODY.EXISTING[2]}(${link})
-		`;
+		result += '';
 	}
-
-	return `
-		${INVITEDOPERATOR.GREETING(email)}
-		${body}
-		${INVITEDOPERATOR.CLOSING[1]} ${INVITEDOPERATOR.CLOSING[2]()}
-	`;
-};
-
-const htmlDynamic = (email, data, language, domain, stringDynamic) => {
-	const link = `${domain}/login`;
-	const { invitingEmail, created, password, role } = data;
-	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
-
-	let body;
-	if (created) {
-		body = `
-			<p>
-				${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[1]) ? stringDynamic.BODY.CREATED[1].format(role, invitingEmail, API_NAME()) : INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}<br />
-			</p>
-			<p>
-				${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[2]) ? stringDynamic.BODY.CREATED[2] : INVITEDOPERATOR.BODY.CREATED[2]}<br />
-			</p>
-				<div>
-					<div>${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[3]) ? stringDynamic.BODY.CREATED[3].format(email) : INVITEDOPERATOR.BODY.CREATED[3](email)}</div>
-					<div>${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[4]) ? stringDynamic.BODY.CREATED[4].format(password) : INVITEDOPERATOR.BODY.CREATED[4](password)}</div>
-				</div>
-			</p>
-			${Button(link, (stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[5]) ? stringDynamic.BODY.CREATED[5] : INVITEDOPERATOR.BODY.CREATED[5])}
-		`;
-	} else {
-		body = `
-			<p>
-				${(stringDynamic.BODY && stringDynamic.BODY.EXISTING && stringDynamic.BODY.EXISTING[1]) ? stringDynamic.BODY.EXISTING[1].format(role, invitingEmail, API_NAME()) : INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}<br />
-			</p>
-			${Button(link, (stringDynamic.BODY && stringDynamic.BODY.EXISTING && stringDynamic.BODY.EXISTING[2]) ? stringDynamic.BODY.EXISTING[2] : INVITEDOPERATOR.BODY.EXISTING[2])}
-		`;
-	}
-
-	return `
-		<div>
-			<p>
-				${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : INVITEDOPERATOR.GREETING(email)}
-			</p>
-			${body}
-			<p>
-        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : INVITEDOPERATOR.CLOSING[1]}<br />
-        		${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : INVITEDOPERATOR.CLOSING[2]()}
-      	</p>
-		</div>
-	`;
-};
-
-const textDynamic = (email, data, language, domain, stringDynamic) => {
-	const link = `${domain}/login`;
-	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
-	const { invitingEmail, created, password, role } = data;
-	let body;
-
-	if (created) {
-		body = `
-			${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[1]) ? stringDynamic.BODY.CREATED[1].format(role, invitingEmail, API_NAME()) : INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}
-			${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[2]) ? stringDynamic.BODY.CREATED[2] : INVITEDOPERATOR.BODY.CREATED[2]}
-			${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[3]) ? stringDynamic.BODY.CREATED[3].format(email) : INVITEDOPERATOR.BODY.CREATED[3](email)}
-			${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[4]) ? stringDynamic.BODY.CREATED[4].format(password) : INVITEDOPERATOR.BODY.CREATED[4](password)}
-			${(stringDynamic.BODY && stringDynamic.BODY.CREATED && stringDynamic.BODY.CREATED[5]) ? stringDynamic.BODY.CREATED[5] : INVITEDOPERATOR.BODY.CREATED[5]}(${link})
-		`;
-	} else {
-		body = `
-			${(stringDynamic.BODY && stringDynamic.BODY.EXISTING && stringDynamic.BODY.EXISTING[1]) ? stringDynamic.BODY.EXISTING[1].format(role, invitingEmail, API_NAME()) : INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}
-			${(stringDynamic.BODY && stringDynamic.BODY.EXISTING && stringDynamic.BODY.EXISTING[2]) ? stringDynamic.BODY.EXISTING[2] : INVITEDOPERATOR.BODY.EXISTING[2]}(${link})
-		`;
-	}
-
-	return `
-		${stringDynamic.GREETING ? stringDynamic.GREETING.format(email) : INVITEDOPERATOR.GREETING(email)}
-		${body}
-    	${(stringDynamic.CLOSING && stringDynamic.CLOSING[1]) ? stringDynamic.CLOSING[1] : INVITEDOPERATOR.CLOSING[1]} ${(stringDynamic.CLOSING && stringDynamic.CLOSING[2]) ? stringDynamic.CLOSING[2].format(API_NAME()) : INVITEDOPERATOR.CLOSING[2]()}
-	`;
+	result += `${DEPOSIT.CLOSING[1]} ${DEPOSIT.CLOSING[2]()}`;
+	return result;
 };
 
 module.exports = fetchMessage;

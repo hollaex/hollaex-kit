@@ -25,7 +25,25 @@ const MAILTYPE = {
 	ALERT: 'alert',
 	DISCOUNT_UPDATE: 'discountUpdate',
 	BANK_VERIFIED: 'bankVerified',
-	CONFIRM_EMAIL: 'confirmEmail'
+	CONFIRM_EMAIL: 'confirmEmail',
+
+	// USER_VERIFICATION_REJECT split
+	USER_ID_VERIFICATION_REJECT: 'user_id_verification_reject',
+	USER_BANK_VERIFICATION_REJECT: 'user_bank_verification_reject',
+
+	// DEPOSIT_CANCEL split
+	WITHDRAWAL_CANCEL: 'withdrawal_cancel',
+
+	// USER_DEACTIVATED split
+	USER_ACTIVATED: 'user_activated',
+
+	// WITHDRAWAL split
+	WITHDRAWAL_PENDING: 'withdrawal_pending ' ,
+	WITHDRAWAL_COMPLETED: 'withdrawal_completed',
+
+	// DEPOSIT split
+	DEPOSIT_PENDING: 'deposit_pending',
+	DEPOSIT_COMPLETED: 'deposit_completed',
 };
 
 const languageFile = (lang) => {
