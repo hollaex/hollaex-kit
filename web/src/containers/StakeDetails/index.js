@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import {
 	getDistributions,
 	getStakeEvents,
@@ -17,13 +18,16 @@ import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import { IconTitle, EditWrapper } from 'components';
-import { CONTRACT_ADDRESSES } from 'config/contracts';
+import { CONTRACT_ADDRESSES, STAKING_INDEX_COIN } from 'config/contracts';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Account from 'containers/Stake/components/Account';
 import { getPublicInfo } from 'actions/stakingActions';
 import { open } from 'helpers/link';
 
-import { userActiveStakesSelector } from 'containers/Stake/selector';
+import {
+	userActiveStakesSelector,
+	networksMismatchSelector,
+} from 'containers/Stake/selector';
 import PublicInfo from './components/PublicInfo';
 import Distributions from './components/Distributions';
 import MyStaking from './components/MyStaking';
@@ -87,6 +91,7 @@ class StakeDetails extends Component {
 	componentDidUpdate(prevProps) {
 		const {
 			account,
+			network,
 			generateTableData,
 			getAllUserStakes,
 			getStakeEvents,
@@ -96,7 +101,10 @@ class StakeDetails extends Component {
 			},
 		} = this.props;
 
-		if (!!account && account !== prevProps.account) {
+		if (
+			(!!account && account !== prevProps.account) ||
+			(!!network && network !== prevProps.network)
+		) {
 			getStakeEvents(token, account);
 			generateTableData(account);
 			getAllUserStakes(account);
@@ -104,17 +112,46 @@ class StakeDetails extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.setBlockNumberInterval();
+	}
+
+	componentWillUnmount() {
+		this.clearBlockNumberInterval();
+	}
+
+	setBlockNumberInterval = () => {
+		const { getCurrentBlock } = this.props;
+		this.BlockNumberIntervalHandler = setInterval(getCurrentBlock, 5000);
+	};
+
+	clearBlockNumberInterval = () => {
+		clearInterval(this.BlockNumberIntervalHandler);
+	};
+
 	goToPOT = () => {
-		const { network, pots } = this.props;
-		const symbol = 'xht';
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+			pots,
+		} = this.props;
+		const address = pots[STAKING_INDEX_COIN]
+			? pots[STAKING_INDEX_COIN].address
+			: '';
+
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${pots[symbol].address}`;
+		}etherscan.io/address/${address}`;
 		open(url);
 	};
 
 	goToBlocks = () => {
-		const { network } = this.props;
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+		} = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
 		}etherscan.io/blocks`;
@@ -183,7 +220,11 @@ class StakeDetails extends Component {
 	};
 
 	openContract = (token) => {
-		const { network } = this.props;
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+		} = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
 		}etherscan.io/token/${token}`;
@@ -197,6 +238,7 @@ class StakeDetails extends Component {
 			router: {
 				params: { token },
 			},
+			networksMismatch,
 		} = this.props;
 
 		const { activeKey } = this.state;
@@ -257,6 +299,7 @@ class StakeDetails extends Component {
 						<Tabs
 							activeKey={activeKey}
 							onTabClick={(key) => this.setActiveTab(key)}
+							className={classnames({ 'area-disabled': networksMismatch })}
 						>
 							{Object.entries(TABS).map(([_, { key, title }]) => {
 								return (
@@ -284,6 +327,8 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
+	networksMismatch: networksMismatchSelector(store),
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

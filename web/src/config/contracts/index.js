@@ -25,10 +25,13 @@ export const generateContracts = (contractsObject, web3) => {
 
 export const CONTRACTS = () => generateContracts(CONTRACT_ADDRESSES(), web3);
 
-export const isStakingAvailable = (token) => {
+export const isStakingAvailable = (token, contracts = {}) => {
 	return (
-		CONTRACT_ADDRESSES()[token] &&
-		CONTRACT_ADDRESSES()[token].main &&
-		CONTRACT_ADDRESSES()[token].token
+		contracts[token] &&
+		contracts[token].main &&
+		contracts[token].token &&
+		contracts[token].network
 	);
 };
+
+export const STAKING_INDEX_COIN = 'xht';

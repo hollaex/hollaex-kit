@@ -17,6 +17,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import { STATIC_ICONS } from 'config/icons';
+import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
 class Wallet extends Component {
 	state = {
@@ -37,7 +38,8 @@ class Wallet extends Component {
 			this.props.pairs,
 			this.props.totalAsset,
 			this.props.oraclePrices,
-			this.props.constants
+			this.props.constants,
+			this.props.contracts
 		);
 	}
 
@@ -52,7 +54,8 @@ class Wallet extends Component {
 			nextProps.pairs,
 			nextProps.totalAsset,
 			nextProps.oraclePrices,
-			nextProps.constants
+			nextProps.constants,
+			nextProps.contracts
 		);
 	}
 
@@ -72,7 +75,8 @@ class Wallet extends Component {
 				this.props.pairs,
 				this.props.totalAsset,
 				this.props.oraclePrices,
-				this.props.constants
+				this.props.constants,
+				this.props.contracts
 			);
 		}
 	}
@@ -118,7 +122,8 @@ class Wallet extends Component {
 		pairs,
 		total,
 		oraclePrices,
-		{ features: { stake_page = false } = {} } = {}
+		{ features: { stake_page = false } = {} } = {},
+		contracts = {}
 	) => {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -147,8 +152,13 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
-						hasEarn={stake_page && !isMobile}
+						hasEarn={
+							isStakingAvailable(STAKING_INDEX_COIN, contracts) &&
+							stake_page &&
+							!isMobile
+						}
 						loading={this.props.dataFetched}
+						contracts={contracts}
 					/>
 				),
 				isOpen: true,
@@ -249,6 +259,7 @@ const mapStateToProps = (store) => ({
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
 	dataFetched: store.asset.dataFetched,
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

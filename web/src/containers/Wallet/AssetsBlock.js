@@ -35,6 +35,7 @@ const AssetsBlock = ({
 	icons: ICONS,
 	hasEarn,
 	loading,
+	contracts,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -312,7 +313,7 @@ const AssetsBlock = ({
 												onClick={() => navigate('/stake')}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!isStakingAvailable(symbol)}
+												disable={!isStakingAvailable(symbol, contracts)}
 											/>
 										</td>
 									)}

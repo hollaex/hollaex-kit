@@ -8,13 +8,7 @@ import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
-const Distributions = ({
-	token,
-	currentBlock,
-	network,
-	distributions,
-	goToPOT,
-}) => {
+const Distributions = ({ token, currentBlock, distributions, goToPOT }) => {
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -38,7 +32,7 @@ const Distributions = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -103,7 +97,6 @@ const Distributions = ({
 };
 
 const mapStateToProps = (store) => ({
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 });

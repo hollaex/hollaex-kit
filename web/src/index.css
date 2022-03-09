@@ -4947,7 +4947,8 @@ table th {
   background-color: var(--base_wallet-sidebar-and-popup);
   border-radius: 0.5rem;
   margin: 0.5rem 0;
-  font-weight: bold; }
+  font-weight: bold;
+  height: 4rem; }
 
 .staking-account__balance {
   padding: 1rem; }
@@ -5060,6 +5061,9 @@ table th {
 .table-row.hoverable:hover {
   background-color: var(--calculated_stake-table_highlight);
   color: var(--labels_important-active-labels-text-graphics); }
+
+.area-disabled {
+  opacity: 0.5; }
 
 .sidebar-fit-to-screen {
   height: 100vh !important; }
