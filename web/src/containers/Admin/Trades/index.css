@@ -466,6 +466,9 @@
 .otc-Container .error svg {
 	fill: yellow;
 }
+.otc-Container.coin-pricing-container .error svg {
+	fill: red;
+}
 .otc-Container .grey-warning {
 	background-color: #545454;
 	color: #ffffff;

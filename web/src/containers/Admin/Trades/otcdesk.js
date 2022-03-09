@@ -1,47 +1,16 @@
-import React, { useRef, useState, Fragment, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import {
-	Table,
-	Input,
-	Button,
-	Select,
-	Modal,
-	InputNumber,
-	Radio,
-	message,
-	Spin,
-} from 'antd';
-import {
-	ExclamationCircleFilled,
-	InfoCircleOutlined,
-	ExclamationCircleOutlined,
-	MinusCircleFilled,
-	CloseOutlined,
-} from '@ant-design/icons';
+import { Table, Input, Button, message, Spin } from 'antd';
+import { MinusCircleFilled } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
-import Coins from '../Coins';
 import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
 import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
-
-const { Option } = Select;
-
-const radioStyle = {
-	display: 'flex',
-	alignItems: 'center',
-	height: '30px',
-	lineHeight: '1.2',
-	padding: '1px 0',
-	margin: 0,
-	paddingLeft: '1px',
-	whiteSpace: 'normal',
-	letterSpacing: '-0.15px',
-	color: '#ffffff',
-};
+import Otcdeskpopup from './Otcdeskpopup';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
@@ -128,7 +97,7 @@ const OtcDeskContainer = ({
 			};
 			setPreviewData(pairPreviewData);
 		}
-	}, [exchange.coins, editData, isOpen, isEdit, exchange]);
+	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
 
 	const getBrokerData = async () => {
 		setTableLoading(true);
@@ -151,6 +120,7 @@ const OtcDeskContainer = ({
 			symbol: `${previewData.pair_base}-${previewData.pair_2}`,
 			sell_price: parseFloat(previewData.sell_price),
 			buy_price: parseFloat(previewData.buy_price),
+			paused: previewData.paused ? previewData.paused : false,
 		};
 		delete body.pair_base;
 		delete body.pair_2;
@@ -190,6 +160,7 @@ const OtcDeskContainer = ({
 			user_id: user.id,
 			sell_price: parseFloat(params.sell_price),
 			buy_price: parseFloat(params.buy_price),
+			paused: params.paused ? params.paused : previewData.paused,
 		};
 		delete body.pair_base;
 		delete body.pair_2;
@@ -448,6 +419,7 @@ const OtcDeskContainer = ({
 	};
 
 	const handlePreviewChange = (value, name, pausedValue = '') => {
+		let tempPreviewData = { ...previewData };
 		let coinSecondaryData = coinSecondary;
 		if (name === 'pair_base') {
 			coinSecondaryData = coins.filter((data) => {
@@ -456,44 +428,36 @@ const OtcDeskContainer = ({
 				}
 				return data.symbol !== value;
 			});
-			previewData['pair_2'] = coinSecondaryData.length
-				? coinSecondaryData[0].symbol
-				: previewData.pair_2;
+			if (coinSecondaryData.length) {
+				tempPreviewData['pair_2'] = coinSecondaryData[0].symbol;
+			}
 		}
 		if (name === 'pair_base') {
-			previewData.pair_base = value;
+			tempPreviewData.pair_base = value;
 		} else if (name === 'pair_2') {
-			previewData.pair_2 = value;
+			tempPreviewData.pair_2 = value;
 		}
-		const existPairData = brokerData.filter(
-			(data) => data.symbol === `${previewData.pair_base}-${previewData.pair_2}`
-		);
-		let temp = {};
-		if (existPairData.length) {
-			setIsExistPair(true);
-			temp = { ...previewData, ...existPairData[0], [name]: value };
-			setPreviewData(temp);
-		} else {
-			setIsExistPair(false);
-			let keys = [
-				'increment_size',
-				'max_size',
-				'min_size',
-				'pair_2',
-				'pair_base',
-			];
-			let obj = {};
-			keys.map((name) => {
-				obj[name] = previewData[name];
-			});
-			temp = {
-				...previewData,
-				...obj,
-				[name]: value,
-			};
-			setPreviewData(temp);
-			setCoinSecondary(coinSecondaryData);
+		if (name === 'pair_base' || name === 'pair_2') {
+			const existPairData = brokerData.filter(
+				(data) =>
+					data.symbol ===
+					`${tempPreviewData.pair_base}-${tempPreviewData.pair_2}`
+			);
+			if (existPairData.length) {
+				setIsExistPair(true);
+				tempPreviewData = { ...tempPreviewData, ...existPairData[0] };
+			} else {
+				setIsExistPair(false);
+				tempPreviewData = {
+					...defaultPreviewValues,
+					pair_base: tempPreviewData.pair_base,
+					pair_2: tempPreviewData.pair_2,
+				};
+			}
 		}
+		tempPreviewData = { ...tempPreviewData, [name]: value };
+		setPreviewData(tempPreviewData);
+		setCoinSecondary(coinSecondaryData);
 		if (name === 'paused') {
 			setStatus(pausedValue);
 		}
@@ -553,879 +517,6 @@ const OtcDeskContainer = ({
 			moveToStep('with-balance');
 		} else {
 			moveToStep('zero-balance');
-		}
-	};
-
-	const renderModalContent = () => {
-		switch (type) {
-			case 'step1':
-				return (
-					<div className="otc-Container otcdesk-add-pair-wrapper">
-						<div className="d-flex justify-content-between">
-							<div>
-								<div className="title font-weight-bold">
-									Start a new deal desk
-								</div>
-								<div className="main-subHeading">
-									Select the assets you'd like to offer for your OTC deal desk.
-								</div>
-							</div>
-							<img
-								src={STATIC_ICONS.BROKER_DESK_ICON}
-								className="broker-desk-icon"
-								alt="active_icon"
-							/>
-						</div>
-						<div className="coin-container">
-							<div className="pair-wrapper">
-								<div className="flex-container">
-									<div className="sub-title">Base Asset</div>
-									<div>What will be traded</div>
-									<div className="flex-container full-width">
-										<Select
-											onChange={(value) => {
-												handlePreviewChange(value, 'pair_base');
-											}}
-											value={previewData.pair_base}
-										>
-											{coins.map((data, index) => {
-												let symbol =
-													typeof data === 'string' ? data : data.symbol;
-												let fullname =
-													typeof data === 'string' ? data : data.fullname;
-												return (
-													<Option key={index} value={symbol}>
-														<img
-															src={getCoinSource(data, symbol)}
-															alt="coins"
-															className="coin-icon"
-														/>
-														{`${fullname} (${(symbol || '').toUpperCase()})`}
-													</Option>
-												);
-											})}
-										</Select>
-									</div>
-								</div>
-								<div className="vs-content">vs</div>
-								<div className="flex-container">
-									<div className="sub-title">Priced</div>
-									<div>What it will be priced in</div>
-									<div className="flex-container full-width">
-										<Select
-											onChange={(value) => {
-												handlePreviewChange(value, 'pair_2');
-											}}
-											value={previewData.pair_2}
-										>
-											{coinSecondary.map((data, index) => {
-												let symbol =
-													typeof data === 'string' ? data : data.symbol;
-												let fullname =
-													typeof data === 'string' ? data : data.fullname;
-												return (
-													<Option key={index} value={symbol}>
-														<img
-															src={getCoinSource(data, symbol)}
-															alt="coins"
-															className="coin-icon"
-														/>
-														{`${fullname} (${(symbol || '').toUpperCase()})`}
-													</Option>
-												);
-											})}
-										</Select>
-									</div>
-								</div>
-							</div>
-							<div className="main-subHeading mb-5">
-								<div className="mt-4">Please take note before proceeding: </div>
-								<div className="mb-4">
-									You should have readily available balance for the above assets
-									selected.
-								</div>
-								<div>OTC deals work through the Quick trade interface.</div>
-								<div className="mt-4">
-									{' '}
-									Creating an OTC deal for a market pair that has an active
-									Quick trade{' '}
-								</div>
-								<div>
-									will cause that active Quick trade price source to switch to
-									your new OTC deal.
-								</div>
-							</div>
-						</div>
-						{isExistsPair ? (
-							<div className="message mb-5">
-								<div className="icon">
-									<ExclamationCircleOutlined />
-								</div>
-								<div className="message-subHeading">
-									This will override the currently active Quick trade which is
-									sourcing prices from the{' '}
-									{previewData &&
-										previewData.symbol &&
-										previewData.symbol.toUpperCase()}{' '}
-									orderbook.
-								</div>
-							</div>
-						) : null}
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={handleClose}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => moveToStep('deal-params')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'zero-balance':
-				return (
-					<div className="otc-Container">
-						<div className="title mb-3">Add OTC Broker Desk</div>
-						<div>Set inventory</div>
-						<div className="sub-content mb-3">
-							<div>
-								Inventory are funds used for satisfying all users orders.
-							</div>
-							<div>
-								It is the responsibility of the operator to allocate an adequate
-								amount of both assets.{' '}
-							</div>
-							<div>
-								Simply define an account with sufficient balance that will be
-								used to source inventory from.
-							</div>
-						</div>
-						<div className="mb-5">
-							<div className="mb-2">Account to source inventory from</div>
-							<Input
-								ref={account_input}
-								placeholder="zero-balance@exchange.com"
-								addonAfter={
-									<div onClick={() => handleInput('zero-balance')}>Edit</div>
-								}
-								onChange={(e) =>
-									handlePreviewChange(e.target.value, 'inventory_email')
-								}
-							/>
-						</div>
-						<div className="mb-4">Available balance on {user.email}:</div>
-						<div className="mb-4 coin-image">
-							<div className="d-flex align-items-center ">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_base} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_base)}:{' '}
-									{balanceData[`${previewData.pair_base}_available`] || 0}
-								</div>
-							</div>
-							<div className="d-flex align-items-center error-container">
-								<span className="error">
-									{' '}
-									<ExclamationCircleFilled />
-								</span>
-								<span className="balance-error-text pl-2">
-									{' '}
-									There doesn't seem to be any available balance for this coins.
-								</span>
-							</div>
-						</div>
-						<div className="mb-4 coin-image">
-							<div className="d-flex align-items-center ">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_2} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_2)}:{' '}
-									{balanceData[`${previewData.pair_2}_available`] || 0}
-								</div>
-							</div>
-							<div className="d-flex align-items-center error-container">
-								<span className="error">
-									{' '}
-									<ExclamationCircleFilled />
-								</span>
-								<span className="balance-error-text pl-2">
-									{' '}
-									There doesn't seem to be any available balance for this coins
-								</span>
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handleBack('coin-pricing')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => moveToStep('preview')}
-								disabled={previewData && !previewData.inventory_email}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'deal-params':
-				return (
-					<div className="otc-Container">
-						<div className="title">Deal parameters</div>
-						<div className="main-subHeading mt-3 mb-3">
-							Adjust how much and what incremental values are allowed for your
-							OTC broker desk.
-						</div>
-						<div className="d-flex align-items-center coin-container mb-4 coin-image">
-							<div className="d-flex align-items-center mr-4">
-								<Coins type={previewData.pair_base} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_base)}
-								</span>
-							</div>
-							<CloseOutlined style={{ fontSize: '24px' }} />
-							<div className="d-flex align-items-center ml-4">
-								<Coins type={previewData.pair_2} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_2)}
-								</span>
-							</div>
-						</div>
-						<div className="edit-wrapper">
-							<div className="sub-title">Min and max tradable</div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => moveToStep('edit-tradable')}
-							>
-								Edit
-							</Button>
-						</div>
-						<div className="field-wrap">
-							<div className="sub-title">Minimum Tradable Amount</div>
-							<div className="description">
-								<div>Minimum - amount that can be traded for this market.</div>
-							</div>
-							<div className="full-width">{previewData.min_size}</div>
-						</div>
-						<div className="field-wrap">
-							<div className="sub-title">Maximum Tradable Amount</div>
-							<div className="description">
-								<div>Maximum - amount that can be traded for this market.</div>
-							</div>
-							<div className="full-width">{previewData.max_size}</div>
-						</div>
-						<div className="edit-wrapper">
-							<div className="sub-title">Tradable increment</div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => moveToStep('edit-increment')}
-							>
-								Edit
-							</Button>
-						</div>
-						<div className="field-wrap">
-							<div className="sub-title">Increment Amount</div>
-							<div className="description">
-								<div>
-									The increment - amount allowed to be adjusted up and down in
-									the order entry panel
-								</div>
-							</div>
-							<div className="full-width">{previewData.increment_size}</div>
-						</div>
-						<div className="edit-wrapper"></div>
-						<div className="btn-wrapper">
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={handleDealBack}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => moveToStep('coin-pricing')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'edit-tradable':
-				return (
-					<div className="otc-Container">
-						<div className="title">Market parameters</div>
-						<div className="field-wrap">
-							<div className="sub-title">Minimum Tradable Amount</div>
-							<div className="description">
-								<div>Minimum - amount that can be traded for this market.</div>
-							</div>
-							<div className="full-width">
-								<InputNumber
-									name="max"
-									onChange={(val) => handlePreviewChange(val, 'min_size')}
-									value={previewData.min_size}
-								/>
-							</div>
-						</div>
-						<div className="field-wrap">
-							<div className="sub-title">Maximum Tradable Amount</div>
-							<div className="description">
-								<div>Maximum - amount that can be traded for this market.</div>
-							</div>
-							<div className="full-width">
-								<InputNumber
-									name="max"
-									onChange={(val) => handlePreviewChange(val, 'max_size')}
-									value={previewData.max_size}
-								/>
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => moveToStep('deal-params')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'edit-increment':
-				return (
-					<div className="otc-Container">
-						<div className="title">Market parameters</div>
-						<div className="field-wrap">
-							<div className="sub-title">Increment Amount</div>
-							<div className="description">
-								<div>
-									The increment - amount allowed to be adjusted up and down in
-									the order entry panel
-								</div>
-							</div>
-							<div className="full-width">
-								<InputNumber
-									name="max"
-									onChange={(val) => handlePreviewChange(val, 'increment_size')}
-									value={previewData.increment_size}
-								/>
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => moveToStep('deal-params')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'coin-pricing':
-				return (
-					<div className="otc-Container coin-pricing-container">
-						<div className="title pb-3">Set coin pricing</div>
-						<div className="d-flex align-items-center coin-container mb-4 coin-image">
-							<div className="d-flex align-items-center mr-4 ">
-								<Coins type={previewData.pair_base} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_base)}
-								</span>
-							</div>
-							<CloseOutlined style={{ fontSize: '24px' }} />
-							<div className="d-flex align-items-center ml-4">
-								<Coins type={previewData.pair_2} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_2)}
-								</span>
-							</div>
-						</div>
-						<div>
-							<div className="mb-1 pt-4 coin-pricing-Heading">Type</div>
-							<div className="select-box">
-								<Select defaultValue="manual" onChange={setPricing}>
-									<Option value="manual">Manually set (static)</Option>
-									<Option value="dynamic">Dynamic (coming soon)</Option>
-								</Select>
-							</div>
-						</div>
-						{isManual ? (
-							<div>
-								<div className="pricing-container mt-4">
-									<div>
-										<div className="mb-1">Displayed selling price</div>
-										<Input
-											type="number"
-											suffix={
-												previewData &&
-												previewData.pair_2 &&
-												previewData.pair_2.toUpperCase()
-											}
-											value={previewData && previewData.sell_price}
-											onChange={(e) =>
-												handlePreviewChange(e.target.value, 'sell_price')
-											}
-										/>
-									</div>
-									<div>
-										<div className="mb-1">Displayed buying price</div>
-										<Input
-											type={'number'}
-											suffix={
-												previewData &&
-												previewData.pair_2 &&
-												previewData.pair_2.toUpperCase()
-											}
-											value={previewData && previewData.buy_price}
-											onChange={(e) =>
-												handlePreviewChange(e.target.value, 'buy_price')
-											}
-										/>
-									</div>
-								</div>
-								<div className="mt-4 warning-message grey-text-color">
-									{' '}
-									<InfoCircleOutlined /> Displayed price is the price your users
-									will see and trade at.
-								</div>
-							</div>
-						) : (
-							<div className="mt-3 ml-3">
-								<div>Select price source:</div>
-								<div className="mt-2 error">
-									<ExclamationCircleFilled /> Coming soon for upgraded HollaEx
-									operators.
-								</div>
-							</div>
-						)}
-						<div className="btn-wrapper pt-3">
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => handleBack('deal-params')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={handlePriceNext}
-								disabled={!isManual}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'preview':
-				return (
-					<div className="otc-Container">
-						<Fragment>
-							<div className="title">Review & confirm market</div>
-							<div className="grey-warning">
-								<div className="warning-text">!</div>
-								<div>
-									<div className="sub-title">
-										Please check the details carefully.
-									</div>
-									<div className="description">
-										To avoid delays it is important to take the time to review
-										the accuracy of the details below
-									</div>
-								</div>
-							</div>
-						</Fragment>
-						<div className="d-flex preview-container">
-							<div className="d-flex flex-container left-container">
-								<div>
-									<Coins
-										nohover
-										large
-										small
-										type={previewData.pair_base}
-										fullname={getFullName(previewData.pair_base)}
-									/>
-								</div>
-								<div className="cross-text">X</div>
-								<div>
-									<Coins
-										nohover
-										large
-										small
-										type={previewData.pair_2}
-										fullname={getFullName(previewData.pair_2)}
-									/>
-								</div>
-							</div>
-							<div className="right-container">
-								<div className="right-content">
-									<div className="title font-weight-bold">Desk assets</div>
-									<div>Base market pair: {previewData.pair_base}</div>
-									<div>Price market pair: {previewData.pair_2}</div>
-								</div>
-								<div className="right-content">
-									<div className="title font-weight-bold">Parameters</div>
-									<div>Increment size: {previewData.increment_size}</div>
-									<div>Max size: {previewData.max_size}</div>
-									<div>Min size: {previewData.min_size}</div>
-								</div>
-								<div className="right-content">
-									<div className="title font-weight-bold">Price</div>
-									<div>Type: {isManual ? 'Static' : 'Dynamic'}</div>
-									<div>Sell at: {previewData.sell_price}</div>
-									<div>buy at: {previewData.buy_price}</div>
-								</div>
-								<div className="right-content">
-									<div className="title font-weight-bold">Fund Source</div>
-									<div>Account: {previewData.inventory_email}</div>
-									<div>
-										{previewData.pair_base}:{' '}
-										{balanceData[`${previewData.pair_base}_available`]}
-									</div>
-									<div>
-										{previewData.pair_2}:{' '}
-										{balanceData[`${previewData.pair_2}_available`]}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={handlePriceNext}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => moveToStep('state-status')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'state-status':
-				return (
-					<div className="otc-Container">
-						<div className="title">State</div>
-						<div className="main-subHeading">
-							Set the state of this OTC deal.
-						</div>
-						<div className="d-flex align-items-center coin-container mb-4 mt-4 coin-image">
-							<div className="d-flex align-items-center mr-4 ">
-								<Coins type={previewData.pair_base} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_base)}
-								</span>
-							</div>
-							<CloseOutlined style={{ fontSize: '24px' }} />
-							<div className="d-flex align-items-center ml-4">
-								<Coins type={previewData.pair_2} />
-								<span className="coin-full-name">
-									{getFullName(previewData.pair_2)}
-								</span>
-							</div>
-						</div>
-						<div>
-							<div className="mt-2">Status</div>
-							<Radio.Group
-								name="status"
-								onChange={(e) =>
-									handlePreviewChange(
-										e.target.value === 'paused' ? true : false,
-										'paused',
-										e.target.value
-									)
-								}
-								value={previewData.paused ? 'paused' : 'live'}
-							>
-								<Radio value={'paused'} style={radioStyle}>
-									Paused
-								</Radio>
-								{status === 'paused' || previewData.paused ? (
-									<div className="message mt-3 mb-2">
-										<div className="icon">
-											<ExclamationCircleOutlined />
-										</div>
-										<div className="message-subHeading">
-											Paused state will stop users from being able to
-											transaction with this OTC broker desk.
-										</div>
-									</div>
-								) : null}
-								<Radio value={'live'} style={radioStyle}>
-									Live
-								</Radio>
-								{status === 'live' ? (
-									<div className="message mt-3 mb-2">
-										<div className="icon">
-											<ExclamationCircleOutlined />
-										</div>
-										<div className="message-subHeading">
-											The live state will allow users to transact with this OTC
-											broker desk.
-										</div>
-									</div>
-								) : null}
-							</Radio.Group>
-						</div>
-						<div className="d-flex  mt-4">
-							<div className="pr-2">
-								<ExclamationCircleOutlined />
-							</div>
-							<div className="main-subHeading">
-								If there is an existing Quick-Trade for this market pair then it
-								will be replaced by this OTC Broker deal.
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handleBack('preview')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={handleBrokerChange}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'with-balance':
-				return (
-					<div className="otc-Container">
-						<div className="title mb-3">Funding account source</div>
-						<div>Set the source of the inventory funds</div>
-						<div className="sub-content mb-3">
-							<div>
-								Inventory are funds used for satisfying all users orders.
-							</div>
-							<div>
-								It is the responsibility of the operator to allocate an adequate
-								amount of both assets.{' '}
-							</div>
-							<div>
-								Simply define an account with sufficient balance that will be
-								used to source inventory from.
-							</div>
-						</div>
-						<div className="mb-5">
-							<div className="mb-2">Account to source inventory from</div>
-							<Input
-								ref={account_input}
-								placeholder="admin@exchange.com"
-								addonAfter={
-									<div onClick={() => handleInput('with-balance')}>Edit</div>
-								}
-								onChange={(e) => handlePreviewChange(e.target.value, 'email')}
-							/>
-						</div>
-						<div className="mb-4">Available balance on {user.email}:</div>
-						<div className="mb-4">
-							<div className="d-flex align-items-center coin-image">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_base} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_base)}:{' '}
-									{balanceData[`${previewData.pair_base}_available`] || 0}
-								</div>
-							</div>
-						</div>
-						<div className="mb-4">
-							<div className="d-flex align-items-center coin-image">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_2} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_2)}:{' '}
-									{balanceData[`${previewData.pair_2}_available`] || 0}
-								</div>
-							</div>
-						</div>
-						<div className="message">
-							<div className="icon">
-								<ExclamationCircleOutlined />
-							</div>
-							<div className="message-subHeading">
-								Please check if the amounts are sufficiently sustainable before
-								proceeding.
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handleBack('coin-pricing')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => moveToStep('preview')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'pause-otcdesk':
-				return (
-					<div className="otc-Container">
-						<div className="title">Pause OTC desk</div>
-						<div className="main-subHeading mt-3 mb-3">
-							Pause your OTC desk for reconfigurations and when you want to halt
-							new transactions.
-						</div>
-						<div className="message mb-5">
-							<div className="icon">
-								<ExclamationCircleOutlined />
-							</div>
-							<div className="message-subHeading">
-								Paused state will stop users from being able to transaction with
-								this OTC broker desk.
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={handleClose}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handlePaused('paused', 'desk')}
-							>
-								Pause
-							</Button>
-						</div>
-						<div className="removedesk-text">
-							Do you want to remove this desk? Remove{' '}
-							<span
-								className="remove-link"
-								onClick={() => moveToStep('remove-otcdesk')}
-							>
-								here
-							</span>
-							.
-						</div>
-					</div>
-				);
-			case 'unpause-otcdesk':
-				return (
-					<div className="otc-Container">
-						<div className="title">Unpause OTC desk</div>
-						<div className="message mt-4 mb-5">
-							<div className="icon">
-								<ExclamationCircleOutlined />
-							</div>
-							<div className="message-subHeading">
-								Unpausing will allow users to transact with this OTC broker
-								desk.
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={handleClose}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handlePaused('unpaused', 'desk')}
-							>
-								Unpause
-							</Button>
-						</div>
-						<div className="removedesk-text">
-							Do you want to remove this desk? Remove{' '}
-							<span
-								className="remove-link"
-								onClick={() => moveToStep('remove-otcdesk')}
-							>
-								here
-							</span>
-							.
-						</div>
-					</div>
-				);
-			case 'remove-otcdesk':
-				return (
-					<div className="otc-Container">
-						<div className="title">Remove OTC desk</div>
-						<div className="message mt-3 mb-5">
-							<div className="icon">
-								<ExclamationCircleOutlined />
-							</div>
-							<div className="message-subHeading">
-								Removing the desk is permanent. Are you sure you want to do
-								this?
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => setType('unpause-otcdesk')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								type="primary"
-								className="remove-btn"
-								onClick={deleteBrokerData}
-							>
-								Remove
-							</Button>
-						</div>
-					</div>
-				);
-			default:
-				return;
 		}
 	};
 
@@ -1560,14 +651,33 @@ const OtcDeskContainer = ({
 					/>
 				</div>
 			</div>
-			<Modal
-				visible={isOpen}
-				width={type === 'remove-otcdesk' ? '480px' : '520px'}
-				onCancel={handleClose}
-				footer={null}
-			>
-				{renderModalContent()}
-			</Modal>
+			<Otcdeskpopup
+				previewData={previewData}
+				type={type}
+				handlePreviewChange={handlePreviewChange}
+				getCoinSource={getCoinSource}
+				coinSecondary={coinSecondary}
+				isExistsPair={isExistsPair}
+				handleClose={handleClose}
+				moveToStep={moveToStep}
+				handleInput={handleInput}
+				getFullName={getFullName}
+				handleBack={handleBack}
+				isManual={isManual}
+				coins={coins}
+				user={user}
+				balanceData={balanceData}
+				handleDealBack={handleDealBack}
+				handlePriceNext={handlePriceNext}
+				handleBrokerChange={handleBrokerChange}
+				handlePaused={handlePaused}
+				deleteBrokerData={deleteBrokerData}
+				isOpen={isOpen}
+				account_input={account_input}
+				setPricing={setPricing}
+				setType={setType}
+				status={status}
+			/>
 		</div>
 	);
 };
