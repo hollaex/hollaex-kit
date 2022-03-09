@@ -64,58 +64,11 @@ const SMS = {
 		`Votre retrait de ${currency.toUpperCase()} d'un montant de ${amount} est confirmé`
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation, currency) =>
-			`Vous avez un nouveau dépôt pour ${amount} ${currency.toUpperCase()} en attente dans votre portefeuille ${API_NAME()}. Veuillez attendre que la transaction soit confirmée et vos fonds seront disponible dans votre portefeuille.${confirmation ? ` Votre transaction nécessite ${confirmation} confirmation(s) sur la blockchain.` : ''}`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`Votre ${
-				currency.toUpperCase()
-			} dépôt pour ${amount} ${currency.toUpperCase()} est confirmé et complété et il est disponible dans votre portefeuille ${
-				currency.toUpperCase()
-			} .`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `Status: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency) =>
-			`Vous avez fait une demande de retrait de ${amount} ${currency.toUpperCase()}. Le statut de votre retrait est en attente et sera traité sous peu.`,
-		COMPLETED: (amount, currency) =>
-			`Votre demande de retrait de ${amount} ${currency.toUpperCase()} est traité.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `Status: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 module.exports = {
 	FOOTER,
 	COMMON,
 	ALERT,
 	SMS,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };
 

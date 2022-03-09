@@ -83,49 +83,6 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation = 0, currency) =>
-			`لديك إيداع جديد بمبلغ  {amount}$ ${currency.toUpperCase()}  في قيد الانتظار في محفظتك ${API_NAME()} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك  ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`Yايداعك لـ
-       ${currency.toUpperCase()} ${amount} ${currency.toUpperCase()} قد تم تأكيده و تكميله و موجود في ${
-				currency.toUpperCase()
-					. محفظتك }`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `الحالة:  ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency, address = '') =>
-			`لقد قدمت طلب سحب بمبلغ ${amount} ${currency.toUpperCase()}  إلى عنوان ${address}. حالة السحب الخاصة بك في قيد الإنتظار وستتم معالجتها قريبًا.`,
-		COMPLETED: (amount, currency, address = '') =>
-			`تمت معالجة طلب سحبك بمبلغ ${amount} ${currency.toUpperCase()}  و نقله إلى عنوان ${address}.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `${status}:الحالة`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
 
 module.exports = {
 	FOOTER,
@@ -133,7 +90,5 @@ module.exports = {
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };

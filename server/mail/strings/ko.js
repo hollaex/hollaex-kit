@@ -82,56 +82,11 @@ const INVITEDOPERATOR = {
 	CLOSING: COMMON.CLOSING
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation, currency) =>
-			`회원님의 ${API_NAME()} 지갑으로 ${amount} ${currency.toUpperCase()} 입금이 진행 중입니다. 거래가 승인되고 지갑에 자금이 입금될 때까지 기다려주십시오.${confirmation ? ` 회원님의 거래에는 비트코인 블록체인 상 ${confirmation} 개의 승인이 요구됩니다.` : ''}`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`회원님의 ${amount} ${currency.toUpperCase()} 입금이 완료되었습니다. 회원님의 ${
-				currency.toUpperCase()
-			} 지갑에서 확인 및 이용하실 수 있습니다.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `입금 상태: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency) =>
-			`회원님의 ${amount} ${currency.toUpperCase()} 출금이 요청되었습니다. 출금 대기 중이며, 곧 완료될 예정입니다.`,
-		COMPLETED: (amount, currency) =>
-			`회원님의 ${amount} ${currency.toUpperCase()}를 출금이 완료되어 회원님의 계좌로 이체되었습니다.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `입금 상태: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 module.exports = {
 	FOOTER,
 	COMMON,
 	ALERT,
 	SMS,
 	INVITEDOPERATOR,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };

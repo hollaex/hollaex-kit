@@ -36,49 +36,6 @@ const FOOTER = {
 	POWERED_BY: 'Powered by'
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation = 0, currency) =>
-			`你的${API_NAME()}钱包中有一笔${amount} ${currency.toUpperCase()}的新存款正在等待处理，待交易被确认后，资金才会进入到你的钱包中，该交易需要在区块链上进行${confirmation}确认。`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`你的${amount} ${currency.toUpperCase()}存款已完成。你的${
-				currency.toUpperCase()
-			}可在钱包中进行确认。`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `状态: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency, address = '') =>
-			`你向该地址${address}申请了${amount} ${currency.toUpperCase()}的提款请求，该提款地址正在等待处理并会很快得到处理。`,
-		COMPLETED: (amount, currency, address = '') =>
-			`你的${amount} ${currency.toUpperCase()}已向该地址${address}提款完毕。`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `充值状态: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 const ALERT = {
 	TITLE: (title) => `ALERT: ${title}`,
 	BODY: {
@@ -110,8 +67,6 @@ const SMS = {
 module.exports = {
 	FOOTER,
 	COMMON,
-	DEPOSIT,
-	WITHDRAWAL,
 	CONTACTFORM,
 	ALERT,
 	SMS

@@ -62,55 +62,10 @@ const SMS = {
 		`お客様の${amount} ${currency.toUpperCase()}出金が完了しました。`
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation, currency) =>
-			`現在、お客様の${API_NAME()}ウォレットへの${amount} ${currency.toUpperCase()}入金は保留中です。取引が承認されるまでお待ちください${confirmation ? ` お客様の取引には、ブロックチェーン上で${confirmation}個の承認が必要です。` : ''}`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`お客様の${amount} ${currency.toUpperCase()}入金が完了しました。お客様の${
-				currency.toUpperCase()
-			}ウォレットから確認および利用が可能です。`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `取引状態：${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency, address = '') =>
-			`お客様のアドレス${address}に${amount} ${currency.toUpperCase()}出金がリクエストされました。現在の取引状態は保留中ですが、まもなく完了する予定です。`,
-		COMPLETED: (amount, currency, address = '') =>
-			`お客様の${amount} ${currency.toUpperCase()}出金が完了し、アドレス${address}に振り込みされました。`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `取引状態：${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 module.exports = {
 	FOOTER,
 	COMMON,
 	ALERT,
 	SMS,
-	CONTACTFORM,
-	DEPOSIT,
-	WITHDRAWAL
+	CONTACTFORM
 };

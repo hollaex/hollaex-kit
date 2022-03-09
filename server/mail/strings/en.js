@@ -36,51 +36,6 @@ const FOOTER = {
 	POWERED_BY: 'Powered by'
 };
 
-const DEPOSIT = {
-	TITLE: (currency) => `${currency.toUpperCase()} ${COMMON.DEPOSIT}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, confirmation, currency) =>
-			`You have a new deposit for ${amount} ${currency.toUpperCase()} pending in your ${API_NAME()} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.${confirmation ? ` Your transaction requires ${confirmation} confirmation(s) on blockchain.` : ''}`,
-		COMPLETED: (amount, confirmation, currency) =>
-			`Your ${
-				currency.toUpperCase()
-			} deposit for ${amount} ${currency.toUpperCase()} is confirmed and completed and it is available in your ${
-				currency.toUpperCase()
-			} wallet.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (status) => `Status: ${status}`,
-		3: (address) => COMMON.ADDRESS(address),
-		4: (txid) => COMMON.TXID(txid),
-		5: (network) => `Network: ${network}`,
-		6: (fee) => COMMON.FEE(fee),
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
-const WITHDRAWAL = {
-	TITLE: (currency) =>
-		`${currency.toUpperCase()} ${COMMON.WITHDRAWAL}`,
-	GREETING: (name) => COMMON.GREETING(name),
-	BODY: {
-		PENDING: (amount, currency) =>
-			`You made a withdrawal request for ${amount} ${currency.toUpperCase()}. Your withdrawal status is pending and will be processed shortly.`,
-		COMPLETED: (amount, currency) =>
-			`Your withdrawal request for ${amount} ${currency.toUpperCase()} is processed.`,
-		1: (amount, currency) => `${COMMON.AMOUNT(amount)} ${currency.toUpperCase()}`,
-		2: (fee) => COMMON.FEE(fee),
-		3: (status) => `Status: ${status}`,
-		4: (address) => COMMON.ADDRESS(address),
-		5: (txid) => COMMON.TXID(txid),
-		6: (network) => `Network: ${network}`,
-		7: (description) => `Description: ${description}`,
-		8: COMMON.EXPLORER
-	},
-	CLOSING: COMMON.CLOSING
-};
-
 const ALERT = {
 	TITLE: (title) => `ALERT: ${title}`,
 	BODY: {
@@ -142,8 +97,6 @@ const CONFIRMEMAIL = {
 module.exports = {
 	FOOTER,
 	COMMON,
-	DEPOSIT,
-	WITHDRAWAL,
 	CONTACTFORM,
 	ALERT,
 	SMS,
