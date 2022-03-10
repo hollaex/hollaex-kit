@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { setNotification } from 'actions/appActions';
 import {
 	requestTokens,
 	revokeToken,
@@ -12,7 +13,7 @@ import {
 import { Table, Dialog, Loader, EmailCodeForm } from 'components';
 import { generateHeaders } from './ApiKeyHeaders';
 import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
-import { openContactForm } from 'actions/appActions';
+import { openContactForm, NOTIFICATIONS } from 'actions/appActions';
 import { errorHandler } from 'components/EmailCodeForm/utils';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -84,7 +85,13 @@ class ApiKey extends Component {
 				this.requestTokens();
 				return data;
 			})
-			.catch(errorHandler);
+			.catch((err) => {
+				const message =
+					err.response && err.response.data && err.response.data.message
+						? err.response.data.message
+						: err.message || JSON.stringify(err);
+				this.props.setNotification(NOTIFICATIONS.ERROR, message);
+			});
 	};
 
 	onSubmitEmail = ({ email_code, otp_code }) => {
@@ -201,6 +208,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(ApiKey));

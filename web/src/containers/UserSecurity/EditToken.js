@@ -8,6 +8,12 @@ import DumbField from 'components/Form/FormFields/DumbField';
 
 const BASIC_PERMISSIONS = ['can_read', 'can_trade'];
 const ADVANCED_PERMISSIONS = ['can_withdraw'];
+const OTHER_PERMISSIONS = ['whitelisting_enabled', 'whitelisted_ips'];
+const ACCESS_TOKEN_DATA_KEYS = [
+	...BASIC_PERMISSIONS,
+	...ADVANCED_PERMISSIONS,
+	...OTHER_PERMISSIONS,
+];
 
 class EditToken extends Component {
 	constructor(props) {
@@ -29,6 +35,23 @@ class EditToken extends Component {
 			ip: '',
 		};
 	}
+
+	enableSaveButton = () => {
+		let enabled = false;
+		ACCESS_TOKEN_DATA_KEYS.forEach((key) => {
+			if (this.state[key] !== this.props[key]) {
+				enabled = true;
+			}
+		});
+		return enabled;
+	};
+
+	validateIp = () => {
+		const { ip } = this.state;
+		const rx = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
+
+		return rx.test(ip);
+	};
 
 	onChangeBasicAccess = (permissions) => {
 		const basicPermissions = {};
@@ -141,11 +164,11 @@ class EditToken extends Component {
 					<QRCode value={apiKey} />
 				</div>
 				<div>
-					<div className="d-flex">
-						<div className="w-50 pl-4">
+					<div className="d-flex flex-direction-column token-keys-wrapper">
+						<div className="pl-4">
 							<DumbField {...props_api_key} />
 						</div>
-						<div className="w-50 pl-4">
+						<div className="pl-4">
 							{isHiddenSecret ? (
 								<Fragment>
 									<div>{STRINGS['DEVELOPERS_TOKEN.SECRET_KEY']}</div>
@@ -234,7 +257,7 @@ class EditToken extends Component {
 												<AntButton
 													type="link"
 													onClick={this.addIP}
-													disabled={!ip}
+													disabled={!this.validateIp()}
 												>
 													{STRINGS['DEVELOPERS_TOKEN.ADD_IP']}
 												</AntButton>
@@ -270,7 +293,7 @@ class EditToken extends Component {
 								stringId="DEVELOPERS_TOKEN.SAVE"
 								label={STRINGS['DEVELOPERS_TOKEN.SAVE']}
 								onClick={this.onSave}
-								disabled={!otp_enabled}
+								disabled={!otp_enabled || !this.enableSaveButton()}
 							/>
 						</div>
 					</div>

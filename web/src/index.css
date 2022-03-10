@@ -1071,6 +1071,9 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   margin-left: 0.8rem; }
 
+.token-keys-wrapper {
+  max-width: 40rem; }
+
 .flex-col {
   flex-basis: 0;
   flex-grow: 1;
