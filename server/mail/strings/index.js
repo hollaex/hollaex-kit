@@ -11,7 +11,7 @@ const MAILTYPE = {
 	PASSWORD_CHANGED: 'password_changed',
 	USER_VERIFICATION_REJECT: 'user_verification_reject',
 	ACCOUNT_UPGRADE: 'account_upgrade',
-	ACCOUNT_VERIFY: 'accountVerify',
+	ACCOUNT_VERIFY: 'account_verify',
 	WITHDRAWAL_REQUEST: 'withdrawal_request',
 	DEPOSIT_CANCEL: 'deposit_cancel',
 	DEPOSIT: 'deposit',
