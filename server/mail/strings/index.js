@@ -25,7 +25,7 @@ const MAILTYPE = {
 	ALERT: 'alert',
 	DISCOUNT_UPDATE: 'discount_update',
 	BANK_VERIFIED: 'bank_verified',
-	CONFIRM_EMAIL: 'confirmEmail',
+	CONFIRM_EMAIL: 'confirm_email',
 
 	// USER_VERIFICATION_REJECT split
 	USER_ID_VERIFICATION_REJECT: 'user_id_verification_reject',

@@ -45,14 +45,16 @@ const generateMessageContent = (
 		const EMAIL_CONFIGURATIONS = GET_EMAIL();
 		let new_type = findMailtype(type, data);
 
-		if (EMAIL_CONFIGURATIONS[language] && EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()]) {
-			let MAILTYPE_CONFIGURATIONS = EMAIL_CONFIGURATIONS['en'][new_type.toUpperCase()];
-			title = getTitle(new_type, MAILTYPE_CONFIGURATIONS['title'], data);
-			message = {
-				html: replaceHTMLContent(new_type, MAILTYPE_CONFIGURATIONS['html'].toString(), email, data, language, domain),
-				text: ''
-			};
+		if (EMAIL_CONFIGURATIONS[language] && EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()] === undefined) {
+			language = 'en';
 		}
+
+		let MAILTYPE_CONFIGURATIONS = EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()];
+		title = getTitle(new_type, MAILTYPE_CONFIGURATIONS['title'], data);
+		message = {
+			html: replaceHTMLContent(new_type, MAILTYPE_CONFIGURATIONS['html'].toString(), email, data, language, domain),
+			text: ''
+		};
 	}
 	const subject = `${API_NAME()} ${title}`;
 
