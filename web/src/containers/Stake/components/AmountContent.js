@@ -25,8 +25,9 @@ const AmountContent = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
-		height: '42.4rem',
-		width: '40rem',
+		height: '34rem',
+		minWidth: '30rem',
+		maxWidth: '40rem',
 	};
 
 	const headerContent = {
@@ -75,7 +76,7 @@ const AmountContent = ({
 				</div>
 			</div>
 			<div className="dialog-content bottom w-100">
-				<div className="mt-4 pt-3">
+				<div className="mt-4">
 					<div className="pb-2">
 						<EditWrapper stringId="STAKE.AMOUNT_LABEL">
 							{STRINGS['STAKE.AMOUNT_LABEL']}
