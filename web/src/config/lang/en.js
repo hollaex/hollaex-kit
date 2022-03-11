@@ -1416,7 +1416,7 @@ export default {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for this market.',
+		INFO_1: 'This will cancel your open orders for {0} market.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
@@ -1475,4 +1475,5 @@ export default {
 		COMING_SOON: 'coming soon', //new
 	},
 	WALLET_BALANCE_LOADING: 'Balance loading...', //new
+	LOADING: 'Loading...', //new
 };
