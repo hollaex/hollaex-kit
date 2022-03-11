@@ -235,7 +235,8 @@ export const EmailSettingsForm = ({
 		);
 	}
 
-	const emailType = emailInfo ? Object.keys(emailInfo.format) : [];
+	const emailType =
+		emailInfo && emailInfo.format ? Object.keys(emailInfo.format) : [];
 
 	const renderFooter = (values) => {
 		if (values) {

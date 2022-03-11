@@ -590,7 +590,7 @@ const OtcDeskContainer = ({
 					<div className="ml-4">
 						<div className="main-Heading">OTC broker deal desks</div>
 						<div className="main-subHeading">
-							Add a fixed prices for specific asset and set max and minimum
+							Add a fixed price for specific asset and set max and minimum
 							amounts per transaction.
 						</div>
 						<div className="main-subHeading">
@@ -616,7 +616,7 @@ const OtcDeskContainer = ({
 					loading={tableLoading}
 				/>
 			</div>
-			<div className="inputarea-Heading">Status display messages</div>
+			{/* <div className="inputarea-Heading">Status display messages</div>
 			<div className="inputarea-subHeading">
 				Set specific messages that you want to display for different states of
 				your OTC desk
@@ -650,7 +650,7 @@ const OtcDeskContainer = ({
 						addonAfter={<div onClick={() => handleEdit('pause')}>Edit</div>}
 					/>
 				</div>
-			</div>
+			</div> */}
 			<Otcdeskpopup
 				previewData={previewData}
 				type={type}

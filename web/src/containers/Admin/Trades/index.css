@@ -65,7 +65,6 @@
 	cursor: pointer;
 }
 .admin-pairs-container .coin-symbol-wrapper .coin-title {
-	width: 25%;
 	text-align: end;
 }
 .admin-pairs-container .coin-symbol-wrapper .coin-wrap {
@@ -232,7 +231,6 @@
 .admin-pairs-container .table-wrapper.summary tbody tr:last-child td {
 	border-bottom: 1px solid #ffffff;
 }
-.admin-pairs-container .table-wrapper.summary thead tr .ant-table-cell,
 .admin-pairs-container .table-wrapper.summary thead tr td .text-center {
 	text-align: center;
 }
