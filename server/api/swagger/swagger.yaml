@@ -2412,56 +2412,7 @@ paths:
     x-swagger-router-controller: admin
     get:
       operationId: getEmail
-      description: Get configurations email for admin
-      tags:
-        - Admin
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: [ ]
-      x-security-scopes:
-        - admin
-    put:
-      operationId: putEmail
-      description: Update configurations email
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            type: object
-            required:
-              - email
-            properties:
-              email:
-                type: object
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: [ ]
-      x-security-scopes:
-        - admin
-  /admin/specific-email:
-    x-swagger-router-controller: admin
-    get:
-      operationId: getSpecificEmail
-      description: Get configurations email for admin
+      description: Get email for admin
       tags:
         - Admin
       parameters:
@@ -2471,7 +2422,7 @@ paths:
           required: true
           type: string
         - in: query
-          name: mailtype
+          name: type
           description: "mail type"
           required: true
           type: string
@@ -2489,8 +2440,8 @@ paths:
       x-security-scopes:
         - admin
     put:
-      operationId: putSpecificEmail
-      description: Update configurations email
+      operationId: putEmail
+      description: Update email for admin
       tags:
         - Admin
       parameters:
@@ -2503,7 +2454,7 @@ paths:
               - html
               - title
               - language
-              - mailtype
+              - type
             properties:
               html:
                 type: string
@@ -2511,8 +2462,28 @@ paths:
                 type: string
               language:
                 type: string
-              mailtype:
+              type:
                 type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+  /admin/email/types:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getEmailTypes
+      description: Get email types for admin
+      tags:
+        - Admin
       responses:
         200:
           description: Success
