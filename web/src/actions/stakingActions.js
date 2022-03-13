@@ -198,7 +198,7 @@ export const getAllPeriods = () => {
 		try {
 			const data = {};
 			Object.keys(CONTRACTS()).forEach((symbol) => {
-				data[symbol] = getPeriodsForToken(symbol)();
+				data[symbol] = getAllPeriodsForToken(symbol)();
 			});
 
 			const periods = await hash(data);
@@ -314,14 +314,21 @@ export const removeStake = (token = 'xht') => ({
 		);
 };
 
-const getPeriodsForToken = (token = 'xht') => async () => {
-	const periods = await Promise.all([
-		CONTRACTS()[token].main.methods.periods(0).call(),
-		CONTRACTS()[token].main.methods.periods(1).call(),
-		CONTRACTS()[token].main.methods.periods(2).call(),
-		CONTRACTS()[token].main.methods.periods(3).call(),
-	]);
-	return periods;
+const getPeriodForToken = (token = 'xht') => async (index) => {
+	try {
+		const period = await CONTRACTS()[token].main.methods.periods(index).call();
+		return period;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const getAllPeriodsForToken = (token = 'xht') => async () => {
+	const indices = Array.from({ length: 5 }, (_, i) => i);
+	const periods = await Promise.all(
+		indices.map((index) => getPeriodForToken(token)(index))
+	);
+	return periods.filter((period) => !!period);
 };
 
 const getPenaltyForToken = (token = 'xht') => async () => {

@@ -10,7 +10,13 @@ import { subtract } from '../utils';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
+const generateHeaders = (
+	pairs = {},
+	onCancel,
+	onCancelAll,
+	ICONS,
+	activeOrdersMarket
+) => [
 	{
 		stringId: 'PAIR',
 		label: STRINGS['PAIR'],
@@ -153,6 +159,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 					onClick={() => onCancelAll()}
 					status="information"
 					textPosition="left"
+					disable={activeOrdersMarket === ''}
 				/>
 			</span>
 		),
@@ -187,6 +194,8 @@ const ActiveOrders = ({
 	height,
 	cancelDelayData,
 	icons: ICONS,
+	activeOrdersMarket,
+	pageSize,
 }) => {
 	return (
 		<div
@@ -197,7 +206,13 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairs, onCancel, onCancelAll, ICONS)}
+				headers={generateHeaders(
+					pairs,
+					onCancel,
+					onCancelAll,
+					ICONS,
+					activeOrdersMarket
+				)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
@@ -206,6 +221,7 @@ const ActiveOrders = ({
 				rowKey={(data) => {
 					return data.id;
 				}}
+				pageSize={pageSize}
 			/>
 		</div>
 	);

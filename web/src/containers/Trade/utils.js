@@ -77,6 +77,8 @@ const calculateOrders = (orders, depth) =>
 const getPairsOrderBook = (state) => state.orderbook.pairsOrderbooks;
 const getQuickTradeOrderBook = (state) => state.quickTrade.pairsOrderbooks;
 const getPair = (state) => state.app.pair;
+const getActiveOrderMarket = (state) => state.app.activeOrdersMarket;
+const getRecentTradesMarket = (state) => state.app.recentTradesMarket;
 const getOrderBookLevels = (state) =>
 	state.user.settings.interface.order_book_levels;
 const getPairsTrades = (state) => state.orderbook.pairsTrades;
@@ -165,22 +167,17 @@ export const marketPriceSelector = createSelector(
 
 export const activeOrdersSelector = createSelector(
 	getActiveOrders,
-	getPair,
+	getActiveOrderMarket,
 	(orders, pair) => {
-		let count = 0;
-		return orders.filter(({ symbol }) => symbol === pair && count++ < 50);
+		return pair ? orders.filter(({ symbol }) => symbol === pair) : orders;
 	}
 );
 
 export const userTradesSelector = createSelector(
 	getUserTradesData,
-	getPair,
+	getRecentTradesMarket,
 	(trades, pair) => {
-		let count = 0;
-		const filtered = trades.filter(
-			({ symbol }) => symbol === pair && count++ < 10
-		);
-		return filtered;
+		return pair ? trades.filter(({ symbol }) => symbol === pair) : trades;
 	}
 );
 

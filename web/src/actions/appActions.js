@@ -46,6 +46,8 @@ export const SET_APP_ANNOUNCEMENT = 'SET_APP_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
+export const SET_ACTIVE_ORDERS_MARKET = 'SET_ACTIVE_ORDERS_MARKET';
+export const SET_RECENT_TRADES_MARKETS = 'SET_RECENT_TRADES_MARKETS';
 export const SET_TICKERS = 'SET_TICKERS';
 export const SET_TICKER_FROM_TRADE = 'SET_TICKER_FROM_TRADE';
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -233,6 +235,20 @@ export const changePair = (pair) => ({
 	type: CHANGE_PAIR,
 	payload: {
 		pair,
+	},
+});
+
+export const setActiveOrdersMarket = (activeOrdersMarket) => ({
+	type: SET_ACTIVE_ORDERS_MARKET,
+	payload: {
+		activeOrdersMarket,
+	},
+});
+
+export const setRecentTradesMarket = (recentTradesMarket) => ({
+	type: SET_RECENT_TRADES_MARKETS,
+	payload: {
+		recentTradesMarket,
 	},
 });
 
