@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import UserTrades from './UserTrades';
 import LogoutInfoTrade from './LogoutInfoTrade';
@@ -9,6 +11,7 @@ import { ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { userTradesSelector } from '../utils';
+import { setRecentTradesMarket } from 'actions/appActions';
 
 const OrdersWrapper = ({
 	pair,
@@ -21,6 +24,9 @@ const OrdersWrapper = ({
 	icons: ICONS,
 	goToTransactionsHistory,
 	tool,
+	recentTradesMarket,
+	setRecentTradesMarket,
+	fetched,
 }) => {
 	return (
 		<TradeBlock
@@ -45,17 +51,21 @@ const OrdersWrapper = ({
 			titleClassName="mb-4"
 		>
 			{isLoggedIn() ? (
-				<UserTrades
-					pageSize={10}
-					trades={userTrades}
-					pair={pair}
-					pairData={pairData}
-					pairs={pairs}
-					coins={coins}
-					discount={discount}
-					prices={prices}
-					icons={ICONS}
-				/>
+				<Fragment>
+					<Filters pair={recentTradesMarket} onChange={setRecentTradesMarket} />
+					<UserTrades
+						pageSize={userTrades.length}
+						trades={userTrades}
+						pair={pair}
+						pairData={pairData}
+						pairs={pairs}
+						coins={coins}
+						discount={discount}
+						prices={prices}
+						icons={ICONS}
+						isLoading={!fetched}
+					/>
+				</Fragment>
 			) : (
 				<LogoutInfoTrade />
 			)}
@@ -70,6 +80,15 @@ OrdersWrapper.defaultProps = {
 const mapStateToProps = (state) => ({
 	prices: state.asset.oraclePrices,
 	userTrades: userTradesSelector(state),
+	recentTradesMarket: state.app.recentTradesMarket,
+	fetched: state.wallet.trades.fetched,
 });
 
-export default connect(mapStateToProps)(withConfig(OrdersWrapper));
+const mapDispatchToProps = (dispatch) => ({
+	setRecentTradesMarket: bindActionCreators(setRecentTradesMarket, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(OrdersWrapper));

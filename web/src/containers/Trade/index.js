@@ -178,12 +178,21 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { tools } = this.props;
+		const {
+			tools,
+			recentTradesMarket,
+			getUserTrades,
+			routeParams,
+		} = this.props;
 
-		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+		if (nextProps.routeParams.pair !== routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 			this.subscribe(nextProps.routeParams.pair);
-			this.unsubscribe(this.props.routeParams.pair);
+			this.unsubscribe(routeParams.pair);
+		} else if (nextProps.recentTradesMarket !== recentTradesMarket) {
+			if (isLoggedIn()) {
+				getUserTrades({ symbol: nextProps.recentTradesMarket });
+			}
 		}
 
 		if (JSON.stringify(tools) !== JSON.stringify(nextProps.tools)) {
@@ -220,7 +229,7 @@ class Trade extends PureComponent {
 
 	setSymbol = (symbol = '') => {
 		if (isLoggedIn()) {
-			this.props.getUserTrades(symbol);
+			this.props.getUserTrades({ symbol });
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '', orderbookFetched: false }, () => {
@@ -441,6 +450,10 @@ class Trade extends PureComponent {
 			coins,
 			discount,
 			fees,
+			recentTradesMarket,
+			recentTradesMarketData,
+			activeOrdersMarket,
+			activeOrdersMarketData,
 		} = this.props;
 		const { chartHeight, symbol, orderbookFetched } = this.state;
 		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -544,8 +557,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<RecentTradesWrapper
-							pair={pair}
-							pairData={pairData}
+							pair={recentTradesMarket}
+							pairData={recentTradesMarketData}
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
@@ -562,8 +575,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<ActiveOrdersWrapper
-							pair={pair}
-							pairData={pairData}
+							pair={activeOrdersMarket}
+							pairData={activeOrdersMarketData}
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
@@ -785,9 +798,26 @@ const feesDataSelector = createSelector(
 const mapStateToProps = (state) => {
 	const pair = state.app.pair;
 	const pairData = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
+
+	const activeOrdersMarket = state.app.activeOrdersMarket;
+	const activeOrdersMarketData = state.app.pairs[activeOrdersMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
+	const recentTradesMarket = state.app.recentTradesMarket;
+	const recentTradesMarketData = state.app.pairs[recentTradesMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
 	return {
 		pair,
 		pairData,
+		activeOrdersMarket,
+		activeOrdersMarketData,
+		recentTradesMarket,
+		recentTradesMarketData,
 		pairs: state.app.pairs,
 		coins: state.app.coins,
 		balance: state.user.balance,
@@ -805,7 +835,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+	getUserTrades: bindActionCreators(getUserTrades, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),

@@ -2,11 +2,11 @@ import React from 'react';
 
 import { Table } from 'components';
 import { generateRecentTradeHeaders } from 'containers/TransactionsHistory/utils';
+import STRINGS from 'config/localizedStrings';
 
 const RecentTrades = ({
 	trades,
 	pairData,
-	pair,
 	pairs,
 	/*lessHeaders,*/
 	pageSize,
@@ -14,6 +14,7 @@ const RecentTrades = ({
 	discount,
 	prices,
 	icons,
+	isLoading,
 }) => {
 	const headers = generateRecentTradeHeaders(
 		pairData.pair_base,
@@ -23,12 +24,11 @@ const RecentTrades = ({
 		prices,
 		icons
 	);
-	if (!pair) {
-		return <div />;
-	}
+
 	return (
 		<div className="trade_active_orders-wrapper">
 			<Table
+				noData={isLoading && STRINGS['LOADING']}
 				headers={headers}
 				data={trades}
 				count={trades.length}
