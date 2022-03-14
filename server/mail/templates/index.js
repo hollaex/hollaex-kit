@@ -363,12 +363,6 @@ const getTitle = (type, title = '', data) => {
 	) {
 		title = title.replace(/\$\{currency\}/g, data.currency);
 	} else if (
-		type === MAILTYPE.DEPOSIT_CANCEL ||
-		type === MAILTYPE.WITHDRAWAL_CANCEL
-	) {
-		title = title.replace(/\$\{currency\}/g, data.currency);
-		title = title.replace(/\$\{type\}/g, data.type);
-	} else if (
 		type === MAILTYPE.USER_ID_VERIFICATION_REJECT ||
 		type === MAILTYPE.USER_BANK_VERIFICATION_REJECT ||
 		type === MAILTYPE.USER_DEACTIVATED ||
