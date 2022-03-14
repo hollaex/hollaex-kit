@@ -38,7 +38,7 @@ const MAILTYPE = {
 	USER_ACTIVATED: 'user_activated',
 
 	// WITHDRAWAL split
-	WITHDRAWAL_PENDING: 'withdrawal_pending ' ,
+	WITHDRAWAL_PENDING: 'withdrawal_pending' ,
 	WITHDRAWAL_COMPLETED: 'withdrawal_completed',
 
 	// DEPOSIT split
