@@ -32,6 +32,7 @@ const {
 	API_KEY_NOT_WHITELISTED,
 	API_SIGNATURE_INVALID,
 	INVALID_PASSWORD,
+	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
 	CODE_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
@@ -212,7 +213,7 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 				throw new Error(INVALID_OTP_CODE);
 			} 
 			if (!passwordIsValid) {
-				throw new Error(INVALID_PASSWORD);
+				throw new Error(INVALID_CREDENTIALS);
 			}
 			return all([createChangePasswordCode(user.id, newPassword), user]);
 		})
