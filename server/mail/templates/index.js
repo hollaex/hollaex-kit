@@ -96,7 +96,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{link\}/g, `${domain}/change-password-confirm/${data.code}`);
+		html = html.replace(/\$\{link\}/g, `${domain}/confirm-change-password/${data.code}`);
 
 	}
 	else if (type === MAILTYPE.PASSWORD_CHANGED) { // ok
@@ -205,7 +205,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
-
+		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_COMPLETED) {
 
@@ -236,7 +236,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
-
+		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 	}
 	else if (type === MAILTYPE.ACCOUNT_VERIFY) { //ok
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -255,7 +255,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
 		html = html.replace(/\$\{date\}/g, data.date || '');
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{txid\}/g, data.txid || '');
+		html = html.replace(/\$\{txid\}/g, data.transaction_id || '');
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_CANCEL) { // ok
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -263,7 +263,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
 		html = html.replace(/\$\{date\}/g, data.date || '');
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{txid\}/g, data.txid || '');
+		html = html.replace(/\$\{txid\}/g, data.transaction_id || '');
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_REQUEST) {
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -340,6 +340,12 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{list_detail_bank_account\}/g, result || '');
 		html = html.replace(/\$\{link_verification\}/g, `${domain}/verification`);
 	}
+	else if (type === MAILTYPE.CONFIRM_EMAIL) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{code\}/g, data.code || '');
+	}
+
 	return html;
 };
 
