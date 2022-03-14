@@ -540,10 +540,11 @@ const changePassword = (req, res) => {
 	const ip = req.headers['x-real-ip'];
 	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
 
-	loggerUser.debug(
+	loggerUser.verbose(
 		req.uuid,
 		'controllers/user/changePassword',
-		req.swagger.params.data.value
+		req.swagger.params.data.value,
+		ip
 	);
 
 	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain)
@@ -556,6 +557,14 @@ const changePassword = (req, res) => {
 
 const confirmChangePassword = (req, res) => {
 	const code = req.swagger.params.code.value;
+	const ip = req.headers['x-real-ip'];
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/changePassword',
+		code,
+		ip
+	);
 
 	toolsLib.security.confirmChangeUserPassword(code)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))

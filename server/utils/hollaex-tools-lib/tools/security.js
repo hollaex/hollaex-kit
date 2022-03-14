@@ -193,7 +193,7 @@ const confirmChangeUserPassword = (code, domain) => {
 		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
+const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -204,6 +204,15 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			}
+			return all([ user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword) ]);
+		})
+		.then(([ user, otp, passwordIsValid ]) => {
+			if (!otp) {
+				throw new Error(INVALID_OTP_CODE);
+			} 
+			if (!passwordIsValid) {
+				throw new Error(INVALID_PASSWORD);
 			}
 			return all([createChangePasswordCode(user.id, newPassword), user]);
 		})
@@ -222,7 +231,7 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
 		.then((data) => {
-			if (!data) {
+			if (!data || !data.id || data.password) {
 				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
