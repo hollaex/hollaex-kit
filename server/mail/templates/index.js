@@ -351,11 +351,15 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 
 const getTitle = (type, title = '', data) => {
 	if (
+		type === MAILTYPE.WITHDRAWAL ||
+		type === MAILTYPE.DEPOSIT ||
 		type === MAILTYPE.WITHDRAWAL_PENDING ||
 		type === MAILTYPE.WITHDRAWAL_COMPLETED ||
 		type === MAILTYPE.DEPOSIT_PENDING ||
 		type === MAILTYPE.DEPOSIT_COMPLETED ||
-		type === MAILTYPE.WITHDRAWAL_REQUEST
+		type === MAILTYPE.WITHDRAWAL_REQUEST ||
+		type === MAILTYPE.DEPOSIT_CANCEL ||
+		type === MAILTYPE.WITHDRAWAL_CANCEL
 	) {
 		title = title.replace(/\$\{currency\}/g, data.currency);
 	} else if (
