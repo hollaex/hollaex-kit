@@ -232,7 +232,7 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
 		.then((data) => {
-			if (!data || !data.id || data.password) {
+			if (!data) {
 				const error = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
