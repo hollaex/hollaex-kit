@@ -17,7 +17,6 @@ import { setAllPairs, setCoins } from 'actions/assetActions';
 import { storePair, updateAssetPairs } from './actions';
 import { STATIC_ICONS } from 'config/icons';
 import { getAllPairs, updateExchange } from '../AdminFinancials/action';
-import Image from '../../../components/Image';
 
 const { Item } = Breadcrumb;
 

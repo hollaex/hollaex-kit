@@ -519,6 +519,7 @@ h2,
 }
 .confirm_modal_wrapper .ant-input {
 	background-color: transparent !important;
+	color: #ffffff !important;
 }
 .email-config-form .custom-email-wrapper .footer-section .small-text {
 	font-size: 12px;

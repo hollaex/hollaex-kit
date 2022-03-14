@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Table, Input, Button, message, Spin } from 'antd';
+import { Table, Button, message, Spin } from 'antd';
 import { MinusCircleFilled } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -44,9 +44,9 @@ const OtcDeskContainer = ({
 	const [isOpenDesk, setOpenDesk] = useState(false);
 	const [tableLoading, setTableLoading] = useState(false);
 
-	const max_message = useRef(null);
-	const min_message = useRef(null);
-	const paused_message = useRef(null);
+	// const max_message = useRef(null);
+	// const min_message = useRef(null);
+	// const paused_message = useRef(null);
 	const account_input = useRef(null);
 
 	useEffect(() => {
@@ -188,15 +188,15 @@ const OtcDeskContainer = ({
 		}
 	};
 
-	const handleEdit = (type) => {
-		if (type === 'max') {
-			max_message.current.focus();
-		} else if (type === 'min') {
-			min_message.current.focus();
-		} else {
-			paused_message.current.focus();
-		}
-	};
+	// const handleEdit = (type) => {
+	// 	if (type === 'max') {
+	// 		max_message.current.focus();
+	// 	} else if (type === 'min') {
+	// 		min_message.current.focus();
+	// 	} else {
+	// 		paused_message.current.focus();
+	// 	}
+	// };
 
 	const handleBrokerChange = () => {
 		if (isEdit || isExistsPair) {
