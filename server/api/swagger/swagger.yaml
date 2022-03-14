@@ -4589,6 +4589,11 @@ definitions:
         type: string
       new_password:
         type: string
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
   LoginsResponse:
     type: object
     properties:

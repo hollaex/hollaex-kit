@@ -32,6 +32,7 @@ const {
 	API_KEY_NOT_WHITELISTED,
 	API_SIGNATURE_INVALID,
 	INVALID_PASSWORD,
+	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
 	CODE_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
@@ -193,7 +194,7 @@ const confirmChangeUserPassword = (code, domain) => {
 		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
+const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -204,6 +205,15 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain) => {
 		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
+			}
+			return all([ user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword) ]);
+		})
+		.then(([ user, otp, passwordIsValid ]) => {
+			if (!otp) {
+				throw new Error(INVALID_OTP_CODE);
+			} 
+			if (!passwordIsValid) {
+				throw new Error(INVALID_CREDENTIALS);
 			}
 			return all([createChangePasswordCode(user.id, newPassword), user]);
 		})
