@@ -132,7 +132,7 @@ class StakeDetails extends Component {
 	goToPOT = () => {
 		const {
 			contracts: {
-				[STAKING_INDEX_COIN]: { network },
+				[STAKING_INDEX_COIN]: { network, token },
 			},
 			pots,
 		} = this.props;
@@ -142,7 +142,7 @@ class StakeDetails extends Component {
 
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${address}`;
+		}etherscan.io/token/${token}?a=${address}`;
 		open(url);
 	};
 
