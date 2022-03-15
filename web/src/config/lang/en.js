@@ -716,6 +716,7 @@ export default {
 		BLOCK: 'Block',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
+		GO_TO_WALLET: 'go to wallet',
 		AMOUNT_LABEL: 'Amount to stake',
 		PERIOD_SUBTITLE:
 			'Longer you stake the more you are rewarded. Select the duration of stake below.',
