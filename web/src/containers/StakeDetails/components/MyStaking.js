@@ -189,7 +189,7 @@ const MyStaking = ({
 									<td>
 										<div className="d-flex">
 											<AntBtn
-												className="stake-btn"
+												className="stake-btn caps"
 												type="primary"
 												ghost
 												onClick={() => startStakingProcess(tokenData)}

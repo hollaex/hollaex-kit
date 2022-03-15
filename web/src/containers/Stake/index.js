@@ -140,7 +140,7 @@ class Stake extends Component {
 	goToPOT = () => {
 		const {
 			contracts: {
-				[STAKING_INDEX_COIN]: { network },
+				[STAKING_INDEX_COIN]: { network, token },
 			},
 			pots,
 		} = this.props;
@@ -150,7 +150,7 @@ class Stake extends Component {
 
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${address}`;
+		}etherscan.io/token/${token}?a=${address}`;
 		open(url);
 	};
 
@@ -305,6 +305,9 @@ class Stake extends Component {
 									const { fullname } = coins[symbol];
 									const iconId = `${symbol.toUpperCase()}_ICON`;
 									const goToSymbol = () => this.goToDetails(symbol);
+									const commonCellProps = !account
+										? {}
+										: { onClick: goToSymbol };
 									return (
 										<tr
 											className="hoverable pointer table-row table-bottom-border"
@@ -325,20 +328,20 @@ class Stake extends Component {
 													</span>
 												</div>
 											</td>
-											<td onClick={goToSymbol}>
+											<td {...commonCellProps}>
 												<ConnectWrapper>{available}</ConnectWrapper>
 											</td>
-											<td onClick={goToSymbol}>
+											<td {...commonCellProps}>
 												<ConnectWrapper>
 													{totalUserStakes[symbol]}
 												</ConnectWrapper>
 											</td>
-											<td onClick={goToSymbol}>
+											<td {...commonCellProps}>
 												<ConnectWrapper>
 													<Variable className="important-text" />
 												</ConnectWrapper>
 											</td>
-											<td onClick={goToSymbol}>
+											<td {...commonCellProps}>
 												<ConnectWrapper>
 													{totalUserEarnings[symbol]}
 												</ConnectWrapper>
@@ -346,7 +349,7 @@ class Stake extends Component {
 											<td>
 												<div className="d-flex">
 													<AntBtn
-														className="stake-btn"
+														className="stake-btn caps"
 														type="primary"
 														ghost
 														onClick={() => this.startStakingProcess(tokenData)}

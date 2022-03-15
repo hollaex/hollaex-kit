@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { withRouter } from 'react-router';
+import { setSnackNotification } from 'actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 import MovePrompt from './MovePrompt';
 
@@ -16,6 +19,14 @@ class MoveXHTContent extends Component {
 			type: CONTENT_TYPE.PROMPT,
 		};
 	}
+
+	onCopy = () => {
+		const { icons: ICONS, setSnackNotification } = this.props;
+		setSnackNotification({
+			icon: ICONS.COPY_NOTIFICATION,
+			content: STRINGS['COPY_SUCCESS_TEXT'],
+		});
+	};
 
 	onProceed = () => {
 		const { router, account, onCloseDialog } = this.props;
@@ -35,6 +46,7 @@ class MoveXHTContent extends Component {
 						onBack={onCloseDialog}
 						onProceed={this.onProceed}
 						onClose={onCloseDialog}
+						onCopy={this.onCopy}
 					/>
 				);
 		}
@@ -51,4 +63,11 @@ const mapStateToProps = (store) => ({
 	account: store.stake.account,
 });
 
-export default connect(mapStateToProps)(withRouter(withConfig(MoveXHTContent)));
+const mapDispatchToProps = (dispatch) => ({
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(withConfig(MoveXHTContent)));
