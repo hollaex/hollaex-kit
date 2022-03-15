@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
-import { EditWrapper, Button, IconTitle } from 'components';
+import Ionicon from 'react-ionicons';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import DumbField from 'components/Form/FormFields/DumbField';
 
-const MovePrompt = ({ account, onClose }) => {
+const MovePrompt = ({ account, onBack, onClose, onProceed }) => {
 	const props_account = {
 		stringId: 'MOVE_XHT.LABEL',
 		label: STRINGS['MOVE_XHT.LABEL'],
@@ -16,6 +17,17 @@ const MovePrompt = ({ account, onClose }) => {
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content">
 				<IconTitle
 					stringId="MOVE_XHT.TITLE"
@@ -55,12 +67,14 @@ const MovePrompt = ({ account, onClose }) => {
 			</div>
 			<div className="dialog-content bottom">
 				<div className="d-flex mt-4 pt-3">
-					<div className="w-100">
-						<EditWrapper stringId="NOTIFICATIONS.BUTTONS.OKAY" />
-						<Button
-							label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
-							onClick={onClose}
-						/>
+					<div className="w-50">
+						<EditWrapper stringId="STAKE.BACK" />
+						<Button label={STRINGS['STAKE.BACK']} onClick={onBack} />
+					</div>
+					<div className="separator" />
+					<div className="w-50">
+						<EditWrapper stringId="STAKE.PROCEED" />
+						<Button label={STRINGS['STAKE.PROCEED']} onClick={onProceed} />
 					</div>
 				</div>
 			</div>

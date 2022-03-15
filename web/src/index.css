@@ -5013,6 +5013,8 @@ table th {
 .stake-amount {
   font-size: 2rem;
   line-height: 2rem; }
+  .stake-amount .small {
+    font-size: 1.2rem; }
 
 .staking-loader {
   font-size: 7rem;

@@ -69,7 +69,12 @@ const AmountContent = ({
 								STRINGS['STAKE.AVAILABLE_TOKEN'],
 								fullname,
 								symbol.toUpperCase(),
-								<span className="blue-link mx-2">{available}</span>
+								<span
+									className="blue-link mx-2 pointer"
+									onClick={() => setAmount({ target: { value: available } })}
+								>
+									{available}
+								</span>
 							)}
 						</EditWrapper>
 					</div>
