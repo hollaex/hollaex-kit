@@ -142,6 +142,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 			);
 		}
 	}
+	const tier = await findTier(user.verification_level);
 
 	const limit = tier.withdrawal_limit;
 	if (limit === -1) {
@@ -149,8 +150,6 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	} else if (limit > 0) {
 		await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 	}
-
-	const tier = await findTier(user.verification_level);
 
 	return {
 		fee,
@@ -169,7 +168,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
-			return getUserByKitId(id);
+			return getUserByKitId(user_id);
 		})
 		.then(async (user) => {
 			const { fee, fee_coin } = await validateWithdrawal(user, address, amount, currency, opts.network);
