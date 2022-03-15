@@ -41,7 +41,7 @@ $controllers--color-disabled: $colors-deactivate-color2;
 			border: none !important;
 		}
 
-		tr.table_body-row td {
+		tr.table_body-row {
 			border-top: $row--border;
 			border-bottom: $row--border;
 		}

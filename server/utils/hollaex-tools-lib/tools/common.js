@@ -11,6 +11,7 @@ const {
 	CONFIGURATION_CHANNEL,
 	INIT_CHANNEL,
 	SEND_CONTACT_US_EMAIL,
+	GET_EMAIL,
 	GET_COINS,
 	GET_PAIRS,
 	GET_TIERS,
@@ -39,10 +40,11 @@ const { TemplateEmail } = require(`${SERVER_PATH}/mail/templates/helpers/common`
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { reject, resolve } = require('bluebird');
 const flatten = require('flat');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}/init`);
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
+const { GET_BROKER } = require('../../../constants');
 // const { Transform } = require('json2csv');
 
 const getKitVersion = () => {
@@ -111,6 +113,28 @@ const getKitCoinsConfig = () => {
 const getKitCoins = () => {
 	return Object.keys(getKitCoinsConfig());
 };
+
+const getEmail = () => {
+	return GET_EMAIL();
+};
+
+const updateEmail = async ( data ) => {
+	const status = await dbQuery.findOne('status', {
+		attributes: ['id', 'email']
+	});
+	const updatedStatus = await status.update({
+		email: data.email
+	});
+
+	publisher.publish(
+		CONFIGURATION_CHANNEL,
+		JSON.stringify({
+			type: 'update', data: { email: updatedStatus.email }
+		})
+	);
+	return updatedStatus.email;
+};
+
 
 const getKitPair = (pair) => {
 	return getKitPairsConfig()[pair];
@@ -738,6 +762,33 @@ const getDefaultFees = () => {
 	}
 };
 
+const validateIp = (ip) => {
+	const regex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/(16|24|32))$/;
+	if (!regex.test(ip)) {
+		return false;
+	}
+	return true;
+};
+
+const validatePair = (pair) => {
+	const regex = /([a-z]){2,8}-([a-z]{2,8})/;
+	if (!regex.test(pair)) {
+		return false;
+	}
+	const [base, quote] = pair.split('-');
+	if (base === quote) {
+		return false;
+	}
+	if (!getKitCoin(base) || !getKitCoin(quote)) {
+		return false;
+	}
+	return true;
+}
+
+const getBrokerDeals = () => {
+	return GET_BROKER();
+}; 
+
 module.exports = {
 	getKitVersion,
 	isUrl,
@@ -794,5 +845,11 @@ module.exports = {
 	emailHtmlBoilerplate,
 	getNetworkConstants,
 	getNetworkEndpoint,
-	getDefaultFees
+	getDefaultFees,
+	getEmail,
+	updateEmail,
+	checkExchangeStatus,
+	validateIp,
+	validatePair,
+	getBrokerDeals
 };

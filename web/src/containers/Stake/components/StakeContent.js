@@ -8,8 +8,12 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	getPendingTransactions,
+	getTokenAllowance,
 } from 'actions/stakingActions';
+import { open } from 'helpers/link';
+import { STAKING_INDEX_COIN } from 'config/contracts';
 
+import AllowanceLoader from './AllowanceLoader';
 import AmountContent from './AmountContent';
 import PeriodContent from './PeriodContent';
 import ReviewContent from './ReviewContent';
@@ -24,6 +28,7 @@ const CONTENT_TYPE = {
 	WAITING: 'WAITING',
 	SUCCESS: 'SUCCESS',
 	ERROR: 'ERROR',
+	LOADING: 'LOADING',
 };
 
 const ACTION_TYPE = {
@@ -54,7 +59,7 @@ class StakeContent extends Component {
 		let amount;
 		if (mathjs.larger(value, available)) {
 			amount = available;
-		} else if (mathjs.smaller(value, 0)) {
+		} else if (mathjs.smallerEq(value, 0)) {
 			amount = 0;
 		} else {
 			amount = value;
@@ -69,27 +74,48 @@ class StakeContent extends Component {
 			getPendingTransactions,
 		} = this.props;
 
-		this.setAction(ACTION_TYPE.WITHDRAW, false);
-		this.setContent(CONTENT_TYPE.WAITING);
+		this.setContent(CONTENT_TYPE.LOADING);
+
 		try {
-			await approve(symbol)({
-				amount,
-				account,
-				cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
-			});
-			this.setAction(ACTION_TYPE.STAKE, false);
-			await addStake(symbol)({
-				amount,
-				period,
-				account,
-				cb: () => this.setAction(ACTION_TYPE.STAKE, true),
-			});
-			await Promise.all([
-				generateTableData(account),
-				getAllUserStakes(account),
-				getPendingTransactions(account),
-			]);
-			this.setContent(CONTENT_TYPE.SUCCESS);
+			const allowance = await getTokenAllowance(symbol)(account);
+			if (mathjs.larger(allowance, amount)) {
+				this.setAction(ACTION_TYPE.STAKE, false);
+				this.setContent(CONTENT_TYPE.WAITING);
+				await addStake(symbol)({
+					amount,
+					period,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+				});
+				await Promise.all([
+					generateTableData(account),
+					getAllUserStakes(account),
+					getPendingTransactions(account),
+				]);
+				this.setContent(CONTENT_TYPE.SUCCESS);
+			} else {
+				this.setAction(ACTION_TYPE.WITHDRAW, false);
+				this.setContent(CONTENT_TYPE.WAITING);
+
+				await approve(symbol)({
+					amount,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.WITHDRAW, true),
+				});
+				this.setAction(ACTION_TYPE.STAKE, false);
+				await addStake(symbol)({
+					amount,
+					period,
+					account,
+					cb: () => this.setAction(ACTION_TYPE.STAKE, true),
+				});
+				await Promise.all([
+					generateTableData(account),
+					getAllUserStakes(account),
+					getPendingTransactions(account),
+				]);
+				this.setContent(CONTENT_TYPE.SUCCESS);
+			}
 		} catch (err) {
 			console.error(err);
 			this.setContent(CONTENT_TYPE.ERROR);
@@ -103,14 +129,18 @@ class StakeContent extends Component {
 			tokenData,
 			onCloseDialog,
 			account,
+			penalties,
 		} = this.props;
 		const { period, amount, action, isPending } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
+			case CONTENT_TYPE.LOADING:
+				return <AllowanceLoader symbol={symbol} />;
 			case CONTENT_TYPE.AMOUNT:
 				return (
 					<AmountContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onBack={onCloseDialog}
 						onNext={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						amount={amount}
@@ -122,18 +152,21 @@ class StakeContent extends Component {
 					<PeriodContent
 						tokenData={tokenData}
 						periods={periods}
+						onClose={onCloseDialog}
 						onBack={() => this.setContent(CONTENT_TYPE.AMOUNT)}
 						onReview={() => this.setContent(CONTENT_TYPE.REVIEW)}
 						setPeriod={this.setPeriod}
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
+						openReadMore={this.openReadMore}
 					/>
 				);
 			case CONTENT_TYPE.REVIEW:
 				return (
 					<ReviewContent
 						tokenData={tokenData}
+						onClose={onCloseDialog}
 						onCancel={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						onProceed={() =>
 							this.approveAndStake(symbol)({ amount, period, account })
@@ -141,6 +174,7 @@ class StakeContent extends Component {
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
+						penalty={penalties[symbol]}
 					/>
 				);
 			case CONTENT_TYPE.WAITING:
@@ -150,6 +184,7 @@ class StakeContent extends Component {
 						action={action}
 						amount={amount}
 						symbol={symbol}
+						onClose={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
@@ -182,6 +217,17 @@ class StakeContent extends Component {
 		this.setState({ action, isPending });
 	};
 
+	openReadMore = () => {
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { whitepaper },
+			},
+		} = this.props;
+		if (whitepaper) {
+			open(whitepaper);
+		}
+	};
+
 	render() {
 		const { type } = this.state;
 
@@ -196,6 +242,8 @@ const mapStateToProps = (store) => ({
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
+	penalties: store.stake.penalties,
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

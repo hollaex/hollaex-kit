@@ -180,6 +180,27 @@
 				padding-top: 4px;
 			}
 		}
+		.table_body-wrapper {
+			.currency-ball {
+				width: 25px;
+				line-height: 10px;
+				margin-top: 6px;
+			}
+		}
+	}
+	.ant-picker-clear {
+		background: none;
+	}
+	.action_notification-wrapper {
+		top: 21px;
+	}
+	.download-icon {
+		.action_notification-svg svg path {
+			fill: $link;
+		}
+	}
+	.loader_background {
+		filter: opacity(0.25) !important;
 	}
 }
 

@@ -20,7 +20,8 @@ export const generateInitialValues = (
 	symbol,
 	coins = {},
 	networks,
-	network
+	network,
+	query
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
@@ -48,6 +49,10 @@ export const generateInitialValues = (
 
 	if (networks && networks.length > 0) {
 		initialValues.network = network;
+	}
+
+	if (network && query && network === query.network && query.address) {
+		initialValues.address = query.address;
 	}
 
 	return initialValues;

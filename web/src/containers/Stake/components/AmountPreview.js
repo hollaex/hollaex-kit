@@ -11,7 +11,7 @@ import {
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 
-// const APPROXIMATELY_EQAUL = '\u2248';
+const APPROXIMATELY_EQAUL = '\u2248';
 
 const AmountPreview = ({
 	amount = 0,
@@ -35,8 +35,8 @@ const AmountPreview = ({
 		);
 
 	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
-	// const formatBase = (value) => `(${APPROXIMATELY_EQAUL} ${format(value, baseSymbol, baseMin)})`;
-	const formatBase = (value) => format(value, baseSymbol, baseMin);
+	const formatBase = (value) =>
+		`(${APPROXIMATELY_EQAUL} ${format(value, baseSymbol, baseMin)})`;
 
 	const amountValue = mathjs.multiply(amount, price);
 
@@ -55,7 +55,7 @@ const AmountPreview = ({
 				</div>
 				<div className="stake-amount pl-2">
 					<div>{formatToken(amount)}</div>
-					<div className="secondary-text">{formatBase(amountValue)}</div>
+					<div className="secondary-text small">{formatBase(amountValue)}</div>
 				</div>
 			</div>
 		</div>

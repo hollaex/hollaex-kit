@@ -192,8 +192,6 @@ const nestedIcons = {
 		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE:
-		'/assets/images/arrow-trans-history-active.svg',
 
 	CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
 	ITEM_OPTIONS: '/assets/images/item-options.svg',
@@ -234,6 +232,14 @@ const nestedIcons = {
 	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
+
+	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background-light.jpg',
+	STAKING_PERIOD_ITEM:
+		'/assets/stake/staking-period-option-background-light.png',
+	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background_light.png',
+	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/stake-unstake-light.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/stake-unstake-light.png',
+	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
 };
 
 const icons = flatten(nestedIcons, options);

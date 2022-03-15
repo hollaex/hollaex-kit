@@ -18,6 +18,7 @@ import {
 	addTrades,
 	setPairsData,
 } from '../../actions/orderbookAction';
+import { initializeTools } from 'actions/toolsAction';
 
 import App from './App';
 
@@ -42,6 +43,7 @@ import {
 } from '../../actions/appActions';
 
 import { setPricesAndAsset } from 'actions/assetActions';
+import { loadBlockchainData } from 'actions/stakingActions';
 
 const mapStateToProps = (store) => ({
 	menuItems: menuItemsSelector(store),
@@ -70,6 +72,7 @@ const mapStateToProps = (store) => ({
 	injected_values: store.app.injected_values,
 	injected_html: store.app.injected_html,
 	plugins_injected_html: store.app.plugins_injected_html,
+	tools: store.tools,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -108,6 +111,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setInfo: bindActionCreators(setInfo, dispatch),
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 	setIsReady: bindActionCreators(setIsReady, dispatch),
+	initializeTools: bindActionCreators(initializeTools, dispatch),
+	loadBlockchainData: bindActionCreators(loadBlockchainData, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

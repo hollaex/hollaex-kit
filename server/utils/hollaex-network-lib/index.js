@@ -981,6 +981,80 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Create a trade for the exchange on the network
+	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
+	 * @param {string} side - Whether this is a buy or a sell trade
+	 * @param {number} price - Price set by the broker
+	 * @param {number} size - Size of the trade
+	 * @param {number} makerId - Network id of the maker
+	 * @param {number} takerId - Network id of the taker
+	 * @param {object} feeStructure - Fee rates for maker and taker
+	 * @param {object} feeStructure.maker - Fee rate for maker
+	 * @param {object} feeStructure.taker - Fee rate for taker
+	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
+	 */
+	createBrokerTrade(
+		symbol,
+		side,
+		price,
+		size,
+		makerId,
+		takerId,
+		feeStructure,
+		opts = {
+			additionalHeaders: null
+		}
+	) {
+		checkKit(this.exchange_id);
+
+		if (!symbol) {
+			return reject(parameterError('symbol', 'cannot be null'));
+		} else if (!side) {
+			return reject(parameterError('side', 'cannot be null'));
+		} else if (!["buy", "sell"].includes(side)) {
+			return reject(parameterError('side', 'must be buy or sell'));
+		} else if (!size) {
+			return reject(parameterError('size', 'cannot be null'));
+		} else if (!makerId) {
+			return reject(parameterError('makerId', 'cannot be null'));
+		} else if (!takerId) {
+			return reject(parameterError('takerId', 'cannot be null'));
+		} else if (!feeStructure) {
+			return reject(parameterError('feeStructure', 'cannot be null'));
+		} else if (isNull(feeStructure.maker)) {
+			return reject(parameterError('feeStructure.maker', 'cannot be null'));
+		} else if (isNull(feeStructure.taker)) {
+			return reject(parameterError('feeStructure.taker', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/trade`;
+
+		const data = {
+			side,
+			price,
+			symbol,
+			size,
+			maker_id: makerId,
+			taker_id: takerId,
+			fee_structure: feeStructure
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
+	/**
 	 * Get an order for the exchange on the network
 	 * @param {number} userId - Id of order's user
 	 * @param {number} orderId - Order id

@@ -102,7 +102,7 @@
 	&.ant-radio-button-wrapper {
 		margin: 1rem;
 		padding: 0.2rem;
-		color: $colors-black;
+		color: $colors-main-black;
 		background-color: transparent;
 		background-size: 100%;
 		background-repeat: repeat-y;
@@ -112,6 +112,7 @@
 		font-size: 1rem;
 		line-height: 1.2rem;
 		text-align: center;
+		opacity: 0.5;
 
 		.stake-period-text {
 			width: 10rem;
@@ -122,7 +123,7 @@
 			font-weight: bolder;
 			font-size: 4rem;
 			line-height: 5rem;
-			color: $colors-black !important;
+			color: $colors-main-black;
 		}
 
 		&:not(:first-child)::before {
@@ -133,12 +134,19 @@
 	&.ant-radio-button-wrapper-checked {
 		height: 12rem;
 		width: 12rem;
+		opacity: 1;
 
 		.period-x {
 			font-weight: bolder;
 			font-size: 5rem;
 			line-height: 6rem;
-			color: $colors-main-black !important;
+		}
+	}
+
+	&.ant-radio-button-wrapper {
+		&:hover,
+		&:focus {
+			color: $colors-black;
 		}
 	}
 }
@@ -149,6 +157,7 @@
 	border-radius: 0.5rem;
 	margin: 0.5rem 0;
 	font-weight: bold;
+	height: 4rem;
 }
 
 .staking-account__balance {
@@ -229,6 +238,10 @@
 .stake-amount {
 	font-size: 2rem;
 	line-height: 2rem;
+
+	.small {
+		font-size: 1.2rem;
+	}
 }
 
 .staking-loader {
@@ -250,5 +263,48 @@
 			color: $colors-main-black;
 			background-color: $app-sidebar-background;
 		}
+	}
+}
+
+.stake-details-table {
+	.table-wrapper {
+		margin: 0.2rem 0 2rem;
+	}
+
+	.table_header-row {
+		color: $colors-main-black;
+	}
+}
+
+.stake-panel-bg {
+	.wallet-assets_block {
+		background-color: transparent;
+		z-index: 1;
+	}
+
+	background-color: $app-sidebar-background;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:before {
+		content: '';
+		background-size: 100% auto;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		opacity: 0.05;
+	}
+
+	.wallet-assets_block {
+		width: 100%;
+		height: 100%;
 	}
 }

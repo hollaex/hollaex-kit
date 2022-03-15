@@ -66,7 +66,7 @@ const Review = ({
 			<div className={classnames(...ROW_CLASSNAMES)}>
 				<div>{STRINGS['FEES']}:</div>
 				<div
-					className="text-price blue-link pointer"
+					className="text-price blue-link pointer caps"
 					onClick={onFeeStructureAndLimits}
 				>
 					{STRINGS['VIEW_MY_FEES']}

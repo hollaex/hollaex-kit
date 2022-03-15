@@ -32,12 +32,16 @@ $tabs-title--margin: 2rem;
 	}
 	.trade_block-wrapper {
 		.trade_block-content {
+			padding: 0;
 			font-size: $regular--font-size;
 			.table_body-wrapper {
 				font-size: $regular--font-size;
 			}
 		}
 		.trade_block-title {
+			cursor: default;
+			background-color: inherit;
+			padding: 0;
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $font-size-mobile-txt !important;
@@ -54,19 +58,31 @@ $tabs-title--margin: 2rem;
 		}
 	}
 }
-.trade_block-column-wrapper {
-	.trade_block-wrapper {
-		max-height: 23rem;
-	}
-}
 .trade_block-wrapper {
-	padding: 1rem;
-	max-height: 50rem;
+	height: 100%;
 	// border: 1px solid $colors-main-border;
-	margin: 6px 3px 3px 3px;
 	background-color: $app-sidebar-background;
+	border: 1px solid $colors-super-pale-black;
+
+	&.chart-embed {
+		padding: 1.2rem;
+		max-height: 100vh;
+
+		.trade_block-title {
+			cursor: default;
+			background-color: inherit;
+			padding: 0;
+		}
+
+		.trade_block-content {
+			padding: 0;
+		}
+	}
 
 	.trade_block-title {
+		cursor: move;
+		background-color: $trade-block_highlight;
+		padding: 0.5rem 1.2rem 0.3rem 1.2rem;
 		// border-top: $trade_title-border--size solid $trade_title-border--color;
 		text-transform: uppercase;
 		font-weight: bold;
@@ -88,12 +104,12 @@ $tabs-title--margin: 2rem;
 
 	.trade_block-content {
 		flex: auto;
+		padding: 0 1.2rem 1.2rem 1.2rem;
 		font-size: $trade-font-size;
 		overflow-y: scroll;
 		height: 100%;
 		.sidebar_hub-content {
-			min-height: 42vh;
-			max-height: 56vh;
+			height: 100%;
 			overflow-y: auto;
 		}
 	}
@@ -155,7 +171,7 @@ $tabs-title--margin: 2rem;
 }
 
 .trade_history-wrapper {
-	height: 49vh;
+	height: 100%;
 
 	.display_table-wrapper {
 		.display_table-header {
@@ -188,6 +204,12 @@ $tabs-title--margin: 2rem;
 						$buying-orderbook-bar,
 						$buying-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-buy;
+					}
+					.public-sale_digits {
+						color: $buy;
+					}
 				}
 
 				.fill-sell {
@@ -195,16 +217,14 @@ $tabs-title--margin: 2rem;
 						$selling-orderbook-bar,
 						$selling-orderbook-bar
 					);
+					.public-sale_zeros {
+						color: $pale-sell;
+					}
+					.public-sale_digits {
+						color: $sell;
+					}
 				}
 			}
-		}
-	}
-}
-
-@media screen and (max-width: 1060px) {
-	.trade_block-column-wrapper {
-		.trade_block-wrapper {
-			max-height: 20rem;
 		}
 	}
 }
@@ -217,6 +237,18 @@ $tabs-title--margin: 2rem;
 		}
 	}
 	.trade_block-wrapper {
+		padding: 1.2rem;
+		margin: 6px 3px 3px 3px;
 		max-height: 50vh;
+		border: none;
+
+		&.chart-embed {
+			max-height: 100vh;
+		}
 	}
+}
+
+.trade-wrapper-action {
+	margin-top: 2.5rem;
+	margin-right: 1rem;
 }

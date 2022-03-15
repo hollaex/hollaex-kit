@@ -73,6 +73,16 @@ class Verification extends Component {
 			this.setUserData(this.props.user);
 		}
 		this.getBankData();
+		if (window.location.search && window.location.search.includes('email')) {
+			this.setState({ activeTab: 0 });
+		} else if (window.location.search && window.location.search.includes('phone')) {
+			this.setState({ activeTab: 1 });
+		} else if (window.location.search && window.location.search.includes('identity')) {
+			this.setState({ activeTab: 2 });
+		} else if (window.location.search && window.location.search.includes('banks')) {
+			this.setState({ activeTab: 3 });
+		}
+		this.openCurrentTab();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -103,6 +113,26 @@ class Verification extends Component {
 			);
 		}
 	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+			this.openCurrentTab();
+		}
+	}
+
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.activeTab === 0) {
+			currentTab = 'email';
+		} if (this.state.activeTab === 1) {
+			currentTab = 'phone';
+		} else if (this.state.activeTab === 2) {
+			currentTab = 'identity';
+		} else if (this.state.activeTab === 3) {
+			currentTab = 'banks';
+		}
+		this.props.router.push(`/verification?${currentTab}`);
+	};
 
 	getBankData = () => {
 		requestPlugin({ name: 'bank' })
@@ -479,7 +509,11 @@ class Verification extends Component {
 		this.setState({ activePage });
 	};
 
-	renderContent = (tabs, activeTab) => tabs[activeTab].content || <div>c</div>;
+	renderContent = (tabs, activeTab) => {
+		console.log("tabs, activeTab", tabs, activeTab);
+		console.log("tabs[activeTab].content", tabs[activeTab].content);
+		return tabs[activeTab].content || <div>c</div>;
+	}
 
 	renderPageContent = (tabProps) => {
 		const { activePage, activeTab, tabs, user, bankMeta } = this.state;

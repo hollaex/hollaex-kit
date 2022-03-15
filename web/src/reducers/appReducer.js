@@ -32,6 +32,10 @@ import {
 	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
+	SET_CONTRACTS,
+	CHANGE_PAIR,
+	SET_ACTIVE_ORDERS_MARKET,
+	SET_RECENT_TRADES_MARKETS,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -76,6 +80,8 @@ const INITIAL_STATE = {
 	language: getLanguage(),
 	pairs: {},
 	pair: '',
+	activeOrdersMarket: '',
+	recentTradesMarket: '',
 	tickers: {},
 	orderLimits: {},
 	coins: {
@@ -170,6 +176,7 @@ const INITIAL_STATE = {
 	injected_values: [],
 	injected_html: {},
 	plugins_injected_html: {},
+	contracts: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -184,10 +191,22 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				pairs: payload.pairs,
 			};
-		case 'CHANGE_PAIR':
+		case CHANGE_PAIR:
 			return {
 				...state,
 				pair: payload.pair,
+				activeOrdersMarket: payload.pair,
+				recentTradesMarket: payload.pair,
+			};
+		case SET_ACTIVE_ORDERS_MARKET:
+			return {
+				...state,
+				activeOrdersMarket: payload.activeOrdersMarket,
+			};
+		case SET_RECENT_TRADES_MARKETS:
+			return {
+				...state,
+				recentTradesMarket: payload.recentTradesMarket,
 			};
 		case SET_CURRENCIES:
 			return {
@@ -558,6 +577,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_html: payload,
+			};
+		}
+		case SET_CONTRACTS: {
+			return {
+				...state,
+				contracts: payload,
 			};
 		}
 		default:

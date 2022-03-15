@@ -8,6 +8,7 @@ import {
 	getPendingTransactions,
 } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
+import mathjs from 'mathjs';
 
 import WarningContent from './WarningContent';
 import ReviewEarlyUnstake from './ReviewEarlyUnstake';
@@ -62,10 +63,13 @@ class EarlyUnstakeContent extends Component {
 	};
 
 	renderContent = (type) => {
-		const { account, stakeData, onCloseDialog } = this.props;
+		const { account, stakeData, onCloseDialog, penalties } = this.props;
 		const { action, isPending } = this.state;
-
 		const { index, symbol, amount } = stakeData;
+		const penalty = penalties[symbol];
+
+		const slashedAmount = mathjs.multiply(amount, mathjs.divide(penalty, 100));
+		const amountToReceive = mathjs.subtract(amount, slashedAmount);
 
 		switch (type) {
 			case CONTENT_TYPE.WARNING:
@@ -79,6 +83,8 @@ class EarlyUnstakeContent extends Component {
 				return (
 					<ReviewEarlyUnstake
 						stakeData={stakeData}
+						penalties={penalties}
+						onClose={onCloseDialog}
 						onCancel={() => this.setContent(CONTENT_TYPE.WARNING)}
 						onProceed={() => this.approveAndUnstake(symbol)({ account, index })}
 					/>
@@ -90,6 +96,7 @@ class EarlyUnstakeContent extends Component {
 						action={action}
 						amount={amount}
 						symbol={symbol}
+						onClose={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
@@ -98,7 +105,8 @@ class EarlyUnstakeContent extends Component {
 						stakeData={stakeData}
 						account={account}
 						action={action}
-						amount={amount}
+						originalAmount={amount}
+						amountToReceive={amountToReceive}
 						symbol={symbol}
 						onOkay={onCloseDialog}
 					/>
@@ -129,6 +137,7 @@ class EarlyUnstakeContent extends Component {
 
 const mapStateToProps = (store) => ({
 	account: store.stake.account,
+	penalties: store.stake.penalties,
 });
 
 const mapDispatchToProps = (dispatch) => ({

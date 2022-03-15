@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import {
 	getDistributions,
 	getStakeEvents,
@@ -9,17 +10,24 @@ import {
 	generateTableData,
 	getAllUserStakes,
 	getPendingTransactions,
+	getAllPeriods,
+	getAllPenalties,
+	getAllPots,
 } from 'actions/stakingActions';
 import { Link } from 'react-router';
 import { Tabs } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import { IconTitle, EditWrapper } from 'components';
-import { CONTRACT_ADDRESSES } from 'config/contracts';
+import { CONTRACT_ADDRESSES, STAKING_INDEX_COIN } from 'config/contracts';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Account from 'containers/Stake/components/Account';
 import { getPublicInfo } from 'actions/stakingActions';
+import { open } from 'helpers/link';
 
-import { userActiveStakesSelector } from 'containers/Stake/selector';
+import {
+	userActiveStakesSelector,
+	networksMismatchSelector,
+} from 'containers/Stake/selector';
 import PublicInfo from './components/PublicInfo';
 import Distributions from './components/Distributions';
 import MyStaking from './components/MyStaking';
@@ -59,10 +67,16 @@ class StakeDetails extends Component {
 			getAllUserStakes,
 			getPublicInfo,
 			getPendingTransactions,
+			getAllPenalties,
+			getAllPeriods,
+			getAllPots,
 		} = this.props;
 
 		loadBlockchainData();
 		getCurrentBlock();
+		getAllPenalties();
+		getAllPeriods();
+		getAllPots();
 		getDistributions(token);
 		getPublicInfo(token);
 
@@ -77,6 +91,7 @@ class StakeDetails extends Component {
 	componentDidUpdate(prevProps) {
 		const {
 			account,
+			network,
 			generateTableData,
 			getAllUserStakes,
 			getStakeEvents,
@@ -86,13 +101,62 @@ class StakeDetails extends Component {
 			},
 		} = this.props;
 
-		if (!!account && account !== prevProps.account) {
+		if (
+			(!!account && account !== prevProps.account) ||
+			(!!network && network !== prevProps.network)
+		) {
 			getStakeEvents(token, account);
 			generateTableData(account);
 			getAllUserStakes(account);
 			getPendingTransactions(account);
 		}
 	}
+
+	componentDidMount() {
+		this.setBlockNumberInterval();
+	}
+
+	componentWillUnmount() {
+		this.clearBlockNumberInterval();
+	}
+
+	setBlockNumberInterval = () => {
+		const { getCurrentBlock } = this.props;
+		this.BlockNumberIntervalHandler = setInterval(getCurrentBlock, 5000);
+	};
+
+	clearBlockNumberInterval = () => {
+		clearInterval(this.BlockNumberIntervalHandler);
+	};
+
+	goToPOT = () => {
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+			pots,
+		} = this.props;
+		const address = pots[STAKING_INDEX_COIN]
+			? pots[STAKING_INDEX_COIN].address
+			: '';
+
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/address/${address}`;
+		open(url);
+	};
+
+	goToBlocks = () => {
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+		} = this.props;
+		const url = `https://${
+			network !== 'main' ? `${network}.` : ''
+		}etherscan.io/blocks`;
+		open(url);
+	};
 
 	renderTabContent = (key) => {
 		const {
@@ -114,16 +178,18 @@ class StakeDetails extends Component {
 						token={token}
 						fullname={fullname}
 						setActiveTab={this.setActiveTab}
+						goToPOT={this.goToPOT}
 					/>
 				);
 			case TABS.DISTRIBUTIONS.key:
-				return <Distributions token={token} />;
+				return <Distributions token={token} goToPOT={this.goToPOT} />;
 			case TABS.MY_STAKING.key:
 				return (
 					<MyStaking
 						token={token}
 						totalUserEarnings={totalUserEarnings}
 						totalUserStakes={totalUserStakes}
+						goToBlocks={this.goToBlocks}
 					/>
 				);
 			default:
@@ -153,14 +219,16 @@ class StakeDetails extends Component {
 		this.setState({ activeKey });
 	};
 
-	openContract = (address) => {
-		const { network } = this.props;
+	openContract = (token) => {
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { network },
+			},
+		} = this.props;
 		const url = `https://${
 			network !== 'main' ? `${network}.` : ''
-		}etherscan.io/address/${address}`;
-		if (window) {
-			window.open(url, '_blank');
-		}
+		}etherscan.io/token/${token}`;
+		open(url);
 	};
 
 	render() {
@@ -170,6 +238,7 @@ class StakeDetails extends Component {
 			router: {
 				params: { token },
 			},
+			networksMismatch,
 		} = this.props;
 
 		const { activeKey } = this.state;
@@ -177,70 +246,76 @@ class StakeDetails extends Component {
 		const { fullname } = coins[token];
 		const iconId = `${token.toUpperCase()}_ICON`;
 
-		return (
-			<div className="stake-details presentation_container apply_rtl wallet-wrapper">
-				<div className="d-flex align-end justify-content-between">
-					<div>
-						<IconTitle
-							text={STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.TOKEN'],
-								fullname
-							)}
-							iconPath={ICONS[iconId]}
-							iconId={iconId}
-							textType="title"
-							imageWrapperClassName="currency-ball pt-2"
-						/>
-						<div>
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
-								<span
-									className="pointer blue-link"
-									onClick={() =>
-										this.openContract(CONTRACT_ADDRESSES[token].main)
-									}
-								>
-									{CONTRACT_ADDRESSES[token].main}
-								</span>
-							)}
-							<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
-						</div>
-						<div>
-							{STRINGS.formatString(
-								STRINGS['STAKE_DETAILS.BACK_SUBTITLE'],
-								<Link to="/stake">
-									<span className="pointer blue-link">
-										{STRINGS['STAKE_DETAILS.GO_BACK']}
-									</span>
-								</Link>
-							)}
-							<EditWrapper stringId="STAKE_DETAILS.BACK_SUBTITLE,STAKE_DETAILS.GO_BACK" />
-						</div>
-					</div>
-					<div>
-						<Account />
-					</div>
-				</div>
+		const __html = `.stake-panel-bg:before { background-image: url(${ICONS['STAKING_PANEL_BACKGROUND']}) }`;
 
-				<Fragment>
-					<Tabs
-						activeKey={activeKey}
-						onTabClick={(key) => this.setActiveTab(key)}
-					>
-						{Object.entries(TABS).map(([_, { key, title }]) => {
-							return (
-								<TabPane tab={title} key={key}>
-									<div className="wallet-container no-border">
-										<div className="wallet-assets_block">
-											{this.renderTabContent(key)}
+		return (
+			<Fragment>
+				<style dangerouslySetInnerHTML={{ __html }} />
+				<div className="stake-details presentation_container apply_rtl wallet-wrapper">
+					<div className="d-flex align-end justify-content-between">
+						<div>
+							<IconTitle
+								text={STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.TOKEN'],
+									fullname
+								)}
+								iconPath={ICONS[iconId]}
+								iconId={iconId}
+								textType="title"
+								imageWrapperClassName="currency-ball pt-2"
+							/>
+							<div>
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.CONTRACT_SUBTITLE'],
+									<span
+										className="pointer blue-link"
+										onClick={() =>
+											this.openContract(CONTRACT_ADDRESSES()[token].token)
+										}
+									>
+										{CONTRACT_ADDRESSES()[token].token}
+									</span>
+								)}
+								<EditWrapper stringId="STAKE_DETAILS.CONTRACT_SUBTITLE" />
+							</div>
+							<div>
+								{STRINGS.formatString(
+									STRINGS['STAKE_DETAILS.BACK_SUBTITLE'],
+									<Link to="/stake">
+										<span className="pointer blue-link">
+											{STRINGS['STAKE_DETAILS.GO_BACK']}
+										</span>
+									</Link>
+								)}
+								<EditWrapper stringId="STAKE_DETAILS.BACK_SUBTITLE,STAKE_DETAILS.GO_BACK" />
+							</div>
+						</div>
+						<div>
+							<Account />
+						</div>
+					</div>
+
+					<Fragment>
+						<Tabs
+							activeKey={activeKey}
+							onTabClick={(key) => this.setActiveTab(key)}
+							className={classnames({ 'area-disabled': networksMismatch })}
+						>
+							{Object.entries(TABS).map(([_, { key, title }]) => {
+								return (
+									<TabPane tab={title} key={key}>
+										<div className="wallet-container no-border stake-panel-bg">
+											<div className="wallet-assets_block">
+												{this.renderTabContent(key)}
+											</div>
 										</div>
-									</div>
-								</TabPane>
-							);
-						})}
-					</Tabs>
-				</Fragment>
-			</div>
+									</TabPane>
+								);
+							})}
+						</Tabs>
+					</Fragment>
+				</div>
+			</Fragment>
 		);
 	}
 }
@@ -250,7 +325,10 @@ const mapStateToProps = (store) => ({
 	account: store.stake.account,
 	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
+	pots: store.stake.pots,
 	...userActiveStakesSelector(store),
+	networksMismatch: networksMismatchSelector(store),
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -262,6 +340,9 @@ const mapDispatchToProps = (dispatch) => ({
 	getAllUserStakes: bindActionCreators(getAllUserStakes, dispatch),
 	getPendingTransactions: bindActionCreators(getPendingTransactions, dispatch),
 	getPublicInfo: bindActionCreators(getPublicInfo, dispatch),
+	getAllPeriods: bindActionCreators(getAllPeriods, dispatch),
+	getAllPenalties: bindActionCreators(getAllPenalties, dispatch),
+	getAllPots: bindActionCreators(getAllPots, dispatch),
 });
 
 export default connect(
