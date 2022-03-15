@@ -1311,6 +1311,10 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
+        - support
+        - kyc
+        - communicator
     put:
       description: Update exchange configuration
       operationId: updateExchange
