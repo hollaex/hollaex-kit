@@ -64,3 +64,17 @@ export const consoleKitInfo = () => {
 		'font-family:sans-serif; font-size: 16px; font-weight: 600'
 	);
 };
+
+export const getContracts = (coins = {}) => {
+	const contracts = {};
+
+	Object.entries(coins).forEach(
+		([coin, { meta: { contract: token, staking: main, network } = {} }]) => {
+			if (token && main) {
+				contracts[coin] = { token, main, network };
+			}
+		}
+	);
+
+	return contracts;
+};

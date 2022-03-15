@@ -2,23 +2,40 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { Table, ActionNotification } from '../../../components';
-import { getFormatTimestamp } from '../../../utils/utils';
-import { formatBaseAmount, formatToCurrency } from '../../../utils/currency';
+import { Table, ActionNotification, Image } from 'components';
+import { getFormatTimestamp } from 'utils/utils';
+import { formatBaseAmount, formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
+const generateHeaders = (
+	pairs = {},
+	onCancel,
+	onCancelAll,
+	ICONS,
+	activeOrdersMarket
+) => [
 	{
+		stringId: 'PAIR',
 		label: STRINGS['PAIR'],
 		key: 'pair',
 		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 		renderCell: ({ symbol }, key, index) => {
+			const data = symbol.split('-');
+			let pairBaseName = data[0];
 			return (
 				<td key={index} className="text-uppercase">
-					{symbol}
+					<div className="d-flex align-items-center">
+						<Image
+							iconId={`${pairBaseName.toUpperCase()}_ICON`}
+							icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+							wrapperClassName="currency-ball"
+							imageWrapperClassName="currency-ball-image-wrapper"
+						/>
+						<div>{symbol}</div>
+					</div>
 				</td>
 			);
 		},
@@ -142,6 +159,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 					onClick={() => onCancelAll()}
 					status="information"
 					textPosition="left"
+					disable={activeOrdersMarket === ''}
 				/>
 			</span>
 		),
@@ -176,6 +194,8 @@ const ActiveOrders = ({
 	height,
 	cancelDelayData,
 	icons: ICONS,
+	activeOrdersMarket,
+	pageSize,
 }) => {
 	return (
 		<div
@@ -186,7 +206,13 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairs, onCancel, onCancelAll, ICONS)}
+				headers={generateHeaders(
+					pairs,
+					onCancel,
+					onCancelAll,
+					ICONS,
+					activeOrdersMarket
+				)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
@@ -195,6 +221,7 @@ const ActiveOrders = ({
 				rowKey={(data) => {
 					return data.id;
 				}}
+				pageSize={pageSize}
 			/>
 		</div>
 	);

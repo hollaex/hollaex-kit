@@ -1,9 +1,12 @@
 import React from 'react';
 import classnames from 'classnames';
+import { CloseOutlined } from '@ant-design/icons';
 import Image from 'components/Image';
 import { EditWrapper } from 'components';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { bindActionCreators } from 'redux';
+import { toggleTool } from 'actions/toolsAction';
 
 const TradeBlock = ({
 	children,
@@ -18,8 +21,10 @@ const TradeBlock = ({
 	pair,
 	isLoggedIn,
 	activeTheme,
-	tailHead = '',
 	icons: ICONS,
+	tool,
+	toggleTool,
+	titleClassName = '',
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
 	const { pair_base } = pairData;
@@ -34,7 +39,13 @@ const TradeBlock = ({
 				'apply_rtl'
 			)}
 		>
-			<div className="trade_block-title">
+			<div
+				className={classnames(
+					'trade_block-title',
+					'drag-handle',
+					titleClassName
+				)}
+			>
 				<div className="d-flex justify-content-between">
 					<div className="d-flex">
 						{pairs.length ? (
@@ -43,21 +54,16 @@ const TradeBlock = ({
 								wrapperClassName="trade_block-icon"
 							/>
 						) : null}
-						<EditWrapper stringId={stringId}>
-							<div className="trade_block-title-items">{title}</div>
-						</EditWrapper>
+						<div className="trade_block-title-items">
+							<EditWrapper stringId={stringId}>{title}</EditWrapper>
+						</div>
 					</div>
-					{tailHead ? (
-						<div className={'trade_block-title-currency'}>{tailHead}</div>
-					) : (
+					{!!tool && (
 						<div
-							className={
-								pairs.length
-									? `trade_block-title-currency-${pairs[0].toLowerCase()}`
-									: 'trade_block-title-currency'
-							}
+							className="trade_block-title-currency pointer"
+							onClick={() => toggleTool(tool)}
 						>
-							{pairs.length ? `${pairs[0]}/${pairs[1]}` : ''}
+							<CloseOutlined />
 						</div>
 					)}
 				</div>
@@ -84,4 +90,11 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 });
 
-export default connect(mapStateToProps)(withConfig(TradeBlock));
+const mapDispatchToProps = (dispatch) => ({
+	toggleTool: bindActionCreators(toggleTool, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(TradeBlock));

@@ -1,6 +1,8 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { getDecimals } from 'utils/utils';
+import { formatPercentage } from 'utils/currency';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -75,6 +77,8 @@ const calculateOrders = (orders, depth) =>
 const getPairsOrderBook = (state) => state.orderbook.pairsOrderbooks;
 const getQuickTradeOrderBook = (state) => state.quickTrade.pairsOrderbooks;
 const getPair = (state) => state.app.pair;
+const getActiveOrderMarket = (state) => state.app.activeOrdersMarket;
+const getRecentTradesMarket = (state) => state.app.recentTradesMarket;
 const getOrderBookLevels = (state) =>
 	state.user.settings.interface.order_book_levels;
 const getPairsTrades = (state) => state.orderbook.pairsTrades;
@@ -83,6 +87,8 @@ const getUserTradesData = (state) => state.wallet.trades.data;
 const getPairs = (state) => state.app.pairs;
 const getDepth = (state) => state.orderbook.depth;
 const getChartClose = (state) => state.orderbook.chart_last_close;
+const getTickers = (state) => state.app.tickers;
+const getCoins = (state) => state.app.coins;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -102,6 +108,38 @@ export const orderbookSelector = createSelector(
 		const bids = pushCumulativeAmounts(filteredBids);
 
 		return { maxCumulative, asks, bids };
+	}
+);
+
+export const depthChartSelector = createSelector(
+	[orderbookSelector],
+	({ asks: fullAsks, bids: fullBids }) => {
+		const asks = fullAsks.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		const bids = fullBids.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		return [
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+			},
+			{
+				name: 'Bids',
+				data: bids,
+				className: 'depth-chart__bids',
+				marker: {
+					enabled: false,
+				},
+			},
+		];
 	}
 );
 
@@ -129,22 +167,17 @@ export const marketPriceSelector = createSelector(
 
 export const activeOrdersSelector = createSelector(
 	getActiveOrders,
-	getPair,
+	getActiveOrderMarket,
 	(orders, pair) => {
-		let count = 0;
-		return orders.filter(({ symbol }) => symbol === pair && count++ < 50);
+		return pair ? orders.filter(({ symbol }) => symbol === pair) : orders;
 	}
 );
 
 export const userTradesSelector = createSelector(
 	getUserTradesData,
-	getPair,
+	getRecentTradesMarket,
 	(trades, pair) => {
-		let count = 0;
-		const filtered = trades.filter(
-			({ symbol }) => symbol === pair && count++ < 10
-		);
-		return filtered;
+		return pair ? trades.filter(({ symbol }) => symbol === pair) : trades;
 	}
 );
 
@@ -232,5 +265,70 @@ export const estimatedQuickTradePriceSelector = createSelector(
 			const [priceValue, sizeValue] = calculateMarketPrice(size, orders);
 			return [priceValue / sizeValue, sizeValue];
 		}
+	}
+);
+
+export const sortedPairKeysSelector = createSelector(
+	[getPairs, getTickers],
+	(pairs, tickers) => {
+		const sortedPairKeys = Object.keys(pairs).sort((a, b) => {
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
+		});
+
+		const pinnedCoins = ['xht'];
+		const pinnedKeys = [];
+		const filteredKeys = [];
+
+		sortedPairKeys.forEach((key) => {
+			const { pair_base, pair_2 } = pairs[key];
+			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+				pinnedKeys.push(key);
+			} else {
+				filteredKeys.push(key);
+			}
+		});
+
+		return [...pinnedKeys, ...filteredKeys];
+	}
+);
+
+export const MarketsSelector = createSelector(
+	[sortedPairKeysSelector, getPairs, getTickers, getCoins],
+	(sortedPairKeys, pairs, tickers, coins) => {
+		const markets = sortedPairKeys.map((key) => {
+			const { pair_base, pair_2, increment_price } = pairs[key] || {};
+			const { fullname, symbol = '' } =
+				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
+			const { open, close } = tickers[key] || {};
+
+			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
+
+			const tickerPercent =
+				priceDifference === 0 || open === 0
+					? 0
+					: (priceDifference / open) * 100;
+
+			const priceDifferencePercent = isNaN(tickerPercent)
+				? formatPercentage(0)
+				: formatPercentage(tickerPercent);
+			return {
+				key,
+				pair: pairs[key],
+				symbol,
+				pairTwo,
+				fullname,
+				ticker: tickers[key] || {},
+				increment_price,
+				priceDifference,
+				priceDifferencePercent,
+			};
+		});
+
+		return markets;
 	}
 );

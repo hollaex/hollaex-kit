@@ -28,7 +28,8 @@ let configuration = {
 		injected_values: [],
 		injected_html: {},
 		black_list_countries: []
-	}
+	},
+	email: {}
 };
 
 let secrets = {
@@ -56,6 +57,7 @@ subscriber.on('message', (channel, message) => {
 				if (data.tiers) updateTiers(data.tiers);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
+				if (data.email) updateEmail(data.email);
 				break;
 			case 'freezeUser':
 				updateFrozenUser('add', data);
@@ -106,7 +108,8 @@ const resetAllConfig = () => {
 			injected_values: [],
 			injected_html: {},
 			black_list_countries: []
-		}
+		},
+		email: {}
 	};
 };
 
@@ -126,6 +129,10 @@ const updateSecrets = (newSecretsConfig) => {
 	Object.assign(secrets, newSecretsConfig);
 };
 
+const updateEmail = (newEmailConfig) => {
+	Object.assign(configuration.email, newEmailConfig);
+};
+
 const updateFrozenUser = (action, userId) => {
 	if (action === 'add') {
 		frozenUsers[userId] = true;
@@ -140,6 +147,8 @@ exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
+exports.GET_EMAIL = () => cloneDeep(configuration.email);
+exports.GET_BROKER = () => cloneDeep(configuration.broker);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -322,7 +331,7 @@ exports.DEFAULT_FEES = {
 };
 
 exports.ROLES = ROLES;
-exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
+exports.BASE_SCOPES = [ROLES.USER];
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 // ACCOUNTS CONSTANTS END --------------------------------------------------

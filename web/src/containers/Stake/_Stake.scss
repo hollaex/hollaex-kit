@@ -1,0 +1,12 @@
+.table-row {
+	&.hoverable {
+		&:hover {
+			background-color: $stake-table-highlight;
+			color: $colors-main-black;
+		}
+	}
+}
+
+.area-disabled {
+	opacity: 0.5;
+}

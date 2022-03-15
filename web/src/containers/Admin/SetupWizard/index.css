@@ -183,13 +183,13 @@
 	left: 18px;
 	color: #000000;
 }
-.ant-radio-inner {
+.wizard-container .ant-radio-inner {
 	background-color: #000000;
 }
-.ant-radio-checked .ant-radio-inner {
+.wizard-container .ant-radio-checked .ant-radio-inner {
 	border-color: #000000;
 }
-.ant-radio-inner::after {
+.wizard-container .ant-radio-inner::after {
 	background-color: #ffffff;
 }
 .wizard-container .interface-box .ant-radio-wrapper {
@@ -201,7 +201,7 @@
 .wizard-container .ant-radio-wrapper-checked {
 	border: 1px solid #c4c4c4;
 }
-.ant-radio-group {
+.wizard-container .ant-radio-group {
 	width: 100%;
 	margin-top: 21px;
 }
@@ -270,36 +270,39 @@
 	width: 22rem;
 }
 .setup-field-content .number_input-wrapper .ant-input-number-handler-wrap,
-.setup-field-content .number_input-wrapper .ant-input-number-handler-wrap .ant-input-number-handler { 
+.setup-field-content
+	.number_input-wrapper
+	.ant-input-number-handler-wrap
+	.ant-input-number-handler {
 	-webkit-appearance: none;
 	display: none;
 	margin: 0;
 }
 .ant-input-affix-wrapper,
-.ant-input,
+.wizard-container .ant-input,
 .ant-input-number,
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
 	background-color: var(--admin_panel_input);
 	color: #c4c4c4;
 }
-.ant-input-affix-wrapper:hover,
-.ant-input-affix-wrapper:focus,
-.ant-input:hover,
-.ant-input:focus,
-.ant-input:active,
-.ant-input-number:hover,
-.ant-input-number:focus {
+.wizard-container .ant-input-affix-wrapper:hover,
+.wizard-container .ant-input-affix-wrapper:focus,
+.wizard-container .ant-input:hover,
+.wizard-container .ant-input:focus,
+.wizard-container .ant-input:active,
+.wizard-container .ant-input-number:hover,
+.wizard-container .ant-input-number:focus {
 	border-color: #c4c4c4;
 	box-shadow: #c4c4c4;
 }
 .ant-input-password-icon {
 	color: #c4c4c4;
 }
-.ant-radio-disabled .ant-radio-inner {
+.wizard-container .ant-radio-disabled .ant-radio-inner {
 	background-color: #050596;
 	border-color: #050596 !important;
 }
-.ant-radio-disabled + span {
+.wizard-container .ant-radio-disabled + span {
 	color: #808088;
 }
 .form-wrapper {

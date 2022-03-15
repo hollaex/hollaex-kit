@@ -7,6 +7,10 @@
 	// justify-content: center;
 	align-items: center;
 
+	&:hover {
+		opacity: 0.75;
+	}
+
 	.notification-info {
 		color: $link;
 	}
@@ -72,13 +76,11 @@
 	.icon-copy-1,
 	.icon-tamer-01,
 	.arrow-1,
-	.trans-history-1,
-	.trans-history-2,
-	.trans-history-3,
+	.trans-history,
 	.cancel-cross-1 {
 		fill: $link;
 	}
-	.trans-history-4,
+
 	.cancel-cross-3 {
 		stroke: $link;
 	}

@@ -118,12 +118,14 @@ const getColumns = (
 							type="warning"
 							tip="This asset is in pending verification"
 							onClick={(e) => {
-								if (selectedAsset.created_by === _get(constants, 'info.user_id')) {
+								if (
+									selectedAsset.created_by === _get(constants, 'info.user_id')
+								) {
 									handleEdit(selectedAsset, e);
 								}
 							}}
 						/>
-						) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
+					) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
 						<div className="config-content">
 							(
 							<span
@@ -198,7 +200,7 @@ class Assets extends Component {
 			formData: {},
 			saveLoading: false,
 			submitting: false,
-			isWithdrawalEdit: false
+			isWithdrawalEdit: false,
 		};
 	}
 
@@ -311,7 +313,7 @@ class Assets extends Component {
 			isConfigureEdit: false,
 			isConfirm: false,
 			width: 520,
-			isWithdrawalEdit: false
+			isWithdrawalEdit: false,
 			// selectedAsset: {}
 		});
 	};
@@ -516,7 +518,11 @@ class Assets extends Component {
 			await this.getMyExchange();
 			await this.getCoins();
 			message.success('Asset removed successfully');
-			this.setState({ isConfigure: false, isPreview: false, submitting: false });
+			this.setState({
+				isConfigure: false,
+				isPreview: false,
+				submitting: false,
+			});
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
@@ -619,7 +625,7 @@ class Assets extends Component {
 	handleWithdrawalEdit = () => {
 		this.handleConfigureEdit('edit_withdrawal_fees');
 		this.setState({ isWithdrawalEdit: true });
-	}
+	};
 
 	renderPreview = () => {
 		const { constants } = this.props;
@@ -669,7 +675,8 @@ class Assets extends Component {
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
-					{this.state.selectedAsset.created_by === _get(constants, 'info.user_id') ? (
+					{this.state.selectedAsset.created_by ===
+					_get(constants, 'info.user_id') ? (
 						<div>
 							<div className="d-flex">
 								<Button

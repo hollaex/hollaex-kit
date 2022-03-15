@@ -23,11 +23,13 @@ const getMakerRow = (pairs, coins, pair, level, index, discount, tiers) => {
 		<tr key={index}>
 			<td className="account-limits-coin">
 				<div className="d-flex align-items-center">
-					<CurrencyBall
-						name={pairBase.symbol.toUpperCase()}
-						symbol={pair_base}
-						size="m"
-					/>
+					<div className='coin-section-wrapper'>
+						<CurrencyBall
+							name={pairBase.symbol.toUpperCase()}
+							symbol={pair_base}
+							size="m"
+						/>
+					</div>
 					<div className="ml-2">
 						{`${pairBase.fullname} / ${pairTwo.fullname}`}
 					</div>

@@ -5,28 +5,25 @@ import {
 	removeStake,
 	generateTableData,
 	getAllUserStakes,
-	distribute,
 	getPendingTransactions,
 } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
+import mathjs from 'mathjs';
 
 import ReviewUnstake from './ReviewUnstake';
 import WaitingContent from './WaitingContent';
 import SuccessContent from './SuccessfulUnstakeContent';
 import ErrorContent from './ErrorContent';
-import ClearPendingEarningsContent from './ClearPendingEarningsContent';
 
 const CONTENT_TYPE = {
 	REVIEW: 'REVIEW',
 	WAITING: 'WAITING',
 	SUCCESS: 'SUCCESS',
 	ERROR: 'ERROR',
-	CLEAR: 'CLEAR',
 };
 
 const ACTION_TYPE = {
 	UNSTAKE: 'UNSTAKE',
-	DISTRIBUTE: 'DISTRIBUTE',
 };
 
 class UnstakeContent extends Component {
@@ -63,46 +60,21 @@ class UnstakeContent extends Component {
 		}
 	};
 
-	clearPendingEarnings = (symbol) => async ({ account }) => {
-		const {
-			generateTableData,
-			getAllUserStakes,
-			getPendingTransactions,
-		} = this.props;
-
-		this.setAction(ACTION_TYPE.DISTRIBUTE, false);
-		this.setContent(CONTENT_TYPE.WAITING);
-		try {
-			await distribute(symbol)({
-				account,
-				cb: () => this.setAction(ACTION_TYPE.DISTRIBUTE, true),
-			});
-			await Promise.all([
-				generateTableData(account),
-				getAllUserStakes(account),
-				getPendingTransactions(account),
-			]);
-			this.setContent(CONTENT_TYPE.REVIEW);
-		} catch (err) {
-			console.error(err);
-			this.setContent(CONTENT_TYPE.ERROR);
-		}
-	};
-
 	renderContent = (type) => {
 		const { account, stakeData, onCloseDialog } = this.props;
 		const { action, isPending } = this.state;
 
-		const { index, symbol, amount } = stakeData;
+		const { index, symbol, amount, reward } = stakeData;
+		const amountToReceive = mathjs.add(amount, reward);
 
 		switch (type) {
 			case CONTENT_TYPE.REVIEW:
 				return (
 					<ReviewUnstake
 						stakeData={stakeData}
+						onClose={onCloseDialog}
 						onCancel={onCloseDialog}
 						onProceed={() => this.approveAndUnstake(symbol)({ account, index })}
-						onClear={() => this.setContent(CONTENT_TYPE.CLEAR)}
 					/>
 				);
 			case CONTENT_TYPE.WAITING:
@@ -112,6 +84,7 @@ class UnstakeContent extends Component {
 						action={action}
 						amount={amount}
 						symbol={symbol}
+						onClose={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.SUCCESS:
@@ -120,21 +93,14 @@ class UnstakeContent extends Component {
 						stakeData={stakeData}
 						account={account}
 						action={action}
-						amount={amount}
+						originalAmount={amount}
+						amountToReceive={amountToReceive}
 						symbol={symbol}
 						onOkay={onCloseDialog}
 					/>
 				);
 			case CONTENT_TYPE.ERROR:
 				return <ErrorContent action={action} onOkay={onCloseDialog} />;
-			case CONTENT_TYPE.CLEAR:
-				return (
-					<ClearPendingEarningsContent
-						stakeData={stakeData}
-						onProceed={() => this.clearPendingEarnings(symbol)({ account })}
-						onBack={() => this.setContent(CONTENT_TYPE.REVIEW)}
-					/>
-				);
 			default:
 				return <div>No Content</div>;
 		}

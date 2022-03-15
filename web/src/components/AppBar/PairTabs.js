@@ -8,13 +8,13 @@ import _get from 'lodash/get';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
+import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
 
 class PairTabs extends Component {
 	state = {
@@ -72,9 +72,9 @@ class PairTabs extends Component {
 	onTabClick = (pair) => {
 		const { router, constants } = this.props;
 		if (pair) {
-			if (_get(constants, "features.pro_trade")) {
+			if (_get(constants, 'features.pro_trade')) {
 				router.push(`/trade/${pair}`);
-			} else if (_get(constants, "features.quick_trade")) {
+			} else if (_get(constants, 'features.quick_trade')) {
 				router.push(`/quick-trade/${pair}`);
 			}
 			this.setState({ activePairTab: pair });
@@ -82,7 +82,11 @@ class PairTabs extends Component {
 	};
 
 	render() {
-		const { activePairTab, isMarketSelectorVisible } = this.state;
+		const {
+			activePairTab,
+			isMarketSelectorVisible,
+			isToolsSelectorVisible,
+		} = this.state;
 
 		const { tickers, location, coins, favourites, pairs } = this.props;
 
@@ -141,7 +145,7 @@ class PairTabs extends Component {
 								}
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
-								trigger={[isMobile ? 'click' : 'hover']}
+								trigger={['click']}
 								visible={isMarketSelectorVisible}
 								onVisibleChange={(visible) => {
 									this.setState({ isMarketSelectorVisible: visible });
@@ -206,6 +210,40 @@ class PairTabs extends Component {
 							)}
 						</Slider>
 					</div>
+					{location.pathname.indexOf('/trade/') === 0 && (
+						<div className="d-flex h-100 tools-button border-left">
+							<div
+								className={classnames(
+									'app_bar-pair-content',
+									'market-trigger',
+									'd-flex',
+									'justify-content-between',
+									'px-2'
+								)}
+							>
+								<Dropdown
+									className="market-selector-dropdown"
+									overlay={<ToolsSelector />}
+									mouseEnterDelay={0}
+									mouseLeaveDelay={0.05}
+									trigger={['click']}
+									visible={isToolsSelectorVisible}
+									onVisibleChange={(visible) => {
+										this.setState({ isToolsSelectorVisible: visible });
+									}}
+								>
+									<div className="selector-trigger narrow app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
+										<div>Tools</div>
+										{isToolsSelectorVisible ? (
+											<CaretUpOutlined style={{ fontSize: '14px' }} />
+										) : (
+											<CaretDownOutlined style={{ fontSize: '14px' }} />
+										)}
+									</div>
+								</Dropdown>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		);
@@ -213,7 +251,14 @@ class PairTabs extends Component {
 }
 
 const mapStateToProps = ({
-	app: { language: activeLanguage, pairs, tickers, coins, favourites, constants },
+	app: {
+		language: activeLanguage,
+		pairs,
+		tickers,
+		coins,
+		favourites,
+		constants,
+	},
 	orderbook: { prices },
 }) => ({
 	activeLanguage,

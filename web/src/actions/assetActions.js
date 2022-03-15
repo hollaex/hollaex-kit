@@ -8,25 +8,32 @@ import {
 	donutFormatPercentage,
 } from 'utils/currency';
 
-export const SET_PRICES_AND_ASSET = 'SET_PRICES_AND_ASSET';
+export const SET_PRICES_AND_ASSET_PENDING = 'SET_PRICES_AND_ASSET_PENDING';
+export const SET_PRICES_AND_ASSET_SUCCESS = 'SET_PRICES_AND_ASSET_SUCCESS';
+export const SET_PRICES_AND_ASSET_FAILURE = 'SET_PRICES_AND_ASSET_FAILURE';
 export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
 
 export const setPricesAndAsset = (balance, coins) => {
 	return (dispatch) => {
-		getPrices({ coins }).then((prices) => {
-			const totalAsset = calculateBalancePrice(balance, prices, coins);
+		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });
+		getPrices({ coins })
+			.then((prices) => {
+				const totalAsset = calculateBalancePrice(balance, prices, coins);
 
-			dispatch({
-				type: SET_PRICES_AND_ASSET,
-				payload: {
-					oraclePrices: prices,
-					totalAsset,
-					chartData: generateChartData(balance, prices, coins, totalAsset),
-				},
+				dispatch({
+					type: SET_PRICES_AND_ASSET_SUCCESS,
+					payload: {
+						oraclePrices: prices,
+						totalAsset,
+						chartData: generateChartData(balance, prices, coins, totalAsset),
+					},
+				});
+			})
+			.catch((err) => {
+				dispatch({ type: SET_PRICES_AND_ASSET_FAILURE });
 			});
-		});
 	};
 };
 

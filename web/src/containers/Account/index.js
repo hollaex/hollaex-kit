@@ -150,7 +150,7 @@ class Account extends Component {
 					/>
 				),
 				notifications: !otp_enabled ? '!' : '',
-				content: <UserSecurity openApiKey={activeDevelopers} />,
+				content: <UserSecurity openApiKey={activeDevelopers} router={this.props.router}/>,
 			},
 			{
 				title: isMobile ? (
@@ -177,7 +177,7 @@ class Account extends Component {
 						icon={ICONS['GEAR_GREY']}
 					/>
 				),
-				content: <UserSettings location={location} />,
+				content: <UserSettings location={location} router={this.props.router}/>,
 			},
 		];
 		this.setState({ tabs, activeTab });

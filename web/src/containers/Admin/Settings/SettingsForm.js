@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
-import { Divider, Button, Tabs, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Divider, Button, Tabs, Row, Spin, Modal, Input } from 'antd';
 import { reduxForm, reset } from 'redux-form';
+import { LoadingOutlined } from '@ant-design/icons';
+import _get from 'lodash/get';
 
 import { AdminHocForm } from '../../../components';
 import {
@@ -11,6 +13,11 @@ import {
 } from './Utils';
 import renderFields from '../../../components/AdminForm/utils';
 import ThemeHocForm from './ThemeSettingsForm';
+import CustomizeEmailForm from './CustomizeEmailForm';
+import languages from 'config/languages';
+import { STATIC_ICONS } from 'config/icons';
+import { updateTestEmail } from './action';
+const { isEmail } = require('validator');
 
 const TabPane = Tabs.TabPane;
 
@@ -57,10 +64,204 @@ export const EmailSettingsForm = ({
 	initialValues,
 	handleSubmitSettings,
 	buttonSubmitting,
+	emailData,
+	requestEmail,
+	defaults,
+	emailTypeData,
+	constants,
 }) => {
 	const fields = generateAdminSettings('email');
+	const [isOpen, setIsOpen] = useState(false);
+	const [type, setType] = useState('edit-email');
+	const [isErrorMsg, setErrorMsg] = useState(false);
+	const [senderEmail, setSenderEmail] = useState('');
+	const [formValues, setFormValues] = useState({});
+	const [isValidEmail, setIsValidEmail] = useState(true);
+
+	useEffect(() => {
+		if (
+			JSON.stringify(formValues) === JSON.stringify(initialValues.configuration)
+		) {
+			setErrorMsg(false);
+		}
+	}, [formValues, initialValues.configuration]);
+
+	const handleTestEmail = (emailType) => {
+		if (
+			JSON.stringify(formValues) !== JSON.stringify(initialValues.configuration)
+		) {
+			if (_get(formValues, 'password').includes('*')) {
+				setErrorMsg(true);
+			} else {
+				setErrorMsg(false);
+				setIsOpen(true);
+				setType(emailType);
+			}
+		} else {
+			setIsOpen(true);
+			setType(emailType);
+		}
+	};
+
+	const handleClose = (val = '') => {
+		setIsOpen(false);
+		setSenderEmail('');
+		setIsValidEmail(true);
+	};
+
+	const handleSenderEmail = (e) => {
+		setSenderEmail(e.target.value);
+		if (isEmail(e.target.value)) {
+			setIsValidEmail(true);
+		} else {
+			setIsValidEmail(false);
+		}
+	};
+
+	const updateEmail = (params) => {
+		let body = {};
+		if (params === initialValues.configuration) {
+			body = {
+				receiver: senderEmail,
+			};
+		} else {
+			body = {
+				receiver: senderEmail,
+				smtp: {
+					password: params.password,
+					port: params.port,
+					server: params.server,
+					user: params.user,
+				},
+			};
+		}
+		updateTestEmail(body)
+			.then((res) => {
+				if (res) {
+					setTimeout(() => {
+						handleConfirm();
+					}, 3000);
+				}
+			})
+			.catch((err) => {
+				handleClose();
+			});
+	};
+
+	const handleConfirm = async (value = '', formProps) => {
+		setType(value);
+		if (formProps) {
+			await updateEmail(formProps);
+		}
+	};
+
+	const renderContent = () => {
+		if (type === 'edit-email') {
+			return (
+				<div>
+					<div className="content-heading">Send Test Email</div>
+					<div className="sub-heading">Send a test to</div>
+					<Input onChange={handleSenderEmail} className="mb-2" />
+					{!isValidEmail && senderEmail.length ? (
+						<span className="errTxt">Please Enter the valid email</span>
+					) : null}
+					<div className="input-note">
+						(Note: default email used is the admin email.)
+					</div>
+					<div className="btn-wrapper">
+						<Button type="primary" className="green-btn" onClick={handleClose}>
+							Back
+						</Button>
+						<div className="separator"></div>
+						<Button
+							type="primary"
+							className="green-btn"
+							onClick={() => handleConfirm('edit-confirm', formValues)}
+							disabled={!senderEmail || !isValidEmail}
+						>
+							Confirm
+						</Button>
+					</div>
+				</div>
+			);
+		} else if (type === 'edit-confirm') {
+			return (
+				<div>
+					<div className="content-align">
+						<div className="loading-icon">
+							<LoadingOutlined style={{ fontSize: '50px' }} />
+						</div>
+						<div>
+							<div className="content-heading"> Sending test email</div>
+							<div>please wait...</div>
+						</div>
+					</div>
+					<div className="btn-wrapper">
+						<Button type="primary" className="green-btn" onClick={handleClose}>
+							Cancel
+						</Button>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<div className="content-heading">Complete</div>
+					<div>Your test email is the way!</div>
+					<div className="btn-wrapper btn-width">
+						<Button
+							type="primary"
+							className="green-btn "
+							onClick={() => handleClose('test-email')}
+						>
+							Okay
+						</Button>
+					</div>
+				</div>
+			);
+		}
+	};
+
+	const { kit = {} } = constants;
+	let valid_languages =
+		kit && kit.valid_languages && kit.valid_languages.split(',');
+	let selectedLanguages = [];
+	if (valid_languages) {
+		selectedLanguages = languages.filter((data) =>
+			valid_languages.includes(data.value)
+		);
+	} else {
+		selectedLanguages = languages;
+	}
+
+	const renderFooter = (values) => {
+		if (values) {
+			setFormValues(values);
+		}
+		return (
+			<div>
+				{isErrorMsg && _get(formValues, 'password').includes('*') ? (
+					<span className="errTxt">Provide the password again</span>
+				) : null}
+				<div className="mb-5">
+					<div>
+						<span
+							className="underline-text content-flex"
+							onClick={() => handleTestEmail('edit-email')}
+						>
+							<div>SEND ADMIN TEST EMAIL</div>
+							<div className="arrow-symbol">
+								<img src={STATIC_ICONS.SEND_ARROW_ICON} alt="send_arrow" />
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
 	return (
-		<div className="email-config-form mb-4">
+		<div className="email-config-form mb-5">
 			<h2>Email Configuration</h2>
 			<EmailForm
 				initialValues={initialValues.configuration}
@@ -70,7 +271,24 @@ export const EmailSettingsForm = ({
 				buttonText="Save"
 				fields={fields.email_configuration}
 				buttonSubmitting={buttonSubmitting}
+				renderCustomFooter={renderFooter}
 			/>
+			<div className="divider"></div>
+			<div className="mb-4 width-50">
+				<h2>Customize emails</h2>
+				<p>Select the type of email you'd like to edit below.</p>
+				{Object.keys(emailData).length ? (
+					<CustomizeEmailForm
+						emailInfo={emailData}
+						requestEmail={requestEmail}
+						selectedLanguages={selectedLanguages}
+						defaultLanguage={defaults && defaults.language}
+						emailType={emailTypeData}
+					/>
+				) : (
+					<Spin />
+				)}
+			</div>
 			<div className="divider"></div>
 			<div className="mb-4">
 				<h2>Email Audit</h2>
@@ -89,6 +307,15 @@ export const EmailSettingsForm = ({
 					buttonSubmitting={buttonSubmitting}
 				/>
 			</div>
+			<Modal
+				visible={isOpen}
+				footer={null}
+				onCancel={handleClose}
+				width={type === 'edit-email' ? '500px' : '400px'}
+				closable={false}
+			>
+				<div className="test-Email-Wrapper">{renderContent()}</div>
+			</Modal>
 		</div>
 	);
 };

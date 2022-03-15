@@ -3,9 +3,12 @@ import { reduxForm } from 'redux-form';
 
 import renderFields from 'components/Form/factoryFields';
 
+const isHide = localStorage.getItem('isZeroBalanceHidden');
+
 class AssetsBlockForm extends React.Component {
 	render() {
 		const { handleCheck, label } = this.props;
+		const isZeroBalanceHidden = isHide === 'false' ? false : true;
 
 		const AssetsBlockFields = {
 			ZeroBalance: {
@@ -15,6 +18,7 @@ class AssetsBlockForm extends React.Component {
 				name: 'ZeroBalance',
 				reverse: true,
 				// isHideToggleText: true,
+				isZeroBalanceHidden
 			},
 		};
 

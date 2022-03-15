@@ -37,6 +37,26 @@ module.exports = function(sequelize, DataTypes) {
 		revoked: {
 			type: DataTypes.BOOLEAN,
 			defaultValue: false
+		},
+		can_read: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: true
+		},
+		can_trade: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
+		can_withdraw: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
+		},
+		whitelisted_ips: {
+			type: DataTypes.JSONB,
+			defaultValue: []
+		},
+		whitelisting_enabled: {
+			type: DataTypes.BOOLEAN,
+			defaultValue: false
 		}
 	}, {
 		timestamps: true,
