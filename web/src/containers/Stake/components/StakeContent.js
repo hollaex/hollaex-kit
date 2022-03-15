@@ -12,6 +12,9 @@ import {
 } from 'actions/stakingActions';
 import { open } from 'helpers/link';
 import { STAKING_INDEX_COIN } from 'config/contracts';
+import { DEFAULT_COIN_DATA } from 'config/constants';
+import { toFixed } from 'utils/currency';
+import { getDecimals } from 'utils/utils';
 
 import AllowanceLoader from './AllowanceLoader';
 import AmountContent from './AmountContent';
@@ -52,6 +55,23 @@ class StakeContent extends Component {
 		this.setState({ period });
 	};
 
+	parse = (value = '') => {
+		const { coins, tokenData } = this.props;
+		const { symbol } = tokenData;
+		const { increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
+		const decimal = getDecimals(increment_unit);
+		const decValue = toFixed(value);
+		const valueDecimal = getDecimals(decValue);
+
+		let result = value;
+		if (decimal < valueDecimal) {
+			result = decValue
+				.toString()
+				.substring(0, decValue.toString().length - (valueDecimal - decimal));
+		}
+		return result;
+	};
+
 	setAmount = ({ target: { value } }) => {
 		const {
 			tokenData: { available },
@@ -59,8 +79,8 @@ class StakeContent extends Component {
 		let amount;
 		if (mathjs.larger(value, available)) {
 			amount = available;
-		} else if (mathjs.smallerEq(value, 0)) {
-			amount = 0;
+		} else if (mathjs.smallerEq(value, 1)) {
+			amount = 1;
 		} else {
 			amount = value;
 		}
@@ -78,7 +98,7 @@ class StakeContent extends Component {
 
 		try {
 			const allowance = await getTokenAllowance(symbol)(account);
-			if (mathjs.larger(allowance, amount)) {
+			if (mathjs.largerEq(allowance, amount)) {
 				this.setAction(ACTION_TYPE.STAKE, false);
 				this.setContent(CONTENT_TYPE.WAITING);
 				await addStake(symbol)({

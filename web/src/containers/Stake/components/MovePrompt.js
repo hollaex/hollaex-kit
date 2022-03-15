@@ -5,14 +5,22 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import DumbField from 'components/Form/FormFields/DumbField';
 
-const MovePrompt = ({ account, onBack, onClose, onProceed, icons: ICONS }) => {
+const MovePrompt = ({
+	account,
+	onBack,
+	onClose,
+	onProceed,
+	icons: ICONS,
+	onCopy,
+}) => {
 	const props_account = {
 		stringId: 'MOVE_XHT.LABEL',
 		label: STRINGS['MOVE_XHT.LABEL'],
-		className: 'token-value-input',
 		value: account,
 		fullWidth: true,
 		allowCopy: true,
+		onCopy: onCopy,
+		copyOnClick: true,
 	};
 
 	return (
@@ -74,8 +82,12 @@ const MovePrompt = ({ account, onBack, onClose, onProceed, icons: ICONS }) => {
 					</div>
 					<div className="separator" />
 					<div className="w-50">
-						<EditWrapper stringId="STAKE.PROCEED" />
-						<Button label={STRINGS['STAKE.PROCEED']} onClick={onProceed} />
+						<EditWrapper stringId="STAKE.GO_TO_WALLET" />
+						<Button
+							classname="caps"
+							label={STRINGS['STAKE.GO_TO_WALLET']}
+							onClick={onProceed}
+						/>
 					</div>
 				</div>
 			</div>
