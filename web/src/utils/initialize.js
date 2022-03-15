@@ -69,9 +69,17 @@ export const getContracts = (coins = {}) => {
 	const contracts = {};
 
 	Object.entries(coins).forEach(
-		([coin, { meta: { contract: token, staking: main, network } = {} }]) => {
+		([
+			coin,
+			{ meta: { contract: token, staking: main, network, whitepaper } = {} },
+		]) => {
 			if (token && main) {
-				contracts[coin] = { token, main, network };
+				contracts[coin] = {
+					token,
+					main,
+					network,
+					whitepaper,
+				};
 			}
 		}
 	);

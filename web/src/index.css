@@ -5013,6 +5013,8 @@ table th {
 .stake-amount {
   font-size: 2rem;
   line-height: 2rem; }
+  .stake-amount .small {
+    font-size: 1.2rem; }
 
 .staking-loader {
   font-size: 7rem;
@@ -11008,7 +11010,8 @@ svg .osko-logo,
 svg .stake-variable,
 svg .stake-pending,
 svg .staking-unlock,
-svg .send-email-code {
+svg .send-email-code,
+svg .move-xht {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,

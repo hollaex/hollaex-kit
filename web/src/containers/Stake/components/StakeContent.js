@@ -10,6 +10,8 @@ import {
 	getPendingTransactions,
 	getTokenAllowance,
 } from 'actions/stakingActions';
+import { open } from 'helpers/link';
+import { STAKING_INDEX_COIN } from 'config/contracts';
 
 import AllowanceLoader from './AllowanceLoader';
 import AmountContent from './AmountContent';
@@ -57,7 +59,7 @@ class StakeContent extends Component {
 		let amount;
 		if (mathjs.larger(value, available)) {
 			amount = available;
-		} else if (mathjs.smaller(value, 0)) {
+		} else if (mathjs.smallerEq(value, 0)) {
 			amount = 0;
 		} else {
 			amount = value;
@@ -157,6 +159,7 @@ class StakeContent extends Component {
 						currentBlock={currentBlock}
 						period={period}
 						amount={amount}
+						openReadMore={this.openReadMore}
 					/>
 				);
 			case CONTENT_TYPE.REVIEW:
@@ -214,6 +217,17 @@ class StakeContent extends Component {
 		this.setState({ action, isPending });
 	};
 
+	openReadMore = () => {
+		const {
+			contracts: {
+				[STAKING_INDEX_COIN]: { whitepaper },
+			},
+		} = this.props;
+		if (whitepaper) {
+			open(whitepaper);
+		}
+	};
+
 	render() {
 		const { type } = this.state;
 
@@ -229,6 +243,7 @@ const mapStateToProps = (store) => ({
 	stakables: store.stake.stakables,
 	periods: store.stake.periods,
 	penalties: store.stake.penalties,
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({
