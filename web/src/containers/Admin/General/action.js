@@ -1,4 +1,5 @@
 import axios from 'axios';
+import querystring from 'query-string';
 import { requestAuthenticated } from '../../../utils';
 
 export const updateConstants = (values) => {
@@ -21,8 +22,8 @@ export const upload = (formData) => {
 	return axios('/admin/upload', options);
 };
 
-export const getEmailStrings = () => {
-	let url = '/admin/email';
+export const getEmailStrings = (param) => {
+	let url = `/admin/email?${querystring.stringify(param)}`;
 	return requestAuthenticated(url);
 };
 
@@ -32,4 +33,9 @@ export const updateEmailStrings = (values) => {
 		body: JSON.stringify(values),
 	};
 	return requestAuthenticated('/admin/email', options);
+};
+
+export const getEmailType = () => {
+	let url = '/admin/email/types';
+	return requestAuthenticated(url);
 };

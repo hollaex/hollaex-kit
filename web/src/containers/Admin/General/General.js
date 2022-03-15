@@ -15,7 +15,12 @@ import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData, setConfig } from '../../../actions/appActions';
-import { upload, updateConstants, getEmailStrings } from './action';
+import {
+	upload,
+	updateConstants,
+	getEmailStrings,
+	getEmailType,
+} from './action';
 import { getGeneralFields } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
@@ -64,6 +69,7 @@ class GeneralContent extends Component {
 			removeCountryLabel: '',
 			removeCountryValue: [],
 			emailData: {},
+			emailTypeData: [],
 		};
 	}
 
@@ -80,7 +86,7 @@ class GeneralContent extends Component {
 		}
 	}
 
-	requestInitial = () => {
+	requestInitial = async () => {
 		this.setState({ loading: true });
 		requestAdminData()
 			.then((res) => {
@@ -90,12 +96,26 @@ class GeneralContent extends Component {
 				this.setState({ loading: false });
 			});
 		if (this.props.activeTab === 'email') {
-			this.requestEmail();
+			await this.requestEmailType();
+			await this.requestEmail();
 		}
 	};
 
-	requestEmail = () => {
-		getEmailStrings()
+	requestEmail = (body) => {
+		const { constants } = this.props;
+		const { defaults = {} } = constants;
+		let bodyParam = {
+			language: defaults.language,
+			type:
+				this.state.emailTypeData && this.state.emailTypeData[0].toLowerCase(),
+		};
+		if (body) {
+			bodyParam = {
+				...bodyParam,
+				...body,
+			};
+		}
+		getEmailStrings(bodyParam)
 			.then((response) => {
 				if (response) {
 					this.setState({ emailData: response });
@@ -104,6 +124,21 @@ class GeneralContent extends Component {
 			.catch((error) => {
 				console.log('error', error);
 			});
+	};
+
+	requestEmailType = () => {
+		return new Promise((resolve, reject) => {
+			getEmailType()
+				.then((response) => {
+					if (response) {
+						this.setState({ emailTypeData: response });
+					}
+					resolve(response);
+				})
+				.catch((error) => {
+					reject(error);
+				});
+		});
 	};
 
 	getSettingsValues = () => {
@@ -689,6 +724,7 @@ class GeneralContent extends Component {
 			loadingButton,
 			buttonSubmitting,
 			constants,
+			emailTypeData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions, activeTab } = this.props;
@@ -1134,6 +1170,9 @@ class GeneralContent extends Component {
 									buttonSubmitting={buttonSubmitting}
 									emailData={this.state.emailData}
 									requestEmail={this.requestEmail}
+									defaults={kit && kit.defaults}
+									emailTypeData={emailTypeData}
+									constants={constants}
 								/>
 							</div>
 						</div>
@@ -1284,6 +1323,7 @@ class GeneralContent extends Component {
 								<a
 									target="_blank"
 									href="https://docs.hollaex.com/advanced/dependencies#recaptcha"
+									rel="noopener noreferrer"
 								>
 									Google reCAPTCHA v3
 								</a>

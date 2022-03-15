@@ -169,7 +169,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 			if (!validOtp) {
 				throw new Error(INVALID_OTP_CODE);
 			}
-			return getUserByKitId(id);
+			return getUserByKitId(user_id);
 		})
 		.then(async (user) => {
 			const { fee, fee_coin } = await validateWithdrawal(user, address, amount, currency, opts.network);
