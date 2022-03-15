@@ -117,8 +117,7 @@ class Stake extends Component {
 	};
 
 	moveXHT = () => {
-		const { setNotification, router, account } = this.props;
-		router.push(`/wallet/xht/withdraw?address=${account}&network=eth`);
+		const { setNotification } = this.props;
 		setNotification(NOTIFICATIONS.MOVE_XHT, {});
 	};
 

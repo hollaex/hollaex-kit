@@ -74,7 +74,7 @@ const SuccessfulContent = ({
 				<div className="d-flex">
 					<div className="bold">
 						<EditWrapper stringId="STAKE.SUCCESSFUL_STAKE_DESTINATION">
-							{STRINGS['STAKE.SUCCESSFUL_STAKE_DESTINATION']}:
+							{STRINGS['STAKE.SUCCESSFUL_UNSTAKE_ADDRESS']}:
 						</EditWrapper>
 					</div>
 					<div>
