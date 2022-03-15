@@ -25,6 +25,7 @@ const AmountContent = ({
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
+		'background-size': 'cover',
 		height: '34rem',
 		minWidth: '30rem',
 		maxWidth: '40rem',

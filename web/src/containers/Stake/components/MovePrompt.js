@@ -5,7 +5,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import DumbField from 'components/Form/FormFields/DumbField';
 
-const MovePrompt = ({ account, onBack, onClose, onProceed }) => {
+const MovePrompt = ({ account, onBack, onClose, onProceed, icons: ICONS }) => {
 	const props_account = {
 		stringId: 'MOVE_XHT.LABEL',
 		label: STRINGS['MOVE_XHT.LABEL'],
@@ -32,10 +32,11 @@ const MovePrompt = ({ account, onBack, onClose, onProceed }) => {
 				<IconTitle
 					stringId="MOVE_XHT.TITLE"
 					text={STRINGS['MOVE_XHT.TITLE']}
+					iconPath={ICONS['MOVE_XHT']}
+					iconId="MOVE_XHT"
 					textType="stake_popup__title m-0 pl-3"
 					underline={false}
 					className="w-100 py-4 flex-direction-row justify-content-start"
-					imageWrapperClassName="stake-unlock-title"
 				/>
 
 				<div className="pt-4">
