@@ -23,7 +23,7 @@ const STATUS_OPTIONS = {
 const Filters = ({ coins = {}, onSearch, formName }) => {
 	const [form] = Form.useForm();
 
-	const onValuesChange = (values) => {
+	const onValuesChange = (_, values) => {
 		onSearch(values);
 	};
 
