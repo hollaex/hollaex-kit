@@ -1,37 +1,11 @@
 import React, { Component } from 'react';
-import { Transition } from 'react-transition-group';
-import Image from 'components/Image';
+import { PriceChange, Image } from 'components';
 import SparkLine from './SparkLine';
-import classnames from 'classnames';
-import { /*formatAverage,*/ formatToCurrency } from 'utils/currency';
+import { formatToCurrency } from 'utils/currency';
 
 class MarketCard extends Component {
-	constructor(props) {
-		super(props);
-		const { market: { priceDifference = 0 } = {} } = this.props;
-		this.state = {
-			tickerDiff: priceDifference,
-			inProp: false,
-		};
-	}
-
-	UNSAFE_componentWillUpdate(nextProp) {
-		const {
-			market: { ticker },
-		} = this.props;
-		if (nextProp.market.ticker.close !== ticker.close) {
-			const tickerDiff = nextProp.market.ticker.close - ticker.close;
-			this.setState((prevState) => ({
-				...prevState,
-				tickerDiff,
-				inProp: !prevState.inProp,
-			}));
-		}
-	}
-
 	render() {
 		const { icons: ICONS, market, chartData, handleClick, index } = this.props;
-		const { inProp, tickerDiff } = this.state;
 
 		const {
 			key,
@@ -41,8 +15,6 @@ class MarketCard extends Component {
 			fullname,
 			ticker,
 			increment_price,
-			priceDifferencePercent,
-			priceDifference,
 		} = market;
 
 		return (
@@ -93,25 +65,7 @@ class MarketCard extends Component {
 							</div>
 							<div className="d-flex justify-content-end align-center">
 								<div className="d-flex justify-content-end">
-									<Transition in={inProp} timeout={1000}>
-										{(state) => (
-											<div className="d-flex">
-												<div
-													className={classnames(
-														'title-font',
-														priceDifference < 0
-															? 'price-diff-down trade-tab-price_diff_down'
-															: 'price-diff-up trade-tab-price_diff_up',
-														tickerDiff < 0
-															? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
-															: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
-													)}
-												>
-													{priceDifferencePercent}
-												</div>
-											</div>
-										)}
-									</Transition>
+									<PriceChange market={market} />
 								</div>
 								<div className=" ml-2 trade_tab-pair-volume">
 									<span className="pr-2">Vol:</span>
