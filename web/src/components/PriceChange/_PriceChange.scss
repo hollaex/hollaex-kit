@@ -1,0 +1,60 @@
+.price-change {
+	.price-diff {
+		color: $colors-black;
+		padding: 0 5px;
+		border-radius: 2px;
+		transition: all 0.2s ease-out 0s;
+		margin: auto 0;
+
+		&:before {
+			visibility: hidden;
+			display: inline-block !important;
+			margin-right: 0.5rem;
+			position: relative !important;
+			top: calc(50% - 0.6rem);
+		}
+
+		&.down {
+			color: $sell;
+
+			&:before {
+				visibility: visible;
+				@include css-triangle($sell, 'down', $trade-tab--arrow-size);
+			}
+		}
+
+		&.up {
+			color: $buy;
+
+			&:before {
+				visibility: visible;
+				@include css-triangle($buy, 'up', $trade-tab--arrow-size);
+				margin-bottom: 0.2rem;
+			}
+		}
+	}
+
+	.glance-down {
+		&.entering,
+		&.exiting {
+			color: $sell-bids-text;
+			background-color: $sell;
+
+			&:before {
+				border-color: $sell-bids-text;
+			}
+		}
+	}
+
+	.glance-up {
+		&.entering,
+		&.exiting {
+			color: $buy-bids-text;
+			background-color: $buy;
+
+			&:before {
+				border-color: $buy-bids-text;
+			}
+		}
+	}
+}
