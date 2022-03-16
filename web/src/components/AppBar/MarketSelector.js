@@ -6,7 +6,7 @@ import Image from 'components/Image';
 import classnames from 'classnames';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 
-import { Slider } from 'components';
+import { Slider, PriceChange } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -197,91 +197,65 @@ class MarketSelector extends Component {
 						{hasTabMenu ? (
 							markets
 								.slice(0, Math.min(tabMenuLength, 10))
-								.map(
-									(
-										{
-											key,
-											pair,
-											symbol,
-											pairTwo,
-											ticker,
-											increment_price,
-											priceDifference,
-											priceDifferencePercent,
-										},
-										index
-									) => {
-										return (
+								.map((market, index) => {
+									const {
+										key,
+										pair,
+										symbol,
+										pairTwo,
+										ticker,
+										increment_price,
+									} = market;
+
+									return (
+										<div
+											key={index}
+											className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
+										>
 											<div
-												key={index}
-												className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
+												className="pl-3 pr-2 pointer"
+												onClick={() => this.toggleFavourite(key)}
 											>
-												<div
-													className="pl-3 pr-2 pointer"
-													onClick={() => this.toggleFavourite(key)}
-												>
-													{this.isFavourite(key) ? (
-														<StarFilled className="stared-market" />
-													) : (
-														<StarOutlined />
-													)}
+												{this.isFavourite(key) ? (
+													<StarFilled className="stared-market" />
+												) : (
+													<StarOutlined />
+												)}
+											</div>
+											<div
+												className="d-flex align-items-center justify-content-between w-100"
+												onClick={() => addTradePairTab(key)}
+											>
+												<div className="d-flex align-items-center">
+													<Image
+														iconId={
+															ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+																? `${pair.pair_base.toUpperCase()}_ICON`
+																: 'DEFAULT_ICON'
+														}
+														icon={
+															ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+																? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+																: ICONS.DEFAULT_ICON
+														}
+														wrapperClassName="app-bar-add-tab-icons"
+														imageWrapperClassName="currency-ball-image-wrapper"
+													/>
+													<div className="app_bar-pair-font">
+														{symbol.toUpperCase()}/
+														{pairTwo.symbol.toUpperCase()}:
+													</div>
+													<div className="title-font ml-1 app-bar_add-tab-price">
+														{formatToCurrency(ticker.close, increment_price)}
+													</div>
 												</div>
-												<div
-													className="d-flex align-items-center justify-content-between w-100"
-													onClick={() => addTradePairTab(key)}
-												>
-													<div className="d-flex align-items-center">
-														<Image
-															iconId={
-																ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-																	? `${pair.pair_base.toUpperCase()}_ICON`
-																	: 'DEFAULT_ICON'
-															}
-															icon={
-																ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-																	? ICONS[
-																			`${pair.pair_base.toUpperCase()}_ICON`
-																	  ]
-																	: ICONS.DEFAULT_ICON
-															}
-															wrapperClassName="app-bar-add-tab-icons"
-															imageWrapperClassName="currency-ball-image-wrapper"
-														/>
-														<div className="app_bar-pair-font">
-															{symbol.toUpperCase()}/
-															{pairTwo.symbol.toUpperCase()}:
-														</div>
-														<div className="title-font ml-1 app-bar_add-tab-price">
-															{formatToCurrency(ticker.close, increment_price)}
-														</div>
-													</div>
-													<div className="d-flex align-items-center mr-4">
-														<div
-															className={
-																priceDifference < 0
-																	? 'app-price-diff-down app-bar-price_diff_down'
-																	: 'app-bar-price_diff_up app-price-diff-up'
-															}
-														>
-															{/* {formatAverage(formatToCurrency(priceDifference, increment_price))} */}
-														</div>
-														<div
-															className={
-																priceDifference < 0
-																	? 'title-font app-price-diff-down'
-																	: priceDifference > 0
-																	? 'title-font app-price-diff-up'
-																	: 'title-font'
-															}
-														>
-															{priceDifferencePercent}
-														</div>
-													</div>
+												<div className="d-flex align-items-center mr-4">
+													<PriceChange market={market} />
 												</div>
 											</div>
-										);
-									}
-								)
+										</div>
+									);
+								})
 						) : (
 							<div className="app-bar-add-tab-content-list d-flex align-items-center">
 								No data...
