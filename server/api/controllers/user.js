@@ -373,7 +373,7 @@ const loginPost = (req, res) => {
 			}));
 
 			if (!service) {
-				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
+				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
 			return res.status(201).json({
 				token: toolsLib.security.issueToken(
