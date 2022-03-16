@@ -10,11 +10,11 @@ import TabList from './TabList';
 import MarketSelector from './MarketSelector';
 import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { EditWrapper } from 'components';
+import { EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
+import { formatToCurrency } from 'utils/currency';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 class PairTabs extends Component {
 	state = {
@@ -88,23 +88,14 @@ class PairTabs extends Component {
 			isToolsSelectorVisible,
 		} = this.state;
 
-		const { tickers, location, coins, favourites, pairs } = this.props;
-
-		const pair = pairs[activePairTab] || {};
-		const ticker = tickers[activePairTab] || {};
-		const { symbol } =
-			coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const { increment_price } = pair;
-		const priceDifference =
-			ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
-		const tickerPercent =
-			priceDifference === 0 || ticker.open === 0
-				? 0
-				: (priceDifference / ticker.open) * 100;
-		const priceDifferencePercent = isNaN(tickerPercent)
-			? donutFormatPercentage(0)
-			: donutFormatPercentage(tickerPercent);
+		const { location, favourites, markets } = this.props;
+		const market = markets.find(({ key }) => key === activePairTab) || {};
+		const {
+			pair: { increment_price } = {},
+			ticker: { close } = {},
+			symbol,
+			pairTwo,
+		} = market;
 
 		return (
 			<div className="d-flex justify-content-between">
@@ -158,24 +149,9 @@ class PairTabs extends Component {
 												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
 											</div>
 											<div className="title-font ml-1">
-												{formatToCurrency(ticker.close, increment_price)}
+												{formatToCurrency(close, increment_price)}
 											</div>
-											<div
-												className={
-													priceDifference < 0
-														? 'app-price-diff-down app-bar-price_diff_down'
-														: 'app-bar-price_diff_up app-price-diff-up'
-												}
-											/>
-											<div
-												className={
-													priceDifference < 0
-														? 'title-font app-price-diff-down'
-														: 'title-font app-price-diff-up'
-												}
-											>
-												{priceDifferencePercent}
-											</div>
+											<PriceChange market={market} />
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -201,9 +177,7 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									pairs={pairs}
-									tickers={tickers}
-									coins={coins}
+									markets={markets}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
@@ -250,24 +224,20 @@ class PairTabs extends Component {
 	}
 }
 
-const mapStateToProps = ({
-	app: {
-		language: activeLanguage,
+const mapStateToProps = (state) => {
+	const {
+		app: { language: activeLanguage, pairs, favourites, constants },
+		orderbook: { prices },
+	} = state;
+
+	return {
+		activeLanguage,
 		pairs,
-		tickers,
-		coins,
+		prices,
 		favourites,
 		constants,
-	},
-	orderbook: { prices },
-}) => ({
-	activeLanguage,
-	pairs,
-	tickers,
-	coins,
-	prices,
-	favourites,
-	constants,
-});
+		markets: MarketsSelector(state),
+	};
+};
 
 export default connect(mapStateToProps)(withConfig(PairTabs));

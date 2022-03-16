@@ -10,7 +10,7 @@ const { RangePicker } = DatePicker;
 const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
 
-	const onValuesChange = (values) => {
+	const onValuesChange = (_, values) => {
 		if (values) {
 			if (values.size) {
 				const {
