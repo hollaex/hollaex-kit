@@ -68,6 +68,10 @@ $title-icon--height: 10rem;
 		color: $colors-deactivate;
 	}
 }
+.quick_trade-wrapper.width-none {
+	min-width: unset !important;
+	max-width: unset !important;
+}
 .quick_trade-wrapper {
 	min-width: $wrapper--min-width;
 	max-width: $wrapper--max-width;

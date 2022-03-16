@@ -9090,6 +9090,10 @@ foreignObject {
     font-family: "Open Sans";
     color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.quick_trade-wrapper.width-none {
+  min-width: unset !important;
+  max-width: unset !important; }
+
 .quick_trade-wrapper {
   min-width: 1000px;
   max-width: 1200px;
