@@ -2718,6 +2718,35 @@ table th {
 .highcharts-tick {
   stroke: var(--calculated_secondary-border) !important; }
 
+.trade-history-record-enter {
+  opacity: 0; }
+  .trade-history-record-enter .trade_history-row.sell {
+    color: var(--calculated_trading_selling-related-text) !important;
+    background-color: var(--trading_selling-related-elements) !important; }
+  .trade-history-record-enter .trade_history-row.buy {
+    color: var(--calculated_trading_buying-related-text) !important;
+    background-color: var(--trading_buying-related-elements) !important; }
+
+.trade-history-record-enter-active {
+  opacity: 1;
+  transition: all 0.2s ease-in; }
+  .trade-history-record-enter-active .trade_history-row.sell {
+    color: var(--calculated_trading_selling-related-text) !important;
+    background-color: var(--trading_selling-related-elements) !important; }
+  .trade-history-record-enter-active .trade_history-row.buy {
+    color: var(--calculated_trading_buying-related-text) !important;
+    background-color: var(--trading_buying-related-elements) !important; }
+
+.trade-history-record-enter-done .trade_history-row.sell {
+  color: var(--trading_selling-related-elements);
+  background-color: transparent;
+  transition: all 1s ease-in; }
+
+.trade-history-record-enter-done .trade_history-row.buy {
+  color: var(--trading_buying-related-elements) !important;
+  background-color: transparent;
+  transition: all 1s ease-in; }
+
 .ask,
 .buy {
   color: var(--trading_selling-related-elements); }
