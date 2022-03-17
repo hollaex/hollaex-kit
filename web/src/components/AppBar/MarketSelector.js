@@ -156,9 +156,15 @@ class MarketSelector extends Component {
 		}
 	};
 
+	onMarketClick = (key) => {
+		const { addTradePairTab } = this.props;
+
+		addTradePairTab(key);
+		this.closeAddTabMenu();
+	};
+
 	render() {
 		const {
-			addTradePairTab,
 			wrapperClassName,
 			icons: ICONS,
 			constants,
@@ -224,7 +230,7 @@ class MarketSelector extends Component {
 											</div>
 											<div
 												className="d-flex align-items-center justify-content-between w-100"
-												onClick={() => addTradePairTab(key)}
+												onClick={() => this.onMarketClick(key)}
 											>
 												<div className="d-flex align-items-center">
 													<Image

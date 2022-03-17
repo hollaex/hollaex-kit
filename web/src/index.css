@@ -10573,6 +10573,7 @@ foreignObject {
   overflow: hidden; }
   .slider__button.disabled {
     color: var(--labels_secondary-inactive-label-text-graphics);
+    opacity: 0.5;
     cursor: default; }
 
 .slider__arrow {
