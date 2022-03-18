@@ -2919,6 +2919,13 @@ table th {
   .mobile-tab_market-indicator svg .xht-icon-1 {
     fill: var(--base_background) !important; }
 
+.general-record-enter {
+  opacity: 0; }
+
+.general-record-enter-active {
+  opacity: 1;
+  transition: opacity 1s ease-in; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }

@@ -35,7 +35,7 @@ const DisplayTable = ({
 					'f-1'
 				)}
 			>
-				<TransitionGroup>
+				<TransitionGroup component={null}>
 					{data.map((row, rowIndex) => {
 						const index = row.id || rowIndex;
 						return (

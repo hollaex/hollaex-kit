@@ -288,3 +288,11 @@ $order_entry-column--width-lg: 20rem;
 		}
 	}
 }
+
+.general-record-enter {
+	opacity: 0;
+}
+.general-record-enter-active {
+	opacity: 1;
+	transition: opacity 1s ease-in;
+}
