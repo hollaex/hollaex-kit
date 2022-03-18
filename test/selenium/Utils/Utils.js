@@ -41,7 +41,7 @@ function getNewUser(){
 }
 async function kitLogIn(step,driver,userName,passWord){
 
-	//let driver = await new Builder().forBrowser(browser).build();
+	//let driver = await new Builder().forBrowser('chrome').build();
 
 	
 	//Given User's data
@@ -78,10 +78,10 @@ async function kitLogIn(step,driver,userName,passWord){
 	await driver.findElement(By.css('.holla-button')).click();
 	await sleep(5000);
 	//then the username should be as same as entered 		
-	console.log(step++,'  | assertText | xpath=//*[@id="trade-nav-container"]/div[3]/div[2] |',userName);
+	console.log(step++,'  | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 	await sleep(5000)//driver.wait(until.elementLocated(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')), 20000);
-	await console.log(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText());
-	expect(await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).getText()).to.equal(userName);
+	await console.log(step++,'css=.app-bar-account-content > div:nth-child(2)');
+	expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
 		 
 	console.log(' you suceccefully logged in ',userName);
 	await setStep(step);
@@ -91,7 +91,7 @@ async function kitLogIn(step,driver,userName,passWord){
 }
 async function emailLogIn(step,driver, emailAdmin,passWord){
 	
-	// let driver = await new Builder().forBrowser(browser).build();
+	// let driver = await new Builder().forBrowser('chrome').build();
 	console.log('Entering username and password');
 	console.log(emailPage);
 	await driver.get(emailPage);

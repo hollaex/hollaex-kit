@@ -28,7 +28,7 @@ async function SmartTrade(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 	        util.kitLogIn(step,driver,adminUser,passWord);

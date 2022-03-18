@@ -48,7 +48,7 @@ async function Promotion(){
 			});
 		} 
 				beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -57,7 +57,7 @@ async function Promotion(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+			// await driver.quit();
 		});
 
 		it('Promotion', async function() {
@@ -165,8 +165,8 @@ async function Promotion(){
 			console.log(step++,'  | click | xpath=//*[@id="trade-nav-container"]/div[3]/div[2]) | ');
 			await driver.findElement(By.xpath('//*[@id="trade-nav-container"]/div[3]/div[2]')).click();
 		
-			console.log(step++,'   | click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
-			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)')).click();
+			console.log(step++,'   | click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)')).click();
 			await sleep(5000);
 
 			console.log(step++,'  | click | name=email | ');
@@ -204,7 +204,7 @@ async function Promotion(){
 			console.log(' Fee reduction: ');
 			console.log(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText());
 			console.log(String(util.getPromotionRate()));
-			assert(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText().replace("%"," ") == String(util.getPromotionRate().replace('discount:','reduction:')));
+			assert(await driver.findElement(By.css('.trade-account-secondary-txt > .d-flex > div:nth-child(2)')).getText().toString().replace("%"," ") == String(util.getPromotionRate().replace('discount:','reduction:')));
 		
 			console.log('This is the EndOfTest');
 		});

@@ -31,7 +31,7 @@ async function Kyc(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			driver.manage().window().maximize();
 			vars = {};
 		});
@@ -159,9 +159,15 @@ async function Kyc(){
 			await driver.findElement(By.css('.button:nth-child(1) > span')).click();
 			await sleep(5000);
 
+			console.log(step++,'  | click | css=.ant-modal-close-x| ');
+			await driver.findElement(By.css('.ant-modal-close-x')).click();
+			await sleep(1000);
+
 			console.log(step++,'  | click | css=.modal-button:nth-child(2) > span| ');
 			await driver.findElement(By.css('.modal-button:nth-child(2) > span')).click();
 			await sleep(1000);
+
+
 
 			console.log(step++,'  | assertText | css=.ant-message-custom-content > span:nth-child(2) | Access denied: User is not authorized to access this endpoint');
 			assert(await driver.findElement(By.css('.ant-message-custom-content > span:nth-child(2)')).getText() == 'Access denied: User is not authorized to access this endpoint');
