@@ -2695,6 +2695,25 @@ table th {
 .trade_orderbook-cell .ant-select-selector {
   color: var(--labels_important-active-labels-text-graphics) !important; }
 
+.price-arrow {
+  color: var(--labels_important-active-labels-text-graphics);
+  transition: all 0.2s ease-out 0s;
+  opacity: 0; }
+  .price-arrow.up.entering, .price-arrow.up.exiting {
+    color: var(--trading_buying-related-elements);
+    opacity: 1; }
+  .price-arrow.down.entering, .price-arrow.down.exiting {
+    color: var(--trading_selling-related-elements);
+    opacity: 1; }
+
+.last-price {
+  color: var(--labels_important-active-labels-text-graphics) !important;
+  transition: all 0.2s ease-out 0s; }
+  .last-price.up.entering, .last-price.up.exiting {
+    color: var(--trading_buying-related-elements) !important; }
+  .last-price.down.entering, .last-price.down.exiting {
+    color: var(--trading_selling-related-elements) !important; }
+
 .depth-chart__bids .highcharts-area {
   fill: var(--calculated_trading_buying-sparkline-fill) !important; }
 

@@ -30,9 +30,10 @@ const pushCumulativeAmounts = (orders) => {
 	let cumulativePrice = 0;
 	return orders.map((order) => {
 		const [price, size] = order;
+		const id = price;
 		cumulative += size;
 		cumulativePrice += math.multiply(math.fraction(size), math.fraction(price));
-		return [...order, cumulative, cumulativePrice];
+		return [...order, cumulative, cumulativePrice, id];
 	});
 };
 
