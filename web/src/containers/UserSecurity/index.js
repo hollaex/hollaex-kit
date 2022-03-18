@@ -52,6 +52,7 @@ class UserVerification extends Component {
 		activeTab: 0,
 		jumpToPage: 0,
 		freeze: false,
+		updatedPassword: {},
 	};
 
 	componentDidMount() {
@@ -64,7 +65,10 @@ class UserVerification extends Component {
 		this.openLogins();
 		if (window.location.search && window.location.search.includes('password')) {
 			this.setState({ activeTab: 1 });
-		} else if (window.location.search && window.location.search.includes('apiKeys')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('apiKeys')
+		) {
 			this.setState({ activeTab: 2 });
 		} else {
 			this.setState({ activeTab: 0 });
@@ -102,7 +106,10 @@ class UserVerification extends Component {
 		) {
 			this.calculateTabs(this.props.user, this.state.activeTab);
 		}
-		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+		if (
+			JSON.stringify(prevState.activeTab) !==
+			JSON.stringify(this.state.activeTab)
+		) {
 			this.openCurrentTab();
 		}
 	}
@@ -375,47 +382,89 @@ class UserVerification extends Component {
 	};
 
 	onSubmitChangePassword = (values) => {
-		return resetPassword({
-			old_password: values.old_password,
-			new_password: values.new_password,
-		})
-			.then((res) => {
-				this.setState({
-					dialogIsOpen: true,
-					modalText:
-						STRINGS[
-							'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION'
-						],
-					stringId:
-						'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION',
-				});
-			})
-			.catch((err) => {
-				const _error =
-					err.response && err.response.data
-						? err.response.data.message
-						: err.message;
-				if (!_error) {
-					message.error(STRINGS['CHANGE_PASSWORD_FAILED']);
-				}
-				throw new SubmissionError({ _error });
+		const { otp_enabled } = this.props.user;
+		if (otp_enabled) {
+			this.setState({
+				dialogIsOpen: true,
+				updatedPassword: {
+					old_password: values.old_password,
+					new_password: values.new_password,
+				},
 			});
+		} else {
+			return resetPassword({
+				old_password: values.old_password,
+				new_password: values.new_password,
+			})
+				.then((res) => {
+					this.setState({
+						dialogIsOpen: true,
+						modalText:
+							STRINGS[
+								'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION'
+							],
+						stringId:
+							'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION',
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message;
+					if (!_error) {
+						message.error(STRINGS['CHANGE_PASSWORD_FAILED']);
+					}
+					throw new SubmissionError({ _error });
+				});
+		}
 	};
 
 	onSubmitCancelOTP = (values) => {
 		const { icons: ICONS } = this.props;
-		return otpRevoke({ code: values.otp_code })
-			.then(() => {
-				this.props.otpSetActivated(false);
-				this.setState({
-					dialogIsOpen: true,
-					iconId: 'OTP_DEACTIVATED',
-					icon: ICONS['OTP_DEACTIVATED'],
-					modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
-					stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
+		const { otp_enabled } = this.props.user;
+		const { updatedPassword } = this.state;
+		const body = {
+			...updatedPassword,
+			...values,
+		};
+		if (otp_enabled && Object.keys(updatedPassword).length) {
+			return resetPassword(body)
+				.then((res) => {
+					this.setState({
+						dialogIsOpen: true,
+						modalText:
+							STRINGS[
+								'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION'
+							],
+						stringId:
+							'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION',
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message;
+					if (!_error) {
+						message.error(STRINGS['CHANGE_PASSWORD_FAILED']);
+					}
+					throw new SubmissionError({ _error });
 				});
-			})
-			.catch(errorHandler);
+		} else {
+			return otpRevoke({ code: values.otp_code })
+				.then(() => {
+					this.props.otpSetActivated(false);
+					this.setState({
+						dialogIsOpen: true,
+						iconId: 'OTP_DEACTIVATED',
+						icon: ICONS['OTP_DEACTIVATED'],
+						modalText: STRINGS['ACCOUNT_SECURITY.OTP.DIALOG.REVOKE'],
+						stringId: 'ACCOUNT_SECURITY.OTP.DIALOG.REVOKE',
+					});
+				})
+				.catch(errorHandler);
+		}
 	};
 
 	openOtp = () => {
@@ -427,7 +476,12 @@ class UserVerification extends Component {
 	};
 
 	onCloseDialog = () => {
-		this.setState({ dialogIsOpen: false, iconId: '', icon: '' });
+		this.setState({
+			dialogIsOpen: false,
+			iconId: '',
+			icon: '',
+			updatedPassword: {},
+		});
 	};
 
 	// onSubmitotp = (values) => {

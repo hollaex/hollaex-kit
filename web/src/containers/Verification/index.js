@@ -75,11 +75,20 @@ class Verification extends Component {
 		this.getBankData();
 		if (window.location.search && window.location.search.includes('email')) {
 			this.setState({ activeTab: 0 });
-		} else if (window.location.search && window.location.search.includes('phone')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('phone')
+		) {
 			this.setState({ activeTab: 1 });
-		} else if (window.location.search && window.location.search.includes('identity')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('identity')
+		) {
 			this.setState({ activeTab: 2 });
-		} else if (window.location.search && window.location.search.includes('banks')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('banks')
+		) {
 			this.setState({ activeTab: 3 });
 		}
 		this.openCurrentTab();
@@ -115,7 +124,10 @@ class Verification extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+		if (
+			JSON.stringify(prevState.activeTab) !==
+			JSON.stringify(this.state.activeTab)
+		) {
 			this.openCurrentTab();
 		}
 	}
@@ -124,7 +136,8 @@ class Verification extends Component {
 		let currentTab = '';
 		if (this.state.activeTab === 0) {
 			currentTab = 'email';
-		} if (this.state.activeTab === 1) {
+		}
+		if (this.state.activeTab === 1) {
 			currentTab = 'phone';
 		} else if (this.state.activeTab === 2) {
 			currentTab = 'identity';
@@ -510,10 +523,8 @@ class Verification extends Component {
 	};
 
 	renderContent = (tabs, activeTab) => {
-		console.log("tabs, activeTab", tabs, activeTab);
-		console.log("tabs[activeTab].content", tabs[activeTab].content);
 		return tabs[activeTab].content || <div>c</div>;
-	}
+	};
 
 	renderPageContent = (tabProps) => {
 		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
