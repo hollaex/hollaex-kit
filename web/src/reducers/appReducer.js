@@ -36,6 +36,7 @@ import {
 	CHANGE_PAIR,
 	SET_ACTIVE_ORDERS_MARKET,
 	SET_RECENT_TRADES_MARKETS,
+	SET_BROKER,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -177,6 +178,7 @@ const INITIAL_STATE = {
 	injected_html: {},
 	plugins_injected_html: {},
 	contracts: {},
+	broker: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -212,6 +214,11 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				coins: payload.coins,
+			};
+		case SET_BROKER:
+			return {
+				...state,
+				broker: payload.broker,
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =

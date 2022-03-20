@@ -57,6 +57,7 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
@@ -277,6 +278,13 @@ export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
 		coins,
+	},
+});
+
+export const setBroker = (broker) => ({
+	type: SET_BROKER,
+	payload: {
+		broker,
 	},
 });
 

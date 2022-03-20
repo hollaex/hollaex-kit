@@ -207,7 +207,7 @@ export const EmailSettingsForm = ({
 			return (
 				<div>
 					<div className="content-heading">Complete</div>
-					<div>Your test email is the way!</div>
+					<div>Your test email is on the way!</div>
 					<div className="btn-wrapper btn-width">
 						<Button
 							type="primary"

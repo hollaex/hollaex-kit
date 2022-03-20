@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Transition } from 'react-transition-group';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
@@ -7,15 +8,16 @@ import {
 	PlusSquareOutlined,
 	MinusSquareOutlined,
 	CaretDownOutlined,
+	CaretUpOutlined,
 } from '@ant-design/icons';
 import { Button, Select } from 'antd';
 import math from 'mathjs';
 
 import { calcPercentage } from 'utils/math';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
-import { formatToFixed, formatToCurrency } from '../../../utils/currency';
-import STRINGS from '../../../config/localizedStrings';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { formatToFixed, formatToCurrency } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
 import { opacifyNumber } from 'helpers/opacify';
 
@@ -106,6 +108,8 @@ class Orderbook extends Component {
 		isBase: true,
 		positioned: false,
 		isOpen: false,
+		priceDiff: 0,
+		inProp: false,
 	};
 
 	componentDidMount() {
@@ -143,6 +147,22 @@ class Orderbook extends Component {
 				const { asksWrapperScrollHeight, wrapperScrollTop } = this.state;
 				this.preserveScroll(asksWrapperScrollHeight, wrapperScrollTop);
 			});
+		}
+	}
+
+	UNSAFE_componentWillUpdate(nextProp) {
+		const { lastPrice } = this.props;
+		if (
+			nextProp.lastPrice &&
+			lastPrice &&
+			!math.equal(nextProp.lastPrice, lastPrice)
+		) {
+			const priceDiff = math.subtract(nextProp.lastPrice, lastPrice);
+			this.setState((prevState) => ({
+				...prevState,
+				priceDiff,
+				inProp: !prevState.inProp,
+			}));
 		}
 	}
 
@@ -239,6 +259,21 @@ class Orderbook extends Component {
 		this.setState({ isOpen });
 	};
 
+	getDirBasedClass = (diff, baseClassName = '') => {
+		const direction = diff < 0 ? 'down' : diff > 0 ? 'up' : '';
+		return baseClassName ? `${baseClassName}-${direction}` : direction;
+	};
+
+	getArrow = (diff) => {
+		if (diff > 0) {
+			return <CaretUpOutlined />;
+		} else if (diff < 0) {
+			return <CaretDownOutlined />;
+		} else {
+			return null;
+		}
+	};
+
 	render() {
 		const {
 			asks,
@@ -252,9 +287,15 @@ class Orderbook extends Component {
 			lastPrice,
 		} = this.props;
 
-		const { isBase, positioned, isOpen } = this.state;
+		const {
+			isBase,
+			positioned,
+			isOpen,
+			priceDiff,
+			inProp,
+			dataBlockHeight,
+		} = this.state;
 		// const blockStyle = {};
-		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
@@ -355,11 +396,34 @@ class Orderbook extends Component {
 						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
 						ref={this.setRefs('spreadWrapper')}
 					>
-						<div className="d-flex align-items-center">
-							<div className="trade_orderbook-market-price">
-								{lastPrice ? formatToFixed(lastPrice, increment_price) : null}
-							</div>
-						</div>
+						<Transition in={inProp} timeout={1000}>
+							{(state) => (
+								<div className="d-flex align-items-center">
+									<div
+										className={classnames(
+											'trade_orderbook-market-price',
+											'last-price',
+											state,
+											this.getDirBasedClass(priceDiff)
+										)}
+									>
+										{lastPrice
+											? formatToFixed(lastPrice, increment_price)
+											: null}
+									</div>
+									<div
+										className={classnames(
+											'px-2',
+											'price-arrow',
+											state,
+											this.getDirBasedClass(priceDiff)
+										)}
+									>
+										{this.getArrow(priceDiff)}
+									</div>
+								</div>
+							)}
+						</Transition>
 						<div className="d-flex align-items-center">
 							{STRINGS.formatString(
 								STRINGS['ORDERBOOK_SPREAD'],

@@ -134,6 +134,7 @@ class PairTabs extends Component {
 										}
 									/>
 								}
+								destroyPopupOnHide={true}
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
 								trigger={['click']}

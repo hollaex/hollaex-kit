@@ -30,9 +30,10 @@ const pushCumulativeAmounts = (orders) => {
 	let cumulativePrice = 0;
 	return orders.map((order) => {
 		const [price, size] = order;
+		const id = price;
 		cumulative += size;
 		cumulativePrice += math.multiply(math.fraction(size), math.fraction(price));
-		return [...order, cumulative, cumulativePrice];
+		return [...order, cumulative, cumulativePrice, id];
 	});
 };
 
@@ -143,14 +144,21 @@ export const depthChartSelector = createSelector(
 	}
 );
 
+const pushId = (record) => {
+	const { price, size, timestamp, side } = record;
+	const id = `${price}${size}${timestamp}${side}`;
+	return { id, ...record };
+};
+
 export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,
 	(pairsTrades, pair) => {
 		const data = pairsTrades[pair] || [];
+		const dataWithId = data.map((record) => pushId(record));
 		const sizeArray = data.map(({ size }) => size);
 		const maxAmount = Math.max(...sizeArray);
-		return { data, maxAmount };
+		return { data: dataWithId, maxAmount };
 	}
 );
 

@@ -26,6 +26,7 @@
 
 	&.disabled {
 		color: $colors-deactivate-color2;
+		opacity: 0.5;
 		cursor: default;
 	}
 }
