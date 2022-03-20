@@ -268,3 +268,44 @@ $limit-bar-side--padding: 0.5rem;
 		color: $colors-main-black !important;
 	}
 }
+
+.price-arrow {
+	color: $colors-main-black;
+	transition: all 0.2s ease-out 0s;
+	opacity: 0;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy;
+			opacity: 1;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell;
+			opacity: 1;
+		}
+	}
+}
+
+.last-price {
+	color: $colors-main-black !important;
+	transition: all 0.2s ease-out 0s;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy !important;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell !important;
+		}
+	}
+}
