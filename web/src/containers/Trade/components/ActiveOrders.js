@@ -222,6 +222,7 @@ const ActiveOrders = ({
 					return data.id;
 				}}
 				pageSize={pageSize}
+				cssTransitionClassName="general-record"
 			/>
 		</div>
 	);

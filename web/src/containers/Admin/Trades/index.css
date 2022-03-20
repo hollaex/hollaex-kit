@@ -595,6 +595,9 @@
 .otc-Container .broker-desk-icon {
 	opacity: 0.2;
 }
+.otc-Container .user-search-field {
+	width: 60%;
+}
 .otcdesk-add-pair-wrapper .broker-desk-icon {
 	opacity: 0.1;
 	height: 80px;

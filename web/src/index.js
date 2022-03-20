@@ -58,6 +58,7 @@ import {
 	setOrderLimits,
 	setHelpdeskInfo,
 	setContracts,
+	setBroker,
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
@@ -149,6 +150,7 @@ const getConfigs = async () => {
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setCurrencies(constants.coins));
 	store.dispatch(setContracts(getContracts(constants.coins)));
+	store.dispatch(setBroker(constants.broker));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {

@@ -104,6 +104,7 @@ class Table extends Component {
 			cancelDelayData,
 			className,
 			expandable,
+			cssTransitionClassName,
 		} = this.props;
 
 		const count = this.props.count || this.props.data.length;
@@ -151,6 +152,7 @@ class Table extends Component {
 							data={data}
 							withIcon={withIcon}
 							expandable={expandable}
+							cssTransitionClassName={cssTransitionClassName}
 						/>
 					</table>
 				</div>
@@ -187,6 +189,7 @@ Table.defaultProps = {
 		defaultExpanded: () => false,
 		rowExpandable: () => false,
 	},
+	cssTransitionClassName: '',
 };
 
 export default Table;
