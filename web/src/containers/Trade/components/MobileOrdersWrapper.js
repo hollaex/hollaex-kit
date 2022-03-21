@@ -61,6 +61,7 @@ class MobileOrdersWrapper extends Component {
 			pairs,
 			coins,
 			icons: ICONS,
+			goToTransactionsHistory,
 		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
@@ -73,7 +74,7 @@ class MobileOrdersWrapper extends Component {
 						cancelOrder={this.handleCancelOrders}
 						cancelDelayData={cancelDelayData}
 						cancelAllOrders={this.openConfirm}
-						goToTransactionsHistory={this.props.goToTransactionsHistory}
+						goToTransactionsHistory={goToTransactionsHistory}
 						pair={pair}
 						pairData={pairData}
 						pairs={pairs}

@@ -13,7 +13,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { userTradesSelector } from '../utils';
 import { setRecentTradesMarket } from 'actions/appActions';
 
-const OrdersWrapper = ({
+const RecentTradesWrapper = ({
 	pair,
 	pairData,
 	userTrades,
@@ -38,7 +38,7 @@ const OrdersWrapper = ({
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
 						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-						onClick={goToTransactionsHistory}
+						onClick={() => goToTransactionsHistory('trades')}
 						status="information"
 						className="trade-wrapper-action"
 					/>
@@ -73,7 +73,7 @@ const OrdersWrapper = ({
 	);
 };
 
-OrdersWrapper.defaultProps = {
+RecentTradesWrapper.defaultProps = {
 	userTrades: [],
 };
 
@@ -91,4 +91,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(OrdersWrapper));
+)(withConfig(RecentTradesWrapper));
