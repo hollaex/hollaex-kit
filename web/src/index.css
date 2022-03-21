@@ -2637,6 +2637,10 @@ table th {
       background-color: var(--trading_selling-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-asks {
     color: var(--trading_selling-related-elements); }
+    .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting {
+      background-color: var(--calculated_trading_selling-orderbook-hover); }
+      .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting .trade_orderbook-cell-price {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child {
     background-color: var(--calculated_trading_selling-orderbook-best-bar);
     font-weight: bold; }
@@ -2649,6 +2653,10 @@ table th {
       color: var(--calculated_trading-orderbook-text); }
   .trade_orderbook-wrapper .trade_orderbook-bids {
     color: var(--trading_buying-related-elements); }
+    .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting {
+      background-color: var(--calculated_trading_buying-orderbook-hover); }
+      .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting .trade_orderbook-cell-price {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_buying-related-elements); }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
