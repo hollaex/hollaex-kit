@@ -157,6 +157,17 @@
 
 	.trade_orderbook-asks {
 		color: $trade-asks-color-main;
+
+		.value-row {
+			&.entering,
+			&.exiting {
+				background-color: $selling-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
+			}
+		}
 	}
 
 	.trade_orderbook-asks > .price-row-wrapper:first-child {
@@ -179,6 +190,17 @@
 
 	.trade_orderbook-bids {
 		color: $trade-bids-color-main;
+
+		.value-row {
+			&.entering,
+			&.exiting {
+				background-color: $buying-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
+			}
+		}
 	}
 	.trade_bids-limit_bar {
 		.orderbook-limit_bar-wrapper {

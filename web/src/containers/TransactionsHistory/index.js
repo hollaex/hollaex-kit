@@ -77,11 +77,20 @@ class TransactionsHistory extends Component {
 		} else {
 			this.setActiveTab();
 		}
-		if (window.location.search && window.location.search.includes('order-history')) {
+		if (
+			window.location.search &&
+			window.location.search.includes('order-history')
+		) {
 			this.setState({ activeTab: 1 });
-		} else if (window.location.search && window.location.search.includes('deposit')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('deposit')
+		) {
 			this.setState({ activeTab: 2 });
-		} else if (window.location.search && window.location.search.includes('withdraw')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('withdraw')
+		) {
 			this.setState({ activeTab: 3 });
 		} else {
 			this.setState({ activeTab: 0 });
@@ -89,8 +98,11 @@ class TransactionsHistory extends Component {
 		this.openCurrentTab();
 	}
 
-	componentDidUpdate (prevProps, prevState) {
-		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			JSON.stringify(prevState.activeTab) !==
+			JSON.stringify(this.state.activeTab)
+		) {
 			this.openCurrentTab();
 		}
 	}
@@ -199,7 +211,14 @@ class TransactionsHistory extends Component {
 		this.setState({
 			headers: {
 				orders: isMobile
-					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
+					? generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
 					: generateOrderHistoryHeaders(
 							symbol,
 							pairs,
@@ -209,7 +228,14 @@ class TransactionsHistory extends Component {
 							ICONS
 					  ),
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
+					? generateTradeHeadersMobile(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
 					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
 				deposits: generateDepositsHeaders(
 					symbol,

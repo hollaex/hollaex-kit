@@ -59,7 +59,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 19,
+		h: 17,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -89,9 +89,9 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 11,
+		h: 12,
 		x: 0,
-		y: 19,
+		y: 28,
 		i: 'recent_trades',
 		isDraggable: true,
 		isResizable: true,
@@ -99,9 +99,9 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 10,
+		h: 11,
 		x: 0,
-		y: 30,
+		y: 17,
 		i: 'open_orders',
 		isDraggable: true,
 		isResizable: true,
@@ -258,8 +258,8 @@ class Trade extends PureComponent {
 		}
 	};
 
-	goToTransactionsHistory = () => {
-		this.props.router.push('/transactions');
+	goToTransactionsHistory = (tab = '') => {
+		this.props.router.push(`/transactions${tab ? `?${tab}` : ''} `);
 	};
 
 	goToPair = (pair) => {
