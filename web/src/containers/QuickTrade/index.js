@@ -146,6 +146,7 @@ class QuickTradeContainer extends PureComponent {
 
 	componentDidMount() {
 		const { pairs, tickers, broker } = this.props;
+		const { pair, searchValue } = this.state;
 		if (
 			this.props.constants &&
 			this.props.constants.features &&
@@ -157,21 +158,21 @@ class QuickTradeContainer extends PureComponent {
 		if (this.props.sourceOptions && this.props.sourceOptions.length) {
 			this.constructTarget();
 		}
-		this.handleMarket(pairs, tickers, this.state.searchValue);
+		this.handleMarket(pairs, tickers, searchValue);
 		let existBroker = {};
 		broker.forEach((item) => {
 			const splitPair = item.symbol.split('-');
-			if (
-				this.state.pair === item.symbol ||
-				this.state.pair === `${splitPair[1]}-${splitPair[0]}`
-			) {
+			if (pair === item.symbol || pair === `${splitPair[1]}-${splitPair[0]}`) {
 				existBroker = item;
 			}
 		});
-		if (existBroker) {
+		if (Object.keys(existBroker).length) {
+			if (pairs[pair] === undefined) {
+				this.setState({ isShowChartDetails: false });
+			}
 			this.setState({ isShowChartDetails: true, existBroker });
 		} else {
-			this.setState({ isShowChartDetails: false, existBroker: {} });
+			this.setState({ isShowChartDetails: true, existBroker: {} });
 		}
 	}
 
@@ -245,20 +246,25 @@ class QuickTradeContainer extends PureComponent {
 				selectedTarget,
 			});
 		} else if (this.state.isSelectChange) {
+			const { pair } = this.state;
 			let existBroker = {};
 			this.props.broker.forEach((item) => {
 				const splitPair = item.symbol.split('-');
 				if (
-					this.state.pair === item.symbol ||
-					this.state.pair === `${splitPair[1]}-${splitPair[0]}`
+					pair === item.symbol ||
+					pair === `${splitPair[1]}-${splitPair[0]}`
 				) {
 					existBroker = item;
 				}
 			});
-			if (existBroker) {
-				this.setState({ isShowChartDetails: true, existBroker });
+			if (Object.keys(existBroker).length) {
+				if (this.props.pairs[pair] === undefined) {
+					this.setState({ isShowChartDetails: false });
+				} else {
+					this.setState({ isShowChartDetails: true, existBroker });
+				}
 			} else {
-				this.setState({ isShowChartDetails: false, existBroker: {} });
+				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
 			this.setState({
 				isSelectChange: false,
@@ -455,16 +461,30 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onSelectTarget = (selectedTarget) => {
-		const { tickers, pairs } = this.props;
+		const { tickers, pairs, broker } = this.props;
 		const { selectedSource } = this.state;
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
 
+		let existBroker = {};
+		let pairSymbol = '';
+		broker.forEach((item) => {
+			if (item.symbol === pairName) {
+				existBroker = item;
+				pairSymbol = pairName;
+			} else if (item.symbol === reversePairName) {
+				existBroker = item;
+				pairSymbol = reversePairName;
+			}
+		});
+
 		let tickerClose;
 		let side;
 		let pair;
-		if (pairs[pairName]) {
+		if (Object.keys(existBroker).length) {
+			pair = pairSymbol;
+		} else if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
@@ -486,6 +506,7 @@ class QuickTradeContainer extends PureComponent {
 			tickerClose,
 			selectedTarget,
 			isSelectChange: true,
+			existBroker,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -493,16 +514,44 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers, pairs } = this.props;
-		const targetOptions = this.getTargetOptions(selectedSource);
-		const selectedTarget = targetOptions[0];
+		const { tickers, pairs, broker, sourceOptions } = this.props;
+		let targetOptions = this.getTargetOptions(selectedSource);
+		let selectedTarget = targetOptions && targetOptions[0];
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
+
+		let existBroker = {};
+		let pairSymbol = '';
+		broker.forEach((item) => {
+			const splitPair = item.symbol.split('-');
+			if (item.symbol === `${splitPair[1]}-${selectedSource}`) {
+				existBroker = item;
+				pairSymbol = `${splitPair[1]}-${selectedSource}`;
+			} else if (item.symbol === `${selectedSource}-${splitPair[1]}`) {
+				existBroker = item;
+				pairSymbol = `${selectedSource}-${splitPair[1]}`;
+			}
+		});
 
 		let tickerClose;
 		let side;
 		let pair;
-		if (pairs[pairName]) {
+		if (Object.keys(existBroker).length) {
+			pair = pairSymbol;
+			selectedTarget = pairSymbol.split('-')[1];
+			let targetOptionData = [];
+			broker.map((item) => {
+				return sourceOptions.forEach((key) => {
+					if (
+						item.symbol === `${key}-${selectedSource}` ||
+						item.symbol === `${selectedSource}-${key}`
+					) {
+						targetOptionData.push(key);
+					}
+				});
+			});
+			targetOptions = targetOptionData;
+		} else if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
@@ -527,6 +576,7 @@ class QuickTradeContainer extends PureComponent {
 			selectedTarget,
 			targetOptions: targetOptions,
 			isSelectChange: true,
+			existBroker,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -579,10 +629,18 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	getTargetOptions = (sourceKey) => {
-		const { sourceOptions, pairs } = this.props;
+		const { sourceOptions, pairs, broker } = this.props;
+		let brokerPairs = {};
+		broker.forEach((br) => {
+			brokerPairs[br.symbol] = br;
+		});
 
 		return sourceOptions.filter(
-			(key) => pairs[`${key}-${sourceKey}`] || pairs[`${sourceKey}-${key}`]
+			(key) =>
+				pairs[`${key}-${sourceKey}`] ||
+				pairs[`${sourceKey}-${key}`] ||
+				brokerPairs[`${sourceKey}-${key}`] ||
+				brokerPairs[`${key}-${sourceKey}`]
 		);
 	};
 
@@ -731,6 +789,7 @@ class QuickTradeContainer extends PureComponent {
 			isShowChartDetails,
 			brokerTargetAmount,
 			brokerSourceAmount,
+			existBroker,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -779,12 +838,14 @@ class QuickTradeContainer extends PureComponent {
 			return <Loader background={false} />;
 		}
 
-		const targetValue = Object.keys(this.state.existBroker).length
+		const targetValue = Object.keys(existBroker).length
 			? brokerTargetAmount
 			: targetAmount;
-		const sourceValue = Object.keys(this.state.existBroker).length
+		const sourceValue = Object.keys(existBroker).length
 			? brokerSourceAmount
 			: sourceAmount;
+		const isExistBroker = Object.keys(existBroker).length ? true : false;
+
 		return (
 			<div className="h-100">
 				<div id="quick-trade-header"></div>
@@ -828,6 +889,7 @@ class QuickTradeContainer extends PureComponent {
 						constants={constants}
 						estimatedPrice={estimatedPrice}
 						isShowChartDetails={isShowChartDetails}
+						isExistBroker={isExistBroker}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
