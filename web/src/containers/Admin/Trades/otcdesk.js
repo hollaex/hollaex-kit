@@ -49,6 +49,7 @@ const OtcDeskContainer = ({
 	const [userData, setUserData] = useState([]);
 	const [pairBaseBalance, setPairBaseBalance] = useState(0);
 	const [pair2Balance, setPair2Balance] = useState(0);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
 
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
@@ -112,18 +113,18 @@ const OtcDeskContainer = ({
 	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
 
 	useEffect(() => {
-		const pairBase =
-			(userData &&
-				userData[0] &&
-				userData[0].balance &&
-				userData[0].balance[`${previewData.pair_base}_available`]) ||
-			0;
-		const pair2 =
-			(userData &&
-				userData[0] &&
-				userData[0].balance &&
-				userData[0].balance[`${previewData.pair_2}_available`]) ||
-			0;
+		let pairBase = balanceData[`${previewData.pair_base}_available`] || 0;
+		let pair2 = balanceData[`${previewData.pair_2}_available`] || 0;
+		let emailData = {};
+		userData.forEach((data) => {
+			if (selectedEmailData.label === data.email) {
+				emailData = data;
+			}
+		});
+		if (emailData && emailData.balance) {
+			pairBase = emailData.balance[`${previewData.pair_base}_available`] || 0;
+			pair2 = emailData.balance[`${previewData.pair_2}_available`] || 0;
+		}
 		if (pairBase !== 0 && pair2 !== 0) {
 			setPairBaseBalance(pairBase);
 			setPair2Balance(pair2);
@@ -137,7 +138,26 @@ const OtcDeskContainer = ({
 			setPairBaseBalance(0);
 			setPair2Balance(0);
 		}
-	}, [userData, previewData]);
+	}, [userData, previewData, balanceData, selectedEmailData]);
+
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+		setSelectedEmailData(emailData);
+		handlePreviewChange(emailId, 'user_id');
+		handleSearch(emailData.label);
+	};
+
+	const handleClosePopup = () => {
+		setSelectedEmailData({});
+		handleClose();
+	};
 
 	const getBrokerData = async () => {
 		setTableLoading(true);
@@ -742,6 +762,10 @@ const OtcDeskContainer = ({
 				handleSearch={handleSearch}
 				pairBaseBalance={pairBaseBalance}
 				pair2Balance={pair2Balance}
+				getAllUserData={getAllUserData}
+				handleEmailChange={handleEmailChange}
+				handleClosePopup={handleClosePopup}
+				selectedEmailData={selectedEmailData}
 			/>
 		</div>
 	);

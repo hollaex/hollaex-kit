@@ -13,75 +13,16 @@ import {
 import { Button, Select } from 'antd';
 import math from 'mathjs';
 
-import { calcPercentage } from 'utils/math';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
-import { formatToFixed, formatToCurrency } from 'utils/currency';
+import { formatToFixed } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
-import { opacifyNumber } from 'helpers/opacify';
+import PriceRow from './PriceRow';
 
 const { Option } = Select;
 
 const DEPTH_LEVELS = [1, 10, 100, 1000];
-
-const PriceRow = (
-	side,
-	increment_price,
-	increment_size,
-	onPriceClick,
-	onAmountClick,
-	maxCumulative,
-	isBase
-) => ([price, amount, cumulative, cumulativePrice], index) => {
-	const ACCFillClassName = `fill fill-${side}`;
-	const ACCFillStyle = {
-		backgroundSize: `${calcPercentage(cumulative, maxCumulative)}% 100%`,
-	};
-
-	const fillClassName = `fill fill-${side}`;
-	const fillStyle = {
-		backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
-	};
-	const totalAmount = isBase ? cumulative : cumulativePrice;
-
-	return (
-		<div
-			key={`${side}-${price}`}
-			className={classnames('price-row-wrapper', ACCFillClassName)}
-			style={ACCFillStyle}
-		>
-			<div
-				className={classnames(
-					'd-flex value-row align-items-center',
-					fillClassName
-				)}
-				style={fillStyle}
-			>
-				<div
-					className={`f-1 trade_orderbook-cell trade_orderbook-cell-price pointer`}
-					onClick={onPriceClick(price)}
-				>
-					{formatToCurrency(price, increment_price)}
-				</div>
-				<div
-					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
-					onClick={onAmountClick(amount)}
-				>
-					{opacifyNumber(formatToCurrency(amount, increment_size))}
-				</div>
-				<div
-					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
-					onClick={onAmountClick(totalAmount)}
-				>
-					{isBase
-						? formatToCurrency(cumulative, increment_size)
-						: formatToCurrency(cumulativePrice, increment_price)}
-				</div>
-			</div>
-		</div>
-	);
-};
 
 const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
@@ -380,17 +321,19 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map(
-							PriceRow(
-								'ask',
-								pairData.increment_price,
-								pairData.increment_size,
-								this.onPriceClick,
-								this.onAmountClick,
-								maxCumulative,
-								isBase
-							)
-						)}
+						{asks.map((record) => (
+							<PriceRow
+								side="ask"
+								key={record[4]}
+								record={record}
+								increment_price={pairData.increment_price}
+								increment_size={pairData.increment_size}
+								onPriceClick={this.onPriceClick}
+								onAmountClick={this.onAmountClick}
+								maxCumulative={maxCumulative}
+								isBase={isBase}
+							/>
+						))}
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
@@ -442,17 +385,19 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map(
-							PriceRow(
-								'bid',
-								pairData.increment_price,
-								pairData.increment_size,
-								this.onPriceClick,
-								this.onAmountClick,
-								maxCumulative,
-								isBase
-							)
-						)}
+						{bids.map((record) => (
+							<PriceRow
+								side="bid"
+								key={record[4]}
+								record={record}
+								increment_price={pairData.increment_price}
+								increment_size={pairData.increment_size}
+								onPriceClick={this.onPriceClick}
+								onAmountClick={this.onAmountClick}
+								maxCumulative={maxCumulative}
+								isBase={isBase}
+							/>
+						))}
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">

@@ -147,7 +147,11 @@ class PairTabs extends Component {
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
 											<div className="app_bar-currency-txt">
-												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+												{symbol && symbol.toUpperCase()}/
+												{pairTwo &&
+													pairTwo.symbol &&
+													pairTwo.symbol.toUpperCase()}
+												:
 											</div>
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}

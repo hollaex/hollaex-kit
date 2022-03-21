@@ -54,7 +54,7 @@ class QuickTrade extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.market !== prevProps.market) {
+		if (this.props.market && this.props.market !== prevProps.market) {
 			const keyData = this.props.market.key.split('-');
 			this.setState({
 				market: this.props.market,
@@ -126,6 +126,7 @@ class QuickTrade extends Component {
 			user,
 			estimatedPrice,
 			isShowChartDetails,
+			isExistBroker,
 		} = this.props;
 		const {
 			inProp,
@@ -166,8 +167,10 @@ class QuickTrade extends Component {
 			type: 'line',
 		};
 		const selectedSourceBalance =
+			selectedSource &&
 			userBalance[`${selectedSource.toLowerCase()}_available`];
 		const selectedTargetBalance =
+			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
 		return (
 			<div className="quick_trade-container">
@@ -382,6 +385,8 @@ class QuickTrade extends Component {
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
 								pair={key ? key : ''}
+								isShowChartDetails={isShowChartDetails}
+								isExistBroker={isExistBroker}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -396,9 +401,12 @@ class QuickTrade extends Component {
 								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
 								pair={key ? key : ''}
+								isShowChartDetails={isShowChartDetails}
+								isExistBroker={isExistBroker}
 							/>
 							<div className="small-text">
-								{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								{selectedTarget && selectedTarget.toUpperCase()}{' '}
+								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.targetTotalBalance(selectedTargetBalance)}
