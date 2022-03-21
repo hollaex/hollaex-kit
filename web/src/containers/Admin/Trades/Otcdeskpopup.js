@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import { Input, Button, Select, Modal, InputNumber, Radio } from 'antd';
 import {
 	ExclamationCircleFilled,
@@ -55,28 +55,10 @@ const Otcdeskpopup = ({
 	handleSearch,
 	pairBaseBalance,
 	pair2Balance,
+	handleEmailChange,
+	handleClosePopup,
+	selectedEmailData,
 }) => {
-	const [selectedEmailData, setSelectedEmailData] = useState({});
-
-	const handleEmailChange = (value) => {
-		let emailId = parseInt(value);
-		let emailData = {};
-		emailOptions &&
-			emailOptions.forEach((item) => {
-				if (item.value === emailId) {
-					emailData = item;
-				}
-			});
-		setSelectedEmailData(emailData);
-		handlePreviewChange(emailId, 'user_id');
-		handleSearch(emailData.label);
-	};
-
-	const handleClosePopup = () => {
-		setSelectedEmailData({});
-		handleClose();
-	};
-
 	const renderErrorMsg = () => {
 		return (
 			<div className="d-flex align-items-center error-container">
@@ -730,7 +712,9 @@ const Otcdeskpopup = ({
 						</div>
 						<div className="mb-4">
 							Available balance on{' '}
-							{emailOptions && emailOptions[0] && emailOptions[0].label}:
+							{(selectedEmailData && selectedEmailData.label) ||
+								(user && user.email)}
+							:
 						</div>
 						<div className="mb-4">
 							<div className="d-flex align-items-center coin-image">

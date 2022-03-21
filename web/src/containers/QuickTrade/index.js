@@ -32,10 +32,18 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
 		super(props);
-		const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
+		const {
+			routeParams,
+			sourceOptions,
+			tickers,
+			pairs,
+			router,
+			broker,
+		} = this.props;
 
 		const pairKeys = Object.keys(pairs);
 		const flippedPair = this.flipPair(routeParams.pair);
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		let pair;
 		let side;
@@ -48,6 +56,18 @@ class QuickTradeContainer extends PureComponent {
 			side = 'buy';
 			tickerClose = close;
 		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (brokerPairs.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (brokerPairs.includes(flippedPair)) {
 			originalPair = routeParams.pair;
 			pair = flippedPair;
 			const { close } = tickers[pair] || {};
@@ -166,11 +186,13 @@ class QuickTradeContainer extends PureComponent {
 				existBroker = item;
 			}
 		});
+		const flipPair = this.flipPair(pair);
 		if (Object.keys(existBroker).length) {
-			if (pairs[pair] === undefined) {
-				this.setState({ isShowChartDetails: false });
+			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+				this.setState({ isShowChartDetails: true, existBroker });
+			} else {
+				this.setState({ isShowChartDetails: false, existBroker });
 			}
-			this.setState({ isShowChartDetails: true, existBroker });
 		} else {
 			this.setState({ isShowChartDetails: true, existBroker: {} });
 		}
@@ -197,9 +219,17 @@ class QuickTradeContainer extends PureComponent {
 				JSON.stringify(this.props.routeParams.pair) &&
 			!this.state.isSelectChange
 		) {
-			const { routeParams, sourceOptions, tickers, pairs, router } = this.props;
+			const {
+				routeParams,
+				sourceOptions,
+				tickers,
+				pairs,
+				router,
+				broker,
+			} = this.props;
 			const pairKeys = Object.keys(pairs);
 			const flippedPair = this.flipPair(routeParams.pair);
+			const brokerPairs = broker.map((br) => br.symbol);
 
 			let pair;
 			let side;
@@ -212,6 +242,18 @@ class QuickTradeContainer extends PureComponent {
 				side = 'buy';
 				tickerClose = close;
 			} else if (pairKeys.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (brokerPairs.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (brokerPairs.includes(flippedPair)) {
 				originalPair = routeParams.pair;
 				pair = flippedPair;
 				const { close } = tickers[pair] || {};
@@ -230,6 +272,26 @@ class QuickTradeContainer extends PureComponent {
 			const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
 			const targetOptions = this.getTargetOptions(selectedSource);
 			const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+			let existBroker = {};
+			this.props.broker.forEach((item) => {
+				const splitPair = item.symbol.split('-');
+				if (
+					pair === item.symbol ||
+					pair === `${splitPair[1]}-${splitPair[0]}`
+				) {
+					existBroker = item;
+				}
+			});
+			const flipPair = this.flipPair(pair);
+			if (Object.keys(existBroker).length) {
+				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+					this.setState({ isShowChartDetails: true, existBroker });
+				} else {
+					this.setState({ isShowChartDetails: false, existBroker });
+				}
+			} else {
+				this.setState({ isShowChartDetails: true, existBroker: {} });
+			}
 
 			this.props.setPriceEssentials({
 				side,
@@ -247,6 +309,7 @@ class QuickTradeContainer extends PureComponent {
 			});
 		} else if (this.state.isSelectChange) {
 			const { pair } = this.state;
+			const { pairs } = this.props;
 			let existBroker = {};
 			this.props.broker.forEach((item) => {
 				const splitPair = item.symbol.split('-');
@@ -257,11 +320,12 @@ class QuickTradeContainer extends PureComponent {
 					existBroker = item;
 				}
 			});
+			const flipPair = this.flipPair(pair);
 			if (Object.keys(existBroker).length) {
-				if (this.props.pairs[pair] === undefined) {
-					this.setState({ isShowChartDetails: false });
-				} else {
+				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 					this.setState({ isShowChartDetails: true, existBroker });
+				} else {
+					this.setState({ isShowChartDetails: false, existBroker });
 				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
@@ -463,34 +527,24 @@ class QuickTradeContainer extends PureComponent {
 	onSelectTarget = (selectedTarget) => {
 		const { tickers, pairs, broker } = this.props;
 		const { selectedSource } = this.state;
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
 
-		let existBroker = {};
-		let pairSymbol = '';
-		broker.forEach((item) => {
-			if (item.symbol === pairName) {
-				existBroker = item;
-				pairSymbol = pairName;
-			} else if (item.symbol === reversePairName) {
-				existBroker = item;
-				pairSymbol = reversePairName;
-			}
-		});
-
 		let tickerClose;
 		let side;
 		let pair;
-		if (Object.keys(existBroker).length) {
-			pair = pairSymbol;
-		} else if (pairs[pairName]) {
-			const { close } = tickers[pairName];
+		if (pairs[pairName] || brokerPairs.includes(pairName)) {
+			const { close } = tickers[pairName] || {};
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (pairs[reversePairName]) {
-			const { close } = tickers[reversePairName];
+		} else if (
+			pairs[reversePairName] ||
+			brokerPairs.includes(reversePairName)
+		) {
+			const { close } = tickers[reversePairName] || {};
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
@@ -506,7 +560,6 @@ class QuickTradeContainer extends PureComponent {
 			tickerClose,
 			selectedTarget,
 			isSelectChange: true,
-			existBroker,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -514,50 +567,26 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers, pairs, broker, sourceOptions } = this.props;
+		const { tickers, pairs, broker } = this.props;
 		let targetOptions = this.getTargetOptions(selectedSource);
 		let selectedTarget = targetOptions && targetOptions[0];
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
-
-		let existBroker = {};
-		let pairSymbol = '';
-		broker.forEach((item) => {
-			const splitPair = item.symbol.split('-');
-			if (item.symbol === `${splitPair[1]}-${selectedSource}`) {
-				existBroker = item;
-				pairSymbol = `${splitPair[1]}-${selectedSource}`;
-			} else if (item.symbol === `${selectedSource}-${splitPair[1]}`) {
-				existBroker = item;
-				pairSymbol = `${selectedSource}-${splitPair[1]}`;
-			}
-		});
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		let tickerClose;
 		let side;
 		let pair;
-		if (Object.keys(existBroker).length) {
-			pair = pairSymbol;
-			selectedTarget = pairSymbol.split('-')[1];
-			let targetOptionData = [];
-			broker.map((item) => {
-				return sourceOptions.forEach((key) => {
-					if (
-						item.symbol === `${key}-${selectedSource}` ||
-						item.symbol === `${selectedSource}-${key}`
-					) {
-						targetOptionData.push(key);
-					}
-				});
-			});
-			targetOptions = targetOptionData;
-		} else if (pairs[pairName]) {
-			const { close } = tickers[pairName];
+		if (pairs[pairName] || brokerPairs.includes(pairName)) {
+			const { close } = tickers[pairName] || {};
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (pairs[reversePairName]) {
-			const { close } = tickers[reversePairName];
+		} else if (
+			pairs[reversePairName] ||
+			brokerPairs.includes(reversePairName)
+		) {
+			const { close } = tickers[reversePairName] || {};
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
@@ -576,7 +605,6 @@ class QuickTradeContainer extends PureComponent {
 			selectedTarget,
 			targetOptions: targetOptions,
 			isSelectChange: true,
-			existBroker,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -692,7 +720,7 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeTargetAmount = (targetAmount) => {
 		const { existBroker } = this.state;
-		if (Object.keys(existBroker).length) {
+		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
 		} else {
 			this.props.setPriceEssentials({
@@ -705,7 +733,7 @@ class QuickTradeContainer extends PureComponent {
 
 	onChangeSourceAmount = (sourceAmount) => {
 		const { existBroker } = this.state;
-		if (Object.keys(existBroker).length) {
+		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
 		} else {
 			this.props.setPriceEssentials({
@@ -838,13 +866,16 @@ class QuickTradeContainer extends PureComponent {
 			return <Loader background={false} />;
 		}
 
-		const targetValue = Object.keys(existBroker).length
-			? brokerTargetAmount
-			: targetAmount;
-		const sourceValue = Object.keys(existBroker).length
-			? brokerSourceAmount
-			: sourceAmount;
-		const isExistBroker = Object.keys(existBroker).length ? true : false;
+		const targetValue =
+			existBroker && Object.keys(existBroker).length
+				? brokerTargetAmount
+				: targetAmount;
+		const sourceValue =
+			existBroker && Object.keys(existBroker).length
+				? brokerSourceAmount
+				: sourceAmount;
+		const isExistBroker =
+			existBroker && Object.keys(existBroker).length ? true : false;
 
 		return (
 			<div className="h-100">
