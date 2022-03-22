@@ -68,6 +68,7 @@ class OrdersWrapper extends Component {
 			tool,
 			activeOrdersMarket,
 			setActiveOrdersMarket,
+			goToTransactionsHistory,
 		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
@@ -82,7 +83,7 @@ class OrdersWrapper extends Component {
 								text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 								iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
 								iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-								onClick={this.props.goToTransactionsHistory}
+								onClick={() => goToTransactionsHistory('order-history')}
 								status="information"
 								className="trade-wrapper-action"
 							/>

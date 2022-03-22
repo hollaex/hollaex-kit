@@ -192,6 +192,7 @@ class TradeHistory extends Component {
 					headers={this.state.headers}
 					data={data}
 					// rowClassName="trade_history-row-wrapper"
+					cssTransitionClassName="trade-history-record"
 				/>
 			</div>
 		);

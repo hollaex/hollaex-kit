@@ -30,9 +30,10 @@ const pushCumulativeAmounts = (orders) => {
 	let cumulativePrice = 0;
 	return orders.map((order) => {
 		const [price, size] = order;
+		const id = price;
 		cumulative += size;
 		cumulativePrice += math.multiply(math.fraction(size), math.fraction(price));
-		return [...order, cumulative, cumulativePrice];
+		return [...order, cumulative, cumulativePrice, id];
 	});
 };
 
@@ -111,46 +112,21 @@ export const orderbookSelector = createSelector(
 	}
 );
 
-export const depthChartSelector = createSelector(
-	[orderbookSelector],
-	({ asks: fullAsks, bids: fullBids }) => {
-		const asks = fullAsks.map(([orderPrice, , accSize]) => [
-			orderPrice,
-			accSize,
-		]);
-		const bids = fullBids.map(([orderPrice, , accSize]) => [
-			orderPrice,
-			accSize,
-		]);
-		return [
-			{
-				name: 'Asks',
-				data: asks,
-				className: 'depth-chart__asks',
-				marker: {
-					enabled: false,
-				},
-			},
-			{
-				name: 'Bids',
-				data: bids,
-				className: 'depth-chart__bids',
-				marker: {
-					enabled: false,
-				},
-			},
-		];
-	}
-);
+const pushId = (record) => {
+	const { price, size, timestamp, side } = record;
+	const id = `${price}${size}${timestamp}${side}`;
+	return { id, ...record };
+};
 
 export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,
 	(pairsTrades, pair) => {
 		const data = pairsTrades[pair] || [];
+		const dataWithId = data.map((record) => pushId(record));
 		const sizeArray = data.map(({ size }) => size);
 		const maxAmount = Math.max(...sizeArray);
-		return { data, maxAmount };
+		return { data: dataWithId, maxAmount };
 	}
 );
 
@@ -330,5 +306,66 @@ export const MarketsSelector = createSelector(
 		});
 
 		return markets;
+	}
+);
+
+const calculateSymmetricExtrems = (center, max, min) => {
+	if (center && max && min) {
+		const span = math.min(
+			math.subtract(center, min),
+			math.subtract(max, center)
+		);
+		return { max: math.add(center, span), min: math.subtract(center, span) };
+	} else {
+		return {};
+	}
+};
+
+export const depthChartSelector = createSelector(
+	[orderbookSelector, marketPriceSelector],
+	({ asks: fullAsks, bids: fullBids }, price) => {
+		const asks = fullAsks.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		const bids = fullBids.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+
+		const series = [
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+			},
+			{
+				name: 'Bids',
+				data: bids,
+				className: 'depth-chart__bids',
+				marker: {
+					enabled: false,
+				},
+			},
+		];
+
+		const min = math.min(
+			bids.map(([price]) => price),
+			0
+		);
+		const max = math.max(
+			asks.map(([price]) => price),
+			0
+		);
+		const extremes = calculateSymmetricExtrems(price, max, min);
+
+		return {
+			price,
+			series,
+			extremes,
+		};
 	}
 );

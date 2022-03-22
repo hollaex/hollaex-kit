@@ -201,9 +201,21 @@ const PublicInfo = ({
 									: STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE_PERCENTLESS']}
 							</div>
 						</div>
-						<div className="ml-4 pl-3">
+						<div className="d-flex ml-4 pl-3">
 							<ConnectWrapper>
 								<div className="important-text">{formatToken(myStake)}</div>
+								<div className="pl-2">
+									(
+									<span
+										className="blue-link underline-text pointer"
+										onClick={() => setActiveTab(TABS.MY_STAKING.key)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW">
+											{STRINGS['STAKE_DETAILS.VIEW']}
+										</EditWrapper>
+									</span>
+									)
+								</div>
 							</ConnectWrapper>
 						</div>
 					</div>
@@ -218,20 +230,8 @@ const PublicInfo = ({
 								)}
 							</div>
 						</div>
-						<div className="d-flex ml-4 pl-3">
+						<div className="ml-4 pl-3">
 							<div className="important-text">{formatToken(othersStake)}</div>
-							<div className="pl-2">
-								(
-								<span
-									className="blue-link underline-text pointer"
-									onClick={() => setActiveTab(TABS.MY_STAKING.key)}
-								>
-									<EditWrapper stringId="STAKE_DETAILS.VIEW">
-										{STRINGS['STAKE_DETAILS.VIEW']}
-									</EditWrapper>
-								</span>
-								)
-							</div>
 						</div>
 					</div>
 				</div>

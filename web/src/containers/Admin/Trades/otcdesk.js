@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { Table, Button, message, Spin } from 'antd';
 import { MinusCircleFilled } from '@ant-design/icons';
+import _debounce from 'lodash/debounce';
 
 import { STATIC_ICONS } from 'config/icons';
 import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
@@ -11,6 +12,7 @@ import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
 import Otcdeskpopup from './Otcdeskpopup';
+import { requestUsers } from '../ListUsers/actions';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
@@ -43,6 +45,11 @@ const OtcDeskContainer = ({
 	const [deskStateData, setdeskStateData] = useState({});
 	const [isOpenDesk, setOpenDesk] = useState(false);
 	const [tableLoading, setTableLoading] = useState(false);
+	const [emailOptions, setEmailOptions] = useState([]);
+	const [userData, setUserData] = useState([]);
+	const [pairBaseBalance, setPairBaseBalance] = useState(0);
+	const [pair2Balance, setPair2Balance] = useState(0);
+	const [selectedEmailData, setSelectedEmailData] = useState({});
 
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
@@ -52,6 +59,12 @@ const OtcDeskContainer = ({
 	useEffect(() => {
 		getBrokerData();
 	}, []);
+
+	useEffect(() => {
+		if (isOpen) {
+			getAllUserData();
+		}
+	}, [isOpen]);
 
 	useEffect(() => {
 		setPricesAndAsset(balanceData, coinData);
@@ -99,6 +112,53 @@ const OtcDeskContainer = ({
 		}
 	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
 
+	useEffect(() => {
+		let pairBase = balanceData[`${previewData.pair_base}_available`] || 0;
+		let pair2 = balanceData[`${previewData.pair_2}_available`] || 0;
+		let emailData = {};
+		userData.forEach((data) => {
+			if (selectedEmailData.label === data.email) {
+				emailData = data;
+			}
+		});
+		if (emailData && emailData.balance) {
+			pairBase = emailData.balance[`${previewData.pair_base}_available`] || 0;
+			pair2 = emailData.balance[`${previewData.pair_2}_available`] || 0;
+		}
+		if (pairBase !== 0 && pair2 !== 0) {
+			setPairBaseBalance(pairBase);
+			setPair2Balance(pair2);
+		} else if (pairBase === 0 && pair2 !== 0) {
+			setPairBaseBalance(0);
+			setPair2Balance(pair2);
+		} else if (pairBase !== 0 && pair2 === 0) {
+			setPairBaseBalance(pairBase);
+			setPair2Balance(0);
+		} else {
+			setPairBaseBalance(0);
+			setPair2Balance(0);
+		}
+	}, [userData, previewData, balanceData, selectedEmailData]);
+
+	const handleEmailChange = (value) => {
+		let emailId = parseInt(value);
+		let emailData = {};
+		emailOptions &&
+			emailOptions.forEach((item) => {
+				if (item.value === emailId) {
+					emailData = item;
+				}
+			});
+		setSelectedEmailData(emailData);
+		handlePreviewChange(emailId, 'user_id');
+		handleSearch(emailData.label);
+	};
+
+	const handleClosePopup = () => {
+		setSelectedEmailData({});
+		handleClose();
+	};
+
 	const getBrokerData = async () => {
 		setTableLoading(true);
 		try {
@@ -113,10 +173,32 @@ const OtcDeskContainer = ({
 		}
 	};
 
+	const getAllUserData = async (params = {}) => {
+		try {
+			const res = await requestUsers(params);
+			if (res && res.data) {
+				const userData = res.data.map((user) => ({
+					label: user.email,
+					value: user.id,
+				}));
+				setEmailOptions(userData);
+				setUserData(res.data);
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	const searchUser = (searchText, type) => {
+		getAllUserData({ search: searchText }, type);
+	};
+
+	const handleSearch = _debounce(searchUser, 1000);
+
 	const createBrokerData = async () => {
 		const body = {
 			...previewData,
-			user_id: user.id,
+			user_id: previewData.user_id,
 			symbol: `${previewData.pair_base}-${previewData.pair_2}`,
 			sell_price: parseFloat(previewData.sell_price),
 			buy_price: parseFloat(previewData.buy_price),
@@ -157,10 +239,10 @@ const OtcDeskContainer = ({
 	const updateBrokerData = async (params) => {
 		const body = {
 			...params,
-			user_id: user.id,
+			user_id: params.user_id,
 			sell_price: parseFloat(params.sell_price),
 			buy_price: parseFloat(params.buy_price),
-			paused: params.paused ? params.paused : previewData.paused,
+			paused: params ? params.paused : previewData.paused,
 		};
 		delete body.pair_base;
 		delete body.pair_2;
@@ -513,11 +595,7 @@ const OtcDeskContainer = ({
 	};
 
 	const handlePriceNext = () => {
-		if (balanceData[`${previewData.pair_base}_available`] !== 0) {
-			moveToStep('with-balance');
-		} else {
-			moveToStep('zero-balance');
-		}
+		moveToStep('with-balance');
 	};
 
 	const moveToStep = (value) => {
@@ -534,6 +612,9 @@ const OtcDeskContainer = ({
 		setIsOpen(false);
 		setIsEdit(false);
 		setdeskStateData({});
+		setEmailOptions([]);
+		setUserData([]);
+		moveToStep('step1');
 	};
 
 	const getSearchResult = (coinData, balance, oraclePrices) => {
@@ -677,6 +758,14 @@ const OtcDeskContainer = ({
 				setPricing={setPricing}
 				setType={setType}
 				status={status}
+				emailOptions={emailOptions}
+				handleSearch={handleSearch}
+				pairBaseBalance={pairBaseBalance}
+				pair2Balance={pair2Balance}
+				getAllUserData={getAllUserData}
+				handleEmailChange={handleEmailChange}
+				handleClosePopup={handleClosePopup}
+				selectedEmailData={selectedEmailData}
 			/>
 		</div>
 	);

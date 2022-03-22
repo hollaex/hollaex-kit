@@ -2637,6 +2637,10 @@ table th {
       background-color: var(--trading_selling-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-asks {
     color: var(--trading_selling-related-elements); }
+    .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting {
+      background-color: var(--calculated_trading_selling-orderbook-hover); }
+      .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting .trade_orderbook-cell-price {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child {
     background-color: var(--calculated_trading_selling-orderbook-best-bar);
     font-weight: bold; }
@@ -2649,6 +2653,10 @@ table th {
       color: var(--calculated_trading-orderbook-text); }
   .trade_orderbook-wrapper .trade_orderbook-bids {
     color: var(--trading_buying-related-elements); }
+    .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting {
+      background-color: var(--calculated_trading_buying-orderbook-hover); }
+      .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting .trade_orderbook-cell-price {
+        color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_buying-related-elements); }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
@@ -2695,6 +2703,25 @@ table th {
 .trade_orderbook-cell .ant-select-selector {
   color: var(--labels_important-active-labels-text-graphics) !important; }
 
+.price-arrow {
+  color: var(--labels_important-active-labels-text-graphics);
+  transition: all 0.2s ease-out 0s;
+  opacity: 0; }
+  .price-arrow.up.entering, .price-arrow.up.exiting {
+    color: var(--trading_buying-related-elements);
+    opacity: 1; }
+  .price-arrow.down.entering, .price-arrow.down.exiting {
+    color: var(--trading_selling-related-elements);
+    opacity: 1; }
+
+.last-price {
+  color: var(--labels_important-active-labels-text-graphics) !important;
+  transition: all 0.2s ease-out 0s; }
+  .last-price.up.entering, .last-price.up.exiting {
+    color: var(--trading_buying-related-elements) !important; }
+  .last-price.down.entering, .last-price.down.exiting {
+    color: var(--trading_selling-related-elements) !important; }
+
 .depth-chart__bids .highcharts-area {
   fill: var(--calculated_trading_buying-sparkline-fill) !important; }
 
@@ -2717,6 +2744,35 @@ table th {
 .highcharts-axis-line,
 .highcharts-tick {
   stroke: var(--calculated_secondary-border) !important; }
+
+.trade-history-record-enter {
+  opacity: 0; }
+  .trade-history-record-enter .trade_history-row.sell {
+    color: var(--calculated_trading_selling-related-text) !important;
+    background-color: var(--trading_selling-related-elements) !important; }
+  .trade-history-record-enter .trade_history-row.buy {
+    color: var(--calculated_trading_buying-related-text) !important;
+    background-color: var(--trading_buying-related-elements) !important; }
+
+.trade-history-record-enter-active {
+  opacity: 1;
+  transition: all 0.2s ease-in; }
+  .trade-history-record-enter-active .trade_history-row.sell {
+    color: var(--calculated_trading_selling-related-text) !important;
+    background-color: var(--trading_selling-related-elements) !important; }
+  .trade-history-record-enter-active .trade_history-row.buy {
+    color: var(--calculated_trading_buying-related-text) !important;
+    background-color: var(--trading_buying-related-elements) !important; }
+
+.trade-history-record-enter-done .trade_history-row.sell {
+  color: var(--trading_selling-related-elements);
+  background-color: transparent;
+  transition: all 1s ease-in; }
+
+.trade-history-record-enter-done .trade_history-row.buy {
+  color: var(--trading_buying-related-elements) !important;
+  background-color: transparent;
+  transition: all 1s ease-in; }
 
 .ask,
 .buy {
@@ -2889,6 +2945,13 @@ table th {
     stroke: var(--calculated_base_top-bar-navigation_text); }
   .mobile-tab_market-indicator svg .xht-icon-1 {
     fill: var(--base_background) !important; }
+
+.general-record-enter {
+  opacity: 0; }
+
+.general-record-enter-active {
+  opacity: 1;
+  transition: opacity 1s ease-in; }
 
 .quote-container {
   background-color: var(--base_background);
@@ -9090,6 +9153,10 @@ foreignObject {
     font-family: "Open Sans";
     color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.quick_trade-wrapper.width-none {
+  min-width: unset !important;
+  max-width: unset !important; }
+
 .quick_trade-wrapper {
   min-width: 1000px;
   max-width: 1200px;
@@ -10573,6 +10640,7 @@ foreignObject {
   overflow: hidden; }
   .slider__button.disabled {
     color: var(--labels_secondary-inactive-label-text-graphics);
+    opacity: 0.5;
     cursor: default; }
 
 .slider__arrow {
@@ -10784,6 +10852,60 @@ foreignObject {
   color: var(--specials_notifications-alerts-warnings);
   padding-top: 3rem;
   padding-bottom: 3rem; }
+
+.price-change .price-diff {
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  padding: 0 5px;
+  border-radius: 2px;
+  transition: all 0.2s ease-out 0s;
+  margin: auto 0; }
+  .price-change .price-diff:before {
+    visibility: hidden;
+    display: inline-block !important;
+    margin-right: 0.5rem;
+    position: relative !important;
+    top: calc(50% - 0.6rem); }
+  .price-change .price-diff.down {
+    color: var(--trading_selling-related-elements); }
+    .price-change .price-diff.down:before {
+      visibility: visible;
+      content: "";
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-bottom: none !important;
+      border-left: 0.4rem solid transparent !important;
+      border-right: 0.4rem solid transparent !important;
+      border-top: 0.4rem solid var(--trading_selling-related-elements);
+      margin-top: 0rem; }
+  .price-change .price-diff.up {
+    color: var(--trading_buying-related-elements); }
+    .price-change .price-diff.up:before {
+      visibility: visible;
+      content: "";
+      display: block;
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-top: none !important;
+      border-left: 0.4rem solid transparent !important;
+      border-right: 0.4rem solid transparent !important;
+      border-bottom: 0.4rem solid var(--trading_buying-related-elements);
+      margin-bottom: 0rem;
+      margin-bottom: 0.2rem; }
+
+.price-change .glance-down.entering, .price-change .glance-down.exiting {
+  color: var(--calculated_trading_selling-related-text);
+  background-color: var(--trading_selling-related-elements); }
+  .price-change .glance-down.entering:before, .price-change .glance-down.exiting:before {
+    border-color: var(--calculated_trading_selling-related-text); }
+
+.price-change .glance-up.entering, .price-change .glance-up.exiting {
+  color: var(--calculated_trading_buying-related-text);
+  background-color: var(--trading_buying-related-elements); }
+  .price-change .glance-up.entering:before, .price-change .glance-up.exiting:before {
+    border-color: var(--calculated_trading_buying-related-text); }
 
 html {
   font-size: 12px !important;

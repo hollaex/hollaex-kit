@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import classnames from 'classnames';
 
 const RENDER_CELL = (row, key, cellIndex) => (
@@ -80,21 +81,47 @@ const TableBody = ({
 	headers,
 	cancelDelayData,
 	expandable,
+	cssTransitionClassName,
 }) => (
 	<tbody
 		className={classnames('table_body-wrapper', {
 			with_icon: withIcon || false,
 		})}
 	>
-		{data.map((row, rowIndex) => (
-			<TableRow
-				headers={headers}
-				cancelDelayData={cancelDelayData}
-				expandable={expandable}
-				row={row}
-				rowIndex={rowIndex}
-			/>
-		))}
+		{cssTransitionClassName ? (
+			<TransitionGroup component={null}>
+				{data.map((row, rowIndex) => {
+					const index = row.id || rowIndex;
+					return (
+						<CSSTransition
+							key={index}
+							timeout={500}
+							classNames={cssTransitionClassName}
+						>
+							<TableRow
+								headers={headers}
+								cancelDelayData={cancelDelayData}
+								expandable={expandable}
+								row={row}
+								rowIndex={index}
+							/>
+						</CSSTransition>
+					);
+				})}
+			</TransitionGroup>
+		) : (
+			<Fragment>
+				{data.map((row, rowIndex) => (
+					<TableRow
+						headers={headers}
+						cancelDelayData={cancelDelayData}
+						expandable={expandable}
+						row={row}
+						rowIndex={rowIndex}
+					/>
+				))}
+			</Fragment>
+		)}
 	</tbody>
 );
 

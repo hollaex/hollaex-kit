@@ -268,7 +268,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.WITHDRAWAL_REQUEST) {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
+		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');

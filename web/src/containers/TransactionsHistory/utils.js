@@ -806,18 +806,42 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 	};
 };
 
-export const generateTradeHeadersMobile = (symbol, pairs, coins, discount) => {
+export const generateTradeHeadersMobile = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
 	const KEYS = ['pair', 'side', 'size', 'price', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+	return generateTradeHeaders(
+		symbol,
+		pairs,
+		coins,
+		discount,
+		prices,
+		icons
+	).filter(({ key }) => KEYS.indexOf(key) > -1);
 };
 
-export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
+export const generateLessTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
 	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+	return generateTradeHeaders(
+		symbol,
+		pairs,
+		coins,
+		discount,
+		prices,
+		icons
+	).filter(({ key }) => KEYS.indexOf(key) > -1);
 };
 
 export const generateRecentTradeHeaders = (

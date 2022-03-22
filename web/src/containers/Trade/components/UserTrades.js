@@ -37,6 +37,7 @@ const RecentTrades = ({
 				rowKey={(data) => {
 					return data.id;
 				}}
+				cssTransitionClassName="general-record"
 			/>
 		</div>
 	);

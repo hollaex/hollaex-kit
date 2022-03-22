@@ -54,7 +54,7 @@ class QuickTrade extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.market !== prevProps.market) {
+		if (this.props.market && this.props.market !== prevProps.market) {
 			const keyData = this.props.market.key.split('-');
 			this.setState({
 				market: this.props.market,
@@ -125,6 +125,8 @@ class QuickTrade extends Component {
 			coins,
 			user,
 			estimatedPrice,
+			isShowChartDetails,
+			isExistBroker,
 		} = this.props;
 		const {
 			inProp,
@@ -165,8 +167,10 @@ class QuickTrade extends Component {
 			type: 'line',
 		};
 		const selectedSourceBalance =
+			selectedSource &&
 			userBalance[`${selectedSource.toLowerCase()}_available`];
 		const selectedTargetBalance =
+			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
 		return (
 			<div className="quick_trade-container">
@@ -198,8 +202,12 @@ class QuickTrade extends Component {
 						{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
 					</div>
 				</div>
-				<div className={classnames('quick_trade-wrapper', 'd-flex')}>
-					{!isMobile ? (
+				<div
+					className={classnames('quick_trade-wrapper', 'd-flex', {
+						'width-none': !isShowChartDetails,
+					})}
+				>
+					{!isMobile && isShowChartDetails ? (
 						<div className="trade-details-wrapper">
 							<div className="trade-details-content">
 								<div className="d-flex pb-30">
@@ -286,9 +294,7 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.high}</div>
-											<div className="fullname">
-												{pair_2.toUpperCase()}
-											</div>
+											<div className="fullname">{pair_2.toUpperCase()}</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -299,9 +305,7 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.low}</div>
-											<div className="fullname">
-												{pair_2.toUpperCase()}
-											</div>
+											<div className="fullname">{pair_2.toUpperCase()}</div>
 										</div>
 									</div>
 								</div>
@@ -314,9 +318,7 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.open}</div>
-											<div className="fullname">
-												{pair_2.toUpperCase()}
-											</div>
+											<div className="fullname">{pair_2.toUpperCase()}</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -327,9 +329,7 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.close}</div>
-											<div className="fullname">
-												{pair_2.toUpperCase()}
-											</div>
+											<div className="fullname">{pair_2.toUpperCase()}</div>
 										</div>
 									</div>
 								</div>
@@ -341,9 +341,7 @@ class QuickTrade extends Component {
 									</div>
 									<div className="d-flex">
 										<div className="f-size-16 pr-2">{ticker.volume}</div>
-										<div className="fullname">
-											{pairBase.toUpperCase()}
-										</div>
+										<div className="fullname">{pairBase.toUpperCase()}</div>
 									</div>
 								</div>
 							</div>
@@ -387,6 +385,8 @@ class QuickTrade extends Component {
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
 								pair={key ? key : ''}
+								isShowChartDetails={isShowChartDetails}
+								isExistBroker={isExistBroker}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -401,9 +401,12 @@ class QuickTrade extends Component {
 								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
 								pair={key ? key : ''}
+								isShowChartDetails={isShowChartDetails}
+								isExistBroker={isExistBroker}
 							/>
 							<div className="small-text">
-								{selectedTarget.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								{selectedTarget && selectedTarget.toUpperCase()}{' '}
+								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.targetTotalBalance(selectedTargetBalance)}

@@ -51,7 +51,29 @@ const Otcdeskpopup = ({
 	setPricing,
 	setType,
 	status,
+	emailOptions,
+	handleSearch,
+	pairBaseBalance,
+	pair2Balance,
+	handleEmailChange,
+	handleClosePopup,
+	selectedEmailData,
 }) => {
+	const renderErrorMsg = () => {
+		return (
+			<div className="d-flex align-items-center error-container">
+				<span className="error">
+					{' '}
+					<ExclamationCircleFilled />
+				</span>
+				<span className="balance-error-text pl-2">
+					{' '}
+					There doesn't seem to be any available balance for this coins.
+				</span>
+			</div>
+		);
+	};
+
 	const renderModalContent = () => {
 		switch (type) {
 			case 'step1':
@@ -171,7 +193,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={handleClose}
+								onClick={handleClosePopup}
 							>
 								Back
 							</Button>
@@ -180,100 +202,6 @@ const Otcdeskpopup = ({
 								className="green-btn"
 								type="primary"
 								onClick={() => moveToStep('deal-params')}
-							>
-								Next
-							</Button>
-						</div>
-					</div>
-				);
-			case 'zero-balance':
-				return (
-					<div className="otc-Container">
-						<div className="title mb-3">Add OTC Broker Desk</div>
-						<div>Set inventory</div>
-						<div className="sub-content mb-3">
-							<div>
-								Inventory are funds used for satisfying all users orders.
-							</div>
-							<div>
-								It is the responsibility of the operator to allocate an adequate
-								amount of both assets.{' '}
-							</div>
-							<div>
-								Simply define an account with sufficient balance that will be
-								used to source inventory from.
-							</div>
-						</div>
-						<div className="mb-5">
-							<div className="mb-2">Account to source inventory from</div>
-							<Input
-								ref={account_input}
-								placeholder="zero-balance@exchange.com"
-								addonAfter={
-									<div onClick={() => handleInput('zero-balance')}>Edit</div>
-								}
-								onChange={(e) =>
-									handlePreviewChange(e.target.value, 'inventory_email')
-								}
-							/>
-						</div>
-						<div className="mb-4">Available balance on {user.email}:</div>
-						<div className="mb-4 coin-image">
-							<div className="d-flex align-items-center ">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_base} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_base)}:{' '}
-									{balanceData[`${previewData.pair_base}_available`] || 0}
-								</div>
-							</div>
-							<div className="d-flex align-items-center error-container">
-								<span className="error">
-									{' '}
-									<ExclamationCircleFilled />
-								</span>
-								<span className="balance-error-text pl-2">
-									{' '}
-									There doesn't seem to be any available balance for this coins.
-								</span>
-							</div>
-						</div>
-						<div className="mb-4 coin-image">
-							<div className="d-flex align-items-center ">
-								<div className=" mr-3">
-									<Coins type={previewData.pair_2} />
-								</div>
-								<div>
-									{getFullName(previewData.pair_2)}:{' '}
-									{balanceData[`${previewData.pair_2}_available`] || 0}
-								</div>
-							</div>
-							<div className="d-flex align-items-center error-container">
-								<span className="error">
-									{' '}
-									<ExclamationCircleFilled />
-								</span>
-								<span className="balance-error-text pl-2">
-									{' '}
-									There doesn't seem to be any available balance for this coins
-								</span>
-							</div>
-						</div>
-						<div className="btn-wrapper">
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => handleBack('coin-pricing')}
-							>
-								Back
-							</Button>
-							<div className="separator"></div>
-							<Button
-								className="green-btn"
-								type="primary"
-								onClick={() => moveToStep('preview')}
-								disabled={previewData && !previewData.inventory_email}
 							>
 								Next
 							</Button>
@@ -600,14 +528,14 @@ const Otcdeskpopup = ({
 								</div>
 								<div className="right-content">
 									<div className="title font-weight-bold">Fund Source</div>
-									<div>Account: {previewData.inventory_email}</div>
 									<div>
-										{previewData.pair_base}:{' '}
-										{balanceData[`${previewData.pair_base}_available`]}
+										Account: {selectedEmailData && selectedEmailData.label}
 									</div>
 									<div>
-										{previewData.pair_2}:{' '}
-										{balanceData[`${previewData.pair_2}_available`]}
+										{previewData.pair_base}: {pairBaseBalance}
+									</div>
+									<div>
+										{previewData.pair_2}: {pair2Balance}
 									</div>
 								</div>
 							</div>
@@ -727,43 +655,77 @@ const Otcdeskpopup = ({
 			case 'with-balance':
 				return (
 					<div className="otc-Container">
-						<div className="title mb-3">Funding account source</div>
-						<div>Set the source of the inventory funds</div>
-						<div className="sub-content mb-3">
+						{pair2Balance !== 0 && pairBaseBalance !== 0 ? (
 							<div>
-								Inventory are funds used for satisfying all users orders.
+								<div className="title mb-3">Funding account source</div>
+								<div>Set the source of the inventory funds</div>
+								<div className="sub-content mb-3">
+									<div>
+										Inventory are funds used for satisfying all users orders.
+									</div>
+									<div>
+										It is the responsibility of the operator to allocate an
+										adequate amount of both assets.{' '}
+									</div>
+									<div>
+										Simply define an account with sufficient balance that will
+										be used to source inventory from.
+									</div>
+								</div>
 							</div>
+						) : (
 							<div>
-								It is the responsibility of the operator to allocate an adequate
-								amount of both assets.{' '}
+								<div className="title mb-3">Add OTC Broker Desk</div>
+								<div>Set inventory</div>
+								<div className="sub-content mb-3">
+									<div>
+										Inventory are funds used for satisfying all users orders.
+									</div>
+									<div>
+										It is the responsibility of the operator to allocate an
+										adequate amount of both assets.{' '}
+									</div>
+									<div>
+										Simply define an account with sufficient balance that will
+										be used to source inventory from.
+									</div>
+								</div>
 							</div>
-							<div>
-								Simply define an account with sufficient balance that will be
-								used to source inventory from.
-							</div>
-						</div>
+						)}
 						<div className="mb-5">
 							<div className="mb-2">Account to source inventory from</div>
-							<Input
+							<Select
+								showSearch
 								ref={account_input}
 								placeholder="admin@exchange.com"
-								addonAfter={
-									<div onClick={() => handleInput('with-balance')}>Edit</div>
-								}
-								onChange={(e) => handlePreviewChange(e.target.value, 'email')}
-							/>
+								className="user-search-field"
+								onSearch={(text) => handleSearch(text)}
+								filterOption={() => true}
+								value={selectedEmailData && selectedEmailData.label}
+								onChange={(text) => handleEmailChange(text)}
+							>
+								{emailOptions &&
+									emailOptions.map((email) => (
+										<Option key={email.value}>{email.label}</Option>
+									))}
+							</Select>
 						</div>
-						<div className="mb-4">Available balance on {user.email}:</div>
+						<div className="mb-4">
+							Available balance on{' '}
+							{(selectedEmailData && selectedEmailData.label) ||
+								(user && user.email)}
+							:
+						</div>
 						<div className="mb-4">
 							<div className="d-flex align-items-center coin-image">
 								<div className=" mr-3">
 									<Coins type={previewData.pair_base} />
 								</div>
 								<div>
-									{getFullName(previewData.pair_base)}:{' '}
-									{balanceData[`${previewData.pair_base}_available`] || 0}
+									{getFullName(previewData.pair_base)}: {pairBaseBalance}
 								</div>
 							</div>
+							{pairBaseBalance === 0 ? renderErrorMsg() : null}
 						</div>
 						<div className="mb-4">
 							<div className="d-flex align-items-center coin-image">
@@ -771,20 +733,22 @@ const Otcdeskpopup = ({
 									<Coins type={previewData.pair_2} />
 								</div>
 								<div>
-									{getFullName(previewData.pair_2)}:{' '}
-									{balanceData[`${previewData.pair_2}_available`] || 0}
+									{getFullName(previewData.pair_2)}: {pair2Balance}
 								</div>
 							</div>
+							{pair2Balance === 0 ? renderErrorMsg() : null}
 						</div>
-						<div className="message">
-							<div className="icon">
-								<ExclamationCircleOutlined />
+						{pair2Balance !== 0 && pairBaseBalance !== 0 ? (
+							<div className="message">
+								<div className="icon">
+									<ExclamationCircleOutlined />
+								</div>
+								<div className="message-subHeading">
+									Please check if the amounts are sufficiently sustainable
+									before proceeding.
+								</div>
 							</div>
-							<div className="message-subHeading">
-								Please check if the amounts are sufficiently sustainable before
-								proceeding.
-							</div>
-						</div>
+						) : null}
 						<div className="btn-wrapper">
 							<Button
 								className="green-btn"
@@ -798,6 +762,7 @@ const Otcdeskpopup = ({
 								className="green-btn"
 								type="primary"
 								onClick={() => moveToStep('preview')}
+								disabled={selectedEmailData && !selectedEmailData.label}
 							>
 								Next
 							</Button>
@@ -825,7 +790,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={handleClose}
+								onClick={handleClosePopup}
 							>
 								Back
 							</Button>
@@ -867,7 +832,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={handleClose}
+								onClick={handleClosePopup}
 							>
 								Back
 							</Button>
@@ -934,7 +899,7 @@ const Otcdeskpopup = ({
 			<Modal
 				visible={isOpen}
 				width={type === 'remove-otcdesk' ? '480px' : '520px'}
-				onCancel={handleClose}
+				onCancel={handleClosePopup}
 				footer={null}
 			>
 				{renderModalContent()}

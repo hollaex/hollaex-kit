@@ -368,7 +368,7 @@ class App extends Component {
 				return 'home';
 			default:
 		}
-		if (path.indexOf('/trade/') === 0) {
+		if (path.indexOf('/trade/') === 0 || path.indexOf('trade/') === 0) {
 			return 'trade';
 		} else if (path.indexOf('/quick-trade/') === 0) {
 			return 'quick-trade';
