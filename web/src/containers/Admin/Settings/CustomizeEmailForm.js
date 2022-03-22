@@ -32,7 +32,13 @@ const CustomizeEmailForm = ({
 
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
-			form.setFieldsValue({ format: JSON.stringify(emailInfo, undefined, 5) });
+			form.setFieldsValue({
+				format: JSON.stringify(emailInfo.html, undefined, 5).replace(
+					/["']/g,
+					''
+				),
+			});
+			form.setFieldsValue({ title: emailInfo.title });
 		}
 	}, [emailInfo, form]);
 
@@ -104,13 +110,12 @@ const CustomizeEmailForm = ({
 	};
 
 	const handleConfirmation = (formProps) => {
-		const htmlData =
-			formProps && formProps.format ? JSON.parse(formProps.format) : {};
+		const { language, mailType, format, title } = formProps;
 		const body = {
-			language: selectedLanguage,
-			type: selectedEmail.toLowerCase(),
-			html: htmlData.html,
-			title: htmlData.title,
+			language,
+			type: mailType.toLowerCase(),
+			html: format,
+			title,
 		};
 		setButtonSubmitting(true);
 		updateEmailStrings(body)
@@ -292,6 +297,13 @@ const CustomizeEmailForm = ({
 						</div>
 					</div>
 				)}
+				<div className="sub-title">Title</div>
+				<div>
+					<Form.Item name="title">
+						<Input />
+					</Form.Item>
+				</div>
+				<div className="sub-title">HTML content</div>
 				<div className="text-area">
 					<Form.Item name="format">
 						<TextArea placeholder="format" rows={20} disabled={!isDisable} />

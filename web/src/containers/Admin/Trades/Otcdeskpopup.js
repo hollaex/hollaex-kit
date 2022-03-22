@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useRef } from 'react';
 import { Input, Button, Select, Modal, InputNumber, Radio } from 'antd';
 import {
 	ExclamationCircleFilled,
@@ -32,22 +32,18 @@ const Otcdeskpopup = ({
 	getCoinSource,
 	coinSecondary,
 	isExistsPair,
-	handleClose,
 	moveToStep,
-	handleInput,
 	getFullName,
 	handleBack,
 	isManual,
 	coins,
 	user,
-	balanceData,
 	handleDealBack,
 	handlePriceNext,
 	handleBrokerChange,
 	handlePaused,
 	deleteBrokerData,
 	isOpen,
-	account_input,
 	setPricing,
 	setType,
 	status,
@@ -59,6 +55,14 @@ const Otcdeskpopup = ({
 	handleClosePopup,
 	selectedEmailData,
 }) => {
+	const searchRef = useRef(null);
+
+	const handleEditInput = () => {
+		if (searchRef && searchRef.current && searchRef.current.focus) {
+			searchRef.current.focus();
+		}
+	};
+
 	const renderErrorMsg = () => {
 		return (
 			<div className="d-flex align-items-center error-container">
@@ -529,7 +533,9 @@ const Otcdeskpopup = ({
 								<div className="right-content">
 									<div className="title font-weight-bold">Fund Source</div>
 									<div>
-										Account: {selectedEmailData && selectedEmailData.label}
+										Account:{' '}
+										{(selectedEmailData && selectedEmailData.label) ||
+											(user && user.email)}
 									</div>
 									<div>
 										{previewData.pair_base}: {pairBaseBalance}
@@ -694,21 +700,32 @@ const Otcdeskpopup = ({
 						)}
 						<div className="mb-5">
 							<div className="mb-2">Account to source inventory from</div>
-							<Select
-								showSearch
-								ref={account_input}
-								placeholder="admin@exchange.com"
-								className="user-search-field"
-								onSearch={(text) => handleSearch(text)}
-								filterOption={() => true}
-								value={selectedEmailData && selectedEmailData.label}
-								onChange={(text) => handleEmailChange(text)}
-							>
-								{emailOptions &&
-									emailOptions.map((email) => (
-										<Option key={email.value}>{email.label}</Option>
-									))}
-							</Select>
+							<div className="d-flex align-items-center">
+								<Select
+									ref={(inp) => {
+										searchRef.current = inp;
+									}}
+									showSearch
+									placeholder="admin@exchange.com"
+									className="user-search-field"
+									onSearch={(text) => handleSearch(text)}
+									filterOption={() => true}
+									value={
+										(selectedEmailData && selectedEmailData.label) ||
+										(user && user.email)
+									}
+									onChange={(text) => handleEmailChange(text)}
+									showAction={['focus', 'click']}
+								>
+									{emailOptions &&
+										emailOptions.map((email) => (
+											<Option key={email.value}>{email.label}</Option>
+										))}
+								</Select>
+								<div className="edit-link" onClick={handleEditInput}>
+									Edit
+								</div>
+							</div>
 						</div>
 						<div className="mb-4">
 							Available balance on{' '}
@@ -762,7 +779,6 @@ const Otcdeskpopup = ({
 								className="green-btn"
 								type="primary"
 								onClick={() => moveToStep('preview')}
-								disabled={selectedEmailData && !selectedEmailData.label}
 							>
 								Next
 							</Button>
