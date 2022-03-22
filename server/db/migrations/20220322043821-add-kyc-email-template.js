@@ -22,7 +22,7 @@ module.exports = {
 };
 
 const doc_verified_email_template = {
-	"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target='_blank'>Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+	"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
 	"title": "KYC Documents Approved"
 };
 const doc_rejected_email_template = {
