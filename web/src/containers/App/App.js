@@ -493,6 +493,7 @@ class App extends Component {
 						onViewMarketsClick={this.onViewMarketsClick}
 						closeAddTabMenu={this.onCloseDialog}
 						addTradePairTab={this.goToPair}
+						wrapperClassName="modal-market-menu"
 					/>
 				);
 			case RISK_PORTFOLIO_ORDER_WARING:
@@ -870,6 +871,9 @@ class App extends Component {
 													activeNotification.type ===
 														NOTIFICATIONS.EARLY_UNSTAKE ||
 													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
+											},
+											{
+												menu: activeNotification.type === MARKET_SELECTOR,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}

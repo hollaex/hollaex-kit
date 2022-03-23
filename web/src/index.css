@@ -506,6 +506,8 @@ table th {
   .popup_info-wrapper .popup_info-text,
   .otp_secret {
     font-size: 1rem !important; }
+  .action_notification-text {
+    line-height: 1rem !important; }
   .presentation_container,
   .trade_tabs-container {
     width: 100rem !important; }
@@ -541,6 +543,8 @@ table th {
   .popup_info-wrapper .popup_info-text,
   .otp_secret {
     font-size: 0.9rem !important; }
+  .action_notification-text {
+    line-height: 0.9rem !important; }
   .verification_container .header-content {
     font-size: 1.2rem !important; }
   .app_bar-pair-tab {
@@ -1387,7 +1391,8 @@ table th {
   font-size: 13px !important; }
 
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
-  font-size: 1.2rem !important; }
+  font-size: 1.2rem !important;
+  line-height: 1.2rem !important; }
 
 .layout-mobile .wallet-container .accordion_wrapper .accordion_section {
   border-width: 2px; }
@@ -1410,7 +1415,8 @@ table th {
     margin: 0 auto;
     width: 18rem; }
     .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .td-wallet .deposit-withdrawal-wrapper .action_notification-wrapper .action_notification-text {
-      font-size: 1.2rem; }
+      font-size: 1.2rem;
+      line-height: 1.2rem; }
   .layout-mobile .wallet-container .wallet-assets_block .wallet-assets_block-table .currency_ball-wrapper.s {
     width: 2.5rem;
     height: 2.5rem;
@@ -1568,7 +1574,8 @@ table th {
   position: absolute; }
 
 .wallet-notification .action_notification-text {
-  font-size: 1.1rem !important; }
+  font-size: 1.1rem !important;
+  line-height: 1.1rem !important; }
 
 .direction_ltr .wallet-container .wallet-header_block {
   font-family: "Raleway"; }
@@ -1719,7 +1726,8 @@ table th {
   font-size: 1.2rem; }
 
 .layout-mobile .presentation_container .inner_container .action_notification-wrapper .action_notification-text {
-  font-size: 1.2rem; }
+  font-size: 1.2rem;
+  line-height: 1.2rem; }
 
 .layout-mobile .presentation_container .inner_container .holla-button {
   font-size: 13px !important; }
@@ -2215,7 +2223,8 @@ table th {
   height: 1.5rem; }
 
 .layout-mobile .action_notification-wrapper .action_notification-text {
-  font-size: 1.2rem; }
+  font-size: 1.2rem;
+  line-height: 1.2rem; }
 
 .layout-mobile .trade_block-wrapper .trade_block-content {
   padding: 0;
@@ -2228,7 +2237,8 @@ table th {
   background-color: inherit;
   padding: 0; }
   .layout-mobile .trade_block-wrapper .trade_block-title .action_notification-wrapper .action_notification-text {
-    font-size: 13px !important; }
+    font-size: 13px !important;
+    line-height: 1.2rem !important; }
 
 .layout-mobile .trade_history-wrapper {
   height: 38vh; }
@@ -5315,6 +5325,183 @@ table th {
 .layout-mobile .transaction-history-wrapper {
   padding-top: 0 !important; }
 
+.modal-market-menu {
+  background-color: var(--base_background);
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+  .modal-market-menu .field-wrapper {
+    margin: 0; }
+    .modal-market-menu .field-wrapper .field-content-outline:before, .modal-market-menu .field-wrapper .field-content-outline:after {
+      height: 0.5px;
+      opacity: 0.7; }
+  .modal-market-menu .app-bar-search-field {
+    flex-direction: row;
+    padding-left: 0.5rem; }
+  .modal-market-menu .app-bar-add-tab-search {
+    height: 4rem; }
+  .modal-market-menu .app-bar-tab-menu-list {
+    background-color: var(--base_top-bar-navigation);
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    font-size: 0.9rem;
+    height: 2.5rem;
+    padding: 0.5rem 0.8rem;
+    width: 3.2rem;
+    max-width: 3.2rem;
+    /* (22 -6) / 5 */ }
+  .modal-market-menu .active-tab {
+    background-color: var(--base_background);
+    color: var(--labels_important-active-labels-text-graphics);
+    font-weight: bold; }
+  .modal-market-menu .app-bar-add-tab-content {
+    font-size: 0.9rem;
+    overflow-y: scroll;
+    padding: 0.3rem 0; }
+    .modal-market-menu .app-bar-add-tab-content .scroll-view {
+      overflow-y: auto;
+      height: calc( 100vh - 19rem - 8rem); }
+  .modal-market-menu .app-bar-tab-overflow-content {
+    background-color: var(--base_background);
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    font-size: 0.9rem;
+    overflow-y: scroll;
+    padding: 0.3rem 0; }
+  .modal-market-menu .active-market {
+    background-color: var(--base_secondary-navigation-bar);
+    color: var(--labels_secondary-inactive-label-text-graphics); }
+  .modal-market-menu .app-bar-add-tab-content-list {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    height: 2.2rem; }
+    .modal-market-menu .app-bar-add-tab-content-list:hover {
+      background-color: var(--base_secondary-navigation-bar);
+      color: var(--labels_secondary-inactive-label-text-graphics); }
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .btc0,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .btc1,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .eth0,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .eth1,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .bch-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .xrp-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .xht-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .xmr-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .xlm-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .eos-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .trx-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .ada-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .bnb-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .tusd-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .dai-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .ltc-icon,
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .default-icon {
+        fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+      .modal-market-menu .app-bar-add-tab-content-list:hover svg .st0 {
+        fill: var(--labels_secondary-inactive-label-text-graphics) !important;
+        stroke-width: 0rem; }
+  .modal-market-menu .app-bar-tab-setting {
+    margin: 0.3rem 0.4rem 0 0.4rem;
+    width: 1rem; }
+  .modal-market-menu .currency-ball-image-wrapper {
+    height: 17px;
+    padding-bottom: 7px; }
+  .modal-market-menu .app-bar-add-tab-icons {
+    width: 1.2rem;
+    margin: 0.6rem 0.3rem 0 0.3rem; }
+  .modal-market-menu .app-bar-tab-setting svg .btc0,
+  .modal-market-menu .app-bar-tab-setting svg .btc1,
+  .modal-market-menu .app-bar-tab-setting svg .eth0,
+  .modal-market-menu .app-bar-tab-setting svg .eth1,
+  .modal-market-menu .app-bar-tab-setting svg .bch-icon,
+  .modal-market-menu .app-bar-tab-setting svg .xrp-icon,
+  .modal-market-menu .app-bar-tab-setting svg .xht-icon,
+  .modal-market-menu .app-bar-tab-setting svg .xmr-icon,
+  .modal-market-menu .app-bar-tab-setting svg .xlm-icon,
+  .modal-market-menu .app-bar-tab-setting svg .eos-icon,
+  .modal-market-menu .app-bar-tab-setting svg .trx-icon,
+  .modal-market-menu .app-bar-tab-setting svg .ada-icon,
+  .modal-market-menu .app-bar-tab-setting svg .bnb-icon,
+  .modal-market-menu .app-bar-tab-setting svg .tusd-icon,
+  .modal-market-menu .app-bar-tab-setting svg .dai-icon,
+  .modal-market-menu .app-bar-tab-setting svg .ltc-icon,
+  .modal-market-menu .app-bar-tab-setting svg .default-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .btc0,
+  .modal-market-menu .app-bar-add-tab-icons svg .btc1,
+  .modal-market-menu .app-bar-add-tab-icons svg .eth0,
+  .modal-market-menu .app-bar-add-tab-icons svg .eth1,
+  .modal-market-menu .app-bar-add-tab-icons svg .bch-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .xrp-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .xht-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .xmr-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .xlm-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .eos-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .trx-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .ada-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .bnb-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .tusd-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .dai-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .ltc-icon,
+  .modal-market-menu .app-bar-add-tab-icons svg .default-icon {
+    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .modal-market-menu .app-bar-tab-setting svg .plus,
+  .modal-market-menu .app-bar-tab-setting svg .minus,
+  .modal-market-menu .app-bar-add-tab-icons svg .plus,
+  .modal-market-menu .app-bar-add-tab-icons svg .minus {
+    stroke: var(--labels_secondary-inactive-label-text-graphics) !important;
+    stroke-width: 0.2rem; }
+  .modal-market-menu .app-bar-tab-setting svg .st0,
+  .modal-market-menu .app-bar-add-tab-icons svg .st0 {
+    fill: var(--calculated_base_top-bar-navigation_text);
+    stroke-width: 0rem; }
+  .modal-market-menu .app-bar-tab-setting svg .icon-check-1,
+  .modal-market-menu .app-bar-add-tab-icons svg .icon-check-1 {
+    stroke: var(--calculated_base_top-bar-navigation_text); }
+  .modal-market-menu .app-bar-tab-setting svg .xht-icon-1,
+  .modal-market-menu .app-bar-add-tab-icons svg .xht-icon-1 {
+    fill: var(--base_background) !important; }
+  .modal-market-menu .app-bar-tab-setting .app-price-diff-down,
+  .modal-market-menu .app-bar-add-tab-icons .app-price-diff-down {
+    color: var(--trading_selling-related-elements); }
+  .modal-market-menu .app-bar-tab-setting .app-price-diff-up,
+  .modal-market-menu .app-bar-add-tab-icons .app-price-diff-up {
+    color: var(--trading_buying-related-elements); }
+  .modal-market-menu .app-price-diff-down {
+    color: var(--trading_selling-related-elements); }
+  .modal-market-menu .app-price-diff-up {
+    color: var(--trading_buying-related-elements); }
+
+@media (min-width: 1920px) {
+  .modal-market-menu {
+    width: 24rem; }
+    .modal-market-menu.narrow {
+      width: 14rem; }
+    .modal-market-menu .app-bar-tab-menu-list {
+      width: 3.6rem;
+      max-width: 3.6rem;
+      /* (24 -6) / 5 */ }
+    .modal-market-menu .app-bar-add-tab-content,
+    .modal-market-menu .app-bar-tab-menu-list,
+    .modal-market-menu .app-bar-tab-overflow-content {
+      font-size: 1rem; } }
+
+@media screen and (max-width: 1096px) {
+  .modal-market-menu .app-bar-add-tab-content,
+  .modal-market-menu .app-bar-tab-menu-list,
+  .modal-market-menu .app-bar-tab-overflow-content {
+    font-size: 0.9rem; } }
+
+.layout-mobile .modal-market-menu .app-bar-add-tab-content,
+.layout-mobile .modal-market-menu .app-bar-tab-menu-list,
+.layout-mobile .modal-market-menu .app-bar-tab-overflow-content {
+  font-size: 1.3rem; }
+
+.layout-mobile .modal-market-menu .app-bar-tab-menu-list {
+  height: 3.5rem;
+  width: 6rem;
+  max-width: 6rem;
+  /* (40 -6) / 5 */ }
+
+.layout-mobile .modal-market-menu .app-bar-add-tab-icons {
+  width: 1.5rem !important; }
+
+.layout-mobile .modal-market-menu .app-bar-add-tab-content-list {
+  height: 4rem; }
+
 .app_bar {
   position: relative;
   width: 100%;
@@ -7758,6 +7945,10 @@ table th {
 .background .icon_title-wrapper {
   margin-top: 0 !important; }
 
+.menu .ReactModal__Content {
+  padding: 0 !important;
+  background-color: var(--base_background) !important; }
+
 .dialog-content {
   padding-right: 2.5rem;
   padding-left: 2.5rem; }
@@ -7865,6 +8056,13 @@ table th {
   .layout-mobile.compressed .ReactModal__Content .dialog-mobile-content {
     min-height: inherit;
     max-height: inherit; }
+
+.layout-mobile.menu .ReactModal__Content {
+  padding: 0 !important;
+  background-color: var(--base_background) !important; }
+  .layout-mobile.menu .ReactModal__Content .dialog-mobile-content {
+    padding: 0 !important;
+    display: block; }
 
 .dialog-compressed-wrapper {
   background-color: var(--labels_important-active-labels-text-graphics);
@@ -8030,6 +8228,7 @@ table th {
     position: relative; }
   .action_notification-wrapper .action_notification-text {
     font-size: 1rem;
+    line-height: 1rem;
     text-transform: uppercase; }
   .action_notification-wrapper .action_notification-image {
     width: 1rem;
@@ -8230,7 +8429,8 @@ table th {
 
 .layout-mobile .auth-container .action_notification-text,
 .layout-mobile .auth-container .font-small {
-  font-size: 1rem !important; }
+  font-size: 1rem !important;
+  line-height: 1rem !important; }
 
 .otp_form-wrapper {
   width: 38rem; }

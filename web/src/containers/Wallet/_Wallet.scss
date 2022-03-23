@@ -26,6 +26,7 @@ $header-margin: 2rem;
 		.action_notification-wrapper {
 			.action_notification-text {
 				font-size: 1.2rem !important;
+				line-height: 1.2rem !important;
 			}
 		}
 		.accordion_wrapper {
@@ -65,6 +66,7 @@ $header-margin: 2rem;
 						.action_notification-wrapper {
 							.action_notification-text {
 								font-size: 1.2rem;
+								line-height: 1.2rem;
 							}
 						}
 					}
@@ -260,7 +262,7 @@ $header-margin: 2rem;
 			background-color: $app-sidebar-background;
 		}
 		.currency-ball-image-wrapper {
-    		height: 24px !important;
+			height: 24px !important;
 			margin-right: 7px;
 			width: 20px !important;
 		}
@@ -269,7 +271,7 @@ $header-margin: 2rem;
 			padding-top: 4px;
 			svg,
 			div:first-child {
-    			width: 28px;
+				width: 28px;
 			}
 		}
 		.loading-anime {
@@ -316,6 +318,7 @@ $header-margin: 2rem;
 .wallet-notification {
 	.action_notification-text {
 		font-size: $font-size-main !important;
+		line-height: $font-size-main !important;
 	}
 }
 

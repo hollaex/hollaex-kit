@@ -412,6 +412,11 @@ $max-content-height-home-mobile: calc(
 $max-content-height-dialog-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height * 2}
 );
+
+$market-menu-height-dialog-mobile: calc(
+	100vh - 19rem - #{$navigation_bar-mobile--height * 2}
+);
+
 $max-content-width-mobile: 100vw;
 $table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;

@@ -132,6 +132,7 @@ class PairTabs extends Component {
 												})
 											)
 										}
+										wrapperClassName="app-bar-add-tab-menu"
 									/>
 								}
 								destroyPopupOnHide={true}

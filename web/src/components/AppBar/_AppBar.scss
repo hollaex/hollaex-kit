@@ -3,6 +3,8 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 
+@import './MobileMarketSelector';
+
 .app_bar {
 	position: relative;
 	width: 100%;
