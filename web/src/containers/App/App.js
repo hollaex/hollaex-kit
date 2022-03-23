@@ -490,7 +490,6 @@ class App extends Component {
 			case MARKET_SELECTOR:
 				return (
 					<MarketSelector
-						onClose={this.onCloseDialog}
 						onViewMarketsClick={this.onViewMarketsClick}
 						closeAddTabMenu={this.onCloseDialog}
 						addTradePairTab={this.goToPair}
