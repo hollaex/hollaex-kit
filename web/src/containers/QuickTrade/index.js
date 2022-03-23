@@ -115,8 +115,8 @@ class QuickTradeContainer extends PureComponent {
 			isSourceChanged: false,
 			isShowChartDetails: false,
 			existBroker: {},
-			brokerTargetAmount: 0,
-			brokerSourceAmount: 0,
+			brokerTargetAmount: undefined,
+			brokerSourceAmount: undefined,
 		};
 
 		this.goToPair(pair);
@@ -334,8 +334,8 @@ class QuickTradeContainer extends PureComponent {
 				isSelectChange: false,
 				targetAmount: undefined,
 				sourceAmount: undefined,
-				brokerTargetAmount: 0,
-				brokerSourceAmount: 0,
+				brokerTargetAmount: undefined,
+				brokerSourceAmount: undefined,
 			});
 		}
 	}
@@ -750,17 +750,44 @@ class QuickTradeContainer extends PureComponent {
 			selectedSource,
 			sourceError,
 			targetError,
+			brokerSourceAmount,
+			brokerTargetAmount,
+			pair,
 		} = this.state;
-		const { targetAmount, sourceAmount } = this.props;
-		return (
-			!isLoggedIn() ||
-			!selectedTarget ||
-			!selectedSource ||
-			!targetAmount ||
-			!sourceAmount ||
-			sourceError ||
-			targetError
-		);
+		const { targetAmount, sourceAmount, broker, pairs } = this.props;
+		const brokerPairs = broker.map((br) => br.symbol);
+		const flipPair = this.flipPair(pair);
+		let isUseBroker = false;
+		if (brokerPairs.includes(pair) || brokerPairs.includes(flipPair)) {
+			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+				isUseBroker = true;
+			} else {
+				isUseBroker = true;
+			}
+		} else {
+			isUseBroker = false;
+		}
+		if (isUseBroker) {
+			return (
+				!isLoggedIn() ||
+				!selectedTarget ||
+				!selectedSource ||
+				!brokerSourceAmount ||
+				!brokerTargetAmount ||
+				sourceError ||
+				targetError
+			);
+		} else {
+			return (
+				!isLoggedIn() ||
+				!selectedTarget ||
+				!selectedSource ||
+				!targetAmount ||
+				!sourceAmount ||
+				sourceError ||
+				targetError
+			);
+		}
 	};
 
 	goToPair = (pair) => {
@@ -804,6 +831,7 @@ class QuickTradeContainer extends PureComponent {
 			estimatedPrice,
 			targetAmount,
 			sourceAmount,
+			broker,
 		} = this.props;
 		const {
 			order,
@@ -921,6 +949,8 @@ class QuickTradeContainer extends PureComponent {
 						estimatedPrice={estimatedPrice}
 						isShowChartDetails={isShowChartDetails}
 						isExistBroker={isExistBroker}
+						flipPair={this.flipPair}
+						broker={broker}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}

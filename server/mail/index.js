@@ -57,7 +57,9 @@ const sendEmail = (
 		case MAILTYPE.BANK_VERIFIED:
 		case MAILTYPE.CONFIRM_EMAIL:
 		case MAILTYPE.DEPOSIT:
-		case MAILTYPE.WITHDRAWAL: {
+		case MAILTYPE.WITHDRAWAL:
+		case MAILTYPE.DOC_REJECTED:
+		case MAILTYPE.DOC_VERIFIED: {
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}

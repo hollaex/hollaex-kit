@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
@@ -54,7 +54,6 @@ const OtcDeskContainer = ({
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
-	const account_input = useRef(null);
 
 	useEffect(() => {
 		getBrokerData();
@@ -198,7 +197,8 @@ const OtcDeskContainer = ({
 	const createBrokerData = async () => {
 		const body = {
 			...previewData,
-			user_id: previewData.user_id,
+			user_id:
+				previewData && previewData.user_id ? previewData.user_id : user.id,
 			symbol: `${previewData.pair_base}-${previewData.pair_2}`,
 			sell_price: parseFloat(previewData.sell_price),
 			buy_price: parseFloat(previewData.buy_price),
@@ -239,7 +239,7 @@ const OtcDeskContainer = ({
 	const updateBrokerData = async (params) => {
 		const body = {
 			...params,
-			user_id: params.user_id,
+			user_id: params && params.user_id ? params.user_id : user.id,
 			sell_price: parseFloat(params.sell_price),
 			buy_price: parseFloat(params.buy_price),
 			paused: params ? params.paused : previewData.paused,
@@ -494,12 +494,6 @@ const OtcDeskContainer = ({
 		}
 	};
 
-	const handleInput = (value) => {
-		if (value) {
-			account_input.current.focus();
-		}
-	};
-
 	const handlePreviewChange = (value, name, pausedValue = '') => {
 		let tempPreviewData = { ...previewData };
 		let coinSecondaryData = coinSecondary;
@@ -741,7 +735,6 @@ const OtcDeskContainer = ({
 				isExistsPair={isExistsPair}
 				handleClose={handleClose}
 				moveToStep={moveToStep}
-				handleInput={handleInput}
 				getFullName={getFullName}
 				handleBack={handleBack}
 				isManual={isManual}
@@ -754,7 +747,6 @@ const OtcDeskContainer = ({
 				handlePaused={handlePaused}
 				deleteBrokerData={deleteBrokerData}
 				isOpen={isOpen}
-				account_input={account_input}
 				setPricing={setPricing}
 				setType={setType}
 				status={status}
