@@ -20,10 +20,11 @@ import {
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
+	MARKET_SELECTOR,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
@@ -60,6 +61,7 @@ import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
+import MarketSelector from 'components/AppBar/MarketSelector';
 
 import {
 	getClasesForLanguage,
@@ -317,6 +319,16 @@ class App extends Component {
 		}
 	};
 
+	goToPair = (pair) => {
+		const { router } = this.props;
+		router.push(`/trade/${pair}`);
+	};
+
+	onViewMarketsClick = () => {
+		const { setTradeTab } = this.props;
+		setTradeTab(3);
+	};
+
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -473,6 +485,15 @@ class App extends Component {
 						data={data}
 						onClose={this.onCloseDialog}
 						activeTheme={this.props.activeTheme}
+					/>
+				);
+			case MARKET_SELECTOR:
+				return (
+					<MarketSelector
+						onClose={this.onCloseDialog}
+						onViewMarketsClick={this.onViewMarketsClick}
+						closeAddTabMenu={this.onCloseDialog}
+						addTradePairTab={this.goToPair}
 					/>
 				);
 			case RISK_PORTFOLIO_ORDER_WARING:

@@ -20,7 +20,8 @@ import {
 	setNotification,
 	NOTIFICATIONS,
 	RISKY_ORDER,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import { isLoggedIn } from '../../utils/token';
@@ -150,11 +151,11 @@ const layout = getLayout().map(({ w, h, x, y, i }) => {
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
 			orderbookWs: null,
-			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
@@ -332,7 +333,8 @@ class Trade extends PureComponent {
 	};
 
 	setActiveTab = (activeTab) => {
-		this.setState({ activeTab });
+		const { setTradeTab } = this.props;
+		setTradeTab(activeTab);
 	};
 
 	storeData = (data) => {
@@ -649,8 +651,9 @@ class Trade extends PureComponent {
 			fees,
 			icons,
 			tools,
+			activeTab,
 		} = this.props;
-		const { symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -735,8 +738,6 @@ class Trade extends PureComponent {
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
-							goToPair={this.goToPair}
-							goToMarkets={() => this.setActiveTab(3)}
 							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
@@ -831,6 +832,7 @@ const mapStateToProps = (state) => {
 		isReady: state.app.isReady,
 		constants: state.app.constants,
 		tools: state.tools,
+		activeTab: state.app.tradeTab,
 	};
 };
 
@@ -841,6 +843,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	resetTools: bindActionCreators(resetTools, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));
