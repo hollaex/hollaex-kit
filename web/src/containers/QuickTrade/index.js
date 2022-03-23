@@ -9,7 +9,7 @@ import { QuickTradeLimitsSelector } from './utils';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 
-import { submitOrder } from 'actions/orderAction';
+import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
 
 import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
@@ -49,25 +49,25 @@ class QuickTradeContainer extends PureComponent {
 		let side;
 		let tickerClose;
 		let originalPair;
-		if (pairKeys.includes(routeParams.pair)) {
-			originalPair = routeParams.pair;
-			pair = routeParams.pair;
-			const { close } = tickers[pair] || {};
-			side = 'buy';
-			tickerClose = close;
-		} else if (pairKeys.includes(flippedPair)) {
-			originalPair = routeParams.pair;
-			pair = flippedPair;
-			const { close } = tickers[pair] || {};
-			side = 'sell';
-			tickerClose = 1 / close;
-		} else if (brokerPairs.includes(routeParams.pair)) {
+		if (brokerPairs.includes(routeParams.pair)) {
 			originalPair = routeParams.pair;
 			pair = routeParams.pair;
 			const { close } = tickers[pair] || {};
 			side = 'buy';
 			tickerClose = close;
 		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
 			originalPair = routeParams.pair;
 			pair = flippedPair;
 			const { close } = tickers[pair] || {};
@@ -235,25 +235,25 @@ class QuickTradeContainer extends PureComponent {
 			let side;
 			let tickerClose;
 			let originalPair;
-			if (pairKeys.includes(routeParams.pair)) {
-				originalPair = routeParams.pair;
-				pair = routeParams.pair;
-				const { close } = tickers[pair] || {};
-				side = 'buy';
-				tickerClose = close;
-			} else if (pairKeys.includes(flippedPair)) {
-				originalPair = routeParams.pair;
-				pair = flippedPair;
-				const { close } = tickers[pair] || {};
-				side = 'sell';
-				tickerClose = 1 / close;
-			} else if (brokerPairs.includes(routeParams.pair)) {
+			if (brokerPairs.includes(routeParams.pair)) {
 				originalPair = routeParams.pair;
 				pair = routeParams.pair;
 				const { close } = tickers[pair] || {};
 				side = 'buy';
 				tickerClose = close;
 			} else if (brokerPairs.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (pairKeys.includes(flippedPair)) {
 				originalPair = routeParams.pair;
 				pair = flippedPair;
 				const { close } = tickers[pair] || {};
@@ -455,64 +455,112 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onExecuteTrade = () => {
-		const { side, pair } = this.state;
+		const {
+			side,
+			pair,
+			existBroker,
+			brokerSourceAmount,
+			brokerTargetAmount,
+		} = this.state;
 		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
 		const { increment_size } = pairData;
 
 		let size;
 		let price;
-		if (side === 'buy') {
-			[size, price] = [targetAmount, sourceAmount];
-		} else {
-			[price, size] = [targetAmount, sourceAmount];
-		}
 
-		const orderData = {
-			type: 'market',
-			side,
-			size: formatNumber(size, getDecimals(increment_size)),
-			symbol: pair,
-		};
+		if (!Object.keys(existBroker).length) {
+			if (side === 'buy') {
+				[size, price] = [targetAmount, sourceAmount];
+			} else {
+				[price, size] = [targetAmount, sourceAmount];
+			}
+			const orderData = {
+				type: 'market',
+				side,
+				size: formatNumber(size, getDecimals(increment_size)),
+				symbol: pair,
+			};
 
-		this.setState({
-			order: {
-				completed: false,
-				fetching: true,
-				error: false,
-				data: orderData,
-			},
-		});
-
-		submitOrder(orderData)
-			.then(({ data }) => {
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: false,
-						data: {
-							...data,
-							price,
-						},
-					},
-				});
-			})
-			.catch((err) => {
-				const _error =
-					err.response && err.response.data
-						? err.response.data.message
-						: err.message;
-
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: _error,
-						data: orderData,
-					},
-				});
+			this.setState({
+				order: {
+					completed: false,
+					fetching: true,
+					error: false,
+					data: orderData,
+				},
 			});
+
+			submitOrder(orderData)
+				.then(({ data }) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data: {
+								...data,
+								price,
+							},
+						},
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message;
+
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: orderData,
+						},
+					});
+				});
+		} else {
+			const { sell_price, buy_price, increment_size, symbol } = existBroker;
+			if (side === 'buy') {
+				price = sell_price;
+				size = brokerTargetAmount;
+			} else {
+				price = buy_price;
+				size = brokerSourceAmount;
+			}
+			const selectedPair = symbol === pair ? pair : this.flipPair(pair);
+			const brokerOrderData = {
+				price,
+				side,
+				symbol: selectedPair,
+				size: formatNumber(size, getDecimals(increment_size)),
+			};
+
+			executeBroker(brokerOrderData)
+				.then(({ data }) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data,
+						},
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: brokerOrderData,
+						},
+					});
+				});
+		}
 	};
 
 	onGoBack = () => {
@@ -612,16 +660,36 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	constructTarget = () => {
-		const { sourceOptions, routeParams, pairs, router, tickers } = this.props;
+		const {
+			sourceOptions,
+			routeParams,
+			pairs,
+			router,
+			tickers,
+			broker,
+		} = this.props;
 
 		const pairKeys = Object.keys(pairs);
 		const flippedPair = this.flipPair(routeParams.pair);
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		let pair;
 		let side;
 		let tickerClose;
 		let originalPair;
-		if (pairKeys.includes(routeParams.pair)) {
+		if (brokerPairs.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
 			originalPair = routeParams.pair;
 			pair = routeParams.pair;
 			const { close } = tickers[pair] || {};
