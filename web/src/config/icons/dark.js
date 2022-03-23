@@ -40,6 +40,7 @@ const nestedIcons = {
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
 		API: '/assets/images/tab-api.svg',
+		STAKE: '/assets/images/stake_and_earn.svg',
 	},
 
 	TOKEN: {
@@ -147,6 +148,7 @@ const nestedIcons = {
 	LETTER: '/assets/acounts/account-icons-24.svg',
 
 	OTP_CODE: '/assets/acounts/account-icons-28.svg',
+	EMAIL_CODE: '/assets/icons/send-email-code.svg',
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
@@ -204,8 +206,7 @@ const nestedIcons = {
 		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE:
-		'/assets/images/arrow-trans-history-active.svg',
+	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history.svg',
 
 	CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
 	ITEM_OPTIONS: '/assets/images/item-options.svg',
@@ -247,6 +248,19 @@ const nestedIcons = {
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
+
+	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background.jpg',
+	STAKING_PERIOD_ITEM: '/assets/stake/staking-period-option-background.jpg',
+	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background.png',
+	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/success_stake-unstake.png',
+	STAKING_ERROR: '/assets/stake/error.svg',
+	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
+	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
+	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
+	STAKING_ACCOUNT: '',
+	METAMASK: '',
+	MOVE_XHT: '/assets/stake/xht-move.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

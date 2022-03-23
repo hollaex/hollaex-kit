@@ -74,7 +74,7 @@ export const withdrawalCancel = (transactionId) => {
 		dispatch({ type: ACTION_KEYS.WITHDRAWAL_CANCEL_PENDING });
 		axios
 			.delete(ENDPOINTS.CANCEL_WITHDRAWAL, {
-				data: { id: parseInt(transactionId.transactionId, 10) },
+				params: { id: parseInt(transactionId.transactionId, 10) },
 			})
 			.then((body) => {
 				dispatch({
@@ -281,7 +281,7 @@ const getParamsByStatus = (status) => {
 		case 'completed':
 			return { status: true };
 		case 'pending':
-			return { waiting: true };
+			return { status: false, dismissed: false, processing: false, rejected: false, waiting: false };
 		default:
 			return {};
 	}

@@ -86,6 +86,46 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+@keyframes outer-round-anim {
+	0% {
+		transform: scale(0.5, 0.5);
+		background-color: $colors-border;
+		opacity: 0.5;
+	}
+	10% {
+		background-color: $colors-border;
+		opacity: 0.3;
+	}
+	30% {
+		background-color: $colors-border;
+		opacity: 0.2;
+	}
+	50% {
+		transform: scale(1.5, 1.5);
+		background-color: $colors-border;
+	}
+	70% {
+		background-color: $colors-border;
+		opacity: 0;
+	}
+	100% {
+		transform: scale(1, 1);
+		background-color: $colors-border;
+		opacity: 0;
+	}
+}
+
+@keyframes dotFlashing {
+	0% {
+		background-color: $colors-border;
+		opacity: 0.5;
+	}
+	50% {
+		background-color: #34363a;
+		opacity: 0.5;
+	}
+}
+
 .summary-container {
 	height: inherit;
 	max-width: 100%;
@@ -131,7 +171,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 		.trade-account-secondary-txt {
 			margin: auto 0;
-			width: 55%;
+			width: 60%;
 		}
 	}
 	.trader-wrapper-icon {
@@ -168,9 +208,50 @@ $trade-tab--arrow-size: 0.4rem;
 		// height: 30rem;
 
 		.assets-wrapper {
+			.rounded-loading {
+				width: 80px;
+				height: 80px;
+				border-radius: 50%;
+				text-align: center;
+				margin: 0 auto;
+				display: flex;
+				align-items: center;
+				border: 1px solid #808080;
+				background-color: $colors-border !important;
+				animation: outer-round-anim 3s ease infinite;
+			}
+			.inner-round {
+				background-color: $app-sidebar-background;
+				width: 50px;
+				height: 50px;
+				border-radius: 50%;
+				margin: 0 auto;
+				border: 1px solid #808080;
+			}
 			.donut-container {
-				height: 16rem;
+				height: 18rem;
 				width: 100%;
+			}
+			.loading-wrapper {
+				height: 16rem;
+				flex-direction: column;
+				.d-none {
+					display: none;
+				}
+				.loading-txt {
+					text-align: center;
+					margin-bottom: 1rem;
+					margin-top: 5rem;
+				}
+			}
+			.dot-flashing {
+				position: relative;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background-color: #34363a;
+				color: #34363a;
+				animation: dotFlashing 3s infinite;
 			}
 		}
 	}
@@ -324,7 +405,10 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 		.coin-price-container {
 			height: 3.5rem;
-
+			.currency-ball-image-wrapper {
+				height: 26px;
+				margin-bottom: 8px;
+			}
 			.coin-price {
 				width: 3rem;
 
@@ -432,11 +516,11 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.account-type-menu-active {
-			border-top: 2px solid $colors-border;
-			border-bottom: 1px solid $colors-border;
+			border-top: 2px solid $sidebar-color-active;
+			border-bottom: 1px solid $sidebar-color-active;
 			color: $colors-black;
 			font-size: 1rem;
-			text-transform: capitalize;
+			text-transform: uppercase;
 
 			.account-current {
 				color: $colors-black;
@@ -556,7 +640,7 @@ $trade-tab--arrow-size: 0.4rem;
 	.content-txt {
 		font-size: $font-size-subtext;
 		.fee-reduction-container {
-    		border: 1px solid $colors-border;
+			border: 1px solid $colors-border;
 		}
 	}
 	.content-title {
@@ -568,7 +652,7 @@ $trade-tab--arrow-size: 0.4rem;
 		margin-top: 1rem;
 
 		.icon_title-svg {
-			height: 11rem;
+			height: 12rem;
 			width: 12rem;
 		}
 		.icon_title-svg svg {
@@ -618,6 +702,8 @@ $trade-tab--arrow-size: 0.4rem;
 		border-bottom: 1px solid $colors-border;
 		padding: 0.25rem 0.5rem;
 		width: 14rem;
+		max-width: 14rem;
+		overflow: scroll;
 	}
 	.account-limits-status {
 		// width: 6rem;

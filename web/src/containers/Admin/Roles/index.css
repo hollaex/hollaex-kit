@@ -117,7 +117,7 @@
 	padding: 3px 8px;
 }
 .admin-roles-wrapper .ant-input:focus,
-.ant-input:active {
+.admin-roles-wrapper .ant-input:active {
 	border: 1px solid #c4c4c4;
 }
 .admin-roles-wrapper .ant-form-item {
@@ -154,4 +154,7 @@
 	color: var(--admin_panel_main_font);
 	top: 55px;
 	left: 12px;
+}
+.admin-roles-wrapper .green-btn {
+	background-color: #288500 !important;
 }

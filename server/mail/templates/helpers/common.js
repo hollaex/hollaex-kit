@@ -1,23 +1,37 @@
 'use strict';
 
 const {
-	BITHOLLA_DOMAIN,
-	BITHOLLA_LOGO_BLACK,
+	REFERRAL_DOMAIN,
+	LOGO_BLACK,
 } = require('../../constants');
-const { DOMAIN, GET_KIT_CONFIG } = require('../../../constants');
+const { DOMAIN, GET_KIT_CONFIG, GET_EMAIL } = require('../../../constants');
 const LOGO_IMAGE = () => GET_KIT_CONFIG().logo_image;
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const LINKS = () => GET_KIT_CONFIG().links;
 
-const styles = require('./styles');
+let styles = require('./styles');
 
-exports.Button = (link, text) => `
-  <div style="${styles.buttonWrapper}">
-    <a href="${link}" target="_blank">
-      <Button style="${styles.button}">${text}</Button>
+const checkConfigurationsTemplate = () => {
+	const emailConfigurations = GET_EMAIL();
+	if(emailConfigurations['template']){
+		let arrKeyTemplate = Object.keys(emailConfigurations['template']);
+		arrKeyTemplate.map(key => {
+			styles[key] = emailConfigurations['template'][key];
+		})
+	}
+}
+
+exports.Button = (link, text) => {
+	checkConfigurationsTemplate();
+
+	return `
+  <div style='${styles.buttonWrapper}'>
+    <a href='${link}' target='_blank'>
+      <Button style='${styles.button}'>${text}</Button>
     </a>
   </div>
 `;
+}
 
 const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 	const FOOTER = require('../../strings').getStringObject(language, 'FOOTER');
@@ -28,24 +42,24 @@ const footerTemplate = (language = DEFAULT_LANGUAGE(), domain = DOMAIN) => {
 				</div>
 				<div style="float: right; font-size: 8px; text-align: right;">
 					${
-						!LINKS().hide_referral_badge
-							? `<div style="${styles.poweredby}">
+	!LINKS().hide_referral_badge
+		? `<div style="${styles.poweredby}">
 							<a href="${
-								LINKS().referral_link && LINKS().referral_label
-									? LINKS().referral_link
-									: BITHOLLA_DOMAIN
-							}">
+	LINKS().referral_link && LINKS().referral_label
+		? LINKS().referral_link
+		: REFERRAL_DOMAIN
+}">
 								${
-									LINKS().referral_label
-										? LINKS().referral_label
-										: `${
-												FOOTER.POWERED_BY
-										  } <img src="${BITHOLLA_LOGO_BLACK}" height="10"/>`
-								}
+	LINKS().referral_label
+		? LINKS().referral_label
+		: `${
+			FOOTER.POWERED_BY
+										  } <img src="${LOGO_BLACK}" height="10"/>`
+}
 							</a>
 						</div>`
-							: ''
-					}
+		: ''
+}
 				</div>
 			</div>
 		`;
@@ -67,6 +81,7 @@ exports.TemplateEmail = (
 	language = DEFAULT_LANGUAGE(),
 	domain = DOMAIN
 ) => {
+	checkConfigurationsTemplate();
 	const bodyStyle = styles.body.concat('');
 
 	return `

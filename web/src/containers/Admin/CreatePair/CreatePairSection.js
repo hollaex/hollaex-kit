@@ -25,16 +25,22 @@ const CreatePairSection = ({
 	setPresetPair,
 	handleChange,
 	moveToStep,
+	pairs,
+	handleExistPair
 }) => {
 	const [isExistError, setExistError] = useState('');
 	const checkExist = () => {
-		const existPair = allPairs.filter(
+		const existFromPair = allPairs.filter(
 			(pair) => pair.name === `${formData.pair_base}-${formData.pair_2}`
 		);
+		const existExchangePair = pairs.includes(`${formData.pair_base}-${formData.pair_2}`);
 		if (!formData.pair_2) {
-			setExistError("Can't create a pair without adding a second asset.");
-		} else if (existPair.length) {
-			setExistError('This pair is already exist');
+			setExistError("Can't create a market without adding a second asset.");
+		} else if (existExchangePair) {
+			setExistError('The market has already been added');
+		} else if (existFromPair.length && !existExchangePair) {
+			handleExistPair(true);
+			moveToStep('preview');
 		} else {
 			setExistError('');
 			handleChange(`${formData.pair_base}-${formData.pair_2}`, 'name');
@@ -49,7 +55,7 @@ const CreatePairSection = ({
 
 	return (
 		<div className="add-pair-wrapper">
-			<div className="title">Add Trading pair</div>
+			<div className="title">Add Market</div>
 			<div className="coin-container">
 				<div className="pair-wrapper">
 					<div className="flex-container">

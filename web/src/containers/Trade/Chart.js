@@ -144,6 +144,9 @@ class TVChartContainer extends React.PureComponent {
 									volume: bar.volume,
 								};
 							});
+							let res = data[data.length - 1];
+							res = res.close;
+							that.props.setChartHigh(res);
 							if (firstDataRequest) {
 								that.setState({
 									lastBar: bars[bars.length - 1],
@@ -264,7 +267,7 @@ class TVChartContainer extends React.PureComponent {
 			interval: resolution,
 			container_id: containerId,
 			library_path: libraryPath,
-			timeframe: '1m',
+			// timeframe: 'M',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
 			locale: locale === 'id' ? 'en' : locale,
 			withdateranges: true,
@@ -281,16 +284,16 @@ class TVChartContainer extends React.PureComponent {
 				'header_screenshot',
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
-			time_frames: [
-				{ text: '3m', resolution: '60' },
-				{ text: '1m', resolution: '60' },
-				{ text: '1d', resolution: '60' },
-				// // { text: "YTD", resolution: "YTD" },
-				// { text: "1Y", resolution: "D" },
-				// { text: "3Y", resolution: "D" },
-				// { text: "5Y", resolution: "W" },
-				// { text: "ALL", resolution: "ALL" },
-			],
+			// time_frames: [
+			// { text: '3m', resolution: '60' },
+			// { text: '1m', resolution: '60' },
+			// { text: '1d', resolution: '60' },
+			// // { text: "YTD", resolution: "YTD" },
+			// { text: "1Y", resolution: "D" },
+			// { text: "3Y", resolution: "D" },
+			// { text: "5Y", resolution: "W" },
+			// { text: "ALL", resolution: "ALL" },
+			// ],
 			charts_storage_url: this.props.chartsStorageUrl,
 			charts_storage_api_version: this.props.chartsStorageApiVersion,
 			client_id: this.props.clientId,
@@ -322,6 +325,34 @@ class TVChartContainer extends React.PureComponent {
 			tvWidget.changeTheme(widgetTheme);
 
 			button[0].innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
+
+			const newWindowButton = tvWidget
+				.createButton({ align: 'right' })
+				.attr('title', 'Open the trading view chart in a new tab.')
+				.addClass('apply-common-tooltip screen-button')
+				.on('click', () => {
+					if (window) {
+						window.open(`/chart-embed/${symbol}`, '_blank');
+					}
+				});
+			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
+			tvWidget.changeTheme(widgetTheme);
+
+			newWindowButton[0].innerHTML = `
+      <div class='screen-container'>
+      	<div>
+      		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="17" height="17">
+      		<path fill="currentColor" d="M27.5,0.5v4.9H7.9c-1.4,0-2.4,1.1-2.4,2.4v34.3c0,1.4,1.1,2.4,2.4,2.4h34.3c1.4,0,2.5-1.1,2.5-2.4V22.5h4.9
+										v19.6c0,4.1-3.3,7.3-7.3,7.3H7.9c-4.1,0-7.3-3.3-7.3-7.3V7.8c0-4.1,3.3-7.3,7.3-7.3H27.5z M47.1,0.5L47.1,0.5c0.1,0,0.2,0,0.2,0
+										L47.1,0.5c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1
+										c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.2,0.1,0.3,0.2L48.6,1c0.2,0.1,0.3,0.3,0.4,0.4
+										c0,0,0,0,0,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0.1,0,0.1,0.1,0.1
+										c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1v12.2h-4.9V8.9L26.8,26.7
+										c-0.9,0.9-2.3,1-3.2,0.2l-0.2-0.2c-1-1-1-2.5,0-3.5L41.2,5.4h-6.3V0.5H47.1z"/>
+      		</svg>
+				</div>
+			</div>
+      `;
 		});
 	};
 

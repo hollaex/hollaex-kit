@@ -17,13 +17,14 @@ import { isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
 import { QuickTrade, EditWrapper, ButtonLink } from 'components';
 import { unique } from 'utils/data';
+import { getDecimals } from 'utils/utils';
 import math from 'mathjs';
 import Image from 'components/Image';
 
 import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const DECIMALS = 4;
+// const DECIMALS = 4;
 const MIN_HEIGHT = 450;
 
 class Home extends Component {
@@ -57,6 +58,8 @@ class Home extends Component {
 			style: {
 				minHeight: MIN_HEIGHT,
 			},
+			market: [],
+			sectionData: {},
 		};
 		this.goToPair(pair);
 	}
@@ -66,6 +69,9 @@ class Home extends Component {
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		this.generateSections(sections);
+		if (window.customRenderCardSection) {
+			window.customRenderCardSection();
+		}
 	}
 
 	goTo = (path) => () => {
@@ -106,6 +112,12 @@ class Home extends Component {
 		}
 	};
 
+	renderContent = (market) => {
+		if (market) {
+			this.setState({ market });
+		}
+	};
+
 	getSectionByKey = (key) => {
 		switch (key) {
 			case 'heading': {
@@ -113,10 +125,10 @@ class Home extends Component {
 					constants: { features: { quick_trade = false } = {} } = {},
 					isReady,
 					pair,
-					sections,
+					// sections,
 				} = this.props;
 
-				const sectionsNumber = Object.entries(sections)
+				const sectionsNumber = Object.entries(this.state.sectionData)
 					.filter(([_, { is_active }]) => is_active)
 					.filter(([key]) => key !== 'quick_trade' || (quick_trade && isReady))
 					.length;
@@ -147,12 +159,16 @@ class Home extends Component {
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
+							<div id="html_card_section"></div>
+							<div id="injected_code_section"></div>
 							<Markets
 								coins={coins}
 								pairs={pairs}
 								router={router}
 								showSearch={false}
 								showMarkets={true}
+								isHome={true}
+								renderContent={this.renderContent}
 							/>
 						</div>
 					</div>
@@ -167,6 +183,7 @@ class Home extends Component {
 					pairs,
 					orderLimits,
 					sourceOptions,
+					user,
 				} = this.props;
 
 				const {
@@ -176,7 +193,21 @@ class Home extends Component {
 					selectedSource,
 					targetOptions,
 					side,
+					market,
 				} = this.state;
+				let marketData;
+				if (market) {
+					market.forEach((data) => {
+						const keyData = data.key.split('-');
+						if (
+							(keyData[0] === selectedSource &&
+								keyData[1] === selectedTarget) ||
+							(keyData[1] === selectedSource && keyData[0] === selectedTarget)
+						) {
+							marketData = data;
+						}
+					});
+				}
 
 				return (
 					pairs &&
@@ -207,6 +238,8 @@ class Home extends Component {
 								forwardSourceError={this.forwardSourceError}
 								forwardTargetError={this.forwardTargetError}
 								autoFocus={false}
+								user={user}
+								market={marketData}
 							/>
 						</div>
 					)
@@ -218,7 +251,7 @@ class Home extends Component {
 	};
 
 	onSelectTarget = (selectedTarget) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 		const { selectedSource } = this.state;
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
@@ -227,12 +260,12 @@ class Home extends Component {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
@@ -250,7 +283,7 @@ class Home extends Component {
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers } = this.props;
+		const { tickers, pairs } = this.props;
 
 		const targetOptions = this.getTargetOptions(selectedSource);
 		const selectedTarget = targetOptions[0];
@@ -260,12 +293,12 @@ class Home extends Component {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
+		if (pairs[pairName]) {
 			const { close } = tickers[pairName];
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
+		} else if (pairs[reversePairName]) {
 			const { close } = tickers[reversePairName];
 			tickerClose = 1 / close;
 			side = 'sell';
@@ -294,7 +327,9 @@ class Home extends Component {
 
 	onChangeTargetAmount = (targetAmount) => {
 		const { tickerClose } = this.state;
-		const sourceAmount = math.round(targetAmount * tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 
 		this.setState({
 			targetAmount,
@@ -304,7 +339,9 @@ class Home extends Component {
 
 	onChangeSourceAmount = (sourceAmount) => {
 		const { tickerClose } = this.state;
-		const targetAmount = math.round(sourceAmount / tickerClose, DECIMALS);
+		const { pairData = {} } = this.props;
+		const decimalPoint = getDecimals(pairData.increment_size);
+		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 
 		this.setState({
 			sourceAmount,

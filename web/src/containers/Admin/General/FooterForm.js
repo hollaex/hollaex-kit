@@ -91,6 +91,7 @@ class FormWrapper extends Component {
 			customFields = false,
 			buttonTxt = 'Save',
 			handleSubmit,
+			buttonSubmitting,
 		} = this.props;
 		const { getFieldDecorator } = this.props.form;
 		return (
@@ -105,6 +106,7 @@ class FormWrapper extends Component {
 						htmlType="submit"
 						className="green-btn minimal-btn"
 						onClick={handleSubmit(this.onSubmit)}
+						disabled={buttonSubmitting}
 					>
 						{buttonTxt}
 					</Button>

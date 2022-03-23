@@ -7,13 +7,10 @@ export default {
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Select a market',
-	ACTIVE_TRADES: 'You must {0} to access your active trades',
 	CANCEL_BASE_WITHDRAWAL: 'Cancel {0} Withdrawal',
 	CANCEL_WITHDRAWAL: 'Cancel Withdrawal',
 	CANCEL_WITHDRAWAL_POPUP_CONFIRM:
 		'Do you want to cancel your pending withdrawal of:',
-	CANT_BE_CANCELLED: '-',
-	ALREADY_CANCELLED: '-',
 	TIMESTAMP_FORMAT: 'YYYY/MM/DD HH:mm:ss',
 	HOUR_FORMAT: 'HH:mm:ss',
 	LOGIN_TEXT: 'Login',
@@ -21,18 +18,14 @@ export default {
 	SIGNUP_TEXT: 'Sign up',
 	REGISTER_TEXT: 'Register',
 	ACCOUNT_TEXT: 'Account',
-	HOME_TEXT: 'Home',
 	CLOSE_TEXT: 'Close',
 	COPY_TEXT: 'Copy',
 	COPY_SUCCESS_TEXT: 'Successfully Copied',
 	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!',
-	UPLOAD_TEXT: 'Upload',
 	ADD_FILES: 'ADD FILES', // ToDo
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
-	HELP_RESOURCE_GUIDE_TEXT:
-		'Feel free to contact us for more information and any issues by sending us an email',
 	HELP_RESOURCE_GUIDE: {
 		CONTACT_US: 'contact us',
 		TEXT:
@@ -49,7 +42,7 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
-	VIEW_MARKET: 'view market', // new
+	VIEW_MARKET: 'view markets', // new
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
@@ -93,46 +86,6 @@ export default {
 		FOOTER_LANGUAGE_TEXT: 'LANGUAGE',
 		TERMS_OF_SERVICE: 'Terms of Service',
 		PRIVACY_POLICY: 'Privacy Policy',
-		SECTIONS: {
-			SECTION_1_TITLE: 'ABOUT',
-			SECTION_1_LINK_1: 'About Us',
-			SECTION_1_LINK_2: 'Terms of Use',
-			SECTION_1_LINK_3: 'Privacy Policy',
-			SECTION_1_LINK_4: 'Contact Us',
-			SECTION_2_TITLE: 'Information',
-			SECTION_2_LINK_1: 'Blog',
-			SECTION_2_LINK_2: 'Contact Us',
-			SECTION_2_LINK_3: 'Career',
-			SECTION_3_TITLE: 'DEVELOPERS',
-			SECTION_3_LINK_1: 'Documentation',
-			SECTION_3_LINK_2: 'Forum',
-			SECTION_3_LINK_3: 'GitHub',
-			SECTION_3_LINK_4: 'Library',
-			SECTION_3_LINK_5: 'API doc',
-			SECTION_3_LINK_6: 'Trading API',
-			SECTION_3_LINK_7: 'Developer tools',
-			SECTION_3_LINK_8: 'Documnetation',
-			SECTION_4_TITLE: 'EXCHANGE',
-			SECTION_4_LINK_1: 'Login',
-			SECTION_4_LINK_2: 'Register',
-			SECTION_4_LINK_3: 'Contact Us',
-			SECTION_4_LINK_4: 'Terms of Use',
-			SECTION_5_TITLE: 'RESOURCES',
-			SECTION_5_LINK_1: 'Whitepaper',
-			SECTION_5_LINK_2: 'HollaEx Token (XHT) ',
-			SECTION_5_LINK_3: 'GitHub',
-			SECTION_5_LINK_4: 'FAQ', // new
-			SECTION_6_TITLE: 'SOCIAL',
-			SECTION_6_LINK_1: 'Twitter',
-			SECTION_6_LINK_2: 'Telegram',
-			SECTION_6_LINK_3: 'Facebook', // new
-			SECTION_6_LINK_4: 'Instagram', // new
-			SECTION_6_LINK_5: 'Linkedin', // new
-			SECTION_6_LINK_6: 'Website', // new
-			SECTION_6_LINK_7: 'Helpdesk', // new
-			SECTION_6_LINK_8: 'Information', // new
-			SECTION_6_LINK_9: 'YouTube', // new
-		},
 		XHT_DESCRIPTION:
 			'HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}.',
 		CLICK_HERE: 'click here',
@@ -142,19 +95,16 @@ export default {
 		TITLE: 'Account',
 		TAB_VERIFICATION: 'Verification',
 		TAB_SECURITY: 'Security',
-		TAB_NOTIFICATIONS: 'Notifications',
 		TAB_SETTINGS: 'Settings',
-		TAB_PROFILE: 'Profile',
 		TAB_WALLET: 'Wallet',
 		TAB_SUMMARY: 'Summary',
 		TAB_HISTORY: 'History',
-		TAB_API: 'API',
 		TAB_SIGNOUT: 'Signout',
+		TAB_STAKE: 'Stake', //new
 	},
 	REQUEST_XHT_ACCESS: {
 		// new
 		REQUEST_TITLE: 'Request Access',
-		REQUEST_INVITE: 'Request Invite',
 		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
 		INTRODUCTION_LABEL: 'Introduce yourself',
 		INTRODUCTION_PLACEHOLDER:
@@ -179,7 +129,6 @@ export default {
 		ATTACHMENT_LABEL: 'Add attachments(3 max)', // ToDo:
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
-		SUCCESS_MESSAGE: 'The email has been seent to our support',
 		SUCCESS_TITLE: 'Message Sent',
 		SUCCESS_MESSAGE_1: 'Your issue has been sent to customer support.',
 		SUCCESS_MESSAGE_2: 'You can expect a reply in 1-3 days.',
@@ -189,15 +138,10 @@ export default {
 			ADDRESS: 'Your {0} receiving address', // new
 			DESTINATION_TAG: 'Your {0} destination tag', // new
 			MEMO: 'Your {0} memo', // new
-			BTC: 'Your Bitcoin receiving address',
-			ETH: 'Your Ethereum receiving address',
-			BCH: 'Your Bitcoin Cash receiving address',
 		},
-		INCREASE_LIMIT: 'Want to increase your daily limit?',
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you funds',
 		NO_DATA: 'No information available',
-		FULL_MESSAGE_LIMIT: '{0}: {1} {2} {3}', //  0 -> {Daily deposit max amount}:  1 -> {50,000,000} 2 -> {T} 3 -> {(Want to increase your daily limit?)}
 	},
 	LOGIN: {
 		LOGIN_TO: 'Login to {0}',
@@ -242,9 +186,6 @@ export default {
 	},
 	LEGAL: {
 		PRIVACY_POLICY: {
-			TITLE: 'Privacy Policy',
-			SUBTITLE:
-				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
 				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
 				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
@@ -256,9 +197,6 @@ export default {
 			],
 		},
 		GENERAL_TERMS: {
-			TITLE: 'General Terms of Service',
-			SUBTITLE:
-				'Last updated April 1, 2019. Replaces the prior version in its entirety.',
 			TEXTS: [
 				'HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.',
 				'Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.',
@@ -296,16 +234,33 @@ export default {
 		OTP_LABEL: 'OTP Code',
 		OTP_PLACEHOLDER: 'Enter the authentication code',
 		OTP_TITLE: 'Authenticator Code',
-		OTP_HELP: 'help',
 		OTP_BUTTON: 'submit',
 		ERROR_INVALID: 'Invalid OTP Code',
 	},
+	EMAIL_CODE_FORM: {
+		TITLE: 'Input you security codes',
+		LABEL: 'Input code (please check your email)',
+		PLACEHOLDER: 'Input the code sent to your email',
+		FORM_TITLE:
+			'A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.',
+		BUTTON: 'submit',
+		ERROR_INVALID: "The code you've entered is incorrect. Please try again",
+		OTP_LABEL: '2FA Code (OTP)',
+		OTP_PLACEHOLDER: 'Enter your 6-digit two-factor authentication code',
+	},
 	QUICK_TRADE_COMPONENT: {
 		TITLE: 'Quick Trade', // updated
-		TOTAL_COST: 'Total cost',
 		BUTTON: 'Review Order', // updated
-		INPUT: '{0} to {1}',
-		TRADE_TITLE: '{0} {1}', // quick buy
+		INFO: 'Fastest and simplest way to trade your crypto', //new
+		CHANGE_TEXT: 'change', //new
+		HIGH_24H: '24H HIGH', //new
+		LOW_24H: '24H LOW', //new
+		BEST_BID: 'BEST BID', //new
+		BEST_ASK: 'BEST ASK', //new
+		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
+		FOOTER_TEXT_1: 'Sourced from', //new
+		GO_TO_TEXT: 'Go to', //new
+		SOURCE_TEXT: 'Broker OTC deal', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
@@ -313,7 +268,6 @@ export default {
 		LOADING_ASSETS: 'Loading assets...', // new
 		TOTAL_ASSETS: 'Total Assets',
 		AVAILABLE_WITHDRAWAL: 'Available for trading',
-		AVAILABLE_TRADING: 'Available for withdrawal',
 		ORDERS_PLURAL: 'orders',
 		ORDERS_SINGULAR: 'order',
 		HOLD_ORDERS:
@@ -378,9 +332,6 @@ export default {
 			'Here you can monitor your progress towards verification and an account upgrades.',
 		INFO_TXT_1:
 			'Please submit the relevant information needed for each section below.Only when all sections have submissions completed will your information be reviewed and approved for an account upgrade.',
-		INFO_TXT_2:
-			'* Verification for the identity section require you to {0} certain documents.',
-		DOCUMENTATIONS: 'upload',
 		COMPLETED: 'Completed',
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
@@ -396,22 +347,15 @@ export default {
 		VERIFY_MOBILE_PHONE: 'Verify mobile phone',
 		VERIFY_USER_DOCUMENTATION: 'Verify user documentation',
 		VERIFY_ID_DOCUMENTS: 'Verify id documents',
-		VERIFY_BANK_ACCOUNT: 'Verify bank account',
-		BUTTON: 'Submit Verification Request',
 		TITLE_IDENTITY: 'Identity',
 		TITLE_MOBILE: 'Mobile',
-		TITLE_MOBILE_HEADER: 'Mobile Phone Number',
 		TITLE_BANK: 'Bank',
-		TITLE_BANK_HEADER: 'Bank Details',
 		CHANGE_VALUE: 'Change value',
 		PENDING_VERIFICATION_PERSONAL_INFORMATION:
 			'Your personal information is being processed',
-		PENDING_VERIFICATION_BANK: 'Your bank details are being verified',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
 		GOTO_WALLET: 'Go to wallet', // new
-		CONNECT_BANK_ACCOUNT: 'Connect Bank Account',
-		ACTIVATE_2FA: 'Activate 2FA',
 		INCOMPLETED: 'Incompleted',
 		BANK_VERIFICATION: 'Bank Verification',
 		IDENTITY_VERIFICATION: 'Identity Verification',
@@ -431,7 +375,6 @@ export default {
 		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account',
 		BANK_NAME: 'Bank Name',
 		ACCOUNT_NUMBER: 'Account Number',
-		CARD_NUMBER: 'Card Number',
 		BANK_VERIFICATION_HELP_TEXT:
 			'In order for this section to be verified you must complete the {0} section.',
 		DOCUMENT_SUBMISSION: 'Document Submission',
@@ -456,12 +399,6 @@ export default {
 		OKAY: 'Okay',
 		USER_DOCUMENTATION_FORM: {
 			FORM_FIELDS: {
-				FIRST_NAME_LABEL: 'First name',
-				FIRST_NAME_PLACEHOLDER:
-					'Type your first name as it appears on your identity document',
-				LAST_NAME_LABEL: 'Last name',
-				LAST_NAME_PLACEHOLDER:
-					'Type your last name as it appears on your identity document',
 				FULL_NAME_LABEL: 'Your Full Name',
 				FULL_NAME_PLACEHOLDER:
 					'Type your full name as it appears on your identity document',
@@ -508,57 +445,45 @@ export default {
 		},
 		ID_DOCUMENTS_FORM: {
 			VALIDATIONS: {
-				ID_TYPE: 'Please select a type of identity document',
 				ID_NUMBER: 'Please type your documents number',
 				ISSUED_DATE: 'Please select the date in which your document was issued',
 				EXPIRATION_DATE:
 					'Please select the date when your document will expire',
-				FRONT: 'Please upload a scan of your passport',
+				FRONT: 'Please upload a scan of your passport or national Id',
 				PROOF_OF_RESIDENCY:
 					'Please upload a scan of document proving the address you current reside',
-				SELFIE_PHOTO_ID: 'Please upload a selfie with passport and note',
+				SELFIE_PHOTO_ID:
+					'Please upload a selfie with passport or national Id and note',
 			},
 			FORM_FIELDS: {
-				TYPE_LABEL: 'ID Document Type',
-				TYPE_PLACEHOLDER: 'Select Type of identity document',
-				TYPE_OPTIONS: {
-					ID: 'ID',
-					PASSPORT: 'Passport',
-				},
-				ID_NUMBER_LABEL: 'Passport Number',
-				ID_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ID_PASSPORT_NUMBER_LABEL: 'Passport Number',
-				ID_PASSPORT_NUMBER_PLACEHOLDER: 'Type your passport number',
-				ISSUED_DATE_LABEL: 'Passport Issue Date',
-				EXPIRATION_DATE_LABEL: 'Passport Expiration Date',
-				FRONT_LABEL: 'Passport',
-				FRONT_PLACEHOLDER: 'Add a copy of your passport',
-				BACK_LABEL: 'Back Side of passport',
-				BACK_PLACEHOLDER:
-					'Add a copy of the backside of your ID (if applicable)',
-				PASSPORT_LABEL: 'Passport Document',
-				PASSPORT_PLACEHOLDER: 'Add a copy of your Passport document',
+				ID_NUMBER_LABEL: 'Passport Number or National Id Number',
+				ID_NUMBER_PLACEHOLDER:
+					'Type your passport Number or national Id number',
+				ISSUED_DATE_LABEL: 'Passport or National Id Issue Date',
+				EXPIRATION_DATE_LABEL: 'Passport or National ID Expiration Date',
+				FRONT_LABEL: 'Passport or National Id',
+				FRONT_PLACEHOLDER: 'Add a copy of your passport or national id',
 				POR_LABEL: 'Document proving your address',
 				POR_PLACEHOLDER: 'Add a copy of a document that proves your address',
-				SELFIE_PHOTO_ID_LABEL: 'Your Selfie with passport and Note',
+				SELFIE_PHOTO_ID_LABEL:
+					'Your Selfie with passport or national Id and Note',
 				SELFIE_PHOTO_ID_PLACEHOLDER:
-					'Add a copy of your Selfie with passport and Note',
+					'Add a copy of your Selfie with passport or national Id and Note',
 			},
 			INFORMATION: {
-				IDENTITY_DOCUMENT: 'Identity Document',
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
-					LIST_ITEM_1:
-						'HIGH QUALITY (colour images, 300dpi resolution or higher).',
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
+					LIST_ITEM_1: 'Clear high quality color image', // updated
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
 						'Only a valid passport is acceptedt; high quality photos or scanned images of these documents are acceptable:',
-					WARNING_2:
-						'Make sure you are uploading your own documents. Any usage of wrong or fake documents will have legal consequences and result in freezing your account immediately.',
 					WARNING_3:
 						'Please do not submit the passport as your proof of residence.',
+					VIOLATION_ERROR:
+						'Total size of all your uploaded documents exceeds the upload limit of {0}mb. Please upload smaller files to proceed.',
 				},
 				POR: {
 					SECTION_1_TEXT_1:
@@ -595,13 +520,8 @@ export default {
 		},
 		BANK_ACCOUNT_FORM: {
 			VALIDATIONS: {
-				ACCOUNT_OWNER:
-					'Please type your first and last name as associated with your bank account',
-				ACCOUNT_NUMBER:
-					'Your bank account number should be less than 50 digits',
 				ACCOUNT_NUMBER_MAX_LENGTH:
 					'Your bank account number has a limit of 50 characters',
-				CARD_NUMBER: 'Your card number has an incorrect format',
 			},
 			FORM_FIELDS: {
 				BANK_NAME_LABEL: 'Bank Name',
@@ -609,8 +529,6 @@ export default {
 				ACCOUNT_NUMBER_LABEL: 'Bank Account Number',
 				ACCOUNT_NUMBER_PLACEHOLDER: 'Type your bank account number',
 				ACCOUNT_OWNER_LABEL: 'Bank Account Owner’s Name',
-				ACCOUNT_OWNER_PLACEHOLDER: 'Type the name as on your bank account',
-				CARD_NUMBER_LABEL: 'Bank Card Number',
 				CARD_NUMBER_PLACEHOLDER:
 					'Type the 16 digit number that is on the front of your bank card',
 			},
@@ -646,7 +564,6 @@ export default {
 			'Create a warning pop up when your trade order uses more than {0} of your portfolio',
 		ORDER_PORTFOLIO_LABEL: 'Portfolio Percentage Amount:',
 		NOTIFICATION_FORM: {
-			TRADE_POPUPS: 'Trade Pop ups',
 			POPUP_ORDER_CONFIRMATION: 'Ask for confirmation before submitting orders',
 			POPUP_ORDER_COMPLETED: 'Show pop up when order has been completed',
 			POPUP_ORDER_PARTIALLY_FILLED:
@@ -726,7 +643,6 @@ export default {
 			TITLE: 'Password',
 			ACTIVE: 'ACTIVE',
 			DIALOG: {
-				SUCCESS: 'You have successfully changed your password',
 				EMAIL_CONFIRMATION:
 					'An email is sent to you to authorize the password change.',
 			},
@@ -752,8 +668,6 @@ export default {
 			TIME: 'Date/Time',
 			CONTENT: {
 				TITLE: 'Logins History',
-				MESSAGE:
-					'Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support',
 			},
 		},
 		FREEZE: {
@@ -777,6 +691,185 @@ export default {
 				WARNING_2: 'Do you really want to freeze your account?',
 			},
 		},
+	},
+	STAKE: {
+		NETWORK_WARNING: 'Incompatible network. Please change your network to {0}',
+		EARN: 'Earn', //new
+		TITLE: 'Stake',
+		MODAL_TITLE: 'Stake and earn {0}',
+		REVIEW_MODAL_TITLE: 'Check and confirm stake',
+		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
+		DEFI_TITLE: 'DeFi asset staking',
+		DEFI_TEXT:
+			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
+		GET_STAKES: 'Get stakes', //new
+		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
+		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
+		LOGIN_HERE: 'Login here',
+		MOVE_XHT: 'Move XHT',
+		ESTIMATED_STAKED: 'Estimated value of total staked',
+		ESTIMATED_EARNINGS: 'Estimated value of earnings',
+		CONNECT_WALLET: 'Connect wallet',
+		BACK: 'Back',
+		NEXT: 'Next',
+		REVIEW: 'Review',
+		ESTIMATED: 'EST.',
+		BLOCK: 'Block',
+		CANCEL: 'Cancel',
+		PROCEED: 'Proceed',
+		GO_TO_WALLET: 'go to wallet',
+		AMOUNT_LABEL: 'Amount to stake',
+		PERIOD_SUBTITLE:
+			'Longer you stake the more you are rewarded. Select the duration of stake below.',
+		PERIOD_OPTION_TEXT: 'Stake for {0} and earn',
+		STAKE_AND_EARN_DETAILS:
+			'Stake for ~{0} and earn {1}x on the amount you stake',
+		PREDICTED_EARNINGS: 'Predicted earnings',
+		VARIABLE_TITLE: 'Variable*',
+		VARIABLE_TEXT: '*{0} about how the variable rate works.',
+		READ_MORE: 'Read more',
+		CURRENT_BLOCK: 'Current block: {0}',
+		END_BLOCK: 'End block: {0}',
+		DURATION: 'Duration',
+		END_ON_BLOCK: 'End on block: {0}',
+		SLASHING_TITLE: 'Slashing (early unstake)',
+		SLASHING_TEXT_1: '{0}% of your stakes principle',
+		SLASHING_TEXT_2: 'All earnings forfeited',
+		REVIEW_NOTE:
+			'Duration is measured by the timing of the Ethereum blocks. Please check and confirm the details above before you stake as unstaking early will result in a percentage of your stakes principle to be deducted and earnings forfeited.',
+		WAITING_TITLE: 'Waiting for confirmation',
+		WAITING_TEXT: 'Confirm this transaction in your wallet',
+		PENDING_TEXT: 'Transaction pending...',
+		CHECKING_ALLOWANCE: 'Checking {0} allowance...',
+		WAITING_PROMPT: '{0} {1} {2}',
+		WAITING_STAKE: 'Confirm the stake amount',
+		WAITING_WITHDRAW: 'Allowing spending',
+		WAITING_UNSTAKE: 'Unstake',
+		WAITING_STAKE_ING: 'Staking pending',
+		WAITING_WITHDRAW_ING: 'Processing of allowing spending',
+		WAITING_UNSTAKE_ING: 'Unstaking',
+		SUCCESSFUL_STAKE_TITLE: "You've successfully staked {0}",
+		SUCCESSFUL_STAKE_AMOUNT: 'Amount staked',
+		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
+		SUCCESSFUL_STAKE_DURATION_DEF: 'Ends on block {0} ({1})',
+		SUCCESSFUL_STAKE_DESTINATION: 'Destination',
+		SUCCESSFUL_UNSTAKE_ADDRESS: 'My Address',
+		OKAY: 'Okay',
+		ERROR_TITLE: 'Error: {0} was rejected',
+		ERROR_SUBTITLE: 'If this was a mistake you can go back and retry',
+		SUCCESSFUL_UNSTAKE_TITLE: "You've successfully unstaked {0}",
+		SUCCESSFUL_UNSTAKE_AMOUNT: 'Total to receive',
+		EARNINGS: 'Earnings',
+		ORIGINAL_AMOUNT: 'Original amount staked',
+		CONNECT_A_WALLET: 'Connect to a wallet',
+		CONNECT_WALLET_TABLE: '{0} to see historical stake events',
+		ZERO_STAKES: 'Zero stakes',
+		PENDING_TRANSACTIONS: 'Pending {0} {1}',
+		VIEW_ON: 'View on the {0}',
+		BLOCKCHAIN: 'blockchain',
+		DISCONNECT: 'Disconnect account',
+		VIEW_POT: 'View distribution POT',
+	},
+	UNSTAKE: {
+		TITLE: 'Unstake',
+		EARLY_TITLE: 'Unstake early',
+		EARLY_WARNING_TITLE: 'Looks like you are trying to unstake early',
+		EARLY_WARNING_TEXT_1:
+			'This could lead to a percentage of your initial principle stake being deducted and all earnings being forfeited.',
+		EARLY_WARNING_TEXT_2: 'Are you sure you want to proceed?',
+		BACK: 'GO BACK',
+		REVIEW: 'REMOVE STAKE',
+		DURATION: 'EST. maturation duration',
+		CANCEL: 'Cancel',
+		PROCEED: 'Proceed',
+		EARNINGS_FORFEITED: 'Earnings forfeited',
+		PRICE_FORMAT: '{0} {1}',
+		EST_PENDING: 'EST. pending: {0}',
+		AMOUNT_SLASHED: 'Amount slashed*',
+		AMOUNT_TO_RECEIVE: 'Amount to receive',
+		SLASH_FOOTNOTE:
+			'*All amounts slashed are distributed to remaining stakers. Please consider the slashed amount from initial principle, the earnings forfeited and duration remaining and determine if the value lost in unstaking early is worth the cost.',
+		AMOUNT_NOTE: 'Amounts will be distributed to your wallet address',
+		TOTAL_EARNT: 'Total earnt',
+		PENDING_EARNINGS: 'Pending earnings*',
+		PENDING_EARNINGS_FOOTNOTE:
+			'*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount.',
+	},
+	STAKE_TABLE: {
+		CURRENCY: 'Currency',
+		AVAILABLE: 'Available to stake',
+		TOTAL: 'Total staked',
+		REWARD_RATE: 'Reward rate',
+		EARNINGS: 'Earnings',
+		STAKE: 'Stake',
+		VARIABLE: 'Variable',
+	},
+	STAKE_LIST: {
+		AMOUNT: 'AMOUNTS STAKED',
+		DURATION: 'EST. MATURATION DURATION',
+		START: 'STARTED STAKING',
+		END: 'END STAKE',
+		EARNINGS: 'EARNINGS',
+		STAKE: 'STAKE',
+	},
+	STAKE_DETAILS: {
+		BACK_SUBTITLE: '{0} to staking page',
+		GO_BACK: 'Go back',
+		CONTRACT_SUBTITLE: 'Token contract: {0}',
+		VIEW_MORE: 'VIEW MORE',
+		VIEW: 'View',
+		TOKEN: '{0} Token',
+		TABS: {
+			PUBLIC_INFO: 'Public info',
+			DISTRIBUTIONS: 'Distributions',
+			MY_STAKING: 'My staking',
+		},
+		PUBLIC_INFO: {
+			TITLE: 'Staking information',
+			SUBTITLE: 'Below is a staking tokenomics for {0} ({1}).',
+			TOTAL_DISTRIBUTED_REWARDS: 'Total distributed rewards ({0})',
+			POT_BALANCE: 'POT balance',
+			UNCLAIMED_REWARDS: 'Unclaimed rewards',
+			TOTAL_STAKED: 'Total staked',
+			REWARD_RATE: 'Reward rate',
+			MY_STAKE: 'My stake ({0}%)',
+			MY_STAKE_PERCENTLESS: 'My stake',
+			OTHER_STAKE: 'Others stake ({0}%)',
+			EVENTS_TITLE: 'Recent distributed rewards',
+		},
+		DISTRIBUTIONS: {
+			TITLE: 'Distributed {0} rewards',
+			SUBTITLE:
+				'Below is a historical list of distributions made to stakers of {0}.',
+			TIME: 'Time distributed',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount distributed',
+		},
+		MY_STAKING: {
+			TITLE: 'My staking',
+			SUBTITLE:
+				'Below displays information and some historical events related to your {0} staking.',
+			EVENTS_TITLE: 'Historical stake events',
+			TIME: 'Time',
+			EVENT: 'Event',
+			TRANSACTION_ID: 'Transaction ID',
+			AMOUNT: 'Amount',
+		},
+	},
+	MOVE_XHT: {
+		TITLE: 'Move XHT',
+		TEXT_1: 'To stake XHT you must first move your XHT into your own wallet.',
+		TEXT_2: 'Your currently connected wallet address is:',
+		LABEL: 'Wallet address',
+		TEXT_3:
+			'It is important to check that the above wallet address is secure. XHT will be moved to the above wallet address.',
+	},
+	MOVE_AMOUNT: {
+		TITLE: 'Input amount',
+		PROMPT: 'Input the amount you would like to move.',
+		BALANCE: '{0} balance: {1}',
+		LABEL: 'Amount to move',
+		FEE: 'Transaction fee: {0} {1}',
 	},
 	CURRENCY: 'Currency',
 	TYPE: 'Type',
@@ -809,9 +902,7 @@ export default {
 	PRICE: 'Price',
 	FEE: 'Fee',
 	FEES: 'Fees',
-	LIMIT: 'Limit',
 	TIME: 'Time',
-	TIMESTAMP: 'Timestamp',
 	MORE: 'More',
 	VIEW: 'View',
 	STATUS: 'Status',
@@ -822,12 +913,10 @@ export default {
 	ORDERBOOK: 'Order book',
 	CANCEL: 'Cancel',
 	CANCEL_ALL: 'Cancel All',
-	GO_TRADE_HISTORY: 'Go to Transaction History',
 	ORDER_ENTRY: 'order entry',
 	TRADE_HISTORY: 'history',
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
-	TRADES: 'my transaction history',
 	RECENT_TRADES: 'my recent trades', // ToDo
 	ORDER_HISTORY: 'Order history',
 	PUBLIC_SALES: 'public sales', // ToDo
@@ -839,12 +928,9 @@ export default {
 	INCOMING: 'Incoming', // new
 	PRICE_CURRENCY: 'Price',
 	AMOUNT_SYMBOL: 'Amount',
-	MARKET_PRICE: 'Market Price',
 	ESTIMATED_PRICE: 'Estimated Price',
 	ORDER_PRICE: 'Order Price',
-	TOTAL_ORDER: 'Order Total',
 	NO_DATA: 'No Data',
-	LOADING: 'Loading',
 	CHART_TEXTS: {
 		d: 'Date',
 		o: 'Open',
@@ -855,10 +941,7 @@ export default {
 	},
 	QUICK_TRADE: 'Quick trade',
 	PRO_TRADE: 'Pro trade',
-	ADMIN_DASH: 'Admin Page',
 	WALLET_TITLE: 'Wallet',
-	TRADING_MODE_TITLE: 'Trading Mode',
-	TRADING_TITLE: 'Trading',
 	LOGOUT: 'Logout',
 	WITHDRAWALS_MIN_VALUE_ERROR:
 		'The transaction is too small to send. Try a larger amount.',
@@ -866,8 +949,6 @@ export default {
 		'The transaction is too big to send. Try a smaller amount.',
 	WITHDRAWALS_LOWER_BALANCE:
 		'Insufficient balance to proceed. This transaction requires {0}.',
-	WITHDRAWALS_FEE_TOO_LARGE:
-		'The fee is more than {0}% of your total transaction',
 	WITHDRAWALS_BTC_INVALID_ADDRESS:
 		'The Bitcoin address is invalid. Please check carefully and input again',
 	WITHDRAWALS_ETH_INVALID_ADDRESS:
@@ -883,6 +964,8 @@ export default {
 	WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE: '{0} address network type: {1}',
 	WITHDRAWALS_FORM_NETWORK_WARNING:
 		'Make sure the network selected is compatible with the destination wallet',
+	WITHDRAWALS_FORM_FEE_WARNING:
+		'{0} ({1}) is a requirement for this asset to be withdrawn',
 	WITHDRAWALS_FORM_DESTINATION_TAG_WARNING:
 		'Check if receiving address requires a Tag. Also known as Memo, digital ID, label, and notes.',
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
@@ -891,47 +974,15 @@ export default {
 	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
 	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
 	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
-	WITHDRAWALS_FORM_MEMO_PLACEHOLDER: 'Type the transaction memo', // new
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
 	WITHDRAWALS_FORM_FEE_COMMON_LABEL: 'Transaction fee',
-	WITHDRAWALS_FORM_FEE_FIAT_LABEL: 'Bank withdrawal fee',
+	WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN: 'Transaction fee ({0})',
 	WITHDRAWALS_FORM_FEE_PLACEHOLDER:
 		'Type the amount of {0} you wish to use in the fee of the transaction',
-	WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE: 'Optimal fee: {0} {1}', // TODO {0} -> amount {1} -> currency name
-	DEPOSITS_FORM_AMOUNT_LABEL: '{0} amount to deposit',
-	DEPOSITS_FORM_AMOUNT_PLACEHOLDER:
-		'Type the amount of {0} you wish to withdraw',
-	DEPOSITS_BUTTON_TEXT: 'review deposit',
-	DEPOSIT_PROCEED_PAYMENT: 'Pay',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	DEPOSIT_METHOD: 'Paymen Method {0}',
-	DEPOSIT_METHOD_DIRECT_PAYMENT: 'Credit card',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1:
-		'Proceed to the credit card payment method.',
-	DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2:
-		'You will leave the platform to perform the payment.',
-	DEPOSIT_VERIFICATION_WAITING_TITLE: 'Verifiying the payment',
-	DEPOSIT_VERIFICATION_WAITING_MESSAGE:
-		'Please do not close the application while the paymen is being verified',
-	DEPOSIT_VERIFICATION_WARNING_MESSAGE:
-		'If something went wrong in the verification, please contact us.',
-	DEPOSIT_VERIFICATION_WARNING_INFORMATION:
-		'This is the ID of the operation: "{0}", please provide us this ID to help you.',
-	DEPOSIT_VERIFICATION_SUCCESS: 'Payment verified',
-	DEPOSIT_VERIFICATION_ERROR: 'There has been an error verifying the deposit.',
-	DEPOSIT_VERIFICATION_ERROR_VERIFIED: 'The deposit has been already verified',
-	DEPOSIT_VERIFICATION_ERROR_STATUS: 'Invalid status',
-	DEPOSIT_VERIFICATION_ERROR_USER_MATCH:
-		'The card you made the deposit is not the same as your registered card. Therefore your deposit is rejected and your funds will be refunded in less than an hour.',
-	QUOTE_MESSAGE: 'You are going to {0} {1} {2} for {3} {4}',
-	QUOTE_BUTTON: 'Accept',
-	QUOTE_REVIEW: 'Review',
-	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
-	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
-	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
 	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
@@ -939,14 +990,12 @@ export default {
 		MESSAGE_ABOUT_SEND: 'You are about to send',
 		MESSAGE_BTC_WARNING:
 			'Please ensure the accuracy of this address since {0} transfers are irreversible',
-		MESSAGE_ABOUT_WITHDRAW: 'You are about to transfer to your bank account',
 		MESSAGE_FEE: 'Transactions fee of {0} ({1}) included',
-		MESSAGE_FEE_BASE: 'Transactions fee of {0} included',
+		MESSAGE_FEE_COIN: 'Transactions fee of {0}',
 		BASE_MESSAGE_1:
 			'You can only withdraw to a bank account in a name that matches the name registered with your account.',
 		BASE_MESSAGE_2: 'Withdrawal min amount',
 		BASE_MESSAGE_3: 'Daily withdrawal max amount',
-		BASE_INCREASE_LIMIT: 'Increase your daily limit',
 		CONFIRM_VIA_EMAIL: 'Confirm via Email',
 		CONFIRM_VIA_EMAIL_1: 'We have sent you a confirmation withdrawal email.',
 		CONFIRM_VIA_EMAIL_2:
@@ -962,24 +1011,18 @@ export default {
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
-	AVAILABLE_TEXT: 'Available',
 	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
-	WALLET_TABLE_AMOUNT_IN: `Amount in {0}`,
-	WALLET_TABLE_TOTAL: 'Grand Total',
 	WALLET_ALL_ASSETS: 'All Assets',
 	WALLET_HIDE_ZERO_BALANCE: 'Hide zero balance',
 	WALLET_ESTIMATED_TOTAL_BALANCE: 'Estimated Total Balance',
 	WALLET_ASSETS_SEARCH_TXT: 'Search',
-	HIDE_TEXT: 'Hide',
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
 	ORDERBOOK_BUYERS: 'Buyers',
 	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
-	ORDERBOOK_SPREAD_PRICE: '{0} {1}', //// 0-> amount  1 -> symbol  600,000 T
 	CALCULATE_MAX: 'Max',
-	DATEFIELD_TOOGLE_DATE_GR: 'Gregorian calendar',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
 		'Before you withdraw, you need to verify your bank details.',
@@ -1006,17 +1049,13 @@ export default {
 	QUICK_TRADE_QUOTE_INVALID: 'Invalid quote',
 	QUICK_TRADE_QUOTE_CALCULATING_ERROR: 'Error calculating the quote',
 	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED:
-		'The order with the current size can not be filled',
+		'The slippage for the amount selected is too high in the market',
 	QUICK_TRADE_ORDER_NOT_FILLED: 'Order is not filled',
 	QUICK_TRADE_NO_BALANCE: 'Insufficient balance to perform the order',
 	QUICK_TRADE_SUCCESS: 'Success!',
 	QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
 	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
 		'You have insufficient funds in your wallet to complete this transaction.',
-	YES: 'Yes',
-	NO: 'No',
-	NEXT: 'Next',
-	SKIP_FOR_NOW: 'Skip for now',
 	SUBMIT: 'submit',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
@@ -1044,7 +1083,6 @@ export default {
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
 	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
-	SETTINGS_ORDERPOPUP_LABEL: 'Display order confirmation popup',
 	SETTINGS_ORDERPOPUP_OPTIONS: [
 		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
@@ -1055,7 +1093,6 @@ export default {
 		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
 	],
 	SETTING_BUTTON: 'save',
-	STRING_WITH_PARENTHESIS: '{0} ({1})',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
@@ -1073,6 +1110,26 @@ export default {
 		INACTIVE: 'Inactive',
 		INVALID_LEVEL:
 			'You need to upgrade your verification level to have access this feature', // TODO
+	},
+	DEVELOPERS_TOKEN: {
+		API_KEY: 'API Key',
+		SECRET_KEY: 'Secret Key',
+		ACCESS: 'Access',
+		BASIC_ACCESS: 'Basic access',
+		BASIC_ACCESS_PROMPT: 'Select what this API key can access.',
+		READING_ACCESS: 'Reading (wallets balances, etc)',
+		TRADING_ACCESS: 'Trading',
+		IP_ACCESS: 'IP access',
+		IP_ACCESS_PROMPT: 'Configure what IP address will work with this API key.',
+		ANY_IP_ADDRESS: 'Any IP address',
+		ONLY_TRUSTED_IPS: 'Only trusted IPs',
+		ADD_IP_PH: 'Enter IP address. You can add multiple IPs',
+		ADD_IP: 'Add',
+		ADVANCED_ACCESS: 'Advanced access',
+		ADVANCED_ACCESS_PROMPT: 'Requires trusted IPs be activated.',
+		WITHDRAWAL_ACCESS: 'Withdrawals',
+		SAVE: 'Save',
+		BEWARE: 'Beware, allowing withdrawals comes with certain risks!',
 	},
 	DEVELOPERS_TOKENS_POPUP: {
 		GENERATE_TITLE: 'Generate API Key',
@@ -1102,15 +1159,12 @@ export default {
 		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token', // TODO
 	},
 	CHAT: {
-		CHAT_TEXT: 'chat',
 		MARKET_CHAT: 'Market Chat',
 		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
 		READ_MORE: 'Read More',
 		SHOW_IMAGE: 'Show Image',
 		HIDE_IMAGE: 'Hide Image',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
-		SIGN_UP_CHAT: 'Sign Up To Chat',
-		JOIN_CHAT: 'Set Username To Chat',
 		TROLLBOX: 'Trollbox ({0})', // new
 	},
 	INVALID_USERNAME:
@@ -1128,8 +1182,6 @@ export default {
 		LABEL_LEVEL_1: 'One',
 		LABEL_LEVEL_2: 'Two',
 		LABEL_LEVEL_3: 'Three',
-		LABEL_MAKER_FEE: 'Maker Fee',
-		LABEL_TAKER_FEE: 'Taker Fee',
 		LABEL_BASE_DEPOSIT: 'Daily Euro Deposit',
 		LABEL_BASE_WITHDRAWAL: 'Daily Euro Withdrawal',
 		LABEL_BTC_DEPOSIT: 'Daily Bitcoin Deposit',
@@ -1152,7 +1204,7 @@ export default {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
-	TRADE_TAB_POSTS: 'ANNOUNCEMENTS', // new
+	TRADE_TAB_POSTS: 'Announcements', // new
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1169,29 +1221,10 @@ export default {
 	TOTAL_ASSETS_VALUE: 'Total assets value in {0}: {1}',
 	SUMMARY: {
 		TITLE: 'Summary',
-		TINY_PINK_SHRIMP_TRADER: 'Tiny Pink Shrimp Trader',
-		TINY_PINK_SHRIMP_TRADER_ACCOUNT: 'Tiny Pink Shrimp Trader Account',
-		LITTLE_RED_SNAPPER_TRADER: 'Little Red Snapper Trader',
-		LITTLE_RED_SNAPPER_TRADER_ACCOUNT: 'Little Red Snapper Trader Account',
-		CUNNING_BLUE_KRAKEN_TRADING: 'Cunning Blue Kraken Trading',
-		CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT: 'Cunning Blue Kraken Trading Account',
-		BLACK_LEVIATHAN_TRADING: 'Black Leviathan Trading',
-		BLACK_LEVIATHAN_TRADING_ACCOUNT: 'Black Leviathan Trading Account',
 		URGENT_REQUIREMENTS: 'Urgent Requirements',
 		TRADING_VOLUME: 'Trading Volume',
 		ACCOUNT_ASSETS: 'Account Assets',
 		ACCOUNT_DETAILS: 'Account Details',
-		SHRIMP_ACCOUNT_TXT_1: 'Your journey begins here!',
-		SHRIMP_ACCOUNT_TXT_2:
-			'Keep swimming true, you’ll soon stand out from the rest of the shoal',
-		SNAPPER_ACCOUNT_TXT_1:
-			'Congrats on staying your course through the swell of the market.',
-		SNAPPER_ACCOUNT_TXT_2:
-			'Forge through and fight the surge for more crypto treasures ahead.',
-		KRAKEN_ACCOUNT_TXT_1:
-			'Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!',
-		LEVIATHAN_ACCOUNT_TXT_1:
-			'Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.',
 		VIEW_FEE_STRUCTURE: 'View Fee Structure and Limits',
 		UPGRADE_ACCOUNT: 'Upgrade Account',
 		ACTIVE_2FA_SECURITY: 'Active 2FA Security',
@@ -1218,20 +1251,13 @@ export default {
 			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
 			'Each account has its own fees and deposit and withdrawal limits.',
-		DEPOSIT_WITHDRAWAL_ALLOWENCE: 'Deposit & withdrawal allowance',
 		TRADING_FEE_STRUCTURE: 'Trading fee structure',
 		WITHDRAWAL: 'Withdrawal',
 		DEPOSIT: 'Deposit',
 		TAKER: 'Taker',
 		MAKER: 'Maker',
-		WEBSITE: 'website',
-		VIP_TRADER_ACCOUNT_ELIGIBLITY: 'VIP Trader Account Upgrade Eligibility',
-		PRO_TRADER_ACCOUNT_ELIGIBLITY: 'Pro Trader Account Upgrade Eligibility',
 		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Eligibility',
-		NOMINAL_TRADING: 'Nominal Trading',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
-		ACCOUNT_AGE_OF_MONTHS: 'Account Age of {0} Months',
-		TRADING_VOLUME_EQUIVALENT: '{0} {1} Trading Volume Equivalent',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		TITLE_OF_ACCOUNT: '{0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
@@ -1258,8 +1284,6 @@ export default {
 		CURRENT_TXT: 'Current',
 		TRADER_ACCOUNT_XHT_TEXT:
 			'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
-		TRADER_ACCOUNT_TITLE: 'Account - Presale Period', // new
-		HAP_ACCOUNT: 'HAP Account', // new
 		HAP_ACCOUNT_TXT:
 			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
 		EMAIL_VERIFICATION: 'Email Verification', // new
@@ -1268,13 +1292,10 @@ export default {
 		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
 		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
-		TRADE_OVER_BTC: 'Trade over {0} BTC worth', // new
 		XHT_IN_WALLET: '{0} XHT in wallet', // new
-		REWARDS_BONUS: 'Rewards and Bonuses', // new
 		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
 		TASKS: 'Tasks', // new
 		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
-		BUY_FIRST_XHT: 'Buy your first XHT and receive a bonus of 5 XHT', // new
 		COMPLETE_ACC_VERIFICATION:
 			'Complete account verification and get a 20 XHT bonus', // new
 		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
@@ -1295,7 +1316,6 @@ export default {
 		MARKETS: 'Markets', // new
 		CHANGE_24H: '24H Change', // new
 		VOLUME_24H: '24H Volume', // new
-		PRICE_GRAPH_24H: '24H Price graph', // new
 		VIEW_MORE_MARKETS: 'View more markets', // new
 	},
 	REFERRAL_LINK: {
@@ -1306,15 +1326,6 @@ export default {
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
 		XHT_TITLE: 'MY REFERRALS', // new
-		XHT_INFO_TEXT: 'Earn commissions by inviting your friends.', // new
-		XHT_INFO_TEXT_1: 'Commissions are paid periodically to your wallet', // new
-		APPLICATION_TXT:
-			'To become a HollaEx Kit distributor please fill out an application.', // new
-		TOTAL_REFERRAL: 'Total bought from referrals:', // new
-		PENDING_REFERRAL: 'Commissions Pending:', // new
-		EARN_REFERRAL: 'Commissions Earn:', // new
-		XHT_COUNT: '{0} XHT', // new
-		APPLY_BUTTON: 'APPLY', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
@@ -1354,7 +1365,6 @@ export default {
 		XHT_ORDER_TXT_1: 'To start trading you must login', // new
 		XHT_ORDER_TXT_2: '', // new
 		XHT_ORDER_TXT_3: '{0} or {1}', // new
-		XHT_TITLE: 'XHT', //new
 		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
 		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here',
@@ -1367,19 +1377,6 @@ export default {
 		FLOOR: 'Floor',
 		LAST_WAVE: 'Last wave',
 	},
-	TYPES_OF_POSTS: {
-		// new
-		TITLE: 'POSTS',
-		ANNOUNCEMEN: 'Announcement',
-		SYSTEM_UPDATE: 'System Update',
-		LAST_WAVE: 'Last Wave',
-		ANNOUNCEMENT_TXT: 'Free XHT will be distributed to all wallets that apply',
-		SYSTEM_UPDATE_TIME: 'Time: 12:31 PM, December 19th, 2019	',
-		SYSTEM_UPDATE_DURATION: '1 hour',
-		LAST_WAVE_AMOUNT: '100, 213 XHT',
-		LAST_WAVE_REDISTRIBUTED: ' 11, 211',
-		LAST_WAVE_TIME: ' 12: 31 PM, December 19th, 2019',
-	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
 	FEE_AMOUNT: 'Fee amount', // new
@@ -1388,36 +1385,18 @@ export default {
 	NOTE_FOR_EDIT_COIN:
 		'Note: For adding and removing {0} please refer to the{1}.', // new
 	REFER_DOCS_LINK: 'docs', // new
-	RESTART_TO_APPLY:
-		'You need to restart your exchange for apply these changes.', // new
-	TRIAL_EXCHANGE_MSG:
-		'You are using a trial version of {0} and it will expire in {1} days.', // new
-	EXPIRY_EXCHANGE_MSG:
-		'Your exchange has expired. Go to dash.bitholla.com to activate it again.', // new
 	EXPIRED_INFO_1: 'Your trial has ended.', // new
 	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
 	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
 	TRADE_POSTS: {
 		// new
-		ANNOUNCEMENT: 'Announcement',
-		ANNOUNCEMNT_TXT_3:
-			'Public launch and Wave Auction is rescheduled to January 1st 2020. Wallet deposit and withdrawals are now open.',
-		ANNOUNCEMNT_TXT_4:
-			'Happy new year Hollaers. We are making a new mark starting from 2020 with launch of the most open trading platform with the help of you all.',
-		ANNOUNCEMNT_TXT_1:
-			'Earn XHT with HAP program by introducing your friends to the exchange. {0}.',
-		DEFAULT_ANNOUNCEMENT:
-			'This section displays your exchange public announcements!',
-		ANNOUNCEMENT_TXT_2: 'Free XHT will be distributed to all wallets that {0}.',
 		LEARN_MORE: 'Learn more',
-		APPLY_TODAY: 'Apply today', // new
 	},
 	OPEN_WALLET: 'Open wallet', // new
-	AGO: 'ago', // new
 	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
-	ORDER_TYPE: 'type',
+	ORDER_TYPE: 'Type',
 	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
@@ -1429,8 +1408,6 @@ export default {
 		// new
 		NEW: 'New',
 		SEARCH_FIELD_LABEL: 'Paste your transaction ID',
-		SEARCH: 'SEARCH',
-		SEARCHING: 'SEARCHING',
 		CHECK_DEPOSIT_STATUS: 'Check deposit status',
 		STATUS_DESCRIPTION:
 			'You can check the status of your deposit by passing the transaction ID (hash) below.',
@@ -1442,7 +1419,7 @@ export default {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for all markets.',
+		INFO_1: 'This will cancel your open orders for {0} market.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
@@ -1489,5 +1466,17 @@ export default {
 	TRIGGER_PRICE: 'Trigger price', //new
 	SPEND_AMOUNT: 'Spend Amount', //new
 	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
-	RC_UNKNOWN_PLUGIN_UNKNOWN_KEY: 'Unknown string key', //new
+	TOOLS: {
+		ORDERBOOK: 'Orderbook', //new
+		CHART: 'Chart', //new
+		PUBLIC_SALES: 'Public sales', //new
+		ORDER_ENTRY: 'Order entry', //new
+		RECENT_TRADES: 'Recent trades', //new
+		OPEN_ORDERS: 'Open orders', //new
+		WALLET: 'Wallet',
+		DEPTH_CHART: 'Depth chart', //new
+		COMING_SOON: 'coming soon', //new
+	},
+	WALLET_BALANCE_LOADING: 'Balance loading...', //new
+	LOADING: 'Loading...', //new
 };

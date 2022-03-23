@@ -17,6 +17,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import { STATIC_ICONS } from 'config/icons';
+import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
 class Wallet extends Component {
 	state = {
@@ -36,7 +37,9 @@ class Wallet extends Component {
 			this.props.coins,
 			this.props.pairs,
 			this.props.totalAsset,
-			this.props.oraclePrices
+			this.props.oraclePrices,
+			this.props.constants,
+			this.props.contracts
 		);
 	}
 
@@ -50,7 +53,9 @@ class Wallet extends Component {
 			nextProps.coins,
 			nextProps.pairs,
 			nextProps.totalAsset,
-			nextProps.oraclePrices
+			nextProps.oraclePrices,
+			nextProps.constants,
+			nextProps.contracts
 		);
 	}
 
@@ -69,7 +74,9 @@ class Wallet extends Component {
 				this.props.coins,
 				this.props.pairs,
 				this.props.totalAsset,
-				this.props.oraclePrices
+				this.props.oraclePrices,
+				this.props.constants,
+				this.props.contracts
 			);
 		}
 	}
@@ -102,6 +109,7 @@ class Wallet extends Component {
 
 	handleCheck = (_, value) => {
 		this.setState({ isZeroBalanceHidden: value });
+		localStorage.setItem('isZeroBalanceHidden', value);
 	};
 
 	generateSections = (
@@ -113,7 +121,9 @@ class Wallet extends Component {
 		coins,
 		pairs,
 		total,
-		oraclePrices
+		oraclePrices,
+		{ features: { stake_page = false } = {} } = {},
+		contracts = {}
 	) => {
 		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -142,6 +152,13 @@ class Wallet extends Component {
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
 						handleCheck={this.handleCheck}
+						hasEarn={
+							isStakingAvailable(STAKING_INDEX_COIN, contracts) &&
+							stake_page &&
+							!isMobile
+						}
+						loading={this.props.dataFetched}
+						contracts={contracts}
 					/>
 				),
 				isOpen: true,
@@ -153,7 +170,9 @@ class Wallet extends Component {
 					iconId: 'PAPER_CLIP',
 					iconPath: STATIC_ICONS['PAPER_CLIP'],
 					allowClick: true,
-					className: isOpen ? 'paper-clip-icon' : 'paper-clip-icon wallet-notification',
+					className: isOpen
+						? 'paper-clip-icon'
+						: 'paper-clip-icon wallet-notification',
 					onClick: () => {
 						this.props.router.push('/transactions');
 					},
@@ -215,7 +234,7 @@ class Wallet extends Component {
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
 							iconPath={ICONS['TAB_WALLET']}
-							iconId={STRINGS['WALLET_TITLE']}
+							iconId="TAB_WALLET"
 							textType="title"
 						/>
 						<div className="wallet-container">
@@ -239,6 +258,8 @@ const mapStateToProps = (store) => ({
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
+	dataFetched: store.asset.dataFetched,
+	contracts: store.app.contracts,
 });
 
 const mapDispatchToProps = (dispatch) => ({

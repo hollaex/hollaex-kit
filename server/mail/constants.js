@@ -9,7 +9,7 @@ exports.EMAIL_ICONS = {
 		'https://s3.ap-northeast-2.amazonaws.com/public-holla-images/exir/twitter_icon.png'
 };
 
-exports.BITHOLLA_LOGO_BLACK =
-	'https://s3.ap-northeast-2.amazonaws.com/public-holla-images/bitholla-logo.png';
+exports.LOGO_BLACK =
+	'https://hollaex-public.s3.ap-southeast-1.amazonaws.com/logo/hollaex-logo-black-l.png';
 
-exports.BITHOLLA_DOMAIN = 'https://bitholla.com';
+exports.REFERRAL_DOMAIN = 'https://hollaex.com';

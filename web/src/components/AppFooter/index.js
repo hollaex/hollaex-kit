@@ -135,7 +135,7 @@ const AppFooter = ({
 						</div>
 						<div className="footer_separter">
 							<div className="footer-content">
-								<div className="d-flex">
+								<div className="d-flex footer-img-wrapper">
 									<Image
 										iconId="EXCHANGE_LOGO"
 										icon={ICONS['EXCHANGE_LOGO']}
@@ -183,11 +183,11 @@ const AppFooter = ({
 				<div className="pt-2">
 					{!links.hide_referral_badge && (
 						<a
-							href={links.referral_link || 'https://bitholla.com'}
+							href={links.referral_link || 'https://hollaex.com'}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
-							<span>{links.referral_label || 'Powered by bitHolla'}</span>
+							<span>{links.referral_label || 'Powered by HollaEx'}</span>
 						</a>
 					)}
 				</div>

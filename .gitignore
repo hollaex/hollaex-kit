@@ -11,23 +11,21 @@ web/coverage
 
 #test
 test/node_modules
-test/selenium/Onboarding/.log
-test/selenium/Onboarding/chatBox.js
-test/selenium/Roles/.log
-test/selenium/Scenario/.log
+test/Onboarding/.log
+test/Onboarding/chatBox.js
+test/Roles/.log
+test/Scenario/.log
 #test/Scenario/*.*
-test/selenium/Trade/.log
-test/selenium/Utils/temp
-test/selenium/Utils/scratch
-test/selenium/Wallet/.log
-test/selenium/Report
-test/selenium/.env
+test/Trade/.log
+test/Utils/temp
+test/Utils/scratch
+test/Wallet/.log
+test/Report
 test/.env
 test/Dev
-test/selenium/Dash
-test/Cypress/cypress.env.json
-test/Cypress/Cypress/screenshots/*.*
-test/Cypress/Cypress/vidoes/*.*
+test/selenium/Onboarding/.log/*/*
+test/selenium/.env
+
 
 # production
 build

@@ -9,11 +9,11 @@ DROP TRIGGER IF EXISTS update_userlevel_after_verify ON "VerificationCodes";
 `;
 sequelize
 	.query(drops, { raw: true })
-    .then(() => {
-        console.log('Triggers and functions are successfully dropped');
+	.then(() => {
+		console.log('Triggers and functions are successfully dropped');
 		process.exit(0);
-    })
-    .catch((err) => {
+	})
+	.catch((err) => {
 		console.error('Error', err.message);
 		process.exit(1);
 	});

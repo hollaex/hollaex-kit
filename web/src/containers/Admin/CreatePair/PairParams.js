@@ -3,12 +3,14 @@ import { InputNumber, Button, Checkbox } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 
 import Coins from '../Coins';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 class PairParams extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isLoading: false,
+			tabParams: getTabParams()
 		};
 	}
 
@@ -24,9 +26,12 @@ class PairParams extends Component {
 	};
 
 	handleBack = () => {
-		const { isEdit, moveToStep, onClose } = this.props;
+		const { isEdit, moveToStep, onClose, router } = this.props;
 		if (isEdit) {
 			onClose();
+		} else if (this.state.tabParams.isOpenPairModal) {
+			onClose();
+			router.replace("/admin/trade?tab=0");
 		} else {
 			moveToStep('pair-init-selection');
 		}
@@ -46,7 +51,7 @@ class PairParams extends Component {
 
 		return (
 			<div>
-				<div className="title">Pair parameters</div>
+				<div className="title">Market parameters</div>
 				<div>
 					Values have been preset based on the rough dollar value of the base
 					asset.
@@ -54,12 +59,12 @@ class PairParams extends Component {
 				<div>Click edit to change these trade values.</div>
 				<div className="d-flex align-items-center coin-container">
 					<div className="d-flex align-items-center">
-						<Coins type={pairBase.symbol} small={true} />
+						<Coins type={pairBase.symbol} small={true} color={pairBase.meta.color}/>
 						<span className="coin-full-name">{pairBase.fullname}</span>
 					</div>
 					<CloseOutlined style={{ fontSize: '24px' }} />
 					<div className="d-flex align-items-center">
-						<Coins type={pair2.symbol} small={true} />
+						<Coins type={pair2.symbol} small={true} color={pair2.meta.color}/>
 						<span className="coin-full-name">{pair2.fullname}</span>
 					</div>
 				</div>
@@ -97,14 +102,14 @@ class PairParams extends Component {
 				<div className="field-wrap">
 					<div className="sub-title">Minimum Tradable Amount</div>
 					<div className="description">
-						<div>Minimum - amount that can be traded for this pair.</div>
+						<div>Minimum - amount that can be traded for this market.</div>
 					</div>
 					<div className="full-width">{formData.min_size}</div>
 				</div>
 				<div className="field-wrap">
 					<div className="sub-title">Maximum Tradable Amount</div>
 					<div className="description">
-						<div>Maximum - amount that can be traded for this pair.</div>
+						<div>Maximum - amount that can be traded for this market.</div>
 					</div>
 					<div className="full-width">{formData.max_size}</div>
 				</div>
@@ -112,7 +117,7 @@ class PairParams extends Component {
 					<div className="sub-title">Minimum Tradable Price</div>
 					<div className="description">
 						<div>
-							Minimum - quoted trading price that can be traded for this pair.
+							Minimum - quoted trading price that can be traded for this market.
 						</div>
 					</div>
 					<div className="full-width">{formData.min_price}</div>
@@ -121,7 +126,7 @@ class PairParams extends Component {
 					<div className="sub-title">Maximum Tradable Price</div>
 					<div className="description">
 						<div>
-							Maximum - quoted trading price that can be traded for this pair.
+							Maximum - quoted trading price that can be traded for this market.
 						</div>
 					</div>
 					<div className="full-width">{formData.max_price}</div>

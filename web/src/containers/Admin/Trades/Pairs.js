@@ -2,8 +2,9 @@ import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Button, Table, Modal, Breadcrumb, message } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseCircleFilled, CloseOutlined } from '@ant-design/icons';
 import { bindActionCreators } from 'redux';
+import _get from 'lodash/get';
 
 import CreatePair from '../CreatePair';
 import Preview from '../CreatePair/Preview';
@@ -12,27 +13,28 @@ import IconToolTip from '../IconToolTip';
 import { getTabParams } from '../AdminFinancials/Assets';
 import Filter from '../FilterComponent';
 import ApplyChangesConfirmation from '../ApplyChangesConfirmation';
-import { getExchange } from '../AdminFinancials/action';
-import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
-import { storePair } from './actions';
+import { setAllPairs, setCoins } from 'actions/assetActions';
+import { storePair, updateAssetPairs } from './actions';
+import { STATIC_ICONS } from 'config/icons';
+import { getAllPairs, updateExchange } from '../AdminFinancials/action';
 
 const { Item } = Breadcrumb;
 
-export const renderStatus = ({ id, verified, created_by }, user) => {
-	if (created_by !== user.id) {
+export const renderStatus = ({ id, verified, created_by }, user_id) => {
+	if (created_by !== user_id) {
 		return null;
 	}
 	return (
 		<div className="settings-toolTip coin-config-align">
 			{!id && !verified ? (
-				<Link to="/admin/financials?tab=1">
+				<Link to="/admin/financials?tab=0">
 					<IconToolTip
 						type="settings"
 						tip="Click to complete the asset configuration"
 					/>
 				</Link>
 			) : !verified ? (
-				<Link to="/admin/financials?tab=1">
+				<Link to="/admin/financials?tab=0">
 					<IconToolTip
 						type="warning"
 						tip="This asset is in pending verification"
@@ -51,9 +53,31 @@ const filterOptions = [
 		secondaryPlaceHolder: 'Input name or symbol',
 	},
 ];
-const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview) => [
+
+const renderTrade = (isActive) => {
+	return (
+		<div>
+			{isActive
+				? <div className="d-flex">
+					<img
+						src={STATIC_ICONS.VERIFICATION_VERIFIED}
+						className="active-status-icon"
+						alt="active_icon"
+					/>
+					<div>Active</div>
+				</div>
+				: <div className="d-flex align-items-center">
+					<CloseCircleFilled style={{ color: '#808080', marginRight: '5px' }} />
+					<div>Inactive</div>
+				</div>
+			}
+		</div>
+	)
+}
+
+const COLUMNS = (pairs, allCoins = [], handlePreview, constants = {}) => [
 	{
-		title: 'Pairs',
+		title: 'Markets',
 		dataIndex: 'symbol',
 		key: 'symbol',
 		render: (symbol, { fullname = '', verified, basename, name, ...rest }) => {
@@ -87,7 +111,7 @@ const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview) => [
 							small={true}
 						/>
 						<div className="icon-wrapper">
-							{renderStatus(pair_base_data, user)}
+							{renderStatus(pair_base_data, _get(constants, 'info.user_id'))}
 						</div>
 					</div>
 					<div className="content-space1">
@@ -99,7 +123,7 @@ const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview) => [
 							type={pair_2.toLowerCase()}
 							small={true}
 						/>
-						<div className="icon-wrapper">{renderStatus(pair2_data, user)}</div>
+						<div className="icon-wrapper">{renderStatus(pair2_data, _get(constants, 'info.user_id'))}</div>
 					</div>
 					<span className="content-space2 pairs">{pair2_data.fullname}</span>
 					{verified ? (
@@ -114,6 +138,16 @@ const COLUMNS = (pairs, allCoins = [], user = {}, handlePreview) => [
 			);
 		},
 	},
+	{
+		title: 'Pro Trade',
+		key: 'proTrade',
+		render: () => (renderTrade(constants.features && constants.features.pro_trade)),
+	},
+	{
+		title: 'Quick Trade',
+		key: 'quickTrade',
+		render: () => (renderTrade(constants.features && constants.features.quick_trade)),
+	}
 ];
 
 class Pairs extends Component {
@@ -132,12 +166,14 @@ class Pairs extends Component {
 			isConfirm: false,
 			isPresetConfirm: false,
 			coins: [],
+			buttonSubmitting: false,
+			saveLoading: false,
 		};
 	}
 
 	componentDidMount() {
-		this.getMyExchange();
-		if (this.props.pairs && this.props.pairs.length) {
+		if (this.props.pairs.length &&
+			this.props.allPairs.length) {
 			let pairs = this.props.allPairs.filter((data) =>
 				this.props.pairs.includes(data.name)
 			);
@@ -145,10 +181,15 @@ class Pairs extends Component {
 				pairs,
 			});
 		}
+		const tabParams = getTabParams();
+		if (tabParams.isOpenPairModal) {
+			this.setState({ isOpen: tabParams.isOpenPairModal });
+		}
 	}
 
 	componentDidUpdate(prevProps) {
-		if (JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs)) {
+		if ((JSON.stringify(this.props.allPairs) !== JSON.stringify(prevProps.allPairs)) ||
+			(JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs))) {
 			let pairs = this.props.allPairs.filter((data) =>
 				this.props.pairs.includes(data.name)
 			);
@@ -160,21 +201,27 @@ class Pairs extends Component {
 			JSON.stringify(this.props.location) !== JSON.stringify(prevProps.location)
 		) {
 			const tabParams = getTabParams();
-			if (tabParams.tab === '0') {
-				this.props.handleHide(false);
+			if (tabParams.tab === '1') {
+				if (!tabParams.isViewTabs) {
+					this.props.handleHide(false);
+				}
 				this.setState({
 					isPreview: false,
 					isConfigure: false,
 				});
+				if (tabParams.isOpenPairModal) {
+					this.setState({ isOpen: tabParams.isOpenPairModal });
+				}
 			}
 		}
 	}
 
-	getMyExchange = async () => {
+	getPairs = async () => {
 		try {
-			const res = await getExchange();
-			const exchange = res.data;
-			this.props.setExchange(exchange);
+			const res = await getAllPairs();
+			if (res && res.data && res.data.data) {
+				this.props.setAllPairs(res.data.data);
+			}
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -193,6 +240,10 @@ class Pairs extends Component {
 			isEdit: false,
 			isConfirm: false,
 		});
+		const tabParams = getTabParams();
+		if (tabParams.isOpenPairModal) {
+			this.props.router.replace("/admin/trade?tab=1&isViewTabs=true");
+		}
 	};
 
 	handleWidth = (width) => {
@@ -213,7 +264,6 @@ class Pairs extends Component {
 	};
 
 	handleConfigure = () => {
-		this.props.handleHide(true);
 		this.setState({ isConfigure: true, isPreview: false });
 	};
 
@@ -246,40 +296,25 @@ class Pairs extends Component {
 		}
 	};
 
-	getTradingPairs = async () => {
-		// const { pairAction } = this.props;
-		try {
-			// const res = await getPairs();
-			const res = {};
-			if (res.data && res.data.data) {
-				// pairAction.setPair(res.data.data);
-			}
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
 	handleDelete = async (formData) => {
-		// const { pairs = [], exchange = {} } = this.props;
+		const { pairs = [], exchange = {} } = this.props;
+		this.setState({ buttonSubmitting: true });
 		try {
-			// let coins = exchange.coins || [];
-			// let pairList = pairs.map(data => data.name ? data.name : data.symbol);
-
-			// let formProps = {
-			//     id: exchange.id,
-			//     // coins: coins.map(data => data.symbol),
-			//     pairs: pairList.filter((data) => data !== `${formData.pair_base}-${formData.pair_2}`)
-			// }
-			// await putExchange(formProps);
-			// await this.getExchange();
-			// await this.getTradingPairs();
+			let formProps = {
+				id: exchange.id,
+				pairs: pairs.filter((data) => data !== `${formData.pair_base}-${formData.pair_2}`)
+			}
+			await updateExchange(formProps);
+			await this.props.getMyExchange();
+			await this.getPairs();
 			message.success('Pair removed successfully');
-			this.setState({ isPreview: false, isConfigure: false });
+			this.setState({ isPreview: false, isConfigure: false, buttonSubmitting: false });
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			this.setState({ buttonSubmitting: false });
 		}
 	};
 
@@ -309,6 +344,7 @@ class Pairs extends Component {
 		isApply = false,
 		isPresetAsset = false
 	) => {
+		this.setState({ saveLoading: true });
 		if (isEdit) {
 			try {
 				delete formData.pair_base_data;
@@ -316,9 +352,9 @@ class Pairs extends Component {
 				if (!formData.name) {
 					formData.name = `${formData.pair_base}-${formData.pair_2}`;
 				}
-				// await updatePair(formData);
-				// await this.getExchange();
-				// await this.getTradingPairs();
+				await updateAssetPairs(formData);
+				await this.props.getMyExchange();
+				await this.getPairs();
 				if (isApply) {
 					await this.handleApply();
 				}
@@ -327,55 +363,49 @@ class Pairs extends Component {
 				if (this.state.isConfigure) {
 					this.setState({ isPreview: true });
 				}
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		} else {
-			const { pairs = [], exchange = {}, allPairs } = this.props;
-			let pairsData = allPairs.filter((data) => pairs.includes(data.name));
-			// let coinsData = allCoins.filter(val => coins.includes(val.symbol))
+			const { pairs = [], exchange = {} } = this.props;
 			try {
 				if (!formData.name) {
 					formData.name = `${formData.pair_base}-${formData.pair_2}`;
 				}
-				// let coins = coinsData || [];
-				let pairList = pairsData.map((data) =>
-					data.name ? data.name : data.symbol
-				);
+				let coins = exchange.coins || [];
 
-				if (
-					!this.props.allPairs.filter((data) => data.name === formData.name)
-						.length
-				) {
+				if (!this.props.allPairs.filter((data) => data.name === formData.name).length) {
 					await storePair(formData);
+					await this.getPairs();
 				}
 
-				if (pairList.includes(formData.name)) {
-					message.warning('Pairs already exists');
-				} else {
-					// let formProps = {
-					//     id: exchange.id,
-					//     coins: coins.map(data => data.symbol),
-					//     pairs: [...pairList, `${formData.pair_base}-${formData.pair_2}`]
-					// }
-					// await putExchange(formProps);
-					await this.getExchange();
-					// await this.getTradingPairs();
-					if (isPresetAsset && exchange.is_running) {
-						this.handleApplyOpen();
+				if (!pairs.includes(formData.name)) {
+					let formProps = {
+						id: exchange.id,
+						coins,
+						pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`]
 					}
-					if (isApply) {
-						await this.handleApply();
-					}
-					this.handleClose();
-					message.success('Pairs created successfully');
+					await updateExchange(formProps);
+					await this.props.getMyExchange();
 				}
+				// if (isPresetAsset && exchange.is_running) {
+				// 	this.handleApplyOpen();
+				// }
+				// if (isApply) {
+				// 	await this.handleApply();
+				// }
+				this.handleClose();
+				message.success('Pairs created successfully');
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		}
 	};
@@ -398,7 +428,7 @@ class Pairs extends Component {
 				{this.state.isPreview || this.state.isConfigure ? (
 					<Breadcrumb>
 						<Item>
-							<Link to="/admin/trade?tab=0">Pairs</Link>
+							<Link to="/admin/trade?tab=1">Orderbooks</Link>
 						</Item>
 						<Item
 							className={
@@ -407,7 +437,7 @@ class Pairs extends Component {
 									: ''
 							}
 						>
-							Manage pair
+							Manage market
 						</Item>
 					</Breadcrumb>
 				) : null}
@@ -416,7 +446,7 @@ class Pairs extends Component {
 	};
 
 	renderContent = () => {
-		const { coins, allCoins, allPairs, user } = this.props;
+		const { coins, allCoins, allPairs, constants } = this.props;
 		let coinsData = allCoins.filter((val) => coins.includes(val.symbol));
 		if (this.state.isPreview) {
 			return (
@@ -430,12 +460,14 @@ class Pairs extends Component {
 							formData={this.state.previewData}
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
+							user_id={_get(constants, 'info.user_id')}
+							buttonSubmitting={this.state.buttonSubmitting}
 						/>
 						<div>
-							{this.state.previewData.created_by === user.id ? (
+							{this.state.previewData.created_by === _get(constants, 'info.user_id') ? (
 								<Button
 									type="primary"
-									className="configure-btn"
+									className="configure-btn green-btn"
 									onClick={this.handleConfigure}
 								>
 									Configure
@@ -453,17 +485,19 @@ class Pairs extends Component {
 						<Preview
 							coins={coinsData}
 							allCoins={allCoins}
-							user={user}
+							user_id={_get(constants, 'info.user_id')}
 							isConfigure={this.state.isConfigure}
 							formData={this.state.previewData}
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
+							buttonSubmitting={this.state.buttonSubmitting}
 						/>
 						<div>
 							<Button
 								type="primary"
-								className="configure-btn"
+								className="configure-btn green-btn"
 								onClick={this.handleApplyConfirmation}
+								loading={this.state.saveLoading}
 							>
 								Save
 							</Button>
@@ -474,6 +508,14 @@ class Pairs extends Component {
 		} else {
 			return (
 				<Fragment>
+					<div className="orderbook-content mb-4">
+						<div className="title">Active orderbook based markets</div>
+						<div className="info-text">
+							<div>Below is list of markets that utilize an orderbook for transactions.</div>
+							<div>These markets are visible if they are marked 'Active' and not visible when marked 'inactive'.</div>
+							<div>Click to view market details and change their visibility.</div>
+						</div>
+					</div>
 					<div className="filter-header">
 						<Filter
 							selectOptions={filterOptions}
@@ -485,15 +527,19 @@ class Pairs extends Component {
 							className="green-btn"
 							onClick={this.handleCreateNew}
 						>
-							Create/add pair
+							Create/add market
 						</Button>
 					</div>
 					<div className="table-wrapper">
 						<Table
-							columns={COLUMNS(allPairs, allCoins, user, this.handlePreview)}
+							columns={COLUMNS(allPairs, allCoins, this.handlePreview, constants)}
 							rowKey={(data, index) => index}
 							dataSource={this.state.pairs}
 						/>
+					</div>
+					<div className="orderbook-footer-content">
+						<div>Don't see your market?</div>
+						<div>Check for unfinished or pending markets <Link to="/admin/trade?tab=0">here.</Link></div>
 					</div>
 				</Fragment>
 			);
@@ -536,6 +582,8 @@ class Pairs extends Component {
 					handleConfirm={this.handleConfirm}
 					editDataCallback={this.handleEditData}
 					onClose={this.handleClose}
+					router={this.props.router}
+					getMyExchange={this.props.getMyExchange}
 				/>
 			);
 		}
@@ -572,13 +620,12 @@ const mapStateToProps = (state) => {
 		pairs:
 			(state.asset && state.asset.exchange && state.asset.exchange.pairs) || [],
 		allPairs: state.asset.allPairs,
-		user: state.user,
 		allCoins: state.asset.allCoins,
+		constants: state.app.constants,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	setExchange: bindActionCreators(setExchange, dispatch),
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 });

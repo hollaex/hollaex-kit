@@ -7,11 +7,13 @@ import { FIT_SCREEN_HEIGHT } from 'config/constants';
 import { isBrowser, isMobile } from 'react-device-detect';
 import isEqual from 'lodash.isequal';
 import debounce from 'lodash.debounce';
+import querystring from 'query-string';
 // import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
 import { addElements, injectHTML } from 'utils/script';
+import { SuccessDisplay } from 'components';
 
 import {
 	NOTIFICATIONS,
@@ -22,6 +24,7 @@ import {
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
 } from '../../actions/appActions';
+import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import {
@@ -69,6 +72,7 @@ import Container from './Container';
 import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 
 class App extends Component {
 	state = {
@@ -83,6 +87,8 @@ class App extends Component {
 		sidebarFitHeight: false,
 		isSidebarOpen: getSideBarState(),
 		activeMenu: '',
+		paramsData: {},
+		isCustomNotification: false,
 	};
 	ordersQueued = [];
 	limitTimeOut = null;
@@ -99,7 +105,13 @@ class App extends Component {
 
 	componentDidMount() {
 		const initialized = getExchangeInitialized();
-		const { injected_values, injected_html } = this.props;
+		const {
+			injected_values,
+			injected_html,
+			plugins_injected_html,
+			initializeTools,
+			loadBlockchainData,
+		} = this.props;
 
 		if (
 			initialized === 'false' ||
@@ -120,8 +132,35 @@ class App extends Component {
 			5000
 		);
 
+		initializeTools();
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
+		injectHTML(plugins_injected_html, 'body');
+		const qs = querystring.parse(this.props.location.search);
+		if (
+			Object.keys(qs).length &&
+			!this.props.location.pathname.includes('trade') &&
+			!this.props.location.pathname.includes('quick-trade')
+		) {
+			const { success_alert, error_alert } = qs;
+			if (success_alert) {
+				const paramsData = { status: true, message: success_alert };
+				this.setState({ paramsData, isCustomNotification: true });
+			} else if (error_alert) {
+				const paramsData = { status: false, message: error_alert };
+				this.setState({ paramsData, isCustomNotification: true });
+			}
+		}
+
+		if (window.ethereum) {
+			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
+				loadBlockchainData();
+			});
+
+			window.ethereum.on(ETHEREUM_EVENTS.NETWORK_CHANGE, () => {
+				window.location.reload();
+			});
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -171,10 +210,14 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		const { tools } = this.props;
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
 			this.setActiveMenu();
+		}
+		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
+			storeTools(tools);
 		}
 	}
 
@@ -325,10 +368,14 @@ class App extends Component {
 				return 'home';
 			default:
 		}
-		if (path.indexOf('/trade/') === 0) {
+		if (path.indexOf('/trade/') === 0 || path.indexOf('trade/') === 0) {
 			return 'trade';
 		} else if (path.indexOf('/quick-trade/') === 0) {
 			return 'quick-trade';
+		} else if (path.indexOf('/chart-embed') === 0) {
+			return 'chart-embed';
+		} else if (path.indexOf('/stake') === 0) {
+			return 'stake';
 		}
 
 		return '';
@@ -480,6 +527,42 @@ class App extends Component {
 				const { gotoWallet, ...rest } = data;
 				return <DepositFunds data={rest} gotoWallet={gotoWallet} />;
 			}
+			case NOTIFICATIONS.STAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.EARLY_UNSTAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.UNSTAKE: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
+			case NOTIFICATIONS.MOVE_XHT: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -504,6 +587,11 @@ class App extends Component {
 				setSideBarState(isSidebarOpen);
 			}
 		);
+	};
+
+	onCloseNotification = () => {
+		this.setState({ paramsData: {}, isCustomNotification: false });
+		this.props.location.search = '';
 	};
 
 	render() {
@@ -535,6 +623,8 @@ class App extends Component {
 			dialogIsOpen,
 			appLoaded,
 			chatIsClosed,
+			isCustomNotification,
+			paramsData,
 			// sidebarFitHeight,
 			// isSidebarOpen,
 		} = this.state;
@@ -544,20 +634,37 @@ class App extends Component {
 
 		const shouldCloseOnOverlayClick =
 			activeNotification.type !== CONTACT_FORM &&
-			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR;
+			activeNotification.type !== NOTIFICATIONS.UNDEFINED_ERROR &&
+			activeNotification.type === NOTIFICATIONS.STAKE &&
+			activeNotification.type === NOTIFICATIONS.UNSTAKE &&
+			activeNotification.type === NOTIFICATIONS.EARLY_UNSTAKE;
+
 		const activePath = !appLoaded
 			? ''
 			: this.getClassForActivePath(this.props.location.pathname);
 
 		const isHome = this.props.location.pathname === '/';
+		const isStakePage = activePath === 'stake';
+		const isChartEmbed = activePath === 'chart-embed';
 		const isMenubar = !isHome;
 		const isMenuSider =
-			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+			activePath !== 'trade' &&
+			activePath !== 'quick-trade' &&
+			activePath !== 'chart-embed' &&
+			!isHome;
 		const showFooter = !isMobile || isHome;
 
 		const homeBackgroundProps = isHome
 			? {
 					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
+		const stakeBackgroundProps = isStakePage
+			? {
+					backgroundImage: `url(${ICONS['STAKING_BACKGROUND']})`,
 					backgroundSize: '100%',
 					backgroundRepeat: 'repeat-y',
 			  }
@@ -621,7 +728,7 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && (
+								{!isHome && !isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
@@ -637,7 +744,7 @@ class App extends Component {
 										)}
 									</AppBar>
 								)}
-								{isBrowser && !isHome && (
+								{isBrowser && !isHome && !isChartEmbed && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -652,6 +759,7 @@ class App extends Component {
 										{
 											'app_container-secondary-content': isMenubar,
 											no_bottom_navigation: isHome,
+											'chart-embed': isChartEmbed,
 										}
 									)}
 								>
@@ -671,8 +779,10 @@ class App extends Component {
 											{
 												'overflow-y': !isMobile,
 												no_bottom_navigation: isHome,
+												'background-color-layer': isStakePage,
 											}
 										)}
+										style={stakeBackgroundProps}
 									>
 										<Container
 											router={router}
@@ -732,6 +842,14 @@ class App extends Component {
 												full:
 													activeNotification.type ===
 													NOTIFICATIONS.UNDEFINED_ERROR,
+											},
+											{
+												background:
+													activeNotification.type === NOTIFICATIONS.STAKE ||
+													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+													activeNotification.type ===
+														NOTIFICATIONS.EARLY_UNSTAKE ||
+													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -739,6 +857,11 @@ class App extends Component {
 										theme={activeTheme}
 										showCloseText={
 											!(
+												activeNotification.type === NOTIFICATIONS.STAKE ||
+												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
+												activeNotification.type ===
+													NOTIFICATIONS.EARLY_UNSTAKE ||
+												activeNotification.type === NOTIFICATIONS.MOVE_XHT ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
@@ -773,7 +896,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && !isHome && (
+								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
@@ -802,14 +925,26 @@ class App extends Component {
 							}
 						)}
 					>
-						{showFooter && (
+						{showFooter && !isChartEmbed && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && (
+				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
+				<Dialog
+					isOpen={isCustomNotification}
+					onCloseDialog={this.onCloseNotification}
+					theme={activeTheme}
+				>
+					<SuccessDisplay
+						onClick={this.onCloseNotification}
+						text={paramsData.message}
+						success={paramsData.status}
+						iconPath={null}
+					/>
+				</Dialog>
 			</ThemeProvider>
 		);
 	}

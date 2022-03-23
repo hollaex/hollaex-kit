@@ -17,6 +17,7 @@ import {
 	Withdraw,
 	TransactionsHistory,
 	Trade,
+	ChartEmbed,
 	Legal,
 	AuthContainer,
 	RequestResetPassword,
@@ -25,6 +26,8 @@ import {
 	Chat,
 	WithdrawConfirmation,
 	AddTradeTabs,
+	Stake,
+	StakeDetails,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -52,7 +55,6 @@ import {
 	Roles,
 	Resources,
 	Pairs,
-	CustomNotification,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -77,6 +79,7 @@ import { checkUserSessionExpired } from './utils/utils';
 import { getExchangeInitialized, getSetupCompleted } from './utils/initialize';
 import PluginConfig from 'containers/Admin/PluginConfig';
 import ConfirmChangePassword from 'containers/ConfirmChangePassword';
+import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
@@ -171,6 +174,17 @@ function loggedIn(nextState, replace) {
 		});
 	}
 }
+
+const checkStaking = (nextState, replace) => {
+	const {
+		app: { contracts },
+	} = store.getState();
+	if (!isStakingAvailable(STAKING_INDEX_COIN, contracts)) {
+		replace({
+			pathname: '/account',
+		});
+	}
+};
 
 const checkLanding = (nextState, replace) => {
 	if (!store.getState().app.home_page) {
@@ -279,6 +293,11 @@ export const generateRoutes = (routes = []) => {
 			</Route>
 			<Route component={Container}>
 				<Route path="/" name="Home" component={Home} onEnter={checkLanding} />
+				<Route
+					path="/chart-embed/:pair"
+					name="ChartEmbed"
+					component={ChartEmbed}
+				/>
 				{isMobile ? (
 					<Route
 						path="/home"
@@ -379,6 +398,18 @@ export const generateRoutes = (routes = []) => {
 					path="confirm-withdraw/:token"
 					name="ConfirmWithdraw"
 					component={WithdrawConfirmation}
+				/>
+				<Route
+					path="stake"
+					name="Stake"
+					component={Stake}
+					onEnter={checkStaking}
+				/>
+				<Route
+					path="stake/details/:token"
+					name="StakeToken"
+					component={StakeDetails}
+					onEnter={checkStaking}
 				/>
 				<Route path="logout" name="LogOut" onEnter={setLogout} />
 				{remoteRoutes}
@@ -522,11 +553,6 @@ export const generateRoutes = (routes = []) => {
 				component={Legal}
 				content="terms"
 				onEnter={requireAuth}
-			/>
-			<Route
-				path="notification"
-				name="notification"
-				component={CustomNotification}
 			/>
 			<Route path="admin-login" name="admin-login" component={AdminLogin} />
 			<Route path="init" name="initWizard" component={Init} />

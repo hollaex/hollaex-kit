@@ -12,7 +12,7 @@ When ('wait 5 second',()=>{
 
 And ('reCaptcha appears',()=>{
     
-    cy.get('.grecaptcha-logo > iframe').click({ force: true }).should('be.visible')
+    cy.get('.grecaptcha-logo > iframe').click(({ force: true })).should('be.visible')
 })
 
 Then ('I should be able to login successfully',()=>{

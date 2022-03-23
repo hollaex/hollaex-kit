@@ -33,6 +33,10 @@ export const NOTIFICATIONS = {
 	DEPOSIT_INFO: 'DEPOSIT_INFO',
 	XHT_SUCCESS_ACCESS: 'XHT_SUCCESS_ACCESS',
 	UNDEFINED_ERROR: 'UNDEFINED_ERROR',
+	STAKE: 'STAKE',
+	EARLY_UNSTAKE: 'EARLY_UNSTAKE',
+	UNSTAKE: 'UNSTAKE',
+	MOVE_XHT: 'MOVE_XHT',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -42,6 +46,8 @@ export const SET_APP_ANNOUNCEMENT = 'SET_APP_ANNOUNCEMENT';
 export const SET_UNREAD = 'SET_UNREAD';
 export const SET_PAIRS = 'SET_PAIRS';
 export const CHANGE_PAIR = 'CHANGE_PAIR';
+export const SET_ACTIVE_ORDERS_MARKET = 'SET_ACTIVE_ORDERS_MARKET';
+export const SET_RECENT_TRADES_MARKETS = 'SET_RECENT_TRADES_MARKETS';
 export const SET_TICKERS = 'SET_TICKERS';
 export const SET_TICKER_FROM_TRADE = 'SET_TICKER_FROM_TRADE';
 export const CHANGE_THEME = 'CHANGE_THEME';
@@ -51,6 +57,7 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
 export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
@@ -67,6 +74,7 @@ export const SET_WEB_VIEWS = 'SET_WEB_VIEWS';
 export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
+export const SET_CONTRACTS = 'SET_CONTRACTS';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -231,6 +239,20 @@ export const changePair = (pair) => ({
 	},
 });
 
+export const setActiveOrdersMarket = (activeOrdersMarket) => ({
+	type: SET_ACTIVE_ORDERS_MARKET,
+	payload: {
+		activeOrdersMarket,
+	},
+});
+
+export const setRecentTradesMarket = (recentTradesMarket) => ({
+	type: SET_RECENT_TRADES_MARKETS,
+	payload: {
+		recentTradesMarket,
+	},
+});
+
 export const getTickers = () => {
 	return (dispatch) => {
 		axios.get('/ticker/all').then((res) => {
@@ -256,6 +278,13 @@ export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
 		coins,
+	},
+});
+
+export const setBroker = (broker) => ({
+	type: SET_BROKER,
+	payload: {
+		broker,
 	},
 });
 
@@ -432,5 +461,10 @@ export const setInjectedValues = (payload) => ({
 
 export const setInjectedHTML = (payload) => ({
 	type: SET_INJECTED_HTML,
+	payload,
+});
+
+export const setContracts = (payload) => ({
+	type: SET_CONTRACTS,
 	payload,
 });

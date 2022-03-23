@@ -11,17 +11,17 @@ import {
 import math from 'mathjs';
 // import classnames from 'classnames';
 // import { isMobile } from 'react-device-detect';
-import { Button, Dialog, OtpForm, Loader } from '../../components';
-import renderFields from '../../components/Form/factoryFields';
+import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
+import renderFields from 'components/Form/factoryFields';
 import {
 	setWithdrawEmailConfirmation,
 	setWithdrawNotificationError,
 } from './notifications';
-import { BASE_CURRENCY } from '../../config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { calculateBaseFee } from './utils';
 import Fiat from 'containers/Deposit/Fiat';
 import Image from 'components/Image';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -31,17 +31,46 @@ const selector = formValueSelector(FORM_NAME);
 let errorTimeOut = null;
 
 const validate = (values, props) => {
+	const { currency, coins, balance } = props;
+	const { withdrawal_fees } = coins[currency] || DEFAULT_COIN_DATA;
+	const { network } = values;
+
 	const errors = {};
 	const amount = math.fraction(values.amount || 0);
 	const fee = math.fraction(values.fee || 0);
-	const balance = math.fraction(props.balanceAvailable || 0);
+	const balanceAvailable = math.fraction(props.balanceAvailable || 0);
+	let fee_coin;
 
-	const totalTransaction = math.add(fee, amount);
-	if (math.larger(totalTransaction, balance)) {
-		errors.amount = STRINGS.formatString(
-			STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-			math.number(totalTransaction)
+	if (withdrawal_fees && network && withdrawal_fees[network]) {
+		fee_coin = withdrawal_fees[network].symbol;
+		const fullFeeCoinName = coins[fee_coin].fullname;
+		const availableFeeBalance = math.fraction(
+			balance[`${fee_coin}_available`] || 0
 		);
+		const totalTransaction = amount;
+		const totalFee = fee;
+
+		if (math.larger(totalTransaction, balanceAvailable)) {
+			errors.amount = STRINGS.formatString(
+				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+				math.number(totalTransaction)
+			);
+		}
+
+		if (math.larger(totalFee, availableFeeBalance)) {
+			errors.amount = STRINGS.formatString(
+				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+				`${math.number(totalFee)} ${fullFeeCoinName}`
+			);
+		}
+	} else {
+		const totalTransaction = math.add(fee, amount);
+		if (math.larger(totalTransaction, balanceAvailable)) {
+			errors.fee = STRINGS.formatString(
+				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+				math.number(totalTransaction)
+			);
+		}
 	}
 
 	return errors;
@@ -195,6 +224,7 @@ class Form extends Component {
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
+			targets,
 		} = this.props;
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
@@ -202,60 +232,73 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
+
+		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
+		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
+		const id = targets.includes(currencySpecificId)
+			? currencySpecificId
+			: GENERAL_ID;
+
 		if (coinObject && coinObject.type !== 'fiat') {
 			return (
-				<form autoComplete="off" className="withdraw-form-wrapper">
-					<div className="withdraw-form">
-						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
-							wrapperClassName="form_currency-ball"
-						/>
-						{titleSection}
-						{renderFields(formValues)}
-						{error && <div className="warning_text">{error}</div>}
-					</div>
-					<div className="btn-wrapper">
-						<Button
-							label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
-							disabled={pristine || submitting || !valid}
-							onClick={this.onOpenDialog}
-							className="mb-3"
-						/>
-					</div>
-					<Dialog
-						isOpen={dialogIsOpen}
-						label="withdraw-modal"
-						onCloseDialog={this.onCloseDialog}
-						shouldCloseOnOverlayClick={dialogOtpOpen}
-						theme={activeTheme}
-						showCloseText={false}
-					>
-						{dialogOtpOpen ? (
-							<OtpForm
-								onSubmit={this.onSubmitOtp}
-								onClickHelp={openContactForm}
+				<SmartTarget
+					id={currencySpecificId}
+					titleSection={titleSection}
+					currency={currency}
+				>
+					<form autoComplete="off" className="withdraw-form-wrapper">
+						<div className="withdraw-form">
+							<Image
+								iconId={`${currency.toUpperCase()}_ICON`}
+								icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+								wrapperClassName="form_currency-ball"
 							/>
-						) : !submitting ? (
-							<ReviewModalContent
-								coins={coins}
-								currency={currency}
-								data={data}
-								price={currentPrice}
-								onClickAccept={this.onAcceptDialog}
-								onClickCancel={this.onCloseDialog}
-								hasDestinationTag={hasDestinationTag}
+							{titleSection}
+							{renderFields(formValues)}
+							{error && <div className="warning_text">{error}</div>}
+						</div>
+						<div className="btn-wrapper">
+							<Button
+								label={STRINGS['WITHDRAWALS_BUTTON_TEXT']}
+								disabled={pristine || submitting || !valid}
+								onClick={this.onOpenDialog}
+								className="mb-3"
 							/>
-						) : (
-							<Loader relative={true} background={false} />
-						)}
-					</Dialog>
-				</form>
+						</div>
+						<Dialog
+							isOpen={dialogIsOpen}
+							label="withdraw-modal"
+							onCloseDialog={this.onCloseDialog}
+							shouldCloseOnOverlayClick={dialogOtpOpen}
+							theme={activeTheme}
+							showCloseText={false}
+						>
+							{dialogOtpOpen ? (
+								<OtpForm
+									onSubmit={this.onSubmitOtp}
+									onClickHelp={openContactForm}
+								/>
+							) : !submitting ? (
+								<ReviewModalContent
+									coins={coins}
+									currency={currency}
+									data={data}
+									price={currentPrice}
+									onClickAccept={this.onAcceptDialog}
+									onClickCancel={this.onCloseDialog}
+									hasDestinationTag={hasDestinationTag}
+								/>
+							) : (
+								<Loader relative={true} background={false} />
+							)}
+						</Dialog>
+					</form>
+				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
 			return (
 				<Fiat
-					id="REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW"
+					id={id}
 					icons={ICONS}
 					titleSection={titleSection}
 					currency={currency}
@@ -286,10 +329,13 @@ const mapStateToForm = (state) => ({
 		'destination_tag',
 		'amount',
 		'fee',
-		'captcha'
+		'captcha',
+		'fee_coin'
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,
+	targets: state.app.targets,
+	balance: state.user.balance,
 });
 
 const WithdrawFormWithValues = connect(mapStateToForm)(WithdrawForm);

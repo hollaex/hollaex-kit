@@ -21,12 +21,12 @@ export const PATHS = [
 	},
 	{
 		path: '/admin/financials',
-		label: 'Financials',
+		label: 'Assets',
 		routeKey: 'financials',
 	},
 	{
 		path: '/admin/trade',
-		label: 'Trading',
+		label: 'Markets',
 		routeKey: 'trade',
 	},
 	{
@@ -47,31 +47,26 @@ export const PATHS = [
 		label: 'Roles',
 		routeKey: 'roles',
 	},
-	{
-		path: '/admin/hosting',
-		label: 'Hosting',
-		routeKey: 'hosting',
-	},
-	{
-		path: '/admin/apikeys',
-		label: 'API Keys',
-		routeKey: 'apikeys',
-	},
-	{
-		path: '/admin/billing',
-		label: 'Billing',
-		routeKey: 'billing',
-	},
+	// {
+	// 	path: '/admin/hosting',
+	// 	label: 'Hosting',
+	// 	routeKey: 'hosting',
+	// },
+	// {
+	// 	path: '/admin/billing',
+	// 	label: 'Billing',
+	// 	routeKey: 'billing',
+	// },
 	{
 		path: '/admin/chat',
 		label: 'Chat',
 		routeKey: 'chat',
 	},
-	{
-		path: '/admin/collateral',
-		label: 'Collateral',
-		routeKey: 'collateral',
-	},
+	// {
+	// 	path: '/admin/collateral',
+	// 	label: 'Collateral',
+	// 	routeKey: 'collateral',
+	// },
 	// {
 	// 	path: '/admin/wallets',
 	// 	// component: Wallets,

@@ -1,5 +1,5 @@
 .trade_orderbook-wrapper {
-	height: 49vh;
+	height: 100%;
 	.trade_orderbook-headers {
 		.trade_orderbook-cell {
 			font-size: $font-size-subtext !important;
@@ -157,6 +157,17 @@
 
 	.trade_orderbook-asks {
 		color: $trade-asks-color-main;
+
+		.value-row {
+			&.entering,
+			&.exiting {
+				background-color: $selling-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
+			}
+		}
 	}
 
 	.trade_orderbook-asks > .price-row-wrapper:first-child {
@@ -179,6 +190,17 @@
 
 	.trade_orderbook-bids {
 		color: $trade-bids-color-main;
+
+		.value-row {
+			&.entering,
+			&.exiting {
+				background-color: $buying-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
+			}
+		}
 	}
 	.trade_bids-limit_bar {
 		.orderbook-limit_bar-wrapper {
@@ -266,5 +288,46 @@ $limit-bar-side--padding: 0.5rem;
 .trade_orderbook-cell {
 	.ant-select-selector {
 		color: $colors-main-black !important;
+	}
+}
+
+.price-arrow {
+	color: $colors-main-black;
+	transition: all 0.2s ease-out 0s;
+	opacity: 0;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy;
+			opacity: 1;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell;
+			opacity: 1;
+		}
+	}
+}
+
+.last-price {
+	color: $colors-main-black !important;
+	transition: all 0.2s ease-out 0s;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy !important;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell !important;
+		}
 	}
 }

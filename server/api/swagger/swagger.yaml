@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.2.0"
+  version: "2.3.0"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -64,38 +64,6 @@ paths:
     get:
       operationId: getNetworkConstants
       description: Get network constants such as pairs and currencies
-      tags:
-        - Public
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-  /network/coins/all:
-    x-swagger-router-controller: public
-    get:
-      description: View all coins on network
-      operationId: getAllCoins
-      tags:
-        - Public
-      responses:
-        200:
-          description: Success
-          schema:
-            type: object
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-  /network/pairs/all:
-    x-swagger-router-controller: public
-    get:
-      description: View all pairs on network
-      operationId: getAllPairs
       tags:
         - Public
       responses:
@@ -829,6 +797,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /user/stats:
     x-swagger-router-controller: user
     get:
@@ -1046,10 +1016,8 @@ paths:
             $ref: "#/definitions/MessageResponse"
       security:
         - Bearer: []
-        - HmacKey: []
       x-security-scopes:
         - user
-        - hmac
   /user/confirm-withdrawal:
     x-swagger-router-controller: withdrawal
     post:
@@ -1248,6 +1216,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
     delete:
       operationId: cancelUserOrder
       description: Cancel order of authenticated user
@@ -1273,6 +1243,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_trade
     post:
       description: Create a new order
       operationId: createOrder
@@ -1301,6 +1273,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_trade
   /tiers:
     x-swagger-router-controller: tier
     get:
@@ -1324,6 +1298,58 @@ paths:
       operationId: getExchange
       tags:
         - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+        - communicator
+    put:
+      description: Update exchange configuration
+      operationId: updateExchange
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              info:
+                type: object
+              is_public:
+                type: boolean
+              type:
+                type: string
+                enum: ['Cloud', 'DIY', 'Enterprise']
+              name:
+                type: string
+              display_name:
+                type: string
+              url:
+                type: string
+              business_info:
+                type: object
+              pairs:
+                type: array
+                items:
+                  type: string
+              coins:
+                type: array
+                items:
+                  type: string
       responses:
         200:
           description: Success
@@ -1516,6 +1542,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /order/all:
     x-swagger-router-controller: order
     delete:
@@ -1527,7 +1555,7 @@ paths:
         - name: symbol
           in: query
           description: Currency symbol
-          required: false
+          required: true
           type: string
       responses:
         200:
@@ -1546,6 +1574,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_trade
   /user/balance:
     x-swagger-router-controller: user
     get:
@@ -1557,7 +1587,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/BalanceResponse"
+            $ref: "#/definitions/ObjectResponse"
         403:
           description: Access Denied
           schema:
@@ -1568,6 +1598,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /user/create-address:
     x-swagger-router-controller: user
     get:
@@ -1603,6 +1635,30 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/request-email-confirmation:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestEmailConfirmation
+      description: Generate and send a code for email confirmation
+      tags:
+        - User
+      responses:
+        200:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        403:
+          description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /user/token:
     x-swagger-router-controller: user
     post:
@@ -1620,10 +1676,13 @@ paths:
             required:
               - name
               - otp_code
+              - email_code
             properties:
               name:
                 type: string
               otp_code:
+                type: string
+              email_code:
                 type: string
       responses:
         200:
@@ -1638,9 +1697,9 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-    delete:
-      operationId: deleteHmacToken
-      description: Revoke an issued token. It requires otp.
+    put:
+      operationId: updateHmacToken
+      description: Update an HMAC token. It requires OTP to edit a token
       tags:
         - User
         - Token
@@ -1653,11 +1712,61 @@ paths:
             required:
               - token_id
               - otp_code
+              - email_code
+            properties:
+              token_id:
+                type: number
+                format: int32
+              name:
+                type: string
+              otp_code:
+                type: string
+              email_code:
+                type: string
+              permissions:
+                $ref: '#/definitions/TokenPermissions'
+              whitelisted_ips:
+                type: array
+                items:
+                  type: string
+              whitelisting_enabled:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/Token"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+    delete:
+      operationId: deleteHmacToken
+      description: Revoke an issued token. It requires OTP.
+      tags:
+        - User
+        - Token
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - token_id
+              - otp_code
+              - email_code
             properties:
               token_id:
                 type: number
                 format: int32
               otp_code:
+                type: string
+              email_code:
                 type: string
       responses:
         200:
@@ -1766,6 +1875,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /user/deposits:
     x-swagger-router-controller: deposit
     get:
@@ -1874,6 +1985,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /user/withdrawals:
     x-swagger-router-controller: withdrawal
     get:
@@ -1982,6 +2095,8 @@ paths:
       x-security-scopes:
         - user
         - hmac
+      x-token-permissions:
+        - can_read
   /user/withdrawal:
     x-swagger-router-controller: withdrawal
     delete:
@@ -2008,8 +2123,101 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
-
+    post:
+      operationId: performDirectWithdrawal
+      description: Make a withdrawal without email confirmation
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - address
+              - amount
+              - currency
+            properties:
+              address:
+                type: string
+                description: Destination address
+              currency:
+                type: string
+                description: Currency to be withdrawn (btc, eth, etc)
+              amount:
+                type: number
+                format: double
+                description: Amount to transfer (in btc, eth, bch)
+              network:
+                type: string
+                description: Blockchain network
+                minLength: 2
+                maxLength: 10
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/TransactionsResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - HmacKey: []
+      x-security-scopes:
+        - hmac
+      x-token-permissions:
+        - can_withdraw
 # ADMIN ENDPOINTS
+  /admin/send-email-test:
+    x-swagger-router-controller: admin
+    post:
+      description: Send test email config
+      operationId: emailConfigTest
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - receiver
+            properties:
+              smtp:
+                type: object
+                required:
+                  - password
+                  - port
+                  - user
+                  - server
+                properties:
+                  password:
+                    type: string
+                  port:
+                    type: number
+                  server:
+                    type: string
+                  user:
+                    type: string
+              receiver:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+        - tech
   /admin/fees:
     x-swagger-router-controller: admin
     get:
@@ -2050,6 +2258,12 @@ paths:
       description: Settle exchange fees
       tags:
         - Admin
+      parameters:
+        - in: query
+          name: user_id
+          required: false
+          type: number
+          format: int32
       responses:
         200:
           description: Success
@@ -2198,6 +2412,95 @@ paths:
       x-security-scopes:
         - admin
         - communicator
+  /admin/email:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getEmail
+      description: Get email for admin
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: language
+          description: "language"
+          required: true
+          type: string
+        - in: query
+          name: type
+          description: "mail type"
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+    put:
+      operationId: putEmail
+      description: Update email for admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - html
+              - title
+              - language
+              - type
+            properties:
+              html:
+                type: string
+              title:
+                type: string
+              language:
+                type: string
+              type:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
+  /admin/email/types:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getEmailTypes
+      description: Get email types for admin
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: [ ]
+      x-security-scopes:
+        - admin
   /admin/operators:
     x-swagger-router-controller: admin
     get:
@@ -2423,7 +2726,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPostRequest"
       responses:
         200:
           description: Success
@@ -2447,7 +2750,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/PairPutPostRequest"
+            $ref: "#/definitions/PairPutRequest"
       responses:
         200:
           description: Success
@@ -2475,6 +2778,31 @@ paths:
         - Admin
       responses:
         200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/pairs/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all pairs in network
+      operationId: getNetworkPairs
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+      responses:
+        "200":
           description: Success
           schema:
             type: object
@@ -2550,7 +2878,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPostRequest"
       responses:
         200:
           description: Success
@@ -2574,7 +2902,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/CoinPutPostRequest"
+            $ref: "#/definitions/CoinPutRequest"
       responses:
         200:
           description: Success
@@ -2603,6 +2931,31 @@ paths:
           description: Leave blank to get all coins
       responses:
         200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /admin/coins/network:
+    x-swagger-router-controller: admin
+    get:
+      description: Get all coins in network
+      operationId: getNetworkCoins
+      tags:
+        - Admin
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+      responses:
+        "200":
           description: Success
           schema:
             type: object
@@ -2743,6 +3096,60 @@ paths:
         - supervisor
         - support
         - kyc
+  /admin/user:
+    x-swagger-router-controller: admin
+    put:
+      operationId: putUserInfo
+      description: Update a user's info
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: integer
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              full_name:
+                type: string
+              gender:
+                type: boolean
+              nationality:
+                type: string
+              phone_number:
+                type: string
+              dob:
+                type: ['string', 'null']
+                format: date-time
+              address:
+                type: object
+                properties:
+                  country:
+                    type: string
+                  address:
+                    type: string
+                  postal_code:
+                    type: string
+                  city:
+                    type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/UserResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
@@ -2897,7 +3304,7 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/BalanceResponse"
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
@@ -3788,6 +4195,145 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /broker:
+    x-swagger-router-controller: broker
+    post:
+      operationId: createBrokerPair
+      description: Create a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairCreate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    put:
+      operationId: updateBrokerPair
+      description: Edit a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+    get:
+      operationId: getBrokerPairs
+      description: Get all broker deals
+      tags:
+        - broker
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/BrokerPair"
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    delete:
+      operationId: deleteBrokerPair
+      description: Delete a broker deal
+      tags:
+        - admin
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /broker/execute:
+    x-swagger-router-controller: broker
+    post:
+      operationId: executeBrokerDeal
+      description: Execute a broker deal
+      tags:
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              symbol:
+                type: string
+              side:
+                type: string
+                enum: ["buy", "sell"]
+              price:
+                type: number
+              size:
+                type: number
+            required:
+              - symbol
+              - price
+              - side
+              - size
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
 definitions:
   ObjectResponse:
     type: object
@@ -4047,6 +4593,11 @@ definitions:
         type: string
       new_password:
         type: string
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
   LoginsResponse:
     type: object
     properties:
@@ -4242,21 +4793,6 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/OrderResponse"
-  BalanceResponse:
-    type: object
-    properties:
-      btc_balance:
-        type: number
-        format: double
-      btc_available:
-        type: number
-        format: double
-      btc_pending:
-        type: number
-        format: double
-      updated_at:
-        type: string
-        format: date-time
   KitPut:
     type: object
     properties:
@@ -4277,6 +4813,8 @@ definitions:
                 type: string
               language:
                 type: string
+              country:
+                type: ['string', 'null']
           color:
             type: object
           links:
@@ -4334,6 +4872,10 @@ definitions:
                   type: string
                 attributes:
                   type: object
+          black_list_countries:
+            type: array
+            items:
+              type: string
       secrets:
         type: object
         properties:
@@ -4599,6 +5141,39 @@ definitions:
         type: string
       network:
         type: string
+  TokenPermissions:
+    type: object
+    properties:
+      can_read:
+        type: boolean
+      can_trade:
+        type: boolean
+      can_withdraw:
+        type: boolean
+  Token:
+    allOf:
+      - $ref: '#/definitions/TokenPermissions'
+      - type: object
+        properties:
+          id:
+            type: number
+            format: int32
+          name:
+            type: string
+          apiKey:
+            type: string
+          secret:
+            type: string
+          active:
+            type: boolean
+          revoked:
+            type: boolean
+          expiry:
+            type: string
+            format: date-time
+          created:
+            type: string
+            format: date-time
   TokensResponse:
     type: object
     properties:
@@ -4608,27 +5183,7 @@ definitions:
       data:
         type: array
         items:
-          type: object
-          properties:
-            id:
-              type: number
-              format: int32
-            name:
-              type: string
-            apiKey:
-              type: string
-            secret:
-              type: string
-            active:
-              type: boolean
-            revoked:
-              type: boolean
-            expiry:
-              type: string
-              format: date-time
-            created:
-              type: string
-              format: date-time
+          $ref: '#/definitions/Token'
   WithdrawalConfirmation:
     type: object
     required:
@@ -4695,6 +5250,8 @@ definitions:
         type: string
       fee:
         type: number
+      fee_coin:
+        type: string
       description:
         type: string
   ExternalWithdrawalRequest:
@@ -4723,6 +5280,8 @@ definitions:
         type: string
         format: date-time
       network:
+        type: string
+      fee_coin:
         type: string
       description:
         type: string
@@ -4937,7 +5496,7 @@ definitions:
         type: boolean
       updated_description:
         type: string
-  CoinPutPostRequest:
+  CoinPostRequest:
     type: object
     required:
       - symbol
@@ -4981,7 +5540,52 @@ definitions:
         type: boolean
       allow_withdrawal:
         type: boolean
-  PairPutPostRequest:
+  CoinPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      fullname:
+        type: string
+      withdrawal_fee:
+        type: number
+        format: double
+      description:
+        type: ['string', 'null']
+      allow_deposit:
+        type: boolean
+      allow_withdrawal:
+        type: boolean
+      withdrawal_fees:
+        type: ['object', 'null']
+      min:
+        type: number
+        format: double
+      max:
+        type: number
+        format: boolean
+      is_public:
+        type: boolean
+      increment_unit:
+        type: number
+        format: double
+      logo:
+        type: ['string', 'null']
+      meta:
+        type: object
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      type:
+        type: string
+        enum: ['blockchain', 'fiat', 'other']
+      network:
+        type: ['string', 'null']
+      standard:
+        type: ['string', 'null']
+  PairPostRequest:
     type: object
     required:
       - name
@@ -5019,6 +5623,38 @@ definitions:
       estimated_price:
         type: number
       is_public:
+        type: boolean
+  PairPutRequest:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+      min_size:
+        type: number
+        format: double
+      max_size:
+        type: number
+        format: double
+      min_price:
+        type: number
+        format: double
+      max_price:
+        type: number
+        format: double
+      increment_size:
+        type: number
+        format: double
+      increment_price:
+        type: number
+        format: double
+      is_public:
+        type: boolean
+      estimated_price:
+        type: ['number', 'null']
+        format: double
+      circuit_breaker:
         type: boolean
   CoinResponse:
     type: object
@@ -5089,3 +5725,66 @@ definitions:
       increment_price:
         type: number
         format: double
+  BrokerPair:
+    type: object
+    properties:
+      symbol:
+        type: string
+      buy_price:
+        type: number
+      sell_price:
+        type: number
+      paused:
+        type: boolean
+      user_id:
+        type: integer
+      min_size:
+        type: number
+      max_size:
+        type: number
+      increment_size:
+        type: number
+  BrokerPairCreate:
+    type: object
+    required:
+      - symbol
+      - buy_price
+      - sell_price
+      - paused
+      - user_id
+      - min_size
+      - max_size
+      - increment_size
+    properties:
+      symbol:
+        type: string
+      buy_price:
+        type: number
+      sell_price:
+        type: number
+      paused:
+        type: boolean
+      user_id:
+        type: integer
+      min_size:
+        type: number
+      max_size:
+        type: number
+      increment_size:
+        type: number
+  BrokerPairUpdate:
+    allOf:
+      - $ref: "#/definitions/BrokerPair"
+      - type: object
+        properties:
+          id:
+            type: integer
+        required:
+          - id
+  IdObject:
+    type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer

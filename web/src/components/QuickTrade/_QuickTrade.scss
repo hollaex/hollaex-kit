@@ -2,8 +2,8 @@ $toogle-size: 14px;
 $toogle-border: 2px;
 $toogle-margin: 2px;
 
-$wrapper--min-width: 45rem;
-$wrapper--max-width: 50rem;
+$wrapper--min-width: 1000px;
+$wrapper--max-width: 1200px;
 $wrapper--padding: 3.5rem;
 $section--margin-bottom: 2rem;
 
@@ -42,41 +42,50 @@ $title-icon--height: 10rem;
 	@include size($title-icon--height);
 	margin: 0 auto;
 }
-
-.quick_trade-wrapper {
-	min-width: $wrapper--min-width;
-	max-width: $wrapper--max-width;
-	padding: $wrapper--padding;
-	background-color: $quick-trade-container;
-	margin: 3rem auto;
-	height: fit-content;
-	// border: 1px solid $colors-main-border;
-
-	.review-block-wrapper,
-	.input_block-wrapper,
-	.toogle_button-wrapper {
-		margin: 1rem 0;
-		width: auto;
-	}
-
-	.quick_trade-bottom-padded {
-		margin-bottom: $section--margin-bottom;
-	}
-
-	.quick_trade-icon svg {
-		@include size($title-icon--height);
-	}
-	.title {
-		font-size: $font-size-headline;
-	}
-
-	> .quick_trade-section_wrapper {
+.quick_trade-container {
+	margin: 3rem 0 4rem 0;
+	.quick_trade-section_wrapper {
 		&.fetching {
 			color: $colors-deactivate-color2;
 		}
 
 		width: 100%;
 		position: relative;
+	}
+	.quick_trade-bottom-padded {
+		margin-bottom: $section--margin-bottom;
+	}
+	.quick_trade-icon {
+		width: 7rem;
+		height: 8rem;
+	}
+	.title {
+		font-size: 30px;
+		font-family: $raleway--font-family;
+	}
+	.info-text {
+		font-family: $en--font-family;
+		color: $colors-deactivate;
+	}
+}
+.quick_trade-wrapper.width-none {
+	min-width: unset !important;
+	max-width: unset !important;
+}
+.quick_trade-wrapper {
+	min-width: $wrapper--min-width;
+	max-width: $wrapper--max-width;
+	background-color: $quick-trade-block-background;
+	// margin: 3rem auto;
+	height: fit-content;
+	height: 550px;
+	border: 1px solid $colors-super-pale-black;
+
+	.review-block-wrapper,
+	.input_block-wrapper,
+	.toogle_button-wrapper {
+		margin: 1rem 0;
+		width: auto;
 	}
 
 	.toogle_button-wrapper {
@@ -235,6 +244,144 @@ $title-icon--height: 10rem;
 			background-color: $coin-ltc;
 		}
 	}
+	.trade-details-wrapper {
+		width: 100%;
+		padding: 40px 65px 30px 55px;
+		font-family: $en--font-family;
+		background-color: $app-background-color;
+		.trade-details-content {
+			height: 450px;
+			.pb-30 {
+				padding-bottom: 30px;
+			}
+			.pb-35 {
+				padding-bottom: 35px;
+			}
+			.pl-6 {
+				padding-left: 6rem;
+			}
+			.chart {
+				height: 100px;
+				margin: 10px 0;
+				// opacity: 0.4;
+				div:last-child {
+					padding-top: 1rem;
+				}
+				.fade-area {
+					position: relative;
+				}
+				.fade-area::before {
+					content: '';
+					position: absolute;
+					height: 100px;
+					width: 100%;
+					background-image: linear-gradient(
+						to right,
+						$app-background-color,
+						rgba(0, 0, 0, 0)
+					);
+					z-index: 9999;
+				}
+			}
+			.trade_tabs-container {
+				margin: 0 !important;
+				width: 100% !important;
+			}
+		}
+		.currency-ball-image-wrapper {
+			height: 5rem;
+		}
+		.coins-icon {
+			width: 5rem;
+			height: 5rem;
+		}
+		.f-size-16 {
+			font-size: 16px;
+			color: $colors-deactivate;
+			font-weight: bold;
+		}
+		.f-size-22 {
+			font-size: 22px;
+			font-weight: bold;
+		}
+		.pairs {
+			color: $link;
+			font-size: 16px;
+			text-decoration: underline;
+		}
+		.fullname {
+			color: $colors-deactivate;
+			font-size: 11px;
+			white-space: nowrap;
+		}
+		.sub-title {
+			color: $colors-deactivate;
+			font: normal normal 300 11px/15px $en--font-family;
+			letter-spacing: 2.2px;
+			opacity: 1;
+			white-space: nowrap;
+		}
+		.white-txt {
+			color: $colors-main-black;
+		}
+	}
+	.trade-section {
+		width: 100%;
+		padding-top: 2rem;
+		background: transparent
+			linear-gradient(
+				180deg,
+				$quick-trade-block-gradient-top 0%,
+				$quick-trade-block-gradient-bottom 100%
+			)
+			0% 0% no-repeat padding-box;
+		.inner-content {
+			width: 400px;
+			height: 390px;
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			margin: 55px 105px 0 95px;
+			.btn-wrapper {
+				padding: 40px 0 120px 0;
+			}
+			.py-2 {
+				display: flex;
+				align-items: center;
+				.bold {
+					padding-right: 10px;
+				}
+				.ant-input-group {
+					width: 310px;
+					background-color: $app-light-background !important;
+					.ant-select-selector,
+					.input-group__input {
+						background-color: $app-light-background !important;
+					}
+				}
+				.input-group__error-wrapper {
+					width: 310px;
+				}
+			}
+			.small-text {
+				font-family: $en--font-family;
+				font-size: 11px;
+				text-transform: capitalize;
+				color: $colors-black;
+				display: flex;
+				span {
+					color: $link;
+				}
+			}
+			.footer-text {
+				font-size: 11px;
+				font-family: $en--font-family;
+				color: $colors-deactivate;
+				opacity: 0.5;
+				text-align: end;
+			}
+		}
+	}
 }
 
 @keyframes linear_loading {
@@ -284,6 +431,40 @@ $title-icon--height: 10rem;
 			}
 		}
 	}
+	.quick_trade-container {
+		height: 100%;
+	}
+	.quick_trade-wrapper {
+		.trade-details-wrapper {
+			width: 100%;
+			.trade-details-content {
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.trade-section .inner-content {
+			align-items: center !important;
+			.py-2 {
+				flex-direction: column;
+				align-items: flex-start;
+				width: 100%;
+				font-size: $font-size-mobile-txt !important;
+				.ant-input-group {
+					width: 100% !important;
+				}
+				.input-group__error-wrapper {
+					width: 100% !important;
+				}
+			}
+			.btn-wrapper {
+				align-items: center !important;
+			}
+			.footer-text,
+			.small-text {
+				font-size: $font-size-mobile-txt !important;
+			}
+		}
+	}
 }
 .mobile_dropdown-section {
 	border-top: solid;
@@ -291,4 +472,41 @@ $title-icon--height: 10rem;
 
 .review-block-wrapper {
 	border-top: $colors-border solid 1px;
+}
+
+@media (max-width: 1020px) {
+	.quick_trade-wrapper {
+		min-width: 100% !important;
+		max-width: 100% !important;
+		.trade-details-wrapper {
+			width: 100%;
+			padding: 15px;
+			.trade-details-content {
+				width: 100%;
+				height: 100%;
+			}
+		}
+		.trade-section {
+			width: 100%;
+			padding: 40px 10px 10px 10px;
+			.inner-content {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				.py-2 .ant-input-group {
+					width: 250px;
+				}
+				.py-2 .input-group__error-wrapper {
+					width: 250px;
+				}
+				.input-group__container {
+					.quick-trade-select-wrapper {
+						.pl-1 {
+							font-size: 10px;
+						}
+					}
+				}
+			}
+		}
+	}
 }

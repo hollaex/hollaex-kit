@@ -166,15 +166,15 @@ table th {
 }
 
 .align-center {
-	align-items: center;
+	align-items: center !important;
 }
 
 .align-start {
-	align-items: flex-start;
+	align-items: flex-start !important;
 }
 
 .align-end {
-	align-items: flex-end;
+	align-items: flex-end !important;
 }
 
 .underline-text {
@@ -305,4 +305,25 @@ table th {
 
 .secondary-text {
 	color: $colors-black;
+}
+
+.kit-divider {
+	margin: 1rem 0;
+	border-bottom: solid 1px $colors-black;
+}
+
+.flex-direction-row {
+	flex-direction: row !important;
+}
+
+.text-align-left {
+	text-align: left !important;
+}
+
+.normal {
+	font-weight: normal;
+}
+
+.text-align-right {
+	text-align: right !important;
 }

@@ -7,9 +7,44 @@ import { getToken } from 'utils/token';
 import { PLUGIN_URL } from 'config/constants';
 import { withRouter } from 'react-router';
 import { generateGlobalId } from 'utils/id';
+import withEdit from 'components/EditProvider/withEdit';
+import renderFields from 'components/Form/factoryFields';
+import { getErrorLocalized } from 'utils/errors';
+import { IconTitle } from 'components';
+
+const DefaultChildren = ({ strings: STRINGS, icons: ICONS }) => {
+	return (
+		<div
+			style={{
+				height: '28rem',
+				display: 'flex',
+				flexDirection: 'column',
+				alignItems: 'center',
+				justifyContent: 'center',
+			}}
+		>
+			<IconTitle
+				stringId="PAGE_UNDER_CONSTRUCTION"
+				text={STRINGS['PAGE_UNDER_CONSTRUCTION']}
+				iconId="FIAT_UNDER_CONSTRUCTION"
+				iconPath={ICONS['FIAT_UNDER_CONSTRUCTION']}
+				className="flex-direction-column"
+			/>
+		</div>
+	);
+};
 
 const SmartTarget = (props) => {
-	const { targets, id, children, webViews } = props;
+	const {
+		targets,
+		id,
+		children,
+		webViews,
+		showLoader = true,
+		loaderClassName = 'default-remote-component-loader',
+		errorClassName = 'default-remote-component-error',
+		icons: ICONS,
+	} = props;
 
 	return targets.includes(id) ? (
 		<Fragment>
@@ -17,16 +52,23 @@ const SmartTarget = (props) => {
 				<RemoteComponent
 					key={`${name}_${index}`}
 					url={src}
+					showLoader={showLoader}
+					loaderClassName={loaderClassName}
+					errorClassName={errorClassName}
 					generateId={generateGlobalId(name)}
 					strings={STRINGS}
 					plugin_url={PLUGIN_URL}
 					token={getToken()}
+					renderFields={renderFields}
+					getErrorLocalized={getErrorLocalized}
 					{...props}
 				/>
 			))}
 		</Fragment>
-	) : (
+	) : children ? (
 		<Fragment>{children}</Fragment>
+	) : (
+		<DefaultChildren strings={STRINGS} icons={ICONS} />
 	);
 };
 
@@ -56,4 +98,6 @@ const mapStateToProps = (store) => ({
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
 });
 
-export default connect(mapStateToProps)(withConfig(withRouter(SmartTarget)));
+export default connect(mapStateToProps)(
+	withEdit(withConfig(withRouter(SmartTarget)))
+);

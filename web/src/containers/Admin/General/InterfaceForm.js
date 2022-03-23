@@ -11,6 +11,7 @@ const InterfaceForm = ({
 	initialValues = {},
 	handleSaveInterface,
 	isUpgrade,
+	buttonSubmitting,
 }) => {
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -19,6 +20,7 @@ const InterfaceForm = ({
 				chat: isUpgrade ? false : !!values.chat,
 				quick_trade: !!values.quick_trade,
 				pro_trade: !!values.pro_trade,
+				stake_page: !!values.stake_page,
 				home_page: isUpgrade ? false : !!values.home_page,
 			};
 			handleSaveInterface(formValues);
@@ -76,6 +78,27 @@ const InterfaceForm = ({
 										<div className="small-text">
 											(Simple buy/sell interface with wallet)
 										</div>
+									</div>
+								</div>
+							</div>
+						</Checkbox>
+					</Item>
+					<Item name="stake_page" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={STATIC_ICONS.STAKE_FEATURE}
+										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
+										beforeInjection={(svg) => {
+											svg.setAttribute('style', 'width: 60px');
+										}}
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Staking
+									<div className="small-text">
+										(Lock coins and distribute crypto rewards)
 									</div>
 								</div>
 							</div>
@@ -173,7 +196,7 @@ const InterfaceForm = ({
 					</div>
 				) : null}
 				<div>
-					<Button type="primary" htmlType="submit">
+					<Button type="primary" htmlType="submit" disabled={buttonSubmitting}>
 						Save
 					</Button>
 				</div>

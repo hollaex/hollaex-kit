@@ -5,6 +5,7 @@ const QUICK_TRADE = 'QUICK_TRADE';
 const TRADE_QUOTE_REQUEST = 'TRADE_QUOTE_REQUEST';
 const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 const SET_ORDERBOOK_DEPTH = 'CHANGE_ORDERBOOK_DEPTH';
+const SET_CHART_LAST_CLOSE = 'CHANGE_CHART_LAST_CLOSE';
 export const PAIRS_TRADES_FETCHED = 'PAIRS_TRADES_FETCHED';
 
 export const ORDERBOOK_CONSTANTS = {
@@ -20,12 +21,20 @@ export const ORDERBOOK_CONSTANTS = {
 	TRADE_QUOTE_PERFORM_FULFILLED: `${TRADE_QUOTE_PERFORM}_FULFILLED`,
 	TRADE_QUOTE_PERFORM_REJECTED: `${TRADE_QUOTE_PERFORM}_REJECTED`,
 	SET_ORDERBOOK_DEPTH,
+	SET_CHART_LAST_CLOSE,
 };
 
 export const setOrderbookDepth = (depth) => {
 	return {
 		type: SET_ORDERBOOK_DEPTH,
 		payload: depth,
+	};
+};
+
+export const setChartHigh = (high) => {
+	return {
+		type: SET_CHART_LAST_CLOSE,
+		payload: high,
 	};
 };
 

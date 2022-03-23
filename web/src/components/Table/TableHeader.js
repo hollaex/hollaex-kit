@@ -1,8 +1,8 @@
 import React from 'react';
 import { EditWrapper } from 'components';
 
-const TableHeader = ({ headers }) => (
-	<thead className="table_header-wrapper">
+const TableHeader = ({ headers, HeaderClassName = '' }) => (
+	<thead className={`table_header-wrapper ${HeaderClassName}`}>
 		<tr className="table_header-row">
 			{headers.map(({ label, className = '', stringId }, index) => (
 				<th key={index} className={className}>

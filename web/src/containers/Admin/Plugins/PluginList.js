@@ -73,7 +73,7 @@ class PluginList extends Component {
 							<div className="plugin-list-bio">{item.bio}</div>
 						</div>
 					</div>
-					{item.premium ? (
+					{item.premium && !item.enabled ? (
 						<div>
 							<div className="add-btn" onClick={this.handleActivate}>
 								Activate

@@ -8,7 +8,7 @@ module.exports = function(sequelize, DataTypes) {
 				allowNull: false
 			},
 			device: {
-				type: DataTypes.STRING,
+				type: DataTypes.STRING(1000),
 				allowNull: true,
 				defaultValue: ''
 			},

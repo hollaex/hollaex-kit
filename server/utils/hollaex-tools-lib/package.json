@@ -1,0 +1,15 @@
+{
+	"name": "hollaex-tools-lib",
+	"version": "2.2.8",
+	"description": "HollaEx tools library for developers",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "bitHolla Inc",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-tools-lib"
+	},
+	"dependencies": {}
+}

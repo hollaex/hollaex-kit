@@ -27,3 +27,11 @@ Scenario: Frozen Account login
     Given I am in the Hollaex login page
     When I enter credentials Frozen Username,Password
     Then I should not be able to login successfully and get This account is frozen
+
+Scenario: 2FA enabled Account login
+
+    Given I am in the Hollaex login page
+    When I enter credentials 2FA enabled Username,Password
+    Then I should be able to login successfully
+    And I enter 2FA code
+    

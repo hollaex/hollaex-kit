@@ -46,6 +46,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
 
+			&.chart-embed {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
+
 			&.no_bottom_navigation {
 				height: auto;
 				flex: 1;
@@ -81,8 +86,12 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 				// width: inherit;
 			}
 
+			.ant-tabs {
+				color: $colors-black;
+			}
+
 			.ant-tabs-ink-bar {
-				background: $colors-main-black;
+				background: $link;
 			}
 
 			.ant-tabs-top > .ant-tabs-nav::before {
@@ -91,11 +100,17 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 
 			.ant-tabs-tab {
 				color: $colors-black;
+
+				.ant-tabs-tab-btn {
+					color: $colors-black;
+				}
 			}
 
 			.ant-tabs-tab-active {
 				color: $colors-main-black;
+
 				.ant-tabs-tab-btn {
+					color: $colors-main-black;
 					font-weight: bold;
 				}
 			}
@@ -313,4 +328,14 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			margin: 1.3rem !important;
 		}
 	}
+}
+
+.react-grid-item > .react-resizable-handle::after {
+	border-color: $colors-black !important;
+	right: 5px;
+	bottom: 5px;
+}
+
+.background-color-layer {
+	box-shadow: inset 0 0 0 1000px $app-background-overlay;
 }

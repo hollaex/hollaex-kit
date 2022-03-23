@@ -100,7 +100,7 @@ export const renderUpgrade = () => {
 	);
 };
 
-export const OperatorRole = ({ handleInvite, isUpgrade }) => {
+export const OperatorRole = ({ handleInvite, isUpgrade, buttonSubmitting }) => {
 	const [selectedRole, setRole] = useState(OPERATORS[0].value);
 
 	const handleSelect = (values) => {
@@ -147,7 +147,12 @@ export const OperatorRole = ({ handleInvite, isUpgrade }) => {
 					</div>
 				</div>
 				<div className={isUpgrade ? 'disable-area' : ''}>
-					<Button type="primary" htmlType="submit" className="green-btn w-100">
+					<Button
+						type="primary"
+						htmlType="submit"
+						className="green-btn w-100"
+						disabled={buttonSubmitting}
+					>
 						Save
 					</Button>
 				</div>
@@ -314,7 +319,12 @@ export const EditModal = ({ onTypeChange, handleUpdateRole, editData }) => {
 	);
 };
 
-export const RevokeRole = ({ editData, handleClose, handleUpdateRole }) => {
+export const RevokeRole = ({
+	editData,
+	handleClose,
+	handleUpdateRole,
+	buttonSubmitting,
+}) => {
 	const handleRevoke = () => {
 		handleUpdateRole(
 			{
@@ -338,6 +348,7 @@ export const RevokeRole = ({ editData, handleClose, handleUpdateRole }) => {
 					type="primary"
 					className="revoke-btn ml-3"
 					onClick={handleRevoke}
+					disabled={buttonSubmitting}
 				>
 					Revoke
 				</Button>

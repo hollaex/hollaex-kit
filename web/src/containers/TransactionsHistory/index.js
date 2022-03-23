@@ -77,6 +77,34 @@ class TransactionsHistory extends Component {
 		} else {
 			this.setActiveTab();
 		}
+		if (
+			window.location.search &&
+			window.location.search.includes('order-history')
+		) {
+			this.setState({ activeTab: 1 });
+		} else if (
+			window.location.search &&
+			window.location.search.includes('deposit')
+		) {
+			this.setState({ activeTab: 2 });
+		} else if (
+			window.location.search &&
+			window.location.search.includes('withdraw')
+		) {
+			this.setState({ activeTab: 3 });
+		} else {
+			this.setState({ activeTab: 0 });
+		}
+		this.openCurrentTab();
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (
+			JSON.stringify(prevState.activeTab) !==
+			JSON.stringify(this.state.activeTab)
+		) {
+			this.openCurrentTab();
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -111,6 +139,20 @@ class TransactionsHistory extends Component {
 		}
 	}
 
+	openCurrentTab = () => {
+		let currentTab = '';
+		if (this.state.activeTab === 1) {
+			currentTab = 'order-history';
+		} else if (this.state.activeTab === 2) {
+			currentTab = 'deposit';
+		} else if (this.state.activeTab === 3) {
+			currentTab = 'withdraw';
+		} else {
+			currentTab = 'trades';
+		}
+		this.props.router.push(`/transactions?${currentTab}`);
+	};
+
 	onCloseDialog = () => {
 		this.setState({
 			dialogIsOpen: false,
@@ -132,7 +174,7 @@ class TransactionsHistory extends Component {
 
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: false });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: true });
 				break;
 			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);
@@ -169,11 +211,32 @@ class TransactionsHistory extends Component {
 		this.setState({
 			headers: {
 				orders: isMobile
-					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
-					: generateOrderHistoryHeaders(symbol, pairs, coins, discount, prices),
+					? generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
+					: generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  ),
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
+					? generateTradeHeadersMobile(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
+					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,

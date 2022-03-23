@@ -26,8 +26,10 @@ let configuration = {
 		meta: {},
 		user_meta: {},
 		injected_values: [],
-		injected_html: {}
-	}
+		injected_html: {},
+		black_list_countries: []
+	},
+	email: {}
 };
 
 let secrets = {
@@ -55,6 +57,7 @@ subscriber.on('message', (channel, message) => {
 				if (data.tiers) updateTiers(data.tiers);
 				if (data.kit) updateKit(data.kit);
 				if (data.secrets) updateSecrets(data.secrets);
+				if (data.email) updateEmail(data.email);
 				break;
 			case 'freezeUser':
 				updateFrozenUser('add', data);
@@ -103,8 +106,10 @@ const resetAllConfig = () => {
 			meta: {},
 			user_meta: {},
 			injected_values: [],
-			injected_html: {}
-		}
+			injected_html: {},
+			black_list_countries: []
+		},
+		email: {}
 	};
 };
 
@@ -124,6 +129,10 @@ const updateSecrets = (newSecretsConfig) => {
 	Object.assign(secrets, newSecretsConfig);
 };
 
+const updateEmail = (newEmailConfig) => {
+	Object.assign(configuration.email, newEmailConfig);
+};
+
 const updateFrozenUser = (action, userId) => {
 	if (action === 'add') {
 		frozenUsers[userId] = true;
@@ -138,6 +147,8 @@ exports.GET_TIERS = () => cloneDeep(configuration.tiers);
 exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
 exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
+exports.GET_EMAIL = () => cloneDeep(configuration.email);
+exports.GET_BROKER = () => cloneDeep(configuration.broker);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -173,7 +184,8 @@ exports.KIT_CONFIG_KEYS = [
 	'email_verification_required',
 	'injected_values',
 	'injected_html',
-	'user_meta'
+	'user_meta',
+	'black_list_countries'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -319,7 +331,7 @@ exports.DEFAULT_FEES = {
 };
 
 exports.ROLES = ROLES;
-exports.BASE_SCOPES = [ROLES.USER, ROLES.HMAC];
+exports.BASE_SCOPES = [ROLES.USER];
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 // ACCOUNTS CONSTANTS END --------------------------------------------------
@@ -415,9 +427,9 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		},
 		{
-			name: 'Blockchain.info',
-			baseUrl: 'https://www.blockchain.com',
-			txPath: '/eth/tx'
+			name: 'Ethplorer',
+			baseUrl: 'https://ethplorer.io',
+			txPath: '/tx'
 		}
 	],
 	trx: [
@@ -425,6 +437,58 @@ exports.EXPLORERS = {
 			name: 'Tronscan',
 			baseUrl: 'https://tronscan.org',
 			txPath: '/#/transaction'
+		}
+	],
+	bnb: [
+		{
+			name: 'BSCScan',
+			baseUrl: 'https://bscscan.com',
+			txPath: '/tx'
+		}
+	],
+	doge: [
+		{
+			name: 'DogeChain',
+			baseUrl: 'https://dogechain.info',
+			txPath: '/tx'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/dogecoin/transaction'
+		}
+	],
+	ltc: [
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/litecoin/transaction'
+		}
+	],
+	etn: [
+		{
+			name: 'Electroneum Explorer',
+			baseUrl: 'https://blockexplorer.electroneum.com',
+			txPath: '/tx'
+		}
+	],
+	ada: [
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/cardano/transaction'
+		}
+	],
+	eos: [
+		{
+			name: 'Bloks',
+			baseUrl: 'https://bloks.io',
+			txPath: '/transaction'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/eos/transaction'
 		}
 	]
 };

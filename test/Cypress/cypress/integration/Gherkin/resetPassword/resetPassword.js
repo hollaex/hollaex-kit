@@ -27,3 +27,4 @@ Then ('I should be redirected contact us page',()=>{
      cy.get(':nth-child(3) > .holla-button').as('contact support')
      .should('be.enabled')
 })
+

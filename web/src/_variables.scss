@@ -42,11 +42,19 @@ $specials_highlight-box: var(--calculated_specials_highlight-box);
 $chat-own-message--color: var(--specials_my-username-in-chat);
 $favourite-star: var(--specials_my-username-in-chat);
 
+$colors-notifications-blue-disabled: var(
+	--calculated_notifications-blue-disabled
+);
+$colors-notification-pending-disabled: var(
+	--calculated_notification-pending-disabled
+);
+
 //common colors for terms
 $colors-terms-background: $specials_highlight-box;
 
 // theme colors
 $app-background-color: var(--base_background);
+$app-background-overlay: var(--calculated_background-overlay);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
@@ -54,6 +62,9 @@ $landing_markets_table: var(--calculated_landing_markets_table);
 $market-card_gradient_background: var(
 	--calculated_market-card_gradient_background
 );
+$trade-block_highlight: var(--calculated_trade-block_highlight);
+$stake-table-highlight: var(--calculated_stake-table_highlight);
+$tag_background: var(--calculated_tag-background);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
@@ -63,6 +74,9 @@ $app-bar-icon-inactive: var(--calculated_base_top-bar-navigation_text-inactive);
 // Quick trade
 $quick-trade-background: $app-background-color;
 $quick-trade-container: var(--base_wallet-sidebar-and-popup);
+$quick-trade-block-background: var(--calculated_quick_trade-bg);
+$quick-trade-block-gradient-top: var(--specials_quick-trade-gradient);
+$quick-trade-block-gradient-bottom: var(--calculated_quick_trade-gradient);
 
 $app-modal-background: var(--calculated_base_modal-overlay);
 $app-bar-background-color: var(--base_top-bar-navigation);
@@ -73,6 +87,9 @@ $box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
 $sell: var(--trading_selling-related-elements);
+
+$pale-buy: var(--calculated_public-sale_buying-zeros);
+$pale-sell: var(--calculated_public-sale_selling-zeros);
 
 $link: var(--specials_buttons-links-and-highlights);
 
@@ -331,6 +348,7 @@ $font-size-subtext: 1rem;
 $font-size-mobile-title: 15px;
 $font-size-mobile-txt: 13px;
 $font-size-mobile-innertxt: 11px;
+$font-size-small-expandable: 0.84rem;
 
 $form-width-max: $content-display-width / 2;
 

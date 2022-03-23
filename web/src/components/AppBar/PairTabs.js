@@ -4,16 +4,17 @@ import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
 import { Slider } from 'components';
+import _get from 'lodash/get';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
+import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { EditWrapper } from 'components';
+import { EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { donutFormatPercentage, formatToCurrency } from 'utils/currency';
-import { isMobile } from 'react-device-detect';
+import { formatToCurrency } from 'utils/currency';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 class PairTabs extends Component {
 	state = {
@@ -69,32 +70,32 @@ class PairTabs extends Component {
 	initTabs = (pairs, activePair) => {};
 
 	onTabClick = (pair) => {
+		const { router, constants } = this.props;
 		if (pair) {
-			this.props.router.push(`/trade/${pair}`);
+			if (_get(constants, 'features.pro_trade')) {
+				router.push(`/trade/${pair}`);
+			} else if (_get(constants, 'features.quick_trade')) {
+				router.push(`/quick-trade/${pair}`);
+			}
 			this.setState({ activePairTab: pair });
 		}
 	};
 
 	render() {
-		const { activePairTab, isMarketSelectorVisible } = this.state;
+		const {
+			activePairTab,
+			isMarketSelectorVisible,
+			isToolsSelectorVisible,
+		} = this.state;
 
-		const { tickers, location, coins, favourites, pairs } = this.props;
-
-		const pair = pairs[activePairTab] || {};
-		const ticker = tickers[activePairTab] || {};
-		const { symbol } =
-			coins[pair.pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const pairTwo = coins[pair.pair_2 || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const { increment_price } = pair;
-		const priceDifference =
-			ticker.open === 0 ? 0 : (ticker.close || 0) - (ticker.open || 0);
-		const tickerPercent =
-			priceDifference === 0 || ticker.open === 0
-				? 0
-				: (priceDifference / ticker.open) * 100;
-		const priceDifferencePercent = isNaN(tickerPercent)
-			? donutFormatPercentage(0)
-			: donutFormatPercentage(tickerPercent);
+		const { location, favourites, markets } = this.props;
+		const market = markets.find(({ key }) => key === activePairTab) || {};
+		const {
+			pair: { increment_price } = {},
+			ticker: { close } = {},
+			symbol,
+			pairTwo,
+		} = market;
 
 		return (
 			<div className="d-flex justify-content-between">
@@ -133,9 +134,10 @@ class PairTabs extends Component {
 										}
 									/>
 								}
+								destroyPopupOnHide={true}
 								mouseEnterDelay={0}
 								mouseLeaveDelay={0.05}
-								trigger={[isMobile ? 'click' : 'hover']}
+								trigger={['click']}
 								visible={isMarketSelectorVisible}
 								onVisibleChange={(visible) => {
 									this.setState({ isMarketSelectorVisible: visible });
@@ -145,27 +147,16 @@ class PairTabs extends Component {
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
 											<div className="app_bar-currency-txt">
-												{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+												{symbol && symbol.toUpperCase()}/
+												{pairTwo &&
+													pairTwo.symbol &&
+													pairTwo.symbol.toUpperCase()}
+												:
 											</div>
 											<div className="title-font ml-1">
-												{formatToCurrency(ticker.close, increment_price)}
+												{formatToCurrency(close, increment_price)}
 											</div>
-											<div
-												className={
-													priceDifference < 0
-														? 'app-price-diff-down app-bar-price_diff_down'
-														: 'app-bar-price_diff_up app-price-diff-up'
-												}
-											/>
-											<div
-												className={
-													priceDifference < 0
-														? 'title-font app-price-diff-down'
-														: 'title-font app-price-diff-up'
-												}
-											>
-												{priceDifferencePercent}
-											</div>
+											<PriceChange market={market} />
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -191,31 +182,67 @@ class PairTabs extends Component {
 							{favourites && favourites.length > 0 && (
 								<TabList
 									items={favourites}
-									pairs={pairs}
-									tickers={tickers}
-									coins={coins}
+									markets={markets}
 									activePairTab={activePairTab}
 									onTabClick={this.onTabClick}
 								/>
 							)}
 						</Slider>
 					</div>
+					{location.pathname.indexOf('/trade/') === 0 && (
+						<div className="d-flex h-100 tools-button border-left">
+							<div
+								className={classnames(
+									'app_bar-pair-content',
+									'market-trigger',
+									'd-flex',
+									'justify-content-between',
+									'px-2'
+								)}
+							>
+								<Dropdown
+									className="market-selector-dropdown"
+									overlay={<ToolsSelector />}
+									mouseEnterDelay={0}
+									mouseLeaveDelay={0.05}
+									trigger={['click']}
+									visible={isToolsSelectorVisible}
+									onVisibleChange={(visible) => {
+										this.setState({ isToolsSelectorVisible: visible });
+									}}
+								>
+									<div className="selector-trigger narrow app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
+										<div>Tools</div>
+										{isToolsSelectorVisible ? (
+											<CaretUpOutlined style={{ fontSize: '14px' }} />
+										) : (
+											<CaretDownOutlined style={{ fontSize: '14px' }} />
+										)}
+									</div>
+								</Dropdown>
+							</div>
+						</div>
+					)}
 				</div>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = ({
-	app: { language: activeLanguage, pairs, tickers, coins, favourites },
-	orderbook: { prices },
-}) => ({
-	activeLanguage,
-	pairs,
-	tickers,
-	coins,
-	prices,
-	favourites,
-});
+const mapStateToProps = (state) => {
+	const {
+		app: { language: activeLanguage, pairs, favourites, constants },
+		orderbook: { prices },
+	} = state;
+
+	return {
+		activeLanguage,
+		pairs,
+		prices,
+		favourites,
+		constants,
+		markets: MarketsSelector(state),
+	};
+};
 
 export default connect(mapStateToProps)(withConfig(PairTabs));

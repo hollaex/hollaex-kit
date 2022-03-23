@@ -3,7 +3,7 @@ HollaEx Kit is a while label crypto software suite with a range of features from
 
 ## Get Started
 
-HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate the exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.bitholla.com) to start your own exchange.
+HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate the exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.hollaex.com) to start your own exchange.
 
 ```
 git clone https://github.com/bitholla/hollaex-kit.git
@@ -40,9 +40,9 @@ Join us on the [Forum](https://forum.hollaex.com) and [Discord](https://discord.
 
 ## Useful Links
 
-- Exchange Dashboard: https://dash.bitholla.com
-- HollaEx Whitepaper: https://hollaex.com/docs/whitepaper.html
-- HollaEx Live Exchange: https://hollaex.com
+- Exchange Dashboard: https://dash.hollaex.com
+- HollaEx Whitepaper: https://whitepaper.hollaex.com
+- HollaEx Live Exchange: https://pro.hollaex.com/trade/xht-usdt
 - Discord Community: https://discord.gg/RkRHU8RbyM
 - Forum: https://forum.hollaex.com
 - Docs: https://docs.hollaex.com

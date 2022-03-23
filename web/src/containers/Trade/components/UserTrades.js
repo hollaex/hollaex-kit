@@ -1,32 +1,34 @@
 import React from 'react';
 
-import { Table } from '../../../components';
-import { generateRecentTradeHeaders } from '../../TransactionsHistory/utils';
+import { Table } from 'components';
+import { generateRecentTradeHeaders } from 'containers/TransactionsHistory/utils';
+import STRINGS from 'config/localizedStrings';
 
-const ActiveOrders = ({
+const RecentTrades = ({
 	trades,
 	pairData,
-	pair,
 	pairs,
 	/*lessHeaders,*/
 	pageSize,
 	coins,
 	discount,
 	prices,
+	icons,
+	isLoading,
 }) => {
 	const headers = generateRecentTradeHeaders(
 		pairData.pair_base,
 		pairs,
 		coins,
 		discount,
-		prices
+		prices,
+		icons
 	);
-	if (!pair) {
-		return <div />;
-	}
+
 	return (
 		<div className="trade_active_orders-wrapper">
 			<Table
+				noData={isLoading && STRINGS['LOADING']}
 				headers={headers}
 				data={trades}
 				count={trades.length}
@@ -35,16 +37,17 @@ const ActiveOrders = ({
 				rowKey={(data) => {
 					return data.id;
 				}}
+				cssTransitionClassName="general-record"
 			/>
 		</div>
 	);
 };
 
-ActiveOrders.defaultProps = {
+RecentTrades.defaultProps = {
 	trades: [],
 	pair: '',
 	pairData: {},
 	pairs: {},
 	coins: {},
 };
-export default ActiveOrders;
+export default RecentTrades;

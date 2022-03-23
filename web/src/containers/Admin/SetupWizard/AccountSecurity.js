@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
 import QRCode from 'qrcode.react';
-import { InputNumber, Form, Button, message } from 'antd';
+import { Form, Button, message, Input } from 'antd';
 import { connect } from 'react-redux';
 
 import {
@@ -30,8 +30,8 @@ const AccountSecurity = ({
 			message.error(user.otp.error);
 		}
 	}, [user.otp]);
-	const handleSubmit = (values) => {
-		return otpActivate({ code: values.code.toString() })
+	const handleSubmit = (code) => {
+		return otpActivate(code)
 			.then((res) => {
 				otpSetActivated(true);
 				message.success('OTP activated successfully');
@@ -52,6 +52,12 @@ const AccountSecurity = ({
 				'https://support.google.com/accounts/answer/1066447?hl=en',
 				'_blank'
 			);
+		}
+	};
+
+	const maxLengthCheck = (object) => {
+		if (object.target.value.length > object.target.maxLength) {
+			object.target.value = object.target.value.slice(0, object.target.maxLength)
 		}
 	};
 
@@ -92,8 +98,14 @@ const AccountSecurity = ({
 									rules={[
 										{ required: true, message: 'Please input your 2FA code!' },
 									]}
+									className="number_input-wrapper"
 								>
-									<InputNumber placeholder="Enter 6-digit code" maxLength={6} />
+									<Input
+										type='number'
+										placeholder="Enter 6-digit code"
+										maxLength="6"
+										onInput={maxLengthCheck}
+									/>
 								</Item>
 							</div>
 							<div className="btn-container">

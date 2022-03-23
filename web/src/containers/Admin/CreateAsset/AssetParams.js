@@ -10,6 +10,17 @@ const AssetParams = ({
 	handleNext,
 	handleMetaChange,
 }) => {
+
+	const handleMoveNext = () => {
+		if (!coinFormData.id) {
+			handleNext();
+		} else if (editParams) {
+			handleScreenChange('update_confirm');
+		} else {
+			handleScreenChange('edit_withdrawal_fees');
+		}
+	};
+
 	return (
 		<Fragment>
 			<div className="title">Asset parameters</div>
@@ -56,20 +67,24 @@ const AssetParams = ({
 						</div>
 					</Checkbox>
 				</div>
-				<div className="field-wrap">
-					<div className="sub-title">Fee for withdrawal</div>
-					<div className="description">
-						<div>
-							Enter the fee amount for when this coin is withdraw from your
-							exchange
+				{/* {!coinFormData.withdrawal_fees
+					?
+					<div className="field-wrap">
+						<div className="sub-title">Fee for withdrawal</div>
+						<div className="description">
+							<div>
+								Enter the fee amount for when this coin is withdraw from your
+								exchange
+							</div>
 						</div>
+						<InputNumber
+							name="withdrawal_fee"
+							onChange={(val) => handleChangeNumber(val, 'withdrawal_fee')}
+							value={coinFormData.withdrawal_fee}
+						/>
 					</div>
-					<InputNumber
-						name="withdrawal_fee"
-						onChange={(val) => handleChangeNumber(val, 'withdrawal_fee')}
-						value={coinFormData.withdrawal_fee}
-					/>
-				</div>
+					: null
+				} */}
 				<div className="field-wrap">
 					<div className="sub-title">Minimum Withdrawal Amount</div>
 					<div className="description">
@@ -96,7 +111,7 @@ const AssetParams = ({
 						value={coinFormData.max}
 					/>
 				</div>
-				<div className={editParams ? 'field-wrap' : 'field-wrap last'}>
+				<div className='field-wrap last'>
 					<div className="sub-title">Increment Amount</div>
 					<div className="description">
 						<div>
@@ -110,7 +125,7 @@ const AssetParams = ({
 						value={coinFormData.increment_unit}
 					/>
 				</div>
-				{editParams ? (
+				{/* {editParams ? (
 					<div className="field-wrap last">
 						<div className="sub-title">Decimal points (max 18):</div>
 						<InputNumber
@@ -119,19 +134,32 @@ const AssetParams = ({
 							value={coinFormData.meta.decimal_points}
 						/>
 					</div>
-				) : null}
+				) : null} */}
 				<div className="btn-wrapper">
 					<Button
 						type="primary"
 						className="green-btn"
-						onClick={() => handleScreenChange('step8')}
+						onClick={() => {
+							if (editParams) {
+								handleScreenChange('edit-params');
+							} else {
+								handleScreenChange('step8')
+							}
+						}}
 					>
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" onClick={handleNext}>
-						Confirm
-					</Button>
+					{editParams
+						?
+						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+							Next
+						</Button>
+						:
+						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+							Confirm
+						</Button>
+					}
 				</div>
 			</div>
 		</Fragment>

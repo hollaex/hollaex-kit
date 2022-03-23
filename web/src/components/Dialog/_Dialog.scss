@@ -9,6 +9,36 @@ $close-button--margin: 1.5rem;
 	background-color: $app-modal-background !important;
 }
 
+.background {
+	.ReactModal__Content {
+		padding: 0 !important;
+		max-width: 100% !important;
+		max-height: 100% !important;
+
+		.action_notification-wrapper.close-button {
+			margin: 0 !important;
+		}
+	}
+
+	.icon_title-wrapper {
+		margin-top: 0 !important;
+	}
+}
+
+.dialog-content {
+	padding-right: $dialog--padding;
+	padding-left: $dialog--padding;
+
+	&.background {
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+	}
+
+	&.bottom {
+		padding-bottom: $dialog--padding;
+	}
+}
+
 .ReactModal__Content {
 	padding: $dialog--padding !important;
 	top: auto !important;

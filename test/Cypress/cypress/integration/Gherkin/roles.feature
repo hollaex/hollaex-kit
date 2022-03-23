@@ -25,7 +25,7 @@ Scenario: SUPERVISOR
      Given I am in the Hollaex login page
      When I enter credentials "supervisor","Password"
      Then I should be able to login successfully as "supervisor@testsae.com"
-     And I have title of 'Supervisor'
+     And I have title of "Supervisor"
      Then I must be able to do Supervisors tasks
 
 Scenario: SUPPORT
@@ -33,6 +33,6 @@ Scenario: SUPPORT
      Given I am in the Hollaex login page
      When I enter credentials "support","Password"
      Then I should be able to login successfully as "support@testsae.com"
-     And I have title of 'Support'
+     And I have title of "Support"
      Then I must be able to do Supports tasks
  

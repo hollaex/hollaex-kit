@@ -122,11 +122,15 @@ class Withdraw extends Component {
 		networks,
 		network
 	) => {
-		const { icons: ICONS } = this.props;
-		const balanceAvailable = balance[`${currency}_available`];
+		const {
+			icons: ICONS,
+			router: {
+				location: { query },
+			},
+		} = this.props;
 		const formValues = generateFormValues(
 			currency,
-			balanceAvailable,
+			balance,
 			this.onCalculateMax,
 			coins,
 			verification_level,
@@ -134,13 +138,15 @@ class Withdraw extends Component {
 			ICONS['BLUE_PLUS'],
 			'BLUE_PLUS',
 			networks,
-			network
+			network,
+			ICONS
 		);
 		const initialValues = generateInitialValues(
 			currency,
 			coins,
 			networks,
-			network
+			network,
+			query
 		);
 
 		this.setState({ formValues, initialValues });
@@ -149,8 +155,8 @@ class Withdraw extends Component {
 	onSubmitWithdraw = (currency) => (values) => {
 		const { destination_tag, network, ...rest } = values;
 
-		let address = rest.address;
-		if (destination_tag) address = `${rest.address}:${destination_tag}`;
+		let address = rest.address.trim();
+		if (destination_tag) address = `${rest.address.trim()}:${destination_tag}`;
 
 		return performWithdraw(currency, {
 			...(network ? { network } : {}),
@@ -174,6 +180,7 @@ class Withdraw extends Component {
 			verification_level,
 			coins,
 			config_level = {},
+			fee_coin,
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
@@ -186,23 +193,42 @@ class Withdraw extends Component {
 		// 	);
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
-		let amount = math.number(
-			math.subtract(math.fraction(balanceAvailable), math.fraction(selectedFee))
-		);
-		if (amount < 0) {
-			amount = 0;
-		} else if (
-			math.larger(amount, math.number(withdrawal_limit)) &&
-			withdrawal_limit !== 0 &&
-			withdrawal_limit !== -1
-		) {
+		let amount = 0;
+
+		if (fee_coin && fee_coin !== currency) {
+			amount = math.number(math.fraction(balanceAvailable));
+			if (amount < 0) {
+				amount = 0;
+			} else if (
+				math.larger(amount, math.number(withdrawal_limit)) &&
+				withdrawal_limit !== 0 &&
+				withdrawal_limit !== -1
+			) {
+				amount = math.number(math.fraction(withdrawal_limit));
+			}
+		} else {
 			amount = math.number(
 				math.subtract(
-					math.fraction(withdrawal_limit),
+					math.fraction(balanceAvailable),
 					math.fraction(selectedFee)
 				)
 			);
+			if (amount < 0) {
+				amount = 0;
+			} else if (
+				math.larger(amount, math.number(withdrawal_limit)) &&
+				withdrawal_limit !== 0 &&
+				withdrawal_limit !== -1
+			) {
+				amount = math.number(
+					math.subtract(
+						math.fraction(withdrawal_limit),
+						math.fraction(selectedFee)
+					)
+				);
+			}
 		}
+
 		dispatch(
 			change(
 				FORM_NAME,
@@ -326,6 +352,7 @@ const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
+	fee_coin: formValueSelector(FORM_NAME)(store, 'fee_coin'),
 	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,

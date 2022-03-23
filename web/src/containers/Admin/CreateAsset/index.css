@@ -285,6 +285,7 @@
 }
 .create-asset-container .md-field-wrap {
 	padding-top: 1rem;
+    color: #ffffff;
 }
 .create-asset-container .md-field-wrap .ant-upload,
 .create-asset-container .md-field-wrap .ant-input-number,
@@ -384,9 +385,8 @@
 	padding: 1.5rem;
 	border-bottom: 1px solid #a9a9a9;
 }
-.create-asset-container .burn-wrapper .type_wrapper h3 {
+.create-asset-container .burn-wrapper h3 {
 	font-weight: bold;
-	margin-bottom: 0;
 	color: #ffffff !important;
 }
 .create-asset-container .burn-wrapper .ant-btn,
@@ -458,4 +458,16 @@
 .create-asset-container .green-btn {
 	background-color: #288500 !important;
 	color: #ffffff !important;
+}
+.create-asset-container .type-wrap .warning-container {
+	position: relative;
+	display: flex;
+}
+.coin-limit-wrap .btn-wrapper .ant-btn {
+	width: 45%;
+}
+.create-asset-container .coin-limit-wrap .ant-input[disabled] {
+    opacity: 0.5;
+    color: #c4c4c4;
+    background-color: var(--admin_panel_input);
 }

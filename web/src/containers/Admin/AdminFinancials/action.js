@@ -1,19 +1,7 @@
 import axios from 'axios';
-// import { NETWORK_API_URL, PLUGIN_URL } from 'config/constants';
+import { HOLLAEX_NETWORK_API_URL } from 'config';
+import querystring from 'query-string';
 import { requestAuthenticated } from 'utils';
-
-export const requestExchange = (values) => {
-	return axios.get(`/network/${values.id}/exchange`);
-};
-
-// export const updateExchange = (values) => {
-//     const options = {
-//         method: 'PUT',
-//         body: JSON.stringify(values),
-//     };
-
-//     return axios(`/network/${values.id}/exchange`, options);
-// };
 
 export const storeMint = (values) => {
 	const options = {
@@ -21,7 +9,7 @@ export const storeMint = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/mint`, options);
+	return requestAuthenticated('/admin/mint', options);
 };
 
 export const updateMint = (values) => {
@@ -30,7 +18,7 @@ export const updateMint = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/mint`, options);
+	return requestAuthenticated('/admin/mint', options);
 };
 
 export const storeBurn = (values) => {
@@ -39,7 +27,7 @@ export const storeBurn = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/burn`, options);
+	return requestAuthenticated('/admin/burn', options);
 };
 
 export const updateBurn = (values) => {
@@ -48,15 +36,15 @@ export const updateBurn = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return axios(`/network/${values.id}/burn`, options);
+	return requestAuthenticated('/admin/burn', options);
 };
 
 export const getAllCoins = () => {
-	return axios.get('/network/coins/all');
+	return axios.get('/admin/coins/network');
 };
 
 export const getAllPairs = () => {
-	return axios.get(`/network/pairs/all`);
+	return axios.get('/admin/pairs/network');
 };
 
 export const getExchange = () => {
@@ -83,4 +71,32 @@ export const storeAsset = (values) => {
 	};
 
 	return requestAuthenticated('/admin/coin', options);
+};
+
+export const getCoinInfo = (dataParams) =>
+	requestAuthenticated(
+		`/coin/info?${querystring.stringify(dataParams)}`,
+		{},
+		null,
+		HOLLAEX_NETWORK_API_URL
+	);
+
+export const updateExchange = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/exchange', options);
+};
+
+export const uploadCoinLogo = (values) => {
+	return axios({
+		headers: {
+			'Content-Type': 'multipart/form-data',
+		},
+		data: values,
+		url: '/admin/upload',
+		method: 'POST',
+	});
 };

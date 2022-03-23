@@ -95,24 +95,51 @@ class Table extends Component {
 	};
 
 	render() {
-		const count = this.props.count || this.props.data.length;
-
-		if (count === 0) {
-			return (
-				<div className="no-data d-flex justify-content-center align-items-center">
-					<EditWrapper stringId="NO_DATA">{STRINGS['NO_DATA']}</EditWrapper>
-				</div>
-			);
-		}
-
 		const {
+			noData,
+			showHeaderNoData,
 			withIcon,
 			displayPaginator,
 			pageSize,
 			cancelDelayData,
 			className,
+			expandable,
+			cssTransitionClassName,
 		} = this.props;
+
+		const count = this.props.count || this.props.data.length;
 		const { data, page, headers } = this.state;
+
+		if (count === 0) {
+			if (!showHeaderNoData) {
+				return (
+					<div className="no-data d-flex justify-content-center align-items-center py-3">
+						<EditWrapper stringId="NO_DATA">
+							{noData ? noData : STRINGS['NO_DATA']}
+						</EditWrapper>
+					</div>
+				);
+			} else {
+				const { headers } = this.props;
+				return (
+					<div className="table_container">
+						<div className={classnames('table-content', className)}>
+							<table className={classnames('table-wrapper')}>
+								<TableHeader
+									headers={headers}
+									HeaderClassName="border-bottom"
+								/>
+							</table>
+						</div>
+						<div className="no-data d-flex justify-content-center align-items-center">
+							<EditWrapper stringId="NO_DATA">
+								{noData ? noData : STRINGS['NO_DATA']}
+							</EditWrapper>
+						</div>
+					</div>
+				);
+			}
+		}
 
 		return (
 			<div className="table_container">
@@ -124,6 +151,8 @@ class Table extends Component {
 							headers={headers}
 							data={data}
 							withIcon={withIcon}
+							expandable={expandable}
+							cssTransitionClassName={cssTransitionClassName}
 						/>
 					</table>
 				</div>
@@ -153,6 +182,14 @@ Table.defaultProps = {
 	handleNext: () => {},
 	handlePrevious: () => {},
 	jumpToPage: 0,
+	noData: '',
+	showHeaderNoData: false,
+	expandable: {
+		expandedRowRender: () => <p>No content</p>,
+		defaultExpanded: () => false,
+		rowExpandable: () => false,
+	},
+	cssTransitionClassName: '',
 };
 
 export default Table;

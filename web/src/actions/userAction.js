@@ -202,7 +202,7 @@ export function otpRequest() {
 			.catch((err) => {
 				dispatch({
 					type: 'REQUEST_OTP_REJECTED',
-					payload: err.response.data,
+					payload: err && err.response && err.response.data,
 				});
 			});
 	};
@@ -221,7 +221,8 @@ export const requestTokens = () => {
 	};
 };
 
-export const generateToken = (values) => axios.post(`/user/token`, values);
+export const generateToken = (values) => axios.post('/user/token', values);
+export const editToken = (values) => axios.put('/user/token', values);
 export const tokenGenerated = (token) => ({
 	type: 'TOKEN_GENERATED',
 	payload: {
@@ -229,16 +230,21 @@ export const tokenGenerated = (token) => ({
 	},
 });
 
-export const revokeToken = (id, otp_code = '') =>
+export const revokeToken = (token_id, otp_code = '', email_code = '') =>
 	axios.delete(`/user/token`, {
-		data: { token_id: id, otp_code: otp_code },
+		data: { token_id, otp_code, email_code },
 	});
+
 export const tokenRevoked = (token) => ({
 	type: 'TOKEN_REVOKED',
 	payload: {
 		token,
 	},
 });
+
+export const sendEmailCode = async () => {
+	return await axios.get('/user/request-email-confirmation');
+};
 
 export const setUsername = (values) => axios.post('/user/username', values);
 export const setUsernameStore = (username) => ({

@@ -137,5 +137,5 @@ const getUserDeposits = (req, res) => {
 
 module.exports = {
 	getAdminDeposits,
-	getUserDeposits,
+	getUserDeposits
 };

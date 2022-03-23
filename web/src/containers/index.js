@@ -18,6 +18,7 @@ export { default as VerificationEmailRequest } from './VerificationEmailRequest'
 export { default as VerificationEmailCode } from './VerificationEmailCode';
 export { default as Home } from './Home';
 export { default as Trade } from './Trade';
+export { default as ChartEmbed } from './ChartEmbed';
 export { default as Legal } from './Legal';
 export { default as RequestResetPassword } from './RequestResetPassword';
 export { default as ResetPassword } from './ResetPassword';
@@ -29,7 +30,8 @@ export { default as AddTradeTabs } from './TradeTabs';
 export { default as ExpiredExchange } from './ExpiredExchange';
 export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
-export { default as CustomNotification } from './Notification';
+export { default as Stake } from './Stake';
+export { default as StakeDetails } from './StakeDetails';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

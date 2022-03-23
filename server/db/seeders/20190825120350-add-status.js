@@ -10,6 +10,7 @@ const {
 	VALID_LANGUAGES,
 	NEW_USER_DEFAULT_LANGUAGE,
 	DEFAULT_THEME,
+	DEFAULT_COUNTRY,
 	NEW_USER_IS_ACTIVATED,
 	SMTP_SERVER,
 	SMTP_PORT,
@@ -102,7 +103,7 @@ module.exports = {
 							api: API_HOST || '',
 							whitepaper: '',
 							website: '',
-							information: '',
+							information: ''
 						},
 						email_verification_required: false,
 						setup_completed: false,
@@ -117,7 +118,8 @@ module.exports = {
 						},
 						defaults: {
 							language: NEW_USER_DEFAULT_LANGUAGE || 'en',
-							theme: DEFAULT_THEME || 'white'
+							theme: DEFAULT_THEME || 'white',
+							country: DEFAULT_COUNTRY || null
 						},
 						features: {},
 						meta: {},

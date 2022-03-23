@@ -112,6 +112,25 @@ export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
 	return undefined;
 };
 
+export const checkFee = (available, coinName, fee = 0) => () => {
+	const operation = math.number(math.fraction(fee));
+
+	if (operation > available) {
+		const errorMessage = coinName
+			? STRINGS.formatString(
+					STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+					<b>{`${operation} ${coinName}`}</b>
+			  )
+			: STRINGS.formatString(
+					STRINGS['VALIDATIONS.INVALID_BALANCE'],
+					available,
+					operation
+			  );
+		return errorMessage;
+	}
+	return undefined;
+};
+
 export const evaluateOrder = (
 	pair_base = '',
 	pair_2 = '',
@@ -140,7 +159,7 @@ export const evaluateOrder = (
 		}
 	}
 
-	if (available < orderPrice) {
+	if (parseFloat(available) < parseFloat(orderPrice)) {
 		return STRINGS['VALIDATIONS.INSUFFICIENT_BALANCE'];
 	}
 	return '';

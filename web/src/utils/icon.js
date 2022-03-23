@@ -124,7 +124,7 @@ export const getAllIconsArray = (themeKeys, content = defaultIcons) => {
 	return allIcons;
 };
 
-const sizeLimitInMB = 2;
+const sizeLimitInMB = 10;
 
 export const checkFileSize = (file) => {
 	if (file && file.size) {

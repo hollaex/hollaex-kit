@@ -1,6 +1,8 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { getDecimals } from 'utils/utils';
+import { formatPercentage } from 'utils/currency';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -9,6 +11,13 @@ export const subtract = (a = 0, b = 0) => {
 
 const sumQuantities = (orders) =>
 	orders.reduce((total, [, size]) => total + size, 0);
+
+const sumOrderTotal = (orders) =>
+	orders.reduce(
+		(total, [price, size]) =>
+			total + math.multiply(math.fraction(size), math.fraction(price)),
+		0
+	);
 
 const calcMaxCumulative = (askOrders, bidOrders) => {
 	const totalAsks = sumQuantities(askOrders);
@@ -21,9 +30,10 @@ const pushCumulativeAmounts = (orders) => {
 	let cumulativePrice = 0;
 	return orders.map((order) => {
 		const [price, size] = order;
+		const id = price;
 		cumulative += size;
 		cumulativePrice += math.multiply(math.fraction(size), math.fraction(price));
-		return [...order, cumulative, cumulativePrice];
+		return [...order, cumulative, cumulativePrice, id];
 	});
 };
 
@@ -66,7 +76,10 @@ const calculateOrders = (orders, depth) =>
 	}, []);
 
 const getPairsOrderBook = (state) => state.orderbook.pairsOrderbooks;
+const getQuickTradeOrderBook = (state) => state.quickTrade.pairsOrderbooks;
 const getPair = (state) => state.app.pair;
+const getActiveOrderMarket = (state) => state.app.activeOrdersMarket;
+const getRecentTradesMarket = (state) => state.app.recentTradesMarket;
 const getOrderBookLevels = (state) =>
 	state.user.settings.interface.order_book_levels;
 const getPairsTrades = (state) => state.orderbook.pairsTrades;
@@ -74,6 +87,9 @@ const getActiveOrders = (state) => state.order.activeOrders;
 const getUserTradesData = (state) => state.wallet.trades.data;
 const getPairs = (state) => state.app.pairs;
 const getDepth = (state) => state.orderbook.depth;
+const getChartClose = (state) => state.orderbook.chart_last_close;
+const getTickers = (state) => state.app.tickers;
+const getCoins = (state) => state.app.coins;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -96,48 +112,54 @@ export const orderbookSelector = createSelector(
 	}
 );
 
+const pushId = (record) => {
+	const { price, size, timestamp, side } = record;
+	const id = `${price}${size}${timestamp}${side}`;
+	return { id, ...record };
+};
+
 export const tradeHistorySelector = createSelector(
 	getPairsTrades,
 	getPair,
 	(pairsTrades, pair) => {
 		const data = pairsTrades[pair] || [];
+		const dataWithId = data.map((record) => pushId(record));
 		const sizeArray = data.map(({ size }) => size);
 		const maxAmount = Math.max(...sizeArray);
-		return { data, maxAmount };
+		return { data: dataWithId, maxAmount };
 	}
 );
 
 export const marketPriceSelector = createSelector(
-	[tradeHistorySelector],
-	({ data: tradeHistory }) => {
+	[tradeHistorySelector, getChartClose],
+	({ data: tradeHistory }, chartCloseValue) => {
 		const marketPrice =
-			tradeHistory && tradeHistory.length > 0 ? tradeHistory[0].price : 1;
+			tradeHistory && tradeHistory.length > 0
+				? tradeHistory[0].price
+				: chartCloseValue;
 		return marketPrice;
 	}
 );
 
 export const activeOrdersSelector = createSelector(
 	getActiveOrders,
-	getPair,
+	getActiveOrderMarket,
 	(orders, pair) => {
-		return orders
+		return pair ? orders.filter(({ symbol }) => symbol === pair) : orders;
 	}
 );
 
 export const userTradesSelector = createSelector(
 	getUserTradesData,
-	getPair,
+	getRecentTradesMarket,
 	(trades, pair) => {
-		let count = 0;
-		const filtered = trades.filter(
-			({ symbol }) => symbol === pair && count++ < 10
-		);
-		return filtered;
+		return pair ? trades.filter(({ symbol }) => symbol === pair) : trades;
 	}
 );
 
 const getSide = (_, { side }) => side;
 const getSize = (_, { size }) => (!!size ? size : 0);
+const getFirstAssetCheck = (_, { isFirstAsset }) => isFirstAsset;
 
 const calculateMarketPrice = (orderSize = 0, orders = []) =>
 	orders.reduce(
@@ -162,6 +184,31 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
 		[0, 0]
 	);
 
+const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
+	orders.reduce(
+		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
+			if (math.larger(orderSize, accumulatedPrice)) {
+				let currentTotal = math.multiply(size, price);
+				const remainingSize = math.subtract(orderSize, accumulatedPrice);
+				if (math.largerEq(remainingSize, currentTotal)) {
+					return [
+						math.sum(accumulatedPrice, currentTotal),
+						math.sum(accumulatedSize, size),
+					];
+				} else {
+					let remainingBaseSize = math.divide(remainingSize, price);
+					return [
+						math.sum(accumulatedPrice, math.multiply(remainingBaseSize, price)),
+						math.sum(accumulatedSize, remainingBaseSize),
+					];
+				}
+			} else {
+				return [accumulatedPrice, accumulatedSize];
+			}
+		},
+		[0, 0]
+	);
+
 export const estimatedMarketPriceSelector = createSelector(
 	[getPairsOrderBook, getPair, getSide, getSize],
 	(pairsOrders, pair, side, size) => {
@@ -173,5 +220,152 @@ export const estimatedMarketPriceSelector = createSelector(
 		} else {
 			return calculateMarketPrice(size, orders);
 		}
+	}
+);
+
+export const estimatedQuickTradePriceSelector = createSelector(
+	[getQuickTradeOrderBook, getPair, getSide, getSize, getFirstAssetCheck],
+	(pairsOrders, pair, side, size, isFirstAsset) => {
+		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
+			pairsOrders[pair] || {};
+		let totalOrders = sumQuantities(orders);
+		if (!isFirstAsset) {
+			totalOrders = sumOrderTotal(orders);
+		}
+		if (math.larger(size, totalOrders)) {
+			return [0, size];
+		} else if (!isFirstAsset) {
+			const [priceValue, sizeValue] = calculateMarketPriceByTotal(size, orders);
+			return [priceValue / sizeValue, sizeValue];
+		} else {
+			const [priceValue, sizeValue] = calculateMarketPrice(size, orders);
+			return [priceValue / sizeValue, sizeValue];
+		}
+	}
+);
+
+export const sortedPairKeysSelector = createSelector(
+	[getPairs, getTickers],
+	(pairs, tickers) => {
+		const sortedPairKeys = Object.keys(pairs).sort((a, b) => {
+			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
+			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
+			const marketCapA = math.multiply(volumeA, closeA);
+			const marketCapB = math.multiply(volumeB, closeB);
+			return marketCapB - marketCapA;
+		});
+
+		const pinnedCoins = ['xht'];
+		const pinnedKeys = [];
+		const filteredKeys = [];
+
+		sortedPairKeys.forEach((key) => {
+			const { pair_base, pair_2 } = pairs[key];
+			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+				pinnedKeys.push(key);
+			} else {
+				filteredKeys.push(key);
+			}
+		});
+
+		return [...pinnedKeys, ...filteredKeys];
+	}
+);
+
+export const MarketsSelector = createSelector(
+	[sortedPairKeysSelector, getPairs, getTickers, getCoins],
+	(sortedPairKeys, pairs, tickers, coins) => {
+		const markets = sortedPairKeys.map((key) => {
+			const { pair_base, pair_2, increment_price } = pairs[key] || {};
+			const { fullname, symbol = '' } =
+				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
+			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
+			const { open, close } = tickers[key] || {};
+
+			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
+
+			const tickerPercent =
+				priceDifference === 0 || open === 0
+					? 0
+					: (priceDifference / open) * 100;
+
+			const priceDifferencePercent = isNaN(tickerPercent)
+				? formatPercentage(0)
+				: formatPercentage(tickerPercent);
+			return {
+				key,
+				pair: pairs[key],
+				symbol,
+				pairTwo,
+				fullname,
+				ticker: tickers[key] || {},
+				increment_price,
+				priceDifference,
+				priceDifferencePercent,
+			};
+		});
+
+		return markets;
+	}
+);
+
+const calculateSymmetricExtrems = (center, max, min) => {
+	if (center && max && min) {
+		const span = math.min(
+			math.subtract(center, min),
+			math.subtract(max, center)
+		);
+		return { max: math.add(center, span), min: math.subtract(center, span) };
+	} else {
+		return {};
+	}
+};
+
+export const depthChartSelector = createSelector(
+	[orderbookSelector, marketPriceSelector],
+	({ asks: fullAsks, bids: fullBids }, price) => {
+		const asks = fullAsks.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+		const bids = fullBids.map(([orderPrice, , accSize]) => [
+			orderPrice,
+			accSize,
+		]);
+
+		const series = [
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+			},
+			{
+				name: 'Bids',
+				data: bids,
+				className: 'depth-chart__bids',
+				marker: {
+					enabled: false,
+				},
+			},
+		];
+
+		const min = math.min(
+			bids.map(([price]) => price),
+			0
+		);
+		const max = math.max(
+			asks.map(([price]) => price),
+			0
+		);
+		const extremes = calculateSymmetricExtrems(price, max, min);
+
+		return {
+			price,
+			series,
+			extremes,
+		};
 	}
 );

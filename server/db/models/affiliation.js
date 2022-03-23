@@ -25,16 +25,6 @@ module.exports = function(sequelize, DataTypes) {
 					model: 'Users',
 					key: 'id'
 				}
-			},
-			updated_at: {
-				allowNull: false,
-				type: DataTypes.DATE,
-				defaultValue: sequelize.literal('NOW()')
-			},
-			created_at: {
-				allowNull: false,
-				type: DataTypes.DATE,
-				defaultValue: sequelize.literal('NOW()')
 			}
 		},
 		{
@@ -48,13 +38,13 @@ module.exports = function(sequelize, DataTypes) {
 			as: 'user',
 			foreignKey: 'user_id',
 			targetKey: 'id',
-			onDelete: 'CASCADE',
+			onDelete: 'CASCADE'
 		});
 		Affiliation.belongsTo(models.User, {
 			as: 'referer',
 			foreignKey: 'referer_id',
 			targetKey: 'id',
-			onDelete: 'CASCADE',
+			onDelete: 'CASCADE'
 		});
 	};
 

@@ -330,6 +330,10 @@ class Deposits extends Component {
 		if (queryType === 'deposit') {
 			requestMint(body)
 				.then((data) => {
+					this.requestDeposits(
+						this.state.queryParams,
+						this.props.queryParams
+					);
 					this.onCancelModal();
 				})
 				.catch((error) => {
@@ -342,6 +346,10 @@ class Deposits extends Component {
 		} else {
 			requestBurn(body)
 				.then((data) => {
+					this.requestDeposits(
+						this.state.queryParams,
+						this.props.queryParams
+					);
 					this.onCancelModal();
 				})
 				.catch((error) => {

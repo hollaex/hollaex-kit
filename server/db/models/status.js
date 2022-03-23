@@ -42,7 +42,11 @@ module.exports = function(sequelize, DataTypes) {
 			kit_version: {
 				type: DataTypes.STRING,
 				allowNull: true
-			}
+			},
+			email: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			},
 		},
 		{
 			underscored: true

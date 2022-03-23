@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin, message } from 'antd';
+import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
@@ -51,9 +51,12 @@ import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
 import {
-	/* getAllCoins, getAllPairs, */ getConstants,
+	getAllCoins,
+	getAllPairs,
+	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
+import Timer from './Timer';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -113,8 +116,8 @@ class AppWrapper extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getExchange();
-		this.getAssets();
+		this.getData();
+		// this.getAssets();
 
 		// if (!this.props.fetchingAuth && !Object.keys(this.props.pairs).length) {
 		if (!this.props.fetchingAuth) {
@@ -176,48 +179,49 @@ class AppWrapper extends React.Component {
 		}
 	}
 
-	getAssets = async () => {
-		try {
-			const res = await getConstants();
-			const { coins, pairs } = res.data;
-			this.props.setCoins(Object.values(coins));
+	// getAssets = async () => {
+	// 	try {
+	// 		const res = await getConstants();
+	// 		const { coins, pairs } = res.data;
+	// 		this.props.setCoins(Object.values(coins));
 
-			this.props.setAllPairs(Object.values(pairs));
+	// 		this.props.setAllPairs(Object.values(pairs));
+	// 	} catch (error) {
+	// 		throw error;
+	// 	}
+	// };
 
-			// const coins = await res.data && res.data.data && res.data.data.map((item) => {
-			// 	// NOTE: Monero set disabled
-			// 	if (item.symbol === 'xmr') {
-			// 		return {
-			// 			key: 'Monero',
-			// 			value: 'xmr',
-			// 			disabled: true,
-			// 			...item
-			// 		};
-			// 	}
-			// 	const filter = ASSET_TYPE_LIST.filter((obj) => obj.value === item.symbol);
-			// 	if (filter.length === 0) {
-			// 		return {
-			// 			key: item.fullname,
-			// 			value: item.symbol,
-			// 			...item
-			// 		};
-			// 	} else {
-			// 		return { ...filter[0], ...item };
-			// 	}
-			// });
-
-			// return this.props.setCoins(coins);
-		} catch (error) {
-			throw error;
-		}
+	getData = async () => {
+		await this.getExchange();
+		await this.getCoins();
+		await this.getPairs();
 	};
 
 	getExchange = async () => {
 		try {
 			const res = await getExchange();
 			const exchange = res.data;
-
 			this.props.setExchange(exchange);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
+	getCoins = async () => {
+		try {
+			const res = await getAllCoins();
+			this.props.setCoins(res.data.data);
+		} catch (error) {
+			if (error && error.data) {
+				message.error(error.data.message);
+			}
+		}
+	};
+	getPairs = async () => {
+		try {
+			const res = await getAllPairs();
+			this.props.setAllPairs(res.data.data);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
@@ -316,7 +320,6 @@ class AppWrapper extends React.Component {
 				}
 			})
 			.catch((err) => {
-				console.log('err', err);
 				let error = err.message;
 				if (err.data && err.data.message) {
 					error = err.data.message;
@@ -410,9 +413,9 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/general')) {
 			return 'General';
 		} else if (location.pathname.includes('/admin/financial')) {
-			return 'Financial';
+			return 'Assets';
 		} else if (location.pathname.includes('/admin/trade')) {
-			return 'Trade';
+			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
 			return 'Plugins';
 		} else if (location.pathname.includes('/admin/tiers')) {
@@ -451,7 +454,7 @@ class AppWrapper extends React.Component {
 						</div>
 						<div>
 							<div className="main-label">Role:</div>
-							<div className="sub-label">SuperVisor</div>
+							<div className="sub-label">Supervisor</div>
 						</div>
 					</div>
 				);
@@ -470,7 +473,7 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
-			case 'tech':
+			case 'communicator':
 				return (
 					<div className="role-section bg-orange">
 						<div>
@@ -481,7 +484,7 @@ class AppWrapper extends React.Component {
 						</div>
 						<div>
 							<div className="main-label">Role:</div>
-							<div className="sub-label">Support</div>
+							<div className="sub-label">Communicator</div>
 						</div>
 					</div>
 				);
@@ -500,7 +503,7 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
-			default:
+			case 'admin':
 				return (
 					<div className="role-section">
 						<div>
@@ -516,6 +519,8 @@ class AppWrapper extends React.Component {
 						</div>
 					</div>
 				);
+			default:
+				return <div></div>;
 		}
 	};
 
@@ -617,23 +622,16 @@ class AppWrapper extends React.Component {
 						<Link to="/summary">
 							<div className="top-box-menu">
 								<CaretLeftOutlined />
-								Back to Exchange web
+								Back to Website
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className="top-box-menu">
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_LINK}
-								className="link-icon"
-								alt="Link-icon"
-							/>{' '}
-							<a
-								href="https://dash.bitholla.com/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Go to Holla Dash
-							</a>
+						<div className="mr-2 time-wrapper">
+							<Tooltip placement="bottom" title={<Timer isHover={true} />}>
+								<div className="ml-2">
+									<Timer isHover={false} />
+								</div>
+							</Tooltip>
 						</div>
 					</div>
 					<Layout>

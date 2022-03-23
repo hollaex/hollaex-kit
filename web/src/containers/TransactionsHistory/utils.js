@@ -63,7 +63,8 @@ export const generateOrderHistoryHeaders = (
 	pairs = {},
 	coins,
 	discount,
-	prices = {}
+	prices = {},
+	ICONS
 ) => {
 	return [
 		{
@@ -73,9 +74,19 @@ export const generateOrderHistoryHeaders = (
 			key: 'pair',
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			renderCell: ({ symbol }, key, index) => {
+				const data = symbol.split('-');
+				let pairBaseName = data[0];
 				return (
 					<td key={index} className="text-uppercase sticky-col">
-						{symbol}
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${pairBaseName.toUpperCase()}_ICON`}
+								icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+								wrapperClassName="currency-ball"
+								imageWrapperClassName="currency-ball-image-wrapper"
+							/>
+							<div>{symbol}</div>
+						</div>
 					</td>
 				);
 			},
@@ -308,7 +319,8 @@ export const generateTradeHeaders = (
 	pairs,
 	coins,
 	discount,
-	prices = {}
+	prices = {},
+	ICONS
 ) => {
 	return [
 		{
@@ -318,9 +330,19 @@ export const generateTradeHeaders = (
 			exportToCsv: ({ symbol }) => symbol.toUpperCase(),
 			className: 'sticky-col',
 			renderCell: ({ symbol }, key, index) => {
+				const data = symbol.split('-');
+				let pairBaseName = data[0];
 				return (
 					<td key={index} className="text-uppercase sticky-col">
-						{symbol}
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={`${pairBaseName.toUpperCase()}_ICON`}
+								icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+								wrapperClassName="currency-ball"
+								imageWrapperClassName="currency-ball-image-wrapper"
+							/>
+							<div>{symbol}</div>
+						</div>
 					</td>
 				);
 			},
@@ -587,6 +609,7 @@ export const generateWithdrawalsHeaders = (
 								iconId={`${data.symbol.toUpperCase()}_ICON`}
 								icon={ICONS[`${data.symbol.toUpperCase()}_ICON`]}
 								wrapperClassName="coin-icons"
+								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
 							{data.fullname}
 						</div>
@@ -637,17 +660,14 @@ export const generateWithdrawalsHeaders = (
 			exportToCsv: ({ amount = 0, fee = 0, currency }) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
-				return `${formatToCurrency(
-					amount - fee,
-					min
-				)} ${rest.symbol.toUpperCase()}`;
+				return `${formatToCurrency(amount, min)} ${rest.symbol.toUpperCase()}`;
 			},
 			renderCell: ({ amount = 0, fee = 0, currency }, key, index) => {
 				const { min, ...rest } =
 					coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 				return (
 					<td key={index}>{`${formatToCurrency(
-						amount - fee,
+						amount,
 						min,
 						true
 					)} ${rest.symbol.toUpperCase()}`}</td>
@@ -658,13 +678,14 @@ export const generateWithdrawalsHeaders = (
 			stringId: 'FEE,NO_FEE',
 			label: STRINGS['FEE'],
 			key: 'fee',
-			exportToCsv: ({ fee = 0, fee_coin = '' }) => `${fee} ${fee_coin}`,
-			renderCell: ({ fee = 0, fee_coin = '' }, key, index) => (
+			exportToCsv: ({ fee = 0, fee_coin = '', currency }) =>
+				`${fee} ${fee_coin ? fee_coin : currency}`,
+			renderCell: ({ fee = 0, fee_coin = '', currency }, key, index) => (
 				<td key={index}>
 					{STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(fee, 0, true),
-						fee_coin.toUpperCase()
+						(fee_coin ? fee_coin : currency).toUpperCase()
 					)}
 				</td>
 			),
@@ -785,25 +806,56 @@ export const filterData = (symbol, { count = 0, data = [] }) => {
 	};
 };
 
-export const generateTradeHeadersMobile = (symbol, pairs, coins, discount) => {
+export const generateTradeHeadersMobile = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
 	const KEYS = ['pair', 'side', 'size', 'price', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+	return generateTradeHeaders(
+		symbol,
+		pairs,
+		coins,
+		discount,
+		prices,
+		icons
+	).filter(({ key }) => KEYS.indexOf(key) > -1);
 };
 
-export const generateLessTradeHeaders = (symbol, pairs, coins, discount) => {
+export const generateLessTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
 	const KEYS = ['side', 'price', 'amount', 'fee', 'timestamp'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+	return generateTradeHeaders(
+		symbol,
+		pairs,
+		coins,
+		discount,
+		prices,
+		icons
+	).filter(({ key }) => KEYS.indexOf(key) > -1);
 };
 
-export const generateRecentTradeHeaders = (symbol, pairs, coins, discount) => {
-	const KEYS = ['side', 'size', 'price', 'amount'];
-	return generateTradeHeaders(symbol, pairs, coins, discount).filter(
-		({ key }) => KEYS.indexOf(key) > -1
-	);
+export const generateRecentTradeHeaders = (
+	symbol,
+	pairs,
+	coins,
+	discount,
+	prices,
+	icons
+) => {
+	const KEYS = ['pair', 'size', 'side', 'price', 'amount'];
+	return generateTradeHeaders(symbol, pairs, coins, discount, prices, icons)
+		.filter(({ key }) => KEYS.indexOf(key) > -1)
+		.sort((a, b) => KEYS.indexOf(a.key) - KEYS.indexOf(b.key));
 };
 
 const getClassNameByStatus = (
