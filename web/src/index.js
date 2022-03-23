@@ -76,6 +76,7 @@ consolePluginDevModeInfo();
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
+	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
 		meta: { versions: remoteVersions = {}, sections = {} } = {},
