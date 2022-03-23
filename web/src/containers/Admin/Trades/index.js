@@ -23,13 +23,13 @@ const PairsTab = (props) => {
 		let exchangeCoins = [];
 		let exchangePairs = [];
 		props.coins.forEach((elem) => {
-			if (props.exchange.coins.includes(elem.symbol)) {
+			if (props.exchange.coins && props.exchange.coins.includes(elem.symbol)) {
 				exchangeCoins.push(elem);
 			}
 		});
 
 		props.pairs.forEach((elem) => {
-			if (props.exchange.pairs.includes(elem.code)) {
+			if (props.exchange.pairs && props.exchange.pairs.includes(elem.code)) {
 				exchangePairs.push(elem);
 			}
 		});

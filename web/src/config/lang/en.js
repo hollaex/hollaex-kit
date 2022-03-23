@@ -260,6 +260,7 @@ export default {
 		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
 		FOOTER_TEXT_1: 'Sourced from', //new
 		GO_TO_TEXT: 'Go to', //new
+		SOURCE_TEXT: 'Broker OTC deal', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',

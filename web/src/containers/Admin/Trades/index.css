@@ -598,6 +598,14 @@
 .otc-Container .user-search-field {
 	width: 60%;
 }
+.otc-Container .user-search-field .anticon svg {
+	fill: #ffffff;
+}
+.otc-Container .edit-link {
+	text-decoration: underline;
+	margin-left: 10px;
+	cursor: pointer;
+}
 .otcdesk-add-pair-wrapper .broker-desk-icon {
 	opacity: 0.1;
 	height: 80px;
