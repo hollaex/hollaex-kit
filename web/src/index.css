@@ -2752,6 +2752,20 @@ table th {
   .last-price.down.entering, .last-price.down.exiting {
     color: var(--trading_selling-related-elements) !important; }
 
+.orderbook_ask_row-enter {
+  opacity: 0; }
+
+.orderbook_ask_row-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in; }
+
+.orderbook_ask_row-exit {
+  opacity: 1; }
+
+.orderbook_ask_row-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in; }
+
 .depth-chart__bids .highcharts-area {
   fill: var(--calculated_trading_buying-sparkline-fill) !important; }
 
@@ -3845,6 +3859,9 @@ table th {
 
 .highcharts-root {
   width: 100% !important; }
+
+.layout-mobile .highcharts-graph {
+  stroke-width: 1px; }
 
 .market-list__container .market-list__block .currency-ball-image-wrapper {
   height: 22px;

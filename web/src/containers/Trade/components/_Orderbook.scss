@@ -331,3 +331,18 @@ $limit-bar-side--padding: 0.5rem;
 		}
 	}
 }
+
+.orderbook_ask_row-enter {
+	opacity: 0;
+}
+.orderbook_ask_row-enter-active {
+	opacity: 1;
+	transition: opacity 500ms ease-in;
+}
+.orderbook_ask_row-exit {
+	opacity: 1;
+}
+.orderbook_ask_row-exit-active {
+	opacity: 0;
+	transition: opacity 500ms ease-in;
+}

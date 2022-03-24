@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Transition } from 'react-transition-group';
+import {
+	Transition,
+	TransitionGroup,
+	CSSTransition,
+} from 'react-transition-group';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
@@ -321,19 +325,26 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map((record) => (
-							<PriceRow
-								side="ask"
-								key={record[4]}
-								record={record}
-								increment_price={pairData.increment_price}
-								increment_size={pairData.increment_size}
-								onPriceClick={this.onPriceClick}
-								onAmountClick={this.onAmountClick}
-								maxCumulative={maxCumulative}
-								isBase={isBase}
-							/>
-						))}
+						<TransitionGroup component={null}>
+							{asks.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={500}
+									classNames="orderbook_ask_row"
+								>
+									<PriceRow
+										side="ask"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
@@ -385,19 +396,26 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map((record) => (
-							<PriceRow
-								side="bid"
-								key={record[4]}
-								record={record}
-								increment_price={pairData.increment_price}
-								increment_size={pairData.increment_size}
-								onPriceClick={this.onPriceClick}
-								onAmountClick={this.onAmountClick}
-								maxCumulative={maxCumulative}
-								isBase={isBase}
-							/>
-						))}
+						<TransitionGroup component={null}>
+							{bids.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={500}
+									classNames="orderbook_bid_row"
+								>
+									<PriceRow
+										side="bid"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">

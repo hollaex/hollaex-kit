@@ -42,6 +42,10 @@
 	--calculated_stake-table_highlight: #ffffffaa;
 	--calculated_trade-block_highlight: #000000fa;
 	--calculated_market-card_gradient_background: #ffffff;
+	--calculated_trading_selling-subtracted-bg: #ee403688;
+	--calculated_trading_selling-added-bg: #ee403688;
+	--calculated_trading_buying-subtracted-bg: #00a69c88;
+	--calculated_trading_buying-added-bg: #00a69c88;
 	--calculated_public-sale_buying-zeros: #ee403688;
 	--calculated_public-sale_selling-zeros: #00a69c88;
 	--calculated_trading_selling-sparkline-fill: #ee40364d;

@@ -55,6 +55,26 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.3)
 			.string(),
+		'calculated_trading_selling-subtracted-bg': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.15)
+			.string(),
+		'calculated_trading_selling-added-bg': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(1)
+			.string(),
+		'calculated_trading_buying-subtracted-bg': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.15)
+			.string(),
+		'calculated_trading_buying-added-bg': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(1)
+			.string(),
 		'calculated_public-sale_buying-zeros': Color(
 			themeData['trading_buying-related-elements']
 		)
@@ -78,12 +98,12 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_trading_buying-orderbook-best-bar': Color(
 			themeData['trading_buying-related-elements']
 		)
-			.alpha(0.55)
+			.alpha(0.45)
 			.string(),
 		'calculated_trading_selling-orderbook-best-bar': Color(
 			themeData['trading_selling-related-elements']
 		)
-			.alpha(0.55)
+			.alpha(0.45)
 			.string(),
 		'calculated_trading_buying-orderbook-hover': Color(
 			themeData['trading_buying-related-elements']
