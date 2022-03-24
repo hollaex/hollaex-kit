@@ -127,6 +127,10 @@ class QuickTrade extends Component {
 			estimatedPrice,
 			isShowChartDetails,
 			isExistBroker,
+			broker,
+			flipPair,
+			pairs,
+			symbol,
 		} = this.props;
 		const {
 			inProp,
@@ -172,6 +176,18 @@ class QuickTrade extends Component {
 		const selectedTargetBalance =
 			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
+		const brokerPairs = broker.map((br) => br.symbol);
+		const flipedPair = flipPair(symbol);
+		let isUseBroker = false;
+		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
+			if (pairs[symbol] !== undefined || pairs[flipedPair] !== undefined) {
+				isUseBroker = true;
+			} else {
+				isUseBroker = true;
+			}
+		} else {
+			isUseBroker = false;
+		}
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -443,8 +459,17 @@ class QuickTrade extends Component {
 									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
 										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
 									</EditWrapper>
-									: {pairBase.toUpperCase()}/{pair_2.toUpperCase()}{' '}
-									<span>{STRINGS['TYPES_VALUES.market']}</span>
+									:{' '}
+									{!isUseBroker ? (
+										<span>
+											<span>
+												{pairBase.toUpperCase()}/{pair_2.toUpperCase()}{' '}
+											</span>
+											<span>{STRINGS['TYPES_VALUES.market']}</span>
+										</span>
+									) : (
+										<span>{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}</span>
+									)}
 								</div>
 							</div>
 						</div>

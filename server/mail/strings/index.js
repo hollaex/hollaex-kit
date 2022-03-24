@@ -44,6 +44,10 @@ const MAILTYPE = {
 	// DEPOSIT split
 	DEPOSIT_PENDING: 'deposit_pending',
 	DEPOSIT_COMPLETED: 'deposit_completed',
+
+	// KYC
+	DOC_REJECTED: 'doc_rejected',
+	DOC_VERIFIED: 'doc_verified'
 };
 
 const languageFile = (lang) => {
