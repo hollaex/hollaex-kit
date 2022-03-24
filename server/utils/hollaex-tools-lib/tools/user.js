@@ -1682,6 +1682,14 @@ const updateUserInfo = async (userId, data = {}) => {
 					};
 				}
 				break;
+			case 'id_data':
+				if (isPlainObject(value)) {
+					updateData[field] = {
+						...user.id_data,
+						...pick(value, ['type', 'status', 'number', 'issued_date', 'expiration_date'])
+					};
+				}
+				break;
 			default:
 				break;
 		}
