@@ -308,6 +308,7 @@ class Earnings extends Component {
 									/>
 								);
 							}}
+							loading={!earningsData.length}
 						/>
 					</div>
 				</div>

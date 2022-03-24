@@ -33,7 +33,7 @@ export const setExchangeInitialized = (initialized) => {
 };
 
 export const getExchangeInitialized = () => {
-	const initialized = localStorage.getItem('initialized') || false;
+	const initialized = localStorage.getItem('initialized');
 	return initialized;
 };
 
