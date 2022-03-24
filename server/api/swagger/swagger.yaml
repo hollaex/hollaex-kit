@@ -3136,6 +3136,11 @@ paths:
                     type: string
                   city:
                     type: string
+              id_data:
+                type: object
+                properties:
+                  status:
+                    type: number
       responses:
         200:
           description: Success
