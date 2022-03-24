@@ -1018,6 +1018,15 @@ table th {
 .layout-mobile .accordion_section_content .warning_text {
   font-size: 13px !important; }
 
+.layout-mobile .presentation_container .edit_token {
+  flex-direction: column; }
+  .layout-mobile .presentation_container .edit_token .token-keys-wrapper .field-content,
+  .layout-mobile .presentation_container .edit_token .token-keys-wrapper .field-children {
+    font-size: 1rem !important; }
+
+.layout-mobile .presentation_container .token-keys-wrapper {
+  max-width: 35rem; }
+
 @media (max-width: 1060px) {
   .change-password-form-wrapper .change-password-form {
     padding: 10px; }
@@ -1027,6 +1036,12 @@ table th {
       font-size: 12px; }
   .user-security-wrapper .tab_controller-tabs .tab_item {
     font-size: 12px !important; } }
+
+.edit_token.overlay {
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  opacity: 0.5; }
 
 .edit_token .qr-code-bg {
   padding: 0 1.5rem 0 1rem; }
