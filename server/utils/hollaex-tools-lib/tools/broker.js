@@ -112,8 +112,8 @@ const executeBrokerDeal = async (userId, symbol, side, size, price) => {
 		side,
 		price,
 		size,
-		broker.id,
-		user.id,
+		broker.network_id,
+		user.network_id,
 		{ maker: makerFee, taker: takerFee }
 	);
 }
