@@ -5860,7 +5860,7 @@ table th {
       .app_bar .app-bar-account-menu .menu-active svg .tab-security0,
       .app_bar .app-bar-account-menu .menu-active svg .tab-api0,
       .app_bar .app-bar-account-menu .menu-active svg .account-active-1,
-      .app_bar .app-bar-account-menu .menu-active svg .stake-smiley-1 {
+      .app_bar .app-bar-account-menu .menu-active svg .stake-page-icon {
         fill: var(--labels_important-active-labels-text-graphics); }
     .app_bar .app-bar-account-menu .notification-content {
       width: 1.2rem; }
@@ -10980,7 +10980,7 @@ foreignObject {
   .app-side-bar .list_active .help-question,
   .app-side-bar .list_active .tab-signout,
   .app-side-bar .list_active .tab-history-st,
-  .app-side-bar .list_active .stake-smiley-1,
+  .app-side-bar .list_active .stake-page-icon,
   .app-side-bar .app-menu-bar-side_list:hover .tab-summary0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-wallet0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-security0,
@@ -10990,7 +10990,7 @@ foreignObject {
   .app-side-bar .app-menu-bar-side_list:hover .help-question,
   .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
   .app-side-bar .app-menu-bar-side_list:hover .tab-history-st,
-  .app-side-bar .app-menu-bar-side_list:hover .stake-smiley-1 {
+  .app-side-bar .app-menu-bar-side_list:hover .stake-page-icon {
     fill: var(--calculated_base_top-bar-navigation_text) !important; }
 
 .app-side-bar .list_active {
@@ -11246,15 +11246,12 @@ svg .account-svg-1,
 svg .incoming-btc-01,
 svg .incoming-toman-01,
 svg .coin-btc-5,
-svg .stake-smiley-1 {
+svg .stake-page-icon {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .logout-door,
 svg .account-inactive {
   stroke: var(--labels_secondary-inactive-label-text-graphics); }
-
-svg .stake-smiley-0 {
-  fill: var(--base_wallet-sidebar-and-popup); }
 
 svg .withdraw-2,
 svg .withdraw-3,
@@ -11369,7 +11366,7 @@ svg .trade-history-5,
 svg .transaction-history-4,
 svg .wallet-coins-1,
 svg .quick-trade-3,
-svg .stake-smiley-1 {
+svg .stake-page-icon {
   stroke: none; }
 
 svg .stake-error-outline {
