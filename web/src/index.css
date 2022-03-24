@@ -336,6 +336,11 @@ table th {
 .text-align-right {
   text-align: right !important; }
 
+.zoom-in {
+  cursor: -moz-zoom-in;
+  cursor: -webkit-zoom-in;
+  cursor: zoom-in; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);

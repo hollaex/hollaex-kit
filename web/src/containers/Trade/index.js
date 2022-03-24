@@ -218,7 +218,10 @@ class Trade extends PureComponent {
 	onResetLayout = () => {
 		const { resetTools } = this.props;
 		resetTools();
-		setTimeout(this.onLayoutChange, 1000);
+		setTimeout(
+			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
+			1000
+		);
 	};
 
 	componentWillUnmount() {
@@ -619,7 +622,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							<DepthChart
-								containerProps={{ style: { height: '100%', width: '100%' } }}
+								containerProps={{ className: 'w-100 h-100 zoom-in' }}
 							/>
 						</TradeBlock>
 					</div>
@@ -631,9 +634,19 @@ class Trade extends PureComponent {
 		}
 	};
 
-	onLayoutChange = (layout = defaultLayout) => {
+	onLayoutChange = (layout = defaultLayout, cb) => {
 		storeLayout(layout);
-		this.setState({ layout });
+		this.setState({ layout }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
+	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
+
+	onStopResize = () => {
+		setTimeout(this.dispatchResizeEvent, 500);
 	};
 
 	render() {
@@ -653,7 +666,7 @@ class Trade extends PureComponent {
 			tools,
 			activeTab,
 		} = this.props;
-		const { symbol, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched, layout } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -749,9 +762,9 @@ class Trade extends PureComponent {
 						<EventListener target="window" onResize={this.onResize} />
 						<GridLayout
 							className="layout w-100"
-							layout={this.state.layout}
-							onLayoutChange={this.onLayoutChange}
-							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
+							layout={layout}
+							onLayoutChange={(layout) => this.onLayoutChange(layout)}
+							onResizeStop={this.onStopResize}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
