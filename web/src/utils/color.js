@@ -75,6 +75,16 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(1)
 			.string(),
+		'calculated_trading_buying-best-subtracted': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_trading_selling-best-subtracted': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.05)
+			.string(),
 		'calculated_public-sale_buying-zeros': Color(
 			themeData['trading_buying-related-elements']
 		)

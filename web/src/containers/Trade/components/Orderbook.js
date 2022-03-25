@@ -329,7 +329,7 @@ class Orderbook extends Component {
 							{asks.map((record) => (
 								<CSSTransition
 									key={record[4]}
-									timeout={500}
+									timeout={1000}
 									classNames="orderbook_ask_row"
 								>
 									<PriceRow
@@ -400,7 +400,7 @@ class Orderbook extends Component {
 							{bids.map((record) => (
 								<CSSTransition
 									key={record[4]}
-									timeout={500}
+									timeout={1000}
 									classNames="orderbook_bid_row"
 								>
 									<PriceRow

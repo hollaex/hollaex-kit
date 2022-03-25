@@ -57,18 +57,21 @@ class PriceRow extends Component {
 		const totalAmount = isBase ? cumulative : cumulativePrice;
 
 		return (
-			<div
-				className={classnames('price-row-wrapper', ACCFillClassName)}
-				style={ACCFillStyle}
-			>
-				<Transition in={inProp} timeout={1000}>
-					{(state) => (
+			<Transition in={inProp} timeout={1000}>
+				{(state) => (
+					<div
+						className={classnames(
+							'price-row-wrapper',
+							ACCFillClassName,
+							state,
+							this.getDirBasedClass(amountDiff)
+						)}
+						style={ACCFillStyle}
+					>
 						<div
 							className={classnames(
 								'd-flex value-row align-items-center',
-								fillClassName,
-								state,
-								this.getDirBasedClass(amountDiff)
+								fillClassName
 							)}
 							style={fillStyle}
 						>
@@ -93,9 +96,9 @@ class PriceRow extends Component {
 									: formatToCurrency(cumulativePrice, increment_price)}
 							</div>
 						</div>
-					)}
-				</Transition>
-			</div>
+					</div>
+				)}
+			</Transition>
 		);
 	}
 }

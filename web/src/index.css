@@ -2606,8 +2606,10 @@ table th {
       padding-right: 0; }
   .trade_orderbook-wrapper .price-row-wrapper {
     margin: 1px 0;
-    text-align: right; }
+    text-align: right;
+    transition: all 0.5s ease-out 0s; }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price {
+      transition: all 0.5s ease-out 0s;
       text-align: left; }
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount {
       text-align: right; }
@@ -2657,36 +2659,52 @@ table th {
     color: var(--trading_buying-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .price-row-wrapper:hover {
     background-color: var(--calculated_trading_buying-orderbook-hover); }
+    .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-bids .price-row-wrapper:hover .trade_orderbook-cell-price {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks .trade_orderbook-cell-price {
     color: var(--trading_selling-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks .price-row-wrapper:hover {
     background-color: var(--calculated_trading_selling-orderbook-hover); }
+    .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-asks .price-row-wrapper:hover .trade_orderbook-cell-price {
+      color: var(--labels_important-active-labels-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_selling-related-elements); }
     .trade_orderbook-wrapper .trade_asks-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
       background-color: var(--trading_selling-related-elements); }
   .trade_orderbook-wrapper .trade_orderbook-asks {
     color: var(--trading_selling-related-elements); }
-    .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting {
-      background-color: var(--calculated_trading_selling-orderbook-hover); }
-      .trade_orderbook-wrapper .trade_orderbook-asks .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-asks .value-row.exiting .trade_orderbook-cell-price {
+    .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.up.entering, .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.up.exiting {
+      background-color: var(--calculated_trading_selling-added-bg); }
+      .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.up.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.up.exiting .trade_orderbook-cell-price {
         color: var(--labels_important-active-labels-text-graphics) !important; }
+    .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.down.entering, .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.down.exiting {
+      background-color: var(--calculated_trading_selling-subtracted-bg); }
+      .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.down.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-asks .price-row-wrapper.down.exiting .trade_orderbook-cell-price {
+        color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child {
     background-color: var(--calculated_trading_selling-orderbook-best-bar);
     font-weight: bold; }
     .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child .trade_orderbook-cell-price {
       color: var(--calculated_trading-orderbook-text); }
+    .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child.down.entering, .trade_orderbook-wrapper .trade_orderbook-asks > .price-row-wrapper:first-child.down.exiting {
+      background-color: var(--calculated_trading_selling-best-subtracted); }
   .trade_orderbook-wrapper .trade_orderbook-bids > .price-row-wrapper:first-child {
     background-color: var(--calculated_trading_buying-orderbook-best-bar);
     font-weight: bold; }
     .trade_orderbook-wrapper .trade_orderbook-bids > .price-row-wrapper:first-child .trade_orderbook-cell-price {
       color: var(--calculated_trading-orderbook-text); }
+    .trade_orderbook-wrapper .trade_orderbook-bids > .price-row-wrapper:first-child.down.entering, .trade_orderbook-wrapper .trade_orderbook-bids > .price-row-wrapper:first-child.down.exiting {
+      background-color: var(--calculated_trading_buying-best-subtracted); }
   .trade_orderbook-wrapper .trade_orderbook-bids {
     color: var(--trading_buying-related-elements); }
-    .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting {
-      background-color: var(--calculated_trading_buying-orderbook-hover); }
-      .trade_orderbook-wrapper .trade_orderbook-bids .value-row.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-bids .value-row.exiting .trade_orderbook-cell-price {
+    .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.up.entering, .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.up.exiting {
+      background-color: var(--calculated_trading_buying-added-bg); }
+      .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.up.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.up.exiting .trade_orderbook-cell-price {
         color: var(--labels_important-active-labels-text-graphics) !important; }
+    .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.down.entering, .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.down.exiting {
+      background-color: var(--calculated_trading_buying-subtracted-bg); }
+      .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.down.entering .trade_orderbook-cell-price, .trade_orderbook-wrapper .trade_orderbook-bids .price-row-wrapper.down.exiting .trade_orderbook-cell-price {
+        color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper {
     color: var(--trading_buying-related-elements); }
     .trade_orderbook-wrapper .trade_bids-limit_bar .orderbook-limit_bar-wrapper .orderbook-limit_bar-line {
@@ -2753,18 +2771,52 @@ table th {
     color: var(--trading_selling-related-elements) !important; }
 
 .orderbook_ask_row-enter {
-  opacity: 0; }
+  opacity: 0;
+  background-color: var(--calculated_trading_selling-added-bg) !important; }
 
 .orderbook_ask_row-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in; }
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_selling-added-bg) !important; }
+
+.orderbook_ask_row-enter-done {
+  opacity: 1;
+  transition: all 0.5s ease-out 0s;
+  background-color: transparent; }
+
+.orderbook_bid_row-enter {
+  opacity: 0;
+  background-color: var(--calculated_trading_buying-added-bg) !important; }
+
+.orderbook_bid_row-enter-active {
+  opacity: 1;
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_buying-added-bg) !important; }
+
+.orderbook_bid_row-enter-done {
+  opacity: 1;
+  transition: all 0.5s ease-out 0s;
+  background-color: transparent; }
 
 .orderbook_ask_row-exit {
-  opacity: 1; }
+  opacity: 1;
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_selling-best-subtracted) !important; }
 
 .orderbook_ask_row-exit-active {
   opacity: 0;
-  transition: opacity 500ms ease-in; }
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_selling-best-subtracted) !important; }
+
+.orderbook_bid_row-exit {
+  opacity: 1;
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_selling-best-subtracted) !important; }
+
+.orderbook_bid_row-exit-active {
+  opacity: 0;
+  transition: all 0.5s ease-out 0s;
+  background-color: var(--calculated_trading_buying-best-subtracted) !important; }
 
 .depth-chart__bids .highcharts-area {
   fill: var(--calculated_trading_buying-sparkline-fill) !important; }
