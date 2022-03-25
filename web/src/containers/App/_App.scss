@@ -255,6 +255,10 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 		font-size: 1rem !important;
 	}
 
+	.action_notification-text {
+		line-height: 1rem !important;
+	}
+
 	.presentation_container,
 	.trade_tabs-container {
 		width: $content-display-width !important;
@@ -307,6 +311,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.otp_secret {
 		font-size: 0.9rem !important;
 	}
+
+	.action_notification-text {
+		line-height: 0.9rem !important;
+	}
+
 	.verification_container .header-content {
 		font-size: 1.2rem !important;
 	}

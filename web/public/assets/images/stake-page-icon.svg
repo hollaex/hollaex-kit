@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="59.482" height="50.688" viewBox="0 0 59.482 50.688" class="w-100 h-100">
+    <g transform="translate(0 0)">
+        <path class="stake-page-icon" d="M93.737,82.874l8.584-10.938-8.581-10.91L85.156,71.964Z" transform="translate(-63.997 -45.863)" fill="#fff"/>
+        <path class="stake-page-icon" d="M84.424,0l8.763,11.141L101.931,0Z" transform="translate(-63.448 0)" fill="#fff"/>
+        <path class="stake-page-icon" d="M126.056,16.8l8.613,10.95h19.548l-18.787-22.9Z" transform="translate(-94.735 -3.649)" fill="#fff"/>
+        <path class="stake-page-icon" d="M0,27.794H19.569l8.592-10.949L18.776,4.913Z" transform="translate(0 -3.692)" fill="#fff"/>
+        <path class="stake-page-icon" d="M135.814,107l-9.758,12.435,8.788,11.173L154.217,107Z" transform="translate(-94.735 -80.415)" fill="#fff"/>
+        <path class="stake-page-icon" d="M89.21,174.8h15.17l-7.594-9.655Z" transform="translate(-67.044 -124.11)" fill="#fff"/>
+        <path class="stake-page-icon" d="M0,107l19.383,23.622,8.777-11.185L18.38,107Z" transform="translate(-0.001 -80.415)" fill="#fff"/>
+    </g>
+</svg>

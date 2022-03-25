@@ -40,7 +40,7 @@ const nestedIcons = {
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
 		API: '/assets/images/tab-api.svg',
-		STAKE: '/assets/images/stake_and_earn.svg',
+		STAKE: '/assets/images/stake-page-icon.svg',
 	},
 
 	TOKEN: {

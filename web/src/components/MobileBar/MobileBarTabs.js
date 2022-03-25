@@ -1,9 +1,11 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { MobileBarWrapper } from '.';
-import MarketSelector from 'components/AppBar/MarketSelector';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { CaretDownOutlined } from '@ant-design/icons';
 import Image from 'components/Image';
+import { openMarketSelector } from 'actions/appActions';
 
 const renderMobileTab = ({
 	title,
@@ -33,28 +35,16 @@ const renderMobileTab = ({
 	);
 };
 
-export const MobileBarTabs = ({
+const MobileBarTabs = ({
 	showMarketSelector,
 	tabs,
-	className,
 	activeTab,
 	setActiveTab,
 	renderTab = renderMobileTab,
 	pair,
-	goToPair,
-	goToMarkets,
 	icons: ICONS,
+	openMarketSelector,
 }) => {
-	const [isMarketSelectorOpen, setIsMarketSelectorOpen] = useState(false);
-
-	const toggleMarketSelector = () => {
-		setIsMarketSelectorOpen(!isMarketSelectorOpen);
-	};
-
-	const closeAddTabMenu = () => {
-		setIsMarketSelectorOpen(false);
-	};
-
 	let pair_base = '';
 	if (pair) {
 		const pairArray = pair.split('-');
@@ -88,7 +78,7 @@ export const MobileBarTabs = ({
 				>
 					<div
 						className="d-flex align-items-center ml-2"
-						onClick={toggleMarketSelector}
+						onClick={openMarketSelector}
 					>
 						{pair_base && (
 							<Image
@@ -101,20 +91,8 @@ export const MobileBarTabs = ({
 							/>
 						)}
 						<span className="pt-2 trade-tab__market-selector pr-2">{pair}</span>
-						{isMarketSelectorOpen ? (
-							<CaretUpOutlined style={{ fontSize: '14px' }} />
-						) : (
-							<CaretDownOutlined style={{ fontSize: '14px' }} />
-						)}
+						<CaretDownOutlined style={{ fontSize: '14px' }} />
 					</div>
-					{isMarketSelectorOpen && (
-						<MarketSelector
-							triggerId="market-selector"
-							onViewMarketsClick={goToMarkets}
-							closeAddTabMenu={closeAddTabMenu}
-							addTradePairTab={goToPair}
-						/>
-					)}
 				</div>
 			)}
 		</Fragment>
@@ -124,3 +102,9 @@ export const MobileBarTabs = ({
 MobileBarWrapper.defaultProps = {
 	tabs: [],
 };
+
+const mapDispatchToProps = (dispatch) => ({
+	openMarketSelector: bindActionCreators(openMarketSelector, dispatch),
+});
+
+export default connect(() => {}, mapDispatchToProps)(MobileBarTabs);

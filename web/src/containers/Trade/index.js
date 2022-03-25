@@ -20,7 +20,8 @@ import {
 	setNotification,
 	NOTIFICATIONS,
 	RISKY_ORDER,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import { isLoggedIn } from '../../utils/token';
@@ -150,11 +151,11 @@ const layout = getLayout().map(({ w, h, x, y, i }) => {
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
 			orderbookWs: null,
-			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
@@ -217,7 +218,10 @@ class Trade extends PureComponent {
 	onResetLayout = () => {
 		const { resetTools } = this.props;
 		resetTools();
-		setTimeout(this.onLayoutChange, 1000);
+		setTimeout(
+			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
+			1000
+		);
 	};
 
 	componentWillUnmount() {
@@ -332,7 +336,8 @@ class Trade extends PureComponent {
 	};
 
 	setActiveTab = (activeTab) => {
-		this.setState({ activeTab });
+		const { setTradeTab } = this.props;
+		setTradeTab(activeTab);
 	};
 
 	storeData = (data) => {
@@ -617,7 +622,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							<DepthChart
-								containerProps={{ style: { height: '100%', width: '100%' } }}
+								containerProps={{ className: 'w-100 h-100 zoom-in' }}
 							/>
 						</TradeBlock>
 					</div>
@@ -629,9 +634,19 @@ class Trade extends PureComponent {
 		}
 	};
 
-	onLayoutChange = (layout = defaultLayout) => {
+	onLayoutChange = (layout = defaultLayout, cb) => {
 		storeLayout(layout);
-		this.setState({ layout });
+		this.setState({ layout }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
+	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
+
+	onStopResize = () => {
+		setTimeout(this.dispatchResizeEvent, 500);
 	};
 
 	render() {
@@ -649,8 +664,9 @@ class Trade extends PureComponent {
 			fees,
 			icons,
 			tools,
+			activeTab,
 		} = this.props;
-		const { symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched, layout } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -735,8 +751,6 @@ class Trade extends PureComponent {
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
-							goToPair={this.goToPair}
-							goToMarkets={() => this.setActiveTab(3)}
 							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
@@ -748,9 +762,9 @@ class Trade extends PureComponent {
 						<EventListener target="window" onResize={this.onResize} />
 						<GridLayout
 							className="layout w-100"
-							layout={this.state.layout}
-							onLayoutChange={this.onLayoutChange}
-							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
+							layout={layout}
+							onLayoutChange={(layout) => this.onLayoutChange(layout)}
+							onResizeStop={this.onStopResize}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
@@ -831,6 +845,7 @@ const mapStateToProps = (state) => {
 		isReady: state.app.isReady,
 		constants: state.app.constants,
 		tools: state.tools,
+		activeTab: state.app.tradeTab,
 	};
 };
 
@@ -841,6 +856,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	resetTools: bindActionCreators(resetTools, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));
