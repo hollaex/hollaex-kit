@@ -36,6 +36,7 @@ import {
 	CHANGE_PAIR,
 	SET_ACTIVE_ORDERS_MARKET,
 	SET_RECENT_TRADES_MARKETS,
+	SET_TRADE_TAB,
 	SET_BROKER,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
@@ -178,6 +179,7 @@ const INITIAL_STATE = {
 	injected_html: {},
 	plugins_injected_html: {},
 	contracts: {},
+	tradeTab: 0,
 	broker: {},
 };
 
@@ -590,6 +592,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				contracts: payload,
+			};
+		}
+		case SET_TRADE_TAB: {
+			return {
+				...state,
+				tradeTab: payload,
 			};
 		}
 		default:

@@ -28,6 +28,7 @@ $tabs-title--margin: 2rem;
 		}
 		.action_notification-text {
 			font-size: $regular--font-size;
+			line-height: $regular--font-size;
 		}
 	}
 	.trade_block-wrapper {
@@ -45,6 +46,7 @@ $tabs-title--margin: 2rem;
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $font-size-mobile-txt !important;
+					line-height: $regular--font-size !important;
 				}
 			}
 		}

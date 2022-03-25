@@ -169,6 +169,7 @@ class MarketSelector extends Component {
 			icons: ICONS,
 			constants,
 			markets: allMarkets,
+			pair: activeMarket,
 		} = this.props;
 
 		const { searchResult, tabResult } = this.state;
@@ -182,7 +183,7 @@ class MarketSelector extends Component {
 		const hasTabMenu = tabMenuLength !== 0;
 
 		return (
-			<div className={classnames('app-bar-add-tab-menu', wrapperClassName)}>
+			<div className={classnames(wrapperClassName)}>
 				<div className="app-bar-tab-menu">
 					<Slider small>{this.tabListMenuItems()}</Slider>
 				</div>
@@ -195,73 +196,71 @@ class MarketSelector extends Component {
 							handleSearch={handleSearch}
 						/>
 					</div>
-					<div
-						className={classnames({
-							'scroll-view': markets.length >= 10,
-						})}
-					>
+					<div className="scroll-view">
 						{hasTabMenu ? (
-							markets
-								.slice(0, Math.min(tabMenuLength, 10))
-								.map((market, index) => {
-									const {
-										key,
-										pair,
-										symbol,
-										pairTwo,
-										ticker,
-										increment_price,
-									} = market;
+							markets.map((market, index) => {
+								const {
+									key,
+									pair,
+									symbol,
+									pairTwo,
+									ticker,
+									increment_price,
+								} = market;
 
-									return (
+								return (
+									<div
+										key={index}
+										className={classnames(
+											'app-bar-add-tab-content-list',
+											'd-flex align-items-center justify-content-start',
+											'pointer',
+											{ 'active-market': pair.name === activeMarket }
+										)}
+									>
 										<div
-											key={index}
-											className="app-bar-add-tab-content-list d-flex align-items-center justify-content-start pointer"
+											className="pl-3 pr-2 pointer"
+											onClick={() => this.toggleFavourite(key)}
 										>
-											<div
-												className="pl-3 pr-2 pointer"
-												onClick={() => this.toggleFavourite(key)}
-											>
-												{this.isFavourite(key) ? (
-													<StarFilled className="stared-market" />
-												) : (
-													<StarOutlined />
-												)}
+											{this.isFavourite(key) ? (
+												<StarFilled className="stared-market" />
+											) : (
+												<StarOutlined />
+											)}
+										</div>
+										<div
+											className="d-flex align-items-center justify-content-between w-100"
+											onClick={() => this.onMarketClick(key)}
+										>
+											<div className="d-flex align-items-center">
+												<Image
+													iconId={
+														ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+															? `${pair.pair_base.toUpperCase()}_ICON`
+															: 'DEFAULT_ICON'
+													}
+													icon={
+														ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+															? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
+															: ICONS.DEFAULT_ICON
+													}
+													wrapperClassName="app-bar-add-tab-icons"
+													imageWrapperClassName="currency-ball-image-wrapper"
+												/>
+												<div className="app_bar-pair-font">
+													{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
+												</div>
+												<div className="title-font ml-1 app-bar_add-tab-price">
+													{formatToCurrency(ticker.close, increment_price)}
+												</div>
 											</div>
-											<div
-												className="d-flex align-items-center justify-content-between w-100"
-												onClick={() => this.onMarketClick(key)}
-											>
-												<div className="d-flex align-items-center">
-													<Image
-														iconId={
-															ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-																? `${pair.pair_base.toUpperCase()}_ICON`
-																: 'DEFAULT_ICON'
-														}
-														icon={
-															ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-																? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-																: ICONS.DEFAULT_ICON
-														}
-														wrapperClassName="app-bar-add-tab-icons"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
-													<div className="app_bar-pair-font">
-														{symbol.toUpperCase()}/
-														{pairTwo.symbol.toUpperCase()}:
-													</div>
-													<div className="title-font ml-1 app-bar_add-tab-price">
-														{formatToCurrency(ticker.close, increment_price)}
-													</div>
-												</div>
-												<div className="d-flex align-items-center mr-4">
-													<PriceChange market={market} />
-												</div>
+											<div className="d-flex align-items-center mr-4">
+												<PriceChange market={market} />
 											</div>
 										</div>
-									);
-								})
+									</div>
+								);
+							})
 						) : (
 							<div className="app-bar-add-tab-content-list d-flex align-items-center">
 								No data...
@@ -304,10 +303,11 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (store) => {
 	const {
-		app: { pairs, coins, favourites, constants },
+		app: { pairs, coins, favourites, constants, pair },
 	} = store;
 
 	return {
+		pair,
 		pairs,
 		coins,
 		favourites,

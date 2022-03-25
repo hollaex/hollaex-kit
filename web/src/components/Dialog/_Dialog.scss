@@ -25,6 +25,13 @@ $close-button--margin: 1.5rem;
 	}
 }
 
+.menu {
+	.ReactModal__Content {
+		padding: 0 !important;
+		background-color: $app-background-color !important;
+	}
+}
+
 .dialog-content {
 	padding-right: $dialog--padding;
 	padding-left: $dialog--padding;
@@ -184,6 +191,18 @@ $close-button--margin: 1.5rem;
 			.dialog-mobile-content {
 				min-height: inherit;
 				max-height: inherit;
+			}
+		}
+	}
+
+	&.menu {
+		.ReactModal__Content {
+			padding: 0 !important;
+			background-color: $app-background-color !important;
+
+			.dialog-mobile-content {
+				padding: 0 !important;
+				display: block;
 			}
 		}
 	}
