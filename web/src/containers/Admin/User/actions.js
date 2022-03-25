@@ -222,3 +222,11 @@ export const deleteMeta = (user, name) => {
 	};
 	return requestAuthenticated(`/admin/kit/user-meta?name=${name}`, options);
 };
+
+export const updateIdData = (body, id) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(body),
+	};
+	return requestAuthenticated(`/admin/user?user_id=${id}`, options);
+};
