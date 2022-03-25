@@ -1056,6 +1056,8 @@ export default {
 	QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
 	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
 		'You have insufficient funds in your wallet to complete this transaction.',
+	QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE:
+		'Broker OTC deal is currently not available.', //new
 	SUBMIT: 'submit',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',

@@ -3,6 +3,8 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 
+@import './MobileMarketSelector';
+
 .app_bar {
 	position: relative;
 	width: 100%;
@@ -408,7 +410,7 @@ $app-menu-notification-size: 1.2rem;
 				.tab-security0,
 				.tab-api0,
 				.account-active-1,
-				.stake-smiley-1 {
+				.stake-page-icon {
 					fill: $colors-main-black;
 				}
 			}

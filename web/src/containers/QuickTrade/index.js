@@ -8,6 +8,7 @@ import math from 'mathjs';
 import { QuickTradeLimitsSelector } from './utils';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
+import { message } from 'antd';
 
 import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -26,6 +27,7 @@ import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { getBroker } from 'containers/Admin/Trades/actions';
 
 // const DECIMALS = 4;
 
@@ -117,6 +119,7 @@ class QuickTradeContainer extends PureComponent {
 			existBroker: {},
 			brokerTargetAmount: undefined,
 			brokerSourceAmount: undefined,
+			isBrokerPaused: false,
 		};
 
 		this.goToPair(pair);
@@ -190,11 +193,18 @@ class QuickTradeContainer extends PureComponent {
 		if (Object.keys(existBroker).length) {
 			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 				this.setState({ isShowChartDetails: true, existBroker });
+				this.getBrokerData();
 			} else {
 				this.setState({ isShowChartDetails: false, existBroker });
+				this.getBrokerData();
 			}
 		} else {
 			this.setState({ isShowChartDetails: true, existBroker: {} });
+		}
+		if (existBroker && !existBroker.paused) {
+			this.setState({ isBrokerPaused: false });
+		} else {
+			this.setState({ isBrokerPaused: true });
 		}
 	}
 
@@ -293,6 +303,12 @@ class QuickTradeContainer extends PureComponent {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
 
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
+			}
+
 			this.props.setPriceEssentials({
 				side,
 				targetAmount: undefined,
@@ -324,12 +340,21 @@ class QuickTradeContainer extends PureComponent {
 			if (Object.keys(existBroker).length) {
 				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
 				} else {
 					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
 				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
+
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
+			}
+
 			this.setState({
 				isSelectChange: false,
 				targetAmount: undefined,
@@ -343,6 +368,16 @@ class QuickTradeContainer extends PureComponent {
 	componentWillUnmount() {
 		this.closeOrderbookSocket();
 	}
+
+	getBrokerData = async () => {
+		try {
+			await getBroker();
+		} catch (error) {
+			if (error) {
+				message.error(error.message);
+			}
+		}
+	};
 
 	storeData = (data) => {
 		this.props.setOrderbooks(data);
@@ -821,6 +856,7 @@ class QuickTradeContainer extends PureComponent {
 			brokerSourceAmount,
 			brokerTargetAmount,
 			pair,
+			isBrokerPaused,
 		} = this.state;
 		const { targetAmount, sourceAmount, broker, pairs } = this.props;
 		const brokerPairs = broker.map((br) => br.symbol);
@@ -843,7 +879,8 @@ class QuickTradeContainer extends PureComponent {
 				!brokerSourceAmount ||
 				!brokerTargetAmount ||
 				sourceError ||
-				targetError
+				targetError ||
+				isBrokerPaused
 			);
 		} else {
 			return (
@@ -914,6 +951,7 @@ class QuickTradeContainer extends PureComponent {
 			brokerTargetAmount,
 			brokerSourceAmount,
 			existBroker,
+			isBrokerPaused,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -1019,6 +1057,7 @@ class QuickTradeContainer extends PureComponent {
 						isExistBroker={isExistBroker}
 						flipPair={this.flipPair}
 						broker={broker}
+						isBrokerPaused={isBrokerPaused}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}

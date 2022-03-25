@@ -155,7 +155,7 @@ class AddTradeTab extends Component {
 		}
 
 		return (
-			<div>
+			<Fragment>
 				<div id="trade-header-section"></div>
 				<div className="trade_tabs-container">
 					{!isMobile && (
@@ -239,7 +239,7 @@ class AddTradeTab extends Component {
 					</div>
 				</div>
 				<div id="trade-footer-section"></div>
-			</div>
+			</Fragment>
 		);
 	}
 }

@@ -159,7 +159,11 @@ class EditToken extends Component {
 		const IPPermission = whitelisting_enabled ? 'only-trusted' : 'any';
 
 		return (
-			<div className="edit_token d-flex py-4 small-expandable">
+			<div
+				className={classnames('edit_token d-flex py-4 small-expandable', {
+					overlay: !otp_enabled,
+				})}
+			>
 				<div className="qr-code-bg">
 					<QRCode value={apiKey} />
 				</div>
