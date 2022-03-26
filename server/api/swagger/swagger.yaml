@@ -4327,7 +4327,7 @@ paths:
               - side
               - size
       responses:
-        201:
+        200:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
