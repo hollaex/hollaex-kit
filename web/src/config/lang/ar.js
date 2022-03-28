@@ -631,7 +631,7 @@ export default {
 				'قم بإنشاء تحذير منبثق عندما تتجاوز قيمة طلب التداول نسبة مئوية محددة من محفظتك',
 			INFO_TEXT_1: 'إجمالي قيمة الأصول بعملة {0}: {1}',
 			PORTFOLIO: 'نسبة المحفظة',
-			TOMAN_ASSET: 'القيمة التقريبية',
+			VALUE_ASSET: 'القيمة التقريبية',
 			ADJUST: '(ضبط النسبة المئوية)',
 			ACTIVATE_RISK_MANAGMENT: 'تفعيل إدارة المخاطر',
 			WARNING_POP_UP: 'النوافذ المنبثقة للتحذير',
@@ -872,7 +872,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'لديك {0} ثواني لإجراء التداول',
 	QUOTE_EXPIRED_TOKEN: 'انتهت صلاحية رمز عرض السعر',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'التداول السريع',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'لقد نجحت في {0} {1} {2} لـ {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'لقد نجحت في {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'انتهى العد التنازلي',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'البنك المراد السحب إليه',

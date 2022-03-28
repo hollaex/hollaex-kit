@@ -623,7 +623,7 @@ export default {
 				'거래 주문 값이 포트폴리오에 설정된 백분율 값을 초과할 경우 경고 알림창을 만들 수 있습니다.',
 			INFO_TEXT_1: '총 자산 가치 {0}: {1}', //new
 			PORTFOLIO: '포트폴리오 백분율',
-			TOMAN_ASSET: '근사값',
+			VALUE_ASSET: '근사값',
 			ADJUST: '(백분율 설정하기)',
 			ACTIVATE_RISK_MANAGMENT: '리스크관리 실행',
 			WARNING_POP_UP: '경고알림창',
@@ -865,7 +865,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

@@ -54,6 +54,7 @@ export const CHANGE_THEME = 'CHANGE_THEME';
 export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
 export const MARKET_SELECTOR = 'MARKET_SELECTOR';
+export const CONNECT_VIA_DESKTOP = 'CONNECT_VIA_DESKTOP';
 export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
@@ -345,6 +346,9 @@ export const openFeesStructureandLimits = (data = {}) =>
 
 export const openMarketSelector = (data = {}) =>
 	setNotification(MARKET_SELECTOR, data, true);
+
+export const openConnectViaDesktop = (data = {}) =>
+	setNotification(CONNECT_VIA_DESKTOP, data, true);
 
 export const openRiskPortfolioOrderWarning = (data = {}) =>
 	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);

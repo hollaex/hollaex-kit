@@ -55,6 +55,7 @@ class Orderbook extends Component {
 		isOpen: false,
 		priceDiff: 0,
 		inProp: false,
+		isAnimated: false,
 	};
 
 	componentDidMount() {
@@ -63,6 +64,7 @@ class Orderbook extends Component {
 			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
+				this.setState({ isAnimated: true });
 			}, 1000);
 		}
 	}
@@ -78,6 +80,12 @@ class Orderbook extends Component {
 			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
+			}, 1000);
+		}
+
+		if (prevProps.orderbookFetched === false && orderbookFetched === true) {
+			setTimeout(() => {
+				this.setState({ isAnimated: true });
 			}, 1000);
 		}
 	}
@@ -239,6 +247,7 @@ class Orderbook extends Component {
 			priceDiff,
 			inProp,
 			dataBlockHeight,
+			isAnimated,
 		} = this.state;
 		// const blockStyle = {};
 		const blockStyle =
@@ -330,7 +339,7 @@ class Orderbook extends Component {
 								<CSSTransition
 									key={record[4]}
 									timeout={1000}
-									classNames="orderbook_ask_row"
+									classNames={classnames({ orderbook_ask_row_: isAnimated })}
 								>
 									<PriceRow
 										side="ask"
@@ -401,7 +410,7 @@ class Orderbook extends Component {
 								<CSSTransition
 									key={record[4]}
 									timeout={1000}
-									classNames="orderbook_bid_row"
+									classNames={classnames({ orderbook_bid_row_: isAnimated })}
 								>
 									<PriceRow
 										side="bid"
@@ -432,6 +441,7 @@ Orderbook.defaultProps = {
 	ready: false,
 	onPriceClick: () => {},
 	onAmountClick: () => {},
+	orderbookFetched: false,
 };
 
 const mapStateToProps = (store) => {
