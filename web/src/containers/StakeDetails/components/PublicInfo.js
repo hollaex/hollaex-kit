@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { TABS } from '../index';
+import { TABS } from '../DesktopStakeDetails';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import DonutChart from './DonutChart';

@@ -11419,7 +11419,8 @@ svg .stake-variable,
 svg .stake-pending,
 svg .staking-unlock,
 svg .send-email-code,
-svg .move-xht {
+svg .move-xht,
+svg .connect-desktop {
   fill: var(--labels_important-active-labels-text-graphics); }
 
 svg .trade-history-2,
