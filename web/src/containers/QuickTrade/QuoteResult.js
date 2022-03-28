@@ -58,7 +58,7 @@ const QuoteResult = ({
 			</div>
 		);
 	} else {
-		const [pair_base, pair_2] = data.symbol.split('-');
+		const [pair_base, pair_2] = data && data.symbol && data.symbol.split('-');
 
 		return (
 			<div className="success-review">
