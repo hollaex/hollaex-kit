@@ -670,7 +670,7 @@ export default {
 				"Créez une fenêtre d'avertissement lorsqu'une valeur d'une transaction dépasse un pourcentage défini de votre portefeuille",
 			INFO_TEXT_1: 'Valeur totale des actifs en {0}: {1}',
 			PORTFOLIO: 'Pourcentage du portefeuille ',
-			TOMAN_ASSET: 'Valeur approximative',
+			VALUE_ASSET: 'Valeur approximative',
 			ADJUST: '(AJUSTER LE POURCENTAGE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activer la gestion des risques',
 			WARNING_POP_UP: "Fenêtre d'avertissement",
@@ -920,7 +920,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: "Vous avez {0} secondes pour effectuer l'échange",
 	QUOTE_EXPIRED_TOKEN: 'Le devis du token a expiré.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Échange rapide / Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'Vous avez réussi {0} {1} {2} pour {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'Vous avez réussi {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Le compte à rebours est terminé',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Banque sur laquelle vous souhaiter retirer',
