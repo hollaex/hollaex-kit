@@ -983,7 +983,7 @@ export default {
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc from x toman
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -1480,5 +1480,11 @@ export default {
 		COMING_SOON: 'coming soon', //new
 	},
 	WALLET_BALANCE_LOADING: 'Balance loading...', //new
-	LOADING: 'Loading...', //new
+	LOADING: 'Loading...', //new,
+	CONNECT_VIA_DESKTOP: {
+		TITLE: 'Connect via desktop',
+		SUBTITLE:
+			"DeFi staking through your mobile devices aren't supported at this time.",
+		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
+	},
 };
