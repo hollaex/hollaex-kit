@@ -99,13 +99,37 @@ const getHeaders = (userTiers, ICONS, onEditFees) => {
 };
 
 const Fees = ({
-	pairs,
 	userTiers,
 	allIcons: { dark: ICONS = {} },
 	onEditFees,
 	constants: { native_currency },
 }) => {
-	const coinsData = Object.keys(pairs).map((key) => pairs[key]);
+	const constructTierData = () => {
+		let feesData = Object.keys(userTiers).map((level) => {
+			const data = userTiers[level].fees;
+			let condition = Object.keys(data.maker).map((item) => {
+				const splitPair = item.split('-');
+				const resData = {
+					name: item,
+					pair_base: splitPair[0],
+					pair_2: splitPair[1],
+				};
+				return resData;
+			});
+			condition = Object.assign({}, condition);
+			return condition;
+		});
+
+		let temp = [];
+		feesData &&
+			feesData[0] &&
+			Object.keys(feesData[0]).forEach((ele) => {
+				temp = [...temp, feesData[0][ele]];
+			});
+		return temp;
+	};
+	const tierPairsData = userTiers ? constructTierData() : [];
+
 	return (
 		<div className="admin-tiers-wrapper">
 			<div className="d-flex">
@@ -133,7 +157,7 @@ const Fees = ({
 			<div className="my-4">
 				<Table
 					columns={getHeaders(userTiers, ICONS, onEditFees)}
-					dataSource={coinsData}
+					dataSource={tierPairsData}
 					rowKey={(data) => data.id}
 					bordered
 					scroll={{ x: 'auto' }}
@@ -144,7 +168,6 @@ const Fees = ({
 };
 
 const mapStateToProps = (state) => ({
-	pairs: state.app.pairs,
 	constants: state.app.constants,
 });
 

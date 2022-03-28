@@ -573,7 +573,7 @@ class QuickTradeContainer extends PureComponent {
 			};
 
 			executeBroker(brokerOrderData)
-				.then(({ data }) => {
+				.then((data) => {
 					this.setState({
 						order: {
 							completed: true,
