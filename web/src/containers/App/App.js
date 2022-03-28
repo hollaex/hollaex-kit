@@ -21,6 +21,7 @@ import {
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
 	MARKET_SELECTOR,
+	CONNECT_VIA_DESKTOP,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
@@ -62,6 +63,7 @@ import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
 import MarketSelector from 'components/AppBar/MarketSelector';
+import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
 
 import {
 	getClasesForLanguage,
@@ -154,7 +156,7 @@ class App extends Component {
 			}
 		}
 
-		if (window.ethereum) {
+		if (!isMobile && window.ethereum) {
 			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
 				loadBlockchainData();
 			});
@@ -496,6 +498,8 @@ class App extends Component {
 						wrapperClassName="modal-market-menu"
 					/>
 				);
+			case CONNECT_VIA_DESKTOP:
+				return <ConnectViaDesktop onClose={this.onCloseDialog} />;
 			case RISK_PORTFOLIO_ORDER_WARING:
 				return <SetOrderPortfolio data={data} onClose={this.onCloseDialog} />;
 			case LOGOUT_CONFORMATION:

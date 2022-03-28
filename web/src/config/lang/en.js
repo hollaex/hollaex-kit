@@ -1480,5 +1480,11 @@ export default {
 		COMING_SOON: 'coming soon', //new
 	},
 	WALLET_BALANCE_LOADING: 'Balance loading...', //new
-	LOADING: 'Loading...', //new
+	LOADING: 'Loading...', //new,
+	CONNECT_VIA_DESKTOP: {
+		TITLE: 'Connect via desktop',
+		SUBTITLE:
+			"DeFi staking through your mobile devices aren't supported at this time.",
+		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
+	},
 };
