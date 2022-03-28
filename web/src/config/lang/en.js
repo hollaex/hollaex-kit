@@ -587,7 +587,7 @@ export default {
 				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
-			TOMAN_ASSET: 'Approximate Value',
+			VALUE_ASSET: 'Approximate Value',
 			ADJUST: '(ADJUST PERCENTAGE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups',
@@ -983,7 +983,7 @@ export default {
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
