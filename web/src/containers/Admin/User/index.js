@@ -279,6 +279,7 @@ class App extends Component {
 				clearData={this.clearData}
 				refreshData={this.refreshData}
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
+				requestUserData={this.requestUserData}
 			/>
 		) : (
 			<div className="app_container-content user-container">

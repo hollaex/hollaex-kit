@@ -194,7 +194,7 @@ class Wallet extends Component {
 			},
 			{
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
-				content: <TransactionsHistory />,
+				content: <TransactionsHistory router={this.props.router} />,
 			},
 			{
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
