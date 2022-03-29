@@ -191,6 +191,7 @@ class QuickTrade extends Component {
 		} else {
 			isUseBroker = false;
 		}
+		const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -400,10 +401,10 @@ class QuickTrade extends Component {
 								forwardError={forwardSourceError}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
-								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_size}
+								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit}
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
-								pair={key ? key : ''}
+								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
 							/>
@@ -417,9 +418,9 @@ class QuickTrade extends Component {
 								onInputChange={onChangeTargetAmount}
 								forwardError={forwardTargetError}
 								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
+								decimal={side === 'buy' ? increment_unit : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
-								pair={key ? key : ''}
+								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
 							/>
