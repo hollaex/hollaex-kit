@@ -767,7 +767,6 @@ export default {
 		PENDING_TRANSACTIONS: 'Pending {0} {1}',
 		VIEW_ON: 'View on the {0}',
 		BLOCKCHAIN: 'blockchain',
-		DISCONNECT: 'Disconnect account',
 		VIEW_POT: 'View distribution POT',
 		COMPLETED: 'Matured',
 		COMPLETED_TOOLTIP:

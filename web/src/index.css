@@ -5225,17 +5225,6 @@ table th {
   font-size: 7rem;
   color: var(--calculated_specials_highlight-box); }
 
-.disconnect-menu.ant-dropdown-menu {
-  color: var(--labels_important-active-labels-text-graphics) !important;
-  background-color: var(--base_background); }
-
-.disconnect-menu .ant-dropdown-menu-item {
-  color: var(--labels_secondary-inactive-label-text-graphics);
-  background-color: var(--base_background); }
-  .disconnect-menu .ant-dropdown-menu-item:hover {
-    color: var(--labels_important-active-labels-text-graphics);
-    background-color: var(--base_wallet-sidebar-and-popup); }
-
 .stake-details-table .table-wrapper {
   margin: 0.2rem 0 2rem; }
 
