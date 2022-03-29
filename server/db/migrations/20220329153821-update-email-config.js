@@ -5,12 +5,13 @@ const TABLE = 'Statuses';
 const COLUMN = 'email';
 
 module.exports = {
-	up: (queryInterface, Sequelize) =>
-		queryInterface.addColumn(TABLE, COLUMN, {
+	async up(queryInterface, Sequelize) {
+		await queryInterface.removeColumn(TABLE, COLUMN);
+		await queryInterface.addColumn(TABLE, COLUMN, {
 			type: Sequelize.JSONB,
 			defaultValue: {
 				"en": {
-					"DOC_REJECTED":{
+					"DOC_REJECTED": {
 						"html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
 						"title": "KYC Documents Rejected"
 					},
@@ -1194,7 +1195,8 @@ module.exports = {
 					}
 				},
 			}
-		}),
+		});
+	},
 	down: () => {
 		return new Promise((resolve) => {
 			resolve();
