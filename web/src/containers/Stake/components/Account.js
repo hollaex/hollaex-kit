@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Menu, Dropdown } from 'antd';
-import { connectWallet, disconnectWallet } from 'actions/stakingActions';
+import { connectWallet } from 'actions/stakingActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { roundNumber } from 'utils';
 import { dotifyString } from 'utils/eth';
@@ -14,7 +13,6 @@ const Account = ({
 	balance,
 	network,
 	connectWallet,
-	disconnectWallet,
 	contracts,
 	networksMismatch,
 }) => {
@@ -40,27 +38,14 @@ const Account = ({
 				<div className="d-flex align-center staking-account__container mx-2">
 					{network}
 				</div>
-				<Dropdown
-					overlay={
-						<Menu className="disconnect-menu">
-							<Menu.Item key="0">
-								<div onClick={disconnectWallet}>
-									{STRINGS['STAKE.DISCONNECT']}
-								</div>
-							</Menu.Item>
-						</Menu>
-					}
-					trigger={['click']}
-				>
-					<div className="d-flex align-center staking-account__container pointer">
-						<div className="staking-account__balance">{`~${roundNumber(
-							balance
-						)} ETH`}</div>
-						<div className="d-flex staking-account__address">
-							{displayAccount}
-						</div>
+				<div className="d-flex align-center staking-account__container">
+					<div className="staking-account__balance">{`~${roundNumber(
+						balance
+					)} ETH`}</div>
+					<div className="d-flex staking-account__address">
+						{displayAccount}
 					</div>
-				</Dropdown>
+				</div>
 			</div>
 		);
 	}
@@ -76,7 +61,6 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	connectWallet: bindActionCreators(connectWallet, dispatch),
-	disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
 });
 
 export default connect(

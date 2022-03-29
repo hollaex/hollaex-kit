@@ -28,6 +28,7 @@ import {
 	EditWrapper,
 	Button,
 	ProgressBar,
+	Help,
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
@@ -439,7 +440,13 @@ class Stake extends Component {
 
 												const progressStatusText = remainingBlocks
 													? `~${estimatedLeftover.join(' ')}`
-													: 'Completed';
+													: STRINGS['STAKE.COMPLETED'];
+
+												const wrappedProgressStatusText = remainingBlocks ? (
+													`~${estimatedLeftover.join(' ')}`
+												) : (
+													<Help tip="sag">{progressStatusText}</Help>
+												);
 
 												const data = {
 													amount,
@@ -473,7 +480,7 @@ class Stake extends Component {
 															<div className="d-flex">
 																<ProgressBar partial={partial} total={total} />
 																<div className="px-2 align-center">
-																	{progressStatusText}
+																	{wrappedProgressStatusText}
 																</div>
 															</div>
 														</td>
