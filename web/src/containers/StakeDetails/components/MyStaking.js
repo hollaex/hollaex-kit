@@ -282,7 +282,7 @@ const MyStaking = ({
 
 									const progressStatusText = remainingBlocks
 										? `~${estimatedLeftover.join(' ')}`
-										: 'Completed';
+										: STRINGS['STAKE.COMPLETED'];
 
 									const btnProps = {
 										type: 'primary',

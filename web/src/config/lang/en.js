@@ -701,7 +701,7 @@ export default {
 		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
 		DEFI_TITLE: 'DeFi asset staking',
 		DEFI_TEXT:
-			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
+			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.',
 		GET_STAKES: 'Get stakes', //new
 		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
 		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
@@ -769,6 +769,7 @@ export default {
 		BLOCKCHAIN: 'blockchain',
 		DISCONNECT: 'Disconnect account',
 		VIEW_POT: 'View distribution POT',
+		COMPLETED: 'Matured',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',

@@ -439,7 +439,7 @@ class Stake extends Component {
 
 												const progressStatusText = remainingBlocks
 													? `~${estimatedLeftover.join(' ')}`
-													: 'Completed';
+													: STRINGS['STAKE.COMPLETED'];
 
 												const data = {
 													amount,
