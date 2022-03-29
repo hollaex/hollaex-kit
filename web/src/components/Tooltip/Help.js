@@ -6,7 +6,7 @@ import { Image } from 'components';
 
 const Help = ({ children, tip }) => {
 	const [isVisible, setIsVisible] = useState(false);
-	const onVisibleChange = (visible) => setIsVisible(true);
+	const onVisibleChange = (visible) => setIsVisible(visible);
 
 	return (
 		<Tooltip

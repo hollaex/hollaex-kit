@@ -11254,7 +11254,7 @@ foreignObject {
   margin: 0 0.2rem; }
 
 .help-tooltip .ant-tooltip-content {
-  border: 1px solid var(--calculated_base_top-bar-navigation_text);
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
   border-radius: 5px;
   opacity: 1; }
 
@@ -11265,8 +11265,8 @@ foreignObject {
   display: none !important; }
 
 .help-tooltip .ant-tooltip-inner {
-  background-color: var(--base_top-bar-navigation);
-  color: var(--calculated_base_top-bar-navigation_text); }
+  background-color: var(--base_background);
+  color: var(--labels_important-active-labels-text-graphics); }
 
 html {
   font-size: 12px !important;

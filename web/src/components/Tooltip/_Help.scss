@@ -17,7 +17,7 @@
 
 .help-tooltip {
 	.ant-tooltip-content {
-		border: 1px solid $base_top-bar-navigation_text;
+		border: 1px solid $colors-main-black;
 		border-radius: 5px;
 		opacity: 1;
 	}
@@ -31,7 +31,7 @@
 	}
 
 	.ant-tooltip-inner {
-		background-color: $app-bar-background-color;
-		color: $base_top-bar-navigation_text;
+		background-color: $app-background-color;
+		color: $colors-main-black;
 	}
 }
