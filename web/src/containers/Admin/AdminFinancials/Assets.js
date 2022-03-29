@@ -201,6 +201,7 @@ class Assets extends Component {
 			saveLoading: false,
 			submitting: false,
 			isWithdrawalEdit: false,
+			isTableLoading: true,
 		};
 	}
 
@@ -216,7 +217,7 @@ class Assets extends Component {
 		if (exchange && exchange.coins) {
 			this.setState({
 				coins: coins || [],
-				exchange: exchange,
+				exchange,
 			});
 		}
 		if (Object.keys(tabParams).length) {
@@ -868,6 +869,7 @@ class Assets extends Component {
 								)}
 								rowKey={(data, index) => index}
 								dataSource={coins}
+								loading={!coins.length}
 							/>
 						</div>
 					</Fragment>

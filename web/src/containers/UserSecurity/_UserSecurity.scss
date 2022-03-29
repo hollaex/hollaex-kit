@@ -291,6 +291,23 @@ $padding-input: 4rem;
 			font-size: $font-size-mobile-txt !important;
 		}
 	}
+
+	.presentation_container {
+		.edit_token {
+			flex-direction: column;
+
+			.token-keys-wrapper {
+				.field-content,
+				.field-children {
+					font-size: $font-size-subtext !important;
+				}
+			}
+		}
+
+		.token-keys-wrapper {
+			max-width: 35rem;
+		}
+	}
 }
 
 @media (max-width: 1060px) {
@@ -319,6 +336,13 @@ $padding-input: 4rem;
 }
 
 .edit_token {
+	&.overlay {
+		height: 100%;
+		width: 100%;
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
 	.qr-code-bg {
 		padding: 0 1.5rem 0 1rem;
 	}

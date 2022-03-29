@@ -219,6 +219,7 @@ class UserContent extends Component {
 			isConfigure,
 			showConfigure,
 			kycPluginName,
+			requestUserData,
 		} = this.props;
 
 		const { showVerifyEmailModal, userTiers } = this.state;
@@ -323,6 +324,7 @@ class UserContent extends Component {
 								freezeAccount={this.freezeAccount}
 								verifyEmail={this.openVerifyEmailModal}
 								kycPluginName={kycPluginName}
+								requestUserData={requestUserData}
 							/>
 						</div>
 					</TabPane>

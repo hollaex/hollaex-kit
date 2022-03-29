@@ -175,6 +175,11 @@ const executeBrokerDeal = (req, res) => {
 
 	toolsLib.broker.executeBrokerDeal(userId, symbol, side, size, price)
 		.then((data) => {
+			loggerBroker.verbose(
+				req.uuid,
+				'controllers/broker/executeBrokerDeal done',
+				data
+			);
 			res.json(data);
 		})
 		.catch((err) => {

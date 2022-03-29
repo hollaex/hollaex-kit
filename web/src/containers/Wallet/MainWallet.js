@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { IconTitle, Accordion, MobileBarTabs } from 'components';
-import { TransactionsHistory } from 'containers';
+import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
 	BASE_CURRENCY,
@@ -194,7 +194,11 @@ class Wallet extends Component {
 			},
 			{
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
-				content: <TransactionsHistory />,
+				content: <TransactionsHistory router={this.props.router} />,
+			},
+			{
+				title: STRINGS['ACCOUNTS.TAB_STAKE'],
+				content: <Stake />,
 			},
 		];
 		this.setState({ sections, isOpen, mobileTabs });

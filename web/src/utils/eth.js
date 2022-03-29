@@ -3,7 +3,7 @@ import mathjs from 'mathjs';
 import { DATETIME_FORMAT } from 'utils/date';
 import STRINGS from 'config/localizedStrings';
 
-const ESTIMATED_TIME_PER_BLOCK = 15000;
+const ESTIMATED_TIME_PER_BLOCK = 13000;
 const TIME_KEYS = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
 
 export const getEstimatedRemainingTime = (remainingBlock) => {

@@ -260,6 +260,7 @@ export default {
 		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
 		FOOTER_TEXT_1: 'Sourced from', //new
 		GO_TO_TEXT: 'Go to', //new
+		SOURCE_TEXT: 'Broker OTC deal', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
@@ -586,7 +587,7 @@ export default {
 				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
-			TOMAN_ASSET: 'Approximate Value',
+			VALUE_ASSET: 'Approximate Value',
 			ADJUST: '(ADJUST PERCENTAGE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups',
@@ -982,7 +983,7 @@ export default {
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -1055,6 +1056,8 @@ export default {
 	QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
 	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
 		'You have insufficient funds in your wallet to complete this transaction.',
+	QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE:
+		'Broker OTC deal is currently not available.', //new
 	SUBMIT: 'submit',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
@@ -1477,5 +1480,11 @@ export default {
 		COMING_SOON: 'coming soon', //new
 	},
 	WALLET_BALANCE_LOADING: 'Balance loading...', //new
-	LOADING: 'Loading...', //new
+	LOADING: 'Loading...', //new,
+	CONNECT_VIA_DESKTOP: {
+		TITLE: 'Connect via desktop',
+		SUBTITLE:
+			"DeFi staking through your mobile devices aren't supported at this time.",
+		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
+	},
 };

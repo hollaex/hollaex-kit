@@ -149,7 +149,7 @@ const generateHeaders = (
 		},
 	},
 	{
-		label: (
+		label: !isMobile ? (
 			<span className="trade__active-orders_cancel-All">
 				<ActionNotification
 					stringId="CANCEL_ALL"
@@ -161,6 +161,10 @@ const generateHeaders = (
 					textPosition="left"
 					disable={activeOrdersMarket === ''}
 				/>
+			</span>
+		) : (
+			<span className="trade__active-orders_cancel-All">
+				{STRINGS['CANCEL']}
 			</span>
 		),
 		key: 'cancel',

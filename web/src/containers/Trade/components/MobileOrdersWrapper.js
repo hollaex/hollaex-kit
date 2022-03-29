@@ -108,7 +108,12 @@ class MobileOrdersWrapper extends Component {
 							</div>
 							<div className="mt-3">
 								<EditWrapper stringId="CANCEL_ORDERS.INFO_1">
-									<div>{STRINGS['CANCEL_ORDERS.INFO_1']}</div>
+									<div>
+										{STRINGS.formatString(
+											STRINGS['CANCEL_ORDERS.INFO_1'],
+											pair.toUpperCase()
+										)}
+									</div>
 								</EditWrapper>
 							</div>
 							<div className="mt-1 mb-5">

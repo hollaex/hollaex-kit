@@ -40,7 +40,7 @@ const nestedIcons = {
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
 		API: '/assets/images/tab-api.svg',
-		STAKE: '/assets/images/stake_and_earn.svg',
+		STAKE: '/assets/images/stake-page-icon.svg',
 	},
 
 	TOKEN: {
@@ -170,7 +170,7 @@ const nestedIcons = {
 	ID_GREY: '/assets/images/id-grey.svg',
 
 	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	INCOMING_COIN: '/assets/images/incoming-coin.svg',
 
 	PASSWORD_RESET: '/assets/images/password-reset.svg',
 
@@ -261,6 +261,7 @@ const nestedIcons = {
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
 	MOVE_XHT: '/assets/stake/xht-move.svg',
+	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

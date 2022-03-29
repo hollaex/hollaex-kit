@@ -43,18 +43,22 @@ notification.config({
 };*/
 
 const calculateAmount = (isQuick = false, price, size) => {
+	/* Deprecated
 	if (isQuick) {
 		return price;
 	}
+	*/
 	const amount = mathjs.chain(price).multiply(size).done();
 	return amount;
 };
 
 const calculatePrice = (isQuick = false, price, size) => {
+	/* Deprecated
 	if (isQuick) {
 		const amount = mathjs.chain(price).divide(size).done();
 		return amount;
 	}
+	*/
 	return price;
 };
 

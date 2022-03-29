@@ -1811,7 +1811,8 @@ const putUserInfo = (req, res) => {
 			'nationality',
 			'phone_number',
 			'dob',
-			'address'
+			'address',
+			'id_data'
 		]
 	);
 

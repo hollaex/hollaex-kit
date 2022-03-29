@@ -20,10 +20,12 @@ import {
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
+	MARKET_SELECTOR,
+	CONNECT_VIA_DESKTOP,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
@@ -60,6 +62,8 @@ import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
+import MarketSelector from 'components/AppBar/MarketSelector';
+import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
 
 import {
 	getClasesForLanguage,
@@ -152,7 +156,7 @@ class App extends Component {
 			}
 		}
 
-		if (window.ethereum) {
+		if (!isMobile && window.ethereum) {
 			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
 				loadBlockchainData();
 			});
@@ -317,6 +321,16 @@ class App extends Component {
 		}
 	};
 
+	goToPair = (pair) => {
+		const { router } = this.props;
+		router.push(`/trade/${pair}`);
+	};
+
+	onViewMarketsClick = () => {
+		const { setTradeTab } = this.props;
+		setTradeTab(3);
+	};
+
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -475,6 +489,17 @@ class App extends Component {
 						activeTheme={this.props.activeTheme}
 					/>
 				);
+			case MARKET_SELECTOR:
+				return (
+					<MarketSelector
+						onViewMarketsClick={this.onViewMarketsClick}
+						closeAddTabMenu={this.onCloseDialog}
+						addTradePairTab={this.goToPair}
+						wrapperClassName="modal-market-menu"
+					/>
+				);
+			case CONNECT_VIA_DESKTOP:
+				return <ConnectViaDesktop onClose={this.onCloseDialog} />;
 			case RISK_PORTFOLIO_ORDER_WARING:
 				return <SetOrderPortfolio data={data} onClose={this.onCloseDialog} />;
 			case LOGOUT_CONFORMATION:
@@ -850,6 +875,9 @@ class App extends Component {
 													activeNotification.type ===
 														NOTIFICATIONS.EARLY_UNSTAKE ||
 													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
+											},
+											{
+												menu: activeNotification.type === MARKET_SELECTOR,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}

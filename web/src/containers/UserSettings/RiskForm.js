@@ -39,8 +39,8 @@ export const generateHeaders = (onAdjustPortfolio) => {
 		},
 		!IS_XHT
 			? {
-					stringId: 'USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET',
-					label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET'],
+					stringId: 'USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET',
+					label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET'],
 					key: 'assetValue',
 					renderCell: ({ id, assetValue }, key, index) => (
 						<td key={`${key}-${id}-assetValue.percentPrice`}>

@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { Transition } from 'react-transition-group';
+import {
+	Transition,
+	TransitionGroup,
+	CSSTransition,
+} from 'react-transition-group';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
@@ -51,6 +55,7 @@ class Orderbook extends Component {
 		isOpen: false,
 		priceDiff: 0,
 		inProp: false,
+		isAnimated: false,
 	};
 
 	componentDidMount() {
@@ -59,6 +64,7 @@ class Orderbook extends Component {
 			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
+				this.setState({ isAnimated: true });
 			}, 1000);
 		}
 	}
@@ -74,6 +80,12 @@ class Orderbook extends Component {
 			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
+			}, 1000);
+		}
+
+		if (prevProps.orderbookFetched === false && orderbookFetched === true) {
+			setTimeout(() => {
+				this.setState({ isAnimated: true });
 			}, 1000);
 		}
 	}
@@ -235,6 +247,7 @@ class Orderbook extends Component {
 			priceDiff,
 			inProp,
 			dataBlockHeight,
+			isAnimated,
 		} = this.state;
 		// const blockStyle = {};
 		const blockStyle =
@@ -321,19 +334,26 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map((record) => (
-							<PriceRow
-								side="ask"
-								key={record[4]}
-								record={record}
-								increment_price={pairData.increment_price}
-								increment_size={pairData.increment_size}
-								onPriceClick={this.onPriceClick}
-								onAmountClick={this.onAmountClick}
-								maxCumulative={maxCumulative}
-								isBase={isBase}
-							/>
-						))}
+						<TransitionGroup component={null}>
+							{asks.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={1000}
+									classNames={classnames({ orderbook_ask_row_: isAnimated })}
+								>
+									<PriceRow
+										side="ask"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
@@ -385,19 +405,26 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map((record) => (
-							<PriceRow
-								side="bid"
-								key={record[4]}
-								record={record}
-								increment_price={pairData.increment_price}
-								increment_size={pairData.increment_size}
-								onPriceClick={this.onPriceClick}
-								onAmountClick={this.onAmountClick}
-								maxCumulative={maxCumulative}
-								isBase={isBase}
-							/>
-						))}
+						<TransitionGroup component={null}>
+							{bids.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={1000}
+									classNames={classnames({ orderbook_bid_row_: isAnimated })}
+								>
+									<PriceRow
+										side="bid"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">
@@ -414,6 +441,7 @@ Orderbook.defaultProps = {
 	ready: false,
 	onPriceClick: () => {},
 	onAmountClick: () => {},
+	orderbookFetched: false,
 };
 
 const mapStateToProps = (store) => {

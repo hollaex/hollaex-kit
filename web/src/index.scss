@@ -178,19 +178,15 @@ svg {
 	.copy-notification-0,
 	.account-svg-1,
 	.incoming-btc-01,
-	.incoming-toman-01,
+	.incoming-coin-01,
 	.coin-btc-5,
-	.stake-smiley-1 {
+	.stake-page-icon {
 		fill: $colors-black;
 	}
 
 	.logout-door,
 	.account-inactive {
 		stroke: $colors-black;
-	}
-
-	.stake-smiley-0 {
-		fill: $app-sidebar-background;
 	}
 
 	.withdraw-2,
@@ -271,7 +267,7 @@ svg {
 	.gear-grey-1,
 	.g1_3,
 	.incoming-btc-2,
-	.incoming-toman-02,
+	.incoming-coin-02,
 	.security-grey-1,
 	.coin-btc-1,
 	.wallet-selected-2,
@@ -290,7 +286,8 @@ svg {
 	.stake-pending,
 	.staking-unlock,
 	.send-email-code,
-	.move-xht {
+	.move-xht,
+	.connect-desktop {
 		fill: $colors-main-black;
 	}
 
@@ -307,7 +304,7 @@ svg {
 	.transaction-history-4,
 	.wallet-coins-1,
 	.quick-trade-3,
-	.stake-smiley-1 {
+	.stake-page-icon {
 		stroke: none;
 	}
 
