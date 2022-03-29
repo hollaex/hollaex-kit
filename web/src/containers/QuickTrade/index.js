@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import math from 'mathjs';
-import { QuickTradeLimitsSelector } from './utils';
+import { QuickTradeLimitsSelector, BrokerLimitsSelector } from './utils';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 import { message } from 'antd';
@@ -1140,7 +1140,14 @@ const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
 	const sourceOptions = getSourceOptions(store.app.pairs, store.app.broker);
-	const qtlimits = QuickTradeLimitsSelector(store);
+	const broker = store.app.broker || [];
+	let flippedPair = pair.split('-');
+	flippedPair = flippedPair.reverse().join('-');
+	const qtlimits = !!broker.filter(
+		(item) => item.symbol === pair || item.symbol === flippedPair
+	)
+		? BrokerLimitsSelector(store)
+		: QuickTradeLimitsSelector(store);
 
 	return {
 		sourceOptions,
@@ -1160,7 +1167,7 @@ const mapStateToProps = (store) => {
 		estimatedPrice: store.quickTrade.estimatedPrice,
 		sourceAmount: store.quickTrade.sourceAmount,
 		targetAmount: store.quickTrade.targetAmount,
-		broker: store.app.broker,
+		broker,
 	};
 };
 
