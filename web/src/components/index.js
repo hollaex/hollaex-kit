@@ -47,6 +47,7 @@ export { default as Countdown } from './Countdown';
 export { default as WarningVerification } from './WarningVerification';
 export { FactoryChart, CHART_TYPES, DonutChart, BarChart } from './Chart';
 export { Tooltip } from './Tooltip';
+export { default as Help } from './Tooltip/Help';
 export { default as CurrencyList } from './CurrencyList';
 export { MobileDropdown } from './MobileDropdown';
 export { default as BlueLink } from './BlueLink';

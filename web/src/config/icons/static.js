@@ -120,6 +120,7 @@ const icons = {
 	SEND_ARROW_ICON: '/assets/images/send-arrow.svg',
 	PENDING_ORANGE_GEAR: '/assets/images/pending-orange-gear.svg',
 	BROKER_DESK_ICON: '/assets/images/broker-desk-otc-deal.svg',
+	TOOLTIP: '/assets/icons/question-circle-solid.svg',
 };
 
 export default icons;
