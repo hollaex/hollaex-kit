@@ -133,7 +133,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		html = html.replace(/\$\{network\}/g, data.network || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
@@ -169,7 +169,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
 		html = html.replace(/\$\{network\}/g, data.network || '');
-		html = html.replace(/\$\{fee\}/g, data.fee);
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
@@ -199,7 +199,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{network\}/g, data.network || '');
@@ -230,7 +230,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{network\}/g, data.network || '');
@@ -270,7 +270,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
