@@ -770,6 +770,8 @@ export default {
 		DISCONNECT: 'Disconnect account',
 		VIEW_POT: 'View distribution POT',
 		COMPLETED: 'Matured',
+		COMPLETED_TOOLTIP:
+			'Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',

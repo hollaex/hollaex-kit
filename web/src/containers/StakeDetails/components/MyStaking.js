@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
-import { Table, EditWrapper, ProgressBar } from 'components';
+import { Table, EditWrapper, ProgressBar, Help } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
@@ -280,9 +280,11 @@ const MyStaking = ({
 										index,
 									};
 
-									const progressStatusText = remainingBlocks
-										? `~${estimatedLeftover.join(' ')}`
-										: STRINGS['STAKE.COMPLETED'];
+									const progressStatusText = remainingBlocks ? (
+										`~${estimatedLeftover.join(' ')}`
+									) : (
+										<Help tip="sag">{STRINGS['STAKE.COMPLETED']}</Help>
+									);
 
 									const btnProps = {
 										type: 'primary',
