@@ -115,6 +115,7 @@ class App extends Component {
 			plugins_injected_html,
 			initializeTools,
 			loadBlockchainData,
+			disconnectWallet,
 		} = this.props;
 
 		if (
@@ -157,8 +158,11 @@ class App extends Component {
 		}
 
 		if (!isMobile && window.ethereum) {
-			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
+			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, ([account]) => {
 				loadBlockchainData();
+				if (!account) {
+					disconnectWallet();
+				}
 			});
 
 			window.ethereum.on(ETHEREUM_EVENTS.NETWORK_CHANGE, () => {

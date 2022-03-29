@@ -249,23 +249,6 @@
 	color: $specials_highlight-box;
 }
 
-.disconnect-menu {
-	&.ant-dropdown-menu {
-		color: $colors-main-black !important;
-		background-color: $app-background-color;
-	}
-
-	.ant-dropdown-menu-item {
-		color: $colors-black;
-		background-color: $app-background-color;
-
-		&:hover {
-			color: $colors-main-black;
-			background-color: $app-sidebar-background;
-		}
-	}
-}
-
 .stake-details-table {
 	.table-wrapper {
 		margin: 0.2rem 0 2rem;
