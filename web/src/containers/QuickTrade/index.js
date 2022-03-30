@@ -9,6 +9,7 @@ import { QuickTradeLimitsSelector, BrokerLimitsSelector } from './utils';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 import { message } from 'antd';
+import _floor from 'lodash/floor';
 
 import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -296,8 +297,10 @@ class QuickTradeContainer extends PureComponent {
 			if (Object.keys(existBroker).length) {
 				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
 				} else {
 					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
 				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
@@ -582,6 +585,7 @@ class QuickTradeContainer extends PureComponent {
 							data,
 						},
 					});
+					this.getBrokerData();
 				})
 				.catch((err) => {
 					const _error =
@@ -778,7 +782,7 @@ class QuickTradeContainer extends PureComponent {
 	brokerTargetChange = (existBroker, targetAmount) => {
 		const decimalPoint = getDecimals(existBroker.increment_size);
 		if (this.state.side === 'buy') {
-			const sourceAmount = math.round(
+			const sourceAmount = _floor(
 				targetAmount * existBroker.sell_price,
 				decimalPoint
 			);
@@ -787,7 +791,7 @@ class QuickTradeContainer extends PureComponent {
 				brokerSourceAmount: sourceAmount,
 			});
 		} else {
-			const sourceAmount = math.round(
+			const sourceAmount = _floor(
 				targetAmount / existBroker.buy_price,
 				decimalPoint
 			);
@@ -801,7 +805,7 @@ class QuickTradeContainer extends PureComponent {
 	brokerSourceChange = (existBroker, sourceAmount) => {
 		const decimalPoint = getDecimals(existBroker.increment_size);
 		if (this.state.side === 'buy') {
-			const targetAmount = math.round(
+			const targetAmount = _floor(
 				sourceAmount / existBroker.sell_price,
 				decimalPoint
 			);
@@ -810,7 +814,7 @@ class QuickTradeContainer extends PureComponent {
 				brokerSourceAmount: sourceAmount,
 			});
 		} else {
-			const targetAmount = math.round(
+			const targetAmount = _floor(
 				sourceAmount * existBroker.buy_price,
 				decimalPoint
 			);
@@ -1077,12 +1081,14 @@ class QuickTradeContainer extends PureComponent {
 											text={STRINGS['SPEND_AMOUNT']}
 											amount={sourceValue}
 											decimalPoint={decimalPoint}
+											isExistBroker={isExistBroker}
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
 											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 											amount={targetValue}
 											decimalPoint={decimalPoint}
+											isExistBroker={isExistBroker}
 										/>
 										<footer className="d-flex pt-4">
 											<Button

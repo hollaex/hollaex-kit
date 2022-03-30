@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
@@ -13,6 +13,7 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
 import Otcdeskpopup from './Otcdeskpopup';
 import { requestUsers } from '../ListUsers/actions';
+import { setBroker } from 'actions/appActions';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
@@ -30,6 +31,7 @@ const OtcDeskContainer = ({
 	balanceData,
 	oraclePrices,
 	setPricesAndAsset,
+	setBroker,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [type, setType] = useState('step1');
@@ -55,9 +57,24 @@ const OtcDeskContainer = ({
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
 
+	const getBrokerData = useCallback(async () => {
+		setTableLoading(true);
+		try {
+			const res = await getBroker();
+			setBrokerData(res);
+			setTableLoading(false);
+			setBroker(res);
+		} catch (error) {
+			setTableLoading(false);
+			if (error) {
+				message.error(error.message);
+			}
+		}
+	}, [setBroker]);
+
 	useEffect(() => {
 		getBrokerData();
-	}, []);
+	}, [getBrokerData]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -156,20 +173,6 @@ const OtcDeskContainer = ({
 	const handleClosePopup = () => {
 		setSelectedEmailData({});
 		handleClose();
-	};
-
-	const getBrokerData = async () => {
-		setTableLoading(true);
-		try {
-			const res = await getBroker();
-			setBrokerData(res);
-			setTableLoading(false);
-		} catch (error) {
-			setTableLoading(false);
-			if (error) {
-				message.error(error.message);
-			}
-		}
 	};
 
 	const getAllUserData = async (params = {}) => {
@@ -772,6 +775,7 @@ const mapStateToProps = (store) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
+	setBroker: bindActionCreators(setBroker, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OtcDeskContainer);
