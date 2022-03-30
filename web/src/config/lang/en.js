@@ -771,6 +771,9 @@ export default {
 		COMPLETED: 'Matured',
 		COMPLETED_TOOLTIP:
 			'Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.',
+		CONNECT_ERROR: 'Please check your wallet',
+		INSTALL_METAMASK:
+			'You must install Metamask into your browser: https://metamask.io/download.html',
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
