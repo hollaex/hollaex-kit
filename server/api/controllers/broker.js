@@ -6,6 +6,40 @@ const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
+const getBrokerQuote = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/getBrokerQuote get',
+		req.auth
+	);
+
+	const user_id = req.auth.sub.id;
+	const {
+		symbol,
+		size,
+		side
+	} = req.swagger.params;
+
+
+	toolsLib.broker.fetchBrokerQuote({
+		symbol,
+		size,
+		side,
+		user_id
+	})
+		.then((brokerQuote) => {
+			return res.json(brokerQuote);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/getBrokerQuote err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
@@ -22,7 +56,11 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size
+		increment_size,
+		type,
+		exchangeId,
+		exchange_api_key,
+		exchange_api_secret
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -36,7 +74,11 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size
+		increment_size,
+		type,
+		exchangeId,
+		exchange_api_key,
+		exchange_api_secret
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -48,6 +90,10 @@ const createBrokerPair = (req, res) => {
 		min_size,
 		max_size,
 		increment_size,
+		type,
+		exchangeId,
+		exchange_api_key,
+		exchange_api_secret
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -69,10 +115,10 @@ function updateBrokerPair(req, res) {
 		'controllers/broker/updateBrokerPair auth',
 		req.auth
 	);
-	
+
 	const ip = req.headers['x-real-ip'];
-	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id } = req.swagger.params.data.value;
-	
+	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, exchangeId, exchange_api_key, exchange_api_secret } = req.swagger.params.data.value;
+
 	loggerBroker.verbose(
 		req.uuid,
 		'controllers/broker/updateBrokerPair data',
@@ -84,11 +130,15 @@ function updateBrokerPair(req, res) {
 		max_size,
 		increment_size,
 		paused,
-		user_id
+		user_id,
+		type,
+		exchangeId,
+		exchange_api_key,
+		exchange_api_secret
 	);
 
 	toolsLib.broker.updateBrokerPair(id, {
-		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id
+		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, exchangeId, exchange_api_key, exchange_api_secret
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -141,7 +191,11 @@ function getBrokerPairs(req, res) {
 		'paused',
 		'min_size',
 		'max_size',
-		'increment_size'
+		'increment_size',
+		'type',
+		'exchangeId',
+		'exchange_api_key',
+		'exchange_api_secret'
 	])
 		.then((brokerPairs) => {
 			return res.json(brokerPairs);
@@ -193,6 +247,7 @@ const executeBrokerDeal = (req, res) => {
 }
 
 module.exports = {
+	getBrokerQuote,
 	createBrokerPair,
 	updateBrokerPair,
 	deleteBrokerPair,

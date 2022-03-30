@@ -2,9 +2,12 @@
 
 const { getModel } = require('./database/model');
 const math = require('mathjs');
+const ccxt = require('ccxt');
+const randomString = require('random-string');
 const dbQuery = require('./database/query');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
+const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
 const { validatePair, getKitTier } = require('./common');
 
@@ -21,6 +24,81 @@ const validateBrokerPair = (brokerPair) => {
 		throw new Error("Broker order price increment must be bigger than zero.")
 	} else if (brokerPair.symbol && !validatePair(brokerPair.symbol)) {
 		throw new Error('invalid symbol');
+	}
+}
+
+const fetchBrokerQuote = async (brokerQuote) => {
+
+	const calculateDeal = (price) => {
+		// TO DO: Calculate the deal and apply exchange admin's formula(Dynamic Script) to the price
+		//--
+		return price;
+	}
+
+	const generateRandomToken = (size, side, user_id, price) => {
+		// Generate random token
+		const randomToken = randomString({ length: 20 });
+
+		// set the generated token along with trade data in Redis with 30 second(Default) expiry time, The value will be editable by exchange admin
+		const tradeData = {
+			user_id,
+			price,
+			size,
+			side
+		}
+
+		client.setexAsync(randomToken, 30, JSON.stringify(tradeData));
+		return randomToken;
+	}
+
+	try {
+		const { symbol, size, side, user_id } = brokerQuote;
+
+		// Get the price from redis
+		const quotePrice = await client.getAsync(symbol);
+
+		// If it doesn't exist, fetch it from Binance 
+		if (!quotePrice) {
+			const formattedSymbol = symbol.split('-').join("").toUpperCase();
+			return rp(`https://api.binance.com/api/v3/ticker/price?symbol=${formattedSymbol}`)
+				.then(res => {
+
+					//Store latest price in Redis with 1 minute expiry time
+					client.setexAsync(symbol, 60, res.price);
+
+					//Calculate the deal
+					const calculatedPrice = calculateDeal(res.price);
+
+					// Generate randomToken to be used during deal exacution
+					const randomToken = generateRandomToken(size, side, user_id, calculatedPrice);
+
+					const responseObject = {
+						token: randomToken,
+						price: calculatedPrice,
+					}
+
+					return responseObject;
+				})
+				.catch(err => {
+					throw new Error(err);
+				})
+		} else {
+			//Calculate the deal
+			const calculatedPrice = calculateDeal(quotePrice);
+
+			// Generate randomToken to be used during deal exacution
+			const randomToken = generateRandomToken(size, side, user_id, calculatedPrice);
+
+			const responseObject = {
+				token: randomToken,
+				price: calculatedPrice,
+			}
+
+			return responseObject;
+		}
+
+	} catch (err) {
+		throw new Error(err);
 	}
 }
 
@@ -63,7 +141,11 @@ const updateBrokerPair = async (id, data) => {
 			"min_size",
 			"max_size",
 			"increment_size",
-			"paused"
+			"paused",
+			"type",
+			"exchangeId",
+			"exchange_api_key",
+			"exchange_api_secret"
 		]
 	});
 }
@@ -124,5 +206,6 @@ module.exports = {
 	fetchBrokerPairs,
 	updateBrokerPair,
 	deleteBrokerPair,
-	executeBrokerDeal
+	executeBrokerDeal,
+	fetchBrokerQuote
 };

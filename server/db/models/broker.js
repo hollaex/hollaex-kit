@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Broker = sequelize.define(
 		'Broker',
 		{
@@ -46,7 +46,24 @@ module.exports = function(sequelize, DataTypes) {
 			increment_size: {
 				type: DataTypes.DOUBLE,
 				allowNull: false
-			}
+			},
+			type: {
+				type: DataTypes.ENUM('manual', 'dynamic'),
+				defaultValue: 'manual',
+				allowNull: false
+			},
+			exchange_id: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			exchange_api_key: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			exchange_api_secret: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 		},
 		{
 			timestamps: true,

@@ -4339,6 +4339,40 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /broker/quote:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerQuote
+      description: Get Quote Currency
+      tags:
+        - User
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: true
+          type: string
+        - in: query
+          name: side
+          description: buy or sell
+          required: true
+          type: string
+          enum: [ 'buy', 'sell' ]
+        - in: query
+          name: size
+          description: size of the coin
+          required: true
+          type: number
+          format: double
+      responses:
+        200:
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
 definitions:
   ObjectResponse:
     type: object
