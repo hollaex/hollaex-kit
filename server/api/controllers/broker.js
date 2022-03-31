@@ -16,15 +16,17 @@ const getBrokerQuote = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const {
 		symbol,
-		size,
-		side
+		exchange_name,
+		spread,
+		multiplier
 	} = req.swagger.params;
 
 
 	toolsLib.broker.fetchBrokerQuote({
 		symbol,
-		size,
-		side,
+		exchange_name,
+		spread,
+		multiplier,
 		user_id
 	})
 		.then((brokerQuote) => {
