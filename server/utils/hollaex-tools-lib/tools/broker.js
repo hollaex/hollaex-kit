@@ -76,9 +76,8 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
-			// TO DO: save the string in formula field.
-			// let formulaScript = ``
-			// await broker.update({ formula: formulaScript }, { fields: ['formula'] });
+			// TO DO: save the script in formula field.
+			// await broker.update({ formula: <formulaScript> }, { fields: ['formula'] });
 
 			if (exchange_name === 'binance') {
 				// Get the price from redis
