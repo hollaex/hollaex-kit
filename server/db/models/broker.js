@@ -52,18 +52,20 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 'manual',
 				allowNull: false
 			},
+			quote_expiry_time: {
+				type: DataTypes.INTEGER,
+				defaultValue: 30,
+				allowNull: true
+			},
 			exchange_id: {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
-			exchange_api_key: {
-				type: DataTypes.STRING,
-				allowNull: true,
+			formula: {
+				type: DataTypes.TEXT,
+				allowNull: true
 			},
-			exchange_api_secret: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
+
 		},
 		{
 			timestamps: true,
