@@ -89,7 +89,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 				if (!quotePrice) {
 					return rp('https://api3.binance.com/api/v3/ticker/price')
 						.then(res => {
-							//Store latest price in Redis with 1 minute expiry time
+							//Store all market prices in Redis with 1 minute expiry time
 							//response is a stringfied object.
 							client.setexAsync(symbol, 60, res);
 
@@ -100,7 +100,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 							}
 							const calculatedPrice = calculateDeal(foundSymbol.price, side, spread, multiplier);
 
-							// Generate randomToken to be used during deal exacution
+							// Generate randomToken to be used during deal execution
 							const randomToken = generateRandomToken(user_id, side, broker.quote_expiry_time, multiplier, calculatedPrice);
 
 							const responseObject = {
@@ -123,7 +123,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 						}
 						const calculatedPrice = calculateDeal(foundSymbol.price, side, broker.quote_expiry_time, spread, multiplier);
 
-						// Generate randomToken to be used during deal exacution
+						// Generate randomToken to be used during deal execution
 						const randomToken = generateRandomToken(user_id, multiplier, calculatedPrice);
 
 						const responseObject = {
