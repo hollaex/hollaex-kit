@@ -721,9 +721,7 @@ export default {
 		AMOUNT_LABEL: 'Amount to stake',
 		PERIOD_SUBTITLE:
 			'Longer you stake the more you are rewarded. Select the duration of stake below.',
-		PERIOD_OPTION_TEXT: 'Stake for {0} and earn',
-		STAKE_AND_EARN_DETAILS:
-			'Stake for ~{0} and earn {1}x on the amount you stake',
+		STAKE_AND_EARN_DETAILS: 'Stake for ~{0} and earn {1}',
 		PREDICTED_EARNINGS: 'Predicted earnings',
 		VARIABLE_TITLE: 'Variable*',
 		VARIABLE_TEXT: '*{0} about how the variable rate works.',
@@ -771,6 +769,31 @@ export default {
 		COMPLETED: 'Matured',
 		COMPLETED_TOOLTIP:
 			'Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.',
+		CONNECT_ERROR: 'Please check your wallet',
+		INSTALL_METAMASK:
+			'You must install Metamask into your browser: https://metamask.io/download.html',
+		REWARDS: {
+			0: {
+				CARD: 'Earn rewards (no bonuses)',
+				TEXT: 'regular rewards.',
+			},
+			1: {
+				CARD: 'Earn rewards + bonuses',
+				TEXT: 'bonus rewards on your earnings',
+			},
+			2: {
+				CARD: 'Highest rewards, highest bonuses',
+				TEXT: 'the highest bonus rewards on your earnings',
+			},
+			3: {
+				CARD: '',
+				TEXT: '',
+			},
+			4: {
+				CARD: '',
+				TEXT: '',
+			},
+		},
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
