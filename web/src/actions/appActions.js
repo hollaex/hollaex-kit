@@ -37,6 +37,7 @@ export const NOTIFICATIONS = {
 	EARLY_UNSTAKE: 'EARLY_UNSTAKE',
 	UNSTAKE: 'UNSTAKE',
 	MOVE_XHT: 'MOVE_XHT',
+	METAMASK_ERROR: 'METAMASK_ERROR',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -349,6 +350,9 @@ export const openMarketSelector = (data = {}) =>
 
 export const openConnectViaDesktop = (data = {}) =>
 	setNotification(CONNECT_VIA_DESKTOP, data, true);
+
+export const openMetamaskError = (data = {}) =>
+	setNotification(NOTIFICATIONS.METAMASK_ERROR, data, true);
 
 export const openRiskPortfolioOrderWarning = (data = {}) =>
 	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);

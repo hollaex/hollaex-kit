@@ -11,6 +11,7 @@ const CurrencyBallWithPrice = ({
 	size = 'm',
 	coins = {},
 	min,
+	isExistBroker = false,
 }) => {
 	const { name, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	const minValue = min ? min : rest.min;
@@ -20,7 +21,7 @@ const CurrencyBallWithPrice = ({
 		<div className="with_price-block_amount d-flex direction_ltr">
 			<CurrencyBall name={currencyShortName} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
-				{`${formatToCurrency(amount, minValue)}`}
+				{isExistBroker ? amount : `${formatToCurrency(amount, minValue)}`}
 				{/* {symbol !== BASE_CURRENCY && price && (
 					<div className={`with_price-block_amount-value-${BASE_CURRENCY.toLowerCase()} d-flex align-items-end`}>
 						{` ~ ${formatToCurrency(

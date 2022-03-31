@@ -5120,32 +5120,33 @@ table th {
   background-color: transparent;
   background-size: 100%;
   background-repeat: repeat-y;
-  height: 10rem;
-  width: 10rem;
-  border: none;
-  font-size: 1rem;
+  height: 9rem;
+  width: 9rem;
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  font-size: 0.9rem;
   line-height: 1.2rem;
   text-align: center;
   opacity: 0.5; }
   .stake-period-button.ant-radio-button-wrapper .stake-period-text {
-    width: 10rem;
+    width: 9rem;
     margin: auto; }
   .stake-period-button.ant-radio-button-wrapper .period-x {
-    font-weight: bolder;
-    font-size: 4rem;
+    font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
     line-height: 5rem;
+    letter-spacing: 0;
     color: var(--labels_important-active-labels-text-graphics); }
   .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
     background-color: transparent; }
 
 .stake-period-button.ant-radio-button-wrapper-checked {
-  height: 12rem;
-  width: 12rem;
+  height: 10rem;
+  width: 10rem;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
   opacity: 1; }
   .stake-period-button.ant-radio-button-wrapper-checked .period-x {
-    font-weight: bolder;
-    font-size: 5rem;
-    line-height: 6rem; }
+    font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
+    line-height: 6rem;
+    letter-spacing: 0; }
 
 .stake-period-button.ant-radio-button-wrapper:hover, .stake-period-button.ant-radio-button-wrapper:focus {
   color: var(--labels_secondary-inactive-label-text-graphics); }
