@@ -49,7 +49,12 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 	const generateRandomToken = (user_id, side, expiryTime, multiplier, price) => {
 		// Generate random token
-		const randomToken = randomString({ length: 20 });
+		//TO DO: Use Crypto lib to generate random string
+		const randomToken = randomString({
+			length: 20, 
+			numeric: true,
+			letters: true
+		});
 
 		// set the generated token along with trade data in Redis expiry time(quote_expiry_time)
 		const tradeData = {
@@ -71,6 +76,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
+			// TO DO: save the string in formula field.
 			// let formulaScript = ``
 			// await broker.update({ formula: formulaScript }, { fields: ['formula'] });
 
@@ -175,16 +181,17 @@ const updateBrokerPair = async (id, data) => {
 	return brokerPair.update(data, {
 		fields: [
 			'user_id',
-			"buy_price",
-			"sell_price",
-			"min_size",
-			"max_size",
-			"increment_size",
-			"paused",
-			"type",
-			"exchangeId",
-			"exchange_api_key",
-			"exchange_api_secret"
+			'buy_price',
+			'sell_price',
+			'min_size',
+			'max_size',
+			'increment_size',
+			'paused',
+			'type',
+			'quote_expiry_time',
+			'rebalancing_symbol',
+			'account',
+			'formula'
 		]
 	});
 }

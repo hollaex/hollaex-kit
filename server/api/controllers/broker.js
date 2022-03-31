@@ -62,9 +62,10 @@ const createBrokerPair = (req, res) => {
 		max_size,
 		increment_size,
 		type,
-		exchangeId,
-		exchange_api_key,
-		exchange_api_secret
+		quote_expiry_time,
+		rebalancing_symbol,
+		account,
+		formula
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -80,9 +81,10 @@ const createBrokerPair = (req, res) => {
 		max_size,
 		increment_size,
 		type,
-		exchangeId,
-		exchange_api_key,
-		exchange_api_secret
+		quote_expiry_time,
+		rebalancing_symbol,
+		account,
+		formula
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -95,9 +97,10 @@ const createBrokerPair = (req, res) => {
 		max_size,
 		increment_size,
 		type,
-		exchangeId,
-		exchange_api_key,
-		exchange_api_secret
+		quote_expiry_time,
+		rebalancing_symbol,
+		account,
+		formula
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -121,7 +124,7 @@ function updateBrokerPair(req, res) {
 	);
 
 	const ip = req.headers['x-real-ip'];
-	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, exchangeId, exchange_api_key, exchange_api_secret } = req.swagger.params.data.value;
+	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, quote_expiry_time, rebalancing_symbol, account, formula } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
 		req.uuid,
@@ -136,9 +139,10 @@ function updateBrokerPair(req, res) {
 		paused,
 		user_id,
 		type,
-		exchangeId,
-		exchange_api_key,
-		exchange_api_secret
+		quote_expiry_time,
+		rebalancing_symbol,
+		account,
+		formula
 	);
 
 	toolsLib.broker.updateBrokerPair(id, {
@@ -197,9 +201,10 @@ function getBrokerPairs(req, res) {
 		'max_size',
 		'increment_size',
 		'type',
-		'exchangeId',
-		'exchange_api_key',
-		'exchange_api_secret'
+		'quote_expiry_time',
+		'rebalancing_symbol',
+		'account',
+		'formula'
 	])
 		.then((brokerPairs) => {
 			return res.json(brokerPairs);
