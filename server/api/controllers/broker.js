@@ -16,6 +16,7 @@ const getBrokerQuote = (req, res) => {
 	const user_id = req.auth.sub.id;
 	const {
 		symbol,
+		side,
 		exchange_name,
 		spread,
 		multiplier
@@ -24,6 +25,7 @@ const getBrokerQuote = (req, res) => {
 
 	toolsLib.broker.fetchBrokerQuote({
 		symbol,
+		side,
 		exchange_name,
 		spread,
 		multiplier,
