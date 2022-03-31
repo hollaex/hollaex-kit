@@ -4351,16 +4351,19 @@ paths:
           name: symbol
           description: Currency symbol
           required: true
-          type: string
         - in: query
-          name: side
-          description: buy or sell
+          name: exchange_name
+          description: name of the desired exchange
           required: true
           type: string
-          enum: [ 'buy', 'sell' ]
         - in: query
-          name: size
-          description: size of the coin
+          name: spread
+          description: percentage
+          required: true
+          type: string
+        - in: query
+          name: multiplier
+          description: quantity by which a given price is to be multiplied.
           required: true
           type: number
           format: double
