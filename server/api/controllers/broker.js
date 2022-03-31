@@ -146,7 +146,7 @@ function updateBrokerPair(req, res) {
 	);
 
 	toolsLib.broker.updateBrokerPair(id, {
-		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, exchangeId, exchange_api_key, exchange_api_secret
+		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, quote_expiry_time, rebalancing_symbol, account, formula
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
