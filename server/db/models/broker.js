@@ -17,10 +17,12 @@ module.exports = function (sequelize, DataTypes) {
 			buy_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
+				defaultValue: 0,
 			},
 			sell_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
+				defaultValue: 0,
 			},
 			paused: {
 				type: DataTypes.BOOLEAN,
@@ -57,8 +59,12 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 30,
 				allowNull: true
 			},
-			exchange_id: {
+			rebalancing_symbol: {
 				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			account: {
+				type: DataTypes.JSONB,
 				allowNull: true,
 			},
 			formula: {
