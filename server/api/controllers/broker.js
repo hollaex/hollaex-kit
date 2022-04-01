@@ -234,18 +234,19 @@ const executeBrokerDeal = (req, res) => {
 		symbol,
 		price,
 		size,
+		token,
 	} = req.swagger.params.data.value;
 
 	const userId = req.auth.sub.id;
 
-	toolsLib.broker.executeBrokerDeal(userId, symbol, side, size, price)
+	toolsLib.broker.executeBrokerDeal(userId, symbol, side, size, price, token)
 		.then((data) => {
 			loggerBroker.verbose(
 				req.uuid,
 				'controllers/broker/executeBrokerDeal done',
 				data
 			);
-			toolsLib.broker.reverseOrder({ userId, symbol, side, size, price });
+			toolsLib.broker.reverseTransaction({ userId, symbol, side, size, price, token });
 			res.json(data);
 		})
 		.catch((err) => {

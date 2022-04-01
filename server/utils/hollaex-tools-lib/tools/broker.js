@@ -153,25 +153,26 @@ const fetchBrokerQuote = async (brokerQuote) => {
 	}
 }
 
-const reverseOrder = async (orderData) => {
-	//TODO: Call Binance API and create limit order
-	
-	// const { userId, symbol, side, size, price } = orderData;
+const reverseTransaction = async (orderData) => {
+	const {symbol, side, size, price } = orderData;
 
-	// const broker = await getModel('broker').findOne({ where: { symbol } });
+	const broker = await getModel('broker').findOne({ where: { symbol } });
 
-	// if (broker?.account?.binance) {
-	// 	const binanceInfo = broker.account.binance;
-	// 	const exchangeId = 'binance'
-	// 		, exchangeClass = ccxt[exchangeId]
-	// 		, exchange = new exchangeClass({
-	// 			'apiKey': binanceInfo.apiKey,
-	// 			'secret': binanceInfo.apiSecret,
-	// 		})
-	// 		exchange.createLimitBuyOrder (symbol, amount, price[, params])
-	// 		exchange.createLimitSellOrder (symbol, amount, price[, params])
-	// }
+	if (broker.account.hasOwnProperty('binance')) {
+		const binanceInfo = broker.account.binance;
+		const exchangeId = 'binance'
+			, exchangeClass = ccxt[exchangeId]
+			, exchange = new exchangeClass({
+				'apiKey': binanceInfo.apiKey,
+				'secret': binanceInfo.apiSecret,
+			})
+		if (side === 'buy') {
+			exchange.createLimitBuyOrder(broker.rebalancing_symbol || symbol, size, price - price * 0.05)
 
+		} else if (side == 'sell') {
+			exchange.createLimitSellOrder(broker.rebalancing_symbol || symbol, size, price + price * 0.05)
+		}
+	}
 
 }
 
@@ -236,7 +237,16 @@ const deleteBrokerPair = async (id) => {
 	return brokerPair.destroy();
 }
 
-const executeBrokerDeal = async (userId, symbol, side, size, price) => {
+const executeBrokerDeal = async (userId, symbol, side, size, price, token) => {
+
+	const storedToken = await client.getAsync(token);
+	if (!storedToken) {
+		throw new Error("Token expired");
+	}
+	if (storedToken.user_id !== userId) {
+		throw new Error("Auth doesn't match");
+	}
+
 	const brokerPair = await getModel("broker").findOne({ where: { symbol } });
 
 	if (!brokerPair) {
@@ -253,6 +263,7 @@ const executeBrokerDeal = async (userId, symbol, side, size, price) => {
 	if (brokerPrice !== price) {
 		throw new Error(`Given price doesn't match the broker pair price. Price should be ${brokerPrice}`);
 	}
+
 
 	const broker = await getUserByKitId(brokerPair.user_id);
 	const user = await getUserByKitId(userId);
@@ -282,5 +293,5 @@ module.exports = {
 	deleteBrokerPair,
 	executeBrokerDeal,
 	fetchBrokerQuote,
-	reverseOrder
+	reverseTransaction
 };

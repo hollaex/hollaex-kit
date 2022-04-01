@@ -4321,11 +4321,14 @@ paths:
                 type: number
               size:
                 type: number
+              token:
+                type: string
             required:
               - symbol
               - price
               - side
               - size
+              - token
       responses:
         200:
           description: Success
