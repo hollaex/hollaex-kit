@@ -4351,10 +4351,12 @@ paths:
           name: symbol
           description: Currency symbol
           required: true
+          type: string
         - in: query
           name: side
           description: buy or sell
           required: true
+          type: string
           enum: ['buy', 'sell']
         - in: query
           name: exchange_name
