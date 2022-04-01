@@ -92,6 +92,7 @@ const PairsTab = (props) => {
 						allCoins={props.coins}
 						exchange={props.exchange}
 						user={props.user}
+						balanceData={props.user && props.user.balance}
 					/>
 				</TabPane>
 			</Tabs>

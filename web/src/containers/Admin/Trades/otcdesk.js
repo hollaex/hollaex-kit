@@ -396,11 +396,11 @@ const OtcDeskContainer = ({
 					<div>
 						<div>
 							{symbol.split('-')[0].toUpperCase()}:{' '}
-							{balanceData[`${symbol}_available`] || 0}
+							{balanceData[`${symbol && symbol.split('-')[0]}_available`] || 0}
 						</div>
 						<div>
 							{symbol.split('-')[1].toUpperCase()}:{' '}
-							{balanceData[`${symbol}_available`] || 0}
+							{balanceData[`${symbol && symbol.split('-')[1]}_available`] || 0}
 						</div>
 					</div>
 				);

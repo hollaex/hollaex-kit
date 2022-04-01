@@ -95,16 +95,6 @@ class TransactionsHistory extends Component {
 		} else {
 			this.setState({ activeTab: 0 });
 		}
-		this.openCurrentTab();
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevState.activeTab) !==
-			JSON.stringify(this.state.activeTab)
-		) {
-			this.openCurrentTab();
-		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -139,20 +129,6 @@ class TransactionsHistory extends Component {
 		}
 	}
 
-	openCurrentTab = () => {
-		let currentTab = '';
-		if (this.state.activeTab === 1) {
-			currentTab = 'order-history';
-		} else if (this.state.activeTab === 2) {
-			currentTab = 'deposit';
-		} else if (this.state.activeTab === 3) {
-			currentTab = 'withdraw';
-		} else {
-			currentTab = 'trades';
-		}
-		this.props.router.push(`/transactions?${currentTab}`);
-	};
-
 	onCloseDialog = () => {
 		this.setState({
 			dialogIsOpen: false,
@@ -171,10 +147,15 @@ class TransactionsHistory extends Component {
 			getUserDeposits,
 			getUserWithdrawals,
 		} = this.props;
-
+		let open = true;
+		if (params && params.type && params.type === 'active') {
+			open = true;
+		} else if (params && params.type && params.type === 'closed') {
+			open = false;
+		}
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: true });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open });
 				break;
 			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);
