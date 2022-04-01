@@ -34,13 +34,13 @@ module.exports = {
         }),
       queryInterface
         .changeColumn(TABLE, 'buy_price', {
-          type: DataTypes.DOUBLE,
+          type: Sequelize.DOUBLE,
           allowNull: false,
           defaultValue: 0,
         }),
       queryInterface
         .changeColumn(TABLE, 'sell_price', {
-          type: DataTypes.DOUBLE,
+          type: Sequelize.DOUBLE,
           allowNull: false,
           defaultValue: 0,
         })
@@ -57,12 +57,12 @@ module.exports = {
       queryInterface.removeColumn(TABLE, 'formula'),
       queryInterface
         .changeColumn(TABLE, 'buy_price', {
-          type: DataTypes.DOUBLE,
+          type: Sequelize.DOUBLE,
           allowNull: false,
         }),
       queryInterface
         .changeColumn(TABLE, 'sell_price', {
-          type: DataTypes.DOUBLE,
+          type: Sequelize.DOUBLE,
           allowNull: false,
         })
     ]);
