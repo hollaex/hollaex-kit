@@ -30,24 +30,24 @@ const validateBrokerPair = (brokerPair) => {
 
 const fetchBrokerQuote = async (brokerQuote) => {
 
-	const calculateDeal = (price, side, spread, multiplier) => {
+	const calculateDeal = (price, side, size, spread, multiplier = 1) => {
 		// Calculate the price
-		const parsedPrice = parseFloat(price);
-		let multipliedPrice = multiplier * parsedPrice;
+		const parsedPrice = parseFloat(price) * multiplier;
+		let totalPrice;
 		let calculatedPrice;
 
 		if (side === 'buy') {
-			multipliedPrice = multiplier / parsedPrice;
-			calculatedPrice = multipliedPrice - (multipliedPrice * spread / 100)
+			totalPrice = size / parsedPrice;
+			calculatedPrice = totalPrice - (totalPrice * spread / 100)
 		} else if (side === 'sell') {
-			multipliedPrice = multiplier * parsedPrice;
-			calculatedPrice = multipliedPrice - (multipliedPrice * spread / 100)
+			totalPrice = size * parsedPrice;
+			calculatedPrice = totalPrice - (totalPrice * spread / 100)
 		}
 
 		return calculatedPrice;
 	}
 
-	const generateRandomToken = (user_id, side, expiryTime, multiplier, price) => {
+	const generateRandomToken = (user_id, side, size, expiryTime, multiplier, price) => {
 		// Generate random token
 		//TO DO: Use Crypto lib to generate random string
 		const randomToken = randomString({
@@ -61,7 +61,8 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			user_id,
 			price,
 			side,
-			size: multiplier,
+			size,
+			multiplier,
 		}
 
 		client.setexAsync(randomToken, expiryTime, JSON.stringify(tradeData));
@@ -69,7 +70,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 	}
 
 	try {
-		const { symbol, side, exchange_name, spread, multiplier, user_id } = brokerQuote;
+		const { symbol, side, size, exchange_name, spread, multiplier, user_id } = brokerQuote;
 
 		// Get the broker record
 		const broker = await getModel('broker').findOne({ where: { symbol } });
@@ -103,10 +104,10 @@ const fetchBrokerQuote = async (brokerQuote) => {
 							if (!foundSymbol) {
 								throw new Error('Pair not found');
 							}
-							const calculatedPrice = calculateDeal(foundSymbol.price, side, spread, multiplier);
+							const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
 
 							// Generate randomToken to be used during deal execution
-							const randomToken = generateRandomToken(user_id, side, broker.quote_expiry_time, multiplier, calculatedPrice);
+							const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
 
 							const responseObject = {
 								token: randomToken,
@@ -126,10 +127,10 @@ const fetchBrokerQuote = async (brokerQuote) => {
 						if (!foundSymbol) {
 							reject('Pair not found');
 						}
-						const calculatedPrice = calculateDeal(foundSymbol.price, side, broker.quote_expiry_time, spread, multiplier);
+						const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
 
 						// Generate randomToken to be used during deal execution
-						const randomToken = generateRandomToken(user_id, multiplier, calculatedPrice);
+						const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
 
 						const responseObject = {
 							token: randomToken,

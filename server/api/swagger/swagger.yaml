@@ -4359,6 +4359,12 @@ paths:
           type: string
           enum: ['buy', 'sell']
         - in: query
+          name: size
+          description: quantity by which a given price is to be multiplied
+          required: true
+          type: number
+          format: double
+        - in: query
           name: exchange_name
           description: name of the desired exchange
           required: true
@@ -4370,8 +4376,8 @@ paths:
           type: string
         - in: query
           name: multiplier
-          description: quantity by which a given price is to be multiplied.
-          required: true
+          description: multiplier.
+          required: false
           type: number
           format: double
       responses:

@@ -17,6 +17,7 @@ const getBrokerQuote = (req, res) => {
 	const {
 		symbol,
 		side,
+		size,
 		exchange_name,
 		spread,
 		multiplier
@@ -26,6 +27,7 @@ const getBrokerQuote = (req, res) => {
 	toolsLib.broker.fetchBrokerQuote({
 		symbol: symbol.value,
 		side: side.value,
+		size: size.value,
 		exchange_name: exchange_name.value,
 		spread: spread.value,
 		multiplier: multiplier.value,
