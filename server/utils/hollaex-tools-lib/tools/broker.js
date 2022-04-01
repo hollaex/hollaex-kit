@@ -11,6 +11,7 @@ const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
 const { validatePair, getKitTier } = require('./common');
+const _eval = require('eval');
 
 const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -83,26 +84,50 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
-			// TO DO: save the script in formula field.
-			// await broker.update({ formula: <formulaScript> }, { fields: ['formula'] });
+
 
 			if (exchange_name === 'binance') {
-				// Get the price from redis
-				const formattedSymbol = symbol.split('-').join('').toUpperCase();
-				const quotePrice = await client.getAsync(formattedSymbol);
 
-				// If it doesn't exist, fetch all market from Binance 
-				if (!quotePrice) {
-					return rp('https://api3.binance.com/api/v3/ticker/price')
-						.then(res => {
-							//Store all market prices in Redis with 1 minute expiry time
-							//response is a stringfied object.
-							client.setexAsync(symbol, 60, res);
+				const binanceScript = async () => {
+					// Get the price from redis
+					const formattedSymbol = symbol.split('-').join('').toUpperCase();
+					const quotePrice = await client.getAsync(symbol);
 
+					// If it doesn't exist, fetch all market from Binance 
+					if (!quotePrice) {
+						return rp('https://api3.binance.com/api/v3/ticker/price')
+							.then(res => {
+								//Store all market prices in Redis with 1 minute expiry time
+								//response is a stringfied object.
+								client.setexAsync(symbol, 60, res);
+
+								//Calculate the deal
+								const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
+								if (!foundSymbol) {
+									throw new Error('Pair not found');
+								}
+								const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
+
+								// Generate randomToken to be used during deal execution
+								const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
+
+								const responseObject = {
+									token: randomToken,
+									price: calculatedPrice
+								}
+
+								return responseObject;
+							})
+							.catch(err => {
+								throw new Error(err);
+							})
+
+					} else {
+						return new Promise((resolve, reject) => {
 							//Calculate the deal
-							const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
+							const foundSymbol = JSON.parse(quotePrice).find((data) => data.symbol === formattedSymbol);
 							if (!foundSymbol) {
-								throw new Error('Pair not found');
+								reject('Pair not found');
 							}
 							const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
 
@@ -113,39 +138,34 @@ const fetchBrokerQuote = async (brokerQuote) => {
 								token: randomToken,
 								price: calculatedPrice
 							}
-
-							return responseObject;
+							resolve(responseObject);
 						})
-						.catch(err => {
-							throw new Error(err);
-						})
-
-				} else {
-					return new Promise((resolve, reject) => {
-						//Calculate the deal
-						const foundSymbol = JSON.parse(quotePrice).find((data) => data.symbol === formattedSymbol);
-						if (!foundSymbol) {
-							reject('Pair not found');
-						}
-						const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
-
-						// Generate randomToken to be used during deal execution
-						const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
-
-						const responseObject = {
-							token: randomToken,
-							price: calculatedPrice
-						}
-						resolve(responseObject);
-					})
+					}
 				}
 
+				// this saves the function as full string
+				let binanceFormula = `module.exports = (${binanceScript.toString()})()`;
+
+				const resObject = _eval(binanceFormula, "binanceScript", {
+					symbol, side, size, exchange_name, spread, multiplier, user_id, client, broker, calculateDeal, generateRandomToken, rp
+				}, true);
+
+				// save the script in formula field.
+				await broker.update({ formula: binanceFormula }, { fields: ['formula'] });
+
+				return resObject;
 			} else if (exchange_name === 'otherExchange') {
 				// TO DO: --
 			}
 
 		} else {
-			//TO DO: Run formula
+
+			//Run formula
+			const resObject = _eval(broker.formula, "customScript", {
+				symbol, side, size, exchange_name, spread, multiplier, user_id, client, broker, calculateDeal, generateRandomToken, rp
+			}, true);
+
+			return resObject;
 		}
 
 	} catch (err) {
@@ -154,7 +174,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 }
 
 const reverseTransaction = async (orderData) => {
-	const {symbol, side, size, price } = orderData;
+	const { symbol, side, size, price } = orderData;
 
 	const broker = await getModel('broker').findOne({ where: { symbol } });
 
