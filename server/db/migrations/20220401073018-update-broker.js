@@ -31,6 +31,18 @@ module.exports = {
         .addColumn(TABLE, 'formula', {
           type: Sequelize.TEXT,
           allowNull: true
+        }),
+      queryInterface
+        .changeColumn(TABLE, 'buy_price', {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+          defaultValue: 0,
+        }),
+      queryInterface
+        .changeColumn(TABLE, 'sell_price', {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+          defaultValue: 0,
         })
     ]);
 
@@ -42,7 +54,17 @@ module.exports = {
       queryInterface.removeColumn(TABLE, 'quote_expiry_time'),
       queryInterface.removeColumn(TABLE, 'rebalancing_symbol'),
       queryInterface.removeColumn(TABLE, 'account'),
-      queryInterface.removeColumn(TABLE, 'formula')
+      queryInterface.removeColumn(TABLE, 'formula'),
+      queryInterface
+        .changeColumn(TABLE, 'buy_price', {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+        }),
+      queryInterface
+        .changeColumn(TABLE, 'sell_price', {
+          type: DataTypes.DOUBLE,
+          allowNull: false,
+        })
     ]);
   }
 };
