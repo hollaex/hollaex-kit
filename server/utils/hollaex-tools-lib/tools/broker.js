@@ -47,11 +47,11 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		return calculatedPrice;
 	}
 
-	const generateRandomToken = (user_id, side, size, expiryTime, multiplier, price) => {
+	const generateRandomToken = (user_id, side, size, expiryTime = 30, multiplier, price) => {
 		// Generate random token
 		//TO DO: Use Crypto lib to generate random string
 		const randomToken = randomString({
-			length: 20, 
+			length: 20,
 			numeric: true,
 			letters: true
 		});
@@ -155,6 +155,24 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 const reverseOrder = async (orderData) => {
 	//TODO: Call Binance API and create limit order
+	
+	// const { userId, symbol, side, size, price } = orderData;
+
+	// const broker = await getModel('broker').findOne({ where: { symbol } });
+
+	// if (broker?.account?.binance) {
+	// 	const binanceInfo = broker.account.binance;
+	// 	const exchangeId = 'binance'
+	// 		, exchangeClass = ccxt[exchangeId]
+	// 		, exchange = new exchangeClass({
+	// 			'apiKey': binanceInfo.apiKey,
+	// 			'secret': binanceInfo.apiSecret,
+	// 		})
+	// 		exchange.createLimitBuyOrder (symbol, amount, price[, params])
+	// 		exchange.createLimitSellOrder (symbol, amount, price[, params])
+	// }
+
+
 }
 
 const createBrokerPair = (brokerPair) => {
