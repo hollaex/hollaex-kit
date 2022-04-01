@@ -84,8 +84,6 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
-
-
 			if (exchange_name === 'binance') {
 
 				const binanceScript = async () => {
