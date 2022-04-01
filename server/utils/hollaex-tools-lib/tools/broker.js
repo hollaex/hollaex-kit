@@ -139,7 +139,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 					})
 				}
 
-			} else if (exchange_name === 'custom') {
+			} else if (exchange_name === 'otherExchange') {
 				// TO DO: --
 			}
 
@@ -150,6 +150,10 @@ const fetchBrokerQuote = async (brokerQuote) => {
 	} catch (err) {
 		throw new Error(err);
 	}
+}
+
+const reverseOrder = async (orderData) => {
+	//TODO: Call Binance API and create limit order
 }
 
 const createBrokerPair = (brokerPair) => {
@@ -258,5 +262,6 @@ module.exports = {
 	updateBrokerPair,
 	deleteBrokerPair,
 	executeBrokerDeal,
-	fetchBrokerQuote
+	fetchBrokerQuote,
+	reverseOrder
 };

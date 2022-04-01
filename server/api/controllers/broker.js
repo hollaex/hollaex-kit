@@ -243,6 +243,7 @@ const executeBrokerDeal = (req, res) => {
 				'controllers/broker/executeBrokerDeal done',
 				data
 			);
+			toolsLib.broker.reverseOrder({ userId, symbol, side, size, price });
 			res.json(data);
 		})
 		.catch((err) => {
