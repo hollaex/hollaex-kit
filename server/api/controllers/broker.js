@@ -24,13 +24,13 @@ const getBrokerQuote = (req, res) => {
 
 
 	toolsLib.broker.fetchBrokerQuote({
-		symbol,
-		side,
-		exchange_name,
-		spread,
-		multiplier,
-		user_id
-	})
+		symbol: symbol.value,
+		side: side.value,
+		exchange_name: exchange_name.value,
+		spread: spread.value,
+		multiplier: multiplier.value,
+		user_id: user_id.value,
+	},)
 		.then((brokerQuote) => {
 			return res.json(brokerQuote);
 		})
