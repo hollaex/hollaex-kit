@@ -74,6 +74,12 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		// Get the broker record
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
+		if (!broker) {
+			throw new Error("Broker pair could not be found.");
+		} else if (broker.paused) {
+			throw new Error("Broker pair is paused.");
+		}
+
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
 			// TO DO: save the script in formula field.
