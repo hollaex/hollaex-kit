@@ -72,7 +72,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		const { symbol, side, exchange_name, spread, multiplier, user_id } = brokerQuote;
 
 		// Get the broker record
-		const broker = await getModel('broker').findOne({ where: { user_id } });
+		const broker = await getModel('broker').findOne({ where: { symbol } });
 
 		// If it doesn't have a formula, generate one with the received parameters
 		if (!broker.formula) {
