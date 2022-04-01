@@ -4345,7 +4345,7 @@ paths:
       operationId: getBrokerQuote
       description: Get Quote Currency
       tags:
-        - User
+        - broker
       parameters:
         - in: query
           name: symbol
@@ -4375,12 +4375,16 @@ paths:
       responses:
         200:
           description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
         default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
         - Bearer: []
+      x-security-scopes:
+        - user
 definitions:
   ObjectResponse:
     type: object
