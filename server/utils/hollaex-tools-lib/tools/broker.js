@@ -175,25 +175,29 @@ const fetchBrokerQuote = async (brokerQuote) => {
 const reverseTransaction = async (orderData) => {
 	const { symbol, side, size, price } = orderData;
 
-	const broker = await getModel('broker').findOne({ where: { symbol } });
+	try {
+		const broker = await getModel('broker').findOne({ where: { symbol } });
 
-	if (broker.account && broker.account.hasOwnProperty('binance')) {
-		const binanceInfo = broker.account.binance;
-		const exchangeId = 'binance'
-			, exchangeClass = ccxt[exchangeId]
-			, exchange = new exchangeClass({
-				'apiKey': binanceInfo.apiKey,
-				'secret': binanceInfo.apiSecret,
-			})
-		if (side === 'buy') {
-			exchange.createLimitBuyOrder(broker.rebalancing_symbol || symbol, size, price - price * 0.05)
-				.then(res => loggerBroker.verbose(res))
-				.catch(err => loggerBroker.error(err));
-		} else if (side == 'sell') {
-			exchange.createLimitSellOrder(broker.rebalancing_symbol || symbol, size, price + price * 0.05)
-				.then(res => loggerBroker.verbose(res))
-				.catch(err => loggerBroker.error(err));
+		if (broker.account && broker.account.hasOwnProperty('binance')) {
+			const binanceInfo = broker.account.binance;
+			const exchangeId = 'binance'
+				, exchangeClass = ccxt[exchangeId]
+				, exchange = new exchangeClass({
+					'apiKey': binanceInfo.apiKey,
+					'secret': binanceInfo.apiSecret,
+				})
+			if (side === 'buy') {
+				exchange.createLimitBuyOrder(broker.rebalancing_symbol || symbol, size, price - price * 0.05)
+					.then(res => loggerBroker.verbose(res))
+					.catch(err => loggerBroker.error(err));
+			} else if (side == 'sell') {
+				exchange.createLimitSellOrder(broker.rebalancing_symbol || symbol, size, price + price * 0.05)
+					.then(res => loggerBroker.verbose(res))
+					.catch(err => loggerBroker.error(err));
+			}
 		}
+	} catch (err) {
+		loggerBroker.error(err);
 	}
 
 }
