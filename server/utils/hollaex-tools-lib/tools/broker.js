@@ -12,6 +12,7 @@ const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
 const { validatePair, getKitTier } = require('./common');
 const _eval = require('eval');
+const { loggerBroker } = require('../../../config/logger');
 
 const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -176,7 +177,7 @@ const reverseTransaction = async (orderData) => {
 
 	const broker = await getModel('broker').findOne({ where: { symbol } });
 
-	if (broker.account.hasOwnProperty('binance')) {
+	if (broker.account && broker.account.hasOwnProperty('binance')) {
 		const binanceInfo = broker.account.binance;
 		const exchangeId = 'binance'
 			, exchangeClass = ccxt[exchangeId]
@@ -186,9 +187,12 @@ const reverseTransaction = async (orderData) => {
 			})
 		if (side === 'buy') {
 			exchange.createLimitBuyOrder(broker.rebalancing_symbol || symbol, size, price - price * 0.05)
-
+				.then(res => loggerBroker.verbose(res))
+				.catch(err => loggerBroker.error(err));
 		} else if (side == 'sell') {
 			exchange.createLimitSellOrder(broker.rebalancing_symbol || symbol, size, price + price * 0.05)
+				.then(res => loggerBroker.verbose(res))
+				.catch(err => loggerBroker.error(err));
 		}
 	}
 
