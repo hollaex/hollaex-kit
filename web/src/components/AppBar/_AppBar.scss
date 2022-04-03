@@ -1213,6 +1213,12 @@ $app-menu-notification-size: 1.2rem;
 		.app_bar-pair-font {
 			font-size: 1rem;
 		}
+		.tools-button {
+			.app_bar-pair-tab {
+				min-width: 14rem !important;
+				max-width: 14rem !important;
+			}
+		}
 	}
 	.app-menu-bar {
 		font-size: 1rem !important;
@@ -1232,7 +1238,7 @@ $app-menu-notification-size: 1.2rem;
 		width: 24rem;
 
 		&.narrow {
-			width: 14rem;
+			width: 15rem;
 		}
 
 		.app-bar-tab-menu-list {

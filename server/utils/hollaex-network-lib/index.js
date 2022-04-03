@@ -402,6 +402,8 @@ class HollaExNetwork {
 			return reject(parameterError('address', 'cannot be null'));
 		} else if (!currency) {
 			return reject(parameterError('currency', 'cannot be null'));
+		} else if (!amount || amount <= 0) {
+			return reject(parameterError('amount', 'cannot be null'));
 		}
 
 		const verb = 'POST';

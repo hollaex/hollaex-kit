@@ -1512,4 +1512,5 @@ export default {
 			"DeFi staking through your mobile devices aren't supported at this time.",
 		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
 	},
+	ORDER_HISTORY_CLOSED: 'Closed', //new
 };
