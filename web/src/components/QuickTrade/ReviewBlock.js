@@ -2,7 +2,13 @@ import React from 'react';
 import { oneOfType, string, number, bool } from 'prop-types';
 import { CurrencyBallWithPrice } from 'components';
 
-const ReviewBlock = ({ text, amount, symbol, decimalPoint }) => {
+const ReviewBlock = ({
+	text,
+	amount,
+	symbol,
+	decimalPoint,
+	isExistBroker = false,
+}) => {
 	return (
 		<div className="review-block-wrapper d-flex flex-column">
 			{text && <div className="input_block-title text-left">{text}</div>}
@@ -11,6 +17,7 @@ const ReviewBlock = ({ text, amount, symbol, decimalPoint }) => {
 					symbol={symbol}
 					amount={amount}
 					min={decimalPoint}
+					isExistBroker={isExistBroker}
 				/>
 			</div>
 		</div>

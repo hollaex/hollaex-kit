@@ -24,6 +24,7 @@ export const QuickTradeLimitsSelector = createSelector(
 		return QTLimits;
 	}
 );
+
 export const BrokerLimitsSelector = createSelector(
 	[getBroker, getPair],
 	(broker, pair) => {
@@ -31,14 +32,19 @@ export const BrokerLimitsSelector = createSelector(
 		broker.forEach(
 			(item) => (brokerObj = { ...brokerObj, [item.symbol]: item })
 		);
+		let flippedPair = pair.split('-');
+		flippedPair = flippedPair.reverse().join('-');
 		let brokerPairLimits = {};
-		if (brokerObj && brokerObj[pair]) {
+		const selectedBroker =
+			brokerObj && (brokerObj[pair] ? brokerObj[pair] : brokerObj[flippedPair]);
+		if (selectedBroker) {
+			const { min_size, max_size, increment_size } = selectedBroker;
 			brokerPairLimits = {
 				[pair]: {
 					SIZE: {
-						MIN: brokerObj[pair].min_size,
-						MAX: brokerObj[pair].max_size,
-						STEP: brokerObj[pair].increment_size,
+						MIN: min_size,
+						MAX: max_size,
+						STEP: increment_size,
 					},
 					PRICE: {},
 				},

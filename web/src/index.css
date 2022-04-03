@@ -455,6 +455,21 @@ table th {
 .layout-mobile .presentation_container {
   padding-top: 4rem !important; }
 
+.layout-mobile .connectViaDesktop_wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+  .layout-mobile .connectViaDesktop_wrapper .w-100 .subtitleClass {
+    font-size: 15px;
+    text-align: center;
+    justify-content: center;
+    align-items: baseline; }
+  .layout-mobile .connectViaDesktop_wrapper .connect_desktop_img {
+    margin: 8rem 0; }
+  .layout-mobile .connectViaDesktop_wrapper .connect_desktop_footer {
+    font-size: 16px;
+    text-align: center; }
+
 .presentation_container {
   width: 100rem;
   max-width: calc(100% - 2rem);
@@ -4014,12 +4029,13 @@ table th {
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
       width: 150px;
-      height: 50px;
-      padding-top: 6px; }
+      height: 50px; }
       .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container {
-        transform: scale(1.2, 2); }
+        transform: scale(2, 2); }
         .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container svg {
           padding-top: 3px; }
+          .market-list__container .market-list__block .market-list__block-table .table-row .td-chart .highcharts-container svg .highcharts-graph {
+            stroke-width: 0.6px !important; }
   .market-list__container .market-list__block .market-list__block-table .table-bottom-border td,
   .market-list__container .market-list__block .market-list__block-table th {
     position: relative;
@@ -5120,32 +5136,33 @@ table th {
   background-color: transparent;
   background-size: 100%;
   background-repeat: repeat-y;
-  height: 10rem;
-  width: 10rem;
-  border: none;
-  font-size: 1rem;
+  height: 9rem;
+  width: 9rem;
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  font-size: 0.9rem;
   line-height: 1.2rem;
   text-align: center;
   opacity: 0.5; }
   .stake-period-button.ant-radio-button-wrapper .stake-period-text {
-    width: 10rem;
+    width: 9rem;
     margin: auto; }
   .stake-period-button.ant-radio-button-wrapper .period-x {
-    font-weight: bolder;
-    font-size: 4rem;
+    font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
     line-height: 5rem;
+    letter-spacing: 0;
     color: var(--labels_important-active-labels-text-graphics); }
   .stake-period-button.ant-radio-button-wrapper:not(:first-child)::before {
     background-color: transparent; }
 
 .stake-period-button.ant-radio-button-wrapper-checked {
-  height: 12rem;
-  width: 12rem;
+  height: 10rem;
+  width: 10rem;
+  border: 1px solid var(--labels_important-active-labels-text-graphics);
   opacity: 1; }
   .stake-period-button.ant-radio-button-wrapper-checked .period-x {
-    font-weight: bolder;
-    font-size: 5rem;
-    line-height: 6rem; }
+    font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
+    line-height: 6rem;
+    letter-spacing: 0; }
 
 .stake-period-button.ant-radio-button-wrapper:hover, .stake-period-button.ant-radio-button-wrapper:focus {
   color: var(--labels_secondary-inactive-label-text-graphics); }
@@ -6644,6 +6661,9 @@ table th {
     font-size: 1rem; }
     .market-bar .app_bar-pair-font {
       font-size: 1rem; }
+    .market-bar .tools-button .app_bar-pair-tab {
+      min-width: 14rem !important;
+      max-width: 14rem !important; }
   .app-menu-bar {
     font-size: 1rem !important;
     height: 45px;
@@ -6653,7 +6673,7 @@ table th {
   .app-bar-add-tab-menu {
     width: 24rem; }
     .app-bar-add-tab-menu.narrow {
-      width: 14rem; }
+      width: 15rem; }
     .app-bar-add-tab-menu .app-bar-tab-menu-list {
       width: 3.6rem;
       max-width: 3.6rem;
