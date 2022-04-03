@@ -175,7 +175,7 @@ function performDirectWithdrawal(req, res) {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
 		})
-		.then(({ data }) => {
+		.then((data) => {
 
 		loggerWithdrawals.verbose(
 			req.uuid,
