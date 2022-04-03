@@ -4726,7 +4726,7 @@ definitions:
           - buy
           - sell
       size:
-        description: "Size of the orders. Should have 4 decimal, if it has more than 4 it will be rounded to 4 decimal. Min: 0.0001, Max: 21000000"
+        description: "Amount of the orders."
         type: number
         format: double
       type:

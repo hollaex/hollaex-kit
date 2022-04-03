@@ -13,6 +13,7 @@ import { formatToCurrency } from 'utils/currency';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
+	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import Variable from 'containers/Stake/components/Variable';
@@ -81,15 +82,21 @@ const PublicInfo = ({
 	const { min: tokenMin, symbol: tokenSymbol = '' } =
 		coins[token] || DEFAULT_COIN_DATA;
 
-	const format = (value, symbol, min) =>
+	const format = (value, symbol, min, format = CURRENCY_PRICE_FORMAT) =>
 		STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
+			format,
 			formatToCurrency(value, min),
 			symbol.toUpperCase()
 		);
 
 	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
-	const formatBase = (value) => `(~ ${format(value, baseSymbol, baseMin)})`;
+	const formatBase = (value) =>
+		format(
+			value,
+			baseSymbol,
+			baseMin,
+			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
+		);
 
 	const chartData = [
 		{

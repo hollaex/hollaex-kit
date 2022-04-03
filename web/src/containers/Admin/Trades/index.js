@@ -85,13 +85,14 @@ const PairsTab = (props) => {
 						getMyExchange={getMyExchange}
 					/>
 				</TabPane>
-				<TabPane tab="OTCdesk" key="1">
+				<TabPane tab="OTC desk" key="1">
 					<OtcDeskContainer
 						coins={coinData}
 						pairs={pairData}
 						allCoins={props.coins}
 						exchange={props.exchange}
 						user={props.user}
+						balanceData={props.user && props.user.balance}
 					/>
 				</TabPane>
 			</Tabs>

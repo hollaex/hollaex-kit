@@ -132,11 +132,15 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
-		html = html.replace(/\$\{network\}/g, data.network || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		if(data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(/id='network'/g, `style="display: none"`);
+		}
 
 	}
 	else if (type === MAILTYPE.DEPOSIT_COMPLETED) {
@@ -168,11 +172,15 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
-		html = html.replace(/\$\{network\}/g, data.network || '');
-		html = html.replace(/\$\{fee\}/g, data.fee);
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		if(data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(/id='network'/g, `style="display: none"`);
+		}
 
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_PENDING) {
@@ -199,13 +207,17 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
-		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
+		if(data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(/id='network'/g, `style="display: none"`);
+		}
 	}
 	else if (type === MAILTYPE.WITHDRAWAL_COMPLETED) {
 
@@ -230,13 +242,17 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
 		html = html.replace(/\$\{address\}/g, data.address || '');
-		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{description\}/g, data.description || '');
 		html = html.replace(/\$\{explorers\}/g, explorers || '');
 		html = html.replace(/\$\{transaction_id\}/g, data.transaction_id || '');
+		if(data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(/id='network'/g, `style="display: none"`);
+		}
 	}
 	else if (type === MAILTYPE.ACCOUNT_VERIFY) { //ok
 		html = html.replace(/\$\{name\}/g, email || '');
@@ -270,11 +286,15 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
-		html = html.replace(/\$\{fee\}/g, data.fee || '');
+		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{address\}/g, data.address || '');
-		html = html.replace(/\$\{network\}/g, data.network || '');
 		html = html.replace(/\$\{ip\}/g, data.ip || '');
 		html = html.replace(/\$\{link\}/g, data.confirmation_link || `${domain}/confirm-withdraw/${data.transaction_id}`);
+		if(data.network) {
+			html = html.replace(/\$\{network\}/g, data.network || '');
+		} else {
+			html = html.replace(/id='network'/g, `style="display: none"`);
+		}
 	}
 	else if (type === MAILTYPE.INVALID_ADDRESS) { // ok1
 		html = html.replace(/\$\{name\}/g, email || '');

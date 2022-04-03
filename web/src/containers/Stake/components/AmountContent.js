@@ -19,6 +19,8 @@ const AmountContent = ({
 	amount,
 	setAmount,
 	icons: ICONS,
+	isValid,
+	error,
 }) => {
 	const { symbol, fullname, available } = tokenData;
 	const iconId = `${symbol.toUpperCase()}_ICON`;
@@ -101,6 +103,9 @@ const AmountContent = ({
 							/>
 						}
 					/>
+					<div>
+						{error && <span className="field_warning_wrapper">{error}</span>}
+					</div>
 				</div>
 				<div className="d-flex mt-4 pt-3">
 					<div className="w-50">
@@ -113,7 +118,7 @@ const AmountContent = ({
 						<Button
 							label={STRINGS['STAKE.NEXT']}
 							onClick={onNext}
-							disabled={!amount}
+							disabled={!isValid}
 						/>
 					</div>
 				</div>

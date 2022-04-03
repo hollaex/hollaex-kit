@@ -36,6 +36,7 @@ const AssetsBlock = ({
 	hasEarn,
 	loading,
 	contracts,
+	broker,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -66,7 +67,18 @@ const AssetsBlock = ({
 	};
 
 	const isMarketAvailable = (pair) => {
-		return pair && pairs[pair] && pairs[pair].active;
+		if (pair) {
+			let flippedPair = pair.split('-');
+			flippedPair.reverse().join('-');
+			const isBroker = !!broker.filter(
+				(item) => item.symbol === pair || item.symbol === flippedPair
+			).length;
+			if (isBroker) {
+				return isBroker;
+			} else {
+				return pair && pairs[pair] && pairs[pair].active;
+			}
+		}
 	};
 
 	const findPairByPairBase = (key) => {
@@ -110,7 +122,14 @@ const AssetsBlock = ({
 	};
 
 	const goToTrade = (pair) => {
-		if (pair) {
+		let flippedPair = pair.split('-');
+		flippedPair.reverse().join('-');
+		const isBroker = !!broker.filter(
+			(item) => item.symbol === pair || item.symbol === flippedPair
+		).length;
+		if (pair && isBroker) {
+			return navigate(`/quick-trade/${pair}`);
+		} else if (pair && !isBroker) {
 			return navigate(`/trade/${pair}`);
 		}
 	};
@@ -192,7 +211,16 @@ const AssetsBlock = ({
 							index
 						) => {
 							const balanceValue = balance[`${key}_balance`];
-							const pair = findPair(key);
+							let brokerPair = '';
+							broker.forEach((item) => {
+								const pairKey = item && item.symbol;
+								const splitPair = pairKey && pairKey.split('-');
+
+								if (splitPair[0] === key || splitPair[1] === key) {
+									brokerPair = pairKey;
+								}
+							});
+							const pair = brokerPair ? brokerPair : findPair(key);
 							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =

@@ -1186,7 +1186,13 @@ const getEmailTypes = (req, res) => {
 			email: toolsLib.getEmail()
 		});
 
-		const arrMailType = Object.keys(data["email"][LANGUAGE_DEFAULT]);
+		let arrMailType = Object.keys(data["email"][LANGUAGE_DEFAULT]);
+		arrMailType.sort((a, b) => {
+			if(a < b) { return -1; }
+			if(a > b) { return 1; }
+			return 0;
+		})
+
 		return res.status(201).json(arrMailType);
 
 	} catch (err) {

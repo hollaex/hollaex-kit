@@ -37,9 +37,37 @@ const Filters = ({ pairs, onSearch, formName }) => {
 			initialValues={{
 				symbol: null,
 				size: 'all',
+				type: 'active',
 			}}
 		>
 			<Row gutter={24}>
+				{formName === 'orders' ? (
+					<Form.Item
+						name="type"
+						label={STRINGS['ORDER_TYPE']}
+						rules={[
+							{
+								message: 'Input something!',
+							},
+						]}
+					>
+						<Select
+							style={{
+								width: 100,
+							}}
+							size="small"
+							className="custom-select-input-style elevated"
+							dropdownClassName="custom-select-style"
+							bordered={false}
+							suffixIcon={<CaretDownOutlined />}
+						>
+							<Option value="active">
+								{STRINGS['DEVELOPER_SECTION.ACTIVE']}
+							</Option>
+							<Option value="closed">{STRINGS['ORDER_HISTORY_CLOSED']}</Option>
+						</Select>
+					</Form.Item>
+				) : null}
 				<Form.Item
 					name="symbol"
 					label={STRINGS['PAIR']}
