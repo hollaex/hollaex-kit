@@ -125,7 +125,6 @@ const generateRandomToken = (user_id, side, size, expiryTime = 30, multiplier, p
 }
 
 const fetchBrokerQuote = async (brokerQuote) => {
-
 	try {
 		const { symbol, side, size, user_id } = brokerQuote;
 
@@ -241,7 +240,6 @@ const updateBrokerPair = async (id, data) => {
 
 	const { exchange_name, spread, multiplier, account, ...rest } = data;
 
-
 	//Validate account JSONB object
 	for (const [key, value] of Object.entries(account)) {
 		if (!value.hasOwnProperty('apiKey')) {
@@ -302,7 +300,6 @@ const deleteBrokerPair = async (id) => {
 }
 
 const executeBrokerDeal = async (userId, symbol, side, size, price, token) => {
-
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
 		throw new Error("Token expired");
