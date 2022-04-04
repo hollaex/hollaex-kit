@@ -41,7 +41,7 @@ async function Referral(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -96,8 +96,8 @@ async function Referral(){
 			// console.log(step++,' | click | xpath=//*[@id="tab-account-menu"]/div[11]/div[3] |  ')
 			// await driver.findElement(By.xpath('//*[@id="tab-account-menu"]/div[10]')).click();
 	  
-			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
+			console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 			
 	        console.log(step++,'  | open | ',signUpPage);

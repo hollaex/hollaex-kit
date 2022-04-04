@@ -35,7 +35,7 @@ async function AccountLevel () {
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			driver.manage().window().maximize();
 			vars = {};
 		});
@@ -144,8 +144,8 @@ async function AccountLevel () {
 			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 
-			console.log(step++,' | click | css=.app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3) | ');
-			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(9) > .edit-wrapper__container:nth-child(3)')).click();
+			console.log(step++,' | click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+			await driver.findElement(By.css('.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)')).click();
 			await util.takeHollashot(driver,reportPath,step);
 			await sleep(3000);
 		

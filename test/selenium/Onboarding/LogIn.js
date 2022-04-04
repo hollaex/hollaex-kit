@@ -2,7 +2,7 @@
 //Using Selenium webderiver and Mocha/Chai
 //given, when and then
 async function LogIn () {
-	const { Builder, By, until } = require('selenium-webdriver');
+	const {Builder, By, Key, until } = require('selenium-webdriver');
 	const { expect } = require('chai');
 	const { Console } = require('console');
 	const path = require('path');
@@ -37,7 +37,7 @@ async function LogIn () {
 		}
 		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()

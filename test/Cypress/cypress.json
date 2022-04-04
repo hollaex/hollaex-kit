@@ -1,0 +1,34 @@
+{   
+    
+        "viewportWidth": 1400,
+        "viewportHeight": 800,
+        "chromeWebSecurity": false,
+        "env": {
+                "TAGS": "not @waiting",
+                "NODE_ENV": "",
+                "USER_NAME": "",
+                "LEVEL_NAME": "",
+                "USER0": "",
+                "ADMIN_USER": "",
+                "ADMIN_PASS": "",
+                "NEW_USER": "",
+                "PASSWORD": "",
+                "NEWPASS": "",
+                "WEBSITE": "",
+                "DASH_WEBSITE": "https://dash.testnet.hollaex.com/",
+                "DASH_WEBSITE_LOGIN": "https://dash.testnet.hollaex.com/login",
+                "API_WEBSITE": "https://api.sandbox.hollaex.com/v2/",
+                "LOGIN_PAGE": "https://sandbox.hollaex.com/login",
+                "SIGN_UP_PAGE": "https://sandbox.hollaex.com/signup",
+                "EMAIL_PAGE": "",
+                "EMAIL_ADMIN_USERNAME": "",
+                "EMAIL_PASS": "",
+                "ALICE": "",
+                "BROWSER": "chrome",
+                "BOB": " ",
+                "COMMUNICATOR": "",
+                "KYC": "",
+                "SUPERVISOR": "",
+                "SUPPORT": ""
+              }
+ }

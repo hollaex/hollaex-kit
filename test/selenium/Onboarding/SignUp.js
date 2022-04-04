@@ -38,7 +38,7 @@ async function SignUp(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			await driver.manage().window().maximize();
 			let step = util.getStep()
@@ -46,7 +46,7 @@ async function SignUp(){
 
 		afterEach(async function() {
 			util.setStep(step);
-			await driver.quit();
+		//	await driver.quit();
 		});
 
 		it('FillUp The Form By NewUser Request', async function() {
@@ -103,8 +103,8 @@ async function SignUp(){
 				await driver.actions({ bridge: true}).doubleClick(element).perform();
 			}
 		
-			console.log(step++,' | selectFrame | index=1 | ');
-			await driver.switchTo().frame(1);
+			console.log(step++,' | selectFrame | index=0 | ');
+			 await driver.switchTo().frame(0);
 			await sleep(10000);
 		
 			console.log(step++,' | storeText | xpath=/html/body/pre/a[22] | content');
