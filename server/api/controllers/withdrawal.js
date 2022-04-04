@@ -188,8 +188,11 @@ function performDirectWithdrawal(req, res) {
 		);
 			return res.json({
 				message: 'Withdrawal request is in the queue and will be processed.',
-				fee,
-				transaction_id
+				transaction_id: data.transaction_id,
+				amount: data.amount,
+				currency: data.currency,
+				fee: data.fee,
+				fee_coin: data.fee_coin
 			});
 		})
 		.catch((err) => {
