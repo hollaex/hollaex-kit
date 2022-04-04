@@ -176,6 +176,13 @@ const Otcdeskpopup = ({
 									will cause that active Quick trade price source to switch to
 									your new OTC deal.
 								</div>
+								<a
+									target="_blank"
+									href="https://docs.hollaex.com/how-tos/otc-broker"
+									rel="noopener noreferrer"
+								>
+									Read More.
+								</a>
 							</div>
 						</div>
 						{isExistsPair ? (
