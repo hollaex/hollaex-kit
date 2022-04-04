@@ -44,7 +44,7 @@ async function TransactionFlow(){
 			throw new Error('New window did not appear before timeout');
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -210,32 +210,34 @@ async function TransactionFlow(){
 			await driver.switchTo().frame(1);
 			await sleep(5000);
 		
-			console.log(step++,' | storeText | xpath=/html/body/pre/a[22] | content');
-			vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[22]')).getText();
+			console.log(step++,' | storeText | xpath=/html/body/pre/a[27] | content');
+			vars['content'] = await driver.findElement(By.xpath('/html/body/pre/a[27]')).getText();
 			const emailCont = await driver.findElement(By.css('pre')).getText();
 		
-			console.log(step++,' | echo | ${content} | ');
-			console.log(vars['content']);
-		
-			console.log(step++,' | assertText | xpath=/html/body/pre/a[22] | ${content}');
-			expect(vars['content']).to.equal(alice.toLowerCase());
+			// /html/body/pre/a[23]
+			// console.log(step++,' | click | xpath=/html/body/pre/a[23] | ');
+			// await driver.findElement(By.xpath('/html/body/pre/a[23]')).click();
+			// await sleep(5000);
+
+			// console.log(step++,' | assertText | xpath=/html/body/pre/a[26] | ${content}');
+			// expect(vars['content']).to.equal(newUser.toLowerCase());
      
-			console.log(step++,' | storeAttribute | xpath=/html/body/pre/a[26]@href | mytextlink');
+			console.log(step++,' ]@href | mytextlink');
 			{
-				const attribute = await driver.findElement(By.xpath('/html/body/pre/a[23]')).getAttribute('href');
+				const attribute = await driver.findElement(By.xpath('/html/body/pre/a[27]')).getAttribute('href');
 				vars['mytextlink'] = attribute;
 			}
 		
-			console.log(step++,' | echo | ${mytextlink} | ');
+			console.log(step++,'  | echo | ${mytextlink} | ');
 			console.log(vars['mytextlink']);
-			console.log(step++,' | echo | \'xpath=/html/body/pre/a[23]\' | ');
-			console.log('\'xpath=/html/body/pre/a[23]\'');
-			console.log(step++,' | open | ${mytextlink} | ');
+			console.log(step++,' | echo | \'xpath=/html/body/pre/a[27]\' | ');
+			console.log('\'xpath=/html/body/pre/a[27]\'');
+			console.log(step++,'  | open | ${mytextlink} | ');
 		
 			const completedLink = await util.addRest(emailCont,vars['mytextlink']);
 			await console.log(completedLink);
 			await driver.get(completedLink);
-			await sleep(10000);
+			await sleep(1000);
 
 			console.log(step++,' | click | css=.icon_title-wrapper | ');
 			await driver.findElement(By.css('.icon_title-wrapper')).click();

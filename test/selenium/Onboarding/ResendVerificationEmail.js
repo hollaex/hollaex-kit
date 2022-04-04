@@ -54,7 +54,7 @@ async function ResendVerificationEmail(){
 			throw new Error('New window did not appear before timeout');
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -170,14 +170,15 @@ async function ResendVerificationEmail(){
 			console.log(step++,'  | selectFrame | relative=parent | ');
 			await sleep(1000);
 			await driver.switchTo().defaultContent();
-		
+			
+			await sleep(4000);
 			console.log(step++,'  | click | css=.icon_title-wrapper | ');
 			await driver.findElement(By.css('.icon_title-wrapper')).click();
 		
 			console.log(step++,'  | assertNotText | css=.icon_title-text | Error');
 			{
 				const text = await driver.findElement(By.css('.icon_title-text')).getText();
-				assert(text !== 'Error');
+				assert(text == 'Success');
 			}
 		
 			console.log('This is the EndOfTest');

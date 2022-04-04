@@ -31,12 +31,12 @@ async function Supervisor(){
 			});
 		}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			driver.manage().window().maximize();
 			vars = {};
 		});
 		afterEach(async function() {
-			await driver.quit();
+			// await driver.quit();
 		});
 		it('supervisor', async function() {
 			console.log('Supervisor can access all deposit, withdrawals and approval settings');

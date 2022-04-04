@@ -43,7 +43,7 @@ async function LogOut(){
 		} 
 		function shot(){util.takeHollashot(driver,reportPath,step);}
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			let step = util.getStep()
@@ -90,6 +90,8 @@ async function LogOut(){
 			console.log(step++,' | assertText | css=.app-bar-account-content > div:nth-child(2) |',userName);
 			await driver.wait(until.elementLocated(By.css('.app-bar-account-content > div:nth-child(2)')), 20000);
 			await console.log(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText());
+			
+			await sleep(2000);
 			expect(await driver.findElement(By.css('.app-bar-account-content > div:nth-child(2)')).getText()).to.equal(userName);
 			await sleep(5000);
 			//Then Log out should happen 		
@@ -98,8 +100,8 @@ async function LogOut(){
            await driver.findElement(By.css(".app-bar-account-content > div:nth-child(2)")).click();
 		   await sleep(5000);
 
-		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3) | ');
-            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(10) > .edit-wrapper__container:nth-child(3)")).click()
+		    console.log(step++,'| click | css=.app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3) | ');
+            await driver.findElement(By.css(".app-bar-account-menu-list:nth-child(11) > .edit-wrapper__container:nth-child(3)")).click()
 			await sleep(5000);
 
 			console.log(step++,' | assertText | css=.icon_title-text | Login');

@@ -5,6 +5,7 @@ import { isMobile } from 'react-device-detect';
 import { Table, Button, message, Spin } from 'antd';
 import { MinusCircleFilled } from '@ant-design/icons';
 import _debounce from 'lodash/debounce';
+import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
 import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
@@ -669,7 +670,14 @@ const OtcDeskContainer = ({
 						<div className="main-Heading">OTC broker deal desks</div>
 						<div className="main-subHeading">
 							Add a fixed price for specific asset and set max and minimum
-							amounts per transaction.
+							amounts per transaction.{' '}
+							<a
+								target="_blank"
+								href="https://docs.hollaex.com/how-tos/otc-broker"
+								rel="noopener noreferrer"
+							>
+								Learn more.
+							</a>
 						</div>
 						<div className="main-subHeading">
 							Open your own custom OTC broker desk with custom prices and asset

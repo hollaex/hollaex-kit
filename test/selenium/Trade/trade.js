@@ -37,7 +37,7 @@ async function Trade(){
 			});
 		} 
 		beforeEach(async function() {
-			driver = await new Builder().forBrowser(browser).build();
+			driver = await new Builder().forBrowser('chrome').build();
 			vars = {};
 			driver.manage().window().maximize();
 			await util.kitLogIn(step,driver, userName,passWord);
