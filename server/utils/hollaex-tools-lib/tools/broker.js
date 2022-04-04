@@ -168,12 +168,16 @@ const reverseTransaction = async (orderData) => {
 					'apiKey': binanceInfo.apiKey,
 					'secret': binanceInfo.apiSecret,
 				})
+
+			const formattedSymbol = symbol.split('-').join('').toUpperCase();
+			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
+
 			if (side === 'buy') {
-				exchange.createLimitBuyOrder(broker.rebalancing_symbol || symbol, size, price - price * 0.05)
+				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, price - price * 0.05)
 					.then(res => loggerBroker.verbose(res))
 					.catch(err => loggerBroker.error(err));
 			} else if (side == 'sell') {
-				exchange.createLimitSellOrder(broker.rebalancing_symbol || symbol, size, price + price * 0.05)
+				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, price + price * 0.05)
 					.then(res => loggerBroker.verbose(res))
 					.catch(err => loggerBroker.error(err));
 			}
