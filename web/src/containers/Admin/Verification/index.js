@@ -346,6 +346,27 @@ class Verification extends Component {
 					</div>
 				</div>
 			);
+		} else {
+			return (
+				<div>
+					<div className="d-flex">
+						<div>Document number: {id_data.number}</div>
+						<span
+							className="ml-1 edit-text"
+							onClick={() => this.handleNumberEdit(true)}
+						>
+							(Edit)
+						</span>
+					</div>
+					<div>
+						Status:
+						<span className="pending-text">
+							<ClockCircleFilled style={{ margin: '0 5px' }} />
+							No status
+						</span>
+					</div>
+				</div>
+			);
 		}
 	};
 
