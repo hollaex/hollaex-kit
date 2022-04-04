@@ -18,9 +18,6 @@ const getBrokerQuote = (req, res) => {
 		symbol,
 		side,
 		size,
-		exchange_name,
-		spread,
-		multiplier
 	} = req.swagger.params;
 
 
@@ -28,11 +25,8 @@ const getBrokerQuote = (req, res) => {
 		symbol: symbol.value,
 		side: side.value,
 		size: size.value,
-		exchange_name: exchange_name.value,
-		spread: spread.value,
-		multiplier: multiplier.value,
 		user_id: user_id.value,
-	},)
+	})
 		.then((brokerQuote) => {
 			return res.json(brokerQuote);
 		})
@@ -67,7 +61,10 @@ const createBrokerPair = (req, res) => {
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
-		formula
+		formula,
+		exchange_name,
+		spread,
+		multiplier
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -86,7 +83,10 @@ const createBrokerPair = (req, res) => {
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
-		formula
+		formula,
+		exchange_name,
+		spread,
+		multiplier
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -102,7 +102,10 @@ const createBrokerPair = (req, res) => {
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
-		formula
+		formula,
+		exchange_name,
+		spread,
+		multiplier
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -126,7 +129,22 @@ function updateBrokerPair(req, res) {
 	);
 
 	const ip = req.headers['x-real-ip'];
-	const { id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, quote_expiry_time, rebalancing_symbol, account, formula } = req.swagger.params.data.value;
+	const { id, 
+		buy_price, 
+		sell_price, 
+		min_size, 
+		max_size, 
+		increment_size, 
+		paused, 
+		user_id, 
+		type, 
+		quote_expiry_time, 
+		rebalancing_symbol, 
+		account, 
+		formula, 
+		exchange_name,
+		spread,
+		multiplier } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
 		req.uuid,
@@ -144,11 +162,29 @@ function updateBrokerPair(req, res) {
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
-		formula
+		formula,
+		exchange_name,
+		spread,
+		multiplier
 	);
 
 	toolsLib.broker.updateBrokerPair(id, {
-		id, buy_price, sell_price, min_size, max_size, increment_size, paused, user_id, type, quote_expiry_time, rebalancing_symbol, account, formula
+		id, 
+		buy_price, 
+		sell_price, 
+		min_size, 
+		max_size, 
+		increment_size, 
+		paused, 
+		user_id, 
+		type, 
+		quote_expiry_time, 
+		rebalancing_symbol, 
+		account, 
+		formula,
+		exchange_name,
+		spread,
+		multiplier
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -189,7 +225,7 @@ function deleteBrokerPair(req, res) {
 function getBrokerPairs(req, res) {
 	loggerBroker.verbose(
 		req.uuid,
-		'controllers/broker/deleteBrokerPair auth',
+		'controllers/broker/getBrokerPairs auth',
 		req.auth
 	);
 
