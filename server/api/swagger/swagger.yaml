@@ -4367,22 +4367,6 @@ paths:
           required: true
           type: number
           format: double
-        - in: query
-          name: exchange_name
-          description: name of the desired exchange
-          required: true
-          type: string
-        - in: query
-          name: spread
-          description: percentage
-          required: true
-          type: string
-        - in: query
-          name: multiplier
-          description: multiplier.
-          required: false
-          type: number
-          format: double
       responses:
         200:
           description: Success
