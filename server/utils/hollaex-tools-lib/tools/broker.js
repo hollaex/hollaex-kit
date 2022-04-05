@@ -33,7 +33,7 @@ const validateBrokerPair = (brokerPair) => {
 const binanceScript = async () => {
 	// Get the price from redis
 	const formattedSymbol = symbol.split('-').join('').toUpperCase();
-	const quotePrice = await client.getAsync(symbol);
+	const quotePrice = await client.getAsync('prices');
 
 	// If it doesn't exist, fetch all market from Binance 
 	if (!quotePrice) {
@@ -41,7 +41,7 @@ const binanceScript = async () => {
 			.then((res) => {
 				//Store all market prices in Redis with 1 minute expiry time
 				//response is a stringfied object.
-				client.setexAsync(symbol, 60, res);
+				client.setexAsync('prices', 60, res);
 
 				//Calculate the deal
 				const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
