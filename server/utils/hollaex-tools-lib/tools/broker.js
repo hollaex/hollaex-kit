@@ -245,13 +245,15 @@ const updateBrokerPair = async (id, data) => {
 	const { exchange_name, spread, multiplier, account, ...rest } = data;
 
 	//Validate account JSONB object
-	for (const [key, value] of Object.entries(account)) {
-		if (!value.hasOwnProperty('apiKey')) {
-			value.apiKey = brokerPair.account[key].apiKey;
-		}
+	if (account) {
+		for (const [key, value] of Object.entries(account)) {
+			if (!value.hasOwnProperty('apiKey')) {
+				value.apiKey = brokerPair.account[key].apiKey;
+			}
 
-		if (!value.hasOwnProperty('apiSecret')) {
-			value.apiSecret = brokerPair.account[key].apiSecret;
+			if (!value.hasOwnProperty('apiSecret')) {
+				value.apiSecret = brokerPair.account[key].apiSecret;
+			}
 		}
 	}
 
