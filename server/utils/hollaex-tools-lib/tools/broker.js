@@ -257,7 +257,7 @@ const updateBrokerPair = async (id, data) => {
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
-		formula, } = data;
+		formula } = data;
 
 	//Validate account JSONB object
 	if (account) {
