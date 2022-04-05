@@ -242,7 +242,22 @@ const updateBrokerPair = async (id, data) => {
 		throw new Error('Pair does not exist');
 	}
 
-	const { exchange_name, spread, multiplier, account, ...rest } = data;
+	const {
+		user_id,
+		exchange_name, 
+		spread, 
+		multiplier, 
+		buy_price,
+		sell_price,
+		min_size,
+		max_size,
+		increment_size,
+		paused,
+		type,
+		quote_expiry_time,
+		rebalancing_symbol,
+		account,
+		formula, } = data;
 
 	//Validate account JSONB object
 	if (account) {
@@ -256,11 +271,19 @@ const updateBrokerPair = async (id, data) => {
 			}
 		}
 	}
-
 	const updatedPair = {
-		...brokerPair,
-		...rest,
-		account
+		user_id: user_id || brokerPair.user_id,
+		buy_price: buy_price || brokerPair.buy_price,
+		sell_price: sell_price || brokerPair.sell_price,
+		min_size: min_size || brokerPair.min_size,
+		max_size: max_size || brokerPair.max_size,
+		increment_size: increment_size || brokerPair.increment_size,
+		paused: paused || brokerPair.paused,
+		type: type || brokerPair.type,
+		quote_expiry_time: quote_expiry_time || brokerPair.quote_expiry_time,
+		rebalancing_symbol: rebalancing_symbol || brokerPair.rebalancing_symbol,
+		account,
+		formula: formula || brokerPair.formula,
 	};
 
 	validateBrokerPair(updatedPair);
@@ -277,7 +300,6 @@ const updateBrokerPair = async (id, data) => {
 
 	return brokerPair.update(updatedPair, {
 		fields: [
-			'user_id',
 			'buy_price',
 			'sell_price',
 			'min_size',
