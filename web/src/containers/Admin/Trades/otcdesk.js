@@ -5,7 +5,6 @@ import { isMobile } from 'react-device-detect';
 import { Table, Button, message, Spin } from 'antd';
 import { MinusCircleFilled } from '@ant-design/icons';
 import _debounce from 'lodash/debounce';
-import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
 import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
