@@ -332,7 +332,7 @@ const executeBrokerDeal = async (userId, symbol, side, size, price, token) => {
 	if (!storedToken) {
 		throw new Error("Token expired");
 	}
-	if (storedToken.user_id !== userId) {
+	if (JSON.parse(storedToken).user_id !== userId) {
 		throw new Error("Auth doesn't match");
 	}
 
