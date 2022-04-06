@@ -56,6 +56,8 @@ describe('Broker Management', async () => {
 
         response.should.have.status(200);
         response.should.be.json;
+        response.body.should.have.property('token');
+        response.body.should.have.property('price');
     });
 
     it('should execute the broker deal', async () => {
