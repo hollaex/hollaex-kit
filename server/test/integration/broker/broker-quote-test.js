@@ -2,14 +2,10 @@ const {
     request,
     getTestUser,
     loginAs,
-    otpCodeFor,
-    emailCodeFor,
-    tools,
-    sleep
 } = require('../helpers');
 
-describe('Broker Management', async () => {
-    let user, bearerToken, createdBroker, quoteData;
+describe('Dynamic Pricing', async () => {
+    let user, bearerToken, quoteData;
     before(async () => {
         user = await getTestUser();
         user.should.be.an('object');
@@ -47,10 +43,7 @@ describe('Broker Management', async () => {
         createdBroker = response.body;
         response.should.have.status(200);
         response.should.be.json;
-        // response.body.should.have.property('');
     });
-
-
 
     it('should get a quote', async () => {
         const response = await request()
@@ -60,26 +53,42 @@ describe('Broker Management', async () => {
 
         response.should.have.status(200);
         response.should.be.json;
-        // response.body.should.have.property('');
+        response.body.should.have.property('token');
+        response.body.should.have.property('price');
     });
 
-    it('should execute the broker deal', async () => {
+    it('should get wrong symbol error', async () => {
         const response = await request()
-            .post(`/v2/broker/execute`)
+            .get(`/v2/broker/quote?symbol=btc-&side=sell&size=1`)
             .set('Authorization', `Bearer ${bearerToken}`)
-            .send({
-                symbol:'btc-usdt',
-                side:'sell',
-                price:46000,
-                size:1,
-                token: quoteData.token
-            });
-
-        response.should.have.status(200);
-        response.should.be.json;
-        // response.body.should.have.property('');
+            
+        response.body.message.should.equal('Error: Broker pair could not be found.');
+        response.should.have.status(400);
     });
 
+    it('should get an error without side param', async () => {
+        const response = await request()
+            .get(`/v2/broker/quote?symbol=btc-usdt&size=1`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+
+        response.should.have.status(400);
+    });
+
+    it('should get an error without size param', async () => {
+        const response = await request()
+            .get(`/v2/broker/quote?symbol=btc-usdt&side=sell`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+
+        response.should.have.status(400);
+    });
+
+    it('should get an error without params', async () => {
+        const response = await request()
+            .get(`/v2/broker/quote`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+
+        response.should.have.status(400);
+    });
 
     it('should update the broker', async () => {
         const response = await request()
@@ -89,12 +98,8 @@ describe('Broker Management', async () => {
                 id: createdBroker.id,
                 paused: true
             });
-
         response.should.have.status(200);
-        response.should.be.json;
-        // response.body.should.have.property('');
     });
-
     it('should delete the broker', async () => {
         const response = await request()
             .delete(`/v2/broker/`)
@@ -102,10 +107,7 @@ describe('Broker Management', async () => {
             .send({
                 id: createdBroker.id
             });
-
         response.should.have.status(200);
-        response.should.be.json;
-        // response.body.should.have.property('');
     });
 
 });
