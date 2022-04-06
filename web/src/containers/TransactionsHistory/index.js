@@ -77,6 +77,24 @@ class TransactionsHistory extends Component {
 		} else {
 			this.setActiveTab();
 		}
+		if (
+			window.location.search &&
+			window.location.search.includes('order-history')
+		) {
+			this.setState({ activeTab: 1 });
+		} else if (
+			window.location.search &&
+			window.location.search.includes('deposit')
+		) {
+			this.setState({ activeTab: 2 });
+		} else if (
+			window.location.search &&
+			window.location.search.includes('withdraw')
+		) {
+			this.setState({ activeTab: 3 });
+		} else {
+			this.setState({ activeTab: 0 });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -129,10 +147,15 @@ class TransactionsHistory extends Component {
 			getUserDeposits,
 			getUserWithdrawals,
 		} = this.props;
-
+		let open = true;
+		if (params && params.type && params.type === 'active') {
+			open = true;
+		} else if (params && params.type && params.type === 'closed') {
+			open = false;
+		}
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: true });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open });
 				break;
 			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);
@@ -169,11 +192,32 @@ class TransactionsHistory extends Component {
 		this.setState({
 			headers: {
 				orders: isMobile
-					? generateOrderHistoryHeaders(symbol, pairs, coins, discount)
-					: generateOrderHistoryHeaders(symbol, pairs, coins, discount, prices),
+					? generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
+					: generateOrderHistoryHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  ),
 				trades: isMobile
-					? generateTradeHeadersMobile(symbol, pairs, coins, discount)
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices),
+					? generateTradeHeadersMobile(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS
+					  )
+					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,

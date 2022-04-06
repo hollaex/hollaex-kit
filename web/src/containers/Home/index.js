@@ -59,6 +59,7 @@ class Home extends Component {
 				minHeight: MIN_HEIGHT,
 			},
 			market: [],
+			sectionData: {},
 		};
 		this.goToPair(pair);
 	}
@@ -68,6 +69,9 @@ class Home extends Component {
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		this.generateSections(sections);
+		if (window.customRenderCardSection) {
+			window.customRenderCardSection();
+		}
 	}
 
 	goTo = (path) => () => {
@@ -121,10 +125,10 @@ class Home extends Component {
 					constants: { features: { quick_trade = false } = {} } = {},
 					isReady,
 					pair,
-					sections,
+					// sections,
 				} = this.props;
 
-				const sectionsNumber = Object.entries(sections)
+				const sectionsNumber = Object.entries(this.state.sectionData)
 					.filter(([_, { is_active }]) => is_active)
 					.filter(([key]) => key !== 'quick_trade' || (quick_trade && isReady))
 					.length;
@@ -155,6 +159,8 @@ class Home extends Component {
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
+							<div id="html_card_section"></div>
+							<div id="injected_code_section"></div>
 							<Markets
 								coins={coins}
 								pairs={pairs}

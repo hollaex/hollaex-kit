@@ -8,7 +8,16 @@
 	}
 
 	.trade_order_entry-selector {
-		border-top: 1px solid $trade-section-border--color;
+		:before {
+			content: '';
+			position: absolute;
+			// top: 0;
+			top: -2px;
+			background: $colors-main-black;
+			left: 0;
+			width: 100%;
+			height: 1px;
+		}
 		position: relative;
 
 		> div {
@@ -35,10 +44,10 @@
 				position: absolute;
 				// top: 0;
 				top: -2px;
-				background: $trade-section-border--color;
+				background: $colors-main-black;
 				left: 0;
 				width: 100%;
-				height: 5px;
+				height: 4px;
 			}
 		}
 	}

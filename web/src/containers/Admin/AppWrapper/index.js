@@ -626,13 +626,10 @@ class AppWrapper extends React.Component {
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className='mr-2 time-wrapper'>
-							<Tooltip
-								placement="bottom"
-								title={<Timer isHover={true}/>}
-							>
-								<div className='ml-2'>
-									<Timer isHover={false}/>
+						<div className="mr-2 time-wrapper">
+							<Tooltip placement="bottom" title={<Timer isHover={true} />}>
+								<div className="ml-2">
+									<Timer isHover={false} />
 								</div>
 							</Tooltip>
 						</div>

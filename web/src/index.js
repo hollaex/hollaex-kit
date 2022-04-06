@@ -22,6 +22,8 @@ import store from './store';
 import { generateRoutes } from './routes';
 import './index.css';
 import '../node_modules/rc-tooltip/assets/bootstrap_white.css'; // eslint-disable-line
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 
 import {
 	setLocalVersions,
@@ -33,6 +35,7 @@ import {
 	setBaseCurrency,
 	setDefaultLogo,
 	consoleKitInfo,
+	getContracts,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -54,6 +57,8 @@ import {
 	setCurrencies,
 	setOrderLimits,
 	setHelpdeskInfo,
+	setContracts,
+	setBroker,
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
@@ -71,6 +76,7 @@ consolePluginDevModeInfo();
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
+	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
 		meta: { versions: remoteVersions = {}, sections = {} } = {},
@@ -144,6 +150,8 @@ const getConfigs = async () => {
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setCurrencies(constants.coins));
+	store.dispatch(setContracts(getContracts(constants.coins)));
+	store.dispatch(setBroker(constants.broker));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {

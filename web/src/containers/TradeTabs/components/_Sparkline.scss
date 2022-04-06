@@ -40,3 +40,9 @@
 .highcharts-root {
 	width: 100% !important;
 }
+
+.layout-mobile {
+	.highcharts-graph {
+		stroke-width: 1px;
+	}
+}

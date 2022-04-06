@@ -596,7 +596,7 @@ export default {
 			INFO_TEXT:
 				'当一个交易订单值超过投资组合的设定百分比金额，创建一个弹出警告。',
 			PORTFOLIO: '站投资组合的百分比',
-			TOMAN_ASSET: '近似值',
+			VALUE_ASSET: '近似值',
 			ADJUST: '(设置百分比)',
 			ACTIVATE_RISK_MANAGMENT: '激活风险管理',
 			WARNING_POP_UP: '警告弹窗',
@@ -826,7 +826,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

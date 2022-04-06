@@ -26,6 +26,7 @@ $header-margin: 2rem;
 		.action_notification-wrapper {
 			.action_notification-text {
 				font-size: 1.2rem !important;
+				line-height: 1.2rem !important;
 			}
 		}
 		.accordion_wrapper {
@@ -65,6 +66,7 @@ $header-margin: 2rem;
 						.action_notification-wrapper {
 							.action_notification-text {
 								font-size: 1.2rem;
+								line-height: 1.2rem;
 							}
 						}
 					}
@@ -88,6 +90,33 @@ $header-margin: 2rem;
 		.action-button-wrapper {
 			padding: 5px 2px;
 		}
+	}
+}
+
+@keyframes mymove {
+	10% {
+		top: 0%;
+		background-color: var(--base_wallet-sidebar-and-popup);
+		opacity: 0;
+	}
+	30% {
+		top: 30%;
+		background-color: var(--base_wallet-sidebar-and-popup);
+		opacity: 0.3;
+	}
+	50% {
+		top: 50%;
+		background-color: var(--calculated_secondary-border);
+		opacity: 0.5;
+	}
+	70% {
+		top: 70%;
+		background-color: var(--calculated_secondary-border);
+		opacity: 0.8;
+	}
+	100% {
+		top: 100%;
+		background-color: var(--base_wallet-sidebar-and-popup);
 	}
 }
 
@@ -233,12 +262,34 @@ $header-margin: 2rem;
 			background-color: $app-sidebar-background;
 		}
 		.currency-ball-image-wrapper {
-			height: 24px;
-			padding-right: 4px;
+			height: 24px !important;
+			margin-right: 7px;
+			width: 20px !important;
 		}
 		.currency-ball {
 			width: 30px;
 			padding-top: 4px;
+			svg,
+			div:first-child {
+				width: 28px;
+			}
+		}
+		.loading-anime {
+			width: 100px;
+			height: 20px;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
+		.loading-row-anime {
+			height: 20px;
+			border-radius: 7px;
+			animation: mymove 3s infinite;
+		}
+		.loading-row-anime.w-half {
+			width: 100px;
+		}
+		.loading-row-anime.w-full {
+			width: 200px;
 		}
 	}
 
@@ -267,6 +318,7 @@ $header-margin: 2rem;
 .wallet-notification {
 	.action_notification-text {
 		font-size: $font-size-main !important;
+		line-height: $font-size-main !important;
 	}
 }
 

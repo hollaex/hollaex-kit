@@ -667,7 +667,7 @@ export default {
 				'Creaar un pop up de adventencia cuando el valor de orden de cambio supera una cantidad en porcentaje de su portafolio',
 			INFO_TEXT_1: 'Valor total de activos en {0}: {1}',
 			PORTFOLIO: 'Porcentaje de portafolio',
-			TOMAN_ASSET: 'Valor Aproximado',
+			VALUE_ASSET: 'Valor Aproximado',
 			ADJUST: '(ADJUSTAR PORCENTAJE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activar Administraciòn de Riesgo',
 			WARNING_POP_UP: 'pop ups de Advertencia',
@@ -918,7 +918,7 @@ export default {
 		'Usted tiene {0} segundos para realizar la operación',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

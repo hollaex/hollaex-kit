@@ -46,6 +46,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			max-width: $max-content-width-mobile;
 			overflow-y: scroll;
 
+			&.chart-embed {
+				min-height: 100vh;
+				max-height: 100vh;
+			}
+
 			&.no_bottom_navigation {
 				height: auto;
 				flex: 1;
@@ -86,7 +91,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 
 			.ant-tabs-ink-bar {
-				background: $colors-main-black;
+				background: $link;
 			}
 
 			.ant-tabs-top > .ant-tabs-nav::before {
@@ -165,6 +170,26 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 .layout-mobile {
 	.presentation_container {
 		padding-top: 4rem !important;
+	}
+	.connectViaDesktop_wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		.w-100 {
+			.subtitleClass {
+				font-size: 15px;
+				text-align: center;
+				justify-content: center;
+				align-items: baseline;
+			}
+		}
+		.connect_desktop_img {
+			margin: 8rem 0;
+		}
+		.connect_desktop_footer {
+			font-size: 16px;
+			text-align: center;
+		}
 	}
 }
 
@@ -250,6 +275,10 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 		font-size: 1rem !important;
 	}
 
+	.action_notification-text {
+		line-height: 1rem !important;
+	}
+
 	.presentation_container,
 	.trade_tabs-container {
 		width: $content-display-width !important;
@@ -302,6 +331,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.otp_secret {
 		font-size: 0.9rem !important;
 	}
+
+	.action_notification-text {
+		line-height: 0.9rem !important;
+	}
+
 	.verification_container .header-content {
 		font-size: 1.2rem !important;
 	}
@@ -323,4 +357,14 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			margin: 1.3rem !important;
 		}
 	}
+}
+
+.react-grid-item > .react-resizable-handle::after {
+	border-color: $colors-black !important;
+	right: 5px;
+	bottom: 5px;
+}
+
+.background-color-layer {
+	box-shadow: inset 0 0 0 1000px $app-background-overlay;
 }

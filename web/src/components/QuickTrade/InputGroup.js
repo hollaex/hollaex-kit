@@ -57,17 +57,27 @@ class InputGroup extends React.PureComponent {
 			availableBalance,
 			estimatedPrice,
 			selectValue,
-			pair
+			pair,
+			isExistBroker,
+			isShowChartDetails,
 		} = this.props;
 		const keydata = pair.split('-');
 		let error = '';
 		if (!value) {
 			error = '';
-		} else if (keydata[0] === selectValue && minValue(limits.MIN)(value)) {
+		} else if (
+			keydata[0] === selectValue &&
+			limits &&
+			minValue(limits.MIN)(value)
+		) {
 			error = minValue(limits.MIN)(value);
-		} else if (keydata[0] === selectValue && maxValue(limits.MAX)(value)) {
+		} else if (
+			keydata[0] === selectValue &&
+			limits &&
+			maxValue(limits.MAX)(value)
+		) {
 			error = maxValue(limits.MAX)(value);
-		} else if (!estimatedPrice) {
+		} else if (!estimatedPrice && !isExistBroker && isShowChartDetails) {
 			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
 		} else if (availableBalance) {
 			error = maxValue(availableBalance)(value);
@@ -165,13 +175,13 @@ class InputGroup extends React.PureComponent {
 							autoFocus={autoFocus}
 						/>
 					</Group>
-					{translateError(this.renderErrorMessage(inputValue)) ? (
+					{translateError(this.renderErrorMessage(inputValue)) && (
 						<FieldError
 							error={translateError(this.renderErrorMessage(inputValue))}
 							displayError={true}
 							className="input-group__error-wrapper"
 						/>
-					) : null}
+					)}
 				</div>
 			</div>
 		);

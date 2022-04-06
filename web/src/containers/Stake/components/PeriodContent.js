@@ -1,14 +1,16 @@
 import React, { Fragment } from 'react';
 import { Radio } from 'antd';
 import mathjs from 'mathjs';
-import { EditWrapper, Button, IconTitle } from 'components';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
-import { getEstimatedRemainingTime } from 'utils/eth';
+import { getEstimatedRemainingTime, roundDuration } from 'utils/eth';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Variable from './Variable';
 
 const PeriodContent = ({
 	tokenData,
+	onClose,
 	onBack,
 	onReview,
 	periods,
@@ -16,6 +18,7 @@ const PeriodContent = ({
 	period,
 	icons: ICONS,
 	currentBlock,
+	openReadMore,
 }) => {
 	const { symbol } = tokenData;
 
@@ -32,6 +35,17 @@ const PeriodContent = ({
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content">
 				<IconTitle
 					stringId="STAKE.MODAL_TITLE"
@@ -52,48 +66,55 @@ const PeriodContent = ({
 						onChange={setPeriod}
 						value={period}
 					>
-						{filteredPeriods.map((period, index) => (
-							<Radio.Button
-								style={background}
-								className="stake-period-button"
-								value={period}
-							>
-								<div className="stake-period-text">
-									{STRINGS.formatString(
-										STRINGS['STAKE.PERIOD_OPTION_TEXT'],
-										getEstimatedRemainingTime(period).join(' ')
-									)}
-								</div>
-								<div className="period-x">{`${index + 1}x`}</div>
-							</Radio.Button>
-						))}
+						{filteredPeriods.map((period, index) => {
+							const [duration, unit] = roundDuration(
+								getEstimatedRemainingTime(period)
+							);
+							const unitAbbrv = unit ? unit.charAt(0).toUpperCase() : '';
+							return (
+								<Radio.Button
+									style={background}
+									className="stake-period-button"
+									value={period}
+								>
+									<div className="stake-period-text">
+										{STRINGS[`STAKE.REWARDS.${index}.CARD`]}
+									</div>
+									<div className="period-x">{`${duration}${unitAbbrv}`}</div>
+								</Radio.Button>
+							);
+						})}
 					</Radio.Group>
 				</div>
 				<div className="text-align-center pt-4">
 					{selectedPeriodIndex !== -1 &&
 						STRINGS.formatString(
 							STRINGS['STAKE.STAKE_AND_EARN_DETAILS'],
-							getEstimatedRemainingTime(period).join(' '),
-							selectedPeriodIndex + 1
+							roundDuration(getEstimatedRemainingTime(period)).join(' '),
+							STRINGS[`STAKE.REWARDS.${selectedPeriodIndex}.TEXT`]
 						)}
 				</div>
 				<div className="text-align-center secondary-text font-small py-3">
-					<div>
-						<EditWrapper stringId="STAKE.CURRENT_BLOCK">
-							{STRINGS.formatString(
-								STRINGS['STAKE.CURRENT_BLOCK'],
-								currentBlock
-							)}
-						</EditWrapper>
-					</div>
-					<div>
-						<EditWrapper stringId="STAKE.END_BLOCK">
-							{STRINGS.formatString(
-								STRINGS['STAKE.END_BLOCK'],
-								mathjs.sum(currentBlock, period)
-							)}
-						</EditWrapper>
-					</div>
+					{period && (
+						<Fragment>
+							<div>
+								<EditWrapper stringId="STAKE.CURRENT_BLOCK">
+									{STRINGS.formatString(
+										STRINGS['STAKE.CURRENT_BLOCK'],
+										currentBlock
+									)}
+								</EditWrapper>
+							</div>
+							<div>
+								<EditWrapper stringId="STAKE.END_BLOCK">
+									{STRINGS.formatString(
+										STRINGS['STAKE.END_BLOCK'],
+										mathjs.sum(currentBlock, period)
+									)}
+								</EditWrapper>
+							</div>
+						</Fragment>
+					)}
 				</div>
 				<div className="kit-divider" />
 				<div>
@@ -108,7 +129,10 @@ const PeriodContent = ({
 					<EditWrapper stringId="STAKE.VARIABLE_TEXT,STAKE.READ_MORE">
 						{STRINGS.formatString(
 							STRINGS['STAKE.VARIABLE_TEXT'],
-							<span className="blue-link pointer underline-text px-2">
+							<span
+								className="blue-link pointer underline-text px-2"
+								onClick={openReadMore}
+							>
 								{STRINGS['STAKE.READ_MORE']}
 							</span>
 						)}

@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
-import { Table, EditWrapper, ProgressBar } from 'components';
+import { Table, EditWrapper, ProgressBar, Help } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
 import {
 	userActiveStakesSelector,
 	pendingTransactionsSelector,
+	networksMismatchSelector,
 } from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
@@ -31,10 +32,14 @@ const MyStaking = ({
 	setNotification,
 	activeStakesCount,
 	activeStakes,
-	network,
 	events,
 	pending,
+	goToBlocks,
+	networksMismatch,
 }) => {
+	// This line is to temporarily hide the events history table
+	const [showEventsHistory] = useState(false);
+
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { fullname } = coins[symbol];
@@ -82,7 +87,7 @@ const MyStaking = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -102,7 +107,7 @@ const MyStaking = ({
 			<div className="d-flex justify-content-between align-start">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.MY_STAKING.TITLE']}
 						</div>
 						<div className="secondary-text">
@@ -116,14 +121,19 @@ const MyStaking = ({
 					<div className="pt-4 secondary-text">
 						{STRINGS.formatString(
 							STRINGS['STAKE.CURRENT_ETH_BLOCK'],
-							<span className="blue-link">{currentBlock}</span>
+							<span
+								className="blue-link pointer underline-text"
+								onClick={goToBlocks}
+							>
+								{currentBlock}
+							</span>
 						)}
 					</div>
 				</div>
 				<StakesAndEarnings />
 			</div>
 			<table className="wallet-assets_block-table">
-				<thead>
+				<thead className="important-text">
 					<tr className="table-bottom-border">
 						<th />
 						<th>
@@ -179,11 +189,11 @@ const MyStaking = ({
 									<td>
 										<div className="d-flex">
 											<AntBtn
-												className="stake-btn"
+												className="stake-btn caps"
 												type="primary"
 												ghost
 												onClick={() => startStakingProcess(tokenData)}
-												disabled={!account}
+												disabled={!account || networksMismatch}
 											>
 												{STRINGS['STAKE_TABLE.STAKE']}
 											</AntBtn>
@@ -196,7 +206,7 @@ const MyStaking = ({
 			</table>
 			{account && activeStakesCount !== 0 && (
 				<table className="wallet-assets_block-table mt-4">
-					<thead>
+					<thead className="important-text">
 						<tr className="table-bottom-border">
 							<th />
 							<th>
@@ -238,11 +248,12 @@ const MyStaking = ({
 									weiAmount,
 									period,
 									startBlock,
-									reward,
+									weiReward,
 									closeBlock,
 									index,
 								]) => {
 									const amount = web3.utils.fromWei(weiAmount);
+									const reward = web3.utils.fromWei(weiReward);
 									const calculatedCloseBlock = mathjs.sum(startBlock, period);
 									const remainingBlocks = mathjs.max(
 										mathjs.subtract(calculatedCloseBlock, currentBlock),
@@ -269,9 +280,11 @@ const MyStaking = ({
 										index,
 									};
 
-									const progressStatusText = remainingBlocks
-										? `~${estimatedLeftover.join(' ')}`
-										: 'Completed';
+									const progressStatusText = remainingBlocks ? (
+										`~${estimatedLeftover.join(' ')}`
+									) : (
+										<Help tip="sag">{STRINGS['STAKE.COMPLETED']}</Help>
+									);
 
 									const btnProps = {
 										type: 'primary',
@@ -282,6 +295,7 @@ const MyStaking = ({
 											? () => startEarlyUnstakingProcess(data)
 											: () => startUnstakingProcess(data),
 										children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+										disabled: networksMismatch,
 									};
 									return (
 										<tr
@@ -370,35 +384,37 @@ const MyStaking = ({
 					</tbody>
 				</table>
 			)}
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
-			<div>
-				<Table
-					className="transactions-history-table"
-					data={events}
-					count={events.length}
-					headers={generateStakeEventsHeader()}
-					withIcon={false}
-					pageSize={TABLE_PAGE_SIZE}
-					rowKey={(data) => {
-						return data.id;
-					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-					handleNext={() => {}}
-					jumpToPage={0}
-					noData={
-						!account &&
-						STRINGS.formatString(
-							STRINGS['STAKE.CONNECT_WALLET_TABLE'],
-							<ConnectWrapper className="pr-2" />
-						)
-					}
-					showHeaderNoData={true}
-				/>
-			</div>
+			{showEventsHistory && (
+				<div className="pt-4">
+					<div className="important-text bold pt-4 mt-2">
+						<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+							{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						</EditWrapper>
+					</div>
+					<Table
+						className="transactions-history-table stake-details-table"
+						data={events}
+						count={events.length}
+						headers={generateStakeEventsHeader()}
+						withIcon={false}
+						pageSize={TABLE_PAGE_SIZE}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						handleNext={() => {}}
+						jumpToPage={0}
+						noData={
+							!account &&
+							STRINGS.formatString(
+								STRINGS['STAKE.CONNECT_WALLET_TABLE'],
+								<ConnectWrapper className="pr-2" />
+							)
+						}
+						showHeaderNoData={true}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
@@ -406,12 +422,12 @@ const MyStaking = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
 	pending: pendingTransactionsSelector(store),
+	networksMismatch: networksMismatchSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

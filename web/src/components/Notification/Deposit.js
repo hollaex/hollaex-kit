@@ -22,7 +22,7 @@ const DepositNotification = ({
 			data.currency === BASE_CURRENCY
 				? data.status
 					? 'DEPOSIT_BASE_COIN_COMPLETE'
-					: 'INCOMING_TOMAN'
+					: 'INCOMING_COIN'
 				: data.status
 				? 'DEPOSIT_RECEIVED_BITCOIN'
 				: 'INCOMING_BTC',
@@ -30,7 +30,7 @@ const DepositNotification = ({
 			data.currency === BASE_CURRENCY
 				? data.status
 					? ICONS['DEPOSIT_BASE_COIN_COMPLETE']
-					: ICONS['INCOMING_TOMAN']
+					: ICONS['INCOMING_COIN']
 				: data.status
 				? ICONS['DEPOSIT_RECEIVED_BITCOIN']
 				: ICONS['INCOMING_BTC'],

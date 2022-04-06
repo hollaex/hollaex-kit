@@ -10,6 +10,8 @@ import {
 	SET_PUBLIC_INFO,
 	SET_PENDING_TRANSACTIONS,
 	RESET_STAKE_STORE,
+	SET_PENALTIES,
+	SET_POTS,
 } from 'actions/stakingActions';
 
 const initialStakable = {
@@ -26,6 +28,8 @@ const initialState = {
 	currentBlock: '',
 	stakables: [initialStakable],
 	periods: {},
+	penalties: {},
+	pots: {},
 	userStakes: {},
 	balance: 0,
 	distributions: [],
@@ -50,6 +54,8 @@ export default (state = initialState, { type, payload }) => {
 		case SET_CONTRACT_EVENTS:
 		case SET_PUBLIC_INFO:
 		case SET_PENDING_TRANSACTIONS:
+		case SET_PENALTIES:
+		case SET_POTS:
 			return { ...state, ...payload };
 
 		case RESET_STAKE_STORE: {
@@ -57,7 +63,6 @@ export default (state = initialState, { type, payload }) => {
 				...state,
 				account: '',
 				stakables: [initialStakable],
-				periods: {},
 				userStakes: {},
 				balance: 0,
 				contractEvents: [],

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { TABS } from '../index';
+import { TABS } from '../DesktopStakeDetails';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import DonutChart from './DonutChart';
@@ -13,6 +13,7 @@ import { formatToCurrency } from 'utils/currency';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
+	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import Variable from 'containers/Stake/components/Variable';
@@ -24,20 +25,20 @@ const PublicInfo = ({
 	token,
 	currentBlock,
 	setActiveTab,
-	network,
 	distributions,
 	account,
 	coins,
-	totalDistributedEarnings,
-	totalDistributedEarningsValue,
-	clearedUndistributedEarnings,
-	unclearedPendingEarnings,
+	totalDistributedRewards,
+	totalDistributedRewardsValue,
+	potBalance,
+	unclaimedRewards,
 	totalStaked,
 	totalStakedValue,
 	myStake,
 	myStakePercent,
 	othersStake,
 	othersStakePercent,
+	goToPOT,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -62,7 +63,7 @@ const PublicInfo = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -81,15 +82,21 @@ const PublicInfo = ({
 	const { min: tokenMin, symbol: tokenSymbol = '' } =
 		coins[token] || DEFAULT_COIN_DATA;
 
-	const format = (value, symbol, min) =>
+	const format = (value, symbol, min, format = CURRENCY_PRICE_FORMAT) =>
 		STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
+			format,
 			formatToCurrency(value, min),
 			symbol.toUpperCase()
 		);
 
 	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
-	const formatBase = (value) => `(~ ${format(value, baseSymbol, baseMin)})`;
+	const formatBase = (value) =>
+		format(
+			value,
+			baseSymbol,
+			baseMin,
+			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
+		);
 
 	const chartData = [
 		{
@@ -111,7 +118,7 @@ const PublicInfo = ({
 			<div className="d-flex justify-content-between">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TITLE']}
 						</div>
 						<div className="secondary-text">
@@ -124,47 +131,51 @@ const PublicInfo = ({
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS']}
+						<div className="bold important-text">
+							{STRINGS.formatString(
+								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_REWARDS'],
+								<span
+									className="blue-link pointer underline-text normal"
+									onClick={goToPOT}
+								>
+									{STRINGS['STAKE.VIEW_POT']}
+								</span>
+							)}
 						</div>
 						<div className="d-flex">
-							<div>{formatToken(totalDistributedEarnings)}</div>
+							<div className="important-text">
+								{formatToken(totalDistributedRewards)}
+							</div>
 							<div className="secondary-text pl-2">
-								{formatBase(totalDistributedEarningsValue)}
+								{formatBase(totalDistributedRewardsValue)}
 							</div>
 						</div>
 					</div>
 
 					<div className="pt-4 d-flex">
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.CLEARED_UNDISTRIBUTED_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.POT_BALANCE']}
 							</div>
-							<div>{formatToken(clearedUndistributedEarnings)}</div>
+							<div className="important-text">{formatToken(potBalance)}</div>
 						</div>
 						<div className="secondary-text px-4">|</div>
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.UNCLEARED_PENDING_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.UNCLAIMED_REWARDS']}
 							</div>
-							<div>{formatToken(unclearedPendingEarnings)}</div>
+							<div className="important-text">
+								{formatToken(unclaimedRewards)}
+							</div>
 						</div>
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_STAKED']}
 						</div>
 						<div className="d-flex">
-							<div>{formatToken(totalStaked)}</div>
+							<div className="important-text">{formatToken(totalStaked)}</div>
 							<div className="secondary-text pl-2">
 								{formatBase(totalStakedValue)}
 							</div>
@@ -172,11 +183,11 @@ const PublicInfo = ({
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.REWARD_RATE']}
 						</div>
-						<div className="secondary-text">
-							<Variable />
+						<div className="important-text">
+							<Variable className="important-text" />
 						</div>
 					</div>
 				</div>
@@ -188,7 +199,7 @@ const PublicInfo = ({
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend mine" />
-							<div className="bold">
+							<div className="bold important-text">
 								{account
 									? STRINGS.formatString(
 											STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
@@ -197,9 +208,21 @@ const PublicInfo = ({
 									: STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE_PERCENTLESS']}
 							</div>
 						</div>
-						<div className="ml-4 pl-3">
+						<div className="d-flex ml-4 pl-3">
 							<ConnectWrapper>
-								<div>{formatToken(myStake)}</div>
+								<div className="important-text">{formatToken(myStake)}</div>
+								<div className="pl-2">
+									(
+									<span
+										className="blue-link underline-text pointer"
+										onClick={() => setActiveTab(TABS.MY_STAKING.key)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW">
+											{STRINGS['STAKE_DETAILS.VIEW']}
+										</EditWrapper>
+									</span>
+									)
+								</div>
 							</ConnectWrapper>
 						</div>
 					</div>
@@ -207,39 +230,27 @@ const PublicInfo = ({
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend others" />
-							<div className="bold">
+							<div className="bold important-text">
 								{STRINGS.formatString(
 									STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
 									othersStakePercent
 								)}
 							</div>
 						</div>
-						<div className="d-flex ml-4 pl-3">
-							<div>{formatToken(othersStake)}</div>
-							<div className="pl-2">
-								(
-								<span
-									className="blue-link underline-text pointer"
-									onClick={() => setActiveTab(TABS.MY_STAKING.key)}
-								>
-									<EditWrapper stringId="STAKE_DETAILS.VIEW">
-										{STRINGS['STAKE_DETAILS.VIEW']}
-									</EditWrapper>
-								</span>
-								)
-							</div>
+						<div className="ml-4 pl-3">
+							<div className="important-text">{formatToken(othersStake)}</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
 			<div>
+				<div className="important-text bold pt-4 mt-2">
+					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+						{STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
+					</EditWrapper>
+				</div>
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={distributions}
 					count={distributions.length}
 					headers={generateDistributionsHeader()}
@@ -248,7 +259,7 @@ const PublicInfo = ({
 					rowKey={(data) => {
 						return data.id;
 					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+					title={STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
 					displayPaginator={false}
@@ -274,7 +285,6 @@ const PublicInfo = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 	publicInfo: store.stake.publicInfo,

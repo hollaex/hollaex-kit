@@ -58,7 +58,7 @@ const QuoteResult = ({
 			</div>
 		);
 	} else {
-		const [pair_base, pair_2] = data.symbol.split('-');
+		const [pair_base] = data && data.symbol && data.symbol.split('-');
 
 		return (
 			<div className="success-review">
@@ -77,9 +77,7 @@ const QuoteResult = ({
 						STRINGS['QUOTE_SUCCESS_REVIEW_MESSAGE'],
 						STRINGS[`SIDES_VERBS.${data.side}`],
 						formatToCurrency(data.size, pairData.increment_size),
-						pair_base.toUpperCase(),
-						formatToCurrency(data.price, pairData.increment_size),
-						pair_2.toUpperCase()
+						pair_base.toUpperCase()
 					)}
 				</div>
 				<footer className="d-flex pt-4">

@@ -23,6 +23,7 @@ const MobileOrders = ({
 	coins,
 	cancelDelayData,
 	icons: ICONS,
+	activeOrdersMarket,
 }) => (
 	<div
 		className={classnames(
@@ -71,7 +72,7 @@ const MobileOrders = ({
 					<ActionNotification
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-						onClick={goToTransactionsHistory}
+						onClick={() => goToTransactionsHistory('trades')}
 						status=""
 						showActionText={true}
 					/>
@@ -90,6 +91,7 @@ const MobileOrders = ({
 					lessHeaders={true}
 					pairs={pairs}
 					coins={coins}
+					icons={ICONS}
 				/>
 			) : (
 				<LogoutInfoTrade />

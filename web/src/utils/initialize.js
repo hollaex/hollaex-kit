@@ -33,7 +33,7 @@ export const setExchangeInitialized = (initialized) => {
 };
 
 export const getExchangeInitialized = () => {
-	const initialized = localStorage.getItem('initialized') || false;
+	const initialized = localStorage.getItem('initialized');
 	return initialized;
 };
 
@@ -63,4 +63,26 @@ export const consoleKitInfo = () => {
 		`%c${API_URL}`,
 		'font-family:sans-serif; font-size: 16px; font-weight: 600'
 	);
+};
+
+export const getContracts = (coins = {}) => {
+	const contracts = {};
+
+	Object.entries(coins).forEach(
+		([
+			coin,
+			{ meta: { contract: token, staking: main, network, whitepaper } = {} },
+		]) => {
+			if (token && main) {
+				contracts[coin] = {
+					token,
+					main,
+					network,
+					whitepaper,
+				};
+			}
+		}
+	);
+
+	return contracts;
 };

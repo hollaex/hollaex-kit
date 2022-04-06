@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import EventListener from 'react-event-listener';
 import { pie, arc } from 'd3-shape';
 import { Link } from 'react-router';
 import classnames from 'classnames';
@@ -78,6 +79,20 @@ class DonutChart extends Component {
 		this.setState({ hoverId: this.state.higherId });
 	};
 
+	handleResize = () => {
+		const donutContainer = document.getElementById(this.props.id);
+		let rect = {};
+		if (donutContainer) {
+			rect = donutContainer.getBoundingClientRect();
+		}
+		const checkFilter = this.checkData(this.props.chartData);
+		this.setState({
+			width: rect.width,
+			height: rect.height,
+			isData: checkFilter,
+		});
+	};
+
 	render() {
 		const { width, height, isData } = this.state;
 		const data = isData ? this.props.chartData : [{ balance: 100 }];
@@ -139,15 +154,18 @@ class DonutChart extends Component {
 		let y = height / 2 - 11;
 
 		return (
-			<div id={this.props.id} className="w-100 h-100">
-				<svg width="100%" height="100%">
-					<g transform={translate(x, y)}>
-						{sortedData.map((value, i) => {
-							return this.renderSlice(value, i, width, height);
-						})}
-					</g>
-				</svg>
-			</div>
+			<Fragment>
+				<EventListener target="window" onResize={this.handleResize} />
+				<div id={this.props.id} className="w-100 h-100">
+					<svg width="100%" height="100%">
+						<g transform={translate(x, y)}>
+							{sortedData.map((value, i) => {
+								return this.renderSlice(value, i, width, height);
+							})}
+						</g>
+					</svg>
+				</div>
+			</Fragment>
 		);
 	}
 

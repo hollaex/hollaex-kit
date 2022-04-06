@@ -373,7 +373,7 @@ const loginPost = (req, res) => {
 			}));
 
 			if (!service) {
-				sendEmail(MAILTYPE.LOGIN, email, data, {}, domain);
+				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
 			return res.status(201).json({
 				token: toolsLib.security.issueToken(
@@ -399,6 +399,44 @@ const verifyToken = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/verifyToken', req.auth.sub);
 	return res.json({ message: 'Valid Token' });
 };
+
+function requestEmailConfirmation(req, res) {
+	loggerUser.verbose(req.uuid, 'controllers/user/requestEmailConfirmation auth', req.auth.sub);
+	let email = req.auth.sub.email;
+	const ip = req.headers['x-real-ip'];
+	const domain = req.headers['x-real-origin'];
+	loggerUser.verbose(req.uuid, 'controllers/user/requestEmailConfirmation ip', ip, domain);
+
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/requestEmailConfirmation invalid email',
+			email
+		);
+		return res.status(400).json({ message: `Invalid email: ${email}` });
+	}
+
+	email = email.toLowerCase();
+
+	toolsLib.security.sendConfirmationEmail(req.auth.sub.id, domain)
+		.then(() => {
+			return res.json({ message: `Confirmation email sent to: ${email}` });
+		})
+		.catch((err) => {
+			let errorMessage = errorMessageConverter(err);
+
+			if (errorMessage === USER_NOT_FOUND) {
+				errorMessage = 'User not found';
+			}
+
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/requestEmailConfirmation',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessage });
+		});
+}
 
 const requestResetPassword = (req, res) => {
 	let email = req.swagger.params.email.value;
@@ -496,20 +534,21 @@ const updateSettings = (req, res) => {
 };
 
 const changePassword = (req, res) => {
-	loggerUser.debug(req.uuid, 'controllers/user/changePassword', req.auth.sub);
+	loggerUser.verbose(req.uuid, 'controllers/user/changePassword', req.auth.sub);
 	const email = req.auth.sub.email;
-	const { old_password, new_password } = req.swagger.params.data.value;
+	const { old_password, new_password, otp_code } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
 
-	loggerUser.debug(
+	loggerUser.verbose(
 		req.uuid,
 		'controllers/user/changePassword',
-		req.swagger.params.data.value
+		ip,
+		otp_code
 	);
 
-	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain)
-		.then(() => res.json({ message: `Change password email confirmation sent to: ${email}` }))
+	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain, otp_code)
+		.then(() => res.json({ message: `Verification email to change password is sent to: ${email}` }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -518,6 +557,14 @@ const changePassword = (req, res) => {
 
 const confirmChangePassword = (req, res) => {
 	const code = req.swagger.params.code.value;
+	const ip = req.headers['x-real-ip'];
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/changePassword',
+		code,
+		ip
+	);
 
 	toolsLib.security.confirmChangeUserPassword(code)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
@@ -727,11 +774,28 @@ const createHmacToken = (req, res) => {
 		req.auth.sub
 	);
 
-	const { id } = req.auth.sub;
+	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { name, otp_code } = req.swagger.params.data.value;
+	const { name, otp_code, email_code } = req.swagger.params.data.value;
 
-	toolsLib.security.createUserKitHmacToken(id, otp_code, ip, name)
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/createHmacToken data',
+		name,
+		otp_code,
+		email_code,
+		ip
+	);
+
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				// TODO check for the name duplication
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
 		.then((token) => {
 			return res.json(token);
 		})
@@ -745,6 +809,58 @@ const createHmacToken = (req, res) => {
 		});
 };
 
+function updateHmacToken(req, res) {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken auth',
+		req.auth.sub
+	);
+
+	const { id: userId } = req.auth.sub;
+	const ip = req.headers['x-real-ip'];
+	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, whitelisting_enabled } = req.swagger.params.data.value;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/updateHmacToken data',
+		token_id,
+		name,
+		otp_code,
+		email_code,
+		permissions,
+		whitelisted_ips,
+		whitelisting_enabled,
+		ip
+	);
+
+	whitelisted_ips.forEach((ip) => {
+		if (!toolsLib.validateIp(ip)) {
+			return res.status(400).json({ message: 'IP address is not valid.' });
+		}
+	});
+	
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then((token) => {
+			return res.json(token);
+		})
+		.catch((err) => {
+			loggerUser.error(
+				req.uuid,
+				'controllers/user/updateHmacToken',
+				err.message,
+				err.stack
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const deleteHmacToken = (req, res) => {
 	loggerUser.verbose(
 		req.uuid,
@@ -752,10 +868,27 @@ const deleteHmacToken = (req, res) => {
 		req.auth.sub
 	);
 
-	const { id } = req.auth.sub;
-	const { token_id, otp_code } = req.swagger.params.data.value;
+	const { id: userId } = req.auth.sub;
+	const { token_id, otp_code, email_code } = req.swagger.params.data.value;
+	const ip = req.headers['x-real-ip'];
 
-	toolsLib.security.deleteUserKitHmacToken(id, otp_code, token_id)
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/deleteHmacToken data',
+		token_id,
+		otp_code,
+		email_code,
+		ip
+	);
+
+	toolsLib.security.confirmByEmail(userId, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.security.deleteUserKitHmacToken(userId, otp_code, token_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
 		.then(() => {
 			return res.json({ message: TOKEN_REMOVED });
 		})
@@ -880,7 +1013,9 @@ module.exports = {
 	createCryptoAddress,
 	getHmacToken,
 	createHmacToken,
+	updateHmacToken,
 	deleteHmacToken,
 	getUserStats,
-	userCheckTransaction
+	userCheckTransaction,
+	requestEmailConfirmation
 };

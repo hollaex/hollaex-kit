@@ -34,6 +34,9 @@ const AssetsBlock = ({
 	handleCheck,
 	icons: ICONS,
 	hasEarn,
+	loading,
+	contracts,
+	broker,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -64,7 +67,18 @@ const AssetsBlock = ({
 	};
 
 	const isMarketAvailable = (pair) => {
-		return pair && pairs[pair] && pairs[pair].active;
+		if (pair) {
+			let flippedPair = pair.split('-');
+			flippedPair.reverse().join('-');
+			const isBroker = !!broker.filter(
+				(item) => item.symbol === pair || item.symbol === flippedPair
+			).length;
+			if (isBroker) {
+				return isBroker;
+			} else {
+				return pair && pairs[pair] && pairs[pair].active;
+			}
+		}
 	};
 
 	const findPairByPairBase = (key) => {
@@ -108,7 +122,14 @@ const AssetsBlock = ({
 	};
 
 	const goToTrade = (pair) => {
-		if (pair) {
+		let flippedPair = pair.split('-');
+		flippedPair.reverse().join('-');
+		const isBroker = !!broker.filter(
+			(item) => item.symbol === pair || item.symbol === flippedPair
+		).length;
+		if (pair && isBroker) {
+			return navigate(`/quick-trade/${pair}`);
+		} else if (pair && !isBroker) {
 			return navigate(`/trade/${pair}`);
 		}
 	};
@@ -116,16 +137,23 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
-					<div className="wallet-search-improvement">
-						{BASE_CURRENCY ? (
-							<div>
-								<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
-								<div className="font-title">{totalAssets}</div>
-							</div>
-						) : null}
+				{totalAssets.length && loading ? (
+					<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
+						<div className="wallet-search-improvement">
+							{BASE_CURRENCY ? (
+								<div>
+									<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
+									<div className="font-title">{totalAssets}</div>
+								</div>
+							) : null}
+						</div>
+					</EditWrapper>
+				) : (
+					<div>
+						<div className="mb-2">{STRINGS['WALLET_BALANCE_LOADING']}</div>
+						<div className="loading-anime"></div>
 					</div>
-				</EditWrapper>
+				)}
 				<div className="d-flex justify-content-between zero-balance-wrapper">
 					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
 						<SearchBox
@@ -178,9 +206,21 @@ const AssetsBlock = ({
 				</thead>
 				<tbody>
 					{sortedSearchResults.map(
-						([key, { min, allow_deposit, allow_withdrawal, oraclePrice }]) => {
+						(
+							[key, { min, allow_deposit, allow_withdrawal, oraclePrice }],
+							index
+						) => {
 							const balanceValue = balance[`${key}_balance`];
-							const pair = findPair(key);
+							let brokerPair = '';
+							broker.forEach((item) => {
+								const pairKey = item && item.symbol;
+								const splitPair = pairKey && pairKey.split('-');
+
+								if (splitPair[0] === key || splitPair[1] === key) {
+									brokerPair = pairKey;
+								}
+							});
+							const pair = brokerPair ? brokerPair : findPair(key);
 							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
@@ -202,37 +242,55 @@ const AssetsBlock = ({
 										</Link> */}
 									</td>
 									<td className="td-name td-fit">
-										<div className="d-flex align-items-center">
-											<Link to={`/wallet/${key.toLowerCase()}`}>
-												<Image
-													iconId={`${symbol.toUpperCase()}_ICON`}
-													icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
-													wrapperClassName="currency-ball"
-													imageWrapperClassName="currency-ball-image-wrapper"
-												/>
-											</Link>
-											<Link to={`/wallet/${key.toLowerCase()}`}>
-												{fullname}
-											</Link>
-										</div>
+										{sortedSearchResults && loading ? (
+											<div className="d-flex align-items-center">
+												<Link to={`/wallet/${key.toLowerCase()}`}>
+													<Image
+														iconId={`${symbol.toUpperCase()}_ICON`}
+														icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+														wrapperClassName="currency-ball"
+														imageWrapperClassName="currency-ball-image-wrapper"
+													/>
+												</Link>
+												<Link to={`/wallet/${key.toLowerCase()}`}>
+													{fullname}
+												</Link>
+											</div>
+										) : (
+											<div
+												className="loading-row-anime w-half"
+												style={{
+													animationDelay: `.${index + 1}s`,
+												}}
+											></div>
+										)}
 									</td>
 									<td className="td-amount">
-										<div className="d-flex">
-											<div className="mr-4">
-												{STRINGS.formatString(
-													CURRENCY_PRICE_FORMAT,
-													formatToCurrency(balanceValue, min, true),
-													symbol.toUpperCase()
-												)}
+										{sortedSearchResults && baseCoin && loading ? (
+											<div className="d-flex">
+												<div className="mr-4">
+													{STRINGS.formatString(
+														CURRENCY_PRICE_FORMAT,
+														formatToCurrency(balanceValue, min, true),
+														symbol.toUpperCase()
+													)}
+												</div>
+												{!isMobile &&
+													key !== BASE_CURRENCY &&
+													parseFloat(balanceText || 0) > 0 && (
+														<div>
+															{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
+														</div>
+													)}
 											</div>
-											{!isMobile &&
-												key !== BASE_CURRENCY &&
-												parseFloat(balanceText || 0) > 0 && (
-													<div>
-														{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
-													</div>
-												)}
-										</div>
+										) : (
+											<div
+												className="loading-row-anime w-full"
+												style={{
+													animationDelay: `.${index + 1}s`,
+												}}
+											></div>
+										)}
 									</td>
 									<th className="td-amount" />
 									<td className="td-wallet">
@@ -283,7 +341,7 @@ const AssetsBlock = ({
 												onClick={() => navigate('/stake')}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!isStakingAvailable(symbol)}
+												disable={!isStakingAvailable(symbol, contracts)}
 											/>
 										</td>
 									)}

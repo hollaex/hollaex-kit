@@ -77,18 +77,19 @@ export const HOLLAEX_LOGO_BLACK =
 	'https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/LOGO_IMAGE_DARK';
 
 export const AUDIOS = {
-	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update.wav',
-	ORDERBOOK_LIMIT_ORDER: '/assets/audio/orderbook-limit-order.wav',
+	ORDERBOOK_FIELD_UPDATE: '/assets/audio/orderbook_field_update_1.wav',
+	ORDERBOOK_LIMIT_ORDER: '/assets/audio/orderbook-limit-order_1.wav',
 	PUBLIC_TRADE_NOTIFICATION: '/assets/audio/public-trade-notification.wav',
-	ORDER_COMPLETED: '/assets/audio/order-filled.wav',
-	ORDER_PARTIALLY_COMPLETED: '/assets/audio/part-fill.wav',
-	CANCEL_ORDER: '/assets/audio/cancel_order.wav',
-	QUICK_TRADE_COMPLETE: '/assets/audio/quick-trade-complete.wav',
-	REVIEW_QUICK_TRADE_ORDER: '/assets/audio/review-quick-trade-order.wav',
+	ORDER_COMPLETED: '/assets/audio/order-filled_1.wav',
+	ORDER_PARTIALLY_COMPLETED: '/assets/audio/part-fill_1.wav',
+	CANCEL_ORDER: '/assets/audio/cancel_order_1.wav',
+	QUICK_TRADE_COMPLETE: '/assets/audio/quick-trade-complete_1.wav',
+	REVIEW_QUICK_TRADE_ORDER: '/assets/audio/review-quick-trade-order_1.wav',
 	TIME_OUT_QUICK_TRADE: '/assets/audio/time-out-quick-trade.wav',
 };
 
 export const CURRENCY_PRICE_FORMAT = '{0} {1}';
+export const APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT = '\u2248{0} {1}';
 // this DEFAULT_COIN_PAIR to prevent from error while irrelevant BASE_CURRENCY
 export const DEFAULT_COIN_DATA = {
 	fullname: '',

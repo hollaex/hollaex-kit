@@ -1,12 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { STAKING_INDEX_COIN } from 'config/contracts';
 import { dotifyString } from 'utils/eth';
+import { open } from 'helpers/link';
 
-const Transaction = ({ id, network }) => {
-	const open = (url) => {
-		if (window) {
-			window.open(url, '_blank');
-		}
-	};
+const Transaction = ({ id, contracts }) => {
+	const network = contracts[STAKING_INDEX_COIN].network;
 
 	const url = `https://${
 		network !== 'main' ? `${network}.` : ''
@@ -28,4 +27,8 @@ const Transaction = ({ id, network }) => {
 	}
 };
 
-export default Transaction;
+const mapStateToProps = (store) => ({
+	contracts: store.app.contracts,
+});
+
+export default connect(mapStateToProps)(Transaction);

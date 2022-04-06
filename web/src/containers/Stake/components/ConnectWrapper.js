@@ -15,9 +15,18 @@ const ConnectWalletLink = ({ className, ...props }) => {
 	);
 };
 
-const ConnectWrapper = ({ account, children, connectWallet, className }) => {
+const ConnectWrapper = ({
+	account,
+	children,
+	connectWallet,
+	className,
+	onClick,
+}) => {
 	return !account ? (
-		<ConnectWalletLink onClick={connectWallet} className={className} />
+		<ConnectWalletLink
+			onClick={onClick || connectWallet}
+			className={className}
+		/>
 	) : children ? (
 		children
 	) : null;

@@ -319,3 +319,21 @@ table th {
 .text-align-left {
 	text-align: left !important;
 }
+
+.normal {
+	font-weight: normal;
+}
+
+.text-align-right {
+	text-align: right !important;
+}
+
+.zoom-in {
+	cursor: -moz-zoom-in;
+	cursor: -webkit-zoom-in;
+	cursor: zoom-in;
+}
+
+.inline-flex {
+	display: inline-flex !important;
+}

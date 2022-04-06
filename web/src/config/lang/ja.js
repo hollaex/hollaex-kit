@@ -631,7 +631,7 @@ export default {
 				'取引注文の値がポートフォリオの設定されたパーセンテージを超えたときに警告が通知されます。',
 			INFO_TEXT_1: '総資産価値 {0}：{1}',
 			PORTFOLIO: 'ポートフォリオのパーセンテージ',
-			TOMAN_ASSET: '概算価額',
+			VALUE_ASSET: '概算価額',
 			ADJUST: '(パーセンテージの設定)',
 			ACTIVATE_RISK_MANAGMENT: 'リスク管理の実行',
 			WARNING_POP_UP: '警告メッセージ',
@@ -882,7 +882,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

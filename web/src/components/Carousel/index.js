@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { oneOfType, array, number, string, object, bool } from 'prop-types';
 import AliceCarousel from 'react-alice-carousel';
@@ -12,12 +13,19 @@ class Carousel extends React.PureComponent {
 			responsive: { 0: { items: groupItems } },
 			isPrevSlideDisabled: true,
 			isNextSlideDisabled: true,
+			items: this.props.items
 		};
 	}
 
 	componentDidMount() {
 		const { isActive } = this.props;
 		this.setState({ currentIndex: 0 }, isActive ? this.slidePrev : null);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.items && prevProps.items.length !== this.props.items.length) {
+			this.setState({ items: this.props.items });
+		}
 	}
 
 	onInitialized = ({
@@ -53,13 +61,14 @@ class Carousel extends React.PureComponent {
 	};
 
 	render() {
-		const { items, containerClass, containerStyle, isInfinite } = this.props;
+		const { items, containerClass, containerStyle, isInfinite, isPositionChange = false } = this.props;
 		const {
 			responsive,
 			currentIndex,
 			isPrevSlideDisabled,
 			isNextSlideDisabled,
 		} = this.state;
+		const itemData = isPositionChange ? this.state.items : items;
 
 		const { onInitialized, onSlideChanged, slidePrev, slideNext } = this;
 
@@ -84,7 +93,7 @@ class Carousel extends React.PureComponent {
 						infinite={isInfinite}
 						dotsDisabled={true}
 						buttonsDisabled={true}
-						items={items}
+						items={itemData}
 						responsive={responsive}
 						slideToIndex={currentIndex}
 						onSlideChanged={onSlideChanged}
