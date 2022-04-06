@@ -5,7 +5,7 @@ const {
 } = require('../helpers');
 
 describe('Dynamic Pricing', async () => {
-    let user, bearerToken, quoteData;
+    let user, bearerToken, quoteData, createdBroker;
     before(async () => {
         user = await getTestUser();
         user.should.be.an('object');
@@ -66,7 +66,7 @@ describe('Dynamic Pricing', async () => {
         response.should.have.status(400);
     });
 
-    it('should get an error without side param', async () => {
+    it('should return an error without side param', async () => {
         const response = await request()
             .get(`/v2/broker/quote?symbol=btc-usdt&size=1`)
             .set('Authorization', `Bearer ${bearerToken}`)
@@ -74,7 +74,7 @@ describe('Dynamic Pricing', async () => {
         response.should.have.status(400);
     });
 
-    it('should get an error without size param', async () => {
+    it('should return an error without size param', async () => {
         const response = await request()
             .get(`/v2/broker/quote?symbol=btc-usdt&side=sell`)
             .set('Authorization', `Bearer ${bearerToken}`)
@@ -82,7 +82,7 @@ describe('Dynamic Pricing', async () => {
         response.should.have.status(400);
     });
 
-    it('should get an error without params', async () => {
+    it('should return an error without params', async () => {
         const response = await request()
             .get(`/v2/broker/quote`)
             .set('Authorization', `Bearer ${bearerToken}`)
