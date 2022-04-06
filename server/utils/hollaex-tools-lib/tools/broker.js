@@ -259,6 +259,12 @@ const updateBrokerPair = async (id, data) => {
 		account,
 		formula } = data;
 
+	if(exchange_name && !spread){
+		throw new Error('Spread is missing');
+	}
+	if(exchange_name && !multiplier){
+		throw new Error('Multiplier is missing');
+	}
 	//Validate account JSONB object
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
