@@ -57,7 +57,7 @@ describe('Dynamic Pricing', async () => {
         response.body.should.have.property('price');
     });
 
-    it('should get wrong symbol error', async () => {
+    it('should return wrong symbol error', async () => {
         const response = await request()
             .get(`/v2/broker/quote?symbol=btc-&side=sell&size=1`)
             .set('Authorization', `Bearer ${bearerToken}`)
@@ -88,6 +88,42 @@ describe('Dynamic Pricing', async () => {
             .set('Authorization', `Bearer ${bearerToken}`)
 
         response.should.have.status(400);
+    });
+
+    it('should validate jsonb object', async () => {
+        // server should check the keys in an object that client sends 
+        //if one key is missing it should be replaced with the old record's key
+        const response = await request()
+            .put(`/v2/broker`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                id: createdBroker.id,
+                account: {
+                    binance: {
+                        apiKey: '1a3321381e9f2e87cdc1a2e9489936bb0e5e0590435',
+                    },
+                },
+            });
+
+        response.should.have.status(200);
+        response.body.account.binance.should.have.property('apiKey');
+        response.body.account.binance.should.have.property('apiSecret');
+    });
+
+    it('should only update that fields that client sends', async () => {
+        // server should not overwrite the whole record if clients send only a few columns to update
+        const response = await request()
+            .put(`/v2/broker`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                id: createdBroker.id,
+                increment_size: 0.001,
+            });
+        response.should.have.status(200);
+        response.body.should.have.property('symbol');
+        response.body.symbol.should.be.a('string');
+        response.body.symbol.should.equal(createdBroker.symbol);
+        response.body.should.have.property('increment_size');
     });
 
     it('should update the broker', async () => {
