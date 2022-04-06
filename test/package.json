@@ -17,7 +17,7 @@
     "package.json": "2.0.1",
     "randomstring": "1.2.1",
     "selenium-webdriver": "^4.0.0-beta.3",
-    "shelljs": "^0.8.4",
+    "shelljs": "^0.8.5",
     "time-stamp": "2.2.0",
     "tokenize-file": "0.1.7",
     "totp-generator": "0.0.9",
