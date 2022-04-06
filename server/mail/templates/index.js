@@ -45,7 +45,7 @@ const generateMessageContent = (
 		const EMAIL_CONFIGURATIONS = GET_EMAIL();
 		let new_type = findMailtype(type, data);
 
-		if (EMAIL_CONFIGURATIONS[language] && EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()] === undefined) {
+		if (EMAIL_CONFIGURATIONS[language] === undefined || EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()] === undefined) {
 			language = 'en';
 		}
 
@@ -392,7 +392,7 @@ const getTitle = (type, title = '', data) => {
 		type === MAILTYPE.DEPOSIT_CANCEL ||
 		type === MAILTYPE.WITHDRAWAL_CANCEL
 	) {
-		title = title.replace(/\$\{currency\}/g, data.currency);
+		title = title.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
 	} else if (
 		type === MAILTYPE.USER_ID_VERIFICATION_REJECT ||
 		type === MAILTYPE.USER_BANK_VERIFICATION_REJECT ||
