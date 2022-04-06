@@ -126,7 +126,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		}
 
 		html = html.replace(/\$\{name\}/g, email || ''); //
-		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase()); //
+		html = html.replace(/\$\{currency\}/g, data.fee_coin.toUpperCase() || data.currency.toUpperCase()); //
 		html = html.replace(/\$\{amount\}/g, data.amount || ''); //
 		html = html.replace(/\$\{confirmation\}/g, confirmation || '');
 		html = html.replace(/\$\{status\}/g, data.status || '');
@@ -166,7 +166,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		}
 
 		html = html.replace(/\$\{name\}/g, email || ''); //
-		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase()); //
+		html = html.replace(/\$\{currency\}/g, data.fee_coin.toUpperCase() || data.currency.toUpperCase()); //
 		html = html.replace(/\$\{amount\}/g, data.amount || ''); //
 		html = html.replace(/\$\{confirmation\}/g, confirmation || '');
 		html = html.replace(/\$\{status\}/g, data.status || '');
@@ -205,7 +205,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
+		html = html.replace(/\$\{currency\}/g, data.fee_coin.toUpperCase() || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
@@ -240,7 +240,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		}
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
+		html = html.replace(/\$\{currency\}/g, data.fee_coin.toUpperCase() || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{status\}/g, data.status || '');
@@ -284,7 +284,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 	else if (type === MAILTYPE.WITHDRAWAL_REQUEST) {
 		html = html.replace(/\$\{name\}/g, email || '');
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
-		html = html.replace(/\$\{currency\}/g, data.fee_coin || data.currency.toUpperCase());
+		html = html.replace(/\$\{currency\}/g, data.fee_coin.toUpperCase() || data.currency.toUpperCase());
 		html = html.replace(/\$\{amount\}/g, data.amount || '');
 		html = html.replace(/\$\{fee\}/g, data.fee || '0');
 		html = html.replace(/\$\{address\}/g, data.address || '');
@@ -381,7 +381,7 @@ const getTitle = (type, title = '', data) => {
 		type === MAILTYPE.DEPOSIT_CANCEL ||
 		type === MAILTYPE.WITHDRAWAL_CANCEL
 	) {
-		title = title.replace(/\$\{currency\}/g, data.currency);
+		title = title.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
 	} else if (
 		type === MAILTYPE.USER_ID_VERIFICATION_REJECT ||
 		type === MAILTYPE.USER_BANK_VERIFICATION_REJECT ||
