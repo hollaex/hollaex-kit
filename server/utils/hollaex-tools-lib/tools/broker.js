@@ -16,6 +16,15 @@ const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { loggerBroker } = require('../../../config/logger');
 
+const {
+	TOKEN_EXPIRED,
+	AUTH_NOT_MATCHED,
+	BROKER_NOT_FOUND,
+	BROKER_PAUSED,
+	BROKER_ERROR_DELETE_UNPAUSED,
+	BROKER_EXISTS,
+	BROKER_FORMULA_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+
 const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
 		throw new Error("Broker buy price must be bigger than zero.")
@@ -33,13 +42,15 @@ const validateBrokerPair = (brokerPair) => {
 }
 
 const binanceScript = async () => {
+	const BINANCE_URL = 'https://api3.binance.com/api/v3/ticker/price'
+
 	// Get the price from redis
 	const formattedSymbol = symbol.split('-').join('').toUpperCase();
 	const quotePrice = await client.getAsync('prices');
 
 	// If it doesn't exist, fetch all market from Binance 
 	if (!quotePrice) {
-		return rp('https://api3.binance.com/api/v3/ticker/price')
+		return rp(BINANCE_URL)
 			.then((res) => {
 				//Store all market prices in Redis with 1 minute expiry time
 				//response is a stringfied object.
@@ -134,9 +145,9 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
 		if (!broker) {
-			throw new Error("Broker pair could not be found.");
+			throw new Error(BROKER_NOT_FOUND);
 		} else if (broker.paused) {
-			throw new Error("Broker pair is paused.");
+			throw new Error(BROKER_PAUSED);
 		}
 		if (broker.type === 'dynamic') {
 			if (broker.formula) {
@@ -148,7 +159,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 				return resObject;
 
 			} else {
-				throw new Error("Broker formula not found.");
+				throw new Error(BROKER_FORMULA_NOT_FOUND);
 			}
 		} else {
 			const calculatedPrice = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
@@ -215,7 +226,7 @@ const createBrokerPair = async (brokerPair) => {
 	return fetchBrokerPair(brokerPair.symbol)
 		.then((deal) => {
 			if (deal) {
-				throw new Error('A deal for this symbol alreadys exists')
+				throw new Error(BROKER_EXISTS)
 			}
 			const {
 				formula,
@@ -263,7 +274,7 @@ async function fetchBrokerPairs(attributes) {
 const updateBrokerPair = async (id, data) => {
 	const brokerPair = await getModel("broker").findOne({ where: { id } });
 	if (!brokerPair) {
-		throw new Error('Pair does not exist');
+		throw new Error(BROKER_NOT_FOUND);
 	}
 
 	const {
@@ -347,9 +358,9 @@ const deleteBrokerPair = async (id) => {
 	const brokerPair = await getModel("broker").findOne({ where: { id } });
 
 	if (!brokerPair) {
-		throw new Error("Broker pair could not be found.");
+		throw new Error(BROKER_NOT_FOUND);
 	} else if (!brokerPair.paused) {
-		throw new Error("Broker pair could not be deleted while unpaused.");
+		throw new Error(BROKER_ERROR_DELETE_UNPAUSED);
 	}
 
 	return brokerPair.destroy();
@@ -358,20 +369,20 @@ const deleteBrokerPair = async (id) => {
 const executeBrokerDeal = async (userId, token) => {
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
-		throw new Error("Token expired");
+		throw new Error(TOKEN_EXPIRED);
 	}
 	const { user_id, symbol, price, side, size } = JSON.parse(storedToken);
 
 	if (user_id !== userId) {
-		throw new Error("Auth doesn't match");
+		throw new Error(AUTH_NOT_MATCHED);
 	}
 
 	const brokerPair = await getModel("broker").findOne({ where: { symbol } });
 
 	if (!brokerPair) {
-		throw new Error("Broker pair could not be found.");
+		throw new Error(BROKER_NOT_FOUND);
 	} else if (brokerPair.paused) {
-		throw new Error("Broker pair is paused.");
+		throw new Error(BROKER_PAUSED);
 	}
 
 	const broker = await getUserByKitId(brokerPair.user_id);

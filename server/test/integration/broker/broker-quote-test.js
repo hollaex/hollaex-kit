@@ -62,7 +62,6 @@ describe('Dynamic Pricing', async () => {
             .get(`/v2/broker/quote?symbol=btc-&side=sell&size=1`)
             .set('Authorization', `Bearer ${bearerToken}`)
             
-        response.body.message.should.equal('Error: Broker pair could not be found.');
         response.should.have.status(400);
     });
 
