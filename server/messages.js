@@ -189,4 +189,4 @@ exports.BROKER_NOT_FOUND = 'Broker pair could not be found';
 exports.BROKER_PAUSED = 'Broker pair is paused';
 exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while unpaused';
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
-exports.BROKER_FORMULA_NOT_FOUND = '"Broker formula not found';
+exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
