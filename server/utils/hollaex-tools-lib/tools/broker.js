@@ -239,6 +239,8 @@ const createBrokerPair = async (brokerPair) => {
 				`;
 
 				adminFormula = binanceFormula;
+			} else {
+				throw new Error('Exchange not found')
 			}
 			const newBrokerObject = {
 				...brokerPair,
@@ -371,7 +373,7 @@ const executeBrokerDeal = async (userId, token) => {
 	} else if (brokerPair.paused) {
 		throw new Error("Broker pair is paused.");
 	}
-	
+
 	const broker = await getUserByKitId(brokerPair.user_id);
 	const user = await getUserByKitId(userId);
 
