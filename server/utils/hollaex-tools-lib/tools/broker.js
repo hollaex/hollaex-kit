@@ -12,6 +12,8 @@ const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
 const { validatePair, getKitTier } = require('./common');
 const _eval = require('eval');
+const { sendEmail } = require('../../../mail');
+const { MAILTYPE } = require('../../../mail/strings');
 const { loggerBroker } = require('../../../config/logger');
 
 const validateBrokerPair = (brokerPair) => {
@@ -155,8 +157,19 @@ const fetchBrokerQuote = async (brokerQuote) => {
 }
 
 const reverseTransaction = async (orderData) => {
-	const { symbol, side, size, price } = orderData;
-
+	const { userId, symbol, side, size, price } = orderData;
+	const notifyUser = async (data) => {
+		const user = await getUserByKitId(userId);
+		sendEmail(
+			MAILTYPE.ALERT,
+			user.email,
+			{
+				type: 'binance order info',
+				data,
+			},
+			user.settings
+		);
+	}
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
@@ -174,12 +187,12 @@ const reverseTransaction = async (orderData) => {
 
 			if (side === 'buy') {
 				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, price - price * 0.05)
-					.then(res => loggerBroker.verbose(res))
-					.catch(err => loggerBroker.error(err));
+					.then(res => { notifyUser(res) })
+					.catch(err => { notifyUser(err) });
 			} else if (side == 'sell') {
 				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, price + price * 0.05)
-					.then(res => loggerBroker.verbose(res))
-					.catch(err => loggerBroker.error(err));
+					.then(res => { notifyUser(res) })
+					.catch(err => { notifyUser(err) });
 			}
 		}
 	} catch (err) {
@@ -244,9 +257,9 @@ const updateBrokerPair = async (id, data) => {
 
 	const {
 		user_id,
-		exchange_name, 
-		spread, 
-		multiplier, 
+		exchange_name,
+		spread,
+		multiplier,
 		buy_price,
 		sell_price,
 		min_size,
@@ -259,7 +272,7 @@ const updateBrokerPair = async (id, data) => {
 		account,
 		formula } = data;
 
-	if(exchange_name && !spread){
+	if (exchange_name && !spread) {
 		throw new Error('Spread is missing');
 	}
 
