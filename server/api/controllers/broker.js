@@ -265,24 +265,19 @@ const executeBrokerDeal = (req, res) => {
 		req.auth
 	);
 
-	const {
-		side,
-		symbol,
-		price,
-		size,
-		token,
-	} = req.swagger.params.data.value;
+	const { token } = req.swagger.params.data.value;
 
 	const userId = req.auth.sub.id;
 
-	toolsLib.broker.executeBrokerDeal(userId, symbol, side, size, price, token)
+	toolsLib.broker.executeBrokerDeal(userId, token)
 		.then((data) => {
 			loggerBroker.verbose(
 				req.uuid,
 				'controllers/broker/executeBrokerDeal done',
 				data
 			);
-			toolsLib.broker.reverseTransaction({ userId, symbol, side, size, price, token });
+			const { symbol, side, size, price } = data;
+			toolsLib.broker.reverseTransaction({ userId, symbol, side, size, price });
 			res.json(data);
 		})
 		.catch((err) => {

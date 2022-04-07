@@ -4312,22 +4312,9 @@ paths:
           schema:
             type: object
             properties:
-              symbol:
-                type: string
-              side:
-                type: string
-                enum: ["buy", "sell"]
-              price:
-                type: number
-              size:
-                type: number
               token:
                 type: string
             required:
-              - symbol
-              - price
-              - side
-              - size
               - token
       responses:
         200:

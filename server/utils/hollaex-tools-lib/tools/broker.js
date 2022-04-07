@@ -53,7 +53,7 @@ const binanceScript = async () => {
 				const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
 
 				// Generate randomToken to be used during deal execution
-				const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
 
 				const responseObject = {
 					token: randomToken,
@@ -76,7 +76,7 @@ const binanceScript = async () => {
 			const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
 
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, side, size, broker.quote_expiry_time, multiplier, calculatedPrice);
+			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
 
 			const responseObject = {
 				token: randomToken,
@@ -104,7 +104,7 @@ const calculateDeal = (price, side, size, spread, multiplier = 1) => {
 	return calculatedPrice;
 }
 
-const generateRandomToken = (user_id, side, size, expiryTime = 30, multiplier, price) => {
+const generateRandomToken = (user_id, symbol, side, size, expiryTime = 30, price) => {
 	// Generate random token
 	//TO DO: Use Crypto lib to generate random string
 	const randomToken = randomString({
@@ -116,10 +116,10 @@ const generateRandomToken = (user_id, side, size, expiryTime = 30, multiplier, p
 	// set the generated token along with trade data in Redis expiry time(quote_expiry_time)
 	const tradeData = {
 		user_id,
+		symbol,
 		price,
 		side,
 		size,
-		multiplier,
 	}
 
 	client.setexAsync(randomToken, expiryTime, JSON.stringify(tradeData));
@@ -138,17 +138,26 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		} else if (broker.paused) {
 			throw new Error("Broker pair is paused.");
 		}
+		if (broker.type === 'dynamic') {
+			if (broker.formula) {
+				//Run formula
+				const resObject = _eval(broker.formula, "formula", {
+					symbol, side, size, user_id, client, broker, calculateDeal, generateRandomToken, rp
+				}, true);
 
-		if (broker.formula) {
-			//Run formula
-			const resObject = _eval(broker.formula, "formula", {
-				symbol, side, size, user_id, client, broker, calculateDeal, generateRandomToken, rp
-			}, true);
+				return resObject;
 
-			return resObject;
-
+			} else {
+				throw new Error("Broker formula not found.");
+			}
 		} else {
-			throw new Error("Broker formula not found.");
+			const calculatedPrice = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
+			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
+			const responseObject = {
+				token: randomToken,
+				price: calculatedPrice
+			}
+			return responseObject;
 		}
 
 	} catch (err) {
@@ -344,12 +353,14 @@ const deleteBrokerPair = async (id) => {
 	return brokerPair.destroy();
 }
 
-const executeBrokerDeal = async (userId, symbol, side, size, price, token) => {
+const executeBrokerDeal = async (userId, token) => {
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
 		throw new Error("Token expired");
 	}
-	if (JSON.parse(storedToken).user_id !== userId) {
+	const { user_id, symbol, price, side, size } = JSON.parse(storedToken);
+
+	if (user_id !== userId) {
 		throw new Error("Auth doesn't match");
 	}
 
@@ -360,17 +371,7 @@ const executeBrokerDeal = async (userId, symbol, side, size, price, token) => {
 	} else if (brokerPair.paused) {
 		throw new Error("Broker pair is paused.");
 	}
-
-	const brokerPrice = {
-		'buy': brokerPair.sell_price,
-		'sell': brokerPair.buy_price
-	}[side];
-
-	if (brokerPrice !== price) {
-		throw new Error(`Given price doesn't match the broker pair price. Price should be ${brokerPrice}`);
-	}
-
-
+	
 	const broker = await getUserByKitId(brokerPair.user_id);
 	const user = await getUserByKitId(userId);
 
