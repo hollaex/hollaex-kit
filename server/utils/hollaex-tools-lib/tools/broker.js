@@ -233,26 +233,29 @@ const createBrokerPair = async (brokerPair) => {
 				formula,
 				exchange_name,
 				spread,
-				multiplier
+				multiplier,
+				type
 			} = brokerPair;
 
-			let adminFormula;
+			let adminFormula = null;
 
-			// If it is a custom script(users send their own formula)
-			if (formula) {
-				adminFormula = formula;
-			}
-			// If user selects a exchange
-			else if (exchange_name === 'binance') {
-				const binanceFormula = `
+			if (type === 'dynamic') {
+				// If it is a custom script(users send their own formula)
+				if (formula) {
+					adminFormula = formula;
+				}
+				// If user selects a exchange
+				else if (exchange_name === 'binance') {
+					const binanceFormula = `
 					const spread = ${spread}; 
 					const multiplier = ${multiplier || 1}; 
 					module.exports = (${binanceScript.toString()})()
 				`;
 
-				adminFormula = binanceFormula;
-			} else {
-				throw new Error('Exchange not found')
+					adminFormula = binanceFormula;
+				} else {
+					throw new Error('Exchange not found')
+				}
 			}
 			const newBrokerObject = {
 				...brokerPair,
@@ -294,6 +297,10 @@ const updateBrokerPair = async (id, data) => {
 		rebalancing_symbol,
 		account,
 		formula } = data;
+
+	if ((exchange_name || formula) && type === 'manual') {
+		throw new Error('manual broker cannot select an exchange or have a script');
+	}
 
 	if (exchange_name && !spread) {
 		throw new Error('Spread is missing');
