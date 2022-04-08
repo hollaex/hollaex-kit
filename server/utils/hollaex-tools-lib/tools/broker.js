@@ -55,15 +55,17 @@ const binanceScript = async () => {
 		if (!foundSymbol) {
 			throw new Error('Pair not found');
 		}
-		const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
-
+		const calculatedSize = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
+		const baseCurrencySize = side === 'buy' ? size / foundSymbol.price : size;
+		const baseCurrencyPrice = foundSymbol.price
+		
 		const responseObject = {
-			price: calculatedPrice
+			size: calculatedSize
 		}
 		//check if there is user_id, if so, assing token
 		if (user_id) {
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
+			const randomToken = generateRandomToken(user_id, symbol, side, baseCurrencySize, broker.quote_expiry_time, baseCurrencyPrice);
 			responseObject.token = randomToken;
 		}
 
@@ -161,12 +163,15 @@ const fetchBrokerQuote = async (brokerQuote) => {
 				throw new Error(BROKER_FORMULA_NOT_FOUND);
 			}
 		} else {
-			const calculatedPrice = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
+			const calculatedSize = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
+			const baseCurrencySize = side === 'buy' ? size / broker.sell_price : size;
+			const baseCurrencyPrice = side === 'buy' ? broker.sell_price : broker.buy_price;
+
 			const responseObject = {
-				price: calculatedPrice
+				size: calculatedSize
 			}
 			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, baseCurrencySize, broker.quote_expiry_time, baseCurrencyPrice);
 				responseObject.token = randomToken
 			}
 			return responseObject;
