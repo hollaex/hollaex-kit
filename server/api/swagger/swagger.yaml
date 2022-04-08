@@ -5773,6 +5773,8 @@ definitions:
         type: number
       increment_size:
         type: number
+      type:
+        type: string
   BrokerPairCreate:
     type: object
     required:
@@ -5784,6 +5786,7 @@ definitions:
       - min_size
       - max_size
       - increment_size
+      - type
     properties:
       symbol:
         type: string
@@ -5801,6 +5804,8 @@ definitions:
         type: number
       increment_size:
         type: number
+      type:
+        type: string
   BrokerPairUpdate:
     allOf:
       - $ref: "#/definitions/BrokerPair"

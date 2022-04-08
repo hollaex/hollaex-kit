@@ -297,9 +297,8 @@ const updateBrokerPair = async (id, data) => {
 		rebalancing_symbol,
 		account,
 		formula } = data;
-
-	if ((exchange_name || formula) && type === 'manual') {
-		throw new Error('manual broker cannot select an exchange or have a script');
+	if (exchange_name && type === 'manual') {
+		throw new Error('manual broker cannot select an exchange');
 	}
 
 	if (exchange_name && !spread) {
