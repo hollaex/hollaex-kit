@@ -118,6 +118,11 @@ class Home extends Component {
 		}
 	};
 
+	flipPair = (pair) => {
+		const pairArray = pair.split('-');
+		return pairArray.reverse().join('-');
+	};
+
 	getSectionByKey = (key) => {
 		switch (key) {
 			case 'heading': {
@@ -184,6 +189,7 @@ class Home extends Component {
 					orderLimits,
 					sourceOptions,
 					user,
+					broker,
 				} = this.props;
 
 				const {
@@ -240,6 +246,8 @@ class Home extends Component {
 								autoFocus={false}
 								user={user}
 								market={marketData}
+								broker={broker}
+								flipPair={this.flipPair}
 							/>
 						</div>
 					)
@@ -468,6 +476,7 @@ const mapStateToProps = (store) => {
 	const pairData = store.app.pairs[pair] || {};
 	const sourceOptions = getSourceOptions(store.app.pairs);
 	const qtlimits = QuickTradeLimitsSelector(store);
+	const broker = store.app.broker || [];
 
 	return {
 		sourceOptions,
@@ -488,6 +497,7 @@ const mapStateToProps = (store) => {
 		settings: store.user.settings,
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
+		broker,
 	};
 };
 
