@@ -23,6 +23,7 @@ const generateMessageContent = (
 ) => {
 	let title;
 	let message;
+	let result
 	if (
 		type === MAILTYPE.INVITED_OPERATOR ||
 		type === MAILTYPE.SMS ||
@@ -41,6 +42,14 @@ const generateMessageContent = (
 		}
 		message = require(`./${type}`)(email, data, language, domain);
 
+		let subject = `${API_NAME()} ${title}`;
+
+		result = {
+			subject: subject,
+			html: TemplateEmail({ title }, message.html, language, domain),
+			text: message.text
+		};
+
 	} else {
 		const EMAIL_CONFIGURATIONS = GET_EMAIL();
 		let new_type = findMailtype(type, data);
@@ -55,14 +64,15 @@ const generateMessageContent = (
 			html: replaceHTMLContent(new_type, MAILTYPE_CONFIGURATIONS['html'].toString(), email, data, language, domain),
 			text: ''
 		};
-	}
-	const subject = `${API_NAME()} ${title}`;
+		let subject = `${API_NAME()} ${title}`;
 
-	let result = {
-		subject: subject,
-		html: (TemplateEmail({ title }, message.html, language, domain)).replace(/\r?\n|\t|\r/g, ''),
-		text: message.text
-	};
+		result = {
+			subject: subject,
+			html: (TemplateEmail({ title }, message.html, language, domain)).replace(/\r?\n|\t|\r/g, ''),
+			text: message.text
+		};
+	}
+
 	return result;
 };
 
