@@ -138,8 +138,6 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			if (auth) {
 				user_id = auth.sub.id;
 			}
-		}else{
-			throw new Error(ip);
 		}
 
 		// Get the broker record
