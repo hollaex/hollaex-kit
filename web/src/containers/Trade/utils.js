@@ -328,10 +328,9 @@ export const depthChartSelector = createSelector(
 			orderPrice,
 			accSize,
 		]);
-		const bids = fullBids.map(([orderPrice, , accSize]) => [
-			orderPrice,
-			accSize,
-		]);
+		const bids = fullBids
+			.map(([orderPrice, , accSize]) => [orderPrice, accSize])
+			.reverse();
 
 		const series = [
 			{
