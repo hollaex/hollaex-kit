@@ -14,6 +14,7 @@ const { validatePair, getKitTier } = require('./common');
 const _eval = require('eval');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
+const { verifyBearerTokenPromise } = require('./security')
 const { loggerBroker } = require('../../../config/logger');
 
 const {
@@ -48,6 +49,27 @@ const binanceScript = async () => {
 	const formattedSymbol = symbol.split('-').join('').toUpperCase();
 	const quotePrice = await client.getAsync('prices');
 
+	const runScript = (prices) => {
+		//Calculate the deal
+		const foundSymbol = JSON.parse(prices).find((data) => data.symbol === formattedSymbol);
+		if (!foundSymbol) {
+			throw new Error('Pair not found');
+		}
+		const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
+
+		const responseObject = {
+			price: calculatedPrice
+		}
+		//check if there is user_id, if so, assing token
+		if (user_id) {
+			// Generate randomToken to be used during deal execution
+			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
+			responseObject.token = randomToken;
+		}
+
+		return responseObject;
+	}
+
 	// If it doesn't exist, fetch all market from Binance 
 	if (!quotePrice) {
 		return rp(BINANCE_URL)
@@ -56,45 +78,14 @@ const binanceScript = async () => {
 				//response is a stringfied object.
 				client.setexAsync('prices', 60, res);
 
-				//Calculate the deal
-				const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
-				if (!foundSymbol) {
-					throw new Error('Pair not found');
-				}
-				const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
-
-				// Generate randomToken to be used during deal execution
-				const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
-
-				const responseObject = {
-					token: randomToken,
-					price: calculatedPrice
-				}
-
-				return responseObject;
+				return runScript(res);
 			})
 			.catch(err => {
 				throw new Error(err);
 			})
 
 	} else {
-		return new Promise((resolve, reject) => {
-			//Calculate the deal
-			const foundSymbol = JSON.parse(quotePrice).find((data) => data.symbol === formattedSymbol);
-			if (!foundSymbol) {
-				reject('Pair not found');
-			}
-			const calculatedPrice = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
-
-			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
-
-			const responseObject = {
-				token: randomToken,
-				price: calculatedPrice
-			}
-			resolve(responseObject);
-		})
+		return runScript(quotePrice);
 	}
 }
 
@@ -138,8 +129,18 @@ const generateRandomToken = (user_id, symbol, side, size, expiryTime = 30, price
 }
 
 const fetchBrokerQuote = async (brokerQuote) => {
+	const { symbol, side, size, bearerToken, ip } = brokerQuote;
+
 	try {
-		const { symbol, side, size, user_id } = brokerQuote;
+		let user_id = null;
+		if (bearerToken) {
+			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			if (auth) {
+				user_id = auth.sub.id;
+			}
+		}else{
+			throw new Error(ip);
+		}
 
 		// Get the broker record
 		const broker = await getModel('broker').findOne({ where: { symbol } });
@@ -163,10 +164,12 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			}
 		} else {
 			const calculatedPrice = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
-			const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
 			const responseObject = {
-				token: randomToken,
 				price: calculatedPrice
+			}
+			if (user_id) {
+				const randomToken = generateRandomToken(user_id, symbol, side, size, broker.quote_expiry_time, calculatedPrice);
+				responseObject.token = randomToken
 			}
 			return responseObject;
 		}

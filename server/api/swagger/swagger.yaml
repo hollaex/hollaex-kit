@@ -4363,10 +4363,6 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-      security:
-        - Bearer: []
-      x-security-scopes:
-        - user
 definitions:
   ObjectResponse:
     type: object

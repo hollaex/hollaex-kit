@@ -12,20 +12,21 @@ const getBrokerQuote = (req, res) => {
 		'controllers/broker/getBrokerQuote get',
 		req.auth
 	);
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
 
-	const user_id = req.auth.sub.id;
 	const {
 		symbol,
 		side,
 		size,
 	} = req.swagger.params;
 
-
 	toolsLib.broker.fetchBrokerQuote({
 		symbol: symbol.value,
 		side: side.value,
 		size: size.value,
-		user_id,
+		bearerToken,
+		ip
 	})
 		.then((brokerQuote) => {
 			return res.json(brokerQuote);
