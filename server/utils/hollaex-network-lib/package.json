@@ -7,7 +7,7 @@
 		"file-type": "16.5.2",
 		"is-base64": "1.1.0",
 		"lodash": "4.17.13",
-		"moment": "2.24.0",
+		"moment": "2.29.2",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
 		"ws": "7.4.0",
