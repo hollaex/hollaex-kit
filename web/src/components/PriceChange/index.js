@@ -14,9 +14,10 @@ class PriceChange extends Component {
 
 	UNSAFE_componentWillUpdate(nextProp) {
 		const {
+			market,
 			market: { ticker },
 		} = this.props;
-		if (nextProp.market.ticker.close !== ticker.close) {
+		if (market && ticker && nextProp.market.ticker.close !== ticker.close) {
 			const tickerDiff = nextProp.market.ticker.close - ticker.close;
 			this.setState((prevState) => ({
 				...prevState,
