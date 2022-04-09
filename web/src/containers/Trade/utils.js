@@ -312,18 +312,6 @@ export const MarketsSelector = createSelector(
 	}
 );
 
-const calculateSymmetricExtrems = (center, max, min) => {
-	if (center && max && min) {
-		const span = math.min(
-			math.subtract(center, min),
-			math.subtract(max, center)
-		);
-		return { max: math.add(center, span), min: math.subtract(center, span) };
-	} else {
-		return {};
-	}
-};
-
 export const depthChartSelector = createSelector(
 	[orderbookSelector, marketPriceSelector, getPairs, getPair],
 	({ asks: fullAsks, bids: fullBids }, price, pairs, pair) => {
@@ -342,37 +330,28 @@ export const depthChartSelector = createSelector(
 
 		const series = [
 			{
-				name: 'Asks',
-				data: asks,
-				className: 'depth-chart__asks',
-				marker: {
-					enabled: false,
-				},
-			},
-			{
 				name: 'Bids',
 				data: bids,
 				className: 'depth-chart__bids',
 				marker: {
 					enabled: false,
 				},
+				xAxis: 0,
+			},
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+				xAxis: 1,
 			},
 		];
-
-		const min = math.min(
-			bids.map(([price]) => price),
-			0
-		);
-		const max = math.max(
-			asks.map(([price]) => price),
-			0
-		);
-		const extremes = calculateSymmetricExtrems(price, max, min);
 
 		return {
 			price,
 			series,
-			extremes,
 		};
 	}
 );
