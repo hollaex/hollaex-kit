@@ -4316,6 +4316,7 @@ paths:
                 type: string
             required:
               - token
+              - size
       responses:
         200:
           description: Success
@@ -4348,12 +4349,6 @@ paths:
           required: true
           type: string
           enum: ['buy', 'sell']
-        - in: query
-          name: size
-          description: quantity by which a given price is to be multiplied
-          required: true
-          type: number
-          format: double
       responses:
         200:
           description: Success

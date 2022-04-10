@@ -55,17 +55,15 @@ const binanceScript = async () => {
 		if (!foundSymbol) {
 			throw new Error('Pair not found');
 		}
-		const calculatedSize = calculateDeal(foundSymbol.price, side, size, spread, multiplier);
-		const baseCurrencySize = side === 'buy' ? size / foundSymbol.price : size;
-		const baseCurrencyPrice = foundSymbol.price
+		const baseCurrencyPrice = calculatePrice(foundSymbol.price, side, spread, multiplier);
 		
 		const responseObject = {
-			size: calculatedSize
+			price: baseCurrencyPrice
 		}
 		//check if there is user_id, if so, assing token
 		if (user_id) {
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, baseCurrencySize, broker.quote_expiry_time, baseCurrencyPrice);
+			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, baseCurrencyPrice);
 			responseObject.token = randomToken;
 		}
 
@@ -91,24 +89,21 @@ const binanceScript = async () => {
 	}
 }
 
-const calculateDeal = (price, side, size, spread, multiplier = 1) => {
+const calculatePrice = (price, side, spread, multiplier = 1) => {
 	// Calculate the price
 	const parsedPrice = parseFloat(price) * multiplier;
-	let totalPrice;
-	let calculatedPrice;
+	let calculatedSize;
 
 	if (side === 'buy') {
-		totalPrice = size / parsedPrice;
-		calculatedPrice = totalPrice - (totalPrice * spread / 100)
+		calculatedSize = parsedPrice + (parsedPrice * spread / 100)
 	} else if (side === 'sell') {
-		totalPrice = size * parsedPrice;
-		calculatedPrice = totalPrice - (totalPrice * spread / 100)
+		calculatedSize = parsedPrice - (parsedPrice * spread / 100)
 	}
 
-	return calculatedPrice;
+	return calculatedSize;
 }
 
-const generateRandomToken = (user_id, symbol, side, size, expiryTime = 30, price) => {
+const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price) => {
 	// Generate random token
 	//TO DO: Use Crypto lib to generate random string
 	const randomToken = randomString({
@@ -123,7 +118,6 @@ const generateRandomToken = (user_id, symbol, side, size, expiryTime = 30, price
 		symbol,
 		price,
 		side,
-		size,
 	}
 
 	client.setexAsync(randomToken, expiryTime, JSON.stringify(tradeData));
@@ -131,7 +125,7 @@ const generateRandomToken = (user_id, symbol, side, size, expiryTime = 30, price
 }
 
 const fetchBrokerQuote = async (brokerQuote) => {
-	const { symbol, side, size, bearerToken, ip } = brokerQuote;
+	const { symbol, side, bearerToken, ip } = brokerQuote;
 
 	try {
 		let user_id = null;
@@ -154,7 +148,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			if (broker.formula) {
 				//Run formula
 				const resObject = _eval(broker.formula, "formula", {
-					symbol, side, size, user_id, client, broker, calculateDeal, generateRandomToken, rp
+					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, rp
 				}, true);
 
 				return resObject;
@@ -163,15 +157,13 @@ const fetchBrokerQuote = async (brokerQuote) => {
 				throw new Error(BROKER_FORMULA_NOT_FOUND);
 			}
 		} else {
-			const calculatedSize = side === 'buy' ? size / broker.sell_price : size * broker.buy_price;
-			const baseCurrencySize = side === 'buy' ? size / broker.sell_price : size;
 			const baseCurrencyPrice = side === 'buy' ? broker.sell_price : broker.buy_price;
 
 			const responseObject = {
-				size: calculatedSize
+				price: baseCurrencyPrice
 			}
 			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, baseCurrencySize, broker.quote_expiry_time, baseCurrencyPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, baseCurrencyPrice);
 				responseObject.token = randomToken
 			}
 			return responseObject;
@@ -378,12 +370,12 @@ const deleteBrokerPair = async (id) => {
 	return brokerPair.destroy();
 }
 
-const executeBrokerDeal = async (userId, token) => {
+const executeBrokerDeal = async (userId, token, size) => {
 	const storedToken = await client.getAsync(token);
 	if (!storedToken) {
 		throw new Error(TOKEN_EXPIRED);
 	}
-	const { user_id, symbol, price, side, size } = JSON.parse(storedToken);
+	const { user_id, symbol, price, side } = JSON.parse(storedToken);
 
 	if (user_id !== userId) {
 		throw new Error(AUTH_NOT_MATCHED);

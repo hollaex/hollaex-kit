@@ -18,13 +18,11 @@ const getBrokerQuote = (req, res) => {
 	const {
 		symbol,
 		side,
-		size,
 	} = req.swagger.params;
 
 	toolsLib.broker.fetchBrokerQuote({
 		symbol: symbol.value,
 		side: side.value,
-		size: size.value,
 		bearerToken,
 		ip
 	})
@@ -266,11 +264,11 @@ const executeBrokerDeal = (req, res) => {
 		req.auth
 	);
 
-	const { token } = req.swagger.params.data.value;
+	const { token, size } = req.swagger.params.data.value;
 
 	const userId = req.auth.sub.id;
 
-	toolsLib.broker.executeBrokerDeal(userId, token)
+	toolsLib.broker.executeBrokerDeal(userId, token, size)
 		.then((data) => {
 			loggerBroker.verbose(
 				req.uuid,
