@@ -5774,8 +5774,6 @@ definitions:
     type: object
     required:
       - symbol
-      - buy_price
-      - sell_price
       - paused
       - user_id
       - min_size
