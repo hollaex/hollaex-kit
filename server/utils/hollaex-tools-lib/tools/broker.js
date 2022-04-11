@@ -30,9 +30,9 @@ const {
 	EXCHANGE_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
-	if (math.compare(brokerPair.buy_price, 0) !== 1) {
+	if (brokerPair.type === 'manual' && math.compare(brokerPair.buy_price, 0) !== 1) {
 		throw new Error("Broker buy price must be bigger than zero.")
-	} else if (math.compare(brokerPair.sell_price, 0) !== 1) {
+	} else if (brokerPair.type === 'manual' &&  math.compare(brokerPair.sell_price, 0) !== 1) {
 		throw new Error("Broker sell price must be bigger than zero.")
 	} else if (math.compare(brokerPair.min_size, 0) !== 1) {
 		throw new Error("Broker minimum order size must be bigger than zero.")
@@ -349,6 +349,8 @@ const updateBrokerPair = async (id, data) => {
 		`;
 
 		updatedPair.formula = binanceFormula;
+	} else if (exchange_name && exchange_name !== 'binance') {
+		throw new Error(EXCHANGE_NOT_FOUND)
 	}
 
 	return brokerPair.update(updatedPair, {
