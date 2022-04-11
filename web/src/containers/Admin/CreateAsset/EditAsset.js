@@ -71,12 +71,12 @@ const EditAsset = ({
 											message: 'This field is required!',
 										},
 										{
-											max: 5,
-											message: 'Username must be maximum 5 characters.',
+											max: 8,
+											message: 'It must be maximum 8 characters.',
 										},
 										{
 											min: 2,
-											message: 'Username must be minimum 2 characters.',
+											message: 'It must be minimum 2 characters.',
 										},
 									]}
 								>
@@ -126,7 +126,12 @@ const EditAsset = ({
 	return (
 		<div>
 			<div className="title">Edit Asset</div>
-			<Form form={form} name="EditAssetForm" onFinish={handleSubmit} initialValues={coinFormData}>
+			<Form
+				form={form}
+				name="EditAssetForm"
+				onFinish={handleSubmit}
+				initialValues={coinFormData}
+			>
 				<div className="edit-wrap">{renderItems()}</div>
 				<div className="btn-wrapper">
 					<Button type="primary" className="green-btn" onClick={onClose}>
