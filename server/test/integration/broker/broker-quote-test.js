@@ -36,9 +36,9 @@ describe('Dynamic Pricing', async () => {
                     }
                 },
                 formula: null,
-                exchange_name: 'binance',
-                spread: 5,
-                multiplier: 1
+                // exchange_name: 'binance',
+                // spread: 5,
+                // multiplier: 1
             });
         createdBroker = response.body;
         response.should.have.status(200);
