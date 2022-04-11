@@ -45,12 +45,22 @@ describe('Dynamic Pricing', async () => {
         response.should.be.json;
     });
 
-    it('should get a quote', async () => {
+    it('should get a quote without auth', async () => {
+        const response = await request()
+            .get(`/v2/broker/quote?symbol=xht-usdt&side=buy`)
+        
+        response.should.have.status(200);
+        response.should.be.json;
+        response.body.should.not.have.property('token');
+        response.body.should.have.property('price');
+    });
+
+    it('should get a quote with auth', async () => {
         const response = await request()
             .get(`/v2/broker/quote?symbol=xht-usdt&side=buy`)
             .set('Authorization', `Bearer ${bearerToken}`)
         quoteData = response.body;
-        
+
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.have.property('token');

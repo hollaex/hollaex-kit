@@ -243,7 +243,7 @@ const createBrokerPair = async (brokerPair) => {
 				// If user selects a exchange
 				else if (exchange_name === 'binance') {
 					const binanceFormula = `
-					const spread = ${spread}; 
+					const spread = ${spread || 0}; 
 					const multiplier = ${multiplier || 1}; 
 					module.exports = (${binanceScript.toString()})()
 				`;
