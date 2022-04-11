@@ -23,6 +23,7 @@ const generateMessageContent = (
 ) => {
 	let title;
 	let message;
+	let result
 	if (
 		type === MAILTYPE.INVITED_OPERATOR ||
 		type === MAILTYPE.SMS ||
@@ -41,11 +42,19 @@ const generateMessageContent = (
 		}
 		message = require(`./${type}`)(email, data, language, domain);
 
+		let subject = `${API_NAME()} ${title}`;
+
+		result = {
+			subject: subject,
+			html: TemplateEmail({ title }, message.html, language, domain),
+			text: message.text
+		};
+
 	} else {
 		const EMAIL_CONFIGURATIONS = GET_EMAIL();
 		let new_type = findMailtype(type, data);
 
-		if (EMAIL_CONFIGURATIONS[language] && EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()] === undefined) {
+		if (EMAIL_CONFIGURATIONS[language] === undefined || EMAIL_CONFIGURATIONS[language][new_type.toUpperCase()] === undefined) {
 			language = 'en';
 		}
 
@@ -55,14 +64,15 @@ const generateMessageContent = (
 			html: replaceHTMLContent(new_type, MAILTYPE_CONFIGURATIONS['html'].toString(), email, data, language, domain),
 			text: ''
 		};
-	}
-	const subject = `${API_NAME()} ${title}`;
+		let subject = `${API_NAME()} ${title}`;
 
-	let result = {
-		subject: subject,
-		html: (TemplateEmail({ title }, message.html, language, domain)).replace(/\r?\n|\t|\r/g, ''),
-		text: message.text
-	};
+		result = {
+			subject: subject,
+			html: (TemplateEmail({ title }, message.html, language, domain)).replace(/\r?\n|\t|\r/g, ''),
+			text: message.text
+		};
+	}
+
 	return result;
 };
 
@@ -392,7 +402,7 @@ const getTitle = (type, title = '', data) => {
 		type === MAILTYPE.DEPOSIT_CANCEL ||
 		type === MAILTYPE.WITHDRAWAL_CANCEL
 	) {
-		title = title.replace(/\$\{currency\}/g, data.currency);
+		title = title.replace(/\$\{currency\}/g, data.currency.toUpperCase() || '');
 	} else if (
 		type === MAILTYPE.USER_ID_VERIFICATION_REJECT ||
 		type === MAILTYPE.USER_BANK_VERIFICATION_REJECT ||

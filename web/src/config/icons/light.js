@@ -3,7 +3,7 @@ import flatten from 'flat';
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
 	EXCHANGE: {
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/light-spinner.gif',
 		BOARDING_IMAGE: '/assets/background.png',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
