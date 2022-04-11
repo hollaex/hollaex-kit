@@ -283,7 +283,9 @@ const MyStaking = ({
 									const progressStatusText = remainingBlocks ? (
 										`~${estimatedLeftover.join(' ')}`
 									) : (
-										<Help tip="sag">{STRINGS['STAKE.COMPLETED']}</Help>
+										<Help tip={STRINGS['STAKE.COMPLETED_TOOLTIP']}>
+											{STRINGS['STAKE.COMPLETED']}
+										</Help>
 									);
 
 									const btnProps = {
