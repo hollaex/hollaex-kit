@@ -20,8 +20,8 @@ describe('Broker Management', async () => {
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
                 symbol: 'btc-usdt',
-                buy_price: 46000,
-                sell_price: 48000,
+                buy_price: 0,
+                sell_price: 0,
                 paused: false,
                 user_id: 1,
                 min_size: 0.0001,
@@ -65,9 +65,6 @@ describe('Broker Management', async () => {
             .post(`/v2/broker/execute`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
-                symbol: 'btc-usdt',
-                side: 'sell',
-                price: 46000,
                 size: 1,
                 token: quoteData.token
             });

@@ -50,7 +50,7 @@ const binanceScript = async () => {
 	const quotePrice = await client.getAsync('prices');
 
 	const runScript = (prices) => {
-		//Calculate the deal
+		//Calculate the price
 		const foundSymbol = JSON.parse(prices).find((data) => data.symbol === formattedSymbol);
 		if (!foundSymbol) {
 			throw new Error('Pair not found');
@@ -105,9 +105,8 @@ const calculatePrice = (price, side, spread, multiplier = 1) => {
 
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price) => {
 	// Generate random token
-	//TO DO: Use Crypto lib to generate random string
 	const randomToken = randomString({
-		length: 20,
+		length: 32,
 		numeric: true,
 		letters: true
 	});

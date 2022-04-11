@@ -18,17 +18,17 @@ describe('Dynamic Pricing', async () => {
             .post(`/v2/broker/`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
-                symbol: 'btc-usdt',
-                buy_price: 46000,
-                sell_price: 48000,
+                symbol: 'xht-usdt',
+                buy_price: 0.25,
+                sell_price: 0.25,
                 paused: false,
                 user_id: 1,
                 min_size: 0.0001,
                 max_size: 10,
                 increment_size: 0.0001,
-                type: 'dynamic',
+                type: 'manual',
                 quote_expiry_time: 30,
-                rebalancing_symbol: 'btc-usdt',
+                rebalancing_symbol: 'xht-usdt',
                 account: {
                     binance: {
                         apiKey: '1a3321381e9f2e87cdc1a2e9489936bb0e5e059043617ff723508a2b0d6cd575',
@@ -47,10 +47,10 @@ describe('Dynamic Pricing', async () => {
 
     it('should get a quote', async () => {
         const response = await request()
-            .get(`/v2/broker/quote?symbol=btc-usdt&side=sell&size=1`)
+            .get(`/v2/broker/quote?symbol=xht-usdt&side=buy`)
             .set('Authorization', `Bearer ${bearerToken}`)
         quoteData = response.body;
-
+        
         response.should.have.status(200);
         response.should.be.json;
         response.body.should.have.property('token');
@@ -59,7 +59,7 @@ describe('Dynamic Pricing', async () => {
 
     it('should return wrong symbol error', async () => {
         const response = await request()
-            .get(`/v2/broker/quote?symbol=btc-&side=sell&size=1`)
+            .get(`/v2/broker/quote?symbol=xht-&side=sell`)
             .set('Authorization', `Bearer ${bearerToken}`)
             
         response.should.have.status(400);
@@ -67,15 +67,7 @@ describe('Dynamic Pricing', async () => {
 
     it('should return an error without side param', async () => {
         const response = await request()
-            .get(`/v2/broker/quote?symbol=btc-usdt&size=1`)
-            .set('Authorization', `Bearer ${bearerToken}`)
-
-        response.should.have.status(400);
-    });
-
-    it('should return an error without size param', async () => {
-        const response = await request()
-            .get(`/v2/broker/quote?symbol=btc-usdt&side=sell`)
+            .get(`/v2/broker/quote?symbol=xht-usdt`)
             .set('Authorization', `Bearer ${bearerToken}`)
 
         response.should.have.status(400);
@@ -124,6 +116,20 @@ describe('Dynamic Pricing', async () => {
         response.body.symbol.should.equal(createdBroker.symbol);
         response.body.should.have.property('increment_size');
     });
+
+    it('should execute the broker deal', async () => {
+        const response = await request()
+            .post(`/v2/broker/execute`)
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                size: 1,
+                token: quoteData.token
+            });
+
+        response.should.have.status(200);
+        response.should.be.json;
+    });
+
 
     it('should update the broker', async () => {
         const response = await request()
