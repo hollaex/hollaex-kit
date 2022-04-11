@@ -24,7 +24,10 @@ const {
 	BROKER_PAUSED,
 	BROKER_ERROR_DELETE_UNPAUSED,
 	BROKER_EXISTS,
-	BROKER_FORMULA_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+	BROKER_FORMULA_NOT_FOUND,
+	SPREAD_MISSING,
+	MANUAL_BROKER_CREATE_ERROR,
+	EXCHANGE_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
 	if (math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -56,7 +59,7 @@ const binanceScript = async () => {
 			throw new Error('Pair not found');
 		}
 		const baseCurrencyPrice = calculatePrice(foundSymbol.price, side, spread, multiplier);
-		
+
 		const responseObject = {
 			price: baseCurrencyPrice
 		}
@@ -233,6 +236,14 @@ const createBrokerPair = async (brokerPair) => {
 				type
 			} = brokerPair;
 
+			if (exchange_name && type === 'manual') {
+				throw new Error(MANUAL_BROKER_CREATE_ERROR);
+			}
+
+			if (exchange_name && !spread) {
+				throw new Error(SPREAD_MISSING);
+			}
+
 			let adminFormula = null;
 
 			if (type === 'dynamic') {
@@ -243,14 +254,14 @@ const createBrokerPair = async (brokerPair) => {
 				// If user selects a exchange
 				else if (exchange_name === 'binance') {
 					const binanceFormula = `
-					const spread = ${spread || 0}; 
+					const spread = ${spread}; 
 					const multiplier = ${multiplier || 1}; 
 					module.exports = (${binanceScript.toString()})()
 				`;
 
 					adminFormula = binanceFormula;
 				} else {
-					throw new Error('Exchange not found')
+					throw new Error(EXCHANGE_NOT_FOUND)
 				}
 			}
 			const newBrokerObject = {
@@ -294,11 +305,11 @@ const updateBrokerPair = async (id, data) => {
 		account,
 		formula } = data;
 	if (exchange_name && type === 'manual') {
-		throw new Error('manual broker cannot select an exchange');
+		throw new Error(MANUAL_BROKER_CREATE_ERROR);
 	}
 
 	if (exchange_name && !spread) {
-		throw new Error('Spread is missing');
+		throw new Error(SPREAD_MISSING);
 	}
 
 	//Validate account JSONB object

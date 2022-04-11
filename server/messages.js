@@ -190,3 +190,6 @@ exports.BROKER_PAUSED = 'Broker pair is paused';
 exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while unpaused';
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
 exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
+exports.SPREAD_MISSING = 'Spread is missing';
+exports.MANUAL_BROKER_CREATE_ERROR = 'manual broker cannot select an exchange';
+exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
