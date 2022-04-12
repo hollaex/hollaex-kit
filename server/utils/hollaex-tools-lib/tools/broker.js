@@ -45,6 +45,18 @@ const validateBrokerPair = (brokerPair) => {
 	}
 }
 
+const getDecimals = (value = 0) => {
+	if (Math.floor(value) === value) return 0;
+
+	let str = value.toString();
+	if (str.indexOf(".") !== -1 && str.indexOf("-") !== -1) {
+		return str.split("-")[1] || 0;
+	} else if (str.indexOf(".") !== -1) {
+		return str.split(".")[1].length || 0;
+	}
+	return str.split("-")[1] || 0;
+}
+
 const binanceScript = async () => {
 	const BINANCE_URL = 'https://api3.binance.com/api/v3/ticker/price'
 
@@ -60,13 +72,19 @@ const binanceScript = async () => {
 		}
 		const baseCurrencyPrice = calculatePrice(foundSymbol.price, side, spread, multiplier);
 
+		const decimalPoint = getDecimals(broker.increment_size);
+		const roundedPrice = math.round(
+			baseCurrencyPrice,
+			decimalPoint
+		);
+
 		const responseObject = {
-			price: baseCurrencyPrice
+			price: roundedPrice
 		}
 		//check if there is user_id, if so, assing token
 		if (user_id) {
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, baseCurrencyPrice);
+			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice);
 			responseObject.token = randomToken;
 		}
 
@@ -150,7 +168,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			if (broker.formula) {
 				//Run formula
 				const resObject = _eval(broker.formula, "formula", {
-					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, rp
+					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, getDecimals, math, rp
 				}, true);
 
 				return resObject;
@@ -161,11 +179,17 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		} else {
 			const baseCurrencyPrice = side === 'buy' ? broker.sell_price : broker.buy_price;
 
+			const decimalPoint = getDecimals(broker.increment_size);
+			const roundedPrice = math.round(
+				baseCurrencyPrice,
+				decimalPoint
+			);
 			const responseObject = {
-				price: baseCurrencyPrice
+				price: roundedPrice
 			}
+			
 			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, baseCurrencyPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice);
 				responseObject.token = randomToken
 			}
 			return responseObject;
@@ -190,8 +214,14 @@ const reverseTransaction = async (orderData) => {
 			user.settings
 		);
 	}
+
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
+		const decimalPoint = getDecimals(broker.increment_size);
+		const roundedPrice = math.round(
+			side === 'buy' ? price + price * 0.05 : price - price * 0.05,
+			decimalPoint
+		);
 
 		if (broker.account && broker.account.hasOwnProperty('binance')) {
 			const binanceInfo = broker.account.binance;
@@ -206,11 +236,11 @@ const reverseTransaction = async (orderData) => {
 			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
 
 			if (side === 'buy') {
-				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, price + price * 0.05)
+				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
 					.then(res => { notifyUser(res) })
 					.catch(err => { notifyUser(err) });
 			} else if (side == 'sell') {
-				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, price - price * 0.05)
+				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
 					.then(res => { notifyUser(res) })
 					.catch(err => { notifyUser(err) });
 			}
