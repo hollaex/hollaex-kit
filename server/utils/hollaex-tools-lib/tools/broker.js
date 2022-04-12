@@ -206,11 +206,11 @@ const reverseTransaction = async (orderData) => {
 			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
 
 			if (side === 'buy') {
-				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, price - price * 0.05)
+				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, price + price * 0.05)
 					.then(res => { notifyUser(res) })
 					.catch(err => { notifyUser(err) });
 			} else if (side == 'sell') {
-				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, price + price * 0.05)
+				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, price - price * 0.05)
 					.then(res => { notifyUser(res) })
 					.catch(err => { notifyUser(err) });
 			}
