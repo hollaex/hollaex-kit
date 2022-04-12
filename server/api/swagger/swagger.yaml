@@ -4314,6 +4314,9 @@ paths:
             properties:
               token:
                 type: string
+              size:
+                type: number
+                format: double
             required:
               - token
               - size
