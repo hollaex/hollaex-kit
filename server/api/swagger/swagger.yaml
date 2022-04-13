@@ -5773,6 +5773,20 @@ definitions:
         type: number
       type:
         type: string
+      quote_expiry_time:
+        type: ['number', 'null']
+      rebalancing_symbol:
+        type: ['string', 'null']
+      account:
+        type: ['object', 'null']
+      formula:
+        type: ['string', 'null']
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
+        type: number
   BrokerPairCreate:
     type: object
     required:
@@ -5802,6 +5816,20 @@ definitions:
         type: number
       type:
         type: string
+      quote_expiry_time:
+        type: number
+      rebalancing_symbol:
+        type: string
+      account:
+        type: object
+      formula:
+        type: string
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
+        type: number
   BrokerPairUpdate:
     allOf:
       - $ref: "#/definitions/BrokerPair"
