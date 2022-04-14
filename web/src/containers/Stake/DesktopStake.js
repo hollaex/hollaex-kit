@@ -445,7 +445,9 @@ class Stake extends Component {
 												const wrappedProgressStatusText = remainingBlocks ? (
 													`~${estimatedLeftover.join(' ')}`
 												) : (
-													<Help tip="sag">{progressStatusText}</Help>
+													<Help tip={STRINGS['STAKE.COMPLETED_TOOLTIP']}>
+														{progressStatusText}
+													</Help>
 												);
 
 												const data = {
