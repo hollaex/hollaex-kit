@@ -669,7 +669,14 @@ const OtcDeskContainer = ({
 						<div className="main-Heading">OTC broker deal desks</div>
 						<div className="main-subHeading">
 							Add a fixed price for specific asset and set max and minimum
-							amounts per transaction.
+							amounts per transaction.{' '}
+							<a
+								target="_blank"
+								href="https://docs.hollaex.com/how-tos/otc-broker"
+								rel="noopener noreferrer"
+							>
+								Learn more.
+							</a>
 						</div>
 						<div className="main-subHeading">
 							Open your own custom OTC broker desk with custom prices and asset

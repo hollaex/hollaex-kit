@@ -1,7 +1,7 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { getDecimals } from 'utils/utils';
-import { formatPercentage } from 'utils/currency';
+import { formatPercentage, formatNumber } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 
 export const subtract = (a = 0, b = 0) => {
@@ -10,12 +10,12 @@ export const subtract = (a = 0, b = 0) => {
 };
 
 const sumQuantities = (orders) =>
-	orders.reduce((total, [, size]) => total + size, 0);
+	orders.reduce((total, [, size]) => math.add(total, size), 0);
 
 const sumOrderTotal = (orders) =>
 	orders.reduce(
 		(total, [price, size]) =>
-			total + math.multiply(math.fraction(size), math.fraction(price)),
+			math.add(total, math.multiply(math.fraction(size), math.fraction(price))),
 		0
 	);
 
@@ -31,8 +31,11 @@ const pushCumulativeAmounts = (orders) => {
 	return orders.map((order) => {
 		const [price, size] = order;
 		const id = price;
-		cumulative += size;
-		cumulativePrice += math.multiply(math.fraction(size), math.fraction(price));
+		cumulative = math.add(cumulative, size);
+		cumulativePrice = math.add(
+			cumulativePrice,
+			math.multiply(math.fraction(size), math.fraction(price))
+		);
 		return [...order, cumulative, cumulativePrice, id];
 	});
 };
@@ -67,7 +70,7 @@ const calculateOrders = (orders, depth) =>
 		const [lastPrice, lastSize] = result[lastIndex] || [];
 
 		if (lastPrice && math.equal(round(price, depth), lastPrice)) {
-			result[lastIndex] = [lastPrice, lastSize + size];
+			result[lastIndex] = [lastPrice, math.add(lastSize, size)];
 		} else {
 			result.push([round(price, depth), size]);
 		}
@@ -309,39 +312,23 @@ export const MarketsSelector = createSelector(
 	}
 );
 
-const calculateSymmetricExtrems = (center, max, min) => {
-	if (center && max && min) {
-		const span = math.min(
-			math.subtract(center, min),
-			math.subtract(max, center)
-		);
-		return { max: math.add(center, span), min: math.subtract(center, span) };
-	} else {
-		return {};
-	}
-};
-
 export const depthChartSelector = createSelector(
-	[orderbookSelector, marketPriceSelector],
-	({ asks: fullAsks, bids: fullBids }, price) => {
+	[orderbookSelector, marketPriceSelector, getPairs, getPair],
+	({ asks: fullAsks, bids: fullBids }, price, pairs, pair) => {
+		const { increment_size = 1 } = pairs[pair] || {};
+
 		const asks = fullAsks.map(([orderPrice, , accSize]) => [
 			orderPrice,
-			accSize,
+			formatNumber(accSize, getDecimals(increment_size)),
 		]);
-		const bids = fullBids.map(([orderPrice, , accSize]) => [
-			orderPrice,
-			accSize,
-		]);
+		const bids = fullBids
+			.map(([orderPrice, , accSize]) => [
+				orderPrice,
+				formatNumber(accSize, getDecimals(increment_size)),
+			])
+			.reverse();
 
 		const series = [
-			{
-				name: 'Asks',
-				data: asks,
-				className: 'depth-chart__asks',
-				marker: {
-					enabled: false,
-				},
-			},
 			{
 				name: 'Bids',
 				data: bids,
@@ -349,23 +336,22 @@ export const depthChartSelector = createSelector(
 				marker: {
 					enabled: false,
 				},
+				xAxis: 0,
+			},
+			{
+				name: 'Asks',
+				data: asks,
+				className: 'depth-chart__asks',
+				marker: {
+					enabled: false,
+				},
+				xAxis: 1,
 			},
 		];
-
-		const min = math.min(
-			bids.map(([price]) => price),
-			0
-		);
-		const max = math.max(
-			asks.map(([price]) => price),
-			0
-		);
-		const extremes = calculateSymmetricExtrems(price, max, min);
 
 		return {
 			price,
 			series,
-			extremes,
 		};
 	}
 );

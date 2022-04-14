@@ -175,11 +175,25 @@ function performDirectWithdrawal(req, res) {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
 		})
-		.then(([ { transaction_id }, { fee } ]) => {
+		.then((data) => {
+
+		loggerWithdrawals.verbose(
+			req.uuid,
+			'controller/withdrawal/performDirectWithdrawal done',
+			'transaction_id',
+			data.transaction_id,
+			'fee',
+			data.fee,
+			data
+		);
 			return res.json({
-				message: 'Withdrawal successful',
-				fee,
-				transaction_id
+				message: 'Withdrawal request is in the queue and will be processed.',
+				id: data.id,
+				transaction_id: data.transaction_id,
+				amount: data.amount,
+				currency: data.currency,
+				fee: data.fee,
+				fee_coin: data.fee_coin
 			});
 		})
 		.catch((err) => {

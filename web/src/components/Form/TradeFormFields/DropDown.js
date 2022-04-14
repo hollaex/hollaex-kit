@@ -9,15 +9,16 @@ const { Option } = Select;
 
 const DropDown = (props) => {
 	const {
-		input: { onChange },
+		input: { onChange, value },
 		options,
+		isOrderEntry = false,
 	} = props;
 	return (
 		<div className="trade-form-select d-flex align-center justify-content-between">
 			<div style={{ width: '50%' }}>{STRINGS['ORDER_MODE']}:</div>
 			<div style={{ width: '50%' }}>
 				<Select
-					defaultValue={options[0].value}
+					defaultValue={isOrderEntry ? value : options[0].value}
 					bordered={false}
 					size="small"
 					onChange={onChange}

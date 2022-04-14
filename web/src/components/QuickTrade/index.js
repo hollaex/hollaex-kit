@@ -179,7 +179,7 @@ class QuickTrade extends Component {
 		const selectedTargetBalance =
 			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
-		const brokerPairs = broker.map((br) => br.symbol);
+		const brokerPairs = broker && broker.map((br) => br.symbol);
 		const flipedPair = flipPair(symbol);
 		let isUseBroker = false;
 		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
