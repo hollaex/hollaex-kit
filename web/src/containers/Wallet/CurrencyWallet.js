@@ -47,7 +47,7 @@ class Wallet extends Component {
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
 		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
-		const { fullname, min } = coins[symbol] || DEFAULT_COIN_DATA;
+		const { fullname, min, icon_id } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
@@ -71,8 +71,8 @@ class Wallet extends Component {
 				/> */}
 				<div className="d-flex">
 					<Image
-						iconId={`${symbol.toUpperCase()}_ICON`}
-						icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+						iconId={icon_id}
+						icon={ICONS[icon_id]}
 						wrapperClassName="coin-icons"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>

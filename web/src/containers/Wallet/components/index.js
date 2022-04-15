@@ -76,8 +76,7 @@ export const renderTitle = (symbol, type = 'withdraw', coins) => {
 };
 
 export const renderAvailableBalanceText = (currency, balance, coins) => {
-	const { fullname, min, symbol = '' } = coins[currency] || DEFAULT_COIN_DATA;
-	const shortName = symbol ? symbol.toUpperCase() : '';
+	const { fullname, min, display_name } = coins[currency] || DEFAULT_COIN_DATA;
 	const available = formatToCurrency(balance[`${currency}_available`], min);
 
 	return (
@@ -88,7 +87,7 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 						STRINGS['AVAILABLE_BALANCE_TEXT'],
 						fullname,
 						available,
-						shortName
+						display_name
 					)}
 				</p>
 			</EditWrapper>

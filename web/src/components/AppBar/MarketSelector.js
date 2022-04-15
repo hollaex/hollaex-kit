@@ -202,10 +202,9 @@ class MarketSelector extends Component {
 								const {
 									key,
 									pair,
-									symbol,
-									pairTwo,
 									ticker,
 									increment_price,
+									display_name,
 								} = market;
 
 								return (
@@ -234,22 +233,12 @@ class MarketSelector extends Component {
 										>
 											<div className="d-flex align-items-center">
 												<Image
-													iconId={
-														ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-															? `${pair.pair_base.toUpperCase()}_ICON`
-															: 'DEFAULT_ICON'
-													}
-													icon={
-														ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-															? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-															: ICONS.DEFAULT_ICON
-													}
+													iconId={pair.icon_id}
+													icon={ICONS[pair.icon_id]}
 													wrapperClassName="app-bar-add-tab-icons"
 													imageWrapperClassName="currency-ball-image-wrapper"
 												/>
-												<div className="app_bar-pair-font">
-													{symbol.toUpperCase()}/{pairTwo.symbol.toUpperCase()}:
-												</div>
+												<div className="app_bar-pair-font">{display_name}:</div>
 												<div className="title-font ml-1 app-bar_add-tab-price">
 													{formatToCurrency(ticker.close, increment_price)}
 												</div>

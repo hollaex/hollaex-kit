@@ -144,19 +144,48 @@ export const marketPriceSelector = createSelector(
 	}
 );
 
+const modifyTradesAndOrders = (data, coins) => {
+	return data.map((record) => {
+		const { symbol: pair, fee_coin } = record;
+		const [pair_base, pair_2] = pair.split('-');
+		const { display_name: pair_base_display, icon_id } =
+			coins[pair_base] || DEFAULT_COIN_DATA;
+		const { display_name: pair_2_display } = coins[pair_2] || DEFAULT_COIN_DATA;
+		const { display_name: fee_coin_display } =
+			coins[fee_coin || pair_base] || DEFAULT_COIN_DATA;
+		const display_name = `${pair_base_display}-${pair_2_display}`;
+		return {
+			...record,
+			display_name,
+			pair_base_display,
+			pair_2_display,
+			fee_coin_display,
+			icon_id,
+		};
+	});
+};
+
 export const activeOrdersSelector = createSelector(
 	getActiveOrders,
 	getActiveOrderMarket,
-	(orders, pair) => {
-		return pair ? orders.filter(({ symbol }) => symbol === pair) : orders;
+	getCoins,
+	(orders, pair, coins) => {
+		return modifyTradesAndOrders(
+			pair ? orders.filter(({ symbol }) => symbol === pair) : orders,
+			coins
+		);
 	}
 );
 
 export const userTradesSelector = createSelector(
 	getUserTradesData,
 	getRecentTradesMarket,
-	(trades, pair) => {
-		return pair ? trades.filter(({ symbol }) => symbol === pair) : trades;
+	getCoins,
+	(trades, pair, coins) => {
+		return modifyTradesAndOrders(
+			pair ? trades.filter(({ symbol }) => symbol === pair) : trades,
+			coins
+		);
 	}
 );
 
@@ -279,7 +308,15 @@ export const MarketsSelector = createSelector(
 	[sortedPairKeysSelector, getPairs, getTickers, getCoins],
 	(sortedPairKeys, pairs, tickers, coins) => {
 		const markets = sortedPairKeys.map((key) => {
-			const { pair_base, pair_2, increment_price } = pairs[key] || {};
+			const {
+				pair_base,
+				pair_2,
+				increment_price,
+				display_name,
+				pair_base_display,
+				pair_2_display,
+				icon_id,
+			} = pairs[key] || {};
 			const { fullname, symbol = '' } =
 				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
@@ -305,6 +342,10 @@ export const MarketsSelector = createSelector(
 				increment_price,
 				priceDifference,
 				priceDifferencePercent,
+				display_name,
+				pair_base_display,
+				pair_2_display,
+				icon_id,
 			};
 		});
 

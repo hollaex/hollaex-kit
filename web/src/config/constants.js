@@ -94,6 +94,8 @@ export const APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT = '\u2248{0} {1}';
 export const DEFAULT_COIN_DATA = {
 	fullname: '',
 	symbol: '',
+	display_name: '',
+	icon_id: 'DEFAULT_ICON',
 	min: 0.001,
 };
 
