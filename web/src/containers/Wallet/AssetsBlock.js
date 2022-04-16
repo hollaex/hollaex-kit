@@ -221,7 +221,8 @@ const AssetsBlock = ({
 								}
 							});
 							const pair = brokerPair ? brokerPair : findPair(key);
-							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
+							const { fullname, symbol = '', display_name, icon_id } =
+								coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
@@ -246,8 +247,8 @@ const AssetsBlock = ({
 											<div className="d-flex align-items-center">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
-														iconId={`${symbol.toUpperCase()}_ICON`}
-														icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+														iconId={icon_id}
+														icon={ICONS[icon_id]}
 														wrapperClassName="currency-ball"
 														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
@@ -272,14 +273,14 @@ const AssetsBlock = ({
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
 														formatToCurrency(balanceValue, min, true),
-														symbol.toUpperCase()
+														display_name
 													)}
 												</div>
 												{!isMobile &&
 													key !== BASE_CURRENCY &&
 													parseFloat(balanceText || 0) > 0 && (
 														<div>
-															{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
+															{`(≈ ${baseCoin.display_name} ${balanceText})`}
 														</div>
 													)}
 											</div>

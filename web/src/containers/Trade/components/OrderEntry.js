@@ -420,6 +420,8 @@ class OrderEntry extends Component {
 			coins,
 			pair_base,
 			pair_2,
+			pair_base_display,
+			pair_2_display,
 			balance = {},
 			marketPrice,
 			pair = '',
@@ -516,8 +518,8 @@ class OrderEntry extends Component {
 											increment_size
 									  )}{' '}
 								{side === 'buy'
-									? pair_2.toUpperCase()
-									: pair_base.toUpperCase()}
+									? pair_2_display.toUpperCase()
+									: pair_base_display.toUpperCase()}
 							</span>
 						</div>
 					</div>
@@ -579,6 +581,7 @@ class OrderEntry extends Component {
 			side,
 			pair_base,
 			pair_2,
+			pair_2_display,
 			price,
 			coins,
 			size,
@@ -593,10 +596,8 @@ class OrderEntry extends Component {
 			orderType,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
-		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 
 		const currencyName = pairBase.fullname;
-		const buyingName = pairTwo.symbol.toUpperCase();
 		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
@@ -626,7 +627,7 @@ class OrderEntry extends Component {
 						price={price}
 						size={size}
 						type={type}
-						currency={buyingName}
+						currency={pair_2_display}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						increment_price={increment_price}
@@ -648,6 +649,8 @@ const mapStateToProps = (state) => {
 	const {
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,
@@ -663,6 +666,8 @@ const mapStateToProps = (state) => {
 		pair,
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,
