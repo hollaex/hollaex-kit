@@ -993,6 +993,45 @@ const userCheckTransaction = (req, res) => {
 		});
 };
 
+const setUserBank = (req, res) =>  {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/setUserBank auth',
+		req.auth
+	);
+	let email = req.auth.sub.email;
+	let { bank_account } = req.swagger.params.data.value;
+
+	toolsLib.user.getUserByEmail(email, false)
+		.then(async (user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
+
+			bank_account = lodash.pick(
+				bank_account,
+				...validFields
+			);
+
+			bank_account.id = crypto.randomBytes(10).toString('hex');
+			bank_account.status = VERIFY_STATUS.PENDING;
+
+			let newBank = user.bank_account;
+			newBank.push(bank_account);
+
+			const updatedUser = await user.update(
+				{ bank_account: newBank },
+				{ fields: ['bank_account'] }
+			);
+
+			return res.json(updatedUser.bank_account);
+		})
+		.catch((err) => {
+			loggerPlugin.error(req.uuid, 'POST /bank/user err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1017,5 +1056,6 @@ module.exports = {
 	deleteHmacToken,
 	getUserStats,
 	userCheckTransaction,
-	requestEmailConfirmation
+	requestEmailConfirmation,
+	setUserBank
 };
