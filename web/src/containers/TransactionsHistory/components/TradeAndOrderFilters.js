@@ -88,11 +88,13 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						suffixIcon={<CaretDownOutlined />}
 					>
 						<Option value={null}>{STRINGS['ALL']}</Option>
-						{Object.entries(pairs).map(([_, { name }]) => (
-							<Option key={name} value={name}>
-								{name.toUpperCase()}
-							</Option>
-						))}
+						{Object.entries(pairs).map(
+							([_, { name, pair_base_display, pair_2_display }]) => (
+								<Option key={name} value={name}>
+									{`${pair_base_display}-${pair_2_display}`}
+								</Option>
+							)
+						)}
 					</Select>
 				</Form.Item>
 				<Form.Item name="size">

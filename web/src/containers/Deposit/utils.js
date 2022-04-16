@@ -102,6 +102,7 @@ const RenderContentForm = ({
 	targets,
 }) => {
 	const coinObject = coins[currency];
+	const { icon_id } = coinObject;
 
 	const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
 	const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
@@ -119,8 +120,8 @@ const RenderContentForm = ({
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form">
 						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="form_currency-ball"
 						/>
 						{titleSection}

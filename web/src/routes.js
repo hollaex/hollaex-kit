@@ -83,6 +83,13 @@ import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
+	if (window) {
+		window.scroll({
+			top: 0,
+			left: 0,
+			behavior: 'smooth',
+		});
+	}
 	ReactGA.set({ page: window.location.pathname });
 	ReactGA.pageview(window.location.pathname);
 });

@@ -22,11 +22,13 @@ const Filters = ({ pairs, pair, onChange }) => {
 				onChange={onChange}
 			>
 				<Option value={''}>{STRINGS['ALL']}</Option>
-				{Object.keys(pairs).map((pair) => (
-					<Option key={pair} value={pair}>
-						{pair}
-					</Option>
-				))}
+				{Object.entries(pairs).map(
+					([pair, { pair_base_display, pair_2_display }]) => (
+						<Option key={pair} value={pair}>
+							{`${pair_base_display}-${pair_2_display}`}
+						</Option>
+					)
+				)}
 			</Select>
 		</div>
 	);
