@@ -787,7 +787,7 @@ const validatePair = (pair) => {
 
 const getBrokerDeals = () => {
 	return GET_BROKER();
-}; 
+};
 
 module.exports = {
 	getKitVersion,

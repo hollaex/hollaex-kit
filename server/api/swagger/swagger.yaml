@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.3.2"
+  version: "2.4.0"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1629,6 +1629,32 @@ paths:
             $ref: "#/definitions/UsersAddressResponse"
         default:
           description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/bank:
+    x-swagger-router-controller: user
+    post:
+      operationId: addUserBank
+      description: Add a new bank for the user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Error
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -4339,6 +4365,81 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /fiat/deposit:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createDepositRequest
+      description: Create a new deposit request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              transaction_id:
+                type: string
+              currency:
+                type: string
+            required:
+              - amount
+              - transaction_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /fiat/withdrawal:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createWithdrawalRequest
+      description: Create a new withdrawal request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              transaction_id:
+                type: string
+              currency:
+                type: string
+            required:
+              - amount
+              - transaction_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+
 definitions:
   ObjectResponse:
     type: object
@@ -4881,6 +4982,16 @@ definitions:
             type: array
             items:
               type: string
+          banks:
+            type: object
+            required:
+              - fields
+              - bank_list
+            properties:
+              fields:
+                type: object
+              bank_list:
+                type: array
       secrets:
         type: object
         properties:
