@@ -1635,6 +1635,32 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /user/bank:
+    x-swagger-router-controller: user
+    post:
+      operationId: addUserBank
+      description: Add a new bank for the user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Error
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /user/request-email-confirmation:
     x-swagger-router-controller: user
     get:
@@ -4956,6 +4982,16 @@ definitions:
             type: array
             items:
               type: string
+          banks:
+            type: object
+            required:
+              - fields
+              - bank_list
+            properties:
+              fields:
+                type: object
+              bank_list:
+                type: array
       secrets:
         type: object
         properties:
