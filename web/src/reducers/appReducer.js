@@ -31,6 +31,7 @@ import {
 	SET_WEB_VIEWS,
 	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
+	//eslint-disable-next-line no-unused-vars
 	SET_INJECTED_HTML,
 	SET_CONTRACTS,
 	CHANGE_PAIR,
@@ -50,6 +51,7 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
+import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -193,7 +195,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_PAIRS:
 			return {
 				...state,
-				pairs: payload.pairs,
+				pairs: modifyPairsData(payload.pairs, { ...state.coins }),
 			};
 		case CHANGE_PAIR:
 			return {
@@ -215,7 +217,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_CURRENCIES:
 			return {
 				...state,
-				coins: payload.coins,
+				coins: modifyCoinsData(payload.coins),
 			};
 		case SET_BROKER:
 			return {
@@ -580,12 +582,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_values: payload,
-			};
-		}
-		case SET_INJECTED_HTML: {
-			return {
-				...state,
-				injected_html: payload,
 			};
 		}
 		case SET_CONTRACTS: {

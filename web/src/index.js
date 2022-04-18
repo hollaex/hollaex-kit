@@ -147,9 +147,9 @@ const getConfigs = async () => {
 		store.dispatch(changePair(initialPair));
 	}
 
+	store.dispatch(setCurrencies(constants.coins));
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
-	store.dispatch(setCurrencies(constants.coins));
 	store.dispatch(setContracts(getContracts(constants.coins)));
 	store.dispatch(setBroker(constants.broker));
 

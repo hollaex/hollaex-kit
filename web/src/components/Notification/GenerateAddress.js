@@ -16,7 +16,7 @@ const GenerateAddressNotification = ({
 	icons: ICONS,
 }) => {
 	const { fetching, error } = data;
-	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
+	const { fullname, icon_id } = coins[currency] || DEFAULT_COIN_DATA;
 	const title = STRINGS.formatString(STRINGS['WALLET_ADDRESS_TITLE'], fullname);
 	if (fetching) {
 		return (
@@ -38,8 +38,8 @@ const GenerateAddressNotification = ({
 				{!error ? (
 					<div className="notification-content-header d-flex align-items-center">
 						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="form_currency-ball mr-3"
 						/>
 						<EditWrapper stringId="WALLET_ADDRESS_MESSAGE">
