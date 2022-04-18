@@ -20,7 +20,7 @@ const {
 	INVALID_NETWORK,
 	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
-const { getUserByKitId, mapNetworkIdToKitId } = require('./user');
+const { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { findTier } = require('./tier');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
@@ -31,6 +31,7 @@ const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
+const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
 
 const isValidAddress = (currency, address, network) => {
@@ -239,18 +240,18 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawalByKitId = (userId, withdrawalId, opts = {
+const cancelUserWithdrawalByKitId = async (userId, withdrawalId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userId]);
+
+	if (!has(idDictionary, userId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().cancelWithdrawal(idDictionary[userId], withdrawalId, opts);
 };
 
 const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId, opts = {
@@ -480,16 +481,16 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 	}
 
 	return all([
-		getUserByKitId(senderId),
-		getUserByKitId(receiverId)
+		mapKitIdToNetworkId([senderId]),
+		mapKitIdToNetworkId([receiverId])
 	])
 		.then(([ sender, receiver ]) => {
-			if (!sender || !receiver) {
+			if (!has(sender, senderId) || !has(receiver, receiverId)) {
 				throw new Error(USER_NOT_FOUND);
-			} else if (!sender.network_id || !receiver.network_id) {
+			} else if (!sender[senderId] || !receiver[receiverId]) {
 				throw new Error('User not registered on network');
 			}
-			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email, ...opts });
+			return getNodeLib().transferAsset(sender[senderId], receiver[receiverId], currency, amount, { description, email, ...opts });
 		});
 };
 
@@ -499,18 +500,19 @@ const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, descr
 	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email, ...opts });
 };
 
-const getUserBalanceByKitId = (userKitId, opts = {
+const getUserBalanceByKitId = async (userKitId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserBalance(user.network_id, opts);
-		})
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	return getNodeLib().getUserBalance(idDictionary[userKitId], opts)
 		.then((data) => {
 			return {
 				user_id: userKitId,
@@ -853,7 +855,7 @@ const getExchangeWithdrawals = (
 		});
 };
 
-const mintAssetByKitId = (
+const mintAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
@@ -865,15 +867,15 @@ const mintAssetByKitId = (
 		fee: null,
 		additionalHeaders: null
 	}) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().mintAsset(user.network_id, currency, amount, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().mintAsset(idDictionary[kitId], currency, amount, opts);
 };
 
 const mintAssetByNetworkId = (
@@ -908,7 +910,7 @@ const updatePendingMint = (
 	return getNodeLib().updatePendingMint(transactionId, opts);
 };
 
-const burnAssetByKitId = (
+const burnAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
@@ -920,15 +922,15 @@ const burnAssetByKitId = (
 		fee: null,
 		additionalHeaders: null
 	}) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().burnAsset(user.network_id, currency, amount, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().burnAsset(idDictionary[kitId], currency, amount, opts);
 };
 
 const burnAssetByNetworkId = (

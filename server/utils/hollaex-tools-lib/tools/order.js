@@ -1,6 +1,6 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId } = require('./user');
+const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
@@ -9,6 +9,7 @@ const { subscribedToPair, getKitTier, getDefaultFees } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
+const { has } = require('lodash');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -90,18 +91,19 @@ const createOrderNetwork = (networkId, symbol, side, size, type, price, feeData 
 	return getNodeLib().createOrder(networkId, symbol, side, size, type, price, feeData, opts);
 };
 
-const getUserOrderByKitId = (userKitId, orderId, opts = {
+const getUserOrderByKitId = async (userKitId, orderId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getOrder(user.network_id, orderId, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	return getNodeLib().getOrder(idDictionary[userKitId], orderId, opts);
 };
 
 const getUserOrderByEmail = (email, orderId, opts = {
@@ -127,18 +129,18 @@ const getUserOrderByNetworkId = (networkId, orderId, opts = {
 	return getNodeLib().getOrder(networkId, orderId, opts);
 };
 
-const cancelUserOrderByKitId = (userKitId, orderId, opts = {
+const cancelUserOrderByKitId = async (userKitId, orderId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().cancelOrder(user.network_id, orderId, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().cancelOrder(idDictionary[userKitId], orderId, opts);
 };
 
 const cancelUserOrderByEmail = (email, orderId, opts = {
@@ -185,33 +187,33 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 	});
 };
 
-const getAllUserOrdersByKitId = (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserOrders(user.network_id, {
-				symbol,
-				side,
-				status,
-				open,
-				limit,
-				page,
-				orderBy,
-				order,
-				startDate,
-				endDate,
-				...opts
-			});
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().getUserOrders(idDictionary[userKitId], {
+		symbol,
+		side,
+		status,
+		open,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		...opts
+	});
 };
 
 const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
@@ -267,21 +269,21 @@ const getAllUserOrdersByNetworkId = (networkId, symbol, side, status, open, limi
 	});
 };
 
-const cancelAllUserOrdersByKitId = (userKitId, symbol, opts = {
+const cancelAllUserOrdersByKitId = async (userKitId, symbol, opts = {
 	additionalHeaders: null
 }) => {
 	if (!symbol || !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().cancelAllOrders(user.network_id, { symbol, ...opts });
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().cancelAllOrders(idDictionary[userKitId], {symbol, ...opts});
 };
 
 const cancelAllUserOrdersByEmail = (email, symbol, opts = {
@@ -368,37 +370,37 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 		});
 };
 
-const getAllUserTradesByKitId = (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
+const getAllUserTradesByKitId = async (userKitId, symbol, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
 
-			const params = {
-				symbol,
-				limit,
-				page,
-				orderBy,
-				order,
-				startDate,
-				endDate,
-				...opts
-			};
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
 
-			if (format) {
-				params.format = 'all';
-			}
+	const params = {
+		symbol,
+		limit,
+		page,
+		orderBy,
+		order,
+		startDate,
+		endDate,
+		...opts
+	};
 
-			return getNodeLib().getUserTrades(user.network_id, params);
-		})
+	if (format) {
+		params.format = 'all';
+	}
+
+	return getNodeLib().getUserTrades(idDictionary[userKitId], params)
 		.then((trades) => {
 			if (format === 'csv') {
 				if (trades.data.length === 0) {
@@ -598,13 +600,14 @@ const settleFees = async (opts = {
 }) => {
 	let network_id = null;
 	if (opts.user_id) {
-		const user = await getUserByKitId(opts.user_id, false);
-		if (!user) {
+		// check mapKitIdToNetworkId
+		const idDictionary = await mapKitIdToNetworkId([opts.user_id]);
+		if (!has(idDictionary, opts.user_id)) {
 			throw new Error(USER_NOT_FOUND);
-		} else if (!user.network_id) {
+		} else if (!idDictionary[opts.user_id]) {
 			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 		} else {
-			network_id = user.network_id;
+			network_id = idDictionary[opts.user_id];
 		}
 	}
 

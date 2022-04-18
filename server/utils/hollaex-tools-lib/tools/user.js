@@ -76,7 +76,10 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
+const { has } = require('lodash');
 
+let networkIdToKitId = {};
+let kitIdToNetworkId = {};
 /* Onboarding*/
 
 const signUpUser = (email, password, opts = { referral: null }) => {
@@ -1300,33 +1303,34 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 	return getNodeLib().createUserCryptoAddress(networkId, crypto, opts);
 };
 
-const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
+const createUserCryptoAddressByKitId = async (kitId, crypto, opts = {
 	network: null,
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().createUserCryptoAddress(user.network_id, crypto, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().createUserCryptoAddress(idDictionary[kitId], crypto, opts);
 };
 
-const getUserStatsByKitId = (userId, opts = {
+const getUserStatsByKitId = async (userId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserStats(user.network_id, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userId]);
+
+	if (!has(idDictionary, userId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	return getNodeLib().getUserStats(idDictionary[userId], opts);
 };
 
 const getUserStatsByNetworkId = (networkId, opts = {
@@ -1505,9 +1509,6 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 };
 
 const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
-	const networkIdToKitId = {};
-	const kitIdToNetworkId = {};
-
 	return [
 		async (networkIds = []) => {
 			if (!isArray(networkIds)) {
@@ -1562,11 +1563,11 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				throw new Error('No users found with given networkIds');
 			}
 
-			Object.entries(result)
-				.filter(([_, value]) => value === undefined)
-				.forEach(([key, _]) => {
-					delete result[key];
-				});
+			// Object.entries(result)
+			// 	.filter(([_, value]) => value === undefined)
+			// 	.forEach(([key, _]) => {
+			// 		delete result[key];
+			// 	});
 
 			return result;
 		},
@@ -1623,11 +1624,11 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				throw new Error('No users found with given kitIds');
 			}
 
-			Object.entries(result)
-				.filter(([_, value]) => value === undefined)
-				.forEach(([key, _]) => {
-					delete result[key];
-				});
+			// Object.entries(result)
+			// 	.filter(([_, value]) => value === undefined)
+			// 	.forEach(([key, _]) => {
+			// 		delete result[key];
+			// 	});
 
 			return result;
 		}];
