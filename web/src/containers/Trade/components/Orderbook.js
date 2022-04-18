@@ -20,7 +20,6 @@ import math from 'mathjs';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
 import { formatToFixed } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
-import { DEFAULT_COIN_DATA } from 'config/constants';
 import { setOrderbookDepth } from 'actions/orderbookAction';
 import PriceRow from './PriceRow';
 
@@ -233,7 +232,6 @@ class Orderbook extends Component {
 			bids,
 			pairData = {},
 			pair,
-			coins,
 			maxCumulative,
 			increment_price = 1,
 			depth = 1,
@@ -258,8 +256,7 @@ class Orderbook extends Component {
 				  }
 				: {};
 
-		const pairBase = pairData.pair_base.toUpperCase();
-		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+		const { pair_base_display, pair_2_display } = pairData;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />
@@ -285,11 +282,11 @@ class Orderbook extends Component {
 				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
 						<div>{STRINGS['PRICE_CURRENCY']}</div>
-						<div>({symbol.toUpperCase()})</div>
+						<div>({pair_2_display})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
-						<div>({pairBase})</div>
+						<div>({pair_base_display})</div>
 					</div>
 					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div className="text-align-right">
@@ -312,8 +309,8 @@ class Orderbook extends Component {
 							dropdownClassName="custom-select-style trade-select-option-wrapper"
 							dropdownStyle={{ minWidth: '7rem' }}
 						>
-							<Option value={false}>{symbol.toUpperCase()}</Option>
-							<Option value={true}>{pairBase}</Option>
+							<Option value={false}>{pair_2_display}</Option>
+							<Option value={true}>{pair_base_display}</Option>
 						</Select>
 					</div>
 				</div>

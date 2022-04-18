@@ -1,0 +1,113 @@
+	
+	{
+		"en": {
+			"DOC_REJECTED": {
+				"html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
+				"title": "KYC Documents Rejected"
+			},
+			"DOC_VERIFIED": {
+				"html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target='_blank'>Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "KYC Documents Approved"
+			},
+			"CONFIRM_EMAIL": {
+				"html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immidiately and proceed to change your crendetials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Security Verification"
+			},
+			"LOGIN": {
+				"html": "<div> <p> Dear ${name} </p> <p> We have recorded a login to your account with the following details </p> <div> <div>Time: ${time}</div> <div>Country: ${country}</div> <div>IP Address: ${ip}</div> </div> <p> If this was not you, please change your password, set up two-factor authentication, and contact us immediately. </p> <p> Regards<br> ${api_name} team </p> </div>",
+				"title": "Login"
+			},
+			"SIGNUP": {
+				"html": "<div> <p> Dear ${name} </p> <p> You need to confirm your email account by clicking the button below.<br> If you have any questions feel free to contact us simply by replying to this email.</p><p>Please click on the button below to proceed with your registration.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Sign Up"
+			},
+			"WELCOME": {
+				"html": "<div><p> Dear ${name} </p><p>Thank you for signing up to ${api_name}.</p><p>To begin trading, you must first deposit cryptocurrency or fund money to your account.Please go to your <a href=\"${link_account}\" target='_blank'>account</a> and visit the <a href=\"${link_deposit}\" target='_blank'>deposit</a> page.,</p><p>If you have any questions or concerns, please contact us simply by replying to this email.</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Welcome"
+			},
+			"RESET_PASSWORD": {
+				"html": "<div><p> Dear ${name} </p><p>You have made a request to reset the password for your account.<br />To update your password, click on the link below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Reset My Password</Button></a></div><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Reset Password Request"
+			},
+			"ACCOUNT_VERIFY": {
+				"html": "<div><p> Dear ${name} </p><p>Congratulations. Your account is verified successfully.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Trade Now</Button></a></div><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Account Verified"
+			},
+			"ACCOUNT_UPGRADE": {
+				"html": "<div><p> Dear ${name} </p><p>Congratulations. Your account access level is upgraded to ${tier} tier. You will benefit from lower fees, higher withdrawal limits and other premium features.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Trade Now</Button></a></div><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Account Upgraded"
+			},
+			"DEPOSIT_CANCEL": {
+				"html": "<div><p> Dear ${name} </p><p>We were not able to find or process your ${currency} deposit made on ${date} for ${amount}. Thus, the transaction is rejected by our system.</p><p>If you have any further inquiries, you can reply to this email</p><p>Transaction ID: ${txid}<br />Amount: ${amount}<br />Status: Rejected</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} Deposit rejected"
+			},
+			"WITHDRAWAL_CANCEL": {
+				"html": "<div><p> Dear ${name} </p><p>We were not able to find or process your ${currency} withdrawal made on ${date} for ${amount}. Thus the transaction is rejected by our system and your pending withdrawal amount is credited back to your ${api_name} wallet.</p><p>If you have any further inquiries, you can reply to this email</p><p>Transaction ID: ${txid}<br />Amount: ${amount}<br />Status: Rejected</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} Withdrawal rejected"
+			},
+			"WITHDRAWAL_REQUEST": {
+				"html": "<div><p> Dear ${name} </p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}<br /><br />Amount: ${amount}<br />Fee: ${fee} ${currency}<br />Address: ${address}<br /><span id='network'>Network: ${network}</span><br /><br />In order to confirm this withdrawal, please click the button below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} Withdrawal Request"
+			},
+			"USER_VERIFICATION": {
+				"html": "<div><h3>User Verification Required</h3><div>User '${email}' uploaded his documents for verification. Please verify his documents.</div></div>",
+				"title": "User Verification"
+			},
+			"SUSPICIOUS_DEPOSIT": {
+				"html": "<div><h3>Suspicious Deposit</h3><div>The client with email ${email} has received a ${currency} deposit that is suspicious.<br />Transaction ID: ${txid}<h4>Transaction data:</h4><div>${data}</div></div></div>",
+				"title": "Suspicious Deposit"
+			},
+			"INVALID_ADDRESS": {
+				"html": "<div><p> Dear ${name} </p><p>Your ${currency} withdrawal for ${amount} was being sent to an invalid address and is rejected.</p><p>Address: ${address}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Invalid Withdrawal Address"
+			},
+			"USER_DEACTIVATED": {
+				"html": "<div><p>Your account ${email} has been deactivated. You will not be able to use your account until it is activated by the exchange admin.</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Account ${type}"
+			},
+			"USER_ACTIVATED": {
+				"html": "<div><p>Your account ${email} has been activated. You are now able to use your account.</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Account ${type}"
+			},
+			"DISCOUNT_UPDATE": {
+				"html": "<div><p> Dear ${name} </p><p>Your discount rate has been changed to ${rate}%. This rate will be applied to your order fees.</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Discount Rate Change"
+			},
+			"BANK_VERIFIED": {
+				"html": "<div><p> Dear ${name} </p><p>A pending bank account has been verified. Your valid account can now be used for exchange operations requiring a bank account.</p><div><strong>Verified Bank Accounts:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">To view your current bank accounts, please visit the exchange's Verification Tab</a></p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Bank Verified"
+			},
+			"USER_ID_VERIFICATION_REJECT": {
+				"html": "<div><p> Dear ${name} </p><p>Your recent ID verification is processed and is unfortunately rejected. For further actions read the message from our expert below:</p><p>Message: ${message}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "ID Verification Rejected"
+			},
+			"USER_BANK_VERIFICATION_REJECT": {
+				"html": "<div><p> Dear ${name} </p><p>Your new bank registration is processed and is unfortunately rejected. For further actions read the message from our expert below:</p><p>Message: ${message}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "New Bank Application Rejected"
+			},
+			"PASSWORD_CHANGED": {
+				"html": "<div><p> Dear ${name} </p><p>This email confirms that you recently changed the password for your account. No further action is required.<br />If you did not authorize this change please contact us immediately.<br /></p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Password Changed"
+			},
+			"CHANGE_PASSWORD": {
+				"html": "<div><p> Dear ${name} </p><p>You have made a request to change the password for your account.<br />To confirm your password changed, click on the link below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm Change My Password</Button></a></div><p>If this request was made in error, it is safe to ignore it; no changes will be made to your account.</p><p>Request initiated from: ${ip}</p><p> Regards<br> ${api_name} team </p></div>",
+				"title": "Change Password Confirmation"
+			},
+			"DEPOSIT_PENDING": {
+				"html": "<div><div><p> Dear ${name} </p><p> You have a new deposit for ${amount} ${currency} pending in your ${api_name} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction requires ${confirmation} confirmation(s) on blockchain.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id='network'>Network: ${network}</span><br />Fee: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} Deposit pending"
+			},
+			"DEPOSIT_COMPLETED": {
+				"html": "<div><div><p> Dear ${name} </p><p> Your ${currency} deposit for ${amount} ${currency} is confirmed and completed and it is available in your ${currency} wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id='network'>Network: ${network}</span><br />Fee: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} Deposit completed"
+			},
+			"WITHDRAWAL_PENDING": {
+				"html": "<div><p> Dear ${name} </p><p>You made a withdrawal request for ${amount} ${currency}. Your withdrawal status is pending and will be processed shortly.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id='network'>Network: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} withdrawal pending"
+			},
+			"WITHDRAWAL_COMPLETED": {
+				"html": "<div><p> Dear ${name} </p><p>Your withdrawal request for ${amount} ${currency} is processed.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id='network'>Network: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+				"title": "${currency} withdrawal completed"
+			}
+		}
+}

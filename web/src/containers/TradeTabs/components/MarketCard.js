@@ -9,12 +9,14 @@ class MarketCard extends Component {
 
 		const {
 			key,
-			pair,
-			symbol,
 			pairTwo,
 			fullname,
 			ticker,
 			increment_price,
+			display_name,
+			pair_base_display,
+			pair_2_display,
+			icon_id,
 		} = market;
 
 		return (
@@ -28,26 +30,15 @@ class MarketCard extends Component {
 						<div className="d-flex">
 							<div className="px-2">
 								<Image
-									iconId={
-										ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-											? `${pair.pair_base.toUpperCase()}_ICON`
-											: 'DEFAULT_ICON'
-									}
-									icon={
-										ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-											? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-											: ICONS['DEFAULT_ICON']
-									}
+									iconId={icon_id}
+									icon={ICONS[icon_id]}
 									wrapperClassName="trade_tab-icons"
 									imageWrapperClassName="currency-ball-image-wrapper"
 								/>
 							</div>
 
 							<div>
-								<div className="trade_tab-pair-title">
-									{symbol.toUpperCase()}/
-									{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
-								</div>
+								<div className="trade_tab-pair-title">{display_name}</div>
 
 								<div className="trade_tab-pair-sub-title">
 									{fullname}/{pairTwo.fullname}
@@ -60,7 +51,7 @@ class MarketCard extends Component {
 									{formatToCurrency(ticker.close, increment_price)}
 								</div>
 								<div className="ml-2 trade_tab-pair-volume">
-									{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
+									{pair_2_display}
 								</div>
 							</div>
 							<div className="d-flex justify-content-end align-center">
@@ -70,8 +61,7 @@ class MarketCard extends Component {
 								<div className=" ml-2 trade_tab-pair-volume">
 									<span className="pr-2">Vol:</span>
 									<span>
-										{ticker.volume &&
-											`${ticker.volume} ${symbol.toUpperCase()}`}
+										{ticker.volume && `${ticker.volume} ${pair_base_display}`}
 									</span>
 								</div>
 							</div>

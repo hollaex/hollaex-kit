@@ -39,7 +39,7 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min, fullname, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+		const { min, fullname, display_name } = coins[symbol] || DEFAULT_COIN_DATA;
 		return {
 			accordionClassName: 'wallet_section-wrapper',
 			title: fullname,
@@ -47,7 +47,7 @@ class Wallet extends Component {
 			titleInformation: (
 				<div className="wallet_section-title-amount">
 					{formatToCurrency(balance[`${symbol}_balance`], min)}
-					<span className="mx-1">{rest.symbol.toUpperCase()}</span>
+					<span className="mx-1">{display_name}</span>
 				</div>
 			),
 			content: (
@@ -94,10 +94,15 @@ class Wallet extends Component {
 		}
 
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const { symbol = '' } = coins[BASE_CURRENCY] || {};
+		const { display_name = '' } = coins[BASE_CURRENCY] || {};
 		const hasScrollbar = sections.length > 7;
 
-		const isShowChart = !Object.keys(balance).length || !Object.keys(coins).length || !Object.keys(prices).length || !chartData.length || fetching;
+		const isShowChart =
+			!Object.keys(balance).length ||
+			!Object.keys(coins).length ||
+			!Object.keys(prices).length ||
+			!chartData.length ||
+			fetching;
 
 		const loadCount = [];
 		for (var i = 1; i <= 6; i++) {
@@ -106,32 +111,42 @@ class Wallet extends Component {
 
 		return (
 			<div className="wallet-wrapper">
-				<div className={classnames("donut-container", { 'd-flex justify-content-center align-items-center': isShowChart })}>
+				<div
+					className={classnames('donut-container', {
+						'd-flex justify-content-center align-items-center': isShowChart,
+					})}
+				>
 					{isShowChart ? (
-						<div className='rounded-loading'>
-							<div className='inner-round'></div>
+						<div className="rounded-loading">
+							<div className="inner-round"></div>
 						</div>
-					) : (chartData.length &&
-						<DonutChart
-							id="side-bar-donut"
-							coins={coins}
-							chartData={chartData}
-						/>
+					) : (
+						chartData.length && (
+							<DonutChart
+								id="side-bar-donut"
+								coins={coins}
+								chartData={chartData}
+							/>
+						)
 					)}
 				</div>
-				{isShowChart
-					?
+				{isShowChart ? (
 					<div>
 						<div className="mt-3 loading-txt">
 							{STRINGS['WALLET.LOADING_ASSETS'].toUpperCase()}
 						</div>
 						<div>
 							{loadCount.map((data, index) => {
-								return <div className='loading-row-anime' style={{ 'animationDelay': `.${index}s` }}></div>
+								return (
+									<div
+										className="loading-row-anime"
+										style={{ animationDelay: `.${index}s` }}
+									></div>
+								);
 							})}
 						</div>
 					</div>
-					:
+				) : (
 					<div>
 						<ControlledScrollbar
 							autoHideArrows={true}
@@ -150,12 +165,12 @@ class Wallet extends Component {
 								</div>
 								<div className="wallet_section-total_asset d-flex justify-content-end">
 									<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
-									{symbol.toUpperCase()}
+									{display_name}
 								</div>
 							</div>
 						) : null}
 					</div>
-				}
+				)}
 			</div>
 		);
 	}

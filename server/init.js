@@ -64,6 +64,7 @@ const checkStatus = () => {
 			injected_html: {},
 			user_meta: {},
 			black_list_countries: [],
+			banks: {}
 		},
 		email: {}
 	};

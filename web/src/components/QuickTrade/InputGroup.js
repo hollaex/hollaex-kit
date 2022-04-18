@@ -98,6 +98,7 @@ class InputGroup extends React.PureComponent {
 			icons: ICONS,
 			autoFocus,
 			stringId,
+			coins,
 		} = this.props;
 
 		return (
@@ -156,7 +157,7 @@ class InputGroup extends React.PureComponent {
 											alt={`${symbol.toUpperCase()}_coin`}
 										/> */}
 										</div>
-										<span className="pl-1">{symbol.toUpperCase()}</span>
+										<span className="pl-1">{coins[symbol].display_name}</span>
 									</div>
 								</Option>
 							))}
