@@ -1,11 +1,20 @@
 import React, { Fragment } from 'react';
+import { connect } from 'react-redux';
 import { EditWrapper, IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { LoadingOutlined } from '@ant-design/icons';
 import Ionicon from 'react-ionicons';
 
-const WaitingContent = ({ action, amount, symbol, isPending, onClose }) => {
+const WaitingContent = ({
+	action,
+	amount,
+	symbol,
+	isPending,
+	onClose,
+	coins,
+}) => {
+	const { display_name } = coins[symbol];
 	return (
 		<Fragment>
 			{isPending && (
@@ -41,13 +50,13 @@ const WaitingContent = ({ action, amount, symbol, isPending, onClose }) => {
 									STRINGS['STAKE.WAITING_PROMPT'],
 									STRINGS[`STAKE.WAITING_${action}`],
 									amount,
-									symbol.toUpperCase()
+									display_name
 							  )
 							: STRINGS.formatString(
 									STRINGS['STAKE.WAITING_PROMPT'],
 									STRINGS[`STAKE.WAITING_${action}_ING`],
 									amount,
-									symbol.toUpperCase()
+									display_name
 							  )}
 					</EditWrapper>
 				</div>
@@ -67,4 +76,8 @@ const WaitingContent = ({ action, amount, symbol, isPending, onClose }) => {
 	);
 };
 
-export default withConfig(WaitingContent);
+const mapStateToProps = (store) => ({
+	coins: store.app.coins,
+});
+
+export default connect(mapStateToProps)(withConfig(WaitingContent));

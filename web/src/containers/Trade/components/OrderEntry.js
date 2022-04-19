@@ -428,8 +428,9 @@ class OrderEntry extends Component {
 			side = 'buy',
 		} = props;
 
-		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
-		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
+		const { display_name } = coins[pair] || DEFAULT_COIN_DATA;
+		const { display_name: buy_display_name } =
+			coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			orderType: {
 				name: 'order_type',
@@ -494,7 +495,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price),
 				],
-				currency: buyData.symbol.toUpperCase(),
+				currency: buy_display_name,
 				setRef: this.props.setPriceRef,
 			},
 			size: {
@@ -517,9 +518,7 @@ class OrderEntry extends Component {
 											balance[`${pair_base}_available`],
 											increment_size
 									  )}{' '}
-								{side === 'buy'
-									? pair_2_display.toUpperCase()
-									: pair_base_display.toUpperCase()}
+								{side === 'buy' ? pair_2_display : pair_base_display}
 							</span>
 						</div>
 					</div>
@@ -531,7 +530,7 @@ class OrderEntry extends Component {
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
-				currency: symbol.toUpperCase(),
+				currency: display_name,
 				setRef: this.props.setSizeRef,
 			},
 			slider: {

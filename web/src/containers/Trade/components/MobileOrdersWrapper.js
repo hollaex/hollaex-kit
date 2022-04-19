@@ -111,7 +111,7 @@ class MobileOrdersWrapper extends Component {
 									<div>
 										{STRINGS.formatString(
 											STRINGS['CANCEL_ORDERS.INFO_1'],
-											pair.toUpperCase()
+											pairData.display_name
 										)}
 									</div>
 								</EditWrapper>
