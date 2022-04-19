@@ -778,14 +778,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_KEY_NOT_WHITELISTED);
 					}
 				}
-				if (!scopes.includes(token.type)) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
-						apiKey,
-						token.type
-					);
-					throw new Error(API_KEY_OUT_OF_SCOPE);
-				} else if (new Date(token.expiry) < new Date()) {
+				if (new Date(token.expiry) < new Date()) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey expired key',
 						apiKey

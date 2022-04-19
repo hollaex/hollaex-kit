@@ -34,6 +34,12 @@ import TradeAndOrderFilters from './components/TradeAndOrderFilters';
 import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
 import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
+import {
+	orderHistorySelector,
+	tradeHistorySelector,
+	depositHistorySelector,
+	withdrawalHistorySelector,
+} from './selectors';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -95,16 +101,6 @@ class TransactionsHistory extends Component {
 		} else {
 			this.setState({ activeTab: 0 });
 		}
-		this.openCurrentTab();
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevState.activeTab) !==
-			JSON.stringify(this.state.activeTab)
-		) {
-			this.openCurrentTab();
-		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -139,20 +135,6 @@ class TransactionsHistory extends Component {
 		}
 	}
 
-	openCurrentTab = () => {
-		let currentTab = '';
-		if (this.state.activeTab === 1) {
-			currentTab = 'order-history';
-		} else if (this.state.activeTab === 2) {
-			currentTab = 'deposit';
-		} else if (this.state.activeTab === 3) {
-			currentTab = 'withdraw';
-		} else {
-			currentTab = 'trades';
-		}
-		this.props.router.push(`/transactions?${currentTab}`);
-	};
-
 	onCloseDialog = () => {
 		this.setState({
 			dialogIsOpen: false,
@@ -171,10 +153,15 @@ class TransactionsHistory extends Component {
 			getUserDeposits,
 			getUserWithdrawals,
 		} = this.props;
-
+		let open = true;
+		if (params && params.type && params.type === 'active') {
+			open = true;
+		} else if (params && params.type && params.type === 'closed') {
+			open = false;
+		}
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open: true });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open });
 				break;
 			case 0:
 				getUserTrades(RECORD_LIMIT, 1, params);
@@ -597,10 +584,10 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	coins: store.app.coins,
 	id: store.user.id,
-	orders: store.wallet.orderHistory,
-	trades: store.wallet.trades,
-	deposits: store.wallet.deposits,
-	withdrawals: store.wallet.withdrawals,
+	orders: orderHistorySelector(store),
+	trades: tradeHistorySelector(store),
+	deposits: depositHistorySelector(store),
+	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,

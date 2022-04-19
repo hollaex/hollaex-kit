@@ -502,6 +502,15 @@ class App extends Component {
 						wrapperClassName="modal-market-menu"
 					/>
 				);
+			case NOTIFICATIONS.METAMASK_ERROR:
+				return (
+					<MessageDisplay
+						iconId="RED_WARNING"
+						iconPath={ICONS['RED_WARNING']}
+						onClick={this.onCloseDialog}
+						text={data}
+					/>
+				);
 			case CONNECT_VIA_DESKTOP:
 				return <ConnectViaDesktop onClose={this.onCloseDialog} />;
 			case RISK_PORTFOLIO_ORDER_WARING:

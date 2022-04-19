@@ -179,7 +179,7 @@ class QuickTrade extends Component {
 		const selectedTargetBalance =
 			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
-		const brokerPairs = broker.map((br) => br.symbol);
+		const brokerPairs = broker && broker.map((br) => br.symbol);
 		const flipedPair = flipPair(symbol);
 		let isUseBroker = false;
 		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
@@ -246,7 +246,8 @@ class QuickTrade extends Component {
 											className="pairs pointer"
 											onClick={() => this.handleClick(key)}
 										>
-											{pairBase.toUpperCase()}/{pair_2.toUpperCase()}
+											{coins[pairBase] && coins[pairBase].display_name}/
+											{coins[pair_2] && coins[pair_2].display_name}
 										</div>
 										<div className="fullname">
 											{pairBase_fullName}/{pair2_fullName}
@@ -263,7 +264,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-22 pr-2">{ticker.last}</div>
 											<div className="fullname white-txt">
-												{pair_2.toUpperCase()}
+												{coins[pair_2] && coins[pair_2].display_name}
 											</div>
 										</div>
 									</div>
@@ -314,7 +315,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.high}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -325,7 +328,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.low}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -338,7 +343,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.open}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -349,7 +356,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.close}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -361,7 +370,9 @@ class QuickTrade extends Component {
 									</div>
 									<div className="d-flex">
 										<div className="f-size-16 pr-2">{ticker.volume}</div>
-										<div className="fullname">{pairBase.toUpperCase()}</div>
+										<div className="fullname">
+											{coins[pairBase] && coins[pairBase].display_name}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -382,7 +393,8 @@ class QuickTrade extends Component {
 								</Link>
 							</div>
 							<div className="small-text">
-								{selectedSource.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								{coins[selectedSource] && coins[selectedSource].display_name}{' '}
+								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
@@ -407,6 +419,7 @@ class QuickTrade extends Component {
 								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
+								coins={coins}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -423,9 +436,10 @@ class QuickTrade extends Component {
 								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
+								coins={coins}
 							/>
 							<div className="small-text">
-								{selectedTarget && selectedTarget.toUpperCase()}{' '}
+								{coins[selectedTarget] && coins[selectedTarget].display_name}{' '}
 								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
@@ -476,7 +490,8 @@ class QuickTrade extends Component {
 									{!isUseBroker ? (
 										<span>
 											<span>
-												{pairBase.toUpperCase()}/{pair_2.toUpperCase()}{' '}
+												{coins[pairBase] && coins[pairBase].display_name}/
+												{coins[pair_2] && coins[pair_2].display_name}{' '}
 											</span>
 											<span>{STRINGS['TYPES_VALUES.market']}</span>
 										</span>

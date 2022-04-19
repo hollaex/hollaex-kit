@@ -5,7 +5,7 @@ const nestedIcons = {
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},

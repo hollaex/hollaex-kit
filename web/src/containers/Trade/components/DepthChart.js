@@ -6,7 +6,7 @@ import { depthChartSelector } from '../utils';
 
 class DepthChart extends Component {
 	render() {
-		const { containerProps, series, extremes } = this.props;
+		const { containerProps, series } = this.props;
 
 		const chartOptions = {
 			chart: {
@@ -16,14 +16,22 @@ class DepthChart extends Component {
 			title: {
 				text: null,
 			},
-			xAxis: {
-				minPadding: 0,
-				maxPadding: 0,
-				title: {
-					text: null,
+			xAxis: [
+				{
+					title: {
+						text: null,
+					},
+					width: '50%',
 				},
-				...extremes,
-			},
+				{
+					title: {
+						text: null,
+					},
+					offset: 0,
+					width: '50%',
+					left: '50%',
+				},
+			],
 			yAxis: [
 				{
 					lineWidth: 1,

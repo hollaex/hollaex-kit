@@ -159,6 +159,7 @@ class Wallet extends Component {
 						}
 						loading={this.props.dataFetched}
 						contracts={contracts}
+						broker={this.props.broker}
 					/>
 				),
 				isOpen: true,
@@ -194,7 +195,7 @@ class Wallet extends Component {
 			},
 			{
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
-				content: <TransactionsHistory router={this.props.router} />,
+				content: <TransactionsHistory />,
 			},
 			{
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
@@ -264,6 +265,7 @@ const mapStateToProps = (store) => ({
 	oraclePrices: store.asset.oraclePrices,
 	dataFetched: store.asset.dataFetched,
 	contracts: store.app.contracts,
+	broker: store.app.broker,
 });
 
 const mapDispatchToProps = (dispatch) => ({
