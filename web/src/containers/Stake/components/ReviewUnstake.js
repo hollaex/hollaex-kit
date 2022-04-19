@@ -6,14 +6,14 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AmountPreview from './AmountPreview';
 import mathjs from 'mathjs';
 
-const ReviewEarlyUnstake = ({
+const ReviewUnstake = ({
 	stakeData,
 	onClose,
 	onCancel,
 	onProceed,
 	icons: ICONS,
 }) => {
-	const { symbol, amount, reward } = stakeData;
+	const { symbol, amount, reward, display_name } = stakeData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
@@ -72,7 +72,7 @@ const ReviewEarlyUnstake = ({
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
 							totalEarnt,
-							symbol.toUpperCase()
+							display_name
 						)}
 					</div>
 				</div>
@@ -86,7 +86,7 @@ const ReviewEarlyUnstake = ({
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
 							reward,
-							symbol.toUpperCase()
+							display_name
 						)}
 					</div>
 				</div>
@@ -114,4 +114,4 @@ const ReviewEarlyUnstake = ({
 	);
 };
 
-export default withConfig(ReviewEarlyUnstake);
+export default withConfig(ReviewUnstake);

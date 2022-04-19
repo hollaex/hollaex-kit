@@ -704,9 +704,9 @@ export default {
 			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.',
 		GET_STAKES: 'Get stakes', //new
 		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
-		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
+		ON_EXCHANGE_XHT: 'On exchange {0} balance: {1} {2}',
 		LOGIN_HERE: 'Login here',
-		MOVE_XHT: 'Move XHT',
+		MOVE_XHT: 'Move {0}',
 		ESTIMATED_STAKED: 'Estimated value of total staked',
 		ESTIMATED_EARNINGS: 'Estimated value of earnings',
 		CONNECT_WALLET: 'Connect wallet',

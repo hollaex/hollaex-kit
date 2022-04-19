@@ -16,6 +16,7 @@ import { removeFromFavourites, addToFavourites } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
 import EditWrapper from 'components/EditWrapper';
 import { MarketsSelector } from 'containers/Trade/utils';
+import { unique } from 'utils/data';
 
 class MarketSelector extends Component {
 	constructor(props) {
@@ -53,31 +54,30 @@ class MarketSelector extends Component {
 
 	tabListMenuItems = () => {
 		const { symbols, selectedTabMenu } = this.state;
+		const { coins } = this.props;
 
-		return symbols.map((symbol, index) => (
-			<div
-				key={index}
-				className={classnames(
-					'app-bar-tab-menu-list',
-					'd-flex',
-					'align-items-center',
-					'pointer',
-					{ 'active-tab': symbol === selectedTabMenu }
-				)}
-				onClick={() => this.onAddTabClick(symbol)}
-			>
-				{symbol === 'all' ? STRINGS['ALL'] : symbol.toUpperCase()}
-			</div>
-		));
+		return symbols.map((symbol, index) => {
+			const { display_name } = coins[symbol] || DEFAULT_COIN_DATA;
+			return (
+				<div
+					key={index}
+					className={classnames(
+						'app-bar-tab-menu-list',
+						'd-flex',
+						'align-items-center',
+						'pointer',
+						{ 'active-tab': symbol === selectedTabMenu }
+					)}
+					onClick={() => this.onAddTabClick(symbol)}
+				>
+					{symbol === 'all' ? STRINGS['ALL'] : display_name}
+				</div>
+			);
+		});
 	};
 
 	getSymbols = (pairs) => {
-		const obj = {};
-		Object.entries(pairs).forEach(([key, pair]) => {
-			obj[pair.pair_2] = '';
-		});
-
-		return Object.keys(obj).map((key) => key);
+		return unique(Object.entries(pairs).map(([_, { pair_2 }]) => pair_2));
 	};
 
 	onAddTabClick = (symbol) => {

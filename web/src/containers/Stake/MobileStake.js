@@ -13,6 +13,7 @@ import Image from 'components/Image';
 import Account from './components/Account';
 import ConnectWrapper from './components/ConnectWrapper';
 import StakesAndEarnings from './components/StakesAndEarnings';
+import { STAKING_INDEX_COIN } from 'config/contracts';
 
 class Stake extends Component {
 	render() {
@@ -22,6 +23,8 @@ class Stake extends Component {
 			openConnectViaDesktop,
 			stakables,
 		} = this.props;
+
+		const { display_name } = coins[STAKING_INDEX_COIN];
 
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
@@ -60,7 +63,9 @@ class Stake extends Component {
 								<div className="secondary-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.ON_EXCHANGE_XHT'],
-										<ConnectWrapper onClick={openConnectViaDesktop} />
+										display_name,
+										<ConnectWrapper onClick={openConnectViaDesktop} />,
+										''
 									)}
 								</div>
 							</div>
@@ -105,8 +110,7 @@ class Stake extends Component {
 							<tbody>
 								{stakables.map((tokenData, index) => {
 									const { symbol } = tokenData;
-									const { fullname } = coins[symbol];
-									const iconId = `${symbol.toUpperCase()}_ICON`;
+									const { fullname, icon_id, display_name } = coins[symbol];
 									const commonCellProps = {};
 									return (
 										<tr
@@ -117,14 +121,14 @@ class Stake extends Component {
 											<td className="td-name td-fit">
 												<div className="d-flex align-items-center">
 													<Image
-														iconId={iconId}
-														icon={ICONS[iconId]}
+														iconId={icon_id}
+														icon={ICONS[icon_id]}
 														wrapperClassName="currency-ball pt-2"
 														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
 													{fullname}
 													<span className="pl-2 secondary-text">
-														{symbol.toUpperCase()}
+														{display_name}
 													</span>
 												</div>
 											</td>

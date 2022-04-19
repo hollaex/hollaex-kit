@@ -243,8 +243,7 @@ class StakeDetails extends Component {
 
 		const { activeKey } = this.state;
 
-		const { fullname } = coins[token];
-		const iconId = `${token.toUpperCase()}_ICON`;
+		const { fullname, icon_id } = coins[token];
 
 		const __html = `.stake-panel-bg:before { background-image: url(${ICONS['STAKING_PANEL_BACKGROUND']}) }`;
 
@@ -259,8 +258,8 @@ class StakeDetails extends Component {
 									STRINGS['STAKE_DETAILS.TOKEN'],
 									fullname
 								)}
-								iconPath={ICONS[iconId]}
-								iconId={iconId}
+								iconPath={ICONS[icon_id]}
+								iconId={icon_id}
 								textType="title"
 								imageWrapperClassName="currency-ball pt-2"
 							/>

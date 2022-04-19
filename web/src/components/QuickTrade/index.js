@@ -24,6 +24,7 @@ import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import { translateError } from './utils';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { generateCoinIconId } from 'utils/icon';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 
@@ -232,12 +233,8 @@ class QuickTrade extends Component {
 							<div className="trade-details-content">
 								<div className="d-flex pb-30">
 									<Image
-										iconId={`${pairBase.toUpperCase()}_ICON`}
-										icon={
-											ICONS[`${pairBase.toUpperCase()}_ICON`]
-												? ICONS[`${pairBase.toUpperCase()}_ICON`]
-												: ICONS['DEFAULT_ICON']
-										}
+										iconId={generateCoinIconId(pairBase)}
+										icon={ICONS[generateCoinIconId(pairBase)]}
 										wrapperClassName="coins-icon"
 										imageWrapperClassName="currency-ball-image-wrapper"
 									/>

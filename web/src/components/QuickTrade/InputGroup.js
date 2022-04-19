@@ -5,6 +5,7 @@ import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
@@ -128,39 +129,30 @@ class InputGroup extends React.PureComponent {
 								/>
 							}
 						>
-							{options.map((symbol, index) => (
-								<Option
-									name="selectedPairBase"
-									value={symbol}
-									key={index}
-									className="d-flex"
-								>
-									<div className="d-flex align-items-center quick-trade-select-wrapper">
-										<div className="input-group__coin-icons-wrap">
-											<Image
-												iconId={`${symbol.toUpperCase()}_ICON`}
-												icon={
-													ICONS[`${symbol.toUpperCase()}_ICON`]
-														? ICONS[`${symbol.toUpperCase()}_ICON`]
-														: ICONS['DEFAULT_ICON']
-												}
-												wrapperClassName="input-group__coin-icons"
-												imageWrapperClassName="currency-ball-image-wrapper"
-											/>
-											{/* <img
-											src={
-												ICONS[`${symbol.toUpperCase()}_ICON`]
-													? ICONS[`${symbol.toUpperCase()}_ICON`]
-													: ICONS['DEFAULT_ICON']
-											}
-											className="input-group__coin-icons"
-											alt={`${symbol.toUpperCase()}_coin`}
-										/> */}
+							{options.map((symbol, index) => {
+								const { display_name, icon_id } =
+									coins[symbol] || DEFAULT_COIN_DATA;
+								return (
+									<Option
+										name="selectedPairBase"
+										value={symbol}
+										key={index}
+										className="d-flex"
+									>
+										<div className="d-flex align-items-center quick-trade-select-wrapper">
+											<div className="input-group__coin-icons-wrap">
+												<Image
+													iconId={icon_id}
+													icon={ICONS[icon_id]}
+													wrapperClassName="input-group__coin-icons"
+													imageWrapperClassName="currency-ball-image-wrapper"
+												/>
+											</div>
+											<span className="pl-1">{display_name}</span>
 										</div>
-										<span className="pl-1">{coins[symbol].display_name}</span>
-									</div>
-								</Option>
-							))}
+									</Option>
+								);
+							})}
 						</Select>
 						<Input
 							type="number"

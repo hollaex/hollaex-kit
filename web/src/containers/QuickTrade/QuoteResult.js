@@ -10,8 +10,10 @@ import {
 
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const QuoteResult = ({
+	coins,
 	onClose,
 	onConfirm,
 	pairData,
@@ -59,6 +61,7 @@ const QuoteResult = ({
 		);
 	} else {
 		const [pair_base] = data && data.symbol && data.symbol.split('-');
+		const { display_name } = coins[pair_base] || DEFAULT_COIN_DATA;
 
 		return (
 			<div className="success-review">
@@ -77,7 +80,7 @@ const QuoteResult = ({
 						STRINGS['QUOTE_SUCCESS_REVIEW_MESSAGE'],
 						STRINGS[`SIDES_VERBS.${data.side}`],
 						formatToCurrency(data.size, pairData.increment_size),
-						pair_base.toUpperCase()
+						display_name
 					)}
 				</div>
 				<footer className="d-flex pt-4">

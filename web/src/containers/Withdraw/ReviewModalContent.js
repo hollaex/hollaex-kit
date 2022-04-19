@@ -1,18 +1,18 @@
 import React from 'react';
 import math from 'mathjs';
 import Image from 'components/Image';
-import { Button } from '../../components';
-import { formatToCurrency } from '../../utils/currency';
+import { Button } from 'components';
+import { formatToCurrency } from 'utils/currency';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
+} from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { getNetworkLabelByKey } from 'utils/wallet';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
@@ -59,12 +59,14 @@ const ReviewModalContent = ({
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
 	const fee = data.fee ? data.fee : 0;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
+	const { display_name: fee_coin_display } =
+		coins[fee_coin] || DEFAULT_COIN_DATA;
 	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
 
 	const withdrawFeeMessage = hasDifferentFeeCoin
 		? STRINGS.formatString(
 				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE_COIN'],
-				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin.toUpperCase())
+				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin_display)
 		  )
 		: STRINGS.formatString(
 				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
