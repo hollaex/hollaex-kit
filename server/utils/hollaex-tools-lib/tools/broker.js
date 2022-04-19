@@ -32,7 +32,7 @@ const {
 const validateBrokerPair = (brokerPair) => {
 	if (brokerPair.type === 'manual' && math.compare(brokerPair.buy_price, 0) !== 1) {
 		throw new Error("Broker buy price must be bigger than zero.")
-	} else if (brokerPair.type === 'manual' &&  math.compare(brokerPair.sell_price, 0) !== 1) {
+	} else if (brokerPair.type === 'manual' && math.compare(brokerPair.sell_price, 0) !== 1) {
 		throw new Error("Broker sell price must be bigger than zero.")
 	} else if (math.compare(brokerPair.min_size, 0) !== 1) {
 		throw new Error("Broker minimum order size must be bigger than zero.")
@@ -187,7 +187,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			const responseObject = {
 				price: roundedPrice
 			}
-			
+
 			if (user_id) {
 				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice);
 				responseObject.token = randomToken
@@ -201,7 +201,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 }
 
 const reverseTransaction = async (orderData) => {
-	const { userId, symbol, side, size, price } = orderData;
+	const { userId, symbol, side, size } = orderData;
 	const notifyUser = async (data) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
@@ -218,10 +218,6 @@ const reverseTransaction = async (orderData) => {
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 		const decimalPoint = getDecimals(broker.increment_size);
-		const roundedPrice = math.round(
-			side === 'buy' ? price + price * 0.05 : price - price * 0.05,
-			decimalPoint
-		);
 
 		if (broker.account && broker.account.hasOwnProperty('binance')) {
 			const binanceInfo = broker.account.binance;
@@ -235,6 +231,13 @@ const reverseTransaction = async (orderData) => {
 			const formattedSymbol = symbol.split('-').join('').toUpperCase();
 			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
 
+			const orderbook = await exchange.fetchOrderBook(formattedSymbol)
+
+			const roundedPrice = math.round(
+				side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99,
+				decimalPoint
+			);
+				
 			if (side === 'buy') {
 				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
 					.then(res => { notifyUser(res) })

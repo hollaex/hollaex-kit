@@ -276,7 +276,7 @@ const executeBrokerDeal = (req, res) => {
 				data
 			);
 			const { symbol, side, size, price } = data;
-			toolsLib.broker.reverseTransaction({ userId, symbol, side, size, price });
+			toolsLib.broker.reverseTransaction({ userId, symbol, side, size });
 			res.json(data);
 		})
 		.catch((err) => {
