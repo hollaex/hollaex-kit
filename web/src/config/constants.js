@@ -37,6 +37,11 @@ export const DEFAULT_LANDING_SECTIONS = {
 		is_active: false,
 		order: 2,
 	},
+	card_section: {
+		name: 'Card section',
+		is_active: true,
+		order: 3,
+	},
 };
 
 export const SOCIAL_ICONS = {
