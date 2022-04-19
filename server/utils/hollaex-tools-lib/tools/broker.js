@@ -112,13 +112,13 @@ const binanceScript = async () => {
 
 const calculatePrice = (price, side, spread, multiplier = 1) => {
 	// Calculate the price
-	const parsedPrice = parseFloat(price) * multiplier;
+	const multipliedPrice = parseFloat(price) * multiplier;
 	let calculatedSize;
 
 	if (side === 'buy') {
-		calculatedSize = parsedPrice + (parsedPrice * spread / 100)
+		calculatedSize = multipliedPrice * (1 + spread)
 	} else if (side === 'sell') {
-		calculatedSize = parsedPrice - (parsedPrice * spread / 100)
+		calculatedSize = multipliedPrice * (1 - spread)
 	}
 
 	return calculatedSize;
