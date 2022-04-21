@@ -119,6 +119,71 @@ const createBrokerPair = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 }
+const testBroker = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testBroker get',
+		req.auth
+	);
+
+	const {
+		formula,
+		exchange_name,
+		spread,
+		multiplier,
+		symbol
+	} = req.swagger.params.data.value;
+
+	toolsLib.broker.testBroker({
+		formula,
+		exchange_name,
+		spread,
+		multiplier,
+		symbol
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testBroker err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
+const testRebalance = (req, res) => {
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/testRebalance get',
+		req.auth
+	);
+
+	const {
+		exchange,
+		api_key,
+		api_secret
+	} = req.swagger.params;
+
+	toolsLib.broker.testRebalance({
+		exchange: exchange.value,
+		api_key: api_key.value,
+		api_secret: api_secret.value
+	})
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/testRebalance err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
 
 function updateBrokerPair(req, res) {
 	loggerBroker.verbose(
@@ -291,6 +356,8 @@ const executeBrokerDeal = (req, res) => {
 
 module.exports = {
 	getBrokerQuote,
+	testBroker,
+	testRebalance,
 	createBrokerPair,
 	updateBrokerPair,
 	deleteBrokerPair,

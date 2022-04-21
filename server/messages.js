@@ -192,3 +192,4 @@ exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
 exports.SPREAD_MISSING = 'Spread is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
 exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
+exports.SYMBOL_NOT_FOUND = 'Symbol not found';

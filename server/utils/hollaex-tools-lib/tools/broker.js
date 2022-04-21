@@ -27,7 +27,8 @@ const {
 	BROKER_FORMULA_NOT_FOUND,
 	SPREAD_MISSING,
 	MANUAL_BROKER_CREATE_ERROR,
-	EXCHANGE_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+	EXCHANGE_NOT_FOUND,
+	SYMBOL_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
 	if (brokerPair.type === 'manual' && math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -200,6 +201,57 @@ const fetchBrokerQuote = async (brokerQuote) => {
 	}
 }
 
+const testBroker = async (data) => {
+	const { formula, exchange, spread, multiplier, symbol } = data;
+	//if formula is sent, run it.
+	if (formula) {
+		const resObject = _eval(formula, "formula", {
+			calculatePrice, generateRandomToken, getDecimals, math, rp
+		}, true);
+
+		return resObject;
+	} else {
+		if (exchange && !spread) {
+			throw new Error(SPREAD_MISSING);
+		}
+		if (exchange === 'binance') {
+			return rp('https://api3.binance.com/api/v3/ticker/price')
+				.then((res) => {
+					const formattedSymbol = symbol.split('-').join('').toUpperCase();
+					const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
+					if (!foundSymbol) {
+						throw new Error(SYMBOL_NOT_FOUND);
+					}
+					const multipliedPrice = parseFloat(foundSymbol.price) * (multiplier || 1);
+					const spreadPrice = multipliedPrice * (1 + spread);
+					return spreadPrice;
+				})
+				.catch(err => {
+					throw new Error(err);
+				})
+		}
+
+		throw new Error(EXCHANGE_NOT_FOUND)
+	}
+}
+
+const testRebalance = async (data) => {
+	const { exchange_id, api_key, api_secret } = data;
+
+	try {
+		const exchangeClass = ccxt[exchange_id]
+		const exchange = new exchangeClass({
+			'apiKey': api_key,
+			'secret': api_secret,
+		})
+		const userBalance = await exchange.fetchBalance()
+		return userBalance;
+	} catch (err) {
+		throw new Error(err);
+	}
+
+}
+
 const reverseTransaction = async (orderData) => {
 	const { userId, symbol, side, size } = orderData;
 	const notifyUser = async (data) => {
@@ -237,7 +289,7 @@ const reverseTransaction = async (orderData) => {
 				side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99,
 				decimalPoint
 			);
-				
+
 			if (side === 'buy') {
 				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
 					.then(res => { notifyUser(res) })
@@ -462,5 +514,7 @@ module.exports = {
 	deleteBrokerPair,
 	executeBrokerDeal,
 	fetchBrokerQuote,
-	reverseTransaction
+	reverseTransaction,
+	testBroker,
+	testRebalance
 };
