@@ -70,6 +70,7 @@ class GeneralContent extends Component {
 			removeCountryValue: [],
 			emailData: {},
 			emailTypeData: [],
+			currentPublishType: '',
 		};
 	}
 
@@ -490,7 +491,7 @@ class GeneralContent extends Component {
 			pendingPublishIcons: { [id]: published = {} },
 		} = this.state;
 
-		this.setState({ loadingButton: true });
+		this.setState({ loadingButton: true, currentPublishType: id });
 		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
 
 		const icons = merge({}, iconsOverwrites, published);
@@ -725,9 +726,10 @@ class GeneralContent extends Component {
 			buttonSubmitting,
 			constants,
 			emailTypeData,
+			currentPublishType,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const { coins, themeOptions, activeTab } = this.props;
+		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
 		const generalFields = getGeneralFields(coins);
 
 		if (loading) {
@@ -907,7 +909,9 @@ class GeneralContent extends Component {
 								<Button
 									type="primary"
 									className="green-btn minimal-btn"
-									loading={loadingButton}
+									loading={
+										loadingButton && currentPublishType === 'EXCHANGE_LOGO'
+									}
 									onClick={() => this.handlePublish('EXCHANGE_LOGO')}
 								>
 									Publish
@@ -958,7 +962,9 @@ class GeneralContent extends Component {
 								<Button
 									type="primary"
 									className="green-btn minimal-btn"
-									loading={loadingButton}
+									loading={
+										loadingButton && currentPublishType === 'EXCHANGE_LOADER'
+									}
 									onClick={() => this.handlePublish('EXCHANGE_LOADER')}
 								>
 									Publish
@@ -983,7 +989,9 @@ class GeneralContent extends Component {
 								<Button
 									type="primary"
 									className="green-btn minimal-btn"
-									loading={loadingButton}
+									loading={
+										loadingButton && currentPublishType === 'EXCHANGE_FAV_ICON'
+									}
 									onClick={() => this.handlePublish('EXCHANGE_FAV_ICON')}
 								>
 									Publish
@@ -1037,7 +1045,10 @@ class GeneralContent extends Component {
 								<Button
 									type="primary"
 									className="green-btn minimal-btn"
-									loading={loadingButton}
+									loading={
+										loadingButton &&
+										currentPublishType === 'EXCHANGE_LANDING_PAGE'
+									}
 									onClick={() => this.handlePublish('EXCHANGE_LANDING_PAGE')}
 								>
 									Publish
@@ -1050,7 +1061,10 @@ class GeneralContent extends Component {
 									<span>
 										To change the login/signup background image please visit the{' '}
 									</span>
-									<Link to="/admin/general?tab=4">onboarding page</Link>.
+									<span className="anchor" onClick={() => handleTabChange('4')}>
+										onboarding page
+									</span>
+									.
 								</div>
 							</div>
 						</div>
@@ -1154,7 +1168,10 @@ class GeneralContent extends Component {
 							<Button
 								type="primary"
 								className="green-btn minimal-btn mb-5"
-								loading={loadingButton}
+								loading={
+									loadingButton &&
+									currentPublishType === 'EXCHANGE_BOARDING_IMAGE'
+								}
 								onClick={() => this.handlePublish('EXCHANGE_BOARDING_IMAGE')}
 							>
 								Publish
