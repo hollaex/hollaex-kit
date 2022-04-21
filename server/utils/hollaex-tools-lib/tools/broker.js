@@ -203,42 +203,45 @@ const fetchBrokerQuote = async (brokerQuote) => {
 
 const testBroker = async (data) => {
 	const { formula, exchange_name, spread, multiplier, symbol } = data;
-	//if formula is sent, run it.
-	if (formula) {
-		const resObject = _eval(formula, "formula", {
-			calculatePrice, generateRandomToken, getDecimals, math, rp
-		}, true);
+	try {
+		//if formula is sent, run it.
+		if (formula) {
+			const resObject = _eval(formula, "formula", {
+				calculatePrice, generateRandomToken, getDecimals, math, rp
+			}, true);
 
-		return resObject;
-	} else {
-		if (!exchange_name) {
+			return resObject;
+		} else {
+			if (!exchange_name) {
+				throw new Error(EXCHANGE_NOT_FOUND)
+			}
+			if (!spread) {
+				throw new Error(SPREAD_MISSING);
+			}
+			if (!symbol) {
+				throw new Error(SYMBOL_NOT_FOUND);
+			}
+			if (exchange_name === 'binance') {
+				const formattedSymbol = symbol.split('-').join('').toUpperCase();
+
+				return rp(`https://api3.binance.com/api/v3/ticker/price?symbol=${formattedSymbol}`)
+					.then((res) => {
+						const multipliedPrice = parseFloat(JSON.parse(res).price) * (multiplier || 1);
+						return {
+							buy_price: multipliedPrice * (1 - spread),
+							sell_price: multipliedPrice * (1 + spread)
+						};
+					})
+					.catch(err => {
+						throw new Error(err);
+					})
+			}
 			throw new Error(EXCHANGE_NOT_FOUND)
 		}
-		if (!spread) {
-			throw new Error(SPREAD_MISSING);
-		}
-		if (!symbol) {
-			throw new Error(SYMBOL_NOT_FOUND);
-		}
-		if (exchange_name === 'binance') {
-			return rp('https://api3.binance.com/api/v3/ticker/price')
-				.then((res) => {
-					const formattedSymbol = symbol.split('-').join('').toUpperCase();
-					const foundSymbol = JSON.parse(res).find((data) => data.symbol === formattedSymbol);
-					if (!foundSymbol) {
-						throw new Error(SYMBOL_NOT_FOUND);
-					}
-					const multipliedPrice = parseFloat(foundSymbol.price) * (multiplier || 1);
-					const spreadPrice = multipliedPrice * (1 + spread);
-					return { price: spreadPrice };
-				})
-				.catch(err => {
-					throw new Error(err);
-				})
-		}
-
-		throw new Error(EXCHANGE_NOT_FOUND)
+	} catch (err) {
+		throw new Error(err)
 	}
+
 }
 
 const testRebalance = async (data) => {
