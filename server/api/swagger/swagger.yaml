@@ -4401,7 +4401,9 @@ paths:
           schema:
             type: object
             properties:
-              exchange:
+              formula:
+                type: string
+              exchange_name:
                 type: string
               multiplier:
                 type: number
@@ -4432,7 +4434,7 @@ paths:
       parameters:
         - in: query
           name: exchange_id
-          description: exchange to cennect to
+          description: exchange to connect to
           required: true
           type: string
         - in: query

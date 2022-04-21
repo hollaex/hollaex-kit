@@ -162,13 +162,13 @@ const testRebalance = (req, res) => {
 	);
 
 	const {
-		exchange,
+		exchange_id,
 		api_key,
 		api_secret
 	} = req.swagger.params;
 
 	toolsLib.broker.testRebalance({
-		exchange: exchange.value,
+		exchange_id: exchange_id.value,
 		api_key: api_key.value,
 		api_secret: api_secret.value
 	})

@@ -202,7 +202,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 }
 
 const testBroker = async (data) => {
-	const { formula, exchange, spread, multiplier, symbol } = data;
+	const { formula, exchange_name, spread, multiplier, symbol } = data;
 	//if formula is sent, run it.
 	if (formula) {
 		const resObject = _eval(formula, "formula", {
@@ -211,10 +211,16 @@ const testBroker = async (data) => {
 
 		return resObject;
 	} else {
-		if (exchange && !spread) {
+		if (!exchange_name) {
+			throw new Error(EXCHANGE_NOT_FOUND)
+		}
+		if (!spread) {
 			throw new Error(SPREAD_MISSING);
 		}
-		if (exchange === 'binance') {
+		if (!symbol) {
+			throw new Error(SYMBOL_NOT_FOUND);
+		}
+		if (exchange_name === 'binance') {
 			return rp('https://api3.binance.com/api/v3/ticker/price')
 				.then((res) => {
 					const formattedSymbol = symbol.split('-').join('').toUpperCase();
@@ -224,7 +230,7 @@ const testBroker = async (data) => {
 					}
 					const multipliedPrice = parseFloat(foundSymbol.price) * (multiplier || 1);
 					const spreadPrice = multipliedPrice * (1 + spread);
-					return spreadPrice;
+					return { price: spreadPrice };
 				})
 				.catch(err => {
 					throw new Error(err);
