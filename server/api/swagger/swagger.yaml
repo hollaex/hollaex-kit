@@ -4338,19 +4338,13 @@ paths:
           schema:
             type: object
             properties:
-              symbol:
+              token:
                 type: string
-              side:
-                type: string
-                enum: ["buy", "sell"]
-              price:
-                type: number
               size:
                 type: number
+                format: double
             required:
-              - symbol
-              - price
-              - side
+              - token
               - size
       responses:
         200:
@@ -4365,6 +4359,107 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /broker/quote:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerQuote
+      description: Get Quote Currency
+      tags:
+        - broker
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: true
+          type: string
+        - in: query
+          name: side
+          description: buy or sell
+          required: true
+          type: string
+          enum: ['buy', 'sell']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /broker/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBroker
+      description: test broker
+      tags:
+        - broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              formula:
+                type: string
+              exchange_name:
+                type: string
+              multiplier:
+                type: number
+              spread:
+                type: number
+              symbol:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /broker/connect:
+    x-swagger-router-controller: broker
+    get:
+      operationId: testRebalance
+      description: test connecting rebalance exchange
+      tags:
+        - broker
+      parameters:
+        - in: query
+          name: exchange_id
+          description: exchange to connect to
+          required: true
+          type: string
+        - in: query
+          name: api_key
+          description: exchang api key
+          required: true
+          type: string
+        - in: query
+          name: api_secret
+          description: exchang api scret
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /fiat/deposit:
     x-swagger-router-controller: fiat
     post:
@@ -5860,17 +5955,32 @@ definitions:
         type: number
       increment_size:
         type: number
+      type:
+        type: string
+      quote_expiry_time:
+        type: ['number', 'null']
+      rebalancing_symbol:
+        type: ['string', 'null']
+      account:
+        type: ['object', 'null']
+      formula:
+        type: ['string', 'null']
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
+        type: number
   BrokerPairCreate:
     type: object
     required:
       - symbol
-      - buy_price
-      - sell_price
       - paused
       - user_id
       - min_size
       - max_size
       - increment_size
+      - type
     properties:
       symbol:
         type: string
@@ -5887,6 +5997,22 @@ definitions:
       max_size:
         type: number
       increment_size:
+        type: number
+      type:
+        type: string
+      quote_expiry_time:
+        type: number
+      rebalancing_symbol:
+        type: string
+      account:
+        type: object
+      formula:
+        type: string
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

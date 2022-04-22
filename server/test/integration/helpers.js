@@ -15,7 +15,7 @@ process.on('unhandledRejection', (reason, promise) => {
 chai.use(chaiHTTP);
 chai.should();
 
-const testURL = process.env.TEST_URL || 'http://localhost';
+const testURL = process.env.TEST_URL || 'http://localhost:10010';
 
 const userCredentials = {
 	email: 'tester@holla.tech',
