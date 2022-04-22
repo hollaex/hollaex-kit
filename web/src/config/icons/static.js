@@ -121,6 +121,10 @@ const icons = {
 	PENDING_ORANGE_GEAR: '/assets/images/pending-orange-gear.svg',
 	BROKER_DESK_ICON: '/assets/images/broker-desk-otc-deal.svg',
 	TOOLTIP: '/assets/icons/question-circle-solid.svg',
+	CARD_SECTION_ICON_1: '/assets/images/Group_93.svg',
+	CARD_SECTION_ICON_2: '/assets/images/Group_95.svg',
+	CARD_SECTION_ICON_3: '/assets/images/Group_96.svg',
+	CARD_SECTION_ICON_4: '/assets/images/Group_97.svg',
 };
 
 export default icons;

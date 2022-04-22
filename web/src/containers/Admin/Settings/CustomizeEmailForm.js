@@ -184,6 +184,7 @@ const CustomizeEmailForm = ({
 						<Button
 							type="primary"
 							onClick={() => handleConfirmation(formProps)}
+							disabled={buttonSubmitting}
 						>
 							Confirm
 						</Button>

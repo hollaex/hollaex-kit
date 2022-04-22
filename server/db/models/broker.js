@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Broker = sequelize.define(
 		'Broker',
 		{
@@ -17,10 +17,12 @@ module.exports = function(sequelize, DataTypes) {
 			buy_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
+				defaultValue: 0,
 			},
 			sell_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
+				defaultValue: 0,
 			},
 			paused: {
 				type: DataTypes.BOOLEAN,
@@ -46,7 +48,30 @@ module.exports = function(sequelize, DataTypes) {
 			increment_size: {
 				type: DataTypes.DOUBLE,
 				allowNull: false
-			}
+			},
+			type: {
+				type: DataTypes.ENUM('manual', 'dynamic'),
+				defaultValue: 'manual',
+				allowNull: false
+			},
+			quote_expiry_time: {
+				type: DataTypes.INTEGER,
+				defaultValue: 30,
+				allowNull: true
+			},
+			rebalancing_symbol: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
+			account: {
+				type: DataTypes.JSONB,
+				allowNull: true,
+			},
+			formula: {
+				type: DataTypes.TEXT,
+				allowNull: true
+			},
+
 		},
 		{
 			timestamps: true,

@@ -76,10 +76,15 @@
 	top: 25px;
 	left: 25px;
 }
-.file-container label .anchor {
+.file-container label .anchor,
+.description .anchor {
 	color: #ffffff;
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+.description .anchor {
+	font-weight: bold;
 }
 .file-container .ant-form-item-control {
 	line-height: 1;

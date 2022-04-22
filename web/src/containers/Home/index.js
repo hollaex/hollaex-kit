@@ -34,10 +34,34 @@ import { getBroker } from 'containers/Admin/Trades/actions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { WS_URL } from 'config/constants';
 import { isIntentionalClosure, NORMAL_CLOSURE_CODE } from 'utils/webSocket';
+import { STATIC_ICONS } from 'config/icons';
 
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
 
+const data = [
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_1'],
+		headerContent: 'Fast deposits',
+		mainContent: 'Make a deposit and begin buying and selling crypto',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_2'],
+		headerContent: 'Trade globally 24/7',
+		mainContent: 'Trade the biggest global crypto assets 24/7 365 days a year.',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_3'],
+		headerContent: 'APIs',
+		mainContent:
+			'Publicly accessible endpoints for market data, exchange status and more',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_4'],
+		headerContent: 'Best prices',
+		mainContent: 'Get the best prices and live price data all in one place',
+	},
+];
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -137,9 +161,6 @@ class Home extends Component {
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		this.generateSections(sections);
-		if (window.customRenderCardSection) {
-			window.customRenderCardSection();
-		}
 		let existBroker = {};
 		broker.forEach((item) => {
 			const splitPair = item.symbol.split('-');
@@ -412,7 +433,6 @@ class Home extends Component {
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
-							<div id="html_card_section"></div>
 							<div id="injected_code_section"></div>
 							<Markets
 								coins={coins}
@@ -521,6 +541,49 @@ class Home extends Component {
 							/>
 						</div>
 					)
+				);
+			}
+			case 'card_section': {
+				const { icons: ICONS } = this.props;
+				return (
+					<div className="html_card_section">
+						{data.map((item, index) => {
+							const { imageSrc, headerContent, mainContent } = item;
+							return (
+								<div className="card-section-wrapper" key={index}>
+									<div className="card-section">
+										<div>
+											<Image
+												iconId={`CARD_SECTION_LOGO_${index}`}
+												icon={
+													ICONS[`CARD_SECTION_LOGO_${index}`]
+														? ICONS[`CARD_SECTION_LOGO_${index}`]
+														: imageSrc
+												}
+												wrapperClassName="card_section_logo"
+											/>
+										</div>
+										<EditWrapper stringId={`CARD_SECTION_HEADER_${index}`}>
+											<div className="header_txt">
+												{STRINGS[`CARD_SECTION_HEADER_${index}`]
+													? STRINGS[`CARD_SECTION_HEADER_${index}`]
+													: headerContent}
+											</div>
+										</EditWrapper>
+										<div className="card_section_main">
+											<EditWrapper stringId={`CARD_SECTION_MAIN_${index}`}>
+												<div>
+													{STRINGS[`CARD_SECTION_MAIN_${index}`]
+														? STRINGS[`CARD_SECTION_MAIN_${index}`]
+														: mainContent}
+												</div>
+											</EditWrapper>
+										</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
 				);
 			}
 			default:

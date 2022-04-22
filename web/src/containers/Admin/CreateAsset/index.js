@@ -57,6 +57,8 @@ class CreateAsset extends Component {
 			// assetType: 'existing_asset',
 			activeTab: '0',
 			savePresetAsset: false,
+			isPresentCoin: false,
+			selectedCoinSymbol: '',
 		};
 	}
 
@@ -189,8 +191,8 @@ class CreateAsset extends Component {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
 					...this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value
-				}
+					[key]: value,
+				},
 			},
 		};
 		this.setState({
@@ -198,8 +200,8 @@ class CreateAsset extends Component {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
 					...this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value
-				}
+					[key]: value,
+				},
 			},
 			coinFormData,
 		});
@@ -213,9 +215,10 @@ class CreateAsset extends Component {
 			[name]: {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
-					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value
-				}
+					...(this.state.coinFormData.withdrawal_fees &&
+						this.state.coinFormData.withdrawal_fees[asset]),
+					[key]: value,
+				},
 			},
 		};
 		this.setState({
@@ -223,9 +226,10 @@ class CreateAsset extends Component {
 			[name]: {
 				...this.state.coinFormData.withdrawal_fees,
 				[asset]: {
-					...this.state.coinFormData.withdrawal_fees && this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value
-				}
+					...(this.state.coinFormData.withdrawal_fees &&
+						this.state.coinFormData.withdrawal_fees[asset]),
+					[key]: value,
+				},
 			},
 			coinFormData,
 		});
@@ -246,9 +250,12 @@ class CreateAsset extends Component {
 		const value = event.target.value;
 		if (
 			value &&
-			((value.split('.')[1].toUpperCase() === 'JPG' || value.toLowerCase().includes('jpg')) ||
-				(value.split('.')[1].toUpperCase() === 'JPEG' || value.toLowerCase().includes('jpeg')) ||
-				(value.split('.')[1].toUpperCase() === 'PNG' || value.toLowerCase().includes('png')))
+			(value.split('.')[1].toUpperCase() === 'JPG' ||
+				value.toLowerCase().includes('jpg') ||
+				value.split('.')[1].toUpperCase() === 'JPEG' ||
+				value.toLowerCase().includes('jpeg') ||
+				value.split('.')[1].toUpperCase() === 'PNG' ||
+				value.toLowerCase().includes('png'))
 		) {
 			const file = event.target.files[0];
 			if (file) {
@@ -397,6 +404,7 @@ class CreateAsset extends Component {
 						...this.state.coinFormData,
 						...this.state.selectedCoinData,
 					},
+					isPresentCoin: true,
 				});
 				// }
 			} else {
@@ -468,6 +476,7 @@ class CreateAsset extends Component {
 	};
 
 	handlePresetConfirmation = (symbol) => {
+		this.setState({ selectedCoinSymbol: symbol });
 		const currentCoin = _get(
 			this.props.coins.filter((coin) => coin.symbol === symbol),
 			'[0]',
@@ -513,6 +522,8 @@ class CreateAsset extends Component {
 			coinFormData = {},
 			// assetType = '',
 			activeTab,
+			isPresentCoin,
+			selectedCoinSymbol,
 		} = this.state;
 
 		switch (currentScreen) {
@@ -622,6 +633,9 @@ class CreateAsset extends Component {
 						handleConfirmation={this.handleConfirmation}
 						handleFileChange={this.handleFileChange}
 						handleScreenChange={this.handleScreenChange}
+						isPresentCoin={isPresentCoin}
+						coins={this.props.coins}
+						selectedCoinSymbol={selectedCoinSymbol}
 					/>
 				);
 			case 'edit-color':
@@ -721,13 +735,14 @@ class CreateAsset extends Component {
 			case 'update_confirm':
 				return (
 					<div>
-						<div className='title mb-3'>Confirm updates</div>
+						<div className="title mb-3">Confirm updates</div>
 						<div>
-							To save and apply the changes, you need to click the save button in the top right corner once you close this popup.
+							To save and apply the changes, you need to click the save button
+							in the top right corner once you close this popup.
 						</div>
 						<Button
-							type='primary'
-							className='green-btn w-100 mt-4'
+							type="primary"
+							className="green-btn w-100 mt-4"
 							onClick={this.props.onClose}
 						>
 							Close

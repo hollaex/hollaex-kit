@@ -143,6 +143,17 @@ $trade-tab--arrow-size: 0.4rem;
 			flex-direction: column;
 		}
 	}
+	.html_card_section {
+		flex-direction: column;
+		.card-section-wrapper {
+			padding: 2rem;
+			.card-section {
+				.header_txt {
+					font-size: 14px;
+				}
+			}
+		}
+	}
 }
 
 .home_container {
@@ -316,9 +327,9 @@ $trade-tab--arrow-size: 0.4rem;
 
 .home-page_section-wrapper {
 	margin-left: auto;
-    margin-right: auto;
-    margin-top: 5rem;
-    max-width: 100rem;
+	margin-right: auto;
+	margin-top: 5rem;
+	max-width: 100rem;
 	&:not(.main-section-wrapper) {
 		padding-top: 5rem;
 		padding-bottom: 5rem;
@@ -366,6 +377,45 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.html_card_section {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $app-sidebar-background;
+	opacity: 60%;
+	.card-section-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 5rem 3rem;
+		.card-section {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 20rem;
+			margin-right: 1rem;
+			.card_section_logo {
+				width: 50px;
+				height: 50px;
+				svg {
+					width: 50px;
+					height: 50px;
+				}
+			}
+			.header_txt {
+				font-weight: bold;
+				font-size: 18px;
+			}
+			.card_section_main {
+				text-align: center;
+				.edit-wrapper__icons-container {
+					transform: translate(-20px, 0px) !important;
+				}
+			}
+		}
+	}
+}
+
 @media (max-width: $bp-sm) {
 	.home_container {
 		.home-card-container {
@@ -390,6 +440,32 @@ $trade-tab--arrow-size: 0.4rem;
 		.features-container {
 			.features-card_container {
 				max-width: $features-container--sm--width;
+			}
+		}
+		.html_card_section {
+			flex-direction: column;
+			.card-section-wrapper {
+				padding: 2rem;
+				.card-section {
+					.header_txt {
+						font-size: 14px;
+					}
+				}
+			}
+		}
+	}
+}
+@media (max-width: $bp-lg) {
+	.home_container {
+		.html_card_section {
+			flex-direction: column;
+			.card-section-wrapper {
+				padding: 2rem;
+				.card-section {
+					.header_txt {
+						font-size: 14px;
+					}
+				}
 			}
 		}
 	}
