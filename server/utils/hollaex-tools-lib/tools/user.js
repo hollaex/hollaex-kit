@@ -76,7 +76,6 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
-const { has } = require('lodash');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
