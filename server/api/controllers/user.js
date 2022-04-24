@@ -73,7 +73,7 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
@@ -306,7 +306,7 @@ const loginPost = (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {

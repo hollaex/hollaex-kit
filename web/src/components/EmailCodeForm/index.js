@@ -72,6 +72,7 @@ class Form extends Component {
 			error,
 			valid,
 			icons: ICONS,
+			pending,
 		} = this.props;
 		const { formValues } = this.state;
 
@@ -98,7 +99,7 @@ class Form extends Component {
 					<EditWrapper stringId="EMAIL_CODE_FORM.BUTTON" />
 					<Button
 						label={STRINGS['EMAIL_CODE_FORM.BUTTON']}
-						disabled={pristine || submitting || !valid}
+						disabled={pristine || submitting || !valid || pending}
 					/>
 				</form>
 			</div>

@@ -84,7 +84,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.size),
-				baseValue.symbol.toUpperCase()
+				baseValue.display_name
 			),
 		});
 		rows.push({
@@ -93,7 +93,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, pair.increment_price),
-				payValue.symbol.toUpperCase()
+				payValue.display_name
 			),
 		});
 	} else {
@@ -111,7 +111,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatBtcAmount(order.filled),
-				baseValue.symbol.toUpperCase()
+				baseValue.display_name
 			),
 		});
 		rows.push({
@@ -120,7 +120,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(order.price, pair.increment_price),
-				payValue.symbol.toUpperCase()
+				payValue.display_name
 			),
 		});
 		rows.push({
@@ -132,7 +132,7 @@ export const generateRows = (type, order, pairs, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(orderValue, pair.increment_price),
-				payValue.symbol.toUpperCase()
+				payValue.display_name
 			),
 		});
 
@@ -143,7 +143,7 @@ export const generateRows = (type, order, pairs, coins) => {
 				value: STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					formatBtcAmount(remaining),
-					btcValue.symbol.toUpperCase()
+					btcValue.display_name
 				),
 			});
 		}

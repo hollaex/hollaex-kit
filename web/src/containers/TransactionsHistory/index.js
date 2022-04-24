@@ -382,7 +382,6 @@ class TransactionsHistory extends Component {
 			downloadUserDeposit,
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage } = this.state;
-		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 			symbol,

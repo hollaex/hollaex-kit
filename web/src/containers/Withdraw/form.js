@@ -9,8 +9,6 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-// import classnames from 'classnames';
-// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
 import renderFields from 'components/Form/factoryFields';
 import {
@@ -213,7 +211,6 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -232,6 +229,7 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
+		const { icon_id } = coinObject || DEFAULT_COIN_DATA;
 
 		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
 		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
@@ -249,8 +247,8 @@ class Form extends Component {
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form">
 							<Image
-								iconId={`${currency.toUpperCase()}_ICON`}
-								icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+								iconId={icon_id}
+								icon={ICONS[icon_id]}
 								wrapperClassName="form_currency-ball"
 							/>
 							{titleSection}
