@@ -3345,6 +3345,123 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/user/bank:
+    x-swagger-router-controller: admin
+    post:
+      operationId: setUserBank
+      description: Set the user bank data
+      tags:
+        - Admin
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: number
+          format: int32
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - bank_account
+            properties:
+              bank_account:
+                type: array
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/bank/verify:
+    x-swagger-router-controller: admin
+    post:
+      operationId: verifyUserBank
+      description: verify specific user bank account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/bank/revoke:
+    x-swagger-router-controller: admin
+    post:
+      operationId: revokeUserBank
+      description: revoke specific user bank account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: string
+              message:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   /admin/logins:
     x-swagger-router-controller: admin
     get:
