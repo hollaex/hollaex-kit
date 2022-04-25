@@ -152,6 +152,10 @@ const handleCurrencyWithdrawal = (req, res) => {
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
+			let coinName = currency;
+			if (toolsLib.getKitCoin(currency).display_name) {
+				coinName = toolsLib.getKitCoin(currency).display_name;
+			}
 			if (rejected) {
 				sendEmail(
 					MAILTYPE.DEPOSIT_CANCEL,
@@ -159,7 +163,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 					{
 						type: 'withdrawal',
 						amount,
-						currency,
+						currency: coinName,
 						transaction_id: txid,
 						date: created_at
 					},
@@ -169,7 +173,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 			} else {
 				const data = {
 					amount,
-					currency,
+					currency: coinName,
 					status: is_confirmed ? 'COMPLETED' : 'PENDING',
 					address,
 					fee,
