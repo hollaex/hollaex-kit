@@ -670,23 +670,23 @@
 		"market": "بازار",
 		"limit": "محدود"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "بازار" },
-		{ "value": "limit", "label": "محدود" }
-	],
+	"TYPES": {
+		"MARKET": "بازار",
+		"LIMIT": "محدود"
+	},
 	"SIDE": "معامله",
 	"SIDES_VALUES": {
 		"buy": "خرید",
 		"sell": "فروش"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "خرید" },
-		{ "value": "sell", "label": "فروش" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "روشن" },
-		{ "value": false, "label": "خاموش" }
-	],
+	"SIDES": {
+		"BUY": "خرید",
+		"SELL": "فروش"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "روشن",
+		"OFF": "خاموش"
+	},
 	"SIZE": "مقدار",
 	"PRICE": "قیمت",
 	"FEE": "کارمزد",
@@ -874,15 +874,7 @@
 	"NO_FEE": "کاربردی ندارد",
 	"SETTINGS_LANGUAGE_LABEL": "انتخاب زبان (این گزینه شامل ایمیل های ارسالی از طرف HollaEx نیز می شود)",
 	"SETTINGS_ORDERPOPUP_LABEL": "مشاهده منوی تایید سفارش",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "خیر" },
-		{ "value": true, "label": "بله" }
-	],
 	"SETTINGS_THEME_LABEL": "حالت پوسته سایت :",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "روشن" },
-		{ "value": "dark", "label": "تیره" }
-	],
 	"SETTING_BUTTON": "ذخیره",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "برداشت فعال نیست",

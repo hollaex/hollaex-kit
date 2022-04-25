@@ -686,23 +686,23 @@
 		"market": "market",
 		"limit": "limit"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "成行" },
-		{ "value": "limit", "label": "指値" }
-	],
+	"TYPES": {
+		"MARKET": "成行",
+		"LIMIT": "指値"
+	},
 	"SIDE": "Side",
 	"SIDES_VALUES": {
 		"buy": "買う",
 		"sell": "売る"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "買う" },
-		{ "value": "sell", "label": "売る" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "オン" },
-		{ "value": false, "label": "オフ" }
-	],
+	"SIDES": {
+		"BUY": "買う",
+		"SELL": "売る"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "オン",
+		"OFF": "オフ"
+	},
 	"SIZE": " 数量",
 	"PRICE": "価格",
 	"FEE": "Fee",
@@ -892,15 +892,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "言語設定 (メールを含む)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NO" },
-		{ "value": true, "label": "YES" }
-	],
 	"SETTINGS_THEME_LABEL": "テーマ設定",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "White" },
-		{ "value": "dark", "label": "Dark" }
-	],
 	"SETTING_BUTTON": "保存",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "出金停止設定",
@@ -1199,10 +1191,10 @@
 	"MARKETS_TABLE": {
 		"VIEW_MARKETS": "もっと見る"
 	},
-	"MARKET_OPTIONS": [
-		{ "value": "List", "label": "リスト" },
-		{ "value": "Card", "label": "カード" }
-	],
+	"MARKET_OPTIONS": {
+		"LIST": "リスト",
+		"CARD": "カード"
+	},
 	"ALL": "すべて",
 	"ASSET_TXT": "資産",
 	"ONE_DAY": "1 日",

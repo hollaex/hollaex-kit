@@ -668,10 +668,10 @@
 		"market": "سوق",
 		"limit": "حد"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "سوق" },
-		{ "value": "limit", "label": "حد" }
-	],
+	"TYPES": {
+		"MARKET": "سوق",
+		"LIMIT": "حد"
+	},
 	"SIDE": "جانب",
 	"SIDES_VALUES": {
 		"buy": "الشراء",
@@ -681,14 +681,14 @@
 		"buy": "تم الشراء",
 		"sell": "تم البيع"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "الشراء" },
-		{ "value": "sell", "label": "بيع" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "تشغيل" },
-		{ "value": false, "label": " إيقاف" }
-	],
+	"SIDES": {
+		"BUY": "الشراء",
+		"SELL": "بيع"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "تشغيل",
+		"OFF": "إيقاف"
+	},
 	"SIZE": "حجم",
 	"PRICE": "السعر",
 	"FEE": "مصاريف",
@@ -888,15 +888,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "تفضيلات اللغة (تشمل رسائل البريد الإلكتروني)",
 	"SETTINGS_ORDERPOPUP_LABEL": "عرض نافذة تأكيد الطلب المنبثقة",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "لا" },
-		{ "value": true, "label": "نعم" }
-	],
 	"SETTINGS_THEME_LABEL": "شكل واجهة المستخدم",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "أبيض" },
-		{ "value": "dark", "label": "داكن" }
-	],
 	"SETTING_BUTTON": "حفظ",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "عمليات السحب معطّلة",

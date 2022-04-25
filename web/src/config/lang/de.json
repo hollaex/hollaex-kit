@@ -651,23 +651,23 @@
 		"market": "Markt",
 		"limit": "Limit"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "Markt" },
-		{ "value": "limit", "label": "Limit" }
-	],
+	"TYPES": {
+		"MARKET": "Markt",
+		"LIMIT": "Limit"
+	},
 	"SIDE": "Seite",
 	"SIDES_VALUES": {
 		"buy": "kaufen",
 		"sell": "verkaufen"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "kaufen" },
-		{ "value": "sell", "label": "verkaufen" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "an" },
-		{ "value": false, "label": "aus" }
-	],
+	"SIDES": {
+		"BUY": "kaufen",
+		"SELL": "verkaufen"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "an",
+		"OFF": "aus"
+	},
 	"SIZE": "Größe",
 	"PRICE": "Preis",
 	"FEE": "Gebühr",
@@ -857,15 +857,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Spracheinstellungen (schließt E-Mails ein)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Pop-up zur Auftragsbestätigung anzeigen",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NEIN" },
-		{ "value": true, "label": "Ja" }
-	],
 	"SETTINGS_THEME_LABEL": "User Interface Theme",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "Weiß" },
-		{ "value": "dark", "label": "Dunkel" }
-	],
 	"SETTING_BUTTON": "speichern",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Abhebungen deaktiviert",

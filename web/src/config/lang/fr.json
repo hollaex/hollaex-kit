@@ -682,23 +682,23 @@
 		"market": "marché",
 		"limit": "limite"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "marché" },
-		{ "value": "limit", "label": "limite" }
-	],
+	"TYPES": {
+		"MARKET": "marché",
+		"LIMIT": "limite"
+	},
 	"SIDE": "Acheter/Vendre",
 	"SIDES_VALUES": {
 		"buy": "acheter",
 		"sell": "vendre"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "acheter" },
-		{ "value": "sell", "label": "vendre" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "on" },
-		{ "value": false, "label": "off" }
-	],
+	"SIDES": {
+		"BUY": "acheter",
+		"SELL": "vendre"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "on",
+		"OFF": "off"
+	},
 	"SIZE": "Taille",
 	"PRICE": "Prix",
 	"FEE": "Frais",
@@ -888,15 +888,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Préférences de langue (incluant les emails)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Afficher une fenêtre d'avertissement de confirmation de la transaction",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NON" },
-		{ "value": true, "label": "OUI" }
-	],
 	"SETTINGS_THEME_LABEL": "Thème de l'interface utilisateur",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "Blanc" },
-		{ "value": "dark", "label": "Sombre" }
-	],
 	"SETTING_BUTTON": "sauvegarder",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Retraits désactivés",

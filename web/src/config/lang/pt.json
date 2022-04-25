@@ -685,16 +685,10 @@
 		"market": "mercado",
 		"limit": "limite"
 	},
-	"TYPES": [
-		{
-			"value": "market",
-			"label": "mercado"
-		},
-		{
-			"value": "limit",
-			"label": "limite"
-		}
-	],
+	"TYPES": {
+		"MARKET": "mercado",
+		"LIMIT": "limite"
+	},
 	"SIDE": "Side",
 	"SIDES_VALUES": {
 		"buy": "comprar",
@@ -704,26 +698,14 @@
 		"buy": "comprado",
 		"sell": "vendido"
 	},
-	"SIDES": [
-		{
-			"value": "buy",
-			"label": "comprar"
-		},
-		{
-			"value": "sell",
-			"label": "vender"
-		}
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{
-			"value": true,
-			"label": "on"
-		},
-		{
-			"value": false,
-			"label": "off"
-		}
-	],
+	"SIDES": {
+		"BUY": "comprar",
+		"SELL": "vender"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "on",
+		"OFF": "off"
+	},
 	"SIZE": "Tamanho",
 	"PRICE": "Preço",
 	"FEE": "Taxa",
@@ -921,27 +903,7 @@
 	"NO_FEE": "N/D",
 	"SETTINGS_LANGUAGE_LABEL": "Preferências de idioma (inclui e-mails)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Exibir pop-up de confirmação de ordem",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{
-			"value": false,
-			"label": "NÃO"
-		},
-		{
-			"value": true,
-			"label": "SIM"
-		}
-	],
 	"SETTINGS_THEME_LABEL": "Tema da interface do usuário",
-	"SETTINGS_THEME_OPTIONS": [
-		{
-			"value": "white",
-			"label": "Branco"
-		},
-		{
-			"value": "dark",
-			"label": "Escuro"
-		}
-	],
 	"SETTING_BUTTON": "salvar",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Saques desabilitadas",

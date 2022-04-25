@@ -674,23 +674,23 @@
 		"market": "market",
 		"limit": "limit"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "시장" },
-		{ "value": "limit", "label": "지정" }
-	],
+	"TYPES": {
+		"MARKET": "시장",
+		"LIMIT": "지정"
+	},
 	"SIDE": "Side",
 	"SIDES_VALUES": {
 		"buy": "매수",
 		"sell": "매도"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "매수" },
-		{ "value": "sell", "label": "매도" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "켜기" },
-		{ "value": false, "label": "끄기" }
-	],
+	"SIDES": {
+		"BUY": "매수",
+		"SELL": "매도"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "켜기",
+		"OFF": "끄기"
+	},
 	"SIZE": "수량",
 	"PRICE": "가격",
 	"FEE": "Fee",
@@ -871,15 +871,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "언어설정 (이메일수신포함)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NO" },
-		{ "value": true, "label": "YES" }
-	],
 	"SETTINGS_THEME_LABEL": "사용자 인터페이스 테마",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "White" },
-		{ "value": "dark", "label": "Dark" }
-	],
 	"SETTING_BUTTON": "저장",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "출금 비활성화",
@@ -1191,10 +1183,10 @@
 	"MARKETS_TABLE": {
 		"VIEW_MARKETS": "마켓 보기"
 	},
-	"MARKET_OPTIONS": [
-		{ "value": "List", "label": "리스트" },
-		{ "value": "Card", "label": "카드" }
-	],
+	"MARKET_OPTIONS": {
+		"LIST": "리스트",
+		"CARD": "카드"
+	},
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "24시간 입금 및 출금 한도 ({0})",
 		"HEADER_ROW_AMOUNT": "24시간 한도 ({0})"

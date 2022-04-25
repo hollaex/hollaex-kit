@@ -687,23 +687,23 @@
 		"market": "market",
 		"limit": "limit"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "Thị trường" },
-		{ "value": "limit", "label": "CHỈ ĐỊNH" }
-	],
+	"TYPES": {
+		"MARKET": "Thị trường",
+		"LIMIT": "CHỈ ĐỊNH"
+	},
 	"SIDE": "Side",
 	"SIDES_VALUES": {
 		"buy": "Mua",
 		"sell": "Bán"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "Mua" },
-		{ "value": "sell", "label": "Bán" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "Bật" },
-		{ "value": false, "label": "Tắt" }
-	],
+	"SIDES": {
+		"BUY": "Mua",
+		"SELL": "Bán"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "Bật",
+		"OFF": "Tắt"
+	},
 	"SIZE": "Số lượng",
 	"PRICE": "Giá",
 	"FEE": "Fee",
@@ -893,15 +893,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Cài đặt ngôn ngữ (Bao gồm email)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NO" },
-		{ "value": true, "label": "YES" }
-	],
 	"SETTINGS_THEME_LABEL": "Chủ đề giao diện người dùng",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "White" },
-		{ "value": "dark", "label": "Dark" }
-	],
 	"SETTING_BUTTON": "Lưu",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Vô hiệu hóa rút tiền",
@@ -1194,10 +1186,10 @@
 	"AGO": "ago",
 	"ALL": "TẤT CẢ",
 	"VIEW_ALL": "XEM CHI TIẾT",
-	"MARKET_OPTIONS": [
-		{ "value": "List", "label": "Danh sách" },
-		{ "value": "Card", "label": "Biểu đồ" }
-	],
+	"MARKET_OPTIONS": {
+		"LIST": "Danh sách",
+		"CARD": "Biểu đồ"
+	},
 	"MARKETS_TABLE": {
 		"VIEW_MARKETS": "XEM THỊ TRƯỜNG "
 	},

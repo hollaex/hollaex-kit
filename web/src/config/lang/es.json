@@ -686,23 +686,23 @@
 		"market": "market",
 		"limit": "limit"
 	},
-	"TYPES": [
-		{ "value": "market", "label": "MERCADO" },
-		{ "value": "limit", "label": " LÍMITE" }
-	],
+	"TYPES": {
+		"MARKET": "MERCADO",
+		"LIMIT": "LÍMITE"
+	},
 	"SIDE": "Side",
 	"SIDES_VALUES": {
 		"buy": "compra",
 		"sell": "venta"
 	},
-	"SIDES": [
-		{ "value": "buy", "label": "compra" },
-		{ "value": "sell", "label": "venta" }
-	],
-	"DEFAULT_TOGGLE_OPTIONS": [
-		{ "value": true, "label": "Sí" },
-		{ "value": false, "label": "No" }
-	],
+	"SIDES": {
+		"BUY": "compra",
+		"SELL": "venta"
+	},
+	"DEFAULT_TOGGLE_OPTIONS": {
+		"ON": "Sí",
+		"OFF": "No"
+	},
 	"SIZE": "Monto",
 	"PRICE": "Límite",
 	"FEE": "Tarifa",
@@ -892,15 +892,7 @@
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Preferencia de Idioma (Incluye correos electrònicos)",
 	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
-	"SETTINGS_ORDERPOPUP_OPTIONS": [
-		{ "value": false, "label": "NO" },
-		{ "value": true, "label": "Si" }
-	],
 	"SETTINGS_THEME_LABEL": "Tema de Interface de Usuario",
-	"SETTINGS_THEME_OPTIONS": [
-		{ "value": "white", "label": "White" },
-		{ "value": "dark", "label": "Dark" }
-	],
 	"SETTING_BUTTON": "guardar",
 	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Retiros deshabilitados",
@@ -1193,10 +1185,10 @@
 	"OPEN_WALLET": "Abrir billetera",
 	"AGO": "ago",
 	"ALL": "Todos",
-	"MARKET_OPTIONS": [
-		{ "value": "List", "label": "LISTA" },
-		{ "value": "Card", "label": "CUADRO" }
-	],
+	"MARKET_OPTIONS": {
+		"LIST": "LISTA",
+		"CARD": "CUADRO"
+	},
 	"ONE_DAY": "1 día",
 	"ONE_WEEK": "1 semana",
 	"MONTH": "{0} mes",
