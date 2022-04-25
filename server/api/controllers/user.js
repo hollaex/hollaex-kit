@@ -791,7 +791,7 @@ const createHmacToken = (req, res) => {
 		.then((confirmed) => {
 			if (confirmed) {
 				// TODO check for the name duplication
-				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -842,7 +842,7 @@ function updateHmacToken(req, res) {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}

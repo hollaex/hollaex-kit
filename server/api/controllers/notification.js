@@ -55,6 +55,10 @@ const handleCurrencyDeposit = (req, res) => {
 			return toolsLib.user.getUserByNetworkId(user_id);
 		})
 		.then((user) => {
+			let coinName = currency;
+			if (toolsLib.getKitCoin(currency).display_name) {
+				coinName = toolsLib.getKitCoin(currency).display_name;
+			}
 			if (rejected) {
 				sendEmail(
 					MAILTYPE.DEPOSIT_CANCEL,
@@ -62,7 +66,7 @@ const handleCurrencyDeposit = (req, res) => {
 					{
 						type: 'deposit',
 						amount,
-						currency,
+						currency: coinName,
 						transaction_id: txid,
 						date: created_at
 					},
@@ -72,7 +76,7 @@ const handleCurrencyDeposit = (req, res) => {
 			} else {
 				const depositData = {
 					amount,
-					currency,
+					currency: coinName,
 					status: is_confirmed ? 'COMPLETED' : 'PENDING',
 					address,
 					transaction_id: txid,
