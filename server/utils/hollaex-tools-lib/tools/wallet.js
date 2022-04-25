@@ -200,6 +200,10 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {
 			const { email, amount, fee, fee_coin, currency, address, network } = data;
+			let coinName = currency;
+			if (getKitCoin(currency).display_name) {
+				coinName = getKitCoin(currency).display_name;
+			}
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
 				email,
@@ -207,7 +211,7 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 					amount,
 					fee,
 					fee_coin,
-					currency,
+					currency: coinName,
 					transaction_id: token,
 					address,
 					ip,
