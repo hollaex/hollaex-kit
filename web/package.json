@@ -34,6 +34,7 @@
 		"keycode": "2.2.0",
 		"lodash.debounce": "4.0.8",
 		"lodash.isequal": "4.5.0",
+		"lodash.merge": "4.6.2",
 		"mathjs": "5.10.3",
 		"mobile-detect": "1.4.2",
 		"moment": "2.24.0",
@@ -95,7 +96,6 @@
 		"json-beautify": "1.1.1",
 		"lint-staged": "10.5.1",
 		"lodash.isempty": "4.4.0",
-		"mkdirp": "1.0.4",
 		"node-sass-chokidar": "1.5.0",
 		"prettier": "2.1.2",
 		"react-scripts": "3.4.3",
@@ -119,7 +119,8 @@
 		"check-build": "npm run pre-build && npm run build:demo && npm run copy-cname && npm run publish:demo",
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
-		"lang": "node ./translationRunner.js --eng"
+		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
+		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
