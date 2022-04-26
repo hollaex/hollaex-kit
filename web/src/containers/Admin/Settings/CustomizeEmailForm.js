@@ -32,11 +32,9 @@ const CustomizeEmailForm = ({
 
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
+			let replacedJSON = emailInfo.html.replace(/@@_BIT_@@/g, "'");
 			form.setFieldsValue({
-				format: JSON.stringify(emailInfo.html, undefined, 5).replace(
-					/["']/g,
-					''
-				),
+				format: replacedJSON,
 			});
 			form.setFieldsValue({ title: emailInfo.title });
 		}
