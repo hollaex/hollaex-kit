@@ -4,6 +4,7 @@ import { reduxForm } from 'redux-form';
 import { Table, Button, IconTitle } from '../../components';
 import renderFields from '../../components/Form/factoryFields';
 import STRINGS from '../../config/localizedStrings';
+import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { formatBaseAmount } from '../../utils/currency';
 import {
 	BASE_CURRENCY,
@@ -77,7 +78,7 @@ export const generateWarningFormValues = () => ({
 		label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP'],
 		// className: 'toggle-wrapper',
 		toggleOnly: true,
-		options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
+		options: DEFAULT_TOGGLE_OPTIONS,
 	},
 });
 
