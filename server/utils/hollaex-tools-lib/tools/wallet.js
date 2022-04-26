@@ -203,6 +203,7 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 			let coinName = currency;
 			if (getKitCoin(currency).display_name) {
 				coinName = getKitCoin(currency).display_name;
+				data.currency = coinName;
 			}
 			sendEmail(
 				MAILTYPE.WITHDRAWAL_REQUEST,
