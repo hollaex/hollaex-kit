@@ -28,6 +28,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'Affiliations',
 			timestamps: true,
 			underscored: true
 		}

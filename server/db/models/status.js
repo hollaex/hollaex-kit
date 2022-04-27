@@ -46,9 +46,10 @@ module.exports = function(sequelize, DataTypes) {
 			email: {
 				type: DataTypes.JSONB,
 				defaultValue: {}
-			},
+			}
 		},
 		{
+			tableName: 'Statuses',
 			underscored: true
 		}
 	);

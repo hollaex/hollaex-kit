@@ -20,6 +20,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'VerificationImages',
 			underscored: true
 		}
 	);

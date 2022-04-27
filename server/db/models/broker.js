@@ -8,23 +8,23 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.INTEGER,
 				allowNull: false,
 				autoIncrement: true,
-				primaryKey: true,
+				primaryKey: true
 			},
 			symbol: {
 				type: DataTypes.STRING,
-				allowNull: false,
+				allowNull: false
 			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
-				allowNull: false,
+				allowNull: false
 			},
 			sell_price: {
 				type: DataTypes.DOUBLE,
-				allowNull: false,
+				allowNull: false
 			},
 			paused: {
 				type: DataTypes.BOOLEAN,
-				allowNull: false,
+				allowNull: false
 			},
 			user_id: {
 				type: DataTypes.INTEGER,
@@ -49,6 +49,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'Brokers',
 			timestamps: true,
 			underscored: true
 		}

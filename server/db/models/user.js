@@ -171,6 +171,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'Users',
 			underscored: true
 		}
 	);

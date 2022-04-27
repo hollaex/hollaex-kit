@@ -59,6 +59,7 @@ module.exports = function(sequelize, DataTypes) {
 			defaultValue: false
 		}
 	}, {
+		tableName: 'Tokens',
 		timestamps: true,
 		underscored: true
 	});

@@ -12,7 +12,7 @@ const getHealth = (req, res) => {
 			name: toolsLib.getKitConfig().api_name || packageJson.name,
 			version: packageJson.version,
 			host: API_HOST,
-			basePath: req.swagger.swaggerObject.basePath,
+			basePath: '/v2',
 			status: toolsLib.getKitConfig().status
 		});
 	} catch (err) {

@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
 			type: DataTypes.STRING
 		}
 	}, {
+		tableName: 'Plugins',
 		timestamps: true,
 		underscored: true
 	});

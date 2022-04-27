@@ -34,6 +34,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'Logins',
 			timestamps: false,
 			underscored: true
 		}

@@ -14,6 +14,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'ResetPasswordCodes',
 			underscored: true
 		}
 	);

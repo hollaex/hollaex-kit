@@ -13,6 +13,7 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
+			tableName: 'VerificationCodes',
 			underscored: true
 		}
 	);
