@@ -375,6 +375,7 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{code\}/g, data.code || '');
 	}
+	html = html.replace(/@@_BIT_@@/g, '"');
 
 	return html;
 };
