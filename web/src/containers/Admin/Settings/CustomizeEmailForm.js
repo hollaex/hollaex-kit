@@ -33,10 +33,7 @@ const CustomizeEmailForm = ({
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
 			form.setFieldsValue({
-				format: JSON.stringify(emailInfo.html, undefined, 5).replace(
-					/["']/g,
-					''
-				),
+				format: emailInfo.html,
 			});
 			form.setFieldsValue({ title: emailInfo.title });
 		}
@@ -114,7 +111,7 @@ const CustomizeEmailForm = ({
 		const body = {
 			language,
 			type: mailType.toLowerCase(),
-			html: format,
+			html: format.replace(/"/g, "'"),
 			title,
 		};
 		setButtonSubmitting(true);
