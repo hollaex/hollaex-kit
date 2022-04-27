@@ -106,7 +106,6 @@
 			"SECTION_6_LINK_8": "Information",
 			"SECTION_6_LINK_9": "YouTube"
 		},
-		"XHT_DESCRIPTION": "HollaeX Kit adalah platform perdagangan sumber terbuka yang dibuat oleh bitHolla Inc. Anda dapat membuat dan mendaftarkan aset digital apa pun dan para pengguna dapat berdagang di bursa Anda menggunakan Kit Bursa. Untuk mulainya silakan rujukan {1}.",
 		"CLICK_HERE": "klik di sini",
 		"VISIT_HERE": "kunjungi sini"
 	},
@@ -202,34 +201,6 @@
 		"ACCEPT_TERMS": "Anda tidak menyetujui Syarat dan Ketentuan dan Kebijakan Pribadi",
 		"STEP": "Nilai yang tidak valid, step is {0}",
 		"ONLY_NUMBERS": "Anda hanya dapat masukkan angka"
-	},
-	"LEGAL": {
-		"PRIVACY_POLICY": {
-			"TITLE": "Privacy Policy",
-			"SUBTITLE": "Last updated April 1, 2019. Replaces the prior version in its entirety.",
-			"TEXTS": [
-				"HollaeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
-				"Use of this HollaeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
-				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
-				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
-				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
-				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
-				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
-			]
-		},
-		"GENERAL_TERMS": {
-			"TITLE": "General Terms of Service",
-			"SUBTITLE": "Last updated April 1, 2019. Replaces the prior version in its entirety.",
-			"TEXTS": [
-				"HollaeX Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
-				"Use of this HollaeX website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
-				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
-				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
-				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
-				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
-				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
-			]
-		}
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -994,24 +965,10 @@
 	"TOTAL_ASSETS_VALUE": "Jumlah nilai aset di {0}: {1}",
 	"SUMMARY": {
 		"TITLE": "Ringkasan",
-		"TINY_PINK_SHRIMP_TRADER": "Tiny Pink Shrimp Trader",
-		"TINY_PINK_SHRIMP_TRADER_ACCOUNT": "Tiny Pink Shrimp Trader Account",
-		"LITTLE_RED_SNAPPER_TRADER": "Little Red Snapper Trader",
-		"LITTLE_RED_SNAPPER_TRADER_ACCOUNT": "Little Red Snapper Trader Account",
-		"CUNNING_BLUE_KRAKEN_TRADING": "Cunning Blue Kraken Trading",
-		"CUNNING_BLUE_KRAKEN_TRADING_ACCOUNT": "Cunning Blue Kraken Trading Account",
-		"BLACK_LEVIATHAN_TRADING": "Black Leviathan Trading",
-		"BLACK_LEVIATHAN_TRADING_ACCOUNT": "Black Leviathan Trading Account",
 		"URGENT_REQUIREMENTS": "Urgent Requirements",
 		"TRADING_VOLUME": "Trading Volume",
 		"ACCOUNT_ASSETS": "Aset Akun",
 		"ACCOUNT_DETAILS": "Account Details",
-		"SHRIMP_ACCOUNT_TXT_1": "Your journey begins here!",
-		"SHRIMP_ACCOUNT_TXT_2": "Keep swimming true, you’ll soon stand out from the rest of the shoal",
-		"SNAPPER_ACCOUNT_TXT_1": "Congrats on staying your course through the swell of the market.",
-		"SNAPPER_ACCOUNT_TXT_2": "Forge through and fight the surge for more crypto treasures ahead.",
-		"KRAKEN_ACCOUNT_TXT_1": "Likelier to crack jokes than hulls, this crustacean has weathered his share of storms!",
-		"LEVIATHAN_ACCOUNT_TXT_1": "Beast from the abyss, seeing through altcoins into unfathomable depths, masters of midnight waters and tidal wave.",
 		"VIEW_FEE_STRUCTURE": "Lihat Struktur Biaya dan Batas",
 		"UPGRADE_ACCOUNT": "Upgrade Akun",
 		"ACTIVE_2FA_SECURITY": "Aktifkan Keamanan 2FA",
@@ -1045,16 +1002,6 @@
 		"TRADING_VOLUME_EQUIVALENT": "Volume Perdagangan Setara {0} {1}",
 		"LEVEL_OF_ACCOUNT": "Akun Level {0}",
 		"LEVEL_TXT_DEFAULT": "Tambahkan deskripsi level Akun di sini",
-		"LEVEL_1_TXT": "Perjalanan Anda sebagai pedagang kripto dimulai di sini! Untuk mendapatkan bonus, Anda dapat memberifikasi identitas Anda dan dapatkan batas deposit dan penarikan lebih tinggi dengan biaya perdagangan lebih rendah.",
-		"LEVEL_2_TXT": "Berdagang senilai lebih dari $3.000 USDT bulanan atau memiliki saldo melebihi 5.000 XHT dan nikmati biaya perdagangan lebih rendah.",
-		"LEVEL_3_TXT": "Di sinilah segalanya menjadi nyata! Nikmati biaya perdagangan lebih rendah dan batas deposit dan penarikan lebih tinggi. Untuk mencapai level 3, Anda perlu menyelesaikan veriﬁkasi",
-		"LEVEL_4_TXT": "Berdagang senilai lebih dari $10.000 USDT bulanan atau memiliki saldo melebihi 10.000 XHT dan nikmati biaya perdagangan lebih rendah.",
-		"LEVEL_5_TXT": "Anda telah berhasil! Akun level 5 sangat unik, hanya untuk operator bursa, pengguna Vault atau Program Afiliasi HollaeX(HAP). Nikmati batas tinggi dan biaya maker kosong.",
-		"LEVEL_6_TXT": "Berdagang senilai lebih dari $300.000 USDT bulanan atau memiliki saldo melebihi 100.000 XHT dan nikmati biaya perdagangan lebih rendah. Batas penarikan ditingkatkan.",
-		"LEVEL_7_TXT": "Berdagang senilai lebih dari $500.000 USDT bulanan atau memiliki saldo melebihi 300.000 XHT dan nikmati biaya perdagangan lebih rendah. Batas penarikan ditingkatkan.",
-		"LEVEL_8_TXT": "Berdagang senilai lebih dari $600.000 USDT bulanan atau memiliki saldo melebihi 400.000 XHT dan nikmati biaya perdagangan lebih rendah.",
-		"LEVEL_9_TXT": "Berdagang senilai lebih dari $2.000.000 USDT bulanan atau memiliki saldo melebihi 1.000.000 XHT dan nikmati biaya perdagangan lebih rendah.",
-		"LEVEL_10_TXT": "Akun whale trader akan menguntungkan Anda dengan market making. Untuk mendapatkan akun spesial ini, silakan hubungi kami.",
 		"CURRENT_TXT": "Saat ini",
 		"TRADER_ACCOUNT_XHT_TEXT": "Akun Anda sedang dalam periode pra-penjualan XHT, artinya Anda dapat mendapatkan XHT seharga $0,10 per XHT. Semua deposit akan dikonversi ke XHT setelah transaksi selesai.",
 		"TRADER_ACCOUNT_TITLE": "Akun - Periode Pra-penjualan",
@@ -1071,19 +1018,8 @@
 		"REWARDS_BONUS": "Hadiah dan Bonus",
 		"COMPLETE_TASK_DESC": "Selesaikan tugas dan dapatkan bonus senilai lebih dari $10.000.",
 		"TASKS": "Tugas",
-		"MAKE_FIRST_DEPOSIT": "Lakukan deposit pertama dan terima 1 XHT",
-		"BUY_FIRST_XHT": "Beli XHT Anda pertama dan dapatkan bonus sebesar 5 XHT",
 		"COMPLETE_ACC_VERIFICATION": "Selesaikan verifikasi akun dan dapatkan bonus sebesar 20 XHT",
 		"INVITE_USER": "Undang pengguna lain dan nikmati komisi dari perdagangannya",
-		"JOIN_HAP": "Bergabunglah HAP dan dapatkan 10% untuk setiap HollaeX Kit yang Anda jual",
-		"EARN_RUNNING_EXCHANGE": "Hasilkan penghasilan pasif untuk menjalankan bursa Anda sendiri",
-		"XHT_WAVE_AUCTION": "Data Wave Auction XHT",
-		"XHT_WAVE_DESC_1": "Distribusi token HollaeX(XHT) akan dilakukan melalui Wave Auction.",
-		"XHT_WAVE_DESC_2": "Wave Auction menjual XHT dalam jumlah acak pada waktu yang ditentukan secara acak kepada penawar tertinggi di orderbook",
-		"XHT_WAVE_DESC_3": "Di bawah ini menampilkan data historis Wave Auction",
-		"WAVE_AUCTION_PHASE": "Wave Auction Tahap {0}",
-		"LEARN_MORE_WAVE_AUCTION": "Pelajari lebih lanjut tentang Wave Auction",
-		"WAVE_NUMBER": "Nomor Wave",
 		"DISCOUNT": "( diskon {0}% )",
 		"MY_FEES_LIMITS": "Biaya dan Batas Saya"
 	},
@@ -1092,47 +1028,11 @@
 		"INFO_TEXT": "Referensikan teman Anda dengan memberikan tautan ini dan dapatkan keuntungan dari onboardingnya.",
 		"COPY_FIELD_LABEL": "Bagikan tautan di bawah dengan teman Anda dan dapatkan komisi:",
 		"REFERRED_USER_COUT": "Anda telah mereferensikan {0} pengguna",
-		"COPY_LINK_BUTTON": "MENGKOPI TAUTAN REFERRAL",
-		"XHT_TITLE": "REFERRAL ANDA",
-		"XHT_INFO_TEXT": "Dapatkan komisi dengan mengundang teman.",
-		"XHT_INFO_TEXT_1": "Komisi dibayarkan secara berkala ke dompet Anda",
-		"APPLICATION_TXT": "Untuk menjadi distributor HollaeX Kit, silakan isi aplikasi.",
-		"TOTAL_REFERRAL": "Total bought from referrals:",
-		"PENDING_REFERRAL": "Commissions Pending:",
-		"EARN_REFERRAL": "Commissions Earn:",
-		"XHT_COUNT": "{0} XHT",
-		"APPLY_BUTTON": "APPLY"
+		"COPY_LINK_BUTTON": "MENGKOPI TAUTAN REFERRAL"
 	},
-	"STAKE_TOKEN": {
-		"TITLE": "Stake HollaeX Token",
-		"INFO_TXT1": "Token HollaeX(XHT) perlu dijamin(distake) untuk menjalankan perangkat lunak bursa HollaeX Kit.",
-		"INFO_TXT2": "Anda dapat menjaminkan token HollaeX Anda dengan cara yang sama dan dapatkan XHT yang tidak dapat dijual selama Wave Auction.",
-		"INFO_TXT3": "Pergi ke dash.bitholla.com dan menjaminkan bursa Anda sendiri hari ini dan dapatkan XHT gratis",
-		"BUTTON_TXT": "TEMUKAN LEBIH BANYAK LAGI"
-	},
-	"TERMS_OF_SERVICES": {
-		"TITLE": "Perjanjian Pembelian Token HollaeX",
-		"PROCEED": "MEMPROSES",
-		"AGREE_TERMS_LABEL": "Saya telah membaca dan menyetujui Perjanjian Pembelian Token HollaeX",
-		"RISK_INVOLVED_LABEL": "Saya memahami risiko yang terlibat",
-		"DOWNLOAD_PDF": "Unduh PDF",
-		"DEPOSIT_FUNDS": "Deposit dana ke dompet Anda untuk mendapatkan Token HollaeX(XHT)",
-		"READ_FAG": "Baca FAQ HollaeX di sini: {0}",
-		"READ_DOCUMENTATION": "Baca buku putih HollaeX di sini: {0}",
-		"READ_WAVES": "Aturan untuk Wave Aution Publik {0} pada Desember mendatang",
-		"DOWNLOAD_BUY_XHT": "Unduh PDF untuk melihat proses langkah demi langkah pada {0} visual",
-		"HOW_TO_BUY": "bagaimana cara membeli Token HollaeX(XHT)",
-		"PUBLIC_SALES": "Wave Auction Publik",
-		"CONTACT_US": "Jika ada masalah apa pun atau ingin mendapatkan informasi lebih lanjut, jangan ragu untuk hubungi kami lewat email {0}",
-		"VISUAL_STEP": "Lihat proses langkah demi langkah pada {0} visual",
-		"WARNING_TXT": "Kami akan meninjau permintaan Anda dan mengirim instruksi lebih lanjut ke email Anda tentang cara mengakses bursa HollaeX.",
-		"WARNING_TXT1": "Sementara itu, Anda dapat membiasakan diri dengan jaringan HollaeX dengan sumber daya di bawah",
-		"XHT_ORDER_TXT_1": "Untuk mulai perdagangan, harap masuk terlebih dahulu",
-		"XHT_ORDER_TXT_2": "",
-		"XHT_ORDER_TXT_3": "{0} atau {1}",
-		"XHT_TITLE": "XHT",
-		"XHT_TRADE_TXT_1": "Masuk untuk lihat perdagangan Anda terkini",
-		"XHT_TRADE_TXT_2": "Anda dapat {0} untuk melihat riwayat perdagangan terkini",
+	"NOT_LOGGEDIN": {
+		"TXT_1": "Untuk mulai perdagangan, harap masuk terlebih dahulu",
+		"TXT_2": "{0} atau {1}",
 		"LOGIN_HERE": "Masuk di sini"
 	},
 	"WAVES": {

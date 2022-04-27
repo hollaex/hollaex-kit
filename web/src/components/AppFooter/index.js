@@ -144,28 +144,6 @@ const AppFooter = ({
 								</div>
 								<div className="footer-txt">
 									{constants.description || ''}
-									{/* {STRINGS.formatString(
-										STRINGS["FOOTER.XHT_DESCRIPTION"],
-										<a
-											href={
-												'https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-'
-											}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="blue-link pointer"
-										>
-											{' '}
-											{STRINGS["FOOTER.CLICK_HERE"]}{' '}
-										</a>,
-										<a
-											href={'https://bitholla.com/hollaex-kit/'}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="blue-link pointer"
-										>
-											{STRINGS["FOOTER.VISIT_HERE"]}
-										</a>
-									)} */}
 								</div>
 							</div>
 						</div>

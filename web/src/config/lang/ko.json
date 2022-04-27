@@ -101,7 +101,6 @@
 			"SECTION_6_LINK_1": "트위터",
 			"SECTION_6_LINK_2": "텔레그램"
 		},
-		"XHT_DESCRIPTION": "HollaEx는 비트홀라에서 개발 및 관리하는 HollaEx Kit기술에 기반하여 만들어진 오픈 암호화폐 거래소입니다. HollaEx 소프트웨어 Kit으로 만들어진 실시간 운영되고있는 거래소로 누구나 이와 같은 거래소를 직접 운영할 수 있다는 것을 보여주는 예입니다. 자신만의 거래소를 시작하기위해 {1}를 참조하시기바랍니다. HollaEx토큰은 HollaEx의 네이티브 토큰으로 웨이브옥션 시스템을 통해 HollaEx거래소에서 거래됩니다. 옥션이 어떻게 작동하는지 자세한 내용은 {0}에서 확인하실 수 있습니다.",
 		"CLICK_HERE": "이곳을 클릭하세요.",
 		"VISIT_HERE": "방문하기"
 	},
@@ -196,34 +195,6 @@
 		"ACCEPT_TERMS": "이용약관 및 개인정보 보호 정책에 동의하지 않으셨습니다.",
 		"STEP": "잘못된 값, step is {0}",
 		"ONLY_NUMBERS": "숫자만 입력가능합니다."
-	},
-	"LEGAL": {
-		"PRIVACY_POLICY": {
-			"TITLE": "Privacy Policy",
-			"SUBTITLE": "Last updated April 1, 2019. Replaces the prior version in its entirety.",
-			"TEXTS": [
-				"HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
-				"Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
-				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
-				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
-				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
-				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
-				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
-			]
-		},
-		"GENERAL_TERMS": {
-			"TITLE": "General Terms of Service",
-			"SUBTITLE": "Last updated April 1, 2019. Replaces the prior version in its entirety.",
-			"TEXTS": [
-				"HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
-				"Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
-				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
-				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
-				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
-				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
-				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
-			]
-		}
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -1076,47 +1047,11 @@
 		"INFO_TEXT_1": "회원님의 추천으로 가입하여 거래하신 분의 거래 수수료의 {0}%가 매달 회원님의 계정으로 입금됩니다.",
 		"COPY_FIELD_LABEL": "아래 링크를 공유하여 커미션을 받으세요:",
 		"REFERRED_USER_COUT": "{0} 명의 추천을 받음",
-		"COPY_LINK_BUTTON": "추천인 링크 복사하기",
-		"XHT_TITLE": "나의 추천",
-		"XHT_INFO_TEXT": "친구를 초대하여 커미션 수익을 얻으세요.",
-		"XHT_INFO_TEXT_1": "커미션 수익은 주기적으로 회원님의 지갑으로 입금됩니다.",
-		"APPLICATION_TXT": "HollaEx Kit 배급자가 되려면 지원서를 작성해주시기바랍니다.",
-		"TOTAL_REFERRAL": "Total bought from referrals:",
-		"PENDING_REFERRAL": "Commissions Pending:",
-		"EARN_REFERRAL": "Commissions Earn:",
-		"XHT_COUNT": "{0} XHT",
-		"APPLY_BUTTON": "APPLY"
+		"COPY_LINK_BUTTON": "추천인 링크 복사하기"
 	},
-	"STAKE_TOKEN": {
-		"TITLE": "HollaEx토큰 지분증명",
-		"INFO_TXT1": "HollaEx Kit 거래소 소프트웨어를 실행하기 위해 HollaEx 토큰(XHT)이 담보로 요구됩니다.",
-		"INFO_TXT2": "비슷한 방식으로 HollaEx 토큰을 담보로 웨이브옥션 기간동안 팔리지않은 XHT를 얻을 수 있습니다.",
-		"INFO_TXT3": "간단하게 dash.bitholla.com를 방문하여 당신의 거래소를 실행하고 이를 담보로 XHT를 무료로 받으세요.",
-		"BUTTON_TXT": "자세히알아보기"
-	},
-	"TERMS_OF_SERVICES": {
-		"TITLE": "HollaEx 토큰 구매 계약",
-		"PROCEED": "계속",
-		"AGREE_TERMS_LABEL": "나는 HollaEx 토큰 구매 계약서를 읽었으며 해당 내용에 동의합니다.",
-		"RISK_INVOLVED_LABEL": "나는 이와 관련된 위험이 있는 것을 이해합니다.",
-		"DOWNLOAD_PDF": "PDF 다운로드",
-		"DEPOSIT_FUNDS": "HollaEx 토큰(XHT)을 얻기 위해 지갑에 입금을 하시기바랍니다.",
-		"READ_FAG": "HollaEx FAQ 보기 : {0}",
-		"READ_DOCUMENTATION": "HollaEx whitepaper 보기: {0}",
-		"READ_WAVES": "웨이브옥션 규정보기 {0}",
-		"DOWNLOAD_BUY_XHT": "PDF를 다운로드하여 {0} 단계별 프로세스를 확인하시기바랍니다.",
-		"HOW_TO_BUY": "HollaEx 토큰(XHT)을 어떻게 살수있나요?",
-		"PUBLIC_SALES": "공개 웨이브옥션",
-		"CONTACT_US": "문의사항이 있으시다면 {0}으로 언제든지 메일주시기바랍니다.",
-		"VISUAL_STEP": "{0}에 대한 시각적인 단계별 프로세스보기",
-		"WARNING_TXT": "회원님의 요청을 검토한 이후 HollaEx거래소에 접근하는 법에 대한 추가 설명을 이메일로 보내드리도록하겠습니다.",
-		"WARNING_TXT1": "그 동안 아래의 지원을 통해 HollaEx 네트워크에 대해 더 알아보실 수 있습니다.",
-		"XHT_ORDER_TXT_1": "HollaEx 토큰(XHT) 거래를 위해선 로그인이 필요합니다.",
-		"XHT_ORDER_TXT_2": "HollaEx 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브옥션을 통해 배포됩니다.",
-		"XHT_ORDER_TXT_3": "{0} 웨이브옥션에 가입 또는 {1}",
-		"XHT_TITLE": "XHT",
-		"XHT_TRADE_TXT_1": "최근 거래를 보기위해 로그인하세요.",
-		"XHT_TRADE_TXT_2": "최근 거래 내역을 보기위해 {0} 할 수 있습니다.",
+	"NOT_LOGGEDIN": {
+		"TXT_1": "로그인이 필요합니다",
+		"TXT_2": "{0} / {1}",
 		"LOGIN_HERE": "로그인하기"
 	},
 	"WAVES": {

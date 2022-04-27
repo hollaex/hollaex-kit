@@ -68,7 +68,6 @@
 		"SECTION_3_BUTTON_1": "Ver Demo"
 	},
 	"FOOTER": {
-		"FOOTER_LEGAL": ["Proudly made in Seoul, South Korea", "bitHolla Inc."],
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
 		"SECTIONS": {
 			"SECTION_1_TITLE": "ABOUT",
@@ -110,7 +109,6 @@
 			"SECTION_6_LINK_8": "Información",
 			"SECTION_6_LINK_9": "YouTube"
 		},
-		"XHT_DESCRIPTION": "HollaEx es una plataforma de intercambio de código abbierto creada por bitHolla Inc. Puede crear y enumerar cualquier activo digital y abordar usuarios para intercambiar en su exchange usando el Kit de exchange. Para simpletemente ejecutar uno usted mismo {1}.",
 		"CLICK_HERE": "click aquí",
 		"VISIT_HERE": "visitar aquí"
 	},
@@ -206,34 +204,6 @@
 		"ACCEPT_TERMS": "No ha aceptado los Términos de uso y Política de Privacidad",
 		"STEP": "Valor inválido, step is {0}",
 		"ONLY_NUMBERS": "Valor puede contener sólo números"
-	},
-	"LEGAL": {
-		"PRIVACY_POLICY": {
-			"TITLE": "Política de Privacidad",
-			"SUBTITLE": "Última actualización Abril 1, 2019. Reemplaza la versión anterior en su totalidad.",
-			"TEXTS": [
-				"HollaEx Web es una plataforma virtual de intercambio que pertenece en su totalidad a bitHolla Inc. bitHolla Inc (referido como bitHolla) se incorporó en Seúl Corea del Sur.",
-				"El uso de este sitio web de HollaEx (\"Sitio Web\") y el servicio ofrecido en el sitio web (\"Servicio\") se rigen por los términos contenidos en esta página de Términos y condiciones (\"Términos\"). Este acuerdo constituye en su totalidad el acuerdo entre las partes. Toda otra información proporcionada en el sitio web o declaraciones orales/escritas excluidas en este acuerdo; la política de exchange se proporciona solo como guía y no constituye un acuerdo legal entre las partes.",
-				"Al acceder, ver o descargar información del sitio web y usar el Servicio proporcionado por bitHolla, usted reconoce que ha leído, comprendido y aceptado incondicionalmente estar sujeto a estos Términos. bitHolla puede en cualquier momento, sin previo aviso, modificar los Términos. Usted acepta seguir estando sujeto a los términos y condiciones modificados y que bitHolla no tiene la obligación de notificarle dichas modificaciones. Usted reconoce que es su responsabilidad verificar estos Términos periódicamente para ver si hay cambios y que su uso continuo del sitio web y los Servicios ofrecidos por bitHolla después de la publicación de cualquier cambio en los Términos indicando su aceptación de dichos cambios.",
-				"El sitio web y los derechos de autor de todos los textos, gráficos, imágenes, software y cualquier otro material en el sitio web son propiedad de bitHolla, incluidas todas las marcas comerciales y otros derechos de propiedad intelectual con respecto a los materiales y servicios en el sitio web. Los materiales de este sitio web solo se pueden utilizar para uso personal y con fines no comerciales.",
-				"Puede mostrar en una pantalla de computadora o imprimir extractos del sitio web para el propósito mencionado anteriormente solo siempre que conserve los derechos de autor y otros avisos de propiedad o cualquier marca comercial o logotipo de bitHolla, como se muestra en la impresión inicial o descarga sin alteración, adición o supresión. Salvo que se indique expresamente en este documento, no puede sin el permiso previo por escrito de bitHolla alterar, modificar, reproducir, distribuir o utilizar en cualquier otro contexto comercial en cualquier material del sitio web.",
-				"Usted reconoce que \"bitHolla\" y el logotipo de bitHolla son marcas comerciales de bitHolla Inc. Puede reproducir dichas marcas comerciales sin alterar el material descargado de este sitio web en la medida autorizada anteriormente, pero no puede usarlos, copiarlos, adaptarlos o borrarlos de otro modo.",
-				"En ninguna circunstancia obtendrá ningún derecho sobre o con respecto al sitio web (que no sean los derechos de uso del sitio web de conformidad con estos Términos y cualquier otro término y condición que rija un servicio o sección en particular del sitio web) o declarar que tiene cualquiera de dichos derechos sobre o con respecto al sitio web."
-			]
-		},
-		"GENERAL_TERMS": {
-			"TITLE": "Términos Generales de Servicio",
-			"SUBTITLE": "Última actualización Abril 1, 2019. Reemplaza la versión anterior en su totalidad.",
-			"TEXTS": [
-				"HollaEx Web es una plataforma virtual de intercambio que pertenece en su totalidad a bitHolla Inc. bitHolla Inc (referido como bitHolla) se incorporó en Seúl Corea del Sur.",
-				"El uso de este sitio web de HollaEx (\"Sitio Web\") y el servicio ofrecido en el sitio web (\"Servicio\") se rigen por los términos contenidos en esta página de Términos y condiciones (\"Términos\"). Este acuerdo constituye en su totalidad el acuerdo entre las partes. Toda otra información proporcionada en el sitio web o declaraciones orales/escritas excluidas en este acuerdo; la política de exchange se proporciona solo como guía y no constituye un acuerdo legal entre las partes.",
-				"Al acceder, ver o desargar información del sitio web y usar el Servicio proporcionado por bitHolla, usted reconoce que ha leído, comprendido y aceptado incondicionalmente estar sujeto a estos Términos. bitHolla puede en cualquier momento, sin previo aviso, modificar los Términos. Usted acepta seguir estando sujeto a los términos y condiciones modificados y que bitHolla no tiene la obligación de notificarle dichas modificaciones. Usted reconoce que es su responsabilidad verificar estos Términos periódicamente para ver si hay cambios y que su uso continuo del sitio web y los Servicios ofrecidos por bitHolla después de la publicación de cualquier cambio en los Términos indicando su aceptación de dichos cambios.",
-				"El sitio web y los derechos de autor de todos los textos, gráficos, imágenes, software y cualquier otro material en el sitio web son propiedad de bitHolla, incluidas todas las marcas comerciales y otros derechos de propiedad intelectual con respecto a los materiales y servicios en el sitio web. Los materiales de este sitio web solo se pueden utilizar para uso personal y con fines no comerciales.",
-				"Puede mostrar en una pantalla de computadora o imprimir extractos del sitio web para el propósio mencionado anteriormente solo siempre que conserve los derechos de autor y otros avisos de propiedad o cualquier marca comercial o logotipo de bitHolla, como se muestra en la impresión inicial o descarga sin alteración, adición o supresión. Salvo que se indique expresamente en este documento, no puede sin el permiso previo por escrito de bitHolla alterar, modificar, reproducr, distribuir o utilizar en cualquier otro contexto conmercial en cualquier material del sitio web.",
-				"Usted reconoce que \"bitHolla\" y el logotipo de bitHolla son marcas comerciales de bitHolla Inc. Puede reproducir dichas marcas comerciales sin alterar el material descargado de este sitio web en la medida autorizada anteriormente, pero no puede usarlos, copiarlos, adaptarlos o borrarlos de otro modo.",
-				"En ninguna circunstancia obtendrá ningún derecho sobre o con respecto al sitio web (que no sean los derechos de uso del sitio web de conformidad con estos Términos y cualquier otro término y condición que rija un servicio o sección en particular del sitio web) o declarar que tiene cualquiera de dichos derechos sobre o con respecto al sitio web."
-			]
-		}
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -1097,47 +1067,11 @@
 		"INFO_TEXT": "Recomiende a sus amigos dando este enlace y reciba los beneficios de incluir a otras personas.",
 		"COPY_FIELD_LABEL": "Comparta el enlace de abajo con sus amigos y gane comisiones:",
 		"REFERRED_USER_COUT": "Usted ha referido a {0} usuarios",
-		"COPY_LINK_BUTTON": "COPIAR ENLACE",
-		"XHT_TITLE": "MIS REFERIDOS",
-		"XHT_INFO_TEXT": "Gane comisiones invitando a sus amigos.",
-		"XHT_INFO_TEXT_1": "Las comisiones se pagan periódicamente a su billetera",
-		"APPLICATION_TXT": "Para ser un distribuidor de HollaEx Kit por favor llene una solicitud.",
-		"TOTAL_REFERRAL": "Total comprado de referidos:",
-		"PENDING_REFERRAL": "Comisiones pendientes:",
-		"EARN_REFERRAL": "Comisiones ganadas:",
-		"XHT_COUNT": "{0} XHT",
-		"APPLY_BUTTON": "SOLICITAR"
+		"COPY_LINK_BUTTON": "COPIAR ENLACE"
 	},
-	"STAKE_TOKEN": {
-		"TITLE": "Stake HollaEx Token",
-		"INFO_TXT1": "Las HollaEx tokens (XHT) deben ser colateralizadas (apostadas) para ejecutar el software de intercambio del kit de HollaEx.",
-		"INFO_TXT2": "Puede colateralizar su HollaEx token de manera similar y ganar XHT no vendidos durante la subasta de la Ola.",
-		"INFO_TXT3": "Simplemente ve a dash.bitholla.com y colateralize su propio intercambio hoy y gane XHT gratis",
-		"BUTTON_TXT": "ENCUENTRE MÁS INFORMACIÓN"
-	},
-	"TERMS_OF_SERVICES": {
-		"TITLE": "Acuerdo de compra de HollaEx tokens",
-		"PROCEED": "CONTINUAR",
-		"AGREE_TERMS_LABEL": "He leído y estoy de acuerdo con el Acuerdo de Compra del HollaEx Token",
-		"RISK_INVOLVED_LABEL": "Entiendo los riesgos que implica",
-		"DOWNLOAD_PDF": "Descargue el PDF",
-		"DEPOSIT_FUNDS": "Deposite fondos en su billetera para obtener HollaEx Token (XHT)",
-		"READ_FAG": "Lea las preguntas frecuentes de HollaEx aquí: {0}",
-		"READ_DOCUMENTATION": "Lea el whitepaper de HollaEx aquí: {0}",
-		"READ_WAVES": "Reglas para la subasta pública de diciembre próximo.",
-		"DOWNLOAD_BUY_XHT": "Descargue el PDF para ver un proceso visual paso a paso en {0}",
-		"HOW_TO_BUY": "Cómo comprar HollaEx Token (XHT)",
-		"PUBLIC_SALES": " Subasta pública de olas",
-		"CONTACT_US": "No dude en contactarnos para más información y cualquier asunto enviándonos un correo electrónico a {0}",
-		"VISUAL_STEP": "Vea un proceso visual paso a paso en {0}",
-		"WARNING_TXT": "Revisaremos su solicitud y le enviaremos más instrucciones a su correo electrónico sobre cómo acceder al intercambio de HollaEx.",
-		"WARNING_TXT1": "Mientras tanto, puede familiarizarse con la red HollaEx con los siguientes recursos",
-		"XHT_ORDER_TXT_1": "Para empezar a comerciar tiene que iniciar sesión",
-		"XHT_ORDER_TXT_2": "",
-		"XHT_ORDER_TXT_3": "{0} o {1}",
-		"XHT_TITLE": "XHT",
-		"XHT_TRADE_TXT_1": "Inicie sesión para ver sus recientes transacciones",
-		"XHT_TRADE_TXT_2": "Puede {0} ver su historia reciente de transacciones",
+	"NOT_LOGGEDIN": {
+		"TXT_1": "Para empezar a comerciar tiene que iniciar sesión",
+		"TXT_2": "{0} o {1}",
 		"LOGIN_HERE": "Ingresa aquí"
 	},
 	"WAVES": {
@@ -1167,8 +1101,6 @@
 	"NOTE_FOR_EDIT_COIN": "Nota: Para agregar y quitar {0} por favor consulte el {1}.",
 	"REFER_DOCS_LINK": "docs",
 	"RESTART_TO_APPLY": "Necesita reiniciar su intercambio para aplicar estos cambios.",
-	"TRIAL_EXCHANGE_MSG": "Está usando una versión de prueba de {0} y expirará en {1} días.",
-	"EXPIRY_EXCHANGE_MSG": "Su intercambio ha expirado. Vaya a dash.bitholla.com para activarlo de nuevo.",
 	"EXPIRED_INFO_1": "Su prueba ha terminado.",
 	"EXPIRED_INFO_2": "Colabora con el intercambio para activarlo de nuevo.",
 	"EXPIRED_BUTTON_TXT": "ACTIVAR INTERCAMBIO",

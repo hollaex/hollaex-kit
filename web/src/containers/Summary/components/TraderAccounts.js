@@ -37,14 +37,7 @@ const TraderAccounts = ({
 	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS['LEVEL_ACCOUNT_ICON_4'];
-	// if (!isAccountDetails) {
-	// 	description = user.is_hap
-	// 		? STRINGS["SUMMARY.HAP_ACCOUNT_TXT"]
-	// 		: STRINGS["SUMMARY.TRADER_ACCOUNT_XHT_TEXT"];
-	// 	icon = user.is_hap === true
-	// 		? ICONS["HAP_ACCOUNT_ICON"]
-	// 		: ICONS["ACCOUNT_SUMMARY"];
-	// }
+
 	return (
 		<div className="d-flex">
 			<div>

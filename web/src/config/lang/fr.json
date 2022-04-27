@@ -106,7 +106,6 @@
 			"SECTION_6_LINK_8": "Information",
 			"SECTION_6_LINK_9": "YouTube"
 		},
-		"XHT_DESCRIPTION": "HollaEx Kit est une plateforme de trading open source construite par bitHolla Inc. Vous pouvez créer et répertorier tous vos digital assets et inviter des utilisateurs sur votre échange à l'aide de ce kit. Pour simplement avoir votre propre échange {1}",
 		"CLICK_HERE": "Cliquez ici",
 		"VISIT_HERE": "Visitez ici"
 	},
@@ -202,34 +201,6 @@
 		"ACCEPT_TERMS": "Vous n'avez pas accepté les conditions d'utilisation et politique de confidentialité.",
 		"STEP": "Valeur invalide, l'étape est {0}",
 		"ONLY_NUMBERS": "La valeur ne peut contenir que des chiffres"
-	},
-	"LEGAL": {
-		"PRIVACY_POLICY": {
-			"TITLE": "Politique de confidentialité",
-			"SUBTITLE": "Dernière mise à jour le 1er avril 2019. Cette présente remplace la version précédente complètement",
-			"TEXTS": [
-				"HollaEx Web est une plateforme de trading virtuelle appartenant entièrement à bitHolla Inc. bitHolla Inc (dénommée bitHolla ci-après) a été créée à Séoul, en Corée du Sud.",
-				"L'utilisation du site internet HollaEx (\"Site Web\") et les services (\"Service\") proposés sur le Site Web sont régis par les conditions rédigées et disponible sur la page Termes et Conditions (\"Termes\"). Cet accord constitue entièrement l'accord entre les deux parties. Toutes autres informations se trouvant sur le Site Web ou autres informations reçues via email ou téléphone (voie orale/ écrite) sont exclues de cet accord; la politique de l'échange a pour but d'informer et conseiller uniquement et ne constitue pas un accord légal entre les parties.",
-				"En accédant et en vous informant ainsi qu'en téléchargeant les informations de ce Site Web et en utilisant les Services de bitHolla vous confirmez que vous avez lu et compris ces Termes et que vous les acceptés complètement sans conditions. bitHolla peut à n'importe quel moment, sans prévenir, modifier ces Termes. Vous acceptez de continuer à être liés à ces Termes et conditions et confirmez que bitHolla n'a aucune obligation de vous informer de quelconque changement. Vous acceptez que c'est de votre responsabilité de vous informer et de vérifier ces Termes périodiquement afin de voir si des annotations ont été faites. Ainsi votre action de continuer à consulter le Site Web ainsi que l'utilisation des Services proposés par bitHolla indique votre acceptation de ces Termes.",
-				"Le Site Web et les droits d'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu'à des fins personnels et non commerciales.",
-				"Vous pouvez afficher sur un écran d'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.",
-				"Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.",
-				"Vous ne devez en aucun cas obtenir des droits sur ou à l'égard du Site Web (autres que les droits d'utiliser le Site Web conformément aux présentes conditions et à toute autre condition régissant un service ou une section particulier du Site Web) ou vous présenter comme avoir de tels droits sur ou à l'égard du Site."
-			]
-		},
-		"GENERAL_TERMS": {
-			"TITLE": "Conditions générales de service",
-			"SUBTITLE": "Dernière mise à jour le 1er avril 2019. Cette présente remplace la version précédente complètement",
-			"TEXTS": [
-				"HollaEx Web est une plateforme de trading virtuelle appartenant entièrement à bitHolla Inc. bitHolla Inc (dénommée bitHolla ci-après) a été créée à Séoul, en Corée du Sud.",
-				"L'utilisation du site internet HollaEx (\"Site Web\") et les services (\"Service\") proposés sur le Site Web sont régis par les conditions rédigées et disponible sur la page Termes et Conditions (\"Termes\"). Cet accord constitue entièrement l'accord entre les deux parties. Toutes autres informations se trouvant sur le Site Web ou autres informations reçues via email ou téléphone (voie orale/ écrite) sont exclues de cet accord; la politique de l'échange a pour but d'informer et conseiller uniquement et ne constitue pas un accord légal entre les parties.",
-				"En accédant et en vous informant ainsi qu'en téléchargeant les informations de ce Site Web et en utilisant les Services de bitHolla vous confirmez que vous avez lu et compris ces Termes et que vous les acceptés complètement sans conditions. bitHolla peut à n'importe quel moment, sans prévenir, modifier ces Termes. Vous acceptez de continuer à être liés à ces Termes et conditions et confirmez que bitHolla n'a aucune obligation de vous informer de quelconque changement. Vous acceptez que c'est de votre responsabilité de vous informer et de vérifier ces Termes périodiquement afin de voir si des annotations ont été faites. Ainsi votre action de continuer à consulter le Site Web ainsi que l'utilisation des Services proposés par bitHolla indique votre acceptation de ces Termes.",
-				"Le Site Web et les droits d'auteur dans tous les textes, graphiques, images, logiciels et autre matériel situés sur le Site Web appartiennent entièrement à bitHolla et ceci en incluant toutes les marques déposées et autres droits de propriété intellectuelle en ce qui concerne le matériel et Services du Site Web. Le matériel de ce Site Web ne peut être utilisé qu'à des fins personnels et non commerciales.",
-				"Vous pouvez afficher sur un écran d'ordinateur ou imprimer des extraits du Site Web pour des fins mentionnées précédemment à condition que vous conserviez les droits d'auteur et autres avis de propriété telles que les marques ou logos de bitHolla, comme indiqué sur l'impression initiale ou le téléchargement sans altération (ajout ou suppression non autorisés). Sauf indication claire dans les présentes, vous ne pouvez sans l'autorisation écrite préalable de bitHolla changer, modifier, reproduire, distribuer ou utiliser dans tout autre contexte commercial le matériel du Site Web.",
-				"Vous reconnaissez que « bitHolla » et le logo bitHolla sont des marques de commerce de bitHolla Inc. Vous pouvez reproduire ces marques sans altération du matériel téléchargé à partir de ce Site Web dans la mesure autorisée ci-dessus, mais vous ne pouvez pas les utiliser, les copier, les adapter ou les effacer autrement.",
-				"Vous ne devez en aucun cas obtenir des droits sur ou à l'égard du Site Web (autres que les droits d'utiliser le Site Web conformément aux présentes conditions et à toute autre condition régissant un service ou une section particulier du Site Web) ou vous présenter comme avoir de tels droits sur ou à l'égard du Site."
-			]
-		}
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -1092,47 +1063,11 @@
 		"INFO_TEXT": "Parrainez vos amis en leur donnant ce lien et bénéficiez d'avantages en intégrant d'autres personnes.",
 		"COPY_FIELD_LABEL": "Partagez le lien ci-dessous avec des amis et gagnez des commissions:",
 		"REFERRED_USER_COUT": "Vous avez parrainé {0} utilisateur(s)",
-		"COPY_LINK_BUTTON": "COPIER LE LIEN DE PARRAINAGE",
-		"XHT_TITLE": "MES PARRAINAGES",
-		"XHT_INFO_TEXT": "Gagnez des commissions en invitant vos amis.",
-		"XHT_INFO_TEXT_1": "Les commissions sont payées périodiquement sur votre portefeuille",
-		"APPLICATION_TXT": "Pour devenir un distributeur HollaEx Kit, veuillez remplir une demande.",
-		"TOTAL_REFERRAL": "Total des achats via parrainage:",
-		"PENDING_REFERRAL": "Commissions en attente:",
-		"EARN_REFERRAL": "Commissions gagnées:",
-		"XHT_COUNT": "{0} XHT",
-		"APPLY_BUTTON": "INSCRIPTION"
+		"COPY_LINK_BUTTON": "COPIER LE LIEN DE PARRAINAGE"
 	},
-	"STAKE_TOKEN": {
-		"TITLE": "Revendiquer HollaEx Token",
-		"INFO_TXT1": "HollaEx tokens (XHT) doivent être garantis (collateralized) pour exécuter le logiciel d'échange HollaEx Kit.",
-		"INFO_TXT2": "Vous pouvez garantir votre token HollaEx de la même manière et gagner du XHT non vendu pendant l'enchère Wave.",
-		"INFO_TXT3": "Rendez-vous simplement sur dash.bitholla.com et garantissez votre propre échange aujourd'hui et gagnez des XHT gratuits",
-		"BUTTON_TXT": "EN SAVOIR PLUS"
-	},
-	"TERMS_OF_SERVICES": {
-		"TITLE": "Condition d'achat du token HollaEx",
-		"PROCEED": "PROCEDÉ",
-		"AGREE_TERMS_LABEL": "J'ai lu et j'accepte le contrat d'achat du token HollaEx ",
-		"RISK_INVOLVED_LABEL": "Je comprends les risques encourus",
-		"DOWNLOAD_PDF": "Télécharger le PDF",
-		"DEPOSIT_FUNDS": "Déposez des fonds dans votre portefeuille pour obtenir un token HollaEx (XHT)",
-		"READ_FAG": "Lisez la FAQ HollaEx ici: {0}",
-		"READ_DOCUMENTATION": "Lisez le livre blanc HollaEx ici: {0}",
-		"READ_WAVES": "Règles pour la prochaine vente aux enchères publique de décembre {0}",
-		"DOWNLOAD_BUY_XHT": "Téléchargez le PDF pour voir un processus visuel étape par étape sur {0}",
-		"HOW_TO_BUY": "Comment acheter un token HollaEx(XHT)",
-		"PUBLIC_SALES": " Enchère publique (Public Wave Auction)",
-		"CONTACT_US": "N'hésitez pas à nous contacter pour plus d'informations et pour tout problème en nous envoyant un email à {0}",
-		"VISUAL_STEP": "Voir un processus visuel étape par étape sur {0}",
-		"WARNING_TXT": "Nous examinerons votre demande et enverrons des instructions supplémentaires sur votre adresse email sur la façon d'accéder à l'échange HollaEx.",
-		"WARNING_TXT1": "En attendant, vous pouvez vous familiariser avec le réseau HollaEx avec les ressources ci-dessous",
-		"XHT_ORDER_TXT_1": "Pour commencer à trader, vous devez vous connecter",
-		"XHT_ORDER_TXT_2": "",
-		"XHT_ORDER_TXT_3": "{0} ou {1}",
-		"XHT_TITLE": "XHT",
-		"XHT_TRADE_TXT_1": "Connectez-vous pour voir vos transactions récentes",
-		"XHT_TRADE_TXT_2": "Vous pouvez {0} voir l'historique de vos échanges",
+	"NOT_LOGGEDIN": {
+		"TXT_1": "Pour commencer à trader, vous devez vous connecter",
+		"TXT_2": "{0} ou {1}",
 		"LOGIN_HERE": "lConnectez-vous ici"
 	},
 	"WAVES": {
