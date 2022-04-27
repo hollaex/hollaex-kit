@@ -104,6 +104,7 @@ class Table extends Component {
 			cancelDelayData,
 			className,
 			expandable,
+			cssTransitionClassName,
 		} = this.props;
 
 		const count = this.props.count || this.props.data.length;
@@ -112,7 +113,7 @@ class Table extends Component {
 		if (count === 0) {
 			if (!showHeaderNoData) {
 				return (
-					<div className="no-data d-flex justify-content-center align-items-center">
+					<div className="no-data d-flex justify-content-center align-items-center py-3">
 						<EditWrapper stringId="NO_DATA">
 							{noData ? noData : STRINGS['NO_DATA']}
 						</EditWrapper>
@@ -151,6 +152,7 @@ class Table extends Component {
 							data={data}
 							withIcon={withIcon}
 							expandable={expandable}
+							cssTransitionClassName={cssTransitionClassName}
 						/>
 					</table>
 				</div>
@@ -187,6 +189,7 @@ Table.defaultProps = {
 		defaultExpanded: () => false,
 		rowExpandable: () => false,
 	},
+	cssTransitionClassName: '',
 };
 
 export default Table;

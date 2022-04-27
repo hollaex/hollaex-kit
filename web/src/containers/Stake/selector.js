@@ -16,6 +16,10 @@ const getPendingTransactions = (state) => state.stake.pendingTransactions;
 
 const getDistributions = (state) => state.stake.distributions;
 
+const getMetamaskNetwork = (state) => state.stake.network;
+
+const getContractNetwork = (state) => state.app.contracts['xht'].network;
+
 export const getPots = (state) => state.stake.pots;
 
 export const userActiveStakesSelector = createSelector(
@@ -157,5 +161,12 @@ export const pendingTransactionsSelector = createSelector(
 		return {
 			xht,
 		};
+	}
+);
+
+export const networksMismatchSelector = createSelector(
+	[getMetamaskNetwork, getContractNetwork],
+	(metamaskNetwork, network) => {
+		return metamaskNetwork && metamaskNetwork !== network;
 	}
 );

@@ -31,7 +31,14 @@ import {
 	SET_WEB_VIEWS,
 	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
+	//eslint-disable-next-line no-unused-vars
 	SET_INJECTED_HTML,
+	SET_CONTRACTS,
+	CHANGE_PAIR,
+	SET_ACTIVE_ORDERS_MARKET,
+	SET_RECENT_TRADES_MARKETS,
+	SET_TRADE_TAB,
+	SET_BROKER,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -44,6 +51,7 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
+import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -76,6 +84,8 @@ const INITIAL_STATE = {
 	language: getLanguage(),
 	pairs: {},
 	pair: '',
+	activeOrdersMarket: '',
+	recentTradesMarket: '',
 	tickers: {},
 	orderLimits: {},
 	coins: {
@@ -170,6 +180,9 @@ const INITIAL_STATE = {
 	injected_values: [],
 	injected_html: {},
 	plugins_injected_html: {},
+	contracts: {},
+	tradeTab: 0,
+	broker: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -182,17 +195,34 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_PAIRS:
 			return {
 				...state,
-				pairs: payload.pairs,
+				pairs: modifyPairsData(payload.pairs, { ...state.coins }),
 			};
-		case 'CHANGE_PAIR':
+		case CHANGE_PAIR:
 			return {
 				...state,
 				pair: payload.pair,
+				activeOrdersMarket: payload.pair,
+				recentTradesMarket: payload.pair,
+			};
+		case SET_ACTIVE_ORDERS_MARKET:
+			return {
+				...state,
+				activeOrdersMarket: payload.activeOrdersMarket,
+			};
+		case SET_RECENT_TRADES_MARKETS:
+			return {
+				...state,
+				recentTradesMarket: payload.recentTradesMarket,
 			};
 		case SET_CURRENCIES:
 			return {
 				...state,
-				coins: payload.coins,
+				coins: modifyCoinsData(payload.coins),
+			};
+		case SET_BROKER:
+			return {
+				...state,
+				broker: payload.broker,
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =
@@ -554,10 +584,16 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				injected_values: payload,
 			};
 		}
-		case SET_INJECTED_HTML: {
+		case SET_CONTRACTS: {
 			return {
 				...state,
-				injected_html: payload,
+				contracts: payload,
+			};
+		}
+		case SET_TRADE_TAB: {
+			return {
+				...state,
+				tradeTab: payload,
 			};
 		}
 		default:

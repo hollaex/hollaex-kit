@@ -163,6 +163,17 @@
 	text-decoration: underline;
 	cursor: pointer;
 }
+.id_data_form {
+	color: #ffffff;
+}
+.id_data_form .ant-select-arrow svg {
+	fill: #ffffff;
+}
+.id_data_form .green-btn {
+	background-color: #288500 !important;
+	color: #ffffff !important;
+	width: 100%;
+}
 .verification-confirm-modal .title {
 	font-size: 18px;
 	font-weight: bold;

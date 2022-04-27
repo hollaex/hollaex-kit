@@ -5,7 +5,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { dotifyString } from 'utils/eth';
 import AmountPreview from './AmountPreview';
 
-const SuccessfulContent = ({
+const SuccessfulUnstakeContent = ({
 	stakeData,
 	amountToReceive,
 	originalAmount,
@@ -13,7 +13,7 @@ const SuccessfulContent = ({
 	icons: ICONS,
 	account,
 }) => {
-	const { symbol, reward } = stakeData;
+	const { symbol, reward, display_name } = stakeData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_SUCCESSFUL_MESSAGE']})`,
@@ -23,12 +23,15 @@ const SuccessfulContent = ({
 
 	return (
 		<Fragment>
-			<div className="dialog-content background bottom" style={background}>
+			<div
+				className="dialog-content background bottom background-color-layer"
+				style={background}
+			>
 				<IconTitle
 					stringId="STAKE.SUCCESSFUL_UNSTAKE_TITLE"
 					text={STRINGS.formatString(
 						STRINGS['STAKE.SUCCESSFUL_UNSTAKE_TITLE'],
-						symbol.toUpperCase()
+						display_name
 					)}
 					textType="stake_popup__title m-0 text-align-left"
 					underline={false}
@@ -50,7 +53,7 @@ const SuccessfulContent = ({
 					</div>
 					<div>
 						<div className="secondary-text px-2">
-							{`${reward} ${symbol.toUpperCase()}`}
+							{`${reward} ${display_name}`}
 						</div>
 					</div>
 				</div>
@@ -63,7 +66,7 @@ const SuccessfulContent = ({
 					</div>
 					<div>
 						<div className="secondary-text px-2">
-							{`${originalAmount} ${symbol.toUpperCase()}`}
+							{`${originalAmount} ${display_name}`}
 						</div>
 					</div>
 				</div>
@@ -71,7 +74,7 @@ const SuccessfulContent = ({
 				<div className="d-flex">
 					<div className="bold">
 						<EditWrapper stringId="STAKE.SUCCESSFUL_STAKE_DESTINATION">
-							{STRINGS['STAKE.SUCCESSFUL_STAKE_DESTINATION']}:
+							{STRINGS['STAKE.SUCCESSFUL_UNSTAKE_ADDRESS']}:
 						</EditWrapper>
 					</div>
 					<div>
@@ -88,4 +91,4 @@ const SuccessfulContent = ({
 	);
 };
 
-export default withConfig(SuccessfulContent);
+export default withConfig(SuccessfulUnstakeContent);

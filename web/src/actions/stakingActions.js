@@ -1,6 +1,9 @@
 import { web3, CONTRACT_ADDRESSES, CONTRACTS } from 'config/contracts';
 import mathjs from 'mathjs';
 import { hash } from 'rsvp';
+import store from 'store';
+import { openMetamaskError } from 'actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 const commonConfigs = {
 	type: '0x2',
@@ -11,6 +14,11 @@ const CONTRACT_EVENTS = {
 	Distribute: 'DistributeEvent',
 	Stake: 'StakeEvent',
 	Unstake: 'UnstakeEvent',
+};
+
+export const ETHEREUM_EVENTS = {
+	NETWORK_CHANGE: 'networkChanged',
+	ACCOUNT_CHANGE: 'accountsChanged',
 };
 
 export const SET_ACCOUNT = 'SET_ACCOUNT';
@@ -127,105 +135,136 @@ export const connectWallet = () => {
 				const balance = await web3.eth.getBalance(account);
 				dispatch(setAccount(account, web3.utils.fromWei(balance)));
 			} catch (error) {
-				// Connect to Metamask using the button on the top right.
-				console.error('Connect to Metamask using the button on the top right.');
+				let message;
+				if (error.code === -32002) {
+					message = STRINGS['STAKE.CONNECT_ERROR'];
+				} else {
+					message = error.message || JSON.stringify(error);
+				}
+				store.dispatch(openMetamaskError(message));
 			}
 		} else {
-			// You must install Metamask into your browser: https://metamask.io/download.html
-			console.error(
-				'You must install Metamask into your browser: https://metamask.io/download.html'
-			);
+			const message = STRINGS['STAKE.INSTALL_METAMASK'];
+			store.dispatch(openMetamaskError(message));
 		}
 	};
 };
 
 export const loadBlockchainData = () => {
 	return async (dispatch) => {
-		const [[account], network] = await Promise.all([
-			web3.eth.getAccounts(),
-			web3.eth.net.getNetworkType(),
-		]);
-		let balance = 0;
-		if (account) {
-			const weiBalance = await web3.eth.getBalance(account);
-			balance = web3.utils.fromWei(weiBalance);
+		try {
+			const [[account], network] = await Promise.all([
+				web3.eth.getAccounts(),
+				web3.eth.net.getNetworkType(),
+			]);
+			let balance = 0;
+			if (account) {
+				const weiBalance = await web3.eth.getBalance(account);
+				balance = web3.utils.fromWei(weiBalance);
+			}
+			dispatch(setBlockchainData(account, balance, network));
+		} catch (err) {
+			console.error(err);
 		}
-		dispatch(setBlockchainData(account, balance, network));
 	};
 };
 
 export const getCurrentBlock = () => {
 	return async (dispatch) => {
-		const currentBlock = await web3.eth.getBlockNumber();
-		dispatch(setCurrentBlock(currentBlock));
+		try {
+			const currentBlock = await web3.eth.getBlockNumber();
+			dispatch(setCurrentBlock(currentBlock));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const generateTableData = (account) => {
 	return async (dispatch) => {
-		let data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
-			data = {
-				symbol,
-				available: getTokenBalance(symbol)(account),
-			};
-		});
+		try {
+			let data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data = {
+					symbol,
+					available: getTokenBalance(symbol)(account),
+				};
+			});
 
-		const stakables = await hash(data);
-		dispatch(setStakables([stakables]));
+			const stakables = await hash(data);
+			dispatch(setStakables([stakables]));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPeriods = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
-			data[symbol] = getPeriodsForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getAllPeriodsForToken(symbol)();
+			});
 
-		const periods = await hash(data);
-		dispatch(setPeriods(periods));
+			const periods = await hash(data);
+			dispatch(setPeriods(periods));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPenalties = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
-			data[symbol] = getPenaltyForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getPenaltyForToken(symbol)();
+			});
 
-		const penalties = await hash(data);
-		dispatch(setPenalties(penalties));
+			const penalties = await hash(data);
+			dispatch(setPenalties(penalties));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getAllPots = () => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
-			data[symbol] = getPotForToken(symbol)();
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getPotForToken(symbol)();
+			});
 
-		const pots = await hash(data);
-		dispatch(setPots(pots));
+			const pots = await hash(data);
+			dispatch(setPots(pots));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 const getUserStake = (token = 'xht') => async (address) => {
-	const stakes = await CONTRACTS[token].main.methods.getStake(address).call();
+	const stakes = await CONTRACTS()[token].main.methods.getStake(address).call();
 	return stakes;
 };
 
 export const getAllUserStakes = (account) => {
 	return async (dispatch) => {
-		const data = {};
-		Object.keys(CONTRACTS).forEach((symbol) => {
-			data[symbol] = getUserStake(symbol)(account);
-		});
+		try {
+			const data = {};
+			Object.keys(CONTRACTS()).forEach((symbol) => {
+				data[symbol] = getUserStake(symbol)(account);
+			});
 
-		const userStakes = await hash(data);
-		dispatch(setAllUserStakes(userStakes));
+			const userStakes = await hash(data);
+			dispatch(setAllUserStakes(userStakes));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
@@ -234,9 +273,9 @@ export const approve = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].token.methods
-		.approve(
-			CONTRACT_ADDRESSES[token].main,
+	return CONTRACTS()
+		[token].token.methods.approve(
+			CONTRACT_ADDRESSES()[token].main,
 			web3.utils.toWei(amount.toString())
 		)
 		.send(
@@ -254,8 +293,8 @@ export const addStake = (token = 'xht') => ({
 	account,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].main.methods
-		.addStake(web3.utils.toWei(amount.toString()), period)
+	return CONTRACTS()
+		[token].main.methods.addStake(web3.utils.toWei(amount.toString()), period)
 		.send(
 			{
 				...commonConfigs,
@@ -270,32 +309,41 @@ export const removeStake = (token = 'xht') => ({
 	index,
 	cb = () => {},
 }) => {
-	return CONTRACTS[token].main.methods.removeStake(index).send(
-		{
-			...commonConfigs,
-			from: account,
-		},
-		cb
-	);
+	return CONTRACTS()
+		[token].main.methods.removeStake(index)
+		.send(
+			{
+				...commonConfigs,
+				from: account,
+			},
+			cb
+		);
 };
 
-const getPeriodsForToken = (token = 'xht') => async () => {
-	const periods = await Promise.all([
-		CONTRACTS[token].main.methods.periods(0).call(),
-		CONTRACTS[token].main.methods.periods(1).call(),
-		CONTRACTS[token].main.methods.periods(2).call(),
-		CONTRACTS[token].main.methods.periods(3).call(),
-	]);
-	return periods;
+const getPeriodForToken = (token = 'xht') => async (index) => {
+	try {
+		const period = await CONTRACTS()[token].main.methods.periods(index).call();
+		return period;
+	} catch (err) {
+		console.error(err);
+	}
+};
+
+const getAllPeriodsForToken = (token = 'xht') => async () => {
+	const indices = Array.from({ length: 5 }, (_, i) => i);
+	const periods = await Promise.all(
+		indices.map((index) => getPeriodForToken(token)(index))
+	);
+	return periods.filter((period) => !!period);
 };
 
 const getPenaltyForToken = (token = 'xht') => async () => {
-	const penalty = await CONTRACTS[token].main.methods.penalty().call();
+	const penalty = await CONTRACTS()[token].main.methods.penalty().call();
 	return penalty;
 };
 
 const getPotForToken = (token = 'xht') => async () => {
-	const address = await CONTRACTS[token].main.methods.pot().call();
+	const address = await CONTRACTS()[token].main.methods.pot().call();
 	const balance = await getTokenBalance(token)(address);
 	return {
 		address,
@@ -304,105 +352,91 @@ const getPotForToken = (token = 'xht') => async () => {
 };
 
 // const getTotalStake = (token = 'xht') => async () => {
-// 	const total = await CONTRACTS[token].main.methods.totalStake().call();
+// 	const total = await CONTRACTS()[token].main.methods.totalStake().call();
 // 	return web3.utils.fromWei(total);
 // };
 
 const getTokenBalance = (token = 'xht') => async (account) => {
-	const balance = await CONTRACTS[token].token.methods
-		.balanceOf(account)
+	const balance = await CONTRACTS()
+		[token].token.methods.balanceOf(account)
 		.call();
 	return web3.utils.fromWei(balance);
 };
 
 export const getPublicInfo = (token = 'xht') => {
 	return async (dispatch) => {
-		const data = {
-			totalReward: CONTRACTS[token].main.methods.getTotalReward().call(),
-			totalStaked: CONTRACTS[token].main.methods.totalStake().call(),
-			totalStakeWeight: CONTRACTS[token].main.methods.totalStakeWeight().call(),
-		};
+		try {
+			const data = {
+				totalReward: CONTRACTS()[token].main.methods.getTotalReward().call(),
+				totalStaked: CONTRACTS()[token].main.methods.totalStake().call(),
+				totalStakeWeight: CONTRACTS()
+					[token].main.methods.totalStakeWeight()
+					.call(),
+			};
 
-		const result = await hash(data);
-		const publicInfo = {};
-		Object.entries(result).forEach(([key, value]) => {
-			publicInfo[key] = mathjs.number(web3.utils.fromWei(value));
-		});
-		dispatch(setPublicInfo(publicInfo));
+			const result = await hash(data);
+			const publicInfo = {};
+			Object.entries(result).forEach(([key, value]) => {
+				publicInfo[key] = mathjs.number(web3.utils.fromWei(value));
+			});
+			dispatch(setPublicInfo(publicInfo));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getStakeEvents = (token = 'xht', account = '') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents(
-			'allEvents',
-			{
+		try {
+			const events = await CONTRACTS()[token].main.getPastEvents('allEvents', {
 				fromBlock: 1,
 				toBlock: 'latest',
-			}
-			// {filter: {_address: account }}
-		);
-		dispatch(setContractEvents(events.reverse()));
+				//filter: {_address: account }
+			});
+			dispatch(setContractEvents(events.reverse()));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getDistributions = (token = 'xht') => {
 	return async (dispatch) => {
-		const events = await CONTRACTS[token].main.getPastEvents(
-			CONTRACT_EVENTS.Distribute,
-			{
-				fromBlock: 1,
-				toBlock: 'latest',
-			}
-		);
-		dispatch(setDistributions(events.reverse()));
+		try {
+			const events = await CONTRACTS()[token].main.getPastEvents(
+				CONTRACT_EVENTS.Distribute,
+				{
+					fromBlock: 1,
+					toBlock: 'latest',
+				}
+			);
+			dispatch(setDistributions(events.reverse()));
+		} catch (err) {
+			console.error(err);
+		}
 	};
 };
 
 export const getPendingTransactions = (account = '') => {
 	return async (dispatch) => {
-		// Pending Transactions Calculations
-		// const pendingTransactions = await web3.eth.getPendingTransactions();
-		const pendingTransactions = [
-			{
-				hash:
-					'0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b',
-				nonce: 2,
-				blockHash:
-					'0xef95f2f1ed3ca60b048b4bf67cde2195961e0bba6f70bcbea9a2c4e133e34b46',
-				blockNumber: 3,
-				transactionIndex: 0,
-				from: '0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b',
-				to: '0x6295ee1b4f6dd65047762f924ecd367c17eabf8f',
-				value: '123450000000000000',
-				gas: 314159,
-				gasPrice: '2000000000000',
-				input: '0x57cb2fc4',
-				v: '0x3d',
-				r: '0xaabc9ddafffb2ae0bac4107697547d22d9383667d9e97f5409dd6881ce08f13f',
-				s: '0x69e43116be8f842dcd4a0b2f760043737a59534430b762317db21d9ac8c5034',
-			},
-			{
-				hash:
-					'0x9fc76417374aa880d4449a1f7f31ec597f00b1f6f3dd2d66f4c9c6c445836d8b',
-				nonce: 3,
-				blockHash:
-					'0xef95f2f1ed3ca60b048b4bf67cde2195961e0bba6f70bcbea9a2c4e133e34b46',
-				blockNumber: 4,
-				transactionIndex: 0,
-				from: '0xa94f5374fce5edbc8e2a8697c15331677e6ebf0b',
-				to: '0x6295ee1b4f6dd65047762f924ecd367c17eabf8f',
-				value: '123450000000000000',
-				gas: 314159,
-				gasPrice: '2000000000000',
-				input: '0x57cb2fc4',
-				v: '0x3d',
-				r: '0xaabc9ddafffb2ae0bac4107697547d22d9383667d9e97f5409dd6881ce08f13f',
-				s: '0x69e43116be8f842dcd4a0b2f760043737a59534430b762317db21d9ac8c5034',
-			},
-		];
-		dispatch(setPendingTransactions(pendingTransactions));
+		try {
+			// Pending Transactions Calculations
+			// const pendingTransactions = await web3.eth.getPendingTransactions();
+			const pendingTransactions = [];
+			dispatch(setPendingTransactions(pendingTransactions));
+		} catch (err) {
+			console.error(err);
+		}
 	};
+};
+
+export const getTokenAllowance = (token = 'xht') => async (account) => {
+	const allowance = await CONTRACTS()
+		[token].token.methods.allowance(account, CONTRACT_ADDRESSES()[token].main)
+		.call();
+
+	return web3.utils.fromWei(allowance);
 };
 
 export const disconnectWallet = () => {

@@ -5,7 +5,7 @@ const nestedIcons = {
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
@@ -40,7 +40,7 @@ const nestedIcons = {
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
 		API: '/assets/images/tab-api.svg',
-		STAKE: '/assets/images/stake_and_earn.svg',
+		STAKE: '/assets/images/stake-page-icon.svg',
 	},
 
 	TOKEN: {
@@ -170,7 +170,7 @@ const nestedIcons = {
 	ID_GREY: '/assets/images/id-grey.svg',
 
 	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	INCOMING_COIN: '/assets/images/incoming-coin.svg',
 
 	PASSWORD_RESET: '/assets/images/password-reset.svg',
 
@@ -206,8 +206,7 @@ const nestedIcons = {
 		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE:
-		'/assets/images/arrow-trans-history-active.svg',
+	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history.svg',
 
 	CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
 	ITEM_OPTIONS: '/assets/images/item-options.svg',
@@ -261,6 +260,8 @@ const nestedIcons = {
 	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
+	MOVE_XHT: '/assets/stake/xht-move.svg',
+	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

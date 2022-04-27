@@ -19,14 +19,17 @@ const AmountContent = ({
 	amount,
 	setAmount,
 	icons: ICONS,
+	isValid,
+	error,
 }) => {
-	const { symbol, fullname, available } = tokenData;
-	const iconId = `${symbol.toUpperCase()}_ICON`;
+	const { fullname, available, icon_id, display_name } = tokenData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_AMOUNT_MODAL']})`,
-		height: '42.4rem',
-		width: '40rem',
+		'background-size': 'cover',
+		height: '34rem',
+		minWidth: '30rem',
+		maxWidth: '40rem',
 	};
 
 	const headerContent = {
@@ -56,7 +59,7 @@ const AmountContent = ({
 						stringId="STAKE.MODAL_TITLE"
 						text={STRINGS.formatString(
 							STRINGS['STAKE.MODAL_TITLE'],
-							symbol.toUpperCase()
+							display_name
 						)}
 						textType="stake_popup__title"
 						underline={false}
@@ -67,15 +70,20 @@ const AmountContent = ({
 							{STRINGS.formatString(
 								STRINGS['STAKE.AVAILABLE_TOKEN'],
 								fullname,
-								symbol.toUpperCase(),
-								<span className="blue-link mx-2">{available}</span>
+								display_name,
+								<span
+									className="blue-link mx-2 pointer"
+									onClick={() => setAmount({ target: { value: available } })}
+								>
+									{available}
+								</span>
 							)}
 						</EditWrapper>
 					</div>
 				</div>
 			</div>
 			<div className="dialog-content bottom w-100">
-				<div className="mt-4 pt-3">
+				<div className="mt-4">
 					<div className="pb-2">
 						<EditWrapper stringId="STAKE.AMOUNT_LABEL">
 							{STRINGS['STAKE.AMOUNT_LABEL']}
@@ -88,12 +96,15 @@ const AmountContent = ({
 						onChange={setAmount}
 						prefix={
 							<Image
-								iconId={iconId}
-								icon={ICONS[iconId]}
+								iconId={icon_id}
+								icon={ICONS[icon_id]}
 								wrapperClassName="currency-ball"
 							/>
 						}
 					/>
+					<div>
+						{error && <span className="field_warning_wrapper">{error}</span>}
+					</div>
 				</div>
 				<div className="d-flex mt-4 pt-3">
 					<div className="w-50">
@@ -106,7 +117,7 @@ const AmountContent = ({
 						<Button
 							label={STRINGS['STAKE.NEXT']}
 							onClick={onNext}
-							disabled={!amount}
+							disabled={!isValid}
 						/>
 					</div>
 				</div>

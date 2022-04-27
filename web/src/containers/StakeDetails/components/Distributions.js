@@ -11,9 +11,9 @@ const TABLE_PAGE_SIZE = 10;
 const Distributions = ({
 	token,
 	currentBlock,
-	network,
 	distributions,
 	goToPOT,
+	coins,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -38,7 +38,7 @@ const Distributions = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -53,6 +53,8 @@ const Distributions = ({
 		},
 	];
 
+	const { display_name } = coins[token];
+
 	return (
 		<div>
 			<div className="d-flex">
@@ -61,13 +63,13 @@ const Distributions = ({
 						<div className="bold important-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.SUBTITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 						<div className="secondary-text">
@@ -103,7 +105,7 @@ const Distributions = ({
 };
 
 const mapStateToProps = (store) => ({
-	network: store.stake.network,
+	coins: store.app.coins,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 });

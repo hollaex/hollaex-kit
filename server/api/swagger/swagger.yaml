@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.3.0"
+  version: "2.3.2"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1311,6 +1311,10 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
+        - support
+        - kyc
+        - communicator
     put:
       description: Update exchange configuration
       operationId: updateExchange
@@ -3132,6 +3136,11 @@ paths:
                     type: string
                   city:
                     type: string
+              id_data:
+                type: object
+                properties:
+                  status:
+                    type: number
       responses:
         200:
           description: Success
@@ -4318,7 +4327,7 @@ paths:
               - side
               - size
       responses:
-        201:
+        200:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
@@ -4589,6 +4598,11 @@ definitions:
         type: string
       new_password:
         type: string
+      otp_code:
+        type: string
+        description: OTP code when otp is enabled
+        minLength: 6
+        maxLength: 6
   LoginsResponse:
     type: object
     properties:
@@ -4712,7 +4726,7 @@ definitions:
           - buy
           - sell
       size:
-        description: "Size of the orders. Should have 4 decimal, if it has more than 4 it will be rounded to 4 decimal. Min: 0.0001, Max: 21000000"
+        description: "Amount of the orders."
         type: number
         format: double
       type:

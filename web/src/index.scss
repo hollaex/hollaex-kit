@@ -178,19 +178,15 @@ svg {
 	.copy-notification-0,
 	.account-svg-1,
 	.incoming-btc-01,
-	.incoming-toman-01,
+	.incoming-coin-01,
 	.coin-btc-5,
-	.stake-smiley-1 {
+	.stake-page-icon {
 		fill: $colors-black;
 	}
 
 	.logout-door,
 	.account-inactive {
 		stroke: $colors-black;
-	}
-
-	.stake-smiley-0 {
-		fill: $app-sidebar-background;
 	}
 
 	.withdraw-2,
@@ -249,7 +245,6 @@ svg {
 	.partial-fill,
 	.limit-trade-tick,
 	.chat-0,
-	.trans-history-1,
 	.quick-trade-insufficient-funds,
 	.quick-trade-success,
 	.gender-female,
@@ -272,7 +267,7 @@ svg {
 	.gear-grey-1,
 	.g1_3,
 	.incoming-btc-2,
-	.incoming-toman-02,
+	.incoming-coin-02,
 	.security-grey-1,
 	.coin-btc-1,
 	.wallet-selected-2,
@@ -290,7 +285,9 @@ svg {
 	.stake-variable,
 	.stake-pending,
 	.staking-unlock,
-	.send-email-code {
+	.send-email-code,
+	.move-xht,
+	.connect-desktop {
 		fill: $colors-main-black;
 	}
 
@@ -307,7 +304,7 @@ svg {
 	.transaction-history-4,
 	.wallet-coins-1,
 	.quick-trade-3,
-	.stake-smiley-1 {
+	.stake-page-icon {
 		stroke: none;
 	}
 
@@ -335,7 +332,6 @@ svg {
 
 	.pending-timer,
 	.tab-close,
-	.trans-history-4,
 	.icon-check-1,
 	.quick-trade-1,
 	.success-check-box-0,

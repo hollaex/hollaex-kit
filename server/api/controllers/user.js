@@ -73,7 +73,7 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
@@ -306,7 +306,7 @@ const loginPost = (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
@@ -534,20 +534,21 @@ const updateSettings = (req, res) => {
 };
 
 const changePassword = (req, res) => {
-	loggerUser.debug(req.uuid, 'controllers/user/changePassword', req.auth.sub);
+	loggerUser.verbose(req.uuid, 'controllers/user/changePassword', req.auth.sub);
 	const email = req.auth.sub.email;
-	const { old_password, new_password } = req.swagger.params.data.value;
+	const { old_password, new_password, otp_code } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
 	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
 
-	loggerUser.debug(
+	loggerUser.verbose(
 		req.uuid,
 		'controllers/user/changePassword',
-		req.swagger.params.data.value
+		ip,
+		otp_code
 	);
 
-	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain)
-		.then(() => res.json({ message: `Change password email confirmation sent to: ${email}` }))
+	toolsLib.security.changeUserPassword(email, old_password, new_password, ip, domain, otp_code)
+		.then(() => res.json({ message: `Verification email to change password is sent to: ${email}` }))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/changePassword', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -556,6 +557,14 @@ const changePassword = (req, res) => {
 
 const confirmChangePassword = (req, res) => {
 	const code = req.swagger.params.code.value;
+	const ip = req.headers['x-real-ip'];
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/changePassword',
+		code,
+		ip
+	);
 
 	toolsLib.security.confirmChangeUserPassword(code)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
@@ -782,7 +791,7 @@ const createHmacToken = (req, res) => {
 		.then((confirmed) => {
 			if (confirmed) {
 				// TODO check for the name duplication
-				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -833,7 +842,7 @@ function updateHmacToken(req, res) {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}

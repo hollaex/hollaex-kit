@@ -11,7 +11,7 @@ import { setOrderbooks } from 'actions/orderbookAction';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getToken } from 'utils/token';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { WS_URL } from 'config/constants';
 import { submitOrder } from 'actions/orderAction';
 import { getUserTrades } from 'actions/walletActions';
 import { storeLayout, getLayout, resetTools } from 'actions/toolsAction';
@@ -20,7 +20,8 @@ import {
 	setNotification,
 	NOTIFICATIONS,
 	RISKY_ORDER,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import { isLoggedIn } from '../../utils/token';
@@ -59,7 +60,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 19,
+		h: 17,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -84,14 +85,14 @@ const defaultLayout = [
 		y: 0,
 		i: 'order_entry',
 		isDraggable: true,
-		isResizable: false,
+		isResizable: true,
 		resizeHandles: ['se'],
 	},
 	{
 		w: 14,
-		h: 11,
+		h: 12,
 		x: 0,
-		y: 19,
+		y: 28,
 		i: 'recent_trades',
 		isDraggable: true,
 		isResizable: true,
@@ -99,9 +100,9 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 10,
+		h: 11,
 		x: 0,
-		y: 30,
+		y: 17,
 		i: 'open_orders',
 		isDraggable: true,
 		isResizable: true,
@@ -150,11 +151,11 @@ const layout = getLayout().map(({ w, h, x, y, i }) => {
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
 			orderbookWs: null,
-			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
@@ -178,12 +179,21 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { tools } = this.props;
+		const {
+			tools,
+			recentTradesMarket,
+			getUserTrades,
+			routeParams,
+		} = this.props;
 
-		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+		if (nextProps.routeParams.pair !== routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 			this.subscribe(nextProps.routeParams.pair);
-			this.unsubscribe(this.props.routeParams.pair);
+			this.unsubscribe(routeParams.pair);
+		} else if (nextProps.recentTradesMarket !== recentTradesMarket) {
+			if (isLoggedIn()) {
+				getUserTrades({ symbol: nextProps.recentTradesMarket });
+			}
 		}
 
 		if (JSON.stringify(tools) !== JSON.stringify(nextProps.tools)) {
@@ -208,7 +218,10 @@ class Trade extends PureComponent {
 	onResetLayout = () => {
 		const { resetTools } = this.props;
 		resetTools();
-		setTimeout(this.onLayoutChange, 1000);
+		setTimeout(
+			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
+			1000
+		);
 	};
 
 	componentWillUnmount() {
@@ -220,7 +233,7 @@ class Trade extends PureComponent {
 
 	setSymbol = (symbol = '') => {
 		if (isLoggedIn()) {
-			this.props.getUserTrades(symbol);
+			this.props.getUserTrades({ symbol });
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '', orderbookFetched: false }, () => {
@@ -249,8 +262,8 @@ class Trade extends PureComponent {
 		}
 	};
 
-	goToTransactionsHistory = () => {
-		this.props.router.push('/transactions');
+	goToTransactionsHistory = (tab = '') => {
+		this.props.router.push(`/transactions${tab ? `?${tab}` : ''} `);
 	};
 
 	goToPair = (pair) => {
@@ -323,7 +336,8 @@ class Trade extends PureComponent {
 	};
 
 	setActiveTab = (activeTab) => {
-		this.setState({ activeTab });
+		const { setTradeTab } = this.props;
+		setTradeTab(activeTab);
 	};
 
 	storeData = (data) => {
@@ -441,15 +455,16 @@ class Trade extends PureComponent {
 			coins,
 			discount,
 			fees,
+			recentTradesMarket,
+			recentTradesMarketData,
+			activeOrdersMarket,
+			activeOrdersMarketData,
 		} = this.props;
 		const { chartHeight, symbol, orderbookFetched } = this.state;
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -544,8 +559,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<RecentTradesWrapper
-							pair={pair}
-							pairData={pairData}
+							pair={recentTradesMarket}
+							pairData={recentTradesMarketData}
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
@@ -562,8 +577,8 @@ class Trade extends PureComponent {
 				return (
 					<div key={key}>
 						<ActiveOrdersWrapper
-							pair={pair}
-							pairData={pairData}
+							pair={activeOrdersMarket}
+							pairData={activeOrdersMarketData}
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
@@ -604,7 +619,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							<DepthChart
-								containerProps={{ style: { height: '100%', width: '100%' } }}
+								containerProps={{ className: 'w-100 h-100 zoom-in' }}
 							/>
 						</TradeBlock>
 					</div>
@@ -616,9 +631,19 @@ class Trade extends PureComponent {
 		}
 	};
 
-	onLayoutChange = (layout = defaultLayout) => {
+	onLayoutChange = (layout = defaultLayout, cb) => {
 		storeLayout(layout);
-		this.setState({ layout });
+		this.setState({ layout }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
+	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
+
+	onStopResize = () => {
+		setTimeout(this.dispatchResizeEvent, 500);
 	};
 
 	render() {
@@ -636,20 +661,18 @@ class Trade extends PureComponent {
 			fees,
 			icons,
 			tools,
+			activeTab,
 		} = this.props;
-		const { symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched, layout } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -722,8 +745,6 @@ class Trade extends PureComponent {
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
-							goToPair={this.goToPair}
-							goToMarkets={() => this.setActiveTab(3)}
 							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
@@ -735,9 +756,9 @@ class Trade extends PureComponent {
 						<EventListener target="window" onResize={this.onResize} />
 						<GridLayout
 							className="layout w-100"
-							layout={this.state.layout}
-							onLayoutChange={this.onLayoutChange}
-							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
+							layout={layout}
+							onLayoutChange={(layout) => this.onLayoutChange(layout)}
+							onResizeStop={this.onStopResize}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
@@ -745,6 +766,7 @@ class Trade extends PureComponent {
 							}
 							rowHeight={30}
 							cols={24}
+							draggableHandle=".drag-handle"
 						>
 							{this.renderTools()}
 						</GridLayout>
@@ -784,9 +806,26 @@ const feesDataSelector = createSelector(
 const mapStateToProps = (state) => {
 	const pair = state.app.pair;
 	const pairData = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
+
+	const activeOrdersMarket = state.app.activeOrdersMarket;
+	const activeOrdersMarketData = state.app.pairs[activeOrdersMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
+	const recentTradesMarket = state.app.recentTradesMarket;
+	const recentTradesMarketData = state.app.pairs[recentTradesMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
 	return {
 		pair,
 		pairData,
+		activeOrdersMarket,
+		activeOrdersMarketData,
+		recentTradesMarket,
+		recentTradesMarketData,
 		pairs: state.app.pairs,
 		coins: state.app.coins,
 		balance: state.user.balance,
@@ -800,16 +839,18 @@ const mapStateToProps = (state) => {
 		isReady: state.app.isReady,
 		constants: state.app.constants,
 		tools: state.tools,
+		activeTab: state.app.tradeTab,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+	getUserTrades: bindActionCreators(getUserTrades, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	resetTools: bindActionCreators(resetTools, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

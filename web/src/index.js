@@ -35,6 +35,7 @@ import {
 	setBaseCurrency,
 	setDefaultLogo,
 	consoleKitInfo,
+	getContracts,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -56,6 +57,8 @@ import {
 	setCurrencies,
 	setOrderLimits,
 	setHelpdeskInfo,
+	setContracts,
+	setBroker,
 } from 'actions/appActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
@@ -73,6 +76,7 @@ consolePluginDevModeInfo();
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
+	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
 		meta: { versions: remoteVersions = {}, sections = {} } = {},
@@ -143,9 +147,11 @@ const getConfigs = async () => {
 		store.dispatch(changePair(initialPair));
 	}
 
+	store.dispatch(setCurrencies(constants.coins));
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
-	store.dispatch(setCurrencies(constants.coins));
+	store.dispatch(setContracts(getContracts(constants.coins)));
+	store.dispatch(setBroker(constants.broker));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {

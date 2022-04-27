@@ -28,7 +28,13 @@ const BasicIconTitle = ({
 				/>
 			)}
 			<EditWrapper stringId={stringId} iconId={iconId}>
-				<div className={classnames('icon_title-text', 'text-center', textType)}>
+				<div
+					className={classnames(
+						'icon_title-text pt-2',
+						'text-center',
+						textType
+					)}
+				>
 					{text}
 				</div>
 			</EditWrapper>

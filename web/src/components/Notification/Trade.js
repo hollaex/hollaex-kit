@@ -99,7 +99,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					btc,
-					baseValue.symbol.toUpperCase()
+					baseValue.display_name
 				)}
 			/>
 			<InformationRow
@@ -108,7 +108,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					average,
-					payValue.symbol.toUpperCase()
+					payValue.display_name
 				)}
 			/>
 			<InformationRow
@@ -117,7 +117,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					base,
-					payValue.symbol.toUpperCase()
+					payValue.display_name
 				)}
 			/>
 		</NotificationContent>

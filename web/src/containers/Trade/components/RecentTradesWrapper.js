@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import UserTrades from './UserTrades';
 import LogoutInfoTrade from './LogoutInfoTrade';
@@ -9,8 +11,9 @@ import { ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { userTradesSelector } from '../utils';
+import { setRecentTradesMarket } from 'actions/appActions';
 
-const OrdersWrapper = ({
+const RecentTradesWrapper = ({
 	pair,
 	pairData,
 	userTrades,
@@ -21,6 +24,9 @@ const OrdersWrapper = ({
 	icons: ICONS,
 	goToTransactionsHistory,
 	tool,
+	recentTradesMarket,
+	setRecentTradesMarket,
+	fetched,
 }) => {
 	return (
 		<TradeBlock
@@ -32,7 +38,7 @@ const OrdersWrapper = ({
 						text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 						iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
 						iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-						onClick={goToTransactionsHistory}
+						onClick={() => goToTransactionsHistory('trades')}
 						status="information"
 						className="trade-wrapper-action"
 					/>
@@ -42,18 +48,24 @@ const OrdersWrapper = ({
 			}
 			stringId="TOOLS.RECENT_TRADES"
 			tool={tool}
+			titleClassName="mb-4"
 		>
 			{isLoggedIn() ? (
-				<UserTrades
-					pageSize={10}
-					trades={userTrades}
-					pair={pair}
-					pairData={pairData}
-					pairs={pairs}
-					coins={coins}
-					discount={discount}
-					prices={prices}
-				/>
+				<Fragment>
+					<Filters pair={recentTradesMarket} onChange={setRecentTradesMarket} />
+					<UserTrades
+						pageSize={userTrades.length}
+						trades={userTrades}
+						pair={pair}
+						pairData={pairData}
+						pairs={pairs}
+						coins={coins}
+						discount={discount}
+						prices={prices}
+						icons={ICONS}
+						isLoading={!fetched}
+					/>
+				</Fragment>
 			) : (
 				<LogoutInfoTrade />
 			)}
@@ -61,13 +73,22 @@ const OrdersWrapper = ({
 	);
 };
 
-OrdersWrapper.defaultProps = {
+RecentTradesWrapper.defaultProps = {
 	userTrades: [],
 };
 
 const mapStateToProps = (state) => ({
 	prices: state.asset.oraclePrices,
 	userTrades: userTradesSelector(state),
+	recentTradesMarket: state.app.recentTradesMarket,
+	fetched: state.wallet.trades.fetched,
 });
 
-export default connect(mapStateToProps)(withConfig(OrdersWrapper));
+const mapDispatchToProps = (dispatch) => ({
+	setRecentTradesMarket: bindActionCreators(setRecentTradesMarket, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(RecentTradesWrapper));

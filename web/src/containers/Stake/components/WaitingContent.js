@@ -1,12 +1,35 @@
 import React, { Fragment } from 'react';
-import { EditWrapper, IconTitle } from 'components';
+import { connect } from 'react-redux';
+import { EditWrapper, IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { LoadingOutlined } from '@ant-design/icons';
+import Ionicon from 'react-ionicons';
 
-const WaitingContent = ({ action, amount, symbol, isPending }) => {
+const WaitingContent = ({
+	action,
+	amount,
+	symbol,
+	isPending,
+	onClose,
+	coins,
+}) => {
+	const { display_name } = coins[symbol];
 	return (
 		<Fragment>
+			{isPending && (
+				<ActionNotification
+					text={
+						<Ionicon
+							icon="md-close"
+							fontSize="24px"
+							className="action_notification-image"
+						/>
+					}
+					onClick={onClose}
+					className="close-button p-2"
+				/>
+			)}
 			<div className="dialog-content">
 				<div className="d-flex content-center pt-4 mt-4 staking-loader">
 					{isPending && <LoadingOutlined />}
@@ -27,13 +50,13 @@ const WaitingContent = ({ action, amount, symbol, isPending }) => {
 									STRINGS['STAKE.WAITING_PROMPT'],
 									STRINGS[`STAKE.WAITING_${action}`],
 									amount,
-									symbol.toUpperCase()
+									display_name
 							  )
 							: STRINGS.formatString(
 									STRINGS['STAKE.WAITING_PROMPT'],
 									STRINGS[`STAKE.WAITING_${action}_ING`],
 									amount,
-									symbol.toUpperCase()
+									display_name
 							  )}
 					</EditWrapper>
 				</div>
@@ -53,4 +76,8 @@ const WaitingContent = ({ action, amount, symbol, isPending }) => {
 	);
 };
 
-export default withConfig(WaitingContent);
+const mapStateToProps = (store) => ({
+	coins: store.app.coins,
+});
+
+export default connect(mapStateToProps)(withConfig(WaitingContent));

@@ -1,14 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-import { IconTitle, Button } from '../../../components';
-import STRINGS from '../../../config/localizedStrings';
+import { DEFAULT_COIN_DATA } from 'config/constants';
+import { IconTitle, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 
 const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
-	const { symbol = '' } = data.coins[data.pairData.pair_2] || {};
+	const { display_name } =
+		data.coins[data.pairData.pair_2] || DEFAULT_COIN_DATA;
 	const { increment_price } = data.pairData;
 	return (
 		<div className="risky-trade-wrapper">
@@ -54,8 +56,12 @@ const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
 			{data.order.price && data.order.size ? (
 				<div className="mb-2">
 					<EditWrapper stringId="AMOUNT">
-						{STRINGS['AMOUNT']}: {formatToCurrency((data.order.price * data.order.size), increment_price)}{' '}
-						{symbol.toUpperCase()}
+						{STRINGS['AMOUNT']}:{' '}
+						{formatToCurrency(
+							data.order.price * data.order.size,
+							increment_price
+						)}{' '}
+						{display_name}
 					</EditWrapper>
 				</div>
 			) : null}

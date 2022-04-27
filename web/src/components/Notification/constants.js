@@ -56,14 +56,7 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 };
 
 export const getDepositTexts = (currency, coins = {}, status = false) => {
-	let texts = {};
-	let currencySymbol = currency.trim();
-	texts = generateCryptoDepositTexts(
-		STRINGS,
-		status,
-		currencySymbol.toUpperCase(),
-		coins
-	);
+	const texts = generateCryptoDepositTexts(STRINGS, status, currency, coins);
 	return {
 		title: texts.TITLE,
 		subtitle: texts.SUBTITLE,

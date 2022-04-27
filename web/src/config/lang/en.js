@@ -42,7 +42,7 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
-	VIEW_MARKET: 'view market', // new
+	VIEW_MARKET: 'view markets', // new
 	GO_TRADE: 'Go Trade', // new
 	VIEW_INFO: 'View info page', // new
 	APPLY_HERE: 'Apply Here', // new
@@ -260,6 +260,7 @@ export default {
 		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
 		FOOTER_TEXT_1: 'Sourced from', //new
 		GO_TO_TEXT: 'Go to', //new
+		SOURCE_TEXT: 'Broker OTC deal', //new
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
@@ -586,7 +587,7 @@ export default {
 				'Create a warning pop up when a trade order value goes over a set percentage amount of your portfolio',
 			INFO_TEXT_1: 'Total assets value in {0}: {1}',
 			PORTFOLIO: 'Percentage of portfolio',
-			TOMAN_ASSET: 'Approximate Value',
+			VALUE_ASSET: 'Approximate Value',
 			ADJUST: '(ADJUST PERCENTAGE)',
 			ACTIVATE_RISK_MANAGMENT: 'Activate Risk Managment',
 			WARNING_POP_UP: 'Warning pop ups',
@@ -692,6 +693,7 @@ export default {
 		},
 	},
 	STAKE: {
+		NETWORK_WARNING: 'Incompatible network. Please change your network to {0}',
 		EARN: 'Earn', //new
 		TITLE: 'Stake',
 		MODAL_TITLE: 'Stake and earn {0}',
@@ -699,12 +701,12 @@ export default {
 		AVAILABLE_TOKEN: '{0} ({1}) available to stake: {2}',
 		DEFI_TITLE: 'DeFi asset staking',
 		DEFI_TEXT:
-			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connecting, once connected you can stake and start earning directly from your wallet.',
+			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.',
 		GET_STAKES: 'Get stakes', //new
 		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
-		ON_EXCHANGE_XHT: 'On exchange XHT balance: {0} {1}',
+		ON_EXCHANGE_XHT: 'On exchange {0} balance: {1} {2}',
 		LOGIN_HERE: 'Login here',
-		MOVE_XHT: 'Move XHT',
+		MOVE_XHT: 'Move {0}',
 		ESTIMATED_STAKED: 'Estimated value of total staked',
 		ESTIMATED_EARNINGS: 'Estimated value of earnings',
 		CONNECT_WALLET: 'Connect wallet',
@@ -715,12 +717,11 @@ export default {
 		BLOCK: 'Block',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
+		GO_TO_WALLET: 'go to wallet',
 		AMOUNT_LABEL: 'Amount to stake',
 		PERIOD_SUBTITLE:
 			'Longer you stake the more you are rewarded. Select the duration of stake below.',
-		PERIOD_OPTION_TEXT: 'Stake for {0} and earn',
-		STAKE_AND_EARN_DETAILS:
-			'Stake for ~{0} and earn {1}x on the amount you stake',
+		STAKE_AND_EARN_DETAILS: 'Stake for ~{0} and earn {1}',
 		PREDICTED_EARNINGS: 'Predicted earnings',
 		VARIABLE_TITLE: 'Variable*',
 		VARIABLE_TEXT: '*{0} about how the variable rate works.',
@@ -737,6 +738,7 @@ export default {
 		WAITING_TITLE: 'Waiting for confirmation',
 		WAITING_TEXT: 'Confirm this transaction in your wallet',
 		PENDING_TEXT: 'Transaction pending...',
+		CHECKING_ALLOWANCE: 'Checking {0} allowance...',
 		WAITING_PROMPT: '{0} {1} {2}',
 		WAITING_STAKE: 'Confirm the stake amount',
 		WAITING_WITHDRAW: 'Allowing spending',
@@ -749,6 +751,7 @@ export default {
 		SUCCESSFUL_STAKE_DURATION_KEY: 'Duration',
 		SUCCESSFUL_STAKE_DURATION_DEF: 'Ends on block {0} ({1})',
 		SUCCESSFUL_STAKE_DESTINATION: 'Destination',
+		SUCCESSFUL_UNSTAKE_ADDRESS: 'My Address',
 		OKAY: 'Okay',
 		ERROR_TITLE: 'Error: {0} was rejected',
 		ERROR_SUBTITLE: 'If this was a mistake you can go back and retry',
@@ -762,8 +765,35 @@ export default {
 		PENDING_TRANSACTIONS: 'Pending {0} {1}',
 		VIEW_ON: 'View on the {0}',
 		BLOCKCHAIN: 'blockchain',
-		DISCONNECT: 'Disconnect account',
 		VIEW_POT: 'View distribution POT',
+		COMPLETED: 'Matured',
+		COMPLETED_TOOLTIP:
+			'Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.',
+		CONNECT_ERROR: 'Please check your wallet',
+		INSTALL_METAMASK:
+			'You must install Metamask into your browser: https://metamask.io/download.html',
+		REWARDS: {
+			0: {
+				CARD: 'Earn rewards (no bonuses)',
+				TEXT: 'regular rewards.',
+			},
+			1: {
+				CARD: 'Earn rewards + bonuses',
+				TEXT: 'bonus rewards on your earnings',
+			},
+			2: {
+				CARD: 'Highest rewards, highest bonuses',
+				TEXT: 'the highest bonus rewards on your earnings',
+			},
+			3: {
+				CARD: '',
+				TEXT: '',
+			},
+			4: {
+				CARD: '',
+				TEXT: '',
+			},
+		},
 	},
 	UNSTAKE: {
 		TITLE: 'Unstake',
@@ -773,7 +803,7 @@ export default {
 			'This could lead to a percentage of your initial principle stake being deducted and all earnings being forfeited.',
 		EARLY_WARNING_TEXT_2: 'Are you sure you want to proceed?',
 		BACK: 'GO BACK',
-		REVIEW: 'REVIEW STAKE',
+		REVIEW: 'REMOVE STAKE',
 		DURATION: 'EST. maturation duration',
 		CANCEL: 'Cancel',
 		PROCEED: 'Proceed',
@@ -978,7 +1008,7 @@ export default {
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -1051,6 +1081,8 @@ export default {
 	QUICK_TRADE_INSUFFICIENT_FUND: 'Insufficient funds',
 	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
 		'You have insufficient funds in your wallet to complete this transaction.',
+	QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE:
+		'Broker OTC deal is currently not available.', //new
 	SUBMIT: 'submit',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
@@ -1391,7 +1423,7 @@ export default {
 	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
-	ORDER_TYPE: 'type',
+	ORDER_TYPE: 'Type',
 	ORDER_MODE: 'Order mode', //new
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
@@ -1414,7 +1446,7 @@ export default {
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
 		SUB_HEADING: 'Cancel all orders',
-		INFO_1: 'This will cancel your open orders for this market.',
+		INFO_1: 'This will cancel your open orders for {0} market.',
 		INFO_2: 'Are you sure you want to cancel all your open orders?',
 	},
 	AMOUNT_IN: 'Amount in',
@@ -1473,4 +1505,12 @@ export default {
 		COMING_SOON: 'coming soon', //new
 	},
 	WALLET_BALANCE_LOADING: 'Balance loading...', //new
+	LOADING: 'Loading...', //new,
+	CONNECT_VIA_DESKTOP: {
+		TITLE: 'Connect via desktop',
+		SUBTITLE:
+			"DeFi staking through your mobile devices aren't supported at this time.",
+		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
+	},
+	ORDER_HISTORY_CLOSED: 'Closed', //new
 };

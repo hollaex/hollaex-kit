@@ -27,6 +27,7 @@ const ReviewEarlyUnstake = ({
 		progressStatusText,
 		reward,
 		symbol,
+		display_name,
 	} = stakeData;
 	const penalty = penalties[symbol];
 
@@ -89,7 +90,7 @@ const ReviewEarlyUnstake = ({
 							{STRINGS.formatString(
 								STRINGS['UNSTAKE.PRICE_FORMAT'],
 								reward,
-								symbol.toUpperCase()
+								display_name
 							)}
 						</EditWrapper>
 					</div>
@@ -100,7 +101,7 @@ const ReviewEarlyUnstake = ({
 								STRINGS.formatString(
 									STRINGS['UNSTAKE.PRICE_FORMAT'],
 									reward,
-									symbol.toUpperCase()
+									display_name
 								)
 							)}
 						</EditWrapper>
@@ -119,7 +120,7 @@ const ReviewEarlyUnstake = ({
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
 							slashedAmount,
-							symbol.toUpperCase()
+							display_name
 						)}
 					</div>
 				</div>

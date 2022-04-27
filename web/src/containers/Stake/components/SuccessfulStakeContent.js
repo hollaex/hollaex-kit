@@ -16,7 +16,7 @@ const SuccessfulContent = ({
 	currentBlock,
 	account,
 }) => {
-	const { symbol } = tokenData;
+	const { symbol, display_name } = tokenData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_SUCCESSFUL_MESSAGE']})`,
@@ -26,12 +26,15 @@ const SuccessfulContent = ({
 
 	return (
 		<Fragment>
-			<div className="dialog-content background bottom" style={background}>
+			<div
+				className="dialog-content background bottom background-color-layer"
+				style={background}
+			>
 				<IconTitle
 					stringId="STAKE.SUCCESSFUL_STAKE_TITLE"
 					text={STRINGS.formatString(
 						STRINGS['STAKE.SUCCESSFUL_STAKE_TITLE'],
-						symbol.toUpperCase()
+						display_name
 					)}
 					textType="stake_popup__title m-0 text-align-left"
 					underline={false}

@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.3.0",
+	"version": "2.3.2",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -26,8 +26,8 @@
 		"emoji-mart": "2.11.1",
 		"flag-icon-css": "3.3.0",
 		"flat": "5.0.2",
-		"highcharts": "8.2.2",
-		"highcharts-react-official": "3.0.0",
+		"highcharts": "10.0.0",
+		"highcharts-react-official": "3.1.0",
 		"hollaex-web-lib": "0.3.0",
 		"html-to-draftjs": "1.5.0",
 		"jwt-decode": "2.2.0",

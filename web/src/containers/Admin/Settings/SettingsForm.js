@@ -66,6 +66,9 @@ export const EmailSettingsForm = ({
 	buttonSubmitting,
 	emailData,
 	requestEmail,
+	defaults,
+	emailTypeData,
+	constants,
 }) => {
 	const fields = generateAdminSettings('email');
 	const [isOpen, setIsOpen] = useState(false);
@@ -204,7 +207,7 @@ export const EmailSettingsForm = ({
 			return (
 				<div>
 					<div className="content-heading">Complete</div>
-					<div>Your test email is the way!</div>
+					<div>Your test email is on the way!</div>
 					<div className="btn-wrapper btn-width">
 						<Button
 							type="primary"
@@ -219,23 +222,17 @@ export const EmailSettingsForm = ({
 		}
 	};
 
-	const emailInfo = emailData && emailData.email;
-
-	let languageData = Object.assign(
-		{},
-		...languages.map((item) => ({ [item.value.toLowerCase()]: item }))
-	);
+	const { kit = {} } = constants;
+	let valid_languages =
+		kit && kit.valid_languages && kit.valid_languages.split(',');
 	let selectedLanguages = [];
-	if (emailInfo) {
-		selectedLanguages = Object.keys(emailInfo).filter((data) =>
-			Object.keys(languageData).includes(data)
-		);
+	if (valid_languages) {
 		selectedLanguages = languages.filter((data) =>
-			selectedLanguages.includes(data.value)
+			valid_languages.includes(data.value)
 		);
+	} else {
+		selectedLanguages = languages;
 	}
-
-	const emailType = emailInfo ? Object.keys(emailInfo.format) : [];
 
 	const renderFooter = (values) => {
 		if (values) {
@@ -282,10 +279,11 @@ export const EmailSettingsForm = ({
 				<p>Select the type of email you'd like to edit below.</p>
 				{Object.keys(emailData).length ? (
 					<CustomizeEmailForm
-						emailInfo={emailInfo}
+						emailInfo={emailData}
 						requestEmail={requestEmail}
 						selectedLanguages={selectedLanguages}
-						emailType={emailType}
+						defaultLanguage={defaults && defaults.language}
+						emailType={emailTypeData}
 					/>
 				) : (
 					<Spin />

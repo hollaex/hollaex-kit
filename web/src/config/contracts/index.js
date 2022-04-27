@@ -1,12 +1,13 @@
+import store from '../../store';
 import Main from 'config/contracts/Main.json';
 import Token from 'config/contracts/Token.json';
 import Web3 from 'web3';
 
-export const CONTRACT_ADDRESSES = {
-	xht: {
-		main: '0x2ac19c641e6453b2fae4bf6bc52f14a5c82eea0f',
-		token: '0xf0D641A2f02cA52ec56d0791BC79f68da2C772A9',
-	},
+export const CONTRACT_ADDRESSES = () => {
+	const {
+		app: { contracts },
+	} = store.getState();
+	return contracts;
 };
 
 export const web3 = new Web3(Web3.givenProvider || 'http://localhost:8545');
@@ -22,12 +23,15 @@ export const generateContracts = (contractsObject, web3) => {
 	return contracts;
 };
 
-export const CONTRACTS = generateContracts(CONTRACT_ADDRESSES, web3);
+export const CONTRACTS = () => generateContracts(CONTRACT_ADDRESSES(), web3);
 
-export const isStakingAvailable = (token) => {
+export const isStakingAvailable = (token, contracts = {}) => {
 	return (
-		CONTRACT_ADDRESSES[token] &&
-		CONTRACT_ADDRESSES[token].main &&
-		CONTRACT_ADDRESSES[token].token
+		contracts[token] &&
+		contracts[token].main &&
+		contracts[token].token &&
+		contracts[token].network
 	);
 };
+
+export const STAKING_INDEX_COIN = 'xht';

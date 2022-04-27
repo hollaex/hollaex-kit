@@ -35,6 +35,8 @@ const AssetsBlock = ({
 	icons: ICONS,
 	hasEarn,
 	loading,
+	contracts,
+	broker,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -65,7 +67,18 @@ const AssetsBlock = ({
 	};
 
 	const isMarketAvailable = (pair) => {
-		return pair && pairs[pair] && pairs[pair].active;
+		if (pair) {
+			let flippedPair = pair.split('-');
+			flippedPair.reverse().join('-');
+			const isBroker = !!broker.filter(
+				(item) => item.symbol === pair || item.symbol === flippedPair
+			).length;
+			if (isBroker) {
+				return isBroker;
+			} else {
+				return pair && pairs[pair] && pairs[pair].active;
+			}
+		}
 	};
 
 	const findPairByPairBase = (key) => {
@@ -109,7 +122,14 @@ const AssetsBlock = ({
 	};
 
 	const goToTrade = (pair) => {
-		if (pair) {
+		let flippedPair = pair.split('-');
+		flippedPair.reverse().join('-');
+		const isBroker = !!broker.filter(
+			(item) => item.symbol === pair || item.symbol === flippedPair
+		).length;
+		if (pair && isBroker) {
+			return navigate(`/quick-trade/${pair}`);
+		} else if (pair && !isBroker) {
 			return navigate(`/trade/${pair}`);
 		}
 	};
@@ -191,8 +211,18 @@ const AssetsBlock = ({
 							index
 						) => {
 							const balanceValue = balance[`${key}_balance`];
-							const pair = findPair(key);
-							const { fullname, symbol = '' } = coins[key] || DEFAULT_COIN_DATA;
+							let brokerPair = '';
+							broker.forEach((item) => {
+								const pairKey = item && item.symbol;
+								const splitPair = pairKey && pairKey.split('-');
+
+								if (splitPair[0] === key || splitPair[1] === key) {
+									brokerPair = pairKey;
+								}
+							});
+							const pair = brokerPair ? brokerPair : findPair(key);
+							const { fullname, symbol = '', display_name, icon_id } =
+								coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
@@ -217,8 +247,8 @@ const AssetsBlock = ({
 											<div className="d-flex align-items-center">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
-														iconId={`${symbol.toUpperCase()}_ICON`}
-														icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+														iconId={icon_id}
+														icon={ICONS[icon_id]}
 														wrapperClassName="currency-ball"
 														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
@@ -243,14 +273,14 @@ const AssetsBlock = ({
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
 														formatToCurrency(balanceValue, min, true),
-														symbol.toUpperCase()
+														display_name
 													)}
 												</div>
 												{!isMobile &&
 													key !== BASE_CURRENCY &&
 													parseFloat(balanceText || 0) > 0 && (
 														<div>
-															{`(≈ ${baseCoin.symbol.toUpperCase()} ${balanceText})`}
+															{`(≈ ${baseCoin.display_name} ${balanceText})`}
 														</div>
 													)}
 											</div>
@@ -312,7 +342,7 @@ const AssetsBlock = ({
 												onClick={() => navigate('/stake')}
 												className="csv-action"
 												showActionText={isMobile}
-												disable={!isStakingAvailable(symbol)}
+												disable={!isStakingAvailable(symbol, contracts)}
 											/>
 										</td>
 									)}

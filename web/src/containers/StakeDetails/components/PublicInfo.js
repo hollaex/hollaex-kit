@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { TABS } from '../index';
+import { TABS } from '../DesktopStakeDetails';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import DonutChart from './DonutChart';
@@ -13,6 +13,7 @@ import { formatToCurrency } from 'utils/currency';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
+	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import Variable from 'containers/Stake/components/Variable';
@@ -24,7 +25,6 @@ const PublicInfo = ({
 	token,
 	currentBlock,
 	setActiveTab,
-	network,
 	distributions,
 	account,
 	coins,
@@ -63,7 +63,7 @@ const PublicInfo = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -77,20 +77,22 @@ const PublicInfo = ({
 			},
 		},
 	];
-	const { min: baseMin, symbol: baseSymbol = '' } =
+	const { min: baseMin, display_name: baseDisplay = '' } =
 		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const { min: tokenMin, symbol: tokenSymbol = '' } =
+	const { min: tokenMin, display_name: tokenDisplay = '' } =
 		coins[token] || DEFAULT_COIN_DATA;
 
-	const format = (value, symbol, min) =>
-		STRINGS.formatString(
-			CURRENCY_PRICE_FORMAT,
-			formatToCurrency(value, min),
-			symbol.toUpperCase()
-		);
+	const format = (value, displayName, min, format = CURRENCY_PRICE_FORMAT) =>
+		STRINGS.formatString(format, formatToCurrency(value, min), displayName);
 
-	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
-	const formatBase = (value) => `(~ ${format(value, baseSymbol, baseMin)})`;
+	const formatToken = (value) => format(value, tokenDisplay, tokenMin);
+	const formatBase = (value) =>
+		format(
+			value,
+			baseDisplay,
+			baseMin,
+			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
+		);
 
 	const chartData = [
 		{
@@ -119,7 +121,7 @@ const PublicInfo = ({
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.PUBLIC_INFO.SUBTITLE'],
 								fullname,
-								token.toUpperCase()
+								tokenDisplay
 							)}
 						</div>
 					</div>
@@ -202,9 +204,21 @@ const PublicInfo = ({
 									: STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE_PERCENTLESS']}
 							</div>
 						</div>
-						<div className="ml-4 pl-3">
+						<div className="d-flex ml-4 pl-3">
 							<ConnectWrapper>
 								<div className="important-text">{formatToken(myStake)}</div>
+								<div className="pl-2">
+									(
+									<span
+										className="blue-link underline-text pointer"
+										onClick={() => setActiveTab(TABS.MY_STAKING.key)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW">
+											{STRINGS['STAKE_DETAILS.VIEW']}
+										</EditWrapper>
+									</span>
+									)
+								</div>
 							</ConnectWrapper>
 						</div>
 					</div>
@@ -219,20 +233,8 @@ const PublicInfo = ({
 								)}
 							</div>
 						</div>
-						<div className="d-flex ml-4 pl-3">
+						<div className="ml-4 pl-3">
 							<div className="important-text">{formatToken(othersStake)}</div>
-							<div className="pl-2">
-								(
-								<span
-									className="blue-link underline-text pointer"
-									onClick={() => setActiveTab(TABS.MY_STAKING.key)}
-								>
-									<EditWrapper stringId="STAKE_DETAILS.VIEW">
-										{STRINGS['STAKE_DETAILS.VIEW']}
-									</EditWrapper>
-								</span>
-								)
-							</div>
 						</div>
 					</div>
 				</div>
@@ -279,7 +281,6 @@ const PublicInfo = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 	publicInfo: store.stake.publicInfo,

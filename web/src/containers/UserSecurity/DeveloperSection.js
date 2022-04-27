@@ -50,10 +50,12 @@ export const OtpEnabled = ({ fetching, openDialog }) => (
 			</EditWrapper>
 		</div>
 		{!fetching && (
-			<div className="mb-4 mt-4 blue-link pointer" onClick={openDialog}>
-				<EditWrapper stringId="DEVELOPER_SECTION.GENERATE_KEY">
-					{STRINGS['DEVELOPER_SECTION.GENERATE_KEY']}
-				</EditWrapper>
+			<div className="my-4">
+				<span className="blue-link pointer" onClick={openDialog}>
+					<EditWrapper stringId="DEVELOPER_SECTION.GENERATE_KEY">
+						{STRINGS['DEVELOPER_SECTION.GENERATE_KEY']}
+					</EditWrapper>
+				</span>
 			</div>
 		)}
 	</div>

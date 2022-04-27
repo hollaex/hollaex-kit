@@ -1,6 +1,6 @@
 # HollaEx Kit License
 
-This License Agreement (Agreement) is between BitHolla Inc. and its subsidiaries and affiliated companies (“bitHolla,” ‘’The Company’’, “we” or “us”), and the entity or individual entering into this Agreement (User, Users). This HollaEx Kit software, materials and documentation provided to User (Software, materials, products, Works) are licensed and are not directly sold or assigned in any manner. 
+This License Agreement (Agreement) is between HollaEx. and its subsidiaries and affiliated companies (“HollaEx,” ‘’The Company’’, “we” or “us”), and the entity or individual entering into this Agreement (User, Users). This HollaEx Kit software, materials and documentation provided to User (Software, materials, products, Works) are licensed and are not directly sold or assigned in any manner. 
 This Agreement is part of a package that includes the Software, materials and certain electronic and/or written content. 
 This Agreement covers the permitted use of the licensed materials, products and/or the Software provided by us. By "using" our products the user acknowledges and agrees that she/he has read all the terms and conditions of this agreement, understand them, and agree to be legally bound by them. 
 HollaEx Kit includes tools and services to develop and run a crypto exchange node all subject to this license. If the user does not agree with the terms of this license, she/he may not use any of our licensed products.
@@ -30,14 +30,13 @@ The user must cause any modified files to carry prominent notices stating that i
 The user must retain, in the Source form of any Derivative Works that she/he distributes, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works. 
 The user must retain all attribution to us regarding any Derivative Work.
 The user may add its own copyright statement to the modifications performed and may provide additional or different license terms and conditions for use, reproduction, or distribution of the modifications, or for any such Derivative Works as a whole, provided the use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
-Wallet Integration: the wallet integration is made with HollaEx Network, that allows our HollaExKit function properly. By using HollaExKit you need to comply with HollaEx Network requests as a proprietary software that requires a yearly license fee. 
+Wallet Integration: the wallet integration is made with HollaEx Network, that allows our HollaExKit function properly. By using HollaExKit you need to comply with HollaEx Network requests as a proprietary software. 
 
 The user is not permitted to:
 
 Impose any terms on the use to be made of the Work, the Derivative Work or the Work as incorporated in a Collective Work that alter or restrict the terms of this License or any rights granted under it or has the effect or intent of restricting the ability to exercise those rights.
 Impose any digital rights management technology on the Work, the Derivative Work or the Work as incorporated in a Collective Work that alters or restricts the terms of this License or any rights granted under it or has the effect or intent of restricting the ability to exercise those rights.
 Sublicense, sell, resell, or commercialize or Software without our permission.
-Subject the Work to any derogatory treatment as defined in the Korean Copyright Act of 1957.
 
 ## 3. NO ENDORSEMENT. 
 
@@ -67,7 +66,7 @@ Unless required by applicable law or agreed to in writing, Licensor provides the
 
 ## 8. LIMITATION OF LIABILITY. 
 
-In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall BITHOLLA INC be liable to the users for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, loss of data, work stoppage, computer failure or malfunction, business interruption or any and all other damages or losses), even if BITHOLLA INC has been advised of the possibility of such damages.
+In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall HollaEx be liable to the users for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, loss of data, work stoppage, computer failure or malfunction, business interruption or any and all other damages or losses), even if HollaEx has been advised of the possibility of such damages.
 
 ## 9. RESTRICTIONS. 
 
@@ -107,17 +106,15 @@ Subject to the above terms and conditions, this License is perpetual (for the du
 
 Rights granted herein apply only to those using our products for non-commercial purposes. In the case an individual or a company desires to use our products for commercial purposes, or if there is existence of a potential commercial opportunity, the interested party must contact our company to inform about the proposal and pay the applicable fee for the commercial license offered under that new agreement. This company reserves the right to accept or decline such a request.
 
-## 14. COPYRIGHT (C) 2021 bitHolla Inc.
+## 14. COPYRIGHT (C) 2022 HollaEx.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of our products, and associated documentation files, to deal in our products without restriction, including the rights to use, copy, modify, merge, publish, distribute, with a limitation to sublicense, and/or sell copies of our products, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of our products. This copyright notice is extended to all the products produced by BitHolla Inc including, but not limited to: HollaEx Kit, HollaEx Network: (HollaEx Core), Vault, and Robolla.
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of our products. This copyright notice is extended to all the products produced by HollaEx including, but not limited to: HollaEx Kit, HollaEx Network: (HollaEx Core), Vault, and Robolla.
 
 THE PRODUCTS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE PRODUCTS OR THE USE OR OTHER DEALINGS RELATED TO THE PRODUCTS.
 
 ## 15. MISCELLANEOUS.
-
-This License shall be governed by the laws of the Republic of Korea.
 
 If any provision of this License is invalid or unenforceable under applicable law, it shall not affect the validity or enforceability of the remainder of the terms of this License, and without further action by the parties to this License, such provision shall be reformed to the minimum extent necessary to make such provision valid and enforceable.
 
@@ -131,7 +128,7 @@ Compliance with Law. User represents and warrants that it will comply in all mat
 
 Support. The Company will provide to Users the following support with respect to the Products: (i) If during the term of this Agreement, user notifies this company of a substantial program error respecting any of our products, or this Company has reason to believe that error exists in the products and so notifies Licensee, Licensor shall at its expense verify and attempt to correct such error. If the User is not satisfied with the correction provided, then he/she may terminate this Agreement, without the right to any monetary or material claim; and (ii) In the case that User has technical questions in the use of our products.
 
-This Creative Commons Public License enables the users to view, edit, and modify, works worldwide, under the terms of this license, provided that, users credit the Original Author (BitHolla Inc).
+This Creative Commons Public License enables the users to view, edit, and modify, works worldwide, under the terms of this license, provided that, users credit the Original Author (HollaEx).
 
 This License may not be modified without the mutual written agreement of this Company. 
 

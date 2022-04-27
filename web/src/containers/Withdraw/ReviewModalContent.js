@@ -1,18 +1,18 @@
 import React from 'react';
 import math from 'mathjs';
 import Image from 'components/Image';
-import { Button } from '../../components';
-import { formatToCurrency } from '../../utils/currency';
+import { Button } from 'components';
+import { formatToCurrency } from 'utils/currency';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
+} from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { getNetworkLabelByKey } from 'utils/wallet';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
@@ -42,10 +42,9 @@ const ReviewModalContent = ({
 	icons: ICONS,
 	hasDestinationTag,
 }) => {
-	const { min, fullname, symbol = '' } =
+	const { min, fullname, display_name } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const shortName = symbol.toUpperCase();
 
 	const totalTransaction = math.number(
 		math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
@@ -54,18 +53,20 @@ const ReviewModalContent = ({
 	const cryptoAmountText = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
 		formatToCurrency(totalTransaction, min),
-		shortName
+		display_name
 	);
 
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
 	const fee = data.fee ? data.fee : 0;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
+	const { display_name: fee_coin_display } =
+		coins[fee_coin] || DEFAULT_COIN_DATA;
 	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
 
 	const withdrawFeeMessage = hasDifferentFeeCoin
 		? STRINGS.formatString(
 				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE_COIN'],
-				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin.toUpperCase())
+				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin_display)
 		  )
 		: STRINGS.formatString(
 				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE'],
@@ -73,7 +74,7 @@ const ReviewModalContent = ({
 				STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					formatToCurrency(feePrice, baseCoin.min),
-					baseCoin.symbol.toUpperCase()
+					baseCoin.display_name
 				)
 		  );
 

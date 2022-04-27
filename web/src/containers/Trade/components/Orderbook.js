@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import {
+	Transition,
+	TransitionGroup,
+	CSSTransition,
+} from 'react-transition-group';
 import classnames from 'classnames';
 import EventListener from 'react-event-listener';
 import { bindActionCreators } from 'redux';
@@ -7,78 +12,20 @@ import {
 	PlusSquareOutlined,
 	MinusSquareOutlined,
 	CaretDownOutlined,
+	CaretUpOutlined,
 } from '@ant-design/icons';
 import { Button, Select } from 'antd';
 import math from 'mathjs';
 
-import { calcPercentage } from 'utils/math';
 import { subtract, orderbookSelector, marketPriceSelector } from '../utils';
-import { formatToFixed, formatToCurrency } from '../../../utils/currency';
-import STRINGS from '../../../config/localizedStrings';
-import { DEFAULT_COIN_DATA } from '../../../config/constants';
+import { formatToFixed } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 import { setOrderbookDepth } from 'actions/orderbookAction';
+import PriceRow from './PriceRow';
 
 const { Option } = Select;
 
 const DEPTH_LEVELS = [1, 10, 100, 1000];
-
-const PriceRow = (
-	side,
-	increment_price,
-	increment_size,
-	onPriceClick,
-	onAmountClick,
-	maxCumulative,
-	isBase
-) => ([price, amount, cumulative, cumulativePrice], index) => {
-	const ACCFillClassName = `fill fill-${side}`;
-	const ACCFillStyle = {
-		backgroundSize: `${calcPercentage(cumulative, maxCumulative)}% 100%`,
-	};
-
-	const fillClassName = `fill fill-${side}`;
-	const fillStyle = {
-		backgroundSize: `${calcPercentage(amount, maxCumulative)}% 100%`,
-	};
-	const totalAmount = isBase ? cumulative : cumulativePrice;
-
-	return (
-		<div
-			key={`${side}-${price}`}
-			className={classnames('price-row-wrapper', ACCFillClassName)}
-			style={ACCFillStyle}
-		>
-			<div
-				className={classnames(
-					'd-flex value-row align-items-center',
-					fillClassName
-				)}
-				style={fillStyle}
-			>
-				<div
-					className={`f-1 trade_orderbook-cell trade_orderbook-cell-price pointer`}
-					onClick={onPriceClick(price)}
-				>
-					{formatToCurrency(price, increment_price)}
-				</div>
-				<div
-					className="f-1 trade_orderbook-cell trade_orderbook-cell-amount pointer"
-					onClick={onAmountClick(amount)}
-				>
-					{formatToCurrency(amount, increment_size)}
-				</div>
-				<div
-					className="f-1 trade_orderbook-cell trade_orderbook-cell_total pointer"
-					onClick={onAmountClick(totalAmount)}
-				>
-					{isBase
-						? formatToCurrency(cumulative, increment_size)
-						: formatToCurrency(cumulativePrice, increment_price)}
-				</div>
-			</div>
-		</div>
-	);
-};
 
 const calculateSpread = (asks, bids, pair, pairData) => {
 	const lowerAsk = asks.length > 0 ? asks[0][0] : 0;
@@ -105,6 +52,9 @@ class Orderbook extends Component {
 		isBase: true,
 		positioned: false,
 		isOpen: false,
+		priceDiff: 0,
+		inProp: false,
+		isAnimated: false,
 	};
 
 	componentDidMount() {
@@ -113,6 +63,7 @@ class Orderbook extends Component {
 			this.setDataBlockHeight();
 			setTimeout(() => {
 				window.dispatchEvent(new Event('resize'));
+				this.setState({ isAnimated: true });
 			}, 1000);
 		}
 	}
@@ -130,6 +81,12 @@ class Orderbook extends Component {
 				window.dispatchEvent(new Event('resize'));
 			}, 1000);
 		}
+
+		if (prevProps.orderbookFetched === false && orderbookFetched === true) {
+			setTimeout(() => {
+				this.setState({ isAnimated: true });
+			}, 1000);
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -142,6 +99,22 @@ class Orderbook extends Component {
 				const { asksWrapperScrollHeight, wrapperScrollTop } = this.state;
 				this.preserveScroll(asksWrapperScrollHeight, wrapperScrollTop);
 			});
+		}
+	}
+
+	UNSAFE_componentWillUpdate(nextProp) {
+		const { lastPrice } = this.props;
+		if (
+			nextProp.lastPrice &&
+			lastPrice &&
+			!math.equal(nextProp.lastPrice, lastPrice)
+		) {
+			const priceDiff = math.subtract(nextProp.lastPrice, lastPrice);
+			this.setState((prevState) => ({
+				...prevState,
+				priceDiff,
+				inProp: !prevState.inProp,
+			}));
 		}
 	}
 
@@ -238,22 +211,43 @@ class Orderbook extends Component {
 		this.setState({ isOpen });
 	};
 
+	getDirBasedClass = (diff, baseClassName = '') => {
+		const direction = diff < 0 ? 'down' : diff > 0 ? 'up' : '';
+		return baseClassName ? `${baseClassName}-${direction}` : direction;
+	};
+
+	getArrow = (diff) => {
+		if (diff > 0) {
+			return <CaretUpOutlined />;
+		} else if (diff < 0) {
+			return <CaretDownOutlined />;
+		} else {
+			return null;
+		}
+	};
+
 	render() {
 		const {
 			asks,
 			bids,
 			pairData = {},
 			pair,
-			coins,
 			maxCumulative,
 			increment_price = 1,
 			depth = 1,
 			lastPrice,
 		} = this.props;
 
-		const { isBase, positioned, isOpen } = this.state;
+		const {
+			isBase,
+			positioned,
+			isOpen,
+			priceDiff,
+			inProp,
+			dataBlockHeight,
+			isAnimated,
+		} = this.state;
 		// const blockStyle = {};
-		const { dataBlockHeight } = this.state;
 		const blockStyle =
 			dataBlockHeight > 0
 				? {
@@ -262,8 +256,7 @@ class Orderbook extends Component {
 				  }
 				: {};
 
-		const pairBase = pairData.pair_base.toUpperCase();
-		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+		const { pair_base_display, pair_2_display } = pairData;
 		return (
 			<div className="trade_orderbook-wrapper d-flex flex-column f-1 apply_rtl">
 				<EventListener target="window" onResize={this.scrollTop} />
@@ -289,14 +282,14 @@ class Orderbook extends Component {
 				<div className="trade_orderbook-headers d-flex align-end">
 					<div className="f-1 trade_orderbook-cell">
 						<div>{STRINGS['PRICE_CURRENCY']}</div>
-						<div>({symbol.toUpperCase()})</div>
+						<div>({pair_2_display})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
+					<div className="f-1 trade_orderbook-cell text-align-right">
 						<div>{STRINGS['AMOUNT_SYMBOL']}</div>
-						<div>({pairBase})</div>
+						<div>({pair_base_display})</div>
 					</div>
-					<div className="f-1 trade_orderbook-cell">
-						<div className="d-flex align-items-center">
+					<div className="f-1 trade_orderbook-cell text-align-right">
+						<div className="text-align-right">
 							{STRINGS['CUMULATIVE_AMOUNT_SYMBOL']}
 						</div>
 						<Select
@@ -316,8 +309,8 @@ class Orderbook extends Component {
 							dropdownClassName="custom-select-style trade-select-option-wrapper"
 							dropdownStyle={{ minWidth: '7rem' }}
 						>
-							<Option value={false}>{symbol.toUpperCase()}</Option>
-							<Option value={true}>{pairBase}</Option>
+							<Option value={false}>{pair_2_display}</Option>
+							<Option value={true}>{pair_base_display}</Option>
 						</Select>
 					</div>
 				</div>
@@ -338,27 +331,59 @@ class Orderbook extends Component {
 						style={blockStyle}
 						ref={this.setRefs('asksWrapper')}
 					>
-						{asks.map(
-							PriceRow(
-								'ask',
-								pairData.increment_price,
-								pairData.increment_size,
-								this.onPriceClick,
-								this.onAmountClick,
-								maxCumulative,
-								isBase
-							)
-						)}
+						<TransitionGroup component={null}>
+							{asks.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={1000}
+									classNames={classnames({ orderbook_ask_row_: isAnimated })}
+								>
+									<PriceRow
+										side="ask"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 					<div
 						className="trade_orderbook-spread d-flex align-items-center justify-content-between"
 						ref={this.setRefs('spreadWrapper')}
 					>
-						<div className="d-flex align-items-center">
-							<div className="trade_orderbook-market-price">
-								{lastPrice ? formatToFixed(lastPrice, increment_price) : null}
-							</div>
-						</div>
+						<Transition in={inProp} timeout={1000}>
+							{(state) => (
+								<div className="d-flex align-items-center">
+									<div
+										className={classnames(
+											'trade_orderbook-market-price',
+											'last-price',
+											state,
+											this.getDirBasedClass(priceDiff)
+										)}
+									>
+										{lastPrice
+											? formatToFixed(lastPrice, increment_price)
+											: null}
+									</div>
+									<div
+										className={classnames(
+											'px-2',
+											'price-arrow',
+											state,
+											this.getDirBasedClass(priceDiff)
+										)}
+									>
+										{this.getArrow(priceDiff)}
+									</div>
+								</div>
+							)}
+						</Transition>
 						<div className="d-flex align-items-center">
 							{STRINGS.formatString(
 								STRINGS['ORDERBOOK_SPREAD'],
@@ -377,17 +402,26 @@ class Orderbook extends Component {
 						ref={this.setRefs('bidsWrapper')}
 						style={blockStyle}
 					>
-						{bids.map(
-							PriceRow(
-								'bid',
-								pairData.increment_price,
-								pairData.increment_size,
-								this.onPriceClick,
-								this.onAmountClick,
-								maxCumulative,
-								isBase
-							)
-						)}
+						<TransitionGroup component={null}>
+							{bids.map((record) => (
+								<CSSTransition
+									key={record[4]}
+									timeout={1000}
+									classNames={classnames({ orderbook_bid_row_: isAnimated })}
+								>
+									<PriceRow
+										side="bid"
+										record={record}
+										increment_price={pairData.increment_price}
+										increment_size={pairData.increment_size}
+										onPriceClick={this.onPriceClick}
+										onAmountClick={this.onAmountClick}
+										maxCumulative={maxCumulative}
+										isBase={isBase}
+									/>
+								</CSSTransition>
+							))}
+						</TransitionGroup>
 					</div>
 				</div>
 				<div className="trade_bids-limit_bar">
@@ -404,6 +438,7 @@ Orderbook.defaultProps = {
 	ready: false,
 	onPriceClick: () => {},
 	onAmountClick: () => {},
+	orderbookFetched: false,
 };
 
 const mapStateToProps = (store) => {

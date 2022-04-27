@@ -2,23 +2,38 @@ import React from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 
-import { Table, ActionNotification } from '../../../components';
-import { getFormatTimestamp } from '../../../utils/utils';
-import { formatBaseAmount, formatToCurrency } from '../../../utils/currency';
+import { Table, ActionNotification, Image } from 'components';
+import { getFormatTimestamp } from 'utils/utils';
+import { formatBaseAmount, formatToCurrency } from 'utils/currency';
 import { isMobile } from 'react-device-detect';
 import { subtract } from '../utils';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
+const generateHeaders = (
+	pairs = {},
+	onCancel,
+	onCancelAll,
+	ICONS,
+	activeOrdersMarket
+) => [
 	{
+		stringId: 'PAIR',
 		label: STRINGS['PAIR'],
 		key: 'pair',
-		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
-		renderCell: ({ symbol }, key, index) => {
+		exportToCsv: ({ display_name }) => display_name,
+		renderCell: ({ display_name, icon_id }, key, index) => {
 			return (
 				<td key={index} className="text-uppercase">
-					{symbol}
+					<div className="d-flex align-items-center">
+						<Image
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
+							wrapperClassName="currency-ball"
+							imageWrapperClassName="currency-ball-image-wrapper"
+						/>
+						<div>{display_name}</div>
+					</div>
 				</td>
 			);
 		},
@@ -132,7 +147,7 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 		},
 	},
 	{
-		label: (
+		label: !isMobile ? (
 			<span className="trade__active-orders_cancel-All">
 				<ActionNotification
 					stringId="CANCEL_ALL"
@@ -142,7 +157,12 @@ const generateHeaders = (pairs = {}, onCancel, onCancelAll, ICONS) => [
 					onClick={() => onCancelAll()}
 					status="information"
 					textPosition="left"
+					disable={activeOrdersMarket === ''}
 				/>
+			</span>
+		) : (
+			<span className="trade__active-orders_cancel-All">
+				{STRINGS['CANCEL']}
 			</span>
 		),
 		key: 'cancel',
@@ -176,6 +196,8 @@ const ActiveOrders = ({
 	height,
 	cancelDelayData,
 	icons: ICONS,
+	activeOrdersMarket,
+	pageSize,
 }) => {
 	return (
 		<div
@@ -186,7 +208,13 @@ const ActiveOrders = ({
 			}
 		>
 			<Table
-				headers={generateHeaders(pairs, onCancel, onCancelAll, ICONS)}
+				headers={generateHeaders(
+					pairs,
+					onCancel,
+					onCancelAll,
+					ICONS,
+					activeOrdersMarket
+				)}
 				cancelDelayData={cancelDelayData}
 				data={orders}
 				count={orders.length}
@@ -195,6 +223,8 @@ const ActiveOrders = ({
 				rowKey={(data) => {
 					return data.id;
 				}}
+				pageSize={pageSize}
+				cssTransitionClassName="general-record"
 			/>
 		</div>
 	);

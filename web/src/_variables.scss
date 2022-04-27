@@ -88,6 +88,9 @@ $box-fields: var(--labels_fields);
 $buy: var(--trading_buying-related-elements);
 $sell: var(--trading_selling-related-elements);
 
+$pale-buy: var(--calculated_public-sale_buying-zeros);
+$pale-sell: var(--calculated_public-sale_selling-zeros);
+
 $link: var(--specials_buttons-links-and-highlights);
 
 $trade-fields: var(--labels_fields);
@@ -116,6 +119,13 @@ $base_top-bar-navigation_text-inactive: var(
 	--calculated_base_top-bar-navigation_text-inactive
 );
 $base_footer_text: var(--calculated_base_footer_text);
+
+$selling-subtracted-bg: var(--calculated_trading_selling-subtracted-bg);
+$selling-added-bg: var(--calculated_trading_selling-added-bg);
+$buying-subtracted-bg: var(--calculated_trading_buying-subtracted-bg);
+$buying-added-bg: var(--calculated_trading_buying-added-bg);
+$selling-subtracted-best: var(--calculated_trading_selling-best-subtracted);
+$buying-subtracted-best: var(--calculated_trading_buying-best-subtracted);
 
 // form field colors
 $form-color-underline-focus: var(
@@ -409,6 +419,11 @@ $max-content-height-home-mobile: calc(
 $max-content-height-dialog-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height * 2}
 );
+
+$market-menu-height-dialog-mobile: calc(
+	100vh - 19rem - #{$navigation_bar-mobile--height * 2}
+);
+
 $max-content-width-mobile: 100vw;
 $table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;

@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import ActiveOrders from './ActiveOrders';
 import LogoutInfoOrder from './LogoutInfoOrder';
@@ -12,6 +13,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { activeOrdersSelector } from '../utils';
 import { EditWrapper } from 'components';
+import { setActiveOrdersMarket } from 'actions/appActions';
 
 class OrdersWrapper extends Component {
 	constructor(props) {
@@ -29,22 +31,28 @@ class OrdersWrapper extends Component {
 	};
 
 	cancelAllOrders = () => {
+		const {
+			activeOrdersMarket,
+			settings,
+			cancelAllOrders,
+			activeOrders,
+		} = this.props;
 		let cancelDelayData = [];
-		this.props.activeOrders.map((order) => {
-			cancelDelayData = [...cancelDelayData, order.id];
-			return '';
+		activeOrders.forEach(({ id }) => {
+			cancelDelayData = [...cancelDelayData, id];
 		});
 		this.setState({ cancelDelayData });
 		setTimeout(() => {
-			this.props.cancelAllOrders(this.props.pair, this.props.settings);
+			cancelAllOrders(activeOrdersMarket, settings);
 			this.onCloseDialog();
 		}, 700);
 	};
 
 	handleCancelOrders = (id) => {
+		const { cancelOrder, settings } = this.props;
 		this.setState({ cancelDelayData: this.state.cancelDelayData.concat(id) });
 		setTimeout(() => {
-			this.props.cancelOrder(id, this.props.settings);
+			cancelOrder(id, settings);
 		}, 700);
 	};
 
@@ -53,7 +61,15 @@ class OrdersWrapper extends Component {
 	};
 
 	render() {
-		const { activeOrders, activeTheme, pairs, icons: ICONS, tool } = this.props;
+		const {
+			activeOrders,
+			pairs,
+			icons: ICONS,
+			tool,
+			activeOrdersMarket,
+			setActiveOrdersMarket,
+			goToTransactionsHistory,
+		} = this.props;
 		const { cancelDelayData, showCancelAllModal } = this.state;
 
 		return (
@@ -67,7 +83,7 @@ class OrdersWrapper extends Component {
 								text={STRINGS['TRANSACTION_HISTORY.TITLE']}
 								iconId="ARROW_TRANSFER_HISTORY_ACTIVE"
 								iconPath={ICONS['ARROW_TRANSFER_HISTORY_ACTIVE']}
-								onClick={this.props.goToTransactionsHistory}
+								onClick={() => goToTransactionsHistory('order-history')}
 								status="information"
 								className="trade-wrapper-action"
 							/>
@@ -77,17 +93,26 @@ class OrdersWrapper extends Component {
 					}
 					stringId="TOOLS.OPEN_ORDERS"
 					tool={tool}
+					titleClassName="mb-4"
 				>
 					{isLoggedIn() ? (
-						<ActiveOrders
-							pairs={pairs}
-							cancelDelayData={cancelDelayData}
-							orders={activeOrders}
-							onCancel={this.handleCancelOrders}
-							onCancelAll={this.openConfirm}
-						/>
+						<Fragment>
+							<Filters
+								pair={activeOrdersMarket}
+								onChange={setActiveOrdersMarket}
+							/>
+							<ActiveOrders
+								pageSize={activeOrders.length}
+								activeOrdersMarket={activeOrdersMarket}
+								pairs={pairs}
+								cancelDelayData={cancelDelayData}
+								orders={activeOrders}
+								onCancel={this.handleCancelOrders}
+								onCancelAll={this.openConfirm}
+							/>
+						</Fragment>
 					) : (
-						<LogoutInfoOrder activeTheme={activeTheme} />
+						<LogoutInfoOrder />
 					)}
 				</TradeBlock>
 				<Dialog
@@ -115,7 +140,12 @@ class OrdersWrapper extends Component {
 							</div>
 							<div className="mt-3">
 								<EditWrapper stringId="CANCEL_ORDERS.INFO_1">
-									<div>{STRINGS['CANCEL_ORDERS.INFO_1']}</div>
+									<div>
+										{STRINGS.formatString(
+											STRINGS['CANCEL_ORDERS.INFO_1'],
+											activeOrdersMarket.toUpperCase()
+										)}
+									</div>
 								</EditWrapper>
 							</div>
 							<div className="mt-1 mb-5">
@@ -149,11 +179,13 @@ OrdersWrapper.defaultProps = {
 const mapStateToProps = (state) => ({
 	activeOrders: activeOrdersSelector(state),
 	settings: state.user.settings,
+	activeOrdersMarket: state.app.activeOrdersMarket,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	cancelOrder: bindActionCreators(cancelOrder, dispatch),
 	cancelAllOrders: bindActionCreators(cancelAllOrders, dispatch),
+	setActiveOrdersMarket: bindActionCreators(setActiveOrdersMarket, dispatch),
 });
 
 export default connect(

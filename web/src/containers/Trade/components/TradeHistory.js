@@ -6,7 +6,6 @@ import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
 import { formatToCurrency } from '../../../utils/currency';
-import { DEFAULT_COIN_DATA } from 'config/constants';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
@@ -15,6 +14,7 @@ import { calcPercentage } from 'utils/math';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import math from 'mathjs';
+import { opacifyNumber } from 'helpers/opacify';
 
 const { Option } = Select;
 
@@ -84,9 +84,8 @@ class TradeHistory extends Component {
 	generateHeaders = (pairs) => {
 		const { icons: ICONS, maxAmount } = this.props;
 		const { isBase, isOpen } = this.state;
-		const { coins, pairData } = this.props;
-		const pairBase = pairData.pair_base.toUpperCase();
-		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+		const { pairData } = this.props;
+		const { pair_base_display, pair_2_display } = pairData;
 
 		return [
 			{
@@ -140,8 +139,8 @@ class TradeHistory extends Component {
 								dropdownClassName="custom-select-style trade-select-option-wrapper"
 								dropdownStyle={{ minWidth: '7rem' }}
 							>
-								<Option value={false}>{symbol.toUpperCase()}</Option>
-								<Option value={true}>{pairBase}</Option>
+								<Option value={false}>{pair_2_display}</Option>
+								<Option value={true}>{pair_base_display}</Option>
 							</Select>
 						</div>
 					</div>
@@ -158,7 +157,10 @@ class TradeHistory extends Component {
 							style={fillStyle}
 							key={`size-${index}`}
 						>
-							{isBase ? size : sizePrice}
+							{opacifyNumber(isBase ? size : sizePrice, {
+								zerosClassName: 'public-sale_zeros',
+								digitsClassName: 'public-sale_digits',
+							})}
 						</div>
 					);
 				},
@@ -188,6 +190,7 @@ class TradeHistory extends Component {
 					headers={this.state.headers}
 					data={data}
 					// rowClassName="trade_history-row-wrapper"
+					cssTransitionClassName="trade-history-record"
 				/>
 			</div>
 		);
@@ -205,7 +208,6 @@ const mapStateToProps = (store) => {
 		pairs: store.app.pairs,
 		data,
 		maxAmount,
-		coins: store.app.coins,
 	};
 };
 

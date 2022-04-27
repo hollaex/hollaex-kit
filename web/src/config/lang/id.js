@@ -654,7 +654,7 @@ export default {
 				'Ciptakan pop up apabila nilai pesan perdagangan melebihi sebagian persentase dari jumlah portofolio Anda yang Anda tetapkan',
 			INFO_TEXT_1: 'Jumlah nilai aset dalam {0}: {1}',
 			PORTFOLIO: 'Persentase portofolio',
-			TOMAN_ASSET: 'Nilai Perkiraan',
+			VALUE_ASSET: 'Nilai Perkiraan',
 			ADJUST: '(SESUAIKAN PERSENTASE)',
 			ACTIVATE_RISK_MANAGMENT: 'Aktifkan Manajemen Risiko',
 			WARNING_POP_UP: 'Pop up peringatan',
@@ -906,7 +906,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

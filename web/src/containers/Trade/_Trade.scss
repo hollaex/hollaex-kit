@@ -26,6 +26,7 @@ $order_entry-column--width-lg: 20rem;
 @import './components/_OrderEntry.scss';
 @import './components/Orderbook.scss';
 @import './components/DepthChart.scss';
+@import './components/TradeHistory.scss';
 
 .ask,
 .buy {
@@ -99,6 +100,15 @@ $order_entry-column--width-lg: 20rem;
 }
 
 .trade_active_orders-wrapper {
+	.currency-ball {
+		width: 25px;
+		line-height: 10px;
+		margin-top: 6px;
+	}
+	.currency-ball-image-wrapper {
+		padding-right: 8px;
+		padding-bottom: 12px;
+	}
 	overflow-y: auto;
 	flex: 1;
 
@@ -144,7 +154,6 @@ $order_entry-column--width-lg: 20rem;
 	}
 	.recent-trades {
 		&.cell_box-type {
-			display: flex;
 			.buy {
 				min-width: 3rem;
 				padding-left: 0.5rem;
@@ -278,4 +287,12 @@ $order_entry-column--width-lg: 20rem;
 			fill: $dark-app-background-color !important;
 		}
 	}
+}
+
+.general-record-enter {
+	opacity: 0;
+}
+.general-record-enter-active {
+	opacity: 1;
+	transition: opacity 1s ease-in;
 }

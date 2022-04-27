@@ -375,8 +375,18 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{code\}/g, data.code || '');
 	}
+	else if (type === MAILTYPE.DOC_REJECTED) { // done
+		html = html.replace(/\$\{email\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{doc_information\}/g, data.doc_information || '');
+	}
+	else if (type === MAILTYPE.DOC_VERIFIED) { // done
+		html = html.replace(/\$\{email\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{doc_information\}/g, data.doc_information || '');
+		html = html.replace(/\$\{link\}/g, data.link || '');
+	}
 	html = html.replace(/@@_BIT_@@/g, '"');
-
 	return html;
 };
 
