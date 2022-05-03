@@ -77,23 +77,19 @@ const PublicInfo = ({
 			},
 		},
 	];
-	const { min: baseMin, symbol: baseSymbol = '' } =
+	const { min: baseMin, display_name: baseDisplay = '' } =
 		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const { min: tokenMin, symbol: tokenSymbol = '' } =
+	const { min: tokenMin, display_name: tokenDisplay = '' } =
 		coins[token] || DEFAULT_COIN_DATA;
 
-	const format = (value, symbol, min, format = CURRENCY_PRICE_FORMAT) =>
-		STRINGS.formatString(
-			format,
-			formatToCurrency(value, min),
-			symbol.toUpperCase()
-		);
+	const format = (value, displayName, min, format = CURRENCY_PRICE_FORMAT) =>
+		STRINGS.formatString(format, formatToCurrency(value, min), displayName);
 
-	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
+	const formatToken = (value) => format(value, tokenDisplay, tokenMin);
 	const formatBase = (value) =>
 		format(
 			value,
-			baseSymbol,
+			baseDisplay,
 			baseMin,
 			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
 		);
@@ -125,7 +121,7 @@ const PublicInfo = ({
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.PUBLIC_INFO.SUBTITLE'],
 								fullname,
-								token.toUpperCase()
+								tokenDisplay
 							)}
 						</div>
 					</div>

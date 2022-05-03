@@ -125,14 +125,13 @@ class Wallet extends Component {
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {}
 	) => {
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { min, display_name } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
+			display_name,
 			formatToCurrency(total, min)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
-		// const { icons: ICONS } = this.props;
 
 		const sections = [
 			{

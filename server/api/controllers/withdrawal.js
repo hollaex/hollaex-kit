@@ -139,7 +139,7 @@ const performWithdrawal = (req, res) => {
 		});
 };
 
-function performDirectWithdrawal(req, res) {
+const performDirectWithdrawal = (req, res) => {
 	const { id: userId } = req.auth.sub;
 	const {
 		address,
@@ -177,15 +177,15 @@ function performDirectWithdrawal(req, res) {
 		})
 		.then((data) => {
 
-		loggerWithdrawals.verbose(
-			req.uuid,
-			'controller/withdrawal/performDirectWithdrawal done',
-			'transaction_id',
-			data.transaction_id,
-			'fee',
-			data.fee,
-			data
-		);
+			loggerWithdrawals.verbose(
+				req.uuid,
+				'controller/withdrawal/performDirectWithdrawal done',
+				'transaction_id',
+				data.transaction_id,
+				'fee',
+				data.fee,
+				data
+			);
 			return res.json({
 				message: 'Withdrawal request is in the queue and will be processed.',
 				id: data.id,
