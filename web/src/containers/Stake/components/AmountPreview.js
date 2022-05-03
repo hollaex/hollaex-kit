@@ -20,24 +20,19 @@ const AmountPreview = ({
 	icons: ICONS,
 	price,
 }) => {
-	const iconId = `${token.toUpperCase()}_ICON`;
-	const { min: baseMin, symbol: baseSymbol = '' } =
+	const { min: baseMin, display_name: base_display = '' } =
 		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-	const { min: tokenMin, symbol: tokenSymbol = '' } =
+	const { min: tokenMin, display_name: token_display = '', icon_id } =
 		coins[token] || DEFAULT_COIN_DATA;
 
-	const format = (value, symbol, min, format = CURRENCY_PRICE_FORMAT) =>
-		STRINGS.formatString(
-			format,
-			formatToCurrency(value, min),
-			symbol.toUpperCase()
-		);
+	const format = (value, displayName, min, format = CURRENCY_PRICE_FORMAT) =>
+		STRINGS.formatString(format, formatToCurrency(value, min), displayName);
 
-	const formatToken = (value) => format(value, tokenSymbol, tokenMin);
+	const formatToken = (value) => format(value, token_display, tokenMin);
 	const formatBase = (value) =>
 		format(
 			value,
-			baseSymbol,
+			base_display,
 			baseMin,
 			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
 		);
@@ -52,8 +47,8 @@ const AmountPreview = ({
 			<div className="d-flex align-center pt-2">
 				<div>
 					<Image
-						iconId={iconId}
-						icon={ICONS[iconId]}
+						iconId={icon_id}
+						icon={ICONS[icon_id]}
 						wrapperClassName="stake-currency-ball"
 					/>
 				</div>

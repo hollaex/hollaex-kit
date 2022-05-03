@@ -14,7 +14,11 @@ import _get from 'lodash/get';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
-import { getCoinInfo, storeAsset, uploadCoinLogo } from '../AdminFinancials/action';
+import {
+	getCoinInfo,
+	storeAsset,
+	uploadCoinLogo,
+} from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
 	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
@@ -120,7 +124,11 @@ const AssetConfig = (props) => {
 				formData.append('file', logoFile);
 				const logo = await uploadCoinLogo(formData);
 				body.logo = _get(logo, 'data.path', '');
-				props.handleBulkUpdate({ logo: body.logo, logoFile: null, iconName: '' });
+				props.handleBulkUpdate({
+					logo: body.logo,
+					logoFile: null,
+					iconName: '',
+				});
 			}
 			const res = await storeAsset(body);
 			if (props.getCoins) {
@@ -385,8 +393,8 @@ const AssetConfig = (props) => {
 													message: 'This field is required!',
 												},
 												{
-													max: 5,
-													message: 'Symbol must be maximum 5 characters.',
+													max: 8,
+													message: 'Symbol must be maximum 8 characters.',
 												},
 												{
 													min: 2,

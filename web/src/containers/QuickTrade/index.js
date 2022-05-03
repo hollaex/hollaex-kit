@@ -1106,6 +1106,7 @@ class QuickTradeContainer extends PureComponent {
 								</div>
 							) : (
 								<QuoteResult
+									coins={coins}
 									pairData={pairData}
 									data={order}
 									onClose={this.onCloseDialog}

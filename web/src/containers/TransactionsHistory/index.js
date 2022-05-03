@@ -34,6 +34,12 @@ import TradeAndOrderFilters from './components/TradeAndOrderFilters';
 import DepositAndWithdrawlFilters from './components/DepositAndWithdrawlFilters';
 import { RECORD_LIMIT } from './constants';
 import HistoryDisplay from './HistoryDisplay';
+import {
+	orderHistorySelector,
+	tradeHistorySelector,
+	depositHistorySelector,
+	withdrawalHistorySelector,
+} from './selectors';
 
 import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -376,7 +382,6 @@ class TransactionsHistory extends Component {
 			downloadUserDeposit,
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage } = this.state;
-		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
 
 		const props = {
 			symbol,
@@ -578,10 +583,10 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	coins: store.app.coins,
 	id: store.user.id,
-	orders: store.wallet.orderHistory,
-	trades: store.wallet.trades,
-	deposits: store.wallet.deposits,
-	withdrawals: store.wallet.withdrawals,
+	orders: orderHistorySelector(store),
+	trades: tradeHistorySelector(store),
+	deposits: depositHistorySelector(store),
+	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
 	activeTheme: store.app.theme,

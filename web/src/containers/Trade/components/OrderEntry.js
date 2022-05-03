@@ -420,14 +420,17 @@ class OrderEntry extends Component {
 			coins,
 			pair_base,
 			pair_2,
+			pair_base_display,
+			pair_2_display,
 			balance = {},
 			marketPrice,
 			pair = '',
 			side = 'buy',
 		} = props;
 
-		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
-		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
+		const { display_name } = coins[pair] || DEFAULT_COIN_DATA;
+		const { display_name: buy_display_name } =
+			coins[buyingPair] || DEFAULT_COIN_DATA;
 		const formValues = {
 			orderType: {
 				name: 'order_type',
@@ -492,7 +495,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price),
 				],
-				currency: buyData.symbol.toUpperCase(),
+				currency: buy_display_name,
 				setRef: this.props.setPriceRef,
 			},
 			size: {
@@ -515,9 +518,7 @@ class OrderEntry extends Component {
 											balance[`${pair_base}_available`],
 											increment_size
 									  )}{' '}
-								{side === 'buy'
-									? pair_2.toUpperCase()
-									: pair_base.toUpperCase()}
+								{side === 'buy' ? pair_2_display : pair_base_display}
 							</span>
 						</div>
 					</div>
@@ -529,7 +530,7 @@ class OrderEntry extends Component {
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
-				currency: symbol.toUpperCase(),
+				currency: display_name,
 				setRef: this.props.setSizeRef,
 			},
 			slider: {
@@ -579,6 +580,7 @@ class OrderEntry extends Component {
 			side,
 			pair_base,
 			pair_2,
+			pair_2_display,
 			price,
 			coins,
 			size,
@@ -593,10 +595,8 @@ class OrderEntry extends Component {
 			orderType,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
-		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 
 		const currencyName = pairBase.fullname;
-		const buyingName = pairTwo.symbol.toUpperCase();
 		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
@@ -626,7 +626,7 @@ class OrderEntry extends Component {
 						price={price}
 						size={size}
 						type={type}
-						currency={buyingName}
+						currency={pair_2_display}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						increment_price={increment_price}
@@ -648,6 +648,8 @@ const mapStateToProps = (state) => {
 	const {
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,
@@ -663,6 +665,8 @@ const mapStateToProps = (state) => {
 		pair,
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,

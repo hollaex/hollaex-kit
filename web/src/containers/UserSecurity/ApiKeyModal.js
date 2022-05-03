@@ -94,10 +94,19 @@ class ApiKeyModal extends Component {
 
 	render() {
 		const { dialogOtpOpen, loading, tokenName, tokenKey, secret } = this.state;
-		const { notificationType, openContactForm, icons: ICONS } = this.props;
+		const {
+			notificationType,
+			openContactForm,
+			icons: ICONS,
+			pending,
+		} = this.props;
 		if (dialogOtpOpen) {
 			return (
-				<EmailCodeForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />
+				<EmailCodeForm
+					onSubmit={this.onSubmit}
+					onClickHelp={openContactForm}
+					pending={pending}
+				/>
 			);
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;

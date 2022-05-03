@@ -4,6 +4,8 @@ import { generateGlobalId } from 'utils/id';
 
 const defaultIconsKey = 'dark';
 
+export const generateCoinIconId = (symbol) => `${symbol.toUpperCase()}_ICON`;
+
 export const getIconByKey = (
 	key,
 	theme = defaultIconsKey,
@@ -21,7 +23,7 @@ const generateServerSideDefaultIcons = (coins) => {
 	const icons = {};
 	Object.entries(coins).forEach(([key, { logo }]) => {
 		if (logo) {
-			icons[`${key.toUpperCase()}_ICON`] = logo;
+			icons[generateCoinIconId(key)] = logo;
 		}
 	});
 
@@ -93,7 +95,7 @@ export const generateAllIcons = (
 
 		// default dynamic coin icons
 		coinKeys.forEach((coinKey = '') => {
-			const coin = `${coinKey.toUpperCase()}_ICON`;
+			const coin = generateCoinIconId(coinKey);
 			if (!allIcons[theme][coin]) {
 				allIcons[theme][coin] = defaultCoinIcon;
 			}
