@@ -1513,4 +1513,61 @@ export default {
 		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
 	},
 	ORDER_HISTORY_CLOSED: 'Closed', //new
+	FIAT: {
+		UNVERIFIED: {
+			TITLE: 'Complete verification',
+			TEXT:
+				'In order to make a {0} you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.',
+			DEPOSIT: 'deposit',
+			WITHDRAWAL: 'withdrawal',
+		},
+		REVIEW_DEPOSIT: {
+			TITLE: 'Check and confirm deposit details',
+			SUBTITLE:
+				'Please check the deposit details below to make sure everything is correct.',
+			FORMAT: '{0} {1}',
+			AMOUNT: 'Amount to deposit',
+			FEE: 'Deposit fee',
+			TRANSACTION_ID: 'Transaction ID',
+			NOTE:
+				"To avoid delays make sure that your deposit's amount, note and the transaction ID match with the details above. If issues shall arise please contact support.",
+			BACK: 'Back',
+			PROCEED: 'Proceed',
+		},
+	},
+	DEPOSIT_FEE_NOTE:
+		'Note, the total amount deposited to your account will be the amount minus the deposit fee',
+	AMOUNT_LABEL:
+		'Enter the amount deposited (must be identical to the actual amount)',
+	TRANSACTION_ID_LABEL: 'Enter the transaction ID of the deposit',
+	FEE_LABEL: 'Deposit Fee',
+	AMOUNT_FORMAT: '{0} {1}',
+	PENDING_DEPOSIT_TITLE: 'Deposit pending',
+	PENDING_DEPOSIT_TEXT_1:
+		'Your deposit is now in que for verification and will remain in a pending state until cleared.',
+	PENDING_DEPOSIT_TEXT_2:
+		'Typically deposits clear within 24h but can take up to 48h, after clearing your deposit amount minus the fee will be credited to your balance.',
+	DEPOSIT_HOME_NOTE:
+		'To make a deposit please input the amount you will deposit from your own bank account. To avoid delays, make sure you the amount you enter below matches the actual amount that you will or have sent from your bank account.',
+	DEPOSIT_TXID_NOTE:
+		'To avoid delays with your deposit please make sure to enter your unique note displayed above when making your bank deposit within the note or message of your transaction. Make sure the amount below matches what you actually deposit from you bank and that you include the transaction ID provided by your bank after the transaction has been made.',
+	DEPOSIT_BANK_TEXT: 'Use the bank details below to make your deposit.',
+	MIN_DEPOSIT: 'Minimum deposit',
+	MAX_DEPOSIT: 'Maximum deposit',
+	BACK: 'Back',
+	PENDING_WITHDRAWAL_TITLE: 'Withdrawal pending',
+	PENDING_WITHDRAWAL_TEXT_1:
+		'Your withdrawal is now in que for verification and will remain in a pending state until cleared.',
+	DEPOSIT_AMOUNT_MIN_VALIDATION:
+		'The transaction is too small to send. Try a larger amount.',
+	DEPOSIT_AMOUNT_MAX_VALIDATION:
+		'The transaction is too big to send. Try a smaller amount.',
+	ACCOUNT_NAME: 'account name',
+	ACCOUNT_NUMBER: 'account number',
+	BANK_NAME: 'bank name',
+	VERIFY_BANK_WITHDRAW:
+		'In order to make a withdrawal you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.',
+	VERIFICATION_TITLE: 'Complete verification',
+	WITHDRAW_NOTE:
+		'Please note: You can only withdraw to an account in your name.',
 };

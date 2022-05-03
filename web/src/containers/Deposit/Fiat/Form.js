@@ -1,0 +1,272 @@
+import React, { useState, useEffect, Fragment } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Image, NoVerifiedAccount, Button, EditWrapper, Tab } from 'components';
+import { ExclamationCircleFilled } from '@ant-design/icons';
+import withConfig from 'components/ConfigProvider/withConfig';
+import STRINGS from 'config/localizedStrings';
+
+import { generateInitialValues } from './DepositForm';
+import math from 'mathjs';
+import classnames from 'classnames';
+import { DEFAULT_COIN_DATA } from 'config/constants';
+import DepositForm from './DepositForm';
+
+export const STEPS = {
+	HOME: 'HOME',
+	TRANSACTION_ID: 'TRANSACTION_ID',
+};
+
+const Form = ({
+	icons: ICONS,
+	titleSection,
+	currency,
+	user: {
+		bank_account: all_accounts = [],
+		verification_level,
+		id_data = {},
+	} = {},
+	router,
+	coins,
+}) => {
+	const TABS = {
+		bank: {
+			iconId: 'VERIFICATION_BANK_NEW',
+			stringId: 'USER_VERIFICATION.TITLE_BANK',
+			title: STRINGS['USER_VERIFICATION.TITLE_BANK'],
+		},
+	};
+
+	const [activeTab, setActiveTab] = useState('bank');
+	const [activeStep, setActiveStep] = useState(STEPS.HOME);
+	const [initialValues, setInitialValues] = useState({});
+
+	useEffect(() => {
+		setInitialValues(
+			generateInitialValues(verification_level, coins, currency)
+		);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	const is_verified = id_data.status === 3;
+	const verified_accounts = all_accounts.filter(({ status }) => status === 3);
+	const has_verified_account = !!verified_accounts.length;
+
+	const renderBankSteps = () => {
+		switch (activeStep) {
+			case STEPS.HOME:
+				return renderBankHomeContent();
+			case STEPS.TRANSACTION_ID:
+				return renderBankTransactionId();
+			default:
+				return 'No Step';
+		}
+	};
+
+	const renderContent = () => {
+		switch (activeTab) {
+			case 'bank': {
+				return renderBankSteps();
+			}
+			default: {
+				return 'No content';
+			}
+		}
+	};
+
+	const renderBankHomeContent = () => {
+		const { meta } = coins[currency];
+
+		const fee =
+			meta && meta[`deposit_fee_${verification_level}`]
+				? meta[`deposit_fee_${verification_level}`].value
+				: 0;
+		const limit =
+			meta && meta[`deposit_limit_${verification_level}`]
+				? meta[`deposit_limit_${verification_level}`].value
+				: 0;
+
+		const { min, max, display_name } = coins[currency] || DEFAULT_COIN_DATA;
+
+		const MIN = math.max(fee, min);
+		const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
+
+		return (
+			<div>
+				{renderTabs()}
+
+				<div className="py-2">
+					<EditWrapper stringId="DEPOSIT_HOME_NOTE">
+						{STRINGS['DEPOSIT_HOME_NOTE']}
+					</EditWrapper>
+				</div>
+
+				<div className="py-3">
+					<div className="d-flex justify-content-start">
+						<div className="bold">
+							<EditWrapper stringId="MIN_DEPOSIT">
+								{STRINGS['MIN_DEPOSIT']}
+							</EditWrapper>
+						</div>
+						<div className="pl-4">
+							{STRINGS.formatString(
+								STRINGS['AMOUNT_FORMAT'],
+								MIN,
+								display_name
+							)}
+						</div>
+					</div>
+					<div className="d-flex justify-content-start">
+						<div className="bold">
+							<EditWrapper stringId="MAX_DEPOSIT">
+								{STRINGS['MAX_DEPOSIT']}
+							</EditWrapper>
+						</div>
+						<div className="pl-4">
+							{STRINGS.formatString(
+								STRINGS['AMOUNT_FORMAT'],
+								MAX,
+								display_name
+							)}
+						</div>
+					</div>
+					<div className="d-flex justify-content-start">
+						<div className="bold">
+							<EditWrapper stringId="FEE_LABEL">
+								{STRINGS['FEE_LABEL']}
+							</EditWrapper>
+						</div>
+						<div className="pl-4">
+							{STRINGS.formatString(
+								STRINGS['AMOUNT_FORMAT'],
+								fee,
+								display_name
+							)}
+						</div>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const renderBankTransactionId = () => {
+		const { meta: { depositOptions = {} } = { depositOptions: {} } } = coins[
+			currency
+		];
+
+		return (
+			<div>
+				<div className="py-2">
+					<EditWrapper stringId="DEPOSIT_BANK_TEXT">
+						{STRINGS['DEPOSIT_BANK_TEXT']}
+					</EditWrapper>
+				</div>
+
+				<div className="py-1 dop_preview">
+					{Object.entries(depositOptions).map(([_, bankData]) => {
+						return Object.entries(bankData).map(([fieldKey, FieldData]) => {
+							const filedName = fieldKey.replace(/_/g, ' ');
+							return (
+								<div className="d-flex justify-content-start">
+									<div className="bold pl-3 cap-first">
+										{STRINGS[fieldKey] ? STRINGS[fieldKey] : filedName}
+										<EditWrapper stringId={fieldKey} />
+									</div>
+									<div className="pl-4">{FieldData.value || '-'}</div>
+								</div>
+							);
+						});
+					})}
+				</div>
+
+				<div className="py-2">
+					<EditWrapper stringId="DEPOSIT_TXID_NOTE">
+						{STRINGS['DEPOSIT_TXID_NOTE']}
+					</EditWrapper>
+				</div>
+
+				<div className="d-flex align-items-baseline field_warning_wrapper">
+					<ExclamationCircleFilled className="field_warning_icon" />
+					<div className="field_warning_text">
+						<EditWrapper stringId="DEPOSIT_FEE_NOTE">
+							{STRINGS['DEPOSIT_FEE_NOTE']}
+						</EditWrapper>
+					</div>
+				</div>
+			</div>
+		);
+	};
+
+	const renderTabs = () => {
+		return (
+			<div
+				className={classnames(
+					'custom-tab-wrapper d-flex flex-nowrap flex-row justify-content-start'
+				)}
+			>
+				{Object.entries(TABS).map(([key, { title, iconId, stringId }]) => {
+					const tabProps = {
+						key: `tab_item-${key}`,
+						className: classnames('tab_item', 'f-1', {
+							'tab_item-active': key === activeTab,
+							pointer: setActiveTab,
+						}),
+					};
+					if (setActiveTab) {
+						tabProps.onClick = () => setActiveTab(key);
+					}
+
+					return (
+						<div {...tabProps}>
+							<Tab icon={ICONS[iconId]} title={title} stringId={stringId} />
+						</div>
+					);
+				})}
+			</div>
+		);
+	};
+
+	return (
+		<div className="withdraw-form-wrapper">
+			<div className="withdraw-form">
+				<Image
+					icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+					wrapperClassName="form_currency-ball"
+				/>
+				{titleSection}
+				{(!is_verified || !has_verified_account) && (
+					<NoVerifiedAccount type="deposit" />
+				)}
+				{is_verified && has_verified_account && (
+					<Fragment>
+						{renderContent()}
+						<div className="mt-4 pt-4">
+							<DepositForm
+								currency={currency}
+								step={activeStep}
+								setStep={setActiveStep}
+								initialValues={initialValues}
+							/>
+						</div>
+					</Fragment>
+				)}
+			</div>
+			{(!is_verified || !has_verified_account) && (
+				<div className="btn-wrapper">
+					<Button
+						label="Proceed"
+						onClick={() => router.push('/verification?initial_tab=bank')}
+						className="mb-3"
+					/>
+				</div>
+			)}
+		</div>
+	);
+};
+
+const mapStateToProps = (store) => ({
+	user: store.user,
+	coins: store.app.coins,
+});
+
+export default connect(mapStateToProps)(withRouter(withConfig(Form)));

@@ -17,7 +17,7 @@ import {
 } from './notifications';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { calculateBaseFee } from './utils';
-import Fiat from 'containers/Deposit/Fiat';
+import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
 
@@ -294,14 +294,7 @@ class Form extends Component {
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
-			return (
-				<Fiat
-					id={id}
-					icons={ICONS}
-					titleSection={titleSection}
-					currency={currency}
-				/>
-			);
+			return <Fiat id={id} titleSection={titleSection} currency={currency} />;
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}
