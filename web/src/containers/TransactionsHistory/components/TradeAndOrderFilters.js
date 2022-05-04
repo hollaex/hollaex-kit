@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
@@ -9,6 +9,7 @@ const { RangePicker } = DatePicker;
 
 const Filters = ({ pairs, onSearch, formName }) => {
 	const [form] = Form.useForm();
+	const [click, setClick] = useState(false);
 
 	const onValuesChange = (_, values) => {
 		if (values) {
@@ -16,16 +17,28 @@ const Filters = ({ pairs, onSearch, formName }) => {
 				const {
 					[values.size]: { range },
 				} = dateFilters;
-				form.setFieldsValue({ range });
-				values.range = range;
-				onSearch(values);
+				if (click) {
+					form.setFieldsValue({ range: values.range });
+					onSearch(values);
+				} else {
+					form.setFieldsValue({ range });
+					values.range = range;
+					onSearch(values);
+				}
+				setClick(false);
 			} else if (!values.range) {
 				values.range = [];
 				onSearch(values);
+				setClick(false);
 			} else if (values.range && values.range[0] && values.range[1]) {
 				onSearch(values);
+				setClick(false);
 			}
 		}
+	};
+
+	const handleDateRange = () => {
+		setClick(true);
 	};
 
 	return (
@@ -110,6 +123,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						size="small"
 						suffixIcon={false}
 						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+						onChange={handleDateRange}
 					/>
 				</Form.Item>
 			</Row>

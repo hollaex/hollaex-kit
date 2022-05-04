@@ -281,7 +281,13 @@ const getParamsByStatus = (status) => {
 		case 'completed':
 			return { status: true };
 		case 'pending':
-			return { status: false, dismissed: false, processing: false, rejected: false, waiting: false };
+			return {
+				status: false,
+				dismissed: false,
+				processing: false,
+				rejected: false,
+				waiting: false,
+			};
 		default:
 			return {};
 	}
@@ -292,15 +298,27 @@ export const getUserDeposits = ({
 	page = 1,
 	status,
 	currency,
+	start_date,
+	end_date,
 	...rest
 }) => {
 	const statusParams = getParamsByStatus(status);
-	const query = querystring.stringify({
+	const queryData = {
 		page,
 		limit,
 		...statusParams,
 		...(currency ? { currency } : {}),
-	});
+	};
+
+	if (start_date) {
+		queryData.start_date = start_date;
+	}
+
+	if (end_date) {
+		queryData.end_date = end_date;
+	}
+
+	const query = querystring.stringify(queryData);
 
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_DEPOSITS_PENDING, payload: { page } });
@@ -333,15 +351,27 @@ export const getUserWithdrawals = ({
 	page = 1,
 	status,
 	currency,
+	start_date,
+	end_date,
 	...rest
 }) => {
 	const statusParams = getParamsByStatus(status);
-	const query = querystring.stringify({
+	const queryData = {
 		page,
 		limit,
 		...statusParams,
 		...(currency ? { currency } : {}),
-	});
+	};
+
+	if (start_date) {
+		queryData.start_date = start_date;
+	}
+
+	if (end_date) {
+		queryData.end_date = end_date;
+	}
+
+	const query = querystring.stringify(queryData);
 
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_WITHDRAWALS_PENDING, payload: { page } });

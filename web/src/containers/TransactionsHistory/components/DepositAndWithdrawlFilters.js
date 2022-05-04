@@ -1,9 +1,11 @@
-import React from 'react';
-import { Select, Form, Row } from 'antd';
+import React, { useState } from 'react';
+import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
+import { dateFilters } from '../filterUtils';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const STATUS_OPTIONS = {
 	pending: {
@@ -22,9 +24,35 @@ const STATUS_OPTIONS = {
 
 const Filters = ({ coins = {}, onSearch, formName }) => {
 	const [form] = Form.useForm();
+	const [click, setClick] = useState(false);
 
 	const onValuesChange = (_, values) => {
-		onSearch(values);
+		if (values) {
+			if (values.size) {
+				const {
+					[values.size]: { range },
+				} = dateFilters;
+				if (click) {
+					form.setFieldsValue({ range: values.range });
+					onSearch(values);
+				} else {
+					form.setFieldsValue({ range });
+					values.range = range;
+					onSearch(values);
+				}
+				setClick(false);
+			} else if (!values.range) {
+				values.range = [];
+				onSearch(values);
+				setClick(false);
+			} else if (values.range && values.range[0] && values.range[1]) {
+				onSearch(values);
+				setClick(false);
+			}
+		}
+	};
+	const handleDateRange = () => {
+		setClick(true);
 	};
 
 	return (
@@ -36,6 +64,7 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 			initialValues={{
 				status: null,
 				currency: null,
+				size: 'all',
 			}}
 		>
 			<Row gutter={24}>
@@ -92,6 +121,24 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 							</Option>
 						))}
 					</Select>
+				</Form.Item>
+				<Form.Item name="size">
+					<Radio.Group buttonStyle="outline" size="small">
+						{Object.entries(dateFilters).map(([key, { name }]) => (
+							<Radio.Button key={key} value={key}>
+								{name}
+							</Radio.Button>
+						))}
+					</Radio.Group>
+				</Form.Item>
+				<Form.Item name="range">
+					<RangePicker
+						allowEmpty={[true, true]}
+						size="small"
+						suffixIcon={false}
+						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+						onChange={handleDateRange}
+					/>
 				</Form.Item>
 			</Row>
 		</Form>
