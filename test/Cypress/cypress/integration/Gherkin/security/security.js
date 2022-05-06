@@ -45,13 +45,18 @@ Then ('I registered with the new username',()=>{
 }) 
 
 Given ('I log in as the new user name',()=>{
-
+      
+      cy.fixture('example')
+      .then((user)=>{
+      username = user.email
+      
       cy.visit(Cypress.env('LOGIN_PAGE'))
       cy.get('.holla-button').should('be.visible').should('be.disabled')
       cy.get('[name="email"]').clear().type(username)
       cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
       cy.get('.holla-button').should('be.visible').should('be.enabled').click()
       cy.get('.warning_text').should('not.exist') 
+})
 }) 
 
 When ('I active 2FA',()=>{
@@ -113,6 +118,7 @@ And ('I request to change the password',()=>{
 
 
 Then ('I logout successfully',()=>{
+      cy.contains('Signout').click()
       cy.wait(5000)
 }) 
 
@@ -287,3 +293,47 @@ Then ('I request to change the password to the previous password',()=>{
         cy.get('.success_display-wrapper > .holla-button').click()
                
 })
+
+
+When ('Admin deactives the 2fa of new user',()=>{
+      cy.fixture('example')
+      .then((user)=>{
+      username = user.email
+      })
+      cy.visit(Cypress.env('LOGIN_PAGE'))
+      cy.get('.holla-button').should('be.visible').should('be.disabled')
+      cy.get('[name="email"]').clear().type(Cypress.env('ADMIN_USER'))
+      cy.get('[name="password"]').clear().type(Cypress.env('ADMIN_PASS'))
+      cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+      cy.get('.warning_text').should('not.exist') 
+ //      cy.get('#trade-nav-container > :nth-child(3) > :nth-child(2)')
+ //      .should('contain',Cypress.env('ADMIN_USER'))
+      cy.contains('Operator controls').click()
+      cy.contains('Users').click({force: true})
+      cy.get('.ant-input').type(username)
+      cy.get('.ant-btn').click()
+     
+      cy.get(':nth-child(3) > .about-info-content > :nth-child(1)').contains('2FA enabled')
+      cy.get(':nth-child(3) > .about-info-content > .info-link').click()
+      cy.get('.mt-3').contains('Are you sure want to disable 2FA for this account?')
+      cy.get('.ant-modal-confirm-btns > .ant-btn-primary').click()
+      cy.get('.my-5 > :nth-child(3) > :nth-child(1) > div').contains('2FA disabled')
+      cy.contains('Logout').click()
+})
+
+
+
+Then ('The activation code is different',()=>{
+
+      cy.get('.app-menu-bar-side > :nth-child(5)').as('Car Keys').click({force:true})
+      cy.get('.checkbutton-input-wrapper').as('enable').click({force:true})
+      cy.get(':nth-child(3) > .otp_form-section-content').invoke('text')
+      .then(text => {
+            var fullText = text;
+            cy.fixture('2fa')
+            .then((user)=>{
+                 const token = user.code;
+               expect(token).to.not.be.equal(fullText) 
+            }) 
+      })       
+}) 

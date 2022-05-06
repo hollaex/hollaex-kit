@@ -17,10 +17,11 @@ When ('I enter credentials to log in successfully',()=>{
 
 And ('I should be able to redirect to {string} page and cancel all open orders',(tradePage)=>{
    
-    cy.contains('24h Trade').click()
+    cy.contains('Pro trade').click()
     cy.contains(tradePage).click()
-    cy.get('.app_bar-currency-txt').should('have.text', 'XHT/USDT:')
-    cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
+    cy.get('.app_bar-currency-txt').should('have.text', 'XHTT/USDT:')
+    //cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
+    cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
     .invoke('text').then(text => {
         var fullText = text;
         var pattern = /[0-9]+/g;
@@ -36,7 +37,7 @@ And ('I should be able to redirect to {string} page and cancel all open orders',
 })
 
 And ('I check the highest and lowest prices',()=>{
-
+    cy.get('.trade_orderbook-depth').contains('0.01')
     cy.log('check lowest aks exist and click on the price will send the price')
     cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
     .as('lowestSell').should('be.visible')
@@ -49,7 +50,8 @@ And ('I check the highest and lowest prices',()=>{
     .should('be.visible').as('highestBuy')
     cy.get('.form-error').should('not.be.exist')
     cy.get('.trade_order_entry-form_fields-wrapper').click()
-    
+    cy.wallectCheck('sell','HollaEx',0.01,0,0.26)
+    cy.wallectCheck('buy','USD Tether',0.01,0,0.26)
 })
 
 When ('I make buy orders {string} times',(orderTime)=>{
@@ -68,7 +70,8 @@ When ('I make buy orders {string} times',(orderTime)=>{
         .contains('buy')
         cy.get('@currentPrice')
         .then(val=> {
-            cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+            cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+            
             .should('contain', val)
         })
         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
@@ -93,8 +96,9 @@ When ('I make sell orders {string} times',(orderTime)=>{
         .contains('sell')
         cy.get('@currentPrice')
         .then(val=> {
-            cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+            cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
             .should('contain', val)
+            cy.contains('HOLLAEX ').click().log("wallet opened").pause()
         })
         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
         .contains(i)         
@@ -169,8 +173,9 @@ When ('I fill {string} of {string} in an order partially',(portion,whole)=>{
      .contains('sell')
      cy.get('@currentPrice')
      .then(val=> {
-         cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+         cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
          .should('contain', val)
+         cy.wallectCheck('sell','HollaEx',0.01,size,val)
        })
      cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
      .contains(size) 
@@ -181,9 +186,9 @@ When ('I fill {string} of {string} in an order partially',(portion,whole)=>{
      .contains('buy')
      cy.get('@currentPrice')
      .then(val=> {
-          cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
+          cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
           .should('contain', val)
-     })
+          })
      cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(2)')
      .contains((size-Number(portion))) 
      cy.get(':nth-child(1) > :nth-child(2) > .trade_history-row')
@@ -207,7 +212,7 @@ Then ('I will see the {string} / {string} percentage',(portion,whole)=>{
     cy.get('.trade__active-orders_cancel-All').click()
     cy.get(':nth-child(2) > .w-100 > :nth-child(3)').click()
     cy.wait(2000)
-    cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
+    cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
     .invoke('text').then(text => {
         var fullText = text;
         var pattern = /[0-9]+/g;
