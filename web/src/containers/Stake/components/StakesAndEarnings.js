@@ -11,17 +11,17 @@ import {
 } from 'config/constants';
 
 const StakesAndEarnings = ({ totalEarningsValue, totalStakesValue, coins }) => {
-	const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const { min, display_name = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 	const totalStakesString = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
-		symbol.toUpperCase(),
+		display_name,
 		formatToCurrency(totalStakesValue, min)
 	);
 
 	const totalEarningsString = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
-		symbol.toUpperCase(),
+		display_name,
 		formatToCurrency(totalEarningsValue, min)
 	);
 

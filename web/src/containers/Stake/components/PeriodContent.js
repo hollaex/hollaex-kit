@@ -20,7 +20,7 @@ const PeriodContent = ({
 	currentBlock,
 	openReadMore,
 }) => {
-	const { symbol } = tokenData;
+	const { symbol, display_name } = tokenData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_PERIOD_ITEM']})`,
@@ -51,7 +51,7 @@ const PeriodContent = ({
 					stringId="STAKE.MODAL_TITLE"
 					text={STRINGS.formatString(
 						STRINGS['STAKE.MODAL_TITLE'],
-						symbol.toUpperCase()
+						display_name
 					)}
 					textType="stake_popup__title m-0"
 					underline={false}

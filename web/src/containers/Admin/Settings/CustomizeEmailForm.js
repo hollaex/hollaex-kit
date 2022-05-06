@@ -112,7 +112,7 @@ const CustomizeEmailForm = ({
 		const body = {
 			language,
 			type: mailType.toLowerCase(),
-			html: format,
+			html: format.replace(/"/g, "'"),
 			title,
 		};
 		setButtonSubmitting(true);

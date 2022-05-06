@@ -179,14 +179,7 @@ const RenderContentForm = ({
 			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {
-		return (
-			<Fiat
-				id={id}
-				titleSection={titleSection}
-				icons={ICONS}
-				currency={currency}
-			/>
-		);
+		return <Fiat id={id} titleSection={titleSection} currency={currency} />;
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 	}

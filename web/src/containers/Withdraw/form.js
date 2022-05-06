@@ -9,8 +9,6 @@ import {
 	change,
 } from 'redux-form';
 import math from 'mathjs';
-// import classnames from 'classnames';
-// import { isMobile } from 'react-device-detect';
 import { Button, Dialog, OtpForm, Loader, SmartTarget } from 'components';
 import renderFields from 'components/Form/factoryFields';
 import {
@@ -19,7 +17,7 @@ import {
 } from './notifications';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { calculateBaseFee } from './utils';
-import Fiat from 'containers/Deposit/Fiat';
+import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
 
@@ -213,7 +211,6 @@ class Form extends Component {
 			pristine,
 			error,
 			valid,
-			// initialValues, // eslint-disable-line
 			currency,
 			data,
 			openContactForm,
@@ -232,6 +229,7 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
+		const { icon_id } = coinObject || DEFAULT_COIN_DATA;
 
 		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
 		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
@@ -249,8 +247,8 @@ class Form extends Component {
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form">
 							<Image
-								iconId={`${currency.toUpperCase()}_ICON`}
-								icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+								iconId={icon_id}
+								icon={ICONS[icon_id]}
 								wrapperClassName="form_currency-ball"
 							/>
 							{titleSection}
@@ -296,14 +294,7 @@ class Form extends Component {
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
-			return (
-				<Fiat
-					id={id}
-					icons={ICONS}
-					titleSection={titleSection}
-					currency={currency}
-				/>
-			);
+			return <Fiat id={id} titleSection={titleSection} currency={currency} />;
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}

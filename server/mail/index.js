@@ -99,11 +99,11 @@ const send = (params) => {
 		});
 };
 
-const testSendSMTPEmail = (receiver = "", smtp = {}) => {
-	const to = {ToAddresses: [receiver]};
+const testSendSMTPEmail = (receiver = '', smtp = {}) => {
+	const to = { ToAddresses: [receiver] };
 	const messageContent = {
 		'subject': 'Test Email Config SMTP',
-		'html': '<div><p>Test Content Email</p></div>',
+		'html': '<div><p>Test email is sent successfully</p></div>',
 		'text': 'test content'
 	};
 	let from = SUPPORT_SOURCE();
