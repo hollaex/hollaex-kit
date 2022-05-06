@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import { dateFilters } from '../filterUtils';
+import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -22,9 +23,37 @@ const STATUS_OPTIONS = {
 	},
 };
 
-const Filters = ({ coins = {}, onSearch, formName }) => {
+const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
-	const [click, setClick] = useState(false);
+	const [click, setClick] = useState([]);
+
+	useEffect(() => {
+		form.setFieldsValue({
+			status: null,
+			currency: null,
+			size: 'all',
+		});
+	}, [activeTab]);
+
+	useEffect(() => {
+		if (
+			click.length &&
+			!click.filter((d) => d === undefined).length &&
+			form.getFieldValue('range').length &&
+			!form.getFieldValue('range').filter((d) => d === undefined).length
+		) {
+			if (
+				!moment(click[0]).isSame(form.getFieldValue('range')[0]) &&
+				!moment(click[1]).isSame(form.getFieldValue('range')[1])
+			) {
+				form.setFieldsValue({ range: click });
+				onSearch(form.getFieldsValue());
+			}
+		} else if (click.length && !form.getFieldValue('range').length) {
+			form.setFieldsValue({ range: click });
+			onSearch(form.getFieldsValue());
+		}
+	}, [click, form, onSearch]);
 
 	const onValuesChange = (_, values) => {
 		if (values) {
@@ -32,27 +61,19 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 				const {
 					[values.size]: { range },
 				} = dateFilters;
-				if (click) {
-					form.setFieldsValue({ range: values.range });
-					onSearch(values);
-				} else {
-					form.setFieldsValue({ range });
-					values.range = range;
+				form.setFieldsValue({ range });
+				values.range = range;
+				if (_.range === undefined) {
 					onSearch(values);
 				}
-				setClick(false);
-			} else if (!values.range) {
-				values.range = [];
-				onSearch(values);
-				setClick(false);
-			} else if (values.range && values.range[0] && values.range[1]) {
-				onSearch(values);
-				setClick(false);
 			}
 		}
 	};
-	const handleDateRange = () => {
-		setClick(true);
+
+	const handleDateRange = (e) => {
+		if (e.length > 1 && e[0] && e[1]) {
+			setClick(e);
+		}
 	};
 
 	return (

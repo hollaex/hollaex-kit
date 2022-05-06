@@ -148,23 +148,25 @@ class TransactionsHistory extends Component {
 			getUserWithdrawals,
 		} = this.props;
 		let open = true;
-		if (params && params.type && params.type === 'active') {
+		let temp = params[`activeTab_${activeTab}`];
+
+		if (temp && temp.type && temp.type === 'active') {
 			open = true;
-		} else if (params && params.type && params.type === 'closed') {
+		} else if (temp && temp.type && temp.type === 'closed') {
 			open = false;
 		}
 		switch (activeTab) {
 			case 1:
-				getOrdersHistory(RECORD_LIMIT, 1, { ...params, open });
+				getOrdersHistory(RECORD_LIMIT, 1, { ...temp, open });
 				break;
 			case 0:
-				getUserTrades(RECORD_LIMIT, 1, params);
+				getUserTrades(RECORD_LIMIT, 1, temp);
 				break;
 			case 2:
-				getUserDeposits(RECORD_LIMIT, 1, params);
+				getUserDeposits(RECORD_LIMIT, 1, temp);
 				break;
 			case 3:
-				getUserWithdrawals(RECORD_LIMIT, 1, params);
+				getUserWithdrawals(RECORD_LIMIT, 1, temp);
 				break;
 			default:
 		}
@@ -181,7 +183,15 @@ class TransactionsHistory extends Component {
 		const start_date = startDate ? moment.utc(startDate).format() : undefined;
 		const end_date = endDate ? moment.utc(endDate).format() : undefined;
 		this.setState(
-			{ params: { start_date, end_date, ...rest } },
+			(prevState) => ({
+				params: {
+					[`activeTab_${prevState.activeTab}`]: {
+						start_date,
+						end_date,
+						...rest,
+					},
+				},
+			}),
 			this.requestData
 		);
 	};
@@ -243,6 +253,7 @@ class TransactionsHistory extends Component {
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="orders"
+						activeTab={1}
 					/>
 				),
 				trades: (
@@ -250,6 +261,7 @@ class TransactionsHistory extends Component {
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="trades"
+						activeTab={0}
 					/>
 				),
 				deposits: (
@@ -257,6 +269,7 @@ class TransactionsHistory extends Component {
 						coins={coins}
 						onSearch={this.onSearch}
 						formName="deposits"
+						activeTab={2}
 					/>
 				),
 				withdrawals: (
@@ -264,6 +277,7 @@ class TransactionsHistory extends Component {
 						coins={coins}
 						onSearch={this.onSearch}
 						formName="withdrawals"
+						activeTab={3}
 					/>
 				),
 			},
@@ -278,16 +292,27 @@ class TransactionsHistory extends Component {
 				jumpToPage: 0,
 			});
 		}
-		this.setState({ activeTab }, () => {
-			if (
-				(orders.page === 1 && orders.fetched === false) ||
-				(trades.page === 1 && trades.fetched === false) ||
-				(withdrawals.page === 1 && withdrawals.fetched === false) ||
-				(deposits.page === 1 && deposits.fetched === false)
-			) {
-				this.requestData(symbol);
+		this.setState(
+			{
+				activeTab,
+				params: {
+					[`activeTab_${activeTab}`]: {
+						end_date: '',
+						start_date: '',
+					},
+				},
+			},
+			() => {
+				if (
+					(orders.page === 1 && orders.fetched === false) ||
+					(trades.page === 1 && trades.fetched === false) ||
+					(withdrawals.page === 1 && withdrawals.fetched === false) ||
+					(deposits.page === 1 && deposits.fetched === false)
+				) {
+					this.requestData(symbol);
+				}
 			}
-		});
+		);
 	};
 	withdrawalPopup = (id, amount, currency) => {
 		if (id) {
@@ -306,10 +331,11 @@ class TransactionsHistory extends Component {
 
 	handleNext = (pageCount, pageNumber) => {
 		const { orders, trades, deposits, withdrawals } = this.props;
-		const { params } = this.state;
+		const { params, activeTab } = this.state;
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
 		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
-		switch (this.state.activeTab) {
+		let temp = params[`activeTab_${activeTab}`];
+		switch (activeTab) {
 			case 1:
 				if (
 					RECORD_LIMIT === pageCount * pageTemp &&
@@ -330,7 +356,7 @@ class TransactionsHistory extends Component {
 					trades.isRemaining
 				) {
 					this.props.getUserTrades(RECORD_LIMIT, trades.page + 1, {
-						...params,
+						...temp,
 					});
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -341,7 +367,7 @@ class TransactionsHistory extends Component {
 					apiPageTemp >= deposits.page &&
 					deposits.isRemaining
 				) {
-					this.props.getUserDeposits(RECORD_LIMIT, deposits.page + 1, params);
+					this.props.getUserDeposits(RECORD_LIMIT, deposits.page + 1, temp);
 					this.setState({ jumpToPage: pageNumber });
 				}
 				break;
@@ -354,7 +380,7 @@ class TransactionsHistory extends Component {
 					this.props.getUserWithdrawals(
 						RECORD_LIMIT,
 						withdrawals.page + 1,
-						params
+						temp
 					);
 					this.setState({ jumpToPage: pageNumber });
 				}
@@ -375,8 +401,9 @@ class TransactionsHistory extends Component {
 			downloadUserWithdrawal,
 			downloadUserDeposit,
 		} = this.props;
-		const { headers, activeTab, filters, jumpToPage } = this.state;
+		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		// const name = STRINGS[`${symbol.toUpperCase()}_NAME`];
+		let temp = params[`activeTab_${activeTab}`];
 
 		const props = {
 			symbol,
@@ -393,7 +420,7 @@ class TransactionsHistory extends Component {
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserOrders;
+				props.handleDownload = () => downloadUserOrders(temp);
 				props.filters = filters.orders;
 				break;
 			case 0:
@@ -405,7 +432,7 @@ class TransactionsHistory extends Component {
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserTrades;
+				props.handleDownload = () => downloadUserTrades(temp);
 				props.filters = filters.trades;
 				break;
 			case 2:
@@ -416,7 +443,7 @@ class TransactionsHistory extends Component {
 				props.filename = `deposit-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserDeposit;
+				props.handleDownload = () => downloadUserDeposit(temp);
 				props.filters = filters.deposits;
 				break;
 			case 3:
@@ -427,7 +454,7 @@ class TransactionsHistory extends Component {
 				props.filename = `withdrawal-history-${moment().unix()}`;
 				props.handleNext = this.handleNext;
 				props.jumpToPage = jumpToPage;
-				props.handleDownload = downloadUserWithdrawal;
+				props.handleDownload = () => downloadUserWithdrawal(temp);
 				props.filters = filters.withdrawals;
 				break;
 			default:
@@ -600,10 +627,13 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch(getUserWithdrawals({ limit, page, ...params })),
 	withdrawalCancel: (transactionId) =>
 		dispatch(withdrawalCancel({ transactionId })),
-	downloadUserTrades: () => dispatch(downloadUserTrades('trade')),
-	downloadUserDeposit: () => dispatch(downloadUserTrades('deposit')),
-	downloadUserWithdrawal: () => dispatch(downloadUserTrades('withdrawal')),
-	downloadUserOrders: () => dispatch(downloadUserTrades('orders')),
+	downloadUserTrades: (params) => dispatch(downloadUserTrades('trade', params)),
+	downloadUserDeposit: (params) =>
+		dispatch(downloadUserTrades('deposit', params)),
+	downloadUserWithdrawal: (params) =>
+		dispatch(downloadUserTrades('withdrawal', params)),
+	downloadUserOrders: (params) =>
+		dispatch(downloadUserTrades('orders', params)),
 });
 
 export default connect(

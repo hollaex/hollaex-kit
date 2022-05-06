@@ -238,10 +238,10 @@ export const getOrdersHistory = ({
 	};
 };
 
-export const downloadUserTrades = (key) => {
-	const query = querystring.stringify({
+export const downloadUserTrades = (key, params = {}) => {
+	const queryData = {
 		format: 'csv',
-	});
+	};
 	let path = ENDPOINTS.TRADES;
 	if (key === 'orders') {
 		path = ENDPOINTS.ORDERS;
@@ -251,7 +251,37 @@ export const downloadUserTrades = (key) => {
 	} else if (key === 'withdrawal') {
 		path = ENDPOINTS.WITHDRAWALS;
 	}
+	if (params && params.symbol) {
+		queryData.symbol = params.symbol;
+	}
 
+	if (params && params.start_date) {
+		queryData.start_date = params.start_date;
+	}
+
+	if (params && params.end_date) {
+		queryData.end_date = params.end_date;
+	}
+
+	if (params && params.status) {
+		if (params.status === 'dismissed') {
+			queryData.dismissed = true;
+		} else if (params.status === 'pending') {
+			queryData.dismissed = false;
+			queryData.processing = false;
+			queryData.rejected = false;
+			queryData.status = false;
+			queryData.waiting = false;
+		} else if (params.status === 'completed') {
+			queryData.status = true;
+		}
+	}
+
+	if (params && params.currency) {
+		queryData.currency = params.currency;
+	}
+
+	const query = querystring.stringify(queryData);
 	return (dispatch) => {
 		axios
 			.get(`${path}?${query}`)
