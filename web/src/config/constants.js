@@ -27,20 +27,20 @@ export const DEFAULT_LANDING_SECTIONS = {
 		is_active: true,
 		order: 0,
 	},
-	market_list: {
-		name: 'Market list',
-		is_active: false,
-		order: 1,
-	},
-	quick_trade: {
-		name: 'Quick trade calculator',
-		is_active: false,
-		order: 2,
-	},
 	card_section: {
 		name: 'Card section',
 		is_active: true,
+		order: 2,
+	},
+	market_list: {
+		name: 'Market list',
+		is_active: true,
 		order: 3,
+	},
+	quick_trade: {
+		name: 'Quick trade calculator',
+		is_active: true,
+		order: 4,
 	},
 };
 

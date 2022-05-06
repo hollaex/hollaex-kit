@@ -1402,7 +1402,7 @@ table th {
   justify-content: center;
   align-items: center;
   background-color: var(--base_wallet-sidebar-and-popup);
-  opacity: 60%; }
+  opacity: 0.8; }
   .html_card_section .card-section-wrapper {
     display: flex;
     align-items: center;
