@@ -28,6 +28,8 @@ export const getEmailStrings = (param) => {
 };
 
 export const updateEmailStrings = (values) => {
+	values.html = values?.html?.replace(/"/g, '@@_BIT_@@');
+	values.html = values?.html?.replace(/'/g, '@@_BIT_@@');
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify(values),

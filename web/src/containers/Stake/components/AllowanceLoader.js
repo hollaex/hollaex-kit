@@ -3,8 +3,10 @@ import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { LoadingOutlined } from '@ant-design/icons';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
-const LoadingContent = ({ symbol }) => {
+const LoadingContent = ({ symbol, coins }) => {
+	const { display_name } = coins[symbol] || DEFAULT_COIN_DATA;
 	return (
 		<Fragment>
 			<div className="dialog-content">
@@ -23,7 +25,7 @@ const LoadingContent = ({ symbol }) => {
 					<EditWrapper stringId="STAKE.CHECKING_ALLOWANCE">
 						{STRINGS.formatString(
 							STRINGS['STAKE.CHECKING_ALLOWANCE'],
-							symbol.toUpperCase()
+							display_name
 						)}
 					</EditWrapper>
 				</div>

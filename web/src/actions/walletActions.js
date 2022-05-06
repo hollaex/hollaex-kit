@@ -42,6 +42,16 @@ const ENDPOINTS = {
 	CANCEL_WITHDRAWAL: '/user/withdrawal',
 	CONFIRM_WITHDRAWAL: '/user/confirm-withdrawal',
 	CHECK_TRANSACTION: '/user/check-transaction',
+	FIAT_DEPOSIT: '/fiat/deposit',
+	FIAT_WITHDRAW: '/fiat/withdrawal',
+};
+
+export const depositFiat = (values) => {
+	return axios.post(ENDPOINTS.FIAT_DEPOSIT, values);
+};
+
+export const withdrawFiat = (values) => {
+	return axios.post(ENDPOINTS.FIAT_WITHDRAW, values);
 };
 
 export const performWithdraw = (currency, values) => {
@@ -281,7 +291,13 @@ const getParamsByStatus = (status) => {
 		case 'completed':
 			return { status: true };
 		case 'pending':
-			return { status: false, dismissed: false, processing: false, rejected: false, waiting: false };
+			return {
+				status: false,
+				dismissed: false,
+				processing: false,
+				rejected: false,
+				waiting: false,
+			};
 		default:
 			return {};
 	}

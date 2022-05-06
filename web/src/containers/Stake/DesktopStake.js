@@ -101,9 +101,9 @@ class Stake extends Component {
 	startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
 		const { coins, setNotification } = this.props;
-		const { fullname } = coins[symbol];
+		const { fullname, display_name, icon_id } = coins[symbol];
 		setNotification(NOTIFICATIONS.STAKE, {
-			tokenData: { ...tokenData, fullname },
+			tokenData: { ...tokenData, fullname, display_name, icon_id },
 		});
 	};
 
@@ -183,6 +183,8 @@ class Stake extends Component {
 			networksMismatch,
 		} = this.props;
 
+		const { display_name: index_display_name } = coins[STAKING_INDEX_COIN];
+
 		return (
 			<div className="presentation_container apply_rtl wallet-wrapper">
 				<div className="d-flex align-end justify-content-between">
@@ -229,6 +231,7 @@ class Stake extends Component {
 								<div className="secondary-text">
 									{STRINGS.formatString(
 										STRINGS['STAKE.ON_EXCHANGE_XHT'],
+										index_display_name,
 										isLoggedIn() ? (
 											this.renderAvailableBalance()
 										) : (
@@ -243,7 +246,10 @@ class Stake extends Component {
 												(
 												{
 													<span className="blue-link pointer">
-														{STRINGS['STAKE.MOVE_XHT']}
+														{STRINGS.formatString(
+															STRINGS['STAKE.MOVE_XHT'],
+															index_display_name
+														)}
 													</span>
 												}
 												)
@@ -303,8 +309,7 @@ class Stake extends Component {
 							<tbody>
 								{stakables.map((tokenData, index) => {
 									const { symbol, available } = tokenData;
-									const { fullname } = coins[symbol];
-									const iconId = `${symbol.toUpperCase()}_ICON`;
+									const { fullname, display_name, icon_id } = coins[symbol];
 									const goToSymbol = () => this.goToDetails(symbol);
 									const commonCellProps = !account
 										? {}
@@ -318,14 +323,14 @@ class Stake extends Component {
 											<td onClick={goToSymbol} className="td-name td-fit">
 												<div className="d-flex align-items-center">
 													<Image
-														iconId={iconId}
-														icon={ICONS[iconId]}
+														iconId={icon_id}
+														icon={ICONS[icon_id]}
 														wrapperClassName="currency-ball pt-2"
 														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
 													{fullname}
 													<span className="pl-2 secondary-text">
-														{symbol.toUpperCase()}
+														{display_name}
 													</span>
 												</div>
 											</td>
@@ -450,6 +455,8 @@ class Stake extends Component {
 													</Help>
 												);
 
+												const { display_name } = coins[symbol];
+
 												const data = {
 													amount,
 													partial,
@@ -458,6 +465,7 @@ class Stake extends Component {
 													symbol,
 													index,
 													progressStatusText,
+													display_name,
 												};
 
 												const btnProps = {

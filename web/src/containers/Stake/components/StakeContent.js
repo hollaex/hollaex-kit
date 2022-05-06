@@ -78,7 +78,7 @@ class StakeContent extends Component {
 
 	setAmount = ({ target: { value: amount } }) => {
 		const {
-			tokenData: { available, symbol },
+			tokenData: { available, display_name },
 		} = this.props;
 
 		if (amount) {
@@ -90,7 +90,7 @@ class StakeContent extends Component {
 						available,
 						STRINGS.formatString(
 							STRINGS['WITHDRAWALS_LOWER_BALANCE'],
-							`${amount} ${symbol.toUpperCase()}`
+							`${amount} ${display_name}`
 						)
 					)(amount),
 				});
@@ -179,12 +179,13 @@ class StakeContent extends Component {
 			onCloseDialog,
 			account,
 			penalties,
+			coins,
 		} = this.props;
 		const { period, amount, action, isPending, isValid, error } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
 			case CONTENT_TYPE.LOADING:
-				return <AllowanceLoader symbol={symbol} />;
+				return <AllowanceLoader coins={coins} symbol={symbol} />;
 			case CONTENT_TYPE.AMOUNT:
 				return (
 					<AmountContent
