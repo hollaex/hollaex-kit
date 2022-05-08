@@ -672,7 +672,7 @@ export default {
 				'Criar um aviso de pop-up quando o valor de uma ordem de trading ultrapassar uma porcentagem de valor determinada de seu portfólio',
 			INFO_TEXT_1: 'Valor total dos ativos em {0}: {1}',
 			PORTFOLIO: 'Porcentagem da carteira',
-			TOMAN_ASSET: 'Valor aproximado',
+			VALUE_ASSET: 'Valor aproximado',
 			ADJUST: '(AJUSTAR PORCENTAGEM)',
 			ACTIVATE_RISK_MANAGMENT: 'Ativar gerenciamento de risco',
 			WARNING_POP_UP: 'Pop-ups de aviso',

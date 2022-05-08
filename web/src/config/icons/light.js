@@ -3,7 +3,7 @@ import flatten from 'flat';
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
 	EXCHANGE: {
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/light-spinner.gif',
 		BOARDING_IMAGE: '/assets/background.png',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
@@ -156,7 +156,7 @@ const nestedIcons = {
 	ID_GREY: '/assets/images/id-grey.svg',
 
 	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	INCOMING_COIN: '/assets/images/incoming-coin.svg',
 
 	PASSWORD_RESET: '/assets/images/password-reset.svg',
 

@@ -1,20 +1,21 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
-import { CurrencyBallWithPrice, ActionNotification, Button } from '../';
+import { CurrencyBallWithPrice, ActionNotification, Button } from 'components';
 
 import { getDepositTexts } from './constants';
 import Header from './Header';
-import { BASE_CURRENCY } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { BASE_CURRENCY } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 const DepositNotification = ({
 	data,
 	onClose,
-	goToPage,
 	openContactForm,
 	icons: ICONS,
+	coins,
 }) => {
-	const depositTexts = getDepositTexts(data.currency, data.coins, data.status);
+	const depositTexts = getDepositTexts(data.currency, coins, data.status);
 
 	const headerProps = {
 		text: depositTexts.title,
@@ -22,7 +23,7 @@ const DepositNotification = ({
 			data.currency === BASE_CURRENCY
 				? data.status
 					? 'DEPOSIT_BASE_COIN_COMPLETE'
-					: 'INCOMING_TOMAN'
+					: 'INCOMING_COIN'
 				: data.status
 				? 'DEPOSIT_RECEIVED_BITCOIN'
 				: 'INCOMING_BTC',
@@ -30,7 +31,7 @@ const DepositNotification = ({
 			data.currency === BASE_CURRENCY
 				? data.status
 					? ICONS['DEPOSIT_BASE_COIN_COMPLETE']
-					: ICONS['INCOMING_TOMAN']
+					: ICONS['INCOMING_COIN']
 				: data.status
 				? ICONS['DEPOSIT_RECEIVED_BITCOIN']
 				: ICONS['INCOMING_BTC'],
@@ -45,8 +46,8 @@ const DepositNotification = ({
 			<div className="notification-content-header">
 				{depositTexts.subtitle}
 				<ActionNotification
-					stringId="NEED_HELP_TEXT"
-					text={STRINGS['NEED_HELP_TEXT']}
+					showActionText={false}
+					text=""
 					status="information"
 					iconId="BLUE_QUESTION"
 					iconPath={ICONS['BLUE_QUESTION']}
@@ -63,36 +64,20 @@ const DepositNotification = ({
 				</div>
 			)}
 			<div className="notification-content-block_amount d-flex justify-content-center">
-				<CurrencyBallWithPrice
-					symbol={data.currency}
-					amount={data.amount}
-					// price={data.price || 1}
-				/>
+				<CurrencyBallWithPrice symbol={data.currency} amount={data.amount} />
 			</div>
 			<div className="notification-buttons-wrapper d-flex">
 				<Button
 					label={STRINGS['NOTIFICATIONS.BUTTONS.OKAY']}
 					onClick={onClose}
 				/>
-				{/* <div className="separator" />
-				<Button
-					className={classnames(
-						`button-${data.currency}`,
-						'deposit-button-notification'
-					)}
-					label={
-						data.currency === BASE_CURRENCY
-							? STRINGS["NOTIFICATIONS.BUTTONS.START_TRADING"]
-							: STRINGS["NOTIFICATIONS.BUTTONS.SEE_HISTORY"]
-					}
-					onClick={() => {
-						goToPage(data.currency === BASE_CURRENCY ? 'trade' : 'transactions');
-						onClose();
-					}}
-				/> */}
 			</div>
 		</div>
 	);
 };
 
-export default DepositNotification;
+const mapStateToProps = (store) => ({
+	coins: store.app.coins,
+});
+
+export default connect(mapStateToProps)(DepositNotification);

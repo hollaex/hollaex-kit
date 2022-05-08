@@ -664,7 +664,7 @@ export default {
 				'Tạo một khung cảnh báo khi số lượng giao dịch vượt quá tỷ lệ phần trăm được cài đặt trong danh mục',
 			INFO_TEXT_1: 'Tổng giá trị tài sản {0}: {1}',
 			PORTFOLIO: 'Tỷ lệ phần trăm danh mục',
-			TOMAN_ASSET: 'Giá trị ước chừng',
+			VALUE_ASSET: 'Giá trị ước chừng',
 			ADJUST: '(ĐIỀU CHỈNH TỶ LỆ)',
 			ACTIVATE_RISK_MANAGMENT: 'Bật quản lý nguy hiểm',
 			WARNING_POP_UP: 'Cửa sổ cảnh báo',
@@ -917,7 +917,7 @@ export default {
 	QUOTE_COUNTDOWN_MESSAGE: 'You have {0} seconds to perform the trade',
 	QUOTE_EXPIRED_TOKEN: 'The quote token has expired.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2} for {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc from
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',

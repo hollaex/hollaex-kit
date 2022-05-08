@@ -6,7 +6,6 @@ import { DisplayTable } from '../../../components';
 import { getFormatTimestamp } from '../../../utils/utils';
 import STRINGS from '../../../config/localizedStrings';
 import { formatToCurrency } from '../../../utils/currency';
-import { DEFAULT_COIN_DATA } from 'config/constants';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
 import { tradeHistorySelector } from '../utils';
@@ -85,9 +84,8 @@ class TradeHistory extends Component {
 	generateHeaders = (pairs) => {
 		const { icons: ICONS, maxAmount } = this.props;
 		const { isBase, isOpen } = this.state;
-		const { coins, pairData } = this.props;
-		const pairBase = pairData.pair_base.toUpperCase();
-		const { symbol } = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
+		const { pairData } = this.props;
+		const { pair_base_display, pair_2_display } = pairData;
 
 		return [
 			{
@@ -141,8 +139,8 @@ class TradeHistory extends Component {
 								dropdownClassName="custom-select-style trade-select-option-wrapper"
 								dropdownStyle={{ minWidth: '7rem' }}
 							>
-								<Option value={false}>{symbol.toUpperCase()}</Option>
-								<Option value={true}>{pairBase}</Option>
+								<Option value={false}>{pair_2_display}</Option>
+								<Option value={true}>{pair_base_display}</Option>
 							</Select>
 						</div>
 					</div>
@@ -210,7 +208,6 @@ const mapStateToProps = (store) => {
 		pairs: store.app.pairs,
 		data,
 		maxAmount,
-		coins: store.app.coins,
 	};
 };
 

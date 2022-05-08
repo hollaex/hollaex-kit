@@ -1,20 +1,18 @@
 import React from 'react';
 import EventListener from 'react-event-listener';
-import { connect } from 'react-redux';
-import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { CURRENCY_PRICE_FORMAT } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import {
 	NotificationWraper,
 	NotificationContent,
 	InformationRow,
 } from './Notification';
 import { Button } from '../';
-import { formatToCurrency } from '../../utils/currency';
+import { formatToCurrency } from 'utils/currency';
 
-const generateRows = ({ order, pairData }, coins) => {
+const generateRows = ({ order, pairData }) => {
 	const { type, side, price, size } = order;
-	const secondaryFormat = coins[pairData.pair_2] || DEFAULT_COIN_DATA;
-	const baseFormat = coins[pairData.pair_base] || DEFAULT_COIN_DATA;
+	const { pair_base_display, pair_2_display } = pairData;
 	const rows = [];
 
 	rows.push({
@@ -37,7 +35,7 @@ const generateRows = ({ order, pairData }, coins) => {
 		value: STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			formatToCurrency(size, pairData.increment_size),
-			baseFormat.symbol.toUpperCase()
+			pair_base_display
 		),
 	});
 
@@ -48,7 +46,7 @@ const generateRows = ({ order, pairData }, coins) => {
 			value: STRINGS.formatString(
 				CURRENCY_PRICE_FORMAT,
 				formatToCurrency(price, pairData.increment_price),
-				secondaryFormat.symbol.toUpperCase()
+				pair_2_display
 			),
 		});
 	}
@@ -69,12 +67,11 @@ const OrderDisplay = ({ rows }) => {
 const NewOrderNotification = ({
 	type,
 	data,
-	coins,
 	onBack,
 	onConfirm,
 	icons: ICONS,
 }) => {
-	const rows = generateRows(data, coins);
+	const rows = generateRows(data);
 	const onConfirmClick = () => {
 		onConfirm();
 		onBack();
@@ -105,8 +102,4 @@ const NewOrderNotification = ({
 	);
 };
 
-const mapStateToProps = (state) => ({
-	coins: state.app.coins,
-});
-
-export default connect(mapStateToProps)(NewOrderNotification);
+export default NewOrderNotification;

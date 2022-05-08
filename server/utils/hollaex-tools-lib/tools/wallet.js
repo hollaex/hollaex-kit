@@ -51,11 +51,11 @@ const isValidAddress = (currency, address, network) => {
 		return true;
 	} else {
 		const supported = WAValidator.findCurrency(currency);
-			if (supported) {
-				return WAValidator.validate(address, currency);
-			} else {
-				return true;
-			}
+		if (supported) {
+			return WAValidator.validate(address, currency);
+		} else {
+			return true;
+		}
 	}
 };
 
@@ -121,8 +121,8 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	if (fee_coin === currency) {
 		const totalAmount =
 			fee > 0
-			? math.number(math.add(math.bignumber(fee), math.bignumber(amount)))
-			: amount;
+				? math.number(math.add(math.bignumber(fee), math.bignumber(amount)))
+				: amount;
 
 		if (math.compare(totalAmount, balance[`${currency}_available`]) === 1) {
 			throw new Error(
@@ -206,8 +206,8 @@ const withdrawalRequestEmail = (user, data, domain, ip) => {
 				{
 					amount,
 					fee,
-					fee_coin,
-					currency,
+					fee_coin: (getKitCoin(fee_coin).display_name) ? getKitCoin(fee_coin).display_name : fee_coin,
+					currency: (getKitCoin(currency).display_name) ? getKitCoin(currency).display_name : currency,
 					transaction_id: token,
 					address,
 					ip,

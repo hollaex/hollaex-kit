@@ -668,7 +668,7 @@ export default {
 				'Erstellen Sie ein Warn-Popup, wenn der Wert eines Handelsauftrags einen bestimmten Prozentsatz Ihres Portfolios überschreitet',
 			INFO_TEXT_1: 'Gesamtwert der Vermögenswerte in {0}: {1}',
 			PORTFOLIO: 'Prozentsatz des Portfolios',
-			TOMAN_ASSET: 'Ungefährer Wert',
+			VALUE_ASSET: 'Ungefährer Wert',
 			ADJUST: '(PROZENTSATZ ANPASSEN)',
 			ACTIVATE_RISK_MANAGMENT: 'Aktivieren Sie das Risikomanagement',
 			WARNING_POP_UP: 'Warn-Pop-ups',
@@ -882,7 +882,7 @@ export default {
 		'Sie haben {0} Sekunden, um den Handel durchzuführen',
 	QUOTE_EXPIRED_TOKEN: 'Der Quote-Token ist abgelaufen.',
 	QUOTE_SUCCESS_REVIEW_TITLE: 'Quick Trade',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'Sie haben erfolgreich {0} {1} {2} für {3} {4}', // you have successfully buy 1 btc from x toman
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'Sie haben erfolgreich {0} {1} {2}', // you have successfully buy 1 btc from
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown ist beende',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank, an die abgehoben werden soll',

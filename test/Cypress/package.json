@@ -1,0 +1,23 @@
+{
+  "devDependencies": {
+    "@4tw/cypress-drag-drop": "^2.1.0",
+    "cypress": "^9.2.0",
+    "cypress-iframe": "^1.0.1",
+    "cypress-xpath": "^1.6.2",
+    "eslint": "^8.11.0",
+    "prettier": "2.6.0"
+  },
+  "dependencies": {
+    "cypress-cucumber-preprocessor": "^4.3.1",
+    "totp-generator": "^0.0.13"
+  },
+  "cypress-cucumber-preprocessor": {
+    "nonGlobalStepDefinitions": true
+  },
+  "scripts": {
+    "debug.javascript.codelens.npmScripts": "never",
+    "test": "npx cypress-tags run -e",
+    "pre": "npm test TAGS=@pre"
+   
+  }
+  }

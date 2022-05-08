@@ -4854,6 +4854,10 @@ table th {
   .sortable_section:active {
     cursor: grabbing; }
 
+.operator-console .ant-input {
+  color: #ffffff !important;
+  background-color: #0000ff !important; }
+
 .init-container {
   flex: 1;
   height: 100%; }
@@ -8868,10 +8872,6 @@ table th {
   line-height: 4rem; }
   .with_price-block_amount .with_price-block_amount-value {
     margin-left: 0.5rem; }
-  .with_price-block_amount .with_price-block_amount-value-eur {
-    color: var(--labels_secondary-inactive-label-text-graphics);
-    font-size: 1.8rem;
-    line-height: 1.8rem; }
 
 .direction_ltr .with_price-block_amount {
   justify-content: flex-start; }
@@ -9856,79 +9856,6 @@ foreignObject {
   .light-theme.holla-tooltip.rc-tooltip-placement-bottom .rc-tooltip-arrow, .light-theme.holla-tooltip.rc-tooltip-placement-bottomLeft .rc-tooltip-arrow, .light-theme.holla-tooltip.rc-tooltip-placement-bottomRight .rc-tooltip-arrow {
     border-bottom-color: var(--labels_important-active-labels-text-graphics) !important; }
 
-.currency-list {
-  width: auto; }
-  .currency-list.horizontal-currency-list {
-    border-left: none !important; }
-    .currency-list.horizontal-currency-list .app_bar_currency-icon {
-      width: 2rem;
-      height: 2rem; }
-    .currency-list.horizontal-currency-list .selected_currency-tab {
-      background-color: var(--base_background);
-      border-left: 1px solid black !important;
-      border-right: 1px solid black !important;
-      height: 3.1rem; }
-    .currency-list.horizontal-currency-list .single-currency {
-      position: relative;
-      justify-content: center;
-      min-width: 15rem;
-      padding: 0 1rem;
-      border-left: 1px solid;
-      border-right: 1px solid;
-      border-color: transparent; }
-      .currency-list.horizontal-currency-list .single-currency:hover, .currency-list.horizontal-currency-list .single-currency.focused {
-        background-color: #fafafa;
-        border-color: black; }
-        .currency-list.horizontal-currency-list .single-currency:hover::before, .currency-list.horizontal-currency-list .single-currency.focused::before {
-          content: '';
-          position: absolute;
-          width: 100%;
-          border-bottom: 1px solid;
-          border-color: #fafafa;
-          left: 0;
-          right: 0;
-          bottom: -1px; }
-        .currency-list.horizontal-currency-list .single-currency:hover::after, .currency-list.horizontal-currency-list .single-currency.focused::after {
-          content: '';
-          position: absolute;
-          width: 100%;
-          top: 0;
-          left: 0;
-          right: 0;
-          border-color: black;
-          border-top: 0.25rem solid;
-          border-left: 1px solid;
-          border-right: 1px solid; }
-  .currency-list .single-currency {
-    height: 100%;
-    font-size: 1rem;
-    cursor: pointer; }
-
-.markets-list {
-  position: absolute;
-  right: 0;
-  top: 36px;
-  min-width: 23.3rem;
-  min-height: 8rem;
-  background-color: #fafafa;
-  z-index: 20;
-  padding: 1rem 2rem;
-  -webkit-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 3px 1px -1px rgba(0, 0, 0, 0.4); }
-  .markets-list .markets-wrapper {
-    width: 1rem; }
-    .markets-list .markets-wrapper .market {
-      position: relative;
-      margin: 0 1rem;
-      cursor: pointer; }
-      .markets-list .markets-wrapper .market:hover:after {
-        content: '';
-        position: absolute;
-        width: 100%;
-        bottom: 0;
-        border-bottom: 1px solid black; }
-
 .mobile-bar {
   width: 100%;
   min-width: 100vw;
@@ -9997,306 +9924,6 @@ foreignObject {
       stroke: white; }
     .dialog-compressed-close .close-dialog svg .cancel-cross-2 {
       stroke: transparent; }
-
-.mobile-drop-down {
-  background: unset;
-  top: 3.5rem;
-  border: none;
-  outline: none !important;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  text-indent: 1px;
-  text-overflow: '';
-  color: var(--labels_secondary-inactive-label-text-graphics);
-  font-size: 2rem;
-  font-weight: bold;
-  padding-right: 2rem; }
-
-.with_arrow_trade {
-  margin-top: -5px; }
-
-.mobile-drop-down.default-coin,
-.drop-down.default-coin,
-.option.default-coin {
-  color: var(--labels_secondary-inactive-label-text-graphics) !important; }
-
-.mobile-drop-down.btc,
-.drop-down.btc,
-.option.btc {
-  color: var(--coin-btc) !important; }
-
-.mobile-drop-down.eur,
-.drop-down.eur,
-.option.eur {
-  color: var(--coin-eur) !important; }
-
-.mobile-drop-down.bch,
-.drop-down.bch,
-.option.bch {
-  color: var(--coin-bch) !important; }
-
-.mobile-drop-down.eth,
-.drop-down.eth,
-.option.eth {
-  color: var(--coin-eth) !important; }
-
-.mobile-drop-down.ltc,
-.drop-down.ltc,
-.option.ltc {
-  color: var(--coin-ltc) !important; }
-
-.mobile-drop-down.xrp,
-.drop-down.xrp,
-.option.xrp {
-  color: var(--coin-xrp) !important; }
-
-.mobile-drop-down.xht,
-.drop-down.xht,
-.option.xht {
-  color: var(--coin-xht) !important; }
-
-.mobile-drop-down.eos,
-.drop-down.eos,
-.option.eos {
-  color: var(--coin-eos) !important; }
-
-.mobile-drop-down.bnb,
-.drop-down.bnb,
-.option.bnb {
-  color: var(--coin-bnb) !important; }
-
-.mobile-drop-down.link,
-.drop-down.link,
-.option.link {
-  color: var(--coin-link) !important; }
-
-.mobile-drop-down.trx,
-.drop-down.trx,
-.option.trx {
-  color: var(--coin-trx) !important; }
-
-.mobile-drop-down.ada,
-.drop-down.ada,
-.option.ada {
-  color: var(--coin-ada) !important; }
-
-.mobile-drop-down.matic,
-.drop-down.matic,
-.option.matic {
-  color: var(--coin-matic) !important; }
-
-.mobile-drop-down.neo,
-.drop-down.neo,
-.option.neo {
-  color: var(--coin-neo) !important; }
-
-.mobile-drop-down.etc,
-.drop-down.etc,
-.option.etc {
-  color: var(--coin-etc) !important; }
-
-.mobile-drop-down.xlm,
-.drop-down.xlm,
-.option.xlm {
-  color: var(--coin-xlm) !important; }
-
-.mobile-drop-down.xmr,
-.drop-down.xmr,
-.option.xmr {
-  color: var(--coin-xmr) !important; }
-
-.mobile-drop-down.zec,
-.drop-down.zec,
-.option.zec {
-  color: var(--coin-zec) !important; }
-
-.mobile-drop-down.one,
-.drop-down.one,
-.option.one {
-  color: var(--coin-one) !important; }
-
-.mobile-drop-down.pax,
-.drop-down.pax,
-.option.pax {
-  color: var(--coin-pax) !important; }
-
-.mobile-drop-down.usdc,
-.drop-down.usdc,
-.option.usdc {
-  color: var(--coin-usdc) !important; }
-
-.mobile-drop-down.usdt,
-.drop-down.usdt,
-.option.usdt {
-  color: var(--coin-usdt) !important; }
-
-.mobile-drop-down.vet,
-.drop-down.vet,
-.option.vet {
-  color: var(--coin-vet) !important; }
-
-.mobile-drop-down.btt,
-.drop-down.btt,
-.option.btt {
-  color: var(--coin-btt) !important; }
-
-.mobile-drop-down.qtum,
-.drop-down.qtum,
-.option.qtum {
-  color: var(--coin-qtum) !important; }
-
-.mobile-drop-down.algo,
-.drop-down.algo,
-.option.algo {
-  color: var(--coin-algo) !important; }
-
-.mobile-drop-down.rvn,
-.drop-down.rvn,
-.option.rvn {
-  color: var(--coin-rvn) !important; }
-
-.mobile-drop-down.iota,
-.drop-down.iota,
-.option.iota {
-  color: var(--coin-iota) !important; }
-
-.mobile-drop-down.dash,
-.drop-down.dash,
-.option.dash {
-  color: var(--coin-dash) !important; }
-
-.mobile-drop-down.bsv,
-.drop-down.bsv,
-.option.bsv {
-  color: var(--coin-bsv) !important; }
-
-.mobile-drop-down.ont,
-.drop-down.ont,
-.option.ont {
-  color: var(--coin-ont) !important; }
-
-.mobile-drop-down.atom,
-.drop-down.atom,
-.option.atom {
-  color: var(--coin-atom) !important; }
-
-.mobile-drop-down.celr,
-.drop-down.celr,
-.option.celr {
-  color: var(--coin-celr) !important; }
-
-.mobile-drop-down.omg,
-.drop-down.omg,
-.option.omg {
-  color: var(--coin-omg) !important; }
-
-.mobile-drop-down.hot,
-.drop-down.hot,
-.option.hot {
-  color: var(--coin-hot) !important; }
-
-.mobile-drop-down.usd,
-.drop-down.usd,
-.option.usd {
-  color: var(--coin-usd) !important; }
-
-.mobile-drop-down.jpy,
-.drop-down.jpy,
-.option.jpy {
-  color: var(--coin-jpy) !important; }
-
-.mobile-drop-down.gbp,
-.drop-down.gbp,
-.option.gbp {
-  color: var(--coin-gbp) !important; }
-
-.mobile-drop-down.chf,
-.drop-down.chf,
-.option.chf {
-  color: var(--coin-chf) !important; }
-
-.mobile-drop-down.cad,
-.drop-down.cad,
-.option.cad {
-  color: var(--coin-cad) !important; }
-
-.mobile-drop-down.aud,
-.drop-down.aud,
-.option.aud {
-  color: var(--coin-aud) !important; }
-
-.mobile-drop-down.nzd,
-.drop-down.nzd,
-.option.nzd {
-  color: var(--coin-nzd) !important; }
-
-.mobile-drop-down.zar,
-.drop-down.zar,
-.option.zar {
-  color: var(--coin-zar) !important; }
-
-.mobile-drop-down.hkd,
-.drop-down.hkd,
-.option.hkd {
-  color: var(--coin-hkd) !important; }
-
-.mobile-drop-down.krw,
-.drop-down.krw,
-.option.krw {
-  color: var(--coin-krw) !important; }
-
-.mobile-drop-down.cny,
-.drop-down.cny,
-.option.cny {
-  color: var(--coin-cny) !important; }
-
-.mobile-drop-down.sgd,
-.drop-down.sgd,
-.option.sgd {
-  color: var(--coin-sgd) !important; }
-
-.mobile-drop-down.tusd,
-.drop-down.tusd,
-.option.tusd {
-  color: var(--coin-tusd) !important; }
-
-.mobile-drop-down.dai,
-.drop-down.dai,
-.option.dai {
-  color: var(--coin-dai) !important; }
-
-.with_arrow_trade:after {
-  border-bottom-color: var(--labels_important-active-labels-text-graphics) !important;
-  border-right-color: var(--labels_important-active-labels-text-graphics) !important; }
-
-.direction_ltr .with_arrow_trade:after {
-  border: solid grey;
-  border-width: 0px 2px 2px 0;
-  display: inline-block;
-  content: '';
-  padding: 3px;
-  height: 1rem;
-  width: 1rem;
-  transform: rotate(46deg);
-  left: -1.5rem;
-  position: relative;
-  top: 0.1rem;
-  z-index: 0; }
-
-.direction_rtl .with_arrow_trade:after {
-  transform: rotate(90deg);
-  content: "";
-  display: block;
-  position: relative;
-  width: 0;
-  height: 0;
-  border-left: none !important;
-  border-top: 0.7rem solid transparent !important;
-  border-bottom: 0.7rem solid transparent !important;
-  border-right: 0.7rem solid var(--dark-accordion-arrow-active);
-  margin-left: -0.7rem;
-  right: -1rem; }
 
 .layout-mobile .chat-wrapper {
   position: relative;
@@ -11394,7 +11021,7 @@ svg .verification-doc,
 svg .copy-notification-0,
 svg .account-svg-1,
 svg .incoming-btc-01,
-svg .incoming-toman-01,
+svg .incoming-coin-01,
 svg .coin-btc-5,
 svg .stake-page-icon {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
@@ -11481,7 +11108,7 @@ svg .email_sent,
 svg .gear-grey-1,
 svg .g1_3,
 svg .incoming-btc-2,
-svg .incoming-toman-02,
+svg .incoming-coin-02,
 svg .security-grey-1,
 svg .coin-btc-1,
 svg .wallet-selected-2,

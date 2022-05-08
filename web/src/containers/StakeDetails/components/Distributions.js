@@ -8,7 +8,13 @@ import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
-const Distributions = ({ token, currentBlock, distributions, goToPOT }) => {
+const Distributions = ({
+	token,
+	currentBlock,
+	distributions,
+	goToPOT,
+	coins,
+}) => {
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -47,6 +53,8 @@ const Distributions = ({ token, currentBlock, distributions, goToPOT }) => {
 		},
 	];
 
+	const { display_name } = coins[token];
+
 	return (
 		<div>
 			<div className="d-flex">
@@ -55,13 +63,13 @@ const Distributions = ({ token, currentBlock, distributions, goToPOT }) => {
 						<div className="bold important-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.SUBTITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 						<div className="secondary-text">
@@ -97,6 +105,7 @@ const Distributions = ({ token, currentBlock, distributions, goToPOT }) => {
 };
 
 const mapStateToProps = (store) => ({
+	coins: store.app.coins,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 });

@@ -11,7 +11,7 @@ import { setOrderbooks } from 'actions/orderbookAction';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
 import { getToken } from 'utils/token';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { WS_URL } from 'config/constants';
 import { submitOrder } from 'actions/orderAction';
 import { getUserTrades } from 'actions/walletActions';
 import { storeLayout, getLayout, resetTools } from 'actions/toolsAction';
@@ -461,13 +461,10 @@ class Trade extends PureComponent {
 			activeOrdersMarketData,
 		} = this.props;
 		const { chartHeight, symbol, orderbookFetched } = this.state;
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -671,14 +668,11 @@ class Trade extends PureComponent {
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,

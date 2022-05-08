@@ -44,12 +44,9 @@ const MobileBarTabs = ({
 	pair,
 	icons: ICONS,
 	openMarketSelector,
+	pairs,
 }) => {
-	let pair_base = '';
-	if (pair) {
-		const pairArray = pair.split('-');
-		pair_base = pairArray[0];
-	}
+	const { icon_id, display_name } = pairs[pair] || {};
 
 	return (
 		<Fragment>
@@ -80,17 +77,15 @@ const MobileBarTabs = ({
 						className="d-flex align-items-center ml-2"
 						onClick={openMarketSelector}
 					>
-						{pair_base && (
+						{display_name && (
 							<Image
-								icon={
-									ICONS[`${pair_base.toUpperCase()}_ICON`]
-										? ICONS[`${pair_base.toUpperCase()}_ICON`]
-										: ICONS.DEFAULT_ICON
-								}
+								icon={ICONS[icon_id]}
 								wrapperClassName="mobile-tab_market-indicator pt-3"
 							/>
 						)}
-						<span className="pt-2 trade-tab__market-selector pr-2">{pair}</span>
+						<span className="pt-2 trade-tab__market-selector pr-2">
+							{display_name}
+						</span>
 						<CaretDownOutlined style={{ fontSize: '14px' }} />
 					</div>
 				</div>
@@ -103,8 +98,12 @@ MobileBarWrapper.defaultProps = {
 	tabs: [],
 };
 
+const mapStateToProps = (state) => ({
+	pairs: state.app.pairs,
+});
+
 const mapDispatchToProps = (dispatch) => ({
 	openMarketSelector: bindActionCreators(openMarketSelector, dispatch),
 });
 
-export default connect(() => {}, mapDispatchToProps)(MobileBarTabs);
+export default connect(mapStateToProps, mapDispatchToProps)(MobileBarTabs);

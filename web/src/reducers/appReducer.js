@@ -50,6 +50,7 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
+import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -193,7 +194,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_PAIRS:
 			return {
 				...state,
-				pairs: payload.pairs,
+				pairs: modifyPairsData(payload.pairs, { ...state.coins }),
 			};
 		case CHANGE_PAIR:
 			return {
@@ -215,7 +216,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_CURRENCIES:
 			return {
 				...state,
-				coins: payload.coins,
+				coins: modifyCoinsData(payload.coins),
 			};
 		case SET_BROKER:
 			return {
