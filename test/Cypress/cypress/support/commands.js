@@ -32,6 +32,7 @@
 //var randomstring = require('randomstring');
 // import 'cypress-iframe';
 // or
+require('@4tw/cypress-drag-drop');
 require('cypress-iframe');
 Cypress.Commands.add('getIframe', (iframe) => {
    cy.get(iframe)
@@ -104,4 +105,73 @@ Cypress.Commands.add('forceVisit', url => {
 
 
 });
+//'USD Tether''HollaEx'
+Cypress.Commands.add('wallectCheck',(buySell,wallet,Fee,Size,Price)=>{
+	cy.log(wallet)
+	if(buySell == 'sell'){
+		 Fee = 0
+		 Price =1 
+		}
+	
+	if(wallet == 'USD Tether'){
+
+ cy.get('.accordion_section_content_text').contains(wallet).click()
+    if(Size = 0){cy.get('.wallet_section-content > :nth-child(3) > :nth-child(2)').as('choose')}
+    else{cy.get('.wallet_section-content > :nth-child(2) > :nth-child(2)').as('choose')}
+ 
+ //cy.get('.wallet_section-content > :nth-child(2) > :nth-child(2)')
+ cy.get('@choose')
+ .invoke('text').then(text => {
+  var nmb = text;
+  cy.wrap(nmb).as('currentAmount')
+  cy.log(nmb);
+  cy.log('second', text) 
+  })
+  cy.get('.wallet_section-content > :nth-child(1) > :nth-child(2)')
+  .invoke('text').then(text => {
+   var nmb = text;
+   cy.wrap(nmb).as('reservedAmount')
+   cy.log(nmb);
+   cy.log('second', text) 
+  })
+  cy.get('@currentAmount')
+	.then(val => {
+		 var fee = Fee
+		 var size = Size
+		  var price = Price
+		  var eq = ((size*price)*(1+fee)).toFixed(1)//+0.0374
+		  cy.get('@reservedAmount')
+		  .then(val1 => expect(parseFloat((parseFloat(val1)-parseFloat(val)).toFixed(1)))
+		  .to.equal(parseFloat(eq)))
+	})
+	}
+	else{
+ cy.get('.accordion_section_content_text').contains(wallet).click()
+  cy.get('.wallet_section-content > :nth-child(2) > :nth-child(2)')
+ .invoke('text').then(text => {
+  var nmb = text;
+  cy.wrap(nmb).as('currentAmount')
+  cy.log(nmb);
+  cy.log('second', text) 
+  })
+  cy.get('.wallet_section-content > :nth-child(1) > :nth-child(2)')
+  .invoke('text').then(text => {
+   var nmb = text;
+   cy.wrap(nmb).as('reservedAmount')
+   cy.log(nmb);
+   cy.log('second', text) 
+  })
+  cy.get('@currentAmount')
+	.then(val => {
+		 var fee = Fee
+		 var size = Size
+		  var price = Price
+		  var eq = ((size*price)*(1+fee)).toFixed(1)//+0.0374
+		  cy.get('@reservedAmount')
+		  .then(val1 => expect(parseFloat((parseFloat(val1)-parseFloat(val)).toFixed(1)))
+		  .to.equal(parseFloat(eq)))
+	})
+}
+})
+
 

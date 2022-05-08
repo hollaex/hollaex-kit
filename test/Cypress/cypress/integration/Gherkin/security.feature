@@ -34,4 +34,17 @@ Scenario: Successful Login with New Password
     And I enter dismatched password
     And I deactivate 2FA
     Then I request to change the password to the previous password
+
+ Scenario: Confirm password change by email confirmation
+
+    When I confirm the transfer by Email
+    Then I receive a successful message 
     
+Scenario: Changing deactivating 2FA by Admin
+
+    Given I log in as the new user name 
+    When I active 2FA
+    Then I logout successfully
+    When Admin deactives the 2fa of new user
+    Given I log in as the new user name 
+    Then The activation code is different 
