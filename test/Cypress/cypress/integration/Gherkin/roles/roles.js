@@ -122,9 +122,10 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('Edit').click({force: true})
      const randomNote= Math.random().toString(36).substring(2,6);
      cy.get('.ant-input').clear().type(randomNote)
-     cy.contains('SAVE').click({force: true})
-     cy.get('.ant-notification-notice-message').should('contain','Success')
-     cy.get('.about-notes-text').should('contain',randomNote)
+     cy.contains('Submit').click({force: true})
+     cy.get('.ant-message-notice-content').should('contain','Access denied:')
+     cy.get('.ant-modal-close-x').click()
+     //cy.get('.about-notes-text').should('contain',randomNote)
      
      cy.get(':nth-child(1) > .about-info-content > .info-link').as('Adjust').click({force: true})
      cy.get('#user-discount-form_feeDiscount')
@@ -132,7 +133,8 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('Next').click()
      cy.get('.button-wrapper > :nth-child(2)').as('Apply').click({force: true})
      cy.get('.ant-message-notice-content').should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
           
      cy.get('.user-info-container > :nth-child(2) > .ant-btn').as('userInfo').click()
      cy.get(':nth-child(2) > :nth-child(2) > .d-flex > .ant-input').as('Full Name')
@@ -140,7 +142,8 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('SAVE').click({force: true})
      cy.get('.user_data > :nth-child(11)')
      .should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
      
      cy.contains('Flag user').click({force: true})
      cy.contains('Are you sure want to flag this user?').should('exist')
@@ -174,7 +177,9 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.get('#AssetConfigForm_contract').type('123')
      cy.contains('Next').click()
      cy.get('.ant-message-notice-content').should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+    cy.get('.ant-modal-close-x')
+    //cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
      
      cy.contains('Summary').click()
      cy.get('.app_container-content > :nth-child(1) > .ant-alert-description').should('contain','Access denied:')
@@ -203,7 +208,9 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('Confirm').click({force: true})
      cy.get('.ant-message-notice-content')
      .should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+    cy.get('.ant-modal-close-x')
+   //cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
      
      cy.contains('Roles').click({force: true})
      cy.contains('Add operator').click({force: true})
@@ -246,17 +253,20 @@ Then ('I must be able to do Supports tasks',()=>{
      cy.contains('Edit').click({force: true})
      const randomNote= Math.random().toString(36).substring(2,6);
      cy.get('.ant-input').clear().type(randomNote)
-     cy.contains('SAVE').click({force: true})
-     cy.get('.ant-notification-notice-message').should('contain','Success')
-     cy.get('.about-notes-text').should('contain',randomNote)
+     cy.contains('Submit').click({force: true})
+     cy.get('.ant-message-notice-content').should('contain','Access denied: User is not authorized to access this endpoint')
+     cy.get('.ant-modal-close-x').click()
+     //cy.get('.about-notes-text').should('contain',randomNote)
      
      cy.get(':nth-child(1) > .about-info-content > .info-link').as('Adjust').click({force: true})
      cy.get('#user-discount-form_feeDiscount')
      .type('{upArrow}{upArrow}{upArrow}')
      cy.contains('Next').click()
      cy.get('.button-wrapper > :nth-child(2)').as('Apply').click({force: true})
-     cy.get('.ant-message-notice-content').should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+     cy.get('.ant-message-notice-content')
+     .should('contain','Access denied:')
+     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
      
      
      cy.get('.user-info-container > :nth-child(2) > .ant-btn').as('userInfo').click()
@@ -265,7 +275,8 @@ Then ('I must be able to do Supports tasks',()=>{
      cy.contains('SAVE').click({force: true})
      cy.get('.user_data > :nth-child(11)')
      .should('contain','Access denied:')
-     cy.get('.ant-modal-close-x').click()
+     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     .click()
      
      cy.contains('Flag user').click({force: true})
      cy.contains('Are you sure want to flag this user?').should('exist')
@@ -374,9 +385,13 @@ Then ('I must be able to do Supervisors tasks',()=>{
      cy.contains('Edit').click({force: true})
      const randomNote= Math.random().toString(36).substring(2,6);
      cy.get('.ant-input').clear().type(randomNote)
-     cy.contains('SAVE').click({force: true})
-     cy.get('.ant-notification-notice-message').should('contain','Success')
-     cy.get('.about-notes-text').should('contain',randomNote)
+     cy.contains('Submit').click({force: true})
+     cy.get('.verification_data_container > :nth-child(1) > :nth-child(1) > .d-flex > div')
+      cy.get('.ant-message-notice-content')
+     .should('contain','Data saved successfully')
+    // cy.get('.about-notes-text')
+     cy.get('.verification_data_container > :nth-child(1) > :nth-child(1) > .d-flex > div')
+     .should('contain',randomNote)
      
      cy.get(':nth-child(1) > .about-info-content > .info-link').as('Adjust').click({force: true})
      cy.get('#user-discount-form_feeDiscount')

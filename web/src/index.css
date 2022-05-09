@@ -4854,6 +4854,10 @@ table th {
   .sortable_section:active {
     cursor: grabbing; }
 
+.operator-console .ant-input {
+  color: #ffffff !important;
+  background-color: #0000ff !important; }
+
 .init-container {
   flex: 1;
   height: 100%; }

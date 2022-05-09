@@ -997,7 +997,7 @@ class OperatorControls extends Component {
 									const placeholder = `${'<'}!-- In this section you can insert any HTML code to the ${title} of your website --${'>'}`;
 									return (
 										<TabPane className="w-100 h-100" tab={title} key={key}>
-											<div className="w-100 h-100">
+											<div className="w-100 h-100 operator-console">
 												<TextArea
 													name={key}
 													placeholder={placeholder}
