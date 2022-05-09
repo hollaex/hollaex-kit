@@ -35,6 +35,10 @@ const Final = ({
 					label = 'BEP20';
 				} else if (data === 'trx') {
 					label = 'TRC20';
+				}  else if (data === 'klay') {
+					label = 'Klaytn';
+				} else if (data === 'xlm') {
+					label = 'Stellar';
 				} else {
 					label = data.toUpperCase();
 				}
