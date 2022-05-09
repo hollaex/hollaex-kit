@@ -411,6 +411,11 @@ exports.EXPLORERS = {
 			name: 'stellarchain.io',
 			baseUrl: 'https://stellarchain.io',
 			txPath: '/tx'
+		},
+		{
+			name: 'Steexp',
+			baseUrl: 'https://steexp.com',
+			txPath: '/tx'
 		}
 	],
 	xmr: [
@@ -477,6 +482,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/cardano/transaction'
+		},
+		{
+			name: 'CardanoScan',
+			baseUrl: 'https://cardanoscan.io',
+			txPath: '/transaction'
 		}
 	],
 	eos: [
@@ -489,6 +499,30 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/eos/transaction'
+		}
+	],
+	sol: [
+		{
+			name: 'Solana Explorer',
+			baseUrl: 'https://explorer.solana.com',
+			txPath: '/tx'
+		},
+		{
+			name: 'SolScan',
+			baseUrl: 'https://solscan.io',
+			txPath: '/tx'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/solana/transaction'
+		}
+	],
+	klay: [
+		{
+			name: 'Klaytn Explorer',
+			baseUrl: 'https://scope.klaytn.com/',
+			txPath: '/tx'
 		}
 	]
 };
