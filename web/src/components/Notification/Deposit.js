@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { CurrencyBallWithPrice, ActionNotification, Button } from 'components';
 
@@ -12,8 +13,9 @@ const DepositNotification = ({
 	onClose,
 	openContactForm,
 	icons: ICONS,
+	coins,
 }) => {
-	const depositTexts = getDepositTexts(data.currency, data.coins, data.status);
+	const depositTexts = getDepositTexts(data.currency, coins, data.status);
 
 	const headerProps = {
 		text: depositTexts.title,
@@ -44,8 +46,8 @@ const DepositNotification = ({
 			<div className="notification-content-header">
 				{depositTexts.subtitle}
 				<ActionNotification
-					stringId="NEED_HELP_TEXT"
-					text={STRINGS['NEED_HELP_TEXT']}
+					showActionText={false}
+					text=""
 					status="information"
 					iconId="BLUE_QUESTION"
 					iconPath={ICONS['BLUE_QUESTION']}
@@ -74,4 +76,8 @@ const DepositNotification = ({
 	);
 };
 
-export default DepositNotification;
+const mapStateToProps = (store) => ({
+	coins: store.app.coins,
+});
+
+export default connect(mapStateToProps)(DepositNotification);
