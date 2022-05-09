@@ -129,6 +129,19 @@ const manipulateObject = (object = {}, cb) => {
 	return result;
 };
 
+const reverseCheck = (base = {}, target = {}) => {
+	const cleanedTarget = { ...target };
+	Object.entries(target).forEach(([key, value]) => {
+		if (!base.hasOwnProperty(key)) {
+			delete cleanedTarget[key];
+		} else if (isObject(value)) {
+			reverseCheck(base[key], value);
+		}
+	});
+
+	return cleanedTarget;
+};
+
 if (!lang) {
 	console.error('No language given');
 	process.exit(1);
@@ -143,4 +156,12 @@ if (has('--merge-diff')) {
 	const diff = manipulateObject(readFile(diffDir), removeError);
 	const content = merge({}, readFile(targetLangDir), diff);
 	saveFile(targetLangDir, content);
+}
+
+if (has('--reverse-check')) {
+	const cleanedLanguageFile = reverseCheck(
+		readFile(baseLangDir),
+		readFile(targetLangDir)
+	);
+	saveFile(targetLangDir, cleanedLanguageFile);
 }

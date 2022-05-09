@@ -120,7 +120,8 @@
 		"test": "react-scripts test --env=jsdom",
 		"eject": "react-scripts eject",
 		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
-		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff"
+		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
+		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
