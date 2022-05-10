@@ -47,25 +47,7 @@
 		"MAIN_TITLE": "Cryptocurrency trading exchange",
 		"MAIN_TEXT": "Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.",
 		"TRADE_CRYPTO": "Start trading",
-		"VIEW_EXCHANGE": "View exchange",
-		"SECTION_1_TITLE": "Welcome to HollaEx Exchange Kit!",
-		"SECTION_1_TEXT_1": "Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.",
-		"SECTION_1_TEXT_2": "We strive to bring the financial technology forward through affordable and simple access to trading technology.",
-		"SECTION_1_BUTTON_1": "Learn more",
-		"SECTION_3_TITLE": "Features",
-		"SECTION_3_CARD_1_TITLE": "SCALABLE MATCHING ENGINE",
-		"SECTION_3_CARD_1_TEXT": "High performance and scalable order matching engine using the most efficient algorithms",
-		"SECTION_3_CARD_2_TITLE": "BANK INTEGRATION",
-		"SECTION_3_CARD_2_TEXT": "Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local",
-		"SECTION_3_CARD_3_TITLE": "STRONG SECURITY",
-		"SECTION_3_CARD_3_TEXT": "HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.",
-		"SECTION_3_CARD_4_TITLE": "ADVANCED REPORTING",
-		"SECTION_3_CARD_4_TEXT": "Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.",
-		"SECTION_3_CARD_5_TITLE": "SUPPORT",
-		"SECTION_3_CARD_5_TEXT": "We can take an extra care for your needs and have an online professional to help with your issues and inquiries.",
-		"SECTION_3_CARD_6_TITLE": "KYC INTEGRATION",
-		"SECTION_3_CARD_6_TEXT": "Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.",
-		"SECTION_3_BUTTON_1": "View Demo"
+		"VIEW_EXCHANGE": "View exchange"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
@@ -84,12 +66,6 @@
 		"TAB_HISTORY": "History",
 		"TAB_SIGNOUT": "Signout",
 		"TAB_STAKE": "Stake"
-	},
-	"REQUEST_XHT_ACCESS": {
-		"REQUEST_TITLE": "Request Access",
-		"CATEGORY_PLACEHOLDER": "Select the category that best suits your issue",
-		"INTRODUCTION_LABEL": "Introduce yourself",
-		"INTRODUCTION_PLACEHOLDER": "Where are you based, are you interested in running an exchange?"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Category",
@@ -279,8 +255,6 @@
 		"PENDING_VERIFICATION": "Pending verification",
 		"TITLE_EMAIL": "Email",
 		"MY_EMAIL": "My Email",
-		"MAKE_FIRST_DEPOSIT": "Make first deposit",
-		"OBTAIN_XHT": "Obtain XHT",
 		"TITLE_USER_DOCUMENTATION": "Identification",
 		"TITLE_ID_DOCUMENTS": "Upload",
 		"TITLE_BANK_ACCOUNT": "Bank Account",
@@ -959,7 +933,6 @@
 	"CHECK_ORDER": "Check and confirm your order",
 	"CHECK_ORDER_TYPE": "{0} {1}",
 	"CONFIRM_TEXT": "Confirm",
-	"GOTO_XHT_MARKET": "Go to XHT market",
 	"INVALID_CAPTCHA": "Invalid captcha",
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Language preferences (Includes Emails)",
@@ -1025,8 +998,6 @@
 		"REVOKE_TOOLTIP": "You have to enable 2FA to revoke the token"
 	},
 	"CHAT": {
-		"MARKET_CHAT": "Market Chat",
-		"CHAT_UNREAD": "{0} ({1})",
 		"READ_MORE": "Read More",
 		"SHOW_IMAGE": "Show Image",
 		"HIDE_IMAGE": "Hide Image",
@@ -1092,8 +1063,6 @@
 		"ACTIVE_2FA_SECURITY": "Active 2FA Security",
 		"ACCOUNT_ASSETS_TXT_1": "Displayed is a summary of all your assets.",
 		"ACCOUNT_ASSETS_TXT_2": "Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.",
-		"TRADING_VOLUME_TXT_1": "Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.",
-		"TRADING_VOLUME_TXT_2": "High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.",
 		"ACCOUNT_DETAILS_TXT_1": "Your account type determines your account badge, trading fee, deposits and withdrawal limits.",
 		"ACCOUNT_DETAILS_TXT_2": "Your trading account age, activity level and total account assets amount will determine if your account is legable for an upgrade.",
 		"ACCOUNT_DETAILS_TXT_3": "Maintaining your account level requires constant trading and maintaining a certain amount of deposited assets.",
@@ -1109,7 +1078,6 @@
 		"DEPOSIT": "Deposit",
 		"TAKER": "Taker",
 		"MAKER": "Maker",
-		"TRADER_ACCOUNT_ELIGIBILITY": "Level {0} Account Eligibility",
 		"NOMINAL_TRADING_WITH_MONTH": "Nominal Trading Last {0}",
 		"LEVEL_OF_ACCOUNT": "Level {0} Account",
 		"TITLE_OF_ACCOUNT": "{0} Account",
@@ -1122,7 +1090,6 @@
 		"WALLET_SUBSCRIPTION_USERS": "Vault Subscription users {0}",
 		"TRADE_OVER_XHT": "Trade over {0} USDT worth",
 		"XHT_IN_WALLET": "{0} XHT in wallet",
-		"COMPLETE_TASK_DESC": "Complete tasks and earn bonuses worth over $10,000.",
 		"TASKS": "Tasks",
 		"INVITE_USER": "Invite users and enjoy commissions from their trade",
 		"DISCOUNT": "( {0}% discount )",
@@ -1143,13 +1110,6 @@
 		"TXT_1": "To start trading you must login",
 		"TXT_2": "{0} or {1}",
 		"LOGIN_HERE": "login here"
-	},
-	"WAVES": {
-		"TITLE": "Wave Info",
-		"NEXT_WAVE": "Next Wave",
-		"WAVE_AMOUNT": "Amount in Wave",
-		"FLOOR": "Floor",
-		"LAST_WAVE": "Last wave"
 	},
 	"USER_LEVEL": "User level",
 	"LIMIT_AMOUNT": "Limit amount",
