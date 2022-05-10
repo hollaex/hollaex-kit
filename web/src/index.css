@@ -1420,6 +1420,16 @@ table th {
         .html_card_section .card-section-wrapper .card-section .card_section_logo svg {
           width: 50px;
           height: 50px; }
+          .html_card_section .card-section-wrapper .card-section .card_section_logo svg path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+      .html_card_section .card-section-wrapper .card-section .fill-none {
+        width: 50px;
+        height: 50px; }
+        .html_card_section .card-section-wrapper .card-section .fill-none svg {
+          width: 50px;
+          height: 50px; }
+          .html_card_section .card-section-wrapper .card-section .fill-none svg path:not(:first-child) {
+            fill: var(--labels_important-active-labels-text-graphics); }
       .html_card_section .card-section-wrapper .card-section .header_txt {
         font-weight: bold;
         font-size: 18px; }

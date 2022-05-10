@@ -400,6 +400,20 @@ $trade-tab--arrow-size: 0.4rem;
 				svg {
 					width: 50px;
 					height: 50px;
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.fill-none {
+				width: 50px;
+				height: 50px;
+				svg {
+					width: 50px;
+					height: 50px;
+					path:not(:first-child) {
+						fill: $colors-main-black;
+					}
 				}
 			}
 			.header_txt {
