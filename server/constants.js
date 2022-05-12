@@ -521,7 +521,7 @@ exports.EXPLORERS = {
 	klay: [
 		{
 			name: 'Klaytn Explorer',
-			baseUrl: 'https://scope.klaytn.com/',
+			baseUrl: 'https://scope.klaytn.com',
 			txPath: '/tx'
 		}
 	]

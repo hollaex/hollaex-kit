@@ -39,6 +39,8 @@ const Final = ({
 					label = 'Klaytn';
 				} else if (data === 'xlm') {
 					label = 'Stellar';
+				} else if (data === 'sol') {
+					label = 'Solana';
 				} else {
 					label = data.toUpperCase();
 				}
