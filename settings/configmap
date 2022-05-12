@@ -9,7 +9,7 @@ ENVIRONMENT_EXCHANGE_NAME=hollaex
 ################################
 
 HOLLAEX_CONFIGMAP_API_NAME=my-hollaex-exchange
-HOLLAEX_CONFIGMAP_DOMAIN=https://yourdomain.com
+HOLLAEX_CONFIGMAP_DOMAIN=http://localhost
 
 HOLLAEX_CONFIGMAP_LOGO_IMAGE=https://bitholla.s3.ap-northeast-2.amazonaws.com/kit/LOGO_IMAGE_LIGHT
 
@@ -23,7 +23,7 @@ HOLLAEX_CONFIGMAP_DEFAULT_THEME=dark
 HOLLAEX_CONFIGMAP_CURRENCIES=xht,usdt
 HOLLAEX_CONFIGMAP_PAIRS='xht-usdt'
 
-HOLLAEX_CONFIGMAP_API_HOST=http://localhost
+HOLLAEX_CONFIGMAP_API_HOST=http://localhost/api
 
 HOLLAEX_CONFIGMAP_USER_LEVEL_NUMBER=4
 
