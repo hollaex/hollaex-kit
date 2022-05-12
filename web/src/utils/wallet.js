@@ -32,6 +32,8 @@ export const getNetworkLabelByKey = (network) => {
 				return 'BEP20';
 			case 'klay':
 				return 'Klaytn';
+			case 'sol':
+				return 'Solana';
 			case 'xlm':
 				return 'Stellar';
 			default:
