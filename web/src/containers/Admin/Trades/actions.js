@@ -37,6 +37,14 @@ export const createBroker = (values) => {
 
 	return requestAuthenticated('/broker', options);
 };
+export const createTestBroker = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/test', options);
+};
 
 export const updateBroker = (values) => {
 	const options = {
@@ -54,3 +62,11 @@ export const deleteBroker = (id) => {
 	};
 	return requestAuthenticated('/broker', options);
 };
+
+export const getBrokerQuote = (symbol, side) =>
+	requestAuthenticated(`/broker/quote?symbol=${symbol}&side=${side}`);
+
+export const getBrokerConnect = (exchange_id, api_key, api_secret) =>
+	requestAuthenticated(
+		`/broker/connect?exchange_id=${exchange_id}&api_key=${api_key}&api_secret=${api_secret}`
+	);
