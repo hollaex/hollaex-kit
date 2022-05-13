@@ -372,7 +372,20 @@ const fetchBrokerPair = (symbol) => {
 	return getModel("broker").findOne({ where: { symbol } });
 }
 
-async function fetchBrokerPairs(attributes) {
+async function fetchBrokerPairs(attributes, bearerToken, ip) {
+	let userId = null;
+	if (bearerToken) {
+		const auth = await verifyBearerTokenPromise(bearerToken, ip);
+		if (auth) {
+			userId = auth.sub.id;
+			const user = await getUserByKitId(userId);
+			if (user && user.is_admin) {
+				attributes.push('account', 'formula');
+			}
+		}
+	}
+
+
 	return await getModel("broker").findAll({ attributes });
 }
 
