@@ -52,7 +52,10 @@ Status.findOne()
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 			user_meta: existingKitConfigurations.user_meta || {},
-			black_list_countries: existingKitConfigurations.black_list_countries || []
+			black_list_countries: existingKitConfigurations.black_list_countries || [],
+			onramp: existingKitConfigurations.onramp || {},
+			offramp: existingKitConfigurations.offramp || {},
+			user_payments: existingKitConfigurations.user_payments || {}
 		};
 
 		const secrets = {
