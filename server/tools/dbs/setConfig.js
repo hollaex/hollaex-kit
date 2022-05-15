@@ -70,7 +70,9 @@ const kit = {
 	meta: {},
 	user_meta: {},
 	black_list_countries: [],
-	banks: {}
+	onramp: {},
+	offramp: {},
+	user_payments: {}
 };
 
 const secrets = {

@@ -64,7 +64,7 @@ When ('I enter credentials 2FA enabled Username,Password',()=>{
      cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
 })
 
-And ('I enter 2FA code',()=>{
+And ('I enter Expired,long,short and then true 2FA code',()=>{
      cy.wait(3000)
      cy.get('.otp_form-wrapper > .icon_title-wrapper > :nth-child(2) > .icon_title-text')
      .contains('Authenticator Code')
@@ -76,6 +76,14 @@ And ('I enter 2FA code',()=>{
      cy.wrap(token).as('token')
      cy.log(token);
      cy.log('second', text)  
-     cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input').clear().type(token)        
+     cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+     .clear().type('543065')        
+      cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled').click()
+     cy.get('.warning_text').should('contain','Invalid OTP Code')
+     cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+     .clear().type('5430656')        
+     cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('be.disabled')
+     cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
+     .clear().type(token)        
      cy.get('.otp_form-wrapper > form.w-100 > .holla-button').click()
 })

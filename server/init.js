@@ -64,7 +64,9 @@ const checkStatus = () => {
 			injected_html: {},
 			user_meta: {},
 			black_list_countries: [],
-			banks: {}
+			onramp: {},
+			offramp: {},
+			user_payments: {}
 		},
 		email: {}
 	};
@@ -162,7 +164,7 @@ const checkStatus = () => {
 					for (let deal of deals) {
 						const pair = deal.symbol;
 						// checking if the deal is already among the pairs
-						if (!exchangePairs.find(e => e.name === pair)) {
+						if (!exchangePairs.find((e) => e.name === pair)) {
 							if (!isNumber(tier.fees.maker[pair])) {
 								fees.maker[pair] = defaultFees.maker;
 							} else {

@@ -30,6 +30,12 @@ export const getNetworkLabelByKey = (network) => {
 				return 'TRC20';
 			case 'bnb':
 				return 'BEP20';
+			case 'klay':
+				return 'Klaytn';
+			case 'sol':
+				return 'Solana';
+			case 'xlm':
+				return 'Stellar';
 			default:
 				return network.toUpperCase();
 		}
