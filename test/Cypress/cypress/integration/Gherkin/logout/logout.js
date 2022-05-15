@@ -27,6 +27,6 @@ And ('I should be in {string} page with {string}',(account,username)=>{
 
 Then ('I should be able to logout successfully',()=>{
 
-     cy.get(':nth-child(10) > .side-bar-txt > .edit-wrapper__container').click()
+     cy.contains('Signout').click()
      cy.url().should('contain','login')
 })

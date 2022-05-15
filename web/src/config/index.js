@@ -19,11 +19,11 @@ export const HOLLAEX_NETWORK_API_URL = `${PRODUCTION_NETWORK_ENDPOINT}${API_PATH
 
 const generateEndpoint = (endpoint, path, networkEndpoint) => ({
 	API_URL: `${endpoint}${path}`,
-	WS_URL:
-		process.env.REACT_APP_STREAM_ENDPOINT ||
+	WS_URL: process.env.REACT_APP_STREAM_ENDPOINT || (
 		endpoint.split('://')[0] === 'https'
 			? `wss://${endpoint.split('://')[1]}` // websocket with ssl
-			: `ws://${endpoint.split('://')[1]}`, // without ssl used for localhost
+			: `ws://${endpoint.split('://')[1]}` // without ssl used for localhost
+	),
 	PLUGIN_URL: endpoint,
 	NETWORK_API_URL: `${networkEndpoint}${path}`,
 });
