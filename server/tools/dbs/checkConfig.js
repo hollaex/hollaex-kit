@@ -52,8 +52,7 @@ Status.findOne()
 			features: existingKitConfigurations.features || {},
 			meta: existingKitConfigurations.meta || {},
 			user_meta: existingKitConfigurations.user_meta || {},
-			black_list_countries: existingKitConfigurations.black_list_countries || [],
-			banks: existingKitConfigurations.banks ? existingKitConfigurations.banks : {fields: {'bank_name': true, 'account_name': false, 'account_number': false, 'iban': false, 'swift': false}, bank_list: []}
+			black_list_countries: existingKitConfigurations.black_list_countries || []
 		};
 
 		const secrets = {
