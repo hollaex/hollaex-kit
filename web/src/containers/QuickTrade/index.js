@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,6 +10,7 @@ import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 import { message } from 'antd';
 import _floor from 'lodash/floor';
+import _debounce from 'lodash/debounce';
 
 import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -21,16 +22,34 @@ import { formatNumber, formatPercentage } from 'utils/currency';
 import { isLoggedIn, getToken } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
-import { changePair, setNotification } from 'actions/appActions';
+import {
+	changePair,
+	setNotification,
+	setSnackNotification,
+} from 'actions/appActions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
-import { getBroker } from 'containers/Admin/Trades/actions';
+import { getBroker, getBrokerQuote } from 'containers/Admin/Trades/actions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 // const DECIMALS = 4;
+
+const Timer = ({ handleSec = () => {}, quoteSeconds }) => {
+	const [seconds, setSeconds] = useState(quoteSeconds);
+	useEffect(() => {
+		if (seconds > 0) {
+			setTimeout(() => setSeconds(seconds - 1), 1000);
+		} else {
+			setSeconds(0);
+			handleSec(true);
+		}
+	}, [seconds, handleSec]);
+	return <span>{seconds}s</span>;
+};
 
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
@@ -121,6 +140,10 @@ class QuickTradeContainer extends PureComponent {
 			brokerTargetAmount: undefined,
 			brokerSourceAmount: undefined,
 			isBrokerPaused: false,
+			isTimer: false,
+			isLoading: false,
+			buy_price: 0,
+			sell_price: 0,
 		};
 
 		this.goToPair(pair);
@@ -170,7 +193,7 @@ class QuickTradeContainer extends PureComponent {
 
 	componentDidMount() {
 		const { pairs, tickers, broker } = this.props;
-		const { pair, searchValue } = this.state;
+		const { pair, searchValue, side } = this.state;
 		if (
 			this.props.constants &&
 			this.props.constants.features &&
@@ -207,6 +230,8 @@ class QuickTradeContainer extends PureComponent {
 		} else {
 			this.setState({ isBrokerPaused: true });
 		}
+
+		this.handleBrokerQuote(pair, side);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -326,8 +351,10 @@ class QuickTradeContainer extends PureComponent {
 				selectedSource,
 				selectedTarget,
 			});
+
+			this.handleBrokerQuote(pair, side);
 		} else if (this.state.isSelectChange) {
-			const { pair } = this.state;
+			const { pair, side } = this.state;
 			const { pairs } = this.props;
 			let existBroker = {};
 			this.props.broker.forEach((item) => {
@@ -365,12 +392,37 @@ class QuickTradeContainer extends PureComponent {
 				brokerTargetAmount: undefined,
 				brokerSourceAmount: undefined,
 			});
+			this.handleBrokerQuote(pair, side);
+		}
+		if (prevState.isTimer !== this.state.isTimer && this.state.isTimer) {
+			const { icons: ICONS, setSnackNotification } = this.props;
+			setSnackNotification({
+				icon: ICONS.COPY_NOTIFICATION,
+				content: STRINGS['ORDER_EXPIRED_MSG'],
+			});
 		}
 	}
 
 	componentWillUnmount() {
 		this.closeOrderbookSocket();
 	}
+
+	getBrokerQuoteData = async (symbol, side) => {
+		try {
+			const res = await getBrokerQuote(symbol, side);
+			if (res) {
+				if (side === 'buy') {
+					this.setState({ buy_price: res.price });
+				} else {
+					this.setState({ sell_price: res.price });
+				}
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
+	};
+
+	handleBrokerQuote = _debounce(this.getBrokerQuoteData, 1000);
 
 	getBrokerData = async () => {
 		try {
@@ -485,7 +537,10 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onCloseDialog = () => {
-		this.setState({ showQuickTradeModal: false }, this.resetOrderData);
+		this.setState(
+			{ showQuickTradeModal: false, isTimer: false },
+			this.resetOrderData
+		);
 	};
 
 	onReviewQuickTrade = () => {
@@ -925,6 +980,53 @@ class QuickTradeContainer extends PureComponent {
 		this.setState({ targetError });
 	};
 
+	handleSec = (isTimer) => {
+		this.setState({ isTimer });
+	};
+
+	handleRefresh = () => {
+		this.setState({ isLoading: true });
+		setTimeout(() => {
+			this.setState({ isLoading: false }, this.handleSec(false));
+		}, 2000);
+	};
+
+	renderFooterBtn = (isExistBroker, isTimer, quoteSeconds) => {
+		if (isExistBroker) {
+			if (isTimer) {
+				return (
+					<Button
+						label={STRINGS['REFRESH']}
+						onClick={this.handleRefresh}
+						className="ml-2"
+					/>
+				);
+			} else {
+				return (
+					<Button
+						label={
+							<div>
+								{STRINGS['CONFIRM_TEXT']} (
+								<Timer handleSec={this.handleSec} quoteSeconds={quoteSeconds} />
+								)
+							</div>
+						}
+						onClick={this.onExecuteTrade}
+						className="ml-2"
+					/>
+				);
+			}
+		} else {
+			return (
+				<Button
+					label={STRINGS['CONFIRM_TEXT']}
+					onClick={this.onExecuteTrade}
+					className="ml-2"
+				/>
+			);
+		}
+	};
+
 	render() {
 		const {
 			pairData = {},
@@ -956,6 +1058,8 @@ class QuickTradeContainer extends PureComponent {
 			brokerSourceAmount,
 			existBroker,
 			isBrokerPaused,
+			isTimer,
+			isLoading,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -1015,6 +1119,9 @@ class QuickTradeContainer extends PureComponent {
 		const isExistBroker =
 			existBroker && Object.keys(existBroker).length ? true : false;
 
+		const quoteSeconds = broker.filter((item) => item.symbol === pair)[0]
+			?.quote_expiry_time;
+
 		return (
 			<div className="h-100">
 				<div id="quick-trade-header"></div>
@@ -1072,35 +1179,60 @@ class QuickTradeContainer extends PureComponent {
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
-						{showQuickTradeModal ? (
+						{isLoading ? (
+							<Loader relative={true} background={false} />
+						) : showQuickTradeModal ? (
 							!order.fetching && !order.completed ? (
 								<div className="quote-review-wrapper">
 									<div>
-										<ReviewBlock
-											symbol={selectedSource}
-											text={STRINGS['SPEND_AMOUNT']}
-											amount={sourceValue}
-											decimalPoint={decimalPoint}
-											isExistBroker={isExistBroker}
-										/>
-										<ReviewBlock
-											symbol={selectedTarget}
-											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
-											amount={targetValue}
-											decimalPoint={decimalPoint}
-											isExistBroker={isExistBroker}
-										/>
+										<div className="mb-4">
+											<div className="quote_header">
+												{STRINGS['CONFIRM_TEXT']}
+											</div>
+											<div className="quote_content">
+												{STRINGS['QUOTE_CONFIRMATION_MSG_TEXT_1']}
+											</div>
+											<div className="quote_content">
+												{STRINGS['QUOTE_CONFIRMATION_MSG_TEXT_2']}
+											</div>
+										</div>
+										<div
+											className={
+												isTimer && isExistBroker ? 'disabled-area' : ''
+											}
+										>
+											<ReviewBlock
+												symbol={selectedSource}
+												text={STRINGS['SPEND_AMOUNT']}
+												amount={sourceValue}
+												decimalPoint={decimalPoint}
+												isExistBroker={isExistBroker}
+											/>
+											{isExistBroker ? (
+												<div
+													className={!isTimer ? 'loading-border' : ''}
+													style={{ animationDuration: `${quoteSeconds}s` }}
+												></div>
+											) : null}
+											<ReviewBlock
+												symbol={selectedTarget}
+												text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
+												amount={targetValue}
+												decimalPoint={decimalPoint}
+												isExistBroker={isExistBroker}
+											/>
+										</div>
 										<footer className="d-flex pt-4">
 											<Button
 												label={STRINGS['CLOSE_TEXT']}
 												onClick={this.onCloseDialog}
 												className="mr-2"
 											/>
-											<Button
-												label={STRINGS['CONFIRM_TEXT']}
-												onClick={this.onExecuteTrade}
-												className="ml-2"
-											/>
+											{this.renderFooterBtn(
+												isExistBroker,
+												isTimer,
+												quoteSeconds
+											)}
 										</footer>
 									</div>
 								</div>
@@ -1184,9 +1316,10 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(QuickTradeContainer);
+)(withConfig(QuickTradeContainer));

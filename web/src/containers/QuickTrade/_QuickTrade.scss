@@ -4,10 +4,24 @@
 }
 
 .base_negative_balance,
-.success-review,
-.quote-review-wrapper {
+.success-review {
 	margin: 1rem 0;
 	width: 30rem;
+}
+.quote-review-wrapper {
+	margin: 1rem 0;
+	width: 40rem !important;
+	position: relative;
+	.quote_header {
+		font-size: 22px;
+		font-weight: bold;
+	}
+	.quote_content {
+		color: $colors-deactivate;
+	}
+	.disabled-area {
+		opacity: 0.3;
+	}
 }
 
 .quote-countdown-wrapper {
@@ -55,7 +69,7 @@
 			margin: 10px;
 			flex-direction: column;
 			padding: 0;
-    		height: fit-content;
+			height: fit-content;
 		}
 	}
 	.base_negative_balance,

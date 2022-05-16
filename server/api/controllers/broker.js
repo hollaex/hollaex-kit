@@ -293,7 +293,10 @@ function getBrokerPairs(req, res) {
 		req.auth
 	);
 
-	toolsLib.broker.fetchBrokerPairs([
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
+
+	const attributes = [
 		'id',
 		'symbol',
 		'buy_price',
@@ -305,9 +308,10 @@ function getBrokerPairs(req, res) {
 		'type',
 		'quote_expiry_time',
 		'rebalancing_symbol',
-		'account',
-		'formula'
-	])
+	];
+
+
+	toolsLib.broker.fetchBrokerPairs(attributes, bearerToken, ip)
 		.then((brokerPairs) => {
 			return res.json(brokerPairs);
 		})

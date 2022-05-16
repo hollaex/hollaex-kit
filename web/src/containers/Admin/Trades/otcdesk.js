@@ -13,7 +13,8 @@ import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
 import Otcdeskpopup from './Otcdeskpopup';
 import { requestUsers } from '../ListUsers/actions';
-import { setBroker } from 'actions/appActions';
+import { getTickers, setBroker } from 'actions/appActions';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
@@ -32,6 +33,9 @@ const OtcDeskContainer = ({
 	oraclePrices,
 	setPricesAndAsset,
 	setBroker,
+	constants,
+	markets,
+	getTickers,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [type, setType] = useState('step1');
@@ -52,6 +56,9 @@ const OtcDeskContainer = ({
 	const [pairBaseBalance, setPairBaseBalance] = useState(0);
 	const [pair2Balance, setPair2Balance] = useState(0);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
+	const [selectedCoinType, setSelectedCoinType] = useState('manual');
+	const [priceLoading, setPriceLoading] = useState(false);
+	const [priceActive, setPriceActive] = useState(false);
 
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
@@ -74,7 +81,8 @@ const OtcDeskContainer = ({
 
 	useEffect(() => {
 		getBrokerData();
-	}, [getBrokerData]);
+		getTickers();
+	}, [getBrokerData, getTickers]);
 
 	useEffect(() => {
 		if (isOpen) {
@@ -103,8 +111,8 @@ const OtcDeskContainer = ({
 		if (isOpen && !isEdit) {
 			let pairPreviewData = {
 				...defaultPreviewValues,
-				pair_base: exchange && exchange.coins[0],
-				pair_2: exchange && exchange.coins[1],
+				pair_base: exchange && exchange.coins && exchange.coins[0],
+				pair_2: exchange && exchange.coins && exchange.coins[1],
 			};
 			const existPairData = brokerData.filter(
 				(data) =>
@@ -118,13 +126,16 @@ const OtcDeskContainer = ({
 				setIsExistPair(false);
 				setPreviewData(pairPreviewData);
 			}
-		} else {
+		} else if (isOpen && isEdit) {
 			let pairPreviewData = {
 				...editData,
 				pair_base: editData && editData.symbol && editData.symbol.split('-')[0],
 				pair_2: editData && editData.symbol && editData.symbol.split('-')[1],
 			};
 			setPreviewData(pairPreviewData);
+			if (editData && editData.type && editData.type === 'dynamic') {
+				setIsManual(false);
+			}
 		}
 	}, [exchange.coins, editData, isOpen, isEdit, exchange, brokerData]);
 
@@ -210,6 +221,17 @@ const OtcDeskContainer = ({
 		delete body.pair_base;
 		delete body.pair_2;
 		delete body.inventory_email;
+		delete body.accountVal;
+		delete body.apikey;
+		delete body.seckey;
+		if (
+			(body.type && body.type !== 'manual') ||
+			!body.sell_price ||
+			!body.buy_price
+		) {
+			delete body.sell_price;
+			delete body.buy_price;
+		}
 		try {
 			await createBroker(body);
 			handleClose();
@@ -250,6 +272,17 @@ const OtcDeskContainer = ({
 		delete body.pair_base;
 		delete body.pair_2;
 		delete body.inventory_email;
+		delete body.accountVal;
+		delete body.apikey;
+		delete body.seckey;
+		if (
+			(body.type && body.type !== 'manual') ||
+			!body.sell_price ||
+			!body.buy_price
+		) {
+			delete body.sell_price;
+			delete body.buy_price;
+		}
 		try {
 			await updateBroker(body);
 			await getBrokerData();
@@ -324,7 +357,13 @@ const OtcDeskContainer = ({
 		}
 	};
 
-	const COLUMNS = (balanceData, sortedSearchResults) => [
+	const COLUMNS = (
+		balanceData,
+		sortedSearchResults,
+		handlePrice,
+		priceLoading,
+		priceActive
+	) => [
 		{
 			title: 'Deal desk',
 			key: 'symbol',
@@ -375,15 +414,78 @@ const OtcDeskContainer = ({
 		{
 			title: 'Price (displayed to user)',
 			key: 'price',
-			render: ({ sell_price, buy_price, symbol }) => {
+			render: ({ sell_price, buy_price, symbol, type }) => {
 				return (
 					<div>
-						<div>
-							Sell @ {sell_price} {symbol.split('-')[1].toUpperCase()}
-						</div>
-						<div>
-							buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
-						</div>
+						{type === 'dynamic' ? (
+							<div>
+								{priceLoading ? (
+									<div>Getting price...</div>
+								) : priceActive ? (
+									<div className="d-flex">
+										<div>
+											<div>
+												Sell @ {sell_price} {symbol.split('-')[1].toUpperCase()}
+											</div>
+											<div>
+												buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
+											</div>
+										</div>
+										<div className="ml-3 text-underline" onClick={handlePrice}>
+											(Get price)
+										</div>
+									</div>
+								) : (
+									<div className="d-flex">
+										<div>Dynamic</div>
+										<div className="ml-3 text-underline" onClick={handlePrice}>
+											(Get price)
+										</div>
+									</div>
+								)}
+							</div>
+						) : (
+							<div>
+								<div>
+									Sell @ {sell_price} {symbol.split('-')[1].toUpperCase()}
+								</div>
+								<div>
+									buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
+								</div>
+							</div>
+						)}
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Expiry',
+			key: 'quote_expiry_time',
+			dataIndex: 'quote_expiry_time',
+			render: (item) => {
+				return (
+					<div className="otc-Container">
+						<div>{item}s</div>
+					</div>
+				);
+			},
+		},
+		{
+			title: 'Hedging',
+			key: 'hedging',
+			render: ({ rebalancing_symbol }) => {
+				return (
+					<div className="otc-Container">
+						{rebalancing_symbol ? (
+							<div className="d-flex align-items-center">
+								<div className="small-circle mr-2"></div>
+								<div>
+									<span className="green-text mr-2">Active</span>
+								</div>
+							</div>
+						) : (
+							<div>Inactive</div>
+						)}
 					</div>
 				);
 			},
@@ -490,10 +592,13 @@ const OtcDeskContainer = ({
 	];
 
 	const setPricing = (value) => {
+		handlePreviewChange(value, 'type');
 		if (value === 'manual') {
 			setIsManual(true);
+			setSelectedCoinType('manual');
 		} else {
 			setIsManual(false);
+			setSelectedCoinType('dynamic');
 		}
 	};
 
@@ -510,6 +615,17 @@ const OtcDeskContainer = ({
 			if (coinSecondaryData.length) {
 				tempPreviewData['pair_2'] = coinSecondaryData[0].symbol;
 			}
+		}
+		if (name === 'accountVal' || name === 'apikey' || name === 'seckey') {
+			const accountName = tempPreviewData?.accountVal
+				? tempPreviewData?.accountVal
+				: 'bitmex';
+			tempPreviewData.account = {
+				[accountName]: {
+					apiKey: tempPreviewData?.apikey,
+					apiSecret: tempPreviewData?.seckey,
+				},
+			};
 		}
 		if (name === 'pair_base') {
 			tempPreviewData.pair_base = value;
@@ -567,6 +683,8 @@ const OtcDeskContainer = ({
 	const handleBack = (value) => {
 		if (type === 'step1') {
 			setIsOpen(false);
+		} else if (type === 'with-balance' && !isManual) {
+			setType('PricingValue');
 		} else {
 			setType(value);
 			setIsOpen(true);
@@ -591,10 +709,6 @@ const OtcDeskContainer = ({
 		return fullName;
 	};
 
-	const handlePriceNext = () => {
-		moveToStep('with-balance');
-	};
-
 	const moveToStep = (value) => {
 		if (value) {
 			setType(value);
@@ -611,6 +725,8 @@ const OtcDeskContainer = ({
 		setdeskStateData({});
 		setEmailOptions([]);
 		setUserData([]);
+		setIsManual(true);
+		setSelectedCoinType('manual');
 		moveToStep('step1');
 	};
 
@@ -651,6 +767,14 @@ const OtcDeskContainer = ({
 			);
 			return price_a < price_b ? 1 : -1; // descending order
 		});
+
+	const handlePrice = () => {
+		setPriceLoading(true);
+		setPriceActive(true);
+		setTimeout(() => {
+			setPriceLoading(false);
+		}, 2000);
+	};
 
 	if (isLoading) {
 		return <Spin size="large" />;
@@ -695,10 +819,17 @@ const OtcDeskContainer = ({
 			<div className="table-wrapper">
 				<Table
 					locale={locale}
-					columns={COLUMNS(balanceData, sortedSearchResults)}
+					columns={COLUMNS(
+						balanceData,
+						sortedSearchResults,
+						handlePrice,
+						priceLoading,
+						priceActive
+					)}
 					rowKey={(data, index) => index}
 					dataSource={brokerData}
 					loading={tableLoading}
+					bordered
 				/>
 			</div>
 			{/* <div className="inputarea-Heading">Status display messages</div>
@@ -736,39 +867,45 @@ const OtcDeskContainer = ({
 					/>
 				</div>
 			</div> */}
-			<Otcdeskpopup
-				previewData={previewData}
-				type={type}
-				handlePreviewChange={handlePreviewChange}
-				getCoinSource={getCoinSource}
-				coinSecondary={coinSecondary}
-				isExistsPair={isExistsPair}
-				handleClose={handleClose}
-				moveToStep={moveToStep}
-				getFullName={getFullName}
-				handleBack={handleBack}
-				isManual={isManual}
-				coins={coins}
-				user={user}
-				balanceData={balanceData}
-				handleDealBack={handleDealBack}
-				handlePriceNext={handlePriceNext}
-				handleBrokerChange={handleBrokerChange}
-				handlePaused={handlePaused}
-				deleteBrokerData={deleteBrokerData}
-				isOpen={isOpen}
-				setPricing={setPricing}
-				setType={setType}
-				status={status}
-				emailOptions={emailOptions}
-				handleSearch={handleSearch}
-				pairBaseBalance={pairBaseBalance}
-				pair2Balance={pair2Balance}
-				getAllUserData={getAllUserData}
-				handleEmailChange={handleEmailChange}
-				handleClosePopup={handleClosePopup}
-				selectedEmailData={selectedEmailData}
-			/>
+			{pairs.length && (
+				<Otcdeskpopup
+					previewData={previewData}
+					type={type}
+					handlePreviewChange={handlePreviewChange}
+					getCoinSource={getCoinSource}
+					coinSecondary={coinSecondary}
+					isExistsPair={isExistsPair}
+					handleClose={handleClose}
+					moveToStep={moveToStep}
+					getFullName={getFullName}
+					handleBack={handleBack}
+					isManual={isManual}
+					coins={coins}
+					user={user}
+					balanceData={balanceData}
+					handleDealBack={handleDealBack}
+					handleBrokerChange={handleBrokerChange}
+					handlePaused={handlePaused}
+					deleteBrokerData={deleteBrokerData}
+					isOpen={isOpen}
+					setPricing={setPricing}
+					status={status}
+					emailOptions={emailOptions}
+					handleSearch={handleSearch}
+					pairBaseBalance={pairBaseBalance}
+					pair2Balance={pair2Balance}
+					getAllUserData={getAllUserData}
+					handleEmailChange={handleEmailChange}
+					handleClosePopup={handleClosePopup}
+					selectedEmailData={selectedEmailData}
+					selectedCoinType={selectedCoinType}
+					kit={constants}
+					pairs={pairs}
+					markets={markets}
+					isEdit={isEdit}
+					editData={editData}
+				/>
+			)}
 		</div>
 	);
 };
@@ -778,11 +915,14 @@ const mapStateToProps = (store) => ({
 	prices: store.orderbook.prices,
 	balanceData: store.user.balance,
 	oraclePrices: store.asset.oraclePrices,
+	constants: store.app.constants,
+	markets: MarketsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setPricesAndAsset: bindActionCreators(setPricesAndAsset, dispatch),
 	setBroker: bindActionCreators(setBroker, dispatch),
+	getTickers: bindActionCreators(getTickers, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OtcDeskContainer);
