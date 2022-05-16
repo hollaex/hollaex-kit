@@ -1570,4 +1570,9 @@ export default {
 	VERIFICATION_TITLE: 'Complete verification',
 	WITHDRAW_NOTE:
 		'Please note: You can only withdraw to an account in your name.',
+	QUOTE_CONFIRMATION_MSG_TEXT_1:
+		'Please check your order and confirm it below.', //new
+	QUOTE_CONFIRMATION_MSG_TEXT_2:
+		"Amount to receive are estimates and aren't inclusive of the trading fee", //new
+	ORDER_EXPIRED_MSG: 'Order expired. Please refresh!', //new
 };

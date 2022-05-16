@@ -560,7 +560,11 @@ class Home extends Component {
 														? ICONS[`CARD_SECTION_LOGO_${index}`]
 														: imageSrc
 												}
-												wrapperClassName="card_section_logo"
+												wrapperClassName={
+													index === 0 && imageSrc.includes('Group_93')
+														? 'fill-none'
+														: 'card_section_logo'
+												}
 											/>
 										</div>
 										<EditWrapper stringId={`CARD_SECTION_HEADER_${index}`}>
