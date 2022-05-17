@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { isEmail } = require('validator');
 
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;
@@ -99,28 +100,44 @@ const performWithdrawal = (req, res) => {
 		.then((withdrawal) => {
 			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
 		})
-		.then(([ withdrawal, user ]) => {
+		.then(async ([ withdrawal, user ]) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
-			return all([
-				toolsLib.wallet.performWithdrawal(
-					withdrawal.user_id,
-					withdrawal.address,
-					withdrawal.currency,
-					withdrawal.amount,
-					{
-						network: withdrawal.network,
+			if (isEmail(withdrawal.address)) {
+				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
+				if (!receiver) {
+					throw new Error(USER_NOT_FOUND);
+				}
+
+				return all([
+					toolsLib.wallet.transferAssetByKitIds(withdrawal.user_id, receiver.id, withdrawal.currency, withdrawal.amount, 'Email Transfer', true, {
 						additionalHeaders: {
 							'x-forwarded-for': req.headers['x-forwarded-for']
 						}
-					}
-				),
-				withdrawal
-			]);
+					}),
+					withdrawal
+				]);
+			} else {
+				return all([
+					toolsLib.wallet.performWithdrawal(
+						withdrawal.user_id,
+						withdrawal.address,
+						withdrawal.currency,
+						withdrawal.amount,
+						{
+							network: withdrawal.network,
+							additionalHeaders: {
+								'x-forwarded-for': req.headers['x-forwarded-for']
+							}
+						}
+					),
+					withdrawal
+				]);
+			}
 		})
 		.then(([ { transaction_id }, { fee } ]) => {
 			return res.json({
