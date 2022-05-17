@@ -1,3 +1,4 @@
+import axios from 'axios';
 import querystring from 'query-string';
 
 import { requestAuthenticated } from '../../../utils';
@@ -28,6 +29,13 @@ export const storePair = (values) => {
 };
 
 export const getBroker = () => requestAuthenticated('/broker');
+
+export const getWithoutAuthBroker = () => {
+	let headers = {
+		'Content-Type': 'application/json',
+	};
+	return axios.get('/broker', headers);
+};
 
 export const createBroker = (values) => {
 	const options = {

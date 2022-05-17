@@ -142,8 +142,8 @@ class QuickTradeContainer extends PureComponent {
 			isBrokerPaused: false,
 			isTimer: false,
 			isLoading: false,
-			buy_price: 0,
-			sell_price: 0,
+			buyPrice: 0,
+			sellPrice: 0,
 		};
 
 		this.goToPair(pair);
@@ -412,9 +412,9 @@ class QuickTradeContainer extends PureComponent {
 			const res = await getBrokerQuote(symbol, side);
 			if (res) {
 				if (side === 'buy') {
-					this.setState({ buy_price: res.price });
+					this.setState({ buyPrice: res.price });
 				} else {
-					this.setState({ sell_price: res.price });
+					this.setState({ sellPrice: res.price });
 				}
 			}
 		} catch (error) {
@@ -554,6 +554,8 @@ class QuickTradeContainer extends PureComponent {
 			existBroker,
 			brokerSourceAmount,
 			brokerTargetAmount,
+			sellPrice,
+			buyPrice,
 		} = this.state;
 		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
@@ -614,13 +616,29 @@ class QuickTradeContainer extends PureComponent {
 					});
 				});
 		} else {
-			const { sell_price, buy_price, increment_size, symbol } = existBroker;
-			if (side === 'buy') {
-				price = sell_price;
-				size = brokerTargetAmount;
+			const {
+				sell_price,
+				buy_price,
+				increment_size,
+				symbol,
+				type,
+			} = existBroker;
+			if (type === 'manual') {
+				if (side === 'buy') {
+					price = sell_price;
+					size = brokerTargetAmount;
+				} else {
+					price = buy_price;
+					size = brokerSourceAmount;
+				}
 			} else {
-				price = buy_price;
-				size = brokerSourceAmount;
+				if (side === 'buy') {
+					price = sellPrice;
+					size = brokerTargetAmount;
+				} else {
+					price = buyPrice;
+					size = brokerSourceAmount;
+				}
 			}
 			const selectedPair = symbol === pair ? pair : this.flipPair(pair);
 			const brokerOrderData = {

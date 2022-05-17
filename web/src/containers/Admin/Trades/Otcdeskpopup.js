@@ -943,8 +943,7 @@ const Otcdeskpopup = ({
 													(!isEdit && customlink && formula === '') ||
 													isUpgrade ||
 													(!isEdit && !spreadMul.spread) ||
-													(!isEdit && !spreadMul.multiplier) ||
-													(isEdit && selelctedPlatform !== 'custom')
+													(!isEdit && !spreadMul.multiplier)
 												}
 											>
 												Next
