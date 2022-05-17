@@ -77,6 +77,7 @@ export const EmailSettingsForm = ({
 	const [senderEmail, setSenderEmail] = useState('');
 	const [formValues, setFormValues] = useState({});
 	const [isValidEmail, setIsValidEmail] = useState(true);
+	const [smtpError, setSmtpError] = useState('');
 
 	useEffect(() => {
 		if (
@@ -129,7 +130,7 @@ export const EmailSettingsForm = ({
 				receiver: senderEmail,
 				smtp: {
 					password: params.password,
-					port: params.port,
+					port: parseInt(params.port),
 					server: params.server,
 					user: params.user,
 				},
@@ -144,7 +145,10 @@ export const EmailSettingsForm = ({
 				}
 			})
 			.catch((err) => {
-				handleClose();
+				let errMsg =
+					err.data && err.data.message ? err.data.message : err.message;
+				setSmtpError(errMsg);
+				setType('smtp-error');
 			});
 	};
 
@@ -206,15 +210,21 @@ export const EmailSettingsForm = ({
 		} else {
 			return (
 				<div>
-					<div className="content-heading">Complete</div>
-					<div>Your test email is on the way!</div>
+					{type === 'smtp-error' ? (
+						<div>{smtpError}</div>
+					) : (
+						<div>
+							<div className="content-heading">Complete</div>
+							<div>Your test email is on the way!</div>
+						</div>
+					)}
 					<div className="btn-wrapper btn-width">
 						<Button
 							type="primary"
 							className="green-btn "
 							onClick={() => handleClose('test-email')}
 						>
-							Okay
+							{type === 'smtp-error' ? 'Close' : 'Okay'}
 						</Button>
 					</div>
 				</div>
