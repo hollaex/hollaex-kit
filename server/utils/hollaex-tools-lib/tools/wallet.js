@@ -33,6 +33,7 @@ const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
 const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
+const { isEmail } = require('validator');
 
 const isValidAddress = (currency, address, network) => {
 	if (network === 'eth' || network === 'ethereum') {
@@ -103,7 +104,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(`Invalid ${currency} network given: ${network}`);
 	}
 
-	if (!isValidAddress(currency, address, network)) {
+	if (!isEmail(address) && !isValidAddress(currency, address, network)) {
 		throw new Error(`Invalid ${currency} address: ${address}`);
 	}
 
