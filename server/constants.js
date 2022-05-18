@@ -526,6 +526,13 @@ exports.EXPLORERS = {
 			baseUrl: 'https://scope.klaytn.com',
 			txPath: '/tx'
 		}
+	],
+	matic: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
+		}
 	]
 };
 
