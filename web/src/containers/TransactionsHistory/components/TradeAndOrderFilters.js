@@ -19,9 +19,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 			size: 'all',
 			type: 'active',
 		});
-		//  TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeTab]);
+	}, [activeTab, form]);
 
 	useEffect(() => {
 		if (
