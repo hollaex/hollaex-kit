@@ -30,7 +30,10 @@ import Image from 'components/Image';
 
 import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getBroker } from 'containers/Admin/Trades/actions';
+import {
+	getBroker,
+	getWithoutAuthBroker,
+} from 'containers/Admin/Trades/actions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { WS_URL } from 'config/constants';
 import { isIntentionalClosure, NORMAL_CLOSURE_CODE } from 'utils/webSocket';
@@ -244,7 +247,11 @@ class Home extends Component {
 
 	getBrokerData = async () => {
 		try {
-			await getBroker();
+			if (isLoggedIn()) {
+				await getBroker();
+			} else {
+				await getWithoutAuthBroker();
+			}
 		} catch (error) {
 			if (error) {
 				message.error(error.message);
@@ -560,7 +567,11 @@ class Home extends Component {
 														? ICONS[`CARD_SECTION_LOGO_${index}`]
 														: imageSrc
 												}
-												wrapperClassName="card_section_logo"
+												wrapperClassName={
+													index === 0 && imageSrc.includes('Group_93')
+														? 'fill-none'
+														: 'card_section_logo'
+												}
 											/>
 										</div>
 										<EditWrapper stringId={`CARD_SECTION_HEADER_${index}`}>

@@ -34,7 +34,6 @@ import {
 	SET_WEB_VIEWS,
 	SET_HELPDESK_INFO,
 	SET_INJECTED_VALUES,
-	//eslint-disable-next-line no-unused-vars
 	SET_INJECTED_HTML,
 	SET_CONTRACTS,
 	CHANGE_PAIR,
@@ -603,6 +602,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				injected_values: payload,
+			};
+		}
+		case SET_INJECTED_HTML: {
+			return {
+				...state,
+				injected_html: payload,
 			};
 		}
 		case SET_CONTRACTS: {

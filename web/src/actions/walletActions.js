@@ -248,10 +248,10 @@ export const getOrdersHistory = ({
 	};
 };
 
-export const downloadUserTrades = (key) => {
-	const query = querystring.stringify({
+export const downloadUserTrades = (key, params = {}) => {
+	const queryData = {
 		format: 'csv',
-	});
+	};
 	let path = ENDPOINTS.TRADES;
 	if (key === 'orders') {
 		path = ENDPOINTS.ORDERS;
@@ -261,7 +261,37 @@ export const downloadUserTrades = (key) => {
 	} else if (key === 'withdrawal') {
 		path = ENDPOINTS.WITHDRAWALS;
 	}
+	if (params && params.symbol) {
+		queryData.symbol = params.symbol;
+	}
 
+	if (params && params.start_date) {
+		queryData.start_date = params.start_date;
+	}
+
+	if (params && params.end_date) {
+		queryData.end_date = params.end_date;
+	}
+
+	if (params && params.status) {
+		if (params.status === 'dismissed') {
+			queryData.dismissed = true;
+		} else if (params.status === 'pending') {
+			queryData.dismissed = false;
+			queryData.processing = false;
+			queryData.rejected = false;
+			queryData.status = false;
+			queryData.waiting = false;
+		} else if (params.status === 'completed') {
+			queryData.status = true;
+		}
+	}
+
+	if (params && params.currency) {
+		queryData.currency = params.currency;
+	}
+
+	const query = querystring.stringify(queryData);
 	return (dispatch) => {
 		axios
 			.get(`${path}?${query}`)
@@ -308,15 +338,27 @@ export const getUserDeposits = ({
 	page = 1,
 	status,
 	currency,
+	start_date,
+	end_date,
 	...rest
 }) => {
 	const statusParams = getParamsByStatus(status);
-	const query = querystring.stringify({
+	const queryData = {
 		page,
 		limit,
 		...statusParams,
 		...(currency ? { currency } : {}),
-	});
+	};
+
+	if (start_date) {
+		queryData.start_date = start_date;
+	}
+
+	if (end_date) {
+		queryData.end_date = end_date;
+	}
+
+	const query = querystring.stringify(queryData);
 
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_DEPOSITS_PENDING, payload: { page } });
@@ -349,15 +391,27 @@ export const getUserWithdrawals = ({
 	page = 1,
 	status,
 	currency,
+	start_date,
+	end_date,
 	...rest
 }) => {
 	const statusParams = getParamsByStatus(status);
-	const query = querystring.stringify({
+	const queryData = {
 		page,
 		limit,
 		...statusParams,
 		...(currency ? { currency } : {}),
-	});
+	};
+
+	if (start_date) {
+		queryData.start_date = start_date;
+	}
+
+	if (end_date) {
+		queryData.end_date = end_date;
+	}
+
+	const query = querystring.stringify(queryData);
 
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.USER_WITHDRAWALS_PENDING, payload: { page } });

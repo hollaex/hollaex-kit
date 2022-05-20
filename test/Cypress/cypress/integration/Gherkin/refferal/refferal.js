@@ -42,7 +42,7 @@ Then  ("a new {string} user sign up with {string}",(random,ReferralCode)=>{
       const randomUsername = Math.random().toString(36).substring(2,6);
       const username = randomUsername + Cypress.env('NEW_USER')
       cy.get('.mr-5').click()
-      cy.get('.app-menu-bar-side > :nth-child(10)').click()
+      cy.contains('Signout').click()
       cy.get("@referralLink").then(val => cy.visit(val))
       cy.get('.holla-button').should('be.visible').should('be.disabled')
       cy.get('.checkfield-input').should('not.be.checked')
@@ -65,7 +65,7 @@ Then  ("I log in as the referee",()=>{
       cy.get('.holla-button').should('be.visible').should('be.enabled').click()
       cy.get('.warning_text').should('not.exist') 
       cy.get('#trade-nav-container > :nth-child(3) > :nth-child(2)')
-      should('contain',Cypress.env('ADMIN_USER'))
+      .should('contain',Cypress.env('ADMIN_USER'))
       cy.get('.trade-account-secondary-txt > :nth-child(2) > .pointer').click()
 })  
 

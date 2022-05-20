@@ -4,6 +4,7 @@ const PRODUCTION_ENDPOINT =
 const DEVELOPMENT_ENDPOINT =
 	process.env.REACT_APP_DEVELOPMENT_ENDPOINT ||
 	'https://api.sandbox.hollaex.com';
+// 'https://api.next.hollaex.com';
 
 const PRODUCTION_NETWORK_ENDPOINT =
 	process.env.REACT_APP_SERVER_NETWORK_ENDPOINT ||
@@ -21,9 +22,9 @@ const generateEndpoint = (endpoint, path, networkEndpoint) => ({
 	API_URL: `${endpoint}${path}`,
 	WS_URL:
 		process.env.REACT_APP_STREAM_ENDPOINT ||
-		endpoint.split('://')[0] === 'https'
+		(endpoint.split('://')[0] === 'https'
 			? `wss://${endpoint.split('://')[1]}` // websocket with ssl
-			: `ws://${endpoint.split('://')[1]}`, // without ssl used for localhost
+			: `ws://${endpoint.split('://')[1]}`), // without ssl used for localhost
 	PLUGIN_URL: endpoint,
 	NETWORK_API_URL: `${networkEndpoint}${path}`,
 });

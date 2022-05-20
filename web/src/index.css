@@ -1402,7 +1402,7 @@ table th {
   justify-content: center;
   align-items: center;
   background-color: var(--base_wallet-sidebar-and-popup);
-  opacity: 60%; }
+  opacity: 0.8; }
   .html_card_section .card-section-wrapper {
     display: flex;
     align-items: center;
@@ -1420,6 +1420,16 @@ table th {
         .html_card_section .card-section-wrapper .card-section .card_section_logo svg {
           width: 50px;
           height: 50px; }
+          .html_card_section .card-section-wrapper .card-section .card_section_logo svg path {
+            fill: var(--labels_important-active-labels-text-graphics); }
+      .html_card_section .card-section-wrapper .card-section .fill-none {
+        width: 50px;
+        height: 50px; }
+        .html_card_section .card-section-wrapper .card-section .fill-none svg {
+          width: 50px;
+          height: 50px; }
+          .html_card_section .card-section-wrapper .card-section .fill-none svg path:not(:first-child) {
+            fill: var(--labels_important-active-labels-text-graphics); }
       .html_card_section .card-section-wrapper .card-section .header_txt {
         font-weight: bold;
         font-size: 18px; }
@@ -3124,10 +3134,21 @@ table th {
   overflow-y: scroll; }
 
 .base_negative_balance,
-.success-review,
-.quote-review-wrapper {
+.success-review {
   margin: 1rem 0;
   width: 30rem; }
+
+.quote-review-wrapper {
+  margin: 1rem 0;
+  width: 40rem !important;
+  position: relative; }
+  .quote-review-wrapper .quote_header {
+    font-size: 22px;
+    font-weight: bold; }
+  .quote-review-wrapper .quote_content {
+    color: var(--labels_secondary-inactive-label-text-graphics); }
+  .quote-review-wrapper .disabled-area {
+    opacity: 0.3; }
 
 .quote-countdown-wrapper {
   display: flex;
@@ -9826,6 +9847,25 @@ foreignObject {
 .review-block-wrapper {
   border-top: var(--calculated_secondary-border) solid 1px; }
 
+.loading-border {
+  position: absolute;
+  border: 1px solid var(--specials_buttons-links-and-highlights);
+  width: 100%;
+  animation-name: dotFlashing;
+  animation-duration: 10s; }
+
+@keyframes dotFlashing {
+  0% {
+    width: 100%; }
+  25% {
+    width: 75%; }
+  50% {
+    width: 50%; }
+  75% {
+    width: 25%; }
+  100% {
+    width: 0%; } }
+
 @media (max-width: 1020px) {
   .quick_trade-wrapper {
     min-width: 100% !important;
@@ -10480,7 +10520,6 @@ foreignObject {
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
         background-repeat: no-repeat;
-        height: 6rem !important;
         margin-left: 1.5rem;
         width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {

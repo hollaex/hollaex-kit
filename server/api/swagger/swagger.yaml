@@ -5194,16 +5194,12 @@ definitions:
             type: array
             items:
               type: string
-          banks:
+          onramp:
             type: object
-            required:
-              - fields
-              - bank_list
-            properties:
-              fields:
-                type: object
-              bank_list:
-                type: array
+          offramp:
+            type: object
+          user_payments:
+            type: object
       secrets:
         type: object
         properties:

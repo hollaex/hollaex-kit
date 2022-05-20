@@ -1,14 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { dateFilters } from '../filterUtils';
 import STRINGS from '../../../config/localizedStrings';
+import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const Filters = ({ pairs, onSearch, formName }) => {
+const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
+	const [click, setClick] = useState([]);
+
+	useEffect(() => {
+		form.setFieldsValue({
+			range: [],
+			symbol: null,
+			size: 'all',
+			type: 'active',
+		});
+	}, [activeTab, form]);
+
+	useEffect(() => {
+		if (
+			click.length &&
+			!click.filter((d) => d === undefined).length &&
+			form.getFieldValue('range').length &&
+			!form.getFieldValue('range').filter((d) => d === undefined).length
+		) {
+			if (
+				!moment(click[0]).isSame(form.getFieldValue('range')[0]) &&
+				!moment(click[1]).isSame(form.getFieldValue('range')[1])
+			) {
+				form.setFieldsValue({ range: click });
+				onSearch(form.getFieldsValue());
+			}
+		} else if (click.length && !form.getFieldValue('range').length) {
+			form.setFieldsValue({ range: click });
+			onSearch(form.getFieldsValue());
+		}
+	}, [click, form, onSearch]);
 
 	const onValuesChange = (_, values) => {
 		if (values) {
@@ -18,13 +49,16 @@ const Filters = ({ pairs, onSearch, formName }) => {
 				} = dateFilters;
 				form.setFieldsValue({ range });
 				values.range = range;
-				onSearch(values);
-			} else if (!values.range) {
-				values.range = [];
-				onSearch(values);
-			} else if (values.range && values.range[0] && values.range[1]) {
-				onSearch(values);
+				if (_.range === undefined) {
+					onSearch(values);
+				}
 			}
+		}
+	};
+
+	const handleDateRange = (e) => {
+		if (e.length > 1 && e[0] && e[1]) {
+			setClick(e);
 		}
 	};
 
@@ -112,6 +146,7 @@ const Filters = ({ pairs, onSearch, formName }) => {
 						size="small"
 						suffixIcon={false}
 						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+						onChange={handleDateRange}
 					/>
 				</Form.Item>
 			</Row>
