@@ -56,7 +56,7 @@ This folder holds the `swagger.yaml` file that contains all the endpoints for th
 ## Websocket
 
 All websocket related files are contained in the `ws` directory. The HollaEx Kit websocket uses the following libraries:
-- [HollaEx Node Library](https://github.com/bitholla/hollaex-node-lib#readme) - Used to connect to the HollaEx Network Websocket
+- [HollaEx Network Library](https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-network-lib) - Used to connect to the HollaEx Network Websocket
 - [ws](https://www.npmjs.com/package/ws) - Used to create the websocket server
 - [ws-heartbeat](https://www.npmjs.com/package/ws-heartbeat) - Used to maintain websocket connection to the Network and also to disconnect any clients that don't send a message within 60 seconds
 
