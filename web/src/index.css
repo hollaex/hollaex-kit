@@ -1756,6 +1756,13 @@ table th {
   border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
   padding: 0.25rem 1rem; }
 
+.review-wrapper .review-crypto-mail {
+  font-size: 1.8rem;
+  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+  padding: 1.5rem 12rem; }
+  .review-wrapper .review-crypto-mail .review-fee_message {
+    font-size: 1.1rem; }
+
 .review-wrapper .review-info_message {
   padding: 0.5rem;
   font-size: 1rem;
@@ -1843,6 +1850,26 @@ table th {
   .review_email-wrapper .review_email-content {
     border-top: 1px solid;
     padding: 1rem; }
+
+.review_email_error-wrapper {
+  margin: auto;
+  max-width: 38rem; }
+  .review_email_error-wrapper .icon_title-wrapper {
+    margin-top: 0 !important; }
+    .review_email_error-wrapper .icon_title-wrapper .icon_title-text.title {
+      font-size: 2.5rem !important; }
+  .review_email_error-wrapper .review_email-error {
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    text-align: center;
+    margin-bottom: 1rem; }
+  .review_email_error-wrapper .email_error-icon {
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    color: var(--labels_secondary-inactive-label-text-graphics);
+    padding: 6px;
+    border-radius: 50%;
+    font-size: 25px;
+    width: 55px;
+    text-align: center; }
 
 @media screen and (max-width: 1096px) {
   .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-wrapper .field-label {

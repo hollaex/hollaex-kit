@@ -24,6 +24,8 @@ const InputField = (props) => {
 		hideCheck,
 		outlineClassName,
 		stringId,
+		isEmail,
+		emailMsg,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;

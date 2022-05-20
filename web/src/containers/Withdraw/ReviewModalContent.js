@@ -100,8 +100,17 @@ const ReviewModalContent = ({
 					</div>
 				</div>
 				<div className="review-warning_arrow" />
-				<div className="review-crypto-address">{data.address}</div>
-				{data.network && (
+				{!data.email ? (
+					<div className="review-crypto-address">{data.address}</div>
+				) : (
+					<div className="review-crypto-mail">
+						{' '}
+						<span className="review-fee_message">
+							<b>Email:</b> {data.email}
+						</span>
+					</div>
+				)}
+				{data.network && !data.email && (
 					<div className="review-fee_message">
 						{STRINGS.formatString(
 							STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
@@ -110,7 +119,7 @@ const ReviewModalContent = ({
 						)}
 					</div>
 				)}
-				{hasDestinationTag && (
+				{hasDestinationTag && !data.email && (
 					<div className="review-fee_message">
 						{STRINGS.formatString(
 							STRINGS['WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE'],
@@ -120,14 +129,16 @@ const ReviewModalContent = ({
 						)}
 					</div>
 				)}
-				<div className="warning_text review-info_message">
-					<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
-						{STRINGS.formatString(
-							STRINGS['WITHDRAW_PAGE.MESSAGE_BTC_WARNING'],
-							fullname
-						)}
-					</EditWrapper>
-				</div>
+				{!data.email && (
+					<div className="warning_text review-info_message">
+						<EditWrapper stringId="WITHDRAW_PAGE.MESSAGE_BTC_WARNING">
+							{STRINGS.formatString(
+								STRINGS['WITHDRAW_PAGE.MESSAGE_BTC_WARNING'],
+								fullname
+							)}
+						</EditWrapper>
+					</div>
+				)}
 			</div>
 			<ButtonSection
 				onClickAccept={onClickAccept}
