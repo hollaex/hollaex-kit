@@ -108,6 +108,7 @@ const icons = {
 	FIAT_BACKGROUND: '/assets/images/fiat-background.svg',
 	RESTART_CIRCLE_ICON: '/assets/images/restart-circle.svg',
 	STAKE_FEATURE: '/assets/images/stake-feature.svg',
+	ULTIMATE_FIAT_FEATURE: '/assets/images/stake-feature.svg',
 	RESOURCE_PLUGIN: '/assets/images/plugins.png',
 	RESOURCE_FAQ: '/assets/images/help-faq.png',
 	RESOURCE_VIDEOS: '/assets/images/videos.png',

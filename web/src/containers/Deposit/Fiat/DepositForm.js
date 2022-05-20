@@ -22,21 +22,28 @@ import { withRouter } from 'react-router';
 
 import STRINGS from 'config/localizedStrings';
 import { depositFiat } from 'actions/walletActions';
+import {
+	getFiatDepositFee,
+	getFiatDepositLimit,
+} from 'containers/Deposit/Fiat/utils';
+
+import { generateDynamicStringKey } from 'utils/id';
 
 const FORM_NAME = 'DepositForm';
 const selector = formValueSelector(FORM_NAME);
 
-const generateFormValues = (symbol, coins = {}, step, verification_level) => {
-	const { min, max, increment_unit, meta } = coins[symbol] || DEFAULT_COIN_DATA;
+const generateFormValues = (
+	symbol,
+	coins = {},
+	step,
+	method,
+	onramp,
+	selectedAccount
+) => {
+	const { min, max, increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
 
-	const fee =
-		meta && meta[`deposit_fee_${verification_level}`]
-			? meta[`deposit_fee_${verification_level}`].value
-			: 0;
-	const limit =
-		meta && meta[`deposit_limit_${verification_level}`]
-			? meta[`deposit_limit_${verification_level}`].value
-			: 0;
+	const { rate: fee } = getFiatDepositFee(symbol);
+	const limit = getFiatDepositLimit();
 
 	const MIN = math.max(fee, min);
 	const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
@@ -53,7 +60,62 @@ const generateFormValues = (symbol, coins = {}, step, verification_level) => {
 		);
 	}
 
+	const options =
+		onramp[method].type === 'manual'
+			? onramp[method].data.map((_, index) => ({
+					value: index,
+					label: index, // TODO: what is the label (fields are defined by user and can be anything)
+			  }))
+			: [];
+
+	let preview;
+	if (selectedAccount || selectedAccount === 0) {
+		const selectedAccountArray =
+			onramp[method].type === 'manual' &&
+			onramp[method].data.find((_, index) => index === selectedAccount);
+		if (selectedAccountArray) {
+			const generateId = generateDynamicStringKey(
+				'ULTIMATE_FIAT',
+				method,
+				'ONRAMP'
+			);
+
+			preview = (
+				<div className="py-2 field-content_preview">
+					{selectedAccountArray.map(({ key, label, value }) => {
+						const labelId = generateId(key);
+						const defaultText = label || key.replace(/_/g, ' ');
+
+						return (
+							<div className="d-flex">
+								<div className="bold pl-4">
+									{STRINGS[labelId] || defaultText}
+								</div>
+								<div className="pl-4">{value}</div>
+							</div>
+						);
+					})}
+				</div>
+			);
+		}
+	}
+
 	const fields = {};
+
+	fields.account = {
+		type: 'select',
+		stringId: 'USER_VERIFICATION.TITLE_BANK',
+		label: STRINGS['USER_VERIFICATION.TITLE_BANK'],
+		placeholder: 'Select a bank',
+		validate: [required],
+		fullWidth: true,
+		options,
+		hideCheck: true,
+		ishorizontalfield: true,
+		disabled: step === STEPS.TRANSACTION_ID,
+		strings: STRINGS,
+		preview,
+	};
 
 	if (step === STEPS.TRANSACTION_ID) {
 		fields.transactionId = {
@@ -117,12 +179,9 @@ const generateFormValues = (symbol, coins = {}, step, verification_level) => {
 export const generateInitialValues = (verification_level, coins, currency) => {
 	const initialValues = {};
 
-	const { meta } = coins[currency];
-	const deposit_fee = meta[`deposit_fee_${verification_level}`]
-		? meta[`deposit_fee_${verification_level}`].value
-		: 0;
+	const { rate } = getFiatDepositFee(currency);
 
-	initialValues.fee = deposit_fee;
+	initialValues.fee = rate;
 
 	return initialValues;
 };
@@ -143,6 +202,9 @@ const Deposit = ({
 	setStep,
 	router,
 	fee,
+	onramp,
+	account,
+	method,
 }) => {
 	const [fields, setFields] = useState({});
 	const [dialogIsOpen, setDialogIsOpen] = useState(false);
@@ -150,9 +212,11 @@ const Deposit = ({
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		setFields(generateFormValues(currency, coins, step, verification_level));
+		setFields(
+			generateFormValues(currency, coins, step, method, onramp, account)
+		);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [step]);
+	}, [step, method, account]);
 
 	const onSubmitPaymentReq = (data) => {
 		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
@@ -282,11 +346,14 @@ const DepositForm = reduxForm({
 	},
 })(Deposit);
 
-const mapStateToProps = (state) => ({
-	...selector(state, 'amount', 'transactionId', 'fee'),
-	coins: state.app.coins,
-	user: state.user,
-});
+const mapStateToProps = (state, ownProps) => {
+	return {
+		...selector(state, 'amount', 'transactionId', 'fee', 'account'),
+		coins: state.app.coins,
+		user: state.user,
+		onramp: state.app.onramp[ownProps.currency],
+	};
+};
 
 const mapDispatchToProps = (dispatch) => ({
 	dispatch,

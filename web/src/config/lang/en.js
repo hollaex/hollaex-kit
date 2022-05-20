@@ -341,6 +341,7 @@ export default {
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
+		TITLE_PAYMENT: 'Cash out / withdrawal system',
 		TITLE_MOBILE_PHONE: 'Mobile Phone',
 		TITLE_PERSONAL_INFORMATION: 'Personal Information',
 		VERIFY_EMAIL: 'Verify email',
@@ -358,10 +359,12 @@ export default {
 		GOTO_WALLET: 'Go to wallet', // new
 		INCOMPLETED: 'Incompleted',
 		BANK_VERIFICATION: 'Bank Verification',
+		PAYMENT_VERIFICATION: 'Withdrawal Verification',
 		IDENTITY_VERIFICATION: 'Identity Verification',
 		PHONE_VERIFICATION: 'Phone Verification',
 		DOCUMENT_VERIFICATION: 'Document Verification',
 		START_BANK_VERIFICATION: 'Start Bank Verification',
+		START_PAYMENT_VERIFICATION: 'Start Bank Verification',
 		START_IDENTITY_VERIFICATION: 'Start Identity Verification',
 		START_PHONE_VERIFICATION: 'Start Phone Verification',
 		START_DOCUMENTATION_SUBMISSION: 'Start Documentation Submission',
@@ -370,12 +373,17 @@ export default {
 			'You can add your bank accounts here and get the verified. International bank accounts will require you contacting customer support and will have limited withdrawal limits.',
 		BANK_VERIFICATION_TEXT_2:
 			'By verifying your bank account you can obtain the following:',
+		PAYMENT_VERIFICATION_TEXT:
+			"Add a withdrawal method so that you can cash out fiat currencies. Once you've added your withdrawal details below (bank, or other payment systems) you will obtain the follow:",
 		BASE_WITHDRAWAL: 'Fiat withdrawal',
 		BASE_DEPOSITS: 'Fiat deposits',
 		ADD_ANOTHER_BANK_ACCOUNT: 'Add Another Bank Account',
+		ADD_ANOTHER_PAYMENT_METHOD: 'ADD ANOTHER WITHDRAW METHOD',
 		BANK_NAME: 'Bank Name',
 		ACCOUNT_NUMBER: 'Account Number',
 		BANK_VERIFICATION_HELP_TEXT:
+			'In order for this section to be verified you must complete the {0} section.',
+		PAYMENT_VERIFICATION_HELP_TEXT:
 			'In order for this section to be verified you must complete the {0} section.',
 		DOCUMENT_SUBMISSION: 'Document Submission',
 		REVIEW_IDENTITY_VERIFICATION: 'Review Identity Verification',
@@ -1570,4 +1578,7 @@ export default {
 	VERIFICATION_TITLE: 'Complete verification',
 	WITHDRAW_NOTE:
 		'Please note: You can only withdraw to an account in your name.',
+	USER_PAYMENT: {
+		TITLE: 'Withdrawal',
+	},
 };

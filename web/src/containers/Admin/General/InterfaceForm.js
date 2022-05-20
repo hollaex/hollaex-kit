@@ -22,6 +22,7 @@ const InterfaceForm = ({
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				home_page: isUpgrade ? false : !!values.home_page,
+				ultimate_fiat: !!values.ultimate_fiat,
 			};
 			handleSaveInterface(formValues);
 		}
@@ -100,6 +101,25 @@ const InterfaceForm = ({
 									<div className="small-text">
 										(Lock coins and distribute crypto rewards)
 									</div>
+								</div>
+							</div>
+						</Checkbox>
+					</Item>
+					<Item name="ultimate_fiat" valuePropName="checked">
+						<Checkbox className="mt-3">
+							<div className="d-flex align-items-center">
+								<div className="feature-trade-box mr-1">
+									<ReactSVG
+										src={STATIC_ICONS.ULTIMATE_FIAT_FEATURE}
+										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
+										beforeInjection={(svg) => {
+											svg.setAttribute('style', 'width: 60px');
+										}}
+									/>
+								</div>
+								<div className="ml-2 checkbox-txt">
+									Ultimate fiat
+									<div className="small-text">(Ultimate fiat ...)</div>
 								</div>
 							</div>
 						</Checkbox>
