@@ -2,7 +2,8 @@
 HollaEx Kit has a built in server based on express + swagger and provides API and Websocket communication for HollaEx Web or any other clients.
 
 The main 3rd-party applications being used throughout the Server are:
-- [HollaEx Tools Library](https://github.com/bitholla/hollaex-tools-lib)
+- [HollaEx Tools Library](https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-tools-lib)
+- [HollaEx Network Library](https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-network-lib)
 - [HollaEx Node Library](https://github.com/bitholla/hollaex-node-lib#readme)
 - [Express v4.16.2](https://expressjs.com/en/api.html)
 - [SwaggerUI v2.0.0](https://swagger.io/docs/specification/2-0/basic-structure/)
