@@ -55,6 +55,8 @@ export const generateInitialValues = (
 		initialValues.address = query.address;
 	}
 
+	initialValues.method = 'address';
+
 	return initialValues;
 };
 
@@ -69,8 +71,11 @@ export const generateFormValues = (
 	iconId,
 	networks,
 	selectedNetwork,
-	ICONS = ''
+	ICONS = '',
+	selectedMethod,
+	handleMethodChange
 ) => {
+	const isEmail = selectedMethod && selectedMethod === 'email' ? true : false;
 	const {
 		fullname,
 		min,
@@ -78,6 +83,7 @@ export const generateFormValues = (
 		withdrawal_limits = {},
 		withdrawal_fee,
 		withdrawal_fees,
+		display_name,
 	} = coins[symbol] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
@@ -86,23 +92,45 @@ export const generateFormValues = (
 
 	let fee;
 	let fee_coin;
-	if (withdrawal_fees && selectedNetwork && withdrawal_fees[selectedNetwork]) {
+	if (
+		withdrawal_fees &&
+		selectedNetwork &&
+		withdrawal_fees[selectedNetwork] &&
+		!isEmail
+	) {
 		fee = withdrawal_fees[selectedNetwork].value;
 		fee_coin = withdrawal_fees[selectedNetwork].symbol;
-	} else if (coins[symbol]) {
+	} else if (coins[symbol] && !isEmail) {
 		fee = withdrawal_fee;
 	} else {
 		fee = 0;
 	}
 
 	const fields = {};
-
+	fields.method = {
+		type: 'select',
+		stringId: 'WITHDRAWALS_FORM_METHOD, WITHDRAWALS_FORM_MAIL_INFO',
+		label: STRINGS['WITHDRAWALS_FORM_METHOD'],
+		options: [
+			{
+				value: 'address',
+				label: `${display_name} ${STRINGS[
+					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL'
+				].toLowerCase()}`,
+			},
+			{ value: 'email', label: STRINGS['FORM_FIELDS.EMAIL_LABEL'] },
+		],
+		fullWidth: true,
+		ishorizontalfield: true,
+		emailMsg: STRINGS['WITHDRAWALS_FORM_MAIL_INFO'],
+		isEmail,
+		onChange: (e) => handleMethodChange(e),
+	};
 	if (networks) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
 			label: getNetworkLabelByKey(network),
 		}));
-
 		fields.network = {
 			type: 'select',
 			stringId:
@@ -118,26 +146,43 @@ export const generateFormValues = (
 			disabled: networks.length === 1,
 		};
 	}
-
-	if (!networks || (networks && (networks.length === 1 || selectedNetwork))) {
-		fields.address = {
-			type: 'text',
-			stringId:
-				'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
-			label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
-			placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
-			validate: [
-				required,
-				validAddress(
-					symbol,
-					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
-					selectedNetwork
-				),
-			],
-			fullWidth: true,
-			ishorizontalfield: true,
-		};
-		if (symbol === 'xrp') {
+	if (
+		!networks ||
+		(networks && (networks.length === 1 || selectedNetwork)) ||
+		isEmail
+	) {
+		if (!isEmail) {
+			fields.address = {
+				type: 'text',
+				stringId:
+					'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
+				label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
+				validate: [
+					required,
+					validAddress(
+						symbol,
+						STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
+						selectedNetwork
+					),
+				],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
+		if (isEmail) {
+			fields.email = {
+				type: 'text',
+				stringId:
+					'WITHDRAWALS_FORM_ADDRESS_EXCHANGE,WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER',
+				label: STRINGS['WITHDRAWALS_FORM_ADDRESS_EXCHANGE'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER'],
+				validate: [required],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
+		if (!isEmail && symbol === 'xrp') {
 			fields.destination_tag = {
 				type: 'number',
 				stringId:

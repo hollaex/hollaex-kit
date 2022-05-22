@@ -37,6 +37,7 @@ class Withdraw extends Component {
 		initialValues: {},
 		checked: false,
 		currency: '',
+		selectedMethodData: 'address',
 	};
 
 	componentWillMount() {
@@ -61,7 +62,21 @@ class Withdraw extends Component {
 				nextProps.coins,
 				nextProps.verification_level,
 				this.state.networks,
-				nextProps.selectedNetwork
+				nextProps.selectedNetwork,
+				this.handleMethodChange
+			);
+		}
+
+		if (nextProps.selectedMethod !== this.props.selectedMethod) {
+			this.generateFormValues(
+				getCurrencyFromName(nextProps.routeParams.currency, nextProps.coins),
+				nextProps.balance,
+				nextProps.coins,
+				nextProps.verification_level,
+				this.state.networks,
+				nextProps.selectedNetwork,
+				nextProps.selectedMethod,
+				this.handleMethodChange
 			);
 		}
 		if (nextProps.routeParams.currency !== this.props.routeParams.currency) {
@@ -102,7 +117,9 @@ class Withdraw extends Component {
 						this.props.coins,
 						this.props.verification_level,
 						networks,
-						initialNetwork
+						initialNetwork,
+						this.state.selectedMethod,
+						this.handleMethodChange
 					);
 				}
 			);
@@ -114,13 +131,19 @@ class Withdraw extends Component {
 		}
 	};
 
+	handleMethodChange = (selectedMethodData) => {
+		this.setState({ selectedMethodData });
+	};
+
 	generateFormValues = (
 		currency,
 		balance,
 		coins,
 		verification_level,
 		networks,
-		network
+		network,
+		selectedMethod,
+		handleMethodChange
 	) => {
 		const {
 			icons: ICONS,
@@ -139,14 +162,18 @@ class Withdraw extends Component {
 			'BLUE_PLUS',
 			networks,
 			network,
-			ICONS
+			ICONS,
+			selectedMethod,
+			handleMethodChange
 		);
-		const initialValues = generateInitialValues(
+
+		let initialValues = generateInitialValues(
 			currency,
 			coins,
 			networks,
 			network,
-			query
+			query,
+			selectedMethod
 		);
 
 		this.setState({ formValues, initialValues });
@@ -254,9 +281,16 @@ class Withdraw extends Component {
 			coins,
 			icons: ICONS,
 			selectedNetwork,
+			email,
 		} = this.props;
 		const { links = {} } = this.props.constants;
-		const { formValues, initialValues, currency, checked } = this.state;
+		const {
+			formValues,
+			initialValues,
+			currency,
+			checked,
+			selectedMethodData,
+		} = this.state;
 		if (!currency || !checked) {
 			return <div />;
 		}
@@ -281,6 +315,8 @@ class Withdraw extends Component {
 			router,
 			icons: ICONS,
 			selectedNetwork,
+			email,
+			selectedMethodData,
 		};
 
 		return (
@@ -354,6 +390,8 @@ const mapStateToProps = (store) => ({
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	fee_coin: formValueSelector(FORM_NAME)(store, 'fee_coin'),
 	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
+	selectedMethod: formValueSelector(FORM_NAME)(store, 'method'),
+	email: formValueSelector(FORM_NAME)(store, 'email'),
 	coins: store.app.coins,
 	activeTheme: store.app.theme,
 	constants: store.app.constants,

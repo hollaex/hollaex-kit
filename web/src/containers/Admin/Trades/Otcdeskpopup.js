@@ -118,9 +118,13 @@ const Otcdeskpopup = ({
 	);
 	const [brokerPriceData, setBrokerPrice] = useState({});
 	const [isDisconnect, setIsDisconnect] = useState(false);
+	const [errMsg, setErrorMsg] = useState('');
 
 	useEffect(() => {
-		if (isEdit && editData && editData.type === 'dynamic' && editData.formula) {
+		if (
+			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
+			isExistsPair
+		) {
 			setSelectedPlatform('custom');
 			setCustomlink(true);
 		}
@@ -133,7 +137,7 @@ const Otcdeskpopup = ({
 				setHedgeApi('binance');
 			}
 		}
-	}, [isEdit, editData]);
+	}, [isEdit, editData, isExistsPair]);
 
 	const handleCloseOtcChild = () => {
 		setHedgeSwitch(false);
@@ -181,9 +185,10 @@ const Otcdeskpopup = ({
 				setConnectpop(e);
 			}, 5000);
 		} catch (error) {
+			const errMsg = error.data ? error.data.message : error.message;
 			setTimeout(() => {
 				setLoading(false);
-				setConnectpop(e);
+				setErrorMsg(errMsg);
 			}, 5000);
 		}
 	};
@@ -676,7 +681,7 @@ const Otcdeskpopup = ({
 										</Select>
 									</div>
 								</div>
-								{isManual ? (
+								{isManual && !isExistsPair ? (
 									<div>
 										<div className="pricing-container mt-4">
 											<div>
@@ -940,11 +945,13 @@ const Otcdeskpopup = ({
 												onClick={handleSetPriceNext}
 												disabled={
 													chainlink ||
-													(!isEdit && customlink && formula === '') ||
+													(!isExistsPair &&
+														!isEdit &&
+														customlink &&
+														formula === '') ||
 													isUpgrade ||
-													(!isEdit && !spreadMul.spread) ||
-													(!isEdit && !spreadMul.multiplier) ||
-													(isEdit && selelctedPlatform !== 'custom')
+													((!isExistsPair || !isEdit) && !spreadMul.spread) ||
+													((!isExistsPair || !isEdit) && !spreadMul.multiplier)
 												}
 											>
 												Next
@@ -1484,6 +1491,7 @@ const Otcdeskpopup = ({
 										</div>
 									</>
 								)}
+								{errMsg && <div className="errMsg mt-2">{errMsg}</div>}
 								<div className="d-flex  mt-4">
 									{hedgeSwitch && !connectpop && (
 										<>
@@ -1621,6 +1629,7 @@ const Otcdeskpopup = ({
 										onClick={handleHedgeNext}
 										disabled={
 											hedgeSwitch &&
+											!isEdit &&
 											(!apiData.apikey || !apiData.seckey || !connectpop)
 										}
 									>
