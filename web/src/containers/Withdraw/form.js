@@ -103,6 +103,17 @@ class Form extends Component {
 				// nextProps.change('fee', fee);
 			}
 		}
+		if (nextProps.selectedMethodData !== this.props.selectedMethodData) {
+			const fee = calculateBaseFee(nextProps.data.amount);
+			if (
+				nextProps.selectedMethodData &&
+				nextProps.selectedMethodData === 'email'
+			) {
+				nextProps.change('fee', 0);
+			} else {
+				nextProps.change('fee', fee);
+			}
+		}
 	}
 
 	componentWillUnmount() {
@@ -131,7 +142,7 @@ class Form extends Component {
 		} else {
 			this.onCloseDialog();
 			// this.props.submit();
-			const values = this.props.data;
+			const values = { ...this.props.data, email: this.props.email };
 			return this.props
 				.onSubmitWithdrawReq({
 					...values,
@@ -222,7 +233,10 @@ class Form extends Component {
 			icons: ICONS,
 			selectedNetwork,
 			targets,
+			email,
 		} = this.props;
+
+		const formData = { ...data, email };
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
@@ -280,7 +294,7 @@ class Form extends Component {
 								<ReviewModalContent
 									coins={coins}
 									currency={currency}
-									data={data}
+									data={formData}
 									price={currentPrice}
 									onClickAccept={this.onAcceptDialog}
 									onClickCancel={this.onCloseDialog}

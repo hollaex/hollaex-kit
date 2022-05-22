@@ -77,6 +77,7 @@ import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { ETHEREUM_EVENTS } from 'actions/stakingActions';
+import ReviewEmailError from 'containers/Withdraw/ReviewEmailError';
 
 class App extends Component {
 	state = {
@@ -449,6 +450,8 @@ class App extends Component {
 						style={{ maxWidth: '40rem' }}
 					/>
 				);
+			case NOTIFICATIONS.WITHDRAWAL_EMAIL_ERROR:
+				return <ReviewEmailError onClose={this.onCloseDialog} />;
 			case CONTACT_FORM:
 				return (
 					<ContactForm
@@ -912,7 +915,9 @@ class App extends Component {
 													!isMobile) ||
 												activeNotification.type === NOTIFICATIONS.ERROR ||
 												activeNotification.type ===
-													NOTIFICATIONS.UNDEFINED_ERROR
+													NOTIFICATIONS.UNDEFINED_ERROR ||
+												activeNotification.type ===
+													NOTIFICATIONS.WITHDRAWAL_EMAIL_ERROR
 											)
 										}
 										compressed={
