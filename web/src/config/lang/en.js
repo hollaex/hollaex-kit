@@ -1039,6 +1039,9 @@ export default {
 		WITHDRAW_CONFIRM_SUCCESS_2:
 			'In order to view your withdrawal status please visit your withdrawal history page.',
 		GO_WITHDRAWAL_HISTORY: 'Go To Withdrawal History',
+		WITHDRAWALS_FORM_ERROR_TITLE: 'Incorrect transfer info', //new
+		WITHDRAWALS_FORM_ERROR:
+			'Your fund transfer has failed. Sending funds to an email requires that the user has an account within this exchange. Check that the email is correct and please try again.', //new
 	},
 	WALLET_BUTTON_BASE_DEPOSIT: 'deposit',
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
@@ -1578,7 +1581,7 @@ export default {
 	VERIFICATION_TITLE: 'Complete verification',
 	WITHDRAW_NOTE:
 		'Please note: You can only withdraw to an account in your name.',
-  USER_PAYMENT: {
+	USER_PAYMENT: {
 		TITLE: 'Withdrawal',
 	},
 	QUOTE_CONFIRMATION_MSG_TEXT_1:
@@ -1586,4 +1589,9 @@ export default {
 	QUOTE_CONFIRMATION_MSG_TEXT_2:
 		"Amount to receive are estimates and aren't inclusive of the trading fee", //new
 	ORDER_EXPIRED_MSG: 'Order expired. Please refresh!', //new
+	WITHDRAWALS_FORM_METHOD: 'Method', // new
+	WITHDRAWALS_FORM_ADDRESS_EXCHANGE: 'Exchange user email', //new
+	WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER: "Input user's email on this exchange", //new
+	WITHDRAWALS_FORM_MAIL_INFO:
+		"Input a user's HollaEx account email that is on this exchange and transfers for free.", //new
 };

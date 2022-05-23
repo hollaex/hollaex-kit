@@ -25,6 +25,8 @@ export const FieldContent = ({
 	dateFieldClassName,
 	warning,
 	preview,
+	isEmail,
+	emailMsg,
 }) => {
 	return (
 		<div>
@@ -72,6 +74,18 @@ export const FieldContent = ({
 					)}
 				</div>
 			</div>
+			{isEmail ? (
+				<div className="field-label-wrapper">
+					<Fragment>
+						<div className="field-label"></div>
+						<div>
+							<EditWrapper stringId={stringId}>
+								<span className="field-error-text">{emailMsg}</span>
+							</EditWrapper>
+						</div>
+					</Fragment>
+				</div>
+			) : null}
 			<div className="field-label-wrapper">
 				{ishorizontalfield ? (
 					<Fragment>
@@ -137,6 +151,8 @@ class FieldWrapper extends Component {
 			outlineClassName = '',
 			ishorizontalfield,
 			preview,
+			isEmail = false,
+			emailMsg = '',
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -166,6 +182,8 @@ class FieldWrapper extends Component {
 					ishorizontalfield={ishorizontalfield}
 					dateFieldClassName={className}
 					preview={preview}
+					isEmail={isEmail}
+					emailMsg={emailMsg}
 				>
 					{children}
 					{notification && typeof notification === 'object' && (
