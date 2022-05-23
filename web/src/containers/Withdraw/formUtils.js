@@ -73,7 +73,7 @@ export const generateFormValues = (
 	selectedNetwork,
 	ICONS = '',
 	selectedMethod,
-	handleMethodChange
+	handleMethodChange = () => {}
 ) => {
 	const isEmail = selectedMethod && selectedMethod === 'email' ? true : false;
 	const {
@@ -126,7 +126,7 @@ export const generateFormValues = (
 		isEmail,
 		onChange: (e) => handleMethodChange(e),
 	};
-	if (networks) {
+	if (networks && !isEmail) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
 			label: getNetworkLabelByKey(network),
