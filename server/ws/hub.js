@@ -117,6 +117,7 @@ const handleHubData = (data) => {
 			});
 			break;
 		case 'order':
+		case 'usertrade':
 		case 'wallet':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				if (ws.readyState === WebSocket.OPEN) {
