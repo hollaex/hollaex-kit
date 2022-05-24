@@ -96,9 +96,9 @@ Then ('I must be able to do Communicators tasks',()=>{
     cy.contains('SEND').click({force: true})
     cy.contains(randomTest).should('exist')
     
-    cy.contains('Cc fee settlement').click({force: true})
-    cy.get('.ant-message-notice-content')
-    .should('contain','Access denied:')
+//     cy.contains('Cc fee settlement').click({force: true})
+//     cy.get('.ant-message-notice-content')
+//     .should('contain','Access denied:')
     
     cy.contains('Announcements').click({force: true})
     cy.get('.ant-message-notice-content')
@@ -133,8 +133,9 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('Next').click()
      cy.get('.button-wrapper > :nth-child(2)').as('Apply').click({force: true})
      cy.get('.ant-message-notice-content').should('contain','Access denied:')
-     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
-     .click()
+     cy.reload()
+     // cy.get(':nth-child(6) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     // .click()
           
      cy.get('.user-info-container > :nth-child(2) > .ant-btn').as('userInfo').click()
      cy.get(':nth-child(2) > :nth-child(2) > .d-flex > .ant-input').as('Full Name')
@@ -142,8 +143,9 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains('SAVE').click({force: true})
      cy.get('.user_data > :nth-child(11)')
      .should('contain','Access denied:')
-     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
-     .click()
+     cy.reload()
+     // cy.get(':nth-child(6) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     // .click()
      
      cy.contains('Flag user').click({force: true})
      cy.contains('Are you sure want to flag this user?').should('exist')
@@ -227,9 +229,9 @@ Then ('I must be able to do KYCs tasks',()=>{
      cy.contains(randomTest).should('exist')
      // cy.get('.ant-switch').click({force:true})
      
-     cy.contains('Cc fee settlement').click({force: true})
-     cy.get('.ant-message-notice-content')
-     .should('contain','Access denied:')
+     // cy.contains('Cc fee settlement').click({force: true})
+     // cy.get('.ant-message-notice-content')
+     // .should('contain','Access denied:')
      
      cy.contains('Announcements').click({force: true})
      cy.get('.ant-message-notice-content')
@@ -265,8 +267,9 @@ Then ('I must be able to do Supports tasks',()=>{
      cy.get('.button-wrapper > :nth-child(2)').as('Apply').click({force: true})
      cy.get('.ant-message-notice-content')
      .should('contain','Access denied:')
-     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
-     .click()
+     cy.reload()
+     // cy.get(':nth-child(6) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     // .click()
      
      
      cy.get('.user-info-container > :nth-child(2) > .ant-btn').as('userInfo').click()
@@ -275,8 +278,9 @@ Then ('I must be able to do Supports tasks',()=>{
      cy.contains('SAVE').click({force: true})
      cy.get('.user_data > :nth-child(11)')
      .should('contain','Access denied:')
-     cy.get(':nth-child(12) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
-     .click()
+     cy.reload()
+     // cy.get(':nth-child(6) > .ant-modal-root > .ant-modal-wrap > .ant-modal > .ant-modal-content > .ant-modal-close > .ant-modal-close-x')
+     // .click()
      
      cy.contains('Flag user').click({force: true})
      cy.contains('Are you sure want to flag this user?').should('exist')
@@ -358,9 +362,9 @@ Then ('I must be able to do Supports tasks',()=>{
      cy.contains(randomTest).should('exist')
      // cy.get('.ant-switch').click({force:true})
      
-     cy.contains('Cc fee settlement').click({force: true})
-     cy.get('.ant-message-notice-content')
-     .should('contain','Access denied:')
+     // cy.contains('Cc fee settlement').click({force: true})
+     // cy.get('.ant-message-notice-content')
+     // .should('contain','Access denied:')
      
      cy.contains('Announcements').click({force: true})
      cy.get('.ant-message-notice-content')
@@ -487,9 +491,9 @@ Then ('I must be able to do Supervisors tasks',()=>{
      cy.contains(randomTest).should('exist')
      // cy.get('.ant-switch').click({force:true})
      
-     cy.contains('Cc fee settlement').click({force: true})
-     cy.get('.ant-message-notice-content')
-     .should('contain','Access denied:')
+     // cy.contains('Cc fee settlement').click({force: true})
+     // cy.get('.ant-message-notice-content')
+     // .should('contain','Access denied:')
      
      cy.contains('Announcements').click({force: true})
      cy.get('.ant-message-notice-content')
