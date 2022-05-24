@@ -185,14 +185,24 @@ class Withdraw extends Component {
 		let address = rest.address.trim();
 		if (destination_tag) address = `${rest.address.trim()}:${destination_tag}`;
 
-		return performWithdraw(currency, {
+		let paramData = {
 			...(network ? { network } : {}),
 			...rest,
 			address,
 			amount: math.eval(values.amount),
 			fee: values.fee ? math.eval(values.fee) : 0,
 			currency,
-		})
+		};
+
+		if (values && values.email) {
+			paramData = {
+				...paramData,
+				network: 'email',
+				email: values && values.email && values.email.toLowerCase(),
+			};
+		}
+
+		return performWithdraw(currency, paramData)
 			.then((response) => {
 				return { ...response.data, currency: this.state.currency };
 			})
