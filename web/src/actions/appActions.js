@@ -61,6 +61,9 @@ export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const SET_USER_PAYMENTS = 'SET_USER_PAYMENTS';
+export const SET_ONRAMP = 'SET_ONRAMP';
+export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
@@ -283,6 +286,27 @@ export const setCurrencies = (coins) => ({
 	type: SET_CURRENCIES,
 	payload: {
 		coins,
+	},
+});
+
+export const setUserPayment = (user_payment = {}) => ({
+	type: SET_USER_PAYMENTS,
+	payload: {
+		user_payment,
+	},
+});
+
+export const setOnramp = (onramp = {}) => ({
+	type: SET_ONRAMP,
+	payload: {
+		onramp,
+	},
+});
+
+export const setOfframp = (offramp = {}) => ({
+	type: SET_OFFRAMP,
+	payload: {
+		offramp,
 	},
 });
 

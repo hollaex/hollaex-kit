@@ -25,7 +25,7 @@ import PendingWithdrawal from './PendingWithdrawal';
 import { withdrawFiat } from 'actions/walletActions';
 import { withRouter } from 'react-router';
 import STRINGS from 'config/localizedStrings';
-import { getFiatWithdrawalFee } from 'containers/Withdraw/Fiat/Form';
+import { getFiatWithdrawalFee } from 'containers/Deposit/Fiat/utils';
 
 export const FORM_NAME = 'FiatWithdrawalForm';
 export const selector = formValueSelector(FORM_NAME);
@@ -313,7 +313,7 @@ class Index extends Component {
 
 		const { icon_id } = coins[currency];
 
-		const fee = getFiatWithdrawalFee(currency, coins);
+		const { rate: fee } = getFiatWithdrawalFee(currency);
 
 		return (
 			<div className="withdraw-form-wrapper">
