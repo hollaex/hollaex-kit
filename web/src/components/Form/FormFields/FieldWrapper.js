@@ -24,6 +24,7 @@ export const FieldContent = ({
 	ishorizontalfield = false,
 	dateFieldClassName,
 	warning,
+	preview,
 	isEmail,
 	emailMsg,
 }) => {
@@ -89,7 +90,11 @@ export const FieldContent = ({
 				{ishorizontalfield ? (
 					<Fragment>
 						<div className="field-label"></div>
-						<FieldError displayError={displayError} error={error} />
+						<FieldError
+							displayError={displayError}
+							error={error}
+							preview={preview}
+						/>
 					</Fragment>
 				) : null}
 			</div>
@@ -97,11 +102,18 @@ export const FieldContent = ({
 	);
 };
 
-export const FieldError = ({ error, displayError, className, stringId }) => (
+export const FieldError = ({
+	error,
+	displayError,
+	className,
+	stringId,
+	preview,
+}) => (
 	<div
 		className={classnames('field-error-content', className, {
-			'field-error-hidden': !displayError,
+			'field-error-hidden': !displayError && !preview,
 		})}
+		style={preview ? { height: 'auto' } : {}}
 	>
 		{error && (
 			<img
@@ -115,6 +127,7 @@ export const FieldError = ({ error, displayError, className, stringId }) => (
 				<span className="field-error-text">{getErrorLocalized(error)}</span>
 			</EditWrapper>
 		)}
+		{preview && <Fragment>{preview}</Fragment>}
 	</div>
 );
 
@@ -137,6 +150,7 @@ class FieldWrapper extends Component {
 			hideCheck = false,
 			outlineClassName = '',
 			ishorizontalfield,
+			preview,
 			isEmail = false,
 			emailMsg = '',
 		} = this.props;
@@ -167,6 +181,7 @@ class FieldWrapper extends Component {
 					error={error}
 					ishorizontalfield={ishorizontalfield}
 					dateFieldClassName={className}
+					preview={preview}
 					isEmail={isEmail}
 					emailMsg={emailMsg}
 				>
@@ -182,7 +197,11 @@ class FieldWrapper extends Component {
 					)}
 				</FieldContent>
 				{!ishorizontalfield ? (
-					<FieldError displayError={displayError} error={error} />
+					<FieldError
+						displayError={displayError}
+						error={error}
+						preview={preview}
+					/>
 				) : null}
 			</div>
 		);

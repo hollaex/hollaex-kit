@@ -62,6 +62,7 @@ const nestedIcons = {
 		ID_NEW: '/assets/images/verification-id.svg',
 		BANK_NEW: '/assets/images/verification-bank.svg',
 		DOCUMENT_NEW: '/assets/images/verification-document.svg',
+		USER_PAYMENT: '/assets/images/verification-bank.svg',
 	},
 
 	SETTING: {

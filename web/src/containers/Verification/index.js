@@ -3,23 +3,19 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
-// import * as d3 from 'd3-selection';
 import {
-	// AppBar,
 	CustomTabs,
 	CustomMobileTabs,
 	Dialog,
 	Loader,
-	// Logout,
 	Notification,
-	// MobileBarTabs,
 	PanelInformationRow,
 	Button,
 	SmartTarget,
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import STRINGS from '../../config/localizedStrings';
-import { logout, requestVerificationEmail } from '../../actions/authAction';
+import STRINGS from 'config/localizedStrings';
+import { logout, requestVerificationEmail } from 'actions/authAction';
 import { MAX_NUMBER_BANKS } from 'config/constants';
 
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -31,10 +27,7 @@ import {
 	identityInitialValues,
 	documentInitialValues,
 } from './utils';
-import {
-	getClasesForLanguage,
-	getFontClassForLanguage,
-} from '../../utils/string';
+import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
 import { ContactForm } from '../';
 import {
 	NOTIFICATIONS,
@@ -42,7 +35,7 @@ import {
 	openContactForm,
 } from 'actions/appActions';
 import { setMe, updateDocuments, updateUser } from 'actions/userAction';
-import { getThemeClass } from '../../utils/theme';
+import { getThemeClass } from 'utils/theme';
 import MobileVerificationHome from './MobileVerificationHome';
 import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
@@ -55,6 +48,8 @@ import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { verificationTabsSelector } from './selector';
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
+import UserPaymentVerification from './UserPaymentVerification';
+import UserPaymentVerificationHome from './UserPaymentVerificationHome';
 
 class Verification extends Component {
 	state = {
@@ -192,8 +187,15 @@ class Verification extends Component {
 				location: { query: { initial_tab } = {} },
 			},
 			availableRemotePlugins,
+			ultimate_fiat,
 		} = this.props;
-		const availablePlugins = ['kyc', 'bank', 'sms', ...availableRemotePlugins];
+		const availablePlugins = [
+			'kyc',
+			'bank',
+			'sms',
+			'user_payment',
+			...availableRemotePlugins,
+		];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
 			const temp = enabledPlugins.filter((val) =>
@@ -201,7 +203,12 @@ class Verification extends Component {
 			);
 			currentTabs = [...currentTabs, ...temp];
 		}
-		const sortingArray = ['email', 'sms', 'kyc', 'bank'];
+
+		if (ultimate_fiat) {
+			currentTabs = [...currentTabs, 'user_payment'];
+		}
+
+		const sortingArray = ['email', 'sms', 'kyc', 'bank', 'user_payment'];
 		currentTabs.sort(
 			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
 		);
@@ -460,6 +467,28 @@ class Verification extends Component {
 					/>
 				),
 			},
+			user_payment: {
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS['USER_PAYMENT.TITLE']}
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+					/>
+				) : (
+					<CustomTabs
+						stringId="USER_PAYMENT.TITLE"
+						title={STRINGS['USER_PAYMENT.TITLE']}
+						iconId="VERIFICATION_USER_PAYMENT"
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+					/>
+				),
+				content: (
+					<UserPaymentVerificationHome
+						user={user}
+						setActivePageContent={this.setActivePageContent}
+						handleBack={this.handleBack}
+					/>
+				),
+			},
 			...this.getRemoteTabUtils(),
 		};
 		let tabs = [];
@@ -472,7 +501,7 @@ class Verification extends Component {
 
 	goNextTab = (type, data) => {
 		let user = { ...this.state.user };
-		if (type === 'bank') {
+		if (type === 'bank' || type === 'user_payment') {
 			user.bank_account = [...data.bank_data];
 		} else if (type === 'identity') {
 			user = {
@@ -593,6 +622,17 @@ class Verification extends Component {
 						setActivePageContent={this.setActivePageContent}
 					/>
 				);
+			case 'user_payment':
+				return (
+					<UserPaymentVerification
+						iconId="VERIFICATION_USER_PAYMENT"
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+						moveToNextStep={this.goNextTab}
+						openContactForm={openContactForm}
+						setActivePageContent={this.setActivePageContent}
+						handleBack={this.handleBack}
+					/>
+				);
 			default:
 				return this.getRemoteTabPageContent(activePage);
 		}
@@ -709,6 +749,7 @@ const mapStateToProps = (state) => {
 	const availableRemotePlugins = Object.keys(remoteTabs);
 
 	return {
+		ultimate_fiat: state.app.features.ultimate_fiat,
 		activeLanguage: state.app.language,
 		// token: state.auth.token,
 		activeTheme: state.app.theme,

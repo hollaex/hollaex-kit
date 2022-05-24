@@ -11,7 +11,8 @@ import {
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getDecimals } from 'utils/utils';
 import { toFixed } from 'utils/currency';
-
+import { HIDDEN_KEYS } from 'containers/Verification/UserPaymentVerificationHome';
+import { generateDynamicStringKey } from 'utils/id';
 import STRINGS from 'config/localizedStrings';
 
 export const generateFormValues = (
@@ -40,40 +41,37 @@ export const generateFormValues = (
 	const fields = {};
 
 	if (banks) {
-		const banksOptions = banks.map(({ bank_name, account_number, id }) => ({
-			value: id,
-			label: bank_name ? `${bank_name} - ${account_number}` : account_number,
-		}));
+		const banksOptions = banks.map(
+			({ bank_name, account_number, id }, index) => ({
+				value: id,
+				label: index, // TODO: what is the label (fields are defined by user and can be anything)
+			})
+		);
 
 		let preview;
 		if (selectedBank) {
 			const selectedBankObj = banks.find(({ id }) => id === selectedBank);
-			if (activeTab === 'bank' && selectedBankObj) {
+			if (selectedBankObj) {
+				const { type = 'bank' } = selectedBankObj;
+				const generateId = generateDynamicStringKey('ULTIMATE_FIAT', type);
+
 				preview = (
-					<div className="d-flex py-2 field-content_preview">
-						<div className="bold pl-4">
-							<div>{STRINGS['BANK_NAME']}:</div>
-							<div>{STRINGS['ACCOUNT_NAME']}:</div>
-							<div>{STRINGS['ACCOUNT_NUMBER']}:</div>
-						</div>
-						<div className="pl-4">
-							<div>{selectedBankObj.bank_name || '-'}</div>
-							<div>{selectedBankObj.account_name || '-'}</div>
-							<div>{selectedBankObj.account_number || '-'}</div>
-						</div>
-					</div>
-				);
-			} else if (activeTab === 'osko' && selectedBankObj) {
-				preview = (
-					<div className="d-flex py-2 field-content_preview">
-						<div className="bold pl-4">
-							<div>Account name:</div>
-							<div>PayID:</div>
-						</div>
-						<div className="pl-4">
-							<div>{selectedBankObj.account_name || '-'}</div>
-							<div>{selectedBankObj.pay_id || '-'}</div>
-						</div>
+					<div className="py-2 field-content_preview">
+						{Object.entries(selectedBankObj)
+							.filter(([key]) => !HIDDEN_KEYS.includes(key))
+							.map(([key, value]) => {
+								const labelId = generateId(key);
+								const defaultText = key.replace(/_/g, ' ');
+
+								return (
+									<div className="d-flex">
+										<div className="bold pl-4">
+											{STRINGS[labelId] || defaultText}
+										</div>
+										<div className="pl-4">{value}</div>
+									</div>
+								);
+							})}
 					</div>
 				);
 			}

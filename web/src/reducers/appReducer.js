@@ -16,6 +16,9 @@ import {
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
+	SET_USER_PAYMENTS,
+	SET_ONRAMP,
+	SET_OFFRAMP,
 	SET_CONFIG,
 	SET_PLUGINS,
 	SET_INFO,
@@ -182,6 +185,9 @@ const INITIAL_STATE = {
 	contracts: {},
 	tradeTab: 0,
 	broker: {},
+	user_payment: {},
+	onramp: {},
+	offramp: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -217,6 +223,21 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				coins: modifyCoinsData(payload.coins),
+			};
+		case SET_USER_PAYMENTS:
+			return {
+				...state,
+				user_payment: payload.user_payment,
+			};
+		case SET_ONRAMP:
+			return {
+				...state,
+				onramp: payload.onramp,
+			};
+		case SET_OFFRAMP:
+			return {
+				...state,
+				offramp: payload.offramp,
 			};
 		case SET_BROKER:
 			return {

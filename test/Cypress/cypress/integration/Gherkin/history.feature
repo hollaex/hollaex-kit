@@ -3,7 +3,7 @@ Feature: History Feature
 As a user
 In order to check transactions and trade records
 I want to check time and pair filters on data and pagination.
-@waiting
+@waitings
 Scenario: Successful order History check
 
     Given I am on the Hollaex history page
@@ -11,7 +11,7 @@ Scenario: Successful order History check
     Then I should be able to click on Order history
     When I select each coin pair in the Trades, for all time-frame,  pagination should work well for closed orders
     And I select each coin pair in the Trades, for all time-frame, pagination should work well for open orders
-@waiting
+@waitings
 Scenario: Successful withdrawals ad deposits check
 
     Given I am on the Hollaex Deposit history page
@@ -21,5 +21,5 @@ Scenario: Successful withdrawals ad deposits check
     Given I am on the Hollaex Withdrawals history page
     When I select each coin  in the Withdrawals,  pagination should work well
 
-@waiting
+@waitings
 Scenario: Successful download 
