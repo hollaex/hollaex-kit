@@ -19,7 +19,7 @@ And ('I should be able to redirect to {string} page and cancel all open orders',
    
     cy.contains('Pro trade').click()
     cy.contains(tradePage).click()
-    cy.get('.app_bar-currency-txt').should('have.text', 'XHTT/USDT:')
+    cy.get('.app_bar-currency-txt').should('have.text', 'XHT/USDT:')
     //cy.get('[style="width: 801px; height: 390px; position: absolute; transform: translate(10px, 1210px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
     cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-title > .justify-content-between > .d-flex > .trade_block-title-items > .edit-wrapper__container')
     .invoke('text').then(text => {
@@ -98,19 +98,22 @@ When ('I make sell orders {string} times',(orderTime)=>{
         .then(val=> {
             cy.get('[style="width: 801px; height: 430px; position: absolute; transform: translate(10px, 690px);"] > .trade_block-wrapper > .trade_block-content > .trade_active_orders-wrapper > .table_container > .table-content > .table-wrapper > .table_body-wrapper > :nth-child(1) > :nth-child(5)')
             .should('contain', val)
-            cy.contains('HOLLAEX ').click().log("wallet opened").pause()
+           // cy.get('.wallet-wrapper > :nth-child(2) > :nth-child(3)').click()
+            // cy.contains('HOLLAEX', {matchCase: false}).click().log("wallet opened")//.pause()
         })
         cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(6)')
         .contains(i)         
-        cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')      
+       // cy.get('.table_body-wrapper > :nth-child(1) > :nth-child(4)')      
        }
 })
 
 And ('I take sell orders {string} times',(orderTime)=>{
-
+    cy.get('.trade_order_entry-action_selector > :nth-child(1)').click()
     for (var i = Number(orderTime); i>0; i--) 
         {
-          cy.get('@highestBuy').click().invoke('val')
+         // cy.get('@highestBuy')
+          cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
+          .click().invoke('text')
           .then(text => {
               cy.log(text)
               cy.wrap(text).as('currentPrice')
@@ -133,10 +136,12 @@ And ('I take sell orders {string} times',(orderTime)=>{
 
 And ('I take buy orders {string} times',(orderTime)=>{
 
-    cy.get('.trade_order_entry-action_selector > :nth-child(1)').click()
+    cy.get('.trade_order_entry-action_selector > :nth-child(2)').click()
     for (var i = Number(orderTime); i >0; i--) 
         {
-         cy.get('@lowestSell').click().invoke('val')
+        // cy.get('@lowestSell')
+         cy.get('.trade_orderbook-bids > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
+         .click().invoke('text')
          .then(text => {
               cy.log(text)
               cy.wrap(text).as('currentPrice')
