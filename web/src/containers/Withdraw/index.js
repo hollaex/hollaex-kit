@@ -198,8 +198,9 @@ class Withdraw extends Component {
 			paramData = {
 				...paramData,
 				network: 'email',
-				email: values && values.email && values.email.toLowerCase(),
+				address: values && values.email && values.email.toLowerCase(),
 			};
+			delete paramData.email;
 		}
 
 		return performWithdraw(currency, paramData)
