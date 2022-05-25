@@ -6,7 +6,7 @@ export const setWithdrawNotificationSuccess = (data, dispatch) => {
 
 export const setWithdrawNotificationError = (error, dispatch) => {
 	const message = error._error || JSON.stringify(error);
-	dispatch(setNotification(NOTIFICATIONS.WITHDRAWAL_EMAIL_ERROR, message));
+	dispatch(setNotification(NOTIFICATIONS.ERROR, message));
 };
 
 export const setWithdrawEmailConfirmation = (data, dispatch) => {
