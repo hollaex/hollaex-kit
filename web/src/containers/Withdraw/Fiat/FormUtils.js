@@ -41,12 +41,21 @@ export const generateFormValues = (
 	const fields = {};
 
 	if (banks) {
-		const banksOptions = banks.map(
-			({ bank_name, account_number, id }, index) => ({
+		const banksOptions = banks.map((bankData) => {
+			const { id, ...rest } = bankData;
+			const { bank_name, name, account_number, account, email } = { ...rest };
+			const defaultLabel = Object.entries(rest)[0][1];
+			return {
 				value: id,
-				label: index, // TODO: what is the label (fields are defined by user and can be anything)
-			})
-		);
+				label:
+					bank_name ||
+					account_number ||
+					account ||
+					email ||
+					name ||
+					defaultLabel,
+			};
+		});
 
 		let preview;
 		if (selectedBank) {

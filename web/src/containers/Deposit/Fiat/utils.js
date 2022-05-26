@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import mathjs from 'mathjs';
 import store from 'store';
 
@@ -68,3 +69,19 @@ export const getFiatLimit = (type) => {
 
 export const getFiatWithdrawalLimit = () => getFiatLimit(WITHDRAWAL_LIMIT_KEY);
 export const getFiatDepositLimit = () => getFiatLimit(DEPOSIT_LIMIT_KEY);
+
+export const getOnramp = (state, ownProps) =>
+	state.app.onramp[ownProps.currency][ownProps.method];
+
+export const depositOptionsSelector = createSelector([getOnramp], (onramp) => {
+	const options = { ...onramp };
+	if (options.type === 'manual') {
+		const data = options.data.map(([labelObject, ...rest], index) => {
+			return [{ ...labelObject, id: `${labelObject.value}_${index}` }, ...rest];
+		});
+
+		options.data = data;
+	}
+
+	return options;
+});

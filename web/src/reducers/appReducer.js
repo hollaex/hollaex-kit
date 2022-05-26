@@ -505,6 +505,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						is_page,
 						is_verification_tab,
 						is_wallet,
+						is_ultimate_fiat,
 						type,
 						currency,
 					} = meta;
@@ -514,6 +515,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						target = generateDynamicTarget(name, 'verification', type);
 					} else if (is_wallet && type && currency) {
 						target = generateFiatWalletTarget(type, currency);
+					} else if (is_ultimate_fiat && type) {
+						target = generateDynamicTarget(name, 'ultimate_fiat', type);
 					}
 				}
 				if (!CLUSTERED_WEB_VIEWS[target]) {

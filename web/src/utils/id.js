@@ -14,6 +14,8 @@ export const generateDynamicTarget = (
 			return `REMOTE_VERIFICATION_TAB__${name}__${sub}`;
 		case 'page':
 			return `REMOTE_ROUTE__${name}`;
+		case 'ultimate_fiat':
+			return `REMOTE_ULTIMATE_FIAT__${name}__${sub}`;
 		default:
 			return `UNKNOWN_DYNAMIC_TARGET_${name}`;
 	}
