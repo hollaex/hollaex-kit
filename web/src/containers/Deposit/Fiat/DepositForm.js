@@ -25,6 +25,7 @@ import { depositFiat } from 'actions/walletActions';
 import {
 	getFiatDepositFee,
 	getFiatDepositLimit,
+	depositOptionsSelector,
 } from 'containers/Deposit/Fiat/utils';
 
 import { generateDynamicStringKey } from 'utils/id';
@@ -61,18 +62,18 @@ const generateFormValues = (
 	}
 
 	const options =
-		onramp[method].type === 'manual'
-			? onramp[method].data.map((_, index) => ({
-					value: index,
-					label: index, // TODO: what is the label (fields are defined by user and can be anything)
+		onramp.type === 'manual'
+			? onramp.data.map(([{ value: label, id }]) => ({
+					value: id,
+					label: label,
 			  }))
 			: [];
 
 	let preview;
-	if (selectedAccount || selectedAccount === 0) {
+	if (selectedAccount) {
 		const selectedAccountArray =
-			onramp[method].type === 'manual' &&
-			onramp[method].data.find((_, index) => index === selectedAccount);
+			onramp.type === 'manual' &&
+			onramp.data.find(([{ id }]) => id === selectedAccount);
 		if (selectedAccountArray) {
 			const generateId = generateDynamicStringKey(
 				'ULTIMATE_FIAT',
@@ -328,6 +329,9 @@ const Deposit = ({
 						currency={currency}
 						loading={loading}
 						coins={coins}
+						account={account}
+						onramp={onramp}
+						method={method}
 					/>
 				)}
 			</Dialog>
@@ -351,7 +355,7 @@ const mapStateToProps = (state, ownProps) => {
 		...selector(state, 'amount', 'transactionId', 'fee', 'account'),
 		coins: state.app.coins,
 		user: state.user,
-		onramp: state.app.onramp[ownProps.currency],
+		onramp: depositOptionsSelector(state, ownProps),
 	};
 };
 

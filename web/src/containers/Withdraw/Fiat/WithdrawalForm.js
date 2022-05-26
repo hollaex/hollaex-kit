@@ -30,8 +30,6 @@ import { getFiatWithdrawalFee } from 'containers/Deposit/Fiat/utils';
 export const FORM_NAME = 'FiatWithdrawalForm';
 export const selector = formValueSelector(FORM_NAME);
 
-const verifiedBankStatus = 3;
-
 let errorTimeOut = null;
 
 const validate = (values, props) => {
@@ -256,14 +254,12 @@ class Index extends Component {
 			pristine,
 			valid,
 			router,
-			user: { bank_account = [], id_data = {} } = {},
+			user: { id_data = {} } = {},
+			banks,
 		} = this.props;
 
 		const is_verified = id_data.status === 3;
-		const verified_bank_account = bank_account.filter(
-			({ status }) => status === verifiedBankStatus
-		);
-		const has_verified_bank_account = !!verified_bank_account.length;
+		const has_verified_bank_account = !!banks.length;
 
 		return (
 			<Fragment>
@@ -290,7 +286,7 @@ class Index extends Component {
 
 	render() {
 		const {
-			user: { bank_account = [], id_data = {} } = {},
+			user: { id_data = {} } = {},
 			activeTheme,
 			submitting,
 			error,
@@ -302,14 +298,12 @@ class Index extends Component {
 			icons: ICONS,
 			activeTab,
 			router,
+			banks,
 		} = this.props;
 		const { dialogIsOpen, dialogOtpOpen, successfulRequest } = this.state;
 
 		const is_verified = id_data.status === 3;
-		const verified_bank_account = bank_account.filter(
-			({ status }) => status === verifiedBankStatus
-		);
-		const has_verified_bank_account = !!verified_bank_account.length;
+		const has_verified_bank_account = !!banks.length;
 
 		const { icon_id } = coins[currency];
 
@@ -372,7 +366,7 @@ class Index extends Component {
 					) : !submitting ? (
 						<ReviewModalContent
 							activeTab={activeTab}
-							banks={verified_bank_account}
+							banks={banks}
 							coins={coins}
 							currency={currency}
 							data={{ ...data, fee }}
