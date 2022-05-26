@@ -1,7 +1,16 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Image, NoVerifiedAccount, Button, EditWrapper, Tab } from 'components';
+import {
+	Image,
+	NoVerifiedAccount,
+	Button,
+	EditWrapper,
+	Tab,
+	SmartTarget,
+	UnderConstruction,
+} from 'components';
+import { generateDynamicTarget } from 'utils/id';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
@@ -79,6 +88,15 @@ const Form = ({
 	const verified_accounts = all_accounts.filter(({ status }) => status === 3);
 	const has_verified_account = !!verified_accounts.length;
 
+	const renderSmartTarget = (name) => {
+		const id = generateDynamicTarget(name, 'ultimate_fiat', 'onramp');
+		return (
+			<SmartTarget id={id} currency={currency}>
+				<UnderConstruction />
+			</SmartTarget>
+		);
+	};
+
 	const renderBankSteps = () => {
 		switch (activeStep) {
 			case STEPS.HOME:
@@ -92,6 +110,7 @@ const Form = ({
 
 	const renderContent = () => {
 		const { type } = tabs[activeTab] || {};
+		const { data } = onramp[activeTab] || {};
 		switch (type) {
 			case 'manual': {
 				return (
@@ -113,7 +132,7 @@ const Form = ({
 				return (
 					<Fragment>
 						{renderBankSteps()}
-						<div>will be added</div>
+						{renderSmartTarget(data)}
 					</Fragment>
 				);
 			}

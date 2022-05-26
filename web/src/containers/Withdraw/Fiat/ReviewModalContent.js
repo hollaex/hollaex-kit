@@ -9,6 +9,8 @@ import {
 } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { generateDynamicStringKey } from 'utils/id';
+import { HIDDEN_KEYS } from 'containers/Verification/UserPaymentVerificationHome';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
 	return (
@@ -61,36 +63,35 @@ const ReviewModalContent = ({
 	const fee = data.fee ? data.fee : 0;
 
 	const renderContent = () => {
-		switch (activeTab) {
-			case 'bank': {
-				return (
-					<div className="d-flex py-4">
-						<div className="bold pl-2">
-							<div>
-								{STRINGS['BANK_NAME']}:
-								<EditWrapper stringId="BANK_NAME" />
-							</div>
-							<div>
-								{STRINGS['ACCOUNT_NAME']}:
-								<EditWrapper stringId="ACCOUNT_NAME" />
-							</div>
-							<div>
-								{STRINGS['ACCOUNT_NUMBER']}:
-								<EditWrapper stringId="ACCOUNT_NUMBER" />
-							</div>
-						</div>
-						<div className="pl-4">
-							<div>{selectedBank.bank_name || '-'}</div>
-							<div>{selectedBank.account_name || '-'}</div>
-							<div>{selectedBank.account_number || '-'}</div>
-						</div>
+		let previewData;
+		if (data.bank) {
+			if (selectedBank) {
+				const { type = 'bank' } = selectedBank;
+				const generateId = generateDynamicStringKey('ULTIMATE_FIAT', type);
+
+				previewData = (
+					<div className="py-2 field-content_preview">
+						{Object.entries(selectedBank)
+							.filter(([key]) => !HIDDEN_KEYS.includes(key))
+							.map(([key, value]) => {
+								const labelId = generateId(key);
+								const defaultText = key.replace(/_/g, ' ');
+
+								return (
+									<div className="d-flex">
+										<div className="bold">
+											{STRINGS[labelId] || defaultText}
+										</div>
+										<div>{value}</div>
+									</div>
+								);
+							})}
 					</div>
 				);
 			}
-			default: {
-				return 'No content';
-			}
 		}
+
+		return <div className="d-flex py-4">{previewData}</div>;
 	};
 
 	return (
