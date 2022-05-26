@@ -94,18 +94,25 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	}
 
-	if (coinConfiguration.network) {
-		if (!network) {
-			throw new Error(NETWORK_REQUIRED(currency, coinConfiguration.network));
-		} else if (!coinConfiguration.network.split(',').includes(network)) {
-			throw new Error(INVALID_NETWORK(network, coinConfiguration.network));
+	if (network === 'email') {
+		// internal email transfer
+		if (!isEmail(address)) {
+			throw new Error(`Invalid ${currency} address: ${address}`);
 		}
-	} else if (network)  {
-		throw new Error(`Invalid ${currency} network given: ${network}`);
-	}
-
-	if (!isEmail(address) && !isValidAddress(currency, address, network)) {
-		throw new Error(`Invalid ${currency} address: ${address}`);
+	} else {
+		// blockchain transfer
+		if (coinConfiguration.network) {
+			if (!network) {
+				throw new Error(NETWORK_REQUIRED(currency, coinConfiguration.network));
+			} else if (!coinConfiguration.network.split(',').includes(network)) {
+				throw new Error(INVALID_NETWORK(network, coinConfiguration.network));
+			}
+		} else if (network)  {
+			throw new Error(`Invalid ${currency} network given: ${network}`);
+		}
+		if (!isValidAddress(currency, address, network)) {
+			throw new Error(`Invalid ${currency} address: ${address}`);
+		}
 	}
 
 	if (!user) {

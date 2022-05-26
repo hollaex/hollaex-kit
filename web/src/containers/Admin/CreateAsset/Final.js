@@ -44,6 +44,8 @@ const Final = ({
 					label = 'Stellar';
 				} else if (data === 'sol') {
 					label = 'Solana';
+				} else if (data === 'matic') {
+					label = 'Polygon';
 				} else {
 					label = data.toUpperCase();
 				}
