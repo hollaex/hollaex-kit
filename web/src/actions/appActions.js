@@ -288,10 +288,10 @@ export const setCurrencies = (coins) => ({
 	},
 });
 
-export const setUserPayment = (user_payment = {}) => ({
+export const setUserPayments = (user_payments = {}) => ({
 	type: SET_USER_PAYMENTS,
 	payload: {
-		user_payment,
+		user_payments,
 	},
 });
 

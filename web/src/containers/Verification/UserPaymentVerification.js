@@ -16,8 +16,8 @@ const FORM_NAME = 'UserPaymentVerification';
 class UserPaymentVerification extends Component {
 	constructor(props) {
 		super(props);
-		const { user_payment } = this.props;
-		const tabs = this.getTabs(user_payment);
+		const { user_payments } = this.props;
+		const tabs = this.getTabs(user_payments);
 
 		this.state = {
 			formFields: {},
@@ -33,10 +33,10 @@ class UserPaymentVerification extends Component {
 		}
 	}
 
-	getTabs = (user_payment) => {
+	getTabs = (user_payments) => {
 		const { icons: ICONS } = this.props;
 		const tabs = {};
-		Object.keys(user_payment).forEach((key) => {
+		Object.keys(user_payments).forEach((key) => {
 			const iconId = generateDynamicIconKey(
 				'ultimate_fiat',
 				key,
@@ -61,8 +61,8 @@ class UserPaymentVerification extends Component {
 	};
 
 	generateFormFields = (tab) => {
-		const { user_payment } = this.props;
-		const formFields = generateUserPaymentFormFields(user_payment[tab], tab);
+		const { user_payments } = this.props;
+		const formFields = generateUserPaymentFormFields(user_payments[tab], tab);
 
 		this.setState({ formFields });
 	};
@@ -71,7 +71,7 @@ class UserPaymentVerification extends Component {
 		const { activeTab: type } = this.state;
 		return verifyUserPayment({ ...rest, type })
 			.then(({ data }) => {
-				this.props.moveToNextStep('user_payment', {
+				this.props.moveToNextStep('user_payments', {
 					bank_data: data,
 				});
 				this.props.setActivePageContent('email');
@@ -87,7 +87,7 @@ class UserPaymentVerification extends Component {
 
 	onGoBack = () => {
 		this.props.setActivePageContent('email');
-		this.props.handleBack('user_payment');
+		this.props.handleBack('user_payments');
 	};
 
 	setActiveTab = (activeTab) => {
@@ -211,9 +211,9 @@ const UserPaymentVerificationForm = reduxForm({
 	form: FORM_NAME,
 })(UserPaymentVerification);
 
-const mapStateToProps = ({ app: { user_payment = {} } }) => {
+const mapStateToProps = ({ app: { user_payments = {} } }) => {
 	return {
-		user_payment,
+		user_payments,
 	};
 };
 

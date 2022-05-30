@@ -142,7 +142,7 @@ const ReviewModalContent = ({
 					<EditWrapper stringId="FIAT.REVIEW_DEPOSIT.PROCEED" />
 					<Button
 						label={STRINGS['FIAT.REVIEW_DEPOSIT.PROCEED']}
-						onClick={() => onProceed({ amount, fee, transactionId })}
+						onClick={() => onProceed({ amount, fee, transactionId, method })}
 						disabled={loading}
 						className="mb-3"
 					/>
