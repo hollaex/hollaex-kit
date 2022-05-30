@@ -55,7 +55,7 @@ import {
 	changePair,
 	setPairs,
 	setCurrencies,
-	setUserPayment,
+	setUserPayments,
 	setOnramp,
 	setOfframp,
 	setOrderLimits,
@@ -151,7 +151,7 @@ const getConfigs = async () => {
 	}
 
 	store.dispatch(setCurrencies(constants.coins));
-	store.dispatch(setUserPayment(kitData.user_payment));
+	store.dispatch(setUserPayments(kitData.user_payments));
 	store.dispatch(setOnramp(kitData.onramp));
 	store.dispatch(setOfframp(kitData.offramp));
 	store.dispatch(setPairs(constants.pairs));

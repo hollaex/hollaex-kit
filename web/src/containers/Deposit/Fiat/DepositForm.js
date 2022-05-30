@@ -227,6 +227,7 @@ const Deposit = ({
 			amount: math.eval(math.round(data.amount, decimals)),
 			transaction_id: data.transactionId,
 			fee: math.eval(math.round(data.fee, decimals)),
+			address: data.method,
 		};
 
 		return depositFiat(values);

@@ -66,7 +66,7 @@ const UserPaymentVerificationHome = ({
 					<EditWrapper stringId="USER_VERIFICATION.START_PAYMENT_VERIFICATION" />
 					<Button
 						label={STRINGS['USER_VERIFICATION.START_PAYMENT_VERIFICATION']}
-						onClick={() => setActivePageContent('user_payment')}
+						onClick={() => setActivePageContent('user_payments')}
 					/>
 				</div>
 			</div>
@@ -94,7 +94,7 @@ const UserPaymentVerificationHome = ({
 						<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD" />
 						<Button
 							label={STRINGS['USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD']}
-							onClick={() => setActivePageContent('user_payment')}
+							onClick={() => setActivePageContent('user_payments')}
 						/>
 					</div>
 				) : null}
