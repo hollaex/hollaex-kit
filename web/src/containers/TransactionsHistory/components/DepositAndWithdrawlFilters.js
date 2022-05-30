@@ -33,9 +33,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 			currency: null,
 			size: 'all',
 		});
-		//  TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [activeTab]);
+	}, [activeTab, form]);
 
 	useEffect(() => {
 		if (

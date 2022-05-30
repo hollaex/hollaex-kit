@@ -244,6 +244,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `trade:${symbolOrUserId}`;
 		case 'order':
 			return `order:${symbolOrUserId}`;
+		case 'usertrade':
+			return `usertrade:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
@@ -521,7 +523,14 @@ exports.EXPLORERS = {
 	klay: [
 		{
 			name: 'Klaytn Explorer',
-			baseUrl: 'https://scope.klaytn.com/',
+			baseUrl: 'https://scope.klaytn.com',
+			txPath: '/tx'
+		}
+	],
+	matic: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
 		}
 	]
