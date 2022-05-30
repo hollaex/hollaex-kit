@@ -193,7 +193,7 @@ class Verification extends Component {
 			'kyc',
 			'bank',
 			'sms',
-			'user_payment',
+			'user_payments',
 			...availableRemotePlugins,
 		];
 		let currentTabs = ['email'];
@@ -205,10 +205,10 @@ class Verification extends Component {
 		}
 
 		if (ultimate_fiat) {
-			currentTabs = [...currentTabs, 'user_payment'];
+			currentTabs = [...currentTabs, 'user_payments'];
 		}
 
-		const sortingArray = ['email', 'sms', 'kyc', 'bank', 'user_payment'];
+		const sortingArray = ['email', 'sms', 'kyc', 'bank', 'user_payments'];
 		currentTabs.sort(
 			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
 		);
@@ -467,7 +467,7 @@ class Verification extends Component {
 					/>
 				),
 			},
-			user_payment: {
+			user_payments: {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS['USER_PAYMENT.TITLE']}
@@ -501,7 +501,7 @@ class Verification extends Component {
 
 	goNextTab = (type, data) => {
 		let user = { ...this.state.user };
-		if (type === 'bank' || type === 'user_payment') {
+		if (type === 'bank' || type === 'user_payments') {
 			user.bank_account = [...data.bank_data];
 		} else if (type === 'identity') {
 			user = {
@@ -622,7 +622,7 @@ class Verification extends Component {
 						setActivePageContent={this.setActivePageContent}
 					/>
 				);
-			case 'user_payment':
+			case 'user_payments':
 				return (
 					<UserPaymentVerification
 						iconId="VERIFICATION_USER_PAYMENT"

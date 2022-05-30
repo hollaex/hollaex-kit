@@ -185,7 +185,7 @@ const INITIAL_STATE = {
 	contracts: {},
 	tradeTab: 0,
 	broker: {},
-	user_payment: {},
+	user_payments: {},
 	onramp: {},
 	offramp: {},
 };
@@ -227,7 +227,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_USER_PAYMENTS:
 			return {
 				...state,
-				user_payment: payload.user_payment,
+				user_payments: payload.user_payments,
 			};
 		case SET_ONRAMP:
 			return {
