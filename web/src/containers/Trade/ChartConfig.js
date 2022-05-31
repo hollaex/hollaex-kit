@@ -3,7 +3,7 @@ import Color from 'color';
 const UP_COLOR_WHITE = '#6496AA';
 const DOWN_COLOR_WHITE = '#000000';
 const BACKGROUND_COLOR = '#ffffff';
-const TRADING_VIEW_AXIS = '#E6ECEF';
+// const TRADING_VIEW_AXIS = '#E6ECEF';
 const TRADING_VIEW_WATERMARK = '#202020';
 const TRADING_VIEW_TEXT = '#292b2c';
 
@@ -23,19 +23,27 @@ export const getTheme = ({
 }) => ({
 	'paneProperties.background':
 		rest['base_wallet-sidebar-and-popup'] || BACKGROUND_COLOR,
-	'paneProperties.vertGridProperties.color':
-		rest['calculated_trad-view_axis'] || TRADING_VIEW_AXIS,
-	'paneProperties.horzGridProperties.color':
-		rest['calculated_trad-view_axis'] || TRADING_VIEW_AXIS,
-	// "paneProperties.crossHairProperties.color": "#1f212a",
-	'symbolWatermarkProperties.transparency': 90,
+	'paneProperties.backgroundType': 'solid',
+
+	'mainSeriesProperties.visible': true,
+
+	'paneProperties.legendProperties.showStudyArguments': true,
+	'paneProperties.legendProperties.showStudyTitles': true,
+	'paneProperties.legendProperties.showStudyValues': true,
+	'paneProperties.legendProperties.showSeriesTitle': true,
+	'paneProperties.legendProperties.showSeriesOHLC': true,
+	'paneProperties.legendProperties.showLegend': true,
+	'paneProperties.legendProperties.showBarChange': true,
+	'paneProperties.legendProperties.showOnlyPriceSource': true,
+
+	// 'paneProperties.crossHairProperties.color': 'red',
 	'symbolWatermarkProperties.color':
 		rest['calculated_trad-view_watermark'] || TRADING_VIEW_WATERMARK,
 	'scalesProperties.textColor':
 		rest['calculated_trad-view_text'] || TRADING_VIEW_TEXT,
 	'scalesProperties.backgroundColor':
 		rest['base_wallet-sidebar-and-popup'] || BACKGROUND_COLOR,
-	'mainSeriesProperties.showPriceLine': true,
+	// 'mainSeriesProperties.showPriceLine': true,
 	// Candles-property
 	'mainSeriesProperties.candleStyle.upColor': buy,
 	'mainSeriesProperties.candleStyle.downColor': sell,
@@ -58,6 +66,12 @@ export const getTheme = ({
 	'mainSeriesProperties.hollowCandleStyle.wickUpColor': buy,
 	'mainSeriesProperties.hollowCandleStyle.wickDownColor': sell,
 
+	//  Line styles
+	'mainSeriesProperties.lineStyle.color': buy,
+	'mainSeriesProperties.lineStyle.linestyle': 0,
+	'mainSeriesProperties.lineStyle.linewidth': 2,
+	'mainSeriesProperties.lineStyle.priceSource': 'close',
+
 	//  Heiken Ashi styles
 	'mainSeriesProperties.haStyle.upColor': buy,
 	'mainSeriesProperties.haStyle.downColor': sell,
@@ -76,12 +90,12 @@ export const getTheme = ({
 	'mainSeriesProperties.barStyle.dontDrawOpen': false,
 
 	//	Area styles
-	'mainSeriesProperties.areaStyle.color1': buy,
-	'mainSeriesProperties.areaStyle.color2': sell,
-	'mainSeriesProperties.areaStyle.linecolor': sell,
-	// "mainSeriesProperties.areaStyle.linestyle": CanvasEx.LINESTYLE_SOLID,
-	'mainSeriesProperties.areaStyle.linewidth': 1,
-	'mainSeriesProperties.areaStyle.priceSource': 'close',
+	// 'mainSeriesProperties.areaStyle.color1': buy,
+	// 'mainSeriesProperties.areaStyle.color2': sell,
+	// 'mainSeriesProperties.areaStyle.linecolor': buy,
+	// 'mainSeriesProperties.areaStyle.linestyle': 0,
+	// 'mainSeriesProperties.areaStyle.linewidth': 2,
+	// 'mainSeriesProperties.areaStyle.priceSource': 'close',
 
 	//  Baseline styles
 	'mainSeriesProperties.baselineStyle.baselineColor': buy,
@@ -96,6 +110,8 @@ export const getTheme = ({
 	'mainSeriesProperties.baselineStyle.priceSource': 'close',
 	'mainSeriesProperties.baselineStyle.transparency': 50,
 	'mainSeriesProperties.baselineStyle.baseLevelPercentage': 50,
+
+
 });
 
 export const getVolume = ({
