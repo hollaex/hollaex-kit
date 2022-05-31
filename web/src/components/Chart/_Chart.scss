@@ -1,20 +1,3 @@
-.ohlc_wrapper {
-	x: 0;
-	y: 0;
-
-	.ohlc_data_wrapper {
-		.ohlc_label {
-			font-size: $font-size-subtext;
-		}
-
-		.ohlc_value {
-			font-size: $font-size-subtext;
-			font-weight: bold;
-			padding-left: 0.25rem;
-		}
-	}
-}
-
 .donut-label-percentage {
 	font-size: 0.8rem;
 	font-weight: bold;
@@ -296,116 +279,6 @@
 	stroke: $coin-dai-1;
 }
 
-.bar_wrapper {
-	height: 38rem;
-
-	.bar_yAxis {
-		line {
-			fill: $colors-deactivate-color2;
-			stroke-dasharray: 3 3;
-			stroke-width: 0.5px;
-		}
-		.tick text {
-			color: $colors-main-black;
-			font-family: $raleway--font-family;
-			font-size: 1.2rem;
-			font-weight: bold;
-		}
-	}
-	.bar_xAxis {
-		line {
-			visibility: hidden;
-		}
-		.axis_month {
-			font-size: 1rem;
-			font-family: $raleway--font-family;
-			color: $colors-deactivate-color2;
-		}
-		.axis_month-active {
-			color: $colors-main-black;
-			font-weight: bold;
-		}
-		.axis_month-total {
-			font-size: 0.8rem;
-			font-weight: bold;
-		}
-		.axis_month-total-active {
-			color: $colors-main-black;
-		}
-		path {
-			stroke: $colors-deactivate-color2;
-			stroke-width: 1;
-		}
-	}
-	.limit_content-text {
-		font-size: 0.72rem;
-	}
-	.bar_axis_triangle {
-		fill: $colors-main-black;
-	}
-}
-
-.bar-tooltip,
-.bar-tooltip-dark {
-	padding: 5px;
-	position: absolute;
-	z-index: 10;
-
-	.tool_tip-pair-volume {
-		padding-left: 0.8rem;
-	}
-}
-
-.bar-tooltip {
-	background-color: $app-background-color;
-	border: 1px solid $colors-border;
-	color: $colors-deactivate-color2;
-}
-
-.bar-tooltip::before,
-.bar-tooltip::after,
-.bar-tooltip-dark::before,
-.bar-tooltip-dark::after {
-	border: solid transparent;
-	content: ' ';
-	right: 100%;
-	top: 50%;
-	height: 0;
-	width: 0;
-	position: absolute;
-}
-
-.bar-tooltip:after {
-	border-color: rgba(136, 183, 213, 0);
-	border-right-color: $app-background-color;
-	border-width: 5px;
-	margin-top: -5px;
-}
-.bar-tooltip:before {
-	border-color: rgba(194, 225, 245, 0);
-	border-right-color: $colors-deactivate-color2;
-	border-width: 7px;
-	margin-top: -7px;
-}
-.bar-tooltip-dark:after {
-	border-color: rgba(136, 183, 213, 0);
-	border-right-color: $dark-app-background-color;
-	border-width: 5px;
-	margin-top: -5px;
-}
-.bar-tooltip-dark:before {
-	border-color: rgba(194, 225, 245, 0);
-	border-right-color: $dark-font-sub-text-color;
-	border-width: 7px;
-	margin-top: -7px;
-}
-
-.bar-tooltip-dark {
-	background-color: $dark-app-background-color;
-	border: 1px solid $dark-font-sub-text-color;
-	color: $dark-font-sub-text-color;
-}
-
 @media (min-width: 1920px) {
 	.donut-label-pair {
 		font-size: 1.2rem;
@@ -413,18 +286,6 @@
 	.donut-label-percentage {
 		font-size: 1rem;
 	}
-	.bar_wrapper {
-		.limit_content-text {
-			font-size: 0.9rem;
-		}
-		.bar_xAxis .axis_month-total {
-			font-size: 1rem;
-		}
-	}
-}
-
-foreignObject {
-	overflow: visible;
 }
 
 .layout-mobile {

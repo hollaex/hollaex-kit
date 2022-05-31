@@ -3,8 +3,7 @@ import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
 
-import STRINGS from '../../../config/localizedStrings';
-import { IS_XHT } from '../../../config/constants';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const TraderAccounts = ({
@@ -69,18 +68,19 @@ const TraderAccounts = ({
 				<div className="account-details-content">
 					<div className="mb-2">{description}</div>
 				</div>
-				{!isAccountDetails && user.discount
-					?
+				{!isAccountDetails && user.discount ? (
 					<div className="d-flex">
 						<div>
-							<ReactSVG src={ICONS['GREEN_CHECK']} className="currency_ball-wrapper s mr-2" />
+							<ReactSVG
+								src={ICONS['GREEN_CHECK']}
+								className="currency_ball-wrapper s mr-2"
+							/>
 						</div>
 						<div>
 							{STRINGS['FEE_REDUCTION']}: {user.discount}%
 						</div>
 					</div>
-					: null
-				}
+				) : null}
 				{/* {!!limitLevel.length && <div
                     className="trade-account-link mb-2">
                     <span
@@ -93,10 +93,7 @@ const TraderAccounts = ({
 					<Fragment>
 						<div className="trade-account-link mb-2">
 							<span className="pointer" onClick={onInviteFriends}>
-								{(IS_XHT
-									? STRINGS['REFERRAL_LINK.XHT_TITLE']
-									: STRINGS['REFERRAL_LINK.TITLE']
-								).toUpperCase()}
+								{STRINGS['REFERRAL_LINK.TITLE'].toUpperCase()}
 							</span>
 						</div>
 						<div className="trade-account-link mb-2">
@@ -119,8 +116,7 @@ const TraderAccounts = ({
 						</span>
 					</div>
 				) : null}
-				{!IS_XHT &&
-					!isAccountDetails &&
+				{!isAccountDetails &&
 					verification_level.level >= 1 &&
 					verification_level.level < 4 && (
 						<div className="trade-account-link mb-2">
