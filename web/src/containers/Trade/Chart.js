@@ -120,17 +120,15 @@ class TVChartContainer extends React.PureComponent {
 			getBars: function (
 				symbolInfo,
 				resolution,
-				date,
+				{ from, to, firstDataRequest },
 				onHistoryCallback,
 				onErrorCallback,
-				firstDataRequest
 			) {
 				getChartHistory(
 					symbolInfo.ticker,
 					resolution,
-					date.from,
-					date.to,
-					firstDataRequest
+					from,
+					to,
 				)
 					.then(({ data }) => {
 						if (data.length) {
@@ -257,7 +255,6 @@ class TVChartContainer extends React.PureComponent {
 		const toolbar_bg = getToolbarBG(activeTheme, color);
 		const widgetTheme = getWidgetTheme(toolbar_bg);
 		const locale = getLanguage();
-		console.log(getThemeOverrides(activeTheme, color))
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
