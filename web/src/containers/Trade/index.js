@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import mathjs from 'mathjs';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
@@ -9,6 +10,7 @@ import { createSelector } from 'reselect';
 import debounce from 'lodash.debounce';
 import { setOrderbooks } from 'actions/orderbookAction';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
+import RGL, { WidthProvider } from 'react-grid-layout';
 
 import { getToken } from 'utils/token';
 import { WS_URL } from 'config/constants';
@@ -23,8 +25,7 @@ import {
 	setTradeTab,
 } from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
-
-import { isLoggedIn } from '../../utils/token';
+import { isLoggedIn } from 'utils/token';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
@@ -38,15 +39,17 @@ import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
 import RecentTradesWrapper from './components/RecentTradesWrapper';
 import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
-
-import { Loader, MobileBarTabs, SidebarHub } from '../../components';
-
-import STRINGS from '../../config/localizedStrings';
-import { playBackgroundAudioNotification } from '../../utils/utils';
+import { Loader, MobileBarTabs, SidebarHub } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import { getViewport } from 'helpers/viewPort';
 
 const GridLayout = WidthProvider(RGL);
+const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
+const GRID_LAYOUT_MARGIN = 10; // RGL package default is 10
+const CHART_GRID_H = 17;
+
 const defaultLayout = [
 	{
 		w: 5,
@@ -115,7 +118,7 @@ const defaultLayout = [
 		y: 23,
 		i: 'wallet',
 		isDraggable: true,
-		isResizable: false,
+		isResizable: true,
 		resizeHandles: ['se'],
 	},
 	{
@@ -160,6 +163,7 @@ class Trade extends PureComponent {
 			chartWidth: 0,
 			symbol: '',
 			layout: layout.length > 0 ? layout : defaultLayout,
+			viewPort: [300, 300],
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -271,6 +275,10 @@ class Trade extends PureComponent {
 	};
 
 	onResize = () => {
+		this.setState({
+			viewPort: getViewport(),
+		});
+
 		if (this.chartBlock) {
 			this.setState({
 				chartHeight: this.chartBlock.offsetHeight || 0,
@@ -663,7 +671,16 @@ class Trade extends PureComponent {
 			tools,
 			activeTab,
 		} = this.props;
-		const { symbol, orderbookFetched, layout } = this.state;
+		const {
+			symbol,
+			orderbookFetched,
+			layout,
+			viewPort: [, height],
+		} = this.state;
+		const rowHeight = mathjs.subtract(
+			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), CHART_GRID_H),
+			GRID_LAYOUT_MARGIN
+		);
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
@@ -764,7 +781,7 @@ class Trade extends PureComponent {
 									([, { is_visible }]) => !!is_visible
 								).length
 							}
-							rowHeight={30}
+							rowHeight={rowHeight}
 							cols={24}
 							draggableHandle=".drag-handle"
 						>

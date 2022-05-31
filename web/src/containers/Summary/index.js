@@ -8,7 +8,6 @@ import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-// import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import Markets from './components/Markets';
 import MobileSummary from './MobileSummary';
@@ -271,7 +270,6 @@ class Summary extends Component {
 										// </span>
 										// }
 									>
-										<TradingVolume user={user} />
 									</SummaryBlock>
 								</div>*/}
 							</div>

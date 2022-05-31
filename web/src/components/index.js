@@ -19,9 +19,7 @@ export {
 export { default as HeaderSection } from './CheckTitle/HeaderSection';
 export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
-export { default as Sidebar } from './Sidebar';
 export { default as SidebarBottom } from './Sidebar/SidebarBottom';
-export { Logout } from './Sidebar/rows';
 export { default as Wallet } from './Wallet';
 export { default as AssetsBlockForm } from './Wallet/AssetsBlockForm';
 export { default as SidebarHub } from './SidebarHub';
@@ -45,7 +43,7 @@ export { default as AuthForm } from './Form/AuthForm';
 export { default as HocForm } from './Form/HocForm';
 export { default as Countdown } from './Countdown';
 export { default as WarningVerification } from './WarningVerification';
-export { FactoryChart, CHART_TYPES, DonutChart, BarChart } from './Chart';
+export { DonutChart } from './Chart';
 export { Tooltip } from './Tooltip';
 export { default as Help } from './Tooltip/Help';
 export { default as BlueLink } from './BlueLink';

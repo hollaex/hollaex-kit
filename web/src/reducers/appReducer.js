@@ -19,7 +19,6 @@ import {
 	SET_CONFIG,
 	SET_PLUGINS,
 	SET_INFO,
-	SET_WAVE_AUCTION,
 	SET_PLUGINS_REQUEST,
 	SET_PLUGINS_SUCCESS,
 	SET_PLUGINS_FAILURE,
@@ -162,7 +161,6 @@ const INITIAL_STATE = {
 	constants: {},
 	config_level: {},
 	info: { is_trial: false, active: true, status: true },
-	wave: [],
 	enabledPlugins: [],
 	plugins: [],
 	pluginNames: {},
@@ -527,11 +525,6 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				info: payload.info,
-			};
-		case SET_WAVE_AUCTION:
-			return {
-				...state,
-				wave: payload.data,
 			};
 		case SET_PLUGINS_REQUEST:
 			return {

@@ -54,32 +54,6 @@ export default {
 			'Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.',
 		TRADE_CRYPTO: 'Start trading',
 		VIEW_EXCHANGE: 'View exchange',
-		SECTION_1_TITLE: 'Welcome to HollaEx Exchange Kit!',
-		SECTION_1_TEXT_1:
-			'Build your own scalable digital asset exchange with HollaEx Kit and be part of the future of finance.',
-		SECTION_1_TEXT_2:
-			'We strive to bring the financial technology forward through affordable and simple access to trading technology.',
-		SECTION_1_BUTTON_1: 'Learn more',
-		SECTION_3_TITLE: 'Features',
-		SECTION_3_CARD_1_TITLE: 'SCALABLE MATCHING ENGINE',
-		SECTION_3_CARD_1_TEXT:
-			'High performance and scalable order matching engine using the most efficient algorithms',
-		SECTION_3_CARD_2_TITLE: 'BANK INTEGRATION',
-		SECTION_3_CARD_2_TEXT:
-			'Plugins with customizable modules available for bank integration. We know the traditional finance and can help you to make your exchange local',
-		SECTION_3_CARD_3_TITLE: 'STRONG SECURITY',
-		SECTION_3_CARD_3_TEXT:
-			'HollaEx uses the best security practices and the most secure and reliable algorithms for keeping the funds secure. It is our top priority and we took a very special extra care of it.',
-		SECTION_3_CARD_4_TITLE: 'ADVANCED REPORTING',
-		SECTION_3_CARD_4_TEXT:
-			'Admin panel with customizable email and reports for notifying support and administrator about the status of the system and transactions.',
-		SECTION_3_CARD_5_TITLE: 'SUPPORT',
-		SECTION_3_CARD_5_TEXT:
-			'We can take an extra care for your needs and have an online professional to help with your issues and inquiries.',
-		SECTION_3_CARD_6_TITLE: 'KYC INTEGRATION',
-		SECTION_3_CARD_6_TEXT:
-			'Flexible and integrable modules to apply KYC and user verification methods in different jurisdiction.',
-		SECTION_3_BUTTON_1: 'View Demo',
 	},
 	FOOTER: {
 		FOOTER_LEGAL: ['Proudly made in Seoul, South Korea', 'bitHolla Inc.'],
@@ -101,14 +75,6 @@ export default {
 		TAB_HISTORY: 'History',
 		TAB_SIGNOUT: 'Signout',
 		TAB_STAKE: 'Stake', //new
-	},
-	REQUEST_XHT_ACCESS: {
-		// new
-		REQUEST_TITLE: 'Request Access',
-		CATEGORY_PLACEHOLDER: 'Select the category that best suits your issue',
-		INTRODUCTION_LABEL: 'Introduce yourself',
-		INTRODUCTION_PLACEHOLDER:
-			'Where are you based, are you interested in running an exchange?',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -336,8 +302,6 @@ export default {
 		PENDING_VERIFICATION: 'Pending verification',
 		TITLE_EMAIL: 'Email',
 		MY_EMAIL: 'My Email',
-		MAKE_FIRST_DEPOSIT: 'Make first deposit', // new
-		OBTAIN_XHT: 'Obtain XHT', // new
 		TITLE_USER_DOCUMENTATION: 'Identification',
 		TITLE_ID_DOCUMENTS: 'Upload',
 		TITLE_BANK_ACCOUNT: 'Bank Account',
@@ -1105,7 +1069,6 @@ export default {
 	CHECK_ORDER: 'Check and confirm your order',
 	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
 	CONFIRM_TEXT: 'Confirm',
-	GOTO_XHT_MARKET: 'Go to XHT market', // new
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
@@ -1186,8 +1149,6 @@ export default {
 		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token', // TODO
 	},
 	CHAT: {
-		MARKET_CHAT: 'Market Chat',
-		CHAT_UNREAD: '{0} ({1})', // 0 -> CHAT_TEXT, 1 -> number
 		READ_MORE: 'Read More',
 		SHOW_IMAGE: 'Show Image',
 		HIDE_IMAGE: 'Hide Image',
@@ -1258,10 +1219,6 @@ export default {
 		ACCOUNT_ASSETS_TXT_1: 'Displayed is a summary of all your assets.',
 		ACCOUNT_ASSETS_TXT_2:
 			'Holding a large amounts of assets will entitle you for an account upgrade which includes a unique badge and lower trading fees.',
-		TRADING_VOLUME_TXT_1:
-			'Your trading volume history is displayed in {0} and is a nominally calculated at the end of every month from all trading pairs.',
-		TRADING_VOLUME_TXT_2:
-			'High trading activity will entitle you for an account upgrade rewarding you with a unique badge and other perks.',
 		ACCOUNT_DETAILS_TXT_1:
 			'Your account type determines your account badge, trading fee, deposits and withdrawal limits.',
 		ACCOUNT_DETAILS_TXT_2:
@@ -1283,7 +1240,6 @@ export default {
 		DEPOSIT: 'Deposit',
 		TAKER: 'Taker',
 		MAKER: 'Maker',
-		TRADER_ACCOUNT_ELIGIBILITY: 'Level {0} Account Eligibility',
 		NOMINAL_TRADING_WITH_MONTH: 'Nominal Trading Last {0}',
 		LEVEL_OF_ACCOUNT: 'Level {0} Account',
 		TITLE_OF_ACCOUNT: '{0} Account',
@@ -1320,24 +1276,7 @@ export default {
 		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
 		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
 		XHT_IN_WALLET: '{0} XHT in wallet', // new
-		COMPLETE_TASK_DESC: 'Complete tasks and earn bonuses worth over $10,000.', // new
 		TASKS: 'Tasks', // new
-		MAKE_FIRST_DEPOSIT: 'Make your first deposit receive 1 XHT', // new
-		COMPLETE_ACC_VERIFICATION:
-			'Complete account verification and get a 20 XHT bonus', // new
-		INVITE_USER: 'Invite users and enjoy commissions from their trade', // new
-		JOIN_HAP: 'Join HAP and earn 10% for every HollaEx Kit you sell', // new
-		EARN_RUNNING_EXCHANGE: 'Earn passive income for running your own exchange', // new
-		XHT_WAVE_AUCTION: 'XHT Wave Auction Data', // new
-		XHT_WAVE_DESC_1:
-			'The distribution of the HollaEx token (XHT) is done through a Wave Auction.', // new
-		XHT_WAVE_DESC_2:
-			'The Wave Auction sells a random amount of XHT at random times to the highest bidders on the orderbook', // new
-		XHT_WAVE_DESC_3:
-			'Below displays the historic data on the Wave Auction history', // new
-		WAVE_AUCTION_PHASE: 'Wave Auction Phase {0}', // new
-		LEARN_MORE_WAVE_AUCTION: 'Learn more about the Wave Auction', // new
-		WAVE_NUMBER: 'Wave Number', // new
 		DISCOUNT: '( {0}% discount )', // new
 		MY_FEES_LIMITS: ' My Fees and Limits', // new
 		MARKETS: 'Markets', // new
@@ -1352,7 +1291,6 @@ export default {
 		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
 		REFERRED_USER_COUT: 'You have referred {0} users', // new
 		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
-		XHT_TITLE: 'MY REFERRALS', // new
 	},
 	STAKE_TOKEN: {
 		TITLE: 'Stake HollaEx Token', // new
@@ -1395,14 +1333,6 @@ export default {
 		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
 		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
 		LOGIN_HERE: 'login here',
-	},
-	WAVES: {
-		// new
-		TITLE: 'Wave Info',
-		NEXT_WAVE: 'Next Wave',
-		WAVE_AMOUNT: 'Amount in Wave',
-		FLOOR: 'Floor',
-		LAST_WAVE: 'Last wave',
 	},
 	USER_LEVEL: 'User level', // new
 	LIMIT_AMOUNT: 'Limit amount', // new
