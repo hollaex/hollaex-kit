@@ -1,6 +1,6 @@
 import * as React from 'react';
 import _isEqual from 'lodash/isEqual';
-import { widget } from '../../charting_library/charting_library.min';
+import { widget } from '../../charting_library';
 import {
 	getTheme,
 	getVolume,
@@ -65,6 +65,7 @@ class TVChartContainer extends React.PureComponent {
 				volume: 0,
 			},
 		};
+		this.ref = React.createRef();
 	}
 
 	componentWillMount() {
@@ -119,8 +120,7 @@ class TVChartContainer extends React.PureComponent {
 			getBars: function (
 				symbolInfo,
 				resolution,
-				from,
-				to,
+				date,
 				onHistoryCallback,
 				onErrorCallback,
 				firstDataRequest
@@ -128,8 +128,8 @@ class TVChartContainer extends React.PureComponent {
 				getChartHistory(
 					symbolInfo.ticker,
 					resolution,
-					from,
-					to,
+					date.from,
+					date.to,
 					firstDataRequest
 				)
 					.then(({ data }) => {
@@ -257,7 +257,7 @@ class TVChartContainer extends React.PureComponent {
 		const toolbar_bg = getToolbarBG(activeTheme, color);
 		const widgetTheme = getWidgetTheme(toolbar_bg);
 		const locale = getLanguage();
-
+		console.log(getThemeOverrides(activeTheme, color))
 		const widgetOptions = {
 			symbol: symbol,
 			// BEWARE: no trailing slash is expected in feed URL
@@ -300,9 +300,10 @@ class TVChartContainer extends React.PureComponent {
 			user_id: this.props.userId,
 			fullscreen: this.props.fullscreen,
 			autosize: this.props.autosize,
+
 			studies_overrides: getStudiesOverrides(activeTheme, color),
 			favorites: {
-				chartTypes: ['Area', 'Candles', 'Bars'],
+				chartTypes: ['Line', 'Area', 'Candles', 'Bars'],
 			},
 			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
@@ -313,46 +314,44 @@ class TVChartContainer extends React.PureComponent {
 		this.tvWidget = tvWidget;
 
 		tvWidget.onChartReady(() => {
-			const button = tvWidget
-				.createButton({ align: 'right' })
-				.attr(
+			tvWidget.headerReady().then(() => {
+				const button = tvWidget.createButton({ align: 'right' })
+				button.setAttribute(
 					'title',
 					'Take instant snapshot of your chart. No more paint or other editors to save screenshots - simply click the button and copy the link of the picture.'
-				)
-				.addClass('apply-common-tooltip screen-button')
-				.on('click', () => tvWidget.takeScreenshot());
-			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
-			tvWidget.changeTheme(widgetTheme);
+				);
+				button.classList.add('apply-common-tooltip');
+				button.addEventListener('click', () => tvWidget.takeScreenshot());
 
-			button[0].innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
+				button.innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
 
-			const newWindowButton = tvWidget
-				.createButton({ align: 'right' })
-				.attr('title', 'Open the trading view chart in a new tab.')
-				.addClass('apply-common-tooltip screen-button')
-				.on('click', () => {
-					if (window) {
-						window.open(`/chart-embed/${symbol}`, '_blank');
-					}
-				});
-			tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
-			tvWidget.changeTheme(widgetTheme);
+				const newWindowButton = tvWidget.createButton({ align: 'right' })
+				newWindowButton.setAttribute('title', 'Open the trading view chart in a new tab.')
+				newWindowButton.classList.add('apply-common-tooltip')
+				newWindowButton.addEventListener('click', () => {
+						if (window) {
+							window.open(`/chart-embed/${symbol}`, '_blank');
+						}
+					});
+				// tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
+				// tvWidget.changeTheme(widgetTheme);
 
-			newWindowButton[0].innerHTML = `
-      <div class='screen-container'>
-      	<div>
-      		<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="17" height="17">
-      		<path fill="currentColor" d="M27.5,0.5v4.9H7.9c-1.4,0-2.4,1.1-2.4,2.4v34.3c0,1.4,1.1,2.4,2.4,2.4h34.3c1.4,0,2.5-1.1,2.5-2.4V22.5h4.9
-										v19.6c0,4.1-3.3,7.3-7.3,7.3H7.9c-4.1,0-7.3-3.3-7.3-7.3V7.8c0-4.1,3.3-7.3,7.3-7.3H27.5z M47.1,0.5L47.1,0.5c0.1,0,0.2,0,0.2,0
-										L47.1,0.5c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1
-										c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.2,0.1,0.3,0.2L48.6,1c0.2,0.1,0.3,0.3,0.4,0.4
-										c0,0,0,0,0,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0.1,0,0.1,0.1,0.1
-										c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1v12.2h-4.9V8.9L26.8,26.7
-										c-0.9,0.9-2.3,1-3.2,0.2l-0.2-0.2c-1-1-1-2.5,0-3.5L41.2,5.4h-6.3V0.5H47.1z"/>
-      		</svg>
-				</div>
-			</div>
-      `;
+				newWindowButton.innerHTML = `
+					<div class='screen-container'>
+						<div>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="17" height="17">
+							<path fill="currentColor" d="M27.5,0.5v4.9H7.9c-1.4,0-2.4,1.1-2.4,2.4v34.3c0,1.4,1.1,2.4,2.4,2.4h34.3c1.4,0,2.5-1.1,2.5-2.4V22.5h4.9
+								v19.6c0,4.1-3.3,7.3-7.3,7.3H7.9c-4.1,0-7.3-3.3-7.3-7.3V7.8c0-4.1,3.3-7.3,7.3-7.3H27.5z M47.1,0.5L47.1,0.5c0.1,0,0.2,0,0.2,0
+								L47.1,0.5c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1
+								c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.2,0.1,0.3,0.2L48.6,1c0.2,0.1,0.3,0.3,0.4,0.4
+								c0,0,0,0,0,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0.1,0,0.1,0.1,0.1
+								c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1v12.2h-4.9V8.9L26.8,26.7
+								c-0.9,0.9-2.3,1-3.2,0.2l-0.2-0.2c-1-1-1-2.5,0-3.5L41.2,5.4h-6.3V0.5H47.1z"/>
+							</svg>
+								</div>
+							</div>
+					`;
+			});
 		});
 	};
 
