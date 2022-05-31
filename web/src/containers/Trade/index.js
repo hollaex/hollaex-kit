@@ -48,12 +48,12 @@ import { getViewport } from 'helpers/viewPort';
 const GridLayout = WidthProvider(RGL);
 const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
 const GRID_LAYOUT_MARGIN = 10; // RGL package default is 10
-const CHART_GRID_H = 17;
+const PORT_ROWS_NUMBER = 34;
 
 const defaultLayout = [
 	{
 		w: 5,
-		h: 14,
+		h: 28,
 		x: 19,
 		y: 0,
 		i: 'orderbook',
@@ -63,7 +63,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 17,
+		h: 18,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -73,7 +73,7 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 17,
+		h: 34,
 		x: 14,
 		y: 23,
 		i: 'public_sales',
@@ -83,7 +83,7 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 14,
+		h: 28,
 		x: 14,
 		y: 0,
 		i: 'order_entry',
@@ -93,7 +93,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 12,
+		h: 32,
 		x: 0,
 		y: 28,
 		i: 'recent_trades',
@@ -103,7 +103,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 11,
+		h: 30,
 		x: 0,
 		y: 17,
 		i: 'open_orders',
@@ -113,7 +113,7 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 17,
+		h: 34,
 		x: 19,
 		y: 23,
 		i: 'wallet',
@@ -123,7 +123,7 @@ const defaultLayout = [
 	},
 	{
 		w: 10,
-		h: 9,
+		h: 18,
 		x: 14,
 		y: 14,
 		i: 'depth_chart',
@@ -275,16 +275,19 @@ class Trade extends PureComponent {
 	};
 
 	onResize = () => {
-		this.setState({
-			viewPort: getViewport(),
-		});
-
-		if (this.chartBlock) {
-			this.setState({
-				chartHeight: this.chartBlock.offsetHeight || 0,
-				chartWidth: this.chartBlock.offsetWidth || 0,
-			});
-		}
+		this.setState(
+			{
+				viewPort: getViewport(),
+			},
+			() => {
+				if (this.chartBlock) {
+					this.setState({
+						chartHeight: this.chartBlock.offsetHeight || 0,
+						chartWidth: this.chartBlock.offsetWidth || 0,
+					});
+				}
+			}
+		);
 	};
 
 	openCheckOrder = (order, onConfirm) => {
@@ -678,7 +681,7 @@ class Trade extends PureComponent {
 			viewPort: [, height],
 		} = this.state;
 		const rowHeight = mathjs.subtract(
-			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), CHART_GRID_H),
+			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), PORT_ROWS_NUMBER),
 			GRID_LAYOUT_MARGIN
 		);
 
