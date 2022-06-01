@@ -271,14 +271,7 @@ class TVChartContainer extends React.PureComponent {
 			range: 'ytd',
 			disabled_features: [
 				'use_localstorage_for_settings',
-				'edit_buttons_in_legend',
-				'context_menus',
-				'border_around_the_chart',
-				'header_symbol_search',
-				'header_compare',
-				'header_settings',
-				'control_bar',
-				'header_screenshot',
+				'header_symbol_search'
 			],
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			// time_frames: [
@@ -308,20 +301,23 @@ class TVChartContainer extends React.PureComponent {
 		};
 
 		const tvWidget = new widget(widgetOptions);
+		
 		this.tvWidget = tvWidget;
 
 		tvWidget.onChartReady(() => {
+			tvWidget.chart().removeAllStudies();
+			tvWidget.chart().createStudy('Moving Average', false, false, [7]);
+			tvWidget.chart().createStudy('Moving Average', false, false, [25]);
+			tvWidget.chart().createStudy('Volume', false, false);
+			// tvWidget.chart().createStudy('MACD', false, false, [14, 30, 'close', 9])
+
 			tvWidget.headerReady().then(() => {
-				const button = tvWidget.createButton({ align: 'right' })
-				button.setAttribute(
-					'title',
-					'Take instant snapshot of your chart. No more paint or other editors to save screenshots - simply click the button and copy the link of the picture.'
-				);
-				button.classList.add('apply-common-tooltip');
-				button.addEventListener('click', () => tvWidget.takeScreenshot());
 
-				button.innerHTML = `<div class='screen-container'> <div><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 17" width="21" height="17"><g fill="none" stroke="currentColor"><path d="M2.5 2.5h3.691a.5.5 0 0 0 .447-.276l.586-1.171A1 1 0 0 1 8.118.5h4.764a1 1 0 0 1 .894.553l.586 1.17a.5.5 0 0 0 .447.277H18.5a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-16a2 2 0 0 1-2-2v-10a2 2 0 0 1 2-2z"></path><circle cx="10.5" cy="9.5" r="4"></circle></g></svg></div></div>`;
-
+				const pane = tvWidget.chart().getPanes()
+				if (pane.length && pane[1]) {
+					pane[1].setHeight(10)
+				}
+				
 				const newWindowButton = tvWidget.createButton({ align: 'right' })
 				newWindowButton.setAttribute('title', 'Open the trading view chart in a new tab.')
 				newWindowButton.classList.add('apply-common-tooltip')
@@ -356,9 +352,20 @@ class TVChartContainer extends React.PureComponent {
 		const { sub } = this.state;
 		let { lastBar, resolution } = sub;
 		let coeff = 0;
-		if (resolution.includes('60')) {
+		if (resolution.includes('1')) {
+			coeff = 60 * 1000;
+		} else if (resolution.includes('5')) {
+			// 1 hour in minutes === 60
+			coeff = 5 * 60 * 1000;
+		} else if (resolution.includes('15')) {
+			// 1 hour in minutes === 60
+			coeff = 15 * 60 * 1000;
+		} else if (resolution.includes('60')) {
 			// 1 hour in minutes === 60
 			coeff = 60 * 60 * 1000;
+		} else if (resolution.includes('240')) {
+			// 1 hour in minutes === 60
+			coeff = 240 * 60 * 1000;
 		} else if (resolution.includes('D')) {
 			// 1 day in minutes === 1440
 			coeff = 60 * 60 * 24 * 1000;
