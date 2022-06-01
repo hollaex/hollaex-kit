@@ -111,7 +111,6 @@ export const getTheme = ({
 	'mainSeriesProperties.baselineStyle.transparency': 50,
 	'mainSeriesProperties.baselineStyle.baseLevelPercentage': 50,
 
-
 });
 
 export const getVolume = ({
@@ -120,5 +119,5 @@ export const getVolume = ({
 }) => ({
 	'volume.volume.color.0': sell,
 	'volume.volume.color.1': buy,
-	'volume.volume.transparency': 50,
+	'volume.volume.transparency': 80,
 });
