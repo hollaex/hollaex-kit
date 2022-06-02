@@ -63,7 +63,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 18,
+		h: 26,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -93,7 +93,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 32,
+		h: 28,
 		x: 0,
 		y: 28,
 		i: 'recent_trades',
@@ -103,7 +103,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 30,
+		h: 26,
 		x: 0,
 		y: 17,
 		i: 'open_orders',
