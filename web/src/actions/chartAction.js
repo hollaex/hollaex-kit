@@ -55,8 +55,7 @@ export const getChartHistory = (
 	symbol,
 	resolution,
 	from,
-	to,
-	firstDataRequest
+	to
 ) => {
 	return axios({
 		url: `/chart?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}`,
