@@ -63,7 +63,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 18,
+		h: 26,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -93,7 +93,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 32,
+		h: 28,
 		x: 0,
 		y: 28,
 		i: 'recent_trades',
@@ -103,7 +103,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 30,
+		h: 26,
 		x: 0,
 		y: 17,
 		i: 'open_orders',
@@ -155,6 +155,7 @@ class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
 
+		const rowHeight = this.calculateRowHeight();
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
@@ -163,7 +164,7 @@ class Trade extends PureComponent {
 			chartWidth: 0,
 			symbol: '',
 			layout: layout.length > 0 ? layout : defaultLayout,
-			viewPort: [300, 300],
+			rowHeight,
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -274,10 +275,21 @@ class Trade extends PureComponent {
 		this.props.router.push(`/trade/${pair}`);
 	};
 
+	calculateRowHeight = () => {
+		const [, height] = getViewport();
+		const rowHeight = mathjs.subtract(
+			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), PORT_ROWS_NUMBER),
+			GRID_LAYOUT_MARGIN
+		);
+
+		return rowHeight;
+	};
+
 	onResize = () => {
+		const rowHeight = this.calculateRowHeight();
 		this.setState(
 			{
-				viewPort: getViewport(),
+				rowHeight,
 			},
 			() => {
 				if (this.chartBlock) {
@@ -674,16 +686,7 @@ class Trade extends PureComponent {
 			tools,
 			activeTab,
 		} = this.props;
-		const {
-			symbol,
-			orderbookFetched,
-			layout,
-			viewPort: [, height],
-		} = this.state;
-		const rowHeight = mathjs.subtract(
-			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), PORT_ROWS_NUMBER),
-			GRID_LAYOUT_MARGIN
-		);
+		const { symbol, orderbookFetched, layout, rowHeight } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
