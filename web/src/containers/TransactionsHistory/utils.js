@@ -836,7 +836,7 @@ export const generateRecentTradeHeaders = (
 	prices,
 	icons
 ) => {
-	const KEYS = ['pair', 'size', 'side', 'price', 'amount'];
+	const KEYS = ['pair', 'size', 'side', 'price', 'amount', 'timestamp'];
 	return generateTradeHeaders(symbol, pairs, coins, discount, prices, icons)
 		.filter(({ key }) => KEYS.indexOf(key) > -1)
 		.sort((a, b) => KEYS.indexOf(a.key) - KEYS.indexOf(b.key));
