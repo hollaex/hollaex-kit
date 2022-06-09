@@ -178,8 +178,12 @@ const Otcdeskpopup = ({
 
 	const getConnect = async (e) => {
 		setLoading(true);
+		let selectedApiType = hedgeApi;
+		if (hedgeApi === 'bitmex') {
+			selectedApiType = 'hollaex';
+		}
 		try {
-			await getBrokerConnect(hedgeApi, apiData.apikey, apiData.seckey);
+			await getBrokerConnect(selectedApiType, apiData.apikey, apiData.seckey);
 			setTimeout(() => {
 				setLoading(false);
 				setConnectpop(e);
@@ -587,6 +591,7 @@ const Otcdeskpopup = ({
 							<div className="full-width">
 								<InputNumber
 									name="max"
+									min={0}
 									onChange={(val) => handlePreviewChange(val, 'min_size')}
 									value={previewData && previewData.min_size}
 								/>
@@ -600,6 +605,7 @@ const Otcdeskpopup = ({
 							<div className="full-width">
 								<InputNumber
 									name="max"
+									min={0}
 									onChange={(val) => handlePreviewChange(val, 'max_size')}
 									value={previewData && previewData.max_size}
 								/>
@@ -631,6 +637,7 @@ const Otcdeskpopup = ({
 							<div className="full-width">
 								<InputNumber
 									name="max"
+									min={0}
 									onChange={(val) => handlePreviewChange(val, 'increment_size')}
 									value={previewData && previewData.increment_size}
 								/>
@@ -1462,7 +1469,11 @@ const Otcdeskpopup = ({
 												)}
 											</div>
 										) : (
-											<div>Connecting Binance account...</div>
+											<div>
+												Connecting{' '}
+												{hedgeApi === 'binance' ? 'Binance' : 'HollaEx Pro'}{' '}
+												account...
+											</div>
 										)}
 										<div className={connectLoading ? 'disabled_area' : ''}>
 											<div className="sub-title">API key</div>
