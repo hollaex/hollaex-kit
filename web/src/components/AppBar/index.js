@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import { DEFAULT_URL } from 'config/constants';
 import MenuList from './MenuList';
@@ -12,7 +11,7 @@ import { isLoggedIn } from '../../utils/token';
 import { getTickers, changeTheme } from '../../actions/appActions';
 import { updateUserSettings, setUserData } from '../../actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
-import { EditWrapper } from 'components';
+import { EditWrapper, ButtonLink, Image } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
@@ -165,9 +164,60 @@ class AppBar extends Component {
 		);
 	};
 
+	goTo = (path) => () => {
+		this.props.router.push(path);
+	};
+
 	onToggle = (theme) => {
 		this.setSelectedTheme(theme);
 		this.handleTheme(theme);
+	};
+
+	renderHomeIcon = () => {
+		const { icons: ICONS } = this.props;
+		return (
+			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
+				<div className="d-flex h-100">
+					<div className="'h-100'">
+						<Image
+							iconId="EXCHANGE_LOGO"
+							icon={ICONS['EXCHANGE_LOGO']}
+							wrapperClassName="app_bar-icon-logo wide-logo h-100"
+						/>
+					</div>
+					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />
+				</div>
+			</div>
+		);
+	};
+
+	renderButtonSection = () => {
+		return (
+			<div className="d-flex align-items-center buttons-section-header">
+				<ButtonLink
+					link={'/login'}
+					type="button"
+					label={STRINGS['LOGIN_TEXT']}
+					className="main-section_button_invert home_header_button"
+				/>
+				<div style={{ width: '0.75rem' }} />
+				<ButtonLink
+					link={'/signup'}
+					type="button"
+					label={STRINGS['SIGNUP_TEXT']}
+					className="main-section_button home_header_button"
+				/>
+			</div>
+		);
+	};
+
+	renderAccountButton = () => {
+		const { user } = this.props;
+		return (
+			<div className="pointer" onClick={this.goTo('/account')}>
+				{user.email}
+			</div>
+		);
 	};
 
 	render() {
@@ -179,12 +229,24 @@ class AppBar extends Component {
 			onMenuChange,
 			menuItems,
 			router,
+			isHome,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
 		const { selected } = this.state;
 		const { themeOptions } = this.props;
-		return isMobile ? (
+		return isHome ? (
+			<div className="home_app_bar d-flex justify-content-between align-items-center">
+				<div className="d-flex align-items-center justify-content-center h-100 ml-2">
+					{this.renderHomeIcon()}
+				</div>
+				<div className="mr-2">
+					{isLoggedIn()
+						? this.renderAccountButton()
+						: this.renderButtonSection()}
+				</div>
+			</div>
+		) : isMobile ? (
 			<MobileBarWrapper
 				className={classnames(
 					'd-flex',

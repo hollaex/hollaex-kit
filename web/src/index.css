@@ -1150,6 +1150,36 @@ table th {
 .layout-mobile .signup_success-wrapper {
   height: calc(100% - 4rem) !important; }
 
+.home-page_content .tabs-pair-details {
+  font-size: 1.2rem;
+  width: 25rem;
+  margin: auto; }
+
+.home-page_content .trade_tab-pair-title {
+  color: var(--labels_important-active-labels-text-graphics);
+  font-size: 1.1rem;
+  font-weight: bold; }
+
+.home-page_content .trade_tab-pair-sub-title {
+  font-size: 1rem; }
+
+.home-page_content .trade_tab-pair-price {
+  color: var(--labels_important-active-labels-text-graphics);
+  font-size: 1.8rem;
+  font-weight: 700;
+  font-family: Raleway; }
+
+.home-page_content .trade_tab-pair-volume {
+  font-size: 1rem; }
+
+.home-page_content .market-card__sparkline-wrapper {
+  height: 5rem !important;
+  width: 10rem !important; }
+  .home-page_content .market-card__sparkline-wrapper .highcharts-area {
+    fill: none !important; }
+    .home-page_content .market-card__sparkline-wrapper .highcharts-area.highcharts-negative {
+      fill: none !important; }
+
 .home-page__market-wrapper {
   background-color: var(--calculated_landing_markets_table); }
   .home-page__market-wrapper .table-row {
@@ -1226,13 +1256,6 @@ table th {
     margin-right: 0.5rem;
     position: relative;
     top: calc(50% - 0.6rem); }
-
-.home_header_button {
-  height: 28px;
-  font-weight: bold; }
-
-.layout-mobile .home_header_button {
-  height: 24px; }
 
 .layout-mobile .home-page__market-wrapper th:nth-child(1) {
   padding-left: 1rem !important; }
@@ -1348,6 +1371,13 @@ table th {
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
+.home-page_content .currency-ball-image-wrapper {
+  height: 2.2rem;
+  padding-right: 10px; }
+
+.home-page_content .trade_tab-icons {
+  width: 3rem; }
+
 .live-markets_header {
   font-size: 1.3rem;
   display: flex;
@@ -1357,13 +1387,10 @@ table th {
   color: var(--labels_important-active-labels-text-graphics);
   font-weight: bolder; }
 
-.buttons-section-header {
-  margin: 0 0.5rem; }
-
 .home-page_section-wrapper {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 5rem;
+  padding-top: 5rem;
   max-width: 100rem; }
   .home-page_section-wrapper:not(.main-section-wrapper) {
     padding-top: 5rem;
@@ -1382,22 +1409,8 @@ table th {
 .direction_rtl .home-card-text-container {
   margin-right: 0.75rem; }
 
-.home_app_bar {
-  height: 45px;
-  min-height: 45px; }
-  .home_app_bar .app_bar-icon-logo {
-    height: 4rem;
-    width: 5rem;
-    background-size: contain;
-    background-position: left center;
-    background-repeat: no-repeat; }
-  .home_app_bar .app_bar-icon {
-    flex: 0;
-    margin: 0 0.5rem;
-    padding-right: 8px;
-    width: 100%; }
-
 .html_card_section {
+  overflow: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1438,11 +1451,21 @@ table th {
         .html_card_section .card-section-wrapper .card-section .card_section_main .edit-wrapper__icons-container {
           transform: translate(-20px, 0px) !important; }
 
+.home_carousel_section {
+  border-top: 1px var(--calculated_secondary-border) solid;
+  border-bottom: 1px var(--calculated_secondary-border) solid;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem; }
+
+.alice-carousel__stage-item {
+  border-right: 1px var(--calculated_secondary-border) solid; }
+
 @media (max-width: 767px) {
   .home_container .home-card-container {
     margin: 0 2rem 3rem; }
-  .home_container .buttons-section .holla-button,
-  .home_container .buttons-section-header .holla-button {
+  .home_container .buttons-section .holla-button {
     font-size: 1.2rem !important; }
   .home_container .text-section {
     font-size: 1.5rem !important; }
@@ -1464,16 +1487,6 @@ table th {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
         font-size: 14px; } }
-
-@media (min-width: 1920px) {
-  .home_app_bar .app_bar-icon-logo {
-    height: 3rem;
-    width: 5rem; }
-  .home_app_bar .app_bar-icon {
-    margin: 1rem 0 1rem; } }
-
-.wide-logo {
-  width: 10rem !important; }
 
 .layout-mobile .button-container {
   min-height: 4.5rem; }
@@ -5731,7 +5744,7 @@ table th {
   height: 36px;
   font-size: 1rem;
   font-weight: bold;
-  background: var(--base_top-bar-navigation);
+  background-color: var(--base_top-bar-navigation);
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics); }
   .app_bar.no-borders {
     border-bottom: none; }
@@ -6142,6 +6155,32 @@ table th {
     border-radius: 3px;
     cursor: pointer;
     font-size: 11px; }
+
+.home_app_bar {
+  position: relative;
+  width: 100%;
+  height: 45px;
+  min-height: 45px;
+  color: var(--calculated_base_top-bar-navigation_text);
+  background-color: var(--base_top-bar-navigation);
+  border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics); }
+  .home_app_bar .app_bar-icon-logo {
+    height: 4rem;
+    width: 5rem;
+    background-size: contain;
+    background-position: left center;
+    background-repeat: no-repeat; }
+  .home_app_bar .app_bar-icon {
+    flex: 0;
+    margin: 0 0.5rem;
+    padding-right: 8px;
+    width: 100%; }
+  .home_app_bar .main-section_button_invert {
+    color: var(--specials_buttons-links-and-highlights) !important;
+    background-color: var(--labels_important-active-labels-text-graphics) !important; }
+  .home_app_bar .main-section_button {
+    color: var(--labels_important-active-labels-text-graphics) !important;
+    background-color: var(--specials_buttons-links-and-highlights) !important; }
 
 .select-option-wrapper .ant-select-item,
 .select-option-wrapper .ant-select-item-option {
@@ -6842,10 +6881,34 @@ table th {
 .landing-page-bar {
   background: linear-gradient(to bottom, var(--calculated_landing_background), var(--calculated_landing_background)) !important; }
 
+.wide-logo {
+  width: 10rem !important; }
+
+.buttons-section-header {
+  margin: 0 0.5rem; }
+
+.home_header_button {
+  height: 28px;
+  font-weight: bold; }
+
+.layout-mobile .home_header_button {
+  height: 24px; }
+
 @media (max-width: 768px) {
   .select-option-wrapper .ant-select-item,
   .select-option-wrapper .ant-select-item-option {
     font-size: 0.9rem !important; } }
+
+@media (min-width: 1920px) {
+  .home_app_bar .app_bar-icon-logo {
+    height: 3rem;
+    width: 5rem; }
+  .home_app_bar .app_bar-icon {
+    margin: 1rem 0 1rem; } }
+
+@media (max-width: 767px) {
+  .buttons-section-header .holla-button {
+    font-size: 1.2rem !important; } }
 
 .check_title-container {
   display: flex;

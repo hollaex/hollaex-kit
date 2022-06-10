@@ -12,7 +12,7 @@ $app-menu-notification-size: 1.2rem;
 	height: $navigation_bar-height;
 	font-size: $navigation_bar-font_size;
 	font-weight: bold;
-	background: $app-bar-background-color;
+	background-color: $app-bar-background-color;
 	border-bottom: 1px solid $dark-app-line-divider;
 
 	&.no-borders {
@@ -503,6 +503,41 @@ $app-menu-notification-size: 1.2rem;
 		border-radius: 3px;
 		cursor: pointer;
 		font-size: 11px;
+	}
+}
+
+.home_app_bar {
+	position: relative;
+	width: 100%;
+	height: $navigation_bar-height-lg;
+	min-height: $navigation_bar-height-lg;
+	color: $base_top-bar-navigation_text;
+	background-color: $app-bar-background-color;
+	border-bottom: 1px solid $dark-app-line-divider;
+
+	.app_bar-icon-logo {
+		height: 4rem;
+		width: 5rem;
+		background-size: contain;
+		background-position: left center;
+		background-repeat: no-repeat;
+	}
+
+	.app_bar-icon {
+		flex: 0;
+		margin: 0 0.5rem;
+		padding-right: 8px;
+		width: 100%;
+	}
+
+	.main-section_button_invert {
+		color: $link !important;
+		background-color: $colors-main-black !important;
+	}
+
+	.main-section_button {
+		color: $colors-main-black !important;
+		background-color: $link !important;
 	}
 }
 
@@ -1373,11 +1408,52 @@ $app-menu-notification-size: 1.2rem;
 		$app-landing_background
 	) !important;
 }
+
+.wide-logo {
+	width: 10rem !important;
+}
+
+.buttons-section-header {
+	margin: 0 0.5rem;
+}
+
+.home_header_button {
+	height: 28px;
+	font-weight: bold;
+}
+
+.layout-mobile {
+	.home_header_button {
+		height: 24px;
+	}
+}
+
 @media (max-width: 768px) {
 	.select-option-wrapper {
 		.ant-select-item,
 		.ant-select-item-option {
 			font-size: 0.9rem !important;
+		}
+	}
+}
+
+@media (min-width: 1920px) {
+	.home_app_bar {
+		.app_bar-icon-logo {
+			height: 3rem;
+			width: 5rem;
+		}
+
+		.app_bar-icon {
+			margin: 1rem 0 1rem;
+		}
+	}
+}
+
+@media (max-width: $bp-sm) {
+	.buttons-section-header {
+		.holla-button {
+			font-size: 1.2rem !important;
 		}
 	}
 }
