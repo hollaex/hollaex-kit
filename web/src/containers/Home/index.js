@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import AliceCarousel from 'react-alice-carousel';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -13,16 +13,11 @@ import debounce from 'lodash.debounce';
 import { message } from 'antd';
 
 import STRINGS from 'config/localizedStrings';
-import {
-	changePair,
-	setLanguage,
-	getExchangeInfo,
-	getTickers,
-} from 'actions/appActions';
-import { logout } from '../../actions/authAction';
+import { changePair, getExchangeInfo, getTickers } from 'actions/appActions';
+import { getSparklines } from 'actions/chartAction';
 import { getToken, isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
-import { QuickTrade, EditWrapper, ButtonLink } from 'components';
+import { QuickTrade, EditWrapper } from 'components';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
 import math from 'mathjs';
@@ -38,9 +33,13 @@ import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { WS_URL } from 'config/constants';
 import { isIntentionalClosure, NORMAL_CLOSURE_CODE } from 'utils/webSocket';
 import { STATIC_ICONS } from 'config/icons';
+import { generateDynamicIconKey } from 'utils/id';
+import { MarketsSelector } from 'containers/Trade/utils';
+import MarketCard from './MarketCard';
 
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
+const DEFAULT_BG_SECTIONS = ['heading', 'market_list'];
 
 const data = [
 	{
@@ -143,6 +142,7 @@ class Home extends Component {
 			brokerSourceAmount: undefined,
 			orderbookWs: null,
 			wsInitialized: false,
+			chartData: {},
 		};
 		this.goToPair(pair);
 		this.props.setPriceEssentials({ side: this.state.side });
@@ -163,6 +163,9 @@ class Home extends Component {
 		const { pair } = this.state;
 		this.props.getExchangeInfo();
 		this.props.getTickers();
+		getSparklines(Object.keys(pairs)).then((chartData) =>
+			this.setState({ chartData })
+		);
 		this.generateSections(sections);
 		let existBroker = {};
 		broker.forEach((item) => {
@@ -364,14 +367,48 @@ class Home extends Component {
 	};
 
 	generateSections = (sections) => {
+		const { icons: ICONS } = this.props;
+		const generateId = generateDynamicIconKey('LANDING_PAGE_SECTION');
 		const sectionComponents = Object.entries(sections)
 			.filter(([_, { is_active }]) => is_active)
 			.sort(
 				([_, { order: order_a }], [__, { order: order_b }]) => order_a - order_b
 			)
-			.map(([key], index) => (
-				<div key={`section-${key}`}>{this.getSectionByKey(key)}</div>
-			));
+			.map(([key, { className = '' }]) => {
+				const iconId = generateId(key);
+
+				const defaultBgStyle = {
+					backgroundImage: `url(${
+						ICONS[iconId] || ICONS['EXCHANGE_LANDING_PAGE']
+					})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+				};
+
+				const defaultNoBGstyle = {
+					...(ICONS[iconId]
+						? {
+								backgroundImage: `url(${ICONS[iconId]})`,
+						  }
+						: {}),
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+				};
+
+				const style = DEFAULT_BG_SECTIONS.includes(key)
+					? defaultBgStyle
+					: defaultNoBGstyle;
+
+				return (
+					<div key={`section-${key}`} style={style} className={className}>
+						<EditWrapper
+							iconId={iconId}
+							style={{ position: 'absolute', right: 10 }}
+						/>
+						{this.getSectionByKey(key)}
+					</div>
+				);
+			});
 
 		return sectionComponents;
 	};
@@ -597,6 +634,51 @@ class Home extends Component {
 					</div>
 				);
 			}
+			case 'carousel_section': {
+				const { markets } = this.props;
+				const { chartData } = this.state;
+				const items = markets.map((market, index) => (
+					<MarketCard
+						market={market}
+						onDragStart={this.handleDragStart}
+						role="presentation"
+						chartData={chartData}
+					/>
+				));
+
+				return (
+					<div className="home_carousel_section">
+						<AliceCarousel
+							autoPlay
+							infinite
+							items={items}
+							dotsDisabled={true}
+							buttonsDisabled={true}
+							disableAutoPlayOnAction={false}
+							stopAutoPlayOnHover={false}
+							touchTrackingEnabled={false}
+							mouseTrackingEnabled={false}
+							duration={4000}
+							autoPlayInterval={0}
+							transitionTimingFunction="linear"
+							responsive={{
+								0: {
+									items: 2,
+								},
+								1024: {
+									items: 3,
+								},
+								1250: {
+									items: 4,
+								},
+								1500: {
+									items: 5,
+								},
+							}}
+						/>
+					</div>
+				);
+			}
 			default:
 				return null;
 		}
@@ -803,52 +885,7 @@ class Home extends Component {
 		changePair(pair);
 	};
 
-	renderIcon = () => {
-		const { icons: ICONS } = this.props;
-		return (
-			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
-				<div className="d-flex h-100">
-					<div className="'h-100'">
-						<Image
-							iconId="EXCHANGE_LOGO"
-							icon={ICONS['EXCHANGE_LOGO']}
-							wrapperClassName="app_bar-icon-logo wide-logo h-100"
-						/>
-					</div>
-					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />
-				</div>
-			</div>
-		);
-	};
-
-	renderButtonSection = () => {
-		return (
-			<div className="d-flex align-items-center buttons-section-header">
-				<ButtonLink
-					link={'/login'}
-					type="button"
-					label={STRINGS['LOGIN_TEXT']}
-					className="main-section_button_invert home_header_button"
-				/>
-				<div style={{ width: '0.75rem' }} />
-				<ButtonLink
-					link={'/signup'}
-					type="button"
-					label={STRINGS['SIGNUP_TEXT']}
-					className="main-section_button home_header_button"
-				/>
-			</div>
-		);
-	};
-
-	renderAccountButton = () => {
-		const { user } = this.props;
-		return (
-			<div className="pointer" onClick={this.goTo('/account')}>
-				{user.email}
-			</div>
-		);
-	};
+	handleDragStart = (e) => e.preventDefault();
 
 	render() {
 		const {
@@ -873,20 +910,8 @@ class Home extends Component {
 							zIndex: 1,
 						}}
 					/>
-					<div className="home_app_bar d-flex justify-content-between align-items-center my-2 mx-3">
-						<div className="d-flex align-items-center justify-content-center h-100">
-							{this.renderIcon()}
-						</div>
-						{isLoggedIn()
-							? this.renderAccountButton()
-							: this.renderButtonSection()}
-					</div>
-					<EditWrapper
-						iconId="EXCHANGE_LANDING_PAGE"
-						style={{ position: 'absolute', right: 10 }}
-					/>
 					<div className="home-page_content">
-						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+						{this.generateSections(sections)}
 					</div>
 				</div>
 			</div>
@@ -949,14 +974,13 @@ const mapStateToProps = (store) => {
 		estimatedPrice: store.quickTrade.estimatedPrice,
 		sourceAmount: store.quickTrade.sourceAmount,
 		targetAmount: store.quickTrade.targetAmount,
+		markets: MarketsSelector(store),
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	logout: bindActionCreators(logout, dispatch),
 	getTickers: bindActionCreators(getTickers, dispatch),
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
