@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerBroker } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants')
+const { INIT_CHANNEL } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -47,7 +47,7 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
+		increment_size
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -61,7 +61,7 @@ const createBrokerPair = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 function updateBrokerPair(req, res) {
 	loggerBroker.verbose(
@@ -114,7 +114,7 @@ function deleteBrokerPair(req, res) {
 	toolsLib.broker.deleteBrokerPair(req.swagger.params.data.value.id)
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
-			return res.json({ message: "Successfully deleted broker pair." });
+			return res.json({ message: 'Successfully deleted broker pair.' });
 		})
 		.catch((err) => {
 			loggerBroker.error(
@@ -168,7 +168,7 @@ const executeBrokerDeal = (req, res) => {
 		side,
 		symbol,
 		price,
-		size,
+		size
 	} = req.swagger.params.data.value;
 
 	const userId = req.auth.sub.id;
@@ -190,7 +190,7 @@ const executeBrokerDeal = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 module.exports = {
 	createBrokerPair,
