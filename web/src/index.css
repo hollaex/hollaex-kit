@@ -350,24 +350,14 @@ table th {
   color: var(--labels_important-active-labels-text-graphics); }
   .app_container.btc .app_bar .app_bar-controllers {
     background-color: var(--coin-btc); }
-  .app_container.btc.wallet .sidebar-container .sidebar-actions, .app_container.btc.trade .sidebar-container .sidebar-actions, .app_container.btc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: var(--coin-btc); }
   .app_container.eur .app_bar .app_bar-controllers {
     background-color: var(--coin-eur); }
-  .app_container.eur.wallet .sidebar-container .sidebar-actions, .app_container.eur.trade .sidebar-container .sidebar-actions, .app_container.eur.quick-trade .sidebar-container .sidebar-actions {
-    border-color: var(--coin-eur); }
   .app_container.bch .app_bar .app_bar-controllers {
     background-color: var(--coin-bch); }
-  .app_container.bch.wallet .sidebar-container .sidebar-actions, .app_container.bch.trade .sidebar-container .sidebar-actions, .app_container.bch.quick-trade .sidebar-container .sidebar-actions {
-    border-color: var(--coin-bch); }
   .app_container.eth .app_bar .app_bar-controllers {
     background-color: var(--coin-eth); }
-  .app_container.eth.wallet .sidebar-container .sidebar-actions, .app_container.eth.trade .sidebar-container .sidebar-actions, .app_container.eth.quick-trade .sidebar-container .sidebar-actions {
-    border-color: var(--coin-eth); }
   .app_container.ltc .app_bar .app_bar-controllers {
     background-color: var(--coin-ltc); }
-  .app_container.ltc.wallet .sidebar-container .sidebar-actions, .app_container.ltc.trade .sidebar-container .sidebar-actions, .app_container.ltc.quick-trade .sidebar-container .sidebar-actions {
-    border-color: var(--coin-ltc); }
   .app_container.layout-desktop .app_container-content {
     height: auto;
     flex: 1; }
@@ -447,8 +437,6 @@ table th {
       max-width: 0; }
       .app_container .app_container-sidebar.close-sidebar .sidebar-toggle {
         transform: translateX(-100%); }
-      .app_container .app_container-sidebar.close-sidebar .sidebar-container {
-        overflow: hidden; }
   .app_container .exchange-warning {
     background-color: #fff100; }
 
@@ -518,8 +506,6 @@ table th {
   .trade_tabs-container .trade_tabs-content,
   .toogle_button-wrapper .toogle-content,
   .trade_block-wrapper .trade_block-content,
-  .ohlc_data_wrapper .ohlc_label,
-  .ohlc_value,
   .information_block-text_wrapper .text,
   .qr-text,
   .header_title-children,
@@ -555,8 +541,6 @@ table th {
   .trade_tabs-container .trade_tabs-content,
   .toogle_button-wrapper .toogle-content,
   .trade_block-wrapper .trade_block-content,
-  .ohlc_data_wrapper .ohlc_label,
-  .ohlc_value,
   .information_block-text_wrapper .text,
   .qr-text,
   .header_title-children,
@@ -1267,12 +1251,6 @@ table th {
   .home_container .exchange-warning {
     background-color: #fff100;
     color: #000000; }
-  .home_container .quick_trade-section {
-    background-color: var(--base_background);
-    border: 1px solid var(--calculated_secondary-border); }
-    .home_container .quick_trade-section > .quick_trade-wrapper {
-      flex: 1; }
-  .home_container .quick_trade-section,
   .home_container .features-container {
     padding: 2rem; }
   .home_container .home-page_overlay {
@@ -2647,16 +2625,12 @@ table th {
     background-image: linear-gradient(var(--calculated_trading_buying-orderbook-bar), var(--calculated_trading_buying-orderbook-bar)); }
   .trade_orderbook-wrapper .fill-ask {
     background-image: linear-gradient(var(--calculated_trading_selling-orderbook-bar), var(--calculated_trading_selling-orderbook-bar)); }
-  .trade_orderbook-wrapper .wave-header {
-    color: var(--labels_secondary-inactive-label-text-graphics); }
   .trade_orderbook-wrapper .trade_orderbook-headers {
     font-weight: bold;
     border-bottom: 1px solid var(--calculated_secondary-border);
     text-transform: capitalize;
     min-height: 1.5rem;
     font-size: 0.85rem; }
-    .trade_orderbook-wrapper .trade_orderbook-headers .waves-icon {
-      width: 3rem; }
   .trade_orderbook-wrapper .trade_orderbook-content .trade_orderbook-spread {
     flex: 0;
     min-height: 4rem;
@@ -3363,11 +3337,7 @@ table th {
   .layout-mobile .summary-container .trader-account-wrapper .summary-block_wrapper .trade-account-secondary-txt .trade-account-link {
     font-size: 13px; }
 
-.layout-mobile .summary-container .account-details-wrapper .requirement-content {
-  font-size: 13px; }
-
-.layout-mobile .summary-container .summary-section_1,
-.layout-mobile .summary-container .summary-section_2 {
+.layout-mobile .summary-container .summary-section_1 {
   height: auto !important; }
 
 .layout-mobile .summary-container .summary-content-txt {
@@ -3540,8 +3510,6 @@ table th {
     background-color: #34363a;
     color: #34363a;
     animation: dotFlashing 3s infinite; }
-  .summary-container .summary-section_2 {
-    height: 40rem; }
   .summary-container .requirements-content-text {
     margin: auto 0; }
   .summary-container .requirements-content {
@@ -3593,8 +3561,6 @@ table th {
       margin: 1rem 1rem 0.5rem 0; }
       .summary-container .requirement-wrapper .requirement-doc-icon svg .verification-doc {
         fill: var(--labels_secondary-inactive-label-text-graphics); }
-  .summary-container .requirement-stauts {
-    width: 1rem; }
   .summary-container .requirement-status-warning {
     height: 1rem;
     width: 1rem;
@@ -3681,11 +3647,6 @@ table th {
       border-top: 1px solid var(--calculated_secondary-border); }
       .summary-container .trading-volume-wrapper .wave-action-phase .table-wrapper {
         margin: 0.5rem 0 2rem; }
-    .summary-container .trading-volume-wrapper .wave-phase-completed {
-      color: var(--specials_checks-okay-done); }
-    .summary-container .trading-volume-wrapper .wave-phase-pending {
-      color: var(--labels_secondary-inactive-label-text-graphics);
-      font-weight: bold; }
   .summary-container .account-details-wrapper .account-type-container {
     width: 30%; }
   .summary-container .account-details-wrapper .mobile-account-type {
@@ -3925,8 +3886,6 @@ table th {
     .summary-container .trading-volume-wrapper,
     .summary-container .requirement-wrapper {
       width: 65% !important; }
-    .summary-container .summary-section_2 {
-      height: 43rem !important; }
   .fee-limits-wrapper .content-txt {
     font-size: 1rem; } }
 
@@ -3936,8 +3895,6 @@ table th {
   .summary-container .assets-wrapper,
   .summary-container .trader-account-wrapper {
     font-size: 0.9rem; }
-  .summary-container .summary-section_2 {
-    height: 44rem !important; }
   .fee-limits-wrapper .content-txt {
     font-size: 0.9rem; } }
 
@@ -4479,23 +4436,6 @@ table th {
     .deposit_funds-wrapper .icon_title-wrapper .icon_title-svg svg {
       width: 8rem;
       height: 8rem; }
-
-.contact_form-wrapper {
-  min-width: 30rem; }
-  .contact_form-wrapper .icon_title-wrapper .icon_title-text.title {
-    text-transform: capitalize;
-    margin: 1.5rem auto; }
-  .contact_form-wrapper .icon_title-wrapper .icon_title-image {
-    height: 6rem;
-    width: 6rem; }
-  .contact_form-wrapper .field-wrapper {
-    margin: 1rem 0; }
-  .contact_form-wrapper .buttons-wrapper {
-    margin-top: 1.5rem; }
-
-.layout-mobile .contact_form-wrapper {
-  min-width: auto;
-  flex: 1; }
 
 .layout-mobile.home_container-mobile .app-icon {
   margin: 1rem auto;
@@ -5285,57 +5225,12 @@ table th {
 .area-disabled {
   opacity: 0.5; }
 
-.sidebar-fit-to-screen {
-  height: 100vh !important; }
-
-.sidebar-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%; }
-  .sidebar-container .sidebar-row {
-    border-top: 1px solid var(--calculated_secondary-border);
-    flex: 0; }
-  .sidebar-container .sidebar-notifications {
-    flex: 1;
-    overflow-y: scroll; }
-    .sidebar-container .sidebar-notifications .sidebar-title {
-      font-size: 1.3rem;
-      font-weight: bold; }
-
-.sidebar-notifications-wrapper {
-  overflow-y: scroll; }
-
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
   .sidebar-row .cell-wrapper {
     padding-left: 1rem;
     padding-right: 1rem; }
-  .sidebar-row .sidebar-row--right-icon {
-    width: 1.5rem;
-    height: 1.5rem; }
-    .sidebar-row .sidebar-row--right-icon.icon--help:hover svg path {
-      fill: var(--labels_important-active-labels-text-graphics) !important;
-      stroke: var(--labels_important-active-labels-text-graphics) !important; }
-    .sidebar-row .sidebar-row--right-icon.icon--help svg path {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-      stroke: var(--labels_secondary-inactive-label-text-graphics) !important; }
-    .sidebar-row .sidebar-row--right-icon.icon--help circle {
-      fill: transparent;
-      stroke: transparent; }
-    .sidebar-row .sidebar-row--right-icon.icon--logout:hover svg path {
-      fill: var(--labels_important-active-labels-text-graphics) !important;
-      stroke: var(--labels_important-active-labels-text-graphics) !important; }
-    .sidebar-row .sidebar-row--right-icon.icon--logout svg path {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-      stroke: var(--labels_secondary-inactive-label-text-graphics) !important; }
-    .sidebar-row .sidebar-row--right-icon.icon--chat:hover svg path {
-      fill: var(--labels_important-active-labels-text-graphics) !important;
-      stroke: var(--labels_important-active-labels-text-graphics) !important; }
-    .sidebar-row .sidebar-row--right-icon.icon--chat svg path {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important;
-      stroke: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .app_bar .sidebar-row {
   min-width: 3rem; }
@@ -5411,10 +5306,6 @@ table th {
   border-left: 1px solid var(--calculated_secondary-border); }
 
 @media screen and (max-height: 600px) {
-  .sidebar-container .sidebar_hub-wrapper {
-    max-height: 35rem !important; }
-  .sidebar-container .sidebar-notifications {
-    min-height: 20rem; }
   .sidebar-bottom-icon svg {
     stroke: none !important; } }
 
@@ -7417,8 +7308,6 @@ table th {
     fill: var(--labels_secondary-inactive-label-text-graphics); }
   .notification-wrapper .new-order-notification svg {
     fill: var(--labels_important-active-labels-text-graphics); }
-    .notification-wrapper .new-order-notification svg .newWave-icon {
-      fill: var(--labels_important-active-labels-text-graphics); }
     .notification-wrapper .new-order-notification svg .generate_api {
       fill: var(--labels_important-active-labels-text-graphics); }
   .notification-wrapper .notification-wrapper {
@@ -8983,16 +8872,6 @@ table th {
 .f-1 {
   flex: 1; }
 
-.ohlc_wrapper {
-  x: 0;
-  y: 0; }
-  .ohlc_wrapper .ohlc_data_wrapper .ohlc_label {
-    font-size: 1rem; }
-  .ohlc_wrapper .ohlc_data_wrapper .ohlc_value {
-    font-size: 1rem;
-    font-weight: bold;
-    padding-left: 0.25rem; }
-
 .donut-label-percentage {
   font-size: 0.8rem;
   font-weight: bold;
@@ -9267,106 +9146,11 @@ table th {
   fill: var(--coin-dai);
   stroke: var(--coin-dai); }
 
-.bar_wrapper {
-  height: 38rem; }
-  .bar_wrapper .bar_yAxis line {
-    fill: var(--labels_secondary-inactive-label-text-graphics);
-    stroke-dasharray: 3 3;
-    stroke-width: 0.5px; }
-  .bar_wrapper .bar_yAxis .tick text {
-    color: var(--labels_important-active-labels-text-graphics);
-    font-family: "Raleway";
-    font-size: 1.2rem;
-    font-weight: bold; }
-  .bar_wrapper .bar_xAxis line {
-    visibility: hidden; }
-  .bar_wrapper .bar_xAxis .axis_month {
-    font-size: 1rem;
-    font-family: "Raleway";
-    color: var(--labels_secondary-inactive-label-text-graphics); }
-  .bar_wrapper .bar_xAxis .axis_month-active {
-    color: var(--labels_important-active-labels-text-graphics);
-    font-weight: bold; }
-  .bar_wrapper .bar_xAxis .axis_month-total {
-    font-size: 0.8rem;
-    font-weight: bold; }
-  .bar_wrapper .bar_xAxis .axis_month-total-active {
-    color: var(--labels_important-active-labels-text-graphics); }
-  .bar_wrapper .bar_xAxis path {
-    stroke: var(--labels_secondary-inactive-label-text-graphics);
-    stroke-width: 1; }
-  .bar_wrapper .limit_content-text {
-    font-size: 0.72rem; }
-  .bar_wrapper .bar_axis_triangle {
-    fill: var(--labels_important-active-labels-text-graphics); }
-
-.bar-tooltip,
-.bar-tooltip-dark {
-  padding: 5px;
-  position: absolute;
-  z-index: 10; }
-  .bar-tooltip .tool_tip-pair-volume,
-  .bar-tooltip-dark .tool_tip-pair-volume {
-    padding-left: 0.8rem; }
-
-.bar-tooltip {
-  background-color: var(--base_background);
-  border: 1px solid var(--calculated_secondary-border);
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
-.bar-tooltip::before,
-.bar-tooltip::after,
-.bar-tooltip-dark::before,
-.bar-tooltip-dark::after {
-  border: solid transparent;
-  content: ' ';
-  right: 100%;
-  top: 50%;
-  height: 0;
-  width: 0;
-  position: absolute; }
-
-.bar-tooltip:after {
-  border-color: rgba(136, 183, 213, 0);
-  border-right-color: var(--base_background);
-  border-width: 5px;
-  margin-top: -5px; }
-
-.bar-tooltip:before {
-  border-color: rgba(194, 225, 245, 0);
-  border-right-color: var(--labels_secondary-inactive-label-text-graphics);
-  border-width: 7px;
-  margin-top: -7px; }
-
-.bar-tooltip-dark:after {
-  border-color: rgba(136, 183, 213, 0);
-  border-right-color: var(--base_background);
-  border-width: 5px;
-  margin-top: -5px; }
-
-.bar-tooltip-dark:before {
-  border-color: rgba(194, 225, 245, 0);
-  border-right-color: var(--labels_secondary-inactive-label-text-graphics);
-  border-width: 7px;
-  margin-top: -7px; }
-
-.bar-tooltip-dark {
-  background-color: var(--base_background);
-  border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
 @media (min-width: 1920px) {
   .donut-label-pair {
     font-size: 1.2rem; }
   .donut-label-percentage {
-    font-size: 1rem; }
-  .bar_wrapper .limit_content-text {
-    font-size: 0.9rem; }
-  .bar_wrapper .bar_xAxis .axis_month-total {
     font-size: 1rem; } }
-
-foreignObject {
-  overflow: visible; }
 
 .layout-mobile .donut-label-pair {
   font-size: 1.4rem; }
@@ -10428,7 +10212,6 @@ foreignObject {
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
         background-repeat: no-repeat;
-        height: 6rem !important;
         margin-left: 1.5rem;
         width: 7rem; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
@@ -11026,7 +10809,6 @@ svg .coin-btc-5,
 svg .stake-page-icon {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
-svg .logout-door,
 svg .account-inactive {
   stroke: var(--labels_secondary-inactive-label-text-graphics); }
 
@@ -11068,9 +10850,7 @@ svg .generate_api,
 svg .key-trashed,
 svg .api-key-revoked,
 svg .risk-order-warning,
-svg .bonus-offer-icon,
 svg .announcement,
-svg .newWave-icon,
 svg .xht-pdf,
 svg .xht-faq,
 svg .xht-email,
@@ -11081,7 +10861,6 @@ svg .hap-icon,
 svg .expired_icon,
 svg .default-icon,
 svg .connect-loading,
-svg .bottom-chat,
 svg .note-kyc,
 svg .partial-fill,
 svg .limit-trade-tick,
@@ -11093,12 +10872,6 @@ svg .gender-male,
 svg .volume-pending,
 svg .quick-trade-4,
 svg .quick_trade-tab-icon,
-svg .features-pro-trade-icons,
-svg .features-payment,
-svg .features-legal,
-svg .features-lock,
-svg .features-support-1,
-svg .features-data,
 svg .check-send-btc-1,
 svg .copy-notification-1,
 svg .data-1,
@@ -11160,7 +10933,6 @@ svg .pending-timer,
 svg .quick-trade-2,
 svg .coin-btc-6,
 svg .coin-btc-4,
-svg .logout-door,
 svg .cancel-cross-3,
 svg .cancel-cross-2,
 svg .account-inactive {

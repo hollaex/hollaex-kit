@@ -105,6 +105,7 @@ Cypress.Commands.add('forceVisit', url => {
 
 
 });
+
 //'USD Tether''HollaEx'
 Cypress.Commands.add('wallectCheck',(buySell,wallet,Fee,Size,Price)=>{
 	cy.log(wallet)

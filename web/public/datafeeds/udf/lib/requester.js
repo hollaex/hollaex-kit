@@ -1,30 +1,28 @@
 import { logMessage } from './helpers';
-var Requester = /** @class */ (function () {
-    function Requester(headers) {
+export class Requester {
+    constructor(headers) {
         if (headers) {
             this._headers = headers;
         }
     }
-    Requester.prototype.sendRequest = function (datafeedUrl, urlPath, params) {
+    sendRequest(datafeedUrl, urlPath, params) {
         if (params !== undefined) {
-            var paramKeys = Object.keys(params);
+            const paramKeys = Object.keys(params);
             if (paramKeys.length !== 0) {
                 urlPath += '?';
             }
-            urlPath += paramKeys.map(function (key) {
-                return encodeURIComponent(key) + "=" + encodeURIComponent(params[key].toString());
+            urlPath += paramKeys.map((key) => {
+                return `${encodeURIComponent(key)}=${encodeURIComponent(params[key].toString())}`;
             }).join('&');
         }
         logMessage('New request: ' + urlPath);
         // Send user cookies if the URL is on the same origin as the calling script.
-        var options = { credentials: 'same-origin' };
+        const options = { credentials: 'same-origin' };
         if (this._headers !== undefined) {
             options.headers = this._headers;
         }
-        return fetch(datafeedUrl + "/" + urlPath, options)
-            .then(function (response) { return response.text(); })
-            .then(function (responseTest) { return JSON.parse(responseTest); });
-    };
-    return Requester;
-}());
-export { Requester };
+        return fetch(`${datafeedUrl}/${urlPath}`, options)
+            .then((response) => response.text())
+            .then((responseTest) => JSON.parse(responseTest));
+    }
+}

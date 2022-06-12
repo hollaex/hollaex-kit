@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
-import { IS_XHT } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import MenuListItem from './MenuListItem';
 
@@ -55,9 +54,7 @@ class MenuList extends Component {
 	getShowNotification = (path = '', notifications) => {
 		switch (path) {
 			case '/verification':
-				return !!notifications && !IS_XHT;
 			case '/wallet':
-				return !!notifications && IS_XHT;
 			default:
 				return !!notifications;
 		}
@@ -67,7 +64,6 @@ class MenuList extends Component {
 		const {
 			securityPending,
 			verificationPending,
-			walletPending,
 			icons: ICONS,
 			user,
 			menuItems,
@@ -75,9 +71,7 @@ class MenuList extends Component {
 			onMenuChange,
 		} = this.props;
 		const { isOpen } = this.state;
-		const totalPending = IS_XHT
-			? securityPending + walletPending
-			: securityPending + verificationPending;
+		const totalPending = securityPending + verificationPending;
 		return (
 			<div
 				className={classnames('d-flex app-bar-account-content', {

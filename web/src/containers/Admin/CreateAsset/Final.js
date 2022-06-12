@@ -20,7 +20,7 @@ const Final = ({
 	user_id,
 	submitting = false,
 	handleWithdrawalEdit,
-	handleScreenChange
+	handleScreenChange,
 }) => {
 	const { meta = {}, type } = coinFormData;
 
@@ -35,13 +35,26 @@ const Final = ({
 					label = 'BEP20';
 				} else if (data === 'trx') {
 					label = 'TRC20';
+				} else if (data === 'klay') {
+					label = 'Klaytn';
+				} else if (data === 'xlm') {
+					label = 'Stellar';
+				} else if (data === 'sol') {
+					label = 'Solana';
+				} else if (data === 'matic') {
+					label = 'Polygon';
 				} else {
 					label = data.toUpperCase();
 				}
-				return <div key={index}><b>{label}</b>: {_get(key, 'value', '')} {_get(key, 'symbol', '').toUpperCase()}</div>
+				return (
+					<div key={index}>
+						<b>{label}</b>: {_get(key, 'value', '')}{' '}
+						{_get(key, 'symbol', '').toUpperCase()}
+					</div>
+				);
 			});
 		}
-	}
+	};
 
 	const handleMoveBack = () => {
 		if (!coinFormData.id) {
@@ -306,38 +319,37 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{coinFormData.withdrawal_fees
-					?
-						<div>
-							<div>{renderFees()}</div>
-							{isConfigure ? (
-								<div className="btn-wrapper">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={handleWithdrawalEdit}
-									>
-										Edit
-									</Button>
-								</div>
-							) : null}
-						</div>
-					:
-						<div>
-							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-							{isConfigure ? (
-								<div className="btn-wrapper">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={handleWithdrawalEdit}
-									>
-										Edit
-									</Button>
-								</div>
-							) : null}
-						</div>
-				}
+				{coinFormData.withdrawal_fees ? (
+					<div>
+						<div>{renderFees()}</div>
+						{isConfigure ? (
+							<div className="btn-wrapper">
+								<Button
+									className="green-btn"
+									type="primary"
+									onClick={handleWithdrawalEdit}
+								>
+									Edit
+								</Button>
+							</div>
+						) : null}
+					</div>
+				) : (
+					<div>
+						<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						{isConfigure ? (
+							<div className="btn-wrapper">
+								<Button
+									className="green-btn"
+									type="primary"
+									onClick={handleWithdrawalEdit}
+								>
+									Edit
+								</Button>
+							</div>
+						) : null}
+					</div>
+				)}
 			</div>
 			{isPreview || isConfigure ? (
 				<div className="preview-detail-container">

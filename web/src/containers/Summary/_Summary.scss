@@ -56,13 +56,7 @@ $trade-tab--arrow-size: 0.4rem;
 				}
 			}
 		}
-		.account-details-wrapper {
-			.requirement-content {
-				font-size: $font-size-mobile-txt;
-			}
-		}
-		.summary-section_1,
-		.summary-section_2 {
+		.summary-section_1 {
 			height: auto !important;
 		}
 		.summary-content-txt {
@@ -296,9 +290,6 @@ $trade-tab--arrow-size: 0.4rem;
 			}
 		}
 	}
-	.summary-section_2 {
-		height: 40rem;
-	}
 	.requirements-content-text {
 		margin: auto 0;
 	}
@@ -386,9 +377,6 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 	}
 
-	.requirement-stauts {
-		width: 1rem;
-	}
 	.requirement-status-warning {
 		height: 1rem;
 		width: 1rem;
@@ -523,13 +511,6 @@ $trade-tab--arrow-size: 0.4rem;
 			.table-wrapper {
 				margin: 0.5rem 0 2rem;
 			}
-		}
-		.wave-phase-completed {
-			color: $colors-wave-phase-completed;
-		}
-		.wave-phase-pending {
-			color: $colors-black;
-			font-weight: bold;
 		}
 	}
 	.account-details-wrapper {
@@ -846,9 +827,6 @@ $trade-tab--arrow-size: 0.4rem;
 		// .summary-section_1 {
 		// 	height: 31rem !important;
 		// }
-		.summary-section_2 {
-			height: 43rem !important;
-		}
 	}
 	.fee-limits-wrapper .content-txt {
 		font-size: 1rem;
@@ -867,9 +845,6 @@ $trade-tab--arrow-size: 0.4rem;
 		// .summary-section_1 {
 		// height: 31rem !important;
 		// }
-		.summary-section_2 {
-			height: 44rem !important;
-		}
 	}
 	.fee-limits-wrapper .content-txt {
 		font-size: 0.9rem;

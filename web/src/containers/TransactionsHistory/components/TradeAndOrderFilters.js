@@ -19,7 +19,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 			size: 'all',
 			type: 'active',
 		});
-	}, [activeTab]);
+	}, [activeTab, form]);
 
 	useEffect(() => {
 		if (
