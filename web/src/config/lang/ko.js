@@ -1266,7 +1266,7 @@ export default {
 			'회원님의 요청을 검토한 이후 HollaEx거래소에 접근하는 법에 대한 추가 설명을 이메일로 보내드리도록하겠습니다.', // new
 		WARNING_TXT1:
 			'그 동안 아래의 지원을 통해 HollaEx 네트워크에 대해 더 알아보실 수 있습니다.', // new
-		XHT_ORDER_TXT_1: 'HollaEx 토큰(XHT) 거래를 위해선 로그인이 필요합니다.', // new
+		XHT_ORDER_TXT_1: '거래를 위해선 로그인이 필요합니다.', // new
 		XHT_ORDER_TXT_2:
 			'HollaEx 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브옥션을 통해 배포됩니다.', // new
 		XHT_ORDER_TXT_3: '{0} 웨이브옥션에 가입 또는 {1}', // new
