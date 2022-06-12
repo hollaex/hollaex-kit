@@ -1,3 +1,5 @@
+@import './MarketCard';
+
 $features-icon--size: 4rem;
 $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
@@ -111,16 +113,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
-.home_header_button {
-	height: 28px;
-	font-weight: bold;
-}
-
 .layout-mobile {
-	.home_header_button {
-		height: 24px;
-	}
-
 	.home-page__market-wrapper {
 		th:nth-child(1) {
 			padding-left: 1rem !important;
@@ -309,6 +302,15 @@ $trade-tab--arrow-size: 0.4rem;
 	// margin-right: auto;
 	// margin-top: 5rem;
 	// max-width: $content-display-width;
+
+	.currency-ball-image-wrapper {
+		height: 2.2rem;
+		padding-right: 10px;
+	}
+
+	.trade_tab-icons {
+		width: 3rem;
+	}
 }
 
 .live-markets_header {
@@ -321,14 +323,10 @@ $trade-tab--arrow-size: 0.4rem;
 	font-weight: bolder;
 }
 
-.buttons-section-header {
-	margin: 0 0.5rem;
-}
-
 .home-page_section-wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 5rem;
+	padding-top: 5rem;
 	max-width: 100rem;
 	&:not(.main-section-wrapper) {
 		padding-top: 5rem;
@@ -357,27 +355,8 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
-.home_app_bar {
-	height: $navigation_bar-height-lg;
-	min-height: $navigation_bar-height-lg;
-
-	.app_bar-icon-logo {
-		height: 4rem;
-		width: 5rem;
-		background-size: contain;
-		background-position: left center;
-		background-repeat: no-repeat;
-	}
-
-	.app_bar-icon {
-		flex: 0;
-		margin: 0 0.5rem;
-		padding-right: 8px;
-		width: 100%;
-	}
-}
-
 .html_card_section {
+	overflow: auto;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -430,14 +409,26 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.home_carousel_section {
+	border-top: 1px $colors-border solid;
+	border-bottom: 1px $colors-border solid;
+	margin-top: 4rem;
+	margin-bottom: 4rem;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.alice-carousel__stage-item {
+	border-right: 1px $colors-border solid;
+}
+
 @media (max-width: $bp-sm) {
 	.home_container {
 		.home-card-container {
 			margin: 0 2rem 3rem;
 		}
 
-		.buttons-section,
-		.buttons-section-header {
+		.buttons-section {
 			.holla-button {
 				font-size: 1.2rem !important;
 			}
@@ -483,21 +474,4 @@ $trade-tab--arrow-size: 0.4rem;
 			}
 		}
 	}
-}
-
-@media (min-width: 1920px) {
-	.home_app_bar {
-		.app_bar-icon-logo {
-			height: 3rem;
-			width: 5rem;
-		}
-
-		.app_bar-icon {
-			margin: 1rem 0 1rem;
-		}
-	}
-}
-
-.wide-logo {
-	width: 10rem !important;
 }
