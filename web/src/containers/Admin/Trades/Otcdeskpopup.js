@@ -1533,7 +1533,8 @@ const Otcdeskpopup = ({
 								{connectpop && (
 									<>
 										<div className="mt-3 mb-3">
-											Binance account : {hedgeApi}
+											{hedgeApi === 'binance' ? 'Binance' : 'HollaEx Pro'}{' '}
+											account: {hedgeApi}
 										</div>
 										<div className="binancewrapper">
 											<div className="binwrapper binborder">
