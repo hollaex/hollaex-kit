@@ -1,15 +1,10 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-
 	"LOGOUT_CONFIRM_TEXT": "您想要注销吗?",
 	"ADD_TRADING_PAIR": "行情",
-	"ACTIVE_TRADES": "为了实际交易时能够进行使用，请{0}",
-	"CANCEL_FIAT_WITHDRAWAL": "{0}取消提现",
 	"CANCEL_WITHDRAWAL": "取消提现",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "想要取消正在进行的交易吗?:",
-	"CANT_BE_CANCELLED": "-",
-	"ALREADY_CANCELLED": "-",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "登录",
@@ -17,17 +12,14 @@
 	"SIGNUP_TEXT": "注册会员",
 	"REGISTER_TEXT": "注册",
 	"ACCOUNT_TEXT": "账号",
-	"HOME_TEXT": "Home",
 	"CLOSE_TEXT": "关闭",
 	"COPY_TEXT": "复制",
 	"COPY_SUCCESS_TEXT": "已成功复制",
 	"CANCEL_SUCCESS_TEXT": "已成功取消!",
-	"UPLOAD_TEXT": "上传",
 	"ADD_FILES": "添加文件",
 	"OR_TEXT": "或者",
 	"CONTACT_US_TEXT": "咨询",
 	"HELPFUL_RESOURCES_TEXT": "Helpful resources",
-	"HELP_RESOURCE_GUIDE_TEXT": "请通过联系support@hollaex.com进行咨询",
 	"HELP_RESOURCE_GUIDE": {
 		"CONTACT_US": "与我们取得联系",
 		"TEXT": "如有其他咨询事项，请随时通过电子邮件 {0}"
@@ -116,13 +108,6 @@
 		"TAB_API": "API",
 		"TAB_SIGNOUT": "退出"
 	},
-	"REQUEST_XHT_ACCESS": {
-		"REQUEST_TITLE": "申请访问",
-		"REQUEST_INVITE": "申请邀请",
-		"CATEGORY_PLACEHOLDER": "选择适合你的问题的类别",
-		"INTRODUCTION_LABEL": "自我介绍",
-		"INTRODUCTION_PLACEHOLDER": "你从属于哪里，对于运营交易所是否有兴趣？"
-	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "咨询类型",
 		"CATEGORY_PLACEHOLDER": "选择适合你的问题的类别",
@@ -210,10 +195,7 @@
 			"INFORMATION_PENDING_2": "可能需要10-30分钟，一旦{0}在区块链上得到确认，我们将向你发送电子邮件"
 		}
 	},
-	"REFERRAL_SUCCESS": {
-		"TITLE": "发送请求",
-		"BUTTON_TEXT": "Okay"
-	},
+	"REFERRAL_SUCCESS": { "TITLE": "发送请求", "BUTTON_TEXT": "Okay" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "如需解除谷歌验证（2FA），请在下方输入验证码",
 		"OTP_LABEL": "谷歌验证码",
@@ -368,10 +350,7 @@
 				"FULL_NAME_PLACEHOLDER": "输入身份证上的名字",
 				"GENDER_LABEL": "性别",
 				"GENDER_PLACEHOLDER": "输入性别",
-				"GENDER_OPTIONS": {
-					"MAN": "男",
-					"WOMAN": "女"
-				},
+				"GENDER_OPTIONS": { "MAN": "男", "WOMAN": "女" },
 				"NATIONALITY_LABEL": "国籍",
 				"NATIONALITY_PLACEHOLDER": "输入身份证上的国籍",
 				"DOB_LABEL": "出生年月日",
@@ -414,10 +393,7 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "身份证件类型",
 				"TYPE_PLACEHOLDER": "选择身份证件类型",
-				"TYPE_OPTIONS": {
-					"ID": "身份证",
-					"PASSPORT": "护照"
-				},
+				"TYPE_OPTIONS": { "ID": "身份证", "PASSPORT": "护照" },
 				"ID_NUMBER_LABEL": "护照号码",
 				"ID_NUMBER_PLACEHOLDER": "请输入护照号码",
 				"ID_PASSPORT_NUMBER_LABEL": "护照号码",
@@ -558,10 +534,7 @@
 			"TITLE": "谷歌验证（2FA）",
 			"OTP_ENABLED": "启用OTP",
 			"OTP_DISABLED": "请激活2FA",
-			"ENABLED_TEXTS": {
-				"TEXT_1": "登录时需要OTP",
-				"TEXT_2": "提款时需要OTP"
-			},
+			"ENABLED_TEXTS": { "TEXT_1": "登录时需要OTP", "TEXT_2": "提款时需要OTP" },
 			"DIALOG": {
 				"SUCCESS": "成功激活谷歌验证（2FA）",
 				"REVOKE": "成功解除谷歌验证（2FA）"
@@ -581,15 +554,11 @@
 				"SECRET_2": "Please enter your secret key to confirm you wrote it down.",
 				"SECRET_3": "This secret key will help you recover your account if you lost access to your phone.",
 				"INPUT_1": "Secret Key",
-
 				"TITLE_2": "Enter One-Time Password (OTP)",
 				"MESSAGE_6": "Please enter your 6-digit one-time password below.",
 				"INPUT_2": "One-Time Password (OTP)"
 			},
-			"FORM": {
-				"PLACEHOLDER": "请输入6位谷歌验证码",
-				"BUTTON": "启用2FA"
-			}
+			"FORM": { "PLACEHOLDER": "请输入6位谷歌验证码", "BUTTON": "启用2FA" }
 		},
 		"CHANGE_PASSWORD": {
 			"TITLE": "更改密码",
@@ -604,10 +573,7 @@
 					"label": "当前密码",
 					"placeholder": "输入当前密码"
 				},
-				"NEW_PASSWORD": {
-					"label": "新密码",
-					"placeholder": "输入新密码"
-				},
+				"NEW_PASSWORD": { "label": "新密码", "placeholder": "输入新密码" },
 				"NEW_PASSWORD_REPEAT": {
 					"label": "确认新密码",
 					"placeholder": "重新输入新密码"
@@ -639,34 +605,17 @@
 	},
 	"CURRENCY": "加密货币",
 	"TYPE": "Type",
-	"TYPES_VALUES": {
-		"market": "market",
-		"limit": "limit"
-	},
-	"TYPES": {
-		"MARKET": "市价",
-		"LIMIT": "限价"
-	},
+	"TYPES_VALUES": { "market": "market", "limit": "limit" },
+	"TYPES": { "MARKET": "市价", "LIMIT": "限价" },
 	"SIDE": "Side",
-	"SIDES_VALUES": {
-		"buy": "买入",
-		"sell": "卖出"
-	},
-	"SIDES": {
-		"BUY": "买入",
-		"SELL": "卖出"
-	},
-	"DEFAULT_TOGGLE_OPTIONS": {
-		"ON": "开启",
-		"OFF": "关闭"
-	},
+	"SIDES_VALUES": { "buy": "买入", "sell": "卖出" },
+	"SIDES": { "BUY": "买入", "SELL": "卖出" },
+	"DEFAULT_TOGGLE_OPTIONS": { "ON": "开启", "OFF": "关闭" },
 	"SIZE": "数量",
 	"PRICE": "价格",
 	"FEE": "Fee",
 	"FEES": "手续费",
-	"LIMIT": "Limit",
 	"TIME": "时间",
-	"TIMESTAMP": "Timestamp",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "状态",
@@ -677,21 +626,17 @@
 	"ORDERBOOK": "Order Book",
 	"CANCEL": "Cancel",
 	"CANCEL_ALL": "Cancel All",
-	"GO_TRADE_HISTORY": "前往交易历史",
 	"ORDER_ENTRY": "委托",
 	"TRADE_HISTORY": "交易记录",
 	"CHART": "价格表",
 	"ORDERS": "我的有效订单",
-	"TRADES": "我的交易记录",
 	"RECENT_TRADES": "最近交易",
 	"PUBLIC_SALES": "实时成交",
 	"REMAINING": "Remaining",
 	"FULLFILLED": "{0} % Filled",
 	"PRICE_CURRENCY": "价格",
 	"AMOUNT_SYMBOL": "数量",
-	"MARKET_PRICE": "市场价格",
 	"ORDER_PRICE": "成交金额",
-	"TOTAL_ORDER": "订单总数",
 	"NO_DATA": "暂无数据",
 	"LOADING": "Loading",
 	"CHART_TEXTS": {
@@ -704,15 +649,11 @@
 	},
 	"QUICK_TRADE": "快速交易",
 	"PRO_TRADE": "Pro交易",
-	"ADMIN_DASH": "管理页面",
 	"WALLET_TITLE": "钱包",
-	"TRADING_MODE_TITLE": "交易模式",
-	"TRADING_TITLE": "交易",
 	"LOGOUT": "退出",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "交易金额太小导致无法发送，请尝试更高的金额",
 	"WITHDRAWALS_MAX_VALUE_ERROR": "交易金额太大导致无法发送，请尝试较小的金额",
 	"WITHDRAWALS_LOWER_BALANCE": "You don’t have enough {0} in your balance to send that transaction",
-	"WITHDRAWALS_FEE_TOO_LARGE": "The fee is more than {0}% of your total transaction",
 	"WITHDRAWALS_BTC_INVALID_ADDRESS": "比特币地址无效，请检查后重新输入",
 	"WITHDRAWALS_ETH_INVALID_ADDRESS": "以太坊地址无效，请检查后重新输入",
 	"WITHDRAWALS_BUTTON_TEXT": "预览提款详情",
@@ -721,33 +662,8 @@
 	"WITHDRAWALS_FORM_AMOUNT_LABEL": "{0} amount to withdraw",
 	"WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER": "Type the amount of {0} you wish to withdraw",
 	"WITHDRAWALS_FORM_FEE_COMMON_LABEL": "Transaction fee",
-	"WITHDRAWALS_FORM_FEE_FIAT_LABEL": "Bank withdrawal fee",
 	"WITHDRAWALS_FORM_FEE_PLACEHOLDER": "Type the amount of {0} you wish to use in the fee of the transaction",
-	"WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE": "Optimal fee: {0} {1}",
-	"DEPOSITS_FORM_AMOUNT_LABEL": "{0} amount to deposit",
-	"DEPOSITS_FORM_AMOUNT_PLACEHOLDER": "Type the amount of {0} you wish to withdraw",
-	"DEPOSITS_BUTTON_TEXT": "review deposit",
-	"DEPOSIT_PROCEED_PAYMENT": "Pay",
 	"DEPOSIT_BANK_REFERENCE": "Add this \"{0}\" code to the bank transation to identify the deposit",
-	"DEPOSIT_METHOD": "支付方式{0}",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT": "信用卡",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1": "进入信用卡支付方式",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2": "将离开平台，进行支付",
-	"DEPOSIT_VERIFICATION_WAITING_TITLE": "支付确认中",
-	"DEPOSIT_VERIFICATION_WAITING_MESSAGE": "请不要在核实付款人时关闭应用程序",
-	"DEPOSIT_VERIFICATION_WARNING_MESSAGE": "如果在进行过程中出现问题，请联系客服中心。",
-	"DEPOSIT_VERIFICATION_WARNING_INFORMATION": "This is the ID of the operation: \"{0}\", please provide us this ID to help you.",
-	"DEPOSIT_VERIFICATION_SUCCESS": "支付完成",
-	"DEPOSIT_VERIFICATION_ERROR": "充值核实出错",
-	"DEPOSIT_VERIFICATION_ERROR_VERIFIED": "充值已核实",
-	"DEPOSIT_VERIFICATION_ERROR_STATUS": "无效状态",
-	"DEPOSIT_VERIFICATION_ERROR_USER_MATCH": "充值的卡和注册的卡不一致，因此充值被拒绝，资金将在一小时内退还。",
-	"QUOTE_MESSAGE": "You are going to {0} {1} {2} for {3} {4}",
-	"QUOTE_BUTTON": "Accept",
-	"QUOTE_REVIEW": "Review",
-	"QUOTE_COUNTDOWN_MESSAGE": "You have {0} seconds to perform the trade",
-	"QUOTE_EXPIRED_TOKEN": "The quote token has expired.",
-	"QUOTE_SUCCESS_REVIEW_TITLE": "Quick Trade",
 	"QUOTE_SUCCESS_REVIEW_MESSAGE": "You have successfully {0} {1} {2}",
 	"COUNTDOWN_ERROR_MESSAGE": "Countdown is finished",
 	"WITHDRAW_PAGE": {
@@ -773,21 +689,15 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "提款",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "receive",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "send",
-	"AVAILABLE_TEXT": "Available",
 	"AVAILABLE_BALANCE_TEXT": "可用余额 : {1} {2}",
 	"BALANCE_TEXT": "可用",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
-	"WALLET_TABLE_AMOUNT_IN": "Amount in {0}",
-	"WALLET_TABLE_TOTAL": "总计",
 	"WALLET_ALL_ASSETS": "全部资产",
-	"HIDE_TEXT": "Hide",
 	"PAGINATOR_FORMAT": "{0} / {1}",
 	"ORDERBOOK_SELLERS": "买盘",
 	"ORDERBOOK_BUYERS": "卖盘",
 	"ORDERBOOK_SPREAD": "买卖价差 {0}",
-	"ORDERBOOK_SPREAD_PRICE": "{0} {1}",
 	"CALCULATE_MAX": "Max",
-	"DATEFIELD_TOOGLE_DATE_GR": "Gregorian calendar",
 	"VERIFICATION_WARNING_TITLE": "Verification you bank details",
 	"VERIFICATION_WARNING_MESSAGE": "Before you withdraw, you need to verify your bank details.",
 	"ORDER_SPENT": "Spent",
@@ -813,10 +723,6 @@
 	"QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED": "The order with the current size can not be filled",
 	"QUICK_TRADE_ORDER_NOT_FILLED": "Order is not filled",
 	"QUICK_TRADE_NO_BALANCE": "Insufficient balance to perform the order",
-	"YES": "Yes",
-	"NO": "No",
-	"NEXT": "Next",
-	"SKIP_FOR_NOW": "Skip for now",
 	"SUBMIT": "提交",
 	"RESUBMIT": "重新提交",
 	"VERIFICATION_NOTIFICATION_SKIP_TITLE": "Missing Documents!",
@@ -839,10 +745,8 @@
 	"INVALID_CAPTCHA": "Invalid captcha",
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "语言设置（包括邮件）",
-	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
 	"SETTINGS_THEME_LABEL": "用户界面主题",
 	"SETTING_BUTTON": "保存",
-	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "提款失效",
 	"VERIFICATION_NO_WITHDRAW_MESSAGE": "你的账户已被禁止提款",
 	"UP_TO_MARKET": "Up to market",
@@ -1057,57 +961,6 @@
 		"XHT_COUNT": "{0} XHT",
 		"APPLY_BUTTON": "APPLY"
 	},
-	"STAKE_TOKEN": {
-		"TITLE": "HollaEx代币股份",
-		"INFO_TXT1": "HollaEx 代币（XHT）需要抵押（押注）才可以运行HollaEx Kit交易软件。",
-		"INFO_TXT2": "可以以类似的方式抵押你的HollaEx 代币，并获取波段拍卖期间未售出的XHT。",
-		"INFO_TXT3": "简单来说，只要访问dash.bitholla.com，今天就可以到交易所做抵押，免费获取XHT。",
-		"BUTTON_TXT": "了解更多"
-	},
-	"TERMS_OF_SERVICES": {
-		"TITLE": "HollaEx 代币购买协议",
-		"PROCEED": "进行",
-		"AGREE_TERMS_LABEL": "我已阅读并同意HollaEx 代币购买协议",
-		"RISK_INVOLVED_LABEL": "我了解其中的风险",
-		"DOWNLOAD_PDF": "下载PDF",
-		"DEPOSIT_FUNDS": "将资金存入你的钱包中，以获得HollaEx 代币（XHT）。",
-		"READ_FAG": "阅读HollaEx FAQ : {0}",
-		"READ_DOCUMENTATION": "点击这里阅读HollaEx 白皮书: {0}",
-		"READ_WAVES": "查看波段拍卖规则{0}",
-		"DOWNLOAD_BUY_XHT": "下载PDF文件，在{0}上确认可视化的步骤过程。",
-		"HOW_TO_BUY": "如何购买HollaEx 代币（XHT）？",
-		"PUBLIC_SALES": "公开波段拍卖",
-		"CONTACT_US": "如有任何问题，欢迎发送邮件至{0}，与我们进行联系。",
-		"VISUAL_STEP": "在{0}上确认直观的步骤流程。",
-		"WARNING_TXT": "我们将审查你的请求，并向你的电子邮件发送进一步的指示，说明如何访问HollaEx交易所。",
-		"WARNING_TXT1": "同时，你可以通过以下资源熟悉HollaEx网络。",
-		"XHT_ORDER_TXT_1": "要开始交易，必须先进行登录",
-		"XHT_ORDER_TXT_2": "HollaEx 토큰은 매일 랜덤으로 정해진 수량이 랜덤으로 정해진 시간에 주문서에서 가장 높은 금액을 호가한 매수자에게 판매되는 웨이브옥션을 통해 배포됩니다.",
-		"XHT_ORDER_TXT_3": "{0}或{1}",
-		"XHT_TITLE": "XHT",
-		"XHT_TRADE_TXT_1": "登录查看近期交易",
-		"XHT_TRADE_TXT_2": "可以{0}查看近期交易记录",
-		"LOGIN_HERE": "在此登录"
-	},
-	"WAVES": {
-		"TITLE": "Wave Info",
-		"NEXT_WAVE": "Next Wave",
-		"WAVE_AMOUNT": "Amount in Wave",
-		"FLOOR": "Floor",
-		"LAST_WAVE": "Last wave"
-	},
-	"TYPES_OF_POSTS": {
-		"TITLE": "POSTS",
-		"ANNOUNCEMEN": "Announcement",
-		"SYSTEM_UPDATE": "System Update",
-		"LAST_WAVE": "Last Wave",
-		"ANNOUNCEMENT_TXT": "Free XHT will be distributed to all wallets that apply",
-		"SYSTEM_UPDATE_TIME": "Time: 12:31 PM, December 19th, 2019",
-		"SYSTEM_UPDATE_DURATION": "1 hour",
-		"LAST_WAVE_AMOUNT": "100, 213 XHT",
-		"LAST_WAVE_REDISTRIBUTED": " 11, 211",
-		"LAST_WAVE_TIME": "12: 31 PM, December 19th, 2019"
-	},
 	"USER_LEVEL": "用户级别",
 	"LIMIT_AMOUNT": "限额",
 	"FEE_AMOUNT": "手续费金额",
@@ -1115,9 +968,6 @@
 	"PAIRS": "对",
 	"NOTE_FOR_EDIT_COIN": "注:关于{0}的添加和删除请参考{1}",
 	"REFER_DOCS_LINK": "文件",
-	"RESTART_TO_APPLY": "需要重新启动交易所才能应用这些更改。",
-	"TRIAL_EXCHANGE_MSG": "你使用的是{0}的试用版，它将在{1}天后失效。",
-	"EXPIRY_EXCHANGE_MSG": "你的交易所已经过期，请前往dash.bitholla.com重新进行激活。",
 	"EXPIRED_INFO_1": "试验版已经结束",
 	"EXPIRED_INFO_2": "抵押你的交易所，再次激活它。",
 	"EXPIRED_BUTTON_TXT": "激活交易所",
@@ -1132,14 +982,8 @@
 		"APPLY_TODAY": "立即申请"
 	},
 	"OPEN_WALLET": "Open 钱包",
-	"AGO": "ago",
-	"MARKETS_TABLE": {
-		"VIEW_MARKETS": "查看行情"
-	},
-	"MARKET_OPTIONS": {
-		"LIST": "列表",
-		"CARD": "图表"
-	},
+	"MARKETS_TABLE": { "VIEW_MARKETS": "查看行情" },
+	"MARKET_OPTIONS": { "LIST": "列表", "CARD": "图表" },
 	"ALL": "全部",
 	"ASSET_TXT": "资产",
 	"ONE_DAY": "1 天",
