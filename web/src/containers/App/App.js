@@ -850,20 +850,6 @@ class App extends Component {
 													className="sidebar-toggle"
 												/>
 											</div>
-											<Sidebar
-												activePath={activePath}
-												logout={this.logout}
-												// help={openContactForm}
-												theme={activeTheme}
-												isLogged={isLoggedIn()}
-												help={openHelpfulResourcesForm}
-												pair={pair}
-												enabledPlugins={enabledPlugins}
-												minimizeChat={this.minimizeChat}
-												chatIsClosed={chatIsClosed}
-												unreadMessages={unreadMessages}
-												sidebarFitHeight={sidebarFitHeight}
-											/>
 										</div>
 									)} */}
 									<Dialog

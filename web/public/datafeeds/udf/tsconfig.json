@@ -1,12 +1,10 @@
 {
 	"compilerOptions": {
-		"baseUrl": "./src",
+		"allowSyntheticDefaultImports": true,
 		"importHelpers": true,
 		"lib": [
 			"dom",
-			"es2015.promise",
-			"es2015.symbol.wellknown",
-			"es5"
+			"es2018"
 		],
 		"module": "es6",
 		"moduleResolution": "node",
@@ -15,9 +13,11 @@
 		"noImplicitReturns": true,
 		"noUnusedLocals": true,
 		"outDir": "./lib/",
+		"rootDir": "src",
 		"sourceMap": false,
 		"strict": true,
-		"target": "es5"
+		"target": "es2018",
+		"types": []
 	},
 	"include": [
 		"./src/**/*.ts"

@@ -60,14 +60,6 @@
 	.app_bar .app_bar-controllers {
 		background-color: $currency-color;
 	}
-
-	&.wallet,
-	&.trade,
-	&.quick-trade {
-		.sidebar-container .sidebar-actions {
-			border-color: $currency-color;
-		}
-	}
 }
 
 @mixin hover-icon($active-color, $inactive-color) {

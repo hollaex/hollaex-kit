@@ -3,14 +3,12 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
-// import * as d3 from 'd3-selection';
 import {
 	// AppBar,
 	CustomTabs,
 	CustomMobileTabs,
 	Dialog,
 	Loader,
-	// Logout,
 	Notification,
 	// MobileBarTabs,
 	PanelInformationRow,

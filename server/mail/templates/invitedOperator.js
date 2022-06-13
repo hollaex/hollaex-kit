@@ -1,6 +1,6 @@
 'use strict';
 
-const { CONFIRMATION, EXPLORERS, GET_COINS } = require('../../constants');
+const { Button } = require('./helpers/common');
 
 const fetchMessage = (email, data, language, domain) => {
 	return {
@@ -10,94 +10,74 @@ const fetchMessage = (email, data, language, domain) => {
 };
 
 const html = (email, data, language, domain) => {
-	const DEPOSIT = require('../strings').getStringObject(language, 'DEPOSIT');
-	let result = `
-        <div>
-            <p>
-                ${DEPOSIT.GREETING(email)}
-			</p>
-		`;
-
-	if (Object.keys(GET_COINS()).includes(data.currency)) {
-		let explorers = '';
-		let confirmation = undefined;
-
-		if (data.transaction_id && !data.transaction_id.includes('-')) {
-			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
-			if (EXPLORERS[data.currency]) {
-				EXPLORERS[data.currency].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
-				});
-			} else if (EXPLORERS[data.network]) {
-				EXPLORERS[data.network].forEach((explorer) => {
-					explorers += `<li><a href=${explorer.baseUrl}${explorer.txPath}/${
-						data.transaction_id
-					}>${explorer.name}</a></li>`;
-				});
-			}
-		}
-
-		result += `
+	const link = `${domain}/login`;
+	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
+	const { invitingEmail, created, password, role } = data;
+	let body;
+	if (created) {
+		body = `
 			<p>
-				${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
+				${INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}<br />
 			</p>
 			<p>
-				${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
-				<br />
-				${DEPOSIT.BODY[2](data.status)}
-				${data.transaction_id && data.address ? '<br />' : ''}
-				${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
-				${data.transaction_id ? '<br />' : ''}
-				${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
-				${data.network ? '<br />' : ''}
-				${data.network ? DEPOSIT.BODY[5](data.network) : ''}
-				${data.fee ? '<br />' : ''}
-				${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
-				${data.description ? '<br />' : ''}
-				${data.description ? DEPOSIT.BODY[7](data.description) : ''}
+				${INVITEDOPERATOR.BODY.CREATED[2]}<br />
 			</p>
-			${explorers.length > 0 ? DEPOSIT.BODY[8] : ''}
-			${explorers.length > 0 ? `<ul>${explorers}</ul>` : ''}
+				<div>
+					<div>${INVITEDOPERATOR.BODY.CREATED[3](email)}</div>
+					<div>${INVITEDOPERATOR.BODY.CREATED[4](password)}</div>
+				</div>
+			</p>
+			${Button(link, INVITEDOPERATOR.BODY.CREATED[5])}
 		`;
 	} else {
-		result += '';
+		body = `
+			<p>
+				${INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}<br />
+			</p>
+			${Button(link, INVITEDOPERATOR.BODY.EXISTING[2])}
+		`;
 	}
 
-	result += `
+	return `
+		<div>
 			<p>
-				${DEPOSIT.CLOSING[1]}<br />
-				${DEPOSIT.CLOSING[2]()}
+				${INVITEDOPERATOR.GREETING(email)}
+			</p>
+			${body}
+			<p>
+				${INVITEDOPERATOR.CLOSING[1]}<br />
+				${INVITEDOPERATOR.CLOSING[2]()}
 			</p>
 		</div>
-		`;
-	return result;
+	`;
 };
 
 const text = (email, data, language, domain) => {
-	const DEPOSIT = require('../strings').getStringObject(language, 'DEPOSIT');
-	let result = `${DEPOSIT.GREETING(email)}`;
-	if (Object.keys(GET_COINS()).includes(data.currency)) {
-		let confirmation = undefined;
-		if (data.transaction_id && !data.transaction_id.includes('-')) {
-			confirmation = CONFIRMATION[data.currency] || CONFIRMATION[data.network];
-		}
-		result += `
-			${DEPOSIT.BODY[data.status](data.amount, confirmation, data.currency.toUpperCase())}
-			${DEPOSIT.BODY[1](data.amount, data.currency.toUpperCase())}
-			${DEPOSIT.BODY[2](data.status)}
-			${data.transaction_id && data.address ? DEPOSIT.BODY[3](data.address) : ''}
-			${data.transaction_id ? DEPOSIT.BODY[4](data.transaction_id) : ''}
-			${data.network ? DEPOSIT.BODY[5](data.network) : ''}
-			${data.fee ? `${DEPOSIT.BODY[6](data.fee)} ${data.fee_coin || data.currency}` : ''}
-			${data.description ? DEPOSIT.BODY[7](data.description) : ''}
+	const link = `${domain}/login`;
+	const INVITEDOPERATOR = require('../strings').getStringObject(language, 'INVITEDOPERATOR');
+	const { invitingEmail, created, password, role } = data;
+	let body;
+
+	if (created) {
+		body = `
+			${INVITEDOPERATOR.BODY.CREATED[1](role, invitingEmail)}
+			${INVITEDOPERATOR.BODY.CREATED[2]}
+			${INVITEDOPERATOR.BODY.CREATED[3](email)}
+			${INVITEDOPERATOR.BODY.CREATED[4](password)}
+			${INVITEDOPERATOR.BODY.CREATED[5]}(${link})
 		`;
 	} else {
-		result += '';
+		body = `
+			${INVITEDOPERATOR.BODY.EXISTING[1](role, invitingEmail)}
+			${INVITEDOPERATOR.BODY.EXISTING[2]}(${link})
+		`;
 	}
-	result += `${DEPOSIT.CLOSING[1]} ${DEPOSIT.CLOSING[2]()}`;
-	return result;
+
+	return `
+		${INVITEDOPERATOR.GREETING(email)}
+		${body}
+		${INVITEDOPERATOR.CLOSING[1]} ${INVITEDOPERATOR.CLOSING[2]()}
+	`;
 };
 
 module.exports = fetchMessage;
