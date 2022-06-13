@@ -33,7 +33,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 			currency: null,
 			size: 'all',
 		});
-	}, [activeTab]);
+	}, [activeTab, form]);
 
 	useEffect(() => {
 		if (

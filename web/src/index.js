@@ -89,21 +89,22 @@ const getConfigs = async () => {
 		injected_values = [],
 		injected_html = {},
 		captcha = {},
+		defaults = {},
 	} = kitData;
 
 	store.dispatch(setConfig(kitData));
-	if (kitData.defaults) {
+	if (defaults) {
 		const themeColor = localStorage.getItem('theme');
 		const isThemeValid = hasTheme(themeColor, kitData.color);
 		const language = localStorage.getItem(LANGUAGE_KEY);
 
-		if (kitData.defaults.theme && (!themeColor || !isThemeValid)) {
-			store.dispatch(changeTheme(kitData.defaults.theme));
-			localStorage.setItem('theme', kitData.defaults.theme);
+		if (defaults.theme && (!themeColor || !isThemeValid)) {
+			store.dispatch(changeTheme(defaults.theme));
+			localStorage.setItem('theme', defaults.theme);
 		}
 
-		if (!language && kitData.defaults.language) {
-			store.dispatch(setLanguage(kitData.defaults.language));
+		if (!language && defaults.language) {
+			store.dispatch(setLanguage(defaults.language));
 		}
 	}
 	if (kitData.info) {
@@ -193,6 +194,8 @@ const getConfigs = async () => {
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,
 		captcha,
+		valid_languages,
+		defaults,
 	});
 
 	const {

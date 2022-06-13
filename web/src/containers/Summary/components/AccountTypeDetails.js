@@ -3,8 +3,7 @@ import classnames from 'classnames';
 
 import TraderAccounts from './TraderAccounts';
 import SummaryRequirements, { getRequirements } from './SummaryRequirements';
-
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const AccountTypeDetails = ({
 	user,
