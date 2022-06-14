@@ -1,0 +1,89 @@
+{
+	"FOOTER": {
+		"FOOTER_LEGAL": ["Proudly made in Seoul, South Korea", "bitHolla Inc."],
+		"XHT_DESCRIPTION": "HollaEx Kit is an open source trading platform built by bitHolla Inc. You can create and list any digital assets and onboard users to trade on your exchange using this exchange Kit. In order to simply run one yourself {1}."
+	},
+	"LEGAL": {
+		"PRIVACY_POLICY": {
+			"TEXTS": [
+				"HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
+				"Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
+				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
+				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
+				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
+				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
+				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
+			]
+		},
+		"GENERAL_TERMS": {
+			"TEXTS": [
+				"HollaEx Web is a virtual trading platform that is wholly owned by bitHolla Inc. bitHolla Inc (hereinafter referred to as bitHolla) was incorporated in Seoul South Korea.",
+				"Use of this HollaEx website (“Website”) and the service offered on the Website (“Service”) are governed by the terms contained on this Terms and Conditions page (“Terms”). This agreement entirely constitutes the agreement between the parties. All other information provided on the Website or oral/written statements made are excluded from this agreement; the exchange policy is provided for guidance only and does not constitute a legal agreement between the parties.",
+				"By accessing, viewing or downloading information from the Website and using the Service provided by bitHolla you acknowledge that you have read, understand, and unconditionally agree to be bound by these Terms. bitHolla may at any time, without notice, amend the Terms. You agree to continue to be bound by any amended terms and conditions and that bitHolla has no obligation to notify you of such amendments. You acknowledge that it is your responsibility to check these Terms periodically for changes and that your continued use of the Website and Services offered by bitHolla following the posting of any changes to the Terms indicates your acceptance of any such changes.",
+				"The Website and the copyright in all text, graphics, images, software and any other materials on the Website is owned by bitHolla including all trademarks and other intellectual property rights in respect of materials and Service on the Website. Materials on this Website may only be used for personal use and non-commercial purposes.",
+				"You may display on a computer screen or print extracts from the Website for the above-stated purpose only provided that you retain any copyright and other proprietary notices or any bitHolla trademarks or logos, as shown on the initial printout or download without alteration, addition or deletion. Except as expressly stated herein, you may not without bitHolla’s prior written permission alter, modify, reproduce, distribute or use in any other commercial context any materials from the Website.",
+				"You acknowledge that ‘bitHolla’ and the bitHolla logo are trademarks of bitHolla Inc. You may reproduce such trademarks without alteration on material downloaded from this Website to the extent authorised above, but you may not otherwise use, copy, adapt or erase them.",
+				"You shall not in any circumstances obtain any rights over or in respect of the Website (other than rights to use the Website pursuant to these Terms and any other terms and conditions governing a particular service or section of the Website) or hold yourself out as having any such rights over or in respect of the Website."
+			]
+		}
+	},
+	"STAKE": {
+		"REWARDS": {
+			"3": { "CARD": "", "TEXT": "" },
+			"4": { "CARD": "", "TEXT": "" }
+		}
+	},
+	"SETTINGS_ORDERPOPUP_OPTIONS": [
+		{ "value": false, "label": "NO" },
+		{ "value": true, "label": "YES" }
+	],
+	"SETTINGS_THEME_OPTIONS": [
+		{ "value": "white", "label": "White" },
+		{ "value": "dark", "label": "Dark" }
+	],
+	"SUMMARY": {
+		"LEVEL_1_TXT": "Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.",
+		"LEVEL_2_TXT": "Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.",
+		"LEVEL_3_TXT": "This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation",
+		"LEVEL_4_TXT": "Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.",
+		"LEVEL_5_TXT": "You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.",
+		"LEVEL_6_TXT": "Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.",
+		"LEVEL_7_TXT": "Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.",
+		"LEVEL_8_TXT": "Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.",
+		"LEVEL_9_TXT": "Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.",
+		"LEVEL_10_TXT": "The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.",
+		"TRADER_ACCOUNT_XHT_TEXT": "Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.",
+		"HAP_ACCOUNT_TXT": "Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT."
+	},
+	"STAKE_TOKEN": {
+		"TITLE": "Stake HollaEx Token",
+		"INFO_TXT1": "HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.",
+		"INFO_TXT2": "You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.",
+		"INFO_TXT3": "Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT",
+		"BUTTON_TXT": "FIND OUT MORE"
+	},
+	"TERMS_OF_SERVICES": {
+		"TITLE": "HollaEx Token Purchase Agreement",
+		"PROCEED": "PROCEED",
+		"AGREE_TERMS_LABEL": "I have read and agree to the HollaEx Token Purchase Agreement",
+		"RISK_INVOLVED_LABEL": "I understand the risks involved",
+		"DOWNLOAD_PDF": "Download the PDF",
+		"DEPOSIT_FUNDS": "Deposit funds into your wallet to obtain HollaEx Token (XHT)",
+		"READ_FAG": "Read HollaEx FAQ here: {0}",
+		"READ_DOCUMENTATION": "Read HollaEx whitepaper here: {0}",
+		"READ_WAVES": "Rules for the coming December Public Wave Auction{0}",
+		"DOWNLOAD_BUY_XHT": "Download the PDF to see a visual step-by-step processes on {0}",
+		"HOW_TO_BUY": "how to buy HollaEx Token (XHT)",
+		"PUBLIC_SALES": " Public Wave Auction",
+		"CONTACT_US": "Feel free to contact us for more information and any issues by sending us an email to {0}",
+		"VISUAL_STEP": "See a visual step-by-step processes on {0}",
+		"WARNING_TXT": "We will review your request and send further instructions to your email on how to access the HollaEx exchange.",
+		"WARNING_TXT1": "In the mean time you can familiarize yourself with the HollaEx network with the resources below",
+		"XHT_ORDER_TXT_1": "To start trading you must login",
+		"XHT_ORDER_TXT_2": "",
+		"XHT_ORDER_TXT_3": "{0} or {1}",
+		"XHT_TRADE_TXT_1": "Login to see your recent trades",
+		"XHT_TRADE_TXT_2": "You can {0} to see your recent trade history",
+		"LOGIN_HERE": "login here"
+	}
+}

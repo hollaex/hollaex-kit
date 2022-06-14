@@ -110,7 +110,6 @@ export const getTheme = ({
 	'mainSeriesProperties.baselineStyle.priceSource': 'close',
 	'mainSeriesProperties.baselineStyle.transparency': 50,
 	'mainSeriesProperties.baselineStyle.baseLevelPercentage': 50,
-
 });
 
 export const getVolume = ({
