@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-
 import { Table, Button, IconTitle } from 'components';
 import renderFields from 'components/Form/factoryFields';
 import STRINGS from 'config/localizedStrings';
-import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { formatBaseAmount } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { EditWrapper } from 'components';
 
 export const generateHeaders = (onAdjustPortfolio) => {

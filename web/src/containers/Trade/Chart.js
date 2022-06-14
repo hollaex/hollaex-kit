@@ -123,14 +123,9 @@ class TVChartContainer extends React.PureComponent {
 				resolution,
 				{ from, to, firstDataRequest },
 				onHistoryCallback,
-				onErrorCallback,
+				onErrorCallback
 			) {
-				getChartHistory(
-					symbolInfo.ticker,
-					resolution,
-					from,
-					to,
-				)
+				getChartHistory(symbolInfo.ticker, resolution, from, to)
 					.then(({ data }) => {
 						if (data.length) {
 							const bars = data.map((bar) => {
@@ -272,7 +267,7 @@ class TVChartContainer extends React.PureComponent {
 			range: 'ytd',
 			disabled_features: [
 				'use_localstorage_for_settings',
-				'header_symbol_search'
+				'header_symbol_search',
 			],
 			preset: isMobile ? 'mobile' : '',
 			enabled_features: ['items_favoriting', 'support_multicharts'],
@@ -303,7 +298,7 @@ class TVChartContainer extends React.PureComponent {
 		};
 
 		const tvWidget = new widget(widgetOptions);
-		
+
 		this.tvWidget = tvWidget;
 
 		tvWidget.onChartReady(() => {
@@ -315,20 +310,22 @@ class TVChartContainer extends React.PureComponent {
 				// tvWidget.chart().createStudy('MACD', false, false, [14, 30, 'close', 9])
 
 				tvWidget.headerReady().then(() => {
-
-					const pane = tvWidget.chart().getPanes()
+					const pane = tvWidget.chart().getPanes();
 					if (pane.length && pane[1]) {
-						pane[1].setHeight(10)
+						pane[1].setHeight(10);
 					}
-					
-					const newWindowButton = tvWidget.createButton({ align: 'right' })
-					newWindowButton.setAttribute('title', 'Open the trading view chart in a new tab.')
-					newWindowButton.classList.add('apply-common-tooltip')
+
+					const newWindowButton = tvWidget.createButton({ align: 'right' });
+					newWindowButton.setAttribute(
+						'title',
+						'Open the trading view chart in a new tab.'
+					);
+					newWindowButton.classList.add('apply-common-tooltip');
 					newWindowButton.addEventListener('click', () => {
-							if (window) {
-								window.open(`/chart-embed/${symbol}`, '_blank');
-							}
-						});
+						if (window) {
+							window.open(`/chart-embed/${symbol}`, '_blank');
+						}
+					});
 					// tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
 					// tvWidget.changeTheme(widgetTheme);
 
