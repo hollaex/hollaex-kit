@@ -1,15 +1,11 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-
 	"LOGOUT_CONFIRM_TEXT": "¿Está seguro?. Quiere cerrar sesión",
 	"ADD_TRADING_PAIR": "Agregar Par de Intercambio",
-	"ACTIVE_TRADES": "Necesita {0} para accesar al intercambio de activos",
 	"CANCEL_BASE_WITHDRAWAL": "Cancelar {0} Retiro",
 	"CANCEL_WITHDRAWAL": "Cancelar Retiro",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Quiere cancelar su retiro pendiente de:",
-	"CANT_BE_CANCELLED": "-",
-	"ALREADY_CANCELLED": "-",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "Iniciar Sesión",
@@ -17,17 +13,14 @@
 	"SIGNUP_TEXT": "Registrarse",
 	"REGISTER_TEXT": "Registrar",
 	"ACCOUNT_TEXT": "Cuenta",
-	"HOME_TEXT": "Home",
 	"CLOSE_TEXT": "Cerrar",
 	"COPY_TEXT": "Copiar",
 	"COPY_SUCCESS_TEXT": "Copiado Exitosamente",
 	"CANCEL_SUCCESS_TEXT": "¡Cancelado Exitosamente",
-	"UPLOAD_TEXT": "Cargar",
 	"ADD_FILES": "AGREGAR ARCHIVOS",
 	"OR_TEXT": "O",
 	"CONTACT_US_TEXT": "Contáctenos",
 	"HELPFUL_RESOURCES_TEXT": "Recursos de Ayuda",
-	"HELP_RESOURCE_GUIDE_TEXT": "Contáctar support@hollaex.com para más información y enviar correo si hay algún problema",
 	"HELP_RESOURCE_GUIDE": {
 		"CONTACT_US": "Contáctenos",
 		"TEXT": "{0} libremente para más información y cualquier problema enviando un correo electrónico"
@@ -125,13 +118,6 @@
 		"TAB_API": "API",
 		"TAB_SIGNOUT": "Cerrar Sesión"
 	},
-	"REQUEST_XHT_ACCESS": {
-		"REQUEST_TITLE": "Solicitar Acceso",
-		"REQUEST_INVITE": "Solicitar Invitación",
-		"CATEGORY_PLACEHOLDER": "Seleccionar la categoría que mejor se adapta a su problema",
-		"INTRODUCTION_LABEL": "Introducirse",
-		"INTRODUCTION_PLACEHOLDER": "¿Dónde está basado?, ¿está interesado en ejecutar una exchange?"
-	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Categoría",
 		"CATEGORY_PLACEHOLDER": "Seleccionar la categoría que mejor se adapta a su problema",
@@ -220,10 +206,7 @@
 			"INFORMATION_PENDING_2": "Estoy puede tardar 10-30 minutos. Vamos a enviar un correo una vez que {0} es confirmado en el blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": {
-		"TITLE": "Solicitud enviada",
-		"BUTTON_TEXT": "Okay"
-	},
+	"REFERRAL_SUCCESS": { "TITLE": "Solicitud enviada", "BUTTON_TEXT": "Okay" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Introducir su código de autenticación para continuar",
 		"OTP_LABEL": "Código OTP",
@@ -379,10 +362,7 @@
 				"FULL_NAME_PLACEHOLDER": "Escriba su nombre completo como aparece en su documento de identidad",
 				"GENDER_LABEL": "Género",
 				"GENDER_PLACEHOLDER": "Escribir su género",
-				"GENDER_OPTIONS": {
-					"MAN": "Masculino",
-					"WOMAN": "Femenino"
-				},
+				"GENDER_OPTIONS": { "MAN": "Masculino", "WOMAN": "Femenino" },
 				"NATIONALITY_LABEL": "Nacionalidad",
 				"NATIONALITY_PLACEHOLDER": "Escribir su nacionalidad que aparece en su documento de identidad",
 				"DOB_LABEL": "Fecha de nacimiento",
@@ -426,10 +406,7 @@
 			"FORM_FIELDS": {
 				"TYPE_LABEL": "Tipo de Documento ID",
 				"TYPE_PLACEHOLDER": "Seleccionar Tipo de Identidad de documento",
-				"TYPE_OPTIONS": {
-					"ID": "ID",
-					"PASSPORT": "Pasaporte"
-				},
+				"TYPE_OPTIONS": { "ID": "ID", "PASSPORT": "Pasaporte" },
 				"ID_NUMBER_LABEL": "Número de pasaporte",
 				"ID_NUMBER_PLACEHOLDER": "Escribir su número de pasaporte",
 				"ID_PASSPORT_NUMBER_LABEL": "Número de Pasaporte",
@@ -594,7 +571,6 @@
 				"SECRET_2": "Please enter your secret key to confirm you wrote it down.",
 				"SECRET_3": "This secret key will help you recover your account if you lost access to your phone.",
 				"INPUT_1": "Secret Key",
-
 				"TITLE_2": "Enter One-Time Password (OTP)",
 				"MESSAGE_6": "Please enter your 6-digit one-time password below.",
 				"INPUT_2": "One-Time Password (OTP)"
@@ -652,34 +628,17 @@
 	},
 	"CURRENCY": "Divisa",
 	"TYPE": "Type",
-	"TYPES_VALUES": {
-		"market": "market",
-		"limit": "limit"
-	},
-	"TYPES": {
-		"MARKET": "MERCADO",
-		"LIMIT": "LÍMITE"
-	},
+	"TYPES_VALUES": { "market": "market", "limit": "limit" },
+	"TYPES": { "MARKET": "MERCADO", "LIMIT": "LÍMITE" },
 	"SIDE": "Side",
-	"SIDES_VALUES": {
-		"buy": "compra",
-		"sell": "venta"
-	},
-	"SIDES": {
-		"BUY": "compra",
-		"SELL": "venta"
-	},
-	"DEFAULT_TOGGLE_OPTIONS": {
-		"ON": "Sí",
-		"OFF": "No"
-	},
+	"SIDES_VALUES": { "buy": "compra", "sell": "venta" },
+	"SIDES": { "BUY": "compra", "SELL": "venta" },
+	"DEFAULT_TOGGLE_OPTIONS": { "ON": "Sí", "OFF": "No" },
 	"SIZE": "Monto",
 	"PRICE": "Límite",
 	"FEE": "Tarifa",
 	"FEES": "Tarifas",
-	"LIMIT": "Límite",
 	"TIME": "Tiempo",
-	"TIMESTAMP": "Sello de tiempo",
 	"MORE": "Más",
 	"VIEW": "Ver",
 	"STATUS": "Estado",
@@ -690,12 +649,10 @@
 	"ORDERBOOK": "Libro de órdenes",
 	"CANCEL": "Cancelar",
 	"CANCEL_ALL": "Cancelar todo",
-	"GO_TRADE_HISTORY": "Ir a la historia de la transacción",
 	"ORDER_ENTRY": "entrada de órdenes",
 	"TRADE_HISTORY": "historia",
 	"CHART": "tabla de precios",
 	"ORDERS": "mis órdenes activas",
-	"TRADES": "mi historial de transacciones",
 	"RECENT_TRADES": "mis recientes transacciones",
 	"PUBLIC_SALES": "ventas públicas",
 	"REMAINING": "restante",
@@ -706,9 +663,7 @@
 	"INCOMING": "Recibido",
 	"PRICE_CURRENCY": "PRECIO",
 	"AMOUNT_SYMBOL": "CANTIDAD",
-	"MARKET_PRICE": "Precio de mercado",
 	"ORDER_PRICE": "Predio de la orden",
-	"TOTAL_ORDER": "Orden total",
 	"NO_DATA": "Sin datos",
 	"LOADING": "Cargando",
 	"CHART_TEXTS": {
@@ -721,15 +676,11 @@
 	},
 	"QUICK_TRADE": "Cambio ràpido",
 	"PRO_TRADE": "Intercambio Pro",
-	"ADMIN_DASH": "Pàgina Admin",
 	"WALLET_TITLE": "Monedero",
-	"TRADING_MODE_TITLE": "Modo Intercambio",
-	"TRADING_TITLE": "Intercambio",
 	"LOGOUT": "Cerrar sesión",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "La transacciòn es un pequeña para enviar. Intentar una cantidad mayor.",
 	"WITHDRAWALS_MAX_VALUE_ERROR": "La transacciòn a enviar es muy grande. Intentar una cantidad menor.",
 	"WITHDRAWALS_LOWER_BALANCE": "Usted no tiene suficiente {0} en su balance para enviar la transacciòn ",
-	"WITHDRAWALS_FEE_TOO_LARGE": "La tarifa es màs de {0}% de su transacciòn total",
 	"WITHDRAWALS_BTC_INVALID_ADDRESS": "La direcciòn de Bitcoin es invàlida. Por favor revisar cuidadosamente e introducir otra vez",
 	"WITHDRAWALS_ETH_INVALID_ADDRESS": "La direcciòn de Ethereum es invàlida. Por favor revisar cuidadosamente e introducir otra vez",
 	"WITHDRAWALS_BUTTON_TEXT": "Revisar Retiro",
@@ -738,37 +689,11 @@
 	"WITHDRAWALS_FORM_DESTINATION_TAG_LABEL": "Destination tag (optional)",
 	"WITHDRAWALS_FORM_MEMO_LABEL": "Memo (optional)",
 	"WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER": "Type the destination tag",
-	"WITHDRAWALS_FORM_MEMO_PLACEHOLDER": "Type the transaction memo",
 	"WITHDRAWALS_FORM_AMOUNT_LABEL": "Cantidad de {0} para retirar",
 	"WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER": "Type the amount of {0} you wish to withdraw",
 	"WITHDRAWALS_FORM_FEE_COMMON_LABEL": "Tarifa de Transacción",
-	"WITHDRAWALS_FORM_FEE_FIAT_LABEL": "Bank withdrawal fee",
 	"WITHDRAWALS_FORM_FEE_PLACEHOLDER": "Type the amount of {0} you wish to use in the fee of the transaction",
-	"WITHDRAWALS_FORM_FEE_OPTIMAL_VALUE": "Optimal fee: {0} {1}",
-	"DEPOSITS_FORM_AMOUNT_LABEL": "{0} amount to deposit",
-	"DEPOSITS_FORM_AMOUNT_PLACEHOLDER": "Type the amount of {0} you wish to withdraw",
-	"DEPOSITS_BUTTON_TEXT": "review deposit",
-	"DEPOSIT_PROCEED_PAYMENT": "Pagar",
 	"DEPOSIT_BANK_REFERENCE": "Añade este código \"{0}\" a la transacción bancaria para identificar el depósito",
-	"DEPOSIT_METHOD": "Método de pago {0}",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT": "Tarjeta de crédito",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_1": "Proceda a la forma de pago con tarjeta de crédito.",
-	"DEPOSIT_METHOD_DIRECT_PAYMENT_MESSAGE_2": "Saldrá de la plataforma para realizar el pago.",
-	"DEPOSIT_VERIFICATION_WAITING_TITLE": "Verificando el pago",
-	"DEPOSIT_VERIFICATION_WAITING_MESSAGE": "Por favor, no cierre la solicitud mientras se verifica el pago.",
-	"DEPOSIT_VERIFICATION_WARNING_MESSAGE": "Si algo salió mal en la verificación, por favor contáctenos.",
-	"DEPOSIT_VERIFICATION_WARNING_INFORMATION": "Esta es la identificación de la operación: \"{0}\", por favor, proporciónenos esta identificación para ayudarle.",
-	"DEPOSIT_VERIFICATION_SUCCESS": "Pago verificado",
-	"DEPOSIT_VERIFICATION_ERROR": "Ha habido un error al verificar el depósito.",
-	"DEPOSIT_VERIFICATION_ERROR_VERIFIED": "El depósito ya ha sido verificado",
-	"DEPOSIT_VERIFICATION_ERROR_STATUS": "Estado inválido",
-	"DEPOSIT_VERIFICATION_ERROR_USER_MATCH": "La tarjeta que realizó el depósito no es el mismo de la tarjeta que registró. Por lo tanto, su depósito es rechazado y los fondos van a ser reembolsados en menos de una hora.",
-	"QUOTE_MESSAGE": "Usted va a {0} {1} {2} para {3} {4}",
-	"QUOTE_BUTTON": "Aceptar",
-	"QUOTE_REVIEW": "Revisar",
-	"QUOTE_COUNTDOWN_MESSAGE": "Usted tiene {0} segundos para realizar la operación",
-	"QUOTE_EXPIRED_TOKEN": "The quote token has expired.",
-	"QUOTE_SUCCESS_REVIEW_TITLE": "Quick Trade",
 	"QUOTE_SUCCESS_REVIEW_MESSAGE": "You have successfully {0} {1} {2}",
 	"COUNTDOWN_ERROR_MESSAGE": "Countdown is finished",
 	"WITHDRAW_PAGE": {
@@ -794,21 +719,15 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "retirar",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "recibir",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "enviar",
-	"AVAILABLE_TEXT": "Disponible",
 	"AVAILABLE_BALANCE_TEXT": "Balance Disponible {0} : {1} {2}",
 	"BALANCE_TEXT": "Balance",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
-	"WALLET_TABLE_AMOUNT_IN": "Cantidad en {0}",
-	"WALLET_TABLE_TOTAL": "Gran Total",
 	"WALLET_ALL_ASSETS": "Todos los activos",
-	"HIDE_TEXT": "Hide",
 	"PAGINATOR_FORMAT": "{0} / {1}",
 	"ORDERBOOK_SELLERS": "Vendedores",
 	"ORDERBOOK_BUYERS": "Compradores",
 	"ORDERBOOK_SPREAD": "{0} spread",
-	"ORDERBOOK_SPREAD_PRICE": "{0} {1}",
 	"CALCULATE_MAX": "Max",
-	"DATEFIELD_TOOGLE_DATE_GR": "Gregorian calendar",
 	"VERIFICATION_WARNING_TITLE": "Verification you bank details",
 	"VERIFICATION_WARNING_MESSAGE": "Antes de hacer un retiro, debe verificar sus datos bancarios.",
 	"ORDER_SPENT": "Spent",
@@ -834,10 +753,6 @@
 	"QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED": "El pedido con el tamaño actual no puede ser llenado",
 	"QUICK_TRADE_ORDER_NOT_FILLED": "Order is not filled",
 	"QUICK_TRADE_NO_BALANCE": "Insufficient balance to perform the order",
-	"YES": "Yes",
-	"NO": "No",
-	"NEXT": "Next",
-	"SKIP_FOR_NOW": "Skip for now",
 	"SUBMIT": "Enviar",
 	"RESUBMIT": "Resubmit",
 	"VERIFICATION_NOTIFICATION_SKIP_TITLE": "Missing Documents!",
@@ -857,14 +772,11 @@
 	"CHECK_ORDER": "Check and confirm your order",
 	"CHECK_ORDER_TYPE": "{0} {1}",
 	"CONFIRM_TEXT": "CONFIRMAR",
-	"GOTO_XHT_MARKET": "Go to XHT market",
 	"INVALID_CAPTCHA": "Invalid captcha",
 	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Preferencia de Idioma (Incluye correos electrònicos)",
-	"SETTINGS_ORDERPOPUP_LABEL": "Display order confirmation popup",
 	"SETTINGS_THEME_LABEL": "Tema de Interface de Usuario",
 	"SETTING_BUTTON": "guardar",
-	"STRING_WITH_PARENTHESIS": "{0} ({1})",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Retiros deshabilitados",
 	"VERIFICATION_NO_WITHDRAW_MESSAGE": "Su cuenta està deshabilitada para retiros",
 	"UP_TO_MARKET": "Arriba de mercado",
@@ -1074,25 +986,6 @@
 		"TXT_2": "{0} o {1}",
 		"LOGIN_HERE": "Ingresa aquí"
 	},
-	"WAVES": {
-		"TITLE": "Información sobre la ola",
-		"NEXT_WAVE": "próxima ola",
-		"WAVE_AMOUNT": "Cantidad en la Ola",
-		"FLOOR": "Piso",
-		"LAST_WAVE": "última ola"
-	},
-	"TYPES_OF_POSTS": {
-		"TITLE": "PUBLICACIONES",
-		"ANNOUNCEMEN": "Anuncio",
-		"SYSTEM_UPDATE": "Actualización del sistema",
-		"LAST_WAVE": "última ola",
-		"ANNOUNCEMENT_TXT": "XHT gratuito se distribuirá a todas las carteras que lo soliciten",
-		"SYSTEM_UPDATE_TIME": "Hora: 12:31 PM, 19 de diciembre de 2019",
-		"SYSTEM_UPDATE_DURATION": "1 hora",
-		"LAST_WAVE_AMOUNT": "100, 213 XHT",
-		"LAST_WAVE_REDISTRIBUTED": " 11, 211",
-		"LAST_WAVE_TIME": " 12: 31 PM, 19 de diciembre de 2019"
-	},
 	"USER_LEVEL": "Nivel del usuario",
 	"LIMIT_AMOUNT": "Cantidad límite",
 	"FEE_AMOUNT": "Importe de tasa",
@@ -1100,7 +993,6 @@
 	"PAIRS": "Pares",
 	"NOTE_FOR_EDIT_COIN": "Nota: Para agregar y quitar {0} por favor consulte el {1}.",
 	"REFER_DOCS_LINK": "docs",
-	"RESTART_TO_APPLY": "Necesita reiniciar su intercambio para aplicar estos cambios.",
 	"EXPIRED_INFO_1": "Su prueba ha terminado.",
 	"EXPIRED_INFO_2": "Colabora con el intercambio para activarlo de nuevo.",
 	"EXPIRED_BUTTON_TXT": "ACTIVAR INTERCAMBIO",
@@ -1115,12 +1007,8 @@
 		"APPLY_TODAY": "Aplicar hoy"
 	},
 	"OPEN_WALLET": "Abrir billetera",
-	"AGO": "ago",
 	"ALL": "Todos",
-	"MARKET_OPTIONS": {
-		"LIST": "LISTA",
-		"CARD": "CUADRO"
-	},
+	"MARKET_OPTIONS": { "LIST": "LISTA", "CARD": "CUADRO" },
 	"ONE_DAY": "1 día",
 	"ONE_WEEK": "1 semana",
 	"MONTH": "{0} mes",
@@ -1137,12 +1025,9 @@
 		"HEADER_ROW_DESCRIPTION": "24h Permiso de Depósito y Retiro de todos los activos（Cuentas Nivel {0})",
 		"HEADER_ROW_AMOUNT": "Cantidad 24h ({0})"
 	},
-	"MARKETS_TABLE": {
-		"VIEW_MARKETS": "Ver más mercados"
-	},
+	"MARKETS_TABLE": { "VIEW_MARKETS": "Ver más mercados" },
 	"DEPOSIT_STATUS": {
 		"STATUS_DESCRIPTION": "Puede revisar el estado de su depósito introduciendo el ID de transacción (hash) abajo.",
-
 		"SEARCH_FIELD_LABEL": "Pegar su ID de transacción",
 		"CURRENCY_FIELD_LABEL": "Seleccionar moneda",
 		"ADDRESS_FIELD_LABEL": "Pegar la dirección"
