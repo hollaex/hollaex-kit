@@ -36,6 +36,7 @@ import {
 	setDefaultLogo,
 	consoleKitInfo,
 	getContracts,
+	modifySections,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -113,7 +114,7 @@ const getConfigs = async () => {
 		store.dispatch(setInfo({ ...kitData.info }));
 	}
 
-	kitData['sections'] = sections;
+	kitData['sections'] = modifySections(sections);
 
 	const promises = {};
 	Object.keys(remoteVersions).forEach((key) => {
