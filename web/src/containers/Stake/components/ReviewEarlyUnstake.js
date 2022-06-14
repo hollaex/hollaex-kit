@@ -1,78 +1,110 @@
 import React, { Fragment } from 'react';
-import { EditWrapper, Button, IconTitle, ProgressBar, Image } from 'components';
+import {
+	EditWrapper,
+	Button,
+	IconTitle,
+	ProgressBar,
+	ActionNotification,
+} from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import AmountPreview from './AmountPreview';
+import mathjs from 'mathjs';
 
 const ReviewEarlyUnstake = ({
 	stakeData,
+	onClose,
 	onCancel,
 	onProceed,
 	icons: ICONS,
+	penalties,
 }) => {
-	const { partial, total, progressStatusText, reward, symbol } = stakeData;
-	const iconId = `${symbol.toUpperCase()}_ICON`;
+	const {
+		amount,
+		partial,
+		total,
+		progressStatusText,
+		reward,
+		symbol,
+		display_name,
+	} = stakeData;
+	const penalty = penalties[symbol];
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
-		height: '292px',
-		width: '506px',
+		height: '24.3rem',
+		width: '40rem',
 	};
 
-	const headerContent = {};
+	const slashedAmount = mathjs.multiply(amount, mathjs.divide(penalty, 100));
+	const amountToReceive = mathjs.subtract(amount, slashedAmount);
 
 	return (
 		<Fragment>
-			<div className="dialog-content background" style={background}>
-				<div style={headerContent}>
-					<IconTitle
-						stringId="UNSTAKE.EARLY_TITLE"
-						text={STRINGS['UNSTAKE.EARLY_TITLE']}
-						textType="stake_popup__title"
-						underline={false}
-						className="w-100"
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
 					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
+			<div className="dialog-content background" style={background}>
+				<IconTitle
+					iconId="STAKING_UNLOCK"
+					iconPath={ICONS['STAKING_UNLOCK']}
+					stringId="UNSTAKE.EARLY_TITLE"
+					text={STRINGS['UNSTAKE.EARLY_TITLE']}
+					textType="stake_popup__title m-0 pl-3"
+					underline={false}
+					className="w-100 py-4 flex-direction-row justify-content-start"
+					imageWrapperClassName="stake-unlock-title"
+				/>
 
-					<div className="py-4">
-						<div className="pb-1 bold">
-							<EditWrapper stringId="UNSTAKE.DURATION">
-								{STRINGS['UNSTAKE.DURATION']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<ProgressBar partial={partial} total={total} />
-							<div className="px-2 align-center secondary-text">
-								{progressStatusText}
-							</div>
+				<div className="py-4">
+					<div className="pb-1 bold">
+						<EditWrapper stringId="UNSTAKE.DURATION">
+							{STRINGS['UNSTAKE.DURATION']}
+						</EditWrapper>
+					</div>
+					<div className="d-flex">
+						<ProgressBar partial={partial} total={total} />
+						<div className="px-2 align-center secondary-text">
+							{progressStatusText}
 						</div>
 					</div>
+				</div>
 
-					<div className="pt-4">
-						<div className="pb-1 bold">
-							<EditWrapper stringId="UNSTAKE.EARNINGS_FORFEITED">
-								{STRINGS['UNSTAKE.EARNINGS_FORFEITED']}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="UNSTAKE.PRICE_FORMAT">
-								{STRINGS.formatString(
+				<div className="pt-4">
+					<div className="pb-1 bold">
+						<EditWrapper stringId="UNSTAKE.EARNINGS_FORFEITED">
+							{STRINGS['UNSTAKE.EARNINGS_FORFEITED']}
+						</EditWrapper>
+					</div>
+					<div>
+						<EditWrapper stringId="UNSTAKE.PRICE_FORMAT">
+							{STRINGS.formatString(
+								STRINGS['UNSTAKE.PRICE_FORMAT'],
+								reward,
+								display_name
+							)}
+						</EditWrapper>
+					</div>
+					<div className="secondary-text">
+						<EditWrapper stringId="UNSTAKE.EST_PENDING">
+							{STRINGS.formatString(
+								STRINGS['UNSTAKE.EST_PENDING'],
+								STRINGS.formatString(
 									STRINGS['UNSTAKE.PRICE_FORMAT'],
 									reward,
-									symbol.toUpperCase()
-								)}
-							</EditWrapper>
-						</div>
-						<div className="secondary-text">
-							<EditWrapper stringId="UNSTAKE.EST_PENDING">
-								{STRINGS.formatString(
-									STRINGS['UNSTAKE.EST_PENDING'],
-									STRINGS.formatString(
-										STRINGS['UNSTAKE.PRICE_FORMAT'],
-										'?',
-										symbol.toUpperCase()
-									)
-								)}
-							</EditWrapper>
-						</div>
+									display_name
+								)
+							)}
+						</EditWrapper>
 					</div>
 				</div>
 			</div>
@@ -87,28 +119,16 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
-							symbol.toUpperCase()
+							slashedAmount,
+							display_name
 						)}
 					</div>
 				</div>
-				<div className="pt-4">
-					<div className="bold pb-1">
-						<EditWrapper stringId="UNSTAKE.AMOUNT_TO_RECEIVE">
-							{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}
-						</EditWrapper>
-					</div>
-					<div className="d-flex">
-						<div>
-							<Image
-								iconId={iconId}
-								icon={ICONS[iconId]}
-								wrapperClassName="currency-ball"
-							/>
-						</div>
-						<div className="bold">{`${'?'} ${symbol.toUpperCase()}`}</div>
-					</div>
-				</div>
+				<AmountPreview
+					amount={amountToReceive}
+					symbol={symbol}
+					labelId="UNSTAKE.AMOUNT_TO_RECEIVE"
+				/>
 				<div className="kit-divider" />
 				<div className="pt-3 secondary-text">
 					<EditWrapper stringId="UNSTAKE.SLASH_FOOTNOTE">

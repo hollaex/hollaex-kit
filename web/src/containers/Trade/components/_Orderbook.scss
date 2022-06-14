@@ -1,5 +1,5 @@
 .trade_orderbook-wrapper {
-	height: 49vh;
+	height: 100%;
 	.trade_orderbook-headers {
 		.trade_orderbook-cell {
 			font-size: $font-size-subtext !important;
@@ -44,8 +44,10 @@
 	.price-row-wrapper {
 		margin: 1px 0;
 		text-align: right;
+		transition: all 0.5s ease-out 0s;
 
 		.trade_orderbook-cell-price {
+			transition: all 0.5s ease-out 0s;
 			text-align: left;
 		}
 		.trade_orderbook-cell-amount {
@@ -85,20 +87,12 @@
 		);
 	}
 
-	.wave-header {
-		color: $colors-black;
-	}
-
 	.trade_orderbook-headers {
 		font-weight: bold;
 		border-bottom: 1px solid $colors-border;
 		text-transform: capitalize;
 		min-height: 1.5rem;
 		font-size: 0.85rem;
-
-		.waves-icon {
-			width: 3rem;
-		}
 	}
 
 	.trade_orderbook-content {
@@ -134,6 +128,10 @@
 			}
 			.price-row-wrapper:hover {
 				background-color: $buying-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
 			}
 		}
 		.trade_orderbook-asks {
@@ -142,6 +140,10 @@
 			}
 			.price-row-wrapper:hover {
 				background-color: $selling-orderbook-hover;
+
+				.trade_orderbook-cell-price {
+					color: $colors-main-black !important;
+				}
 			}
 		}
 	}
@@ -157,6 +159,30 @@
 
 	.trade_orderbook-asks {
 		color: $trade-asks-color-main;
+
+		.price-row-wrapper {
+			&.up {
+				&.entering,
+				&.exiting {
+					background-color: $selling-added-bg;
+
+					.trade_orderbook-cell-price {
+						color: $colors-main-black !important;
+					}
+				}
+			}
+
+			&.down {
+				&.entering,
+				&.exiting {
+					background-color: $selling-subtracted-bg;
+
+					.trade_orderbook-cell-price {
+						color: $colors-black !important;
+					}
+				}
+			}
+		}
 	}
 
 	.trade_orderbook-asks > .price-row-wrapper:first-child {
@@ -165,6 +191,13 @@
 		font-weight: bold;
 		.trade_orderbook-cell-price {
 			color: $orderbook-text;
+		}
+
+		&.down {
+			&.entering,
+			&.exiting {
+				background-color: $selling-subtracted-best;
+			}
 		}
 	}
 
@@ -175,10 +208,41 @@
 		.trade_orderbook-cell-price {
 			color: $orderbook-text;
 		}
+
+		&.down {
+			&.entering,
+			&.exiting {
+				background-color: $buying-subtracted-best;
+			}
+		}
 	}
 
 	.trade_orderbook-bids {
 		color: $trade-bids-color-main;
+
+		.price-row-wrapper {
+			&.up {
+				&.entering,
+				&.exiting {
+					background-color: $buying-added-bg;
+
+					.trade_orderbook-cell-price {
+						color: $colors-main-black !important;
+					}
+				}
+			}
+
+			&.down {
+				&.entering,
+				&.exiting {
+					background-color: $buying-subtracted-bg;
+
+					.trade_orderbook-cell-price {
+						color: $colors-black !important;
+					}
+				}
+			}
+		}
 	}
 	.trade_bids-limit_bar {
 		.orderbook-limit_bar-wrapper {
@@ -267,4 +331,103 @@ $limit-bar-side--padding: 0.5rem;
 	.ant-select-selector {
 		color: $colors-main-black !important;
 	}
+}
+
+.price-arrow {
+	color: $colors-main-black;
+	transition: all 0.2s ease-out 0s;
+	opacity: 0;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy;
+			opacity: 1;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell;
+			opacity: 1;
+		}
+	}
+}
+
+.last-price {
+	color: $colors-main-black !important;
+	transition: all 0.2s ease-out 0s;
+
+	&.up {
+		&.entering,
+		&.exiting {
+			color: $buy !important;
+		}
+	}
+
+	&.down {
+		&.entering,
+		&.exiting {
+			color: $sell !important;
+		}
+	}
+}
+
+.orderbook_ask_row-enter {
+	opacity: 0;
+	background-color: $selling-added-bg !important;
+}
+
+.orderbook_ask_row-enter-active {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: $selling-added-bg !important;
+}
+
+.orderbook_ask_row-enter-done {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: transparent;
+}
+
+.orderbook_bid_row-enter {
+	opacity: 0;
+	background-color: $buying-added-bg !important;
+}
+
+.orderbook_bid_row-enter-active {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: $buying-added-bg !important;
+}
+
+.orderbook_bid_row-enter-done {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: transparent;
+}
+
+.orderbook_ask_row-exit {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: $selling-subtracted-best !important;
+}
+
+.orderbook_ask_row-exit-active {
+	opacity: 0;
+	transition: all 0.5s ease-out 0s;
+	background-color: $selling-subtracted-best !important;
+}
+
+.orderbook_bid_row-exit {
+	opacity: 1;
+	transition: all 0.5s ease-out 0s;
+	background-color: $selling-subtracted-best !important;
+}
+
+.orderbook_bid_row-exit-active {
+	opacity: 0;
+	transition: all 0.5s ease-out 0s;
+	background-color: $buying-subtracted-best !important;
 }

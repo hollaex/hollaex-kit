@@ -55,6 +55,46 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.3)
 			.string(),
+		'calculated_trading_selling-subtracted-bg': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.15)
+			.string(),
+		'calculated_trading_selling-added-bg': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(1)
+			.string(),
+		'calculated_trading_buying-subtracted-bg': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.15)
+			.string(),
+		'calculated_trading_buying-added-bg': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(1)
+			.string(),
+		'calculated_trading_buying-best-subtracted': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_trading_selling-best-subtracted': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_public-sale_buying-zeros': Color(
+			themeData['trading_buying-related-elements']
+		)
+			.alpha(0.5)
+			.string(),
+		'calculated_public-sale_selling-zeros': Color(
+			themeData['trading_selling-related-elements']
+		)
+			.alpha(0.5)
+			.string(),
 		'calculated_trading_buying-orderbook-bar': Color(
 			themeData['trading_buying-related-elements']
 		)
@@ -68,12 +108,12 @@ const pushCalculatedColors = (themeData) => {
 		'calculated_trading_buying-orderbook-best-bar': Color(
 			themeData['trading_buying-related-elements']
 		)
-			.alpha(0.55)
+			.alpha(0.45)
 			.string(),
 		'calculated_trading_selling-orderbook-best-bar': Color(
 			themeData['trading_selling-related-elements']
 		)
-			.alpha(0.55)
+			.alpha(0.45)
 			.string(),
 		'calculated_trading_buying-orderbook-hover': Color(
 			themeData['trading_buying-related-elements']
@@ -188,6 +228,24 @@ const pushCalculatedColors = (themeData) => {
 			themeData['base_secondary-navigation-bar']
 		)
 			.alpha(0.1)
+			.string(),
+		'calculated_trade-block_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_stake-table_highlight': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.05)
+			.string(),
+		'calculated_background-overlay': Color(themeData['base_background'])
+			.alpha(0.7)
+			.string(),
+		'calculated_tag-background': Color(
+			themeData['labels_important-active-labels-text-graphics']
+		)
+			.alpha(0.2)
 			.string(),
 	};
 

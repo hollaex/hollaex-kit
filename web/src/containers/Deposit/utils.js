@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import QRCode from 'qrcode.react';
 import { ExclamationCircleFilled } from '@ant-design/icons';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { EditWrapper, Button, SmartTarget } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
 import { getNetworkLabelByKey } from 'utils/wallet';
@@ -98,16 +99,29 @@ const RenderContentForm = ({
 	formFields,
 	icons: ICONS,
 	selectedNetwork,
+	targets,
 }) => {
 	const coinObject = coins[currency];
+	const { icon_id } = coinObject;
+
+	const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
+	const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
+	const id = targets.includes(currencySpecificId)
+		? currencySpecificId
+		: GENERAL_ID;
+
 	if (coinObject && coinObject.type !== 'fiat') {
 		return (
-			<Fragment>
+			<SmartTarget
+				id={currencySpecificId}
+				titleSection={titleSection}
+				currency={currency}
+			>
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form">
 						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="form_currency-ball"
 						/>
 						{titleSection}
@@ -162,12 +176,12 @@ const RenderContentForm = ({
 						</div>
 					)}
 				</div>
-			</Fragment>
+			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {
 		return (
 			<Fiat
-				id="REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT"
+				id={id}
 				titleSection={titleSection}
 				icons={ICONS}
 				currency={currency}
@@ -178,7 +192,13 @@ const RenderContentForm = ({
 	}
 };
 
-export default reduxForm({
+const mapStateToProps = ({ app: { targets } }) => ({
+	targets,
+});
+
+const Form = reduxForm({
 	form: 'GenerateWalletForm',
 	enableReinitialize: true,
 })(RenderContentForm);
+
+export default connect(mapStateToProps)(Form);

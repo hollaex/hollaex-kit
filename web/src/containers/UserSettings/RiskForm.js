@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
-import { Table, Button, IconTitle } from '../../components';
-import renderFields from '../../components/Form/factoryFields';
-import STRINGS from '../../config/localizedStrings';
-import { formatBaseAmount } from '../../utils/currency';
-import {
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
-	IS_XHT,
-} from '../../config/constants';
+import { Table, Button, IconTitle } from 'components';
+import renderFields from 'components/Form/factoryFields';
+import STRINGS from 'config/localizedStrings';
+import { formatBaseAmount } from 'utils/currency';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { EditWrapper } from 'components';
 
 export const generateHeaders = (onAdjustPortfolio) => {
@@ -37,23 +33,19 @@ export const generateHeaders = (onAdjustPortfolio) => {
 				</td>
 			),
 		},
-		!IS_XHT
-			? {
-					stringId: 'USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET',
-					label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.TOMAN_ASSET'],
-					key: 'assetValue',
-					renderCell: ({ id, assetValue }, key, index) => (
-						<td key={`${key}-${id}-assetValue.percentPrice`}>
-							<span
-								className={assetValue.popupWarning ? '' : 'deactive_risk_data'}
-							>
-								{' '}
-								{assetValue.percentPrice}
-							</span>
-						</td>
-					),
-			  }
-			: {},
+		{
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET',
+			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.VALUE_ASSET'],
+			key: 'assetValue',
+			renderCell: ({ id, assetValue }, key, index) => (
+				<td key={`${key}-${id}-assetValue.percentPrice`}>
+					<span className={assetValue.popupWarning ? '' : 'deactive_risk_data'}>
+						{' '}
+						{assetValue.percentPrice}
+					</span>
+				</td>
+			),
+		},
 		{
 			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT',
 			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT'],
@@ -106,7 +98,8 @@ class RiskForm extends Component {
 		} = this.props;
 		const percentPrice =
 			(totalAssets / 100) * initialValues.order_portfolio_percentage;
-		const { fullname, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { fullname, display_name } =
+			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const assetData = [
 			{
 				id: 1,
@@ -118,7 +111,7 @@ class RiskForm extends Component {
 				},
 				assetValue: {
 					percentPrice: percentPrice
-						? `${formatBaseAmount(percentPrice)} ${symbol.toUpperCase()}`
+						? `${formatBaseAmount(percentPrice)} ${display_name}`
 						: 0,
 					popupWarning: initialValues.popup_warning,
 				},
@@ -138,17 +131,15 @@ class RiskForm extends Component {
 								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
 							</EditWrapper>
 						</p>
-						{!IS_XHT ? (
-							<p>
-								<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
-									{STRINGS.formatString(
-										STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
-										fullname,
-										totalAssets
-									).join('')}
-								</EditWrapper>
-							</p>
-						) : null}
+						<p>
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
+								{STRINGS.formatString(
+									STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
+									fullname,
+									totalAssets
+								).join('')}
+							</EditWrapper>
+						</p>
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}

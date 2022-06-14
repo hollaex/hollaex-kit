@@ -52,7 +52,7 @@ checkStatus()
 			Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
 				Object.keys(pathContent).forEach((method) => {
 					if (method.indexOf('swagger') === -1) {
-						if (pathContent[method].hasOwnProperty('tags')) {
+						if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
 							const tags = pathContent[method].tags;
 							const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
 							if (index > -1) {

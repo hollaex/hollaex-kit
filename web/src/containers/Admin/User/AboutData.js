@@ -249,6 +249,7 @@ const AboutData = ({
 	allIcons = {},
 	userTiers,
 	kycPluginName,
+	requestUserData,
 }) => {
 	const [isUpload, setUpload] = useState(false);
 	const [isEdit, setEdit] = useState(false);
@@ -376,8 +377,6 @@ const AboutData = ({
 			return 'user';
 		}
 	};
-
-	const isManualKYC = kycPluginName === 'kyc';
 
 	return (
 		<div>
@@ -565,19 +564,18 @@ const AboutData = ({
 									refreshData={refreshData}
 									closeUpload={() => setUpload(false)}
 									kycPluginName={kycPluginName}
+									requestUserData={requestUserData}
 								/>
 							</div>
-							{isManualKYC && (
-								<div>
-									<Button
-										type="primary"
-										className="green-btn"
-										onClick={() => setUpload(true)}
-									>
-										Upload
-									</Button>
-								</div>
-							)}
+							<div>
+								<Button
+									type="primary"
+									className="green-btn"
+									onClick={() => setUpload(true)}
+								>
+									Upload
+								</Button>
+							</div>
 						</div>
 					</div>
 					<div className="about-notes-content">

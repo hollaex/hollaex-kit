@@ -6,7 +6,7 @@ import { DownloadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin } from './action';
+import { addPlugin, updatePlugins } from './action';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -20,6 +20,7 @@ class MyPlugins extends Component {
 			thirdParty: {},
 			thirdPartyError: '',
 			jsonURL: '',
+			buttonSubmitting: false,
 		};
 	}
 
@@ -73,28 +74,66 @@ class MyPlugins extends Component {
 		}
 	};
 
+	handleNavigation = (res) => {
+		message.success('Added third party plugin successfully');
+		this.props.handleOpenPlugin(res, 'add_plugin');
+	};
+
 	handleAddPlugin = async () => {
-		const { restart } = this.props;
+		const { restart, myPlugins } = this.props;
 		const body = {
 			...this.state.thirdParty,
 			enabled: true,
 		};
-		addPlugin(body)
-			.then((res) => {
-				if (res) {
+		this.setState({ buttonSubmitting: true });
+		const selectedPlugin = myPlugins.filter(
+			(data) =>
+				data.name === body.name &&
+				data.author === body.author &&
+				data.version !== body.version
+		);
+		const existPlugin = myPlugins.filter(
+			(data) => data.name === body.name && data.author === body.author
+		);
+		if (existPlugin.length && !selectedPlugin.length) {
+			message.warning('Plugin is already exist');
+			this.setState({ buttonSubmitting: false });
+		} else if (selectedPlugin.length) {
+			updatePlugins({ name: body.name }, body)
+				.then((res) => {
 					this.onCancel();
-					this.props.handlePluginList(res);
-					restart(() =>
-						message.success('Added third party plugin successfully')
-					);
-				}
-			})
-			.catch((err) => {
-				this.onCancel();
-				const _error =
-					err.data && err.data.message ? err.data.message : err.message;
-				message.error(_error);
-			});
+					if (res) {
+						restart(() =>
+							message.success('Third party plugin updated successfully')
+						);
+						this.setState({ buttonSubmitting: false });
+					}
+				})
+				.catch((err) => {
+					this.onCancel();
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					message.error(_error);
+					this.setState({ buttonSubmitting: false });
+				});
+		} else {
+			addPlugin(body)
+				.then((res) => {
+					if (res) {
+						this.onCancel();
+						this.props.handlePluginList(res);
+						restart(() => this.handleNavigation(res));
+						this.setState({ buttonSubmitting: false });
+					}
+				})
+				.catch((err) => {
+					this.onCancel();
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					message.error(_error);
+					this.setState({ buttonSubmitting: false });
+				});
+		}
 	};
 
 	handleURL = (e) => {
@@ -143,12 +182,7 @@ class MyPlugins extends Component {
 	};
 
 	checkJSON = (json) => {
-		if (
-			json &&
-			json.name &&
-			json.version &&
-			json.author
-		) {
+		if (json && json.name && json.version && json.author) {
 			return true;
 		} else {
 			return false;
@@ -205,6 +239,7 @@ class MyPlugins extends Component {
 			isConfirm,
 			thirdParty,
 			thirdPartyError,
+			buttonSubmitting,
 		} = this.state;
 		switch (step) {
 			case 2:
@@ -319,7 +354,7 @@ class MyPlugins extends Component {
 									type="primary"
 									className="remove-btn"
 									onClick={this.handleAddPlugin}
-									disabled={isConfirm}
+									disabled={isConfirm || buttonSubmitting}
 								>
 									Add
 								</Button>

@@ -20,7 +20,8 @@ export const generateInitialValues = (
 	symbol,
 	coins = {},
 	networks,
-	network
+	network,
+	query
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
@@ -48,6 +49,10 @@ export const generateInitialValues = (
 
 	if (networks && networks.length > 0) {
 		initialValues.network = network;
+	}
+
+	if (network && query && network === query.network && query.address) {
+		initialValues.address = query.address;
 	}
 
 	return initialValues;
@@ -229,19 +234,10 @@ export const generateFormValues = (
 		if (coins[symbol]) {
 			const { fullname: feeFullname } = coins[fee_coin] || coins[symbol];
 
-			// const notification = {
-			//     status: 'information',
-			//     iconPath: ICONS[`${fee_coin.toUpperCase()}_ICON`],
-			//     className: 'currency-ball',
-			//     useSvg: true,
-			//     onClick: () => {},
-			// }
-
 			fields.fee = {
 				type: 'number',
 				stringId:
 					'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
-				// label: STRINGS[`WITHDRAWALS_FORM_FEE_${symbol.toUpperCase()}_LABEL`],
 				label: STRINGS.formatString(
 					STRINGS[
 						fee_coin && fee_coin !== symbol

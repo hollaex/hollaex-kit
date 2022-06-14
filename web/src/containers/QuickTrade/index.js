@@ -5,23 +5,30 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import math from 'mathjs';
-import { QuickTradeLimitsSelector } from './utils';
+import { QuickTradeLimitsSelector, BrokerLimitsSelector } from './utils';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
+import debounce from 'lodash.debounce';
+import { message } from 'antd';
+import _floor from 'lodash/floor';
 
-import { submitOrder } from 'actions/orderAction';
+import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
 
 import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
 import ReviewBlock from 'components/QuickTrade/ReviewBlock';
 import { changeSymbol } from 'actions/orderbookAction';
 import { formatNumber, formatPercentage } from 'utils/currency';
-import { isLoggedIn } from 'utils/token';
+import { isLoggedIn, getToken } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
 import { changePair, setNotification } from 'actions/appActions';
+import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
+import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { getBroker } from 'containers/Admin/Trades/actions';
 
 // const DECIMALS = 4;
 
@@ -29,18 +36,64 @@ class QuickTradeContainer extends PureComponent {
 	constructor(props) {
 		super(props);
 		const {
-			routeParams: { pair },
+			routeParams,
 			sourceOptions,
 			tickers,
+			pairs,
+			router,
+			broker,
 		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
-		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
-		const { close: tickerClose } = tickers[pair] || {};
 
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+		const brokerPairs = broker.map((br) => br.symbol);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (brokerPairs.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
+		const targetOptions = this.getTargetOptions(selectedSource);
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+
+		this.props.setPriceEssentials({ side });
 		this.state = {
 			pair,
-			side: 'buy',
+			side,
 			tickerClose,
 			showQuickTradeModal: false,
 			targetOptions,
@@ -59,7 +112,18 @@ class QuickTradeContainer extends PureComponent {
 			page: 0,
 			pageSize: 12,
 			searchValue: '',
+			isSelectChange: false,
+			wsInitialized: false,
+			orderbookWs: null,
+			isSourceChanged: false,
+			isShowChartDetails: false,
+			existBroker: {},
+			brokerTargetAmount: undefined,
+			brokerSourceAmount: undefined,
+			isBrokerPaused: false,
 		};
+
+		this.goToPair(pair);
 	}
 
 	getSearchPairs = (value) => {
@@ -101,10 +165,12 @@ class QuickTradeContainer extends PureComponent {
 		if (!isReady) {
 			router.push('/summary');
 		}
+		this.initializeOrderbookWs(routeParams.pair, getToken());
 	}
 
 	componentDidMount() {
-		const { pairs, tickers } = this.props;
+		const { pairs, tickers, broker } = this.props;
+		const { pair, searchValue } = this.state;
 		if (
 			this.props.constants &&
 			this.props.constants.features &&
@@ -114,14 +180,40 @@ class QuickTradeContainer extends PureComponent {
 			this.props.router.push('/account');
 		}
 		if (this.props.sourceOptions && this.props.sourceOptions.length) {
-			this.constructTraget();
+			this.constructTarget();
 		}
-		this.handleMarket(pairs, tickers, this.state.searchValue);
+		this.handleMarket(pairs, tickers, searchValue);
+		let existBroker = {};
+		broker.forEach((item) => {
+			const splitPair = item.symbol.split('-');
+			if (pair === item.symbol || pair === `${splitPair[1]}-${splitPair[0]}`) {
+				existBroker = item;
+			}
+		});
+		const flipPair = this.flipPair(pair);
+		if (Object.keys(existBroker).length) {
+			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+				this.setState({ isShowChartDetails: true, existBroker });
+				this.getBrokerData();
+			} else {
+				this.setState({ isShowChartDetails: false, existBroker });
+				this.getBrokerData();
+			}
+		} else {
+			this.setState({ isShowChartDetails: true, existBroker: {} });
+		}
+		if (existBroker && !existBroker.paused) {
+			this.setState({ isBrokerPaused: false });
+		} else {
+			this.setState({ isBrokerPaused: true });
+		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
 			this.changePair(nextProps.routeParams.pair);
+			this.subscribe(nextProps.routeParams.pair);
+			this.unsubscribe(this.props.routeParams.pair);
 		}
 	}
 
@@ -131,9 +223,257 @@ class QuickTradeContainer extends PureComponent {
 			JSON.stringify(prevProps.sourceOptions) !==
 				JSON.stringify(this.props.sourceOptions)
 		) {
-			this.constructTraget();
+			this.constructTarget();
+		}
+		if (
+			JSON.stringify(prevProps.routeParams.pair) !==
+				JSON.stringify(this.props.routeParams.pair) &&
+			!this.state.isSelectChange
+		) {
+			const {
+				routeParams,
+				sourceOptions,
+				tickers,
+				pairs,
+				router,
+				broker,
+			} = this.props;
+			const pairKeys = Object.keys(pairs);
+			const flippedPair = this.flipPair(routeParams.pair);
+			const brokerPairs = broker.map((br) => br.symbol);
+
+			let pair;
+			let side;
+			let tickerClose;
+			let originalPair;
+			if (brokerPairs.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (brokerPairs.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (pairKeys.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.length) {
+				originalPair = pairKeys[0];
+				pair = pairKeys[0];
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else {
+				router.push('/summary');
+			}
+
+			const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
+			const targetOptions = this.getTargetOptions(selectedSource);
+			const [selectedTarget = targetOptions[0]] = originalPair.split('-');
+			let existBroker = {};
+			this.props.broker.forEach((item) => {
+				const splitPair = item.symbol.split('-');
+				if (
+					pair === item.symbol ||
+					pair === `${splitPair[1]}-${splitPair[0]}`
+				) {
+					existBroker = item;
+				}
+			});
+			const flipPair = this.flipPair(pair);
+			if (Object.keys(existBroker).length) {
+				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
+				} else {
+					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
+				}
+			} else {
+				this.setState({ isShowChartDetails: true, existBroker: {} });
+			}
+
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
+			}
+
+			this.props.setPriceEssentials({
+				side,
+				targetAmount: undefined,
+				sourceAmount: undefined,
+			});
+
+			this.setState({
+				pair,
+				side,
+				tickerClose,
+				targetOptions,
+				selectedSource,
+				selectedTarget,
+			});
+		} else if (this.state.isSelectChange) {
+			const { pair } = this.state;
+			const { pairs } = this.props;
+			let existBroker = {};
+			this.props.broker.forEach((item) => {
+				const splitPair = item.symbol.split('-');
+				if (
+					pair === item.symbol ||
+					pair === `${splitPair[1]}-${splitPair[0]}`
+				) {
+					existBroker = item;
+				}
+			});
+			const flipPair = this.flipPair(pair);
+			if (Object.keys(existBroker).length) {
+				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
+				} else {
+					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
+				}
+			} else {
+				this.setState({ isShowChartDetails: true, existBroker: {} });
+			}
+
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
+			}
+
+			this.setState({
+				isSelectChange: false,
+				targetAmount: undefined,
+				sourceAmount: undefined,
+				brokerTargetAmount: undefined,
+				brokerSourceAmount: undefined,
+			});
 		}
 	}
+
+	componentWillUnmount() {
+		this.closeOrderbookSocket();
+	}
+
+	getBrokerData = async () => {
+		try {
+			await getBroker();
+		} catch (error) {
+			if (error) {
+				message.error(error.message);
+			}
+		}
+	};
+
+	storeData = (data) => {
+		this.props.setOrderbooks(data);
+		this.orderCache = {};
+	};
+
+	storeOrderData = debounce(this.storeData, 250);
+
+	initializeOrderbookWs = (symbol, token = '') => {
+		let url = `${WS_URL}/stream`;
+		if (token) {
+			url = `${WS_URL}/stream?authorization=Bearer ${token}`;
+		}
+
+		const orderbookWs = new WebSocket(url);
+
+		this.setState({ orderbookWs });
+
+		orderbookWs.onopen = (evt) => {
+			this.setState({ wsInitialized: true }, () => {
+				const {
+					routeParams: { pair },
+				} = this.props;
+				this.subscribe(pair);
+			});
+
+			setWsHeartbeat(orderbookWs, JSON.stringify({ op: 'ping' }), {
+				pingTimeout: 60000,
+				pingInterval: 25000,
+			});
+		};
+
+		orderbookWs.onmessage = (evt) => {
+			const data = JSON.parse(evt.data);
+			if (data.topic === 'orderbook')
+				switch (data.action) {
+					case 'partial':
+						const tempData = {
+							...data,
+							[data.symbol]: data.data,
+						};
+						delete tempData.data;
+						this.orderCache = { ...this.orderCache, ...tempData };
+						this.storeOrderData(this.orderCache);
+						break;
+
+					default:
+						break;
+				}
+		};
+
+		orderbookWs.onerror = (evt) => {
+			console.error('orderbook socket error', evt);
+		};
+
+		orderbookWs.onclose = (evt) => {
+			this.setState({ wsInitialized: false });
+
+			if (!isIntentionalClosure(evt)) {
+				setTimeout(() => {
+					this.initializeOrderbookWs(this.props.routeParams.pair, getToken());
+				}, 1000);
+			}
+		};
+	};
+
+	subscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({
+					op: 'subscribe',
+					args: [`orderbook:${pair}`],
+				})
+			);
+		}
+	};
+
+	unsubscribe = (pair) => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.send(
+				JSON.stringify({ op: 'unsubscribe', args: [`orderbook:${pair}`] })
+			);
+		}
+	};
+
+	closeOrderbookSocket = () => {
+		const { orderbookWs, wsInitialized } = this.state;
+		if (orderbookWs && wsInitialized) {
+			orderbookWs.close(NORMAL_CLOSURE_CODE);
+		}
+	};
 
 	changePair = (pair) => {
 		this.setState({ pair });
@@ -153,73 +493,128 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onExecuteTrade = () => {
-		const { side, targetAmount, pair, sourceAmount } = this.state;
-		const { pairs } = this.props;
+		const {
+			side,
+			pair,
+			existBroker,
+			brokerSourceAmount,
+			brokerTargetAmount,
+		} = this.state;
+		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
 		const { increment_size } = pairData;
 
 		let size;
 		let price;
-		if (side === 'buy') {
-			[size, price] = [targetAmount, sourceAmount];
-		} else {
-			[price, size] = [targetAmount, sourceAmount];
-		}
 
-		const orderData = {
-			type: 'market',
-			side,
-			size: formatNumber(size, getDecimals(increment_size)),
-			symbol: pair,
-		};
+		if (!Object.keys(existBroker).length) {
+			if (side === 'buy') {
+				[size, price] = [targetAmount, sourceAmount];
+			} else {
+				[price, size] = [targetAmount, sourceAmount];
+			}
+			const orderData = {
+				type: 'market',
+				side,
+				size: formatNumber(size, getDecimals(increment_size)),
+				symbol: pair,
+			};
 
-		this.setState({
-			order: {
-				completed: false,
-				fetching: true,
-				error: false,
-				data: orderData,
-			},
-		});
-
-		submitOrder(orderData)
-			.then(({ data }) => {
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: false,
-						data: {
-							...data,
-							price,
-						},
-					},
-				});
-			})
-			.catch((err) => {
-				const _error =
-					err.response && err.response.data
-						? err.response.data.message
-						: err.message;
-
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: _error,
-						data: orderData,
-					},
-				});
+			this.setState({
+				order: {
+					completed: false,
+					fetching: true,
+					error: false,
+					data: orderData,
+				},
 			});
+
+			submitOrder(orderData)
+				.then(({ data }) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data: {
+								...data,
+								price,
+							},
+						},
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message;
+
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: orderData,
+						},
+					});
+				});
+		} else {
+			const { sell_price, buy_price, increment_size, symbol } = existBroker;
+			if (side === 'buy') {
+				price = sell_price;
+				size = brokerTargetAmount;
+			} else {
+				price = buy_price;
+				size = brokerSourceAmount;
+			}
+			const selectedPair = symbol === pair ? pair : this.flipPair(pair);
+			const brokerOrderData = {
+				price,
+				side,
+				symbol: selectedPair,
+				size: formatNumber(size, getDecimals(increment_size)),
+			};
+
+			executeBroker(brokerOrderData)
+				.then((data) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data,
+						},
+					});
+					this.getBrokerData();
+				})
+				.catch((err) => {
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: brokerOrderData,
+						},
+					});
+				});
+		}
 	};
 
 	onGoBack = () => {
 		this.props.router.push(`/trade/${this.state.pair}`);
 	};
 
+	flipPair = (pair) => {
+		const pairArray = pair.split('-');
+		return pairArray.reverse().join('-');
+	};
+
 	onSelectTarget = (selectedTarget) => {
-		const { tickers } = this.props;
+		const { tickers, pairs, broker } = this.props;
 		const { selectedSource } = this.state;
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
@@ -227,128 +622,281 @@ class QuickTradeContainer extends PureComponent {
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
-			const { close } = tickers[pairName];
+		if (pairs[pairName] || brokerPairs.includes(pairName)) {
+			const { close } = tickers[pairName] || {};
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
-			const { close } = tickers[reversePairName];
+		} else if (
+			pairs[reversePairName] ||
+			brokerPairs.includes(reversePairName)
+		) {
+			const { close } = tickers[reversePairName] || {};
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
 		}
 
-		this.setState({
-			tickerClose,
+		this.props.setPriceEssentials({
 			side,
-			selectedTarget,
 			targetAmount: undefined,
 			sourceAmount: undefined,
 		});
-		this.goToPair(pair);
+		this.setState({
+			side,
+			tickerClose,
+			selectedTarget,
+			isSelectChange: true,
+		});
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
 	onSelectSource = (selectedSource) => {
-		const { tickers } = this.props;
-
-		const targetOptions = this.getTargetOptions(selectedSource);
-		const selectedTarget = targetOptions[0];
+		const { tickers, pairs, broker } = this.props;
+		let targetOptions = this.getTargetOptions(selectedSource);
+		let selectedTarget = targetOptions && targetOptions[0];
 		const pairName = `${selectedTarget}-${selectedSource}`;
 		const reversePairName = `${selectedSource}-${selectedTarget}`;
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		let tickerClose;
 		let side;
 		let pair;
-		if (tickers[pairName]) {
-			const { close } = tickers[pairName];
+		if (pairs[pairName] || brokerPairs.includes(pairName)) {
+			const { close } = tickers[pairName] || {};
 			tickerClose = close;
 			side = 'buy';
 			pair = pairName;
-		} else if (tickers[reversePairName]) {
-			const { close } = tickers[reversePairName];
+		} else if (
+			pairs[reversePairName] ||
+			brokerPairs.includes(reversePairName)
+		) {
+			const { close } = tickers[reversePairName] || {};
 			tickerClose = 1 / close;
 			side = 'sell';
 			pair = reversePairName;
 		}
 
-		this.setState({
-			tickerClose,
+		this.props.setPriceEssentials({
 			side,
+			targetAmount: undefined,
+			sourceAmount: undefined,
+		});
+		this.setState({
+			side,
+			tickerClose,
 			// pair,
 			selectedSource,
 			selectedTarget,
 			targetOptions: targetOptions,
-			targetAmount: undefined,
-			sourceAmount: undefined,
+			isSelectChange: true,
 		});
-		this.goToPair(pair);
+		if (pair) {
+			this.goToPair(pair);
+		}
 	};
 
-	constructTraget = () => {
+	constructTarget = () => {
 		const {
 			sourceOptions,
-			routeParams: { pair = '' },
+			routeParams,
+			pairs,
+			router,
+			tickers,
+			broker,
 		} = this.props;
-		const [, selectedSource = sourceOptions[0]] = pair.split('-');
+
+		const pairKeys = Object.keys(pairs);
+		const flippedPair = this.flipPair(routeParams.pair);
+		const brokerPairs = broker.map((br) => br.symbol);
+
+		let pair;
+		let side;
+		let tickerClose;
+		let originalPair;
+		if (brokerPairs.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.length) {
+			originalPair = pairKeys[0];
+			pair = pairKeys[0];
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else {
+			router.push('/summary');
+		}
+
+		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
 		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = pair.split('-');
+		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
 		this.setState({
 			selectedTarget,
 			targetOptions,
+			side,
+			tickerClose,
 		});
+
+		this.goToPair(pair);
 	};
 
 	getTargetOptions = (sourceKey) => {
-		const { sourceOptions, pairs } = this.props;
+		const { sourceOptions, pairs, broker } = this.props;
+		let brokerPairs = {};
+		broker.forEach((br) => {
+			brokerPairs[br.symbol] = br;
+		});
 
 		return sourceOptions.filter(
-			(key) => pairs[`${key}-${sourceKey}`] || pairs[`${sourceKey}-${key}`]
+			(key) =>
+				pairs[`${key}-${sourceKey}`] ||
+				pairs[`${sourceKey}-${key}`] ||
+				brokerPairs[`${sourceKey}-${key}`] ||
+				brokerPairs[`${key}-${sourceKey}`]
 		);
 	};
 
-	onChangeTargetAmount = (targetAmount) => {
-		const { tickerClose } = this.state;
-		const { pairData = {} } = this.props;
-		const decimalPoint = getDecimals(pairData.increment_size);
-		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
+	brokerTargetChange = (existBroker, targetAmount) => {
+		const decimalPoint = getDecimals(existBroker.increment_size);
+		if (this.state.side === 'buy') {
+			const sourceAmount = _floor(
+				targetAmount * existBroker.sell_price,
+				decimalPoint
+			);
+			this.setState({
+				brokerTargetAmount: targetAmount,
+				brokerSourceAmount: sourceAmount,
+			});
+		} else {
+			const sourceAmount = _floor(
+				targetAmount / existBroker.buy_price,
+				decimalPoint
+			);
+			this.setState({
+				brokerTargetAmount: targetAmount,
+				brokerSourceAmount: sourceAmount,
+			});
+		}
+	};
 
-		this.setState({
-			targetAmount,
-			sourceAmount,
-		});
+	brokerSourceChange = (existBroker, sourceAmount) => {
+		const decimalPoint = getDecimals(existBroker.increment_size);
+		if (this.state.side === 'buy') {
+			const targetAmount = _floor(
+				sourceAmount / existBroker.sell_price,
+				decimalPoint
+			);
+			this.setState({
+				brokerTargetAmount: targetAmount,
+				brokerSourceAmount: sourceAmount,
+			});
+		} else {
+			const targetAmount = _floor(
+				sourceAmount * existBroker.buy_price,
+				decimalPoint
+			);
+			this.setState({
+				brokerTargetAmount: targetAmount,
+				brokerSourceAmount: sourceAmount,
+			});
+		}
+	};
+
+	onChangeTargetAmount = (targetAmount) => {
+		const { existBroker } = this.state;
+		if (existBroker && Object.keys(existBroker).length) {
+			this.brokerTargetChange(existBroker, targetAmount);
+		} else {
+			this.props.setPriceEssentials({
+				size: targetAmount,
+				targetAmount,
+				isSourceChanged: false,
+			});
+		}
 	};
 
 	onChangeSourceAmount = (sourceAmount) => {
-		const { tickerClose } = this.state;
-		const { pairData = {} } = this.props;
-		const decimalPoint = getDecimals(pairData.increment_size);
-		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
-
-		this.setState({
-			sourceAmount,
-			targetAmount,
-		});
+		const { existBroker } = this.state;
+		if (existBroker && Object.keys(existBroker).length) {
+			this.brokerSourceChange(existBroker, sourceAmount);
+		} else {
+			this.props.setPriceEssentials({
+				size: sourceAmount,
+				sourceAmount,
+				isSourceChanged: true,
+			});
+		}
 	};
 
 	isReviewDisabled = () => {
 		const {
-			targetAmount,
-			sourceAmount,
 			selectedTarget,
 			selectedSource,
 			sourceError,
 			targetError,
+			brokerSourceAmount,
+			brokerTargetAmount,
+			pair,
+			isBrokerPaused,
 		} = this.state;
-		return (
-			!isLoggedIn() ||
-			!selectedTarget ||
-			!selectedSource ||
-			!targetAmount ||
-			!sourceAmount ||
-			sourceError ||
-			targetError
-		);
+		const { targetAmount, sourceAmount, broker, pairs } = this.props;
+		const brokerPairs = broker.map((br) => br.symbol);
+		const flipPair = this.flipPair(pair);
+		let isUseBroker = false;
+		if (brokerPairs.includes(pair) || brokerPairs.includes(flipPair)) {
+			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
+				isUseBroker = true;
+			} else {
+				isUseBroker = true;
+			}
+		} else {
+			isUseBroker = false;
+		}
+		if (isUseBroker) {
+			return (
+				!isLoggedIn() ||
+				!selectedTarget ||
+				!selectedSource ||
+				!brokerSourceAmount ||
+				!brokerTargetAmount ||
+				sourceError ||
+				targetError ||
+				isBrokerPaused
+			);
+		} else {
+			return (
+				!isLoggedIn() ||
+				!selectedTarget ||
+				!selectedSource ||
+				!targetAmount ||
+				!sourceAmount ||
+				sourceError ||
+				targetError
+			);
+		}
 	};
 
 	goToPair = (pair) => {
@@ -388,11 +936,14 @@ class QuickTradeContainer extends PureComponent {
 			tickers,
 			user,
 			router,
+			constants,
+			estimatedPrice,
+			targetAmount,
+			sourceAmount,
+			broker,
 		} = this.props;
 		const {
 			order,
-			targetAmount,
-			sourceAmount,
 			selectedTarget,
 			selectedSource,
 			showQuickTradeModal,
@@ -400,6 +951,11 @@ class QuickTradeContainer extends PureComponent {
 			targetOptions,
 			side,
 			data,
+			isShowChartDetails,
+			brokerTargetAmount,
+			brokerSourceAmount,
+			existBroker,
+			isBrokerPaused,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -448,8 +1004,20 @@ class QuickTradeContainer extends PureComponent {
 			return <Loader background={false} />;
 		}
 
+		const targetValue =
+			existBroker && Object.keys(existBroker).length
+				? brokerTargetAmount
+				: targetAmount;
+		const sourceValue =
+			existBroker && Object.keys(existBroker).length
+				? brokerSourceAmount
+				: sourceAmount;
+		const isExistBroker =
+			existBroker && Object.keys(existBroker).length ? true : false;
+
 		return (
 			<div className="h-100">
+				<div id="quick-trade-header"></div>
 				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
 
 				<div
@@ -480,13 +1048,20 @@ class QuickTradeContainer extends PureComponent {
 						targetOptions={targetOptions}
 						selectedSource={selectedSource}
 						selectedTarget={selectedTarget}
-						targetAmount={targetAmount}
-						sourceAmount={sourceAmount}
+						targetAmount={targetValue}
+						sourceAmount={sourceValue}
 						router={router}
 						onChangeTargetAmount={this.onChangeTargetAmount}
 						onChangeSourceAmount={this.onChangeSourceAmount}
 						forwardSourceError={this.forwardSourceError}
 						forwardTargetError={this.forwardTargetError}
+						constants={constants}
+						estimatedPrice={estimatedPrice}
+						isShowChartDetails={isShowChartDetails}
+						isExistBroker={isExistBroker}
+						flipPair={this.flipPair}
+						broker={broker}
+						isBrokerPaused={isBrokerPaused}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
@@ -504,14 +1079,16 @@ class QuickTradeContainer extends PureComponent {
 										<ReviewBlock
 											symbol={selectedSource}
 											text={STRINGS['SPEND_AMOUNT']}
-											amount={sourceAmount}
+											amount={sourceValue}
 											decimalPoint={decimalPoint}
+											isExistBroker={isExistBroker}
 										/>
 										<ReviewBlock
 											symbol={selectedTarget}
 											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
-											amount={targetAmount}
+											amount={targetValue}
 											decimalPoint={decimalPoint}
+											isExistBroker={isExistBroker}
 										/>
 										<footer className="d-flex pt-4">
 											<Button
@@ -529,6 +1106,7 @@ class QuickTradeContainer extends PureComponent {
 								</div>
 							) : (
 								<QuoteResult
+									coins={coins}
 									pairData={pairData}
 									data={order}
 									onClose={this.onCloseDialog}
@@ -540,16 +1118,26 @@ class QuickTradeContainer extends PureComponent {
 						)}
 					</Dialog>
 				</div>
+				<div id="quick-trade-footer"></div>
 			</div>
 		);
 	}
 }
 
-const getSourceOptions = (pairs = {}) => {
+const getSourceOptions = (pairs = {}, broker = []) => {
 	const coins = [];
 	Object.entries(pairs).forEach(([, { pair_base, pair_2 }]) => {
 		coins.push(pair_base);
 		coins.push(pair_2);
+	});
+	broker.forEach((data) => {
+		const brokerCoin = data.symbol.split('-');
+		if (!coins.includes(brokerCoin[0])) {
+			coins.push(brokerCoin[0]);
+		}
+		if (!coins.includes(brokerCoin[1])) {
+			coins.push(brokerCoin[1]);
+		}
 	});
 
 	return unique(coins);
@@ -558,8 +1146,15 @@ const getSourceOptions = (pairs = {}) => {
 const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
-	const sourceOptions = getSourceOptions(store.app.pairs);
-	const qtlimits = QuickTradeLimitsSelector(store);
+	const sourceOptions = getSourceOptions(store.app.pairs, store.app.broker);
+	const broker = store.app.broker || [];
+	let flippedPair = pair.split('-');
+	flippedPair = flippedPair.reverse().join('-');
+	const qtlimits = !!broker.filter(
+		(item) => item.symbol === pair || item.symbol === flippedPair
+	)
+		? BrokerLimitsSelector(store)
+		: QuickTradeLimitsSelector(store);
 
 	return {
 		sourceOptions,
@@ -576,6 +1171,10 @@ const mapStateToProps = (store) => {
 		constants: store.app.constants,
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
+		estimatedPrice: store.quickTrade.estimatedPrice,
+		sourceAmount: store.quickTrade.sourceAmount,
+		targetAmount: store.quickTrade.targetAmount,
+		broker,
 	};
 };
 
@@ -583,6 +1182,8 @@ const mapDispatchToProps = (dispatch) => ({
 	changePair: bindActionCreators(changePair, dispatch),
 	changeSymbol: bindActionCreators(changeSymbol, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
+	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
 });
 
 export default connect(

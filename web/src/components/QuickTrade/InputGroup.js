@@ -5,6 +5,7 @@ import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
 import { CaretDownOutlined } from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
@@ -38,7 +39,9 @@ class InputGroup extends React.PureComponent {
 
 		if (isNumeric(newValue) || isFloat(newValue)) {
 			const value = math.round(newValue, decimalPoint);
-			if (value) {
+			if (isFloat(newValue) && `${newValue}`.endsWith('0')) {
+				onInputChange(newValue);
+			} else if (value) {
 				onInputChange(value);
 			} else {
 				onInputChange(0);
@@ -49,12 +52,36 @@ class InputGroup extends React.PureComponent {
 	};
 
 	renderErrorMessage = (value) => {
-		const { limits, forwardError } = this.props;
+		const {
+			limits,
+			forwardError,
+			availableBalance,
+			estimatedPrice,
+			selectValue,
+			pair,
+			isExistBroker,
+			isShowChartDetails,
+		} = this.props;
+		const keydata = pair.split('-');
 		let error = '';
 		if (!value) {
 			error = '';
-		} else {
-			error = minValue(limits.MIN)(value) || maxValue(limits.MAX)(value);
+		} else if (
+			keydata[0] === selectValue &&
+			limits &&
+			minValue(limits.MIN)(value)
+		) {
+			error = minValue(limits.MIN)(value);
+		} else if (
+			keydata[0] === selectValue &&
+			limits &&
+			maxValue(limits.MAX)(value)
+		) {
+			error = maxValue(limits.MAX)(value);
+		} else if (!estimatedPrice && !isExistBroker && isShowChartDetails) {
+			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
+		} else if (availableBalance) {
+			error = maxValue(availableBalance)(value);
 		}
 		forwardError(error);
 		return error;
@@ -72,6 +99,7 @@ class InputGroup extends React.PureComponent {
 			icons: ICONS,
 			autoFocus,
 			stringId,
+			coins,
 		} = this.props;
 
 		return (
@@ -79,7 +107,7 @@ class InputGroup extends React.PureComponent {
 				<label className="bold caps-first">
 					<EditWrapper stringId={stringId}>{name}</EditWrapper>
 				</label>
-				<div className={isMobile ? "w-100" : ""}>
+				<div className={isMobile ? 'w-100' : ''}>
 					<Group compact className="input-group__container">
 						<Select
 							open={isOpen}
@@ -101,46 +129,37 @@ class InputGroup extends React.PureComponent {
 								/>
 							}
 						>
-							{options.map((symbol, index) => (
-								<Option
-									name="selectedPairBase"
-									value={symbol}
-									key={index}
-									className="d-flex"
-								>
-									<div className="d-flex align-items-center quick-trade-select-wrapper">
-										<div className="input-group__coin-icons-wrap">
-											<Image
-												iconId={`${symbol.toUpperCase()}_ICON`}
-												icon={
-													ICONS[`${symbol.toUpperCase()}_ICON`]
-														? ICONS[`${symbol.toUpperCase()}_ICON`]
-														: ICONS['DEFAULT_ICON']
-												}
-												wrapperClassName="input-group__coin-icons"
-												imageWrapperClassName="currency-ball-image-wrapper"
-											/>
-											{/* <img
-											src={
-												ICONS[`${symbol.toUpperCase()}_ICON`]
-													? ICONS[`${symbol.toUpperCase()}_ICON`]
-													: ICONS['DEFAULT_ICON']
-											}
-											className="input-group__coin-icons"
-											alt={`${symbol.toUpperCase()}_coin`}
-										/> */}
+							{options.map((symbol, index) => {
+								const { display_name, icon_id } =
+									coins[symbol] || DEFAULT_COIN_DATA;
+								return (
+									<Option
+										name="selectedPairBase"
+										value={symbol}
+										key={index}
+										className="d-flex"
+									>
+										<div className="d-flex align-items-center quick-trade-select-wrapper">
+											<div className="input-group__coin-icons-wrap">
+												<Image
+													iconId={icon_id}
+													icon={ICONS[icon_id]}
+													wrapperClassName="input-group__coin-icons"
+													imageWrapperClassName="currency-ball-image-wrapper"
+												/>
+											</div>
+											<span className="pl-1">{display_name}</span>
 										</div>
-										<span className="pl-1">{symbol.toUpperCase()}</span>
-									</div>
-								</Option>
-							))}
+									</Option>
+								);
+							})}
 						</Select>
 						<Input
 							type="number"
 							placeholder={STRINGS['AMOUNT']}
 							style={isOpen ? { display: 'none' } : { width: '67%' }}
 							className="input-group__input"
-							value={inputValue}
+							value={`${inputValue}`}
 							onChange={this.onChangeEvent}
 							bordered={false}
 							step={limits.MIN}
@@ -149,15 +168,13 @@ class InputGroup extends React.PureComponent {
 							autoFocus={autoFocus}
 						/>
 					</Group>
-					{translateError(this.renderErrorMessage(inputValue))
-						?
+					{translateError(this.renderErrorMessage(inputValue)) && (
 						<FieldError
 							error={translateError(this.renderErrorMessage(inputValue))}
 							displayError={true}
 							className="input-group__error-wrapper"
 						/>
-						: null
-					}
+					)}
 				</div>
 			</div>
 		);

@@ -8,7 +8,13 @@ import { web3 } from 'config/contracts';
 
 const TABLE_PAGE_SIZE = 10;
 
-const Distributions = ({ token, currentBlock, network, distributions }) => {
+const Distributions = ({
+	token,
+	currentBlock,
+	distributions,
+	goToPOT,
+	coins,
+}) => {
 	const generateDistributionsHeader = () => [
 		{
 			stringId: 'STAKE_DETAILS.DISTRIBUTIONS.TIME',
@@ -32,7 +38,7 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -47,29 +53,39 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 		},
 	];
 
+	const { display_name } = coins[token];
+
 	return (
 		<div>
 			<div className="d-flex">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.TITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.DISTRIBUTIONS.SUBTITLE'],
-								token.toUpperCase()
+								display_name
 							)}
+						</div>
+						<div className="secondary-text">
+							<span
+								className="blue-link pointer underline-text"
+								onClick={goToPOT}
+							>
+								{STRINGS['STAKE.VIEW_POT']}
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div>
+			<div className="pt-4">
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={distributions}
 					count={distributions.length}
 					headers={generateDistributionsHeader()}
@@ -81,6 +97,7 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
+					showHeaderNoData={true}
 				/>
 			</div>
 		</div>
@@ -88,7 +105,7 @@ const Distributions = ({ token, currentBlock, network, distributions }) => {
 };
 
 const mapStateToProps = (store) => ({
-	network: store.stake.network,
+	coins: store.app.coins,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
 });

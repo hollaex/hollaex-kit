@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
-import classnames from 'classnames';
-import { Select, Form, Row, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
+import { dateFilters } from '../filterUtils';
+import moment from 'moment';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 const STATUS_OPTIONS = {
 	pending: {
@@ -13,7 +15,7 @@ const STATUS_OPTIONS = {
 	},
 	rejected: {
 		name: STRINGS['TRANSACTION_STATUS.REJECTED'],
-		value: 'rejected',
+		value: 'dismissed',
 	},
 	completed: {
 		name: STRINGS['TRANSACTION_STATUS.COMPLETED'],
@@ -21,17 +23,57 @@ const STATUS_OPTIONS = {
 	},
 };
 
-const Filters = ({ coins = {}, onSearch, formName }) => {
+const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
-	const [isSearchShining, setIsSearchShining] = useState(false);
+	const [click, setClick] = useState([]);
 
-	const onFinish = (values) => {
-		onSearch(values);
-		setIsSearchShining(false);
+	useEffect(() => {
+		form.setFieldsValue({
+			status: null,
+			currency: null,
+			size: 'all',
+		});
+	}, [activeTab, form]);
+
+	useEffect(() => {
+		if (
+			click.length &&
+			!click.filter((d) => d === undefined).length &&
+			form.getFieldValue('range').length &&
+			!form.getFieldValue('range').filter((d) => d === undefined).length
+		) {
+			if (
+				!moment(click[0]).isSame(form.getFieldValue('range')[0]) &&
+				!moment(click[1]).isSame(form.getFieldValue('range')[1])
+			) {
+				form.setFieldsValue({ range: click });
+				onSearch(form.getFieldsValue());
+			}
+		} else if (click.length && !form.getFieldValue('range').length) {
+			form.setFieldsValue({ range: click });
+			onSearch(form.getFieldsValue());
+		}
+	}, [click, form, onSearch]);
+
+	const onValuesChange = (_, values) => {
+		if (values) {
+			if (values.size) {
+				const {
+					[values.size]: { range },
+				} = dateFilters;
+				form.setFieldsValue({ range });
+				values.range = range;
+				if (_.range === undefined) {
+					onSearch(values);
+				}
+			}
+		}
 	};
 
-	const onValuesChange = () => {
-		setIsSearchShining(true);
+	const handleDateRange = (e) => {
+		if (e.length > 1 && e[0] && e[1]) {
+			setClick(e);
+		}
 	};
 
 	return (
@@ -39,11 +81,11 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 			form={form}
 			name={`${formName}-filters`}
 			className="ant-advanced-search-form"
-			onFinish={onFinish}
 			onValuesChange={onValuesChange}
 			initialValues={{
 				status: null,
 				currency: null,
+				size: 'all',
 			}}
 		>
 			<Row gutter={24}>
@@ -101,15 +143,23 @@ const Filters = ({ coins = {}, onSearch, formName }) => {
 						))}
 					</Select>
 				</Form.Item>
-				<Form.Item>
-					<Button
-						type="ghost"
-						htmlType="submit"
+				<Form.Item name="size">
+					<Radio.Group buttonStyle="outline" size="small">
+						{Object.entries(dateFilters).map(([key, { name }]) => (
+							<Radio.Button key={key} value={key}>
+								{name}
+							</Radio.Button>
+						))}
+					</Radio.Group>
+				</Form.Item>
+				<Form.Item name="range">
+					<RangePicker
+						allowEmpty={[true, true]}
 						size="small"
-						className={classnames({ active_search_button: isSearchShining })}
-					>
-						{STRINGS['SEARCH_TXT']}
-					</Button>
+						suffixIcon={false}
+						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+						onChange={handleDateRange}
+					/>
 				</Form.Item>
 			</Row>
 		</Form>

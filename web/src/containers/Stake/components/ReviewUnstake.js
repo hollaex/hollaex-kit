@@ -1,59 +1,62 @@
 import React, { Fragment } from 'react';
-import { Button as AntBtn } from 'antd';
-import { EditWrapper, Button, IconTitle, Image } from 'components';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import AmountPreview from './AmountPreview';
+import mathjs from 'mathjs';
 
-const ReviewEarlyUnstake = ({
+const ReviewUnstake = ({
 	stakeData,
+	onClose,
 	onCancel,
 	onProceed,
-	onClear,
 	icons: ICONS,
 }) => {
-	const { symbol } = stakeData;
-	const iconId = `${symbol.toUpperCase()}_ICON`;
+	const { symbol, amount, reward, display_name } = stakeData;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
-		height: '292px',
-		width: '506px',
+		height: '24.3rem',
+		width: '40rem',
 	};
 
-	const headerContent = {};
+	const totalEarnt = mathjs.add(amount, reward);
 
 	return (
 		<Fragment>
-			<div className="dialog-content background" style={background}>
-				<div style={headerContent}>
-					<IconTitle
-						stringId="UNSTAKE.TITLE"
-						text={STRINGS['UNSTAKE.TITLE']}
-						textType="stake_popup__title"
-						underline={false}
-						className="w-100"
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
 					/>
-					<div className="pt-4">
-						<div className="bold pb-1">
-							<EditWrapper stringId="UNSTAKE.AMOUNT_TO_RECEIVE">
-								{STRINGS['UNSTAKE.AMOUNT_TO_RECEIVE']}
-							</EditWrapper>
-						</div>
-						<div className="d-flex">
-							<div>
-								<Image
-									iconId={iconId}
-									icon={ICONS[iconId]}
-									wrapperClassName="currency-ball"
-								/>
-							</div>
-							<div className="bold">{`${'?'} ${symbol.toUpperCase()}`}</div>
-						</div>
-						<div className="secondary-text pt-1">
-							<EditWrapper stringId="UNSTAKE.AMOUNT_NOTE">
-								{STRINGS['UNSTAKE.AMOUNT_NOTE']}
-							</EditWrapper>
-						</div>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
+			<div className="dialog-content background" style={background}>
+				<IconTitle
+					iconId="STAKING_UNLOCK"
+					iconPath={ICONS['STAKING_UNLOCK']}
+					stringId="UNSTAKE.TITLE"
+					text={STRINGS['UNSTAKE.TITLE']}
+					textType="stake_popup__title m-0 pl-3"
+					underline={false}
+					className="w-100 py-4 flex-direction-row justify-content-start"
+					imageWrapperClassName="stake-unlock-title"
+				/>
+				<div className="pt-4">
+					<AmountPreview
+						amount={amount}
+						symbol={symbol}
+						labelId="UNSTAKE.AMOUNT_TO_RECEIVE"
+					/>
+					<div className="secondary-text pt-1">
+						<EditWrapper stringId="UNSTAKE.AMOUNT_NOTE">
+							{STRINGS['UNSTAKE.AMOUNT_NOTE']}
+						</EditWrapper>
 					</div>
 				</div>
 			</div>
@@ -68,12 +71,12 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
-							symbol.toUpperCase()
+							totalEarnt,
+							display_name
 						)}
 					</div>
 				</div>
-				<div className="pt-4">
+				<div className="py-4">
 					<div className="bold pb-1">
 						<EditWrapper stringId="UNSTAKE.PENDING_EARNINGS">
 							{STRINGS['UNSTAKE.PENDING_EARNINGS']}
@@ -82,36 +85,17 @@ const ReviewEarlyUnstake = ({
 					<div>
 						{STRINGS.formatString(
 							STRINGS['UNSTAKE.PRICE_FORMAT'],
-							'?',
-							symbol.toUpperCase()
+							reward,
+							display_name
 						)}
 					</div>
 				</div>
 
-				<div className="py-3">
-					<AntBtn
-						type="primary"
-						className="stake-btn caps"
-						ghost={true}
-						danger={true}
-						onClick={onClear}
-					>
-						{STRINGS['UNSTAKE.CLEAR_PENDING_EARNING']}
-					</AntBtn>
-				</div>
 				<div className="kit-divider" />
 
 				<div className="pt-3 secondary-text">
 					<EditWrapper stringId="UNSTAKE.PENDING_EARNINGS_FOOTNOTE" />
-					{STRINGS.formatString(
-						STRINGS['UNSTAKE.PENDING_EARNINGS_FOOTNOTE'],
-						<span
-							className="blue-link pointer underline-text"
-							onClick={onClear}
-						>
-							{STRINGS['UNSTAKE.CLEAR']}
-						</span>
-					)}
+					{STRINGS['UNSTAKE.PENDING_EARNINGS_FOOTNOTE']}
 				</div>
 
 				<div className="d-flex mt-4 pt-3">
@@ -130,4 +114,4 @@ const ReviewEarlyUnstake = ({
 	);
 };
 
-export default withConfig(ReviewEarlyUnstake);
+export default withConfig(ReviewUnstake);

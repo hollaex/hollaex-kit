@@ -109,7 +109,7 @@ const updateTiersLimits = (req, res) => {
 		.then(() => {
 			loggerTier.info(
 				req.uuid,
-				'controllers/tier/updateTierLimits updated limits',
+				'controllers/tier/updateTierLimits updated limits'
 			);
 			return res.json({ message: 'Success' });
 		})

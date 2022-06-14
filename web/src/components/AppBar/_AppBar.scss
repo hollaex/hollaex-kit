@@ -3,6 +3,8 @@ $app-bar--arrow-size: 0.4rem;
 $notification-size: 1.5rem;
 $app-menu-notification-size: 1.2rem;
 
+@import './MobileMarketSelector';
+
 .app_bar {
 	position: relative;
 	width: 100%;
@@ -407,7 +409,8 @@ $app-menu-notification-size: 1.2rem;
 				.tab-verify0,
 				.tab-security0,
 				.tab-api0,
-				.account-active-1 {
+				.account-active-1,
+				.stake-page-icon {
 					fill: $colors-main-black;
 				}
 			}
@@ -615,7 +618,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-menu {
 		color: $base_top-bar-navigation_text;
-		border-top: 3px solid $base_top-bar-navigation_text;
+		border-top: 4px solid $link;
 		height: 100%;
 		opacity: 1;
 
@@ -731,6 +734,13 @@ $app-menu-notification-size: 1.2rem;
 	}
 }
 
+.tools-button {
+	border-bottom: 1px solid $dark-app-line-divider;
+	&.border-left {
+		border-left: 1px solid $dark-app-line-divider;
+	}
+}
+
 .market-bar {
 	background: $app-light-background;
 	display: flex;
@@ -757,6 +767,10 @@ $app-menu-notification-size: 1.2rem;
 		&:hover {
 			background-color: $app-light-background;
 			border-radius: 0.2rem;
+		}
+		&.narrow {
+			min-width: 14rem;
+			max-width: 14rem;
 		}
 	}
 
@@ -857,6 +871,11 @@ $app-menu-notification-size: 1.2rem;
 		&.selector-trigger {
 			min-width: 17rem;
 			max-width: 17rem;
+
+			&.narrow {
+				min-width: 14rem;
+				max-width: 14rem;
+			}
 		}
 	}
 
@@ -982,6 +1001,40 @@ $app-menu-notification-size: 1.2rem;
 	-moz-box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 	box-shadow: 0px 4px 6px 1px rgba(0, 0, 0, 0.4);
 
+	&.narrow {
+		width: 14rem;
+	}
+
+	.field-wrapper {
+		margin: 0;
+		.field-content-outline {
+			&:before,
+			&:after {
+				height: 0.5px;
+				opacity: 0.7;
+			}
+		}
+	}
+
+	.ant-checkbox-wrapper {
+		span {
+			color: $colors-main-black !important;
+		}
+	}
+
+	.ant-btn-background-ghost {
+		border-color: $colors-black;
+	}
+
+	.ant-btn {
+		&:active,
+		&:hover,
+		&:focus {
+			color: $colors-main-black;
+			border-color: $colors-main-black;
+		}
+	}
+
 	.app-bar-tab-menu-list {
 		background-color: $app-bar-background-color;
 		color: $app-bar-menu-list-color;
@@ -995,7 +1048,7 @@ $app-menu-notification-size: 1.2rem;
 
 	.active-tab {
 		background-color: $app-background-color;
-		color: $app-bar-menu-list-color;
+		color: $colors-main-black;
 		font-weight: bold;
 	}
 
@@ -1130,7 +1183,7 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .app-bar_add-tab-price {
-	color: $colors-black;
+	color: $colors-main-black;
 }
 
 @media (min-width: 1920px) {
@@ -1160,6 +1213,12 @@ $app-menu-notification-size: 1.2rem;
 		.app_bar-pair-font {
 			font-size: 1rem;
 		}
+		.tools-button {
+			.app_bar-pair-tab {
+				min-width: 14rem !important;
+				max-width: 14rem !important;
+			}
+		}
 	}
 	.app-menu-bar {
 		font-size: 1rem !important;
@@ -1177,6 +1236,10 @@ $app-menu-notification-size: 1.2rem;
 	}
 	.app-bar-add-tab-menu {
 		width: 24rem;
+
+		&.narrow {
+			width: 15rem;
+		}
 
 		.app-bar-tab-menu-list {
 			width: 3.6rem;
@@ -1295,7 +1358,7 @@ $app-menu-notification-size: 1.2rem;
 }
 
 .active-market-trigger {
-	color: $colors-main-black;
+	color: $colors-main-black !important;
 	font-weight: bold;
 }
 

@@ -13,17 +13,20 @@ import querystring from 'query-string';
 import { setSideBarState, getSideBarState } from 'utils/sideBar';
 import AppMenuSidebar from '../../components/AppMenuSidebar';
 import { addElements, injectHTML } from 'utils/script';
-import { SuccessDisplay } from 'components'
+import { SuccessDisplay } from 'components';
 
 import {
 	NOTIFICATIONS,
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
+	MARKET_SELECTOR,
+	CONNECT_VIA_DESKTOP,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
-} from '../../actions/appActions';
+} from 'actions/appActions';
+import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
 import {
@@ -59,6 +62,8 @@ import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
+import MarketSelector from 'components/AppBar/MarketSelector';
+import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
 
 import {
 	getClasesForLanguage,
@@ -71,6 +76,7 @@ import Container from './Container';
 import GetSocketState from './GetSocketState';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { ETHEREUM_EVENTS } from 'actions/stakingActions';
 
 class App extends Component {
 	state = {
@@ -107,6 +113,9 @@ class App extends Component {
 			injected_values,
 			injected_html,
 			plugins_injected_html,
+			initializeTools,
+			loadBlockchainData,
+			disconnectWallet,
 		} = this.props;
 
 		if (
@@ -128,14 +137,16 @@ class App extends Component {
 			5000
 		);
 
+		initializeTools();
 		addElements(injected_values, 'body');
 		injectHTML(injected_html, 'body');
 		injectHTML(plugins_injected_html, 'body');
 		const qs = querystring.parse(this.props.location.search);
-		if (Object.keys(qs).length
-			&& !this.props.location.pathname.includes('trade')
-			&& !this.props.location.pathname.includes('quick-trade')
-			&& !this.props.location.pathname.includes('account')) {
+		if (
+			Object.keys(qs).length &&
+			!this.props.location.pathname.includes('trade') &&
+			!this.props.location.pathname.includes('quick-trade')
+		) {
 			const { success_alert, error_alert } = qs;
 			if (success_alert) {
 				const paramsData = { status: true, message: success_alert };
@@ -144,6 +155,19 @@ class App extends Component {
 				const paramsData = { status: false, message: error_alert };
 				this.setState({ paramsData, isCustomNotification: true });
 			}
+		}
+
+		if (!isMobile && window.ethereum) {
+			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, ([account]) => {
+				loadBlockchainData();
+				if (!account) {
+					disconnectWallet();
+				}
+			});
+
+			window.ethereum.on(ETHEREUM_EVENTS.NETWORK_CHANGE, () => {
+				window.location.reload();
+			});
 		}
 	}
 
@@ -194,10 +218,14 @@ class App extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		const { tools } = this.props;
 		if (
 			JSON.stringify(prevProps.location) !== JSON.stringify(this.props.location)
 		) {
 			this.setActiveMenu();
+		}
+		if (JSON.stringify(prevProps.tools) !== JSON.stringify(tools)) {
+			storeTools(tools);
 		}
 	}
 
@@ -297,6 +325,16 @@ class App extends Component {
 		}
 	};
 
+	goToPair = (pair) => {
+		const { router } = this.props;
+		router.push(`/trade/${pair}`);
+	};
+
+	onViewMarketsClick = () => {
+		const { setTradeTab } = this.props;
+		setTradeTab(3);
+	};
+
 	logout = (message = '') => {
 		this.setState({ appLoaded: false }, () => {
 			this.props.logout(typeof message === 'string' ? message : '');
@@ -348,10 +386,14 @@ class App extends Component {
 				return 'home';
 			default:
 		}
-		if (path.indexOf('/trade/') === 0) {
+		if (path.indexOf('/trade/') === 0 || path.indexOf('trade/') === 0) {
 			return 'trade';
 		} else if (path.indexOf('/quick-trade/') === 0) {
 			return 'quick-trade';
+		} else if (path.indexOf('/chart-embed') === 0) {
+			return 'chart-embed';
+		} else if (path.indexOf('/stake') === 0) {
+			return 'stake';
 		}
 
 		return '';
@@ -451,6 +493,26 @@ class App extends Component {
 						activeTheme={this.props.activeTheme}
 					/>
 				);
+			case MARKET_SELECTOR:
+				return (
+					<MarketSelector
+						onViewMarketsClick={this.onViewMarketsClick}
+						closeAddTabMenu={this.onCloseDialog}
+						addTradePairTab={this.goToPair}
+						wrapperClassName="modal-market-menu"
+					/>
+				);
+			case NOTIFICATIONS.METAMASK_ERROR:
+				return (
+					<MessageDisplay
+						iconId="RED_WARNING"
+						iconPath={ICONS['RED_WARNING']}
+						onClick={this.onCloseDialog}
+						text={data}
+					/>
+				);
+			case CONNECT_VIA_DESKTOP:
+				return <ConnectViaDesktop onClose={this.onCloseDialog} />;
 			case RISK_PORTFOLIO_ORDER_WARING:
 				return <SetOrderPortfolio data={data} onClose={this.onCloseDialog} />;
 			case LOGOUT_CONFORMATION:
@@ -530,6 +592,15 @@ class App extends Component {
 					/>
 				);
 			}
+			case NOTIFICATIONS.MOVE_XHT: {
+				return (
+					<Notification
+						type={type}
+						data={data}
+						onCloseDialog={this.onCloseDialog}
+					/>
+				);
+			}
 			default:
 				return <div />;
 		}
@@ -591,7 +662,7 @@ class App extends Component {
 			appLoaded,
 			chatIsClosed,
 			isCustomNotification,
-			paramsData
+			paramsData,
 			// sidebarFitHeight,
 			// isSidebarOpen,
 		} = this.state;
@@ -611,17 +682,30 @@ class App extends Component {
 			: this.getClassForActivePath(this.props.location.pathname);
 
 		const isHome = this.props.location.pathname === '/';
+		const isStakePage = activePath === 'stake';
+		const isChartEmbed = activePath === 'chart-embed';
 		const isMenubar = !isHome;
 		const isMenuSider =
-			activePath !== 'trade' && activePath !== 'quick-trade' && !isHome;
+			activePath !== 'trade' &&
+			activePath !== 'quick-trade' &&
+			activePath !== 'chart-embed' &&
+			!isHome;
 		const showFooter = !isMobile || isHome;
 
 		const homeBackgroundProps = isHome
 			? {
-				backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-				backgroundSize: '100%',
-				backgroundRepeat: 'repeat-y',
-			}
+					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
+			: {};
+
+		const stakeBackgroundProps = isStakePage
+			? {
+					backgroundImage: `url(${ICONS['STAKING_BACKGROUND']})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+			  }
 			: {};
 
 		return (
@@ -682,7 +766,7 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && (
+								{!isHome && !isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
@@ -698,7 +782,7 @@ class App extends Component {
 										)}
 									</AppBar>
 								)}
-								{isBrowser && !isHome && (
+								{isBrowser && !isHome && !isChartEmbed && (
 									<PairTabs
 										activePath={activePath}
 										location={location}
@@ -713,6 +797,7 @@ class App extends Component {
 										{
 											'app_container-secondary-content': isMenubar,
 											no_bottom_navigation: isHome,
+											'chart-embed': isChartEmbed,
 										}
 									)}
 								>
@@ -732,8 +817,10 @@ class App extends Component {
 											{
 												'overflow-y': !isMobile,
 												no_bottom_navigation: isHome,
+												'background-color-layer': isStakePage,
 											}
 										)}
+										style={stakeBackgroundProps}
 									>
 										<Container
 											router={router}
@@ -763,20 +850,6 @@ class App extends Component {
 													className="sidebar-toggle"
 												/>
 											</div>
-											<Sidebar
-												activePath={activePath}
-												logout={this.logout}
-												// help={openContactForm}
-												theme={activeTheme}
-												isLogged={isLoggedIn()}
-												help={openHelpfulResourcesForm}
-												pair={pair}
-												enabledPlugins={enabledPlugins}
-												minimizeChat={this.minimizeChat}
-												chatIsClosed={chatIsClosed}
-												unreadMessages={unreadMessages}
-												sidebarFitHeight={sidebarFitHeight}
-											/>
 										</div>
 									)} */}
 									<Dialog
@@ -799,7 +872,11 @@ class App extends Component {
 													activeNotification.type === NOTIFICATIONS.STAKE ||
 													activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 													activeNotification.type ===
-														NOTIFICATIONS.EARLY_UNSTAKE,
+														NOTIFICATIONS.EARLY_UNSTAKE ||
+													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
+											},
+											{
+												menu: activeNotification.type === MARKET_SELECTOR,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -811,6 +888,7 @@ class App extends Component {
 												activeNotification.type === NOTIFICATIONS.UNSTAKE ||
 												activeNotification.type ===
 													NOTIFICATIONS.EARLY_UNSTAKE ||
+												activeNotification.type === NOTIFICATIONS.MOVE_XHT ||
 												activeNotification.type === CONTACT_FORM ||
 												activeNotification.type === HELPFUL_RESOURCES_FORM ||
 												activeNotification.type === NOTIFICATIONS.NEW_ORDER ||
@@ -845,7 +923,7 @@ class App extends Component {
 										/>
 									)}
 								</div>
-								{isMobile && !isHome && (
+								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
 											isLogged={isLoggedIn()}
@@ -874,12 +952,12 @@ class App extends Component {
 							}
 						)}
 					>
-						{showFooter && (
+						{showFooter && !isChartEmbed && (
 							<AppFooter theme={activeTheme} constants={constants} />
 						)}
 					</div>
 				</div>
-				{isAdmin() && isBrowser && (
+				{isAdmin() && isBrowser && !isChartEmbed && (
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog

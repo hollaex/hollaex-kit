@@ -62,7 +62,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 				background-size: contain;
 				// background-position: center;
 				background-repeat: no-repeat;
-				height: 6rem !important;
+				// height: 6rem !important;
 				margin-left: 1.5rem;
 				width: 7rem;
 			}
@@ -73,6 +73,11 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			}
 			.blue-link {
 				color: #00aeef !important;
+			}
+			.footer-content {
+				.footer-img-wrapper {
+					height: 4rem;
+				}
 			}
 		}
 		.footer-public-texts {

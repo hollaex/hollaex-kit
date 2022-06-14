@@ -47,6 +47,7 @@ class Description extends Component {
 			ReferralBadgeInitialValues,
 			constants: { info: { type, plan } = {} } = {},
 			isUpgrade,
+			buttonSubmitting,
 		} = this.props;
 		return (
 			<div className="description-wrapper">
@@ -72,6 +73,7 @@ class Description extends Component {
 					onSubmit={this.props.handleSubmitDescription}
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
+					buttonSubmitting={buttonSubmitting}
 				/>
 				<div className="divider"></div>
 				<div>
@@ -93,6 +95,7 @@ class Description extends Component {
 					onSubmit={this.props.handleSubmitFooterText}
 					buttonText="Save"
 					buttonClass="green-btn minimal-btn"
+					buttonSubmitting={buttonSubmitting}
 				/>
 				<div className="divider"></div>
 				<div>
@@ -154,8 +157,12 @@ class Description extends Component {
 						buttonClass="green-btn minimal-btn"
 						onSubmit={this.props.handleSubmitReferralBadge}
 						disableAllFields={
-							plan !== 'crypto' && plan !== 'fiat' && type !== 'Enterprise'
+							plan !== 'crypto' &&
+							plan !== 'fiat' &&
+							type !== 'Enterprise' &&
+							plan !== 'boost'
 						}
+						buttonSubmitting={buttonSubmitting}
 					/>
 				</div>
 			</div>

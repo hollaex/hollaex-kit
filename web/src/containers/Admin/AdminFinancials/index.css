@@ -135,10 +135,6 @@
 	text-decoration: underline;
 	cursor: pointer;
 }
-.ant-table-row-expand-icon {
-	color: #2930ff;
-	border-color: #2930ff;
-}
 .admin-earnings-container .id-wrapper {
 	background-color: #288500;
 	width: 35px;
@@ -490,4 +486,17 @@
 }
 .admin-asset-wrapper .btn-wrapper .apply-btn {
 	width: 100%;
+}
+.settle-modal-page .btn-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.settle-modal-page .btn-wrapper .ant-btn.ant-btn-primary {
+	background-color: #288500;
+	width: 45%;
+}
+.settle-modal-page .anticon.anticon-loading svg {
+	fill: #ffffff;
+	font-size: larger;
 }

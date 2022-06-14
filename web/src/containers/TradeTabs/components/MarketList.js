@@ -71,7 +71,7 @@ const MarketList = ({
 							</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="market-list_tableBody">
 						{markets.map((market, index) => (
 							<MarketRow
 								key={index}
@@ -103,8 +103,6 @@ MarketList.propTypes = {
 			shape({
 				key: string,
 				pair: object,
-				symbol: string,
-				pairTwo: object,
 				ticker: object,
 				increment_price: number,
 				priceDifference: number,

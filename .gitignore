@@ -23,6 +23,9 @@ test/Wallet/.log
 test/Report
 test/.env
 test/Dev
+test/selenium/Onboarding/.log/*/*
+test/selenium/.env
+
 
 # production
 build

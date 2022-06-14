@@ -14,7 +14,11 @@ import _get from 'lodash/get';
 
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
-import { getCoinInfo, storeAsset, uploadCoinLogo } from '../AdminFinancials/action';
+import {
+	getCoinInfo,
+	storeAsset,
+	uploadCoinLogo,
+} from '../AdminFinancials/action';
 
 const CONTACT_DESCRIPTION_LINK =
 	'https://metamask.zendesk.com/hc/en-us/articles/360015488811-What-is-a-Token-Contract-Address-';
@@ -36,6 +40,7 @@ const { Search, TextArea } = Input;
 const AssetConfig = (props) => {
 	const [isSupply, setIsApply] = useState(false);
 	const [showPresetAlert, setPresetAlert] = useState(false);
+	const [submitting, setSubmitting] = useState(false);
 	const [form] = Form.useForm();
 	const {
 		coinFormData = {},
@@ -110,6 +115,7 @@ const AssetConfig = (props) => {
 		if (body.decimals) {
 			body.decimals = parseInt(body.decimals, 10);
 		}
+		setSubmitting(true);
 		try {
 			if (logoFile) {
 				let formData = new FormData();
@@ -118,7 +124,11 @@ const AssetConfig = (props) => {
 				formData.append('file', logoFile);
 				const logo = await uploadCoinLogo(formData);
 				body.logo = _get(logo, 'data.path', '');
-				props.handleBulkUpdate({ logo: body.logo, logoFile: null, iconName: '' });
+				props.handleBulkUpdate({
+					logo: body.logo,
+					logoFile: null,
+					iconName: '',
+				});
 			}
 			const res = await storeAsset(body);
 			if (props.getCoins) {
@@ -130,10 +140,12 @@ const AssetConfig = (props) => {
 			if (res) {
 				handleNext();
 			}
+			setSubmitting(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			setSubmitting(false);
 		}
 	};
 
@@ -381,8 +393,8 @@ const AssetConfig = (props) => {
 													message: 'This field is required!',
 												},
 												{
-													max: 5,
-													message: 'Symbol must be maximum 5 characters.',
+													max: 8,
+													message: 'Symbol must be maximum 8 characters.',
 												},
 												{
 													min: 2,
@@ -589,7 +601,12 @@ const AssetConfig = (props) => {
 						Back
 					</Button>
 					<div className="separator"></div>
-					<Button type="primary" className="green-btn" htmlType="submit">
+					<Button
+						type="primary"
+						className="green-btn"
+						htmlType="submit"
+						disabled={submitting}
+					>
 						Next
 					</Button>
 				</div>

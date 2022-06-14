@@ -118,12 +118,14 @@ const getColumns = (
 							type="warning"
 							tip="This asset is in pending verification"
 							onClick={(e) => {
-								if (selectedAsset.created_by === _get(constants, 'info.user_id')) {
+								if (
+									selectedAsset.created_by === _get(constants, 'info.user_id')
+								) {
 									handleEdit(selectedAsset, e);
 								}
 							}}
 						/>
-						) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
+					) : selectedAsset.created_by === _get(constants, 'info.user_id') ? (
 						<div className="config-content">
 							(
 							<span
@@ -166,7 +168,7 @@ const getColumns = (
 					className="coin-symbol-wrapper"
 					onClick={() => handlePreview(selectedAsset)}
 				>
-					{balance[symbol] || 0}
+					{balance[`${symbol}_available`] || 0}
 				</div>
 			);
 		},
@@ -197,6 +199,9 @@ class Assets extends Component {
 			exchangeBalance: {},
 			formData: {},
 			saveLoading: false,
+			submitting: false,
+			isWithdrawalEdit: false,
+			isTableLoading: true,
 		};
 	}
 
@@ -212,7 +217,7 @@ class Assets extends Component {
 		if (exchange && exchange.coins) {
 			this.setState({
 				coins: coins || [],
-				exchange: exchange,
+				exchange,
 			});
 		}
 		if (Object.keys(tabParams).length) {
@@ -309,6 +314,7 @@ class Assets extends Component {
 			isConfigureEdit: false,
 			isConfirm: false,
 			width: 520,
+			isWithdrawalEdit: false,
 			// selectedAsset: {}
 		});
 	};
@@ -497,6 +503,7 @@ class Assets extends Component {
 
 	handleDelete = async (symbol) => {
 		const { coins, exchange } = this.state;
+		this.setState({ submitting: true });
 		try {
 			let formProps = {
 				id: exchange.id,
@@ -512,12 +519,17 @@ class Assets extends Component {
 			await this.getMyExchange();
 			await this.getCoins();
 			message.success('Asset removed successfully');
-			this.setState({ isConfigure: false, isPreview: false });
+			this.setState({
+				isConfigure: false,
+				isPreview: false,
+				submitting: false,
+			});
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			this.setState({ submitting: false });
 		}
 	};
 
@@ -611,6 +623,11 @@ class Assets extends Component {
 		});
 	};
 
+	handleWithdrawalEdit = () => {
+		this.handleConfigureEdit('edit_withdrawal_fees');
+		this.setState({ isWithdrawalEdit: true });
+	};
+
 	renderPreview = () => {
 		const { constants } = this.props;
 		if (this.state.isConfigure) {
@@ -625,6 +642,8 @@ class Assets extends Component {
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleDelete={this.handleDelete}
+							submitting={this.state.submitting}
+							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
 					<div>
@@ -653,9 +672,12 @@ class Assets extends Component {
 							setConfigEdit={this.handleConfigureEdit}
 							exchangeUsers={this.state.exchangeUsers}
 							userEmails={this.state.userEmails}
+							submitting={this.state.submitting}
+							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
-					{this.state.selectedAsset.created_by === _get(constants, 'info.user_id') ? (
+					{this.state.selectedAsset.created_by ===
+					_get(constants, 'info.user_id') ? (
 						<div>
 							<div className="d-flex">
 								<Button
@@ -793,6 +815,7 @@ class Assets extends Component {
 					formData={formData}
 					exchangeCoins={this.state.coins}
 					handleRefreshCoin={this.handleRefreshCoin}
+					isWithdrawalEdit={this.state.isWithdrawalEdit}
 				/>
 			);
 		}
@@ -846,6 +869,7 @@ class Assets extends Component {
 								)}
 								rowKey={(data, index) => index}
 								dataSource={coins}
+								loading={!coins.length}
 							/>
 						</div>
 					</Fragment>

@@ -67,6 +67,7 @@ const HistoryDisplay = (props) => {
 	const onCloseDialog = () => {
 		setDialogOpen(false);
 		setMessage('');
+		setInitialValues({});
 	};
 
 	return (
@@ -75,14 +76,16 @@ const HistoryDisplay = (props) => {
 				<div className="title text-capitalize">
 					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					{count > 0 && (
-						<ActionNotification
-							stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
-							text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
-							iconId="DATA"
-							iconPath={ICONS['DATA']}
-							className="csv-action"
-							onClick={handleDownload}
-						/>
+						<div className='download-icon'>
+							<ActionNotification
+								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
+								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
+								iconId="DATA"
+								iconPath={ICONS['DATA']}
+								className="csv-action"
+								onClick={handleDownload}
+							/>
+						</div>
 					)}
 					{activeTab === 2 ? (
 						<ActionNotification
@@ -123,14 +126,17 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				<CheckDeposit
-					onCloseDialog={onCloseDialog}
-					onSubmit={requestDeposit}
-					message={statusMessage}
-					isLoading={isLoading}
-					initialValues={initialValue}
-					props={props}
-				/>
+				{dialogIsOpen
+					? <CheckDeposit
+						onCloseDialog={onCloseDialog}
+						onSubmit={requestDeposit}
+						message={statusMessage}
+						isLoading={isLoading}
+						initialValues={initialValue}
+						props={props}
+					/>
+					: null
+				}
 			</Dialog>
 		</div>
 	);

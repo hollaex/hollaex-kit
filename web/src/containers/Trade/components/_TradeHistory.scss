@@ -1,0 +1,46 @@
+.trade-history-record-enter {
+	opacity: 0;
+	.trade_history-row {
+		&.sell {
+			color: $sell-bids-text !important;
+			background-color: $sell !important;
+		}
+
+		&.buy {
+			color: $buy-bids-text !important;
+			background-color: $buy !important;
+		}
+	}
+}
+
+.trade-history-record-enter-active {
+	opacity: 1;
+	.trade_history-row {
+		&.sell {
+			color: $sell-bids-text !important;
+			background-color: $sell !important;
+		}
+
+		&.buy {
+			color: $buy-bids-text !important;
+			background-color: $buy !important;
+		}
+	}
+	transition: all 0.2s ease-in;
+}
+
+.trade-history-record-enter-done {
+	.trade_history-row {
+		&.sell {
+			color: $sell;
+			background-color: transparent;
+			transition: all 1s ease-in;
+		}
+
+		&.buy {
+			color: $buy !important;
+			background-color: transparent;
+			transition: all 1s ease-in;
+		}
+	}
+}

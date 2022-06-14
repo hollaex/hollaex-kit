@@ -1,10 +1,10 @@
 'use strict';
 
-const { Network } = require('hollaex-node-lib');
+const Network = require('hollaex-network-lib');
 const { all } = require('bluebird');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
-const { User, Status, Tier } = require('./db/models');
+const { User, Status, Tier, Broker } = require('./db/models');
 
 const { subscriber, publisher } = require('./db/pubsub');
 const {
@@ -62,8 +62,10 @@ const checkStatus = () => {
 			meta: {},
 			injected_values: [],
 			injected_html: {},
-			user_meta: {}
-		}
+			user_meta: {},
+			black_list_countries: [],
+		},
+		email: {}
 	};
 
 	let secrets = {
@@ -97,6 +99,7 @@ const checkStatus = () => {
 			} else {
 				secrets = status.secrets;
 				configuration.kit = status.kit;
+				configuration.email = status.email;
 				return all([
 					checkActivation(
 						status.name,
@@ -106,11 +109,12 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
+					Broker.findAll(),
 					status.dataValues
 				]);
 			}
 		})
-		.then(async ([exchange, tiers, status]) => {
+		.then(async ([exchange, tiers, deals, status]) => {
 			loggerInit.info('init/checkStatus/activation', exchange.name, exchange.active);
 
 			const exchangePairs = [];
@@ -124,11 +128,14 @@ const checkStatus = () => {
 				configuration.pairs[pair.name] = pair;
 			}
 
+			configuration.broker = deals;
+
 			for (let tier of tiers) {
 				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
 				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
+				const brokerDiff = difference(deals.map((d) => d.symbol), Object.keys(tier.fees.maker));
 
-				if (makerDiff.length > 0 || takerDiff.length > 0 || isNumber(tier.fees.maker.default) || isNumber(tier.fees.taker.default)) {
+				if (makerDiff.length > 0 || takerDiff.length > 0 || brokerDiff.length > 0 || isNumber(tier.fees.maker.default) || isNumber(tier.fees.taker.default)) {
 					const fees = {
 						maker: {},
 						taker: {}
@@ -151,6 +158,23 @@ const checkStatus = () => {
 							fees.taker[pair] = tier.fees.taker[pair];
 						}
 					}
+					for (let deal of deals) {
+						const pair = deal.symbol;
+						// checking if the deal is already among the pairs
+						if (!exchangePairs.find(e => e.name === pair)) {
+							if (!isNumber(tier.fees.maker[pair])) {
+								fees.maker[pair] = defaultFees.maker;
+							} else {
+								fees.maker[pair] = tier.fees.maker[pair];
+							}
+	
+							if (!isNumber(tier.fees.taker[pair])) {
+								fees.taker[pair] = defaultFees.taker;
+							} else {
+								fees.taker[pair] = tier.fees.taker[pair];
+							}
+						}
+					}
 
 					const t = await tier.update({ fees }, { fields: ['fees'] });
 
@@ -164,6 +188,7 @@ const checkStatus = () => {
 				name: exchange.name,
 				active: exchange.active,
 				exchange_id: exchange.id,
+				user_id: exchange.user_id,
 				url: exchange.url,
 				is_trial: exchange.is_trial,
 				created_at: exchange.created_at,

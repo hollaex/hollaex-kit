@@ -1,5 +1,6 @@
 import axios from 'axios';
 import ICONS from 'config/icons';
+import { requestAuthenticated } from 'utils';
 import STRINGS from '../config/localizedStrings';
 import { playBackgroundAudioNotification } from '../utils/utils';
 
@@ -55,7 +56,7 @@ export const cancelOrder = (orderId, settings) => (dispatch) => {
 
 export const cancelAllOrders = (symbol = '', settings) => (dispatch) => {
 	axios
-		.delete('/order/all') //?symbol=${symbol} can be used to cancel all based on pairs
+		.delete(`/order/all?symbol=${symbol}`)
 		.then((data) => {
 			dispatch({
 				type: 'CANCEL_ALL_ORDERS',
@@ -71,4 +72,13 @@ export const cancelAllOrders = (symbol = '', settings) => (dispatch) => {
 			});
 		})
 		.catch((err) => {});
+};
+
+export const executeBroker = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/execute', options);
 };

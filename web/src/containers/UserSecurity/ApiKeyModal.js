@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { OtpForm, Loader, Notification } from '../../components';
-import { NOTIFICATIONS } from '../../actions/appActions';
-import STRINGS from '../../config/localizedStrings';
+import { Loader, Notification, EmailCodeForm } from 'components';
+import { NOTIFICATIONS } from 'actions/appActions';
+import STRINGS from 'config/localizedStrings';
 import { PopupInfo, TokenCreatedInfo } from './DeveloperSection';
 import { formValueSelector } from 'redux-form';
 import { TokenForm, generateFormValues, FORM_NAME } from './ApiKeyForm';
-import { tokenKeyValidation } from '../../components/Form/validations';
+import { tokenKeyValidation } from 'components/Form/validations';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 export const TYPE_REVOKE = 'TYPE_REVOKE';
@@ -30,25 +30,44 @@ class ApiKeyModal extends Component {
 		}
 	}
 
-	setTokenKey = (tokenKey) => {
-		this.setState({ tokenKey });
-	};
 	setTokenName = (tokenName) => {
 		this.setState({ tokenName });
 	};
+
 	onClickNext = () => {
 		this.setState({ dialogOtpOpen: true });
 	};
 
-	onSubmit = (values) => {
+	getSubmitByType = (type) => {
+		const { onRevoke, onGenerate } = this.props;
+
+		switch (type) {
+			case TYPE_REVOKE:
+				return onRevoke;
+			case TYPE_GENERATE:
+			default:
+				return onGenerate;
+		}
+	};
+
+	getAssetByType = (type) => {
+		switch (type) {
+			case TYPE_REVOKE:
+				return ['DEVELOPERS_TOKENS_POPUP.DELETE', 'TOKEN_TRASHED'];
+			case TYPE_GENERATE:
+			default:
+				return ['DEVELOPERS_TOKENS_POPUP.GENERATE', 'TOKEN_GENERATE'];
+		}
+	};
+
+	onSubmit = ({ otp_code, email_code }) => {
 		this.setState({ loading: true });
-		const { otp_code } = values;
+		const { notificationType } = this.props;
 		const { tokenName } = this.state;
-		let submit =
-			this.props.notificationType === TYPE_REVOKE
-				? this.props.onRevoke
-				: this.props.onGenerate;
-		return submit(otp_code, tokenName).then((res) => {
+
+		const submit = this.getSubmitByType(notificationType);
+
+		return submit(otp_code, email_code, tokenName).then((res) => {
 			if (typeof res === 'object') {
 				const { apiKey, secret } = res;
 				this.setState({
@@ -57,6 +76,7 @@ class ApiKeyModal extends Component {
 					dialogOtpOpen: false,
 					loading: false,
 				});
+				this.onCloseDialog();
 			} else {
 				this.setState({
 					tokenKey: res,
@@ -74,9 +94,20 @@ class ApiKeyModal extends Component {
 
 	render() {
 		const { dialogOtpOpen, loading, tokenName, tokenKey, secret } = this.state;
-		const { notificationType, openContactForm, icons: ICONS } = this.props;
+		const {
+			notificationType,
+			openContactForm,
+			icons: ICONS,
+			pending,
+		} = this.props;
 		if (dialogOtpOpen) {
-			return <OtpForm onSubmit={this.onSubmit} onClickHelp={openContactForm} />;
+			return (
+				<EmailCodeForm
+					onSubmit={this.onSubmit}
+					onClickHelp={openContactForm}
+					pending={pending}
+				/>
+			);
 		} else if (loading) {
 			return <Loader relative={true} background={false} />;
 		} else if (secret !== '') {
@@ -95,28 +126,16 @@ class ApiKeyModal extends Component {
 				</Notification>
 			);
 		} else {
-			const icon =
-				notificationType === TYPE_REVOKE
-					? ICONS['TOKEN_TRASHED']
-					: ICONS['TOKEN_GENERATE'];
-			const iconId =
-				notificationType === TYPE_REVOKE ? 'TOKEN_TRASHED' : 'TOKEN_GENERATE';
-			const nextLabel =
-				notificationType === TYPE_REVOKE
-					? STRINGS['DEVELOPERS_TOKENS_POPUP.DELETE']
-					: STRINGS['DEVELOPERS_TOKENS_POPUP.GENERATE'];
-			const stringId_nextLabel =
-				notificationType === TYPE_REVOKE
-					? 'DEVELOPERS_TOKENS_POPUP.DELETE'
-					: 'DEVELOPERS_TOKENS_POPUP.GENERATE';
+			const [stringId, iconId] = this.getAssetByType(notificationType);
+
 			return (
 				<Notification
 					iconId={iconId}
-					icon={icon}
+					icon={ICONS[iconId]}
 					onBack={this.onCloseDialog}
 					onNext={this.onClickNext}
-					nextLabel={nextLabel}
-					stringId_nextLabel={stringId_nextLabel}
+					nextLabel={STRINGS[stringId]}
+					stringId_nextLabel={stringId}
 					disabledNext={
 						notificationType === TYPE_GENERATE &&
 						!!tokenKeyValidation(tokenName)

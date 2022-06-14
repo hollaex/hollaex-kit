@@ -135,7 +135,7 @@ const AppFooter = ({
 						</div>
 						<div className="footer_separter">
 							<div className="footer-content">
-								<div className="d-flex">
+								<div className="d-flex footer-img-wrapper">
 									<Image
 										iconId="EXCHANGE_LOGO"
 										icon={ICONS['EXCHANGE_LOGO']}

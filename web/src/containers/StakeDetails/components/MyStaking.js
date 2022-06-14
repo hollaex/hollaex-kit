@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
-import { Table, EditWrapper, ProgressBar } from 'components';
+import { Table, EditWrapper, ProgressBar, Help } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
-import { userActiveStakesSelector } from 'containers/Stake/selector';
+import {
+	userActiveStakesSelector,
+	pendingTransactionsSelector,
+	networksMismatchSelector,
+} from 'containers/Stake/selector';
 import { getEstimatedRemainingTime, calculateEsimatedDate } from 'utils/eth';
 import { web3 } from 'config/contracts';
 import Transaction from './Transaction';
+import StakesAndEarnings from 'containers/Stake/components/StakesAndEarnings';
+import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
+import Variable from 'containers/Stake/components/Variable';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -18,22 +26,25 @@ const MyStaking = ({
 	token,
 	account,
 	currentBlock,
-	totalEarningsString,
-	totalStakesString,
 	totalUserEarnings,
 	totalUserStakes,
 	stakables,
 	setNotification,
 	activeStakesCount,
 	activeStakes,
-	network,
 	events,
+	pending,
+	goToBlocks,
+	networksMismatch,
 }) => {
+	// This line is to temporarily hide the events history table
+	const [showEventsHistory] = useState(false);
+
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
-		const { fullname } = coins[symbol];
+		const { fullname, display_name, icon_id } = coins[symbol];
 		setNotification(NOTIFICATIONS.STAKE, {
-			tokenData: { ...tokenData, fullname },
+			tokenData: { ...tokenData, fullname, display_name, icon_id },
 		});
 	};
 
@@ -76,7 +87,7 @@ const MyStaking = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -91,18 +102,20 @@ const MyStaking = ({
 		},
 	];
 
+	const { display_name } = coins[token];
+
 	return (
 		<div>
 			<div className="d-flex justify-content-between align-start">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.MY_STAKING.TITLE']}
 						</div>
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.MY_STAKING.SUBTITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 					</div>
@@ -110,32 +123,19 @@ const MyStaking = ({
 					<div className="pt-4 secondary-text">
 						{STRINGS.formatString(
 							STRINGS['STAKE.CURRENT_ETH_BLOCK'],
-							<span className="blue-link">{currentBlock}</span>
+							<span
+								className="blue-link pointer underline-text"
+								onClick={goToBlocks}
+							>
+								{currentBlock}
+							</span>
 						)}
 					</div>
 				</div>
-				<div
-					className="secondary-text"
-					style={{
-						minWidth: 'max-content',
-						paddingTop: '0.5rem',
-						textAlign: 'right',
-						marginLeft: '3rem',
-					}}
-				>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_STAKED']}</div>
-						<div>{totalStakesString}</div>
-						<div className="kit-divider" />
-					</div>
-					<div>
-						<div>{STRINGS['STAKE.ESTIMATED_EARNINGS']}</div>
-						<div>{totalEarningsString}</div>
-					</div>
-				</div>
+				<StakesAndEarnings />
 			</div>
 			<table className="wallet-assets_block-table">
-				<thead>
+				<thead className="important-text">
 					<tr className="table-bottom-border">
 						<th />
 						<th>
@@ -174,18 +174,28 @@ const MyStaking = ({
 							return (
 								<tr className="table-row table-bottom-border" key={index}>
 									<td />
-									<td>{available}</td>
-									<td>{totalUserStakes[token]}</td>
-									<td>{STRINGS['STAKE_TABLE.VARIABLE']}</td>
-									<td>{totalUserEarnings[token]}</td>
 									<td>
-										<div className="d-flex content-center">
+										<ConnectWrapper>{available}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserStakes[token]}</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>
+											<Variable className="important-text" />
+										</ConnectWrapper>
+									</td>
+									<td>
+										<ConnectWrapper>{totalUserEarnings[token]}</ConnectWrapper>
+									</td>
+									<td>
+										<div className="d-flex">
 											<AntBtn
-												className="stake-btn"
+												className="stake-btn caps"
 												type="primary"
 												ghost
 												onClick={() => startStakingProcess(tokenData)}
-												disabled={!account}
+												disabled={!account || networksMismatch}
 											>
 												{STRINGS['STAKE_TABLE.STAKE']}
 											</AntBtn>
@@ -198,7 +208,7 @@ const MyStaking = ({
 			</table>
 			{account && activeStakesCount !== 0 && (
 				<table className="wallet-assets_block-table mt-4">
-					<thead>
+					<thead className="important-text">
 						<tr className="table-bottom-border">
 							<th />
 							<th>
@@ -240,11 +250,12 @@ const MyStaking = ({
 									weiAmount,
 									period,
 									startBlock,
-									reward,
+									weiReward,
 									closeBlock,
 									index,
 								]) => {
 									const amount = web3.utils.fromWei(weiAmount);
+									const reward = web3.utils.fromWei(weiReward);
 									const calculatedCloseBlock = mathjs.sum(startBlock, period);
 									const remainingBlocks = mathjs.max(
 										mathjs.subtract(calculatedCloseBlock, currentBlock),
@@ -262,6 +273,8 @@ const MyStaking = ({
 
 									const total = mathjs.number(period);
 
+									const { display_name } = coins[symbol];
+
 									const data = {
 										amount,
 										partial,
@@ -269,11 +282,16 @@ const MyStaking = ({
 										reward,
 										symbol,
 										index,
+										display_name,
 									};
 
-									const progressStatusText = remainingBlocks
-										? `~${estimatedLeftover.join(' ')}`
-										: 'Completed';
+									const progressStatusText = remainingBlocks ? (
+										`~${estimatedLeftover.join(' ')}`
+									) : (
+										<Help tip={STRINGS['STAKE.COMPLETED_TOOLTIP']}>
+											{STRINGS['STAKE.COMPLETED']}
+										</Help>
+									);
 
 									const btnProps = {
 										type: 'primary',
@@ -284,6 +302,7 @@ const MyStaking = ({
 											? () => startEarlyUnstakingProcess(data)
 											: () => startUnstakingProcess(data),
 										children: isEarly ? 'UNSTAKE EARLY' : 'UNSTAKE',
+										disabled: networksMismatch,
 									};
 									return (
 										<tr
@@ -317,7 +336,7 @@ const MyStaking = ({
 											</td>
 											<td>{reward}</td>
 											<td className="text-align-center">
-												<div className="d-flex content-center">
+												<div className="d-flex">
 													<AntBtn {...btnProps} />
 												</div>
 											</td>
@@ -326,30 +345,83 @@ const MyStaking = ({
 								}
 							)
 						)}
+						{Object.entries(pending).map(
+							([token, pendingValue], pendingIndex) => {
+								return (
+									pendingValue !== 0 && (
+										<tr
+											className="table-row table-bottom-border"
+											key={`${token}_${pendingIndex}`}
+										>
+											<td />
+											<td>
+												<div className="d-flex align-center">
+													<div>
+														<ClockCircleOutlined />
+													</div>
+													<div className="pl-4">
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.PENDING_TRANSACTIONS'],
+																pendingValue,
+																token.toUpperCase()
+															)}
+														</div>
+														<div>
+															{STRINGS.formatString(
+																STRINGS['STAKE.VIEW_ON'],
+																<span className="underline-text pointer blue-link">
+																	{STRINGS['STAKE.BLOCKCHAIN']}
+																</span>
+															)}
+														</div>
+													</div>
+												</div>
+											</td>
+											<td />
+											<td />
+											<td />
+											<td />
+											<td />
+										</tr>
+									)
+								);
+							}
+						)}
 					</tbody>
 				</table>
 			)}
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
-			<div>
-				<Table
-					className="transactions-history-table"
-					data={events}
-					count={events.length}
-					headers={generateStakeEventsHeader()}
-					withIcon={false}
-					pageSize={TABLE_PAGE_SIZE}
-					rowKey={(data) => {
-						return data.id;
-					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-					handleNext={() => {}}
-					jumpToPage={0}
-				/>
-			</div>
+			{showEventsHistory && (
+				<div className="pt-4">
+					<div className="important-text bold pt-4 mt-2">
+						<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+							{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						</EditWrapper>
+					</div>
+					<Table
+						className="transactions-history-table stake-details-table"
+						data={events}
+						count={events.length}
+						headers={generateStakeEventsHeader()}
+						withIcon={false}
+						pageSize={TABLE_PAGE_SIZE}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+						handleNext={() => {}}
+						jumpToPage={0}
+						noData={
+							!account &&
+							STRINGS.formatString(
+								STRINGS['STAKE.CONNECT_WALLET_TABLE'],
+								<ConnectWrapper className="pr-2" />
+							)
+						}
+						showHeaderNoData={true}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };
@@ -357,11 +429,12 @@ const MyStaking = ({
 const mapStateToProps = (store) => ({
 	coins: store.app.coins,
 	account: store.stake.account,
-	network: store.stake.network,
 	currentBlock: store.stake.currentBlock,
 	stakables: store.stake.stakables,
 	events: store.stake.contractEvents,
 	...userActiveStakesSelector(store),
+	pending: pendingTransactionsSelector(store),
+	networksMismatch: networksMismatchSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -14,30 +14,40 @@ import { formatToCurrency } from 'utils/currency';
 import AssetCard from './AssetCard';
 import { EditWrapper } from 'components';
 
-const AccountAssets = ({
-	chartData = [],
-	totalAssets,
-	balance,
-	coins,
-	activeTheme,
-}) => {
+const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const assetCards = () => {
-		return chartData.map((value, index) => {
-			const { min, symbol = '' } = coins[value.symbol || BASE_CURRENCY] || {};
-			let currencyBalance = formatToCurrency(
-				balance[`${value.symbol}_balance`],
-				min
-			);
-			return (
-				<AssetCard
-					key={index}
-					value={value}
-					symbol={symbol}
-					currencyBalance={currencyBalance}
-				/>
-			);
-		});
+		if (!chartData.length) {
+			let chartLoading = [];
+			for (var i = 1; i <= 8; i++) {
+				chartLoading.push(
+					<div>
+						<div
+							className="dot-flashing"
+							style={{ animationDelay: `.${i}s` }}
+						></div>
+					</div>
+				);
+			}
+			return chartLoading;
+		} else {
+			return chartData.map((value, index) => {
+				const { min, display_name } =
+					coins[value.symbol || BASE_CURRENCY] || {};
+				let currencyBalance = formatToCurrency(
+					balance[`${value.symbol}_balance`],
+					min
+				);
+				return (
+					<AssetCard
+						key={index}
+						value={value}
+						name={display_name}
+						currencyBalance={currencyBalance}
+					/>
+				);
+			});
+		}
 	};
 
 	return (
@@ -66,15 +76,29 @@ const AccountAssets = ({
 					<div className="d-flex justify-content-end">
 						<EditWrapper stringId="ZERO_ASSET,DEPOSIT_ASSETS,OPEN_WALLET" />
 					</div>
-					<div className={classnames('w-100 donut-container mb-4')}>
-						{BASE_CURRENCY && (
+					<div
+						className={classnames('w-100 donut-container mb-4', {
+							'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+						})}
+					>
+						{chartData.length ? (
 							<DonutChart coins={coins} chartData={chartData} />
+						) : (
+							<div>
+								<div className="rounded-loading">
+									<div className="inner-round"></div>
+								</div>
+								<div className="loading-txt">
+									{STRINGS['WALLET.LOADING_ASSETS'].toUpperCase()}
+								</div>
+							</div>
 						)}
 					</div>
 					<Carousel
 						items={assetCards()}
 						groupItems={isMobile ? 4 : 7}
 						isActive={true}
+						isPositionChange={true}
 					/>
 				</div>
 			</div>

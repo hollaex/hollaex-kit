@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import mathjs from 'mathjs';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
@@ -9,20 +10,22 @@ import { createSelector } from 'reselect';
 import debounce from 'lodash.debounce';
 import { setOrderbooks } from 'actions/orderbookAction';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
+import RGL, { WidthProvider } from 'react-grid-layout';
 
 import { getToken } from 'utils/token';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
-import { submitOrder } from '../../actions/orderAction';
-import { getUserTrades } from '../../actions/walletActions';
+import { WS_URL } from 'config/constants';
+import { submitOrder } from 'actions/orderAction';
+import { getUserTrades } from 'actions/walletActions';
+import { storeLayout, getLayout, resetTools } from 'actions/toolsAction';
 import {
 	changePair,
 	setNotification,
 	NOTIFICATIONS,
 	RISKY_ORDER,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
-
-import { isLoggedIn } from '../../utils/token';
+import { isLoggedIn } from 'utils/token';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
@@ -31,26 +34,137 @@ import TradeHistory from './components/TradeHistory';
 import MobileTrade from './MobileTrade';
 import MobileChart from './MobileChart';
 import TVChartContainer from './ChartContainer';
-import OrdersWrapper from './components/OrdersWrapper';
+import MobileOrdersWrapper from './components/MobileOrdersWrapper';
+import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
+import RecentTradesWrapper from './components/RecentTradesWrapper';
+import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
-
-import { Loader, MobileBarTabs, SidebarHub } from '../../components';
-
-import STRINGS from '../../config/localizedStrings';
-import { playBackgroundAudioNotification } from '../../utils/utils';
+import { Loader, MobileBarTabs, SidebarHub } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getViewport } from 'helpers/viewPort';
+
+const GridLayout = WidthProvider(RGL);
+const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
+const GRID_LAYOUT_MARGIN = 10; // RGL package default is 10
+const PORT_ROWS_NUMBER = 34;
+
+const defaultLayout = [
+	{
+		w: 5,
+		h: 28,
+		x: 19,
+		y: 0,
+		i: 'orderbook',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 14,
+		h: 26,
+		x: 0,
+		y: 0,
+		i: 'chart',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 5,
+		h: 34,
+		x: 14,
+		y: 23,
+		i: 'public_sales',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 5,
+		h: 28,
+		x: 14,
+		y: 0,
+		i: 'order_entry',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 14,
+		h: 28,
+		x: 0,
+		y: 28,
+		i: 'recent_trades',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 14,
+		h: 26,
+		x: 0,
+		y: 17,
+		i: 'open_orders',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 5,
+		h: 34,
+		x: 19,
+		y: 23,
+		i: 'wallet',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+	{
+		w: 10,
+		h: 18,
+		x: 14,
+		y: 14,
+		i: 'depth_chart',
+		isDraggable: true,
+		isResizable: true,
+		resizeHandles: ['se'],
+	},
+];
+
+const getDefaultLayoutByTool = (tool) =>
+	defaultLayout.find(({ i }) => i === tool) || {};
+
+const layout = getLayout().map(({ w, h, x, y, i }) => {
+	const defaultItemLayout = getDefaultLayoutByTool(i);
+	const itemLayout = { ...defaultItemLayout };
+	if (defaultItemLayout.isResizable) {
+		itemLayout.w = w;
+		itemLayout.h = h;
+	}
+
+	if (defaultItemLayout.isDraggable) {
+		itemLayout.x = x;
+		itemLayout.y = y;
+	}
+	return itemLayout;
+});
 
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
+
+		const rowHeight = this.calculateRowHeight();
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
 			orderbookWs: null,
-			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
+			layout: layout.length > 0 ? layout : defaultLayout,
+			rowHeight,
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -70,14 +184,53 @@ class Trade extends PureComponent {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		if (nextProps.routeParams.pair !== this.props.routeParams.pair) {
+		const {
+			tools,
+			recentTradesMarket,
+			getUserTrades,
+			routeParams,
+		} = this.props;
+
+		if (nextProps.routeParams.pair !== routeParams.pair) {
 			this.setSymbol(nextProps.routeParams.pair);
 			this.subscribe(nextProps.routeParams.pair);
-			this.unsubscribe(this.props.routeParams.pair);
+			this.unsubscribe(routeParams.pair);
+		} else if (nextProps.recentTradesMarket !== recentTradesMarket) {
+			if (isLoggedIn()) {
+				getUserTrades({ symbol: nextProps.recentTradesMarket });
+			}
+		}
+
+		if (JSON.stringify(tools) !== JSON.stringify(nextProps.tools)) {
+			const { layout } = this.state;
+			const newItemsLayout = [];
+			Object.entries(nextProps.tools)
+				.filter(([, { is_visible }]) => !!is_visible)
+				.forEach(([tool]) => {
+					if (!layout.find(({ i }) => i === tool)) {
+						const defaultItemLayout = getDefaultLayoutByTool(tool);
+						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
+					}
+				});
+			this.setState({ layout: [...layout, ...newItemsLayout] });
 		}
 	}
 
+	componentDidMount() {
+		document.addEventListener('resetlayout', this.onResetLayout);
+	}
+
+	onResetLayout = () => {
+		const { resetTools } = this.props;
+		resetTools();
+		setTimeout(
+			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
+			1000
+		);
+	};
+
 	componentWillUnmount() {
+		document.removeEventListener('resetlayout', this.onResetLayout);
 		clearTimeout(this.priceTimeOut);
 		clearTimeout(this.sizeTimeOut);
 		this.closeOrderbookSocket();
@@ -85,7 +238,7 @@ class Trade extends PureComponent {
 
 	setSymbol = (symbol = '') => {
 		if (isLoggedIn()) {
-			this.props.getUserTrades(symbol);
+			this.props.getUserTrades({ symbol });
 		}
 		this.props.changePair(symbol);
 		this.setState({ symbol: '', orderbookFetched: false }, () => {
@@ -114,21 +267,39 @@ class Trade extends PureComponent {
 		}
 	};
 
-	goToTransactionsHistory = () => {
-		this.props.router.push('/transactions');
+	goToTransactionsHistory = (tab = '') => {
+		this.props.router.push(`/transactions${tab ? `?${tab}` : ''} `);
 	};
 
 	goToPair = (pair) => {
 		this.props.router.push(`/trade/${pair}`);
 	};
 
+	calculateRowHeight = () => {
+		const [, height] = getViewport();
+		const rowHeight = mathjs.subtract(
+			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), PORT_ROWS_NUMBER),
+			GRID_LAYOUT_MARGIN
+		);
+
+		return rowHeight;
+	};
+
 	onResize = () => {
-		if (this.chartBlock) {
-			this.setState({
-				chartHeight: this.chartBlock.offsetHeight || 0,
-				chartWidth: this.chartBlock.offsetWidth || 0,
-			});
-		}
+		const rowHeight = this.calculateRowHeight();
+		this.setState(
+			{
+				rowHeight,
+			},
+			() => {
+				if (this.chartBlock) {
+					this.setState({
+						chartHeight: this.chartBlock.offsetHeight || 0,
+						chartWidth: this.chartBlock.offsetWidth || 0,
+					});
+				}
+			}
+		);
 	};
 
 	openCheckOrder = (order, onConfirm) => {
@@ -188,7 +359,8 @@ class Trade extends PureComponent {
 	};
 
 	setActiveTab = (activeTab) => {
-		this.setState({ activeTab });
+		const { setTradeTab } = this.props;
+		setTradeTab(activeTab);
 	};
 
 	storeData = (data) => {
@@ -285,6 +457,218 @@ class Trade extends PureComponent {
 		}
 	};
 
+	renderTools = () => {
+		const { tools } = this.props;
+
+		return Object.entries(tools)
+			.filter(([, { is_visible }]) => !!is_visible)
+			.map(([key]) => this.getSectionByKey(key));
+	};
+
+	getSectionByKey = (key) => {
+		const {
+			pair,
+			pairData,
+			orderbookReady,
+			balance,
+			activeLanguage,
+			activeTheme,
+			settings,
+			pairs,
+			coins,
+			discount,
+			fees,
+			recentTradesMarket,
+			recentTradesMarketData,
+			activeOrdersMarket,
+			activeOrdersMarketData,
+		} = this.props;
+		const { chartHeight, symbol, orderbookFetched } = this.state;
+
+		const orderbookProps = {
+			symbol,
+			pairData,
+			onPriceClick: this.onPriceClick,
+			onAmountClick: this.onAmountClick,
+			orderbookFetched,
+		};
+
+		switch (key) {
+			case 'orderbook': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="TOOLS.ORDERBOOK"
+							isLoggedIn={isLoggedIn()}
+							title={STRINGS['TOOLS.ORDERBOOK']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							{orderbookReady && <Orderbook {...orderbookProps} />}
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'chart': {
+				return (
+					<div
+						className={classnames('trade-main_content', 'flex-auto', 'd-flex')}
+						key={key}
+					>
+						<TradeBlock
+							stringId="TOOLS.CHART"
+							title={STRINGS['TOOLS.CHART']}
+							setRef={this.setChartRef}
+							className="f-1 overflow-x"
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							{pair && chartHeight > 0 && (
+								<TVChartContainer
+									activeTheme={activeTheme}
+									symbol={symbol}
+									// tradeHistory={tradeHistory}
+									pairData={pairData}
+								/>
+							)}
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'public_sales': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="TOOLS.PUBLIC_SALES"
+							title={STRINGS['TOOLS.PUBLIC_SALES']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							<TradeHistory pairData={pairData} language={activeLanguage} />
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'order_entry': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="TOOLS.ORDER_ENTRY"
+							title={STRINGS['TOOLS.ORDER_ENTRY']}
+							pairData={pairData}
+							pair={pair}
+							tool={key}
+						>
+							<OrderEntry
+								focusOnSizeInput={this.focusOnSizeInput}
+								submitOrder={this.onSubmitOrder}
+								openCheckOrder={this.openCheckOrder}
+								onRiskyTrade={this.onRiskyTrade}
+								symbol={symbol}
+								balance={balance}
+								fees={fees}
+								showPopup={settings.notification.popup_order_confirmation}
+								setPriceRef={this.setPriceRef}
+								setSizeRef={this.setSizeRef}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'recent_trades': {
+				return (
+					<div key={key}>
+						<RecentTradesWrapper
+							pair={recentTradesMarket}
+							pairData={recentTradesMarketData}
+							discount={discount}
+							pairs={pairs}
+							coins={coins}
+							activeTheme={activeTheme}
+							isLoggedIn={isLoggedIn()}
+							goToTransactionsHistory={this.goToTransactionsHistory}
+							goToPair={this.goToPair}
+							tool={key}
+						/>
+					</div>
+				);
+			}
+			case 'open_orders': {
+				return (
+					<div key={key}>
+						<ActiveOrdersWrapper
+							pair={activeOrdersMarket}
+							pairData={activeOrdersMarketData}
+							discount={discount}
+							pairs={pairs}
+							coins={coins}
+							activeTheme={activeTheme}
+							isLoggedIn={isLoggedIn()}
+							goToTransactionsHistory={this.goToTransactionsHistory}
+							goToPair={this.goToPair}
+							tool={key}
+						/>
+					</div>
+				);
+			}
+			case 'wallet': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="TOOLS.WALLET"
+							title={STRINGS['TOOLS.WALLET']}
+							className="f-1"
+							tool={key}
+						>
+							<SidebarHub
+								isLogged={isLoggedIn()}
+								pair={pair}
+								theme={activeTheme}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
+			case 'depth_chart': {
+				return (
+					<div key={key}>
+						<TradeBlock
+							stringId="TOOLS.DEPTH_CHART"
+							title={STRINGS['TOOLS.DEPTH_CHART']}
+							className="f-1"
+							tool={key}
+						>
+							<DepthChart
+								containerProps={{ className: 'w-100 h-100 zoom-in' }}
+							/>
+						</TradeBlock>
+					</div>
+				);
+			}
+			default: {
+				return null;
+			}
+		}
+	};
+
+	onLayoutChange = (layout = defaultLayout, cb) => {
+		storeLayout(layout);
+		this.setState({ layout }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
+	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
+
+	onStopResize = () => {
+		setTimeout(this.dispatchResizeEvent, 500);
+	};
+
 	render() {
 		const {
 			pair,
@@ -297,23 +681,21 @@ class Trade extends PureComponent {
 			orderLimits,
 			pairs,
 			coins,
-			discount,
 			fees,
 			icons,
+			tools,
+			activeTab,
 		} = this.props;
-		const { chartHeight, symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched, layout, rowHeight } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -355,7 +737,7 @@ class Trade extends PureComponent {
 			{
 				title: STRINGS['TRADE_TAB_ORDERS'],
 				content: (
-					<OrdersWrapper
+					<MobileOrdersWrapper
 						isLoggedIn={isLoggedIn()}
 						goToTransactionsHistory={this.goToTransactionsHistory}
 						pair={pair}
@@ -386,8 +768,6 @@ class Trade extends PureComponent {
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
-							goToPair={this.goToPair}
-							goToMarkets={() => this.setActiveTab(3)}
 							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
@@ -397,123 +777,22 @@ class Trade extends PureComponent {
 				) : (
 					<div className={classnames('trade-container', 'd-flex')}>
 						<EventListener target="window" onResize={this.onResize} />
-						<div
-							className={classnames(
-								'trade-col_main_wrapper',
-								'flex-column',
-								'd-flex',
-								'f-1',
-								'overflow-x'
-							)}
+						<GridLayout
+							className="layout w-100"
+							layout={layout}
+							onLayoutChange={(layout) => this.onLayoutChange(layout)}
+							onResizeStop={this.onStopResize}
+							items={
+								Object.entries(tools).filter(
+									([, { is_visible }]) => !!is_visible
+								).length
+							}
+							rowHeight={rowHeight}
+							cols={24}
+							draggableHandle=".drag-handle"
 						>
-							<div
-								className={classnames(
-									'trade-main_content',
-									'flex-auto',
-									'd-flex'
-								)}
-							>
-								<TradeBlock
-									stringId="CHART"
-									title={STRINGS['CHART']}
-									setRef={this.setChartRef}
-									className="f-1 overflow-x"
-									pairData={pairData}
-									pair={pair}
-								>
-									{pair && chartHeight > 0 && (
-										<TVChartContainer
-											activeTheme={activeTheme}
-											symbol={symbol}
-											// tradeHistory={tradeHistory}
-											pairData={pairData}
-										/>
-									)}
-								</TradeBlock>
-							</div>
-							<div
-								className={classnames(
-									'trade-tabs_content',
-									'd-flex',
-									'flex-column',
-									'apply_rtl'
-								)}
-							>
-								<OrdersWrapper
-									pair={pair}
-									pairData={pairData}
-									discount={discount}
-									pairs={pairs}
-									coins={coins}
-									activeTheme={activeTheme}
-									isLoggedIn={isLoggedIn()}
-									goToTransactionsHistory={this.goToTransactionsHistory}
-									goToPair={this.goToPair}
-								/>
-							</div>
-						</div>
-						<div
-							className={classnames(
-								'trade-col_side_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDERBOOK"
-								isLoggedIn={isLoggedIn()}
-								title={STRINGS['ORDERBOOK']}
-								pairData={pairData}
-								pair={pair}
-							>
-								{orderbookReady && <Orderbook {...orderbookProps} />}
-							</TradeBlock>
-							<TradeBlock
-								stringId="PUBLIC_SALES"
-								title={STRINGS['PUBLIC_SALES']}
-								pairData={pairData}
-								pair={pair}
-							>
-								<TradeHistory pairData={pairData} language={activeLanguage} />
-							</TradeBlock>
-						</div>
-
-						<div
-							className={classnames(
-								'trade-col_action_wrapper',
-								'flex-column',
-								'd-flex',
-								'apply_rtl'
-							)}
-						>
-							<TradeBlock
-								stringId="ORDER_ENTRY"
-								title={STRINGS['ORDER_ENTRY']}
-								pairData={pairData}
-								pair={pair}
-							>
-								<OrderEntry
-									focusOnSizeInput={this.focusOnSizeInput}
-									submitOrder={this.onSubmitOrder}
-									openCheckOrder={this.openCheckOrder}
-									onRiskyTrade={this.onRiskyTrade}
-									symbol={symbol}
-									balance={balance}
-									fees={fees}
-									showPopup={settings.notification.popup_order_confirmation}
-									setPriceRef={this.setPriceRef}
-									setSizeRef={this.setSizeRef}
-								/>
-							</TradeBlock>
-							<TradeBlock title={STRINGS.WALLET_TITLE} className="f-1">
-								<SidebarHub
-									isLogged={isLoggedIn()}
-									pair={pair}
-									theme={activeTheme}
-								/>
-							</TradeBlock>
-						</div>
+							{this.renderTools()}
+						</GridLayout>
 					</div>
 				)}
 			</div>
@@ -550,9 +829,26 @@ const feesDataSelector = createSelector(
 const mapStateToProps = (state) => {
 	const pair = state.app.pair;
 	const pairData = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
+
+	const activeOrdersMarket = state.app.activeOrdersMarket;
+	const activeOrdersMarketData = state.app.pairs[activeOrdersMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
+	const recentTradesMarket = state.app.recentTradesMarket;
+	const recentTradesMarketData = state.app.pairs[recentTradesMarket] || {
+		pair_base: '',
+		pair_2: '',
+	};
+
 	return {
 		pair,
 		pairData,
+		activeOrdersMarket,
+		activeOrdersMarketData,
+		recentTradesMarket,
+		recentTradesMarketData,
 		pairs: state.app.pairs,
 		coins: state.app.coins,
 		balance: state.user.balance,
@@ -565,15 +861,19 @@ const mapStateToProps = (state) => {
 		discount: state.user.discount || 0,
 		isReady: state.app.isReady,
 		constants: state.app.constants,
+		tools: state.tools,
+		activeTab: state.app.tradeTab,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	getUserTrades: (symbol) => dispatch(getUserTrades({ symbol })),
+	getUserTrades: bindActionCreators(getUserTrades, dispatch),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	resetTools: bindActionCreators(resetTools, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

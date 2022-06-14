@@ -55,7 +55,7 @@ $title-icon--height: 10rem;
 	.quick_trade-bottom-padded {
 		margin-bottom: $section--margin-bottom;
 	}
-	.quick_trade-icon svg {
+	.quick_trade-icon {
 		width: 7rem;
 		height: 8rem;
 	}
@@ -67,6 +67,10 @@ $title-icon--height: 10rem;
 		font-family: $en--font-family;
 		color: $colors-deactivate;
 	}
+}
+.quick_trade-wrapper.width-none {
+	min-width: unset !important;
+	max-width: unset !important;
 }
 .quick_trade-wrapper {
 	min-width: $wrapper--min-width;
@@ -355,12 +359,8 @@ $title-icon--height: 10rem;
 						background-color: $app-light-background !important;
 					}
 				}
-			}
-			div:nth-child(4) {
-				.input-group__container {
-					.input-group__input {
-						color: $colors-main-black !important;
-					}
+				.input-group__error-wrapper {
+					width: 310px;
 				}
 			}
 			.small-text {
@@ -452,6 +452,9 @@ $title-icon--height: 10rem;
 				.ant-input-group {
 					width: 100% !important;
 				}
+				.input-group__error-wrapper {
+					width: 100% !important;
+				}
 			}
 			.btn-wrapper {
 				align-items: center !important;
@@ -493,11 +496,13 @@ $title-icon--height: 10rem;
 				.py-2 .ant-input-group {
 					width: 250px;
 				}
+				.py-2 .input-group__error-wrapper {
+					width: 250px;
+				}
 				.input-group__container {
 					.quick-trade-select-wrapper {
 						.pl-1 {
 							font-size: 10px;
-
 						}
 					}
 				}

@@ -17,6 +17,7 @@ import { GenerateApiKey, CreatedApiKey } from './GenerateApiKey';
 import StakeContent from 'containers/Stake/components/StakeContent';
 import EarlyUnstakeContent from 'containers/Stake/components/EarlyUnstakeContent';
 import UnstakeContent from 'containers/Stake/components/UnstakeContent';
+import MoveXHTContent from 'containers/Stake/components/MoveXHTContent';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const generateNotificationContent = ({ type, data, ...rest }) => {
@@ -55,6 +56,8 @@ const generateNotificationContent = ({ type, data, ...rest }) => {
 			return <EarlyUnstakeContent {...data} {...rest} />;
 		case NOTIFICATIONS.UNSTAKE:
 			return <UnstakeContent {...data} {...rest} />;
+		case NOTIFICATIONS.MOVE_XHT:
+			return <MoveXHTContent {...data} {...rest} />;
 		default:
 			break;
 	}

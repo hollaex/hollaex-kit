@@ -2,7 +2,8 @@ import React, { Fragment } from 'react';
 import { isDate } from 'moment';
 import classnames from 'classnames';
 import _map from 'lodash/map';
-import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
+import moment from 'moment';
+import { DATETIME_FORMAT } from '../../../utils/date';
 import { ZoomInOutlined } from '@ant-design/icons';
 export const KEYS_TO_HIDE = [
 	// 'email',
@@ -50,7 +51,7 @@ export const renderRowInformation = ([key, value]) =>
 export const renderJSONKey = (key, value) => {
 	let valueText = '';
 	if (key === 'dob' && isDate(new Date(value))) {
-		valueText = `${formatTimestampGregorian(value, DATETIME_FORMAT)}`;
+		valueText = `${moment.parseZone(value).format(DATETIME_FORMAT)}`;
 	} else if (key === 'wallet') {
 		valueText = _map(value, (wallet, index) => {
 			return (

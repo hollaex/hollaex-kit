@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import STRINGS from 'config/localizedStrings';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';

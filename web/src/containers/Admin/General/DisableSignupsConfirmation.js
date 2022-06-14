@@ -2,7 +2,11 @@ import React from 'react';
 import { Button, Modal } from 'antd';
 import { WarningFilled } from '@ant-design/icons';
 
-const DisableSignupsConfirmation = ({ onConfirm, ...rest }) => (
+const DisableSignupsConfirmation = ({
+	onConfirm,
+	buttonSubmitting,
+	...rest
+}) => (
 	<Modal footer={null} width={350} {...rest}>
 		<div>
 			<h3 style={{ color: '#ffffff' }}>Turn off sign ups</h3>
@@ -18,7 +22,11 @@ const DisableSignupsConfirmation = ({ onConfirm, ...rest }) => (
 				</div>
 			</div>
 			<div>
-				<Button className="green-btn w-100" onClick={onConfirm}>
+				<Button
+					className="green-btn w-100"
+					onClick={onConfirm}
+					disabled={buttonSubmitting}
+				>
 					Yes, proceed
 				</Button>
 			</div>

@@ -45,7 +45,17 @@ class UploadIds extends Component {
 		return uploadFiles(this.props.user_id, values)
 			.then(({ data }) => {
 				if (data.data) {
-					refreshData(data.data, 'files');
+					const imageFiles = ['back', 'front', 'proof_of_residency'];
+					let updatedData = {};
+					Object.keys(data.data).forEach(item => {
+						if (imageFiles.includes(item)) {
+							updatedData = {
+								...updatedData,
+								[item]: data.data[item]
+							}
+						}
+					});
+					refreshData(updatedData, 'files');
 				}
 				if (data.user) {
 					refreshData(data.user);
@@ -54,7 +64,10 @@ class UploadIds extends Component {
 				AntdMessage.success('Files upload successfully', 5);
 			})
 			.catch((err) => {
-				const message = err && err.data ? err.data.message : err.message;
+				let message = err && err.data ? err.data.message : err.message;
+				if (message && message.includes('404')) {
+					message = 'Admin upload is not available';
+				}
 				AntdMessage.error(message, 5);
 				throw new SubmissionError({ _error: message });
 			});

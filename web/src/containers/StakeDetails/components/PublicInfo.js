@@ -2,11 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Table, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
-import { TABS } from '../index';
+import { TABS } from '../DesktopStakeDetails';
 import { calculateEsimatedDate } from 'utils/eth';
 import Transaction from './Transaction';
 import DonutChart from './DonutChart';
 import { web3 } from 'config/contracts';
+import ConnectWrapper from 'containers/Stake/components/ConnectWrapper';
+import { publicInfoSelector } from 'containers/Stake/selector';
+import { formatToCurrency } from 'utils/currency';
+import {
+	BASE_CURRENCY,
+	CURRENCY_PRICE_FORMAT,
+	APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT,
+	DEFAULT_COIN_DATA,
+} from 'config/constants';
+import Variable from 'containers/Stake/components/Variable';
 
 const TABLE_PAGE_SIZE = 10;
 
@@ -15,8 +25,20 @@ const PublicInfo = ({
 	token,
 	currentBlock,
 	setActiveTab,
-	network,
 	distributions,
+	account,
+	coins,
+	totalDistributedRewards,
+	totalDistributedRewardsValue,
+	potBalance,
+	unclaimedRewards,
+	totalStaked,
+	totalStakedValue,
+	myStake,
+	myStakePercent,
+	othersStake,
+	othersStakePercent,
+	goToPOT,
 }) => {
 	const generateDistributionsHeader = () => [
 		{
@@ -41,7 +63,7 @@ const PublicInfo = ({
 			renderCell: ({ transactionHash }, key, index) => {
 				return (
 					<td key={index}>
-						<Transaction id={transactionHash} network={network} />
+						<Transaction id={transactionHash} />
 					</td>
 				);
 			},
@@ -55,125 +77,176 @@ const PublicInfo = ({
 			},
 		},
 	];
+	const { min: baseMin, display_name: baseDisplay = '' } =
+		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const { min: tokenMin, display_name: tokenDisplay = '' } =
+		coins[token] || DEFAULT_COIN_DATA;
+
+	const format = (value, displayName, min, format = CURRENCY_PRICE_FORMAT) =>
+		STRINGS.formatString(format, formatToCurrency(value, min), displayName);
+
+	const formatToken = (value) => format(value, tokenDisplay, tokenMin);
+	const formatBase = (value) =>
+		format(
+			value,
+			baseDisplay,
+			baseMin,
+			APPROXIMATELY_EQAUL_CURRENCY_PRICE_FORMAT
+		);
+
+	const chartData = [
+		{
+			symbol: 'mine',
+			balancePercentage: myStakePercent,
+			balance: myStake,
+			stringId: 'STAKE_DETAILS.PUBLIC_INFO.MY_STAKE',
+		},
+		{
+			symbol: 'others',
+			balancePercentage: othersStakePercent,
+			balance: othersStake,
+			stringId: 'STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE',
+		},
+	];
 
 	return (
 		<div>
 			<div className="d-flex justify-content-between">
 				<div>
 					<div>
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TITLE']}
 						</div>
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.PUBLIC_INFO.SUBTITLE'],
 								fullname,
-								token.toUpperCase()
+								tokenDisplay
 							)}
 						</div>
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_EARNINGS']}
+						<div className="bold important-text">
+							{STRINGS.formatString(
+								STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_DISTRIBUTED_REWARDS'],
+								<span
+									className="blue-link pointer underline-text normal"
+									onClick={goToPOT}
+								>
+									{STRINGS['STAKE.VIEW_POT']}
+								</span>
+							)}
 						</div>
-						<div className="secondary-text">383,001 XHT</div>
+						<div className="d-flex">
+							<div className="important-text">
+								{formatToken(totalDistributedRewards)}
+							</div>
+							<div className="secondary-text pl-2">
+								{formatBase(totalDistributedRewardsValue)}
+							</div>
+						</div>
 					</div>
 
 					<div className="pt-4 d-flex">
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.CLEARED_UNDISTRIBUTED_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.POT_BALANCE']}
 							</div>
-							<div className="secondary-text">31,000 XHT</div>
+							<div className="important-text">{formatToken(potBalance)}</div>
 						</div>
 						<div className="secondary-text px-4">|</div>
 						<div>
-							<div className="bold">
-								{
-									STRINGS[
-										'STAKE_DETAILS.PUBLIC_INFO.UNCLEARED_PENDING_EARNINGS'
-									]
-								}
+							<div className="bold important-text">
+								{STRINGS['STAKE_DETAILS.PUBLIC_INFO.UNCLAIMED_REWARDS']}
 							</div>
-							<div className="secondary-text">13,000 XHT</div>
+							<div className="important-text">
+								{formatToken(unclaimedRewards)}
+							</div>
 						</div>
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.TOTAL_STAKED']}
 						</div>
-						<div className="secondary-text">3,213,321 XHT</div>
+						<div className="d-flex">
+							<div className="important-text">{formatToken(totalStaked)}</div>
+							<div className="secondary-text pl-2">
+								{formatBase(totalStakedValue)}
+							</div>
+						</div>
 					</div>
 
 					<div className="pt-4">
-						<div className="bold">
+						<div className="bold important-text">
 							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.REWARD_RATE']}
 						</div>
-						<div className="secondary-text">
-							{STRINGS['STAKE_DETAILS.PUBLIC_INFO.VARIABLE']}
+						<div className="important-text">
+							<Variable className="important-text" />
 						</div>
 					</div>
 				</div>
 				<div>
 					<div>
-						<DonutChart />
+						<DonutChart chartData={chartData} />
 					</div>
 
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend mine" />
-							<div className="bold">
-								{STRINGS.formatString(
-									STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
-									25
-								)}
+							<div className="bold important-text">
+								{account
+									? STRINGS.formatString(
+											STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE'],
+											myStakePercent
+									  )
+									: STRINGS['STAKE_DETAILS.PUBLIC_INFO.MY_STAKE_PERCENTLESS']}
 							</div>
 						</div>
-						<div className="secondary-text ml-4 pl-3">3,213,321 XHT</div>
+						<div className="d-flex ml-4 pl-3">
+							<ConnectWrapper>
+								<div className="important-text">{formatToken(myStake)}</div>
+								<div className="pl-2">
+									(
+									<span
+										className="blue-link underline-text pointer"
+										onClick={() => setActiveTab(TABS.MY_STAKING.key)}
+									>
+										<EditWrapper stringId="STAKE_DETAILS.VIEW">
+											{STRINGS['STAKE_DETAILS.VIEW']}
+										</EditWrapper>
+									</span>
+									)
+								</div>
+							</ConnectWrapper>
+						</div>
 					</div>
 
 					<div className="pt-4">
 						<div className="d-flex align-center">
 							<div className="stake-chart-legend others" />
-							<div className="bold">
+							<div className="bold important-text">
 								{STRINGS.formatString(
 									STRINGS['STAKE_DETAILS.PUBLIC_INFO.OTHER_STAKE'],
-									75
+									othersStakePercent
 								)}
 							</div>
 						</div>
-						<div className="d-flex ml-4 pl-3">
-							<div className="secondary-text">3,213,321 XHT</div>
-							<div className="pl-2">
-								(
-								<span
-									className="blue-link underline-text pointer"
-									onClick={() => setActiveTab(TABS.MY_STAKING.key)}
-								>
-									<EditWrapper stringId="STAKE_DETAILS.VIEW">
-										{STRINGS['STAKE_DETAILS.VIEW']}
-									</EditWrapper>
-								</span>
-								)
-							</div>
+						<div className="ml-4 pl-3">
+							<div className="important-text">{formatToken(othersStake)}</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div className="bold">
-				<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
-					{STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
-				</EditWrapper>
-			</div>
 			<div>
+				<div className="important-text bold pt-4 mt-2">
+					<EditWrapper stringId="STAKE_DETAILS.MY_STAKING.EVENTS_TITLE">
+						{STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
+					</EditWrapper>
+				</div>
 				<Table
-					className="transactions-history-table"
+					className="transactions-history-table stake-details-table"
 					data={distributions}
 					count={distributions.length}
 					headers={generateDistributionsHeader()}
@@ -182,10 +255,11 @@ const PublicInfo = ({
 					rowKey={(data) => {
 						return data.id;
 					}}
-					title={STRINGS['STAKE_DETAILS.MY_STAKING.EVENTS_TITLE']}
+					title={STRINGS['STAKE_DETAILS.PUBLIC_INFO.EVENTS_TITLE']}
 					handleNext={() => {}}
 					jumpToPage={0}
 					displayPaginator={false}
+					showHeaderNoData={true}
 				/>
 			</div>
 			{distributions.length !== 0 && (
@@ -205,9 +279,12 @@ const PublicInfo = ({
 };
 
 const mapStateToProps = (store) => ({
-	network: store.stake.network,
+	coins: store.app.coins,
+	account: store.stake.account,
 	currentBlock: store.stake.currentBlock,
 	distributions: store.stake.distributions,
+	publicInfo: store.stake.publicInfo,
+	...publicInfoSelector(store),
 });
 
 export default connect(mapStateToProps)(PublicInfo);

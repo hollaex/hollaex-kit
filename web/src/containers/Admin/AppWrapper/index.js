@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { CaretLeftOutlined } from '@ant-design/icons';
-import { Layout, Menu, Row, Col, Spin, message } from 'antd';
+import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 
@@ -52,10 +52,11 @@ import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allPairs } from '../Trades/Pairs';
 import {
 	getAllCoins,
-	getAllPairs, 
+	getAllPairs,
 	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
+import Timer from './Timer';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -194,7 +195,7 @@ class AppWrapper extends React.Component {
 		await this.getExchange();
 		await this.getCoins();
 		await this.getPairs();
-	}
+	};
 
 	getExchange = async () => {
 		try {
@@ -453,7 +454,7 @@ class AppWrapper extends React.Component {
 						</div>
 						<div>
 							<div className="main-label">Role:</div>
-							<div className="sub-label">SuperVisor</div>
+							<div className="sub-label">Supervisor</div>
 						</div>
 					</div>
 				);
@@ -519,7 +520,7 @@ class AppWrapper extends React.Component {
 					</div>
 				);
 			default:
-				return <div></div>
+				return <div></div>;
 		}
 	};
 
@@ -621,23 +622,16 @@ class AppWrapper extends React.Component {
 						<Link to="/summary">
 							<div className="top-box-menu">
 								<CaretLeftOutlined />
-								Back to Exchange web
+								Back to Website
 							</div>
 						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
-						<div className="top-box-menu">
-							<img
-								src={STATIC_ICONS.BLUE_SCREEN_LINK}
-								className="link-icon"
-								alt="Link-icon"
-							/>{' '}
-							<a
-								href="https://dash.bitholla.com/"
-								target="_blank"
-								rel="noopener noreferrer"
-							>
-								Go to Holla Dash
-							</a>
+						<div className="mr-2 time-wrapper">
+							<Tooltip placement="bottom" title={<Timer isHover={true} />}>
+								<div className="ml-2">
+									<Timer isHover={false} />
+								</div>
+							</Tooltip>
 						</div>
 					</div>
 					<Layout>

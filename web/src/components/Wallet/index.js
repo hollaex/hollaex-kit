@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
+import classnames from 'classnames';
 
 import { Accordion, ControlledScrollbar } from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
@@ -38,7 +39,7 @@ class Wallet extends Component {
 	}
 
 	generateSection = (symbol, price, balance, orders, coins) => {
-		const { min, fullname, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+		const { min, fullname, display_name } = coins[symbol] || DEFAULT_COIN_DATA;
 		return {
 			accordionClassName: 'wallet_section-wrapper',
 			title: fullname,
@@ -46,7 +47,7 @@ class Wallet extends Component {
 			titleInformation: (
 				<div className="wallet_section-title-amount">
 					{formatToCurrency(balance[`${symbol}_balance`], min)}
-					<span className="mx-1">{rest.symbol.toUpperCase()}</span>
+					<span className="mx-1">{display_name}</span>
 				</div>
 			),
 			content: (
@@ -93,49 +94,83 @@ class Wallet extends Component {
 		}
 
 		const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-		const { symbol = '' } = coins[BASE_CURRENCY] || {};
+		const { display_name = '' } = coins[BASE_CURRENCY] || {};
 		const hasScrollbar = sections.length > 7;
+
+		const isShowChart =
+			!Object.keys(balance).length ||
+			!Object.keys(coins).length ||
+			!Object.keys(prices).length ||
+			!chartData.length ||
+			fetching;
+
+		const loadCount = [];
+		for (var i = 1; i <= 6; i++) {
+			loadCount.push(i);
+		}
 
 		return (
 			<div className="wallet-wrapper">
-				<div className="donut-container">
-					{!Object.keys(balance).length ||
-					!Object.keys(coins).length ||
-					!Object.keys(prices).length ||
-					!chartData.length ||
-					fetching ? (
-						<div className="text-center mt-3">
-							{STRINGS['WALLET.LOADING_ASSETS']}
+				<div
+					className={classnames('donut-container', {
+						'd-flex justify-content-center align-items-center': isShowChart,
+					})}
+				>
+					{isShowChart ? (
+						<div className="rounded-loading">
+							<div className="inner-round"></div>
 						</div>
 					) : (
-						<DonutChart
-							id="side-bar-donut"
-							coins={coins}
-							chartData={chartData}
-						/>
+						chartData.length && (
+							<DonutChart
+								id="side-bar-donut"
+								coins={coins}
+								chartData={chartData}
+							/>
+						)
 					)}
 				</div>
-				<ControlledScrollbar
-					autoHideArrows={true}
-					autoHeight={true}
-					autoHeightMax={hasScrollbar ? 245 : 350}
-				>
-					<Accordion sections={sections} />
-					<div className="d-flex justify-content-center wallet_link blue-link">
-						<Link to="/wallet">{STRINGS['VIEW_ALL']}</Link>
-					</div>
-				</ControlledScrollbar>
-				{BASE_CURRENCY ? (
-					<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
-						<div className="wallet_section-title">
-							{STRINGS['WALLET.TOTAL_ASSETS']}
+				{isShowChart ? (
+					<div>
+						<div className="mt-3 loading-txt">
+							{STRINGS['WALLET.LOADING_ASSETS'].toUpperCase()}
 						</div>
-						<div className="wallet_section-total_asset d-flex justify-content-end">
-							<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
-							{symbol.toUpperCase()}
+						<div>
+							{loadCount.map((data, index) => {
+								return (
+									<div
+										className="loading-row-anime"
+										style={{ animationDelay: `.${index}s` }}
+									></div>
+								);
+							})}
 						</div>
 					</div>
-				) : null}
+				) : (
+					<div>
+						<ControlledScrollbar
+							autoHideArrows={true}
+							autoHeight={true}
+							autoHeightMax={hasScrollbar ? 245 : 350}
+						>
+							<Accordion sections={sections} />
+							<div className="d-flex justify-content-center wallet_link blue-link">
+								<Link to="/wallet">{STRINGS['VIEW_ALL']}</Link>
+							</div>
+						</ControlledScrollbar>
+						{BASE_CURRENCY ? (
+							<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
+								<div className="wallet_section-title">
+									{STRINGS['WALLET.TOTAL_ASSETS']}
+								</div>
+								<div className="wallet_section-total_asset d-flex justify-content-end">
+									<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
+									{display_name}
+								</div>
+							</div>
+						) : null}
+					</div>
+				)}
 			</div>
 		);
 	}

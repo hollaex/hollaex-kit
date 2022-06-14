@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { setNotification } from 'actions/appActions';
 import {
 	requestTokens,
 	revokeToken,
 	generateToken,
 	tokenGenerated,
 	tokenRevoked,
-} from '../../actions/userAction';
-import { Table, Dialog, Loader } from '../../components';
+	editToken,
+} from 'actions/userAction';
+import { Table, Dialog, Loader, EmailCodeForm } from 'components';
 import { generateHeaders } from './ApiKeyHeaders';
 import ApiKeyModal, { TYPE_GENERATE, TYPE_REVOKE } from './ApiKeyModal';
-import { openContactForm } from 'actions/appActions';
-import { errorHandler } from '../../components/OtpForm/utils';
+import { openContactForm, NOTIFICATIONS } from 'actions/appActions';
 import { NoOtpEnabled, OtpEnabled } from './DeveloperSection';
 import withConfig from 'components/ConfigProvider/withConfig';
+import EditToken from './EditToken';
 
 const INITIAL_STATE = {
 	dialogIsOpen: false,
 	dialogType: '',
 	tokenId: -1,
+	isCodeDialog: false,
+	editData: {},
+	pending: false,
 };
 class ApiKey extends Component {
 	state = INITIAL_STATE;
@@ -53,26 +58,64 @@ class ApiKey extends Component {
 		this.setState({ dialogIsOpen: true, dialogType: TYPE_REVOKE, tokenId });
 	};
 
-	onRevokeToken = (otp_code) => {
-		return revokeToken(this.state.tokenId, otp_code)
+	onRevokeToken = (otp_code, email_code) => {
+		this.setPending();
+		return revokeToken(this.state.tokenId, otp_code, email_code)
 			.then((resp) => {
 				const { data } = resp;
 				this.props.tokenRevoked(data);
 				this.onCloseDialog();
 				this.requestTokens();
 			})
-			.catch(errorHandler);
+			.catch(this.onError);
 	};
 
-	onGenerateToken = (otp_code, name) => {
-		return generateToken({ otp_code, name })
+	onGenerateToken = (otp_code, email_code, name) => {
+		this.setPending();
+		return generateToken({ otp_code, name, email_code })
+			.then(({ data: { key: apiKey, ...rest } }) => {
+				const response = { apiKey, ...rest };
+				this.props.tokenGenerated(response);
+				return response;
+			})
+			.catch(this.onError);
+	};
+
+	onEditToken = (values) => {
+		this.setPending();
+		return editToken({ ...values })
 			.then(({ data }) => {
-				this.props.tokenGenerated(data);
 				this.requestTokens();
 				return data;
 			})
-			.catch(errorHandler);
+			.catch(this.onError);
 	};
+
+	onSubmitEmail = ({ email_code, otp_code }) => {
+		const { editData } = this.state;
+
+		this.onEditToken({ ...editData, email_code, otp_code }).then(() => {
+			this.onCloseDialog();
+		});
+	};
+
+	onEdit = (editData) => {
+		this.setState({
+			editData,
+			isCodeDialog: true,
+		});
+	};
+
+	onError = (err) => {
+		this.onCloseDialog();
+		const message =
+			err.response && err.response.data && err.response.data.message
+				? err.response.data.message
+				: err.message || JSON.stringify(err);
+		this.props.setNotification(NOTIFICATIONS.ERROR, message);
+	};
+
+	setPending = (pending = true) => this.setState({ pending });
 
 	render() {
 		const {
@@ -85,7 +128,7 @@ class ApiKey extends Component {
 			icons: ICONS,
 		} = this.props;
 
-		const { dialogIsOpen, dialogType } = this.state;
+		const { dialogIsOpen, dialogType, isCodeDialog, pending } = this.state;
 		return (
 			<div>
 				{otp_enabled ? (
@@ -110,6 +153,17 @@ class ApiKey extends Component {
 									return data.id;
 								}}
 								count={tokens.count}
+								expandable={{
+									rowExpandable: () => true,
+									defaultExpanded: (row, index) => index === 0,
+									expandedRowRender: (record) => (
+										<EditToken
+											{...record}
+											onEdit={this.onEdit}
+											otp_enabled={otp_enabled}
+										/>
+									),
+								}}
 							/>
 						)
 					) : (
@@ -128,7 +182,16 @@ class ApiKey extends Component {
 						onGenerate={this.onGenerateToken}
 						onRevoke={this.onRevokeToken}
 						openContactForm={openContactForm}
+						pending={pending}
 					/>
+				</Dialog>
+				<Dialog
+					isOpen={isCodeDialog}
+					label="token-modal"
+					theme={activeTheme}
+					onCloseDialog={this.onCloseDialog}
+				>
+					<EmailCodeForm onSubmit={this.onSubmitEmail} pending={pending} />
 				</Dialog>
 			</div>
 		);
@@ -154,6 +217,7 @@ const mapDispatchToProps = (dispatch) => ({
 	requestTokens: bindActionCreators(requestTokens, dispatch),
 	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
 	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(ApiKey));

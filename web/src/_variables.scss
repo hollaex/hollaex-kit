@@ -13,7 +13,6 @@ $colors-border-hover: var(--calculated_secondary-border-1);
 $colors-main-border: var(--calculated_important-border);
 $footer-border-color: var(--calculated_footer_border);
 $colors-super-pale-black: var(--calculated_super-pale_label-text-graphics);
-$colors-wave-phase-completed: var(--specials_checks-okay-done);
 
 // common colors for deactivate and disabled look
 $colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
@@ -54,6 +53,7 @@ $colors-terms-background: $specials_highlight-box;
 
 // theme colors
 $app-background-color: var(--base_background);
+$app-background-overlay: var(--calculated_background-overlay);
 $app-light-background: var(--base_secondary-navigation-bar);
 $app-sidebar-background: var(--base_wallet-sidebar-and-popup);
 $auth-container-background: var(--base_wallet-sidebar-and-popup);
@@ -61,6 +61,9 @@ $landing_markets_table: var(--calculated_landing_markets_table);
 $market-card_gradient_background: var(
 	--calculated_market-card_gradient_background
 );
+$trade-block_highlight: var(--calculated_trade-block_highlight);
+$stake-table-highlight: var(--calculated_stake-table_highlight);
+$tag_background: var(--calculated_tag-background);
 
 // common colors for app bar
 $dark-app-bar-add-tab-menu-background: $app-background-color;
@@ -83,6 +86,9 @@ $box-fields: var(--labels_fields);
 
 $buy: var(--trading_buying-related-elements);
 $sell: var(--trading_selling-related-elements);
+
+$pale-buy: var(--calculated_public-sale_buying-zeros);
+$pale-sell: var(--calculated_public-sale_selling-zeros);
 
 $link: var(--specials_buttons-links-and-highlights);
 
@@ -112,6 +118,13 @@ $base_top-bar-navigation_text-inactive: var(
 	--calculated_base_top-bar-navigation_text-inactive
 );
 $base_footer_text: var(--calculated_base_footer_text);
+
+$selling-subtracted-bg: var(--calculated_trading_selling-subtracted-bg);
+$selling-added-bg: var(--calculated_trading_selling-added-bg);
+$buying-subtracted-bg: var(--calculated_trading_buying-subtracted-bg);
+$buying-added-bg: var(--calculated_trading_buying-added-bg);
+$selling-subtracted-best: var(--calculated_trading_selling-best-subtracted);
+$buying-subtracted-best: var(--calculated_trading_buying-best-subtracted);
 
 // form field colors
 $form-color-underline-focus: var(
@@ -341,6 +354,7 @@ $font-size-subtext: 1rem;
 $font-size-mobile-title: 15px;
 $font-size-mobile-txt: 13px;
 $font-size-mobile-innertxt: 11px;
+$font-size-small-expandable: 0.84rem;
 
 $form-width-max: $content-display-width / 2;
 
@@ -404,6 +418,11 @@ $max-content-height-home-mobile: calc(
 $max-content-height-dialog-mobile: calc(
 	100vh - #{$navigation_bar-mobile--height * 2}
 );
+
+$market-menu-height-dialog-mobile: calc(
+	100vh - 19rem - #{$navigation_bar-mobile--height * 2}
+);
+
 $max-content-width-mobile: 100vw;
 $table-header-column--font-size: 1rem;
 $regular--font-size: 1.2rem;

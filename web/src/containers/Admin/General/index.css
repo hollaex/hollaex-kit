@@ -11,14 +11,14 @@
 	width: 10rem !important;
 }
 .wizard-container .sub-title,
-.ant-modal-body .sub-title,
+/* .ant-modal-body .sub-title, */
 .admin-content-wrapper .sub-title {
 	color: #ffffff;
 	font-size: 15px;
 	font-weight: bold;
 }
-.admin-content-wrapper .divider,
-.ant-modal-body .divider {
+/* .ant-modal-body .divider, */
+.admin-content-wrapper .divider {
 	border-top: 1px solid #c4c4c4;
 	margin: 2rem 0;
 	width: 500px;
@@ -26,7 +26,7 @@
 .wizard-container .description {
 	/* width: 550px; */
 }
-.ant-modal-body .description,
+/* .ant-modal-body .description, */
 .admin-content-wrapper .description,
 .wizard-container .description {
 	color: #ffffff;
@@ -228,13 +228,13 @@
 	left: 18px;
 	color: #000000 !important;
 }
-.ant-checkbox-wrapper-checked .buy {
+.general-wrapper .ant-checkbox-wrapper-checked .buy {
 	background-color: #ffffff;
 }
-.ant-checkbox-wrapper-checked .sell {
+.general-wrapper .ant-checkbox-wrapper-checked .sell {
 	border: 1px solid #ffffff;
 }
-.ant-checkbox-wrapper-checked .sell .label {
+.general-wrapper .ant-checkbox-wrapper-checked .sell .label {
 	color: #ffffff;
 }
 .general-wrapper .ant-radio-wrapper {
@@ -269,10 +269,11 @@
 }
 h2,
 .email-config-form,
-.ant-checkbox-wrapper span,
+.input_field .ant-checkbox-wrapper span,
 .description-wrapper,
 .bottom-description,
-.custom-form-wrapper {
+.custom-form-wrapper,
+.custom-email-wrapper div {
 	color: #ffffff;
 }
 .admin-general-description-tip .ant-tooltip-arrow {
@@ -310,7 +311,8 @@ h2,
 .custom-form-wrapper {
 	display: flex;
 	margin: 1.5rem 0rem;
-	width: 70%;
+	width: 100%;
+	overflow: scroll;
 }
 .section-wrapper {
 	width: 220px;
@@ -340,4 +342,256 @@ h2,
 .general-wrapper .disabled-area {
 	opacity: 0.6;
 	pointer-events: none;
+}
+
+.general-wrapper .description a {
+	text-decoration: underline !important;
+}
+.general-geo-wrapper .title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.general-geo-wrapper .location-option-wrapper {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 18rem;
+	overflow-y: auto;
+}
+
+.general-geo-wrapper .location-option-wrapper .location-option {
+	padding: 0.3rem 0.3rem 0.3rem 1rem;
+	color: #b6b6b6;
+}
+.general-geo-wrapper .location-option-wrapper .location-option:hover,
+.general-geo-wrapper .location-option-wrapper .location-option-active {
+	background: rgba(255, 255, 255, 0.23);
+	color: #ffffff;
+	cursor: pointer;
+}
+.general-geo-wrapper .btn-wrapper {
+	display: flex;
+	margin-top: 1rem;
+}
+.general-geo-wrapper .btn-wrapper .ant-btn {
+	background-color: #288500;
+	flex: 1;
+}
+.general-geo-wrapper .btn-wrapper .separator {
+	margin: 5px;
+}
+.general-geo-wrapper .box-wrapper {
+	border: 1px solid #c8c8c8;
+	padding: 10px;
+	margin-top: 20px;
+	margin-bottom: 4rem;
+}
+.general-wrapper .geo-display {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 18rem;
+	overflow-y: auto;
+	width: 300px;
+	height: 7.5rem;
+}
+.general-wrapper .geo-display .location-data {
+	padding: 0.3rem 1rem;
+	color: #ffffff;
+	justify-content: space-between;
+}
+.general-wrapper .geo-display .location-data .anchor {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.general-wrapper .geo-display .placeHolder {
+	color: #c4c4c4;
+	padding: 5px;
+	font-size: 12px;
+	user-select: none;
+}
+
+.email-config-form .width-50 {
+	width: 50rem;
+}
+.email-config-form .custom-email-wrapper .ant-select,
+.email-config-form .custom-email-wrapper .ant-input {
+	width: 600px !important;
+	margin: 0 !important;
+}
+.email-config-form .custom-email-wrapper .sub-title {
+	color: #ffffff;
+	margin-bottom: 1rem;
+}
+.email-config-form .custom-email-wrapper .text-area .ant-form-item {
+	margin-bottom: 0 !important;
+}
+.email-config-form .custom-email-wrapper .text-area .ant-input[disabled] {
+	opacity: 0.5;
+	color: #c4c4c4;
+	background-color: var(--admin_panel_input);
+}
+.email-config-form .custom-email-wrapper .footer-section {
+	border: 1px solid #ffffff;
+	padding: 10px;
+	margin-bottom: 3rem;
+}
+.email-config-form .custom-email-wrapper .footer-section.border-none {
+	border-top: none;
+}
+.email-config-form .custom-email-wrapper .anchor {
+	text-decoration: underline;
+	cursor: pointer;
+	margin-right: 6px;
+}
+.email-config-form .custom-email-wrapper .option-wrapper {
+	padding: 20px 20px 20px 10px;
+	border: 1px solid #ffffff;
+	background-color: #27339d;
+	position: absolute;
+	z-index: 9999;
+	width: 600px;
+	height: 37.5rem;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .first-title {
+	font-size: 24px;
+	margin: 0.5rem 0rem;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .ant-input {
+	width: 100% !important;
+}
+.email-config-form .custom-email-wrapper .option-wrapper .email-option-wrapper {
+	border: 1px solid #d9d9d9;
+	border-radius: 4px;
+	margin-top: 0.5rem;
+	max-height: 22rem;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .email-option {
+	padding: 1rem;
+	font-size: 12px;
+}
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.email-option
+	.preview_text {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.email-option:hover {
+	background-color: var(--admin_panel_input);
+	color: #c4c4c4;
+	cursor: pointer;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .table-header {
+	display: flex;
+	padding: 10px 0;
+	border-bottom: 1px solid #ffffff;
+	align-items: center;
+}
+.email-config-form
+	.custom-email-wrapper
+	.email-option-wrapper
+	.table-header
+	div:first-child {
+	width: 50%;
+	padding-left: 11px;
+}
+.email-config-form .custom-email-wrapper .email-option-wrapper .overflow {
+	overflow-y: auto;
+	max-height: 18rem;
+}
+
+.confirm_modal_wrapper .heading {
+	font-size: 24px;
+}
+.confirm_modal_wrapper .btn-wrapper {
+	display: flex;
+	justify-content: space-between;
+}
+.confirm_modal_wrapper .btn-wrapper .ant-btn {
+	width: 47%;
+	background-color: #288500 !important;
+}
+.confirm_modal_wrapper .ant-input {
+	background-color: transparent !important;
+	color: #ffffff !important;
+}
+.email-config-form .custom-email-wrapper .footer-section .small-text {
+	font-size: 12px;
+	margin-left: 20px;
+	padding-left: 20px;
+	border-left: 1px solid #c4c4c4;
+}
+.email-config-form .custom-email-wrapper .footer-section .small-text div {
+	color: #c4c4c4 !important;
+}
+.email-config-form .custom-email-wrapper .footer-section .edit-pen-icon {
+	width: 20px;
+}
+
+.general-wrapper .content-flex {
+	display: flex;
+	margin-top: 2rem;
+	cursor: pointer;
+}
+.general-wrapper .content-flex .arrow-symbol {
+	margin-left: 1rem;
+}
+.general-wrapper .content-flex .arrow-symbol img {
+	width: 22px;
+}
+.confirm_modal_wrapper .box-container {
+	border: 1px solid #ffffff;
+	padding: 1rem;
+	margin-top: 2rem;
+	margin-bottom: 2rem;
+}
+
+.email-config-form .transaction-form .errTxt {
+	color: red;
+}
+.test-Email-Wrapper .btn-wrapper {
+	display: flex;
+	width: 100%;
+	margin-top: 3rem;
+	justify-content: center;
+}
+.test-Email-Wrapper .btn-wrapper .ant-btn {
+	background-color: #288500;
+	width: 90%;
+}
+.test-Email-Wrapper .content-heading {
+	text-align: left;
+	font-size: 24px;
+}
+.test-Email-Wrapper .sub-heading {
+	margin-bottom: 1rem;
+}
+.test-Email-Wrapper .input-note {
+	margin-top: 1rem;
+}
+.test-Email-Wrapper .btn-width {
+	justify-content: flex-end;
+}
+.test-Email-Wrapper .btn-width .ant-btn {
+	width: 50%;
+}
+.test-Email-Wrapper .content-align {
+	display: flex;
+	justify-content: center;
+}
+.test-Email-Wrapper .content-alignment {
+	background-color: #525cb1;
+}
+.test-Email-Wrapper .content-align .loading-icon {
+	padding-right: 1rem;
+}
+.test-Email-Wrapper .errTxt {
+	color: red;
+	padding-top: 1rem;
 }

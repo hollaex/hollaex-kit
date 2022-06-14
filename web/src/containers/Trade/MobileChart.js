@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 // import { Link } from 'react-router';
 import { connect } from 'react-redux';
@@ -52,19 +52,6 @@ class MobileChart extends Component {
 					setRef={this.setChartRef}
 					className="f-1 overflow-x"
 					alignChildTitle={true}
-					tailHead={
-						// constants &&
-						// constants.features &&
-						// constants.features.quick_trade ? (
-						// 	<div className="quick-trade-tab p-1 mt-1">
-						// 		<Link to={`/quick-trade/${pairValue}`}>
-						// 			{STRINGS['QUICK_TRADE']}
-						// 		</Link>
-						// 	</div>
-						// ) : (
-							<Fragment />
-						// )
-					}
 				>
 					{pair && chartHeight > 0 && (
 						<TVChartContainer

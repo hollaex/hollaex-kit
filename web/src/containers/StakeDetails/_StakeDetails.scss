@@ -10,9 +10,13 @@
 		color: $colors-notifications-blue;
 		border-color: $colors-notifications-blue;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notifications-blue;
+			border-color: $colors-notifications-blue;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -22,9 +26,13 @@
 		color: $colors-notification-pending;
 		border-color: $colors-notification-pending;
 
-		&:hover,
-		&:active,
 		&:focus {
+			color: $colors-notification-pending;
+			border-color: $colors-notification-pending;
+		}
+
+		&:hover,
+		&:active {
 			color: $colors-main-black;
 			border-color: $colors-black;
 		}
@@ -94,21 +102,28 @@
 	&.ant-radio-button-wrapper {
 		margin: 1rem;
 		padding: 0.2rem;
-		color: $colors-black;
+		color: $colors-main-black;
 		background-color: transparent;
 		background-size: 100%;
 		background-repeat: repeat-y;
-		height: 10rem;
-		width: 10rem;
-		border: none;
-		font-size: 1rem;
+		height: 9rem;
+		width: 9rem;
+		border: 1px solid $colors-black;
+		font-size: 0.9rem;
 		line-height: 1.2rem;
 		text-align: center;
+		opacity: 0.5;
+
+		.stake-period-text {
+			width: 9rem;
+			margin: auto;
+		}
 
 		.period-x {
-			font-weight: bolder;
-			font-size: 4rem;
+			font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
 			line-height: 5rem;
+			letter-spacing: 0;
+			color: $colors-main-black;
 		}
 
 		&:not(:first-child)::before {
@@ -117,13 +132,22 @@
 	}
 
 	&.ant-radio-button-wrapper-checked {
-		height: 12rem;
-		width: 12rem;
+		height: 10rem;
+		width: 10rem;
+		border: 1px solid $colors-main-black;
+		opacity: 1;
 
 		.period-x {
-			font-weight: bolder;
-			font-size: 5rem;
+			font: italic normal 900 52px/5px Neue Haas Grotesk Display Pro;
 			line-height: 6rem;
+			letter-spacing: 0;
+		}
+	}
+
+	&.ant-radio-button-wrapper {
+		&:hover,
+		&:focus {
+			color: $colors-black;
 		}
 	}
 }
@@ -134,6 +158,7 @@
 	border-radius: 0.5rem;
 	margin: 0.5rem 0;
 	font-weight: bold;
+	height: 4rem;
 }
 
 .staking-account__balance {
@@ -145,6 +170,16 @@
 	margin: 0.5rem 0;
 	padding: 0.5rem;
 	border-radius: 0.5rem;
+}
+
+.staking-account__connect {
+	cursor: pointer;
+	padding: 0.5rem 1rem;
+	color: $colors-notifications-blue;
+	background-color: $specials_highlight-box;
+	border-radius: 0.5rem;
+	margin: 1rem 0.5rem;
+	font-weight: bold;
 }
 
 .chart_mine {
@@ -176,4 +211,84 @@
 
 .stake_popup__title {
 	font-size: 2.4rem !important;
+	font-weight: bold;
+}
+
+.stake-currency-ball {
+	width: 4.75rem;
+}
+
+.stake-currency-ball-small {
+	width: 2.5rem;
+	padding-top: 0.4rem;
+}
+
+.stake-variable {
+	width: 1.5rem;
+	padding-top: 0.2rem;
+}
+
+.stake-unlock-title {
+	svg,
+	&.icon_title-svg {
+		width: 2.2rem !important;
+		height: 2.2rem !important;
+	}
+}
+
+.stake-amount {
+	font-size: 2rem;
+	line-height: 2rem;
+
+	.small {
+		font-size: 1.2rem;
+	}
+}
+
+.staking-loader {
+	font-size: 7rem;
+	color: $specials_highlight-box;
+}
+
+.stake-details-table {
+	.table-wrapper {
+		margin: 0.2rem 0 2rem;
+	}
+
+	.table_header-row {
+		color: $colors-main-black;
+	}
+}
+
+.stake-panel-bg {
+	.wallet-assets_block {
+		background-color: transparent;
+		z-index: 1;
+	}
+
+	background-color: $app-sidebar-background;
+	position: relative;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	&:before {
+		content: '';
+		background-size: 100% auto;
+		background-position: center;
+		background-repeat: no-repeat;
+		position: absolute;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		opacity: 0.05;
+	}
+
+	.wallet-assets_block {
+		width: 100%;
+		height: 100%;
+	}
 }

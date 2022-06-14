@@ -1,44 +1,58 @@
 import React, { Fragment } from 'react';
 import mathjs from 'mathjs';
-import { EditWrapper, Button, IconTitle, Image } from 'components';
+import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
+import Ionicon from 'react-ionicons';
 import STRINGS from 'config/localizedStrings';
 import { getEstimatedRemainingTime } from 'utils/eth';
 import withConfig from 'components/ConfigProvider/withConfig';
+import Variable from './Variable';
+import AmountPreview from './AmountPreview';
 
 const ReviewContent = ({
 	tokenData,
+	onClose,
 	onCancel,
 	onProceed,
 	currentBlock,
 	period,
 	amount,
 	icons: ICONS,
+	penalty,
 }) => {
 	const { symbol } = tokenData;
-	const iconId = `${symbol.toUpperCase()}_ICON`;
 
 	const background = {
 		'background-image': `url(${ICONS['STAKING_MODAL_BACKGROUND']})`,
-		height: '376px',
-		width: '506px',
+		height: '31.3rem',
+		width: '40rem',
 	};
 
 	return (
 		<Fragment>
+			<ActionNotification
+				text={
+					<Ionicon
+						icon="md-close"
+						fontSize="24px"
+						className="action_notification-image"
+					/>
+				}
+				onClick={onClose}
+				className="close-button p-2"
+			/>
 			<div className="dialog-content background" style={background}>
 				<IconTitle
 					stringId="STAKE.REVIEW_MODAL_TITLE"
 					text={STRINGS['STAKE.REVIEW_MODAL_TITLE']}
-					textType="stake_popup__title"
+					textType="stake_popup__title m-0"
 					underline={false}
-					className="w-100"
-				/>
-				<div className="secondary-text pb-3">
-					{STRINGS.formatString(
+					className="w-100 pt-4 align-start"
+					subtitle={STRINGS.formatString(
 						STRINGS['STAKE.CURRENT_ETH_BLOCK'],
 						currentBlock
 					)}
-				</div>
+					subtitleClass="secondary-text pb-3"
+				/>
 				<div className="pt-4">
 					<div className="bold pb-1">
 						<EditWrapper stringId="STAKE.DURATION">
@@ -64,9 +78,7 @@ const ReviewContent = ({
 						</EditWrapper>
 					</div>
 					<div className="secondary-text">
-						<EditWrapper stringId="STAKE.VARIABLE_TITLE">
-							{STRINGS['STAKE.VARIABLE_TITLE']}
-						</EditWrapper>
+						<Variable />
 					</div>
 				</div>
 				<div className="pt-4">
@@ -77,7 +89,7 @@ const ReviewContent = ({
 					</div>
 					<div className="secondary-text">
 						<EditWrapper stringId="STAKE.SLASHING_TEXT_1">
-							{STRINGS['STAKE.SLASHING_TEXT_1']}
+							{STRINGS.formatString(STRINGS['STAKE.SLASHING_TEXT_1'], penalty)}
 						</EditWrapper>
 					</div>
 					<div className="secondary-text">
@@ -89,23 +101,11 @@ const ReviewContent = ({
 			</div>
 
 			<div className="dialog-content bottom w-100">
-				<div className="pt-4">
-					<div>
-						<EditWrapper stringId="STAKE.AMOUNT_LABEL">
-							{STRINGS['STAKE.AMOUNT_LABEL']}
-						</EditWrapper>
-					</div>
-					<div className="d-flex">
-						<div>
-							<Image
-								iconId={iconId}
-								icon={ICONS[iconId]}
-								wrapperClassName="currency-ball"
-							/>
-						</div>
-						<div className="bold">{`${amount} ${symbol.toUpperCase()}`}</div>
-					</div>
-				</div>
+				<AmountPreview
+					amount={amount}
+					symbol={symbol}
+					labelId="STAKE.AMOUNT_LABEL"
+				/>
 				<div className="kit-divider" />
 				<div className="secondary-text">
 					<EditWrapper stringId="STAKE.REVIEW_NOTE">

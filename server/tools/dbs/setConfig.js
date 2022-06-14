@@ -48,7 +48,7 @@ const kit = {
 		api: API_HOST || '',
 		whitepaper: '',
 		website: '',
-		information: '',
+		information: ''
 	},
 	email_verification_required: false,
 	setup_completed: false,
@@ -68,7 +68,8 @@ const kit = {
 	},
 	features: {},
 	meta: {},
-	user_meta: {}
+	user_meta: {},
+	black_list_countries: []
 };
 
 const secrets = {

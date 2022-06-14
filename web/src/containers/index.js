@@ -4,7 +4,6 @@ export { default as UserProfile } from './UserProfile';
 export { default as UserSecurity } from './UserSecurity';
 export { default as UserSettings } from './UserSettings';
 export { default as ContactForm } from './ContactForm';
-export { default as RequestForm } from './RequestForm';
 export { default as HelpfulResourcesForm } from './HelpfulResourcesForm';
 export { default as Account } from './Account';
 export * from './Wallet';
@@ -18,6 +17,7 @@ export { default as VerificationEmailRequest } from './VerificationEmailRequest'
 export { default as VerificationEmailCode } from './VerificationEmailCode';
 export { default as Home } from './Home';
 export { default as Trade } from './Trade';
+export { default as ChartEmbed } from './ChartEmbed';
 export { default as Legal } from './Legal';
 export { default as RequestResetPassword } from './RequestResetPassword';
 export { default as ResetPassword } from './ResetPassword';

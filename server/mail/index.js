@@ -1,6 +1,6 @@
 'use strict';
 
-const { formatDate, getCountryFromIp, sendSMTPEmail } = require('./utils');
+const { formatDate, getCountryFromIp, sendSMTPEmail, sendSMTPTestEmail } = require('./utils');
 const payloadTemplate = require('./templates/helpers/payloadTemplate');
 const { loggerEmail } = require('../config/logger');
 const { getValidLanguage } = require('./utils');
@@ -55,8 +55,11 @@ const sendEmail = (
 		case MAILTYPE.DISCOUNT_UPDATE:
 		case MAILTYPE.WITHDRAWAL_REQUEST:
 		case MAILTYPE.BANK_VERIFIED:
+		case MAILTYPE.CONFIRM_EMAIL:
 		case MAILTYPE.DEPOSIT:
-		case MAILTYPE.WITHDRAWAL: {
+		case MAILTYPE.WITHDRAWAL:
+		case MAILTYPE.DOC_REJECTED:
+		case MAILTYPE.DOC_VERIFIED: {
 			to.BccAddresses = BCC_ADDRESSES();
 			break;
 		}
@@ -96,6 +99,25 @@ const send = (params) => {
 		});
 };
 
+const testSendSMTPEmail = (receiver = '', smtp = {}) => {
+	const to = { ToAddresses: [receiver] };
+	const messageContent = {
+		'subject': 'Test Email Config SMTP',
+		'html': '<div><p>Test email is sent successfully</p></div>',
+		'text': 'test content'
+	};
+	let from = SUPPORT_SOURCE();
+
+	if (Object.keys(smtp).length > 0) {
+		from = `'SMTP User <${smtp.user}>'`;
+	}
+
+	const payload = payloadTemplate(from, to, messageContent);
+
+	return sendSMTPTestEmail(payload, smtp);
+};
+
 module.exports = {
-	sendEmail
+	sendEmail,
+	testSendSMTPEmail
 };

@@ -376,3 +376,10 @@ $operator-controls__panel-border-color: #a7a7a7;
 		cursor: grabbing;
 	}
 }
+
+.operator-console {
+	.ant-input {
+		color: $operator-controls__panel-text-color !important;
+		background-color: $operator-controls__panel-main-color !important;
+	}
+}

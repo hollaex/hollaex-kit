@@ -23,7 +23,8 @@ const Preview = ({
 	onClose,
 	exchange,
 	pairs,
-	getMyExchange
+	getMyExchange,
+	buttonSubmitting = false
 }) => {
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
@@ -188,7 +189,11 @@ const Preview = ({
 							<div className="title">Manage</div>
 							<div className="d-flex">
 								<div className="btn-wrapper">
-									<Button type="danger" onClick={() => onDelete(formData)}>
+									<Button
+										type="danger"
+										onClick={() => onDelete(formData)}
+										disabled={buttonSubmitting}
+									>
 										Remove
 									</Button>
 									<div className="separator"></div>

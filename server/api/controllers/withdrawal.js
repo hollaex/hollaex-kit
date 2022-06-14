@@ -139,6 +139,73 @@ const performWithdrawal = (req, res) => {
 		});
 };
 
+const performDirectWithdrawal = (req, res) => {
+	const { id: userId } = req.auth.sub;
+	const {
+		address,
+		currency,
+		amount,
+		network
+	} = req.swagger.params.data.value;
+
+	const domain = req.headers['x-real-origin'];
+	const ip = req.headers['x-real-ip'];
+
+	loggerWithdrawals.verbose(
+		req.uuid,
+		'controller/withdrawal/performDirectWithdrawal auth',
+		'address',
+		address,
+		'amount',
+		amount,
+		'currency',
+		currency,
+		'network',
+		network
+	);
+
+	toolsLib.wallet.performDirectWithdrawal(
+		userId,
+		address,
+		currency,
+		amount,
+		{
+			network,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		})
+		.then((data) => {
+
+			loggerWithdrawals.verbose(
+				req.uuid,
+				'controller/withdrawal/performDirectWithdrawal done',
+				'transaction_id',
+				data.transaction_id,
+				'fee',
+				data.fee,
+				data
+			);
+			return res.json({
+				message: 'Withdrawal request is in the queue and will be processed.',
+				id: data.id,
+				transaction_id: data.transaction_id,
+				amount: data.amount,
+				currency: data.currency,
+				fee: data.fee,
+				fee_coin: data.fee_coin
+			});
+		})
+		.catch((err) => {
+			loggerWithdrawals.error(
+				req.uuid,
+				'controller/withdrawals/performWithdrawal',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getAdminWithdrawals = (req, res) => {
 	loggerWithdrawals.verbose(
 		req.uuid,
@@ -304,5 +371,6 @@ module.exports = {
 	performWithdrawal,
 	getAdminWithdrawals,
 	getUserWithdrawals,
-	cancelWithdrawal
+	cancelWithdrawal,
+	performDirectWithdrawal
 };

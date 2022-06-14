@@ -166,6 +166,8 @@ class Pairs extends Component {
 			isConfirm: false,
 			isPresetConfirm: false,
 			coins: [],
+			buttonSubmitting: false,
+			saveLoading: false,
 		};
 	}
 
@@ -296,6 +298,7 @@ class Pairs extends Component {
 
 	handleDelete = async (formData) => {
 		const { pairs = [], exchange = {} } = this.props;
+		this.setState({ buttonSubmitting: true });
 		try {
 			let formProps = {
 				id: exchange.id,
@@ -305,12 +308,13 @@ class Pairs extends Component {
 			await this.props.getMyExchange();
 			await this.getPairs();
 			message.success('Pair removed successfully');
-			this.setState({ isPreview: false, isConfigure: false });
+			this.setState({ isPreview: false, isConfigure: false, buttonSubmitting: false });
 			this.props.handleHide(false);
 		} catch (error) {
 			if (error && error.data) {
 				message.error(error.data.message);
 			}
+			this.setState({ buttonSubmitting: false });
 		}
 	};
 
@@ -340,6 +344,7 @@ class Pairs extends Component {
 		isApply = false,
 		isPresetAsset = false
 	) => {
+		this.setState({ saveLoading: true });
 		if (isEdit) {
 			try {
 				delete formData.pair_base_data;
@@ -358,10 +363,12 @@ class Pairs extends Component {
 				if (this.state.isConfigure) {
 					this.setState({ isPreview: true });
 				}
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		} else {
 			const { pairs = [], exchange = {} } = this.props;
@@ -393,10 +400,12 @@ class Pairs extends Component {
 				// }
 				this.handleClose();
 				message.success('Pairs created successfully');
+				this.setState({ saveLoading: false });
 			} catch (error) {
 				if (error && error.data) {
 					message.error(error.data.message);
 				}
+				this.setState({ saveLoading: false });
 			}
 		}
 	};
@@ -452,6 +461,7 @@ class Pairs extends Component {
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
 							user_id={_get(constants, 'info.user_id')}
+							buttonSubmitting={this.state.buttonSubmitting}
 						/>
 						<div>
 							{this.state.previewData.created_by === _get(constants, 'info.user_id') ? (
@@ -480,12 +490,14 @@ class Pairs extends Component {
 							formData={this.state.previewData}
 							onEdit={this.handleEdit}
 							onDelete={this.handleDelete}
+							buttonSubmitting={this.state.buttonSubmitting}
 						/>
 						<div>
 							<Button
 								type="primary"
 								className="configure-btn green-btn"
 								onClick={this.handleApplyConfirmation}
+								loading={this.state.saveLoading}
 							>
 								Save
 							</Button>

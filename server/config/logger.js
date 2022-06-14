@@ -38,7 +38,7 @@ const all = format((info) => {
 });
 
 // used for filtering specific logs. currently not used.
-const filterOnly = level => {
+const filterOnly = (level) => {
 	return format((info) => {
 		if (info[LEVEL] === level) {
 			return info;
@@ -49,7 +49,7 @@ const filterOnly = level => {
 
 const generateLoggerConfiguration = (name) => {
 	const transportsConfig = [
-		new transports.Console({ level: LOG_LEVEL} )
+		new transports.Console({ level: LOG_LEVEL } )
 	];
 
 	if (APM_ENABLED) {
@@ -98,7 +98,8 @@ const LOGGER_NAMES = {
 	auth: 'auth',
 	plugin: 'plugin',
 	tier: 'tier',
-	init: 'init'
+	init: 'init',
+	broker: 'broker'
 };
 
 winston.loggers.add('default', generateLoggerConfiguration('all', false));
@@ -153,5 +154,6 @@ module.exports = {
 	loggerInit: winston.loggers.get(LOGGER_NAMES.init),
 	loggerPlugin: winston.loggers.get(LOGGER_NAMES.plugin),
 	loggerPublic: winston.loggers.get(LOGGER_NAMES.public),
-	loggerTier: winston.loggers.get(LOGGER_NAMES.tier)
+	loggerTier: winston.loggers.get(LOGGER_NAMES.tier),
+	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker)
 };

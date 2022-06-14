@@ -5,7 +5,7 @@ const nestedIcons = {
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
@@ -40,6 +40,7 @@ const nestedIcons = {
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
 		API: '/assets/images/tab-api.svg',
+		STAKE: '/assets/images/stake-page-icon.svg',
 	},
 
 	TOKEN: {
@@ -93,15 +94,6 @@ const nestedIcons = {
 		ICON_10: '/assets/images/level-10.svg',
 	},
 
-	FEATURES: {
-		PRO_TRADING: '/assets/images/features-pro-trade-icons.svg',
-		PAYMENT: '/assets/images/features-payment-card-icons.svg',
-		SECURITY: '/assets/images/features-lock-icons.svg',
-		REPORTING: '/assets/images/features-data-icons.svg',
-		SUPPORT: '/assets/images/features-support-icons.svg',
-		LEGAL: '/assets/images/features-legal-icons.svg',
-	},
-
 	SOCIAL: {
 		FACEBOOK: '/assets/icons/facebook.png',
 		LINKEDIN: '/assets/icons/linkedin.png',
@@ -147,6 +139,7 @@ const nestedIcons = {
 	LETTER: '/assets/acounts/account-icons-24.svg',
 
 	OTP_CODE: '/assets/acounts/account-icons-28.svg',
+	EMAIL_CODE: '/assets/icons/send-email-code.svg',
 	COPY_NEW: '/assets/images/copy.svg',
 	COPY_NOTIFICATION: '/assets/images/copy-icon-snack-notification.svg',
 	ACCOUNT_LINE: '/assets/images/account.svg',
@@ -168,7 +161,7 @@ const nestedIcons = {
 	ID_GREY: '/assets/images/id-grey.svg',
 
 	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	INCOMING_COIN: '/assets/images/incoming-coin.svg',
 
 	PASSWORD_RESET: '/assets/images/password-reset.svg',
 
@@ -204,8 +197,7 @@ const nestedIcons = {
 		'/assets/images/quick-trade-tab-selected-01.svg',
 	SIDEBAR_QUICK_TRADING_INACTIVE: '/assets/images/quick-trade-tab-01-01.svg',
 	SIDEBAR_ADMIN_DASH_ACTIVE: '/assets/images/admin-dash-icon.svg',
-	ARROW_TRANSFER_HISTORY_ACTIVE:
-		'/assets/images/arrow-trans-history-active.svg',
+	ARROW_TRANSFER_HISTORY_ACTIVE: '/assets/images/arrow-trans-history.svg',
 
 	CHECK_ORDER: '/assets/images/check-order-popup-01.svg',
 	ITEM_OPTIONS: '/assets/images/item-options.svg',
@@ -223,7 +215,6 @@ const nestedIcons = {
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
-	SIDEBAR_CHAT: '/assets/images/bottom-chat-icon.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
 
@@ -241,20 +232,24 @@ const nestedIcons = {
 	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
 	XHT_PDF: '/assets/images/XHT-pdf.svg',
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
-	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
 
 	STAKING_AMOUNT_MODAL: '/assets/stake/staking-modal-background.jpg',
-	STAKING_PERIOD_ITEM: '/assets/stake/staking-pariod-option-background.jpg',
+	STAKING_PERIOD_ITEM: '/assets/stake/staking-period-option-background.jpg',
 	STAKING_MODAL_BACKGROUND: '/assets/stake/modal_background.png',
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/success_stake-unstake.png',
+	STAKING_PANEL_BACKGROUND: '/assets/stake/success_stake-unstake.png',
 	STAKING_ERROR: '/assets/stake/error.svg',
+	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
+	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
+	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
+	MOVE_XHT: '/assets/stake/xht-move.svg',
+	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

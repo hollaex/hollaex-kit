@@ -1,11 +1,11 @@
 import PhoneNumber from 'awesome-phonenumber';
 import _get from 'lodash/get';
 
-import { initialCountry, COUNTRIES } from '../../utils/countries';
+import { initialCountry, COUNTRIES } from 'utils/countries';
 
 export const mobileInitialValues = ({ country }, defaults) => {
 	let countryVal = country ? country : _get(defaults, 'country');
-	return { phone_country: getCountry(countryVal).phoneCode };
+	return { phone_country: getCountry(countryVal).phoneCodes[0] || '' };
 };
 
 export const identityInitialValues = (
@@ -65,11 +65,8 @@ export const getCountry = (country) => {
 };
 
 export const getCountryFromNumber = (phone = '') => {
-	const number = PhoneNumber(phone);
-	const phoneCode = `+${PhoneNumber.getCountryCodeForRegionCode(
-		number.getRegionCode()
-	)}`;
-	const filterValue = COUNTRIES.filter((data) => data.phoneCode === phoneCode);
-	if (filterValue.length) return filterValue[0];
-	return initialCountry;
+	const alpha2 = PhoneNumber(phone).getRegionCode();
+	const country =
+		COUNTRIES.find(({ value }) => value === alpha2) || initialCountry;
+	return country;
 };

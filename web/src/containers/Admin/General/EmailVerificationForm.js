@@ -7,6 +7,7 @@ const { Item } = Form;
 const EmailVerificationForm = ({
 	initialValues = {},
 	handleSaveEmailVerification,
+	buttonSubmitting,
 }) => {
 	const [form] = Form.useForm();
 	useEffect(() => {
@@ -62,6 +63,7 @@ const EmailVerificationForm = ({
 						type="primary"
 						htmlType="submit"
 						className="green-btn minimal-btn"
+						disabled={buttonSubmitting}
 					>
 						Save
 					</Button>

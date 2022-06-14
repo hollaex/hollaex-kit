@@ -83,6 +83,15 @@
 				.td-chart {
 					width: 150px;
 					height: 50px;
+					.highcharts-container {
+						transform: scale(2, 2);
+						svg {
+							padding-top: 3px;
+							.highcharts-graph {
+								stroke-width: 0.6px !important;
+							}
+						}
+					}
 				}
 			}
 
