@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { requestAuthenticated } from 'utils';
+import { modifySections } from 'utils/initialize';
 
 export const updateConfigs = async (configs) => {
 	const { valid_languages, defaults, ...restConfigs } = configs;
@@ -65,7 +66,7 @@ export const pushVersions = async (configs = {}) => {
 	Object.keys(configs).forEach((key) => {
 		versions[key] = `${key}-${uniqid}`;
 	});
-	return { ...rest, meta: { versions, sections } };
+	return { ...rest, meta: { versions, sections: modifySections(sections) } };
 };
 
 export const upload = (formData) => {
