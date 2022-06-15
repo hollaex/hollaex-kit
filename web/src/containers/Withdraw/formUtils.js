@@ -240,7 +240,7 @@ export const generateFormValues = (
 			placeholder: STRINGS.formatString(
 				STRINGS['WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER'],
 				fullname
-			).join(''),
+			),
 			min: min,
 			max: MAX,
 			step: increment_unit,
@@ -294,7 +294,7 @@ export const generateFormValues = (
 				placeholder: STRINGS.formatString(
 					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
 					feeFullname
-				).join(''),
+				),
 				disabled: true,
 				fullWidth: true,
 				ishorizontalfield: true,
@@ -317,7 +317,7 @@ export const generateFormValues = (
 				placeholder: STRINGS.formatString(
 					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
 					fullname
-				).join(''),
+				),
 				min: min,
 				max: MAX,
 				step: min,

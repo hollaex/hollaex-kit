@@ -159,7 +159,7 @@ class TradingVolume extends Component {
 							text: STRINGS.formatString(
 								STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 								3
-							).join(''),
+							),
 						});
 					} else if (index === 1) {
 						limitContent.push({
@@ -167,7 +167,7 @@ class TradingVolume extends Component {
 							text: STRINGS.formatString(
 								STRINGS['SUMMARY.TRADER_ACCOUNT_ELIGIBILITY'],
 								4
-							).join(''),
+							),
 						});
 					}
 					return index;

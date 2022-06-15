@@ -146,7 +146,7 @@ class RiskForm extends Component {
 										STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
 										fullname,
 										totalAssets
-									).join('')}
+									)}
 								</EditWrapper>
 							</p>
 						) : null}
