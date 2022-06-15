@@ -127,7 +127,7 @@ export const generateFormValues = (
 			placeholder: STRINGS.formatString(
 				STRINGS['WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER'],
 				fullname
-			).join(''),
+			),
 			min: min,
 			max: MAX,
 			step: increment_unit,

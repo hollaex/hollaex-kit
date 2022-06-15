@@ -140,7 +140,7 @@ const MobileSummary = ({
 										.subtract(1, 'month')
 										.startOf('month')
 										.format('MMMM')
-								).join('')}`}
+								)}`}
 							</span>
 						)
 					}

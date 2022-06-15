@@ -203,7 +203,7 @@ export const generateWaveHeaders = (ICONS) => [
 		label: STRINGS.formatString(
 			STRINGS['LOWEST_PRICE'],
 			BASE_CURRENCY.toUpperCase()
-		).join(''),
+		),
 		key: 'low',
 		renderCell: ({ low = 0, status = '' }, key, index) => {
 			return status === 'TBA' ? (

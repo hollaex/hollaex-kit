@@ -16,11 +16,7 @@ import Fiat from './Fiat';
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
-		{id && (
-			<p>
-				{STRINGS.formatString(STRINGS['DEPOSIT_BANK_REFERENCE'], id).join(' ')}
-			</p>
-		)}
+		{id && <p>{STRINGS.formatString(STRINGS['DEPOSIT_BANK_REFERENCE'], id)}</p>}
 	</div>
 );
 
