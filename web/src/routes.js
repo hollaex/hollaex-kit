@@ -55,6 +55,7 @@ import {
 	Roles,
 	Resources,
 	Pairs,
+	Fiatmarkets,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -427,6 +428,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/general"
 					name="Admin General"
 					component={withAdminProps(General, 'general')}
+				/>
+				<Route
+					path="/admin/fiat"
+					name="Admin Fiat"
+					component={withAdminProps(Fiatmarkets, 'fiat')}
 				/>
 				<Route
 					path="/admin/tiers"
