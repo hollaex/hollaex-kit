@@ -10,6 +10,7 @@ import vi from './vi.json';
 import id from './id.json';
 import zh from './zh.json';
 import pt from './pt.json';
+import tr from './tr.json';
 
 export default {
 	en,
@@ -24,4 +25,5 @@ export default {
 	id,
 	zh,
 	pt,
+	tr
 };

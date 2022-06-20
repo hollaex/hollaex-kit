@@ -31,7 +31,7 @@
 	"NEED_HELP_TEXT": "Yardıma ihtiyacınız mı var?",
 	"HELP_TEXT": "yardım",
 	"SUCCESS_TEXT": "Başarılı",
-	"ERROR_TEXT": "Hata",										//Virex Notu: "Hatalı" olarak kullanılması gereken yerlerde "Hata" olarak gözükecek. Gerektiğinde borsa üzerinden düzenlenebilir.
+	"ERROR_TEXT": "Hata",
 	"PROCEED": "ONAY",
 	"EDIT_TEXT": "Düzenle",
 	"BACK_TEXT": "Geri",
@@ -42,7 +42,7 @@
 	"VIEW_INFO": "Bilgi sayfasını incele",
 	"APPLY_HERE": "Buradan Başvurun",
 	"CONVERT": "Dönüştür",
-	"TO": "",											//Virex Notu: Boş bırakıldı. Çünkü Türkçe'de gelecek ek; e, a, ye, ya gibi olabilir. Gerektiğinde borsa üzerinden düzenlenebilir.
+	"TO": "",
 	"HOME": {
 		"MAIN_TITLE": "Kripto Para Borsası",
 		"MAIN_TEXT": "Kolayca kripto varlık alım satımı yapın. Sadece e-mail adresiniz ile kayıt olun ve majör kripto para varlıklarında 7/24 işlem yapın.",
@@ -83,7 +83,7 @@
 		"TAB_SUMMARY": "Özet",
 		"TAB_HISTORY": "Geçmiş",
 		"TAB_SIGNOUT": "Çıkış",
-		"TAB_STAKE": "Stake"										//Virex Notu: Stake kelimesinin kripto paralar için henüz Türkçe'de bir karşılığı yok. Çevirisi var. Ancak Stake kullanılıyor. Bu sebeple değiştirmedik.
+		"TAB_STAKE": "Stake"
 	},
 	"REQUEST_XHT_ACCESS": {
 		"REQUEST_TITLE": "Erişim İste",
@@ -123,7 +123,7 @@
 		"NO_DATA": "Bilgi yok"
 	},
 	"LOGIN": {
-		"LOGIN_TO": "{0}'a giriş yapın",								//Virex Notu: "'a" olarak kullanıldı.
+		"LOGIN_TO": "{0}'a giriş yapın",
 		"CANT_LOGIN": "Giriş yapamadınız mı?",
 		"NO_ACCOUNT": "Hesabınız yok mu?",
 		"CREATE_ACCOUNT": "Buradan hesap açın",
@@ -148,7 +148,7 @@
 		"INVALID_PASSWORD": "Hatalı şifre. Şifre en az 8 karakterli olmalı, şifrede en az bir rakam ve en az bir de özel karakter olmalı.",
 		"INVALID_PASSWORD_2": "Hatalı şifre. En az 8 karakter, en az bir rakam ve en az bir özel karakter.",
 		"INVALID_CURRENCY": "Hatalı {0} adresi ({1})",
-		"INVALID_BALANCE": "({1}) işlemini gerçekleştirmek için yetersiz bakiye ({0}).",		//Virex Notu: Türkçe gramer yapısına göre tekrar sıralama düzenlendi.
+		"INVALID_BALANCE": "({1}) işlemini gerçekleştirmek için yetersiz bakiye ({0}).",
 		"MIN_VALUE": "Değer en az {0} ya da daha fazla olmalı.",
 		"MAX_VALUE": "Değer en fazla {0} ya da daha az olmalı.",
 		"MIN_VALUE_NE": "Değer {0}'dan yüksek olmalı.",
@@ -207,7 +207,7 @@
 		"BEST_BID": "EN İYİ ALIM",
 		"BEST_ASK": "EN İYİ SATIM",
 		"FOOTER_TEXT": "Hızlı işlem komisyon oranı, piyasa emri komisyon oranı ile aynıdır.",
-		"FOOTER_TEXT_1": "'den/'dan kaynaklanan",							//Virex Notu: İki eki de beraber kullandık.
+		"FOOTER_TEXT_1": "'den/'dan kaynaklanan",
 		"GO_TO_TEXT": "Git",
 		"SOURCE_TEXT": "Broker OTC işlemi"
 	},
@@ -219,7 +219,7 @@
 		"AVAILABLE_WITHDRAWAL": "İşlem yapmak için uygun kısım",
 		"ORDERS_PLURAL": "emirler",
 		"ORDERS_SINGULAR": "emir",
-		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"	//Virex Notu: Çevirmedik. Borsa üstünden çevrilmesi daha doğru.
+		"HOLD_ORDERS": "You have {0} open {1}, resulting in a hold of {2} {3} placed on your {4} balance"
 	},
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "Hesap Kurtarma",
@@ -526,7 +526,7 @@
 				"MESSAGE_2": "Aşağıdaki QR KODUNU tarayınız. Google Authenticator veya Auty kullanabilirsiniz. Bu şekilde cihazınızda iki-faktörlü doğrulama açılacaktır.",
 				"MESSAGE_3": "Eğer kodu taramakta sorun yaşarsanız, aşağıdaki kodu cihazınıza kendiniz girebilirsiniz.",
 				"MESSAGE_4": "Telefonunuzu kaybetmeniz ya da değiştirmeniz durumunda, 2FA doğrulamanızı tekrar yaratabilmeniz için, bu kodu lütfen saklayınız.",
-				"MESSAGE_5": "Manual",																	//Virex Note: Burayı bilerek çevirmedik. Daha sonra düzeltilmeli.
+				"MESSAGE_5": "Manual",
 				"WARNING": "İki-Faktörlü doğrulamayı (2FA) aktiflemenizi şiddetle öneriyoruz. Bu şekilde fonlarınızın güvenliğini önemli ölçüde arttırabilirsiniz.",
 				"ENABLE": "İki-Faktörlü Doğrulamayı Aktifle",
 				"DISABLE": "İki-Faktörlü Doğrulamayı Kapat",
@@ -586,7 +586,7 @@
 	"STAKE": {
 		"NETWORK_WARNING": "Uyumsuz network. Lütfen networkünüzü {0}'a çeviriniz.",
 		"EARN": "Kazan",
-		"TITLE": "Stake",									//Virex Notu: Stake kelimesi Türkçe'de aynı şekilde kullanıldığı için çevirmedik.
+		"TITLE": "Stake",
 		"MODAL_TITLE": "{0} stake edin ve kazanın",
 		"REVIEW_MODAL_TITLE": "Stake işlemini kontrol edin ve onaylayın",
 		"AVAILABLE_TOKEN": "{0} ({1}) stake için uygun: {2}",
@@ -613,7 +613,7 @@
 		"STAKE_AND_EARN_DETAILS": "{0} için stake edin ve {1} kazanın",
 		"PREDICTED_EARNINGS": "Tahmini kazançlar",
 		"VARIABLE_TITLE": "Değişken*",
-		"VARIABLE_TEXT": "*{0} değişken oranın nasıl ayarlandığı hakkında.",					//Virex Notu: Bu kısmın borsada kontrol edilmesi gerekiyor.
+		"VARIABLE_TEXT": "*{0} değişken oranın nasıl ayarlandığı hakkında.",
 		"READ_MORE": "Daha fazla oku",
 		"CURRENT_BLOCK": "Mevcut blok: {0}",
 		"END_BLOCK": "Son blok: {0}",
@@ -648,7 +648,7 @@
 		"EARNINGS": "Kazançlar",
 		"ORIGINAL_AMOUNT": "Stake edilen orjinal miktar",
 		"CONNECT_A_WALLET": "Bir cüzdana bağla",
-		"CONNECT_WALLET_TABLE": "Geçmiş stake işlemlerini görmek için {0}",					//Virex Notu: Burası borsada kontrol edilmeli.
+		"CONNECT_WALLET_TABLE": "Geçmiş stake işlemlerini görmek için {0}",
 		"ZERO_STAKES": "Stake yok",
 		"PENDING_TRANSACTIONS": "Bekleyen {0} {1}",
 		"VIEW_ON": "{0}'da görüntüleyin",
@@ -688,7 +688,7 @@
 		"EARLY_WARNING_TEXT_1": "Bu işlem, stake kazançlarınızdan vazgeçmenize ve de stake ana paranızın bir kısmının kesilmesine yol açacaktır.",
 		"EARLY_WARNING_TEXT_2": "Devam etmek istediğinize emin misiniz?",
 		"BACK": "GERİ DÖN",
-		"REVIEW": "STAKE İPTAL ET,
+		"REVIEW": "STAKE İPTAL ET",
 		"DURATION": "TAHM. vade sonu",
 		"CANCEL": "İptal",
 		"PROCEED": "Onay",
@@ -844,7 +844,7 @@
 		"c": "Kapanış",
 		"v": "Hacim"
 	},
-	"QUICK_TRADE": "Quick trade",										//Virex Note: Burayı bilerek çevirmedik.
+	"QUICK_TRADE": "Quick trade",
 	"PRO_TRADE": "Pro trade",
 	"WALLET_TITLE": "Cüzdan",
 	"LOGOUT": "Çıkış",
@@ -862,20 +862,20 @@
 	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} adresi ağ tipi: {1}",
 	"WITHDRAWALS_FORM_NETWORK_WARNING": "Seçilen ağın, gönderim yapılacak cüzdanın ağıyla aynı olduğuna emin olunuz.",
 	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) bu varlığın çekilebilmesi için gereklidir.",
-	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "Alıcı adresin etiket isteyip istemediğini kontrol ediniz. (Memo, Digital ID, Label, Tag, Notes.)",		//Virex Notu: Burada İngilizce/Türkçe karışık çeviri yaptık.
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "Alıcı adresin etiket isteyip istemediğini kontrol ediniz. (Memo, Digital ID, Label, Tag, Notes.)",
 	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "Ağ seçiniz",
 	"WITHDRAWALS_FORM_ADDRESS_LABEL": "Hedef adres",
 	"WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER": "Adresi yazın",
 	"WITHDRAWALS_FORM_DESTINATION_TAG_LABEL": "Hedef etiket (opsiyonel)",
-	"WITHDRAWALS_FORM_MEMO_LABEL": "Memo (opsiyonel)",													//Virex Notu: Bilerek çevirmedik.
+	"WITHDRAWALS_FORM_MEMO_LABEL": "Memo (opsiyonel)",
 	"WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER": "Hedef etiketini yazınız.",
 	"WITHDRAWALS_FORM_AMOUNT_LABEL": "Çekilecek {0} miktarı",
 	"WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER": "Çekmek istediğiniz {0} miktarını yazınız",
 	"WITHDRAWALS_FORM_FEE_COMMON_LABEL": "İşlem komisyonu",
 	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "İşlem komisyonu ({0})",
 	"WITHDRAWALS_FORM_FEE_PLACEHOLDER": "İşlem komisyonlarını ödemek için kullanmak istediğiniz {0} miktarını giriniz.",
-	"DEPOSIT_BANK_REFERENCE": "Bu kodu, banka EFT/HAVALE bilgilerine giriniz, böylece yatırımınız tanımlanacak ve işlenecektir: "\{0}\" ",			//Virex Notu: Düzeltildi ve çevrildi.
-	"QUOTE_SUCCESS_REVIEW_MESSAGE": "Başarıyla {0} {1} {2}",												//Virex Notu: Borsada kontrol ediniz.
+	"DEPOSIT_BANK_REFERENCE": "Bu kodu, banka EFT/HAVALE bilgilerine giriniz, böylece yatırımınız tanımlanacak ve işlenecektir: {0}",
+	"QUOTE_SUCCESS_REVIEW_MESSAGE": "Başarıyla {0} {1} {2}",
 	"COUNTDOWN_ERROR_MESSAGE": "Geriye sayım tamamlandı",
 	"WITHDRAW_PAGE": {
 		"BANK_TO_WITHDRAW": "Çekim yapılacak banka",
@@ -908,7 +908,7 @@
 	"PAGINATOR_FORMAT": "{0} / {1}",
 	"ORDERBOOK_SELLERS": "Satıcılar",
 	"ORDERBOOK_BUYERS": "Alıcılar",
-	"ORDERBOOK_SPREAD": "Spread {0}",										//Virex Notu: Bilerek çevirmedik.
+	"ORDERBOOK_SPREAD": "Spread {0}",
 	"CALCULATE_MAX": "Maks",
 	"VERIFICATION_WARNING_TITLE": "Banka bilgilerinizin onaylanması",
 	"VERIFICATION_WARNING_MESSAGE": "Çekim yapmadan önce, banka bilgilerinizi onaylamanız gerekmektedir.",
@@ -924,12 +924,12 @@
 	"LOGOUT_TITLE": "Çevrimdışı oldunuz.",
 	"LOGOUT_ERROR_TOKEN_EXPIRED": "Oturum süreniz doldu. Lütfen tekrar giriş yapınız.",
 	"LOGOUT_ERROR_LOGIN_AGAIN": "Tekrar giriş yapın",
-	"LOGOUT_ERROR_INVALID_TOKEN": "Hatalı token",									//virex Notu: "Token" bilerek çevirilmedi.
+	"LOGOUT_ERROR_INVALID_TOKEN": "Hatalı token",
 	"LOGOUT_ERROR_INACTIVE": "Aktif olmadığınız için oturumunuz kapatıldı.",
 	"ORDER_ENTRY_BUTTON": "{0} {1}",
 	"ORDER_ENTRY_ADVANCED": "Gelişmiş",
 	"QUICK_TRADE_OUT_OF_LIMITS": "Emir büyüklüğü limitleri aşıyor",
-	"QUICK_TRADE_TOKEN_USED": "Token kullanıldı",									//Virex notu: "Token" bilerek çevirilmedi.
+	"QUICK_TRADE_TOKEN_USED": "Token kullanıldı",
 	"QUICK_TRADE_QUOTE_EXPIRED": "Fiyat teklifinin süresi doldu",
 	"QUICK_TRADE_QUOTE_INVALID": "Hatalı fiyat teklifi",
 	"QUICK_TRADE_QUOTE_CALCULATING_ERROR": "Fiyat teklifini hesaplama hatası",
@@ -961,13 +961,13 @@
 	"CONFIRM_TEXT": "Onay",
 	"GOTO_XHT_MARKET": "XHT piyasasına gidin",
 	"INVALID_CAPTCHA": "Hatalı captcha",
-	"NO_FEE": "N/A",											//Virex Note: Bilerek çevirilmedi.
+	"NO_FEE": "N/A",
 	"SETTINGS_LANGUAGE_LABEL": "Dil seçenekleri (E-Postaları da kapsar)",
 	"SETTINGS_THEME_LABEL": "Kullanıcı Arayüz Teması",
 	"SETTING_BUTTON": "kaydet",
 	"VERIFICATION_NO_WITHDRAW_TITLE": "Çekimler aktif değil",
 	"VERIFICATION_NO_WITHDRAW_MESSAGE": "Hesabınızda çekimler aktif değil",
-	"UP_TO_MARKET": "Piyasaya göre",									//Virex Notu: Borsada kontrol edilmeli.
+	"UP_TO_MARKET": "Piyasaya göre",
 	"VIEW_MY_FEES": "Komisyonlarımı incele",
 	"DEVELOPER_SECTION": {
 		"TITLE": "API anahtarı",
@@ -1022,7 +1022,7 @@
 		"CREATED": "Oluşturma Tarihi",
 		"REVOKE": "İptal Et",
 		"REVOKED": "İptal Edildi",
-		"REVOKE_TOOLTIP": "Token'ı iptal edebilmeniz için 2FA aktiflemeniz gerekiyor."					//Virex Notu: Token kelimesi bilerek çevirilmedi.
+		"REVOKE_TOOLTIP": "Token'ı iptal edebilmeniz için 2FA aktiflemeniz gerekiyor."
 	},
 	"CHAT": {
 		"MARKET_CHAT": "Piyasa Sohbeti",
@@ -1110,7 +1110,7 @@
 		"TAKER": "İşlemci",
 		"MAKER": "Piyasa Yapıcı",
 		"TRADER_ACCOUNT_ELIGIBILITY": "Seviye {0} Hesap Yeterliliği",
-		"NOMINAL_TRADING_WITH_MONTH": "Nominal Trading Last {0}",										//Virex Notu: Burayı anlamadığımız için çevirmedik.
+		"NOMINAL_TRADING_WITH_MONTH": "Nominal Trading Last {0}",
 		"LEVEL_OF_ACCOUNT": "Seviye {0} Hesap",
 		"TITLE_OF_ACCOUNT": "{0} Hesap",
 		"LEVEL_TXT_DEFAULT": "Seviye tanımınızı buraya giriniz",
@@ -1192,7 +1192,7 @@
 		"INFO_1": "Bu, {0} piyasasındaki tüm emirlerinizi iptal edecektir.",
 		"INFO_2": "Tüm açık emirlerinizi iptal etmek istediğinize emin misiniz?"
 	},
-	"AMOUNT_IN": "Miktar",														//Virex Notu: Borsada kontrol edilmeli.
+	"AMOUNT_IN": "Miktar",
 	"LIMITS_BLOCK": {
 		"HEADER_ROW_DESCRIPTION": "({0}) varlıkları için 24S'lik yatırım ve çekim limitleri",
 		"HEADER_ROW_TYPE": "Tip (Tüm varlıklar)",
