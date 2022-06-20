@@ -403,7 +403,7 @@ class Home extends Component {
 					<div key={`section-${key}`} style={style} className={className}>
 						<EditWrapper
 							iconId={iconId}
-							style={{ position: 'absolute', right: 10 }}
+							style={{ position: 'absolute', right: 10, zIndex: 1 }}
 						/>
 						{this.getSectionByKey(key)}
 					</div>

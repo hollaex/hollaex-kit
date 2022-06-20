@@ -100,7 +100,7 @@ const Form = ({
 						STRINGS['ORDER_ENTRY_BUTTON'],
 						STRINGS[`SIDES_VALUES.${side}`] || '',
 						currencyName
-					).join(' ')}
+					)}
 					disabled={submitting || !valid || !!errorText || !isLoggedIn()}
 					className={classnames('trade_order_entry-form-action', 'mb-1')}
 				/>

@@ -93,16 +93,13 @@ class CurrencySlider extends Component {
 								label={STRINGS.formatString(
 									STRINGS['RECEIVE_CURRENCY'],
 									fullname
-								).join('')}
+								)}
 								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
 							/>
 						)}
 						{allow_withdrawal && (
 							<Button
-								label={STRINGS.formatString(
-									STRINGS['SEND_CURRENCY'],
-									fullname
-								).join('')}
+								label={STRINGS.formatString(STRINGS['SEND_CURRENCY'], fullname)}
 								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
 							/>
 						)}
