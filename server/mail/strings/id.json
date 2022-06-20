@@ -1,0 +1,100 @@
+{
+    "id": {
+        "LOGIN": {
+            "html": "<div> <p> Kepada ${name} </p> <p> Kami telah mencatat login ke akun Anda dengan rincian sebagai berikut </p> <div> <div>Waktu: ${time}</div> <div>Negara: ${country}</div> <div>Alamat IP: ${ip}</div> </div> <p> Jika ini bukan Anda, harap ubah kata sandi Anda, siapkan otentikasi dua faktor, dan segera hubungi kami. </p> <p> Salam<br> ${api_name} tim </p> </div>",
+            "title": "Masuk"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> Kepada ${name} </p> <p> Konfirmasikan akun email Anda dengan klik Anda dengan klik tombol di bawah.<br> Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi kami dengan membalas email ini.</p><p>Silakan klik tombol di bawah untuk melanjutkan pendaftaran Anda.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Konfirmasi</Button></a></div><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Daftar"
+        },
+        "WELCOME": {
+            "html": "<div><p> Kepada ${name} </p><p>Terima kasih telah mendaftar di ${api_name}.</p><p>Untuk memulai perdagangan, Anda perlu deposito cryptocurrency atau dana ke akun Anda terlebih dahulu. Silakan pergi ke <a href=\"${link_account}\" target='_blank'>akun</a>Anda dan kunjungi halaman <a href=\"${link_deposit}\" target='_blank'>Deposito</a>.,</p><p>Jika Anda memiliki pertanyaan atau kekhawatiran, jangan ragu untuk menghubungi kami dengan membalas email ini.</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Selamat datang"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> Kepada ${name} </p><p>Anda telah meminta reset kata sandi akun Anda.<br />Untuk memperbarui kata sandi Anda, silakan klik tautan di bawah.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Reset Kata Sandi Saya</Button></a></div><p>Jika Anda tidak ingin melanjutkan permintaan ini, silakan abaikan ini; tidak ada perubahan pada akun Anda.</p><p>Permintaan dari: ${ip}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Permintaan Reset Kata Sandi"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> Kepada ${name} </p><p>Selamat. Akun Anda telah berhasil terverifikasi.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Berdagang Sekarang</Button></a></div><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Akun Terverifikasi"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> Kepada ${name} </p><p>Selamat. Tingkat akses akun Anda telah diperbarui ke tingkat ${tier}. Anda akan mendapatkan keuntungan dari biaya lebih rendah, batas penarikan lebih tinggi dan fitur premium lainnya.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Berdagang Sekarang</Button></a></div><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Akun Diperbarui"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> Kepada ${name} </p><p>Kami tidak dapat menemukan atau memproses deposit ${currency} Anda yang dibuat pada tanggal ${date} dengan jumlah ${amount}. Oleh karena itu, transaksi tersebut dibatalkan oleh sistem kami.</p><p>Jika Anda memiliki pertanyaan lebih lanjut, silakan membalas email ini</p><p>ID Transaksi: ${txid}<br />Jumlah: ${amount}<br />Status: Rejected</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Deposito dibatalkan"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> Kepada ${name} </p><p>Kami tidak dapat menemukan atau memproses penarikan ${currency} Anda yang dibuat pada tanggal ${date} dengan jumlah ${amount}. Oleh karena itu, transaksi tersebut dibatalkan oleh sistem kami dan jumlah penarikan tertunda akan kembalikan ke dompet ${api_name} Anda.</p><p>Jika Anda memiliki pertanyaan lebih lanjut, silakan membalas email ini</p><p>ID Transaksi: ${txid}<br />Jumlah: ${amount}<br />Status: Rejected</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Penarikan dibatalkan"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> Kepada ${name} </p><p>Anda telah membuat permintaan penarikan ${currency} dengan jumlah ${amount} ke ${address}<br /><br />Jumlah: ${amount}<br />Biaya: ${fee} ${currency}<br />Alamat: ${address}<br /><span id='network'>Jaringan: ${network}</span><br /><br />Untuk konfirmasi penarikan ini, silakan klik tombol di bawah.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Konfirmasi</Button></a></div><p>Jika Anda tidak ingin melanjutkan permintaan ini, silakan abaikan ini; tidak ada perubahan pada akun Anda.</p><p>Permintaan dari: ${ip}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Penarikan Permintaan"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>Verifikasi Pengguna Diperlukan</h3><div>Pengguna '${email}' telah mengupload dokumen untuk verifikasi. Silakan verifikasi dokumennya.</div></div>",
+            "title": "Verifikasi Pengguna"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>Deposit Mencurigakan</h3><div>Klien dengan email ${email} telah mendapatkan deposit ${currency} yang mencurigakan.<br />ID Transaksi: ${txid}<h4>Data transaksi:</h4><div>${data}</div></div></div>",
+            "title": "Deposit Mencurigakan"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> Kepada ${name} </p><p>Penarikan ${currency} Anda untuk ${amount} telah dikirim ke alamat tidak valid dan dibatalkan.</p><p>Alamat: ${address}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Alamat Penarikan Tidak Valid"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>Akun Anda ${email} telah dinonaktifkan. Anda tidak dapat menggunakan akun Anda sampai diaktifkan lagi oleh admin bursa.</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Akun ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>Akun Anda ${email} telah diaktifkan. Sekarang, Anda dapat menggunakan akun Anda.</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Akun ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> Kepada ${name} </p><p>Tarif diskon Anda telah diubah menjadi ${rate}%. Tarif ini akan diterapkan pada biaya pemesanan Anda.</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Perubahan Tarif Diskon"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> Kepada ${name} </p><p>Rekening bank yang tertunda telah diverifikasi. Rekening Anda yang valid sekarang dapat digunakan untuk operasi pertukaran yang membutuhkan rekening bank.</p><div><strong>Rekening Bank Terverifikasi:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Untuk melihat rekening bank Anda saat ini, kunjungi Verifikasi bursa Tab</a></p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Bank Terverifikasi"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> Kepada ${name} </p><p>Verifikasi ID Anda telah diproses tetapi dibatalkan. Untuk melakukan tindakan lebih lanjut, silakan baca pesan di bawah:</p><p>Pesan: ${message}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Verifikasi ID Dibatalkan"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> Kepada ${name} </p><p>Pendaftaran bank baru Anda telah diproses tetapi dibatalkan. Untuk melakukan tindakan lebih lanjut, silakan baca pesan di bawah:</p><p>Pesan: ${message}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Aplikasi Bank Baru Dibatalkan"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> Kepada ${name} </p><p>Email ini mengonfirmasi bahwa Anda baru saja mengubah kata sandi untuk akun Anda. Tidak diperlukan tindakan lebih lanjut.<br />Jika Anda tidak mengizinkan perubahan ini, harap segera hubungi kami.<br /></p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Kata Sandi Diubah"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> Kepada ${name} </p><p>Anda telah membuat permintaan untuk mengubah kata sandi akun Anda.<br />Untuk mengonfirmasi kata sandi Anda diubah, klik tautan di bawah<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Konfirmasi Ubah Kata Sandi Saya</Button></a></div><p>Jika permintaan ini dibuat karena kesalahan, Anda dapat mengabaikannya; tidak ada perubahan yang akan dilakukan pada akun</p><p>Permintaan dimulai dari: ${ip}</p><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "Ubah Konfirmasi Kata Sandi"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> Kepada ${name} </p><p> Ada deposit baru untuk ${amount} ${currency} yang sedang dalam proses di dompet ${api_name} Anda. Mohon ditunggu sampai transaksi dikonfirmasi dan dana Anda akan tersedia di dompet Anda. Please wait until the transaction is confirmed and your funds will be available in your wallet. Transaksi Anda memerlukan ${confirmation} konfirmasi dalam blockchain.</p><p>Jumlah: ${amount} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><span id='network'>Jaringan: ${network}</span><br />Biaya: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Deposito pending"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> Kepada ${name} </p><p> Deposit ${currency} Anda untukr ${amount} ${currency} telah dikonfirmasi dan berhasil dibuat dan tersedia di dompet ${currency} Anda.</p><p>Jumlah: ${amount} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><span id='network'>Jaringan: ${network}</span><br />Biaya: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Deposito completed"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> Kepada ${name} </p><p>Anda telah membuat permintaan penarikan untuk ${amount} ${currency}. ke alamat ${address}. Penarikan Anda sedang dalam proses dan akan segera diproses.</p><p>Jumlah: ${amount} ${currency}<br />Biaya: ${fee} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><span id='network'>Jaringan: ${network}</span><br /><ul>${explorers}</ul><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Penarikan pending"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p>Kepada ${name} </p><p>Permintaan penarikan Anda untuk ${amount} ${currency} telah diproses dan ditransfer ke alamat ${address}.</p><p>Jumlah: ${amount} ${currency}<br />Biaya: ${fee} ${currency}<br />Status: ${status}<br />Alamat: ${address}<br />ID Transaksi: ${transaction_id}<br /><span id='network'>Jaringan: ${network}</span><br /><ul>${explorers}</ul><p> Salam<br> ${api_name} tim </p></div>",
+            "title": "${currency} Penarikan completed"
+        }
+    }
+}
