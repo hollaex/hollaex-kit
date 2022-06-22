@@ -224,18 +224,39 @@ export const renderBooleanField = ({
 	meta: { touched, error, warning },
 	disabled = false,
 	description = '',
-}) => (
-	<div className="input_field">
-		{label && <label>{label}</label>}
-		{description ? <div>{description}</div> : null}
-		<div className="check_field">
-			<Radio.Group {...input} disabled={disabled}>
-				<Radio value={true}>True</Radio>
-				<Radio value={false}>false</Radio>
-			</Radio.Group>
-			{touched &&
-				((error && <span className="red-text">{error}</span>) ||
-					(warning && <span className="red-text">{warning}</span>))}
+	isPayment = false,
+}) => {
+	return (
+		<div className="input_field">
+			{label && <label>{label}</label>}
+			{description ? <div>{description}</div> : null}
+			<div className="check_field">
+				<Radio.Group {...input} disabled={disabled}>
+					<Radio value={true}>
+						{isPayment ? (
+							<div>
+								<div className="mb-2">Required</div>
+								<span>(important payment detail)</span>
+							</div>
+						) : (
+							<div>True</div>
+						)}
+					</Radio>
+					<Radio value={false}>
+						{isPayment ? (
+							<div>
+								<div className="mb-2">Optional</div>
+								<span>(optional payment detail)</span>
+							</div>
+						) : (
+							<div>False</div>
+						)}
+					</Radio>
+				</Radio.Group>
+				{touched &&
+					((error && <span className="red-text">{error}</span>) ||
+						(warning && <span className="red-text">{warning}</span>))}
+			</div>
 		</div>
-	</div>
-);
+	);
+};

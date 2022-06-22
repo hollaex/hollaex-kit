@@ -99,6 +99,7 @@ export default {
 		TAB_WALLET: 'Wallet',
 		TAB_SUMMARY: 'Summary',
 		TAB_HISTORY: 'History',
+		TAB_FIAT: 'Fiat controls', //new
 		TAB_SIGNOUT: 'Signout',
 		TAB_STAKE: 'Stake', //new
 	},

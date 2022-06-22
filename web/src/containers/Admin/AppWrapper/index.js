@@ -416,6 +416,8 @@ class AppWrapper extends React.Component {
 			return 'Assets';
 		} else if (location.pathname.includes('/admin/trade')) {
 			return 'Markets';
+		} else if (location.pathname.includes('/admin/fiat')) {
+			return 'Fiat controls';
 		} else if (location.pathname.includes('/admin/plugins')) {
 			return 'Plugins';
 		} else if (location.pathname.includes('/admin/tiers')) {

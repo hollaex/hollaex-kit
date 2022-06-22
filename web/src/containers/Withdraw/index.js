@@ -190,7 +190,6 @@ class Withdraw extends Component {
 			...rest,
 			address,
 			amount: math.eval(values.amount),
-			fee: values.fee ? math.eval(values.fee) : 0,
 			currency,
 		};
 
