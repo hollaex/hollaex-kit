@@ -30,6 +30,11 @@ export const PATHS = [
 		routeKey: 'trade',
 	},
 	{
+		path: '/admin/fiat',
+		label: 'Fiat controls',
+		routeKey: 'trade',
+	},
+	{
 		path: '/admin/plugins',
 		// component: BlockchainTransaction,
 		label: 'Plugins',

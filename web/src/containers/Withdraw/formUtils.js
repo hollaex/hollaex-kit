@@ -15,6 +15,7 @@ import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
 import { getNetworkLabelByKey } from 'utils/wallet';
+import { email } from 'components/AdminForm/validations';
 
 export const generateInitialValues = (
 	symbol,
@@ -177,7 +178,7 @@ export const generateFormValues = (
 					'WITHDRAWALS_FORM_ADDRESS_EXCHANGE,WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER',
 				label: STRINGS['WITHDRAWALS_FORM_ADDRESS_EXCHANGE'],
 				placeholder: STRINGS['WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER'],
-				validate: [required],
+				validate: [required, email],
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
