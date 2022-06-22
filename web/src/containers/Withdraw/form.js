@@ -147,7 +147,6 @@ class Form extends Component {
 				.onSubmitWithdrawReq({
 					...values,
 					amount: math.eval(values.amount),
-					fee: values.fee ? math.eval(values.fee) : 0,
 				})
 				.then((response) => {
 					this.props.onSubmitSuccess(
@@ -180,7 +179,6 @@ class Form extends Component {
 			.onSubmitWithdrawReq({
 				...values,
 				amount: math.eval(values.amount),
-				fee: values.fee ? math.eval(values.fee) : 0,
 				otp_code,
 			})
 			.then((response) => {
@@ -333,9 +331,8 @@ const mapStateToForm = (state) => ({
 		'address',
 		'destination_tag',
 		'amount',
-		'fee',
 		'captcha',
-		'fee_coin'
+		'email'
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,
