@@ -1,0 +1,553 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<script src="/modiein/commons-web/googleAnalytics/4.0/google-analytics-head.js"></script>
+
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>EIN Individual Request - Online Application</title>
+
+
+<style type="text/css">
+	@import url("/modiein/css/navigation-gecko.css");
+	@import url("/modiein/css/styles-gecko.css");
+	@import url("/modiein/css/icce-gecko.css");
+	@import url("/modiein/css/modiein-gecko.css");
+</style>   
+
+<!--[if IE]>
+<style type="text/css">  
+	@import url("/modiein/css/styles-ie.css");
+	@import url("/modiein/css/navigation-ie.css");
+	@import url("/modiein/css/icce-ie.css");
+	@import url("/modiein/css/modiein-ie.css");
+</style>
+<![endif]-->
+
+<!-- Begin Meta Tags -->
+<meta http-equiv="Content-Language" content="en-US">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- End Meta Tags -->
+    
+<script language="JavaScript" src="/modiein/js/ein.js"></script>
+<script language="JavaScript" type="text/javascript">
+	var ga_id = 'UA-22588183-6';
+ 	//alert("ga_id="+ga_id);
+</script>
+
+<script language="JavaScript" type="text/javascript">
+function stopRKey(evt) { 
+  var evt = (evt) ? evt : ((event) ? event : null); 
+  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null); 
+  
+  if ((evt.keyCode == 13) && (node.type == '')) // This allows links to work
+  {
+  	return true;
+  } 
+  else if ((evt.keyCode == 13) && (node.type != 'submit'))  
+  {
+  	return false;
+  } 
+} 
+
+document.onkeypress = stopRKey; 
+
+</script> 
+</head>
+
+
+<body onload=";setTimeout('warnuser()', 60000 * 10)">
+
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KV978ZL"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div id="main">   
+
+<!--stopindex-->
+  
+<!-- Header -->
+       
+<div class="headerBar">     
+
+<a href="http://www.irs.gov/">
+<img id="logo" src="/modiein/images/irslogo.gif" 
+	 title="Internal Revenue Service United States Department of the Treasury" 
+	 alt="Internal Revenue Service United States Department of the Treasury"/></a>
+<div class="help">
+
+<a href="#SkipLinks"><img src="/modiein/images/blank.gif" title="Skip to Main Content." alt="Skip to Main Content" width="0" height="0" border="0" /></a>
+	
+
+
+<!-- THis code interogates the seesion to see if it is the middle of the application or end
+     and sets the waring message on the lilnks accordingly
+     the links will only work during the middle and before the EIN is genrated     
+-->
+
+ <a href="/modiein/individual/help/help-toc.jsp" 
+	target="help_popup"
+	onClick="javascript:return(openHelpTOCWindow('help/help-toc.jsp'))"
+    title="Click here to go to the Help page.">
+	<b>Help</b></a> |
+
+ <a href="/modiein/IndividualEINClientServlet?action=StartNewAppAction"
+ 	onClick="javascript:return(confirmStartEin())"
+    title="Click here to apply for a new EIN.">
+   <b>Apply for New EIN</b></a> |
+
+ <a href="/modiein/IndividualEINClientServlet?action=ExitApplicationAction"
+    onClick="javascript:return(confirmExit())"
+    title="Click here to exit.">
+ 	<b>Exit</b></a>
+
+</div>  
+     
+</div>
+
+<div id="skipnav">  
+	<a name="SkipLinks"></a>  
+</div>
+<div class="individual-page-title">
+	<h1> EIN Assistant
+	<img src="/modiein/images/1x1-grey.gif" width="720" height="1" alt=""></h1> 
+	
+</div>
+ 
+</div>
+ 
+
+
+<head>
+<script language="JavaScript" type="text/javascript">
+var submitted = false;
+function stopDoubleClickContinue()
+{
+	if (!submitted)
+ 	{       
+       document.form1.Submit.disabled = true;
+       submitted = true;
+       document.form1.submit();	
+ 	}
+ 	return false;
+}
+</script>
+</head>
+<body id="ein-confirmation">    
+
+
+<div id="main">
+<div class="ind-headerBar">
+<div id="individual-list">
+<ul> 
+<li>Your Progress:</li>
+
+
+
+
+  <li id="identity1">1. Identity <img id="" src="/modiein/images/check-web.gif" title="" ></li>
+  <li id="authenticate1">2. Authenticate <img id="" src="/modiein/images/check-web.gif" title="" ></li>
+  <li id="address1">3. Addresses <img id="" src="/modiein/images/check-web.gif" title="" ></li>
+  <li id="details1">4. Details <img id="" src="/modiein/images/check-web.gif" title="" ></li>
+  <li id="ein-confirmation1">5. EIN Confirmation</li>    
+
+
+</ul>
+</div>  
+</div>   
+</div>              
+
+<div id="main" class="body"> 
+   
+<div id="topcontent" class="nopadding">
+
+
+
+
+<div id="individual-leftcontent">
+
+<h2>Summary of your information</h2>
+
+<p>
+Please review the information you are about to submit. 
+If any of the information below is incorrect, you will need to 
+<a href="/modiein/IndividualEINClientServlet?action=StartNewAppAction" onClick="javascript:return(confirmStartEin())">start a new application.</a>
+</p>
+
+<div class="hint_text_different_font">
+ Click the "Submit" button at the bottom of the page to receive your EIN.
+</div>
+<br><br>
+<div>
+
+ <div class="bigger-font">Organization Type: Non-Profit/Tax-Exempt Organization</div><br>
+ <span class="space"></span>
+</div>
+<table>
+ <tr>   
+   <td width="50">&nbsp;</td> 
+   <td><div class="bigger-font">Non-Profit/Tax-Exempt Organization Information</div><td>
+ </tr>
+</table>
+<BR>
+<table> 
+
+ <tr>
+  <td width="50">&nbsp;</td> 
+  <td width="250" align="left">Legal name: </td>
+  <td align="left"><b>RICHARD-ELDON OF THE FAMILY WOODL</b></td>
+ </tr>
+
+
+
+ <tr>
+  <td></td>
+  <td width="250" align="left">Trade name/Doing business as:</td>
+  <td align="left"><b> RICHWOOD PRECIOUS METALGE INTERNATI</b></td>
+ </tr>
+
+
+
+ <tr>
+  <td></td>
+  <td width="250" align="left">County: </td>
+  <td align="left"><b>ROCKDALE</b> </td>
+ </tr>
+ 
+
+  
+ <tr>
+  <td></td>
+  <td width="250" align="left">State/Territory: </td>
+  <td align="left"><b> GA</b> </td>
+ </tr>
+ 
+ 
+
+
+  
+  <tr>
+  <td></td>
+  <td width="250" align="left">Start date:</td>
+  <td align="left"><b> FEBRUARY 2017</b> </td>
+ </tr>
+ 
+ 
+
+
+ 
+ 
+
+
+
+
+ 
+
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+</table>
+<br>
+<img src="/modiein/images/1x1-grey.gif" width="550" height="1" alt="">
+<br><br>
+<table>
+ <tr>   
+   <td width="50">&nbsp;</td> 
+   <td><div class="bigger-font">Addresses</div><td>
+ </tr>
+</table>
+
+	<br>
+	<table>
+ 	<tr>   
+   		<td width="50">&nbsp;</td> 
+   		<td width = "250">
+   	 		Physical Location: 
+   </td>
+  	<td align="left" ><b>1475 KLONDIKE ROAD</b></td>
+ 	</tr>
+ 	<tr>
+  		<td width="50">&nbsp;</td> 
+  		<td>&nbsp;</td> 
+  		<td align="left"><b>CONYERS GA 00000</b></td>
+ 	</tr>
+	
+	<tr></tr><tr></tr><tr></tr>
+ 	<tr>
+  		<td width="50">&nbsp;</td> 
+  		<td width="250">Phone Number:&nbsp;</td>
+  		<td align="left" ><b>404-874-0555</b></td>
+ 	</tr>
+
+
+	<tr></tr><tr></tr><tr></tr>
+ 	<tr>
+  		<td width="50">&nbsp;</td> 
+  		<td width="250">Mail directed to:&nbsp;</td>
+  		<td align="left" ><b>RICHARD-ELDON OF THE FAMILY WOOD</b></td>
+ 	</tr>
+
+</table>
+
+
+
+
+
+<BR>
+<table>
+ <tr>
+  <td width="50">&nbsp;</td>	
+  <td align="left" width = "250">TPD Name:</td>
+  <td align="left" width= "250"><b>RICHARD ELDON WOOD</b></td>
+ </tr>
+ <tr>
+  <td width="50">&nbsp;</td>	
+  <td align="left" >TPD Address:</td>
+  <td align="left" width="250"><b>1475 KLONDIKE ROAD SUITE 100</b> </td>
+ </tr>
+ <tr>  
+  <td width="50">&nbsp;</td>	
+  <td></td>
+  <td align="left" width="250"><b>CONYERS GA 00000</b> </td>
+ </tr>
+ <tr></tr><tr></tr><tr></tr>
+ <tr>  
+  <td width="50">&nbsp;</td>	
+  <td align="left">TPD Phone Number:</td>
+  <td align="left" width="250"><b>470-899-4840</b> </td>
+ </tr>
+</table>
+
+
+<img src="/modiein/images/1x1-grey.gif" width="550" height="1" alt="">
+<br><br>
+
+
+
+<table> 
+ <tr> 
+   <td width="50"></td>
+   <td align="left" width="250">
+	   
+           <div class="bigger-font">Responsible Party</div>   
+  </td>
+ </tr>
+ <tr><td></td><td></td></tr><tr></tr> 
+ <tr>
+  <td width="50"></td>
+  <td width="250" align="left">Name:</td>
+  <td align="left"><b>RICHARD- ELDON WOOD</b></td>
+ </tr>
+ <tr>
+  <td width="50"></td>
+  <td width="250" align="left">SSN/ITIN: </td>
+  <td align="left"><b> XXX-XX-7856</b></td>
+ </tr>
+</table>
+ 
+<br>
+<img src="/modiein/images/1x1-grey.gif" width="550" height="1" alt="">
+<br><br>
+
+
+
+
+
+
+
+
+	  
+
+<table> 
+ <tr> 
+   <td width="50"></td>
+   <td align="left"><div class="bigger-font">Principal Business Activity </div></td>
+ </tr>
+ <tr><td></td><td></td></tr>
+ <tr>
+  <td></td>
+  <td width="250" align="left">What your business/organization does:</td>
+  
+  <td align="left"><b> OTHER</b></td>
+
+ </tr>
+
+ <tr>
+  <td></td>
+  <td width="250" align="left">Principal products/services:</td>
+  
+
+  <td align="left"><b> INTERNATIONAL ASSAYER AND REFINER HOLDING ORGANIZ</b></td>
+ </tr>
+
+</table>
+<br>
+<img src="/modiein/images/1x1-grey.gif" width="550" height="1" alt="">
+<br><br>
+
+
+
+
+<table> 
+ <tr>
+   <td width="50"></td> 
+   <td width="250" align="left"><div class="bigger-font">Additional Non-Profit/Tax-Exempt Organization Information</div></td>   
+	<td align="left"></td>
+ </tr>
+ <tr><td></td><td></td></tr>
+ 
+	 <tr>
+	  <td></td>
+	  <td width="230" align="left">Owns a 55,000 pounds or greater <br> highway motor vehicle: </td>
+	  <td align="left"><br><b>NO</b></td>
+	 </tr>
+ 
+ 
+	 <tr>
+	  <td></td>
+	  <td width="230" align="left">Involves gambling/wagering:</td>
+	  <td align="left"><b>NO</b></td>
+	 </tr>
+ 
+ 
+	 <tr>
+	  <td></td>
+	  <td width="230" align="left">Involves alcohol, tobacco or firearms:</td>
+	  <td align="left"><b>NO</b></td>
+	 </tr>
+ 
+ 
+	 <tr>
+	  <td></td>
+	  <td width="230" align="left">Files Form 720 (Quarterly <br> Federal Excise Tax Return): </td>
+	  <td align="left"><br><b>NO</b> </td>
+	 </tr>
+ 
+ 
+ 
+	 <tr>
+	  <td></td>
+	  <td width="230" align="left">Has employees who receive Forms W-2:</td>
+	  <td align="left"><b>NO</b></td>
+	 </tr>
+ 
+ 
+ 	<tr>
+	  <td></td>
+	  <td width="230" align="left">Reason for Applying:</td>
+	  <td align="left"><b>BANKING PURPOSES</b></td>
+	 </tr>
+  
+</table>
+
+<br>
+<img src="/modiein/images/1x1-grey.gif" width="550" height="1" alt="">
+<br><br>
+
+
+
+<form name="form1" method="post" 
+	action="/modiein/IndividualEINClientServlet?action=GenerateEINAction">
+ 
+ <b> We strongly recommend you print this summary page for your records as this will be your only copy of the application. 
+ You will not be able to return to this page after you click the "Submit" button.</b>
+<br><br><br>
+<table>
+ 
+ <tr>
+  <td width="30" align="left" valign="top"></td>
+  <td width="1500" align="left" valign="top"><div class="hint_text_different_font">Click "Submit" to send your request and receive your EIN.
+   </div>
+  </td>
+  <td align="left" width="150" valign="top">
+    <input type="submit" name="Submit" value="Submit" title=""
+    onclick="javascript:return(stopDoubleClickContinue())" />
+  </td>
+  <td align="left" width="400" valign="top"><span class="validation_error_text">Once you submit, please wait while your application is being processed.
+     It can take up to two minutes for your application to be processed.</span>
+  </td>
+</tr>
+</table>
+</form>
+</div>
+
+</div>
+
+
+
+<div class="footer" id="footerDiv">
+	  
+<a href="/modiein/IndividualEINClientServlet?action=LinkAction&amp;linkfollowed=true&amp;linkid=22" 
+        	target=_blank 
+		  	title="Click here to view the IRS Privacy Policy."
+	 		onClick="javascript:return(openWindowForInternalSite('22'))">IRS Privacy Policy</a>
+| <a href="" target=_blank 
+		  	title="Click this link for accessibility options"
+	 		onClick="window.open('https://www.irs.gov/businesses/modiein-accessibility'); return false;">Accessibility</a>			
+			<br><br>
+		     
+
+
+<img src="/modiein/images/1x1-transparent.gif" name="renewSession" width="1" height="1" alt="">
+	
+</div>
+<script type="text/javascript"  src="/WH6V5_Y_K/Y/rZFi12vw/taDiQffGba/JDdDZzJ0Aw/Yk/pFOE9VUTg"></script></body>
+</html>
+   
+        
+</div> 
