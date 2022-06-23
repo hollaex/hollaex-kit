@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.3.5",
+	"version": "2.3.6",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -90,7 +90,9 @@
 	"devDependencies": {
 		"cpy-cli": "3.1.1",
 		"husky": "4.3.0",
+		"json-beautify": "1.1.1",
 		"lint-staged": "10.5.1",
+		"lodash.isempty": "4.4.0",
 		"node-sass-chokidar": "1.5.0",
 		"prettier": "2.1.2",
 		"react-scripts": "3.4.3",
@@ -113,7 +115,10 @@
 		"publish:demo": "surge build",
 		"check-build": "npm run pre-build && npm run build:demo && npm run copy-cname && npm run publish:demo",
 		"test": "react-scripts test --env=jsdom",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
+		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
+		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",

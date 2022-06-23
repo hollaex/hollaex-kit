@@ -1,9 +1,6 @@
-import AGREEMENT from '../agreement';
-import LANGUAGES from '../languages';
-
-export default {
+module.exports = {
 	APP_TITLE: 'HollaEx',
-	APP_SUB_TITLE: 'Open Crypto Exchange', // slogan
+	APP_SUB_TITLE: 'Open Crypto Exchange',
 
 	LOGOUT_CONFIRM_TEXT: 'Are you sure?. Do you want to logout',
 	ADD_TRADING_PAIR: 'Select a market',
@@ -22,7 +19,7 @@ export default {
 	COPY_TEXT: 'Copy',
 	COPY_SUCCESS_TEXT: 'Successfully Copied',
 	CANCEL_SUCCESS_TEXT: 'Successfully Cancelled!',
-	ADD_FILES: 'ADD FILES', // ToDo
+	ADD_FILES: 'ADD FILES',
 	OR_TEXT: 'Or',
 	CONTACT_US_TEXT: 'Contact us',
 	HELPFUL_RESOURCES_TEXT: 'Helpful resources',
@@ -33,7 +30,7 @@ export default {
 	},
 	HELP_TELEGRAM_TEXT: 'Check out open API documentation:',
 	HELP_TELEGRAM_LINK: 'https://apidocs.hollaex.com',
-	NEED_HELP_TEXT: 'Need help?', // new
+	NEED_HELP_TEXT: 'Need help?',
 	HELP_TEXT: 'help',
 	SUCCESS_TEXT: 'Success',
 	ERROR_TEXT: 'Error',
@@ -42,12 +39,12 @@ export default {
 	BACK_TEXT: 'Back',
 	NO_OPTIONS: 'No options availables',
 	SECONDS: 'seconds',
-	VIEW_MARKET: 'view markets', // new
-	GO_TRADE: 'Go Trade', // new
-	VIEW_INFO: 'View info page', // new
-	APPLY_HERE: 'Apply Here', // new
-	CONVERT: 'Convert', // new
-	TO: 'To', // new
+	VIEW_MARKET: 'view markets',
+	GO_TRADE: 'Go Trade',
+	VIEW_INFO: 'View info page',
+	APPLY_HERE: 'Apply Here',
+	CONVERT: 'Convert',
+	TO: 'To',
 	HOME: {
 		MAIN_TITLE: 'Cryptocurrency trading exchange',
 		MAIN_TEXT:
@@ -74,7 +71,7 @@ export default {
 		TAB_SUMMARY: 'Summary',
 		TAB_HISTORY: 'History',
 		TAB_SIGNOUT: 'Signout',
-		TAB_STAKE: 'Stake', //new
+		TAB_STAKE: 'Stake',
 	},
 	CONTACT_FORM: {
 		CATEGORY_LABEL: 'Category',
@@ -83,16 +80,16 @@ export default {
 			OPTION_VERIFY: 'User verification',
 			OPTION_LEVEL: 'Increase user level',
 			OPTION_DEPOSIT: 'Deposit & Withdrawal',
-			OPTION_BUG: 'Report bug', // ToDo:
-			OPTION_PERSONAL_INFO: 'Change personal information', // ToDo:
-			OPTION_BANK_TRANSFER: 'Bank wire transfer', // new
-			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange', // new
+			OPTION_BUG: 'Report bug',
+			OPTION_PERSONAL_INFO: 'Change personal information',
+			OPTION_BANK_TRANSFER: 'Bank wire transfer',
+			OPTION_REQUEST: 'Request Invite for the HollaEx Exchange',
 		},
 		SUBJECT_LABEL: 'Subject',
 		SUBJECT_PLACEHOLDER: 'Type the subject of your issue',
 		DESCRIPTION_LABEL: 'Description',
 		DESCRIPTION_PLACEHOLDER: 'Type in detail what the issue is',
-		ATTACHMENT_LABEL: 'Add attachments(3 max)', // ToDo:
+		ATTACHMENT_LABEL: 'Add attachments(3 max)',
 		ATTACHMENT_PLACEHOLDER:
 			'Add a file to help communicate your issue. PDF, JPG, PNG and GIF files are accepted',
 		SUCCESS_TITLE: 'Message Sent',
@@ -101,9 +98,9 @@ export default {
 	},
 	DEPOSIT: {
 		CRYPTO_LABELS: {
-			ADDRESS: 'Your {0} receiving address', // new
-			DESTINATION_TAG: 'Your {0} destination tag', // new
-			MEMO: 'Your {0} memo', // new
+			ADDRESS: 'Your {0} receiving address',
+			DESTINATION_TAG: 'Your {0} destination tag',
+			MEMO: 'Your {0} memo',
 		},
 		QR_CODE:
 			'This QR Code can be scanned by the person who wants to send you funds',
@@ -215,23 +212,23 @@ export default {
 		OTP_PLACEHOLDER: 'Enter your 6-digit two-factor authentication code',
 	},
 	QUICK_TRADE_COMPONENT: {
-		TITLE: 'Quick Trade', // updated
-		BUTTON: 'Review Order', // updated
-		INFO: 'Fastest and simplest way to trade your crypto', //new
-		CHANGE_TEXT: 'change', //new
-		HIGH_24H: '24H HIGH', //new
-		LOW_24H: '24H LOW', //new
-		BEST_BID: 'BEST BID', //new
-		BEST_ASK: 'BEST ASK', //new
-		FOOTER_TEXT: 'Quick trade fees use market taker rates', //new
-		FOOTER_TEXT_1: 'Sourced from', //new
-		GO_TO_TEXT: 'Go to', //new
-		SOURCE_TEXT: 'Broker OTC deal', //new
+		TITLE: 'Quick Trade',
+		BUTTON: 'Review Order',
+		INFO: 'Fastest and simplest way to trade your crypto',
+		CHANGE_TEXT: 'change',
+		HIGH_24H: '24H HIGH',
+		LOW_24H: '24H LOW',
+		BEST_BID: 'BEST BID',
+		BEST_ASK: 'BEST ASK',
+		FOOTER_TEXT: 'Quick trade fees use market taker rates',
+		FOOTER_TEXT_1: 'Sourced from',
+		GO_TO_TEXT: 'Go to',
+		SOURCE_TEXT: 'Broker OTC deal',
 	},
 	PREVIOUS_PAGE: 'previous page',
 	NEXT_PAGE: 'next page',
 	WALLET: {
-		LOADING_ASSETS: 'Loading assets...', // new
+		LOADING_ASSETS: 'Loading assets...',
 		TOTAL_ASSETS: 'Total Assets',
 		AVAILABLE_WITHDRAWAL: 'Available for trading',
 		ORDERS_PLURAL: 'orders',
@@ -241,7 +238,7 @@ export default {
 	},
 	REQUEST_RESET_PASSWORD: {
 		TITLE: 'Account Recovery',
-		SUBTITLE: `Recover your account below`,
+		SUBTITLE: 'Recover your account below',
 		SUPPORT: 'Contact Support',
 		BUTTON: 'Send recovery link',
 	},
@@ -319,7 +316,7 @@ export default {
 			'Your personal information is being processed',
 		PENDING_VERIFICATION_DOCUMENTS: 'Your documents are being verified',
 		GOTO_VERIFICATION: 'Go to verification',
-		GOTO_WALLET: 'Go to wallet', // new
+		GOTO_WALLET: 'Go to wallet',
 		INCOMPLETED: 'Incompleted',
 		BANK_VERIFICATION: 'Bank Verification',
 		IDENTITY_VERIFICATION: 'Identity Verification',
@@ -386,7 +383,7 @@ export default {
 				POSTAL_CODE_PLACEHOLDER: 'Type your postal code',
 				PHONE_CODE_LABEL: 'Country',
 				PHONE_CODE_PLACEHOLDER: 'Select the country your phone is connected to',
-				PHONE_CODE_DISPLAY: '({0}) {1}', // 0 -> (+21)  1 -> South Korea
+				PHONE_CODE_DISPLAY: '({0}) {1}',
 				PHONE_NUMBER_LABEL: 'Phone number',
 				PHONE_NUMBER_PLACEHOLDER: 'Type your phone number',
 				CONNECTING_LOADING: 'Connecting',
@@ -438,8 +435,8 @@ export default {
 				PROOF_OF_RESIDENCY: 'Proof of residence',
 				ID_SECTION: {
 					TITLE: 'Please make sure that your submitted documents are:',
-					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb', //new
-					LIST_ITEM_1: 'Clear high quality color image', // updated
+					LIST_ITEM_0: 'Total size of all docs should not exceed {0}mb',
+					LIST_ITEM_1: 'Clear high quality color image',
 					LIST_ITEM_2: 'VISIBLE IN THEIR ENTIRETY (watermarks are permitted).',
 					LIST_ITEM_3: 'VALID, with the expiry date clearly visible.',
 					WARNING_1:
@@ -512,7 +509,7 @@ export default {
 		TITLE_INTERFACE: 'Interface',
 		TITLE_LANGUAGE: 'Language',
 		TITLE_CHAT: 'Chat',
-		TITLE_AUDIO_CUE: 'Play Audio Cue', // new
+		TITLE_AUDIO_CUE: 'Play Audio Cue',
 		TITLE_MANAGE_RISK: 'Manage Risk',
 		ORDERBOOK_LEVEL: 'Orderbook Levels (Max 20)',
 		SET_TXT: 'SET',
@@ -534,7 +531,6 @@ export default {
 				'Show pop up when order has partially filled',
 		},
 		AUDIO_CUE_FORM: {
-			// new
 			ALL_AUDIO: 'All Audio cues',
 			PUBLIC_TRADE_AUDIO: 'When a public trade has been made',
 			ORDERS_PARTIAL_AUDIO: 'When one of your orders is partially filled',
@@ -658,7 +654,7 @@ export default {
 	},
 	STAKE: {
 		NETWORK_WARNING: 'Incompatible network. Please change your network to {0}',
-		EARN: 'Earn', //new
+		EARN: 'Earn',
 		TITLE: 'Stake',
 		MODAL_TITLE: 'Stake and earn {0}',
 		REVIEW_MODAL_TITLE: 'Check and confirm stake',
@@ -666,8 +662,8 @@ export default {
 		DEFI_TITLE: 'DeFi asset staking',
 		DEFI_TEXT:
 			'Staking DeFi style will use your own wallet outside of the exchange. To start you are required to establish a connection, once connected you can stake and start earning directly from your wallet.',
-		GET_STAKES: 'Get stakes', //new
-		CURRENT_ETH_BLOCK: 'Current ETH block: {0}', //new
+		GET_STAKES: 'Get stakes',
+		CURRENT_ETH_BLOCK: 'Current ETH block: {0}',
 		ON_EXCHANGE_XHT: 'On exchange {0} balance: {1} {2}',
 		LOGIN_HERE: 'Login here',
 		MOVE_XHT: 'Move {0}',
@@ -867,8 +863,8 @@ export default {
 		limit: 'limit',
 	},
 	TYPES: [
-		{ value: 'market', label: 'market' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'limit', label: 'limit' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'market', label: 'market' },
+		{ value: 'limit', label: 'limit' },
 	],
 	SIDE: 'Side',
 	SIDES_VALUES: {
@@ -882,10 +878,10 @@ export default {
 	SIDES: [
 		{ value: 'buy', label: 'buy' },
 		{ value: 'sell', label: 'sell' },
-	], // DO NOT CHANGE value, ONLY TRANSLATE label
+	],
 	DEFAULT_TOGGLE_OPTIONS: [
-		{ value: true, label: 'on' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: false, label: 'off' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: true, label: 'on' },
+		{ value: false, label: 'off' },
 	],
 	SIZE: 'Size',
 	PRICE: 'Price',
@@ -906,15 +902,15 @@ export default {
 	TRADE_HISTORY: 'history',
 	CHART: 'price chart',
 	ORDERS: 'my active orders',
-	RECENT_TRADES: 'my recent trades', // ToDo
+	RECENT_TRADES: 'my recent trades',
 	ORDER_HISTORY: 'Order history',
-	PUBLIC_SALES: 'public sales', // ToDo
+	PUBLIC_SALES: 'public sales',
 	REMAINING: 'Remaining',
 	FULLFILLED: '{0} % Filled',
-	FILLED: 'Filled', // new
-	LOWEST_PRICE: 'Lowest Price ({0})', // new
-	PHASE: 'Phase', // new
-	INCOMING: 'Incoming', // new
+	FILLED: 'Filled',
+	LOWEST_PRICE: 'Lowest Price ({0})',
+	PHASE: 'Phase',
+	INCOMING: 'Incoming',
 	PRICE_CURRENCY: 'Price',
 	AMOUNT_SYMBOL: 'Amount',
 	ESTIMATED_PRICE: 'Estimated Price',
@@ -960,9 +956,9 @@ export default {
 	WITHDRAWALS_FORM_NETWORK_PLACEHOLDER: 'Select a network',
 	WITHDRAWALS_FORM_ADDRESS_LABEL: 'Destination address',
 	WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER: 'Type the address',
-	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)', // new
-	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)', // new
-	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag', // new
+	WITHDRAWALS_FORM_DESTINATION_TAG_LABEL: 'Destination tag (optional)',
+	WITHDRAWALS_FORM_MEMO_LABEL: 'Memo (optional)',
+	WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER: 'Type the destination tag',
 	WITHDRAWALS_FORM_AMOUNT_LABEL: '{0} amount to withdraw',
 	WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER:
 		'Type the amount of {0} you wish to withdraw',
@@ -972,7 +968,7 @@ export default {
 		'Type the amount of {0} you wish to use in the fee of the transaction',
 	DEPOSIT_BANK_REFERENCE:
 		'Add this "{0}" code to the bank transation to identify the deposit',
-	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}', // you have successfully buy 1 btc
+	QUOTE_SUCCESS_REVIEW_MESSAGE: 'You have successfully {0} {1} {2}',
 	COUNTDOWN_ERROR_MESSAGE: 'Countdown is finished',
 	WITHDRAW_PAGE: {
 		BANK_TO_WITHDRAW: 'Bank to Withdraw to',
@@ -1000,7 +996,7 @@ export default {
 	WALLET_BUTTON_BASE_WITHDRAW: 'withdraw',
 	WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT: 'receive',
 	WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW: 'send',
-	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}', // Available Bitcoin Balance: 2.6 BTC
+	AVAILABLE_BALANCE_TEXT: 'Available {0} Balance: {1} {2}',
 	BALANCE_TEXT: 'Balance',
 	CURRENCY_BALANCE_TEXT: '{0} Balance',
 	WALLET_ALL_ASSETS: 'All Assets',
@@ -1010,7 +1006,7 @@ export default {
 	PAGINATOR_FORMAT: '{0} / {1}',
 	ORDERBOOK_SELLERS: 'Sellers',
 	ORDERBOOK_BUYERS: 'Buyers',
-	ORDERBOOK_SPREAD: 'spread {0}', // 0 -> 660,000 T
+	ORDERBOOK_SPREAD: 'spread {0}',
 	CALCULATE_MAX: 'Max',
 	VERIFICATION_WARNING_TITLE: 'Verification you bank details',
 	VERIFICATION_WARNING_MESSAGE:
@@ -1020,17 +1016,17 @@ export default {
 	ORDER_SOLD: 'Sold',
 	ORDER_BOUGHT: 'Bought',
 	ORDER_AVERAGE_PRICE: 'Average price',
-	ORDER_TITLE_CREATED: 'Successfully created a limit {0}', // 0 -> buy / sell
-	ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled', // 0 -> buy / sell
-	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled', // 0 -> buy / sell
-	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful', // 0 -> buy / sell
+	ORDER_TITLE_CREATED: 'Successfully created a limit {0}',
+	ORDER_TITLE_FULLY_FILLED: '{0} order successfully filled',
+	ORDER_TITLE_PARTIALLY_FILLED: '{0} order partially filled',
+	ORDER_TITLE_TRADE_COMPLETE: '{0} {1} order was successful',
 	LOGOUT_TITLE: 'You have been logged out',
 	LOGOUT_ERROR_TOKEN_EXPIRED: 'Your session is expired. Please login again.',
-	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again', // ip doesnt match
+	LOGOUT_ERROR_LOGIN_AGAIN: 'Login again',
 	LOGOUT_ERROR_INVALID_TOKEN: 'Invalid token',
 	LOGOUT_ERROR_INACTIVE:
 		'You have been logged out because you have been inactive',
-	ORDER_ENTRY_BUTTON: '{0} {1}', // 0 -> buy/sell 1 -> btc/..
+	ORDER_ENTRY_BUTTON: '{0} {1}',
 	ORDER_ENTRY_ADVANCED: 'Advanced',
 	QUICK_TRADE_OUT_OF_LIMITS: 'Order size is out of the limits',
 	QUICK_TRADE_TOKEN_USED: 'Token has been used',
@@ -1046,7 +1042,7 @@ export default {
 	QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE:
 		'You have insufficient funds in your wallet to complete this transaction.',
 	QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE:
-		'Broker OTC deal is currently not available.', //new
+		'Broker OTC deal is currently not available.',
 	SUBMIT: 'submit',
 	RESUBMIT: 'Resubmit',
 	VERIFICATION_NOTIFICATION_SKIP_TITLE: 'Missing Documents!',
@@ -1062,31 +1058,30 @@ export default {
 	ERROR_LOGIN_USER_NOT_VERIFIED: 'User is not verified',
 	ERROR_LOGIN_USER_NOT_ACTIVATED: 'User is not activated',
 	ERROR_LOGIN_INVALID_CREDENTIALS: 'Credentials incorrect',
-	SMS_SENT_TO: 'SMS sent to {0}', // TODO check msg
+	SMS_SENT_TO: 'SMS sent to {0}',
 	SMS_ERROR_SENT_TO:
-		'Error sending the SMS to {0}. Please refresh the page and try again.', // TODO check msg
-	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:', // TODO check msg
+		'Error sending the SMS to {0}. Please refresh the page and try again.',
+	WITHDRAW_NOTIFICATION_TRANSACTION_ID: 'Transaction ID:',
 	CHECK_ORDER: 'Check and confirm your order',
-	CHECK_ORDER_TYPE: '{0} {1}', // 0 -> maker/limit  1 -> sell/buy
+	CHECK_ORDER_TYPE: '{0} {1}',
 	CONFIRM_TEXT: 'Confirm',
 	INVALID_CAPTCHA: 'Invalid captcha',
 	NO_FEE: 'N/A',
 	SETTINGS_LANGUAGE_LABEL: 'Language preferences (Includes Emails)',
-	SETTINGS_LANGUAGE_OPTIONS: LANGUAGES,
 	SETTINGS_ORDERPOPUP_OPTIONS: [
-		{ value: false, label: 'NO' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: true, label: 'YES' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: false, label: 'NO' },
+		{ value: true, label: 'YES' },
 	],
-	SETTINGS_THEME_LABEL: 'User Interface Theme', // TODO set right labels // ToDo
+	SETTINGS_THEME_LABEL: 'User Interface Theme',
 	SETTINGS_THEME_OPTIONS: [
-		{ value: 'white', label: 'White' }, // DO NOT CHANGE value, ONLY TRANSLATE label
-		{ value: 'dark', label: 'Dark' }, // DO NOT CHANGE value, ONLY TRANSLATE label
+		{ value: 'white', label: 'White' },
+		{ value: 'dark', label: 'Dark' },
 	],
 	SETTING_BUTTON: 'save',
 	VERIFICATION_NO_WITHDRAW_TITLE: 'Withdrawals disabled',
 	VERIFICATION_NO_WITHDRAW_MESSAGE: 'Your account is disabled for withdrawals',
 	UP_TO_MARKET: 'Up to market',
-	VIEW_MY_FEES: 'View my fees', // new
+	VIEW_MY_FEES: 'View my fees',
 	DEVELOPER_SECTION: {
 		TITLE: 'API Key',
 		INFORMATION_TEXT:
@@ -1099,7 +1094,7 @@ export default {
 		ACTIVE: 'Active',
 		INACTIVE: 'Inactive',
 		INVALID_LEVEL:
-			'You need to upgrade your verification level to have access this feature', // TODO
+			'You need to upgrade your verification level to have access this feature',
 	},
 	DEVELOPERS_TOKEN: {
 		API_KEY: 'API Key',
@@ -1146,14 +1141,14 @@ export default {
 		CREATED: 'Date Generated',
 		REVOKE: 'Revoke',
 		REVOKED: 'Revoked',
-		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token', // TODO
+		REVOKE_TOOLTIP: 'You have to enable 2FA to revoke the token',
 	},
 	CHAT: {
 		READ_MORE: 'Read More',
 		SHOW_IMAGE: 'Show Image',
 		HIDE_IMAGE: 'Hide Image',
 		CHAT_MESSAGE_BOX_PLACEHOLDER: 'Message',
-		TROLLBOX: 'Trollbox ({0})', // new
+		TROLLBOX: 'Trollbox ({0})',
 	},
 	INVALID_USERNAME:
 		'Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore',
@@ -1192,7 +1187,7 @@ export default {
 	TRADE_TAB_CHART: 'Chart',
 	TRADE_TAB_TRADE: 'Trade',
 	TRADE_TAB_ORDERS: 'Orders',
-	TRADE_TAB_POSTS: 'Announcements', // new
+	TRADE_TAB_POSTS: 'Announcements',
 	WALLET_TAB_WALLET: 'Wallet',
 	WALLET_TAB_TRANSACTIONS: 'Transactions',
 	RECEIVE_CURRENCY: 'Receive {0}',
@@ -1228,9 +1223,9 @@ export default {
 		ACCOUNT_DETAILS_TXT_4:
 			'Periodic downgrading of accounts will occur if activity and assets are not maintained.',
 		REQUIREMENTS: 'Requirements',
-		ONE_REQUIREMENT: 'One Requirement only:', // new
+		ONE_REQUIREMENT: 'One Requirement only:',
 		REQUEST_ACCOUNT_UPGRADE: 'Request an Account Upgrade',
-		FEES_AND_LIMIT: '{0} Fee & Limit Structure', // new
+		FEES_AND_LIMIT: '{0} Fee & Limit Structure',
 		FEES_AND_LIMIT_TXT_1:
 			'Becoming a crypto trader marks new beginning. Armed with wits, will and speed only by taking risks and trading will you be allowed to update your account.',
 		FEES_AND_LIMIT_TXT_2:
@@ -1245,67 +1240,65 @@ export default {
 		TITLE_OF_ACCOUNT: '{0} Account',
 		LEVEL_TXT_DEFAULT: 'Add your level description here',
 		LEVEL_1_TXT:
-			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.', // new
+			'Your journey starts here young crypto trader! To obtain bonuses you can verify your identiﬁcation and also get larger deposit and withdraw limits with reduced trading fees.',
 		LEVEL_2_TXT:
-			'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.', // new
+			'Simply trade monthly over $3,000 USDT worth or have balance of over 5,000 XHT and enjoy lower trading fees.',
 		LEVEL_3_TXT:
-			'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation', // new
+			'This is where things get real! Enjoy reduced trading fees and large deposit and withdrawal limits. To get to level 3 you must complete your veriﬁcation',
 		LEVEL_4_TXT:
-			'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.', // new
+			'Simply trade monthly over $10,000 USDT worth or have balance of over 10,000 XHT and enjoy lower trading fees.',
 		LEVEL_5_TXT:
-			'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.', // new
+			'You’ve made it! The level 5 account is a rare account only for exchange operators, Vault users or HollaEx Affiliate Program (HAP). Enjoy large limits and enjoy zero maker fees.',
 		LEVEL_6_TXT:
-			'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+			'Simply trade monthly over $300,000 USDT worth or have balance of over 100,000 XHT and enjoy lower trading fees. Increased withdraw amount.',
 		LEVEL_7_TXT:
-			'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.', // new
+			'Simply trade monthly over $500,000 USDT worth or have balance of over 300,000 XHT and enjoy lower trading fees. Increased withdraw amount.',
 		LEVEL_8_TXT:
-			'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.', // new
+			'Simply trade monthly over $600,000 USDT worth or have balance of over 400,000 XHT and enjoy lower trading fees.',
 		LEVEL_9_TXT:
-			'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.', // new
+			'Simply trade monthly over $2,000,000 USDT worth or have balance of over 1,000,000 XHT and enjoy lower trading fees.',
 		LEVEL_10_TXT:
-			'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.', // new
+			'The whale trader account that earns you money back for market making. To obtain this special account please get in touch with us.',
 		CURRENT_TXT: 'Current',
 		TRADER_ACCOUNT_XHT_TEXT:
 			'Your account is in the presale period of XHT, this means you can obtain XHT for $0.10 per XHT. All deposit will be converted to XHT once the transaction has cleared.',
 		HAP_ACCOUNT_TXT:
-			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.', // new
-		EMAIL_VERIFICATION: 'Email Verification', // new
-		DOCUMENTS: 'Documents', // new
-		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}', // new
-		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}', // new
-		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}', // new
-		TRADE_OVER_XHT: 'Trade over {0} USDT worth', // new
-		XHT_IN_WALLET: '{0} XHT in wallet', // new
-		TASKS: 'Tasks', // new
-		DISCOUNT: '( {0}% discount )', // new
-		MY_FEES_LIMITS: ' My Fees and Limits', // new
-		MARKETS: 'Markets', // new
-		CHANGE_24H: '24H Change', // new
-		VOLUME_24H: '24H Volume', // new
-		VIEW_MORE_MARKETS: 'View more markets', // new
+			'Your account is a verified HollaEx affiliate program account. You can now earn 10% bonus for every person you invite that buys XHT.',
+		EMAIL_VERIFICATION: 'Email Verification',
+		DOCUMENTS: 'Documents',
+		HAP_TEXT: 'HollaEx Affiliate Program (HAP) {0}',
+		LOCK_AN_EXCHANGE: 'Lock an Exchange {0}',
+		WALLET_SUBSCRIPTION_USERS: 'Vault Subscription users {0}',
+		TRADE_OVER_XHT: 'Trade over {0} USDT worth',
+		XHT_IN_WALLET: '{0} XHT in wallet',
+		TASKS: 'Tasks',
+		DISCOUNT: '( {0}% discount )',
+		MY_FEES_LIMITS: ' My Fees and Limits',
+		MARKETS: 'Markets',
+		CHANGE_24H: '24H Change',
+		VOLUME_24H: '24H Volume',
+		VIEW_MORE_MARKETS: 'View more markets',
 	},
 	REFERRAL_LINK: {
-		TITLE: 'Invite your friend', // new
+		TITLE: 'Invite your friend',
 		INFO_TEXT:
 			'Refer your friends by giving out this link and receive benefits by onboarding other people.',
-		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:', // new
-		REFERRED_USER_COUT: 'You have referred {0} users', // new
-		COPY_LINK_BUTTON: 'COPY REFERRAL LINK', // new
+		COPY_FIELD_LABEL: 'Share the link below with friends and earn commissions:',
+		REFERRED_USER_COUT: 'You have referred {0} users',
+		COPY_LINK_BUTTON: 'COPY REFERRAL LINK',
 	},
 	STAKE_TOKEN: {
-		TITLE: 'Stake HollaEx Token', // new
+		TITLE: 'Stake HollaEx Token',
 		INFO_TXT1:
-			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.', // new
+			'HollaEx tokens (XHT) are required to be collateralized (staked) to run the HollaEx Kit exchange software.',
 		INFO_TXT2:
-			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.', // new
+			'You can collateralize your HollaEx token in a similar fashion and earn XHT not sold during the Wave Auction.',
 		INFO_TXT3:
-			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT', // new
-		BUTTON_TXT: 'FIND OUT MORE', // new
+			'Simply go to dash.bitholla.com and collateralize your own exchange today and earn free XHT',
+		BUTTON_TXT: 'FIND OUT MORE',
 	},
 	TERMS_OF_SERVICES: {
-		// new
 		TITLE: 'HollaEx Token Purchase Agreement',
-		SERVICE_AGREEMENT: AGREEMENT,
 		PROCEED: 'PROCEED',
 		AGREE_TERMS_LABEL:
 			'I have read and agree to the HollaEx Token Purchase Agreement',
@@ -1315,46 +1308,45 @@ export default {
 			'Deposit funds into your wallet to obtain HollaEx Token (XHT)',
 		READ_FAG: 'Read HollaEx FAQ here: {0}',
 		READ_DOCUMENTATION: 'Read HollaEx whitepaper here: {0}',
-		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}', // new
+		READ_WAVES: 'Rules for the coming December Public Wave Auction{0}',
 		DOWNLOAD_BUY_XHT:
 			'Download the PDF to see a visual step-by-step processes on {0}',
 		HOW_TO_BUY: 'how to buy HollaEx Token (XHT)',
-		PUBLIC_SALES: ' Public Wave Auction', // new
+		PUBLIC_SALES: ' Public Wave Auction',
 		CONTACT_US:
 			'Feel free to contact us for more information and any issues by sending us an email to {0}',
-		VISUAL_STEP: 'See a visual step-by-step processes on {0}', // new
+		VISUAL_STEP: 'See a visual step-by-step processes on {0}',
 		WARNING_TXT:
-			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.', // new
+			'We will review your request and send further instructions to your email on how to access the HollaEx exchange.',
 		WARNING_TXT1:
-			'In the mean time you can familiarize yourself with the HollaEx network with the resources below', // new
-		XHT_ORDER_TXT_1: 'To start trading you must login', // new
-		XHT_ORDER_TXT_2: '', // new
-		XHT_ORDER_TXT_3: '{0} or {1}', // new
-		XHT_TRADE_TXT_1: 'Login to see your recent trades', //new
-		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history', //new
+			'In the mean time you can familiarize yourself with the HollaEx network with the resources below',
+		XHT_ORDER_TXT_1: 'To start trading you must login',
+		XHT_ORDER_TXT_2: '',
+		XHT_ORDER_TXT_3: '{0} or {1}',
+		XHT_TRADE_TXT_1: 'Login to see your recent trades',
+		XHT_TRADE_TXT_2: 'You can {0} to see your recent trade history',
 		LOGIN_HERE: 'login here',
 	},
-	USER_LEVEL: 'User level', // new
-	LIMIT_AMOUNT: 'Limit amount', // new
-	FEE_AMOUNT: 'Fee amount', // new
-	COINS: 'Coins', // new
-	PAIRS: 'Pairs', // new
+	USER_LEVEL: 'User level',
+	LIMIT_AMOUNT: 'Limit amount',
+	FEE_AMOUNT: 'Fee amount',
+	COINS: 'Coins',
+	PAIRS: 'Pairs',
 	NOTE_FOR_EDIT_COIN:
-		'Note: For adding and removing {0} please refer to the{1}.', // new
-	REFER_DOCS_LINK: 'docs', // new
-	EXPIRED_INFO_1: 'Your trial has ended.', // new
-	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.', // new
-	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE', // new
+		'Note: For adding and removing {0} please refer to the{1}.',
+	REFER_DOCS_LINK: 'docs',
+	EXPIRED_INFO_1: 'Your trial has ended.',
+	EXPIRED_INFO_2: 'Collateralize your exchange to activate it again.',
+	EXPIRED_BUTTON_TXT: 'ACTIVATE EXCHANGE',
 	TRADE_POSTS: {
-		// new
 		LEARN_MORE: 'Learn more',
 	},
-	OPEN_WALLET: 'Open wallet', // new
-	CUMULATIVE_AMOUNT_SYMBOL: 'Total', //new
+	OPEN_WALLET: 'Open wallet',
+	CUMULATIVE_AMOUNT_SYMBOL: 'Total',
 	POST_ONLY: 'Post only',
 	CLEAR: 'Clear',
 	ORDER_TYPE: 'Type',
-	ORDER_MODE: 'Order mode', //new
+	ORDER_MODE: 'Order mode',
 	TRIGGER_CONDITIONS: 'Trigger conditions',
 	TRANSACTION_STATUS: {
 		PENDING: 'Pending',
@@ -1362,16 +1354,15 @@ export default {
 		COMPLETED: 'Completed',
 	},
 	DEPOSIT_STATUS: {
-		// new
 		NEW: 'New',
 		SEARCH_FIELD_LABEL: 'Paste your transaction ID',
 		CHECK_DEPOSIT_STATUS: 'Check deposit status',
 		STATUS_DESCRIPTION:
 			'You can check the status of your deposit by passing the transaction ID (hash) below.',
 		TRANSACTION_ID: 'Transaction ID (hash)',
-		SEARCH_SUCCESS: 'Search complete', // new
-		ADDRESS_FIELD_LABEL: 'Paste your address', // new
-		CURRENCY_FIELD_LABEL: 'Select the currency', // new
+		SEARCH_SUCCESS: 'Search complete',
+		ADDRESS_FIELD_LABEL: 'Paste your address',
+		CURRENCY_FIELD_LABEL: 'Select the currency',
 	},
 	CANCEL_ORDERS: {
 		HEADING: 'Cancel orders',
@@ -1400,47 +1391,47 @@ export default {
 	UNDEFINED_ERROR_TITLE: 'You’ve Encountered an Unidentified Error',
 	UNDEFINED_ERROR:
 		'Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.',
-	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.', // new
+	POST_ONLY_TOOLTIP: 'Post only orders only execute as a limit order.',
 	REFRESH: 'Refresh',
-	FEE_REDUCTION: 'Fee reduction', // new
+	FEE_REDUCTION: 'Fee reduction',
 	FEE_REDUCTION_DESCRIPTION:
-		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.', // new
-	CHANGE_PASSWORD_FAILED: 'changing password failed', // new
+		'*your account has a fee discount applied to it. The reduction is applied to the trading fees based on your account.',
+	CHANGE_PASSWORD_FAILED: 'changing password failed',
 	MARKET_OPTIONS: [
-		{ value: 'List', label: 'List' }, // new
-		{ value: 'Card', label: 'Card' }, // new
+		{ value: 'List', label: 'List' },
+		{ value: 'Card', label: 'Card' },
 	],
-	ALL: 'All', //new
-	ASSET_TXT: 'Asset', //new
-	ONE_DAY: '1 day', //new
-	ONE_WEEK: '1 week', //new
-	MONTH: '{0} month', //new
-	START_DATE: 'Start date', //new
-	END_DATE: 'End date', //new
-	REGULAR: 'Regular', //new
-	STOPS: 'Stops', //new
-	VIEW_ALL: 'view all', //new
-	TRIGGER_PRICE: 'Trigger price', //new
-	SPEND_AMOUNT: 'Spend Amount', //new
-	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount', //new
+	ALL: 'All',
+	ASSET_TXT: 'Asset',
+	ONE_DAY: '1 day',
+	ONE_WEEK: '1 week',
+	MONTH: '{0} month',
+	START_DATE: 'Start date',
+	END_DATE: 'End date',
+	REGULAR: 'Regular',
+	STOPS: 'Stops',
+	VIEW_ALL: 'view all',
+	TRIGGER_PRICE: 'Trigger price',
+	SPEND_AMOUNT: 'Spend Amount',
+	ESTIMATE_RECEIVE_AMOUNT: 'Estimated Receiving Amount',
 	TOOLS: {
-		ORDERBOOK: 'Orderbook', //new
-		CHART: 'Chart', //new
-		PUBLIC_SALES: 'Public sales', //new
-		ORDER_ENTRY: 'Order entry', //new
-		RECENT_TRADES: 'Recent trades', //new
-		OPEN_ORDERS: 'Open orders', //new
+		ORDERBOOK: 'Orderbook',
+		CHART: 'Chart',
+		PUBLIC_SALES: 'Public sales',
+		ORDER_ENTRY: 'Order entry',
+		RECENT_TRADES: 'Recent trades',
+		OPEN_ORDERS: 'Open orders',
 		WALLET: 'Wallet',
-		DEPTH_CHART: 'Depth chart', //new
-		COMING_SOON: 'coming soon', //new
+		DEPTH_CHART: 'Depth chart',
+		COMING_SOON: 'coming soon',
 	},
-	WALLET_BALANCE_LOADING: 'Balance loading...', //new
-	LOADING: 'Loading...', //new,
+	WALLET_BALANCE_LOADING: 'Balance loading...',
+	LOADING: 'Loading...',
 	CONNECT_VIA_DESKTOP: {
 		TITLE: 'Connect via desktop',
 		SUBTITLE:
 			"DeFi staking through your mobile devices aren't supported at this time.",
 		TEXT: 'To connect your wallet please use a desktop/laptop computer.',
 	},
-	ORDER_HISTORY_CLOSED: 'Closed', //new
+	ORDER_HISTORY_CLOSED: 'Closed',
 };
