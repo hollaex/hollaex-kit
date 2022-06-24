@@ -144,6 +144,7 @@ class QuickTradeContainer extends PureComponent {
 			isLoading: false,
 			buyPrice: 0,
 			sellPrice: 0,
+			token: '',
 		};
 
 		this.goToPair(pair);
@@ -416,6 +417,7 @@ class QuickTradeContainer extends PureComponent {
 				} else {
 					this.setState({ sellPrice: res.price });
 				}
+				this.setState({ token: res.token });
 			}
 		} catch (error) {
 			console.log('error', error);
@@ -556,6 +558,7 @@ class QuickTradeContainer extends PureComponent {
 			brokerTargetAmount,
 			sellPrice,
 			buyPrice,
+			token,
 		} = this.state;
 		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
@@ -646,6 +649,7 @@ class QuickTradeContainer extends PureComponent {
 				side,
 				symbol: selectedPair,
 				size: formatNumber(size, getDecimals(increment_size)),
+				token,
 			};
 
 			executeBroker(brokerOrderData)
