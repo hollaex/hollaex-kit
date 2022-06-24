@@ -635,7 +635,6 @@ class App extends Component {
 	render() {
 		const {
 			symbol,
-			pair,
 			children,
 			activeNotification,
 			// prices,
@@ -646,7 +645,6 @@ class App extends Component {
 			// unreadMessages,
 			router,
 			location,
-			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
 			// user,
@@ -926,11 +924,10 @@ class App extends Component {
 								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
+											menuItems={menuItems}
 											isLogged={isLoggedIn()}
-											activePath={activePath}
-											pair={pair}
-											enabledPlugins={enabledPlugins}
-											features={features}
+											activePath={this.state.activeMenu}
+											onMenuChange={this.handleMenuChange}
 										/>
 									</div>
 								)}
