@@ -3,7 +3,6 @@ import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 import { dateFilters } from '../filterUtils';
-import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -26,6 +25,7 @@ const STATUS_OPTIONS = {
 const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
 	const [click, setClick] = useState([]);
+	const [customSel, setCustomSel] = useState(false);
 
 	useEffect(() => {
 		form.setFieldsValue({
@@ -33,6 +33,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 			currency: null,
 			size: 'all',
 		});
+		setCustomSel(false);
 	}, [activeTab, form]);
 
 	useEffect(() => {
@@ -42,13 +43,8 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 			form.getFieldValue('range').length &&
 			!form.getFieldValue('range').filter((d) => d === undefined).length
 		) {
-			if (
-				!moment(click[0]).isSame(form.getFieldValue('range')[0]) &&
-				!moment(click[1]).isSame(form.getFieldValue('range')[1])
-			) {
-				form.setFieldsValue({ range: click });
-				onSearch(form.getFieldsValue());
-			}
+			form.setFieldsValue({ range: click });
+			onSearch(form.getFieldsValue());
 		} else if (click.length && !form.getFieldValue('range').length) {
 			form.setFieldsValue({ range: click });
 			onSearch(form.getFieldsValue());
@@ -58,6 +54,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 	const onValuesChange = (_, values) => {
 		if (values) {
 			if (values.size) {
+				setCustomSel(false);
 				const {
 					[values.size]: { range },
 				} = dateFilters;
@@ -66,13 +63,42 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 				if (_.range === undefined) {
 					onSearch(values);
 				}
+			} else {
+				if (_.range === undefined) {
+					onSearch(values);
+				}
 			}
 		}
 	};
 
 	const handleDateRange = (e) => {
-		if (e.length > 1 && e[0] && e[1]) {
+		const data = {
+			...form.getFieldsValue(),
+			range: [],
+		};
+		if (!e) {
+			onSearch(data);
+		} else if (e && e.length > 1 && e[0] && e[1]) {
 			setClick(e);
+		}
+	};
+
+	const Customselection = (e) => {
+		const data = {
+			...form.getFieldsValue(),
+			range: [],
+		};
+		if (e === 'custom' && !customSel) {
+			setCustomSel(true);
+			form.setFieldsValue({
+				size: '',
+				range: [],
+			});
+			onSearch(data);
+		} else {
+			if (!click.length) {
+				setCustomSel(false);
+			}
 		}
 	};
 
@@ -152,15 +178,26 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 						))}
 					</Radio.Group>
 				</Form.Item>
-				<Form.Item name="range">
-					<RangePicker
-						allowEmpty={[true, true]}
-						size="small"
-						suffixIcon={false}
-						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
-						onChange={handleDateRange}
-					/>
+				<Form.Item
+					name="custom"
+					buttonStyle="outline"
+					size="small"
+					onClick={() => Customselection('custom')}
+					className={customSel ? 'cusStyle1' : 'cusStyle2'}
+				>
+					Custom
 				</Form.Item>
+				{customSel && (
+					<Form.Item name="range">
+						<RangePicker
+							allowEmpty={[true, true]}
+							size="small"
+							suffixIcon={false}
+							placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+							onChange={handleDateRange}
+						/>
+					</Form.Item>
+				)}
 			</Row>
 		</Form>
 	);
