@@ -1,0 +1,100 @@
+{
+    "fa": {
+        "LOGIN": {
+            "html": "<div> <p>  کاربر عزیز${name} </p> <p> شما با جزییات زیر وارد حساب کاربری خود شده ایید </p> <div> <div>زمان: ${time}</div> <div>:کشور ${country}</div> <div>آی پی آدرس: ${ip}</div> </div> <p> اگر شما وارد حساب کاربری خود نشده ایید ، اکیدا توصیه میکنیم  بی درنگ پسورد خود را عوض کنید و همچنین رمز یکبار مصرف حساب کاربری خود را فعال نمایید. </p> <p> با تشکر<br> ${api_name} تیم </p> </div>",
+            "title": "ورود"
+        },
+        "SIGNUP": {
+            "html": "<div> <p>  کاربر عزیز${name} </p> <p> شما باید ایمیل خود را با فشار دادن دکمه زیر تایید نمایید.<br> در صورت داشتن هر گونه سوال و یا ابهامی  کافیست تا آن را در پاسخ به همین ایمیل با ما درمیان بگذارید .</p><p>برای ادامه روند ثبت نام خود ، لطفا دکمه زیر را فشار دهید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "ثبت نام"
+        },
+        "WELCOME": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>با تشکر از ثبت نام شما در  ${api_name}.</p><p>برای شروع معاملات شما ابتدا باید به حساب کاربری خود رمزارز و یا پول فیات واریز نمایید.لطفا ابتدا به حساب کاربری خود رفته وصفحه واریز ها را مشاهده فرمایید.,</p><p>در صورت داشتن سوال و یا ابهامی با ما تماس حاصل فرمایید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "خوش آمدید"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست کلمه عبور جدید برای حساب کاربری خود را ارسال کرده اید.<br />برای بروز رسانی کلمه عبور خود از لینک زیر استفاده نمایید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">کلمه عبور من را مجددا تنظیم کن</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "درخواست کلمه عبور جدید"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>تبریک می گوییم. حساب کاربری شما تایید و ارتقا سطح داده شده است و هم اکنون می توانید براحتی فعالیت خود را آغاز نمایید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "حساب کاربری تایید شد"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>بریک می گوییم ، سطح حساب کاربری شما به سطح ${tier}ارتقا یافت.شما می توانید از مزیت های کارمزد کمتر و سقف برداشت های بیشتر منتفع شوید.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">هم اکنون معامله کنید</Button></a></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "حساب کاربری ارتقا یافت"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش واریز ${currency} شما در تاریخ ${date} و به مبلغ ${amount}نمی باشیم. یه همین دلیل سیستم درخواست شما رد کرده است `,</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} واریز مردود شد"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>ما قادر به پردازش برداشت ${currency} شما در تاریخ ${date} و به مبلغ ${amount}.به همین دلیل درخواست برداشت شما توسط سیستم رد شده است و مبلغ برداشت به${api_name} کیف پول شما عودت داده خواهد شد.`,.</p><p>درصورت وجود هر گونه سوال بیشتر ، در پاسخ به این ایمیل آن را مطرح کنید.l</p><p>شماره پیگیری تراکنش : ${txid}<br />مبلغ: ${amount}<br />وضعیت: مردود شده</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} برداشت مردود شد"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>شما درخواست برداشت ${currency} و به مبلغ ${amount} به آدرس ${address}نموده اید.<br /><br />مبلغ: ${amount}<br />کارمزد: ${fee} ${currency}<br />آدرس: ${address}<br /><span id='network'>شبکه: ${network}</span><br /><br />برای تایید برداشت خود ،دکمه زیر فشار دهید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تایید</Button></a></div><p>اگر این درخواست را باشتباه صادر کرده اید می توانید براحتی آن را ملغی کنید بدون آنکه نگران تغییر در حساب کاربری خود باشید.</p><p>درخواست ارسالی از : ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} برداشت درخواست"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3تایید کاربر باید صورت پذیرد</h3><div>کاربر '${email}' مدارکش برای تایید حساب کاربری ارسال نموده ، لطفا آنها را بررسی نمایید.</div></div>",
+            "title": "تایید کاربر"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>واریز مشکوک</h3><div>کاربر با ایمیل کاربری ${email} واریز ${currency}  دریافت نموده که مشکوک به نظر می رسد.<br />شماره پیگیری تراکنش : ${txid}<h4>اطلاعات تراکنش:</h4><div>${data}</div></div></div>",
+            "title": "واریز مشکوک"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>برداشت ${currency} شما برای ${amount} به آدرسی نامعتبر ارسال شد و رد شد.</p><p>آدرس: ${address}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Invalid Withdrawal Address"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>حساب ${email} شما غیرفعال شده است. تا زمانی که اکانت خود توسط ادمین صرافی فعال نشود، نمی توانید از آن استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Account ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>حساب ${email} شما فعال شده است. اکنون می توانید از حساب کاربری خود استفاده کنید.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Account ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>نرخ تخفیف شما به ${rate}٪ تغییر کرده است. این نرخ برای هزینه های سفارش شما اعمال می شود.</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Discount Rate Change"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>یک حساب بانکی معلق تأیید شده است. حساب معتبر شما اکنون می تواند برای عملیات مبادله ای که نیاز به حساب بانکی دارد استفاده شود.</p><div><strong>حساب های بانکی تایید شده:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">برای مشاهده حساب های بانکی فعلی خود، لطفاً به برگه تأیید صرافی مراجعه کنید</a></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Bank Verified"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>کد ملی و هویتی شما مورد پردازش قرار گرفت و متاسفانه مورد تایید نمی باشد لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "کد ملی مورد تایید نیست"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>درخواست اضافه شدن بانک جدید ، مورد تایید قرار نگرفت لطفا برای جزییات بیشتر به پیام های ذیل مراجعه فرمایید:</p><p>:پیام ${message}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "شماره حساب بانکی مورد تایید نیست"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p>  کاربر عزیز${name} </p><p>این ایمیل تأیید می کند که شما اخیراً رمز عبور حساب خود را تغییر داده اید. هیچ اقدام دیگری لازم نیست.<br />اگر شما اجازه این تغییر را نداده اید، لطفاً فوراً با ما تماس بگیرید.<br /></p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Password Changed"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> کاربر عزیز${name}} </p><p>شما درخواست تغییر رمز عبور حساب کاربری خود را داده اید<br />برای تایید تغییر رمز عبور، روی لینک زیر کلیک کنید.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تغییر رمز عبور من را تأیید کنید</Button></a></div><p>اگر این درخواست به اشتباه انجام شده است، می توان آن را نادیده گرفت. هیچ تغییری در حساب شما ایجاد نخواهد شد.</p><p>درخواست از: ${ip}</p><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "Change Password Confirmation"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> کاربر عزیز${name} </p><p> شما یک واریز جدید به مبلغ ${amount} ${currency} دارید که در حال انتظار برای واریز به کیف پول ${api_name} می باشد. لطفا تا تایید تراکنش خود و مشاهده مبلغ در کیف پول خود تامل فرمایید. تراکنش شما حداقل به  ${confirmation} تایید بر روی شبکه بلاکچین نیاز دارد.` </p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} واریز pending"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> کاربر عزیز${name}} </p><p> واریز ${currency} شما به میزان ${amount} ${currency}  تکمیل و تایید شده و هم اکنون در کیف پول ${currency}  شما قابل استفاده است.</p><p>مبلغ: ${amount} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br />کارمزد: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} واریز completed"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> کاربر عزیز${name} </p><p>شما درخواست برداشت به مبلغ ${amount} ${currency}.و به آدرس ${address} ثبت کرده اید. درخواست برداشت شما درحال انتظار بوده و به زودی مورد پردازش قرار خواهد گرفت.</p><p>مبلغ: ${amount} ${currency}<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> با تشکر<br> ${api_name} تیم </p></div>",
+            "title": "${currency} برداشت request"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> کاربر عزیز${name} </p><p>درخواست برداشت شما به مبلغ ${amount} ${currency} درحال انجام و ارسال به آدرس ${address} می باشد.<br />کارمزد: ${fee} ${currency}<br />Status: ${status}<br />آدرس: ${address}<br />شماره پیگیری تراکنش: ${transaction_id}<br /><span id='network'>شبکه: ${network}</span><br /><ul>${explorers}</ul><p> Regards<br> ${api_name} team </p></div>",
+            "title": "${currency} برداشت completed"
+        }
+    }
+}

@@ -1,0 +1,100 @@
+{
+    "vi": {
+        "LOGIN": {
+            "html": "<div> <p> ${name} thân mến </p> <p> Chúng tôi ghi nhận lịch sử đăng nhập vào tài khoản của quý khách với chi tiết như sau </p> <div> <div>Thời gian: ${time}</div> <div>Quốc gia: ${country}</div> <div>Địa chỉ IP: ${ip}</div> </div> <p> Nếu đây không phải là quý khách, hãy thay đổi mật khẩu, cài đặt bảo mật Xác thực 2 yếu tố cho tài khoản và liên hệ với chúng tôi ngay lập tức. </p> <p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p> </div>",
+            "title": "Đăng nhập"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> ${name} thân mến </p> <p> Quý khách cần xác nhận địa chỉ email bằng cách nhấn vào nút bên dưới.<br> Nếu có bất kỳ thắc mắc nào, đừng ngần ngại liên hệ với chúng tôi bằng cách hồi đáp lại thư này.</p><p>Vui lòng nhấn vào nút bên dưới để hoàn tất thủ tục đăng ký.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Xác nhận</Button></a></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Đăng ký"
+        },
+        "WELCOME": {
+            "html": "<div><p> ${name} thân mến </p><p>Cảm ơn quý khách đã đăng ký thành viên tại ${api_name}.</p><p>Để giao dịch, trước tiên quý khách cần nạp tiền điện tử hoặc tiền mặt vào tài khoản.Vui lòng truy cập vào <a href=\"${link_account}\" target='_blank'>Tài khoản</a> và chuyển tới mục <a href=\"${link_deposit}\" target='_blank'>Nạp tiền</a>.,</p><p>Hãy hồi đáp lại thư này này nếu quý khách có bất kỳ câu hỏi hoặc mối bận tâm nào.</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Chào mừng quý khách"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> ${name} thân mến </p><p>Quý khách vừa thực hiện yêu cầu đặt lại mật khẩu cho tài khoản của mình.<br />Để cập nhật mật khẩu, vui lòng nhấn vào liên kết phía dưới.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Đặt lại mật khẩu</Button></a></div><p>Trong trường hợp không mong muốn thay đổi nêu trên, hãy bỏ qua tin nhắn này. Chúng tôi sẽ không thực hiện bất kỳ thay đổi nào trên tài khoản của quý khách.</p><p>Yêu cầu được gửi đến từ: ${ip}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Yêu cầu đặt lại mật khẩu"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> ${name} thân mến </p><p>Chúc mừng. Tài khoản của quý khách đã được xác thực thành công.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Giao dịch ngay bây giờ</Button></a></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Tài khoản đã được xác thực"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> ${name} thân mến </p><p>Chúc mừng. Tài khoản của quý khách đã được nâng cấp lên cấp bậc ${tier}. Quý khách sẽ nhận được nhiều ưu đãi như phí giao dịch rẻ hơn, hạn mức rút tiền cao hơn và các phần thưởng khác.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Giao dịch ngay bây giờ</Button></a></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Tài khoản đã được nâng cấp"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> ${name} thân mến </p><p>Chúng tôi không thể xác định và thực hiện yêu cầu nạp ${currency} với số lượng ${amount} được thực hiện vào ${date} của quý khách. Chính vì vậy, giao dịch đã bị từ chối bởi hệ thống của chúng tôi.</p><p>Hãy hồi đáp lại thư này nếu quý khách có thêm bất kỳ yêu cầu nào khác</p><p>ID giao dịch: ${txid}<br />Số lượng: ${amount}<br />Trạng thái: Bị từ chối</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Nạp tiền bị từ chối"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> ${name} thân mến </p><p>Chúng tôi không thể xác định và thực hiện yêu cầu rút ${currency} với số lượng ${amount} được thực hiện vào ${date} của quý khách. Chính vì vậy, giao dịch đã bị từ chối bởi hệ thống của chúng tôi và số tiền tương ứng đã được hoàn lại vào ví ${api_name} của quý khách.</p><p>Hãy hồi đáp lại thư này nếu quý khách có thêm bất kỳ yêu cầu nào khác</p><p>ID giao dịch: ${txid}<br />Số lượng: ${amount}<br />Trạng thái: Bị từ chối</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Rút tiền bị từ chối"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> ${name} thân mến </p><p>Quý khách vừa thực hiện yêu cầu rút ${currency} với số lượng ${amount} tới ${address}<br /><br />Số lượng: ${amount}<br />Phí: ${fee} ${currency}<br />Địa chỉ: ${address}<br /><span id='network'>Mạng: ${network}</span><br /><br />Để xác nhận yêu cầu rút tiền này, vui lòng nhấn vào nút bên dưới.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Xác nhận</Button></a></div><p>Trong trường hợp không mong muốn thay đổi nêu trên, hãy bỏ qua tin nhắn này. Chúng tôi sẽ không thực hiện bất kỳ thay đổi nào trên tài khoản của quý khách.</p><p>Yêu cầu được gửi đến từ: ${ip}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Yêu cầu ${currency} Rút tiền"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>Đã yêu cầu xác thực người dùng</h3><div>Khách hàng có địa chỉ email '${email}' đã tải lên hồ sơ để yêu cầu xác thực. Vui lòng xác thực hồ sơ của người dùng này.</div></div>",
+            "title": "Xác thực người dùng"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>Giao dịch nạp tiền đáng ngờ</h3><div>Khách hàng có địa chỉ email ${email} đã nhận được một giao dịch nạp ${currency} đáng ngờ.<br />ID giao dịch: ${txid}<h4>Dữ liệu giao dịch:</h4><div>${data}</div></div></div>",
+            "title": "Giao dịch nạp tiền đáng ngờ"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> ${name} thân mến </p><p>Yêu cầu rút ${currency} với số lượng ${amount} của quý khách đã được gửi tới một địa chỉ không hợp lệ và bị từ chối.</p><p>Địa chỉ: ${address}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Địa chỉ rút tiền không hợp lệ"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>Tài khoản ${email} của quý khách đã bị vô hiệu hóa. Quý khách sẽ không thể sử dụng tài khoản của mình cho đến khi nó được kích hoạt bởi người quản lý của sàn giao dịch.</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Tài khoản ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>Tài khoản ${email} của quý khách đã được kích hoạt. Giờ đây, quý khách đã có thể sử dụng tài khoản của mình.</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Tài khoản ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> ${name} thân mến </p><p>Tỷ lệ chiết khấu của bạn đã được thay đổi thành ${rate}%. Tỷ lệ này sẽ được áp dụng cho phí đặt hàng của bạn.</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Thay đổi tỷ lệ chiết khấu"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> ${name} thân mến </p><p>Một tài khoản ngân hàng đang chờ xử lý đã được xác minh. Tài khoản hợp lệ của bạn hiện có thể được sử dụng cho các hoạt động trao đổi yêu cầu tài khoản ngân hàng.</p><div><strong>Tài khoản ngân hàng đã xác minh::</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Để xem các tài khoản ngân hàng hiện tại của bạn, vui lòng truy cập vào Tab Xác minh của sàn giao dịch</a></p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Ngân hàng đã xác minh"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name} thân mến </p><p>Thủ tục xác thực ID của quý khách đã được tiếp nhận nhưng rất tiếc đã bị từ chối. Vui lòng tham khảo các hạng mục dưới đây để thực hiện các biện pháp tiếp theo:</p><p>Tin nhắn: ${message}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Thủ tục xác thực ID bị từ chối"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name} thân mến </p><p>Thủ tục đăng ký ngân hàng mới của quý khách đã được tiếp nhận nhưng rất tiếc đã bị từ chối. Vui lòng tham khảo các hạng mục dưới đây để thực hiện các biện pháp tiếp theo:</p><p>Tin nhắn: ${message}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Thủ tục đăng ký ngân hàng mới bị từ chối"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> ${name} thân mến </p><p>Email này xác nhận rằng gần đây bạn đã thay đổi mật khẩu cho tài khoản của mình. Không có thêm hành động được yêu cầu.<br />Nếu bạn không cho phép thay đổi này, vui lòng liên hệ với chúng tôi ngay lập tức.<br /></p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Mật khẩu đã được thay đổi"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> ${name} thân mến </p><p>Bạn đã yêu cầu thay đổi mật khẩu cho tài khoản của mình.<br />Để xác nhận mật khẩu của bạn đã thay đổi, hãy nhấp vào liên kết bên dưới.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Xác nhận thay đổi mật khẩu của tôi</Button></a></div><p>Nếu yêu cầu này được đưa ra do nhầm lẫn, bạn có thể yên tâm bỏ qua nó; không có thay đổi nào sẽ được thực hiện đối với tài khoản của bạn.</p><p>Yêu cầu bắt đầu từ: ${ip}</p><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "Thay đổi xác nhận mật khẩu"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> ${name} thân mến </p><p> Một giao dịch nạp ${amount} ${currency} vào địa chỉ ví ${api_name} của quý khách đang chờ được xử lý. Vui lòng chờ đợi cho đến khi giao dịch được xác nhận và tiền được nạp vào ví của quý khách. Yêu cầu giao dịch của quý khách cần nhận được ${confirmation} kết quả đồng thuận trên blockchain.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br />Phí: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Nạp tiền chưa giải quyết"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> ${name} thân mến </p><p> Giao dịch nạp ${currency} với số lượng ${amount} ${currency} đã được xác nhận và hoàn tất thành công. Số tiền đã được cập nhập vào ví ${currency} của quý khách.</p><p>Số lượng: ${amount} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br />Phí: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Nạp tiền hoàn thành"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> ${name} thân mến </p><p>Quý khách vừa thực hiện yêu cầu rút ${amount} ${currency} tới địa chỉ ${address}. Yêu cầu rút tiền của quý khách đang ở trạng thái chờ xử lý và sẽ sớm được thực hiện.</p><p>Số lượng: ${amount} ${currency}<br />Phí: ${fee} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br /><ul>${explorers}</ul<p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Rút tiền chưa giải quyết"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> ${name} thân mến </p><p>Yêu cầu rút ${amount} ${currency} của quý khách đã được thực hiện và số tiền tương ứng đã được chuyển thành công tới địa chỉ ${address}.</p><p>Số lượng: ${amount} ${currency}<br />Phí: ${fee} ${currency}<br />Trạng thái: ${status}<br />Địa chỉ: ${address}<br />ID giao dịch: ${transaction_id}<br /><span id='network'>Mạng: ${network}</span><br /><ul>${explorers}</ul><p> Cảm ơn quý khách vì đã sử dụng dịch vụ của chúng tôi. <br> Đội ngũ  ${api_name}  </p></div>",
+            "title": "${currency} Rút tiền hoàn thành"
+        }
+    }
+}
