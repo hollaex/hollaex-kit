@@ -11,6 +11,7 @@ import debounce from 'lodash.debounce';
 import { message } from 'antd';
 import _floor from 'lodash/floor';
 import _debounce from 'lodash/debounce';
+import moment from 'moment';
 
 import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
@@ -145,6 +146,7 @@ class QuickTradeContainer extends PureComponent {
 			buyPrice: 0,
 			sellPrice: 0,
 			token: '',
+			quoteSeconds: '',
 		};
 
 		this.goToPair(pair);
@@ -417,7 +419,11 @@ class QuickTradeContainer extends PureComponent {
 				} else {
 					this.setState({ sellPrice: res.price });
 				}
-				this.setState({ token: res.token });
+
+				let quoteSeconds = '';
+				if (!isNaN(moment(res.expiry).diff(moment(), 'seconds')))
+					quoteSeconds = moment(res.expiry).diff(moment(), 'seconds');
+				this.setState({ token: res.token, quoteSeconds });
 			}
 		} catch (error) {
 			console.log('error', error);
@@ -903,9 +909,10 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onChangeTargetAmount = (targetAmount) => {
-		const { existBroker } = this.state;
+		const { existBroker, pair, side } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
+			this.handleBrokerQuote(pair, side);
 		} else {
 			this.props.setPriceEssentials({
 				size: targetAmount,
@@ -916,9 +923,10 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onChangeSourceAmount = (sourceAmount) => {
-		const { existBroker } = this.state;
+		const { existBroker, pair, side } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
+			this.handleBrokerQuote(pair, side);
 		} else {
 			this.props.setPriceEssentials({
 				size: sourceAmount,
@@ -1007,7 +1015,9 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	handleRefresh = () => {
+		const { pair, side } = this.state;
 		this.setState({ isLoading: true });
+		this.handleBrokerQuote(pair, side);
 		setTimeout(() => {
 			this.setState({ isLoading: false }, this.handleSec(false));
 		}, 2000);
@@ -1082,6 +1092,7 @@ class QuickTradeContainer extends PureComponent {
 			isBrokerPaused,
 			isTimer,
 			isLoading,
+			quoteSeconds,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -1140,9 +1151,6 @@ class QuickTradeContainer extends PureComponent {
 				: sourceAmount;
 		const isExistBroker =
 			existBroker && Object.keys(existBroker).length ? true : false;
-
-		const quoteSeconds = broker.filter((item) => item.symbol === pair)[0]
-			?.quote_expiry_time;
 
 		return (
 			<div className="h-100">
@@ -1233,7 +1241,7 @@ class QuickTradeContainer extends PureComponent {
 											{isExistBroker ? (
 												<div
 													className={!isTimer ? 'loading-border' : ''}
-													style={{ animationDuration: `${quoteSeconds}s` }}
+													style={{ animationDuration: `${quoteSeconds + 1}s` }}
 												></div>
 											) : null}
 											<ReviewBlock
