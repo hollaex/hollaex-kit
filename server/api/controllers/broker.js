@@ -1,7 +1,7 @@
 'use strict';
 
 const { loggerBroker } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants')
+const { INIT_CHANNEL } = require('../../constants');
 const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -17,7 +17,7 @@ const getBrokerQuote = (req, res) => {
 
 	const {
 		symbol,
-		side,
+		side
 	} = req.swagger.params;
 
 	toolsLib.broker.fetchBrokerQuote({
@@ -37,7 +37,7 @@ const getBrokerQuote = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
@@ -118,7 +118,7 @@ const createBrokerPair = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 const testBroker = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
@@ -152,7 +152,7 @@ const testBroker = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const testRebalance = (req, res) => {
 	loggerBroker.verbose(
@@ -183,7 +183,7 @@ const testRebalance = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 function updateBrokerPair(req, res) {
 	loggerBroker.verbose(
@@ -274,7 +274,7 @@ function deleteBrokerPair(req, res) {
 	toolsLib.broker.deleteBrokerPair(req.swagger.params.data.value.id)
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
-			return res.json({ message: "Successfully deleted broker pair." });
+			return res.json({ message: 'Successfully deleted broker pair.' });
 		})
 		.catch((err) => {
 			loggerBroker.error(
@@ -307,7 +307,7 @@ function getBrokerPairs(req, res) {
 		'increment_size',
 		'type',
 		'quote_expiry_time',
-		'rebalancing_symbol',
+		'rebalancing_symbol'
 	];
 
 
@@ -356,7 +356,7 @@ const executeBrokerDeal = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 module.exports = {
 	getBrokerQuote,

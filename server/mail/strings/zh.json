@@ -1,0 +1,96 @@
+{
+    "zh": {
+        "LOGIN": {
+            "html": "<div> <p> ${name} </p> <p> 我们已经记录了你的账号的登录信息，具体如下 </p> <div> <div>时间: ${time}</div> <div>国家: ${country}</div> <div>IP 地址: ${ip}</div> </div> <p> 非本人的情况下，请更改你的密码，设置双重身份验证并立即联系我们。 </p> <p> 感谢你的使用<br> ${api_name} 团队 </p> </div>",
+            "title": "登录"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> ${name} </p> <p>需要通过点击下面的按钮确认你的邮箱地址。<br> 如果你有任何问题，请随时联系我们，只需回复此邮件即可。</p><p>请点击下方按钮，进行注册</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认</Button></a></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "注册会员"
+        },
+        "WELCOME": {
+            "html": "<div><p> ${name} </p><p>感谢你在 ${api_name} 进行注册.</p><p>若要进行交易，必须先将加密货币或资金存入你的账户。.前往 <a href=\"${link_account}\" target='_blank'>账号</a> 并访问 <a href=\"${link_deposit}\" target='_blank'>充值</a> 页面。.,</p><p>如果您有任何问题，请回复此邮件与我们进行联系。</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "注册会员"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> ${name} </p><p>你已申请重置密码<br />请点击下方链接，进行密码更新<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\"重置我的密码</Button></a></div><p>如果该请求是错误的，请忽略，并且你的账号不会有任何改变</p><p>提出申请的出处: ${ip}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "申请重置密码"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> ${name} </p><p>恭喜你，你的账号验证成功。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">进行交易</Button></a></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "账号认证完成"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> ${name} </p><p>恭喜你，你的账号级别已升级至${tier}，你将可以享受更低的费用、更高的提款限额和其他高级功能。</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">进行交易</Button></a></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "账号升级完成"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> ${name} </p><p>我们无法找到或处理你在${date}存入的${currency}存款${amount}，因此这笔交易已被系统拒绝。</p><p>如果你有任何疑问，请回复此邮件。</p><p>交易 ID: ${txid}<br />金额: ${amount}<br />状态:拒绝</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 充值 拒绝"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> ${name} </p><p>我们无法找到或处理你的${currency}在${date}提取的${amount}，因此系统拒绝了这一交易，你的待处理提款金额将被退回至${api_name}钱包中。</p><p>如果你有任何疑问，请回复此邮件。</p><p>交易 ID: ${txid}<br />金额: ${amount}<br />状态:拒绝</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 提款 拒绝"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> ${name} </p><p>你已提出${currency}提款申请，金额为${amount}至${address}。<br /><br />金额: ${amount}<br />手续费: ${fee} ${currency}<br />地址: ${address}<br /><span id='network'>网络: ${network}</span><br /><br />为完成此次提款申请，请点击下方按钮。<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">确认</Button></a></div><p>如果该请求是错误的，请忽略，并且你的账号不会有任何改变</p><p>提出申请的出处: ${ip}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 提款 申请"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>需要用戶驗證</h3><div> 用戶'${email}'上傳了他的文件以供驗證。 請核實他的文件。</div></div>",
+            "title": "用户验证"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>可疑存款</h3><div>電子郵件為 ${email} 的客戶收到了一筆可疑的 ${currency} 存款。<br />交易 ID: ${txid}<h4>交易數據：</h4><div>${data}</div></div></div>",
+            "title": "可疑存款"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> ${name} </p><p>您的 ${amount} 的 ${currency} 提款被發送到無效地址並被拒絕。</p><p>地址: ${address}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "取款地址無效"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>您的帳戶 ${email} 已停用。 在交易所管理員激活之前，您將無法使用您的帳戶。</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "帳戶 ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>您的帳戶 ${email} 已激活。 您現在可以使用您的帳戶了。</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "帳戶 ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> ${name} </p><p>您的折扣率已更改為 ${rate}%。 此費率將適用於您的訂單費用。</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "貼現率變化"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> ${name} </p><p>一個待處理的銀行賬戶已經過驗證。 您的有效賬戶現在可用於需要銀行賬戶的兌換操作。</p><div><strong>已驗證的銀行賬戶:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">要查看您當前的銀行賬戶，請訪問交易所的驗證選項卡</a></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "銀行認證"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name} </p><p>你的ID 认证已处理完毕，但是很遗憾被拒绝。关于进一步的操作，请阅读下方信息:</p><p>消息: ${message}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "ID 认证拒绝"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name} </p><p>你的新的银行信息申请已被处理，但是很遗憾被拒绝。关于进一步的操作，请阅读下方信息:</p><p>消息: ${message}</p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "新的银行信息申请被拒绝"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> ${name} </p><p>此電子郵件確認您最近更改了帳戶的密碼。 不需要採取進一步行動。<br />如果您未授權此更改，請立即與我們聯繫。<br /></p><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "密碼已更改"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> ${name} </p><p> 你的${api_name}钱包中有一笔${amount} ${currency}的新存款正在等待处理，待交易被确认后，资金才会进入到你的钱包中，该交易需要在区块链上进行${confirmation}确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br />手续费: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 存款待處理"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> ${name}  </p><p> 你的${amount} ${currency}存款已完成。你的${currency}可在钱包中进行确认。</p><p>金额: ${amount} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br />手续费: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 存款完成"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> ${name} </p><p>你向该地址${address}申请了${amount} ${currency}的提款请求，该提款地址正在等待处理并会很快得到处理。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br /><ul>${explorers}</ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 提款待處理"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> ${name} </p><p>你的${amount} ${currency}已向该地址${address}提款完毕。</p><p>金额: ${amount} ${currency}<br />手续费: ${fee} ${currency}<br />状态: ${status}<br />地址: ${address}<br />交易 ID: ${transaction_id}<br /><span id='network'>网络: ${network}</span><br /><ul>${explorers}</ul><p> 感谢你的使用<br> ${api_name} 团队 </p></div>",
+            "title": "${currency} 提款完成"
+        }
+    }
+}

@@ -95,15 +95,6 @@ const nestedIcons = {
 		ICON_10: '/assets/images/level-10.svg',
 	},
 
-	FEATURES: {
-		PRO_TRADING: '/assets/images/features-pro-trade-icons.svg',
-		PAYMENT: '/assets/images/features-payment-card-icons.svg',
-		SECURITY: '/assets/images/features-lock-icons.svg',
-		REPORTING: '/assets/images/features-data-icons.svg',
-		SUPPORT: '/assets/images/features-support-icons.svg',
-		LEGAL: '/assets/images/features-legal-icons.svg',
-	},
-
 	SOCIAL: {
 		FACEBOOK: '/assets/icons/facebook.png',
 		LINKEDIN: '/assets/icons/linkedin.png',
@@ -225,7 +216,6 @@ const nestedIcons = {
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
-	SIDEBAR_CHAT: '/assets/images/bottom-chat-icon.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
 
@@ -243,9 +233,7 @@ const nestedIcons = {
 	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
 	XHT_PDF: '/assets/images/XHT-pdf.svg',
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
-	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',

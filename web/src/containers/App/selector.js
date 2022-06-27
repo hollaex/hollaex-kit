@@ -23,6 +23,7 @@ export const menuItemsSelector = createSelector(
 					hide_from_appbar,
 					hide_from_sidebar,
 					hide_from_menulist,
+					hide_from_bottom_nav,
 					...rest
 				}) => {
 					const item = {
@@ -30,6 +31,7 @@ export const menuItemsSelector = createSelector(
 						hide_from_appbar: hide_from_appbar || !features[id],
 						hide_from_sidebar: hide_from_sidebar || !features[id],
 						hide_from_menulist: hide_from_menulist || !features[id],
+						hide_from_bottom_nav: hide_from_bottom_nav || !features[id],
 					};
 					return item;
 				}

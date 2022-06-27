@@ -1,34 +1,3 @@
-.sidebar-fit-to-screen {
-	height: 100vh !important;
-}
-
-.sidebar-container {
-	display: flex;
-	flex-direction: column;
-	height: 100%;
-	width: 100%;
-
-	.sidebar-row {
-		// padding: $sidebar-sections-padding;
-		border-top: 1px solid $colors-border;
-		flex: 0;
-	}
-
-	.sidebar-notifications {
-		flex: 1;
-		overflow-y: scroll;
-
-		.sidebar-title {
-			font-size: $font-size-subhead3;
-			font-weight: bold;
-		}
-	}
-}
-
-.sidebar-notifications-wrapper {
-	overflow-y: scroll;
-}
-
 $row--height: 3rem;
 $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 
@@ -41,27 +10,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 	.cell-wrapper {
 		padding-left: $sidebar-sections-padding;
 		padding-right: $sidebar-sections-padding;
-	}
-	.sidebar-row--right-icon {
-		@include size(1.5rem);
-		&.icon--help {
-			@include hover-icon($icon-hover, $icon-unhover);
-			circle {
-				fill: transparent;
-				stroke: transparent;
-			}
-		}
-		&.icon--logout {
-			@include hover-icon($icon-hover, $icon-unhover);
-		}
-		&.icon--chat {
-			@include hover-icon($icon-hover, $icon-unhover);
-		}
-
-		> div,
-		svg {
-			// @include size(1.5rem);
-		}
 	}
 }
 
@@ -184,14 +132,6 @@ $row--size: calc(#{$row--height} - #{$sidebar-sections-padding});
 }
 
 @media screen and (max-height: 600px) {
-	.sidebar-container {
-		.sidebar_hub-wrapper {
-			max-height: 35rem !important;
-		}
-		.sidebar-notifications {
-			min-height: 20rem;
-		}
-	}
 	.sidebar-bottom-icon {
 		svg {
 			stroke: none !important;

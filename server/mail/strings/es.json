@@ -1,0 +1,100 @@
+{
+    "es": {
+        "LOGIN": {
+            "html": "<div> <p> Estimado/ Estimada ${name} </p> <p> Hemos registrado un acceso a su cuenta con los siguientes detalles </p> <div> <div>Tiempo: ${time}</div> <div>País: ${country}</div> <div>Dirección IP: ${ip}</div> </div> <p> Si no ha sido usted, por favor cambie su contraseña, establezca una autenticación de dos factores y póngase en contacto con nosotros inmediatamente. </p> <p> Saludos<br>Equipo de  ${api_name}  </p> </div>",
+            "title": "Inicio de sesión"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> Estimado/ Estimada ${name} </p> <p> Tiene que confirmar su cuenta de correo electrónico haciendo clic en el botón de abajo.<br> Si tiene alguna pregunta, no dude en contactarnos simplemente respondiendo a este correo electrónico.</p><p>Por favor, haga clic en el botón de abajo para proceder a su registro.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmar</Button></a></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Registro"
+        },
+        "WELCOME": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Gracias por registrarse en ${api_name}.</p><p>Para poder comerciar, primero debe depositar criptomonedas en su cuenta.Por favor, vaya a su <a href=\"${link_account}\" target='_blank'>cuenta</a> y visite la página de <a href=\"${link_deposit}\" target='_blank'>depósito</a>.,</p><p>Si tiene alguna pregunta o preocupación, por favor contáctenos simplemente respondiendo a este correo electrónico.</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Bienvenido"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Ha solicitado que se restablezca la contraseña de su cuenta.<br />Para actualizar su contraseña, haga clic en el siguiente enlace.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Restablecer mi contraseña</Button></a></div><p>Si esta solicitud se hizo por error, es seguro ignorarla; no se harán cambios en su cuenta.</p><p>Solicitud iniciada de: ${ip}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Solicitud de restablecimiento de la contraseña."
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Felicidades. Su cuenta ha sido verificada con éxito.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Comercie ahora</Button></a></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Cuenta verificada"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Felicidades. El nivel de acceso a su cuenta ha sido actualizado a nivel ${tier}. Usted se beneficiará de tarifas más bajas, límites de retiro más altos y otras características premium.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Comercie ahora</Button></a></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Cuenta actualizada"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>No pudimos encontrar o procesar su ${currency} depósito hecho el ${date} de ${amount}. Por consiguiente, la transacción es rechazada por nuestro sistema.</p><p>Si tiene más preguntas, puede responder a este correo electrónico</p><p>ID de transacción: ${txid}<br />Cantidad: ${amount}<br />Estado: Rechazado</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Depósito rechazado"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>No pudimos encontrar o procesar su ${currency} retirada hecha el ${date} de ${amount}. Por consiguiente, la transacción es rechazada por nuestro sistema y el importe de la retirada pendiente se acredita de nuevo a su ${api_name} billetera.</p><p>Si tiene más preguntas, puede responder a este correo electrónico</p><p>ID de transacción: ${txid}<br />Cantidad: ${amount}<br />Estado: Rechazado</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Retirada rechazado"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>You have made a ${currency} withdrawal request of ${amount} to ${address}<br /><br />Cantidad: ${amount}<br />Fee: ${fee} ${currency}<br />Dirección: ${address}<br /><span id='network'>La red: ${network}</span><br /><br />In order to confirm this withdrawal, please click the button below.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm</Button></a></div><p>Si esta solicitud se hizo por error, es seguro ignorarla; no se harán cambios en su cuenta.</p><p>Solicitud iniciada de: ${ip}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Retirada Request"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>Se requiere la verificación del usuario</h3><div>Usuario '${email}' subió sus documentos para verificarlos. Por favor, verifique sus documentos.</div></div>",
+            "title": "Verificación de usuario"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>Depósito sospechoso</h3><div>El cliente con el correo electrónico ${email} ha recibido un depósito de ${currency} que es sospechoso.<br />ID de transacción: ${txid}<h4>Transaction data:</h4><div>${data}</div></div></div>",
+            "title": "Depósito sospechoso"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Su retiro de ${currency} por ${amount} fue enviada a una dirección inválida y fue rechazada.</p><p>Dirección: ${address}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Dirección de retiro no válida"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>Su cuenta ${email} ha sido desactivada. No podrá utilizar su cuenta hasta que sea activada por el administrador del intercambio.</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Cuenta ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>Su cuenta ${email} ha sido activada. Ahora puede usar su cuenta.</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Cuenta ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Dirección: ${address}Su tasa de descuento se ha cambiado al ${rate}%.  Este descuento se aplicará a las tarifas de sus transacciones.</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Descuento"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Se ha verificado una cuenta bancaria pendiente. Su cuenta válida ahora se puede utilizar para operaciones de cambio que requieren una cuenta bancaria.</p><div><strong>Cuentas bancarias verificadas:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Para ver sus cuentas bancarias actuales, visite el Pestaña de Verificación de Exchange</a></p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Banco verificado"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Su reciente verificación de identidad ha sido procesada y desafortunadamente es rechazada. Para más información, lea el mensaje de nuestro experto a continuación:</p><p>Mensaje: ${message}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "La verificación de identificación fue rechazada"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Su nuevo registro bancario se ha procesado y desafortunadamente ha sido rechazado. Para más información, lea el mensaje de nuestro experto a continuación:</p><p>Mensaje: ${message}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Solicitud de nuevo banco rechazada"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Este correo electrónico confirma que recientemente cambió la contraseña de su cuenta. No se requiere ninguna otra acción.<br />Si no autorizó este cambio por favor contáctenos inmediatamente.<br /></p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Contraseña cambiada"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Ha realizado una solicitud para cambiar la contraseña de su cuenta.<br />Para confirmar el cambio de contraseña, haga clic en el enlace a continuación.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmar cambio de contraseña</Button></a></div><p>Si esta solicitud se realizó por error, es seguro ignorarla; no se realizarán cambios en su cuenta.</p><p>Solicitud iniciada desde: ${ip}</p><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "Cambiar confirmación de contraseña"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> Estimado/ Estimada ${name} </p><p>Tiene un nuevo depósito por ${amount} ${currency} pendiente en su ${api_name} billetera. Por favor espere hasta que la transacción se confirme y sus fondos estarán disponibles en su billetera. Su transacción requiere ${confirmation} confirmación(es) en la cadena de bloqueo.</p><p>Cantidad: ${amount} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacción: ${transaction_id}<br /><span id='network'>La red: ${network}</span><br />Tarifa: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Depósito pending"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> Estimado/ Estimada ${name} </p><p> Su ${currency} depósito por ${amount} ${currency} está confirmado y completado y está disponible en su ${currency} billetera.</p><p>Cantidad: ${amount} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacción: ${transaction_id}<br /><span id='network'>La red: ${network}</span><br />Tarifa: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Depósito completed"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Usted hizo una solicitud de retiro de ${amount} ${currency}. El estado de su retirada está pendiente y se procesará en breve.</p><p>Cantidad: ${amount} ${currency}<br />Tarifa: ${fee} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacción: ${transaction_id}<br /><span id='network'>La red: ${network}</span><br /><ul>${explorers}</ul><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Retirada request"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> Estimado/ Estimada ${name} </p><p>Su solicitud de retirada de ${amount} ${currency} se está procesando.</p><p>Cantidad: ${amount} ${currency}<br />Tarifa: ${fee} ${currency}<br />Estado: ${status}<br />Dirección: ${address}<br />ID de transacciónID: ${transaction_id}<br /><span id='network'>La red: ${network}</span><br /><ul>${explorers}</ul><p> Saludos<br>Equipo de  ${api_name}  </p></div>",
+            "title": "${currency} Retirada completed"
+        }
+    }
+}
