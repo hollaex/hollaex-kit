@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import UserTrades from './UserTrades';
-import LogoutInfoTrade from './LogoutInfoTrade';
+import LogoutInfoOrder from './LogoutInfoOrder';
 import { isLoggedIn } from 'utils/token';
 import { ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
@@ -67,7 +67,7 @@ const RecentTradesWrapper = ({
 					/>
 				</Fragment>
 			) : (
-				<LogoutInfoTrade />
+				<LogoutInfoOrder />
 			)}
 		</TradeBlock>
 	);

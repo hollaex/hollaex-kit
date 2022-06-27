@@ -1,0 +1,100 @@
+{
+    "ar": {
+        "LOGIN": {
+            "html": "<div> <p> ${name}العزيز </p> <p> لقد سجلنا تسجيل دخولٍ إلى حسابك مع التفاصيل التالية </p> <div> <div>الوقت:  ${time} </div> <div>البلد:  ${country}</div> <div>عنوان IP: ${ip}</div> </div> <p> إذا لم يكن هذا أنت ، فيرجى تغيير كلمة المرور الخاصة بك وإعداد المصادقة ذات العاملين والاتصال بنا على الفور. </p> <p> تحية<br> فريق${api_name} </p> </div>",
+            "title": "تسجيل الدخول"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> ${name}العزيز </p> <p> تحتاج إلى تأكيد حساب البريد الإلكتروني الخاص بك عن طريق النقر على الزر أدناه.<br> إذا كانت لديك أي أسئلة ، فلا تتردد في الاتصال بنا ببساطة عن طريق الرد على هذا البريد الإلكتروني.</p><p>الرجاء الضغط على الزر أدناه لمتابعة التسجيل الخاص بك.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">أيِّد</Button></a></div><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "سجّل"
+        },
+        "WELCOME": {
+            "html": "<div><p> ${name}العزيز </p><p>شكرًا لك على الاشتراك في${api_name}.</p><p>لكي تقوم بالتداول ، يجب عليك أولاً إيداع عملة مشفرة أو تمويل الأموال في حسابك.من فضلك ، انتقل إلى <a href=\"${link_account}\" target='_blank'>الحساب</a> وقم بزيارة صفحة <a href=\"${link_deposit}\" target='_blank'>ايداع</a>.,</p><p>إذا كانت لديك أي أسئلة أو استفسارات ، فيرجى الاتصال بنا ببساطة عن طريق الرد على هذا البريد الإلكتروني.</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "أهلا بك"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> ${name}العزيز </p><p>لقد قدمت طلباً لإعادة تعيين كلمة المرور لحسابك.<br />لتحديث كلمة المرور الخاصة بك ، انقر على الرابط أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">إعادة تعيين كلمة المرور الخاصة بي</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات في حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "طلب إعادة تعيين كلمة المرور"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> ${name}العزيز </p><p>تهانينا. تم التحقق من حسابك بنجاح.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تداول الآن</Button></a></div><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم التحقق من الحساب"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> ${name}العزيز </p><p>تهانينا. تمت ترقية مستوى حسابك إلى مستوى${tier}. ستستفيد من رسوم أقل وحدود سحب أعلى وميزات مميزة أخرى.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تداول الآن</Button></a></div><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم ترقية الحساب"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> ${name}العزيز </p><p>لم نتمكن من العثور على أو معالجة إيداعك ${currency} الذي تم إجراؤه في ${date} بمبلغ {amount} دولار. وبالتالي ، يتم رفض المعاملة من قبل نظامنا.</p><p>إذا كان لديك أي استفسارات أخرى ، يمكنك الرد على هذا البريد الإلكتروني</p><p>معرّف المعاملة:${txid} <br />المبلغ: ${amount}<br />Status: Rejected</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} ايداع مرفوض"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> ${name}العزيز </p><p>لم نتمكن من العثور على الايداعك أو معالجة إيداعك ${currency} الذي تم إجراؤه في ${date} بمبلغ ${amount}. وبالتالي ، يتم رفض المعاملة من قبل نظامنا.</p><p>لم نتمكن من العثور على السحب الذي طلبته ${currency} أو معالجته في  ${date} بمبلغ  ${amount}.  وبالتالي تم رفض المعاملة من قبل نظامنا وإعادة مبلغ السحب المعلق إلى محفظتك ${api_name}.</p><p>معرّف المعاملة:${txid} <br />المبلغ: ${amount}<br />Status: Rejected</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} سحب مرفوض"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> ${name}العزيز </p><p>لقد قدّمت طلب سحب${currency} بمبلغ ${amount} الى ${address}<br /><br />المبلغ: ${amount}<br />الرسوم: ${fee} ${currency}<br />العنوان: ${address}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><br />لتأكيد هذا السحب ، انقر على الزر أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">أيٍّد</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات في حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} سحب  طلب"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>مطلوب التحقق من المستخدم</h3><div>قام المستخدم '${email}' بتحميل مستنداته للتحقق منها. يرجى التحقق من وثائقه.</div></div>",
+            "title": "التحقق من المستخدم"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>الوديعة مشكوك فيها</h3><div>تلقى العميل بالبريد الإلكتروني  ${email} تلقى العميل بالبريد الإلكتروني  ${currency} مشكوكاً.<br />معرّف المعاملة:${txid} <h4>Transaction data:</h4><div>${data}</div></div></div>",
+            "title": "الوديعة مشكوك فيها"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> ${name}العزيز </p><p>تم إرسال سحب ${currency} الخاص بك لـ ${amount} إلى عنوان غير صالح وتم رفضه.</p><p>العنوان: ${address}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "عنوان السحب غير صالح"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>تم إلغاء تنشيط حسابك ${email}. لن تتمكن من استخدام حسابك حتى يتم تنشيطه من قبل مسؤول التبادل.</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "حساب ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>تم تفعيل حسابك ${email}. أنت الآن قادر على استخدام حسابك.</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "حساب ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> ${name}العزيز </p><p>تم تغيير معدل الخصم الخاص بك إلى ${rate}٪. سيتم تطبيق هذا المعدل على رسوم طلبك.</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تغيير معدل الخصم"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> ${name}العزيز </p><p>تم التحقق من حساب مصرفي معلق. يمكن الآن استخدام حسابك الصالح لعمليات الصرف التي تتطلب حسابًا مصرفيًا.</p><div><strong>Verified Bank Accounts:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">لعرض حساباتك المصرفية الحالية ، يرجى زيارة علامة تبويب التحقق في البورصة</a></p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم التحقق من البنك"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name}العزيز </p><p>تتم معالجة عملية التحقق من هويتك الحديثة ورفضها للأسف. لمزيد من الإجراءات ، اقرأ الرسالة من خبيرنا أدناه:</p><p>رسالة: ${message}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم رفض التحقق من الهوية"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> ${name}العزيز </p><p>تتم معالجة تسجيلك المصرفي الجديد ورفضه للأسف. لمزيد من الإجراءات ، اقرأ الرسالة من خبيرنا أدناه</p><p>رسالة: ${message}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم رفض طلب البنك الجديد"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> ${name}العزيز </p><p>يؤكد هذا البريد الإلكتروني أنك قمت مؤخرًا بتغيير كلمة المرور لحسابك. مطلوب أي إجراء آخر.<br />إذا لم تأذن بهذا التغيير ، يرجى الاتصال بنا على الفور.<br /></p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تم تغيير كلمة السر"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> ${name}العزيز </p><p>لقد قدمت طلبًا لتغيير كلمة المرور الخاصة بحسابك.<br />لتأكيد تغيير كلمة المرور الخاصة بك ، انقر فوق الارتباط أدناه.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">تأكيد تغيير كلمة المرور الخاصة بي</Button></a></div><p>إذا تم تقديم هذا الطلب عن طريق الخطأ ، فمن الآمن تجاهله ؛ لن يتم إجراء أي تغييرات على حسابك.</p><p>تم بدء الطلب من: ${ip}</p><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "تغيير تأكيد كلمة المرور"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> ${name}العزيز </p><p> ${amount} لديك إيداع جديد بمبلغ ${currency} في قيد الانتظار في محفظتك ${api_name} .يرجى الانتظار حتى يتم تأكيد المعاملة وستتوفر أموالك في محفظتك. تتطلب معاملتك. ${confirmation} تأكيداً (تأكيداتٍ) على البلوك تشين.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} ايداع pending"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> ${name}العزيز </p><p> تم تأكيد وديعة ${currency} بمبلغ ${amount} ${currency} واكتملت وهي متوفرة في محفظتك ${currency}.</p><p>المبلغ: ${amount} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br />الرسوم: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} ايداع completed"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> ${name}العزيز </p><p>لقد قدمت طلب سحب بمبلغ ${amount} ${currency} إلى عنوان. ${address}. حالة السحب الخاصة بك في قيد الإنتظار وستتم معالجتها قريبًا.</p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><ul>${explorers}</ul><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} سحب request"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> ${name}العزيز </p><p>تمت معالجة طلب سحبك بمبلغ ${amount} ${currency} و نقله إلى عنوان.${address}. </p><p>المبلغ: ${amount} ${currency}<br />الرسوم: ${fee} ${currency}<br />الحالة: ${status}<br />العنوان: ${address}<br />معرّف المعاملة: ${transaction_id}<br /><span id='network'>شبكة الاتصال: ${network}</span><br /><ul>${explorers}</ul><p> تحية<br> فريق${api_name} </p></div>",
+            "title": "${currency} سحب completed"
+        }
+    }
+}
