@@ -629,20 +629,39 @@ class Assets extends Component {
 	};
 
 	renderPreview = () => {
-		const { constants } = this.props;
-		if (this.state.isConfigure) {
+		const {
+			constants: {
+				info: { user_id },
+			},
+		} = this.props;
+
+		const {
+			selectedAsset,
+			isConfigure,
+			isPreview,
+			exchangeUsers,
+			userEmails,
+			submitting,
+			saveLoading,
+		} = this.state;
+
+		const { owner_id, created_by, verified } = selectedAsset;
+		const showMintAndBurnButtons = verified && owner_id === user_id;
+		const showConfigureButton = created_by === user_id;
+
+		if (isConfigure) {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
 						{this.renderBreadcrumb()}
 						<FinalPreview
 							isConfigure
-							coinFormData={this.state.selectedAsset}
-							user_id={_get(constants, 'info.user_id')}
+							coinFormData={selectedAsset}
+							user_id={user_id}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleDelete={this.handleDelete}
-							submitting={this.state.submitting}
+							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
@@ -651,33 +670,32 @@ class Assets extends Component {
 							type="primary"
 							className="configure-btn green-btn"
 							onClick={this.applyConfirmation}
-							loading={this.state.saveLoading}
+							loading={saveLoading}
 						>
 							Save
 						</Button>
 					</div>
 				</div>
 			);
-		} else if (this.state.isPreview) {
+		} else if (isPreview) {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
 						{this.renderBreadcrumb()}
 						<FinalPreview
 							isPreview
-							coinFormData={this.state.selectedAsset}
-							user_id={_get(constants, 'info.user_id')}
+							coinFormData={selectedAsset}
+							user_id={user_id}
 							handleEdit={this.handleEdit}
 							handleDelete={this.handleDelete}
 							setConfigEdit={this.handleConfigureEdit}
-							exchangeUsers={this.state.exchangeUsers}
-							userEmails={this.state.userEmails}
-							submitting={this.state.submitting}
+							exchangeUsers={exchangeUsers}
+							userEmails={userEmails}
+							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
-					{this.state.selectedAsset.created_by ===
-					_get(constants, 'info.user_id') ? (
+					{showConfigureButton && (
 						<div>
 							<div className="d-flex">
 								<Button
@@ -687,8 +705,8 @@ class Assets extends Component {
 								>
 									Configure
 								</Button>
-								<div className="separator"></div>
-								{this.state.selectedAsset.verified ? (
+								<div className="separator" />
+								{showMintAndBurnButtons && (
 									<Fragment>
 										<Button
 											className="green-btn"
@@ -697,7 +715,7 @@ class Assets extends Component {
 										>
 											Mint
 										</Button>
-										<div className="separator"></div>
+										<div className="separator" />
 										<Button
 											className="green-btn"
 											type="primary"
@@ -706,10 +724,10 @@ class Assets extends Component {
 											Burn
 										</Button>
 									</Fragment>
-								) : null}
+								)}
 							</div>
 						</div>
-					) : null}
+					)}
 				</div>
 			);
 		}
