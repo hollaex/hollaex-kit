@@ -38,9 +38,7 @@ const Final = ({
 	};
 
 	const renderNetworkFee = ([key, data]) => {
-		const {
-			symbol: { assetSymbol },
-		} = coinFormData;
+		const { symbol: assetSymbol } = coinFormData;
 		const { symbol, type } = data;
 		const network = `${key.toUpperCase()} (${getNetworkLabelByKey(key)})`;
 		const symbolBasedFields = getSymbolBasedFields(type);
@@ -61,7 +59,7 @@ const Final = ({
 									<div>
 										<b className="caps-first">{key}</b>:
 									</div>
-									<div>
+									<div className="pl-1">
 										{Object.entries(value).map(([level, fee]) => {
 											const feeText = `${fee} ${hasUnit ? unit : '%'}`;
 											return <div>{`Tier ${level} @ ${feeText}`}</div>;
