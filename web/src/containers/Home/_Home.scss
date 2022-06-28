@@ -294,6 +294,10 @@ $trade-tab--arrow-size: 0.4rem;
 	// margin-top: 5rem;
 	// max-width: $content-display-width;
 
+	.alice-carousel__stage-item {
+		border-right: 1px $colors-border solid;
+	}
+
 	.currency-ball-image-wrapper {
 		height: 2.2rem;
 		padding-right: 10px;
@@ -407,10 +411,6 @@ $trade-tab--arrow-size: 0.4rem;
 	margin-bottom: 4rem;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
-}
-
-.alice-carousel__stage-item {
-	border-right: 1px $colors-border solid;
 }
 
 @media (max-width: $bp-sm) {
