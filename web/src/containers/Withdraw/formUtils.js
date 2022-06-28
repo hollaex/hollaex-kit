@@ -14,7 +14,7 @@ import { getLanguage } from '../../utils/string';
 import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 import { email } from 'components/AdminForm/validations';
 
 export const generateInitialValues = (
@@ -130,7 +130,7 @@ export const generateFormValues = (
 	if (networks && !isEmail) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
 		fields.network = {
 			type: 'select',
