@@ -33,6 +33,7 @@ import { Loader, Tooltip } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
+import { SIDES, TYPES } from 'config/options';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
@@ -467,7 +468,7 @@ class OrderEntry extends Component {
 			type: {
 				name: 'type',
 				type: 'tab',
-				options: STRINGS['TYPES'],
+				options: TYPES,
 				validate: [required],
 				onChange: (marketType) =>
 					this.handleOrderBookChange('entry_type', marketType),
@@ -475,7 +476,7 @@ class OrderEntry extends Component {
 			side: {
 				name: 'side',
 				type: 'select',
-				options: STRINGS['SIDES'],
+				options: SIDES,
 				validate: [required],
 				onChange: (selectedSide) =>
 					this.handleOrderBookChange('entry_side', selectedSide),

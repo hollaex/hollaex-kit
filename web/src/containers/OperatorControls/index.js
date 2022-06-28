@@ -334,7 +334,7 @@ class OperatorControls extends Component {
 	};
 
 	countPlaceholders = (string = '') => {
-		const matches = string.match(/{(.*?)}/);
+		const matches = string.match(/[^{}]+(?=})/g);
 		return matches ? matches.length : 0;
 	};
 
