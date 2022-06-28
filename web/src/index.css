@@ -1349,6 +1349,9 @@ table th {
     .home_container .buttons-section--button.contrast {
       background-color: var(--labels_important-active-labels-text-graphics); }
 
+.home-page_content .alice-carousel__stage-item {
+  border-right: 1px var(--calculated_secondary-border) solid; }
+
 .home-page_content .currency-ball-image-wrapper {
   height: 2.2rem;
   padding-right: 10px; }
@@ -1436,9 +1439,6 @@ table th {
   margin-bottom: 4rem;
   padding-top: 2rem;
   padding-bottom: 2rem; }
-
-.alice-carousel__stage-item {
-  border-right: 1px var(--calculated_secondary-border) solid; }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
