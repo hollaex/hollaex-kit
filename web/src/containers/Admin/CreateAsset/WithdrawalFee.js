@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Select, InputNumber, Form, Input } from 'antd';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 const WITHDRAWAL_FEE_TYPES = ['static', 'percentage'];
 
@@ -108,7 +109,7 @@ const WithdrawalFee = ({
 						return (
 							<div key={key}>
 								<div className="field-wrap">
-									<div className="sub-title">{data.toUpperCase()}</div>
+									<div className="sub-title">{getNetworkLabelByKey(data)}</div>
 								</div>
 								<div className="field-wrap last">
 									<div className="sub-title">Type</div>

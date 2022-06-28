@@ -6,6 +6,7 @@ import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getNetworkLabelByKey } from 'utils/wallet';
+import { formatPercentage } from 'utils/currency';
 
 const Final = ({
 	isPreview = false,
@@ -40,7 +41,7 @@ const Final = ({
 	const renderNetworkFee = ([key, data]) => {
 		const { symbol: assetSymbol } = coinFormData;
 		const { symbol, type } = data;
-		const network = `${key.toUpperCase()} (${getNetworkLabelByKey(key)})`;
+		const network = getNetworkLabelByKey(key);
 		const symbolBasedFields = getSymbolBasedFields(type);
 		const unit = type === 'percentage' ? assetSymbol : symbol;
 
@@ -61,7 +62,9 @@ const Final = ({
 									</div>
 									<div className="pl-1">
 										{Object.entries(value).map(([level, fee]) => {
-											const feeText = `${fee} ${hasUnit ? unit : '%'}`;
+											const feeText = hasUnit
+												? `${fee} ${unit}`
+												: formatPercentage(fee);
 											return <div>{`Tier ${level} @ ${feeText}`}</div>;
 										})}
 									</div>
