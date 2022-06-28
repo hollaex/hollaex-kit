@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import _get from 'lodash/get';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
+import { getNetworkLabelByKey } from 'utils/wallet';
 
 const Final = ({
 	isPreview = false,
@@ -25,38 +25,67 @@ const Final = ({
 	coins,
 	selectedCoinSymbol,
 }) => {
-	const { meta = {}, type } = coinFormData;
+	const { meta = {}, type, withdrawal_fees } = coinFormData;
 
-	const renderFees = () => {
-		if (coinFormData && coinFormData.withdrawal_fees) {
-			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
-				const key = coinFormData.withdrawal_fees[data];
-				let label;
-				if (data === 'eth') {
-					label = 'ERC20';
-				} else if (data === 'bnb') {
-					label = 'BEP20';
-				} else if (data === 'trx') {
-					label = 'TRC20';
-				} else if (data === 'klay') {
-					label = 'Klaytn';
-				} else if (data === 'xlm') {
-					label = 'Stellar';
-				} else if (data === 'sol') {
-					label = 'Solana';
-				} else if (data === 'matic') {
-					label = 'Polygon';
-				} else {
-					label = data.toUpperCase();
-				}
-				return (
-					<div key={index}>
-						<b>{label}</b>: {_get(key, 'value', '')}{' '}
-						{_get(key, 'symbol', '').toUpperCase()}
-					</div>
-				);
-			});
+	const getSymbolBasedFields = (type) => {
+		switch (type) {
+			case 'percentage':
+				return ['min', 'max'];
+			case 'static':
+			default:
+				return ['value', 'levels'];
 		}
+	};
+
+	const renderNetworkFee = ([key, data]) => {
+		const {
+			symbol: { assetSymbol },
+		} = coinFormData;
+		const { symbol, type } = data;
+		const network = `${key.toUpperCase()} (${getNetworkLabelByKey(key)})`;
+		const symbolBasedFields = getSymbolBasedFields(type);
+		const unit = type === 'percentage' ? assetSymbol : symbol;
+
+		return (
+			<div key={key} className="pb-3">
+				<div>
+					<b className="caps-first">network</b>: {network}
+				</div>
+				<Fragment>
+					{Object.entries(data).map(([key, value]) => {
+						const hasUnit = symbolBasedFields.includes(key);
+
+						if (key === 'levels') {
+							return (
+								<div className="d-flex align-start">
+									<div>
+										<b className="caps-first">{key}</b>:
+									</div>
+									<div>
+										{Object.entries(value).map(([level, fee]) => {
+											const feeText = `${fee} ${hasUnit ? unit : '%'}`;
+											return <div>{`Tier ${level} @ ${feeText}`}</div>;
+										})}
+									</div>
+								</div>
+							);
+						} else {
+							const valueText = hasUnit ? `${value} ${unit}` : value;
+
+							return (
+								<div>
+									<b className="caps-first">{key}</b>: {valueText}
+								</div>
+							);
+						}
+					})}
+				</Fragment>
+			</div>
+		);
+	};
+
+	const renderFees = (fees) => {
+		return Object.entries(fees).map(renderNetworkFee);
 	};
 
 	const handleMoveBack = () => {
@@ -71,6 +100,8 @@ const Final = ({
 			handleScreenChange('edit_withdrawal_fees');
 		}
 	};
+
+	const isOwner = coinFormData.owner_id === user_id;
 
 	return (
 		<Fragment>
@@ -327,35 +358,37 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{coinFormData.withdrawal_fees ? (
+				{withdrawal_fees ? (
 					<div>
-						<div>{renderFees()}</div>
-						{isConfigure ? (
+						<div>{renderFees(withdrawal_fees)}</div>
+						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
 									className="green-btn"
 									type="primary"
 									onClick={handleWithdrawalEdit}
+									disabled={!isOwner}
 								>
 									Edit
 								</Button>
 							</div>
-						) : null}
+						)}
 					</div>
 				) : (
 					<div>
 						<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-						{isConfigure ? (
+						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
 									className="green-btn"
 									type="primary"
 									onClick={handleWithdrawalEdit}
+									disabled={!isOwner}
 								>
 									Edit
 								</Button>
 							</div>
-						) : null}
+						)}
 					</div>
 				)}
 			</div>
