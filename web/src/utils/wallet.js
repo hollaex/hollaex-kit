@@ -21,7 +21,7 @@ export const getWallet = (currnecy, network, wallets, networks) => {
 	);
 };
 
-export const getNetworkLabelByKey = (network) => {
+export const getNetworkNameByKey = (network) => {
 	if (network) {
 		switch (network) {
 			case 'eth':
@@ -44,4 +44,8 @@ export const getNetworkLabelByKey = (network) => {
 	} else {
 		return network;
 	}
+};
+
+export const getNetworkLabelByKey = (network) => {
+	return `${network.toUpperCase()} (${getNetworkNameByKey(network)})`;
 };
