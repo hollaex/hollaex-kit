@@ -22,7 +22,7 @@ const Currency = ({ currency, balance, balanceValue, balanceText, coins }) => {
 					parseFloat(balanceText || 0) > 0 && (
 						<span className="d-flex align-items-end balance-small pb-4">
 							{BASE_CURRENCY &&
-								`${baseCurrency.display_name}	${formatToCurrency(
+								`${display_name}	${formatToCurrency(
 									balanceText,
 									baseCurrency.min
 								)}`}

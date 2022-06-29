@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { Table, Button, message, Spin } from 'antd';
+import { Table, Button, message, Spin, Tooltip } from 'antd';
 import { MinusCircleFilled } from '@ant-design/icons';
 import _debounce from 'lodash/debounce';
+import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
 import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
@@ -15,12 +16,21 @@ import Otcdeskpopup from './Otcdeskpopup';
 import { requestUsers } from '../ListUsers/actions';
 import { getTickers, setBroker } from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
+import { requestUserData } from '../User/actions';
 
 const defaultPreviewValues = {
 	min_size: 0.0001,
 	max_size: 0.001,
 	increment_size: 0.0001,
 };
+
+const renderUser = (id) => (
+	<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+		<Button type="primary" className="green-btn">
+			<Link to={`/admin/user?id=${id}`}>{id}</Link>
+		</Button>
+	</Tooltip>
+);
 
 const OtcDeskContainer = ({
 	coins,
@@ -59,6 +69,8 @@ const OtcDeskContainer = ({
 	const [selectedCoinType, setSelectedCoinType] = useState('manual');
 	const [priceLoading, setPriceLoading] = useState(false);
 	const [priceActive, setPriceActive] = useState(false);
+	const [inventoryBalanceData, setBalanceData] = useState({});
+	const [isShowBalance, setIsShowBalance] = useState(false);
 
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
@@ -261,6 +273,20 @@ const OtcDeskContainer = ({
 		}
 	};
 
+	const getUserBalance = async (id, isShowBalance) => {
+		try {
+			const res = await requestUserData({ id });
+			if (res && res.data) {
+				setBalanceData(res.data[0]?.balance);
+				setIsShowBalance(isShowBalance);
+			}
+		} catch (err) {
+			let errMsg =
+				err.data && err.data.message ? err.data.message : err.message;
+			message.error(errMsg);
+		}
+	};
+
 	const updateBrokerData = async (params) => {
 		const body = {
 			...params,
@@ -358,11 +384,13 @@ const OtcDeskContainer = ({
 	};
 
 	const COLUMNS = (
-		balanceData,
 		sortedSearchResults,
 		handlePrice,
 		priceLoading,
-		priceActive
+		priceActive,
+		getUserBalance,
+		inventoryBalanceData,
+		isShowBalance
 	) => [
 		{
 			title: 'Deal desk',
@@ -493,17 +521,34 @@ const OtcDeskContainer = ({
 		{
 			title: 'Inventory remaining',
 			key: 'inventoryRemaining',
-			render: ({ symbol }) => {
+			render: ({ user_id, symbol }) => {
 				return (
-					<div>
-						<div>
-							{symbol.split('-')[0].toUpperCase()}:{' '}
-							{balanceData[`${symbol && symbol.split('-')[0]}_available`] || 0}
-						</div>
-						<div>
-							{symbol.split('-')[1].toUpperCase()}:{' '}
-							{balanceData[`${symbol && symbol.split('-')[1]}_available`] || 0}
-						</div>
+					<div className="d-flex align-items-center">
+						<div className="mr-2">User ID: </div>
+						<div className="mr-3">{renderUser(user_id)}</div>{' '}
+						{isShowBalance ? (
+							<div>
+								<div>
+									{symbol.split('-')[0].toUpperCase()}:{' '}
+									{inventoryBalanceData[
+										`${symbol && symbol.split('-')[0]}_available`
+									] || 0}
+								</div>
+								<div>
+									{symbol.split('-')[1].toUpperCase()}:{' '}
+									{inventoryBalanceData[
+										`${symbol && symbol.split('-')[1]}_available`
+									] || 0}
+								</div>
+							</div>
+						) : (
+							<div
+								className="text-underline"
+								onClick={() => getUserBalance(user_id, true)}
+							>
+								(display balance)
+							</div>
+						)}
 					</div>
 				);
 			},
@@ -820,11 +865,13 @@ const OtcDeskContainer = ({
 				<Table
 					locale={locale}
 					columns={COLUMNS(
-						balanceData,
 						sortedSearchResults,
 						handlePrice,
 						priceLoading,
-						priceActive
+						priceActive,
+						getUserBalance,
+						inventoryBalanceData,
+						isShowBalance
 					)}
 					rowKey={(data, index) => index}
 					dataSource={brokerData}
