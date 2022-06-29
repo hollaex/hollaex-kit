@@ -10,7 +10,7 @@ import {
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 import STRINGS from 'config/localizedStrings';
 
@@ -45,10 +45,14 @@ const ReviewModalContent = ({
 	const { min, fullname, display_name } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+	const fee_coin = data.fee_coin ? data.fee_coin : '';
+	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
 
-	const totalTransaction = math.number(
-		math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
-	);
+	const totalTransaction = hasDifferentFeeCoin
+		? math.number(math.fraction(data.amount))
+		: math.number(
+				math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
+		  );
 
 	const cryptoAmountText = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
@@ -58,10 +62,8 @@ const ReviewModalContent = ({
 
 	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
 	const fee = data.fee ? data.fee : 0;
-	const fee_coin = data.fee_coin ? data.fee_coin : '';
 	const { display_name: fee_coin_display } =
 		coins[fee_coin] || DEFAULT_COIN_DATA;
-	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
 
 	const withdrawFeeMessage = hasDifferentFeeCoin
 		? STRINGS.formatString(
@@ -115,7 +117,7 @@ const ReviewModalContent = ({
 						{STRINGS.formatString(
 							STRINGS['WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE'],
 							fullname,
-							getNetworkLabelByKey(data.network)
+							getNetworkNameByKey(data.network)
 						)}
 					</div>
 				)}

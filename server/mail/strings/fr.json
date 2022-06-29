@@ -1,0 +1,100 @@
+{
+    "fr": {
+        "LOGIN": {
+            "html": "<div> <p> Bonjour ${name} </p> <p> Nous avons enregistré une connexion à votre compte avec les détails suivants </p> <div> <div>Heure: ${time}</div> <div>Pays ${country}</div> <div>Adresse IP: ${ip}</div> </div> <p> Si ce n'était pas vous, veuillez changer votre mot de passe, définissez authentification à deux facteurs, et contactez-nous immédiatement. </p> <p> Bien cordialement<br> ${api_name} team </p> </div>",
+            "title": "Login"
+        },
+        "SIGNUP": {
+            "html": "<div> <p> Bonjour ${name} </p> <p> Vous devez confirmer votre email en cliquant sur le bouton ci-dessous.<br> Si vous avez des questions, n'hésitez pas à nous contacter simplement en répondant à cet email.</p><p>Veuillez cliquer sur le bouton ci-dessous pour procéder à votre inscription.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmer</Button></a></div><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "S'inscrire"
+        },
+        "WELCOME": {
+            "html": "<div><p> Bonjour ${name} </p><p>Merci pour votre inscription à ${api_name}.</p><p>Pour faire du trading, vous devez d'abord déposer de la crypto-monnaie ou verser de l'argent sur votre compte.Veuillez aller à votre <a href=\"${link_account}\" target='_blank'>compte</a> et visitez la page <a href=\"${link_deposit}\" target='_blank'>dépôt</a>.,</p><p>Si vous avez des questions ou des préoccupations, veuillez nous contacter simplement en répondant à cet email.</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Bienvenue"
+        },
+        "RESET_PASSWORD": {
+            "html": "<div><p> Bonjour ${name} </p><p>Vous avez fait une demande de réinitialisation du mot de passe de votre compte.<br />Pour mettre à jour votre mot de passe, cliquez sur le lien ci-dessous.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Réinitialiser mon mot de passe</Button></a></div><p>Si cette demande a été faite par erreur, il est prudent de l'ignorer; aucune modification ne sera apportée à votre compte.</p><p>Demande initiée depuis: ${ip}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Réinitialiser la demande de mot de passe"
+        },
+        "ACCOUNT_VERIFY": {
+            "html": "<div><p> Bonjour ${name} </p><p>Félicitations. Votre compte a été vérifié correctement.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Commencer le trading maintenant.</Button></a></div><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Compte vérifié"
+        },
+        "ACCOUNT_UPGRADE": {
+            "html": "<div><p> Bonjour ${name} </p><p>Félicitations. Le niveau d'accès de votre compte a été mis à jour au niveau ${tier}. Vous bénéficierez de frais moins élevés, de limites de retrait plus élevées et d'autres fonctionnalités premium.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Commencer le trading maintenant.</Button></a></div><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "ompte mis à jour"
+        },
+        "DEPOSIT_CANCEL": {
+            "html": "<div><p> Bonjour ${name} </p><p>Nous n'avons pas pu trouver ni traiter votre dépôt ${currency} effectué le ${date} de ${amount}. Ainsi, la transaction a été rejetée par notre système.</p><p>Si vous avez d'autres questions, vous pouvez répondre à cet email</p><p>Identité de la transaction: ${txid}<br />Montant: ${amount}<br />Status: Rejeté</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} Dépôt rejeté"
+        },
+        "WITHDRAWAL_CANCEL": {
+            "html": "<div><p> Bonjour ${name} </p><p>Nous n'avons pas pu trouver ni traiter votre retrait ${currency} fait le ${date} de ${amount}. Ainsi, la transaction a été rejetée par notre système et le montant de votre retrait en attente sera crédité sur votre portefeuille ${api_name}.</p><p>Si vous avez d'autres questions, vous pouvez répondre à cet email</p><p>Identité de la transaction: ${txid}<br />Montant: ${amount}<br />Status: Rejeté</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} Retrait rejeté"
+        },
+        "WITHDRAWAL_REQUEST": {
+            "html": "<div><p> Bonjour ${name} </p><p>Vous avez fait une demande de retrait ${currency} d'un montant de ${amount} à l'adresse suivante  ${address}<br /><br />Montant: ${amount}<br />Frais: ${fee} ${currency}<br />Addresse: ${address}<br /><span id='network'>Réseau: ${network}</span><br /><br />Pour confirmer le retrait, veuillez cliquer dur le bouton ci-dessous.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmer</Button></a></div><p>Si cette demande a été faite par erreur, il est prudent de l'ignorer; aucune modification ne sera apportée à votre compte.</p><p>Demande initiée depuis: ${ip}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} Retrait Demande"
+        },
+        "USER_VERIFICATION": {
+            "html": "<div><h3>Vérification de l'utilisateur</h3><div>Utilisateur \"${email}\" a téléchargé ses documents pour vérification. Veuillez vérifier ses documents.</div></div>",
+            "title": "Vérification de l'utilisateur"
+        },
+        "SUSPICIOUS_DEPOSIT": {
+            "html": "<div><h3>Dépôt suspect</h3><div>TLe client avec l'email ${email} a reçu un retrait de ${currency} ce qui est suspect.<br />Identité de la transaction: ${txid}<h4>Données de la transaction:</h4><div>${data}</div></div></div>",
+            "title": "Dépôt suspect"
+        },
+        "INVALID_ADDRESS": {
+            "html": "<div><p> Bonjour ${name} </p><p>Votre retrait ${currency} de ${amount} a été envoyé à une adresse invalide et est rejeté.</p><p>Addresse: ${address}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Adresse de retrait invalide"
+        },
+        "USER_DEACTIVATED": {
+            "html": "<div><p>Votre compte ${email} a été désactivé. Vous ne pourrez pas utiliser votre compte tant qu'il ne sera pas activé par l'administrateur de l'échange.</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Compte ${type}"
+        },
+        "USER_ACTIVATED": {
+            "html": "<div><p>Votre compte ${email} a été activé. Vous pouvez désormais utiliser votre compte.</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Compte ${type}"
+        },
+        "DISCOUNT_UPDATE": {
+            "html": "<div><p> Bonjour ${name} </p><p>Votre taux de remise a été changé à ${rate}%. Ce taux sera appliqué aux frais de votre commande.</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Modification du taux d'actualisation"
+        },
+        "BANK_VERIFIED": {
+            "html": "<div><p> Bonjour ${name} </p><p>Un compte bancaire en attente a été vérifié. Votre compte valide peut maintenant être utilisé pour les opérations de change nécessitant un compte bancaire.</p><div><strong>Comptes bancaires vérifiés:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Pour afficher vos comptes bancaires actuels, veuillez visiter la vérification de l'échange Tab</a></p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Vérifié par la banque"
+        },
+        "USER_ID_VERIFICATION_REJECT": {
+            "html": "<div><p> Bonjour ${name} </p><p>Votre récente vérification d'identité a été traitée et est malheureusement rejetée. Pour d'autres actions, lisez le message de notre expert ci-dessous:</p><p>Message: ${message}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Vérification d'identité refusée"
+        },
+        "USER_BANK_VERIFICATION_REJECT": {
+            "html": "<div><p> Bonjour ${name} </p><p>Votre nouvelle inscription bancaire a été traitée et est malheureusement rejetée. Pour d'autres actions, lisez le message de notre expert ci-dessous:</p><p>Message: ${message}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Nouvelle demande bancaire rejetée"
+        },
+        "PASSWORD_CHANGED": {
+            "html": "<div><p> Bonjour ${name} </p><p>Cet e-mail confirme que vous avez récemment modifié le mot de passe de votre compte. Aucune autre action est nécessaire.<br />Si vous n'avez pas autorisé ce changement, veuillez nous contacter immédiatement.<br /></p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Mot de passe changé"
+        },
+        "CHANGE_PASSWORD": {
+            "html": "<div><p> Bonjour ${name} </p><p>Vous avez fait une demande de modification du mot de passe de votre compte.<br />Pour confirmer la modification de votre mot de passe, cliquez sur le lien ci-dessous.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target='_blank'><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirmer le changement de mon mot de passe</Button></a></div><p>Si cette demande a été faite par erreur, vous pouvez l'ignorer; aucune modification ne sera apportée à votre compte.</p><p>Demande initiée par: ${ip}</p><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "Change Password Confirmation"
+        },
+        "DEPOSIT_PENDING": {
+            "html": "<div><div><p> Bonjour ${name} </p><p> Vous avez un nouveau dépôt pour ${amount} ${currency} en attente dans votre portefeuille ${api_name} . Veuillez attendre que la transaction soit confirmée et vos fonds seront disponible dans votre portefeuille. Votre transaction nécessite ${confirmation} confirmation(s) sur la blockchain.</p><p>Montant: ${amount} ${currency}<br />Status: ${status}<br />Addresse: ${address}<br />Identité de la transaction: ${transaction_id}<br /><span id='network'>Réseau: ${network}</span><br />Frais: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} Deposit pending"
+        },
+        "DEPOSIT_COMPLETED": {
+            "html": "<div><div><p> Bonjour ${name} </p><p> Votre ${currency} dépôt pour ${amount} ${currency} est confirmé et complété et il est disponible dans votre portefeuille ${currency}.</p><p>Montant: ${amount} ${currency}<br />Status: ${status}<br />Addresse: ${address}<br />Identité de la transaction: ${transaction_id}<br /><span id='network'>Réseau: ${network}</span><br />Frais: ${fee} ${currency}<br /><ul>${explorers}</ul></div><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} Deposit completed"
+        },
+        "WITHDRAWAL_PENDING": {
+            "html": "<div><p> Bonjour ${name} </p><p>Vous avez fait une demande de retrait de ${amount} ${currency}. Le statut de votre retrait est en attente et sera traité sous peu.</p><p>Montant: ${amount} ${currency}<br />Frais: ${fee} ${currency}<br />Status: ${status}<br />Addresse: ${address}<br />Identité de la transaction: ${transaction_id}<br /><span id='network'>Réseau: ${network}</span><br /><ul>${explorers}</ul><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} withdrawal pending"
+        },
+        "WITHDRAWAL_COMPLETED": {
+            "html": "<div><p> Bonjour ${name} </p><p>Votre demande de retrait de ${amount} ${currency} est traité.</p><p>Montant: ${amount} ${currency}<br />Frais: ${fee} ${currency}<br />Status: ${status}<br />Addresse: ${address}<br />Identité de la transaction: ${transaction_id}<br /><span id='network'>Réseau: ${network}</span><br /><ul>${explorers}</ul><p> Bien cordialement<br> ${api_name} team </p></div>",
+            "title": "${currency} withdrawal completed"
+        }
+    }
+}

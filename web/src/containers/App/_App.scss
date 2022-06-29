@@ -157,9 +157,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 			min-width: 0;
 			max-width: 0;
-			.sidebar-container {
-				overflow: hidden;
-			}
 		}
 	}
 	.exchange-warning {
@@ -262,8 +259,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.trade_tabs-container .trade_tabs-content,
 	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
-	.ohlc_data_wrapper .ohlc_label,
-	.ohlc_value,
 	.information_block-text_wrapper .text,
 	.qr-text,
 	.header_title-children,
@@ -319,8 +314,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.trade_tabs-container .trade_tabs-content,
 	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
-	.ohlc_data_wrapper .ohlc_label,
-	.ohlc_value,
 	.information_block-text_wrapper .text,
 	.qr-text,
 	.header_title-children,

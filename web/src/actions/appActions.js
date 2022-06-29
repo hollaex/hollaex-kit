@@ -66,9 +66,7 @@ export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
-export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
-export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
 export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
@@ -414,19 +412,6 @@ export const getExchangeInfo = () => {
 						payload: { info: { ...res.data.info } },
 					});
 				}
-			}
-		});
-	};
-};
-
-export const getWaveAuction = () => {
-	return (dispatch) => {
-		axios.get('/wave').then((res) => {
-			if (res && res.data && res.data.data) {
-				dispatch({
-					type: SET_WAVE_AUCTION,
-					payload: { data: res.data.data },
-				});
 			}
 		});
 	};

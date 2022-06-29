@@ -4,10 +4,10 @@ import { ReactSVG } from 'react-svg';
 
 import LimitsBlock from './LimitsBlock';
 import FeesBlock from './FeesBlock';
-import { IconTitle, Button } from '../../../components';
-import STRINGS from '../../../config/localizedStrings';
+import DepositAndWithdrawalFees from './DepositAndWithdrawalFees';
+import { IconTitle, Button, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { EditWrapper } from 'components';
 
 const FeesAndLimits = ({
 	data,
@@ -72,12 +72,14 @@ const FeesAndLimits = ({
 							{STRINGS['SUMMARY.FEES_AND_LIMIT_TXT_2']}
 						</EditWrapper>
 					</div>
-					{discount
-						?
+					{discount ? (
 						<div className="my-4">
 							<div className="fee-reduction-container d-flex p-2 my-2 align-items-center">
 								<div>
-									<ReactSVG src={ICONS['GREEN_CHECK']} className="currency_ball-wrapper m" />
+									<ReactSVG
+										src={ICONS['GREEN_CHECK']}
+										className="currency_ball-wrapper m"
+									/>
 								</div>
 								<div className="mx-1" />
 								<div className="font-weight-bold">
@@ -88,8 +90,7 @@ const FeesAndLimits = ({
 								{STRINGS['FEE_REDUCTION_DESCRIPTION']}
 							</div>
 						</div>
-						: null
-					}
+					) : null}
 				</div>
 				<div>
 					<LimitsBlock
@@ -98,6 +99,9 @@ const FeesAndLimits = ({
 						title={title}
 						tiers={tiers}
 					/>
+				</div>
+				<div>
+					<DepositAndWithdrawalFees coins={coins} level={verification_level} />
 				</div>
 				<div>
 					<FeesBlock
