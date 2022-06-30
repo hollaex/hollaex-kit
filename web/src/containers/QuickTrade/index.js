@@ -1,4 +1,4 @@
-import React, { PureComponent, useEffect, useState } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -38,18 +38,10 @@ import { getBroker, getBrokerQuote } from 'containers/Admin/Trades/actions';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 // const DECIMALS = 4;
+let timeout = undefined;
 
-const Timer = ({ handleSec = () => {}, quoteSeconds }) => {
-	const [seconds, setSeconds] = useState(quoteSeconds);
-	useEffect(() => {
-		if (seconds > 0) {
-			setTimeout(() => setSeconds(seconds - 1), 1000);
-		} else {
-			setSeconds(0);
-			handleSec(true);
-		}
-	}, [seconds, handleSec]);
-	return <span>{seconds}s</span>;
+const Timer = ({ quoteSeconds }) => {
+	return <span>{quoteSeconds}s</span>;
 };
 
 class QuickTradeContainer extends PureComponent {
@@ -147,6 +139,7 @@ class QuickTradeContainer extends PureComponent {
 			sellPrice: 0,
 			token: '',
 			quoteSeconds: '',
+			OriginalQuoteSeconds: '',
 		};
 
 		this.goToPair(pair);
@@ -404,6 +397,10 @@ class QuickTradeContainer extends PureComponent {
 				content: STRINGS['ORDER_EXPIRED_MSG'],
 			});
 		}
+
+		if (prevState.quoteSeconds !== this.state.quoteSeconds) {
+			this.handleSecondsChange(this.state.quoteSeconds);
+		}
 	}
 
 	componentWillUnmount() {
@@ -423,10 +420,18 @@ class QuickTradeContainer extends PureComponent {
 				let quoteSeconds = '';
 				if (!isNaN(moment(res.expiry).diff(moment(), 'seconds')))
 					quoteSeconds = moment(res.expiry).diff(moment(), 'seconds');
-				this.setState({ token: res.token, quoteSeconds });
+				clearTimeout(timeout);
+				this.setState({
+					token: res.token,
+					OriginalQuoteSeconds: quoteSeconds,
+					quoteSeconds,
+				});
 			}
 		} catch (error) {
-			console.log('error', error);
+			if (error) {
+				clearTimeout(timeout);
+				this.setState({ quoteSeconds: '', isTimer: false });
+			}
 		}
 	};
 
@@ -1023,9 +1028,22 @@ class QuickTradeContainer extends PureComponent {
 		}, 2000);
 	};
 
-	renderFooterBtn = (isExistBroker, isTimer, quoteSeconds) => {
+	handleSecondsChange = (quoteSeconds) => {
+		if (quoteSeconds > 0) {
+			timeout = setTimeout(
+				() => this.setState({ quoteSeconds: quoteSeconds - 1 }),
+				1000
+			);
+		} else {
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
+			this.handleSec(true);
+		}
+	};
+
+	renderFooterBtn = (isExistBroker, quoteSeconds) => {
 		if (isExistBroker) {
-			if (isTimer) {
+			if (quoteSeconds <= 0) {
 				return (
 					<Button
 						label={STRINGS['REFRESH']}
@@ -1039,8 +1057,7 @@ class QuickTradeContainer extends PureComponent {
 						label={
 							<div>
 								{STRINGS['CONFIRM_TEXT']} (
-								<Timer handleSec={this.handleSec} quoteSeconds={quoteSeconds} />
-								)
+								<Timer quoteSeconds={quoteSeconds} />)
 							</div>
 						}
 						onClick={this.onExecuteTrade}
@@ -1090,9 +1107,9 @@ class QuickTradeContainer extends PureComponent {
 			brokerSourceAmount,
 			existBroker,
 			isBrokerPaused,
-			isTimer,
 			isLoading,
 			quoteSeconds,
+			OriginalQuoteSeconds,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -1151,6 +1168,11 @@ class QuickTradeContainer extends PureComponent {
 				: sourceAmount;
 		const isExistBroker =
 			existBroker && Object.keys(existBroker).length ? true : false;
+
+		let widthPercent = 100;
+		if (!isNaN((quoteSeconds / OriginalQuoteSeconds) * 100)) {
+			widthPercent = (quoteSeconds / OriginalQuoteSeconds) * 100;
+		}
 
 		return (
 			<div className="h-100">
@@ -1228,7 +1250,9 @@ class QuickTradeContainer extends PureComponent {
 										</div>
 										<div
 											className={
-												isTimer && isExistBroker ? 'disabled-area' : ''
+												quoteSeconds <= 0 && isExistBroker
+													? 'disabled-area'
+													: ''
 											}
 										>
 											<ReviewBlock
@@ -1240,8 +1264,8 @@ class QuickTradeContainer extends PureComponent {
 											/>
 											{isExistBroker ? (
 												<div
-													className={!isTimer ? 'loading-border' : ''}
-													style={{ animationDuration: `${quoteSeconds + 1}s` }}
+													className={'loading-border'}
+													style={{ width: `${widthPercent}%` }}
 												></div>
 											) : null}
 											<ReviewBlock
@@ -1258,11 +1282,7 @@ class QuickTradeContainer extends PureComponent {
 												onClick={this.onCloseDialog}
 												className="mr-2"
 											/>
-											{this.renderFooterBtn(
-												isExistBroker,
-												isTimer,
-												quoteSeconds
-											)}
+											{this.renderFooterBtn(isExistBroker, quoteSeconds)}
 										</footer>
 									</div>
 								</div>
