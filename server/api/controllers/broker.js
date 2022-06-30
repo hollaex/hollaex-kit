@@ -298,6 +298,7 @@ function getBrokerPairs(req, res) {
 
 	const attributes = [
 		'id',
+		'user_id',
 		'symbol',
 		'buy_price',
 		'sell_price',
