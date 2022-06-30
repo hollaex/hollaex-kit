@@ -524,10 +524,10 @@ class PairsSummary extends Component {
 						{pendingPairs.map((item, key) => {
 							const pair_base_fullname =
 								allCoins.filter((data) => data.symbol === item.pair_base)[0]
-									.fullname || '';
+									?.fullname || '';
 							const pair2_fullname =
 								allCoins.filter((data) => data.symbol === item.pair_2)[0]
-									.fullname || '';
+									?.fullname || '';
 							return (
 								<div key={key} className="box-content">
 									<div className="d-flex justify-content-between">
