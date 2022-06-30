@@ -22,21 +22,42 @@ export const generateInitialValues = (
 	coins = {},
 	networks,
 	network,
-	query
+	query,
+	verification_level
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		initialValues.fee = withdrawal_fees[network].value;
-		initialValues.fee_coin = withdrawal_fees[network].symbol;
+		const { value, symbol, type = 'static', levels } = withdrawal_fees[network];
+		if (type === 'static') {
+			initialValues.fee_coin = symbol;
+			initialValues.fee_type = 'static';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		} else {
+			initialValues.fee_coin = '';
+			initialValues.fee_type = 'percentage';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		}
 	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
 		initialValues.fee_coin = '';
+		initialValues.fee_type = 'static';
 	} else {
 		initialValues.fee = 0;
 		initialValues.fee_coin = '';
+		initialValues.fee_type = 'static';
 	}
 
 	if (min) {
@@ -93,18 +114,33 @@ export const generateFormValues = (
 
 	let fee;
 	let fee_coin;
+	let fee_type;
 	if (
 		withdrawal_fees &&
 		selectedNetwork &&
 		withdrawal_fees[selectedNetwork] &&
 		!isEmail
 	) {
-		fee = withdrawal_fees[selectedNetwork].value;
-		fee_coin = withdrawal_fees[selectedNetwork].symbol;
+		const { value, symbol, type = 'static', levels } = withdrawal_fees[
+			selectedNetwork
+		];
+		fee_type = type;
+
+		if (type === 'static') {
+			fee_coin = symbol;
+		}
+
+		if (levels && levels[verification_level]) {
+			fee = levels[verification_level];
+		} else {
+			fee = value;
+		}
 	} else if (coins[symbol] && !isEmail) {
 		fee = withdrawal_fee;
+		fee_type = 'static';
 	} else {
 		fee = 0;
+		fee_type = 'static';
 	}
 
 	const fields = {};
@@ -227,7 +263,7 @@ export const generateFormValues = (
 			amountValidate.push(checkBalance(available, fullname, 0));
 			amountValidate.push(checkFee(availableFeeBalance, feeFullname, fee));
 		} else {
-			amountValidate.push(checkBalance(available, fullname, fee));
+			amountValidate.push(checkBalance(available, fullname, fee, fee_type));
 		}
 
 		fields.amount = {
@@ -332,6 +368,14 @@ export const generateFormValues = (
 		fields.fee_coin = {
 			type: 'hidden',
 			label: 'fee coin',
+			disabled: true,
+			fullWidth: true,
+			ishorizontalfield: true,
+		};
+
+		fields.fee_type = {
+			type: 'hidden',
+			label: 'fee type',
 			disabled: true,
 			fullWidth: true,
 			ishorizontalfield: true,

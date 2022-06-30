@@ -21,6 +21,7 @@ export const generateBaseInformation = (id = '') => (
 );
 
 export const generateFormFields = ({
+	currency,
 	networks,
 	address,
 	label,
@@ -28,6 +29,9 @@ export const generateFormFields = ({
 	copyOnClick,
 	destinationAddress,
 	destinationLabel,
+	coins,
+	network,
+	fee,
 }) => {
 	const fields = {};
 
@@ -77,6 +81,47 @@ export const generateFormFields = ({
 			hideCheck: true,
 			ishorizontalfield: true,
 		};
+	}
+
+	if (fee) {
+		const { deposit_fees } = coins[currency];
+		if (deposit_fees && deposit_fees[network]) {
+			const { symbol, type } = deposit_fees[network];
+			const isPercentage = type === 'percentage';
+			const fee_coin = isPercentage ? '' : symbol || currency;
+
+			const fullname = coins[fee_coin]?.fullname;
+
+			fields.fee = {
+				type: 'number',
+				stringId:
+					'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
+				label: STRINGS.formatString(
+					STRINGS[
+						fee_coin && fee_coin !== currency
+							? 'WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN'
+							: 'WITHDRAWALS_FORM_FEE_COMMON_LABEL'
+					],
+					fullname
+				),
+				placeholder: STRINGS.formatString(
+					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
+					fullname
+				),
+				disabled: true,
+				fullWidth: true,
+				ishorizontalfield: true,
+				...(fee_coin && fee_coin !== currency
+					? {
+							warning: STRINGS.formatString(
+								STRINGS['WITHDRAWALS_FORM_FEE_WARNING'],
+								fullname,
+								fee_coin.toUpperCase()
+							),
+					  }
+					: {}),
+			};
+		}
 	}
 
 	return fields;

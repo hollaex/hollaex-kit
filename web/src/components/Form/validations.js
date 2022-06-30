@@ -91,11 +91,26 @@ export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
 		? message || STRINGS.formatString(STRINGS['VALIDATIONS.STEP'], step)
 		: undefined;
-export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
-	const operation =
-		fee > 0
-			? math.number(math.add(math.fraction(value), math.fraction(fee)))
-			: value;
+export const checkBalance = (available, coinName, fee = 0, type = 'static') => (
+	value = 0
+) => {
+	let operation;
+	if (type === 'static') {
+		operation =
+			fee > 0
+				? math.number(math.add(math.fraction(value), math.fraction(fee)))
+				: value;
+	} else {
+		operation =
+			fee > 0
+				? math.number(
+						math.add(
+							math.fraction(value),
+							math.multiply(math.fraction(value), math.fraction(fee))
+						)
+				  )
+				: value;
+	}
 
 	if (operation > available) {
 		const errorMessage = coinName
