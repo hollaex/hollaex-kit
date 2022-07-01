@@ -401,6 +401,13 @@ class QuickTradeContainer extends PureComponent {
 		if (prevState.quoteSeconds !== this.state.quoteSeconds) {
 			this.handleSecondsChange(this.state.quoteSeconds);
 		}
+
+		if (
+			prevState.isAmountChanged !== this.state.isAmountChanged &&
+			this.state.isAmountChanged
+		) {
+			this.handleBrokerQuote(this.state.pair, this.state.side);
+		}
 	}
 
 	componentWillUnmount() {
@@ -408,8 +415,11 @@ class QuickTradeContainer extends PureComponent {
 	}
 
 	getBrokerQuoteData = async (symbol, side) => {
+		const brokerPairs = this.props.broker.map((br) => br.symbol);
+		const flipSymbol = this.flipPair(symbol);
+		const pairData = brokerPairs.includes(symbol) ? symbol : flipSymbol;
 		try {
-			const res = await getBrokerQuote(symbol, side);
+			const res = await getBrokerQuote(pairData, side);
 			if (res) {
 				if (side === 'buy') {
 					this.setState({ buyPrice: res.price });
@@ -425,12 +435,17 @@ class QuickTradeContainer extends PureComponent {
 					token: res.token,
 					OriginalQuoteSeconds: quoteSeconds,
 					quoteSeconds,
+					isAmountChanged: false,
 				});
 			}
 		} catch (error) {
 			if (error) {
 				clearTimeout(timeout);
-				this.setState({ quoteSeconds: '', isTimer: false });
+				this.setState({
+					quoteSeconds: '',
+					isTimer: false,
+					isAmountChanged: false,
+				});
 			}
 		}
 	};
@@ -914,10 +929,11 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onChangeTargetAmount = (targetAmount) => {
-		const { existBroker, pair, side } = this.state;
+		const { existBroker } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
-			this.handleBrokerQuote(pair, side);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: targetAmount,
@@ -928,10 +944,11 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onChangeSourceAmount = (sourceAmount) => {
-		const { existBroker, pair, side } = this.state;
+		const { existBroker } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
-			this.handleBrokerQuote(pair, side);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: sourceAmount,
@@ -1008,11 +1025,31 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	forwardSourceError = (sourceError) => {
-		this.setState({ sourceError });
+		this.setState({ sourceError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = sourceError || this.state.targetError ? false : true;
+				clearTimeout(timeout);
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	forwardTargetError = (targetError) => {
-		this.setState({ targetError });
+		this.setState({ targetError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = targetError || this.state.sourceError ? false : true;
+				clearTimeout(timeout);
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	handleSec = (isTimer) => {
