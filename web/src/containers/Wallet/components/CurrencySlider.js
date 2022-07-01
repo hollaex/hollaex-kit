@@ -56,7 +56,7 @@ class CurrencySlider extends Component {
 		);
 
 	render() {
-		const { balance, prices, navigate, coins } = this.props;
+		const { balance, prices, navigate, coins, searchResult } = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
 		const baseBalance =
@@ -78,6 +78,7 @@ class CurrencySlider extends Component {
 							balanceValue={balanceValue}
 							balanceText={baseBalance}
 							coins={coins}
+							searchResult={searchResult}
 						/>
 					}
 					<div className="d-flex align-items-center arrow-container">
