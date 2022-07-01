@@ -121,9 +121,9 @@ const calculatePrice = (price, side, spread, multiplier = 1) => {
 	let calculatedSize;
 
 	if (side === 'buy') {
-		calculatedSize = multipliedPrice * (1 + spread);
+		calculatedSize = multipliedPrice * (1 + (spread / 100))
 	} else if (side === 'sell') {
-		calculatedSize = multipliedPrice * (1 - spread);
+		calculatedSize = multipliedPrice * (1 - (spread / 100))
 	}
 
 	return calculatedSize;
@@ -236,8 +236,8 @@ const testBroker = async (data) => {
 					.then((res) => {
 						const multipliedPrice = parseFloat(JSON.parse(res).price) * (multiplier || 1);
 						return {
-							buy_price: multipliedPrice * (1 - spread),
-							sell_price: multipliedPrice * (1 + spread)
+							buy_price: multipliedPrice * (1 - (spread / 100)),
+							sell_price: multipliedPrice * (1 + (spread / 100))
 						};
 					})
 					.catch((err) => {
@@ -470,6 +470,7 @@ const updateBrokerPair = async (id, data) => {
 
 	return brokerPair.update(updatedPair, {
 		fields: [
+			'user_id',
 			'buy_price',
 			'sell_price',
 			'min_size',
