@@ -6,11 +6,10 @@ import { getDecimals } from '../utils/utils';
 export const getChartConfig = () => {
 	return axios({
 		url: '/udf/config',
-		method: 'GET'
-	})
-		.then((res) => {
-			return res.data;
-		});
+		method: 'GET',
+	}).then((res) => {
+		return res.data;
+	});
 	// const config = {
 	// 	supported_resolutions: ['60', '240', '1D'],
 	// 	supports_group_request: false,
@@ -51,13 +50,7 @@ export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 	});
 };
 
-export const getChartHistory = (
-	symbol,
-	resolution,
-	from,
-	to,
-	firstDataRequest
-) => {
+export const getChartHistory = (symbol, resolution, from, to) => {
 	return axios({
 		url: `/chart?symbol=${symbol}&resolution=${resolution}&from=${from}&to=${to}`,
 		method: 'GET',

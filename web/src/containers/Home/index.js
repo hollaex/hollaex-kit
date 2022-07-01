@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import AliceCarousel from 'react-alice-carousel';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -11,9 +10,15 @@ import _floor from 'lodash/floor';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 import { message } from 'antd';
+import moment from 'moment';
 
 import STRINGS from 'config/localizedStrings';
-import { changePair, getExchangeInfo, getTickers } from 'actions/appActions';
+import {
+	changePair,
+	getExchangeInfo,
+	getTickers,
+	setSnackNotification,
+} from 'actions/appActions';
 import { getSparklines } from 'actions/chartAction';
 import { getToken, isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
@@ -27,6 +32,7 @@ import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	getBroker,
+	getBrokerQuote,
 	getWithoutAuthBroker,
 } from 'containers/Admin/Trades/actions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
@@ -40,6 +46,8 @@ import MarketCard from './MarketCard';
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
 const DEFAULT_BG_SECTIONS = ['heading', 'market_list'];
+
+let timeout = undefined;
 
 const data = [
 	{
@@ -143,6 +151,16 @@ class Home extends Component {
 			orderbookWs: null,
 			wsInitialized: false,
 			chartData: {},
+			isTimer: false,
+			isLoading: false,
+			buyPrice: 0,
+			sellPrice: 0,
+			token: '',
+			quoteSeconds: '',
+			OriginalQuoteSeconds: '',
+			isAmountChanged: false,
+			isHover: false,
+			hoveredIndex: 0,
 		};
 		this.goToPair(pair);
 		this.props.setPriceEssentials({ side: this.state.side });
@@ -160,7 +178,7 @@ class Home extends Component {
 
 	componentDidMount() {
 		const { sections, broker, pairs } = this.props;
-		const { pair } = this.state;
+		const { pair, side } = this.state;
 		this.props.getExchangeInfo();
 		this.props.getTickers();
 		getSparklines(Object.keys(pairs)).then((chartData) =>
@@ -191,6 +209,7 @@ class Home extends Component {
 		} else {
 			this.setState({ isBrokerPaused: true });
 		}
+		this.handleBrokerQuote(pair, side);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -220,6 +239,9 @@ class Home extends Component {
 					this.setState({ isShowChartDetails: false, existBroker });
 					this.getBrokerData();
 				}
+				if (existBroker && existBroker.symbol === flipPair) {
+					pair = flipPair;
+				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
@@ -245,8 +267,80 @@ class Home extends Component {
 			});
 
 			this.initializeOrderbookWs(pair, getToken());
+			this.handleBrokerQuote(pair, this.state.side);
+		}
+
+		if (prevState.isTimer !== this.state.isTimer && this.state.isTimer) {
+			const { icons: ICONS, setSnackNotification } = this.props;
+			setSnackNotification({
+				icon: ICONS.COPY_NOTIFICATION,
+				content: STRINGS['ORDER_EXPIRED_MSG'],
+			});
+		}
+
+		if (prevState.quoteSeconds !== this.state.quoteSeconds) {
+			this.handleSecondsChange(this.state.quoteSeconds);
+		}
+
+		if (
+			prevState.isAmountChanged !== this.state.isAmountChanged &&
+			this.state.isAmountChanged
+		) {
+			this.handleBrokerQuote(this.state.pair, this.state.side);
 		}
 	}
+
+	getBrokerQuoteData = async (symbol, side) => {
+		try {
+			const res = await getBrokerQuote(symbol, side);
+			if (res) {
+				if (side === 'buy') {
+					this.setState({ buyPrice: res.price });
+				} else {
+					this.setState({ sellPrice: res.price });
+				}
+
+				let quoteSeconds = '';
+				if (!isNaN(moment(res.expiry).diff(moment(), 'seconds')))
+					quoteSeconds = moment(res.expiry).diff(moment(), 'seconds');
+				clearTimeout(timeout);
+				this.setState({
+					token: res.token,
+					OriginalQuoteSeconds: quoteSeconds,
+					quoteSeconds,
+					isAmountChanged: false,
+				});
+			}
+		} catch (error) {
+			if (error) {
+				clearTimeout(timeout);
+				this.setState({
+					quoteSeconds: '',
+					isTimer: false,
+					isAmountChanged: false,
+				});
+			}
+		}
+	};
+
+	handleBrokerQuote = debounce(this.getBrokerQuoteData, 1000);
+
+	handleSec = (isTimer) => {
+		this.setState({ isTimer });
+	};
+
+	handleSecondsChange = (quoteSeconds) => {
+		if (quoteSeconds > 0) {
+			timeout = setTimeout(
+				() => this.setState({ quoteSeconds: quoteSeconds - 1 }),
+				1000
+			);
+		} else {
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
+			this.handleSec(true);
+		}
+	};
 
 	getBrokerData = async () => {
 		try {
@@ -434,6 +528,14 @@ class Home extends Component {
 	flipPair = (pair) => {
 		const pairArray = pair.split('-');
 		return pairArray.reverse().join('-');
+	};
+
+	sectionToNav = (sec) => {
+		this.props.router.push(`/trade/${sec?.props?.market?.pair?.code}`);
+	};
+
+	onMouseOver = (val, hoveredIndex) => {
+		this.setState({ isHover: val, hoveredIndex });
 	};
 
 	getSectionByKey = (key) => {
@@ -637,7 +739,8 @@ class Home extends Component {
 			case 'carousel_section': {
 				const { markets } = this.props;
 				const { chartData } = this.state;
-				const items = markets.map((market, index) => (
+				const marketsData = [...markets, ...markets, ...markets];
+				const items = marketsData.map((market, index) => (
 					<MarketCard
 						market={market}
 						onDragStart={this.handleDragStart}
@@ -647,35 +750,27 @@ class Home extends Component {
 				));
 
 				return (
-					<div className="home_carousel_section">
-						<AliceCarousel
-							autoPlay
-							infinite
-							items={items}
-							dotsDisabled={true}
-							buttonsDisabled={true}
-							disableAutoPlayOnAction={false}
-							stopAutoPlayOnHover={false}
-							touchTrackingEnabled={false}
-							mouseTrackingEnabled={false}
-							duration={4000}
-							autoPlayInterval={0}
-							transitionTimingFunction="linear"
-							responsive={{
-								0: {
-									items: 2,
-								},
-								1024: {
-									items: 3,
-								},
-								1250: {
-									items: 4,
-								},
-								1500: {
-									items: 5,
-								},
-							}}
-						/>
+					<div className="home_carousel_section ">
+						<div class="slideshow-wrapper">
+							<div class="parent-slider d-flex">
+								{items.map((sec, index) => {
+									return (
+										<div
+											className={
+												this.state.isHover && index === this.state.hoveredIndex
+													? 'section section_active'
+													: 'section'
+											}
+											onClick={() => this.sectionToNav(sec)}
+											onMouseOver={() => this.onMouseOver(true, index)}
+											onMouseLeave={() => this.onMouseOver(false, 0)}
+										>
+											{sec}
+										</div>
+									);
+								})}
+							</div>
+						</div>
 					</div>
 				);
 			}
@@ -719,6 +814,7 @@ class Home extends Component {
 			tickerClose,
 			selectedTarget,
 			isSelectChange: true,
+			pair,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -764,6 +860,7 @@ class Home extends Component {
 			selectedTarget,
 			targetOptions: targetOptions,
 			isSelectChange: true,
+			pair,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -839,6 +936,8 @@ class Home extends Component {
 		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: targetAmount,
@@ -859,6 +958,8 @@ class Home extends Component {
 		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: sourceAmount,
@@ -873,11 +974,29 @@ class Home extends Component {
 	};
 
 	forwardSourceError = (sourceError) => {
-		this.setState({ sourceError });
+		this.setState({ sourceError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = sourceError || this.state.targetError ? false : true;
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	forwardTargetError = (targetError) => {
-		this.setState({ targetError });
+		this.setState({ targetError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = targetError || this.state.sourceError ? false : true;
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	goToPair = (pair) => {
@@ -985,6 +1104,7 @@ const mapDispatchToProps = (dispatch) => ({
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Home));

@@ -1,39 +1,25 @@
 /* globals process */
 
-var buble = require('rollup-plugin-buble');
-var uglify = require('rollup-plugin-uglify');
-var nodeResolve = require('rollup-plugin-node-resolve');
+import { terser } from 'rollup-plugin-terser';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
-var environment = process.env.ENV || 'development';
-var isDevelopmentEnv = (environment === 'development');
+const environment = process.env.ENV || 'development';
+const isDevelopmentEnv = (environment === 'development');
 
-module.exports = [
+export default [
 	{
 		input: 'lib/udf-compatible-datafeed.js',
-		name: 'Datafeeds',
-		sourceMap: false,
 		output: {
+			name: 'Datafeeds',
 			format: 'umd',
 			file: 'dist/bundle.js',
 		},
 		plugins: [
-			nodeResolve({ jsnext: true, main: true }),
-			buble(),
-			!isDevelopmentEnv && uglify({ output: { inline_script: true } }),
-		],
-	},
-	{
-		input: 'src/polyfills.es6',
-		sourceMap: false,
-		context: 'window',
-		output: {
-			format: 'iife',
-			file: 'dist/polyfills.js',
-		},
-		plugins: [
-			nodeResolve({ jsnext: true, main: true }),
-			buble(),
-			uglify({ output: { inline_script: true } }),
+			nodeResolve(),
+			!isDevelopmentEnv && terser({
+				ecma: 2018,
+				output: { inline_script: true },
+			}),
 		],
 	},
 ];

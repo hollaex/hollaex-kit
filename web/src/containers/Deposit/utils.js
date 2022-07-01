@@ -7,7 +7,7 @@ import STRINGS from 'config/localizedStrings';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 import Image from 'components/Image';
 import renderFields from 'components/Form/factoryFields';
@@ -34,7 +34,7 @@ export const generateFormFields = ({
 	if (networks) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
 
 		fields.network = {

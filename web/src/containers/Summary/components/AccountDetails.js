@@ -1,12 +1,12 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { EditWrapper } from 'components';
 
+import { EditWrapper } from 'components';
 import AccountTypesList from './AccountTypesList';
 import AccountTypeDetails from './AccountTypeDetails';
 import MobileAccountTypeList from '../MobileAccountTypeList';
 
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const AccountDetails = ({
 	user,

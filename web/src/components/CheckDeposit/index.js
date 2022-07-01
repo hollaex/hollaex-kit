@@ -8,7 +8,7 @@ import { STATIC_ICONS } from 'config/icons';
 import renderFields from '../../components/Form/factoryFields';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { required } from '../Form/validations';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const FORM_NAME = 'CheckDeposit';
 
@@ -64,7 +64,7 @@ const CheckDeposit = ({
 		const { network: networks = '' } = coins[formValues.currency];
 		const networkOptions = networks.split(',').map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
 
 		formFields.network = {

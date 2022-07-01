@@ -10,6 +10,7 @@ import Toggle from './components/Toggle';
 import { SearchBox } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import { MARKET_OPTIONS } from 'config/options';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import Image from 'components/Image';
@@ -22,10 +23,8 @@ class AddTradeTab extends Component {
 		data: [],
 		count: 0,
 		searchValue: '',
-		selected: isMobile
-			? STRINGS['MARKET_OPTIONS'][0].value
-			: STRINGS['MARKET_OPTIONS'][0].value,
-		options: STRINGS['MARKET_OPTIONS'],
+		selected: isMobile ? MARKET_OPTIONS[0].value : MARKET_OPTIONS[0].value,
+		options: MARKET_OPTIONS,
 		chartData: {},
 	};
 

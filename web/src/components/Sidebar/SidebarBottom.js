@@ -1,19 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
-import { ButtonLink } from '../../components';
+import STRINGS from 'config/localizedStrings';
+import { ButtonLink, Image } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
 
 const SidebarButton = ({
 	title = '',
-	path = '',
 	iconPath = '',
 	active = false,
+	onClick,
 }) => {
 	return (
-		<Link to={path} className={classnames('sidebar-bottom-button', { active })}>
+		<div
+			onClick={onClick}
+			className={classnames('sidebar-bottom-button', { active })}
+		>
 			<Image icon={iconPath} wrapperClassName="sidebar-bottom-icon" />
 			<div
 				className={
@@ -22,81 +23,61 @@ const SidebarButton = ({
 			>
 				{title}
 			</div>
-		</Link>
+		</div>
 	);
 };
 
+const ButtonsSection = () => (
+	<div className="d-flex w-100 p-4">
+		<div className="w-50">
+			<ButtonLink
+				link={'/signup'}
+				type="button"
+				label={STRINGS['SIGNUP_TEXT']}
+			/>
+		</div>
+		<div className="separator" />
+		<div className="w-50">
+			<ButtonLink link={'/login'} type="button" label={STRINGS['LOGIN_TEXT']} />
+		</div>
+	</div>
+);
+
 const SidebarBottom = ({
-	activePath = 'x',
-	pair = '',
+	menuItems,
+	activePath,
 	isLogged,
-	enabledPlugins = [],
-	features = {},
 	icons: ICONS = {},
+	onMenuChange,
 }) => {
 	return isLogged ? (
 		<div className="sidebar-bottom-wrapper d-flex">
-			<SidebarButton
-				path={'/account'}
-				title={STRINGS['ACCOUNT_TEXT']}
-				iconPath={ICONS.ACCOUNT_LINE}
-				active={activePath === 'account'}
-			/>
-			{features && features.quick_trade && (
-				<SidebarButton
-					path={`/quick-trade/${pair}`}
-					title={STRINGS['QUICK_TRADE']}
-					iconPath={ICONS.QUICK_TRADE_TAB_ACTIVE}
-					active={activePath === 'quick-trade'}
-				/>
+			{menuItems.map(
+				(
+					{ path, icon_id, string_id, hide_from_bottom_nav, activePaths },
+					index
+				) => {
+					return (
+						!hide_from_bottom_nav && (
+							<SidebarButton
+								key={`bottom_nav_item_${index}`}
+								path={path}
+								title={STRINGS[string_id]}
+								iconPath={ICONS[icon_id]}
+								active={
+									activePaths
+										? activePaths.includes(activePath)
+										: path === activePath
+								}
+								onClick={() => onMenuChange(path)}
+							/>
+						)
+					);
+				}
 			)}
-			{features && features.pro_trade && (
-				<SidebarButton
-					path={`/trade/${pair}`}
-					title={STRINGS['PRO_TRADE']}
-					iconPath={ICONS.SIDEBAR_TRADING_ACTIVE}
-					active={activePath === 'trade'}
-				/>
-			)}
-			{features && features.chat && (
-				<SidebarButton
-					path={`/chat`}
-					title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
-					iconPath={ICONS.CHAT}
-					active={activePath === 'chat'}
-				/>
-			)}
-			<SidebarButton
-				path="/wallet"
-				title={STRINGS['WALLET_TITLE']}
-				iconPath={ICONS.TAB_WALLET}
-				active={activePath === 'wallet'}
-			/>
-			{/*<SidebarButton
-				path={'/home'}
-				title={STRINGS['TRADE_TAB_POSTS']}
-				iconPath={ICONS.SIDEBAR_POST_ACTIVE}
-				active={activePath === 'home'}
-			/>*/}
 		</div>
 	) : (
-		<div className="d-flex w-100 p-4">
-			<div className="w-50">
-				<ButtonLink
-					link={'/signup'}
-					type="button"
-					label={STRINGS['SIGNUP_TEXT']}
-				/>
-			</div>
-			<div className="separator" />
-			<div className="w-50">
-				<ButtonLink
-					link={'/login'}
-					type="button"
-					label={STRINGS['LOGIN_TEXT']}
-				/>
-			</div>
-		</div>
+		<ButtonsSection />
 	);
 };
 

@@ -172,8 +172,6 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 	ip: null,
 	domain: null
 }) => {
-	const network = opts.network;
-
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
@@ -182,7 +180,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 			return getUserByKitId(user_id);
 		})
 		.then(async (user) => {
-			const { fee, fee_coin } = await validateWithdrawal(user, address, amount, currency, network);
+			const { fee, fee_coin } = await validateWithdrawal(user, address, amount, currency, opts.network);
 
 			return withdrawalRequestEmail(
 				user,
@@ -195,7 +193,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 					transaction_id: uuid(),
 					address,
 					currency,
-					network
+					network: opts.network
 				},
 				opts.domain,
 				opts.ip
