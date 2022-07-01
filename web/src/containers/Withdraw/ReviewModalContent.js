@@ -46,13 +46,24 @@ const ReviewModalContent = ({
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
-	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
+	const fee_type = data.fee_type ? data.fee_type : '';
+	const isPercentage = fee_type === 'percentage';
+	const hasDifferentFeeCoin =
+		!isPercentage && fee_coin && fee_coin !== currency;
+
+	const fee = isPercentage
+		? math.number(
+				math.multiply(math.fraction(data.amount), math.fraction(data.fee || 0))
+		  )
+		: data.fee
+		? data.fee
+		: 0;
+
+	const feePrice = math.number(math.multiply(fee, price));
 
 	const totalTransaction = hasDifferentFeeCoin
 		? math.number(math.fraction(data.amount))
-		: math.number(
-				math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
-		  );
+		: math.number(math.add(math.fraction(data.amount), fee));
 
 	const cryptoAmountText = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
@@ -60,8 +71,6 @@ const ReviewModalContent = ({
 		display_name
 	);
 
-	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
-	const fee = data.fee ? data.fee : 0;
 	const { display_name: fee_coin_display } =
 		coins[fee_coin] || DEFAULT_COIN_DATA;
 

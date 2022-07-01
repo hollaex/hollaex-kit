@@ -407,10 +407,51 @@ $trade-tab--arrow-size: 0.4rem;
 .home_carousel_section {
 	border-top: 1px $colors-border solid;
 	border-bottom: 1px $colors-border solid;
-	margin-top: 4rem;
-	margin-bottom: 4rem;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	margin-top: 1.5rem;
+	margin-bottom: 1.5rem;
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	.slideshow-wrapper {
+		height: 110px;
+		margin: 0 auto;
+		position: relative;
+		overflow: hidden;
+		transform: translate3d(0, 0, 0);
+	}
+
+	.slideshow-wrapper > div {
+		height: 110px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		transform: translate3d(0, 0, 0);
+	}
+	.slideshow-wrapper .parent-slider {
+		animation: moveSlideshow 25s linear infinite;
+	}
+
+	.parent-slider:hover {
+		animation-play-state: paused;
+	}
+
+	.section {
+		opacity: 0.8;
+		border-right: 1px solid #60605d;
+		padding-left: 40px;
+		padding-right: 40px;
+	}
+
+	.section_active {
+		opacity: 1;
+		cursor: pointer;
+	}
+}
+
+@keyframes moveSlideshow {
+	100% {
+		transform: translateX(-66.6666%);
+	}
 }
 
 @media (max-width: $bp-sm) {

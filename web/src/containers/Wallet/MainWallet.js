@@ -189,6 +189,7 @@ class Wallet extends Component {
 						prices={prices}
 						navigate={this.goToPage}
 						coins={coins}
+						searchResult={searchResult}
 					/>
 				),
 			},
