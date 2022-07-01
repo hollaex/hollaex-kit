@@ -1137,7 +1137,8 @@ table th {
 .home-page_content .tabs-pair-details {
   font-size: 1.2rem;
   width: 25rem;
-  margin: auto; }
+  margin: auto;
+  white-space: nowrap; }
 
 .home-page_content .trade_tab-pair-title {
   color: var(--labels_important-active-labels-text-graphics);
@@ -1357,7 +1358,8 @@ table th {
   padding-right: 10px; }
 
 .home-page_content .trade_tab-icons {
-  width: 3rem; }
+  width: 4rem;
+  margin-top: 2px; }
 
 .live-markets_header {
   font-size: 1.3rem;
@@ -1435,10 +1437,39 @@ table th {
 .home_carousel_section {
   border-top: 1px var(--calculated_secondary-border) solid;
   border-bottom: 1px var(--calculated_secondary-border) solid;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem; }
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+  .home_carousel_section .slideshow-wrapper {
+    height: 110px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0); }
+  .home_carousel_section .slideshow-wrapper > div {
+    height: 110px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translate3d(0, 0, 0); }
+  .home_carousel_section .slideshow-wrapper .parent-slider {
+    animation: moveSlideshow 25s linear infinite; }
+  .home_carousel_section .parent-slider:hover {
+    animation-play-state: paused; }
+  .home_carousel_section .section {
+    opacity: 0.8;
+    border-right: 1px solid #60605d;
+    padding-left: 40px;
+    padding-right: 40px; }
+  .home_carousel_section .section_active {
+    opacity: 1;
+    cursor: pointer; }
+
+@keyframes moveSlideshow {
+  100% {
+    transform: translateX(-66.6666%); } }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
@@ -9717,22 +9748,7 @@ table th {
 
 .loading-border {
   position: absolute;
-  border: 1px solid var(--specials_buttons-links-and-highlights);
-  width: 100%;
-  animation-name: dotFlashing;
-  animation-duration: 10s; }
-
-@keyframes dotFlashing {
-  0% {
-    width: 100%; }
-  25% {
-    width: 75%; }
-  50% {
-    width: 50%; }
-  75% {
-    width: 25%; }
-  100% {
-    width: 0%; } }
+  border: 1px solid var(--specials_buttons-links-and-highlights); }
 
 @media (max-width: 1020px) {
   .quick_trade-wrapper {
