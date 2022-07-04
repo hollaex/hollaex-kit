@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
@@ -7,6 +8,8 @@ import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
 import { getNetworkLabelByKey } from 'utils/wallet';
 import { formatPercentage } from 'utils/currency';
+import { Link } from 'react-router';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 const Final = ({
 	isPreview = false,
@@ -25,8 +28,19 @@ const Final = ({
 	isPresentCoin,
 	coins,
 	selectedCoinSymbol,
+	exchange = {},
+	constants = {},
 }) => {
 	const { meta = {}, type, withdrawal_fees } = coinFormData;
+	const { onramp = {} } = constants;
+	const [isUpgrade, setIsUpgrade] = useState(false);
+	const tabParams = getTabParams();
+
+	useEffect(() => {
+		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
+			setIsUpgrade(true);
+		}
+	}, [exchange]);
 
 	const getSymbolBasedFields = (type) => {
 		switch (type) {
@@ -392,6 +406,76 @@ const Final = ({
 						)}
 					</div>
 				)}
+				{(tabParams?.isFiat === 'onRamp' ||
+					tabParams?.isFiat === 'offRamp') && (
+					<div>
+						<div className="preview-detail-container"></div>
+						<div className="finalfiatwrapper">
+							<div className="title">Fiat ramps</div>
+							{!isUpgrade ? (
+								<>
+									<Link
+										className="fiatlink"
+										to="/admin/fiat?tab=2&isAssetHome=true"
+									>
+										View fiat controls
+									</Link>
+									<div className="d-flex ml-4">
+										<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+											<div>
+												<div className="font-weight-bold">
+													Add fiat deposits & withdrawals
+												</div>
+												<div>Allow your users to send USD & other fiat</div>
+											</div>
+											<div className="ml-5 button-wrapper">
+												<a
+													href="https://dash.bitholla.com/billing"
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													<Button type="primary" className="w-100">
+														Upgrade Now
+													</Button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</>
+							) : (
+								Object.keys(onramp).filter((item) => item === tabParams?.symbol)
+									.length && (
+									<div className="mb-3">
+										{Object.keys(onramp[tabParams?.symbol]).map((val, i) => {
+											let name = '';
+											if (onramp[tabParams?.symbol]?.[val]?.type === 'manual') {
+												name =
+													onramp[tabParams?.symbol]?.[val]?.data[0][0].value;
+											} else {
+												name = onramp[tabParams?.symbol]?.[val]?.data;
+											}
+											return (
+												<div className="d-flex align-items-center mt-3">
+													On-ramp {i + 1}: {name}
+													<span className="small-circle mr-2 ml-2 d-flex"></span>
+													<span>PUBLISHED</span>
+												</div>
+											);
+										})}
+										<div className="mt-3">
+											<Link
+												className="fiatlink"
+												to="/admin/fiat?tab=2&isAssetHome=true"
+											>
+												View fiat controls
+											</Link>
+										</div>
+									</div>
+								)
+							)}
+						</div>
+					</div>
+				)}
 			</div>
 			{isPreview || isConfigure ? (
 				<div className="preview-detail-container">
@@ -431,4 +515,11 @@ const Final = ({
 	);
 };
 
-export default Final;
+const mapStateToProps = (state) => {
+	return {
+		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
+		constants: state.app.constants,
+	};
+};
+
+export default connect(mapStateToProps, null)(Final);
