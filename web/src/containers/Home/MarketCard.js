@@ -22,7 +22,7 @@ const MarketCard = ({ icons: ICONS, market, chartData }) => {
 			<div className="w-100">
 				<div className="d-flex justify-content-between">
 					<div className="d-flex flex-direction-column justify-content-between">
-						<div className="d-flex">
+						<div className="d-flex height-40">
 							<div className="px-2">
 								<Image
 									iconId={icon_id}
@@ -38,13 +38,13 @@ const MarketCard = ({ icons: ICONS, market, chartData }) => {
 								</div>
 							</div>
 						</div>
-						<div className="d-flex align-center pl-2">
+						<div className="d-flex align-center pl-3">
 							<div className="trade_tab-pair-price">
 								{formatToCurrency(ticker.close, increment_price)}
 							</div>
 							<div className="ml-2 trade_tab-pair-price">{pair_2_display}</div>
 						</div>
-						<div className="trade_tab-pair-volume pl-2">
+						<div className="trade_tab-pair-volume pl-3">
 							<span className="pr-2">Vol:</span>
 							<span>
 								{ticker.volume && `${ticker.volume} ${pair_base_display}`}
