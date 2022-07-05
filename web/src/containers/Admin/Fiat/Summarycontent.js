@@ -13,7 +13,12 @@ import { requestDeposits } from '../Deposits/actions';
 
 import './index.css';
 
-const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
+const Summarycontent = ({
+	handleTabChange,
+	coins,
+	isUpgrade,
+	user_payments = {},
+}) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
 	const [currentTablePage, setCurrentTablePage] = useState(1);
@@ -253,7 +258,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 	];
 	let locale = {
 		emptyText: (
-			<span>
+			<span className="gray-txt">
 				<div>
 					<Image
 						icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
@@ -271,7 +276,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 	};
 	let withDrawalLocale = {
 		emptyText: (
-			<span>
+			<span className="gray-txt">
 				<div>
 					<Image
 						icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
@@ -289,7 +294,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 	};
 	let kycLocale = {
 		emptyText: (
-			<span>
+			<span className="gray-txt">
 				<div>
 					<Image
 						icon={STATIC_ICONS['FIAT_KYC_ICON']}
@@ -300,9 +305,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 				<div>Invite users to your exchange and/or turn on KYC plugins.</div>
 				<div>
 					{' '}
-					<span onClick={() => handleTabChange('4')} className="underline">
+					<Link to="/admin/fiat?tab=4" className="underline">
 						Visit KYC section
-					</span>
+					</Link>
 				</div>
 			</span>
 		),
@@ -322,7 +327,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 					system account details.
 				</div>
 			</div>
-			{isUpgrade ? (
+			{!isUpgrade ? (
 				<div className="d-flex mb-4">
 					<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
 						<div>
@@ -345,54 +350,46 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 					</div>
 				</div>
 			) : null}
-			<div className={isUpgrade ? 'disableall' : ''}>
-				<div>
-					<div className="payment mt-5">
-						<div className="d-flex align-items-center justify-content-between">
-							<div className="d-flex align-items-center">
-								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
-									wrapperClassName="fiatcurrency"
-								/>
-								<div>
-									We've noticed that there hasn't been any Payment Accounts
-									added yet. To start it is recommended to{' '}
-									<span
-										onClick={() => handleTabChange('1')}
-										className="underline"
-									>
-										add a Payment Account
-									</span>
-									.
+			<div className={!isUpgrade ? 'disableall' : ''}>
+				{!user_payments ? (
+					<div>
+						<div className="payment mt-5">
+							<div className="d-flex align-items-center justify-content-between">
+								<div className="d-flex align-items-center">
+									<Image
+										icon={STATIC_ICONS['DOLLAR_GEAR']}
+										wrapperClassName="fiatcurrency"
+									/>
+									<div>
+										We've noticed that there hasn't been any Payment Accounts
+										added yet. To start it is recommended to{' '}
+										<Link to="/admin/fiat?tab=1" className="underline">
+											add a Payment Account
+										</Link>
+										.
+									</div>
 								</div>
+								<Button type="primary" className="green-btn">
+									<Link to="/admin/fiat?tab=1">Add payment account</Link>
+								</Button>
 							</div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => handleTabChange('1')}
-							>
-								Add payment account
-							</Button>
 						</div>
 					</div>
-				</div>
-				<div className="body-container">
+				) : null}
+				<div className="body-container mt-3">
 					<div className="box-outerDesign">
 						<div className="d-flex justify-content-between ramp-heading">
 							<span>
 								<b>On-ramps </b>(exchange banks and payment processors)
 							</span>
-							<span style={{ display: 'flex' }}>
+							<span className="d-flex">
 								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+									icon={STATIC_ICONS['ONRAMP_SIMPLE_DOLLAR']}
 									wrapperClassName="withdrawalIcon"
 								/>
-								<div
-									onClick={() => handleTabChange('2')}
-									className="underline ml-1"
-								>
+								<Link to="/admin/fiat?tab=2" className="underline  ml-1">
 									View on-ramps
-								</div>
+								</Link>
 							</span>
 						</div>
 						<div className="box-content">
@@ -400,15 +397,12 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								icon={STATIC_ICONS['ONRAMP_DOLLAR_ICON']}
 								wrapperClassName="withdrawalIcon green"
 							/>
-							<div>
+							<div className="txtpad">
 								There seems to be no fiat on-ramp systems connected to your
 								exchange yet. Connect a way for your users to deposit fiat{' '}
-								<span
-									onClick={() => handleTabChange('2')}
-									className="underline"
-								>
+								<Link to="/admin/fiat?tab=2" className="underline">
 									here
-								</span>
+								</Link>
 								.
 							</div>
 							{/* <div  className="d-flex">
@@ -434,15 +428,12 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 							</span>
 							<span style={{ display: 'flex' }}>
 								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+									icon={STATIC_ICONS['OFFRAMP_SIMPLE_DOLLAR']}
 									wrapperClassName="withdrawalIcon"
 								/>{' '}
-								<div
-									onClick={() => handleTabChange('3')}
-									className="underline ml-1"
-								>
+								<Link to="/admin/fiat?tab=3" className="underline  ml-1">
 									View off-ramps
-								</div>
+								</Link>
 							</span>
 						</div>
 						<div className="box-content">
@@ -450,10 +441,10 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								icon={STATIC_ICONS['OFFRAMP_DOLLAR_ICON']}
 								wrapperClassName="withdrawalIcon"
 							/>
-							<div>
+							<div className="txtpad">
 								There seems to be no fiat off-ramp systems connected to your
 								exchange yet. Connect a way for your users to withdraw fiat{' '}
-								<Link to="/admin/fiat?tab=4" className="underline">
+								<Link to="/admin/fiat?tab=3" className="underline">
 									here
 								</Link>
 								.
@@ -496,7 +487,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								</Link>
 							</span>
 						</div>
-						<div className="fiattable1">
+						<div
+							className={deposits.length ? 'fiattable mb-5' : 'fiattable1 mb-5'}
+						>
 							<Table
 								columns={columns}
 								locale={locale}
@@ -533,7 +526,11 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								</Link>
 							</span>
 						</div>
-						<div className="fiattable1">
+						<div
+							className={
+								withdrawal.length ? 'fiattable mb-5' : 'fiattable1 mb-5'
+							}
+						>
 							<Table
 								columns={columns}
 								dataSource={withdrawal.map((item) => {
@@ -561,13 +558,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								type="warning"
 								tip="This market is in pending verification"
 							/>
-							<div
-								onClick={() => handleTabChange('4')}
-								className="underline ml-1"
-							>
-								{' '}
+							<Link to="/admin/fiat?tab=4" className="underline  ml-1">
 								View KYC page
-							</div>
+							</Link>
 						</span>
 					</div>
 					<div

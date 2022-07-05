@@ -304,7 +304,8 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade_tab-icons {
-		width: 3rem;
+		width: 4rem;
+		margin-top: 2px;
 	}
 }
 
@@ -407,8 +408,8 @@ $trade-tab--arrow-size: 0.4rem;
 .home_carousel_section {
 	border-top: 1px $colors-border solid;
 	border-bottom: 1px $colors-border solid;
-	margin-top: 1.5rem;
-	margin-bottom: 1.5rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 	padding-top: 1rem;
 	padding-bottom: 1rem;
 	.slideshow-wrapper {
