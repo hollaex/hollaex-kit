@@ -140,6 +140,11 @@ const icons = {
 	OFFRAMP_DOLLAR_ICON: '/assets/images/off-ramp-dollar-fiat-slant-right.svg',
 	DOUBLEFIAT_ICON: '/assets/images/double-fiat-gear.svg',
 	FIAT_KYC_ICON: '/assets/images/kyc-id-info.svg',
+	ONRAMP_SIMPLE_DOLLAR: '/assets/images/simple-fiat-on-ramp-left-slant.svg',
+	OFFRAMP_SIMPLE_DOLLAR: '/assets/images/simple-fiat-off-ramp-right-slant.svg',
+	MPESA_ICON: '/assets/images/other-fiat-systems.svg',
+	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
+	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 };
 
 export default icons;
