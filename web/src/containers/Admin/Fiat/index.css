@@ -661,3 +661,15 @@
 	height: 28rem;
 	background-color: var(--admin_panel_content_background);
 }
+
+.align-pay-tooltip {
+	top: 90px !important;
+}
+
+.align-bankform-tooltip {
+	top: 320px !important;
+}
+
+.align-onramp-tooltip {
+	top: 167px !important;
+}
