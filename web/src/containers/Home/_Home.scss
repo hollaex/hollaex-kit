@@ -147,6 +147,15 @@ $trade-tab--arrow-size: 0.4rem;
 			}
 		}
 	}
+	.home-page_section-wrapper {
+		padding-top: 60px !important;
+		padding-bottom: 75px !important;
+	}
+	.home_carousel_section {
+		.slideshow-wrapper {
+			height: 12rem;
+		}
+	}
 }
 
 .home_container {
@@ -436,6 +445,9 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0.8;
 		border-right: 1px solid #60605d;
 		padding: 1.5rem 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	.section_active {
@@ -501,6 +513,11 @@ $trade-tab--arrow-size: 0.4rem;
 						font-size: 14px;
 					}
 				}
+			}
+		}
+		.home_carousel_section {
+			.section {
+				padding: 0 30px !important;
 			}
 		}
 	}

@@ -20,6 +20,7 @@ import { calculateBaseFee } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
+import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -40,7 +41,7 @@ const validate = (values, props) => {
 	let fee_coin;
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		const { type = 'static' } = withdrawal_fees[network];
+		const { type = 'static', min, max } = withdrawal_fees[network];
 		const isPercentage = type === 'percentage';
 
 		fee_coin = withdrawal_fees[network].symbol;
@@ -52,7 +53,16 @@ const validate = (values, props) => {
 			balance[`${fee_coin}_available`] || 0
 		);
 
-		const totalFee = isPercentage ? math.multiply(amount, fee) : fee;
+		const totalFee = isPercentage
+			? limitNumberWithinRange(
+					math.multiply(
+						amount,
+						math.fraction(math.divide(math.fraction(fee), 100))
+					),
+					min,
+					max
+			  )
+			: fee;
 		const totalTransaction = hasDifferentFeeCoin
 			? amount
 			: math.add(amount, totalFee);

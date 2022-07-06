@@ -1,15 +1,12 @@
 import { createSelector } from 'reselect';
 import mathjs from 'mathjs';
 import store from 'store';
+import { limitNumberWithinRange } from 'utils/math';
 
 const WITHDRAWAL_FEES_KEY = 'withdrawal_fees';
 const DEPOSIT_FEES_KEY = 'deposit_fees';
 const WITHDRAWAL_LIMIT_KEY = 'withdrawal_limit';
 const DEPOSIT_LIMIT_KEY = 'deposit_limit';
-
-const limitNumberWithinRange = (num, min = 0, max = Number.MAX_VALUE) => {
-	return mathjs.min(mathjs.max(num, min), max);
-};
 
 export const getFiatFee = (currency, amount, network, type) => {
 	const {
@@ -24,14 +21,15 @@ export const getFiatFee = (currency, amount, network, type) => {
 		const { [verification_level]: level_based_fee = value } = levels || {};
 
 		if (type === 'percentage') {
+			const calcualtedFee = mathjs.multiply(
+				mathjs.fraction(amount),
+				mathjs.fraction(mathjs.divide(mathjs.fraction(level_based_fee), 100))
+			);
+
 			return {
 				symbol,
 				rate: level_based_fee,
-				value: limitNumberWithinRange(
-					mathjs.divide(mathjs.multiply(amount, level_based_fee), 100),
-					min,
-					max
-				),
+				value: mathjs.number(limitNumberWithinRange(calcualtedFee, min, max)),
 			};
 		} else {
 			return {
