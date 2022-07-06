@@ -1023,16 +1023,16 @@ const addUserBank = (req, res) =>  {
 				throw new Error ('Bank fields are not defined yet');
 			}
 			each(toolsLib.getKitConfig().banks.fields, (required, key) => {
-				if (required && !data.hasOwnProperty(key)) {
+				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
 					throw new Error (`Missing field: ${key}`);
 				}
-				if (data.hasOwnProperty(key)) {
-					bank_account[key] = data[key]
+				if (Object.prototype.hasOwnProperty.call(data, key)) {
+					bank_account[key] = data[key];
 				}
 			});
 		
 			if (Object.keys(bank_account).length === 0) {
-				throw new Error (`No bank fields to add`);
+				throw new Error ('No payment system fields to add');
 			}
 			
 			bank_account.id = crypto.randomBytes(8).toString('hex');
