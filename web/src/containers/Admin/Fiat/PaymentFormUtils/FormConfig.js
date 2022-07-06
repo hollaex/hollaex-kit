@@ -53,7 +53,10 @@ class FormConfig extends Component {
 	generateInitialValues = () => {
 		const { initialValues } = this.props;
 		let initialValuesData = initialValues;
-		if (Object.keys(initialValues).length === 1) {
+		if (
+			Object.keys(initialValues).length === 1 &&
+			this.props.currentActiveTab === 'onRamp'
+		) {
 			Object.keys(initialValues).forEach((item) => {
 				initialValuesData = initialValues[item];
 			});
@@ -73,13 +76,10 @@ class FormConfig extends Component {
 	};
 
 	addColumn = (modalType = '', editData = {}) => {
-		let editedVal = Object.keys(editData).includes('lablel')
-			? { ...editData, label: editData?.lablel }
-			: editData;
 		this.setState({
 			isAddColumn: true,
 			modalType,
-			editData: editedVal,
+			editData,
 		});
 	};
 
@@ -135,13 +135,6 @@ class FormConfig extends Component {
 	};
 
 	handleAddColumn = (formProps, type = '', index = 0) => {
-		let formPropsData = formProps;
-		if (type !== 'initialValue') {
-			formPropsData = {
-				...formProps,
-				lablel: formProps?.label,
-			};
-		}
 		const { editData } = this.state;
 		const { section_type } = formProps;
 		let custom_fields = { ...this.state.custom_fields };
@@ -161,7 +154,7 @@ class FormConfig extends Component {
 						label: (
 							<div className="form-label">
 								<div>
-									<b>{formProps.label || formProps.lablel}:</b>
+									<b>{formProps.label}:</b>
 									{!formProps.required ? <div>(optional)</div> : null}
 								</div>
 								<span
@@ -182,7 +175,6 @@ class FormConfig extends Component {
 								formProps.required
 							),
 						input: { name: `column_header_${index + 1}` },
-						// input: { name: `column_header_${index + 1}`, value: formProps?.value}
 					},
 				},
 			},
@@ -206,16 +198,15 @@ class FormConfig extends Component {
 				Object.keys(editedValues).forEach((item) => {
 					let editedVal = editedValues[item];
 					let filteredData = editedVal.filter(
-						(val) => val.key !== formPropsData?.key
+						(val) => val.key !== formProps?.key
 					);
 					editedVal.forEach((val) => {
-						if (formPropsData?.key === val?.key) {
+						if (formProps?.key === val?.key) {
 							editedValues = {
 								[item]: [
 									...filteredData,
 									{
-										...val,
-										lablel: formPropsData?.label,
+										...formProps,
 									},
 								],
 							};
@@ -226,7 +217,7 @@ class FormConfig extends Component {
 				editedValues = {
 					...editedValues,
 					[editData?.section_type]: {
-						...formPropsData,
+						...formProps,
 					},
 				};
 			}
@@ -244,12 +235,12 @@ class FormConfig extends Component {
 								{
 									...formProps,
 									key:
-										formPropsData.lablel.split(' ').length > 1
-											? formPropsData.lablel
+										formProps.label.split(' ').length > 1
+											? formProps.label
 													.toLowerCase()
 													.trim()
 													.replaceAll(' ', '_')
-											: formPropsData.lablel.toLowerCase().trim(),
+											: formProps.label.toLowerCase().trim(),
 								},
 							],
 						};
@@ -305,7 +296,6 @@ class FormConfig extends Component {
 							onSubmit={(val) => this.handleAddColumn(val, 'edit')}
 							buttonText="Proceed"
 							buttonClass="green-btn"
-							// buttonSubmitting={true}
 						/>
 					</div>
 				);

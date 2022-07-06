@@ -257,7 +257,7 @@ const PaymentAccountPopup = ({
 							title={
 								<img
 									src={STATIC_ICONS.HELP_FOOTER_POPUP}
-									className="help-icon description_footer"
+									className="description_footer"
 									alt="footer"
 								/>
 							}
@@ -343,6 +343,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
+							disabled={!plugin}
 							onClick={
 								paymentSelect !== 'customPay'
 									? () => handleNext()
@@ -507,7 +508,7 @@ const PaymentAccountPopup = ({
 											? STATIC_ICONS.FIAT_ONRAMP_TOOLTIP
 											: STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP
 									}
-									className="help-icon description_footer"
+									className="description_footer"
 									alt="footer"
 								/>
 							}
@@ -605,7 +606,7 @@ const PaymentAccountPopup = ({
 									? 'Bank'
 									: paymentSelect === 'paypal'
 									? 'paypal'
-									: 'M-Pesa'}
+									: paymentSelectData}
 							</b>
 						</div>
 					</div>
@@ -616,7 +617,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn w-100"
-							onClick={() => handlePopupDel()}
+							onClick={() => handlePopupDel(paymentSelectData)}
 						>
 							Proceed
 						</Button>
@@ -676,7 +677,7 @@ const PaymentAccountPopup = ({
 								return (
 									<div className="details-wrapper" key={index}>
 										<div className="d-flex justify-content-between">
-											<b>{item?.label || item?.lablel}:</b>
+											<b>{item?.label}:</b>
 											{item?.value ? (
 												<div>{item?.value}</div>
 											) : (
@@ -700,8 +701,7 @@ const PaymentAccountPopup = ({
 									<div className="details-wrapper" key={index}>
 										<div className="d-flex justify-content-between">
 											<div>
-												<b>{item?.label || item?.lablel}:</b>{' '}
-												<div>(optional)</div>
+												<b>{item?.label}:</b> <div>(optional)</div>
 											</div>
 											{item?.value ? (
 												<div>{item?.value}</div>
