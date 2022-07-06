@@ -1,14 +1,14 @@
 import React from 'react';
 import mathjs from 'mathjs';
-import { Accordion } from '../../components';
+import { Accordion } from 'components';
 import {
 	BANK_WITHDRAWAL_BASE_FEE,
 	BANK_WITHDRAWAL_DYNAMIC_FEE_RATE,
 	BANK_WITHDRAWAL_MAX_DYNAMIC_FEE,
 	BANK_WITHDRAWAL_MAX_AMOUNT_FOR_BASE_FEE,
 	BASE_CURRENCY,
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+} from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 import { renderBankInformation } from '../Wallet/components';
 
