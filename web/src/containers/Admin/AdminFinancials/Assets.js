@@ -202,13 +202,14 @@ class Assets extends Component {
 			submitting: false,
 			isWithdrawalEdit: false,
 			isTableLoading: true,
+			isFiat: '',
 		};
 	}
 
 	componentDidMount() {
 		// this.getMyExchange();
 		this.getBalance();
-		const { exchange, allCoins } = this.props;
+		const { exchange, allCoins, isPreview, selectedAsset } = this.props;
 		const { tabParams } = this.state;
 
 		let coins = allCoins.filter(
@@ -233,6 +234,11 @@ class Assets extends Component {
 						allCoins.filter((list) => list.symbol === filterSymbol)[0] || {};
 				}
 				this.props.handleHide(isPreview);
+				if (!Object.keys(filterCoin).length && tabParams?.isFiat) {
+					filterCoin =
+						allCoins.filter((item) => item.symbol === tabParams?.symbol)[0] ||
+						{};
+				}
 				this.setState({
 					isPreview,
 					isOpenAdd: isAddAsset,
@@ -240,8 +246,12 @@ class Assets extends Component {
 						...default_coin_data,
 						...filterCoin,
 					},
+					isFiat: tabParams.isFiat,
 				});
 			}
+		}
+		if (isPreview) {
+			this.setState({ isPreview: true, selectedAsset });
 		}
 	}
 
@@ -584,14 +594,22 @@ class Assets extends Component {
 		this.setState({ selectedAsset: data });
 	};
 
+	renderLink = (isFiat) => {
+		if (isFiat === 'onRamp') {
+			return <Link to="/admin/fiat?tab=2">Fiat controls</Link>;
+		} else if (isFiat === 'offRamp') {
+			return <Link to="/admin/fiat?tab=3">Fiat controls</Link>;
+		} else {
+			return <Link to="/admin/financials?tab=0&isAssetHome=true">Assets</Link>;
+		}
+	};
+
 	renderBreadcrumb = () => {
 		return (
 			<div>
 				{this.state.isPreview || this.state.isConfigure ? (
 					<Breadcrumb>
-						<Item>
-							<Link to="/admin/financials?tab=0&isAssetHome=true">Assets</Link>
-						</Item>
+						<Item>{this.renderLink(this.state.isFiat)}</Item>
 						<Item
 							className={
 								this.state.isPreview || this.state.isConfigure
@@ -633,6 +651,7 @@ class Assets extends Component {
 			constants: {
 				info: { user_id },
 			},
+			fiat,
 		} = this.props;
 
 		const {
@@ -643,6 +662,7 @@ class Assets extends Component {
 			userEmails,
 			submitting,
 			saveLoading,
+			isFiat,
 		} = this.state;
 
 		const { owner_id, created_by, verified } = selectedAsset;
@@ -653,7 +673,7 @@ class Assets extends Component {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
-						{this.renderBreadcrumb()}
+						{!fiat && this.renderBreadcrumb()}
 						<FinalPreview
 							isConfigure
 							coinFormData={selectedAsset}
@@ -681,7 +701,7 @@ class Assets extends Component {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
-						{this.renderBreadcrumb()}
+						{!fiat && this.renderBreadcrumb()}
 						<FinalPreview
 							isPreview
 							coinFormData={selectedAsset}
@@ -693,6 +713,7 @@ class Assets extends Component {
 							userEmails={userEmails}
 							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
+							isFiat={isFiat}
 						/>
 					</div>
 					{showConfigureButton && (
