@@ -197,22 +197,22 @@ const Otcdeskpopup = ({
 		}
 	};
 
-	const setPlatform = (value) => {
-		handlePreviewChange(selelctedPlatform, 'exchange_name');
-		setSelectedPlatform(value);
-		if (value === 'chainlink') {
-			setChainlink(true);
-			setCustomlink(false);
-		}
-		if (value === 'binance' || value === 'bitmex') {
-			setChainlink(false);
-			setCustomlink(false);
-		}
-		if (value === 'custom') {
-			setChainlink(false);
-			setCustomlink(true);
-		}
-	};
+	// const setPlatform = (value) => {
+	// 	handlePreviewChange(selelctedPlatform, 'exchange_name');
+	// 	setSelectedPlatform(value);
+	// 	if (value === 'chainlink') {
+	// 		setChainlink(true);
+	// 		setCustomlink(false);
+	// 	}
+	// 	if (value === 'binance' || value === 'bitmex') {
+	// 		setChainlink(false);
+	// 		setCustomlink(false);
+	// 	}
+	// 	if (value === 'custom') {
+	// 		setChainlink(false);
+	// 		setCustomlink(true);
+	// 	}
+	// };
 
 	const onhandleFormula = (e) => {
 		setFormula(e.target.value);
@@ -684,7 +684,7 @@ const Otcdeskpopup = ({
 											value={previewData && previewData.type}
 										>
 											<Option value="manual">Manually set (static)</Option>
-											<Option value="dynamic">Dynamic</Option>
+											<Option value="dynamic">Dynamic (coming soon)</Option>
 										</Select>
 									</div>
 								</div>
@@ -770,7 +770,14 @@ const Otcdeskpopup = ({
 												</div>
 											</div>
 										)}
-										<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+										<div className="mt-3 ml-3">
+											<div>Select price source:</div>
+											<div className="mt-2 error">
+												<ExclamationCircleFilled /> Coming soon for upgraded
+												HollaEx operators.
+											</div>
+										</div>
+										{/* <div className={isUpgrade ? 'Datahide mt-3' : ''}>
 											<div>Platform price source</div>
 											<div className="select-box">
 												<Select
@@ -785,10 +792,10 @@ const Otcdeskpopup = ({
 													<Option value="custom">Custom</Option>
 												</Select>
 											</div>
-										</div>
+										</div> */}
 										{!chainlink && !customlink && (
 											<div>
-												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+												{/* <div className={isUpgrade ? 'Datahide mt-3' : ''}>
 													<div className="mt-4">Market pair</div>
 													<div className="select-box">
 														<Select
@@ -804,10 +811,10 @@ const Otcdeskpopup = ({
 															})}
 														</Select>
 													</div>
-												</div>
+												</div> */}
 												{!isUpgrade && (
 													<div>
-														<div className="mt-3 ">Spread percentage</div>
+														{/* <div className="mt-3 ">Spread percentage</div>
 														<Input
 															type="number"
 															placeholder="Input the % spread"
@@ -874,7 +881,7 @@ const Otcdeskpopup = ({
 															value={
 																previewData && previewData.quote_expiry_time
 															}
-														/>
+														/> */}
 													</div>
 												)}
 											</div>
@@ -1173,7 +1180,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={() => moveToStep('hedge')}
+								onClick={() => moveToStep('with-balance')}
 							>
 								Back
 							</Button>
@@ -1403,7 +1410,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={() => moveToStep('hedge')}
+								onClick={() => moveToStep('preview')}
 							>
 								Next
 							</Button>

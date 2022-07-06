@@ -1,6 +1,6 @@
 .summary-content-wrapper .payment {
 	border: 1px solid #ffffff;
-	padding: 15px;
+	padding: 7px;
 	margin-bottom: 30px;
 }
 
@@ -41,7 +41,7 @@
 }
 
 .summary-content-wrapper .body-container .box-outerDesign .withdrawalIcon {
-	width: 3rem !important;
+	width: 4rem !important;
 }
 .summary-content-wrapper .body-container .box-outerDesign .green svg .st4 {
 	fill: #2bb473 !important;
@@ -63,11 +63,11 @@
 	height: 15px;
 }
 
-.summary-content-wrapper .fiattable1 .ant-table {
+.summary-content-wrapper .fiattable1 .ant-table,
+.summary-content-wrapper .kyc-table .ant-table {
 	border: 1px solid #ffffff;
-}
-.summary-content-wrapper .kyc-table .ant-table-tbody {
-	height: 25rem;
+	height: 28rem;
+	background-color: var(--admin_panel_content_background);
 }
 
 .summary-content-wrapper .fiattable1 .icon-tooltip:hover .warning {
@@ -113,8 +113,8 @@
 
 .summary-content-wrapper .fiatcurrency svg {
 	font-size: 20px;
-	width: 50px !important;
-	height: 50px !important;
+	width: 40px !important;
+	height: 40px !important;
 	margin-right: 5px;
 }
 
@@ -175,7 +175,8 @@
 	background-color: #4d5499;
 }
 
-.payment-acc-wrapper .disableall {
+.payment-acc-wrapper .disableall,
+.summary-content-wrapper .disableall {
 	opacity: 0.6;
 	pointer-events: none;
 }
@@ -257,7 +258,8 @@
 	.body-container
 	.box-outerDesign
 	.coins-wrapper
-	.coin-ico {
+	.coin-ico,
+.payment-acc-wrapper .quesIcon {
 	color: #ffffff !important;
 }
 
@@ -287,6 +289,9 @@
 	border-radius: 50%;
 	width: 15px;
 	height: 15px;
+}
+.paymentContainer .orange {
+	background: #f28041;
 }
 
 .paymentContainer .bankDetails {
@@ -435,6 +440,9 @@
 	display: flex;
 	align-items: center;
 }
+.payment-modal-wrapper .noticepad svg {
+	font-size: 35px;
+}
 
 .payment-modal-wrapper .notepad {
 	width: 85%;
@@ -555,7 +563,9 @@
 	height: 17px;
 }
 
-.payment-acc-wrapper .checkbox-content .ant-checkbox-wrapper .gray-txt {
+.payment-acc-wrapper .checkbox-content .ant-checkbox-wrapper .gray-txt,
+.summary-content-wrapper .body-container .fiattable1 .gray-txt,
+.summary-content-wrapper .kyc-table .gray-txt {
 	color: #a5a5a5 !important;
 }
 
@@ -576,6 +586,8 @@
 	border-color: #000000 !important;
 }
 
+.payment-modal-wrapper .green-btn,
+.payment-acc-wrapper .green-btn,
 .add-field-modal .green-btn {
 	background-color: #288500;
 	margin-top: 2rem;
@@ -597,4 +609,55 @@
 }
 .summary-coin .coins-wrapper .coin-ico {
 	color: #000000 !important;
+}
+
+.payment-modal-wrapper .button-wrapper .nxtbtn {
+	width: 100%;
+}
+
+.payment-modal-wrapper .infoStyle svg {
+	width: 35px;
+	height: 45px;
+}
+.payment-modal-wrapper .quesIcon {
+	color: #ffffff;
+	font-size: 25px;
+}
+
+.payment-acc-wrapper .bigques {
+	color: #ffffff;
+	font-size: '30px';
+	margin-right: '10px';
+	margin-left: '20px';
+}
+
+.payment-modal-wrapper .coinSelect .ant-select .ant-select-selector {
+	height: 4rem;
+	width: 200px;
+	border: 1px solid white;
+	color: white;
+	background-color: transparent;
+}
+
+.payment-modal-wrapper .coinSelect .ant-select .ant-select-arrow {
+	color: white;
+	margin-top: 4px;
+}
+
+.summary-content-wrapper .body-container .box-outerDesign .txtpad {
+	padding-right: 5rem;
+	padding-left: 5rem;
+	color: #a5a5a5 !important;
+}
+.summary-content-wrapper .kyc-table .ant-table-tbody,
+.summary-content-wrapper .fiattable1 .ant-table-tbody {
+	height: 25.5rem;
+	background-color: var(--admin_panel_content_background);
+}
+
+.summary-content-wrapper .fiattable .ant-table,
+.summary-content-wrapper .kyc-table1 .ant-table {
+	border: 1px solid #ffffff;
+	height: 28rem;
+	background-color: var(--admin_panel_content_background);
 }

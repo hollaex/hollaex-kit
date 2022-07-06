@@ -362,8 +362,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -379,8 +379,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1373,7 +1373,8 @@ table th {
 .home-page_section-wrapper {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 5rem;
+  padding-top: 148px;
+  padding-bottom: 335px !important;
   max-width: 100rem; }
   .home-page_section-wrapper:not(.main-section-wrapper) {
     padding-top: 5rem;
@@ -1436,36 +1437,41 @@ table th {
 
 .home_carousel_section {
   border-top: 1px var(--calculated_secondary-border) solid;
-  border-bottom: 1px var(--calculated_secondary-border) solid;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem; }
+  border-bottom: 1px var(--calculated_secondary-border) solid; }
   .home_carousel_section .slideshow-wrapper {
-    height: 110px;
+    height: 11rem;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
     transform: translate3d(0, 0, 0); }
   .home_carousel_section .slideshow-wrapper > div {
-    height: 110px;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     transform: translate3d(0, 0, 0); }
   .home_carousel_section .slideshow-wrapper .parent-slider {
-    animation: moveSlideshow 25s linear infinite; }
+    animation: moveSlideshow 50s linear infinite; }
   .home_carousel_section .parent-slider:hover {
     animation-play-state: paused; }
   .home_carousel_section .section {
     opacity: 0.8;
     border-right: 1px solid #60605d;
-    padding-left: 40px;
-    padding-right: 40px; }
+    padding: 1.5rem 30px; }
   .home_carousel_section .section_active {
     opacity: 1;
-    cursor: pointer; }
+    cursor: pointer;
+    background-color: var(--base_wallet-sidebar-and-popup); }
+  .home_carousel_section .height-40 {
+    height: 40px; }
+  .home_carousel_section .trade_tab-pair-title,
+  .home_carousel_section .trade_tab-pair-sub-title,
+  .home_carousel_section .trade_tab-pair-volume {
+    opacity: 0.5; }
+  .home_carousel_section .section_active .trade_tab-pair-title,
+  .home_carousel_section .section_active .trade_tab-pair-sub-title,
+  .home_carousel_section .section_active .trade_tab-pair-volume {
+    opacity: 1; }
 
 @keyframes moveSlideshow {
   100% {
@@ -3219,8 +3225,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3374,7 +3380,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5528,7 +5534,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8246,14 +8252,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -10400,12 +10406,14 @@ table th {
       margin-left: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 23rem;
-        margin-left: 1.5rem; }
+        margin-left: 1.5rem;
+        margin-top: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
         background-repeat: no-repeat;
         margin-left: 1.5rem;
-        width: 7rem; }
+        width: 7rem;
+        height: 100% !important; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: var(--calculated_base_footer_text); }
       .app_footer-container .footer-row-content .footer_separter .blue-link {

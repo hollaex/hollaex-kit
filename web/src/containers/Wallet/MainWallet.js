@@ -25,6 +25,8 @@ class Wallet extends Component {
 		sections: [],
 		mobileTabs: [],
 		isOpen: true,
+		isZeroBalanceHidden:
+			localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
 	};
 
 	componentDidMount() {
@@ -82,7 +84,7 @@ class Wallet extends Component {
 	}
 
 	getSearchResult = (coins, balance, oraclePrices) => {
-		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
+		const { searchValue = '', isZeroBalanceHidden } = this.state;
 
 		const result = {};
 		const searchTerm = searchValue.toLowerCase().trim();
@@ -99,6 +101,15 @@ class Wallet extends Component {
 				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
 			}
 			return key;
+		});
+		return { ...result };
+	};
+
+	getMobileSlider = (coins, oraclePrices) => {
+		const result = {};
+		Object.keys(coins).map((key) => {
+			const temp = coins[key];
+			return (result[key] = { ...temp, oraclePrice: oraclePrices[key] });
 		});
 		return { ...result };
 	};
@@ -189,7 +200,7 @@ class Wallet extends Component {
 						prices={prices}
 						navigate={this.goToPage}
 						coins={coins}
-						searchResult={searchResult}
+						searchResult={this.getMobileSlider(coins, oraclePrices)}
 					/>
 				),
 			},
