@@ -75,8 +75,8 @@ const PaymentWay = ({
 										overlayClassName="admin-general-description-tip general-description-tip-right"
 										title={
 											<img
-												src={STATIC_ICONS.HELP_FOOTER_POPUP}
-												className="help-icon description_footer"
+												src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
+												className="description_footer"
 												alt="footer"
 											/>
 										}
@@ -85,9 +85,7 @@ const PaymentWay = ({
 										<QuestionCircleOutlined className="quesIcon" />
 									</Tooltip>
 								</div>
-							) : (
-								''
-							)}
+							) : null}
 						</div>
 						<div className="d-flex mb-5 ml-1">
 							<img
@@ -104,9 +102,7 @@ const PaymentWay = ({
 									<span className="txtanchor" onClick={() => handleDel(true)}>
 										Delete payment account
 									</span>
-								) : (
-									''
-								)}
+								) : null}
 							</div>
 						</div>
 						<div className="d-flex align-items-center mb-4">
@@ -148,11 +144,11 @@ const PaymentWay = ({
 							<div className="mr-4">On-ramp 1</div>
 						)}
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right fiat-icon"
+							overlayClassName="admin-general-description-tip general-description-tip-right align-bankform-tooltip"
 							title={
 								<img
-									src={STATIC_ICONS.HELP_FOOTER_POPUP}
-									className="help-icon description_footer"
+									src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
+									className="description_footer"
 									alt="footer"
 								/>
 							}
@@ -176,7 +172,6 @@ const PaymentWay = ({
 					</div>
 					<FormConfig
 						initialValues={bankInitialValues}
-						// handleSubmitFooter={this.submitSettings}
 						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
@@ -191,11 +186,11 @@ const PaymentWay = ({
 					<div className="d-flex">
 						<div className="mr-4">User payment account 2</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right fiat-icon"
+							overlayClassName="admin-general-description-tip general-description-tip-right align-bankform-tooltip"
 							title={
 								<img
-									src={STATIC_ICONS.HELP_FOOTER_POPUP}
-									className="help-icon description_footer"
+									src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
+									className="description_footer"
 									alt="footer"
 								/>
 							}
@@ -212,18 +207,13 @@ const PaymentWay = ({
 						/>
 						<div>
 							<b>PayPal</b>
-							<div
-								className="anchor"
-								// onClick={() => handleClose(true, 'delete')}
-								onClick={() => handleDelBank(true)}
-							>
+							<div className="anchor" onClick={() => handleDelBank(true)}>
 								Delete payment account
 							</div>
 						</div>
 					</div>
 					<FormConfig
 						initialValues={paypalInitialValues}
-						// handleSubmitFooter={this.submitSettings}
 						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
@@ -238,11 +228,11 @@ const PaymentWay = ({
 					<div className="d-flex">
 						<div className="mr-4">User payment account 1</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right fiat-icon"
+							overlayClassName="admin-general-description-tip general-description-tip-right align-bankform-tooltip"
 							title={
 								<img
-									src={STATIC_ICONS.HELP_FOOTER_POPUP}
-									className="help-icon description_footer"
+									src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
+									className="description_footer"
 									alt="footer"
 								/>
 							}
@@ -266,7 +256,6 @@ const PaymentWay = ({
 					</div>
 					<FormConfig
 						initialValues={isCustomPay ? {} : customInitialValues}
-						// handleSubmitFooter={this.submitSettings}
 						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
@@ -319,6 +308,8 @@ const PaymentAccounts = ({
 	setConfig = () => {},
 	onRampCoins = [],
 	customName = '',
+	originalonramp = {},
+	offramp = {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -339,6 +330,8 @@ const PaymentAccounts = ({
 	const [currentPaymentType, setCurrentPaymentType] = useState('');
 	const [isCustomPay, setIsCustomPay] = useState(false);
 	const [isOnRampCoins, setIsOnRampCoins] = useState(false);
+	const [paymentMethods, setPaymentMethods] = useState([]);
+	const [isDisplayDetails, setIsDisplayDetails] = useState(false);
 
 	useEffect(() => {
 		if (formType) {
@@ -418,13 +411,30 @@ const PaymentAccounts = ({
 		}
 	}, [currentPaymentType, onramp, user_payments]);
 
+	useEffect(() => {
+		if (
+			formValues &&
+			Object.keys(formValues).length &&
+			currentActiveTab !== 'offRamp'
+		) {
+			let temp = Object.keys(formValues).map((item) => item);
+			setPaymentMethods(temp);
+		}
+	}, [formValues, currentActiveTab]);
+
 	const getConstantData = () => {
 		getConstants()
 			.then((res) => {
-				if (_get(res, 'kit.user_payments')) {
-					setFormValues(_get(res, 'kit.user_payments'));
-					setConfig(res && res.kit);
+				if (currentActiveTab === 'onRamp') {
+					if (_get(res, 'kit.onramp')) {
+						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
+					}
+				} else {
+					if (_get(res, 'kit.user_payments')) {
+						setFormValues(_get(res, 'kit.user_payments'));
+					}
 				}
+				setConfig(res && res.kit);
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -436,11 +446,8 @@ const PaymentAccounts = ({
 		setIsVisible(val);
 		setCurrentTab('payment');
 	};
-	const handleSaveAndPublish = (val, payType, saveMethod) => {
-		setIsVisible(val);
-		setPaymentType('paymentform');
-		setPaymentSelect(payType);
-		setSaveType(saveMethod);
+
+	const updateConstantsData = (bodyData) => {
 		updateConstants(bodyData)
 			.then((res) => {
 				if (res) {
@@ -452,6 +459,15 @@ const PaymentAccounts = ({
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
 			});
+	};
+
+	const handleSaveAndPublish = (val, payType, saveMethod) => {
+		setIsVisible(val);
+		setPaymentType('paymentform');
+		// setPaymentSelect(payType);
+		setSaveType(saveMethod);
+		setIsDisplayDetails(false);
+		updateConstantsData(bodyData);
 	};
 	const handleClose = (val, type = '', formData = {}) => {
 		setIsVisible(val);
@@ -470,7 +486,7 @@ const PaymentAccounts = ({
 							...temp,
 							{
 								key: val?.key,
-								lablel: val?.label || val?.lablel,
+								label: val?.label,
 								value: val?.value || '',
 							},
 						];
@@ -484,7 +500,9 @@ const PaymentAccounts = ({
 			userPayment = {
 				kit: {
 					onramp: {
+						...originalonramp,
 						[coinSymbol]: {
+							...originalonramp[coinSymbol],
 							[currentPaymentType || customName]: onRampData,
 						},
 					},
@@ -505,6 +523,7 @@ const PaymentAccounts = ({
 			userPayment = {
 				kit: {
 					user_payments: {
+						...user_payments,
 						[currentPaymentType]: { data: paymentAccData },
 					},
 				},
@@ -521,6 +540,7 @@ const PaymentAccounts = ({
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
 		setIsOnRampCoins(false);
+		setIsDisplayDetails(true);
 	};
 	const onCancel = () => {
 		setIsVisible(false);
@@ -548,8 +568,40 @@ const PaymentAccounts = ({
 		setSavedContent(true);
 		setIsVisible(false);
 	};
-	const handlePopupDel = () => {
-		setPaymentType('initial');
+	const handlePopupDel = (method) => {
+		let deletedData = {};
+		Object.keys(user_payments).forEach((item) => {
+			if (item !== method)
+				deletedData = {
+					...deletedData,
+					[item]: user_payments[item],
+				};
+		});
+		let deletedBodyData = {
+			kit: {
+				user_payments: deletedData,
+			},
+		};
+		if (currentActiveTab === 'onRamp') {
+			Object.keys(onramp).forEach((item) => {
+				if (item !== method) {
+					deletedData = {
+						...deletedData,
+						[item]: onramp[item],
+					};
+				}
+			});
+
+			deletedBodyData = {
+				kit: {
+					onramp: {
+						[coinSymbol]: deletedData,
+					},
+				},
+			};
+		}
+		updateConstantsData(deletedBodyData);
+		// setPaymentType('initial');
 		setIsVisible(false);
 	};
 	const handleEdit = () => {
@@ -557,10 +609,19 @@ const PaymentAccounts = ({
 	};
 	const setPaymentMethod = (e) => {
 		setPaymentSelect(e);
+		setIsDisplayDetails(false);
+		setIsDisplayForm(false);
 	};
 	const handleOpenPayment = () => {
 		setIsOpen(!isOpen);
 	};
+
+	let formValuesData = formValues;
+	let paymentMethodsData = paymentMethods;
+	if (currentActiveTab === 'offRamp') {
+		formValuesData = Object.keys(offramp).map((item) => offramp[item]);
+		paymentMethodsData = Object.keys(offramp).map((item) => offramp[item]);
+	}
 
 	return (
 		<div className="payment-acc-wrapper">
@@ -587,11 +648,11 @@ const PaymentAccounts = ({
 											verification section.
 										</div>
 										<Tooltip
-											overlayClassName="admin-general-description-tip general-description-tip-right"
+											overlayClassName="admin-general-description-tip general-description-tip-right align-pay-tooltip"
 											title={
 												<img
 													src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
-													className="help-icon description_footer"
+													className="description_footer"
 													alt="footer"
 												/>
 											}
@@ -619,37 +680,7 @@ const PaymentAccounts = ({
 						<div className="border-divider"></div>
 					</div>
 				) : null}
-				{payOption && (
-					<div className="mt-4">
-						<div>
-							Payment accounts ({Object.keys(formValues).length} method saved)
-						</div>
-						<div className="mb-3">
-							<Select
-								className="paymentSelect"
-								defaultValue={'bank'}
-								suffixIcon={
-									isOpen ? (
-										<CaretDownOutlined className="downarrow" />
-									) : (
-										<CaretUpOutlined className="downarrow" />
-									)
-								}
-								onClick={handleOpenPayment}
-								onChange={setPaymentMethod}
-							>
-								{Object.keys(formValues).map((item, index) => {
-									return (
-										<Option value={item} key={index}>
-											User payment account {index + 1}: {item}
-										</Option>
-									);
-								})}
-							</Select>
-						</div>
-					</div>
-				)}
-				{!isUpgrade ? (
+				{!isUpgrade && currentActiveTab === 'paymentAccounts' ? (
 					<div className="d-flex mt-3 ml-4">
 						<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
 							<div>
@@ -672,6 +703,84 @@ const PaymentAccounts = ({
 						</div>
 					</div>
 				) : null}
+				<div className={!isUpgrade ? 'disableall' : ''}>
+					{payOption && (
+						<div className="mt-4">
+							<div>
+								Payment accounts ({paymentMethodsData.length} method saved)
+							</div>
+							<div className="mb-3">
+								{paymentMethodsData.length ? (
+									<Select
+										className="paymentSelect"
+										defaultValue={paymentMethodsData[0]}
+										suffixIcon={
+											isOpen ? (
+												<CaretDownOutlined className="downarrow" />
+											) : (
+												<CaretUpOutlined className="downarrow" />
+											)
+										}
+										onClick={handleOpenPayment}
+										onChange={setPaymentMethod}
+									>
+										{Object.keys(formValuesData).map((item, index) => {
+											const value =
+												currentActiveTab === 'offRamp'
+													? formValuesData[item]
+													: item;
+											return (
+												<Option value={value} key={index}>
+													User payment account {index + 1}: {value}
+												</Option>
+											);
+										})}
+									</Select>
+								) : null}
+							</div>
+						</div>
+					)}
+				</div>
+			</div>
+			<div className={!isUpgrade ? 'disableall' : ''}>
+				{isDisplayForm && !isOnRampCoins && (
+					<PaymentWay
+						paymenttype={paymenttype}
+						handleClosePlugin={handleClosePlugin}
+						handleSave={handleSave}
+						savedContent={savedContent}
+						handleEdit={handleEdit}
+						pluginName={pluginName}
+						handleDel={handleDel}
+						isUpgrade={isUpgrade}
+						handleDelBank={handleDelBank}
+						paymentSelect={paymentSelect}
+						handleClose={handleClose}
+						saveType={saveType}
+						formData={formData}
+						router={router}
+						formUpdate={formUpdate}
+						currentActiveTab={currentActiveTab}
+						bankInitialValues={bankInitialValues}
+						paypalInitialValues={paypalInitialValues}
+						customInitialValues={customInitialValues}
+						currentPaymentType={currentPaymentType}
+						isCustomPay={isCustomPay}
+						customName={customName}
+					/>
+				)}
+				{payOption && !isDisplayDetails && (
+					<PaymentDetails
+						type={paymentSelect}
+						formUpdate={formUpdate}
+						saveType={saveType}
+						handleClose={handleClose}
+						formData={formData}
+						router={router}
+						user_payments={formValues}
+						activeTab={currentActiveTab}
+					/>
+				)}
 			</div>
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
@@ -691,46 +800,6 @@ const PaymentAccounts = ({
 					coinSymbol={coinSymbol}
 				/>
 			</Modal>
-			{/* {isDisplayForm || !payOption && */}
-			{isDisplayForm && !isOnRampCoins && (
-				<PaymentWay
-					paymenttype={paymenttype}
-					handleClosePlugin={handleClosePlugin}
-					handleSave={handleSave}
-					savedContent={savedContent}
-					handleEdit={handleEdit}
-					pluginName={pluginName}
-					handleDel={handleDel}
-					isUpgrade={isUpgrade}
-					handleDelBank={handleDelBank}
-					paymentSelect={paymentSelect}
-					handleClose={handleClose}
-					saveType={saveType}
-					formData={formData}
-					router={router}
-					formUpdate={formUpdate}
-					currentActiveTab={currentActiveTab}
-					bankInitialValues={bankInitialValues}
-					paypalInitialValues={paypalInitialValues}
-					customInitialValues={customInitialValues}
-					currentPaymentType={currentPaymentType}
-					isCustomPay={isCustomPay}
-					customName={customName}
-				/>
-			)}
-			{/* {payOption && !isDisplayForm && */}
-			{payOption && (
-				<PaymentDetails
-					type={paymentSelect}
-					formUpdate={formUpdate}
-					saveType={saveType}
-					handleClose={handleClose}
-					formData={formData}
-					router={router}
-					user_payments={formValues}
-					activeTab={currentActiveTab}
-				/>
-			)}
 		</div>
 	);
 };

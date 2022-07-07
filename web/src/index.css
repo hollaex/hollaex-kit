@@ -1264,6 +1264,13 @@ table th {
     .layout-mobile .html_card_section .card-section-wrapper .card-section .header_txt {
       font-size: 14px; }
 
+.layout-mobile .home-page_section-wrapper {
+  padding-top: 60px !important;
+  padding-bottom: 75px !important; }
+
+.layout-mobile .home_carousel_section .slideshow-wrapper {
+  height: 12rem; }
+
 .home_container {
   background-repeat: no-repeat;
   background-size: cover; }
@@ -1373,7 +1380,8 @@ table th {
 .home-page_section-wrapper {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 5rem;
+  padding-top: 148px;
+  padding-bottom: 335px !important;
   max-width: 100rem; }
   .home-page_section-wrapper:not(.main-section-wrapper) {
     padding-top: 5rem;
@@ -1436,36 +1444,44 @@ table th {
 
 .home_carousel_section {
   border-top: 1px var(--calculated_secondary-border) solid;
-  border-bottom: 1px var(--calculated_secondary-border) solid;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem; }
+  border-bottom: 1px var(--calculated_secondary-border) solid; }
   .home_carousel_section .slideshow-wrapper {
-    height: 110px;
+    height: 11rem;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
     transform: translate3d(0, 0, 0); }
   .home_carousel_section .slideshow-wrapper > div {
-    height: 110px;
     position: absolute;
     top: 0;
     left: 0;
     height: 100%;
     transform: translate3d(0, 0, 0); }
   .home_carousel_section .slideshow-wrapper .parent-slider {
-    animation: moveSlideshow 25s linear infinite; }
+    animation: moveSlideshow 50s linear infinite; }
   .home_carousel_section .parent-slider:hover {
     animation-play-state: paused; }
   .home_carousel_section .section {
     opacity: 0.8;
     border-right: 1px solid #60605d;
-    padding-left: 40px;
-    padding-right: 40px; }
+    padding: 1.5rem 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
   .home_carousel_section .section_active {
     opacity: 1;
-    cursor: pointer; }
+    cursor: pointer;
+    background-color: var(--base_wallet-sidebar-and-popup); }
+  .home_carousel_section .height-40 {
+    height: 40px; }
+  .home_carousel_section .trade_tab-pair-title,
+  .home_carousel_section .trade_tab-pair-sub-title,
+  .home_carousel_section .trade_tab-pair-volume {
+    opacity: 0.5; }
+  .home_carousel_section .section_active .trade_tab-pair-title,
+  .home_carousel_section .section_active .trade_tab-pair-sub-title,
+  .home_carousel_section .section_active .trade_tab-pair-volume {
+    opacity: 1; }
 
 @keyframes moveSlideshow {
   100% {
@@ -1487,7 +1503,9 @@ table th {
     .home_container .html_card_section .card-section-wrapper {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
-        font-size: 14px; } }
+        font-size: 14px; }
+  .home_container .home_carousel_section .section {
+    padding: 0 30px !important; } }
 
 @media (max-width: 1199px) {
   .home_container .html_card_section {

@@ -25,7 +25,7 @@ const Fiatmarkets = ({
 
 	useEffect(() => {
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
-			setIsUpgrade(false);
+			setIsUpgrade(true);
 		}
 	}, [exchange]);
 
@@ -69,6 +69,7 @@ const Fiatmarkets = ({
 						activeTab={activeTab}
 						user_payments={user_payments}
 						onramp={onramp}
+						offramp={offramp}
 						setConfig={setConfig}
 					/>
 				</TabPane>

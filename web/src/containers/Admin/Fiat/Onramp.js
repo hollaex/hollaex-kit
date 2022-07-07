@@ -137,7 +137,7 @@ const Onramp = ({
 										: 'Add an off-ramp to allow your users a way to withdraw fiat.'}
 								</div>
 								<Tooltip
-									overlayClassName="admin-general-description-tip general-description-tip-right"
+									overlayClassName="admin-general-description-tip general-description-tip-right align-onramp-tooltip"
 									title={
 										<img
 											src={
@@ -145,7 +145,7 @@ const Onramp = ({
 													? STATIC_ICONS.FIAT_ONRAMP_TOOLTIP
 													: STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP
 											}
-											className="help-icon description_footer"
+											className="description_footer"
 											alt="footer"
 										/>
 									}
@@ -159,6 +159,7 @@ const Onramp = ({
 					<Button
 						type="primary"
 						className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
+						disabled={activeTab === 'offRamp' ? true : false}
 						onClick={() =>
 							handleRamp(activeTab === 'onRamp' ? 'onramp' : 'offramp', true)
 						}
@@ -256,6 +257,7 @@ const Onramp = ({
 										<Button
 											type="primary"
 											className="green-btn ml-5"
+											disabled={true}
 											onClick={() =>
 												handleRamp(
 													'offramp',
@@ -269,17 +271,20 @@ const Onramp = ({
 										</Button>
 									)}
 								</div>
-								{(isPaymentForm && activeTab === 'onRamp') ||
-								item?.symbol === coinSymbol ? (
+								{/* {(isPaymentForm && activeTab === 'onRamp') || item?.symbol === coinSymbol ? ( */}
+								{isPaymentForm ? (
 									<PaymentAccounts
 										formType={formType}
 										isDisplayFormData={true}
 										onramp={onramp[item?.symbol]}
 										currentActiveTab={activeTab}
 										coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
-										onRampCoins={Object.keys(onramp)}
+										onRampCoins={!isPaymentForm ? Object.keys(onramp) : []}
 										customName={customName}
-										user_payments={{}}
+										user_payments={activeTab === 'offRamp' ? user_payments : {}}
+										isUpgrade={isUpgrade}
+										originalonramp={onramp}
+										offramp={offramp[item?.symbol]}
 									/>
 								) : null}
 								<div className="border-divider"></div>
