@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import { reduxForm, SubmissionError } from 'redux-form';
 import renderFields from 'components/Form/factoryFields';
-import { EditWrapper, Button, IconTitle, HeaderSection, Tab } from 'components';
+import {
+	EditWrapper,
+	Button,
+	IconTitle,
+	HeaderSection,
+	Tab,
+	CustomMobileTabs,
+} from 'components';
 import STRINGS from 'config/localizedStrings';
 import { verifyUserPayment } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
@@ -100,7 +108,7 @@ class UserPaymentVerification extends Component {
 		return (
 			<div
 				className={classnames(
-					'custom-tab-wrapper d-flex flex-nowrap flex-row justify-content-start'
+					'custom-tab-wrapper d-flex flex-wrap flex-row justify-content-start'
 				)}
 			>
 				{Object.entries(tabs).map(([key, data]) => {
@@ -118,6 +126,45 @@ class UserPaymentVerification extends Component {
 					return (
 						<div {...tabProps}>
 							<Tab {...data} />
+						</div>
+					);
+				})}
+			</div>
+		);
+	};
+
+	renderMobileTabs = () => {
+		const { tabs, activeTab, formFields } = this.state;
+		const { setActiveTab } = this;
+
+		return (
+			<div>
+				{Object.entries(tabs).map(([key, data]) => {
+					const tabProps = {
+						key: `tab_item-${key}`,
+						className: classnames('mobile_tab-wrapper', {
+							active_mobile_tab: key === activeTab,
+							mobile_tab_last: key === Object.keys(tabs).length - 1,
+							'mobile_tab_last-active':
+								key === tabs.length - 1 && key === activeTab,
+							pointer: setActiveTab,
+						}),
+					};
+					if (setActiveTab) {
+						tabProps.onClick = () => {
+							if (key !== activeTab) {
+								setActiveTab(key);
+							}
+						};
+					}
+					return (
+						<div {...tabProps}>
+							<CustomMobileTabs title={data.title} icon={data.icon} />
+							{key === activeTab && (
+								<div className="inner_container py-4">
+									{activeTab && renderFields(formFields)}
+								</div>
+							)}
 						</div>
 					);
 				})}
@@ -154,30 +201,19 @@ class UserPaymentVerification extends Component {
 							openContactForm={openContactForm}
 						>
 							<div className="my-2">
-								<EditWrapper stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT">
-									{STRINGS['USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT']}
+								<EditWrapper stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT_1">
+									{STRINGS['USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT_1']}
 								</EditWrapper>
 							</div>
-							<ul className="pl-4">
-								<li className="my-1">
-									<EditWrapper stringId="USER_VERIFICATION.BASE_WITHDRAWAL">
-										{STRINGS['USER_VERIFICATION.BASE_WITHDRAWAL']}
-									</EditWrapper>
-								</li>
-								<li className="my-1">
-									<EditWrapper stringId="USER_VERIFICATION.BASE_DEPOSITS">
-										{STRINGS['USER_VERIFICATION.BASE_DEPOSITS']}
-									</EditWrapper>
-								</li>
-								<li className="my-1">
-									<EditWrapper stringId="USER_VERIFICATION.WARNING.LIST_ITEM_3">
-										{STRINGS['USER_VERIFICATION.WARNING.LIST_ITEM_3']}
-									</EditWrapper>
-								</li>
-							</ul>
+
+							<div className="my-2">
+								<EditWrapper stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT_2">
+									{STRINGS['USER_VERIFICATION.PAYMENT_VERIFICATION_TEXT_2']}
+								</EditWrapper>
+							</div>
 						</HeaderSection>
-						{this.renderTabs()}
-						{renderFields(formFields)}
+						{!isMobile ? this.renderTabs() : this.renderMobileTabs()}
+						{!isMobile && renderFields(formFields)}
 						{error && (
 							<div className="warning_text">{getErrorLocalized(error)}</div>
 						)}

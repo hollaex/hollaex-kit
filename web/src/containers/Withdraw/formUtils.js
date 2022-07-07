@@ -115,19 +115,31 @@ export const generateFormValues = (
 	let fee;
 	let fee_coin;
 	let fee_type;
+	let min_fee;
+	let max_fee;
 	if (
 		withdrawal_fees &&
 		selectedNetwork &&
 		withdrawal_fees[selectedNetwork] &&
 		!isEmail
 	) {
-		const { value, symbol, type = 'static', levels } = withdrawal_fees[
-			selectedNetwork
-		];
+		const {
+			value,
+			symbol,
+			type = 'static',
+			levels,
+			min,
+			max,
+		} = withdrawal_fees[selectedNetwork];
 		fee_type = type;
 
 		if (type === 'static') {
 			fee_coin = symbol;
+		}
+
+		if (type === 'percentage') {
+			min_fee = min;
+			max_fee = max;
 		}
 
 		if (levels && levels[verification_level]) {
@@ -263,7 +275,9 @@ export const generateFormValues = (
 			amountValidate.push(checkBalance(available, fullname, 0));
 			amountValidate.push(checkFee(availableFeeBalance, feeFullname, fee));
 		} else {
-			amountValidate.push(checkBalance(available, fullname, fee, fee_type));
+			amountValidate.push(
+				checkBalance(available, fullname, fee, fee_type, min_fee, max_fee)
+			);
 		}
 
 		fields.amount = {

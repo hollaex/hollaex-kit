@@ -30,6 +30,7 @@ import {
 } from '../Wallet/components';
 
 import { FORM_NAME } from './form';
+import { limitNumberWithinRange } from 'utils/math';
 
 class Withdraw extends Component {
 	state = {
@@ -223,11 +224,13 @@ class Withdraw extends Component {
 			config_level = {},
 			fee_coin,
 			fee_type,
+			selectedNetwork,
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit, withdrawal_fees = {} } =
+			coins[currency] || DEFAULT_COIN_DATA;
 		const isPercentage = fee_type === 'percentage';
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
@@ -237,6 +240,13 @@ class Withdraw extends Component {
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
 		let amount = 0;
+		let min;
+		let max;
+
+		if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
+			min = withdrawal_fees[selectedNetwork].min;
+			max = withdrawal_fees[selectedNetwork].max;
+		}
 
 		if (fee_coin && fee_coin !== currency && !isPercentage) {
 			amount = math.number(math.fraction(balanceAvailable));
@@ -250,39 +260,44 @@ class Withdraw extends Component {
 				amount = math.number(math.fraction(withdrawal_limit));
 			}
 		} else {
-			amount = isPercentage
-				? math.number(
-						math.divide(
-							math.fraction(balanceAvailable),
-							math.add(math.fraction(selectedFee), 1)
+			let max_allowed = balanceAvailable;
+			if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
+				max_allowed = math.min(math.number(withdrawal_limit), balanceAvailable);
+			}
+
+			if (isPercentage) {
+				amount = math.number(
+					math.divide(
+						math.fraction(max_allowed),
+						math.add(
+							math.fraction(math.divide(math.fraction(selectedFee), 100)),
+							1
 						)
-				  )
-				: math.number(
-						math.subtract(
-							math.fraction(balanceAvailable),
-							math.fraction(selectedFee)
-						)
-				  );
+					)
+				);
+
+				const calculatedFee = limitNumberWithinRange(
+					math.multiply(
+						math.fraction(amount),
+						math.fraction(math.divide(math.fraction(selectedFee), 100))
+					),
+					min,
+					max
+				);
+				amount = math.number(
+					math.subtract(
+						math.fraction(max_allowed),
+						math.fraction(calculatedFee)
+					)
+				);
+			} else {
+				amount = math.number(
+					math.subtract(math.fraction(max_allowed), math.fraction(selectedFee))
+				);
+			}
+
 			if (amount < 0) {
 				amount = 0;
-			} else if (
-				math.larger(amount, math.number(withdrawal_limit)) &&
-				withdrawal_limit !== 0 &&
-				withdrawal_limit !== -1
-			) {
-				amount = isPercentage
-					? math.number(
-							math.divide(
-								math.fraction(withdrawal_limit),
-								math.add(math.fraction(selectedFee), 1)
-							)
-					  )
-					: math.number(
-							math.subtract(
-								math.fraction(withdrawal_limit),
-								math.fraction(selectedFee)
-							)
-					  );
 			}
 		}
 

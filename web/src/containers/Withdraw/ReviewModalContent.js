@@ -11,7 +11,7 @@ import {
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { getNetworkNameByKey } from 'utils/wallet';
-
+import { limitNumberWithinRange } from 'utils/math';
 import STRINGS from 'config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
@@ -42,7 +42,7 @@ const ReviewModalContent = ({
 	icons: ICONS,
 	hasDestinationTag,
 }) => {
-	const { min, fullname, display_name } =
+	const { min, fullname, display_name, withdrawal_fees } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
@@ -51,9 +51,23 @@ const ReviewModalContent = ({
 	const hasDifferentFeeCoin =
 		!isPercentage && fee_coin && fee_coin !== currency;
 
+	let min_fee;
+	let max_fee;
+	if (withdrawal_fees && withdrawal_fees[data.network]) {
+		min_fee = withdrawal_fees[data.network].min;
+		max_fee = withdrawal_fees[data.network].max;
+	}
+
 	const fee = isPercentage
-		? math.number(
-				math.multiply(math.fraction(data.amount), math.fraction(data.fee || 0))
+		? limitNumberWithinRange(
+				math.number(
+					math.multiply(
+						math.fraction(data.amount),
+						math.fraction(math.divide(math.fraction(data.fee), 100) || 0)
+					)
+				),
+				min_fee,
+				max_fee
 		  )
 		: data.fee
 		? data.fee

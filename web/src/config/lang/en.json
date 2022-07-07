@@ -417,11 +417,12 @@
 			"LIST_ITEM_2": "Increased deposits limits",
 			"LIST_ITEM_3": "Lower fees"
 		},
-		"TITLE_PAYMENT": "Cash out / withdrawal system",
-		"PAYMENT_VERIFICATION": "Withdrawal Verification",
-		"START_PAYMENT_VERIFICATION": "Start Bank Verification",
-		"PAYMENT_VERIFICATION_TEXT": "Add a withdrawal method so that you can cash out fiat currencies. Once you've added your withdrawal details below (bank, or other payment systems) you will obtain the follow:",
-		"ADD_ANOTHER_PAYMENT_METHOD": "ADD ANOTHER WITHDRAW METHOD",
+		"TITLE_PAYMENT": "Add payment methods",
+		"PAYMENT_VERIFICATION": "Payment Verification",
+		"START_PAYMENT_VERIFICATION": "Start Verification",
+		"PAYMENT_VERIFICATION_TEXT_1": "Add your payment account details below.",
+		"PAYMENT_VERIFICATION_TEXT_2": "After they have been verified your account will gain more withdrawal and deposit methods for various currencies.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "ADD ANOTHER PAYMENT METHOD",
 		"PAYMENT_VERIFICATION_HELP_TEXT": "In order for this section to be verified you must complete the {0} section."
 	},
 	"USER_SETTINGS": {
@@ -1225,7 +1226,7 @@
 	"VERIFY_BANK_WITHDRAW": "In order to make a withdrawal you are required to complete your verification which includes verification of your bank details. Please click the proceed button below.",
 	"VERIFICATION_TITLE": "Complete verification",
 	"WITHDRAW_NOTE": "Please note: You can only withdraw to an account in your name.",
-	"USER_PAYMENT": { "TITLE": "Withdrawal" },
+	"USER_PAYMENT": { "TITLE": "Payments" },
 	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Please check your order and confirm it below.",
 	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Amount to receive are estimates and aren't inclusive of the trading fee",
 	"ORDER_EXPIRED_MSG": "Order expired. Please refresh!",
