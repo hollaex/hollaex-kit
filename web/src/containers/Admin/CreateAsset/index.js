@@ -20,7 +20,8 @@ import EditAsset from './EditAsset';
 import BurnModal from './Burn';
 import CoinLimited from './CoinLimited';
 import WithdrawalFee from './WithdrawalFee';
-
+import { requestTiers } from '../Tiers/action.js';
+import WithDrawTiers from './WithdrawalTiers';
 import './index.css';
 
 export const default_coin_data = {
@@ -59,10 +60,29 @@ class CreateAsset extends Component {
 			savePresetAsset: false,
 			isPresentCoin: false,
 			selectedCoinSymbol: '',
+			userTiers: {},
+			feeData: {},
+			withdrawalFees: _cloneDeep(this.props.editAsset?.withdrawal_fees),
+			selectedTier: '',
+			confirm: true,
+			selectedTierValues: {},
+			keyType: null,
+			currentCoins: {},
 		};
 	}
 
 	componentDidMount() {
+		this.getTiers();
+		let constructedData = {};
+		if (this.props.editAsset?.withdrawal_fees) {
+			Object.keys(this.props.editAsset?.withdrawal_fees).forEach((data) => {
+				constructedData = {
+					...constructedData,
+					[data]: this.props.editAsset?.withdrawal_fees[data].levels,
+				};
+			});
+		}
+		this.setState({ currentCoins: constructedData });
 		if (this.props.coins && this.props.coins.length) {
 			this.setCurrentPageAssets(this.state.activeTab);
 		}
@@ -86,6 +106,28 @@ class CreateAsset extends Component {
 		}
 	}
 
+	getTiers = () => {
+		requestTiers()
+			.then((res) => {
+				this.setState({
+					userTiers: { ...res },
+				});
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	handleTierValues = (selectedTierValues, sel) => {
+		let temp = {
+			...this.state.withdrawalFees,
+			[sel]: {
+				...this.state.withdrawalFees[sel],
+				levels: selectedTierValues,
+			},
+		};
+		this.setState({ selectedTierValues, withdrawalFees: temp });
+	};
 	setCurrentPageAssets = (activeKey) => {
 		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
 		// const coinKeys = exchangeCoins.map((data) => data.symbol);
@@ -185,28 +227,30 @@ class CreateAsset extends Component {
 	};
 
 	handleWithdrawalFeeChange = (asset, value, key, name) => {
-		const coinFormData = {
-			...this.state.coinFormData,
-			[name]: {
-				...this.state.coinFormData.withdrawal_fees,
-				[asset]: {
-					...this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value,
+		if (this.state.coinFormData.withdrawal_fees) {
+			const coinFormData = {
+				...this.state.coinFormData,
+				[name]: {
+					...this.state.coinFormData.withdrawal_fees,
+					[asset]: {
+						...this.state.coinFormData.withdrawal_fees[asset],
+						[key]: value,
+					},
 				},
-			},
-		};
-		this.setState({
-			[name]: {
-				...this.state.coinFormData.withdrawal_fees,
-				[asset]: {
-					...this.state.coinFormData.withdrawal_fees[asset],
-					[key]: value,
+			};
+			this.setState({
+				[name]: {
+					...this.state.coinFormData.withdrawal_fees,
+					[asset]: {
+						...this.state.coinFormData.withdrawal_fees[asset],
+						[key]: value,
+					},
 				},
-			},
-			coinFormData,
-		});
-		this.props.handleEditDataCallback(coinFormData);
-		this.props.updateFormData(name, value);
+				coinFormData,
+			});
+			this.props.handleEditDataCallback(coinFormData);
+			this.props.updateFormData(name, value);
+		}
 	};
 
 	handleSymbolChange = (asset, value, key, name) => {
@@ -237,7 +281,8 @@ class CreateAsset extends Component {
 		this.props.updateFormData(name, value);
 	};
 
-	handleScreenChange = (screen) => {
+	handleScreenChange = (screen, selectedTier = '', keyType) => {
+		this.setState({ selectedTier, keyType });
 		if (screen === 'final') {
 			this.props.handleWidth(650);
 		} else {
@@ -384,7 +429,10 @@ class CreateAsset extends Component {
 		this.setState({ activeTab });
 	};
 
-	handleNext = () => {
+	handleNext = (selectedTier, tierValues = {}) => {
+		this.setState({
+			currentCoins: { ...this.state.currentCoins, [selectedTier]: tierValues },
+		});
 		const { id, type } = this.state.coinFormData || {};
 		if (this.state.currentScreen === 'step1') {
 			if (id) {
@@ -472,6 +520,9 @@ class CreateAsset extends Component {
 			this.handleScreenChange('final');
 		} else if (this.state.currentScreen === 'coin-pro') {
 			this.handleConfirmation();
+		} else if (this.state.currentScreen === 'step18') {
+			this.handleScreenChange('edit_withdrawal_fees');
+			this.setState({ confirm: true });
 		}
 	};
 
@@ -524,6 +575,8 @@ class CreateAsset extends Component {
 			activeTab,
 			isPresentCoin,
 			selectedCoinSymbol,
+			currentCoins = [],
+			selectedTier = '',
 		} = this.state;
 
 		switch (currentScreen) {
@@ -730,6 +783,9 @@ class CreateAsset extends Component {
 						isWithdrawalEdit={this.props.isWithdrawalEdit}
 						handleWithdrawalFeeChange={this.handleWithdrawalFeeChange}
 						handleSymbolChange={this.handleSymbolChange}
+						confirm={this.state.confirm}
+						tierValues={currentCoins}
+						assetType={this.props.assetType}
 					/>
 				);
 			case 'update_confirm':
@@ -748,6 +804,25 @@ class CreateAsset extends Component {
 							Close
 						</Button>
 					</div>
+				);
+			case 'step18':
+				return (
+					<WithDrawTiers
+						handleClose={this.props.onClose}
+						handleScreenChange={this.handleScreenChange}
+						isWithdrawalEdit={this.props.isWithdrawalEdit}
+						handleWithdrawalFeeChange={this.handleWithdrawalFeeChange}
+						withdrawalFees={this.state.withdrawalFees}
+						handleSymbolChange={this.handleSymbolChange}
+						handleNext={this.handleNext}
+						userTiers={this.state.userTiers}
+						feeData={this.state.feeData}
+						selectedTier={selectedTier}
+						handleTierValues={this.handleTierValues}
+						tierValues={this.state.selectedTierValues}
+						keyType={this.state.keyType}
+						assetType={this.props.assetType}
+					/>
 				);
 			case 'step1':
 			default:

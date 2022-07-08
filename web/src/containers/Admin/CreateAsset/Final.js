@@ -31,7 +31,12 @@ const Final = ({
 	exchange = {},
 	constants = {},
 }) => {
-	const { meta = {}, type, withdrawal_fees } = coinFormData;
+	const {
+		meta = {},
+		type,
+		withdrawal_fees = {},
+		deposit_fees = {},
+	} = coinFormData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const tabParams = getTabParams();
@@ -52,12 +57,13 @@ const Final = ({
 		}
 	};
 
-	const renderNetworkFee = ([key, data]) => {
+	const renderNetworkFee = ([key, data], index) => {
 		const { symbol: assetSymbol } = coinFormData;
 		const { symbol, type } = data;
 		const network = getNetworkLabelByKey(key);
 		const symbolBasedFields = getSymbolBasedFields(type);
 		const unit = type === 'percentage' ? assetSymbol : symbol;
+		const keyArr = Object.keys(withdrawal_fees).length;
 
 		return (
 			<div key={key} className="pb-3">
@@ -94,6 +100,9 @@ const Final = ({
 							);
 						}
 					})}
+					{keyArr > 1 && index === 0 ? (
+						<div className="border-separator"></div>
+					) : null}
 				</Fragment>
 			</div>
 		);
@@ -379,9 +388,9 @@ const Final = ({
 						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
-									className="green-btn"
+									className="green-btn mb-3"
 									type="primary"
-									onClick={handleWithdrawalEdit}
+									onClick={() => handleWithdrawalEdit('withdraw')}
 									disabled={!isOwner}
 								>
 									Edit
@@ -406,6 +415,42 @@ const Final = ({
 						)}
 					</div>
 				)}
+				<div className="preview-detail-container">
+					<div className="title">Deposit Fee</div>
+					{deposit_fees ? (
+						<div>
+							<div>{renderFees(deposit_fees)}</div>
+							{isConfigure && (
+								<div className="btn-wrapper">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={() => handleWithdrawalEdit('deposit')}
+										disabled={!isOwner}
+									>
+										Edit
+									</Button>
+								</div>
+							)}
+						</div>
+					) : (
+						<div>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+							{isConfigure && (
+								<div className="btn-wrapper">
+									<Button
+										className="green-btn"
+										type="primary"
+										onClick={handleWithdrawalEdit}
+										disabled={!isOwner}
+									>
+										Edit
+									</Button>
+								</div>
+							)}
+						</div>
+					)}
+				</div>
 				{(tabParams?.isFiat === 'onRamp' ||
 					tabParams?.isFiat === 'offRamp') && (
 					<div>

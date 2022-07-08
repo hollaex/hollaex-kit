@@ -326,12 +326,25 @@ class GeneralContent extends Component {
 		let formValues = {};
 		if (formKey === 'email_distribution') {
 			formValues = {};
-			if (formProps.audit) {
-				formValues.secrets = {
-					emails: {
-						audit: formProps.audit,
-					},
-				};
+			let compareValues = initialEmailValues.distribution || {};
+			if (formProps.audit || formProps.send_email_to_support) {
+				if (compareValues.audit !== formProps.audit) {
+					formValues.secrets = {
+						emails: {
+							audit: formProps.audit,
+						},
+					};
+				}
+				if (
+					compareValues.send_email_to_support !==
+					formProps.send_email_to_support
+				) {
+					formValues.secrets = {
+						emails: {
+							send_email_to_support: formProps.send_email_to_support,
+						},
+					};
+				}
 			}
 		} else if (formKey === 'email_configuration') {
 			formValues = {};
