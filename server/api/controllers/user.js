@@ -1037,7 +1037,7 @@ const addUserBank = (req, res) =>  {
 
 			// });
 
-			each(toolsLib.getKitConfig().user_payments[data.type].data, (required, key) => {
+			each(toolsLib.getKitConfig().user_payments[data.type].data, ({ required, key }) => {
 				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
 					throw new Error (`Missing field: ${key}`);
 				}
