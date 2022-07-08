@@ -51,6 +51,7 @@ const PaymentAccountPopup = ({
 	paymentSelectData,
 	currentActiveTab = '',
 	handleOffRampProceed,
+	selectedPlugin = '',
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -89,8 +90,8 @@ const PaymentAccountPopup = ({
 
 	const renderSelect = (type) => {
 		return (
-			<div className="mt-4">
-				<div>Fiat coins:</div>
+			<div className="mt-4 d-flex align-items-center">
+				<div className="mr-3">Fiat coins:</div>
 				<div className="coinSelect">
 					<Select
 						onChange={(e) => handleSelectCoin(e, type)}
@@ -133,10 +134,7 @@ const PaymentAccountPopup = ({
 		handleClosePlugin(false);
 		formUpdate('customForm', plugin, true);
 	};
-	const handlePlugin = () => {
-		tabUpdate('sysname');
-		setPaymentSelect('bank');
-	};
+
 	const handleProceed = () => {
 		if (paymentSelect === 'bank') {
 			handleClosePlugin(false);
@@ -182,18 +180,15 @@ const PaymentAccountPopup = ({
 							Proceed
 						</Button>
 					</div>
-					<div className="mt-4 text-align-center small-txt">
-						<div>
-							Do you have programmatic access (APIs) to payment system or plan
-							on getting one?
-						</div>
-						<div onClick={() => handlePlugin()}>
-							Try <span className="anchor">adding a plugin</span>.
-						</div>
-					</div>
 				</div>
 			);
 		case 'account':
+			let imgSrc = STATIC_ICONS.FIAT_PAYMENT_TOOLTIP;
+			if (activeTab === 'onRamp') {
+				imgSrc = STATIC_ICONS.FIAT_ONRAMP_TOOLTIP;
+			} else if (activeTab === 'offRamp') {
+				imgSrc = STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP;
+			}
 			return (
 				<div className="payment-modal-wrapper">
 					<div className="d-flex align-items-center ">
@@ -253,13 +248,9 @@ const PaymentAccountPopup = ({
 							section.
 						</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right"
+							overlayClassName="admin-general-description-tip general-description-tip-right align-popup-tooltip"
 							title={
-								<img
-									src={STATIC_ICONS.HELP_FOOTER_POPUP}
-									className="description_footer"
-									alt="footer"
-								/>
+								<img src={imgSrc} className="description_footer" alt="footer" />
 							}
 							placement="right"
 						>
@@ -295,7 +286,7 @@ const PaymentAccountPopup = ({
 								user and should be a recognizable system.
 							</div>
 							<div className="mb-3">
-								<b>Payment system name</b>
+								<b>Plugin on-ramp system name</b>
 							</div>
 						</>
 					) : (
@@ -307,9 +298,9 @@ const PaymentAccountPopup = ({
 									className="add-pay-icon2 mb-4 mr-2"
 								/>
 								<div>
-									<h3 className="syshead">Payment system name</h3>
+									<h3 className="syshead">On-ramp system name</h3>
 									<p className="plugintxt">
-										Please name the plugin based payment system.
+										Please name the plugin on-ramp payment system.
 									</p>
 								</div>
 							</div>
@@ -360,7 +351,7 @@ const PaymentAccountPopup = ({
 				<div className="payment-modal-wrapper">
 					<h3>Save</h3>
 					<div>
-						Please check that the plugin payment details below are correct.
+						Please check that the plugin on-ramp details below are correct.
 					</div>
 					<div className="d-flex mt-5 mb-5 ml-1">
 						<img
@@ -369,9 +360,9 @@ const PaymentAccountPopup = ({
 							className="pay-icon"
 						/>
 						<div className="d-flex flex-column ml-3">
-							<span>User payment account 1</span>
+							<span>On-ramp 1</span>
 							<span>
-								<b>{plugin}</b>
+								<b>{plugin || selectedPlugin}</b>
 							</span>
 							<span>
 								<b className="mr-1">Plugin:</b> True
@@ -379,7 +370,7 @@ const PaymentAccountPopup = ({
 						</div>
 					</div>
 					<div>
-						This payment account is marked as a <b>'plugin'</b> based system.
+						This on-ramp is marked as a <b>'plugin'</b> based system.
 					</div>
 					<div className="mb-5">
 						Plugins require that you get in touch with{' '}
@@ -500,7 +491,7 @@ const PaymentAccountPopup = ({
 							in their wallet fiat asset pages.
 						</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right"
+							overlayClassName="admin-general-description-tip general-description-tip-right align-popup-tooltip"
 							title={
 								<img
 									src={
