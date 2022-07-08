@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { STATIC_ICONS } from 'config/icons';
-import { Button, Tooltip, Modal } from 'antd';
+import { Button, Tooltip, Modal, Select } from 'antd';
 import { QuestionCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
 
@@ -32,14 +32,11 @@ const Onramp = ({
 	const [selectedAsset, setSelectedAsset] = useState('');
 	const [showCoins, setShowCoins] = useState(false);
 	const [customName, setCustomName] = useState('');
+	const [pluginName, setPluginName] = useState('');
+
 	useEffect(() => {
-		let coins =
-			allCoins &&
-			allCoins.filter(
-				(val) =>
-					exchange && exchange.coins && exchange.coins.includes(val.symbol)
-			);
-		if (exchange && exchange.coins && activeTab === 'onRamp') {
+		let coins = allCoins;
+		if (activeTab === 'onRamp') {
 			coins = coins.filter((item) => Object.keys(onramp).includes(item.symbol));
 		} else {
 			coins = coins.filter((item) =>
@@ -53,27 +50,40 @@ const Onramp = ({
 			);
 			coins = [...coins, ...selectedAssetData];
 		}
-		if (!coins.length) {
-			setCoins([allCoins[0]]);
-		} else {
+		if (coins.length) {
 			setCoins(coins);
 		}
 	}, [allCoins, onramp, offramp, activeTab, exchange, selectedAsset]);
+
 	useEffect(() => {
 		let filteredFiatCoins = [];
-		allCoins &&
-			allCoins
-				.filter((item) => !Object.keys(onramp).includes(item.symbol))
-				.forEach((item) => {
+		let rampData = activeTab === 'onRamp' ? onramp : offramp;
+		if (Object.keys(rampData).length) {
+			allCoins &&
+				allCoins
+					.filter((item) => !Object.keys(rampData).includes(item.symbol))
+					.forEach((item) => {
+						if (item.type === 'fiat') {
+							filteredFiatCoins = [
+								...filteredFiatCoins,
+								{ symbol: item?.symbol, color: item?.meta?.color },
+							];
+						}
+					});
+		} else {
+			allCoins &&
+				allCoins.forEach((item) => {
 					if (item.type === 'fiat') {
 						filteredFiatCoins = [
 							...filteredFiatCoins,
-							{ symbol: item?.symbol, color: item?.meta?.color },
+							{ ...item, color: item?.meta?.color },
 						];
 					}
 				});
+			setCoins([filteredFiatCoins[0]]);
+		}
 		setFiatCoins(filteredFiatCoins);
-	}, [allCoins, onramp]);
+	}, [allCoins, onramp, offramp, activeTab]);
 
 	useEffect(() => {
 		if (Object.keys(onramp).length) {
@@ -115,6 +125,45 @@ const Onramp = ({
 		setType(type);
 	};
 
+	const updatePlugin = (e) => {
+		setFormType('plugin');
+		setPluginName(e);
+	};
+
+	const renderSelect = (type) => {
+		return (
+			<div className="mt-4 d-flex align-items-center">
+				<div className="mr-3">Fiat coins:</div>
+				<div className="coinSelect flex-direction-column">
+					<Select
+						onChange={(e) => handleSelectCoin(e, type)}
+						size="small"
+						value={
+							selectedAsset
+								? selectedAsset
+								: fiatCoins && fiatCoins[0] && fiatCoins[0].symbol
+						}
+						className="mb-2"
+					>
+						{fiatCoins &&
+							fiatCoins.map((option, index) => (
+								<Select.Option value={option.symbol} key={index}>
+									<div className="d-flex align-items-center mt-1 summary-coin">
+										<Coins
+											type={option?.symbol?.toLowerCase()}
+											small={true}
+											color={option?.color || ''}
+										/>
+										<div className="ml-2">{option?.symbol}</div>
+									</div>
+								</Select.Option>
+							))}
+					</Select>
+				</div>
+			</div>
+		);
+	};
+
 	return (
 		<div className="payment-acc-wrapper">
 			<Fragment>
@@ -133,11 +182,15 @@ const Onramp = ({
 							<div className="d-flex align-items-center">
 								<div className="mr-3 w-50">
 									{activeTab === 'onRamp'
-										? 'Connect an on-ramp. This can simply be bank deposit details and/or other payment processor details. Below are fiat assets that you can connect deposit details for. Once connected, these details will be displayed to users in their asset wallet deposit page for that specific asset.. '
+										? 'Connect an on-ramp. This can simply be bank deposit details and/or other payment processor details. Below are fiat assets that you can connect deposit details for. Once connected, these details will be displayed to users in their asset wallet deposit page for that specific asset.'
 										: 'Add an off-ramp to allow your users a way to withdraw fiat.'}
 								</div>
 								<Tooltip
-									overlayClassName="admin-general-description-tip general-description-tip-right align-onramp-tooltip"
+									overlayClassName={
+										activeTab === 'onRamp'
+											? 'admin-general-description-tip general-description-tip-right align-onramp-tooltip'
+											: 'admin-general-description-tip general-description-tip-right align-onramp-tooltip off-ramp-adjust'
+									}
 									title={
 										<img
 											src={
@@ -211,6 +264,10 @@ const Onramp = ({
 							</div>
 						</div>
 					) : null}
+					{(activeTab === 'onRamp' && !Object.keys(onramp).length) ||
+					(activeTab === 'offRamp' && !Object.keys(offramp).length)
+						? renderSelect('deposit')
+						: null}
 					{coins.map((item, index) => {
 						return (
 							<div key={index}>
@@ -285,6 +342,9 @@ const Onramp = ({
 										isUpgrade={isUpgrade}
 										originalonramp={onramp}
 										offramp={offramp[item?.symbol]}
+										pluginName={pluginName}
+										currentsymbol={item?.symbol}
+										isPaymentForm={formType === 'plugin' && customName}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -313,6 +373,7 @@ const Onramp = ({
 					}
 					currentActiveTab={activeTab}
 					handleOffRampProceed={handleOffRampProceed}
+					updatePlugin={updatePlugin}
 				/>
 			</Modal>
 		</div>
