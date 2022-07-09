@@ -61,7 +61,6 @@ const PaymentWay = ({
 				}
 				title={<img src={imgSrc} className="description_footer" alt="footer" />}
 				placement="right"
-				visible={true}
 			>
 				<QuestionCircleOutlined className="quesIcon" />
 			</Tooltip>
@@ -106,12 +105,17 @@ const PaymentWay = ({
 									className="pay-icon"
 								/>
 								<div className="d-flex flex-column">
-									<span>{pluginName ? pluginName : 'Bank'}</span>
+									<span>{pluginName || currentPaymentType}</span>
 									<span>
 										<b className="mr-1">Plugin:</b> True
 									</span>
 									{!savedContent ? (
-										<span className="txtanchor" onClick={() => handleDel(true)}>
+										<span
+											className="txtanchor"
+											onClick={() =>
+												handleDel(true, pluginName || currentPaymentType)
+											}
+										>
 											Delete on-ramp
 										</span>
 									) : null}
@@ -149,7 +153,12 @@ const PaymentWay = ({
 								<Button
 									type="primary"
 									className="green-btn customizedbtn"
-									onClick={() => handleSave(true, pluginName)}
+									onClick={() =>
+										handleSave(
+											true,
+											pluginName ? pluginName : currentPaymentType
+										)
+									}
 								>
 									SAVE
 								</Button>
@@ -310,6 +319,7 @@ const PaymentAccounts = ({
 	pluginName = '',
 	currentsymbol = '',
 	isPaymentForm = false,
+	setCoindata,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -365,7 +375,7 @@ const PaymentAccounts = ({
 							...tempPaypal,
 							[`section_${index + 1}`]: elem,
 						};
-					} else if (item === currentPaymentType) {
+					} else {
 						tempCustom = {
 							...tempCustom,
 							[`section_${index + 1}`]: elem,
@@ -541,6 +551,7 @@ const PaymentAccounts = ({
 		setIsCustomPay(isCustomPay);
 		setIsOnRampCoins(false);
 		setIsDisplayDetails(true);
+		// setCoinSymbol(coinSymbol);
 	};
 	const onCancel = () => {
 		setIsVisible(false);
@@ -552,18 +563,10 @@ const PaymentAccounts = ({
 		setCurrentTab('save');
 		setPlugin(selectedPlugin);
 	};
-	const handleDel = (val) => {
-		let deletedPlugin = {};
-		Object.keys(onramp).forEach((item) => {
-			if (item !== selectedPlugin) {
-				deletedPlugin = {
-					...deletedPlugin,
-					[item]: onramp[item],
-				};
-			}
-		});
+	const handleDel = (val, selectedPlugin) => {
 		setIsVisible(val);
 		setCurrentTab('delete');
+		setPlugin(selectedPlugin);
 	};
 	const handleDelBank = (val, formData) => {
 		setIsVisible(val);
@@ -824,6 +827,8 @@ const PaymentAccounts = ({
 					paymentSelectData={currentPaymentType || customName}
 					coinSymbol={coinSymbol}
 					selectedPlugin={selectedPlugin}
+					currentsymbol={currentsymbol}
+					setCoindata={setCoindata}
 				/>
 			</Modal>
 		</div>

@@ -52,13 +52,14 @@ const PaymentAccountPopup = ({
 	currentActiveTab = '',
 	handleOffRampProceed,
 	selectedPlugin = '',
+	setCoindata,
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [paymentSelect, setPaymentSelect] = useState('bank');
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState({});
-	let userPayment = formData
+	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
 		: user_payments[paymentSelectData];
 	if (currentActiveTab && currentActiveTab === 'onRamp') {
@@ -73,6 +74,9 @@ const PaymentAccountPopup = ({
 		userPayment = {
 			data: temp,
 		};
+	}
+	if (currentActiveTab && currentActiveTab === 'offRamp') {
+		userPayment = user_payments[paymentSelect];
 	}
 
 	useEffect(() => {
@@ -145,6 +149,12 @@ const PaymentAccountPopup = ({
 		} else if (paymentSelect === 'customPay') {
 			tabUpdate('sysname');
 		}
+		setCoindata(coinSymbol);
+	};
+
+	const handleCloseOnramp = () => {
+		setIsMutli(false);
+		handleClosePlugin(false);
 	};
 
 	switch (type) {
@@ -327,7 +337,11 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('payment')}
+							onClick={() =>
+								currentActiveTab === 'onRamp'
+									? tabUpdate('onramp')
+									: tabUpdate('payment')
+							}
 						>
 							Back
 						</Button>
@@ -399,7 +413,7 @@ const PaymentAccountPopup = ({
 						/>
 						<div className="d-flex flex-column ml-3">
 							<span>
-								<b>{plugin ? plugin : 'bank'}</b>
+								<b>{plugin || selectedPlugin}</b>
 							</span>
 							<span>
 								<b className="mr-1">Plugin:</b> True
@@ -413,7 +427,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn nxtbtn "
-							onClick={() => handlePopupDel()}
+							onClick={() => handlePopupDel(plugin || selectedPlugin)}
 						>
 							Proceed
 						</Button>
@@ -434,11 +448,14 @@ const PaymentAccountPopup = ({
 						</div>
 					</div>
 					<div className="mb-5 mt-2">
-						Add an off-ramp to {selectedCoin?.fullname} (
-						{selectedCoin?.symbol?.toUpperCase()}) so that you users can
-						withdraw. Off-ramps require a Payment Account.
+						Add an off-ramp to{' '}
+						{selectedCoin?.fullname || fiatCoins[0]?.fullname} (
+						{selectedCoin?.symbol?.toUpperCase() ||
+							fiatCoins[0]?.symbol?.toUpperCase()}
+						) so that you users can withdraw. Off-ramps require a Payment
+						Account.
 					</div>
-					{isMulti ? (
+					{isMulti && selectOffField ? (
 						<div>
 							<div>
 								Select from premade Payment Accounts (
@@ -467,6 +484,8 @@ const PaymentAccountPopup = ({
 								</Select>
 							</div>
 						</div>
+					) : showCoins ? (
+						<span>{renderSelect('deposit')}</span>
 					) : (
 						<div>
 							<div>Select from premade Payment Accounts</div>
@@ -512,7 +531,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => handleClosePlugin(false)}
+							onClick={handleCloseOnramp}
 						>
 							Back
 						</Button>
@@ -546,7 +565,10 @@ const PaymentAccountPopup = ({
 							deposit page which then can be used making deposits.
 						</div>
 					</div>
-					{showCoins ? <span>{renderSelect('deposit')}</span> : null}
+					{(showCoins && activeTab !== 'onRamp') ||
+					(showCoins && activeTab === 'onRamp') ? (
+						<span>{renderSelect('deposit')}</span>
+					) : null}
 					<div className="button-wrapper mt-4">
 						<Button
 							type="primary"
@@ -620,13 +642,18 @@ const PaymentAccountPopup = ({
 				<div className="payment-modal-wrapper">
 					<h3>Save and publish</h3>
 					<div>
-						Please check that the payment details below are correct. This
+						Please check that the{' '}
+						{activeTab === 'offRamp' ? 'off-ramp' : 'payment'} details below are
+						correct. This
 					</div>
 					<div>
-						information will be displayed live in the verification page for your
+						information will be displayed live in the{' '}
+						{activeTab === 'offRamp' ? 'fiat withdrawal' : 'verification'} page
+						for your
 					</div>
 					<div>
-						users to fill in after clicking 'Save and publish'. To save without
+						users {activeTab === 'offRamp' ? '' : 'to fill'} in after clicking
+						'Save and publish'. To save without
 					</div>
 					<div>publishing simply click 'Save.</div>
 					<div className="d-flex align-items-start mt-4">
@@ -712,6 +739,7 @@ const PaymentAccountPopup = ({
 							type="primary"
 							className="green-btn"
 							onClick={() => handleSaveAndPublish(false, paymentSelect, 'save')}
+							disabled={true}
 						>
 							Save
 						</Button>

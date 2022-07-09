@@ -203,6 +203,7 @@ class Assets extends Component {
 			isWithdrawalEdit: false,
 			isTableLoading: true,
 			isFiat: '',
+			assetType: '',
 		};
 	}
 
@@ -641,9 +642,9 @@ class Assets extends Component {
 		});
 	};
 
-	handleWithdrawalEdit = () => {
+	handleWithdrawalEdit = (assetType) => {
 		this.handleConfigureEdit('edit_withdrawal_fees');
-		this.setState({ isWithdrawalEdit: true });
+		this.setState({ isWithdrawalEdit: true, assetType });
 	};
 
 	renderPreview = () => {
@@ -855,6 +856,7 @@ class Assets extends Component {
 					exchangeCoins={this.state.coins}
 					handleRefreshCoin={this.handleRefreshCoin}
 					isWithdrawalEdit={this.state.isWithdrawalEdit}
+					assetType={this.state.assetType}
 				/>
 			);
 		}
