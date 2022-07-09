@@ -108,6 +108,8 @@ export const OperatorRole = ({ handleInvite, isUpgrade, buttonSubmitting }) => {
 	};
 
 	const handleSubmitOperator = (values) => {
+		const roleData = selectedRole;
+		values.role = roleData;
 		handleInvite(values);
 	};
 

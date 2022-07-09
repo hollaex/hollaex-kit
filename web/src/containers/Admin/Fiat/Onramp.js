@@ -66,7 +66,11 @@ const Onramp = ({
 						if (item.type === 'fiat') {
 							filteredFiatCoins = [
 								...filteredFiatCoins,
-								{ symbol: item?.symbol, color: item?.meta?.color },
+								{
+									symbol: item?.symbol,
+									color: item?.meta?.color,
+									fullname: item?.fullname,
+								},
 							];
 						}
 					});
@@ -76,7 +80,7 @@ const Onramp = ({
 					if (item.type === 'fiat') {
 						filteredFiatCoins = [
 							...filteredFiatCoins,
-							{ ...item, color: item?.meta?.color },
+							{ ...item, color: item?.meta?.color, fullname: item?.fullname },
 						];
 					}
 				});
@@ -86,10 +90,11 @@ const Onramp = ({
 	}, [allCoins, onramp, offramp, activeTab]);
 
 	useEffect(() => {
-		if (Object.keys(onramp).length) {
+		if (Object.keys(onramp).length && !selectedAsset) {
 			setIsPaymentForm(true);
 		}
-	}, [onramp]);
+		// eslint-disable-next-line
+	}, []);
 
 	const handleSelectCoin = (e) => {
 		if (e) {
@@ -128,6 +133,10 @@ const Onramp = ({
 	const updatePlugin = (e) => {
 		setFormType('plugin');
 		setPluginName(e);
+	};
+
+	const setCoindata = (coinSymb = coinSymbol) => {
+		setCoinSymbol(coinSymb);
 	};
 
 	const renderSelect = (type) => {
@@ -212,7 +221,7 @@ const Onramp = ({
 					<Button
 						type="primary"
 						className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
-						disabled={activeTab === 'offRamp' ? true : false}
+						// disabled={activeTab === 'offRamp' ? true : false}
 						onClick={() =>
 							handleRamp(activeTab === 'onRamp' ? 'onramp' : 'offramp', true)
 						}
@@ -314,7 +323,7 @@ const Onramp = ({
 										<Button
 											type="primary"
 											className="green-btn ml-5"
-											disabled={true}
+											// disabled={true}
 											onClick={() =>
 												handleRamp(
 													'offramp',
@@ -345,6 +354,7 @@ const Onramp = ({
 										pluginName={pluginName}
 										currentsymbol={item?.symbol}
 										isPaymentForm={formType === 'plugin' && customName}
+										setCoindata={setCoindata}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -374,6 +384,8 @@ const Onramp = ({
 					currentActiveTab={activeTab}
 					handleOffRampProceed={handleOffRampProceed}
 					updatePlugin={updatePlugin}
+					handleSaveAndPublish={onCancel}
+					setCoindata={setCoindata}
 				/>
 			</Modal>
 		</div>
