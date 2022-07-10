@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
@@ -11,18 +10,19 @@ import _floor from 'lodash/floor';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
 import { message } from 'antd';
+import moment from 'moment';
 
 import STRINGS from 'config/localizedStrings';
 import {
 	changePair,
-	setLanguage,
 	getExchangeInfo,
 	getTickers,
+	setSnackNotification,
 } from 'actions/appActions';
-import { logout } from '../../actions/authAction';
+import { getSparklines } from 'actions/chartAction';
 import { getToken, isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
-import { QuickTrade, EditWrapper, ButtonLink } from 'components';
+import { QuickTrade, EditWrapper } from 'components';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
 import math from 'mathjs';
@@ -30,14 +30,48 @@ import Image from 'components/Image';
 
 import MainSection from './MainSection';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { getBroker } from 'containers/Admin/Trades/actions';
+import {
+	getBroker,
+	getBrokerQuote,
+	getWithoutAuthBroker,
+} from 'containers/Admin/Trades/actions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { WS_URL } from 'config/constants';
 import { isIntentionalClosure, NORMAL_CLOSURE_CODE } from 'utils/webSocket';
+import { STATIC_ICONS } from 'config/icons';
+import { generateDynamicIconKey } from 'utils/id';
+import { MarketsSelector } from 'containers/Trade/utils';
+import MarketCard from './MarketCard';
 
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
+const DEFAULT_BG_SECTIONS = ['heading', 'market_list'];
 
+let timeout = undefined;
+
+const data = [
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_1'],
+		headerContent: 'Fast deposits',
+		mainContent: 'Make a deposit and begin buying and selling crypto',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_2'],
+		headerContent: 'Trade globally 24/7',
+		mainContent: 'Trade the biggest global crypto assets 24/7 365 days a year.',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_3'],
+		headerContent: 'APIs',
+		mainContent:
+			'Publicly accessible endpoints for market data, exchange status and more',
+	},
+	{
+		imageSrc: STATIC_ICONS['CARD_SECTION_ICON_4'],
+		headerContent: 'Best prices',
+		mainContent: 'Get the best prices and live price data all in one place',
+	},
+];
 class Home extends Component {
 	constructor(props) {
 		super(props);
@@ -116,6 +150,17 @@ class Home extends Component {
 			brokerSourceAmount: undefined,
 			orderbookWs: null,
 			wsInitialized: false,
+			chartData: {},
+			isTimer: false,
+			isLoading: false,
+			buyPrice: 0,
+			sellPrice: 0,
+			token: '',
+			quoteSeconds: '',
+			OriginalQuoteSeconds: '',
+			isAmountChanged: false,
+			isHover: false,
+			hoveredIndex: 0,
 		};
 		this.goToPair(pair);
 		this.props.setPriceEssentials({ side: this.state.side });
@@ -133,13 +178,13 @@ class Home extends Component {
 
 	componentDidMount() {
 		const { sections, broker, pairs } = this.props;
-		const { pair } = this.state;
+		const { pair, side } = this.state;
 		this.props.getExchangeInfo();
 		this.props.getTickers();
+		getSparklines(Object.keys(pairs)).then((chartData) =>
+			this.setState({ chartData })
+		);
 		this.generateSections(sections);
-		if (window.customRenderCardSection) {
-			window.customRenderCardSection();
-		}
 		let existBroker = {};
 		broker.forEach((item) => {
 			const splitPair = item.symbol.split('-');
@@ -164,6 +209,7 @@ class Home extends Component {
 		} else {
 			this.setState({ isBrokerPaused: true });
 		}
+		this.handleBrokerQuote(pair, side);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -193,6 +239,9 @@ class Home extends Component {
 					this.setState({ isShowChartDetails: false, existBroker });
 					this.getBrokerData();
 				}
+				if (existBroker && existBroker.symbol === flipPair) {
+					pair = flipPair;
+				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
@@ -218,12 +267,88 @@ class Home extends Component {
 			});
 
 			this.initializeOrderbookWs(pair, getToken());
+			this.handleBrokerQuote(pair, this.state.side);
+		}
+
+		if (prevState.isTimer !== this.state.isTimer && this.state.isTimer) {
+			const { icons: ICONS, setSnackNotification } = this.props;
+			setSnackNotification({
+				icon: ICONS.COPY_NOTIFICATION,
+				content: STRINGS['ORDER_EXPIRED_MSG'],
+			});
+		}
+
+		if (prevState.quoteSeconds !== this.state.quoteSeconds) {
+			this.handleSecondsChange(this.state.quoteSeconds);
+		}
+
+		if (
+			prevState.isAmountChanged !== this.state.isAmountChanged &&
+			this.state.isAmountChanged
+		) {
+			this.handleBrokerQuote(this.state.pair, this.state.side);
 		}
 	}
 
+	getBrokerQuoteData = async (symbol, side) => {
+		try {
+			const res = await getBrokerQuote(symbol, side);
+			if (res) {
+				if (side === 'buy') {
+					this.setState({ buyPrice: res.price });
+				} else {
+					this.setState({ sellPrice: res.price });
+				}
+
+				let quoteSeconds = '';
+				if (!isNaN(moment(res.expiry).diff(moment(), 'seconds')))
+					quoteSeconds = moment(res.expiry).diff(moment(), 'seconds');
+				clearTimeout(timeout);
+				this.setState({
+					token: res.token,
+					OriginalQuoteSeconds: quoteSeconds,
+					quoteSeconds,
+					isAmountChanged: false,
+				});
+			}
+		} catch (error) {
+			if (error) {
+				clearTimeout(timeout);
+				this.setState({
+					quoteSeconds: '',
+					isTimer: false,
+					isAmountChanged: false,
+				});
+			}
+		}
+	};
+
+	handleBrokerQuote = debounce(this.getBrokerQuoteData, 1000);
+
+	handleSec = (isTimer) => {
+		this.setState({ isTimer });
+	};
+
+	handleSecondsChange = (quoteSeconds) => {
+		if (quoteSeconds > 0) {
+			timeout = setTimeout(
+				() => this.setState({ quoteSeconds: quoteSeconds - 1 }),
+				1000
+			);
+		} else {
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
+			this.handleSec(true);
+		}
+	};
+
 	getBrokerData = async () => {
 		try {
-			await getBroker();
+			if (isLoggedIn()) {
+				await getBroker();
+			} else {
+				await getWithoutAuthBroker();
+			}
 		} catch (error) {
 			if (error) {
 				message.error(error.message);
@@ -336,14 +461,48 @@ class Home extends Component {
 	};
 
 	generateSections = (sections) => {
+		const { icons: ICONS } = this.props;
+		const generateId = generateDynamicIconKey('LANDING_PAGE_SECTION');
 		const sectionComponents = Object.entries(sections)
 			.filter(([_, { is_active }]) => is_active)
 			.sort(
 				([_, { order: order_a }], [__, { order: order_b }]) => order_a - order_b
 			)
-			.map(([key], index) => (
-				<div key={`section-${key}`}>{this.getSectionByKey(key)}</div>
-			));
+			.map(([key, { className = '' }]) => {
+				const iconId = generateId(key);
+
+				const defaultBgStyle = {
+					backgroundImage: `url(${
+						ICONS[iconId] || ICONS['EXCHANGE_LANDING_PAGE']
+					})`,
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+				};
+
+				const defaultNoBGstyle = {
+					...(ICONS[iconId]
+						? {
+								backgroundImage: `url(${ICONS[iconId]})`,
+						  }
+						: {}),
+					backgroundSize: '100%',
+					backgroundRepeat: 'repeat-y',
+				};
+
+				const style = DEFAULT_BG_SECTIONS.includes(key)
+					? defaultBgStyle
+					: defaultNoBGstyle;
+
+				return (
+					<div key={`section-${key}`} style={style} className={className}>
+						<EditWrapper
+							iconId={iconId}
+							style={{ position: 'absolute', right: 10, zIndex: 1 }}
+						/>
+						{this.getSectionByKey(key)}
+					</div>
+				);
+			});
 
 		return sectionComponents;
 	};
@@ -369,6 +528,14 @@ class Home extends Component {
 	flipPair = (pair) => {
 		const pairArray = pair.split('-');
 		return pairArray.reverse().join('-');
+	};
+
+	sectionToNav = (sec) => {
+		this.props.router.push(`/trade/${sec?.props?.market?.pair?.code}`);
+	};
+
+	onMouseOver = (val, hoveredIndex) => {
+		this.setState({ isHover: val, hoveredIndex });
 	};
 
 	getSectionByKey = (key) => {
@@ -412,7 +579,6 @@ class Home extends Component {
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
-							<div id="html_card_section"></div>
 							<div id="injected_code_section"></div>
 							<Markets
 								coins={coins}
@@ -523,6 +689,91 @@ class Home extends Component {
 					)
 				);
 			}
+			case 'card_section': {
+				const { icons: ICONS } = this.props;
+				return (
+					<div className="html_card_section">
+						{data.map((item, index) => {
+							const { imageSrc, headerContent, mainContent } = item;
+							return (
+								<div className="card-section-wrapper" key={index}>
+									<div className="card-section">
+										<div>
+											<Image
+												iconId={`CARD_SECTION_LOGO_${index}`}
+												icon={
+													ICONS[`CARD_SECTION_LOGO_${index}`]
+														? ICONS[`CARD_SECTION_LOGO_${index}`]
+														: imageSrc
+												}
+												wrapperClassName={
+													index === 0 && imageSrc.includes('Group_93')
+														? 'fill-none'
+														: 'card_section_logo'
+												}
+											/>
+										</div>
+										<EditWrapper stringId={`CARD_SECTION_HEADER_${index}`}>
+											<div className="header_txt">
+												{STRINGS[`CARD_SECTION_HEADER_${index}`]
+													? STRINGS[`CARD_SECTION_HEADER_${index}`]
+													: headerContent}
+											</div>
+										</EditWrapper>
+										<div className="card_section_main">
+											<EditWrapper stringId={`CARD_SECTION_MAIN_${index}`}>
+												<div>
+													{STRINGS[`CARD_SECTION_MAIN_${index}`]
+														? STRINGS[`CARD_SECTION_MAIN_${index}`]
+														: mainContent}
+												</div>
+											</EditWrapper>
+										</div>
+									</div>
+								</div>
+							);
+						})}
+					</div>
+				);
+			}
+			case 'carousel_section': {
+				const { markets } = this.props;
+				const { chartData } = this.state;
+				const marketsData = [...markets, ...markets, ...markets];
+				const items = marketsData.map((market, index) => (
+					<MarketCard
+						market={market}
+						onDragStart={this.handleDragStart}
+						role="presentation"
+						chartData={chartData}
+					/>
+				));
+
+				return (
+					<div className="home_carousel_section ">
+						<div class="slideshow-wrapper">
+							<div class="parent-slider d-flex">
+								{items.map((sec, index) => {
+									return (
+										<div
+											className={
+												this.state.isHover && index === this.state.hoveredIndex
+													? 'section section_active'
+													: 'section'
+											}
+											onClick={() => this.sectionToNav(sec)}
+											onMouseOver={() => this.onMouseOver(true, index)}
+											onMouseLeave={() => this.onMouseOver(false, 0)}
+										>
+											{sec}
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</div>
+				);
+			}
 			default:
 				return null;
 		}
@@ -563,6 +814,7 @@ class Home extends Component {
 			tickerClose,
 			selectedTarget,
 			isSelectChange: true,
+			pair,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -608,6 +860,7 @@ class Home extends Component {
 			selectedTarget,
 			targetOptions: targetOptions,
 			isSelectChange: true,
+			pair,
 		});
 		if (pair) {
 			this.goToPair(pair);
@@ -683,6 +936,8 @@ class Home extends Component {
 		const sourceAmount = math.round(targetAmount * tickerClose, decimalPoint);
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: targetAmount,
@@ -703,6 +958,8 @@ class Home extends Component {
 		const targetAmount = math.round(sourceAmount / tickerClose, decimalPoint);
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: sourceAmount,
@@ -717,11 +974,29 @@ class Home extends Component {
 	};
 
 	forwardSourceError = (sourceError) => {
-		this.setState({ sourceError });
+		this.setState({ sourceError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = sourceError || this.state.targetError ? false : true;
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	forwardTargetError = (targetError) => {
-		this.setState({ targetError });
+		this.setState({ targetError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = targetError || this.state.sourceError ? false : true;
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	goToPair = (pair) => {
@@ -729,52 +1004,7 @@ class Home extends Component {
 		changePair(pair);
 	};
 
-	renderIcon = () => {
-		const { icons: ICONS } = this.props;
-		return (
-			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
-				<div className="d-flex h-100">
-					<div className="'h-100'">
-						<Image
-							iconId="EXCHANGE_LOGO"
-							icon={ICONS['EXCHANGE_LOGO']}
-							wrapperClassName="app_bar-icon-logo wide-logo h-100"
-						/>
-					</div>
-					<EditWrapper iconId="EXCHANGE_LOGO" position={[-5, 5]} />
-				</div>
-			</div>
-		);
-	};
-
-	renderButtonSection = () => {
-		return (
-			<div className="d-flex align-items-center buttons-section-header">
-				<ButtonLink
-					link={'/login'}
-					type="button"
-					label={STRINGS['LOGIN_TEXT']}
-					className="main-section_button_invert home_header_button"
-				/>
-				<div style={{ width: '0.75rem' }} />
-				<ButtonLink
-					link={'/signup'}
-					type="button"
-					label={STRINGS['SIGNUP_TEXT']}
-					className="main-section_button home_header_button"
-				/>
-			</div>
-		);
-	};
-
-	renderAccountButton = () => {
-		const { user } = this.props;
-		return (
-			<div className="pointer" onClick={this.goTo('/account')}>
-				{user.email}
-			</div>
-		);
-	};
+	handleDragStart = (e) => e.preventDefault();
 
 	render() {
 		const {
@@ -799,20 +1029,8 @@ class Home extends Component {
 							zIndex: 1,
 						}}
 					/>
-					<div className="home_app_bar d-flex justify-content-between align-items-center my-2 mx-3">
-						<div className="d-flex align-items-center justify-content-center h-100">
-							{this.renderIcon()}
-						</div>
-						{isLoggedIn()
-							? this.renderAccountButton()
-							: this.renderButtonSection()}
-					</div>
-					<EditWrapper
-						iconId="EXCHANGE_LANDING_PAGE"
-						style={{ position: 'absolute', right: 10 }}
-					/>
 					<div className="home-page_content">
-						<div className="mx-2 mb-3">{this.generateSections(sections)}</div>
+						{this.generateSections(sections)}
 					</div>
 				</div>
 			</div>
@@ -875,18 +1093,18 @@ const mapStateToProps = (store) => {
 		estimatedPrice: store.quickTrade.estimatedPrice,
 		sourceAmount: store.quickTrade.sourceAmount,
 		targetAmount: store.quickTrade.targetAmount,
+		markets: MarketsSelector(store),
 	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
 	// requestQuickTrade: bindActionCreators(requestQuickTrade, dispatch),
 	changePair: bindActionCreators(changePair, dispatch),
-	changeLanguage: bindActionCreators(setLanguage, dispatch),
-	logout: bindActionCreators(logout, dispatch),
 	getTickers: bindActionCreators(getTickers, dispatch),
 	getExchangeInfo: bindActionCreators(getExchangeInfo, dispatch),
 	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Home));

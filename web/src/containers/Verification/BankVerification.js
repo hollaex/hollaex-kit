@@ -1,19 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, SubmissionError } from 'redux-form';
-import {
-	required,
-	// exactLength,
-	// onlyNumbers,
-	maxLength,
-} from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, HeaderSection } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { verifyBankData } from '../../actions/verificationActions';
-import { getErrorLocalized } from '../../utils/errors';
+import { required, maxLength } from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
+import { EditWrapper, Button, IconTitle, HeaderSection } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { verifyBankData } from 'actions/verificationActions';
+import { getErrorLocalized } from 'utils/errors';
 import { isMobile } from 'react-device-detect';
-import { EditWrapper } from 'components';
 
 const FORM_NAME = 'BankVerification';
 
@@ -104,7 +98,7 @@ class BankVerification extends Component {
 			error,
 			openContactForm,
 			icon,
-			// iconId,
+			iconId,
 		} = this.props;
 		const { formFields } = this.state;
 		return (
@@ -114,6 +108,7 @@ class BankVerification extends Component {
 					text={STRINGS['USER_VERIFICATION.BANK_VERIFICATION']}
 					textType="title"
 					iconPath={icon}
+					iconId={iconId}
 				/>
 				<form className="d-flex flex-column w-100 verification_content-form-wrapper">
 					<div className="verification-form-panel mt-3 mb-5">

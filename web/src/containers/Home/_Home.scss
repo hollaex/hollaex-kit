@@ -1,3 +1,5 @@
+@import './MarketCard';
+
 $features-icon--size: 4rem;
 $features-card--width: 17.5rem;
 $features-card--margin: 3rem;
@@ -111,16 +113,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
-.home_header_button {
-	height: 28px;
-	font-weight: bold;
-}
-
 .layout-mobile {
-	.home_header_button {
-		height: 24px;
-	}
-
 	.home-page__market-wrapper {
 		th:nth-child(1) {
 			padding-left: 1rem !important;
@@ -141,6 +134,26 @@ $trade-tab--arrow-size: 0.4rem;
 	.home_container {
 		.quick_trade-wrapper {
 			flex-direction: column;
+		}
+	}
+	.html_card_section {
+		flex-direction: column;
+		.card-section-wrapper {
+			padding: 2rem;
+			.card-section {
+				.header_txt {
+					font-size: 14px;
+				}
+			}
+		}
+	}
+	.home-page_section-wrapper {
+		padding-top: 60px !important;
+		padding-bottom: 75px !important;
+	}
+	.home_carousel_section {
+		.slideshow-wrapper {
+			height: 12rem;
 		}
 	}
 }
@@ -289,6 +302,20 @@ $trade-tab--arrow-size: 0.4rem;
 	// margin-right: auto;
 	// margin-top: 5rem;
 	// max-width: $content-display-width;
+
+	.alice-carousel__stage-item {
+		border-right: 1px $colors-border solid;
+	}
+
+	.currency-ball-image-wrapper {
+		height: 2.2rem;
+		padding-right: 10px;
+	}
+
+	.trade_tab-icons {
+		width: 4rem;
+		margin-top: 2px;
+	}
 }
 
 .live-markets_header {
@@ -301,14 +328,11 @@ $trade-tab--arrow-size: 0.4rem;
 	font-weight: bolder;
 }
 
-.buttons-section-header {
-	margin: 0 0.5rem;
-}
-
 .home-page_section-wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: 5rem;
+	padding-top: 148px;
+	padding-bottom: 335px !important;
 	max-width: 100rem;
 	&:not(.main-section-wrapper) {
 		padding-top: 5rem;
@@ -337,23 +361,121 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
-.home_app_bar {
-	height: $navigation_bar-height-lg;
-	min-height: $navigation_bar-height-lg;
+.html_card_section {
+	overflow: auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: $app-sidebar-background;
+	opacity: 0.8;
+	.card-section-wrapper {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding: 5rem 3rem;
+		.card-section {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 20rem;
+			margin-right: 1rem;
+			.card_section_logo {
+				width: 50px;
+				height: 50px;
+				svg {
+					width: 50px;
+					height: 50px;
+					path {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.fill-none {
+				width: 50px;
+				height: 50px;
+				svg {
+					width: 50px;
+					height: 50px;
+					path:not(:first-child) {
+						fill: $colors-main-black;
+					}
+				}
+			}
+			.header_txt {
+				font-weight: bold;
+				font-size: 18px;
+			}
+			.card_section_main {
+				text-align: center;
+				.edit-wrapper__icons-container {
+					transform: translate(-20px, 0px) !important;
+				}
+			}
+		}
+	}
+}
 
-	.app_bar-icon-logo {
-		height: 4rem;
-		width: 5rem;
-		background-size: contain;
-		background-position: left center;
-		background-repeat: no-repeat;
+.home_carousel_section {
+	border-top: 1px $colors-border solid;
+	border-bottom: 1px $colors-border solid;
+	.slideshow-wrapper {
+		height: 11rem;
+		margin: 0 auto;
+		position: relative;
+		overflow: hidden;
+		transform: translate3d(0, 0, 0);
 	}
 
-	.app_bar-icon {
-		flex: 0;
-		margin: 0 0.5rem;
-		padding-right: 8px;
-		width: 100%;
+	.slideshow-wrapper > div {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		transform: translate3d(0, 0, 0);
+	}
+	.slideshow-wrapper .parent-slider {
+		animation: moveSlideshow 50s linear infinite;
+	}
+
+	.parent-slider:hover {
+		animation-play-state: paused;
+	}
+
+	.section {
+		opacity: 0.8;
+		border-right: 1px solid #60605d;
+		padding: 1.5rem 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.section_active {
+		opacity: 1;
+		cursor: pointer;
+		background-color: var(--base_wallet-sidebar-and-popup);
+	}
+
+	.height-40 {
+		height: 40px;
+	}
+
+	.trade_tab-pair-title,
+	.trade_tab-pair-sub-title,
+	.trade_tab-pair-volume {
+		opacity: 0.5;
+	}
+
+	.section_active .trade_tab-pair-title,
+	.section_active .trade_tab-pair-sub-title,
+	.section_active .trade_tab-pair-volume {
+		opacity: 1;
+	}
+}
+
+@keyframes moveSlideshow {
+	100% {
+		transform: translateX(-66.6666%);
 	}
 }
 
@@ -363,8 +485,7 @@ $trade-tab--arrow-size: 0.4rem;
 			margin: 0 2rem 3rem;
 		}
 
-		.buttons-section,
-		.buttons-section-header {
+		.buttons-section {
 			.holla-button {
 				font-size: 1.2rem !important;
 			}
@@ -383,22 +504,36 @@ $trade-tab--arrow-size: 0.4rem;
 				max-width: $features-container--sm--width;
 			}
 		}
+		.html_card_section {
+			flex-direction: column;
+			.card-section-wrapper {
+				padding: 2rem;
+				.card-section {
+					.header_txt {
+						font-size: 14px;
+					}
+				}
+			}
+		}
+		.home_carousel_section {
+			.section {
+				padding: 0 30px !important;
+			}
+		}
 	}
 }
-
-@media (min-width: 1920px) {
-	.home_app_bar {
-		.app_bar-icon-logo {
-			height: 3rem;
-			width: 5rem;
-		}
-
-		.app_bar-icon {
-			margin: 1rem 0 1rem;
+@media (max-width: $bp-lg) {
+	.home_container {
+		.html_card_section {
+			flex-direction: column;
+			.card-section-wrapper {
+				padding: 2rem;
+				.card-section {
+					.header_txt {
+						font-size: 14px;
+					}
+				}
+			}
 		}
 	}
-}
-
-.wide-logo {
-	width: 10rem !important;
 }

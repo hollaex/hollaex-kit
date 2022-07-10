@@ -7,7 +7,7 @@ import STRINGS from 'config/localizedStrings';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { required } from 'components/Form/validations';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 import Image from 'components/Image';
 import renderFields from 'components/Form/factoryFields';
@@ -16,15 +16,12 @@ import Fiat from './Fiat';
 
 export const generateBaseInformation = (id = '') => (
 	<div className="text">
-		{id && (
-			<p>
-				{STRINGS.formatString(STRINGS['DEPOSIT_BANK_REFERENCE'], id).join(' ')}
-			</p>
-		)}
+		{id && <p>{STRINGS.formatString(STRINGS['DEPOSIT_BANK_REFERENCE'], id)}</p>}
 	</div>
 );
 
 export const generateFormFields = ({
+	currency,
 	networks,
 	address,
 	label,
@@ -32,13 +29,16 @@ export const generateFormFields = ({
 	copyOnClick,
 	destinationAddress,
 	destinationLabel,
+	coins,
+	network,
+	fee,
 }) => {
 	const fields = {};
 
 	if (networks) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
 
 		fields.network = {
@@ -81,6 +81,47 @@ export const generateFormFields = ({
 			hideCheck: true,
 			ishorizontalfield: true,
 		};
+	}
+
+	if (fee) {
+		const { deposit_fees } = coins[currency];
+		if (deposit_fees && deposit_fees[network]) {
+			const { symbol, type } = deposit_fees[network];
+			const isPercentage = type === 'percentage';
+			const fee_coin = isPercentage ? '' : symbol || currency;
+
+			const fullname = coins[fee_coin]?.fullname;
+
+			fields.fee = {
+				type: 'number',
+				stringId:
+					'WITHDRAWALS_FORM_FEE_COMMON_LABEL,WITHDRAWALS_FORM_FEE_PLACEHOLDER',
+				label: STRINGS.formatString(
+					STRINGS[
+						fee_coin && fee_coin !== currency
+							? 'WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN'
+							: 'WITHDRAWALS_FORM_FEE_COMMON_LABEL'
+					],
+					fullname
+				),
+				placeholder: STRINGS.formatString(
+					STRINGS['WITHDRAWALS_FORM_FEE_PLACEHOLDER'],
+					fullname
+				),
+				disabled: true,
+				fullWidth: true,
+				ishorizontalfield: true,
+				...(fee_coin && fee_coin !== currency
+					? {
+							warning: STRINGS.formatString(
+								STRINGS['WITHDRAWALS_FORM_FEE_WARNING'],
+								fullname,
+								fee_coin.toUpperCase()
+							),
+					  }
+					: {}),
+			};
+		}
 	}
 
 	return fields;
@@ -179,14 +220,7 @@ const RenderContentForm = ({
 			</SmartTarget>
 		);
 	} else if (coinObject && coinObject.type === 'fiat') {
-		return (
-			<Fiat
-				id={id}
-				titleSection={titleSection}
-				icons={ICONS}
-				currency={currency}
-			/>
-		);
+		return <Fiat id={id} titleSection={titleSection} currency={currency} />;
 	} else {
 		return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 	}

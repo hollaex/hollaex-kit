@@ -266,7 +266,7 @@ class Summary extends Component {
 										//     <span className="title-font">
 										//         {` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
 										//     </span>
-										//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM')).join('')}`}
+										//     {` ${fullname} ${STRINGS.formatString(STRINGS["SUMMARY.NOMINAL_TRADING_WITH_MONTH"], moment().subtract(1, "month").startOf("month").format('MMMM'))}`}
 										// </span>
 										// }
 									>

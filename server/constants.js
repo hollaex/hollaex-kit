@@ -27,7 +27,10 @@ let configuration = {
 		user_meta: {},
 		injected_values: [],
 		injected_html: {},
-		black_list_countries: []
+		black_list_countries: [],
+		onramp: {},
+		offramp: {},
+		user_payments: {}
 	},
 	email: {}
 };
@@ -107,7 +110,10 @@ const resetAllConfig = () => {
 			user_meta: {},
 			injected_values: [],
 			injected_html: {},
-			black_list_countries: []
+			black_list_countries: [],
+			onramp: {},
+			offramp: {},
+			user_payments: {}
 		},
 		email: {}
 	};
@@ -185,7 +191,10 @@ exports.KIT_CONFIG_KEYS = [
 	'injected_values',
 	'injected_html',
 	'user_meta',
-	'black_list_countries'
+	'black_list_countries',
+	'onramp',
+	'offramp',
+	'user_payments'
 ];
 
 exports.KIT_SECRETS_KEYS = [

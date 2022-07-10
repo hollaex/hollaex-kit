@@ -172,7 +172,7 @@ class MobileVerification extends Component {
 			);
 			requestSmsCode(phone)
 				.then(({ data }) => {
-					// alert(STRINGS.formatString(STRINGS["SMS_SENT_TO"], phone).join(''));
+					// alert(STRINGS.formatString(STRINGS["SMS_SENT_TO"], phone));
 					this.setState(
 						{
 							codeRequested: true,
@@ -187,10 +187,7 @@ class MobileVerification extends Component {
 				})
 				.catch((err) => {
 					const error = {
-						_error: STRINGS.formatString(
-							STRINGS['SMS_ERROR_SENT_TO'],
-							phone
-						).join(''),
+						_error: STRINGS.formatString(STRINGS['SMS_ERROR_SENT_TO'], phone),
 					};
 					this.setState({ codeRequestLoading: false }, () => {
 						this.generateFormFields();

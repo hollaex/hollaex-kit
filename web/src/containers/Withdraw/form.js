@@ -17,9 +17,10 @@ import {
 } from './notifications';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { calculateBaseFee } from './utils';
-import Fiat from 'containers/Deposit/Fiat';
+import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
+import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -40,13 +41,31 @@ const validate = (values, props) => {
 	let fee_coin;
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
+		const { type = 'static', min, max } = withdrawal_fees[network];
+		const isPercentage = type === 'percentage';
+
 		fee_coin = withdrawal_fees[network].symbol;
-		const fullFeeCoinName = coins[fee_coin].fullname;
+		const hasDifferentFeeCoin =
+			!isPercentage && fee_coin && fee_coin !== currency;
+
+		const fullFeeCoinName = coins[fee_coin]?.fullname;
 		const availableFeeBalance = math.fraction(
 			balance[`${fee_coin}_available`] || 0
 		);
-		const totalTransaction = amount;
-		const totalFee = fee;
+
+		const totalFee = isPercentage
+			? limitNumberWithinRange(
+					math.multiply(
+						amount,
+						math.fraction(math.divide(math.fraction(fee), 100))
+					),
+					min,
+					max
+			  )
+			: fee;
+		const totalTransaction = hasDifferentFeeCoin
+			? amount
+			: math.add(amount, totalFee);
 
 		if (math.larger(totalTransaction, balanceAvailable)) {
 			errors.amount = STRINGS.formatString(
@@ -55,7 +74,7 @@ const validate = (values, props) => {
 			);
 		}
 
-		if (math.larger(totalFee, availableFeeBalance)) {
+		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
 			errors.amount = STRINGS.formatString(
 				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
 				`${math.number(totalFee)} ${fullFeeCoinName}`
@@ -103,6 +122,17 @@ class Form extends Component {
 				// nextProps.change('fee', fee);
 			}
 		}
+		if (nextProps.selectedMethodData !== this.props.selectedMethodData) {
+			const fee = calculateBaseFee(nextProps.data.amount);
+			if (
+				nextProps.selectedMethodData &&
+				nextProps.selectedMethodData === 'email'
+			) {
+				nextProps.change('fee', 0);
+			} else {
+				nextProps.change('fee', fee);
+			}
+		}
 	}
 
 	componentWillUnmount() {
@@ -131,12 +161,11 @@ class Form extends Component {
 		} else {
 			this.onCloseDialog();
 			// this.props.submit();
-			const values = this.props.data;
+			const values = { ...this.props.data, email: this.props.email };
 			return this.props
 				.onSubmitWithdrawReq({
 					...values,
 					amount: math.eval(values.amount),
-					fee: values.fee ? math.eval(values.fee) : 0,
 				})
 				.then((response) => {
 					this.props.onSubmitSuccess(
@@ -169,7 +198,6 @@ class Form extends Component {
 			.onSubmitWithdrawReq({
 				...values,
 				amount: math.eval(values.amount),
-				fee: values.fee ? math.eval(values.fee) : 0,
 				otp_code,
 			})
 			.then((response) => {
@@ -222,7 +250,10 @@ class Form extends Component {
 			icons: ICONS,
 			selectedNetwork,
 			targets,
+			email,
 		} = this.props;
+
+		const formData = { ...data, email };
 
 		const { dialogIsOpen, dialogOtpOpen } = this.state;
 		const hasDestinationTag =
@@ -280,7 +311,7 @@ class Form extends Component {
 								<ReviewModalContent
 									coins={coins}
 									currency={currency}
-									data={data}
+									data={formData}
 									price={currentPrice}
 									onClickAccept={this.onAcceptDialog}
 									onClickCancel={this.onCloseDialog}
@@ -294,14 +325,7 @@ class Form extends Component {
 				</SmartTarget>
 			);
 		} else if (coinObject && coinObject.type === 'fiat') {
-			return (
-				<Fiat
-					id={id}
-					icons={ICONS}
-					titleSection={titleSection}
-					currency={currency}
-				/>
-			);
+			return <Fiat id={id} titleSection={titleSection} currency={currency} />;
 		} else {
 			return <div>{STRINGS['DEPOSIT.NO_DATA']}</div>;
 		}
@@ -326,9 +350,10 @@ const mapStateToForm = (state) => ({
 		'address',
 		'destination_tag',
 		'amount',
-		'fee',
 		'captcha',
-		'fee_coin'
+		'fee',
+		'email',
+		'fee_type'
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,

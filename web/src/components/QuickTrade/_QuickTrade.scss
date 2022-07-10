@@ -473,6 +473,10 @@ $title-icon--height: 10rem;
 .review-block-wrapper {
 	border-top: $colors-border solid 1px;
 }
+.loading-border {
+	position: absolute;
+	border: 1px solid $link;
+}
 
 @media (max-width: 1020px) {
 	.quick_trade-wrapper {

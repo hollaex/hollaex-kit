@@ -1,0 +1,104 @@
+.kyc-wrapper .btn-wrapper {
+	display: flex;
+	justify-content: space-between;
+	padding: 10px;
+}
+.kyc-wrapper .btn-wrapper .ant-btn {
+	background-color: #0000ff;
+	border: unset;
+}
+.kyc-wrapper .btn-wrapper a {
+	text-decoration: underline !important;
+	color: #5985ff !important;
+}
+.kyc-wrapper .content-panel {
+	padding: 32px 100px;
+}
+.kyc-wrapper .rounded-btn .ant-btn {
+	border-radius: 15px;
+	font-size: 12px;
+	min-width: 4rem;
+	line-height: 1;
+	height: 26px;
+	padding: 0px 6px;
+}
+.kyc-wrapper .disabled-btn .ant-btn {
+	border-color: #d9d9d9;
+	color: rgba(0, 0, 0, 0.25);
+	background-color: #f5f5f5;
+}
+.kyc-wrapper .KYC_PLUGIN_ICON {
+	width: 7rem;
+}
+.kyc-wrapper .box-wrapper {
+	border: 1px solid #efefef;
+	width: 380px;
+}
+.kyc-wrapper .box-text-wrapper {
+	margin-left: 1rem;
+}
+.kyc-wrapper .content-title {
+	font-weight: bold;
+}
+.kyc-wrapper .box-container {
+	background-color: #485695;
+	padding: 5rem 1rem;
+}
+.kyc-wrapper .box-container .cloud-icon {
+	width: 3.5rem;
+	height: 3.5rem;
+}
+.kyc-wrapper .font-green {
+	color: #288500;
+}
+.kyc-wrapper .font-red {
+	color: #ff8800;
+}
+.kyc-wrapper .warning-wrapper {
+	display: flex;
+	align-items: center;
+}
+.kyc-wrapper .warning-wrapper .small-round {
+	width: 14px;
+	height: 14px;
+	border: 1px solid #707070;
+	border-radius: 50%;
+	margin: 0px 6px 2px 0;
+}
+.kyc-wrapper .warning-wrapper .warning {
+	background-color: #ff8800;
+	border-color: #ff8800 !important;
+}
+.kyc-wrapper .warn-text {
+	font-size: 12px;
+	max-width: 400px;
+	margin-top: 1rem;
+}
+.kyc-wrapper .kyc-content {
+	padding: 1rem 2rem;
+}
+.kyc-wrapper .kyc-content .sub-title {
+	font-size: 18px;
+	font-weight: bold;
+}
+.kyc-wrapper .kyc-content .button-wrapper {
+	display: flex;
+	align-items: center;
+}
+.kyc-wrapper .divider-style {
+	margin: 0.5rem;
+}
+.kyc-wrapper .box-style {
+	padding-bottom: 1rem;
+	width: fit-content;
+}
+.kyc-wrapper .kyc-table-wrapper .empty-table .ant-table-tbody {
+	height: 25rem;
+}
+.kyc-wrapper .kyc-table-wrapper .kyc-info {
+	font-weight: bold;
+	margin-bottom: 6px;
+}
+.kyc-wrapper .kyc-table-wrapper table {
+	border: 1px solid #ffffff;
+}

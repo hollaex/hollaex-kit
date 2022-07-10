@@ -690,14 +690,6 @@ class App extends Component {
 			!isHome;
 		const showFooter = !isMobile || isHome;
 
-		const homeBackgroundProps = isHome
-			? {
-					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
-			  }
-			: {};
-
 		const stakeBackgroundProps = isStakePage
 			? {
 					backgroundImage: `url(${ICONS['STAKING_BACKGROUND']})`,
@@ -753,7 +745,6 @@ class App extends Component {
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
-							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"
@@ -764,12 +755,13 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && !isChartEmbed && (
+								{!isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}
+										isHome={isHome}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
 											<AppMenuBar

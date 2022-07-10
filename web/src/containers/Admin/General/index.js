@@ -27,7 +27,10 @@ const General = () => {
 				renderTabBar={renderTabBar}
 			>
 				<TabPane tab="Branding" key="0">
-					<GeneralContent activeTab={'branding'} />
+					<GeneralContent
+						activeTab={'branding'}
+						handleTabChange={handleTabChange}
+					/>
 				</TabPane>
 				<TabPane tab="Footer" key="1">
 					<GeneralContent activeTab={'footer'} />

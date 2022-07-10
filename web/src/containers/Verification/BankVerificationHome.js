@@ -1,11 +1,7 @@
 import React from 'react';
-import Image from 'components/Image';
-
-import { Button, PanelInformationRow } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { MAX_NUMBER_BANKS } from '../../config/constants';
+import { EditWrapper, Button, PanelInformationRow, Image } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { EditWrapper } from 'components';
 
 const BankVerificationHome = ({
 	user,
@@ -83,7 +79,7 @@ const BankVerificationHome = ({
 					<EditWrapper stringId="USER_VERIFICATION.BANK_VERIFICATION_HELP_TEXT,USER_VERIFICATION.DOCUMENT_SUBMISSION" />
 				</div>
 				{List}
-				{lastVerified.status === 3 && MAX_NUMBER_BANKS > bank_account.length ? (
+				{lastVerified.status === 3 ? (
 					<div>
 						<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_BANK_ACCOUNT" />
 						<Button

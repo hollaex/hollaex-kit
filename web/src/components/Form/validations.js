@@ -2,9 +2,10 @@ import React from 'react';
 import validator from 'validator';
 import WAValidator from 'multicoin-address-validator';
 import math from 'mathjs';
-import { roundNumber } from '../../utils/currency';
-import STRINGS from '../../config/localizedStrings';
+import { roundNumber } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 import { getDecimals } from 'utils/utils';
+import { limitNumberWithinRange } from 'utils/math';
 
 const passwordRegEx = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/;
 const usernameRegEx = /^[a-z0-9_]{3,15}$/;
@@ -91,11 +92,35 @@ export const step = (step, message) => (value = 0) =>
 	math.larger(math.mod(math.bignumber(value), math.bignumber(step)), 0)
 		? message || STRINGS.formatString(STRINGS['VALIDATIONS.STEP'], step)
 		: undefined;
-export const checkBalance = (available, coinName, fee = 0) => (value = 0) => {
-	const operation =
-		fee > 0
-			? math.number(math.add(math.fraction(value), math.fraction(fee)))
-			: value;
+export const checkBalance = (
+	available,
+	coinName,
+	fee = 0,
+	type = 'static',
+	min,
+	max
+) => (value = 0) => {
+	let operation;
+	if (type === 'static') {
+		operation =
+			fee > 0
+				? math.number(math.add(math.fraction(value), math.fraction(fee)))
+				: value;
+	} else {
+		const calcualtedFee = math.multiply(
+			math.fraction(value),
+			math.fraction(math.divide(math.fraction(fee), 100))
+		);
+		operation =
+			fee > 0
+				? math.number(
+						math.add(
+							math.fraction(value),
+							limitNumberWithinRange(calcualtedFee, min, max)
+						)
+				  )
+				: value;
+	}
 
 	if (operation > available) {
 		const errorMessage = coinName

@@ -32,8 +32,9 @@ const CustomizeEmailForm = ({
 
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
+			let replacedJSON = emailInfo.html.replace(/@@_BIT_@@/g, "'");
 			form.setFieldsValue({
-				format: emailInfo.html,
+				format: replacedJSON,
 			});
 			form.setFieldsValue({ title: emailInfo.title });
 		}
@@ -181,6 +182,7 @@ const CustomizeEmailForm = ({
 						<Button
 							type="primary"
 							onClick={() => handleConfirmation(formProps)}
+							disabled={buttonSubmitting}
 						>
 							Confirm
 						</Button>

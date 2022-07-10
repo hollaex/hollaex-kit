@@ -25,16 +25,29 @@ export const DEFAULT_LANDING_SECTIONS = {
 		name: 'Title/heading',
 		is_active: true,
 		order: 0,
+		className: 'px-2',
+	},
+	carousel_section: {
+		name: 'Moving ticker cards',
+		is_active: true,
+		order: 1,
+	},
+	card_section: {
+		name: 'Key icon features',
+		is_active: true,
+		order: 3,
 	},
 	market_list: {
 		name: 'Market list',
-		is_active: false,
-		order: 1,
+		is_active: true,
+		order: 4,
+		className: 'px-2',
 	},
 	quick_trade: {
 		name: 'Quick trade calculator',
-		is_active: false,
+		is_active: true,
 		order: 2,
+		className: 'px-2',
 	},
 };
 

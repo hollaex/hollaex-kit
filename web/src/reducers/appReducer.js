@@ -16,6 +16,9 @@ import {
 	SET_ORDER_LIMITS,
 	SET_TICKER_FROM_TRADE,
 	SET_CURRENCIES,
+	SET_USER_PAYMENTS,
+	SET_ONRAMP,
+	SET_OFFRAMP,
 	SET_CONFIG,
 	SET_PLUGINS,
 	SET_INFO,
@@ -180,6 +183,9 @@ const INITIAL_STATE = {
 	contracts: {},
 	tradeTab: 0,
 	broker: {},
+	user_payments: {},
+	onramp: {},
+	offramp: {},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -215,6 +221,21 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				coins: modifyCoinsData(payload.coins),
+			};
+		case SET_USER_PAYMENTS:
+			return {
+				...state,
+				user_payments: payload.user_payments,
+			};
+		case SET_ONRAMP:
+			return {
+				...state,
+				onramp: payload.onramp,
+			};
+		case SET_OFFRAMP:
+			return {
+				...state,
+				offramp: payload.offramp,
 			};
 		case SET_BROKER:
 			return {
@@ -482,6 +503,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						is_page,
 						is_verification_tab,
 						is_wallet,
+						is_ultimate_fiat,
 						type,
 						currency,
 					} = meta;
@@ -491,6 +513,8 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						target = generateDynamicTarget(name, 'verification', type);
 					} else if (is_wallet && type && currency) {
 						target = generateFiatWalletTarget(type, currency);
+					} else if (is_ultimate_fiat && type) {
+						target = generateDynamicTarget(name, 'ultimate_fiat', type);
 					}
 				}
 				if (!CLUSTERED_WEB_VIEWS[target]) {

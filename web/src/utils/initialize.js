@@ -86,3 +86,18 @@ export const getContracts = (coins = {}) => {
 
 	return contracts;
 };
+
+export const modifySections = (sections = {}) => {
+	const CUSTOMIZABLE_ATTRIBUTES = ['order', 'is_active'];
+
+	const modifiedSections = { ...sections };
+	Object.entries(modifiedSections).forEach(([sectionKey, section = {}]) => {
+		Object.keys(section).forEach((key) => {
+			if (!CUSTOMIZABLE_ATTRIBUTES.includes(key)) {
+				delete modifiedSections[sectionKey][key];
+			}
+		});
+	});
+
+	return modifiedSections;
+};

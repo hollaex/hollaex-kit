@@ -1,3 +1,4 @@
+import axios from 'axios';
 import querystring from 'query-string';
 
 import { requestAuthenticated } from '../../../utils';
@@ -29,6 +30,13 @@ export const storePair = (values) => {
 
 export const getBroker = () => requestAuthenticated('/broker');
 
+export const getWithoutAuthBroker = () => {
+	let headers = {
+		'Content-Type': 'application/json',
+	};
+	return axios.get('/broker', headers);
+};
+
 export const createBroker = (values) => {
 	const options = {
 		method: 'POST',
@@ -36,6 +44,14 @@ export const createBroker = (values) => {
 	};
 
 	return requestAuthenticated('/broker', options);
+};
+export const createTestBroker = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/test', options);
 };
 
 export const updateBroker = (values) => {
@@ -54,3 +70,11 @@ export const deleteBroker = (id) => {
 	};
 	return requestAuthenticated('/broker', options);
 };
+
+export const getBrokerQuote = (symbol, side) =>
+	requestAuthenticated(`/broker/quote?symbol=${symbol}&side=${side}`);
+
+export const getBrokerConnect = (exchange_id, api_key, api_secret) =>
+	requestAuthenticated(
+		`/broker/connect?exchange_id=${exchange_id}&api_key=${api_key}&api_secret=${api_secret}`
+	);

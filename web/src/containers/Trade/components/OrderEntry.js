@@ -37,6 +37,7 @@ import { SIDES, TYPES } from 'config/options';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
+import { setOrderEntryData } from 'actions/orderbookAction';
 
 const ORDER_OPTIONS = () => [
 	{
@@ -50,17 +51,23 @@ const ORDER_OPTIONS = () => [
 ];
 
 class OrderEntry extends Component {
-	state = {
-		formValues: {},
-		initialValues: {
-			side: SIDES[0].value,
-			type: TYPES[1].value,
-		},
-		orderPrice: 0,
-		orderFees: 0,
-		outsideFormError: '',
-		orderType: 'regular',
-	};
+	constructor(props) {
+		super(props);
+		const { order_entry_data } = props;
+		const { order_mode, entry_type, entry_side } = order_entry_data;
+		this.state = {
+			formValues: {},
+			initialValues: {
+				order_type: order_mode,
+				side: entry_side,
+				type: entry_type,
+			},
+			orderPrice: 0,
+			orderFees: 0,
+			outsideFormError: '',
+			orderType: 'regular',
+		};
+	}
 
 	componentDidMount() {
 		if (this.props.pair_base) {
@@ -410,6 +417,19 @@ class OrderEntry extends Component {
 		change(FORM_NAME, 'size', '');
 	};
 
+	handleOrderBookChange = (name, value) => {
+		const { order_entry_data } = this.props;
+		let orderEntryData = {};
+		orderEntryData = {
+			...order_entry_data,
+			[name]: value,
+		};
+		this.props.setOrderEntryData(orderEntryData);
+		if (name === 'order_mode') {
+			this.setState({ orderType: value });
+		}
+	};
+
 	generateFormValues = (props, buyingPair = '') => {
 		const {
 			min_size,
@@ -432,24 +452,34 @@ class OrderEntry extends Component {
 		const { display_name } = coins[pair] || DEFAULT_COIN_DATA;
 		const { display_name: buy_display_name } =
 			coins[buyingPair] || DEFAULT_COIN_DATA;
+		const {
+			initialValues: { order_type },
+		} = this.state;
 		const formValues = {
 			orderType: {
 				name: 'order_type',
 				type: 'dropdown',
 				options: ORDER_OPTIONS(),
-				onChange: (orderType) => this.setState({ orderType }),
+				onChange: (orderType) =>
+					this.handleOrderBookChange('order_mode', orderType),
+				isOrderEntry: true,
+				value: order_type,
 			},
 			type: {
 				name: 'type',
 				type: 'tab',
 				options: TYPES,
 				validate: [required],
+				onChange: (marketType) =>
+					this.handleOrderBookChange('entry_type', marketType),
 			},
 			side: {
 				name: 'side',
 				type: 'select',
 				options: SIDES,
 				validate: [required],
+				onChange: (selectedSide) =>
+					this.handleOrderBookChange('entry_side', selectedSide),
 			},
 			clear: {
 				name: 'clear',
@@ -684,6 +714,7 @@ const mapStateToProps = (state) => {
 		asks,
 		bids,
 		marketPrice,
+		order_entry_data: state.orderbook.order_entry_data,
 		// totalAsset: state.asset.totalAsset
 	};
 };
@@ -695,6 +726,7 @@ const mapDispatchToProps = (dispatch) => ({
 		openFeesStructureandLimits,
 		dispatch
 	),
+	setOrderEntryData: bindActionCreators(setOrderEntryData, dispatch),
 });
 
 export default connect(

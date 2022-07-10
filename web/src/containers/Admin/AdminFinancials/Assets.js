@@ -202,13 +202,15 @@ class Assets extends Component {
 			submitting: false,
 			isWithdrawalEdit: false,
 			isTableLoading: true,
+			isFiat: '',
+			assetType: '',
 		};
 	}
 
 	componentDidMount() {
 		// this.getMyExchange();
 		this.getBalance();
-		const { exchange, allCoins } = this.props;
+		const { exchange, allCoins, isPreview, selectedAsset } = this.props;
 		const { tabParams } = this.state;
 
 		let coins = allCoins.filter(
@@ -233,6 +235,11 @@ class Assets extends Component {
 						allCoins.filter((list) => list.symbol === filterSymbol)[0] || {};
 				}
 				this.props.handleHide(isPreview);
+				if (!Object.keys(filterCoin).length && tabParams?.isFiat) {
+					filterCoin =
+						allCoins.filter((item) => item.symbol === tabParams?.symbol)[0] ||
+						{};
+				}
 				this.setState({
 					isPreview,
 					isOpenAdd: isAddAsset,
@@ -240,8 +247,12 @@ class Assets extends Component {
 						...default_coin_data,
 						...filterCoin,
 					},
+					isFiat: tabParams.isFiat,
 				});
 			}
+		}
+		if (isPreview) {
+			this.setState({ isPreview: true, selectedAsset });
 		}
 	}
 
@@ -584,14 +595,22 @@ class Assets extends Component {
 		this.setState({ selectedAsset: data });
 	};
 
+	renderLink = (isFiat) => {
+		if (isFiat === 'onRamp') {
+			return <Link to="/admin/fiat?tab=2">Fiat controls</Link>;
+		} else if (isFiat === 'offRamp') {
+			return <Link to="/admin/fiat?tab=3">Fiat controls</Link>;
+		} else {
+			return <Link to="/admin/financials?tab=0&isAssetHome=true">Assets</Link>;
+		}
+	};
+
 	renderBreadcrumb = () => {
 		return (
 			<div>
 				{this.state.isPreview || this.state.isConfigure ? (
 					<Breadcrumb>
-						<Item>
-							<Link to="/admin/financials?tab=0&isAssetHome=true">Assets</Link>
-						</Item>
+						<Item>{this.renderLink(this.state.isFiat)}</Item>
 						<Item
 							className={
 								this.state.isPreview || this.state.isConfigure
@@ -623,26 +642,47 @@ class Assets extends Component {
 		});
 	};
 
-	handleWithdrawalEdit = () => {
+	handleWithdrawalEdit = (assetType) => {
 		this.handleConfigureEdit('edit_withdrawal_fees');
-		this.setState({ isWithdrawalEdit: true });
+		this.setState({ isWithdrawalEdit: true, assetType });
 	};
 
 	renderPreview = () => {
-		const { constants } = this.props;
-		if (this.state.isConfigure) {
+		const {
+			constants: {
+				info: { user_id },
+			},
+			fiat,
+		} = this.props;
+
+		const {
+			selectedAsset,
+			isConfigure,
+			isPreview,
+			exchangeUsers,
+			userEmails,
+			submitting,
+			saveLoading,
+			isFiat,
+		} = this.state;
+
+		const { owner_id, created_by, verified } = selectedAsset;
+		const showMintAndBurnButtons = verified && owner_id === user_id;
+		const showConfigureButton = created_by === user_id;
+
+		if (isConfigure) {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
-						{this.renderBreadcrumb()}
+						{!fiat && this.renderBreadcrumb()}
 						<FinalPreview
 							isConfigure
-							coinFormData={this.state.selectedAsset}
-							user_id={_get(constants, 'info.user_id')}
+							coinFormData={selectedAsset}
+							user_id={user_id}
 							setConfigEdit={this.handleConfigureEdit}
 							handleFileChange={this.handleFileChange}
 							handleDelete={this.handleDelete}
-							submitting={this.state.submitting}
+							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
 						/>
 					</div>
@@ -651,33 +691,33 @@ class Assets extends Component {
 							type="primary"
 							className="configure-btn green-btn"
 							onClick={this.applyConfirmation}
-							loading={this.state.saveLoading}
+							loading={saveLoading}
 						>
 							Save
 						</Button>
 					</div>
 				</div>
 			);
-		} else if (this.state.isPreview) {
+		} else if (isPreview) {
 			return (
 				<div className="overview-wrap">
 					<div className="preview-container">
-						{this.renderBreadcrumb()}
+						{!fiat && this.renderBreadcrumb()}
 						<FinalPreview
 							isPreview
-							coinFormData={this.state.selectedAsset}
-							user_id={_get(constants, 'info.user_id')}
+							coinFormData={selectedAsset}
+							user_id={user_id}
 							handleEdit={this.handleEdit}
 							handleDelete={this.handleDelete}
 							setConfigEdit={this.handleConfigureEdit}
-							exchangeUsers={this.state.exchangeUsers}
-							userEmails={this.state.userEmails}
-							submitting={this.state.submitting}
+							exchangeUsers={exchangeUsers}
+							userEmails={userEmails}
+							submitting={submitting}
 							handleWithdrawalEdit={this.handleWithdrawalEdit}
+							isFiat={isFiat}
 						/>
 					</div>
-					{this.state.selectedAsset.created_by ===
-					_get(constants, 'info.user_id') ? (
+					{showConfigureButton && (
 						<div>
 							<div className="d-flex">
 								<Button
@@ -687,8 +727,8 @@ class Assets extends Component {
 								>
 									Configure
 								</Button>
-								<div className="separator"></div>
-								{this.state.selectedAsset.verified ? (
+								<div className="separator" />
+								{showMintAndBurnButtons && (
 									<Fragment>
 										<Button
 											className="green-btn"
@@ -697,7 +737,7 @@ class Assets extends Component {
 										>
 											Mint
 										</Button>
-										<div className="separator"></div>
+										<div className="separator" />
 										<Button
 											className="green-btn"
 											type="primary"
@@ -706,10 +746,10 @@ class Assets extends Component {
 											Burn
 										</Button>
 									</Fragment>
-								) : null}
+								)}
 							</div>
 						</div>
-					) : null}
+					)}
 				</div>
 			);
 		}
@@ -816,6 +856,7 @@ class Assets extends Component {
 					exchangeCoins={this.state.coins}
 					handleRefreshCoin={this.handleRefreshCoin}
 					isWithdrawalEdit={this.state.isWithdrawalEdit}
+					assetType={this.state.assetType}
 				/>
 			);
 		}

@@ -120,7 +120,7 @@ export const generateOrderHistoryHeaders = (
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, increment_size),
 						pair_base_display
-					).join('');
+					);
 				} else {
 					return size;
 				}
@@ -158,7 +158,7 @@ export const generateOrderHistoryHeaders = (
 							increment_price
 						),
 						pair_2_display
-					).join('');
+					);
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -199,7 +199,7 @@ export const generateOrderHistoryHeaders = (
 							increment_price
 						),
 						pair_2_display
-					).join('');
+					);
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -367,7 +367,7 @@ export const generateTradeHeaders = (
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, increment_size),
 						pair_base_display
-					).join('');
+					);
 				} else {
 					return size;
 				}
@@ -405,7 +405,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						pair_2_display
-					).join('');
+					);
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -446,7 +446,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						pair_2_display
-					).join('');
+					);
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -491,7 +491,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						rest.symbol.toUpperCase()
-					).join('');
+					);
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -836,7 +836,7 @@ export const generateRecentTradeHeaders = (
 	prices,
 	icons
 ) => {
-	const KEYS = ['pair', 'size', 'side', 'price', 'amount'];
+	const KEYS = ['pair', 'size', 'side', 'price', 'amount', 'timestamp'];
 	return generateTradeHeaders(symbol, pairs, coins, discount, prices, icons)
 		.filter(({ key }) => KEYS.indexOf(key) > -1)
 		.sort((a, b) => KEYS.indexOf(a.key) - KEYS.indexOf(b.key));
