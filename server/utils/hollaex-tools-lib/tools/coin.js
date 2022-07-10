@@ -50,6 +50,7 @@ const updateCoin = async (
 		withdrawalFee: null,
 		description: null,
 		withdrawalFees: null,
+		depositFees: null,
 		min: null,
 		max: null,
 		isPublic: null,
