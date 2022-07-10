@@ -2,8 +2,10 @@
 
 const Network = require('hollaex-network-lib');
 const { all } = require('bluebird');
+const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
+const { Op } = require('sequelize');
 const { User, Status, Tier, Broker } = require('./db/models');
 const packageJson = require('./package.json');
 
@@ -229,9 +231,14 @@ const checkStatus = () => {
 			nodeLib = networkNodeLib;
 
 			return all([
+				// get deactivated users in the last week. Its only set to week because
+				// the sessions are assumed to be lower than a week for user to be logged in.
 				User.findAll({
 					where: {
-						activated: false
+						activated: false,
+						updated_at: {
+							[Op.gt]: moment().subtract(7, 'days').toDate()
+						}
 					}
 				}),
 				networkNodeLib
