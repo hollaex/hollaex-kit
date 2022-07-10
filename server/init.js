@@ -5,6 +5,7 @@ const { all } = require('bluebird');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
 const { User, Status, Tier, Broker } = require('./db/models');
+const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
 const {
@@ -81,6 +82,8 @@ const checkStatus = () => {
 
 	let frozenUsers = {};
 
+	let version = packageJson.version; // current exchange version
+
 	return Status.findOne({})
 		.then((status) => {
 			loggerInit.info('init/checkStatus');
@@ -100,15 +103,20 @@ const checkStatus = () => {
 				stop();
 				throw new Error('Exchange is expired');
 			} else {
+				if (status.kit_version != version) {
+					loggerInit.verbose('init/checkStatus version update', version, status.kit_version);
+					status.update({ kit_version: version }, { fields: ['kit_version'] });
+				}
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				configuration.email = status.email;
+
 				return all([
 					checkActivation(
 						status.name,
 						status.url,
 						status.activation_code,
-						status.kit_version,
+						version,
 						status.constants
 					),
 					Tier.findAll(),
