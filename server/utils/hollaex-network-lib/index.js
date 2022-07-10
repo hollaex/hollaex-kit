@@ -1013,7 +1013,7 @@ class HollaExNetwork {
 			return reject(parameterError('symbol', 'cannot be null'));
 		} else if (!side) {
 			return reject(parameterError('side', 'cannot be null'));
-		} else if (!["buy", "sell"].includes(side)) {
+		} else if (!['buy', 'sell'].includes(side)) {
 			return reject(parameterError('side', 'must be buy or sell'));
 		} else if (!size) {
 			return reject(parameterError('size', 'cannot be null'));
@@ -1042,7 +1042,7 @@ class HollaExNetwork {
 			maker_id: makerId,
 			taker_id: takerId,
 			fee_structure: feeStructure
-		}
+		};
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2703,6 +2703,7 @@ class HollaExNetwork {
 			withdrawalFee: null,
 			description: null,
 			withdrawalFees: null,
+			depositFees: null,
 			min: null,
 			max: null,
 			isPublic: null,
@@ -2777,6 +2778,11 @@ class HollaExNetwork {
 					break;
 				case 'meta':
 				case 'withdrawalFees':
+					if (isPlainObject(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'depositFees':
 					if (isPlainObject(value)) {
 						data[formattedField] = value;
 					}

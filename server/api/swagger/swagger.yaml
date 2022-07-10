@@ -5884,6 +5884,8 @@ definitions:
         type: boolean
       withdrawal_fees:
         type: ['object', 'null']
+      deposit_fees:
+        type: ['object', 'null']
       min:
         type: number
         format: double

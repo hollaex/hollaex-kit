@@ -1031,12 +1031,6 @@ const addUserBank = (req, res) =>  {
 				throw new Error ('Payment system fields are not defined yet');
 			}
 
-			// TODO 
-			// CHECK THE FIELDS AND REQUIRED
-			// toolsLib.getKitConfig().user_payments(data.type).data.forEach(() => {
-
-			// });
-
 			each(toolsLib.getKitConfig().user_payments[data.type].data, ({ required, key }) => {
 				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
 					throw new Error (`Missing field: ${key}`);
