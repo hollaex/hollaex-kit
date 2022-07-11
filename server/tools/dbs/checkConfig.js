@@ -2,7 +2,7 @@
 
 const { Status } = require('../../db/models');
 const { publisher } = require('../../db/pubsub');
-const { CONFIGURATION_CHANNEL } = require('../../constants');
+const { CONFIGURATION_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
 const { isBoolean } = require('lodash');
 
 Status.findOne()
@@ -82,9 +82,12 @@ Status.findOne()
 			}
 		};
 
+		const constants = { ...status.constants, url: API_HOST, domain: DOMAIN };
+		console.log('hi', constants);
+
 		return status.update(
-			{ kit, secrets },
-			{ fields: ['kit', 'secrets'] }
+			{ kit, secrets, constants },
+			{ fields: ['kit', 'secrets', 'constants'] }
 		);
 	})
 	.then((data) => {
