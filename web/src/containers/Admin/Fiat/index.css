@@ -102,7 +102,8 @@
 .payment-acc-wrapper .paymentContent .underline,
 .payment-acc-wrapper .anchor,
 .payment-modal-wrapper .anchor,
-.preview-fiat-container .txtanchor {
+.preview-fiat-container .txtanchor,
+.payment-modal-wrapper .noticepad .underline {
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -662,6 +663,7 @@
 	border: 1px solid #ffffff;
 	height: 28rem;
 	background-color: var(--admin_panel_content_background);
+	overflow: scroll;
 }
 .payment-acc-wrapper .field-wrap .ant-checkbox-wrapper {
 	display: flex;
@@ -680,6 +682,10 @@
 }
 .payment-acc-wrapper .field-wrap .description {
 	color: #a5a5a5;
+}
+
+.payment-modal-wrapper .error-text {
+	color: red;
 }
 
 .align-onramp-tooltip {

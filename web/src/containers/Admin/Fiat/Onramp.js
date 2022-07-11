@@ -35,8 +35,13 @@ const Onramp = ({
 	const [pluginName, setPluginName] = useState('');
 
 	useEffect(() => {
-		let coins = allCoins;
-		if (activeTab === 'onRamp') {
+		let coins =
+			allCoins &&
+			allCoins.filter(
+				(val) =>
+					exchange && exchange.coins && exchange.coins.includes(val.symbol)
+			);
+		if (exchange && exchange.coins && activeTab === 'onRamp') {
 			coins = coins.filter((item) => Object.keys(onramp).includes(item.symbol));
 		} else {
 			coins = coins.filter((item) =>
@@ -50,7 +55,7 @@ const Onramp = ({
 			);
 			coins = [...coins, ...selectedAssetData];
 		}
-		if (coins.length) {
+		if (coins.length && activeTab === 'onRamp') {
 			setCoins(coins);
 		}
 	}, [allCoins, onramp, offramp, activeTab, exchange, selectedAsset]);
@@ -58,25 +63,28 @@ const Onramp = ({
 	useEffect(() => {
 		let filteredFiatCoins = [];
 		let rampData = activeTab === 'onRamp' ? onramp : offramp;
+		const FiatCoinData = allCoins.filter((item) =>
+			exchange?.coins.includes(item?.symbol)
+		);
 		if (Object.keys(rampData).length) {
-			allCoins &&
-				allCoins
-					.filter((item) => !Object.keys(rampData).includes(item.symbol))
-					.forEach((item) => {
-						if (item.type === 'fiat') {
-							filteredFiatCoins = [
-								...filteredFiatCoins,
-								{
-									symbol: item?.symbol,
-									color: item?.meta?.color,
-									fullname: item?.fullname,
-								},
-							];
-						}
-					});
+			FiatCoinData &&
+				FiatCoinData.filter(
+					(item) => !Object.keys(rampData).includes(item.symbol)
+				).forEach((item) => {
+					if (item.type === 'fiat') {
+						filteredFiatCoins = [
+							...filteredFiatCoins,
+							{
+								symbol: item?.symbol,
+								color: item?.meta?.color,
+								fullname: item?.fullname,
+							},
+						];
+					}
+				});
 		} else {
-			allCoins &&
-				allCoins.forEach((item) => {
+			FiatCoinData &&
+				FiatCoinData.forEach((item) => {
 					if (item.type === 'fiat') {
 						filteredFiatCoins = [
 							...filteredFiatCoins,
@@ -87,7 +95,7 @@ const Onramp = ({
 			setCoins([filteredFiatCoins[0]]);
 		}
 		setFiatCoins(filteredFiatCoins);
-	}, [allCoins, onramp, offramp, activeTab]);
+	}, [allCoins, onramp, offramp, activeTab, exchange]);
 
 	useEffect(() => {
 		if (Object.keys(onramp).length && !selectedAsset) {
@@ -221,7 +229,6 @@ const Onramp = ({
 					<Button
 						type="primary"
 						className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
-						// disabled={activeTab === 'offRamp' ? true : false}
 						onClick={() =>
 							handleRamp(activeTab === 'onRamp' ? 'onramp' : 'offramp', true)
 						}
@@ -263,12 +270,9 @@ const Onramp = ({
 							<div className="paymentContent">
 								We've noticed that there hasn't been any Payment Accounts added
 								yet. To start it is recommended to{' '}
-								<span
-									onClick={() => handleTabChange('1')}
-									className="underline"
-								>
+								<Link to="/admin/fiat?tab=1" className="underline">
 									add a Payment Account
-								</span>
+								</Link>
 								.
 							</div>
 						</div>
@@ -323,7 +327,6 @@ const Onramp = ({
 										<Button
 											type="primary"
 											className="green-btn ml-5"
-											// disabled={true}
 											onClick={() =>
 												handleRamp(
 													'offramp',
@@ -337,7 +340,6 @@ const Onramp = ({
 										</Button>
 									)}
 								</div>
-								{/* {(isPaymentForm && activeTab === 'onRamp') || item?.symbol === coinSymbol ? ( */}
 								{isPaymentForm ? (
 									<PaymentAccounts
 										formType={formType}

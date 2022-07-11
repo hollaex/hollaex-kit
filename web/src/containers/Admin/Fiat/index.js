@@ -7,7 +7,7 @@ import Summarycontent from './Summarycontent';
 import Onramp from './Onramp';
 import PaymentAccounts from './PaymentAccounts';
 import { getTabParams } from '../AdminFinancials/Assets';
-import Kyc from './Kyc';
+// import Kyc from './Kyc';
 import { setConfig } from 'actions/appActions';
 
 const TabPane = Tabs.TabPane;
@@ -97,9 +97,9 @@ const Fiatmarkets = ({
 						setConfig={setConfig}
 					/>
 				</TabPane>
-				<TabPane tab="KYC" key="4">
+				{/* <TabPane tab="KYC" key="4">
 					<Kyc />
-				</TabPane>
+				</TabPane> */}
 			</Tabs>
 		</div>
 	);

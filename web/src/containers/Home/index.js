@@ -756,14 +756,8 @@ class Home extends Component {
 								{items.map((sec, index) => {
 									return (
 										<div
-											className={
-												this.state.isHover && index === this.state.hoveredIndex
-													? 'section section_active'
-													: 'section'
-											}
+											className="section"
 											onClick={() => this.sectionToNav(sec)}
-											onMouseOver={() => this.onMouseOver(true, index)}
-											onMouseLeave={() => this.onMouseOver(false, 0)}
 										>
 											{sec}
 										</div>

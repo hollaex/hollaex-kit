@@ -158,7 +158,9 @@ const PaymentDetails = ({
 												: item === 'bank' || item === 'paypal'
 												? `${item}Form`
 												: 'customForm',
-											item
+											item,
+											false,
+											index + 1
 										)
 									}
 								>
