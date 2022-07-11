@@ -12,6 +12,7 @@ import {
 	PanelInformationRow,
 	Button,
 	SmartTarget,
+	EditWrapper,
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
@@ -28,16 +29,11 @@ import {
 	documentInitialValues,
 } from './utils';
 import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
-import { ContactForm } from '../';
-import {
-	NOTIFICATIONS,
-	requestPlugin,
-	openContactForm,
-} from 'actions/appActions';
+import { ContactForm } from 'containers';
+import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
 import { setMe, updateDocuments, updateUser } from 'actions/userAction';
 import { getThemeClass } from 'utils/theme';
 import MobileVerificationHome from './MobileVerificationHome';
-import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
 import { verifyBankData } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
@@ -60,33 +56,27 @@ class Verification extends Component {
 		user: {},
 		activePage: 'email',
 		showVerificationSentModal: false,
-		bankMeta: {},
 	};
 
 	componentDidMount() {
-		if (this.props.user) {
-			this.setUserData(this.props.user);
+		const {
+			user,
+			router: {
+				location: { search },
+			},
+		} = this.props;
+
+		if (user) {
+			this.setUserData(user, () => {
+				if (search) {
+					const { currentTabs } = this.state;
+					const activeTab = currentTabs.findIndex(
+						(tab) => tab === this.getTabBySearch(search)
+					);
+					this.setState({ activeTab }, this.openCurrentTab);
+				}
+			});
 		}
-		this.getBankData();
-		if (window.location.search && window.location.search.includes('email')) {
-			this.setState({ activeTab: 0 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('phone')
-		) {
-			this.setState({ activeTab: 1 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('identity')
-		) {
-			this.setState({ activeTab: 2 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('banks')
-		) {
-			this.setState({ activeTab: 3 });
-		}
-		this.openCurrentTab();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -119,42 +109,52 @@ class Verification extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevState.activeTab) !==
-			JSON.stringify(this.state.activeTab)
-		) {
+		const { activeTab } = this.state;
+		if (prevState.activeTab !== activeTab) {
 			this.openCurrentTab();
 		}
 	}
 
+	getTabBySearch = (search) => {
+		if (search) {
+			if (search.includes('email')) {
+				return 'email';
+			} else if (search.includes('phone')) {
+				return 'sms';
+			} else if (search.includes('identity')) {
+				return 'kyc';
+			} else if (search.includes('banks')) {
+				return 'bank';
+			}
+		}
+
+		return '';
+	};
+
+	translateTabKey = (key) => {
+		switch (key) {
+			case 'email':
+				return 'email';
+			case 'sms':
+				return 'phone';
+			case 'kyc':
+				return 'identity';
+			case 'bank':
+				return 'banks';
+			default:
+				return '';
+		}
+	};
+
 	openCurrentTab = () => {
-		let currentTab = '';
-		if (this.state.activeTab === 0) {
-			currentTab = 'email';
-		}
-		if (this.state.activeTab === 1) {
-			currentTab = 'phone';
-		} else if (this.state.activeTab === 2) {
-			currentTab = 'identity';
-		} else if (this.state.activeTab === 3) {
-			currentTab = 'banks';
-		}
-		this.props.router.push(`/verification?${currentTab}`);
+		const { activeTab, currentTabs } = this.state;
+		const { router } = this.props;
+		const currentTab = this.translateTabKey(currentTabs[activeTab]);
+
+		router.push(`/verification?${currentTab}`);
 	};
 
-	getBankData = () => {
-		requestPlugin({ name: 'bank' })
-			.then((res) => {
-				if (res.data) {
-					this.setState({ bankMeta: res.data });
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-
-	setUserData = (user = {}) => {
+	setUserData = (user = {}, cb) => {
 		const calculatedData = this.calculateActiveTab(user);
 		if (calculatedData.activeTab > 4) {
 			this.goToAccountPage();
@@ -165,11 +165,18 @@ class Verification extends Component {
 				calculatedData.activeTab,
 				calculatedData.currentTabs
 			);
-			this.setState({
-				user,
-				activeTab: calculatedData.activeTab,
-				currentTabs: calculatedData.currentTabs,
-			});
+			this.setState(
+				{
+					user,
+					activeTab: calculatedData.activeTab,
+					currentTabs: calculatedData.currentTabs,
+				},
+				() => {
+					if (cb) {
+						cb();
+					}
+				}
+			);
 		}
 	};
 
@@ -556,7 +563,7 @@ class Verification extends Component {
 	};
 
 	renderPageContent = (tabProps) => {
-		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
+		const { activePage, activeTab, tabs, user } = this.state;
 		const {
 			activeLanguage,
 			icons: ICONS,
@@ -589,7 +596,6 @@ class Verification extends Component {
 						getErrorLocalized={getErrorLocalized}
 						maxLength={maxLength}
 						required={required}
-						bankMeta={bankMeta}
 					/>
 				);
 			case 'kyc':
