@@ -105,10 +105,12 @@ class Index extends Component {
 	}
 
 	onSubmitWithdrawReq = (values) => {
+		const { currency } = this.props;
 		const { bank, ...rest } = values;
 		const data = {
 			...rest,
 			bank_id: bank,
+			currency,
 		};
 
 		return withdrawFiat(data);
