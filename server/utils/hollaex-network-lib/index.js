@@ -1991,6 +1991,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for mint.
+	 * @param {string} opts.address - Custom address for mint.
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
@@ -2000,6 +2001,7 @@ class HollaExNetwork {
 	mintAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
+		address: null,
 		status: true,
 		email: true,
 		fee: null,
@@ -2029,6 +2031,10 @@ class HollaExNetwork {
 
 		if (opts.transactionId) {
 			data.transaction_id = opts.transactionId;
+		}
+
+		if (opts.address) {
+			data.address = opts.address;
 		}
 
 		if (isBoolean(opts.status)) {
@@ -2069,6 +2075,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.processing - Set to true to set state to processing.
 	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
+	 * @param {string} opts.updatedAddress - Value to update address of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -2083,6 +2090,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
+			updatedAddress: null,
 			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
@@ -2127,6 +2135,10 @@ class HollaExNetwork {
 			data.updated_transaction_id = opts.updatedTransactionId;
 		}
 
+		if (opts.updatedAddress) {
+			data.updated_address = opts.updatedAddress;
+		}
+
 		if (opts.updatedDescription) {
 			data.updated_description = opts.updatedDescription;
 		}
@@ -2157,6 +2169,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
+	 * @param {string} opts.address - Custom address for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
@@ -2166,6 +2179,7 @@ class HollaExNetwork {
 	burnAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
+		address: null,
 		status: true,
 		email: true,
 		fee: null,
@@ -2195,6 +2209,10 @@ class HollaExNetwork {
 
 		if (opts.transactionId) {
 			data.transaction_id = opts.transactionId;
+		}
+
+		if (opts.address) {
+			data.address = opts.address;
 		}
 
 		if (isBoolean(opts.status)) {
@@ -2235,6 +2253,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.processing - Set to true to set state to processing.
 	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
+	 * @param {string} opts.updatedAddress - Value to update address of pending burn to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -2249,6 +2268,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
+			updatedAddress: null,
 			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
@@ -2291,6 +2311,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (opts.updatedAddress) {
+			data.updated_address = opts.updatedAddress;
 		}
 
 		if (opts.updatedDescription) {
