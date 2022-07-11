@@ -47,6 +47,10 @@ module.exports = function(sequelize, DataTypes) {
 				type: DataTypes.JSONB,
 				defaultValue: {}
 			},
+			constants: {
+				type: DataTypes.JSONB,
+				defaultValue: {}
+			}
 		},
 		{
 			underscored: true
