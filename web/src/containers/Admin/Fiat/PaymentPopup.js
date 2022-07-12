@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { STATIC_ICONS } from 'config/icons';
 import {
 	CaretDownOutlined,
 	CaretUpOutlined,
@@ -7,6 +6,9 @@ import {
 	QuestionCircleOutlined,
 } from '@ant-design/icons';
 import { Button, Tooltip, Select, Input, Radio } from 'antd';
+import { Link } from 'react-router';
+
+import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 
 import './index.css';
@@ -52,13 +54,16 @@ const PaymentAccountPopup = ({
 	currentActiveTab = '',
 	handleOffRampProceed,
 	selectedPlugin = '',
-	setCoindata,
+	currentIndex = 1,
+	// setCoindata,
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [paymentSelect, setPaymentSelect] = useState('bank');
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState({});
+	const [errorMsg, setErrorMsg] = useState('');
+
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
 		: user_payments[paymentSelectData];
@@ -135,8 +140,12 @@ const PaymentAccountPopup = ({
 		setPaymentSelect(e);
 	};
 	const handleCustomSelect = () => {
-		handleClosePlugin(false);
-		formUpdate('customForm', plugin, true);
+		if (Object.keys(user_payments).includes(plugin)) {
+			setErrorMsg('This payment is already exist');
+		} else {
+			handleClosePlugin(false);
+			formUpdate('customForm', plugin, true);
+		}
 	};
 
 	const handleProceed = () => {
@@ -149,12 +158,21 @@ const PaymentAccountPopup = ({
 		} else if (paymentSelect === 'customPay') {
 			tabUpdate('sysname');
 		}
-		setCoindata(coinSymbol);
+		// setCoindata(coinSymbol);
 	};
 
 	const handleCloseOnramp = () => {
 		setIsMutli(false);
 		handleClosePlugin(false);
+	};
+
+	const handleUpdatePlugin = (val) => {
+		if (val && val !== plugin) {
+			setPlugin(val);
+		} else {
+			setPlugin('');
+			setErrorMsg('');
+		}
 	};
 
 	switch (type) {
@@ -322,7 +340,7 @@ const PaymentAccountPopup = ({
 					<Input
 						placeholder="Enter your system name"
 						id="sysname"
-						onChange={(e) => setPlugin(e.target.value)}
+						onChange={(e) => handleUpdatePlugin(e.target.value)}
 						className="mb-4"
 					/>
 					{paymentSelect !== 'customPay' && (
@@ -333,6 +351,7 @@ const PaymentAccountPopup = ({
 							<div className="plugintxt txtanchor">support@hollaex.com</div>
 						</>
 					)}
+					{errorMsg ? <div className="error-text">{errorMsg}</div> : null}
 					<div className="button-wrapper mt-5">
 						<Button
 							type="primary"
@@ -348,7 +367,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							disabled={!plugin}
+							disabled={!plugin || errorMsg}
 							onClick={
 								paymentSelect !== 'customPay'
 									? () => handleNext()
@@ -494,12 +513,10 @@ const PaymentAccountPopup = ({
 								<div>
 									We've noticed that there hasn't been any Payment Accounts
 									added yet. To start it is recommended to{' '}
-									<span
-										className="txtanchor"
-										onClick={() => handleTabChange('1')}
-									>
-										add a Payment Account.
-									</span>
+									<Link to="/admin/fiat?tab=1" className="underline">
+										add a Payment Account
+									</Link>
+									.
 								</div>
 							</div>
 						</div>
@@ -603,9 +620,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelect === 'bank'
+								paymentSelectData === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelect === 'paypal'
+									: paymentSelectData === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -613,12 +630,12 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>User payment account 1</div>
+							<div>User payment account {currentIndex}</div>
 							<b>
-								{paymentSelect === 'bank'
+								{paymentSelectData === 'bank'
 									? 'Bank'
-									: paymentSelect === 'paypal'
-									? 'paypal'
+									: paymentSelectData === 'paypal'
+									? 'Paypal'
 									: paymentSelectData}
 							</b>
 						</div>

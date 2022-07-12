@@ -1468,20 +1468,20 @@ table th {
     display: flex;
     justify-content: center;
     align-items: center; }
-  .home_carousel_section .section_active {
+  .home_carousel_section .section:hover {
     opacity: 1;
     cursor: pointer;
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home_carousel_section .height-40 {
     height: 40px; }
-  .home_carousel_section .trade_tab-pair-title,
-  .home_carousel_section .trade_tab-pair-sub-title,
-  .home_carousel_section .trade_tab-pair-volume {
-    opacity: 0.5; }
-  .home_carousel_section .section_active .trade_tab-pair-title,
-  .home_carousel_section .section_active .trade_tab-pair-sub-title,
-  .home_carousel_section .section_active .trade_tab-pair-volume {
+  .home_carousel_section .section:hover .trade_tab-pair-title,
+  .home_carousel_section .section:hover .trade_tab-pair-sub-title,
+  .home_carousel_section .section:hover .trade_tab-pair-volume {
     opacity: 1; }
+  .home_carousel_section .section .trade_tab-pair-title,
+  .home_carousel_section .section .trade_tab-pair-sub-title,
+  .home_carousel_section .section .trade_tab-pair-volume {
+    opacity: 0.5; }
 
 @keyframes moveSlideshow {
   100% {
