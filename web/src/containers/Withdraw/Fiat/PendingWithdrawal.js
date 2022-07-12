@@ -27,7 +27,7 @@ const PendingWithdrawal = ({ onOkay }) => {
 			</div>
 
 			<div className="d-flex mt-4 pt-3">
-				<EditWrapper stringId="back" />
+				<EditWrapper stringId="BACK" />
 				<Button label={STRINGS['BACK']} onClick={onOkay} className="mb-3" />
 			</div>
 		</div>
