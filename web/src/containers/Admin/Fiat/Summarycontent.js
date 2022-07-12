@@ -2,12 +2,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { STATIC_ICONS } from 'config/icons';
 import { Link } from 'react-router';
 import { Button, Select, Spin, Table } from 'antd';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { RightOutlined } from '@ant-design/icons';
-import moment from 'moment';
+// import { Icon as LegacyIcon } from '@ant-design/compatible';
+// import { RightOutlined } from '@ant-design/icons';
+// import moment from 'moment';
 
 import { Image } from 'components';
-import IconToolTip from '../IconToolTip';
+// import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
 import { requestDeposits } from '../Deposits/actions';
 
@@ -117,9 +117,9 @@ const Summarycontent = ({
 		setCurrentTablePage(count);
 	};
 
-	const renderVerification = (value) => (
-		<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
-	);
+	// const renderVerification = (value) => (
+	// 	<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
+	// );
 
 	const handleSelect = async (currency, type) => {
 		if (type === 'deposit') {
@@ -141,14 +141,14 @@ const Summarycontent = ({
 		}
 	};
 
-	const renderLink = (value) => (
-		<Button type="primary" className="green-btn">
-			<Link to={`/admin/user?id=${value}`}>
-				GO
-				<RightOutlined />
-			</Link>
-		</Button>
-	);
+	// const renderLink = (value) => (
+	// 	<Button type="primary" className="green-btn">
+	// 		<Link to={`/admin/user?id=${value}`}>
+	// 			GO
+	// 			<RightOutlined />
+	// 		</Link>
+	// 	</Button>
+	// );
 
 	const renderSelect = (type) => {
 		return (
@@ -199,63 +199,63 @@ const Summarycontent = ({
 		},
 	];
 
-	const kycColumns = [
-		{
-			title: '',
-			dataIndex: 'tooltip',
-			key: 'tooltip',
-			render: () => (
-				<IconToolTip
-					type="warning"
-					tip="This market is in pending verification"
-				/>
-			),
-		},
-		{
-			title: 'Account created',
-			dataIndex: 'actcreated',
-			key: 'actcreated',
-			render: (date) => (
-				<span>
-					Created at:{' '}
-					{moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
-						new Date(date).toTimeString().slice(9)}
-				</span>
-			),
-		},
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-		},
-		{
-			title: 'Username',
-			dataIndex: 'username',
-			key: 'username',
-		},
-		{
-			title: 'Email',
-			dataIndex: 'email',
-			key: 'email',
-		},
-		{
-			title: 'Verification Level',
-			dataIndex: 'vlevel',
-			key: 'vlevel',
-		},
-		{
-			title: 'Activated',
-			dataIndex: 'ac',
-			key: 'act',
-			render: renderVerification,
-		},
-		{
-			title: 'See Data',
-			dataIndex: 'seedata',
-			key: 'seedata',
-			render: renderLink,
-		},
-	];
+	// const kycColumns = [
+	// 	{
+	// 		title: '',
+	// 		dataIndex: 'tooltip',
+	// 		key: 'tooltip',
+	// 		render: () => (
+	// 			<IconToolTip
+	// 				type="warning"
+	// 				tip="This market is in pending verification"
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		title: 'Account created',
+	// 		dataIndex: 'actcreated',
+	// 		key: 'actcreated',
+	// 		render: (date) => (
+	// 			<span>
+	// 				Created at:{' '}
+	// 				{moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
+	// 					new Date(date).toTimeString().slice(9)}
+	// 			</span>
+	// 		),
+	// 	},
+	// 	{
+	// 		title: 'ID',
+	// 		dataIndex: 'id',
+	// 		key: 'id',
+	// 	},
+	// 	{
+	// 		title: 'Username',
+	// 		dataIndex: 'username',
+	// 		key: 'username',
+	// 	},
+	// 	{
+	// 		title: 'Email',
+	// 		dataIndex: 'email',
+	// 		key: 'email',
+	// 	},
+	// 	{
+	// 		title: 'Verification Level',
+	// 		dataIndex: 'vlevel',
+	// 		key: 'vlevel',
+	// 	},
+	// 	{
+	// 		title: 'Activated',
+	// 		dataIndex: 'ac',
+	// 		key: 'act',
+	// 		render: renderVerification,
+	// 	},
+	// 	{
+	// 		title: 'See Data',
+	// 		dataIndex: 'seedata',
+	// 		key: 'seedata',
+	// 		render: renderLink,
+	// 	},
+	// ];
 	let locale = {
 		emptyText: (
 			<span className="gray-txt">
@@ -292,28 +292,28 @@ const Summarycontent = ({
 			</span>
 		),
 	};
-	let kycLocale = {
-		emptyText: (
-			<span className="gray-txt">
-				<div>
-					<Image
-						icon={STATIC_ICONS['FIAT_KYC_ICON']}
-						wrapperClassName="limit-status-icon mr-2"
-					/>
-				</div>
-				<div>No pending KYC information here yet.</div>
-				<div>Invite users to your exchange and/or turn on KYC plugins.</div>
-				<div>
-					{' '}
-					<Link to="/admin/fiat?tab=4" className="underline">
-						Visit KYC section
-					</Link>
-				</div>
-			</span>
-		),
-	};
+	// let kycLocale = {
+	// 	emptyText: (
+	// 		<span className="gray-txt">
+	// 			<div>
+	// 				<Image
+	// 					icon={STATIC_ICONS['FIAT_KYC_ICON']}
+	// 					wrapperClassName="limit-status-icon mr-2"
+	// 				/>
+	// 			</div>
+	// 			<div>No pending KYC information here yet.</div>
+	// 			<div>Invite users to your exchange and/or turn on KYC plugins.</div>
+	// 			<div>
+	// 				{' '}
+	// 				<Link to="/admin/fiat?tab=4" className="underline">
+	// 					Visit KYC section
+	// 				</Link>
+	// 			</div>
+	// 		</span>
+	// 	),
+	// };
 
-	const kycData = [];
+	// const kycData = [];
 	return (
 		<div className="summary-content-wrapper">
 			<div className="d-flex">
@@ -466,8 +466,8 @@ const Summarycontent = ({
 						</div>
 					</div>
 				</div>
-				<div className="body-container">
-					<div className="box-outerDesign">
+				<div className="body-container flex-column">
+					<div className="box-outerDesign w-100">
 						<div className="d-flex justify-content-between align-items-center ramp-heading">
 							<span className="d-flex align-items-center">
 								<b>Recent fiat pending deposits</b>
@@ -506,7 +506,7 @@ const Summarycontent = ({
 							/>
 						</div>
 					</div>
-					<div className="box-outerDesign">
+					<div className="box-outerDesign w-100">
 						<div className="d-flex justify-content-between align-items-center ramp-heading">
 							<span className="d-flex align-items-center">
 								<b>Recent fiat pending withdrawals</b>
@@ -548,7 +548,7 @@ const Summarycontent = ({
 						</div>
 					</div>
 				</div>
-				<div>
+				{/* <div>
 					<div className="d-flex justify-content-between kyc-heading">
 						<span>
 							<b>KYC - recent pending user verifications </b>
@@ -578,7 +578,7 @@ const Summarycontent = ({
 							pagination={false}
 						/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

@@ -450,7 +450,7 @@ $trade-tab--arrow-size: 0.4rem;
 		align-items: center;
 	}
 
-	.section_active {
+	.section:hover {
 		opacity: 1;
 		cursor: pointer;
 		background-color: var(--base_wallet-sidebar-and-popup);
@@ -460,16 +460,16 @@ $trade-tab--arrow-size: 0.4rem;
 		height: 40px;
 	}
 
-	.trade_tab-pair-title,
-	.trade_tab-pair-sub-title,
-	.trade_tab-pair-volume {
-		opacity: 0.5;
+	.section:hover .trade_tab-pair-title,
+	.section:hover .trade_tab-pair-sub-title,
+	.section:hover .trade_tab-pair-volume {
+		opacity: 1;
 	}
 
-	.section_active .trade_tab-pair-title,
-	.section_active .trade_tab-pair-sub-title,
-	.section_active .trade_tab-pair-volume {
-		opacity: 1;
+	.section .trade_tab-pair-title,
+	.section .trade_tab-pair-sub-title,
+	.section .trade_tab-pair-volume {
+		opacity: 0.5;
 	}
 }
 

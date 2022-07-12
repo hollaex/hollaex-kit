@@ -627,12 +627,10 @@ class AppWrapper extends React.Component {
 			return (
 				<Fragment>
 					<div className="admin-top-bar">
-						<Link to="/summary">
-							<div className="top-box-menu">
-								<CaretLeftOutlined />
-								Back to Website
-							</div>
-						</Link>
+						<div className="top-box-menu" onClick={() => window.history.back()}>
+							<CaretLeftOutlined />
+							Back to Website
+						</div>
 						<div className="admin-top-header">Operator Control Panel</div>
 						<div className="mr-2 time-wrapper">
 							<Tooltip placement="bottom" title={<Timer isHover={true} />}>

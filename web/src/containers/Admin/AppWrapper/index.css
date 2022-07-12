@@ -98,6 +98,7 @@
 	color: #c4c4c4;
 	margin: 0px 10px;
 	padding: 1px 5px;
+	cursor: pointer;
 }
 .ant-layout .ant-layout-sider,
 .ant-layout .ant-layout-content {
