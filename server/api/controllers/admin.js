@@ -922,6 +922,7 @@ const putMint = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
@@ -947,6 +948,8 @@ const putMint = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
+		'updated_address',
+		updated_address,
 		'updated_description',
 		updated_description
 	);
@@ -958,6 +961,7 @@ const putMint = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
 		updatedDescription: updated_description,
 		additionalHeaders: {
@@ -1063,6 +1067,7 @@ const putBurn = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
@@ -1088,6 +1093,8 @@ const putBurn = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
+		'updated_address',
+		updated_address,
 		'updated_description',
 		updated_description
 	);
@@ -1099,6 +1106,7 @@ const putBurn = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
 		updatedDescription: updated_description,
 		additionalHeaders: {

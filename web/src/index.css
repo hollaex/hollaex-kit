@@ -362,8 +362,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -379,8 +379,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1468,20 +1468,20 @@ table th {
     display: flex;
     justify-content: center;
     align-items: center; }
-  .home_carousel_section .section_active {
+  .home_carousel_section .section:hover {
     opacity: 1;
     cursor: pointer;
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home_carousel_section .height-40 {
     height: 40px; }
-  .home_carousel_section .trade_tab-pair-title,
-  .home_carousel_section .trade_tab-pair-sub-title,
-  .home_carousel_section .trade_tab-pair-volume {
-    opacity: 0.5; }
-  .home_carousel_section .section_active .trade_tab-pair-title,
-  .home_carousel_section .section_active .trade_tab-pair-sub-title,
-  .home_carousel_section .section_active .trade_tab-pair-volume {
+  .home_carousel_section .section:hover .trade_tab-pair-title,
+  .home_carousel_section .section:hover .trade_tab-pair-sub-title,
+  .home_carousel_section .section:hover .trade_tab-pair-volume {
     opacity: 1; }
+  .home_carousel_section .section .trade_tab-pair-title,
+  .home_carousel_section .section .trade_tab-pair-sub-title,
+  .home_carousel_section .section .trade_tab-pair-volume {
+    opacity: 0.5; }
 
 @keyframes moveSlideshow {
   100% {
@@ -3237,8 +3237,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3392,7 +3392,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5546,7 +5546,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8264,14 +8264,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {

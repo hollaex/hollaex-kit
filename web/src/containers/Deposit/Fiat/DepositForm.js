@@ -319,7 +319,9 @@ const Deposit = ({
 				showCloseText={false}
 			>
 				{isPending ? (
-					<PendingDeposit onOkay={() => router.push('/transactions?tab=2')} />
+					<PendingDeposit
+						onOkay={() => router.push('/transactions?deposits')}
+					/>
 				) : (
 					<ReviewModalContent
 						onBack={() => setDialogIsOpen(false)}
