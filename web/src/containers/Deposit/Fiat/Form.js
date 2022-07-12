@@ -311,7 +311,7 @@ const Form = ({
 				<div className="btn-wrapper">
 					<Button
 						label="Proceed"
-						onClick={() => router.push('/verification?initial_tab=bank')}
+						onClick={() => router.push('/verification?banks')}
 						className="mb-3"
 					/>
 				</div>

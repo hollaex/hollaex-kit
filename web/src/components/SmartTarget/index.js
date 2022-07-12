@@ -10,7 +10,7 @@ import { generateGlobalId } from 'utils/id';
 import withEdit from 'components/EditProvider/withEdit';
 import renderFields from 'components/Form/factoryFields';
 import { getErrorLocalized } from 'utils/errors';
-import { IconTitle } from 'components';
+import { IconTitle, ErrorBoundary } from 'components';
 
 const DefaultChildren = ({ strings: STRINGS, icons: ICONS }) => {
 	return (
@@ -47,7 +47,7 @@ const SmartTarget = (props) => {
 	} = props;
 
 	return targets.includes(id) ? (
-		<Fragment>
+		<ErrorBoundary>
 			{webViews[id].map(({ src, name }, index) => (
 				<RemoteComponent
 					key={`${name}_${index}`}
@@ -64,7 +64,7 @@ const SmartTarget = (props) => {
 					{...props}
 				/>
 			))}
-		</Fragment>
+		</ErrorBoundary>
 	) : children ? (
 		<Fragment>{children}</Fragment>
 	) : (

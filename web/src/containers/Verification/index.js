@@ -73,7 +73,9 @@ class Verification extends Component {
 					const activeTab = currentTabs.findIndex(
 						(tab) => tab === this.getTabBySearch(search)
 					);
-					this.setState({ activeTab }, this.openCurrentTab);
+					if (activeTab !== -1) {
+						this.setState({ activeTab }, this.openCurrentTab);
+					}
 				}
 			});
 		}

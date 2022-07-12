@@ -255,7 +255,7 @@ const Deposit = ({
 					<div style={{ position: 'absolute', top: '60px' }}>
 						<div className="btn-wrapper">
 							<div>
-								<EditWrapper stringId="back" />
+								<EditWrapper stringId="BACK" />
 								<Button
 									label={STRINGS['BACK']}
 									onClick={() => setStep(STEPS.HOME)}
