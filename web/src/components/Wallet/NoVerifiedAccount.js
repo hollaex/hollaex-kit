@@ -13,8 +13,8 @@ const NoVerifiedAccount = ({ icons: ICONS, type = 'deposit' }) => {
 			<IconTitle
 				text={STRINGS['FIAT.UNVERIFIED.TITLE']}
 				stringId="FIAT.UNVERIFIED.TITLE"
-				iconId="user_kyc"
-				iconPath={ICONS['user_kyc']} /* Icon should be added*/
+				iconId="FIAT_KYC"
+				iconPath={ICONS['FIAT_KYC']}
 				className="flex-direction-column"
 			/>
 			<div className="text-align-center py-4">
