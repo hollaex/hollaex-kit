@@ -218,6 +218,7 @@ const nestedIcons = {
 	NOTE_KYC: '/assets/images/note-KYC.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
+	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',

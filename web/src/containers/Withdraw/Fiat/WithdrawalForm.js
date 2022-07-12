@@ -325,8 +325,8 @@ class Index extends Component {
 							<IconTitle
 								text={STRINGS['VERIFICATION_TITLE']}
 								stringId="VERIFICATION_TITLE"
-								iconId="user_kyc"
-								iconPath={ICONS['user_kyc']}
+								iconId="FIAT_KYC"
+								iconPath={ICONS['FIAT_KYC']}
 								className="flex-direction-column"
 							/>
 							<div className="text-align-center py-4">
