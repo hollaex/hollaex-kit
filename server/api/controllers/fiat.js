@@ -16,7 +16,8 @@ const createDepositRequest = (req, res) => {
 	const {
 		amount,
 		transaction_id,
-		currency
+		currency,
+		address
 	} = req.swagger.params.data.value;
 
 	loggerFiat.verbose(
@@ -26,22 +27,17 @@ const createDepositRequest = (req, res) => {
 		amount,
 		transaction_id,
 		currency,
+		address,
 		userId
 	);
-
-	// TODO check TX amount range
-
 
 	toolsLib.user.getUserByKitId(userId)
 		.then(async (user) => {
 			if (!user) {
 				throw new Error('User not found');
 			}
-
-			// TODO CHECK TRANASCTION ID TO BE UNIQUE
-			// await validateTxid(transaction_id);
-			// CHECK DEPOSIT FEE
-			let fee = 0;
+			
+			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
 			return toolsLib.wallet.mintAssetByKitId(
 				userId,
@@ -50,6 +46,7 @@ const createDepositRequest = (req, res) => {
 				{
 					description: `Pending deposit created with ${currency.toUpperCase()} for username: ${user.username}`,
 					transactionId: transaction_id,
+					address,
 					status: false,
 					fee
 				}
@@ -93,7 +90,7 @@ const createWithdrawalRequest = (req, res) => {
 
 	const {
 		amount,
-		transaction_id,
+		bank_id,
 		currency
 	} = req.swagger.params.data.value;
 
@@ -102,15 +99,75 @@ const createWithdrawalRequest = (req, res) => {
 		'controllers/fiat/createWithdrawalRequest data',
 		ip,
 		amount,
-		transaction_id,
+		bank_id,
 		currency,
 		userId
 	);
 
-	// TODO
+	toolsLib.user.getUserByKitId(userId)
+		.then(async (user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
 
-	return res.status(400).json({ message: 'Under construction' });
+			const bank = user.bank_account.find((bank) => {
+				return bank.id === bank_id;
+			});
 
+			if (!bank) {
+				throw new Error('The selected payment option is not registered');
+			}
+
+			// fee_coin is always the same as currency in fiat
+			const { fee } = await toolsLib.wallet.validateWithdrawal(user, bank_id, amount, currency, 'fiat');
+			
+			let bankFormat = '';
+
+			Object.keys(bank).forEach((key, i) => {
+				if (key !== 'id' && key !== 'status' && bank[key] && bank[key] != undefined) {
+					bankFormat += `${key}: ${bank[key]}`;
+					if (i !== Object.keys(bank).length - 1) {
+						bankFormat += ' - ';
+					}
+				}
+			});
+
+			return toolsLib.wallet.burnAssetByKitId(
+				userId,
+				currency,
+				amount,
+				{
+					description: `withdrawal to ${bankFormat}`,
+					transactionId: req.uuid,
+					address: bank_id,
+					status: false,
+					fee
+				}
+			);
+		})
+		.then((deposit) => {
+			loggerFiat.verbose(
+				req.uuid,
+				'controllers/fiat/createDepositRequest then',
+				'Pending mint created',
+				'transaction_id:',
+				deposit.transaction_id,
+				'amount:',
+				deposit.amount,
+				'fee:',
+				deposit.fee
+			);
+
+			return res.json(deposit);
+		})
+		.catch((err) => {
+			loggerFiat.error(
+				req.uuid,
+				'controllers/fiat/createDepositRequest catch',
+				err.message
+			);
+			return res.status(400).json({ message: err.message });
+		});
 };
 
 module.exports = {

@@ -4595,6 +4595,8 @@ paths:
                 type: number
               transaction_id:
                 type: string
+              address:
+                type: string
               currency:
                 type: string
             required:
