@@ -232,24 +232,7 @@ function updateBrokerPair(req, res) {
 		multiplier
 	);
 
-	toolsLib.broker.updateBrokerPair(id, {
-		id,
-		buy_price,
-		sell_price,
-		min_size,
-		max_size,
-		increment_size,
-		paused,
-		user_id,
-		type,
-		quote_expiry_time,
-		rebalancing_symbol,
-		account,
-		formula,
-		exchange_name,
-		spread,
-		multiplier
-	})
+	toolsLib.broker.updateBrokerPair(id, req.swagger.params.data.value)
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
