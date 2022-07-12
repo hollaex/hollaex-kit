@@ -161,6 +161,7 @@ exports.ACCOUNT_NOT_VERIFIED = 'Account is not verified';
 exports.INVALID_SYMBOL = (symbol) => `Invalid symbol: ${symbol}`;
 exports.INVALID_COIN = (coin) => `Invalid coin: ${coin}`;
 exports.INVALID_AMOUNT = (amount) => `Invalid amount: ${amount}`;
+exports.DEPOSIT_DISABLED_FOR_COIN = (coin) => `Deposits are disabled for coin: ${coin}`;
 exports.WITHDRAWAL_DISABLED_FOR_COIN = (coin) => `Withdrawals are disabled for coin: ${coin}`;
 exports.UPGRADE_VERIFICATION_LEVEL = (level) => `Verification level must be at or above ${level}`;
 exports.INVALID_VERIFICATION_LEVEL = (level) => `Invalid verification level: ${level}`;

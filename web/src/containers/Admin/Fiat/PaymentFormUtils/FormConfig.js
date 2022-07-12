@@ -3,6 +3,8 @@ import { Modal, Button } from 'antd';
 
 import Form from './PaymentForm';
 import { AdminHocForm } from 'components';
+import { required } from 'components/Form/validations';
+import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
 
@@ -11,11 +13,13 @@ const add_column_field = {
 		type: 'text',
 		label: 'Payment detail name',
 		placeholder: 'Input the payment detail name',
+		validate: [required],
 	},
 	required: {
 		type: 'boolean',
 		isPayment: true,
 		defaultValue: 'required',
+		validate: validateBoolean,
 	},
 };
 
@@ -32,6 +36,7 @@ class FormConfig extends Component {
 			label: '',
 			required: '',
 			editedValues: this.props.initialValues,
+			buttonSubmitting: false,
 		};
 	}
 
@@ -47,6 +52,12 @@ class FormConfig extends Component {
 			JSON.stringify(prevProps.initialValues)
 		) {
 			this.generateInitialValues();
+		}
+		if (
+			JSON.stringify(this.state.editedValues) !==
+			JSON.stringify(prevState.editedValues)
+		) {
+			this.setState({ buttonSubmitting: true });
 		}
 	}
 
@@ -131,6 +142,7 @@ class FormConfig extends Component {
 		this.setState({
 			isAddColumn: false,
 			currentSection: '',
+			buttonSubmitting: false,
 		});
 	};
 
@@ -155,7 +167,10 @@ class FormConfig extends Component {
 							<div className="form-label">
 								<div>
 									<b>{formProps.label}:</b>
-									{!formProps.required ? <div>(optional)</div> : null}
+									{!formProps.required &&
+									this.state.currentActiveTab !== 'onRamp' ? (
+										<div>(optional)</div>
+									) : null}
 								</div>
 								<span
 									className="anchor"
@@ -343,7 +358,12 @@ class FormConfig extends Component {
 	};
 
 	render() {
-		const { custom_fields, isAddColumn, modalType } = this.state;
+		const {
+			custom_fields,
+			isAddColumn,
+			modalType,
+			buttonSubmitting,
+		} = this.state;
 		return (
 			<div>
 				<Form
@@ -351,7 +371,7 @@ class FormConfig extends Component {
 					customFields={true}
 					editColumn={this.editColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
-					buttonSubmitting={this.props.buttonSubmitting}
+					buttonSubmitting={!buttonSubmitting}
 					isFiat={this.props.isFiat}
 				/>
 				<Modal visible={isAddColumn} footer={null} onCancel={this.onCancel}>

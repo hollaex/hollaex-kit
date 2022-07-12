@@ -12,6 +12,7 @@ const {
 	EXPIRED_WITHDRAWAL_TOKEN,
 	INVALID_COIN,
 	INVALID_AMOUNT,
+	DEPOSIT_DISABLED_FOR_COIN,
 	WITHDRAWAL_DISABLED_FOR_COIN,
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV,
@@ -61,7 +62,7 @@ const isValidAddress = (currency, address, network) => {
 	}
 };
 
-const getWithdrawalFee = (currency, network) => {
+const getWithdrawalFee = (currency, network, amount, level) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -74,6 +75,22 @@ const getWithdrawalFee = (currency, network) => {
 	if (network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[network]) {
 		fee = coinConfiguration.withdrawal_fees[network].value;
 		fee_coin = coinConfiguration.withdrawal_fees[network].symbol;
+	}
+
+	// withdrawal fee calculation for fiat
+	if (network === 'fiat') {
+		if (coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[currency]) {
+			let value = coinConfiguration.withdrawal_fees[currency].value;
+			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
+			if (coinConfiguration.withdrawal_fees[currency].levels && coinConfiguration.withdrawal_fees[currency].levels[level]) {
+				value = coinConfiguration.withdrawal_fees[currency].levels[level];
+			}
+			if (coinConfiguration.withdrawal_fees[currency].type === 'static') {
+				fee = value;
+			} else {
+				fee = amount * value / 100;
+			}
+		}
 	}
 
 	return { fee, fee_coin };
@@ -99,7 +116,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		if (!isEmail(address)) {
 			throw new Error(`Invalid ${currency} address: ${address}`);
 		}
-	} else {
+	} else if (network !== 'fiat') {
 		// blockchain transfer
 		if (coinConfiguration.network) {
 			if (!network) {
@@ -123,7 +140,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 	}
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, network);
+	const { fee, fee_coin } = getWithdrawalFee(currency, network, amount, user.verification_level);
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
@@ -973,8 +990,67 @@ const updatePendingBurn = (
 	return getNodeLib().updatePendingBurn(transactionId, opts);
 };
 
+const getDepositFee = (currency, network, amount, level) => {
+	if (!subscribedToCoin(currency)) {
+		return reject(new Error(INVALID_COIN(currency)));
+	}
+	const { deposit_fees } = getKitCoin(currency);
+
+	let fee = 0;
+	let fee_coin = currency;
+	if (deposit_fees && deposit_fees[currency]) {
+		let value = deposit_fees[currency].value;
+		fee_coin =  deposit_fees[currency].symbol;
+		if (deposit_fees[currency].levels && deposit_fees[currency].levels[level]) {
+			value = deposit_fees[currency].levels[level];
+		}
+		if (deposit_fees[currency].type === 'static') {
+			fee = value;
+		} else {
+			fee = amount * value / 100;
+		}
+	}
+
+	return {
+		fee,
+		fee_coin
+	};
+};
+
+async function validateDeposit(user, amount, currency, network = null) {
+	const coinConfiguration = getKitCoin(currency);
+
+	if (!subscribedToCoin(currency)) {
+		throw new Error(INVALID_COIN(currency));
+	}
+
+	if (amount <= 0) {
+		throw new Error(INVALID_AMOUNT(amount));
+	}
+
+	if (!coinConfiguration.allow_deposit) {
+		throw new Error(DEPOSIT_DISABLED_FOR_COIN(currency));
+	}
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!user.network_id) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	} else if (user.verification_level < 1) {
+		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
+	}
+
+	const { fee, fee_coin } = getDepositFee(currency, network, amount, user.verification_level);
+
+	return {
+		fee,
+		fee_coin
+	};
+}
+
 module.exports = {
 	sendRequestWithdrawalEmail,
+	validateWithdrawal,
 	validateWithdrawalToken,
 	cancelUserWithdrawalByKitId,
 	checkTransaction,
@@ -997,5 +1073,6 @@ module.exports = {
 	getKitBalance,
 	updatePendingMint,
 	updatePendingBurn,
-	isValidAddress
+	isValidAddress,
+	validateDeposit
 };

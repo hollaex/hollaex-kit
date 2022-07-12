@@ -4595,6 +4595,8 @@ paths:
                 type: number
               transaction_id:
                 type: string
+              address:
+                type: string
               currency:
                 type: string
             required:
@@ -4630,13 +4632,15 @@ paths:
             properties:
               amount:
                 type: number
-              transaction_id:
+              bank_id:
                 type: string
               currency:
                 type: string
+              captcha:
+                type: string
             required:
               - amount
-              - transaction_id
+              - bank_id
               - currency
       responses:
         200:
@@ -5805,6 +5809,8 @@ definitions:
       transaction_id:
         type: string
       updated_transaction_id:
+        type: string
+      updated_address:
         type: string
       status:
         type: boolean

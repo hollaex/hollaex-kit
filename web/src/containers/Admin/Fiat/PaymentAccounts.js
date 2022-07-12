@@ -44,6 +44,7 @@ const PaymentWay = ({
 	currentsymbol = '',
 	coinSymbol = '',
 	isPaymentForm,
+	currentIndex = 1,
 }) => {
 	const renderTooltip = () => {
 		let imgSrc = STATIC_ICONS.FIAT_PAYMENT_TOOLTIP;
@@ -181,9 +182,9 @@ const PaymentWay = ({
 				<div>
 					<div className="d-flex">
 						{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
-							<div className="mr-4">User payment account 1</div>
+							<div className="mr-4">User payment account {currentIndex}</div>
 						) : (
-							<div className="mr-4">On-ramp 1</div>
+							<div className="mr-4">On-ramp {currentIndex}</div>
 						)}
 						{renderTooltip()}
 					</div>
@@ -202,7 +203,6 @@ const PaymentWay = ({
 					</div>
 					<FormConfig
 						initialValues={bankInitialValues}
-						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
 						currentActiveTab={currentActiveTab}
@@ -214,7 +214,7 @@ const PaymentWay = ({
 			return (
 				<div>
 					<div className="d-flex">
-						<div className="mr-4">User payment account 2</div>
+						<div className="mr-4">User payment account {currentIndex}</div>
 						{renderTooltip()}
 					</div>
 					<div className="d-flex mt-4 mb-4">
@@ -232,7 +232,6 @@ const PaymentWay = ({
 					</div>
 					<FormConfig
 						initialValues={paypalInitialValues}
-						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
 						currentActiveTab={currentActiveTab}
@@ -244,7 +243,7 @@ const PaymentWay = ({
 			return (
 				<div>
 					<div className="d-flex">
-						<div className="mr-4">User payment account 1</div>
+						<div className="mr-4">User payment account {currentIndex}</div>
 						{renderTooltip()}
 					</div>
 					<div className="d-flex mt-4 mb-4">
@@ -262,7 +261,6 @@ const PaymentWay = ({
 					</div>
 					<FormConfig
 						initialValues={isCustomPay ? {} : customInitialValues}
-						buttonSubmitting={false}
 						isFiat={true}
 						handleClose={handleClose}
 						currentActiveTab={currentActiveTab}
@@ -342,6 +340,7 @@ const PaymentAccounts = ({
 	const [paymentMethods, setPaymentMethods] = useState([]);
 	const [isDisplayDetails, setIsDisplayDetails] = useState(false);
 	const [selectedPlugin, setPlugin] = useState('');
+	const [currentIndex, setCurrentIndex] = useState(1);
 
 	useEffect(() => {
 		if (formType) {
@@ -544,13 +543,14 @@ const PaymentAccounts = ({
 	const tabUpdate = (type) => {
 		setCurrentTab(type);
 	};
-	const formUpdate = (type, currentPaymentType, isCustomPay) => {
+	const formUpdate = (type, currentPaymentType, isCustomPay, curIndex) => {
 		setPaymentType(type);
 		setIsDisplayForm(true);
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
 		setIsOnRampCoins(false);
 		setIsDisplayDetails(true);
+		setCurrentIndex(curIndex);
 		// setCoinSymbol(coinSymbol);
 	};
 	const onCancel = () => {
@@ -583,7 +583,7 @@ const PaymentAccounts = ({
 						...originalonramp[coinSymbol],
 						[selectedPlugin]: {
 							data: selectedPlugin,
-							type: 'Plugin',
+							type: 'plugin',
 						},
 					},
 				},
@@ -604,7 +604,7 @@ const PaymentAccounts = ({
 		});
 		let deletedBodyData = {
 			kit: {
-				user_payments: { ...user_payments, deletedData },
+				user_payments: deletedData,
 			},
 		};
 		if (currentActiveTab === 'onRamp') {
@@ -730,42 +730,40 @@ const PaymentAccounts = ({
 					</div>
 				) : null}
 				<div className={!isUpgrade ? 'disableall' : ''}>
-					{payOption && (
+					{payOption && paymentMethodsData.length ? (
 						<div className="mt-4">
 							<div>
 								Payment accounts ({paymentMethodsData.length} method saved)
 							</div>
 							<div className="mb-3">
-								{paymentMethodsData.length ? (
-									<Select
-										className="paymentSelect"
-										defaultValue={paymentMethodsData[0]}
-										suffixIcon={
-											isOpen ? (
-												<CaretDownOutlined className="downarrow" />
-											) : (
-												<CaretUpOutlined className="downarrow" />
-											)
-										}
-										onClick={handleOpenPayment}
-										onChange={setPaymentMethod}
-									>
-										{Object.keys(formValuesData).map((item, index) => {
-											const value =
-												currentActiveTab === 'offRamp'
-													? formValuesData[item]
-													: item;
-											return (
-												<Option value={value} key={index}>
-													User payment account {index + 1}: {value}
-												</Option>
-											);
-										})}
-									</Select>
-								) : null}
+								<Select
+									className="paymentSelect"
+									defaultValue={paymentMethodsData[0]}
+									suffixIcon={
+										isOpen ? (
+											<CaretDownOutlined className="downarrow" />
+										) : (
+											<CaretUpOutlined className="downarrow" />
+										)
+									}
+									onClick={handleOpenPayment}
+									onChange={setPaymentMethod}
+								>
+									{Object.keys(formValuesData).map((item, index) => {
+										const value =
+											currentActiveTab === 'offRamp'
+												? formValuesData[item]
+												: item;
+										return (
+											<Option value={value} key={index}>
+												User payment account {index + 1}: {value}
+											</Option>
+										);
+									})}
+								</Select>
 							</div>
 						</div>
-					)}
+					) : null}
 				</div>
 			</div>
 			<div className={!isUpgrade ? 'disableall' : ''}>
@@ -796,9 +794,10 @@ const PaymentAccounts = ({
 						currentsymbol={currentsymbol}
 						coinSymbol={coinSymbol}
 						isPaymentForm={isPaymentForm}
+						currentIndex={currentIndex}
 					/>
 				)}
-				{payOption && !isDisplayDetails && (
+				{payOption && !isDisplayDetails && paymentMethodsData.length ? (
 					<PaymentDetails
 						type={paymentSelect}
 						formUpdate={formUpdate}
@@ -809,7 +808,7 @@ const PaymentAccounts = ({
 						user_payments={formValues}
 						activeTab={currentActiveTab}
 					/>
-				)}
+				) : null}
 			</div>
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
@@ -829,6 +828,7 @@ const PaymentAccounts = ({
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}
+					currentIndex={currentIndex}
 				/>
 			</Modal>
 		</div>
