@@ -269,7 +269,7 @@ class Index extends Component {
 					<Button
 						label={STRINGS['PROCEED']}
 						stringId="PROCEED"
-						onClick={() => router.push('/verification?initial_tab=bank')}
+						onClick={() => router.push('/verification?banks')}
 						className="mb-3"
 					/>
 				)}
