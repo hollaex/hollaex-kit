@@ -59,6 +59,7 @@ const Fiatmarkets = ({
 						coins={coins}
 						isUpgrade={isUpgrade}
 						user_payments={user_payments}
+						exchange={exchange}
 					/>
 				</TabPane>
 				<TabPane tab="Payment accounts" key="1">

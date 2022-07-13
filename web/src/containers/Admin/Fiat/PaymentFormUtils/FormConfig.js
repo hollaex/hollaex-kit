@@ -86,7 +86,7 @@ class FormConfig extends Component {
 		this.setState({ custom_fields });
 	};
 
-	addColumn = (modalType = '', editData = {}) => {
+	editColumn = (modalType = '', editData = {}) => {
 		this.setState({
 			isAddColumn: true,
 			modalType,
@@ -94,13 +94,13 @@ class FormConfig extends Component {
 		});
 	};
 
-	editColumn = (currentSection = '') => {
+	addColumn = (currentSection = '') => {
 		this.setState({ currentSection });
-		this.addColumn();
+		this.editColumn();
 	};
 
 	handleRemoveHeader = (headerName, label, required) => {
-		this.addColumn('delete_field');
+		this.editColumn('delete_field');
 		this.setState({
 			headerName,
 			label,
@@ -118,8 +118,6 @@ class FormConfig extends Component {
 					: [];
 			if (!headerKeys.includes(headerName)) {
 				data[key] = section;
-			} else {
-				data[key] = '';
 			}
 			this.setState({ custom_fields: data });
 		});
@@ -141,6 +139,7 @@ class FormConfig extends Component {
 	onCancel = () => {
 		this.setState({
 			isAddColumn: false,
+			editData: [],
 			currentSection: '',
 			buttonSubmitting: false,
 		});
@@ -174,7 +173,7 @@ class FormConfig extends Component {
 								</div>
 								<span
 									className="anchor"
-									onClick={() => this.addColumn('edit', formProps)}
+									onClick={() => this.editColumn('edit', formProps)}
 								>
 									Edit field name
 								</span>
@@ -207,7 +206,6 @@ class FormConfig extends Component {
 			this.onCancel();
 		}
 		if (type === 'edit') {
-			delete formProps.section_type;
 			let editedValues = { ...this.state.editedValues };
 			if (this.props.currentActiveTab === 'onRamp') {
 				Object.keys(editedValues).forEach((item) => {
@@ -238,7 +236,6 @@ class FormConfig extends Component {
 			}
 			this.setState({ editedValues });
 		} else {
-			delete formProps.section_type;
 			let editedValues = { ...this.state.editedValues };
 			if (this.props.currentActiveTab === 'onRamp') {
 				if (Object.keys(editedValues).length) {
@@ -369,7 +366,7 @@ class FormConfig extends Component {
 				<Form
 					fields={custom_fields}
 					customFields={true}
-					editColumn={this.editColumn}
+					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
 					buttonSubmitting={!buttonSubmitting}
 					isFiat={this.props.isFiat}
