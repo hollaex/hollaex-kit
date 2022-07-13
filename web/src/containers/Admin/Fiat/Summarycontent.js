@@ -18,6 +18,7 @@ const Summarycontent = ({
 	coins,
 	isUpgrade,
 	user_payments = {},
+	exchange = {},
 }) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
@@ -31,9 +32,15 @@ const Summarycontent = ({
 	const [selectedWithdrawalAsset, setSelectedWithdrawalAsset] = useState('');
 
 	useEffect(() => {
+		let exchangeCoins =
+			coins &&
+			coins.filter(
+				(val) =>
+					exchange && exchange.coins && exchange.coins.includes(val.symbol)
+			);
 		let filteredFiatCoins = [];
-		coins &&
-			coins.forEach((item) => {
+		exchangeCoins &&
+			exchangeCoins.forEach((item) => {
 				if (item.type === 'fiat') {
 					filteredFiatCoins = [
 						...filteredFiatCoins,
@@ -44,7 +51,7 @@ const Summarycontent = ({
 		setFiatCoins(filteredFiatCoins);
 		setSelectedDepositAsset(filteredFiatCoins[0]?.symbol);
 		setSelectedWithdrawalAsset(filteredFiatCoins[0]?.symbol);
-	}, [coins]);
+	}, [coins, exchange]);
 
 	const requestDepositData = useCallback(
 		(values = {}, queryParams = { type: 'deposit' }, page = 1, limit = 50) => {

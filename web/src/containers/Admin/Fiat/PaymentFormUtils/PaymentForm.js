@@ -104,7 +104,7 @@ class FormWrapper extends Component {
 					</div>
 					<div className="payment-form-wrapper center-content">
 						<div
-							onClick={() => this.props.editColumn(`section_${requiredCount}`)}
+							onClick={() => this.props.addColumn(`section_${requiredCount}`)}
 							className="anchor"
 						>
 							<PlusOutlined style={{ color: '#FFFFFF' }} /> Add more payment
