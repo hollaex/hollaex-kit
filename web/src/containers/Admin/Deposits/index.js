@@ -56,7 +56,7 @@ class Deposits extends Component {
 		currentTablePage: 1,
 		isRemaining: true,
 		isOpen: false,
-		statusType: "",
+		statusType: '',
 		validateData: {},
 	};
 
@@ -293,74 +293,69 @@ class Deposits extends Component {
 	};
 
 	onOpenModal = (validateData, statusType) => {
-		this.setState({ isOpen: true, validateData, statusType })
-	}
+		this.setState({ isOpen: true, validateData, statusType });
+	};
 
 	onCancelModal = () => {
-		this.setState({ isOpen: false, statusType: "" })
-	}
+		this.setState({ isOpen: false, statusType: '' });
+	};
 
 	handleConfirm = (formValues) => {
 		const { statusType, queryType } = this.state;
 		let body = {
 			transaction_id: formValues.transaction_id,
+			updated_transaction_id: formValues.updated_transaction_id,
 			rejected: false,
 			processing: false,
-			waiting: false
+			waiting: false,
 		};
 		if (formValues.description) {
 			body = {
 				...body,
-				description: formValues.description
-			}
+				description: formValues.description,
+			};
 		}
-		if (statusType === "validate") {
+		if (statusType === 'validate') {
 			body = {
 				...body,
 				status: true,
-				dismissed: false
-			}
+				dismissed: false,
+			};
 		} else {
 			body = {
 				...body,
 				dismissed: true,
-				status: false
-			}
+				status: false,
+			};
 		}
 		if (queryType === 'deposit') {
 			requestMint(body)
 				.then((data) => {
-					this.requestDeposits(
-						this.state.queryParams,
-						this.props.queryParams
-					);
+					this.requestDeposits(this.state.queryParams, this.props.queryParams);
 					this.onCancelModal();
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
-						error: message
+						error: message,
 					});
 					this.onCancelModal();
 				});
 		} else {
 			requestBurn(body)
 				.then((data) => {
-					this.requestDeposits(
-						this.state.queryParams,
-						this.props.queryParams
-					);
+					this.requestDeposits(this.state.queryParams, this.props.queryParams);
 					this.onCancelModal();
 				})
 				.catch((error) => {
 					const message = error.data ? error.data.message : error.message;
 					this.setState({
-						error: message
+						error: message,
 					});
 					this.onCancelModal();
 				});
 		}
-	}
+	};
 	render() {
 		const {
 			deposits,
@@ -497,15 +492,14 @@ class Deposits extends Component {
 					onCancel={this.onCancelModal}
 					width="37rem"
 				>
-					{isOpen
-						? <ValidateDismiss
+					{isOpen ? (
+						<ValidateDismiss
 							validateData={validateData}
 							statusType={statusType}
 							onCancel={this.onCancelModal}
 							handleConfirm={this.handleConfirm}
 						/>
-						: null
-					}
+					) : null}
 				</Modal>
 			</div>
 		);
