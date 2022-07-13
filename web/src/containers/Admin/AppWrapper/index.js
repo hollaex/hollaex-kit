@@ -624,13 +624,16 @@ class AppWrapper extends React.Component {
 				</Layout>
 			);
 		} else {
+			const prevPath = localStorage.getItem('prevPath');
 			return (
 				<Fragment>
 					<div className="admin-top-bar">
-						<div className="top-box-menu" onClick={() => window.history.back()}>
-							<CaretLeftOutlined />
-							Back to Website
-						</div>
+						<Link to={prevPath}>
+							<div className="top-box-menu">
+								<CaretLeftOutlined />
+								Back to Website
+							</div>
+						</Link>
 						<div className="admin-top-header">Operator Control Panel</div>
 						<div className="mr-2 time-wrapper">
 							<Tooltip placement="bottom" title={<Timer isHover={true} />}>
