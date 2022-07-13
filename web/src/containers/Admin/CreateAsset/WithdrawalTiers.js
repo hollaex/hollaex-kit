@@ -29,7 +29,7 @@ const WithDrawTiers = ({
 		} else if (level) {
 			let temp = tierValues;
 			delete temp[level];
-			handleTierValues({ ...temp });
+			handleTierValues({ ...temp }, selectedTier);
 		}
 	};
 	const handleConfirm = (val) => {
@@ -80,44 +80,46 @@ const WithDrawTiers = ({
 								</div>
 							</div>
 						</div>
-						{Object.keys(userTiers).map((level, index) => {
-							let init = tierValues;
-							let initValue = '';
-							Object.keys(init).filter((item) => {
-								if (item === level) {
-									return (initValue = init[level]);
-								} else {
-									return null;
-								}
-							});
-							return (
-								<div className="d-flex py-2" key={index}>
-									<div className="f-1">
-										<div className="d-flex align-items-center">
-											<Image
-												icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
-												wrapperClassName="table-tier-icon mr-2"
+						{Object.keys(userTiers).length &&
+							Object.keys(userTiers).map((level, index) => {
+								let init = tierValues;
+								let initValue = '';
+								init &&
+									Object.keys(init).filter((item) => {
+										if (item === level) {
+											return (initValue = init[level]);
+										} else {
+											return null;
+										}
+									});
+								return (
+									<div className="d-flex py-2" key={index}>
+										<div className="f-1">
+											<div className="d-flex align-items-center">
+												<Image
+													icon={ICONS[`LEVEL_ACCOUNT_ICON_${level}`]}
+													wrapperClassName="table-tier-icon mr-2"
+												/>
+												{`Tiers ${level}`}
+											</div>
+										</div>
+										<div className="f-1 px-2 ">
+											<InputNumber
+												formatter={(value) => {
+													if (value && keyType === 'percentage') {
+														return `${value}%`;
+													}
+													return value;
+												}}
+												parser={(value) => value.replace('%', '')}
+												onChange={(value) => handleTier(level, value)}
+												value={initValue ? initValue : ''}
+												className="tieredInput"
 											/>
-											{`Tiers ${level}`}
 										</div>
 									</div>
-									<div className="f-1 px-2 ">
-										<InputNumber
-											formatter={(value) => {
-												if (value && keyType === 'percentage') {
-													return `${value}%`;
-												}
-												return value;
-											}}
-											parser={(value) => value.replace('%', '')}
-											onChange={(value) => handleTier(level, value)}
-											value={initValue ? initValue : ''}
-											className="tieredInput"
-										/>
-									</div>
-								</div>
-							);
-						})}
+								);
+							})}
 					</div>
 					<div className="d-flex my-4">
 						<Button
