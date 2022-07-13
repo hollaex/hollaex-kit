@@ -147,6 +147,15 @@ $trade-tab--arrow-size: 0.4rem;
 			}
 		}
 	}
+	.home-page_section-wrapper {
+		padding-top: 60px !important;
+		padding-bottom: 75px !important;
+	}
+	.home_carousel_section {
+		.slideshow-wrapper {
+			height: 12rem;
+		}
+	}
 }
 
 .home_container {
@@ -304,7 +313,8 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.trade_tab-icons {
-		width: 3rem;
+		width: 4rem;
+		margin-top: 2px;
 	}
 }
 
@@ -321,7 +331,8 @@ $trade-tab--arrow-size: 0.4rem;
 .home-page_section-wrapper {
 	margin-left: auto;
 	margin-right: auto;
-	padding-top: 5rem;
+	padding-top: 148px;
+	padding-bottom: 335px !important;
 	max-width: 100rem;
 	&:not(.main-section-wrapper) {
 		padding-top: 5rem;
@@ -407,12 +418,8 @@ $trade-tab--arrow-size: 0.4rem;
 .home_carousel_section {
 	border-top: 1px $colors-border solid;
 	border-bottom: 1px $colors-border solid;
-	margin-top: 1.5rem;
-	margin-bottom: 1.5rem;
-	padding-top: 1rem;
-	padding-bottom: 1rem;
 	.slideshow-wrapper {
-		height: 110px;
+		height: 11rem;
 		margin: 0 auto;
 		position: relative;
 		overflow: hidden;
@@ -420,7 +427,6 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 
 	.slideshow-wrapper > div {
-		height: 110px;
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -428,7 +434,7 @@ $trade-tab--arrow-size: 0.4rem;
 		transform: translate3d(0, 0, 0);
 	}
 	.slideshow-wrapper .parent-slider {
-		animation: moveSlideshow 25s linear infinite;
+		animation: moveSlideshow 50s linear infinite;
 	}
 
 	.parent-slider:hover {
@@ -438,13 +444,32 @@ $trade-tab--arrow-size: 0.4rem;
 	.section {
 		opacity: 0.8;
 		border-right: 1px solid #60605d;
-		padding-left: 40px;
-		padding-right: 40px;
+		padding: 1.5rem 30px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	.section_active {
+	.section:hover {
 		opacity: 1;
 		cursor: pointer;
+		background-color: var(--base_wallet-sidebar-and-popup);
+	}
+
+	.height-40 {
+		height: 40px;
+	}
+
+	.section:hover .trade_tab-pair-title,
+	.section:hover .trade_tab-pair-sub-title,
+	.section:hover .trade_tab-pair-volume {
+		opacity: 1;
+	}
+
+	.section .trade_tab-pair-title,
+	.section .trade_tab-pair-sub-title,
+	.section .trade_tab-pair-volume {
+		opacity: 0.5;
 	}
 }
 
@@ -488,6 +513,11 @@ $trade-tab--arrow-size: 0.4rem;
 						font-size: 14px;
 					}
 				}
+			}
+		}
+		.home_carousel_section {
+			.section {
+				padding: 0 30px !important;
 			}
 		}
 	}

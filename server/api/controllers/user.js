@@ -1011,6 +1011,10 @@ const addUserBank = (req, res) =>  {
 	let email = req.auth.sub.email;
 	let data = req.swagger.params.data.value;
 
+	if (!data.type) {
+		return res.status(400).json({ message: 'No type is selected' });
+	}
+
 	let bank_account = {};
 
 	toolsLib.user.getUserByEmail(email, false)
@@ -1019,20 +1023,25 @@ const addUserBank = (req, res) =>  {
 				throw new Error('User not found');
 			}
 
-			if (!toolsLib.getKitConfig().banks) {
-				throw new Error ('Bank fields are not defined yet');
+			if (!toolsLib.getKitConfig().user_payments) {
+				throw new Error ('Payment system fields are not defined yet');
 			}
-			each(toolsLib.getKitConfig().banks.fields, (required, key) => {
-				if (required && !data.hasOwnProperty(key)) {
+
+			if (!toolsLib.getKitConfig().user_payments[data.type]) {
+				throw new Error ('Payment system fields are not defined yet');
+			}
+
+			each(toolsLib.getKitConfig().user_payments[data.type].data, ({ required, key }) => {
+				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
 					throw new Error (`Missing field: ${key}`);
 				}
-				if (data.hasOwnProperty(key)) {
-					bank_account[key] = data[key]
+				if (Object.prototype.hasOwnProperty.call(data, key)) {
+					bank_account[key] = data[key];
 				}
 			});
 		
 			if (Object.keys(bank_account).length === 0) {
-				throw new Error (`No bank fields to add`);
+				throw new Error ('No payment system fields to add');
 			}
 			
 			bank_account.id = crypto.randomBytes(8).toString('hex');

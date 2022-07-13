@@ -20,6 +20,7 @@ import { calculateBaseFee } from './utils';
 import Fiat from './Fiat';
 import Image from 'components/Image';
 import STRINGS from 'config/localizedStrings';
+import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
 
@@ -40,13 +41,31 @@ const validate = (values, props) => {
 	let fee_coin;
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
+		const { type = 'static', min, max } = withdrawal_fees[network];
+		const isPercentage = type === 'percentage';
+
 		fee_coin = withdrawal_fees[network].symbol;
-		const fullFeeCoinName = coins[fee_coin].fullname;
+		const hasDifferentFeeCoin =
+			!isPercentage && fee_coin && fee_coin !== currency;
+
+		const fullFeeCoinName = coins[fee_coin]?.fullname;
 		const availableFeeBalance = math.fraction(
 			balance[`${fee_coin}_available`] || 0
 		);
-		const totalTransaction = amount;
-		const totalFee = fee;
+
+		const totalFee = isPercentage
+			? limitNumberWithinRange(
+					math.multiply(
+						amount,
+						math.fraction(math.divide(math.fraction(fee), 100))
+					),
+					min,
+					max
+			  )
+			: fee;
+		const totalTransaction = hasDifferentFeeCoin
+			? amount
+			: math.add(amount, totalFee);
 
 		if (math.larger(totalTransaction, balanceAvailable)) {
 			errors.amount = STRINGS.formatString(
@@ -55,7 +74,7 @@ const validate = (values, props) => {
 			);
 		}
 
-		if (math.larger(totalFee, availableFeeBalance)) {
+		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
 			errors.amount = STRINGS.formatString(
 				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
 				`${math.number(totalFee)} ${fullFeeCoinName}`
@@ -332,7 +351,9 @@ const mapStateToForm = (state) => ({
 		'destination_tag',
 		'amount',
 		'captcha',
-		'email'
+		'fee',
+		'email',
+		'fee_type'
 	),
 	activeTheme: state.app.theme,
 	coins: state.app.coins,

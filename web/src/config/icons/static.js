@@ -128,18 +128,21 @@ const icons = {
 	CARD_SECTION_ICON_4: '/assets/images/Group_97.svg',
 	KYC_PLUGIN_ICON: '/assets/images/kyc-plugin-icon.svg',
 	KYC_USER_ICON: '/assets/images/kyc-user-icon.svg',
-	FIAT_ONRAMP_TOOLTIP:
-		'/assets/images/user-preview-fiat-on-ramp-deposit-receive.png',
-	FIAT_OFFRAMP_TOOLTIP:
-		'/assets/images/user-preview-fiat-off-ramp-withdraw-send.png',
+	FIAT_ONRAMP_TOOLTIP: '/assets/images/on-ramp-hover-tool-tip.png',
+	FIAT_OFFRAMP_TOOLTIP: '/assets/images/off-ramp-help-hover-tool-tip.png',
 	FIAT_PAYMENT_TOOLTIP:
-		'/assets/images/user-payment-account-verify-page-preview.png',
+		'/assets/images/payment-account-help-hover-tool-tip.png',
 	BANK_FIAT_PILLARS: '/assets/images/bank-fiat-pillers.svg',
 	PAYPAL_FIAT_ICON: '/assets/images/paypal-fiat-page.svg',
 	ONRAMP_DOLLAR_ICON: '/assets/images/on-ramp-dollar-fiat-slant-left.svg',
 	OFFRAMP_DOLLAR_ICON: '/assets/images/off-ramp-dollar-fiat-slant-right.svg',
 	DOUBLEFIAT_ICON: '/assets/images/double-fiat-gear.svg',
 	FIAT_KYC_ICON: '/assets/images/kyc-id-info.svg',
+	ONRAMP_SIMPLE_DOLLAR: '/assets/images/simple-fiat-on-ramp-left-slant.svg',
+	OFFRAMP_SIMPLE_DOLLAR: '/assets/images/simple-fiat-off-ramp-right-slant.svg',
+	MPESA_ICON: '/assets/images/other-fiat-systems.svg',
+	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
+	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 };
 
 export default icons;

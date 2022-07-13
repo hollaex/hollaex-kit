@@ -79,8 +79,8 @@ const ReviewModalContent = ({
 
 								return (
 									<div className="d-flex">
-										<div className="bold">
-											{STRINGS[labelId] || defaultText}
+										<div className="bold pr-3">
+											{STRINGS[labelId] || defaultText}:
 										</div>
 										<div>{value}</div>
 									</div>

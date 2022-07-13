@@ -2,18 +2,24 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { STATIC_ICONS } from 'config/icons';
 import { Link } from 'react-router';
 import { Button, Select, Spin, Table } from 'antd';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { RightOutlined } from '@ant-design/icons';
-import moment from 'moment';
+// import { Icon as LegacyIcon } from '@ant-design/compatible';
+// import { RightOutlined } from '@ant-design/icons';
+// import moment from 'moment';
 
 import { Image } from 'components';
-import IconToolTip from '../IconToolTip';
+// import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
 import { requestDeposits } from '../Deposits/actions';
 
 import './index.css';
 
-const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
+const Summarycontent = ({
+	handleTabChange,
+	coins,
+	isUpgrade,
+	user_payments = {},
+	exchange = {},
+}) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
 	const [currentTablePage, setCurrentTablePage] = useState(1);
@@ -26,9 +32,15 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 	const [selectedWithdrawalAsset, setSelectedWithdrawalAsset] = useState('');
 
 	useEffect(() => {
+		let exchangeCoins =
+			coins &&
+			coins.filter(
+				(val) =>
+					exchange && exchange.coins && exchange.coins.includes(val.symbol)
+			);
 		let filteredFiatCoins = [];
-		coins &&
-			coins.forEach((item) => {
+		exchangeCoins &&
+			exchangeCoins.forEach((item) => {
 				if (item.type === 'fiat') {
 					filteredFiatCoins = [
 						...filteredFiatCoins,
@@ -39,7 +51,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 		setFiatCoins(filteredFiatCoins);
 		setSelectedDepositAsset(filteredFiatCoins[0]?.symbol);
 		setSelectedWithdrawalAsset(filteredFiatCoins[0]?.symbol);
-	}, [coins]);
+	}, [coins, exchange]);
 
 	const requestDepositData = useCallback(
 		(values = {}, queryParams = { type: 'deposit' }, page = 1, limit = 50) => {
@@ -112,9 +124,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 		setCurrentTablePage(count);
 	};
 
-	const renderVerification = (value) => (
-		<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
-	);
+	// const renderVerification = (value) => (
+	// 	<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
+	// );
 
 	const handleSelect = async (currency, type) => {
 		if (type === 'deposit') {
@@ -136,14 +148,14 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 		}
 	};
 
-	const renderLink = (value) => (
-		<Button type="primary" className="green-btn">
-			<Link to={`/admin/user?id=${value}`}>
-				GO
-				<RightOutlined />
-			</Link>
-		</Button>
-	);
+	// const renderLink = (value) => (
+	// 	<Button type="primary" className="green-btn">
+	// 		<Link to={`/admin/user?id=${value}`}>
+	// 			GO
+	// 			<RightOutlined />
+	// 		</Link>
+	// 	</Button>
+	// );
 
 	const renderSelect = (type) => {
 		return (
@@ -194,66 +206,66 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 		},
 	];
 
-	const kycColumns = [
-		{
-			title: '',
-			dataIndex: 'tooltip',
-			key: 'tooltip',
-			render: () => (
-				<IconToolTip
-					type="warning"
-					tip="This market is in pending verification"
-				/>
-			),
-		},
-		{
-			title: 'Account created',
-			dataIndex: 'actcreated',
-			key: 'actcreated',
-			render: (date) => (
-				<span>
-					Created at:{' '}
-					{moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
-						new Date(date).toTimeString().slice(9)}
-				</span>
-			),
-		},
-		{
-			title: 'ID',
-			dataIndex: 'id',
-			key: 'id',
-		},
-		{
-			title: 'Username',
-			dataIndex: 'username',
-			key: 'username',
-		},
-		{
-			title: 'Email',
-			dataIndex: 'email',
-			key: 'email',
-		},
-		{
-			title: 'Verification Level',
-			dataIndex: 'vlevel',
-			key: 'vlevel',
-		},
-		{
-			title: 'Activated',
-			dataIndex: 'ac',
-			key: 'act',
-			render: renderVerification,
-		},
-		{
-			title: 'See Data',
-			dataIndex: 'seedata',
-			key: 'seedata',
-			render: renderLink,
-		},
-	];
+	// const kycColumns = [
+	// 	{
+	// 		title: '',
+	// 		dataIndex: 'tooltip',
+	// 		key: 'tooltip',
+	// 		render: () => (
+	// 			<IconToolTip
+	// 				type="warning"
+	// 				tip="This market is in pending verification"
+	// 			/>
+	// 		),
+	// 	},
+	// 	{
+	// 		title: 'Account created',
+	// 		dataIndex: 'actcreated',
+	// 		key: 'actcreated',
+	// 		render: (date) => (
+	// 			<span>
+	// 				Created at:{' '}
+	// 				{moment(date).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
+	// 					new Date(date).toTimeString().slice(9)}
+	// 			</span>
+	// 		),
+	// 	},
+	// 	{
+	// 		title: 'ID',
+	// 		dataIndex: 'id',
+	// 		key: 'id',
+	// 	},
+	// 	{
+	// 		title: 'Username',
+	// 		dataIndex: 'username',
+	// 		key: 'username',
+	// 	},
+	// 	{
+	// 		title: 'Email',
+	// 		dataIndex: 'email',
+	// 		key: 'email',
+	// 	},
+	// 	{
+	// 		title: 'Verification Level',
+	// 		dataIndex: 'vlevel',
+	// 		key: 'vlevel',
+	// 	},
+	// 	{
+	// 		title: 'Activated',
+	// 		dataIndex: 'ac',
+	// 		key: 'act',
+	// 		render: renderVerification,
+	// 	},
+	// 	{
+	// 		title: 'See Data',
+	// 		dataIndex: 'seedata',
+	// 		key: 'seedata',
+	// 		render: renderLink,
+	// 	},
+	// ];
 	let locale = {
 		emptyText: (
-			<span>
+			<span className="gray-txt">
 				<div>
 					<Image
 						icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
@@ -271,7 +283,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 	};
 	let withDrawalLocale = {
 		emptyText: (
-			<span>
+			<span className="gray-txt">
 				<div>
 					<Image
 						icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
@@ -287,28 +299,28 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 			</span>
 		),
 	};
-	let kycLocale = {
-		emptyText: (
-			<span>
-				<div>
-					<Image
-						icon={STATIC_ICONS['FIAT_KYC_ICON']}
-						wrapperClassName="limit-status-icon mr-2"
-					/>
-				</div>
-				<div>No pending KYC information here yet.</div>
-				<div>Invite users to your exchange and/or turn on KYC plugins.</div>
-				<div>
-					{' '}
-					<span onClick={() => handleTabChange('4')} className="underline">
-						Visit KYC section
-					</span>
-				</div>
-			</span>
-		),
-	};
+	// let kycLocale = {
+	// 	emptyText: (
+	// 		<span className="gray-txt">
+	// 			<div>
+	// 				<Image
+	// 					icon={STATIC_ICONS['FIAT_KYC_ICON']}
+	// 					wrapperClassName="limit-status-icon mr-2"
+	// 				/>
+	// 			</div>
+	// 			<div>No pending KYC information here yet.</div>
+	// 			<div>Invite users to your exchange and/or turn on KYC plugins.</div>
+	// 			<div>
+	// 				{' '}
+	// 				<Link to="/admin/fiat?tab=4" className="underline">
+	// 					Visit KYC section
+	// 				</Link>
+	// 			</div>
+	// 		</span>
+	// 	),
+	// };
 
-	const kycData = [];
+	// const kycData = [];
 	return (
 		<div className="summary-content-wrapper">
 			<div className="d-flex">
@@ -322,7 +334,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 					system account details.
 				</div>
 			</div>
-			{isUpgrade ? (
+			{!isUpgrade ? (
 				<div className="d-flex mb-4">
 					<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
 						<div>
@@ -345,54 +357,46 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 					</div>
 				</div>
 			) : null}
-			<div className={isUpgrade ? 'disableall' : ''}>
-				<div>
-					<div className="payment mt-5">
-						<div className="d-flex align-items-center justify-content-between">
-							<div className="d-flex align-items-center">
-								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
-									wrapperClassName="fiatcurrency"
-								/>
-								<div>
-									We've noticed that there hasn't been any Payment Accounts
-									added yet. To start it is recommended to{' '}
-									<span
-										onClick={() => handleTabChange('1')}
-										className="underline"
-									>
-										add a Payment Account
-									</span>
-									.
+			<div className={!isUpgrade ? 'disableall' : ''}>
+				{!user_payments ? (
+					<div>
+						<div className="payment mt-5">
+							<div className="d-flex align-items-center justify-content-between">
+								<div className="d-flex align-items-center">
+									<Image
+										icon={STATIC_ICONS['DOLLAR_GEAR']}
+										wrapperClassName="fiatcurrency"
+									/>
+									<div>
+										We've noticed that there hasn't been any Payment Accounts
+										added yet. To start it is recommended to{' '}
+										<Link to="/admin/fiat?tab=1" className="underline">
+											add a Payment Account
+										</Link>
+										.
+									</div>
 								</div>
+								<Button type="primary" className="green-btn">
+									<Link to="/admin/fiat?tab=1">Add payment account</Link>
+								</Button>
 							</div>
-							<Button
-								type="primary"
-								className="green-btn"
-								onClick={() => handleTabChange('1')}
-							>
-								Add payment account
-							</Button>
 						</div>
 					</div>
-				</div>
-				<div className="body-container">
+				) : null}
+				<div className="body-container mt-3">
 					<div className="box-outerDesign">
 						<div className="d-flex justify-content-between ramp-heading">
 							<span>
 								<b>On-ramps </b>(exchange banks and payment processors)
 							</span>
-							<span style={{ display: 'flex' }}>
+							<span className="d-flex">
 								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+									icon={STATIC_ICONS['ONRAMP_SIMPLE_DOLLAR']}
 									wrapperClassName="withdrawalIcon"
 								/>
-								<div
-									onClick={() => handleTabChange('2')}
-									className="underline ml-1"
-								>
+								<Link to="/admin/fiat?tab=2" className="underline  ml-1">
 									View on-ramps
-								</div>
+								</Link>
 							</span>
 						</div>
 						<div className="box-content">
@@ -400,15 +404,12 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								icon={STATIC_ICONS['ONRAMP_DOLLAR_ICON']}
 								wrapperClassName="withdrawalIcon green"
 							/>
-							<div>
+							<div className="txtpad">
 								There seems to be no fiat on-ramp systems connected to your
 								exchange yet. Connect a way for your users to deposit fiat{' '}
-								<span
-									onClick={() => handleTabChange('2')}
-									className="underline"
-								>
+								<Link to="/admin/fiat?tab=2" className="underline">
 									here
-								</span>
+								</Link>
 								.
 							</div>
 							{/* <div  className="d-flex">
@@ -434,15 +435,12 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 							</span>
 							<span style={{ display: 'flex' }}>
 								<Image
-									icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
+									icon={STATIC_ICONS['OFFRAMP_SIMPLE_DOLLAR']}
 									wrapperClassName="withdrawalIcon"
 								/>{' '}
-								<div
-									onClick={() => handleTabChange('3')}
-									className="underline ml-1"
-								>
+								<Link to="/admin/fiat?tab=3" className="underline  ml-1">
 									View off-ramps
-								</div>
+								</Link>
 							</span>
 						</div>
 						<div className="box-content">
@@ -450,10 +448,10 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								icon={STATIC_ICONS['OFFRAMP_DOLLAR_ICON']}
 								wrapperClassName="withdrawalIcon"
 							/>
-							<div>
+							<div className="txtpad">
 								There seems to be no fiat off-ramp systems connected to your
 								exchange yet. Connect a way for your users to withdraw fiat{' '}
-								<Link to="/admin/fiat?tab=4" className="underline">
+								<Link to="/admin/fiat?tab=3" className="underline">
 									here
 								</Link>
 								.
@@ -475,8 +473,8 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 						</div>
 					</div>
 				</div>
-				<div className="body-container">
-					<div className="box-outerDesign">
+				<div className="body-container flex-column">
+					<div className="box-outerDesign w-100">
 						<div className="d-flex justify-content-between align-items-center ramp-heading">
 							<span className="d-flex align-items-center">
 								<b>Recent fiat pending deposits</b>
@@ -496,7 +494,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								</Link>
 							</span>
 						</div>
-						<div className="fiattable1">
+						<div
+							className={deposits.length ? 'fiattable mb-5' : 'fiattable1 mb-5'}
+						>
 							<Table
 								columns={columns}
 								locale={locale}
@@ -513,7 +513,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 							/>
 						</div>
 					</div>
-					<div className="box-outerDesign">
+					<div className="box-outerDesign w-100">
 						<div className="d-flex justify-content-between align-items-center ramp-heading">
 							<span className="d-flex align-items-center">
 								<b>Recent fiat pending withdrawals</b>
@@ -533,7 +533,11 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								</Link>
 							</span>
 						</div>
-						<div className="fiattable1">
+						<div
+							className={
+								withdrawal.length ? 'fiattable mb-5' : 'fiattable1 mb-5'
+							}
+						>
 							<Table
 								columns={columns}
 								dataSource={withdrawal.map((item) => {
@@ -551,7 +555,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 						</div>
 					</div>
 				</div>
-				<div>
+				{/* <div>
 					<div className="d-flex justify-content-between kyc-heading">
 						<span>
 							<b>KYC - recent pending user verifications </b>
@@ -561,13 +565,9 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 								type="warning"
 								tip="This market is in pending verification"
 							/>
-							<div
-								onClick={() => handleTabChange('4')}
-								className="underline ml-1"
-							>
-								{' '}
+							<Link to="/admin/fiat?tab=4" className="underline  ml-1">
 								View KYC page
-							</div>
+							</Link>
 						</span>
 					</div>
 					<div
@@ -585,7 +585,7 @@ const Summarycontent = ({ handleTabChange, coins, isUpgrade }) => {
 							pagination={false}
 						/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);

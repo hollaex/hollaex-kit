@@ -30,6 +30,7 @@ import {
 } from '../Wallet/components';
 
 import { FORM_NAME } from './form';
+import { limitNumberWithinRange } from 'utils/math';
 
 class Withdraw extends Component {
 	state = {
@@ -173,6 +174,7 @@ class Withdraw extends Component {
 			networks,
 			network,
 			query,
+			verification_level,
 			selectedMethod
 		);
 
@@ -192,6 +194,9 @@ class Withdraw extends Component {
 			amount: math.eval(values.amount),
 			currency,
 		};
+
+		delete paramData.fee_type;
+		delete paramData.fee;
 
 		if (values && values.email) {
 			paramData = {
@@ -218,11 +223,15 @@ class Withdraw extends Component {
 			coins,
 			config_level = {},
 			fee_coin,
+			fee_type,
+			selectedNetwork,
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit, withdrawal_fees = {} } =
+			coins[currency] || DEFAULT_COIN_DATA;
+		const isPercentage = fee_type === 'percentage';
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
 		// 	const amount = math.number(
@@ -231,8 +240,15 @@ class Withdraw extends Component {
 		// 	dispatch(change(FORM_NAME, 'amount', math.floor(amount)));
 		// } else {
 		let amount = 0;
+		let min;
+		let max;
 
-		if (fee_coin && fee_coin !== currency) {
+		if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
+			min = withdrawal_fees[selectedNetwork].min;
+			max = withdrawal_fees[selectedNetwork].max;
+		}
+
+		if (fee_coin && fee_coin !== currency && !isPercentage) {
 			amount = math.number(math.fraction(balanceAvailable));
 			if (amount < 0) {
 				amount = 0;
@@ -244,25 +260,44 @@ class Withdraw extends Component {
 				amount = math.number(math.fraction(withdrawal_limit));
 			}
 		} else {
-			amount = math.number(
-				math.subtract(
-					math.fraction(balanceAvailable),
-					math.fraction(selectedFee)
-				)
-			);
-			if (amount < 0) {
-				amount = 0;
-			} else if (
-				math.larger(amount, math.number(withdrawal_limit)) &&
-				withdrawal_limit !== 0 &&
-				withdrawal_limit !== -1
-			) {
+			let max_allowed = balanceAvailable;
+			if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
+				max_allowed = math.min(math.number(withdrawal_limit), balanceAvailable);
+			}
+
+			if (isPercentage) {
 				amount = math.number(
-					math.subtract(
-						math.fraction(withdrawal_limit),
-						math.fraction(selectedFee)
+					math.divide(
+						math.fraction(max_allowed),
+						math.add(
+							math.fraction(math.divide(math.fraction(selectedFee), 100)),
+							1
+						)
 					)
 				);
+
+				const calculatedFee = limitNumberWithinRange(
+					math.multiply(
+						math.fraction(amount),
+						math.fraction(math.divide(math.fraction(selectedFee), 100))
+					),
+					min,
+					max
+				);
+				amount = math.number(
+					math.subtract(
+						math.fraction(max_allowed),
+						math.fraction(calculatedFee)
+					)
+				);
+			} else {
+				amount = math.number(
+					math.subtract(math.fraction(max_allowed), math.fraction(selectedFee))
+				);
+			}
+
+			if (amount < 0) {
+				amount = 0;
 			}
 		}
 
@@ -389,7 +424,7 @@ class Withdraw extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	prices: store.orderbook.prices,
+	prices: store.asset.oraclePrices,
 	balance: store.user.balance,
 	// fee: store.user.fee,
 	verification_level: store.user.verification_level,
@@ -399,6 +434,7 @@ const mapStateToProps = (store) => ({
 	// btcFee: store.wallet.btcFee,
 	selectedFee: formValueSelector(FORM_NAME)(store, 'fee'),
 	fee_coin: formValueSelector(FORM_NAME)(store, 'fee_coin'),
+	fee_type: formValueSelector(FORM_NAME)(store, 'fee_type'),
 	selectedNetwork: formValueSelector(FORM_NAME)(store, 'network'),
 	selectedMethod: formValueSelector(FORM_NAME)(store, 'method'),
 	email: formValueSelector(FORM_NAME)(store, 'email'),

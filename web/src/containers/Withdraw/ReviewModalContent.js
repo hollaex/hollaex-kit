@@ -11,7 +11,7 @@ import {
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import { getNetworkNameByKey } from 'utils/wallet';
-
+import { limitNumberWithinRange } from 'utils/math';
 import STRINGS from 'config/localizedStrings';
 
 const ButtonSection = ({ onClickAccept, onClickCancel }) => {
@@ -42,17 +42,42 @@ const ReviewModalContent = ({
 	icons: ICONS,
 	hasDestinationTag,
 }) => {
-	const { min, fullname, display_name } =
+	const { min, fullname, display_name, withdrawal_fees } =
 		coins[currency || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 	const fee_coin = data.fee_coin ? data.fee_coin : '';
-	const hasDifferentFeeCoin = fee_coin && fee_coin !== currency;
+	const fee_type = data.fee_type ? data.fee_type : '';
+	const isPercentage = fee_type === 'percentage';
+	const hasDifferentFeeCoin =
+		!isPercentage && fee_coin && fee_coin !== currency;
+
+	let min_fee;
+	let max_fee;
+	if (withdrawal_fees && withdrawal_fees[data.network]) {
+		min_fee = withdrawal_fees[data.network].min;
+		max_fee = withdrawal_fees[data.network].max;
+	}
+
+	const fee = isPercentage
+		? limitNumberWithinRange(
+				math.number(
+					math.multiply(
+						math.fraction(data.amount),
+						math.fraction(math.divide(math.fraction(data.fee), 100) || 0)
+					)
+				),
+				min_fee,
+				max_fee
+		  )
+		: data.fee
+		? data.fee
+		: 0;
+
+	const feePrice = math.number(math.multiply(fee, price));
 
 	const totalTransaction = hasDifferentFeeCoin
 		? math.number(math.fraction(data.amount))
-		: math.number(
-				math.add(math.fraction(data.amount), math.fraction(data.fee || 0))
-		  );
+		: math.number(math.add(math.fraction(data.amount), fee));
 
 	const cryptoAmountText = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
@@ -60,8 +85,6 @@ const ReviewModalContent = ({
 		display_name
 	);
 
-	const feePrice = data.fee ? math.number(math.multiply(data.fee, price)) : 0;
-	const fee = data.fee ? data.fee : 0;
 	const { display_name: fee_coin_display } =
 		coins[fee_coin] || DEFAULT_COIN_DATA;
 

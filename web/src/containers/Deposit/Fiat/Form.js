@@ -154,7 +154,7 @@ const Form = ({
 		const MAX = limit && math.larger(limit, 0) ? math.min(limit, max) : max;
 
 		return (
-			<div>
+			<Fragment>
 				{renderTabs()}
 
 				{isManual && (
@@ -211,7 +211,7 @@ const Form = ({
 						</div>
 					</Fragment>
 				)}
-			</div>
+			</Fragment>
 		);
 	};
 
@@ -267,7 +267,7 @@ const Form = ({
 		return (
 			<div
 				className={classnames(
-					'custom-tab-wrapper d-flex flex-nowrap flex-row justify-content-start'
+					'custom-tab-wrapper d-flex flex-wrap flex-row justify-content-start'
 				)}
 			>
 				{Object.entries(tabs).map(([key, data]) => {

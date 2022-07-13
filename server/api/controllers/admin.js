@@ -922,6 +922,7 @@ const putMint = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
@@ -947,6 +948,8 @@ const putMint = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
+		'updated_address',
+		updated_address,
 		'updated_description',
 		updated_description
 	);
@@ -958,6 +961,7 @@ const putMint = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
 		updatedDescription: updated_description,
 		additionalHeaders: {
@@ -1063,6 +1067,7 @@ const putBurn = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
@@ -1088,6 +1093,8 @@ const putBurn = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
+		'updated_address',
+		updated_address,
 		'updated_description',
 		updated_description
 	);
@@ -1099,6 +1106,7 @@ const putBurn = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
 		updatedDescription: updated_description,
 		additionalHeaders: {
@@ -1152,18 +1160,18 @@ const postKitUserMeta = (req, res) => {
 
 const getEmail = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
-	const { language, type} = req.swagger.params;
+	const { language, type } = req.swagger.params;
 	try {
 		const data = cloneDeep({
 			email: toolsLib.getEmail()
 		});
 
-		return res.json(data["email"][language.value][type.value.toUpperCase()]);
+		return res.json(data['email'][language.value][type.value.toUpperCase()]);
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
-}
+};
 
 
 const putEmail = (req, res) => {
@@ -1173,7 +1181,7 @@ const putEmail = (req, res) => {
 	const data = cloneDeep({
 		email: toolsLib.getEmail()
 	});
-	data["email"][language][type.toUpperCase()] = {html, title};
+	data['email'][language][type.toUpperCase()] = { html, title };
 	toolsLib.updateEmail(data)
 		.then(() => {
 			return res.status(201).json({ message: 'Success' });
@@ -1184,7 +1192,7 @@ const putEmail = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 
-}
+};
 
 const getEmailTypes = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmailTypes', req.auth.sub);
@@ -1194,12 +1202,12 @@ const getEmailTypes = (req, res) => {
 			email: toolsLib.getEmail()
 		});
 
-		let arrMailType = Object.keys(data["email"][LANGUAGE_DEFAULT]);
+		let arrMailType = Object.keys(data['email'][LANGUAGE_DEFAULT]);
 		arrMailType.sort((a, b) => {
 			if(a < b) { return -1; }
 			if(a > b) { return 1; }
 			return 0;
-		})
+		});
 
 		return res.status(201).json(arrMailType);
 
@@ -1207,7 +1215,7 @@ const getEmailTypes = (req, res) => {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmailTypes', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
-}
+};
 
 const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
@@ -1573,6 +1581,7 @@ const updateCoin = (req, res) => {
 		allow_deposit: allowDeposit,
 		allow_withdrawal: allowWithdrawal,
 		withdrawal_fees: withdrawalFees,
+		deposit_fees: depositFees,
 		is_public: isPublic,
 		description
 	} = req.swagger.params.data.value;
@@ -1610,6 +1619,8 @@ const updateCoin = (req, res) => {
 		allowWithdrawal,
 		'withdrawal_fees:',
 		withdrawalFees,
+		'deposit_fees:',
+		depositFees,
 		'is_public:',
 		isPublic,
 		'description:',
@@ -1634,6 +1645,7 @@ const updateCoin = (req, res) => {
 			allowDeposit,
 			allowWithdrawal,
 			withdrawalFees,
+			depositFees,
 			isPublic
 		},
 		{
@@ -1902,36 +1914,36 @@ const setUserBank = (req, res) => {
 			
 			const existingBankAccounts = user.bank_account;
 
-				let sendEmail = false;
+			let sendEmail = false;
 
-				const newBankAccounts = bank_account.map((bank) => {
-					let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
-					existingBank = existingBank[0];
+			const newBankAccounts = bank_account.map((bank) => {
+				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
+				existingBank = existingBank[0];
 
-					if (existingBank) {
-						return bank;
-					} else {
-						sendEmail = true;
-						bank.id = crypto.randomBytes(8).toString('hex');
-						bank.status = VERIFY_STATUS.COMPLETED;
-						return bank;
-					}
-				});
-
-				const updatedUser = await user.update(
-					{ bank_account: newBankAccounts },
-					{ fields: ['bank_account'] }
-				);
-
-				if (sendEmail) {
-					try {
-						toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter(account => account.status === VERIFY_STATUS.COMPLETED )}, updatedUser.settings);
-					} catch (err) {
-						loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
-					}
+				if (existingBank) {
+					return bank;
+				} else {
+					sendEmail = true;
+					bank.id = crypto.randomBytes(8).toString('hex');
+					bank.status = VERIFY_STATUS.COMPLETED;
+					return bank;
 				}
+			});
 
-				return res.json(updatedUser.bank_account);
+			const updatedUser = await user.update(
+				{ bank_account: newBankAccounts },
+				{ fields: ['bank_account'] }
+			);
+
+			if (sendEmail) {
+				try {
+					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, updatedUser.settings);
+				} catch (err) {
+					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
+				}
+			}
+
+			return res.json(updatedUser.bank_account);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -1983,7 +1995,7 @@ const verifyUserBank = (req, res) => {
 		})
 		.then((user) => {
 			try {
-				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter(account => account.status === VERIFY_STATUS.COMPLETED )}, user.settings);
+				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, user.settings);
 			} catch (err) {
 				loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank email catch', err.message);
 			}

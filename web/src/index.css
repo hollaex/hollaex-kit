@@ -1137,7 +1137,8 @@ table th {
 .home-page_content .tabs-pair-details {
   font-size: 1.2rem;
   width: 25rem;
-  margin: auto; }
+  margin: auto;
+  white-space: nowrap; }
 
 .home-page_content .trade_tab-pair-title {
   color: var(--labels_important-active-labels-text-graphics);
@@ -1263,6 +1264,13 @@ table th {
     .layout-mobile .html_card_section .card-section-wrapper .card-section .header_txt {
       font-size: 14px; }
 
+.layout-mobile .home-page_section-wrapper {
+  padding-top: 60px !important;
+  padding-bottom: 75px !important; }
+
+.layout-mobile .home_carousel_section .slideshow-wrapper {
+  height: 12rem; }
+
 .home_container {
   background-repeat: no-repeat;
   background-size: cover; }
@@ -1357,7 +1365,8 @@ table th {
   padding-right: 10px; }
 
 .home-page_content .trade_tab-icons {
-  width: 3rem; }
+  width: 4rem;
+  margin-top: 2px; }
 
 .live-markets_header {
   font-size: 1.3rem;
@@ -1371,7 +1380,8 @@ table th {
 .home-page_section-wrapper {
   margin-left: auto;
   margin-right: auto;
-  padding-top: 5rem;
+  padding-top: 148px;
+  padding-bottom: 335px !important;
   max-width: 100rem; }
   .home-page_section-wrapper:not(.main-section-wrapper) {
     padding-top: 5rem;
@@ -1434,11 +1444,48 @@ table th {
 
 .home_carousel_section {
   border-top: 1px var(--calculated_secondary-border) solid;
-  border-bottom: 1px var(--calculated_secondary-border) solid;
-  margin-top: 4rem;
-  margin-bottom: 4rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem; }
+  border-bottom: 1px var(--calculated_secondary-border) solid; }
+  .home_carousel_section .slideshow-wrapper {
+    height: 11rem;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    transform: translate3d(0, 0, 0); }
+  .home_carousel_section .slideshow-wrapper > div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translate3d(0, 0, 0); }
+  .home_carousel_section .slideshow-wrapper .parent-slider {
+    animation: moveSlideshow 50s linear infinite; }
+  .home_carousel_section .parent-slider:hover {
+    animation-play-state: paused; }
+  .home_carousel_section .section {
+    opacity: 0.8;
+    border-right: 1px solid #60605d;
+    padding: 1.5rem 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+  .home_carousel_section .section:hover {
+    opacity: 1;
+    cursor: pointer;
+    background-color: var(--base_wallet-sidebar-and-popup); }
+  .home_carousel_section .height-40 {
+    height: 40px; }
+  .home_carousel_section .section:hover .trade_tab-pair-title,
+  .home_carousel_section .section:hover .trade_tab-pair-sub-title,
+  .home_carousel_section .section:hover .trade_tab-pair-volume {
+    opacity: 1; }
+  .home_carousel_section .section .trade_tab-pair-title,
+  .home_carousel_section .section .trade_tab-pair-sub-title,
+  .home_carousel_section .section .trade_tab-pair-volume {
+    opacity: 0.5; }
+
+@keyframes moveSlideshow {
+  100% {
+    transform: translateX(-66.6666%); } }
 
 @media (max-width: 767px) {
   .home_container .home-card-container {
@@ -1456,7 +1503,9 @@ table th {
     .home_container .html_card_section .card-section-wrapper {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
-        font-size: 14px; } }
+        font-size: 14px; }
+  .home_container .home_carousel_section .section {
+    padding: 0 30px !important; } }
 
 @media (max-width: 1199px) {
   .home_container .html_card_section {
@@ -9717,22 +9766,7 @@ table th {
 
 .loading-border {
   position: absolute;
-  border: 1px solid var(--specials_buttons-links-and-highlights);
-  width: 100%;
-  animation-name: dotFlashing;
-  animation-duration: 10s; }
-
-@keyframes dotFlashing {
-  0% {
-    width: 100%; }
-  25% {
-    width: 75%; }
-  50% {
-    width: 50%; }
-  75% {
-    width: 25%; }
-  100% {
-    width: 0%; } }
+  border: 1px solid var(--specials_buttons-links-and-highlights); }
 
 @media (max-width: 1020px) {
   .quick_trade-wrapper {
@@ -10384,12 +10418,14 @@ table th {
       margin-left: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 23rem;
-        margin-left: 1.5rem; }
+        margin-left: 1.5rem;
+        margin-top: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
         background-repeat: no-repeat;
         margin-left: 1.5rem;
-        width: 7rem; }
+        width: 7rem;
+        height: 100% !important; }
       .app_footer-container .footer-row-content .footer_separter svg .hollaEX_logo_gray {
         fill: var(--calculated_base_footer_text); }
       .app_footer-container .footer-row-content .footer_separter .blue-link {
