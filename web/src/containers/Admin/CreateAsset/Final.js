@@ -63,43 +63,51 @@ const Final = ({
 		const network = getNetworkLabelByKey(key);
 		const symbolBasedFields = getSymbolBasedFields(type);
 		const unit = type === 'percentage' ? assetSymbol : symbol;
-		const keyArr = Object.keys(withdrawal_fees).length;
+		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
 
 		return (
 			<div key={key} className="pb-3">
-				<div>
-					<b className="caps-first">network</b>: {network}
-				</div>
+				{network ? (
+					<div>
+						<b className="caps-first">network</b>: {network}
+					</div>
+				) : null}
 				<Fragment>
-					{Object.entries(data).map(([key, value]) => {
-						const hasUnit = symbolBasedFields.includes(key);
+					{data &&
+						Object.entries(data).map(([key, value]) => {
+							const hasUnit = symbolBasedFields.includes(key);
 
-						if (key === 'levels') {
-							return (
-								<div className="d-flex align-start">
+							if (key && key === 'levels') {
+								return (
+									<div className="d-flex align-start">
+										<div>
+											<b className="caps-first">{key}</b>:
+										</div>
+										<div className="pl-1">
+											{value &&
+												Object.entries(value).map(([level, fee]) => {
+													if (level && fee) {
+														const feeText = hasUnit
+															? `${fee} ${unit}`
+															: formatPercentage(fee);
+														return <div>{`Tier ${level} @ ${feeText}`}</div>;
+													} else {
+														return null;
+													}
+												})}
+										</div>
+									</div>
+								);
+							} else {
+								const valueText = hasUnit ? `${value} ${unit}` : value;
+
+								return (
 									<div>
-										<b className="caps-first">{key}</b>:
+										<b className="caps-first">{key}</b>: {valueText}
 									</div>
-									<div className="pl-1">
-										{Object.entries(value).map(([level, fee]) => {
-											const feeText = hasUnit
-												? `${fee} ${unit}`
-												: formatPercentage(fee);
-											return <div>{`Tier ${level} @ ${feeText}`}</div>;
-										})}
-									</div>
-								</div>
-							);
-						} else {
-							const valueText = hasUnit ? `${value} ${unit}` : value;
-
-							return (
-								<div>
-									<b className="caps-first">{key}</b>: {valueText}
-								</div>
-							);
-						}
-					})}
+								);
+							}
+						})}
 					{keyArr > 1 && index === 0 ? (
 						<div className="border-separator"></div>
 					) : null}
@@ -407,7 +415,7 @@ const Final = ({
 									className="green-btn"
 									type="primary"
 									onClick={handleWithdrawalEdit}
-									disabled={!isOwner}
+									disabled={!isOwner || !Object.keys(withdrawal_fees).length}
 								>
 									Edit
 								</Button>
@@ -415,9 +423,9 @@ const Final = ({
 						)}
 					</div>
 				)}
-				<div className="preview-detail-container">
-					<div className="title">Deposit Fee</div>
-					{deposit_fees ? (
+				{deposit_fees && (
+					<div className="preview-detail-container">
+						<div className="title">Deposit Fee</div>
 						<div>
 							<div>{renderFees(deposit_fees)}</div>
 							{isConfigure && (
@@ -433,24 +441,8 @@ const Final = ({
 								</div>
 							)}
 						</div>
-					) : (
-						<div>
-							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-							{isConfigure && (
-								<div className="btn-wrapper">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={handleWithdrawalEdit}
-										disabled={!isOwner}
-									>
-										Edit
-									</Button>
-								</div>
-							)}
-						</div>
-					)}
-				</div>
+					</div>
+				)}
 				{(tabParams?.isFiat === 'onRamp' ||
 					tabParams?.isFiat === 'offRamp') && (
 					<div>

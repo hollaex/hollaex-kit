@@ -33,8 +33,8 @@ const PendingDeposit = ({ onOkay }) => {
 			</div>
 
 			<div className="d-flex mt-4 pt-3">
-				<EditWrapper stringId="back" />
-				<Button label={STRINGS['BACK']} onClick={onOkay} className="mb-3" />
+				<EditWrapper stringId="DONE" />
+				<Button label={STRINGS['DONE']} onClick={onOkay} className="mb-3" />
 			</div>
 		</div>
 	);

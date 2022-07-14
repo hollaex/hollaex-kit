@@ -11018,7 +11018,8 @@ svg .account-svg-1,
 svg .incoming-btc-01,
 svg .incoming-coin-01,
 svg .coin-btc-5,
-svg .stake-page-icon {
+svg .stake-page-icon,
+svg .fiat-kyc {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .account-inactive {

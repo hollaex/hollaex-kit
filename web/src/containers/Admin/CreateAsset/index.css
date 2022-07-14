@@ -516,7 +516,7 @@
 	background-color: #27339d;
 	left: 1rem;
 	top: 21px;
-	width: 41%;
+	width: 42%;
 	padding: 5px;
 	position: relative;
 }
@@ -556,16 +556,10 @@
 	color: #bcbcbc;
 }
 
-.tieredWrapper .headStaticTier {
-	display: flex;
-	/* justify-content: end; */
-	margin-right: 5rem;
-}
-
+.tieredWrapper .headStaticTier,
 .tieredWrapper .headPercentageTier {
 	display: flex;
-	/* justify-content: end; */
-	margin-right: 7rem;
+	margin-left: 18.5rem;
 }
 
 .checkToConfirmDeposit .legend2 {
