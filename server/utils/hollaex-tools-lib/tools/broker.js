@@ -332,7 +332,7 @@ const createBrokerPair = async (brokerPair) => {
 			where: {
 				[Op.or]: [
 					{ symbol: brokerPair.symbol },
-					{ symbol: brokerPair.symbol.split('-').slice().reverse().join('-') }
+					{ symbol: brokerPair.symbol.split('-').reverse().join('-') }
 				]
 			}
 		})
