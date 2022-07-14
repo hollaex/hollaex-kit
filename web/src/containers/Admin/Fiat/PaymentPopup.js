@@ -73,7 +73,7 @@ const PaymentAccountPopup = ({
 		let temp = [];
 		if (constructedData) {
 			constructedData.forEach((item) => {
-				temp = [...temp, { ...item, required: true }];
+				temp = [...temp, item];
 			});
 		}
 		userPayment = {
@@ -276,9 +276,17 @@ const PaymentAccountPopup = ({
 							section.
 						</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right align-popup-tooltip"
+							overlayClassName="admin-general-description-tip general-description-tip-right "
 							title={
-								<img src={imgSrc} className="description_footer" alt="footer" />
+								<img
+									src={imgSrc}
+									className={
+										activeTab !== 'onRamp'
+											? 'fiatpayhelp fiatpayhelpnote'
+											: 'fiatpayhelp fiatonramppop'
+									}
+									alt="footer"
+								/>
 							}
 							placement="right"
 						>
@@ -314,7 +322,11 @@ const PaymentAccountPopup = ({
 								user and should be a recognizable system.
 							</div>
 							<div className="mb-3">
-								<b>Plugin on-ramp system name</b>
+								<b>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Payment system name'
+										: 'Plugin on-ramp system name'}
+								</b>
 							</div>
 						</>
 					) : (
@@ -527,7 +539,7 @@ const PaymentAccountPopup = ({
 							in their wallet fiat asset pages.
 						</div>
 						<Tooltip
-							overlayClassName="admin-general-description-tip general-description-tip-right align-popup-tooltip"
+							overlayClassName="admin-general-description-tip general-description-tip-right "
 							title={
 								<img
 									src={
@@ -535,7 +547,7 @@ const PaymentAccountPopup = ({
 											? STATIC_ICONS.FIAT_ONRAMP_TOOLTIP
 											: STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP
 									}
-									className="description_footer"
+									className="fiatpayhelp fiatonramppop"
 									alt="footer"
 								/>
 							}
@@ -660,17 +672,25 @@ const PaymentAccountPopup = ({
 					<h3>Save and publish</h3>
 					<div>
 						Please check that the{' '}
-						{activeTab === 'offRamp' ? 'off-ramp' : 'payment'} details below are
-						correct. This
+						{currentActiveTab === 'offRamp'
+							? 'off-ramp'
+							: currentActiveTab === 'onRamp'
+							? 'on-ramp'
+							: 'payment'}{' '}
+						details below are correct. This
 					</div>
 					<div>
 						information will be displayed live in the{' '}
-						{activeTab === 'offRamp' ? 'fiat withdrawal' : 'verification'} page
-						for your
+						{currentActiveTab === 'offRamp'
+							? 'fiat withdrawal'
+							: currentActiveTab === 'onRamp'
+							? 'fiat deposit'
+							: 'verification'}{' '}
+						page for your
 					</div>
 					<div>
-						users {activeTab === 'offRamp' ? '' : 'to fill'} in after clicking
-						'Save and publish'. To save without
+						users {currentActiveTab !== 'paymentAccounts' ? '' : 'to fill in'}{' '}
+						after clicking 'Save and publish'. To save without
 					</div>
 					<div>publishing simply click 'Save.</div>
 					<div className="d-flex align-items-start mt-4">
@@ -686,14 +706,7 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>
-								User payment account{' '}
-								{paymentSelect === 'bank'
-									? '1'
-									: paymentSelect === 'paypal'
-									? '2'
-									: paymentSelectData}
-							</div>
+							<div>User payment account {currentIndex}</div>
 							<b>
 								{paymentSelect === 'bank'
 									? 'Bank'

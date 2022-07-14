@@ -19,6 +19,8 @@ const Summarycontent = ({
 	isUpgrade,
 	user_payments = {},
 	exchange = {},
+	onramp = {},
+	offramp = {},
 }) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
@@ -400,18 +402,43 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							<Image
-								icon={STATIC_ICONS['ONRAMP_DOLLAR_ICON']}
-								wrapperClassName="withdrawalIcon green"
-							/>
-							<div className="txtpad">
-								There seems to be no fiat on-ramp systems connected to your
-								exchange yet. Connect a way for your users to deposit fiat{' '}
-								<Link to="/admin/fiat?tab=2" className="underline">
-									here
-								</Link>
-								.
-							</div>
+							{Object.keys(onramp).length ? (
+								<div>
+									{Object.keys(onramp).map((key) => {
+										return Object.keys(onramp[key]).length ? (
+											<div className="d-flex">
+												<div>Fiat {key && key.toUpperCase()}:</div>
+												<div className="ml-3 text-left">
+													<div className="text-capitalize">
+														{Object.keys(onramp[key]).map((name, index) => {
+															return (
+																<div>
+																	on-ramp {index + 1} : {name}
+																</div>
+															);
+														})}
+													</div>
+												</div>
+											</div>
+										) : null;
+									})}
+								</div>
+							) : (
+								<>
+									<Image
+										icon={STATIC_ICONS['ONRAMP_DOLLAR_ICON']}
+										wrapperClassName="withdrawalIcon green"
+									/>
+									<div className="txtpad">
+										There seems to be no fiat on-ramp systems connected to your
+										exchange yet. Connect a way for your users to deposit fiat{' '}
+										<Link to="/admin/fiat?tab=2" className="underline">
+											here
+										</Link>
+										.
+									</div>
+								</>
+							)}
 							{/* <div  className="d-flex">
 							<div className="small-circle mr-2 d-flex"></div>
 							<div className='d-flex'>
@@ -444,18 +471,43 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							<Image
-								icon={STATIC_ICONS['OFFRAMP_DOLLAR_ICON']}
-								wrapperClassName="withdrawalIcon"
-							/>
-							<div className="txtpad">
-								There seems to be no fiat off-ramp systems connected to your
-								exchange yet. Connect a way for your users to withdraw fiat{' '}
-								<Link to="/admin/fiat?tab=3" className="underline">
-									here
-								</Link>
-								.
-							</div>
+							{Object.keys(offramp).length ? (
+								<div>
+									{Object.keys(offramp).map((key) => {
+										return Object.keys(offramp[key]).length ? (
+											<div className="d-flex">
+												<div>Fiat {key && key.toUpperCase()}:</div>
+												<div className="ml-3 text-left">
+													<div className="text-capitalize">
+														{offramp[key].map((name, index) => {
+															return (
+																<div>
+																	off-ramp {index + 1} : {name}
+																</div>
+															);
+														})}
+													</div>
+												</div>
+											</div>
+										) : null;
+									})}
+								</div>
+							) : (
+								<>
+									<Image
+										icon={STATIC_ICONS['OFFRAMP_DOLLAR_ICON']}
+										wrapperClassName="withdrawalIcon"
+									/>
+									<div className="txtpad">
+										There seems to be no fiat off-ramp systems connected to your
+										exchange yet. Connect a way for your users to withdraw fiat{' '}
+										<Link to="/admin/fiat?tab=3" className="underline">
+											here
+										</Link>
+										.
+									</div>
+								</>
+							)}
 							{/* <div  className="d-flex">
 							<div className="small-circle mr-2 d-flex"></div>
 							<div className='d-flex'>
