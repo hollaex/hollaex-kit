@@ -10,33 +10,23 @@ const WITHDRAWAL_FEE_TYPES = ['static', 'percentage'];
 
 const WithdrawalFee = ({
 	coinFormData = {},
-	updateFormData,
 	coins = [],
 	handleScreenChange,
 	isWithdrawalEdit = false,
 	handleWithdrawalFeeChange,
 	handleSymbolChange,
-	confirm,
 	tierValues,
 	icons: ICONS,
 	assetType,
+	withdrawalFees,
 }) => {
-	const [withdrawalFees, setWithdrawalFees] = useState(
-		coinFormData?.withdrawal_fees
-	);
+	const [withdrawal_fees, setWithdrawalFees] = useState(withdrawalFees);
 	const [form] = Form.useForm();
 
 	let network = [];
 	if (coinFormData && coinFormData.network) {
 		network.push(coinFormData.network);
 	}
-
-	let withdrawal_fees = {};
-	coins.forEach((data) => {
-		if (data.symbol === coinFormData.symbol) {
-			withdrawal_fees = data.withdrawal_fees;
-		}
-	});
 
 	const networkData = network.length && network[0];
 
@@ -74,7 +64,6 @@ const WithdrawalFee = ({
 				});
 			}
 		}
-		updateFormData('withdrawal_fees', formProps);
 		if (isWithdrawalEdit) {
 			handleScreenChange('update_confirm');
 		} else {
@@ -109,7 +98,12 @@ const WithdrawalFee = ({
 		let tempObj = withdrawal_fees;
 		tempObj[data].type = val;
 		setWithdrawalFees({ ...tempObj });
-		handleWithdrawalFeeChange(data, val, 'type', 'withdrawal_fees');
+		handleWithdrawalFeeChange(
+			data,
+			val,
+			'type',
+			assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
+		);
 	};
 	return (
 		<div className="coin-limit-wrap">
@@ -206,7 +200,7 @@ const WithdrawalFee = ({
 											<Select
 												size="small"
 												className={
-													withdrawalFees[data].type === 'static'
+													withdrawal_fees[data].type === 'static'
 														? 'w-100 '
 														: 'w-100 disableall'
 												}
@@ -215,7 +209,9 @@ const WithdrawalFee = ({
 														data,
 														val,
 														'symbol',
-														'withdrawal_fees'
+														assetType === 'deposit'
+															? 'deposit_fees'
+															: 'withdrawal_fees'
 													)
 												}
 											>
@@ -233,7 +229,7 @@ const WithdrawalFee = ({
 									</div>
 									<div className="field-wrap last">
 										<div className="sub-title">
-											{withdrawalFees[data].type === 'static'
+											{withdrawal_fees[data].type === 'static'
 												? `Static value (withdraw fee amount in ${getNetworkLabelByKey(
 														data
 												  )})`
@@ -242,12 +238,30 @@ const WithdrawalFee = ({
 										</div>
 										<Form.Item
 											name={`${data}_value`}
-											rules={[
-												{
-													required: true,
-													message: 'This field is required!',
-												},
-											]}
+											rules={
+												withdrawal_fees[data].type === 'static'
+													? [
+															{
+																required: true,
+																message: 'This field is required!',
+															},
+															{
+																pattern: /^[+]?([0-9]+(?:[\\.][0-9]*)?|\.[0-9]+)$/,
+																message:
+																	'The field should contains positive values',
+															},
+													  ]
+													: [
+															{
+																required: true,
+																message: 'This field is required!',
+															},
+															{
+																pattern: /^[0-9][0-9]?$|^100$/,
+																message: 'The field should be 0-100',
+															},
+													  ]
+											}
 										>
 											<Input
 												onChange={(e) =>
@@ -255,12 +269,14 @@ const WithdrawalFee = ({
 														data,
 														parseFloat(e.target.value),
 														'value',
-														'withdrawal_fees'
+														assetType === 'deposit'
+															? 'deposit_fees'
+															: 'withdrawal_fees'
 													)
 												}
 												className="withdrawInput"
 												suffix={
-													withdrawalFees[data].type === 'percentage' && '%'
+													withdrawal_fees[data].type === 'percentage' && '%'
 												}
 											/>
 										</Form.Item>
@@ -269,20 +285,31 @@ const WithdrawalFee = ({
 											{getNetworkLabelByKey(data)})
 										</div>
 									</div>
-									{withdrawalFees[data].type === 'static' ? null : (
+									{withdrawal_fees[data].type === 'static' ? null : (
 										<div>
 											<div className="field-wrap last">
 												<div className="sub-title">
 													Maximum fee USDT value (optional)
 												</div>
-												<Form.Item name={`${data}_max`}>
+												<Form.Item
+													name={`${data}_max`}
+													rules={[
+														{
+															pattern: /^[+]?([0-9]+(?:[\\.][0-9]*)?|\.[0-9]+)$/,
+															message:
+																'The field should contains positive values',
+														},
+													]}
+												>
 													<Input
 														onChange={(e) =>
 															handleWithdrawalFeeChange(
 																data,
 																parseFloat(e.target.value),
 																'max',
-																'withdrawal_fees'
+																assetType === 'deposit'
+																	? 'deposit_fees'
+																	: 'withdrawal_fees'
 															)
 														}
 														className="withdrawInput"
@@ -299,14 +326,25 @@ const WithdrawalFee = ({
 												<div className="sub-title">
 													Minimum fee USDT value (optional)
 												</div>
-												<Form.Item name={`${data}_min`}>
+												<Form.Item
+													name={`${data}_min`}
+													rules={[
+														{
+															pattern: /^[+]?([0-9]+(?:[\\.][0-9]*)?|\.[0-9]+)$/,
+															message:
+																'The field should contains positive values',
+														},
+													]}
+												>
 													<Input
 														onChange={(e) =>
 															handleWithdrawalFeeChange(
 																data,
 																parseFloat(e.target.value),
 																'min',
-																'withdrawal_fees'
+																assetType === 'deposit'
+																	? 'deposit_fees'
+																	: 'withdrawal_fees'
 															)
 														}
 														className="withdrawInput"
@@ -321,7 +359,7 @@ const WithdrawalFee = ({
 											</div>
 										</div>
 									)}
-									{confirm ? (
+									{withdrawal_fees[data].levels ? (
 										<>
 											<div>Advanced:</div>
 											<div className="infotxt2">
@@ -347,16 +385,16 @@ const WithdrawalFee = ({
 																			</div>
 																			<div className="centerBorder"></div>
 																			<div>
-																				<span className="bold ml-3">
+																				<span className="ml-3">
 																					{`${
-																						withdrawalFees[data].type ===
+																						withdrawal_fees[data].type ===
 																						'static'
 																							? 'Static value:' +
 																							  ' ' +
 																							  tierValues[data][level] +
 																							  ' ' +
 																							  data
-																							: ' Percent Value:' +
+																							: ' Percent Value: ' +
 																							  tierValues[data][level] +
 																							  '%'
 																					}`}
@@ -377,7 +415,7 @@ const WithdrawalFee = ({
 													handleScreenChange(
 														'step18',
 														data,
-														withdrawalFees[data].type
+														withdrawal_fees[data].type
 													)
 												}
 											>
@@ -391,7 +429,7 @@ const WithdrawalFee = ({
 												handleScreenChange(
 													'step18',
 													data,
-													withdrawalFees[data].type
+													withdrawal_fees[data].type
 												)
 											}
 										>
@@ -450,6 +488,10 @@ const WithdrawalFee = ({
 									{
 										required: true,
 										message: 'This field is required!',
+									},
+									{
+										pattern: /^[+]?([0-9]+(?:[\\.][0-9]*)?|\.[0-9]+)$/,
+										message: 'The field should contains positive values',
 									},
 								]}
 							>
