@@ -62,20 +62,29 @@ class Verification extends Component {
 		const {
 			user,
 			router: {
-				location: { search },
+				location: { search, query },
 			},
 		} = this.props;
 
 		if (user) {
 			this.setUserData(user, () => {
-				if (search) {
-					const { currentTabs } = this.state;
-					const activeTab = currentTabs.findIndex(
+				const { currentTabs } = this.state;
+
+				let initial_tab = -1;
+
+				// The initial_tab logic is added to support old plugins logic
+				if (query && query.initial_tab) {
+					initial_tab = currentTabs.findIndex(
+						(tab) => tab === query.initial_tab
+					);
+				} else if (search) {
+					initial_tab = currentTabs.findIndex(
 						(tab) => tab === this.getTabBySearch(search)
 					);
-					if (activeTab !== -1) {
-						this.setState({ activeTab }, this.openCurrentTab);
-					}
+				}
+
+				if (initial_tab !== -1) {
+					this.setState({ activeTab: initial_tab }, this.openCurrentTab);
 				}
 			});
 		}

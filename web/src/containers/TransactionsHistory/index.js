@@ -11,7 +11,7 @@ import {
 	getUserWithdrawals,
 	withdrawalCancel,
 	downloadUserTrades,
-} from '../../actions/walletActions';
+} from 'actions/walletActions';
 
 import {
 	IconTitle,
@@ -21,8 +21,8 @@ import {
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
-} from '../../components';
-import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from '../../config/constants';
+} from 'components';
+import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from 'config/constants';
 import {
 	generateOrderHistoryHeaders,
 	generateTradeHeaders,
@@ -41,7 +41,7 @@ import {
 	withdrawalHistorySelector,
 } from './selectors';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
@@ -67,6 +67,11 @@ class TransactionsHistory extends Component {
 	}
 
 	componentDidMount() {
+		const {
+			router: {
+				location: { query, search },
+			},
+		} = this.props;
 		this.generateHeaders(
 			this.props.symbol,
 			this.props.coins,
@@ -74,34 +79,28 @@ class TransactionsHistory extends Component {
 			this.props.prices
 		);
 		this.generateFilters();
-		if (
-			this.props.location &&
-			this.props.location.query &&
-			this.props.location.query.tab
-		) {
-			this.setActiveTab(parseInt(this.props.location.query.tab, 10));
+
+		if (query && query.tab) {
+			this.setActiveTab(parseInt(query.tab, 10));
 		} else {
-			this.setActiveTab();
-		}
-		if (
-			window.location.search &&
-			window.location.search.includes('order-history')
-		) {
-			this.setState({ activeTab: 1 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('deposit')
-		) {
-			this.setState({ activeTab: 2 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('withdraw')
-		) {
-			this.setState({ activeTab: 3 });
-		} else {
-			this.setState({ activeTab: 0 });
+			const activeTab = this.getTabBySearch(search);
+			this.setActiveTab(activeTab);
 		}
 	}
+
+	getTabBySearch = (search) => {
+		if (search) {
+			if (search.includes('order-history')) {
+				return 1;
+			} else if (search.includes('deposit')) {
+				return 2;
+			} else if (search.includes('withdraw')) {
+				return 3;
+			}
+		}
+
+		return 0;
+	};
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { pairs, coins, prices } = this.props;
