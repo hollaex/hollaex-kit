@@ -15,6 +15,7 @@ const _eval = require('eval');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
+const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
 
 const {
@@ -325,7 +326,16 @@ const reverseTransaction = async (orderData) => {
 
 const createBrokerPair = async (brokerPair) => {
 	validateBrokerPair(brokerPair);
-	return fetchBrokerPair(brokerPair.symbol)
+
+	return getModel('broker')
+		.findOne({
+			where: {
+				[Op.or]: [
+					{ symbol: brokerPair.symbol },
+					{ symbol: brokerPair.symbol.split('-').reverse().join('-') }
+				]
+			}
+		})
 		.then((deal) => {
 			if (deal) {
 				throw new Error(BROKER_EXISTS);
