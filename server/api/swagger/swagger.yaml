@@ -5821,7 +5821,7 @@ definitions:
         type: boolean
       email:
         type: boolean
-      updated_description:
+      description:
         type: string
   CoinPostRequest:
     type: object
