@@ -39,21 +39,14 @@ const createDepositRequest = (req, res) => {
 			
 			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
-			const { count: depositCount } = await toolsLib.wallet.getExchangeDeposits(
+			const { count: depositCount } = await toolsLib.wallet.getUserDepositsByKitId(
+				userId,
 				currency,
 				false,
 				false,
 				false,
 				false,
-				false,
-				1,
-				null,
-				null,
-				null,
-				null,
-				null,
-				null,
-				address
+				false
 			);
 
 			if (depositCount > 3) {
@@ -141,6 +134,20 @@ const createWithdrawalRequest = (req, res) => {
 
 			if (!bank) {
 				throw new Error('The selected payment option is not registered');
+			}
+
+			const { count: withdrawalCount } = await toolsLib.wallet.getUserWithdrawalsByKitId(
+				userId,
+				currency,
+				false,
+				false,
+				false,
+				false,
+				false
+			);
+
+			if (withdrawalCount > 3) {
+				throw new Error('You already have 3 pending withdrawals. Please wait for them to be processed before creating new withdrawals.');
 			}
 
 			// fee_coin is always the same as currency in fiat
