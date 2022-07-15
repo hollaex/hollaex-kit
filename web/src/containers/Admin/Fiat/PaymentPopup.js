@@ -63,6 +63,7 @@ const PaymentAccountPopup = ({
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
+	const [existErrorMsg, setExistErrorMsg] = useState('');
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -138,6 +139,7 @@ const PaymentAccountPopup = ({
 
 	const handleChange = (e) => {
 		setPaymentSelect(e);
+		setExistErrorMsg('');
 	};
 	const handleCustomSelect = () => {
 		if (Object.keys(user_payments).includes(plugin)) {
@@ -149,16 +151,26 @@ const PaymentAccountPopup = ({
 	};
 
 	const handleProceed = () => {
-		if (paymentSelect === 'bank') {
-			handleClosePlugin(false);
-			formUpdate('bankForm', paymentSelect);
-		} else if (paymentSelect === 'paypal') {
-			handleClosePlugin(false);
-			formUpdate('paypalForm', paymentSelect);
-		} else if (paymentSelect === 'customPay') {
-			tabUpdate('sysname');
+		if (
+			user_payments &&
+			Object.keys(user_payments).length &&
+			Object.keys(user_payments).includes(paymentSelect)
+		) {
+			setExistErrorMsg(
+				`You have already created the payment by using ${paymentSelect} method`
+			);
+		} else {
+			if (paymentSelect === 'bank') {
+				handleClosePlugin(false);
+				formUpdate('bankForm', paymentSelect);
+			} else if (paymentSelect === 'paypal') {
+				handleClosePlugin(false);
+				formUpdate('paypalForm', paymentSelect);
+			} else if (paymentSelect === 'customPay') {
+				tabUpdate('sysname');
+			}
+			// setCoindata(coinSymbol);
 		}
-		// setCoindata(coinSymbol);
 	};
 
 	const handleCloseOnramp = () => {
@@ -171,8 +183,8 @@ const PaymentAccountPopup = ({
 			setPlugin(val);
 		} else {
 			setPlugin('');
-			setErrorMsg('');
 		}
+		setErrorMsg('');
 	};
 
 	switch (type) {
@@ -293,6 +305,9 @@ const PaymentAccountPopup = ({
 							<QuestionCircleOutlined className="quesIcon" />
 						</Tooltip>
 					</div>
+					{existErrorMsg ? (
+						<div className="error-text">{existErrorMsg}</div>
+					) : null}
 					<div className="button-wrapper mt-4">
 						<Button
 							type="primary"

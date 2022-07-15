@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Modal, Tooltip, Select, message, Checkbox } from 'antd';
+import { Button, Modal, Tooltip, Select, message, Checkbox, Spin } from 'antd';
 import {
 	CaretDownOutlined,
 	CaretUpOutlined,
@@ -353,6 +353,7 @@ const PaymentAccounts = ({
 	const [isDisplayDetails, setIsDisplayDetails] = useState(false);
 	const [selectedPlugin, setPlugin] = useState('');
 	const [currentIndex, setCurrentIndex] = useState(1);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		if (formType) {
@@ -459,16 +460,25 @@ const PaymentAccounts = ({
 						let temp = Object.keys(tempData).map((item) => item);
 						if (type === 'delete') {
 							setPaymentMethod(temp[0]);
+							if (Object.keys(tempData).length === 0) {
+								setPaymentType('initial');
+								setFormValues({});
+								setBankInitValue({});
+								setPaypalInitValue({});
+								setCustomInitValue({});
+							}
 						} else if (type === 'add') {
 							setPaymentMethod(temp[temp.length - 1]);
+							setFormValues(tempData);
 						}
-						setFormValues(tempData);
 					}
 				}
 				setConfig(res && res.kit);
+				setIsLoading(false);
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
+				setIsLoading(false);
 				console.log('message', message);
 			});
 	};
@@ -493,6 +503,7 @@ const PaymentAccounts = ({
 	};
 
 	const handleSaveAndPublish = (val, payType, saveMethod) => {
+		setIsLoading(true);
 		setIsVisible(val);
 		setPaymentType('paymentform');
 		// setPaymentSelect(payType);
@@ -617,6 +628,7 @@ const PaymentAccounts = ({
 		setIsVisible(false);
 	};
 	const handlePopupDel = (method) => {
+		setIsLoading(true);
 		let deletedData = {};
 		Object.keys(user_payments).forEach((item) => {
 			if (item !== method)
@@ -669,6 +681,10 @@ const PaymentAccounts = ({
 	const handleBack = () => {
 		setIsDisplayDetails(false);
 		setIsDisplayForm(false);
+		if (!user_payments || !Object.keys(user_payments).length) {
+			setPaymentType('initial');
+			setIsDisplayForm(true);
+		}
 	};
 
 	return (
@@ -785,52 +801,58 @@ const PaymentAccounts = ({
 					) : null}
 				</div>
 			</div>
-			<div className={!isUpgrade ? 'disableall' : ''}>
-				{isDisplayForm && !isOnRampCoins && (
-					<PaymentWay
-						paymenttype={paymenttype}
-						handleClosePlugin={handleClosePlugin}
-						handleSave={handleSave}
-						savedContent={savedContent}
-						handleEdit={handleEdit}
-						pluginName={pluginName}
-						handleDel={handleDel}
-						isUpgrade={isUpgrade}
-						handleDelBank={handleDelBank}
-						paymentSelect={paymentSelect}
-						handleClose={handleClose}
-						saveType={saveType}
-						formData={formData}
-						router={router}
-						formUpdate={formUpdate}
-						currentActiveTab={currentActiveTab}
-						bankInitialValues={bankInitialValues}
-						paypalInitialValues={paypalInitialValues}
-						customInitialValues={customInitialValues}
-						currentPaymentType={currentPaymentType}
-						isCustomPay={isCustomPay}
-						customName={customName}
-						currentsymbol={currentsymbol}
-						coinSymbol={coinSymbol}
-						isPaymentForm={isPaymentForm}
-						currentIndex={currentIndex}
-						handleBack={handleBack}
-					/>
-				)}
-				{payOption && !isDisplayDetails ? (
-					<PaymentDetails
-						type={paymentSelect}
-						formUpdate={formUpdate}
-						saveType={saveType}
-						handleClose={handleClose}
-						formData={formData}
-						router={router}
-						user_payments={formValues}
-						activeTab={currentActiveTab}
-						paymentIndex={currentIndex}
-					/>
-				) : null}
-			</div>
+			{isLoading ? (
+				<div className="d-flex justify-content-center align-items-center">
+					<Spin size="large" />
+				</div>
+			) : (
+				<div className={!isUpgrade ? 'disableall' : ''}>
+					{isDisplayForm && !isOnRampCoins && (
+						<PaymentWay
+							paymenttype={paymenttype}
+							handleClosePlugin={handleClosePlugin}
+							handleSave={handleSave}
+							savedContent={savedContent}
+							handleEdit={handleEdit}
+							pluginName={pluginName}
+							handleDel={handleDel}
+							isUpgrade={isUpgrade}
+							handleDelBank={handleDelBank}
+							paymentSelect={paymentSelect}
+							handleClose={handleClose}
+							saveType={saveType}
+							formData={formData}
+							router={router}
+							formUpdate={formUpdate}
+							currentActiveTab={currentActiveTab}
+							bankInitialValues={bankInitialValues}
+							paypalInitialValues={paypalInitialValues}
+							customInitialValues={customInitialValues}
+							currentPaymentType={currentPaymentType}
+							isCustomPay={isCustomPay}
+							customName={customName}
+							currentsymbol={currentsymbol}
+							coinSymbol={coinSymbol}
+							isPaymentForm={isPaymentForm}
+							currentIndex={currentIndex}
+							handleBack={handleBack}
+						/>
+					)}
+					{payOption && !isDisplayDetails ? (
+						<PaymentDetails
+							type={paymentSelect}
+							formUpdate={formUpdate}
+							saveType={saveType}
+							handleClose={handleClose}
+							formData={formData}
+							router={router}
+							user_payments={formValues}
+							activeTab={currentActiveTab}
+							paymentIndex={currentIndex}
+						/>
+					) : null}
+				</div>
+			)}
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
 					handleClosePlugin={handleClosePlugin}
