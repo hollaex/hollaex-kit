@@ -390,15 +390,37 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{withdrawal_fees ? (
-					<div>
+				<div>
+					{withdrawal_fees ? (
 						<div>{renderFees(withdrawal_fees)}</div>
+					) : (
+						<Fragment>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						</Fragment>
+					)}
+					{isConfigure && (
+						<div className="btn-wrapper">
+							<Button
+								className="green-btn mb-3"
+								type="primary"
+								onClick={() => handleWithdrawalEdit('withdraw')}
+								disabled={!isOwner}
+							>
+								Edit
+							</Button>
+						</div>
+					)}
+				</div>
+				<div className="preview-detail-container">
+					<div className="title">Deposit Fee</div>
+					<div>
+						{deposit_fees && <div>{renderFees(deposit_fees)}</div>}
 						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
-									className="green-btn mb-3"
+									className="green-btn"
 									type="primary"
-									onClick={() => handleWithdrawalEdit('withdraw')}
+									onClick={() => handleWithdrawalEdit('deposit')}
 									disabled={!isOwner}
 								>
 									Edit
@@ -406,43 +428,7 @@ const Final = ({
 							</div>
 						)}
 					</div>
-				) : (
-					<div>
-						<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-						{isConfigure && (
-							<div className="btn-wrapper">
-								<Button
-									className="green-btn"
-									type="primary"
-									onClick={handleWithdrawalEdit}
-									disabled={!isOwner || !Object.keys(withdrawal_fees).length}
-								>
-									Edit
-								</Button>
-							</div>
-						)}
-					</div>
-				)}
-				{deposit_fees && (
-					<div className="preview-detail-container">
-						<div className="title">Deposit Fee</div>
-						<div>
-							<div>{renderFees(deposit_fees)}</div>
-							{isConfigure && (
-								<div className="btn-wrapper">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={() => handleWithdrawalEdit('deposit')}
-										disabled={!isOwner}
-									>
-										Edit
-									</Button>
-								</div>
-							)}
-						</div>
-					</div>
-				)}
+				</div>
 				{(tabParams?.isFiat === 'onRamp' ||
 					tabParams?.isFiat === 'offRamp') && (
 					<div>
