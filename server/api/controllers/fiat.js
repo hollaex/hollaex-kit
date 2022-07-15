@@ -39,12 +39,37 @@ const createDepositRequest = (req, res) => {
 			
 			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
+			const { count: depositCount } = await toolsLib.wallet.getExchangeDeposits(
+				currency,
+				false,
+				false,
+				false,
+				false,
+				false,
+				1,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				address
+			);
+
+			if (depositCount > 3) {
+				throw new Error('You already have 3 pending deposits. Please wait for them to be processed before creating new deposit.');
+			}
+
+			// if (toolsLib.getKitConfig().onramp[currency] && toolsLib.getKitConfig().onramp[currency][address]) {
+			// 	console.log(toolsLib.getKitConfig().onramp[currency][address].data);
+			// }
+
 			return toolsLib.wallet.mintAssetByKitId(
 				userId,
 				currency,
 				amount,
 				{
-					description: `Pending deposit created with ${currency.toUpperCase()} for username: ${user.username}`,
+					description: `Pending ${currency.toUpperCase()} deposit for username: ${user.username}`,
 					transactionId: transaction_id,
 					address,
 					status: false,
