@@ -15,6 +15,7 @@ const _eval = require('eval');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
+const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
 
 const {
@@ -325,7 +326,16 @@ const reverseTransaction = async (orderData) => {
 
 const createBrokerPair = async (brokerPair) => {
 	validateBrokerPair(brokerPair);
-	return fetchBrokerPair(brokerPair.symbol)
+
+	return getModel('broker')
+		.findOne({
+			where: {
+				[Op.or]: [
+					{ symbol: brokerPair.symbol },
+					{ symbol: brokerPair.symbol.split('-').reverse().join('-') }
+				]
+			}
+		})
 		.then((deal) => {
 			if (deal) {
 				throw new Error(BROKER_EXISTS);
@@ -398,56 +408,17 @@ async function fetchBrokerPairs(attributes, bearerToken, ip) {
 }
 
 const updateBrokerPair = async (id, data) => {
-	const brokerPair = await getModel('broker').findOne({ where: { id } });
+	const brokerPair = await getModel("broker").findOne({ where: { id } });
 	if (!brokerPair) {
-		throw new Error(BROKER_NOT_FOUND);
+		throw new Error('Pair does not exist');
 	}
 
-	const {
-		exchange_name,
-		spread,
-		multiplier,
-		type,
-		account } = data;
-	if (exchange_name && type === 'manual') {
-		throw new Error(MANUAL_BROKER_CREATE_ERROR);
-	}
-
-	if (exchange_name && !spread) {
-		throw new Error(SPREAD_MISSING);
-	}
-
-	//Validate account JSONB object
-	if (account) {
-		for (const [key, value] of Object.entries(account)) {
-			if (!value.hasOwnProperty('apiKey')) {
-				value.apiKey = brokerPair.account[key].apiKey;
-			}
-
-			if (!value.hasOwnProperty('apiSecret')) {
-				value.apiSecret = brokerPair.account[key].apiSecret;
-			}
-		}
-	}
 	const updatedPair = {
-		...brokerPair.get({ plain: true }),
-		...data,
+		...brokerPair,
+		...data
 	};
 
 	validateBrokerPair(updatedPair);
-	if (exchange_name === 'binance') {
-
-		const binanceFormula = `
-			const spread = ${spread}; 
-			const multiplier = ${multiplier || 1}; 
-			module.exports = (${binanceScript.toString()})()
-		`;
-
-		updatedPair.formula = binanceFormula;
-	} else if (exchange_name && exchange_name !== 'binance') {
-		throw new Error(EXCHANGE_NOT_FOUND);
-	}
-
 	return brokerPair.update(updatedPair, {
 		fields: [
 			'user_id',
