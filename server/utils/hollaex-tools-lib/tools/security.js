@@ -979,13 +979,13 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 			});
 		})
 		.then((token) => {
-			return token
+			return token;
 		});
 };
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({where: {id: token_id}});
+	const token = await findToken({ where: { id: token_id } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);

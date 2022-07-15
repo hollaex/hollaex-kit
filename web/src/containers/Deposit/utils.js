@@ -84,9 +84,10 @@ export const generateFormFields = ({
 	}
 
 	if (fee) {
+		const feeKey = networks ? network : currency;
 		const { deposit_fees } = coins[currency];
-		if (deposit_fees && deposit_fees[network]) {
-			const { symbol, type } = deposit_fees[network];
+		if (deposit_fees && deposit_fees[feeKey]) {
+			const { symbol, type } = deposit_fees[feeKey];
 			const isPercentage = type === 'percentage';
 			const fee_coin = isPercentage ? '' : symbol || currency;
 
