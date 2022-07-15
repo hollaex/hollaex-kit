@@ -85,8 +85,6 @@ const Form = ({
 	};
 
 	const is_verified = id_data.status === 3;
-	const verified_accounts = all_accounts.filter(({ status }) => status === 3);
-	const has_verified_account = !!verified_accounts.length;
 
 	const renderSmartTarget = (name) => {
 		const id = generateDynamicTarget(name, 'ultimate_fiat', 'onramp');
@@ -300,14 +298,14 @@ const Form = ({
 					wrapperClassName="form_currency-ball"
 				/>
 				{titleSection}
-				{(!is_verified || !has_verified_account) && (
+				{(!is_verified) && (
 					<NoVerifiedAccount type="deposit" />
 				)}
-				{is_verified && has_verified_account && (
+				{is_verified && (
 					<Fragment>{renderContent()}</Fragment>
 				)}
 			</div>
-			{(!is_verified || !has_verified_account) && (
+			{(!is_verified) && (
 				<div className="btn-wrapper">
 					<Button
 						label="Proceed"
