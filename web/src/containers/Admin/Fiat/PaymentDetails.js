@@ -8,6 +8,7 @@ const PaymentDetails = ({
 	type,
 	formUpdate,
 	user_payments = {},
+	paymentIndex,
 }) => {
 	const renderImage = (type) => {
 		if (type === 'bank') {
@@ -33,7 +34,7 @@ const PaymentDetails = ({
 							<div className="paymentheader d-flex justify-content-between mb-4 ">
 								<div>
 									{activeTab && activeTab !== 'paymentAccounts'
-										? activeTab + '1'
+										? `${activeTab}  ${paymentIndex}`
 										: `User payment account ${index + 1}`}
 								</div>
 							</div>
@@ -81,20 +82,53 @@ const PaymentDetails = ({
 											<div className="bankborder">
 												{curData?.data.map((elem) => {
 													return elem.map((item, key) => {
-														return (
-															<div className="bankDetails" key={key}>
-																<span>
-																	<b>{item?.label}: </b>
-																</span>
-																{item?.value ? (
-																	<span className="userinfo">
-																		{item?.value}
+														if (item?.required) {
+															return (
+																<div className="bankDetails" key={key}>
+																	<span>
+																		<b>{item?.label}: </b>
 																	</span>
-																) : (
-																	<span className="userinfo">(user input)</span>
-																)}
-															</div>
-														);
+																	{item?.value ? (
+																		<span className="userinfo">
+																			{item?.value}
+																		</span>
+																	) : (
+																		<span className="userinfo">
+																			(user input)
+																		</span>
+																	)}
+																</div>
+															);
+														} else {
+															return null;
+														}
+													});
+												})}
+											</div>
+											<div className="mb-1">OPTIONAL</div>
+											<div className="bankborder">
+												{curData?.data.map((elem) => {
+													return elem.map((item, key) => {
+														if (!item?.required) {
+															return (
+																<div className="bankDetails" key={key}>
+																	<span>
+																		<b>{item?.label}: </b>
+																	</span>
+																	{item?.value ? (
+																		<span className="userinfo">
+																			{item?.value}
+																		</span>
+																	) : (
+																		<span className="userinfo">
+																			(user input)
+																		</span>
+																	)}
+																</div>
+															);
+														} else {
+															return null;
+														}
 													});
 												})}
 											</div>
