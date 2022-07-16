@@ -99,6 +99,7 @@ const connect = () => {
 	// check after 10 seconds to make sure stream is connected
 	setTimeout(() => {
 		if (!hubConnected()) {
+			loggerWebsocket.error('ws/hub/connect hub not connected');
 			process.exit(1);
 		}
 	}, 10000);
