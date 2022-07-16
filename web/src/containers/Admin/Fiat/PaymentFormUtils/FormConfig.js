@@ -8,21 +8,6 @@ import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
 
-const add_column_field = {
-	label: {
-		type: 'text',
-		label: 'Payment detail name',
-		placeholder: 'Input the payment detail name',
-		validate: [required],
-	},
-	required: {
-		type: 'boolean',
-		isPayment: true,
-		defaultValue: 'required',
-		validate: validateBoolean,
-	},
-};
-
 class FormConfig extends Component {
 	constructor(props) {
 		super(props);
@@ -96,7 +81,7 @@ class FormConfig extends Component {
 
 	addColumn = (currentSection = '') => {
 		this.setState({ currentSection });
-		this.editColumn();
+		this.editColumn('add');
 	};
 
 	handleRemoveHeader = (headerName, label, required) => {
@@ -155,55 +140,72 @@ class FormConfig extends Component {
 		if (section_type && type === 'initialValue') {
 			custom_fields = {};
 		}
-		custom_fields[section_type ? section_type : this.state.currentSection] = {
-			className: 'section-wrapper',
-			header: {
-				className: 'section-header',
-				fields: {
-					[`column_header_${count}`]: {
-						type: 'input',
-						label: (
-							<div className="form-label">
-								<div>
-									<b>{formProps.label}:</b>
-									{!formProps.required &&
-									this.state.currentActiveTab !== 'onRamp' ? (
-										<div>(optional)</div>
-									) : null}
+
+		const checkData = [];
+		Object.keys(custom_fields).forEach((item, index) => {
+			if (
+				custom_fields[item]?.fieldLabel[
+					`column_header_${index + 1}`
+				]?.toLowerCase() === formProps?.label?.toLowerCase()
+			) {
+				checkData.push(item);
+			}
+		});
+
+		if (checkData.length === 0) {
+			custom_fields[section_type ? section_type : this.state.currentSection] = {
+				className: 'section-wrapper',
+				header: {
+					className: 'section-header',
+					fields: {
+						[`column_header_${count}`]: {
+							type: 'input',
+							label: (
+								<div className="form-label">
+									<div>
+										<b>{formProps.label}:</b>
+										{!formProps.required ? <div>(optional)</div> : null}
+									</div>
+									<span
+										className="anchor"
+										onClick={() => this.editColumn('edit', formProps)}
+									>
+										Edit field name
+									</span>
 								</div>
-								<span
-									className="anchor"
-									onClick={() => this.editColumn('edit', formProps)}
-								>
-									Edit field name
-								</span>
-							</div>
-						),
-						placeholder:
-							'(User input. Details will be shown in user verification page)',
-						isClosable: true,
-						closeCallback: () =>
-							this.handleRemoveHeader(
-								`column_header_${count}`,
-								formProps.label,
-								formProps.required
 							),
-						input: { name: `column_header_${index + 1}` },
+							placeholder:
+								'(User input. Details will be shown in user verification page)',
+							isClosable: true,
+							closeCallback: () =>
+								this.handleRemoveHeader(
+									`column_header_${count}`,
+									formProps.label,
+									formProps.required
+								),
+							input: formProps?.value,
+							isTooltip: true,
+							tooltipTitle:
+								this.props.currentActiveTab === 'onRamp'
+									? 'Field is for operator to fill'
+									: 'This input is for your users in their verification page',
+						},
 					},
 				},
-			},
-			isRequired:
-				this.props.currentActiveTab === 'onRamp' ? true : formProps.required,
-			fieldLabel: { [`column_header_${count}`]: formProps.label },
-			fieldKey: { [`column_header_${count}`]: formProps.key },
-		};
+				isRequired: formProps.required,
+				fieldLabel: { [`column_header_${count}`]: formProps.label },
+				fieldKey: { [`column_header_${count}`]: formProps.key },
+			};
+		}
 		if (section_type && type === 'initialValue') {
 			return custom_fields;
 		} else {
 			this.setState({
 				custom_fields,
 			});
-			this.onCancel();
+			if (checkData && checkData.length === 0) {
+				this.onCancel();
+			}
 		}
 		if (type === 'edit') {
 			let editedValues = { ...this.state.editedValues };
@@ -280,6 +282,7 @@ class FormConfig extends Component {
 							formProps.label.split(' ').length > 1
 								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
 								: formProps.label.toLowerCase().trim(),
+						section_type: `section_${sectionCount}`,
 						...formProps,
 					},
 				};
@@ -288,11 +291,42 @@ class FormConfig extends Component {
 		}
 	};
 
-	handleSubmitLinks = () => {
+	handleSubmitLinks = (formProps) => {
 		this.props.handleClose(true, 'savePayment', this.state.editedValues);
 	};
 
+	validateExist = (value) => {
+		const { editedValues, modalType } = this.state;
+		let isExistField = '';
+		if (value && editedValues && modalType === 'add') {
+			Object.keys(editedValues).forEach((item) => {
+				const temp = editedValues[item];
+				let valData = value && value.replaceAll(' ', '_');
+				valData = valData.toLowerCase();
+				if (temp && temp.key === valData) {
+					isExistField = 'The given field is already exist';
+				}
+			});
+		}
+		return isExistField;
+	};
+
 	renderModalContent = (type) => {
+		const add_column_field = {
+			label: {
+				type: 'text',
+				label: 'Payment detail name',
+				placeholder: 'Input the payment detail name',
+				validate: [required, this.validateExist],
+			},
+			required: {
+				type: 'boolean',
+				isPayment: true,
+				defaultValue: 'required',
+				validate: validateBoolean,
+			},
+		};
+
 		switch (type) {
 			case 'edit':
 				return (
@@ -354,6 +388,11 @@ class FormConfig extends Component {
 		}
 	};
 
+	handleBack = () => {
+		this.props.handleBack();
+		this.setState({ editedValues: this.props.initialValues });
+	};
+
 	render() {
 		const {
 			custom_fields,
@@ -370,6 +409,8 @@ class FormConfig extends Component {
 					handleSubmitLinks={this.handleSubmitLinks}
 					buttonSubmitting={!buttonSubmitting}
 					isFiat={this.props.isFiat}
+					currentActiveTab={this.props.currentActiveTab}
+					handleBack={this.handleBack}
 				/>
 				<Modal visible={isAddColumn} footer={null} onCancel={this.onCancel}>
 					<div>{this.renderModalContent(modalType)}</div>

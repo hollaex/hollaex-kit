@@ -62,38 +62,22 @@ const Onramp = ({
 
 	useEffect(() => {
 		let filteredFiatCoins = [];
-		let rampData = activeTab === 'onRamp' ? onramp : offramp;
 		const FiatCoinData = allCoins.filter((item) =>
 			exchange?.coins.includes(item?.symbol)
 		);
-		if (Object.keys(rampData).length) {
-			FiatCoinData &&
-				FiatCoinData.filter(
-					(item) => !Object.keys(rampData).includes(item.symbol)
-				).forEach((item) => {
-					if (item.type === 'fiat') {
-						filteredFiatCoins = [
-							...filteredFiatCoins,
-							{
-								symbol: item?.symbol,
-								color: item?.meta?.color,
-								fullname: item?.fullname,
-							},
-						];
-					}
-				});
-		} else {
-			FiatCoinData &&
-				FiatCoinData.forEach((item) => {
-					if (item.type === 'fiat') {
-						filteredFiatCoins = [
-							...filteredFiatCoins,
-							{ ...item, color: item?.meta?.color, fullname: item?.fullname },
-						];
-					}
-				});
-			setCoins([filteredFiatCoins[0]]);
-		}
+		FiatCoinData &&
+			FiatCoinData.forEach((item) => {
+				if (item.type === 'fiat') {
+					filteredFiatCoins = [
+						...filteredFiatCoins,
+						{
+							symbol: item?.symbol,
+							color: item?.meta?.color,
+							fullname: item?.fullname,
+						},
+					];
+				}
+			});
 		setFiatCoins(filteredFiatCoins);
 	}, [allCoins, onramp, offramp, activeTab, exchange]);
 
@@ -197,17 +181,26 @@ const Onramp = ({
 						/>
 						<div>
 							<div className="d-flex align-items-center">
-								<div className="mr-3 w-50">
-									{activeTab === 'onRamp'
-										? 'Connect an on-ramp. This can simply be bank deposit details and/or other payment processor details. Below are fiat assets that you can connect deposit details for. Once connected, these details will be displayed to users in their asset wallet deposit page for that specific asset.'
-										: 'Add an off-ramp to allow your users a way to withdraw fiat.'}
-								</div>
+								{activeTab === 'onRamp' ? (
+									<div className="mr-3 w-50">
+										Connect an on-ramp. This can simply be bank deposit details
+										and/or other payment processor details. Below are fiat
+										assets that you can connect deposit details for. Once
+										connected, these details will be displayed to users in their
+										asset wallet deposit page for that specific asset.
+									</div>
+								) : (
+									<div className="mr-3 w-50">
+										Add an off-ramp to allow your users a way to withdraw fiat.
+										Off-ramps require previously added{' '}
+										<Link to="/admin/fiat?tab=1" className="anchor">
+											payment Accounts
+										</Link>
+										.
+									</div>
+								)}
 								<Tooltip
-									overlayClassName={
-										activeTab === 'onRamp'
-											? 'admin-general-description-tip general-description-tip-right align-onramp-tooltip'
-											: 'admin-general-description-tip general-description-tip-right align-onramp-tooltip off-ramp-adjust'
-									}
+									overlayClassName="admin-general-description-tip general-description-tip-right"
 									title={
 										<img
 											src={
@@ -215,7 +208,7 @@ const Onramp = ({
 													? STATIC_ICONS.FIAT_ONRAMP_TOOLTIP
 													: STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP
 											}
-											className="description_footer"
+											className="fiatpayhelp fiatonramphelpnote"
 											alt="footer"
 										/>
 									}
@@ -232,6 +225,7 @@ const Onramp = ({
 						onClick={() =>
 							handleRamp(activeTab === 'onRamp' ? 'onramp' : 'offramp', true)
 						}
+						disabled={!user_payments || !Object.keys(user_payments).length}
 					>
 						{activeTab === 'onRamp' ? 'Add on-ramp' : 'Add off-ramp'}
 					</Button>
@@ -268,16 +262,44 @@ const Onramp = ({
 								className="mr-3 ml-4"
 							/>
 							<div className="paymentContent">
-								We've noticed that there hasn't been any Payment Accounts added
-								yet. To start it is recommended to{' '}
-								<Link to="/admin/fiat?tab=1" className="underline">
-									add a Payment Account
-								</Link>
-								.
+								<div>
+									We've noticed that there hasn't been any Payment Accounts
+									added yet. To start it is recommended to{' '}
+									<Link to="/admin/fiat?tab=1" className="underline">
+										add a Payment Account
+									</Link>
+									.
+								</div>
+								{activeTab === 'onRamp' ? (
+									<div>
+										<Link to="/admin/fiat?tab=1" className="underline">
+											<Button type="primary" className="green-btn">
+												Add payment account
+											</Button>
+										</Link>
+										<div className="small-gray-text">
+											Add an on-ramp anyway{' '}
+											<span
+												className="anchor"
+												onClick={() =>
+													handleRamp(
+														activeTab === 'onRamp' ? 'onramp' : 'offramp',
+														true
+													)
+												}
+											>
+												here
+											</span>
+										</div>
+									</div>
+								) : null}
 							</div>
 						</div>
 					) : null}
-					{(activeTab === 'onRamp' && !Object.keys(onramp).length) ||
+					{(activeTab === 'onRamp' &&
+						!Object.keys(onramp).length &&
+						user_payments &&
+						Object.keys(user_payments).length) ||
 					(activeTab === 'offRamp' && !Object.keys(offramp).length)
 						? renderSelect('deposit')
 						: null}
@@ -320,6 +342,9 @@ const Onramp = ({
 											type="primary"
 											className="green-btn ml-5"
 											onClick={() => handleRamp('onramp', false, item?.symbol)}
+											disabled={
+												!user_payments || !Object.keys(user_payments).length
+											}
 										>
 											Add on-ramp
 										</Button>
@@ -349,7 +374,7 @@ const Onramp = ({
 										coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
 										onRampCoins={!isPaymentForm ? Object.keys(onramp) : []}
 										customName={customName}
-										user_payments={activeTab === 'offRamp' ? user_payments : {}}
+										user_payments={user_payments}
 										isUpgrade={isUpgrade}
 										originalonramp={onramp}
 										offramp={offramp[item?.symbol]}
