@@ -1,5 +1,13 @@
 import React from 'react';
-import { InputNumber, Input, DatePicker, Select, Checkbox, Radio } from 'antd';
+import {
+	InputNumber,
+	Input,
+	DatePicker,
+	Select,
+	Checkbox,
+	Radio,
+	Tooltip,
+} from 'antd';
 import moment from 'moment';
 import TextArea from 'antd/lib/input/TextArea';
 import classname from 'classnames';
@@ -20,29 +28,52 @@ export const renderInputField = ({
 	isClosable = false,
 	closeCallback = () => {},
 	description = '',
-}) => (
-	<div className={classname('input_field', className)}>
-		{label && <label>{label}</label>}
-		{description ? <div>{description}</div> : null}
-		<div>
-			<div className="d-flex align-items-center">
-				<Input
-					placeholder={placeholder}
-					prefix={prefix}
-					{...input}
-					type={type}
-					disabled={disabled}
-				/>
-				{isClosable ? (
-					<CloseCircleOutlined className="close-icon" onClick={closeCallback} />
-				) : null}
+	isTooltip = false,
+	tooltipTitle = '',
+}) => {
+	return (
+		<div className={classname('input_field', className)}>
+			{label && <label>{label}</label>}
+			{description ? <div>{description}</div> : null}
+			<div>
+				<div className="d-flex align-items-center">
+					{isTooltip ? (
+						<Tooltip placement="bottom" title={tooltipTitle}>
+							<span className="w-100">
+								<Input
+									placeholder={placeholder}
+									prefix={prefix}
+									{...input}
+									type={type}
+									disabled={disabled}
+									defaultValue={input}
+								/>
+							</span>
+						</Tooltip>
+					) : (
+						<Input
+							placeholder={placeholder}
+							prefix={prefix}
+							{...input}
+							type={type}
+							disabled={disabled}
+							defaultValue={input}
+						/>
+					)}
+					{isClosable ? (
+						<CloseCircleOutlined
+							className="close-icon"
+							onClick={closeCallback}
+						/>
+					) : null}
+				</div>
+				{touched &&
+					((error && <span className="red-text">{error}</span>) ||
+						(warning && <span className="red-text">{warning}</span>))}
 			</div>
-			{touched &&
-				((error && <span className="red-text">{error}</span>) ||
-					(warning && <span className="red-text">{warning}</span>))}
 		</div>
-	</div>
-);
+	);
+};
 
 export const renderTextAreaField = ({
 	input,

@@ -41,7 +41,7 @@ export const ChatMessageBox = ({
 				'username-to-chat'
 			)}
 		>
-			<Link className="pointer" to={'/account/settings/username?tab=3'}>
+			<Link className="pointer" to={'/account/settings/username?tab=5'}>
 				SET USERNAME TO CHAT
 			</Link>
 		</div>

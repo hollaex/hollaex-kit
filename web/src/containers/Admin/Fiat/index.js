@@ -21,9 +21,13 @@ const Fiatmarkets = ({
 }) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [isUpgrade, setIsUpgrade] = useState(false);
+	const [isGetExchange, setIsGetExchange] = useState(false);
 	const { user_payments = {}, onramp = {}, offramp = {} } = constants;
 
 	useEffect(() => {
+		if (exchange && Object.keys(exchange).length) {
+			setIsGetExchange(true);
+		}
 		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
 			setIsUpgrade(true);
 		}
@@ -31,7 +35,7 @@ const Fiatmarkets = ({
 
 	const tabParams = getTabParams();
 	useEffect(() => {
-		if (tabParams) {
+		if (tabParams && tabParams.tab) {
 			setActiveTab(tabParams.tab);
 		}
 	}, [tabParams]);
@@ -60,6 +64,9 @@ const Fiatmarkets = ({
 						isUpgrade={isUpgrade}
 						user_payments={user_payments}
 						exchange={exchange}
+						onramp={onramp}
+						offramp={offramp}
+						isGetExchange={isGetExchange}
 					/>
 				</TabPane>
 				<TabPane tab="Payment accounts" key="1">
