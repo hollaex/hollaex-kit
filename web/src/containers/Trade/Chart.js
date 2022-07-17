@@ -7,6 +7,7 @@ import {
 	getVolume,
 	getToolbarBG,
 	getWidgetTheme,
+	addFullscreenButton,
 } from './ChartConfig';
 import { getLanguage } from '../../utils/string';
 import { getChartResolution, setChartResolution } from '../../utils/utils';
@@ -268,8 +269,9 @@ class TVChartContainer extends React.PureComponent {
 			disabled_features: [
 				'use_localstorage_for_settings',
 				'header_symbol_search',
+				'header_compare'
 			],
-			preset: isMobile ? 'mobile' : '',
+			// preset: isMobile ? 'mobile' : '',
 			enabled_features: ['items_favoriting', 'support_multicharts'],
 			// time_frames: [
 			// { text: '3m', resolution: '60' },
@@ -295,83 +297,88 @@ class TVChartContainer extends React.PureComponent {
 			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
 			overrides: getThemeOverrides(activeTheme, color),
+			load_last_chart: true
 		};
+
+		if (isMobile) {
+			// remove left side bar in mobile
+			widgetOptions.enabled_features = [...widgetOptions.enabled_features, 'hide_left_toolbar_by_default'];
+			widgetOptions.disabled_features = [...widgetOptions.disabled_features, 'header_undo_redo', 'header_indicators', 'header_screenshot'];
+		}
 
 		const tvWidget = new widget(widgetOptions);
 
-		this.tvWidget = tvWidget;
-
 		tvWidget.onChartReady(() => {
-			if (!isMobile) {
-				tvWidget.chart().removeAllStudies();
-				tvWidget.chart().createStudy('Moving Average', false, false, [7]);
-				tvWidget.chart().createStudy('Moving Average', false, false, [25]);
-				tvWidget.chart().createStudy('Volume', false, false);
-				// tvWidget.chart().createStudy('MACD', false, false, [14, 30, 'close', 9])
+			
+			if (localStorage.getItem(`chart_${symbol}`)) {
+				tvWidget.load(JSON.parse(localStorage.getItem(`chart_${symbol}`)).chartObject)
+				addFullscreenButton(tvWidget, symbol)
+
+			} else {
+				if (!isMobile) {
+					tvWidget.chart().removeAllStudies();
+					tvWidget.chart().createStudy('Moving Average', false, false, [7]);
+					tvWidget.chart().createStudy('Moving Average', false, false, [25]);
+					tvWidget.chart().createStudy('Volume', false, false);
+					// tvWidget.chart().createStudy('MACD', false, false, [14, 30, 'close', 9])
+				}
 
 				tvWidget.headerReady().then(() => {
-					const pane = tvWidget.chart().getPanes();
-					if (pane.length && pane[1]) {
-						pane[1].setHeight(10);
+					if (!isMobile) {
+						const pane = tvWidget.chart().getPanes();
+						if (pane.length && pane[1]) {
+							pane[1].setHeight(10);
+						}
 					}
 
-					const newWindowButton = tvWidget.createButton({ align: 'right' });
-					newWindowButton.setAttribute(
-						'title',
-						'Open the trading view chart in a new tab.'
-					);
-					newWindowButton.classList.add('apply-common-tooltip');
-					newWindowButton.addEventListener('click', () => {
-						if (window) {
-							window.open(`/chart-embed/${symbol}`, '_blank');
-						}
-					});
-					// tvWidget.applyOverrides(getThemeOverrides(activeTheme, color));
-					// tvWidget.changeTheme(widgetTheme);
-
-					newWindowButton.innerHTML = `
-						<div class='screen-container'>
-							<div>
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="17" height="17">
-								<path fill="currentColor" d="M27.5,0.5v4.9H7.9c-1.4,0-2.4,1.1-2.4,2.4v34.3c0,1.4,1.1,2.4,2.4,2.4h34.3c1.4,0,2.5-1.1,2.5-2.4V22.5h4.9
-									v19.6c0,4.1-3.3,7.3-7.3,7.3H7.9c-4.1,0-7.3-3.3-7.3-7.3V7.8c0-4.1,3.3-7.3,7.3-7.3H27.5z M47.1,0.5L47.1,0.5c0.1,0,0.2,0,0.2,0
-									L47.1,0.5c0.1,0,0.2,0,0.4,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.2,0c0,0,0.1,0,0.1,0c0.1,0,0.1,0,0.1,0.1c0,0,0.1,0,0.1,0.1
-									c0.1,0,0.1,0.1,0.1,0.1c0,0,0.1,0,0.1,0.1c0.1,0,0.1,0.1,0.2,0.1c0.1,0.1,0.2,0.1,0.3,0.2L48.6,1c0.2,0.1,0.3,0.3,0.4,0.4
-									c0,0,0,0,0,0.1c0,0.1,0.1,0.1,0.1,0.2c0,0,0,0.1,0.1,0.1c0,0.1,0.1,0.1,0.1,0.1c0,0,0,0.1,0.1,0.1c0,0.1,0,0.1,0.1,0.1
-									c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.2c0,0,0,0.1,0,0.1c0,0.1,0,0.1,0,0.1c0,0,0,0.1,0,0.1c0,0,0,0.1,0,0.1v12.2h-4.9V8.9L26.8,26.7
-									c-0.9,0.9-2.3,1-3.2,0.2l-0.2-0.2c-1-1-1-2.5,0-3.5L41.2,5.4h-6.3V0.5H47.1z"/>
-								</svg>
-									</div>
-								</div>
-						`;
+					addFullscreenButton(tvWidget, symbol)
 				});
 			}
 		});
+		
+		tvWidget.subscribe('onAutoSaveNeeded', () => {
+			tvWidget.save((tvChartObject) => {
+				let chartID = tvChartObject['charts'][0]['panes'][0]['sources'][0]['id'];
+
+				let chartToSave = {
+					tvChartId: chartID,
+					chartObject: tvChartObject,
+					lastUpdate: Math.floor(Date.now() / 1000),
+				};
+				// save chart setting in localstorage
+				localStorage.setItem(`chart_${symbol}`, JSON.stringify(chartToSave));
+			})
+		});
+
+		this.tvWidget = tvWidget;
 	};
 
 	updateBar(data) {
 		const { sub } = this.state;
 		let { lastBar, resolution } = sub;
 		let coeff = 0;
-		if (resolution.includes('1')) {
+		if (resolution === '1') {
 			coeff = 60 * 1000;
-		} else if (resolution.includes('5')) {
+		} else if (resolution === '5') {
 			// 1 hour in minutes === 60
 			coeff = 5 * 60 * 1000;
-		} else if (resolution.includes('15')) {
+		} else if (resolution === '15') {
 			// 1 hour in minutes === 60
 			coeff = 15 * 60 * 1000;
-		} else if (resolution.includes('60')) {
+		} else if (resolution === '60') {
 			// 1 hour in minutes === 60
 			coeff = 60 * 60 * 1000;
-		} else if (resolution.includes('240')) {
+		} else if (resolution === '240') {
 			// 1 hour in minutes === 60
 			coeff = 240 * 60 * 1000;
-		} else if (resolution.includes('D')) {
+		} else if (resolution === '1D') {
 			// 1 day in minutes === 1440
 			coeff = 60 * 60 * 24 * 1000;
-		} else if (resolution.includes('W')) {
+		} else if (resolution === '1W') {
 			// 1 week in minutes === 10080
+			coeff = 60 * 60 * 24 * 7 * 1000;
+		} else {
+			// 1 week by default
 			coeff = 60 * 60 * 24 * 7 * 1000;
 		}
 
@@ -383,9 +390,9 @@ class TVChartContainer extends React.PureComponent {
 			// create a new candle, use last close as open
 			_lastBar = {
 				time: rounded,
-				open: lastBar.close ? lastBar.close : 0,
-				high: lastBar.close ? lastBar.close : 0,
-				low: lastBar.close ? lastBar.close : 0,
+				open: data.price,
+				high: data.price,
+				low: data.price,
 				close: data.price,
 				volume: data.size,
 			};
