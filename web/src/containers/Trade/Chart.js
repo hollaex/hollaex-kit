@@ -353,25 +353,28 @@ class TVChartContainer extends React.PureComponent {
 		const { sub } = this.state;
 		let { lastBar, resolution } = sub;
 		let coeff = 0;
-		if (resolution.includes('1')) {
+		if (resolution === '1') {
 			coeff = 60 * 1000;
-		} else if (resolution.includes('5')) {
+		} else if (resolution === '5') {
 			// 1 hour in minutes === 60
 			coeff = 5 * 60 * 1000;
-		} else if (resolution.includes('15')) {
+		} else if (resolution === '15') {
 			// 1 hour in minutes === 60
 			coeff = 15 * 60 * 1000;
-		} else if (resolution.includes('60')) {
+		} else if (resolution === '60') {
 			// 1 hour in minutes === 60
 			coeff = 60 * 60 * 1000;
-		} else if (resolution.includes('240')) {
+		} else if (resolution === '240') {
 			// 1 hour in minutes === 60
 			coeff = 240 * 60 * 1000;
-		} else if (resolution.includes('D')) {
+		} else if (resolution === '1D') {
 			// 1 day in minutes === 1440
 			coeff = 60 * 60 * 24 * 1000;
-		} else if (resolution.includes('W')) {
+		} else if (resolution === '1W') {
 			// 1 week in minutes === 10080
+			coeff = 60 * 60 * 24 * 7 * 1000;
+		} else {
+			// 1 week by default
 			coeff = 60 * 60 * 24 * 7 * 1000;
 		}
 
@@ -383,9 +386,9 @@ class TVChartContainer extends React.PureComponent {
 			// create a new candle, use last close as open
 			_lastBar = {
 				time: rounded,
-				open: lastBar.close ? lastBar.close : 0,
-				high: lastBar.close ? lastBar.close : 0,
-				low: lastBar.close ? lastBar.close : 0,
+				open: data.price,
+				high: data.price,
+				low: data.price,
 				close: data.price,
 				volume: data.size,
 			};
