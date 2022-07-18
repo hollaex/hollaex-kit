@@ -194,7 +194,8 @@ const PaymentDetails = ({
 												: 'customForm',
 											item,
 											false,
-											index + 1
+											index + 1,
+											'edit'
 										)
 									}
 								>

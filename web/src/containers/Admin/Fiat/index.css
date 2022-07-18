@@ -56,7 +56,8 @@
 }
 
 .summary-content-wrapper .box-content .small-circle,
-.manageassetwrapper .small-circle {
+.manageassetwrapper .small-circle,
+.preview-detail-container .small-circle {
 	background: #288500;
 	border-radius: 50%;
 	width: 15px;
@@ -103,7 +104,8 @@
 .payment-acc-wrapper .anchor,
 .payment-modal-wrapper .anchor,
 .preview-fiat-container .txtanchor,
-.payment-modal-wrapper .noticepad .underline {
+.payment-modal-wrapper .noticepad .underline,
+.preview-detail-container .fiatlink {
 	text-decoration: underline;
 	cursor: pointer;
 }
