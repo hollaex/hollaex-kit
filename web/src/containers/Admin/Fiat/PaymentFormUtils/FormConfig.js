@@ -8,21 +8,6 @@ import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
 
-const add_column_field = {
-	label: {
-		type: 'text',
-		label: 'Payment detail name',
-		placeholder: 'Input the payment detail name',
-		validate: [required],
-	},
-	required: {
-		type: 'boolean',
-		isPayment: true,
-		defaultValue: 'required',
-		validate: validateBoolean,
-	},
-};
-
 class FormConfig extends Component {
 	constructor(props) {
 		super(props);
@@ -96,7 +81,7 @@ class FormConfig extends Component {
 
 	addColumn = (currentSection = '') => {
 		this.setState({ currentSection });
-		this.editColumn();
+		this.editColumn('add');
 	};
 
 	handleRemoveHeader = (headerName, label, required) => {
@@ -218,7 +203,9 @@ class FormConfig extends Component {
 			this.setState({
 				custom_fields,
 			});
-			this.onCancel();
+			if (checkData && checkData.length === 0) {
+				this.onCancel();
+			}
 		}
 		if (type === 'edit') {
 			let editedValues = { ...this.state.editedValues };
@@ -295,6 +282,7 @@ class FormConfig extends Component {
 							formProps.label.split(' ').length > 1
 								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
 								: formProps.label.toLowerCase().trim(),
+						section_type: `section_${sectionCount}`,
 						...formProps,
 					},
 				};
@@ -304,11 +292,41 @@ class FormConfig extends Component {
 	};
 
 	handleSubmitLinks = (formProps) => {
-		console.log('formProps 123', formProps);
 		this.props.handleClose(true, 'savePayment', this.state.editedValues);
 	};
 
+	validateExist = (value) => {
+		const { editedValues, modalType } = this.state;
+		let isExistField = '';
+		if (value && editedValues && modalType === 'add') {
+			Object.keys(editedValues).forEach((item) => {
+				const temp = editedValues[item];
+				let valData = value && value.replaceAll(' ', '_');
+				valData = valData.toLowerCase();
+				if (temp && temp.key === valData) {
+					isExistField = 'The given field is already exist';
+				}
+			});
+		}
+		return isExistField;
+	};
+
 	renderModalContent = (type) => {
+		const add_column_field = {
+			label: {
+				type: 'text',
+				label: 'Payment detail name',
+				placeholder: 'Input the payment detail name',
+				validate: [required, this.validateExist],
+			},
+			required: {
+				type: 'boolean',
+				isPayment: true,
+				defaultValue: 'required',
+				validate: validateBoolean,
+			},
+		};
+
 		switch (type) {
 			case 'edit':
 				return (

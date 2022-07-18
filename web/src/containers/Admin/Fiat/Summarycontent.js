@@ -21,6 +21,7 @@ const Summarycontent = ({
 	exchange = {},
 	onramp = {},
 	offramp = {},
+	isGetExchange = true,
 }) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
@@ -323,6 +324,15 @@ const Summarycontent = ({
 	// };
 
 	// const kycData = [];
+
+	if (!isGetExchange) {
+		return (
+			<div className="d-flex align-items-center justify-content-center">
+				<Spin size="large" />
+			</div>
+		);
+	}
+
 	return (
 		<div className="summary-content-wrapper">
 			<div className="d-flex">
