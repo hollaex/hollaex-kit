@@ -6,7 +6,7 @@ HollaEx Kit is a while label crypto software suite with a range of features from
 HollaEx Kit provides simple (but powerful) CLI tool to help exchange operators setup and operate the exchange. Get started by install HollaEx CLI and following the [documentation](https://docs.hollaex.com) to start your own exchange.
 
 ```
-git clone https://github.com/bitholla/hollaex-kit.git
+git clone https://github.com/hollaex/hollaex-kit.git
 
 bash install.sh
 ```
@@ -14,20 +14,20 @@ Read more on our [Docs](https://docs.hollaex.com)!
 
 ## Developers
 
-Checkout [Web](https://github.com/bitholla/hollaex-kit/tree/master/web) for the front-end UI/UX code.
+Checkout [Web](https://github.com/hollaex/hollaex-kit/tree/master/web) for the front-end UI/UX code.
 
-Check out [Server](https://github.com/bitholla/hollaex-kit/tree/master/server) for back-end and server side operations and endpoints.
+Check out [Server](https://github.com/hollaex/hollaex-kit/tree/master/server) for back-end and server side operations and endpoints.
 
-Check out [Plugins](https://github.com/bitholla/hollaex-kit/tree/2.0-develop/server#plugins) for developing seamless and flexible custom services that can be added to the HollaEx Kit.
+Check out [Plugins](https://github.com/hollaex/hollaex-kit/tree/2.0-develop/server#plugins) for developing seamless and flexible custom services that can be added to the HollaEx Kit.
 
-Check out [HollaEx CLI](https://github.com/bitholla/hollaex-cli) (Command Line Interface) for interacting and deploying your exchange.
+Check out [HollaEx CLI](https://github.com/hollaex/hollaex-cli) (Command Line Interface) for interacting and deploying your exchange.
 
 ## Community
 Join us on the [Forum](https://forum.hollaex.com), [Discord](https://discord.gg/RkRHU8RbyM) and [Twitter](http://www.twitter.com/hollaex).
 
 
-<a href="https://github.com/bitholla/hollaex-kit/graphs/contributors">
-  <img src="https://contributors-img.web.app/image?repo=bitholla/hollaex-kit" />
+<a href="https://github.com/hollaex/hollaex-kit/graphs/contributors">
+  <img src="https://contributors-img.web.app/image?repo=hollaex/hollaex-kit" />
 </a>
 
 
