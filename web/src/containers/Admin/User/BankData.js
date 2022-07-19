@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, reset } from 'redux-form';
 import { addBankData, approveBank, rejectBank } from './actions';
 import {
 	CheckOutlined,
@@ -64,6 +64,7 @@ class BankData extends Component {
 	}
 
 	onCancel = () => {
+		this.resetForms();
 		this.setState({
 			formVisible: false,
 			methodFormVisible: false,
@@ -106,6 +107,12 @@ class BankData extends Component {
 			});
 	};
 
+	resetForms = () => {
+		const { dispatch } = this.props;
+		dispatch(reset('PAYMENT_METHOD'));
+		dispatch(reset('BANK_DATA'));
+	};
+
 	showModal = () => {
 		const {
 			pluginNames: { bank },
@@ -120,6 +127,7 @@ class BankData extends Component {
 	};
 
 	closeModal = () => {
+		this.resetForms();
 		this.setState({ formVisible: false, method: undefined });
 	};
 
@@ -311,6 +319,7 @@ class BankData extends Component {
 	};
 
 	onSubmitMethod = ({ method }) => {
+		this.resetForms();
 		this.setState({ method, methodFormVisible: false, formVisible: true });
 	};
 
@@ -335,6 +344,7 @@ class BankData extends Component {
 					title="Add a new bank"
 					fields={this.getFields()}
 					visible={formVisible}
+					destroyOnClose={true}
 				/>
 
 				<MethodForm
@@ -343,6 +353,7 @@ class BankData extends Component {
 					title="Select a payment method"
 					fields={this.getMethods()}
 					visible={methodFormVisible}
+					destroyOnClose={true}
 				/>
 
 				<Row gutter={16}>
