@@ -72,8 +72,6 @@ const UserPaymentVerificationHome = ({
 			</div>
 		);
 	} else {
-		const lastVerified = bank_account[bank_account.length - 1];
-
 		return (
 			<div>
 				<div className="font-weight-bold text-lowercase">
@@ -89,15 +87,13 @@ const UserPaymentVerificationHome = ({
 					<EditWrapper stringId="USER_VERIFICATION.PAYMENT_VERIFICATION_HELP_TEXT,USER_VERIFICATION.DOCUMENT_SUBMISSION" />
 				</div>
 				{renderList()}
-				{lastVerified.status === 3 ? (
-					<div>
-						<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD" />
-						<Button
-							label={STRINGS['USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD']}
-							onClick={() => setActivePageContent('user_payments')}
-						/>
-					</div>
-				) : null}
+				<div>
+					<EditWrapper stringId="USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD" />
+					<Button
+						label={STRINGS['USER_VERIFICATION.ADD_ANOTHER_PAYMENT_METHOD']}
+						onClick={() => setActivePageContent('user_payments')}
+					/>
+				</div>
 			</div>
 		);
 	}
