@@ -162,12 +162,12 @@ const PaymentAccountPopup = ({
 		} else {
 			if (paymentSelect === 'bank') {
 				handleClosePlugin(false);
-				formUpdate('bankForm', paymentSelect);
+				formUpdate('bankForm', paymentSelect, false, 0, 'add');
 			} else if (paymentSelect === 'paypal') {
 				handleClosePlugin(false);
-				formUpdate('paypalForm', paymentSelect);
+				formUpdate('paypalForm', paymentSelect, false, 0, 'add');
 			} else if (paymentSelect === 'customPay') {
-				tabUpdate('sysname');
+				tabUpdate('sysname', 'add');
 			}
 			// setCoindata(coinSymbol);
 		}
@@ -383,11 +383,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() =>
-								currentActiveTab === 'onRamp'
-									? tabUpdate('onramp')
-									: tabUpdate('payment')
-							}
+							onClick={() => tabUpdate('account')}
 						>
 							Back
 						</Button>
@@ -643,7 +639,11 @@ const PaymentAccountPopup = ({
 		case 'deletebank':
 			return (
 				<div className="payment-modal-wrapper">
-					<h3>Delete payment account</h3>
+					{currentActiveTab && currentActiveTab === 'onRamp' ? (
+						<h3>Delete on-ramp</h3>
+					) : (
+						<h3>Delete payment account</h3>
+					)}
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
@@ -657,7 +657,11 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>User payment account {currentIndex}</div>
+							{currentActiveTab && currentActiveTab === 'onRamp' ? (
+								<div>On-ramp {currentIndex}</div>
+							) : (
+								<div>User payment account {currentIndex}</div>
+							)}
 							<b>
 								{paymentSelectData === 'bank'
 									? 'Bank'
@@ -668,7 +672,11 @@ const PaymentAccountPopup = ({
 						</div>
 					</div>
 					<div className="mt-5 mb-5">
-						Are you sure you want to delete the payment account?
+						Are you sure you want to delete the{' '}
+						{currentActiveTab && currentActiveTab === 'onRamp'
+							? 'on-ramp'
+							: 'payment'}{' '}
+						account?
 					</div>
 					<div className="button-wrapper">
 						<Button

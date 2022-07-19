@@ -21,7 +21,7 @@ class FormConfig extends Component {
 			label: '',
 			required: '',
 			editedValues: this.props.initialValues,
-			buttonSubmitting: false,
+			buttonSubmitting: this.props.buttonSubmitting,
 		};
 	}
 
@@ -140,6 +140,7 @@ class FormConfig extends Component {
 		if (section_type && type === 'initialValue') {
 			custom_fields = {};
 		}
+		formProps.section_type = section_type || this.state.currentSection;
 
 		const checkData = [];
 		Object.keys(custom_fields).forEach((item, index) => {
@@ -296,14 +297,26 @@ class FormConfig extends Component {
 	};
 
 	validateExist = (value) => {
-		const { editedValues, modalType } = this.state;
+		const { editedValues, modalType, editData } = this.state;
 		let isExistField = '';
+		let valData =
+			value &&
+			value?.toLowerCase().trim().replace(/  +/g, ' ').replaceAll(' ', '_');
 		if (value && editedValues && modalType === 'add') {
 			Object.keys(editedValues).forEach((item) => {
 				const temp = editedValues[item];
-				let valData = value && value.replaceAll(' ', '_');
-				valData = valData.toLowerCase();
-				if (temp && temp.key === valData) {
+				if (temp && temp?.key?.toLowerCase() === valData) {
+					isExistField = 'The given field is already exist';
+				}
+			});
+		} else if (value && editedValues && modalType === 'edit') {
+			Object.keys(editedValues).forEach((item) => {
+				const temp = editedValues[item];
+				if (
+					temp &&
+					temp?.key?.toLowerCase() === valData &&
+					editData?.section_type !== temp?.section_type
+				) {
 					isExistField = 'The given field is already exist';
 				}
 			});
