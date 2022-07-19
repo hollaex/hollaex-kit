@@ -34,6 +34,9 @@ const Summarycontent = ({
 	const [selectedDepositAsset, setSelectedDepositAsset] = useState('');
 	const [selectedWithdrawalAsset, setSelectedWithdrawalAsset] = useState('');
 
+	let onRampData = Object.values(onramp).filter((d) => Object.keys(d).length);
+	let offRampData = Object.values(offramp).filter((d) => Object.keys(d).length);
+
 	useEffect(() => {
 		let exchangeCoins =
 			coins &&
@@ -412,7 +415,7 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							{Object.keys(onramp).length ? (
+							{onRampData.length ? (
 								<div>
 									{Object.keys(onramp).map((key) => {
 										return Object.keys(onramp[key]).length ? (
@@ -481,7 +484,7 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							{Object.keys(offramp).length ? (
+							{offRampData.length ? (
 								<div>
 									{Object.keys(offramp).map((key) => {
 										return Object.keys(offramp[key]).length ? (
