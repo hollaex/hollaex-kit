@@ -342,6 +342,7 @@ const PaymentAccounts = ({
 	currentsymbol = '',
 	isPaymentForm = false,
 	setCoindata,
+	kitOfframpData = {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -457,8 +458,8 @@ const PaymentAccounts = ({
 		let tempCustom = { ...customInitialValues };
 		let firstPayment = [];
 		if (
-			Object.keys(user_payments).length &&
-			currentActiveTab === 'paymentAccounts'
+			currentActiveTab === 'paymentAccounts' ||
+			(Object.keys(offramp).length && currentActiveTab === 'offRamp')
 		) {
 			setPayOption(true);
 			Object.keys(user_payments).forEach((item) => {
@@ -536,12 +537,24 @@ const PaymentAccounts = ({
 		}
 	}, [formValues, currentActiveTab]);
 
+	useEffect(() => {
+		if (kitOfframpData && Object.keys(kitOfframpData).length) {
+			updateConstantsData(kitOfframpData);
+		}
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [kitOfframpData]);
+
 	const getConstantData = (type) => {
 		getConstants()
 			.then((res) => {
 				if (currentActiveTab === 'onRamp') {
 					if (_get(res, 'kit.onramp')) {
 						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
+					}
+				} else if (currentActiveTab === 'offRamp') {
+					if (_get(res, 'kit.offramp')) {
+						setFormValues(_get(res, `kit.offramp`));
 					}
 				} else {
 					if (_get(res, 'kit.user_payments')) {

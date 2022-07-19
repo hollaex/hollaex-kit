@@ -30,6 +30,7 @@ export const renderInputField = ({
 	description = '',
 	isTooltip = false,
 	tooltipTitle = '',
+	inputDefaultValue,
 }) => {
 	return (
 		<div className={classname('input_field', className)}>
@@ -46,7 +47,7 @@ export const renderInputField = ({
 									{...input}
 									type={type}
 									disabled={disabled}
-									defaultValue={input}
+									defaultValue={inputDefaultValue}
 								/>
 							</span>
 						</Tooltip>
@@ -57,7 +58,6 @@ export const renderInputField = ({
 							{...input}
 							type={type}
 							disabled={disabled}
-							defaultValue={input}
 						/>
 					)}
 					{isClosable ? (

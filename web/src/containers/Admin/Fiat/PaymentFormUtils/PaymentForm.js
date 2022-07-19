@@ -15,7 +15,7 @@ class FormWrapper extends Component {
 	}
 
 	onSubmit = (formProps) => {
-		return this.props.handleSubmitLinks(formProps);
+		this.props.handleSubmitLinks(formProps);
 	};
 
 	getNewIndexFromFields = (fields = {}) => {

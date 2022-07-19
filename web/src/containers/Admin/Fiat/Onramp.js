@@ -2,7 +2,12 @@ import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { STATIC_ICONS } from 'config/icons';
 import { Button, Tooltip, Modal, Select } from 'antd';
-import { QuestionCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
+import {
+	QuestionCircleOutlined,
+	InfoCircleOutlined,
+	CaretDownOutlined,
+	CaretUpOutlined,
+} from '@ant-design/icons';
 import { Link } from 'react-router';
 
 import Coins from '../Coins';
@@ -10,6 +15,8 @@ import PaymentAccountPopup from './PaymentPopup';
 import PaymentAccounts from './PaymentAccounts';
 
 import './index.css';
+
+const { Option } = Select;
 
 const Onramp = ({
 	activeTab,
@@ -33,6 +40,12 @@ const Onramp = ({
 	const [showCoins, setShowCoins] = useState(false);
 	const [customName, setCustomName] = useState('');
 	const [pluginName, setPluginName] = useState('');
+	const [selectedCoin, setSelectedCoin] = useState({});
+	const [isCallOfframp, setCallOfframp] = useState(false);
+	const [kitOfframpData, setKitOfframpData] = useState({});
+	const [showSelect, setShowSelect] = useState(false);
+	const [paymentSelect, setPaymentSelect] = useState('bank');
+	const [isOpen, setIsOpen] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -54,6 +67,9 @@ const Onramp = ({
 				(item) => item.symbol === selectedAsset
 			);
 			coins = [...coins, ...selectedAssetData];
+			setCoins(coins);
+			let value = coins.filter((d) => d.symbol === selectedAsset);
+			setSelectedCoin(...value);
 		}
 		if (coins.length && activeTab === 'onRamp') {
 			setCoins(coins);
@@ -88,15 +104,30 @@ const Onramp = ({
 		// eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		if (!coins.length) {
+			setCoins(fiatCoins && fiatCoins.length ? [fiatCoins?.[0]] : []);
+			setSelectedCoin(fiatCoins?.[0]);
+		}
+	}, [fiatCoins, coins, activeTab]);
+
 	const handleSelectCoin = (e) => {
 		if (e) {
 			setSelectedAsset(e);
 		}
 	};
 
-	const handleRamp = (type, showCoin, coinSymb = coinSymbol, offrampSelect) => {
+	const handleRamp = (
+		type,
+		showCoin,
+		coinSymb = coinSymbol,
+		offrampSelect,
+		_,
+		showSelect = false
+	) => {
 		setIsVisible(true);
 		setType(type);
+		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
 		setSelectOffField(offrampSelect);
 		setShowCoins(showCoin);
@@ -118,7 +149,27 @@ const Onramp = ({
 		setCustomName(plugin);
 	};
 
-	const handleOffRampProceed = (type) => {
+	const handleOffRampProceed = (type, paymentType, selectedSymbol) => {
+		let kitData = {
+			kit: {
+				offramp: {
+					[selectedSymbol]: [paymentType],
+				},
+			},
+		};
+		if (Object.keys(offramp).length && selectedSymbol) {
+			kitData = {
+				kit: {
+					offramp: {
+						...offramp,
+						[selectedSymbol]: offramp[selectedSymbol]
+							? [...offramp[selectedSymbol], paymentType]
+							: [paymentType],
+					},
+				},
+			};
+		}
+		setKitOfframpData(kitData);
 		setType(type);
 	};
 
@@ -129,6 +180,14 @@ const Onramp = ({
 
 	const setCoindata = (coinSymb = coinSymbol) => {
 		setCoinSymbol(coinSymb);
+	};
+
+	const setPaymentMethod = (e) => {
+		setPaymentSelect(e);
+	};
+
+	const handleOpenPayment = () => {
+		setIsOpen(!isOpen);
 	};
 
 	const renderSelect = (type) => {
@@ -165,6 +224,13 @@ const Onramp = ({
 		);
 	};
 
+	const handleSaveAndPublish = (a, b, closeType) => {
+		setIsVisible(false);
+		setSelectOffField([]);
+		if (activeTab === 'offRamp' && closeType && closeType === 'saveAndPub') {
+			setCallOfframp(true);
+		}
+	};
 	return (
 		<div className="payment-acc-wrapper">
 			<Fragment>
@@ -223,7 +289,14 @@ const Onramp = ({
 						type="primary"
 						className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
 						onClick={() =>
-							handleRamp(activeTab === 'onRamp' ? 'onramp' : 'offramp', true)
+							handleRamp(
+								activeTab === 'onRamp' ? 'onramp' : 'offramp',
+								true,
+								null,
+								null,
+								null,
+								true
+							)
 						}
 						disabled={!user_payments || !Object.keys(user_payments).length}
 					>
@@ -357,7 +430,9 @@ const Onramp = ({
 													'offramp',
 													false,
 													item?.symbol,
-													offramp[item?.symbol]
+													offramp[item?.symbol],
+													selectedCoin,
+													false
 												)
 											}
 										>
@@ -365,7 +440,49 @@ const Onramp = ({
 										</Button>
 									)}
 								</div>
-								{isPaymentForm ? (
+								{activeTab === 'offRamp' &&
+								user_payments &&
+								Object.keys(user_payments).length &&
+								Object.keys(user_payments).length > 1 ? (
+									<div className="mt-4">
+										<div>
+											Payment accounts ({Object.keys(user_payments).length}{' '}
+											method saved)
+										</div>
+										<div className="mb-3">
+											<Select
+												className="paymentSelect"
+												defaultValue={Object.keys(user_payments)[0]}
+												value={paymentSelect}
+												suffixIcon={
+													isOpen ? (
+														<CaretDownOutlined className="downarrow" />
+													) : (
+														<CaretUpOutlined className="downarrow" />
+													)
+												}
+												onClick={handleOpenPayment}
+												onChange={setPaymentMethod}
+											>
+												{offramp[selectedCoin.symbol] &&
+													Object.keys(offramp[selectedCoin.symbol]).map(
+														(item, index) => {
+															const value =
+																activeTab === 'offRamp'
+																	? offramp[selectedCoin.symbol][item]
+																	: item;
+															return (
+																<Option value={value} key={index}>
+																	User payment account {index + 1}: {value}
+																</Option>
+															);
+														}
+													)}
+											</Select>
+										</div>
+									</div>
+								) : null}
+								{isPaymentForm || isCallOfframp ? (
 									<PaymentAccounts
 										formType={formType}
 										isDisplayFormData={true}
@@ -382,6 +499,7 @@ const Onramp = ({
 										currentsymbol={item?.symbol}
 										isPaymentForm={formType === 'plugin' && customName}
 										setCoindata={setCoindata}
+										kitOfframpData={isCallOfframp ? kitOfframpData : {}}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -411,8 +529,11 @@ const Onramp = ({
 					currentActiveTab={activeTab}
 					handleOffRampProceed={handleOffRampProceed}
 					updatePlugin={updatePlugin}
-					handleSaveAndPublish={onCancel}
+					handleSaveAndPublish={handleSaveAndPublish}
 					setCoindata={setCoindata}
+					singleCoin={selectedCoin}
+					offramp={offramp}
+					showSelect={showSelect}
 				/>
 			</Modal>
 		</div>
