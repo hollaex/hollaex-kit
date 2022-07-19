@@ -521,6 +521,8 @@ const PaymentAccounts = ({
 			setPayOption(false);
 			setIsDisplayForm(true);
 		}
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [currentPaymentType, onramp, user_payments, currentActiveTab]);
 
 	useEffect(() => {
