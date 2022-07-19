@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const MAX_LENGTH = 480;
 
@@ -42,7 +42,7 @@ export const ChatMessageBox = ({
 			)}
 		>
 			<Link className="pointer" to={'/account/settings/username?tab=5'}>
-				SET USERNAME TO CHAT
+				{STRINGS['CHAT.SET_USERNAME']}
 			</Link>
 		</div>
 	);
