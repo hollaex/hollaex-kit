@@ -343,6 +343,10 @@ const PaymentAccounts = ({
 	isPaymentForm = false,
 	setCoindata,
 	kitOfframpData = {},
+	selectedPaymentType = '',
+	currentCoinItem,
+	selectedPayType = {},
+	currentOfframpIndex = 0,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -522,9 +526,9 @@ const PaymentAccounts = ({
 			setPayOption(false);
 			setIsDisplayForm(true);
 		}
-		//  TODO: Fix react-hooks/exhaustive-deps
+		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentPaymentType, onramp, user_payments, currentActiveTab]);
+	}, [currentActiveTab]);
 
 	useEffect(() => {
 		if (
@@ -539,9 +543,9 @@ const PaymentAccounts = ({
 
 	useEffect(() => {
 		if (kitOfframpData && Object.keys(kitOfframpData).length) {
-			updateConstantsData(kitOfframpData);
+			// updateConstantsData(kitOfframpData);
 		}
-		//  TODO: Fix react-hooks/exhaustive-deps
+		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [kitOfframpData]);
 
@@ -964,7 +968,11 @@ const PaymentAccounts = ({
 					)}
 					{payOption && !isDisplayDetails ? (
 						<PaymentDetails
-							type={paymentSelect}
+							type={
+								currentActiveTab && currentActiveTab === 'offRamp'
+									? selectedPaymentType
+									: paymentSelect
+							}
 							formUpdate={formUpdate}
 							saveType={saveType}
 							handleClose={handleClose}
