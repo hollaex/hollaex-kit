@@ -297,7 +297,7 @@ class App extends Component {
 							buttonClass="green-btn"
 							fields={{
 								id: {
-									type: 'string',
+									type: 'number',
 									label: 'Id',
 									placeholder: ' id ',
 									validate: [],
