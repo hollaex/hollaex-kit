@@ -63,7 +63,11 @@ export const documentInitialValues = ({ nationality, id_data = {} }) => {
 };
 
 export const getCountry = (country) => {
-	const filterValue = COUNTRIES.filter((data) => data.value === country);
+	const filterValue = COUNTRIES.filter(
+		({ value, name }) =>
+			value?.toUpperCase() === country.toUpperCase() ||
+			name?.toUpperCase() === country.toUpperCase()
+	);
 	if (filterValue.length) return filterValue[0];
 	return initialCountry;
 };
