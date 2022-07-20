@@ -230,3 +230,18 @@ export const MAX_NUMBER_BANKS = 3;
 export const SHOW_SUMMARY_ACCOUNT_DETAILS = false;
 export const SHOW_TOTAL_ASSETS = false;
 export const FIT_SCREEN_HEIGHT = ['trade'];
+
+export const DEFAULT_BANK_PAYMENT_ACCOUNTS = [
+	{ key: 'bank_name', label: 'Bank name', required: true },
+	{ key: 'account_number', label: 'Bank Account number', required: true },
+	{ key: 'bank_account_owner', label: 'Bank Account Owner', required: true },
+	{ key: 'swift_code', label: 'SWIFT code', required: false },
+	{ key: 'iban', label: 'Iban', required: false },
+	{ key: 'bank_location', label: 'Bank location (country)', required: false },
+];
+export const DEFAULT_PAYPAL_PAYMENT_PAYPAL = [
+	{ key: 'email', label: 'Email', required: true },
+];
+export const DEFAULT_CUSTOM_PAYMENT_CUSTOM = [
+	{ key: 'payment_info', label: 'Payment Info', required: true },
+];

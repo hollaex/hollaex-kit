@@ -20,14 +20,17 @@ import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
 class Wallet extends Component {
-	state = {
-		activeTab: 0,
-		sections: [],
-		mobileTabs: [],
-		isOpen: true,
-		isZeroBalanceHidden:
-			localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeTab: 0,
+			sections: [],
+			mobileTabs: [],
+			isOpen: true,
+			isZeroBalanceHidden:
+				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+		};
+	}
 
 	componentDidMount() {
 		this.generateSections(

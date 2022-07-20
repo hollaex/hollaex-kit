@@ -229,7 +229,7 @@ class Withdraw extends Component {
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_fees = {} } =
+		const { increment_unit, withdrawal_fees = {}, network } =
 			coins[currency] || DEFAULT_COIN_DATA;
 		const isPercentage = fee_type === 'percentage';
 		// if (currency === BASE_CURRENCY) {
@@ -246,6 +246,9 @@ class Withdraw extends Component {
 		if (withdrawal_fees && withdrawal_fees[selectedNetwork]) {
 			min = withdrawal_fees[selectedNetwork].min;
 			max = withdrawal_fees[selectedNetwork].max;
+		} else if (!network && withdrawal_fees && withdrawal_fees[currency]) {
+			min = withdrawal_fees[currency].min;
+			max = withdrawal_fees[currency].max;
 		}
 
 		if (fee_coin && fee_coin !== currency && !isPercentage) {
