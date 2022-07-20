@@ -18,6 +18,11 @@ subscriber.on('message', (channel, message) => {
 		const { action } = JSON.parse(message);
 		switch (action) {
 			case 'restart':
+				loggerWebsocket.info(
+					'ws/hub subscriber action restart',
+					hubConnected(),
+					networkNodeLib.wsConnected()
+				);
 				if (hubConnected() && networkNodeLib && networkNodeLib.wsConnected()) {
 					networkNodeLib.disconnect();
 					connect();
@@ -90,6 +95,14 @@ const connect = () => {
 				process.exit(1);
 			}, 5000);
 		});
+
+	// check after 10 seconds to make sure stream is connected
+	setTimeout(() => {
+		if (!hubConnected()) {
+			loggerWebsocket.error('ws/hub/connect hub not connected');
+			process.exit(1);
+		}
+	}, 10000);
 };
 
 const sendNetworkWsMessage = (op, topic, networkId) => {

@@ -55,6 +55,9 @@ const PaymentAccountPopup = ({
 	handleOffRampProceed,
 	selectedPlugin = '',
 	currentIndex = 1,
+	singleCoin = {},
+	offramp = {},
+	showSelect,
 	// setCoindata,
 }) => {
 	const [plugin, setPlugin] = useState('');
@@ -63,6 +66,7 @@ const PaymentAccountPopup = ({
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState({});
 	const [errorMsg, setErrorMsg] = useState('');
+	const [existErrorMsg, setExistErrorMsg] = useState('');
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -138,6 +142,7 @@ const PaymentAccountPopup = ({
 
 	const handleChange = (e) => {
 		setPaymentSelect(e);
+		setExistErrorMsg('');
 	};
 	const handleCustomSelect = () => {
 		if (Object.keys(user_payments).includes(plugin)) {
@@ -149,16 +154,38 @@ const PaymentAccountPopup = ({
 	};
 
 	const handleProceed = () => {
-		if (paymentSelect === 'bank') {
-			handleClosePlugin(false);
-			formUpdate('bankForm', paymentSelect);
-		} else if (paymentSelect === 'paypal') {
-			handleClosePlugin(false);
-			formUpdate('paypalForm', paymentSelect);
-		} else if (paymentSelect === 'customPay') {
-			tabUpdate('sysname');
+		if (
+			user_payments &&
+			Object.keys(user_payments).length &&
+			Object.keys(user_payments).includes(paymentSelect)
+		) {
+			setExistErrorMsg(
+				`You have already created the payment by using ${paymentSelect} method`
+			);
+		} else {
+			if (paymentSelect === 'bank') {
+				handleClosePlugin(false);
+				formUpdate(
+					'bankForm',
+					paymentSelect,
+					false,
+					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'paypal') {
+				handleClosePlugin(false);
+				formUpdate(
+					'paypalForm',
+					paymentSelect,
+					false,
+					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'customPay') {
+				tabUpdate('sysname', 'add');
+			}
+			// setCoindata(coinSymbol);
 		}
-		// setCoindata(coinSymbol);
 	};
 
 	const handleCloseOnramp = () => {
@@ -171,8 +198,8 @@ const PaymentAccountPopup = ({
 			setPlugin(val);
 		} else {
 			setPlugin('');
-			setErrorMsg('');
 		}
+		setErrorMsg('');
 	};
 
 	switch (type) {
@@ -293,6 +320,9 @@ const PaymentAccountPopup = ({
 							<QuestionCircleOutlined className="quesIcon" />
 						</Tooltip>
 					</div>
+					{existErrorMsg ? (
+						<div className="error-text">{existErrorMsg}</div>
+					) : null}
 					<div className="button-wrapper mt-4">
 						<Button
 							type="primary"
@@ -368,11 +398,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() =>
-								currentActiveTab === 'onRamp'
-									? tabUpdate('onramp')
-									: tabUpdate('payment')
-							}
+							onClick={() => tabUpdate('account')}
 						>
 							Back
 						</Button>
@@ -486,11 +512,16 @@ const PaymentAccountPopup = ({
 						) so that you users can withdraw. Off-ramps require a Payment
 						Account.
 					</div>
-					{isMulti && selectOffField ? (
+
+					{showSelect && <span>{renderSelect('deposit')}</span>}
+					{isMulti || Object.keys(user_payments).length ? (
 						<div>
 							<div>
 								Select from premade Payment Accounts (
-								{selectOffField?.length ? selectOffField?.length : null}):
+								{Object.keys(user_payments).length
+									? Object.keys(user_payments).length
+									: null}
+								):
 							</div>
 							<div>
 								<Select
@@ -506,12 +537,18 @@ const PaymentAccountPopup = ({
 									onClick={handleOpenPayment}
 									onChange={handleChange}
 								>
-									{selectOffField &&
-										selectOffField.map((item, i) => (
-											<Option value={item} key={i}>
-												User payment account {i + 1}: {item}
-											</Option>
-										))}
+									{Object.keys(user_payments).map((item, i) => (
+										<Option
+											value={item}
+											key={i}
+											disabled={
+												offramp[singleCoin.symbol] &&
+												offramp[singleCoin.symbol].includes(item)
+											}
+										>
+											User payment account {i + 1}: {item}
+										</Option>
+									))}
 								</Select>
 							</div>
 						</div>
@@ -569,9 +606,15 @@ const PaymentAccountPopup = ({
 							className="green-btn"
 							onClick={
 								currentActiveTab === 'offRamp'
-									? () => handleOffRampProceed('savePayment')
+									? () =>
+											handleOffRampProceed(
+												'savePayment',
+												paymentSelect,
+												singleCoin.symbol
+											)
 									: () => handleProceed()
 							}
+							disabled={!user_payments || !Object.keys(user_payments).length}
 						>
 							Proceed
 						</Button>
@@ -628,7 +671,11 @@ const PaymentAccountPopup = ({
 		case 'deletebank':
 			return (
 				<div className="payment-modal-wrapper">
-					<h3>Delete payment account</h3>
+					{currentActiveTab && currentActiveTab === 'onRamp' ? (
+						<h3>Delete on-ramp</h3>
+					) : (
+						<h3>Delete payment account</h3>
+					)}
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
@@ -642,7 +689,11 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>User payment account {currentIndex}</div>
+							{currentActiveTab && currentActiveTab === 'onRamp' ? (
+								<div>On-ramp {currentIndex}</div>
+							) : (
+								<div>User payment account {currentIndex}</div>
+							)}
 							<b>
 								{paymentSelectData === 'bank'
 									? 'Bank'
@@ -653,7 +704,11 @@ const PaymentAccountPopup = ({
 						</div>
 					</div>
 					<div className="mt-5 mb-5">
-						Are you sure you want to delete the payment account?
+						Are you sure you want to delete the{' '}
+						{currentActiveTab && currentActiveTab === 'onRamp'
+							? 'on-ramp'
+							: 'payment'}{' '}
+						account?
 					</div>
 					<div className="button-wrapper">
 						<Button

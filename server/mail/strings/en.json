@@ -42,7 +42,7 @@
 				"title": "${currency} Deposit rejected"
 			},
 			"DEPOSIT_PENDING": {
-				"html": "<div><div><p> Dear ${name} </p><p> You have a new deposit for ${amount} ${currency} pending in your ${api_name} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet. Your transaction requires ${confirmation} confirmation(s) on blockchain.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br />Fee: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
+				"html": "<div><div><p> Dear ${name} </p><p> You have a new deposit for ${amount} ${currency} pending in your ${api_name} wallet. Please wait until the transaction is confirmed and your funds will be available in your wallet.</p><p>Amount: ${amount} ${currency}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br />Fee: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Regards<br> ${api_name} team </p></div>",
 				"title": "${currency} Deposit pending"
 			},
 			"DEPOSIT_COMPLETED": {

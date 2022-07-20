@@ -10,6 +10,12 @@ import { Image } from 'components';
 // import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
 import { requestDeposits } from '../Deposits/actions';
+import {
+	renderContent,
+	renderRowContent,
+	renderStatus,
+	renderUser,
+} from '../Deposits/utils';
 
 import './index.css';
 
@@ -21,6 +27,7 @@ const Summarycontent = ({
 	exchange = {},
 	onramp = {},
 	offramp = {},
+	isGetExchange = true,
 }) => {
 	const [page, setPage] = useState(1);
 	const [limit] = useState(50);
@@ -32,6 +39,9 @@ const Summarycontent = ({
 	const [fiatCoins, setFiatCoins] = useState([]);
 	const [selectedDepositAsset, setSelectedDepositAsset] = useState('');
 	const [selectedWithdrawalAsset, setSelectedWithdrawalAsset] = useState('');
+
+	let onRampData = Object.values(onramp).filter((d) => Object.keys(d).length);
+	let offRampData = Object.values(offramp).filter((d) => Object.keys(d).length);
 
 	useEffect(() => {
 		let exchangeCoins =
@@ -187,24 +197,26 @@ const Summarycontent = ({
 
 	const columns = [
 		{
-			title: 'Asset',
-			dataIndex: 'currency',
-			key: 'asset',
-		},
-		{
-			title: 'Amount',
-			dataIndex: 'amount',
-			key: 'amount',
+			title: 'User Id',
+			dataIndex: 'user_id',
+			key: 'user_id',
+			render: renderUser,
 		},
 		{
 			title: 'Transaction Id',
 			dataIndex: 'transaction_id',
 			key: 'transaction_id',
 		},
+		{ title: 'Currency', dataIndex: 'currency', key: 'currency' },
 		{
-			title: 'User',
-			key: 'user',
-			render: (data) => <Button className="green-btn">{data?.User?.id}</Button>,
+			title: 'Status',
+			key: 'status',
+			render: renderStatus,
+		},
+		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
+		{
+			title: 'Validate/dismiss',
+			render: (renderData) => renderContent(renderData, () => {}),
 		},
 	];
 
@@ -323,6 +335,15 @@ const Summarycontent = ({
 	// };
 
 	// const kycData = [];
+
+	if (!isGetExchange) {
+		return (
+			<div className="d-flex align-items-center justify-content-center">
+				<Spin size="large" />
+			</div>
+		);
+	}
+
 	return (
 		<div className="summary-content-wrapper">
 			<div className="d-flex">
@@ -402,17 +423,17 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							{Object.keys(onramp).length ? (
+							{onRampData.length ? (
 								<div>
-									{Object.keys(onramp).map((key) => {
+									{Object.keys(onramp).map((key, ind) => {
 										return Object.keys(onramp[key]).length ? (
-											<div className="d-flex">
+											<div className="d-flex" key={ind}>
 												<div>Fiat {key && key.toUpperCase()}:</div>
 												<div className="ml-3 text-left">
 													<div className="text-capitalize">
 														{Object.keys(onramp[key]).map((name, index) => {
 															return (
-																<div>
+																<div key={index}>
 																	on-ramp {index + 1} : {name}
 																</div>
 															);
@@ -471,17 +492,17 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div className="box-content">
-							{Object.keys(offramp).length ? (
+							{offRampData.length ? (
 								<div>
-									{Object.keys(offramp).map((key) => {
+									{Object.keys(offramp).map((key, ind) => {
 										return Object.keys(offramp[key]).length ? (
-											<div className="d-flex">
+											<div className="d-flex" key={ind}>
 												<div>Fiat {key && key.toUpperCase()}:</div>
 												<div className="ml-3 text-left">
 													<div className="text-capitalize">
 														{offramp[key].map((name, index) => {
 															return (
-																<div>
+																<div key={index}>
 																	off-ramp {index + 1} : {name}
 																</div>
 															);
@@ -562,6 +583,8 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
+								expandedRowRender={renderRowContent}
+								expandRowByClick={true}
 							/>
 						</div>
 					</div>
@@ -603,6 +626,8 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
+								expandedRowRender={renderRowContent}
+								expandRowByClick={true}
 							/>
 						</div>
 					</div>

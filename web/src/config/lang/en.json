@@ -467,7 +467,7 @@
 			"PORTFOLIO": "Percentage of portfolio",
 			"VALUE_ASSET": "Approximate Value",
 			"ADJUST": "(ADJUST PERCENTAGE)",
-			"ACTIVATE_RISK_MANAGMENT": "Activate Risk Managment",
+			"ACTIVATE_RISK_MANAGMENT": "Activate Risk management",
 			"WARNING_POP_UP": "Warning pop ups"
 		}
 	},
@@ -976,7 +976,8 @@
 		"SHOW_IMAGE": "Show Image",
 		"HIDE_IMAGE": "Hide Image",
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "Message",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "SET USERNAME TO CHAT"
 	},
 	"INVALID_USERNAME": "Username must be between 3 and 15 characters long. Only contains lowercase, numbers and underscore",
 	"USERNAME_TAKEN": "This username has already been taken. Please try another.",
