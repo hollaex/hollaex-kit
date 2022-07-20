@@ -607,8 +607,7 @@ $app-menu-notification-size: 1.2rem;
 .app-menu-bar {
 	display: flex;
 	font-size: $navigation_bar-font_size;
-	// height: $navigation_bar-height;
-	// min-height: $navigation_bar-height;
+	height: 100%;
 	position: relative;
 	width: 100%;
 
@@ -1382,8 +1381,8 @@ $app-menu-notification-size: 1.2rem;
 .app-menu-bar-wrapper {
 	flex-grow: 1;
 	flex-shrink: 1;
-	overflow-y: auto;
 	align-items: flex-start !important;
+	height: 100%;
 }
 
 .stared-market {
