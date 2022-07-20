@@ -55,6 +55,9 @@ const PaymentAccountPopup = ({
 	handleOffRampProceed,
 	selectedPlugin = '',
 	currentIndex = 1,
+	singleCoin = {},
+	offramp = {},
+	showSelect,
 	// setCoindata,
 }) => {
 	const [plugin, setPlugin] = useState('');
@@ -162,10 +165,22 @@ const PaymentAccountPopup = ({
 		} else {
 			if (paymentSelect === 'bank') {
 				handleClosePlugin(false);
-				formUpdate('bankForm', paymentSelect, false, 0, 'add');
+				formUpdate(
+					'bankForm',
+					paymentSelect,
+					false,
+					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
 			} else if (paymentSelect === 'paypal') {
 				handleClosePlugin(false);
-				formUpdate('paypalForm', paymentSelect, false, 0, 'add');
+				formUpdate(
+					'paypalForm',
+					paymentSelect,
+					false,
+					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
 			} else if (paymentSelect === 'customPay') {
 				tabUpdate('sysname', 'add');
 			}
@@ -497,11 +512,16 @@ const PaymentAccountPopup = ({
 						) so that you users can withdraw. Off-ramps require a Payment
 						Account.
 					</div>
-					{isMulti && selectOffField ? (
+
+					{showSelect && <span>{renderSelect('deposit')}</span>}
+					{isMulti || Object.keys(user_payments).length ? (
 						<div>
 							<div>
 								Select from premade Payment Accounts (
-								{selectOffField?.length ? selectOffField?.length : null}):
+								{Object.keys(user_payments).length
+									? Object.keys(user_payments).length
+									: null}
+								):
 							</div>
 							<div>
 								<Select
@@ -517,12 +537,18 @@ const PaymentAccountPopup = ({
 									onClick={handleOpenPayment}
 									onChange={handleChange}
 								>
-									{selectOffField &&
-										selectOffField.map((item, i) => (
-											<Option value={item} key={i}>
-												User payment account {i + 1}: {item}
-											</Option>
-										))}
+									{Object.keys(user_payments).map((item, i) => (
+										<Option
+											value={item}
+											key={i}
+											disabled={
+												offramp[singleCoin.symbol] &&
+												offramp[singleCoin.symbol].includes(item)
+											}
+										>
+											User payment account {i + 1}: {item}
+										</Option>
+									))}
 								</Select>
 							</div>
 						</div>
@@ -580,9 +606,15 @@ const PaymentAccountPopup = ({
 							className="green-btn"
 							onClick={
 								currentActiveTab === 'offRamp'
-									? () => handleOffRampProceed('savePayment')
+									? () =>
+											handleOffRampProceed(
+												'savePayment',
+												paymentSelect,
+												singleCoin.symbol
+											)
 									: () => handleProceed()
 							}
+							disabled={!user_payments || !Object.keys(user_payments).length}
 						>
 							Proceed
 						</Button>
