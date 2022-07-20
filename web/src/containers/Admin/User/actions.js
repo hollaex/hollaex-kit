@@ -60,7 +60,8 @@ export const addBankData = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return ultimate_fiat
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
 		? requestAuthenticated(`/admin/user/bank?id=${values.id}`, options)
 		: requestAuthenticated(
 				`/plugins/${bank}/admin?id=${values.id}`,
@@ -83,7 +84,8 @@ export const approveBank = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return ultimate_fiat
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
 		? requestAuthenticated('/admin/bank/verify', options)
 		: requestAuthenticated(
 				`/plugins/${bank}/verify`,
@@ -106,7 +108,8 @@ export const rejectBank = (values) => {
 		body: JSON.stringify(values),
 	};
 
-	return ultimate_fiat
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
 		? requestAuthenticated('/admin/bank/revoke', options)
 		: requestAuthenticated(
 				`/plugins/${bank}/revoke`,

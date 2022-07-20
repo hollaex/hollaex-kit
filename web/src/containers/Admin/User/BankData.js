@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, reset } from 'redux-form';
 import { addBankData, approveBank, rejectBank } from './actions';
 import {
 	CheckOutlined,
@@ -24,6 +24,7 @@ import { status } from '../../../components/CheckTitle';
 import { requestPlugin } from 'actions/appActions';
 
 const Form = ModalForm('BANK_DATA', 'bank_data');
+const MethodForm = ModalForm('PAYMENT_METHOD', 'bank_data');
 
 // const generateInitialValues = (initialValues) => {
 // 	const values = {
@@ -41,6 +42,8 @@ class BankData extends Component {
 			note: '',
 			isVisible: false,
 			bankData: {},
+			method: undefined,
+			methodFormVisible: false,
 		};
 	}
 
@@ -61,13 +64,25 @@ class BankData extends Component {
 	}
 
 	onCancel = () => {
-		this.setState({ formVisible: false });
+		this.resetForms();
+		this.setState({
+			formVisible: false,
+			methodFormVisible: false,
+			method: undefined,
+		});
 	};
 
-	onSubmit = (onChangeSuccess, bank, userId) => (values) => {
+	onSubmit = (onChangeSuccess, bank, userId, type) => (values) => {
+		const { ultimate_fiat, pluginNames } = this.props;
+
 		let bank_account = [...bank];
 		values.id = values.account_number + '-man';
 		values.status = 3;
+
+		if (!pluginNames.bank && ultimate_fiat) {
+			values.type = type;
+		}
+
 		bank_account = [...bank_account, values];
 		const submitData = {
 			id: userId,
@@ -92,11 +107,28 @@ class BankData extends Component {
 			});
 	};
 
-	showModal = () => {
-		this.setState({ formVisible: true });
+	resetForms = () => {
+		const { dispatch } = this.props;
+		dispatch(reset('PAYMENT_METHOD'));
+		dispatch(reset('BANK_DATA'));
 	};
+
+	showModal = () => {
+		const {
+			pluginNames: { bank },
+			ultimate_fiat,
+		} = this.props;
+
+		if (!bank && ultimate_fiat) {
+			this.setState({ methodFormVisible: true });
+		} else {
+			this.setState({ formVisible: true });
+		}
+	};
+
 	closeModal = () => {
-		this.setState({ formVisible: false });
+		this.resetForms();
+		this.setState({ formVisible: false, method: undefined });
 	};
 
 	handleNoteChange = (event) => {
@@ -200,32 +232,62 @@ class BankData extends Component {
 		return text;
 	};
 
-	render() {
-		const { bank, formVisible, userId, bankData } = this.state;
-		const { onChangeSuccess, pluginNames } = this.props;
-		let Fields = {};
-		if (bankData.public_meta && Object.keys(bankData.public_meta).length) {
-			let publicMeta = Object.keys(bankData.public_meta);
-			publicMeta.forEach((key) => {
-				const metaData = bankData.public_meta[key];
-				if (typeof metaData === 'object') {
-					if (metaData.value) {
-						Fields[key] = {
+	getPaymentFields = (method) => {
+		const { user_payments } = this.props;
+		const fields = {};
+
+		if (user_payments && user_payments[method] && user_payments[method].data)
+			user_payments[method].data.forEach(
+				({ key, label, placeholder, required }) => {
+					fields[key] = {
+						type: 'text',
+						label: label || key,
+						placeholder: placeholder || label || key,
+						validate: required ? [validateRequired] : [],
+					};
+				}
+			);
+
+		return fields;
+	};
+
+	getFields = () => {
+		const {
+			bankData: { public_meta },
+			method,
+		} = this.state;
+		const {
+			pluginNames: { bank },
+			ultimate_fiat,
+		} = this.props;
+
+		// This will be deprecated and ultimate fiat will supersede bank plugin
+		if (!bank && ultimate_fiat) {
+			return this.getPaymentFields(method);
+		}
+
+		const fields = {};
+		if (public_meta) {
+			Object.entries(public_meta).forEach(([key, data]) => {
+				if (typeof data === 'object') {
+					if (data.value) {
+						fields[key] = {
 							type: 'text',
 							label: this.renderLabel(key),
 							placeholder: this.renderLabel(key),
 						};
-						if (metaData.required) {
-							Fields[key].validate = [validateRequired];
+
+						if (data.required) {
+							fields[key].validate = [validateRequired];
 
 							//FIXME: This is to make pay_id field optional in the aussie bank
-							if (pluginNames.bank === 'aussie-bank' && key === 'pay_id') {
-								delete Fields[key].validate;
+							if (bank === 'aussie-bank' && key === 'pay_id') {
+								delete fields[key].validate;
 							}
 						}
 					}
 				} else {
-					Fields[key] = {
+					fields[key] = {
 						type: 'text',
 						label: key,
 						placeholder: key,
@@ -233,23 +295,67 @@ class BankData extends Component {
 				}
 			});
 		}
+
+		return fields;
+	};
+
+	getMethods = () => {
+		const { user_payments } = this.props;
+		const options = Object.keys(user_payments).map((key) => ({
+			value: key,
+			label: key,
+		}));
+		const fields = {};
+
+		fields['method'] = {
+			type: 'select',
+			label: 'Payment Method',
+			placeholder: 'Select payment method',
+			validate: [validateRequired],
+			options,
+		};
+
+		return fields;
+	};
+
+	onSubmitMethod = ({ method }) => {
+		this.resetForms();
+		this.setState({ method, methodFormVisible: false, formVisible: true });
+	};
+
+	render() {
+		const { bank, formVisible, userId, methodFormVisible, method } = this.state;
+		const { onChangeSuccess } = this.props;
+
 		return (
 			<Row>
 				<Button
-					onClick={() => this.showModal()}
+					onClick={this.showModal}
 					type="primary"
 					icon={<PlusCircleOutlined />}
 					size="small"
 				>
 					Add bank
 				</Button>
+
 				<Form
-					onSubmit={this.onSubmit(onChangeSuccess, bank, userId)}
+					onSubmit={this.onSubmit(onChangeSuccess, bank, userId, method)}
 					onCancel={this.onCancel}
 					title="Add a new bank"
-					fields={Fields}
+					fields={this.getFields()}
 					visible={formVisible}
+					destroyOnClose={true}
 				/>
+
+				<MethodForm
+					onSubmit={this.onSubmitMethod}
+					onCancel={this.onCancel}
+					title="Select a payment method"
+					fields={this.getMethods()}
+					visible={methodFormVisible}
+					destroyOnClose={true}
+				/>
+
 				<Row gutter={16}>
 					{bank.map((bank, index) => {
 						return (
@@ -361,8 +467,16 @@ class BankData extends Component {
 	}
 }
 
-const mapStateToProps = ({ app: { pluginNames } }) => ({
+const mapStateToProps = ({
+	app: {
+		pluginNames,
+		user_payments,
+		features: { ultimate_fiat },
+	},
+}) => ({
 	pluginNames,
+	user_payments,
+	ultimate_fiat,
 });
 
 export default connect(mapStateToProps)(BankData);
