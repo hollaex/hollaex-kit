@@ -159,7 +159,7 @@ class FormConfig extends Component {
 				header: {
 					className: 'section-header',
 					fields: {
-						[`column_header_${count}`]: {
+						[formProps?.key]: {
 							type: 'input',
 							label: (
 								<div className="form-label">
@@ -184,12 +184,13 @@ class FormConfig extends Component {
 									formProps.label,
 									formProps.required
 								),
-							input: formProps?.value,
+							inputDefaultValue: formProps?.value,
 							isTooltip: true,
 							tooltipTitle:
 								this.props.currentActiveTab === 'onRamp'
 									? 'Field is for operator to fill'
 									: 'This input is for your users in their verification page',
+							name: formProps?.key,
 						},
 					},
 				},
@@ -293,7 +294,34 @@ class FormConfig extends Component {
 	};
 
 	handleSubmitLinks = (formProps) => {
-		this.props.handleClose(true, 'savePayment', this.state.editedValues);
+		const { handleClose, currentActiveTab } = this.props;
+		let finalEditData = this.state.editedValues;
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			let formPropsData = {};
+			Object.keys(formProps).forEach((item) => {
+				const tempData = formProps[item];
+				formPropsData = {
+					...formPropsData,
+					...tempData,
+				};
+			});
+			let final = {};
+			Object.keys(finalEditData).forEach((data) => {
+				const itemData = finalEditData[data];
+				const result = itemData.map((val) => {
+					return {
+						...val,
+						value: formPropsData[val.key],
+					};
+				});
+				final = {
+					...final,
+					[data]: result,
+				};
+			});
+			finalEditData = final;
+		}
+		handleClose(true, 'savePayment', finalEditData);
 	};
 
 	validateExist = (value) => {
@@ -413,10 +441,44 @@ class FormConfig extends Component {
 			modalType,
 			buttonSubmitting,
 		} = this.state;
+		let constructInitValue = {};
+		if (
+			this.props.currentActiveTab &&
+			this.props.currentActiveTab === 'onRamp' &&
+			this.props.initialValues &&
+			Object.keys(this.props.initialValues).length
+		) {
+			Object.keys(this.props.initialValues).forEach((item) => {
+				const tempData =
+					this.props.initialValues && this.props.initialValues[item];
+				if (tempData && tempData.length) {
+					return tempData?.forEach((data) => {
+						if (data?.required) {
+							constructInitValue = {
+								...constructInitValue,
+								required: {
+									...constructInitValue['required'],
+									[data?.key]: data?.value,
+								},
+							};
+						} else {
+							constructInitValue = {
+								...constructInitValue,
+								optional: {
+									...constructInitValue['optional'],
+									[data?.key]: data?.value,
+								},
+							};
+						}
+					});
+				}
+			});
+		}
 		return (
 			<div>
 				<Form
 					fields={custom_fields}
+					initialValues={constructInitValue}
 					customFields={true}
 					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
