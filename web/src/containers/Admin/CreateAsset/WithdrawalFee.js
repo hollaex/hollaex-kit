@@ -20,6 +20,7 @@ const WithdrawalFee = ({
 	assetType,
 	withdrawalFees,
 	handleInitialValues,
+	updateFormData = () => {},
 }) => {
 	const generateInitialFees = () => {
 		const initialFees = {};
@@ -30,8 +31,6 @@ const WithdrawalFee = ({
 				value: 0,
 				symbol: coinFormData?.symbol,
 				type: 'static',
-				min: 0,
-				max: 0,
 				levels: {},
 			};
 		});
@@ -47,6 +46,28 @@ const WithdrawalFee = ({
 	useEffect(() => {
 		if (!withdrawalFees) {
 			handleInitialValues(withdrawal_fees);
+		}
+		// eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (
+			coinFormData &&
+			withdrawalFees &&
+			withdrawalFees[coinFormData?.symbol] &&
+			Object.keys(withdrawalFees[coinFormData?.symbol]).length &&
+			!Object.keys(withdrawalFees[coinFormData?.symbol]).includes('symbol')
+		) {
+			updateFormData(
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
+				{
+					...withdrawal_fees,
+					[coinFormData?.symbol]: {
+						...withdrawal_fees[coinFormData?.symbol],
+						symbol: coinFormData?.symbol,
+					},
+				}
+			);
 		}
 		// eslint-disable-next-line
 	}, []);
