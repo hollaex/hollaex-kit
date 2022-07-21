@@ -30,13 +30,19 @@ const Final = ({
 	selectedCoinSymbol,
 	exchange = {},
 	constants = {},
+	allCoins = {},
 }) => {
-	const {
-		meta = {},
-		type,
-		withdrawal_fees = {},
-		deposit_fees = {},
-	} = coinFormData;
+	const { meta = {}, type } = coinFormData;
+	let coinData = {};
+	allCoins.forEach((item) => {
+		if (item.symbol === coinFormData.symbol) {
+			coinData = {
+				...coinData,
+				...item,
+			};
+		}
+	});
+	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const tabParams = getTabParams();
@@ -79,7 +85,7 @@ const Final = ({
 
 							if (key && key === 'levels') {
 								return (
-									<div className="d-flex align-start">
+									<div key={key} className="d-flex align-start">
 										<div>
 											<b className="caps-first">{key}</b>:
 										</div>
@@ -90,7 +96,11 @@ const Final = ({
 														const feeText = hasUnit
 															? `${fee} ${unit}`
 															: formatPercentage(fee);
-														return <div>{`Tier ${level} @ ${feeText}`}</div>;
+														return (
+															<div
+																key={fee}
+															>{`Tier ${level} @ ${feeText}`}</div>
+														);
 													} else {
 														return null;
 													}
@@ -102,7 +112,7 @@ const Final = ({
 								const valueText = hasUnit ? `${value} ${unit}` : value;
 
 								return (
-									<div>
+									<div key={key}>
 										<b className="caps-first">{key}</b>: {valueText}
 									</div>
 								);
@@ -411,7 +421,7 @@ const Final = ({
 						</div>
 					)}
 				</div>
-				<div className="preview-detail-container">
+				<div className="preview-detail-container pl-0">
 					<div className="title">Deposit Fee</div>
 					<div>
 						{deposit_fees && <div>{renderFees(deposit_fees)}</div>}
@@ -542,6 +552,7 @@ const mapStateToProps = (state) => {
 	return {
 		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
 		constants: state.app.constants,
+		allCoins: state.asset.allCoins,
 	};
 };
 
