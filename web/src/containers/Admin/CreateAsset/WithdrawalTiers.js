@@ -115,6 +115,7 @@ const WithDrawTiers = ({
 												onChange={(value) => handleTier(level, value)}
 												value={initValue ? initValue : ''}
 												className="tieredInput"
+												min={0}
 											/>
 										</div>
 									</div>
@@ -134,6 +135,7 @@ const WithDrawTiers = ({
 							type="primary"
 							className="green-btn"
 							onClick={() => handleConfirm('confirm')}
+							disabled={!tierValues || !Object.keys(tierValues).length}
 						>
 							Confirm
 						</Button>

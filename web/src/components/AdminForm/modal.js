@@ -22,6 +22,7 @@ const Form = (name, className = '', allowPristine = false) => {
 		initialValues,
 		CustomRenderContent,
 		customLevels,
+		destroyOnClose,
 		...rest
 	}) => {
 		return (
@@ -32,6 +33,7 @@ const Form = (name, className = '', allowPristine = false) => {
 					okText={okText}
 					onCancel={onCancel}
 					onOk={handleSubmit(onSubmit)}
+					destroyOnClose={destroyOnClose}
 				>
 					{CustomRenderContent ? (
 						<CustomRenderContent
