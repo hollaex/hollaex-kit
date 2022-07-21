@@ -380,6 +380,97 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Get list of wallets in the exchange
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.userId - User's id to filter wallet addresses
+	 * @param {string} opts.currency - Crypto currency of the wallet
+	 * @param {string} opts.network - Crypto's blockchain network
+	 * @param {string} opts.address - Cryptocurrency address for the wallet
+	 * @param {string} opts.isValid - Whether wallet is still active or not
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.createdAt - Start date of wallet creation query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Fields: Count, Data. Count is the number of Wallets on the page. Data is an array of Wallets
+	 */
+	getExchangeWallets(opts = {
+		userId: null,
+		currency: null,
+		network: null,
+		address: null,
+		isValid: null,
+		limit: null,
+		page: null,
+		orderBy: null,
+		order: null,
+		createdAt: null,
+		format: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/wallets?`;
+
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
+		}
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isDatetime(opts.createdAt)) {
+			path += `&created_at=${sanitizeDate(opts.createdAt)}`;
+		}
+
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (opts.network) {
+			path += `&network=${opts.network}`;
+		}
+
+		if (isBoolean(opts.isValid)) {
+			path += `&is_valid=${opts.isValid}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
 	 * Create a withdrawal for an exchange's user on the network
 	 * @param {number} userId - User id on network
 	 * @param {string} address - Address to send withdrawal to
@@ -970,6 +1061,49 @@ class HollaExNetwork {
 		const verb = 'GET';
 
 		let path = `${this.baseUrl}/network/${this.exchange_id}/balance?user_id=${userId}`;
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
+	 * Get the balance report of all assets
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.userId - User's id to get balance data
+	 * @param {string} opts.currency - Currency symbol of assets to filter. Leave blank to get withdrawals for all currencies
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Fields: Count, Data. Count is the number of rows on the page. Data is an array of balances for assets
+	 */
+	getBalances(opts = {
+		userId: null,
+		currency: null,
+		format: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let path = `${this.baseUrl}/network/${this.exchange_id}/balances?`;
+
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
+		}
+
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
