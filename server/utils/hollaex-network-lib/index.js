@@ -1074,6 +1074,49 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Get the balance report of all assets
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.userId - User's id to get balance data
+	 * @param {string} opts.currency - Currency symbol of assets to filter. Leave blank to get withdrawals for all currencies
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Fields: Count, Data. Count is the number of rows on the page. Data is an array of balances for assets
+	 */
+	getBalances(opts = {
+		userId: null,
+		currency: null,
+		format: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let path = `${this.baseUrl}/network/${this.exchange_id}/balances?`;
+
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
+		}
+
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
 	 * Create a trade for the exchange on the network
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - Whether this is a buy or a sell trade
