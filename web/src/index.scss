@@ -129,6 +129,10 @@ a {
 	}
 }
 
+.ant-input-number:hover .ant-input-number-handler-wrap {
+	opacity: 0 !important;
+}
+
 @media screen and (max-width: $bp-sm) {
 	html {
 		font-size: 8px !important;

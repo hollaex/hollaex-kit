@@ -109,7 +109,9 @@ const PaymentAccountPopup = ({
 					<Select
 						onChange={(e) => handleSelectCoin(e, type)}
 						size="small"
-						value={selectedAsset ? selectedAsset : fiatCoins[0].symbol}
+						value={
+							selectedAsset ? selectedAsset : fiatCoins && fiatCoins[0].symbol
+						}
 						className="mb-2"
 					>
 						{fiatCoins.map((option, index) => (
@@ -498,7 +500,7 @@ const PaymentAccountPopup = ({
 						<img
 							src={STATIC_ICONS.OFFRAMP_DOLLAR_ICON}
 							alt="add-pay-icon"
-							className="add-pay-icon2  mr-2"
+							className="add-pay-icon2 mr-2"
 						/>
 						<div>
 							<h3 className="syshead">Add off-ramp</h3>
@@ -558,7 +560,7 @@ const PaymentAccountPopup = ({
 						<div>
 							<div>Select from premade Payment Accounts</div>
 							<div className="noticepad">
-								<InfoCircleOutlined className="infoStyle  mr-4" />
+								<InfoCircleOutlined className="infoStyle mr-4" />
 								<div>
 									We've noticed that there hasn't been any Payment Accounts
 									added yet. To start it is recommended to{' '}
