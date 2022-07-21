@@ -2,13 +2,15 @@ import React from 'react';
 import { SubmissionError } from 'redux-form';
 import { updateUserData } from './actions';
 import { AdminHocForm } from '../../../components';
+import { COUNTRIES_OPTIONS } from 'utils/countries';
 
 const Form = AdminHocForm('USER_DATA', 'user_data');
 
 const AddressFields = {
 	country: {
-		type: 'text',
+		type: 'select',
 		label: 'Country',
+		options: COUNTRIES_OPTIONS,
 	},
 	address: {
 		type: 'text',
@@ -40,8 +42,9 @@ const DataFields = {
 		options: ['Man', 'Woman'],
 	},
 	nationality: {
-		type: 'text',
+		type: 'select',
 		label: 'nationality',
+		options: COUNTRIES_OPTIONS,
 	},
 	dob: {
 		type: 'date',

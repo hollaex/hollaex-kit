@@ -233,9 +233,13 @@ class GeneralContent extends Component {
 								} = await upload(formData);
 								icons[themeKey][key] = path;
 								this.setState({ currentIcon: {} });
-							} catch (error) {
+							} catch ({ response }) {
 								clearFileInputById(`admin-file-input__${themeKey},${key}`);
-								message.error('Something went wrong!');
+								const errorMsg =
+									response && response.data && response.data.message
+										? response.data.message
+										: 'Something went wrong!';
+								message.error(errorMsg);
 								return;
 							}
 						}
