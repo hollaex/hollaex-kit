@@ -45,12 +45,12 @@ class FormWrapper extends Component {
 										<div className={section.header.className}>
 											{renderFields(
 												section.header.fields,
-												currentActiveTab &&
-													currentActiveTab === 'paymentAccounts'
+												currentActiveTab && currentActiveTab !== 'onRamp'
 													? true
 													: false,
 												getFieldDecorator,
-												this.props.initialValues
+												this.props.initialValues,
+												currentActiveTab
 											)}
 										</div>
 									</Fragment>
@@ -108,15 +108,17 @@ class FormWrapper extends Component {
 							</div>
 						</FormSection>
 					</div>
-					<div className="payment-form-wrapper center-content">
-						<div
-							onClick={() => this.props.addColumn(`section_${requiredCount}`)}
-							className="anchor"
-						>
-							<PlusOutlined style={{ color: '#FFFFFF' }} /> Add more payment
-							details
+					{currentActiveTab && currentActiveTab !== 'offRamp' ? (
+						<div className="payment-form-wrapper center-content">
+							<div
+								onClick={() => this.props.addColumn(`section_${requiredCount}`)}
+								className="anchor"
+							>
+								<PlusOutlined style={{ color: '#FFFFFF' }} /> Add more payment
+								details
+							</div>
 						</div>
-					</div>
+					) : null}
 					<div className="btn-wrapper pt-5">
 						<Button
 							block
@@ -126,15 +128,17 @@ class FormWrapper extends Component {
 						>
 							Back
 						</Button>
-						<Button
-							block
-							type="primary"
-							htmlType="submit"
-							className="green-btn minimal-btn"
-							disabled={buttonSubmitting}
-						>
-							{buttonTxt}
-						</Button>
+						{currentActiveTab && currentActiveTab !== 'offRamp' ? (
+							<Button
+								block
+								type="primary"
+								htmlType="submit"
+								className="green-btn minimal-btn"
+								disabled={buttonSubmitting}
+							>
+								{buttonTxt}
+							</Button>
+						) : null}
 					</div>
 				</form>
 			</div>
