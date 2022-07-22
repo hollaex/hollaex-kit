@@ -347,7 +347,7 @@ const PaymentAccounts = ({
 	setCoindata,
 	selectedPaymentType = '',
 	originalofframp = {},
-	getKitData = () => {},
+	getUpdatedKitData = () => {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -577,7 +577,7 @@ const PaymentAccounts = ({
 					}
 				}
 				setConfig(res && res.kit);
-				getKitData(res && res.kit);
+				getUpdatedKitData(res && res.kit);
 				setIsLoading(false);
 			})
 			.catch((error) => {

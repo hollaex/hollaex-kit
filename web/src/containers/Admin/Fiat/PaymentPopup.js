@@ -36,7 +36,6 @@ const PaymentAccountPopup = ({
 	updatePlugin,
 	handlePopupSave,
 	handlePopupDel,
-	handleTabChange,
 	formData = {},
 	formUpdate,
 	handleSaveAndPublish,
@@ -59,7 +58,8 @@ const PaymentAccountPopup = ({
 	offramp = {},
 	showSelect,
 	selectedPaymentType = '',
-	// setCoindata,
+	isPayChanged = false,
+	setIsPayChanged,
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -147,6 +147,7 @@ const PaymentAccountPopup = ({
 	const handleChange = (e) => {
 		setPaymentSelect(e);
 		setExistErrorMsg('');
+		setIsPayChanged(true);
 	};
 	const handleCustomSelect = () => {
 		if (Object.keys(user_payments).includes(plugin)) {
@@ -195,6 +196,7 @@ const PaymentAccountPopup = ({
 	const handleCloseOnramp = () => {
 		setIsMutli(false);
 		handleClosePlugin(false);
+		setIsPayChanged(false);
 	};
 
 	const handleUpdatePlugin = (val) => {
@@ -204,6 +206,13 @@ const PaymentAccountPopup = ({
 			setPlugin('');
 		}
 		setErrorMsg('');
+	};
+
+	const handleOffRampDataProceed = (type, paymentSelect, symbol) => {
+		if (!isPayChanged) {
+			setPaymentSelect(selectedPaymentType);
+		}
+		handleOffRampProceed(type, paymentSelect, symbol);
 	};
 
 	switch (type) {
@@ -520,9 +529,9 @@ const PaymentAccountPopup = ({
 					{showSelect && <span>{renderSelect('deposit')}</span>}
 					{isMulti || Object.keys(user_payments).length ? (
 						<div>
-							{!offramp?.[selectedCoin.symbol] ||
+							{!offramp?.[singleCoin.symbol] ||
 							(Object.keys(user_payments)?.length !==
-								offramp?.[selectedCoin.symbol]?.length &&
+								offramp?.[singleCoin.symbol]?.length &&
 								selectedPaymentType) ? (
 								<div>
 									<div>
@@ -568,7 +577,7 @@ const PaymentAccountPopup = ({
 									</div>
 								</div>
 							) : (
-								<div className="green-text">
+								<div className="warning-text">
 									You have already saved all of the Payment Accounts
 								</div>
 							)}
@@ -628,14 +637,20 @@ const PaymentAccountPopup = ({
 							onClick={
 								currentActiveTab === 'offRamp'
 									? () =>
-											handleOffRampProceed(
+											handleOffRampDataProceed(
 												'savePayment',
 												paymentSelect,
 												singleCoin.symbol
 											)
 									: () => handleProceed()
 							}
-							disabled={!user_payments || !Object.keys(user_payments).length}
+							disabled={
+								!user_payments ||
+								!Object.keys(user_payments).length ||
+								(Object.keys(user_payments)?.length ===
+									offramp?.[singleCoin.symbol]?.length &&
+									selectedPaymentType)
+							}
 						>
 							Proceed
 						</Button>

@@ -30,6 +30,7 @@ const Onramp = ({
 	offramp,
 	user_payments,
 	setConfig,
+	getUpdatedKitData = () => {},
 }) => {
 	const [coins, setCoins] = useState([]);
 	const [type, setType] = useState('');
@@ -51,6 +52,7 @@ const Onramp = ({
 	const [currentCoinItem, setCoinItem] = useState('');
 	const [currentOfframpIndex, setCurrentOfframpIndex] = useState(0);
 	const [selectedPaymentType, setSelectedPaymentType] = useState('');
+	const [isPayChanged, setIsPayChanged] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -194,6 +196,8 @@ const Onramp = ({
 		setIsVisible(false);
 		setSelectOffField([]);
 		setSelectedPaymentType('');
+		setIsPayChanged(false);
+		setSelectedCoin(fiatCoins && fiatCoins[0]);
 	};
 
 	const handleoffRampTab = (e) => {
@@ -311,6 +315,7 @@ const Onramp = ({
 		getConstants()
 			.then((res) => {
 				setConfig(res && res.kit);
+				getUpdatedKitData(res && res.kit);
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
@@ -629,6 +634,7 @@ const Onramp = ({
 										currentCoinItem={currentCoinItem}
 										currentOfframpIndex={currentOfframpIndex}
 										originalofframp={offramp}
+										getUpdatedKitData={getUpdatedKitData}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -664,6 +670,8 @@ const Onramp = ({
 					offramp={offramp}
 					showSelect={showSelect}
 					selectedPaymentType={selectedPaymentType}
+					isPayChanged={isPayChanged}
+					setIsPayChanged={setIsPayChanged}
 				/>
 			</Modal>
 		</div>
