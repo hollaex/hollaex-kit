@@ -51,6 +51,7 @@ const PaymentWay = ({
 	currentIndex = 1,
 	handleBack = () => {},
 	currentType,
+	user_payments = {},
 }) => {
 	const renderTooltip = () => {
 		let imgSrc = STATIC_ICONS.FIAT_PAYMENT_TOOLTIP;
@@ -93,6 +94,7 @@ const PaymentWay = ({
 						handleClose={handleClose}
 						formData={formData}
 						router={router}
+						user_payments={user_payments}
 					/>
 				</div>
 			);
@@ -531,6 +533,7 @@ const PaymentAccounts = ({
 		} else {
 			setPayOption(false);
 			setIsDisplayForm(true);
+			setFormValues(user_payments);
 		}
 		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps

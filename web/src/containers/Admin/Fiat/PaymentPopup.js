@@ -65,7 +65,7 @@ const PaymentAccountPopup = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [paymentSelect, setPaymentSelect] = useState('bank');
 	const [isMulti, setIsMutli] = useState(false);
-	const [selectedCoin, setSelectedCoin] = useState({});
+	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
 
@@ -90,17 +90,18 @@ const PaymentAccountPopup = ({
 	}
 
 	useEffect(() => {
-		if (coins && coinSymbol) {
-			const filterData = coins.filter((item) => item.symbol === coinSymbol)[0];
-			setSelectedCoin(filterData);
-		}
-	}, [coinSymbol, coins]);
-
-	useEffect(() => {
 		if (selectOffField && selectOffField.length) {
 			setIsMutli(true);
 		}
 	}, [selectOffField]);
+
+	const handleCoinChange = (val, type) => {
+		if (val) {
+			const filterData = coins.filter((item) => item.symbol === val)[0];
+			setSelectedCoin(filterData);
+		}
+		handleSelectCoin(val, type);
+	};
 
 	const renderSelect = (type) => {
 		return (
@@ -108,7 +109,7 @@ const PaymentAccountPopup = ({
 				<div className="mr-3">Fiat coins:</div>
 				<div className="coinSelect">
 					<Select
-						onChange={(e) => handleSelectCoin(e, type)}
+						onChange={(e) => handleCoinChange(e, type)}
 						size="small"
 						value={
 							selectedAsset ? selectedAsset : fiatCoins && fiatCoins[0].symbol
@@ -519,8 +520,10 @@ const PaymentAccountPopup = ({
 					{showSelect && <span>{renderSelect('deposit')}</span>}
 					{isMulti || Object.keys(user_payments).length ? (
 						<div>
-							{Object.keys(user_payments)?.length ===
-							offramp?.[selectedCoin.symbol]?.length ? (
+							{!offramp?.[selectedCoin.symbol] ||
+							(Object.keys(user_payments)?.length !==
+								offramp?.[selectedCoin.symbol]?.length &&
+								selectedPaymentType) ? (
 								<div>
 									<div>
 										Select from premade Payment Accounts (
