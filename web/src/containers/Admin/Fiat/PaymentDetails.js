@@ -26,8 +26,9 @@ const PaymentDetails = ({
 
 	return (
 		<div>
-			{Object.keys(user_payments).map((item, index) => {
-				if (type === item) {
+			{Object.keys(user_payments)
+				.filter((e) => e === type)
+				.map((item, index) => {
 					const curData = user_payments[item];
 					return (
 						<div className="paymentContainer mt-4" key={index}>
@@ -182,32 +183,27 @@ const PaymentDetails = ({
 									)}
 								</div>
 							) : null}
-							{activeTab !== 'offRamp' ? (
-								<div
-									className="txtanchor mt-4"
-									onClick={() =>
-										formUpdate(
-											typeof curData?.data === 'string'
-												? 'plugin'
-												: item === 'bank' || item === 'paypal'
-												? `${item}Form`
-												: 'customForm',
-											item,
-											false,
-											index + 1,
-											'edit'
-										)
-									}
-								>
-									EDIT
-								</div>
-							) : null}
+							<div
+								className="txtanchor mt-4"
+								onClick={() =>
+									formUpdate(
+										typeof curData?.data === 'string'
+											? 'plugin'
+											: item === 'bank' || item === 'paypal'
+											? `${item}Form`
+											: 'customForm',
+										item,
+										false,
+										index + 1,
+										'edit'
+									)
+								}
+							>
+								EDIT
+							</div>
 						</div>
 					);
-				} else {
-					return null;
-				}
-			})}
+				})}
 		</div>
 	);
 };

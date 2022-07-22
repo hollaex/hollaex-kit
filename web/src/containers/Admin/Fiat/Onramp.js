@@ -46,7 +46,6 @@ const Onramp = ({
 	const [selectedCoin, setSelectedCoin] = useState();
 	const [kitOfframpData, setKitOfframpData] = useState({});
 	const [showSelect, setShowSelect] = useState(false);
-	const [paymentSelect, setPaymentSelect] = useState('bank');
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedPayType, setSelectedPayType] = useState({});
 	const [currentCoinItem, setCoinItem] = useState('');
@@ -135,6 +134,7 @@ const Onramp = ({
 		_,
 		showSelect = false
 	) => {
+		setSelectedAsset(coinSymb);
 		setIsVisible(true);
 		setType(type);
 		setShowSelect(showSelect);
@@ -163,7 +163,7 @@ const Onramp = ({
 		let kitData = {
 			kit: {
 				offramp: {
-					[selectedSymbol && selectedSymbol]: [paymentType],
+					[selectedSymbol]: [paymentType],
 				},
 			},
 		};
@@ -193,7 +193,6 @@ const Onramp = ({
 	};
 
 	const setPaymentMethod = (e, item, index) => {
-		setPaymentSelect(e);
 		setSelectedPayType({
 			...selectedPayType,
 			[item]: e,
@@ -484,6 +483,10 @@ const Onramp = ({
 													false
 												)
 											}
+											disabled={
+												Object.keys(user_payments).length ===
+												offramp[item?.symbol].length
+											}
 										>
 											Add off-ramp
 										</Button>
@@ -505,10 +508,11 @@ const Onramp = ({
 											<Select
 												className="paymentSelect"
 												defaultValue={
-													Object.keys(user_payments).length &&
-													Object.keys(user_payments)[0]
+													offramp &&
+													offramp[item?.symbol] &&
+													offramp[item?.symbol][0]
 												}
-												value={paymentSelect}
+												value={selectedPayType[item?.symbol]}
 												suffixIcon={
 													isOpen ? (
 														<CaretDownOutlined className="downarrow" />
@@ -517,7 +521,6 @@ const Onramp = ({
 													)
 												}
 												onClick={handleOpenPayment}
-												// onChange={setPaymentMethod}
 												onChange={(val) =>
 													setPaymentMethod(val, item?.symbol, index)
 												}
@@ -566,10 +569,17 @@ const Onramp = ({
 										currentsymbol={item?.symbol}
 										isPaymentForm={formType === 'plugin' && customName}
 										setCoindata={setCoindata}
-										selectedPaymentType={paymentSelect}
+										selectedPaymentType={
+											selectedPayType[item?.symbol]
+												? selectedPayType[item?.symbol]
+												: offramp &&
+												  offramp[item?.symbol] &&
+												  offramp[item?.symbol][0]
+										}
 										selectedPayType={selectedPayType}
 										currentCoinItem={currentCoinItem}
 										currentOfframpIndex={currentOfframpIndex}
+										originalofframp={offramp}
 									/>
 								) : null}
 								<div className="border-divider"></div>
