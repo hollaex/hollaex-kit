@@ -668,7 +668,7 @@ class Assets extends Component {
 
 		const { owner_id, created_by, verified } = selectedAsset;
 		const showMintAndBurnButtons = verified && owner_id === user_id;
-		const showConfigureButton = created_by === user_id;
+		const showConfigureButton = created_by === user_id || owner_id === user_id;
 
 		if (isConfigure) {
 			return (
