@@ -44,7 +44,6 @@ const PaymentWay = ({
 	paypalInitialValues,
 	customInitialValues,
 	currentPaymentType,
-	isCustomPay,
 	customName,
 	currentsymbol = '',
 	coinSymbol = '',
@@ -52,7 +51,6 @@ const PaymentWay = ({
 	currentIndex = 1,
 	handleBack = () => {},
 	currentType,
-	defaultBankInitialValues = {},
 }) => {
 	const renderTooltip = () => {
 		let imgSrc = STATIC_ICONS.FIAT_PAYMENT_TOOLTIP;
@@ -199,8 +197,10 @@ const PaymentWay = ({
 					<div className="d-flex">
 						{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
 							<div className="mr-4">User payment account {currentIndex}</div>
-						) : (
+						) : currentActiveTab && currentActiveTab === 'onRamp' ? (
 							<div className="mr-4">On-ramp {currentIndex}</div>
+						) : (
+							<div className="mr-4">Off-ramp {currentIndex}</div>
 						)}
 						{renderTooltip()}
 					</div>
@@ -215,7 +215,9 @@ const PaymentWay = ({
 							<div className="anchor" onClick={() => handleDelBank(true)}>
 								{currentActiveTab && currentActiveTab === 'paymentAccounts'
 									? 'Delete payment account'
-									: 'Delete On-ramp'}
+									: currentActiveTab && currentActiveTab === 'onRamp'
+									? 'Delete On-ramp'
+									: 'Delete off-ramp'}
 							</div>
 						</div>
 					</div>
@@ -334,7 +336,6 @@ const PaymentAccounts = ({
 	currentActiveTab = '',
 	coinSymbol = '',
 	setConfig = () => {},
-	onRampCoins = [],
 	customName = '',
 	originalonramp = {},
 	offramp = {},
@@ -342,11 +343,9 @@ const PaymentAccounts = ({
 	currentsymbol = '',
 	isPaymentForm = false,
 	setCoindata,
-	kitOfframpData = {},
 	selectedPaymentType = '',
-	currentCoinItem,
-	selectedPayType = {},
-	currentOfframpIndex = 0,
+	originalofframp = {},
+	getKitData = () => {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -462,8 +461,9 @@ const PaymentAccounts = ({
 		let tempCustom = { ...customInitialValues };
 		let firstPayment = [];
 		if (
-			currentActiveTab === 'paymentAccounts' ||
-			(Object.keys(offramp).length && currentActiveTab === 'offRamp')
+			Object.keys(user_payments).length &&
+			currentActiveTab &&
+			currentActiveTab !== 'onRamp'
 		) {
 			setPayOption(true);
 			Object.keys(user_payments).forEach((item) => {
@@ -487,12 +487,18 @@ const PaymentAccounts = ({
 					}
 				});
 			});
-			setBankInitValue(tempBank);
-			setPaypalInitValue(tempPaypal);
-			setCustomInitValue(tempCustom);
+			if (currentActiveTab && currentActiveTab !== 'offRamp') {
+				setBankInitValue(tempBank);
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+			}
 			setFormValues(user_payments);
 			setPaymentSelect(firstPayment[0]);
-		} else if (Object.keys(onramp).length && currentActiveTab === 'onRamp') {
+		} else if (
+			Object.keys(onramp).length &&
+			currentActiveTab &&
+			currentActiveTab === 'onRamp'
+		) {
 			Object.keys(onramp).forEach((item) => {
 				firstPayment = [...firstPayment, item];
 				if (typeof onramp[item]?.data !== 'string') {
@@ -528,7 +534,7 @@ const PaymentAccounts = ({
 		}
 		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [currentActiveTab]);
+	}, [currentPaymentType, onramp, user_payments, currentActiveTab]);
 
 	useEffect(() => {
 		if (
@@ -541,24 +547,12 @@ const PaymentAccounts = ({
 		}
 	}, [formValues, currentActiveTab]);
 
-	useEffect(() => {
-		if (kitOfframpData && Object.keys(kitOfframpData).length) {
-			// updateConstantsData(kitOfframpData);
-		}
-		// TODO: Fix react-hooks/exhaustive-deps
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [kitOfframpData]);
-
 	const getConstantData = (type) => {
 		getConstants()
 			.then((res) => {
 				if (currentActiveTab === 'onRamp') {
 					if (_get(res, 'kit.onramp')) {
 						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
-					}
-				} else if (currentActiveTab === 'offRamp') {
-					if (_get(res, 'kit.offramp')) {
-						setFormValues(_get(res, `kit.offramp`));
 					}
 				} else {
 					if (_get(res, 'kit.user_payments')) {
@@ -580,6 +574,7 @@ const PaymentAccounts = ({
 					}
 				}
 				setConfig(res && res.kit);
+				getKitData(res && res.kit);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -779,6 +774,20 @@ const PaymentAccounts = ({
 				},
 			};
 		}
+
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			const filteredOfframp = originalofframp[coinSymbol].filter(
+				(item) => item !== method
+			);
+			deletedBodyData = {
+				kit: {
+					offramp: {
+						...originalofframp,
+						[coinSymbol]: filteredOfframp,
+					},
+				},
+			};
+		}
 		updateConstantsData(deletedBodyData, 'delete');
 		// setPaymentType('initial');
 		setIsVisible(false);
@@ -931,7 +940,10 @@ const PaymentAccounts = ({
 						isDisplayForm) ||
 						(currentActiveTab &&
 							currentActiveTab === 'onRamp' &&
-							isCurrentFormOpen)) && (
+							isCurrentFormOpen) ||
+						(currentActiveTab &&
+							currentActiveTab === 'offRamp' &&
+							isDisplayDetails)) && (
 						<PaymentWay
 							paymenttype={paymenttype}
 							handleClosePlugin={handleClosePlugin}
@@ -1004,6 +1016,12 @@ const PaymentAccounts = ({
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}
 					currentIndex={currentIndex}
+					selectedPaymentType={
+						(originalofframp &&
+							originalofframp[currentsymbol] &&
+							originalofframp[currentsymbol][0]) ||
+						(offramp && offramp[0])
+					}
 				/>
 			</Modal>
 		</div>

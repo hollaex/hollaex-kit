@@ -167,12 +167,15 @@ class FormConfig extends Component {
 										<b>{formProps.label}:</b>
 										{!formProps.required ? <div>(optional)</div> : null}
 									</div>
-									<span
-										className="anchor"
-										onClick={() => this.editColumn('edit', formProps)}
-									>
-										Edit field name
-									</span>
+									{this.props.currentActiveTab &&
+									this.props.currentActiveTab !== 'offRamp' ? (
+										<span
+											className="anchor"
+											onClick={() => this.editColumn('edit', formProps)}
+										>
+											Edit field name
+										</span>
+									) : null}
 								</div>
 							),
 							placeholder:
@@ -191,6 +194,7 @@ class FormConfig extends Component {
 									? 'Field is for operator to fill'
 									: 'This input is for your users in their verification page',
 							name: formProps?.key,
+							currentActiveTab: this.props.currentActiveTab,
 						},
 					},
 				},
