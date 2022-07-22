@@ -63,11 +63,15 @@ const PaymentAccountPopup = ({
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
-	const [paymentSelect, setPaymentSelect] = useState('bank');
+	const [paymentSelect, setPaymentSelect] = useState(selectedPaymentType);
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
+
+	useEffect(() => {
+		setPaymentSelect(selectedPaymentType || Object.keys(user_payments)?.[0]);
+	}, [selectedPaymentType, user_payments]);
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -100,6 +104,7 @@ const PaymentAccountPopup = ({
 			const filterData = coins.filter((item) => item.symbol === val)[0];
 			setSelectedCoin(filterData);
 		}
+		setPaymentSelect(selectedPaymentType);
 		handleSelectCoin(val, type);
 	};
 
@@ -544,7 +549,8 @@ const PaymentAccountPopup = ({
 									<div>
 										<Select
 											className="paymentSelect"
-											defaultValue={selectedPaymentType}
+											defaultValue={paymentSelect}
+											value={paymentSelect}
 											suffixIcon={
 												isOpen ? (
 													<CaretDownOutlined className="downarrow" />
