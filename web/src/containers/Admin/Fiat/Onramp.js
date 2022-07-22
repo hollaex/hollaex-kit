@@ -43,13 +43,14 @@ const Onramp = ({
 	const [showCoins, setShowCoins] = useState(false);
 	const [customName, setCustomName] = useState('');
 	const [pluginName, setPluginName] = useState('');
-	const [selectedCoin, setSelectedCoin] = useState();
+	const [selectedCoin, setSelectedCoin] = useState({});
 	const [kitOfframpData, setKitOfframpData] = useState({});
 	const [showSelect, setShowSelect] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedPayType, setSelectedPayType] = useState({});
 	const [currentCoinItem, setCoinItem] = useState('');
 	const [currentOfframpIndex, setCurrentOfframpIndex] = useState(0);
+	const [selectedPaymentType, setSelectedPaymentType] = useState('');
 
 	useEffect(() => {
 		let coins =
@@ -72,8 +73,17 @@ const Onramp = ({
 			);
 			coins = [...coins, ...selectedAssetData];
 			setCoins(coins);
-			let value = coins.filter((d) => d.symbol === selectedAsset);
-			setSelectedCoin(...value);
+			let value = {};
+			selectedAssetData.forEach((d) => {
+				if (d.symbol === selectedAsset) {
+					value = {
+						symbol: d?.symbol,
+						color: d?.meta?.color,
+						fullname: d?.fullname,
+					};
+				}
+			});
+			setSelectedCoin(value);
 		}
 		if (!coins.length) {
 			setCoins(fiatCoins && fiatCoins.length ? [fiatCoins?.[0]] : []);
@@ -120,9 +130,44 @@ const Onramp = ({
 		// eslint-disable-next-line
 	}, []);
 
+	useEffect(() => {
+		if (isVisible) {
+			setSelectedPaymentType(
+				user_payments &&
+					selectedCoin &&
+					offramp &&
+					Object.keys(user_payments).filter(
+						(item) =>
+							offramp[selectedCoin.symbol] &&
+							!offramp[selectedCoin.symbol].includes(item)
+					) &&
+					Object.keys(user_payments).filter(
+						(item) =>
+							offramp[selectedCoin.symbol] &&
+							!offramp[selectedCoin.symbol].includes(item)
+					)[0]
+			);
+		}
+	}, [offramp, user_payments, selectedCoin, isVisible]);
+
 	const handleSelectCoin = (e) => {
 		if (e) {
 			setSelectedAsset(e);
+			setSelectedPaymentType(
+				user_payments &&
+					selectedCoin &&
+					offramp &&
+					Object.keys(user_payments).filter(
+						(item) =>
+							offramp[selectedCoin.symbol] &&
+							!offramp[selectedCoin.symbol].includes(item)
+					) &&
+					Object.keys(user_payments).filter(
+						(item) =>
+							offramp[selectedCoin.symbol] &&
+							!offramp[selectedCoin.symbol].includes(item)
+					)[0]
+			);
 		}
 	};
 
@@ -135,7 +180,9 @@ const Onramp = ({
 		showSelect = false
 	) => {
 		setSelectedAsset(coinSymb);
-		setIsVisible(true);
+		setTimeout(() => {
+			setIsVisible(true);
+		}, 100);
 		setType(type);
 		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
@@ -146,6 +193,7 @@ const Onramp = ({
 	const onCancel = () => {
 		setIsVisible(false);
 		setSelectOffField([]);
+		setSelectedPaymentType('');
 	};
 
 	const handleoffRampTab = (e) => {
@@ -484,8 +532,9 @@ const Onramp = ({
 												)
 											}
 											disabled={
+												Object.keys(offramp).includes(item?.symbol) &&
 												Object.keys(user_payments).length ===
-												offramp[item?.symbol].length
+													offramp[item?.symbol].length
 											}
 										>
 											Add off-ramp
@@ -614,6 +663,7 @@ const Onramp = ({
 					singleCoin={selectedCoin}
 					offramp={offramp}
 					showSelect={showSelect}
+					selectedPaymentType={selectedPaymentType}
 				/>
 			</Modal>
 		</div>
