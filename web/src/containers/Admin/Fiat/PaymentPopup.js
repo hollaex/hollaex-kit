@@ -54,10 +54,11 @@ const PaymentAccountPopup = ({
 	currentActiveTab = '',
 	handleOffRampProceed,
 	selectedPlugin = '',
-	currentIndex = 1,
+	currentIndex = 0,
 	singleCoin = {},
 	offramp = {},
 	showSelect,
+	selectedPaymentType = '',
 	// setCoindata,
 }) => {
 	const [plugin, setPlugin] = useState('');
@@ -171,7 +172,7 @@ const PaymentAccountPopup = ({
 					'bankForm',
 					paymentSelect,
 					false,
-					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
 			} else if (paymentSelect === 'paypal') {
@@ -180,7 +181,7 @@ const PaymentAccountPopup = ({
 					'paypalForm',
 					paymentSelect,
 					false,
-					currentIndex >= 1 ? currentIndex + 1 : currentIndex,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
 			} else if (paymentSelect === 'customPay') {
@@ -518,41 +519,56 @@ const PaymentAccountPopup = ({
 					{showSelect && <span>{renderSelect('deposit')}</span>}
 					{isMulti || Object.keys(user_payments).length ? (
 						<div>
-							<div>
-								Select from premade Payment Accounts (
-								{Object.keys(user_payments).length
-									? Object.keys(user_payments).length
-									: null}
-								):
-							</div>
-							<div>
-								<Select
-									className="paymentSelect"
-									defaultValue={paymentSelect}
-									suffixIcon={
-										isOpen ? (
-											<CaretDownOutlined className="downarrow" />
-										) : (
-											<CaretUpOutlined className="downarrow" />
-										)
-									}
-									onClick={handleOpenPayment}
-									onChange={handleChange}
-								>
-									{Object.keys(user_payments).map((item, i) => (
-										<Option
-											value={item}
-											key={i}
-											disabled={
-												offramp[singleCoin.symbol] &&
-												offramp[singleCoin.symbol].includes(item)
+							{Object.keys(user_payments)?.length ===
+							offramp?.[selectedCoin.symbol]?.length ? (
+								<div>
+									<div>
+										Select from premade Payment Accounts (
+										{Object.keys(user_payments).length
+											? Object.keys(user_payments).length
+											: null}
+										):
+									</div>
+									<div>
+										<Select
+											className="paymentSelect"
+											defaultValue={selectedPaymentType}
+											suffixIcon={
+												isOpen ? (
+													<CaretDownOutlined className="downarrow" />
+												) : (
+													<CaretUpOutlined className="downarrow" />
+												)
 											}
+											onClick={handleOpenPayment}
+											onChange={handleChange}
 										>
-											User payment account {i + 1}: {item}
-										</Option>
-									))}
-								</Select>
-							</div>
+											{Object.keys(user_payments).map((item, i) => {
+												if (!offramp[singleCoin.symbol]?.includes(item)) {
+													return (
+														<Option
+															value={item}
+															key={i}
+															disabled={
+																offramp[singleCoin.symbol] &&
+																offramp[singleCoin.symbol].includes(item)
+															}
+														>
+															User payment account {i + 1}: {item}
+														</Option>
+													);
+												} else {
+													return null;
+												}
+											})}
+										</Select>
+									</div>
+								</div>
+							) : (
+								<div className="green-text">
+									You have already saved all of the Payment Accounts
+								</div>
+							)}
 						</div>
 					) : showCoins ? (
 						<span>{renderSelect('deposit')}</span>
@@ -675,6 +691,8 @@ const PaymentAccountPopup = ({
 				<div className="payment-modal-wrapper">
 					{currentActiveTab && currentActiveTab === 'onRamp' ? (
 						<h3>Delete on-ramp</h3>
+					) : currentActiveTab && currentActiveTab === 'offRamp' ? (
+						<h3>Delete off-ramp</h3>
 					) : (
 						<h3>Delete payment account</h3>
 					)}
@@ -693,6 +711,8 @@ const PaymentAccountPopup = ({
 						<div>
 							{currentActiveTab && currentActiveTab === 'onRamp' ? (
 								<div>On-ramp {currentIndex}</div>
+							) : currentActiveTab && currentActiveTab === 'offRamp' ? (
+								<div>off-ramp {currentIndex}</div>
 							) : (
 								<div>User payment account {currentIndex}</div>
 							)}
@@ -709,6 +729,8 @@ const PaymentAccountPopup = ({
 						Are you sure you want to delete the{' '}
 						{currentActiveTab && currentActiveTab === 'onRamp'
 							? 'on-ramp'
+							: currentActiveTab && currentActiveTab === 'offRamp'
+							? 'off-ramp'
 							: 'payment'}{' '}
 						account?
 					</div>

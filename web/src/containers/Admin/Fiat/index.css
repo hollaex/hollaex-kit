@@ -53,6 +53,8 @@
 	text-align: center;
 	display: flex;
 	flex-direction: column;
+	max-height: 150px;
+	overflow: auto;
 }
 
 .summary-content-wrapper .box-content .small-circle,
