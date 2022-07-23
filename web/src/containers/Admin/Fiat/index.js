@@ -23,6 +23,7 @@ const Fiatmarkets = ({
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const [isGetExchange, setIsGetExchange] = useState(false);
 	const { user_payments = {}, onramp = {}, offramp = {} } = constants;
+	const [offRampData, setOffRamp] = useState(offramp);
 
 	useEffect(() => {
 		if (exchange && Object.keys(exchange).length) {
@@ -45,6 +46,9 @@ const Fiatmarkets = ({
 		router.replace('/admin/fiat');
 	};
 
+	const getUpdatedKitData = (kitData) => {
+		setOffRamp(kitData && kitData.offramp);
+	};
 	const renderTabBar = (props, DefaultTabBar) => {
 		return <DefaultTabBar {...props} />;
 	};
@@ -65,7 +69,7 @@ const Fiatmarkets = ({
 						user_payments={user_payments}
 						exchange={exchange}
 						onramp={onramp}
-						offramp={offramp}
+						offramp={offRampData}
 						isGetExchange={isGetExchange}
 					/>
 				</TabPane>
@@ -77,7 +81,7 @@ const Fiatmarkets = ({
 						activeTab={activeTab}
 						user_payments={user_payments}
 						onramp={onramp}
-						offramp={offramp}
+						offramp={offRampData}
 						setConfig={setConfig}
 					/>
 				</TabPane>
@@ -88,7 +92,7 @@ const Fiatmarkets = ({
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
 						onramp={onramp}
-						offramp={offramp}
+						offramp={offRampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
 					/>
@@ -100,9 +104,10 @@ const Fiatmarkets = ({
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
 						onramp={onramp}
-						offramp={offramp}
+						offramp={offRampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
+						getUpdatedKitData={getUpdatedKitData}
 					/>
 				</TabPane>
 				{/* <TabPane tab="KYC" key="4">

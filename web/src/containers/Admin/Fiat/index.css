@@ -726,3 +726,8 @@
 .fiatformhelpicon {
 	top: 66px !important;
 }
+.payment-modal-wrapper .warning-text {
+	color: yellow;
+	font-size: 16px;
+	font-weight: bold;
+}
