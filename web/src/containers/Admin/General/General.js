@@ -29,7 +29,7 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import _get from 'lodash/get';
 
 import './index.css';
-import { handleUpgrade } from 'utils/utils';
+import { handleFiatUpgrade, handleUpgrade } from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
 
 const NameForm = AdminHocForm('NameForm');
@@ -757,6 +757,7 @@ class GeneralContent extends Component {
 			);
 		}
 		const isUpgrade = handleUpgrade(kit.info);
+		const isFiatUpgrade = handleFiatUpgrade(kit.info);
 
 		return (
 			<div>
@@ -1292,6 +1293,7 @@ class GeneralContent extends Component {
 						handleSaveInterface={this.handleSaveInterface}
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
+						isFiatUpgrade={isFiatUpgrade}
 					/>
 				) : null}
 				{activeTab === 'security' ? (

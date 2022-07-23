@@ -12,6 +12,7 @@ const InterfaceForm = ({
 	handleSaveInterface,
 	isUpgrade,
 	buttonSubmitting,
+	isFiatUpgrade,
 }) => {
 	const handleSubmit = (values) => {
 		let formValues = {};
@@ -105,25 +106,51 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
-					<Item name="ultimate_fiat" valuePropName="checked">
-						<Checkbox className="mt-3">
-							<div className="d-flex align-items-center">
-								<div className="feature-trade-box mr-1">
-									<ReactSVG
-										src={STATIC_ICONS.ULTIMATE_FIAT_FEATURE}
-										className="d-flex feature-icon justify-content-center mr-1 mt-1 ml-3 pl-1"
-										beforeInjection={(svg) => {
-											svg.setAttribute('style', 'width: 60px');
-										}}
-									/>
+
+					<div className={classnames({ 'disabled-area': isFiatUpgrade })}>
+						<Item name="ultimate_fiat" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box mr-1">
+										<ReactSVG
+											src={STATIC_ICONS.MPESA_ICON}
+											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
+											beforeInjection={(svg) => {
+												svg.setAttribute('style', 'width: 60px');
+											}}
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Ultimate fiat
+										<div className="small-text">(Ultimate fiat ...)</div>
+									</div>
 								</div>
-								<div className="ml-2 checkbox-txt">
-									Ultimate fiat
-									<div className="small-text">(Ultimate fiat ...)</div>
+							</Checkbox>
+						</Item>
+					</div>
+					{isFiatUpgrade ? (
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+								<div>
+									<div className="font-weight-bold">
+										Make a good first impression
+									</div>
+									<div>Add a customizable landing page</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button type="primary" className="w-100">
+											Upgrade Now
+										</Button>
+									</a>
 								</div>
 							</div>
-						</Checkbox>
-					</Item>
+						</div>
+					) : null}
 					<div className={classnames({ 'disabled-area': isUpgrade })}>
 						<Item name="chat" valuePropName="checked">
 							<Checkbox className="mt-3">
