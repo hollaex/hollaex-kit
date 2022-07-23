@@ -10,7 +10,7 @@ export const dateFilters = {
 	},
 	one_day: {
 		name: STRINGS['ONE_DAY'],
-		range: [moment(new Date()).subtract(1, 'days'), moment(new Date())] || [],
+		range: [moment(new Date()), moment(new Date()).add(1, 'days')] || [],
 	},
 	one_week: {
 		name: STRINGS['ONE_WEEK'],
