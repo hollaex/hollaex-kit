@@ -39,12 +39,30 @@ const createDepositRequest = (req, res) => {
 			
 			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
+			const { count: depositCount } = await toolsLib.wallet.getUserDepositsByKitId(
+				userId,
+				currency,
+				false,
+				false,
+				false,
+				false,
+				false
+			);
+
+			if (depositCount > 3) {
+				throw new Error('You already have 3 pending deposits. Please wait for them to be processed before creating new deposit.');
+			}
+
+			// if (toolsLib.getKitConfig().onramp[currency] && toolsLib.getKitConfig().onramp[currency][address]) {
+			// 	console.log(toolsLib.getKitConfig().onramp[currency][address].data);
+			// }
+
 			return toolsLib.wallet.mintAssetByKitId(
 				userId,
 				currency,
 				amount,
 				{
-					description: `Pending deposit created with ${currency.toUpperCase()} for username: ${user.username}`,
+					description: `Pending ${currency.toUpperCase()} deposit for username: ${user.username}`,
 					transactionId: transaction_id,
 					address,
 					status: false,
@@ -116,6 +134,20 @@ const createWithdrawalRequest = (req, res) => {
 
 			if (!bank) {
 				throw new Error('The selected payment option is not registered');
+			}
+
+			const { count: withdrawalCount } = await toolsLib.wallet.getUserWithdrawalsByKitId(
+				userId,
+				currency,
+				false,
+				false,
+				false,
+				false,
+				false
+			);
+
+			if (withdrawalCount > 3) {
+				throw new Error('You already have 3 pending withdrawals. Please wait for them to be processed before creating new withdrawals.');
 			}
 
 			// fee_coin is always the same as currency in fiat

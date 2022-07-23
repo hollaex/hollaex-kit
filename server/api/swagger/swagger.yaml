@@ -4349,8 +4349,7 @@ paths:
       operationId: createBrokerPair
       description: Create a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4374,8 +4373,7 @@ paths:
       operationId: updateBrokerPair
       description: Edit a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4399,7 +4397,7 @@ paths:
       operationId: getBrokerPairs
       description: Get all broker deals
       tags:
-        - broker
+        - Broker
       responses:
         200:
           description: Success
@@ -4420,8 +4418,7 @@ paths:
       operationId: deleteBrokerPair
       description: Delete a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4447,7 +4444,7 @@ paths:
       operationId: executeBrokerDeal
       description: Execute a broker deal
       tags:
-        - broker
+        - Broker
       parameters:
         - name: data
           in: body
@@ -4482,7 +4479,7 @@ paths:
       operationId: getBrokerQuote
       description: Get Quote Currency
       tags:
-        - broker
+        - Broker
       parameters:
         - in: query
           name: symbol
@@ -4510,7 +4507,7 @@ paths:
       operationId: testBroker
       description: test broker
       tags:
-        - broker
+        - Broker
       parameters:
         - name: data
           in: body
@@ -4547,7 +4544,7 @@ paths:
       operationId: testRebalance
       description: test connecting rebalance exchange
       tags:
-        - broker
+        - Broker
       parameters:
         - in: query
           name: exchange_id
@@ -5824,7 +5821,7 @@ definitions:
         type: boolean
       email:
         type: boolean
-      updated_description:
+      description:
         type: string
   CoinPostRequest:
     type: object

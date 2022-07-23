@@ -5707,7 +5707,7 @@ table th {
   .app_bar > div {
     display: flex;
     align-items: center;
-    padding: 0 8px; }
+    padding: 0; }
   .app_bar .app_bar-icon-logo {
     height: 4rem;
     width: 5rem;
@@ -6188,12 +6188,13 @@ table th {
 .app-menu-bar {
   display: flex;
   font-size: 1rem;
+  height: 100%;
   position: relative;
-  width: 100%; }
+  max-width: calc(100vw - 40rem); }
   .app-menu-bar .app-menu-bar-content {
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
-    margin: 0 20px;
+    margin: 0 15px;
     height: 100%;
     padding: 8px 0;
     opacity: 0.8;
@@ -6819,8 +6820,9 @@ table th {
 .app-menu-bar-wrapper {
   flex-grow: 1;
   flex-shrink: 1;
-  overflow-y: auto;
-  align-items: flex-start !important; }
+  align-items: flex-start !important;
+  height: 100%;
+  max-width: calc(100vw - 40rem); }
 
 .stared-market svg {
   fill: var(--specials_my-username-in-chat); }
@@ -10971,6 +10973,9 @@ a {
   a:hover, a:visited, a:link, a:active {
     color: inherit;
     text-decoration: none; }
+
+.ant-input-number:hover .ant-input-number-handler-wrap {
+  opacity: 0 !important; }
 
 @media screen and (max-width: 767px) {
   html {

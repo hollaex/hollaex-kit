@@ -93,6 +93,7 @@ const getDepth = (state) => state.orderbook.depth;
 const getChartClose = (state) => state.orderbook.chart_last_close;
 const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
+const getFavourites = (state) => state.app.favourites;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -277,8 +278,8 @@ export const estimatedQuickTradePriceSelector = createSelector(
 );
 
 export const sortedPairKeysSelector = createSelector(
-	[getPairs, getTickers],
-	(pairs, tickers) => {
+	[getPairs, getTickers, getFavourites],
+	(pairs, tickers, favourites) => {
 		const sortedPairKeys = Object.keys(pairs).sort((a, b) => {
 			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
 			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
@@ -288,19 +289,25 @@ export const sortedPairKeysSelector = createSelector(
 		});
 
 		const pinnedCoins = ['xht'];
+		const favouriteKeys = [];
 		const pinnedKeys = [];
 		const filteredKeys = [];
 
 		sortedPairKeys.forEach((key) => {
 			const { pair_base, pair_2 } = pairs[key];
-			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+			if (favourites.includes(key)) {
+				favouriteKeys.push(key);
+			} else if (
+				pinnedCoins.includes(pair_base) ||
+				pinnedCoins.includes(pair_2)
+			) {
 				pinnedKeys.push(key);
 			} else {
 				filteredKeys.push(key);
 			}
 		});
 
-		return [...pinnedKeys, ...filteredKeys];
+		return [...favouriteKeys, ...pinnedKeys, ...filteredKeys];
 	}
 );
 

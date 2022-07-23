@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import { withRouter } from 'react-router';
 
 import {
 	getOrdersHistory,
@@ -643,4 +644,4 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(TransactionsHistory));
+)(withRouter(withConfig(TransactionsHistory)));

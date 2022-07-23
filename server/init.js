@@ -267,13 +267,12 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, version, constants = {}, kit = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}) => {
 	const body = {
 		name,
 		url,
 		activation_code,
-		constants,
-		kit
+		constants
 	};
 	if (version) {
 		// only sends version if its set

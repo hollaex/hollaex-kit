@@ -15,7 +15,7 @@ import { isSupport } from 'utils/token';
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
 );*/
 
-const renderStatus = (_, { status, dismissed, rejected }) => {
+export const renderStatus = (_, { status, dismissed, rejected }) => {
 	if (status) {
 		return 'Completed';
 	}
@@ -86,7 +86,7 @@ export const renderUser = (id) => (
 	</Tooltip>
 );
 
-const renderContent = (renderData, onOpenModal) => {
+export const renderContent = (renderData, onOpenModal) => {
 	if (renderData.status) {
 		return (
 			<div className="d-flex">

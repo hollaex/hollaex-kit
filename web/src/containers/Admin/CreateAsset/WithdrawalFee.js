@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Select, InputNumber, Form, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Select, Form, Input } from 'antd';
 import { getNetworkLabelByKey } from 'utils/wallet';
 import Coins from '../Coins';
 import { STATIC_ICONS } from 'config/icons';
@@ -19,24 +19,84 @@ const WithdrawalFee = ({
 	icons: ICONS,
 	assetType,
 	withdrawalFees,
+	handleInitialValues,
+	updateFormData = () => {},
 }) => {
-	const [withdrawal_fees, setWithdrawalFees] = useState(withdrawalFees);
+	const generateInitialFees = () => {
+		const initialFees = {};
+		const { network, symbol } = coinFormData;
+		const networks = network ? network.split(',') : [symbol];
+		networks.forEach((key) => {
+			initialFees[key] = {
+				value: 0,
+				symbol: coinFormData?.symbol,
+				type: 'static',
+				levels: {},
+			};
+		});
+		return initialFees;
+	};
+
+	const initialFees = generateInitialFees();
+	const [withdrawal_fees, setWithdrawalFees] = useState(
+		withdrawalFees || initialFees
+	);
 	const [form] = Form.useForm();
 
-	let network = [];
-	if (coinFormData && coinFormData.network) {
-		network.push(coinFormData.network);
-	}
-
-	const networkData = network.length && network[0];
-
-	const renderData = () => {
-		if (network.length) {
-			return network[0];
-		} else if (coinFormData && coinFormData.symbol) {
-			return coinFormData.symbol;
+	useEffect(() => {
+		if (!withdrawalFees) {
+			handleInitialValues(withdrawal_fees);
 		}
-	};
+		// eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (
+			coinFormData &&
+			withdrawalFees &&
+			withdrawalFees[coinFormData?.symbol] &&
+			Object.keys(withdrawalFees[coinFormData?.symbol]).length &&
+			!Object.keys(withdrawalFees[coinFormData?.symbol]).includes('symbol')
+		) {
+			updateFormData(
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
+				{
+					...withdrawal_fees,
+					[coinFormData?.symbol]: {
+						...withdrawal_fees[coinFormData?.symbol],
+						symbol: coinFormData?.symbol,
+					},
+				}
+			);
+		}
+		// eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (
+			coinFormData.withdrawal_fees &&
+			JSON.stringify(coinFormData.withdrawal_fees) !==
+				JSON.stringify(withdrawalFees) &&
+			assetType &&
+			assetType !== 'deposit'
+		) {
+			setWithdrawalFees(coinFormData.withdrawal_fees);
+		} else if (
+			coinFormData.deposit_fees &&
+			JSON.stringify(coinFormData.deposit_fees) !==
+				JSON.stringify(withdrawalFees) &&
+			assetType &&
+			assetType === 'deposit'
+		) {
+			setWithdrawalFees(coinFormData.deposit_fees);
+		}
+	}, [coinFormData, withdrawalFees, assetType]);
+
+	let tempArr = [];
+	coins.map((data) => {
+		return tempArr.push(data.symbol);
+	});
+	let coinOptions = tempArr.sort();
 
 	const handleUpdate = (values) => {
 		let formProps = {};
@@ -73,27 +133,23 @@ const WithdrawalFee = ({
 
 	const getInitialValues = () => {
 		let initialValues = {};
-		if (withdrawal_fees) {
-			Object.keys(withdrawal_fees).forEach((data) => {
-				initialValues = {
-					...initialValues,
-					[`${data}_type`]: withdrawal_fees[data].type,
-					[`${data}_value`]: withdrawal_fees[data].value,
-					[`${data}_symbol`]: withdrawal_fees[data].symbol,
-					[`${data}_max`]: withdrawal_fees[data].max,
-					[`${data}_min`]: withdrawal_fees[data].min,
-				};
-			});
-		} else {
+
+		Object.keys(withdrawal_fees).forEach((data) => {
 			initialValues = {
 				...initialValues,
-				option: network.length ? [] : coinFormData && coinFormData.symbol,
-				value: coinFormData.withdrawal_fee || 0,
-				symbol: coinFormData.symbol,
+				[`${data}_type`]: withdrawal_fees[data] && withdrawal_fees[data].type,
+				[`${data}_value`]: withdrawal_fees[data] && withdrawal_fees[data].value,
+				[`${data}_symbol`]: withdrawal_fees[data]?.symbol
+					? withdrawal_fees[data].symbol
+					: coinFormData?.symbol,
+				[`${data}_max`]: withdrawal_fees[data] && withdrawal_fees[data].max,
+				[`${data}_min`]: withdrawal_fees[data] && withdrawal_fees[data].min,
 			};
-		}
+		});
+
 		return initialValues;
 	};
+
 	const handleType = (data, val, key) => {
 		let tempObj = withdrawal_fees;
 		tempObj[data].type = val;
@@ -108,7 +164,7 @@ const WithdrawalFee = ({
 	return (
 		<div className="coin-limit-wrap">
 			<div className="title">
-				{assetType === 'deposit' ? 'Deposit' : 'Withdrawal'} Fees
+				{assetType && assetType === 'deposit' ? 'Deposit' : 'Withdrawal'} Fees
 			</div>
 			<Form
 				form={form}
@@ -116,35 +172,41 @@ const WithdrawalFee = ({
 				name="withdrawalForm"
 				onFinish={handleUpdate}
 			>
-				{withdrawal_fees ? (
-					<div className="fee-wrapper">
-						<div className="d-flex align-items-center">
-							<h3 className="mr-5">
-								Asset being{' '}
-								{assetType === 'deposit' ? 'deposited:' : 'withdrawn:'}
-							</h3>
-							<Coins
-								nohover
-								large
-								small
-								type={(coinFormData.symbol || '').toLowerCase()}
-								fullname={coinFormData.fullname}
-								color={coinFormData.meta ? coinFormData.meta.color : ''}
-							/>
-						</div>
-						<div className="fee-seperator mb-4"></div>
-						<div className="d-flex">
-							<Image
-								icon={
-									assetType === 'deposit'
-										? STATIC_ICONS['DEPOSIT_TIERS_SECTION']
-										: STATIC_ICONS['WITHDRAW_TIERS_SECTION']
-								}
-								wrapperClassName="mr-2 tiers-icon"
-							/>
-							<h3>{assetType === 'deposit' ? 'Deposit' : 'Withdraw'} rules:</h3>
-						</div>
-						{Object.keys(withdrawal_fees).map((data, key) => {
+				<div className="fee-wrapper">
+					<div className="d-flex align-items-center">
+						<h3 className="mr-5">
+							Asset being{' '}
+							{assetType && assetType === 'deposit'
+								? 'deposited:'
+								: 'withdrawn:'}
+						</h3>
+						<Coins
+							nohover
+							large
+							small
+							type={(coinFormData.symbol || '').toLowerCase()}
+							fullname={coinFormData.fullname}
+							color={coinFormData.meta ? coinFormData.meta.color : ''}
+						/>
+					</div>
+					<div className="fee-seperator mb-4"></div>
+					<div className="d-flex">
+						<Image
+							icon={
+								assetType && assetType === 'deposit'
+									? STATIC_ICONS['DEPOSIT_TIERS_SECTION']
+									: STATIC_ICONS['WITHDRAW_TIERS_SECTION']
+							}
+							wrapperClassName="mr-2 tiers-icon"
+						/>
+						<h3>
+							{assetType && assetType === 'deposit' ? 'Deposit' : 'Withdraw'}{' '}
+							rules:
+						</h3>
+					</div>
+					{withdrawal_fees &&
+						Object.keys(withdrawal_fees).length &&
+						Object.keys(withdrawal_fees).map((data, key) => {
 							return (
 								<div key={key}>
 									<div className="d-flex align-items-center">
@@ -200,6 +262,7 @@ const WithdrawalFee = ({
 											<Select
 												size="small"
 												className={
+													withdrawal_fees[data] &&
 													withdrawal_fees[data].type === 'static'
 														? 'w-100 '
 														: 'w-100 disableall'
@@ -209,15 +272,15 @@ const WithdrawalFee = ({
 														data,
 														val,
 														'symbol',
-														assetType === 'deposit'
+														assetType && assetType === 'deposit'
 															? 'deposit_fees'
 															: 'withdrawal_fees'
 													)
 												}
 											>
-												{coins.map((option, index) => (
-													<Select.Option key={index} value={option.symbol}>
-														{option.symbol}
+												{coinOptions.map((option, index) => (
+													<Select.Option key={index} value={option}>
+														{option}
 													</Select.Option>
 												))}
 											</Select>
@@ -229,7 +292,8 @@ const WithdrawalFee = ({
 									</div>
 									<div className="field-wrap last">
 										<div className="sub-title">
-											{withdrawal_fees[data].type === 'static'
+											{withdrawal_fees[data] &&
+											withdrawal_fees[data].type === 'static'
 												? `Static value (withdraw fee amount in ${getNetworkLabelByKey(
 														data
 												  )})`
@@ -239,6 +303,7 @@ const WithdrawalFee = ({
 										<Form.Item
 											name={`${data}_value`}
 											rules={
+												withdrawal_fees[data] &&
 												withdrawal_fees[data].type === 'static'
 													? [
 															{
@@ -269,14 +334,16 @@ const WithdrawalFee = ({
 														data,
 														parseFloat(e.target.value),
 														'value',
-														assetType === 'deposit'
+														assetType && assetType === 'deposit'
 															? 'deposit_fees'
 															: 'withdrawal_fees'
 													)
 												}
 												className="withdrawInput"
 												suffix={
-													withdrawal_fees[data].type === 'percentage' && '%'
+													withdrawal_fees[data] &&
+													withdrawal_fees[data].type === 'percentage' &&
+													'%'
 												}
 											/>
 										</Form.Item>
@@ -307,7 +374,7 @@ const WithdrawalFee = ({
 																data,
 																parseFloat(e.target.value),
 																'max',
-																assetType === 'deposit'
+																assetType && assetType === 'deposit'
 																	? 'deposit_fees'
 																	: 'withdrawal_fees'
 															)
@@ -342,7 +409,7 @@ const WithdrawalFee = ({
 																data,
 																parseFloat(e.target.value),
 																'min',
-																assetType === 'deposit'
+																assetType && assetType === 'deposit'
 																	? 'deposit_fees'
 																	: 'withdrawal_fees'
 															)
@@ -359,7 +426,8 @@ const WithdrawalFee = ({
 											</div>
 										</div>
 									)}
-									{withdrawal_fees[data].levels ? (
+									{withdrawal_fees[data]?.levels &&
+									Object.keys(withdrawal_fees[data].levels).length ? (
 										<>
 											<div>Advanced:</div>
 											<div className="infotxt2">
@@ -423,123 +491,29 @@ const WithdrawalFee = ({
 											</div>
 										</>
 									) : (
-										<div
-											className="viewLink"
-											onClick={() =>
-												handleScreenChange(
-													'step18',
-													data,
-													withdrawal_fees[data].type
-												)
-											}
-										>
-											View advanced{' '}
-											{assetType === 'deposit' ? 'deposit' : 'withdrawal'} fee
-											rule
-										</div>
+										withdrawal_fees[data].type && (
+											<div
+												className="viewLink"
+												onClick={() =>
+													handleScreenChange(
+														'step18',
+														data,
+														withdrawal_fees[data].type
+													)
+												}
+											>
+												View advanced{' '}
+												{assetType && assetType === 'deposit'
+													? 'deposit'
+													: 'withdrawal'}{' '}
+												fee rule
+											</div>
+										)
 									)}
 								</div>
 							);
 						})}
-					</div>
-				) : (
-					<div>
-						<div className="field-wrap last">
-							<div className="sub-title">Option</div>
-							<Form.Item
-								name="option"
-								rules={[
-									{
-										required: true,
-										message: 'This field is required!',
-									},
-								]}
-							>
-								{network.length ? (
-									<Select
-										size="small"
-										className="w-100"
-										onChange={(e) =>
-											handleSymbolChange(
-												networkData,
-												e.target && e.target.value,
-												'option',
-												'withdrawal_fees'
-											)
-										}
-									>
-										{network &&
-											network.map((option, index) => (
-												<Select.Option key={index} value={option}>
-													{option}
-												</Select.Option>
-											))}
-									</Select>
-								) : (
-									<Input disabled={network && !network.length} />
-								)}
-							</Form.Item>
-						</div>
-						<div className="field-wrap last">
-							<div className="sub-title">Value</div>
-							<Form.Item
-								name="value"
-								rules={[
-									{
-										required: true,
-										message: 'This field is required!',
-									},
-									{
-										pattern: /^[+]?([0-9]+(?:[\\.][0-9]*)?|\.[0-9]+)$/,
-										message: 'The field should contains positive values',
-									},
-								]}
-							>
-								<InputNumber
-									onChange={(val) =>
-										handleSymbolChange(
-											renderData(),
-											val,
-											'value',
-											'withdrawal_fees'
-										)
-									}
-								/>
-							</Form.Item>
-						</div>
-						<div className="field-wrap last">
-							<div className="sub-title">Symbol</div>
-							<Form.Item
-								name="symbol"
-								rules={[
-									{
-										required: true,
-										message: 'This field is required!',
-									},
-								]}
-							>
-								<Select
-									size="small"
-									className="w-100"
-									onChange={(val) =>
-										handleSymbolChange(
-											renderData(),
-											val,
-											'symbol',
-											'withdrawal_fees'
-										)
-									}
-								>
-									{coins.map((option, index) => (
-										<Select.Option key={index} value={option.symbol}>
-											{option.symbol}
-										</Select.Option>
-									))}
-								</Select>
-							</Form.Item>
-						</div>
-					</div>
-				)}
+				</div>
 				{isWithdrawalEdit ? (
 					<div>
 						<Button

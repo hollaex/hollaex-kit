@@ -929,7 +929,7 @@ const putMint = (req, res) => {
 		processing,
 		waiting,
 		email,
-		updated_description
+		description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -950,8 +950,8 @@ const putMint = (req, res) => {
 		updated_transaction_id,
 		'updated_address',
 		updated_address,
-		'updated_description',
-		updated_description
+		'description',
+		description
 	);
 
 	toolsLib.wallet.updatePendingMint(transaction_id, {
@@ -963,7 +963,7 @@ const putMint = (req, res) => {
 		updatedTransactionId: updated_transaction_id,
 		updatedAddress: updated_address,
 		email,
-		updatedDescription: updated_description,
+		updatedDescription: description,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

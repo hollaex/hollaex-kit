@@ -30,13 +30,19 @@ const Final = ({
 	selectedCoinSymbol,
 	exchange = {},
 	constants = {},
+	allCoins = {},
 }) => {
-	const {
-		meta = {},
-		type,
-		withdrawal_fees = {},
-		deposit_fees = {},
-	} = coinFormData;
+	const { meta = {}, type } = coinFormData;
+	let coinData = {};
+	allCoins.forEach((item) => {
+		if (item.symbol === coinFormData.symbol) {
+			coinData = {
+				...coinData,
+				...item,
+			};
+		}
+	});
+	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const tabParams = getTabParams();
@@ -79,7 +85,7 @@ const Final = ({
 
 							if (key && key === 'levels') {
 								return (
-									<div className="d-flex align-start">
+									<div key={key} className="d-flex align-start">
 										<div>
 											<b className="caps-first">{key}</b>:
 										</div>
@@ -90,7 +96,11 @@ const Final = ({
 														const feeText = hasUnit
 															? `${fee} ${unit}`
 															: formatPercentage(fee);
-														return <div>{`Tier ${level} @ ${feeText}`}</div>;
+														return (
+															<div
+																key={fee}
+															>{`Tier ${level} @ ${feeText}`}</div>
+														);
 													} else {
 														return null;
 													}
@@ -102,7 +112,7 @@ const Final = ({
 								const valueText = hasUnit ? `${value} ${unit}` : value;
 
 								return (
-									<div>
+									<div key={key}>
 										<b className="caps-first">{key}</b>: {valueText}
 									</div>
 								);
@@ -390,15 +400,37 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{withdrawal_fees ? (
-					<div>
+				<div>
+					{withdrawal_fees ? (
 						<div>{renderFees(withdrawal_fees)}</div>
+					) : (
+						<Fragment>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						</Fragment>
+					)}
+					{isConfigure && (
+						<div className="btn-wrapper">
+							<Button
+								className="green-btn mb-3"
+								type="primary"
+								onClick={() => handleWithdrawalEdit('withdraw')}
+								disabled={!isOwner}
+							>
+								Edit
+							</Button>
+						</div>
+					)}
+				</div>
+				<div className="preview-detail-container pl-0">
+					<div className="title">Deposit Fee</div>
+					<div>
+						{deposit_fees && <div>{renderFees(deposit_fees)}</div>}
 						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
-									className="green-btn mb-3"
+									className="green-btn"
 									type="primary"
-									onClick={() => handleWithdrawalEdit('withdraw')}
+									onClick={() => handleWithdrawalEdit('deposit')}
 									disabled={!isOwner}
 								>
 									Edit
@@ -406,43 +438,7 @@ const Final = ({
 							</div>
 						)}
 					</div>
-				) : (
-					<div>
-						<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-						{isConfigure && (
-							<div className="btn-wrapper">
-								<Button
-									className="green-btn"
-									type="primary"
-									onClick={handleWithdrawalEdit}
-									disabled={!isOwner || !Object.keys(withdrawal_fees).length}
-								>
-									Edit
-								</Button>
-							</div>
-						)}
-					</div>
-				)}
-				{deposit_fees && (
-					<div className="preview-detail-container">
-						<div className="title">Deposit Fee</div>
-						<div>
-							<div>{renderFees(deposit_fees)}</div>
-							{isConfigure && (
-								<div className="btn-wrapper">
-									<Button
-										className="green-btn"
-										type="primary"
-										onClick={() => handleWithdrawalEdit('deposit')}
-										disabled={!isOwner}
-									>
-										Edit
-									</Button>
-								</div>
-							)}
-						</div>
-					</div>
-				)}
+				</div>
 				{(tabParams?.isFiat === 'onRamp' ||
 					tabParams?.isFiat === 'offRamp') && (
 					<div>
@@ -556,6 +552,7 @@ const mapStateToProps = (state) => {
 	return {
 		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
 		constants: state.app.constants,
+		allCoins: state.asset.allCoins,
 	};
 };
 

@@ -31,7 +31,8 @@ let errorTimeOut = null;
 
 const validate = (values, props) => {
 	const { currency, coins, balance } = props;
-	const { withdrawal_fees } = coins[currency] || DEFAULT_COIN_DATA;
+	const { withdrawal_fees, network: networks } =
+		coins[currency] || DEFAULT_COIN_DATA;
 	const { network } = values;
 
 	const errors = {};
@@ -45,6 +46,46 @@ const validate = (values, props) => {
 		const isPercentage = type === 'percentage';
 
 		fee_coin = withdrawal_fees[network].symbol;
+		const hasDifferentFeeCoin =
+			!isPercentage && fee_coin && fee_coin !== currency;
+
+		const fullFeeCoinName = coins[fee_coin]?.fullname;
+		const availableFeeBalance = math.fraction(
+			balance[`${fee_coin}_available`] || 0
+		);
+
+		const totalFee = isPercentage
+			? limitNumberWithinRange(
+					math.multiply(
+						amount,
+						math.fraction(math.divide(math.fraction(fee), 100))
+					),
+					min,
+					max
+			  )
+			: fee;
+		const totalTransaction = hasDifferentFeeCoin
+			? amount
+			: math.add(amount, totalFee);
+
+		if (math.larger(totalTransaction, balanceAvailable)) {
+			errors.amount = STRINGS.formatString(
+				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+				math.number(totalTransaction)
+			);
+		}
+
+		if (hasDifferentFeeCoin && math.larger(totalFee, availableFeeBalance)) {
+			errors.amount = STRINGS.formatString(
+				STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+				`${math.number(totalFee)} ${fullFeeCoinName}`
+			);
+		}
+	} else if (!networks && withdrawal_fees && withdrawal_fees[currency]) {
+		const { type = 'static', min, max } = withdrawal_fees[currency];
+		const isPercentage = type === 'percentage';
+
+		fee_coin = withdrawal_fees[currency].symbol;
 		const hasDifferentFeeCoin =
 			!isPercentage && fee_coin && fee_coin !== currency;
 

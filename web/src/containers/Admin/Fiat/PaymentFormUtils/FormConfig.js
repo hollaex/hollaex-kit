@@ -8,21 +8,6 @@ import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
 
-const add_column_field = {
-	label: {
-		type: 'text',
-		label: 'Payment detail name',
-		placeholder: 'Input the payment detail name',
-		validate: [required],
-	},
-	required: {
-		type: 'boolean',
-		isPayment: true,
-		defaultValue: 'required',
-		validate: validateBoolean,
-	},
-};
-
 class FormConfig extends Component {
 	constructor(props) {
 		super(props);
@@ -36,7 +21,7 @@ class FormConfig extends Component {
 			label: '',
 			required: '',
 			editedValues: this.props.initialValues,
-			buttonSubmitting: false,
+			buttonSubmitting: this.props.buttonSubmitting,
 		};
 	}
 
@@ -96,7 +81,7 @@ class FormConfig extends Component {
 
 	addColumn = (currentSection = '') => {
 		this.setState({ currentSection });
-		this.editColumn();
+		this.editColumn('add');
 	};
 
 	handleRemoveHeader = (headerName, label, required) => {
@@ -155,55 +140,78 @@ class FormConfig extends Component {
 		if (section_type && type === 'initialValue') {
 			custom_fields = {};
 		}
-		custom_fields[section_type ? section_type : this.state.currentSection] = {
-			className: 'section-wrapper',
-			header: {
-				className: 'section-header',
-				fields: {
-					[`column_header_${count}`]: {
-						type: 'input',
-						label: (
-							<div className="form-label">
-								<div>
-									<b>{formProps.label}:</b>
-									{!formProps.required &&
-									this.state.currentActiveTab !== 'onRamp' ? (
-										<div>(optional)</div>
+		formProps.section_type = section_type || this.state.currentSection;
+
+		const checkData = [];
+		Object.keys(custom_fields).forEach((item, index) => {
+			if (
+				custom_fields[item]?.fieldLabel[
+					`column_header_${index + 1}`
+				]?.toLowerCase() === formProps?.label?.toLowerCase()
+			) {
+				checkData.push(item);
+			}
+		});
+
+		if (checkData.length === 0) {
+			custom_fields[section_type ? section_type : this.state.currentSection] = {
+				className: 'section-wrapper',
+				header: {
+					className: 'section-header',
+					fields: {
+						[formProps?.key]: {
+							type: 'input',
+							label: (
+								<div className="form-label">
+									<div>
+										<b>{formProps.label}:</b>
+										{!formProps.required ? <div>(optional)</div> : null}
+									</div>
+									{this.props.currentActiveTab &&
+									this.props.currentActiveTab !== 'offRamp' ? (
+										<span
+											className="anchor"
+											onClick={() => this.editColumn('edit', formProps)}
+										>
+											Edit field name
+										</span>
 									) : null}
 								</div>
-								<span
-									className="anchor"
-									onClick={() => this.editColumn('edit', formProps)}
-								>
-									Edit field name
-								</span>
-							</div>
-						),
-						placeholder:
-							'(User input. Details will be shown in user verification page)',
-						isClosable: true,
-						closeCallback: () =>
-							this.handleRemoveHeader(
-								`column_header_${count}`,
-								formProps.label,
-								formProps.required
 							),
-						input: { name: `column_header_${index + 1}` },
+							placeholder:
+								'(User input. Details will be shown in user verification page)',
+							isClosable: true,
+							closeCallback: () =>
+								this.handleRemoveHeader(
+									`column_header_${count}`,
+									formProps.label,
+									formProps.required
+								),
+							inputDefaultValue: formProps?.value,
+							isTooltip: true,
+							tooltipTitle:
+								this.props.currentActiveTab === 'onRamp'
+									? 'Field is for operator to fill'
+									: 'This input is for your users in their verification page',
+							name: formProps?.key,
+							currentActiveTab: this.props.currentActiveTab,
+						},
 					},
 				},
-			},
-			isRequired:
-				this.props.currentActiveTab === 'onRamp' ? true : formProps.required,
-			fieldLabel: { [`column_header_${count}`]: formProps.label },
-			fieldKey: { [`column_header_${count}`]: formProps.key },
-		};
+				isRequired: formProps.required,
+				fieldLabel: { [`column_header_${count}`]: formProps.label },
+				fieldKey: { [`column_header_${count}`]: formProps.key },
+			};
+		}
 		if (section_type && type === 'initialValue') {
 			return custom_fields;
 		} else {
 			this.setState({
 				custom_fields,
 			});
-			this.onCancel();
+			if (checkData && checkData.length === 0) {
+				this.onCancel();
+			}
 		}
 		if (type === 'edit') {
 			let editedValues = { ...this.state.editedValues };
@@ -280,6 +288,7 @@ class FormConfig extends Component {
 							formProps.label.split(' ').length > 1
 								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
 								: formProps.label.toLowerCase().trim(),
+						section_type: `section_${sectionCount}`,
 						...formProps,
 					},
 				};
@@ -288,11 +297,81 @@ class FormConfig extends Component {
 		}
 	};
 
-	handleSubmitLinks = () => {
-		this.props.handleClose(true, 'savePayment', this.state.editedValues);
+	handleSubmitLinks = (formProps) => {
+		const { handleClose, currentActiveTab } = this.props;
+		let finalEditData = this.state.editedValues;
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			let formPropsData = {};
+			Object.keys(formProps).forEach((item) => {
+				const tempData = formProps[item];
+				formPropsData = {
+					...formPropsData,
+					...tempData,
+				};
+			});
+			let final = {};
+			Object.keys(finalEditData).forEach((data) => {
+				const itemData = finalEditData[data];
+				const result = itemData.map((val) => {
+					return {
+						...val,
+						value: formPropsData[val.key],
+					};
+				});
+				final = {
+					...final,
+					[data]: result,
+				};
+			});
+			finalEditData = final;
+		}
+		handleClose(true, 'savePayment', finalEditData);
+	};
+
+	validateExist = (value) => {
+		const { editedValues, modalType, editData } = this.state;
+		let isExistField = '';
+		let valData =
+			value &&
+			value?.toLowerCase().trim().replace(/  +/g, ' ').replaceAll(' ', '_');
+		if (value && editedValues && modalType === 'add') {
+			Object.keys(editedValues).forEach((item) => {
+				const temp = editedValues[item];
+				if (temp && temp?.key?.toLowerCase() === valData) {
+					isExistField = 'The given field is already exist';
+				}
+			});
+		} else if (value && editedValues && modalType === 'edit') {
+			Object.keys(editedValues).forEach((item) => {
+				const temp = editedValues[item];
+				if (
+					temp &&
+					temp?.key?.toLowerCase() === valData &&
+					editData?.section_type !== temp?.section_type
+				) {
+					isExistField = 'The given field is already exist';
+				}
+			});
+		}
+		return isExistField;
 	};
 
 	renderModalContent = (type) => {
+		const add_column_field = {
+			label: {
+				type: 'text',
+				label: 'Payment detail name',
+				placeholder: 'Input the payment detail name',
+				validate: [required, this.validateExist],
+			},
+			required: {
+				type: 'boolean',
+				isPayment: true,
+				defaultValue: 'required',
+				validate: validateBoolean,
+			},
+		};
+
 		switch (type) {
 			case 'edit':
 				return (
@@ -354,6 +433,11 @@ class FormConfig extends Component {
 		}
 	};
 
+	handleBack = () => {
+		this.props.handleBack();
+		this.setState({ editedValues: this.props.initialValues });
+	};
+
 	render() {
 		const {
 			custom_fields,
@@ -361,15 +445,51 @@ class FormConfig extends Component {
 			modalType,
 			buttonSubmitting,
 		} = this.state;
+		let constructInitValue = {};
+		if (
+			this.props.currentActiveTab &&
+			this.props.currentActiveTab === 'onRamp' &&
+			this.props.initialValues &&
+			Object.keys(this.props.initialValues).length
+		) {
+			Object.keys(this.props.initialValues).forEach((item) => {
+				const tempData =
+					this.props.initialValues && this.props.initialValues[item];
+				if (tempData && tempData.length) {
+					return tempData?.forEach((data) => {
+						if (data?.required) {
+							constructInitValue = {
+								...constructInitValue,
+								required: {
+									...constructInitValue['required'],
+									[data?.key]: data?.value,
+								},
+							};
+						} else {
+							constructInitValue = {
+								...constructInitValue,
+								optional: {
+									...constructInitValue['optional'],
+									[data?.key]: data?.value,
+								},
+							};
+						}
+					});
+				}
+			});
+		}
 		return (
 			<div>
 				<Form
 					fields={custom_fields}
+					initialValues={constructInitValue}
 					customFields={true}
 					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
 					buttonSubmitting={!buttonSubmitting}
 					isFiat={this.props.isFiat}
+					currentActiveTab={this.props.currentActiveTab}
+					handleBack={this.handleBack}
 				/>
 				<Modal visible={isAddColumn} footer={null} onCancel={this.onCancel}>
 					<div>{this.renderModalContent(modalType)}</div>

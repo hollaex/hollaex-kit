@@ -27,8 +27,12 @@ const renderFields = (fields, disableAllFields) => {
 					...(disableAllFields ? { disabled: true } : {}),
 				};
 				if (field.type === 'number') {
-					options.parse = (value) =>
-						isNaN(Number(value)) ? null : Number(value);
+					options.parse = (value) => {
+						if (value === undefined || value === '') {
+							return '';
+						}
+						return isNaN(Number(value)) ? null : Number(value);
+					};
 				}
 
 				let component;

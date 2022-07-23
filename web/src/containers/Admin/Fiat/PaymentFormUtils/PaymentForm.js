@@ -15,7 +15,7 @@ class FormWrapper extends Component {
 	}
 
 	onSubmit = (formProps) => {
-		return this.props.handleSubmitLinks(formProps);
+		this.props.handleSubmitLinks(formProps);
 	};
 
 	getNewIndexFromFields = (fields = {}) => {
@@ -30,7 +30,7 @@ class FormWrapper extends Component {
 		return 1;
 	};
 
-	renderCustomFields = (fields = {}) => {
+	renderCustomFields = (fields = {}, currentActiveTab = '') => {
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div className="custom-form-wrapper flex-direction-column">
@@ -45,8 +45,12 @@ class FormWrapper extends Component {
 										<div className={section.header.className}>
 											{renderFields(
 												section.header.fields,
+												currentActiveTab && currentActiveTab !== 'onRamp'
+													? true
+													: false,
 												getFieldDecorator,
-												this.props.initialValues
+												this.props.initialValues,
+												currentActiveTab
 											)}
 										</div>
 									</Fragment>
@@ -64,6 +68,8 @@ class FormWrapper extends Component {
 			buttonTxt = 'Save',
 			handleSubmit,
 			buttonSubmitting,
+			currentActiveTab = '',
+			handleBack,
 		} = this.props;
 		let requiredCount = this.getNewIndexFromFields(fields);
 		let requiredFields = {};
@@ -82,7 +88,7 @@ class FormWrapper extends Component {
 			}
 		});
 		return (
-			<div>
+			<div className="payment-form-wrapper">
 				<form onSubmit={handleSubmit(this.onSubmit)}>
 					<div className="mt-5">
 						<FormSection name="required">
@@ -90,7 +96,7 @@ class FormWrapper extends Component {
 								{Object.keys(requiredFields).length ? (
 									<div className="mb-2">REQUIRED</div>
 								) : null}
-								{this.renderCustomFields(requiredFields)}
+								{this.renderCustomFields(requiredFields, currentActiveTab)}
 							</div>
 						</FormSection>
 						<FormSection name="optional">
@@ -98,28 +104,42 @@ class FormWrapper extends Component {
 								{Object.keys(optionalFields).length ? (
 									<div className="config-content mb-2 mt-5">OPTIONAL</div>
 								) : null}
-								{this.renderCustomFields(optionalFields)}
+								{this.renderCustomFields(optionalFields, currentActiveTab)}
 							</div>
 						</FormSection>
 					</div>
-					<div className="payment-form-wrapper center-content">
-						<div
-							onClick={() => this.props.addColumn(`section_${requiredCount}`)}
-							className="anchor"
-						>
-							<PlusOutlined style={{ color: '#FFFFFF' }} /> Add more payment
-							details
+					{currentActiveTab && currentActiveTab !== 'offRamp' ? (
+						<div className="payment-form-wrapper center-content">
+							<div
+								onClick={() => this.props.addColumn(`section_${requiredCount}`)}
+								className="anchor"
+							>
+								<PlusOutlined style={{ color: '#FFFFFF' }} /> Add more payment
+								details
+							</div>
 						</div>
+					) : null}
+					<div className="btn-wrapper pt-5">
+						<Button
+							block
+							type="ghost"
+							className="minimal-btn"
+							onClick={handleBack}
+						>
+							Back
+						</Button>
+						{currentActiveTab && currentActiveTab !== 'offRamp' ? (
+							<Button
+								block
+								type="primary"
+								htmlType="submit"
+								className="green-btn minimal-btn"
+								disabled={buttonSubmitting}
+							>
+								{buttonTxt}
+							</Button>
+						) : null}
 					</div>
-					<Button
-						block
-						type="primary"
-						htmlType="submit"
-						className="green-btn minimal-btn"
-						disabled={buttonSubmitting}
-					>
-						{buttonTxt}
-					</Button>
 				</form>
 			</div>
 		);

@@ -50,6 +50,32 @@ export const generateInitialValues = (
 				initialValues.fee = value;
 			}
 		}
+	} else if (withdrawal_fees && withdrawal_fees[symbol]) {
+		const {
+			value,
+			symbol: feeSymbol,
+			type = 'static',
+			levels,
+		} = withdrawal_fees[symbol];
+		if (type === 'static') {
+			initialValues.fee_coin = feeSymbol;
+			initialValues.fee_type = 'static';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		} else {
+			initialValues.fee_coin = '';
+			initialValues.fee_type = 'percentage';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		}
 	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
 		initialValues.fee_coin = '';
@@ -135,6 +161,36 @@ export const generateFormValues = (
 
 		if (type === 'static') {
 			fee_coin = symbol;
+		}
+
+		if (type === 'percentage') {
+			min_fee = min;
+			max_fee = max;
+		}
+
+		if (levels && levels[verification_level]) {
+			fee = levels[verification_level];
+		} else {
+			fee = value;
+		}
+	} else if (
+		!networks &&
+		withdrawal_fees &&
+		withdrawal_fees[symbol] &&
+		!isEmail
+	) {
+		const {
+			value,
+			symbol: feeSymbol,
+			type = 'static',
+			levels,
+			min,
+			max,
+		} = withdrawal_fees[symbol];
+		fee_type = type;
+
+		if (type === 'static') {
+			fee_coin = feeSymbol;
 		}
 
 		if (type === 'percentage') {
