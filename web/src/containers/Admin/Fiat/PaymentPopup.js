@@ -60,6 +60,7 @@ const PaymentAccountPopup = ({
 	selectedPaymentType = '',
 	isPayChanged = false,
 	setIsPayChanged,
+	paymentSavedCoins = [],
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -152,7 +153,9 @@ const PaymentAccountPopup = ({
 	const handleChange = (e) => {
 		setPaymentSelect(e);
 		setExistErrorMsg('');
-		setIsPayChanged(true);
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			setIsPayChanged(true);
+		}
 	};
 	const handleCustomSelect = () => {
 		if (Object.keys(user_payments).includes(plugin)) {
@@ -194,7 +197,6 @@ const PaymentAccountPopup = ({
 			} else if (paymentSelect === 'customPay') {
 				tabUpdate('sysname', 'add');
 			}
-			// setCoindata(coinSymbol);
 		}
 	};
 
@@ -758,11 +760,33 @@ const PaymentAccountPopup = ({
 							: 'payment'}{' '}
 						account?
 					</div>
+					{paymentSavedCoins && paymentSavedCoins.length > 0 && (
+						<>
+							<div className="delete-warning">
+								This payment method has offramp for the
+								{paymentSavedCoins.map((item) => (
+									<span> {item?.toUpperCase()}, </span>
+								))}{' '}
+								coins. So, please delete that from off-ramp first.
+							</div>
+							<div
+								onClick={() => handleClosePlugin(false)}
+								className="go-to-offramp-text"
+							>
+								<Link to="/admin/fiat?tab=3" className="underline">
+									Go to off-ramp
+								</Link>
+							</div>
+						</>
+					)}
 					<div className="button-wrapper">
 						<Button
 							type="primary"
 							className="green-btn w-100"
 							onClick={() => handlePopupDel(paymentSelectData)}
+							disabled={
+								paymentSavedCoins && paymentSavedCoins.length > 0 ? true : false
+							}
 						>
 							Proceed
 						</Button>

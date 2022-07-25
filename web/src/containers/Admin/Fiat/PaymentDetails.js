@@ -38,7 +38,7 @@ const PaymentDetails = ({
 									<div>
 										{activeTab && activeTab !== 'paymentAccounts'
 											? `${activeTab}  ${paymentIndex}`
-											: `User payment account ${index + 1}`}
+											: `User payment account ${paymentIndex}`}
 									</div>
 								</div>
 								<div className="d-flex mb-4">
@@ -197,7 +197,7 @@ const PaymentDetails = ({
 												: 'customForm',
 											item,
 											false,
-											index + 1,
+											paymentIndex,
 											'edit'
 										)
 									}

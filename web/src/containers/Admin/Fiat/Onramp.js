@@ -197,7 +197,9 @@ const Onramp = ({
 		setSelectOffField([]);
 		setSelectedPaymentType('');
 		setIsPayChanged(false);
-		setSelectedCoin(fiatCoins && fiatCoins[0]);
+		if (showSelect) {
+			setSelectedCoin(fiatCoins && fiatCoins[0]);
+		}
 	};
 
 	const handleoffRampTab = (e) => {
@@ -562,9 +564,11 @@ const Onramp = ({
 											<Select
 												className="paymentSelect"
 												defaultValue={
-													offramp &&
-													offramp[item?.symbol] &&
-													offramp[item?.symbol][0]
+													selectedPayType[item?.symbol]
+														? selectedPayType[item?.symbol][0]
+														: offramp &&
+														  offramp[item?.symbol] &&
+														  offramp[item?.symbol][0]
 												}
 												value={selectedPayType[item?.symbol]}
 												suffixIcon={
@@ -635,6 +639,16 @@ const Onramp = ({
 										currentOfframpIndex={currentOfframpIndex}
 										originalofframp={offramp}
 										getUpdatedKitData={getUpdatedKitData}
+										setSelectedPayType={setSelectedPayType}
+										paymentIndex={
+											selectedPayType && selectedPayType[item?.symbol]
+												? offramp &&
+												  offramp[item?.symbol] &&
+												  offramp[item?.symbol].indexOf(
+														selectedPayType && selectedPayType[item?.symbol]
+												  ) + 1
+												: 1
+										}
 									/>
 								) : null}
 								<div className="border-divider"></div>
