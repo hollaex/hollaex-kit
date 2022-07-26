@@ -686,6 +686,8 @@ const Onramp = ({
 					selectedPaymentType={selectedPaymentType}
 					isPayChanged={isPayChanged}
 					setIsPayChanged={setIsPayChanged}
+					currentIndex={currentOfframpIndex}
+					setCurrentOfframpIndex={setCurrentOfframpIndex}
 				/>
 			</Modal>
 		</div>

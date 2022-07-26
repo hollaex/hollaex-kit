@@ -61,6 +61,7 @@ const PaymentAccountPopup = ({
 	isPayChanged = false,
 	setIsPayChanged,
 	paymentSavedCoins = [],
+	setCurrentOfframpIndex = () => {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -107,6 +108,7 @@ const PaymentAccountPopup = ({
 		}
 		setPaymentSelect(selectedPaymentType);
 		handleSelectCoin(val, type);
+		setIsPayChanged(true);
 	};
 
 	const renderSelect = (type) => {
@@ -162,7 +164,13 @@ const PaymentAccountPopup = ({
 			setErrorMsg('This payment is already exist');
 		} else {
 			handleClosePlugin(false);
-			formUpdate('customForm', plugin, true);
+			formUpdate(
+				'customForm',
+				plugin,
+				true,
+				currentIndex === 0 ? currentIndex + 1 : currentIndex,
+				'add'
+			);
 		}
 	};
 
@@ -220,6 +228,18 @@ const PaymentAccountPopup = ({
 			setPaymentSelect(selectedPaymentType);
 		}
 		handleOffRampProceed(type, paymentSelect, symbol);
+		if (
+			singleCoin &&
+			singleCoin.symbol &&
+			offramp &&
+			offramp[singleCoin.symbol]
+		) {
+			setCurrentOfframpIndex(
+				offramp[singleCoin.symbol].length
+					? offramp[singleCoin.symbol].length + 1
+					: 1
+			);
+		}
 	};
 
 	switch (type) {

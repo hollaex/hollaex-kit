@@ -399,6 +399,7 @@ const PaymentAccounts = ({
 	const [currentType, setCurrentType] = useState('');
 	const [isCurrentFormOpen, setIsCurrentFormOpen] = useState(false);
 	const [paymentSavedCoins, setPaymentSavedCoins] = useState([]);
+	const [paymentmethodIndex, setPaymentmethodIndex] = useState(1);
 
 	const getCustomDefaultValues = (paymentType = '') => {
 		let temp = {};
@@ -445,17 +446,26 @@ const PaymentAccounts = ({
 		}
 	}, []);
 
-	const generateFormFieldsValues = (type, paymentType) => {
+	const generateFormFieldsValues = (type, paymentType, currentType) => {
 		if (type === 'bankForm') {
-			if (Object.keys(bankInitialValues).length === 0) {
+			if (
+				Object.keys(bankInitialValues).length === 0 ||
+				currentType === 'add'
+			) {
 				setBankInitValue(defaultBankInitialValues);
 			}
 		} else if (type === 'paypalForm') {
-			if (Object.keys(paypalInitialValues).length === 0) {
+			if (
+				Object.keys(paypalInitialValues).length === 0 ||
+				currentType === 'add'
+			) {
 				setPaypalInitValue(defaultPaypalInitialValues);
 			}
 		} else if (type === 'customForm') {
-			if (Object.keys(customInitialValues).length === 0) {
+			if (
+				Object.keys(customInitialValues).length === 0 ||
+				currentType === 'add'
+			) {
 				const test = getCustomDefaultValues(paymentType);
 				setCustomInitValue(test);
 			}
@@ -644,6 +654,7 @@ const PaymentAccounts = ({
 	};
 
 	const handleSaveAndPublish = (val, payType, saveMethod) => {
+		setPaymentmethodIndex(1);
 		setIsLoading(true);
 		setIsVisible(val);
 		setPaymentType('paymentform');
@@ -730,8 +741,11 @@ const PaymentAccounts = ({
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
 		setIsDisplayDetails(true);
+		if (currentType === 'add') {
+			setPaymentmethodIndex(paymentMethods.length + 1);
+		}
 		setCurrentIndex(curIndex);
-		generateFormFieldsValues(type, currentPaymentType);
+		generateFormFieldsValues(type, currentPaymentType, currentType);
 		if (currentType) {
 			setCurrentType(currentType);
 		}
@@ -842,6 +856,7 @@ const PaymentAccounts = ({
 		} else {
 			updateConstantsData(deletedBodyData, 'delete');
 			setIsVisible(false);
+			setPaymentmethodIndex(1);
 		}
 	};
 	const handleEdit = () => {
@@ -849,6 +864,7 @@ const PaymentAccounts = ({
 	};
 	const setPaymentMethod = (e) => {
 		setCurrentIndex(Object.keys(formValues).indexOf(e) + 1);
+		setPaymentmethodIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentSelect(e);
 		setIsDisplayDetails(false);
 		setIsDisplayForm(false);
@@ -865,6 +881,7 @@ const PaymentAccounts = ({
 			setIsDisplayForm(true);
 		}
 		setIsCurrentFormOpen(false);
+		setPaymentmethodIndex(currentIndex);
 	};
 
 	return (
@@ -1022,7 +1039,7 @@ const PaymentAccounts = ({
 							currentsymbol={currentsymbol}
 							coinSymbol={coinSymbol}
 							isPaymentForm={isPaymentForm}
-							currentIndex={currentIndex}
+							currentIndex={paymentmethodIndex}
 							handleBack={handleBack}
 							currentType={currentType}
 							defaultBankInitialValues={defaultBankInitialValues}
@@ -1071,7 +1088,7 @@ const PaymentAccounts = ({
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}
-					currentIndex={currentIndex}
+					currentIndex={paymentmethodIndex}
 					selectedPaymentType={
 						(originalofframp &&
 							originalofframp[currentsymbol] &&
