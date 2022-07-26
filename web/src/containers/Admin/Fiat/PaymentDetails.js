@@ -27,7 +27,7 @@ const PaymentDetails = ({
 	return (
 		<div>
 			{user_payments &&
-				Object.keys(user_payments).length &&
+				Object.keys(user_payments).length > 0 &&
 				Object.keys(user_payments)
 					.filter((e) => e === type)
 					.map((item, index) => {

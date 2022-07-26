@@ -370,6 +370,10 @@ const PaymentAccounts = ({
 	getUpdatedKitData = () => {},
 	setSelectedPayType = () => {},
 	paymentIndex = 1,
+	currentOnrampType = '',
+	OnsetCurrentType = () => {},
+	isProceed = false,
+	setIsProceed = () => {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -446,29 +450,37 @@ const PaymentAccounts = ({
 		}
 	}, []);
 
+	const constructedData = (paymentType) => {
+		const tempData = user_payments[paymentType]?.data || [];
+		let temp = {};
+		tempData.forEach((item, index) => {
+			temp = {
+				...temp,
+				[`section_${index + 1}`]: item,
+			};
+		});
+		return temp;
+	};
+
 	const generateFormFieldsValues = (type, paymentType, currentType) => {
 		if (type === 'bankForm') {
-			if (
-				Object.keys(bankInitialValues).length === 0 ||
+			setBankInitValue(
 				currentType === 'add'
-			) {
-				setBankInitValue(defaultBankInitialValues);
-			}
+					? defaultBankInitialValues
+					: constructedData(paymentType)
+			);
 		} else if (type === 'paypalForm') {
-			if (
-				Object.keys(paypalInitialValues).length === 0 ||
+			setPaypalInitValue(
 				currentType === 'add'
-			) {
-				setPaypalInitValue(defaultPaypalInitialValues);
-			}
+					? defaultPaypalInitialValues
+					: constructedData(paymentType)
+			);
 		} else if (type === 'customForm') {
-			if (
-				Object.keys(customInitialValues).length === 0 ||
+			const test =
 				currentType === 'add'
-			) {
-				const test = getCustomDefaultValues(paymentType);
-				setCustomInitValue(test);
-			}
+					? getCustomDefaultValues(paymentType)
+					: constructedData(paymentType);
+			setCustomInitValue(test);
 		}
 	};
 
@@ -529,40 +541,71 @@ const PaymentAccounts = ({
 			}
 			setFormValues(user_payments);
 			setPaymentSelect(firstPayment[0]);
-		} else if (
-			Object.keys(onramp).length &&
-			currentActiveTab &&
-			currentActiveTab === 'onRamp'
-		) {
-			Object.keys(onramp).forEach((item) => {
-				firstPayment = [...firstPayment, item];
-				if (typeof onramp[item]?.data !== 'string') {
-					return onramp[item]?.data?.forEach((elem, index) => {
-						if (item === 'bank') {
-							tempBank = {
-								...tempBank,
-								[`section_${index + 1}`]: elem,
-							};
-						} else if (item === 'paypal') {
-							tempPaypal = {
-								...tempPaypal,
-								[`section_${index + 1}`]: elem,
-							};
-						} else {
-							tempCustom = {
-								...tempCustom,
-								[`section_${index + 1}`]: elem,
-							};
-						}
-					});
+		} else if (currentActiveTab === 'onRamp') {
+			if (Object.keys(onramp).length && currentOnrampType !== 'add') {
+				Object.keys(onramp).forEach((item) => {
+					firstPayment = [...firstPayment, item];
+					if (typeof onramp[item]?.data !== 'string') {
+						return onramp[item]?.data?.forEach((elem, index) => {
+							if (item === 'bank') {
+								tempBank = {
+									...tempBank,
+									[`section_${index + 1}`]: elem,
+								};
+							} else if (item === 'paypal') {
+								tempPaypal = {
+									...tempPaypal,
+									[`section_${index + 1}`]: elem,
+								};
+							} else {
+								tempCustom = {
+									...tempCustom,
+									[`section_${index + 1}`]: elem,
+								};
+							}
+						});
+					}
+				});
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+				setFormValues(onramp);
+				setPayOption(true);
+				setPaymentSelect(firstPayment[0]);
+				OnsetCurrentType('');
+			} else if (currentOnrampType === 'add') {
+				if (customName === 'bank') {
+					tempBank =
+						Object.keys(user_payments).length &&
+						user_payments['bank']?.data.length > 0
+							? { [`section_1`]: user_payments['bank'].data }
+							: {
+									[`section_1`]: getConstantObjtoArray(
+										defaultBankInitialValues
+									),
+							  };
+				} else if (customName === 'paypal') {
+					tempPaypal =
+						Object.keys(user_payments).length &&
+						user_payments['paypal']?.data.length > 0
+							? { [`section_1`]: user_payments['paypal'].data }
+							: {
+									[`section_1`]: getConstantObjtoArray(
+										defaultPaypalInitialValues
+									),
+							  };
+				} else if (customName.trim() !== '') {
+					const temp = getCustomDefaultValues(customName);
+					tempCustom = { [`section_1`]: getConstantObjtoArray(temp) };
 				}
-			});
-			setBankInitValue(tempBank);
-			setPaypalInitValue(tempPaypal);
-			setCustomInitValue(tempCustom);
-			setFormValues(onramp);
-			setPayOption(true);
-			setPaymentSelect(firstPayment[0]);
+				setCurrentType('add');
+				setBankInitValue(tempBank);
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+				setFormValues(onramp);
+				setPayOption(true);
+				setPaymentSelect(firstPayment[0]);
+				OnsetCurrentType('');
+			}
 		} else {
 			setPayOption(false);
 			setIsDisplayForm(true);
@@ -570,7 +613,7 @@ const PaymentAccounts = ({
 		}
 		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [onramp, user_payments, currentActiveTab]);
+	}, [onramp, user_payments, currentActiveTab, currentOnrampType]);
 
 	useEffect(() => {
 		if (
@@ -583,10 +626,25 @@ const PaymentAccounts = ({
 		}
 	}, [formValues, currentActiveTab]);
 
+	useEffect(() => {
+		if (isProceed && currentsymbol === coinSymbol) {
+			setPayOption(false);
+			setIsDisplayDetails(true);
+		}
+	}, [isProceed, currentsymbol, coinSymbol]);
+
+	const getConstantObjtoArray = (obj) => {
+		let temp = [];
+		Object.keys(obj).forEach((item) => {
+			temp = [...temp, obj[item]];
+		});
+		return temp;
+	};
+
 	const getConstantData = (type) => {
 		getConstants()
 			.then((res) => {
-				if (currentActiveTab === 'onRamp') {
+				if (currentActiveTab && currentActiveTab === 'onRamp') {
 					if (_get(res, 'kit.onramp')) {
 						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
 					}
@@ -749,6 +807,9 @@ const PaymentAccounts = ({
 		if (currentType) {
 			setCurrentType(currentType);
 		}
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			setIsCurrentFormOpen(true);
+		}
 	};
 	const onCancel = () => {
 		setIsVisible(false);
@@ -882,6 +943,10 @@ const PaymentAccounts = ({
 		}
 		setIsCurrentFormOpen(false);
 		setPaymentmethodIndex(currentIndex);
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			setIsProceed(false);
+			OnsetCurrentType('');
+		}
 	};
 
 	return (
@@ -1004,15 +1069,15 @@ const PaymentAccounts = ({
 				</div>
 			) : (
 				<div className={!isUpgrade ? 'disableall' : ''}>
-					{((currentActiveTab &&
+					{(currentActiveTab &&
 						currentActiveTab === 'paymentAccounts' &&
 						isDisplayForm) ||
-						(currentActiveTab &&
-							currentActiveTab === 'onRamp' &&
-							isCurrentFormOpen) ||
-						(currentActiveTab &&
-							currentActiveTab === 'offRamp' &&
-							isDisplayDetails)) && (
+					(currentActiveTab &&
+						currentActiveTab === 'onRamp' &&
+						isCurrentFormOpen) ||
+					(currentActiveTab &&
+						currentActiveTab === 'offRamp' &&
+						isDisplayDetails) ? (
 						<PaymentWay
 							paymenttype={paymenttype}
 							handleClosePlugin={handleClosePlugin}
@@ -1046,7 +1111,7 @@ const PaymentAccounts = ({
 							defaultPaypalInitialValues={defaultPaypalInitialValues}
 							defaultCustomInitialValues={defaultCustomInitialValues}
 						/>
-					)}
+					) : null}
 					{payOption && !isDisplayDetails ? (
 						<PaymentDetails
 							type={
@@ -1096,6 +1161,7 @@ const PaymentAccounts = ({
 						(offramp && offramp[0])
 					}
 					paymentSavedCoins={paymentSavedCoins}
+					setIsDisplayDetails={setIsDisplayDetails}
 				/>
 			</Modal>
 		</div>

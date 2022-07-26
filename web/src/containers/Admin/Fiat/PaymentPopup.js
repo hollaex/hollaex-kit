@@ -62,6 +62,7 @@ const PaymentAccountPopup = ({
 	setIsPayChanged,
 	paymentSavedCoins = [],
 	setCurrentOfframpIndex = () => {},
+	userPaymentsData = {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -242,6 +243,13 @@ const PaymentAccountPopup = ({
 		}
 	};
 
+	const checkOptionExist = (optValue) => {
+		if (activeTab === 'onRamp') {
+			return !Object.keys(userPaymentsData).includes(optValue);
+		}
+		return true;
+	};
+
 	switch (type) {
 		case 'payment':
 			return (
@@ -284,6 +292,12 @@ const PaymentAccountPopup = ({
 			} else if (activeTab === 'offRamp') {
 				imgSrc = STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP;
 			}
+			let paymentOptions = [];
+			Object.keys(userPaymentsData).forEach((item) => {
+				if (['bank', 'paypal'].includes(item)) {
+					paymentOptions = [...paymentOptions, item];
+				}
+			});
 			return (
 				<div className="payment-modal-wrapper">
 					<div className="d-flex align-items-center ">
@@ -299,6 +313,32 @@ const PaymentAccountPopup = ({
 						This will be used for the purpose of verification. This information
 						can also be used in the off ramp section.
 					</div>
+					{paymentOptions.length > 0 && (
+						<div className="mb-3">
+							<Select
+								className="paymentSelect"
+								defaultValue={userPaymentsData[0]}
+								value={paymentSelect}
+								suffixIcon={
+									isOpen ? (
+										<CaretDownOutlined className="downarrow" />
+									) : (
+										<CaretUpOutlined className="downarrow" />
+									)
+								}
+								onClick={handleOpenPayment}
+								onChange={setPaymentSelect}
+							>
+								{paymentOptions.map((item, index) => {
+									return (
+										<Option value={item} key={index}>
+											User payment account {index + 1}: {item}
+										</Option>
+									);
+								})}
+							</Select>
+						</div>
+					)}
 					<Radio.Group
 						name="standard"
 						value={paymentSelect}
@@ -306,26 +346,30 @@ const PaymentAccountPopup = ({
 							handleChange(e.target.value, 'standard');
 						}}
 					>
-						<Radio style={radioStyle} value={'bank'}>
-							<span className="radio-content">
-								<span>Bank (bank payment details)</span>
-								<img
-									src={STATIC_ICONS.BANK_FIAT_PILLARS}
-									alt="add-pay-icon"
-									className="add-pay-icon"
-								/>
-							</span>
-						</Radio>
-						<Radio style={radioStyle} value={'paypal'}>
-							<span className="radio-content">
-								<span>PayPal</span>
-								<img
-									src={STATIC_ICONS.PAYPAL_FIAT_ICON}
-									alt="add-pay-icon"
-									className="add-pay-icon"
-								/>
-							</span>
-						</Radio>
+						{checkOptionExist('bank') && (
+							<Radio style={radioStyle} value={'bank'}>
+								<span className="radio-content">
+									<span>Bank (bank payment details)</span>
+									<img
+										src={STATIC_ICONS.BANK_FIAT_PILLARS}
+										alt="add-pay-icon"
+										className="add-pay-icon"
+									/>
+								</span>
+							</Radio>
+						)}
+						{checkOptionExist('paypal') && (
+							<Radio style={radioStyle} value={'paypal'}>
+								<span className="radio-content">
+									<span>PayPal</span>
+									<img
+										src={STATIC_ICONS.PAYPAL_FIAT_ICON}
+										alt="add-pay-icon"
+										className="add-pay-icon"
+									/>
+								</span>
+							</Radio>
+						)}
 						<Radio style={radioStyle} value={'customPay'}>
 							<span className="radio-content">
 								<span>Custom (add other payment method)</span>
@@ -853,7 +897,13 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>User payment account {currentIndex}</div>
+							{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
+								<div>User payment account {currentIndex}</div>
+							) : currentActiveTab && currentActiveTab === 'onRamp' ? (
+								<div>On-ramp {currentIndex}</div>
+							) : (
+								<div>Off-ramp {currentIndex}</div>
+							)}
 							<b>
 								{paymentSelect === 'bank'
 									? 'Bank'

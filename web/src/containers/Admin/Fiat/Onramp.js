@@ -53,6 +53,8 @@ const Onramp = ({
 	const [currentOfframpIndex, setCurrentOfframpIndex] = useState(0);
 	const [selectedPaymentType, setSelectedPaymentType] = useState('');
 	const [isPayChanged, setIsPayChanged] = useState(false);
+	const [currentType, setCurrentType] = useState('');
+	const [isProceed, setIsProceed] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -207,10 +209,14 @@ const Onramp = ({
 		handleTabChange(e);
 	};
 
-	const formUpdate = (val, plugin) => {
+	const formUpdate = (val, plugin, isCustomPay, curIndex, currentType = '') => {
 		setIsPaymentForm(true);
 		setFormType(val);
 		setCustomName(plugin);
+		if (currentType && currentType === 'add') {
+			setIsProceed(true);
+		}
+		if (currentType) setCurrentType(currentType);
 	};
 
 	const handleOffRampProceed = (type, paymentType, selectedSymbol) => {
@@ -649,6 +655,10 @@ const Onramp = ({
 												  ) + 1
 												: 1
 										}
+										currentOnrampType={currentType}
+										OnsetCurrentType={setCurrentType}
+										isProceed={isProceed}
+										setIsProceed={setIsProceed}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -688,6 +698,7 @@ const Onramp = ({
 					setIsPayChanged={setIsPayChanged}
 					currentIndex={currentOfframpIndex}
 					setCurrentOfframpIndex={setCurrentOfframpIndex}
+					userPaymentsData={user_payments}
 				/>
 			</Modal>
 		</div>
