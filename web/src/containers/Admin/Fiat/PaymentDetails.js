@@ -27,7 +27,7 @@ const PaymentDetails = ({
 	return (
 		<div>
 			{user_payments &&
-				Object.keys(user_payments).length &&
+				Object.keys(user_payments).length > 0 &&
 				Object.keys(user_payments)
 					.filter((e) => e === type)
 					.map((item, index) => {
@@ -38,7 +38,7 @@ const PaymentDetails = ({
 									<div>
 										{activeTab && activeTab !== 'paymentAccounts'
 											? `${activeTab}  ${paymentIndex}`
-											: `User payment account ${index + 1}`}
+											: `User payment account ${paymentIndex}`}
 									</div>
 								</div>
 								<div className="d-flex mb-4">
@@ -197,7 +197,7 @@ const PaymentDetails = ({
 												: 'customForm',
 											item,
 											false,
-											index + 1,
+											paymentIndex,
 											'edit'
 										)
 									}

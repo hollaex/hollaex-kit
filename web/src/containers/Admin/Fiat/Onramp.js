@@ -53,6 +53,8 @@ const Onramp = ({
 	const [currentOfframpIndex, setCurrentOfframpIndex] = useState(0);
 	const [selectedPaymentType, setSelectedPaymentType] = useState('');
 	const [isPayChanged, setIsPayChanged] = useState(false);
+	const [currentType, setCurrentType] = useState('');
+	const [isProceed, setIsProceed] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -197,7 +199,9 @@ const Onramp = ({
 		setSelectOffField([]);
 		setSelectedPaymentType('');
 		setIsPayChanged(false);
-		setSelectedCoin(fiatCoins && fiatCoins[0]);
+		if (showSelect) {
+			setSelectedCoin(fiatCoins && fiatCoins[0]);
+		}
 	};
 
 	const handleoffRampTab = (e) => {
@@ -205,10 +209,14 @@ const Onramp = ({
 		handleTabChange(e);
 	};
 
-	const formUpdate = (val, plugin) => {
+	const formUpdate = (val, plugin, isCustomPay, curIndex, currentType = '') => {
 		setIsPaymentForm(true);
 		setFormType(val);
 		setCustomName(plugin);
+		if (currentType && currentType === 'add') {
+			setIsProceed(true);
+		}
+		if (currentType) setCurrentType(currentType);
 	};
 
 	const handleOffRampProceed = (type, paymentType, selectedSymbol) => {
@@ -562,9 +570,11 @@ const Onramp = ({
 											<Select
 												className="paymentSelect"
 												defaultValue={
-													offramp &&
-													offramp[item?.symbol] &&
-													offramp[item?.symbol][0]
+													selectedPayType[item?.symbol]
+														? selectedPayType[item?.symbol][0]
+														: offramp &&
+														  offramp[item?.symbol] &&
+														  offramp[item?.symbol][0]
 												}
 												value={selectedPayType[item?.symbol]}
 												suffixIcon={
@@ -635,6 +645,20 @@ const Onramp = ({
 										currentOfframpIndex={currentOfframpIndex}
 										originalofframp={offramp}
 										getUpdatedKitData={getUpdatedKitData}
+										setSelectedPayType={setSelectedPayType}
+										paymentIndex={
+											selectedPayType && selectedPayType[item?.symbol]
+												? offramp &&
+												  offramp[item?.symbol] &&
+												  offramp[item?.symbol].indexOf(
+														selectedPayType && selectedPayType[item?.symbol]
+												  ) + 1
+												: 1
+										}
+										currentOnrampType={currentType}
+										OnsetCurrentType={setCurrentType}
+										isProceed={isProceed}
+										setIsProceed={setIsProceed}
 									/>
 								) : null}
 								<div className="border-divider"></div>
@@ -672,6 +696,9 @@ const Onramp = ({
 					selectedPaymentType={selectedPaymentType}
 					isPayChanged={isPayChanged}
 					setIsPayChanged={setIsPayChanged}
+					currentIndex={currentOfframpIndex}
+					setCurrentOfframpIndex={setCurrentOfframpIndex}
+					userPaymentsData={user_payments}
 				/>
 			</Modal>
 		</div>
