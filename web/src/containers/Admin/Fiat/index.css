@@ -731,3 +731,12 @@
 	font-size: 16px;
 	font-weight: bold;
 }
+.payment-modal-wrapper .delete-warning {
+	color: #ff2000;
+}
+.payment-modal-wrapper .go-to-offramp-text {
+	text-decoration: underline;
+	cursor: pointer;
+	width: 10rem;
+	color: yellow;
+}
