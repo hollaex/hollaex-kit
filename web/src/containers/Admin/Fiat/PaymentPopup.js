@@ -71,10 +71,51 @@ const PaymentAccountPopup = ({
 	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
+	const [paymentOptions, setPaymentOptions] = useState([]);
 
 	useEffect(() => {
-		setPaymentSelect(selectedPaymentType || Object.keys(user_payments)?.[0]);
-	}, [selectedPaymentType, user_payments]);
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			let tempData =
+				Object.keys(userPaymentsData).filter((item) =>
+					['bank', 'paypal'].includes(item)
+				) || [];
+			if (
+				currentActiveTab &&
+				currentActiveTab === 'onRamp' &&
+				selectedPaymentType !== null &&
+				!paymentSelect !== null
+			) {
+				setPaymentSelect(tempData[0]);
+			} else {
+				setPaymentSelect(
+					selectedPaymentType || Object.keys(user_payments)?.[0]
+				);
+			}
+		}
+		// eslint-disable-next-line
+	}, []);
+
+	useEffect(() => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			const tempArr = Object.keys(user_payments);
+			const paymentsData = Object.keys(userPaymentsData).filter((item) =>
+				['bank', 'paypal'].includes(item)
+			);
+			let temp = [];
+			if (tempArr.length > 0) {
+				paymentsData.forEach((item) => {
+					if (!tempArr.includes(item)) {
+						temp = [...temp, item];
+					}
+				});
+			} else {
+				temp = paymentsData;
+			}
+			setPaymentOptions(temp);
+			setPaymentSelect(temp.length > 0 ? temp[0] : 'customPay');
+		}
+		// eslint-disable-next-line
+	}, [user_payments]);
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -292,12 +333,6 @@ const PaymentAccountPopup = ({
 			} else if (activeTab === 'offRamp') {
 				imgSrc = STATIC_ICONS.FIAT_OFFRAMP_TOOLTIP;
 			}
-			let paymentOptions = [];
-			Object.keys(userPaymentsData).forEach((item) => {
-				if (['bank', 'paypal'].includes(item)) {
-					paymentOptions = [...paymentOptions, item];
-				}
-			});
 			return (
 				<div className="payment-modal-wrapper">
 					<div className="d-flex align-items-center ">
@@ -411,7 +446,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('payment')}
+							onClick={() => tabUpdate('onramp', true)}
 						>
 							Back
 						</Button>

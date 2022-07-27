@@ -630,6 +630,7 @@ const PaymentAccounts = ({
 		if (isProceed && currentsymbol === coinSymbol) {
 			setPayOption(false);
 			setIsDisplayDetails(true);
+			setIsCurrentFormOpen(true);
 		}
 	}, [isProceed, currentsymbol, coinSymbol]);
 
@@ -929,6 +930,7 @@ const PaymentAccounts = ({
 		setPaymentSelect(e);
 		setIsDisplayDetails(false);
 		setIsDisplayForm(false);
+		setIsCurrentFormOpen(false);
 	};
 	const handleOpenPayment = () => {
 		setIsOpen(!isOpen);
