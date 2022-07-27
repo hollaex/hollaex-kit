@@ -141,13 +141,18 @@ class FormConfig extends Component {
 			custom_fields = {};
 		}
 		formProps.section_type = section_type || this.state.currentSection;
+		const fieldName =
+			this.props.currentActiveTab !== 'onRamp'
+				? `column_header_${count}`
+				: formProps?.key;
 
 		const checkData = [];
 		Object.keys(custom_fields).forEach((item, index) => {
 			if (
 				custom_fields[item]?.fieldLabel[
 					`column_header_${index + 1}`
-				]?.toLowerCase() === formProps?.label?.toLowerCase()
+				]?.toLowerCase() === formProps?.label?.toLowerCase() &&
+				formProps?.section_type !== item
 			) {
 				checkData.push(item);
 			}
@@ -159,7 +164,7 @@ class FormConfig extends Component {
 				header: {
 					className: 'section-header',
 					fields: {
-						[formProps?.key]: {
+						[fieldName]: {
 							type: 'input',
 							label: (
 								<div className="form-label">

@@ -290,3 +290,11 @@ export const handleUpgrade = (info = {}) => {
 		return false;
 	}
 };
+
+export const handleFiatUpgrade = (info = {}) => {
+	if (_toLower(info.plan) !== 'fiat' && _toLower(info.plan) !== 'boost') {
+		return true;
+	} else {
+		return false;
+	}
+};
