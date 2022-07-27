@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
+import moment from 'moment';
+
 import STRINGS from 'config/localizedStrings';
 import { dateFilters } from '../filterUtils';
 
@@ -79,7 +81,13 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 		if (!e) {
 			onSearch(data);
 		} else if (e && e.length > 1 && e[0] && e[1]) {
-			setClick(e);
+			const firstDate = moment(e[0]).format('DD/MMM/YYYY');
+			const secondDate = moment(e[1]).format('DD/MMM/YYYY');
+			if (firstDate === secondDate) {
+				setClick([moment(e[0]), moment(e[1]).add(1, 'days')]);
+			} else {
+				setClick(e);
+			}
 		}
 	};
 
