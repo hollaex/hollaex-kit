@@ -125,6 +125,7 @@ const Onramp = ({
 			});
 		setFiatCoins(filteredFiatCoins);
 		setSelectedCoin(filteredFiatCoins?.[0]);
+		setCoinSymbol(filteredFiatCoins?.[0]?.symbol);
 	}, [allCoins, onramp, offramp, activeTab, exchange]);
 
 	useEffect(() => {
@@ -156,6 +157,7 @@ const Onramp = ({
 
 	const handleSelectCoin = (e) => {
 		if (e) {
+			setCoinSymbol(e);
 			setSelectedAsset(e);
 			setSelectedPaymentType(
 				user_payments &&
@@ -401,7 +403,7 @@ const Onramp = ({
 							handleRamp(
 								activeTab === 'onRamp' ? 'onramp' : 'offramp',
 								true,
-								null,
+								activeTab === 'onRamp' ? selectedCoin?.symbol : null,
 								null,
 								null,
 								true
@@ -613,7 +615,7 @@ const Onramp = ({
 										</div>
 									</div>
 								) : null}
-								{isPaymentForm ||
+								{(activeTab && activeTab === 'onRamp') ||
 								(activeTab &&
 									activeTab === 'offRamp' &&
 									item.symbol === coinSymbol) ? (
@@ -683,7 +685,7 @@ const Onramp = ({
 					showCoins={showCoins}
 					handleSelectCoin={handleSelectCoin}
 					user_payments={
-						activeTab === 'onRamp' ? onramp[coinSymbol] : user_payments
+						activeTab === 'onRamp' ? onramp[coinSymbol] || {} : user_payments
 					}
 					currentActiveTab={activeTab}
 					handleOffRampProceed={handleOffRampProceed}
