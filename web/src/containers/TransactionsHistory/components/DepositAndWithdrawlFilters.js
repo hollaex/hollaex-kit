@@ -83,7 +83,9 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 		} else if (e && e.length > 1 && e[0] && e[1]) {
 			const firstDate = moment(e[0]).format('DD/MMM/YYYY');
 			const secondDate = moment(e[1]).format('DD/MMM/YYYY');
-			if (firstDate !== secondDate) {
+			if (firstDate === secondDate) {
+				setClick([moment(e[0]), moment(e[1]).add(1, 'days')]);
+			} else {
 				setClick(e);
 			}
 		}
@@ -104,18 +106,6 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 		} else {
 			if (!click.length) {
 				setCustomSel(false);
-			}
-		}
-	};
-
-	const checkExistDate = (rule, value, callback) => {
-		if (value && value.length && value[0] && value[1]) {
-			const firstDate = moment(value[0]).format('DD/MMM/YYYY');
-			const secondDate = moment(value[1]).format('DD/MMM/YYYY');
-			if (firstDate === secondDate) {
-				callback('Select a duration of time that is at least 1 day in length');
-			} else {
-				callback();
 			}
 		}
 	};
@@ -206,14 +196,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 					Custom
 				</Form.Item>
 				{customSel && (
-					<Form.Item
-						name="range"
-						rules={[
-							{
-								validator: checkExistDate,
-							},
-						]}
-					>
+					<Form.Item name="range">
 						<RangePicker
 							allowEmpty={[true, true]}
 							size="small"
