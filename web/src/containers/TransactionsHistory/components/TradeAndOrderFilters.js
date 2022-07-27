@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
+import moment from 'moment';
+
 import { dateFilters } from '../filterUtils';
 import STRINGS from '../../../config/localizedStrings';
 
@@ -64,7 +66,11 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 		if (!e) {
 			onSearch(data);
 		} else if (e && e.length > 1 && e[0] && e[1]) {
-			setClick(e);
+			const firstDate = moment(e[0]).format('DD/MMM/YYYY');
+			const secondDate = moment(e[1]).format('DD/MMM/YYYY');
+			if (firstDate !== secondDate) {
+				setClick(e);
+			}
 		}
 	};
 
@@ -83,6 +89,18 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 		} else {
 			if (!click.length) {
 				setCustomSel(false);
+			}
+		}
+	};
+
+	const checkExistDate = (rule, value, callback) => {
+		if (value && value.length && value[0] && value[1]) {
+			const firstDate = moment(value[0]).format('DD/MMM/YYYY');
+			const secondDate = moment(value[1]).format('DD/MMM/YYYY');
+			if (firstDate === secondDate) {
+				callback('Select a duration of time that is at least 1 day in length');
+			} else {
+				callback();
 			}
 		}
 	};
@@ -175,7 +193,14 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 					Custom
 				</Form.Item>
 				{customSel && (
-					<Form.Item name="range">
+					<Form.Item
+						name="range"
+						rules={[
+							{
+								validator: checkExistDate,
+							},
+						]}
+					>
 						<RangePicker
 							allowEmpty={[true, true]}
 							size="small"
