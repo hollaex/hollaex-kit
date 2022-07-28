@@ -458,7 +458,7 @@ const Offramp = ({
 												item?.symbol,
 												offramp[item?.symbol],
 												selectedCoin,
-												false
+												true
 											)
 										}
 										disabled={
@@ -600,7 +600,9 @@ const Offramp = ({
 					singleCoin={selectedCoin}
 					offramp={offramp}
 					showSelect={showSelect}
-					selectedPaymentType={selectedPaymentType}
+					selectedPaymentType={
+						selectedPaymentType || Object.keys(user_payments)?.[0]
+					}
 					isPayChanged={isPayChanged}
 					setIsPayChanged={setIsPayChanged}
 					currentIndex={currentOfframpIndex}
