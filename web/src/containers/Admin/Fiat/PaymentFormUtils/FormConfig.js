@@ -208,26 +208,6 @@ class FormConfig extends Component {
 				fieldKey: { [`column_header_${count}`]: formProps.key },
 			};
 		}
-		if (
-			section_type &&
-			type === 'initialValue' &&
-			this.props.currentActiveTab === 'paymentAccounts'
-		) {
-			let editedValues = { ...this.state.editedValues };
-			let sectionCount = Object.keys(editedValues).length + 1;
-			editedValues = {
-				[`section_${sectionCount}`]: {
-					key:
-						formProps.label.split(' ').length > 1
-							? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
-							: formProps.label.toLowerCase().trim(),
-					section_type: `section_${sectionCount}`,
-					...formProps,
-				},
-			};
-			this.setState({ editedValues });
-		}
-
 		if (section_type && type === 'initialValue') {
 			return custom_fields;
 		} else {
@@ -260,25 +240,12 @@ class FormConfig extends Component {
 					});
 				});
 			} else {
-				if (
-					Object.keys(this.props.user_payments).includes(
-						this.props.currentPaymentType
-					) &&
-					type !== 'initialValue'
-				) {
-					editedValues = {
-						...editedValues,
-						[editData?.section_type]: {
-							...formProps,
-						},
-					};
-				} else {
-					editedValues = {
-						[editData?.section_type]: {
-							...formProps,
-						},
-					};
-				}
+				editedValues = {
+					...editedValues,
+					[editData?.section_type]: {
+						...formProps,
+					},
+				};
 			}
 			this.setState({ editedValues });
 		} else {

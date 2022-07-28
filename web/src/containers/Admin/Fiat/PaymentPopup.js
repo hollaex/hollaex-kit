@@ -63,10 +63,17 @@ const PaymentAccountPopup = ({
 	paymentSavedCoins = [],
 	setCurrentOfframpIndex = () => {},
 	userPaymentsData = {},
+	isVisible = false,
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
-	const [paymentSelect, setPaymentSelect] = useState(selectedPaymentType);
+	const [paymentSelect, setPaymentSelect] = useState(
+		!selectedPaymentType &&
+			currentActiveTab &&
+			currentActiveTab === 'paymentAccounts'
+			? 'bank'
+			: selectedPaymentType
+	);
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
@@ -74,9 +81,10 @@ const PaymentAccountPopup = ({
 	const [paymentOptions, setPaymentOptions] = useState([]);
 
 	useEffect(() => {
-		if (currentActiveTab === 'onRamp') {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			let tempData = Object.keys(userPaymentsData) || [];
 			if (
+				currentActiveTab &&
 				currentActiveTab === 'onRamp' &&
 				selectedPaymentType !== null &&
 				!paymentSelect !== null
@@ -92,7 +100,20 @@ const PaymentAccountPopup = ({
 	}, []);
 
 	useEffect(() => {
-		if (currentActiveTab === 'onRamp') {
+		if (!isVisible) {
+			setExistErrorMsg('');
+			setPaymentSelect(
+				!selectedPaymentType &&
+					currentActiveTab &&
+					currentActiveTab === 'paymentAccounts'
+					? 'bank'
+					: selectedPaymentType
+			);
+		}
+	}, [isVisible, currentActiveTab, selectedPaymentType]);
+
+	useEffect(() => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
 			const paymentsData = Object.keys(userPaymentsData);
 			let temp = [];
@@ -296,6 +317,22 @@ const PaymentAccountPopup = ({
 		return true;
 	};
 
+	const handleAccountBack = () => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			tabUpdate('onramp', true);
+		} else {
+			tabUpdate('payment');
+		}
+		setExistErrorMsg('');
+		setPaymentSelect(
+			!selectedPaymentType &&
+				currentActiveTab &&
+				currentActiveTab === 'paymentAccounts'
+				? 'bank'
+				: selectedPaymentType
+		);
+	};
+
 	switch (type) {
 		case 'payment':
 			return (
@@ -451,7 +488,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('payment')}
+							onClick={handleAccountBack}
 						>
 							Back
 						</Button>
@@ -927,9 +964,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelect === 'bank'
+								paymentSelectData === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelect === 'paypal'
+									: paymentSelectData === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -937,19 +974,19 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
-								<div>User payment account {currentIndex}</div>
-							) : currentActiveTab && currentActiveTab === 'onRamp' ? (
+							{currentActiveTab && currentActiveTab === 'onRamp' ? (
 								<div>On-ramp {currentIndex}</div>
+							) : currentActiveTab && currentActiveTab === 'offRamp' ? (
+								<div>off-ramp {currentIndex}</div>
 							) : (
-								<div>Off-ramp {currentIndex}</div>
+								<div>User payment account {currentIndex}</div>
 							)}
 							<b>
-								{paymentSelect === 'bank'
+								{paymentSelectData === 'bank'
 									? 'Bank'
-									: paymentSelect === 'paypal'
+									: paymentSelectData === 'paypal'
 									? 'Paypal'
-									: paymentSelectData}{' '}
+									: paymentSelectData}
 							</b>
 						</div>
 					</div>

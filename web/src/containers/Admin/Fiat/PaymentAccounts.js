@@ -29,6 +29,7 @@ const PaymentAccounts = ({
 	isUpgrade,
 	user_payments = {},
 	setConfig = () => {},
+	offramp = {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -55,6 +56,7 @@ const PaymentAccounts = ({
 	const [defaultPaypalInitialValues, setDefaultPaypalInitValue] = useState({});
 	const [defaultCustomInitialValues, setDefaultCustomInitValue] = useState({});
 	const [currentType, setCurrentType] = useState('');
+	const [paymentSavedCoins, setPaymentSavedCoins] = useState([]);
 	const [paymentmethodIndex, setPaymentmethodIndex] = useState(1);
 
 	const getCustomDefaultValues = (paymentType = '') => {
@@ -210,6 +212,7 @@ const PaymentAccounts = ({
 						setPaymentMethod(temp[temp.length - 1]);
 						setFormValues(tempData);
 					}
+					setPaymentmethodIndex(1);
 				}
 				setConfig(res && res.kit);
 				setIsLoading(false);
@@ -305,6 +308,7 @@ const PaymentAccounts = ({
 	const onCancel = () => {
 		setIsVisible(false);
 		setCurrentTab('payment');
+		setPaymentSavedCoins([]);
 	};
 
 	const handleSave = (val, selectedPlugin) => {
@@ -340,12 +344,27 @@ const PaymentAccounts = ({
 			},
 		};
 
-		updateConstantsData(deletedBodyData, 'delete');
-		setIsVisible(false);
-		setPaymentmethodIndex(1);
+		let paymentSavedCoins = Object.keys(offramp).filter((item) => {
+			if (offramp[item].includes(method)) {
+				return item;
+			}
+			return null;
+		});
+		if (
+			paymentSavedCoins &&
+			currentActiveTab &&
+			currentActiveTab === 'paymentAccounts' &&
+			paymentSavedCoins.length > 0
+		) {
+			setPaymentSavedCoins(paymentSavedCoins);
+		} else {
+			updateConstantsData(deletedBodyData, 'delete');
+			setIsVisible(false);
+			setPaymentmethodIndex(1);
+		}
 	};
 	const setPaymentMethod = (e) => {
-		setCurrentIndex(Object.keys(formValues).indexOf(e) + 1);
+		setCurrentIndex(Object.keys(user_payments).indexOf(e) + 1);
 		setPaymentmethodIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentSelect(e);
 		setIsDisplayDetails(false);
@@ -509,6 +528,7 @@ const PaymentAccounts = ({
 							defaultBankInitialValues={defaultBankInitialValues}
 							defaultPaypalInitialValues={defaultPaypalInitialValues}
 							defaultCustomInitialValues={defaultCustomInitialValues}
+							user_payments={user_payments}
 						/>
 					) : null}
 					{payOption && !isDisplayDetails ? (
@@ -521,7 +541,7 @@ const PaymentAccounts = ({
 							router={router}
 							user_payments={formValues}
 							activeTab={currentActiveTab}
-							paymentIndex={currentIndex}
+							paymentIndex={paymentmethodIndex}
 						/>
 					) : null}
 				</div>
@@ -541,7 +561,10 @@ const PaymentAccounts = ({
 					paymentSelectData={currentPaymentType}
 					selectedPlugin={selectedPlugin}
 					currentIndex={paymentmethodIndex}
+					paymentSavedCoins={paymentSavedCoins}
 					setIsDisplayDetails={setIsDisplayDetails}
+					offramp={offramp}
+					isVisible={isVisible}
 				/>
 			</Modal>
 		</div>
