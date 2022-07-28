@@ -74,13 +74,12 @@ const PaymentAccountPopup = ({
 	const [paymentOptions, setPaymentOptions] = useState([]);
 
 	useEffect(() => {
-		if (currentActiveTab && currentActiveTab === 'onRamp') {
+		if (currentActiveTab === 'onRamp') {
 			let tempData =
 				Object.keys(userPaymentsData).filter((item) =>
 					['bank', 'paypal'].includes(item)
 				) || [];
 			if (
-				currentActiveTab &&
 				currentActiveTab === 'onRamp' &&
 				selectedPaymentType !== null &&
 				!paymentSelect !== null
@@ -96,7 +95,7 @@ const PaymentAccountPopup = ({
 	}, []);
 
 	useEffect(() => {
-		if (currentActiveTab && currentActiveTab === 'onRamp') {
+		if (currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
 			const paymentsData = Object.keys(userPaymentsData).filter((item) =>
 				['bank', 'paypal'].includes(item)
@@ -446,7 +445,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('onramp', true)}
+							onClick={() => tabUpdate('payment')}
 						>
 							Back
 						</Button>
