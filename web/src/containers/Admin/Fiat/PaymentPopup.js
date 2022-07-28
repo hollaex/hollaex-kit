@@ -75,10 +75,7 @@ const PaymentAccountPopup = ({
 
 	useEffect(() => {
 		if (currentActiveTab === 'onRamp') {
-			let tempData =
-				Object.keys(userPaymentsData).filter((item) =>
-					['bank', 'paypal'].includes(item)
-				) || [];
+			let tempData = Object.keys(userPaymentsData) || [];
 			if (
 				currentActiveTab === 'onRamp' &&
 				selectedPaymentType !== null &&
@@ -97,9 +94,7 @@ const PaymentAccountPopup = ({
 	useEffect(() => {
 		if (currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
-			const paymentsData = Object.keys(userPaymentsData).filter((item) =>
-				['bank', 'paypal'].includes(item)
-			);
+			const paymentsData = Object.keys(userPaymentsData);
 			let temp = [];
 			if (tempArr.length > 0) {
 				paymentsData.forEach((item) => {
@@ -225,26 +220,37 @@ const PaymentAccountPopup = ({
 				`You have already created the payment by using ${paymentSelect} method`
 			);
 		} else {
-			if (paymentSelect === 'bank') {
+			if (currentActiveTab && currentActiveTab === 'onRamp') {
 				handleClosePlugin(false);
 				formUpdate(
-					'bankForm',
+					'customForm',
 					paymentSelect,
 					false,
 					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
-			} else if (paymentSelect === 'paypal') {
-				handleClosePlugin(false);
-				formUpdate(
-					'paypalForm',
-					paymentSelect,
-					false,
-					currentIndex === 0 ? currentIndex + 1 : currentIndex,
-					'add'
-				);
-			} else if (paymentSelect === 'customPay') {
-				tabUpdate('sysname', 'add');
+			} else {
+				if (paymentSelect === 'bank') {
+					handleClosePlugin(false);
+					formUpdate(
+						'bankForm',
+						paymentSelect,
+						false,
+						currentIndex === 0 ? currentIndex + 1 : currentIndex,
+						'add'
+					);
+				} else if (paymentSelect === 'paypal') {
+					handleClosePlugin(false);
+					formUpdate(
+						'paypalForm',
+						paymentSelect,
+						false,
+						currentIndex === 0 ? currentIndex + 1 : currentIndex,
+						'add'
+					);
+				} else if (paymentSelect === 'customPay') {
+					tabUpdate('sysname', 'add');
+				}
 			}
 		}
 	};

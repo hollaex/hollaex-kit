@@ -7,7 +7,7 @@ import { Link } from 'react-router';
 
 import Coins from '../Coins';
 import PaymentAccountPopup from './PaymentPopup';
-import PaymentAccounts from './PaymentAccounts';
+import RampPaymentAccounts from './RampPaymentAccounts';
 
 import './index.css';
 
@@ -361,7 +361,7 @@ const Onramp = ({
 									</Button>
 								</div>
 								{isPaymentForm ? (
-									<PaymentAccounts
+									<RampPaymentAccounts
 										formType={formType}
 										isDisplayFormData={true}
 										onramp={onramp[item?.symbol]}

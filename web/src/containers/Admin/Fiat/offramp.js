@@ -12,7 +12,7 @@ import { Link } from 'react-router';
 
 import Coins from '../Coins';
 import PaymentAccountPopup from './PaymentPopup';
-import PaymentAccounts from './PaymentAccounts';
+import RampPaymentAccounts from './RampPaymentAccounts';
 import { updateConstants } from '../General/action';
 import { getConstants } from '../Settings/action';
 
@@ -529,7 +529,7 @@ const Offramp = ({
 									</div>
 								) : null}
 								{isPaymentForm || item.symbol === coinSymbol ? (
-									<PaymentAccounts
+									<RampPaymentAccounts
 										formType={formType}
 										isDisplayFormData={true}
 										currentActiveTab={activeTab}
