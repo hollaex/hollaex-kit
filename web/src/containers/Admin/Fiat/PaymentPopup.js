@@ -64,6 +64,8 @@ const PaymentAccountPopup = ({
 	setCurrentOfframpIndex = () => {},
 	userPaymentsData = {},
 	isVisible = false,
+	setPaymentSavedCoins = () => {},
+	handleBack = () => {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -256,7 +258,31 @@ const PaymentAccountPopup = ({
 				`You have already created the payment by using ${paymentSelect} method`
 			);
 		} else {
-			if (currentActiveTab && currentActiveTab === 'onRamp') {
+			if (paymentSelect === 'bank') {
+				handleClosePlugin(false);
+				formUpdate(
+					'bankForm',
+					paymentSelect,
+					false,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'paypal') {
+				handleClosePlugin(false);
+				formUpdate(
+					'paypalForm',
+					paymentSelect,
+					false,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'customPay') {
+				tabUpdate('sysname', 'add');
+			} else if (
+				currentActiveTab &&
+				currentActiveTab === 'onRamp' &&
+				!['bank', 'paypal', 'customPay'].includes(paymentSelect)
+			) {
 				handleClosePlugin(false);
 				formUpdate(
 					'customForm',
@@ -265,28 +291,6 @@ const PaymentAccountPopup = ({
 					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
-			} else {
-				if (paymentSelect === 'bank') {
-					handleClosePlugin(false);
-					formUpdate(
-						'bankForm',
-						paymentSelect,
-						false,
-						currentIndex === 0 ? currentIndex + 1 : currentIndex,
-						'add'
-					);
-				} else if (paymentSelect === 'paypal') {
-					handleClosePlugin(false);
-					formUpdate(
-						'paypalForm',
-						paymentSelect,
-						false,
-						currentIndex === 0 ? currentIndex + 1 : currentIndex,
-						'add'
-					);
-				} else if (paymentSelect === 'customPay') {
-					tabUpdate('sysname', 'add');
-				}
 			}
 		}
 	};
@@ -346,6 +350,12 @@ const PaymentAccountPopup = ({
 				? 'bank'
 				: selectedPaymentType
 		);
+	};
+
+	const handleLink = () => {
+		handleClosePlugin(false);
+		setPaymentSavedCoins([]);
+		handleBack();
 	};
 
 	switch (type) {
@@ -923,10 +933,7 @@ const PaymentAccountPopup = ({
 								))}{' '}
 								coins. So, please delete that from off-ramp first.
 							</div>
-							<div
-								onClick={() => handleClosePlugin(false)}
-								className="go-to-offramp-text"
-							>
+							<div onClick={handleLink} className="go-to-offramp-text">
 								<Link to="/admin/fiat?tab=3" className="underline">
 									Go to off-ramp
 								</Link>
