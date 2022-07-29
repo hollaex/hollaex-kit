@@ -568,7 +568,11 @@ const Summarycontent = ({
 							</span>
 						</div>
 						<div
-							className={deposits.length ? 'fiattable mb-5' : 'fiattable1 mb-5'}
+							className={
+								deposits.length
+									? 'fiattable mb-5 blue-admin-table'
+									: 'fiattable1 mb-5'
+							}
 						>
 							<Table
 								columns={columns}
@@ -610,7 +614,9 @@ const Summarycontent = ({
 						</div>
 						<div
 							className={
-								withdrawal.length ? 'fiattable mb-5' : 'fiattable1 mb-5'
+								withdrawal.length
+									? 'fiattable mb-5 blue-admin-table'
+									: 'fiattable1 mb-5'
 							}
 						>
 							<Table
