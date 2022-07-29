@@ -49,6 +49,7 @@ const RampPaymentAccounts = ({
 	OnsetCurrentType = () => {},
 	isProceed = false,
 	setIsProceed = () => {},
+	isModalVisible = false,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -126,15 +127,34 @@ const RampPaymentAccounts = ({
 	}, []);
 
 	const constructedData = (paymentType) => {
-		const tempData = user_payments[paymentType]?.data || [];
+		const tempData = onramp[paymentType]?.data || [];
 		let temp = {};
-		tempData.forEach((item, index) => {
-			temp = {
-				...temp,
-				[`section_${index + 1}`]: item,
-			};
+		tempData.forEach((item) => {
+			if (item?.length) {
+				item.forEach((nestItem, index) => {
+					temp = {
+						...temp,
+						[`section_${index + 1}`]: nestItem,
+					};
+				});
+			}
 		});
 		return temp;
+	};
+
+	const integrateFieldValues = (fieldKey = 'bank', fieldData) => {
+		let tempVal = { ...fieldData };
+		let newVal = onramp?.[fieldKey]?.data?.[0];
+		if (newVal.length) {
+			Object.keys(fieldData).forEach((val) => {
+				let valTemp = fieldData[val];
+				if (valTemp && valTemp.key) {
+					let res = newVal?.find((p) => p.key === valTemp.key) ?? {};
+					tempVal[val].value = res.value ?? '';
+				}
+			});
+		}
+		return tempVal;
 	};
 
 	const generateFormFieldsValues = (type, paymentType, currentType) => {
@@ -142,22 +162,28 @@ const RampPaymentAccounts = ({
 			setBankInitValue(
 				currentType === 'add'
 					? defaultBankInitialValues
-					: constructedData(paymentType)
+					: integrateFieldValues('bank', constructedData(paymentType))
 			);
 		} else if (type === 'paypalForm') {
 			setPaypalInitValue(
 				currentType === 'add'
 					? defaultPaypalInitialValues
-					: constructedData(paymentType)
+					: integrateFieldValues('paypal', constructedData(paymentType))
 			);
 		} else if (type === 'customForm') {
-			const test =
+			setCustomInitValue(
 				currentType === 'add'
 					? getCustomDefaultValues(paymentType)
-					: constructedData(paymentType);
-			setCustomInitValue(test);
+					: integrateFieldValues(paymentType, constructedData(paymentType))
+			);
 		}
 	};
+
+	useEffect(() => {
+		if (isModalVisible) {
+			setIsCurrentFormOpen(false);
+		}
+	}, [isModalVisible]);
 
 	useEffect(() => {
 		generateDefaultInitValue();
@@ -221,22 +247,26 @@ const RampPaymentAccounts = ({
 				Object.keys(onramp).forEach((item) => {
 					firstPayment = [...firstPayment, item];
 					if (typeof onramp[item]?.data !== 'string') {
-						return onramp[item]?.data?.forEach((elem, index) => {
-							if (item === 'bank') {
-								tempBank = {
-									...tempBank,
-									[`section_${index + 1}`]: elem,
-								};
-							} else if (item === 'paypal') {
-								tempPaypal = {
-									...tempPaypal,
-									[`section_${index + 1}`]: elem,
-								};
-							} else {
-								tempCustom = {
-									...tempCustom,
-									[`section_${index + 1}`]: elem,
-								};
+						return onramp[item]?.data?.forEach((elem) => {
+							if (elem?.length) {
+								elem.forEach((nestEl, indexKey) => {
+									if (item === 'bank') {
+										tempBank = {
+											...tempBank,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									} else if (item === 'paypal') {
+										tempPaypal = {
+											...tempPaypal,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									} else {
+										tempCustom = {
+											...tempCustom,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									}
+								});
 							}
 						});
 					}
@@ -246,31 +276,22 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				OnsetCurrentType('');
+				// OnsetCurrentType('');
 			} else if (currentOnrampType === 'add') {
 				if (customName === 'bank') {
 					tempBank =
 						Object.keys(user_payments).length &&
 						user_payments['bank']?.data.length > 0
-							? { [`section_1`]: user_payments['bank'].data }
-							: {
-									[`section_1`]: getConstantObjtoArray(
-										defaultBankInitialValues
-									),
-							  };
+							? getStructedDataFromArray(user_payments['bank'].data)
+							: defaultBankInitialValues;
 				} else if (customName === 'paypal') {
 					tempPaypal =
 						Object.keys(user_payments).length &&
 						user_payments['paypal']?.data.length > 0
-							? { [`section_1`]: user_payments['paypal'].data }
-							: {
-									[`section_1`]: getConstantObjtoArray(
-										defaultPaypalInitialValues
-									),
-							  };
+							? getStructedDataFromArray(user_payments['paypal'].data)
+							: defaultPaypalInitialValues;
 				} else if (customName.trim() !== '') {
-					const temp = getCustomDefaultValues(customName);
-					tempCustom = { [`section_1`]: getConstantObjtoArray(temp) };
+					tempCustom = getCustomDefaultValues(customName);
 				}
 				setCurrentType('add');
 				setBankInitValue(tempBank);
@@ -279,7 +300,7 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				OnsetCurrentType('');
+				// OnsetCurrentType('');
 			}
 		} else {
 			setPayOption(false);
@@ -309,10 +330,10 @@ const RampPaymentAccounts = ({
 		}
 	}, [isProceed, currentsymbol, coinSymbol]);
 
-	const getConstantObjtoArray = (obj) => {
-		let temp = [];
-		Object.keys(obj).forEach((item) => {
-			temp = [...temp, obj[item]];
+	const getStructedDataFromArray = (value) => {
+		let temp = {};
+		value.forEach((val, index) => {
+			temp[`section_${index + 1}`] = val;
 		});
 		return temp;
 	};
@@ -321,8 +342,9 @@ const RampPaymentAccounts = ({
 		getConstants()
 			.then((res) => {
 				if (currentActiveTab && currentActiveTab === 'onRamp') {
+					handleBack();
 					if (_get(res, 'kit.onramp')) {
-						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
+						setFormValues(_get(res, `kit.onramp[${currentsymbol}]`));
 					}
 				} else {
 					if (_get(res, 'kit.user_payments')) {
@@ -403,23 +425,11 @@ const RampPaymentAccounts = ({
 		let userPayment = {};
 		let onRampData = {};
 		let paymentAccData = [];
+		let temp = [];
 		if (currentActiveTab === 'onRamp') {
 			Object.keys(formData).forEach((elem) => {
 				const item = formData[elem];
-				let temp = [];
-				item.forEach((val) => {
-					if (val) {
-						temp = [
-							...temp,
-							{
-								key: val?.key,
-								label: val?.label,
-								value: val?.value || '',
-								required: val?.required,
-							},
-						];
-					}
-				});
+				temp = [...temp, item];
 				onRampData = {
 					data: [temp],
 					type: 'manual',
@@ -429,8 +439,8 @@ const RampPaymentAccounts = ({
 				kit: {
 					onramp: {
 						...originalonramp,
-						[coinSymbol]: {
-							...originalonramp[coinSymbol],
+						[currentsymbol]: {
+							...originalonramp[currentsymbol],
 							[currentPaymentType || customName]: onRampData,
 						},
 					},
@@ -558,7 +568,7 @@ const RampPaymentAccounts = ({
 				kit: {
 					onramp: {
 						...originalonramp,
-						[coinSymbol]: deletedData,
+						[currentsymbol]: deletedData,
 					},
 				},
 			};
@@ -789,7 +799,9 @@ const RampPaymentAccounts = ({
 							defaultCustomInitialValues={defaultCustomInitialValues}
 						/>
 					) : null}
-					{payOption && !isDisplayDetails ? (
+					{payOption &&
+					!isDisplayDetails &&
+					(paymentSelect || selectedPaymentType) ? (
 						<PaymentDetails
 							type={
 								currentActiveTab && currentActiveTab === 'offRamp'
@@ -826,7 +838,7 @@ const RampPaymentAccounts = ({
 					user_payments={formValues}
 					bodyData={bodyData}
 					paymentSelectData={currentPaymentType || customName}
-					coinSymbol={coinSymbol}
+					coinSymbol={currentsymbol}
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}

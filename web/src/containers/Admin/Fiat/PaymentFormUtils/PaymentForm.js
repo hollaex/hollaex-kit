@@ -42,7 +42,13 @@ class FormWrapper extends Component {
 							<Fragment key={index}>
 								<div className={section.className}>
 									<Fragment>
-										<div className={section.header.className}>
+										<div
+											className={
+												currentActiveTab && currentActiveTab === 'onRamp'
+													? 'colorWrapper'
+													: section.header.className
+											}
+										>
 											{renderFields(
 												section.header.fields,
 												currentActiveTab && currentActiveTab !== 'onRamp'
@@ -70,8 +76,11 @@ class FormWrapper extends Component {
 			buttonSubmitting,
 			currentActiveTab = '',
 			handleBack,
+			pristine,
+			valid,
+			submitting,
 		} = this.props;
-		let requiredCount = this.getNewIndexFromFields(fields);
+		let requiredCount = (Object.keys(fields).length ?? 0) + 1;
 		let requiredFields = {};
 		let optionalFields = {};
 		Object.keys(fields).forEach((item) => {
@@ -134,7 +143,11 @@ class FormWrapper extends Component {
 								type="primary"
 								htmlType="submit"
 								className="green-btn minimal-btn"
-								disabled={buttonSubmitting}
+								disabled={
+									currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? buttonSubmitting
+										: pristine || submitting || !valid
+								}
 							>
 								{buttonTxt}
 							</Button>

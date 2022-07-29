@@ -49,14 +49,6 @@ class FormConfig extends Component {
 	generateInitialValues = () => {
 		const { initialValues } = this.props;
 		let initialValuesData = initialValues;
-		if (
-			Object.keys(initialValues).length === 1 &&
-			this.props.currentActiveTab === 'onRamp'
-		) {
-			Object.keys(initialValues).forEach((item) => {
-				initialValuesData = initialValues[item];
-			});
-		}
 		let custom_fields = {};
 		Object.keys(initialValuesData).forEach((item, index) => {
 			custom_fields = {
@@ -140,6 +132,12 @@ class FormConfig extends Component {
 		if (section_type && type === 'initialValue') {
 			custom_fields = {};
 		}
+		if (!formProps?.key) {
+			formProps['key'] =
+				formProps?.label?.split(' ').length > 1
+					? formProps?.label?.toLowerCase().trim().replaceAll(' ', '_')
+					: formProps?.label?.toLowerCase().trim();
+		}
 		formProps.section_type = section_type || this.state.currentSection;
 		const fieldName =
 			this.props.currentActiveTab !== 'onRamp'
@@ -200,6 +198,12 @@ class FormConfig extends Component {
 									: 'This input is for your users in their verification page',
 							name: formProps?.key,
 							currentActiveTab: this.props.currentActiveTab,
+							validate:
+								this.props.currentActiveTab &&
+								this.props.currentActiveTab === 'onRamp' &&
+								formProps.required
+									? [required]
+									: [],
 						},
 					},
 				},
@@ -274,38 +278,26 @@ class FormConfig extends Component {
 			this.setState({ editedValues });
 		} else {
 			let editedValues = { ...this.state.editedValues };
+			const { section_type, ...rest } = formProps;
 			if (this.props.currentActiveTab === 'onRamp') {
 				if (Object.keys(editedValues).length) {
-					Object.keys(editedValues).forEach((item) => {
-						editedValues = {
-							...editedValues,
-							[item]: [
-								...editedValues[item],
-								{
-									...formProps,
-									key:
-										formProps.label.split(' ').length > 1
-											? formProps.label
-													.toLowerCase()
-													.trim()
-													.replaceAll(' ', '_')
-											: formProps.label.toLowerCase().trim(),
-								},
-							],
-						};
-					});
+					editedValues[`section_${Object.keys(editedValues).length + 1}`] = {
+						...rest,
+						key:
+							formProps.label.split(' ').length > 1
+								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
+								: formProps.label.toLowerCase().trim(),
+					};
 				} else {
 					editedValues = {
 						...editedValues,
-						[`section_1`]: [
-							{
-								key:
-									formProps.label.split(' ').length > 1
-										? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
-										: formProps.label.toLowerCase().trim(),
-								...formProps,
-							},
-						],
+						[`section_1`]: {
+							key:
+								formProps.label.split(' ').length > 1
+									? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
+									: formProps.label.toLowerCase().trim(),
+							...formProps,
+						},
 					};
 				}
 			} else {
@@ -341,16 +333,13 @@ class FormConfig extends Component {
 			});
 			let final = {};
 			Object.keys(finalEditData).forEach((data) => {
-				const itemData = finalEditData[data];
-				const result = itemData.map((val) => {
-					return {
-						...val,
-						value: formPropsData[val.key],
-					};
-				});
+				const itemData = finalEditData[data] ?? {};
 				final = {
 					...final,
-					[data]: result,
+					[data]: {
+						...itemData,
+						value: formPropsData[itemData?.key],
+					},
 				};
 			});
 			finalEditData = final;
@@ -485,26 +474,24 @@ class FormConfig extends Component {
 			Object.keys(this.props.initialValues).forEach((item) => {
 				const tempData =
 					this.props.initialValues && this.props.initialValues[item];
-				if (tempData && tempData.length) {
-					return tempData?.forEach((data) => {
-						if (data?.required) {
-							constructInitValue = {
-								...constructInitValue,
-								required: {
-									...constructInitValue['required'],
-									[data?.key]: data?.value,
-								},
-							};
-						} else {
-							constructInitValue = {
-								...constructInitValue,
-								optional: {
-									...constructInitValue['optional'],
-									[data?.key]: data?.value,
-								},
-							};
-						}
-					});
+				if (tempData && Object.keys(tempData).length) {
+					if (tempData?.required) {
+						constructInitValue = {
+							...constructInitValue,
+							required: {
+								...constructInitValue['required'],
+								[tempData?.key]: tempData?.value,
+							},
+						};
+					} else {
+						constructInitValue = {
+							...constructInitValue,
+							optional: {
+								...constructInitValue['optional'],
+								[tempData?.key]: tempData?.value,
+							},
+						};
+					}
 				}
 			});
 		}
