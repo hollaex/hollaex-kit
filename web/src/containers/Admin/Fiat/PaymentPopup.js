@@ -79,7 +79,7 @@ const PaymentAccountPopup = ({
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
 	const [paymentOptions, setPaymentOptions] = useState([]);
-
+	const [paymentCount, setPaymentCount] = useState([]);
 	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			let tempData = Object.keys(userPaymentsData) || [];
@@ -98,6 +98,21 @@ const PaymentAccountPopup = ({
 		}
 		// eslint-disable-next-line
 	}, []);
+
+	useEffect(() => {
+		if (currentActiveTab === 'offRamp') {
+			setPaymentSelect(selectedPaymentType);
+		}
+		let tempArr = Object.keys(user_payments).filter((item, i) => {
+			if (!offramp[singleCoin.symbol]?.includes(item)) {
+				return item;
+			} else {
+				return null;
+			}
+		});
+		setPaymentCount(tempArr);
+		// eslint-disable-next-line
+	}, [selectedPaymentType]);
 
 	useEffect(() => {
 		if (!isVisible) {
@@ -684,9 +699,7 @@ const PaymentAccountPopup = ({
 								<div>
 									<div>
 										Select from premade Payment Accounts (
-										{Object.keys(user_payments).length
-											? Object.keys(user_payments).length
-											: null}
+										{paymentCount.length ? paymentCount.length : null}
 										):
 									</div>
 									<div>
