@@ -219,6 +219,7 @@ class FormConfig extends Component {
 			let editedValues = { ...this.props.initialValues };
 			let sectionCount = Object.keys(editedValues).length;
 			editedValues = {
+				...editedValues,
 				[`section_${sectionCount}`]: {
 					...editedValues[`section_${sectionCount}`],
 					key:
@@ -263,25 +264,12 @@ class FormConfig extends Component {
 					});
 				});
 			} else {
-				if (
-					Object.keys(this.props.user_payments).includes(
-						this.props.currentPaymentType
-					) &&
-					type !== 'initialValue'
-				) {
-					editedValues = {
-						...editedValues,
-						[editData?.section_type]: {
-							...formProps,
-						},
-					};
-				} else {
-					editedValues = {
-						[editData?.section_type]: {
-							...formProps,
-						},
-					};
-				}
+				editedValues = {
+					...editedValues,
+					[editData?.section_type]: {
+						...formProps,
+					},
+				};
 			}
 			this.setState({ editedValues });
 		} else {
@@ -404,7 +392,7 @@ class FormConfig extends Component {
 				type: 'text',
 				label: 'Payment detail name',
 				placeholder: 'Input the payment detail name',
-				validate: [required, this.validateExist],
+				validate: type === 'edit' ? [required] : [required, this.validateExist],
 			},
 			required: {
 				type: 'boolean',

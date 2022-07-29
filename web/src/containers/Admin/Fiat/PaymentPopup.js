@@ -119,6 +119,7 @@ const PaymentAccountPopup = ({
 	useEffect(() => {
 		if (!isVisible) {
 			setExistErrorMsg('');
+			setErrorMsg('');
 			setPaymentSelect(
 				!selectedPaymentType &&
 					currentActiveTab &&
@@ -358,6 +359,11 @@ const PaymentAccountPopup = ({
 		handleBack();
 	};
 
+	const onClickBack = () => {
+		setErrorMsg('');
+		tabUpdate('account');
+	};
+
 	switch (type) {
 		case 'payment':
 			return (
@@ -581,11 +587,7 @@ const PaymentAccountPopup = ({
 					)}
 					{errorMsg ? <div className="error-text">{errorMsg}</div> : null}
 					<div className="button-wrapper mt-5">
-						<Button
-							type="primary"
-							className="green-btn"
-							onClick={() => tabUpdate('account')}
-						>
+						<Button type="primary" className="green-btn" onClick={onClickBack}>
 							Back
 						</Button>
 						<Button
@@ -593,9 +595,7 @@ const PaymentAccountPopup = ({
 							className="green-btn"
 							disabled={!plugin || errorMsg}
 							onClick={
-								paymentSelect !== 'customPay'
-									? () => handleNext()
-									: () => handleCustomSelect()
+								paymentSelect !== 'customPay' ? handleNext : handleCustomSelect
 							}
 						>
 							NEXT
