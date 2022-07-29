@@ -208,6 +208,29 @@ class FormConfig extends Component {
 				fieldKey: { [`column_header_${count}`]: formProps.key },
 			};
 		}
+		if (
+			section_type &&
+			type === 'initialValue' &&
+			this.props.currentType &&
+			this.props.currentType === 'add' &&
+			this.props.user_payments &&
+			Object.keys(this.props.user_payments).length
+		) {
+			let editedValues = { ...this.props.initialValues };
+			let sectionCount = Object.keys(editedValues).length;
+			editedValues = {
+				[`section_${sectionCount}`]: {
+					...editedValues[`section_${sectionCount}`],
+					key:
+						formProps.label.split(' ').length > 1
+							? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
+							: formProps.label.toLowerCase().trim(),
+					section_type: `section_${sectionCount}`,
+					...formProps,
+				},
+			};
+			this.setState({ editedValues });
+		}
 		if (section_type && type === 'initialValue') {
 			return custom_fields;
 		} else {
@@ -240,12 +263,25 @@ class FormConfig extends Component {
 					});
 				});
 			} else {
-				editedValues = {
-					...editedValues,
-					[editData?.section_type]: {
-						...formProps,
-					},
-				};
+				if (
+					Object.keys(this.props.user_payments).includes(
+						this.props.currentPaymentType
+					) &&
+					type !== 'initialValue'
+				) {
+					editedValues = {
+						...editedValues,
+						[editData?.section_type]: {
+							...formProps,
+						},
+					};
+				} else {
+					editedValues = {
+						[editData?.section_type]: {
+							...formProps,
+						},
+					};
+				}
 			}
 			this.setState({ editedValues });
 		} else {
@@ -285,10 +321,11 @@ class FormConfig extends Component {
 					};
 				}
 			} else {
-				let sectionCount = Object.keys(editedValues).length + 1;
+				let sectionCount = Object.keys(editedValues).length;
 				editedValues = {
 					...editedValues,
-					[`section_${sectionCount}`]: {
+					[`section_${sectionCount + 1}`]: {
+						...editedValues[`section_${sectionCount}`],
 						key:
 							formProps.label.split(' ').length > 1
 								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')

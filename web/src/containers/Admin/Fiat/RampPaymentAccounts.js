@@ -23,21 +23,41 @@ import './index.css';
 
 const { Option } = Select;
 
-const PaymentAccounts = ({
-	currentActiveTab = '',
+const RampPaymentAccounts = ({
 	router,
 	isUpgrade,
 	user_payments = {},
+	formType = '',
+	isDisplayFormData = false,
+	onramp = {},
+	currentActiveTab = '',
+	coinSymbol = '',
 	setConfig = () => {},
+	customName = '',
+	originalonramp = {},
 	offramp = {},
+	pluginName = '',
+	currentsymbol = '',
+	isPaymentForm = false,
+	setCoindata,
+	selectedPaymentType = '',
+	originalofframp = {},
+	getUpdatedKitData = () => {},
+	setSelectedPayType = () => {},
+	paymentIndex = 1,
+	currentOnrampType = '',
+	OnsetCurrentType = () => {},
+	isProceed = false,
+	setIsProceed = () => {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
 	const [paymenttype, setPaymentType] = useState('initial');
+	const [savedContent, setSavedContent] = useState(false);
 	const [paymentSelect, setPaymentSelect] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [payOption, setPayOption] = useState(true);
-	const [isDisplayForm, setIsDisplayForm] = useState(true);
+	const [isDisplayForm, setIsDisplayForm] = useState(isDisplayFormData);
 	const [formData, setFormData] = useState({});
 	const [saveType, setSaveType] = useState('');
 	const [bodyData, setBodyData] = useState({});
@@ -56,6 +76,7 @@ const PaymentAccounts = ({
 	const [defaultPaypalInitialValues, setDefaultPaypalInitValue] = useState({});
 	const [defaultCustomInitialValues, setDefaultCustomInitValue] = useState({});
 	const [currentType, setCurrentType] = useState('');
+	const [isCurrentFormOpen, setIsCurrentFormOpen] = useState(false);
 	const [paymentSavedCoins, setPaymentSavedCoins] = useState([]);
 	const [paymentmethodIndex, setPaymentmethodIndex] = useState(1);
 
@@ -143,13 +164,30 @@ const PaymentAccounts = ({
 	}, [currentPaymentType, generateDefaultInitValue]);
 
 	useEffect(() => {
+		if (currentsymbol === coinSymbol) {
+			setIsCurrentFormOpen(true);
+		} else {
+			setIsCurrentFormOpen(false);
+		}
+	}, [currentsymbol, coinSymbol]);
+
+	useEffect(() => {
+		if (formType) {
+			setPaymentType(formType);
+		}
+	}, [formType]);
+
+	useEffect(() => {
 		let tempBank = { ...bankInitialValues };
 		let tempPaypal = { ...paypalInitialValues };
 		let tempCustom = { ...customInitialValues };
 		let firstPayment = [];
-		if (Object.keys(user_payments).length) {
+		if (
+			Object.keys(user_payments).length &&
+			currentActiveTab &&
+			currentActiveTab !== 'onRamp'
+		) {
 			setPayOption(true);
-			setIsDisplayForm(false);
 			Object.keys(user_payments).forEach((item) => {
 				firstPayment = [...firstPayment, item];
 				return user_payments[item]?.data?.forEach((elem, index) => {
@@ -171,50 +209,155 @@ const PaymentAccounts = ({
 					}
 				});
 			});
-			setBankInitValue(tempBank);
-			setPaypalInitValue(tempPaypal);
-			setCustomInitValue(tempCustom);
+			if (currentActiveTab && currentActiveTab !== 'offRamp') {
+				setBankInitValue(tempBank);
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+			}
 			setFormValues(user_payments);
 			setPaymentSelect(firstPayment[0]);
+		} else if (currentActiveTab === 'onRamp') {
+			if (Object.keys(onramp).length && currentOnrampType !== 'add') {
+				Object.keys(onramp).forEach((item) => {
+					firstPayment = [...firstPayment, item];
+					if (typeof onramp[item]?.data !== 'string') {
+						return onramp[item]?.data?.forEach((elem, index) => {
+							if (item === 'bank') {
+								tempBank = {
+									...tempBank,
+									[`section_${index + 1}`]: elem,
+								};
+							} else if (item === 'paypal') {
+								tempPaypal = {
+									...tempPaypal,
+									[`section_${index + 1}`]: elem,
+								};
+							} else {
+								tempCustom = {
+									...tempCustom,
+									[`section_${index + 1}`]: elem,
+								};
+							}
+						});
+					}
+				});
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+				setFormValues(onramp);
+				setPayOption(true);
+				setPaymentSelect(firstPayment[0]);
+				OnsetCurrentType('');
+			} else if (currentOnrampType === 'add') {
+				if (customName === 'bank') {
+					tempBank =
+						Object.keys(user_payments).length &&
+						user_payments['bank']?.data.length > 0
+							? { [`section_1`]: user_payments['bank'].data }
+							: {
+									[`section_1`]: getConstantObjtoArray(
+										defaultBankInitialValues
+									),
+							  };
+				} else if (customName === 'paypal') {
+					tempPaypal =
+						Object.keys(user_payments).length &&
+						user_payments['paypal']?.data.length > 0
+							? { [`section_1`]: user_payments['paypal'].data }
+							: {
+									[`section_1`]: getConstantObjtoArray(
+										defaultPaypalInitialValues
+									),
+							  };
+				} else if (customName.trim() !== '') {
+					const temp = getCustomDefaultValues(customName);
+					tempCustom = { [`section_1`]: getConstantObjtoArray(temp) };
+				}
+				setCurrentType('add');
+				setBankInitValue(tempBank);
+				setPaypalInitValue(tempPaypal);
+				setCustomInitValue(tempCustom);
+				setFormValues(onramp);
+				setPayOption(true);
+				setPaymentSelect(firstPayment[0]);
+				OnsetCurrentType('');
+			}
+		} else {
+			setPayOption(false);
+			setIsDisplayForm(true);
+			setFormValues(user_payments);
 		}
 		// TODO: Fix react-hooks/exhaustive-deps
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user_payments]);
+	}, [onramp, user_payments, currentActiveTab, currentOnrampType]);
 
 	useEffect(() => {
-		if (formValues && Object.keys(formValues).length) {
+		if (
+			formValues &&
+			Object.keys(formValues).length &&
+			currentActiveTab !== 'offRamp'
+		) {
 			let temp = Object.keys(formValues).map((item) => item);
 			setPaymentMethods(temp);
 		}
-	}, [formValues]);
+	}, [formValues, currentActiveTab]);
+
+	useEffect(() => {
+		if (isProceed && currentsymbol === coinSymbol) {
+			setPayOption(false);
+			setIsDisplayDetails(true);
+			setIsCurrentFormOpen(true);
+		}
+	}, [isProceed, currentsymbol, coinSymbol]);
+
+	const getConstantObjtoArray = (obj) => {
+		let temp = [];
+		Object.keys(obj).forEach((item) => {
+			temp = [...temp, obj[item]];
+		});
+		return temp;
+	};
 
 	const getConstantData = (type) => {
 		getConstants()
 			.then((res) => {
-				if (_get(res, 'kit.user_payments')) {
-					const tempData = _get(res, 'kit.user_payments');
-					let temp = Object.keys(tempData).map((item) => item);
-					if (type === 'delete') {
-						setPaymentMethod(temp[0]);
-						if (
-							!tempData ||
-							!Object.keys(tempData).length ||
-							Object.keys(tempData).length === 0
-						) {
-							setIsDisplayForm(true);
-							setPaymentType('initial');
-							setFormValues({});
-							setBankInitValue({});
-							setPaypalInitValue({});
-							setCustomInitValue({});
-						}
-					} else if (type === 'add') {
-						setPaymentMethod(temp[temp.length - 1]);
-						setFormValues(tempData);
+				if (currentActiveTab && currentActiveTab === 'onRamp') {
+					if (_get(res, 'kit.onramp')) {
+						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
 					}
-					setPaymentmethodIndex(1);
+				} else {
+					if (_get(res, 'kit.user_payments')) {
+						const tempData = _get(res, 'kit.user_payments');
+						let temp = Object.keys(tempData).map((item) => item);
+						if (type === 'delete') {
+							setPaymentMethod(temp[0]);
+							if (Object.keys(tempData).length === 0) {
+								setPaymentType('initial');
+								setFormValues({});
+								setBankInitValue({});
+								setPaypalInitValue({});
+								setCustomInitValue({});
+							}
+						} else if (type === 'add') {
+							setPaymentMethod(temp[temp.length - 1]);
+							setFormValues(tempData);
+						}
+					}
+				}
+				if (currentActiveTab && currentActiveTab === 'offRamp') {
+					const { offramp = {} } = res && res.kit;
+					if (
+						offramp &&
+						Object.keys(offramp).length &&
+						Object.keys(offramp).length > 1 &&
+						currentsymbol
+					) {
+						setSelectedPayType({
+							[currentsymbol]: offramp[currentsymbol]?.[0],
+						});
+					}
 				}
 				setConfig(res && res.kit);
+				getUpdatedKitData(res && res.kit);
 				setIsLoading(false);
 			})
 			.catch((error) => {
@@ -258,26 +401,62 @@ const PaymentAccounts = ({
 		setCurrentTab(type);
 		setFormData(formData);
 		let userPayment = {};
+		let onRampData = {};
 		let paymentAccData = [];
-		Object.keys(formData).forEach((elem) => {
-			const item = formData[elem];
-			paymentAccData = [
-				...paymentAccData,
-				{
-					key: item?.key,
-					label: item?.label,
-					required: item?.required,
+		if (currentActiveTab === 'onRamp') {
+			Object.keys(formData).forEach((elem) => {
+				const item = formData[elem];
+				let temp = [];
+				item.forEach((val) => {
+					if (val) {
+						temp = [
+							...temp,
+							{
+								key: val?.key,
+								label: val?.label,
+								value: val?.value || '',
+								required: val?.required,
+							},
+						];
+					}
+				});
+				onRampData = {
+					data: [temp],
+					type: 'manual',
+				};
+			});
+			userPayment = {
+				kit: {
+					onramp: {
+						...originalonramp,
+						[coinSymbol]: {
+							...originalonramp[coinSymbol],
+							[currentPaymentType || customName]: onRampData,
+						},
+					},
 				},
-			];
-		});
-		userPayment = {
-			kit: {
-				user_payments: {
-					...user_payments,
-					[currentPaymentType]: { data: paymentAccData },
+			};
+		} else if (currentActiveTab === 'paymentAccounts') {
+			Object.keys(formData).forEach((elem) => {
+				const item = formData[elem];
+				paymentAccData = [
+					...paymentAccData,
+					{
+						key: item?.key,
+						label: item?.label,
+						required: item?.required,
+					},
+				];
+			});
+			userPayment = {
+				kit: {
+					user_payments: {
+						...user_payments,
+						[currentPaymentType]: { data: paymentAccData },
+					},
 				},
-			},
-		};
+			};
+		}
 		setBodyData(userPayment);
 	};
 	const tabUpdate = (type, currentType) => {
@@ -304,6 +483,9 @@ const PaymentAccounts = ({
 		if (currentType) {
 			setCurrentType(currentType);
 		}
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			setIsCurrentFormOpen(true);
+		}
 	};
 	const onCancel = () => {
 		setIsVisible(false);
@@ -327,6 +509,25 @@ const PaymentAccounts = ({
 		setFormData(formData);
 	};
 
+	const handlePopupSave = () => {
+		const pluginBodyData = {
+			kit: {
+				onramp: {
+					...originalonramp,
+					[coinSymbol]: {
+						...originalonramp[coinSymbol],
+						[selectedPlugin]: {
+							data: selectedPlugin,
+							type: 'plugin',
+						},
+					},
+				},
+			},
+		};
+		updateConstantsData(pluginBodyData);
+		setSavedContent(true);
+		setIsVisible(false);
+	};
 	const handlePopupDel = (method) => {
 		let deletedData = {};
 		if (currentActiveTab && currentActiveTab === 'paymentAccounts') {
@@ -343,7 +544,39 @@ const PaymentAccounts = ({
 				user_payments: deletedData,
 			},
 		};
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			Object.keys(onramp).forEach((item) => {
+				if (item !== method) {
+					deletedData = {
+						...deletedData,
+						[item]: onramp[item],
+					};
+				}
+			});
 
+			deletedBodyData = {
+				kit: {
+					onramp: {
+						...originalonramp,
+						[coinSymbol]: deletedData,
+					},
+				},
+			};
+		}
+
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			const filteredOfframp = originalofframp[coinSymbol].filter(
+				(item) => item !== method
+			);
+			deletedBodyData = {
+				kit: {
+					offramp: {
+						...originalofframp,
+						[coinSymbol]: filteredOfframp,
+					},
+				},
+			};
+		}
 		let paymentSavedCoins = Object.keys(offramp).filter((item) => {
 			if (offramp[item].includes(method)) {
 				return item;
@@ -363,12 +596,16 @@ const PaymentAccounts = ({
 			setPaymentmethodIndex(1);
 		}
 	};
+	const handleEdit = () => {
+		setSavedContent(false);
+	};
 	const setPaymentMethod = (e) => {
-		setCurrentIndex(Object.keys(user_payments).indexOf(e) + 1);
+		setCurrentIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentmethodIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentSelect(e);
 		setIsDisplayDetails(false);
 		setIsDisplayForm(false);
+		setIsCurrentFormOpen(false);
 	};
 	const handleOpenPayment = () => {
 		setIsOpen(!isOpen);
@@ -381,7 +618,12 @@ const PaymentAccounts = ({
 			setPaymentType('initial');
 			setIsDisplayForm(true);
 		}
+		setIsCurrentFormOpen(false);
 		setPaymentmethodIndex(currentIndex);
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			setIsProceed(false);
+			OnsetCurrentType('');
+		}
 	};
 
 	return (
@@ -484,9 +726,11 @@ const PaymentAccounts = ({
 									onChange={setPaymentMethod}
 								>
 									{Object.keys(formValues).map((item, index) => {
+										const value =
+											currentActiveTab === 'offRamp' ? formValues[item] : item;
 										return (
-											<Option value={item} key={index}>
-												User payment account {index + 1}: {item}
+											<Option value={value} key={index}>
+												User payment account {index + 1}: {value}
 											</Option>
 										);
 									})}
@@ -502,11 +746,22 @@ const PaymentAccounts = ({
 				</div>
 			) : (
 				<div className={!isUpgrade ? 'disableall' : ''}>
-					{isDisplayForm ? (
+					{(currentActiveTab &&
+						currentActiveTab === 'paymentAccounts' &&
+						isDisplayForm) ||
+					(currentActiveTab &&
+						currentActiveTab === 'onRamp' &&
+						isCurrentFormOpen) ||
+					(currentActiveTab &&
+						currentActiveTab === 'offRamp' &&
+						isDisplayDetails) ? (
 						<PaymentWay
 							paymenttype={paymenttype}
 							handleClosePlugin={handleClosePlugin}
 							handleSave={handleSave}
+							savedContent={savedContent}
+							handleEdit={handleEdit}
+							pluginName={pluginName}
 							handleDel={handleDel}
 							isUpgrade={isUpgrade}
 							handleDelBank={handleDelBank}
@@ -522,18 +777,25 @@ const PaymentAccounts = ({
 							customInitialValues={customInitialValues}
 							currentPaymentType={currentPaymentType}
 							isCustomPay={isCustomPay}
+							customName={customName}
+							currentsymbol={currentsymbol}
+							coinSymbol={coinSymbol}
+							isPaymentForm={isPaymentForm}
 							currentIndex={paymentmethodIndex}
 							handleBack={handleBack}
 							currentType={currentType}
 							defaultBankInitialValues={defaultBankInitialValues}
 							defaultPaypalInitialValues={defaultPaypalInitialValues}
 							defaultCustomInitialValues={defaultCustomInitialValues}
-							user_payments={user_payments}
 						/>
 					) : null}
 					{payOption && !isDisplayDetails ? (
 						<PaymentDetails
-							type={paymentSelect}
+							type={
+								currentActiveTab && currentActiveTab === 'offRamp'
+									? selectedPaymentType
+									: paymentSelect
+							}
 							formUpdate={formUpdate}
 							saveType={saveType}
 							handleClose={handleClose}
@@ -541,7 +803,11 @@ const PaymentAccounts = ({
 							router={router}
 							user_payments={formValues}
 							activeTab={currentActiveTab}
-							paymentIndex={paymentmethodIndex}
+							paymentIndex={
+								currentActiveTab && currentActiveTab === 'offRamp'
+									? paymentIndex
+									: currentIndex
+							}
 						/>
 					) : null}
 				</div>
@@ -551,6 +817,7 @@ const PaymentAccounts = ({
 					handleClosePlugin={handleClosePlugin}
 					type={currentTab}
 					tabUpdate={tabUpdate}
+					handlePopupSave={handlePopupSave}
 					handlePopupDel={handlePopupDel}
 					formData={formData}
 					formUpdate={formUpdate}
@@ -558,17 +825,24 @@ const PaymentAccounts = ({
 					currentActiveTab={currentActiveTab}
 					user_payments={formValues}
 					bodyData={bodyData}
-					paymentSelectData={currentPaymentType}
+					paymentSelectData={currentPaymentType || customName}
+					coinSymbol={coinSymbol}
 					selectedPlugin={selectedPlugin}
+					currentsymbol={currentsymbol}
+					setCoindata={setCoindata}
 					currentIndex={paymentmethodIndex}
+					selectedPaymentType={
+						(originalofframp &&
+							originalofframp[currentsymbol] &&
+							originalofframp[currentsymbol][0]) ||
+						(offramp && offramp[0])
+					}
 					paymentSavedCoins={paymentSavedCoins}
 					setIsDisplayDetails={setIsDisplayDetails}
-					offramp={offramp}
-					isVisible={isVisible}
 				/>
 			</Modal>
 		</div>
 	);
 };
 
-export default PaymentAccounts;
+export default RampPaymentAccounts;

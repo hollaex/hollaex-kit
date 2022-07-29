@@ -63,22 +63,26 @@ const PaymentAccountPopup = ({
 	paymentSavedCoins = [],
 	setCurrentOfframpIndex = () => {},
 	userPaymentsData = {},
+	isVisible = false,
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
-	const [paymentSelect, setPaymentSelect] = useState(selectedPaymentType);
+	const [paymentSelect, setPaymentSelect] = useState(
+		!selectedPaymentType &&
+			currentActiveTab &&
+			currentActiveTab === 'paymentAccounts'
+			? 'bank'
+			: selectedPaymentType
+	);
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
 	const [paymentOptions, setPaymentOptions] = useState([]);
-
+	const [paymentCount, setPaymentCount] = useState([]);
 	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
-			let tempData =
-				Object.keys(userPaymentsData).filter((item) =>
-					['bank', 'paypal'].includes(item)
-				) || [];
+			let tempData = Object.keys(userPaymentsData) || [];
 			if (
 				currentActiveTab &&
 				currentActiveTab === 'onRamp' &&
@@ -96,11 +100,37 @@ const PaymentAccountPopup = ({
 	}, []);
 
 	useEffect(() => {
+		if (currentActiveTab === 'offRamp') {
+			setPaymentSelect(selectedPaymentType);
+		}
+		let tempArr = Object.keys(user_payments).filter((item, i) => {
+			if (!offramp[singleCoin.symbol]?.includes(item)) {
+				return item;
+			} else {
+				return null;
+			}
+		});
+		setPaymentCount(tempArr);
+		// eslint-disable-next-line
+	}, [selectedPaymentType]);
+
+	useEffect(() => {
+		if (!isVisible) {
+			setExistErrorMsg('');
+			setPaymentSelect(
+				!selectedPaymentType &&
+					currentActiveTab &&
+					currentActiveTab === 'paymentAccounts'
+					? 'bank'
+					: selectedPaymentType
+			);
+		}
+	}, [isVisible, currentActiveTab, selectedPaymentType]);
+
+	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
-			const paymentsData = Object.keys(userPaymentsData).filter((item) =>
-				['bank', 'paypal'].includes(item)
-			);
+			const paymentsData = Object.keys(userPaymentsData);
 			let temp = [];
 			if (tempArr.length > 0) {
 				paymentsData.forEach((item) => {
@@ -226,26 +256,37 @@ const PaymentAccountPopup = ({
 				`You have already created the payment by using ${paymentSelect} method`
 			);
 		} else {
-			if (paymentSelect === 'bank') {
+			if (currentActiveTab && currentActiveTab === 'onRamp') {
 				handleClosePlugin(false);
 				formUpdate(
-					'bankForm',
+					'customForm',
 					paymentSelect,
 					false,
 					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
-			} else if (paymentSelect === 'paypal') {
-				handleClosePlugin(false);
-				formUpdate(
-					'paypalForm',
-					paymentSelect,
-					false,
-					currentIndex === 0 ? currentIndex + 1 : currentIndex,
-					'add'
-				);
-			} else if (paymentSelect === 'customPay') {
-				tabUpdate('sysname', 'add');
+			} else {
+				if (paymentSelect === 'bank') {
+					handleClosePlugin(false);
+					formUpdate(
+						'bankForm',
+						paymentSelect,
+						false,
+						currentIndex === 0 ? currentIndex + 1 : currentIndex,
+						'add'
+					);
+				} else if (paymentSelect === 'paypal') {
+					handleClosePlugin(false);
+					formUpdate(
+						'paypalForm',
+						paymentSelect,
+						false,
+						currentIndex === 0 ? currentIndex + 1 : currentIndex,
+						'add'
+					);
+				} else if (paymentSelect === 'customPay') {
+					tabUpdate('sysname', 'add');
+				}
 			}
 		}
 	};
@@ -289,6 +330,22 @@ const PaymentAccountPopup = ({
 			return !Object.keys(userPaymentsData).includes(optValue);
 		}
 		return true;
+	};
+
+	const handleAccountBack = () => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			tabUpdate('onramp', true);
+		} else {
+			tabUpdate('payment');
+		}
+		setExistErrorMsg('');
+		setPaymentSelect(
+			!selectedPaymentType &&
+				currentActiveTab &&
+				currentActiveTab === 'paymentAccounts'
+				? 'bank'
+				: selectedPaymentType
+		);
 	};
 
 	switch (type) {
@@ -446,7 +503,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('onramp', true)}
+							onClick={handleAccountBack}
 						>
 							Back
 						</Button>
@@ -642,9 +699,7 @@ const PaymentAccountPopup = ({
 								<div>
 									<div>
 										Select from premade Payment Accounts (
-										{Object.keys(user_payments).length
-											? Object.keys(user_payments).length
-											: null}
+										{paymentCount.length ? paymentCount.length : null}
 										):
 									</div>
 									<div>
@@ -922,9 +977,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelect === 'bank'
+								paymentSelectData === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelect === 'paypal'
+									: paymentSelectData === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -932,19 +987,19 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
-								<div>User payment account {currentIndex}</div>
-							) : currentActiveTab && currentActiveTab === 'onRamp' ? (
+							{currentActiveTab && currentActiveTab === 'onRamp' ? (
 								<div>On-ramp {currentIndex}</div>
+							) : currentActiveTab && currentActiveTab === 'offRamp' ? (
+								<div>off-ramp {currentIndex}</div>
 							) : (
-								<div>Off-ramp {currentIndex}</div>
+								<div>User payment account {currentIndex}</div>
 							)}
 							<b>
-								{paymentSelect === 'bank'
+								{paymentSelectData === 'bank'
 									? 'Bank'
-									: paymentSelect === 'paypal'
+									: paymentSelectData === 'paypal'
 									? 'Paypal'
-									: paymentSelectData}{' '}
+									: paymentSelectData}
 							</b>
 						</div>
 					</div>

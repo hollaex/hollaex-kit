@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Summarycontent from './Summarycontent';
 import Onramp from './Onramp';
+import Offramp from './offramp';
 import PaymentAccounts from './PaymentAccounts';
 import { getTabParams } from '../AdminFinancials/Assets';
 // import Kyc from './Kyc';
@@ -94,19 +95,17 @@ const Fiatmarkets = ({
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
 						onramp={onrampData}
-						offramp={offRampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
 					/>
 				</TabPane>
 				<TabPane tab="Off-ramp" key="3">
-					<Onramp
+					<Offramp
 						activeTab={'offRamp'}
 						handleTabChange={handleTabChange}
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
-						onramp={onrampData}
 						offramp={offRampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
