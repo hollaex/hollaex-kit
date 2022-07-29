@@ -127,25 +127,35 @@ const RampPaymentAccounts = ({
 	}, []);
 
 	const constructedData = (paymentType) => {
-		const tempData = onramp[paymentType]?.data || [];
 		let temp = {};
-		tempData.forEach((item) => {
-			if (item?.length) {
-				item.forEach((nestItem, index) => {
-					temp = {
-						...temp,
-						[`section_${index + 1}`]: nestItem,
-					};
-				});
-			}
-		});
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			const tempData = user_payments[paymentType]?.data || [];
+			tempData.forEach((item, index) => {
+				temp = {
+					...temp,
+					[`section_${index + 1}`]: item,
+				};
+			});
+		} else {
+			const tempData = onramp[paymentType]?.data || [];
+			tempData.forEach((item) => {
+				if (item?.length) {
+					item.forEach((nestItem, index) => {
+						temp = {
+							...temp,
+							[`section_${index + 1}`]: nestItem,
+						};
+					});
+				}
+			});
+		}
 		return temp;
 	};
 
 	const integrateFieldValues = (fieldKey = 'bank', fieldData) => {
 		let tempVal = { ...fieldData };
 		let newVal = onramp?.[fieldKey]?.data?.[0];
-		if (newVal.length) {
+		if (newVal?.length) {
 			Object.keys(fieldData).forEach((val) => {
 				let valTemp = fieldData[val];
 				if (valTemp && valTemp.key) {
@@ -162,35 +172,35 @@ const RampPaymentAccounts = ({
 			setBankInitValue(
 				currentType === 'add'
 					? defaultBankInitialValues
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
 					: integrateFieldValues('bank', constructedData(paymentType))
 			);
 		} else if (type === 'paypalForm') {
 			setPaypalInitValue(
 				currentType === 'add'
 					? defaultPaypalInitialValues
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
 					: integrateFieldValues('paypal', constructedData(paymentType))
 			);
 		} else if (type === 'customForm') {
 			setCustomInitValue(
 				currentType === 'add'
 					? getCustomDefaultValues(paymentType)
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
 					: integrateFieldValues(paymentType, constructedData(paymentType))
 			);
 		}
 	};
 
 	useEffect(() => {
-		if (isModalVisible) {
-			setIsCurrentFormOpen(false);
-		}
-	}, [isModalVisible]);
-
-	useEffect(() => {
 		generateDefaultInitValue();
 	}, [currentPaymentType, generateDefaultInitValue]);
 
 	useEffect(() => {
-		if (currentsymbol === coinSymbol) {
+		if (currentsymbol === coinSymbol && !isModalVisible) {
 			setIsCurrentFormOpen(true);
 		} else {
 			setIsCurrentFormOpen(false);

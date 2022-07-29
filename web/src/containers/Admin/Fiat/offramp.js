@@ -616,6 +616,7 @@ const Offramp = ({
 					currentIndex={currentOfframpIndex}
 					setCurrentOfframpIndex={setCurrentOfframpIndex}
 					userPaymentsData={user_payments}
+					paymentSelectData={selectedPaymentType}
 				/>
 			</Modal>
 		</div>
