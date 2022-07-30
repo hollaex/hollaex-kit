@@ -27,7 +27,7 @@ class FormConfig extends Component {
 
 	componentDidMount() {
 		if (this.props.initialValues) {
-			this.generateInitialValues();
+			this.generateInitialValues(this.props.initialValues);
 		}
 	}
 
@@ -36,19 +36,19 @@ class FormConfig extends Component {
 			JSON.stringify(this.props.initialValues) !==
 			JSON.stringify(prevProps.initialValues)
 		) {
-			this.generateInitialValues();
+			this.generateInitialValues(this.props.initialValues);
 		}
 		if (
 			JSON.stringify(this.state.editedValues) !==
 			JSON.stringify(prevState.editedValues)
 		) {
+			this.generateInitialValues(this.state.editedValues);
 			this.setState({ buttonSubmitting: true });
 		}
 	}
 
-	generateInitialValues = () => {
-		const { initialValues } = this.props;
-		let initialValuesData = initialValues;
+	generateInitialValues = (formInitialValue) => {
+		let initialValuesData = formInitialValue;
 		let custom_fields = {};
 		Object.keys(initialValuesData).forEach((item, index) => {
 			custom_fields = {
@@ -98,19 +98,22 @@ class FormConfig extends Component {
 			}
 			this.setState({ custom_fields: data });
 		});
-		let temp = headerName.split('_');
-		temp = `section_${temp[2]}`;
 		let res = {};
 		Object.keys(editedValues).forEach((item) => {
-			if (item !== temp) {
+			if (item !== headerName) {
 				res = {
 					...res,
 					[item]: { ...editedValues[item] },
 				};
 			}
 		});
-		this.setState({ editedValues: res });
-		this.onCancel();
+		this.setState({
+			editedValues: res,
+			isAddColumn: false,
+			editData: [],
+			currentSection: '',
+			buttonSubmitting: false,
+		});
 	};
 
 	onCancel = () => {
@@ -186,7 +189,7 @@ class FormConfig extends Component {
 							isClosable: true,
 							closeCallback: () =>
 								this.handleRemoveHeader(
-									`column_header_${count}`,
+									`section_${count}`,
 									formProps.label,
 									formProps.required
 								),
@@ -249,24 +252,11 @@ class FormConfig extends Component {
 		if (type === 'edit') {
 			let editedValues = { ...this.state.editedValues };
 			if (this.props.currentActiveTab === 'onRamp') {
-				Object.keys(editedValues).forEach((item) => {
-					let editedVal = editedValues[item];
-					let filteredData = editedVal.filter(
-						(val) => val.key !== formProps?.key
-					);
-					editedVal.forEach((val) => {
-						if (formProps?.key === val?.key) {
-							editedValues = {
-								[item]: [
-									...filteredData,
-									{
-										...formProps,
-									},
-								],
-							};
-						}
-					});
-				});
+				const { section_type, ...rest } = formProps;
+				editedValues = {
+					...editedValues,
+					[section_type]: rest,
+				};
 			} else {
 				editedValues = {
 					...editedValues,

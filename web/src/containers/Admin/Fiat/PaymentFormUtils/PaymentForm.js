@@ -78,7 +78,6 @@ class FormWrapper extends Component {
 			handleBack,
 			pristine,
 			valid,
-			submitting,
 		} = this.props;
 		let requiredCount = (Object.keys(fields).length ?? 0) + 1;
 		let requiredFields = {};
@@ -96,6 +95,16 @@ class FormWrapper extends Component {
 				};
 			}
 		});
+		const btnEnabled = (pristine, valid, buttonSubmitting) => {
+			if (
+				valid &&
+				((!pristine && !buttonSubmitting) || !pristine || !buttonSubmitting)
+			) {
+				return false;
+			}
+			return true;
+		};
+
 		return (
 			<div className="payment-form-wrapper">
 				<form onSubmit={handleSubmit(this.onSubmit)}>
@@ -146,7 +155,7 @@ class FormWrapper extends Component {
 								disabled={
 									currentActiveTab && currentActiveTab === 'paymentAccounts'
 										? buttonSubmitting
-										: pristine || submitting || !valid
+										: btnEnabled(pristine, valid, buttonSubmitting)
 								}
 							>
 								{buttonTxt}

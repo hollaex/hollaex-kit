@@ -145,7 +145,7 @@ const PaymentAccountPopup = ({
 				temp = paymentsData;
 			}
 			setPaymentOptions(temp);
-			setPaymentSelect(temp.length > 0 ? temp[0] : 'customPay');
+			setPaymentSelect(temp.length > 0 ? temp[0] : selectedPaymentType);
 		}
 		// eslint-disable-next-line
 	}, [user_payments]);
@@ -955,6 +955,10 @@ const PaymentAccountPopup = ({
 				</div>
 			);
 		case 'savePayment':
+			const currentSelectedPay =
+				currentActiveTab && currentActiveTab === 'onRamp'
+					? paymentSelectData
+					: paymentSelect;
 			return (
 				<div className="payment-modal-wrapper">
 					<h3>Save and publish</h3>
@@ -984,9 +988,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelectData === 'bank'
+								currentSelectedPay === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelectData === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -1002,11 +1006,11 @@ const PaymentAccountPopup = ({
 								<div>User payment account {currentIndex}</div>
 							)}
 							<b>
-								{paymentSelectData === 'bank'
+								{currentSelectedPay === 'bank'
 									? 'Bank'
-									: paymentSelectData === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? 'Paypal'
-									: paymentSelectData}
+									: currentSelectedPay}
 							</b>
 						</div>
 					</div>
