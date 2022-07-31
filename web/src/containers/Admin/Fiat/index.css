@@ -740,3 +740,13 @@
 	width: 10rem;
 	color: yellow;
 }
+
+.payment-acc-wrapper
+	.custom-form-wrapper
+	.section-wrapper
+	.colorWrapper
+	.input_field
+	.ant-input {
+	background-color: #ffffff !important;
+	color: #000000 !important;
+}

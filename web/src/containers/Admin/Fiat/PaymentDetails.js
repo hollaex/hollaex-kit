@@ -82,7 +82,11 @@ const PaymentDetails = ({
 									<div>
 										{activeTab && activeTab === 'onRamp' ? (
 											<div>
-												<div className="mb-1">REQUIRED</div>
+												{curData?.data.map((elem) =>
+													elem.filter((item) => item?.required)
+												)[0]?.length ? (
+													<div className="mb-1">REQUIRED</div>
+												) : null}
 												<div className="bankborder">
 													{curData?.data.map((elem) => {
 														return elem.map((item, key) => {
@@ -109,7 +113,11 @@ const PaymentDetails = ({
 														});
 													})}
 												</div>
-												<div className="mb-1">OPTIONAL</div>
+												{curData?.data.map((elem) =>
+													elem.filter((item) => !item?.required)
+												)[0]?.length ? (
+													<div className="mb-1">OPTIONAL</div>
+												) : null}
 												<div className="bankborder">
 													{curData?.data.map((elem) => {
 														return elem.map((item, key) => {

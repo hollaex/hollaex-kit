@@ -64,6 +64,8 @@ const PaymentAccountPopup = ({
 	setCurrentOfframpIndex = () => {},
 	userPaymentsData = {},
 	isVisible = false,
+	setPaymentSavedCoins = () => {},
+	handleBack = () => {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -117,6 +119,7 @@ const PaymentAccountPopup = ({
 	useEffect(() => {
 		if (!isVisible) {
 			setExistErrorMsg('');
+			setErrorMsg('');
 			setPaymentSelect(
 				!selectedPaymentType &&
 					currentActiveTab &&
@@ -142,7 +145,7 @@ const PaymentAccountPopup = ({
 				temp = paymentsData;
 			}
 			setPaymentOptions(temp);
-			setPaymentSelect(temp.length > 0 ? temp[0] : 'customPay');
+			setPaymentSelect(temp.length > 0 ? temp[0] : selectedPaymentType);
 		}
 		// eslint-disable-next-line
 	}, [user_payments]);
@@ -256,7 +259,31 @@ const PaymentAccountPopup = ({
 				`You have already created the payment by using ${paymentSelect} method`
 			);
 		} else {
-			if (currentActiveTab && currentActiveTab === 'onRamp') {
+			if (paymentSelect === 'bank') {
+				handleClosePlugin(false);
+				formUpdate(
+					'bankForm',
+					paymentSelect,
+					false,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'paypal') {
+				handleClosePlugin(false);
+				formUpdate(
+					'paypalForm',
+					paymentSelect,
+					false,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
+			} else if (paymentSelect === 'customPay') {
+				tabUpdate('sysname', 'add');
+			} else if (
+				currentActiveTab &&
+				currentActiveTab === 'onRamp' &&
+				!['bank', 'paypal', 'customPay'].includes(paymentSelect)
+			) {
 				handleClosePlugin(false);
 				formUpdate(
 					'customForm',
@@ -265,28 +292,6 @@ const PaymentAccountPopup = ({
 					currentIndex === 0 ? currentIndex + 1 : currentIndex,
 					'add'
 				);
-			} else {
-				if (paymentSelect === 'bank') {
-					handleClosePlugin(false);
-					formUpdate(
-						'bankForm',
-						paymentSelect,
-						false,
-						currentIndex === 0 ? currentIndex + 1 : currentIndex,
-						'add'
-					);
-				} else if (paymentSelect === 'paypal') {
-					handleClosePlugin(false);
-					formUpdate(
-						'paypalForm',
-						paymentSelect,
-						false,
-						currentIndex === 0 ? currentIndex + 1 : currentIndex,
-						'add'
-					);
-				} else if (paymentSelect === 'customPay') {
-					tabUpdate('sysname', 'add');
-				}
 			}
 		}
 	};
@@ -346,6 +351,17 @@ const PaymentAccountPopup = ({
 				? 'bank'
 				: selectedPaymentType
 		);
+	};
+
+	const handleLink = () => {
+		handleClosePlugin(false);
+		setPaymentSavedCoins([]);
+		handleBack();
+	};
+
+	const onClickBack = () => {
+		setErrorMsg('');
+		tabUpdate('account');
 	};
 
 	switch (type) {
@@ -571,11 +587,7 @@ const PaymentAccountPopup = ({
 					)}
 					{errorMsg ? <div className="error-text">{errorMsg}</div> : null}
 					<div className="button-wrapper mt-5">
-						<Button
-							type="primary"
-							className="green-btn"
-							onClick={() => tabUpdate('account')}
-						>
+						<Button type="primary" className="green-btn" onClick={onClickBack}>
 							Back
 						</Button>
 						<Button
@@ -583,9 +595,7 @@ const PaymentAccountPopup = ({
 							className="green-btn"
 							disabled={!plugin || errorMsg}
 							onClick={
-								paymentSelect !== 'customPay'
-									? () => handleNext()
-									: () => handleCustomSelect()
+								paymentSelect !== 'customPay' ? handleNext : handleCustomSelect
 							}
 						>
 							NEXT
@@ -923,10 +933,7 @@ const PaymentAccountPopup = ({
 								))}{' '}
 								coins. So, please delete that from off-ramp first.
 							</div>
-							<div
-								onClick={() => handleClosePlugin(false)}
-								className="go-to-offramp-text"
-							>
+							<div onClick={handleLink} className="go-to-offramp-text">
 								<Link to="/admin/fiat?tab=3" className="underline">
 									Go to off-ramp
 								</Link>
@@ -948,6 +955,10 @@ const PaymentAccountPopup = ({
 				</div>
 			);
 		case 'savePayment':
+			const currentSelectedPay =
+				currentActiveTab && currentActiveTab === 'onRamp'
+					? paymentSelectData
+					: paymentSelect;
 			return (
 				<div className="payment-modal-wrapper">
 					<h3>Save and publish</h3>
@@ -977,9 +988,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelectData === 'bank'
+								currentSelectedPay === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelectData === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -995,11 +1006,11 @@ const PaymentAccountPopup = ({
 								<div>User payment account {currentIndex}</div>
 							)}
 							<b>
-								{paymentSelectData === 'bank'
+								{currentSelectedPay === 'bank'
 									? 'Bank'
-									: paymentSelectData === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? 'Paypal'
-									: paymentSelectData}
+									: currentSelectedPay}
 							</b>
 						</div>
 					</div>

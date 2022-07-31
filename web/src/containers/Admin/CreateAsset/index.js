@@ -234,15 +234,31 @@ class CreateAsset extends Component {
 		this.props.updateFormData(name, value);
 	};
 
-	handleWithdrawalFeeChange = (asset, value, key, name) => {
+	handleWithdrawalFeeChange = (
+		asset,
+		value,
+		key,
+		name,
+		updatedValue = '',
+		updatedKey = ''
+	) => {
+		let field = { [key]: value };
+		if (
+			updatedKey &&
+			updatedValue &&
+			key === 'type' &&
+			value === 'percentage'
+		) {
+			field = { ...field, [updatedKey]: updatedValue };
+		}
 		if (asset) {
-			const coinFormData = {
+			let coinFormData = {
 				...this.state.coinFormData,
 				[name]: {
 					...this.state.coinFormData[name],
 					[asset]: this.state.coinFormData[name] && {
 						...this.state.coinFormData[name][asset],
-						[key]: value,
+						...field,
 					},
 				},
 			};
@@ -251,7 +267,7 @@ class CreateAsset extends Component {
 					...this.state.coinFormData[name],
 					[asset]: this.state.coinFormData[name] && {
 						...this.state.coinFormData[name][asset],
-						[key]: value,
+						...field,
 					},
 				},
 				coinFormData,
