@@ -154,12 +154,43 @@ const WithdrawalFee = ({
 		let tempObj = withdrawal_fees;
 		tempObj[data].type = val;
 		setWithdrawalFees({ ...tempObj });
-		handleWithdrawalFeeChange(
-			data,
-			val,
-			'type',
-			assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
-		);
+		if (val === 'percentage') {
+			handleWithdrawalFeeChange(
+				data,
+				val,
+				'type',
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
+				coinFormData?.symbol,
+				'symbol'
+			);
+		} else {
+			handleWithdrawalFeeChange(
+				data,
+				val,
+				'type',
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
+			);
+		}
+	};
+	const handleValuesChange = (values = {}) => {
+		if (
+			withdrawal_fees &&
+			Object.keys(withdrawal_fees).length &&
+			coinFormData &&
+			Object.keys(coinFormData).length
+		) {
+			Object.keys(withdrawal_fees).forEach((data) => {
+				if (
+					Object.keys(values).length &&
+					values[`${data}_type`] &&
+					values[`${data}_type`] === 'percentage'
+				) {
+					form.setFieldsValue({
+						[`${data}_symbol`]: coinFormData?.symbol,
+					});
+				}
+			});
+		}
 	};
 	return (
 		<div className="coin-limit-wrap">
@@ -171,6 +202,7 @@ const WithdrawalFee = ({
 				initialValues={getInitialValues()}
 				name="withdrawalForm"
 				onFinish={handleUpdate}
+				onValuesChange={handleValuesChange}
 			>
 				<div className="fee-wrapper">
 					<div className="d-flex align-items-center">
@@ -352,7 +384,9 @@ const WithdrawalFee = ({
 											{getNetworkLabelByKey(data)})
 										</div>
 									</div>
-									{withdrawal_fees[data].type === 'static' ? null : (
+									{withdrawal_fees[data] &&
+									withdrawal_fees[data].type &&
+									withdrawal_fees[data].type === 'static' ? null : (
 										<div>
 											<div className="field-wrap last">
 												<div className="sub-title">

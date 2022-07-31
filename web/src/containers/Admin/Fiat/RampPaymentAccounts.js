@@ -1,13 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Button, Modal, Tooltip, Select, message, Spin } from 'antd';
-import {
-	CaretDownOutlined,
-	CaretUpOutlined,
-	QuestionCircleOutlined,
-} from '@ant-design/icons';
+import { Modal, Select, message, Spin } from 'antd';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
 
-import { STATIC_ICONS } from 'config/icons';
 import PaymentAccountPopup from './PaymentPopup';
 import PaymentDetails from './PaymentDetails';
 import { updateConstants } from '../General/action';
@@ -49,6 +44,7 @@ const RampPaymentAccounts = ({
 	OnsetCurrentType = () => {},
 	isProceed = false,
 	setIsProceed = () => {},
+	isModalVisible = false,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -57,7 +53,6 @@ const RampPaymentAccounts = ({
 	const [paymentSelect, setPaymentSelect] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
 	const [payOption, setPayOption] = useState(true);
-	const [isDisplayForm, setIsDisplayForm] = useState(isDisplayFormData);
 	const [formData, setFormData] = useState({});
 	const [saveType, setSaveType] = useState('');
 	const [bodyData, setBodyData] = useState({});
@@ -126,15 +121,44 @@ const RampPaymentAccounts = ({
 	}, []);
 
 	const constructedData = (paymentType) => {
-		const tempData = user_payments[paymentType]?.data || [];
 		let temp = {};
-		tempData.forEach((item, index) => {
-			temp = {
-				...temp,
-				[`section_${index + 1}`]: item,
-			};
-		});
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			const tempData = user_payments[paymentType]?.data || [];
+			tempData.forEach((item, index) => {
+				temp = {
+					...temp,
+					[`section_${index + 1}`]: item,
+				};
+			});
+		} else {
+			const tempData = onramp[paymentType]?.data || [];
+			tempData.forEach((item) => {
+				if (item?.length) {
+					item.forEach((nestItem, index) => {
+						temp = {
+							...temp,
+							[`section_${index + 1}`]: nestItem,
+						};
+					});
+				}
+			});
+		}
 		return temp;
+	};
+
+	const integrateFieldValues = (fieldKey = 'bank', fieldData) => {
+		let tempVal = { ...fieldData };
+		let newVal = onramp?.[fieldKey]?.data?.[0];
+		if (newVal?.length) {
+			Object.keys(fieldData).forEach((val) => {
+				let valTemp = fieldData[val];
+				if (valTemp && valTemp.key) {
+					let res = newVal?.find((p) => p.key === valTemp.key) ?? {};
+					tempVal[val].value = res.value ?? '';
+				}
+			});
+		}
+		return tempVal;
 	};
 
 	const generateFormFieldsValues = (type, paymentType, currentType) => {
@@ -142,34 +166,32 @@ const RampPaymentAccounts = ({
 			setBankInitValue(
 				currentType === 'add'
 					? defaultBankInitialValues
-					: constructedData(paymentType)
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
+					: integrateFieldValues('bank', constructedData(paymentType))
 			);
 		} else if (type === 'paypalForm') {
 			setPaypalInitValue(
 				currentType === 'add'
 					? defaultPaypalInitialValues
-					: constructedData(paymentType)
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
+					: integrateFieldValues('paypal', constructedData(paymentType))
 			);
 		} else if (type === 'customForm') {
-			const test =
+			setCustomInitValue(
 				currentType === 'add'
 					? getCustomDefaultValues(paymentType)
-					: constructedData(paymentType);
-			setCustomInitValue(test);
+					: currentActiveTab && currentActiveTab === 'offRamp'
+					? constructedData(paymentType)
+					: integrateFieldValues(paymentType, constructedData(paymentType))
+			);
 		}
 	};
 
 	useEffect(() => {
 		generateDefaultInitValue();
 	}, [currentPaymentType, generateDefaultInitValue]);
-
-	useEffect(() => {
-		if (currentsymbol === coinSymbol) {
-			setIsCurrentFormOpen(true);
-		} else {
-			setIsCurrentFormOpen(false);
-		}
-	}, [currentsymbol, coinSymbol]);
 
 	useEffect(() => {
 		if (formType) {
@@ -221,22 +243,26 @@ const RampPaymentAccounts = ({
 				Object.keys(onramp).forEach((item) => {
 					firstPayment = [...firstPayment, item];
 					if (typeof onramp[item]?.data !== 'string') {
-						return onramp[item]?.data?.forEach((elem, index) => {
-							if (item === 'bank') {
-								tempBank = {
-									...tempBank,
-									[`section_${index + 1}`]: elem,
-								};
-							} else if (item === 'paypal') {
-								tempPaypal = {
-									...tempPaypal,
-									[`section_${index + 1}`]: elem,
-								};
-							} else {
-								tempCustom = {
-									...tempCustom,
-									[`section_${index + 1}`]: elem,
-								};
+						return onramp[item]?.data?.forEach((elem) => {
+							if (elem?.length) {
+								elem.forEach((nestEl, indexKey) => {
+									if (item === 'bank') {
+										tempBank = {
+											...tempBank,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									} else if (item === 'paypal') {
+										tempPaypal = {
+											...tempPaypal,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									} else {
+										tempCustom = {
+											...tempCustom,
+											[`section_${indexKey + 1}`]: nestEl,
+										};
+									}
+								});
 							}
 						});
 					}
@@ -246,31 +272,25 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				OnsetCurrentType('');
+				// OnsetCurrentType('');
 			} else if (currentOnrampType === 'add') {
+				Object.keys(user_payments).forEach((item) => {
+					firstPayment = [...firstPayment, item];
+				});
 				if (customName === 'bank') {
 					tempBank =
 						Object.keys(user_payments).length &&
 						user_payments['bank']?.data.length > 0
-							? { [`section_1`]: user_payments['bank'].data }
-							: {
-									[`section_1`]: getConstantObjtoArray(
-										defaultBankInitialValues
-									),
-							  };
+							? getStructedDataFromArray(user_payments['bank'].data)
+							: defaultBankInitialValues;
 				} else if (customName === 'paypal') {
 					tempPaypal =
 						Object.keys(user_payments).length &&
 						user_payments['paypal']?.data.length > 0
-							? { [`section_1`]: user_payments['paypal'].data }
-							: {
-									[`section_1`]: getConstantObjtoArray(
-										defaultPaypalInitialValues
-									),
-							  };
+							? getStructedDataFromArray(user_payments['paypal'].data)
+							: defaultPaypalInitialValues;
 				} else if (customName.trim() !== '') {
-					const temp = getCustomDefaultValues(customName);
-					tempCustom = { [`section_1`]: getConstantObjtoArray(temp) };
+					tempCustom = getCustomDefaultValues(customName);
 				}
 				setCurrentType('add');
 				setBankInitValue(tempBank);
@@ -279,11 +299,10 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				OnsetCurrentType('');
+				// OnsetCurrentType('');
 			}
 		} else {
 			setPayOption(false);
-			setIsDisplayForm(true);
 			setFormValues(user_payments);
 		}
 		// TODO: Fix react-hooks/exhaustive-deps
@@ -309,10 +328,10 @@ const RampPaymentAccounts = ({
 		}
 	}, [isProceed, currentsymbol, coinSymbol]);
 
-	const getConstantObjtoArray = (obj) => {
-		let temp = [];
-		Object.keys(obj).forEach((item) => {
-			temp = [...temp, obj[item]];
+	const getStructedDataFromArray = (value) => {
+		let temp = {};
+		value.forEach((val, index) => {
+			temp[`section_${index + 1}`] = val;
 		});
 		return temp;
 	};
@@ -321,8 +340,9 @@ const RampPaymentAccounts = ({
 		getConstants()
 			.then((res) => {
 				if (currentActiveTab && currentActiveTab === 'onRamp') {
+					handleBack();
 					if (_get(res, 'kit.onramp')) {
-						setFormValues(_get(res, `kit.onramp[${coinSymbol}]`));
+						setFormValues(_get(res, `kit.onramp[${currentsymbol}]`));
 					}
 				} else {
 					if (_get(res, 'kit.user_payments')) {
@@ -402,24 +422,11 @@ const RampPaymentAccounts = ({
 		setFormData(formData);
 		let userPayment = {};
 		let onRampData = {};
-		let paymentAccData = [];
+		let temp = [];
 		if (currentActiveTab === 'onRamp') {
 			Object.keys(formData).forEach((elem) => {
 				const item = formData[elem];
-				let temp = [];
-				item.forEach((val) => {
-					if (val) {
-						temp = [
-							...temp,
-							{
-								key: val?.key,
-								label: val?.label,
-								value: val?.value || '',
-								required: val?.required,
-							},
-						];
-					}
-				});
+				temp = [...temp, item];
 				onRampData = {
 					data: [temp],
 					type: 'manual',
@@ -429,30 +436,10 @@ const RampPaymentAccounts = ({
 				kit: {
 					onramp: {
 						...originalonramp,
-						[coinSymbol]: {
-							...originalonramp[coinSymbol],
+						[currentsymbol]: {
+							...originalonramp[currentsymbol],
 							[currentPaymentType || customName]: onRampData,
 						},
-					},
-				},
-			};
-		} else if (currentActiveTab === 'paymentAccounts') {
-			Object.keys(formData).forEach((elem) => {
-				const item = formData[elem];
-				paymentAccData = [
-					...paymentAccData,
-					{
-						key: item?.key,
-						label: item?.label,
-						required: item?.required,
-					},
-				];
-			});
-			userPayment = {
-				kit: {
-					user_payments: {
-						...user_payments,
-						[currentPaymentType]: { data: paymentAccData },
 					},
 				},
 			};
@@ -471,7 +458,6 @@ const RampPaymentAccounts = ({
 		currentType = ''
 	) => {
 		setPaymentType(type);
-		setIsDisplayForm(true);
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
 		setIsDisplayDetails(true);
@@ -530,20 +516,7 @@ const RampPaymentAccounts = ({
 	};
 	const handlePopupDel = (method) => {
 		let deletedData = {};
-		if (currentActiveTab && currentActiveTab === 'paymentAccounts') {
-			Object.keys(user_payments).forEach((item) => {
-				if (item !== method)
-					deletedData = {
-						...deletedData,
-						[item]: user_payments[item],
-					};
-			});
-		}
-		let deletedBodyData = {
-			kit: {
-				user_payments: deletedData,
-			},
-		};
+		let deletedBodyData = {};
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			Object.keys(onramp).forEach((item) => {
 				if (item !== method) {
@@ -558,13 +531,11 @@ const RampPaymentAccounts = ({
 				kit: {
 					onramp: {
 						...originalonramp,
-						[coinSymbol]: deletedData,
+						[currentsymbol]: deletedData,
 					},
 				},
 			};
-		}
-
-		if (currentActiveTab && currentActiveTab === 'offRamp') {
+		} else if (currentActiveTab && currentActiveTab === 'offRamp') {
 			const filteredOfframp = originalofframp[coinSymbol].filter(
 				(item) => item !== method
 			);
@@ -577,24 +548,9 @@ const RampPaymentAccounts = ({
 				},
 			};
 		}
-		let paymentSavedCoins = Object.keys(offramp).filter((item) => {
-			if (offramp[item].includes(method)) {
-				return item;
-			}
-			return null;
-		});
-		if (
-			paymentSavedCoins &&
-			currentActiveTab &&
-			currentActiveTab === 'paymentAccounts' &&
-			paymentSavedCoins.length > 0
-		) {
-			setPaymentSavedCoins(paymentSavedCoins);
-		} else {
-			updateConstantsData(deletedBodyData, 'delete');
-			setIsVisible(false);
-			setPaymentmethodIndex(1);
-		}
+		updateConstantsData(deletedBodyData, 'delete');
+		setIsVisible(false);
+		setPaymentmethodIndex(1);
 	};
 	const handleEdit = () => {
 		setSavedContent(false);
@@ -604,7 +560,6 @@ const RampPaymentAccounts = ({
 		setPaymentmethodIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentSelect(e);
 		setIsDisplayDetails(false);
-		setIsDisplayForm(false);
 		setIsCurrentFormOpen(false);
 	};
 	const handleOpenPayment = () => {
@@ -612,12 +567,10 @@ const RampPaymentAccounts = ({
 	};
 
 	const handleBack = () => {
-		setIsDisplayDetails(false);
-		setIsDisplayForm(false);
 		if (!user_payments || !Object.keys(user_payments).length) {
 			setPaymentType('initial');
-			setIsDisplayForm(true);
 		}
+		setIsDisplayDetails(false);
 		setIsCurrentFormOpen(false);
 		setPaymentmethodIndex(currentIndex);
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
@@ -629,83 +582,6 @@ const RampPaymentAccounts = ({
 	return (
 		<div className="payment-acc-wrapper">
 			<div>
-				{currentActiveTab && currentActiveTab === 'paymentAccounts' ? (
-					<div>
-						<div className="d-flex justify-content-between">
-							<div className="d-flex">
-								<img
-									src={STATIC_ICONS.DOUBLEFIAT_ICON}
-									alt="pay-icon"
-									className="pay-icon"
-								/>
-								<div>
-									<div>
-										Allow your users add their payment method for{' '}
-										{paymenttype === 'initial'
-											? 'receiving fiat.'
-											: 'withdrawing fiat.'}
-									</div>
-									<div className="d-flex align-items-center">
-										<div className="mr-3">
-											The payment account details will be added to the user's
-											verification section.
-										</div>
-										<Tooltip
-											overlayClassName="admin-general-description-tip general-description-tip-right"
-											title={
-												<img
-													src={STATIC_ICONS.FIAT_PAYMENT_TOOLTIP}
-													className="fiatpayhelp fiatpayhelpnote"
-													alt="footer"
-												/>
-											}
-											placement="right"
-										>
-											<QuestionCircleOutlined className="quesIcon" />
-										</Tooltip>
-									</div>
-									<div className="mt-4">
-										These payment details can be reused for{' '}
-										{paymenttype === 'initial'
-											? 'on and off ramping.'
-											: 'off ramping page.'}
-									</div>
-								</div>
-							</div>
-							<Button
-								type="primary"
-								className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
-								onClick={() => handleClosePlugin(true)}
-							>
-								Add payment account
-							</Button>
-						</div>
-						<div className="border-divider"></div>
-					</div>
-				) : null}
-				{!isUpgrade && currentActiveTab === 'paymentAccounts' ? (
-					<div className="d-flex mt-3 ml-4">
-						<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-							<div>
-								<div className="font-weight-bold">
-									Add fiat deposits & withdrawals
-								</div>
-								<div>Allow your users to send USD & other fiat</div>
-							</div>
-							<div className="ml-5 button-wrapper">
-								<a
-									href="https://dash.bitholla.com/billing"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Button type="primary" className="w-100">
-										Upgrade Now
-									</Button>
-								</a>
-							</div>
-						</div>
-					</div>
-				) : null}
 				<div className={!isUpgrade ? 'disableall' : ''}>
 					{payOption && paymentMethods.length && paymentMethods.length > 1 ? (
 						<div className="mt-4">
@@ -747,9 +623,6 @@ const RampPaymentAccounts = ({
 			) : (
 				<div className={!isUpgrade ? 'disableall' : ''}>
 					{(currentActiveTab &&
-						currentActiveTab === 'paymentAccounts' &&
-						isDisplayForm) ||
-					(currentActiveTab &&
 						currentActiveTab === 'onRamp' &&
 						isCurrentFormOpen) ||
 					(currentActiveTab &&
@@ -789,7 +662,9 @@ const RampPaymentAccounts = ({
 							defaultCustomInitialValues={defaultCustomInitialValues}
 						/>
 					) : null}
-					{payOption && !isDisplayDetails ? (
+					{payOption &&
+					!isDisplayDetails &&
+					(paymentSelect || selectedPaymentType) ? (
 						<PaymentDetails
 							type={
 								currentActiveTab && currentActiveTab === 'offRamp'
@@ -826,7 +701,7 @@ const RampPaymentAccounts = ({
 					user_payments={formValues}
 					bodyData={bodyData}
 					paymentSelectData={currentPaymentType || customName}
-					coinSymbol={coinSymbol}
+					coinSymbol={currentsymbol}
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}

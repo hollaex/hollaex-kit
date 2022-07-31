@@ -121,9 +121,7 @@ const Onramp = ({
 		showSelect = false
 	) => {
 		setSelectedAsset(coinSymb);
-		setTimeout(() => {
-			setIsVisible(true);
-		}, 100);
+		setIsVisible(true);
 		setType(type);
 		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
@@ -393,6 +391,7 @@ const Onramp = ({
 										OnsetCurrentType={setCurrentType}
 										isProceed={isProceed}
 										setIsProceed={setIsProceed}
+										isModalVisible={isVisible}
 									/>
 								) : null}
 								<div className="border-divider"></div>
