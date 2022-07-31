@@ -565,6 +565,8 @@ const PaymentAccounts = ({
 					setIsDisplayDetails={setIsDisplayDetails}
 					offramp={offramp}
 					isVisible={isVisible}
+					setPaymentSavedCoins={setPaymentSavedCoins}
+					handleBack={handleBack}
 				/>
 			</Modal>
 		</div>

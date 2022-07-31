@@ -172,6 +172,17 @@ const Offramp = ({
 		setTimeout(() => {
 			setIsVisible(true);
 		}, 100);
+		if (coinSymb) {
+			let IndexNum;
+			fiatCoins.forEach((item, index) => {
+				if (item.symbol === coinSymb) {
+					IndexNum = index;
+				}
+			});
+			setSelectedCoin(fiatCoins[IndexNum]);
+		} else {
+			setSelectedCoin(fiatCoins && fiatCoins[0]);
+		}
 		setType(type);
 		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
@@ -184,9 +195,6 @@ const Offramp = ({
 		setSelectOffField([]);
 		setSelectedPaymentType('');
 		setIsPayChanged(false);
-		if (showSelect) {
-			setSelectedCoin(fiatCoins && fiatCoins[0]);
-		}
 	};
 
 	const handleoffRampTab = (e) => {
@@ -458,7 +466,7 @@ const Offramp = ({
 												item?.symbol,
 												offramp[item?.symbol],
 												selectedCoin,
-												true
+												false
 											)
 										}
 										disabled={
@@ -608,6 +616,7 @@ const Offramp = ({
 					currentIndex={currentOfframpIndex}
 					setCurrentOfframpIndex={setCurrentOfframpIndex}
 					userPaymentsData={user_payments}
+					paymentSelectData={selectedPaymentType}
 				/>
 			</Modal>
 		</div>
