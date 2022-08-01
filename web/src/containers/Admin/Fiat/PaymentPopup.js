@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Tooltip, Select, Input, Radio } from 'antd';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
@@ -66,6 +67,7 @@ const PaymentAccountPopup = ({
 	isVisible = false,
 	setPaymentSavedCoins = () => {},
 	handleBack = () => {},
+	paymentMethodItems = {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
@@ -84,7 +86,7 @@ const PaymentAccountPopup = ({
 	const [paymentCount, setPaymentCount] = useState([]);
 	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
-			let tempData = Object.keys(userPaymentsData) || [];
+			let tempData = Object.keys(paymentMethodItems) || [];
 			if (
 				currentActiveTab &&
 				currentActiveTab === 'onRamp' &&
@@ -133,7 +135,7 @@ const PaymentAccountPopup = ({
 	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
-			const paymentsData = Object.keys(userPaymentsData);
+			const paymentsData = Object.keys(paymentMethodItems);
 			let temp = [];
 			if (tempArr.length > 0) {
 				paymentsData.forEach((item) => {
@@ -145,10 +147,12 @@ const PaymentAccountPopup = ({
 				temp = paymentsData;
 			}
 			setPaymentOptions(temp);
-			setPaymentSelect(temp.length > 0 ? temp[0] : selectedPaymentType);
+			if (temp.length > 0) {
+				setPaymentSelect(temp[0]);
+			}
 		}
 		// eslint-disable-next-line
-	}, [user_payments]);
+	}, [user_payments, paymentMethodItems]);
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -332,7 +336,7 @@ const PaymentAccountPopup = ({
 
 	const checkOptionExist = (optValue) => {
 		if (activeTab === 'onRamp') {
-			return !Object.keys(userPaymentsData).includes(optValue);
+			return !Object.keys(paymentMethodItems).includes(optValue);
 		}
 		return true;
 	};
@@ -425,7 +429,7 @@ const PaymentAccountPopup = ({
 						<div className="mb-3">
 							<Select
 								className="paymentSelect"
-								defaultValue={userPaymentsData[0]}
+								defaultValue={paymentMethodItems[0]}
 								value={paymentSelect}
 								suffixIcon={
 									isOpen ? (
@@ -1088,4 +1092,8 @@ const PaymentAccountPopup = ({
 	}
 };
 
-export default PaymentAccountPopup;
+const mapStateToProps = (state) => ({
+	paymentMethodItems: state.app?.constants?.user_payments,
+});
+
+export default connect(mapStateToProps)(PaymentAccountPopup);
