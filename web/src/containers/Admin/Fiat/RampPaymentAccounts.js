@@ -241,7 +241,8 @@ const RampPaymentAccounts = ({
 		} else if (currentActiveTab === 'onRamp') {
 			if (
 				Object.keys(onramp).length &&
-				(currentOnrampType !== 'add' || currentOnrampType !== 'addSuccess')
+				currentOnrampType !== 'add' &&
+				currentOnrampType !== 'addSuccess'
 			) {
 				Object.keys(onramp).forEach((item) => {
 					firstPayment = [...firstPayment, item];
@@ -413,7 +414,6 @@ const RampPaymentAccounts = ({
 		setPaymentmethodIndex(1);
 		setIsLoading(true);
 		setIsVisible(val);
-		setPaymentType('paymentform');
 		setSaveType(saveMethod);
 		setIsDisplayDetails(false);
 		updateConstantsData(bodyData, 'add');
