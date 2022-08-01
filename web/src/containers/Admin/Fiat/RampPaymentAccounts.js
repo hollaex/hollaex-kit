@@ -40,7 +40,7 @@ const RampPaymentAccounts = ({
 	getUpdatedKitData = () => {},
 	setSelectedPayType = () => {},
 	paymentIndex = 1,
-	currentOnrampType = '',
+	currentOnrampType = 'initial',
 	OnsetCurrentType = () => {},
 	isProceed = false,
 	setIsProceed = () => {},
@@ -239,7 +239,10 @@ const RampPaymentAccounts = ({
 			setFormValues(user_payments);
 			setPaymentSelect(firstPayment[0]);
 		} else if (currentActiveTab === 'onRamp') {
-			if (Object.keys(onramp).length && currentOnrampType !== 'add') {
+			if (
+				Object.keys(onramp).length &&
+				(currentOnrampType !== 'add' || currentOnrampType !== 'addSuccess')
+			) {
 				Object.keys(onramp).forEach((item) => {
 					firstPayment = [...firstPayment, item];
 					if (typeof onramp[item]?.data !== 'string') {
@@ -272,7 +275,6 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				// OnsetCurrentType('');
 			} else if (currentOnrampType === 'add') {
 				Object.keys(user_payments).forEach((item) => {
 					firstPayment = [...firstPayment, item];
@@ -299,7 +301,7 @@ const RampPaymentAccounts = ({
 				setFormValues(onramp);
 				setPayOption(true);
 				setPaymentSelect(firstPayment[0]);
-				// OnsetCurrentType('');
+				OnsetCurrentType('addSuccess');
 			}
 		} else {
 			setPayOption(false);
