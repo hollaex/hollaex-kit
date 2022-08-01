@@ -36,7 +36,7 @@ const Onramp = ({
 	const [selectedPayType, setSelectedPayType] = useState({});
 	const [selectedPaymentType, setSelectedPaymentType] = useState('');
 	const [isPayChanged, setIsPayChanged] = useState(false);
-	const [currentType, setCurrentType] = useState('');
+	const [currentType, setCurrentType] = useState('initial');
 	const [isProceed, setIsProceed] = useState(false);
 
 	useEffect(() => {
@@ -46,11 +46,13 @@ const Onramp = ({
 				(val) =>
 					exchange && exchange.coins && exchange.coins.includes(val.symbol)
 			);
+		let selectedAssetData = allCoins;
 		if (exchange && exchange.coins) {
 			coins = coins.filter((item) => Object.keys(onramp).includes(item.symbol));
 		}
-		let selectedAssetData = allCoins;
-		if (selectedAsset) {
+		if (!coins.length) {
+			setCoins(fiatCoins && fiatCoins.length ? [fiatCoins?.[0]] : []);
+		} else if (selectedAsset) {
 			selectedAssetData = selectedAssetData.filter(
 				(item) => item.symbol === selectedAsset
 			);
@@ -67,11 +69,7 @@ const Onramp = ({
 				}
 			});
 			setSelectedCoin(value);
-		}
-		if (!coins.length) {
-			setCoins(fiatCoins && fiatCoins.length ? [fiatCoins?.[0]] : []);
-		}
-		if (coins.length) {
+		} else if (coins.length) {
 			setCoins(coins);
 		}
 	}, [allCoins, onramp, exchange, selectedAsset, fiatCoins]);
