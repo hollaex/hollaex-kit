@@ -418,15 +418,31 @@ const PaymentAccountPopup = ({
 							alt="add-pay-icon"
 							className="add-pay-icon2 mr-3"
 						/>
-						<h3 className="payhead">Payment account information</h3>
+						<h3 className="payhead">
+							{currentActiveTab && currentActiveTab === 'onRamp'
+								? 'On-ramp'
+								: 'Payment account'}{' '}
+							information
+						</h3>
 					</div>
-					<div>
-						Select what type of payment account information you'd like to add.
-						This will be used for the purpose of verification. This information
-						can also be used in the off ramp section.
-					</div>
+					{currentActiveTab && currentActiveTab === 'onRamp' ? (
+						<div>
+							Select what on-ramp payment system you'd like to add information
+							for. This will then be viewed by your users for the fiat deposit
+							purposes.
+						</div>
+					) : (
+						<div>
+							Select what type of payment account information you'd like to add.
+							This will be used for the purpose of verification. This
+							information can also be used in the off ramp section.
+						</div>
+					)}
 					{paymentOptions.length > 0 && (
 						<div className="mb-3">
+							<div>
+								Select from premade payment accounts ({paymentOptions.length}):
+							</div>
 							<Select
 								className="paymentSelect"
 								defaultValue={paymentMethodItems[0]}
