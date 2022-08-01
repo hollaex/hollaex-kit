@@ -36,7 +36,7 @@ const Onramp = ({
 	const [selectedPayType, setSelectedPayType] = useState({});
 	const [selectedPaymentType, setSelectedPaymentType] = useState('');
 	const [isPayChanged, setIsPayChanged] = useState(false);
-	const [currentType, setCurrentType] = useState('initial');
+	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
 
 	useEffect(() => {
@@ -123,7 +123,11 @@ const Onramp = ({
 		setType(type);
 		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
-		setShowCoins(showCoin);
+		if (coinSymb) {
+			setShowCoins(false);
+		} else {
+			setShowCoins(showCoin);
+		}
 	};
 
 	const onCancel = () => {
