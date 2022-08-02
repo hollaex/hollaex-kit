@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, Select, message, Spin } from 'antd';
+import { Modal, Select, message } from 'antd';
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
 
@@ -45,6 +45,9 @@ const RampPaymentAccounts = ({
 	isProceed = false,
 	setIsProceed = () => {},
 	isModalVisible = false,
+	setIsLoading = () => {},
+	setIsDisable = () => {},
+	isDisable = false,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -66,7 +69,6 @@ const RampPaymentAccounts = ({
 	const [isDisplayDetails, setIsDisplayDetails] = useState(false);
 	const [selectedPlugin, setPlugin] = useState('');
 	const [currentIndex, setCurrentIndex] = useState(1);
-	const [isLoading, setIsLoading] = useState(false);
 	const [defaultBankInitialValues, setDefaultBankInitValue] = useState({});
 	const [defaultPaypalInitialValues, setDefaultPaypalInitValue] = useState({});
 	const [defaultCustomInitialValues, setDefaultCustomInitValue] = useState({});
@@ -74,6 +76,21 @@ const RampPaymentAccounts = ({
 	const [isCurrentFormOpen, setIsCurrentFormOpen] = useState(false);
 	const [paymentSavedCoins, setPaymentSavedCoins] = useState([]);
 	const [paymentmethodIndex, setPaymentmethodIndex] = useState(1);
+
+	useEffect(() => {
+		if (currentPaymentType !== customName) {
+			setCurrentPaymentType(customName);
+		}
+		// eslint-disable-next-line
+	}, [customName]);
+
+	useEffect(() => {
+		if (isCurrentFormOpen) {
+			setIsDisable(true);
+		} else if (!isCurrentFormOpen) {
+			setIsDisable(false);
+		}
+	}, [isCurrentFormOpen, setIsDisable]);
 
 	const getCustomDefaultValues = (paymentType = '') => {
 		let temp = {};
@@ -440,7 +457,7 @@ const RampPaymentAccounts = ({
 						...originalonramp,
 						[currentsymbol]: {
 							...originalonramp[currentsymbol],
-							[currentPaymentType || customName]: onRampData,
+							[currentPaymentType]: onRampData,
 						},
 					},
 				},
@@ -465,6 +482,8 @@ const RampPaymentAccounts = ({
 		setIsDisplayDetails(true);
 		if (currentType === 'add') {
 			setPaymentmethodIndex(paymentMethods.length + 1);
+		} else if (currentType === 'edit') {
+			setIsDisable(true);
 		}
 		setCurrentIndex(curIndex);
 		generateFormFieldsValues(type, currentPaymentType, currentType);
@@ -569,6 +588,7 @@ const RampPaymentAccounts = ({
 	};
 
 	const handleBack = () => {
+		setIsDisable(false);
 		if (!user_payments || !Object.keys(user_payments).length) {
 			setPaymentType('initial');
 		}
@@ -618,77 +638,72 @@ const RampPaymentAccounts = ({
 					) : null}
 				</div>
 			</div>
-			{isLoading ? (
-				<div className="d-flex justify-content-center align-items-center">
-					<Spin size="large" />
-				</div>
-			) : (
-				<div className={!isUpgrade ? 'disableall' : ''}>
-					{(currentActiveTab &&
-						currentActiveTab === 'onRamp' &&
-						isCurrentFormOpen) ||
-					(currentActiveTab &&
-						currentActiveTab === 'offRamp' &&
-						isDisplayDetails) ? (
-						<PaymentWay
-							paymenttype={paymenttype}
-							handleClosePlugin={handleClosePlugin}
-							handleSave={handleSave}
-							savedContent={savedContent}
-							handleEdit={handleEdit}
-							pluginName={pluginName}
-							handleDel={handleDel}
-							isUpgrade={isUpgrade}
-							handleDelBank={handleDelBank}
-							paymentSelect={paymentSelect}
-							handleClose={handleClose}
-							saveType={saveType}
-							formData={formData}
-							router={router}
-							formUpdate={formUpdate}
-							currentActiveTab={currentActiveTab}
-							bankInitialValues={bankInitialValues}
-							paypalInitialValues={paypalInitialValues}
-							customInitialValues={customInitialValues}
-							currentPaymentType={currentPaymentType}
-							isCustomPay={isCustomPay}
-							customName={customName}
-							currentsymbol={currentsymbol}
-							coinSymbol={coinSymbol}
-							isPaymentForm={isPaymentForm}
-							currentIndex={paymentmethodIndex}
-							handleBack={handleBack}
-							currentType={currentType}
-							defaultBankInitialValues={defaultBankInitialValues}
-							defaultPaypalInitialValues={defaultPaypalInitialValues}
-							defaultCustomInitialValues={defaultCustomInitialValues}
-						/>
-					) : null}
-					{payOption &&
-					!isDisplayDetails &&
-					(paymentSelect || selectedPaymentType) ? (
-						<PaymentDetails
-							type={
-								currentActiveTab && currentActiveTab === 'offRamp'
-									? selectedPaymentType
-									: paymentSelect
-							}
-							formUpdate={formUpdate}
-							saveType={saveType}
-							handleClose={handleClose}
-							formData={formData}
-							router={router}
-							user_payments={formValues}
-							activeTab={currentActiveTab}
-							paymentIndex={
-								currentActiveTab && currentActiveTab === 'offRamp'
-									? paymentIndex
-									: currentIndex
-							}
-						/>
-					) : null}
-				</div>
-			)}
+			<div className={!isUpgrade ? 'disableall' : ''}>
+				{(currentActiveTab &&
+					currentActiveTab === 'onRamp' &&
+					isCurrentFormOpen) ||
+				(currentActiveTab &&
+					currentActiveTab === 'offRamp' &&
+					isDisplayDetails) ? (
+					<PaymentWay
+						paymenttype={paymenttype}
+						handleClosePlugin={handleClosePlugin}
+						handleSave={handleSave}
+						savedContent={savedContent}
+						handleEdit={handleEdit}
+						pluginName={pluginName}
+						handleDel={handleDel}
+						isUpgrade={isUpgrade}
+						handleDelBank={handleDelBank}
+						paymentSelect={paymentSelect}
+						handleClose={handleClose}
+						saveType={saveType}
+						formData={formData}
+						router={router}
+						formUpdate={formUpdate}
+						currentActiveTab={currentActiveTab}
+						bankInitialValues={bankInitialValues}
+						paypalInitialValues={paypalInitialValues}
+						customInitialValues={customInitialValues}
+						currentPaymentType={currentPaymentType}
+						isCustomPay={isCustomPay}
+						customName={customName}
+						currentsymbol={currentsymbol}
+						coinSymbol={coinSymbol}
+						isPaymentForm={isPaymentForm}
+						currentIndex={paymentmethodIndex}
+						handleBack={handleBack}
+						currentType={currentType}
+						defaultBankInitialValues={defaultBankInitialValues}
+						defaultPaypalInitialValues={defaultPaypalInitialValues}
+						defaultCustomInitialValues={defaultCustomInitialValues}
+					/>
+				) : null}
+				{payOption &&
+				!isDisplayDetails &&
+				(paymentSelect || selectedPaymentType) ? (
+					<PaymentDetails
+						type={
+							currentActiveTab && currentActiveTab === 'offRamp'
+								? selectedPaymentType
+								: paymentSelect
+						}
+						formUpdate={formUpdate}
+						saveType={saveType}
+						handleClose={handleClose}
+						formData={formData}
+						router={router}
+						user_payments={formValues}
+						activeTab={currentActiveTab}
+						paymentIndex={
+							currentActiveTab && currentActiveTab === 'offRamp'
+								? paymentIndex
+								: currentIndex
+						}
+						isDisable={isDisable}
+					/>
+				) : null}
+			</div>
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
 					handleClosePlugin={handleClosePlugin}
@@ -702,7 +717,7 @@ const RampPaymentAccounts = ({
 					currentActiveTab={currentActiveTab}
 					user_payments={formValues}
 					bodyData={bodyData}
-					paymentSelectData={currentPaymentType || customName}
+					paymentSelectData={currentPaymentType}
 					coinSymbol={currentsymbol}
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
