@@ -27,7 +27,7 @@ const PaymentDetails = ({
 	return (
 		<div>
 			{user_payments &&
-				Object.keys(user_payments).length &&
+				Object.keys(user_payments).length > 0 &&
 				Object.keys(user_payments)
 					.filter((e) => e === type)
 					.map((item, index) => {
@@ -38,7 +38,7 @@ const PaymentDetails = ({
 									<div>
 										{activeTab && activeTab !== 'paymentAccounts'
 											? `${activeTab}  ${paymentIndex}`
-											: `User payment account ${index + 1}`}
+											: `User payment account ${paymentIndex}`}
 									</div>
 								</div>
 								<div className="d-flex mb-4">
@@ -82,7 +82,11 @@ const PaymentDetails = ({
 									<div>
 										{activeTab && activeTab === 'onRamp' ? (
 											<div>
-												<div className="mb-1">REQUIRED</div>
+												{curData?.data.map((elem) =>
+													elem.filter((item) => item?.required)
+												)[0]?.length ? (
+													<div className="mb-1">REQUIRED</div>
+												) : null}
 												<div className="bankborder">
 													{curData?.data.map((elem) => {
 														return elem.map((item, key) => {
@@ -109,7 +113,11 @@ const PaymentDetails = ({
 														});
 													})}
 												</div>
-												<div className="mb-1">OPTIONAL</div>
+												{curData?.data.map((elem) =>
+													elem.filter((item) => !item?.required)
+												)[0]?.length ? (
+													<div className="mb-1">OPTIONAL</div>
+												) : null}
 												<div className="bankborder">
 													{curData?.data.map((elem) => {
 														return elem.map((item, key) => {
@@ -197,7 +205,7 @@ const PaymentDetails = ({
 												: 'customForm',
 											item,
 											false,
-											index + 1,
+											paymentIndex,
 											'edit'
 										)
 									}
