@@ -336,7 +336,10 @@ const PaymentAccountPopup = ({
 
 	const checkOptionExist = (optValue) => {
 		if (activeTab === 'onRamp') {
-			return !Object.keys(paymentMethodItems).includes(optValue);
+			return (
+				!Object.keys(paymentMethodItems).includes(optValue) &&
+				!Object.keys(user_payments).includes(optValue)
+			);
 		}
 		return true;
 	};
@@ -865,10 +868,7 @@ const PaymentAccountPopup = ({
 							deposit page which then can be used making deposits.
 						</div>
 					</div>
-					{(showCoins && activeTab !== 'onRamp') ||
-					(showCoins && activeTab === 'onRamp') ? (
-						<span>{renderSelect('deposit')}</span>
-					) : null}
+					{showCoins ? <span>{renderSelect('deposit')}</span> : null}
 					<div className="button-wrapper mt-4">
 						<Button
 							type="primary"

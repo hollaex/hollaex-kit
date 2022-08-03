@@ -9,6 +9,7 @@ const PaymentDetails = ({
 	formUpdate,
 	user_payments = {},
 	paymentIndex,
+	isDisable = false,
 }) => {
 	const renderImage = (type) => {
 		if (type === 'bank') {
@@ -195,7 +196,9 @@ const PaymentDetails = ({
 									</div>
 								) : null}
 								<div
-									className="txtanchor mt-4"
+									className={
+										isDisable ? 'txtanchor mt-4 pointer-none' : 'txtanchor mt-4'
+									}
 									onClick={() =>
 										formUpdate(
 											typeof curData?.data === 'string'
@@ -210,7 +213,7 @@ const PaymentDetails = ({
 										)
 									}
 								>
-									EDIT
+									<div>EDIT</div>
 								</div>
 							</div>
 						);
