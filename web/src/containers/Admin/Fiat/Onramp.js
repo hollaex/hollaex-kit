@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { STATIC_ICONS } from 'config/icons';
-import { Button, Tooltip, Modal, Select } from 'antd';
+import { Button, Tooltip, Modal, Select, Spin } from 'antd';
 import { QuestionCircleOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { Link } from 'react-router';
 
@@ -19,6 +19,8 @@ const Onramp = ({
 	onramp,
 	user_payments,
 	getUpdatedKitData = () => {},
+	isLoading = false,
+	setIsLoading = () => {},
 }) => {
 	const [coins, setCoins] = useState([]);
 	const [type, setType] = useState('');
@@ -38,6 +40,7 @@ const Onramp = ({
 	const [isPayChanged, setIsPayChanged] = useState(false);
 	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
+	const [isDisable, setIsDisable] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -206,202 +209,226 @@ const Onramp = ({
 	});
 
 	return (
-		<div className="payment-acc-wrapper">
-			<Fragment>
-				<div className="d-flex justify-content-between">
-					<div className="d-flex align-items-center">
-						<img
-							src={STATIC_ICONS.ONRAMP_DOLLAR_ICON}
-							alt="pay-icon"
-							className="pay-icon"
-						/>
-						<div>
+		<div className="ramp-wrapper">
+			<Spin spinning={isLoading || !allCoins.length} size="large">
+				<div className="payment-acc-wrapper">
+					<Fragment>
+						<div className="d-flex justify-content-between">
 							<div className="d-flex align-items-center">
-								<div className="mr-3 w-50">
-									Connect an on-ramp. This can simply be bank deposit details
-									and/or other payment processor details. Below are fiat assets
-									that you can connect deposit details for. Once connected,
-									these details will be displayed to users in their asset wallet
-									deposit page for that specific asset.
-								</div>
-								<Tooltip
-									overlayClassName="admin-general-description-tip general-description-tip-right"
-									title={
-										<img
-											src={STATIC_ICONS.FIAT_ONRAMP_TOOLTIP}
-											className="fiatpayhelp fiatonramphelpnote"
-											alt="footer"
-										/>
-									}
-									placement="right"
-								>
-									<QuestionCircleOutlined className="quesIcon" />
-								</Tooltip>
-							</div>
-						</div>
-					</div>
-					<Button
-						type="primary"
-						className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
-						onClick={() =>
-							handleRamp('onramp', true, selectedCoin?.symbol, null, null, true)
-						}
-						disabled={!user_payments || !Object.keys(user_payments).length}
-					>
-						Add on-ramp
-					</Button>
-				</div>
-				<div className="border-divider"></div>
-				{!isUpgrade ? (
-					<div className="d-flex ml-4">
-						<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
-							<div>
-								<div className="font-weight-bold">
-									Add fiat deposits & withdrawals
-								</div>
-								<div>Allow your users to send USD & other fiat</div>
-							</div>
-							<div className="ml-5 button-wrapper">
-								<a
-									href="https://dash.bitholla.com/billing"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Button type="primary" className="w-100">
-										Upgrade Now
-									</Button>
-								</a>
-							</div>
-						</div>
-					</div>
-				) : null}
-				<div className={!isUpgrade ? 'disableall' : ''}>
-					{!Object.keys(user_payments).length ? (
-						<div className="paymentbox">
-							<InfoCircleOutlined
-								style={{ fontSize: '35px' }}
-								className="mr-3 ml-4"
-							/>
-							<div className="paymentContent">
+								<img
+									src={STATIC_ICONS.ONRAMP_DOLLAR_ICON}
+									alt="pay-icon"
+									className="pay-icon"
+								/>
 								<div>
-									We've noticed that there hasn't been any Payment Accounts
-									added yet. To start it is recommended to{' '}
-									<Link to="/admin/fiat?tab=1" className="underline">
-										add a Payment Account
-									</Link>
-									.
-								</div>
-								<div>
-									<Link to="/admin/fiat?tab=1" className="underline">
-										<Button type="primary" className="green-btn">
-											Add payment account
-										</Button>
-									</Link>
-									<div className="small-gray-text">
-										Add an on-ramp anyway{' '}
-										<span
-											className="anchor"
-											onClick={() => handleRamp('onramp', true)}
+									<div className="d-flex align-items-center">
+										<div className="mr-3 w-50">
+											Connect an on-ramp. This can simply be bank deposit
+											details and/or other payment processor details. Below are
+											fiat assets that you can connect deposit details for. Once
+											connected, these details will be displayed to users in
+											their asset wallet deposit page for that specific asset.
+										</div>
+										<Tooltip
+											overlayClassName="admin-general-description-tip general-description-tip-right"
+											title={
+												<img
+													src={STATIC_ICONS.FIAT_ONRAMP_TOOLTIP}
+													className="fiatpayhelp fiatonramphelpnote"
+													alt="footer"
+												/>
+											}
+											placement="right"
 										>
-											here
-										</span>
+											<QuestionCircleOutlined className="quesIcon" />
+										</Tooltip>
 									</div>
 								</div>
 							</div>
+							<Button
+								type="primary"
+								className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
+								onClick={() =>
+									handleRamp(
+										'onramp',
+										true,
+										selectedCoin?.symbol,
+										null,
+										null,
+										true
+									)
+								}
+								disabled={
+									!user_payments ||
+									!Object.keys(user_payments).length ||
+									isDisable
+								}
+							>
+								Add on-ramp
+							</Button>
 						</div>
-					) : null}
-					{!Object.keys(onramp).length &&
-					user_payments &&
-					Object.keys(user_payments).length
-						? renderSelect('deposit')
-						: null}
-					{coinData.map((item, index) => {
-						return (
-							<div key={index}>
-								<div className="paymentbox2">
-									<div className="mr-4 ml-4">
-										<Coins
-											type={item?.symbol.toLowerCase()}
-											color={item?.meta ? item?.meta.color : ''}
-											fullname={item?.fullname}
-											nohover
-											large
-											small
-										/>
+						<div className="border-divider"></div>
+						{!isUpgrade ? (
+							<div className="d-flex ml-4">
+								<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+									<div>
+										<div className="font-weight-bold">
+											Add fiat deposits & withdrawals
+										</div>
+										<div>Allow your users to send USD & other fiat</div>
 									</div>
-									<div className="d-flex flex-column ml-5 mr-5">
-										<span>
-											<b>Name</b>: {item?.fullname}
-										</span>
-										<span>
-											<b>Symbol</b>: {item?.symbol}
-										</span>
-										<span>
-											<b>Type</b>: {item?.type}
-										</span>
-										<span>
-											<b>Status</b>: {item?.verified ? 'Active' : 'In active'}
-										</span>
-										<Link
-											to={`/admin/financials?tab=0&preview=true&symbol=${item?.symbol}&isFiat=${activeTab}`}
-											className="underline assetclick"
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.bitholla.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
 										>
-											Manage asset
-										</Link>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
 									</div>
-									<Button
-										type="primary"
-										className="green-btn ml-5"
-										onClick={() => handleRamp('onramp', false, item?.symbol)}
-										disabled={
-											!user_payments || !Object.keys(user_payments).length
-										}
-									>
-										Add on-ramp
-									</Button>
 								</div>
-								{isPaymentForm ? (
-									<RampPaymentAccounts
-										formType={formType}
-										isDisplayFormData={true}
-										onramp={onramp[item?.symbol]}
-										currentActiveTab={activeTab}
-										coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
-										onRampCoins={!isPaymentForm ? Object.keys(onramp) : []}
-										customName={customName}
-										user_payments={user_payments}
-										isUpgrade={isUpgrade}
-										originalonramp={onramp}
-										pluginName={pluginName}
-										currentsymbol={item?.symbol}
-										isPaymentForm={formType === 'plugin' && customName}
-										setCoindata={setCoindata}
-										selectedPaymentType={selectedPayType?.[item?.symbol]}
-										selectedPayType={selectedPayType}
-										getUpdatedKitData={getUpdatedKitData}
-										setSelectedPayType={setSelectedPayType}
-										paymentIndex={
-											selectedPayType && selectedPayType[item?.symbol]
-												? onramp &&
-												  onramp[item?.symbol] &&
-												  onramp[item?.symbol].indexOf(
-														selectedPayType && selectedPayType[item?.symbol]
-												  ) + 1
-												: 1
-										}
-										currentOnrampType={currentType}
-										OnsetCurrentType={setCurrentType}
-										isProceed={isProceed}
-										setIsProceed={setIsProceed}
-										isModalVisible={isVisible}
+							</div>
+						) : null}
+						<div className={!isUpgrade ? 'disableall' : ''}>
+							{!Object.keys(user_payments).length ? (
+								<div className="paymentbox">
+									<InfoCircleOutlined
+										style={{ fontSize: '35px' }}
+										className="mr-3 ml-4"
 									/>
-								) : null}
-								<div className="border-divider"></div>
-							</div>
-						);
-					})}
+									<div className="paymentContent">
+										<div>
+											We've noticed that there hasn't been any Payment Accounts
+											added yet. To start it is recommended to{' '}
+											<Link to="/admin/fiat?tab=1" className="underline">
+												add a Payment Account
+											</Link>
+											.
+										</div>
+										<div>
+											<Link to="/admin/fiat?tab=1" className="underline">
+												<Button type="primary" className="green-btn">
+													Add payment account
+												</Button>
+											</Link>
+											<div className="small-gray-text">
+												Add an on-ramp anyway{' '}
+												<span
+													className="anchor"
+													onClick={() => handleRamp('onramp', true)}
+												>
+													here
+												</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							) : null}
+							{!Object.keys(onramp).length &&
+							user_payments &&
+							Object.keys(user_payments).length
+								? renderSelect('deposit')
+								: null}
+							{coinData.map((item, index) => {
+								return (
+									<div key={index}>
+										<div className="paymentbox2">
+											<div className="mr-4 ml-4">
+												<Coins
+													type={item?.symbol.toLowerCase()}
+													color={item?.meta ? item?.meta.color : ''}
+													fullname={item?.fullname}
+													nohover
+													large
+													small
+												/>
+											</div>
+											<div className="d-flex flex-column ml-5 mr-5">
+												<span>
+													<b>Name</b>: {item?.fullname}
+												</span>
+												<span>
+													<b>Symbol</b>: {item?.symbol}
+												</span>
+												<span>
+													<b>Type</b>: {item?.type}
+												</span>
+												<span>
+													<b>Status</b>:{' '}
+													{item?.verified ? 'Active' : 'In active'}
+												</span>
+												<Link
+													to={`/admin/financials?tab=0&preview=true&symbol=${item?.symbol}&isFiat=${activeTab}`}
+													className="underline assetclick"
+												>
+													Manage asset
+												</Link>
+											</div>
+											<Button
+												type="primary"
+												className="green-btn ml-5"
+												onClick={() =>
+													handleRamp('onramp', false, item?.symbol)
+												}
+												disabled={
+													!user_payments ||
+													!Object.keys(user_payments).length ||
+													isDisable
+												}
+											>
+												Add on-ramp
+											</Button>
+										</div>
+										{isPaymentForm ? (
+											<RampPaymentAccounts
+												formType={formType}
+												isDisplayFormData={true}
+												onramp={onramp[item?.symbol]}
+												currentActiveTab={activeTab}
+												coinSymbol={coinSymbol ? coinSymbol : item?.symbol}
+												onRampCoins={!isPaymentForm ? Object.keys(onramp) : []}
+												customName={customName}
+												user_payments={user_payments}
+												isUpgrade={isUpgrade}
+												originalonramp={onramp}
+												pluginName={pluginName}
+												currentsymbol={item?.symbol}
+												isPaymentForm={formType === 'plugin' && customName}
+												setCoindata={setCoindata}
+												selectedPaymentType={selectedPayType?.[item?.symbol]}
+												selectedPayType={selectedPayType}
+												getUpdatedKitData={getUpdatedKitData}
+												setSelectedPayType={setSelectedPayType}
+												paymentIndex={
+													selectedPayType && selectedPayType[item?.symbol]
+														? onramp &&
+														  onramp[item?.symbol] &&
+														  onramp[item?.symbol].indexOf(
+																selectedPayType && selectedPayType[item?.symbol]
+														  ) + 1
+														: 1
+												}
+												currentOnrampType={currentType}
+												OnsetCurrentType={setCurrentType}
+												isProceed={isProceed}
+												setIsProceed={setIsProceed}
+												isModalVisible={isVisible}
+												isLoading={isLoading}
+												setIsLoading={setIsLoading}
+												setIsDisable={setIsDisable}
+												isDisable={isDisable}
+											/>
+										) : null}
+										<div className="border-divider"></div>
+									</div>
+								);
+							})}
+						</div>
+					</Fragment>
 				</div>
-			</Fragment>
+			</Spin>
 			<Modal visible={isVisible} footer={null} width={500} onCancel={onCancel}>
 				<PaymentAccountPopup
 					handleClosePlugin={onCancel}
@@ -426,6 +453,7 @@ const Onramp = ({
 					isPayChanged={isPayChanged}
 					setIsPayChanged={setIsPayChanged}
 					userPaymentsData={user_payments}
+					isVisible={isVisible}
 				/>
 			</Modal>
 		</div>

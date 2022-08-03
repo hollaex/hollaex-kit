@@ -23,6 +23,7 @@ const Fiatmarkets = ({
 	const [activeTab, setActiveTab] = useState('0');
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const [isGetExchange, setIsGetExchange] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const { user_payments = {}, onramp = {}, offramp = {} } = constants;
 	const [offRampData, setOffRamp] = useState(offramp);
 	const [onrampData, setOnRamp] = useState(onramp);
@@ -98,6 +99,8 @@ const Fiatmarkets = ({
 						user_payments={user_payments}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 				</TabPane>
 				<TabPane tab="Off-ramp" key="3">
@@ -110,6 +113,8 @@ const Fiatmarkets = ({
 						user_payments={user_payments}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 				</TabPane>
 				{/* <TabPane tab="KYC" key="4">

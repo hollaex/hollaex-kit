@@ -203,8 +203,7 @@ class FormConfig extends Component {
 							currentActiveTab: this.props.currentActiveTab,
 							validate:
 								this.props.currentActiveTab &&
-								this.props.currentActiveTab === 'onRamp' &&
-								formProps.required
+								this.props.currentActiveTab === 'onRamp'
 									? [required]
 									: [],
 						},

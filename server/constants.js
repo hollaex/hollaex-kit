@@ -328,8 +328,8 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	zero: {
-		maker: 0.3,
-		taker: 0.3
+		maker: 0.2,
+		taker: 0.2
 	},
 	lite: {
 		maker: 0.05,
@@ -337,7 +337,7 @@ exports.DEFAULT_FEES = {
 	},
 	member: {
 		maker: 0,
-		taker: 0.05
+		taker: 0
 	}
 };
 

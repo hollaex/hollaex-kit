@@ -750,3 +750,17 @@
 	background-color: #ffffff !important;
 	color: #000000 !important;
 }
+
+.ramp-wrapper {
+	position: 'relative';
+}
+
+.ramp-wrapper .ant-spin-nested-loading > div > .ant-spin {
+	max-height: 30% !important;
+}
+
+.paymentContainer .txtanchor.pointer-none {
+	pointer-events: none;
+	width: 5rem;
+	opacity: 0.5;
+}
