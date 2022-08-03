@@ -204,7 +204,7 @@ class FormConfig extends Component {
 							validate:
 								this.props.currentActiveTab &&
 								this.props.currentActiveTab === 'onRamp'
-									? [requiredWithTrim]
+									? [required, requiredWithTrim]
 									: [],
 							fieldsCount: totalFieldsCount,
 						},

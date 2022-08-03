@@ -346,7 +346,7 @@ const PaymentAccountPopup = ({
 
 	const handleAccountBack = () => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
-			tabUpdate('onramp', true);
+			tabUpdate('onramp', showCoins ? true : false);
 		} else {
 			tabUpdate('payment');
 		}
@@ -884,7 +884,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('account')}
+							onClick={() => tabUpdate('account', showCoins ? true : false)}
 						>
 							Proceed
 						</Button>

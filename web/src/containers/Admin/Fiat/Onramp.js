@@ -126,11 +126,7 @@ const Onramp = ({
 		setType(type);
 		setShowSelect(showSelect);
 		setCoinSymbol(coinSymb);
-		if (coinSymb) {
-			setShowCoins(false);
-		} else {
-			setShowCoins(showCoin);
-		}
+		setShowCoins(showCoin);
 	};
 
 	const onCancel = () => {

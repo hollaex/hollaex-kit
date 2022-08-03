@@ -323,7 +323,11 @@ export const PaymentWay = ({
 					/>
 					<div className="info">
 						There are no fiat payment account systems added yet. Add a payment
-						account system information <span className="txtanchor">here</span>.
+						account system information{' '}
+						<span className="txtanchor" onClick={() => handleClosePlugin(true)}>
+							here
+						</span>
+						.
 					</div>
 					<Button
 						type="primary"
