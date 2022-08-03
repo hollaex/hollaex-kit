@@ -495,6 +495,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 };
 
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	transactionId: null,
 	additionalHeaders: null
 }) => {
 	if (!subscribedToCoin(currency)) {
@@ -520,6 +521,7 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 };
 
 const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	transactionId: null,
 	additionalHeaders: null
 }) => {
 	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email, ...opts });
