@@ -41,6 +41,7 @@ const Onramp = ({
 	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
 	const [isDisable, setIsDisable] = useState(false);
+	const [onrampIndex, setOnrampIndex] = useState(1);
 
 	useEffect(() => {
 		let coins =
@@ -139,6 +140,11 @@ const Onramp = ({
 	};
 
 	const formUpdate = (val, plugin, isCustomPay, curIndex, currentType = '') => {
+		setOnrampIndex(
+			onramp && onramp[coinSymbol]
+				? Object.keys(onramp[coinSymbol]).length + 1
+				: 1
+		);
 		setIsPaymentForm(true);
 		setFormType(val);
 		setCustomName(plugin);
@@ -312,7 +318,9 @@ const Onramp = ({
 											<div className="small-gray-text">
 												Add an on-ramp anyway{' '}
 												<span
-													className="anchor"
+													className={
+														isDisable ? 'anchor pointer-none' : 'anchor'
+													}
 													onClick={() => handleRamp('onramp', true)}
 												>
 													here
@@ -415,6 +423,8 @@ const Onramp = ({
 												setIsLoading={setIsLoading}
 												setIsDisable={setIsDisable}
 												isDisable={isDisable}
+												onrampIndex={onrampIndex}
+												setOnrampIndex={setOnrampIndex}
 											/>
 										) : null}
 										<div className="border-divider"></div>

@@ -122,13 +122,15 @@ const PaymentAccountPopup = ({
 		if (!isVisible) {
 			setExistErrorMsg('');
 			setErrorMsg('');
-			setPaymentSelect(
-				!selectedPaymentType &&
-					currentActiveTab &&
-					currentActiveTab === 'paymentAccounts'
-					? 'bank'
-					: selectedPaymentType
-			);
+			if (currentActiveTab && currentActiveTab !== 'onRamp') {
+				setPaymentSelect(
+					!selectedPaymentType &&
+						currentActiveTab &&
+						currentActiveTab === 'paymentAccounts'
+						? 'bank'
+						: selectedPaymentType
+				);
+			}
 		}
 	}, [isVisible, currentActiveTab, selectedPaymentType]);
 
@@ -351,13 +353,15 @@ const PaymentAccountPopup = ({
 			tabUpdate('payment');
 		}
 		setExistErrorMsg('');
-		setPaymentSelect(
-			!selectedPaymentType &&
-				currentActiveTab &&
-				currentActiveTab === 'paymentAccounts'
-				? 'bank'
-				: selectedPaymentType
-		);
+		if (currentActiveTab && currentActiveTab !== 'onRamp') {
+			setPaymentSelect(
+				!selectedPaymentType &&
+					currentActiveTab &&
+					currentActiveTab === 'paymentAccounts'
+					? 'bank'
+					: selectedPaymentType
+			);
+		}
 	};
 
 	const handleLink = () => {
