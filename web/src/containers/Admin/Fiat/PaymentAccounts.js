@@ -297,8 +297,17 @@ const PaymentAccounts = ({
 		setIsCustomPay(isCustomPay);
 		setIsDisplayDetails(true);
 		if (currentType === 'add') {
-			setPaymentmethodIndex(paymentMethods.length + 1);
+			setPaymentmethodIndex(
+				user_payments && Object.keys(user_payments).length
+					? Object.keys(user_payments).length + 1
+					: 1
+			);
+		} else {
+			setPaymentmethodIndex(
+				Object.keys(user_payments).indexOf(currentPaymentType) + 1
+			);
 		}
+
 		setCurrentIndex(curIndex);
 		generateFormFieldsValues(type, currentPaymentType, currentType);
 		if (currentType) {
@@ -434,6 +443,7 @@ const PaymentAccounts = ({
 								type="primary"
 								className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
 								onClick={() => handleClosePlugin(true)}
+								disabled={isDisplayForm}
 							>
 								Add payment account
 							</Button>

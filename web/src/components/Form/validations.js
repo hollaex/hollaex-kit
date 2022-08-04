@@ -291,3 +291,6 @@ export const validateOtp = (message = STRINGS['OTP_FORM.ERROR_INVALID']) => (
 export const normalizeEmail = (value = '') => value.toLowerCase();
 
 export const tokenKeyValidation = required;
+
+export const requiredWithTrim = (value) =>
+	!value.trim() ? STRINGS['VALIDATIONS.REQUIRED'] : undefined;

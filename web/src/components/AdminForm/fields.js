@@ -32,6 +32,7 @@ export const renderInputField = ({
 	tooltipTitle = '',
 	inputDefaultValue,
 	currentActiveTab = '',
+	fieldsCount = 1,
 }) => {
 	return (
 		<div className={classname('input_field', className)}>
@@ -62,7 +63,10 @@ export const renderInputField = ({
 						/>
 					)}
 					{(isClosable && !currentActiveTab) ||
-					(isClosable && currentActiveTab && currentActiveTab !== 'offRamp') ? (
+					(isClosable &&
+						currentActiveTab &&
+						currentActiveTab !== 'offRamp' &&
+						fieldsCount !== 1) ? (
 						<CloseCircleOutlined
 							className="close-icon"
 							onClick={closeCallback}
