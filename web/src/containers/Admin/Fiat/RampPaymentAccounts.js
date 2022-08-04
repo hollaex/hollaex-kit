@@ -580,6 +580,7 @@ const RampPaymentAccounts = ({
 		setCurrentIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentmethodIndex(Object.keys(formValues).indexOf(e) + 1);
 		setPaymentSelect(e);
+		setPayOption(true);
 		setIsDisplayDetails(false);
 		setIsCurrentFormOpen(false);
 	};
@@ -605,7 +606,7 @@ const RampPaymentAccounts = ({
 		<div className="payment-acc-wrapper">
 			<div>
 				<div className={!isUpgrade ? 'disableall' : ''}>
-					{payOption && paymentMethods.length && paymentMethods.length > 1 ? (
+					{paymentMethods.length && paymentMethods.length > 1 ? (
 						<div className="mt-4">
 							<div>Payment accounts ({paymentMethods.length} method saved)</div>
 							<div className="mb-3">

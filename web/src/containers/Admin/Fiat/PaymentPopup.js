@@ -346,7 +346,7 @@ const PaymentAccountPopup = ({
 
 	const handleAccountBack = () => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
-			tabUpdate('onramp', true);
+			tabUpdate('onramp', showCoins ? true : false);
 		} else {
 			tabUpdate('payment');
 		}
@@ -371,6 +371,10 @@ const PaymentAccountPopup = ({
 		tabUpdate('account');
 	};
 
+	const currentSelectedPay =
+		currentActiveTab && currentActiveTab === 'offRamp'
+			? paymentSelect
+			: paymentSelectData;
 	switch (type) {
 		case 'payment':
 			return (
@@ -570,7 +574,7 @@ const PaymentAccountPopup = ({
 								<b>
 									{currentActiveTab && currentActiveTab === 'paymentAccounts'
 										? 'Payment system name'
-										: 'Plugin on-ramp system name'}
+										: 'Custom on-ramp system name'}
 								</b>
 							</div>
 						</>
@@ -590,7 +594,7 @@ const PaymentAccountPopup = ({
 								</div>
 							</div>
 							<div className="mb-3">
-								<b>Plugin payment system name</b>
+								<b>Plugin on-ramp system name</b>
 							</div>
 						</>
 					)}
@@ -880,7 +884,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('account')}
+							onClick={() => tabUpdate('account', showCoins ? true : false)}
 						>
 							Proceed
 						</Button>
@@ -975,10 +979,6 @@ const PaymentAccountPopup = ({
 				</div>
 			);
 		case 'savePayment':
-			const currentSelectedPay =
-				currentActiveTab && currentActiveTab === 'onRamp'
-					? paymentSelectData
-					: paymentSelect;
 			return (
 				<div className="payment-modal-wrapper">
 					<h3>Save and publish</h3>
