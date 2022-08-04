@@ -1665,6 +1665,7 @@ class HollaExNetwork {
 	 * @param {string} currency - Currency to transfer
 	 * @param {number} amount - Amount to transfer
 	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.transactionId - Custom transaction ID for transfer.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {boolean} opts.email - Send email to users after transfer. Default: true.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -1676,6 +1677,7 @@ class HollaExNetwork {
 		currency,
 		amount,
 		opts = {
+			transactionId: null,
 			description: null,
 			email: null,
 			additionalHeaders: null
@@ -1706,6 +1708,10 @@ class HollaExNetwork {
 
 		if (opts.description) {
 			data.description = opts.description;
+		}
+
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
 		}
 
 		if (isBoolean(opts.email)) {

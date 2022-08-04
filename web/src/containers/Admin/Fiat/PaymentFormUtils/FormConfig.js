@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 
 import Form from './PaymentForm';
 import { AdminHocForm } from 'components';
-import { required } from 'components/Form/validations';
+import { required, requiredWithTrim } from 'components/Form/validations';
 import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
@@ -50,13 +50,14 @@ class FormConfig extends Component {
 	generateInitialValues = (formInitialValue) => {
 		let initialValuesData = formInitialValue;
 		let custom_fields = {};
-		Object.keys(initialValuesData).forEach((item, index) => {
+		const totalFieldsCount = Object.keys(initialValuesData).length ?? 1;
+		Object.keys(initialValuesData).forEach((item) => {
 			custom_fields = {
 				...custom_fields,
 				...this.handleAddColumn(
 					{ ...initialValuesData[item], section_type: item },
 					'initialValue',
-					index
+					totalFieldsCount
 				),
 			};
 		});
@@ -125,7 +126,7 @@ class FormConfig extends Component {
 		});
 	};
 
-	handleAddColumn = (formProps, type = '', index = 0) => {
+	handleAddColumn = (formProps, type = '', totalFieldsCount = 1) => {
 		const { editData } = this.state;
 		const { section_type } = formProps;
 		let custom_fields = { ...this.state.custom_fields };
@@ -184,8 +185,7 @@ class FormConfig extends Component {
 									) : null}
 								</div>
 							),
-							placeholder:
-								'(User input. Details will be shown in user verification page)',
+							placeholder: `input ${this.props.currentPaymentType} details`,
 							isClosable: true,
 							closeCallback: () =>
 								this.handleRemoveHeader(
@@ -204,8 +204,9 @@ class FormConfig extends Component {
 							validate:
 								this.props.currentActiveTab &&
 								this.props.currentActiveTab === 'onRamp'
-									? [required]
+									? [required, requiredWithTrim]
 									: [],
+							fieldsCount: totalFieldsCount,
 						},
 					},
 				},
@@ -213,30 +214,6 @@ class FormConfig extends Component {
 				fieldLabel: { [`column_header_${count}`]: formProps.label },
 				fieldKey: { [`column_header_${count}`]: formProps.key },
 			};
-		}
-		if (
-			section_type &&
-			type === 'initialValue' &&
-			this.props.currentType &&
-			this.props.currentType === 'add' &&
-			this.props.user_payments &&
-			Object.keys(this.props.user_payments).length
-		) {
-			let editedValues = { ...this.props.initialValues };
-			let sectionCount = Object.keys(editedValues).length;
-			editedValues = {
-				...editedValues,
-				[`section_${sectionCount}`]: {
-					...editedValues[`section_${sectionCount}`],
-					key:
-						formProps.label.split(' ').length > 1
-							? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
-							: formProps.label.toLowerCase().trim(),
-					section_type: `section_${sectionCount}`,
-					...formProps,
-				},
-			};
-			this.setState({ editedValues });
 		}
 		if (section_type && type === 'initialValue') {
 			return custom_fields;
@@ -432,7 +409,7 @@ class FormConfig extends Component {
 						</div>
 						<AddColumnForm
 							fields={add_column_field}
-							onSubmit={this.handleAddColumn}
+							onSubmit={(val) => this.handleAddColumn(val, 'add')}
 							buttonText="Proceed"
 							buttonClass="green-btn"
 						/>
