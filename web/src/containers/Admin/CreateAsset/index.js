@@ -62,11 +62,10 @@ class CreateAsset extends Component {
 			selectedCoinSymbol: '',
 			userTiers: {},
 			feeData: {},
-			withdrawalFees: _cloneDeep(
+			withdrawalFees:
 				this.props.assetType === 'deposit'
 					? this.props.editAsset?.deposit_fees
-					: this.props.editAsset?.withdrawal_fees
-			),
+					: this.props.editAsset?.withdrawal_fees,
 			selectedTier: '',
 			selectedTierValues: {},
 			keyType: null,
@@ -90,6 +89,9 @@ class CreateAsset extends Component {
 						: {},
 				};
 			});
+		} else {
+			const initialFees = this.generateInitialFees();
+			this.setState({ withdrawalFees: initialFees });
 		}
 		this.setState({ currentCoins: constructedData });
 		if (this.props.coins && this.props.coins.length) {
@@ -123,6 +125,22 @@ class CreateAsset extends Component {
 			);
 		}
 	}
+
+	generateInitialFees = () => {
+		const { editAsset } = this.props;
+		const initialFees = {};
+		const { network, symbol } = editAsset;
+		const networks = network ? network.split(',') : [symbol];
+		networks.forEach((key) => {
+			initialFees[key] = {
+				value: 0,
+				symbol: editAsset?.symbol,
+				type: 'static',
+				levels: {},
+			};
+		});
+		return initialFees;
+	};
 
 	getTiers = () => {
 		requestTiers()
@@ -242,7 +260,7 @@ class CreateAsset extends Component {
 		updatedValue = '',
 		updatedKey = ''
 	) => {
-		let field = { [key]: value };
+		let field = {};
 		if (
 			updatedKey &&
 			updatedValue &&
@@ -252,46 +270,50 @@ class CreateAsset extends Component {
 			field = { ...field, [updatedKey]: updatedValue };
 		}
 		if (asset) {
-			let coinFormData = {
-				...this.state.coinFormData,
-				[name]: {
-					...this.state.coinFormData[name],
-					[asset]: this.state.coinFormData[name] && {
-						...this.state.coinFormData[name][asset],
-						...field,
-					},
+			let withdrawalFees = {
+				...this.state.withdrawalFees,
+				[asset]: {
+					...this.state.withdrawalFees?.[asset],
+					[key]: value,
 				},
 			};
-			this.setState({
-				withdrawalFees: {
-					...this.state.coinFormData[name],
-					[asset]: this.state.coinFormData[name] && {
-						...this.state.coinFormData[name][asset],
+			if (field && Object.keys(field).length) {
+				withdrawalFees = {
+					...withdrawalFees,
+					[asset]: {
+						...withdrawalFees[asset],
 						...field,
 					},
-				},
-				coinFormData,
-			});
+				};
+			}
+			let coinFormData = {
+				...this.state.coinFormData,
+				[name]: withdrawalFees,
+			};
+			this.setState({ withdrawalFees, coinFormData });
 			this.props.handleEditDataCallback(coinFormData);
 			this.props.updateFormData(name, coinFormData[name]);
 		}
 	};
 
-	handleTierValues = (selectedTierValues, sel) => {
-		let temp = this.state?.withdrawalFees && {
-			...this.state?.withdrawalFees,
-			[sel]: {
-				...this.state?.withdrawalFees[sel],
-				levels: selectedTierValues,
-			},
-		};
-		this.handleWithdrawalFeeChange(
-			sel,
-			temp && temp[sel]?.levels,
-			'levels',
-			this.props.assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
-		);
-		this.setState({ selectedTierValues, withdrawalFees: temp });
+	handleTierValues = (isTierConfirm, selectedTierValues, sel) => {
+		this.setState({ selectedTierValues });
+		if (isTierConfirm) {
+			let temp = this.state?.withdrawalFees && {
+				...this.state?.withdrawalFees,
+				[sel]: {
+					...this.state?.withdrawalFees[sel],
+					levels: selectedTierValues,
+				},
+			};
+			this.setState({ withdrawalFees: temp });
+			this.handleWithdrawalFeeChange(
+				sel,
+				temp && temp[sel]?.levels,
+				'levels',
+				this.props.assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
+			);
+		}
 	};
 
 	handleSymbolChange = (asset, value, key, name) => {
@@ -611,6 +633,7 @@ class CreateAsset extends Component {
 	handleInitialValues = (init) => {
 		this.setState({ withdrawalFees: init });
 	};
+
 	renderContent = (currentScreen) => {
 		const {
 			coins = [],

@@ -17,19 +17,22 @@ const WithDrawTiers = ({
 	assetType,
 }) => {
 	const [confirmPopup, setConfirmPopup] = useState(false);
-
+	const [withDrawTiers, setWithdrawTiers] = useState({});
 	useEffect(() => {
-		handleTierValues(withdrawalFees[selectedTier]?.levels, selectedTier);
+		handleTierValues(false, withdrawalFees[selectedTier]?.levels, selectedTier);
+		setWithdrawTiers(withdrawalFees[selectedTier]?.levels, selectedTier);
 		// eslint-disable-next-line
 	}, []);
 
 	const handleTier = (level, e) => {
 		if (level && e) {
-			handleTierValues({ ...tierValues, [level]: e }, selectedTier);
+			setWithdrawTiers({ ...tierValues, [level]: e }, selectedTier);
+			handleTierValues(false, { ...tierValues, [level]: e }, selectedTier);
 		} else if (level) {
 			let temp = tierValues;
 			delete temp[level];
-			handleTierValues({ ...temp }, selectedTier);
+			setWithdrawTiers({ ...temp }, selectedTier);
+			handleTierValues(false, { ...temp }, selectedTier);
 		}
 	};
 	const handleConfirm = (val) => {
@@ -207,7 +210,10 @@ const WithDrawTiers = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => handleNext(selectedTier, tierValues)}
+							onClick={() => {
+								handleTierValues(true, withDrawTiers, selectedTier);
+								handleNext(selectedTier, tierValues);
+							}}
 						>
 							Confirm
 						</Button>
