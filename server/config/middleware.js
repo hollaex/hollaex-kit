@@ -49,7 +49,7 @@ const rateLimitMiddleware = (app) => {
 	limiter({
 		path: '/v2/user/request-withdrawal',
 		method: 'post',
-		total: 4,
+		total: 10,
 		expire: 1000 * 60 * 2,
 		lookup: (req, res, opts, next) => {
 			if (req.headers.hasOwnProperty('authorization') && req.headers.authorization.indexOf('Bearer ') > -1) {
@@ -78,7 +78,7 @@ const rateLimitMiddleware = (app) => {
 	limiter({
 		path: '/v2/login',
 		method: 'post',
-		total: 6,
+		total: 24,
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
