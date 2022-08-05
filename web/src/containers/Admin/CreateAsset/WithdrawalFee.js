@@ -22,29 +22,11 @@ const WithdrawalFee = ({
 	handleInitialValues,
 	updateFormData = () => {},
 }) => {
-	const generateInitialFees = () => {
-		const initialFees = {};
-		const { network, symbol } = coinFormData;
-		const networks = network ? network.split(',') : [symbol];
-		networks.forEach((key) => {
-			initialFees[key] = {
-				value: 0,
-				symbol: coinFormData?.symbol,
-				type: 'static',
-				levels: {},
-			};
-		});
-		return initialFees;
-	};
-
-	const initialFees = generateInitialFees();
-	const [withdrawal_fees, setWithdrawalFees] = useState(
-		withdrawalFees || initialFees
-	);
+	const [withdrawal_fees, setWithdrawalFees] = useState(withdrawalFees);
 	const [form] = Form.useForm();
 
 	useEffect(() => {
-		if (!withdrawalFees) {
+		if (withdrawalFees) {
 			handleInitialValues(withdrawal_fees);
 		}
 		// eslint-disable-next-line
@@ -154,12 +136,43 @@ const WithdrawalFee = ({
 		let tempObj = withdrawal_fees;
 		tempObj[data].type = val;
 		setWithdrawalFees({ ...tempObj });
-		handleWithdrawalFeeChange(
-			data,
-			val,
-			'type',
-			assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
-		);
+		if (val === 'percentage') {
+			handleWithdrawalFeeChange(
+				data,
+				val,
+				'type',
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees',
+				coinFormData?.symbol,
+				'symbol'
+			);
+		} else {
+			handleWithdrawalFeeChange(
+				data,
+				val,
+				'type',
+				assetType === 'deposit' ? 'deposit_fees' : 'withdrawal_fees'
+			);
+		}
+	};
+	const handleValuesChange = (values = {}) => {
+		if (
+			withdrawal_fees &&
+			Object.keys(withdrawal_fees).length &&
+			coinFormData &&
+			Object.keys(coinFormData).length
+		) {
+			Object.keys(withdrawal_fees).forEach((data) => {
+				if (
+					Object.keys(values).length &&
+					values[`${data}_type`] &&
+					values[`${data}_type`] === 'percentage'
+				) {
+					form.setFieldsValue({
+						[`${data}_symbol`]: coinFormData?.symbol,
+					});
+				}
+			});
+		}
 	};
 	return (
 		<div className="coin-limit-wrap">
@@ -171,6 +184,7 @@ const WithdrawalFee = ({
 				initialValues={getInitialValues()}
 				name="withdrawalForm"
 				onFinish={handleUpdate}
+				onValuesChange={handleValuesChange}
 			>
 				<div className="fee-wrapper">
 					<div className="d-flex align-items-center">
@@ -263,7 +277,7 @@ const WithdrawalFee = ({
 												size="small"
 												className={
 													withdrawal_fees[data] &&
-													withdrawal_fees[data].type === 'static'
+													withdrawal_fees[data]?.type === 'static'
 														? 'w-100 '
 														: 'w-100 disableall'
 												}
@@ -293,7 +307,7 @@ const WithdrawalFee = ({
 									<div className="field-wrap last">
 										<div className="sub-title">
 											{withdrawal_fees[data] &&
-											withdrawal_fees[data].type === 'static'
+											withdrawal_fees[data]?.type === 'static'
 												? `Static value (withdraw fee amount in ${getNetworkLabelByKey(
 														data
 												  )})`
@@ -304,7 +318,7 @@ const WithdrawalFee = ({
 											name={`${data}_value`}
 											rules={
 												withdrawal_fees[data] &&
-												withdrawal_fees[data].type === 'static'
+												withdrawal_fees[data]?.type === 'static'
 													? [
 															{
 																required: true,
@@ -342,7 +356,7 @@ const WithdrawalFee = ({
 												className="withdrawInput"
 												suffix={
 													withdrawal_fees[data] &&
-													withdrawal_fees[data].type === 'percentage' &&
+													withdrawal_fees[data]?.type === 'percentage' &&
 													'%'
 												}
 											/>
@@ -352,11 +366,14 @@ const WithdrawalFee = ({
 											{getNetworkLabelByKey(data)})
 										</div>
 									</div>
-									{withdrawal_fees[data].type === 'static' ? null : (
+									{withdrawal_fees[data] &&
+									withdrawal_fees[data].type &&
+									withdrawal_fees[data].type === 'static' ? null : (
 										<div>
 											<div className="field-wrap last">
 												<div className="sub-title">
-													Maximum fee USDT value (optional)
+													Maximum fee {coinFormData?.symbol.toUpperCase()} value
+													(optional)
 												</div>
 												<Form.Item
 													name={`${data}_max`}
@@ -380,7 +397,7 @@ const WithdrawalFee = ({
 															)
 														}
 														className="withdrawInput"
-														suffix={data.toUpperCase()}
+														suffix={coinFormData?.symbol.toUpperCase()}
 													/>
 												</Form.Item>
 												<div className="infotxt">
@@ -391,7 +408,8 @@ const WithdrawalFee = ({
 											</div>
 											<div className="field-wrap last">
 												<div className="sub-title">
-													Minimum fee USDT value (optional)
+													Minimum fee {coinFormData?.symbol.toUpperCase()} value
+													(optional)
 												</div>
 												<Form.Item
 													name={`${data}_min`}
@@ -415,7 +433,7 @@ const WithdrawalFee = ({
 															)
 														}
 														className="withdrawInput"
-														suffix={data.toUpperCase()}
+														suffix={coinFormData?.symbol.toUpperCase()}
 													/>
 												</Form.Item>
 												<div className="infotxt">
@@ -455,7 +473,7 @@ const WithdrawalFee = ({
 																			<div>
 																				<span className="ml-3">
 																					{`${
-																						withdrawal_fees[data].type ===
+																						withdrawal_fees[data]?.type ===
 																						'static'
 																							? 'Static value:' +
 																							  ' ' +
@@ -483,7 +501,7 @@ const WithdrawalFee = ({
 													handleScreenChange(
 														'step18',
 														data,
-														withdrawal_fees[data].type
+														withdrawal_fees[data]?.type
 													)
 												}
 											>
@@ -491,14 +509,14 @@ const WithdrawalFee = ({
 											</div>
 										</>
 									) : (
-										withdrawal_fees[data].type && (
+										withdrawal_fees[data]?.type && (
 											<div
 												className="viewLink"
 												onClick={() =>
 													handleScreenChange(
 														'step18',
 														data,
-														withdrawal_fees[data].type
+														withdrawal_fees[data]?.type
 													)
 												}
 											>

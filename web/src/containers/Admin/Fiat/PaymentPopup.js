@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Tooltip, Select, Input, Radio } from 'antd';
 import { Link } from 'react-router';
+import { connect } from 'react-redux';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
@@ -60,18 +61,100 @@ const PaymentAccountPopup = ({
 	selectedPaymentType = '',
 	isPayChanged = false,
 	setIsPayChanged,
+	paymentSavedCoins = [],
+	setCurrentOfframpIndex = () => {},
+	userPaymentsData = {},
+	isVisible = false,
+	setPaymentSavedCoins = () => {},
+	handleBack = () => {},
+	paymentMethodItems = {},
 }) => {
 	const [plugin, setPlugin] = useState('');
 	const [isOpen, setIsOpen] = useState(false);
-	const [paymentSelect, setPaymentSelect] = useState(selectedPaymentType);
+	const [paymentSelect, setPaymentSelect] = useState(
+		!selectedPaymentType &&
+			currentActiveTab &&
+			currentActiveTab === 'paymentAccounts'
+			? 'bank'
+			: selectedPaymentType
+	);
 	const [isMulti, setIsMutli] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState(singleCoin);
 	const [errorMsg, setErrorMsg] = useState('');
 	const [existErrorMsg, setExistErrorMsg] = useState('');
+	const [paymentOptions, setPaymentOptions] = useState([]);
+	const [paymentCount, setPaymentCount] = useState([]);
+	useEffect(() => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			let tempData = Object.keys(paymentMethodItems) || [];
+			if (
+				currentActiveTab &&
+				currentActiveTab === 'onRamp' &&
+				selectedPaymentType !== null &&
+				!paymentSelect !== null
+			) {
+				setPaymentSelect(tempData[0]);
+			} else {
+				setPaymentSelect(
+					selectedPaymentType || Object.keys(user_payments)?.[0]
+				);
+			}
+		}
+		// eslint-disable-next-line
+	}, []);
 
 	useEffect(() => {
-		setPaymentSelect(selectedPaymentType || Object.keys(user_payments)?.[0]);
-	}, [selectedPaymentType, user_payments]);
+		if (currentActiveTab === 'offRamp') {
+			setPaymentSelect(selectedPaymentType);
+		}
+		let tempArr = Object.keys(user_payments).filter((item, i) => {
+			if (!offramp[singleCoin.symbol]?.includes(item)) {
+				return item;
+			} else {
+				return null;
+			}
+		});
+		setPaymentCount(tempArr);
+		// eslint-disable-next-line
+	}, [selectedPaymentType]);
+
+	useEffect(() => {
+		if (!isVisible) {
+			setExistErrorMsg('');
+			setErrorMsg('');
+			if (currentActiveTab && currentActiveTab !== 'onRamp') {
+				setPaymentSelect(
+					!selectedPaymentType &&
+						currentActiveTab &&
+						currentActiveTab === 'paymentAccounts'
+						? 'bank'
+						: selectedPaymentType
+				);
+			}
+		}
+	}, [isVisible, currentActiveTab, selectedPaymentType]);
+
+	useEffect(() => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			const tempArr = Object.keys(user_payments);
+			const paymentsData = Object.keys(paymentMethodItems);
+			let temp = [];
+			if (tempArr.length > 0) {
+				paymentsData.forEach((item) => {
+					if (!tempArr.includes(item)) {
+						temp = [...temp, item];
+					}
+				});
+			} else {
+				temp = paymentsData;
+			}
+			setPaymentOptions(temp);
+			if (temp.length > 0) {
+				setPaymentSelect(temp[0]);
+			}
+		}
+		// eslint-disable-next-line
+	}, [user_payments, paymentMethodItems]);
 
 	let userPayment = Object.keys(formData).length
 		? bodyData?.kit?.user_payments?.[paymentSelectData]
@@ -106,6 +189,7 @@ const PaymentAccountPopup = ({
 		}
 		setPaymentSelect(selectedPaymentType);
 		handleSelectCoin(val, type);
+		setIsPayChanged(true);
 	};
 
 	const renderSelect = (type) => {
@@ -152,14 +236,22 @@ const PaymentAccountPopup = ({
 	const handleChange = (e) => {
 		setPaymentSelect(e);
 		setExistErrorMsg('');
-		setIsPayChanged(true);
+		if (currentActiveTab && currentActiveTab === 'offRamp') {
+			setIsPayChanged(true);
+		}
 	};
 	const handleCustomSelect = () => {
 		if (Object.keys(user_payments).includes(plugin)) {
 			setErrorMsg('This payment is already exist');
 		} else {
 			handleClosePlugin(false);
-			formUpdate('customForm', plugin, true);
+			formUpdate(
+				'customForm',
+				plugin,
+				true,
+				currentIndex === 0 ? currentIndex + 1 : currentIndex,
+				'add'
+			);
 		}
 	};
 
@@ -193,8 +285,20 @@ const PaymentAccountPopup = ({
 				);
 			} else if (paymentSelect === 'customPay') {
 				tabUpdate('sysname', 'add');
+			} else if (
+				currentActiveTab &&
+				currentActiveTab === 'onRamp' &&
+				!['bank', 'paypal', 'customPay'].includes(paymentSelect)
+			) {
+				handleClosePlugin(false);
+				formUpdate(
+					'customForm',
+					paymentSelect,
+					false,
+					currentIndex === 0 ? currentIndex + 1 : currentIndex,
+					'add'
+				);
 			}
-			// setCoindata(coinSymbol);
 		}
 	};
 
@@ -218,8 +322,63 @@ const PaymentAccountPopup = ({
 			setPaymentSelect(selectedPaymentType);
 		}
 		handleOffRampProceed(type, paymentSelect, symbol);
+		if (
+			singleCoin &&
+			singleCoin.symbol &&
+			offramp &&
+			offramp[singleCoin.symbol]
+		) {
+			setCurrentOfframpIndex(
+				offramp[singleCoin.symbol].length
+					? offramp[singleCoin.symbol].length + 1
+					: 1
+			);
+		}
 	};
 
+	const checkOptionExist = (optValue) => {
+		if (activeTab === 'onRamp') {
+			return (
+				!Object.keys(paymentMethodItems).includes(optValue) &&
+				!Object.keys(user_payments).includes(optValue)
+			);
+		}
+		return true;
+	};
+
+	const handleAccountBack = () => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			tabUpdate('onramp', showCoins ? true : false);
+		} else {
+			tabUpdate('payment');
+		}
+		setExistErrorMsg('');
+		if (currentActiveTab && currentActiveTab !== 'onRamp') {
+			setPaymentSelect(
+				!selectedPaymentType &&
+					currentActiveTab &&
+					currentActiveTab === 'paymentAccounts'
+					? 'bank'
+					: selectedPaymentType
+			);
+		}
+	};
+
+	const handleLink = () => {
+		handleClosePlugin(false);
+		setPaymentSavedCoins([]);
+		handleBack();
+	};
+
+	const onClickBack = () => {
+		setErrorMsg('');
+		tabUpdate('account');
+	};
+
+	const currentSelectedPay =
+		currentActiveTab && currentActiveTab === 'offRamp'
+			? paymentSelect
+			: paymentSelectData;
 	switch (type) {
 		case 'payment':
 			return (
@@ -270,13 +429,55 @@ const PaymentAccountPopup = ({
 							alt="add-pay-icon"
 							className="add-pay-icon2 mr-3"
 						/>
-						<h3 className="payhead">Payment account information</h3>
+						<h3 className="payhead">
+							{currentActiveTab && currentActiveTab === 'onRamp'
+								? 'On-ramp'
+								: 'Payment account'}{' '}
+							information
+						</h3>
 					</div>
-					<div>
-						Select what type of payment account information you'd like to add.
-						This will be used for the purpose of verification. This information
-						can also be used in the off ramp section.
-					</div>
+					{currentActiveTab && currentActiveTab === 'onRamp' ? (
+						<div>
+							Select what on-ramp payment system you'd like to add information
+							for. This will then be viewed by your users for the fiat deposit
+							purposes.
+						</div>
+					) : (
+						<div>
+							Select what type of payment account information you'd like to add.
+							This will be used for the purpose of verification. This
+							information can also be used in the off ramp section.
+						</div>
+					)}
+					{paymentOptions.length > 0 && (
+						<div className="mb-3">
+							<div>
+								Select from premade payment accounts ({paymentOptions.length}):
+							</div>
+							<Select
+								className="paymentSelect"
+								defaultValue={paymentMethodItems[0]}
+								value={paymentSelect}
+								suffixIcon={
+									isOpen ? (
+										<CaretDownOutlined className="downarrow" />
+									) : (
+										<CaretUpOutlined className="downarrow" />
+									)
+								}
+								onClick={handleOpenPayment}
+								onChange={setPaymentSelect}
+							>
+								{paymentOptions.map((item, index) => {
+									return (
+										<Option value={item} key={index}>
+											User payment account {index + 1}: {item}
+										</Option>
+									);
+								})}
+							</Select>
+						</div>
+					)}
 					<Radio.Group
 						name="standard"
 						value={paymentSelect}
@@ -284,26 +485,30 @@ const PaymentAccountPopup = ({
 							handleChange(e.target.value, 'standard');
 						}}
 					>
-						<Radio style={radioStyle} value={'bank'}>
-							<span className="radio-content">
-								<span>Bank (bank payment details)</span>
-								<img
-									src={STATIC_ICONS.BANK_FIAT_PILLARS}
-									alt="add-pay-icon"
-									className="add-pay-icon"
-								/>
-							</span>
-						</Radio>
-						<Radio style={radioStyle} value={'paypal'}>
-							<span className="radio-content">
-								<span>PayPal</span>
-								<img
-									src={STATIC_ICONS.PAYPAL_FIAT_ICON}
-									alt="add-pay-icon"
-									className="add-pay-icon"
-								/>
-							</span>
-						</Radio>
+						{checkOptionExist('bank') && (
+							<Radio style={radioStyle} value={'bank'}>
+								<span className="radio-content">
+									<span>Bank (bank payment details)</span>
+									<img
+										src={STATIC_ICONS.BANK_FIAT_PILLARS}
+										alt="add-pay-icon"
+										className="add-pay-icon"
+									/>
+								</span>
+							</Radio>
+						)}
+						{checkOptionExist('paypal') && (
+							<Radio style={radioStyle} value={'paypal'}>
+								<span className="radio-content">
+									<span>PayPal</span>
+									<img
+										src={STATIC_ICONS.PAYPAL_FIAT_ICON}
+										alt="add-pay-icon"
+										className="add-pay-icon"
+									/>
+								</span>
+							</Radio>
+						)}
 						<Radio style={radioStyle} value={'customPay'}>
 							<span className="radio-content">
 								<span>Custom (add other payment method)</span>
@@ -345,7 +550,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('payment')}
+							onClick={handleAccountBack}
 						>
 							Back
 						</Button>
@@ -373,7 +578,7 @@ const PaymentAccountPopup = ({
 								<b>
 									{currentActiveTab && currentActiveTab === 'paymentAccounts'
 										? 'Payment system name'
-										: 'Plugin on-ramp system name'}
+										: 'Custom on-ramp system name'}
 								</b>
 							</div>
 						</>
@@ -393,7 +598,7 @@ const PaymentAccountPopup = ({
 								</div>
 							</div>
 							<div className="mb-3">
-								<b>Plugin payment system name</b>
+								<b>Plugin on-ramp system name</b>
 							</div>
 						</>
 					)}
@@ -413,11 +618,7 @@ const PaymentAccountPopup = ({
 					)}
 					{errorMsg ? <div className="error-text">{errorMsg}</div> : null}
 					<div className="button-wrapper mt-5">
-						<Button
-							type="primary"
-							className="green-btn"
-							onClick={() => tabUpdate('account')}
-						>
+						<Button type="primary" className="green-btn" onClick={onClickBack}>
 							Back
 						</Button>
 						<Button
@@ -425,9 +626,7 @@ const PaymentAccountPopup = ({
 							className="green-btn"
 							disabled={!plugin || errorMsg}
 							onClick={
-								paymentSelect !== 'customPay'
-									? () => handleNext()
-									: () => handleCustomSelect()
+								paymentSelect !== 'customPay' ? handleNext : handleCustomSelect
 							}
 						>
 							NEXT
@@ -541,9 +740,7 @@ const PaymentAccountPopup = ({
 								<div>
 									<div>
 										Select from premade Payment Accounts (
-										{Object.keys(user_payments).length
-											? Object.keys(user_payments).length
-											: null}
+										{paymentCount.length ? paymentCount.length : null}
 										):
 									</div>
 									<div>
@@ -679,10 +876,7 @@ const PaymentAccountPopup = ({
 							deposit page which then can be used making deposits.
 						</div>
 					</div>
-					{(showCoins && activeTab !== 'onRamp') ||
-					(showCoins && activeTab === 'onRamp') ? (
-						<span>{renderSelect('deposit')}</span>
-					) : null}
+					{showCoins ? <span>{renderSelect('deposit')}</span> : null}
 					<div className="button-wrapper mt-4">
 						<Button
 							type="primary"
@@ -694,7 +888,7 @@ const PaymentAccountPopup = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => tabUpdate('account')}
+							onClick={() => tabUpdate('account', showCoins ? true : false)}
 						>
 							Proceed
 						</Button>
@@ -758,11 +952,30 @@ const PaymentAccountPopup = ({
 							: 'payment'}{' '}
 						account?
 					</div>
+					{paymentSavedCoins && paymentSavedCoins.length > 0 && (
+						<>
+							<div className="delete-warning">
+								This payment method has offramp for the
+								{paymentSavedCoins.map((item) => (
+									<span> {item?.toUpperCase()}, </span>
+								))}{' '}
+								coins. So, please delete that from off-ramp first.
+							</div>
+							<div onClick={handleLink} className="go-to-offramp-text">
+								<Link to="/admin/fiat?tab=3" className="underline">
+									Go to off-ramp
+								</Link>
+							</div>
+						</>
+					)}
 					<div className="button-wrapper">
 						<Button
 							type="primary"
 							className="green-btn w-100"
 							onClick={() => handlePopupDel(paymentSelectData)}
+							disabled={
+								paymentSavedCoins && paymentSavedCoins.length > 0 ? true : false
+							}
 						>
 							Proceed
 						</Button>
@@ -799,9 +1012,9 @@ const PaymentAccountPopup = ({
 					<div className="d-flex align-items-start mt-4">
 						<img
 							src={
-								paymentSelect === 'bank'
+								currentSelectedPay === 'bank'
 									? STATIC_ICONS.BANK_FIAT_PILLARS
-									: paymentSelect === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? STATIC_ICONS.PAYPAL_FIAT_ICON
 									: STATIC_ICONS.MPESA_ICON
 							}
@@ -809,13 +1022,19 @@ const PaymentAccountPopup = ({
 							className="add-pay-icon"
 						/>
 						<div>
-							<div>User payment account {currentIndex}</div>
+							{currentActiveTab && currentActiveTab === 'onRamp' ? (
+								<div>On-ramp {currentIndex}</div>
+							) : currentActiveTab && currentActiveTab === 'offRamp' ? (
+								<div>off-ramp {currentIndex}</div>
+							) : (
+								<div>User payment account {currentIndex}</div>
+							)}
 							<b>
-								{paymentSelect === 'bank'
+								{currentSelectedPay === 'bank'
 									? 'Bank'
-									: paymentSelect === 'paypal'
+									: currentSelectedPay === 'paypal'
 									? 'Paypal'
-									: paymentSelectData}{' '}
+									: currentSelectedPay}
 							</b>
 						</div>
 					</div>
@@ -893,4 +1112,8 @@ const PaymentAccountPopup = ({
 	}
 };
 
-export default PaymentAccountPopup;
+const mapStateToProps = (state) => ({
+	paymentMethodItems: state.app?.constants?.user_payments,
+});
+
+export default connect(mapStateToProps)(PaymentAccountPopup);

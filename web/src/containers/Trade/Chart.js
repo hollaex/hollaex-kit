@@ -272,7 +272,7 @@ class TVChartContainer extends React.PureComponent {
 				'header_compare'
 			],
 			// preset: isMobile ? 'mobile' : '',
-			enabled_features: ['items_favoriting', 'support_multicharts'],
+			enabled_features: ['items_favoriting'],
 			// time_frames: [
 			// { text: '3m', resolution: '60' },
 			// { text: '1m', resolution: '60' },
@@ -296,8 +296,7 @@ class TVChartContainer extends React.PureComponent {
 			},
 			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
-			overrides: getThemeOverrides(activeTheme, color),
-			load_last_chart: true
+			overrides: getThemeOverrides(activeTheme, color)
 		};
 
 		if (isMobile) {

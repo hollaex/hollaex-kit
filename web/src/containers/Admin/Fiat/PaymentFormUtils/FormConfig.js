@@ -3,7 +3,7 @@ import { Modal, Button } from 'antd';
 
 import Form from './PaymentForm';
 import { AdminHocForm } from 'components';
-import { required } from 'components/Form/validations';
+import { required, requiredWithTrim } from 'components/Form/validations';
 import { validateBoolean } from 'components/AdminForm/validations';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
@@ -27,7 +27,7 @@ class FormConfig extends Component {
 
 	componentDidMount() {
 		if (this.props.initialValues) {
-			this.generateInitialValues();
+			this.generateInitialValues(this.props.initialValues);
 		}
 	}
 
@@ -36,35 +36,28 @@ class FormConfig extends Component {
 			JSON.stringify(this.props.initialValues) !==
 			JSON.stringify(prevProps.initialValues)
 		) {
-			this.generateInitialValues();
+			this.generateInitialValues(this.props.initialValues);
 		}
 		if (
 			JSON.stringify(this.state.editedValues) !==
 			JSON.stringify(prevState.editedValues)
 		) {
+			this.generateInitialValues(this.state.editedValues);
 			this.setState({ buttonSubmitting: true });
 		}
 	}
 
-	generateInitialValues = () => {
-		const { initialValues } = this.props;
-		let initialValuesData = initialValues;
-		if (
-			Object.keys(initialValues).length === 1 &&
-			this.props.currentActiveTab === 'onRamp'
-		) {
-			Object.keys(initialValues).forEach((item) => {
-				initialValuesData = initialValues[item];
-			});
-		}
+	generateInitialValues = (formInitialValue) => {
+		let initialValuesData = formInitialValue;
 		let custom_fields = {};
-		Object.keys(initialValuesData).forEach((item, index) => {
+		const totalFieldsCount = Object.keys(initialValuesData).length ?? 1;
+		Object.keys(initialValuesData).forEach((item) => {
 			custom_fields = {
 				...custom_fields,
 				...this.handleAddColumn(
 					{ ...initialValuesData[item], section_type: item },
 					'initialValue',
-					index
+					totalFieldsCount
 				),
 			};
 		});
@@ -106,19 +99,33 @@ class FormConfig extends Component {
 			}
 			this.setState({ custom_fields: data });
 		});
-		let temp = headerName.split('_');
-		temp = `section_${temp[2]}`;
 		let res = {};
 		Object.keys(editedValues).forEach((item) => {
-			if (item !== temp) {
+			if (item !== headerName) {
 				res = {
 					...res,
 					[item]: { ...editedValues[item] },
 				};
 			}
 		});
-		this.setState({ editedValues: res });
-		this.onCancel();
+		let arrData = [];
+		Object.keys(res).forEach((item) => {
+			arrData = [...arrData, res[item]];
+		});
+		let resData = {};
+		arrData.forEach((item, index) => {
+			resData = {
+				...resData,
+				[`section_${index + 1}`]: item,
+			};
+		});
+		this.setState({
+			editedValues: resData,
+			isAddColumn: false,
+			editData: [],
+			currentSection: '',
+			buttonSubmitting: false,
+		});
 	};
 
 	onCancel = () => {
@@ -130,7 +137,7 @@ class FormConfig extends Component {
 		});
 	};
 
-	handleAddColumn = (formProps, type = '', index = 0) => {
+	handleAddColumn = (formProps, type = '', totalFieldsCount = 1) => {
 		const { editData } = this.state;
 		const { section_type } = formProps;
 		let custom_fields = { ...this.state.custom_fields };
@@ -140,14 +147,25 @@ class FormConfig extends Component {
 		if (section_type && type === 'initialValue') {
 			custom_fields = {};
 		}
+		if (!formProps?.key) {
+			formProps['key'] =
+				formProps?.label?.split(' ').length > 1
+					? formProps?.label?.toLowerCase().trim().replaceAll(' ', '_')
+					: formProps?.label?.toLowerCase().trim();
+		}
 		formProps.section_type = section_type || this.state.currentSection;
+		const fieldName =
+			this.props.currentActiveTab !== 'onRamp'
+				? `column_header_${count}`
+				: formProps?.key;
 
 		const checkData = [];
 		Object.keys(custom_fields).forEach((item, index) => {
 			if (
 				custom_fields[item]?.fieldLabel[
 					`column_header_${index + 1}`
-				]?.toLowerCase() === formProps?.label?.toLowerCase()
+				]?.toLowerCase() === formProps?.label?.toLowerCase() &&
+				formProps?.section_type !== item
 			) {
 				checkData.push(item);
 			}
@@ -159,7 +177,7 @@ class FormConfig extends Component {
 				header: {
 					className: 'section-header',
 					fields: {
-						[formProps?.key]: {
+						[fieldName]: {
 							type: 'input',
 							label: (
 								<div className="form-label">
@@ -179,11 +197,14 @@ class FormConfig extends Component {
 								</div>
 							),
 							placeholder:
-								'(User input. Details will be shown in user verification page)',
+								this.props.currentActiveTab &&
+								this.props.currentActiveTab === 'paymentAccounts'
+									? '(User input. Details will be shown in user verification page)'
+									: `input ${this.props.currentPaymentType} details`,
 							isClosable: true,
 							closeCallback: () =>
 								this.handleRemoveHeader(
-									`column_header_${count}`,
+									`section_${count}`,
 									formProps.label,
 									formProps.required
 								),
@@ -195,6 +216,12 @@ class FormConfig extends Component {
 									: 'This input is for your users in their verification page',
 							name: formProps?.key,
 							currentActiveTab: this.props.currentActiveTab,
+							validate:
+								this.props.currentActiveTab &&
+								this.props.currentActiveTab === 'onRamp'
+									? [required, requiredWithTrim]
+									: [],
+							fieldsCount: totalFieldsCount,
 						},
 					},
 				},
@@ -216,24 +243,11 @@ class FormConfig extends Component {
 		if (type === 'edit') {
 			let editedValues = { ...this.state.editedValues };
 			if (this.props.currentActiveTab === 'onRamp') {
-				Object.keys(editedValues).forEach((item) => {
-					let editedVal = editedValues[item];
-					let filteredData = editedVal.filter(
-						(val) => val.key !== formProps?.key
-					);
-					editedVal.forEach((val) => {
-						if (formProps?.key === val?.key) {
-							editedValues = {
-								[item]: [
-									...filteredData,
-									{
-										...formProps,
-									},
-								],
-							};
-						}
-					});
-				});
+				const { section_type, ...rest } = formProps;
+				editedValues = {
+					...editedValues,
+					[section_type]: rest,
+				};
 			} else {
 				editedValues = {
 					...editedValues,
@@ -245,45 +259,34 @@ class FormConfig extends Component {
 			this.setState({ editedValues });
 		} else {
 			let editedValues = { ...this.state.editedValues };
+			const { section_type, ...rest } = formProps;
 			if (this.props.currentActiveTab === 'onRamp') {
 				if (Object.keys(editedValues).length) {
-					Object.keys(editedValues).forEach((item) => {
-						editedValues = {
-							...editedValues,
-							[item]: [
-								...editedValues[item],
-								{
-									...formProps,
-									key:
-										formProps.label.split(' ').length > 1
-											? formProps.label
-													.toLowerCase()
-													.trim()
-													.replaceAll(' ', '_')
-											: formProps.label.toLowerCase().trim(),
-								},
-							],
-						};
-					});
+					editedValues[`section_${Object.keys(editedValues).length + 1}`] = {
+						...rest,
+						key:
+							formProps.label.split(' ').length > 1
+								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
+								: formProps.label.toLowerCase().trim(),
+					};
 				} else {
 					editedValues = {
 						...editedValues,
-						[`section_1`]: [
-							{
-								key:
-									formProps.label.split(' ').length > 1
-										? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
-										: formProps.label.toLowerCase().trim(),
-								...formProps,
-							},
-						],
+						[`section_1`]: {
+							key:
+								formProps.label.split(' ').length > 1
+									? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
+									: formProps.label.toLowerCase().trim(),
+							...formProps,
+						},
 					};
 				}
 			} else {
-				let sectionCount = Object.keys(editedValues).length + 1;
+				let sectionCount = Object.keys(editedValues).length;
 				editedValues = {
 					...editedValues,
-					[`section_${sectionCount}`]: {
+					[`section_${sectionCount + 1}`]: {
+						...editedValues[`section_${sectionCount}`],
 						key:
 							formProps.label.split(' ').length > 1
 								? formProps.label.toLowerCase().trim().replaceAll(' ', '_')
@@ -311,16 +314,13 @@ class FormConfig extends Component {
 			});
 			let final = {};
 			Object.keys(finalEditData).forEach((data) => {
-				const itemData = finalEditData[data];
-				const result = itemData.map((val) => {
-					return {
-						...val,
-						value: formPropsData[val.key],
-					};
-				});
+				const itemData = finalEditData[data] ?? {};
 				final = {
 					...final,
-					[data]: result,
+					[data]: {
+						...itemData,
+						value: formPropsData[itemData?.key],
+					},
 				};
 			});
 			finalEditData = final;
@@ -362,7 +362,7 @@ class FormConfig extends Component {
 				type: 'text',
 				label: 'Payment detail name',
 				placeholder: 'Input the payment detail name',
-				validate: [required, this.validateExist],
+				validate: type === 'edit' ? [required] : [required, this.validateExist],
 			},
 			required: {
 				type: 'boolean',
@@ -424,7 +424,7 @@ class FormConfig extends Component {
 						</div>
 						<AddColumnForm
 							fields={add_column_field}
-							onSubmit={this.handleAddColumn}
+							onSubmit={(val) => this.handleAddColumn(val, 'add')}
 							buttonText="Proceed"
 							buttonClass="green-btn"
 						/>
@@ -455,26 +455,24 @@ class FormConfig extends Component {
 			Object.keys(this.props.initialValues).forEach((item) => {
 				const tempData =
 					this.props.initialValues && this.props.initialValues[item];
-				if (tempData && tempData.length) {
-					return tempData?.forEach((data) => {
-						if (data?.required) {
-							constructInitValue = {
-								...constructInitValue,
-								required: {
-									...constructInitValue['required'],
-									[data?.key]: data?.value,
-								},
-							};
-						} else {
-							constructInitValue = {
-								...constructInitValue,
-								optional: {
-									...constructInitValue['optional'],
-									[data?.key]: data?.value,
-								},
-							};
-						}
-					});
+				if (tempData && Object.keys(tempData).length) {
+					if (tempData?.required) {
+						constructInitValue = {
+							...constructInitValue,
+							required: {
+								...constructInitValue['required'],
+								[tempData?.key]: tempData?.value,
+							},
+						};
+					} else {
+						constructInitValue = {
+							...constructInitValue,
+							optional: {
+								...constructInitValue['optional'],
+								[tempData?.key]: tempData?.value,
+							},
+						};
+					}
 				}
 			});
 		}

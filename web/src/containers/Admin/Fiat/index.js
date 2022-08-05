@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Summarycontent from './Summarycontent';
 import Onramp from './Onramp';
+import Offramp from './offramp';
 import PaymentAccounts from './PaymentAccounts';
 import { getTabParams } from '../AdminFinancials/Assets';
 // import Kyc from './Kyc';
@@ -22,8 +23,10 @@ const Fiatmarkets = ({
 	const [activeTab, setActiveTab] = useState('0');
 	const [isUpgrade, setIsUpgrade] = useState(false);
 	const [isGetExchange, setIsGetExchange] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
 	const { user_payments = {}, onramp = {}, offramp = {} } = constants;
 	const [offRampData, setOffRamp] = useState(offramp);
+	const [onrampData, setOnRamp] = useState(onramp);
 
 	useEffect(() => {
 		if (exchange && Object.keys(exchange).length) {
@@ -48,6 +51,7 @@ const Fiatmarkets = ({
 
 	const getUpdatedKitData = (kitData) => {
 		setOffRamp(kitData && kitData.offramp);
+		setOnRamp(kitData && kitData.onramp);
 	};
 	const renderTabBar = (props, DefaultTabBar) => {
 		return <DefaultTabBar {...props} />;
@@ -68,7 +72,7 @@ const Fiatmarkets = ({
 						isUpgrade={isUpgrade}
 						user_payments={user_payments}
 						exchange={exchange}
-						onramp={onramp}
+						onramp={onrampData}
 						offramp={offRampData}
 						isGetExchange={isGetExchange}
 					/>
@@ -80,7 +84,7 @@ const Fiatmarkets = ({
 						isUpgrade={isUpgrade}
 						activeTab={activeTab}
 						user_payments={user_payments}
-						onramp={onramp}
+						onramp={onrampData}
 						offramp={offRampData}
 						setConfig={setConfig}
 					/>
@@ -91,23 +95,26 @@ const Fiatmarkets = ({
 						handleTabChange={handleTabChange}
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
-						onramp={onramp}
-						offramp={offRampData}
+						onramp={onrampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
+						getUpdatedKitData={getUpdatedKitData}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 				</TabPane>
 				<TabPane tab="Off-ramp" key="3">
-					<Onramp
+					<Offramp
 						activeTab={'offRamp'}
 						handleTabChange={handleTabChange}
 						coins={coins[0]}
 						isUpgrade={isUpgrade}
-						onramp={onramp}
 						offramp={offRampData}
 						user_payments={user_payments}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
+						isLoading={isLoading}
+						setIsLoading={setIsLoading}
 					/>
 				</TabPane>
 				{/* <TabPane tab="KYC" key="4">
