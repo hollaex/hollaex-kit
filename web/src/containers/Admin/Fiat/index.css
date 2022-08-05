@@ -759,7 +759,8 @@
 	max-height: 30% !important;
 }
 
-.paymentContainer .txtanchor.pointer-none {
+.paymentContainer .txtanchor.pointer-none,
+.ramp-wrapper .paymentContent .pointer-none {
 	pointer-events: none;
 	width: 5rem;
 	opacity: 0.5;

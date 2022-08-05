@@ -48,6 +48,11 @@ const RampPaymentAccounts = ({
 	setIsLoading = () => {},
 	setIsDisable = () => {},
 	isDisable = false,
+	onrampIndex = 1,
+	setOnrampIndex = () => {},
+	selectedPayType,
+	setOfframpCurrentType = () => {},
+	offrampCurrentType = '',
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -76,6 +81,23 @@ const RampPaymentAccounts = ({
 	const [isCurrentFormOpen, setIsCurrentFormOpen] = useState(false);
 	const [paymentSavedCoins, setPaymentSavedCoins] = useState([]);
 	const [paymentmethodIndex, setPaymentmethodIndex] = useState(1);
+
+	useEffect(() => {
+		if (currentActiveTab && currentActiveTab === 'onRamp') {
+			setCurrentIndex(onrampIndex);
+		}
+	}, [onrampIndex, currentActiveTab]);
+
+	useEffect(() => {
+		if (
+			selectedPayType &&
+			Object.keys(selectedPayType).length &&
+			offrampCurrentType &&
+			offrampCurrentType === 'edit'
+		) {
+			setIsDisplayDetails(false);
+		}
+	}, [selectedPayType, offrampCurrentType]);
 
 	useEffect(() => {
 		if (currentPaymentType !== customName) {
@@ -361,6 +383,7 @@ const RampPaymentAccounts = ({
 			.then((res) => {
 				if (currentActiveTab && currentActiveTab === 'onRamp') {
 					handleBack();
+					setCurrentIndex(1);
 					if (_get(res, 'kit.onramp')) {
 						setFormValues(_get(res, `kit.onramp[${currentsymbol}]`));
 					}
@@ -480,12 +503,12 @@ const RampPaymentAccounts = ({
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
 		setIsDisplayDetails(true);
-		if (currentType === 'add') {
-			setPaymentmethodIndex(paymentMethods.length + 1);
-		} else if (currentType === 'edit') {
+		if (currentType && currentType === 'edit') {
 			setIsDisable(true);
+			setOfframpCurrentType('edit');
 		}
 		setCurrentIndex(curIndex);
+		setPaymentmethodIndex(curIndex);
 		generateFormFieldsValues(type, currentPaymentType, currentType);
 		if (currentType) {
 			setCurrentType(currentType);
@@ -590,6 +613,7 @@ const RampPaymentAccounts = ({
 
 	const handleBack = () => {
 		setIsDisable(false);
+		setOnrampIndex(1);
 		if (!user_payments || !Object.keys(user_payments).length) {
 			setPaymentType('initial');
 		}
@@ -672,7 +696,11 @@ const RampPaymentAccounts = ({
 						currentsymbol={currentsymbol}
 						coinSymbol={coinSymbol}
 						isPaymentForm={isPaymentForm}
-						currentIndex={paymentmethodIndex}
+						currentIndex={
+							currentActiveTab && currentActiveTab === 'onRamp'
+								? currentIndex
+								: paymentmethodIndex
+						}
 						handleBack={handleBack}
 						currentType={currentType}
 						defaultBankInitialValues={defaultBankInitialValues}
@@ -723,7 +751,11 @@ const RampPaymentAccounts = ({
 					selectedPlugin={selectedPlugin}
 					currentsymbol={currentsymbol}
 					setCoindata={setCoindata}
-					currentIndex={paymentmethodIndex}
+					currentIndex={
+						currentActiveTab && currentActiveTab === 'onRamp'
+							? currentIndex
+							: paymentmethodIndex
+					}
 					selectedPaymentType={
 						(originalofframp &&
 							originalofframp[currentsymbol] &&

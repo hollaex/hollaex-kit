@@ -213,7 +213,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'bank'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>
@@ -257,7 +257,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'paypal'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>
@@ -301,7 +301,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'payment'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>
