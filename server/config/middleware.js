@@ -78,7 +78,7 @@ const rateLimitMiddleware = (app) => {
 	limiter({
 		path: '/v2/login',
 		method: 'post',
-		total: 24,
+		total: 16,
 		expire: 1000 * 60 * 2,
 		lookup: 'headers.x-forwarded-for',
 		onRateLimited: function (req, res, next) {
