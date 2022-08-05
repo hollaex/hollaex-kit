@@ -98,6 +98,7 @@ class OperatorControls extends Component {
 			selectedThemes,
 			allIconsArray: [],
 			injected_html: { head: '', body: '', ...injected_html },
+			iconAfterRemove: {},
 		};
 	}
 
@@ -354,11 +355,16 @@ class OperatorControls extends Component {
 		if (isEditMode) {
 			const {
 				overwrites,
-				iconsOverwrites: icons,
+				iconsOverwrites,
 				colorOverwrites,
 				languageKeys,
+				iconAfterRemove,
 			} = this.state;
 
+			let icons = iconsOverwrites;
+			if (iconAfterRemove && Object.keys(iconAfterRemove)?.length) {
+				icons = iconAfterRemove;
+			}
 			const { defaults, sections } = this.props;
 
 			const valid_languages = languageKeys.join();
@@ -715,18 +721,27 @@ class OperatorControls extends Component {
 		});
 	};
 
-	removeIcon = (key) => {
-		const { removeIcon } = this.props;
-		const { iconsOverwrites } = this.state;
-		const { [key]: iconKey, ...restIcons } = iconsOverwrites;
-		this.setState(
-			{
-				iconsOverwrites: restIcons,
-			},
-			() => {
-				removeIcon(key);
+	removeIcon = (themeKey, iconKey) => {
+		const {
+			constants: { icons },
+		} = this.props;
+		const selectedTheme = themeKey && icons[themeKey];
+		let data = {};
+		Object.keys(selectedTheme).forEach((item) => {
+			if (item !== iconKey) {
+				data = {
+					...data,
+					[item]: selectedTheme[item],
+				};
 			}
-		);
+		});
+		const iconAfterRemove = {
+			...icons,
+			[themeKey]: data,
+		};
+		const iconsEditData = { ...this.state.iconsEditData };
+		iconsEditData[themeKey] = { [iconKey]: undefined };
+		this.setState({ iconsEditData, iconAfterRemove });
 	};
 
 	openThemeSettings = () => {
@@ -1141,7 +1156,7 @@ class OperatorControls extends Component {
 						isOpen={isUploadIconOpen}
 						onCloseDialog={this.closeUploadIcon}
 						onSave={this.addIcons}
-						onReset={this.removeIcon}
+						removeIcon={this.removeIcon}
 					/>
 				)}
 				{isThemeSettingsOpen && (
@@ -1292,6 +1307,7 @@ class OperatorControls extends Component {
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	injected_html: state.app.injected_html,
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -4665,6 +4665,13 @@ table th {
 .image-upload__file-img-content {
   border-right: 1px solid #ffffff; }
 
+.image-upload__file-container .closeIcon {
+  position: absolute;
+  left: 5.5rem;
+  bottom: 5rem;
+  font-size: 20px;
+  cursor: pointer; }
+
 .image-upload_image {
   padding: 5px;
   overflow: hidden; }
