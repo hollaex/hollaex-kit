@@ -319,12 +319,9 @@ const loginPost = (req, res) => {
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
-			return all([
-				toolsLib.user.getUserByEmail(email),
-				toolsLib.security.checkCaptcha(captcha, ip)
-			]);
+			return toolsLib.user.getUserByEmail(email);
 		})
-		.then(([user]) => {
+		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
@@ -347,7 +344,7 @@ const loginPost = (req, res) => {
 			}
 
 			if (!user.otp_enabled) {
-				return all([user]);
+				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
@@ -355,7 +352,7 @@ const loginPost = (req, res) => {
 						if (!validOtp) {
 							throw new Error(INVALID_OTP_CODE);
 						} else {
-							return;
+							return toolsLib.security.checkCaptcha(captcha, ip);
 						}
 					})
 				]);
