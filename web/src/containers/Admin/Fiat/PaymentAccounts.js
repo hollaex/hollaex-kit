@@ -409,8 +409,8 @@ const PaymentAccounts = ({
 									<div>
 										Allow your users add their payment method for{' '}
 										{paymenttype === 'initial'
-											? 'receiving fiat.'
-											: 'withdrawing fiat.'}
+											? 'withdrawing fiat.'
+											: 'receiving fiat.'}
 									</div>
 									<div className="d-flex align-items-center">
 										<div className="mr-3">
@@ -434,8 +434,8 @@ const PaymentAccounts = ({
 									<div className="mt-4">
 										These payment details can be reused for{' '}
 										{paymenttype === 'initial'
-											? 'on and off ramping.'
-											: 'off ramping page.'}
+											? 'off ramping page.'
+											: 'on and off ramping.'}
 									</div>
 								</div>
 							</div>
@@ -443,7 +443,7 @@ const PaymentAccounts = ({
 								type="primary"
 								className={!isUpgrade ? 'green-btn disableall' : 'green-btn'}
 								onClick={() => handleClosePlugin(true)}
-								disabled={isDisplayForm}
+								disabled={isDisplayDetails || isLoading}
 							>
 								Add payment account
 							</Button>

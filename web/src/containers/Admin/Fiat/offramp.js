@@ -56,6 +56,7 @@ const Offramp = ({
 	const [isPayChanged, setIsPayChanged] = useState(false);
 	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
+	const [offrampCurrentType, setOfframpCurrentType] = useState('');
 
 	useEffect(() => {
 		let coins =
@@ -594,6 +595,8 @@ const Offramp = ({
 												setIsProceed={setIsProceed}
 												isLoading={isLoading}
 												setIsLoading={setIsLoading}
+												setOfframpCurrentType={setOfframpCurrentType}
+												offrampCurrentType={offrampCurrentType}
 											/>
 										) : null}
 										<div className="border-divider"></div>

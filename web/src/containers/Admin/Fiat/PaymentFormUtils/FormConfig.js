@@ -108,8 +108,19 @@ class FormConfig extends Component {
 				};
 			}
 		});
+		let arrData = [];
+		Object.keys(res).forEach((item) => {
+			arrData = [...arrData, res[item]];
+		});
+		let resData = {};
+		arrData.forEach((item, index) => {
+			resData = {
+				...resData,
+				[`section_${index + 1}`]: item,
+			};
+		});
 		this.setState({
-			editedValues: res,
+			editedValues: resData,
 			isAddColumn: false,
 			editData: [],
 			currentSection: '',
@@ -185,7 +196,11 @@ class FormConfig extends Component {
 									) : null}
 								</div>
 							),
-							placeholder: `input ${this.props.currentPaymentType} details`,
+							placeholder:
+								this.props.currentActiveTab &&
+								this.props.currentActiveTab === 'paymentAccounts'
+									? '(User input. Details will be shown in user verification page)'
+									: `input ${this.props.currentPaymentType} details`,
 							isClosable: true,
 							closeCallback: () =>
 								this.handleRemoveHeader(
