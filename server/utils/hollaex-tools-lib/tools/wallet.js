@@ -610,6 +610,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -636,6 +637,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
