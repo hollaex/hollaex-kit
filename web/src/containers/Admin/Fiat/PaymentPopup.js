@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
+import { constractPaymentOption } from 'utils/utils';
 
 import './index.css';
 
@@ -63,7 +64,6 @@ const PaymentAccountPopup = ({
 	setIsPayChanged,
 	paymentSavedCoins = [],
 	setCurrentOfframpIndex = () => {},
-	userPaymentsData = {},
 	isVisible = false,
 	setPaymentSavedCoins = () => {},
 	handleBack = () => {},
@@ -84,16 +84,20 @@ const PaymentAccountPopup = ({
 	const [existErrorMsg, setExistErrorMsg] = useState('');
 	const [paymentOptions, setPaymentOptions] = useState([]);
 	const [paymentCount, setPaymentCount] = useState([]);
+	const [PaymentMethodData, setPaymentMethodData] = useState([
+		constractPaymentOption(paymentMethodItems),
+	]);
+
 	useEffect(() => {
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
-			let tempData = Object.keys(paymentMethodItems) || [];
+			let tempData = constractPaymentOption(paymentMethodItems) || [];
 			if (
 				currentActiveTab &&
 				currentActiveTab === 'onRamp' &&
 				selectedPaymentType !== null &&
 				!paymentSelect !== null
 			) {
-				setPaymentSelect(tempData[0]);
+				setPaymentSelect(tempData[0].name);
 			} else {
 				setPaymentSelect(
 					selectedPaymentType || Object.keys(user_payments)?.[0]
@@ -135,14 +139,15 @@ const PaymentAccountPopup = ({
 	}, [isVisible, currentActiveTab, selectedPaymentType]);
 
 	useEffect(() => {
+		const paymentsData = constractPaymentOption(paymentMethodItems);
+		setPaymentMethodData(paymentsData);
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			const tempArr = Object.keys(user_payments);
-			const paymentsData = Object.keys(paymentMethodItems);
 			let temp = [];
 			if (tempArr.length > 0) {
 				paymentsData.forEach((item) => {
-					if (!tempArr.includes(item)) {
-						temp = [...temp, item];
+					if (!tempArr.includes(item.name)) {
+						temp.push(item);
 					}
 				});
 			} else {
@@ -150,7 +155,7 @@ const PaymentAccountPopup = ({
 			}
 			setPaymentOptions(temp);
 			if (temp.length > 0) {
-				setPaymentSelect(temp[0]);
+				setPaymentSelect(temp[0].name);
 			}
 		}
 		// eslint-disable-next-line
@@ -309,8 +314,9 @@ const PaymentAccountPopup = ({
 	};
 
 	const handleUpdatePlugin = (val) => {
-		if (val && val !== plugin) {
-			setPlugin(val);
+		let value = val.trim();
+		if (value && value !== plugin) {
+			setPlugin(value);
 		} else {
 			setPlugin('');
 		}
@@ -456,7 +462,7 @@ const PaymentAccountPopup = ({
 							</div>
 							<Select
 								className="paymentSelect"
-								defaultValue={paymentMethodItems[0]}
+								defaultValue={paymentOptions[0]}
 								value={paymentSelect}
 								suffixIcon={
 									isOpen ? (
@@ -470,8 +476,8 @@ const PaymentAccountPopup = ({
 							>
 								{paymentOptions.map((item, index) => {
 									return (
-										<Option value={item} key={index}>
-											User payment account {index + 1}: {item}
+										<Option value={item.name} key={index}>
+											User payment account {index + 1}: {item.name}
 										</Option>
 									);
 								})}
@@ -709,6 +715,10 @@ const PaymentAccountPopup = ({
 				</div>
 			);
 		case 'offramp':
+			const userPaymentOptions = PaymentMethodData.filter(
+				(item) => !offramp[singleCoin.symbol]?.includes(item.name)
+			);
+
 			return (
 				<div className="payment-modal-wrapper">
 					<div className="d-flex align-items-center">
@@ -731,10 +741,10 @@ const PaymentAccountPopup = ({
 					</div>
 
 					{showSelect && <span>{renderSelect('deposit')}</span>}
-					{isMulti || Object.keys(user_payments).length ? (
+					{isMulti || PaymentMethodData.length ? (
 						<div>
 							{!offramp?.[singleCoin.symbol] ||
-							(Object.keys(user_payments)?.length !==
+							(PaymentMethodData.length !==
 								offramp?.[singleCoin.symbol]?.length &&
 								selectedPaymentType) ? (
 								<div>
@@ -758,23 +768,12 @@ const PaymentAccountPopup = ({
 											onClick={handleOpenPayment}
 											onChange={handleChange}
 										>
-											{Object.keys(user_payments).map((item, i) => {
-												if (!offramp[singleCoin.symbol]?.includes(item)) {
-													return (
-														<Option
-															value={item}
-															key={i}
-															disabled={
-																offramp[singleCoin.symbol] &&
-																offramp[singleCoin.symbol].includes(item)
-															}
-														>
-															User payment account {i + 1}: {item}
-														</Option>
-													);
-												} else {
-													return null;
-												}
+											{userPaymentOptions.map((item, i) => {
+												return (
+													<Option value={item.name} key={i}>
+														User payment account {i + 1}: {item.name}
+													</Option>
+												);
 											})}
 										</Select>
 									</div>
