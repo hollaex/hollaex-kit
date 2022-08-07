@@ -475,8 +475,8 @@ class Home extends Component {
 					backgroundImage: `url(${
 						ICONS[iconId] || ICONS['EXCHANGE_LANDING_PAGE']
 					})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat',
 				};
 
 				const defaultNoBGstyle = {
@@ -485,8 +485,8 @@ class Home extends Component {
 								backgroundImage: `url(${ICONS[iconId]})`,
 						  }
 						: {}),
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
+					backgroundSize: 'cover',
+					backgroundRepeat: 'no-repeat',
 				};
 
 				const style = DEFAULT_BG_SECTIONS.includes(key)

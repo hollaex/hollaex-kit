@@ -458,7 +458,6 @@ const Onramp = ({
 					selectedPaymentType={selectedPaymentType}
 					isPayChanged={isPayChanged}
 					setIsPayChanged={setIsPayChanged}
-					userPaymentsData={user_payments}
 					isVisible={isVisible}
 				/>
 			</Modal>

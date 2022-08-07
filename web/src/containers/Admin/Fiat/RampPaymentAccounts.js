@@ -53,6 +53,7 @@ const RampPaymentAccounts = ({
 	selectedPayType,
 	setOfframpCurrentType = () => {},
 	offrampCurrentType = '',
+	setCoinSymbol = () => {},
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [currentTab, setCurrentTab] = useState('payment');
@@ -515,6 +516,8 @@ const RampPaymentAccounts = ({
 		}
 		if (currentActiveTab && currentActiveTab === 'onRamp') {
 			setIsCurrentFormOpen(true);
+		} else {
+			setCoinSymbol(currentsymbol);
 		}
 	};
 	const onCancel = () => {

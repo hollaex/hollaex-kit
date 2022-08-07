@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'components/Image';
+import { CloseCircleOutlined } from '@ant-design/icons';
 // import { Button } from 'antd';
 // import { DeleteOutlined } from '@ant-design/icons';
 
@@ -9,7 +10,7 @@ const ImageUpload = ({
 	iconPath,
 	onFileChange,
 	beforeInjection,
-	// onReset,
+	onReset,
 	// loading,
 }) => {
 	return (
@@ -22,6 +23,12 @@ const ImageUpload = ({
 						beforeInjection={beforeInjection}
 					/>
 				</div>
+				{iconPath ? (
+					<CloseCircleOutlined
+						className="closeIcon"
+						onClick={() => onReset(themeKey, iconKey)}
+					/>
+				) : null}
 				<div>
 					<div>{`${themeKey} theme`}</div>
 					<div>
