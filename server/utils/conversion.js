@@ -1,5 +1,10 @@
 'use strict';
 
+const {
+	INVALID_CAPTCHA,
+	INVALID_CREDENTIALS
+} = require('../messages');
+
 const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;
 };
@@ -9,6 +14,8 @@ const errorMessageConverter = (error) => {
 
 	if (error.name === 'SequelizeValidationError') {
 		message = error.errors[0].message;
+	} else if (error.message === INVALID_CAPTCHA) {
+		message = INVALID_CREDENTIALS;
 	} else if (error.statusCode) {
 		if (typeof error.error === 'string') {
 			try {

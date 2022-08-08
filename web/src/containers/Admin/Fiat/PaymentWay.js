@@ -196,13 +196,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>Bank</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig
@@ -213,7 +215,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'bank'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>
@@ -240,13 +242,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>PayPal</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig
@@ -257,7 +261,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'paypal'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>
@@ -284,13 +288,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>{currentPaymentType || customName}</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig
@@ -301,7 +307,7 @@ export const PaymentWay = ({
 						currentActiveTab={currentActiveTab}
 						paymentSelect={paymentSelect}
 						buttonSubmitting={currentType && currentType === 'add'}
-						currentPaymentType={currentPaymentType}
+						currentPaymentType={'payment'}
 						user_payments={user_payments}
 						currentType={currentType}
 					/>

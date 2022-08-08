@@ -56,6 +56,7 @@ const Offramp = ({
 	const [isPayChanged, setIsPayChanged] = useState(false);
 	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
+	const [offrampCurrentType, setOfframpCurrentType] = useState('');
 
 	useEffect(() => {
 		let coins =
@@ -594,6 +595,9 @@ const Offramp = ({
 												setIsProceed={setIsProceed}
 												isLoading={isLoading}
 												setIsLoading={setIsLoading}
+												setOfframpCurrentType={setOfframpCurrentType}
+												offrampCurrentType={offrampCurrentType}
+												setCoinSymbol={setCoinSymbol}
 											/>
 										) : null}
 										<div className="border-divider"></div>
@@ -635,7 +639,6 @@ const Offramp = ({
 					setIsPayChanged={setIsPayChanged}
 					currentIndex={currentOfframpIndex}
 					setCurrentOfframpIndex={setCurrentOfframpIndex}
-					userPaymentsData={user_payments}
 					paymentSelectData={selectedPaymentType}
 				/>
 			</Modal>
