@@ -154,7 +154,7 @@ class EditLimit extends Component {
 				<h3>Edit deposit and withdraw limits</h3>
 				<div className="description">
 					Set the limit amounts that are allowed for both deposits and
-					withdrawal for the asset Bitcoin (BTC).
+					withdrawal for the asset {constants.native_currency}.
 				</div>
 				<div className="my-3">
 					<div className="d-flex align-items-center">
