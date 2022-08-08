@@ -46,10 +46,6 @@ class UploadIcon extends Component {
 		}));
 	};
 
-	onReset = ({ target: { name } }) => {
-		return console.log('reset', name);
-	};
-
 	handleSave = async () => {
 		const { onSave } = this.props;
 		const { selectedFiles } = this.state;
@@ -154,7 +150,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.onReset}
+												onReset={this.props.removeIcon}
 											/>
 										))}
 								</Collapse.Panel>
@@ -177,7 +173,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.onReset}
+												onReset={this.props.removeIcon}
 											/>
 										))}
 								</Collapse.Panel>

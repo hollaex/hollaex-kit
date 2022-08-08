@@ -196,13 +196,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>Bank</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig
@@ -240,13 +242,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>PayPal</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig
@@ -284,13 +288,15 @@ export const PaymentWay = ({
 						/>
 						<div>
 							<b>{currentPaymentType || customName}</b>
-							<div className="anchor" onClick={() => handleDelBank(true)}>
-								{currentActiveTab && currentActiveTab === 'paymentAccounts'
-									? 'Delete payment account'
-									: currentActiveTab && currentActiveTab === 'onRamp'
-									? 'Delete On-ramp'
-									: 'Delete off-ramp'}
-							</div>
+							{currentType && currentType === 'add' ? null : (
+								<div className="anchor" onClick={() => handleDelBank(true)}>
+									{currentActiveTab && currentActiveTab === 'paymentAccounts'
+										? 'Delete payment account'
+										: currentActiveTab && currentActiveTab === 'onRamp'
+										? 'Delete On-ramp'
+										: 'Delete off-ramp'}
+								</div>
+							)}
 						</div>
 					</div>
 					<FormConfig

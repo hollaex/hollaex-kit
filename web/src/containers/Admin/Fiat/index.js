@@ -10,6 +10,7 @@ import PaymentAccounts from './PaymentAccounts';
 import { getTabParams } from '../AdminFinancials/Assets';
 // import Kyc from './Kyc';
 import { setConfig } from 'actions/appActions';
+import { constractPaymentOption } from 'utils/utils';
 
 const TabPane = Tabs.TabPane;
 
@@ -27,6 +28,7 @@ const Fiatmarkets = ({
 	const { user_payments = {}, onramp = {}, offramp = {} } = constants;
 	const [offRampData, setOffRamp] = useState(offramp);
 	const [onrampData, setOnRamp] = useState(onramp);
+	const [userPaymentsData, setOnuserPaymentsData] = useState([]);
 
 	useEffect(() => {
 		if (exchange && Object.keys(exchange).length) {
@@ -43,6 +45,11 @@ const Fiatmarkets = ({
 			setActiveTab(tabParams.tab);
 		}
 	}, [tabParams]);
+
+	useEffect(() => {
+		const userPayments = constractPaymentOption(user_payments);
+		setOnuserPaymentsData(userPayments);
+	}, [user_payments]);
 
 	const handleTabChange = (key) => {
 		setActiveTab(key);
@@ -79,11 +86,11 @@ const Fiatmarkets = ({
 				</TabPane>
 				<TabPane tab="Payment accounts" key="1">
 					<PaymentAccounts
-						currentActiveTab="paymentAccounts"
 						router={router}
 						isUpgrade={isUpgrade}
 						activeTab={activeTab}
 						user_payments={user_payments}
+						paymentsMethodsData={userPaymentsData}
 						onramp={onrampData}
 						offramp={offRampData}
 						setConfig={setConfig}
@@ -97,6 +104,7 @@ const Fiatmarkets = ({
 						isUpgrade={isUpgrade}
 						onramp={onrampData}
 						user_payments={user_payments}
+						paymentsMethodsData={userPaymentsData}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
 						isLoading={isLoading}
@@ -111,6 +119,7 @@ const Fiatmarkets = ({
 						isUpgrade={isUpgrade}
 						offramp={offRampData}
 						user_payments={user_payments}
+						paymentsMethodsData={userPaymentsData}
 						setConfig={setConfig}
 						getUpdatedKitData={getUpdatedKitData}
 						isLoading={isLoading}
