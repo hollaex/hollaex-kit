@@ -93,6 +93,10 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 		}
 	}
 
+	if (network === 'email') {
+		fee = 0;
+	}
+
 	return { fee, fee_coin };
 };
 
