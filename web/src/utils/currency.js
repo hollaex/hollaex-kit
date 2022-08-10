@@ -14,7 +14,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const BASE_FORMAT = '0,0.[0000]';
-export const PERCENTAGE_FORMAT = '0.[00]%';
+export const PERCENTAGE_FORMAT = '0.[000]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
 
