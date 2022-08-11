@@ -98,7 +98,8 @@ const RampPaymentAccounts = ({
 		) {
 			setIsDisplayDetails(false);
 		}
-	}, [selectedPayType, offrampCurrentType]);
+		// eslint-disable-next-line
+	}, [selectedPayType]);
 
 	useEffect(() => {
 		if (currentPaymentType !== customName) {
@@ -409,14 +410,25 @@ const RampPaymentAccounts = ({
 				}
 				if (currentActiveTab && currentActiveTab === 'offRamp') {
 					const { offramp = {} } = res && res.kit;
+					setIsDisable(false);
 					if (
 						offramp &&
 						Object.keys(offramp).length &&
 						Object.keys(offramp).length > 1 &&
 						currentsymbol
 					) {
-						setSelectedPayType({
-							[currentsymbol]: offramp[currentsymbol]?.[0],
+						Object.keys(selectedPayType).forEach((item) => {
+							if (item && currentsymbol && item !== currentsymbol) {
+								setSelectedPayType({
+									...selectedPayType,
+									[item]: selectedPayType?.item,
+								});
+							} else {
+								setSelectedPayType({
+									...selectedPayType,
+									[currentsymbol]: offramp[currentsymbol]?.[0],
+								});
+							}
 						});
 					}
 				}
@@ -500,6 +512,7 @@ const RampPaymentAccounts = ({
 		curIndex,
 		currentType = ''
 	) => {
+		setIsDisplayDetails(true);
 		setPaymentType(type);
 		setCurrentPaymentType(currentPaymentType);
 		setIsCustomPay(isCustomPay);
@@ -629,6 +642,14 @@ const RampPaymentAccounts = ({
 		}
 	};
 
+	const handleOpen = (text) => {
+		if (text === 'open') {
+			setIsOpen(true);
+		} else {
+			setIsOpen(false);
+		}
+	};
+
 	return (
 		<div className="payment-acc-wrapper">
 			<div>
@@ -643,11 +664,18 @@ const RampPaymentAccounts = ({
 									value={paymentSelect}
 									suffixIcon={
 										isOpen ? (
-											<CaretDownOutlined className="downarrow" />
+											<CaretDownOutlined
+												className="downarrow"
+												onClick={() => handleOpen('close')}
+											/>
 										) : (
-											<CaretUpOutlined className="downarrow" />
+											<CaretUpOutlined
+												className="downarrow"
+												onClick={() => handleOpen('open')}
+											/>
 										)
 									}
+									open={isOpen}
 									onClick={handleOpenPayment}
 									onChange={setPaymentMethod}
 								>

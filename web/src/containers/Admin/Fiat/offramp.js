@@ -57,6 +57,7 @@ const Offramp = ({
 	const [currentType, setCurrentType] = useState('');
 	const [isProceed, setIsProceed] = useState(false);
 	const [offrampCurrentType, setOfframpCurrentType] = useState('');
+	const [isDisable, setIsDisable] = useState(false);
 
 	useEffect(() => {
 		let coins =
@@ -261,6 +262,14 @@ const Offramp = ({
 		setIsOpen(!isOpen);
 	};
 
+	const handleOpen = (text) => {
+		if (text === 'open') {
+			setIsOpen(true);
+		} else {
+			setIsOpen(false);
+		}
+	};
+
 	const renderSelect = (type) => {
 		return (
 			<div className="mt-4 d-flex align-items-center">
@@ -382,7 +391,11 @@ const Offramp = ({
 								onClick={() =>
 									handleRamp('offramp', true, null, null, null, true)
 								}
-								disabled={!user_payments || !Object.keys(user_payments).length}
+								disabled={
+									!user_payments ||
+									!Object.keys(user_payments).length ||
+									isDisable
+								}
 							>
 								Add off-ramp
 							</Button>
@@ -480,9 +493,10 @@ const Offramp = ({
 													)
 												}
 												disabled={
-													Object.keys(offramp).includes(item?.symbol) &&
-													Object.keys(user_payments).length ===
-														offramp[item?.symbol].length
+													(Object.keys(offramp).includes(item?.symbol) &&
+														Object.keys(user_payments).length ===
+															offramp[item?.symbol].length) ||
+													isDisable
 												}
 											>
 												Add off-ramp
@@ -514,12 +528,19 @@ const Offramp = ({
 														value={selectedPayType[item?.symbol]}
 														suffixIcon={
 															isOpen ? (
-																<CaretDownOutlined className="downarrow" />
+																<CaretDownOutlined
+																	className="downarrow"
+																	onClick={() => handleOpen('close')}
+																/>
 															) : (
-																<CaretUpOutlined className="downarrow" />
+																<CaretUpOutlined
+																	className="downarrow"
+																	onClick={() => handleOpen('open')}
+																/>
 															)
 														}
 														onClick={handleOpenPayment}
+														open={isOpen}
 														onChange={(val) =>
 															setPaymentMethod(val, item?.symbol, index)
 														}
@@ -598,6 +619,8 @@ const Offramp = ({
 												setOfframpCurrentType={setOfframpCurrentType}
 												offrampCurrentType={offrampCurrentType}
 												setCoinSymbol={setCoinSymbol}
+												isDisable={isDisable}
+												setIsDisable={setIsDisable}
 											/>
 										) : null}
 										<div className="border-divider"></div>
