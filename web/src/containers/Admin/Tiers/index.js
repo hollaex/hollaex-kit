@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Tabs, Modal, message } from 'antd';
+import { connect } from 'react-redux';
 
 import TiersContainer from './Tiers';
 import Limits from './Limits';
@@ -10,7 +11,9 @@ import NewTierForm, {
 } from './ModalForm';
 import EditFees from './EditFees';
 import EditLimit from './EditLimit';
-import { requestTiers, addNewTier, updateTier } from './action';
+import ChangeLimit from './ChangeLimit';
+import CheckAndConfirm from './CheckAndConfirm';
+import { requestTiers, addNewTier, updateTier, updateLimits } from './action';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -26,7 +29,20 @@ const renderContent = (
 	handleSave,
 	handleClose,
 	getTiers,
-	buttonSubmitting
+	buttonSubmitting,
+	tierName,
+	coinSymbol,
+	handleScreenUpdate,
+	isNativeCoin,
+	setIsNativeCoin,
+	constants = {},
+	allCoins = [],
+	handleConfirm = () => {},
+	formData = {},
+	setFormData = () => {},
+	handleSaveData = () => {},
+	isButtonSubmit = false,
+	isUseNativeCoin = false
 ) => {
 	switch (type) {
 		case 'new-tier-confirm':
@@ -71,9 +87,46 @@ const renderContent = (
 		case 'edit-limits':
 			return (
 				<EditLimit
+					tierName={tierName}
+					coinSymbol={coinSymbol}
 					userTiers={userTiers}
 					getTiers={getTiers}
 					handleClose={handleClose}
+					handleScreenUpdate={handleScreenUpdate}
+					formData={formData}
+					setFormData={setFormData}
+					handleSave={handleSaveData}
+					buttonSubmitting={isButtonSubmit}
+					isNativeCoin={isNativeCoin}
+					constants={constants}
+					isUseNativeCoin={isUseNativeCoin}
+				/>
+			);
+		case 'change-limits':
+			return (
+				<ChangeLimit
+					tierName={tierName}
+					coinSymbol={coinSymbol}
+					handleScreenUpdate={handleScreenUpdate}
+					isNativeCoin={isNativeCoin}
+					setIsNativeCoin={setIsNativeCoin}
+					constants={constants}
+					allCoins={allCoins}
+					formData={formData}
+					setFormData={setFormData}
+					isUseNativeCoin={isUseNativeCoin}
+				/>
+			);
+		case 'check-confirm':
+			return (
+				<CheckAndConfirm
+					tierName={tierName}
+					coinSymbol={coinSymbol}
+					handleScreenUpdate={handleScreenUpdate}
+					constants={constants}
+					handleConfirm={handleConfirm}
+					isNativeCoin={isNativeCoin}
+					isUseNativeCoin={isUseNativeCoin}
 				/>
 			);
 		default:
@@ -81,7 +134,7 @@ const renderContent = (
 	}
 };
 
-const Tiers = () => {
+const Tiers = ({ constants = {}, allCoins = [] }) => {
 	const [userTiers, setTiers] = useState({});
 	const [isNew, setNew] = useState(false);
 	const [isOpen, setOpen] = useState(false);
@@ -89,6 +142,21 @@ const Tiers = () => {
 	const [editData, setData] = useState({});
 	const [selectedPair, setPair] = useState('');
 	const [buttonSubmitting, setButttonSubmitting] = useState(false);
+	const [tierName, setTierName] = useState('');
+	const [coinSymbol, setSymbol] = useState('');
+	const [isNativeCoin, setIsNativeCoin] = useState(false);
+	const [isButtonSubmit, setIsButtonSubmit] = useState(false);
+	const [formData, setFormData] = useState({});
+	const [isUseNativeCoin, setUseNativeCoin] = useState(false);
+
+	useEffect(() => {
+		if (userTiers && Object.keys(userTiers).length) {
+			if (userTiers[1]?.native_currency_limit) {
+				setIsNativeCoin(true);
+				setUseNativeCoin(true);
+			}
+		}
+	}, [userTiers]);
 
 	useEffect(() => {
 		getTiers();
@@ -190,6 +258,36 @@ const Tiers = () => {
 			return 420;
 		}
 	};
+
+	const handleScreenUpdate = (val) => {
+		setOpen(true);
+		onTypeChange(val);
+	};
+
+	const handleSave = () => {
+		let formValues = {
+			limits: formData,
+		};
+		setIsButtonSubmit(true);
+		updateLimits(formValues)
+			.then((res) => {
+				getTiers();
+				handleClose();
+				setIsButtonSubmit(false);
+				message.success('Limits updated successfully');
+			})
+			.catch((err) => {
+				let error = err && err.data ? err.data.message : err.message;
+				setIsButtonSubmit(false);
+				message.error(error);
+			});
+	};
+
+	const handleConfirm = (type) => {
+		onTypeChange(type);
+		handleSave();
+	};
+
 	return (
 		<div className="admin-tiers-wrapper w-100">
 			<Tabs>
@@ -206,9 +304,11 @@ const Tiers = () => {
 				<TabPane tab="Limits" key="limits">
 					<Limits
 						userTiers={userTiers}
-						onEditLimit={() => {
+						onEditLimit={(symbol, fullName) => {
 							setOpen(true);
 							onTypeChange('edit-limits');
+							setSymbol(symbol);
+							setTierName(fullName);
 						}}
 					/>
 				</TabPane>
@@ -237,11 +337,29 @@ const Tiers = () => {
 					handleSubmit,
 					handleClose,
 					getTiers,
-					buttonSubmitting
+					buttonSubmitting,
+					tierName,
+					coinSymbol,
+					handleScreenUpdate,
+					isNativeCoin,
+					setIsNativeCoin,
+					constants,
+					allCoins,
+					handleConfirm,
+					formData,
+					setFormData,
+					handleSave,
+					isButtonSubmit,
+					isUseNativeCoin
 				)}
 			</Modal>
 		</div>
 	);
 };
 
-export default Tiers;
+const mapStateToProps = (state) => ({
+	constants: state.app.constants,
+	allCoins: state.asset.allCoins,
+});
+
+export default connect(mapStateToProps)(Tiers);

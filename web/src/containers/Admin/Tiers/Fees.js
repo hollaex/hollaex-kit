@@ -150,7 +150,7 @@ const Fees = ({
 					<div className="description mt-4">
 						{`All amounts are valued in your set native currency ${native_currency}. You can
 						change the native currency for your exchange in the general setup
-						page.`}
+						page or change a specific assets limit value type by clicking 'Adjust limits' below.`}
 					</div>
 				</div>
 			</div>
