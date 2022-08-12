@@ -75,11 +75,14 @@ class GeneralContent extends Component {
 			isDisableSave: false,
 			isPublishDisable: false,
 			updatedKey: '',
+			isDisable: false,
+			defaultEmailData: {},
 		};
 	}
 
 	componentDidMount() {
 		this.requestInitial();
+		this.setState({ isDisable: true });
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -90,6 +93,10 @@ class GeneralContent extends Component {
 			this.getSettingsValues();
 		}
 	}
+
+	handleDisable = (isDisable) => {
+		this.setState({ isDisable });
+	};
 
 	requestInitial = async () => {
 		this.setState({ loading: true });
@@ -123,7 +130,18 @@ class GeneralContent extends Component {
 		getEmailStrings(bodyParam)
 			.then((response) => {
 				if (response) {
-					this.setState({ emailData: response });
+					if (response?.title === 'Account Upgraded') {
+						this.setState({
+							defaultEmailData: {
+								...response,
+								language: bodyParam.language,
+								type: bodyParam.type,
+							},
+							emailData: response,
+						});
+					} else {
+						this.setState({ emailData: response });
+					}
 				}
 			})
 			.catch((error) => {
@@ -310,11 +328,13 @@ class GeneralContent extends Component {
 				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 				this.setState({ buttonSubmitting: false });
+				this.handleDisable(true);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
 				this.setState({ buttonSubmitting: false });
+				this.handleDisable(true);
 			});
 	};
 
@@ -756,6 +776,9 @@ class GeneralContent extends Component {
 			currentPublishType,
 			isPublishDisable,
 			updatedKey,
+			isDisable,
+			emailData,
+			defaultEmailData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
 		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
@@ -999,11 +1022,12 @@ class GeneralContent extends Component {
 										initialValues={initialEmailValues}
 										handleSubmitSettings={this.submitSettings}
 										buttonSubmitting={buttonSubmitting}
-										emailData={this.state.emailData}
+										emailData={emailData}
 										requestEmail={this.requestEmail}
 										defaults={kit && kit.defaults}
 										emailTypeData={emailTypeData}
 										constants={constants}
+										defaultEmailData={defaultEmailData}
 									/>
 								</div>
 							</div>
@@ -1040,6 +1064,8 @@ class GeneralContent extends Component {
 							initialValues={initialLinkValues}
 							handleSubmitFooter={this.submitSettings}
 							buttonSubmitting={buttonSubmitting}
+							isDisable={isDisable}
+							handleDisable={this.handleDisable}
 						/>
 						<div className="mb-5"></div>
 					</div>

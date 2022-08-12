@@ -70,6 +70,7 @@ export const EmailSettingsForm = ({
 	defaults,
 	emailTypeData,
 	constants,
+	defaultEmailData,
 }) => {
 	const fields = generateAdminSettings('email');
 	const [isOpen, setIsOpen] = useState(false);
@@ -303,6 +304,7 @@ export const EmailSettingsForm = ({
 						selectedLanguages={selectedLanguages}
 						defaultLanguage={defaults && defaults.language}
 						emailType={emailTypeData}
+						defaultEmailData={defaultEmailData}
 					/>
 				) : (
 					<Spin />

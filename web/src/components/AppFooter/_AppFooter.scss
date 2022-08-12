@@ -223,8 +223,10 @@ $footer-logo-color: $trade-tabs-inactive-color;
 .layout-mobile {
 	.app_footer-container {
 		.footer-row-content {
+			margin-bottom: 1rem;
 			.footer-links-section {
 				width: 100%;
+				margin-top: 1rem;
 				.footer-links-group {
 					justify-content: center;
 					align-items: center;
@@ -250,12 +252,12 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						align-items: center;
 					}
 					.footer-txt {
-						width: 100%;
+						width: 80%;
 						margin-top: 2rem !important;
 						margin-left: 0 !important;
 						display: flex;
 						justify-content: center;
-						align-items: center;
+						text-align: center;
 					}
 					.footer-logo {
 						height: 3.5rem;
@@ -286,6 +288,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 			flex-direction: column;
 			align-items: center;
 			border-top: 1px solid $footer-wrapper--border-color;
+			margin-bottom: 1rem;
 		}
 	}
 }

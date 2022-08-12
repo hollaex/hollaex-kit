@@ -149,7 +149,7 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 	.home-page_section-wrapper {
 		padding-top: 60px !important;
-		padding-bottom: 75px !important;
+		padding-bottom: 60px !important;
 	}
 	.home_carousel_section {
 		.slideshow-wrapper {
@@ -448,6 +448,7 @@ $trade-tab--arrow-size: 0.4rem;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		width: 30rem;
 	}
 
 	.section:hover {
@@ -458,6 +459,7 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.height-40 {
 		height: 40px;
+		width: 16rem;
 	}
 
 	.section:hover .trade_tab-pair-title,

@@ -13,6 +13,7 @@ class UploadIcon extends Component {
 		loading: false,
 		error: false,
 		preview: {},
+		isRemove: false,
 	};
 
 	componentWillUnmount() {
@@ -48,7 +49,7 @@ class UploadIcon extends Component {
 
 	handleSave = async () => {
 		const { onSave } = this.props;
-		const { selectedFiles } = this.state;
+		const { selectedFiles, isRemove } = this.state;
 		const icons = {};
 
 		this.setState({
@@ -91,11 +92,19 @@ class UploadIcon extends Component {
 			}
 		}
 
-		this.setState({
-			loading: false,
-		});
-
-		onSave(icons);
+		if (isRemove) {
+			setTimeout(() => {
+				onSave(icons);
+				this.setState({
+					loading: false,
+				});
+			}, 2500);
+		} else {
+			onSave(icons);
+			this.setState({
+				loading: false,
+			});
+		}
 	};
 
 	getIconPath = (theme, id) => {
@@ -103,6 +112,11 @@ class UploadIcon extends Component {
 		const { preview } = this.state;
 		const icons = merge({}, editData, preview);
 		return icons[theme][id];
+	};
+
+	onReset = (themeKey, iconKey) => {
+		this.setState({ isRemove: true });
+		this.props.removeIcon(themeKey, iconKey);
 	};
 
 	render() {
@@ -150,7 +164,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.props.removeIcon}
+												onReset={this.onReset}
 											/>
 										))}
 								</Collapse.Panel>
@@ -173,7 +187,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.props.removeIcon}
+												onReset={this.onReset}
 											/>
 										))}
 								</Collapse.Panel>
