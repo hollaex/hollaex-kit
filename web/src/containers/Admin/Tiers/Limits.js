@@ -100,15 +100,19 @@ const getHeaders = (userTiers, ICONS, constants = {}, onEditLimit) => {
 	});
 	headers.push({
 		title: 'Adjust limit values',
-		dataIndex: 'type',
 		key: 'type',
 		fixed: 'right',
 		width: 150,
 		align: 'right',
-		render: () => (
-			<span className="admin-link-highlight" onClick={onEditLimit}>
-				Adjust limits
-			</span>
+		render: ({ symbol, fullname }) => (
+			<>
+				<span
+					className="admin-link-highlight"
+					onClick={() => onEditLimit(symbol, fullname)}
+				>
+					Adjust limits
+				</span>
+			</>
 		),
 	});
 	return headers;

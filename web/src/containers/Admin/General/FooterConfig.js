@@ -5,6 +5,7 @@ import _isEqual from 'lodash/isEqual';
 
 import Form from './FooterForm';
 import { AdminHocForm } from '../../../components';
+import debounce from 'lodash.debounce';
 
 const AddColumnForm = AdminHocForm('ADD_COLUMN_FORM');
 const AddLinkForm = AdminHocForm('ADD_LINK_FORM');
@@ -147,6 +148,7 @@ class FooterConfig extends Component {
 				),
 			});
 		}
+		// this.setState({isDisable: true})
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -231,6 +233,33 @@ class FooterConfig extends Component {
 				data[key] = '';
 			}
 		});
+		let originalCustom = {
+			custom_fields: link_sections(
+				{},
+				this.props.links,
+				this.addLink,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks,
+				true
+			),
+		};
+		let tempData = {};
+		Object.keys(data).forEach((item) => {
+			if (data[item]) {
+				tempData = {
+					...tempData,
+					[item]: data[item],
+				};
+			}
+		});
+		if (
+			Object.keys(originalCustom?.custom_fields).length !==
+			Object.keys(tempData).length
+		) {
+			this.props.handleDisable(false);
+		} else {
+			this.props.handleDisable(true);
+		}
 		this.setState({
 			custom_fields: link_sections(
 				data,
@@ -272,6 +301,11 @@ class FooterConfig extends Component {
 				data[key] = section;
 			}
 		});
+		if (_isEqual(data, this.state.custom_fields)) {
+			this.props.handleDisable(false);
+		} else {
+			this.props.handleDisable(true);
+		}
 		this.setState({ custom_fields: data });
 	};
 
@@ -285,6 +319,19 @@ class FooterConfig extends Component {
 
 	handleAddColumn = (formProps) => {
 		const custom_fields = { ...this.state.custom_fields };
+		let originalCustom = {
+			custom_fields: link_sections(
+				{},
+				this.props.links,
+				this.addLink,
+				this.handleRemoveHeader,
+				this.handleRemoveLinks,
+				true
+			),
+		};
+		if (!_isEqual(originalCustom, custom_fields)) {
+			this.props.handleDisable(false);
+		}
 		let count = this.state.currentSection.split('_')[1] || 2;
 		custom_fields[this.state.currentSection] = {
 			className: 'section-wrapper',
@@ -321,8 +368,29 @@ class FooterConfig extends Component {
 		this.onCancel();
 	};
 
+	onCheck = (originalCustom, initialCustom) => {
+		if (!_isEqual(originalCustom, initialCustom)) {
+			this.props.handleDisable(false);
+		}
+	};
+
 	handleAddLink = (formProps) => {
+		const { initialValues } = this.props;
+		let originalCustom = {
+			...this.state.initialCustom,
+		};
+		Object.keys(initialValues)
+			.filter((sectionKey) => typeof initialValues[sectionKey] === 'object')
+			.forEach((key) => {
+				let tempSection = initialValues[key];
+				originalCustom = {
+					...originalCustom,
+					...tempSection.header,
+					...tempSection.content,
+				};
+			});
 		let initialCustom = { ...this.state.initialCustom };
+		debounce(() => this.onCheck(originalCustom, initialCustom), 500);
 		if (
 			formProps.link &&
 			Object.keys(initialCustom).includes(formProps.link.toLowerCase())
@@ -390,6 +458,7 @@ class FooterConfig extends Component {
 
 	render() {
 		const { custom_fields, initialCustom, isAddColumn, isAddLink } = this.state;
+		const { isDisable } = this.props;
 		return (
 			<div>
 				<h3>Footer Links</h3>
@@ -399,7 +468,8 @@ class FooterConfig extends Component {
 					customFields={true}
 					addColumn={this.addColumn}
 					handleSubmitLinks={this.handleSubmitLinks}
-					buttonSubmitting={this.props.buttonSubmitting}
+					buttonSubmitting={isDisable || this.props.buttonSubmitting}
+					handleDisbale={this.props.handleDisable}
 				/>
 				{/* <p className="bottom-description">
 					Add/change footer description and small text{' '}
