@@ -725,6 +725,7 @@ class OperatorControls extends Component {
 		const {
 			constants: { icons },
 		} = this.props;
+		console.log('onReset', icons, themeKey, iconKey);
 		const selectedTheme = themeKey && icons[themeKey];
 		let data = {};
 		Object.keys(selectedTheme).forEach((item) => {

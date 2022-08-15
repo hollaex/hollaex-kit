@@ -264,7 +264,7 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 		onTypeChange(val);
 	};
 
-	const handleSave = () => {
+	const handleSave = (type = '') => {
 		let formValues = {
 			limits: formData,
 		};
@@ -272,7 +272,9 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 		updateLimits(formValues)
 			.then((res) => {
 				getTiers();
-				handleClose();
+				if (type && type !== 'coinChange') {
+					handleClose();
+				}
 				setIsButtonSubmit(false);
 				message.success('Limits updated successfully');
 			})
@@ -285,7 +287,7 @@ const Tiers = ({ constants = {}, allCoins = [] }) => {
 
 	const handleConfirm = (type) => {
 		onTypeChange(type);
-		handleSave();
+		handleSave('coinChange');
 	};
 
 	return (

@@ -4,7 +4,7 @@ import { Select } from 'antd';
 import { CurrencyBall } from '../../../components';
 import { validateRequired } from '../../../components/AdminForm/validations';
 import LANGUAGES from '../../../config/languages';
-import {COUNTRIES_OPTIONS} from '../../../utils/countries'
+import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 
 const renderCoinOptions = (coins = {}) =>
 	Object.keys(coins).map((symbol, index) => {
@@ -125,3 +125,30 @@ export const getGeneralFields = (coins) => ({
 		},
 	},
 });
+
+export const publishJSON = [
+	{
+		title: 'Exchange logo',
+		description:
+			'This logo will be applied to emails send to your users and login screen, footer and other places. Any custom graphics uploaded via the direct edit function will override the logo.',
+		currentkey: 'EXCHANGE_LOGO',
+	},
+	{
+		title: 'Loader',
+		description: 'Used for areas that require loading.Also known as a spinner.',
+		currentkey: 'EXCHANGE_LOADER',
+	},
+	{
+		title: 'Exchange favicon',
+		description: '',
+		currentkey: 'EXCHANGE_FAV_ICON',
+		themeKey: 'dark',
+		indexKey: 'EXCHANGE_1',
+	},
+	{
+		title: 'Landing page background',
+		description:
+			'Landing home page for your exchange. This is the page your users will likely see first.',
+		currentkey: 'EXCHANGE_LANDING_PAGE',
+	},
+];

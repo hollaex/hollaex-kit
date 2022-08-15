@@ -21,7 +21,7 @@ const MarketCard = ({ icons: ICONS, market, chartData }) => {
 		<div className="tabs-pair-details">
 			<div className="w-100">
 				<div className="d-flex justify-content-between">
-					<div className="d-flex flex-direction-column justify-content-between">
+					<div className="d-flex flex-direction-column justify-content-between pl-3">
 						<div className="d-flex height-40">
 							<div className="px-2">
 								<Image
@@ -51,8 +51,8 @@ const MarketCard = ({ icons: ICONS, market, chartData }) => {
 							</span>
 						</div>
 					</div>
-					<div className="d-flex flex-direction-column align-end mr-2">
-						<div className="d-flex justify-content-end align-center">
+					<div className="d-flex flex-direction-column align-start mr-2">
+						<div className="d-flex justify-content-end align-center pl-5 ml-5">
 							<div className="d-flex justify-content-end">
 								<PriceChange market={market} disableGlance={true} />
 							</div>
