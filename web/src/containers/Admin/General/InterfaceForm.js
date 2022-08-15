@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Button, Checkbox, Form } from 'antd';
 import classnames from 'classnames';
+import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -14,6 +15,9 @@ const InterfaceForm = ({
 	buttonSubmitting,
 	isFiatUpgrade,
 }) => {
+	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
+	const [form] = Form.useForm();
+
 	const handleSubmit = (values) => {
 		let formValues = {};
 		if (values) {
@@ -28,6 +32,20 @@ const InterfaceForm = ({
 			handleSaveInterface(formValues);
 		}
 	};
+
+	const handleValuesChange = () => {
+		if (!_isEqual(initialValues, form.getFieldsValue())) {
+			setIsSubmit(false);
+		} else {
+			setIsSubmit(true);
+		}
+	};
+
+	const handleSubmitData = (formProps) => {
+		setIsSubmit(true);
+		handleSubmit(formProps);
+	};
+
 	let initialValue = initialValues;
 	if (isUpgrade) {
 		initialValue.home_page = false;
@@ -40,9 +58,12 @@ const InterfaceForm = ({
 				Select the features that will be available on your exchange.
 			</div>
 			<Form
+				form={form}
 				name="interface-form"
 				initialValues={initialValue}
-				onFinish={handleSubmit}
+				onFinish={handleSubmitData}
+				onValuesChange={handleValuesChange}
+				className="disable-button"
 			>
 				<div className="interface-box">
 					<Item name="pro_trade" valuePropName="checked">
@@ -243,7 +264,7 @@ const InterfaceForm = ({
 					</div>
 				) : null}
 				<div>
-					<Button type="primary" htmlType="submit" disabled={buttonSubmitting}>
+					<Button type="primary" htmlType="submit" disabled={isSubmit}>
 						Save
 					</Button>
 				</div>
