@@ -3,6 +3,7 @@ import { Divider, Button, Tabs, Row, Spin, Modal, Input } from 'antd';
 import { reduxForm, reset } from 'redux-form';
 import { LoadingOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
+import _isEqual from 'lodash.isequal';
 
 import { AdminHocForm } from '../../../components';
 import {
@@ -69,6 +70,7 @@ export const EmailSettingsForm = ({
 	defaults,
 	emailTypeData,
 	constants,
+	defaultEmailData,
 }) => {
 	const fields = generateAdminSettings('email');
 	const [isOpen, setIsOpen] = useState(false);
@@ -78,12 +80,20 @@ export const EmailSettingsForm = ({
 	const [formValues, setFormValues] = useState({});
 	const [isValidEmail, setIsValidEmail] = useState(true);
 	const [smtpError, setSmtpError] = useState('');
+	const [isDisable, setIsDisable] = useState(false);
 
 	useEffect(() => {
 		if (
 			JSON.stringify(formValues) === JSON.stringify(initialValues.configuration)
 		) {
 			setErrorMsg(false);
+		}
+
+		let formVal = { ...formValues, port: Number(formValues.port) };
+		if (!_isEqual(formVal, initialValues.configuration)) {
+			setIsDisable(true);
+		} else {
+			setIsDisable(false);
 		}
 	}, [formValues, initialValues.configuration]);
 
@@ -280,7 +290,7 @@ export const EmailSettingsForm = ({
 				}
 				buttonText="Save"
 				fields={fields.email_configuration}
-				buttonSubmitting={buttonSubmitting}
+				buttonSubmitting={!isDisable || buttonSubmitting}
 				renderCustomFooter={renderFooter}
 			/>
 			<div className="divider"></div>
@@ -294,6 +304,7 @@ export const EmailSettingsForm = ({
 						selectedLanguages={selectedLanguages}
 						defaultLanguage={defaults && defaults.language}
 						emailType={emailTypeData}
+						defaultEmailData={defaultEmailData}
 					/>
 				) : (
 					<Spin />

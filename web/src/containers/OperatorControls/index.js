@@ -98,7 +98,6 @@ class OperatorControls extends Component {
 			selectedThemes,
 			allIconsArray: [],
 			injected_html: { head: '', body: '', ...injected_html },
-			iconAfterRemove: {},
 		};
 	}
 
@@ -355,16 +354,11 @@ class OperatorControls extends Component {
 		if (isEditMode) {
 			const {
 				overwrites,
-				iconsOverwrites,
+				iconsOverwrites: icons,
 				colorOverwrites,
 				languageKeys,
-				iconAfterRemove,
 			} = this.state;
 
-			let icons = iconsOverwrites;
-			if (iconAfterRemove && Object.keys(iconAfterRemove)?.length) {
-				icons = iconAfterRemove;
-			}
 			const { defaults, sections } = this.props;
 
 			const valid_languages = languageKeys.join();
@@ -395,6 +389,7 @@ class OperatorControls extends Component {
 					message.error(error);
 				});
 		}
+		localStorage.removeItem('removedBackgroundItems');
 	};
 
 	reload = () => window.location.reload(false);
@@ -722,10 +717,8 @@ class OperatorControls extends Component {
 	};
 
 	removeIcon = (themeKey, iconKey) => {
-		const {
-			constants: { icons },
-		} = this.props;
-		const selectedTheme = themeKey && icons[themeKey];
+		const icons = this.state.iconsOverwrites;
+		const selectedTheme = themeKey && icons?.[themeKey];
 		let data = {};
 		Object.keys(selectedTheme).forEach((item) => {
 			if (item !== iconKey) {
@@ -735,13 +728,13 @@ class OperatorControls extends Component {
 				};
 			}
 		});
-		const iconAfterRemove = {
+		const iconsOverwrites = {
 			...icons,
 			[themeKey]: data,
 		};
 		const iconsEditData = { ...this.state.iconsEditData };
 		iconsEditData[themeKey] = { [iconKey]: undefined };
-		this.setState({ iconsEditData, iconAfterRemove });
+		this.setState({ iconsEditData, iconsOverwrites });
 	};
 
 	openThemeSettings = () => {
