@@ -489,9 +489,19 @@ class Home extends Component {
 					backgroundRepeat: 'no-repeat',
 				};
 
-				const style = DEFAULT_BG_SECTIONS.includes(key)
-					? defaultBgStyle
-					: defaultNoBGstyle;
+				const style =
+					DEFAULT_BG_SECTIONS.includes(key) && ICONS[iconId]
+						? defaultBgStyle
+						: defaultNoBGstyle;
+
+				const temp = JSON.parse(localStorage.getItem('removedBackgroundItems'));
+				if (
+					temp &&
+					!!temp.filter((item) => style?.backgroundImage?.includes(item))
+						?.length
+				) {
+					style['backgroundImage'] = '';
+				}
 
 				return (
 					<div key={`section-${key}`} style={style} className={className}>
