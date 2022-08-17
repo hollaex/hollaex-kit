@@ -70,7 +70,7 @@ const SetOrderPortfolio = ({ data, icons: ICONS, ...rest }) => {
 				{STRINGS.formatString(
 					STRINGS['USER_SETTINGS.CREATE_ORDER_WARING_TEXT'],
 					portfolioPercent
-				)}
+				).join('')}
 			</div>
 			<OrderPortfolioForm {...data} {...rest} />
 		</div>
