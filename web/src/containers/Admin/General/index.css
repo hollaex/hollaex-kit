@@ -600,3 +600,11 @@ h2,
 	color: red;
 	padding-top: 1rem;
 }
+.general-wrapper .disable-button .ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary[disabled]:active {
+	opacity: 0.5;
+	background-color: #288500;
+	color: #ffffff;
+}

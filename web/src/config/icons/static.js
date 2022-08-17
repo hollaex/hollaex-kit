@@ -143,6 +143,7 @@ const icons = {
 	MPESA_ICON: '/assets/images/other-fiat-systems.svg',
 	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
+	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 };
 
 export default icons;

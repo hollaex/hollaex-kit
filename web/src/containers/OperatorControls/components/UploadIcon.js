@@ -13,6 +13,8 @@ class UploadIcon extends Component {
 		loading: false,
 		error: false,
 		preview: {},
+		isRemove: false,
+		removedKeys: [],
 	};
 
 	componentWillUnmount() {
@@ -48,7 +50,7 @@ class UploadIcon extends Component {
 
 	handleSave = async () => {
 		const { onSave } = this.props;
-		const { selectedFiles } = this.state;
+		const { selectedFiles, isRemove } = this.state;
 		const icons = {};
 
 		this.setState({
@@ -91,18 +93,57 @@ class UploadIcon extends Component {
 			}
 		}
 
-		this.setState({
-			loading: false,
-		});
-
-		onSave(icons);
+		if (isRemove) {
+			const { removedKeys } = this.state;
+			localStorage.setItem(
+				'removedBackgroundItems',
+				JSON.stringify(removedKeys)
+			);
+			setTimeout(() => {
+				onSave(icons);
+				this.setState({
+					loading: false,
+				});
+			}, 2500);
+		} else {
+			onSave(icons);
+			this.setState({
+				loading: false,
+			});
+		}
 	};
 
 	getIconPath = (theme, id) => {
-		const { iconsEditData: editData } = this.props;
-		const { preview } = this.state;
-		const icons = merge({}, editData, preview);
-		return icons[theme][id];
+		if (
+			JSON.parse(localStorage.getItem('removedBackgroundItems')) &&
+			JSON.parse(localStorage.getItem('removedBackgroundItems')).length &&
+			JSON.parse(localStorage.getItem('removedBackgroundItems'))?.includes(
+				`${id}__${theme}`
+			)
+		) {
+			return undefined;
+		} else {
+			const { iconsEditData: editData } = this.props;
+			const { preview } = this.state;
+			const icons = merge({}, editData, preview);
+			return icons[theme][id];
+		}
+	};
+
+	onReset = (themeKey, iconKey) => {
+		let currentTheme = 'white';
+		if (themeKey && themeKey !== 'white') {
+			currentTheme = 'dark';
+		}
+		let removedKeys = [...this.state.removedKeys];
+		const val = JSON.parse(localStorage.getItem('removedBackgroundItems'));
+		if (val?.length && !removedKeys.includes(`${iconKey}__${currentTheme}`)) {
+			removedKeys = [...val, `${iconKey}__${currentTheme}`];
+		} else if (!removedKeys.includes(`${iconKey}__${currentTheme}`)) {
+			removedKeys = [...removedKeys, `${iconKey}__${currentTheme}`];
+		}
+		this.setState({ isRemove: true, removedKeys });
+		this.props.removeIcon(themeKey, iconKey);
 	};
 
 	render() {
@@ -150,7 +191,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.props.removeIcon}
+												onReset={this.onReset}
 											/>
 										))}
 								</Collapse.Panel>
@@ -173,7 +214,7 @@ class UploadIcon extends Component {
 												iconPath={getIconPath(theme, id)}
 												loading={loading}
 												onFileChange={this.onFileChange}
-												onReset={this.props.removeIcon}
+												onReset={this.onReset}
 											/>
 										))}
 								</Collapse.Panel>

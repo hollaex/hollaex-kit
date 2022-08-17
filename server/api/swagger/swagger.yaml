@@ -5647,6 +5647,8 @@ definitions:
         type: string
       description:
         type: string
+      native_currency_limit:
+        type: boolean
   PostTierBody:
     type: object
     required:

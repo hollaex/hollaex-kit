@@ -2,6 +2,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Select, Form, Input, message, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import _isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 
 import { updateEmailStrings } from '../General/action';
 import { STATIC_ICONS } from 'config/icons';
@@ -15,6 +17,7 @@ const CustomizeEmailForm = ({
 	selectedLanguages,
 	defaultLanguage,
 	emailType,
+	defaultEmailData,
 }) => {
 	const [form] = Form.useForm();
 	const [isDisable, setIsDisable] = useState(false);
@@ -29,6 +32,41 @@ const CustomizeEmailForm = ({
 	const [modalType, setModalType] = useState('');
 	const [isEdit, setIsEdit] = useState(false);
 	const [isReset, setIsReset] = useState(false);
+
+	const initialValues = {
+		language: defaultLanguage,
+		mailType: emailType[0],
+	};
+
+	let originalInitialValue = {
+		...initialValues,
+		format: defaultEmailData.html.replace(/@@_BIT_@@/g, "'"),
+		title: defaultEmailData.title,
+	};
+
+	useEffect(() => {
+		if (form.getFieldsValue().hasOwnProperty('mailType') && selectedEmail) {
+			form.setFieldsValue({ mailType: selectedEmail });
+		}
+	}, [form, selectedEmail]);
+
+	useEffect(() => {
+		setButtonSubmitting(true);
+	}, []);
+
+	const mailType = form.getFieldValue('mailType');
+	useEffect(() => {
+		if (
+			typeof form.getFieldsValue().format !== 'undefined' &&
+			typeof form.getFieldsValue().title !== 'undefined' &&
+			!_isEqual(form.getFieldsValue(), originalInitialValue)
+		) {
+			setButtonSubmitting(false);
+		} else {
+			setButtonSubmitting(true);
+		}
+		// eslint-disable-next-line
+	}, [mailType]);
 
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
@@ -123,7 +161,6 @@ const CustomizeEmailForm = ({
 					language: body.language,
 					type: body.type,
 				});
-				setButtonSubmitting(false);
 				handleDisable();
 				setLastEdit(moment().format('DD/MM/YYYY HH:mm UTC'));
 				setIsEdit(true);
@@ -132,7 +169,6 @@ const CustomizeEmailForm = ({
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
-				setButtonSubmitting(false);
 				handleConfirmOpen();
 			});
 	};
@@ -192,16 +228,15 @@ const CustomizeEmailForm = ({
 		}
 	};
 
-	const onValuesChange = (values) => {
-		if (values) {
+	const onValuesChange = () => {
+		if (!_isEqual(form.getFieldsValue(), originalInitialValue)) {
 			setButtonSubmitting(false);
+		} else {
+			setButtonSubmitting(true);
 		}
 	};
 
-	const initialValues = {
-		language: selectedLanguage,
-		mailType: emailType[0],
-	};
+	const onChange = debounce(() => onValuesChange(), 500);
 
 	useEffect(() => {
 		if (form.getFieldsValue().hasOwnProperty('mailType') && selectedEmail) {
@@ -220,7 +255,7 @@ const CustomizeEmailForm = ({
 				name="EditEmailForm"
 				onFinish={handleSubmit}
 				initialValues={initialValues}
-				onValuesChange={onValuesChange}
+				onValuesChange={onChange}
 			>
 				<div className="sub-title">Language</div>
 				<Form.Item name="language">

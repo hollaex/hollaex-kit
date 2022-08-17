@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Checkbox, Form } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
 
@@ -9,7 +9,9 @@ const EmailVerificationForm = ({
 	handleSaveEmailVerification,
 	buttonSubmitting,
 }) => {
+	const [isDisable, setIsDisable] = useState(true);
 	const [form] = Form.useForm();
+
 	useEffect(() => {
 		if (initialValues.hasOwnProperty('email_verification_required')) {
 			form.setFieldsValue(initialValues);
@@ -24,7 +26,17 @@ const EmailVerificationForm = ({
 			};
 			handleSaveEmailVerification(formValues);
 		}
+		setIsDisable(true);
 	};
+
+	const handleOnChange = (e) => {
+		if (initialValues?.email_verification_required !== e?.target?.checked) {
+			setIsDisable(false);
+		} else {
+			setIsDisable(true);
+		}
+	};
+
 	return (
 		<div className="general-wrapper mb-5 ml-5">
 			<div className="sub-title">Email verification</div>
@@ -40,7 +52,7 @@ const EmailVerificationForm = ({
 						valuePropName="checked"
 						className="mb-0"
 					>
-						<Checkbox className="mt-3">
+						<Checkbox className="mt-3" onChange={(e) => handleOnChange(e)}>
 							<div className="d-flex align-items-center">
 								<div className="ml-2 checkbox-txt">
 									Enable email verification requirement
@@ -63,7 +75,7 @@ const EmailVerificationForm = ({
 						type="primary"
 						htmlType="submit"
 						className="green-btn minimal-btn"
-						disabled={buttonSubmitting}
+						disabled={isDisable || buttonSubmitting}
 					>
 						Save
 					</Button>
