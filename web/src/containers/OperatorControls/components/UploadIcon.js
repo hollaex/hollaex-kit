@@ -14,6 +14,7 @@ class UploadIcon extends Component {
 		error: false,
 		preview: {},
 		isRemove: false,
+		removedKeys: [],
 	};
 
 	componentWillUnmount() {
@@ -93,6 +94,11 @@ class UploadIcon extends Component {
 		}
 
 		if (isRemove) {
+			const { removedKeys } = this.state;
+			localStorage.setItem(
+				'removedBackgroundItems',
+				JSON.stringify(removedKeys)
+			);
 			setTimeout(() => {
 				onSave(icons);
 				this.setState({
@@ -108,14 +114,35 @@ class UploadIcon extends Component {
 	};
 
 	getIconPath = (theme, id) => {
-		const { iconsEditData: editData } = this.props;
-		const { preview } = this.state;
-		const icons = merge({}, editData, preview);
-		return icons[theme][id];
+		if (
+			JSON.parse(localStorage.getItem('removedBackgroundItems')) &&
+			JSON.parse(localStorage.getItem('removedBackgroundItems')).length &&
+			JSON.parse(localStorage.getItem('removedBackgroundItems'))?.includes(
+				`${id}__${theme}`
+			)
+		) {
+			return undefined;
+		} else {
+			const { iconsEditData: editData } = this.props;
+			const { preview } = this.state;
+			const icons = merge({}, editData, preview);
+			return icons[theme][id];
+		}
 	};
 
 	onReset = (themeKey, iconKey) => {
-		this.setState({ isRemove: true });
+		let currentTheme = 'white';
+		if (themeKey && themeKey !== 'white') {
+			currentTheme = 'dark';
+		}
+		let removedKeys = [...this.state.removedKeys];
+		const val = JSON.parse(localStorage.getItem('removedBackgroundItems'));
+		if (val?.length && !removedKeys.includes(`${iconKey}__${currentTheme}`)) {
+			removedKeys = [...val, `${iconKey}__${currentTheme}`];
+		} else if (!removedKeys.includes(`${iconKey}__${currentTheme}`)) {
+			removedKeys = [...removedKeys, `${iconKey}__${currentTheme}`];
+		}
+		this.setState({ isRemove: true, removedKeys });
 		this.props.removeIcon(themeKey, iconKey);
 	};
 
