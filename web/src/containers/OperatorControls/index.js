@@ -98,6 +98,9 @@ class OperatorControls extends Component {
 			selectedThemes,
 			allIconsArray: [],
 			injected_html: { head: '', body: '', ...injected_html },
+			isUpload: false,
+			isRemove: false,
+			removedKeys: [],
 		};
 	}
 
@@ -860,6 +863,16 @@ class OperatorControls extends Component {
 		}));
 	};
 
+	handleRemoveOrUpload = (type, val) => {
+		if (type === 'remove') {
+			this.setState({ isRemove: val });
+		} else if (type === 'removedKeys') {
+			this.setState({ removedKeys: val });
+		} else {
+			this.setState({ isUpload: val });
+		}
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -891,6 +904,9 @@ class OperatorControls extends Component {
 			isSectionsModalOpen,
 			isAddSectionOpen,
 			injected_html,
+			isRemove,
+			isUpload,
+			removedKeys,
 		} = this.state;
 		const {
 			isEditMode,
@@ -1150,6 +1166,10 @@ class OperatorControls extends Component {
 						onCloseDialog={this.closeUploadIcon}
 						onSave={this.addIcons}
 						removeIcon={this.removeIcon}
+						isRemove={isRemove}
+						isUpload={isUpload}
+						removedKeys={removedKeys}
+						handleRemoveOrUpload={this.handleRemoveOrUpload}
 					/>
 				)}
 				{isThemeSettingsOpen && (
