@@ -36,16 +36,20 @@ const generateCryptoDepositTexts = (strings, status, currency, coins) => {
 			fullname
 		),
 		INFORMATION_PENDING: [
-			strings.formatString(
-				strings['NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1'],
-				fullname
-				// name
-			),
-			strings.formatString(
-				strings['NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2'],
-				fullname
-				// name
-			),
+			strings
+				.formatString(
+					strings['NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_1'],
+					fullname
+					// name
+				)
+				.join(''),
+			strings
+				.formatString(
+					strings['NOTIFICATIONS.DEPOSITS.INFORMATION_PENDING_2'],
+					fullname
+					// name
+				)
+				.join(''),
 		],
 		INFORMATION_COMPLETE: [],
 	};

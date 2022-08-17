@@ -54,7 +54,7 @@ const getPhoneOptions = () => {
 					],
 					phoneCode,
 					country.name
-				),
+				).join(''),
 				value: phoneCode,
 				icon: country.flag,
 			});
