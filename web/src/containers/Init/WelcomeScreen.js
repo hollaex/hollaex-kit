@@ -35,7 +35,7 @@ const WelcomeScreen = ({ onChangeStep }) => {
 				Why am I seeing this page? This page is a one-time page for the original
 				exchange administrator. Upon admin account creation this page will no
 				longer be reachable. For further assistance contact{' '}
-				<Link>support@bitholla.com</Link>
+				<Link>support@hollaex.com</Link>
 			</div>
 		</div>
 	);
