@@ -378,3 +378,35 @@
 	opacity: 0.6;
 	pointer-events: none;
 }
+.asset-content {
+	text-align: left;
+}
+.top-fade {
+	mask-image: linear-gradient(
+		to top,
+		black calc(100% - 48px),
+		transparent 100%
+	);
+}
+.asset-content-scrollbar {
+	overflow-y: auto;
+	height: 28rem;
+}
+.asset-content .bottom-fade {
+	mask-image: linear-gradient(black calc(100% - 48px), transparent 100%);
+}
+.asset-content .scrolldefault {
+	overflow-y: auto;
+	height: 28rem;
+}
+.asset-content .asset-content-scrollbar::-webkit-scrollbar {
+	width: 4px;
+}
+
+.asset-content .asset-content-scrollbar::-webkit-scrollbar-track {
+	background: black;
+}
+
+.asset-content .asset-content-scrollbar::-webkit-scrollbar-thumb {
+	background: white;
+}
