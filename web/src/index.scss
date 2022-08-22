@@ -129,6 +129,10 @@ a {
 	}
 }
 
+.ant-input-number:hover .ant-input-number-handler-wrap {
+	opacity: 0 !important;
+}
+
 @media screen and (max-width: $bp-sm) {
 	html {
 		font-size: 8px !important;
@@ -180,7 +184,8 @@ svg {
 	.incoming-btc-01,
 	.incoming-coin-01,
 	.coin-btc-5,
-	.stake-page-icon {
+	.stake-page-icon,
+	.fiat-kyc {
 		fill: $colors-black;
 	}
 

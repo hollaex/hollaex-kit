@@ -9,6 +9,7 @@ import {
 	AUDIOS,
 } from '../config/constants';
 import { getLanguage } from './string';
+import _orderBy from 'lodash/orderBy';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -289,4 +290,20 @@ export const handleUpgrade = (info = {}) => {
 	} else {
 		return false;
 	}
+};
+
+export const handleFiatUpgrade = (info = {}) => {
+	if (_toLower(info.plan) !== 'fiat' && _toLower(info.plan) !== 'boost') {
+		return true;
+	} else {
+		return false;
+	}
+};
+
+export const constractPaymentOption = (paymentsData) => {
+	const tempData = [];
+	Object.keys(paymentsData).forEach((key) => {
+		tempData.push({ name: key, ...paymentsData[key] });
+	});
+	return _orderBy(tempData, ['orderBy'], ['asc']);
 };

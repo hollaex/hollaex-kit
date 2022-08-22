@@ -2,24 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import debounce from 'lodash.debounce';
-import { WS_URL, SESSION_TIME, BASE_CURRENCY } from '../../config/constants';
+import { WS_URL, SESSION_TIME, BASE_CURRENCY } from 'config/constants';
 import { isMobile } from 'react-device-detect';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
-import { getMe, setMe, setBalance, updateUser } from '../../actions/userAction';
-import { addUserTrades } from '../../actions/walletActions';
+import { getMe, setMe, setBalance, updateUser } from 'actions/userAction';
+import { addUserTrades } from 'actions/walletActions';
 import {
 	setUserOrders,
 	addOrder,
 	updateOrder,
 	removeOrder,
-} from '../../actions/orderAction';
+} from 'actions/orderAction';
 import {
 	setTrades,
 	setOrderbook,
 	addTrades,
 	setPairsTradesFetched,
-} from '../../actions/orderbookAction';
+} from 'actions/orderbookAction';
 import {
 	setTickers,
 	setNotification,
@@ -33,9 +33,9 @@ import {
 	NOTIFICATIONS,
 	setSnackDialog,
 	requestTiers,
-} from '../../actions/appActions';
-import { playBackgroundAudioNotification } from '../../utils/utils';
-import { getToken, isLoggedIn } from '../../utils/token';
+} from 'actions/appActions';
+import { playBackgroundAudioNotification } from 'utils/utils';
+import { getToken, isLoggedIn } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 import { ERROR_TOKEN_EXPIRED } from 'components/Notification/Logout';
 
@@ -206,7 +206,7 @@ class Container extends Component {
 			privateSocket.send(
 				JSON.stringify({
 					op: 'subscribe',
-					args: ['trade', 'wallet', 'order', 'deposit'],
+					args: ['trade', 'wallet', 'order', 'deposit', 'usertrade'],
 				})
 			);
 			// this.wsInterval = setInterval(() => {
@@ -265,9 +265,7 @@ class Container extends Component {
 									this.setState({ limitFilledOnOrder: '' });
 							}, 1000);
 						}
-						if (data.data.status === 'filled') {
-							this.props.addUserTrades([data.data]);
-						} else {
+						if (data.data.status !== 'filled') {
 							this.props.addOrder(data.data);
 						}
 						break;
@@ -308,7 +306,6 @@ class Container extends Component {
 								return data.data.id === order.id;
 							});
 							this.props.removeOrder(data.data);
-							this.props.addUserTrades([data.data]);
 							if (
 								this.props.settings.notification &&
 								this.props.settings.notification.popup_order_completed
@@ -355,9 +352,9 @@ class Container extends Component {
 						}
 					}
 					break;
-				// case 'userTrade':
-				// 	this.props.addUserTrades(data.data);
-				// 	break;
+				case 'usertrade':
+					this.props.addUserTrades(data.data);
+					break;
 				case 'wallet':
 					this.props.setBalance(data.data);
 					break;

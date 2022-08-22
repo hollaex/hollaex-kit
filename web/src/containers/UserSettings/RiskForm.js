@@ -47,8 +47,8 @@ export const generateHeaders = (onAdjustPortfolio) => {
 			),
 		},
 		{
-			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT',
-			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGMENT'],
+			stringId: 'USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGEMENT',
+			label: STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ACTIVATE_RISK_MANAGEMENT'],
 			key: 'adjust',
 			className: 'text-right',
 			renderCell: ({ id, adjust }, key, index) => (

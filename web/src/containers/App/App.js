@@ -635,7 +635,6 @@ class App extends Component {
 	render() {
 		const {
 			symbol,
-			pair,
 			children,
 			activeNotification,
 			// prices,
@@ -646,7 +645,6 @@ class App extends Component {
 			// unreadMessages,
 			router,
 			location,
-			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
 			// user,
@@ -691,14 +689,6 @@ class App extends Component {
 			activePath !== 'chart-embed' &&
 			!isHome;
 		const showFooter = !isMobile || isHome;
-
-		const homeBackgroundProps = isHome
-			? {
-					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
-			  }
-			: {};
 
 		const stakeBackgroundProps = isStakePage
 			? {
@@ -755,7 +745,6 @@ class App extends Component {
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
-							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"
@@ -766,12 +755,13 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && !isChartEmbed && (
+								{!isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}
+										isHome={isHome}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
 											<AppMenuBar
@@ -926,11 +916,10 @@ class App extends Component {
 								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
+											menuItems={menuItems}
 											isLogged={isLoggedIn()}
-											activePath={activePath}
-											pair={pair}
-											enabledPlugins={enabledPlugins}
-											features={features}
+											activePath={this.state.activeMenu}
+											onMenuChange={this.handleMenuChange}
 										/>
 									</div>
 								)}

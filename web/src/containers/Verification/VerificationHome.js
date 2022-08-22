@@ -8,8 +8,8 @@ import {
 	HeaderSection,
 	CustomTabBar,
 	MobileTabBar,
-} from '../../components';
-import STRINGS from '../../config/localizedStrings';
+} from 'components';
+import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 

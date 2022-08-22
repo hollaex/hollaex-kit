@@ -65,3 +65,7 @@ export { default as Image } from './Image';
 export { default as SmartTarget } from './SmartTarget';
 export { default as ProgressBar } from './ProgressBar';
 export { default as PriceChange } from './PriceChange';
+export { default as UnderConstruction } from './Wallet/UnderConstruction';
+export { default as NoVerifiedAccount } from './Wallet/NoVerifiedAccount';
+export { default as Tab } from './Tab';
+export { default as ErrorBoundary } from './ErrorBoundary';

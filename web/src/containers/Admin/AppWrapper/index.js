@@ -57,6 +57,7 @@ import {
 	getExchange,
 } from '../AdminFinancials/action';
 import Timer from './Timer';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 const md = new MobileDetect(window.navigator.userAgent);
 
@@ -403,6 +404,7 @@ class AppWrapper extends React.Component {
 
 	getTitle = () => {
 		const { location = {}, router } = this.props;
+		const tabParams = getTabParams();
 		if (location.pathname.includes('/admin/user') && !this.state.isConfigure) {
 			return 'Users';
 		} else if (
@@ -412,6 +414,12 @@ class AppWrapper extends React.Component {
 			return 'Configure Meta';
 		} else if (location.pathname.includes('/admin/general')) {
 			return 'General';
+		} else if (
+			location.pathname.includes('/admin/fiat') ||
+			tabParams?.isFiat === 'onRamp' ||
+			tabParams?.isFiat === 'offRamp'
+		) {
+			return 'Fiat controls';
 		} else if (location.pathname.includes('/admin/financial')) {
 			return 'Assets';
 		} else if (location.pathname.includes('/admin/trade')) {
@@ -616,10 +624,11 @@ class AppWrapper extends React.Component {
 				</Layout>
 			);
 		} else {
+			const prevPath = localStorage.getItem('prevPath');
 			return (
 				<Fragment>
 					<div className="admin-top-bar">
-						<Link to="/summary">
+						<Link to={prevPath}>
 							<div className="top-box-menu">
 								<CaretLeftOutlined />
 								Back to Website
@@ -707,7 +716,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setMe: bindActionCreators(setMe, dispatch),
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	changeTheme: bindActionCreators(changeTheme, dispatch),
-	// requestAvailPlugins: bindActionCreators(requestAvailPlugins, dispatch),
 	logout: bindActionCreators(logout, dispatch),
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),

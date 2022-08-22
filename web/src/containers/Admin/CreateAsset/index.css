@@ -114,10 +114,19 @@
 .create-asset-container .grey-warning .fiat-icon {
 	width: 4rem;
 }
+.create-asset-container .coin-limit-wrap h3,
+.create-asset-container .coin-limit-wrap .fee-wrapper,
 .create-asset-container .grey-warning .sub-title {
-	color: #ffffff;
+	color: #ffffff !important;
 }
-
+.create-asset-container .coin-limit-wrap .fee-wrapper .tiers-icon,
+.tieredWrapper .tiers-icon,
+.checkToConfirmDeposit .tiers-icon {
+	width: 25px;
+}
+.create-asset-container .coin-limit-wrap .fee-wrapper .network-border {
+	border-bottom: 1px solid #ffffff;
+}
 .preview-coin-container {
 	display: flex;
 	margin: 2rem 0rem;
@@ -285,7 +294,7 @@
 }
 .create-asset-container .md-field-wrap {
 	padding-top: 1rem;
-    color: #ffffff;
+	color: #ffffff;
 }
 .create-asset-container .md-field-wrap .ant-upload,
 .create-asset-container .md-field-wrap .ant-input-number,
@@ -467,7 +476,109 @@
 	width: 45%;
 }
 .create-asset-container .coin-limit-wrap .ant-input[disabled] {
-    opacity: 0.5;
-    color: #c4c4c4;
-    background-color: var(--admin_panel_input);
+	opacity: 0.5;
+	color: #c4c4c4;
+	background-color: var(--admin_panel_input);
+}
+.preview-detail-container .border-separator,
+.create-asset-container .coin-limit-wrap .fee-seperator {
+	border-bottom: 1px solid #ffffff;
+	margin-top: 14px;
+	width: 5rem;
+}
+.create-asset-container .coin-limit-wrap .fee-seperator {
+	width: 8rem;
+}
+.create-asset-container .coin-limit-wrap .infotxt {
+	font-size: 11px;
+	color: #bcbcbc;
+	margin-bottom: 24px !important;
+}
+.create-asset-container .coin-limit-wrap .field-wrap .ant-form-item {
+	margin-bottom: 0px !important;
+}
+.create-asset-container
+	.coin-limit-wrap
+	.field-wrap
+	.ant-form-item
+	.ant-select
+	.ant-select-arrow {
+	color: white !important;
+}
+.create-asset-container .viewLink {
+	cursor: pointer;
+	color: #ffffff;
+	text-decoration: underline;
+	margin-bottom: 20px;
+}
+
+.checkToConfirmDeposit .legend {
+	background-color: #27339d;
+	left: 1rem;
+	top: 21px;
+	width: 42%;
+	padding: 5px;
+	position: relative;
+}
+
+.checkToConfirmDeposit .confirm-container {
+	border: 1px solid #bcbcbc;
+	padding: 1.5rem;
+	display: flex;
+}
+
+.checkToConfirmDeposit .confirmTiers,
+.fee-wrapper .confirmTiers {
+	border: 1px solid #bcbcbc;
+	padding: 1.5rem;
+}
+
+.checkToConfirmDeposit .centerBorder,
+.fee-wrapper .centerBorder {
+	border: 1px solid #bcbcbc;
+	margin-left: 1rem;
+	margin-right: 1rem;
+}
+
+.tieredWrapper .withdrawhead {
+	color: white;
+}
+
+.coin-limit-wrap .disableall {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.coin-limit-wrap .withdrawInput,
+.coin-limit-wrap .withdrawInput .ant-input,
+.tieredWrapper .tieredInput {
+	background-color: #202980;
+	color: #bcbcbc;
+}
+
+.tieredWrapper .headStaticTier,
+.tieredWrapper .headPercentageTier {
+	display: flex;
+	margin-left: 18.5rem;
+}
+
+.checkToConfirmDeposit .legend2 {
+	background-color: #27339d;
+	left: 1rem;
+	top: 21px;
+	width: 31%;
+	position: relative;
+}
+
+.fee-wrapper .confirmTiers {
+	width: 70%;
+}
+
+.fee-wrapper .coin-ico {
+	background-color: #202980;
+}
+
+.create-asset-container .coin-limit-wrap .infotxt2 {
+	font-size: 11px;
+	color: #bcbcbc;
 }

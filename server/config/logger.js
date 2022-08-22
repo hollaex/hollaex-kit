@@ -99,7 +99,8 @@ const LOGGER_NAMES = {
 	plugin: 'plugin',
 	tier: 'tier',
 	init: 'init',
-	broker: 'broker'
+	broker: 'broker',
+	fiat: 'fiat'
 };
 
 winston.loggers.add('default', generateLoggerConfiguration('all', false));
@@ -155,5 +156,6 @@ module.exports = {
 	loggerPlugin: winston.loggers.get(LOGGER_NAMES.plugin),
 	loggerPublic: winston.loggers.get(LOGGER_NAMES.public),
 	loggerTier: winston.loggers.get(LOGGER_NAMES.tier),
-	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker)
+	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker),
+	loggerFiat: winston.loggers.get(LOGGER_NAMES.loggerFiat)
 };

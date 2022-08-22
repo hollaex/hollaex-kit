@@ -36,6 +36,7 @@ import {
 	setDefaultLogo,
 	consoleKitInfo,
 	getContracts,
+	modifySections,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -55,6 +56,9 @@ import {
 	changePair,
 	setPairs,
 	setCurrencies,
+	setUserPayments,
+	setOnramp,
+	setOfframp,
 	setOrderLimits,
 	setHelpdeskInfo,
 	setContracts,
@@ -111,7 +115,7 @@ const getConfigs = async () => {
 		store.dispatch(setInfo({ ...kitData.info }));
 	}
 
-	kitData['sections'] = sections;
+	kitData['sections'] = modifySections(sections);
 
 	const promises = {};
 	Object.keys(remoteVersions).forEach((key) => {
@@ -149,6 +153,9 @@ const getConfigs = async () => {
 	}
 
 	store.dispatch(setCurrencies(constants.coins));
+	store.dispatch(setUserPayments(kitData.user_payments));
+	store.dispatch(setOnramp(kitData.onramp));
+	store.dispatch(setOfframp(kitData.offramp));
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setContracts(getContracts(constants.coins)));

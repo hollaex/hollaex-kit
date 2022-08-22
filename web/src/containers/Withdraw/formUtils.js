@@ -14,28 +14,76 @@ import { getLanguage } from '../../utils/string';
 import { getTheme } from '../../utils/theme';
 import { toFixed } from '../../utils/currency';
 import { getDecimals } from '../../utils/utils';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
+import { email } from 'components/AdminForm/validations';
 
 export const generateInitialValues = (
 	symbol,
 	coins = {},
 	networks,
 	network,
-	query
+	query,
+	verification_level
 ) => {
 	const { min, withdrawal_fee, withdrawal_fees } =
 		coins[symbol] || DEFAULT_COIN_DATA;
 	const initialValues = {};
 
 	if (withdrawal_fees && network && withdrawal_fees[network]) {
-		initialValues.fee = withdrawal_fees[network].value;
-		initialValues.fee_coin = withdrawal_fees[network].symbol;
+		const { value, symbol, type = 'static', levels } = withdrawal_fees[network];
+		if (type === 'static') {
+			initialValues.fee_coin = symbol;
+			initialValues.fee_type = 'static';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		} else {
+			initialValues.fee_coin = '';
+			initialValues.fee_type = 'percentage';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		}
+	} else if (withdrawal_fees && withdrawal_fees[symbol]) {
+		const {
+			value,
+			symbol: feeSymbol,
+			type = 'static',
+			levels,
+		} = withdrawal_fees[symbol];
+		if (type === 'static') {
+			initialValues.fee_coin = feeSymbol;
+			initialValues.fee_type = 'static';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		} else {
+			initialValues.fee_coin = '';
+			initialValues.fee_type = 'percentage';
+
+			if (levels && levels[verification_level]) {
+				initialValues.fee = levels[verification_level];
+			} else {
+				initialValues.fee = value;
+			}
+		}
 	} else if (coins[symbol]) {
 		initialValues.fee = withdrawal_fee;
 		initialValues.fee_coin = '';
+		initialValues.fee_type = 'static';
 	} else {
 		initialValues.fee = 0;
 		initialValues.fee_coin = '';
+		initialValues.fee_type = 'static';
 	}
 
 	if (min) {
@@ -55,6 +103,8 @@ export const generateInitialValues = (
 		initialValues.address = query.address;
 	}
 
+	initialValues.method = 'address';
+
 	return initialValues;
 };
 
@@ -69,8 +119,11 @@ export const generateFormValues = (
 	iconId,
 	networks,
 	selectedNetwork,
-	ICONS = ''
+	ICONS = '',
+	selectedMethod,
+	handleMethodChange = () => {}
 ) => {
+	const isEmail = selectedMethod && selectedMethod === 'email' ? true : false;
 	const {
 		fullname,
 		min,
@@ -78,6 +131,7 @@ export const generateFormValues = (
 		withdrawal_limits = {},
 		withdrawal_fee,
 		withdrawal_fees,
+		display_name,
 	} = coins[symbol] || DEFAULT_COIN_DATA;
 	let MAX = withdrawal_limits[verification_level];
 	if (withdrawal_limits[verification_level] === 0) MAX = '';
@@ -86,23 +140,102 @@ export const generateFormValues = (
 
 	let fee;
 	let fee_coin;
-	if (withdrawal_fees && selectedNetwork && withdrawal_fees[selectedNetwork]) {
-		fee = withdrawal_fees[selectedNetwork].value;
-		fee_coin = withdrawal_fees[selectedNetwork].symbol;
-	} else if (coins[symbol]) {
+	let fee_type;
+	let min_fee;
+	let max_fee;
+	if (
+		withdrawal_fees &&
+		selectedNetwork &&
+		withdrawal_fees[selectedNetwork] &&
+		!isEmail
+	) {
+		const {
+			value,
+			symbol,
+			type = 'static',
+			levels,
+			min,
+			max,
+		} = withdrawal_fees[selectedNetwork];
+		fee_type = type;
+
+		if (type === 'static') {
+			fee_coin = symbol;
+		}
+
+		if (type === 'percentage') {
+			min_fee = min;
+			max_fee = max;
+		}
+
+		if (levels && levels[verification_level]) {
+			fee = levels[verification_level];
+		} else {
+			fee = value;
+		}
+	} else if (
+		!networks &&
+		withdrawal_fees &&
+		withdrawal_fees[symbol] &&
+		!isEmail
+	) {
+		const {
+			value,
+			symbol: feeSymbol,
+			type = 'static',
+			levels,
+			min,
+			max,
+		} = withdrawal_fees[symbol];
+		fee_type = type;
+
+		if (type === 'static') {
+			fee_coin = feeSymbol;
+		}
+
+		if (type === 'percentage') {
+			min_fee = min;
+			max_fee = max;
+		}
+
+		if (levels && levels[verification_level]) {
+			fee = levels[verification_level];
+		} else {
+			fee = value;
+		}
+	} else if (coins[symbol] && !isEmail) {
 		fee = withdrawal_fee;
+		fee_type = 'static';
 	} else {
 		fee = 0;
+		fee_type = 'static';
 	}
 
 	const fields = {};
-
-	if (networks) {
+	fields.method = {
+		type: 'select',
+		stringId: 'WITHDRAWALS_FORM_METHOD, WITHDRAWALS_FORM_MAIL_INFO',
+		label: STRINGS['WITHDRAWALS_FORM_METHOD'],
+		options: [
+			{
+				value: 'address',
+				label: `${display_name} ${STRINGS[
+					'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL'
+				].toLowerCase()}`,
+			},
+			{ value: 'email', label: STRINGS['FORM_FIELDS.EMAIL_LABEL'] },
+		],
+		fullWidth: true,
+		ishorizontalfield: true,
+		emailMsg: STRINGS['WITHDRAWALS_FORM_MAIL_INFO'],
+		isEmail,
+		onChange: (e) => handleMethodChange(e),
+	};
+	if (networks && !isEmail) {
 		const networkOptions = networks.map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
-
 		fields.network = {
 			type: 'select',
 			stringId:
@@ -118,26 +251,43 @@ export const generateFormValues = (
 			disabled: networks.length === 1,
 		};
 	}
-
-	if (!networks || (networks && (networks.length === 1 || selectedNetwork))) {
-		fields.address = {
-			type: 'text',
-			stringId:
-				'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
-			label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
-			placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
-			validate: [
-				required,
-				validAddress(
-					symbol,
-					STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
-					selectedNetwork
-				),
-			],
-			fullWidth: true,
-			ishorizontalfield: true,
-		};
-		if (symbol === 'xrp') {
+	if (
+		!networks ||
+		(networks && (networks.length === 1 || selectedNetwork)) ||
+		isEmail
+	) {
+		if (!isEmail) {
+			fields.address = {
+				type: 'text',
+				stringId:
+					'WITHDRAWALS_FORM_ADDRESS_LABEL,WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER',
+				label: STRINGS['WITHDRAWALS_FORM_ADDRESS_LABEL'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER'],
+				validate: [
+					required,
+					validAddress(
+						symbol,
+						STRINGS[`WITHDRAWALS_${symbol.toUpperCase()}_INVALID_ADDRESS`],
+						selectedNetwork
+					),
+				],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
+		if (isEmail) {
+			fields.email = {
+				type: 'text',
+				stringId:
+					'WITHDRAWALS_FORM_ADDRESS_EXCHANGE,WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER',
+				label: STRINGS['WITHDRAWALS_FORM_ADDRESS_EXCHANGE'],
+				placeholder: STRINGS['WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER'],
+				validate: [required, email],
+				fullWidth: true,
+				ishorizontalfield: true,
+			};
+		}
+		if (!isEmail && symbol === 'xrp') {
 			fields.destination_tag = {
 				type: 'number',
 				stringId:
@@ -181,7 +331,9 @@ export const generateFormValues = (
 			amountValidate.push(checkBalance(available, fullname, 0));
 			amountValidate.push(checkFee(availableFeeBalance, feeFullname, fee));
 		} else {
-			amountValidate.push(checkBalance(available, fullname, fee));
+			amountValidate.push(
+				checkBalance(available, fullname, fee, fee_type, min_fee, max_fee)
+			);
 		}
 
 		fields.amount = {
@@ -286,6 +438,14 @@ export const generateFormValues = (
 		fields.fee_coin = {
 			type: 'hidden',
 			label: 'fee coin',
+			disabled: true,
+			fullWidth: true,
+			ishorizontalfield: true,
+		};
+
+		fields.fee_type = {
+			type: 'hidden',
+			label: 'fee type',
 			disabled: true,
 			fullWidth: true,
 			ishorizontalfield: true,

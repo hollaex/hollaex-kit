@@ -14,6 +14,8 @@ export const generateDynamicTarget = (
 			return `REMOTE_VERIFICATION_TAB__${name}__${sub}`;
 		case 'page':
 			return `REMOTE_ROUTE__${name}`;
+		case 'ultimate_fiat':
+			return `REMOTE_ULTIMATE_FIAT__${name}__${sub}`;
 		default:
 			return `UNKNOWN_DYNAMIC_TARGET_${name}`;
 	}
@@ -33,3 +35,13 @@ export const generateFiatWalletTarget = (type = '', currency = '') => {
 export const globalize = (name) => ({ is_global, id }) => {
 	return is_global ? id : generateGlobalId(name)(id);
 };
+
+const generateDynamicKey = (...args) => (key = 'UNKNOWN_KEY') => {
+	const prefix = args.join('_').toUpperCase();
+	return `${prefix}_${key.toUpperCase()}`;
+};
+
+export const generateDynamicStringKey = (prefixes) => (key) =>
+	generateDynamicKey('DS', prefixes)(key);
+export const generateDynamicIconKey = (prefixes) => (key) =>
+	generateDynamicKey('DI', prefixes)(key);

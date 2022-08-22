@@ -24,6 +24,9 @@ export const FieldContent = ({
 	ishorizontalfield = false,
 	dateFieldClassName,
 	warning,
+	preview,
+	isEmail,
+	emailMsg,
 }) => {
 	return (
 		<div>
@@ -71,11 +74,27 @@ export const FieldContent = ({
 					)}
 				</div>
 			</div>
+			{isEmail ? (
+				<div className="field-label-wrapper">
+					<Fragment>
+						<div className="field-label"></div>
+						<div>
+							<EditWrapper stringId={stringId}>
+								<span className="field-error-text">{emailMsg}</span>
+							</EditWrapper>
+						</div>
+					</Fragment>
+				</div>
+			) : null}
 			<div className="field-label-wrapper">
 				{ishorizontalfield ? (
 					<Fragment>
 						<div className="field-label"></div>
-						<FieldError displayError={displayError} error={error} />
+						<FieldError
+							displayError={displayError}
+							error={error}
+							preview={preview}
+						/>
 					</Fragment>
 				) : null}
 			</div>
@@ -83,11 +102,18 @@ export const FieldContent = ({
 	);
 };
 
-export const FieldError = ({ error, displayError, className, stringId }) => (
+export const FieldError = ({
+	error,
+	displayError,
+	className,
+	stringId,
+	preview,
+}) => (
 	<div
 		className={classnames('field-error-content', className, {
-			'field-error-hidden': !displayError,
+			'field-error-hidden': !displayError && !preview,
 		})}
+		style={preview ? { height: 'auto' } : {}}
 	>
 		{error && (
 			<img
@@ -101,6 +127,7 @@ export const FieldError = ({ error, displayError, className, stringId }) => (
 				<span className="field-error-text">{getErrorLocalized(error)}</span>
 			</EditWrapper>
 		)}
+		{preview && <Fragment>{preview}</Fragment>}
 	</div>
 );
 
@@ -123,6 +150,9 @@ class FieldWrapper extends Component {
 			hideCheck = false,
 			outlineClassName = '',
 			ishorizontalfield,
+			preview,
+			isEmail = false,
+			emailMsg = '',
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -151,6 +181,9 @@ class FieldWrapper extends Component {
 					error={error}
 					ishorizontalfield={ishorizontalfield}
 					dateFieldClassName={className}
+					preview={preview}
+					isEmail={isEmail}
+					emailMsg={emailMsg}
 				>
 					{children}
 					{notification && typeof notification === 'object' && (
@@ -164,7 +197,11 @@ class FieldWrapper extends Component {
 					)}
 				</FieldContent>
 				{!ishorizontalfield ? (
-					<FieldError displayError={displayError} error={error} />
+					<FieldError
+						displayError={displayError}
+						error={error}
+						preview={preview}
+					/>
 				) : null}
 			</div>
 		);

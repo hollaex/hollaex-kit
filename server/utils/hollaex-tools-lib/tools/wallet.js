@@ -12,6 +12,7 @@ const {
 	EXPIRED_WITHDRAWAL_TOKEN,
 	INVALID_COIN,
 	INVALID_AMOUNT,
+	DEPOSIT_DISABLED_FOR_COIN,
 	WITHDRAWAL_DISABLED_FOR_COIN,
 	UPGRADE_VERIFICATION_LEVEL,
 	NO_DATA_FOR_CSV,
@@ -20,7 +21,7 @@ const {
 	INVALID_NETWORK,
 	NETWORK_REQUIRED
 } = require(`${SERVER_PATH}/messages`);
-const { getUserByKitId, mapNetworkIdToKitId } = require('./user');
+const { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { findTier } = require('./tier');
 const { client } = require('./database/redis');
 const crypto = require('crypto');
@@ -31,7 +32,9 @@ const moment = require('moment');
 const math = require('mathjs');
 const { parse } = require('json2csv');
 const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
+const { has } = require('lodash');
 const WAValidator = require('multicoin-address-validator');
+const { isEmail } = require('validator');
 
 const isValidAddress = (currency, address, network) => {
 	if (network === 'eth' || network === 'ethereum') {
@@ -59,7 +62,7 @@ const isValidAddress = (currency, address, network) => {
 	}
 };
 
-const getWithdrawalFee = (currency, network) => {
+const getWithdrawalFee = (currency, network, amount, level) => {
 	if (!subscribedToCoin(currency)) {
 		return reject(new Error(INVALID_COIN(currency)));
 	}
@@ -72,6 +75,26 @@ const getWithdrawalFee = (currency, network) => {
 	if (network && coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[network]) {
 		fee = coinConfiguration.withdrawal_fees[network].value;
 		fee_coin = coinConfiguration.withdrawal_fees[network].symbol;
+	}
+
+	// withdrawal fee calculation for fiat
+	if (network === 'fiat') {
+		if (coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[currency]) {
+			let value = coinConfiguration.withdrawal_fees[currency].value;
+			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
+			if (coinConfiguration.withdrawal_fees[currency].levels && coinConfiguration.withdrawal_fees[currency].levels[level]) {
+				value = coinConfiguration.withdrawal_fees[currency].levels[level];
+			}
+			if (coinConfiguration.withdrawal_fees[currency].type === 'static') {
+				fee = value;
+			} else {
+				fee = amount * value / 100;
+			}
+		}
+	}
+
+	if (network === 'email') {
+		fee = 0;
 	}
 
 	return { fee, fee_coin };
@@ -92,18 +115,25 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	}
 
-	if (coinConfiguration.network) {
-		if (!network) {
-			throw new Error(NETWORK_REQUIRED(currency, coinConfiguration.network));
-		} else if (!coinConfiguration.network.split(',').includes(network)) {
-			throw new Error(INVALID_NETWORK(network, coinConfiguration.network));
+	if (network === 'email') {
+		// internal email transfer
+		if (!isEmail(address)) {
+			throw new Error(`Invalid ${currency} address: ${address}`);
 		}
-	} else if (network)  {
-		throw new Error(`Invalid ${currency} network given: ${network}`);
-	}
-
-	if (!isValidAddress(currency, address, network)) {
-		throw new Error(`Invalid ${currency} address: ${address}`);
+	} else if (network !== 'fiat') {
+		// blockchain transfer
+		if (coinConfiguration.network) {
+			if (!network) {
+				throw new Error(NETWORK_REQUIRED(currency, coinConfiguration.network));
+			} else if (!coinConfiguration.network.split(',').includes(network)) {
+				throw new Error(INVALID_NETWORK(network, coinConfiguration.network));
+			}
+		} else if (network)  {
+			throw new Error(`Invalid ${currency} network given: ${network}`);
+		}
+		if (!isValidAddress(currency, address, network)) {
+			throw new Error(`Invalid ${currency} address: ${address}`);
+		}
 	}
 
 	if (!user) {
@@ -114,7 +144,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 	}
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, network);
+	const { fee, fee_coin } = getWithdrawalFee(currency, network, amount, user.verification_level);
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
@@ -148,7 +178,12 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	if (limit === -1) {
 		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	} else if (limit > 0) {
-		await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+		if (tier.native_currency_limit) {
+			// limit is based on native_currency
+			await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+		} else {
+			await withdrawalBelowLimitSameCoin(user.network_id, currency, limit, amount);
+		}
 	}
 
 	return {
@@ -239,18 +274,18 @@ const validateWithdrawalToken = (token) => {
 		});
 };
 
-const cancelUserWithdrawalByKitId = (userId, withdrawalId, opts = {
+const cancelUserWithdrawalByKitId = async (userId, withdrawalId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().cancelWithdrawal(user.network_id, withdrawalId, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userId]);
+
+	if (!has(idDictionary, userId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().cancelWithdrawal(idDictionary[userId], withdrawalId, opts);
 };
 
 const cancelUserWithdrawalByNetworkId = (networkId, withdrawalId, opts = {
@@ -296,7 +331,12 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				if (tier.native_currency_limit) {
+					// limit is based on native_currency
+					await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				} else {
+					await withdrawalBelowLimitSameCoin(user.network_id, currency, limit, amount);
+				}	
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -318,8 +358,9 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const get24HourAccumulatedWithdrawals = async (userId) => {
+const get24HourAccumulatedWithdrawals = async (userId, currency) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+		currency,
 		dismissed: false,
 		rejected: false,
 		startDate: moment().subtract(24, 'hours').toISOString()
@@ -361,33 +402,39 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 
 	let totalWithdrawalAmount = 0;
 
-	for (let withdrawalCurrency in withdrawalAmount) {
-		loggerWithdrawals.debug(
-			'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-			`accumulated ${withdrawalCurrency} withdrawal amount`,
-			withdrawalAmount[withdrawalCurrency]
-		);
-
-		await sleep(500);
-
-		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
-			quote: getKitConfig().native_currency,
-			amount: withdrawalAmount[withdrawalCurrency]
-		});
-
-		if (convertedAmount[withdrawalCurrency] !== -1) {
+	if (currency) {
+		// specific currency accumulated withdrawal is only needed
+		totalWithdrawalAmount = withdrawalData[currency];
+		
+	} else {
+		for (let withdrawalCurrency in withdrawalAmount) {
 			loggerWithdrawals.debug(
 				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-				`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
-				convertedAmount[withdrawalCurrency]
+				`accumulated ${withdrawalCurrency} withdrawal amount`,
+				withdrawalAmount[withdrawalCurrency]
 			);
 
-			totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
-		} else {
-			loggerWithdrawals.debug(
-				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-				`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
-			);
+			await sleep(500);
+
+			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
+				quote: getKitConfig().native_currency,
+				amount: withdrawalAmount[withdrawalCurrency]
+			});
+
+			if (convertedAmount[withdrawalCurrency] !== -1) {
+				loggerWithdrawals.debug(
+					'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+					`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
+					convertedAmount[withdrawalCurrency]
+				);
+
+				totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+			} else {
+				loggerWithdrawals.debug(
+					'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+					`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
+				);
+			}
 		}
 	}
 
@@ -468,7 +515,53 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	return;
 };
 
+const withdrawalBelowLimitSameCoin = async (userId, currency, limit, amount = 0) => {
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimitSameCoin',
+		'amount being withdrawn',
+		amount,
+		'currency',
+		currency,
+		'limit',
+		limit,
+		'userId',
+		userId
+	);
+
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, currency);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`total 24 hour ${currency} withdrawn amount`,
+		last24HourWithdrawalAmount
+	);
+
+	let totalWithdrawalAmount = math.number(
+		math.add(
+			math.bignumber(amount),
+			math.bignumber(last24HourWithdrawalAmount)
+		)
+	);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'total 24 hour withdrawn amount after performing current withdrawal',
+		totalWithdrawalAmount,
+		'24 hour withdrawal limit',
+		limit
+	);
+
+	if (totalWithdrawalAmount > limit) {
+		throw new Error(
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${currency}. Request amount: ${amount} ${currency}`
+		);
+	}
+
+	return;
+};
+
 const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	transactionId: null,
 	additionalHeaders: null
 }) => {
 	if (!subscribedToCoin(currency)) {
@@ -480,37 +573,39 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 	}
 
 	return all([
-		getUserByKitId(senderId),
-		getUserByKitId(receiverId)
+		mapKitIdToNetworkId([senderId]),
+		mapKitIdToNetworkId([receiverId])
 	])
 		.then(([ sender, receiver ]) => {
-			if (!sender || !receiver) {
+			if (!has(sender, senderId) || !has(receiver, receiverId)) {
 				throw new Error(USER_NOT_FOUND);
-			} else if (!sender.network_id || !receiver.network_id) {
+			} else if (!sender[senderId] || !receiver[receiverId]) {
 				throw new Error('User not registered on network');
 			}
-			return getNodeLib().transferAsset(sender.network_id, receiver.network_id, currency, amount, { description, email, ...opts });
+			return getNodeLib().transferAsset(sender[senderId], receiver[receiverId], currency, amount, { description, email, ...opts });
 		});
 };
 
 const transferAssetByNetworkIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+	transactionId: null,
 	additionalHeaders: null
 }) => {
 	return getNodeLib().transferAsset(senderId, receiverId, currency, amount, { description, email, ...opts });
 };
 
-const getUserBalanceByKitId = (userKitId, opts = {
+const getUserBalanceByKitId = async (userKitId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userKitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserBalance(user.network_id, opts);
-		})
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userKitId]);
+
+	if (!has(idDictionary, userKitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userKitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	return getNodeLib().getUserBalance(idDictionary[userKitId], opts)
 		.then((data) => {
 			return {
 				user_id: userKitId,
@@ -581,6 +676,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -607,6 +703,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -853,7 +950,7 @@ const getExchangeWithdrawals = (
 		});
 };
 
-const mintAssetByKitId = (
+const mintAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
@@ -865,15 +962,15 @@ const mintAssetByKitId = (
 		fee: null,
 		additionalHeaders: null
 	}) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().mintAsset(user.network_id, currency, amount, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().mintAsset(idDictionary[kitId], currency, amount, opts);
 };
 
 const mintAssetByNetworkId = (
@@ -908,7 +1005,7 @@ const updatePendingMint = (
 	return getNodeLib().updatePendingMint(transactionId, opts);
 };
 
-const burnAssetByKitId = (
+const burnAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
@@ -920,15 +1017,15 @@ const burnAssetByKitId = (
 		fee: null,
 		additionalHeaders: null
 	}) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().burnAsset(user.network_id, currency, amount, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().burnAsset(idDictionary[kitId], currency, amount, opts);
 };
 
 const burnAssetByNetworkId = (
@@ -963,8 +1060,67 @@ const updatePendingBurn = (
 	return getNodeLib().updatePendingBurn(transactionId, opts);
 };
 
+const getDepositFee = (currency, network, amount, level) => {
+	if (!subscribedToCoin(currency)) {
+		return reject(new Error(INVALID_COIN(currency)));
+	}
+	const { deposit_fees } = getKitCoin(currency);
+
+	let fee = 0;
+	let fee_coin = currency;
+	if (deposit_fees && deposit_fees[currency]) {
+		let value = deposit_fees[currency].value;
+		fee_coin =  deposit_fees[currency].symbol;
+		if (deposit_fees[currency].levels && deposit_fees[currency].levels[level]) {
+			value = deposit_fees[currency].levels[level];
+		}
+		if (deposit_fees[currency].type === 'static') {
+			fee = value;
+		} else {
+			fee = amount * value / 100;
+		}
+	}
+
+	return {
+		fee,
+		fee_coin
+	};
+};
+
+async function validateDeposit(user, amount, currency, network = null) {
+	const coinConfiguration = getKitCoin(currency);
+
+	if (!subscribedToCoin(currency)) {
+		throw new Error(INVALID_COIN(currency));
+	}
+
+	if (amount <= 0) {
+		throw new Error(INVALID_AMOUNT(amount));
+	}
+
+	if (!coinConfiguration.allow_deposit) {
+		throw new Error(DEPOSIT_DISABLED_FOR_COIN(currency));
+	}
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!user.network_id) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	} else if (user.verification_level < 1) {
+		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
+	}
+
+	const { fee, fee_coin } = getDepositFee(currency, network, amount, user.verification_level);
+
+	return {
+		fee,
+		fee_coin
+	};
+}
+
 module.exports = {
 	sendRequestWithdrawalEmail,
+	validateWithdrawal,
 	validateWithdrawalToken,
 	cancelUserWithdrawalByKitId,
 	checkTransaction,
@@ -987,5 +1143,6 @@ module.exports = {
 	getKitBalance,
 	updatePendingMint,
 	updatePendingBurn,
-	isValidAddress
+	isValidAddress,
+	validateDeposit
 };

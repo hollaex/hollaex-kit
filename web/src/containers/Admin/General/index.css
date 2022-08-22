@@ -76,10 +76,15 @@
 	top: 25px;
 	left: 25px;
 }
-.file-container label .anchor {
+.file-container label .anchor,
+.description .anchor {
 	color: #ffffff;
 	text-decoration: underline;
 	cursor: pointer;
+}
+
+.description .anchor {
+	font-weight: bold;
 }
 .file-container .ant-form-item-control {
 	line-height: 1;
@@ -594,4 +599,12 @@ h2,
 .test-Email-Wrapper .errTxt {
 	color: red;
 	padding-top: 1rem;
+}
+.general-wrapper .disable-button .ant-btn-primary[disabled],
+.ant-btn-primary[disabled]:hover,
+.ant-btn-primary[disabled]:focus,
+.ant-btn-primary[disabled]:active {
+	opacity: 0.5;
+	background-color: #288500;
+	color: #ffffff;
 }

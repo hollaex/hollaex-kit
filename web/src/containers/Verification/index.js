@@ -4,20 +4,19 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import _get from 'lodash/get';
 import {
-	// AppBar,
 	CustomTabs,
 	CustomMobileTabs,
 	Dialog,
 	Loader,
 	Notification,
-	// MobileBarTabs,
 	PanelInformationRow,
 	Button,
 	SmartTarget,
+	EditWrapper,
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import STRINGS from '../../config/localizedStrings';
-import { logout, requestVerificationEmail } from '../../actions/authAction';
+import STRINGS from 'config/localizedStrings';
+import { logout, requestVerificationEmail } from 'actions/authAction';
 import { MAX_NUMBER_BANKS } from 'config/constants';
 
 import { isBrowser, isMobile } from 'react-device-detect';
@@ -29,20 +28,12 @@ import {
 	identityInitialValues,
 	documentInitialValues,
 } from './utils';
-import {
-	getClasesForLanguage,
-	getFontClassForLanguage,
-} from '../../utils/string';
-import { ContactForm } from '../';
-import {
-	NOTIFICATIONS,
-	requestPlugin,
-	openContactForm,
-} from 'actions/appActions';
+import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
+import { ContactForm } from 'containers';
+import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
 import { setMe, updateDocuments, updateUser } from 'actions/userAction';
-import { getThemeClass } from '../../utils/theme';
+import { getThemeClass } from 'utils/theme';
 import MobileVerificationHome from './MobileVerificationHome';
-import { EditWrapper } from 'components';
 // import MobileTabs from './MobileTabs';
 import { verifyBankData } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
@@ -53,6 +44,8 @@ import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { verificationTabsSelector } from './selector';
 // const CONTENT_CLASS =
 // 	'd-flex justify-content-center align-items-center f-1 flex-column verification_content-wrapper';
+import UserPaymentVerification from './UserPaymentVerification';
+import UserPaymentVerificationHome from './UserPaymentVerificationHome';
 
 class Verification extends Component {
 	state = {
@@ -63,33 +56,38 @@ class Verification extends Component {
 		user: {},
 		activePage: 'email',
 		showVerificationSentModal: false,
-		bankMeta: {},
 	};
 
 	componentDidMount() {
-		if (this.props.user) {
-			this.setUserData(this.props.user);
+		const {
+			user,
+			router: {
+				location: { search, query },
+			},
+		} = this.props;
+
+		if (user) {
+			this.setUserData(user, () => {
+				const { currentTabs } = this.state;
+
+				let initial_tab = -1;
+
+				// The initial_tab logic is added to support old plugins logic
+				if (query && query.initial_tab) {
+					initial_tab = currentTabs.findIndex(
+						(tab) => tab === query.initial_tab
+					);
+				} else if (search) {
+					initial_tab = currentTabs.findIndex(
+						(tab) => tab === this.getTabBySearch(search)
+					);
+				}
+
+				if (initial_tab !== -1) {
+					this.setState({ activeTab: initial_tab }, this.openCurrentTab);
+				}
+			});
 		}
-		this.getBankData();
-		if (window.location.search && window.location.search.includes('email')) {
-			this.setState({ activeTab: 0 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('phone')
-		) {
-			this.setState({ activeTab: 1 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('identity')
-		) {
-			this.setState({ activeTab: 2 });
-		} else if (
-			window.location.search &&
-			window.location.search.includes('banks')
-		) {
-			this.setState({ activeTab: 3 });
-		}
-		this.openCurrentTab();
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -122,42 +120,52 @@ class Verification extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (
-			JSON.stringify(prevState.activeTab) !==
-			JSON.stringify(this.state.activeTab)
-		) {
+		const { activeTab } = this.state;
+		if (prevState.activeTab !== activeTab) {
 			this.openCurrentTab();
 		}
 	}
 
+	getTabBySearch = (search) => {
+		if (search) {
+			if (search.includes('email')) {
+				return 'email';
+			} else if (search.includes('phone')) {
+				return 'sms';
+			} else if (search.includes('identity')) {
+				return 'kyc';
+			} else if (search.includes('banks')) {
+				return 'bank';
+			}
+		}
+
+		return '';
+	};
+
+	translateTabKey = (key) => {
+		switch (key) {
+			case 'email':
+				return 'email';
+			case 'sms':
+				return 'phone';
+			case 'kyc':
+				return 'identity';
+			case 'bank':
+				return 'banks';
+			default:
+				return '';
+		}
+	};
+
 	openCurrentTab = () => {
-		let currentTab = '';
-		if (this.state.activeTab === 0) {
-			currentTab = 'email';
-		}
-		if (this.state.activeTab === 1) {
-			currentTab = 'phone';
-		} else if (this.state.activeTab === 2) {
-			currentTab = 'identity';
-		} else if (this.state.activeTab === 3) {
-			currentTab = 'banks';
-		}
-		this.props.router.push(`/verification?${currentTab}`);
+		const { activeTab, currentTabs } = this.state;
+		const { router } = this.props;
+		const currentTab = this.translateTabKey(currentTabs[activeTab]);
+
+		router.push(`/verification?${currentTab}`);
 	};
 
-	getBankData = () => {
-		requestPlugin({ name: 'bank' })
-			.then((res) => {
-				if (res.data) {
-					this.setState({ bankMeta: res.data });
-				}
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
-
-	setUserData = (user = {}) => {
+	setUserData = (user = {}, cb) => {
 		const calculatedData = this.calculateActiveTab(user);
 		if (calculatedData.activeTab > 4) {
 			this.goToAccountPage();
@@ -168,11 +176,18 @@ class Verification extends Component {
 				calculatedData.activeTab,
 				calculatedData.currentTabs
 			);
-			this.setState({
-				user,
-				activeTab: calculatedData.activeTab,
-				currentTabs: calculatedData.currentTabs,
-			});
+			this.setState(
+				{
+					user,
+					activeTab: calculatedData.activeTab,
+					currentTabs: calculatedData.currentTabs,
+				},
+				() => {
+					if (cb) {
+						cb();
+					}
+				}
+			);
 		}
 	};
 
@@ -190,8 +205,15 @@ class Verification extends Component {
 				location: { query: { initial_tab } = {} },
 			},
 			availableRemotePlugins,
+			ultimate_fiat,
 		} = this.props;
-		const availablePlugins = ['kyc', 'bank', 'sms', ...availableRemotePlugins];
+		const availablePlugins = [
+			'kyc',
+			'bank',
+			'sms',
+			'user_payments',
+			...availableRemotePlugins,
+		];
 		let currentTabs = ['email'];
 		if (enabledPlugins.length) {
 			const temp = enabledPlugins.filter((val) =>
@@ -199,7 +221,12 @@ class Verification extends Component {
 			);
 			currentTabs = [...currentTabs, ...temp];
 		}
-		const sortingArray = ['email', 'sms', 'kyc', 'bank'];
+
+		if (ultimate_fiat) {
+			currentTabs = [...currentTabs, 'user_payments'];
+		}
+
+		const sortingArray = ['email', 'sms', 'kyc', 'bank', 'user_payments'];
 		currentTabs.sort(
 			(a, b) => sortingArray.indexOf(a) - sortingArray.indexOf(b)
 		);
@@ -458,6 +485,28 @@ class Verification extends Component {
 					/>
 				),
 			},
+			user_payments: {
+				title: isMobile ? (
+					<CustomMobileTabs
+						title={STRINGS['USER_PAYMENT.TITLE']}
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+					/>
+				) : (
+					<CustomTabs
+						stringId="USER_PAYMENT.TITLE"
+						title={STRINGS['USER_PAYMENT.TITLE']}
+						iconId="VERIFICATION_USER_PAYMENT"
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+					/>
+				),
+				content: (
+					<UserPaymentVerificationHome
+						user={user}
+						setActivePageContent={this.setActivePageContent}
+						handleBack={this.handleBack}
+					/>
+				),
+			},
 			...this.getRemoteTabUtils(),
 		};
 		let tabs = [];
@@ -470,7 +519,7 @@ class Verification extends Component {
 
 	goNextTab = (type, data) => {
 		let user = { ...this.state.user };
-		if (type === 'bank') {
+		if (type === 'bank' || type === 'user_payments') {
 			user.bank_account = [...data.bank_data];
 		} else if (type === 'identity') {
 			user = {
@@ -525,7 +574,7 @@ class Verification extends Component {
 	};
 
 	renderPageContent = (tabProps) => {
-		const { activePage, activeTab, tabs, user, bankMeta } = this.state;
+		const { activePage, activeTab, tabs, user } = this.state;
 		const {
 			activeLanguage,
 			icons: ICONS,
@@ -558,7 +607,6 @@ class Verification extends Component {
 						getErrorLocalized={getErrorLocalized}
 						maxLength={maxLength}
 						required={required}
-						bankMeta={bankMeta}
 					/>
 				);
 			case 'kyc':
@@ -589,6 +637,17 @@ class Verification extends Component {
 						openContactForm={openContactForm}
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
+					/>
+				);
+			case 'user_payments':
+				return (
+					<UserPaymentVerification
+						iconId="VERIFICATION_USER_PAYMENT"
+						icon={ICONS['VERIFICATION_USER_PAYMENT']}
+						moveToNextStep={this.goNextTab}
+						openContactForm={openContactForm}
+						setActivePageContent={this.setActivePageContent}
+						handleBack={this.handleBack}
 					/>
 				);
 			default:
@@ -707,6 +766,7 @@ const mapStateToProps = (state) => {
 	const availableRemotePlugins = Object.keys(remoteTabs);
 
 	return {
+		ultimate_fiat: state.app.features.ultimate_fiat,
 		activeLanguage: state.app.language,
 		// token: state.auth.token,
 		activeTheme: state.app.theme,

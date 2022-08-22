@@ -12,6 +12,7 @@ export class SettleModal extends Component {
 		super(props);
 		this.state = {
 			selectedUser: {},
+			buttonSubmitting: false,
 		};
 	}
 
@@ -22,6 +23,7 @@ export class SettleModal extends Component {
 	}
 
 	settleFee = () => {
+		this.setState({ buttonSubmitting: true });
 		const { requestFees, handleSettle } = this.props;
 		const { selectedUser } = this.state;
 		if (selectedUser && selectedUser.id) {
@@ -36,7 +38,8 @@ export class SettleModal extends Component {
 				})
 				.finally(() => {
 					handleSettle();
-				})
+					this.setState({ buttonSubmitting: false });
+				});
 		} else {
 			handleSettle();
 		}
@@ -67,7 +70,7 @@ export class SettleModal extends Component {
 			currentScreen,
 			userDetails,
 		} = this.props;
-		const { selectedUser } = this.state;
+		const { selectedUser, buttonSubmitting } = this.state;
 		return (
 			<div>
 				{currentScreen === 'step1' ? (
@@ -164,7 +167,11 @@ export class SettleModal extends Component {
 							<Button className="modal-button" onClick={toggleVisibility}>
 								Back
 							</Button>
-							<Button className="modal-button" onClick={this.settleFee}>
+							<Button
+								className="modal-button"
+								onClick={this.settleFee}
+								disabled={buttonSubmitting}
+							>
 								Settle
 							</Button>
 						</div>

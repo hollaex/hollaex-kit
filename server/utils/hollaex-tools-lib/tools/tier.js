@@ -5,7 +5,7 @@ const dbQuery = require('./database/query');
 const { getModel } = require('./database');
 const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
 const { reject, all } = require('bluebird');
-const { difference, omit, isNumber, each, isString } = require('lodash');
+const { difference, omit, isNumber, each, isString, isBoolean } = require('lodash');
 const { publisher } = require('./database/redis');
 const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
 const flatten = require('flat');
@@ -130,6 +130,10 @@ const updateTier = (level, updateData) => {
 
 			if (isString(updateData.description)) {
 				newData.description = updateData.description;
+			}
+
+			if (isBoolean(updateData.native_currency_limit)) {
+				newData.native_currency_limit = updateData.native_currency_limit;
 			}
 
 			return tier.update(newData);

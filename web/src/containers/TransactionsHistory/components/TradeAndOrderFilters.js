@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
+import moment from 'moment';
+
 import { dateFilters } from '../filterUtils';
 import STRINGS from '../../../config/localizedStrings';
-import moment from 'moment';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -11,14 +12,15 @@ const { RangePicker } = DatePicker;
 const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
 	const [click, setClick] = useState([]);
+	const [customSel, setCustomSel] = useState(false);
 
 	useEffect(() => {
 		form.setFieldsValue({
-			range: [],
-			symbol: null,
+			status: null,
+			currency: null,
 			size: 'all',
-			type: 'active',
 		});
+		setCustomSel(false);
 	}, [activeTab, form]);
 
 	useEffect(() => {
@@ -28,13 +30,8 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 			form.getFieldValue('range').length &&
 			!form.getFieldValue('range').filter((d) => d === undefined).length
 		) {
-			if (
-				!moment(click[0]).isSame(form.getFieldValue('range')[0]) &&
-				!moment(click[1]).isSame(form.getFieldValue('range')[1])
-			) {
-				form.setFieldsValue({ range: click });
-				onSearch(form.getFieldsValue());
-			}
+			form.setFieldsValue({ range: click });
+			onSearch(form.getFieldsValue());
 		} else if (click.length && !form.getFieldValue('range').length) {
 			form.setFieldsValue({ range: click });
 			onSearch(form.getFieldsValue());
@@ -44,6 +41,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 	const onValuesChange = (_, values) => {
 		if (values) {
 			if (values.size) {
+				setCustomSel(false);
 				const {
 					[values.size]: { range },
 				} = dateFilters;
@@ -52,13 +50,48 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 				if (_.range === undefined) {
 					onSearch(values);
 				}
+			} else {
+				if (_.range === undefined) {
+					onSearch(values);
+				}
 			}
 		}
 	};
 
 	const handleDateRange = (e) => {
-		if (e.length > 1 && e[0] && e[1]) {
-			setClick(e);
+		const data = {
+			...form.getFieldsValue(),
+			range: [],
+		};
+		if (!e) {
+			onSearch(data);
+		} else if (e && e.length > 1 && e[0] && e[1]) {
+			const firstDate = moment(e[0]).format('DD/MMM/YYYY');
+			const secondDate = moment(e[1]).format('DD/MMM/YYYY');
+			if (firstDate === secondDate) {
+				setClick([moment(e[0]), moment(e[1]).add(1, 'days')]);
+			} else {
+				setClick(e);
+			}
+		}
+	};
+
+	const Customselection = (e) => {
+		const data = {
+			...form.getFieldsValue(),
+			range: [],
+		};
+		if (e === 'custom' && !customSel) {
+			setCustomSel(true);
+			form.setFieldsValue({
+				size: '',
+				range: [],
+			});
+			onSearch(data);
+		} else {
+			if (!click.length) {
+				setCustomSel(false);
+			}
 		}
 	};
 
@@ -140,15 +173,26 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 						))}
 					</Radio.Group>
 				</Form.Item>
-				<Form.Item name="range">
-					<RangePicker
-						allowEmpty={[true, true]}
-						size="small"
-						suffixIcon={false}
-						placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
-						onChange={handleDateRange}
-					/>
+				<Form.Item
+					name="custom"
+					buttonStyle="outline"
+					size="small"
+					onClick={() => Customselection('custom')}
+					className={customSel ? 'cusStyle1' : 'cusStyle2'}
+				>
+					Custom
 				</Form.Item>
+				{customSel && (
+					<Form.Item name="range">
+						<RangePicker
+							allowEmpty={[true, true]}
+							size="small"
+							suffixIcon={false}
+							placeholder={[STRINGS['START_DATE'], STRINGS['END_DATE']]}
+							onChange={handleDateRange}
+						/>
+					</Form.Item>
+				)}
 			</Row>
 		</Form>
 	);

@@ -69,7 +69,8 @@ class Deposit extends Component {
 				nextProps.selectedNetwork,
 				nextProps.wallet,
 				networks,
-				nextProps.coins
+				nextProps.coins,
+				nextProps.verification_level
 			);
 		}
 
@@ -105,14 +106,15 @@ class Deposit extends Component {
 				},
 				() => {
 					const { currency, initialNetwork, networks } = this.state;
-					const { wallet, coins } = this.props;
+					const { wallet, coins, verification_level } = this.props;
 					this.validateRoute(this.props.routeParams.currency, coins);
 					this.generateFormFields(
 						currency,
 						initialNetwork,
 						wallet,
 						networks,
-						coins
+						coins,
+						verification_level
 					);
 				}
 			);
@@ -158,7 +160,14 @@ class Deposit extends Component {
 		}
 	};
 
-	generateFormFields = (currency, network, wallet, networks, coins) => {
+	generateFormFields = (
+		currency,
+		network,
+		wallet,
+		networks,
+		coins,
+		verification_level
+	) => {
 		let address = getWallet(currency, network, wallet, networks);
 		let destinationAddress = '';
 
@@ -173,7 +182,7 @@ class Deposit extends Component {
 				? STRINGS['DEPOSIT.CRYPTO_LABELS.MEMO']
 				: STRINGS['DEPOSIT.CRYPTO_LABELS.DESTINATION_TAG'];
 
-		const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
+		const { fullname, deposit_fees } = coins[currency] || DEFAULT_COIN_DATA;
 		const destinationLabel = STRINGS.formatString(additionalText, fullname);
 		const label = STRINGS.formatString(
 			STRINGS['DEPOSIT.CRYPTO_LABELS.ADDRESS'],
@@ -183,7 +192,18 @@ class Deposit extends Component {
 		const showGenerateButton =
 			(!address && networks && network) || (!address && !networks);
 
+		let fee;
+		const feeKey = networks ? network : currency;
+		if (deposit_fees && deposit_fees[feeKey]) {
+			const { levels, value } = deposit_fees[feeKey];
+			fee =
+				levels && levels[verification_level]
+					? levels[verification_level]
+					: value;
+		}
+
 		const formFields = generateFormFields({
+			currency,
 			networks,
 			address,
 			label,
@@ -191,11 +211,15 @@ class Deposit extends Component {
 			copyOnClick: true,
 			destinationAddress,
 			destinationLabel,
+			coins,
+			network,
+			fee,
 		});
 
 		const initialValues = {
 			...(address ? { address } : {}),
 			...(destinationAddress ? { destinationAddress } : {}),
+			...(fee ? { fee } : {}),
 			network,
 		};
 
@@ -319,6 +343,7 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 	addressRequest: store.user.addressRequest,
 	selectedNetwork: formValueSelector('GenerateWalletForm')(store, 'network'),
+	verification_level: store.user.verification_level,
 });
 
 const mapDispatchToProps = (dispatch) => ({

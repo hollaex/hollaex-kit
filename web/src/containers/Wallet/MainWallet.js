@@ -20,12 +20,17 @@ import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
 class Wallet extends Component {
-	state = {
-		activeTab: 0,
-		sections: [],
-		mobileTabs: [],
-		isOpen: true,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeTab: 0,
+			sections: [],
+			mobileTabs: [],
+			isOpen: true,
+			isZeroBalanceHidden:
+				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+		};
+	}
 
 	componentDidMount() {
 		this.generateSections(
@@ -82,7 +87,7 @@ class Wallet extends Component {
 	}
 
 	getSearchResult = (coins, balance, oraclePrices) => {
-		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
+		const { searchValue = '', isZeroBalanceHidden } = this.state;
 
 		const result = {};
 		const searchTerm = searchValue.toLowerCase().trim();
@@ -99,6 +104,15 @@ class Wallet extends Component {
 				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
 			}
 			return key;
+		});
+		return { ...result };
+	};
+
+	getMobileSlider = (coins, oraclePrices) => {
+		const result = {};
+		Object.keys(coins).map((key) => {
+			const temp = coins[key];
+			return (result[key] = { ...temp, oraclePrice: oraclePrices[key] });
 		});
 		return { ...result };
 	};
@@ -189,6 +203,7 @@ class Wallet extends Component {
 						prices={prices}
 						navigate={this.goToPage}
 						coins={coins}
+						searchResult={this.getMobileSlider(coins, oraclePrices)}
 					/>
 				),
 			},

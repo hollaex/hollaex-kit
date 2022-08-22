@@ -2,6 +2,7 @@ import { BASE_CURRENCY } from '../config/constants';
 import {
 	ORDERBOOK_CONSTANTS,
 	PAIRS_TRADES_FETCHED,
+	SET_ORDER_ENTRY,
 } from '../actions/orderbookAction';
 
 const INITIAL_QUICK_TRADE = {
@@ -36,6 +37,12 @@ const INITIAL_QUOTE = {
 	},
 };
 
+const INITIAL_ORDER_ENTRY = {
+	order_mode: 'regular',
+	entry_type: 'limit',
+	entry_side: 'buy',
+};
+
 const INITIAL_STATE = {
 	fetched: false,
 	fetching: false,
@@ -56,6 +63,7 @@ const INITIAL_STATE = {
 	pairs: {},
 	depth: parseInt(localStorage.getItem('orderbook_depth') || 1, 10),
 	chart_last_close: 0,
+	order_entry_data: INITIAL_ORDER_ENTRY,
 };
 
 export default function reducer(state = INITIAL_STATE, { payload, type }) {
@@ -318,6 +326,14 @@ export default function reducer(state = INITIAL_STATE, { payload, type }) {
 			return {
 				...state,
 				chart_last_close: payload,
+			};
+		case SET_ORDER_ENTRY:
+			return {
+				...state,
+				order_entry_data: {
+					...state.order_entry_data,
+					...payload.items,
+				},
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

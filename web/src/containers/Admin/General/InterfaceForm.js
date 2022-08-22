@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactSVG } from 'react-svg';
 import { Button, Checkbox, Form } from 'antd';
 import classnames from 'classnames';
+import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -12,7 +13,11 @@ const InterfaceForm = ({
 	handleSaveInterface,
 	isUpgrade,
 	buttonSubmitting,
+	isFiatUpgrade,
 }) => {
+	const [isSubmit, setIsSubmit] = useState(!buttonSubmitting);
+	const [form] = Form.useForm();
+
 	const handleSubmit = (values) => {
 		let formValues = {};
 		if (values) {
@@ -22,10 +27,25 @@ const InterfaceForm = ({
 				pro_trade: !!values.pro_trade,
 				stake_page: !!values.stake_page,
 				home_page: isUpgrade ? false : !!values.home_page,
+				ultimate_fiat: !!values.ultimate_fiat,
 			};
 			handleSaveInterface(formValues);
 		}
 	};
+
+	const handleValuesChange = () => {
+		if (!_isEqual(initialValues, form.getFieldsValue())) {
+			setIsSubmit(false);
+		} else {
+			setIsSubmit(true);
+		}
+	};
+
+	const handleSubmitData = (formProps) => {
+		setIsSubmit(true);
+		handleSubmit(formProps);
+	};
+
 	let initialValue = initialValues;
 	if (isUpgrade) {
 		initialValue.home_page = false;
@@ -38,9 +58,12 @@ const InterfaceForm = ({
 				Select the features that will be available on your exchange.
 			</div>
 			<Form
+				form={form}
 				name="interface-form"
 				initialValues={initialValue}
-				onFinish={handleSubmit}
+				onFinish={handleSubmitData}
+				onValuesChange={handleValuesChange}
+				className="disable-button"
 			>
 				<div className="interface-box">
 					<Item name="pro_trade" valuePropName="checked">
@@ -104,6 +127,51 @@ const InterfaceForm = ({
 							</div>
 						</Checkbox>
 					</Item>
+
+					<div className={classnames({ 'disabled-area': isFiatUpgrade })}>
+						<Item name="ultimate_fiat" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box mr-1">
+										<ReactSVG
+											src={STATIC_ICONS.MPESA_ICON}
+											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
+											beforeInjection={(svg) => {
+												svg.setAttribute('style', 'width: 60px');
+											}}
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Ultimate fiat
+										<div className="small-text">(Ultimate fiat ...)</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					</div>
+					{isFiatUpgrade ? (
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+								<div>
+									<div className="font-weight-bold">
+										Make a good first impression
+									</div>
+									<div>Add a customizable landing page</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button type="primary" className="w-100">
+											Upgrade Now
+										</Button>
+									</a>
+								</div>
+							</div>
+						</div>
+					) : null}
 					<div className={classnames({ 'disabled-area': isUpgrade })}>
 						<Item name="chat" valuePropName="checked">
 							<Checkbox className="mt-3">
@@ -196,7 +264,7 @@ const InterfaceForm = ({
 					</div>
 				) : null}
 				<div>
-					<Button type="primary" htmlType="submit" disabled={buttonSubmitting}>
+					<Button type="primary" htmlType="submit" disabled={isSubmit}>
 						Save
 					</Button>
 				</div>

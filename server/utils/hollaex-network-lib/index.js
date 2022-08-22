@@ -380,6 +380,97 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Get list of wallets in the exchange
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.userId - User's id to filter wallet addresses
+	 * @param {string} opts.currency - Crypto currency of the wallet
+	 * @param {string} opts.network - Crypto's blockchain network
+	 * @param {string} opts.address - Cryptocurrency address for the wallet
+	 * @param {string} opts.isValid - Whether wallet is still active or not
+	 * @param {number} opts.limit - Amount of trades per page. Maximum: 50. Default: 50
+	 * @param {number} opts.page - Page of trades data. Default: 1
+	 * @param {string} opts.orderBy - The field to order data by e.g. amount, id.
+	 * @param {string} opts.order - Ascending (asc) or descending (desc).
+	 * @param {string} opts.createdAt - Start date of wallet creation query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Fields: Count, Data. Count is the number of Wallets on the page. Data is an array of Wallets
+	 */
+	getExchangeWallets(opts = {
+		userId: null,
+		currency: null,
+		network: null,
+		address: null,
+		isValid: null,
+		limit: null,
+		page: null,
+		orderBy: null,
+		order: null,
+		createdAt: null,
+		format: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${
+			this.exchange_id
+		}/wallets?`;
+
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
+		}
+		if (isNumber(opts.limit)) {
+			path += `&limit=${opts.limit}`;
+		}
+
+		if (isNumber(opts.page)) {
+			path += `&page=${opts.page}`;
+		}
+
+		if (isString(opts.orderBy)) {
+			path += `&order_by=${opts.orderBy}`;
+		}
+
+		if (isString(opts.order)) {
+			path += `&order=${opts.order}`;
+		}
+
+		if (isString(opts.address)) {
+			path += `&address=${opts.address}`;
+		}
+
+		if (isDatetime(opts.createdAt)) {
+			path += `&created_at=${sanitizeDate(opts.createdAt)}`;
+		}
+
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (opts.network) {
+			path += `&network=${opts.network}`;
+		}
+
+		if (isBoolean(opts.isValid)) {
+			path += `&is_valid=${opts.isValid}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
 	 * Create a withdrawal for an exchange's user on the network
 	 * @param {number} userId - User id on network
 	 * @param {string} address - Address to send withdrawal to
@@ -477,6 +568,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
@@ -496,6 +588,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -562,6 +655,10 @@ class HollaExNetwork {
 			path += `&waiting=${opts.waiting}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -591,6 +688,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
@@ -611,6 +709,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -682,6 +781,10 @@ class HollaExNetwork {
 			path += `&waiting=${opts.waiting}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -710,6 +813,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
@@ -729,6 +833,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -795,6 +900,10 @@ class HollaExNetwork {
 			path += `&waiting=${opts.waiting}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -824,6 +933,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
@@ -844,6 +954,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -915,6 +1026,10 @@ class HollaExNetwork {
 			path += `&waiting=${opts.waiting}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -983,6 +1098,49 @@ class HollaExNetwork {
 	}
 
 	/**
+	 * Get the balance report of all assets
+	 * @param {object} opts - Optional parameters.
+	 * @param {number} opts.userId - User's id to get balance data
+	 * @param {string} opts.currency - Currency symbol of assets to filter. Leave blank to get withdrawals for all currencies
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Fields: Count, Data. Count is the number of rows on the page. Data is an array of balances for assets
+	 */
+	getBalances(opts = {
+		userId: null,
+		currency: null,
+		format: null,
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+		const verb = 'GET';
+
+		let path = `${this.baseUrl}/network/${this.exchange_id}/balances?`;
+
+		if (opts.userId) {
+			path += `&user_id=${opts.userId}`;
+		}
+
+		if (opts.currency) {
+			path += `&currency=${opts.currency}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
 	 * Create a trade for the exchange on the network
 	 * @param {string} symbol - The currency pair symbol e.g. 'hex-usdt'
 	 * @param {string} side - Whether this is a buy or a sell trade
@@ -1013,7 +1171,7 @@ class HollaExNetwork {
 			return reject(parameterError('symbol', 'cannot be null'));
 		} else if (!side) {
 			return reject(parameterError('side', 'cannot be null'));
-		} else if (!["buy", "sell"].includes(side)) {
+		} else if (!['buy', 'sell'].includes(side)) {
 			return reject(parameterError('side', 'must be buy or sell'));
 		} else if (!size) {
 			return reject(parameterError('size', 'cannot be null'));
@@ -1042,7 +1200,7 @@ class HollaExNetwork {
 			maker_id: makerId,
 			taker_id: takerId,
 			fee_structure: feeStructure
-		}
+		};
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -1519,6 +1677,7 @@ class HollaExNetwork {
 	 * @param {string} currency - Currency to transfer
 	 * @param {number} amount - Amount to transfer
 	 * @param {object} opts - Optional parameters.
+	 * @param {string} opts.transactionId - Custom transaction ID for transfer.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {boolean} opts.email - Send email to users after transfer. Default: true.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -1530,6 +1689,7 @@ class HollaExNetwork {
 		currency,
 		amount,
 		opts = {
+			transactionId: null,
 			description: null,
 			email: null,
 			additionalHeaders: null
@@ -1560,6 +1720,10 @@ class HollaExNetwork {
 
 		if (opts.description) {
 			data.description = opts.description;
+		}
+
+		if (opts.transactionId) {
+			data.transaction_id = opts.transactionId;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -1991,6 +2155,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for mint.
+	 * @param {string} opts.address - Custom address for mint.
 	 * @param {boolean} opts.status - Status of mint created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
@@ -2000,6 +2165,7 @@ class HollaExNetwork {
 	mintAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
+		address: null,
 		status: true,
 		email: true,
 		fee: null,
@@ -2029,6 +2195,10 @@ class HollaExNetwork {
 
 		if (opts.transactionId) {
 			data.transaction_id = opts.transactionId;
+		}
+
+		if (opts.address) {
+			data.address = opts.address;
 		}
 
 		if (isBoolean(opts.status)) {
@@ -2069,6 +2239,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.processing - Set to true to set state to processing.
 	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending mint to.
+	 * @param {string} opts.updatedAddress - Value to update address of pending mint to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -2083,6 +2254,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
+			updatedAddress: null,
 			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
@@ -2127,6 +2299,10 @@ class HollaExNetwork {
 			data.updated_transaction_id = opts.updatedTransactionId;
 		}
 
+		if (opts.updatedAddress) {
+			data.updated_address = opts.updatedAddress;
+		}
+
 		if (opts.updatedDescription) {
 			data.updated_description = opts.updatedDescription;
 		}
@@ -2157,6 +2333,7 @@ class HollaExNetwork {
 	 * @param {object} opts - Optional parameters.
 	 * @param {string} opts.description - Description of transfer.
 	 * @param {string} opts.transactionId - Custom transaction ID for burn.
+	 * @param {string} opts.address - Custom address for burn.
 	 * @param {boolean} opts.status - Status of burn created. Default: true.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {number} opts.fee - Optional fee to display in data.
@@ -2166,6 +2343,7 @@ class HollaExNetwork {
 	burnAsset(userId, currency, amount, opts = {
 		description: null,
 		transactionId: null,
+		address: null,
 		status: true,
 		email: true,
 		fee: null,
@@ -2195,6 +2373,10 @@ class HollaExNetwork {
 
 		if (opts.transactionId) {
 			data.transaction_id = opts.transactionId;
+		}
+
+		if (opts.address) {
+			data.address = opts.address;
 		}
 
 		if (isBoolean(opts.status)) {
@@ -2235,6 +2417,7 @@ class HollaExNetwork {
 	 * @param {boolean} opts.processing - Set to true to set state to processing.
 	 * @param {boolean} opts.waiting - Set to true to set state to waiting.
 	 * @param {string} opts.updatedTransactionId - Value to update transaction ID of pending burn to.
+	 * @param {string} opts.updatedAddress - Value to update address of pending burn to.
 	 * @param {boolean} opts.email - Send email notification to user. Default: true.
 	 * @param {string} opts.updatedDescription - Value to update transaction description to.
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
@@ -2249,6 +2432,7 @@ class HollaExNetwork {
 			processing: null,
 			waiting: null,
 			updatedTransactionId: null,
+			updatedAddress: null,
 			email: true,
 			updatedDescription: null,
 			additionalHeaders: null
@@ -2291,6 +2475,10 @@ class HollaExNetwork {
 
 		if (opts.updatedTransactionId) {
 			data.updated_transaction_id = opts.updatedTransactionId;
+		}
+
+		if (opts.updatedAddress) {
+			data.updated_address = opts.updatedAddress;
 		}
 
 		if (opts.updatedDescription) {
@@ -2703,6 +2891,7 @@ class HollaExNetwork {
 			withdrawalFee: null,
 			description: null,
 			withdrawalFees: null,
+			depositFees: null,
 			min: null,
 			max: null,
 			isPublic: null,
@@ -2777,6 +2966,11 @@ class HollaExNetwork {
 					break;
 				case 'meta':
 				case 'withdrawalFees':
+					if (isPlainObject(value)) {
+						data[formattedField] = value;
+					}
+					break;
+				case 'depositFees':
 					if (isPlainObject(value)) {
 						data[formattedField] = value;
 					}

@@ -3,6 +3,7 @@ import math from 'mathjs';
 
 import { estimatedQuickTradePriceSelector } from 'containers/Trade/utils';
 import { getDecimals } from 'utils/utils';
+import STRINGS from 'config/localizedStrings';
 
 export function getOrderbook() {
 	return {
@@ -37,9 +38,15 @@ export const setPriceEssentials = (priceEssentials) => (dispatch, getState) => {
 		if (side === 'buy') {
 			if (estimatedPrice) {
 				if (isSourceChanged) {
-					targetAmount = math.round(sourceAmount / estimatedPrice, decimalPoint);
+					targetAmount = math.round(
+						sourceAmount / estimatedPrice,
+						decimalPoint
+					);
 				} else {
-					sourceAmount = math.round(targetAmount * estimatedPrice, decimalPoint);
+					sourceAmount = math.round(
+						targetAmount * estimatedPrice,
+						decimalPoint
+					);
 				}
 			}
 			priceValues = {
@@ -51,9 +58,15 @@ export const setPriceEssentials = (priceEssentials) => (dispatch, getState) => {
 		} else {
 			if (estimatedPrice) {
 				if (isSourceChanged) {
-					targetAmount = math.round(sourceAmount * estimatedPrice, decimalPoint);
+					targetAmount = math.round(
+						sourceAmount * estimatedPrice,
+						decimalPoint
+					);
 				} else {
-					sourceAmount = math.round(targetAmount / estimatedPrice, decimalPoint);
+					sourceAmount = math.round(
+						targetAmount / estimatedPrice,
+						decimalPoint
+					);
 				}
 			}
 			priceValues = {
@@ -104,5 +117,12 @@ export const changeSymbol = (symbol) => ({
 	type: 'CHANGE_QUICK_TRADE_SYMBOL',
 	payload: {
 		symbol,
+	},
+});
+
+export const setOrderMsg = () => ({
+	type: 'SET_SNACK_NOTIFICATION',
+	payload: {
+		content: STRINGS['CANCEL_SUCCESS_TEXT'],
 	},
 });

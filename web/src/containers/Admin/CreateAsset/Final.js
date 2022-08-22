@@ -1,11 +1,15 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Button } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import _get from 'lodash/get';
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import IconToolTip from '../IconToolTip';
+import { getNetworkLabelByKey } from 'utils/wallet';
+import { formatPercentage } from 'utils/currency';
+import { Link } from 'react-router';
+import { getTabParams } from '../AdminFinancials/Assets';
 
 const Final = ({
 	isPreview = false,
@@ -21,48 +25,125 @@ const Final = ({
 	submitting = false,
 	handleWithdrawalEdit,
 	handleScreenChange,
+	isPresentCoin,
+	coins,
+	selectedCoinSymbol,
+	exchange = {},
+	constants = {},
+	allCoins = {},
 }) => {
 	const { meta = {}, type } = coinFormData;
+	let coinData = {};
+	allCoins.forEach((item) => {
+		if (item.symbol === coinFormData.symbol) {
+			coinData = {
+				...coinData,
+				...item,
+			};
+		}
+	});
+	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
+	const { onramp = {} } = constants;
+	const [isUpgrade, setIsUpgrade] = useState(false);
+	const tabParams = getTabParams();
 
-	const renderFees = () => {
-		if (coinFormData && coinFormData.withdrawal_fees) {
-			return Object.keys(coinFormData.withdrawal_fees).map((data, index) => {
-				const key = coinFormData.withdrawal_fees[data];
-				let label;
-				if (data === 'eth') {
-					label = 'ERC20';
-				} else if (data === 'bnb') {
-					label = 'BEP20';
-				} else if (data === 'trx') {
-					label = 'TRC20';
-				} else if (data === 'klay') {
-					label = 'Klaytn';
-				} else if (data === 'xlm') {
-					label = 'Stellar';
-				} else if (data === 'sol') {
-					label = 'Solana';
-				} else if (data === 'matic') {
-					label = 'Polygon';
-				} else {
-					label = data.toUpperCase();
-				}
-				return (
-					<div key={index}>
-						<b>{label}</b>: {_get(key, 'value', '')}{' '}
-						{_get(key, 'symbol', '').toUpperCase()}
-					</div>
-				);
-			});
+	useEffect(() => {
+		if (exchange?.plan === 'fiat' || exchange?.plan === 'boost') {
+			setIsUpgrade(true);
+		}
+	}, [exchange]);
+
+	const getSymbolBasedFields = (type) => {
+		switch (type) {
+			case 'percentage':
+				return ['min', 'max'];
+			case 'static':
+			default:
+				return ['value', 'levels'];
 		}
 	};
 
+	const renderNetworkFee = ([key, data], index) => {
+		const { symbol: assetSymbol } = coinFormData;
+		const { symbol, type } = data;
+		const network = getNetworkLabelByKey(key);
+		const symbolBasedFields = getSymbolBasedFields(type);
+		const unit = type === 'percentage' ? assetSymbol : symbol;
+		const keyArr = withdrawal_fees && Object.keys(withdrawal_fees).length;
+
+		return (
+			<div key={key} className="pb-3">
+				{network ? (
+					<div>
+						<b className="caps-first">network</b>: {network}
+					</div>
+				) : null}
+				<Fragment>
+					{data &&
+						Object.entries(data).map(([key, value]) => {
+							const hasUnit = symbolBasedFields.includes(key);
+
+							if (key && key === 'levels') {
+								return (
+									<div key={key} className="d-flex align-start">
+										<div>
+											<b className="caps-first">{key}</b>:
+										</div>
+										<div className="pl-1">
+											{value &&
+												Object.entries(value).map(([level, fee]) => {
+													if (level && fee) {
+														const feeText = hasUnit
+															? `${fee} ${unit}`
+															: formatPercentage(fee);
+														return (
+															<div
+																key={fee}
+															>{`Tier ${level} @ ${feeText}`}</div>
+														);
+													} else {
+														return null;
+													}
+												})}
+										</div>
+									</div>
+								);
+							} else {
+								const valueText = hasUnit ? `${value} ${unit}` : value;
+
+								return (
+									<div key={key}>
+										<b className="caps-first">{key}</b>: {valueText}
+									</div>
+								);
+							}
+						})}
+					{keyArr > 1 && index === 0 ? (
+						<div className="border-separator"></div>
+					) : null}
+				</Fragment>
+			</div>
+		);
+	};
+
+	const renderFees = (fees) => {
+		return Object.entries(fees).map(renderNetworkFee);
+	};
+
 	const handleMoveBack = () => {
-		if (!coinFormData.id) {
+		const isExchangeCoin = !!coins.filter(
+			(item) => item.symbol === selectedCoinSymbol
+		).length;
+		if (coinFormData.id && isPresentCoin) {
+			handleScreenChange('step1');
+		} else if (!coinFormData.id || isExchangeCoin) {
 			handleBack(true);
 		} else {
 			handleScreenChange('edit_withdrawal_fees');
 		}
 	};
+
+	const isOwner = coinFormData.owner_id === user_id;
 
 	return (
 		<Fragment>
@@ -319,35 +400,113 @@ const Final = ({
 			</div>
 			<div className="preview-detail-container">
 				<div className="title">Withdrawal Fee</div>
-				{coinFormData.withdrawal_fees ? (
+				<div>
+					{withdrawal_fees ? (
+						<div>{renderFees(withdrawal_fees)}</div>
+					) : (
+						<Fragment>
+							<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
+						</Fragment>
+					)}
+					{isConfigure && (
+						<div className="btn-wrapper">
+							<Button
+								className="green-btn mb-3"
+								type="primary"
+								onClick={() => handleWithdrawalEdit('withdraw')}
+								disabled={!isOwner}
+							>
+								Edit
+							</Button>
+						</div>
+					)}
+				</div>
+				<div className="preview-detail-container pl-0">
+					<div className="title">Deposit Fee</div>
 					<div>
-						<div>{renderFees()}</div>
-						{isConfigure ? (
+						{deposit_fees && <div>{renderFees(deposit_fees)}</div>}
+						{isConfigure && (
 							<div className="btn-wrapper">
 								<Button
 									className="green-btn"
 									type="primary"
-									onClick={handleWithdrawalEdit}
+									onClick={() => handleWithdrawalEdit('deposit')}
+									disabled={!isOwner}
 								>
 									Edit
 								</Button>
 							</div>
-						) : null}
+						)}
 					</div>
-				) : (
+				</div>
+				{(tabParams?.isFiat === 'onRamp' ||
+					tabParams?.isFiat === 'offRamp') && (
 					<div>
-						<b>{coinFormData.symbol}:</b> {coinFormData.withdrawal_fee}
-						{isConfigure ? (
-							<div className="btn-wrapper">
-								<Button
-									className="green-btn"
-									type="primary"
-									onClick={handleWithdrawalEdit}
-								>
-									Edit
-								</Button>
-							</div>
-						) : null}
+						<div className="preview-detail-container"></div>
+						<div className="finalfiatwrapper">
+							<div className="title">Fiat ramps</div>
+							{!isUpgrade ? (
+								<>
+									<Link
+										className="fiatlink"
+										to="/admin/fiat?tab=2&isAssetHome=true"
+									>
+										View fiat controls
+									</Link>
+									<div className="d-flex ml-4">
+										<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+											<div>
+												<div className="font-weight-bold">
+													Add fiat deposits & withdrawals
+												</div>
+												<div>Allow your users to send USD & other fiat</div>
+											</div>
+											<div className="ml-5 button-wrapper">
+												<a
+													href="https://dash.bitholla.com/billing"
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													<Button type="primary" className="w-100">
+														Upgrade Now
+													</Button>
+												</a>
+											</div>
+										</div>
+									</div>
+								</>
+							) : (
+								Object.keys(onramp).filter((item) => item === tabParams?.symbol)
+									.length && (
+									<div className="mb-3">
+										{Object.keys(onramp[tabParams?.symbol]).map((val, i) => {
+											let name = '';
+											if (onramp[tabParams?.symbol]?.[val]?.type === 'manual') {
+												name =
+													onramp[tabParams?.symbol]?.[val]?.data[0][0].value;
+											} else {
+												name = onramp[tabParams?.symbol]?.[val]?.data;
+											}
+											return (
+												<div className="d-flex align-items-center mt-3">
+													On-ramp {i + 1}: {name}
+													<span className="small-circle mr-2 ml-2 d-flex"></span>
+													<span>PUBLISHED</span>
+												</div>
+											);
+										})}
+										<div className="mt-3">
+											<Link
+												className="fiatlink"
+												to="/admin/fiat?tab=2&isAssetHome=true"
+											>
+												View fiat controls
+											</Link>
+										</div>
+									</div>
+								)
+							)}
+						</div>
 					</div>
 				)}
 			</div>
@@ -389,4 +548,12 @@ const Final = ({
 	);
 };
 
-export default Final;
+const mapStateToProps = (state) => {
+	return {
+		exchange: state.asset && state.asset.exchange ? state.asset.exchange : {},
+		constants: state.app.constants,
+		allCoins: state.asset.allCoins,
+	};
+};
+
+export default connect(mapStateToProps, null)(Final);

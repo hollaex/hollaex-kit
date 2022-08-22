@@ -182,6 +182,10 @@ export const generateAdminSettings = (key) => {
 					placeholder: 'auditor email address',
 					validate: [validateRequired, email],
 				},
+				send_email_to_support: {
+					type: 'checkbox',
+					label: 'send email to support',
+				},
 			},
 			email_configuration: {
 				sender: {
@@ -190,12 +194,6 @@ export const generateAdminSettings = (key) => {
 						'Sender email (appears in the emails sent to the user as sender)',
 					placeholder: 'Sender email',
 					validate: [validateRequired, email],
-				},
-				send_email_to_support: {
-					type: 'checkbox',
-					label: 'send email to support',
-					// placeholder: 'send email to support',
-					// validate: [validateRequired]
 				},
 				timezone: {
 					type: 'select',

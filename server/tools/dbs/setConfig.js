@@ -69,7 +69,10 @@ const kit = {
 	features: {},
 	meta: {},
 	user_meta: {},
-	black_list_countries: []
+	black_list_countries: [],
+	onramp: {},
+	offramp: {},
+	user_payments: {}
 };
 
 const secrets = {

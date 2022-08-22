@@ -262,6 +262,9 @@ const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
 				|| key === 'color'
 				|| key === 'injected_values'
 				|| key === 'injected_html'
+				|| key === 'onramp'
+				|| key === 'offramp'
+				|| key === 'user_payments'
 			) {
 				joinedKitConfig[key] = newKitConfig[key];
 			} else if (isPlainObject(existingKitConfig[key])) {
@@ -783,11 +786,11 @@ const validatePair = (pair) => {
 		return false;
 	}
 	return true;
-}
+};
 
 const getBrokerDeals = () => {
 	return GET_BROKER();
-}; 
+};
 
 module.exports = {
 	getKitVersion,

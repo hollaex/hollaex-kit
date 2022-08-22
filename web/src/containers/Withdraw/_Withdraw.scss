@@ -49,6 +49,15 @@ $content--margin: 2rem;
 		padding: $crypto-address--padding $crypto-address--padding * 4;
 	}
 
+	.review-crypto-mail {
+		font-size: $font-size-subhead2;
+		border: 1px solid $colors-deactivate-color2;
+		padding: 1.5rem 12rem;
+		.review-fee_message {
+			font-size: $font-size-main;
+		}
+	}
+
 	.review-info_message {
 		padding: 0.5rem;
 		font-size: $font-size-subtext;

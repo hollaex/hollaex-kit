@@ -515,6 +515,7 @@ class Verification extends Component {
 										className={'d-flex flex-wrap'}
 										data={userImageData}
 										renderRow={renderRowImages}
+										popError={true}
 									/>
 								</div>
 							) : (

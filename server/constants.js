@@ -27,7 +27,10 @@ let configuration = {
 		user_meta: {},
 		injected_values: [],
 		injected_html: {},
-		black_list_countries: []
+		black_list_countries: [],
+		onramp: {},
+		offramp: {},
+		user_payments: {}
 	},
 	email: {}
 };
@@ -107,7 +110,10 @@ const resetAllConfig = () => {
 			user_meta: {},
 			injected_values: [],
 			injected_html: {},
-			black_list_countries: []
+			black_list_countries: [],
+			onramp: {},
+			offramp: {},
+			user_payments: {}
 		},
 		email: {}
 	};
@@ -185,7 +191,10 @@ exports.KIT_CONFIG_KEYS = [
 	'injected_values',
 	'injected_html',
 	'user_meta',
-	'black_list_countries'
+	'black_list_countries',
+	'onramp',
+	'offramp',
+	'user_payments'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -319,8 +328,8 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	zero: {
-		maker: 0.3,
-		taker: 0.3
+		maker: 0.2,
+		taker: 0.2
 	},
 	lite: {
 		maker: 0.05,
@@ -328,7 +337,7 @@ exports.DEFAULT_FEES = {
 	},
 	member: {
 		maker: 0,
-		taker: 0.05
+		taker: 0
 	}
 };
 
@@ -591,7 +600,7 @@ exports.VERIFY_STATUS = {
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
-		content:url('https://s3.ap-northeast-2.amazonaws.com/public-holla-images/bitholla/bitholla-white--01.png');
+		content:url('${exports.GET_KIT_CONFIG().logo_image}}');
 		height: 2rem;
 	}
 	.swagger-ui .opblock.opblock-get .opblock-summary-method {

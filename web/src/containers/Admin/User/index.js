@@ -195,12 +195,17 @@ class App extends Component {
 	};
 
 	searchUser = (values) => {
-		if (values.id === 0) {
+		let valueData = values;
+		if (values.id) {
+			valueData['id'] = parseInt(valueData.id);
+		}
+		if (valueData.id === 0) {
 			message.error('User not found');
-		} else if (values.id) {
-			this.requestUserData({ id: values.id });
+		} else if (valueData.id) {
+			this.requestUserData({ id: valueData.id });
 		} else {
-			let searchUserdata = values && values.input ? values.input.trim() : '';
+			let searchUserdata =
+				valueData && valueData.input ? valueData.input.trim() : '';
 			searchUserdata = searchUserdata.toLowerCase();
 			this.requestUserData({ search: searchUserdata });
 		}
@@ -296,6 +301,7 @@ class App extends Component {
 									label: 'Id',
 									placeholder: ' id ',
 									validate: [],
+									min: 1,
 								},
 								input: {
 									type: 'string',
