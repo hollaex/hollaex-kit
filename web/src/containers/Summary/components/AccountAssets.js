@@ -77,9 +77,12 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 						<EditWrapper stringId="ZERO_ASSET,DEPOSIT_ASSETS,OPEN_WALLET" />
 					</div>
 					<div
-						className={classnames('w-100 donut-container mb-4', {
-							'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
-						})}
+						className={classnames(
+							'w-100 py-1 donut-container mb-4 overflow-visible',
+							{
+								'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+							}
+						)}
 					>
 						{chartData.length ? (
 							<DonutChart coins={coins} chartData={chartData} />
