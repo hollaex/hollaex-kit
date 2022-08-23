@@ -27,7 +27,7 @@ export const MENU_ITEMS = {
 	features: [
 		{
 			id: 'pro_trade',
-			path: '/trade/add/tabs',
+			path: '/markets',
 			icon_id: 'SIDEBAR_TRADING_ACTIVE',
 			string_id: 'PRO_TRADE',
 			hide_from_sidebar: true,

@@ -391,11 +391,7 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route path="trade/:pair" name="Trade" component={Trade} />
-				<Route
-					path="trade/add/tabs"
-					name="Trade Tabs"
-					component={AddTradeTabs}
-				/>
+				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />
 				<Route
 					path="quick-trade/:pair"
 					name="Quick Trade"

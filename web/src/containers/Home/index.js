@@ -570,7 +570,7 @@ class Home extends Component {
 								minHeight: this.calculateMinHeight(sectionsNumber),
 							}}
 							onClickDemo={
-								pair ? this.goTo(`trade/${pair}`) : this.goTo('trade/add/tabs')
+								pair ? this.goTo(`trade/${pair}`) : this.goTo('markets')
 							}
 							onClickTrade={this.goTo('signup')}
 						/>
