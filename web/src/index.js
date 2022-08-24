@@ -64,6 +64,7 @@ import {
 	setContracts,
 	setBroker,
 } from 'actions/appActions';
+import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
 import { LANGUAGE_KEY } from './config/constants';
@@ -160,6 +161,7 @@ const getConfigs = async () => {
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setContracts(getContracts(constants.coins)));
 	store.dispatch(setBroker(constants.broker));
+	store.dispatch(setPricesAndAsset({}, constants.coins));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {
