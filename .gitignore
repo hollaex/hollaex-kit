@@ -48,6 +48,9 @@ web/yarn-error.log*
 
 web/src/**/*.css
 
+plugins/dist
+plugins/json
+
 #HollaEx CLI related
 templates/local/nginx/conf.d/*
 templates/local/logs/*

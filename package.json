@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "plugin:kit": "npm run --prefix ./web dev:plugin --plugin=$npm_config_plugin",
+    "plugin:plugin": "npm run --prefix ./plugins start --plugin=$npm_config_plugin",
+    "plugin:dev": "concurrently \"npm run plugin:kit --plugin=$npm_config_plugin\" \"npm run plugin:plugin --plugin=$npm_config_plugin\""
+  },
+  "devDependencies": {
+    "concurrently": "7.3.0"
+  }
+}
