@@ -134,9 +134,8 @@ class Form extends Component {
 		} = this.props;
 
 		const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
-		const calculated_withdrawal_limit = math.divide(
-			withdrawal_limit,
-			prices[currency]
+		const calculated_withdrawal_limit = math.abs(
+			math.divide(withdrawal_limit, prices[currency])
 		);
 
 		const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
