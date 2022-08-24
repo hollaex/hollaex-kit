@@ -134,14 +134,16 @@ class Form extends Component {
 		} = this.props;
 
 		const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
-		const calculated_withdrawal_limit = math.divide(
-			withdrawal_limit,
-			prices[currency]
-		);
-
 		const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit, max: coin_max } =
+			coins[currency] || DEFAULT_COIN_DATA;
+
+		const oraclePrice = prices[currency];
+		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+		const calculated_withdrawal_limit = has_price
+			? math.divide(withdrawal_limit, oraclePrice)
+			: coin_max;
 
 		let amount = math.number(
 			math.max(

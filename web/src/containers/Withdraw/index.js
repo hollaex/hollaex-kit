@@ -229,13 +229,16 @@ class Withdraw extends Component {
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
-		const calculated_withdrawal_limit = math.divide(
-			withdrawal_limit,
-			prices[currency]
-		);
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_fees = {}, network } =
+		const { increment_unit, withdrawal_fees = {}, network, max: coin_max } =
 			coins[currency] || DEFAULT_COIN_DATA;
+
+		const oraclePrice = prices[currency];
+		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+		const calculated_withdrawal_limit = has_price
+			? math.divide(withdrawal_limit, oraclePrice)
+			: coin_max;
+
 		const isPercentage = fee_type === 'percentage';
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
