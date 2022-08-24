@@ -229,8 +229,9 @@ class Withdraw extends Component {
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
-		const calculated_withdrawal_limit = math.abs(
-			math.divide(withdrawal_limit, prices[currency])
+		const calculated_withdrawal_limit = math.divide(
+			withdrawal_limit,
+			prices[currency]
 		);
 		const balanceAvailable = balance[`${currency}_available`];
 		const { increment_unit, withdrawal_fees = {}, network } =
