@@ -146,7 +146,14 @@ class AppBar extends Component {
 	renderIcon = () => {
 		const { icons: ICONS, isEditMode } = this.props;
 		return (
-			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
+			<div
+				className={classnames(
+					'app_bar-icon',
+					'text-uppercase',
+					'h-100',
+					'ml-3'
+				)}
+			>
 				<div className="d-flex h-100">
 					<Link
 						to={DEFAULT_URL}
@@ -178,7 +185,7 @@ class AppBar extends Component {
 		return (
 			<div className={classnames('app_bar-icon', 'text-uppercase', 'h-100')}>
 				<div className="d-flex h-100">
-					<div className="'h-100'">
+					<div className="h-100">
 						<Image
 							iconId="EXCHANGE_LOGO"
 							icon={ICONS['EXCHANGE_LOGO']}

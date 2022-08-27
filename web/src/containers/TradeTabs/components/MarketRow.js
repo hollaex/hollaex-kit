@@ -26,6 +26,8 @@ class MarketRow extends Component {
 				<td className="sticky-col">
 					<div className="d-flex align-items-center">
 						<Image
+							width='32px'
+							height='32px'
 							iconId={icon_id}
 							icon={ICONS[icon_id]}
 							wrapperClassName="market-list__coin-icons"

@@ -3912,7 +3912,9 @@ table th {
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
-    font-size: 1rem; }
+    font-size: 1rem;
+    max-height: 70vh;
+    overflow-y: auto; }
     .fee-limits-wrapper .content-txt .fee-reduction-container {
       border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {

@@ -661,6 +661,8 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 	.content-txt {
 		font-size: $font-size-subtext;
+		max-height: 70vh;
+		overflow-y: auto;
 		.fee-reduction-container {
 			border: 1px solid $colors-border;
 		}
