@@ -99,6 +99,7 @@ class Earnings extends Component {
 			currentScreen: '',
 			userDetails: [],
 			isLoading: false,
+			isEarning: false,
 		};
 	}
 
@@ -111,6 +112,7 @@ class Earnings extends Component {
 		this.setState({
 			error: '',
 			buttonSubmitting: true,
+			isEarning: true,
 		});
 		return getFees({ start_date, end_date })
 			.then((response) => {
@@ -123,13 +125,14 @@ class Earnings extends Component {
 				if (response) {
 					this.handleData(response);
 				}
-				this.setState({ buttonSubmitting: false });
+				this.setState({ buttonSubmitting: false, isEarning: false });
 			})
 			.catch((error) => {
 				const message = error.data ? error.data.message : error.message;
 				this.setState({
 					error: message,
 					buttonSubmitting: false,
+					isEarning: false,
 				});
 			});
 	};
@@ -308,7 +311,7 @@ class Earnings extends Component {
 									/>
 								);
 							}}
-							loading={!earningsData.length}
+							loading={this.state.isEarning}
 						/>
 					</div>
 				</div>
