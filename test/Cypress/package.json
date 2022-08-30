@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "cypress-cucumber-preprocessor": "^4.3.1",
+    "cypress-tags": "^1.0.0",
     "totp-generator": "^0.0.13"
   },
   "cypress-cucumber-preprocessor": {
@@ -16,8 +17,9 @@
   },
   "scripts": {
     "debug.javascript.codelens.npmScripts": "never",
-    "test": "npx cypress-tags run -e",
+    "test-ci": "npx cypress-tags run --browser chrome --record -e",
+    "test": "npx cypress-tags run --browser chrome -e",
+    "pre-ci": "npm run test-ci TAGS=@pre",
     "pre": "npm test TAGS=@pre"
-   
   }
-  }
+}
