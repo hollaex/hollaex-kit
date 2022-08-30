@@ -17,7 +17,7 @@
   },
   "scripts": {
     "debug.javascript.codelens.npmScripts": "never",
-    "test": "npx cypress-tags run --record --key be1ff852-f35f-471f-98c7-dddd2a787615 -e",
+    "test": "npx cypress-tags run --browser chrome --record --key be1ff852-f35f-471f-98c7-dddd2a787615 -e",
     "pre": "npm test TAGS=@pre"
   }
 }
