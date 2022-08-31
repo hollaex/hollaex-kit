@@ -186,7 +186,12 @@ class AddTheme extends Component {
 
 	validateColor = ({ target: { value, name } }) => {
 		if (!this.isCalculated(name) && !validateColor(value)) {
-			this.onReset(name);
+			const color = `#${value}`;
+			if (validateColor(color)) {
+				this.updateTheme(color, name);
+			} else {
+				this.onReset(name);
+			}
 		} else if (this.isCalculated(name) && !this.validateRatio(value)) {
 			this.updateRatio(0, name);
 		}
