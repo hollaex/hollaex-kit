@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const uglifyEs = require('uglify-es');
 const { minify: htmlMinify } = require('html-minifier-terser');
-const { FILES, PATHS } = require('./scripts/patterns');
+const { FILES, PATHS } = require('./patterns');
 
 const { env: { PLUGIN: plugin } } = process;
 
@@ -11,7 +11,7 @@ if (!plugin) {
 	process.exit(1);
 }
 
-const pluginPath = path.resolve(__dirname, PATHS.ROOT, plugin, PATHS.SERVER);
+const pluginPath = path.resolve(__dirname, '..', PATHS.ROOT, plugin, PATHS.SERVER);
 
 if (!fs.existsSync(pluginPath)) {
 	console.error(`Plugin ${plugin} does not exist`);

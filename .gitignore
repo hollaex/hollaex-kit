@@ -50,6 +50,7 @@ web/src/**/*.css
 
 plugins/dist
 plugins/json
+plugins/config
 
 #HollaEx CLI related
 templates/local/nginx/conf.d/*

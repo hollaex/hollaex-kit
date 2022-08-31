@@ -1,7 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 const beautify = require("json-beautify");
-const { PLUGINS_PATH, PATHS, FILES } = require("./patterns");
+const glob = require("glob");
+const merge = require("lodash.merge");
+const { PLUGINS_PATH, PATHS, FILES, PATTERNS } = require("./patterns");
 
 const saveFile = (output, content) => {
   fs.writeFileSync(output, beautify(content, null, 4, 100));
@@ -32,8 +34,35 @@ const getBundlePath = (pathname) => {
   return `${PLUGINS_PATH}/${pluginName}/v${version}/${bundleName}.js`
 }
 
+const getWebView = (plugin) => {
+  const assetsPath = `${PATHS.ROOT}/${plugin}/${PATHS.ASSETS}`;
+  const viewsPattern = `${PATHS.ROOT}/${plugin}/${PATTERNS.VIEW}`;
+
+  let assetsAdded = false;
+  const assets = {
+    strings: readFile(`${assetsPath}/${FILES.STRINGS}`),
+    icons: readFile(`${assetsPath}/${FILES.ICONS}`),
+  };
+
+  const webViews = glob.sync(viewsPattern, { noglobstar: true })
+    .reduce((acc, curr) => {
+      const view = readFile(`${path.dirname(curr)}/${FILES.VIEW}`);
+      const generatedView = {
+        src: getBundlePath(curr),
+        ...(assetsAdded ? {} : { meta: { ...assets }}),
+      };
+
+      const webView = merge({}, generatedView, view);
+
+      assetsAdded = true;
+
+      return [...acc, webView]
+    }, []);
+
+  return webViews.length !== 0 ? webViews : null;
+}
+
 module.exports = {
   saveFile,
-  readFile,
-  getBundlePath,
+  getWebView,
 }

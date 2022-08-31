@@ -6,5 +6,6 @@ const PORT = 8080;
 app.use(nocache());
 app.use(express.static('dist'));
 app.use(express.static('json'));
+app.use(express.static('config'));
 
 app.listen(PORT, () => console.log(`Server listening on port: ${PORT}`));
