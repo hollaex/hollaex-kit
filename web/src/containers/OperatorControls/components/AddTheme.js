@@ -113,14 +113,14 @@ class AddTheme extends Component {
 	};
 
 	isSaveDisabled = () => {
-		const { isEditTheme, themeKey, theme } = this.state;
+		const { isEditTheme, themeKey, theme, isSingleBase } = this.state;
 		const { themes } = this.props;
 		const themeKeys = Object.keys(themes);
 
 		return (
 			!themeKey ||
 			(!isEditTheme && themeKeys.includes(themeKey)) ||
-			(theme && !this.validateTheme(theme))
+			(!isSingleBase && theme && !this.validateTheme(theme))
 		);
 	};
 
