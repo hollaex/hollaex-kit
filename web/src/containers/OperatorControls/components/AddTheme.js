@@ -113,17 +113,46 @@ class AddTheme extends Component {
 	};
 
 	isSaveDisabled = () => {
-		const { isEditTheme, themeKey } = this.state;
+		const { isEditTheme, themeKey, theme } = this.state;
 		const { themes } = this.props;
 		const themeKeys = Object.keys(themes);
 
-		return !themeKey || (!isEditTheme && themeKeys.includes(themeKey));
+		return (
+			!themeKey ||
+			(!isEditTheme && themeKeys.includes(themeKey)) ||
+			(theme && !this.validateTheme(theme))
+		);
+	};
+
+	validateTheme = (theme) => {
+		let is_valid = true;
+
+		Object.entries(theme).forEach(([name, value]) => {
+			const is_calculated = this.isCalculated(name);
+			if (is_calculated && !this.validateRatio(value)) {
+				is_valid = false;
+			} else if (!is_calculated && !validateColor(value)) {
+				is_valid = false;
+			}
+		});
+
+		return is_valid;
 	};
 
 	onReset = (name) => {
 		const { theme } = this.state;
 		const baseColor = theme['base_background'];
-		const upstreamTheme = Color(baseColor).isLight()
+
+		let color;
+		if (validateColor(baseColor)) {
+			color = baseColor;
+		} else if (validateColor(`#${baseColor}`)) {
+			color = `#${baseColor}`;
+		} else {
+			color = `#000000`;
+		}
+
+		const upstreamTheme = Color(color).isLight()
 			? initialLightTheme
 			: initialDarkTheme;
 		const value = getColorByKey(name, upstreamTheme);
