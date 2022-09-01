@@ -74,6 +74,7 @@ import {
 	IS_PLUGIN_DEV_MODE,
 } from 'utils/plugin';
 import { drawFavIcon } from 'helpers/vanilla';
+import { setupManifest } from 'helpers/manifest';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -231,11 +232,16 @@ const bootstrapApp = (
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	// window.appConfig = { ...appConfig }
 	const {
-		app: { remoteRoutes, plugins },
+		app: {
+			remoteRoutes,
+			plugins,
+			info: { name },
+		},
 	} = store.getState();
 
 	const RCStrings = generateRCStrings(plugins);
 	const mergedStrings = merge({}, RCStrings, appConfig.strings);
+	setupManifest({ name, short_name: name });
 
 	initializeStrings(mergedStrings);
 

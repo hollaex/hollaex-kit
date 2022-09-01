@@ -3,7 +3,8 @@
         "viewportWidth": 1400,
         "viewportHeight": 800,
         "chromeWebSecurity": false,
-        "defaultCommandTimeout": 10000 ,
+        "defaultCommandTimeout": 10000,
+        "projectId": "zx8ctg",
         "env": {
                 "TAGS": "not @waiting",
                 "NODE_ENV": "",
