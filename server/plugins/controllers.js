@@ -38,7 +38,7 @@ const getPlugins = async (req, res) => {
 					'postscript'
 				]
 			},
-			order: [[ 'id', 'asc' ]]
+			order: [['id', 'asc']]
 		};
 
 		if (name) {
@@ -59,7 +59,7 @@ const getPlugins = async (req, res) => {
 			count: data.count,
 			data: data.rows.map((plugin) => {
 				plugin.enabled_admin_view = !!plugin.admin_view;
-				return lodash.omit(plugin, [ 'admin_view' ]);
+				return lodash.omit(plugin, ['admin_view']);
 			})
 		};
 
@@ -225,7 +225,7 @@ const postPlugin = async (req, res) => {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
 						}
 
-						pluginConfig[field] =  minifiedScript.code;
+						pluginConfig[field] = minifiedScript.code;
 					}
 					break;
 				case 'description':
@@ -281,7 +281,10 @@ const postPlugin = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			process.exit();
+			const { startPlugin } = require('./index');
+
+			startPlugin(plugin);
+			// process.exit();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -411,7 +414,7 @@ const putPlugin = async (req, res) => {
 							if (
 								lodash.isPlainObject(plugin[field])
 								&& plugin[field][key].overwrite === false
-									&& (!value[key] || value[key].overwrite === false)
+								&& (!value[key] || value[key].overwrite === false)
 							) {
 								value[key] = plugin[field][key];
 							}
@@ -764,6 +767,7 @@ const enablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
+			// startPlugin(plugin);
 			process.exit();
 		}
 	} catch (err) {
