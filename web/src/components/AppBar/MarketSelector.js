@@ -194,6 +194,7 @@ class MarketSelector extends Component {
 							placeHolder={`${STRINGS['SEARCH_TXT']}...`}
 							className="app-bar-search-field"
 							handleSearch={handleSearch}
+							showCross
 						/>
 					</div>
 					<div className="scroll-view">

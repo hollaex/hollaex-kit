@@ -75,6 +75,16 @@ $outline-height: 1.5px;
 		}
 		bottom: 0.25rem;
 	}
+
+	.clear-field {
+		@include size($valid-icon-size);
+		svg {
+			@include size($valid-icon-size);
+		}
+		position: absolute;
+		right: 0px;
+		bottom: 0.5rem;
+	}
 }
 .input-box-field {
 	width: 100%;

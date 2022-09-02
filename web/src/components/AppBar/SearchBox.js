@@ -13,6 +13,8 @@ class SearchBox extends React.Component {
 		dispatch(reset(FORM_NAME));
 	}
 
+	handleOnClear = () => {};
+
 	render() {
 		const {
 			handleSearch,
@@ -20,6 +22,7 @@ class SearchBox extends React.Component {
 			className = '',
 			outlineClassName = '',
 			name,
+			showCross = false,
 		} = this.props;
 		const searchField = {
 			search: {
@@ -33,6 +36,11 @@ class SearchBox extends React.Component {
 					: 'app-bar-search-field-outline',
 				placeholder: placeHolder,
 				onChange: handleSearch,
+				showCross: showCross,
+				onCrossClick: (e) => {
+					handleSearch('');
+					this.props.dispatch(reset(FORM_NAME));
+				},
 			},
 		};
 

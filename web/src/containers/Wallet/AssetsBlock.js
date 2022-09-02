@@ -160,6 +160,7 @@ const AssetsBlock = ({
 							name="search-assets"
 							placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
 							handleSearch={handleSearch}
+							showCross
 						/>
 					</EditWrapper>
 					<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
