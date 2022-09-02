@@ -18,6 +18,8 @@ export const FieldContent = ({
 	hideUnderline = false,
 	contentClassName = '',
 	hideCheck = false,
+	showCross = false,
+	onCrossClick = () => {},
 	outlineClassName = '',
 	displayError,
 	error,
@@ -62,6 +64,13 @@ export const FieldContent = ({
 							<ReactSVG
 								src={STATIC_ICONS.BLACK_CHECK}
 								className="field-valid"
+							/>
+						)}
+						{showCross && hasValue && (
+							<ReactSVG
+								onClick={onCrossClick}
+								src={STATIC_ICONS.CANCEL_CROSS_ACTIVE}
+								className="clear-field"
 							/>
 						)}
 					</div>
@@ -153,6 +162,8 @@ class FieldWrapper extends Component {
 			preview,
 			isEmail = false,
 			emailMsg = '',
+			showCross = showCross,
+			onCrossClick = () => {},
 		} = this.props;
 
 		const displayError = !(active || focused) && (visited || touched) && error;
@@ -184,6 +195,8 @@ class FieldWrapper extends Component {
 					preview={preview}
 					isEmail={isEmail}
 					emailMsg={emailMsg}
+					onCrossClick={onCrossClick}
+					showCross={showCross}
 				>
 					{children}
 					{notification && typeof notification === 'object' && (
