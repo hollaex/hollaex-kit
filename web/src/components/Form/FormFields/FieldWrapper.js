@@ -66,13 +66,13 @@ export const FieldContent = ({
 								className="field-valid"
 							/>
 						)}
-						{showCross && hasValue && (
+						{/* {showCross && hasValue && (
 							<ReactSVG
 								onClick={onCrossClick}
 								src={STATIC_ICONS.CANCEL_CROSS_ACTIVE}
 								className="clear-field"
 							/>
-						)}
+						)} */}
 					</div>
 					{!hideUnderline && (
 						<span
