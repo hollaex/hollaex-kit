@@ -749,8 +749,31 @@ class Home extends Component {
 			case 'carousel_section': {
 				const { markets } = this.props;
 				const { chartData } = this.state;
-				const marketsData = [...markets, ...markets, ...markets];
-				const items = marketsData.map((market, index) => (
+				let testMarket = [];
+				let loopCnt = 0;
+				if (markets.length < 12) {
+					if (markets.length === 1) {
+						loopCnt = 12;
+					} else if (markets.length === 2) {
+						loopCnt = 6;
+					} else if (markets.length === 3) {
+						loopCnt = 4;
+					} else if (markets.length === 4 || markets.length === 5) {
+						loopCnt = 3;
+					} else if (markets.length > 5 || markets.length < 12) {
+						loopCnt = 2;
+					}
+
+					for (let i = 0; i < loopCnt; i++) {
+						testMarket = [...testMarket, ...markets];
+					}
+				} else {
+					testMarket = [...markets];
+				}
+
+				const duration = parseInt((50 / 12) * testMarket.length);
+				const marketsData = [...testMarket, ...testMarket, ...testMarket];
+				const items = marketsData.map((market) => (
 					<MarketCard
 						market={market}
 						onDragStart={this.handleDragStart}
@@ -762,11 +785,15 @@ class Home extends Component {
 				return (
 					<div className="home_carousel_section ">
 						<div class="slideshow-wrapper">
-							<div class="parent-slider d-flex">
+							<div
+								class="parent-slider d-flex"
+								style={{ animationDuration: `${duration}s` }}
+							>
 								{items.map((sec, index) => {
 									return (
 										<div
 											className="section"
+											key={index}
 											onClick={() => this.sectionToNav(sec)}
 										>
 											{sec}
