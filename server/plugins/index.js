@@ -13,7 +13,7 @@ const { Plugin } = require('../db/models');
 const path = require('path');
 const fs = require('fs');
 const latestVersion = require('latest-version');
-const npm = require('npm-programmatic');
+const npmi = require('npmi');
 const sequelize = require('sequelize');
 const _eval = require('eval');
 const toolsLib = require('hollaex-tools-lib');
@@ -76,30 +76,48 @@ const getInstalledLibrary = async (name, version) => {
 
 const installLibrary = async (library) => {
 	const [name, version = 'latest'] = library.split('@');
+	const options = {
+		name,
+		version,
+		path: '.',
+		forceInstall: false,
+		npmLoad: {
+			loglevel: 'silent'
+		}
+	};
 
-	try {
-		const data = await getInstalledLibrary(name, version);
-		return data;
-	} catch (err) {
-		loggerPlugin.verbose(
-			'plugins/index/installLibrary',
-			`${name} version ${version} installing`
+	
+	npmi(options, function (err, result) {
+		if (err) {
+			if (err.code === npmi.LOAD_ERR) {
+				loggerPlugin.error(
+					'plugins/installLibrary',
+					`Error installing packages for plugin ${name}`,
+					err.code,
+					err.message
+				);
+			}
+			else if (err.code === npmi.INSTALL_ERR) {
+				loggerPlugin.error(
+					'plugins/installLibrary',
+					`Error installing packages for plugin ${name}`,
+					err.code,
+					err.message
+				);
+			}
+			throw new Error(err.message);
+		}
+
+		// installed
+		loggerPlugin.info(
+			'plugins/installLibrary',
+			`Successful installation of packages for plugin ${name}`,
+			options.name+'@'+options.version+' installed successfully in '+path.resolve(options.path)
 		);
+	});
 
-		await npm.install([`${name}@${version}`], {
-			cwd: path.resolve(__dirname, '../'),
-			save: true,
-			output: true
-		});
-
-		loggerPlugin.verbose(
-			'plugins/index/installLibrary',
-			`${name} version ${version} installed`
-		);
-
-		const lib = require(name);
-		return lib;
-	}
+	const lib = require(name);
+	return lib;
 };
 
 checkStatus()
