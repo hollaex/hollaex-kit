@@ -40,8 +40,8 @@ const CustomizeEmailForm = ({
 
 	let originalInitialValue = {
 		...initialValues,
-		format: defaultEmailData.html.replace(/@@_BIT_@@/g, "'"),
-		title: defaultEmailData.title,
+		format: defaultEmailData?.html?.replace(/@@_BIT_@@/g, "'"),
+		title: defaultEmailData?.title,
 	};
 
 	useEffect(() => {
