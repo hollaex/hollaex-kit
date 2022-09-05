@@ -49,7 +49,7 @@ const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
 
 let app;
-let activePlugins = {};
+let disabledPlugins = {};
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
@@ -108,7 +108,8 @@ const installLibrary = async (library) => {
 const stopPlugin = async (plugin) => {
 
 	try {
-		delete activePlugins[plugin.name]
+		const subStr = plugin.script.match(/\"\/plugins(.*?)\"/g);
+		disabledPlugins[plugin.name] = subStr || [];
 
 	} catch (err) {
 		loggerPlugin.error(
@@ -196,7 +197,8 @@ const startPlugin = async (plugin) => {
 
 		_eval(plugin.script, plugin.name, context, true);
 
-		activePlugins[plugin.name] = true;
+		if (disabledPlugins[plugin.name]) delete disabledPlugins[plugin.name];
+
 
 		loggerPlugin.verbose(
 			'plugins/index/initialization',
@@ -233,10 +235,12 @@ checkStatus()
 		app.use((req, res, next) => {
 			if (req.path.length > 1 && req.path.includes('/plugins/')) {
 				//Check if plugin is disabled
-				next();
-			} else {
-				next();
+				for (let endpoints of Object.values(disabledPlugins)) {
+					console.log(endpoints.some(endpoint => endpoint.includes(req.path)))
+					if (endpoints.some(endpoint => endpoint.includes(req.path))) { return res.status(404).send() }
+				}
 			}
+			next();
 		})
 
 		app.use('/plugins', routes);
