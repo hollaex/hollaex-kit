@@ -30,11 +30,12 @@ export const generateFormValues = (
 	selectedBank,
 	activeTab,
 	withdrawal_limit,
-	withdrawal_fee
+	withdrawal_fee,
+	prices
 ) => {
 	const { fullname, min, increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
 
-	let MAX = withdrawal_limit;
+	let MAX = mathjs.divide(withdrawal_limit, prices[symbol]);
 	if (withdrawal_limit === 0) MAX = '';
 	if (withdrawal_limit === -1) MAX = 0;
 

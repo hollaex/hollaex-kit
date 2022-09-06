@@ -270,8 +270,8 @@ class App extends Component {
 
 	handleFitHeight = (path) => {
 		let pathname = this.getClassForActivePath(path);
-		if (path.indexOf('/trade/add/tabs') !== -1) {
-			pathname = '/trade/add/tabs';
+		if (path.indexOf('/markets') !== -1) {
+			pathname = '/markets';
 		}
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
 	};

@@ -29,6 +29,7 @@ class Form extends Component {
 			user: { balance, verification_level },
 			coins,
 			banks,
+			prices,
 		} = this.props;
 		const { activeTab } = this.state;
 
@@ -44,12 +45,13 @@ class Form extends Component {
 			coins,
 			verification_level,
 			banks,
-			initialBank
+			initialBank,
+			prices
 		);
 	}
 
 	UNSAFE_componentWillUpdate(nextProps, nextState) {
-		const { selectedBank } = this.props;
+		const { selectedBank, prices } = this.props;
 		const { activeTab } = this.state;
 		if (
 			nextProps.selectedBank !== selectedBank ||
@@ -82,7 +84,8 @@ class Form extends Component {
 				coins,
 				verification_level,
 				banks,
-				initialBank
+				initialBank,
+				prices
 			);
 		}
 	}
@@ -95,6 +98,7 @@ class Form extends Component {
 				currency,
 				user: { balance, verification_level },
 				coins,
+				prices,
 			} = this.props;
 			const { activeTab } = this.state;
 
@@ -110,7 +114,8 @@ class Form extends Component {
 				coins,
 				verification_level,
 				banks,
-				initialBank
+				initialBank,
+				prices
 			);
 		}
 	}
@@ -125,12 +130,20 @@ class Form extends Component {
 			change,
 			coins,
 			currency,
+			prices,
 		} = this.props;
 
 		const withdrawal_limit = getFiatWithdrawalLimit(verification_level);
 		const { rate: withdrawal_fee } = getFiatWithdrawalFee(currency);
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit } = coins[currency] || DEFAULT_COIN_DATA;
+		const { increment_unit, max: coin_max } =
+			coins[currency] || DEFAULT_COIN_DATA;
+
+		const oraclePrice = prices[currency];
+		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+		const calculated_withdrawal_limit = has_price
+			? math.divide(withdrawal_limit, oraclePrice)
+			: coin_max;
 
 		let amount = math.number(
 			math.max(
@@ -145,9 +158,9 @@ class Form extends Component {
 		if (
 			withdrawal_limit !== 0 &&
 			withdrawal_limit !== -1 &&
-			math.larger(amount, withdrawal_limit)
+			math.larger(amount, calculated_withdrawal_limit)
 		) {
-			amount = withdrawal_limit;
+			amount = calculated_withdrawal_limit;
 		}
 
 		change(
@@ -165,7 +178,8 @@ class Form extends Component {
 		coins,
 		verification_level,
 		banks,
-		selectedBank
+		selectedBank,
+		prices
 	) => {
 		const { icons: ICONS, activeTheme, activeLanguage, constants } = this.props;
 		const balanceAvailable = balance[`${currency}_available`];
@@ -188,7 +202,8 @@ class Form extends Component {
 			selectedBank,
 			activeTab,
 			withdrawal_limit,
-			withdrawal_fee
+			withdrawal_fee,
+			prices
 		);
 
 		const initialValues = generateInitialValues(

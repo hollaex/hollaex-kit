@@ -64,6 +64,7 @@ import {
 	setContracts,
 	setBroker,
 } from 'actions/appActions';
+import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
 import { LANGUAGE_KEY } from './config/constants';
@@ -73,6 +74,7 @@ import {
 	IS_PLUGIN_DEV_MODE,
 } from 'utils/plugin';
 import { drawFavIcon } from 'helpers/vanilla';
+import { setupManifest } from 'helpers/manifest';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -160,6 +162,7 @@ const getConfigs = async () => {
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setContracts(getContracts(constants.coins)));
 	store.dispatch(setBroker(constants.broker));
+	store.dispatch(setPricesAndAsset({}, constants.coins));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {
@@ -229,11 +232,16 @@ const bootstrapApp = (
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	// window.appConfig = { ...appConfig }
 	const {
-		app: { remoteRoutes, plugins },
+		app: {
+			remoteRoutes,
+			plugins,
+			info: { name },
+		},
 	} = store.getState();
 
 	const RCStrings = generateRCStrings(plugins);
 	const mergedStrings = merge({}, RCStrings, appConfig.strings);
+	setupManifest({ name, short_name: name });
 
 	initializeStrings(mergedStrings);
 

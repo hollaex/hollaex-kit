@@ -362,8 +362,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -379,8 +379,8 @@ table th {
     .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
       height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -3238,8 +3238,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3393,7 +3393,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -3762,36 +3762,38 @@ table th {
         margin-bottom: 8px; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
         width: 3rem; }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
-          fill: var(--coin-btc); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
-          fill: var(--coin-eth); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
-          fill: var(--coin-bch); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
-          fill: var(--coin-xrp); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
-          fill: var(--coin-xmr); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .ada-icon {
-          fill: var(--coin-ada); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .bnb-icon {
-          fill: var(--coin-bnb); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .dai-icon {
-          fill: var(--coin-dai); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eos-icon {
-          fill: var(--coin-eos); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .ltc-icon {
-          fill: var(--coin-ltc); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .trx-icon {
-          fill: var(--coin-trx); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .tusd-icon {
-          fill: var(--coin-tusd); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xlm-icon {
-          fill: var(--coin-xlm); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
-          fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg {
+          width: 2.5rem; }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
+            fill: var(--coin-btc); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
+            fill: var(--coin-eth); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
+            fill: var(--coin-bch); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
+            fill: var(--coin-xrp); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
+            fill: var(--coin-xmr); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ada-icon {
+            fill: var(--coin-ada); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bnb-icon {
+            fill: var(--coin-bnb); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .dai-icon {
+            fill: var(--coin-dai); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eos-icon {
+            fill: var(--coin-eos); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ltc-icon {
+            fill: var(--coin-ltc); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .trx-icon {
+            fill: var(--coin-trx); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .tusd-icon {
+            fill: var(--coin-tusd); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xlm-icon {
+            fill: var(--coin-xlm); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
+            fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .summary-container .asset_wrapper_width {
     width: 100%; }
   .summary-container .xht_asset_wrapper_width {
@@ -3912,7 +3914,9 @@ table th {
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
-    font-size: 1rem; }
+    font-size: 1rem;
+    max-height: 70vh;
+    overflow-y: auto; }
     .fee-limits-wrapper .content-txt .fee-reduction-container {
       border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {
@@ -4094,36 +4098,39 @@ table th {
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;
   margin: 0.3rem 0.3rem 0 0.3rem; }
-  .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
-  .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
-    fill: var(--coin-btc); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
-  .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
-    fill: var(--coin-eth); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
-    fill: var(--coin-bch); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xrp-icon {
-    fill: var(--coin-xrp); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xmr-icon {
-    fill: var(--coin-xmr); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .ada-icon {
-    fill: var(--coin-ada); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .bnb-icon {
-    fill: var(--coin-bnb); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .dai-icon {
-    fill: var(--coin-dai); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .eos-icon {
-    fill: var(--coin-eos); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .ltc-icon {
-    fill: var(--coin-ltc); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .trx-icon {
-    fill: var(--coin-trx); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .tusd-icon {
-    fill: var(--coin-tusd); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xlm-icon {
-    fill: var(--coin-xlm); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .default-icon {
-    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .market-list__container .market-list__block .market-list__coin-icons svg {
+    width: 2.5rem !important;
+    height: 2.5rem !important; }
+    .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
+    .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
+      fill: var(--coin-btc); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
+    .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
+      fill: var(--coin-eth); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
+      fill: var(--coin-bch); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xrp-icon {
+      fill: var(--coin-xrp); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xmr-icon {
+      fill: var(--coin-xmr); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .ada-icon {
+      fill: var(--coin-ada); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .bnb-icon {
+      fill: var(--coin-bnb); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .dai-icon {
+      fill: var(--coin-dai); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .eos-icon {
+      fill: var(--coin-eos); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .ltc-icon {
+      fill: var(--coin-ltc); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .trx-icon {
+      fill: var(--coin-trx); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .tusd-icon {
+      fill: var(--coin-tusd); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xlm-icon {
+      fill: var(--coin-xlm); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .default-icon {
+      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .market-list__container .market-list__block .market-list__block-table {
   width: 100%;
@@ -5531,8 +5538,7 @@ table th {
       height: 0.5px;
       opacity: 0.7; }
   .modal-market-menu .app-bar-search-field {
-    flex-direction: row;
-    padding-left: 0.5rem; }
+    flex-direction: row; }
   .modal-market-menu .app-bar-add-tab-search {
     height: 4rem; }
   .modal-market-menu .app-bar-tab-menu-list {
@@ -5554,7 +5560,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -7704,6 +7710,17 @@ table th {
     .field-children .field-valid svg {
       width: 1.25rem;
       height: 1.25rem; }
+  .field-children .clear-field {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    right: 0px;
+    bottom: 0.5rem; }
+    .field-children .clear-field svg {
+      width: 1.25rem;
+      height: 1.25rem; }
 
 .input-box-field {
   width: 100%;
@@ -8274,14 +8291,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -10428,7 +10445,7 @@ table th {
       margin-left: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 23rem;
-        margin-left: 1.5rem;
+        margin-left: 2rem !important;
         margin-top: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
@@ -10941,7 +10958,11 @@ body {
   color: var(--labels_important-active-labels-text-graphics);
   font-size: 1.1rem !important;
   font-family: "Open Sans" !important;
-  height: 100%; }
+  height: 100%;
+  transition: all 0.3s; }
+
+* {
+  transition: all 0.3s; }
 
 .direction_rtl.apply_rtl {
   direction: rtl; }

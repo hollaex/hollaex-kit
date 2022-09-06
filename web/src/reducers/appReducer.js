@@ -101,8 +101,6 @@ const INITIAL_STATE = {
 			min: 0.0001,
 			max: 100000,
 			increment_unit: 0.001,
-			deposit_limits: {},
-			withdrawal_limits: {},
 		},
 		xrp: {
 			id: 5,
@@ -115,8 +113,6 @@ const INITIAL_STATE = {
 			min: 0.0001,
 			max: 100000,
 			increment_unit: 0.001,
-			deposit_limits: {},
-			withdrawal_limits: {},
 		},
 		eur: {
 			id: 1,
@@ -129,8 +125,6 @@ const INITIAL_STATE = {
 			min: 0.0001,
 			max: 100000,
 			increment_unit: 0.0001,
-			deposit_limits: {},
-			withdrawal_limits: {},
 		},
 		btc: {
 			id: 2,
@@ -143,8 +137,6 @@ const INITIAL_STATE = {
 			min: 0.0001,
 			max: 100000,
 			increment_unit: 0.0001,
-			deposit_limits: {},
-			withdrawal_limits: {},
 		},
 		eth: {
 			id: 3,
@@ -157,8 +149,6 @@ const INITIAL_STATE = {
 			min: 0.0001,
 			max: 100000,
 			increment_unit: 0.001,
-			deposit_limits: {},
-			withdrawal_limits: {},
 		},
 	},
 	constants: {},

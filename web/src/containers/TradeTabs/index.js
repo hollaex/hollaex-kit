@@ -199,6 +199,7 @@ class AddTradeTab extends Component {
 									outlineClassName="trade_tabs-search-outline"
 									placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
 									handleSearch={this.handleTabSearch}
+									showCross
 								/>
 							</div>
 							<div className="mt-2">

@@ -858,7 +858,8 @@ const issueToken = (
 	isSupport = false,
 	isSupervisor = false,
 	isKYC = false,
-	isCommunicator = false
+	isCommunicator = false,
+	expiresIn = getKitSecrets().security.token_time // 24 hours by default
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -894,7 +895,7 @@ const issueToken = (
 		},
 		SECRET,
 		{
-			expiresIn: getKitSecrets().security.token_time
+			expiresIn
 		}
 	);
 	return token;

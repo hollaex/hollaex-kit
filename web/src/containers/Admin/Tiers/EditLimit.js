@@ -100,6 +100,9 @@ class EditLimit extends Component {
 		return (
 			<Fragment>
 				<Select
+					style={{
+						minWidth: '110px',
+					}}
 					onSelect={(value) => this.handleChange(value, level, type)}
 					value={selectData[type]}
 					disabled={isDeposit}

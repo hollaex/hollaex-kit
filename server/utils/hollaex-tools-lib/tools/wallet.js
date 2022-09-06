@@ -676,7 +676,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
-						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
+						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -703,7 +703,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
-						format: (format && format === 'csv') ? 'all' : null, // for csv get all data
+						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -749,7 +749,7 @@ const getUserTransactionsByKitId = (
 	}
 	return promiseQuery
 		.then((transactions) => {
-			if (format) {
+			if (format && format === 'csv') {
 				if (transactions.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
