@@ -53,6 +53,10 @@ body {
 .language_rtl {
 }
 
+* {
+	transition: all 0.3s;
+}
+
 .direction_rtl {
 	&.apply_rtl {
 		direction: rtl;
