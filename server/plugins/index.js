@@ -236,7 +236,6 @@ checkStatus()
 			if (req.path.length > 1 && req.path.includes('/plugins/')) {
 				//Check if plugin is disabled
 				for (let endpoints of Object.values(disabledPlugins)) {
-					console.log(endpoints.some(endpoint => endpoint.includes(req.path)))
 					if (endpoints.some(endpoint => endpoint.includes(req.path))) { return res.status(404).send() }
 				}
 			}
