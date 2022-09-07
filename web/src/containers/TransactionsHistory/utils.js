@@ -5,16 +5,15 @@ import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
 
-import STRINGS from '../../config/localizedStrings';
-
-import { Image } from '../../components';
+import STRINGS from 'config/localizedStrings';
+import { Image } from 'components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import { getFormatTimestamp } from '../../utils/utils';
+} from 'config/constants';
+import { getFormatTimestamp } from 'utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({

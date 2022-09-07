@@ -1,10 +1,10 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { ChatMessageBox, ButtonLink } from '../';
+import { ChatMessageBox, ButtonLink } from 'components';
 import ChatEmoji from './ChatEmoji';
-import STRINGS from '../../config/localizedStrings';
-import { isLoggedIn } from '../../utils/token';
+import STRINGS from 'config/localizedStrings';
+import { isLoggedIn } from 'utils/token';
 
 const ChatFooter = ({
 	sendMessage,

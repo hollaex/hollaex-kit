@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button, IconTitle } from '../../components';
-import { EditWrapper } from 'components';
-
-import STRINGS from '../../config/localizedStrings';
+import { Button, IconTitle, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const ReviewEmailContent = ({ onConfirmEmail, icons: ICONS }) => {

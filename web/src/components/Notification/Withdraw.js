@@ -1,10 +1,8 @@
 import React from 'react';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { EXPLORERS_ENDPOINT } from '../../config/constants';
-import { Button } from '../';
-
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import { EXPLORERS_ENDPOINT } from 'config/constants';
+import { Button, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 const WithdrawNotification = ({ data, onClose, icons: ICONS }) => {
 	const notificationProps = {

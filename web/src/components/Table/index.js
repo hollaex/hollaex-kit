@@ -6,7 +6,7 @@ import TableBody from './TableBody';
 // import TableFooter from './TableFooter';
 import Paginator from './paginator';
 import { EditWrapper } from 'components';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 class Table extends Component {
 	state = {

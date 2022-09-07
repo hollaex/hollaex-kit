@@ -1,9 +1,8 @@
 import React from 'react';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { Button, EditWrapper } from 'components';
 
 import { NotificationWraper, NotificationContent } from './Notification';
-import { Button } from '../';
 
 export const GenerateApiKey = (props) => {
 	const {

@@ -1,7 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
-import STRINGS from '../../config/localizedStrings';
 
 const CurrencySelector = ({ activeCurrency, changeCurrency, coins }) => {
 	return (

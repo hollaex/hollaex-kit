@@ -1,10 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import Image from 'components/Image';
-
-import STRINGS from '../../config/localizedStrings';
+import { Image } from 'components';
+import STRINGS from 'config/localizedStrings';
 import AccountTypeDetails from './components/AccountTypeDetails';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileAccountTypeList = ({

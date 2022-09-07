@@ -35,9 +35,9 @@ import { DeveloperSection } from './DeveloperSection';
 import { generateLogins } from './utils_logins';
 import { RECORD_LIMIT } from './constants';
 import LoginDisplay from './LoginDisplay';
-import { getUserLogins } from '../../actions/userAction';
+import { getUserLogins } from 'actions/userAction';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 // import { ICONS } from 'config/constants';
 

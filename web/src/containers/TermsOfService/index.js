@@ -1,8 +1,8 @@
 import React from 'react';
 
 import TermsForm from './Form';
-import { requiredWithCustomMessage } from '../../components/Form/validations';
-import STRINGS from '../../config/localizedStrings';
+import { requiredWithCustomMessage } from 'components/Form/validations';
+import STRINGS from 'config/localizedStrings';
 
 const formFields = {
 	agreeTerms: {

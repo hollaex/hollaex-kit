@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FieldWrapper, { FieldContent } from './FieldWrapper';
-import { ActionNotification } from '../../';
-import { ICONS } from '../../../config/constants';
-import STRINGS from '../../../config/localizedStrings';
+import { ActionNotification } from 'components';
+import { ICONS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 export const renderCopy = (text, onCopy, component) => {
 	return (

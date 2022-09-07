@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 const getSizeClass = (size) => {
 	switch (size) {

@@ -5,17 +5,15 @@ import {
 	required,
 	requiredBoolean,
 	isBefore,
-} from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, HeaderSection } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+} from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
+import { Button, IconTitle, HeaderSection, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { COUNTRIES_OPTIONS } from '../../utils/countries';
-
+import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { isMobile } from 'react-device-detect';
-import { getErrorLocalized } from '../../utils/errors';
-import { updateUser } from '../../actions/userAction';
-import { EditWrapper } from 'components';
+import { getErrorLocalized } from 'utils/errors';
+import { updateUser } from 'actions/userAction';
 
 const FORM_NAME = 'IdentityVerification';
 
