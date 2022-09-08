@@ -1,4 +1,4 @@
-import { APP_TITLE } from '../../config/constants';
+import { APP_TITLE } from 'config/constants';
 
 export const PATHS = [
 	{

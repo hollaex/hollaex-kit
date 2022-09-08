@@ -1,8 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
-import { ActionNotification } from '../';
+import { ActionNotification } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const renderPageCount = (currentPage, totalPages) => {
 	if (totalPages > 0) {

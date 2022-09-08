@@ -1,12 +1,12 @@
 import React from 'react';
 import math from 'mathjs';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import { formatToCurrency } from '../../utils/currency';
+} from 'config/constants';
+import { formatToCurrency } from 'utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =

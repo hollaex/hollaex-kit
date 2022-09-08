@@ -1,9 +1,7 @@
 import React from 'react';
-import { CurrencyBallWithPrice, ActionNotification } from '../';
-import { ICONS } from '../../config/constants';
-import { NotificationWraper, NotificationContent } from './Notification';
-
-import STRINGS from '../../config/localizedStrings';
+import { ICONS } from 'config/constants';
+import { NotificationWraper } from './Notification';
+import STRINGS from 'config/localizedStrings';
 
 const VerificationWarningNotification = ({}) => {
 	return (

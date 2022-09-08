@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { required, validateOtp } from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, ActionNotification } from '../';
-
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import { required, validateOtp } from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
+import { Button, IconTitle, ActionNotification, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class Form extends Component {

@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Link } from 'react-router';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 const COMMON_CLASSES = [
 	'text-uppercase',

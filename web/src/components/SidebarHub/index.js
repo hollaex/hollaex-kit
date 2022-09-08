@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import withConfig from 'components/ConfigProvider/withConfig';
-import STRINGS from '../../config/localizedStrings';
-import { IconTitle } from '../../components';
-
-import { ButtonLink, Wallet } from '../';
+import STRINGS from 'config/localizedStrings';
+import { ButtonLink, Wallet, IconTitle } from 'components';
 
 class SidebarHub extends Component {
 	render() {

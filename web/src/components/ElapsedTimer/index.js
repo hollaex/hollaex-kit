@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Image from 'components/Image';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 let timerInterval = '';

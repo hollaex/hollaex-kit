@@ -1,9 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-// import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
+import { Image } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import STRINGS from 'config/localizedStrings';
 
