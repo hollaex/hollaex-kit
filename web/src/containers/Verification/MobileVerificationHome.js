@@ -1,9 +1,7 @@
 import React from 'react';
-
 import { getCountryFromNumber } from './utils';
-import { Button, PanelInformationRow } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import { Button, PanelInformationRow, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 const MobileVerificationHome = ({ user, setActivePageContent }) => {
 	const { phone_number } = user;

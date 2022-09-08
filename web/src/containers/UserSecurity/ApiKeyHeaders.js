@@ -1,9 +1,9 @@
 import React from 'react';
 import Image from 'components/Image';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
-import { getFormatTimestamp } from '../../utils/utils';
-import { Tooltip } from '../../components';
+import STRINGS from 'config/localizedStrings';
+import { getFormatTimestamp } from 'utils/utils';
+import { Tooltip } from 'components';
 import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 const NOT_REVOKED = 'pointer blue-link';

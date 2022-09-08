@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import TruncateMarkup from 'react-truncate-markup';
-import { ICONS } from '../../config/constants';
-import { USER_TYPES } from '../../actions/appActions';
+import { ICONS } from 'config/constants';
+import { USER_TYPES } from 'actions/appActions';
 import { ReactSVG } from 'react-svg';
 
 moment.updateLocale('en', {

@@ -1,8 +1,5 @@
-import {
-	COUNTRIES_OPTIONS,
-	NATIONAL_COUNTRY_VALUE,
-} from '../../utils/countries';
-import STRINGS from '../../config/localizedStrings';
+import { COUNTRIES_OPTIONS, NATIONAL_COUNTRY_VALUE } from 'utils/countries';
+import STRINGS from 'config/localizedStrings';
 import { isMobile } from 'react-device-detect';
 
 export const generateFormValues = (

@@ -1,5 +1,5 @@
-import { PHONE_OPTIONS } from '../../utils/countries';
-import STRINGS from '../../config/localizedStrings';
+import { PHONE_OPTIONS } from 'utils/countries';
+import STRINGS from 'config/localizedStrings';
 import { isMobile } from 'react-device-detect';
 
 export const generateFormValues = () => ({

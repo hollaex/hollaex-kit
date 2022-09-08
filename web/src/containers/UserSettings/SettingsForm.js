@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
+import renderFields from 'components/Form/factoryFields';
+import { Button, IconTitle, EditWrapper } from 'components';
 import {
 	required,
 	minValue,
 	maxValue,
 	step,
-} from '../../components/Form/validations';
-import { getErrorLocalized } from '../../utils/errors';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+} from 'components/Form/validations';
+import { getErrorLocalized } from 'utils/errors';
+import STRINGS from 'config/localizedStrings';
 
 const orderbook_level_step = 1;
 const orderbook_level_min = 1;

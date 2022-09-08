@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 
-import { IconTitle, Button, Loader } from '../../components';
-import { performConfirmWithdrawal } from '../../actions/walletActions';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Button, Loader } from 'components';
+import { performConfirmWithdrawal } from 'actions/walletActions';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 

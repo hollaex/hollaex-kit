@@ -12,9 +12,9 @@ import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	SHOW_TOTAL_ASSETS,
-} from '../../config/constants';
-// import { formatAverage, formatBaseAmount } from '../../utils/currency';
-import STRINGS from '../../config/localizedStrings';
+} from 'config/constants';
+// import { formatAverage, formatBaseAmount } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 
 const MobileSummary = ({
 	user,

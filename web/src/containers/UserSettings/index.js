@@ -12,13 +12,13 @@ import {
 	openRiskPortfolioOrderWarning,
 	closeNotification,
 } from 'actions/appActions';
-import { logout } from '../../actions/authAction';
+import { logout } from 'actions/authAction';
 import {
 	updateUserSettings,
 	setUserData,
 	setUsername,
 	setUsernameStore,
-} from '../../actions/userAction';
+} from 'actions/userAction';
 import {
 	IconTitle,
 	HeaderSection,
@@ -28,7 +28,8 @@ import {
 	MobileTabBar,
 	Loader,
 	TabController,
-} from '../../components';
+	EditWrapper,
+} from 'components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
@@ -38,9 +39,8 @@ import NotificationForm, {
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { EditWrapper } from 'components';
 
 class UserSettings extends Component {
 	state = {
@@ -64,15 +64,30 @@ class UserSettings extends Component {
 		}
 		if (window.location.search && window.location.search.includes('signals')) {
 			this.setState({ activeTab: 0 });
-		} else if (window.location.search && window.location.search.includes('interface')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('interface')
+		) {
 			this.setState({ activeTab: 1 });
-		} else if (window.location.search && window.location.search.includes('language')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('language')
+		) {
 			this.setState({ activeTab: 2 });
-		} else if (window.location.search && window.location.search.includes('audioCue')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('audioCue')
+		) {
 			this.setState({ activeTab: 3 });
-		} else if (window.location.search && window.location.search.includes('manageRisk')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('manageRisk')
+		) {
 			this.setState({ activeTab: 4 });
-		} else if (window.location.search && window.location.search.includes('chat')) {
+		} else if (
+			window.location.search &&
+			window.location.search.includes('chat')
+		) {
 			this.setState({ activeTab: 5 });
 		}
 		this.openCurrentTab();
@@ -112,7 +127,10 @@ class UserSettings extends Component {
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(prevState.activeTab) !== JSON.stringify(this.state.activeTab)) {
+		if (
+			JSON.stringify(prevState.activeTab) !==
+			JSON.stringify(this.state.activeTab)
+		) {
 			this.openCurrentTab();
 		}
 	}
@@ -121,7 +139,8 @@ class UserSettings extends Component {
 		let currentTab = '';
 		if (this.state.activeTab === 0) {
 			currentTab = 'signals';
-		} if (this.state.activeTab === 1) {
+		}
+		if (this.state.activeTab === 1) {
 			currentTab = 'interface';
 		} else if (this.state.activeTab === 2) {
 			currentTab = 'language';

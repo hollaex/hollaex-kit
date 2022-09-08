@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import moment from 'moment';
 
-import { playBackgroundAudioNotification } from '../../utils/utils';
-import STRINGS from '../../config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
+import STRINGS from 'config/localizedStrings';
 
 import { Button, Loader } from '../';
 

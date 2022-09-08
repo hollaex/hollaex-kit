@@ -5,10 +5,10 @@ import {
 	email,
 	normalizeEmail,
 	required,
-} from '../../components/Form/validations';
-import { AuthForm } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { getLanguage } from '../../utils/string';
+} from 'components/Form/validations';
+import { AuthForm } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { getLanguage } from 'utils/string';
 
 export const generateFormFields = (theme) => ({
 	email: {

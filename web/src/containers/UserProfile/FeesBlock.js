@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
-import { formatPercentage } from '../../utils/currency';
+import STRINGS from 'config/localizedStrings';
+import { formatPercentage } from 'utils/currency';
 
 const FeeRow = ({ data = {}, headers = [], isUserLevel = false, row }) => {
 	const { verification_level, ...rest } = data;

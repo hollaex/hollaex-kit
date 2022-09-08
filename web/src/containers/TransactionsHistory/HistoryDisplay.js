@@ -7,16 +7,15 @@ import {
 	// CsvDownload,
 	Loader,
 	Dialog,
-} from '../../components';
+	EditWrapper,
+} from 'components';
 import classnames from 'classnames';
 import { SubmissionError } from 'redux-form';
-
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 import { searchTransaction } from 'actions/walletActions';
-import CheckDeposit from '../../components/CheckDeposit';
+import CheckDeposit from 'components/CheckDeposit';
 
 const HistoryDisplay = (props) => {
 	const {
@@ -76,7 +75,7 @@ const HistoryDisplay = (props) => {
 				<div className="title text-capitalize">
 					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					{count > 0 && (
-						<div className='download-icon'>
+						<div className="download-icon">
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
@@ -126,8 +125,8 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				{dialogIsOpen
-					? <CheckDeposit
+				{dialogIsOpen ? (
+					<CheckDeposit
 						onCloseDialog={onCloseDialog}
 						onSubmit={requestDeposit}
 						message={statusMessage}
@@ -135,8 +134,7 @@ const HistoryDisplay = (props) => {
 						initialValues={initialValue}
 						props={props}
 					/>
-					: null
-				}
+				) : null}
 			</Dialog>
 		</div>
 	);

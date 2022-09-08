@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { Button } from '../';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { EditWrapper } from 'components';
+import { EditWrapper, Button } from 'components';
 
 const getTitleAndIcon = (type, ICONS) => {
 	const data = {

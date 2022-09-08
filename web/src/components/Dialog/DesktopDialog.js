@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
 import Ionicon from 'react-ionicons';
-import { Button, ActionNotification } from '../';
-import STRINGS from '../../config/localizedStrings';
-import { getClasesForLanguage, getLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
+import { Button, ActionNotification } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { getClasesForLanguage, getLanguage } from 'utils/string';
+import { getThemeClass } from 'utils/theme';
 import withEdit from 'components/EditProvider/withEdit';
 
 class Dialog extends PureComponent {
