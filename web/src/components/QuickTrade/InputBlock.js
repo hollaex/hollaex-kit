@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
-
-import { CurrencyBall } from '../../components';
-
-import { minValue, maxValue } from '../../components/Form/validations';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+import { CurrencyBall } from 'components';
+import { minValue, maxValue } from 'components/Form/validations';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from 'config/constants';
 import { translateError } from './utils';
 
 const PLACEHOLDER = '0.00';

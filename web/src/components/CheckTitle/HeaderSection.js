@@ -1,10 +1,9 @@
 import React from 'react';
 import Image from 'components/Image';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { ActionNotification } from '../../components';
-import { EditWrapper } from 'components';
+import { ActionNotification, EditWrapper } from 'components';
 
 const HeaderSection = ({
 	title,

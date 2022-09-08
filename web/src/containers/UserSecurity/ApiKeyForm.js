@@ -1,8 +1,8 @@
 import React from 'react';
-import STRINGS from '../../config/localizedStrings';
-import { getErrorLocalized } from '../../utils/errors';
-import renderFields from '../../components/Form/factoryFields';
-import { tokenKeyValidation } from '../../components/Form/validations';
+import STRINGS from 'config/localizedStrings';
+import { getErrorLocalized } from 'utils/errors';
+import renderFields from 'components/Form/factoryFields';
+import { tokenKeyValidation } from 'components/Form/validations';
 import { reduxForm } from 'redux-form';
 
 import { TYPE_GENERATE } from './ApiKeyModal';

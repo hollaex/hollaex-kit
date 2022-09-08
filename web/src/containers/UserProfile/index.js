@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Accordion, Loader, Button } from '../../components';
+import { Accordion, Loader, Button } from 'components';
 import Form from './Form';
 import { generateFormValues as generateMobileFormValues } from './MobileFormValues';
 import {
@@ -10,8 +10,8 @@ import {
 } from './IdentificationFormValues';
 import { InformationSection } from './InformationSection';
 import { LevelSection } from './LevelSection';
-import { logout } from '../../actions/authAction';
-import STRINGS from '../../config/localizedStrings';
+import { logout } from 'actions/authAction';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isMobile } from 'react-device-detect';
 import { openContactForm } from 'actions/appActions';

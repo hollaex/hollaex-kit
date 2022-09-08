@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import { SubmissionError, change } from 'redux-form';
-import { requestResetPassword } from '../../actions/authAction';
+import { requestResetPassword } from 'actions/authAction';
 import ResetPasswordForm, { generateFormFields } from './ResetPasswordForm';
-import { IconTitle, Dialog, MobileBarBack } from '../../components';
-import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Dialog, MobileBarBack } from 'components';
+import { ContactForm } from 'containers';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import RequestResetPasswordSuccess from './RequestResetPasswordSuccess';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';

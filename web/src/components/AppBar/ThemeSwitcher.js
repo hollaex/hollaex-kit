@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Select } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';

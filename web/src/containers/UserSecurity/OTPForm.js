@@ -1,10 +1,9 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { required } from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import { required } from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
+import { Button, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 const Form = ({ handleSubmit, submitting, pristine, error, valid }) => {
 	const formFields = {

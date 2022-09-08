@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 export const MinimalizeChat = ({ minimized, onClick }) => (
 	<div className={classnames('d-flex', 'minimize-button')} onClick={onClick}>

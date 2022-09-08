@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 const ToogleButton = ({ onToogle, values, selected }) => (
 	<div className={classnames('toogle_button-wrapper', 'd-flex')}>

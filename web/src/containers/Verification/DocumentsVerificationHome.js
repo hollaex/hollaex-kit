@@ -3,9 +3,9 @@ import moment from 'moment';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
-import { Button, PanelInformationRow } from '../../components';
-import STRINGS from '../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { Button, PanelInformationRow } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 

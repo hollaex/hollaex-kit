@@ -1,8 +1,8 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
-import { required, password } from '../../components/Form/validations';
-import { AuthForm } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { required, password } from 'components/Form/validations';
+import { AuthForm } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 export const generateFormFields = () => ({
 	password: {

@@ -1,10 +1,8 @@
 import React from 'react';
-import { CheckboxButton, IconTitle } from '../../components';
+import { CheckboxButton, IconTitle, EditWrapper } from 'components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
-import { EditWrapper } from 'components';
-
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 export const renderOTPForm = (
 	secret,

@@ -5,13 +5,13 @@ import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError, change } from 'redux-form';
 import { bindActionCreators } from 'redux';
-import { performSignup } from '../../actions/authAction';
+import { performSignup } from 'actions/authAction';
 import SignupForm, { generateFormFields, FORM_NAME } from './SignupForm';
 import SignupSuccess from './SignupSuccess';
-import { ContactForm } from '../';
-import { IconTitle, Dialog, MobileBarBack } from '../../components';
+import { ContactForm } from 'containers';
+import { IconTitle, Dialog, MobileBarBack } from 'components';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 

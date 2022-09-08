@@ -1,6 +1,6 @@
 import React from 'react';
 import Ionicon from 'react-ionicons';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 export const InformationSection = ({ text, onChangeValue, onChangeText }) => (
 	<div className="information_section d-flex flex-column">

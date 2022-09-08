@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import Image from 'components/Image';
-import { IconTitle, Notification, Button, BlueLink } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Notification, Button, BlueLink } from 'components';
+import STRINGS from 'config/localizedStrings';
 import {
 	sendSupportMail,
 	NOTIFICATIONS,

@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Button, PanelInformationRow } from '../../components';
+import { Button, PanelInformationRow } from 'components';
 import { getCountry } from './utils';
-import STRINGS from '../../config/localizedStrings';
-import { getFormatTimestamp } from '../../utils/utils';
+import STRINGS from 'config/localizedStrings';
+import { getFormatTimestamp } from 'utils/utils';
 import { EditWrapper } from 'components';
 
 const formatBirthday = {

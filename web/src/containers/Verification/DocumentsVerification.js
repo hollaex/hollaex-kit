@@ -4,18 +4,18 @@ import moment from 'moment';
 import {
 	isBefore,
 	requiredWithCustomMessage,
-} from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle, HeaderSection } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+} from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
+import { Button, IconTitle, HeaderSection } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import {
 	IdentificationFormSection,
 	PORSection,
 	SelfieWithPhotoId,
 } from './HeaderSection';
-import { getErrorLocalized } from '../../utils/errors';
-import { updateDocuments } from '../../actions/userAction';
+import { getErrorLocalized } from 'utils/errors';
+import { updateDocuments } from 'actions/userAction';
 import Image from 'components/Image';
 
 import { isMobile } from 'react-device-detect';

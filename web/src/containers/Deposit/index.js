@@ -4,17 +4,14 @@ import { bindActionCreators } from 'redux';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
-import { BALANCE_ERROR } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import { getCurrencyFromName } from '../../utils/currency';
+import { BALANCE_ERROR } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { getCurrencyFromName } from 'utils/currency';
 import { createAddress, cleanCreateAddress } from 'actions/userAction';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
-import {
-	openContactForm,
-	setSnackNotification,
-} from '../../actions/appActions';
+import { openContactForm, setSnackNotification } from 'actions/appActions';
 
 import { MobileBarBack, Dialog, Notification } from 'components';
 import {
