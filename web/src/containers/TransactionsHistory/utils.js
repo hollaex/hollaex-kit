@@ -5,16 +5,15 @@ import classnames from 'classnames';
 import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
 
-import STRINGS from '../../config/localizedStrings';
-
-import { Image } from '../../components';
+import STRINGS from 'config/localizedStrings';
+import { Image } from 'components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import { getFormatTimestamp } from '../../utils/utils';
+} from 'config/constants';
+import { getFormatTimestamp } from 'utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({
@@ -120,7 +119,7 @@ export const generateOrderHistoryHeaders = (
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, increment_size),
 						pair_base_display
-					);
+					).join('');
 				} else {
 					return size;
 				}
@@ -158,7 +157,7 @@ export const generateOrderHistoryHeaders = (
 							increment_price
 						),
 						pair_2_display
-					);
+					).join('');
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -199,7 +198,7 @@ export const generateOrderHistoryHeaders = (
 							increment_price
 						),
 						pair_2_display
-					);
+					).join('');
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -367,7 +366,7 @@ export const generateTradeHeaders = (
 						CURRENCY_PRICE_FORMAT,
 						formatToCurrency(size, increment_size),
 						pair_base_display
-					);
+					).join('');
 				} else {
 					return size;
 				}
@@ -405,7 +404,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						pair_2_display
-					);
+					).join('');
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -446,7 +445,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						pair_2_display
-					);
+					).join('');
 				} else {
 					return calculateAmount(quick, price, size);
 				}
@@ -491,7 +490,7 @@ export const generateTradeHeaders = (
 							increment_price
 						),
 						rest.symbol.toUpperCase()
-					);
+					).join('');
 				} else {
 					return calculateAmount(quick, price, size);
 				}

@@ -41,6 +41,14 @@
 	border-right: 1px solid $operator-controls__panel-text-color;
 }
 
+.image-upload__file-container .closeIcon {
+	position: absolute;
+	left: 5.5rem;
+	bottom: 5rem;
+	font-size: 20px;
+	cursor: pointer;
+}
+
 .image-upload_image {
 	padding: 5px;
 	overflow: hidden;

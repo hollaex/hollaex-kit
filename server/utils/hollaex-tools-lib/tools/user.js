@@ -557,7 +557,7 @@ const getAllUsersAdmin = (opts = {
 			return { count, data };
 		})
 		.then(async (users) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (users.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1110,7 +1110,7 @@ const getUserLogins = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (logins.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1238,7 +1238,7 @@ const getUserAudits = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('audit', options)
 		.then((audits) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (audits.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}

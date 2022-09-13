@@ -35,11 +35,11 @@ const PaymentDetails = ({
 						const curData = user_payments[item];
 						return (
 							<div className="paymentContainer mt-4" key={index}>
-								<div className="paymentheader d-flex justify-content-between mb-4 ">
+								<div className="paymentheader d-flex justify-content-between mb-4">
 									<div>
-										{activeTab && activeTab !== 'paymentAccounts'
-											? `${activeTab}  ${paymentIndex}`
-											: `User payment account ${paymentIndex}`}
+										{activeTab && activeTab === 'paymentAccounts'
+											? `User payment account ${curData.orderBy}`
+											: `${activeTab}  ${paymentIndex}`}
 									</div>
 								</div>
 								<div className="d-flex mb-4">

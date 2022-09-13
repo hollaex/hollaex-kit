@@ -489,7 +489,7 @@
 		"TITLE_INTERFACE": "Interface",
 		"TITLE_LANGUAGE": "Bahasa",
 		"TITLE_CHAT": "Chat",
-		"TITLE_AUDIO_CUE": "Play Audio Cue",
+		"TITLE_AUDIO_CUE": "Audio Cues",
 		"TITLE_MANAGE_RISK": "Manajemen Risiko",
 		"ORDERBOOK_LEVEL": "Level Orderbook(Max 20)",
 		"SET_TXT": "SET",
@@ -525,7 +525,7 @@
 			"PORTFOLIO": "Persentase portofolio",
 			"VALUE_ASSET": "Nilai Perkiraan",
 			"ADJUST": "(SESUAIKAN PERSENTASE)",
-			"ACTIVATE_RISK_MANAGMENT": "Aktifkan Manajemen Risiko",
+			"ACTIVATE_RISK_MANAGEMENT": "Aktifkan Manajemen Risiko",
 			"WARNING_POP_UP": "Pop up peringatan"
 		}
 	},

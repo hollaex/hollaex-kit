@@ -3,10 +3,10 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { isBrowser, isMobile } from 'react-device-detect';
 
-import STRINGS from '../../config/localizedStrings';
-import { AppFooter, NotificationsList } from '../../components';
-import { getClasesForLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
+import STRINGS from 'config/localizedStrings';
+import { AppFooter, NotificationsList } from 'components';
+import { getClasesForLanguage } from 'utils/string';
+import { getThemeClass } from 'utils/theme';
 
 class Home extends Component {
 	render() {

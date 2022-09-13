@@ -36,6 +36,10 @@ module.exports = function(sequelize, DataTypes) {
 			note: {
 				type: DataTypes.STRING,
 				defaultValue: ''
+			},
+			native_currency_limit: {
+				type: DataTypes.BOOLEAN,
+				defaultValue: true
 			}
 		},
 		{

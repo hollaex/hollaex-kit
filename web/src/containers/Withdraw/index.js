@@ -6,16 +6,16 @@ import { connect } from 'react-redux';
 import { formValueSelector, change } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { Loader, MobileBarBack } from '../../components';
+import { Loader, MobileBarBack } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { DEFAULT_COIN_DATA } from '../../config/constants';
-import { getCurrencyFromName, roundNumber } from '../../utils/currency';
-import { getDecimals } from '../../utils/utils';
+import { DEFAULT_COIN_DATA } from 'config/constants';
+import { getCurrencyFromName, roundNumber } from 'utils/currency';
+import { getDecimals } from 'utils/utils';
 import {
 	performWithdraw,
 	// requestWithdrawFee
-} from '../../actions/walletActions';
-import { errorHandler } from '../../components/OtpForm/utils';
+} from 'actions/walletActions';
+import { errorHandler } from 'components/OtpForm/utils';
 
 import { openContactForm } from 'actions/appActions';
 
@@ -225,12 +225,20 @@ class Withdraw extends Component {
 			fee_coin,
 			fee_type,
 			selectedNetwork,
+			prices,
 		} = this.props;
 		const { withdrawal_limit } = config_level[verification_level] || {};
 		const { currency } = this.state;
 		const balanceAvailable = balance[`${currency}_available`];
-		const { increment_unit, withdrawal_fees = {}, network } =
+		const { increment_unit, withdrawal_fees = {}, network, max: coin_max } =
 			coins[currency] || DEFAULT_COIN_DATA;
+
+		const oraclePrice = prices[currency];
+		const has_price = oraclePrice && oraclePrice !== 0 && oraclePrice !== -1;
+		const calculated_withdrawal_limit = has_price
+			? math.divide(withdrawal_limit, oraclePrice)
+			: coin_max;
+
 		const isPercentage = fee_type === 'percentage';
 		// if (currency === BASE_CURRENCY) {
 		// 	const fee = calculateBaseFee(balanceAvailable);
@@ -256,16 +264,19 @@ class Withdraw extends Component {
 			if (amount < 0) {
 				amount = 0;
 			} else if (
-				math.larger(amount, math.number(withdrawal_limit)) &&
+				math.larger(amount, math.number(calculated_withdrawal_limit)) &&
 				withdrawal_limit !== 0 &&
 				withdrawal_limit !== -1
 			) {
-				amount = math.number(math.fraction(withdrawal_limit));
+				amount = math.number(math.fraction(calculated_withdrawal_limit));
 			}
 		} else {
 			let max_allowed = balanceAvailable;
 			if (withdrawal_limit !== 0 && withdrawal_limit !== -1) {
-				max_allowed = math.min(math.number(withdrawal_limit), balanceAvailable);
+				max_allowed = math.min(
+					math.number(calculated_withdrawal_limit),
+					balanceAvailable
+				);
 			}
 
 			if (isPercentage) {

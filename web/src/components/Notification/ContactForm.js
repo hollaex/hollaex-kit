@@ -1,9 +1,7 @@
 import React from 'react';
-import { Button } from '../';
+import { Button, EditWrapper } from 'components';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { EditWrapper } from 'components';
-
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const ContactFormNotification = ({ onClose, icons: ICONS }) => {
 	return (

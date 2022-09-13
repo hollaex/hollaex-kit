@@ -5,13 +5,13 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError } from 'redux-form';
-import { requestVerificationEmail } from '../../actions/authAction';
+import { requestVerificationEmail } from 'actions/authAction';
 import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
-import { IconTitle, Dialog, MobileBarBack } from '../../components';
-import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Dialog, MobileBarBack } from 'components';
+import { ContactForm } from 'containers';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 

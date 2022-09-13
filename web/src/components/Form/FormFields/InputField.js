@@ -42,6 +42,7 @@ const InputField = (props) => {
 					type={type}
 					{...input}
 					{...rest}
+					onBlur={() => {}}
 				/>
 			</div>
 		</FieldWrapper>

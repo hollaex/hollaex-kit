@@ -1,15 +1,11 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
 
-import renderFields from '../../components/Form/factoryFields';
-import { getErrorLocalized } from '../../utils/errors';
-import {
-	required,
-	minValue,
-	maxValue,
-} from '../../components/Form/validations';
-import { IconTitle, Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import renderFields from 'components/Form/factoryFields';
+import { getErrorLocalized } from 'utils/errors';
+import { required, minValue, maxValue } from 'components/Form/validations';
+import { IconTitle, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const fields = {
@@ -70,7 +66,7 @@ const SetOrderPortfolio = ({ data, icons: ICONS, ...rest }) => {
 				{STRINGS.formatString(
 					STRINGS['USER_SETTINGS.CREATE_ORDER_WARING_TEXT'],
 					portfolioPercent
-				)}
+				).join('')}
 			</div>
 			<OrderPortfolioForm {...data} {...rest} />
 		</div>

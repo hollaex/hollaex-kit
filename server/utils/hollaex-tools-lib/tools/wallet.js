@@ -93,6 +93,10 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 		}
 	}
 
+	if (network === 'email') {
+		fee = 0;
+	}
+
 	return { fee, fee_coin };
 };
 
@@ -174,7 +178,12 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	if (limit === -1) {
 		throw new Error(WITHDRAWAL_DISABLED_FOR_COIN(currency));
 	} else if (limit > 0) {
-		await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+		if (tier.native_currency_limit) {
+			// limit is based on native_currency
+			await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+		} else {
+			await withdrawalBelowLimitSameCoin(user.network_id, currency, limit, amount);
+		}
 	}
 
 	return {
@@ -322,7 +331,12 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
 			} else if (limit > 0) {
-				await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				if (tier.native_currency_limit) {
+					// limit is based on native_currency
+					await withdrawalBelowLimit(user.network_id, currency, limit, amount);
+				} else {
+					await withdrawalBelowLimitSameCoin(user.network_id, currency, limit, amount);
+				}	
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -344,8 +358,9 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const get24HourAccumulatedWithdrawals = async (userId) => {
+const get24HourAccumulatedWithdrawals = async (userId, currency) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
+		currency,
 		dismissed: false,
 		rejected: false,
 		startDate: moment().subtract(24, 'hours').toISOString()
@@ -387,33 +402,39 @@ const get24HourAccumulatedWithdrawals = async (userId) => {
 
 	let totalWithdrawalAmount = 0;
 
-	for (let withdrawalCurrency in withdrawalAmount) {
-		loggerWithdrawals.debug(
-			'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-			`accumulated ${withdrawalCurrency} withdrawal amount`,
-			withdrawalAmount[withdrawalCurrency]
-		);
-
-		await sleep(500);
-
-		const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
-			quote: getKitConfig().native_currency,
-			amount: withdrawalAmount[withdrawalCurrency]
-		});
-
-		if (convertedAmount[withdrawalCurrency] !== -1) {
+	if (currency) {
+		// specific currency accumulated withdrawal is only needed
+		totalWithdrawalAmount = withdrawalData[currency];
+		
+	} else {
+		for (let withdrawalCurrency in withdrawalAmount) {
 			loggerWithdrawals.debug(
 				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-				`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
-				convertedAmount[withdrawalCurrency]
+				`accumulated ${withdrawalCurrency} withdrawal amount`,
+				withdrawalAmount[withdrawalCurrency]
 			);
 
-			totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
-		} else {
-			loggerWithdrawals.debug(
-				'toolsLib/wallet/get24HourAccumulatedWithdrawals',
-				`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
-			);
+			await sleep(500);
+
+			const convertedAmount = await getNodeLib().getOraclePrices([withdrawalCurrency], {
+				quote: getKitConfig().native_currency,
+				amount: withdrawalAmount[withdrawalCurrency]
+			});
+
+			if (convertedAmount[withdrawalCurrency] !== -1) {
+				loggerWithdrawals.debug(
+					'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+					`${withdrawalCurrency} withdrawal amount converted to ${getKitConfig().native_currency}`,
+					convertedAmount[withdrawalCurrency]
+				);
+
+				totalWithdrawalAmount = math.number(math.add(math.bignumber(totalWithdrawalAmount), math.bignumber(convertedAmount[withdrawalCurrency])));
+			} else {
+				loggerWithdrawals.debug(
+					'toolsLib/wallet/get24HourAccumulatedWithdrawals',
+					`No conversion found between ${withdrawalCurrency} and ${getKitConfig().native_currency}`
+				);
+			}
 		}
 	}
 
@@ -488,6 +509,51 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 	if (totalWithdrawalAmount > limit) {
 		throw new Error(
 			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${getKitConfig().native_currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${getKitConfig().native_currency}. Request amount: ${convertedWithdrawalAmount[currency]} ${getKitConfig().native_currency}`
+		);
+	}
+
+	return;
+};
+
+const withdrawalBelowLimitSameCoin = async (userId, currency, limit, amount = 0) => {
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimitSameCoin',
+		'amount being withdrawn',
+		amount,
+		'currency',
+		currency,
+		'limit',
+		limit,
+		'userId',
+		userId
+	);
+
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, currency);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		`total 24 hour ${currency} withdrawn amount`,
+		last24HourWithdrawalAmount
+	);
+
+	let totalWithdrawalAmount = math.number(
+		math.add(
+			math.bignumber(amount),
+			math.bignumber(last24HourWithdrawalAmount)
+		)
+	);
+
+	loggerWithdrawals.verbose(
+		'toolsLib/wallet/withdrawalBelowLimit',
+		'total 24 hour withdrawn amount after performing current withdrawal',
+		totalWithdrawalAmount,
+		'24 hour withdrawal limit',
+		limit
+	);
+
+	if (totalWithdrawalAmount > limit) {
+		throw new Error(
+			`Total withdrawn amount would exceed withdrawal limit of ${limit} ${currency}. Withdrawn amount: ${last24HourWithdrawalAmount} ${currency}. Request amount: ${amount} ${currency}`
 		);
 	}
 
@@ -610,6 +676,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -636,6 +703,7 @@ const getUserTransactionsByKitId = (
 						endDate,
 						transactionId,
 						address,
+						format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 						...opts
 					});
 				});
@@ -681,7 +749,7 @@ const getUserTransactionsByKitId = (
 	}
 	return promiseQuery
 		.then((transactions) => {
-			if (format) {
+			if (format && format === 'csv') {
 				if (transactions.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}

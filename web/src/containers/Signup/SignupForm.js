@@ -6,9 +6,9 @@ import {
 	email,
 	requiredWithCustomMessage,
 	normalizeEmail,
-} from '../../components/Form/validations';
-import { AuthForm, BlueLink } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+} from 'components/Form/validations';
+import { AuthForm, BlueLink } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 export const FORM_NAME = 'SignForm';
 

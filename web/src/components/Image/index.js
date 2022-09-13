@@ -12,6 +12,8 @@ const Image = ({
 	imageWrapperClassName,
 	svgWrapperClassName,
 	stringId,
+	width,
+	height,
 	showUpload,
 	beforeInjection = () => {},
 }) => {
@@ -26,7 +28,7 @@ const Image = ({
 					'background-size-contain',
 					'h-100'
 				)}
-				style={{ backgroundImage: `url(${icon})` }}
+				style={{ backgroundImage: `url(${icon})`, width, height }}
 			/>
 		);
 	}
@@ -37,11 +39,17 @@ const Image = ({
 				<ReactSVG
 					src={icon}
 					className={classnames(wrapperClassName, svgWrapperClassName)}
+					style={{
+						width,
+						height,
+					}}
 					beforeInjection={beforeInjection}
 					fallback={() => (
 						<img
 							src={icon}
 							alt={alt}
+							width={width}
+							height={height}
 							className={classnames(wrapperClassName, svgWrapperClassName)}
 						/>
 					)}
@@ -51,6 +59,10 @@ const Image = ({
 				<img
 					src={icon}
 					alt={alt}
+					style={{
+						width,
+						height,
+					}}
 					className={classnames(
 						wrapperClassName,
 						imageWrapperClassName,

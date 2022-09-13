@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 
-import renderFields from '../../components/Form/factoryFields';
-import { Button, IconTitle } from '../../components';
-import { getErrorLocalized } from '../../utils/errors';
-import STRINGS from '../../config/localizedStrings';
+import renderFields from 'components/Form/factoryFields';
+import { Button, IconTitle, EditWrapper } from 'components';
+import { getErrorLocalized } from 'utils/errors';
+import STRINGS from 'config/localizedStrings';
 import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
-import { EditWrapper } from 'components';
 
 export const generateNotificationFormValues = () => ({
 	popup_order_confirmation: {

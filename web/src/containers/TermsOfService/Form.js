@@ -2,11 +2,11 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { ReactSVG } from 'react-svg';
 
-import { Button } from '../../components';
-import renderFields from '../../components/Form/factoryFields';
-import STRINGS from '../../config/localizedStrings';
-import { ICONS } from '../../config/constants';
-import { getErrorLocalized } from '../../utils/errors';
+import { Button } from 'components';
+import renderFields from 'components/Form/factoryFields';
+import STRINGS from 'config/localizedStrings';
+import { ICONS } from 'config/constants';
+import { getErrorLocalized } from 'utils/errors';
 
 export const FORM_NAME = 'termsAndConditionForm';
 

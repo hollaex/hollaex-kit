@@ -49,10 +49,15 @@ const getRows = (level, coins) => {
 			withdrawal_fees,
 			withdrawal_fee,
 			deposit_fees,
+			symbol,
 		} = coin;
 		if (withdrawal_fees) {
 			Object.keys(withdrawal_fees).forEach((network, n_index) => {
-				const withdrawal_text = getFeeText(withdrawal_fees[network], level);
+				const withdrawal_fees_data = withdrawal_fees[network];
+				if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
+					withdrawal_fees_data['symbol'] = symbol;
+				}
+				const withdrawal_text = getFeeText(withdrawal_fees_data, level);
 				const deposit_text =
 					deposit_fees && deposit_fees[network]
 						? getFeeText(deposit_fees[network], level)

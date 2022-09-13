@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.4.0"
+  version: "2.4.2"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -5647,6 +5647,8 @@ definitions:
         type: string
       description:
         type: string
+      native_currency_limit:
+        type: boolean
   PostTierBody:
     type: object
     required:

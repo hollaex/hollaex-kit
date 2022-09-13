@@ -133,11 +133,11 @@ const defaultLayout = [
 	},
 ];
 
-const getDefaultLayoutByTool = (tool) =>
-	defaultLayout.find(({ i }) => i === tool) || {};
+const getLayoutByTool = (tool, layout = defaultLayout) =>
+	layout.find(({ i }) => i === tool) || {};
 
-const layout = getLayout().map(({ w, h, x, y, i }) => {
-	const defaultItemLayout = getDefaultLayoutByTool(i);
+const LAYOUT = getLayout().map(({ w, h, x, y, i }) => {
+	const defaultItemLayout = getLayoutByTool(i);
 	const itemLayout = { ...defaultItemLayout };
 	if (defaultItemLayout.isResizable) {
 		itemLayout.w = w;
@@ -163,7 +163,7 @@ class Trade extends PureComponent {
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
-			layout: layout.length > 0 ? layout : defaultLayout,
+			layout: LAYOUT.length > 0 ? LAYOUT : defaultLayout,
 			rowHeight,
 		};
 		this.priceTimeOut = '';
@@ -208,8 +208,8 @@ class Trade extends PureComponent {
 				.filter(([, { is_visible }]) => !!is_visible)
 				.forEach(([tool]) => {
 					if (!layout.find(({ i }) => i === tool)) {
-						const defaultItemLayout = getDefaultLayoutByTool(tool);
-						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
+						const defaultItemLayout = getLayoutByTool(tool);
+						newItemsLayout.push(defaultItemLayout);
 					}
 				});
 			this.setState({ layout: [...layout, ...newItemsLayout] });

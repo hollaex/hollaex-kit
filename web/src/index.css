@@ -1136,7 +1136,6 @@ table th {
 
 .home-page_content .tabs-pair-details {
   font-size: 1.2rem;
-  width: 25rem;
   margin: auto;
   white-space: nowrap; }
 
@@ -1266,7 +1265,7 @@ table th {
 
 .layout-mobile .home-page_section-wrapper {
   padding-top: 60px !important;
-  padding-bottom: 75px !important; }
+  padding-bottom: 60px !important; }
 
 .layout-mobile .home_carousel_section .slideshow-wrapper {
   height: 12rem; }
@@ -1467,13 +1466,15 @@ table th {
     padding: 1.5rem 30px;
     display: flex;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    width: 30rem; }
   .home_carousel_section .section:hover {
     opacity: 1;
     cursor: pointer;
     background-color: var(--base_wallet-sidebar-and-popup); }
   .home_carousel_section .height-40 {
-    height: 40px; }
+    height: 40px;
+    width: 16rem; }
   .home_carousel_section .section:hover .trade_tab-pair-title,
   .home_carousel_section .section:hover .trade_tab-pair-sub-title,
   .home_carousel_section .section:hover .trade_tab-pair-volume {
@@ -3761,36 +3762,38 @@ table th {
         margin-bottom: 8px; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
         width: 3rem; }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
-          fill: var(--coin-btc); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
-          fill: var(--coin-eth); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
-          fill: var(--coin-bch); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
-          fill: var(--coin-xrp); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
-          fill: var(--coin-xmr); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .ada-icon {
-          fill: var(--coin-ada); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .bnb-icon {
-          fill: var(--coin-bnb); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .dai-icon {
-          fill: var(--coin-dai); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .eos-icon {
-          fill: var(--coin-eos); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .ltc-icon {
-          fill: var(--coin-ltc); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .trx-icon {
-          fill: var(--coin-trx); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .tusd-icon {
-          fill: var(--coin-tusd); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .xlm-icon {
-          fill: var(--coin-xlm); }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
-          fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+        .summary-container .assets-wrapper .coin-price-container .coin-price svg {
+          width: 2.5rem; }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
+            fill: var(--coin-btc); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
+            fill: var(--coin-eth); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
+            fill: var(--coin-bch); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
+            fill: var(--coin-xrp); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
+            fill: var(--coin-xmr); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ada-icon {
+            fill: var(--coin-ada); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bnb-icon {
+            fill: var(--coin-bnb); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .dai-icon {
+            fill: var(--coin-dai); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eos-icon {
+            fill: var(--coin-eos); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ltc-icon {
+            fill: var(--coin-ltc); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .trx-icon {
+            fill: var(--coin-trx); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .tusd-icon {
+            fill: var(--coin-tusd); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xlm-icon {
+            fill: var(--coin-xlm); }
+          .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
+            fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .summary-container .asset_wrapper_width {
     width: 100%; }
   .summary-container .xht_asset_wrapper_width {
@@ -3911,7 +3914,9 @@ table th {
     cursor: pointer;
     font-weight: bold; }
   .fee-limits-wrapper .content-txt {
-    font-size: 1rem; }
+    font-size: 1rem;
+    max-height: 70vh;
+    overflow-y: auto; }
     .fee-limits-wrapper .content-txt .fee-reduction-container {
       border: 1px solid var(--calculated_secondary-border); }
   .fee-limits-wrapper .content-title {
@@ -4093,36 +4098,39 @@ table th {
 .market-list__container .market-list__block .market-list__coin-icons {
   width: 2.8rem;
   margin: 0.3rem 0.3rem 0 0.3rem; }
-  .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
-  .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
-    fill: var(--coin-btc); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
-  .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
-    fill: var(--coin-eth); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
-    fill: var(--coin-bch); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xrp-icon {
-    fill: var(--coin-xrp); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xmr-icon {
-    fill: var(--coin-xmr); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .ada-icon {
-    fill: var(--coin-ada); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .bnb-icon {
-    fill: var(--coin-bnb); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .dai-icon {
-    fill: var(--coin-dai); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .eos-icon {
-    fill: var(--coin-eos); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .ltc-icon {
-    fill: var(--coin-ltc); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .trx-icon {
-    fill: var(--coin-trx); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .tusd-icon {
-    fill: var(--coin-tusd); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .xlm-icon {
-    fill: var(--coin-xlm); }
-  .market-list__container .market-list__block .market-list__coin-icons svg .default-icon {
-    fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .market-list__container .market-list__block .market-list__coin-icons svg {
+    width: 2.5rem !important;
+    height: 2.5rem !important; }
+    .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
+    .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
+      fill: var(--coin-btc); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
+    .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
+      fill: var(--coin-eth); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
+      fill: var(--coin-bch); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xrp-icon {
+      fill: var(--coin-xrp); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xmr-icon {
+      fill: var(--coin-xmr); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .ada-icon {
+      fill: var(--coin-ada); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .bnb-icon {
+      fill: var(--coin-bnb); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .dai-icon {
+      fill: var(--coin-dai); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .eos-icon {
+      fill: var(--coin-eos); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .ltc-icon {
+      fill: var(--coin-ltc); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .trx-icon {
+      fill: var(--coin-trx); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .tusd-icon {
+      fill: var(--coin-tusd); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .xlm-icon {
+      fill: var(--coin-xlm); }
+    .market-list__container .market-list__block .market-list__coin-icons svg .default-icon {
+      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .market-list__container .market-list__block .market-list__block-table {
   width: 100%;
@@ -4664,6 +4672,13 @@ table th {
 
 .image-upload__file-img-content {
   border-right: 1px solid #ffffff; }
+
+.image-upload__file-container .closeIcon {
+  position: absolute;
+  left: 5.5rem;
+  bottom: 5rem;
+  font-size: 20px;
+  cursor: pointer; }
 
 .image-upload_image {
   padding: 5px;
@@ -5523,8 +5538,7 @@ table th {
       height: 0.5px;
       opacity: 0.7; }
   .modal-market-menu .app-bar-search-field {
-    flex-direction: row;
-    padding-left: 0.5rem; }
+    flex-direction: row; }
   .modal-market-menu .app-bar-add-tab-search {
     height: 4rem; }
   .modal-market-menu .app-bar-tab-menu-list {
@@ -7694,6 +7708,17 @@ table th {
     height: 1.25rem;
     bottom: 0.25rem; }
     .field-children .field-valid svg {
+      width: 1.25rem;
+      height: 1.25rem; }
+  .field-children .clear-field {
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+    width: 1.25rem;
+    height: 1.25rem;
+    position: absolute;
+    right: 0px;
+    bottom: 0.5rem; }
+    .field-children .clear-field svg {
       width: 1.25rem;
       height: 1.25rem; }
 
@@ -10420,7 +10445,7 @@ table th {
       margin-left: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-txt {
         width: 23rem;
-        margin-left: 1.5rem;
+        margin-left: 2rem !important;
         margin-top: 0.5rem; }
       .app_footer-container .footer-row-content .footer_separter .footer-logo {
         background-size: contain;
@@ -10485,7 +10510,8 @@ table th {
 
 @media screen and (max-width: 991px) {
   .app_footer-container .footer-row-content {
-    flex-direction: column; }
+    flex-direction: column;
+    padding: 0 !important; }
     .app_footer-container .footer-row-content > div:not(:last-child) {
       margin-bottom: 2rem; }
     .app_footer-container .footer-row-content .footer-public-texts {
@@ -10499,40 +10525,58 @@ table th {
   .app_footer-container .footer-row-content .footer_separter .footer-txt {
     width: 12rem; } }
 
-.layout-mobile .app_footer-container .footer-row-content .footer-links-section {
-  width: 100%; }
-  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
-    margin-left: 3rem;
-    margin-bottom: 3rem !important;
-    font-size: 12px; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
-      margin-top: 0.25rem; }
-      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
-        color: grey; }
-  .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter {
-    border-left: none !important;
-    border-top: 1px solid var(--calculated_footer_border) !important; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-content {
-      display: flex;
-      flex-direction: column;
-      align-items: center; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
-      width: 100%; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
-      height: 3.5rem;
-      margin-top: 11px;
-      margin-bottom: 1rem;
-      width: 6.5rem; }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
-      fill: var(--calculated_base_footer_text); }
-    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
-      color: #00aeef !important; }
-
-.layout-mobile .app_footer-container .footer-row-content .blue-link {
-  color: #00aeef !important; }
+.layout-mobile .app_footer-container .footer-row-content {
+  margin-bottom: 1rem; }
+  .layout-mobile .app_footer-container .footer-row-content .footer-links-section {
+    width: 100%;
+    margin-top: 1rem; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group {
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 3rem !important;
+      font-size: 12px; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section {
+        justify-content: center;
+        align-items: center;
+        margin-top: 0.25rem; }
+        .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer-links-group .footer-links-section--list .link-section:hover {
+          color: grey; }
+    .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter {
+      border-left: none !important;
+      border-top: 1px solid var(--calculated_footer_border) !important; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-txt {
+        width: 80%;
+        margin-top: 2rem !important;
+        margin-left: 0 !important;
+        display: flex;
+        justify-content: center;
+        text-align: center; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .footer-logo {
+        height: 3.5rem;
+        margin-top: 11px;
+        margin-bottom: 1rem;
+        width: 6.5rem;
+        margin-left: 7rem !important; }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter svg .hollaEX_logo_gray {
+        fill: var(--calculated_base_footer_text); }
+      .layout-mobile .app_footer-container .footer-row-content .footer-links-section .footer_separter .blue-link {
+        color: #00aeef !important; }
+  .layout-mobile .app_footer-container .footer-row-content .blue-link {
+    color: #00aeef !important; }
 
 .layout-mobile .app_footer-container .footer-links-group {
   margin: 10rem; }
+
+.layout-mobile .app_footer-container .footer-row-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid var(--calculated_footer_border);
+  margin-bottom: 1rem; }
 
 .carousel__container {
   display: flex;
@@ -10914,7 +10958,11 @@ body {
   color: var(--labels_important-active-labels-text-graphics);
   font-size: 1.1rem !important;
   font-family: "Open Sans" !important;
-  height: 100%; }
+  height: 100%;
+  transition: all 0.3s; }
+
+* {
+  transition: all 0.3s; }
 
 .direction_rtl.apply_rtl {
   direction: rtl; }

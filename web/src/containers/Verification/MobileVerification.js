@@ -8,23 +8,20 @@ import {
 } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import { required } from '../../components/Form/validations';
-import renderFields from '../../components/Form/factoryFields';
+import { required } from 'components/Form/validations';
+import renderFields from 'components/Form/factoryFields';
 import {
 	Button,
 	IconTitle,
 	ElapsedTimer,
 	HeaderSection,
-} from '../../components';
-import STRINGS from '../../config/localizedStrings';
+	EditWrapper,
+} from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { PHONE_OPTIONS } from '../../utils/countries';
-import { getErrorLocalized } from '../../utils/errors';
-import {
-	verifySmsCode,
-	requestSmsCode,
-} from '../../actions/verificationActions';
-import { EditWrapper } from 'components';
+import { PHONE_OPTIONS } from 'utils/countries';
+import { getErrorLocalized } from 'utils/errors';
+import { verifySmsCode, requestSmsCode } from 'actions/verificationActions';
 
 const FORM_NAME = 'MobileVerification';
 let loadingTimeOut = '';
@@ -172,7 +169,7 @@ class MobileVerification extends Component {
 			);
 			requestSmsCode(phone)
 				.then(({ data }) => {
-					// alert(STRINGS.formatString(STRINGS["SMS_SENT_TO"], phone));
+					// alert(STRINGS.formatString(STRINGS["SMS_SENT_TO"], phone).join(''));
 					this.setState(
 						{
 							codeRequested: true,
@@ -187,7 +184,10 @@ class MobileVerification extends Component {
 				})
 				.catch((err) => {
 					const error = {
-						_error: STRINGS.formatString(STRINGS['SMS_ERROR_SENT_TO'], phone),
+						_error: STRINGS.formatString(
+							STRINGS['SMS_ERROR_SENT_TO'],
+							phone
+						).join(''),
 					};
 					this.setState({ codeRequestLoading: false }, () => {
 						this.generateFormFields();

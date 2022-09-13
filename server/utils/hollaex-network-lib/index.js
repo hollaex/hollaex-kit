@@ -688,6 +688,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Deposit with specific transaction ID.
 	 * @param {string} opts.address - Deposits with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
@@ -708,6 +709,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -777,6 +779,10 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
@@ -927,6 +933,7 @@ class HollaExNetwork {
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
 	 * @param {string} opts.transactionId - Withdrawals with specific transaction ID.
 	 * @param {string} opts.address - Withdrawals with specific address.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
@@ -947,6 +954,7 @@ class HollaExNetwork {
 			endDate: null,
 			transactionId: null,
 			address: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1016,6 +1024,10 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.waiting)) {
 			path += `&waiting=${opts.waiting}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
