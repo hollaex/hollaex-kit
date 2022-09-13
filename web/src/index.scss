@@ -55,6 +55,10 @@ body {
 
 * {
 	transition: all 0.3s;
+	.presentation_container,
+	.presentation_container * {
+		transition: none !important;
+	}
 }
 
 .direction_rtl {
