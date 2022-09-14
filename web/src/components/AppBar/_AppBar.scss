@@ -332,7 +332,13 @@ $app-menu-width: calc(100vw - 40rem);
 		font-weight: bold;
 	}
 
+	.opacity-1 {
+		opacity: 1 !important;
+	}
+
 	.app-bar-account-menu {
+		transition: 0.9s;
+		opacity: 0;
 		display: block;
 		position: absolute;
 		// right: 0;
@@ -1365,6 +1371,7 @@ $app-menu-width: calc(100vw - 40rem);
 			left: unset;
 		}
 	}
+
 	.app_bar {
 		.app-bar-account-menu {
 			.app-bar-account-list-icon {

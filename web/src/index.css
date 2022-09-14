@@ -6020,7 +6020,11 @@ table th {
     font-size: 0.8rem;
     line-height: 1;
     font-weight: bold; }
+  .app_bar .opacity-1 {
+    opacity: 1 !important; }
   .app_bar .app-bar-account-menu {
+    transition: .9s;
+    opacity: 0;
     display: block;
     position: absolute;
     top: 36px;
