@@ -398,7 +398,7 @@ table th {
       max-width: 100vw;
       overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content .app_container-main {
-      transition: .3s; }
+      transition: 0.3s; }
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
@@ -1060,7 +1060,7 @@ table th {
     .change-password-form-wrapper .change-password-form .input_field-input::placeholder {
       font-size: 12px; }
   .user-security-wrapper .tab_controller-tabs .tab_item {
-    transition: .3s;
+    transition: 0.3s;
     font-size: 12px !important; } }
 
 .edit_token.overlay {
@@ -2006,7 +2006,7 @@ table th {
     color: var(--labels_important-active-labels-text-graphics); }
 
 .transaction-history-wrapper #trades-filters_size * {
-  transition: .2s; }
+  transition: 0.2s; }
 
 .transaction-history-wrapper .ant-radio-button-wrapper-checked::before,
 .transaction-history-wrapper .ant-radio-button-wrapper::before {
@@ -5520,7 +5520,7 @@ table th {
 
 .layout-mobile .tab_controller-tabs,
 .layout-mobile .tab_item {
-  transition: .3s;
+  transition: 0.3s;
   font-size: 1.5rem !important; }
 
 .tab_controller-tabs {
@@ -6234,7 +6234,7 @@ table th {
   position: relative;
   max-width: calc(100vw - 40rem); }
   .app-menu-bar .app-menu-bar-content {
-    transition: .3s;
+    transition: 0.3s;
     color: var(--calculated_base_top-bar-navigation_text-inactive);
     cursor: pointer;
     margin: 0 15px;
@@ -6910,7 +6910,7 @@ table th {
     font-size: 1.2rem !important; } }
 
 .check_title-container {
-  transition: .3s;
+  transition: 0.3s;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7069,7 +7069,7 @@ table th {
   min-width: 10rem; }
 
 .custom-tab-wrapper .tab_item-active {
-  transition: .3s;
+  transition: 0.3s;
   border: 1px solid var(--calculated_important-border);
   color: var(--labels_important-active-labels-text-graphics) !important;
   font-weight: bold; }
@@ -10994,7 +10994,7 @@ body {
   transition: all 0.3s; }
 
 .half-opacity {
-  opacity: .5; }
+  opacity: 0.5; }
 
 .direction_rtl.apply_rtl {
   direction: rtl; }
