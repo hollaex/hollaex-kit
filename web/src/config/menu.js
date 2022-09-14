@@ -92,6 +92,12 @@ export const MENU_ITEMS = {
 			hide_from_appbar: true,
 			hide_from_bottom_nav: true,
 		},
+		{
+			path: '/apps',
+			icon_id: 'TAB_APPS',
+			string_id: 'ACCOUNTS.TAB_APPS',
+			hide_from_bottom_nav: true,
+		},
 	],
 	bottom: [
 		{
