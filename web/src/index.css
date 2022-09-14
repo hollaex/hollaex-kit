@@ -6867,7 +6867,8 @@ table th {
 
 .market-selector-dropdown.ant-dropdown-trigger {
   height: 100% !important;
-  width: 100% !important; }
+  width: 100% !important;
+  box-sizing: content-box; }
 
 .app-menu-bar-wrapper {
   flex-grow: 1;

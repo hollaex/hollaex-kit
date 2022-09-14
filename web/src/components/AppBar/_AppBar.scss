@@ -1379,6 +1379,7 @@ $app-menu-width: calc(100vw - 40rem);
 	&.ant-dropdown-trigger {
 		height: 100% !important;
 		width: 100% !important;
+		box-sizing: content-box;
 	}
 }
 
