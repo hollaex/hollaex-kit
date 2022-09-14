@@ -165,6 +165,9 @@ table th {
 .blue-link {
   color: var(--specials_buttons-links-and-highlights) !important; }
 
+.blue-link:hover {
+  opacity: .5; }
+
 .arrow {
   border: solid grey;
   border-width: 0 3px 3px 0;
@@ -4285,6 +4288,8 @@ table th {
     margin: 0.5rem 0;
     padding: 0 0.5rem;
     text-transform: uppercase; }
+    .trade_tabs-container .trade_tabs-link:hover {
+      opacity: .5; }
   .trade_tabs-container .link-separator {
     border-right: 1px solid var(--calculated_secondary-border); }
   .trade_tabs-container .trade_tabs-search-field {
@@ -5334,6 +5339,8 @@ table th {
   border-radius: 0.5rem;
   margin: 1rem 0.5rem;
   font-weight: bold; }
+  .staking-account__connect:hover {
+    opacity: .8; }
 
 .chart_mine {
   fill-opacity: 0.7;
@@ -6247,6 +6254,8 @@ table th {
   .app-menu-bar .app-menu-bar-content-item {
     margin: auto;
     position: relative; }
+    .app-menu-bar .app-menu-bar-content-item:hover {
+      opacity: .5; }
   .app-menu-bar .app-menu-bar-icon {
     margin-right: 0.4rem;
     width: 1rem; }
@@ -7060,6 +7069,9 @@ table th {
     .header_title-wrapper .header_title-icon svg .verification-phone,
     .header_title-wrapper .header_title-icon svg .verification-bank {
       fill: var(--labels_important-active-labels-text-graphics); }
+
+.tab_item-deactive:hover {
+  opacity: .5; }
 
 .custom-tab-wrapper .tab_item {
   color: var(--labels_secondary-inactive-label-text-graphics);

@@ -96,6 +96,10 @@ table th {
 	color: $link !important;
 }
 
+.blue-link:hover {
+	opacity: 0.5;
+}
+
 .arrow {
 	border: solid grey;
 	border-width: 0 3px 3px 0;

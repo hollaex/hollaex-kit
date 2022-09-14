@@ -217,6 +217,11 @@ $notification-size: 1.5rem;
 		}
 	}
 }
+.tab_item-deactive {
+	&:hover {
+		opacity: 0.5;
+	}
+}
 
 .custom-tab-wrapper {
 	.tab_item {

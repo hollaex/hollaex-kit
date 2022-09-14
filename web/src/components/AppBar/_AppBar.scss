@@ -628,6 +628,9 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-menu-bar-content-item {
 		margin: auto;
 		position: relative;
+		&:hover {
+			opacity: 0.5;
+		}
 	}
 
 	.app-menu-bar-icon {
