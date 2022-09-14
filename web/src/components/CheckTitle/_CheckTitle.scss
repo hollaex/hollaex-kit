@@ -3,6 +3,7 @@ $custom-title-img-size: 6rem;
 $notification-size: 1.5rem;
 
 .check_title-container {
+	transition: 0.3s;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -17,7 +18,7 @@ $notification-size: 1.5rem;
 	.custom_title-label {
 		font-size: $font-size-subhead3;
 		line-height: $font-size-subhead3;
-    	padding: 0.25rem 0 1.5rem 0;
+		padding: 0.25rem 0 1.5rem 0;
 		text-align: center;
 	}
 
@@ -227,6 +228,7 @@ $notification-size: 1.5rem;
 	}
 
 	.tab_item-active {
+		transition: 0.3s;
 		border: 1px solid $colors-main-border;
 		color: $tab-active !important;
 		font-weight: bold;

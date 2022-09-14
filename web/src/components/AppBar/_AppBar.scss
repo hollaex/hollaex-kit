@@ -613,6 +613,7 @@ $app-menu-width: calc(100vw - 40rem);
 	max-width: $app-menu-width;
 
 	.app-menu-bar-content {
+		transition: 0.3s;
 		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
 		margin: 0 15px;

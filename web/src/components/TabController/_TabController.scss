@@ -20,6 +20,7 @@ $tab_controller-item-min-width: 8rem;
 .layout-mobile {
 	.tab_controller-tabs,
 	.tab_item {
+		transition: 0.3s;
 		font-size: $extra-thick--font-size !important;
 	}
 }

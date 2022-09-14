@@ -50,15 +50,11 @@ body {
 // 	 padding-top: 3rem;
 // }
 
-.language_rtl {
+.half-opacity {
+	opacity: 0.5;
 }
 
-* {
-	transition: all 0.3s;
-	.presentation_container,
-	.presentation_container * {
-		transition: none !important;
-	}
+.language_rtl {
 }
 
 .direction_rtl {
