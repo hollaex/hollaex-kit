@@ -251,11 +251,12 @@ class TransactionsHistory extends Component {
 	}
 
 	generateFilters = () => {
-		const { pairs, coins } = this.props;
+		const { pairs, coins, icons } = this.props;
 		this.setState({
 			filters: {
 				orders: (
 					<TradeAndOrderFilters
+						icons={icons}
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="orders"
@@ -264,6 +265,7 @@ class TransactionsHistory extends Component {
 				),
 				trades: (
 					<TradeAndOrderFilters
+						icons={icons}
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="trades"
@@ -272,6 +274,7 @@ class TransactionsHistory extends Component {
 				),
 				deposits: (
 					<DepositAndWithdrawlFilters
+						icons={icons}
 						coins={coins}
 						onSearch={this.onSearch}
 						formName="deposits"
@@ -280,6 +283,7 @@ class TransactionsHistory extends Component {
 				),
 				withdrawals: (
 					<DepositAndWithdrawlFilters
+						icons={icons}
 						coins={coins}
 						onSearch={this.onSearch}
 						formName="withdrawals"
