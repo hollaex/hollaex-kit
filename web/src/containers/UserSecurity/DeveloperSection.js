@@ -1,9 +1,9 @@
 import React from 'react';
-import { MIN_LEVEL_FOR_TOKENS } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
+import { MIN_LEVEL_FOR_TOKENS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import ApiKeyContainer from './ApiKey';
-import DumbField from '../../components/Form/FormFields/DumbField';
+import DumbField from 'components/Form/FormFields/DumbField';
 import { EditWrapper } from 'components';
 
 const NoLevel = () => (

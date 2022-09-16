@@ -2,13 +2,11 @@ import React, { Component } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import IconTitle from '../IconTitle';
-import DumbField from '../Form/FormFields/DumbField';
-import Button from '../Button';
-import STRINGS from '../../config/localizedStrings';
-import { getUserReferralCount } from '../../actions/userAction';
-import { setSnackNotification } from '../../actions/appActions';
+import DumbField from 'components/Form/FormFields/DumbField';
+import { Button, IconTitle } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { getUserReferralCount } from 'actions/userAction';
+import { setSnackNotification } from 'actions/appActions';
 import { EditWrapper } from 'components';
 
 const RenderDumbField = (props) => <DumbField {...props} />;

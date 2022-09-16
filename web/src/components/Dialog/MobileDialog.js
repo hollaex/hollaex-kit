@@ -2,11 +2,11 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import Modal from 'react-modal';
-import { isLoggedIn } from '../../utils/token';
-import { MobileBarBack } from '../';
-import { getClasesForLanguage, getLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
-import { ICONS } from '../../config/constants';
+import { isLoggedIn } from 'utils/token';
+import { MobileBarBack } from 'components';
+import { getClasesForLanguage, getLanguage } from 'utils/string';
+import { getThemeClass } from 'utils/theme';
+import { ICONS } from 'config/constants';
 import { ReactSVG } from 'react-svg';
 
 const CompressedContent = ({ children, onClose }) => {

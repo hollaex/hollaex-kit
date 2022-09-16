@@ -1,4 +1,4 @@
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const QUICK_TRADE_OUT_OF_LIMITS = 'Order size is out of the limits';
 const QUICK_TRADE_TOKEN_USED = 'Token has been used';

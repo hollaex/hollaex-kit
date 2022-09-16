@@ -1,8 +1,8 @@
 import React from 'react';
-import { ICONS } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { ICONS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
-import { IconTitle, Button } from '../../components';
+import { IconTitle, Button } from 'components';
 
 const RequestResetPasswordSuccess = ({ onLoginClick, onContactUs }) => (
 	<div className="auth_wrapper d-flex justify-content-center align-items-center flex-column">

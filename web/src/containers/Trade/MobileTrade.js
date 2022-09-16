@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const MobileTrade = ({
 	orderbookReady,
@@ -50,7 +50,10 @@ const MobileTrade = ({
 					setSizeRef={setSizeRef}
 				/>
 			</TradeBlock>
-			<TradeBlock title={STRINGS['ORDERBOOK']} className="order-entry w-50 orderBook-wrapper">
+			<TradeBlock
+				title={STRINGS['ORDERBOOK']}
+				className="order-entry w-50 orderBook-wrapper"
+			>
 				{orderbookReady && <Orderbook {...orderbookProps} />}
 			</TradeBlock>
 		</div>

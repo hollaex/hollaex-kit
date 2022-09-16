@@ -1,6 +1,6 @@
 import React from 'react';
-import { IconTitle, Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const ResetPasswordSuccess = ({

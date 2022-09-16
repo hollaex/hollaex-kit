@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button } from '../';
-import STRINGS from '../../config/localizedStrings';
-import Image from 'components/Image';
-import { EditWrapper } from 'components';
+import { Image, Button, EditWrapper } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 const MessageDisplay = ({
 	stringId,

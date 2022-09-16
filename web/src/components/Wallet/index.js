@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
-import { Accordion, ControlledScrollbar } from 'components';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../config/constants';
-import { formatToCurrency } from '../../utils/currency';
+import { Accordion, ControlledScrollbar, DonutChart } from 'components';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { formatToCurrency } from 'utils/currency';
 import WalletSection from './Section';
-import { DonutChart } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 class Wallet extends Component {
 	state = {

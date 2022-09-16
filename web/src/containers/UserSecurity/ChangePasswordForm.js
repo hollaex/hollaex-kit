@@ -2,12 +2,10 @@ import React from 'react';
 import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import renderFields from '../../components/Form/factoryFields';
-import { Button } from '../../components';
-import { required, password } from '../../components/Form/validations';
-
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import renderFields from 'components/Form/factoryFields';
+import { Button, EditWrapper } from 'components';
+import { required, password } from 'components/Form/validations';
+import STRINGS from 'config/localizedStrings';
 
 const validate = (values) => {
 	const errors = {};

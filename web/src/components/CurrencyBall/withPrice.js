@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { CurrencyBall } from '../';
-import { formatToCurrency } from '../../utils/currency';
-import { DEFAULT_COIN_DATA } from '../../config/constants';
+import { CurrencyBall } from 'components';
+import { formatToCurrency } from 'utils/currency';
+import { DEFAULT_COIN_DATA } from 'config/constants';
 
 const CurrencyBallWithPrice = ({
 	symbol,

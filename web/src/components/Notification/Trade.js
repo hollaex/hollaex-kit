@@ -1,17 +1,14 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import {
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import {
 	NotificationWraper,
 	NotificationContent,
 	InformationRow,
 } from './Notification';
-import { formatToCurrency } from '../../utils/currency';
+import { formatToCurrency } from 'utils/currency';
 
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';

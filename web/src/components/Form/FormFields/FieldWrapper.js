@@ -162,7 +162,7 @@ class FieldWrapper extends Component {
 			preview,
 			isEmail = false,
 			emailMsg = '',
-			showCross = showCross,
+			showCross,
 			onCrossClick = () => {},
 		} = this.props;
 

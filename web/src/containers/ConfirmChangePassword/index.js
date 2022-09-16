@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Dialog } from '../../components';
+import { Dialog } from 'components';
 import ResetPasswordSuccess from 'containers/ResetPassword/ResetPasswordSuccess';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 class ConfirmChangePassword extends Component {
 	state = {

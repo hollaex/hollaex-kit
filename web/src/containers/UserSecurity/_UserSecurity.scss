@@ -329,6 +329,7 @@ $padding-input: 4rem;
 	.user-security-wrapper {
 		.tab_controller-tabs {
 			.tab_item {
+				transition: 0.3s;
 				font-size: 12px !important;
 			}
 		}
