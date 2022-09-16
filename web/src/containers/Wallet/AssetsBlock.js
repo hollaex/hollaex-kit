@@ -324,8 +324,8 @@ const AssetsBlock = ({
 											<ActionNotification
 												stringId="TRADE_TAB_TRADE"
 												text={STRINGS['TRADE_TAB_TRADE']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconId="BLUE_TRADE_ICON"
+												iconPath={ICONS['BLUE_TRADE_ICON']}
 												onClick={() => goToTrade(pair)}
 												className="csv-action"
 												showActionText={isMobile}
@@ -338,8 +338,8 @@ const AssetsBlock = ({
 											<ActionNotification
 												stringId="STAKE.EARN"
 												text={STRINGS['STAKE.EARN']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconId="BLUE_EARN_ICON"
+												iconPath={ICONS['BLUE_EARN_ICON']}
 												onClick={() => navigate('/stake')}
 												className="csv-action"
 												showActionText={isMobile}
