@@ -182,7 +182,7 @@ class Wallet extends Component {
 					text: STRINGS['TRADE_HISTORY'],
 					status: 'information',
 					iconId: 'PAPER_CLIP',
-					iconPath: STATIC_ICONS['PAPER_CLIP'],
+					iconPath: STATIC_ICONS['CLOCK'],
 					allowClick: true,
 					className: isOpen
 						? 'paper-clip-icon'
