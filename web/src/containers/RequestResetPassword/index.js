@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
+import { Link } from 'react-router';
 
 import { SubmissionError, change } from 'redux-form';
 import { requestResetPassword } from 'actions/authAction';
@@ -16,6 +17,23 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 
 let errorTimeOut = null;
+
+const BottomLink = () => (
+	<>
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['SIGN_UP.HAVE_ACCOUNT']}
+			<Link to="/login" className={classnames('blue-link')}>
+				{STRINGS['SIGN_UP.GOTO_LOGIN']}
+			</Link>
+		</div>
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['LOGIN.NO_ACCOUNT']}
+			<Link to="/signup" className={classnames('blue-link')}>
+				{STRINGS['LOGIN.CREATE_ACCOUNT']}
+			</Link>
+		</div>
+	</>
+);
 
 class RequestResetPassword extends Component {
 	constructor(props) {
@@ -131,6 +149,7 @@ class RequestResetPassword extends Component {
 								onSubmit={this.onSubmitRequestResetPassword}
 								formFields={formFields}
 							/>
+							{isMobile && <BottomLink />}
 						</div>
 					</div>
 				)}
@@ -149,6 +168,7 @@ class RequestResetPassword extends Component {
 						onClose={this.onCloseDialog}
 					/>
 				</Dialog>
+				{!isMobile && <BottomLink />}
 			</div>
 		);
 	}
