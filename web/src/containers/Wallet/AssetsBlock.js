@@ -301,7 +301,7 @@ const AssetsBlock = ({
 												stringId="WALLET_BUTTON_BASE_DEPOSIT"
 												text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
 												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconPath={ICONS['BLUE_DEPOSIT_ICON']}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												className="csv-action action-button-wrapper"
 												showActionText={isMobile}
@@ -311,7 +311,7 @@ const AssetsBlock = ({
 												stringId="WALLET_BUTTON_BASE_WITHDRAW"
 												text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
 												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconPath={ICONS['BLUE_WITHROW_ICON']}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												className="csv-action action-button-wrapper"
 												showActionText={isMobile}
