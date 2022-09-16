@@ -144,6 +144,7 @@ const icons = {
 	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
+	CLOCK: '/assets/images/clock.svg',
 };
 
 export default icons;
