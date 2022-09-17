@@ -5,9 +5,10 @@ import { Button } from 'antd';
 import _findLast from 'lodash/findLast';
 import _findLastKey from 'lodash/findLastKey';
 import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 
 import renderFields from '../../../components/AdminForm/utils';
-import debounce from 'lodash.debounce';
+import FormButton from 'components/FormButton/Button';
 
 class FormWrapper extends Component {
 	componentDidMount() {
@@ -114,16 +115,14 @@ class FormWrapper extends Component {
 					{customFields
 						? this.renderCustomFields(fields)
 						: renderFields(fields, getFieldDecorator, initialValues)}
-					<Button
-						block
+					<FormButton
 						type="primary"
+						handleSubmit={handleSubmit(this.onSubmit)}
 						htmlType="submit"
-						className="green-btn minimal-btn"
-						onClick={handleSubmit(this.onSubmit)}
 						disabled={buttonSubmitting}
-					>
-						{buttonTxt}
-					</Button>
+						className="green-btn minimal-btn"
+						buttonText={buttonTxt}
+					/>
 				</form>
 			</div>
 		);
