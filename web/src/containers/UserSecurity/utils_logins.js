@@ -1,6 +1,6 @@
 import React from 'react';
-import { getFormatTimestamp } from '../../utils/utils';
-import STRINGS from '../../config/localizedStrings';
+import { getFormatTimestamp } from 'utils/utils';
+import STRINGS from 'config/localizedStrings';
 
 export const generateLogins = () => {
 	return [

@@ -222,7 +222,7 @@ const nestedIcons = {
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
-	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
+	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
 
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',

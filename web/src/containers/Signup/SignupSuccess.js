@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { IconTitle } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const SignupSuccess = ({ icons: ICONS, ...rest }) => {

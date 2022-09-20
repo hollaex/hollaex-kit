@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { SubmissionError } from 'redux-form';
 import { connect } from 'react-redux';
-import { HocForm, IconTitle, Notification } from '../../components';
-import { email as isEmail, required } from '../../components/Form/validations';
-import STRINGS from '../../config/localizedStrings';
-import { sendSupportMail, NOTIFICATIONS } from '../../actions/appActions';
+import { HocForm, IconTitle, Notification } from 'components';
+import { email as isEmail, required } from 'components/Form/validations';
+import STRINGS from 'config/localizedStrings';
+import { sendSupportMail, NOTIFICATIONS } from 'actions/appActions';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const FORM_NAME = 'ContactForm';

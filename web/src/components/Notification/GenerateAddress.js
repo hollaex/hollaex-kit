@@ -1,10 +1,8 @@
 import React from 'react';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { Button, Loader } from '../';
-import { EditWrapper } from 'components';
-import Image from 'components/Image';
+import { Button, Loader, EditWrapper, Image } from 'components';
 
 const GenerateAddressNotification = ({
 	type,

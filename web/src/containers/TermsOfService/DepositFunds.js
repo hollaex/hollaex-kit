@@ -1,8 +1,8 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 
-import { IconTitle, BlueLink, Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, BlueLink, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const DepositFunds = (props) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, getFormValues } from 'redux-form';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { Button } from '../../components';
 import { STATIC_ICONS } from 'config/icons';
 import renderFields from '../../components/Form/factoryFields';

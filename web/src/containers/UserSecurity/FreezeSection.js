@@ -1,7 +1,7 @@
 import React from 'react';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 export const FreezeSection = ({ handleSubmit }) => (
 	<div>

@@ -9,14 +9,14 @@ import {
 	ActionNotification,
 	MobileBarBack,
 	Image,
-} from '../../components';
-import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+} from 'components';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	formatToCurrency,
 	generateWalletActionsText,
 	getCurrencyFromName,
-} from '../../utils/currency';
-import STRINGS from '../../config/localizedStrings';
+} from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 
@@ -74,8 +74,8 @@ class Wallet extends Component {
 						iconId={icon_id}
 						icon={ICONS[icon_id]}
 						wrapperClassName="coin-icons"
-						width='32px'
-						height='32px'
+						width="32px"
+						height="32px"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
 					<div className="with_price-block_amount-value">
