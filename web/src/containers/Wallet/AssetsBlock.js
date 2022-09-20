@@ -245,7 +245,7 @@ const AssetsBlock = ({
 									</td>
 									<td className="td-name td-fit">
 										{sortedSearchResults && loading ? (
-											<div className="d-flex align-items-center">
+											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
 														iconId={icon_id}
