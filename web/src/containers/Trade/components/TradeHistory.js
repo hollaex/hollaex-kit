@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
@@ -12,7 +12,7 @@ import { tradeHistorySelector } from '../utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { calcPercentage } from 'utils/math';
 import { Select } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import math from 'mathjs';
 import { opacifyNumber } from 'helpers/opacify';
 
@@ -86,6 +86,7 @@ class TradeHistory extends Component {
 		const { isBase, isOpen } = this.state;
 		const { pairData } = this.props;
 		const { pair_base_display, pair_2_display } = pairData;
+		const { isDropdownOpen, setIsDropdownOpen } = useState(false);
 
 		return [
 			{
@@ -126,10 +127,17 @@ class TradeHistory extends Component {
 								bordered={false}
 								defaultValue={false}
 								size="small"
+								onClick={() => {
+									setIsDropdownOpen((prev) => !prev);
+								}}
 								suffixIcon={
-									<CaretDownOutlined
-										onClick={() => this.dropdownVisibleChange(!isOpen)}
-									/>
+									isDropdownOpen ? (
+										<CaretUpOutlined />
+									) : (
+										<CaretDownOutlined
+											onClick={() => this.dropdownVisibleChange(!isOpen)}
+										/>
+									)
 								}
 								value={isBase}
 								onSelect={this.onSelect}

@@ -55,6 +55,7 @@ class Orderbook extends Component {
 		priceDiff: 0,
 		inProp: false,
 		isAnimated: false,
+		isDropdownOpen: false,
 	};
 
 	componentDidMount() {
@@ -296,10 +297,17 @@ class Orderbook extends Component {
 							bordered={false}
 							defaultValue={false}
 							size="small"
+							onClick={() => {
+								this.setState({ isDropdownOpend: !this.state.isDropdownOpen });
+							}}
 							suffixIcon={
-								<CaretDownOutlined
-									onClick={() => this.dropdownVisibleChange(!isOpen)}
-								/>
+								this.isDropdownOpen ? (
+									<CaretUpOutlined />
+								) : (
+									<CaretDownOutlined
+										onClick={() => this.dropdownVisibleChange(!isOpen)}
+									/>
+								)
 							}
 							value={isBase}
 							onSelect={this.onSelect}

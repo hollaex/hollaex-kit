@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Select } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 
 const { Option } = Select;
@@ -8,6 +8,7 @@ const { Option } = Select;
 // todo: add antd component to redux form
 
 const DropDown = (props) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const {
 		input: { onChange, value },
 		options,
@@ -22,7 +23,8 @@ const DropDown = (props) => {
 					bordered={false}
 					size="small"
 					onChange={onChange}
-					suffixIcon={<CaretDownOutlined />}
+					onClick={setIsOpen((prev) => !prev)}
+					suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
 					className="custom-select-input-style w-100 elevated"
 					dropdownClassName="custom-select-style select-option-wrapper"
 				>
