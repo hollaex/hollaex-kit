@@ -8,6 +8,7 @@ import MenuListItem from './MenuListItem';
 class MenuList extends Component {
 	state = {
 		isOpen: false,
+		startTransition: false,
 	};
 
 	element = null;
@@ -29,7 +30,19 @@ class MenuList extends Component {
 			event.target !== this.element &&
 			this.element.contains(event.target)
 		) {
-			this.setState({ isOpen: !this.state.isOpen });
+			this.setState({ isOpen: !this.state.isOpen }, () => {
+				if (this.state.isOpen) {
+					setTimeout(() => {
+						this.setState({
+							startTransition: true,
+						});
+					}, 50);
+				} else {
+					this.setState({
+						startTransition: false,
+					});
+				}
+			});
 		}
 	};
 
@@ -70,7 +83,7 @@ class MenuList extends Component {
 			activePath,
 			onMenuChange,
 		} = this.props;
-		const { isOpen } = this.state;
+		const { isOpen, startTransition } = this.state;
 		const totalPending = securityPending + verificationPending;
 		return (
 			<div
@@ -92,7 +105,12 @@ class MenuList extends Component {
 				</div>
 				<div>{user.email}</div>
 				{isOpen && (
-					<div id="tab-account-menu" className="app-bar-account-menu apply_rtl">
+					<div
+						id="tab-account-menu"
+						className={`${
+							startTransition ? 'opacity-1 ' : ' '
+						} app-bar-account-menu apply_rtl`}
+					>
 						{menuItems.map(
 							(
 								{ path, icon_id, string_id, hide_from_menulist, activePaths },

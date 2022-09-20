@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Checkbox, Form } from 'antd';
+import { Checkbox, Form } from 'antd';
 import { InfoCircleFilled } from '@ant-design/icons';
+
+import FormButton from 'components/FormButton/Button';
 
 const { Item } = Form;
 
@@ -71,14 +73,13 @@ const EmailVerificationForm = ({
 					</div>
 				</div>
 				<div>
-					<Button
+					<FormButton
 						type="primary"
 						htmlType="submit"
-						className="green-btn minimal-btn"
 						disabled={isDisable || buttonSubmitting}
-					>
-						Save
-					</Button>
+						className="green-btn minimal-btn"
+						buttonText="Save"
+					/>
 				</div>
 			</Form>
 		</div>
