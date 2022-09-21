@@ -61,3 +61,6 @@ templates/kubernetes/config/*
 
 .token
 backups
+
+settings
+settings/*
