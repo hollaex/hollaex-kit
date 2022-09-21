@@ -235,7 +235,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "Resend Email Request",
-		"BUTTON": "Request Email"
+		"BUTTON": "Request Email",
+		"SUBTITLE": "Make another email verification request below",
+		"SUPPORT": "Contact Support"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "Resent Email",

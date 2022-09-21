@@ -35,7 +35,7 @@ $toggle-margin: 2px;
 				.toggle-action_button {
 					width: $toggle-size * 3 !important;
 					&.left {
-    					opacity: 1 !important;
+						opacity: 1 !important;
 						.toggle-action_button-display {
 							$right-pos: $toggle-size + $toggle-margin * 2;
 							right: calc(100% - #{$right-pos}) !important;
@@ -54,6 +54,9 @@ $toggle-margin: 2px;
 		margin: 0.5rem 0;
 		padding: 0 0.5rem;
 		text-transform: uppercase;
+		&:hover {
+			opacity: 0.5;
+		}
 	}
 
 	.link-separator {

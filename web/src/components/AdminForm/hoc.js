@@ -3,6 +3,7 @@ import renderFields from './utils';
 import { reduxForm, reset, getFormValues } from 'redux-form';
 import { Button } from 'antd';
 import { connect } from 'react-redux';
+import FormButton from 'components/FormButton/Button';
 
 const Form = (name, className = '', allowPristine = false) => {
 	const HocForm = ({
@@ -49,9 +50,9 @@ const Form = (name, className = '', allowPristine = false) => {
 						{secondaryBtnTxt}
 					</Button>
 				) : null}
-				<Button
+				<FormButton
 					type={buttonType ? buttonType : 'primary'}
-					onClick={handleSubmit(onSubmit)}
+					handleSubmit={handleSubmit(onSubmit)}
 					disabled={
 						disableAllFields ||
 						(allowPristine ? false : fields && pristine) ||
@@ -63,9 +64,8 @@ const Form = (name, className = '', allowPristine = false) => {
 					size={small ? 'small' : 'large'}
 					className={small ? `${buttonClass}` : `w-100 ${buttonClass}`}
 					style={small ? { float: 'right' } : null}
-				>
-					{buttonText}
-				</Button>
+					buttonText={buttonText}
+				/>
 			</form>
 		);
 	};
@@ -78,7 +78,7 @@ const Form = (name, className = '', allowPristine = false) => {
 	})(HocForm);
 
 	const mapStateToProps = (state) => ({
-		formValues: getFormValues(name)(state)
+		formValues: getFormValues(name)(state),
 	});
 	return connect(mapStateToProps)(CommonHocForm);
 };

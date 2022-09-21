@@ -31,7 +31,7 @@ const ResetPasswordSuccess = ({
 					{STRINGS['RESET_PASSWORD_SUCCESS.TEXT_1']}
 				</div>
 			)}
-			<Button label={label} onClick={onClick} className="button-margin" />
+			<Button label={label} onClick={onClick} className="button-margin mt-5" />
 		</div>
 	);
 };

@@ -332,7 +332,13 @@ $app-menu-width: calc(100vw - 40rem);
 		font-weight: bold;
 	}
 
+	.opacity-1 {
+		opacity: 1 !important;
+	}
+
 	.app-bar-account-menu {
+		transition: 0.9s;
+		opacity: 0;
 		display: block;
 		position: absolute;
 		// right: 0;
@@ -614,6 +620,7 @@ $app-menu-width: calc(100vw - 40rem);
 	max-width: $app-menu-width;
 
 	.app-menu-bar-content {
+		transition: 0.3s;
 		color: $base_top-bar-navigation_text-inactive;
 		cursor: pointer;
 		margin: 0 15px;
@@ -628,6 +635,9 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-menu-bar-content-item {
 		margin: auto;
 		position: relative;
+		&:hover {
+			opacity: 0.5;
+		}
 	}
 
 	.app-menu-bar-icon {
@@ -1362,6 +1372,7 @@ $app-menu-width: calc(100vw - 40rem);
 			left: unset;
 		}
 	}
+
 	.app_bar {
 		.app-bar-account-menu {
 			.app-bar-account-list-icon {
@@ -1376,6 +1387,7 @@ $app-menu-width: calc(100vw - 40rem);
 	&.ant-dropdown-trigger {
 		height: 100% !important;
 		width: 100% !important;
+		box-sizing: content-box;
 	}
 }
 

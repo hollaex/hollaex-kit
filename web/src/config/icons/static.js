@@ -102,7 +102,7 @@ const icons = {
 		xmr: '/assets/images/xmr-icon.svg',
 		xrp: '/assets/images/xrp-icon.svg',
 	},
-	MISSING_ICON: '/assets/images/missing-coin.svg',
+	MISSING_ICON: '/assets/images/coin-graphic-not-detected.svg',
 	SETTINGS: '/assets/images/noun_settings.svg',
 	CURRENCY_SYMBOL: '/assets/images/noun_currency.svg',
 	BLOCKCHAIN_BACKGROUND: '/assets/images/blockchain-background.svg',
@@ -145,6 +145,7 @@ const icons = {
 	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
+	CLOCK: '/assets/images/clock.svg',
 };
 
 export default icons;
