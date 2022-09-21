@@ -12,7 +12,7 @@ import { tradeHistorySelector } from '../utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { calcPercentage } from 'utils/math';
 import { Select } from 'antd';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { CaretDownOutlined } from '@ant-design/icons';
 import math from 'mathjs';
 import { opacifyNumber } from 'helpers/opacify';
 

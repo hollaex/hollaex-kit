@@ -23,7 +23,9 @@ const DropDown = (props) => {
 					bordered={false}
 					size="small"
 					onChange={onChange}
-					onClick={setIsOpen((prev) => !prev)}
+					onClick={() => {
+						setIsOpen((prev) => !prev);
+					}}
 					suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
 					className="custom-select-input-style w-100 elevated"
 					dropdownClassName="custom-select-style select-option-wrapper"
