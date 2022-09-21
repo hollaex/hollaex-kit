@@ -293,7 +293,6 @@ class QuickTrade extends Component {
 										<Transition in={inProp} timeout={1000}>
 											{(state) => (
 												<div className="d-flex f-size-22">
-													{console.log(tickerDiff)}
 													<div
 														className={classnames(
 															'title-font',
@@ -315,6 +314,7 @@ class QuickTrade extends Component {
 										containerProps={{
 											style: { height: '100%', width: '100%' },
 										}}
+										renderDefaultLine
 									/>
 								</div>
 								<div className="d-flex pb-35">
