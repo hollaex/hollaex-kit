@@ -5,6 +5,7 @@ import classnames from 'classnames';
 import _isEqual from 'lodash/isEqual';
 
 import { STATIC_ICONS } from 'config/icons';
+import FormButton from 'components/FormButton/Button';
 
 const { Item } = Form;
 
@@ -264,9 +265,12 @@ const InterfaceForm = ({
 					</div>
 				) : null}
 				<div>
-					<Button type="primary" htmlType="submit" disabled={isSubmit}>
-						Save
-					</Button>
+					<FormButton
+						type="primary"
+						htmlType="submit"
+						disabled={isSubmit}
+						buttonText="save"
+					/>
 				</div>
 			</Form>
 		</div>

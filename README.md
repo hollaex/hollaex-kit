@@ -22,6 +22,10 @@ Check out [Plugins](https://github.com/hollaex/hollaex-kit/tree/2.0-develop/serv
 
 Check out [HollaEx CLI](https://github.com/hollaex/hollaex-cli) (Command Line Interface) for interacting and deploying your exchange.
 
+Check out [HollaEx Network Library](https://github.com/hollaex/hollaex-kit/tree/master/server/utils/hollaex-network-lib) for tools and functions used to communicate with HollaEx Network.
+
+Check out [HollaEx Tools Library](https://github.com/hollaex/hollaex-kit/tree/master/server/utils/hollaex-tools-lib) for developers as a suite of all useful functions in the HollaEx Kit.
+
 ## Community
 Join us on the [Forum](https://forum.hollaex.com), [Discord](https://discord.gg/RkRHU8RbyM) and [Twitter](http://www.twitter.com/hollaex).
 
