@@ -1,3 +1,0 @@
-extends: ["@paciolan/react"]
-rules:
-  react/prop-types: off
