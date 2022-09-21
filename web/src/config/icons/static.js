@@ -51,6 +51,7 @@ const icons = {
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
+	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	MAKER_TIERS_SECTION: '/assets/images/maker-tier-section.svg',
 	LIMITS_SECTION_ICON: '/assets/images/limits-coin-tiers.svg',
 	FEES_SECTION_ICON: '/assets/images/limits-pairs-tiers.svg',

@@ -1294,6 +1294,7 @@
 		"NEW": "New",
 		"SEARCH_FIELD_LABEL": "Paste your transaction ID",
 		"CHECK_DEPOSIT_STATUS": "Check deposit status",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Search blockchain for your deposit",
 		"STATUS_DESCRIPTION": "You can check the status of your deposit by passing the transaction ID (hash) below.",
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",

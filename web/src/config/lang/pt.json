@@ -1012,6 +1012,7 @@
 		"SEARCH": "PESQUISAR",
 		"SEARCHING": "PESQUISANDO",
 		"CHECK_DEPOSIT_STATUS": "Verificar o status do depósito",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Pesquise blockchain para seu depósito",
 		"STATUS_DESCRIPTION": "Você pode verificar o status do seu depósito passando o ID da transação (hash) abaixo.",
 		"TRANSACTION_ID": "ID de transação (hash)",
 		"SEARCH_SUCCESS": "Pesquisa finalizada",
