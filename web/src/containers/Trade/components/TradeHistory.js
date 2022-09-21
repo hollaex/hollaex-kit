@@ -86,7 +86,6 @@ class TradeHistory extends Component {
 		const { isBase, isOpen } = this.state;
 		const { pairData } = this.props;
 		const { pair_base_display, pair_2_display } = pairData;
-		const { isDropdownOpen, setIsDropdownOpen } = useState(false);
 
 		return [
 			{
@@ -127,17 +126,10 @@ class TradeHistory extends Component {
 								bordered={false}
 								defaultValue={false}
 								size="small"
-								onClick={() => {
-									setIsDropdownOpen((prev) => !prev);
-								}}
 								suffixIcon={
-									isDropdownOpen ? (
-										<CaretUpOutlined />
-									) : (
-										<CaretDownOutlined
-											onClick={() => this.dropdownVisibleChange(!isOpen)}
-										/>
-									)
+									<CaretDownOutlined
+										onClick={() => this.dropdownVisibleChange(!isOpen)}
+									/>
 								}
 								value={isBase}
 								onSelect={this.onSelect}
