@@ -411,10 +411,12 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { change } = this.props;
+		const { change, resetSlider } = this.props;
+		this.setState({ sliderVal: 0 });
 		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');
 		change(FORM_NAME, 'size', '');
+		resetSlider();
 	};
 
 	handleOrderBookChange = (name, value) => {
@@ -568,6 +570,8 @@ class OrderEntry extends Component {
 				name: 'size-slider',
 				type: 'slider',
 				onClick: this.setMax,
+				value: 0,
+				setRef: this.props.setSliderRef,
 			},
 			postOnly: {
 				name: 'post_only',

@@ -1543,6 +1543,9 @@ table th {
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
         font-size: 14px; } }
 
+.wallet-hover:hover {
+  opacity: 0.5; }
+
 .layout-mobile .button-container {
   min-height: 4.5rem; }
 
@@ -6023,7 +6026,7 @@ table th {
   .app_bar .opacity-1 {
     opacity: 1 !important; }
   .app_bar .app-bar-account-menu {
-    transition: .9s;
+    transition: 0.9s;
     opacity: 0;
     display: block;
     position: absolute;
@@ -8167,6 +8170,9 @@ table th {
 
 .direction_rtl .trade_input-input-currency {
   left: 0; }
+
+.size-slider .ant-slider * {
+  transition: 0.1s; }
 
 .size-slider .ant-slider-with-marks {
   margin-bottom: 10px; }
@@ -11046,6 +11052,9 @@ body {
     background-color: red;
     left: 0;
     top: calc(50% - 0.75rem); }
+
+.blockchain-search {
+  filter: brightness(0) invert(0.8); }
 
 input,
 input:focus {

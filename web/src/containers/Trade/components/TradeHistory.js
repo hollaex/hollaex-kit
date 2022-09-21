@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
