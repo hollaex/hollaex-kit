@@ -115,6 +115,7 @@ const HistoryDisplay = (props) => {
 					title={title}
 					handleNext={handleNext}
 					jumpToPage={jumpToPage}
+					noData={props.noData}
 				/>
 			)}
 			<Dialog

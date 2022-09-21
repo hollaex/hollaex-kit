@@ -36,6 +36,7 @@
 	"GO_TRADE": "معامله رو شروع کن",
 	"VIEW_INFO": "مشاهده صفحه اطلاعات",
 	"APPLY_HERE": "اعمال تغییرات",
+	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"HOME": {
 		"SECTION_1_TITLE": "به HollaEx kit خوش آمدید",
 		"SECTION_1_TEXT_1": "با خیالی آسوده اکسچنج تبادل دارایی های دیجیتال خود را بسازید و جزو آینده بازارهای مالی جهان شوید.",

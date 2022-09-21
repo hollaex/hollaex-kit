@@ -11062,7 +11062,7 @@ input:focus {
   border: none; }
 
 .onHoverOpacity:hover {
-  opacity: .5; }
+  opacity: 0.5; }
 
 input[type='number'] {
   -moz-appearance: textfield;
