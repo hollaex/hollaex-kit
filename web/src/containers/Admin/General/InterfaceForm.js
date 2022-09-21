@@ -28,6 +28,7 @@ const InterfaceForm = ({
 				stake_page: !!values.stake_page,
 				home_page: isUpgrade ? false : !!values.home_page,
 				ultimate_fiat: !!values.ultimate_fiat,
+				apps: !!values.apps,
 			};
 			handleSaveInterface(formValues);
 		}
@@ -50,6 +51,7 @@ const InterfaceForm = ({
 	if (isUpgrade) {
 		initialValue.home_page = false;
 		initialValue.chat = false;
+		initialValue.apps = false;
 	}
 	return (
 		<div className="general-wrapper">
@@ -239,6 +241,49 @@ const InterfaceForm = ({
 							</Checkbox>
 						</Item>
 					</div>
+					<div className={classnames({ 'disabled-area': isUpgrade })}>
+						<Item name="apps" valuePropName="checked">
+							<Checkbox className="mt-3">
+								<div className="d-flex align-items-center">
+									<div className="feature-trade-box mr-1">
+										<ReactSVG
+											src={STATIC_ICONS.APPS_FEATURE_ICON}
+											className="feature-apps-icon"
+										/>
+									</div>
+									<div className="ml-2 checkbox-txt">
+										Apps
+										<div className="d-flex justify-content-between">
+											<div className="small-text">(Apps ...)</div>
+										</div>
+									</div>
+								</div>
+							</Checkbox>
+						</Item>
+					</div>
+					{isUpgrade && (
+						<div className="d-flex">
+							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+								<div>
+									<div className="font-weight-bold">
+										Start your crypto culture
+									</div>
+									<div>Allow your users to socialize through chat</div>
+								</div>
+								<div className="ml-5 button-wrapper">
+									<a
+										href="https://dash.bitholla.com/billing"
+										target="_blank"
+										rel="noopener noreferrer"
+									>
+										<Button type="primary" className="w-100">
+											Upgrade Now
+										</Button>
+									</a>
+								</div>
+							</div>
+						</div>
+					)}
 				</div>
 				{isUpgrade ? (
 					<div className="d-flex">

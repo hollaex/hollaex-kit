@@ -18,7 +18,7 @@ import User from './User';
 
 const Index = ({ icons: ICONS, openContactForm }) => {
 	const [tabs, setTabs] = useState([]);
-	const [activeTab, setActiveTab] = useState();
+	const [activeTab, setActiveTab] = useState(0);
 
 	useEffect(() => {
 		updateTabs();
@@ -66,8 +66,8 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 					stringId="ACCOUNTS.TAB_APPS"
 					text={STRINGS['ACCOUNTS.TAB_APPS']}
 					textType="title"
-					iconPath={ICONS['TAB_SETTING']}
-					iconId={STRINGS['ACCOUNTS.TAB_APPS']}
+					iconPath={ICONS['TAB_APPS']}
+					iconId="TAB_APPS"
 				/>
 			)}
 

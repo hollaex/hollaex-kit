@@ -344,6 +344,9 @@ table th {
 .inline-flex {
   display: inline-flex !important; }
 
+.no-wrap {
+  white-space: nowrap !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -5396,6 +5399,19 @@ table th {
 .area-disabled {
   opacity: 0.5; }
 
+.add-app-button {
+  border-radius: 24px;
+  height: 24px !important;
+  min-width: 70px !important;
+  width: auto !important;
+  text-transform: none !important; }
+
+.apps-form .ant-input {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.action_notification-wrapper.remove-action {
+  position: relative !important; }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
@@ -6017,7 +6033,8 @@ table th {
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-history-st,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .help-question,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-signout,
-      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-api0 {
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-api0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .apps {
         fill: var(--labels_secondary-inactive-label-text-graphics); }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .account-active-1 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
@@ -10770,6 +10787,7 @@ table th {
   .app-side-bar .list_active .tab-signout,
   .app-side-bar .list_active .tab-history-st,
   .app-side-bar .list_active .stake-page-icon,
+  .app-side-bar .list_active .apps,
   .app-side-bar .app-menu-bar-side_list:hover .tab-summary0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-wallet0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-security0,
@@ -10779,7 +10797,8 @@ table th {
   .app-side-bar .app-menu-bar-side_list:hover .help-question,
   .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
   .app-side-bar .app-menu-bar-side_list:hover .tab-history-st,
-  .app-side-bar .app-menu-bar-side_list:hover .stake-page-icon {
+  .app-side-bar .app-menu-bar-side_list:hover .stake-page-icon,
+  .app-side-bar .app-menu-bar-side_list:hover .apps {
     fill: var(--calculated_base_top-bar-navigation_text) !important; }
 
 .app-side-bar .list_active {
@@ -11072,7 +11091,10 @@ svg .incoming-btc-01,
 svg .incoming-coin-01,
 svg .coin-btc-5,
 svg .stake-page-icon,
-svg .fiat-kyc {
+svg .fiat-kyc,
+svg .all-apps,
+svg .my-apps,
+svg .apps {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .account-inactive {

@@ -48,6 +48,13 @@ export const MENU_ITEMS = {
 			hide_from_bottom_nav: true,
 		},
 		{
+			id: 'apps',
+			path: '/apps',
+			icon_id: 'TAB_APPS',
+			string_id: 'ACCOUNTS.TAB_APPS',
+			hide_from_bottom_nav: true,
+		},
+		{
 			id: 'chat',
 			path: '/chat',
 			icon_id: 'CHAT',
@@ -90,12 +97,6 @@ export const MENU_ITEMS = {
 			icon_id: 'TAB_SETTING',
 			string_id: 'ACCOUNTS.TAB_SETTINGS',
 			hide_from_appbar: true,
-			hide_from_bottom_nav: true,
-		},
-		{
-			path: '/apps',
-			icon_id: 'TAB_APPS',
-			string_id: 'ACCOUNTS.TAB_APPS',
 			hide_from_bottom_nav: true,
 		},
 	],

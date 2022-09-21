@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { openContactForm } from 'actions/appActions';
-import { IconTitle, HeaderSection, EditWrapper } from 'components';
+import { IconTitle, HeaderSection, EditWrapper, SmartTarget } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { generateDynamicTarget } from 'utils/id';
+import { userAppsSelector } from 'containers/Apps/utils';
 
-const Index = ({ openContactForm, icons: ICONS, router }) => {
+const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
+	const [mounted, setMounted] = useState(false);
+	const goBack = () => router.push('/apps');
+
 	const {
 		params: { app },
 	} = router;
-	const goBack = () => router.push('/apps');
+
+	if (!mounted) {
+		if (!app || userApps.map(({ name }) => name).includes(app)) {
+			goBack();
+		}
+	}
+
+	const id = generateDynamicTarget(app, 'app');
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	return (
 		<div className="presentation_container apply_rtl settings_container">
@@ -42,11 +58,14 @@ const Index = ({ openContactForm, icons: ICONS, router }) => {
 					</div>
 				</div>
 			</HeaderSection>
+			<SmartTarget id={id} />
 		</div>
 	);
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+	userApps: userAppsSelector(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
 	openContactForm: bindActionCreators(openContactForm, dispatch),

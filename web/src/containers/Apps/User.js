@@ -1,18 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { IconTitle, EditWrapper, Table } from 'components';
+import { updateUserSettings, setUserData } from 'actions/userAction';
+import { openConfigureApps, closeNotification } from 'actions/appActions';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { withRouter } from 'react-router';
+import { userAppsSelector } from './utils';
 
-const data = [
-	{
-		id: 0,
-		name: 'Name of the app',
-		description: 'App description short sentence here',
-	},
-];
-
-const generateHeaders = (goToDetails) => {
+const generateHeaders = (goToDetails, openConfigs) => {
 	return [
 		{
 			stringId: 'USER_APPS.TABLE.APP_NAME',
@@ -25,12 +22,26 @@ const generateHeaders = (goToDetails) => {
 			key: 'description',
 		},
 		{
+			stringId: 'USER_APPS.TABLE.CONFIGURE',
+			label: STRINGS['USER_APPS.TABLE.CONFIGURE'],
+			renderCell: ({ name }, key) => (
+				<td key={`${key}-${name}-configure`}>
+					<span
+						className="blue-link underline-text pointer no-wrap"
+						onClick={() => openConfigs(name)}
+					>
+						{STRINGS['USER_APPS.TABLE.CONFIGURE']}
+					</span>
+				</td>
+			),
+		},
+		{
 			stringId: 'USER_APPS.TABLE.ACTION',
 			label: STRINGS['USER_APPS.TABLE.ACTION'],
-			renderCell: ({ id, name }, key) => (
-				<td key={`${key}-${id}-app`}>
+			renderCell: ({ name }, key) => (
+				<td key={`${key}-${name}-action`}>
 					<span
-						className="blue-link underline-text pointer"
+						className="blue-link underline-text pointer no-wrap"
 						onClick={() => goToDetails(name)}
 					>
 						{STRINGS['USER_APPS.TABLE.VIEW_APP']}
@@ -41,8 +52,29 @@ const generateHeaders = (goToDetails) => {
 	];
 };
 
-const User = ({ icons: ICONS, router }) => {
+const User = ({
+	icons: ICONS,
+	router,
+	userApps: data,
+	settings: { apps = [] },
+	setUserData,
+	openConfigureApps,
+	closeNotification,
+}) => {
 	const goToDetails = (name) => router.push(`apps/details/${name}`);
+	const onRemove = (name) => {
+		// send add app request and show toast notification
+		const settings = {
+			apps: apps.filter((app) => app !== name),
+		};
+		updateUserSettings(settings)
+			.then(({ data }) => {
+				setUserData(data);
+				closeNotification();
+			})
+			.catch((err) => console.log('error'));
+	};
+	const openConfigs = (name) => openConfigureApps(() => onRemove(name));
 
 	return (
 		<div>
@@ -60,11 +92,14 @@ const User = ({ icons: ICONS, router }) => {
 						</EditWrapper>
 					</div>
 					<Table
+						showHeaderNoData={true}
 						rowClassName="pt-2 pb-2"
-						headers={generateHeaders(goToDetails)}
+						headers={generateHeaders(goToDetails, openConfigs)}
 						count={data.length}
+						pageSize={data.length}
 						data={data}
-						rowKey={({ id }) => id}
+						rowKey={({ name }) => name}
+						displayPaginator={false}
 					/>
 				</div>
 			</div>
@@ -72,4 +107,24 @@ const User = ({ icons: ICONS, router }) => {
 	);
 };
 
-export default withRouter(withConfig(User));
+const mapStateToProps = (state) => {
+	const {
+		user: { settings },
+	} = state;
+
+	return {
+		userApps: userAppsSelector(state),
+		settings,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	setUserData: bindActionCreators(setUserData, dispatch),
+	openConfigureApps: bindActionCreators(openConfigureApps, dispatch),
+	closeNotification: bindActionCreators(closeNotification, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withRouter(withConfig(User)));

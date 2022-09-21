@@ -478,7 +478,8 @@
 		"ALL_APPS": {
 			"TAB_TITLE": "All apps",
 			"TITLE": "Exchange apps",
-			"SUBTITLE": "Get more functionality from your exchange account by simply selecting an app below and clicking Add button."
+			"SUBTITLE": "Get more functionality from your exchange account by simply selecting an app below and clicking Add button.",
+			"SEARCH_PLACEHOLDER": "Search apps..."
 		},
 		"MY_APPS": {
 			"TAB_TITLE": "My apps",
@@ -489,11 +490,30 @@
 			"APP_NAME": "App name",
 			"DESCRIPTION": "Description",
 			"ACTION": "Action",
-			"VIEW_APP": "View app"
+			"CONFIGURE": "Configure",
+			"VIEW_APP": "View app",
+			"ADD": "Add",
+			"NOT_FOUND": "Can't find this app...",
+			"RETRY": "Try another search term"
 		},
 		"APP_DETAILS": {
 			"BACK_TO_APPS": "{0} to my apps",
 			"BACK": "Back"
+		},
+		"CONFIGURE": {
+			"TITLE": "Configure app",
+			"SUBTITLE": "Configure your app below:",
+			"REMOVE": "Remove app",
+			"TEXT": "If you are having issues with your app please contact us by clicking help below.",
+			"BACK": "BACK",
+			"HELP": "HELP"
+		},
+		"REMOVE": {
+			"TITLE": "Remove app",
+			"SUBTITLE": "This will remove the app from your 'My apps' list.",
+			"TEXT": "Are you sure you want to remove this app?",
+			"BACK": "BACK",
+			"CONFIRM": "CONFIRM"
 		}
 	},
 	"TRANSACTION_HISTORY": {

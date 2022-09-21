@@ -39,7 +39,7 @@ const nestedIcons = {
 		SECURITY: '/assets/images/tab-security.svg',
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
-		APPS: '/assets/images/tab-setting.svg',
+		APPS: '/assets/images/apps.svg',
 		API: '/assets/images/tab-api.svg',
 		STAKE: '/assets/images/stake-page-icon.svg',
 	},
@@ -78,8 +78,10 @@ const nestedIcons = {
 	},
 
 	APPS: {
-		ALL: '/assets/images/tab-setting.svg',
-		USER: '/assets/images/tab-setting.svg',
+		ALL: '/assets/images/all-apps.svg',
+		USER: '/assets/images/my-apps.svg',
+		CONFIGURE: '/assets/images/interface-settings-icon.svg',
+		REMOVE: '/assets/images/cancel-cross-active.svg',
 	},
 
 	SECURITY: {
