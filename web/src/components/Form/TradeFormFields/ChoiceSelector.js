@@ -15,6 +15,7 @@ const ChoiceSelector = (props) => {
 						'justify-content-center',
 						'align-items-center',
 						'pointer',
+						option.value !== input.value ? option.className : '',
 						'holla-button-font',
 						{ active: option.value === input.value }
 					)}

@@ -11061,6 +11061,9 @@ input:focus {
   outline: none;
   border: none; }
 
+.onHoverOpacity:hover {
+  opacity: .5; }
+
 input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield; }

@@ -1,13 +1,21 @@
 import STRINGS from 'config/localizedStrings';
 
 export const SIDES = [
-	{ value: 'buy', label: STRINGS['SIDES.BUY'] },
-	{ value: 'sell', label: STRINGS['SIDES.SELL'] },
+	{ value: 'buy', label: STRINGS['SIDES.BUY'], className: 'onHoverOpacity' },
+	{ value: 'sell', label: STRINGS['SIDES.SELL'], className: 'onHoverOpacity' },
 ];
 
 export const TYPES = [
-	{ value: 'market', label: STRINGS['TYPES.MARKET'] },
-	{ value: 'limit', label: STRINGS['TYPES.LIMIT'] },
+	{
+		value: 'market',
+		label: STRINGS['TYPES.MARKET'],
+		className: 'onHoverOpacity',
+	},
+	{
+		value: 'limit',
+		label: STRINGS['TYPES.LIMIT'],
+		className: 'onHoverOpacity',
+	},
 ];
 
 export const DEFAULT_TOGGLE_OPTIONS = [
