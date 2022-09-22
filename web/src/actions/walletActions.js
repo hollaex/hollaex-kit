@@ -221,7 +221,6 @@ export const getOrdersHistory = ({
 		dataParams.open = open;
 	}
 	const query = querystring.stringify(dataParams);
-
 	return (dispatch) => {
 		dispatch({ type: ACTION_KEYS.ORDER_HISTORY_PENDING, payload: { page } });
 		axios

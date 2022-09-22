@@ -449,6 +449,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = () => downloadUserOrders(temp);
 				props.filters = filters.orders;
 				props.noData = prepareNoData('NO_ACTIVE_ORDERS');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 0:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
@@ -462,7 +463,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = () => downloadUserTrades(temp);
 				props.filters = filters.trades;
 				props.noData = prepareNoData('NO_ACTIVE_TRADES');
-
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
@@ -475,7 +476,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = () => downloadUserDeposit(temp);
 				props.filters = filters.deposits;
 				props.noData = prepareNoData('NO_ACTIVE_DEPOSITS');
-
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
@@ -488,6 +489,7 @@ class TransactionsHistory extends Component {
 				props.handleDownload = () => downloadUserWithdrawal(temp);
 				props.filters = filters.withdrawals;
 				props.noData = prepareNoData('NO_ACTIVE_WITHDRAWALS');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			default:
 				return <div />;
