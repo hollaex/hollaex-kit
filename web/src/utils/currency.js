@@ -4,6 +4,7 @@ import store from 'store';
 import STRINGS from '../config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
 import { findPath, convertPathToPairNames } from './data';
+import { isNaN } from 'lodash';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -31,7 +32,7 @@ export const AVERAGE_FORMAT = '3a';
 // };
 
 export const roundNumber = (number = 0, decimals = 4) => {
-	if (number === 0) {
+	if (number === 0 || number === Infinity || isNaN(number)) {
 		return 0;
 	} else if (decimals > 0) {
 		const multipliedNumber = math.multiply(

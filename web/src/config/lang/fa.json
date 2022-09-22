@@ -36,6 +36,7 @@
 	"GO_TRADE": "معامله رو شروع کن",
 	"VIEW_INFO": "مشاهده صفحه اطلاعات",
 	"APPLY_HERE": "اعمال تغییرات",
+	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"HOME": {
 		"SECTION_1_TITLE": "به HollaEx kit خوش آمدید",
 		"SECTION_1_TEXT_1": "با خیالی آسوده اکسچنج تبادل دارایی های دیجیتال خود را بسازید و جزو آینده بازارهای مالی جهان شوید.",
@@ -1294,6 +1295,7 @@
 		"NEW": "New",
 		"SEARCH_FIELD_LABEL": "Paste your transaction ID",
 		"CHECK_DEPOSIT_STATUS": "Check deposit status",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Search blockchain for your deposit",
 		"STATUS_DESCRIPTION": "You can check the status of your deposit by passing the transaction ID (hash) below.",
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",
