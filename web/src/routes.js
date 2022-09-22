@@ -28,6 +28,8 @@ import {
 	AddTradeTabs,
 	Stake,
 	StakeDetails,
+	Apps,
+	AppDetails,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -346,6 +348,13 @@ export const generateRoutes = (routes = []) => {
 					path="settings"
 					name="Settings"
 					component={Account}
+					onEnter={requireAuth}
+				/>
+				<Route path="apps" name="Apps" component={Apps} onEnter={requireAuth} />
+				<Route
+					path="apps/details/:app"
+					name="AppDetails"
+					component={AppDetails}
 					onEnter={requireAuth}
 				/>
 				<Route

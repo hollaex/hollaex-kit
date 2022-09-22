@@ -64,6 +64,7 @@
 		"TAB_VERIFICATION": "Verification",
 		"TAB_SECURITY": "Security",
 		"TAB_SETTINGS": "Settings",
+		"TAB_APPS": "Apps",
 		"TAB_WALLET": "Wallet",
 		"TAB_SUMMARY": "Summary",
 		"TAB_HISTORY": "History",
@@ -475,6 +476,50 @@
 			"ADJUST": "(ADJUST PERCENTAGE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Activate Risk Management",
 			"WARNING_POP_UP": "Warning pop ups"
+		}
+	},
+	"USER_APPS": {
+		"TITLE": "Your exchange apps",
+		"SUBTITLE": "Your exchange account applications information and extra functionality below.",
+		"ALL_APPS": {
+			"TAB_TITLE": "All apps",
+			"TITLE": "Exchange apps",
+			"SUBTITLE": "Get more functionality from your exchange account by simply selecting an app below and clicking Add button.",
+			"SEARCH_PLACEHOLDER": "Search apps..."
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "My apps",
+			"TITLE": "My exchange apps",
+			"SUBTITLE": "Below are your active exchange applications. You can click to see expand on each applications information, functions and add/remove them. Apps are designed to provide more your functionality to your exchange experience."
+		},
+		"TABLE": {
+			"APP_NAME": "App name",
+			"DESCRIPTION": "Description",
+			"ACTION": "Action",
+			"CONFIGURE": "Configure",
+			"VIEW_APP": "View app",
+			"ADD": "Add",
+			"NOT_FOUND": "Can't find this app...",
+			"RETRY": "Try another search term"
+		},
+		"APP_DETAILS": {
+			"BACK_TO_APPS": "{0} to my apps",
+			"BACK": "Back"
+		},
+		"CONFIGURE": {
+			"TITLE": "Configure app",
+			"SUBTITLE": "Configure your app below:",
+			"REMOVE": "Remove app",
+			"TEXT": "If you are having issues with your app please contact us by clicking help below.",
+			"BACK": "BACK",
+			"HELP": "HELP"
+		},
+		"REMOVE": {
+			"TITLE": "Remove app",
+			"SUBTITLE": "This will remove the app from your 'My apps' list.",
+			"TEXT": "Are you sure you want to remove this app?",
+			"BACK": "BACK",
+			"CONFIRM": "CONFIRM"
 		}
 	},
 	"TRANSACTION_HISTORY": {
