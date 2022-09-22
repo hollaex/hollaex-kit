@@ -2228,14 +2228,14 @@ table th {
   .history_block-wrapper .check-deposit-txt {
     right: 230px !important; }
     .history_block-wrapper .check-deposit-txt svg {
-      padding-right: .3rem;
+      padding-right: 0.3rem;
       box-sizing: border-box;
       border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       height: 100%; }
   .history_block-wrapper .download-history {
     right: 85px !important; }
     .history_block-wrapper .download-history svg {
-      padding-right: .1rem;
+      padding-right: 0.1rem;
       box-sizing: content-box;
       border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
       height: 100%; }
