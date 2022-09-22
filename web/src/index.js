@@ -252,7 +252,7 @@ const bootstrapApp = (
 		app: {
 			remoteRoutes,
 			plugins,
-			info: { name },
+			constants: { api_name: name },
 		},
 	} = store.getState();
 

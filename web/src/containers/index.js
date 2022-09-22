@@ -31,6 +31,8 @@ export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
 export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
+export { default as Apps } from './Apps';
+export { default as AppDetails } from './AppDetails';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

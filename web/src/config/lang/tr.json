@@ -1180,6 +1180,7 @@
 		"NEW": "Yeni",
 		"SEARCH_FIELD_LABEL": "İşlem ID'sini yapıştırın",
 		"CHECK_DEPOSIT_STATUS": "Yatırım durumunu kontrol et",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Depozitonuz için blockchain arayın",
 		"STATUS_DESCRIPTION": "Aşağıya İşlem ID'nizi (hash) yapıştırarak, yatırım durumunuzu kontrol edebilirsiniz.",
 		"TRANSACTION_ID": "İşlem ID (hash)",
 		"SEARCH_SUCCESS": "Arama tamamlandı",

@@ -368,6 +368,9 @@ table th {
 .inline-flex {
   display: inline-flex !important; }
 
+.no-wrap {
+  white-space: nowrap !important; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1542,6 +1545,9 @@ table th {
       padding: 2rem; }
       .home_container .html_card_section .card-section-wrapper .card-section .header_txt {
         font-size: 14px; } }
+
+.wallet-hover:hover {
+  opacity: 0.5; }
 
 .layout-mobile .button-container {
   min-height: 4.5rem; }
@@ -5430,6 +5436,19 @@ table th {
 .area-disabled {
   opacity: 0.5; }
 
+.add-app-button {
+  border-radius: 24px;
+  height: 24px !important;
+  min-width: 70px !important;
+  width: auto !important;
+  text-transform: none !important; }
+
+.apps-form .ant-input {
+  color: var(--labels_important-active-labels-text-graphics); }
+
+.action_notification-wrapper.remove-action {
+  position: relative !important; }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
@@ -6023,7 +6042,7 @@ table th {
   .app_bar .opacity-1 {
     opacity: 1 !important; }
   .app_bar .app-bar-account-menu {
-    transition: .9s;
+    transition: 0.9s;
     opacity: 0;
     display: block;
     position: absolute;
@@ -6056,7 +6075,8 @@ table th {
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-history-st,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .help-question,
       .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-signout,
-      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-api0 {
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .tab-api0,
+      .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .apps {
         fill: var(--labels_secondary-inactive-label-text-graphics); }
     .app_bar .app-bar-account-menu .app-bar-account-list-icon svg .account-active-1 {
       fill: var(--calculated_base_top-bar-navigation_text-inactive); }
@@ -8167,6 +8187,9 @@ table th {
 
 .direction_rtl .trade_input-input-currency {
   left: 0; }
+
+.size-slider .ant-slider * {
+  transition: 0.1s; }
 
 .size-slider .ant-slider-with-marks {
   margin-bottom: 10px; }
@@ -10819,6 +10842,7 @@ table th {
   .app-side-bar .list_active .tab-signout,
   .app-side-bar .list_active .tab-history-st,
   .app-side-bar .list_active .stake-page-icon,
+  .app-side-bar .list_active .apps,
   .app-side-bar .app-menu-bar-side_list:hover .tab-summary0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-wallet0,
   .app-side-bar .app-menu-bar-side_list:hover .tab-security0,
@@ -10828,7 +10852,8 @@ table th {
   .app-side-bar .app-menu-bar-side_list:hover .help-question,
   .app-side-bar .app-menu-bar-side_list:hover .tab-signout,
   .app-side-bar .app-menu-bar-side_list:hover .tab-history-st,
-  .app-side-bar .app-menu-bar-side_list:hover .stake-page-icon {
+  .app-side-bar .app-menu-bar-side_list:hover .stake-page-icon,
+  .app-side-bar .app-menu-bar-side_list:hover .apps {
     fill: var(--calculated_base_top-bar-navigation_text) !important; }
 
 .app-side-bar .list_active {
@@ -11047,10 +11072,16 @@ body {
     left: 0;
     top: calc(50% - 0.75rem); }
 
+.blockchain-search {
+  filter: brightness(0) invert(0.8); }
+
 input,
 input:focus {
   outline: none;
   border: none; }
+
+.onHoverOpacity:hover {
+  opacity: 0.5; }
 
 input[type='number'] {
   -moz-appearance: textfield;
@@ -11121,7 +11152,10 @@ svg .incoming-btc-01,
 svg .incoming-coin-01,
 svg .coin-btc-5,
 svg .stake-page-icon,
-svg .fiat-kyc {
+svg .fiat-kyc,
+svg .all-apps,
+svg .my-apps,
+svg .apps {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .account-inactive {

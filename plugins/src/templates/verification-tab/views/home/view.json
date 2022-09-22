@@ -1,0 +1,14 @@
+{
+  "meta": {
+    "is_verification_tab": true,
+    "type": "home",
+    "string": {
+      "id": "title",
+      "is_global": false
+    },
+    "icon": {
+      "id": "SIDEBAR_HELP",
+      "is_global": true
+    }
+  }
+}

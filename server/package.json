@@ -89,7 +89,8 @@
 		"undomigrate": "sequelize db:migrate:undo:all",
 		"migrate": "sequelize db:migrate",
 		"start": "node app.js",
-		"test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --recursive --timeout 5000"
+		"test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --recursive --timeout 5000",
+		"dev:plugin": "docker exec -it server_hollaex-kit-server_1 node plugins/dev.js"
 	},
 	"nyc": {
 		"exclude": [
