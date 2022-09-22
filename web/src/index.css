@@ -6207,6 +6207,9 @@ table th {
     cursor: pointer;
     font-size: 11px; }
 
+.capitalize {
+  text-transform: capitalize; }
+
 .home_app_bar {
   position: relative;
   width: 100%;

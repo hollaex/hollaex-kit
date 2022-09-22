@@ -513,6 +513,9 @@ $app-menu-width: calc(100vw - 40rem);
 		font-size: 11px;
 	}
 }
+.capitalize {
+	text-transform: capitalize;
+}
 
 .home_app_bar {
 	position: relative;
