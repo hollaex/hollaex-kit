@@ -7707,6 +7707,9 @@ table th {
   cursor: not-allowed;
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.dropdown-option-open {
+  margin: 0px !important; }
+
 .disabled .field-children {
   color: var(--labels_secondary-inactive-label-text-graphics); }
   .disabled .field-children .dropdown-triangle:after {
