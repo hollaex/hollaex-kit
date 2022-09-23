@@ -15,6 +15,10 @@ $dropdown-option--padding: 0.25rem;
 	}
 }
 
+.dropdown-option-open {
+	margin: 0px !important;
+}
+
 .disabled {
 	.field-children {
 		color: $colors-deactivate;
