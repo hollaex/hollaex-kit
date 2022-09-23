@@ -870,6 +870,13 @@ table th {
   .user_security-wrapper > *:not(:last-child) {
     margin-bottom: 2rem; }
 
+.OTP_Success {
+  width: 30px;
+  height: 30px; }
+  .OTP_Success svg {
+    width: 30px;
+    height: 30px; }
+
 .otp_form-wrapper {
   display: flex;
   flex-direction: column;
@@ -1002,6 +1009,9 @@ table th {
   justify-content: flex-start !important;
   flex-direction: row;
   align-items: center; }
+
+.user-security-container .checkbutton-input-wrapper {
+  margin-top: 0px !important; }
 
 .layout-mobile .user_security-wrapper .warning_text {
   font-size: 13px !important; }
@@ -2216,7 +2226,21 @@ table th {
       border-radius: 20px;
       margin-right: 10px; }
   .history_block-wrapper .check-deposit-txt {
-    right: 150px !important; }
+    right: 230px !important; }
+    .history_block-wrapper .check-deposit-txt svg {
+      padding-right: 0.3rem;
+      box-sizing: border-box;
+      border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      height: 100%; }
+  .history_block-wrapper .download-history {
+    right: 85px !important; }
+    .history_block-wrapper .download-history svg {
+      padding-right: 0.1rem;
+      box-sizing: content-box;
+      border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+      height: 100%; }
+  .history_block-wrapper .refresh-history {
+    right: 10px !important; }
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
@@ -6183,6 +6207,9 @@ table th {
     cursor: pointer;
     font-size: 11px; }
 
+.capitalize {
+  text-transform: capitalize; }
+
 .home_app_bar {
   position: relative;
   width: 100%;
@@ -7682,6 +7709,9 @@ table th {
 .dropdown-content.disabled {
   cursor: not-allowed;
   color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.dropdown-option-open {
+  margin: 0px !important; }
 
 .disabled .field-children {
   color: var(--labels_secondary-inactive-label-text-graphics); }

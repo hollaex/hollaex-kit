@@ -29,6 +29,7 @@ const HistoryDisplay = (props) => {
 		handleNext,
 		jumpToPage,
 		handleDownload,
+		refetchData,
 		icons: ICONS,
 		activeTab,
 	} = props;
@@ -81,7 +82,7 @@ const HistoryDisplay = (props) => {
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
 								iconId="DATA"
 								iconPath={ICONS['DATA']}
-								className="csv-action"
+								className="download-history"
 								onClick={handleDownload}
 							/>
 						</div>
@@ -96,6 +97,16 @@ const HistoryDisplay = (props) => {
 							onClick={openDialog}
 						/>
 					) : null}
+					<div className="download-icon">
+						<ActionNotification
+							stringId="RESFRESH"
+							text={STRINGS['REFRESH']}
+							iconId="REFRESH"
+							iconPath={STATIC_ICONS['REFRESH']}
+							className="refresh-history"
+							onClick={refetchData}
+						/>
+					</div>
 				</div>
 			)}
 			{filters}

@@ -79,7 +79,7 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						dropdownClassName="custom-select-style select-option-wrapper"
 					>
 						{options.map(({ value }) => (
-							<Option value={value} key={value}>
+							<Option value={value} key={value} className="capitalize">
 								{value}
 							</Option>
 						))}

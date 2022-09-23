@@ -102,6 +102,20 @@ class DropdownField extends Component {
 		</div>
 	);
 
+	renderOptionWhenOpen = (option, index) => (
+		<div
+			id={`${this.props.input.name}-${option.value}-${index}`}
+			key={`${this.props.input.name}-${option.value}-${index}`}
+			onClick={this.onSelectOption(option)}
+			className={classnames('dropdown-option-open', {
+				pointer: !this.props.disabled,
+			})}
+		>
+			{this.renderIcon(option)}
+			{option.label}
+		</div>
+	);
+
 	renderOptions = (options) => (
 		<div className={classnames('dropdown-options-wrapper')}>
 			{options.length > 0
@@ -195,6 +209,10 @@ class DropdownField extends Component {
 						</div>
 					)}
 				</div>
+				{isOpen &&
+					selectedItem &&
+					!autocomplete &&
+					this.renderOptionWhenOpen(selectedItem)}
 				{isOpen && this.renderOptions(filteredOptions)}
 			</FieldWrapper>
 		);
