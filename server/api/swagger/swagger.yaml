@@ -1613,7 +1613,7 @@ paths:
           in: query
           required: true
           type: string
-          minLength: 3
+          minLength: 2
           maxLength: 15
         - name: network
           in: query
