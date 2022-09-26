@@ -2,6 +2,10 @@ $wrapper-border: 1px solid $colors-main-black;
 $wrapper-button-margin: 2.5rem;
 $header-margin: 2rem;
 
+.wallet-hover:hover {
+	opacity: 0.5;
+}
+
 .layout-mobile {
 	.button-container {
 		min-height: 4.5rem;

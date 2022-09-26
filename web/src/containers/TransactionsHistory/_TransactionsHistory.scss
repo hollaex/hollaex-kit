@@ -159,8 +159,29 @@
 		}
 	}
 	.check-deposit-txt {
-		right: 150px !important;
+		right: 230px !important;
+		& svg {
+			padding-right: 0.3rem;
+			box-sizing: border-box;
+			border-right: 1px solid $trade-fill-indicator-text;
+			height: 100%;
+		}
 	}
+
+	.download-history {
+		right: 85px !important;
+		& svg {
+			padding-right: 0.1rem;
+			box-sizing: content-box;
+			border-right: 1px solid $trade-fill-indicator-text;
+			height: 100%;
+		}
+	}
+
+	.refresh-history {
+		right: 10px !important;
+	}
+
 	.loader_wrapper {
 		top: 0;
 		left: 0;

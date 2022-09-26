@@ -44,6 +44,8 @@ import {
 
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
+import { Image } from 'hollaex-web-lib';
 
 const GROUP_CLASSES = [...FLEX_CENTER_CLASSES, 'flex-column'];
 
@@ -419,6 +421,21 @@ class TransactionsHistory extends Component {
 			withIcon: true,
 		};
 
+		const prepareNoData = (tab) => {
+			return (
+				<div className="d-flex flex-column align-items-center">
+					<Image
+						iconId={tab}
+						icon={STATIC_ICONS[tab]}
+						alt={tab}
+						width="40px"
+						height="40px"
+					/>
+					<span>{STRINGS[tab]}</span>
+				</div>
+			);
+		};
+
 		switch (activeTab) {
 			case 1:
 				props.stringId = 'ORDER_HISTORY';
@@ -431,6 +448,8 @@ class TransactionsHistory extends Component {
 				props.jumpToPage = jumpToPage;
 				props.handleDownload = () => downloadUserOrders(temp);
 				props.filters = filters.orders;
+				props.noData = prepareNoData('NO_ACTIVE_ORDERS');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 0:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
@@ -443,6 +462,8 @@ class TransactionsHistory extends Component {
 				props.jumpToPage = jumpToPage;
 				props.handleDownload = () => downloadUserTrades(temp);
 				props.filters = filters.trades;
+				props.noData = prepareNoData('NO_ACTIVE_TRADES');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
@@ -454,6 +475,8 @@ class TransactionsHistory extends Component {
 				props.jumpToPage = jumpToPage;
 				props.handleDownload = () => downloadUserDeposit(temp);
 				props.filters = filters.deposits;
+				props.noData = prepareNoData('NO_ACTIVE_DEPOSITS');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			case 3:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_WITHDRAWALS';
@@ -465,6 +488,8 @@ class TransactionsHistory extends Component {
 				props.jumpToPage = jumpToPage;
 				props.handleDownload = () => downloadUserWithdrawal(temp);
 				props.filters = filters.withdrawals;
+				props.noData = prepareNoData('NO_ACTIVE_WITHDRAWALS');
+				props.refetchData = () => this.requestData(activeTab);
 				break;
 			default:
 				return <div />;

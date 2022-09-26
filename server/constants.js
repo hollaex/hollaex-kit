@@ -302,7 +302,8 @@ exports.SETTING_KEYS = [
 	'interface',
 	'audio',
 	'risk',
-	'chat'
+	'chat',
+	'app'
 ];
 
 exports.OMITTED_USER_FIELDS = [

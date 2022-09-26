@@ -1,0 +1,35 @@
+{
+	"name": "hello-exchange",
+	"version": 1,
+	"type": null,
+	"author": "bitHolla",
+	"bio": "Say hello from an exchange",
+	"description": "Demo plugin for proof of concept",
+	"documentation": null,
+	"logo": null,
+	"icon": null,
+	"url": null,
+	"public_meta": {
+		"public_message": {
+			"type": "string",
+			"required": false,
+			"description": "Not a secret",
+			"value": "Hello Exchange!"
+		}
+	},
+	"meta": {
+		"private_message": {
+			"type": "string",
+			"required": false,
+			"description": "A secret",
+			"value": "hello exchange..."
+		}
+	},
+	"prescript": {
+		"install": ["hello-world-npm"],
+		"run": null
+	},
+	"postscript": {
+		"run": null
+	}
+}

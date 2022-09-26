@@ -411,10 +411,12 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { change } = this.props;
+		const { change, resetSlider } = this.props;
+		this.setState({ sliderVal: 0 });
 		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');
 		change(FORM_NAME, 'size', '');
+		resetSlider();
 	};
 
 	handleOrderBookChange = (name, value) => {
@@ -449,9 +451,6 @@ class OrderEntry extends Component {
 			side = 'buy',
 		} = props;
 
-		const { display_name } = coins[pair] || DEFAULT_COIN_DATA;
-		const { display_name: buy_display_name } =
-			coins[buyingPair] || DEFAULT_COIN_DATA;
 		const {
 			initialValues: { order_type },
 		} = this.state;
@@ -526,7 +525,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price),
 				],
-				currency: buy_display_name,
+				currency: pair_2_display,
 				setRef: this.props.setPriceRef,
 			},
 			size: {
@@ -561,13 +560,15 @@ class OrderEntry extends Component {
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
-				currency: display_name,
+				currency: pair_base_display,
 				setRef: this.props.setSizeRef,
 			},
 			slider: {
 				name: 'size-slider',
 				type: 'slider',
 				onClick: this.setMax,
+				value: 0,
+				setRef: this.props.setSliderRef,
 			},
 			postOnly: {
 				name: 'post_only',

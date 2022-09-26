@@ -167,6 +167,10 @@ const nestedIcons = {
 	SESSION_TIMED_OUT: '/assets/images/session-timed-out.svg',
 	BLUE_EDIT: '/assets/images/blue-edit-exir-icon.svg',
 	BLUE_PLUS: '/assets/images/max-plus-blue-icon.svg',
+	BLUE_DEPOSIT_ICON: '/assets/images/blue-deposit-icon.svg',
+	BLUE_TRADE_ICON: '/assets/images/trade.svg',
+	BLUE_EARN_ICON: '/assets/images/earn.svg',
+	BLUE_WITHROW_ICON: '/assets/images/blue_withrow_icon.svg',
 	BLUE_TIMER: '/assets/images/timer-icon.svg',
 
 	NOTIFICATION_VERIFICATION_WARNING: '/assets/images/verification.svg',
