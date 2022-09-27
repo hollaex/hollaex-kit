@@ -150,8 +150,7 @@ const All = ({
 						showHeaderNoData={true}
 						rowClassName="pt-2 pb-2"
 						headers={generateHeaders(addApp, isAdded, ICONS)}
-						count={data.length}
-						pageSize={data.length}
+						showAll={true}
 						data={data}
 						rowKey={({ name }) => name}
 						displayPaginator={false}
