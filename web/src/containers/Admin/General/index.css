@@ -365,6 +365,10 @@ h2,
 	pointer-events: none;
 }
 
+.general-wrapper .interface-item {
+	min-width: 418px;
+}
+
 .general-wrapper .description a {
 	text-decoration: underline !important;
 }
