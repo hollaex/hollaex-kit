@@ -134,6 +134,7 @@ const All = ({
 					</div>
 					<div>
 						<Input
+							allowClear
 							prefix={<SearchOutlined className="secondary-text" />}
 							placeholder={STRINGS['USER_APPS.ALL_APPS.SEARCH_PLACEHOLDER']}
 							value={search}

@@ -5470,6 +5470,9 @@ table th {
 .apps-form .ant-input {
   color: var(--labels_important-active-labels-text-graphics); }
 
+.apps-form .ant-input-clear-icon {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
 .action_notification-wrapper.remove-action {
   position: relative !important; }
 
