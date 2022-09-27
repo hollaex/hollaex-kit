@@ -72,7 +72,7 @@ const All = ({
 	const addApp = (name) => {
 		// send add app request and show toast notification
 		const settings = {
-			apps: unique([...user_apps, name]),
+			app: unique([...user_apps, name]),
 		};
 		updateUserSettings(settings)
 			.then(({ data }) => {

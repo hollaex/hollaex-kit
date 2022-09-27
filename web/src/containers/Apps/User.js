@@ -65,7 +65,7 @@ const User = ({
 	const onRemove = (name) => {
 		// send add app request and show toast notification
 		const settings = {
-			apps: apps.filter((app) => app !== name),
+			app: apps.filter((app) => app !== name),
 		};
 		updateUserSettings(settings)
 			.then(({ data }) => {
