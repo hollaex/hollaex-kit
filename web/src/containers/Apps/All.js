@@ -27,7 +27,7 @@ const generateHeaders = (addApp, isAdded, ICONS) => {
 		{
 			label: '',
 			renderCell: ({ name }, key) => (
-				<td key={`${key}-${name}-app`} className="text-align-right">
+				<td key={`${key}-${name}-app`} className="text-align-center">
 					{isAdded(name) ? (
 						<Image
 							icon={ICONS['GREEN_CHECK']}
@@ -70,10 +70,10 @@ const All = ({
 	const inputRef = useRef(null);
 
 	const addApp = (name) => {
-		// send add app request and show toast notification
 		const settings = {
 			app: unique([...user_apps, name]),
 		};
+
 		updateUserSettings(settings)
 			.then(({ data }) => {
 				setUserData(data);
@@ -81,6 +81,13 @@ const All = ({
 				setSnackNotification({
 					content: STRINGS['USER_APPS.ALL_APPS.ADD.SUCCESSFUL'],
 				});
+				if (window) {
+					window.scroll({
+						top: 0,
+						left: 0,
+						behavior: 'smooth',
+					});
+				}
 			})
 			.catch(() => {
 				setSnackNotification({

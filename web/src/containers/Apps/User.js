@@ -62,11 +62,12 @@ const User = ({
 	closeNotification,
 }) => {
 	const goToDetails = (name) => router.push(`apps/details/${name}`);
+	const openConfigs = (name) => openConfigureApps(() => onRemove(name));
 	const onRemove = (name) => {
-		// send add app request and show toast notification
 		const settings = {
 			app: apps.filter((app) => app !== name),
 		};
+
 		updateUserSettings(settings)
 			.then(({ data }) => {
 				setUserData(data);
@@ -74,7 +75,6 @@ const User = ({
 			})
 			.catch((err) => console.log('error'));
 	};
-	const openConfigs = (name) => openConfigureApps(() => onRemove(name));
 
 	return (
 		<div>
