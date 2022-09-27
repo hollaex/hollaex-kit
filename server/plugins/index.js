@@ -93,6 +93,7 @@ checkStatus()
 		helmetMiddleware(app);
 
 
+		const defaultURL = 'http://localhost:10012';
 		const customRouter = function (req) {
 			if (req.path.length > 1 && req.path.includes('/plugins/')) {
 				for (let plugin of Object.values(activePlugins)) {
@@ -101,12 +102,12 @@ checkStatus()
 					}
 				}
 			}
-			return `http://localhost:10012`;
+			return defaultURL;
 
 		};
 
 		const options = {
-			target: 'http://localhost:10012',
+			target: defaultURL,
 			router: customRouter,
 		};
 
