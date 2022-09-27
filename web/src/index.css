@@ -5473,6 +5473,9 @@ table th {
 .action_notification-wrapper.remove-action {
   position: relative !important; }
 
+.apps-table-check {
+  width: 10px !important; }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }

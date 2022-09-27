@@ -86,7 +86,7 @@ const User = ({
 						textType="title"
 						iconPath={ICONS['APPS_USER']}
 					/>
-					<div>
+					<div className="py-4">
 						<EditWrapper stringId="USER_APPS.MY_APPS.SUBTITLE">
 							{STRINGS['USER_APPS.MY_APPS.SUBTITLE']}
 						</EditWrapper>
