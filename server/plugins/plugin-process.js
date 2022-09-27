@@ -41,7 +41,6 @@ const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
 const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
-// const PORT = workerData.PLUGIN_PORT || 10011;
 
 
 
@@ -105,7 +104,6 @@ const initPluginProcess = async ({ PORT, plugin }) => {
     const app = express();
 
     app.use(morgan(morganType, { stream }));
-    // app.listen(10012);
     app.listen(PORT);
     app.use(cors());
     app.use(express.urlencoded({ extended: true }));
