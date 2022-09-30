@@ -62,11 +62,12 @@ const User = ({
 	closeNotification,
 }) => {
 	const goToDetails = (name) => router.push(`apps/details/${name}`);
+	const openConfigs = (name) => openConfigureApps(() => onRemove(name));
 	const onRemove = (name) => {
-		// send add app request and show toast notification
 		const settings = {
-			apps: apps.filter((app) => app !== name),
+			app: apps.filter((app) => app !== name),
 		};
+
 		updateUserSettings(settings)
 			.then(({ data }) => {
 				setUserData(data);
@@ -74,7 +75,6 @@ const User = ({
 			})
 			.catch((err) => console.log('error'));
 	};
-	const openConfigs = (name) => openConfigureApps(() => onRemove(name));
 
 	return (
 		<div>
@@ -86,7 +86,7 @@ const User = ({
 						textType="title"
 						iconPath={ICONS['APPS_USER']}
 					/>
-					<div>
+					<div className="py-4">
 						<EditWrapper stringId="USER_APPS.MY_APPS.SUBTITLE">
 							{STRINGS['USER_APPS.MY_APPS.SUBTITLE']}
 						</EditWrapper>
@@ -95,8 +95,7 @@ const User = ({
 						showHeaderNoData={true}
 						rowClassName="pt-2 pb-2"
 						headers={generateHeaders(goToDetails, openConfigs)}
-						count={data.length}
-						pageSize={data.length}
+						showAll={true}
 						data={data}
 						rowKey={({ name }) => name}
 						displayPaginator={false}
