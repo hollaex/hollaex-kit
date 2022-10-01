@@ -485,7 +485,11 @@
 			"TAB_TITLE": "All apps",
 			"TITLE": "Exchange apps",
 			"SUBTITLE": "Get more functionality from your exchange account by simply selecting an app below and clicking Add button.",
-			"SEARCH_PLACEHOLDER": "Search apps..."
+			"SEARCH_PLACEHOLDER": "Search apps...",
+			"ADD": {
+				"SUCCESSFUL": "You've successfully added a new app!",
+				"FAILED": "Something went wrong"
+			}
 		},
 		"MY_APPS": {
 			"TAB_TITLE": "My apps",
