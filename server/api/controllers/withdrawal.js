@@ -121,7 +121,24 @@ const performWithdrawal = (req, res) => {
 					}),
 					withdrawal
 				]);
+			} else if (toolsLib.getKitCoin(withdrawal.currency).type === 'fiat') {
+				// burn the asset
+				return all([
+					toolsLib.wallet.burnAssetByKitId(
+						withdrawal.user_id,
+						withdrawal.currency,
+						withdrawal.amount,
+						{
+							transactionId: withdrawal.transaction_id,
+							address: withdrawal.address,
+							status: false,
+							fee: withdrawal.fee
+						}
+					),
+					withdrawal
+				]);
 			} else {
+				// blockchain type to sent to the network
 				return all([
 					toolsLib.wallet.performWithdrawal(
 						withdrawal.user_id,
