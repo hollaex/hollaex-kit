@@ -386,6 +386,9 @@ class UserVerification extends Component {
 		if (otp_enabled) {
 			this.setState({
 				dialogIsOpen: true,
+				modalText:
+					STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION'],
+				stringId: 'ACCOUNT_SECURITY.CHANGE_PASSWORD.DIALOG.EMAIL_CONFIRMATION',
 				updatedPassword: {
 					old_password: values.old_password,
 					new_password: values.new_password,
