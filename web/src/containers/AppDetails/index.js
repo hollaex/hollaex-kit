@@ -23,7 +23,7 @@ const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
 		}
 	}
 
-	const id = generateDynamicTarget(app, 'app');
+	const id = generateDynamicTarget(app, 'app', 'kit');
 
 	useEffect(() => {
 		setMounted(true);

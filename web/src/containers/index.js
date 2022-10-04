@@ -66,3 +66,4 @@ export { default as Roles } from './Admin/Roles';
 export { default as Resources } from './Admin/Resources';
 export { default as Pairs } from './Admin/Trades';
 export { default as Fiatmarkets } from './Admin/Fiat';
+export { default as AdminApps } from './Admin/Apps';
