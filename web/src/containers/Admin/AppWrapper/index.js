@@ -426,6 +426,8 @@ class AppWrapper extends React.Component {
 			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
 			return 'Plugins';
+		} else if (location.pathname.includes('/admin/apps')) {
+			return 'Apps';
 		} else if (location.pathname.includes('/admin/tiers')) {
 			return 'Tiers';
 		} else if (location.pathname.includes('/admin/roles')) {
@@ -549,7 +551,12 @@ class AppWrapper extends React.Component {
 	};
 
 	render() {
-		const { children, router, user } = this.props;
+		const {
+			children,
+			router,
+			user,
+			constants: { features },
+		} = this.props;
 		const logout = () => {
 			removeToken();
 			router.replace('/login');
@@ -575,6 +582,17 @@ class AppWrapper extends React.Component {
 				];
 			}
 		});
+
+		if (features.apps) {
+			pathNames = [
+				...pathNames,
+				{
+					path: '/admin/apps',
+					label: 'Apps',
+					routeKey: 'apps',
+				},
+			];
+		}
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
