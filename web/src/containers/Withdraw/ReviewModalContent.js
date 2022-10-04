@@ -49,7 +49,7 @@ const ReviewModalContent = ({
 	const fee_type = data.fee_type ? data.fee_type : '';
 	const isPercentage = fee_type === 'percentage';
 	const hasDifferentFeeCoin =
-		!isPercentage && fee_coin && fee_coin !== currency;
+		!isPercentage && !!fee_coin && fee_coin !== currency;
 
 	let min_fee;
 	let max_fee;
@@ -76,7 +76,7 @@ const ReviewModalContent = ({
 
 	const feePrice = math.number(math.multiply(fee, price));
 
-	const totalTransaction = hasDifferentFeeCoin
+	const totalTransaction = !!hasDifferentFeeCoin
 		? math.number(math.fraction(data.amount))
 		: math.number(math.add(math.fraction(data.amount), fee));
 
@@ -89,7 +89,7 @@ const ReviewModalContent = ({
 	const { display_name: fee_coin_display } =
 		coins[fee_coin] || DEFAULT_COIN_DATA;
 
-	const withdrawFeeMessage = hasDifferentFeeCoin
+	const withdrawFeeMessage = !!hasDifferentFeeCoin
 		? STRINGS.formatString(
 				STRINGS['WITHDRAW_PAGE.MESSAGE_FEE_COIN'],
 				STRINGS.formatString(CURRENCY_PRICE_FORMAT, fee, fee_coin_display)
