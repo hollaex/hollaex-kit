@@ -507,7 +507,8 @@
 			"RETRY": "Try another search term"
 		},
 		"APP_DETAILS": {
-			"BACK_TO_APPS": "{0} to my apps",
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "to my apps",
 			"BACK": "Back"
 		},
 		"CONFIGURE": {

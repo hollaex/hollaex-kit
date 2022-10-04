@@ -18,7 +18,7 @@ const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
 	} = router;
 
 	if (!mounted) {
-		if (!app || userApps.map(({ name }) => name).includes(app)) {
+		if (!app || !userApps.map(({ name }) => name).includes(app)) {
 			goBack();
 		}
 	}
@@ -46,12 +46,15 @@ const Index = ({ openContactForm, icons: ICONS, router, userApps }) => {
 					<div>
 						<EditWrapper stringId="USER_APPS.APP_DETAILS.BACK_TO_APPS,USER_APPS.APP_DETAILS.BACK">
 							{STRINGS.formatString(
-								STRINGS['USER_APPS.APP_DETAILS.BACK_TO_APPS'],
+								STRINGS['USER_APPS.APP_DETAILS.BACK_PLACEHOLDER'],
 								<span
 									className="blue-link underline-text pointer"
 									onClick={goBack}
 								>
 									{STRINGS['USER_APPS.APP_DETAILS.BACK']}
+								</span>,
+								<span className="px-1">
+									{STRINGS['USER_APPS.APP_DETAILS.BACK_TO_APPS']}
 								</span>
 							)}
 						</EditWrapper>
