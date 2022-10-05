@@ -1,10 +1,10 @@
-FROM node:10.24.1-buster-slim
+FROM node:16
 
 RUN apt-get update && \
     apt-get install -y curl openssl ca-certificates git python build-essential && \
     rm -rf /var/lib/apt/lists/* && \
     npm config set unsafe-perm true && \
-    npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha -g --loglevel=error
+    npm install pm2 sequelize-cli mocha -g --loglevel=error
 
 ENV NODE_ENV=production
 
