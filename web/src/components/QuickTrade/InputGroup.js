@@ -159,7 +159,7 @@ class InputGroup extends React.PureComponent {
 							placeholder={STRINGS['AMOUNT']}
 							style={isOpen ? { display: 'none' } : { width: '67%' }}
 							className="input-group__input"
-							value={`${inputValue}`}
+							value={inputValue || ''}
 							onChange={this.onChangeEvent}
 							bordered={false}
 							step={limits.MIN}
