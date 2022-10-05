@@ -570,6 +570,18 @@ class AppWrapper extends React.Component {
 			isConfigure,
 		} = this.state;
 		let pathNames = PATHS;
+
+		if (features.apps) {
+			pathNames = [
+				...pathNames,
+				{
+					path: '/admin/apps',
+					label: 'Apps',
+					routeKey: 'apps',
+				},
+			];
+		}
+
 		myPlugins.forEach((data) => {
 			if (data.enabled && data.enabled_admin_view) {
 				pathNames = [
@@ -582,17 +594,6 @@ class AppWrapper extends React.Component {
 				];
 			}
 		});
-
-		if (features.apps) {
-			pathNames = [
-				...pathNames,
-				{
-					path: '/admin/apps',
-					label: 'Apps',
-					routeKey: 'apps',
-				},
-			];
-		}
 
 		if (!isLoaded) return null;
 		if (!isLoggedIn()) {
