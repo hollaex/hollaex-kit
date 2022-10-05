@@ -58,6 +58,7 @@ import {
 	Resources,
 	Pairs,
 	Fiatmarkets,
+	AdminApps,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -543,6 +544,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugins"
 					name="Admin plugins"
 					component={withAdminProps(Plugins, 'plugins')}
+				/>
+				<Route
+					path="/admin/apps"
+					name="Admin apps"
+					component={withAdminProps(AdminApps, 'apps')}
 				/>
 				{/* <Route
 				path="/admin/plugins/:services"

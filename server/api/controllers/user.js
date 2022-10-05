@@ -505,9 +505,9 @@ const resetPassword = (req, res) => {
 
 const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
-	const email = req.auth.sub.email;
+	const id = req.auth.sub.id;
 
-	toolsLib.user.getUserByEmail(email, true, true, {
+	toolsLib.user.getUserByKitId(id, true, true, {
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

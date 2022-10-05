@@ -489,9 +489,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			allWebViews.forEach((plugin) => {
 				const { target: staticTarget, meta, name, plugin_type } = plugin;
 				let target;
-				if (plugin_type === 'app') {
-					target = generateDynamicTarget(name, 'app');
-				} else if (staticTarget) {
+				if (staticTarget) {
 					target = staticTarget;
 				} else if (meta) {
 					const {
@@ -502,7 +500,10 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						type,
 						currency,
 					} = meta;
-					if (is_page) {
+
+					if (plugin_type === 'app') {
+						target = generateDynamicTarget(name, 'app', type);
+					} else if (is_page) {
 						target = generateDynamicTarget(name, 'page');
 					} else if (is_verification_tab && type) {
 						target = generateDynamicTarget(name, 'verification', type);

@@ -35,7 +35,7 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 				) : (
 					<div>{STRINGS['USER_APPS.ALL_APPS.TAB_TITLE']}</div>
 				),
-				content: <All />,
+				content: <All setActiveTab={setActiveTab} />,
 			},
 			{
 				title: isMobile ? (
