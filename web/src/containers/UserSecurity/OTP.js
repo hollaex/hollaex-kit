@@ -3,6 +3,7 @@ import { CheckboxButton, IconTitle, EditWrapper } from 'components';
 import QRCode from 'qrcode.react';
 import OTPForm from './OTPForm';
 import STRINGS from 'config/localizedStrings';
+import { Image } from 'hollaex-web-lib';
 
 export const renderOTPForm = (
 	secret,
@@ -86,20 +87,32 @@ export const OTP = ({
 				</div>
 			)}
 		</div>
-		<CheckboxButton
-			stringId="ACCOUNT_SECURITY.OTP.CONTENT.ENABLE,ACCOUNT_SECURITY.OTP.CONTENT.DISABLE"
-			label={
-				STRINGS[
-					`ACCOUNT_SECURITY.OTP.CONTENT.${otp_enabled ? 'DISABLE' : 'ENABLE'}`
-				]
-			}
-			onClick={requestOTP}
-			disabled={data.requesting}
-			loading={data.requesting}
-			checked={otp_enabled}
-			icons={icons}
-		>
-			{children}
-		</CheckboxButton>
+		<div className="d-flex w-100 justify-content-center align-items-center mt-5">
+			<CheckboxButton
+				stringId="ACCOUNT_SECURITY.OTP.CONTENT.ENABLE,ACCOUNT_SECURITY.OTP.CONTENT.DISABLE"
+				label={
+					STRINGS[
+						`ACCOUNT_SECURITY.OTP.CONTENT.${otp_enabled ? 'DISABLE' : 'ENABLE'}`
+					]
+				}
+				onClick={requestOTP}
+				disabled={data.requesting}
+				loading={data.requesting}
+				checked={otp_enabled}
+				icons={icons}
+				customCheckIcon="SECURE"
+			>
+				{children}
+			</CheckboxButton>
+			{otp_enabled && (
+				<Image
+					iconId={'SUCCESS_BLACK'}
+					icon={icons['SUCCESS_BLACK']}
+					wrapperClassName="OTP_Success ml-2"
+					width="20px"
+					height="20px"
+				/>
+			)}
+		</div>
 	</div>
 );

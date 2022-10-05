@@ -97,10 +97,18 @@ body {
 	}
 }
 
+.blockchain-search {
+	filter: brightness(0) invert(0.8);
+}
+
 input,
 input:focus {
 	outline: none;
 	border: none;
+}
+
+.onHoverOpacity:hover {
+	opacity: 0.5;
 }
 
 input[type='number'] {
@@ -187,7 +195,10 @@ svg {
 	.incoming-coin-01,
 	.coin-btc-5,
 	.stake-page-icon,
-	.fiat-kyc {
+	.fiat-kyc,
+	.all-apps,
+	.my-apps,
+	.apps {
 		fill: $colors-black;
 	}
 

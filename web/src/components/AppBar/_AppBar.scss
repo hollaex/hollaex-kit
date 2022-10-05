@@ -377,7 +377,8 @@ $app-menu-width: calc(100vw - 40rem);
 				.tab-history-st,
 				.help-question,
 				.tab-signout,
-				.tab-api0 {
+				.tab-api0,
+				.apps {
 					fill: $colors-black;
 				}
 			}
@@ -511,6 +512,9 @@ $app-menu-width: calc(100vw - 40rem);
 		cursor: pointer;
 		font-size: 11px;
 	}
+}
+.capitalize {
+	text-transform: capitalize;
 }
 
 .home_app_bar {

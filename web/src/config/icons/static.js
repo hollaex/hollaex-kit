@@ -48,9 +48,15 @@ const icons = {
 	HELP_FOOTER_POPUP:
 		'/assets/images/terms_of_service_and_privacy_policy-tooltip.png',
 	HELP_REFERRAL_BADGE_POPUP: '/assets/images/help-popup-footer.png',
+	REFRESH: '/assets/icons/refresh-icon.svg',
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
+	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
+	NO_ACTIVE_ORDERS: '/assets/images/no-active-orders-01.svg',
+	NO_ACTIVE_TRADES: '/assets/images/no-recent-trades-01.svg',
+	NO_ACTIVE_DEPOSITS: '/assets/images/no-recent-deposits.svg',
+	NO_ACTIVE_WITHDRAWALS: '/assets/images/no-recent-withdrawals.svg',
 	MAKER_TIERS_SECTION: '/assets/images/maker-tier-section.svg',
 	LIMITS_SECTION_ICON: '/assets/images/limits-coin-tiers.svg',
 	FEES_SECTION_ICON: '/assets/images/limits-pairs-tiers.svg',
@@ -71,6 +77,7 @@ const icons = {
 	CANCEL_CROSS_ACTIVE: '/assets/images/cancel-cross-active.svg',
 	VERIFICATION_ICON: '/assets/images/verification-green-tick.svg',
 	CHAT_FEATURE_ICON: '/assets/images/chat-feature-icon.svg',
+	APPS_FEATURE_ICON: '/assets/images/apps.svg',
 	HOME_PAGE_FEATURE_ICON: '/assets/images/home-page.svg',
 	USER_EMAIL: '/assets/images/user-email.svg',
 	USER_EMAIL_VERIFIED: '/assets/images/user-email-verified.svg',
@@ -144,6 +151,7 @@ const icons = {
 	FIAT_PLUGIN: '/assets/images/fiat-plugin.svg',
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
+	CLOCK: '/assets/images/clock.svg',
 };
 
 export default icons;

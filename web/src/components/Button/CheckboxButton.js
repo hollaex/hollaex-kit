@@ -3,10 +3,16 @@ import classnames from 'classnames';
 import { EditWrapper } from 'components';
 import Image from 'components/Image';
 
-const renderCheckboxImage = (checked, ICONS = {}) => (
+const renderCheckboxImage = (checked, ICONS = {}, customCheckIcon) => (
 	<Image
 		iconId={checked ? 'SUCCESS_BLACK' : 'SECURE'}
-		icon={checked ? ICONS['SUCCESS_BLACK'] : ICONS['SECURE']}
+		icon={
+			checked
+				? customCheckIcon
+					? ICONS[customCheckIcon]
+					: ICONS['SUCCESS_BLACK']
+				: ICONS['SECURE']
+		}
 		wrapperClassName="checkbutton-input-wrapper--image"
 	/>
 );
@@ -27,6 +33,7 @@ const CheckboxButton = ({
 	loading = false,
 	children,
 	icons,
+	customCheckIcon = '',
 }) => (
 	<div className="checkbutton-wrapper">
 		<div
@@ -43,7 +50,7 @@ const CheckboxButton = ({
 			{loading ? (
 				<div className="checkbutton-input-wrapper--loader" />
 			) : (
-				renderCheckboxImage(checked, icons)
+				renderCheckboxImage(checked, icons, customCheckIcon)
 			)}
 			<span className="checkbutton-input-wrapper--label">
 				<EditWrapper stringId={stringId}>{label}</EditWrapper>

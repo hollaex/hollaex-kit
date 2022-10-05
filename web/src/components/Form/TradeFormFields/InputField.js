@@ -21,7 +21,7 @@ const InputField = (props) => {
 			>
 				<input ref={setRef} {...input} {...rest} />
 				{currency && (
-					<div className="trade_input-input-currency d-flex justify-content-center align-items-center">
+					<div className="trade_input-input-currency d-flex justify-content-center align-items-center mr-2">
 						{currency}
 					</div>
 				)}

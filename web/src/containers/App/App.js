@@ -64,6 +64,7 @@ import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
 import MarketSelector from 'components/AppBar/MarketSelector';
 import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
+import ConfigureApps from 'containers/Apps/ConfigureApps';
 
 import {
 	getClasesForLanguage,
@@ -509,6 +510,13 @@ class App extends Component {
 						iconPath={ICONS['RED_WARNING']}
 						onClick={this.onCloseDialog}
 						text={data}
+					/>
+				);
+			case NOTIFICATIONS.CONFIGURE_APPS:
+				return (
+					<ConfigureApps
+						onClose={this.onCloseDialog}
+						onRemove={data.onRemove}
 					/>
 				);
 			case CONNECT_VIA_DESKTOP:

@@ -1,5 +1,7 @@
 import React from 'react';
-import { Button, Collapse } from 'antd';
+import { Collapse } from 'antd';
+
+import FormButton from 'components/FormButton/Button';
 
 const PublishSection = ({
 	title = '',
@@ -54,17 +56,15 @@ const PublishSection = ({
 					) : null}
 				</Collapse>
 			</div>
-			<Button
+			<FormButton
 				type="primary"
-				className="green-btn minimal-btn"
-				loading={loadingButton && currentPublishType === currentkey}
-				onClick={() => handlePublish(currentkey)}
+				handleSubmit={() => handlePublish(currentkey)}
 				disabled={
 					!isPublishDisable || (isPublishDisable && updatedKey !== currentkey)
 				}
-			>
-				Publish
-			</Button>
+				className="green-btn minimal-btn"
+				buttonText="Publish"
+			/>
 		</div>
 	);
 };

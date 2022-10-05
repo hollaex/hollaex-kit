@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "is_wallet": true,
+    "type": "deposit",
+    "currency": "USD"
+  }
+}

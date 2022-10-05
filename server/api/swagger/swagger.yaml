@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.4.2"
+  version: "2.4.3"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1613,7 +1613,7 @@ paths:
           in: query
           required: true
           type: string
-          minLength: 3
+          minLength: 2
           maxLength: 15
         - name: network
           in: query

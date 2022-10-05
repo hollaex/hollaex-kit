@@ -28,6 +28,7 @@ export const getChartSymbol = (symbol, tickSize, api_name = '') => {
 		let count = getDecimals(tickSize);
 		pricescale = math.pow(10, count);
 	}
+	if (pricescale === 0) pricescale = 1;
 	// return axios({
 	// 	url: `/udf/symbols?symbol=${symbol}`,
 	// 	method: 'GET'

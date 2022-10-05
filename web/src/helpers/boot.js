@@ -16,7 +16,7 @@ const getLoadingImage = () => {
 export const setLoadingImage = ({ icons }) => {
 	const theme = localStorage.getItem('theme');
 	getLoadingImage().src =
-		icons[theme]['EXCHANGE_LOADER'] ||
+		(icons[theme] && icons[theme]['EXCHANGE_LOADER']) ||
 		icons[defaultIconsKey]['EXCHANGE_LOADER'];
 };
 

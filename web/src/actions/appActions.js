@@ -38,6 +38,7 @@ export const NOTIFICATIONS = {
 	UNSTAKE: 'UNSTAKE',
 	MOVE_XHT: 'MOVE_XHT',
 	METAMASK_ERROR: 'METAMASK_ERROR',
+	CONFIGURE_APPS: 'CONFIGURE_APPS',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -375,6 +376,9 @@ export const openConnectViaDesktop = (data = {}) =>
 
 export const openMetamaskError = (data = {}) =>
 	setNotification(NOTIFICATIONS.METAMASK_ERROR, data, true);
+
+export const openConfigureApps = (onRemove) =>
+	setNotification(NOTIFICATIONS.CONFIGURE_APPS, { onRemove }, true);
 
 export const openRiskPortfolioOrderWarning = (data = {}) =>
 	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);

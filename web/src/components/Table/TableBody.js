@@ -82,6 +82,7 @@ const TableBody = ({
 	cancelDelayData,
 	expandable,
 	cssTransitionClassName,
+	rowKey,
 }) => (
 	<tbody
 		className={classnames('table_body-wrapper', {
@@ -113,6 +114,7 @@ const TableBody = ({
 			<Fragment>
 				{data.map((row, rowIndex) => (
 					<TableRow
+						key={rowKey(row)}
 						headers={headers}
 						cancelDelayData={cancelDelayData}
 						expandable={expandable}
