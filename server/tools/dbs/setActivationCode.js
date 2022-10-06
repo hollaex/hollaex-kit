@@ -3,7 +3,7 @@ const { Status } = require('../../db/models');
 const { ACTIVATION_CODE, API_KEY, API_SECRET } = process.env;
 
 Status.findOne({}).then((status) => {
-	Status.create({
+	status.update({
 		activation_code: ACTIVATION_CODE,
 		activated: true,
 		api_key: API_KEY,
