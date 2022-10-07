@@ -16,7 +16,7 @@ import { AdminHocForm } from '../../../components';
 import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
-import { ListUsers, FullListUsers } from '../ListUsers';
+import { FullListUsers, PendingUsers } from '../ListUsers';
 import { requestMyPlugins } from '../Plugins/action';
 // import { isSupport } from '../../../utils/token';
 
@@ -324,11 +324,11 @@ class App extends Component {
 						) : null}
 					</TabPane>
 
-					<TabPane tab="User Verification" key="userVerification">
-						<div className="list_users">
-							<ListUsers
-								requestUser={this.requestUserData}
-								handleDownload={this.requestUsersDownload}
+					<TabPane tab="Pending Users" key="pendingUsers">
+						<div className="m-top">
+							<PendingUsers
+								requestUserData={this.requestUserData}
+								requestUsersDownload={this.requestUsersDownload}
 								columns={COLUMNS}
 							/>
 						</div>
