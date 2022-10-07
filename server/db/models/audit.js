@@ -2,7 +2,7 @@ const DESCRIPTION = {
 	note: ''
 };
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Audit = sequelize.define(
 		'Audit',
 		{
@@ -45,7 +45,8 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		{
 			timestamps: false,
-			underscored: true
+			underscored: true,
+			tableName: 'Audits'
 		}
 	);
 	return Audit;

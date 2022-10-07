@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Login = sequelize.define(
 		'Login',
 		{
@@ -35,7 +35,8 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		{
 			timestamps: false,
-			underscored: true
+			underscored: true,
+			tableName: 'Logins'
 		}
 	);
 

@@ -3363,11 +3363,11 @@ paths:
           required: true
           schema:
             type: object
-            # required:
-            #   - bank_account
-            # properties:
-            #   bank_account:
-            #     type: array
+            required:
+              - bank_account
+            properties:
+              bank_account:
+                type: array
       responses:
         200:
           description: Success

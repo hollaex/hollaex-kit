@@ -1,4 +1,4 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Affiliation = sequelize.define(
 		'Affiliation',
 		{
@@ -29,7 +29,8 @@ module.exports = function(sequelize, DataTypes) {
 		},
 		{
 			timestamps: true,
-			underscored: true
+			underscored: true,
+			tableName: 'Affiliations'
 		}
 	);
 
