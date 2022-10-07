@@ -109,6 +109,7 @@ checkStatus()
 		const options = {
 			target: defaultURL,
 			router: customRouter,
+			changeOrigin: true
 		};
 
 		app.use('/plugins', routes, createProxyMiddleware(options));
@@ -124,16 +125,7 @@ checkStatus()
 		});
 
 		for (const plugin of plugins) {
-			const pluginData = { PORT: 10011 + plugin.id, plugin }
-			const childProcess = fork(pluginProcess);
-			childProcess.send(JSON.stringify(pluginData));
-			const subStr = plugin.script.match(/\"\/plugins(.*?)\"/g);
-
-			activePlugins[plugin.name] = {
-				process: childProcess,
-				port: pluginData.PORT,
-				endpoints: subStr || [],
-			};
+			startPlugin(plugin);
 		}
 
 		loggerPlugin.info(
