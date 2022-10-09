@@ -3061,6 +3061,11 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pending_type
+          in: query
+          required: false
+          type: string
+          enum: ['id', 'bank']
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"

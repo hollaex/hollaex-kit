@@ -111,7 +111,7 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { id, search, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -126,6 +126,7 @@ const getUsersAdmin = (req, res) => {
 		id: id.value,
 		search: search.value,
 		pending: pending.value,
+		pending_type: pending_type.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
