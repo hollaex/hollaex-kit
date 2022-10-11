@@ -159,6 +159,9 @@
 	"REFERRAL_SUCCESS": { "TITLE": "Request Sent", "BUTTON_TEXT": "Okay" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Enter your authentication code to continue",
+		"OTP_FORM_INFO": "Enter your 6-digit code to continue",
+		"OTP_FORM_SUBNOTE_LINE_1": "Your code is also known as a two-factor authenticator (2FA) or OTP code.",
+		"OTP_FORM_SUBNOTE_LINE_2": "If you've lost your code, please reach out to support.",
 		"OTP_LABEL": "OTP Code",
 		"OTP_PLACEHOLDER": "Enter the authentication code",
 		"OTP_TITLE": "Authenticator Code",
