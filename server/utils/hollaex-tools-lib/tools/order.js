@@ -283,7 +283,7 @@ const cancelAllUserOrdersByKitId = async (userKitId, symbol, opts = {
 	} else if (!idDictionary[userKitId]) {
 		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 	}
-	return getNodeLib().cancelAllOrders(idDictionary[userKitId], {symbol, ...opts});
+	return getNodeLib().cancelAllOrders(idDictionary[userKitId], { symbol, ...opts });
 };
 
 const cancelAllUserOrdersByEmail = (email, symbol, opts = {
@@ -339,22 +339,28 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 		.then(async (trades) => {
 			if (trades.data.length > 0) {
 				const networkIds = [];
-
 				for (const trade of trades.data) {
-					networkIds.push(trade.maker_id, trade.taker_id);
+					if (trade.maker_id) {
+						networkIds.push(trade.maker_id);
+					}
+					if (trade.taker_id) {
+						networkIds.push(trade.taker_id);
+					}
 				}
 
 				const idDictionary = await mapNetworkIdToKitId(networkIds);
 
 				for (let trade of trades.data) {
-					const maker_kit_id = idDictionary[trade.maker_id] || 0;
-					const taker_kit_id = idDictionary[trade.taker_id] || 0;
-
-					trade.maker_network_id = trade.maker_id;
-					trade.maker_id = maker_kit_id;
-
-					trade.taker_network_id = trade.taker_id;
-					trade.taker_id = taker_kit_id;
+					if (trade.maker_id) {
+						const maker_kit_id = idDictionary[trade.maker_id] || 0;
+						trade.maker_network_id = trade.maker_id;
+						trade.maker_id = maker_kit_id;
+					}
+					if (trade.taker_id) {
+						const taker_kit_id = idDictionary[trade.taker_id] || 0;
+						trade.taker_network_id = trade.taker_id;
+						trade.taker_id = taker_kit_id;
+					}
 				}
 			}
 

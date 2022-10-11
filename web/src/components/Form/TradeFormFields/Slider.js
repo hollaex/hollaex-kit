@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Slider } from 'antd';
 
 // todo: connect antd slider to redux form
@@ -31,8 +31,18 @@ const marks = {
 	},
 };
 
-const SizeSlider = (props) => {
-	const { onClick } = props;
+const SizeSlider = ({ onClick, value, setRef }) => {
+	const [val, setVal] = useState(0);
+
+	useEffect(() => {
+		if (setRef) {
+			setRef({
+				reset: () => {
+					setVal(0);
+				},
+			});
+		}
+	}, [setRef]);
 
 	return (
 		<div className="size-slider px-1 pb-2">
@@ -42,6 +52,8 @@ const SizeSlider = (props) => {
 				defaultValue={0}
 				tooltipVisible={false}
 				onAfterChange={onClick}
+				value={val}
+				onChange={setVal}
 			/>
 		</div>
 	);

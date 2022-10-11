@@ -158,10 +158,26 @@
 	stroke: #808080;
 	fill-opacity: 0.5;
 }
+.interface-box .feature-apps-icon {
+	width: 42px;
+	margin: 4px 16px;
+	fill: #808080 !important;
+	fill-opacity: 0.5;
+}
+.feature-apps-icon .apps {
+	fill: #808080 !important;
+}
 .interface-box .ant-checkbox-wrapper-checked .feature-icon,
 .interface-box .ant-checkbox-wrapper-checked .feature-chat-icon {
 	stroke: #ffffff;
 	fill-opacity: 1;
+}
+.interface-box .ant-checkbox-wrapper-checked .feature-apps-icon {
+	fill: #ffffff !important;
+	fill-opacity: 1;
+}
+.feature-apps-icon .apps {
+	fill: #ffffff !important;
 }
 .interface-box .checkbox-txt,
 .interface-box .small-text {
@@ -347,6 +363,10 @@ h2,
 .general-wrapper .disabled-area {
 	opacity: 0.6;
 	pointer-events: none;
+}
+
+.general-wrapper .interface-item {
+	min-width: 418px;
 }
 
 .general-wrapper .description a {

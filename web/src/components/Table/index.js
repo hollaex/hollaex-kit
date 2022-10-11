@@ -105,6 +105,7 @@ class Table extends Component {
 			className,
 			expandable,
 			cssTransitionClassName,
+			rowKey,
 		} = this.props;
 
 		const count = this.props.count || this.props.data.length;
@@ -153,6 +154,7 @@ class Table extends Component {
 							withIcon={withIcon}
 							expandable={expandable}
 							cssTransitionClassName={cssTransitionClassName}
+							rowKey={rowKey}
 						/>
 					</table>
 				</div>
@@ -190,6 +192,7 @@ Table.defaultProps = {
 		rowExpandable: () => false,
 	},
 	cssTransitionClassName: '',
+	rowKey: ({ id }) => id,
 };
 
 export default Table;

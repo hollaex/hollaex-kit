@@ -1,0 +1,18 @@
+{
+  "meta": {
+    "is_page": true,
+    "path": "/custom-route",
+    "hide_from_appbar": true,
+    "hide_from_sidebar": false,
+    "hide_from_menulist": false,
+    "hide_from_bottom_nav": true,
+    "string": {
+      "id": "title",
+      "is_global": false
+    },
+    "icon": {
+      "id": "SIDEBAR_HELP",
+      "is_global": true
+    }
+  }
+}

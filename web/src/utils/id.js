@@ -10,6 +10,8 @@ export const generateDynamicTarget = (
 	const name = pluginName.toUpperCase();
 	const sub = subType.toUpperCase();
 	switch (type) {
+		case 'app':
+			return `APPLICATION__${name}__${sub}`;
 		case 'verification':
 			return `REMOTE_VERIFICATION_TAB__${name}__${sub}`;
 		case 'page':

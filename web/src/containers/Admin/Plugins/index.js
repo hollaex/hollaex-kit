@@ -18,6 +18,11 @@ const { Item } = Breadcrumb;
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
+		const {
+			router: {
+				location: { query: { plugin } = {} },
+			},
+		} = this.props;
 		this.state = {
 			activeTab: '',
 			loading: false,
@@ -32,7 +37,7 @@ class Plugins extends Component {
 			isVisible: false,
 			isRemovePlugin: false,
 			removePluginName: '',
-			tabKey: 'explore',
+			tabKey: plugin ? 'my_plugin' : 'explore',
 			pluginCards: [],
 			processing: false,
 		};
@@ -75,7 +80,20 @@ class Plugins extends Component {
 		return requestMyPlugins(params)
 			.then((res) => {
 				if (res && res.data) {
-					this.setState({ myPlugins: res.data });
+					const {
+						router,
+						router: {
+							location: { pathname, query: { plugin } = {} },
+						},
+					} = this.props;
+					this.setState({ myPlugins: res.data }, () => {
+						const pluginData = res.data.find(({ name }) => name === plugin);
+						if (pluginData) {
+							this.handleOpenPlugin(pluginData);
+							this.handleBreadcrumb();
+							router.push(pathname);
+						}
+					});
 				}
 			})
 			.catch((err) => {
@@ -183,7 +201,7 @@ class Plugins extends Component {
 			if (plugin_type === 'add_plugin' && !isConfigure) {
 				this.setState({
 					type: 'configure',
-					isConfigure: true
+					isConfigure: true,
 				});
 			}
 		} else {
@@ -200,7 +218,7 @@ class Plugins extends Component {
 			selectedPlugin: {},
 			type: '',
 			isConfigure: false,
-			tabKey: 'explore'
+			tabKey: 'explore',
 		});
 	};
 

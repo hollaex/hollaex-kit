@@ -7,6 +7,10 @@
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
+	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
+	"NO_ACTIVE_TRADES": "Looks like there aren't any trades yet",
+	"NO_ACTIVE_DEPOSITS": "Looks like there aren't any deposits yet.",
+	"NO_ACTIVE_WITHDRAWALS": "Looks like there aren't any withdrawals yet",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "Login",
 	"SIGN_IN": "Sign In",
@@ -60,6 +64,7 @@
 		"TAB_VERIFICATION": "Verification",
 		"TAB_SECURITY": "Security",
 		"TAB_SETTINGS": "Settings",
+		"TAB_APPS": "Apps",
 		"TAB_WALLET": "Wallet",
 		"TAB_SUMMARY": "Summary",
 		"TAB_HISTORY": "History",
@@ -234,7 +239,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "Resend Email Request",
-		"BUTTON": "Request Email"
+		"BUTTON": "Request Email",
+		"SUBTITLE": "Make another email verification request below",
+		"SUPPORT": "Contact Support"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "Resent Email",
@@ -471,6 +478,55 @@
 			"WARNING_POP_UP": "Warning pop ups"
 		}
 	},
+	"USER_APPS": {
+		"TITLE": "Your exchange apps",
+		"SUBTITLE": "Your exchange account applications information and extra functionality below.",
+		"ALL_APPS": {
+			"TAB_TITLE": "All apps",
+			"TITLE": "Exchange apps",
+			"SUBTITLE": "Get more functionality from your exchange account by simply selecting an app below and clicking Add button.",
+			"SEARCH_PLACEHOLDER": "Search apps...",
+			"ADD": {
+				"SUCCESSFUL": "You've successfully added a new app!",
+				"FAILED": "Something went wrong"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "My apps",
+			"TITLE": "My exchange apps",
+			"SUBTITLE": "Below are your active exchange applications. You can click to see expand on each applications information, functions and add/remove them. Apps are designed to provide more your functionality to your exchange experience."
+		},
+		"TABLE": {
+			"APP_NAME": "App name",
+			"DESCRIPTION": "Description",
+			"ACTION": "Action",
+			"CONFIGURE": "Configure",
+			"VIEW_APP": "View app",
+			"ADD": "Add",
+			"NOT_FOUND": "Can't find this app...",
+			"RETRY": "Try another search term"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "to my apps",
+			"BACK": "Back"
+		},
+		"CONFIGURE": {
+			"TITLE": "Configure app",
+			"SUBTITLE": "Configure your app below:",
+			"REMOVE": "Remove app",
+			"TEXT": "If you are having issues with your app please contact us by clicking help below.",
+			"BACK": "BACK",
+			"HELP": "HELP"
+		},
+		"REMOVE": {
+			"TITLE": "Remove app",
+			"SUBTITLE": "This will remove the app from your 'My apps' list.",
+			"TEXT": "Are you sure you want to remove this app?",
+			"BACK": "BACK",
+			"CONFIRM": "CONFIRM"
+		}
+	},
 	"TRANSACTION_HISTORY": {
 		"TITLE": "History",
 		"TITLE_TRADES": "Trades  History",
@@ -631,6 +687,7 @@
 		"COMPLETED_TOOLTIP": "Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.",
 		"CONNECT_ERROR": "Please check your wallet",
 		"INSTALL_METAMASK": "You must install Metamask into your browser: https://metamask.io/download.html",
+		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
 			"1": {
@@ -1116,6 +1173,7 @@
 		"NEW": "New",
 		"SEARCH_FIELD_LABEL": "Paste your transaction ID",
 		"CHECK_DEPOSIT_STATUS": "Check deposit status",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Search blockchain for your deposit",
 		"STATUS_DESCRIPTION": "You can check the status of your deposit by passing the transaction ID (hash) below.",
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",

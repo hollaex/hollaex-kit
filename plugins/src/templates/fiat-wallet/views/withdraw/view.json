@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "is_wallet": true,
+    "type": "withdraw",
+    "currency": "USD"
+  }
+}

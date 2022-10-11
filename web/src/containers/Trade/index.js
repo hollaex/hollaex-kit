@@ -358,6 +358,12 @@ class Trade extends PureComponent {
 		}
 	};
 
+	setSliderRef = (sliderRef) => {
+		if (sliderRef) {
+			this.sliderRef = sliderRef;
+		}
+	};
+
 	setActiveTab = (activeTab) => {
 		const { setTradeTab } = this.props;
 		setTradeTab(activeTab);
@@ -427,6 +433,13 @@ class Trade extends PureComponent {
 				}, 1000);
 			}
 		};
+	};
+
+	resetSlider = () => {
+		console.log(this.sliderRef);
+		if (this.sliderRef) {
+			this.sliderRef.reset();
+		}
 	};
 
 	subscribe = (pair) => {
@@ -573,6 +586,8 @@ class Trade extends PureComponent {
 								showPopup={settings.notification.popup_order_confirmation}
 								setPriceRef={this.setPriceRef}
 								setSizeRef={this.setSizeRef}
+								setSliderRef={this.setSliderRef}
+								resetSlider={this.resetSlider}
 							/>
 						</TradeBlock>
 					</div>
