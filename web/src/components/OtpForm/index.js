@@ -59,8 +59,8 @@ class Form extends Component {
 				<IconTitle
 					stringId="OTP_FORM.OTP_TITLE"
 					text={STRINGS['OTP_FORM.OTP_TITLE']}
-					iconId="OTP_CODE"
-					iconPath={ICONS['OTP_CODE']}
+					iconId="SET_NEW_PASSWORD"
+					iconPath={ICONS['SET_NEW_PASSWORD']}
 				/>
 				<div className="otp_form-title-wrapper">
 					{onClickHelp && (
