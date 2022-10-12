@@ -56,6 +56,10 @@ const TEMPLATES = {
     type: 'onramp',
     template: 'src/templates/onramp',
   },
+  APP: {
+    type: 'app',
+    template: 'src/templates/app',
+  },
   SERVER: {
     type: 'server',
   }
