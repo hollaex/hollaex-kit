@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { required, validateOtp } from 'components/Form/validations';
 import renderFields from 'components/Form/factoryFields';
-import { Button, IconTitle, ActionNotification, EditWrapper } from 'components';
+import { IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -60,8 +59,8 @@ class Form extends Component {
 				<IconTitle
 					stringId="OTP_FORM.OTP_TITLE"
 					text={STRINGS['OTP_FORM.OTP_TITLE']}
-					iconId="OTP_CODE"
-					iconPath={ICONS['OTP_CODE']}
+					iconId="SET_NEW_PASSWORD"
+					iconPath={ICONS['SET_NEW_PASSWORD']}
 				/>
 				<div className="otp_form-title-wrapper">
 					{onClickHelp && (
