@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
-import { required, validateOtp } from 'components/Form/validations';
 import renderFields from 'components/Form/factoryFields';
-import { Button, IconTitle, ActionNotification, EditWrapper } from 'components';
+import { IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -29,12 +28,8 @@ class Form extends Component {
 	setFormValues = () => {
 		const formValues = {
 			otp_code: {
-				type: 'number',
-				stringId:
-					'OTP_FORM.OTP_LABEL,OTP_FORM.OTP_PLACEHOLDER,OTP_FORM.ERROR_INVALID',
+				type: 'pin',
 				label: STRINGS['OTP_FORM.OTP_LABEL'],
-				placeholder: STRINGS['OTP_FORM.OTP_PLACEHOLDER'],
-				validate: [required, validateOtp(STRINGS['OTP_FORM.ERROR_INVALID'])],
 				fullWidth: true,
 			},
 		};
@@ -51,11 +46,9 @@ class Form extends Component {
 
 	render() {
 		const {
-			handleSubmit,
 			submitting,
-			pristine,
+			handleSubmit,
 			error,
-			valid,
 			onClickHelp,
 			icons: ICONS,
 		} = this.props;
@@ -66,15 +59,10 @@ class Form extends Component {
 				<IconTitle
 					stringId="OTP_FORM.OTP_TITLE"
 					text={STRINGS['OTP_FORM.OTP_TITLE']}
-					iconId="OTP_CODE"
-					iconPath={ICONS['OTP_CODE']}
+					iconId="SET_NEW_PASSWORD"
+					iconPath={ICONS['SET_NEW_PASSWORD']}
 				/>
 				<div className="otp_form-title-wrapper">
-					<span className="otp_form-title-text">
-						<EditWrapper stringId="OTP_FORM.OTP_FORM_TITLE">
-							{STRINGS['OTP_FORM.OTP_FORM_TITLE']}
-						</EditWrapper>
-					</span>
 					{onClickHelp && (
 						<ActionNotification
 							stringId="NEED_HELP_TEXT"
@@ -88,14 +76,19 @@ class Form extends Component {
 				</div>
 				<form onSubmit={handleSubmit} className="w-100" ref={this.setFormRef}>
 					<div className="w-100 otp_form-fields">
-						{renderFields(formValues)}
-						{error && <div className="warning_text">{error}</div>}
+						{renderFields(formValues, {
+							isSubmitting: submitting,
+							error,
+							handleSubmit,
+						})}
 					</div>
-					<EditWrapper stringId="OTP_FORM.OTP_BUTTON" />
-					<Button
-						label={STRINGS['OTP_FORM.OTP_BUTTON']}
-						disabled={pristine || submitting || !valid}
-					/>
+					<div className="otp_form-info-text">
+						{STRINGS['OTP_FORM.OTP_FORM_INFO']}
+					</div>
+					<div className="otp_form-subnote-text">
+						{STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_1']}
+						{STRINGS['OTP_FORM.OTP_FORM_SUBNOTE_LINE_2']}
+					</div>
 				</form>
 			</div>
 		);

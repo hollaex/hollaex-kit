@@ -232,6 +232,7 @@ const nestedIcons = {
 	STAKING_SUCCESSFUL_MESSAGE: '/assets/stake/stake-unstake-light.png',
 	STAKING_PANEL_BACKGROUND: '/assets/stake/stake-unstake-light.png',
 	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
+	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
 };
 
 const icons = flatten(nestedIcons, options);
