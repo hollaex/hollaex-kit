@@ -124,10 +124,7 @@ const deletePlugin = async (req, res) => {
 				'restarting plugin process'
 			);
 
-			const { stopPlugin } = require('./index');
-
-			stopPlugin(plugin);
-			// process.exit();
+			process.exit();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -284,10 +281,7 @@ const postPlugin = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			const { startPlugin } = require('./index');
-
-			startPlugin(plugin);
-			// process.exit();
+			process.exit();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -715,10 +709,7 @@ const disablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			// process.exit();
-			const { stopPlugin } = require('./index');
-
-			stopPlugin(plugin);
+			process.exit();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -773,11 +764,7 @@ const enablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			//process.exit();
-
-			const { startPlugin } = require('./index');
-
-			startPlugin(plugin);
+			process.exit();
 		}
 	} catch (err) {
 		loggerPlugin.error(
