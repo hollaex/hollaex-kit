@@ -440,14 +440,12 @@ class OrderEntry extends Component {
 			increment_price,
 			min_price,
 			max_price,
-			coins,
 			pair_base,
 			pair_2,
 			pair_base_display,
 			pair_2_display,
 			balance = {},
 			marketPrice,
-			pair = '',
 			side = 'buy',
 		} = props;
 

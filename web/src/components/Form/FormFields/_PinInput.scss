@@ -1,0 +1,48 @@
+.mainContainer {
+	display: flex;
+	width: fit-content;
+	margin: auto;
+	position: relative;
+	justify-content: center;
+	align-items: center;
+	input {
+		width: 30px;
+		height: 30px;
+		border-radius: 0.5rem;
+		border: 1px solid $colors-border;
+		background: $app-background-color;
+		text-align: center;
+		font-size: large;
+	}
+	.masterInput {
+		position: absolute;
+		width: 100%;
+		top: 8px;
+		opacity: 0 !important;
+	}
+
+	.seperator {
+		width: 2rem;
+		border: 1px solid $colors-black;
+		background: $colors-black;
+	}
+}
+
+.active {
+	border: 1px solid $colors-black !important;
+}
+
+.error {
+	border: 1px solid red !important;
+}
+
+.warning_text {
+	text-align: center;
+}
+
+.group {
+	padding: 1rem;
+	& input {
+		margin: 0rem 0.25rem;
+	}
+}

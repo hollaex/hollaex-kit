@@ -159,6 +159,9 @@
 	"REFERRAL_SUCCESS": { "TITLE": "Request Sent", "BUTTON_TEXT": "Okay" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Enter your authentication code to continue",
+		"OTP_FORM_INFO": "Enter your 6-digit code to continue",
+		"OTP_FORM_SUBNOTE_LINE_1": "Your code is also known as a two-factor authenticator (2FA) or OTP code.",
+		"OTP_FORM_SUBNOTE_LINE_2": "If you've lost your code, please reach out to support.",
 		"OTP_LABEL": "OTP Code",
 		"OTP_PLACEHOLDER": "Enter the authentication code",
 		"OTP_TITLE": "Authenticator Code",
@@ -687,6 +690,7 @@
 		"COMPLETED_TOOLTIP": "Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.",
 		"CONNECT_ERROR": "Please check your wallet",
 		"INSTALL_METAMASK": "You must install Metamask into your browser: https://metamask.io/download.html",
+		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
 			"1": {

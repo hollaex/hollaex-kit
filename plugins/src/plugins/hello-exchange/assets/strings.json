@@ -1,6 +1,6 @@
 {
   "en": {
-    "title": "New Page",
-    "content": "{0} content"
+    "title": "Hello exchange",
+    "hello": "Hello {0}"
   }
 }
