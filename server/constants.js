@@ -350,6 +350,9 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 
 // SECURITY CONSTANTS START --------------------------------------------------
 
+exports.TOKEN_TIME_NORMAL = '24h';
+exports.TOKEN_TIME_LONG = '30d';
+
 exports.TOKEN_TYPES = {
 	HMAC: 'hmac'
 };

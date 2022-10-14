@@ -27,7 +27,7 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -296,15 +296,45 @@ const loginPost = (req, res) => {
 		password,
 		otp_code,
 		captcha,
-		service
+		service,
+		long_term
 	} = req.swagger.params.authentication.value;
-	let { email } = req.swagger.params.authentication.value;
+	let {
+		email
+	} = req.swagger.params.authentication.value;
+
 	const ip = req.headers['x-real-ip'];
 	const device = req.headers['user-agent'];
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
 	const time = new Date();
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/loginPost',
+		'email',
+		email,
+		'otp_code',
+		otp_code,
+		'captcha',
+		captcha,
+		'service',
+		service,
+		'long_term',
+		long_term,
+		'ip',
+		ip,
+		'device',
+		device,
+		'domain',
+		domain,
+		'origin',
+		origin,
+		'referer',
+		referer
+	);
+
 
 	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
@@ -394,7 +424,8 @@ const loginPost = (req, res) => {
 					user.is_support,
 					user.is_supervisor,
 					user.is_kyc,
-					user.is_communicator
+					user.is_communicator,
+					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
 			});
 		})
