@@ -3372,7 +3372,9 @@ paths:
               - bank_account
             properties:
               bank_account:
-                $ref: "#/definitions/BankArray"
+                type: array
+                items:
+                  type: object
       responses:
         200:
           description: Success
