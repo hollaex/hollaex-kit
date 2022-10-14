@@ -69,7 +69,11 @@ export const getFormat = (min = 0, fullFormat) => {
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat);
-	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
+	let _amount = amount;
+	if (min >= 1) {
+		_amount = math.subtract(amount, math.mod(amount, min));
+	}
+	return numbro(roundNumber(_amount, formatObj.digit)).format(formatObj.format);
 };
 
 export const formatToSimple = (amount = 0, min = 0, fullFormat = false) => {
