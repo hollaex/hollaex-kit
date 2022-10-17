@@ -17,6 +17,11 @@ $dropdown-option--padding: 0.25rem;
 
 .dropdown-option-open {
 	margin: 0px !important;
+	& img {
+		height: 1rem;
+		margin-right: 0.25rem;
+		margin-bottom: 0.25rem;
+	}
 }
 
 .disabled {

@@ -10,12 +10,16 @@ const LanguageSwitcher = ({ selected, valid_languages, toggle }) => {
 	const languageFormValue = generateLanguageFormValues(valid_languages).language
 		.options;
 	const onSwitch = (val) => {
-		setSelected(val);
+		toggle(val);
 	};
 
 	useEffect(() => {
-		if (toggle && _selected !== selected) toggle(_selected);
-	}, [_selected, toggle, selected]);
+		if (setSelected && _selected !== selected) setSelected(selected);
+	}, [setSelected, _selected, selected]);
+
+	useEffect(() => {
+		if (toggle) toggle(_selected);
+	}, [_selected, toggle]);
 	return (
 		<Select
 			value={_selected}
