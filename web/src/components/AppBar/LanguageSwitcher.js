@@ -1,7 +1,9 @@
 import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
+import { updateUserSettings } from 'actions/userAction';
 import { Select } from 'antd';
 import { generateLanguageFormValues } from 'containers/UserSettings/LanguageForm';
 import React, { useEffect, useState } from 'react';
+import { SubmissionError } from 'redux-form';
 const { Option } = Select;
 
 const LanguageSwitcher = ({ selected, valid_languages, toggle }) => {
@@ -10,12 +12,30 @@ const LanguageSwitcher = ({ selected, valid_languages, toggle }) => {
 	const languageFormValue = generateLanguageFormValues(valid_languages).language
 		.options;
 	const onSwitch = (val) => {
-		setSelected(val);
+		updateUserSettings({ language: val })
+			.then(({ data }) => {
+				if (data.settings) {
+					if (data.settings.language) {
+						toggle(data.settings.language);
+					}
+				}
+			})
+			.catch((err) => {
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
+				throw new SubmissionError({ _error });
+			});
 	};
 
 	useEffect(() => {
-		if (toggle && _selected !== selected) toggle(_selected);
-	}, [_selected, toggle, selected]);
+		if (setSelected && _selected !== selected) setSelected(selected);
+	}, [setSelected, _selected, selected]);
+
+	useEffect(() => {
+		if (toggle) toggle(_selected);
+	}, [_selected, toggle]);
 	return (
 		<Select
 			value={_selected}

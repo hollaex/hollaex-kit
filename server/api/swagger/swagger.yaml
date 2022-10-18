@@ -4686,6 +4686,8 @@ definitions:
         type: string
       service:
         type: string
+      long_term:
+        type: boolean
   ResetPassword:
     type: object
     required:
