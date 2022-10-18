@@ -63,7 +63,8 @@ const CheckAndConfirm = ({
 				<span className="bold">{currentNative?.toUpperCase()}</span> to{' '}
 				<span className="bold">{currentCoin.toUpperCase()}</span>?
 			</div>
-			<div className="button-wrapper mt-4">
+			<div className="switch-warn mt-3 mb-1">Asset switcher coming soon!</div>
+			<div className="button-wrapper">
 				<Button
 					type="primary"
 					className="green-btn"
@@ -74,6 +75,7 @@ const CheckAndConfirm = ({
 				<Button
 					type="primary"
 					className="green-btn"
+					disabled
 					onClick={() => handleConfirm('edit-limits')}
 				>
 					Confirm
