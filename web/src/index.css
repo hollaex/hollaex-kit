@@ -7718,6 +7718,10 @@ table th {
 
 .dropdown-option-open {
   margin: 0px !important; }
+  .dropdown-option-open img {
+    height: 1rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem; }
 
 .disabled .field-children {
   color: var(--labels_secondary-inactive-label-text-graphics); }
