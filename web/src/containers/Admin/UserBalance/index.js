@@ -22,7 +22,7 @@ const INITIAL_STATE = {
 class UserBalance extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		const isSupportUser = isSupport();
 		if (this.props.userData) {
 			this.handleBalance(this.props.userData, isSupportUser);

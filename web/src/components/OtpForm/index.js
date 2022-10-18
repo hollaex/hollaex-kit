@@ -10,7 +10,7 @@ class Form extends Component {
 		formValues: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.setFormValues();
 	}
 

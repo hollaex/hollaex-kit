@@ -25,7 +25,7 @@ class Wallet extends Component {
 		currency: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 

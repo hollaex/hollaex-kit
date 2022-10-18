@@ -41,7 +41,7 @@ class Withdraw extends Component {
 		selectedMethodData: 'address',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}

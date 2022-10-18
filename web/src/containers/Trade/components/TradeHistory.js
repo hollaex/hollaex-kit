@@ -27,7 +27,7 @@ class TradeHistory extends Component {
 		isOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.calculateHeaders();
 		if (this.props.data.length) {
 			this.generateData(this.props.data);
