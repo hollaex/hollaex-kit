@@ -448,18 +448,15 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		}
 		case SET_WEB_VIEWS: {
 			const allWebViews = [];
-			payload.enabledPlugins.forEach(
-				({ name, web_view = [], type: plugin_type }) => {
-					if (web_view && web_view.length) {
-						const named_web_views = web_view.map((viewObj) => ({
-							...viewObj,
-							name,
-							plugin_type,
-						}));
-						allWebViews.push(...named_web_views);
-					}
+			payload.enabledPlugins.forEach(({ name, web_view = [] }) => {
+				if (web_view && web_view.length) {
+					const named_web_views = web_view.map((viewObj) => ({
+						...viewObj,
+						name,
+					}));
+					allWebViews.push(...named_web_views);
 				}
-			);
+			});
 
 			const remoteRoutes = [];
 			allWebViews.forEach(({ meta, name }) => {
@@ -487,11 +484,9 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 
 			const CLUSTERED_WEB_VIEWS = {};
 			allWebViews.forEach((plugin) => {
-				const { target: staticTarget, meta, name, plugin_type } = plugin;
+				const { target: staticTarget, meta, name } = plugin;
 				let target;
-				if (plugin_type === 'app') {
-					target = generateDynamicTarget(name, 'app');
-				} else if (staticTarget) {
+				if (staticTarget) {
 					target = staticTarget;
 				} else if (meta) {
 					const {
@@ -499,10 +494,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						is_verification_tab,
 						is_wallet,
 						is_ultimate_fiat,
+						is_app,
 						type,
 						currency,
 					} = meta;
-					if (is_page) {
+
+					if (is_app) {
+						target = generateDynamicTarget(name, 'app', type);
+					} else if (is_page) {
 						target = generateDynamicTarget(name, 'page');
 					} else if (is_verification_tab && type) {
 						target = generateDynamicTarget(name, 'verification', type);

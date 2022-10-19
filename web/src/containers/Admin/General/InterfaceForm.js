@@ -131,184 +131,215 @@ const InterfaceForm = ({
 						</Checkbox>
 					</Item>
 
-					<div className={classnames({ 'disabled-area': isFiatUpgrade })}>
-						<Item name="ultimate_fiat" valuePropName="checked">
-							<Checkbox className="mt-3">
-								<div className="d-flex align-items-center">
-									<div className="feature-trade-box mr-1">
-										<ReactSVG
-											src={STATIC_ICONS.MPESA_ICON}
-											className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
-											beforeInjection={(svg) => {
-												svg.setAttribute('style', 'width: 60px');
-											}}
-										/>
-									</div>
-									<div className="ml-2 checkbox-txt">
-										Ultimate fiat
-										<div className="small-text">(Ultimate fiat ...)</div>
-									</div>
-								</div>
-							</Checkbox>
-						</Item>
-					</div>
-					{isFiatUpgrade ? (
-						<div className="d-flex">
-							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
-								<div>
-									<div className="font-weight-bold">
-										Make a good first impression
-									</div>
-									<div>Add a customizable landing page</div>
-								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.bitholla.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Button type="primary" className="w-100">
-											Upgrade Now
-										</Button>
-									</a>
-								</div>
-							</div>
-						</div>
-					) : null}
-					<div className={classnames({ 'disabled-area': isUpgrade })}>
-						<Item name="chat" valuePropName="checked">
-							<Checkbox className="mt-3">
-								<div className="d-flex align-items-center">
-									<div className="feature-trade-box mr-1">
-										<ReactSVG
-											src={STATIC_ICONS.CHAT_FEATURE_ICON}
-											className="feature-chat-icon"
-										/>
-									</div>
-									<div className="ml-2 checkbox-txt">
-										Chat system
-										<div className="d-flex justify-content-between">
-											<div className="small-text">
-												(Usernames, text and emoji communication)
-											</div>
-										</div>
-									</div>
-								</div>
-							</Checkbox>
-						</Item>
-					</div>
-					{isUpgrade ? (
-						<div className="d-flex">
-							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
-								<div>
-									<div className="font-weight-bold">
-										Start your crypto culture
-									</div>
-									<div>Allow your users to socialize through chat</div>
-								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.bitholla.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Button type="primary" className="w-100">
-											Upgrade Now
-										</Button>
-									</a>
-								</div>
-							</div>
-						</div>
-					) : null}
-					<div className={classnames({ 'disabled-area': isUpgrade })}>
-						<Item name="home_page" valuePropName="checked">
-							<Checkbox className="mt-3">
-								<div className="d-flex align-items-center">
-									<div className="feature-trade-box mr-1">
-										<ReactSVG
-											src={STATIC_ICONS.HOME_PAGE_FEATURE_ICON}
-											className="feature-chat-icon"
-										/>
-									</div>
-									<div className="ml-2 checkbox-txt">
-										Homepage
-										<div className="d-flex justify-content-between">
-											<div className="small-text">
-												(This will be the first page seen on your domain)
-											</div>
-										</div>
-									</div>
-								</div>
-							</Checkbox>
-						</Item>
-					</div>
-					<div className={classnames({ 'disabled-area': isUpgrade })}>
-						<Item name="apps" valuePropName="checked">
-							<Checkbox className="mt-3">
-								<div className="d-flex align-items-center">
-									<div className="feature-trade-box mr-1">
-										<ReactSVG
-											src={STATIC_ICONS.APPS_FEATURE_ICON}
-											className="feature-apps-icon"
-										/>
-									</div>
-									<div className="ml-2 checkbox-txt">
-										Apps
-										<div className="d-flex justify-content-between">
-											<div className="small-text">(Apps ...)</div>
-										</div>
-									</div>
-								</div>
-							</Checkbox>
-						</Item>
-					</div>
-					{isUpgrade && (
-						<div className="d-flex">
-							<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
-								<div>
-									<div className="font-weight-bold">
-										Start your crypto culture
-									</div>
-									<div>Allow your users to socialize through chat</div>
-								</div>
-								<div className="ml-5 button-wrapper">
-									<a
-										href="https://dash.bitholla.com/billing"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Button type="primary" className="w-100">
-											Upgrade Now
-										</Button>
-									</a>
-								</div>
-							</div>
-						</div>
-					)}
-				</div>
-				{isUpgrade ? (
 					<div className="d-flex">
-						<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
-							<div>
-								<div className="font-weight-bold">
-									Make a good first impression
-								</div>
-								<div>Add a customizable landing page</div>
-							</div>
-							<div className="ml-5 button-wrapper">
-								<a
-									href="https://dash.bitholla.com/billing"
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Button type="primary" className="w-100">
-										Upgrade Now
-									</Button>
-								</a>
-							</div>
+						<div
+							className={classnames('interface-item', {
+								'disabled-area': isFiatUpgrade,
+							})}
+						>
+							<Item name="ultimate_fiat" valuePropName="checked">
+								<Checkbox className="mt-3">
+									<div className="d-flex align-items-center">
+										<div className="feature-trade-box mr-1">
+											<ReactSVG
+												src={STATIC_ICONS.MPESA_ICON}
+												className="d-flex feature-icon justify-content-center mr-2 mt-3 ml-1 pl-1"
+												beforeInjection={(svg) => {
+													svg.setAttribute('style', 'width: 60px');
+												}}
+											/>
+										</div>
+										<div className="ml-2 checkbox-txt">
+											Fiat Controls
+											<div className="small-text">
+												(On & off ramping and tracking for fiat assets)
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Item>
 						</div>
+						{isFiatUpgrade && (
+							<div className="d-flex">
+								<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+									<div>
+										<div className="font-weight-bold">
+											Powerful fiat ramping
+										</div>
+										<div>Cash in and out with fiat ramps</div>
+									</div>
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.bitholla.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
+									</div>
+								</div>
+							</div>
+						)}
 					</div>
-				) : null}
+
+					<div className="d-flex">
+						<div
+							className={classnames('interface-item', {
+								'disabled-area': isUpgrade,
+							})}
+						>
+							<Item name="chat" valuePropName="checked">
+								<Checkbox className="mt-3">
+									<div className="d-flex align-items-center">
+										<div className="feature-trade-box mr-1">
+											<ReactSVG
+												src={STATIC_ICONS.CHAT_FEATURE_ICON}
+												className="feature-chat-icon"
+											/>
+										</div>
+										<div className="ml-2 checkbox-txt">
+											Chat system
+											<div className="d-flex justify-content-between">
+												<div className="small-text">
+													(Usernames, text and emoji communication)
+												</div>
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Item>
+						</div>
+						{isUpgrade && (
+							<div className="d-flex">
+								<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+									<div>
+										<div className="font-weight-bold">
+											Start your crypto culture
+										</div>
+										<div>Allow your users to socialize through chat</div>
+									</div>
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.bitholla.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+
+					<div className="d-flex">
+						<div
+							className={classnames('interface-item', {
+								'disabled-area': isUpgrade,
+							})}
+						>
+							<Item name="home_page" valuePropName="checked">
+								<Checkbox className="mt-3">
+									<div className="d-flex align-items-center">
+										<div className="feature-trade-box mr-1">
+											<ReactSVG
+												src={STATIC_ICONS.HOME_PAGE_FEATURE_ICON}
+												className="feature-chat-icon"
+											/>
+										</div>
+										<div className="ml-2 checkbox-txt">
+											Homepage
+											<div className="d-flex justify-content-between">
+												<div className="small-text">
+													(This will be the first page seen on your domain)
+												</div>
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Item>
+						</div>
+						{isUpgrade && (
+							<div className="d-flex">
+								<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+									<div>
+										<div className="font-weight-bold">
+											Make a good first impression
+										</div>
+										<div>Add a customizable landing page</div>
+									</div>
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.bitholla.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+
+					<div className="d-flex">
+						<div
+							className={classnames('interface-item', {
+								'disabled-area': isUpgrade,
+							})}
+						>
+							<Item name="apps" valuePropName="checked">
+								<Checkbox className="mt-3">
+									<div className="d-flex align-items-center">
+										<div className="feature-trade-box mr-1">
+											<ReactSVG
+												src={STATIC_ICONS.APPS_FEATURE_ICON}
+												className="feature-apps-icon"
+											/>
+										</div>
+										<div className="ml-2 checkbox-txt">
+											Apps
+											<div className="d-flex justify-content-between">
+												<div className="small-text">
+													(Give your users extra exchange applications)
+												</div>
+											</div>
+										</div>
+									</div>
+								</Checkbox>
+							</Item>
+						</div>
+						{isUpgrade && (
+							<div className="d-flex">
+								<div className="d-flex align-items-center justify-content-between upgrade-section mt-2 mb-5">
+									<div>
+										<div className="font-weight-bold">
+											First exchange app store
+										</div>
+										<div>Add more exchange functionality</div>
+									</div>
+									<div className="ml-5 button-wrapper">
+										<a
+											href="https://dash.bitholla.com/billing"
+											target="_blank"
+											rel="noopener noreferrer"
+										>
+											<Button type="primary" className="w-100">
+												Upgrade Now
+											</Button>
+										</a>
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
 				<div>
 					<FormButton
 						type="primary"

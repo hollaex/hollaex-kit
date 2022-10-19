@@ -208,7 +208,15 @@ const AssetsBlock = ({
 				<tbody>
 					{sortedSearchResults.map(
 						(
-							[key, { min, allow_deposit, allow_withdrawal, oraclePrice }],
+							[
+								key,
+								{
+									increment_unit,
+									allow_deposit,
+									allow_withdrawal,
+									oraclePrice,
+								},
+							],
 							index
 						) => {
 							const balanceValue = balance[`${key}_balance`];
@@ -227,10 +235,10 @@ const AssetsBlock = ({
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
-									? formatToCurrency(balanceValue, min)
+									? formatToCurrency(balanceValue, increment_unit)
 									: formatToCurrency(
 											calculateOraclePrice(balanceValue, oraclePrice),
-											baseCoin.min
+											baseCoin.increment_unit
 									  );
 							return (
 								<tr className="table-row table-bottom-border" key={key}>
@@ -268,12 +276,15 @@ const AssetsBlock = ({
 										)}
 									</td>
 									<td className="td-amount">
-										{sortedSearchResults && baseCoin && loading ? (
+										{sortedSearchResults &&
+										baseCoin &&
+										loading &&
+										increment_unit ? (
 											<div className="d-flex">
 												<div className="mr-4">
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
-														formatToCurrency(balanceValue, min, true),
+														formatToCurrency(balanceValue, increment_unit),
 														display_name
 													)}
 												</div>

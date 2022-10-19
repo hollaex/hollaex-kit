@@ -95,6 +95,18 @@
         "WITHDRAWAL_COMPLETED": {
             "html": "<div><p> Bonjour ${name} </p><p>Votre demande de retrait de ${amount} ${currency} est traité.</p><p>Montant: ${amount} ${currency}<br />Frais: ${fee} ${currency}<br />Status: ${status}<br />Addresse: ${address}<br />Identité de la transaction: ${transaction_id}<br /><span id='network'>Réseau: ${network}</span><br /><ul>${explorers}</ul><p> Bien cordialement<br> ${api_name} team </p></div>",
             "title": "${currency} withdrawal completed"
+        },
+        "DOC_REJECTED": {
+            "html": "<div><p>Dear ${email} </p><p>Unfortunately, your uploaded KYC documents have been rejected.<br>The reasons for your documents being rejected are listed below.<br></p><div><ul>${doc_information}</ul></div><p>If you feel these reasons are invalid, please feel free to reply to this email.<br>Otherwise, please reupload valid documents in order to verify your identity.</p><p> Regards<br> ${api_name} team </p</div>",
+            "title": "KYC Documents Rejected"
+        },
+        "DOC_VERIFIED": {
+            "html": "<div><p>Dear ${email} </p><p>Your uploaded KYC documents have been approved.<br>You now have access to all exchange features that require identity verification.</p><ul>${doc_information}</ul><p>To view your approved documents, visit your <a href=\"${link}\" target=\"_blank\">Verification page</a></p><p> Regards<br> ${api_name} team </p></div>",
+            "title": "KYC Documents Approved"
+        },
+        "CONFIRM_EMAIL": {
+            "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
+            "title": "Security Verification"
         }
     }
 }

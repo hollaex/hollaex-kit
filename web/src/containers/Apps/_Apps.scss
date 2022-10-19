@@ -10,10 +10,17 @@
 	.ant-input {
 		color: $colors-main-black;
 	}
+	.ant-input-clear-icon {
+		color: $colors-black;
+	}
 }
 
 .action_notification-wrapper {
 	&.remove-action {
 		position: relative !important;
 	}
+}
+
+.apps-table-check {
+	width: 2rem !important;
 }

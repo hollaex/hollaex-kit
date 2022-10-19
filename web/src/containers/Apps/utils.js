@@ -3,7 +3,11 @@ import { createSelector } from 'reselect';
 const getPlugins = (state) => state.app.plugins;
 const getUserApps = (state) => state.user.settings.apps || [];
 export const appsSelector = createSelector([getPlugins], (plugins) =>
-	plugins.filter((type) => type === 'app')
+	plugins.filter(
+		({ web_view }) =>
+			web_view &&
+			web_view.some(({ meta: { is_app, type } }) => is_app && type === 'kit')
+	)
 );
 
 export const userAppsSelector = createSelector(

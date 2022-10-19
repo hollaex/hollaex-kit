@@ -23,16 +23,16 @@ class ListUsers extends Component {
 	}
 
 	componentWillMount() {
-		this.requestUsers(this.state.page, this.state.limit);
+		this.requestUsers(this.state.page, this.state.limit, this.props.type);
 	}
 
-	requestUsers = (page = 1, limit = 50) => {
+	requestUsers = (page = 1, limit = 50, pending_type = 'id') => {
 		this.setState({
 			loading: true,
 			error: '',
 		});
 
-		requestUsers({ pending: true, page, limit })
+		requestUsers({ pending: true, page, limit, pending_type })
 			.then((response) => {
 				this.setState({
 					users:

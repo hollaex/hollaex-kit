@@ -69,7 +69,7 @@ And ('Show pop up when order has partially filled is off',()=>{
 
 And ('All Audio cues is off',()=>{
     cy.get('.tab_controller-tabs > :nth-child(2) > div').as('Interface').click()
-    cy.contains('Play Audio Cue').click()
+    cy.contains('Audio Cues').click()
     cy.get('.toggle-wrapper-all > :nth-child(1) > :nth-child(1) > .field-content > .field-children > .justify-content-between > .toggle_button-wrapper > .toggle-content > .toggle-action_button')
    .invoke('text')
       .then(text => {
@@ -124,8 +124,8 @@ And ('chatbox is off',()=>{
 And ('XHTT spread in market is less than 0.001',()=>{
     cy.get('.top-box-menu').click()
     cy.contains('Pro trade').click()
-    cy.contains('XHTT/USDT').click()
-    cy.get('.app_bar-currency-txt').should('have.text', 'XHTT/USDT:')
+    cy.contains('XHT/USDT').click()
+    cy.get('.app_bar-currency-txt').should('have.text', 'XHT/USDT:')
     cy.get('.trade_orderbook-asks > :nth-child(1) > .d-flex > .trade_orderbook-cell-price')
     .should('be.visible')
     cy.log('check lowest aks exist and click on the price will send the price')

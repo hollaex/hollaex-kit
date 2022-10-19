@@ -104,6 +104,9 @@ export const constructSettings = (state = {}, settings) => {
 	if (settings.language) {
 		settingsData.language = settings.language;
 	}
+	if (settings.app) {
+		settingsData.apps = settings.app;
+	}
 
 	// ToDo: need to these code after end point update.
 	if (

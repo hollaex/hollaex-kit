@@ -5,13 +5,14 @@ import { Input } from 'antd';
 import debounce from 'lodash.debounce';
 import { SearchOutlined } from '@ant-design/icons';
 import { updateUserSettings, setUserData } from 'actions/userAction';
+import { setSnackNotification } from 'actions/appActions';
 import { IconTitle, EditWrapper, Table, Button, Image } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { unique } from 'utils/data';
 import { isEnabled, appsSelector } from './utils';
 
-const generateHeaders = (addApp, isAdded) => {
+const generateHeaders = (addApp, isAdded, ICONS) => {
 	return [
 		{
 			stringId: 'USER_APPS.TABLE.APP_NAME',
@@ -26,9 +27,13 @@ const generateHeaders = (addApp, isAdded) => {
 		{
 			label: '',
 			renderCell: ({ name }, key) => (
-				<td key={`${key}-${name}-app`} className="text-align-right">
+				<td key={`${key}-${name}-app`} className="text-align-center">
 					{isAdded(name) ? (
-						<Image icon={''} iconId={''} wrapperClassName={''} />
+						<Image
+							icon={ICONS['GREEN_CHECK']}
+							iconId={'GREEN_CHECK'}
+							wrapperClassName={'apps-table-check'}
+						/>
 					) : (
 						<Button
 							label={STRINGS['USER_APPS.TABLE.ADD']}
@@ -56,6 +61,8 @@ const All = ({
 	apps,
 	settings: { apps: user_apps = [] },
 	setUserData,
+	setActiveTab,
+	setSnackNotification,
 }) => {
 	const [search, setSearch] = useState();
 	const [data, setData] = useState(apps);
@@ -63,13 +70,30 @@ const All = ({
 	const inputRef = useRef(null);
 
 	const addApp = (name) => {
-		// send add app request and show toast notification
 		const settings = {
-			apps: unique([...user_apps, name]),
+			app: unique([...user_apps, name]),
 		};
+
 		updateUserSettings(settings)
-			.then(({ data }) => setUserData(data))
-			.catch((err) => console.log('error'));
+			.then(({ data }) => {
+				setUserData(data);
+				setActiveTab(1);
+				setSnackNotification({
+					content: STRINGS['USER_APPS.ALL_APPS.ADD.SUCCESSFUL'],
+				});
+				if (window) {
+					window.scroll({
+						top: 0,
+						left: 0,
+						behavior: 'smooth',
+					});
+				}
+			})
+			.catch(() => {
+				setSnackNotification({
+					content: STRINGS['USER_APPS.ALL_APPS.ADD.FAILED'],
+				});
+			});
 	};
 
 	const isAdded = (name) => {
@@ -110,13 +134,14 @@ const All = ({
 						textType="title"
 						iconPath={ICONS['APPS_ALL']}
 					/>
-					<div>
+					<div className="py-4">
 						<EditWrapper stringId="USER_APPS.ALL_APPS.SUBTITLE">
 							{STRINGS['USER_APPS.ALL_APPS.SUBTITLE']}
 						</EditWrapper>
 					</div>
 					<div>
 						<Input
+							allowClear
 							prefix={<SearchOutlined className="secondary-text" />}
 							placeholder={STRINGS['USER_APPS.ALL_APPS.SEARCH_PLACEHOLDER']}
 							value={search}
@@ -132,9 +157,8 @@ const All = ({
 					<Table
 						showHeaderNoData={true}
 						rowClassName="pt-2 pb-2"
-						headers={generateHeaders(addApp, isAdded)}
-						count={data.length}
-						pageSize={data.length}
+						headers={generateHeaders(addApp, isAdded, ICONS)}
+						showAll={true}
 						data={data}
 						rowKey={({ name }) => name}
 						displayPaginator={false}
@@ -159,6 +183,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
 	setUserData: bindActionCreators(setUserData, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(All));

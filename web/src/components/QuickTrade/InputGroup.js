@@ -64,7 +64,7 @@ class InputGroup extends React.PureComponent {
 		} = this.props;
 		const keydata = pair.split('-');
 		let error = '';
-		if (!value) {
+		if (!value || (value && !parseFloat(value))) {
 			error = '';
 		} else if (
 			keydata[0] === selectValue &&
@@ -159,7 +159,7 @@ class InputGroup extends React.PureComponent {
 							placeholder={STRINGS['AMOUNT']}
 							style={isOpen ? { display: 'none' } : { width: '67%' }}
 							className="input-group__input"
-							value={`${inputValue}`}
+							value={inputValue || ''}
 							onChange={this.onChangeEvent}
 							bordered={false}
 							step={limits.MIN}

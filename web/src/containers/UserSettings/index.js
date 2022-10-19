@@ -95,7 +95,7 @@ class UserSettings extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		if (nextProps.activeLanguage !== this.props.activeLanguage) {
-			this.updateTabs(this.props, this.state.activeTab);
+			this.updateTabs(nextProps, this.state.activeTab);
 		}
 		if (
 			JSON.stringify(this.props.settings) !== JSON.stringify(nextProps.settings)
@@ -161,7 +161,10 @@ class UserSettings extends Component {
 		});
 	};
 
-	updateTabs = ({ username = '', settings = {}, coins = {} }, activeTab) => {
+	updateTabs = (
+		{ activeLanguage = '', username = '', settings = {}, coins = {} },
+		activeTab
+	) => {
 		const {
 			constants = {},
 			icons: ICONS,
@@ -269,7 +272,7 @@ class UserSettings extends Component {
 							this.onSubmitSettings(formProps, 'language')
 						}
 						formFields={languageFormValue}
-						initialValues={{ language: settings.language }}
+						initialValues={{ language: activeLanguage }}
 						ICONS={ICONS}
 					/>
 				),
@@ -400,8 +403,9 @@ class UserSettings extends Component {
 			.then(({ data }) => {
 				this.props.setUserData(data);
 				if (data.settings) {
-					if (data.settings.language)
+					if (data.settings.language) {
 						this.props.changeLanguage(data.settings.language);
+					}
 					if (data.settings.interface && data.settings.interface.theme) {
 						this.props.changeTheme(data.settings.interface.theme);
 						localStorage.setItem('theme', data.settings.interface.theme);

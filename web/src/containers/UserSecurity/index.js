@@ -52,6 +52,7 @@ class UserVerification extends Component {
 		activeTab: 0,
 		jumpToPage: 0,
 		freeze: false,
+		error: '',
 		updatedPassword: {},
 	};
 
@@ -101,10 +102,16 @@ class UserVerification extends Component {
 			prevProps.user.otp.requesting !== this.props.user.otp.requesting ||
 			prevProps.user.otp.activated !== this.props.user.otp.activated ||
 			prevProps.user.otp_enabled !== this.props.user.otp_enabled ||
+			prevState.error !== this.state.error ||
 			prevProps.activeLanguage !== this.props.activeLanguage ||
 			this.state.activeTab !== prevState.activeTab
 		) {
 			this.calculateTabs(this.props.user, this.state.activeTab);
+		}
+		if (this.state.activeTab !== prevState.activeTab) {
+			this.setState({
+				error: undefined,
+			});
 		}
 		if (
 			JSON.stringify(prevState.activeTab) !==
@@ -236,6 +243,7 @@ class UserVerification extends Component {
 				),
 				content: activeTab === 1 && (
 					<ChangePasswordForm
+						_error={this.state.error}
 						onSubmit={this.onSubmitChangePassword}
 						formFields={formValues}
 					/>
@@ -381,16 +389,21 @@ class UserVerification extends Component {
 			});
 	};
 
+	setOtpModalsState = (values) => {
+		this.setState({
+			dialogIsOpen: true,
+			modalText: undefined,
+			updatedPassword: {
+				old_password: values.old_password,
+				new_password: values.new_password,
+			},
+		});
+	};
+
 	onSubmitChangePassword = (values) => {
 		const { otp_enabled } = this.props.user;
 		if (otp_enabled) {
-			this.setState({
-				dialogIsOpen: true,
-				updatedPassword: {
-					old_password: values.old_password,
-					new_password: values.new_password,
-				},
-			});
+			this.setOtpModalsState(values);
 		} else {
 			return resetPassword({
 				old_password: values.old_password,
@@ -448,6 +461,12 @@ class UserVerification extends Component {
 							: err.message;
 					if (!_error) {
 						message.error(STRINGS['CHANGE_PASSWORD_FAILED']);
+					}
+					if (_error !== 'Invalid OTP Code') {
+						this.setState({
+							dialogIsOpen: false,
+							error: _error,
+						});
 					}
 					throw new SubmissionError({ _error });
 				});

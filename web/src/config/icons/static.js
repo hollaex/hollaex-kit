@@ -42,6 +42,7 @@ const icons = {
 	ADMIN_PLUGINS: '/assets/images/plugins.svg',
 	ADMIN_TIERS: '/assets/images/tiers.svg',
 	ADMIN_ROLES: '/assets/images/roles.svg',
+	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
 	ADMIN_CUSTOMIZE: '/assets/images/customize.svg',
 	ADMIN_MISSING_GO_BACK: '/assets/images/missing-page-go-back-to-dash.svg',
 	HELP_DESCRIPTION_POPUP: '/assets/images/help-popup-description.png',
