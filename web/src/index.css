@@ -1444,7 +1444,8 @@ table th {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--base_wallet-sidebar-and-popup);
+  background-color: transparent;
+  border-bottom: 1px var(--calculated_secondary-border) solid;
   opacity: 0.8; }
   .html_card_section .card-section-wrapper {
     display: flex;

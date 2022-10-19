@@ -139,11 +139,12 @@ class Wallet extends Component {
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {}
 	) => {
-		const { min, display_name } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_unit, display_name } =
+			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			display_name,
-			formatToCurrency(total, min)
+			formatToCurrency(total, increment_unit)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
 

@@ -4,15 +4,10 @@ import { isMobile } from 'react-device-detect';
 
 import renderFields from 'components/Form/factoryFields';
 import { Button, EditWrapper } from 'components';
-import { required, password } from 'components/Form/validations';
 import STRINGS from 'config/localizedStrings';
 
-const validate = (values) => {
+const validate = () => {
 	const errors = {};
-	if (values.new_password !== values.new_password_confirm) {
-		errors.new_password_confirm = STRINGS['VALIDATIONS.PASSWORDS_DONT_MATCH'];
-	}
-
 	return errors;
 };
 
@@ -21,7 +16,6 @@ export const generateFormValues = () => ({
 		type: 'password',
 		stringId:
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.placeholder',
-		validate: [required, password],
 		label:
 			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.CURRENT_PASSWORD.label'],
 		placeholder:
@@ -35,7 +29,6 @@ export const generateFormValues = () => ({
 		type: 'password',
 		stringId:
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder',
-		validate: [required, password],
 		label: STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.label'],
 		placeholder:
 			STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD.placeholder'],
@@ -46,7 +39,6 @@ export const generateFormValues = () => ({
 		type: 'password',
 		stringId:
 			'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label,ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.placeholder',
-		validate: [required],
 		label:
 			STRINGS[
 				'ACCOUNT_SECURITY.CHANGE_PASSWORD.FORM.NEW_PASSWORD_REPEAT.label'
@@ -65,6 +57,7 @@ const Form = ({
 	submitting,
 	pristine,
 	error,
+	_error,
 	valid,
 	initialValues,
 	formFields,
@@ -72,6 +65,7 @@ const Form = ({
 	<form onSubmit={handleSubmit} className="change-password-form-wrapper">
 		<div className="change-password-form">
 			{renderFields(formFields)}
+			{_error && <div className="warning_text">{_error}</div>}
 			{error && <div className="warning_text">{error}</div>}
 		</div>
 		<div className="d-flex justify-content-center mb-4">
