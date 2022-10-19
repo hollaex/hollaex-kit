@@ -1,0 +1,112 @@
+{
+	"mn": {
+		"LOGIN": {
+			"html": "<div> <p> Эрхэм хүндэт ${name} </p> <p> Та дараах хаягнаас нэвтэрч орсон байна </p> <div> <div>Цаг: ${time}</div> <div>Улс: ${country}</div> <div>IP Хаяг: ${ip}</div> </div> <p> Хэрэв энэ нь та биш байсан бол нууц үгээ сольж, давхар баталгаажуулалтыг тохируулаад бидэнтэй шууд холбогдоно уу. </p> <p> Хүндэтгэсэн<br> ${api_name} team </p> </div>",
+			"title": "Нэвтрэх"
+		},
+		"SIGNUP": {
+			"html": "<div> <p> Эрхэм хүндэт ${name} </p> <p> Та доорх товчийг дарж имэйл хаягаа баталгаажуулах шаардлагатай.<br> Хэрэв танд асуух зүйл байвал энэ имэйлд хариу бичих замаар бидэнтэй холбоо барина уу.</p><p>Доорх товчийг дарж бүртгэлээ үргэлжлүүлнэ үү.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Баталгаажуулах</Button></a></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Бүртгүүлэх"
+		},
+		"WELCOME": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>${api_name} бүртгүүлсэнд баярлалаа.</p><p>Арилжааэд оролцохын тулд та эхлээд криптовалютын орлого хийх эсвэл дансандаа мөнгө байршуулах ёстой. Та өөрийн <a href=${link_account} target=_blank>account</a> руу нэвтэрч<a href=${link_deposit} target=_blank>deposit</a> хуудас руу орно уу.,</p><p>Хэрэв танд асуулт, тусламж хэрэгтэй байвал энэ имэйлд хариу бичих замаар бидэнтэй холбоо барина уу.</p><p> Хүндэтгэсэн<br> ${api_name} </p></div>",
+			"title": "Welcome"
+		},
+		"RESET_PASSWORD": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Та нууц үгээ өөрчлөх хүсэлт явуулсан байна.<br />Нууц үгээ өөрчлөхийн тулд доорх линк дээр дарна уу.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Нууц үг шинэчлэх</Button></a></div><p>Хэрэв та энэ хүсэлтийг санамсаргүйгээр хийсэн бол ямар ч үйлдэл хийх шаардлагагүй; таны бүртгэлд ямар нэг өөрчлөлт орохгүй болно.</p><p>Request initiated from: ${ip}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Нууц үг өөрчлөх хүсэлт"
+		},
+		"ACCOUNT_VERIFY": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Баяр хүргэе. Таны бүртгэл ажилттай баталгаажлаа.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Арилжаа хийх</Button></a></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Бүртгэл баталгаажлаа"
+		},
+		"ACCOUNT_UPGRADE": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Баяр хүргэе. Таны бүртгэлийн ${tier} түвшин болж дээшиллээ. Таны шимтгэл багасч, зарлага гаргах хэмжээ ихэслээ.</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Арилжаанд оролцох</Button></a></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Бүртгэлийн түвшин дээшиллээ"
+		},
+		"DEPOSIT_CANCEL": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Бид таны ${date} өдөр ${amount} дүнтэй ${currency} -р хийсэн орлогын гүйлгээг батлах боломжгүй байна. Тиймээс гүйлгээс систем автоматаар цуцалсан болно.</p><p>Танд асуух зүйл байвал, энэ и-мэйлд хариу бичнэ үү</p><p>Гүйлгээний №: ${txid}<br />Дүн: ${amount}<br />Төлөв: Татгалзсан</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} орлого цуцлагдлаа"
+		},
+		"DEPOSIT_PENDING": {
+			"html": "<div><div><p> Эрхэм хүндэт ${name} </p><p> Таны ${amount} ${currency} орлого, таны ${api_name} хэтэвчинд орохоор хүлээгдэж байна. Гүйлгээ баталгаажиж таны хэтэвчинд ортол түр хүлээнэ үү.</p><p>Дүн: ${amount} ${currency}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Сүлжээ: ${network}</span><br />Шимтгэл: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} орлого хүлээгдэж байна"
+		},
+		"DEPOSIT_COMPLETED": {
+			"html": "<div><div><p> Эрхэм хүндэт ${name} </p><p> Таны ${amount} ${currency} орлого амжилттай хийгдэж, таны ${currency} хэтэвчинд орлоо.</p><p>Дүн: ${amount} ${currency}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Сүлжээ: ${network}</span><br />Шимтгэл: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} Орлого амжилттай"
+		},
+		"WITHDRAWAL_PENDING": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Та ${amount} ${currency} зарлагын хүсэлт илгээсэн байна. Таны зарлагын хүсэлт тун удахгүй шийдэгдэх болно.</p><p>Дүн: ${amount} ${currency}<br />Шимтгэл: ${fee} ${fee_coin}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Сүлжээ: ${network}</span><br /><ul>${explorers}</ul><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} зарлага хүлээгдэж байна"
+		},
+		"WITHDRAWAL_COMPLETED": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны ${amount} ${currency} зарлагын хүсэлт амжилттай биеллээ.</p><p>Дүн: ${amount} ${currency}<br />Шимтгэл: ${fee} ${fee_coin}<br />Төлөв: ${status}<br />Хаяг: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Сүлжээ: ${network}</span><br /><ul>${explorers}</ul><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} зарлага амжилттай"
+		},
+		"WITHDRAWAL_CANCEL": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Бид таны ${date} өдөр хийсэн ${amount} ${currency} хийсэн зарлагын хүсэлтийг баталгаажуулах боломжгүй байна. Таны зарлага цуцлагдаж, зарлагын дүн  ${api_name} хэтэвч рүү буцаж орсон болно.</p><p>Танд тусламж хэрэгтэй байвал бидэнд и-мэйл илгээнэ үү</p><p>Гүйлгээ №: ${txid}<br />Дүн: ${amount}<br />Төлөв: Татгалзсан</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} зарлага татгалзлаа"
+		},
+		"WITHDRAWAL_REQUEST": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Та ${amount} ${currency} -г ${address} хаяг руу зарлагадахаар хүсэлт илгээсэн байна<br /><br />Дүн: ${amount} ${currency}<br />Шимтгэл: ${fee} ${fee_coin}<br />Хаяг: ${address}<br /><span id=\"network\">Сүлжээ: ${network}</span><br /><br />Энэ зарлагыг баталгаажуулахын тулд доорх линк дээр дарна уу.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Баталгаажуулах</Button></a></div><p>Хэрэв та энэ хүсэлтийг санамсаргүйгээр хийсэн бол ямар ч үйлдэл хийх шаардлагагүй; таны бүртгэлд ямар нэг өөрчлөлт орохгүй болно.</p><p>Хүсэлт гаргасан хаяг: ${ip}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${currency} Зарлагын хүсэлт"
+		},
+		"USER_VERIFICATION": {
+			"html": "<div><h3>Баталгаажуулалт шаардлагатай байна</h3><div> \"${email}\" хаягтай хэрэглэгч бичиг баримтаа баталгаажуулахаар илгээсэн байна. Бичиг баримтыг нь шалгана уу.</div></div>",
+			"title": "Хэрэглэгч баталгаажуулалт"
+		},
+		"SUSPICIOUS_DEPOSIT": {
+			"html": "<div><h3>Сэжигтэй гүйлгээ</h3><div> ${email} и-мэйл хаягтай хэрэглэгч ${currency} сэжигтэй орлого хүлээн авлаа.<br />Transaction ID: ${txid}<h4>Transaction data:</h4><div>${data}</div></div></div>",
+			"title": "Сэжигтэй гүйлгээ"
+		},
+		"INVALID_ADDRESS": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны ${amount} ${currency} зарлага буруу хаяг руу илгээгдсэн байсан тул цуцлагдлаа.</p><p>Хаяг: ${address}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Зарлагын хаяг буруу байна"
+		},
+		"USER_DEACTIVATED": {
+			"html": "<div><p>Таны ${email} идэвхигүй боллоо. Таны и-мэйл дахин хүсэлт гаргах хүртэл ашиглах боломжгүй болно.</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${type} аккаунт"
+		},
+		"USER_ACTIVATED": {
+			"html": "<div><p>Таны ${email} баталгаажлаа. Та нэвтэрч орон бүртгэлээ үргэлжлүүлнэ үү.</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "${type} аккаунт"
+		},
+		"DISCOUNT_UPDATE": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны хөнгөлөлтийн дүн ${rate}% боллоо. Энэ хөнгөлөлт нь таны захиалгын хураамжид хамаарна.</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Хөнгөлөлтийн дүн өөрчлөгдлөө"
+		},
+		"BANK_VERIFIED": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны банкны дансыг баталгаажууллаа. Та одоо орлого, зарлага гаргах боломжтой боллоо</p><div><strong>Баталгаажсан банкны данс:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">Баталгаажсан банкны дансаа харахын тулд баталгаажуулалтын хэсэг рүү очно уу</a></p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Банк баталгаажлаа"
+		},
+		"USER_ID_VERIFICATION_REJECT": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны бичиг баримтыг шалгаж үзээд баталгаажуулах боломжгүй байна. Та доорх мессежийн дагуу дахин илгээнэ үү:</p><p>Шалтгаан: ${message}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Үнэмлэх баталгаажуулалт амжилтгүй"
+		},
+		"USER_BANK_VERIFICATION_REJECT": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Таны банкны данс бүртгүүлэх хүсэлтийг шалгаж үзээд баталгаажуулах боломжгүй байна. Шалгааныг дор бичив:</p><p>Шалтгаан: ${message}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Банкны мэдээлэл баталгаажуулалт амжилтгүй"
+		},
+		"PASSWORD_CHANGED": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Энэ имэйл таныг саяхан өөрийн акаунтын нууц үгээ өөрчилсөн болохыг баталгаажуулж байна. Цаашид арга хэмжээ авах шаардлагагүй.<br />Хэрэв та энэ өөрчлөлтийг хийгээгүй бол бидэнтэй шууд холбогдоно уу.<br /></p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Нууц үг өөрчлөгдлөө"
+		},
+		"CHANGE_PASSWORD": {
+			"html": "<div><p> Эрхэм хүндэт ${name} </p><p>Та нууц үг солих хүсэлт гаргасан байна.<br />Нууц үгээ өөрчилсныг баталгаажуулахын тулд доор линк дээр дарна уу.<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Нууц үг өөрчилснийг батлах</Button></a></div><p>Хэрэв энэ хүсэлтийг алдаатай хийсэн бол та энэ и-мэйлийг тоохгүй байж болно. Таны бүртгэлд ямар нэг өөрчлөлт орохгүй</p><p>Request initiated from: ${ip}</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Нууц үг өөрчлөх баталгаажуулалт"
+		},
+		"DOC_REJECTED": {
+			"html": "<div><p>Эрхэм хүндэт ${email} </p><p>Харамсалтай нь таны илгээсэн KYC баримт бичгүүдийг баталгаажуулах боломжгүй байна.<br>Таны баримт бичгүүдээс татгалзсан шалтгааныг доор жагсаав.<br></p><div><ul>${doc_information}</ul></div><p>Хэрэв та эдгээр шалтгааныг буруу гэж үзвэл энэ имэйлд хариу илгээнэ үү.<br>Эсвэл, бичиг баримтаа шаардлагын дагуу дахин илгээнэ үү.</p><p> Хүндэтгэсэн<br> ${api_name} team </p</div>",
+			"title": "KYC бичиг баримт татаглзлаа"
+		},
+		"DOC_VERIFIED": {
+			"html": "<div><p>Эрхэм хүндэт ${email} </p><p>Таны бичиг баримт баталгаажсан байна.<br>Та одоо баталгаажуулалт шаардсан бүх хэсэгт хандах боломжтой.</p><ul>${doc_information}</ul><p>Та баталгаажуулсан бичиг баримтаа шалгахыг хүсвэл <a href=\"${link}\" target=\"_blank\">Баталгаажуулах хуудас</a> руу орно уу.</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "KYC бичиг баримт баталгаажлаа"
+		},
+		"CONFIRM_EMAIL": {
+			"html": "<div><p><p>Эрхэм хүндэт ${name} </p></p><p>Та өөрийн бүртгэлийн аюулгүй байдалтай холбоотой хүсэлт гаргасан байна. Үйлдлийг баталгаажуулахын тулд та доорх кодыг оруулаарай.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>Хэрэв та энэ хүсэлтийг гаргаагүй бол энэ тухай нэн даруй мэдэгдэж, нэвтрэх мэдээллээ аль болох хурдан солино уу.</p><p> Хүндэтгэсэн<br> ${api_name} team </p></div>",
+			"title": "Аюулгүй байдлын баталгаажуулалт"
+		}
+	}
+}

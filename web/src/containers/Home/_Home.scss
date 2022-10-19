@@ -366,7 +366,8 @@ $trade-tab--arrow-size: 0.4rem;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: $app-sidebar-background;
+	background-color: transparent;
+	border-bottom: 1px $colors-border solid;
 	opacity: 0.8;
 	.card-section-wrapper {
 		display: flex;

@@ -97,6 +97,11 @@ $padding: 0.25rem;
 }
 
 .size-slider {
+	.ant-slider {
+		* {
+			transition: 0.1s;
+		}
+	}
 	.ant-slider-with-marks {
 		margin-bottom: 10px;
 	}

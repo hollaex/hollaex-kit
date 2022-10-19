@@ -448,6 +448,7 @@ const getAllUsersAdmin = (opts = {
 	id: null,
 	search: null,
 	pending: null,
+	pending_type: null,
 	limit: null,
 	page: null,
 	order_by: null,
@@ -499,19 +500,30 @@ const getAllUsersAdmin = (opts = {
 			};
 		}
 	} else if (isBoolean(opts.pending) && opts.pending) {
+
+		let pendingQuery = [];
+		// users that have a pending id waiting for admin to confirm
+		const pendingId = {
+			id_data: {
+				status: 1
+			}
+		};
+		// users that have a pending bank waiting for admin to confirm
+		const pendingBank = getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'');
+
+		if (opts.pending_type) {
+			if (opts.pending_type === 'id') {
+				pendingQuery.push(pendingId);
+			} else if (opts.pending_type === 'bank') {
+				pendingQuery.push(pendingBank);
+			}
+		} else {
+			pendingQuery = [pendingId, pendingBank];
+		}
+
 		query = {
 			where: {
-				$or: [
-					getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''),
-					{
-						id_data: {
-							status: 1
-						}
-					},
-					{
-						activated: false
-					}
-				]
+				[Op.or]: pendingQuery
 			},
 			attributes: [
 				'id',

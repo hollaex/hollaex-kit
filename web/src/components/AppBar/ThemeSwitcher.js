@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import classnames from 'classnames';
 import Image from 'components/Image';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Select } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
 const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const handleClick = () => {
 		const theme =
 			options[0].value === selected ? options[1].value : options[0].value;
@@ -72,12 +73,13 @@ const ThemeSwitcher = ({ selected, options = [], toggle, icons: ICONS }) => {
 						size="small"
 						onSelect={toggle}
 						bordered={false}
-						suffixIcon={<CaretDownOutlined />}
+						onClick={() => setIsOpen((prev) => !prev)}
+						suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
 						className="custom-select-input-style appbar elevated"
 						dropdownClassName="custom-select-style select-option-wrapper"
 					>
 						{options.map(({ value }) => (
-							<Option value={value} key={value}>
+							<Option value={value} key={value} className="capitalize">
 								{value}
 							</Option>
 						))}

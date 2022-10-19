@@ -1,5 +1,5 @@
 import React from 'react';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const UpgradeWarning = () => (
 	<div className="warning_text">

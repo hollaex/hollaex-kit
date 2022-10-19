@@ -96,6 +96,10 @@ table th {
 	color: $link !important;
 }
 
+.blue-link:hover {
+	opacity: 0.5;
+}
+
 .arrow {
 	border: solid grey;
 	border-width: 0 3px 3px 0;
@@ -216,11 +220,40 @@ table th {
 	}
 }
 
+.filter-option {
+	gap: 1rem;
+
+	.coin-icons {
+		width: 13px !important;
+		height: 13px !important;
+	}
+
+	.currency-ball-image-wrapper {
+		width: 13px;
+		height: 13px;
+	}
+}
+
+.filter-dropdown {
+	width: 150px !important;
+}
+
 .custom-select-input-style {
 	&.no-border {
 		.ant-select-selector {
 			border: none !important;
 		}
+	}
+
+	.coin-icons {
+		width: 16px;
+		height: 16px;
+	}
+
+	.currency-ball-image-wrapper {
+		width: 16px;
+		height: 16px;
+		margin-right: 15px;
 	}
 
 	.ant-select-selector {
@@ -336,4 +369,8 @@ table th {
 
 .inline-flex {
 	display: inline-flex !important;
+}
+
+.no-wrap {
+	white-space: nowrap !important;
 }

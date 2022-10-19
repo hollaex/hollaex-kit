@@ -1,8 +1,8 @@
 import axios from 'axios';
 import ICONS from 'config/icons';
 import { requestAuthenticated } from 'utils';
-import STRINGS from '../config/localizedStrings';
-import { playBackgroundAudioNotification } from '../utils/utils';
+import STRINGS from 'config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
 
 // Set orders from websocket
 export function setUserOrders(orders) {

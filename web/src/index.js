@@ -75,6 +75,12 @@ import {
 } from 'utils/plugin';
 import { drawFavIcon } from 'helpers/vanilla';
 import { setupManifest } from 'helpers/manifest';
+import {
+	hideBooting,
+	showBooting,
+	setLoadingImage,
+	setLoadingStyle,
+} from 'helpers/boot';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -191,22 +197,33 @@ const getConfigs = async () => {
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
 
-	const {
-		data: { data: plugins = [] } = { data: [] },
-	} = await requestPlugins();
-
-	const allPlugins = IS_PLUGIN_DEV_MODE ? await mergePlugins(plugins) : plugins;
-
-	store.dispatch(setPlugins(allPlugins));
-	store.dispatch(setWebViews(allPlugins));
-	store.dispatch(setHelpdeskInfo(allPlugins));
-
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,
 		captcha,
 		valid_languages,
 		defaults,
 	});
+
+	setLoadingStyle(appConfigs);
+	setLoadingImage(appConfigs);
+
+	try {
+		const {
+			data: { data: plugins = [] } = { data: [] },
+		} = await requestPlugins();
+
+		const allPlugins = IS_PLUGIN_DEV_MODE
+			? await mergePlugins(plugins)
+			: plugins;
+
+		store.dispatch(setPlugins(allPlugins));
+		store.dispatch(setWebViews(allPlugins));
+		store.dispatch(setHelpdeskInfo(allPlugins));
+	} catch (err) {
+		console.error(err);
+		showBooting();
+		throw err;
+	}
 
 	const {
 		app: { plugins_injected_html },
@@ -235,7 +252,7 @@ const bootstrapApp = (
 		app: {
 			remoteRoutes,
 			plugins,
-			info: { name },
+			constants: { api_name: name },
 		},
 	} = store.getState();
 
@@ -274,6 +291,7 @@ const initialize = async () => {
 			injected_html,
 			plugins_injected_html
 		);
+		hideBooting();
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);

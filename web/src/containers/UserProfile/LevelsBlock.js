@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
-import { formatBaseAmount, formatBtcAmount } from '../../utils/currency';
+import STRINGS from 'config/localizedStrings';
+import { formatBaseAmount, formatBtcAmount } from 'utils/currency';
 
 const getLimitValue = (limit = -1, format) => {
 	if (limit === 0) {

@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { reduxForm } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
-import renderFields from '../../components/Form/factoryFields';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
-import { Button, IconTitle } from '../../components';
-import { required, username } from '../../components/Form/validations';
-import { getErrorLocalized } from '../../utils/errors';
-import STRINGS from '../../config/localizedStrings';
-import { EditWrapper } from 'components';
+import renderFields from 'components/Form/factoryFields';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { Button, IconTitle, EditWrapper } from 'components';
+import { required, username } from 'components/Form/validations';
+import { getErrorLocalized } from 'utils/errors';
+import STRINGS from 'config/localizedStrings';
 
 export const generateUsernameFormValues = (disabled = false) => ({
 	username: {

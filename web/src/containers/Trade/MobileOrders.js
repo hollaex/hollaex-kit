@@ -3,8 +3,8 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
-import { ActionNotification } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { ActionNotification } from 'components';
+import STRINGS from 'config/localizedStrings';
 import LogoutInfoOrder from './components/LogoutInfoOrder';
 import withConfig from 'components/ConfigProvider/withConfig';
 

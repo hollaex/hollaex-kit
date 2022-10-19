@@ -208,7 +208,15 @@ const AssetsBlock = ({
 				<tbody>
 					{sortedSearchResults.map(
 						(
-							[key, { min, allow_deposit, allow_withdrawal, oraclePrice }],
+							[
+								key,
+								{
+									increment_unit,
+									allow_deposit,
+									allow_withdrawal,
+									oraclePrice,
+								},
+							],
 							index
 						) => {
 							const balanceValue = balance[`${key}_balance`];
@@ -227,10 +235,10 @@ const AssetsBlock = ({
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
-									? formatToCurrency(balanceValue, min)
+									? formatToCurrency(balanceValue, increment_unit)
 									: formatToCurrency(
 											calculateOraclePrice(balanceValue, oraclePrice),
-											baseCoin.min
+											baseCoin.increment_unit
 									  );
 							return (
 								<tr className="table-row table-bottom-border" key={key}>
@@ -245,7 +253,7 @@ const AssetsBlock = ({
 									</td>
 									<td className="td-name td-fit">
 										{sortedSearchResults && loading ? (
-											<div className="d-flex align-items-center">
+											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
 														iconId={icon_id}
@@ -268,12 +276,15 @@ const AssetsBlock = ({
 										)}
 									</td>
 									<td className="td-amount">
-										{sortedSearchResults && baseCoin && loading ? (
+										{sortedSearchResults &&
+										baseCoin &&
+										loading &&
+										increment_unit ? (
 											<div className="d-flex">
 												<div className="mr-4">
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
-														formatToCurrency(balanceValue, min, true),
+														formatToCurrency(balanceValue, increment_unit),
 														display_name
 													)}
 												</div>
@@ -301,7 +312,7 @@ const AssetsBlock = ({
 												stringId="WALLET_BUTTON_BASE_DEPOSIT"
 												text={STRINGS['WALLET_BUTTON_BASE_DEPOSIT']}
 												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconPath={ICONS['BLUE_DEPOSIT_ICON']}
 												onClick={() => navigate(`wallet/${key}/deposit`)}
 												className="csv-action action-button-wrapper"
 												showActionText={isMobile}
@@ -311,7 +322,7 @@ const AssetsBlock = ({
 												stringId="WALLET_BUTTON_BASE_WITHDRAW"
 												text={STRINGS['WALLET_BUTTON_BASE_WITHDRAW']}
 												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconPath={ICONS['BLUE_WITHROW_ICON']}
 												onClick={() => navigate(`wallet/${key}/withdraw`)}
 												className="csv-action action-button-wrapper"
 												showActionText={isMobile}
@@ -324,8 +335,8 @@ const AssetsBlock = ({
 											<ActionNotification
 												stringId="TRADE_TAB_TRADE"
 												text={STRINGS['TRADE_TAB_TRADE']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconId="BLUE_TRADE_ICON"
+												iconPath={ICONS['BLUE_TRADE_ICON']}
 												onClick={() => goToTrade(pair)}
 												className="csv-action"
 												showActionText={isMobile}
@@ -338,8 +349,8 @@ const AssetsBlock = ({
 											<ActionNotification
 												stringId="STAKE.EARN"
 												text={STRINGS['STAKE.EARN']}
-												iconId="BLUE_PLUS"
-												iconPath={ICONS['BLUE_PLUS']}
+												iconId="BLUE_EARN_ICON"
+												iconPath={ICONS['BLUE_EARN_ICON']}
 												onClick={() => navigate('/stake')}
 												className="csv-action"
 												showActionText={isMobile}

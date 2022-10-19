@@ -20,6 +20,12 @@
 		}
 	}
 
+	#trades-filters_size {
+		* {
+			transition: 0.2s;
+		}
+	}
+
 	.ant-radio-button-wrapper-checked::before,
 	.ant-radio-button-wrapper::before {
 		background-color: transparent !important;

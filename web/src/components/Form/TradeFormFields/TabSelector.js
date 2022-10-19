@@ -9,9 +9,15 @@ const TabSelector = (props) => {
 			{options.map((option, index) => (
 				<div
 					key={`type-${index}`}
-					className={classnames('text-uppercase', 'text-center', 'pointer', {
-						active: input.value === option.value,
-					})}
+					className={classnames(
+						'text-uppercase',
+						'text-center',
+						'pointer',
+						input.value !== option.value ? option.className : '',
+						{
+							active: input.value === option.value,
+						}
+					)}
 					onClick={() => input.onChange(option.value)}
 				>
 					{option.label}

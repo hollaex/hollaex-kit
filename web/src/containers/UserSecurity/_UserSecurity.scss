@@ -11,6 +11,15 @@
 	}
 }
 
+.OTP_Success {
+	width: 30px;
+	height: 30px;
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+}
+
 .otp_form-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -215,6 +224,10 @@ $padding-input: 4rem;
 		flex-direction: row;
 		align-items: center;
 	}
+
+	.checkbutton-input-wrapper {
+		margin-top: 0px !important;
+	}
 }
 
 .layout-mobile {
@@ -329,6 +342,7 @@ $padding-input: 4rem;
 	.user-security-wrapper {
 		.tab_controller-tabs {
 			.tab_item {
+				transition: 0.3s;
 				font-size: 12px !important;
 			}
 		}

@@ -105,7 +105,6 @@ class PairTabs extends Component {
 								'app_bar-pair-content',
 								'd-flex',
 								'justify-content-between',
-								'px-2',
 								'market-trigger',
 								{
 									'active-tab-pair': location.pathname === '/markets',

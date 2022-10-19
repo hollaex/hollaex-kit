@@ -6,6 +6,7 @@
 	"CANCEL_BASE_WITHDRAWAL": "Cancelar {0} Retiro",
 	"CANCEL_WITHDRAWAL": "Cancelar Retiro",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Quiere cancelar su retiro pendiente de:",
+	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "Iniciar Sesión",

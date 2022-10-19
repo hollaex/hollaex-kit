@@ -116,6 +116,7 @@ const INITIAL_STATE = {
 			order_portfolio_percentage: 80,
 			popup_warning: true,
 		},
+		apps: [],
 	},
 	addressRequest: INITIAL_ADDRESS_OBJECT,
 	limits: INITIAL_LIMIT_OBJECT,

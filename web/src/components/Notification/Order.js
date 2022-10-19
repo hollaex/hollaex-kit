@@ -1,12 +1,9 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import {
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import { formatBtcAmount, formatToCurrency } from '../../utils/currency';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { formatBtcAmount, formatToCurrency } from 'utils/currency';
 import {
 	NotificationWraper,
 	NotificationContent,

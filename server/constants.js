@@ -302,7 +302,8 @@ exports.SETTING_KEYS = [
 	'interface',
 	'audio',
 	'risk',
-	'chat'
+	'chat',
+	'app'
 ];
 
 exports.OMITTED_USER_FIELDS = [
@@ -348,6 +349,9 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 // ACCOUNTS CONSTANTS END --------------------------------------------------
 
 // SECURITY CONSTANTS START --------------------------------------------------
+
+exports.TOKEN_TIME_NORMAL = '24h';
+exports.TOKEN_TIME_LONG = '30d';
 
 exports.TOKEN_TYPES = {
 	HMAC: 'hmac'

@@ -195,9 +195,15 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 	network: null,
 	otpCode: null,
+	fee: null,
+	fee_coin: null,
+	skipValidate: false, // should be used with care if set to true
 	ip: null,
 	domain: null
 }) => {
+	let fee = opts.fee;
+	let fee_coin = opts.fee_coin;
+
 	return verifyOtpBeforeAction(user_id, opts.otpCode)
 		.then((validOtp) => {
 			if (!validOtp) {
@@ -206,7 +212,12 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 			return getUserByKitId(user_id);
 		})
 		.then(async (user) => {
-			const { fee, fee_coin } = await validateWithdrawal(user, address, amount, currency, opts.network);
+			if (!opts.skipValidate) {
+				const withdrawal = await validateWithdrawal(user, address, amount, currency, opts.network);
+				fee = withdrawal.fee;
+				fee_coin = withdrawal.fee_coin;
+			}
+			
 
 			return withdrawalRequestEmail(
 				user,
@@ -230,7 +241,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
 const withdrawalRequestEmail = (user, data, domain, ip) => {
 	data.timestamp = Date.now();
 	let stringData = JSON.stringify(data);
-	const token = crypto.randomBytes(60).toString('hex');
+	const token = data.transaction_id || crypto.randomBytes(60).toString('hex');
 
 	return client.hsetAsync(WITHDRAWALS_REQUEST_KEY, token, stringData)
 		.then(() => {

@@ -31,6 +31,8 @@ export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
 export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
+export { default as Apps } from './Apps';
+export { default as AppDetails } from './AppDetails';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';
@@ -64,3 +66,4 @@ export { default as Roles } from './Admin/Roles';
 export { default as Resources } from './Admin/Resources';
 export { default as Pairs } from './Admin/Trades';
 export { default as Fiatmarkets } from './Admin/Fiat';
+export { default as AdminApps } from './Admin/Apps';

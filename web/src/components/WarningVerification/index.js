@@ -1,5 +1,5 @@
 import React from 'react';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const generateTexts = (level = 0) => {
 	if (level === 1) {

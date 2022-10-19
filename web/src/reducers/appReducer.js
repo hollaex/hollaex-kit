@@ -494,10 +494,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 						is_verification_tab,
 						is_wallet,
 						is_ultimate_fiat,
+						is_app,
 						type,
 						currency,
 					} = meta;
-					if (is_page) {
+
+					if (is_app) {
+						target = generateDynamicTarget(name, 'app', type);
+					} else if (is_page) {
 						target = generateDynamicTarget(name, 'page');
 					} else if (is_verification_tab && type) {
 						target = generateDynamicTarget(name, 'verification', type);

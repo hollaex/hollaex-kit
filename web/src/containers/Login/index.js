@@ -10,14 +10,14 @@ import {
 	performLogin,
 	storeLoginResult,
 	setLogoutMessage,
-} from '../../actions/authAction';
+} from 'actions/authAction';
 import LoginForm, { FORM_NAME } from './LoginForm';
-import { Dialog, OtpForm, IconTitle, Notification } from '../../components';
-import { NOTIFICATIONS } from '../../actions/appActions';
-import { errorHandler } from '../../components/OtpForm/utils';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { Dialog, OtpForm, IconTitle, Notification } from 'components';
+import { NOTIFICATIONS } from 'actions/appActions';
+import { errorHandler } from 'components/OtpForm/utils';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 let errorTimeOut = null;

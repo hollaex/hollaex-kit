@@ -79,7 +79,7 @@ class ToggleField extends Component {
 						{...rest}
 					>
 						<div className="d-flex justify-content-between">
-							<div>{label}</div>
+							<div className={selected ? '' : 'half-opacity'}>{label}</div>
 							<Toggle
 								selected={selected}
 								options={options}

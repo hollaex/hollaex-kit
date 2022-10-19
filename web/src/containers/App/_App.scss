@@ -61,6 +61,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 
 			.app_container-main {
+				transition: 0.3s;
 				&.no_bottom_navigation {
 					height: 100%;
 				}

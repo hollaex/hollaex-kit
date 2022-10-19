@@ -9,7 +9,7 @@ import { isMobile } from 'react-device-detect';
 import _floor from 'lodash/floor';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
-import { message } from 'antd';
+import { message, Spin } from 'antd';
 import moment from 'moment';
 
 import STRINGS from 'config/localizedStrings';
@@ -161,6 +161,7 @@ class Home extends Component {
 			isAmountChanged: false,
 			isHover: false,
 			hoveredIndex: 0,
+			carouselLodaing: true,
 		};
 		this.goToPair(pair);
 		this.props.setPriceEssentials({ side: this.state.side });
@@ -210,6 +211,9 @@ class Home extends Component {
 			this.setState({ isBrokerPaused: true });
 		}
 		this.handleBrokerQuote(pair, side);
+		setTimeout(() => {
+			this.setState({ carouselLodaing: false });
+		}, 3000);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -749,32 +753,67 @@ class Home extends Component {
 			case 'carousel_section': {
 				const { markets } = this.props;
 				const { chartData } = this.state;
-				const marketsData = [...markets, ...markets, ...markets];
-				const items = marketsData.map((market, index) => (
-					<MarketCard
-						market={market}
-						onDragStart={this.handleDragStart}
-						role="presentation"
-						chartData={chartData}
-					/>
-				));
+				let testMarket = [];
+				let loopCnt = 0;
+				if (markets.length < 12) {
+					if (markets.length === 1) {
+						loopCnt = 12;
+					} else if (markets.length === 2) {
+						loopCnt = 6;
+					} else if (markets.length === 3) {
+						loopCnt = 4;
+					} else if (markets.length === 4 || markets.length === 5) {
+						loopCnt = 3;
+					} else if (markets.length > 5 || markets.length < 12) {
+						loopCnt = 2;
+					}
+
+					for (let i = 0; i < loopCnt; i++) {
+						testMarket = [...testMarket, ...markets];
+					}
+				} else {
+					testMarket = [...markets];
+				}
+
+				const duration = parseInt((50 / 12) * testMarket.length);
+				const marketsData = [...testMarket, ...testMarket, ...testMarket];
 
 				return (
 					<div className="home_carousel_section ">
-						<div class="slideshow-wrapper">
-							<div class="parent-slider d-flex">
-								{items.map((sec, index) => {
-									return (
-										<div
-											className="section"
-											onClick={() => this.sectionToNav(sec)}
-										>
-											{sec}
-										</div>
-									);
-								})}
+						<Spin spinning={this.state.carouselLodaing}>
+							<div class="slideshow-wrapper">
+								<div
+									class="parent-slider d-flex"
+									style={{ animationDuration: `${duration}s` }}
+								>
+									{marketsData.map((sec, index) => {
+										return (
+											<div
+												className="section"
+												style={{
+													borderRight: `${
+														!this.state.carouselLodaing
+															? '1px solid #60605d'
+															: 'none'
+													}`,
+												}}
+												key={index}
+												onClick={() => this.sectionToNav(sec)}
+											>
+												{!this.state.carouselLodaing ? (
+													<MarketCard
+														market={sec}
+														onDragStart={this.handleDragStart}
+														role="presentation"
+														chartData={chartData}
+													/>
+												) : null}
+											</div>
+										);
+									})}
+								</div>
 							</div>
-						</div>
+						</Spin>
 					</div>
 				);
 			}
