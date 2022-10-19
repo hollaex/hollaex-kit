@@ -3,6 +3,7 @@ import { string, array, object, bool } from 'prop-types';
 import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
+import { convertToFormatted } from 'utils/string';
 
 const EditWrapper = ({
 	children,
@@ -24,7 +25,7 @@ const EditWrapper = ({
 			className={classnames('edit-wrapper__container', { reverse: reverse })}
 			style={style}
 		>
-			{children}
+			{convertToFormatted(children)}
 			<div className="edit-wrapper__icons-container" style={triggerStyles}>
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>

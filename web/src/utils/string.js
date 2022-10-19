@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from 'moment';
 
 import {
@@ -5,11 +6,12 @@ import {
 	DEFAULT_LANGUAGE,
 	TEMP_KEY_LANGUAGE_RTL,
 	TEMP_KEY_LANGUAGE_LTR,
-} from '../config/constants';
+} from 'config/constants';
 import STRINGS, { content as CONTENT } from 'config/localizedStrings';
 import { getValidLanguages } from 'utils/initialize';
 import { generateGlobalId } from 'utils/id';
 import LANGUAGES from 'config/languages';
+import { stringToHTML } from 'utils/script';
 export { formatBtcAmount, formatBaseAmount, formatEthAmount } from './currency';
 
 export const getFormattedDate = (value) => {
@@ -230,3 +232,46 @@ export const generateRCStrings = (plugins = []) => {
 export const EDITABLE_NAME_SEPARATOR = '---';
 export const generateInputName = (key, lang) =>
 	`${key}${EDITABLE_NAME_SEPARATOR}${lang}`;
+
+const ANCHOR_REGEX = /<\/?a[^>]*>/g;
+
+const getAnchors = (html) => {
+	return html.getElementsByTagName('a');
+};
+
+const generateLinks = (anchors = [], texts = []) => {
+	return anchors.map(({ href = '' }, index) => (
+		<a
+			href={href}
+			target="_blank"
+			rel="noopener noreferrer"
+			className="blue-link pointer underline-text px-1"
+		>
+			{texts[index]}
+		</a>
+	));
+};
+
+export const convertToFormatted = (children) => {
+	if (typeof children === 'string' && children.match(ANCHOR_REGEX)) {
+		try {
+			const html = stringToHTML(children);
+			const anchors = [...getAnchors(html)];
+			const texts = anchors.map(({ innerHTML }) => innerHTML);
+
+			anchors.forEach((_, index) => {
+				html.getElementsByTagName('a')[index].innerHTML = `{${index}}`;
+			});
+
+			const links = generateLinks(anchors, texts);
+			return STRINGS.formatString(
+				html.innerHTML.replace(ANCHOR_REGEX, ''),
+				...links
+			);
+		} catch {
+			return children;
+		}
+	} else {
+		return children;
+	}
+};
