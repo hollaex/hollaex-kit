@@ -11,7 +11,7 @@ import id from './id.json';
 import zh from './zh.json';
 import pt from './pt.json';
 import tr from './tr.json';
-import tr from './mn.json';
+import mn from './mn.json';
 
 export default {
 	en,
