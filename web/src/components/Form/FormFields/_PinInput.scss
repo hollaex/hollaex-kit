@@ -26,23 +26,19 @@
 		border: 1px solid $colors-black;
 		background: $colors-black;
 	}
-}
 
-.active {
-	border: 1px solid $colors-black !important;
-}
+	.active {
+		border: 1px solid $colors-black !important;
+	}
 
-.error {
-	border: 1px solid red !important;
-}
+	.error {
+		border: 1px solid $colors-notifications-red !important;
+	}
 
-.warning_text {
-	text-align: center;
-}
-
-.group {
-	padding: 1rem;
-	& input {
-		margin: 0rem 0.25rem;
+	.group {
+		padding: 1rem;
+		& input {
+			margin: 0 0.25rem;
+		}
 	}
 }
