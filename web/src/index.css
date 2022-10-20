@@ -7990,20 +7990,14 @@ table th {
     width: 2rem;
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
     background: var(--labels_secondary-inactive-label-text-graphics); }
-
-.active {
-  border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
-
-.error {
-  border: 1px solid red !important; }
-
-.warning_text {
-  text-align: center; }
-
-.group {
-  padding: 1rem; }
-  .group input {
-    margin: 0rem 0.25rem; }
+  .mainContainer .active {
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .mainContainer .error {
+    border: 1px solid red !important; }
+  .mainContainer .group {
+    padding: 1rem; }
+    .mainContainer .group input {
+      margin: 0rem 0.25rem; }
 
 .input_icon {
   margin-right: 0.25rem;
