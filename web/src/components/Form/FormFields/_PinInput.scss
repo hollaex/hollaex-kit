@@ -32,13 +32,13 @@
 	}
 
 	.error {
-		border: 1px solid red !important;
+		border: 1px solid $colors-notifications-red !important;
 	}
 
 	.group {
 		padding: 1rem;
 		& input {
-			margin: 0rem 0.25rem;
+			margin: 0 0.25rem;
 		}
 	}
 }

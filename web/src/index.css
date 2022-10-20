@@ -7993,11 +7993,11 @@ table th {
   .mainContainer .active {
     border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
   .mainContainer .error {
-    border: 1px solid red !important; }
+    border: 1px solid var(--specials_notifications-alerts-warnings) !important; }
   .mainContainer .group {
     padding: 1rem; }
     .mainContainer .group input {
-      margin: 0rem 0.25rem; }
+      margin: 0 0.25rem; }
 
 .input_icon {
   margin-right: 0.25rem;
