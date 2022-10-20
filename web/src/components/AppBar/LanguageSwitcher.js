@@ -43,6 +43,9 @@ const LanguageSwitcher = ({ selected, valid_languages, toggle }) => {
 			onSelect={onSwitch}
 			bordered={false}
 			onClick={() => setIsOpen((prev) => !prev)}
+			onBlur={() => {
+				if (isOpen) setIsOpen(false);
+			}}
 			suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
 			className="custom-select-input-style appbar elevated"
 			dropdownClassName="custom-select-style select-option-wrapper"

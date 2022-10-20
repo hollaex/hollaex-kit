@@ -1868,6 +1868,9 @@ table th {
   margin: 0 0 40px;
   background-color: var(--base_wallet-sidebar-and-popup);
   padding: 30px; }
+  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-children .field-valid {
+    top: 8px;
+    right: -20px; }
 
 .withdrawal-container .withdraw-form-wrapper .btn-wrapper {
   display: flex;
