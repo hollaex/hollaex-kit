@@ -4,7 +4,7 @@
         "viewportHeight": 800,
         "chromeWebSecurity": false,
         "defaultCommandTimeout": 10000,
-        "projectId": "zx8ctg",
+        "projectId": "sandboxhollaex",
         "env": {
                 "TAGS": "not @waiting",
                 "NODE_ENV": "",

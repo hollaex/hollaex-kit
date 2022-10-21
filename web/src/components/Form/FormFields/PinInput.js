@@ -82,7 +82,9 @@ const PinInput = ({
 					<input value={value[5] || ''} className={getClassname(5)} />
 				</div>
 			</div>
-			{isError && <div className="warning_text">{isError}</div>}
+			{isError && (
+				<div className="warning_text text-align-center">{isError}</div>
+			)}
 		</React.Fragment>
 	);
 };
