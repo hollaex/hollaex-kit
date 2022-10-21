@@ -506,10 +506,12 @@ class App extends Component {
 			case NOTIFICATIONS.METAMASK_ERROR:
 				return (
 					<MessageDisplay
-						iconId="RED_WARNING"
-						iconPath={ICONS['RED_WARNING']}
+						iconId="META_MASK_NOT_FOUND"
+						iconPath={ICONS['META_MASK_NOT_FOUND']}
 						onClick={this.onCloseDialog}
 						text={data}
+						title={STRINGS['STAKE.INSTALL_METAMASK_TITLE']}
+						titleId={'STAKE.INSTALL_METAMASK_TITLE'}
 					/>
 				);
 			case NOTIFICATIONS.CONFIGURE_APPS:

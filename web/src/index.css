@@ -1444,7 +1444,8 @@ table th {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--base_wallet-sidebar-and-popup);
+  background-color: transparent;
+  border-bottom: 1px var(--calculated_secondary-border) solid;
   opacity: 0.8; }
   .html_card_section .card-section-wrapper {
     display: flex;
@@ -1867,6 +1868,9 @@ table th {
   margin: 0 0 40px;
   background-color: var(--base_wallet-sidebar-and-popup);
   padding: 30px; }
+  .withdrawal-container .withdraw-form-wrapper .withdraw-form .field-children .field-valid {
+    top: 8px;
+    right: -20px; }
 
 .withdrawal-container .withdraw-form-wrapper .btn-wrapper {
   display: flex;
@@ -7718,6 +7722,10 @@ table th {
 
 .dropdown-option-open {
   margin: 0px !important; }
+  .dropdown-option-open img {
+    height: 1rem;
+    margin-right: 0.25rem;
+    margin-bottom: 0.25rem; }
 
 .disabled .field-children {
   color: var(--labels_secondary-inactive-label-text-graphics); }
@@ -7957,6 +7965,39 @@ table th {
 
 .layout-mobile .field_warning_wrapper {
   padding-bottom: 1rem; }
+
+.mainContainer {
+  display: flex;
+  width: fit-content;
+  margin: auto;
+  position: relative;
+  justify-content: center;
+  align-items: center; }
+  .mainContainer input {
+    width: 30px;
+    height: 30px;
+    border-radius: 0.5rem;
+    border: 1px solid var(--calculated_secondary-border);
+    background: var(--base_background);
+    text-align: center;
+    font-size: large; }
+  .mainContainer .masterInput {
+    position: absolute;
+    width: 100%;
+    top: 8px;
+    opacity: 0 !important; }
+  .mainContainer .seperator {
+    width: 2rem;
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    background: var(--labels_secondary-inactive-label-text-graphics); }
+  .mainContainer .active {
+    border: 1px solid var(--labels_secondary-inactive-label-text-graphics) !important; }
+  .mainContainer .error {
+    border: 1px solid var(--specials_notifications-alerts-warnings) !important; }
+  .mainContainer .group {
+    padding: 1rem; }
+    .mainContainer .group input {
+      margin: 0 0.25rem; }
 
 .input_icon {
   margin-right: 0.25rem;
@@ -8813,9 +8854,20 @@ table th {
   border-top: 1px solid var(--calculated_secondary-border);
   margin: 1rem 0;
   position: relative; }
-  .otp_form-title-wrapper .otp_form-title-text {
-    font-weight: bold;
-    font-size: 1.1rem; }
+
+.otp_form-info-text {
+  font-weight: bold;
+  font-size: 1.1rem;
+  width: 100%;
+  text-align: center !important; }
+
+.otp_form-subnote-text {
+  font-weight: 400;
+  font-size: 1.1rem;
+  opacity: 0.7;
+  width: 100%;
+  margin-top: 5rem;
+  text-align: center !important; }
 
 .otp_form-fields {
   margin-bottom: 1rem; }

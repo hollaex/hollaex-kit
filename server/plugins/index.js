@@ -48,9 +48,6 @@ const tripleBeam = require('triple-beam');
 const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
 
-let app;
-let disabledPlugins = {};
-
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
 
@@ -105,115 +102,6 @@ const installLibrary = async (library) => {
 	}
 };
 
-const stopPlugin = async (plugin) => {
-
-	try {
-		const subStr = plugin.script.match(/\"\/plugins(.*?)\"/g);
-		disabledPlugins[plugin.name] = subStr || [];
-
-	} catch (err) {
-		loggerPlugin.error(
-			'plugins/index/kill_plugin',
-			`error while stopping plugin ${plugin.name}`,
-			err.message
-		);
-	}
-}
-
-const startPlugin = async (plugin) => {
-	try {
-		loggerPlugin.verbose(
-			'plugins/index/initialization',
-			`starting plugin ${plugin.name}`
-		);
-
-		const context = {
-			configValues: {
-				publicMeta: plugin.public_meta,
-				meta: plugin.meta
-			},
-			pluginLibraries: {
-				app,
-				loggerPlugin,
-				toolsLib
-			},
-			app,
-			toolsLib,
-			lodash,
-			expressValidator,
-			loggerPlugin,
-			multer,
-			moment,
-			mathjs,
-			bluebird,
-			umzug,
-			rp,
-			sequelize,
-			uuid,
-			jwt,
-			momentTz,
-			json2csv,
-			flat,
-			ws,
-			cron,
-			randomString,
-			bcryptjs,
-			expectCt,
-			validator,
-			uglifyEs,
-			otp,
-			latestVersion,
-			geoipLite,
-			nodemailer,
-			wsHeartbeatServer,
-			wsHeartbeatClient,
-			cors,
-			winston,
-			elasticApmNode,
-			winstonElasticsearchApm,
-			tripleBeam,
-			bodyParser,
-			morgan,
-			meta: plugin.meta,
-			publicMeta: plugin.public_meta,
-			installedLibraries: {}
-		};
-
-		if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
-			loggerPlugin.verbose(
-				'plugins/index/initialization',
-				`Installing packages for plugin ${plugin.name}`
-			);
-
-			for (const library of plugin.prescript.install) {
-				context.installedLibraries[library] = await installLibrary(library);
-			}
-
-			loggerPlugin.verbose(
-				'plugins/index/initialization',
-				`Plugin ${plugin.name} packages installed`
-			);
-		}
-
-		_eval(plugin.script, plugin.name, context, true);
-
-		if (disabledPlugins[plugin.name]) delete disabledPlugins[plugin.name];
-
-
-		loggerPlugin.verbose(
-			'plugins/index/initialization',
-			`Plugin ${plugin.name} running`
-		);
-	} catch (err) {
-		loggerPlugin.error(
-			'plugins/index/initialization',
-			`error while starting plugin ${plugin.name}`,
-			err.message
-		);
-	}
-}
-
-
 checkStatus()
 	.then(async () => {
 		loggerPlugin.info(
@@ -221,7 +109,7 @@ checkStatus()
 			'Initializing Plugin Server...'
 		);
 
-		app = express();
+		const app = express();
 
 		app.use(morgan(morganType, { stream }));
 		app.listen(PORT);
@@ -231,16 +119,6 @@ checkStatus()
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
 		helmetMiddleware(app);
-
-		app.use((req, res, next) => {
-			if (req.path.length > 1 && req.path.includes('/plugins/')) {
-				//Check if plugin is disabled
-				for (let endpoints of Object.values(disabledPlugins)) {
-					if (endpoints.some(endpoint => endpoint.includes(req.path))) { return res.status(404).send() }
-				}
-			}
-			next();
-		})
 
 		app.use('/plugins', routes);
 
@@ -255,7 +133,93 @@ checkStatus()
 		});
 
 		for (const plugin of plugins) {
-			startPlugin(plugin);
+			try {
+				loggerPlugin.verbose(
+					'plugins/index/initialization',
+					`starting plugin ${plugin.name}`
+				);
+
+				const context = {
+					configValues: {
+						publicMeta: plugin.public_meta,
+						meta: plugin.meta
+					},
+					pluginLibraries: {
+						app,
+						loggerPlugin,
+						toolsLib
+					},
+					app,
+					toolsLib,
+					lodash,
+					expressValidator,
+					loggerPlugin,
+					multer,
+					moment,
+					mathjs,
+					bluebird,
+					umzug,
+					rp,
+					sequelize,
+					uuid,
+					jwt,
+					momentTz,
+					json2csv,
+					flat,
+					ws,
+					cron,
+					randomString,
+					bcryptjs,
+					expectCt,
+					validator,
+					uglifyEs,
+					otp,
+					latestVersion,
+					geoipLite,
+					nodemailer,
+					wsHeartbeatServer,
+					wsHeartbeatClient,
+					cors,
+					winston,
+					elasticApmNode,
+					winstonElasticsearchApm,
+					tripleBeam,
+					bodyParser,
+					morgan,
+					meta: plugin.meta,
+					publicMeta: plugin.public_meta,
+					installedLibraries: {}
+				};
+
+				if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+					loggerPlugin.verbose(
+						'plugins/index/initialization',
+						`Installing packages for plugin ${plugin.name}`
+					);
+
+					for (const library of plugin.prescript.install) {
+						context.installedLibraries[library] = await installLibrary(library);
+					}
+
+					loggerPlugin.verbose(
+						'plugins/index/initialization',
+						`Plugin ${plugin.name} packages installed`
+					);
+				}
+
+				_eval(plugin.script, plugin.name, context, true);
+
+				loggerPlugin.verbose(
+					'plugins/index/initialization',
+					`Plugin ${plugin.name} running`
+				);
+			} catch (err) {
+				loggerPlugin.error(
+					'plugins/index/initialization',
+					`error while starting plugin ${plugin.name}`,
+					err.message
+				);
+			}
 		}
 
 		loggerPlugin.info(
@@ -281,8 +245,3 @@ checkStatus()
 
 		setTimeout(() => { process.exit(1); }, 5000);
 	});
-
-module.exports = {
-	startPlugin,
-	stopPlugin
-}

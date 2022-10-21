@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { STATIC_ICONS } from 'config/icons';
 import { Link } from 'react-router';
-import { Button, Select, Spin, Table } from 'antd';
+import { Alert, Button, Modal, Select, Spin, Table } from 'antd';
 // import { Icon as LegacyIcon } from '@ant-design/compatible';
 // import { RightOutlined } from '@ant-design/icons';
 // import moment from 'moment';
@@ -9,7 +9,7 @@ import { Button, Select, Spin, Table } from 'antd';
 import { Image } from 'components';
 // import IconToolTip from '../IconToolTip';
 import Coins from '../Coins';
-import { requestDeposits } from '../Deposits/actions';
+import { requestDeposits, requestBurn, requestMint } from '../Deposits/actions';
 import {
 	renderContent,
 	renderRowContent,
@@ -18,6 +18,7 @@ import {
 } from '../Deposits/utils';
 
 import './index.css';
+import ValidateDismiss from '../Deposits/ValidateDismiss';
 
 const Summarycontent = ({
 	handleTabChange,
@@ -39,7 +40,11 @@ const Summarycontent = ({
 	const [fiatCoins, setFiatCoins] = useState([]);
 	const [selectedDepositAsset, setSelectedDepositAsset] = useState('');
 	const [selectedWithdrawalAsset, setSelectedWithdrawalAsset] = useState('');
-
+	const [isOpen, setIsOpen] = useState(false);
+	const [statusType, setStatusType] = useState('');
+	const [validateData, setValidateData] = useState({});
+	const [queryType, setQueryType] = useState('');
+	const [error, setError] = useState('');
 	let onRampData = Object.values(onramp).filter((d) => Object.keys(d).length);
 	let offRampData = Object.values(offramp).filter((d) => Object.keys(d).length);
 
@@ -70,7 +75,7 @@ const Summarycontent = ({
 			if (Object.keys(queryParams).length === 0) {
 				setQueryParams({});
 			}
-
+			setQueryType(queryParams.type);
 			requestDeposits({
 				...values,
 				...queryParams,
@@ -169,6 +174,78 @@ const Summarycontent = ({
 	// 	</Button>
 	// );
 
+	const onOpenModal = (validateData, statusType) => {
+		setIsOpen(true);
+		setStatusType(statusType);
+		setValidateData(validateData);
+	};
+
+	const onCancelModal = () => {
+		setIsOpen(false);
+		setStatusType('');
+	};
+
+	const handleConfirm = (formValues) => {
+		let body = {
+			transaction_id: formValues.transaction_id,
+			updated_transaction_id: formValues.updated_transaction_id,
+			rejected: false,
+			processing: false,
+			waiting: false,
+		};
+		if (formValues.description) {
+			body = {
+				...body,
+				description: formValues.description,
+			};
+		}
+		if (statusType === 'validate') {
+			body = {
+				...body,
+				status: true,
+				dismissed: false,
+			};
+		} else {
+			body = {
+				...body,
+				dismissed: true,
+				status: false,
+			};
+		}
+		if (queryType === 'deposit') {
+			requestMint(body)
+				.then((data) => {
+					onSuccess(queryParams, queryType);
+				})
+				.catch((error) => {
+					onFailure(error);
+				});
+		} else {
+			requestBurn(body)
+				.then((data) => {
+					onSuccess(queryParams, queryType);
+				})
+				.catch((error) => {
+					onFailure(error);
+				});
+		}
+	};
+
+	const onFailure = (errObj) => {
+		const message = errObj.data ? errObj.data.message : errObj.message;
+		setError(message);
+		onCancelModal();
+	};
+
+	const onSuccess = (queryParams, queryType) => {
+		requestDeposits(queryParams, { type: queryType });
+		onCancelModal();
+	};
+
+	const onCloseErrorAlert = () => {
+		setError('');
+	};
+
 	const renderSelect = (type) => {
 		return (
 			<Select
@@ -216,7 +293,7 @@ const Summarycontent = ({
 		{ title: 'Amount', dataIndex: 'amount', key: 'amount' },
 		{
 			title: 'Validate/dismiss',
-			render: (renderData) => renderContent(renderData, () => {}),
+			render: (renderData) => renderContent(renderData, onOpenModal),
 		},
 	];
 
@@ -619,6 +696,16 @@ const Summarycontent = ({
 									: 'fiattable1 mb-5'
 							}
 						>
+							{error && (
+								<Alert
+									message={error}
+									type="error"
+									showIcon
+									onClose={onCloseErrorAlert}
+									closable={true}
+									closeText="Close"
+								/>
+							)}
 							<Table
 								columns={columns}
 								dataSource={withdrawal.map((item) => {
@@ -670,6 +757,21 @@ const Summarycontent = ({
 					</div>
 				</div> */}
 			</div>
+			<Modal
+				visible={isOpen}
+				footer={null}
+				onCancel={onCancelModal}
+				width="37rem"
+			>
+				{isOpen ? (
+					<ValidateDismiss
+						validateData={validateData}
+						statusType={statusType}
+						onCancel={onCancelModal}
+						handleConfirm={handleConfirm}
+					/>
+				) : null}
+			</Modal>
 		</div>
 	);
 };

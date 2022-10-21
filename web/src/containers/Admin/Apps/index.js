@@ -64,6 +64,17 @@ const Index = ({ router, apps }) => {
 	const configure = (app) => router.push(`/admin/plugins?plugin=${app}`);
 	const goToPlugins = () => router.push('/admin/plugins');
 
+	const renderBreadcrumb = () => {
+		return (
+			<Breadcrumb>
+				<Item>
+					<span onClick={back}>Apps</span>
+				</Item>
+				<Item>{app}</Item>
+			</Breadcrumb>
+		);
+	};
+
 	useEffect(() => {
 		setId(generateDynamicTarget(app, 'app', 'admin'));
 	}, [app]);
@@ -71,15 +82,11 @@ const Index = ({ router, apps }) => {
 	return (
 		<div className="app_container-content admin-user-container admin-user-content apps-list-container">
 			{app ? (
-				<Fragment>
-					<Breadcrumb>
-						<Item>
-							<span onClick={back}>Apps</span>
-						</Item>
-						<Item>{app}</Item>
-					</Breadcrumb>
-					<SmartTarget id={id} onBack={back} />
-				</Fragment>
+				<SmartTarget
+					id={id}
+					onBack={back}
+					extra={{ top: renderBreadcrumb() }}
+				/>
 			) : (
 				<Fragment>
 					<div className="d-flex align-items-center">

@@ -6,11 +6,22 @@
 	border-top: 1px solid $colors-border;
 	margin: 1rem 0;
 	position: relative;
+}
 
-	.otp_form-title-text {
-		font-weight: bold;
-		font-size: $font-size-main;
-	}
+.otp_form-info-text {
+	font-weight: bold;
+	font-size: $font-size-main;
+	width: 100%;
+	text-align: center !important;
+}
+
+.otp_form-subnote-text {
+	font-weight: 400;
+	font-size: $font-size-main;
+	opacity: 0.7;
+	width: 100%;
+	margin-top: 5rem;
+	text-align: center !important;
 }
 
 .otp_form-fields {
