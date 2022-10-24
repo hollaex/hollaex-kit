@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import classnames from 'classnames';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const PinInput = ({
 	input: { value = '', onChange },
@@ -58,29 +59,35 @@ const PinInput = ({
 	return (
 		<React.Fragment>
 			<div className={classnames('mainContainer')}>
-				<input
-					autoFocus
-					inputMode={'numeric'}
-					ref={masterRef}
-					className={classnames('masterInput')}
-					disabled={isSubmitting}
-					type="text"
-					value={value}
-					onClick={handleOnMasterFocus}
-					onChange={handleMasterValueChange}
-					onBlur={handleOnMasterBlur}
-				/>
-				<div className="group">
-					<input value={value[0] || ''} className={getClassname(0)} />
-					<input value={value[1] || ''} className={getClassname(1)} />
-					<input value={value[2] || ''} className={getClassname(2)} />
-				</div>
-				<div className="seperator"></div>
-				<div className="group">
-					<input value={value[3] || ''} className={getClassname(3)} />
-					<input value={value[4] || ''} className={getClassname(4)} />
-					<input value={value[5] || ''} className={getClassname(5)} />
-				</div>
+				{!isSubmitting ? (
+					<React.Fragment>
+						<input
+							autoFocus
+							inputMode={'numeric'}
+							ref={masterRef}
+							className={classnames('masterInput')}
+							disabled={isSubmitting}
+							type="text"
+							value={value}
+							onClick={handleOnMasterFocus}
+							onChange={handleMasterValueChange}
+							onBlur={handleOnMasterBlur}
+						/>
+						<div className="group">
+							<input value={value[0] || ''} className={getClassname(0)} />
+							<input value={value[1] || ''} className={getClassname(1)} />
+							<input value={value[2] || ''} className={getClassname(2)} />
+						</div>
+						<div className="seperator"></div>
+						<div className="group">
+							<input value={value[3] || ''} className={getClassname(3)} />
+							<input value={value[4] || ''} className={getClassname(4)} />
+							<input value={value[5] || ''} className={getClassname(5)} />
+						</div>
+					</React.Fragment>
+				) : (
+					<LoadingOutlined />
+				)}
 			</div>
 			{isError && <div className="warning_text">{isError}</div>}
 		</React.Fragment>
