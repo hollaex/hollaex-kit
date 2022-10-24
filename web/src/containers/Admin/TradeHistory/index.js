@@ -22,11 +22,11 @@ const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
 };
 const formatNum = (value) => {
-	return <div>{formatCurrency(value)}</div>;
+	return <div>{value}</div>;
 };
 
 const formatFee = (value, { fee_coin }) => {
-	return <div>{`${formatCurrency(value)} ${fee_coin}`}</div>;
+	return <div>{`${value} ${fee_coin}`}</div>;
 };
 
 const COLUMNS = [

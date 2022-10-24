@@ -89,7 +89,9 @@ const PinInput = ({
 					<LoadingOutlined />
 				)}
 			</div>
-			{isError && <div className="warning_text">{isError}</div>}
+			{isError && (
+				<div className="warning_text text-align-center">{isError}</div>
+			)}
 		</React.Fragment>
 	);
 };
