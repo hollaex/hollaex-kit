@@ -1,4 +1,5 @@
 //*** Let name it cucumber-html-report.js **
+//the newst version
 var os = require('os');
 const { detect } = require('detect-browser');
 const browser = detect();

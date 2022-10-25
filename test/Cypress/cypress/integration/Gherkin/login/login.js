@@ -95,7 +95,7 @@ And ('I enter Expired,long,short and then true 2FA code',()=>{
      .clear().type('108294')        
     // cy.get('.otp_form-wrapper > form.w-100 > .holla-button').should('not.be.disabled')
      //cy.get('.otp_form-wrapper > form.w-100 > .w-100 > :nth-child(1) > .field-wrapper > :nth-child(1) > :nth-child(1) > .field-content > .field-children > div > .input_field-input')
-     
+     //the new changes 
      .clear().type(token)        
    //  cy.get('.otp_form-wrapper > form.w-100 > .holla-button').click()
 })
