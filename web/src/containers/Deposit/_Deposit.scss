@@ -14,6 +14,16 @@ $qr-code--size: 12rem;
 	}
 }
 
+.margin-aligner {
+	margin-bottom: 24px;
+	margin-right: 1rem;
+
+	& svg {
+		width: 30px !important;
+		height: 30px !important;
+	}
+}
+
 .deposit_info-wrapper > div {
 	flex: 1;
 }
@@ -60,9 +70,6 @@ $qr-code--size: 12rem;
 	.review-title {
 		font-size: $font-size-subhead2;
 		margin-bottom: 0.5rem;
-	}
-
-	.review-link {
 	}
 
 	.separator {

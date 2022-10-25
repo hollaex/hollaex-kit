@@ -84,6 +84,11 @@ $content--margin: 2rem;
 			margin: 0 0 40px;
 			background-color: $app-sidebar-background;
 			padding: 30px;
+
+			& .field-children .field-valid {
+				top: 8px;
+				right: -20px;
+			}
 		}
 		.btn-wrapper {
 			display: flex;
