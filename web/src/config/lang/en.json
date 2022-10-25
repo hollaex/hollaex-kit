@@ -811,6 +811,7 @@
 	"DEFAULT_TOGGLE_OPTIONS": { "ON": "on", "OFF": "off" },
 	"SIZE": "Size",
 	"PRICE": "Price",
+	"AVERAGE": "Average",
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
