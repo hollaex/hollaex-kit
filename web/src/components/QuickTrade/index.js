@@ -270,9 +270,9 @@ class QuickTrade extends Component {
 								</div>
 								<div className="d-flex">
 									<div>
-										<div className="sub-title">
+										<div className="sub-title caps">
 											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-												{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
+												{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 											</EditWrapper>
 										</div>
 										<div className="d-flex">
@@ -283,11 +283,9 @@ class QuickTrade extends Component {
 										</div>
 									</div>
 									<div className="pl-6 trade_tabs-container">
-										<div className="sub-title">
+										<div className="sub-title caps">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-												{STRINGS[
-													'QUICK_TRADE_COMPONENT.CHANGE_TEXT'
-												].toUpperCase()}
+												{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
 											</EditWrapper>
 										</div>
 										<Transition in={inProp} timeout={1000}>
@@ -374,9 +372,9 @@ class QuickTrade extends Component {
 									</div>
 								</div>
 								<div>
-									<div className="sub-title">
+									<div className="sub-title caps">
 										<EditWrapper stringId="SUMMARY.VOLUME_24H">
-											{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
+											{STRINGS['SUMMARY.VOLUME_24H']}
 										</EditWrapper>
 									</div>
 									<div className="d-flex">
@@ -490,12 +488,18 @@ class QuickTrade extends Component {
 								/>
 							</div>
 							<div className="footer-text">
-								<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">
-									<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}</div>
+								<EditWrapper
+									stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}
 								</EditWrapper>
 								<div>
-									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
-										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
+									<EditWrapper
+										stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1"
+										render={(string) => <div>{string}</div>}
+									>
+										{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}
 									</EditWrapper>
 									:{' '}
 									{!isUseBroker ? (

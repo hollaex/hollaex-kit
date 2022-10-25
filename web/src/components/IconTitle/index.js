@@ -27,16 +27,22 @@ const BasicIconTitle = ({
 					showUpload={false}
 				/>
 			)}
-			<EditWrapper stringId={stringId} iconId={iconId}>
-				<div
-					className={classnames(
-						'icon_title-text pt-2',
-						'text-center',
-						textType
-					)}
-				>
-					{text}
-				</div>
+			<EditWrapper
+				stringId={stringId}
+				iconId={iconId}
+				render={(string) => (
+					<div
+						className={classnames(
+							'icon_title-text pt-2',
+							'text-center',
+							textType
+						)}
+					>
+						{string}
+					</div>
+				)}
+			>
+				{text}
 			</EditWrapper>
 		</div>
 	);

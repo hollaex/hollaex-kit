@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
-import { CheckTitle, MobileBarTabs, Loader } from 'components';
+import { CheckTitle, MobileBarTabs, Loader, EditWrapper } from 'components';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
 import STRINGS from 'config/localizedStrings';
 import { openContactForm } from 'actions/appActions';
@@ -125,7 +125,7 @@ class Account extends Component {
 		const tabs = [
 			{
 				title: isMobile ? (
-					STRINGS['SUMMARY.TITLE']
+					<EditWrapper>{STRINGS['SUMMARY.TITLE']}</EditWrapper>
 				) : (
 					<CheckTitle
 						stringId="SUMMARY.TITLE"
@@ -138,7 +138,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS['ACCOUNTS.TAB_SECURITY']
+					<EditWrapper>{STRINGS['ACCOUNTS.TAB_SECURITY']}</EditWrapper>
 				) : (
 					<CheckTitle
 						stringId="ACCOUNTS.TAB_SECURITY"
@@ -158,7 +158,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS['ACCOUNTS.TAB_VERIFICATION']
+					<EditWrapper>{STRINGS['ACCOUNTS.TAB_VERIFICATION']}</EditWrapper>
 				) : (
 					<CheckTitle
 						stringId="ACCOUNTS.TAB_VERIFICATION"
@@ -177,7 +177,7 @@ class Account extends Component {
 			},
 			{
 				title: isMobile ? (
-					STRINGS['ACCOUNTS.TAB_SETTINGS']
+					<EditWrapper>{STRINGS['ACCOUNTS.TAB_SETTINGS']}</EditWrapper>
 				) : (
 					<CheckTitle
 						stringId="ACCOUNTS.TAB_SETTINGS"

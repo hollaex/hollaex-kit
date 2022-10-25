@@ -178,10 +178,11 @@ const RenderContentForm = ({
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
 									<div className="field_warning_text">
-										{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+										<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG">
+											{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+										</EditWrapper>
 									</div>
 								</div>
-								<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG" />
 							</div>
 						)}
 						{renderFields(formFields)}

@@ -8572,8 +8572,8 @@ table th {
   .accordion_wrapper .accordion_section .accordion_section_content_text {
     position: relative;
     color: var(--labels_secondary-inactive-label-text-graphics); }
-    .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
-      color: var(--labels_inactive-button); }
+  .accordion_wrapper .accordion_section .accordion_section_content_text-subtitle {
+    color: var(--labels_inactive-button); }
   .accordion_wrapper .accordion_section.disabled {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .accordion_wrapper .accordion_section:last-child {

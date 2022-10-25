@@ -26,9 +26,10 @@ export const generateHeaders = (onAdjustPortfolio) => {
 							}
 							onClick={percentage.popupWarning ? onAdjustPortfolio : () => {}}
 						>
-							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST">
+								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							</EditWrapper>
 						</span>
-						<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST" />
 					</span>
 				</td>
 			),

@@ -69,12 +69,18 @@ const CheckTitle = ({
 					<div className="empty-notification" />
 				)}
 			</div>
-			<EditWrapper stringId={stringId} iconId={iconId}>
-				{title && (
-					<div className={classnames('check_title-label', titleClassName)}>
-						{title}
-					</div>
-				)}
+			<EditWrapper
+				stringId={stringId}
+				iconId={iconId}
+				render={(string) =>
+					string && (
+						<div className={classnames('check_title-label', titleClassName)}>
+							{string}
+						</div>
+					)
+				}
+			>
+				{title}
 			</EditWrapper>
 			<div className="check_title-icon">
 				<Image
@@ -153,16 +159,22 @@ export const CustomTabs = ({
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			<EditWrapper stringId={stringId} iconId={iconId}>
-				{title && (
-					<div
-						className={classnames('custom_title-label', {
-							'title-inactive': false,
-						})}
-					>
-						{title}
-					</div>
-				)}
+			<EditWrapper
+				stringId={stringId}
+				iconId={iconId}
+				render={(string) =>
+					string && (
+						<div
+							className={classnames('custom_title-label', {
+								'title-inactive': false,
+							})}
+						>
+							{string}
+						</div>
+					)
+				}
+			>
+				{title}
 			</EditWrapper>
 		</div>
 	);

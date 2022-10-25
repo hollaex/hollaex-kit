@@ -139,10 +139,9 @@ $main-text--color: $colors-deactivate-color2;
 	.accordion_section_content_text {
 		position: relative;
 		color: $main-text--color;
-
-		.accordion_section_content_text-subtitle {
-			color: $colors-deactivate-color1;
-		}
+	}
+	.accordion_section_content_text-subtitle {
+		color: $colors-deactivate-color1;
 	}
 
 	&.disabled {

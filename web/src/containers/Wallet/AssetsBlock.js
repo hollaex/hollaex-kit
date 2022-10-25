@@ -138,15 +138,20 @@ const AssetsBlock = ({
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				{totalAssets.length && loading ? (
-					<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
-						<div className="wallet-search-improvement">
-							{BASE_CURRENCY ? (
-								<div>
-									<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
-									<div className="font-title">{totalAssets}</div>
-								</div>
-							) : null}
-						</div>
+					<EditWrapper
+						stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+						render={(children) => (
+							<div className="wallet-search-improvement">
+								{BASE_CURRENCY && (
+									<div>
+										<div>{children}</div>
+										<div className="font-title">{totalAssets}</div>
+									</div>
+								)}
+							</div>
+						)}
+					>
+						{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
 					</EditWrapper>
 				) : (
 					<div>
