@@ -40,7 +40,8 @@ class Form extends Component {
 	setFormRef = (el) => {
 		if (el) {
 			this.otpFormRef = el;
-			el.getElementsByTagName('input')[0].focus();
+			if (el.getElementsByTagName('input')[0])
+				el.getElementsByTagName('input')[0].focus();
 		}
 	};
 
