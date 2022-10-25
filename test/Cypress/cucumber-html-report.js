@@ -5,11 +5,7 @@ const { detect } = require('detect-browser');
 const browser = detect();
 const report = require("multiple-cucumber-html-reporter");
 const cypress = require('cypress');
-const fs = require("fs");
-const { timeStamp } = require('console');
-const dest = 'cypress/reports'+'dest'//timeStamp.toString()
-fs.mkdir(dest)
-fs.cp('cypress/cucuber-json',dest, { recursive: true })
+
 report.generate(
     {jsonDir: "cypress/cucumber-json",  // ** Path of .json file **//
      reportPath: "./reports/cucumber-htmlreport.html",
