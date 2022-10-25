@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import mathjs from 'mathjs';
 import { bindActionCreators } from 'redux';
 import STRINGS from 'config/localizedStrings';
-import { Table, EditWrapper, ProgressBar } from 'components';
+import { Table, EditWrapper, ProgressBar, Help } from 'components';
 import { setNotification, NOTIFICATIONS } from 'actions/appActions';
 import { ClockCircleOutlined } from '@ant-design/icons';
 import { Button as AntBtn } from 'antd';
@@ -42,9 +42,9 @@ const MyStaking = ({
 
 	const startStakingProcess = (tokenData) => {
 		const { symbol } = tokenData;
-		const { fullname } = coins[symbol];
+		const { fullname, display_name, icon_id } = coins[symbol];
 		setNotification(NOTIFICATIONS.STAKE, {
-			tokenData: { ...tokenData, fullname },
+			tokenData: { ...tokenData, fullname, display_name, icon_id },
 		});
 	};
 
@@ -102,6 +102,8 @@ const MyStaking = ({
 		},
 	];
 
+	const { display_name } = coins[token];
+
 	return (
 		<div>
 			<div className="d-flex justify-content-between align-start">
@@ -113,7 +115,7 @@ const MyStaking = ({
 						<div className="secondary-text">
 							{STRINGS.formatString(
 								STRINGS['STAKE_DETAILS.MY_STAKING.SUBTITLE'],
-								token.toUpperCase()
+								display_name
 							)}
 						</div>
 					</div>
@@ -271,6 +273,8 @@ const MyStaking = ({
 
 									const total = mathjs.number(period);
 
+									const { display_name } = coins[symbol];
+
 									const data = {
 										amount,
 										partial,
@@ -278,11 +282,16 @@ const MyStaking = ({
 										reward,
 										symbol,
 										index,
+										display_name,
 									};
 
-									const progressStatusText = remainingBlocks
-										? `~${estimatedLeftover.join(' ')}`
-										: 'Completed';
+									const progressStatusText = remainingBlocks ? (
+										`~${estimatedLeftover.join(' ')}`
+									) : (
+										<Help tip={STRINGS['STAKE.COMPLETED_TOOLTIP']}>
+											{STRINGS['STAKE.COMPLETED']}
+										</Help>
+									);
 
 									const btnProps = {
 										type: 'primary',

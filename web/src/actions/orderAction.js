@@ -1,7 +1,8 @@
 import axios from 'axios';
 import ICONS from 'config/icons';
-import STRINGS from '../config/localizedStrings';
-import { playBackgroundAudioNotification } from '../utils/utils';
+import { requestAuthenticated } from 'utils';
+import STRINGS from 'config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
 
 // Set orders from websocket
 export function setUserOrders(orders) {
@@ -71,4 +72,13 @@ export const cancelAllOrders = (symbol = '', settings) => (dispatch) => {
 			});
 		})
 		.catch((err) => {});
+};
+
+export const executeBroker = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/execute', options);
 };

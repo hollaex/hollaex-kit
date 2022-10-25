@@ -458,11 +458,15 @@ class PairsSummary extends Component {
 						{configurePairs.map((item, key) => {
 							const pairs = item.split('-');
 							const pair_base_fullname =
-								allCoins.filter((data) => data.symbol === pairs[0])[0]
-									.fullname || '';
+								(allCoins.filter((data) => data.symbol === pairs[0])[0] &&
+									allCoins.filter((data) => data.symbol === pairs[0])[0]
+										.fullname) ||
+								'';
 							const pair2_fullname =
-								allCoins.filter((data) => data.symbol === pairs[1])[0]
-									.fullname || '';
+								(allCoins.filter((data) => data.symbol === pairs[1])[0] &&
+									allCoins.filter((data) => data.symbol === pairs[1])[0]
+										.fullname) ||
+								'';
 							return (
 								<div
 									className="box-content"
@@ -520,10 +524,10 @@ class PairsSummary extends Component {
 						{pendingPairs.map((item, key) => {
 							const pair_base_fullname =
 								allCoins.filter((data) => data.symbol === item.pair_base)[0]
-									.fullname || '';
+									?.fullname || '';
 							const pair2_fullname =
 								allCoins.filter((data) => data.symbol === item.pair_2)[0]
-									.fullname || '';
+									?.fullname || '';
 							return (
 								<div key={key} className="box-content">
 									<div className="d-flex justify-content-between">
@@ -746,7 +750,7 @@ class PairsSummary extends Component {
 		const pendingPairs =
 			allPairs &&
 			allPairs.filter((data) => pairs.includes(data.name) && !data.verified);
-		if (this.state.pairs.length === 0 && pendingPairs.length === 0) {
+		if (!this.state.pairs || !this.state.pairs.length) {
 			return <Spin size="large" className="m-top" />;
 		}
 		return (

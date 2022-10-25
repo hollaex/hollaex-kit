@@ -2,13 +2,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm, getFormValues } from 'redux-form';
 
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { Button } from '../../components';
 import { STATIC_ICONS } from 'config/icons';
 import renderFields from '../../components/Form/factoryFields';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { required } from '../Form/validations';
-import { getNetworkLabelByKey } from 'utils/wallet';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const FORM_NAME = 'CheckDeposit';
 
@@ -64,7 +64,7 @@ const CheckDeposit = ({
 		const { network: networks = '' } = coins[formValues.currency];
 		const networkOptions = networks.split(',').map((network) => ({
 			value: network,
-			label: getNetworkLabelByKey(network),
+			label: getNetworkNameByKey(network),
 		}));
 
 		formFields.network = {
@@ -94,17 +94,15 @@ const CheckDeposit = ({
 		<form className="check-deposit-modal-wrapper" onSubmit={handleSubmit}>
 			<div className="d-flex justify-content-center align-items-center flex-column">
 				<img
-					src={STATIC_ICONS.SEARCH}
+					src={STATIC_ICONS.SEARCH_BLOCKCHAIN}
 					alt="search"
-					className="search-icon mb-4"
+					className="search-icon mb-4 blockchain-search"
 				/>
 				<h2>{STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}</h2>
 			</div>
 			<div className="inner-content">
-				<span className="field-header">
-					{STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
-				</span>
-				<div className="mb-5">
+				<span>{STRINGS['DEPOSIT_STATUS.SEARCH_BLOCKCHAIN_FOR_DEPOSIT']}</span>
+				<div className="mb-5 field-header">
 					{STRINGS['DEPOSIT_STATUS.STATUS_DESCRIPTION']}
 				</div>
 				{renderFields(formFields)}

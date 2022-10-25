@@ -59,6 +59,7 @@ const initializeTopic = (topic, ws, symbol) => {
 			}
 			break;
 		case 'order':
+		case 'usertrade':
 		case 'wallet':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
@@ -109,6 +110,7 @@ const terminateTopic = (topic, ws, symbol) => {
 			}
 			break;
 		case 'order':
+		case 'usertrade':
 		case 'wallet':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
@@ -200,6 +202,15 @@ const terminateClosedChannels = (ws) => {
 			removeSubscriber(WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId), ws, 'private');
 			if (!getChannels()[WEBSOCKET_CHANNEL('order', ws.auth.sub.networkId)]) {
 				sendNetworkWsMessage('unsubscribe', 'order', ws.auth.sub.networkId);
+			}
+		} catch (err) {
+			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
+		}
+
+		try {
+			removeSubscriber(WEBSOCKET_CHANNEL('usertrade', ws.auth.sub.networkId), ws, 'private');
+			if (!getChannels()[WEBSOCKET_CHANNEL('usertrade', ws.auth.sub.networkId)]) {
+				sendNetworkWsMessage('unsubscribe', 'usertrade', ws.auth.sub.networkId);
 			}
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);

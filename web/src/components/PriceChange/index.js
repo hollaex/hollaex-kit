@@ -14,9 +14,10 @@ class PriceChange extends Component {
 
 	UNSAFE_componentWillUpdate(nextProp) {
 		const {
+			market,
 			market: { ticker },
 		} = this.props;
-		if (nextProp.market.ticker.close !== ticker.close) {
+		if (market && ticker && nextProp.market.ticker.close !== ticker.close) {
 			const tickerDiff = nextProp.market.ticker.close - ticker.close;
 			this.setState((prevState) => ({
 				...prevState,
@@ -34,8 +35,12 @@ class PriceChange extends Component {
 	render() {
 		const {
 			market: { priceDifference, priceDifferencePercent },
+			disableGlance = false,
 		} = this.props;
 		const { inProp, tickerDiff } = this.state;
+		const glanceClass = !disableGlance
+			? this.getDirBasedClass(tickerDiff, 'glance')
+			: '';
 
 		return (
 			<Fragment>
@@ -48,7 +53,7 @@ class PriceChange extends Component {
 									'price-diff',
 									state,
 									this.getDirBasedClass(priceDifference),
-									this.getDirBasedClass(tickerDiff, 'glance')
+									glanceClass
 								)}
 							>
 								{priceDifferencePercent}

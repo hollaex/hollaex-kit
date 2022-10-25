@@ -51,6 +51,7 @@ export const addBankData = (values) => {
 	const {
 		app: {
 			pluginNames: { bank },
+			features: { ultimate_fiat },
 		},
 	} = store.getState();
 
@@ -58,18 +59,23 @@ export const addBankData = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(
-		`/plugins/${bank}/admin?id=${values.id}`,
-		options,
-		null,
-		PLUGIN_URL
-	);
+
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
+		? requestAuthenticated(`/admin/user/bank?id=${values.id}`, options)
+		: requestAuthenticated(
+				`/plugins/${bank}/admin?id=${values.id}`,
+				options,
+				null,
+				PLUGIN_URL
+		  );
 };
 
 export const approveBank = (values) => {
 	const {
 		app: {
 			pluginNames: { bank },
+			features: { ultimate_fiat },
 		},
 	} = store.getState();
 
@@ -77,18 +83,23 @@ export const approveBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(
-		`/plugins/${bank}/verify`,
-		options,
-		null,
-		PLUGIN_URL
-	);
+
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
+		? requestAuthenticated('/admin/bank/verify', options)
+		: requestAuthenticated(
+				`/plugins/${bank}/verify`,
+				options,
+				null,
+				PLUGIN_URL
+		  );
 };
 
 export const rejectBank = (values) => {
 	const {
 		app: {
 			pluginNames: { bank },
+			features: { ultimate_fiat },
 		},
 	} = store.getState();
 
@@ -96,12 +107,16 @@ export const rejectBank = (values) => {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
-	return requestAuthenticated(
-		`/plugins/${bank}/revoke`,
-		options,
-		null,
-		PLUGIN_URL
-	);
+
+	// This will be deprecated and ultimate fiat will supersede bank plugin
+	return !bank && ultimate_fiat
+		? requestAuthenticated('/admin/bank/revoke', options)
+		: requestAuthenticated(
+				`/plugins/${bank}/revoke`,
+				options,
+				null,
+				PLUGIN_URL
+		  );
 };
 
 export const requestUser = (values, kyc_name) => {
@@ -221,4 +236,12 @@ export const deleteMeta = (user, name) => {
 		method: 'DELETE',
 	};
 	return requestAuthenticated(`/admin/kit/user-meta?name=${name}`, options);
+};
+
+export const updateIdData = (body, id) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(body),
+	};
+	return requestAuthenticated(`/admin/user?user_id=${id}`, options);
 };

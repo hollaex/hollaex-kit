@@ -1,4 +1,4 @@
-import { APP_TITLE } from '../../config/constants';
+import { APP_TITLE } from 'config/constants';
 
 export const PATHS = [
 	{
@@ -27,6 +27,11 @@ export const PATHS = [
 	{
 		path: '/admin/trade',
 		label: 'Markets',
+		routeKey: 'trade',
+	},
+	{
+		path: '/admin/fiat',
+		label: 'Fiat controls',
 		routeKey: 'trade',
 	},
 	{

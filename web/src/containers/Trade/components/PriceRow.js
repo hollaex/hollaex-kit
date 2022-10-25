@@ -9,6 +9,7 @@ import { formatToCurrency } from 'utils/currency';
 class PriceRow extends Component {
 	state = {
 		inProp: false,
+		amountDiff: 0,
 	};
 
 	UNSAFE_componentWillUpdate(nextProp) {
@@ -16,12 +17,19 @@ class PriceRow extends Component {
 			record: [, amount],
 		} = this.props;
 		if (!math.equal(nextProp.record[1], amount)) {
+			const amountDiff = math.subtract(nextProp.record[1], amount);
 			this.setState((prevState) => ({
 				...prevState,
+				amountDiff,
 				inProp: !prevState.inProp,
 			}));
 		}
 	}
+
+	getDirBasedClass = (diff, baseClassName = '') => {
+		const direction = diff < 0 ? 'down' : diff > 0 ? 'up' : '';
+		return baseClassName ? `${baseClassName}-${direction}` : direction;
+	};
 
 	render() {
 		const {
@@ -35,7 +43,7 @@ class PriceRow extends Component {
 			record,
 		} = this.props;
 
-		const { inProp } = this.state;
+		const { inProp, amountDiff } = this.state;
 		const [price, amount, cumulative, cumulativePrice] = record;
 		const ACCFillClassName = `fill fill-${side}`;
 		const ACCFillStyle = {
@@ -49,17 +57,21 @@ class PriceRow extends Component {
 		const totalAmount = isBase ? cumulative : cumulativePrice;
 
 		return (
-			<div
-				className={classnames('price-row-wrapper', ACCFillClassName)}
-				style={ACCFillStyle}
-			>
-				<Transition in={inProp} timeout={1000}>
-					{(state) => (
+			<Transition in={inProp} timeout={1000}>
+				{(state) => (
+					<div
+						className={classnames(
+							'price-row-wrapper',
+							ACCFillClassName,
+							state,
+							this.getDirBasedClass(amountDiff)
+						)}
+						style={ACCFillStyle}
+					>
 						<div
 							className={classnames(
 								'd-flex value-row align-items-center',
-								fillClassName,
-								state
+								fillClassName
 							)}
 							style={fillStyle}
 						>
@@ -84,9 +96,9 @@ class PriceRow extends Component {
 									: formatToCurrency(cumulativePrice, increment_price)}
 							</div>
 						</div>
-					)}
-				</Transition>
-			</div>
+					</div>
+				)}
+			</Transition>
 		);
 	}
 }

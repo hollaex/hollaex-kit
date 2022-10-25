@@ -28,6 +28,8 @@ import {
 	AddTradeTabs,
 	Stake,
 	StakeDetails,
+	Apps,
+	AppDetails,
 	// ADMIN
 	User,
 	AppWrapper as AdminContainer,
@@ -55,6 +57,8 @@ import {
 	Roles,
 	Resources,
 	Pairs,
+	Fiatmarkets,
+	AdminApps,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -83,6 +87,13 @@ import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
 
 ReactGA.initialize('UA-154626247-1'); // Google analytics. Set your own Google Analytics values
 browserHistory.listen((location) => {
+	if (window) {
+		window.scroll({
+			top: 0,
+			left: 0,
+			behavior: 'smooth',
+		});
+	}
 	ReactGA.set({ page: window.location.pathname });
 	ReactGA.pageview(window.location.pathname);
 });
@@ -340,6 +351,13 @@ export const generateRoutes = (routes = []) => {
 					component={Account}
 					onEnter={requireAuth}
 				/>
+				<Route path="apps" name="Apps" component={Apps} onEnter={requireAuth} />
+				<Route
+					path="apps/details/:app"
+					name="AppDetails"
+					component={AppDetails}
+					onEnter={requireAuth}
+				/>
 				<Route
 					path="summary"
 					name="Summary"
@@ -383,11 +401,7 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route path="trade/:pair" name="Trade" component={Trade} />
-				<Route
-					path="trade/add/tabs"
-					name="Trade Tabs"
-					component={AddTradeTabs}
-				/>
+				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />
 				<Route
 					path="quick-trade/:pair"
 					name="Quick Trade"
@@ -420,6 +434,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/general"
 					name="Admin General"
 					component={withAdminProps(General, 'general')}
+				/>
+				<Route
+					path="/admin/fiat"
+					name="Admin Fiat"
+					component={withAdminProps(Fiatmarkets, 'fiat')}
 				/>
 				<Route
 					path="/admin/tiers"
@@ -525,6 +544,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugins"
 					name="Admin plugins"
 					component={withAdminProps(Plugins, 'plugins')}
+				/>
+				<Route
+					path="/admin/apps"
+					name="Admin apps"
+					component={withAdminProps(AdminApps, 'apps')}
 				/>
 				{/* <Route
 				path="/admin/plugins/:services"

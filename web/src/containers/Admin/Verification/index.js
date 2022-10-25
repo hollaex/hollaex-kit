@@ -6,7 +6,7 @@ import {
 	verifyData,
 	revokeData,
 } from './actions';
-import { Button, Modal } from 'antd';
+import { Button, Form, Input, message, Modal, Select } from 'antd';
 import {
 	ClockCircleFilled,
 	CloseCircleOutlined,
@@ -27,6 +27,7 @@ import UploadIds from '../UploadIds';
 import { STATIC_ICONS } from 'config/icons';
 
 import './index.css';
+import { updateIdData } from '../User/actions';
 
 // import { isSupport, isSupervisor } from '../../../utils/token';
 // import { formatTimestampGregorian, DATETIME_FORMAT } from '../../../utils/date';
@@ -51,6 +52,7 @@ const IDRevokeForm = AdminHocForm('ID_DATA_REVOKE_FORM');
 // const VerificationForm = AdminHocForm('VERIFICATION_FORM');
 // const UserRoleForm = AdminHocForm('USER_ROLE_FORM');
 
+const id_data_options = ['No status', 'Pending', 'Rejected', 'Approve'];
 class Verification extends Component {
 	constructor(props) {
 		super(props);
@@ -61,6 +63,7 @@ class Verification extends Component {
 			isEdit: false,
 			is_dataDisplay: false,
 			selectedImage: '',
+			isNumberEdit: false,
 		};
 	}
 	onSubmit = (refreshData) => (values) => {
@@ -253,6 +256,11 @@ class Verification extends Component {
 	handleOpen = (type) => {
 		this.setState({ isConfirm: true, type: type });
 	};
+
+	handleNumberEdit = (isNumberEdit) => {
+		this.setState({ isNumberEdit });
+	};
+
 	renderContent = () => {
 		const { isVisible, isEdit } = this.state;
 		const { userInformation } = this.props;
@@ -260,49 +268,103 @@ class Verification extends Component {
 
 		if (id_data.status === 3) {
 			return (
-				<div className="d-flex">
-					Status:
-					<ReactSVG
-						src={STATIC_ICONS.VERIFICATION_ICON}
-						className={'verification-icon mx-1'}
-					/>
-					<span className="approved-text">Approved</span>
-					{isVisible && !isEdit ? (
+				<div>
+					<div className="d-flex">
+						<div>Document number: {id_data.number}</div>
 						<span
 							className="ml-1 edit-text"
-							onClick={() => this.setState({ isEdit: true })}
+							onClick={() => this.handleNumberEdit(true)}
 						>
 							(Edit)
 						</span>
-					) : null}
+					</div>
+					<div className="d-flex">
+						Status:
+						<ReactSVG
+							src={STATIC_ICONS.VERIFICATION_ICON}
+							className={'verification-icon mx-1'}
+						/>
+						<span className="approved-text">Approved</span>
+						{isVisible && !isEdit ? (
+							<span
+								className="ml-1 edit-text"
+								onClick={() => this.setState({ isEdit: true })}
+							>
+								(Edit)
+							</span>
+						) : null}
+					</div>
 				</div>
 			);
 		} else if (id_data.status === 2) {
 			return (
 				<div>
-					Status:
-					<span className="rejected-text">
-						<CloseCircleOutlined className="mx-2" />
-						Rejected
-					</span>
-					{isVisible && !isEdit ? (
+					<div className="d-flex">
+						<div>Document number: {id_data.number}</div>
 						<span
 							className="ml-1 edit-text"
-							onClick={() => this.setState({ isEdit: true })}
+							onClick={() => this.handleNumberEdit(true)}
 						>
 							(Edit)
 						</span>
-					) : null}
+					</div>
+					<div>
+						Status:
+						<span className="rejected-text">
+							<CloseCircleOutlined className="mx-2" />
+							Rejected
+						</span>
+						{isVisible && !isEdit ? (
+							<span
+								className="ml-1 edit-text"
+								onClick={() => this.setState({ isEdit: true })}
+							>
+								(Edit)
+							</span>
+						) : null}
+					</div>
 				</div>
 			);
 		} else if (id_data.status === 1) {
 			return (
 				<div>
-					Status:
-					<span className="pending-text">
-						<ClockCircleFilled style={{ margin: '0 5px' }} />
-						Pending ID data
-					</span>
+					<div className="d-flex">
+						<div>Document number: {id_data.number}</div>
+						<span
+							className="ml-1 edit-text"
+							onClick={() => this.handleNumberEdit(true)}
+						>
+							(Edit)
+						</span>
+					</div>
+					<div>
+						Status:
+						<span className="pending-text">
+							<ClockCircleFilled style={{ margin: '0 5px' }} />
+							Pending ID data
+						</span>
+					</div>
+				</div>
+			);
+		} else {
+			return (
+				<div>
+					<div className="d-flex">
+						<div>Document number: {id_data.number}</div>
+						<span
+							className="ml-1 edit-text"
+							onClick={() => this.handleNumberEdit(true)}
+						>
+							(Edit)
+						</span>
+					</div>
+					<div>
+						Status:
+						<span className="pending-text">
+							<ClockCircleFilled style={{ margin: '0 5px' }} />
+							No status
+						</span>
+					</div>
 				</div>
 			);
 		}
@@ -310,6 +372,28 @@ class Verification extends Component {
 
 	handleView = () => {
 		this.setState({ isVisible: true });
+	};
+
+	handleSubmit = (formValues) => {
+		const { userInformation, requestUserData } = this.props;
+		const body = {
+			id_data: {
+				...formValues,
+				status: id_data_options.indexOf(formValues.status),
+			},
+		};
+		updateIdData(body, userInformation.id)
+			.then((res) => {
+				if (res) {
+					requestUserData({ id: res.id });
+					this.handleNumberEdit(false);
+					message.success('Data saved successfully');
+				}
+			})
+			.catch((error) => {
+				const messageTxt = error.data ? error.data.message : error.message;
+				message.error(messageTxt);
+			});
 	};
 
 	render() {
@@ -431,6 +515,7 @@ class Verification extends Component {
 										className={'d-flex flex-wrap'}
 										data={userImageData}
 										renderRow={renderRowImages}
+										popError={true}
 									/>
 								</div>
 							) : (
@@ -584,6 +669,36 @@ class Verification extends Component {
 					wrapClassName={this.state.is_dataDisplay ? 'zoom-image-modal' : ''}
 				>
 					{this.renderPopupContent(userImageData)}
+				</Modal>
+				<Modal
+					visible={this.state.isNumberEdit}
+					footer={null}
+					onCancel={() => this.handleNumberEdit(false)}
+				>
+					<Form
+						onFinish={this.handleSubmit}
+						initialValues={{
+							number: id_data.number,
+							status: id_data_options[id_data.status],
+						}}
+						className="id_data_form"
+					>
+						<div>Document number</div>
+						<Form.Item name="number">
+							<Input />
+						</Form.Item>
+						<div>Status</div>
+						<Form.Item name="status">
+							<Select>
+								{id_data_options.map((Item) => (
+									<Select.Option key={Item}>{Item}</Select.Option>
+								))}
+							</Select>
+						</Form.Item>
+						<Button type="primary" className="green-btn" htmlType="submit">
+							Submit
+						</Button>
+					</Form>
 				</Modal>
 			</div>
 		);

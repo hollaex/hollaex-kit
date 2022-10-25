@@ -5,11 +5,15 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { browserHistory } from 'react-router';
 import math from 'mathjs';
-import { QuickTradeLimitsSelector } from './utils';
+import { QuickTradeLimitsSelector, BrokerLimitsSelector } from './utils';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 import debounce from 'lodash.debounce';
+import { message } from 'antd';
+import _floor from 'lodash/floor';
+import _debounce from 'lodash/debounce';
+import moment from 'moment';
 
-import { submitOrder } from 'actions/orderAction';
+import { executeBroker, submitOrder } from 'actions/orderAction';
 import STRINGS from 'config/localizedStrings';
 
 import { QuickTrade, Dialog, Loader, MobileBarBack, Button } from 'components';
@@ -19,15 +23,26 @@ import { formatNumber, formatPercentage } from 'utils/currency';
 import { isLoggedIn, getToken } from 'utils/token';
 import { unique } from 'utils/data';
 import { getDecimals } from 'utils/utils';
-import { changePair, setNotification } from 'actions/appActions';
+import {
+	changePair,
+	setNotification,
+	setSnackNotification,
+} from 'actions/appActions';
 import { setOrderbooks, setPriceEssentials } from 'actions/quickTradeAction';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 import QuoteResult from './QuoteResult';
 // import { getSparklines } from 'actions/chartAction';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { getBroker, getBrokerQuote } from 'containers/Admin/Trades/actions';
+import withConfig from 'components/ConfigProvider/withConfig';
 
 // const DECIMALS = 4;
+let timeout = undefined;
+
+const Timer = ({ quoteSeconds }) => {
+	return <span>{quoteSeconds}s</span>;
+};
 
 class QuickTradeContainer extends PureComponent {
 	constructor(props) {
@@ -49,25 +64,25 @@ class QuickTradeContainer extends PureComponent {
 		let side;
 		let tickerClose;
 		let originalPair;
-		if (pairKeys.includes(routeParams.pair)) {
-			originalPair = routeParams.pair;
-			pair = routeParams.pair;
-			const { close } = tickers[pair] || {};
-			side = 'buy';
-			tickerClose = close;
-		} else if (pairKeys.includes(flippedPair)) {
-			originalPair = routeParams.pair;
-			pair = flippedPair;
-			const { close } = tickers[pair] || {};
-			side = 'sell';
-			tickerClose = 1 / close;
-		} else if (brokerPairs.includes(routeParams.pair)) {
+		if (brokerPairs.includes(routeParams.pair)) {
 			originalPair = routeParams.pair;
 			pair = routeParams.pair;
 			const { close } = tickers[pair] || {};
 			side = 'buy';
 			tickerClose = close;
 		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (pairKeys.includes(flippedPair)) {
 			originalPair = routeParams.pair;
 			pair = flippedPair;
 			const { close } = tickers[pair] || {};
@@ -117,6 +132,14 @@ class QuickTradeContainer extends PureComponent {
 			existBroker: {},
 			brokerTargetAmount: undefined,
 			brokerSourceAmount: undefined,
+			isBrokerPaused: false,
+			isTimer: false,
+			isLoading: false,
+			buyPrice: 0,
+			sellPrice: 0,
+			token: '',
+			quoteSeconds: '',
+			OriginalQuoteSeconds: '',
 		};
 
 		this.goToPair(pair);
@@ -166,7 +189,7 @@ class QuickTradeContainer extends PureComponent {
 
 	componentDidMount() {
 		const { pairs, tickers, broker } = this.props;
-		const { pair, searchValue } = this.state;
+		const { pair, searchValue, side } = this.state;
 		if (
 			this.props.constants &&
 			this.props.constants.features &&
@@ -190,12 +213,21 @@ class QuickTradeContainer extends PureComponent {
 		if (Object.keys(existBroker).length) {
 			if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 				this.setState({ isShowChartDetails: true, existBroker });
+				this.getBrokerData();
 			} else {
 				this.setState({ isShowChartDetails: false, existBroker });
+				this.getBrokerData();
 			}
 		} else {
 			this.setState({ isShowChartDetails: true, existBroker: {} });
 		}
+		if (existBroker && !existBroker.paused) {
+			this.setState({ isBrokerPaused: false });
+		} else {
+			this.setState({ isBrokerPaused: true });
+		}
+
+		this.handleBrokerQuote(pair, side);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -235,25 +267,25 @@ class QuickTradeContainer extends PureComponent {
 			let side;
 			let tickerClose;
 			let originalPair;
-			if (pairKeys.includes(routeParams.pair)) {
-				originalPair = routeParams.pair;
-				pair = routeParams.pair;
-				const { close } = tickers[pair] || {};
-				side = 'buy';
-				tickerClose = close;
-			} else if (pairKeys.includes(flippedPair)) {
-				originalPair = routeParams.pair;
-				pair = flippedPair;
-				const { close } = tickers[pair] || {};
-				side = 'sell';
-				tickerClose = 1 / close;
-			} else if (brokerPairs.includes(routeParams.pair)) {
+			if (brokerPairs.includes(routeParams.pair)) {
 				originalPair = routeParams.pair;
 				pair = routeParams.pair;
 				const { close } = tickers[pair] || {};
 				side = 'buy';
 				tickerClose = close;
 			} else if (brokerPairs.includes(flippedPair)) {
+				originalPair = routeParams.pair;
+				pair = flippedPair;
+				const { close } = tickers[pair] || {};
+				side = 'sell';
+				tickerClose = 1 / close;
+			} else if (pairKeys.includes(routeParams.pair)) {
+				originalPair = routeParams.pair;
+				pair = routeParams.pair;
+				const { close } = tickers[pair] || {};
+				side = 'buy';
+				tickerClose = close;
+			} else if (pairKeys.includes(flippedPair)) {
 				originalPair = routeParams.pair;
 				pair = flippedPair;
 				const { close } = tickers[pair] || {};
@@ -286,11 +318,19 @@ class QuickTradeContainer extends PureComponent {
 			if (Object.keys(existBroker).length) {
 				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
 				} else {
 					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
 				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
+			}
+
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
 			}
 
 			this.props.setPriceEssentials({
@@ -307,8 +347,10 @@ class QuickTradeContainer extends PureComponent {
 				selectedSource,
 				selectedTarget,
 			});
+
+			this.handleBrokerQuote(pair, side);
 		} else if (this.state.isSelectChange) {
-			const { pair } = this.state;
+			const { pair, side } = this.state;
 			const { pairs } = this.props;
 			let existBroker = {};
 			this.props.broker.forEach((item) => {
@@ -324,12 +366,21 @@ class QuickTradeContainer extends PureComponent {
 			if (Object.keys(existBroker).length) {
 				if (pairs[pair] !== undefined || pairs[flipPair] !== undefined) {
 					this.setState({ isShowChartDetails: true, existBroker });
+					this.getBrokerData();
 				} else {
 					this.setState({ isShowChartDetails: false, existBroker });
+					this.getBrokerData();
 				}
 			} else {
 				this.setState({ isShowChartDetails: true, existBroker: {} });
 			}
+
+			if (existBroker && !existBroker.paused) {
+				this.setState({ isBrokerPaused: false });
+			} else {
+				this.setState({ isBrokerPaused: true });
+			}
+
 			this.setState({
 				isSelectChange: false,
 				targetAmount: undefined,
@@ -337,12 +388,79 @@ class QuickTradeContainer extends PureComponent {
 				brokerTargetAmount: undefined,
 				brokerSourceAmount: undefined,
 			});
+			this.handleBrokerQuote(pair, side);
+		}
+		if (prevState.isTimer !== this.state.isTimer && this.state.isTimer) {
+			const { icons: ICONS, setSnackNotification } = this.props;
+			setSnackNotification({
+				icon: ICONS.COPY_NOTIFICATION,
+				content: STRINGS['ORDER_EXPIRED_MSG'],
+			});
+		}
+
+		if (prevState.quoteSeconds !== this.state.quoteSeconds) {
+			this.handleSecondsChange(this.state.quoteSeconds);
+		}
+
+		if (
+			prevState.isAmountChanged !== this.state.isAmountChanged &&
+			this.state.isAmountChanged
+		) {
+			this.handleBrokerQuote(this.state.pair, this.state.side);
 		}
 	}
 
 	componentWillUnmount() {
 		this.closeOrderbookSocket();
 	}
+
+	getBrokerQuoteData = async (symbol, side) => {
+		const brokerPairs = this.props.broker.map((br) => br.symbol);
+		const flipSymbol = this.flipPair(symbol);
+		const pairData = brokerPairs.includes(symbol) ? symbol : flipSymbol;
+		try {
+			const res = await getBrokerQuote(pairData, side);
+			if (res) {
+				if (side === 'buy') {
+					this.setState({ buyPrice: res.price });
+				} else {
+					this.setState({ sellPrice: res.price });
+				}
+
+				let quoteSeconds = '';
+				if (!isNaN(moment(res.expiry).diff(moment(), 'seconds')))
+					quoteSeconds = moment(res.expiry).diff(moment(), 'seconds');
+				clearTimeout(timeout);
+				this.setState({
+					token: res.token,
+					OriginalQuoteSeconds: quoteSeconds,
+					quoteSeconds,
+					isAmountChanged: false,
+				});
+			}
+		} catch (error) {
+			if (error) {
+				clearTimeout(timeout);
+				this.setState({
+					quoteSeconds: '',
+					isTimer: false,
+					isAmountChanged: false,
+				});
+			}
+		}
+	};
+
+	handleBrokerQuote = _debounce(this.getBrokerQuoteData, 1000);
+
+	getBrokerData = async () => {
+		try {
+			await getBroker();
+		} catch (error) {
+			if (error) {
+				message.error(error.message);
+			}
+		}
+	};
 
 	storeData = (data) => {
 		this.props.setOrderbooks(data);
@@ -447,7 +565,10 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onCloseDialog = () => {
-		this.setState({ showQuickTradeModal: false }, this.resetOrderData);
+		this.setState(
+			{ showQuickTradeModal: false, isTimer: false },
+			this.resetOrderData
+		);
 	};
 
 	onReviewQuickTrade = () => {
@@ -455,64 +576,133 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	onExecuteTrade = () => {
-		const { side, pair } = this.state;
+		const {
+			side,
+			pair,
+			existBroker,
+			brokerSourceAmount,
+			brokerTargetAmount,
+			sellPrice,
+			buyPrice,
+			token,
+		} = this.state;
 		const { pairs, targetAmount, sourceAmount } = this.props;
 		const pairData = pairs[pair] || {};
 		const { increment_size } = pairData;
 
 		let size;
 		let price;
-		if (side === 'buy') {
-			[size, price] = [targetAmount, sourceAmount];
-		} else {
-			[price, size] = [targetAmount, sourceAmount];
-		}
 
-		const orderData = {
-			type: 'market',
-			side,
-			size: formatNumber(size, getDecimals(increment_size)),
-			symbol: pair,
-		};
+		if (!Object.keys(existBroker).length) {
+			if (side === 'buy') {
+				[size, price] = [targetAmount, sourceAmount];
+			} else {
+				[price, size] = [targetAmount, sourceAmount];
+			}
+			const orderData = {
+				type: 'market',
+				side,
+				size: formatNumber(size, getDecimals(increment_size)),
+				symbol: pair,
+			};
 
-		this.setState({
-			order: {
-				completed: false,
-				fetching: true,
-				error: false,
-				data: orderData,
-			},
-		});
-
-		submitOrder(orderData)
-			.then(({ data }) => {
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: false,
-						data: {
-							...data,
-							price,
-						},
-					},
-				});
-			})
-			.catch((err) => {
-				const _error =
-					err.response && err.response.data
-						? err.response.data.message
-						: err.message;
-
-				this.setState({
-					order: {
-						completed: true,
-						fetching: false,
-						error: _error,
-						data: orderData,
-					},
-				});
+			this.setState({
+				order: {
+					completed: false,
+					fetching: true,
+					error: false,
+					data: orderData,
+				},
 			});
+
+			submitOrder(orderData)
+				.then(({ data }) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data: {
+								...data,
+								price,
+							},
+						},
+					});
+				})
+				.catch((err) => {
+					const _error =
+						err.response && err.response.data
+							? err.response.data.message
+							: err.message;
+
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: orderData,
+						},
+					});
+				});
+		} else {
+			const {
+				sell_price,
+				buy_price,
+				increment_size,
+				symbol,
+				type,
+			} = existBroker;
+			if (type === 'manual') {
+				if (side === 'buy') {
+					price = sell_price;
+					size = brokerTargetAmount;
+				} else {
+					price = buy_price;
+					size = brokerSourceAmount;
+				}
+			} else {
+				if (side === 'buy') {
+					price = sellPrice;
+					size = brokerTargetAmount;
+				} else {
+					price = buyPrice;
+					size = brokerSourceAmount;
+				}
+			}
+			const selectedPair = symbol === pair ? pair : this.flipPair(pair);
+			const brokerOrderData = {
+				price,
+				side,
+				symbol: selectedPair,
+				size: formatNumber(size, getDecimals(increment_size)),
+				token,
+			};
+
+			executeBroker(brokerOrderData)
+				.then((data) => {
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: false,
+							data,
+						},
+					});
+					this.getBrokerData();
+				})
+				.catch((err) => {
+					const _error =
+						err.data && err.data.message ? err.data.message : err.message;
+					this.setState({
+						order: {
+							completed: true,
+							fetching: false,
+							error: _error,
+							data: brokerOrderData,
+						},
+					});
+				});
+		}
 	};
 
 	onGoBack = () => {
@@ -612,16 +802,36 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	constructTarget = () => {
-		const { sourceOptions, routeParams, pairs, router, tickers } = this.props;
+		const {
+			sourceOptions,
+			routeParams,
+			pairs,
+			router,
+			tickers,
+			broker,
+		} = this.props;
 
 		const pairKeys = Object.keys(pairs);
 		const flippedPair = this.flipPair(routeParams.pair);
+		const brokerPairs = broker.map((br) => br.symbol);
 
 		let pair;
 		let side;
 		let tickerClose;
 		let originalPair;
-		if (pairKeys.includes(routeParams.pair)) {
+		if (brokerPairs.includes(routeParams.pair)) {
+			originalPair = routeParams.pair;
+			pair = routeParams.pair;
+			const { close } = tickers[pair] || {};
+			side = 'buy';
+			tickerClose = close;
+		} else if (brokerPairs.includes(flippedPair)) {
+			originalPair = routeParams.pair;
+			pair = flippedPair;
+			const { close } = tickers[pair] || {};
+			side = 'sell';
+			tickerClose = 1 / close;
+		} else if (pairKeys.includes(routeParams.pair)) {
 			originalPair = routeParams.pair;
 			pair = routeParams.pair;
 			const { close } = tickers[pair] || {};
@@ -675,7 +885,7 @@ class QuickTradeContainer extends PureComponent {
 	brokerTargetChange = (existBroker, targetAmount) => {
 		const decimalPoint = getDecimals(existBroker.increment_size);
 		if (this.state.side === 'buy') {
-			const sourceAmount = math.round(
+			const sourceAmount = _floor(
 				targetAmount * existBroker.sell_price,
 				decimalPoint
 			);
@@ -684,7 +894,7 @@ class QuickTradeContainer extends PureComponent {
 				brokerSourceAmount: sourceAmount,
 			});
 		} else {
-			const sourceAmount = math.round(
+			const sourceAmount = _floor(
 				targetAmount / existBroker.buy_price,
 				decimalPoint
 			);
@@ -698,7 +908,7 @@ class QuickTradeContainer extends PureComponent {
 	brokerSourceChange = (existBroker, sourceAmount) => {
 		const decimalPoint = getDecimals(existBroker.increment_size);
 		if (this.state.side === 'buy') {
-			const targetAmount = math.round(
+			const targetAmount = _floor(
 				sourceAmount / existBroker.sell_price,
 				decimalPoint
 			);
@@ -707,7 +917,7 @@ class QuickTradeContainer extends PureComponent {
 				brokerSourceAmount: sourceAmount,
 			});
 		} else {
-			const targetAmount = math.round(
+			const targetAmount = _floor(
 				sourceAmount * existBroker.buy_price,
 				decimalPoint
 			);
@@ -722,6 +932,8 @@ class QuickTradeContainer extends PureComponent {
 		const { existBroker } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerTargetChange(existBroker, targetAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: targetAmount,
@@ -735,6 +947,8 @@ class QuickTradeContainer extends PureComponent {
 		const { existBroker } = this.state;
 		if (existBroker && Object.keys(existBroker).length) {
 			this.brokerSourceChange(existBroker, sourceAmount);
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
 		} else {
 			this.props.setPriceEssentials({
 				size: sourceAmount,
@@ -753,6 +967,7 @@ class QuickTradeContainer extends PureComponent {
 			brokerSourceAmount,
 			brokerTargetAmount,
 			pair,
+			isBrokerPaused,
 		} = this.state;
 		const { targetAmount, sourceAmount, broker, pairs } = this.props;
 		const brokerPairs = broker.map((br) => br.symbol);
@@ -775,7 +990,8 @@ class QuickTradeContainer extends PureComponent {
 				!brokerSourceAmount ||
 				!brokerTargetAmount ||
 				sourceError ||
-				targetError
+				targetError ||
+				isBrokerPaused
 			);
 		} else {
 			return (
@@ -809,11 +1025,92 @@ class QuickTradeContainer extends PureComponent {
 	};
 
 	forwardSourceError = (sourceError) => {
-		this.setState({ sourceError });
+		this.setState({ sourceError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = sourceError || this.state.targetError ? false : true;
+				clearTimeout(timeout);
+			}
+			this.setState({ isAmountChanged: temp });
+		});
 	};
 
 	forwardTargetError = (targetError) => {
-		this.setState({ targetError });
+		this.setState({ targetError }, () => {
+			let temp = false;
+			if (
+				parseFloat(this.state.brokerTargetAmount) ||
+				parseFloat(this.state.brokerSourceAmount)
+			) {
+				temp = targetError || this.state.sourceError ? false : true;
+				clearTimeout(timeout);
+			}
+			this.setState({ isAmountChanged: temp });
+		});
+	};
+
+	handleSec = (isTimer) => {
+		this.setState({ isTimer });
+	};
+
+	handleRefresh = () => {
+		const { pair, side } = this.state;
+		this.setState({ isLoading: true });
+		this.handleBrokerQuote(pair, side);
+		setTimeout(() => {
+			this.setState({ isLoading: false }, this.handleSec(false));
+		}, 2000);
+	};
+
+	handleSecondsChange = (quoteSeconds) => {
+		if (quoteSeconds > 0) {
+			timeout = setTimeout(
+				() => this.setState({ quoteSeconds: quoteSeconds - 1 }),
+				1000
+			);
+		} else {
+			clearTimeout(timeout);
+			this.setState({ quoteSeconds: '' });
+			this.handleSec(true);
+		}
+	};
+
+	renderFooterBtn = (isExistBroker, quoteSeconds) => {
+		if (isExistBroker) {
+			if (quoteSeconds <= 0) {
+				return (
+					<Button
+						label={STRINGS['REFRESH']}
+						onClick={this.handleRefresh}
+						className="ml-2"
+					/>
+				);
+			} else {
+				return (
+					<Button
+						label={
+							<div>
+								{STRINGS['CONFIRM_TEXT']} (
+								<Timer quoteSeconds={quoteSeconds} />)
+							</div>
+						}
+						onClick={this.onExecuteTrade}
+						className="ml-2"
+					/>
+				);
+			}
+		} else {
+			return (
+				<Button
+					label={STRINGS['CONFIRM_TEXT']}
+					onClick={this.onExecuteTrade}
+					className="ml-2"
+				/>
+			);
+		}
 	};
 
 	render() {
@@ -846,6 +1143,10 @@ class QuickTradeContainer extends PureComponent {
 			brokerTargetAmount,
 			brokerSourceAmount,
 			existBroker,
+			isBrokerPaused,
+			isLoading,
+			quoteSeconds,
+			OriginalQuoteSeconds,
 		} = this.state;
 
 		let market = data.map((key) => {
@@ -905,6 +1206,11 @@ class QuickTradeContainer extends PureComponent {
 		const isExistBroker =
 			existBroker && Object.keys(existBroker).length ? true : false;
 
+		let widthPercent = 100;
+		if (!isNaN((quoteSeconds / OriginalQuoteSeconds) * 100)) {
+			widthPercent = (quoteSeconds / OriginalQuoteSeconds) * 100;
+		}
+
 		return (
 			<div className="h-100">
 				<div id="quick-trade-header"></div>
@@ -951,6 +1257,7 @@ class QuickTradeContainer extends PureComponent {
 						isExistBroker={isExistBroker}
 						flipPair={this.flipPair}
 						broker={broker}
+						isBrokerPaused={isBrokerPaused}
 					/>
 					<Dialog
 						isOpen={showQuickTradeModal}
@@ -961,38 +1268,64 @@ class QuickTradeContainer extends PureComponent {
 						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
-						{showQuickTradeModal ? (
+						{isLoading ? (
+							<Loader relative={true} background={false} />
+						) : showQuickTradeModal ? (
 							!order.fetching && !order.completed ? (
 								<div className="quote-review-wrapper">
 									<div>
-										<ReviewBlock
-											symbol={selectedSource}
-											text={STRINGS['SPEND_AMOUNT']}
-											amount={sourceValue}
-											decimalPoint={decimalPoint}
-										/>
-										<ReviewBlock
-											symbol={selectedTarget}
-											text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
-											amount={targetValue}
-											decimalPoint={decimalPoint}
-										/>
+										<div className="mb-4">
+											<div className="quote_header">
+												{STRINGS['CONFIRM_TEXT']}
+											</div>
+											<div className="quote_content">
+												{STRINGS['QUOTE_CONFIRMATION_MSG_TEXT_1']}
+											</div>
+											<div className="quote_content">
+												{STRINGS['QUOTE_CONFIRMATION_MSG_TEXT_2']}
+											</div>
+										</div>
+										<div
+											className={
+												quoteSeconds <= 0 && isExistBroker
+													? 'disabled-area'
+													: ''
+											}
+										>
+											<ReviewBlock
+												symbol={selectedSource}
+												text={STRINGS['SPEND_AMOUNT']}
+												amount={sourceValue}
+												decimalPoint={decimalPoint}
+												isExistBroker={isExistBroker}
+											/>
+											{isExistBroker ? (
+												<div
+													className={'loading-border'}
+													style={{ width: `${widthPercent}%` }}
+												></div>
+											) : null}
+											<ReviewBlock
+												symbol={selectedTarget}
+												text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
+												amount={targetValue}
+												decimalPoint={decimalPoint}
+												isExistBroker={isExistBroker}
+											/>
+										</div>
 										<footer className="d-flex pt-4">
 											<Button
 												label={STRINGS['CLOSE_TEXT']}
 												onClick={this.onCloseDialog}
 												className="mr-2"
 											/>
-											<Button
-												label={STRINGS['CONFIRM_TEXT']}
-												onClick={this.onExecuteTrade}
-												className="ml-2"
-											/>
+											{this.renderFooterBtn(isExistBroker, quoteSeconds)}
 										</footer>
 									</div>
 								</div>
 							) : (
 								<QuoteResult
+									coins={coins}
 									pairData={pairData}
 									data={order}
 									onClose={this.onCloseDialog}
@@ -1033,7 +1366,14 @@ const mapStateToProps = (store) => {
 	const pair = store.app.pair;
 	const pairData = store.app.pairs[pair] || {};
 	const sourceOptions = getSourceOptions(store.app.pairs, store.app.broker);
-	const qtlimits = QuickTradeLimitsSelector(store);
+	const broker = store.app.broker || [];
+	let flippedPair = pair.split('-');
+	flippedPair = flippedPair.reverse().join('-');
+	const qtlimits = !!broker.filter(
+		(item) => item.symbol === pair || item.symbol === flippedPair
+	)
+		? BrokerLimitsSelector(store)
+		: QuickTradeLimitsSelector(store);
 
 	return {
 		sourceOptions,
@@ -1053,7 +1393,7 @@ const mapStateToProps = (store) => {
 		estimatedPrice: store.quickTrade.estimatedPrice,
 		sourceAmount: store.quickTrade.sourceAmount,
 		targetAmount: store.quickTrade.targetAmount,
-		broker: store.app.broker,
+		broker,
 	};
 };
 
@@ -1063,9 +1403,10 @@ const mapDispatchToProps = (dispatch) => ({
 	setNotification: bindActionCreators(setNotification, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	setPriceEssentials: bindActionCreators(setPriceEssentials, dispatch),
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
 });
 
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(QuickTradeContainer);
+)(withConfig(QuickTradeContainer));

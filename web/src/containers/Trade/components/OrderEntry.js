@@ -33,9 +33,11 @@ import { Loader, Tooltip } from '../../../components';
 import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
 
 import STRINGS from '../../../config/localizedStrings';
+import { SIDES, TYPES } from 'config/options';
 import { isLoggedIn } from '../../../utils/token';
 import { openFeesStructureandLimits } from '../../../actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
+import { setOrderEntryData } from 'actions/orderbookAction';
 
 const ORDER_OPTIONS = () => [
 	{
@@ -49,17 +51,23 @@ const ORDER_OPTIONS = () => [
 ];
 
 class OrderEntry extends Component {
-	state = {
-		formValues: {},
-		initialValues: {
-			side: STRINGS.SIDES[0].value,
-			type: STRINGS.TYPES[1].value,
-		},
-		orderPrice: 0,
-		orderFees: 0,
-		outsideFormError: '',
-		orderType: 'regular',
-	};
+	constructor(props) {
+		super(props);
+		const { order_entry_data } = props;
+		const { order_mode, entry_type, entry_side } = order_entry_data;
+		this.state = {
+			formValues: {},
+			initialValues: {
+				order_type: order_mode,
+				side: entry_side,
+				type: entry_type,
+			},
+			orderPrice: 0,
+			orderFees: 0,
+			outsideFormError: '',
+			orderType: 'regular',
+		};
+	}
 
 	componentDidMount() {
 		if (this.props.pair_base) {
@@ -403,10 +411,25 @@ class OrderEntry extends Component {
 	};
 
 	reset = () => {
-		const { change } = this.props;
+		const { change, resetSlider } = this.props;
+		this.setState({ sliderVal: 0 });
 		change(FORM_NAME, 'stop', '');
 		change(FORM_NAME, 'price', '');
 		change(FORM_NAME, 'size', '');
+		resetSlider();
+	};
+
+	handleOrderBookChange = (name, value) => {
+		const { order_entry_data } = this.props;
+		let orderEntryData = {};
+		orderEntryData = {
+			...order_entry_data,
+			[name]: value,
+		};
+		this.props.setOrderEntryData(orderEntryData);
+		if (name === 'order_mode') {
+			this.setState({ orderType: value });
+		}
 	};
 
 	generateFormValues = (props, buyingPair = '') => {
@@ -417,35 +440,43 @@ class OrderEntry extends Component {
 			increment_price,
 			min_price,
 			max_price,
-			coins,
 			pair_base,
 			pair_2,
+			pair_base_display,
+			pair_2_display,
 			balance = {},
 			marketPrice,
-			pair = '',
 			side = 'buy',
 		} = props;
 
-		const { symbol } = coins[pair] || DEFAULT_COIN_DATA;
-		const buyData = coins[buyingPair] || DEFAULT_COIN_DATA;
+		const {
+			initialValues: { order_type },
+		} = this.state;
 		const formValues = {
 			orderType: {
 				name: 'order_type',
 				type: 'dropdown',
 				options: ORDER_OPTIONS(),
-				onChange: (orderType) => this.setState({ orderType }),
+				onChange: (orderType) =>
+					this.handleOrderBookChange('order_mode', orderType),
+				isOrderEntry: true,
+				value: order_type,
 			},
 			type: {
 				name: 'type',
 				type: 'tab',
-				options: STRINGS['TYPES'],
+				options: TYPES,
 				validate: [required],
+				onChange: (marketType) =>
+					this.handleOrderBookChange('entry_type', marketType),
 			},
 			side: {
 				name: 'side',
 				type: 'select',
-				options: STRINGS['SIDES'],
+				options: SIDES,
 				validate: [required],
+				onChange: (selectedSide) =>
+					this.handleOrderBookChange('entry_side', selectedSide),
 			},
 			clear: {
 				name: 'clear',
@@ -492,7 +523,7 @@ class OrderEntry extends Component {
 					maxValue(max_price),
 					step(increment_price),
 				],
-				currency: buyData.symbol.toUpperCase(),
+				currency: pair_2_display,
 				setRef: this.props.setPriceRef,
 			},
 			size: {
@@ -515,9 +546,7 @@ class OrderEntry extends Component {
 											balance[`${pair_base}_available`],
 											increment_size
 									  )}{' '}
-								{side === 'buy'
-									? pair_2.toUpperCase()
-									: pair_base.toUpperCase()}
+								{side === 'buy' ? pair_2_display : pair_base_display}
 							</span>
 						</div>
 					</div>
@@ -529,13 +558,15 @@ class OrderEntry extends Component {
 				min: min_size,
 				max: max_size,
 				validate: [required, minValue(min_size), maxValue(max_size)],
-				currency: symbol.toUpperCase(),
+				currency: pair_base_display,
 				setRef: this.props.setSizeRef,
 			},
 			slider: {
 				name: 'size-slider',
 				type: 'slider',
 				onClick: this.setMax,
+				value: 0,
+				setRef: this.props.setSliderRef,
 			},
 			postOnly: {
 				name: 'post_only',
@@ -579,6 +610,7 @@ class OrderEntry extends Component {
 			side,
 			pair_base,
 			pair_2,
+			pair_2_display,
 			price,
 			coins,
 			size,
@@ -593,10 +625,8 @@ class OrderEntry extends Component {
 			orderType,
 		} = this.state;
 		const pairBase = coins[pair_base] || DEFAULT_COIN_DATA;
-		const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 
 		const currencyName = pairBase.fullname;
-		const buyingName = pairTwo.symbol.toUpperCase();
 		if (isLoggedIn() && !balance.hasOwnProperty(`${pair_2}_balance`)) {
 			return <Loader relative={true} background={false} />;
 		}
@@ -626,7 +656,7 @@ class OrderEntry extends Component {
 						price={price}
 						size={size}
 						type={type}
-						currency={buyingName}
+						currency={pair_2_display}
 						orderPrice={orderPrice}
 						fees={orderFees}
 						increment_price={increment_price}
@@ -648,6 +678,8 @@ const mapStateToProps = (state) => {
 	const {
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,
@@ -663,6 +695,8 @@ const mapStateToProps = (state) => {
 		pair,
 		pair_base,
 		pair_2,
+		pair_base_display,
+		pair_2_display,
 		max_price,
 		max_size,
 		min_size,
@@ -679,6 +713,7 @@ const mapStateToProps = (state) => {
 		asks,
 		bids,
 		marketPrice,
+		order_entry_data: state.orderbook.order_entry_data,
 		// totalAsset: state.asset.totalAsset
 	};
 };
@@ -690,6 +725,7 @@ const mapDispatchToProps = (dispatch) => ({
 		openFeesStructureandLimits,
 		dispatch
 	),
+	setOrderEntryData: bindActionCreators(setOrderEntryData, dispatch),
 });
 
 export default connect(

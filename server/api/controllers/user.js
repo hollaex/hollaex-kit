@@ -2,6 +2,7 @@
 
 const { isEmail, isUUID } = require('validator');
 const toolsLib = require('hollaex-tools-lib');
+const crypto = require('crypto');
 const { sendEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { loggerUser } = require('../../config/logger');
@@ -26,11 +27,19 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG } = require('../../constants');
 const { all } = require('bluebird');
-const { isString } = require('lodash');
+const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+
+const VERIFY_STATUS = {
+	EMPTY: 0,
+	PENDING: 1,
+	REJECTED: 2,
+	COMPLETED: 3
+};
+
 const INITIAL_SETTINGS = () => {
 	return {
 		notification: {
@@ -73,7 +82,7 @@ const signUpUser = (req, res) => {
 		ip
 	);
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
@@ -287,15 +296,45 @@ const loginPost = (req, res) => {
 		password,
 		otp_code,
 		captcha,
-		service
+		service,
+		long_term
 	} = req.swagger.params.authentication.value;
-	let { email } = req.swagger.params.authentication.value;
+	let {
+		email
+	} = req.swagger.params.authentication.value;
+
 	const ip = req.headers['x-real-ip'];
 	const device = req.headers['user-agent'];
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
 	const time = new Date();
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/loginPost',
+		'email',
+		email,
+		'otp_code',
+		otp_code,
+		'captcha',
+		captcha,
+		'service',
+		service,
+		'long_term',
+		long_term,
+		'ip',
+		ip,
+		'device',
+		device,
+		'domain',
+		domain,
+		'origin',
+		origin,
+		'referer',
+		referer
+	);
+
 
 	if (!email || typeof email !== 'string' || !isEmail(email)) {
 		loggerUser.error(
@@ -306,7 +345,7 @@ const loginPost = (req, res) => {
 		return res.status(400).json({ message: 'Invalid Email' });
 	}
 
-	email = email.toLowerCase();
+	email = email.toLowerCase().trim();
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
@@ -385,7 +424,8 @@ const loginPost = (req, res) => {
 					user.is_support,
 					user.is_supervisor,
 					user.is_kyc,
-					user.is_communicator
+					user.is_communicator,
+					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
 			});
 		})
@@ -496,9 +536,9 @@ const resetPassword = (req, res) => {
 
 const getUser = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUser', req.auth.sub);
-	const email = req.auth.sub.email;
+	const id = req.auth.sub.id;
 
-	toolsLib.user.getUserByEmail(email, true, true, {
+	toolsLib.user.getUserByKitId(id, true, true, {
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -791,7 +831,7 @@ const createHmacToken = (req, res) => {
 		.then((confirmed) => {
 			if (confirmed) {
 				// TODO check for the name duplication
-				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name)
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -842,7 +882,7 @@ function updateHmacToken(req, res) {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled)
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -993,6 +1033,67 @@ const userCheckTransaction = (req, res) => {
 		});
 };
 
+const addUserBank = (req, res) =>  {
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/addUserBank auth',
+		req.auth
+	);
+	let email = req.auth.sub.email;
+	let data = req.swagger.params.data.value;
+
+	if (!data.type) {
+		return res.status(400).json({ message: 'No type is selected' });
+	}
+
+	let bank_account = {};
+
+	toolsLib.user.getUserByEmail(email, false)
+		.then(async (user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
+
+			if (!toolsLib.getKitConfig().user_payments) {
+				throw new Error ('Payment system fields are not defined yet');
+			}
+
+			if (!toolsLib.getKitConfig().user_payments[data.type]) {
+				throw new Error ('Payment system fields are not defined yet');
+			}
+
+			each(toolsLib.getKitConfig().user_payments[data.type].data, ({ required, key }) => {
+				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
+					throw new Error (`Missing field: ${key}`);
+				}
+				if (Object.prototype.hasOwnProperty.call(data, key)) {
+					bank_account[key] = data[key];
+				}
+			});
+		
+			if (Object.keys(bank_account).length === 0) {
+				throw new Error ('No payment system fields to add');
+			}
+			
+			bank_account.id = crypto.randomBytes(8).toString('hex');
+			bank_account.status = VERIFY_STATUS.PENDING;
+
+			let newBank = user.bank_account;
+			newBank.push(bank_account);
+
+			const updatedUser = await user.update(
+				{ bank_account: newBank },
+				{ fields: ['bank_account'] }
+			);
+
+			return res.json(updatedUser.bank_account);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/addUserBank catch', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1017,5 +1118,6 @@ module.exports = {
 	deleteHmacToken,
 	getUserStats,
 	userCheckTransaction,
-	requestEmailConfirmation
+	requestEmailConfirmation,
+	addUserBank
 };

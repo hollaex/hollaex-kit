@@ -37,6 +37,8 @@ export const NOTIFICATIONS = {
 	EARLY_UNSTAKE: 'EARLY_UNSTAKE',
 	UNSTAKE: 'UNSTAKE',
 	MOVE_XHT: 'MOVE_XHT',
+	METAMASK_ERROR: 'METAMASK_ERROR',
+	CONFIGURE_APPS: 'CONFIGURE_APPS',
 };
 export const CONTACT_FORM = 'CONTACT_FORM';
 export const HELPFUL_RESOURCES_FORM = 'HELPFUL_RESOURCES_FORM';
@@ -53,16 +55,19 @@ export const SET_TICKER_FROM_TRADE = 'SET_TICKER_FROM_TRADE';
 export const CHANGE_THEME = 'CHANGE_THEME';
 export const SET_ORDER_LIMITS = 'SET_ORDER_LIMITS';
 export const FEES_STRUCTURE_AND_LIMITS = 'FEES_STRUCTURE_AND_LIMITS';
+export const MARKET_SELECTOR = 'MARKET_SELECTOR';
+export const CONNECT_VIA_DESKTOP = 'CONNECT_VIA_DESKTOP';
 export const RISK_PORTFOLIO_ORDER_WARING = 'RISK_PORTFOLIO_ORDER_WARING';
 export const RISKY_ORDER = 'RISKY_ORDER';
 export const LOGOUT_CONFORMATION = 'LOGOUT_CONFORMATION';
 export const SET_CURRENCIES = 'SET_CURRENCIES';
+export const SET_USER_PAYMENTS = 'SET_USER_PAYMENTS';
+export const SET_ONRAMP = 'SET_ONRAMP';
+export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
-export const REQUEST_XHT_ACCESS = 'REQUEST_XHT_ACCESS';
 export const SET_INFO = 'SET_INFO';
-export const SET_WAVE_AUCTION = 'SET_WAVE_AUCTION';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
 export const SET_PLUGINS_FAILURE = 'SET_PLUGINS_FAILURE';
@@ -75,6 +80,7 @@ export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 export const SET_CONTRACTS = 'SET_CONTRACTS';
+export const SET_TRADE_TAB = 'SET_TRADE_TAB';
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',
@@ -281,6 +287,27 @@ export const setCurrencies = (coins) => ({
 	},
 });
 
+export const setUserPayments = (user_payments = {}) => ({
+	type: SET_USER_PAYMENTS,
+	payload: {
+		user_payments,
+	},
+});
+
+export const setOnramp = (onramp = {}) => ({
+	type: SET_ONRAMP,
+	payload: {
+		onramp,
+	},
+});
+
+export const setOfframp = (offramp = {}) => ({
+	type: SET_OFFRAMP,
+	payload: {
+		offramp,
+	},
+});
+
 export const setBroker = (broker) => ({
 	type: SET_BROKER,
 	payload: {
@@ -341,6 +368,18 @@ export const setInfo = (info) => ({
 export const openFeesStructureandLimits = (data = {}) =>
 	setNotification(FEES_STRUCTURE_AND_LIMITS, data, true);
 
+export const openMarketSelector = (data = {}) =>
+	setNotification(MARKET_SELECTOR, data, true);
+
+export const openConnectViaDesktop = (data = {}) =>
+	setNotification(CONNECT_VIA_DESKTOP, data, true);
+
+export const openMetamaskError = (data = {}) =>
+	setNotification(NOTIFICATIONS.METAMASK_ERROR, data, true);
+
+export const openConfigureApps = (onRemove) =>
+	setNotification(NOTIFICATIONS.CONFIGURE_APPS, { onRemove }, true);
+
 export const openRiskPortfolioOrderWarning = (data = {}) =>
 	setNotification(RISK_PORTFOLIO_ORDER_WARING, data, true);
 
@@ -377,19 +416,6 @@ export const getExchangeInfo = () => {
 						payload: { info: { ...res.data.info } },
 					});
 				}
-			}
-		});
-	};
-};
-
-export const getWaveAuction = () => {
-	return (dispatch) => {
-		axios.get('/wave').then((res) => {
-			if (res && res.data && res.data.data) {
-				dispatch({
-					type: SET_WAVE_AUCTION,
-					payload: { data: res.data.data },
-				});
 			}
 		});
 	};
@@ -466,5 +492,10 @@ export const setInjectedHTML = (payload) => ({
 
 export const setContracts = (payload) => ({
 	type: SET_CONTRACTS,
+	payload,
+});
+
+export const setTradeTab = (payload) => ({
+	type: SET_TRADE_TAB,
 	payload,
 });

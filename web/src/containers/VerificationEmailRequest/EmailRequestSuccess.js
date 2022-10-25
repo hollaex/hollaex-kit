@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
-import { IconTitle, Button } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Button } from 'components';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 const EmailRequestSuccess = ({ onClick, icons: ICONS, ...rest }) => {
 	return (

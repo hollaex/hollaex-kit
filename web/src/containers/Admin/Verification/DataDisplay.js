@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
+import { message } from 'antd';
 import { isDate } from 'moment';
 import classnames from 'classnames';
 import _map from 'lodash/map';
@@ -123,13 +124,33 @@ export const renderJSONKey = (key, value) => {
 		</div>
 	);
 };
-export default ({ className = '', renderRow, title, data = {} }) => (
-	<div className={classnames('verification_data_container-data', className)}>
-		{title ? <h2>{title}</h2> : null}
-		{data.message ? (
-			<div>{JSON.stringify(data.message)}</div>
-		) : (
-			Object.entries(data).map(renderRow)
-		)}
-	</div>
-);
+
+const DataDisplay = ({
+	className = '',
+	renderRow,
+	title,
+	data = {},
+	popError = false,
+}) => {
+	useEffect(() => {
+		if (popError && data.message) {
+			message.error(JSON.stringify(data.message));
+		}
+
+		//  TODO: Fix react-hooks/exhaustive-deps
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	return (
+		<div className={classnames('verification_data_container-data', className)}>
+			{title ? <h2>{title}</h2> : null}
+			{data.message ? (
+				<div>{JSON.stringify(data.message)}</div>
+			) : (
+				Object.entries(data).map(renderRow)
+			)}
+		</div>
+	);
+};
+
+export default DataDisplay;

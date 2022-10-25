@@ -98,6 +98,9 @@ class OperatorControls extends Component {
 			selectedThemes,
 			allIconsArray: [],
 			injected_html: { head: '', body: '', ...injected_html },
+			isUpload: false,
+			isRemove: false,
+			removedKeys: [],
 		};
 	}
 
@@ -334,7 +337,7 @@ class OperatorControls extends Component {
 	};
 
 	countPlaceholders = (string = '') => {
-		const matches = string.match(/{(.*?)}/);
+		const matches = string.match(/[^{}]+(?=})/g);
 		return matches ? matches.length : 0;
 	};
 
@@ -389,6 +392,7 @@ class OperatorControls extends Component {
 					message.error(error);
 				});
 		}
+		localStorage.removeItem('removedBackgroundItems');
 	};
 
 	reload = () => window.location.reload(false);
@@ -715,18 +719,25 @@ class OperatorControls extends Component {
 		});
 	};
 
-	removeIcon = (key) => {
-		const { removeIcon } = this.props;
-		const { iconsOverwrites } = this.state;
-		const { [key]: iconKey, ...restIcons } = iconsOverwrites;
-		this.setState(
-			{
-				iconsOverwrites: restIcons,
-			},
-			() => {
-				removeIcon(key);
+	removeIcon = (themeKey, iconKey) => {
+		const icons = this.state.iconsOverwrites;
+		const selectedTheme = themeKey && icons?.[themeKey];
+		let data = {};
+		Object.keys(selectedTheme).forEach((item) => {
+			if (item !== iconKey) {
+				data = {
+					...data,
+					[item]: selectedTheme[item],
+				};
 			}
-		);
+		});
+		const iconsOverwrites = {
+			...icons,
+			[themeKey]: data,
+		};
+		const iconsEditData = { ...this.state.iconsEditData };
+		iconsEditData[themeKey] = { [iconKey]: undefined };
+		this.setState({ iconsEditData, iconsOverwrites });
 	};
 
 	openThemeSettings = () => {
@@ -852,6 +863,16 @@ class OperatorControls extends Component {
 		}));
 	};
 
+	handleRemoveOrUpload = (type, val) => {
+		if (type === 'remove') {
+			this.setState({ isRemove: val });
+		} else if (type === 'removedKeys') {
+			this.setState({ removedKeys: val });
+		} else {
+			this.setState({ isUpload: val });
+		}
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -883,6 +904,9 @@ class OperatorControls extends Component {
 			isSectionsModalOpen,
 			isAddSectionOpen,
 			injected_html,
+			isRemove,
+			isUpload,
+			removedKeys,
 		} = this.state;
 		const {
 			isEditMode,
@@ -997,7 +1021,7 @@ class OperatorControls extends Component {
 									const placeholder = `${'<'}!-- In this section you can insert any HTML code to the ${title} of your website --${'>'}`;
 									return (
 										<TabPane className="w-100 h-100" tab={title} key={key}>
-											<div className="w-100 h-100">
+											<div className="w-100 h-100 operator-console">
 												<TextArea
 													name={key}
 													placeholder={placeholder}
@@ -1141,7 +1165,11 @@ class OperatorControls extends Component {
 						isOpen={isUploadIconOpen}
 						onCloseDialog={this.closeUploadIcon}
 						onSave={this.addIcons}
-						onReset={this.removeIcon}
+						removeIcon={this.removeIcon}
+						isRemove={isRemove}
+						isUpload={isUpload}
+						removedKeys={removedKeys}
+						handleRemoveOrUpload={this.handleRemoveOrUpload}
 					/>
 				)}
 				{isThemeSettingsOpen && (
@@ -1292,6 +1320,7 @@ class OperatorControls extends Component {
 const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	injected_html: state.app.injected_html,
+	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({

@@ -61,6 +61,7 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 
 			.app_container-main {
+				transition: 0.3s;
 				&.no_bottom_navigation {
 					height: 100%;
 				}
@@ -157,9 +158,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 			}
 			min-width: 0;
 			max-width: 0;
-			.sidebar-container {
-				overflow: hidden;
-			}
 		}
 	}
 	.exchange-warning {
@@ -170,6 +168,26 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 .layout-mobile {
 	.presentation_container {
 		padding-top: 4rem !important;
+	}
+	.connectViaDesktop_wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		.w-100 {
+			.subtitleClass {
+				font-size: 15px;
+				text-align: center;
+				justify-content: center;
+				align-items: baseline;
+			}
+		}
+		.connect_desktop_img {
+			margin: 8rem 0;
+		}
+		.connect_desktop_footer {
+			font-size: 16px;
+			text-align: center;
+		}
 	}
 }
 
@@ -242,8 +260,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.trade_tabs-container .trade_tabs-content,
 	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
-	.ohlc_data_wrapper .ohlc_label,
-	.ohlc_value,
 	.information_block-text_wrapper .text,
 	.qr-text,
 	.header_title-children,
@@ -253,6 +269,10 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.popup_info-wrapper .popup_info-text,
 	.otp_secret {
 		font-size: 1rem !important;
+	}
+
+	.action_notification-text {
+		line-height: 1rem !important;
 	}
 
 	.presentation_container,
@@ -295,8 +315,6 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.trade_tabs-container .trade_tabs-content,
 	.toogle_button-wrapper .toogle-content,
 	.trade_block-wrapper .trade_block-content,
-	.ohlc_data_wrapper .ohlc_label,
-	.ohlc_value,
 	.information_block-text_wrapper .text,
 	.qr-text,
 	.header_title-children,
@@ -307,6 +325,11 @@ $inner_container-border: 1px solid $colors-super-pale-black;
 	.otp_secret {
 		font-size: 0.9rem !important;
 	}
+
+	.action_notification-text {
+		line-height: 0.9rem !important;
+	}
+
 	.verification_container .header-content {
 		font-size: 1.2rem !important;
 	}

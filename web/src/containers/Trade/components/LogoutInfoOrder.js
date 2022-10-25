@@ -23,22 +23,17 @@ const LogoutInfoOrder = ({ icons: ICONS }) => {
 				className="w-100"
 			/>
 			<div className="text-center">
-				<div className="xht-order-heading">
-					{STRINGS['TERMS_OF_SERVICES.XHT_ORDER_TXT_1']}
-				</div>
+				<div className="xht-order-heading">{STRINGS['NOT_LOGGEDIN.TXT_1']}</div>
 				<div className="xht-order-content">
 					<div className="my-2">
-						{STRINGS['TERMS_OF_SERVICES.XHT_ORDER_TXT_2']}
-					</div>
-					<div className="my-2">
 						{STRINGS.formatString(
-							STRINGS['TERMS_OF_SERVICES.XHT_ORDER_TXT_3'],
+							STRINGS['NOT_LOGGEDIN.TXT_2'],
 							SIGN_IN,
 							<Link
 								to="/login"
 								className={classnames('blue-link', 'dialog-link', 'pointer')}
 							>
-								{STRINGS['TERMS_OF_SERVICES.LOGIN_HERE']}{' '}
+								{STRINGS['NOT_LOGGEDIN.LOGIN_HERE']}{' '}
 							</Link>
 						)}
 					</div>

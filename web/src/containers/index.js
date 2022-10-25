@@ -4,7 +4,6 @@ export { default as UserProfile } from './UserProfile';
 export { default as UserSecurity } from './UserSecurity';
 export { default as UserSettings } from './UserSettings';
 export { default as ContactForm } from './ContactForm';
-export { default as RequestForm } from './RequestForm';
 export { default as HelpfulResourcesForm } from './HelpfulResourcesForm';
 export { default as Account } from './Account';
 export * from './Wallet';
@@ -32,6 +31,8 @@ export { default as TermsOfService } from './TermsOfService';
 export { default as DepositFunds } from './TermsOfService/DepositFunds';
 export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
+export { default as Apps } from './Apps';
+export { default as AppDetails } from './AppDetails';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';
@@ -64,3 +65,5 @@ export { default as Tiers } from './Admin/Tiers';
 export { default as Roles } from './Admin/Roles';
 export { default as Resources } from './Admin/Resources';
 export { default as Pairs } from './Admin/Trades';
+export { default as Fiatmarkets } from './Admin/Fiat';
+export { default as AdminApps } from './Admin/Apps';

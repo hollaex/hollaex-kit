@@ -4,20 +4,17 @@ import classnames from 'classnames';
 
 import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
-// import RewardsBonus from './components/RewardsBonus';
 import AccountAssets from './components/AccountAssets';
-// import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import Markets from './components/Markets';
-// import AccountWaveAuction from './components/AccountWaveAuction';
 
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	SHOW_TOTAL_ASSETS,
-} from '../../config/constants';
-// import { formatAverage, formatBaseAmount } from '../../utils/currency';
-import STRINGS from '../../config/localizedStrings';
+} from 'config/constants';
+// import { formatAverage, formatBaseAmount } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 
 const MobileSummary = ({
 	user,
@@ -73,15 +70,6 @@ const MobileSummary = ({
 					title={STRINGS["SUMMARY.URGENT_REQUIREMENTS"]}
 					wrapperClassname="w-100"
 				>
-					<RewardsBonus
-						coins={coins}
-						user={user}
-						balance={balance}
-						lastMonthVolume={lastMonthVolume}
-						affiliation={affiliation}
-						onUpgradeAccount={onUpgradeAccount}
-						contentClassName="requirements-content"
-					/>
 				</SummaryBlock>
 			</div> */}
 			<div className="assets-wrapper w-100">
@@ -121,15 +109,8 @@ const MobileSummary = ({
 			</div>
 			{/*<div className="trading-volume-wrapper w-100">
 				<SummaryBlock
-					title={
-						IS_XHT
-							? STRINGS["SUMMARY.XHT_WAVE_AUCTION"]
-							: STRINGS["SUMMARY.TRADING_VOLUME"]
-					}
-					secondaryTitle={
-						IS_XHT ? (
-							''
-						) : (
+					title={STRINGS["SUMMARY.TRADING_VOLUME"]}
+					secondaryTitle={(
 							<span>
 								<span className="title-font">
 									{` ${formatAverage(formatBaseAmount(lastMonthVolume))}`}
@@ -142,14 +123,8 @@ const MobileSummary = ({
 										.format('MMMM')
 								).join('')}`}
 							</span>
-						)
-					}
+						)}
 				>
-					{IS_XHT ? (
-						<AccountWaveAuction user={user} />
-					) : (
-						<TradingVolume user={user} />
-					)}
 				</SummaryBlock>
 			</div>*/}
 			<SummaryBlock

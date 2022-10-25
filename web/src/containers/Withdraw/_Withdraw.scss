@@ -49,6 +49,15 @@ $content--margin: 2rem;
 		padding: $crypto-address--padding $crypto-address--padding * 4;
 	}
 
+	.review-crypto-mail {
+		font-size: $font-size-subhead2;
+		border: 1px solid $colors-deactivate-color2;
+		padding: 1.5rem 12rem;
+		.review-fee_message {
+			font-size: $font-size-main;
+		}
+	}
+
 	.review-info_message {
 		padding: 0.5rem;
 		font-size: $font-size-subtext;
@@ -75,6 +84,11 @@ $content--margin: 2rem;
 			margin: 0 0 40px;
 			background-color: $app-sidebar-background;
 			padding: 30px;
+
+			& .field-children .field-valid {
+				top: 8px;
+				right: -20px;
+			}
 		}
 		.btn-wrapper {
 			display: flex;
@@ -149,6 +163,7 @@ $content--margin: 2rem;
 			.action_notification-wrapper {
 				.action_notification-text {
 					font-size: $regular--font-size;
+					line-height: $regular--font-size;
 				}
 			}
 			.holla-button {

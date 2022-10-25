@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
-import { CheckTitle, MobileBarTabs, Loader } from '../../components';
-import { IS_XHT } from '../../config/constants';
+import { CheckTitle, MobileBarTabs, Loader } from 'components';
 import { UserSecurity, UserSettings, Summary, Verification } from '../';
-import STRINGS from '../../config/localizedStrings';
-import { openContactForm } from '../../actions/appActions';
+import STRINGS from 'config/localizedStrings';
+import { openContactForm } from 'actions/appActions';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -150,7 +149,12 @@ class Account extends Component {
 					/>
 				),
 				notifications: !otp_enabled ? '!' : '',
-				content: <UserSecurity openApiKey={activeDevelopers} router={this.props.router}/>,
+				content: (
+					<UserSecurity
+						openApiKey={activeDevelopers}
+						router={this.props.router}
+					/>
+				),
 			},
 			{
 				title: isMobile ? (
@@ -163,8 +167,13 @@ class Account extends Component {
 						icon={ICONS['TAB_SUMMARY']}
 					/>
 				),
-				notifications: verificationPending && !IS_XHT ? '!' : '',
-				content: <Verification router={this.props.router} location={this.props.location}/>,
+				notifications: verificationPending ? '!' : '',
+				content: (
+					<Verification
+						router={this.props.router}
+						location={this.props.location}
+					/>
+				),
 			},
 			{
 				title: isMobile ? (
@@ -177,7 +186,9 @@ class Account extends Component {
 						icon={ICONS['GEAR_GREY']}
 					/>
 				),
-				content: <UserSettings location={location} router={this.props.router}/>,
+				content: (
+					<UserSettings location={location} router={this.props.router} />
+				),
 			},
 		];
 		this.setState({ tabs, activeTab });

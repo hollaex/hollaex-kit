@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button } from '../';
+import { Button } from 'components';
 import { NotificationWraper, NotificationContent } from './Notification';
-
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 const ERROR_DENIED = 'Error Denied: ';
 const ERROR_INVALID_TOKEN = 'Invalid token';

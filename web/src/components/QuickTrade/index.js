@@ -22,6 +22,9 @@ import { FLEX_CENTER_CLASSES } from 'config/constants';
 import InputGroup from './InputGroup';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
+import { translateError } from './utils';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { generateCoinIconId } from 'utils/icon';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 
@@ -131,6 +134,7 @@ class QuickTrade extends Component {
 			flipPair,
 			pairs,
 			symbol,
+			isBrokerPaused,
 		} = this.props;
 		const {
 			inProp,
@@ -176,7 +180,7 @@ class QuickTrade extends Component {
 		const selectedTargetBalance =
 			selectedTarget &&
 			userBalance[`${selectedTarget.toLowerCase()}_available`];
-		const brokerPairs = broker.map((br) => br.symbol);
+		const brokerPairs = broker && broker.map((br) => br.symbol);
 		const flipedPair = flipPair(symbol);
 		let isUseBroker = false;
 		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
@@ -188,6 +192,24 @@ class QuickTrade extends Component {
 		} else {
 			isUseBroker = false;
 		}
+		const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
+
+		const getClassnameForPriceDifferences = (priceDifferences) => {
+			if (priceDifference === 0)
+				return 'price-diff-none trade-tab-price_diff_none';
+			if (priceDifference < 0)
+				return 'price-diff-down trade-tab-price_diff_down';
+			return 'price-diff-up trade-tab-price_diff_up';
+		};
+
+		const getClassnameForTickDifferences = (tickDifferences, state) => {
+			if (tickDifferences === 0)
+				return `glance-price-diff-none glance-trade-tab-price_diff_none ${state}`;
+			if (tickDifferences < 0)
+				return `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`;
+			return `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`;
+		};
+
 		return (
 			<div className="quick_trade-container">
 				<div
@@ -228,12 +250,8 @@ class QuickTrade extends Component {
 							<div className="trade-details-content">
 								<div className="d-flex pb-30">
 									<Image
-										iconId={`${pairBase.toUpperCase()}_ICON`}
-										icon={
-											ICONS[`${pairBase.toUpperCase()}_ICON`]
-												? ICONS[`${pairBase.toUpperCase()}_ICON`]
-												: ICONS['DEFAULT_ICON']
-										}
+										iconId={generateCoinIconId(pairBase)}
+										icon={ICONS[generateCoinIconId(pairBase)]}
 										wrapperClassName="coins-icon"
 										imageWrapperClassName="currency-ball-image-wrapper"
 									/>
@@ -242,7 +260,8 @@ class QuickTrade extends Component {
 											className="pairs pointer"
 											onClick={() => this.handleClick(key)}
 										>
-											{pairBase.toUpperCase()}/{pair_2.toUpperCase()}
+											{coins[pairBase] && coins[pairBase].display_name}/
+											{coins[pair_2] && coins[pair_2].display_name}
 										</div>
 										<div className="fullname">
 											{pairBase_fullName}/{pair2_fullName}
@@ -259,7 +278,7 @@ class QuickTrade extends Component {
 										<div className="d-flex">
 											<div className="f-size-22 pr-2">{ticker.last}</div>
 											<div className="fullname white-txt">
-												{pair_2.toUpperCase()}
+												{coins[pair_2] && coins[pair_2].display_name}
 											</div>
 										</div>
 									</div>
@@ -277,12 +296,8 @@ class QuickTrade extends Component {
 													<div
 														className={classnames(
 															'title-font',
-															priceDifference < 0
-																? 'price-diff-down trade-tab-price_diff_down'
-																: 'price-diff-up trade-tab-price_diff_up',
-															tickerDiff < 0
-																? `glance-price-diff-down glance-trade-tab-price_diff_down ${state}`
-																: `glance-price-diff-up glance-trade-tab-price_diff_up ${state}`
+															getClassnameForPriceDifferences(priceDifference),
+															getClassnameForTickDifferences(tickerDiff, state)
 														)}
 													>
 														{priceDifferencePercent}
@@ -299,6 +314,7 @@ class QuickTrade extends Component {
 										containerProps={{
 											style: { height: '100%', width: '100%' },
 										}}
+										renderDefaultLine
 									/>
 								</div>
 								<div className="d-flex pb-35">
@@ -310,7 +326,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.high}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -321,7 +339,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.low}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -334,7 +354,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.open}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 									<div className="pl-6">
@@ -345,7 +367,9 @@ class QuickTrade extends Component {
 										</div>
 										<div className="d-flex">
 											<div className="f-size-16 pr-2">{ticker.close}</div>
-											<div className="fullname">{pair_2.toUpperCase()}</div>
+											<div className="fullname">
+												{coins[pair_2] && coins[pair_2].display_name}
+											</div>
 										</div>
 									</div>
 								</div>
@@ -357,7 +381,9 @@ class QuickTrade extends Component {
 									</div>
 									<div className="d-flex">
 										<div className="f-size-16 pr-2">{ticker.volume}</div>
-										<div className="fullname">{pairBase.toUpperCase()}</div>
+										<div className="fullname">
+											{coins[pairBase] && coins[pairBase].display_name}
+										</div>
 									</div>
 								</div>
 							</div>
@@ -378,7 +404,8 @@ class QuickTrade extends Component {
 								</Link>
 							</div>
 							<div className="small-text">
-								{selectedSource.toUpperCase()} {STRINGS['BALANCE_TEXT']}:{' '}
+								{coins[selectedSource] && coins[selectedSource].display_name}{' '}
+								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
@@ -397,12 +424,13 @@ class QuickTrade extends Component {
 								forwardError={forwardSourceError}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
-								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_size}
+								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit}
 								availableBalance={selectedSourceBalance}
 								estimatedPrice={estimatedPrice}
-								pair={key ? key : ''}
+								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
+								coins={coins}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -414,14 +442,15 @@ class QuickTrade extends Component {
 								onInputChange={onChangeTargetAmount}
 								forwardError={forwardTargetError}
 								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={side === 'buy' ? increment_size : PAIR2_STATIC_SIZE}
+								decimal={side === 'buy' ? increment_unit : PAIR2_STATIC_SIZE}
 								estimatedPrice={estimatedPrice}
-								pair={key ? key : ''}
+								pair={isUseBroker ? symbol : key ? key : ''}
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
+								coins={coins}
 							/>
 							<div className="small-text">
-								{selectedTarget && selectedTarget.toUpperCase()}{' '}
+								{coins[selectedTarget] && coins[selectedTarget].display_name}{' '}
 								{STRINGS['BALANCE_TEXT']}:{' '}
 								<span
 									className="ml-2 pointer"
@@ -430,6 +459,15 @@ class QuickTrade extends Component {
 									{selectedTargetBalance ? selectedTargetBalance : 0}
 								</span>
 							</div>
+							{isBrokerPaused && (
+								<FieldError
+									error={translateError(
+										STRINGS['QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE']
+									)}
+									displayError={true}
+									className="input-group__error-wrapper"
+								/>
+							)}
 							<div
 								className={classnames(
 									'quick_trade-section_wrapper',
@@ -463,7 +501,8 @@ class QuickTrade extends Component {
 									{!isUseBroker ? (
 										<span>
 											<span>
-												{pairBase.toUpperCase()}/{pair_2.toUpperCase()}{' '}
+												{coins[pairBase] && coins[pairBase].display_name}/
+												{coins[pair_2] && coins[pair_2].display_name}{' '}
 											</span>
 											<span>{STRINGS['TYPES_VALUES.market']}</span>
 										</span>

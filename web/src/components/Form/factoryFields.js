@@ -11,6 +11,7 @@ import EditableInputField from './FormFields/EditableInputField';
 import CaptchaField from './FormFields/Captcha';
 import ToggleField from './FormFields/ToggleField';
 import DumbField from './FormFields/DumbFieldForm';
+import PinInput from './FormFields/PinInput';
 
 const renderFields = (fields = {}, callback) => {
 	return (
@@ -62,6 +63,8 @@ const renderFields = (fields = {}, callback) => {
 						return <Field component={TextAreaField} {...commonProps} />;
 					case 'toggle':
 						return <Field component={ToggleField} {...commonProps} />;
+					case 'pin':
+						return <Field component={PinInput} {...commonProps} />;
 					case 'text':
 					case 'password':
 					case 'email':

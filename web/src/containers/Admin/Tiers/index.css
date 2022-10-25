@@ -103,7 +103,9 @@
 	padding: 15px;
 }
 .admin-tiers-wrapper h1,
-.admin-tiers-wrapper h3 {
+.admin-tiers-wrapper h3,
+.change-Limit-wrapper h1,
+.change-Limit-wrapper h3 {
 	color: var(--admin_panel_main_font);
 }
 
@@ -121,9 +123,83 @@
 	overflow-x: auto;
 }
 
-.admin-tiers-wrapper .ant-select-disabled.ant-select-single:not(.ant-select-customize-input) .ant-select-selector,
+.admin-tiers-wrapper
+	.ant-select-disabled.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector,
 .admin-tiers-wrapper .ant-input[disabled] {
-    opacity: 0.5;
+	opacity: 0.5;
 	color: #c4c4c4;
 	background-color: var(--admin_panel_input);
+}
+
+.admin-tiers-wrapper .ant-input-affix-wrapper .ant-input {
+	background-color: var(--admin_panel_input);
+	color: #c4c4c4;
+}
+.admin-tiers-wrapper .ant-input-affix-wrapper {
+	background-color: var(--admin_panel_input);
+	color: #c4c4c4;
+}
+
+.change-Limit-wrapper .button-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.change-Limit-wrapper .button-wrapper .ant-btn {
+	width: 45%;
+	background-color: #288500;
+	border-color: #288500;
+}
+
+.admin-tiers-wrapper .cursor-pointer {
+	cursor: pointer;
+}
+.admin-tiers-wrapper .underline {
+	text-decoration: underline;
+}
+
+.change-Limit-wrapper .arrow-border {
+	border-bottom: 2px solid #ffffff !important;
+	font-size: 12px;
+	color: #b7b7b7;
+	margin-bottom: 10px;
+	width: 14rem;
+	text-align: center;
+}
+
+.change-Limit-wrapper .p-relative .anticon {
+	margin-top: 9px;
+	font-size: 20px;
+	position: absolute;
+	left: 17rem;
+}
+
+.change-Limit-wrapper .small-txt {
+	font-size: 10px;
+}
+
+.change-Limit-wrapper .disabled {
+	opacity: 0.5;
+}
+
+.change-Limit-wrapper .ant-switch-checked {
+	background-color: rgba(0, 0, 0, 0.25);
+}
+
+.admin-tiers-wrapper .description {
+	font-size: 14px;
+	color: #c4c4c4;
+}
+.admin-tiers-wrapper .description.f-16 {
+	font-size: 16px;
+}
+.admin-tiers-wrapper .description .underline {
+	color: #ffffff;
+}
+.change-Limit-wrapper .switch-warn {
+	float: right;
+	font-size: 13px;
+	color: #f15a29;
 }

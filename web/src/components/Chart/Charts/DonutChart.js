@@ -224,7 +224,7 @@ class DonutChart extends Component {
 				</g>
 			);
 		} else if (data.balance > 0) {
-			const { symbol = '' } =
+			const { display_name = '' } =
 				this.props.coins[data.symbol || BASE_CURRENCY] || {};
 			return (
 				<g key={i}>
@@ -252,7 +252,7 @@ class DonutChart extends Component {
 								textAnchor="middle"
 								className="donut-label-pair"
 							>
-								{symbol.toUpperCase()}
+								{display_name}
 							</text>
 							{showOpenWallet && (
 								<text dy="5px" textAnchor="middle" className="donut-label-link">

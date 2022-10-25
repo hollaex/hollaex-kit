@@ -1,6 +1,9 @@
 import { web3, CONTRACT_ADDRESSES, CONTRACTS } from 'config/contracts';
 import mathjs from 'mathjs';
 import { hash } from 'rsvp';
+import store from 'store';
+import { openMetamaskError } from 'actions/appActions';
+import STRINGS from 'config/localizedStrings';
 
 const commonConfigs = {
 	type: '0x2',
@@ -132,14 +135,17 @@ export const connectWallet = () => {
 				const balance = await web3.eth.getBalance(account);
 				dispatch(setAccount(account, web3.utils.fromWei(balance)));
 			} catch (error) {
-				// Connect to Metamask using the button on the top right.
-				console.error('Connect to Metamask using the button on the top right.');
+				let message;
+				if (error.code === -32002) {
+					message = STRINGS['STAKE.CONNECT_ERROR'];
+				} else {
+					message = error.message || JSON.stringify(error);
+				}
+				store.dispatch(openMetamaskError(message));
 			}
 		} else {
-			// You must install Metamask into your browser: https://metamask.io/download.html
-			console.error(
-				'You must install Metamask into your browser: https://metamask.io/download.html'
-			);
+			const message = STRINGS['STAKE.INSTALL_METAMASK'];
+			store.dispatch(openMetamaskError(message));
 		}
 	};
 };

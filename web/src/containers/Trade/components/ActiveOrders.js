@@ -21,20 +21,18 @@ const generateHeaders = (
 		stringId: 'PAIR',
 		label: STRINGS['PAIR'],
 		key: 'pair',
-		exportToCsv: ({ symbol }) => symbol.toUpperCase(),
-		renderCell: ({ symbol }, key, index) => {
-			const data = symbol.split('-');
-			let pairBaseName = data[0];
+		exportToCsv: ({ display_name }) => display_name,
+		renderCell: ({ display_name, icon_id }, key, index) => {
 			return (
 				<td key={index} className="text-uppercase">
 					<div className="d-flex align-items-center">
 						<Image
-							iconId={`${pairBaseName.toUpperCase()}_ICON`}
-							icon={ICONS[`${pairBaseName.toUpperCase()}_ICON`]}
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="currency-ball"
 							imageWrapperClassName="currency-ball-image-wrapper"
 						/>
-						<div>{symbol}</div>
+						<div>{display_name}</div>
 					</div>
 				</td>
 			);
@@ -149,7 +147,7 @@ const generateHeaders = (
 		},
 	},
 	{
-		label: (
+		label: !isMobile ? (
 			<span className="trade__active-orders_cancel-All">
 				<ActionNotification
 					stringId="CANCEL_ALL"
@@ -161,6 +159,10 @@ const generateHeaders = (
 					textPosition="left"
 					disable={activeOrdersMarket === ''}
 				/>
+			</span>
+		) : (
+			<span className="trade__active-orders_cancel-All">
+				{STRINGS['CANCEL']}
 			</span>
 		),
 		key: 'cancel',

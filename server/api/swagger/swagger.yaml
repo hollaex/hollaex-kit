@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.3.0"
+  version: "2.4.4"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1613,7 +1613,7 @@ paths:
           in: query
           required: true
           type: string
-          minLength: 3
+          minLength: 2
           maxLength: 15
         - name: network
           in: query
@@ -1629,6 +1629,32 @@ paths:
             $ref: "#/definitions/UsersAddressResponse"
         default:
           description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /user/bank:
+    x-swagger-router-controller: user
+    post:
+      operationId: addUserBank
+      description: Add a new bank for the user
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: Error
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -3035,6 +3061,11 @@ paths:
           in: query
           required: false
           type: boolean
+        - name: pending_type
+          in: query
+          required: false
+          type: string
+          enum: ['id', 'bank']
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -3136,6 +3167,11 @@ paths:
                     type: string
                   city:
                     type: string
+              id_data:
+                type: object
+                properties:
+                  status:
+                    type: number
       responses:
         200:
           description: Success
@@ -3314,6 +3350,123 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+  /admin/user/bank:
+    x-swagger-router-controller: admin
+    post:
+      operationId: setUserBank
+      description: Set the user bank data
+      tags:
+        - Admin
+      parameters:
+        - name: id
+          in: query
+          required: true
+          type: number
+          format: int32
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - bank_account
+            properties:
+              bank_account:
+                type: array
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/bank/verify:
+    x-swagger-router-controller: admin
+    post:
+      operationId: verifyUserBank
+      description: verify specific user bank account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
+  /admin/bank/revoke:
+    x-swagger-router-controller: admin
+    post:
+      operationId: revokeUserBank
+      description: revoke specific user bank account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - bank_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+              bank_id:
+                type: string
+              message:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/BankArray"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+        - supervisor
+        - support
+        - kyc
   /admin/logins:
     x-swagger-router-controller: admin
     get:
@@ -4201,8 +4354,7 @@ paths:
       operationId: createBrokerPair
       description: Create a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4226,8 +4378,7 @@ paths:
       operationId: updateBrokerPair
       description: Edit a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4251,7 +4402,7 @@ paths:
       operationId: getBrokerPairs
       description: Get all broker deals
       tags:
-        - broker
+        - Broker
       responses:
         200:
           description: Success
@@ -4272,8 +4423,7 @@ paths:
       operationId: deleteBrokerPair
       description: Delete a broker deal
       tags:
-        - admin
-        - broker
+        - Admin
       parameters:
         - name: data
           in: body
@@ -4299,7 +4449,7 @@ paths:
       operationId: executeBrokerDeal
       description: Execute a broker deal
       tags:
-        - broker
+        - Broker
       parameters:
         - name: data
           in: body
@@ -4307,22 +4457,16 @@ paths:
           schema:
             type: object
             properties:
-              symbol:
+              token:
                 type: string
-              side:
-                type: string
-                enum: ["buy", "sell"]
-              price:
-                type: number
               size:
                 type: number
+                format: double
             required:
-              - symbol
-              - price
-              - side
+              - token
               - size
       responses:
-        201:
+        200:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
@@ -4334,6 +4478,186 @@ paths:
         - Bearer: []
       x-security-scopes:
         - user
+  /broker/quote:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerQuote
+      description: Get Quote Currency
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: true
+          type: string
+        - in: query
+          name: side
+          description: buy or sell
+          required: true
+          type: string
+          enum: ['buy', 'sell']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /broker/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBroker
+      description: test broker
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              formula:
+                type: string
+              exchange_name:
+                type: string
+              multiplier:
+                type: number
+              spread:
+                type: number
+              symbol:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /broker/connect:
+    x-swagger-router-controller: broker
+    get:
+      operationId: testRebalance
+      description: test connecting rebalance exchange
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_id
+          description: exchange to connect to
+          required: true
+          type: string
+        - in: query
+          name: api_key
+          description: exchang api key
+          required: true
+          type: string
+        - in: query
+          name: api_secret
+          description: exchang api scret
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
+  /fiat/deposit:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createDepositRequest
+      description: Create a new deposit request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              transaction_id:
+                type: string
+              address:
+                type: string
+              currency:
+                type: string
+            required:
+              - amount
+              - transaction_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /fiat/withdrawal:
+    x-swagger-router-controller: fiat
+    post:
+      operationId: createWithdrawalRequest
+      description: Create a new withdrawal request
+      tags:
+        - fiat
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+              bank_id:
+                type: string
+              currency:
+                type: string
+              captcha:
+                type: string
+            required:
+              - amount
+              - bank_id
+              - currency
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+
 definitions:
   ObjectResponse:
     type: object
@@ -4362,6 +4686,8 @@ definitions:
         type: string
       service:
         type: string
+      long_term:
+        type: boolean
   ResetPassword:
     type: object
     required:
@@ -4721,7 +5047,7 @@ definitions:
           - buy
           - sell
       size:
-        description: "Size of the orders. Should have 4 decimal, if it has more than 4 it will be rounded to 4 decimal. Min: 0.0001, Max: 21000000"
+        description: "Amount of the orders."
         type: number
         format: double
       type:
@@ -4876,6 +5202,12 @@ definitions:
             type: array
             items:
               type: string
+          onramp:
+            type: object
+          offramp:
+            type: object
+          user_payments:
+            type: object
       secrets:
         type: object
         properties:
@@ -5322,6 +5654,8 @@ definitions:
         type: string
       description:
         type: string
+      native_currency_limit:
+        type: boolean
   PostTierBody:
     type: object
     required:
@@ -5482,6 +5816,8 @@ definitions:
         type: string
       updated_transaction_id:
         type: string
+      updated_address:
+        type: string
       status:
         type: boolean
       rejected:
@@ -5494,7 +5830,7 @@ definitions:
         type: boolean
       email:
         type: boolean
-      updated_description:
+      description:
         type: string
   CoinPostRequest:
     type: object
@@ -5559,6 +5895,8 @@ definitions:
       allow_withdrawal:
         type: boolean
       withdrawal_fees:
+        type: ['object', 'null']
+      deposit_fees:
         type: ['object', 'null']
       min:
         type: number
@@ -5744,17 +6082,32 @@ definitions:
         type: number
       increment_size:
         type: number
+      type:
+        type: string
+      quote_expiry_time:
+        type: ['number', 'null']
+      rebalancing_symbol:
+        type: ['string', 'null']
+      account:
+        type: ['object', 'null']
+      formula:
+        type: ['string', 'null']
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
+        type: number
   BrokerPairCreate:
     type: object
     required:
       - symbol
-      - buy_price
-      - sell_price
       - paused
       - user_id
       - min_size
       - max_size
       - increment_size
+      - type
     properties:
       symbol:
         type: string
@@ -5771,6 +6124,22 @@ definitions:
       max_size:
         type: number
       increment_size:
+        type: number
+      type:
+        type: string
+      quote_expiry_time:
+        type: number
+      rebalancing_symbol:
+        type: string
+      account:
+        type: object
+      formula:
+        type: string
+      exchange_name:
+        type: string
+      spread:
+        type: number
+      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

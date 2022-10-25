@@ -1,12 +1,12 @@
 import React from 'react';
 import math from 'mathjs';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import { formatToCurrency } from '../../utils/currency';
+} from 'config/constants';
+import { formatToCurrency } from 'utils/currency';
 
 const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 	const ordersText =
@@ -29,7 +29,7 @@ const TextHolders = ({ ordersOfSymbol, currencySymbol, hold, name }) => {
 };
 
 const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
-	const { fullname, min, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
+	const { fullname, min, display_name } = coins[symbol] || DEFAULT_COIN_DATA;
 	const ordersOfSymbol = orders.filter((order) => {
 		if (symbol === BASE_CURRENCY) {
 			return order.side === 'buy';
@@ -56,16 +56,16 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(total, min),
-							rest.symbol.toUpperCase()
+							display_name
 						)}
 					</div>
 				</div>
 				{ordersOfSymbol > 0 && (
 					<TextHolders
 						ordersOfSymbol={ordersOfSymbol}
-						currencySymbol={rest.symbol.toUpperCase()}
+						currencySymbol={display_name}
 						hold={formatToCurrency(hold, min)}
-						name={rest.symbol.toUpperCase() || fullname}
+						name={display_name || fullname}
 					/>
 				)}
 				<div className="d-flex flex-column">
@@ -74,7 +74,7 @@ const Section = ({ symbol = BASE_CURRENCY, balance, orders, price, coins }) => {
 						{STRINGS.formatString(
 							amountFormat,
 							formatToCurrency(available, min),
-							rest.symbol.toUpperCase()
+							display_name
 						)}
 					</div>
 				</div>

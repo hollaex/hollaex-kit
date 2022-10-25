@@ -3,13 +3,13 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
-import { resetPassword } from '../../actions/authAction';
+import { resetPassword } from 'actions/authAction';
 import ResetPasswordForm from './ResetPasswordForm';
 import ResetPasswordSuccess from './ResetPasswordSuccess';
-import { IconTitle, Dialog } from '../../components';
-import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Dialog } from 'components';
+import { ContactForm } from 'containers';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 

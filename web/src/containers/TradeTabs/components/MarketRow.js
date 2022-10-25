@@ -7,7 +7,15 @@ class MarketRow extends Component {
 	render() {
 		const { icons: ICONS, market, chartData, handleClick } = this.props;
 
-		const { key, pair, symbol, pairTwo, ticker, increment_price } = market;
+		const {
+			key,
+			ticker,
+			increment_price,
+			display_name,
+			pair_base_display,
+			pair_2_display,
+			icon_id,
+		} = market;
 
 		return (
 			<tr
@@ -18,43 +26,39 @@ class MarketRow extends Component {
 				<td className="sticky-col">
 					<div className="d-flex align-items-center">
 						<Image
-							iconId={
-								ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-									? `${pair.pair_base.toUpperCase()}_ICON`
-									: 'DEFAULT_ICON'
-							}
-							icon={
-								ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-									? ICONS[`${pair.pair_base.toUpperCase()}_ICON`]
-									: ICONS['DEFAULT_ICON']
-							}
+							width='32px'
+							height='32px'
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="market-list__coin-icons"
 							imageWrapperClassName="currency-ball-image-wrapper"
 						/>
-						<div>
-							{symbol.toUpperCase()}/
-							{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
-						</div>
+						<div>{display_name}</div>
 					</div>
 				</td>
 				<td>
 					<span className="title-font ml-1">
 						{formatToCurrency(ticker.close, increment_price)}
 					</span>
-					<span className="title-font ml-2">
-						{pairTwo.symbol ? pairTwo.symbol.toUpperCase() : ''}
-					</span>
+					<span className="title-font ml-2">{pair_2_display}</span>
 				</td>
 				<td>
 					<PriceChange market={market} />
 				</td>
 				<td>
 					<span className="title-font ml-1">{ticker.volume}</span>
-					<span className="title-font ml-2">{symbol.toUpperCase()}</span>
+					<span className="title-font ml-2">{pair_base_display}</span>
 				</td>
 				<td className="td-chart">
 					<SparkLine
-						data={chartData[key] || []}
+						data={
+							!chartData[key] ||
+							(chartData[key] &&
+								chartData[key].close &&
+								chartData[key].close.length < 2)
+								? { close: [0.1, 0.1, 0.1], open: [] }
+								: chartData[key]
+						}
 						containerProps={{ style: { height: '100%', width: '100%' } }}
 					/>
 				</td>

@@ -1,0 +1,767 @@
+.summary-content-wrapper .payment {
+	border: 1px solid #ffffff;
+	padding: 7px;
+	margin-bottom: 30px;
+}
+
+.summary-content-wrapper .body-container {
+	display: flex;
+	width: 100%;
+	justify-content: space-between;
+}
+
+.summary-content-wrapper .body-container .box-outerDesign {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 30px;
+	width: 49%;
+}
+.summary-content-wrapper
+	.body-container
+	.box-outerDesign
+	.ant-select
+	.ant-select-selector {
+	height: 50px;
+	width: 150px;
+}
+
+.summary-content-wrapper .body-container .box-outerDesign .ramp-heading {
+	display: flex;
+	justify-content: space-between;
+}
+
+.summary-content-wrapper
+	.body-container
+	.box-outerDesign
+	.ramp-heading
+	.withdrawalIcon,
+.summary-content-wrapper .kyc-heading .withdrawalIcon {
+	width: 1.5rem !important;
+	height: 1.5rem !important;
+}
+
+.summary-content-wrapper .body-container .box-outerDesign .withdrawalIcon {
+	width: 4rem !important;
+}
+.summary-content-wrapper .body-container .box-outerDesign .green svg .st4 {
+	fill: #2bb473 !important;
+}
+
+.summary-content-wrapper .box-content {
+	border: 1px solid #ffffff;
+	padding: 10px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	max-height: 150px;
+	overflow: auto;
+}
+
+.summary-content-wrapper .box-content .small-circle,
+.manageassetwrapper .small-circle,
+.preview-detail-container .small-circle {
+	background: #288500;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+}
+
+.summary-content-wrapper .fiattable1 .ant-table,
+.summary-content-wrapper .kyc-table .ant-table {
+	border: 1px solid #ffffff;
+	height: 28rem;
+	background-color: var(--admin_panel_content_background);
+}
+
+.summary-content-wrapper .fiattable1 .icon-tooltip:hover .warning {
+	z-index: 1;
+}
+
+.summary-content-wrapper .tooltip-wrapper .icon-tooltip {
+	display: flex;
+	margin: 0px 13px;
+	border-radius: 50%;
+	align-items: center;
+	justify-content: center;
+	height: 21px;
+}
+
+.summary-content-wrapper .fiattable1 .limit-status-icon {
+	width: 4rem !important;
+}
+.summary-content-wrapper .fiattable1 .limit-status-icon svg .st0 {
+	fill: #ffffff !important;
+}
+
+.paymentContainer .txtanchor,
+.pluginContentWrapper .txtanchor,
+.payment-modal-wrapper .txtanchor,
+.pluginContentWrapper .txtanchor,
+.payment-acc-wrapper .assetclick,
+.preview-fiat-container .txtanchor,
+.summary-content-wrapper .underline,
+.manageassetwrapper .txtanchor,
+.inner-content .txtanchor,
+.payment-acc-wrapper .paymentContent .underline,
+.payment-acc-wrapper .anchor,
+.payment-modal-wrapper .anchor,
+.preview-fiat-container .txtanchor,
+.payment-modal-wrapper .noticepad .underline,
+.preview-detail-container .fiatlink {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.summary-content-wrapper .fiatcurrency {
+	width: 5rem !important;
+}
+
+.summary-content-wrapper .fiatcurrency svg {
+	font-size: 20px;
+	width: 40px !important;
+	height: 40px !important;
+	margin-right: 5px;
+}
+
+.summary-content-wrapper .centercontent {
+	width: 60%;
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.summary-content-wrapper .payment .centercontent {
+	width: 70%;
+}
+
+.pluginContentWrapper {
+	margin-top: 3rem;
+}
+
+.pluginContentWrapper .pay-icon {
+	width: 80px;
+}
+
+.manageassetwrapper .pay-icon {
+	width: 80px;
+}
+
+.payment-acc-wrapper .border-divider {
+	border-bottom: 1px solid #ffffff;
+	width: 35rem;
+	margin: 2rem 0 0 0;
+}
+
+.manageassetwrapper .border-divider {
+	border-bottom: 1px solid #ffffff;
+	width: 25rem;
+	margin: 2rem 0 0 0;
+}
+
+.payment-acc-wrapper .fiat-icon {
+	width: 40px;
+}
+
+.payment-acc-wrapper .inner-content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 65rem;
+	margin-top: 5rem;
+}
+
+.payment-acc-wrapper .upgradedheight {
+	margin-top: 2rem !important;
+}
+
+.summary-content-wrapper .upgrade-section,
+.payment-acc-wrapper .upgrade-section,
+.finalfiatwrapper .upgrade-section {
+	background-color: #4d5499;
+}
+
+.payment-acc-wrapper .disableall,
+.summary-content-wrapper .disableall {
+	opacity: 0.6;
+	pointer-events: none;
+}
+
+.payment-acc-wrapper .inner-content .info {
+	width: 31rem;
+	text-align: center;
+	margin: 1rem 0 3rem 0;
+}
+
+.payment-acc-wrapper .anticon-question-circle svg {
+	font-size: 23px;
+}
+
+.payment-acc-wrapper .paymentbox {
+	display: flex;
+}
+
+.payment-acc-wrapper .paymentContent {
+	width: 40%;
+}
+
+.payment-acc-wrapper .paymentbox2 {
+	width: 50%;
+	margin-top: 5rem;
+	display: flex;
+	align-items: center;
+}
+
+.payment-acc-wrapper .paymentbox2 .pay-icon {
+	margin-right: 50px;
+}
+
+.payment-acc-wrapper .paymentbox2 .btn-gap {
+	margin-left: 10%;
+}
+
+.payment-modal-wrapper .add-pay-icon {
+	width: 5rem;
+	margin-right: 15px;
+}
+
+.payment-modal-wrapper .add-pay-icon2 {
+	width: 40px;
+}
+
+.pluginContentWrapper .add-pay-icon2 {
+	width: 40px;
+	background: #288500;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+}
+
+.payment-modal-wrapper .button-wrapper {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+
+.payment-modal-wrapper .button-wrapper .ant-btn {
+	width: 45%;
+	background-color: #288500;
+	border-color: #288500;
+}
+
+.payment-modal-wrapper .small-txt {
+	font-size: 12px;
+	color: #c7c7c7;
+}
+
+.payment-modal-wrapper h3,
+.payment-modal-wrapper .radiobuttonstyle,
+.payment-acc-wrapper .preview-container .ant-breadcrumb-separator,
+.payment-modal-wrapper h3,
+.payment-modal-wrapper .radiobuttonstyle,
+.summary-content-wrapper
+	.body-container
+	.box-outerDesign
+	.coins-wrapper
+	.coin-ico,
+.payment-acc-wrapper .quesIcon,
+.payment-acc-wrapper .field-wrap .checkbox-title {
+	color: #ffffff !important;
+}
+
+.payment-modal-wrapper .payhead {
+	margin-top: 10px;
+}
+
+.payment-modal-wrapper .radiobtn {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	color: #ffffff;
+}
+
+.payment-modal-wrapper .ant-radio-group .ant-space {
+	width: 38rem;
+}
+
+.paymentContainer {
+	border: 1px solid #707070;
+	padding: 20px;
+	width: 50rem;
+}
+
+.paymentContainer .small-circle {
+	background: #288500;
+	border-radius: 50%;
+	width: 15px;
+	height: 15px;
+}
+.paymentContainer .orange {
+	background: #f28041;
+}
+
+.paymentContainer .bankDetails {
+	margin: 0px 30px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.paymentContainer .verificationtxt {
+	margin: 0px 30px;
+}
+
+.paymentContainer .bankborder {
+	margin-bottom: 30px;
+	border-left: 1px solid #707070;
+}
+
+.payment-modal-wrapper .syshead {
+	margin-bottom: 0px;
+}
+
+.payment-modal-wrapper .plugintxt {
+	color: #d8d8d8;
+	font-size: 12px;
+}
+
+.paymentContainer .bankborder .userinfo {
+	color: #d8d8d8;
+}
+
+.payment-modal-wrapper .pay-icon {
+	width: 10%;
+}
+
+.payment-acc-wrapper .boxcontent {
+	border: 1px solid #707070;
+	width: 60%;
+	padding: 20px;
+}
+
+.payment-acc-wrapper .customizedbtn {
+	width: 20%;
+	font-size: 18px;
+	height: 40px;
+}
+
+.manageassetwrapper .manageIcon2 {
+	margin-left: 5rem;
+}
+
+.manageassetwrapper .managecontent {
+	align-items: center;
+	width: 40%;
+}
+
+.preview-container .title,
+.preview-container .preview-coin-container,
+.preview-container .preview-detail-container,
+.line {
+	width: 30rem;
+}
+
+.fiatBreadcrumb .breadcrumb_active {
+	color: #ffffff;
+	cursor: pointer;
+	opacity: 1;
+}
+
+.fiatBreadcrumb .ant-breadcrumb {
+	margin: 1rem 0rem;
+}
+
+.fiatBreadcrumb .ant-breadcrumb .ant-breadcrumb-link,
+.fiatBreadcrumb .ant-breadcrumb .ant-breadcrumb-separator,
+.payment-acc-wrapper .preview-container .ant-breadcrumb-link {
+	color: #ffffff;
+	opacity: 0.6;
+}
+
+.fiatBreadcrumb .breadcrumb_active,
+.fiatBreadcrumb .ant-breadcrumb .ant-breadcrumb-link:hover {
+	color: #ffffff;
+	cursor: pointer;
+	opacity: 1;
+}
+
+.preview-coin-container {
+	display: flex;
+	margin: 2rem 0rem;
+}
+
+.preview-coin-container .preview-content {
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.preview-coin-container .preview-content .currency_ball-wrapper {
+	width: 80px !important;
+	height: 80px !important;
+}
+
+.finalfiatwrapper {
+	padding-left: 1rem;
+	width: 50rem;
+}
+
+.preview-fiat-container {
+	border-top: 1px solid #a1a1a1;
+	color: #ffffff;
+	padding: 1rem 0 0 0;
+}
+
+.payment-acc-wrapper .paymentSelect {
+	margin-top: 10px;
+	width: 45rem;
+}
+
+.payment-acc-wrapper .ant-select .ant-select-selector,
+.payment-modal-wrapper .ant-select .ant-select-selector {
+	background-color: #ffffff;
+	color: black;
+	border: 1px solid black;
+	height: 35px;
+	padding: 0 11px;
+	font-size: 12px;
+}
+
+.payment-modal-wrapper .ant-select .ant-select-selector {
+	margin-top: 10px;
+	width: 35rem;
+}
+
+.payment-modal-wrapper .paymentSelect .downarrow {
+	margin-top: 5px;
+}
+
+.payment-acc-wrapper .paymentSelect .downarrow,
+.payment-modal-wrapper .paymentSelect .downarrow {
+	color: #000000;
+}
+
+.payment-modal-wrapper .noticepad {
+	padding: 15px;
+	display: flex;
+	align-items: center;
+}
+.payment-modal-wrapper .noticepad svg {
+	font-size: 35px;
+}
+
+.payment-modal-wrapper .notepad {
+	width: 85%;
+	display: flex;
+	align-items: center;
+	margin-top: 20px;
+	margin-bottom: 40px;
+}
+
+.finalfiatwrapper .finalconnect {
+	width: 30rem;
+	margin-bottom: 20px;
+}
+
+.payment-modal-wrapper .ant-radio-wrapper .radio-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 36rem;
+}
+
+.payment-modal-wrapper .ant-radio-group .ant-radio-wrapper-checked {
+	opacity: 1 !important;
+}
+
+.payment-acc-wrapper .pay-icon {
+	width: 80px;
+	margin-right: 1.5rem;
+}
+
+.payment-acc-wrapper .border-divider {
+	margin: 2rem 0 5rem 0;
+}
+
+.payment-acc-wrapper .paymentbox2 .underline {
+	text-decoration: underline;
+	margin-top: 10px;
+}
+
+.payment-modal-wrapper .details-wrapper {
+	padding: 0.5rem 2rem 0.5rem 2rem;
+	border-left: 1px solid #707070;
+}
+
+.payment-modal-wrapper .details-wrapper .disable-txt {
+	opacity: 0.5;
+}
+
+.payment-modal-wrapper .details-wrapper div:not(:first-child) {
+	line-height: 2.5rem;
+}
+.payment-modal-wrapper .sider {
+	border-left: 1px solid;
+	padding: 10px 15px;
+}
+
+.payment-acc-wrapper .custom-form-wrapper {
+	margin: 0 !important;
+}
+
+.payment-acc-wrapper .custom-form-wrapper .section-wrapper {
+	width: 50rem;
+	border-left: 1px solid #ffffff;
+	padding-left: 1rem;
+}
+
+.payment-acc-wrapper .custom-form-wrapper .section-wrapper .input_field {
+	flex-direction: row !important;
+}
+
+.payment-acc-wrapper .custom-form-wrapper .section-wrapper .input_field label {
+	width: 25rem;
+}
+
+.payment-acc-wrapper
+	.custom-form-wrapper
+	.section-wrapper
+	.input_field
+	.ant-input {
+	background-color: #2d3687;
+	color: #ffffff;
+}
+
+.payment-acc-wrapper
+	.custom-form-wrapper
+	.section-wrapper
+	.input_field
+	.anticon {
+	padding-left: 10px;
+}
+
+.payment-acc-wrapper
+	.custom-form-wrapper
+	.section-wrapper
+	.input_field
+	.anticon
+	svg {
+	font-size: 23px;
+}
+
+.payment-acc-wrapper .payment-form-wrapper {
+	width: 78rem !important;
+}
+
+.payment-acc-wrapper .custom-form-wrapper .center-content {
+	justify-content: flex-end;
+	padding-right: 2rem;
+	border: unset !important;
+}
+
+.payment-acc-wrapper .checkbox-content .ant-checkbox-wrapper {
+	display: flex;
+	margin: 4rem 0 2rem 0;
+}
+
+.payment-acc-wrapper .checkbox-content .ant-checkbox-wrapper .ant-checkbox {
+	margin-top: 4px;
+	height: 17px;
+}
+
+.payment-acc-wrapper .checkbox-content .ant-checkbox-wrapper .gray-txt,
+.summary-content-wrapper .body-container .fiattable1 .gray-txt,
+.summary-content-wrapper .kyc-table .gray-txt {
+	color: #a5a5a5 !important;
+}
+
+.payment-acc-wrapper
+	.checkbox-content
+	.ant-checkbox-wrapper
+	.ant-checkbox-checked
+	.ant-checkbox-inner {
+	background-color: #ffffff !important;
+	border-color: #ffffff;
+}
+
+.payment-acc-wrapper
+	.checkbox-content
+	.ant-checkbox-checked
+	.ant-checkbox-inner::after,
+.payment-acc-wrapper .checkbox-content .ant-checkbox-checked::after {
+	border-color: #000000 !important;
+}
+
+.payment-modal-wrapper .green-btn,
+.payment-acc-wrapper .green-btn,
+.add-field-modal .green-btn {
+	background-color: #288500;
+	margin-top: 2rem;
+}
+
+.add-field-modal .input_field {
+	margin-bottom: 2rem;
+}
+
+.add-field-modal .input_field .ant-radio-wrapper {
+	display: flex;
+	height: 60px;
+	line-height: 1.2;
+	padding: 24px 0;
+	margin: 0;
+	padding-left: 1px;
+	white-space: normal;
+	letter-spacing: -0.15px;
+}
+.summary-coin .coins-wrapper .coin-ico {
+	color: #000000 !important;
+}
+
+.payment-modal-wrapper .button-wrapper .nxtbtn {
+	width: 100%;
+}
+
+.payment-modal-wrapper .infoStyle svg {
+	width: 35px;
+	height: 45px;
+}
+.payment-modal-wrapper .quesIcon {
+	color: #ffffff;
+	font-size: 25px;
+}
+
+.payment-acc-wrapper .bigques {
+	color: #ffffff;
+	font-size: '30px';
+	margin-right: '10px';
+	margin-left: '20px';
+}
+
+.payment-modal-wrapper .coinSelect .ant-select .ant-select-selector,
+.payment-acc-wrapper .coinSelect .ant-select .ant-select-selector {
+	height: 4rem;
+	width: 200px;
+	border: 1px solid white;
+	color: white;
+	background-color: transparent;
+}
+
+.payment-modal-wrapper .coinSelect .ant-select .ant-select-arrow {
+	color: white;
+	margin-top: 4px;
+}
+
+.summary-content-wrapper .body-container .box-outerDesign .txtpad {
+	padding-right: 5rem;
+	padding-left: 5rem;
+	color: #a5a5a5 !important;
+}
+.summary-content-wrapper .kyc-table .ant-table-tbody,
+.summary-content-wrapper .fiattable1 .ant-table-tbody {
+	height: 25.5rem;
+	background-color: var(--admin_panel_content_background);
+}
+
+.summary-content-wrapper .fiattable .ant-table,
+.summary-content-wrapper .kyc-table1 .ant-table {
+	border: 1px solid #ffffff;
+	height: 28rem;
+	background-color: var(--admin_panel_content_background);
+	overflow: scroll;
+}
+.payment-acc-wrapper .field-wrap .ant-checkbox-wrapper {
+	display: flex;
+}
+.payment-acc-wrapper .field-wrap .ant-checkbox-wrapper .ant-checkbox {
+	margin-top: 6px;
+}
+.payment-acc-wrapper .field-wrap .ant-checkbox-wrapper .ant-checkbox-input {
+	height: 20px;
+}
+.payment-acc-wrapper
+	.field-wrap
+	.ant-checkbox-wrapper
+	.ant-checkbox-checked::after {
+	border: none;
+}
+.payment-acc-wrapper .field-wrap .description {
+	color: #a5a5a5;
+}
+
+.payment-modal-wrapper .error-text {
+	color: red;
+}
+.summary-content-wrapper .box-content .text-capitalize {
+	text-transform: capitalize;
+}
+
+.payment-acc-wrapper .paymentContent .small-gray-text {
+	font-size: 12px;
+	margin-top: 1.5rem;
+}
+
+.payment-acc-wrapper .payment-form-wrapper .btn-wrapper {
+	width: 21.5rem;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.payment-acc-wrapper .payment-form-wrapper .btn-wrapper .ant-btn {
+	margin-top: 0 !important;
+	color: #ffffff;
+}
+
+.fiatpayhelp {
+	height: 200px !important;
+	position: relative;
+}
+.fiatpayhelpnote {
+	top: 53px !important;
+}
+.fiatonramphelpnote {
+	top: 75px;
+}
+.fiatonramppop {
+	top: 70px;
+}
+.fiatformhelpicon {
+	top: 66px !important;
+}
+.payment-modal-wrapper .warning-text {
+	color: yellow;
+	font-size: 16px;
+	font-weight: bold;
+}
+.payment-modal-wrapper .delete-warning {
+	color: #ff2000;
+}
+.payment-modal-wrapper .go-to-offramp-text {
+	text-decoration: underline;
+	cursor: pointer;
+	width: 10rem;
+	color: yellow;
+}
+
+.payment-acc-wrapper
+	.custom-form-wrapper
+	.section-wrapper
+	.colorWrapper
+	.input_field
+	.ant-input {
+	background-color: #ffffff !important;
+	color: #000000 !important;
+}
+
+.ramp-wrapper {
+	position: 'relative';
+}
+
+.ramp-wrapper .ant-spin-nested-loading > div > .ant-spin {
+	max-height: 30% !important;
+}
+
+.paymentContainer .txtanchor.pointer-none,
+.ramp-wrapper .paymentContent .pointer-none {
+	pointer-events: none;
+	width: 5rem;
+	opacity: 0.5;
+}

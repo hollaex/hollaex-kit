@@ -1,0 +1,41 @@
+.home-page_content {
+	.tabs-pair-details {
+		font-size: 1.2rem;
+		margin: auto;
+		white-space: nowrap;
+	}
+
+	.trade_tab-pair-title {
+		color: $colors-main-black;
+		font-size: $font-size-main;
+		font-weight: bold;
+	}
+
+	.trade_tab-pair-sub-title {
+		font-size: $font-size-subtext;
+	}
+
+	.trade_tab-pair-price {
+		color: $colors-main-black;
+		font-size: $font-size-subhead2;
+		font-weight: 700;
+		font-family: Raleway;
+	}
+
+	.trade_tab-pair-volume {
+		font-size: $font-size-subtext;
+	}
+
+	.market-card__sparkline-wrapper {
+		height: 5rem !important;
+		width: 10rem !important;
+
+		.highcharts-area {
+			fill: none !important;
+
+			&.highcharts-negative {
+				fill: none !important;
+			}
+		}
+	}
+}

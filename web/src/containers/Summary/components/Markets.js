@@ -136,6 +136,7 @@ class Markets extends Component {
 								outlineClassName="trade_tabs-search-outline"
 								placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
 								handleSearch={this.handleTabSearch}
+								showCross
 							/>
 						</div>
 					</div>
@@ -160,7 +161,7 @@ class Markets extends Component {
 						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
 						<div
 							onClick={() => {
-								router.push('/trade/add/tabs');
+								router.push('/markets');
 							}}
 							className="pt-1"
 						>

@@ -1,10 +1,8 @@
 import React from 'react';
 import { DEFAULT_COIN_DATA } from 'config/constants';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { Button, Loader } from '../';
-import { EditWrapper } from 'components';
-import Image from 'components/Image';
+import { Button, Loader, EditWrapper, Image } from 'components';
 
 const GenerateAddressNotification = ({
 	type,
@@ -16,7 +14,7 @@ const GenerateAddressNotification = ({
 	icons: ICONS,
 }) => {
 	const { fetching, error } = data;
-	const { fullname } = coins[currency] || DEFAULT_COIN_DATA;
+	const { fullname, icon_id } = coins[currency] || DEFAULT_COIN_DATA;
 	const title = STRINGS.formatString(STRINGS['WALLET_ADDRESS_TITLE'], fullname);
 	if (fetching) {
 		return (
@@ -38,8 +36,8 @@ const GenerateAddressNotification = ({
 				{!error ? (
 					<div className="notification-content-header d-flex align-items-center">
 						<Image
-							iconId={`${currency.toUpperCase()}_ICON`}
-							icon={ICONS[`${currency.toUpperCase()}_ICON`]}
+							iconId={icon_id}
+							icon={ICONS[icon_id]}
 							wrapperClassName="form_currency-ball mr-3"
 						/>
 						<EditWrapper stringId="WALLET_ADDRESS_MESSAGE">

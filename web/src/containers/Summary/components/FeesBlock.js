@@ -23,9 +23,9 @@ const getMakerRow = (pairs, coins, pair, level, index, discount, tiers) => {
 		<tr key={index}>
 			<td className="account-limits-coin">
 				<div className="d-flex align-items-center">
-					<div className='coin-section-wrapper'>
+					<div className="coin-section-wrapper">
 						<CurrencyBall
-							name={pairBase.symbol.toUpperCase()}
+							name={pairBase.display_name}
 							symbol={pair_base}
 							size="m"
 						/>

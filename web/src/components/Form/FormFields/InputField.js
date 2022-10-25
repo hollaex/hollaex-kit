@@ -24,6 +24,8 @@ const InputField = (props) => {
 		hideCheck,
 		outlineClassName,
 		stringId,
+		isEmail,
+		emailMsg,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
@@ -40,6 +42,7 @@ const InputField = (props) => {
 					type={type}
 					{...input}
 					{...rest}
+					onBlur={() => {}}
 				/>
 			</div>
 		</FieldWrapper>

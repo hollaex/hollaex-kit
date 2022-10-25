@@ -2,9 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Select, Form, Input, message, Modal } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
 import moment from 'moment';
+import _isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 
 import { updateEmailStrings } from '../General/action';
 import { STATIC_ICONS } from 'config/icons';
+import FormButton from 'components/FormButton/Button';
 
 const { TextArea } = Input;
 const { Option } = Select;
@@ -15,6 +18,7 @@ const CustomizeEmailForm = ({
 	selectedLanguages,
 	defaultLanguage,
 	emailType,
+	defaultEmailData,
 }) => {
 	const [form] = Form.useForm();
 	const [isDisable, setIsDisable] = useState(false);
@@ -30,13 +34,46 @@ const CustomizeEmailForm = ({
 	const [isEdit, setIsEdit] = useState(false);
 	const [isReset, setIsReset] = useState(false);
 
+	const initialValues = {
+		language: defaultLanguage,
+		mailType: emailType[0],
+	};
+
+	let originalInitialValue = {
+		...initialValues,
+		format: defaultEmailData?.html?.replace(/@@_BIT_@@/g, "'"),
+		title: defaultEmailData?.title,
+	};
+
+	useEffect(() => {
+		if (form.getFieldsValue().hasOwnProperty('mailType') && selectedEmail) {
+			form.setFieldsValue({ mailType: selectedEmail });
+		}
+	}, [form, selectedEmail]);
+
+	useEffect(() => {
+		setButtonSubmitting(true);
+	}, []);
+
+	const mailType = form.getFieldValue('mailType');
+	useEffect(() => {
+		if (
+			typeof form.getFieldsValue().format !== 'undefined' &&
+			typeof form.getFieldsValue().title !== 'undefined' &&
+			!_isEqual(form.getFieldsValue(), originalInitialValue)
+		) {
+			setButtonSubmitting(false);
+		} else {
+			setButtonSubmitting(true);
+		}
+		// eslint-disable-next-line
+	}, [mailType]);
+
 	const constructedData = useCallback(() => {
 		if (emailInfo && emailInfo.html) {
+			let replacedJSON = emailInfo.html.replace(/@@_BIT_@@/g, "'");
 			form.setFieldsValue({
-				format: JSON.stringify(emailInfo.html, undefined, 5).replace(
-					/["']/g,
-					''
-				),
+				format: replacedJSON,
 			});
 			form.setFieldsValue({ title: emailInfo.title });
 		}
@@ -114,7 +151,7 @@ const CustomizeEmailForm = ({
 		const body = {
 			language,
 			type: mailType.toLowerCase(),
-			html: format,
+			html: format.replace(/"/g, "'"),
 			title,
 		};
 		setButtonSubmitting(true);
@@ -125,7 +162,6 @@ const CustomizeEmailForm = ({
 					language: body.language,
 					type: body.type,
 				});
-				setButtonSubmitting(false);
 				handleDisable();
 				setLastEdit(moment().format('DD/MM/YYYY HH:mm UTC'));
 				setIsEdit(true);
@@ -134,7 +170,6 @@ const CustomizeEmailForm = ({
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
-				setButtonSubmitting(false);
 				handleConfirmOpen();
 			});
 	};
@@ -184,6 +219,7 @@ const CustomizeEmailForm = ({
 						<Button
 							type="primary"
 							onClick={() => handleConfirmation(formProps)}
+							disabled={buttonSubmitting}
 						>
 							Confirm
 						</Button>
@@ -193,16 +229,15 @@ const CustomizeEmailForm = ({
 		}
 	};
 
-	const onValuesChange = (values) => {
-		if (values) {
+	const onValuesChange = () => {
+		if (!_isEqual(form.getFieldsValue(), originalInitialValue)) {
 			setButtonSubmitting(false);
+		} else {
+			setButtonSubmitting(true);
 		}
 	};
 
-	const initialValues = {
-		language: selectedLanguage,
-		mailType: emailType[0],
-	};
+	const onChange = debounce(() => onValuesChange(), 500);
 
 	useEffect(() => {
 		if (form.getFieldsValue().hasOwnProperty('mailType') && selectedEmail) {
@@ -221,7 +256,7 @@ const CustomizeEmailForm = ({
 				name="EditEmailForm"
 				onFinish={handleSubmit}
 				initialValues={initialValues}
-				onValuesChange={onValuesChange}
+				onValuesChange={onChange}
 			>
 				<div className="sub-title">Language</div>
 				<Form.Item name="language">
@@ -349,14 +384,13 @@ const CustomizeEmailForm = ({
 						)}
 					</div>
 				</div>
-				<Button
+				<FormButton
 					type="primary"
-					className="green-btn"
 					htmlType="submit"
 					disabled={buttonSubmitting}
-				>
-					Save
-				</Button>
+					className="green-btn"
+					buttonText="Save"
+				/>
 			</Form>
 			<Modal
 				visible={isModalVisible}

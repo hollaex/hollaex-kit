@@ -23,6 +23,7 @@
 		}
 	}
 	.app-menu-bar-side_list {
+		transition: 0.3s;
 		height: 60px;
 		padding: 18px 17px;
 		cursor: pointer;
@@ -50,7 +51,8 @@
 		.help-question,
 		.tab-signout,
 		.tab-history-st,
-		.stake-smiley-1 {
+		.stake-page-icon,
+		.apps {
 			fill: $base_top-bar-navigation_text !important;
 		}
 	}

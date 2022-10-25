@@ -9,14 +9,14 @@ import {
 	ActionNotification,
 	MobileBarBack,
 	Image,
-} from '../../components';
-import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from '../../config/constants';
+} from 'components';
+import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from 'config/constants';
 import {
 	formatToCurrency,
 	generateWalletActionsText,
 	getCurrencyFromName,
-} from '../../utils/currency';
-import STRINGS from '../../config/localizedStrings';
+} from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
 
@@ -47,7 +47,7 @@ class Wallet extends Component {
 	renderWalletHeaderBlock = (symbol, price, balance, coins) => {
 		const { icons: ICONS } = this.props;
 		const balanceValue = balance[`${symbol}_balance`] || 0;
-		const { fullname, min } = coins[symbol] || DEFAULT_COIN_DATA;
+		const { fullname, min, icon_id } = coins[symbol] || DEFAULT_COIN_DATA;
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
@@ -71,9 +71,11 @@ class Wallet extends Component {
 				/> */}
 				<div className="d-flex">
 					<Image
-						iconId={`${symbol.toUpperCase()}_ICON`}
-						icon={ICONS[`${symbol.toUpperCase()}_ICON`]}
+						iconId={icon_id}
+						icon={ICONS[icon_id]}
 						wrapperClassName="coin-icons"
+						width="32px"
+						height="32px"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
 					<div className="with_price-block_amount-value">

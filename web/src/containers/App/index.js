@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { logout } from '../../actions/authAction';
-import { setMe, setBalance, updateUser } from '../../actions/userAction';
-import { addUserTrades } from '../../actions/walletActions';
+import { logout } from 'actions/authAction';
+import { setMe, setBalance, updateUser } from 'actions/userAction';
+import { addUserTrades } from 'actions/walletActions';
 import { menuItemsSelector } from './selector';
 
 import {
@@ -10,14 +10,14 @@ import {
 	addOrder,
 	updateOrder,
 	removeOrder,
-} from '../../actions/orderAction';
+} from 'actions/orderAction';
 import {
 	setOrderbooks,
 	setTrades,
 	setOrderbook,
 	addTrades,
 	setPairsData,
-} from '../../actions/orderbookAction';
+} from 'actions/orderbookAction';
 import { initializeTools } from 'actions/toolsAction';
 
 import App from './App';
@@ -40,10 +40,11 @@ import {
 	setConfig,
 	setInfo,
 	setIsReady,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 
 import { setPricesAndAsset } from 'actions/assetActions';
-import { loadBlockchainData } from 'actions/stakingActions';
+import { loadBlockchainData, disconnectWallet } from 'actions/stakingActions';
 
 const mapStateToProps = (store) => ({
 	menuItems: menuItemsSelector(store),
@@ -113,6 +114,8 @@ const mapDispatchToProps = (dispatch) => ({
 	setIsReady: bindActionCreators(setIsReady, dispatch),
 	initializeTools: bindActionCreators(initializeTools, dispatch),
 	loadBlockchainData: bindActionCreators(loadBlockchainData, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
+	disconnectWallet: bindActionCreators(disconnectWallet, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

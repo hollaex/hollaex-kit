@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-import STRINGS from '../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 class HamburgerMenu extends React.Component {
 	constructor(props) {

@@ -36,6 +36,7 @@ import {
 	setDefaultLogo,
 	consoleKitInfo,
 	getContracts,
+	modifySections,
 } from 'utils/initialize';
 
 import { getKitData } from 'actions/operatorActions';
@@ -55,11 +56,15 @@ import {
 	changePair,
 	setPairs,
 	setCurrencies,
+	setUserPayments,
+	setOnramp,
+	setOfframp,
 	setOrderLimits,
 	setHelpdeskInfo,
 	setContracts,
 	setBroker,
 } from 'actions/appActions';
+import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
 import { LANGUAGE_KEY } from './config/constants';
@@ -69,6 +74,13 @@ import {
 	IS_PLUGIN_DEV_MODE,
 } from 'utils/plugin';
 import { drawFavIcon } from 'helpers/vanilla';
+import { setupManifest } from 'helpers/manifest';
+import {
+	hideBooting,
+	showBooting,
+	setLoadingImage,
+	setLoadingStyle,
+} from 'helpers/boot';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -76,6 +88,7 @@ consolePluginDevModeInfo();
 const getConfigs = async () => {
 	const localVersions = getLocalVersions();
 
+	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
 		meta: { versions: remoteVersions = {}, sections = {} } = {},
@@ -88,28 +101,29 @@ const getConfigs = async () => {
 		injected_values = [],
 		injected_html = {},
 		captcha = {},
+		defaults = {},
 	} = kitData;
 
 	store.dispatch(setConfig(kitData));
-	if (kitData.defaults) {
+	if (defaults) {
 		const themeColor = localStorage.getItem('theme');
 		const isThemeValid = hasTheme(themeColor, kitData.color);
 		const language = localStorage.getItem(LANGUAGE_KEY);
 
-		if (kitData.defaults.theme && (!themeColor || !isThemeValid)) {
-			store.dispatch(changeTheme(kitData.defaults.theme));
-			localStorage.setItem('theme', kitData.defaults.theme);
+		if (defaults.theme && (!themeColor || !isThemeValid)) {
+			store.dispatch(changeTheme(defaults.theme));
+			localStorage.setItem('theme', defaults.theme);
 		}
 
-		if (!language && kitData.defaults.language) {
-			store.dispatch(setLanguage(kitData.defaults.language));
+		if (!language && defaults.language) {
+			store.dispatch(setLanguage(defaults.language));
 		}
 	}
 	if (kitData.info) {
 		store.dispatch(setInfo({ ...kitData.info }));
 	}
 
-	kitData['sections'] = sections;
+	kitData['sections'] = modifySections(sections);
 
 	const promises = {};
 	Object.keys(remoteVersions).forEach((key) => {
@@ -146,11 +160,15 @@ const getConfigs = async () => {
 		store.dispatch(changePair(initialPair));
 	}
 
+	store.dispatch(setCurrencies(constants.coins));
+	store.dispatch(setUserPayments(kitData.user_payments));
+	store.dispatch(setOnramp(kitData.onramp));
+	store.dispatch(setOfframp(kitData.offramp));
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
-	store.dispatch(setCurrencies(constants.coins));
 	store.dispatch(setContracts(getContracts(constants.coins)));
 	store.dispatch(setBroker(constants.broker));
+	store.dispatch(setPricesAndAsset({}, constants.coins));
 
 	const orderLimits = {};
 	Object.keys(constants.pairs).forEach((pair) => {
@@ -179,20 +197,33 @@ const getConfigs = async () => {
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
 
-	const {
-		data: { data: plugins = [] } = { data: [] },
-	} = await requestPlugins();
-
-	const allPlugins = IS_PLUGIN_DEV_MODE ? await mergePlugins(plugins) : plugins;
-
-	store.dispatch(setPlugins(allPlugins));
-	store.dispatch(setWebViews(allPlugins));
-	store.dispatch(setHelpdeskInfo(allPlugins));
-
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,
 		captcha,
+		valid_languages,
+		defaults,
 	});
+
+	setLoadingStyle(appConfigs);
+	setLoadingImage(appConfigs);
+
+	try {
+		const {
+			data: { data: plugins = [] } = { data: [] },
+		} = await requestPlugins();
+
+		const allPlugins = IS_PLUGIN_DEV_MODE
+			? await mergePlugins(plugins)
+			: plugins;
+
+		store.dispatch(setPlugins(allPlugins));
+		store.dispatch(setWebViews(allPlugins));
+		store.dispatch(setHelpdeskInfo(allPlugins));
+	} catch (err) {
+		console.error(err);
+		showBooting();
+		throw err;
+	}
 
 	const {
 		app: { plugins_injected_html },
@@ -218,11 +249,16 @@ const bootstrapApp = (
 	drawFavIcon(EXCHANGE_FAV_ICON);
 	// window.appConfig = { ...appConfig }
 	const {
-		app: { remoteRoutes, plugins },
+		app: {
+			remoteRoutes,
+			plugins,
+			constants: { api_name: name },
+		},
 	} = store.getState();
 
 	const RCStrings = generateRCStrings(plugins);
 	const mergedStrings = merge({}, RCStrings, appConfig.strings);
+	setupManifest({ name, short_name: name });
 
 	initializeStrings(mergedStrings);
 
@@ -255,6 +291,7 @@ const initialize = async () => {
 			injected_html,
 			plugins_injected_html
 		);
+		hideBooting();
 	} catch (err) {
 		console.error('Initialization failed!\n', err);
 		setTimeout(initialize, 3000);

@@ -7,7 +7,7 @@ const morgan = require('morgan');
 var YAML = require('yamljs');
 var swaggerDoc = YAML.load('./api/swagger/swagger.yaml');
 const { logEntryRequest, stream, logger } = require('./config/logger');
-const { domainMiddleware, helmetMiddleware } = require('./config/middleware');
+const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('./config/middleware');
 const toolsLib = require('hollaex-tools-lib');
 const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
@@ -31,8 +31,8 @@ checkStatus()
 		module.exports = app; // for testing
 
 		app.use(logEntryRequest);
-
 		app.use(domainMiddleware);
+		rateLimitMiddleware(app);
 		helmetMiddleware(app);
 
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
@@ -66,16 +66,14 @@ checkStatus()
 
 		var options = {
 			customCss: CUSTOM_CSS,
-			customSiteTitle: 'HollaEx Kit API Explorer',
-			customfavIcon:
-			'https://rm-content.s3.amazonaws.com/5aead825bb456c005e2322dd/upload-c116da40-ebd2-11e8-9c84-e32cc39c32d1_57.png'
+			customSiteTitle: 'API Explorer'
 		};
 
 		app.get('/', (req, res) => {
 			res.redirect('/v2/health');
 		});
 
-		app.use('/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+		app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
 		SwaggerExpress.create(config, function(err, swaggerExpress) {
 			if (err) { throw err; }

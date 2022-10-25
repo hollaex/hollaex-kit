@@ -1,9 +1,8 @@
 import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-// import { PUBLIC_URL } from '../../config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
+import { Image } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import STRINGS from 'config/localizedStrings';
 
@@ -142,31 +141,7 @@ const AppFooter = ({
 										wrapperClassName="footer-logo"
 									/>
 								</div>
-								<div className="footer-txt">
-									{constants.description || ''}
-									{/* {STRINGS.formatString(
-										STRINGS["FOOTER.XHT_DESCRIPTION"],
-										<a
-											href={
-												'https://info.hollaex.com/hc/en-us/articles/360040098633-What-is-the-Wave-Auction-'
-											}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="blue-link pointer"
-										>
-											{' '}
-											{STRINGS["FOOTER.CLICK_HERE"]}{' '}
-										</a>,
-										<a
-											href={'https://bitholla.com/hollaex-kit/'}
-											target="_blank"
-											rel="noopener noreferrer"
-											className="blue-link pointer"
-										>
-											{STRINGS["FOOTER.VISIT_HERE"]}
-										</a>
-									)} */}
-								</div>
+								<div className="footer-txt">{constants.description || ''}</div>
 							</div>
 						</div>
 					</div>

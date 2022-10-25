@@ -11,6 +11,15 @@
 	}
 }
 
+.OTP_Success {
+	width: 30px;
+	height: 30px;
+	svg {
+		width: 30px;
+		height: 30px;
+	}
+}
+
 .otp_form-wrapper {
 	display: flex;
 	flex-direction: column;
@@ -215,6 +224,10 @@ $padding-input: 4rem;
 		flex-direction: row;
 		align-items: center;
 	}
+
+	.checkbutton-input-wrapper {
+		margin-top: 0px !important;
+	}
 }
 
 .layout-mobile {
@@ -291,6 +304,23 @@ $padding-input: 4rem;
 			font-size: $font-size-mobile-txt !important;
 		}
 	}
+
+	.presentation_container {
+		.edit_token {
+			flex-direction: column;
+
+			.token-keys-wrapper {
+				.field-content,
+				.field-children {
+					font-size: $font-size-subtext !important;
+				}
+			}
+		}
+
+		.token-keys-wrapper {
+			max-width: 35rem;
+		}
+	}
 }
 
 @media (max-width: 1060px) {
@@ -312,6 +342,7 @@ $padding-input: 4rem;
 	.user-security-wrapper {
 		.tab_controller-tabs {
 			.tab_item {
+				transition: 0.3s;
 				font-size: 12px !important;
 			}
 		}
@@ -319,6 +350,13 @@ $padding-input: 4rem;
 }
 
 .edit_token {
+	&.overlay {
+		height: 100%;
+		width: 100%;
+		pointer-events: none;
+		opacity: 0.5;
+	}
+
 	.qr-code-bg {
 		padding: 0 1.5rem 0 1rem;
 	}

@@ -7,9 +7,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 import { AppFooter, Dialog } from 'components';
 import { HelpfulResourcesForm } from 'containers';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import { getClasesForLanguage } from '../../utils/string';
-import { getThemeClass } from '../../utils/theme';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import { getClasesForLanguage } from 'utils/string';
+import { getThemeClass } from 'utils/theme';
 import {
 	getExchangeInfo,
 	closeNotification,

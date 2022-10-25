@@ -56,15 +56,17 @@ $footer-logo-color: $trade-tabs-inactive-color;
 
 			.footer-txt {
 				width: 23rem;
-				margin-left: 1.5rem;
+				margin-left: 2rem !important;
+				margin-top: 0.5rem;
 			}
 			.footer-logo {
 				background-size: contain;
 				// background-position: center;
 				background-repeat: no-repeat;
-				height: 6rem !important;
+				// height: 6rem !important;
 				margin-left: 1.5rem;
 				width: 7rem;
+				height: 100% !important;
 			}
 			svg {
 				.hollaEX_logo_gray {
@@ -172,6 +174,7 @@ $footer-logo-color: $trade-tabs-inactive-color;
 	.app_footer-container {
 		.footer-row-content {
 			flex-direction: column;
+			padding: 0 !important;
 			> div:not(:last-child) {
 				margin-bottom: $footer-wrapper--margin-bottom;
 			}
@@ -220,14 +223,19 @@ $footer-logo-color: $trade-tabs-inactive-color;
 .layout-mobile {
 	.app_footer-container {
 		.footer-row-content {
+			margin-bottom: 1rem;
 			.footer-links-section {
 				width: 100%;
+				margin-top: 1rem;
 				.footer-links-group {
-					margin-left: 3rem;
+					justify-content: center;
+					align-items: center;
 					margin-bottom: 3rem !important;
 					font-size: $footer-content-size;
 					.footer-links-section--list {
 						.link-section {
+							justify-content: center;
+							align-items: center;
 							margin-top: 0.25rem;
 							&:hover {
 								color: grey;
@@ -244,13 +252,19 @@ $footer-logo-color: $trade-tabs-inactive-color;
 						align-items: center;
 					}
 					.footer-txt {
-						width: 100%;
+						width: 80%;
+						margin-top: 2rem !important;
+						margin-left: 0 !important;
+						display: flex;
+						justify-content: center;
+						text-align: center;
 					}
 					.footer-logo {
 						height: 3.5rem;
 						margin-top: 11px;
 						margin-bottom: $footer-wrapper--margin;
 						width: 6.5rem;
+						margin-left: 7rem !important;
 					}
 					svg {
 						.hollaEX_logo_gray {
@@ -268,6 +282,13 @@ $footer-logo-color: $trade-tabs-inactive-color;
 		}
 		.footer-links-group {
 			margin: 10rem;
+		}
+		.footer-row-bottom {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			border-top: 1px solid $footer-wrapper--border-color;
+			margin-bottom: 1rem;
 		}
 	}
 }

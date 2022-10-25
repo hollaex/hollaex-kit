@@ -1,10 +1,14 @@
 import React, { Component, Fragment } from 'react';
-import { reduxForm } from 'redux-form';
+import { connect } from 'react-redux';
+import { reduxForm, getFormValues } from 'redux-form';
 import { Button } from 'antd';
 import _findLast from 'lodash/findLast';
 import _findLastKey from 'lodash/findLastKey';
+import isEqual from 'lodash.isequal';
+import debounce from 'lodash.debounce';
 
 import renderFields from '../../../components/AdminForm/utils';
+import FormButton from 'components/FormButton/Button';
 
 class FormWrapper extends Component {
 	componentDidMount() {
@@ -84,6 +88,17 @@ class FormWrapper extends Component {
 		);
 	};
 
+	handleOnchange = () => {
+		const { formValues, initialValues } = this.props;
+		if (!isEqual(formValues, initialValues)) {
+			this.props.handleDisbale(false);
+		} else {
+			this.props.handleDisbale(true);
+		}
+	};
+
+	onChange = debounce(() => this.handleOnchange(), 500);
+
 	render() {
 		const {
 			fields,
@@ -96,27 +111,36 @@ class FormWrapper extends Component {
 		const { getFieldDecorator } = this.props.form;
 		return (
 			<div>
-				<form>
+				<form onChange={this.onChange}>
 					{customFields
 						? this.renderCustomFields(fields)
 						: renderFields(fields, getFieldDecorator, initialValues)}
-					<Button
-						block
+					<FormButton
 						type="primary"
+						handleSubmit={handleSubmit(this.onSubmit)}
 						htmlType="submit"
-						className="green-btn minimal-btn"
-						onClick={handleSubmit(this.onSubmit)}
 						disabled={buttonSubmitting}
-					>
-						{buttonTxt}
-					</Button>
+						className="green-btn minimal-btn"
+						buttonText={buttonTxt}
+					/>
 				</form>
 			</div>
 		);
 	}
 }
 
-export default reduxForm({
-	form: 'FooterLinkForm',
-	enableReinitialize: true,
-})(FormWrapper);
+// export default reduxForm({
+// 	form: 'FooterLinkForm',
+// 	enableReinitialize: true,
+// })(FormWrapper);
+
+const mapStateToProps = (state, props) => {
+	const values = getFormValues('FooterLinkForm')(state);
+	return {
+		formValues: values,
+	};
+};
+
+export default connect(mapStateToProps)(
+	reduxForm({ form: 'FooterLinkForm', enableReinitialize: true })(FormWrapper)
+);

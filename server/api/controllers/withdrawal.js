@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
 const { USER_NOT_FOUND } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { isEmail } = require('validator');
 
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;
@@ -99,28 +100,61 @@ const performWithdrawal = (req, res) => {
 		.then((withdrawal) => {
 			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
 		})
-		.then(([ withdrawal, user ]) => {
+		.then(async ([ withdrawal, user ]) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
 			if (user.verification_level < 1) {
 				throw new Error('User must upgrade verification level to perform a withdrawal');
 			}
-			return all([
-				toolsLib.wallet.performWithdrawal(
-					withdrawal.user_id,
-					withdrawal.address,
-					withdrawal.currency,
-					withdrawal.amount,
-					{
-						network: withdrawal.network,
+			if (isEmail(withdrawal.address)) {
+				const receiver = await toolsLib.user.getUserByEmail(withdrawal.address);
+				if (!receiver) {
+					throw new Error(USER_NOT_FOUND);
+				}
+
+				return all([
+					toolsLib.wallet.transferAssetByKitIds(withdrawal.user_id, receiver.id, withdrawal.currency, withdrawal.amount, 'Email Transfer', true, {
 						additionalHeaders: {
 							'x-forwarded-for': req.headers['x-forwarded-for']
 						}
-					}
-				),
-				withdrawal
-			]);
+					}),
+					withdrawal
+				]);
+			} else if (toolsLib.getKitCoin(withdrawal.currency).type === 'fiat') {
+				// burn the asset
+				return all([
+					toolsLib.wallet.burnAssetByKitId(
+						withdrawal.user_id,
+						withdrawal.currency,
+						withdrawal.amount,
+						{
+							transactionId: withdrawal.transaction_id,
+							address: withdrawal.address,
+							status: false,
+							fee: withdrawal.fee
+						}
+					),
+					withdrawal
+				]);
+			} else {
+				// blockchain type to sent to the network
+				return all([
+					toolsLib.wallet.performWithdrawal(
+						withdrawal.user_id,
+						withdrawal.address,
+						withdrawal.currency,
+						withdrawal.amount,
+						{
+							network: withdrawal.network,
+							additionalHeaders: {
+								'x-forwarded-for': req.headers['x-forwarded-for']
+							}
+						}
+					),
+					withdrawal
+				]);
+			}
 		})
 		.then(([ { transaction_id }, { fee } ]) => {
 			return res.json({
@@ -139,7 +173,7 @@ const performWithdrawal = (req, res) => {
 		});
 };
 
-function performDirectWithdrawal(req, res) {
+const performDirectWithdrawal = (req, res) => {
 	const { id: userId } = req.auth.sub;
 	const {
 		address,
@@ -175,11 +209,25 @@ function performDirectWithdrawal(req, res) {
 				'x-forwarded-for': req.headers['x-forwarded-for']
 			}
 		})
-		.then(([ { transaction_id }, { fee } ]) => {
+		.then((data) => {
+
+			loggerWithdrawals.verbose(
+				req.uuid,
+				'controller/withdrawal/performDirectWithdrawal done',
+				'transaction_id',
+				data.transaction_id,
+				'fee',
+				data.fee,
+				data
+			);
 			return res.json({
-				message: 'Withdrawal successful',
-				fee,
-				transaction_id
+				message: 'Withdrawal request is in the queue and will be processed.',
+				id: data.id,
+				transaction_id: data.transaction_id,
+				amount: data.amount,
+				currency: data.currency,
+				fee: data.fee,
+				fee_coin: data.fee_coin
 			});
 		})
 		.catch((err) => {

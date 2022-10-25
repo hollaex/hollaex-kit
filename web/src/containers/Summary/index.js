@@ -8,12 +8,11 @@ import SummaryBlock from './components/SummaryBlock';
 import TraderAccounts from './components/TraderAccounts';
 // import SummaryRequirements from './components/SummaryRequirements';
 import AccountAssets from './components/AccountAssets';
-// import TradingVolume from './components/TradingVolume';
 import AccountDetails from './components/AccountDetails';
 import Markets from './components/Markets';
 import MobileSummary from './MobileSummary';
 
-import { IconTitle } from '../../components';
+import { IconTitle } from 'components';
 // import { logout } from '../../actions/authAction';
 import {
 	openFeesStructureandLimits,
@@ -21,17 +20,17 @@ import {
 	logoutconfirm,
 	setNotification,
 	NOTIFICATIONS,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import {
 	BASE_CURRENCY,
 	DEFAULT_COIN_DATA,
 	// SHOW_SUMMARY_ACCOUNT_DETAILS,
 	SHOW_TOTAL_ASSETS,
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+} from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
-import { getUserReferralCount } from '../../actions/userAction';
+import { getUserReferralCount } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 
@@ -271,7 +270,6 @@ class Summary extends Component {
 										// </span>
 										// }
 									>
-										<TradingVolume user={user} />
 									</SummaryBlock>
 								</div>*/}
 							</div>

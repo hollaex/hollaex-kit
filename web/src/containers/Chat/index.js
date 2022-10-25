@@ -4,13 +4,10 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
 
-import { ChatWrapper } from '../../components';
-import { WS_URL } from '../../config/constants';
-import {
-	setAnnouncements,
-	setChatUnreadMessages,
-} from '../../actions/appActions';
-import { getToken } from '../../utils/token';
+import { ChatWrapper } from 'components';
+import { WS_URL } from 'config/constants';
+import { setAnnouncements, setChatUnreadMessages } from 'actions/appActions';
+import { getToken } from 'utils/token';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
 
 const ENTER_KEY = 'Enter';

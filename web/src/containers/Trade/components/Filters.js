@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Select } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 
 const { Option } = Select;
 
 const Filters = ({ pairs, pair, onChange }) => {
+	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<div>
 			<Select
@@ -17,16 +18,21 @@ const Filters = ({ pairs, pair, onChange }) => {
 				className="custom-select-input-style elevated"
 				dropdownClassName="custom-select-style"
 				bordered={false}
-				suffixIcon={<CaretDownOutlined />}
+				suffixIcon={isOpen ? <CaretUpOutlined /> : <CaretDownOutlined />}
+				onClick={() => {
+					setIsOpen((prev) => !prev);
+				}}
 				value={pair}
 				onChange={onChange}
 			>
 				<Option value={''}>{STRINGS['ALL']}</Option>
-				{Object.keys(pairs).map((pair) => (
-					<Option key={pair} value={pair}>
-						{pair}
-					</Option>
-				))}
+				{Object.entries(pairs).map(
+					([pair, { pair_base_display, pair_2_display }]) => (
+						<Option key={pair} value={pair}>
+							{`${pair_base_display}-${pair_2_display}`}
+						</Option>
+					)
+				)}
 			</Select>
 		</div>
 	);

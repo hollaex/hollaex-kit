@@ -333,6 +333,7 @@
 	object-fit: fill;
 	cursor: pointer;
 	border-left: 1px solid #b9b9b9;
+	width: 230px;
 }
 .admin-plugin-modal-wrapper .anticon-download {
 	font-size: 64px;

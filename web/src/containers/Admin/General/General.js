@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Button, Modal, message, Collapse, Spin, Input } from 'antd';
+import { Switch, Button, Modal, message, Spin, Input } from 'antd';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
 import { bindActionCreators } from 'redux';
@@ -21,7 +21,7 @@ import {
 	getEmailStrings,
 	getEmailType,
 } from './action';
-import { getGeneralFields } from './utils';
+import { getGeneralFields, publishJSON } from './utils';
 import { publish } from 'actions/operatorActions';
 import merge from 'lodash.merge';
 import { clearFileInputById } from 'helpers/vanilla';
@@ -29,8 +29,9 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import _get from 'lodash/get';
 
 import './index.css';
-import { handleUpgrade } from 'utils/utils';
+import { handleFiatUpgrade, handleUpgrade } from 'utils/utils';
 import { checkFileSize, fileSizeError } from 'utils/icon';
+import PublishSection from './PublishSection';
 
 const NameForm = AdminHocForm('NameForm');
 const LanguageForm = AdminHocForm('LanguageForm');
@@ -70,11 +71,18 @@ class GeneralContent extends Component {
 			removeCountryValue: [],
 			emailData: {},
 			emailTypeData: [],
+			currentPublishType: '',
+			isDisableSave: false,
+			isPublishDisable: false,
+			updatedKey: '',
+			isDisable: false,
+			defaultEmailData: {},
 		};
 	}
 
 	componentDidMount() {
 		this.requestInitial();
+		this.setState({ isDisable: true });
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -85,6 +93,10 @@ class GeneralContent extends Component {
 			this.getSettingsValues();
 		}
 	}
+
+	handleDisable = (isDisable) => {
+		this.setState({ isDisable });
+	};
 
 	requestInitial = async () => {
 		this.setState({ loading: true });
@@ -118,7 +130,18 @@ class GeneralContent extends Component {
 		getEmailStrings(bodyParam)
 			.then((response) => {
 				if (response) {
-					this.setState({ emailData: response });
+					if (response?.title === 'Account Upgraded') {
+						this.setState({
+							defaultEmailData: {
+								...response,
+								language: bodyParam.language,
+								type: bodyParam.type,
+							},
+							emailData: response,
+						});
+					} else {
+						this.setState({ emailData: response });
+					}
 				}
 			})
 			.catch((error) => {
@@ -231,10 +254,14 @@ class GeneralContent extends Component {
 									data: { path },
 								} = await upload(formData);
 								icons[themeKey][key] = path;
-								this.setState({ currentIcon: {} });
-							} catch (error) {
+								this.setState({ currentIcon: {}, isPublishDisable: true });
+							} catch ({ response }) {
 								clearFileInputById(`admin-file-input__${themeKey},${key}`);
-								message.error('Something went wrong!');
+								const errorMsg =
+									response && response.data && response.data.message
+										? response.data.message
+										: 'Something went wrong!';
+								message.error(errorMsg);
 								return;
 							}
 						}
@@ -247,6 +274,7 @@ class GeneralContent extends Component {
 			pendingPublishIcons: merge({}, prevState.pendingPublishIcons, {
 				[iconKey]: icons,
 			}),
+			updatedKey: iconKey,
 		}));
 
 		updateIcons(icons);
@@ -300,11 +328,13 @@ class GeneralContent extends Component {
 				this.props.setConfig(res.kit);
 				message.success('Updated successfully');
 				this.setState({ buttonSubmitting: false });
+				this.handleDisable(true);
 			})
 			.catch((err) => {
 				let error = err && err.data ? err.data.message : err.message;
 				message.error(error);
 				this.setState({ buttonSubmitting: false });
+				this.handleDisable(true);
 			});
 	};
 
@@ -325,12 +355,25 @@ class GeneralContent extends Component {
 		let formValues = {};
 		if (formKey === 'email_distribution') {
 			formValues = {};
-			if (formProps.audit) {
-				formValues.secrets = {
-					emails: {
-						audit: formProps.audit,
-					},
-				};
+			let compareValues = initialEmailValues.distribution || {};
+			if (formProps.audit || formProps.send_email_to_support) {
+				if (compareValues.audit !== formProps.audit) {
+					formValues.secrets = {
+						emails: {
+							audit: formProps.audit,
+						},
+					};
+				}
+				if (
+					compareValues.send_email_to_support !==
+					formProps.send_email_to_support
+				) {
+					formValues.secrets = {
+						emails: {
+							send_email_to_support: formProps.send_email_to_support,
+						},
+					};
+				}
 			}
 		} else if (formKey === 'email_configuration') {
 			formValues = {};
@@ -448,6 +491,11 @@ class GeneralContent extends Component {
 	};
 
 	handleSubmitSignUps = (new_user_is_activated) => {
+		if (this.state.isSignUpActive !== new_user_is_activated) {
+			this.setState({ isDisableSave: true });
+		} else {
+			this.setState({ isDisableSave: false });
+		}
 		return this.handleSubmitGeneral({
 			kit: {
 				new_user_is_activated,
@@ -490,7 +538,7 @@ class GeneralContent extends Component {
 			pendingPublishIcons: { [id]: published = {} },
 		} = this.state;
 
-		this.setState({ loadingButton: true });
+		this.setState({ loadingButton: true, currentPublishType: id });
 		const iconsOverwrites = JSON.parse(localStorage.getItem('icons') || '{}');
 
 		const icons = merge({}, iconsOverwrites, published);
@@ -506,7 +554,7 @@ class GeneralContent extends Component {
 				message.error(error);
 			})
 			.finally(() => {
-				this.setState({ loadingButton: false });
+				this.setState({ loadingButton: false, isPublishDisable: false });
 			});
 	};
 
@@ -725,9 +773,15 @@ class GeneralContent extends Component {
 			buttonSubmitting,
 			constants,
 			emailTypeData,
+			currentPublishType,
+			isPublishDisable,
+			updatedKey,
+			isDisable,
+			emailData,
+			defaultEmailData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const { coins, themeOptions, activeTab } = this.props;
+		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
 		const generalFields = getGeneralFields(coins);
 
 		if (loading) {
@@ -738,6 +792,7 @@ class GeneralContent extends Component {
 			);
 		}
 		const isUpgrade = handleUpgrade(kit.info);
+		const isFiatUpgrade = handleFiatUpgrade(kit.info);
 
 		return (
 			<div>
@@ -857,200 +912,37 @@ class GeneralContent extends Component {
 					) : null}
 					{activeTab === 'branding' ? (
 						<div>
-							<div>
-								<div className="sub-title">Exchange logo</div>
-								<div className="description">
-									This logo will be applied to emails send to your users and
-									login screen, footer and other places. Any custom graphics
-									uploaded via the direct edit function will override the logo.
-								</div>
-								<div className="file-wrapper">
-									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-										<Collapse.Panel showArrow={false} key="1" disabled={true}>
-											<div className="file-wrapper">
-												{themeOptions
-													.filter(({ value: theme }) => theme === 'dark')
-													.map(({ value: theme }, index) =>
-														this.renderImageUpload(
-															'EXCHANGE_LOGO',
-															theme,
-															index,
-															false
-														)
-													)}
-											</div>
-										</Collapse.Panel>
-										<Collapse.Panel
-											showArrow={false}
-											header={
-												<span className="underline-text">
-													Theme Specific Graphics
-												</span>
-											}
-											key="2"
-										>
-											<div className="file-wrapper">
-												{themeOptions
-													.filter(({ value: theme }) => theme !== 'dark')
-													.map(({ value: theme }, index) =>
-														this.renderImageUpload(
-															'EXCHANGE_LOGO',
-															theme,
-															index,
-															false
-														)
-													)}
-											</div>
-										</Collapse.Panel>
-									</Collapse>
-								</div>
-								<Button
-									type="primary"
-									className="green-btn minimal-btn"
-									loading={loadingButton}
-									onClick={() => this.handlePublish('EXCHANGE_LOGO')}
-								>
-									Publish
-								</Button>
-							</div>
-							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Loader</div>
-								<div className="description">
-									Used for areas that require loading.Also known as a spinner.
-								</div>
-								<div className="file-wrapper">
-									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-										<Collapse.Panel showArrow={false} key="1" disabled={true}>
-											{themeOptions
-												.filter(({ value: theme }) => theme === 'dark')
-												.map(({ value: theme }, index) =>
-													this.renderImageUpload(
-														'EXCHANGE_LOADER',
-														theme,
-														index,
-														false
-													)
-												)}
-										</Collapse.Panel>
-										<Collapse.Panel
-											showArrow={false}
-											header={
-												<span className="underline-text">
-													Theme Specific Graphics
-												</span>
-											}
-											key="2"
-										>
-											{themeOptions
-												.filter(({ value: theme }) => theme !== 'dark')
-												.map(({ value: theme }, index) =>
-													this.renderImageUpload(
-														'EXCHANGE_LOADER',
-														theme,
-														index,
-														false
-													)
-												)}
-										</Collapse.Panel>
-									</Collapse>
-								</div>
-								<Button
-									type="primary"
-									className="green-btn minimal-btn"
-									loading={loadingButton}
-									onClick={() => this.handlePublish('EXCHANGE_LOADER')}
-								>
-									Publish
-								</Button>
-							</div>
-							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Exchange favicon</div>
-								<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-									<Collapse.Panel showArrow={false} key="1" disabled={true}>
-										<div className="file-wrapper">
-											{this.renderImageUpload(
-												'EXCHANGE_FAV_ICON',
-												'dark',
-												'EXCHANGE_1',
-												false,
-												false
-											)}
-										</div>
-									</Collapse.Panel>
-								</Collapse>
-								<Button
-									type="primary"
-									className="green-btn minimal-btn"
-									loading={loadingButton}
-									onClick={() => this.handlePublish('EXCHANGE_FAV_ICON')}
-								>
-									Publish
-								</Button>
-							</div>
-							<div className="divider"></div>
-							<div>
-								<div className="sub-title">Landing page background</div>
-								<div className="description">
-									Landing home page for your exchange. This is the page your
-									users will likely see first.
-								</div>
-								<div className="file-wrapper">
-									<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-										<Collapse.Panel showArrow={false} key="1" disabled={true}>
-											<div className="file-wrapper">
-												{themeOptions
-													.filter(({ value: theme }) => theme === 'dark')
-													.map(({ value: theme }, index) =>
-														this.renderImageUpload(
-															'EXCHANGE_LANDING_PAGE',
-															theme,
-															index
-														)
-													)}
-											</div>
-										</Collapse.Panel>
-										<Collapse.Panel
-											showArrow={false}
-											header={
-												<span className="underline-text">
-													Theme Specific Graphics
-												</span>
-											}
-											key="2"
-										>
-											<div className="file-wrapper">
-												{themeOptions
-													.filter(({ value: theme }) => theme !== 'dark')
-													.map(({ value: theme }, index) =>
-														this.renderImageUpload(
-															'EXCHANGE_LANDING_PAGE',
-															theme,
-															index
-														)
-													)}
-											</div>
-										</Collapse.Panel>
-									</Collapse>
-								</div>
-								<Button
-									type="primary"
-									className="green-btn minimal-btn"
-									loading={loadingButton}
-									onClick={() => this.handlePublish('EXCHANGE_LANDING_PAGE')}
-								>
-									Publish
-								</Button>
-							</div>
-							<div className="divider" />
+							{publishJSON.map((item, key) => {
+								return (
+									<div key={key}>
+										<PublishSection
+											title={item.title}
+											description={item.description}
+											themeOptions={themeOptions}
+											loadingButton={loadingButton}
+											currentPublishType={currentPublishType}
+											renderImageUpload={this.renderImageUpload}
+											handlePublish={this.handlePublish}
+											currentkey={item.currentkey}
+											isPublishDisable={isPublishDisable}
+											updatedKey={updatedKey}
+											themeKey={item.themeKey ? item.themeKey : ''}
+											indexKey={item.indexKey ? item.indexKey : ''}
+										/>
+										<div className="divider"></div>
+									</div>
+								);
+							})}
 							<div className="mb-5">
 								<div className="sub-title">Onboarding background image</div>
 								<div className="description">
 									<span>
 										To change the login/signup background image please visit the{' '}
 									</span>
-									<Link to="/admin/general?tab=4">onboarding page</Link>.
+									<span className="anchor" onClick={() => handleTabChange('4')}>
+										onboarding page
+									</span>
+									.
 								</div>
 							</div>
 						</div>
@@ -1108,72 +1000,36 @@ class GeneralContent extends Component {
 								onConfirm={this.disableSignUpsConfirmation}
 								buttonSubmitting={buttonSubmitting}
 							/>
-
-							<div className="sub-title mt-5">Onboarding background image</div>
-							<div className="description">
-								(The image displayed in the background on your onboarding page)
-							</div>
-							<div className="file-wrapper">
-								<Collapse defaultActiveKey={['1']} bordered={false} ghost>
-									<Collapse.Panel showArrow={false} key="1" disabled={true}>
-										<div className="file-wrapper">
-											{themeOptions
-												.filter(({ value: theme }) => theme === 'dark')
-												.map(({ value: theme }, index) =>
-													this.renderImageUpload(
-														'EXCHANGE_BOARDING_IMAGE',
-														theme,
-														index
-													)
-												)}
-										</div>
-									</Collapse.Panel>
-									<Collapse.Panel
-										showArrow={false}
-										header={
-											<span className="underline-text">
-												Theme Specific Graphics
-											</span>
-										}
-										key="2"
-									>
-										<div className="file-wrapper">
-											{themeOptions
-												.filter(({ value: theme }) => theme !== 'dark')
-												.map(({ value: theme }, index) =>
-													this.renderImageUpload(
-														'EXCHANGE_BOARDING_IMAGE',
-														theme,
-														index
-													)
-												)}
-										</div>
-									</Collapse.Panel>
-								</Collapse>
-							</div>
-							<Button
-								type="primary"
-								className="green-btn minimal-btn mb-5"
-								loading={loadingButton}
-								onClick={() => this.handlePublish('EXCHANGE_BOARDING_IMAGE')}
-							>
-								Publish
-							</Button>
+							<PublishSection
+								title="Onboarding background image"
+								description="(The image displayed in the background on your onboarding page)"
+								themeOptions={themeOptions}
+								loadingButton={loadingButton}
+								currentPublishType={currentPublishType}
+								renderImageUpload={this.renderImageUpload}
+								handlePublish={this.handlePublish}
+								currentkey="EXCHANGE_BOARDING_IMAGE"
+								isPublishDisable={isPublishDisable}
+								updatedKey={updatedKey}
+							/>
 						</div>
 					) : null}
 					{activeTab === 'email' ? (
 						<div>
 							<div className="form-wrapper">
-								<EmailSettingsForm
-									initialValues={initialEmailValues}
-									handleSubmitSettings={this.submitSettings}
-									buttonSubmitting={buttonSubmitting}
-									emailData={this.state.emailData}
-									requestEmail={this.requestEmail}
-									defaults={kit && kit.defaults}
-									emailTypeData={emailTypeData}
-									constants={constants}
-								/>
+								<div className="disable-button">
+									<EmailSettingsForm
+										initialValues={initialEmailValues}
+										handleSubmitSettings={this.submitSettings}
+										buttonSubmitting={buttonSubmitting}
+										emailData={emailData}
+										requestEmail={this.requestEmail}
+										defaults={kit && kit.defaults}
+										emailTypeData={emailTypeData}
+										constants={constants}
+										defaultEmailData={defaultEmailData}
+									/>
+								</div>
 							</div>
 						</div>
 					) : null}
@@ -1208,6 +1064,8 @@ class GeneralContent extends Component {
 							initialValues={initialLinkValues}
 							handleSubmitFooter={this.submitSettings}
 							buttonSubmitting={buttonSubmitting}
+							isDisable={isDisable}
+							handleDisable={this.handleDisable}
 						/>
 						<div className="mb-5"></div>
 					</div>
@@ -1258,6 +1116,7 @@ class GeneralContent extends Component {
 						handleSaveInterface={this.handleSaveInterface}
 						isUpgrade={isUpgrade}
 						buttonSubmitting={buttonSubmitting}
+						isFiatUpgrade={isFiatUpgrade}
 					/>
 				) : null}
 				{activeTab === 'security' ? (

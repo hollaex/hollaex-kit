@@ -1,9 +1,9 @@
 import React from 'react';
-import { MIN_LEVEL_FOR_TOKENS } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
-import { FieldError } from '../../components/Form/FormFields/FieldWrapper';
+import { MIN_LEVEL_FOR_TOKENS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
+import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import ApiKeyContainer from './ApiKey';
-import DumbField from '../../components/Form/FormFields/DumbField';
+import DumbField from 'components/Form/FormFields/DumbField';
 import { EditWrapper } from 'components';
 
 const NoLevel = () => (
@@ -50,10 +50,12 @@ export const OtpEnabled = ({ fetching, openDialog }) => (
 			</EditWrapper>
 		</div>
 		{!fetching && (
-			<div className="mb-4 mt-4 blue-link pointer" onClick={openDialog}>
-				<EditWrapper stringId="DEVELOPER_SECTION.GENERATE_KEY">
-					{STRINGS['DEVELOPER_SECTION.GENERATE_KEY']}
-				</EditWrapper>
+			<div className="my-4">
+				<span className="blue-link pointer" onClick={openDialog}>
+					<EditWrapper stringId="DEVELOPER_SECTION.GENERATE_KEY">
+						{STRINGS['DEVELOPER_SECTION.GENERATE_KEY']}
+					</EditWrapper>
+				</span>
 			</div>
 		)}
 	</div>

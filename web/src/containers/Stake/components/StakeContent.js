@@ -15,6 +15,8 @@ import { STAKING_INDEX_COIN } from 'config/contracts';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { toFixed } from 'utils/currency';
 import { getDecimals } from 'utils/utils';
+import { minValue, maxValue, required } from 'components/Form/validations';
+import STRINGS from 'config/localizedStrings';
 
 import AllowanceLoader from './AllowanceLoader';
 import AmountContent from './AmountContent';
@@ -48,6 +50,8 @@ class StakeContent extends Component {
 			period: '',
 			action: ACTION_TYPE.STAKE,
 			pending: false,
+			isValid: false,
+			error: '',
 		};
 	}
 
@@ -72,19 +76,44 @@ class StakeContent extends Component {
 		return result;
 	};
 
-	setAmount = ({ target: { value } }) => {
+	setAmount = ({ target: { value: amount } }) => {
 		const {
-			tokenData: { available },
+			tokenData: { available, display_name },
 		} = this.props;
-		let amount;
-		if (mathjs.larger(value, available)) {
-			amount = available;
-		} else if (mathjs.smallerEq(value, 1)) {
-			amount = 1;
+
+		if (amount) {
+			if (mathjs.larger(amount, available)) {
+				this.setState({
+					amount,
+					isValid: false,
+					error: maxValue(
+						available,
+						STRINGS.formatString(
+							STRINGS['WITHDRAWALS_LOWER_BALANCE'],
+							`${amount} ${display_name}`
+						)
+					)(amount),
+				});
+			} else if (mathjs.smaller(amount, 1)) {
+				this.setState({
+					amount,
+					isValid: false,
+					error: minValue(1, STRINGS['WITHDRAWALS_MIN_VALUE_ERROR'])(amount),
+				});
+			} else {
+				this.setState({
+					amount,
+					isValid: true,
+					error: '',
+				});
+			}
 		} else {
-			amount = value;
+			this.setState({
+				amount,
+				isValid: false,
+				error: required(amount),
+			});
 		}
-		this.setState({ amount });
 	};
 
 	approveAndStake = (symbol) => async ({ amount, period, account }) => {
@@ -150,12 +179,13 @@ class StakeContent extends Component {
 			onCloseDialog,
 			account,
 			penalties,
+			coins,
 		} = this.props;
-		const { period, amount, action, isPending } = this.state;
+		const { period, amount, action, isPending, isValid, error } = this.state;
 		const { symbol } = tokenData;
 		switch (type) {
 			case CONTENT_TYPE.LOADING:
-				return <AllowanceLoader symbol={symbol} />;
+				return <AllowanceLoader coins={coins} symbol={symbol} />;
 			case CONTENT_TYPE.AMOUNT:
 				return (
 					<AmountContent
@@ -165,6 +195,8 @@ class StakeContent extends Component {
 						onNext={() => this.setContent(CONTENT_TYPE.PERIOD)}
 						amount={amount}
 						setAmount={this.setAmount}
+						isValid={isValid}
+						error={error}
 					/>
 				);
 			case CONTENT_TYPE.PERIOD:

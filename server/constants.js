@@ -27,7 +27,10 @@ let configuration = {
 		user_meta: {},
 		injected_values: [],
 		injected_html: {},
-		black_list_countries: []
+		black_list_countries: [],
+		onramp: {},
+		offramp: {},
+		user_payments: {}
 	},
 	email: {}
 };
@@ -107,7 +110,10 @@ const resetAllConfig = () => {
 			user_meta: {},
 			injected_values: [],
 			injected_html: {},
-			black_list_countries: []
+			black_list_countries: [],
+			onramp: {},
+			offramp: {},
+			user_payments: {}
 		},
 		email: {}
 	};
@@ -185,7 +191,10 @@ exports.KIT_CONFIG_KEYS = [
 	'injected_values',
 	'injected_html',
 	'user_meta',
-	'black_list_countries'
+	'black_list_countries',
+	'onramp',
+	'offramp',
+	'user_payments'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -244,6 +253,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `trade:${symbolOrUserId}`;
 		case 'order':
 			return `order:${symbolOrUserId}`;
+		case 'usertrade':
+			return `usertrade:${symbolOrUserId}`;
 		case 'wallet':
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
@@ -291,7 +302,8 @@ exports.SETTING_KEYS = [
 	'interface',
 	'audio',
 	'risk',
-	'chat'
+	'chat',
+	'app'
 ];
 
 exports.OMITTED_USER_FIELDS = [
@@ -317,8 +329,8 @@ const ROLES = {
 
 exports.DEFAULT_FEES = {
 	zero: {
-		maker: 0.3,
-		taker: 0.3
+		maker: 0.2,
+		taker: 0.2
 	},
 	lite: {
 		maker: 0.05,
@@ -326,7 +338,7 @@ exports.DEFAULT_FEES = {
 	},
 	member: {
 		maker: 0,
-		taker: 0.05
+		taker: 0
 	}
 };
 
@@ -337,6 +349,9 @@ exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to
 // ACCOUNTS CONSTANTS END --------------------------------------------------
 
 // SECURITY CONSTANTS START --------------------------------------------------
+
+exports.TOKEN_TIME_NORMAL = '24h';
+exports.TOKEN_TIME_LONG = '30d';
 
 exports.TOKEN_TYPES = {
 	HMAC: 'hmac'
@@ -411,6 +426,11 @@ exports.EXPLORERS = {
 			name: 'stellarchain.io',
 			baseUrl: 'https://stellarchain.io',
 			txPath: '/tx'
+		},
+		{
+			name: 'Steexp',
+			baseUrl: 'https://steexp.com',
+			txPath: '/tx'
 		}
 	],
 	xmr: [
@@ -477,6 +497,11 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/cardano/transaction'
+		},
+		{
+			name: 'CardanoScan',
+			baseUrl: 'https://cardanoscan.io',
+			txPath: '/transaction'
 		}
 	],
 	eos: [
@@ -489,6 +514,37 @@ exports.EXPLORERS = {
 			name: 'BlockChair',
 			baseUrl: 'https://blockchair.com',
 			txPath: '/eos/transaction'
+		}
+	],
+	sol: [
+		{
+			name: 'Solana Explorer',
+			baseUrl: 'https://explorer.solana.com',
+			txPath: '/tx'
+		},
+		{
+			name: 'SolScan',
+			baseUrl: 'https://solscan.io',
+			txPath: '/tx'
+		},
+		{
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/solana/transaction'
+		}
+	],
+	klay: [
+		{
+			name: 'Klaytn Explorer',
+			baseUrl: 'https://scope.klaytn.com',
+			txPath: '/tx'
+		}
+	],
+	matic: [
+		{
+			name: 'PolygonScan',
+			baseUrl: 'https://polygonscan.com',
+			txPath: '/tx'
 		}
 	]
 };
@@ -548,7 +604,7 @@ exports.VERIFY_STATUS = {
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
-		content:url('https://s3.ap-northeast-2.amazonaws.com/public-holla-images/bitholla/bitholla-white--01.png');
+		content:url('${exports.GET_KIT_CONFIG().logo_image}}');
 		height: 2rem;
 	}
 	.swagger-ui .opblock.opblock-get .opblock-summary-method {

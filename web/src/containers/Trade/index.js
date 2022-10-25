@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
+import mathjs from 'mathjs';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
@@ -9,9 +10,10 @@ import { createSelector } from 'reselect';
 import debounce from 'lodash.debounce';
 import { setOrderbooks } from 'actions/orderbookAction';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
+import RGL, { WidthProvider } from 'react-grid-layout';
 
 import { getToken } from 'utils/token';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA, WS_URL } from 'config/constants';
+import { WS_URL } from 'config/constants';
 import { submitOrder } from 'actions/orderAction';
 import { getUserTrades } from 'actions/walletActions';
 import { storeLayout, getLayout, resetTools } from 'actions/toolsAction';
@@ -20,10 +22,10 @@ import {
 	setNotification,
 	NOTIFICATIONS,
 	RISKY_ORDER,
-} from '../../actions/appActions';
+	setTradeTab,
+} from 'actions/appActions';
 import { NORMAL_CLOSURE_CODE, isIntentionalClosure } from 'utils/webSocket';
-
-import { isLoggedIn } from '../../utils/token';
+import { isLoggedIn } from 'utils/token';
 import TradeBlock from './components/TradeBlock';
 import Orderbook from './components/Orderbook';
 import OrderEntry from './components/OrderEntry';
@@ -37,19 +39,21 @@ import ActiveOrdersWrapper from './components/ActiveOrdersWrapper';
 import RecentTradesWrapper from './components/RecentTradesWrapper';
 import DepthChart from './components/DepthChart';
 import { AddTradeTabs } from 'containers';
-
-import { Loader, MobileBarTabs, SidebarHub } from '../../components';
-
-import STRINGS from '../../config/localizedStrings';
-import { playBackgroundAudioNotification } from '../../utils/utils';
+import { Loader, MobileBarTabs, SidebarHub } from 'components';
+import STRINGS from 'config/localizedStrings';
+import { playBackgroundAudioNotification } from 'utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
-import RGL, { WidthProvider } from 'react-grid-layout';
+import { getViewport } from 'helpers/viewPort';
 
 const GridLayout = WidthProvider(RGL);
+const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
+const GRID_LAYOUT_MARGIN = 10; // RGL package default is 10
+const PORT_ROWS_NUMBER = 34;
+
 const defaultLayout = [
 	{
 		w: 5,
-		h: 14,
+		h: 28,
 		x: 19,
 		y: 0,
 		i: 'orderbook',
@@ -59,7 +63,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 17,
+		h: 26,
 		x: 0,
 		y: 0,
 		i: 'chart',
@@ -69,7 +73,7 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 17,
+		h: 34,
 		x: 14,
 		y: 23,
 		i: 'public_sales',
@@ -79,7 +83,7 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 14,
+		h: 28,
 		x: 14,
 		y: 0,
 		i: 'order_entry',
@@ -89,7 +93,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 12,
+		h: 28,
 		x: 0,
 		y: 28,
 		i: 'recent_trades',
@@ -99,7 +103,7 @@ const defaultLayout = [
 	},
 	{
 		w: 14,
-		h: 11,
+		h: 26,
 		x: 0,
 		y: 17,
 		i: 'open_orders',
@@ -109,17 +113,17 @@ const defaultLayout = [
 	},
 	{
 		w: 5,
-		h: 17,
+		h: 34,
 		x: 19,
 		y: 23,
 		i: 'wallet',
 		isDraggable: true,
-		isResizable: false,
+		isResizable: true,
 		resizeHandles: ['se'],
 	},
 	{
 		w: 10,
-		h: 9,
+		h: 18,
 		x: 14,
 		y: 14,
 		i: 'depth_chart',
@@ -129,11 +133,11 @@ const defaultLayout = [
 	},
 ];
 
-const getDefaultLayoutByTool = (tool) =>
-	defaultLayout.find(({ i }) => i === tool) || {};
+const getLayoutByTool = (tool, layout = defaultLayout) =>
+	layout.find(({ i }) => i === tool) || {};
 
-const layout = getLayout().map(({ w, h, x, y, i }) => {
-	const defaultItemLayout = getDefaultLayoutByTool(i);
+const LAYOUT = getLayout().map(({ w, h, x, y, i }) => {
+	const defaultItemLayout = getLayoutByTool(i);
 	const itemLayout = { ...defaultItemLayout };
 	if (defaultItemLayout.isResizable) {
 		itemLayout.w = w;
@@ -150,15 +154,17 @@ const layout = getLayout().map(({ w, h, x, y, i }) => {
 class Trade extends PureComponent {
 	constructor(props) {
 		super(props);
+
+		const rowHeight = this.calculateRowHeight();
 		this.state = {
 			wsInitialized: false,
 			orderbookFetched: false,
 			orderbookWs: null,
-			activeTab: 0,
 			chartHeight: 0,
 			chartWidth: 0,
 			symbol: '',
-			layout: layout.length > 0 ? layout : defaultLayout,
+			layout: LAYOUT.length > 0 ? LAYOUT : defaultLayout,
+			rowHeight,
 		};
 		this.priceTimeOut = '';
 		this.sizeTimeOut = '';
@@ -202,8 +208,8 @@ class Trade extends PureComponent {
 				.filter(([, { is_visible }]) => !!is_visible)
 				.forEach(([tool]) => {
 					if (!layout.find(({ i }) => i === tool)) {
-						const defaultItemLayout = getDefaultLayoutByTool(tool);
-						newItemsLayout.push({ ...defaultItemLayout, x: 0, y: Infinity });
+						const defaultItemLayout = getLayoutByTool(tool);
+						newItemsLayout.push(defaultItemLayout);
 					}
 				});
 			this.setState({ layout: [...layout, ...newItemsLayout] });
@@ -217,7 +223,10 @@ class Trade extends PureComponent {
 	onResetLayout = () => {
 		const { resetTools } = this.props;
 		resetTools();
-		setTimeout(this.onLayoutChange, 1000);
+		setTimeout(
+			() => this.onLayoutChange(defaultLayout, this.dispatchResizeEvent),
+			1000
+		);
 	};
 
 	componentWillUnmount() {
@@ -266,13 +275,31 @@ class Trade extends PureComponent {
 		this.props.router.push(`/trade/${pair}`);
 	};
 
+	calculateRowHeight = () => {
+		const [, height] = getViewport();
+		const rowHeight = mathjs.subtract(
+			mathjs.divide(mathjs.subtract(height, TOPBARS_HEIGHT), PORT_ROWS_NUMBER),
+			GRID_LAYOUT_MARGIN
+		);
+
+		return rowHeight;
+	};
+
 	onResize = () => {
-		if (this.chartBlock) {
-			this.setState({
-				chartHeight: this.chartBlock.offsetHeight || 0,
-				chartWidth: this.chartBlock.offsetWidth || 0,
-			});
-		}
+		const rowHeight = this.calculateRowHeight();
+		this.setState(
+			{
+				rowHeight,
+			},
+			() => {
+				if (this.chartBlock) {
+					this.setState({
+						chartHeight: this.chartBlock.offsetHeight || 0,
+						chartWidth: this.chartBlock.offsetWidth || 0,
+					});
+				}
+			}
+		);
 	};
 
 	openCheckOrder = (order, onConfirm) => {
@@ -331,8 +358,15 @@ class Trade extends PureComponent {
 		}
 	};
 
+	setSliderRef = (sliderRef) => {
+		if (sliderRef) {
+			this.sliderRef = sliderRef;
+		}
+	};
+
 	setActiveTab = (activeTab) => {
-		this.setState({ activeTab });
+		const { setTradeTab } = this.props;
+		setTradeTab(activeTab);
 	};
 
 	storeData = (data) => {
@@ -401,6 +435,13 @@ class Trade extends PureComponent {
 		};
 	};
 
+	resetSlider = () => {
+		console.log(this.sliderRef);
+		if (this.sliderRef) {
+			this.sliderRef.reset();
+		}
+	};
+
 	subscribe = (pair) => {
 		const { orderbookWs, wsInitialized } = this.state;
 		if (orderbookWs && wsInitialized) {
@@ -456,13 +497,10 @@ class Trade extends PureComponent {
 			activeOrdersMarketData,
 		} = this.props;
 		const { chartHeight, symbol, orderbookFetched } = this.state;
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -548,6 +586,8 @@ class Trade extends PureComponent {
 								showPopup={settings.notification.popup_order_confirmation}
 								setPriceRef={this.setPriceRef}
 								setSizeRef={this.setSizeRef}
+								setSliderRef={this.setSliderRef}
+								resetSlider={this.resetSlider}
 							/>
 						</TradeBlock>
 					</div>
@@ -617,7 +657,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							<DepthChart
-								containerProps={{ style: { height: '100%', width: '100%' } }}
+								containerProps={{ className: 'w-100 h-100 zoom-in' }}
 							/>
 						</TradeBlock>
 					</div>
@@ -629,9 +669,19 @@ class Trade extends PureComponent {
 		}
 	};
 
-	onLayoutChange = (layout = defaultLayout) => {
+	onLayoutChange = (layout = defaultLayout, cb) => {
 		storeLayout(layout);
-		this.setState({ layout });
+		this.setState({ layout }, () => {
+			if (cb) {
+				cb();
+			}
+		});
+	};
+
+	dispatchResizeEvent = () => window.dispatchEvent(new Event('resize'));
+
+	onStopResize = () => {
+		setTimeout(this.dispatchResizeEvent, 500);
 	};
 
 	render() {
@@ -649,20 +699,18 @@ class Trade extends PureComponent {
 			fees,
 			icons,
 			tools,
+			activeTab,
 		} = this.props;
-		const { symbol, activeTab, orderbookFetched } = this.state;
+		const { symbol, orderbookFetched, layout, rowHeight } = this.state;
 
 		if (symbol !== pair || !pairData) {
 			return <Loader background={false} />;
 		}
-		const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 		// TODO get right base pair
 		const orderbookProps = {
 			symbol,
 			pairData,
-			baseSymbol: baseValue.symbol.toUpperCase(),
-			coins,
 			onPriceClick: this.onPriceClick,
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
@@ -735,8 +783,6 @@ class Trade extends PureComponent {
 							activeTab={activeTab}
 							setActiveTab={this.setActiveTab}
 							pair={pair}
-							goToPair={this.goToPair}
-							goToMarkets={() => this.setActiveTab(3)}
 							icons={icons}
 						/>
 						<div className="content-with-bar d-flex">
@@ -748,15 +794,15 @@ class Trade extends PureComponent {
 						<EventListener target="window" onResize={this.onResize} />
 						<GridLayout
 							className="layout w-100"
-							layout={this.state.layout}
-							onLayoutChange={this.onLayoutChange}
-							onResizeStop={() => window.dispatchEvent(new Event('resize'))}
+							layout={layout}
+							onLayoutChange={(layout) => this.onLayoutChange(layout)}
+							onResizeStop={this.onStopResize}
 							items={
 								Object.entries(tools).filter(
 									([, { is_visible }]) => !!is_visible
 								).length
 							}
-							rowHeight={30}
+							rowHeight={rowHeight}
 							cols={24}
 							draggableHandle=".drag-handle"
 						>
@@ -831,6 +877,7 @@ const mapStateToProps = (state) => {
 		isReady: state.app.isReady,
 		constants: state.app.constants,
 		tools: state.tools,
+		activeTab: state.app.tradeTab,
 	};
 };
 
@@ -841,6 +888,7 @@ const mapDispatchToProps = (dispatch) => ({
 	change: bindActionCreators(change, dispatch),
 	setOrderbooks: bindActionCreators(setOrderbooks, dispatch),
 	resetTools: bindActionCreators(resetTools, dispatch),
+	setTradeTab: bindActionCreators(setTradeTab, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withConfig(Trade));

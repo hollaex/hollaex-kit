@@ -1,0 +1,40 @@
+{
+	"name": "hello-exchange",
+	"version": 1,
+	"type": null,
+	"author": "bitHolla",
+	"bio": "Say hello from an exchange",
+	"description": "Demo plugin for proof of concept",
+	"documentation": null,
+	"logo": null,
+	"icon": null,
+	"url": null,
+	"public_meta": {
+		"public_message": {
+			"type": "string",
+			"required": false,
+			"description": "Not a secret",
+			"value": "Hello Exchange!"
+		}
+	},
+	"meta": {
+		"private_message": {
+			"type": "string",
+			"required": false,
+			"description": "A secret",
+			"value": "hello exchange..."
+		}
+	},
+	"prescript": {
+		"install": [
+			"hello-world-npm"
+		],
+		"run": null
+	},
+	"postscript": {
+		"run": null
+	},
+	"script": "\"use strict\";const{publicMeta:publicMeta,meta:meta}=this.configValues,{app:app,loggerPlugin:loggerPlugin,toolsLib:toolsLib}=this.pluginLibraries,helloWorld=require(\"hello-world-npm\"),moment=require(\"moment\"),init=async()=>{if(loggerPlugin.info(\"HELLO-EXCHANGE PLUGIN initializing...\"),!meta.private.value)throw new Error(\"Configuration value private required\")};init().then(()=>{app.get(\"/plugins/hello-exchange/info\",(e,i)=>(loggerPlugin.verbose(e.uuid,\"GET /plugins/hello-exchange/info\"),i.json({public_message:publicMeta.public.value,private_message:meta.private.value,library_message:helloWorld(),moment_timestamp:moment().toISOString(),exchange_info:toolsLib.getKitConfig().info})))}).catch(e=>{loggerPlugin.error(\"HELLO-EXCHANGE PLUGIN error during initialization\",e.message)});",
+	"admin_view": null,
+	"web_view": null
+}

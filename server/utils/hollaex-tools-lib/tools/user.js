@@ -77,6 +77,8 @@ const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 
+let networkIdToKitId = {};
+let kitIdToNetworkId = {};
 /* Onboarding*/
 
 const signUpUser = (email, password, opts = { referral: null }) => {
@@ -446,6 +448,7 @@ const getAllUsersAdmin = (opts = {
 	id: null,
 	search: null,
 	pending: null,
+	pending_type: null,
 	limit: null,
 	page: null,
 	order_by: null,
@@ -497,19 +500,30 @@ const getAllUsersAdmin = (opts = {
 			};
 		}
 	} else if (isBoolean(opts.pending) && opts.pending) {
+
+		let pendingQuery = [];
+		// users that have a pending id waiting for admin to confirm
+		const pendingId = {
+			id_data: {
+				status: 1
+			}
+		};
+		// users that have a pending bank waiting for admin to confirm
+		const pendingBank = getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'');
+
+		if (opts.pending_type) {
+			if (opts.pending_type === 'id') {
+				pendingQuery.push(pendingId);
+			} else if (opts.pending_type === 'bank') {
+				pendingQuery.push(pendingBank);
+			}
+		} else {
+			pendingQuery = [pendingId, pendingBank];
+		}
+
 		query = {
 			where: {
-				$or: [
-					getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''),
-					{
-						id_data: {
-							status: 1
-						}
-					},
-					{
-						activated: false
-					}
-				]
+				[Op.or]: pendingQuery
 			},
 			attributes: [
 				'id',
@@ -555,7 +569,7 @@ const getAllUsersAdmin = (opts = {
 			return { count, data };
 		})
 		.then(async (users) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (users.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1108,7 +1122,7 @@ const getUserLogins = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('login', options)
 		.then((logins) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (logins.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1236,7 +1250,7 @@ const getUserAudits = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('audit', options)
 		.then((audits) => {
-			if (opts.format) {
+			if (opts.format && opts.format === 'csv') {
 				if (audits.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -1300,33 +1314,34 @@ const createUserCryptoAddressByNetworkId = (networkId, crypto, opts = {
 	return getNodeLib().createUserCryptoAddress(networkId, crypto, opts);
 };
 
-const createUserCryptoAddressByKitId = (kitId, crypto, opts = {
+const createUserCryptoAddressByKitId = async (kitId, crypto, opts = {
 	network: null,
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(kitId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().createUserCryptoAddress(user.network_id, crypto, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([kitId]);
+
+	if (!has(idDictionary, kitId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[kitId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+	return getNodeLib().createUserCryptoAddress(idDictionary[kitId], crypto, opts);
 };
 
-const getUserStatsByKitId = (userId, opts = {
+const getUserStatsByKitId = async (userId, opts = {
 	additionalHeaders: null
 }) => {
-	return getUserByKitId(userId)
-		.then((user) => {
-			if (!user) {
-				throw new Error(USER_NOT_FOUND);
-			} else if (!user.network_id) {
-				throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
-			}
-			return getNodeLib().getUserStats(user.network_id, opts);
-		});
+	// check mapKitIdToNetworkId
+	const idDictionary = await mapKitIdToNetworkId([userId]);
+
+	if (!has(idDictionary, userId)) {
+		throw new Error(USER_NOT_FOUND);
+	} else if (!idDictionary[userId]) {
+		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+	}
+
+	return getNodeLib().getUserStats(idDictionary[userId], opts);
 };
 
 const getUserStatsByNetworkId = (networkId, opts = {
@@ -1505,9 +1520,6 @@ const updateUserMeta = async (id, givenMeta = {}, opts = { overwrite: null }) =>
 };
 
 const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
-	const networkIdToKitId = {};
-	const kitIdToNetworkId = {};
-
 	return [
 		async (networkIds = []) => {
 			if (!isArray(networkIds)) {
@@ -1562,11 +1574,11 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				throw new Error('No users found with given networkIds');
 			}
 
-			Object.entries(result)
-				.filter(([_, value]) => value === undefined)
-				.forEach(([key, _]) => {
-					delete result[key];
-				});
+			// Object.entries(result)
+			// 	.filter(([_, value]) => value === undefined)
+			// 	.forEach(([key, _]) => {
+			// 		delete result[key];
+			// 	});
 
 			return result;
 		},
@@ -1623,11 +1635,11 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				throw new Error('No users found with given kitIds');
 			}
 
-			Object.entries(result)
-				.filter(([_, value]) => value === undefined)
-				.forEach(([key, _]) => {
-					delete result[key];
-				});
+			// Object.entries(result)
+			// 	.filter(([_, value]) => value === undefined)
+			// 	.forEach(([key, _]) => {
+			// 		delete result[key];
+			// 	});
 
 			return result;
 		}];
@@ -1679,6 +1691,14 @@ const updateUserInfo = async (userId, data = {}) => {
 					updateData[field] = {
 						...user.address,
 						...pick(value, ['address', 'city', 'country', 'postal_code'])
+					};
+				}
+				break;
+			case 'id_data':
+				if (isPlainObject(value)) {
+					updateData[field] = {
+						...user.id_data,
+						...pick(value, ['type', 'status', 'number', 'issued_date', 'expiration_date'])
 					};
 				}
 				break;

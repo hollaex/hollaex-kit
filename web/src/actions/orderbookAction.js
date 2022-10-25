@@ -7,6 +7,7 @@ const TRADE_QUOTE_PERFORM = 'TRADE_QUOTE_PERFORM';
 const SET_ORDERBOOK_DEPTH = 'CHANGE_ORDERBOOK_DEPTH';
 const SET_CHART_LAST_CLOSE = 'CHANGE_CHART_LAST_CLOSE';
 export const PAIRS_TRADES_FETCHED = 'PAIRS_TRADES_FETCHED';
+export const SET_ORDER_ENTRY = 'SET_ORDER_ENTRY';
 
 export const ORDERBOOK_CONSTANTS = {
 	QUICK_TRADE_CANCEL: `${QUICK_TRADE}_CANCEL`,
@@ -185,5 +186,12 @@ export const setPairsData = (pairs) => ({
 	type: 'SET_PAIRS_DATA',
 	payload: {
 		pairs,
+	},
+});
+
+export const setOrderEntryData = (items) => ({
+	type: SET_ORDER_ENTRY,
+	payload: {
+		items,
 	},
 });

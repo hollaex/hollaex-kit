@@ -10,6 +10,7 @@ import Toggle from './components/Toggle';
 import { SearchBox } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import { MARKET_OPTIONS } from 'config/options';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { EditWrapper } from 'components';
 import Image from 'components/Image';
@@ -22,10 +23,8 @@ class AddTradeTab extends Component {
 		data: [],
 		count: 0,
 		searchValue: '',
-		selected: isMobile
-			? STRINGS['MARKET_OPTIONS'][0].value
-			: STRINGS['MARKET_OPTIONS'][0].value,
-		options: STRINGS['MARKET_OPTIONS'],
+		selected: isMobile ? MARKET_OPTIONS[0].value : MARKET_OPTIONS[0].value,
+		options: MARKET_OPTIONS,
 		chartData: {},
 	};
 
@@ -155,7 +154,7 @@ class AddTradeTab extends Component {
 		}
 
 		return (
-			<div>
+			<Fragment>
 				<div id="trade-header-section"></div>
 				<div className="trade_tabs-container">
 					{!isMobile && (
@@ -200,6 +199,7 @@ class AddTradeTab extends Component {
 									outlineClassName="trade_tabs-search-outline"
 									placeHolder={`${STRINGS['SEARCH_ASSETS']}...`}
 									handleSearch={this.handleTabSearch}
+									showCross
 								/>
 							</div>
 							<div className="mt-2">
@@ -239,7 +239,7 @@ class AddTradeTab extends Component {
 					</div>
 				</div>
 				<div id="trade-footer-section"></div>
-			</div>
+			</Fragment>
 		);
 	}
 }

@@ -27,8 +27,8 @@ const TradeBlock = ({
 	titleClassName = '',
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
-	const { pair_base } = pairData;
-	let ICON_PATH = pair_base ? ICONS[`${pair_base.toUpperCase()}_ICON`] : ``;
+	const { icon_id } = pairData;
+
 	return (
 		<div
 			className={classnames(
@@ -50,7 +50,7 @@ const TradeBlock = ({
 					<div className="d-flex">
 						{pairs.length ? (
 							<Image
-								icon={ICON_PATH ? ICON_PATH : ICONS['DEFAULT_ICON']}
+								icon={ICONS[icon_id]}
 								wrapperClassName="trade_block-icon"
 							/>
 						) : null}

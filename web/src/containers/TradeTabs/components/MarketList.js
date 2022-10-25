@@ -103,8 +103,6 @@ MarketList.propTypes = {
 			shape({
 				key: string,
 				pair: object,
-				symbol: string,
-				pairTwo: object,
 				ticker: object,
 				increment_price: number,
 				priceDifference: number,

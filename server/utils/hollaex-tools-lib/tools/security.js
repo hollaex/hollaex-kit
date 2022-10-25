@@ -778,14 +778,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_KEY_NOT_WHITELISTED);
 					}
 				}
-				if (!scopes.includes(token.type)) {
-					loggerAuth.error(
-						'helpers/auth/checkApiKey/findTokenByApiKey out of scope',
-						apiKey,
-						token.type
-					);
-					throw new Error(API_KEY_OUT_OF_SCOPE);
-				} else if (new Date(token.expiry) < new Date()) {
+				if (new Date(token.expiry) < new Date()) {
 					loggerAuth.error(
 						'helpers/auth/checkApiKey/findTokenByApiKey expired key',
 						apiKey
@@ -865,7 +858,8 @@ const issueToken = (
 	isSupport = false,
 	isSupervisor = false,
 	isKYC = false,
-	isCommunicator = false
+	isCommunicator = false,
+	expiresIn = getKitSecrets().security.token_time // 24 hours by default
 ) => {
 	// Default scope is ['user']
 	let scopes = [].concat(BASE_SCOPES);
@@ -901,7 +895,7 @@ const issueToken = (
 		},
 		SECRET,
 		{
-			expiresIn: getKitSecrets().security.token_time
+			expiresIn
 		}
 	);
 	return token;
@@ -986,13 +980,13 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 			});
 		})
 		.then((token) => {
-			return token
+			return token;
 		});
 };
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({where: {id: token_id}});
+	const token = await findToken({ where: { id: token_id } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);

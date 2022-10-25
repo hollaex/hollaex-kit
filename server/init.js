@@ -2,9 +2,12 @@
 
 const Network = require('hollaex-network-lib');
 const { all } = require('bluebird');
+const moment = require('moment');
 const rp = require('request-promise');
 const { loggerInit } = require('./config/logger');
+const { Op } = require('sequelize');
 const { User, Status, Tier, Broker } = require('./db/models');
+const packageJson = require('./package.json');
 
 const { subscriber, publisher } = require('./db/pubsub');
 const {
@@ -64,6 +67,9 @@ const checkStatus = () => {
 			injected_html: {},
 			user_meta: {},
 			black_list_countries: [],
+			onramp: {},
+			offramp: {},
+			user_payments: {}
 		},
 		email: {}
 	};
@@ -77,6 +83,8 @@ const checkStatus = () => {
 	};
 
 	let frozenUsers = {};
+
+	let version = packageJson.version; // current exchange version
 
 	return Status.findOne({})
 		.then((status) => {
@@ -97,15 +105,20 @@ const checkStatus = () => {
 				stop();
 				throw new Error('Exchange is expired');
 			} else {
+				if (status.kit_version != version) {
+					loggerInit.verbose('init/checkStatus version update', version, status.kit_version);
+					status.update({ kit_version: version }, { fields: ['kit_version'] });
+				}
 				secrets = status.secrets;
 				configuration.kit = status.kit;
 				configuration.email = status.email;
+
 				return all([
 					checkActivation(
 						status.name,
 						status.url,
 						status.activation_code,
-						status.kit_version,
+						version,
 						status.constants
 					),
 					Tier.findAll(),
@@ -161,7 +174,7 @@ const checkStatus = () => {
 					for (let deal of deals) {
 						const pair = deal.symbol;
 						// checking if the deal is already among the pairs
-						if (!exchangePairs.find(e => e.name === pair)) {
+						if (!exchangePairs.find((e) => e.name === pair)) {
 							if (!isNumber(tier.fees.maker[pair])) {
 								fees.maker[pair] = defaultFees.maker;
 							} else {
@@ -218,9 +231,14 @@ const checkStatus = () => {
 			nodeLib = networkNodeLib;
 
 			return all([
+				// get deactivated users in the last week. Its only set to week because
+				// the sessions are assumed to be lower than a week for user to be logged in.
 				User.findAll({
 					where: {
-						activated: false
+						activated: false,
+						updated_at: {
+							[Op.gt]: moment().subtract(7, 'days').toDate()
+						}
 					}
 				}),
 				networkNodeLib
@@ -249,13 +267,12 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, version, constants = {}, kit = {}) => {
+const checkActivation = (name, url, activation_code, version, constants = {}) => {
 	const body = {
 		name,
 		url,
 		activation_code,
-		constants,
-		kit
+		constants
 	};
 	if (version) {
 		// only sends version if its set

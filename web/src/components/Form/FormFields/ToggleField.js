@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { FieldContent } from './FieldWrapper';
 
-import STRINGS from '../../../config/localizedStrings';
-import { FLEX_CENTER_CLASSES } from '../../../config/constants';
+import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
 
 class ToggleField extends Component {
 	state = {
@@ -19,7 +19,7 @@ class ToggleField extends Component {
 			this.setState({ selected: input.value });
 		}
 		if ('isZeroBalanceHidden' in rest) {
-			this.setState({ selected: rest?.isZeroBalanceHidden })
+			this.setState({ selected: rest?.isZeroBalanceHidden });
 		}
 	}
 
@@ -79,7 +79,7 @@ class ToggleField extends Component {
 						{...rest}
 					>
 						<div className="d-flex justify-content-between">
-							<div>{label}</div>
+							<div className={selected ? '' : 'half-opacity'}>{label}</div>
 							<Toggle
 								selected={selected}
 								options={options}
@@ -149,7 +149,7 @@ const Toggle = ({
 );
 
 ToggleField.defaultProps = {
-	options: STRINGS['DEFAULT_TOGGLE_OPTIONS'],
+	options: DEFAULT_TOGGLE_OPTIONS,
 	onChange: () => {},
 	toggleOnly: false,
 };

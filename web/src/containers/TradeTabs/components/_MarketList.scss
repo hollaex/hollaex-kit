@@ -11,6 +11,8 @@
 			margin: 0.3rem 0.3rem 0 0.3rem;
 
 			svg {
+				width: 2.5rem !important;
+				height: 2.5rem !important;
 				.btc0,
 				.btc1 {
 					fill: $coin-btc;
@@ -83,11 +85,13 @@
 				.td-chart {
 					width: 150px;
 					height: 50px;
-    				padding-top: 6px;
-					.highcharts-container  {
-						transform: scale(1.2, 2);
+					.highcharts-container {
+						transform: scale(2, 2);
 						svg {
-    						padding-top: 3px;
+							padding-top: 3px;
+							.highcharts-graph {
+								stroke-width: 0.6px !important;
+							}
 						}
 					}
 				}

@@ -18,13 +18,13 @@
 
 ### Prerequisites
 
-This Tools Library will only work with the [HollaEx Kit](https://github.com/bitholla/hollaex-kit).
+This Tools Library will only work with the [HollaEx Kit](https://github.com/hollaex/hollaex-kit).
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/bitholla/hollaex-tools-lib.git
+   git clone https://github.com/hollaex/hollaex-tools-lib.git
    ```
 2. Install NPM packages
    ```sh
@@ -649,7 +649,7 @@ const tools = require('hollaex-tools-lib');
 #### User functions
 
 - `signUpUser(email, password, [opts = { referral: null }])`
-  - Signup new user using bitHolla's signup flow
+  - Signup new user using hollaex's signup flow
   - Will send email to user asking for verification
   - Returns promise with sequelize object of user data
 	```javascript
@@ -1780,7 +1780,7 @@ const tools = require('hollaex-tools-lib');
   - `order` = asc or desc
   - `start_date` = get users created after this date
   - `end_date` = get users created before this date
-  - `format` = pass `csv` to get csv file
+  - `format` = pass `csv` to get csv file or `all` to get all the data without pagination
   - Returns promise with trades data
 	```javascript
 	tools.order.getAllTradesNetwork()
@@ -1805,7 +1805,7 @@ const tools = require('hollaex-tools-lib');
   - `order` = asc or desc
   - `start_date` = get users created after this date
   - `end_date` = get users created before this date
-  - `format` = pass `csv` to get csv file
+  - `format` = pass `csv` to get csv file or `all` to get all the data without pagination
   - Returns promise with trades data
 	```javascript
 	tools.order.getAllUserTradesByKitId(99)
@@ -1830,7 +1830,7 @@ const tools = require('hollaex-tools-lib');
   - `order` = asc or desc
   - `start_date` = get users created after this date
   - `end_date` = get users created before this date
-  - `format` = pass `csv` to get csv file
+  - `format` = pass `csv` to get csv file or `all` to get all the data without pagination
   - Returns promise with trades data
 	```javascript
 	tools.order.getAllUserTradesByEmail('person@bitholla.com')
@@ -1855,7 +1855,7 @@ const tools = require('hollaex-tools-lib');
   - `order` = asc or desc
   - `start_date` = get users created after this date
   - `end_date` = get users created before this date
-  - `format` = pass `csv` to get csv file
+  - `format` = pass `csv` to get csv file or `all` to get all the data without pagination
   - Returns promise with trades data
 	```javascript
 	tools.order.getAllUserTradesByNetwork(1)

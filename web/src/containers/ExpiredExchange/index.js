@@ -4,13 +4,12 @@ import { ReactSVG } from 'react-svg';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import moment from 'moment';
-import { getThemeClass } from '../../utils/theme';
-
-import { FLEX_CENTER_CLASSES, EXCHANGE_URL } from '../../config/constants';
-import { getExchangeInfo } from '../../actions/appActions';
-import { logout } from '../../actions/authAction';
-import STRINGS from '../../config/localizedStrings';
-import { Button } from '../../components';
+import { getThemeClass } from 'utils/theme';
+import { FLEX_CENTER_CLASSES, EXCHANGE_URL } from 'config/constants';
+import { getExchangeInfo } from 'actions/appActions';
+import { logout } from 'actions/authAction';
+import STRINGS from 'config/localizedStrings';
+import { Button } from 'components';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 

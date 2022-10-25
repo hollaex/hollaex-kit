@@ -612,3 +612,152 @@
 	width: 90px;
 	margin-left: 5px;
 }
+.otcDeskContainer .main-subHeading a,
+.otc-Container .main-subHeading a,
+.otcDeskContainer .table-wrapper .text-underline {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.otc-Container .anchor {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.otc-Container .connect-btn-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 1rem;
+}
+.otc-Container .connect-btn-wrapper .connect-btn {
+	height: 25px;
+	width: 27%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.otc-Container .greentxt {
+	margin-left: 20px;
+	margin-top: -3px;
+	color: #288500;
+}
+.otc-Container .str-wrapper {
+	border: 1px solid #ffffff;
+	margin-bottom: 25px;
+}
+.otc-Container .binwrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1rem 1rem;
+}
+.otc-Container .justify-content-unset {
+	justify-content: space-evenly;
+	width: 80%;
+	overflow: scroll;
+}
+.otc-Container .binborder {
+	width: 93%;
+	margin-left: 20px;
+	border-bottom: 1px solid #9e9a9a;
+}
+.otc-Container .binRborder {
+	border-right: 1px solid #9e9a9a;
+	height: 45px;
+}
+.otc-Container .hedgehead {
+	color: #ffffff;
+}
+.hedge_switch .switch-wrapper .ant-switch {
+	background-color: #ffffff !important;
+}
+.hedge_switch .switch-wrapper .ant-switch .ant-switch-handle::before {
+	background-color: #000000 !important;
+}
+.otc-Container .disabled_area {
+	margin-top: 1rem;
+	opacity: 0.4;
+}
+.otc-Container .connect-btn-wrapper .ant-spin {
+	margin-right: 1rem;
+}
+.otc-Container .connect-btn-wrapper .ant-spin svg {
+	fill: #ffffff;
+}
+.otc-Container .errmes {
+	font-size: 12px;
+	color: #f10e39;
+}
+.otc-Container .binancewrapper {
+	border: 1px solid #ffffff;
+}
+.otc-Container .Formulabox {
+	width: 87%;
+}
+.otc-Container .Formulabox .ant-input {
+	height: 28px;
+}
+.otc-Container .dysell {
+	color: #ffffff;
+}
+.otc-Container .preStep {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.otc-Container .dynamic {
+	border-top: 1px solid #ffffff;
+}
+.otc-Container .overflow {
+	border: 1px solid #ffffff;
+	height: 250px;
+	overflow-y: scroll;
+}
+.otc-Container .ant-input-affix-wrapper .ant-input,
+.otc-Container .expiry-time-field {
+	background-color: var(--admin_panel_input);
+	color: #ffffff;
+}
+.otc-Container .Formulabox .anticon-exclamation-circle {
+	font-size: 18px;
+}
+.otc-Container .button-design {
+	border: 1px solid #ffffff;
+	padding: 0 1rem;
+	border-radius: 6px;
+	cursor: pointer;
+}
+.otc-Container .table-header:hover {
+	cursor: pointer;
+}
+.otc-Container .email-option-wrapper .email-header {
+	width: 63%;
+	justify-content: space-between;
+	margin-left: 1rem;
+}
+.otc-Container .email-option-wrapper .email-option {
+	padding-left: 1rem;
+}
+.otc-Container .email-option-wrapper .email-option .w-85 {
+	width: 85%;
+}
+.otc-Container .email-option-wrapper .email-option:hover {
+	background-color: #4b55ae;
+	cursor: pointer;
+}
+.otc-Container .Datahide {
+	opacity: 0.4;
+	pointer-events: none;
+}
+.otc-Container .infoColor {
+	color: '#B6B6B6';
+}
+.otc-Container .icon-outline-Size {
+	font-size: '24px';
+}
+.otc-Container .upgrade {
+	width: 87%;
+	justify-content: space-around;
+	background-color: #525cb1;
+}
+.otc-Container .errMsg {
+	color: red;
+}

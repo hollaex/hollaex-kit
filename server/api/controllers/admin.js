@@ -10,6 +10,14 @@ const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
+const crypto = require('crypto');
+
+const VERIFY_STATUS = {
+	EMPTY: 0,
+	PENDING: 1,
+	REJECTED: 2,
+	COMPLETED: 3
+};
 
 const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
@@ -103,7 +111,7 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, pending, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { id, search, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -118,6 +126,7 @@ const getUsersAdmin = (req, res) => {
 		id: id.value,
 		search: search.value,
 		pending: pending.value,
+		pending_type: pending_type.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -914,13 +923,14 @@ const putMint = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
 		processing,
 		waiting,
 		email,
-		updated_description
+		description
 	} = req.swagger.params.data.value;
 
 	loggerAdmin.info(
@@ -939,8 +949,10 @@ const putMint = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
-		'updated_description',
-		updated_description
+		'updated_address',
+		updated_address,
+		'description',
+		description
 	);
 
 	toolsLib.wallet.updatePendingMint(transaction_id, {
@@ -950,8 +962,9 @@ const putMint = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
-		updatedDescription: updated_description,
+		updatedDescription: description,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -1055,6 +1068,7 @@ const putBurn = (req, res) => {
 	const {
 		transaction_id,
 		updated_transaction_id,
+		updated_address,
 		status,
 		rejected,
 		dismissed,
@@ -1080,6 +1094,8 @@ const putBurn = (req, res) => {
 		waiting,
 		'updated_transaction_id',
 		updated_transaction_id,
+		'updated_address',
+		updated_address,
 		'updated_description',
 		updated_description
 	);
@@ -1091,6 +1107,7 @@ const putBurn = (req, res) => {
 		processing,
 		waiting,
 		updatedTransactionId: updated_transaction_id,
+		updatedAddress: updated_address,
 		email,
 		updatedDescription: updated_description,
 		additionalHeaders: {
@@ -1144,18 +1161,18 @@ const postKitUserMeta = (req, res) => {
 
 const getEmail = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
-	const { language, type} = req.swagger.params;
+	const { language, type } = req.swagger.params;
 	try {
 		const data = cloneDeep({
 			email: toolsLib.getEmail()
 		});
 
-		return res.json(data["email"][language.value][type.value.toUpperCase()]);
+		return res.json(data['email'][language.value][type.value.toUpperCase()]);
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmail', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
-}
+};
 
 
 const putEmail = (req, res) => {
@@ -1165,7 +1182,7 @@ const putEmail = (req, res) => {
 	const data = cloneDeep({
 		email: toolsLib.getEmail()
 	});
-	data["email"][language][type.toUpperCase()] = {html, title};
+	data['email'][language][type.toUpperCase()] = { html, title };
 	toolsLib.updateEmail(data)
 		.then(() => {
 			return res.status(201).json({ message: 'Success' });
@@ -1176,7 +1193,7 @@ const putEmail = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 
-}
+};
 
 const getEmailTypes = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmailTypes', req.auth.sub);
@@ -1186,14 +1203,20 @@ const getEmailTypes = (req, res) => {
 			email: toolsLib.getEmail()
 		});
 
-		const arrMailType = Object.keys(data["email"][LANGUAGE_DEFAULT]);
+		let arrMailType = Object.keys(data['email'][LANGUAGE_DEFAULT]);
+		arrMailType.sort((a, b) => {
+			if(a < b) { return -1; }
+			if(a > b) { return 1; }
+			return 0;
+		});
+
 		return res.status(201).json(arrMailType);
 
 	} catch (err) {
 		loggerAdmin.error(req.uuid, 'controllers/admin/getEmailTypes', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	}
-}
+};
 
 const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
@@ -1559,6 +1582,7 @@ const updateCoin = (req, res) => {
 		allow_deposit: allowDeposit,
 		allow_withdrawal: allowWithdrawal,
 		withdrawal_fees: withdrawalFees,
+		deposit_fees: depositFees,
 		is_public: isPublic,
 		description
 	} = req.swagger.params.data.value;
@@ -1596,6 +1620,8 @@ const updateCoin = (req, res) => {
 		allowWithdrawal,
 		'withdrawal_fees:',
 		withdrawalFees,
+		'deposit_fees:',
+		depositFees,
 		'is_public:',
 		isPublic,
 		'description:',
@@ -1620,6 +1646,7 @@ const updateCoin = (req, res) => {
 			allowDeposit,
 			allowWithdrawal,
 			withdrawalFees,
+			depositFees,
 			isPublic
 		},
 		{
@@ -1811,7 +1838,8 @@ const putUserInfo = (req, res) => {
 			'nationality',
 			'phone_number',
 			'dob',
-			'address'
+			'address',
+			'id_data'
 		]
 	);
 
@@ -1866,6 +1894,161 @@ const emailConfigTest = (req, res) => {
 		});
 };
 
+const setUserBank = (req, res) => {
+
+	const { bank_account } = req.swagger.params.data.value;
+	const id = req.swagger.params.id.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/setUserBank auth',
+		req.auth,
+		id,
+		bank_account
+	);
+
+	toolsLib.user.getUserByKitId(id, false)
+		.then(async (user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
+			
+			const existingBankAccounts = user.bank_account;
+
+			let sendEmail = false;
+
+			const newBankAccounts = bank_account.map((bank) => {
+				let existingBank = existingBankAccounts.filter((b) => b.id === bank.id);
+				existingBank = existingBank[0];
+
+				if (existingBank) {
+					return bank;
+				} else {
+					sendEmail = true;
+					bank.id = crypto.randomBytes(8).toString('hex');
+					bank.status = VERIFY_STATUS.COMPLETED;
+					return bank;
+				}
+			});
+
+			const updatedUser = await user.update(
+				{ bank_account: newBankAccounts },
+				{ fields: ['bank_account'] }
+			);
+
+			if (sendEmail) {
+				try {
+					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, updatedUser.settings);
+				} catch (err) {
+					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
+				}
+			}
+
+			return res.json(updatedUser.bank_account);
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/setUserBank err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const verifyUserBank = (req, res) => {
+
+	const { user_id, bank_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/verifyUserBank auth',
+		req.auth,
+		user_id,
+		bank_id
+	);
+	
+	toolsLib.user.getUserByKitId(user_id, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
+
+			const bank = user.bank_account.filter((bank) => bank.id === bank_id);
+
+			if (bank.length === 0) {
+				throw new Error('Bank not found');
+			} else if (bank[0].status === VERIFY_STATUS.COMPLETED) {
+				throw new Error('Bank is already verified');
+			}
+
+			const banks = user.bank_account.map((bank) => {
+				if (bank.id === bank_id) {
+					bank.status = VERIFY_STATUS.COMPLETED;
+				}
+				return bank;
+			});
+
+			return user.update(
+				{ bank_account: banks },
+				{ fields: ['bank_account'] }
+			);
+		})
+		.then((user) => {
+			try {
+				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, user.settings);
+			} catch (err) {
+				loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank email catch', err.message);
+			}
+			return res.json(user.bank_account);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const revokeUserBank = (req, res) => {
+	const { user_id, bank_id, message } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/revokeUserBank auth',
+		req.auth,
+		user_id,
+		bank_id,
+		message
+	);
+
+	toolsLib.user.getUserByKitId(user_id, false)
+		.then((user) => {
+			if (!user) {
+				throw new Error('User not found');
+			}
+
+			const bank = user.bank_account.filter((bank) => bank.id === bank_id);
+
+			if (bank.length === 0) {
+				throw new Error('Bank not found');
+			}
+
+			const newBanks = user.bank_account.filter((bank) => bank.id !== bank_id);
+
+			return user.update(
+				{ bank_account: newBanks },
+				{ fields: ['bank_account'] }
+			);
+		})
+		.then((user) => {
+			toolsLib.sendEmail('USER_VERIFICATION_REJECT', user.email, { type: 'bank', message }, user.settings);
+			return res.json(user.bank_account);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserBank err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -1913,5 +2096,8 @@ module.exports = {
 	getEmail,
 	putEmail,
 	emailConfigTest,
-	getEmailTypes
+	getEmailTypes,
+	setUserBank,
+	verifyUserBank,
+	revokeUserBank
 };

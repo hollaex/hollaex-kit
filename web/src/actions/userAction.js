@@ -279,11 +279,6 @@ export const cleanCreateAddress = () => ({
 	type: 'CLEAN_CREATE_ADDRESS',
 });
 
-export const getTradeVolume = () => ({
-	type: 'GET_TRADE_VOLUME',
-	payload: axios.get(`/user/stats`),
-});
-
 export function getUserReferralCount() {
 	return (dispatch) => {
 		axios

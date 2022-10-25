@@ -93,8 +93,7 @@ class PairTabs extends Component {
 		const {
 			pair: { increment_price } = {},
 			ticker: { close } = {},
-			symbol,
-			pairTwo,
+			display_name,
 		} = market;
 
 		return (
@@ -106,10 +105,9 @@ class PairTabs extends Component {
 								'app_bar-pair-content',
 								'd-flex',
 								'justify-content-between',
-								'px-2',
 								'market-trigger',
 								{
-									'active-tab-pair': location.pathname === '/trade/add/tabs',
+									'active-tab-pair': location.pathname === '/markets',
 								},
 								{
 									'active-market-trigger': activePairTab,
@@ -121,9 +119,7 @@ class PairTabs extends Component {
 								className="market-selector-dropdown"
 								overlay={
 									<MarketSelector
-										onViewMarketsClick={() =>
-											browserHistory.push('/trade/add/tabs')
-										}
+										onViewMarketsClick={() => browserHistory.push('/markets')}
 										addTradePairTab={this.onTabClick}
 										closeAddTabMenu={() =>
 											this.setState((prevState) =>
@@ -132,6 +128,7 @@ class PairTabs extends Component {
 												})
 											)
 										}
+										wrapperClassName="app-bar-add-tab-menu"
 									/>
 								}
 								destroyPopupOnHide={true}
@@ -147,11 +144,7 @@ class PairTabs extends Component {
 									{activePairTab ? (
 										<div className="app_bar-pair-font d-flex align-items-center justify-content-between">
 											<div className="app_bar-currency-txt">
-												{symbol && symbol.toUpperCase()}/
-												{pairTwo &&
-													pairTwo.symbol &&
-													pairTwo.symbol.toUpperCase()}
-												:
+												{display_name}:
 											</div>
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}

@@ -5,23 +5,31 @@ import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { SubmissionError } from 'redux-form';
-import { requestVerificationEmail } from '../../actions/authAction';
+import { requestVerificationEmail } from 'actions/authAction';
 import EmailRequestForm, { generateFormFields } from './EmailRequestForm';
 import EmailRequestSuccess from './EmailRequestSuccess';
-import { IconTitle, Dialog, MobileBarBack } from '../../components';
-import { ContactForm } from '../';
-import { FLEX_CENTER_CLASSES } from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { IconTitle, Dialog, MobileBarBack } from 'components';
+import { ContactForm } from 'containers';
+import { FLEX_CENTER_CLASSES } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 
 const BottomLink = () => (
-	<div className={classnames('f-1', 'link_wrapper')}>
-		{STRINGS['VERIFICATION_EMAIL_REQUEST.NO_EMAIL']}
-		<Link to="/verify" className={classnames('blue-link')}>
-			{STRINGS['VERIFICATION_EMAIL_REQUEST.REQUEST_EMAIL']}
-		</Link>
-	</div>
+	<>
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['SIGN_UP.HAVE_ACCOUNT']}
+			<Link to="/login" className={classnames('blue-link')}>
+				{STRINGS['SIGN_UP.GOTO_LOGIN']}
+			</Link>
+		</div>
+		<div className={classnames('f-1', 'link_wrapper')}>
+			{STRINGS['LOGIN.NO_ACCOUNT']}
+			<Link to="/signup" className={classnames('blue-link')}>
+				{STRINGS['LOGIN.CREATE_ACCOUNT']}
+			</Link>
+		</div>
+	</>
 );
 
 class VerifyEmailRequest extends Component {
@@ -113,8 +121,9 @@ class VerifyEmailRequest extends Component {
 					'login_container'
 				)}
 			>
-				{isMobile && <MobileBarBack onBackClick={this.onGoBack} />}
-
+				{isMobile && !showContactForm && (
+					<MobileBarBack onBackClick={this.onGoBack} />
+				)}
 				<div
 					className={classnames(
 						...FLEX_CENTER_CLASSES,
@@ -124,16 +133,6 @@ class VerifyEmailRequest extends Component {
 						'w-100'
 					)}
 				>
-					<IconTitle
-						iconId="EXCHANGE_LOGO"
-						iconPath={ICONS['EXCHANGE_LOGO']}
-						stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
-						text={STRINGS['VERIFICATION_EMAIL_REQUEST.TITLE']}
-						textType="title"
-						underline={true}
-						imageWrapperClassName="auth_logo-wrapper"
-						className="w-100 holla-logo"
-					/>
 					<div
 						className={classnames(
 							...FLEX_CENTER_CLASSES,
@@ -143,6 +142,23 @@ class VerifyEmailRequest extends Component {
 							'w-100'
 						)}
 					>
+						<IconTitle
+							iconId="EXCHANGE_LOGO"
+							iconPath={ICONS['EXCHANGE_LOGO']}
+							stringId="VERIFICATION_EMAIL_REQUEST.TITLE"
+							text={STRINGS['VERIFICATION_EMAIL_REQUEST.TITLE']}
+							textType="title"
+							underline={true}
+							imageWrapperClassName="auth_logo-wrapper"
+							className="w-100 holla-logo"
+							subtitle={STRINGS['VERIFICATION_EMAIL_REQUEST.SUBTITLE']}
+							actionProps={{
+								text: STRINGS['VERIFICATION_EMAIL_REQUEST.SUPPORT'],
+								iconPath: ICONS['BLUE_QUESTION'],
+								onClick: openContactForm,
+								useSvg: true,
+							}}
+						/>
 						<EmailRequestForm
 							onSubmit={this.onSubmitEmailRequest}
 							formFields={formFields}

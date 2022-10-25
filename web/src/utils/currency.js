@@ -4,6 +4,7 @@ import store from 'store';
 import STRINGS from '../config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../config/constants';
 import { findPath, convertPathToPairNames } from './data';
+import { isNaN } from 'lodash';
 
 export const BTC_FORMAT = '0,0.[0000]';
 export const ETH_FORMAT = '0,0.[0000]';
@@ -14,7 +15,7 @@ export const ETH_FULL_FORMAT = '0,0.[00000000]';
 export const XRP_FULL_FORMAT = '0,0.[0]';
 export const BCH_FULL_FORMAT = '0,0.[00000000]';
 export const BASE_FORMAT = '0,0.[0000]';
-export const PERCENTAGE_FORMAT = '0.[00]%';
+export const PERCENTAGE_FORMAT = '0.[000]%';
 export const DONUT_PERCENTAGE_FORMAT = '0.[0]%';
 export const AVERAGE_FORMAT = '3a';
 
@@ -31,7 +32,7 @@ export const AVERAGE_FORMAT = '3a';
 // };
 
 export const roundNumber = (number = 0, decimals = 4) => {
-	if (number === 0) {
+	if (number === 0 || number === Infinity || isNaN(number)) {
 		return 0;
 	} else if (decimals > 0) {
 		const multipliedNumber = math.multiply(
@@ -68,7 +69,11 @@ export const getFormat = (min = 0, fullFormat) => {
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat);
-	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
+	let _amount = amount;
+	if (min >= 1) {
+		_amount = math.subtract(amount, math.mod(amount, min));
+	}
+	return numbro(roundNumber(_amount, formatObj.digit)).format(formatObj.format);
 };
 
 export const formatToSimple = (amount = 0, min = 0, fullFormat = false) => {

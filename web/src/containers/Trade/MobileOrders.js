@@ -3,10 +3,9 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
-import { ActionNotification } from '../../components';
-import STRINGS from '../../config/localizedStrings';
+import { ActionNotification } from 'components';
+import STRINGS from 'config/localizedStrings';
 import LogoutInfoOrder from './components/LogoutInfoOrder';
-import LogoutInfoTrade from './components/LogoutInfoTrade';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileOrders = ({
@@ -94,7 +93,7 @@ const MobileOrders = ({
 					icons={ICONS}
 				/>
 			) : (
-				<LogoutInfoTrade />
+				<LogoutInfoOrder />
 			)}
 		</TradeBlock>
 	</div>

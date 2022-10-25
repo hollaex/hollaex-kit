@@ -20,10 +20,12 @@ import {
 	CONTACT_FORM,
 	HELPFUL_RESOURCES_FORM,
 	FEES_STRUCTURE_AND_LIMITS,
+	MARKET_SELECTOR,
+	CONNECT_VIA_DESKTOP,
 	RISK_PORTFOLIO_ORDER_WARING,
 	RISKY_ORDER,
 	LOGOUT_CONFORMATION,
-} from '../../actions/appActions';
+} from 'actions/appActions';
 import { storeTools } from 'actions/toolsAction';
 import STRINGS from 'config/localizedStrings';
 
@@ -60,6 +62,9 @@ import LogoutConfirmation from '../Summary/components/LogoutConfirmation';
 import RiskyOrder from '../Trade/components/RiskyOrder';
 import AppFooter from '../../components/AppFooter';
 import OperatorControls from 'containers/OperatorControls';
+import MarketSelector from 'components/AppBar/MarketSelector';
+import ConnectViaDesktop from 'containers/Stake/components/ConnectViaDesktop';
+import ConfigureApps from 'containers/Apps/ConfigureApps';
 
 import {
 	getClasesForLanguage,
@@ -111,6 +116,7 @@ class App extends Component {
 			plugins_injected_html,
 			initializeTools,
 			loadBlockchainData,
+			disconnectWallet,
 		} = this.props;
 
 		if (
@@ -152,9 +158,12 @@ class App extends Component {
 			}
 		}
 
-		if (window.ethereum) {
-			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, () => {
+		if (!isMobile && window.ethereum) {
+			window.ethereum.on(ETHEREUM_EVENTS.ACCOUNT_CHANGE, ([account]) => {
 				loadBlockchainData();
+				if (!account) {
+					disconnectWallet();
+				}
 			});
 
 			window.ethereum.on(ETHEREUM_EVENTS.NETWORK_CHANGE, () => {
@@ -262,8 +271,8 @@ class App extends Component {
 
 	handleFitHeight = (path) => {
 		let pathname = this.getClassForActivePath(path);
-		if (path.indexOf('/trade/add/tabs') !== -1) {
-			pathname = '/trade/add/tabs';
+		if (path.indexOf('/markets') !== -1) {
+			pathname = '/markets';
 		}
 		this.setState({ sidebarFitHeight: FIT_SCREEN_HEIGHT.includes(pathname) });
 	};
@@ -315,6 +324,16 @@ class App extends Component {
 		if (this.props.location.pathname !== path) {
 			this.props.router.push(path);
 		}
+	};
+
+	goToPair = (pair) => {
+		const { router } = this.props;
+		router.push(`/trade/${pair}`);
+	};
+
+	onViewMarketsClick = () => {
+		const { setTradeTab } = this.props;
+		setTradeTab(3);
 	};
 
 	logout = (message = '') => {
@@ -475,6 +494,35 @@ class App extends Component {
 						activeTheme={this.props.activeTheme}
 					/>
 				);
+			case MARKET_SELECTOR:
+				return (
+					<MarketSelector
+						onViewMarketsClick={this.onViewMarketsClick}
+						closeAddTabMenu={this.onCloseDialog}
+						addTradePairTab={this.goToPair}
+						wrapperClassName="modal-market-menu"
+					/>
+				);
+			case NOTIFICATIONS.METAMASK_ERROR:
+				return (
+					<MessageDisplay
+						iconId="META_MASK_NOT_FOUND"
+						iconPath={ICONS['META_MASK_NOT_FOUND']}
+						onClick={this.onCloseDialog}
+						text={data}
+						title={STRINGS['STAKE.INSTALL_METAMASK_TITLE']}
+						titleId={'STAKE.INSTALL_METAMASK_TITLE'}
+					/>
+				);
+			case NOTIFICATIONS.CONFIGURE_APPS:
+				return (
+					<ConfigureApps
+						onClose={this.onCloseDialog}
+						onRemove={data.onRemove}
+					/>
+				);
+			case CONNECT_VIA_DESKTOP:
+				return <ConnectViaDesktop onClose={this.onCloseDialog} />;
 			case RISK_PORTFOLIO_ORDER_WARING:
 				return <SetOrderPortfolio data={data} onClose={this.onCloseDialog} />;
 			case LOGOUT_CONFORMATION:
@@ -597,7 +645,6 @@ class App extends Component {
 	render() {
 		const {
 			symbol,
-			pair,
 			children,
 			activeNotification,
 			// prices,
@@ -608,7 +655,6 @@ class App extends Component {
 			// unreadMessages,
 			router,
 			location,
-			enabledPlugins,
 			constants = { captcha: {} },
 			isEditMode,
 			// user,
@@ -653,14 +699,6 @@ class App extends Component {
 			activePath !== 'chart-embed' &&
 			!isHome;
 		const showFooter = !isMobile || isHome;
-
-		const homeBackgroundProps = isHome
-			? {
-					backgroundImage: `url(${ICONS['EXCHANGE_LANDING_PAGE']})`,
-					backgroundSize: '100%',
-					backgroundRepeat: 'repeat-y',
-			  }
-			: {};
 
 		const stakeBackgroundProps = isStakePage
 			? {
@@ -717,7 +755,6 @@ class App extends Component {
 									'layout-edit': isEditMode && isBrowser,
 								}
 							)}
-							style={homeBackgroundProps}
 						>
 							<EventListener
 								target="window"
@@ -728,12 +765,13 @@ class App extends Component {
 								onKeyPress={this.resetTimer}
 							/>
 							<div className="d-flex flex-column f-1">
-								{!isHome && !isChartEmbed && (
+								{!isChartEmbed && (
 									<AppBar
 										router={router}
 										menuItems={menuItems}
 										activePath={this.state.activeMenu}
 										onMenuChange={this.handleMenuChange}
+										isHome={isHome}
 									>
 										{isBrowser && isMenubar && isLoggedIn() && (
 											<AppMenuBar
@@ -812,20 +850,6 @@ class App extends Component {
 													className="sidebar-toggle"
 												/>
 											</div>
-											<Sidebar
-												activePath={activePath}
-												logout={this.logout}
-												// help={openContactForm}
-												theme={activeTheme}
-												isLogged={isLoggedIn()}
-												help={openHelpfulResourcesForm}
-												pair={pair}
-												enabledPlugins={enabledPlugins}
-												minimizeChat={this.minimizeChat}
-												chatIsClosed={chatIsClosed}
-												unreadMessages={unreadMessages}
-												sidebarFitHeight={sidebarFitHeight}
-											/>
 										</div>
 									)} */}
 									<Dialog
@@ -850,6 +874,9 @@ class App extends Component {
 													activeNotification.type ===
 														NOTIFICATIONS.EARLY_UNSTAKE ||
 													activeNotification.type === NOTIFICATIONS.MOVE_XHT,
+											},
+											{
+												menu: activeNotification.type === MARKET_SELECTOR,
 											}
 										)}
 										onCloseDialog={this.onCloseDialog}
@@ -899,11 +926,10 @@ class App extends Component {
 								{isMobile && !isHome && !isChartEmbed && (
 									<div className="app_container-bottom_bar">
 										<SidebarBottom
+											menuItems={menuItems}
 											isLogged={isLoggedIn()}
-											activePath={activePath}
-											pair={pair}
-											enabledPlugins={enabledPlugins}
-											features={features}
+											activePath={this.state.activeMenu}
+											onMenuChange={this.handleMenuChange}
 										/>
 									</div>
 								)}

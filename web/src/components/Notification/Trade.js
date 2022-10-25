@@ -1,17 +1,14 @@
 import React from 'react';
 import math from 'mathjs';
 import { connect } from 'react-redux';
-import {
-	CURRENCY_PRICE_FORMAT,
-	DEFAULT_COIN_DATA,
-} from '../../config/constants';
-import STRINGS from '../../config/localizedStrings';
+import { CURRENCY_PRICE_FORMAT, DEFAULT_COIN_DATA } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 import {
 	NotificationWraper,
 	NotificationContent,
 	InformationRow,
 } from './Notification';
-import { formatToCurrency } from '../../utils/currency';
+import { formatToCurrency } from 'utils/currency';
 
 const SIDE_BUY = 'buy';
 const SIDE_SELL = 'sell';
@@ -99,7 +96,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					btc,
-					baseValue.symbol.toUpperCase()
+					baseValue.display_name
 				)}
 			/>
 			<InformationRow
@@ -108,7 +105,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					average,
-					payValue.symbol.toUpperCase()
+					payValue.display_name
 				)}
 			/>
 			<InformationRow
@@ -117,7 +114,7 @@ export const TradeDisplay = ({ side, data, pairs, coins, ...rest }) => {
 				value={STRINGS.formatString(
 					CURRENCY_PRICE_FORMAT,
 					base,
-					payValue.symbol.toUpperCase()
+					payValue.display_name
 				)}
 			/>
 		</NotificationContent>

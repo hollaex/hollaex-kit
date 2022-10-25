@@ -5,7 +5,7 @@ const nestedIcons = {
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
-		LOADER: '/assets/loader-dark.gif',
+		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
@@ -39,8 +39,9 @@ const nestedIcons = {
 		SECURITY: '/assets/images/tab-security.svg',
 		VERIFY: '/assets/images/tab-verify.svg',
 		SETTING: '/assets/images/tab-setting.svg',
+		APPS: '/assets/images/apps.svg',
 		API: '/assets/images/tab-api.svg',
-		STAKE: '/assets/images/stake_and_earn.svg',
+		STAKE: '/assets/images/stake-page-icon.svg',
 	},
 
 	TOKEN: {
@@ -62,6 +63,7 @@ const nestedIcons = {
 		ID_NEW: '/assets/images/verification-id.svg',
 		BANK_NEW: '/assets/images/verification-bank.svg',
 		DOCUMENT_NEW: '/assets/images/verification-document.svg',
+		USER_PAYMENT: '/assets/images/verification-bank.svg',
 	},
 
 	SETTING: {
@@ -73,6 +75,13 @@ const nestedIcons = {
 		RISK_ICON: '/assets/images/risk-settings-icon.svg',
 		RISK_ADJUST_ICON: '/assets/images/risk-management-pop-adjust.svg',
 		RISK_MANAGE_WARNING_ICON: '/assets/images/risk-manage-pop-warning.svg',
+	},
+
+	APPS: {
+		ALL: '/assets/images/all-apps.svg',
+		USER: '/assets/images/my-apps.svg',
+		CONFIGURE: '/assets/images/interface-settings-icon.svg',
+		REMOVE: '/assets/images/cancel-cross-active.svg',
 	},
 
 	SECURITY: {
@@ -92,15 +101,6 @@ const nestedIcons = {
 		ICON_8: '/assets/images/level-8.svg',
 		ICON_9: '/assets/images/level-9.svg',
 		ICON_10: '/assets/images/level-10.svg',
-	},
-
-	FEATURES: {
-		PRO_TRADING: '/assets/images/features-pro-trade-icons.svg',
-		PAYMENT: '/assets/images/features-payment-card-icons.svg',
-		SECURITY: '/assets/images/features-lock-icons.svg',
-		REPORTING: '/assets/images/features-data-icons.svg',
-		SUPPORT: '/assets/images/features-support-icons.svg',
-		LEGAL: '/assets/images/features-legal-icons.svg',
 	},
 
 	SOCIAL: {
@@ -170,7 +170,7 @@ const nestedIcons = {
 	ID_GREY: '/assets/images/id-grey.svg',
 
 	INCOMING_BTC: '/assets/images/incoming-btc.svg',
-	INCOMING_TOMAN: '/assets/images/incoming-toman.svg',
+	INCOMING_COIN: '/assets/images/incoming-coin.svg',
 
 	PASSWORD_RESET: '/assets/images/password-reset.svg',
 
@@ -189,7 +189,11 @@ const nestedIcons = {
 	BLUE_ARROW_RIGHT: '/assets/images/blue-arrow-right.svg',
 	SESSION_TIMED_OUT: '/assets/images/session-timed-out.svg',
 	BLUE_EDIT: '/assets/images/blue-edit-exir-icon.svg',
+	BLUE_TRADE_ICON: '/assets/images/trade.svg',
+	BLUE_EARN_ICON: '/assets/images/earn.svg',
 	BLUE_PLUS: '/assets/images/max-plus-blue-icon.svg',
+	BLUE_DEPOSIT_ICON: '/assets/images/blue-deposit-icon.svg',
+	BLUE_WITHROW_ICON: '/assets/images/blue_withrow_icon.svg',
 	BLUE_TIMER: '/assets/images/timer-icon.svg',
 
 	NOTIFICATION_VERIFICATION_WARNING: '/assets/images/verification.svg',
@@ -224,13 +228,13 @@ const nestedIcons = {
 	SELF_KYC_ID_EN: '/assets/self-kyc-id-note-english.png',
 
 	NOTE_KYC: '/assets/images/note-KYC.svg',
-	SIDEBAR_CHAT: '/assets/images/bottom-chat-icon.svg',
 	SIDEBAR_HELP: '/assets/images/help-question-mark-icon.svg',
 	CONNECT_LOADING: '/assets/images/connect-loading.svg',
+	FIAT_KYC: '/assets/images/fiat-kyc.svg',
 
 	REFER_ICON: '/assets/images/refer-icon.svg',
 	STAKETOKEN_ICON: '/assets/images/stake.svg',
-	DEFAULT_ICON: '/assets/icons/missing-coin-light.svg',
+	DEFAULT_ICON: '/assets/icons/coin-graphic-not-detected.svg',
 	EXPIRED_ICON: '/assets/images/expired.svg',
 
 	HAP_ACCOUNT_ICON: '/assets/icons/hap-account-icon.svg',
@@ -242,9 +246,7 @@ const nestedIcons = {
 	XHT_FAQ: '/assets/images/XHT-FAQ.svg',
 	XHT_PDF: '/assets/images/XHT-pdf.svg',
 	REFERRAL_SUCCESS: '/assets/icons/send-request.svg',
-	INCOMING_WAVE: '/assets/images/incoming-wave.svg',
 	TRADE_ANNOUNCEMENT: '/assets/images/announcement.svg',
-	BONUS_OFFERING: '/assets/icons/bonus_offering.svg',
 
 	CANCEL_ORDERS: '/assets/images/cancel-all-orders.svg',
 	FIAT_UNDER_CONSTRUCTION: '/assets/icons/fiat-page-under-construction-01.svg',
@@ -258,9 +260,11 @@ const nestedIcons = {
 	STAKING_VARIABLE: '/assets/stake/variable_icon.svg',
 	STAKING_UNLOCK: '/assets/stake/unlock-unstake-icon.svg',
 	STAKING_BACKGROUND: '/assets/stake/stake-background.jpg',
+	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
 	STAKING_ACCOUNT: '',
 	METAMASK: '',
 	MOVE_XHT: '/assets/stake/xht-move.svg',
+	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

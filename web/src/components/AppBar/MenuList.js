@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import Image from 'components/Image';
 import classnames from 'classnames';
 
-import { IS_XHT } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import MenuListItem from './MenuListItem';
 
 class MenuList extends Component {
 	state = {
 		isOpen: false,
+		startTransition: false,
 	};
 
 	element = null;
@@ -30,7 +30,19 @@ class MenuList extends Component {
 			event.target !== this.element &&
 			this.element.contains(event.target)
 		) {
-			this.setState({ isOpen: !this.state.isOpen });
+			this.setState({ isOpen: !this.state.isOpen }, () => {
+				if (this.state.isOpen) {
+					setTimeout(() => {
+						this.setState({
+							startTransition: true,
+						});
+					}, 50);
+				} else {
+					this.setState({
+						startTransition: false,
+					});
+				}
+			});
 		}
 	};
 
@@ -55,9 +67,7 @@ class MenuList extends Component {
 	getShowNotification = (path = '', notifications) => {
 		switch (path) {
 			case '/verification':
-				return !!notifications && !IS_XHT;
 			case '/wallet':
-				return !!notifications && IS_XHT;
 			default:
 				return !!notifications;
 		}
@@ -67,17 +77,14 @@ class MenuList extends Component {
 		const {
 			securityPending,
 			verificationPending,
-			walletPending,
 			icons: ICONS,
 			user,
 			menuItems,
 			activePath,
 			onMenuChange,
 		} = this.props;
-		const { isOpen } = this.state;
-		const totalPending = IS_XHT
-			? securityPending + walletPending
-			: securityPending + verificationPending;
+		const { isOpen, startTransition } = this.state;
+		const totalPending = securityPending + verificationPending;
 		return (
 			<div
 				className={classnames('d-flex app-bar-account-content', {
@@ -98,7 +105,12 @@ class MenuList extends Component {
 				</div>
 				<div>{user.email}</div>
 				{isOpen && (
-					<div id="tab-account-menu" className="app-bar-account-menu apply_rtl">
+					<div
+						id="tab-account-menu"
+						className={`${
+							startTransition ? 'opacity-1 ' : ' '
+						} app-bar-account-menu apply_rtl`}
+					>
 						{menuItems.map(
 							(
 								{ path, icon_id, string_id, hide_from_menulist, activePaths },

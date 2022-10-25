@@ -20,6 +20,12 @@
 		}
 	}
 
+	#trades-filters_size {
+		* {
+			transition: 0.2s;
+		}
+	}
+
 	.ant-radio-button-wrapper-checked::before,
 	.ant-radio-button-wrapper::before {
 		background-color: transparent !important;
@@ -38,7 +44,7 @@
 		border-top: none;
 		border-left: none;
 		border-right: none;
-		margin: 0 15px;
+		margin: 0 3px;
 	}
 
 	.ant-picker-separator {
@@ -70,7 +76,7 @@
 	.ant-radio-group {
 		margin-top: 0;
 		padding: 0 15px;
-		border-right: 1px $colors-border solid;
+		// border-right: 1px $colors-border solid;
 		border-left: 1px $colors-border solid;
 	}
 
@@ -91,6 +97,25 @@
 			box-shadow: 0 0 8px 0.1px $app-sidebar-background;
 			position: relative;
 		}
+	}
+
+	.cusStyle1 {
+		.ant-form-item-control-input-content {
+			color: $colors-main-black;
+			border: $colors-main-black 1px solid !important;
+			border-radius: 0.2rem;
+			cursor: pointer;
+			padding: 0 5px;
+		}
+	}
+	.cusStyle2 {
+		color: $colors-black;
+		.ant-form-item-control-input-content {
+			padding: 0 5px;
+		}
+	}
+	.cusStyle2:hover {
+		cursor: pointer;
 	}
 }
 

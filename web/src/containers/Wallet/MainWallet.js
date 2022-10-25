@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 import { IconTitle, Accordion, MobileBarTabs } from 'components';
-import { TransactionsHistory } from 'containers';
+import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
 	BASE_CURRENCY,
@@ -20,12 +20,17 @@ import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
 class Wallet extends Component {
-	state = {
-		activeTab: 0,
-		sections: [],
-		mobileTabs: [],
-		isOpen: true,
-	};
+	constructor(props) {
+		super(props);
+		this.state = {
+			activeTab: 0,
+			sections: [],
+			mobileTabs: [],
+			isOpen: true,
+			isZeroBalanceHidden:
+				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+		};
+	}
 
 	componentDidMount() {
 		this.generateSections(
@@ -82,7 +87,7 @@ class Wallet extends Component {
 	}
 
 	getSearchResult = (coins, balance, oraclePrices) => {
-		const { searchValue = '', isZeroBalanceHidden = false } = this.state;
+		const { searchValue = '', isZeroBalanceHidden } = this.state;
 
 		const result = {};
 		const searchTerm = searchValue.toLowerCase().trim();
@@ -99,6 +104,15 @@ class Wallet extends Component {
 				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
 			}
 			return key;
+		});
+		return { ...result };
+	};
+
+	getMobileSlider = (coins, oraclePrices) => {
+		const result = {};
+		Object.keys(coins).map((key) => {
+			const temp = coins[key];
+			return (result[key] = { ...temp, oraclePrice: oraclePrices[key] });
 		});
 		return { ...result };
 	};
@@ -125,14 +139,14 @@ class Wallet extends Component {
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {}
 	) => {
-		const { min, symbol = '' } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_unit, display_name } =
+			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
-			symbol.toUpperCase(),
-			formatToCurrency(total, min)
+			display_name,
+			formatToCurrency(total, increment_unit)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
-		// const { icons: ICONS } = this.props;
 
 		const sections = [
 			{
@@ -159,6 +173,7 @@ class Wallet extends Component {
 						}
 						loading={this.props.dataFetched}
 						contracts={contracts}
+						broker={this.props.broker}
 					/>
 				),
 				isOpen: true,
@@ -168,7 +183,7 @@ class Wallet extends Component {
 					text: STRINGS['TRADE_HISTORY'],
 					status: 'information',
 					iconId: 'PAPER_CLIP',
-					iconPath: STATIC_ICONS['PAPER_CLIP'],
+					iconPath: STATIC_ICONS['CLOCK'],
 					allowClick: true,
 					className: isOpen
 						? 'paper-clip-icon'
@@ -189,12 +204,17 @@ class Wallet extends Component {
 						prices={prices}
 						navigate={this.goToPage}
 						coins={coins}
+						searchResult={this.getMobileSlider(coins, oraclePrices)}
 					/>
 				),
 			},
 			{
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
 				content: <TransactionsHistory />,
+			},
+			{
+				title: STRINGS['ACCOUNTS.TAB_STAKE'],
+				content: <Stake />,
 			},
 		];
 		this.setState({ sections, isOpen, mobileTabs });
@@ -260,6 +280,7 @@ const mapStateToProps = (store) => ({
 	oraclePrices: store.asset.oraclePrices,
 	dataFetched: store.asset.dataFetched,
 	contracts: store.app.contracts,
+	broker: store.app.broker,
 });
 
 const mapDispatchToProps = (dispatch) => ({

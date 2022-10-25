@@ -16,7 +16,7 @@ import { AdminHocForm } from '../../../components';
 import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
-import { ListUsers, FullListUsers } from '../ListUsers';
+import { FullListUsers, PendingUsers } from '../ListUsers';
 import { requestMyPlugins } from '../Plugins/action';
 // import { isSupport } from '../../../utils/token';
 
@@ -195,12 +195,17 @@ class App extends Component {
 	};
 
 	searchUser = (values) => {
-		if (values.id === 0) {
+		let valueData = values;
+		if (values.id) {
+			valueData['id'] = parseInt(valueData.id);
+		}
+		if (valueData.id === 0) {
 			message.error('User not found');
-		} else if (values.id) {
-			this.requestUserData({ id: values.id });
+		} else if (valueData.id) {
+			this.requestUserData({ id: valueData.id });
 		} else {
-			let searchUserdata = values && values.input ? values.input.trim() : '';
+			let searchUserdata =
+				valueData && valueData.input ? valueData.input.trim() : '';
 			searchUserdata = searchUserdata.toLowerCase();
 			this.requestUserData({ search: searchUserdata });
 		}
@@ -279,6 +284,7 @@ class App extends Component {
 				clearData={this.clearData}
 				refreshData={this.refreshData}
 				onChangeUserDataSuccess={this.onChangeUserDataSuccess}
+				requestUserData={this.requestUserData}
 			/>
 		) : (
 			<div className="app_container-content user-container">
@@ -295,6 +301,7 @@ class App extends Component {
 									label: 'Id',
 									placeholder: ' id ',
 									validate: [],
+									min: 1,
 								},
 								input: {
 									type: 'string',
@@ -317,11 +324,11 @@ class App extends Component {
 						) : null}
 					</TabPane>
 
-					<TabPane tab="User Verification" key="userVerification">
-						<div className="list_users">
-							<ListUsers
-								requestUser={this.requestUserData}
-								handleDownload={this.requestUsersDownload}
+					<TabPane tab="Pending Users" key="pendingUsers">
+						<div className="m-top">
+							<PendingUsers
+								requestUserData={this.requestUserData}
+								requestUsersDownload={this.requestUsersDownload}
 								columns={COLUMNS}
 							/>
 						</div>

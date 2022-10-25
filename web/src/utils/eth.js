@@ -3,8 +3,37 @@ import mathjs from 'mathjs';
 import { DATETIME_FORMAT } from 'utils/date';
 import STRINGS from 'config/localizedStrings';
 
-const ESTIMATED_TIME_PER_BLOCK = 15000;
+const ESTIMATED_TIME_PER_BLOCK = 13000;
 const TIME_KEYS = ['years', 'months', 'days', 'hours', 'minutes', 'seconds'];
+
+export const roundDuration = (estimatedTime) => {
+	const [duration, unit] = estimatedTime;
+
+	if (unit.includes('hour')) {
+		const day = mathjs.round(mathjs.divide(duration, 24));
+
+		if (mathjs.larger(day, 0)) {
+			return [day, 'day'];
+		}
+	} else if (unit.includes('day')) {
+		const month = mathjs.round(mathjs.divide(duration, 30));
+		const week = mathjs.round(mathjs.divide(duration, 7));
+
+		if (mathjs.larger(month, 0)) {
+			return [month, 'month'];
+		} else if (mathjs.larger(week, 0)) {
+			return [week, 'week'];
+		}
+	} else if (unit.includes('month')) {
+		const year = mathjs.round(mathjs.divide(duration, 12));
+
+		if (mathjs.larger(year, 0)) {
+			return [year, 'year'];
+		}
+	}
+
+	return [duration, unit];
+};
 
 export const getEstimatedRemainingTime = (remainingBlock) => {
 	const totalRemainigTime = mathjs.multiply(
