@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { string, array, object, bool } from 'prop-types';
 import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
 import { convertToFormatted } from 'utils/string';
+
+const defaultRender = (children) => <Fragment>{children}</Fragment>;
 
 const EditWrapper = ({
 	children,
@@ -14,6 +16,8 @@ const EditWrapper = ({
 	reverse,
 	sectionId,
 	backgroundId,
+	render = defaultRender,
+	strings,
 }) => {
 	const [x = 5, y = 0] = position;
 	const triggerStyles = {
@@ -25,7 +29,17 @@ const EditWrapper = ({
 			className={classnames('edit-wrapper__container', { reverse: reverse })}
 			style={style}
 		>
-			{convertToFormatted(children)}
+			{strings && Array.isArray(strings)
+				? strings.map((string, index) => {
+						if (Array.isArray(render) && typeof render[index] === 'function') {
+							return render[index](convertToFormatted(string));
+						} else if (typeof render === 'function') {
+							return render(convertToFormatted(string));
+						} else {
+							return defaultRender(convertToFormatted(string));
+						}
+				  })
+				: render(convertToFormatted(children))}
 			<div className="edit-wrapper__icons-container" style={triggerStyles}>
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>
