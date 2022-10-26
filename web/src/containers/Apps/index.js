@@ -77,11 +77,12 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 				openContactForm={openContactForm}
 			>
 				<div className="header-content">
-					<div>
-						<EditWrapper stringId="USER_APPS.SUBTITLE">
-							{STRINGS['USER_APPS.SUBTITLE']}
-						</EditWrapper>
-					</div>
+					<EditWrapper
+						stringId="USER_APPS.SUBTITLE"
+						renderWrapper={(children) => <div>{children}</div>}
+					>
+						{STRINGS['USER_APPS.SUBTITLE']}
+					</EditWrapper>
 				</div>
 			</HeaderSection>
 

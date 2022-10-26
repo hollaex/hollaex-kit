@@ -59,7 +59,13 @@ const EnhancedIconTitle = ({
 		<div
 			className={classnames('d-flex', 'justify-content-between', 'p-relative')}
 		>
-			<div className={subtitleClass}>{subtitle}</div>
+			<EditWrapper
+				renderWrapper={(children) => (
+					<div className={subtitleClass}>{children}</div>
+				)}
+			>
+				{subtitle}
+			</EditWrapper>
 			<div>{actionProps && <ActionNotification {...actionProps} />}</div>
 		</div>
 	</div>

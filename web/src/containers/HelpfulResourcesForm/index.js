@@ -89,7 +89,12 @@ class HelpfulResourcesForm extends Component {
 							icon={ICONS['LAPTOP']}
 							wrapperClassName="help_icons ml-1 mr-1"
 						/>
-						<div className="text">
+						<EditWrapper
+							stringId="HELP_RESOURCE_GUIDE.TEXT,HELP_RESOURCE_GUIDE.CONTACT_US"
+							renderWrapper={(children) => (
+								<div className="text">{children}</div>
+							)}
+						>
 							{STRINGS.formatString(
 								STRINGS['HELP_RESOURCE_GUIDE.TEXT'],
 								<span
@@ -99,8 +104,7 @@ class HelpfulResourcesForm extends Component {
 									{STRINGS['HELP_RESOURCE_GUIDE.CONTACT_US']}
 								</span>
 							)}
-							<EditWrapper stringId="HELP_RESOURCE_GUIDE.TEXT,HELP_RESOURCE_GUIDE.CONTACT_US" />
-						</div>
+						</EditWrapper>
 						<div className="w-25" />
 					</div>
 					<div className="d-flex mt-5 mb-5">
