@@ -18,28 +18,32 @@ const EditWrapper = ({
 	backgroundId,
 	render = defaultRender,
 	strings,
+	renderWrapper = defaultRender,
 }) => {
 	const [x = 5, y = 0] = position;
 	const triggerStyles = {
 		transform: `translate(${x}px, ${y}px)`,
 	};
 
+	const getConvertedString = (elements) =>
+		elements && Array.isArray(elements)
+			? elements.map((element, index) => {
+					if (Array.isArray(render) && typeof render[index] === 'function') {
+						return render[index](convertToFormatted(element));
+					} else if (typeof render === 'function') {
+						return render(convertToFormatted(element));
+					} else {
+						return defaultRender(convertToFormatted(element));
+					}
+			  })
+			: render(convertToFormatted(elements));
+
 	return (
 		<div
 			className={classnames('edit-wrapper__container', { reverse: reverse })}
 			style={style}
 		>
-			{strings && Array.isArray(strings)
-				? strings.map((string, index) => {
-						if (Array.isArray(render) && typeof render[index] === 'function') {
-							return render[index](convertToFormatted(string));
-						} else if (typeof render === 'function') {
-							return render(convertToFormatted(string));
-						} else {
-							return defaultRender(convertToFormatted(string));
-						}
-				  })
-				: render(convertToFormatted(children))}
+			{renderWrapper(getConvertedString(strings || children))}
 			<div className="edit-wrapper__icons-container" style={triggerStyles}>
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>
