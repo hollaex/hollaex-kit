@@ -234,6 +234,12 @@ export const generateInputName = (key, lang) =>
 	`${key}${EDITABLE_NAME_SEPARATOR}${lang}`;
 
 const ANCHOR_REGEX = /<\/?a[^>]*>/g;
+const PLACEHOLDER_REGEX = /[^{}]+(?=})/g;
+
+export const countPlaceholders = (string = '') => {
+	const matches = string.match(PLACEHOLDER_REGEX);
+	return matches ? matches.length : 0;
+};
 
 const getAnchors = (html) => {
 	return html.getElementsByTagName('a');

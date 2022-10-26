@@ -36,6 +36,7 @@ import {
 	pushTempContent,
 	getTempLanguageKey,
 	filterOverwrites,
+	countPlaceholders,
 } from 'utils/string';
 import { filterThemes } from 'utils/color';
 import { getIconByKey, getAllIconsArray } from 'utils/icon';
@@ -342,17 +343,12 @@ class OperatorControls extends Component {
 		);
 	};
 
-	countPlaceholders = (string = '') => {
-		const matches = string.match(/[^{}]+(?=})/g);
-		return matches ? matches.length : 0;
-	};
-
 	validateString = (string, key) => {
 		const benchmarkLanguage = 'en';
-		const benchmarkPlaceholders = this.countPlaceholders(
+		const benchmarkPlaceholders = countPlaceholders(
 			getStringByKey(key, benchmarkLanguage, CONTENT)
 		);
-		const placeholders = this.countPlaceholders(string);
+		const placeholders = countPlaceholders(string);
 
 		return placeholders === benchmarkPlaceholders;
 	};
