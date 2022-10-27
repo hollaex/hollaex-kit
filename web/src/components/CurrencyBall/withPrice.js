@@ -13,7 +13,7 @@ const CurrencyBallWithPrice = ({
 	isExistBroker = false,
 }) => {
 	const { display_name, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
-	const minValue = min ? min : rest.min;
+	const minValue = rest.min ? rest.min : min;
 
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">

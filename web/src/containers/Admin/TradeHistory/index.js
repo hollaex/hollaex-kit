@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { requestTrades, requestTradesDownload } from './actions';
-
 import { SubmissionError } from 'redux-form';
-
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
