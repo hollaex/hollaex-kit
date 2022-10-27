@@ -4220,6 +4220,11 @@ table th {
   width: 100%;
   font-size: 1rem;
   margin-bottom: 3rem; }
+  .market-list__container .market-list__block .market-list__block-table .loading-anime {
+    height: 20px;
+    width: 100px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
   .market-list__container .market-list__block .market-list__block-table thead {
     color: var(--labels_secondary-inactive-label-text-graphics); }
     .market-list__container .market-list__block .market-list__block-table thead tr {
@@ -4273,6 +4278,12 @@ table th {
 .direction_ltr .market-list__container .market-list__block .market-list__block-table .table-icon {
   padding-right: 0.5rem; }
 
+.direction_ltr .market-list__container .market-list__block .market-list__block-table .loading-anime {
+  height: 20px;
+  width: 100px;
+  border-radius: 7px;
+  animation: mymove 3s infinite; }
+
 .direction_rtl .market-list__container .market-list__block .market-list__block-table th,
 .direction_rtl .market-list__container .market-list__block .market-list__block-table td {
   text-align: right; }
@@ -4305,6 +4316,11 @@ table th {
     min-width: 12rem !important;
     max-width: 12rem !important;
     z-index: 1; }
+  .layout-mobile .market-list__container .market-list__block .market-list__block-table .loading-anime {
+    height: 20px;
+    width: 100px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
 
 .layout-mobile .trade_tabs-container .sticky-col {
   background-color: var(--base_background) !important; }
@@ -4512,6 +4528,11 @@ table th {
   .trade_tabs-container .market-card__sparkline-wrapper {
     padding-top: 10px;
     height: 12rem; }
+  .trade_tabs-container .loading-anime {
+    height: 20px;
+    width: 100px;
+    border-radius: 7px;
+    animation: mymove 3s infinite; }
 
 .layout-mobile .trade_tabs-container {
   overflow-y: scroll; }
