@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "出金キャンセル",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "保留中の出金をキャンセルしますか？",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "ログイン",
 	"SIGN_IN": "ログイン",

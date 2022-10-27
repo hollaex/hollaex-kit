@@ -44,7 +44,8 @@ class Wallet extends Component {
 			this.props.totalAsset,
 			this.props.oraclePrices,
 			this.props.constants,
-			this.props.contracts
+			this.props.contracts,
+			this.props.isFetching
 		);
 	}
 
@@ -60,7 +61,8 @@ class Wallet extends Component {
 			nextProps.totalAsset,
 			nextProps.oraclePrices,
 			nextProps.constants,
-			nextProps.contracts
+			nextProps.contracts,
+			nextProps.isFetching
 		);
 	}
 
@@ -81,7 +83,8 @@ class Wallet extends Component {
 				this.props.totalAsset,
 				this.props.oraclePrices,
 				this.props.constants,
-				this.props.contracts
+				this.props.contracts,
+				this.props.isFetching
 			);
 		}
 	}
@@ -137,14 +140,14 @@ class Wallet extends Component {
 		total,
 		oraclePrices,
 		{ features: { stake_page = false } = {} } = {},
-		contracts = {}
+		contracts = {},
+		isFetching
 	) => {
-		const { increment_unit, display_name } =
-			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { min, display_name } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			display_name,
-			formatToCurrency(total, increment_unit)
+			formatToCurrency(total, min)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
 
@@ -171,7 +174,7 @@ class Wallet extends Component {
 							stake_page &&
 							!isMobile
 						}
-						loading={this.props.dataFetched}
+						loading={isFetching}
 						contracts={contracts}
 						broker={this.props.broker}
 					/>
@@ -278,7 +281,7 @@ const mapStateToProps = (store) => ({
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,
 	oraclePrices: store.asset.oraclePrices,
-	dataFetched: store.asset.dataFetched,
+	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	broker: store.app.broker,
 });
