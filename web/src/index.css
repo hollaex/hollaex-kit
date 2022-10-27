@@ -2352,6 +2352,19 @@ table th {
   font-weight: bold;
   font-size: 1.1rem; }
 
+.vertical-line-seperator {
+  width: 1px;
+  height: 50%;
+  margin: .4rem .33rem;
+  border: 1px solid rgba(255, 255, 255, 0.4); }
+
+.trade-daily-value-container {
+  display: flex;
+  text-transform: none !important; }
+  .trade-daily-value-container .trade_header_values {
+    opacity: .55;
+    margin-left: .25rem; }
+
 .xht-order-content {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 

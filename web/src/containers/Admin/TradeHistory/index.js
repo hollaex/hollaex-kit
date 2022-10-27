@@ -4,7 +4,6 @@ import { requestTrades, requestTradesDownload } from './actions';
 
 import { SubmissionError } from 'redux-form';
 
-import { formatCurrency } from '../../../utils/index';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {

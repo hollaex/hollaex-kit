@@ -4,6 +4,7 @@
 		color: $colors-notifications-blue;
 		padding: 0 $terms_label--padding;
 	}
+
 	.trade-col_main_wrapper {
 		.trade-main_content {
 			flex: 6;
@@ -54,6 +55,22 @@
 .xht-order-heading {
 	font-weight: bold;
 	font-size: 1.1rem;
+}
+
+.vertical-line-seperator {
+	width: 1px;
+	height: 50%;
+	margin: 0.4rem 0.33rem;
+	border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.trade-daily-value-container {
+	display: flex;
+	text-transform: none !important;
+	.trade_header_values {
+		opacity: 0.55;
+		margin-left: 0.25rem;
+	}
 }
 
 .xht-order-content {
