@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "Cancelar Saque",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Você gostaria de cancelar seu saque em andamento de:",
 	"TIMESTAMP_FORMAT": "DD/MM/YYYY HH:mm:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "Login",
 	"SIGN_IN": "Acessar",

@@ -27,6 +27,7 @@ const MarketList = ({
 	goToNextPage,
 	goToPreviousPage,
 	showPaginator = false,
+	loading,
 }) => {
 	return (
 		<div className="market-list__container">
@@ -74,11 +75,12 @@ const MarketList = ({
 					<tbody id="market-list_tableBody">
 						{markets.map((market, index) => (
 							<MarketRow
-								key={index}
+								index={index}
 								icons={ICONS}
 								handleClick={handleClick}
 								chartData={chartData}
 								market={market}
+								loading={loading}
 							/>
 						))}
 					</tbody>

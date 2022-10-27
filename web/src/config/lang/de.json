@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "Auszahlung abbrechen",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Möchten Sie Ihre ausstehende Auszahlung stornieren?:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"HOUR_FORMAT": "HH:mm:ss",
 	"LOGIN_TEXT": "Login",
