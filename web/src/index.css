@@ -2355,15 +2355,15 @@ table th {
 .vertical-line-seperator {
   width: 1px;
   height: 50%;
-  margin: .4rem .33rem;
+  margin: 0.4rem 0.33rem;
   border: 1px solid rgba(255, 255, 255, 0.4); }
 
 .trade-daily-value-container {
   display: flex;
   text-transform: none !important; }
   .trade-daily-value-container .trade_header_values {
-    opacity: .55;
-    margin-left: .25rem; }
+    opacity: 0.55;
+    margin-left: 0.25rem; }
 
 .xht-order-content {
   color: var(--labels_secondary-inactive-label-text-graphics); }
