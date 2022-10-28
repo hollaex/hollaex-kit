@@ -6,8 +6,11 @@ import renderFields from 'components/Form/factoryFields';
 import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const validate = () => {
+const validate = (values) => {
 	const errors = {};
+	if (values.new_password !== values.new_password_confirm) {
+		errors.new_password_confirm = STRINGS['VALIDATIONS.PASSWORDS_DONT_MATCH'];
+	}
 	return errors;
 };
 
