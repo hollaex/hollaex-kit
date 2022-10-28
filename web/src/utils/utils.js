@@ -6,6 +6,7 @@ import {
 	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
 	TIMESTAMP_FORMAT_FA,
+	DEFAULT_TIMESTAMP_FORMAT,
 	AUDIOS,
 } from '../config/constants';
 import { getLanguage } from './string';
@@ -46,6 +47,13 @@ export const checkUserSessionExpired = (loginTime) => {
 	const currentTime = Date.now();
 
 	return currentTime - loginTime > TOKEN_TIME;
+};
+
+export const getFormattedBOD = (date, format = DEFAULT_TIMESTAMP_FORMAT) => {
+	if (getLanguage() === 'fa') {
+		return formatTimestampFarsi(date, format);
+	}
+	return formatTimestampGregorian(date, format);
 };
 
 export const getFormatTimestamp = (date, format) => {

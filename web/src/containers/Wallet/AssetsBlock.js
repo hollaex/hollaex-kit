@@ -137,7 +137,7 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				{totalAssets.length && loading ? (
+				{totalAssets.length && !loading ? (
 					<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
 						<div className="wallet-search-improvement">
 							{BASE_CURRENCY ? (
@@ -252,7 +252,7 @@ const AssetsBlock = ({
 										</Link> */}
 									</td>
 									<td className="td-name td-fit">
-										{sortedSearchResults && loading ? (
+										{sortedSearchResults && !loading ? (
 											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
@@ -278,7 +278,7 @@ const AssetsBlock = ({
 									<td className="td-amount">
 										{sortedSearchResults &&
 										baseCoin &&
-										loading &&
+										!loading &&
 										increment_unit ? (
 											<div className="d-flex">
 												<div className="mr-4">
