@@ -150,7 +150,7 @@ export const renderTitleSection = (symbol, type, icon, coins, iconId) => {
 		<IconTitle
 			text={text}
 			stringId={stringId}
-			iconPath={icon}
+			iconPath={coins[symbol].logo}
 			iconId={iconId}
 			textType="title"
 		/>

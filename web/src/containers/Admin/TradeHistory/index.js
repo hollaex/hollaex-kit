@@ -1,10 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Table, Spin } from 'antd';
 import { requestTrades, requestTradesDownload } from './actions';
-
 import { SubmissionError } from 'redux-form';
-
-import { formatCurrency } from '../../../utils/index';
 import Moment from 'react-moment';
 
 const INITIAL_STATE = {
@@ -22,11 +19,11 @@ const formatDate = (value) => {
 	return <Moment format="YYYY/MM/DD HH:mm">{value}</Moment>;
 };
 const formatNum = (value) => {
-	return <div>{formatCurrency(value)}</div>;
+	return <div>{value}</div>;
 };
 
 const formatFee = (value, { fee_coin }) => {
-	return <div>{`${formatCurrency(value)} ${fee_coin}`}</div>;
+	return <div>{`${value} ${fee_coin}`}</div>;
 };
 
 const COLUMNS = [

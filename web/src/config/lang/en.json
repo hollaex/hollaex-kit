@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"NO_ACTIVE_TRADES": "Looks like there aren't any trades yet",
 	"NO_ACTIVE_DEPOSITS": "Looks like there aren't any deposits yet.",
@@ -811,6 +812,7 @@
 	"DEFAULT_TOGGLE_OPTIONS": { "ON": "on", "OFF": "off" },
 	"SIZE": "Size",
 	"PRICE": "Price",
+	"AVERAGE": "Average",
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
@@ -904,7 +906,7 @@
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "deposit",
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
-	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "receive",
+	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "deposit",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "send",
 	"AVAILABLE_BALANCE_TEXT": "Available {0} Balance: {1} {2}",
 	"BALANCE_TEXT": "Balance",
@@ -1075,7 +1077,7 @@
 	"TRADE_TAB_POSTS": "Announcements",
 	"WALLET_TAB_WALLET": "Wallet",
 	"WALLET_TAB_TRANSACTIONS": "Transactions",
-	"RECEIVE_CURRENCY": "Receive {0}",
+	"RECEIVE_CURRENCY": "Deposit {0}",
 	"SEND_CURRENCY": "Send {0}",
 	"COPY_ADDRESS": "Copy Address",
 	"SUCCESFUL_COPY": "Successfully Copied!",
@@ -1296,5 +1298,5 @@
 	"WITHDRAWALS_FORM_METHOD": "Method",
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
-	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfers for free."
+	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free."
 }

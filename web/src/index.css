@@ -1955,6 +1955,13 @@ table th {
     color: var(--specials_buttons-links-and-highlights);
     padding: 0 0.25rem; }
 
+.margin-aligner {
+  margin-bottom: 24px;
+  margin-right: 1rem; }
+  .margin-aligner svg {
+    width: 30px !important;
+    height: 30px !important; }
+
 .deposit_info-wrapper > div {
   flex: 1; }
 
@@ -8020,7 +8027,8 @@ table th {
   .input_field-input::placeholder {
     color: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .input_field-input:disabled {
-    cursor: not-allowed; }
+    cursor: not-allowed;
+    opacity: 0.5; }
 
 .dropdown-triangle:after {
   content: '';

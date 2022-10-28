@@ -5,7 +5,14 @@ import { formatToCurrency } from 'utils/currency';
 
 class MarketRow extends Component {
 	render() {
-		const { icons: ICONS, market, chartData, handleClick } = this.props;
+		const {
+			icons: ICONS,
+			market,
+			chartData,
+			handleClick,
+			loading,
+			index,
+		} = this.props;
 
 		const {
 			key,
@@ -24,30 +31,61 @@ class MarketRow extends Component {
 				onClick={() => handleClick(key)}
 			>
 				<td className="sticky-col">
-					<div className="d-flex align-items-center">
-						<Image
-							width='32px'
-							height='32px'
-							iconId={icon_id}
-							icon={ICONS[icon_id]}
-							wrapperClassName="market-list__coin-icons"
-							imageWrapperClassName="currency-ball-image-wrapper"
-						/>
-						<div>{display_name}</div>
-					</div>
+					{!loading ? (
+						<div className="d-flex align-items-center">
+							<Image
+								width="32px"
+								height="32px"
+								iconId={icon_id}
+								icon={ICONS[icon_id]}
+								wrapperClassName="market-list__coin-icons"
+								imageWrapperClassName="currency-ball-image-wrapper"
+							/>
+							<div>{display_name}</div>
+						</div>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
+						></div>
+					)}
 				</td>
 				<td>
-					<span className="title-font ml-1">
-						{formatToCurrency(ticker.close, increment_price)}
-					</span>
-					<span className="title-font ml-2">{pair_2_display}</span>
+					{!loading ? (
+						<div>
+							<span className="title-font ml-1">
+								{formatToCurrency(ticker.close, increment_price)}
+							</span>
+							<span className="title-font ml-2">{pair_2_display}</span>
+						</div>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
+						></div>
+					)}
 				</td>
 				<td>
 					<PriceChange market={market} />
 				</td>
 				<td>
-					<span className="title-font ml-1">{ticker.volume}</span>
-					<span className="title-font ml-2">{pair_base_display}</span>
+					{!loading ? (
+						<div>
+							<span className="title-font ml-1">{ticker.volume}</span>
+							<span className="title-font ml-2">{pair_base_display}</span>
+						</div>
+					) : (
+						<div
+							className="loading-anime"
+							style={{
+								animationDelay: `.${index + 1}s`,
+							}}
+						></div>
+					)}
 				</td>
 				<td className="td-chart">
 					<SparkLine
