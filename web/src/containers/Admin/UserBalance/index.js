@@ -127,14 +127,6 @@ class UserBalance extends Component {
 			// 	}
 			// },
 			{
-				title: 'Last generated',
-				dataIndex: 'updated_at',
-				key: 'updated_at',
-				render: (updated) => (
-					<Moment format="YYYY/MM/DD HH:mm">{updated}</Moment>
-				),
-			},
-			{
 				title: 'Available',
 				dataIndex: 'balance_available',
 				key: 'balance_available',

@@ -643,7 +643,7 @@ const AboutData = ({
 								/>
 							</div>
 							<div className="user-info-label">
-								Verification level: {userData.verification_level}
+								Tier: {userData.verification_level}
 							</div>
 							<div className="ml-4">
 								<Button
