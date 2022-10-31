@@ -1,25 +1,39 @@
 {
   "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.1.0",
+    "@cucumber/cucumber": "^8.5.3",
+    "@cucumber/pretty-formatter": "^1.0.0",
+    "@cypress-audit/lighthouse": "^1.3.1",
     "cypress": "^9.2.0",
+    "cypress-audit": "^1.1.0",
     "cypress-iframe": "^1.0.1",
+    "cypress-timings": "^1.0.0",
     "cypress-xpath": "^1.6.2",
     "eslint": "^8.11.0",
+    "multiple-cucumber-html-reporter": "^2.0.0",
     "prettier": "2.6.0"
   },
   "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^13.0.0",
+    "cucumber-perf": "^2.0.1",
     "cypress-cucumber-preprocessor": "^4.3.1",
-    "cypress-tags": "^1.0.0",
+    "cypress-lighthouse": "^0.1.0",
+    "detect-browser": "^5.3.0",
+    "save-dev": "^0.0.1-security",
     "totp-generator": "^0.0.13"
   },
   "cypress-cucumber-preprocessor": {
+    "cucumberJson": {
+      "generate": true,
+      "outputFolder": "cypress/cucumber-json",
+      "filePrefix": "",
+      "fileSuffix": ".cucumber"
+    },
     "nonGlobalStepDefinitions": true
   },
   "scripts": {
     "debug.javascript.codelens.npmScripts": "never",
-    "test-ci": "npx cypress-tags run --browser chrome --record -e",
-    "test": "npx cypress-tags run --browser chrome -e",
-    "pre-ci": "npm run test-ci TAGS=@pre",
+    "test": "npx cypress-tags run -e",
     "pre": "npm test TAGS=@pre"
   }
 }

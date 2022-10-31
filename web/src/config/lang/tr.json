@@ -8,6 +8,7 @@
 	"CANCEL_WITHDRAWAL": "Çekimi İptal Et",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Bekleyen çekiminizi iptal etmek istiyor musunuz:",
 	"TIMESTAMP_FORMAT": "YYYY/AA/GG SS:dd:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"HOUR_FORMAT": "SS:dd:ss",
 	"LOGIN_TEXT": "Giriş",
 	"SIGN_IN": "Giriş",

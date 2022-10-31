@@ -318,12 +318,16 @@ class Form extends Component {
 				>
 					<form autoComplete="off" className="withdraw-form-wrapper">
 						<div className="withdraw-form">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="form_currency-ball"
-							/>
-							{titleSection}
+							<div className="d-flex">
+								<Image
+									iconId={icon_id}
+									icon={ICONS['WITHDRAW']}
+									height="30px"
+									width="30px"
+									wrapperClassName="form_currency-ball margin-aligner"
+								/>
+								{titleSection}
+							</div>
 							{renderFields(formValues)}
 							{error && <div className="warning_text">{error}</div>}
 						</div>

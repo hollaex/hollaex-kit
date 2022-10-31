@@ -301,6 +301,13 @@ $toggle-margin: 2px;
 		padding-top: 10px;
 		height: 12rem;
 	}
+
+	.loading-anime {
+		height: 20px;
+		width: 100px;
+		border-radius: 7px;
+		animation: mymove 3s infinite;
+	}
 }
 
 .layout-mobile {

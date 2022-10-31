@@ -65,6 +65,12 @@
 			font-size: $font-size-subtext;
 			margin-bottom: 3rem;
 
+			.loading-anime {
+				height: 20px;
+				width: 100px;
+				border-radius: 7px;
+				animation: mymove 3s infinite;
+			}
 			thead {
 				color: $colors-black;
 				& tr {
@@ -145,6 +151,12 @@
 				.table-icon {
 					padding-right: 0.5rem;
 				}
+				.loading-anime {
+					height: 20px;
+					width: 100px;
+					border-radius: 7px;
+					animation: mymove 3s infinite;
+				}
 			}
 		}
 	}
@@ -198,6 +210,12 @@
 					min-width: 12rem !important;
 					max-width: 12rem !important;
 					z-index: 1;
+				}
+				.loading-anime {
+					height: 20px;
+					width: 100px;
+					border-radius: 7px;
+					animation: mymove 3s infinite;
 				}
 			}
 		}

@@ -27,5 +27,5 @@ export default {
 	zh,
 	pt,
 	tr,
-	mn
+	mn,
 };
