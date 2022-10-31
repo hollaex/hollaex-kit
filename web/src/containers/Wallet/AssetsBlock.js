@@ -10,7 +10,10 @@ import {
 	AssetsBlockForm,
 	EditWrapper,
 } from 'components';
-import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
+import {
+	formatCurrencyByIncrementalUnit,
+	calculateOraclePrice,
+} from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
@@ -235,8 +238,11 @@ const AssetsBlock = ({
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
-									? formatToCurrency(balanceValue, increment_unit)
-									: formatToCurrency(
+									? formatCurrencyByIncrementalUnit(
+											balanceValue,
+											increment_unit
+									  )
+									: formatCurrencyByIncrementalUnit(
 											calculateOraclePrice(balanceValue, oraclePrice),
 											baseCoin.increment_unit
 									  );
@@ -284,7 +290,10 @@ const AssetsBlock = ({
 												<div className="mr-4">
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
-														formatToCurrency(balanceValue, increment_unit),
+														formatCurrencyByIncrementalUnit(
+															balanceValue,
+															increment_unit
+														),
 														display_name
 													)}
 												</div>

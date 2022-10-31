@@ -10,7 +10,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
-import { formatToCurrency } from 'utils/currency';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -143,11 +143,12 @@ class Wallet extends Component {
 		contracts = {},
 		isFetching
 	) => {
-		const { min, display_name } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+		const { increment_unit, display_name } =
+			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
 			CURRENCY_PRICE_FORMAT,
 			display_name,
-			formatToCurrency(total, min)
+			formatCurrencyByIncrementalUnit(total, increment_unit)
 		);
 		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
 
