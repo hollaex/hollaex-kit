@@ -1,6 +1,6 @@
 import { overwriteLocale } from './string';
 import { API_URL } from 'config/constants';
-import { version, name } from '../../package.json';
+import { version } from '../../package.json';
 
 export const getLocalVersions = () => {
 	const versions = localStorage.getItem('versions') || '{}';
@@ -56,7 +56,7 @@ export const setDefaultLogo = (logo_black_path) => {
 
 export const consoleKitInfo = () => {
 	console.info(
-		`%c${name.toUpperCase()} ${version}`,
+		`%c${version}`,
 		'color: #00509d; font-family:sans-serif; font-size: 20px; font-weight: 800'
 	);
 	console.info(
