@@ -213,6 +213,7 @@ class AddTradeTab extends Component {
 						<Fragment>
 							{selected === options[0].value ? (
 								<MarketList
+									loading={!data.length ? true : false}
 									markets={data}
 									chartData={chartData}
 									handleClick={handleClick}

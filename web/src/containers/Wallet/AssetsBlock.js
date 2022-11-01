@@ -10,7 +10,10 @@ import {
 	AssetsBlockForm,
 	EditWrapper,
 } from 'components';
-import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
+import {
+	formatCurrencyByIncrementalUnit,
+	calculateOraclePrice,
+} from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
@@ -137,14 +140,14 @@ const AssetsBlock = ({
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
-				{totalAssets.length && loading ? (
+				{totalAssets.length && !loading ? (
 					<EditWrapper
 						stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
 						render={(children) => (
 							<div className="wallet-search-improvement">
 								{BASE_CURRENCY && (
 									<div>
-										<div>{children}</div>
+										<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
 										<div className="font-title">{totalAssets}</div>
 									</div>
 								)}
@@ -240,8 +243,11 @@ const AssetsBlock = ({
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
-									? formatToCurrency(balanceValue, increment_unit)
-									: formatToCurrency(
+									? formatCurrencyByIncrementalUnit(
+											balanceValue,
+											increment_unit
+									  )
+									: formatCurrencyByIncrementalUnit(
 											calculateOraclePrice(balanceValue, oraclePrice),
 											baseCoin.increment_unit
 									  );
@@ -257,7 +263,7 @@ const AssetsBlock = ({
 										</Link> */}
 									</td>
 									<td className="td-name td-fit">
-										{sortedSearchResults && loading ? (
+										{sortedSearchResults && !loading ? (
 											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
@@ -283,13 +289,16 @@ const AssetsBlock = ({
 									<td className="td-amount">
 										{sortedSearchResults &&
 										baseCoin &&
-										loading &&
+										!loading &&
 										increment_unit ? (
 											<div className="d-flex">
 												<div className="mr-4">
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
-														formatToCurrency(balanceValue, increment_unit),
+														formatCurrencyByIncrementalUnit(
+															balanceValue,
+															increment_unit
+														),
 														display_name
 													)}
 												</div>

@@ -142,6 +142,7 @@ class Markets extends Component {
 					</div>
 				)}
 				<MarketList
+					loading={!data.length ? true : false}
 					markets={data}
 					chartData={chartData}
 					handleClick={this.handleClick}

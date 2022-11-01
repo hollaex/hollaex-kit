@@ -39,7 +39,7 @@ import { verifyBankData } from 'actions/verificationActions';
 import { getErrorLocalized } from 'utils/errors';
 import { required, maxLength } from 'components/Form/validations';
 import { getCountry } from 'containers/Verification/utils';
-import { getFormatTimestamp } from 'utils/utils';
+import { getFormattedBOD } from 'utils/utils';
 import { COUNTRIES_OPTIONS } from 'utils/countries';
 import { verificationTabsSelector } from './selector';
 // const CONTENT_CLASS =
@@ -449,7 +449,7 @@ class Verification extends Component {
 						id="REMOTE_COMPONENT__KYC_VERIFICATION_HOME"
 						handleBack={this.handleBack}
 						setActivePageContent={this.setActivePageContent}
-						getFormatTimestamp={getFormatTimestamp}
+						getFormatTimestamp={getFormattedBOD}
 						getCountry={getCountry}
 					/>
 				),
