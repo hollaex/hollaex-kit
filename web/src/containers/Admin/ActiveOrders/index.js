@@ -1,68 +1,67 @@
-import React, { Component } from 'react';
-import { Tabs, Row } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Row, Select } from 'antd';
 import { connect } from 'react-redux';
 
 import PairsSection from './PairsSection';
 
-const TabPane = Tabs.TabPane;
+const TYPE_OPTIONS = [
+	{ value: true, label: 'Active' },
+	{ value: false, label: 'Closed' },
+];
 
-class ActiveOrders extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			activeTab: '',
-		};
-	}
+const ActiveOrders = ({ pairs, userId, cancelOrder }) => {
+	const [options, setOptions] = useState([]);
+	const [pair, setPair] = useState(null);
+	const [type, setType] = useState(true);
 
-	componentDidMount() {
-		this.setInitTab();
-	}
+	useEffect(() => {
+		setOptions(getOptions(pairs));
+	}, [pairs]);
 
-	componentDidUpdate(prevProps, prevState) {
-		if (JSON.stringify(this.props.pairs) !== JSON.stringify(prevProps.pairs)) {
-			this.setInitTab();
-		}
-	}
-
-	setInitTab = () => {
-		const pairKeys = Object.keys(this.props.pairs);
-		if (pairKeys.length) {
-			this.setState({ activeTab: pairKeys[0] });
-		}
+	const getOptions = (pairs) => {
+		const options = [{ value: null, label: 'All' }];
+		Object.keys(pairs).forEach((pair) => {
+			options.push({
+				label: pair,
+				value: pair,
+			});
+		});
+		return options;
 	};
 
-	tabChange = (activeTab) => {
-		this.setState({ activeTab });
-	};
-
-	render() {
-		const { activeTab } = this.state;
-		const { pairs, userId, cancelOrder } = this.props;
-
-		return (
-			<div className="app_container-content">
-				<h1>Active Orders</h1>
-				<Tabs onChange={this.tabChange}>
-					{Object.keys(pairs).map((pair) => {
-						return (
-							<TabPane tab={pair} key={pair}>
-								{activeTab === pair ? (
-									<Row>
-										<PairsSection
-											userId={userId}
-											activePair={activeTab}
-											cancelOrder={cancelOrder}
-										/>
-									</Row>
-								) : null}
-							</TabPane>
-						);
-					})}
-				</Tabs>
+	return (
+		<div className="app_container-content">
+			<h1>Active Orders</h1>
+			<div>
+				<Select
+					style={{
+						width: 100,
+					}}
+					options={options}
+					value={pair}
+					onChange={setPair}
+				/>
+				<Select
+					style={{
+						width: 100,
+					}}
+					options={TYPE_OPTIONS}
+					value={type}
+					onChange={setType}
+				/>
 			</div>
-		);
-	}
-}
+			<Row>
+				<PairsSection
+					key={`${pair}_${type}`}
+					userId={userId}
+					pair={pair}
+					open={type}
+					cancelOrder={cancelOrder}
+				/>
+			</Row>
+		</div>
+	);
+};
 
 const mapStateToProps = (state) => ({
 	pairs: state.app.pairs,
