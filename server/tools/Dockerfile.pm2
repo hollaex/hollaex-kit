@@ -22,7 +22,7 @@ FROM node:10.15.3-stretch-slim
 
 COPY --from=build /app /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python build-essential && rm -rf /var/lib/apt/lists/*
 
 RUN npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha@6.2.3 -g
 

@@ -33,11 +33,9 @@ services:
     env_file:
       - ./tools/hollaex-kit.env.local
     entrypoint:
-      - pm2-runtime
-      - start
-      - ecosystem.config.js
-      - --env
-      - development
+      - /bin/sh
+      - -c 
+      - ip -4 route list match 0/0 | awk '{print $$3 " host.docker.internal"}' >> /etc/hosts && cat /etc/hosts && pm2-runtime start ecosystem.config.js --env development;
     volumes:
       - ./api:/app/api
       - ./config:/app/config
