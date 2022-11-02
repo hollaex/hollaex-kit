@@ -234,10 +234,14 @@ class QuickTrade extends Component {
 							...FLEX_CENTER_CLASSES
 						)}
 					>
-						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.TITLE">
+							{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						</EditWrapper>
 					</div>
 					<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
-						{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.INFO">
+							{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
+						</EditWrapper>
 					</div>
 				</div>
 				<div
@@ -390,20 +394,28 @@ class QuickTrade extends Component {
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
 							<div className="small-text">
-								<EditWrapper stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT">
-									<div className="mr-2">
-										{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
-									</div>
+								<EditWrapper
+									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
+									renderWrapper={(children) => (
+										<div className="mr-2">{children}</div>
+									)}
+								>
+									{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
 								</EditWrapper>{' '}
 								<Link to="/wallet">
 									<span>
-										<div>{STRINGS['WALLET_TITLE']}</div>
+										<EditWrapper stringId="WALLET_TITLE">
+											{STRINGS['WALLET_TITLE']}
+										</EditWrapper>
 									</span>
 								</Link>
 							</div>
 							<div className="small-text">
 								{coins[selectedSource] && coins[selectedSource].display_name}{' '}
-								{STRINGS['BALANCE_TEXT']}:{' '}
+								<EditWrapper stringId="BALANCE_TEXT">
+									{STRINGS['BALANCE_TEXT']}
+								</EditWrapper>
+								:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
@@ -449,7 +461,10 @@ class QuickTrade extends Component {
 							/>
 							<div className="small-text">
 								{coins[selectedTarget] && coins[selectedTarget].display_name}{' '}
-								{STRINGS['BALANCE_TEXT']}:{' '}
+								<EditWrapper stringId="BALANCE_TEXT">
+									{STRINGS['BALANCE_TEXT']}
+								</EditWrapper>
+								:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.targetTotalBalance(selectedTargetBalance)}
@@ -488,17 +503,11 @@ class QuickTrade extends Component {
 								/>
 							</div>
 							<div className="footer-text">
-								<EditWrapper
-									stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT"
-									render={(string) => <div>{string}</div>}
-								>
+								<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">
 									{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}
 								</EditWrapper>
 								<div>
-									<EditWrapper
-										stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1"
-										render={(string) => <div>{string}</div>}
-									>
+									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
 										{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}
 									</EditWrapper>
 									:{' '}
@@ -508,10 +517,18 @@ class QuickTrade extends Component {
 												{coins[pairBase] && coins[pairBase].display_name}/
 												{coins[pair_2] && coins[pair_2].display_name}{' '}
 											</span>
-											<span>{STRINGS['TYPES_VALUES.market']}</span>
+											<span>
+												<EditWrapper stringId="TYPES_VALUES.market">
+													{STRINGS['TYPES_VALUES.market']}
+												</EditWrapper>
+											</span>
 										</span>
 									) : (
-										<span>{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}</span>
+										<span>
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+												{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}
+											</EditWrapper>
+										</span>
 									)}
 								</div>
 							</div>

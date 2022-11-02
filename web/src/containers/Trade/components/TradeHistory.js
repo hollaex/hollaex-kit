@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { ReactSVG } from 'react-svg';
-import { DisplayTable } from '../../../components';
-import { getFormatTimestamp } from '../../../utils/utils';
-import STRINGS from '../../../config/localizedStrings';
+import { DisplayTable, EditWrapper } from 'components';
+import { getFormatTimestamp } from 'utils/utils';
+import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from '../../../utils/currency';
 // import { roundNumber } from '../../../utils/currency';
 // import { getDecimals } from '../../../utils/utils';
@@ -91,7 +91,9 @@ class TradeHistory extends Component {
 			{
 				key: 'price',
 				label: (
-					<div className="d-flex justify-content-start">{STRINGS['PRICE']}</div>
+					<div className="d-flex justify-content-start">
+						<EditWrapper stringId="PRICE">{STRINGS['PRICE']}</EditWrapper>
+					</div>
 				),
 				renderCell: (
 					{ side, price = 0, isSameBefore, upDownRate, timestamp },
@@ -120,7 +122,7 @@ class TradeHistory extends Component {
 				key: 'size',
 				label: (
 					<div className="d-flex align-items-baseline content-center public-history__header">
-						<div>{STRINGS['SIZE']}</div>
+						<EditWrapper stringId="SIZE">{STRINGS['SIZE']}</EditWrapper>
 						<div>
 							<Select
 								bordered={false}
@@ -168,7 +170,9 @@ class TradeHistory extends Component {
 			{
 				key: 'timestamp',
 				label: (
-					<div className="d-flex justify-content-end">{STRINGS['TIME']}</div>
+					<div className="d-flex justify-content-end">
+						<EditWrapper stringId="TIME">{STRINGS['TIME']}</EditWrapper>
+					</div>
 				),
 				renderCell: ({ timestamp, side }, index) => (
 					<div

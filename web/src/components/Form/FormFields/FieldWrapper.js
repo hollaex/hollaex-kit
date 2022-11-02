@@ -36,7 +36,11 @@ export const FieldContent = ({
 				<div className="d-flex">
 					{label && (
 						<div className="field-label">
-							{label}
+							{typeof label === 'string' ? (
+								<EditWrapper>{label}</EditWrapper>
+							) : (
+								label
+							)}
 							{warning && (
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />

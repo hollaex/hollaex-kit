@@ -6,6 +6,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { convertToFormatted } from 'utils/string';
 
 const defaultRender = (children) => <Fragment>{children}</Fragment>;
+const defaultRenderWrapper = (children) => <div>{children}</div>;
 
 const EditWrapper = ({
 	children,
@@ -18,7 +19,7 @@ const EditWrapper = ({
 	backgroundId,
 	render = defaultRender,
 	strings,
-	renderWrapper = defaultRender,
+	renderWrapper = defaultRenderWrapper,
 }) => {
 	const [x = 5, y = 0] = position;
 	const triggerStyles = {

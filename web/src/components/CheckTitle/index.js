@@ -123,8 +123,14 @@ export const PanelInformationRow = ({
 		)}
 	>
 		<span style={{ wordBreak: 'normal' }}>
-			{bold ? <b>{label}</b> : label}:{' '}
-			<span className="information-content">{information}</span>
+			<EditWrapper
+				renderWrapper={(children) => (
+					<div className={classnames({ bold })}>{children}</div>
+				)}
+			>
+				{label}
+			</EditWrapper>
+			: <span className="information-content">{information}</span>
 		</span>
 		<EditWrapper stringId={stringId} />
 	</div>
@@ -197,7 +203,12 @@ export const status = (key) => {
 	}
 };
 
-export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
+export const CustomMobileTabs = ({
+	stringId,
+	title,
+	icon,
+	statusCode = -1,
+}) => {
 	const statusText = status(statusCode);
 	const statusIcon = renderStatusIcon(
 		statusCode,
@@ -214,7 +225,7 @@ export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
 						'ml-3'
 					)}
 				>
-					{title}
+					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 				</div>
 			</div>
 			<div
