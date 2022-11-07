@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import moment from 'moment';
+import React, { useCallback, useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { CloseOutlined } from '@ant-design/icons';
 import Image from 'components/Image';
@@ -10,6 +9,7 @@ import { bindActionCreators } from 'redux';
 import { toggleTool } from 'actions/toolsAction';
 import { formatCurrency } from 'utils/currency';
 import strings from 'config/localizedStrings';
+import { getChartHeaderValues } from 'actions/chartAction';
 
 const TradeBlock = ({
 	children,
@@ -30,30 +30,25 @@ const TradeBlock = ({
 	titleClassName = '',
 	symbol = '',
 	pairTrades,
+	ticker,
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
 	const { icon_id } = pairData;
+	const [stats, setStats] = useState({
+		maxPrice: 0,
+		lowPrice: 0,
+		summary: 0,
+	});
 
-	const getDailyValues = useCallback(() => {
-		const lastTrades = pairTrades[symbol].filter(
-			(trade) => moment(trade.timestamp) > moment().subtract(24, 'hours')
+	useEffect(() => {
+		getChartHeaderValues(pair).then((res) =>
+			setStats({
+				maxPrice: res.high,
+				lowPrice: res.low,
+				summary: res.volume,
+			})
 		);
-		const buys = lastTrades.filter((trade) => trade.side === 'buy');
-
-		buys.sort((b1, b2) => b2.price - b1.price);
-		const maxPrice = [...buys][0]?.price || 0;
-		const lowPrice = [...buys][buys.length - 1]?.price || 0;
-		const summary = buys.reduce(
-			(previousValue, currentValue) =>
-				(previousValue.size || 0) + (currentValue.size || 0),
-			0
-		);
-		return {
-			maxPrice,
-			lowPrice,
-			summary,
-		};
-	}, [pairTrades, symbol]);
+	}, [ticker]);
 
 	return (
 		<div
@@ -89,7 +84,7 @@ const TradeBlock = ({
 								<div className="trade-daily-value-container">
 									<div className="ml-1">{strings['24H_MAX']}</div>
 									<span className="trade_header_values">
-										{formatCurrency(getDailyValues().maxPrice)}
+										{formatCurrency(stats.maxPrice)}
 										&nbsp;
 										{pairs[1]}
 									</span>
@@ -100,7 +95,7 @@ const TradeBlock = ({
 										{strings['24H_MIN']}
 									</div>
 									<span className="trade_header_values">
-										{formatCurrency(getDailyValues().lowPrice)}
+										{formatCurrency(stats.lowPrice)}
 										&nbsp;
 										{pairs[1]}
 									</span>
@@ -111,7 +106,7 @@ const TradeBlock = ({
 										{strings['24H_VAL']}
 									</div>
 									<span className="trade_header_values">
-										{getDailyValues().summary}
+										{stats.summary}
 										&nbsp;
 										{pairs[0]}
 									</span>

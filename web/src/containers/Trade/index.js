@@ -537,6 +537,7 @@ class Trade extends PureComponent {
 							pairData={pairData}
 							pair={pair}
 							tool={key}
+							ticker={this.props.ticker}
 						>
 							{pair && chartHeight > 0 && (
 								<TVChartContainer
@@ -878,6 +879,7 @@ const mapStateToProps = (state) => {
 		constants: state.app.constants,
 		tools: state.tools,
 		activeTab: state.app.tradeTab,
+		ticker: state.app.tickers,
 	};
 };
 
