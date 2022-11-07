@@ -2,7 +2,7 @@
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Нээлттэй Крипто Эксченж",
 	"LOGOUT_CONFIRM_TEXT": "Та гарахдаа итгэлтэй байна уу",
-	"ADD_TRADING_PAIR": "Макет сонгох",
+	"ADD_TRADING_PAIR": "Маркет сонгох",
 	"CANCEL_BASE_WITHDRAWAL": "{0} зарлага цуцлах",
 	"CANCEL_WITHDRAWAL": "Зарлага цуцлах",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Та дараах хүлээгдэж буй зарлагыг цуцлахдаа итгэлтэй байна уу:",
@@ -257,7 +257,7 @@
 	},
 	"USER_VERIFICATION": {
 		"INFO_TXT": "Энэ хэсэгт та баталгаажуулалт болон бүртгэл шинэчлэх хэсгийг харж болно.",
-		"INFO_TXT_1": "Доорх хэсэг тус бүрд шаардлагатай холбогдох мэдээллийг оруулна уу. Зөвхөн бүх хэсгүүдийг бөглөж дууссаны дараа таны мэдээллийг хянаж, бүртгэл шинэчлэлтийг зөвшөөрөх болно..",
+		"INFO_TXT_1": "Доорх хэсэг тус бүрд шаардлагатай холбогдох мэдээллийг оруулна уу. Зөвхөн бүх хэсгүүдийг бөглөж дууссаны дараа таны мэдээллийг хянаж, бүртгэл шинэчлэлтийг зөвшөөрөх болно.",
 		"COMPLETED": "Дууссан",
 		"PENDING_VERIFICATION": "Баталгаажуулалт хүлээгдэж байна",
 		"TITLE_EMAIL": "И-мэйл",
@@ -381,7 +381,7 @@
 					"LIST_ITEM_2": "ТОД ХАРАГДАХУЙЦ БАЙХ.",
 					"LIST_ITEM_3": "ХҮЧИНТЭЙ БАЙХ",
 					"WARNING_1": "Зөвхөн хүчинтэй бичиг баримтыг хүлээн авна; Эдгээр баримт бичгийн өндөр чанартай зураг эсвэл сканнердсан зургийг хүлээн авах боломжтой:",
-					"WARNING_3": "Энэ хэсэгт та иргэний үнэмлэхнйи ар талыг оруулж болно.",
+					"WARNING_3": "Энэ хэсэгт та иргэний үнэмлэхний нүүр хэсгийг оруулж болно.",
 					"VIOLATION_ERROR": "Таны байршуулсан бүх баримт бичгийн нийт хэмжээ {0}mb-ын байршуулах хязгаараас хэтэрсэн байна. Үргэлжлүүлэхийн тулд жижиг файлуудыг байршуулна уу."
 				},
 				"POR": {
@@ -533,12 +533,12 @@
 	"TRANSACTION_HISTORY": {
 		"TITLE": "Түүх",
 		"TITLE_TRADES": "Арилжааны түүх",
-		"TITLE_DEPOSITS": "Хадгаламжийн түүх",
-		"TITLE_WITHDRAWALS": "Татан авалтын түүх",
+		"TITLE_DEPOSITS": "Орлогын түүх",
+		"TITLE_WITHDRAWALS": "Зарлагын түүх",
 		"TEXT_DOWNLOAD": "ТҮҮХИЙГ ТАТАЖ АВАХ",
 		"TRADES": "Арилжаанууд",
-		"DEPOSITS": "Хадгаламжууд",
-		"WITHDRAWALS": "Татан авалтууд"
+		"DEPOSITS": "Орлого",
+		"WITHDRAWALS": "Зарлага"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "2FA баталгаажуулалт, нууц үг, API түлхүүрүүд болон бусад аюулгүй байдалтай холбоотой функцуудаас бүртгэлийнхээ аюулгүй байдлын тохиргоог тохируулна уу.",
@@ -562,7 +562,7 @@
 				"MESSAGE_4": "Та ирээдүйд гар утсаа солих эсвэл алдах тохиолдолд 2FA-аа сэргээхийн тулд энэ кодыг найдвартай хадгалах ёстой.",
 				"MESSAGE_5": "Гарын авлага",
 				"WARNING": "Бид танд 2FA тохируулахыг зөвлөж байна. Ингэх нь таны хөрөнгийн аюулгүй байдлыг ихээхэн нэмэгдүүлэх болно.",
-				"ENABLE": "2FA баталгаажуулалтыг идэвхжүүлнэ үү",
+				"ENABLE": "2FA баталгаажуулалтыг идэвхжүүлэх",
 				"DISABLE": "2FA баталгаажуулалтыг идэвхгүй болгох",
 				"INPUT": "OTP-ээ оруулна уу"
 			},
@@ -617,7 +617,7 @@
 	},
 	"STAKE": {
 		"NETWORK_WARNING": "Тохиромжгүй сүлжээ. Сүлжээгээ {0} болгож өөрчилнө үү",
-		"EARN": "Олж авах",
+		"EARN": "Earn",
 		"TITLE": "Стэйк",
 		"MODAL_TITLE": "Стэйклэж, {0}-г олоорой",
 		"REVIEW_MODAL_TITLE": "Стэйкийг шалгаж баталгаажуулна уу",
@@ -634,7 +634,7 @@
 		"CONNECT_WALLET": "Хэтэвчээ холбоно уу",
 		"BACK": "Буцах",
 		"NEXT": "Дараачийн",
-		"REVIEW": "Шүүмж",
+		"REVIEW": "Нягтлах",
 		"ESTIMATED": "EST.",
 		"BLOCK": "Блок",
 		"CANCEL": "Цуцлах",
@@ -710,8 +710,8 @@
 		"EARLY_TITLE": "Unstake early",
 		"EARLY_WARNING_TITLE": "Looks like you are trying to unstake early",
 		"EARLY_WARNING_TEXT_1": "This could lead to a percentage of your initial principle stake being deducted and all earnings being forfeited.",
-		"EARLY_WARNING_TEXT_2": "Are you sure you want to proceed?",
-		"BACK": "GO BACK",
+		"EARLY_WARNING_TEXT_2": "Үргэлжлүүлэхдээ итгэлтэй байна уу?",
+		"BACK": "БУЦАХ",
 		"REVIEW": "REMOVE STAKE",
 		"DURATION": "EST. maturation duration",
 		"CANCEL": "Cancel",
@@ -728,10 +728,10 @@
 		"PENDING_EARNINGS_FOOTNOTE": "*Pending earnings are amounts that have not cleared and require a blockchain transaction in order to be added to your total receiving amount."
 	},
 	"STAKE_TABLE": {
-		"CURRENCY": "Currency",
-		"AVAILABLE": "Available to stake",
-		"TOTAL": "Total staked",
-		"REWARD_RATE": "Reward rate",
+		"CURRENCY": "Крипто",
+		"AVAILABLE": "Стэйк хийх боломжтой",
+		"TOTAL": "Нийт стэйк хийсэн",
+		"REWARD_RATE": "Өгөөжийн хувь",
 		"EARNINGS": "Earnings",
 		"STAKE": "Stake",
 		"VARIABLE": "Variable"
@@ -770,8 +770,8 @@
 			"EVENTS_TITLE": "Саяхан тараасан урамшуулал"
 		},
 		"DISTRIBUTIONS": {
-			"TITLE": "{0} шагналыг тараасан",
-			"SUBTITLE": "Доорх нь {0}-н стэйкинг эзэмшигчдэд хийсэн түгээлтийн түүхэн жагсаалт юм..",
+			"TITLE": "{0} урамшуулал тараасан",
+			"SUBTITLE": "Доорх нь {0}-н стэйкинг эзэмшигчдэд хийсэн түгээлтийн түүхэн жагсаалт юм.",
 			"TIME": "Хуваарилсан огноо",
 			"TRANSACTION_ID": "Гүйлгээний ID",
 			"AMOUNT": "Хуваарилсан дүн"
