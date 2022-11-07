@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import classnames from 'classnames';
 import { CloseOutlined } from '@ant-design/icons';
 import Image from 'components/Image';
@@ -28,8 +28,6 @@ const TradeBlock = ({
 	tool,
 	toggleTool,
 	titleClassName = '',
-	symbol = '',
-	pairTrades,
 	ticker,
 }) => {
 	const pairs = pair ? pair.split('-').map((curr) => curr.toUpperCase()) : [];
@@ -48,7 +46,7 @@ const TradeBlock = ({
 				summary: res.volume,
 			})
 		);
-	}, [ticker]);
+	}, [pair, ticker]);
 
 	return (
 		<div
