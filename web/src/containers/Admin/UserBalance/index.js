@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
-import Moment from 'react-moment';
 
 import { DonutChart, CurrencyBall } from '../../../components';
 import { requestUserBalance } from './actions';
