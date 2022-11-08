@@ -282,7 +282,11 @@ class OperatorControls extends Component {
 
 	handleAddLink = (value, name) => {
 		const [key, lang] = name.split(EDITABLE_NAME_SEPARATOR);
-		this.updateEditData(value + " <a href=''></a>", key, lang);
+		this.updateEditData(
+			value + ' <a href="https://example.com">link</a>',
+			key,
+			lang
+		);
 	};
 
 	updateEditData = (value, key, lang) => {
