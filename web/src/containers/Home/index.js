@@ -545,7 +545,7 @@ class Home extends Component {
 	};
 
 	sectionToNav = (sec) => {
-		this.props.router.push(`/trade/${sec?.props?.market?.pair?.code}`);
+		this.props.router.push(`/trade/${sec?.pair?.code}`);
 	};
 
 	onMouseOver = (val, hoveredIndex) => {
