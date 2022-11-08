@@ -1,6 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
-
+import { EditWrapper } from 'components';
 import TraderAccounts from './TraderAccounts';
 import SummaryRequirements, { getRequirements } from './SummaryRequirements';
 import STRINGS from 'config/localizedStrings';
@@ -44,15 +44,19 @@ const AccountTypeDetails = ({
 				verification_level={currentAccount}
 				selectedAccount={currentAccount}
 			/>
-			{Object.keys(requirement).length ? (
+			{Object.keys(requirement).length && (
 				<div>
 					<div className="requirement-header d-flex justify-content-between">
 						<div>
-							{selectedLevel === 3
-								? STRINGS['SUMMARY.ONE_REQUIREMENT']
-								: STRINGS['SUMMARY.REQUIREMENTS']}
+							<EditWrapper stringId="SUMMARY.ONE_REQUIREMENT,SUMMARY.REQUIREMENTS">
+								{selectedLevel === 3
+									? STRINGS['SUMMARY.ONE_REQUIREMENT']
+									: STRINGS['SUMMARY.REQUIREMENTS']}
+							</EditWrapper>
 						</div>
-						<div className="status-header">{STRINGS['STATUS']}</div>
+						<div className="status-header">
+							<EditWrapper stringId="STATUS">{STRINGS['STATUS']}</EditWrapper>
+						</div>
 					</div>
 					<SummaryRequirements
 						user={user}
@@ -66,7 +70,7 @@ const AccountTypeDetails = ({
 						contentClassName="w-100"
 					/>
 				</div>
-			) : null}
+			)}
 		</div>
 	);
 };

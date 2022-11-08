@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { FieldContent } from './FieldWrapper';
-
+import { EditWrapper } from 'components';
 import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
@@ -79,7 +79,9 @@ class ToggleField extends Component {
 						{...rest}
 					>
 						<div className="d-flex justify-content-between">
-							<div className={selected ? '' : 'half-opacity'}>{label}</div>
+							<div className={selected ? '' : 'half-opacity'}>
+								<EditWrapper>{label}</EditWrapper>
+							</div>
 							<Toggle
 								selected={selected}
 								options={options}

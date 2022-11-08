@@ -98,7 +98,7 @@ class App extends Component {
 	ordersQueued = [];
 	limitTimeOut = null;
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const chatIsClosed = getChatMinimized();
 		this.setState({
 			chatIsClosed,

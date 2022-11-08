@@ -36,7 +36,11 @@ export const FieldContent = ({
 				<div className="d-flex">
 					{label && (
 						<div className="field-label">
-							{label}
+							{typeof label === 'string' ? (
+								<EditWrapper>{label}</EditWrapper>
+							) : (
+								label
+							)}
 							{warning && (
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
@@ -88,8 +92,13 @@ export const FieldContent = ({
 					<Fragment>
 						<div className="field-label"></div>
 						<div>
-							<EditWrapper stringId={stringId}>
-								<span className="field-error-text">{emailMsg}</span>
+							<EditWrapper
+								stringId={stringId}
+								render={(string) => (
+									<span className="field-error-text">{string}</span>
+								)}
+							>
+								{emailMsg}
 							</EditWrapper>
 						</div>
 					</Fragment>
@@ -132,8 +141,11 @@ export const FieldError = ({
 			/>
 		)}
 		{error && (
-			<EditWrapper stringId={stringId}>
-				<span className="field-error-text">{getErrorLocalized(error)}</span>
+			<EditWrapper
+				stringId={stringId}
+				render={(string) => <span className="field-error-text">{string}</span>}
+			>
+				{getErrorLocalized(error)}
 			</EditWrapper>
 		)}
 		{preview && <Fragment>{preview}</Fragment>}

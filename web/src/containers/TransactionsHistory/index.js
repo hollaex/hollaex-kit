@@ -22,6 +22,7 @@ import {
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
+	EditWrapper,
 } from 'components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from 'config/constants';
 import {
@@ -529,7 +530,9 @@ class TransactionsHistory extends Component {
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.TRADES']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.TRADES']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.TRADES"
@@ -537,12 +540,17 @@ class TransactionsHistory extends Component {
 								// 	iconId="TRADE_HISTORY"
 								// 	icon={ICONS['TRADE_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.TRADES']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.TRADES"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.TRADES']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['ORDER_HISTORY']
+								<EditWrapper>{STRINGS['ORDER_HISTORY']}</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="ORDER_HISTORY"
@@ -550,12 +558,19 @@ class TransactionsHistory extends Component {
 								// 	iconId="TRADE_HISTORY"
 								// 	icon={ICONS['TRADE_HISTORY']}
 								// />
-								<div>{STRINGS['ORDER_HISTORY']}</div>
+								<EditWrapper
+									stringId="ORDER_HISTORY"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['ORDER_HISTORY']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.DEPOSITS']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.DEPOSITS"
@@ -563,12 +578,19 @@ class TransactionsHistory extends Component {
 								// 	iconId="DEPOSIT_HISTORY"
 								// 	icon={ICONS['DEPOSIT_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.DEPOSITS"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.WITHDRAWALS"
@@ -576,7 +598,12 @@ class TransactionsHistory extends Component {
 								// 	iconId="WITHDRAW_HISTORY"
 								// 	icon={ICONS['WITHDRAW_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								</EditWrapper>
 							),
 						},
 					]}

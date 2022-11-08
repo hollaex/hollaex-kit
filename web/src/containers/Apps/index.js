@@ -33,7 +33,9 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 						// icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				) : (
-					<div>{STRINGS['USER_APPS.ALL_APPS.TAB_TITLE']}</div>
+					<EditWrapper stringId="USER_APPS.ALL_APPS.TAB_TITLE">
+						{STRINGS['USER_APPS.ALL_APPS.TAB_TITLE']}
+					</EditWrapper>
 				),
 				content: <All setActiveTab={setActiveTab} />,
 			},
@@ -44,7 +46,9 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 						// icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					/>
 				) : (
-					<div>{STRINGS['USER_APPS.MY_APPS.TAB_TITLE']}</div>
+					<EditWrapper stringId="USER_APPS.MY_APPS.TAB_TITLE">
+						{STRINGS['USER_APPS.MY_APPS.TAB_TITLE']}
+					</EditWrapper>
 				),
 				content: <User />,
 			},
@@ -77,11 +81,12 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 				openContactForm={openContactForm}
 			>
 				<div className="header-content">
-					<div>
-						<EditWrapper stringId="USER_APPS.SUBTITLE">
-							{STRINGS['USER_APPS.SUBTITLE']}
-						</EditWrapper>
-					</div>
+					<EditWrapper
+						stringId="USER_APPS.SUBTITLE"
+						renderWrapper={(children) => <div>{children}</div>}
+					>
+						{STRINGS['USER_APPS.SUBTITLE']}
+					</EditWrapper>
 				</div>
 			</HeaderSection>
 

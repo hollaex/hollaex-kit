@@ -1239,6 +1239,7 @@
 		"DEPTH_CHART": "Depth chart",
 		"COMING_SOON": "coming soon"
 	},
+	"RESET_LAYOUT": "Reset Layout",
 	"WALLET_BALANCE_LOADING": "Balance loading...",
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {

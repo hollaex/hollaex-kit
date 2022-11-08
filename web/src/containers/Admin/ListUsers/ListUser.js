@@ -22,7 +22,7 @@ class ListUsers extends Component {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestUsers(this.state.page, this.state.limit, this.props.type);
 	}
 

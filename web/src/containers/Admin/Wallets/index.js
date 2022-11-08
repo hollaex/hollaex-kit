@@ -18,7 +18,7 @@ class Wallets extends Component {
 		constants: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestTotalBalance();
 		this.requestConstants();
 		this.setState({ showSweep: false });

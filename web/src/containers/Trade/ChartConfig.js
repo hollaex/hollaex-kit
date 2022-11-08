@@ -34,7 +34,6 @@ export const getTheme = ({
 	'paneProperties.legendProperties.showSeriesOHLC': true,
 	'paneProperties.legendProperties.showLegend': true,
 	'paneProperties.legendProperties.showBarChange': true,
-	'paneProperties.legendProperties.showOnlyPriceSource': true,
 
 	// 'paneProperties.crossHairProperties.color': 'red',
 	'symbolWatermarkProperties.color':
@@ -151,4 +150,4 @@ export const addFullscreenButton = (tvWidget, symbol) => {
 					</div>
 				</div>
 		`;
-}
+};

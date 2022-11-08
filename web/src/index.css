@@ -1802,6 +1802,23 @@ table th {
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
   color: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
+.wallet-trade-group .ant-select-selector {
+  background-color: transparent !important;
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
+.wallet-trade-group .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+.wallet-trade-group .ant-select:not(.ant-select-disabled):focus .ant-select-selector,
+.wallet-trade-group .ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+  box-shadow: none !important;
+  border-color: var(--specials_buttons-links-and-highlights) !important; }
+
+.wallet-trade-group .ant-btn-background-ghost.ant-btn-primary {
+  color: var(--specials_buttons-links-and-highlights) !important;
+  border-color: var(--specials_buttons-links-and-highlights) !important; }
+
+.wallet-trade-group .ant-select-arrow {
+  color: var(--labels_secondary-inactive-label-text-graphics); }
+
 .review-wrapper .review-icon {
   width: 8rem;
   height: 8rem;
@@ -8598,8 +8615,8 @@ table th {
   .accordion_wrapper .accordion_section .accordion_section_content_text {
     position: relative;
     color: var(--labels_secondary-inactive-label-text-graphics); }
-    .accordion_wrapper .accordion_section .accordion_section_content_text .accordion_section_content_text-subtitle {
-      color: var(--labels_inactive-button); }
+  .accordion_wrapper .accordion_section .accordion_section_content_text-subtitle {
+    color: var(--labels_inactive-button); }
   .accordion_wrapper .accordion_section.disabled {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .accordion_wrapper .accordion_section:last-child {

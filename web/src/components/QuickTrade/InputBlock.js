@@ -23,7 +23,7 @@ class InputBlock extends Component {
 		symbol: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.symbol) {
 			this.setState({ symbol: this.props.symbol });
 		}

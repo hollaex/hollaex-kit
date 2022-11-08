@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames';
+import { EditWrapper } from 'components';
 
 const ChoiceSelector = (props) => {
 	const { input, options } = props;
@@ -21,7 +22,7 @@ const ChoiceSelector = (props) => {
 					)}
 					onClick={() => input.onChange(option.value)}
 				>
-					{option.label}
+					<EditWrapper>{option.label}</EditWrapper>
 				</div>
 			))}
 		</div>
