@@ -1802,22 +1802,14 @@ table th {
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
   color: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
-.wallet-trade-group .ant-select-selector {
-  background-color: transparent !important;
+.custom-dropdown-style .ant-dropdown-menu-item {
   color: var(--labels_secondary-inactive-label-text-graphics); }
+  .custom-dropdown-style .ant-dropdown-menu-item.ant-dropdown-menu-item-active {
+    color: var(--labels_important-active-labels-text-graphics);
+    background-color: var(--base_wallet-sidebar-and-popup); }
 
-.wallet-trade-group .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
-.wallet-trade-group .ant-select:not(.ant-select-disabled):focus .ant-select-selector,
-.wallet-trade-group .ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
-  box-shadow: none !important;
-  border-color: var(--specials_buttons-links-and-highlights) !important; }
-
-.wallet-trade-group .ant-btn-background-ghost.ant-btn-primary {
-  color: var(--specials_buttons-links-and-highlights) !important;
-  border-color: var(--specials_buttons-links-and-highlights) !important; }
-
-.wallet-trade-group .ant-select-arrow {
-  color: var(--labels_secondary-inactive-label-text-graphics); }
+.custom-dropdown-style .ant-dropdown-menu {
+  background-color: var(--base_background); }
 
 .review-wrapper .review-icon {
   width: 8rem;
@@ -9864,7 +9856,7 @@ table th {
           height: 100px;
           width: 100%;
           background-image: linear-gradient(to right, var(--base_background), rgba(0, 0, 0, 0));
-          z-index: 9999; }
+          z-index: -1; }
       .quick_trade-wrapper .trade-details-wrapper .trade-details-content .trade_tabs-container {
         margin: 0 !important;
         width: 100% !important; }
