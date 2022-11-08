@@ -388,25 +388,17 @@ $header-margin: 2rem;
 	color: $dark-font-sub-text-color !important;
 }
 
-.wallet-trade-group {
-	.ant-select-selector {
-		background-color: transparent !important;
+.custom-dropdown-style {
+	.ant-dropdown-menu-item {
 		color: $colors-black;
+
+		&.ant-dropdown-menu-item-active {
+			color: $colors-main-black;
+			background-color: $app-sidebar-background;
+		}
 	}
 
-	.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
-	.ant-select:not(.ant-select-disabled):focus .ant-select-selector,
-	.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
-		box-shadow: none !important;
-		border-color: $link !important;
-	}
-
-	.ant-btn-background-ghost.ant-btn-primary {
-		color: $link !important;
-		border-color: $link !important;
-	}
-
-	.ant-select-arrow {
-		color: $colors-black;
+	.ant-dropdown-menu {
+		background-color: $app-background-color;
 	}
 }
