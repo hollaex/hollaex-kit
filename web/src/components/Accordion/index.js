@@ -9,7 +9,7 @@ class Accordion extends Component {
 		ready: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.sections.length > 0) {
 			this.initialize(this.props.sections);
 		}

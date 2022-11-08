@@ -38,7 +38,7 @@ class Deposit extends Component {
 		initialValues: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}

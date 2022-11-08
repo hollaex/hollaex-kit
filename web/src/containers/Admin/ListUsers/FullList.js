@@ -31,7 +31,7 @@ class FullListUsers extends Component {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestFullUsers(this.state.page, this.state.limit);
 	}
 

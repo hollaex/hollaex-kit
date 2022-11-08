@@ -3,7 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 
-import { Accordion, ControlledScrollbar, DonutChart } from 'components';
+import {
+	Accordion,
+	ControlledScrollbar,
+	DonutChart,
+	EditWrapper,
+} from 'components';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { formatToCurrency } from 'utils/currency';
 import WalletSection from './Section';
@@ -154,20 +159,24 @@ class Wallet extends Component {
 						>
 							<Accordion sections={sections} />
 							<div className="d-flex justify-content-center wallet_link blue-link">
-								<Link to="/wallet">{STRINGS['VIEW_ALL']}</Link>
+								<Link to="/wallet">
+									<EditWrapper stringId="VIEW_ALL">
+										{STRINGS['VIEW_ALL']}
+									</EditWrapper>
+								</Link>
 							</div>
 						</ControlledScrollbar>
-						{BASE_CURRENCY ? (
+						{BASE_CURRENCY && (
 							<div className="wallet_section-wrapper wallet_section-total_asset d-flex flex-column">
 								<div className="wallet_section-title">
-									{STRINGS['WALLET.TOTAL_ASSETS']}
+									<EditWrapper>{STRINGS['WALLET.TOTAL_ASSETS']}</EditWrapper>
 								</div>
 								<div className="wallet_section-total_asset d-flex justify-content-end">
 									<span>{formatToCurrency(totalAsset, baseCoin.min)}</span>
 									{display_name}
 								</div>
 							</div>
-						) : null}
+						)}
 					</div>
 				)}
 			</div>

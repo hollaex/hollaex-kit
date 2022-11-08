@@ -11,7 +11,7 @@ class CurrencySlider extends Component {
 		currentCurrency: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const currency = Object.keys(this.props.coins)[0];
 		const currencyIndex = this.findCurrentCurrencyIndex(currency);
 		this.setcurrentCurrency(currency);

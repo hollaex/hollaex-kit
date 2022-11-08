@@ -586,10 +586,13 @@ class Home extends Component {
 				return (
 					<div className="home-page_section-wrapper">
 						<div className="d-flex justify-content-center">
-							<EditWrapper stringId="MARKETS_TABLE.TITLE">
-								<div className="live-markets_header">
-									{STRINGS['MARKETS_TABLE.TITLE']}
-								</div>
+							<EditWrapper
+								stringId="MARKETS_TABLE.TITLE"
+								render={(string) => (
+									<div className="live-markets_header">{string}</div>
+								)}
+							>
+								{STRINGS['MARKETS_TABLE.TITLE']}
 							</EditWrapper>
 						</div>
 						<div className="home-page__market-wrapper">
@@ -727,20 +730,24 @@ class Home extends Component {
 												}
 											/>
 										</div>
-										<EditWrapper stringId={`CARD_SECTION_HEADER_${index}`}>
-											<div className="header_txt">
-												{STRINGS[`CARD_SECTION_HEADER_${index}`]
-													? STRINGS[`CARD_SECTION_HEADER_${index}`]
-													: headerContent}
-											</div>
+										<EditWrapper
+											stringId={`CARD_SECTION_HEADER_${index}`}
+											render={(string) => (
+												<div className="header_txt">{string}</div>
+											)}
+										>
+											{STRINGS[`CARD_SECTION_HEADER_${index}`]
+												? STRINGS[`CARD_SECTION_HEADER_${index}`]
+												: headerContent}
 										</EditWrapper>
 										<div className="card_section_main">
-											<EditWrapper stringId={`CARD_SECTION_MAIN_${index}`}>
-												<div>
-													{STRINGS[`CARD_SECTION_MAIN_${index}`]
-														? STRINGS[`CARD_SECTION_MAIN_${index}`]
-														: mainContent}
-												</div>
+											<EditWrapper
+												stringId={`CARD_SECTION_MAIN_${index}`}
+												render={(string) => <div>{string}</div>}
+											>
+												{STRINGS[`CARD_SECTION_MAIN_${index}`]
+													? STRINGS[`CARD_SECTION_MAIN_${index}`]
+													: mainContent}
 											</EditWrapper>
 										</div>
 									</div>
