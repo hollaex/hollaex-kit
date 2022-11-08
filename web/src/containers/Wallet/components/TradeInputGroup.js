@@ -1,39 +1,41 @@
-import React, { useState } from 'react';
-import { Select, Input, Button } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import React from 'react';
+import { isMobile } from 'react-device-detect';
+import { ActionNotification } from 'components';
+import { Space, Menu, Dropdown } from 'antd';
 import STRINGS from 'config/localizedStrings';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const TradeInputGroup = ({ markets, goToTrade }) => {
-	const [market, setMarket] = useState(markets[0]);
-
+const TradeInputGroup = ({ markets, goToTrade, icons: ICONS }) => {
 	return (
-		<Input.Group compact className="d-flex wallet-trade-group caps">
-			<Select
-				style={{
-					width: 100,
-				}}
-				size="small"
-				dropdownClassName="custom-select-style caps"
-				options={markets.map((pair) => ({
-					value: pair,
-					label: pair,
-				}))}
-				suffixIcon={<CaretDownOutlined />}
-				value={market}
-				onChange={setMarket}
-			/>
-			<Button
-				ghost
-				type="primary"
-				size="small"
-				className="caps"
-				disabled={!market}
-				onClick={() => goToTrade(market)}
-			>
-				{STRINGS['TRADE_TAB_TRADE']}
-			</Button>
-		</Input.Group>
+		<Dropdown
+			size="small"
+			overlayClassName="custom-dropdown-style"
+			style={{
+				width: 100,
+			}}
+			overlay={
+				<Menu onClick={({ key }) => goToTrade(key)}>
+					{markets.map((pair) => (
+						<Menu.Item className="caps" key={pair}>
+							{pair}
+						</Menu.Item>
+					))}
+				</Menu>
+			}
+		>
+			<Space>
+				<ActionNotification
+					stringId="TRADE_TAB_TRADE"
+					text={STRINGS['TRADE_TAB_TRADE']}
+					iconId="BLUE_TRADE_ICON"
+					iconPath={ICONS['BLUE_TRADE_ICON']}
+					className="csv-action"
+					showActionText={isMobile}
+					disable={markets.length === 0}
+				/>
+			</Space>
+		</Dropdown>
 	);
 };
 
-export default TradeInputGroup;
+export default withConfig(TradeInputGroup);
