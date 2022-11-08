@@ -25,17 +25,29 @@ const AccountDetails = ({
 	return (
 		<div className="account-details-wrapper summary-content-txt">
 			<div className="account-details-text">
-				<EditWrapper stringId="SUMMARY.ACCOUNT_DETAILS_TXT_1">
-					<div>{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}</div>
+				<EditWrapper
+					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_1"
+					render={(string) => <div>{string}</div>}
+				>
+					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_1']}
 				</EditWrapper>
-				<EditWrapper stringId="SUMMARY.ACCOUNT_DETAILS_TXT_2">
-					<div>{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_2']}</div>
+				<EditWrapper
+					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_2"
+					render={(string) => <div>{string}</div>}
+				>
+					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_2']}
 				</EditWrapper>
-				<EditWrapper stringId="SUMMARY.ACCOUNT_DETAILS_TXT_3">
-					<div className="mt-2">{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_3']}</div>
+				<EditWrapper
+					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_3"
+					render={(string) => <div className="mt-2">{string}</div>}
+				>
+					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_3']}
 				</EditWrapper>
-				<EditWrapper stringId="SUMMARY.ACCOUNT_DETAILS_TXT_4">
-					<div className="mt-2">{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_4']}</div>
+				<EditWrapper
+					stringId="SUMMARY.ACCOUNT_DETAILS_TXT_4"
+					render={(string) => <div className="mt-2">{string}</div>}
+				>
+					{STRINGS['SUMMARY.ACCOUNT_DETAILS_TXT_4']}
 				</EditWrapper>
 			</div>
 			{isMobile ? (

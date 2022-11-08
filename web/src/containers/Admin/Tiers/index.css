@@ -198,3 +198,8 @@
 .admin-tiers-wrapper .description .underline {
 	color: #ffffff;
 }
+.change-Limit-wrapper .switch-warn {
+	float: right;
+	font-size: 13px;
+	color: #f15a29;
+}

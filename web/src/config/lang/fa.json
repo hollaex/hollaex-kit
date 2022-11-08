@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "لغو برداشت",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "آیا از لغو برداشت در حال انتظار خود مطمئن هستید؟",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss ",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"HOUR_FORMAT": "HH:mm:ss ",
 	"LOGIN_TEXT": "ورود",
 	"SIGN_IN": "ورود",

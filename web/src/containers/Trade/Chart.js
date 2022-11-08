@@ -70,7 +70,7 @@ class TVChartContainer extends React.PureComponent {
 		this.ref = React.createRef();
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		var that = this;
 		const { api_name } = this.props.constants;
 		this.chartConfig = {
@@ -259,17 +259,17 @@ class TVChartContainer extends React.PureComponent {
 			toolbar_bg,
 			datafeed: this.chartConfig,
 			interval: resolution,
-			container_id: containerId,
+			container: containerId,
 			library_path: libraryPath,
 			// timeframe: 'M',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			locale: locale === 'id' ? 'en' : locale,
+			locale: ['id', 'mn'].includes(locale) ? 'en' : locale,
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [
 				'use_localstorage_for_settings',
 				'header_symbol_search',
-				'header_compare'
+				'header_compare',
 			],
 			// preset: isMobile ? 'mobile' : '',
 			enabled_features: ['items_favoriting'],
@@ -296,23 +296,31 @@ class TVChartContainer extends React.PureComponent {
 			},
 			loading_screen: { backgroundColor: getToolbarBG(activeTheme, color) },
 			custom_css_url: `${process.env.REACT_APP_PUBLIC_URL}/css/chart.css`,
-			overrides: getThemeOverrides(activeTheme, color)
+			overrides: getThemeOverrides(activeTheme, color),
 		};
 
 		if (isMobile) {
 			// remove left side bar in mobile
-			widgetOptions.enabled_features = [...widgetOptions.enabled_features, 'hide_left_toolbar_by_default'];
-			widgetOptions.disabled_features = [...widgetOptions.disabled_features, 'header_undo_redo', 'header_indicators', 'header_screenshot'];
+			widgetOptions.enabled_features = [
+				...widgetOptions.enabled_features,
+				'hide_left_toolbar_by_default',
+			];
+			widgetOptions.disabled_features = [
+				...widgetOptions.disabled_features,
+				'header_undo_redo',
+				'header_indicators',
+				'header_screenshot',
+			];
 		}
 
 		const tvWidget = new widget(widgetOptions);
 
 		tvWidget.onChartReady(() => {
-			
 			if (localStorage.getItem(`chart_${symbol}`)) {
-				tvWidget.load(JSON.parse(localStorage.getItem(`chart_${symbol}`)).chartObject)
-				addFullscreenButton(tvWidget, symbol)
-
+				tvWidget.load(
+					JSON.parse(localStorage.getItem(`chart_${symbol}`)).chartObject
+				);
+				addFullscreenButton(tvWidget, symbol);
 			} else {
 				if (!isMobile) {
 					tvWidget.chart().removeAllStudies();
@@ -330,14 +338,15 @@ class TVChartContainer extends React.PureComponent {
 						}
 					}
 
-					addFullscreenButton(tvWidget, symbol)
+					addFullscreenButton(tvWidget, symbol);
 				});
 			}
 		});
-		
+
 		tvWidget.subscribe('onAutoSaveNeeded', () => {
 			tvWidget.save((tvChartObject) => {
-				let chartID = tvChartObject['charts'][0]['panes'][0]['sources'][0]['id'];
+				let chartID =
+					tvChartObject['charts'][0]['panes'][0]['sources'][0]['id'];
 
 				let chartToSave = {
 					tvChartId: chartID,
@@ -346,7 +355,7 @@ class TVChartContainer extends React.PureComponent {
 				};
 				// save chart setting in localstorage
 				localStorage.setItem(`chart_${symbol}`, JSON.stringify(chartToSave));
-			})
+			});
 		});
 
 		this.tvWidget = tvWidget;
@@ -402,8 +411,7 @@ class TVChartContainer extends React.PureComponent {
 			} else if (data.price > lastBar.high) {
 				lastBar.high = data.price;
 			}
-
-			lastBar.volume = lastBar.volume ? lastBar.volume + data.size : data.size;
+			lastBar.volume = lastBar.volume ? Number(lastBar.volume) + Number(data.size) : data.size;
 			lastBar.close = data.price;
 			if (!lastBar.low) lastBar.low = 0;
 			if (!lastBar.close) lastBar.close = 0;

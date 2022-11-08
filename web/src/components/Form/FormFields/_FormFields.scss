@@ -1,5 +1,6 @@
 @import './DropdownField.scss';
 @import './FieldWrapper.scss';
+@import './PinInput.scss';
 
 $toggle-size: 14px;
 $toggle-border: 2px;
@@ -36,6 +37,7 @@ $placeholder--font-weight: bold;
 	}
 	&:disabled {
 		cursor: not-allowed;
+		opacity: 0.5;
 	}
 }
 
@@ -59,10 +61,6 @@ $placeholder--font-weight: bold;
 			background-color: $app-sidebar-background;
 			padding: 6px 0;
 		}
-	}
-
-	.datefield-input {
-		// visibility: hidden;
 	}
 
 	.datefield-values-wrapper {
@@ -107,7 +105,7 @@ $placeholder--font-weight: bold;
 				}
 			}
 			.dropdown-triangle::after {
-    			bottom: 0 !important;
+				bottom: 0 !important;
 			}
 		}
 	}
@@ -125,9 +123,6 @@ $placeholder--font-weight: bold;
 			}
 		}
 	}
-}
-
-.input_file {
 }
 
 .placeholder {
@@ -150,14 +145,14 @@ $placeholder--font-weight: bold;
 		position: relative;
 		top: 0 !important;
 	}
-	.paper-clip-icon{
+	.paper-clip-icon {
 		.action_notification-svg {
 			background-color: $link;
 			width: 1.2rem;
 			height: 1.2rem;
 			border-radius: 50%;
 			display: flex;
-    		margin-left: 5px;
+			margin-left: 5px;
 			svg {
 				width: 0.8rem !important;
 				height: 0.8rem !important;
@@ -215,7 +210,7 @@ $placeholder--font-weight: bold;
 			cursor: pointer;
 
 			&.left {
-    			opacity: 0.3;
+				opacity: 0.3;
 				.option-text {
 					position: relative;
 					left: 23px;
@@ -309,7 +304,7 @@ $placeholder--font-weight: bold;
 			.toggle-action_button {
 				width: $toggle-size * 3;
 				&.left .option-text {
-    				left: 20px;
+					left: 20px;
 				}
 			}
 		}

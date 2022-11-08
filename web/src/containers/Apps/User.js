@@ -86,11 +86,12 @@ const User = ({
 						textType="title"
 						iconPath={ICONS['APPS_USER']}
 					/>
-					<div className="py-4">
-						<EditWrapper stringId="USER_APPS.MY_APPS.SUBTITLE">
-							{STRINGS['USER_APPS.MY_APPS.SUBTITLE']}
-						</EditWrapper>
-					</div>
+					<EditWrapper
+						stringId="USER_APPS.MY_APPS.SUBTITLE"
+						renderWrapper={(children) => <div className="py-4">{children}</div>}
+					>
+						{STRINGS['USER_APPS.MY_APPS.SUBTITLE']}
+					</EditWrapper>
 					<Table
 						showHeaderNoData={true}
 						rowClassName="pt-2 pb-2"

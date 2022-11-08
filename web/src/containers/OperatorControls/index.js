@@ -15,7 +15,7 @@ import {
 } from 'utils/string';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Input, Button, Divider, Tabs, message } from 'antd';
-import { DeleteOutlined, SettingFilled, KeyOutlined } from '@ant-design/icons';
+import { SettingFilled, KeyOutlined } from '@ant-design/icons';
 import { initializeStrings, getValidLanguages } from 'utils/initialize';
 import { publish, updateInjectedHTML } from 'actions/operatorActions';
 import LANGUAGES from 'config/languages';
@@ -29,12 +29,14 @@ import AllIconsModal from './components/AllIconsModal';
 import UploadIcon from './components/UploadIcon';
 import SectionsModal from './components/Sections';
 import AddSection from './components/AddSection';
+import String from './components/String';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
 import {
 	pushTempContent,
 	getTempLanguageKey,
 	filterOverwrites,
+	countPlaceholders,
 } from 'utils/string';
 import { filterThemes } from 'utils/color';
 import { getIconByKey, getAllIconsArray } from 'utils/icon';
@@ -278,6 +280,11 @@ class OperatorControls extends Component {
 		this.updateEditData(value, key, lang);
 	};
 
+	handleAddLink = (value, name) => {
+		const [key, lang] = name.split(EDITABLE_NAME_SEPARATOR);
+		this.updateEditData(value + " <a href=''></a>", key, lang);
+	};
+
 	updateEditData = (value, key, lang) => {
 		const { editData } = this.state;
 		this.setState((prevState) => ({
@@ -336,17 +343,12 @@ class OperatorControls extends Component {
 		);
 	};
 
-	countPlaceholders = (string = '') => {
-		const matches = string.match(/[^{}]+(?=})/g);
-		return matches ? matches.length : 0;
-	};
-
 	validateString = (string, key) => {
 		const benchmarkLanguage = 'en';
-		const benchmarkPlaceholders = this.countPlaceholders(
+		const benchmarkPlaceholders = countPlaceholders(
 			getStringByKey(key, benchmarkLanguage, CONTENT)
 		);
-		const placeholders = this.countPlaceholders(string);
+		const placeholders = countPlaceholders(string);
 
 		return placeholders === benchmarkPlaceholders;
 	};
@@ -1062,27 +1064,15 @@ class OperatorControls extends Component {
 									</Divider>
 									{languageKeys.map((lang) => {
 										return (
-											<div className="p-1" key={lang}>
-												<label>{this.getLanguageLabel(lang)}:</label>
-												<div className="d-flex align-items-center">
-													<Input
-														type="text"
-														name={generateInputName(key, lang)}
-														placeholder="text"
-														className="operator-controls__input mr-2"
-														value={editData[lang][key]}
-														onChange={this.handleInputChange}
-													/>
-													<Button
-														ghost
-														shape="circle"
-														size="small"
-														className="operator-controls__all-strings-settings-button"
-														onClick={() => this.getDefaultString(key, lang)}
-														icon={<DeleteOutlined />}
-													/>
-												</div>
-											</div>
+											<String
+												key={lang}
+												label={this.getLanguageLabel(lang)}
+												onReset={() => this.getDefaultString(key, lang)}
+												name={generateInputName(key, lang)}
+												value={editData[lang][key]}
+												onChange={this.handleInputChange}
+												onAddLink={this.handleAddLink}
+											/>
 										);
 									})}
 								</div>

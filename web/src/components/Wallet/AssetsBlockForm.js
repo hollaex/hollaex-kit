@@ -1,5 +1,6 @@
 import React from 'react';
 import { reduxForm } from 'redux-form';
+import { convertToFormatted } from 'utils/string';
 
 import renderFields from 'components/Form/factoryFields';
 
@@ -13,12 +14,12 @@ class AssetsBlockForm extends React.Component {
 		const AssetsBlockFields = {
 			ZeroBalance: {
 				type: 'toggle',
-				label,
+				label: convertToFormatted(label),
 				onChange: handleCheck,
 				name: 'ZeroBalance',
 				reverse: true,
 				// isHideToggleText: true,
-				isZeroBalanceHidden
+				isZeroBalanceHidden,
 			},
 		};
 

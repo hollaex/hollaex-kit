@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
+import { EditWrapper } from 'components';
 
 import '@material/button/dist/mdc.button.css';
 
@@ -28,7 +29,7 @@ const Button = ({
 		disabled={disabled}
 		autoFocus={autoFocus}
 	>
-		{label}
+		<EditWrapper>{label}</EditWrapper>
 	</button>
 );
 

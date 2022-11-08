@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
-import Moment from 'react-moment';
 
 import { DonutChart, CurrencyBall } from '../../../components';
 import { requestUserBalance } from './actions';
@@ -22,7 +21,7 @@ const INITIAL_STATE = {
 class UserBalance extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		const isSupportUser = isSupport();
 		if (this.props.userData) {
 			this.handleBalance(this.props.userData, isSupportUser);
@@ -126,14 +125,6 @@ class UserBalance extends Component {
 			// 		}
 			// 	}
 			// },
-			{
-				title: 'Last generated',
-				dataIndex: 'updated_at',
-				key: 'updated_at',
-				render: (updated) => (
-					<Moment format="YYYY/MM/DD HH:mm">{updated}</Moment>
-				),
-			},
 			{
 				title: 'Available',
 				dataIndex: 'balance_available',

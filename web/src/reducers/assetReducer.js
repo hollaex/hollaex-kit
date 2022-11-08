@@ -14,17 +14,17 @@ const INITIAL_STATE = {
 	allCoins: [],
 	allPairs: [],
 	exchange: {},
-	dataFetched: false,
+	isFetching: true,
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
 	switch (type) {
 		case SET_PRICES_AND_ASSET_PENDING:
-			return { ...state, dataFetched: true };
+			return { ...state, isFetching: true };
 		case SET_PRICES_AND_ASSET_SUCCESS:
-			return { ...state, ...payload, dataFetched: true };
+			return { ...state, ...payload, isFetching: false };
 		case SET_PRICES_AND_ASSET_FAILURE:
-			return { ...state, dataFetched: false };
+			return { ...state, isFetching: false };
 		case SET_ALL_COINS:
 			return { ...state, ...payload };
 

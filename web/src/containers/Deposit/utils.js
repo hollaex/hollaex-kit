@@ -148,13 +148,12 @@ const RenderContentForm = ({
 	targets,
 }) => {
 	const coinObject = coins[currency];
-	const { icon_id } = coinObject;
 
-	const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
-	const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
+	const generalId = 'REMOTE_COMPONENT__FIAT_WALLET_DEPOSIT';
+	const currencySpecificId = `${generalId}__${currency.toUpperCase()}`;
 	const id = targets.includes(currencySpecificId)
 		? currencySpecificId
-		: GENERAL_ID;
+		: generalId;
 
 	if (coinObject && coinObject.type !== 'fiat') {
 		return (
@@ -165,12 +164,14 @@ const RenderContentForm = ({
 			>
 				<div className="withdraw-form-wrapper">
 					<div className="withdraw-form">
-						<Image
-							iconId={icon_id}
-							icon={ICONS[icon_id]}
-							wrapperClassName="form_currency-ball"
-						/>
-						{titleSection}
+						<div className="d-flex align-items-center">
+							<Image
+								iconId={'DEPOSIT_BITCOIN'}
+								icon={ICONS['DEPOSIT_BITCOIN']}
+								wrapperClassName="form_currency-ball margin-aligner"
+							/>
+							{titleSection}
+						</div>
 						{(currency === 'xrp' ||
 							currency === 'xlm' ||
 							selectedNetwork === 'xlm') && (
@@ -178,10 +179,11 @@ const RenderContentForm = ({
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
 									<div className="field_warning_text">
-										{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+										<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG">
+											{STRINGS['DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG']}
+										</EditWrapper>
 									</div>
 								</div>
-								<EditWrapper stringId="DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG" />
 							</div>
 						)}
 						{renderFields(formFields)}

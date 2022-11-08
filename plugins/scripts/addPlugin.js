@@ -42,6 +42,7 @@ if (!plugin) {
       case TEMPLATES.KYC.type:
       case TEMPLATES.BANK.type:
       case TEMPLATES.ONRAMP.type:
+      case TEMPLATES.APP.type:
         return (
           mkdirp(`${PATHS.ROOT}/${plugin}`)
             .then(() => {

@@ -31,6 +31,7 @@ import {
 
 import { FORM_NAME } from './form';
 import { limitNumberWithinRange } from 'utils/math';
+import { STATIC_ICONS } from 'config/icons';
 
 class Withdraw extends Component {
 	state = {
@@ -41,7 +42,7 @@ class Withdraw extends Component {
 		selectedMethodData: 'address',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
@@ -159,8 +160,8 @@ class Withdraw extends Component {
 			coins,
 			verification_level,
 			this.props.activeTheme,
-			ICONS['BLUE_PLUS'],
-			'BLUE_PLUS',
+			STATIC_ICONS['MAX_ICON'],
+			'MAX_ICON',
 			networks,
 			network,
 			ICONS,
