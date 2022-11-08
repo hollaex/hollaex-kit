@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
-import Moment from 'react-moment';
 
 import { DonutChart, CurrencyBall } from '../../../components';
 import { requestUserBalance } from './actions';
@@ -126,14 +125,6 @@ class UserBalance extends Component {
 			// 		}
 			// 	}
 			// },
-			{
-				title: 'Last generated',
-				dataIndex: 'updated_at',
-				key: 'updated_at',
-				render: (updated) => (
-					<Moment format="YYYY/MM/DD HH:mm">{updated}</Moment>
-				),
-			},
 			{
 				title: 'Available',
 				dataIndex: 'balance_available',
