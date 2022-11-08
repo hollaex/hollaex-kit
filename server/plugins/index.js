@@ -123,12 +123,11 @@ const startPlugin = async (plugin) => {
 		const childProcess = new Worker(pluginProcess, {
 			workerData: JSON.stringify(pluginData)
 		})
-		const subStr = plugin.script.match(/\"\/plugins(.*?)\"/g);
 
 		activePlugins[plugin.name] = {
 			process: childProcess,
 			port: pluginData.PORT,
-			endpoints: subStr || [],
+			name: plugin.name
 		};
 
 
@@ -169,7 +168,7 @@ checkStatus()
 		const customRouter = function (req) {
 			if (req.path.length > 1 && req.path.includes('/plugins/')) {
 				for (let plugin of Object.values(activePlugins)) {
-					if (plugin.endpoints.some(endpoint => endpoint.includes(req.path))) {
+					if (req.path.includes(plugin.name)) {
 						return `http://localhost:${plugin.port}`;
 					}
 				}

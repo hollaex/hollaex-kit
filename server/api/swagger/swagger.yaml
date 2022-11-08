@@ -4698,13 +4698,6 @@ definitions:
         type: string
       code:
         type: string
-  # ConfirmChangePassword:
-  #   type: object
-  #   required:
-  #     - code
-  #   properties:
-  #     code:
-  #       type: string
   OperatorResponse:
     type: object
     required:
@@ -4879,36 +4872,6 @@ definitions:
             type: boolean
           popup_order_partially_filled:
             type: boolean
-  # UserPut:
-  #   type: object
-  #   properties:
-  #     full_name:
-  #       type: string
-  #     gender:
-  #       type: boolean
-  #     nationality:
-  #       type: string
-  #     dob:
-  #       type: string
-  #       format: date-time
-  #     address:
-  #       type: object
-  #       required:
-  #         - country
-  #         - address
-  #         - postal_code
-  #         - city
-  #       properties:
-  #         country:
-  #           type: string
-  #         address:
-  #           type: string
-  #         postal_code:
-  #           type: string
-  #         city:
-  #           type: string
-  #     phone_number:
-  #       type: string
   ChangePassword:
     type: object
     required:
@@ -5004,32 +4967,6 @@ definitions:
         maxLength: 50
       card_number:
         type: string
-  # VerificationId:
-  #   type: object
-  #   required:
-  #     - front
-  #   properties:
-  #     front:
-  #       type: string
-  #     back:
-  #       type: string
-  #     proof_of_residency:
-  #       type: string
-  # AnnouncementObject:
-  #   type: object
-  #   properties:
-  #     id:
-  #       type: number
-  #       format: int32
-  #     created_by:
-  #       type: number
-  #       format: int32
-  #     title:
-  #       type: string
-  #     message:
-  #       type: string
-  #     type:
-  #       type: string
   OrderRequest:
     type: object
     required:
