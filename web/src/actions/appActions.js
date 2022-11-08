@@ -81,6 +81,26 @@ export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 export const SET_CONTRACTS = 'SET_CONTRACTS';
 export const SET_TRADE_TAB = 'SET_TRADE_TAB';
+export const SET_SORT_MODE = 'SET_SORT_MODE';
+export const TOGGLE_SORT = 'TOGGLE_SORT';
+export const SORT = {
+	VOL: 'VOLUME',
+	CHANGE: 'CHANGE',
+};
+
+export const setSortModeVolume = () => ({
+	type: SET_SORT_MODE,
+	payload: SORT.VOL,
+});
+
+export const setSortModeChange = () => ({
+	type: SET_SORT_MODE,
+	payload: SORT.CHANGE,
+});
+
+export const toggleSort = () => ({
+	type: TOGGLE_SORT,
+});
 
 export const USER_TYPES = {
 	USER_TYPE_NORMAL: 'normal',

@@ -40,6 +40,9 @@ import {
 	SET_RECENT_TRADES_MARKETS,
 	SET_TRADE_TAB,
 	SET_BROKER,
+	SORT,
+	SET_SORT_MODE,
+	TOGGLE_SORT,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -176,6 +179,10 @@ const INITIAL_STATE = {
 	user_payments: {},
 	onramp: {},
 	offramp: {},
+	sort: {
+		mode: SORT.VOL,
+		is_descending: true,
+	},
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -612,6 +619,22 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				tradeTab: payload,
 			};
 		}
+		case SET_SORT_MODE:
+			return {
+				...state,
+				sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
+		case TOGGLE_SORT:
+			return {
+				...state,
+				sort: {
+					...state.sort,
+					is_descending: !state.sort.is_descending,
+				},
+			};
 		default:
 			return state;
 	}
