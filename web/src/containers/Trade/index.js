@@ -577,7 +577,6 @@ class Trade extends PureComponent {
 							pairData={pairData}
 							pair={pair}
 							tool={key}
-							ticker={tickers}
 						>
 							{pair && chartHeight > 0 && (
 								<TVChartContainer

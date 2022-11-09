@@ -95,9 +95,7 @@ const TradeBlock = ({
 };
 
 const mapStateToProps = (store) => ({
-	pairTrades: store.orderbook.pairsTrades,
 	activeTheme: store.app.theme,
-	symbol: store.orderbook.symbol,
 });
 
 const mapDispatchToProps = (dispatch) => ({
