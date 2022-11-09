@@ -76,12 +76,3 @@ export const getSparklines = async () => {
 
 	return chartData;
 };
-
-export const getChartHeaderValues = (pairs) => {
-	return axios({
-		url: '/ticker?symbol=' + pairs,
-		method: 'GET',
-	}).then(({ data }) => {
-		return data;
-	});
-};

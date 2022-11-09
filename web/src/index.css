@@ -2356,7 +2356,7 @@ table th {
   width: 1px;
   height: 50%;
   margin: 0.4rem 0.33rem;
-  border: 1px solid rgba(255, 255, 255, 0.4); }
+  border: 1px solid var(--calculated_secondary-border); }
 
 .trade-daily-value-container {
   display: flex;
