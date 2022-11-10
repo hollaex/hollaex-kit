@@ -282,9 +282,11 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice;
 			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice;
 
-			const expiryDate = new Date();
-			expiryDate.setSeconds(expiryDate.getSeconds() + 60);
-			responseObj.expiry = expiryDate;
+			if (bearerToken) {
+				const expiryDate = new Date();
+				expiryDate.setSeconds(expiryDate.getSeconds() + 60);
+				responseObj.expiry = expiryDate;
+			}
 
 			return responseObj;
 		} catch (err) {
