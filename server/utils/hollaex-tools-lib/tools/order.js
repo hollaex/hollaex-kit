@@ -3,14 +3,13 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { getConstants } = require('../../../api/controllers/public');
+const { getPublicData } = require('../../../ws/publicData');
+const { fetchBrokerQuote } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees } = require('./common');
 const { reject } = require('bluebird');
-const { getPublicData } = require('../../../ws/publicData');
-const { fetchBrokerQuote } = require('./broker');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
@@ -40,6 +39,7 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 };
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip) => {
+	const toolsLib = require('hollaex-tools-lib');
 
 	if (spending_amount) spending_amount = parseFloat(spending_amount);
 	if (receiving_amount) receiving_amount = parseFloat(receiving_amount);
@@ -65,9 +65,10 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			0
 		);
 
-	const estimatedQuickTradePriceSelector = (pairsOrders, pair, side, size, isFirstAsset) => {
+	const estimatedQuickTradePriceSelector = ({ pairsOrders, pair, side, size, isFirstAsset }) => {
 		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
-			pairsOrders[pair] || {};
+			pairsOrders[pair]?.data || {};
+
 		let totalOrders = sumQuantities(orders);
 		if (!isFirstAsset) {
 			totalOrders = sumOrderTotal(orders);
@@ -83,10 +84,13 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		}
 	}
 
-	const setPriceEssentials = (pair, priceEssentials, side, isSourceChanged) => {
-		const constants = getConstants();
+	const setPriceEssentials = (priceEssentials) => {
 		const pairsOrders = getPublicData().orderbook;
-		const pairData = constants.pairs[pair] || {};
+
+		const pair = priceEssentials.pair;
+		const side = priceEssentials.side;
+		const isSourceChanged = priceEssentials.isSourceChanged;
+		const pairData = toolsLib.getKitPairsConfig()[pair] || {};
 		let priceValues = {};
 
 		const decimalPoint = getDecimals(pairData.increment_size);
@@ -206,10 +210,10 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	let side = 'sell';
 
 	// find if broker exists
-	let broker = await getModel('broker').findOne({ where: { originalPair } });
+	let broker = await getModel('broker').findOne({ where: { symbol: originalPair } });
 
 	if (!broker) {
-		broker = await getModel('broker').findOne({ where: { flippedPair } });
+		broker = await getModel('broker').findOne({ where: { symbol: flippedPair } });
 		symbol = flippedPair;
 		side = 'buy';
 	}

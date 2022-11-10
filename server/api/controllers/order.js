@@ -59,11 +59,6 @@ const getQuickTrade = (req, res) => {
 		'controllers/order/createQuickTrade auth',
 		req.auth
 	);
-	loggerOrders.verbose(
-		req.uuid,
-		'controllers/order/createQuickTrade order',
-		req.swagger.params.order.value
-	);
 
 	const bearerToken = req.headers['authorization'];
 	const ip = req.headers['x-real-ip'];
