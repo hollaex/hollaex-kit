@@ -1275,6 +1275,41 @@ paths:
         - hmac
       x-token-permissions:
         - can_trade
+  /quick-trade:
+    x-swagger-router-controller: order
+    get:
+      operationId: getQuickTrade
+      description: Get Quick Trade
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: spending_currency
+          description: Currency symbol of the spending currency
+          required: true
+          type: string
+        - in: query
+          name: receiving_currency
+          description: Currency symbol of the receiving currency
+          required: true
+          type: string
+        - in: query
+          name: spending_amount
+          required: false
+          type: string
+        - in: query
+          name: spending_amount
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /tiers:
     x-swagger-router-controller: tier
     get:
