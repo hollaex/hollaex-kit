@@ -63,6 +63,12 @@ const getQuickTrade = (req, res) => {
 	const bearerToken = req.headers['authorization'];
 	const ip = req.headers['x-real-ip'];
 
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
 	const {
 		spending_currency,
 		spending_amount,
@@ -70,7 +76,7 @@ const getQuickTrade = (req, res) => {
 		receiving_currency,
 	} = req.swagger.params;
 
-	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip)
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts)
 		.then((order) => {
 			return res.json(order);
 		})

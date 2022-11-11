@@ -3,7 +3,6 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { getPublicData } = require('../../../ws/publicData');
 const { fetchBrokerQuote } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
@@ -38,11 +37,11 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 		});
 };
 
-const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip) => {
+const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 	const toolsLib = require('hollaex-tools-lib');
 
-	if (spending_amount) spending_amount = parseFloat(spending_amount);
-	if (receiving_amount) receiving_amount = parseFloat(receiving_amount);
+	if (spending_amount) spending_amount = math.number(spending_amount);
+	if (receiving_amount) receiving_amount = math.number(receiving_amount);
 
 	const getDecimals = (value = 0) => {
 		if (Math.floor(value) === value) return 0;
@@ -67,7 +66,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 	const estimatedQuickTradePriceSelector = ({ pairsOrders, pair, side, size, isFirstAsset }) => {
 		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
-			pairsOrders[pair]?.data || {};
+			pairsOrders[pair] || {};
 
 		let totalOrders = sumQuantities(orders);
 		if (!isFirstAsset) {
@@ -84,8 +83,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		}
 	}
 
-	const setPriceEssentials = (priceEssentials) => {
-		const pairsOrders = getPublicData().orderbook;
+	const setPriceEssentials = async (priceEssentials) => {
+		const pairsOrders = await toolsLib.getOrderbook(priceEssentials.pair, opts);
 
 		const pair = priceEssentials.pair;
 		const side = priceEssentials.side;
@@ -257,7 +256,9 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	else {
 		try {
 			symbol = originalPair;
-			if (symbol && !subscribedToPair(symbol)) {
+			side = 'sell';
+			if (!subscribedToPair(symbol)) {
+				side = 'buy';
 				symbol = flippedPair;
 			}
 
@@ -271,7 +272,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
 			}
 
-			const priceValues = setPriceEssentials({
+			const priceValues = await setPriceEssentials({
 				pair: symbol,
 				size: spending_amount != null ? spending_amount : receiving_amount,
 				side,
@@ -279,14 +280,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				isSourceChanged: spending_amount != null ? true : false,
 			});
 
-			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice;
-			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice;
-
-			if (bearerToken) {
-				const expiryDate = new Date();
-				expiryDate.setSeconds(expiryDate.getSeconds() + 60);
-				responseObj.expiry = expiryDate;
-			}
+			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice == 0 ? null : priceValues.targetAmount;
+			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice == 0 ? null : priceValues.sourceAmount;
 
 			return responseObj;
 		} catch (err) {
