@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.4.5"
+  version: "2.4.6"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -3186,6 +3186,7 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
@@ -3246,6 +3247,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/discount:
     x-swagger-router-controller: admin
     put:
@@ -3290,6 +3292,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/note:
     x-swagger-router-controller: admin
     put:

@@ -263,7 +263,7 @@ class TVChartContainer extends React.PureComponent {
 			library_path: libraryPath,
 			// timeframe: 'M',
 			timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-			locale: locale === 'id' ? 'en' : locale,
+			locale: ['id', 'mn'].includes(locale) ? 'en' : locale,
 			withdateranges: true,
 			range: 'ytd',
 			disabled_features: [
@@ -402,8 +402,7 @@ class TVChartContainer extends React.PureComponent {
 			} else if (data.price > lastBar.high) {
 				lastBar.high = data.price;
 			}
-
-			lastBar.volume = lastBar.volume ? lastBar.volume + data.size : data.size;
+			lastBar.volume = lastBar.volume ? Number(lastBar.volume) + Number(data.size) : data.size;
 			lastBar.close = data.price;
 			if (!lastBar.low) lastBar.low = 0;
 			if (!lastBar.close) lastBar.close = 0;
