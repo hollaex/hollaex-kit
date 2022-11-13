@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import {
 	SORT,
 	toggleSort,
@@ -59,12 +60,18 @@ const MarketList = ({
 	};
 
 	const renderCaret = (cell) => (
-		<span
-			className="mx-1"
-			style={{ visibility: mode === cell ? 'visible' : 'hidden' }}
-		>
-			{is_descending ? <CaretDownOutlined /> : <CaretUpOutlined />}
-		</span>
+		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+			<CaretUpOutlined
+				className={classnames({
+					'important-text': mode === cell && !is_descending,
+				})}
+			/>
+			<CaretDownOutlined
+				className={classnames({
+					'important-text': mode === cell && is_descending,
+				})}
+			/>
+		</div>
 	);
 
 	return (

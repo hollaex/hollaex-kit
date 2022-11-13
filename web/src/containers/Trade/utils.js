@@ -2,6 +2,7 @@ import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { getDecimals } from 'utils/utils';
 import {
+	formatCurrencyByIncrementalUnit,
 	formatPercentage,
 	formatNumber,
 	calculateOraclePrice,
@@ -100,6 +101,7 @@ const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
 const getFavourites = (state) => state.app.favourites;
 const getPrices = (state) => state.asset.oraclePrices;
+const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
 
@@ -290,8 +292,15 @@ const pairKeysSelector = createSelector([getPairs], (pairs) =>
 );
 
 export const unsortedMarketsSelector = createSelector(
-	[pairKeysSelector, getPairs, getTickers, getCoins, getPrices],
-	(pairKeys, pairs, tickers, coins, prices) => {
+	[
+		pairKeysSelector,
+		getPairs,
+		getTickers,
+		getCoins,
+		getPrices,
+		getNativeCurrency,
+	],
+	(pairKeys, pairs, tickers, coins, prices, native_currency) => {
 		const markets = pairKeys.map((key) => {
 			const {
 				pair_base,
@@ -307,6 +316,7 @@ export const unsortedMarketsSelector = createSelector(
 			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
 			const { volume = 0, open, close } = tickers[key] || {};
 			const { [pair_base]: price = 0 } = prices;
+			const baseCoin = coins[native_currency] || DEFAULT_COIN_DATA;
 
 			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
 
@@ -320,6 +330,10 @@ export const unsortedMarketsSelector = createSelector(
 				: formatPercentage(tickerPercent);
 
 			const volume_native = calculateOraclePrice(volume, price);
+			const volume_native_text = `${formatCurrencyByIncrementalUnit(
+				volume_native,
+				baseCoin.increment_unit
+			)} ${baseCoin.display_name}`;
 
 			return {
 				key,
@@ -337,6 +351,7 @@ export const unsortedMarketsSelector = createSelector(
 				pair_2_display,
 				icon_id,
 				volume_native,
+				volume_native_text,
 			};
 		});
 

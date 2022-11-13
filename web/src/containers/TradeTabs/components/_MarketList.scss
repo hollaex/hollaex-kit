@@ -129,6 +129,14 @@
 				direction: ltr;
 			}
 		}
+		.market-list__caret {
+			span:not(.important-text) {
+				opacity: 0.3;
+			}
+			.important-text {
+				opacity: 0.8;
+			}
+		}
 	}
 }
 
