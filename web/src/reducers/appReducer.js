@@ -382,12 +382,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
-					let close =
-						pairTrade && pairTrade.price
-							? pairTrade.price
-							: temp.close
-							? temp.close
-							: 0;
+					let close = (
+						pairTrade && pairTrade.price ? pairTrade.price : temp.close
+					)
+						? temp.close
+						: 0;
+					temp.volume += parseFloat(pairTrade?.size ?? 0);
+					if (pairTrade?.side === 'buy' && pairTrade?.price > temp.high) {
+						temp.high = pairTrade?.price;
+					}
+					if (pairTrade?.side === 'sell' && pairTrade?.price < temp.low) {
+						temp.low = pairTrade?.price;
+					}
 					tempTickers[key] = {
 						...temp,
 						close,

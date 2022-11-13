@@ -22,7 +22,7 @@ class MarketRow extends Component {
 			pair_base_display,
 			pair_2_display,
 			icon_id,
-			volume_native,
+			volume_native_text,
 		} = market;
 
 		return (
@@ -76,9 +76,11 @@ class MarketRow extends Component {
 				<td>
 					{!loading ? (
 						<div>
-							{volume_native && (
+							{ticker.volume > 0 && (
 								<div>
-									<span className="title-font">{volume_native}</span>
+									<span className="title-font ml-1 important-text">
+										{volume_native_text}
+									</span>
 								</div>
 							)}
 							<div>
