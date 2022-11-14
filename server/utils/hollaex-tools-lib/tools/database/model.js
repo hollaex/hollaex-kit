@@ -4,7 +4,8 @@ const { SERVER_PATH } = require('../../constants');
 const models = require(`${SERVER_PATH}/db/models`);
 const { PROVIDE_TABLE_NAME } = require(`${SERVER_PATH}/messages`);
 const { capitalize, camelCase } = require('lodash');
-
+var pluralize = require('pluralize')
+const Sequelize = require('sequelize');
 /**
  * Get sequelize model of table.
  * @param {string} table - Table name of model.
@@ -45,36 +46,40 @@ const createModel = (
 		underscored: true
 	}
 ) => {
-	const result =  models.sequelize.import(name, (sequelize, DataTypes) => {{
-		const modelProperties = {
-			id: {
-				allowNull: false,
-				autoIncrement: true,
-				primaryKey: true,
-				type: DataTypes.INTEGER
-			}
-		};
+	const table = name
+		.split(' ')
+		.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+		.join('');
 
-		for (let prop in properties) {
-			if (!properties[prop].type) {
-				throw new Error('Type not given for property ' + prop);
-			}
-			properties[prop].type = DataTypes[properties[prop].type.toUpperCase()];
-			modelProperties[prop] = properties[prop];
+	if (models[table]) return models[table];
+
+	const modelProperties = {
+		id: {
+			allowNull: false,
+			autoIncrement: true,
+			primaryKey: true,
+			type: Sequelize.DataTypes.INTEGER
 		}
-		const model = models.sequelize.define(
-			name.split(' ').map((word) => `${capitalize(word)}`).join(''),
-			modelProperties,
-			{
-				timestamps: true,
-				underscored: true,
-				...options
-			}
-		);
-		return model;
-	}});
+	};
 
-	return result;
+	for (let prop in properties) {
+		if (!properties[prop].type) {
+			throw new Error('Type not given for property ' + prop);
+		}
+		properties[prop].type = Sequelize.DataTypes[properties[prop].type.toUpperCase()];
+		modelProperties[prop] = properties[prop];
+	}
+	const model = models.sequelize.define(
+		name.split(' ').map((word) => `${capitalize(word)}`).join(''),
+		modelProperties,
+		{
+			timestamps: true,
+			underscored: true,
+			tableName: pluralize(name.split(' ').map((word) => `${capitalize(word)}`).join('')),
+			...options
+		}
+	);
+	return model;
 };
 
 const associateModel = (model, association, associatedModel, options = {}) => {

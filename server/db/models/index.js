@@ -4,7 +4,7 @@
 var Sequelize = require('sequelize');
 var env = process.env.NODE_ENV || 'development';
 var config = require('../../config/db.js')[env];
-
+const path = require('path');
 
 var sequelize = new Sequelize(
 	config.database,
@@ -16,34 +16,34 @@ var sequelize = new Sequelize(
 var db = {};
 var model;
 
-model = sequelize.import('affiliation', require('./affiliation'));
+model = require(path.join(__dirname, './affiliation'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('audit', require('./audit'));
+model = require(path.join(__dirname, './audit'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('login', require('./login'));
+model = require(path.join(__dirname, './login'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('otpCode', require('./otpCode'));
+model = require(path.join(__dirname, './otpCode'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('resetPasswordCode', require('./resetPasswordCode'));
+model = require(path.join(__dirname, './resetPasswordCode'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('token', require('./token'));
+model = require(path.join(__dirname, './token'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('user', require('./user'));
+model = require(path.join(__dirname, './user'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('verificationCode', require('./verificationCode'));
+model = require(path.join(__dirname, './verificationCode'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('verificationImage', require('./verificationImage'));
+model = require(path.join(__dirname, './verificationImage'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('status', require('./status'));
+model = require(path.join(__dirname, './status'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('tier', require('./tier'));
+model = require(path.join(__dirname, './tier'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('plugin', require('./plugin'));
+model = require(path.join(__dirname, './plugin'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
-model = sequelize.import('broker', require('./broker'));
+model = require(path.join(__dirname, './broker'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
 
-Object.keys(db).forEach(function(modelName) {
+Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {
 		db[modelName].associate(db);
 	}
