@@ -6,10 +6,7 @@ import BrokerForm from './BrokerForm';
 import { getConstants, updatePlugins } from '../Plugins/action';
 import { getFees } from '../Fees/actions';
 import { validateRequired } from '../../../components/AdminForm/validations';
-import {
-	formatCurrency,
-	formatCurrencyByIncrementalUnit,
-} from '../../../utils/currency';
+import { formatCurrencyByIncrementalUnit } from '../../../utils/currency';
 import { connect } from 'react-redux';
 
 const generateForm = () => ({
