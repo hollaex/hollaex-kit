@@ -6,7 +6,11 @@ import BrokerForm from './BrokerForm';
 import { getConstants, updatePlugins } from '../Plugins/action';
 import { getFees } from '../Fees/actions';
 import { validateRequired } from '../../../components/AdminForm/validations';
-import { formatCurrency } from '../../../utils/currency';
+import {
+	formatCurrency,
+	formatCurrencyByIncrementalUnit,
+} from '../../../utils/currency';
+import { connect } from 'react-redux';
 
 const generateForm = () => ({
 	trade_master_account_id: {
@@ -26,7 +30,7 @@ const generateForm = () => ({
 	},
 });
 
-const Broker = () => {
+const Broker = ({ coins }) => {
 	const [loading, setLoading] = useState(false);
 	const [serviceLoading, setServiceLoading] = useState(false);
 	const [openDialog, setOpenDialog] = useState(false);
@@ -181,7 +185,11 @@ const Broker = () => {
 											key={index}
 											className="list-group-item list-group-item-action"
 										>
-											{currency.toUpperCase()} : {formatCurrency(amount)}
+											{currency.toUpperCase()} :{' '}
+											{formatCurrencyByIncrementalUnit(
+												amount,
+												coins?.[currency]?.increment_unit
+											)}
 										</div>
 									))}
 								</Card>
@@ -201,5 +209,8 @@ const Broker = () => {
 		</div>
 	);
 };
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
 
-export default Broker;
+export default connect(mapStateToProps)(Broker);

@@ -16,6 +16,7 @@ import {
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 import ValidateDismiss from './ValidateDismiss';
+import { connect } from 'react-redux';
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -477,7 +478,7 @@ class Deposits extends Component {
 							rowKey={(data) => {
 								return data.id;
 							}}
-							expandedRowRender={renderRowContent}
+							expandedRowRender={(vals) => renderRowContent({ ...vals, coins })}
 							expandRowByClick={true}
 							pagination={{
 								current: currentTablePage,
@@ -505,5 +506,8 @@ class Deposits extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
 
-export default Deposits;
+export default connect(mapStateToProps)(Deposits);

@@ -3,7 +3,8 @@ import { Card, Alert, Spin } from 'antd';
 import { isSupport } from '../../../utils/token';
 
 import { getFees } from './actions';
-import { formatCurrency } from '../../../utils';
+import { connect } from 'react-redux';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 class BlockchainTransaction extends Component {
 	state = {
@@ -60,14 +61,19 @@ class BlockchainTransaction extends Component {
 							title="Fees"
 							style={{ textAlign: 'center' }}
 						>
-							{Object.entries(data.fees).map(([currency, amount], index) => (
-								<div
-									key={index}
-									className="list-group-item list-group-item-action"
-								>
-									{currency.toUpperCase()} : {formatCurrency(amount)}
-								</div>
-							))}
+							{Object.entries(data.fees).map(([currency, amount], index) => {
+								const increment_unit = this.props.coins?.[currency]
+									?.increment_unit;
+								return (
+									<div
+										key={index}
+										className="list-group-item list-group-item-action"
+									>
+										{currency.toUpperCase()} :{' '}
+										{formatCurrencyByIncrementalUnit(amount, increment_unit)}
+									</div>
+								);
+							})}
 						</Card>
 					</div>
 				)}
@@ -76,4 +82,8 @@ class BlockchainTransaction extends Component {
 	}
 }
 
-export default BlockchainTransaction;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
+
+export default connect(mapStateToProps)(BlockchainTransaction);

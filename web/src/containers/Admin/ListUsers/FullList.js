@@ -3,12 +3,13 @@ import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Table, Spin, Button } from 'antd';
 import { Link } from 'react-router';
-import { formatCurrency } from '../../../utils/index';
 import moment from 'moment';
 
 import './index.css';
 
 import { requestUsers } from './actions';
+import { connect } from 'react-redux';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 // import { generateHeaders } from './constants';
 
@@ -136,11 +137,26 @@ class FullListUsers extends Component {
 			xrp_balance,
 			fiat_balance,
 		}) => {
-			btc_balance = formatCurrency(btc_balance);
-			bch_balance = formatCurrency(bch_balance);
-			eth_balance = formatCurrency(eth_balance);
-			xrp_balance = formatCurrency(xrp_balance);
-			fiat_balance = formatCurrency(fiat_balance);
+			btc_balance = formatCurrencyByIncrementalUnit(
+				btc_balance,
+				this.props.coins?.['btc']?.increment_unit
+			);
+			bch_balance = formatCurrencyByIncrementalUnit(
+				bch_balance,
+				this.props.coins?.['bch']?.increment_unit
+			);
+			eth_balance = formatCurrencyByIncrementalUnit(
+				eth_balance,
+				this.props.coins?.['eth']?.increment_unit
+			);
+			xrp_balance = formatCurrencyByIncrementalUnit(
+				xrp_balance,
+				this.props.coins?.['xrp']?.increment_unit
+			);
+			fiat_balance = formatCurrencyByIncrementalUnit(
+				fiat_balance,
+				this.props.coins?.['fiat']?.increment_unit
+			);
 
 			return (
 				<div>
@@ -192,4 +208,8 @@ class FullListUsers extends Component {
 	}
 }
 
-export default FullListUsers;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
+
+export default connect(mapStateToProps)(FullListUsers);
