@@ -12,6 +12,7 @@ const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
+const { setPriceEssentials, getDecimals } = require('../../orderbook');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -38,169 +39,9 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 };
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
-	const toolsLib = require('hollaex-tools-lib');
 
 	if (spending_amount) spending_amount = math.number(spending_amount);
 	if (receiving_amount) receiving_amount = math.number(receiving_amount);
-
-	const getDecimals = (value = 0) => {
-		if (Math.floor(value) === value) return 0;
-
-		let str = value.toString();
-		if (str.indexOf('.') !== -1 && str.indexOf('-') !== -1) {
-			return str.split('-')[1] || 0;
-		} else if (str.indexOf('.') !== -1) {
-			return str.split('.')[1].length || 0;
-		}
-		return str.split('-')[1] || 0;
-	};
-	const sumQuantities = (orders) =>
-		orders.reduce((total, [, size]) => math.add(total, size), 0);
-
-	const sumOrderTotal = (orders) =>
-		orders.reduce(
-			(total, [price, size]) =>
-				math.add(total, math.multiply(math.fraction(size), math.fraction(price))),
-			0
-		);
-
-	const estimatedQuickTradePriceSelector = ({ pairsOrders, pair, side, size, isFirstAsset }) => {
-		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
-			pairsOrders[pair] || {};
-
-		let totalOrders = sumQuantities(orders);
-		if (!isFirstAsset) {
-			totalOrders = sumOrderTotal(orders);
-		}
-		if (math.larger(size, totalOrders)) {
-			return [0, size];
-		} else if (!isFirstAsset) {
-			const [priceValue, sizeValue] = calculateMarketPriceByTotal(size, orders);
-			return [priceValue / sizeValue, sizeValue];
-		} else {
-			const [priceValue, sizeValue] = calculateMarketPrice(size, orders);
-			return [priceValue / sizeValue, sizeValue];
-		}
-	}
-
-	const setPriceEssentials = async (priceEssentials) => {
-		const pairsOrders = await toolsLib.getOrderbook(priceEssentials.pair, opts);
-
-		const pair = priceEssentials.pair;
-		const side = priceEssentials.side;
-		const isSourceChanged = priceEssentials.isSourceChanged;
-		const pairData = toolsLib.getKitPairsConfig()[pair] || {};
-		let priceValues = {};
-
-		const decimalPoint = getDecimals(pairData.increment_size);
-		let [estimatedPrice] = estimatedQuickTradePriceSelector({
-			pairsOrders,
-			pair,
-			side,
-			size: priceEssentials.size,
-			isFirstAsset: side === 'buy' ? !isSourceChanged : isSourceChanged,
-		});
-		let sourceAmount = priceEssentials.sourceAmount;
-		let targetAmount = priceEssentials.targetAmount;
-		if (side === 'buy') {
-			if (estimatedPrice) {
-				if (isSourceChanged) {
-					targetAmount = math.round(
-						sourceAmount / estimatedPrice,
-						decimalPoint
-					);
-				} else {
-					sourceAmount = math.round(
-						targetAmount * estimatedPrice,
-						decimalPoint
-					);
-				}
-			}
-			priceValues = {
-				...priceValues,
-				sourceAmount,
-				targetAmount,
-				estimatedPrice,
-			};
-		} else {
-			if (estimatedPrice) {
-				if (isSourceChanged) {
-					targetAmount = math.round(
-						sourceAmount * estimatedPrice,
-						decimalPoint
-					);
-				} else {
-					sourceAmount = math.round(
-						targetAmount / estimatedPrice,
-						decimalPoint
-					);
-				}
-			}
-			priceValues = {
-				...priceValues,
-				sourceAmount,
-				targetAmount,
-				estimatedPrice,
-			};
-		}
-
-		const responsePayload = {
-			...priceEssentials,
-			side,
-			isSourceChanged,
-			...priceValues,
-		}
-
-		return responsePayload;
-	};
-
-	const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
-		orders.reduce(
-			([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
-				if (math.larger(orderSize, accumulatedPrice)) {
-					let currentTotal = math.multiply(size, price);
-					const remainingSize = math.subtract(orderSize, accumulatedPrice);
-					if (math.largerEq(remainingSize, currentTotal)) {
-						return [
-							math.sum(accumulatedPrice, currentTotal),
-							math.sum(accumulatedSize, size),
-						];
-					} else {
-						let remainingBaseSize = math.divide(remainingSize, price);
-						return [
-							math.sum(accumulatedPrice, math.multiply(remainingBaseSize, price)),
-							math.sum(accumulatedSize, remainingBaseSize),
-						];
-					}
-				} else {
-					return [accumulatedPrice, accumulatedSize];
-				}
-			},
-			[0, 0]
-		);
-
-	const calculateMarketPrice = (orderSize = 0, orders = []) =>
-		orders.reduce(
-			([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
-				if (math.larger(orderSize, accumulatedSize)) {
-					const remainingSize = math.subtract(orderSize, accumulatedSize);
-					if (math.largerEq(remainingSize, size)) {
-						return [
-							math.sum(accumulatedPrice, math.multiply(size, price)),
-							math.sum(accumulatedSize, size),
-						];
-					} else {
-						return [
-							math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
-							math.sum(accumulatedSize, remainingSize),
-						];
-					}
-				} else {
-					return [accumulatedPrice, accumulatedSize];
-				}
-			},
-			[0, 0]
-		);
 
 	const originalPair = `${spending_currency}-${receiving_currency}`;
 	const flippedPair = `${receiving_currency}-${spending_currency}`;
@@ -278,7 +119,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				side,
 				...(spending_amount != null ? { sourceAmount: spending_amount } : { targetAmount: receiving_amount }),
 				isSourceChanged: spending_amount != null ? true : false,
-			});
+			}, opts);
 
 			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice == 0 ? null : priceValues.targetAmount;
 			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice == 0 ? null : priceValues.sourceAmount;
