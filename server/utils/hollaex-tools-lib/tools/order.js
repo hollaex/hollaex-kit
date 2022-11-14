@@ -13,6 +13,7 @@ const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials, getDecimals } = require('../../orderbook');
+const { getPublicTrades } = require('./common');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -123,6 +124,17 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice == 0 ? null : priceValues.targetAmount;
 			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice == 0 ? null : priceValues.sourceAmount;
+
+			//Check if the estimated price is 50% greater than the last trade
+			const lastTrades = await getPublicTrades(symbol);
+			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
+				const lastPrice = math.number(lastTrades[symbol][0].price) * 1.50
+
+				if (priceValues.estimatedPrice > lastPrice) {
+					responseObj.receiving_amount = null;
+					responseObj.spending_amount = null;
+				}
+			}
 
 			return responseObj;
 		} catch (err) {
