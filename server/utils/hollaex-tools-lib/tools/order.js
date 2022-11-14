@@ -72,7 +72,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					spending_currency,
 					receiving_currency,
 					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
-					quote: brokerQuote.token
+					quote: brokerQuote?.token,
+					expiry: brokerQuote?.expiry
 				}
 				if (spending_amount != null) {
 					const sourceAmount = math.round(
