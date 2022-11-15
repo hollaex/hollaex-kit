@@ -291,6 +291,29 @@ const pairKeysSelector = createSelector([getPairs], (pairs) =>
 	Object.keys(pairs)
 );
 
+export const selectMarketOptions = createSelector(
+	[pairKeysSelector, getPairs, getCoins],
+	(pairKeys, pairs, coins) => {
+		const markets = pairKeys.map((key) => {
+			const { pair_base, pair_2 } = pairs[key] || {};
+
+			return {
+				key,
+				pairBase: {
+					symbol: coins[pair_base].symbol,
+					fullname: coins[pair_base].fullname,
+				},
+				pair2: {
+					symbol: coins[pair_2].symbol,
+					fullname: coins[pair_2].fullname,
+				},
+			};
+		});
+
+		return markets;
+	}
+);
+
 export const unsortedMarketsSelector = createSelector(
 	[
 		pairKeysSelector,

@@ -11,7 +11,7 @@ import {
 } from 'prop-types';
 
 import MarketCard from './MarketCard';
-import { Paginator } from 'components';
+import { Paginator, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const MarketCards = ({
@@ -27,6 +27,9 @@ const MarketCards = ({
 }) => {
 	return (
 		<Fragment>
+			<div className="d-flex justify-content-end">
+				<EditWrapper configId="MARKET_LIST_CONFIGS" />
+			</div>
 			<div className="d-flex flex-wrap p-3 my-5 justify-content-center">
 				{markets.map((market, index) => (
 					<MarketCard

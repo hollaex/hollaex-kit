@@ -5025,6 +5025,25 @@ table th {
   background-color: transparent !important;
   color: #ffffff !important; }
 
+.operator-controls__modal .divider {
+  border-top: 1px solid #ffffffcc;
+  margin: 2rem 0;
+  width: 100%; }
+
+.operator-controls__modal .pinned-markets-table {
+  font-size: 1.2rem;
+  width: 100%; }
+
+.operator-controls__modal .pinned-markets-table-wrapper {
+  border: 1px solid #ffffffcc; }
+
+.operator-controls__modal .market-options-wrapper {
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  max-height: 18rem;
+  overflow-y: auto; }
+
 .operator-controls__modal-open #root {
   filter: none !important;
   background-color: transparent !important; }

@@ -88,6 +88,11 @@ export const SORT = {
 	CHANGE: 'CHANGE',
 };
 
+export const SORT_EXP = {
+	VOL: 'biggest gainers first',
+	CHANGE: 'most actively traded first',
+};
+
 export const setSortModeVolume = () => ({
 	type: SET_SORT_MODE,
 	payload: SORT.VOL,

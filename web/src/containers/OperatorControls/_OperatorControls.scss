@@ -289,6 +289,29 @@ $operator-controls__panel-border-color: #a7a7a7;
 		background-color: transparent !important;
 		color: $operator-controls__panel-text-color !important;
 	}
+
+	.divider {
+		border-top: 1px solid $operator-controls__panel-text-color-inactive;
+		margin: 2rem 0;
+		width: 100%;
+	}
+
+	.pinned-markets-table {
+		font-size: 1.2rem;
+		width: 100%;
+	}
+
+	.pinned-markets-table-wrapper {
+		border: 1px solid $operator-controls__panel-text-color-inactive;
+	}
+
+	.market-options-wrapper {
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		margin-top: 0.5rem;
+		max-height: 18rem;
+		overflow-y: auto;
+	}
 }
 
 .operator-controls__modal-open #root {

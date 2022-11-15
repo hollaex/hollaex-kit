@@ -29,6 +29,7 @@ import AllIconsModal from './components/AllIconsModal';
 import UploadIcon from './components/UploadIcon';
 import SectionsModal from './components/Sections';
 import AddSection from './components/AddSection';
+import ConfigsModal from './components/ConfigsModal';
 import String from './components/String';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { setLanguage } from 'actions/appActions';
@@ -92,6 +93,7 @@ class OperatorControls extends Component {
 			isAddThemeOpen: false,
 			isSectionsModalOpen: false,
 			isAddSectionOpen: false,
+			isConfigsModalOpen: false,
 			selectedTheme: '',
 			iconsOverwrites,
 			colorOverwrites,
@@ -209,7 +211,7 @@ class OperatorControls extends Component {
 	handleEditButton = ({ target: { dataset = {} } }, source) => {
 		const { isEditModalOpen, isUploadIconOpen } = this.state;
 		const { isEditMode } = this.props;
-		const { stringId, iconId, sectionId } = dataset;
+		const { stringId, iconId, sectionId, configId } = dataset;
 
 		if (isEditMode && !isEditModalOpen && !isUploadIconOpen) {
 			const string_ids_array = stringId ? stringId.split(',') : [];
@@ -232,6 +234,8 @@ class OperatorControls extends Component {
 						this.openUploadIcon();
 					} else if (sectionId) {
 						this.openSectionsModal();
+					} else if (configId) {
+						this.openConfigsModal();
 					}
 				}
 			);
@@ -879,6 +883,22 @@ class OperatorControls extends Component {
 		}
 	};
 
+	openConfigsModal = () => {
+		this.setState({
+			isConfigsModalOpen: true,
+		});
+	};
+
+	closeConfigsModal = () => {
+		this.setState({
+			isConfigsModalOpen: false,
+		});
+	};
+
+	updateConfigs = (data) => {
+		console.log('data', data);
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -908,6 +928,7 @@ class OperatorControls extends Component {
 			iconSearchValue,
 			iconSearchResults,
 			isSectionsModalOpen,
+			isConfigsModalOpen,
 			isAddSectionOpen,
 			injected_html,
 			isRemove,
@@ -1202,6 +1223,14 @@ class OperatorControls extends Component {
 						onCloseDialog={this.closeAddSectionModal}
 						sections={sections}
 						onSave={this.updateSections}
+					/>
+				)}
+
+				{isConfigsModalOpen && (
+					<ConfigsModal
+						isOpen={isEditMode && isConfigsModalOpen}
+						onCloseDialog={this.closeConfigsModal}
+						onConfirm={this.updateConfigs}
 					/>
 				)}
 
