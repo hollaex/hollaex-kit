@@ -1803,13 +1803,25 @@ table th {
   color: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .custom-dropdown-style .ant-dropdown-menu-item {
-  color: var(--labels_secondary-inactive-label-text-graphics); }
+  color: var(--labels_secondary-inactive-label-text-graphics);
+  line-height: 1.1rem;
+  font-size: 1rem; }
   .custom-dropdown-style .ant-dropdown-menu-item.ant-dropdown-menu-item-active {
     color: var(--labels_important-active-labels-text-graphics);
     background-color: var(--base_wallet-sidebar-and-popup); }
 
 .custom-dropdown-style .ant-dropdown-menu {
-  background-color: var(--base_background); }
+  background-color: var(--base_background);
+  max-height: 10rem;
+  overflow-y: scroll; }
+
+.custom-dropdown-style .app_bar-pair-font {
+  font-size: 0.9rem; }
+
+.custom-dropdown-style .app-bar-add-tab-icons {
+  width: 1.2rem; }
+  .custom-dropdown-style .app-bar-add-tab-icons div {
+    display: flex; }
 
 .review-wrapper .review-icon {
   width: 8rem;

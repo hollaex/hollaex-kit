@@ -313,6 +313,7 @@ const AssetsBlock = ({
 												<TradeInputGroup
 													markets={markets}
 													goToTrade={goToTrade}
+													pairs={pairs}
 												/>
 											) : (
 												<ActionNotification
