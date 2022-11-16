@@ -83,9 +83,10 @@ export const SET_CONTRACTS = 'SET_CONTRACTS';
 export const SET_TRADE_TAB = 'SET_TRADE_TAB';
 export const SET_SORT_MODE = 'SET_SORT_MODE';
 export const TOGGLE_SORT = 'TOGGLE_SORT';
+export const SET_ADMIN_SORT = 'SET_ADMIN_SORT';
 export const SORT = {
-	VOL: 'VOLUME',
-	CHANGE: 'CHANGE',
+	VOL: 'volume',
+	CHANGE: 'change',
 };
 
 export const SORT_EXP = {
@@ -101,6 +102,14 @@ export const setSortModeVolume = () => ({
 export const setSortModeChange = () => ({
 	type: SET_SORT_MODE,
 	payload: SORT.CHANGE,
+});
+
+export const setAdminSortData = ({ pinned_markets, default_sort }) => ({
+	type: SET_ADMIN_SORT,
+	payload: {
+		pinned_markets,
+		default_sort,
+	},
 });
 
 export const toggleSort = () => ({

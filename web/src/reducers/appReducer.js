@@ -43,6 +43,7 @@ import {
 	SORT,
 	SET_SORT_MODE,
 	TOGGLE_SORT,
+	SET_ADMIN_SORT,
 } from '../actions/appActions';
 import { THEME_DEFAULT } from '../config/constants';
 import { getLanguage } from '../utils/string';
@@ -180,9 +181,11 @@ const INITIAL_STATE = {
 	onramp: {},
 	offramp: {},
 	sort: {
-		mode: SORT.VOL,
+		mode: SORT.CHANGE,
 		is_descending: true,
 	},
+	pinned_markets: [],
+	default_sort: SORT.CHANGE,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -640,6 +643,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					...state.sort,
 					is_descending: !state.sort.is_descending,
 				},
+			};
+		case SET_ADMIN_SORT:
+			return {
+				...state,
+				pinned_markets: payload.pinned_markets,
+				default_sort: payload.default_sort,
 			};
 		default:
 			return state;
