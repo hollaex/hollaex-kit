@@ -78,7 +78,7 @@ const MarketList = ({
 		<div className="market-list__container">
 			<div className="market-list__block">
 				<div className="d-flex justify-content-end">
-					<EditWrapper configId="MARKET_LIST_CONFIGS" />
+					<EditWrapper configId="MARKET_LIST_CONFIGS" position={[0, 0]} />
 				</div>
 				<table className="market-list__block-table">
 					<thead>

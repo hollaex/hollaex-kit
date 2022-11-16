@@ -28,7 +28,7 @@ const MarketCards = ({
 	return (
 		<Fragment>
 			<div className="d-flex justify-content-end">
-				<EditWrapper configId="MARKET_LIST_CONFIGS" />
+				<EditWrapper configId="MARKET_LIST_CONFIGS" position={[0, 0]} />
 			</div>
 			<div className="d-flex flex-wrap p-3 my-5 justify-content-center">
 				{markets.map((market, index) => (

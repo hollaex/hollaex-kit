@@ -76,7 +76,7 @@ const EditWrapper = ({
 				)}
 				{configId && (
 					<div
-						className="edit-wrapper__icon-wrapper large"
+						className="edit-wrapper__icon-wrapper medium"
 						data-config-id={configId}
 					>
 						<ReactSVG

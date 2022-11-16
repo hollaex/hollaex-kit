@@ -10953,6 +10953,9 @@ table th {
   font-size: 10px !important;
   text-decoration: none !important;
   font-weight: normal !important; }
+  .edit-wrapper__icon-wrapper.medium {
+    width: 35px !important;
+    height: 35px !important; }
   .edit-wrapper__icon-wrapper.large {
     width: 50px !important;
     height: 50px !important; }
