@@ -5044,6 +5044,21 @@ table th {
   max-height: 18rem;
   overflow-y: auto; }
 
+.operator-controls__modal .important-text {
+  color: #ffffff !important; }
+
+.operator-controls__modal .secondary-text {
+  color: #ffffffcc !important; }
+
+.operator-controls__modal .coin-option {
+  padding: 1rem; }
+  .operator-controls__modal .coin-option:hover {
+    background-color: #ffffff60; }
+
+.operator-controls__modal .coin-full-name {
+  margin-left: 0.4rem;
+  font-size: 1rem; }
+
 .operator-controls__modal-open #root {
   filter: none !important;
   background-color: transparent !important; }

@@ -2,8 +2,16 @@ import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
-import { MenuOutlined, CloseOutlined } from '@ant-design/icons';
-import { selectMarketOptions } from 'containers/Trade/utils';
+import classnames from 'classnames';
+import {
+	MenuOutlined,
+	CloseOutlined,
+	CloseCircleOutlined,
+} from '@ant-design/icons';
+import {
+	selectMarketOptions,
+	pinnedMarketsSelector,
+} from 'containers/Trade/utils';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Button, Radio } from 'antd';
 import { SORT, SORT_EXP } from 'actions/appActions';
@@ -12,48 +20,63 @@ import Coins from 'containers/Admin/Coins';
 
 const { Group } = Radio;
 
-const SortableItem = SortableElement(({ market, order, handleRemove }) => (
-	<tr className="sortable_section">
-		<td>{order + 1}</td>
-		<td>
-			<MenuOutlined />
-		</td>
-		<td>{market}</td>
-		<td>
-			<div onClick={() => handleRemove(market)} className="underline-text">
-				Remove
-			</div>
-		</td>
-	</tr>
-));
+const SortableItem = SortableElement(
+	({ market, order, onRemove, removeDisabled }) => (
+		<tr className="sortable_section">
+			<td>{order + 1}</td>
+			<td>
+				<MenuOutlined />
+			</td>
+			<td>
+				<div className="caps">{market}</div>
+			</td>
+			<td>
+				<div
+					onClick={removeDisabled ? () => {} : () => onRemove(market)}
+					className={classnames(
+						'underline-text',
+						{ pointer: !removeDisabled },
+						{ 'secondary-text': removeDisabled }
+					)}
+				>
+					<span>Remove</span>
+					<CloseCircleOutlined className="mx-2" />
+				</div>
+			</td>
+		</tr>
+	)
+);
 
-const SortableList = SortableContainer(({ items, handleRemove }) => {
-	return (
-		<div className="mt-4 pinned-markets-table-wrapper">
-			<table className="m-3 pinned-markets-table">
-				<thead>
-					<tr>
-						<th>Order</th>
-						<th>Move</th>
-						<th>Market</th>
-						<th>Remove</th>
-					</tr>
-				</thead>
-				<tbody>
-					{items.map((market, index) => (
-						<SortableItem
-							key={`item-${market}`}
-							index={index}
-							market={market}
-							order={index}
-							handleRemove={handleRemove}
-						/>
-					))}
-				</tbody>
-			</table>
-		</div>
-	);
-});
+const SortableList = SortableContainer(
+	({ items, onRemove, removeDisabled }) => {
+		return (
+			<div className="mt-4 pinned-markets-table-wrapper">
+				<table className="m-3 pinned-markets-table">
+					<thead>
+						<tr>
+							<th>Order</th>
+							<th>Move</th>
+							<th>Market</th>
+							<th>Remove</th>
+						</tr>
+					</thead>
+					<tbody>
+						{items.map((market, index) => (
+							<SortableItem
+								key={`item-${market}`}
+								index={index}
+								market={market}
+								order={index}
+								onRemove={onRemove}
+								removeDisabled={removeDisabled}
+							/>
+						))}
+					</tbody>
+				</table>
+			</div>
+		);
+	}
+);
 
 const Upgrade = () => {
 	return (
@@ -83,25 +106,35 @@ const Upgrade = () => {
 const ConfigsModal = ({
 	isOpen,
 	onCloseDialog,
-	sort: { mode: sortMode },
+	default_sort,
 	onConfirm,
 	info,
 	markets,
+	pinned_markets,
 }) => {
 	const [isAddMarket, setIsAddMarket] = useState(false);
-	const [sort, setSort] = useState(sortMode);
-	const [items, setItems] = useState(['XHT/BTC', 'ETH/USDT']);
+	const [sort, setSort] = useState(default_sort);
+	const [items, setItems] = useState([...pinned_markets]);
 
 	const handleSort = ({ target: { value } }) => {
 		setSort(value);
 	};
 
 	const handleConfirm = () => {
+		onConfirm({ pinned_markets: items, default_sort: sort });
 		onCloseDialog();
+	};
+
+	const onClose = () => {
+		return isAddMarket ? setIsAddMarket(false) : onCloseDialog();
 	};
 
 	const onSortEnd = ({ oldIndex, newIndex }) => {
 		setItems(arrayMove(items, oldIndex, newIndex));
+	};
+
+	const handleRemove = (key = '') => {
+		setItems(items.filter((market) => market !== key));
 	};
 
 	const isUpgrade = handleUpgrade(info);
@@ -119,12 +152,12 @@ const ConfigsModal = ({
 			>
 				<div className="d-flex align-items-center">
 					<div className="d-flex align-items-center f-1">
-						<Coins type={pairBase.symbol} small={true} />
+						<Coins type={pairBase.symbol} small={true} isLight={true} />
 						<span className="coin-full-name">{pairBase.fullname}</span>
 					</div>
 					<CloseOutlined style={{ fontSize: '24px', margin: '0px 15px' }} />
 					<div className="d-flex align-items-center f-1">
-						<Coins type={pair2.symbol} small={true} />
+						<Coins type={pair2.symbol} small={true} isLight={true} />
 						<span className="coin-full-name">{pair2.fullname}</span>
 					</div>
 				</div>
@@ -137,7 +170,7 @@ const ConfigsModal = ({
 			label="operator-controls-modal"
 			className="operator-controls__modal add-theme"
 			disableTheme={true}
-			onCloseDialog={onCloseDialog}
+			onCloseDialog={onClose}
 			shouldCloseOnOverlayClick={true}
 			showCloseText={true}
 			bodyOpenClassName="operator-controls__modal-open"
@@ -194,12 +227,22 @@ const ConfigsModal = ({
 							Apply a market pin to the top of the list
 						</div>
 						<div className="my-4">
-							<SortableList items={items} onSortEnd={onSortEnd} />
+							<SortableList
+								pressDelay={200}
+								items={items}
+								onSortEnd={onSortEnd}
+								onRemove={handleRemove}
+								removeDisabled={isUpgrade}
+							/>
 						</div>
 						<div>
 							<span
-								onClick={() => setIsAddMarket(true)}
-								className="important-text underline-text pointer"
+								onClick={isUpgrade ? () => {} : () => setIsAddMarket(true)}
+								className={
+									isUpgrade
+										? 'secondary-text underline-text'
+										: 'important-text underline-text pointer'
+								}
 							>
 								Add market
 							</span>
@@ -207,7 +250,7 @@ const ConfigsModal = ({
 						<div className="my-4">
 							<span className="bold">Note: </span>
 							Markets after the pinned markets will continue to follow the
-							ordering you've set above.
+							ordering rule you've set above.
 						</div>
 					</Fragment>
 
@@ -229,7 +272,8 @@ const ConfigsModal = ({
 };
 
 const mapStateToProps = (state) => ({
-	sort: state.app.sort,
+	default_sort: state.app.default_sort,
+	pinned_markets: pinnedMarketsSelector(state),
 	info: state.app.info,
 	markets: selectMarketOptions(state),
 });
