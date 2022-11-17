@@ -3057,6 +3057,10 @@ paths:
           in: query
           required: false
           type: string
+        - name: type
+          in: query
+          required: false
+          type: string
         - name: pending
           in: query
           required: false

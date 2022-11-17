@@ -60,7 +60,7 @@ const createInitialAdmin = (req, res) => {
 		toolsLib.database.findOne('user', { raw: true }),
 		toolsLib.database.findOne('status', { raw: true })
 	])
-		.then(([ user, status ]) => {
+		.then(([user, status]) => {
 			if (status.initialized) {
 				throw new Error('Exchange is already initialized');
 			}
@@ -111,7 +111,7 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { id, search, type, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -134,6 +134,7 @@ const getUsersAdmin = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value,
+		type: type.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -322,9 +323,8 @@ const activateUser = (req, res) => {
 
 	promiseQuery
 		.then((user) => {
-			const message = `Account ${user.email} has been ${
-				activated ? 'activated' : 'deactivated'
-			}`;
+			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
+				}`;
 			return res.json({ message });
 		})
 		.catch((err) => {
@@ -1205,8 +1205,8 @@ const getEmailTypes = (req, res) => {
 
 		let arrMailType = Object.keys(data['email'][LANGUAGE_DEFAULT]);
 		arrMailType.sort((a, b) => {
-			if(a < b) { return -1; }
-			if(a > b) { return 1; }
+			if (a < b) { return -1; }
+			if (a > b) { return 1; }
 			return 0;
 		});
 
@@ -1912,7 +1912,7 @@ const setUserBank = (req, res) => {
 			if (!user) {
 				throw new Error('User not found');
 			}
-			
+
 			const existingBankAccounts = user.bank_account;
 
 			let sendEmail = false;
@@ -1938,7 +1938,7 @@ const setUserBank = (req, res) => {
 
 			if (sendEmail) {
 				try {
-					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, updatedUser.settings);
+					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, updatedUser.settings);
 				} catch (err) {
 					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
 				}
@@ -1967,7 +1967,7 @@ const verifyUserBank = (req, res) => {
 		user_id,
 		bank_id
 	);
-	
+
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
 			if (!user) {
@@ -1996,7 +1996,7 @@ const verifyUserBank = (req, res) => {
 		})
 		.then((user) => {
 			try {
-				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, user.settings);
+				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, user.settings);
 			} catch (err) {
 				loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank email catch', err.message);
 			}
