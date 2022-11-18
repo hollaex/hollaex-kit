@@ -65,7 +65,7 @@ export const NotificationWraperMobile = ({
 					titleClassName
 				)}
 			>
-				{title}
+				<EditWrapper>{title}</EditWrapper>
 			</div>
 			{children}
 		</div>

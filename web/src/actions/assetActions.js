@@ -15,6 +15,12 @@ export const SET_ALL_COINS = 'SET_ALL_COINS';
 export const SET_ALL_PAIRS = 'SET_ALL_PAIRS';
 export const SET_EXCHANGE = 'SET_EXCHANGE';
 
+export const setPricesAndAssetPending = () => {
+	return (dispatch) => {
+		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });
+	};
+};
+
 export const setPricesAndAsset = (balance, coins) => {
 	return (dispatch) => {
 		dispatch({ type: SET_PRICES_AND_ASSET_PENDING });

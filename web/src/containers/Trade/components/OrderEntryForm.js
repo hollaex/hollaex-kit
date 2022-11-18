@@ -4,10 +4,10 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { reduxForm, formValueSelector } from 'redux-form';
 
-import STRINGS from '../../../config/localizedStrings';
-import { Button } from '../../../components';
-import renderFields from '../../../components/Form/factoryTradeFields';
-import { isLoggedIn } from '../../../utils/token';
+import STRINGS from 'config/localizedStrings';
+import { Button, EditWrapper } from 'components';
+import renderFields from 'components/Form/factoryTradeFields';
+import { isLoggedIn } from 'utils/token';
 
 export const FORM_NAME = 'OrderEntryForm';
 
@@ -75,7 +75,9 @@ const Form = ({
 								showArrow={false}
 								header={
 									<span className="underline-text">
-										{STRINGS['ORDER_ENTRY_ADVANCED']}
+										<EditWrapper stringId="ORDER_ENTRY_ADVANCED">
+											{STRINGS['ORDER_ENTRY_ADVANCED']}
+										</EditWrapper>
 									</span>
 								}
 								key="1"

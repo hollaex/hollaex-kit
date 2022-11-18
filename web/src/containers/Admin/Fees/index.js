@@ -12,7 +12,7 @@ class BlockchainTransaction extends Component {
 		error: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (!isSupport()) {
 			getFees()
 				.then((data) => {

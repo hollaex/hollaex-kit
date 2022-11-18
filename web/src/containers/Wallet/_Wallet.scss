@@ -387,3 +387,26 @@ $header-margin: 2rem;
 	border-bottom: 1px solid $dark-app-line-divider;
 	color: $dark-font-sub-text-color !important;
 }
+
+.wallet-trade-group {
+	.ant-select-selector {
+		background-color: transparent !important;
+		color: $colors-black;
+	}
+
+	.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+	.ant-select:not(.ant-select-disabled):focus .ant-select-selector,
+	.ant-select-focused:not(.ant-select-disabled) .ant-select-selector {
+		box-shadow: none !important;
+		border-color: $link !important;
+	}
+
+	.ant-btn-background-ghost.ant-btn-primary {
+		color: $link !important;
+		border-color: $link !important;
+	}
+
+	.ant-select-arrow {
+		color: $colors-black;
+	}
+}
