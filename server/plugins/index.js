@@ -196,7 +196,7 @@ checkStatus()
 		});
 
 		for (const plugin of plugins) {
-			startPlugin(plugin);
+			await startPlugin(plugin);
 		}
 
 		loggerPlugin.info(
