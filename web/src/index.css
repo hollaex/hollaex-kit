@@ -371,6 +371,9 @@ table th {
 .no-wrap {
   white-space: nowrap !important; }
 
+.margin-auto {
+  margin: auto; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1968,6 +1971,10 @@ table th {
   .withdrawal-container .withdraw-form-wrapper .btn-wrapper .holla-button {
     width: 200px; } }
 
+.qr_reader_wrapper {
+  width: 25rem;
+  margin: 2rem; }
+
 .extra_information-wrapper {
   margin-top: 1rem;
   padding: 0.5rem;
@@ -1987,7 +1994,7 @@ table th {
   flex: 1; }
 
 .qr_code-wrapper {
-  margin: 2rem;
+  margin: 0.5rem;
   width: 12rem;
   max-width: 12rem; }
   .qr_code-wrapper .qr-code-bg {
@@ -1996,24 +2003,17 @@ table th {
     .qr_code-wrapper .qr-code-bg > *:first-child {
       width: 11rem !important;
       height: 11rem !important; }
-  .qr_code-wrapper .qr-text {
-    display: flex;
-    font-size: 1rem;
-    padding-top: 0.25rem;
-    margin-left: 1rem; }
-    .qr_code-wrapper .qr-text:before {
-      padding-top: 0.25rem;
-      content: "";
-      display: block;
-      position: relative;
-      width: 0;
-      height: 0;
-      border-top: none !important;
-      border-left: 0.5rem solid transparent !important;
-      border-right: 0.5rem solid transparent !important;
-      border-bottom: 0.5rem solid var(--labels_important-active-labels-text-graphics);
-      margin-bottom: 0rem;
-      border-bottom: 0.75rem solid var(--labels_important-active-labels-text-graphics); }
+
+.deposit_info-qr-wrapper .qr-text {
+  text-align: center;
+  display: flex;
+  font-size: 1rem;
+  padding: 1.5rem 0;
+  margin-left: 1rem;
+  max-width: 20rem; }
+
+.deposit_info-qr-wrapper .qr-title {
+  font-size: 1.5rem; }
 
 .review-wrapper {
   min-width: 575px; }
@@ -2040,6 +2040,9 @@ table th {
 .form_currency-ball {
   width: 30px;
   height: 30px; }
+
+.multiple-actions-wrapper .mini-qr {
+  fill: var(--specials_buttons-links-and-highlights); }
 
 .transaction-history-wrapper .ant-row {
   margin-left: 0 !important;
@@ -7893,6 +7896,19 @@ table th {
         padding-bottom: 0.5rem; }
   .field-wrapper .checkfield-input-wrapper {
     align-items: center; }
+  .field-wrapper .multiple-actions-wrapper {
+    display: flex;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    right: 1.25rem; }
+    .field-wrapper .multiple-actions-wrapper .action_notification-wrapper {
+      position: static !important; }
+    .field-wrapper .multiple-actions-wrapper .action_notification-wrapper:not(:last-child):after {
+      content: '|';
+      padding: 0 0.5rem;
+      color: var(--calculated_important-border); }
 
 .field-label-wrapper {
   display: flex;
@@ -8010,10 +8026,10 @@ table th {
 .direction_ltr .field_warning_text {
   padding-left: 0.25rem; }
 
-.direction_ltr .field-children.valid > *:not(:last-child) {
+.direction_ltr .field-children:not(.padding_zero).valid > *:not(:last-child) {
   padding-right: 1.25rem; }
 
-.direction_ltr .field-children .field-valid {
+.direction_ltr .field-children:not(.padding_zero) .field-valid {
   right: 0; }
 
 .direction_ltr .field-wrapper.inline .field-error-content {
@@ -8034,10 +8050,10 @@ table th {
 .direction_rtl .field_warning_text {
   padding-right: 0.25rem; }
 
-.direction_rtl .field-children.valid > *:not(:last-child) {
+.direction_rtl .field-children:not(.padding_zero).valid > *:not(:last-child) {
   padding-left: 1.25rem; }
 
-.direction_rtl .field-children .field-valid {
+.direction_rtl .field-children:not(.padding_zero) .field-valid {
   left: 0; }
 
 .direction_rtl .field-wrapper.inline .field-error-content {
@@ -8050,6 +8066,10 @@ table th {
   left: -1.75rem; }
 
 .direction_rtl .field-wrapper .action_notification-wrapper.with-tick-icon {
+  left: 1.25rem; }
+
+.direction_rtl .field-wrapper .multiple-actions-wrapper {
+  right: auto;
   left: 1.25rem; }
 
 .layout-mobile.direction_ltr .field-wrapper.field-valid.with-notification .action_notification-wrapper {
@@ -11213,6 +11233,12 @@ table th {
 .help-tooltip .ant-tooltip-inner {
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
+
+button.html5-qrcode-element {
+  background-color: var(--specials_buttons-links-and-highlights); }
+
+a.html5-qrcode-element {
+  color: var(--labels_important-active-labels-text-graphics) !important; }
 
 html {
   font-size: 12px !important;

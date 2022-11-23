@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import QRCode from 'qrcode.react';
 import { ExclamationCircleFilled } from '@ant-design/icons';
+import { STATIC_ICONS } from 'config/icons';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper, Button, SmartTarget } from 'components';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -36,6 +36,7 @@ export const generateFormFields = ({
 	coins,
 	network,
 	fee,
+	openQRCode,
 }) => {
 	const fields = {};
 
@@ -71,6 +72,18 @@ export const generateFormFields = ({
 			copyOnClick,
 			hideCheck: true,
 			ishorizontalfield: true,
+			notification: [
+				{
+					stringId: 'QR_CODE.SHOW',
+					text: STRINGS['QR_CODE.SHOW'],
+					status: 'information',
+					iconPath: STATIC_ICONS['QR_CODE_SHOW'],
+					className: 'file_upload_icon',
+					useSvg: true,
+					onClick: openQRCode,
+					showActionText: !isMobile,
+				},
+			],
 		};
 	}
 
@@ -187,20 +200,6 @@ const RenderContentForm = ({
 							</div>
 						)}
 						{renderFields(formFields)}
-						{address && (
-							<div className="deposit_info-qr-wrapper d-flex align-items-center justify-content-center">
-								<div className="qr_code-wrapper d-flex flex-column">
-									<div className="qr-code-bg d-flex justify-content-center align-items-center">
-										<QRCode value={address} />
-									</div>
-									<div className="qr-text">
-										<EditWrapper stringId="DEPOSIT.QR_CODE">
-											{STRINGS['DEPOSIT.QR_CODE']}
-										</EditWrapper>
-									</div>
-								</div>
-							</div>
-						)}
 					</div>
 					{showGenerateButton && (
 						<div className="btn-wrapper">

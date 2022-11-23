@@ -23,6 +23,7 @@ import STRINGS from 'config/localizedStrings';
 import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
+import QRScanner from './QRScanner';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -292,6 +293,9 @@ class Form extends Component {
 			selectedNetwork,
 			targets,
 			email,
+			qrScannerOpen,
+			closeQRScanner,
+			getQRData,
 		} = this.props;
 
 		const formData = { ...data, email };
@@ -364,6 +368,21 @@ class Form extends Component {
 								/>
 							) : (
 								<Loader relative={true} background={false} />
+							)}
+						</Dialog>
+						<Dialog
+							isOpen={qrScannerOpen}
+							label="withdraw-modal"
+							onCloseDialog={closeQRScanner}
+							shouldCloseOnOverlayClick={false}
+							theme={activeTheme}
+							showCloseText={true}
+						>
+							{qrScannerOpen && (
+								<QRScanner
+									closeQRScanner={closeQRScanner}
+									getQRData={getQRData}
+								/>
 							)}
 						</Dialog>
 					</form>
