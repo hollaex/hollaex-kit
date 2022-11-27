@@ -17,6 +17,7 @@ const EditWrapper = ({
 	reverse,
 	sectionId,
 	backgroundId,
+	configId,
 	render = defaultRender,
 	strings,
 	renderWrapper = defaultRenderWrapper,
@@ -66,6 +67,17 @@ const EditWrapper = ({
 					<div
 						className="edit-wrapper__icon-wrapper large"
 						data-section-id={sectionId}
+					>
+						<ReactSVG
+							src={STATIC_ICONS['EDIT_SECTION']}
+							className="edit-wrapper__icon"
+						/>
+					</div>
+				)}
+				{configId && (
+					<div
+						className="edit-wrapper__icon-wrapper medium"
+						data-config-id={configId}
 					>
 						<ReactSVG
 							src={STATIC_ICONS['EDIT_SECTION']}

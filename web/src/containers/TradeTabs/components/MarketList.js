@@ -63,12 +63,12 @@ const MarketList = ({
 		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
 			<CaretUpOutlined
 				className={classnames({
-					'important-text': mode === cell && !is_descending,
+					'important-text': mode === cell && is_descending,
 				})}
 			/>
 			<CaretDownOutlined
 				className={classnames({
-					'important-text': mode === cell && is_descending,
+					'important-text': mode === cell && !is_descending,
 				})}
 			/>
 		</div>
@@ -77,6 +77,9 @@ const MarketList = ({
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
+				<div className="d-flex justify-content-end">
+					<EditWrapper configId="MARKET_LIST_CONFIGS" position={[0, 0]} />
+				</div>
 				<table className="market-list__block-table">
 					<thead>
 						<tr className="table-bottom-border">
@@ -96,18 +99,18 @@ const MarketList = ({
 							</th>
 							<th>
 								<div onClick={handleClickChange} className="d-flex pointer">
-									{renderCaret(SORT.CHANGE)}
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
 									</EditWrapper>
+									{renderCaret(SORT.CHANGE)}
 								</div>
 							</th>
 							<th>
 								<div onClick={handleClickVolume} className="d-flex pointer">
-									{renderCaret(SORT.VOL)}
 									<EditWrapper stringId="MARKETS_TABLE.VOLUME_24h">
 										{STRINGS['MARKETS_TABLE.VOLUME_24h']}
 									</EditWrapper>
+									{renderCaret(SORT.VOL)}
 								</div>
 							</th>
 							<th>

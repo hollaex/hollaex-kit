@@ -1,25 +1,36 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { ActionNotification } from 'components';
+import { ActionNotification, Image } from 'components';
 import { Space, Menu, Dropdown } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const TradeInputGroup = ({ markets, goToTrade, icons: ICONS }) => {
+const TradeInputGroup = ({ markets, goToTrade, icons: ICONS, pairs }) => {
 	return (
 		<Dropdown
 			size="small"
 			overlayClassName="custom-dropdown-style"
 			style={{
-				width: 100,
+				width: 130,
 			}}
 			overlay={
 				<Menu onClick={({ key }) => goToTrade(key)}>
-					{markets.map((pair) => (
-						<Menu.Item className="caps" key={pair}>
-							{pair}
-						</Menu.Item>
-					))}
+					{markets.map((market) => {
+						const { display_name, icon_id } = pairs[market];
+						return (
+							<Menu.Item className="caps" key={market}>
+								<div className="d-flex align-items-center">
+									<Image
+										iconId={icon_id}
+										icon={ICONS[icon_id]}
+										wrapperClassName="app-bar-add-tab-icons"
+										imageWrapperClassName="currency-ball-image-wrapper"
+									/>
+									<div className="app_bar-pair-font">{display_name}</div>
+								</div>
+							</Menu.Item>
+						);
+					})}
 				</Menu>
 			}
 		>
