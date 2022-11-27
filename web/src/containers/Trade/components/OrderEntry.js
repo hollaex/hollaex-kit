@@ -344,21 +344,17 @@ class OrderEntry extends Component {
 
 	onReview = () => {
 		const {
-			// showPopup,
 			type,
 			side,
 			price,
 			size,
-			// pair,
 			pair_base,
-			pair_2,
 			increment_size,
 			increment_price,
 			openCheckOrder,
 			onRiskyTrade,
 			submit,
 			settings: { risk = {}, notification = {} },
-			balance,
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -373,15 +369,9 @@ class OrderEntry extends Component {
 			orderPrice: orderTotal,
 			orderFees: this.state.orderFees,
 		};
-		// const orderPriceInBaseCoin = calculatePrice(orderTotal, this.props.prices[pair_2]);
-		let coin_balance = 0;
-		if (side === 'buy') {
-			coin_balance = balance[`${pair_2.toLowerCase()}_balance`];
-		} else {
-			coin_balance = balance[`${pair_base.toLowerCase()}_balance`];
-		}
-		// const riskySize = ((this.props.totalAsset / 100) * risk.order_portfolio_percentage);
-		let riskySize = (coin_balance / 100) * risk.order_portfolio_percentage;
+
+		let riskySize =
+			(this.props.totalAsset / 100) * risk.order_portfolio_percentage;
 		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
