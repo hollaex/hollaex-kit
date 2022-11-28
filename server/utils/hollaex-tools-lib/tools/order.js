@@ -2,6 +2,8 @@
 
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
+const { getModel } = require('./database/model');
+const { fetchBrokerQuote } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
@@ -10,6 +12,8 @@ const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
+const { setPriceEssentials, getDecimals } = require('../../orderbook');
+const { getPublicTrades } = require('./common');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -34,6 +38,111 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
+
+const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
+
+	if (spending_amount) spending_amount = math.number(spending_amount);
+	if (receiving_amount) receiving_amount = math.number(receiving_amount);
+
+	const originalPair = `${spending_currency}-${receiving_currency}`;
+	const flippedPair = `${receiving_currency}-${spending_currency}`;
+
+	let symbol = originalPair;
+	let side = 'sell';
+
+	// find if broker exists
+	let broker = await getModel('broker').findOne({ where: { symbol: originalPair } });
+
+	if (!broker) {
+		broker = await getModel('broker').findOne({ where: { symbol: flippedPair } });
+		symbol = flippedPair;
+		side = 'buy';
+	}
+
+	if (broker) {
+		return fetchBrokerQuote({
+			symbol: symbol,
+			side: side,
+			bearerToken,
+			ip
+		})
+			.then((brokerQuote) => {
+				const decimalPoint = getDecimals(broker.increment_size);
+				const responseObj = {
+					spending_currency,
+					receiving_currency,
+					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
+					quote: brokerQuote?.token,
+					expiry: brokerQuote?.expiry
+				}
+				if (spending_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price,
+						decimalPoint
+					);
+					responseObj.receiving_amount = sourceAmount;
+
+				} else if (receiving_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price,
+						decimalPoint
+					);
+					responseObj.spending_amount = sourceAmount;
+				}
+
+				return responseObj;
+			})
+			.catch((err) => {
+				return reject(new Error(err.message));
+			});
+	}
+	else {
+		try {
+			symbol = originalPair;
+			side = 'sell';
+			if (!subscribedToPair(symbol)) {
+				side = 'buy';
+				symbol = flippedPair;
+			}
+
+			if (!subscribedToPair(symbol)) {
+				return reject(new Error(INVALID_SYMBOL(symbol)));
+			}
+
+			const responseObj = {
+				spending_currency,
+				receiving_currency,
+				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
+			}
+
+			const priceValues = await setPriceEssentials({
+				pair: symbol,
+				size: spending_amount != null ? spending_amount : receiving_amount,
+				side,
+				...(spending_amount != null ? { sourceAmount: spending_amount } : { targetAmount: receiving_amount }),
+				isSourceChanged: spending_amount != null ? true : false,
+			}, opts);
+
+			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice == 0 ? null : priceValues.targetAmount;
+			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice == 0 ? null : priceValues.sourceAmount;
+
+			//Check if the estimated price is 50% greater than the last trade
+			const lastTrades = await getPublicTrades(symbol);
+			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
+				const lastPrice = math.number(lastTrades[symbol][0].price) * 1.50
+
+				if (priceValues.estimatedPrice > lastPrice) {
+					responseObj.receiving_amount = null;
+					responseObj.spending_amount = null;
+				}
+			}
+
+			return responseObj;
+		} catch (err) {
+			return reject(new Error(err.message));
+		}
+	}
+}
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -725,6 +834,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 module.exports = {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
+	getUserQuickTrade,
 	createUserOrderByEmail,
 	getUserOrderByKitId,
 	getUserOrderByEmail,

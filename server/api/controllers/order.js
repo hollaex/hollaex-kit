@@ -53,6 +53,43 @@ const createOrder = (req, res) => {
 		});
 };
 
+const getQuickTrade = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createQuickTrade auth',
+		req.auth
+	);
+
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	const {
+		spending_currency,
+		spending_amount,
+		receiving_amount,
+		receiving_currency,
+	} = req.swagger.params;
+
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts)
+		.then((order) => {
+			return res.json(order);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createQuickTrade error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getUserOrder = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getUserOrder auth', req.auth);
 	loggerOrders.verbose(
@@ -277,5 +314,6 @@ module.exports = {
 	getAllUserOrders,
 	cancelAllUserOrders,
 	getAdminOrders,
-	adminCancelOrder
+	adminCancelOrder,
+	getQuickTrade
 };
