@@ -41,8 +41,8 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 
-	if (spending_amount) spending_amount = math.number(math.fraction(spending_amount));
-	if (receiving_amount) receiving_amount = math.number(math.fraction(receiving_amount));
+	if (spending_amount) spending_amount = math.number(spending_amount);
+	if (receiving_amount) receiving_amount = math.number(receiving_amount);
 
 	const originalPair = `${spending_currency}-${receiving_currency}`;
 	const flippedPair = `${receiving_currency}-${spending_currency}`;

@@ -18,7 +18,10 @@ const sumQuantities = (orders) =>
 const sumOrderTotal = (orders) =>
     orders.reduce(
         (total, [price, size]) =>
-            math.add(total, math.multiply(math.fraction(size), math.fraction(price))),
+            math.add(
+                total,
+                math.number(math.multiply(math.fraction(size), math.fraction(price)))
+            ),
         0
     );
 
