@@ -26,6 +26,8 @@ const InputField = (props) => {
 		stringId,
 		isEmail,
 		emailMsg,
+		onCrossClick,
+		showCross,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
