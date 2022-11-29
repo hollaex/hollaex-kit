@@ -23,8 +23,13 @@ const SummaryBlock = (props) => {
 					alt={title}
 					wrapperClassName="summary-title-icon"
 				/>
-				<EditWrapper stringId={stringId}>
-					<div className="summary-block-title">{title}</div>
+				<EditWrapper
+					stringId={stringId}
+					renderWrapper={(children) => (
+						<div className="summary-block-title">{children}</div>
+					)}
+				>
+					{title}
 				</EditWrapper>
 				{secondaryTitle && (
 					<div className="summary-block-secondaryTitle">: {secondaryTitle}</div>

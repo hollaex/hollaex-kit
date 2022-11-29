@@ -53,7 +53,7 @@ class StakeDetails extends Component {
 		activeKey: TABS.PUBLIC_INFO.key,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const {
 			account,
 			router: {

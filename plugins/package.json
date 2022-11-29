@@ -11,7 +11,6 @@
   "author": "bitHolla",
   "license": "ISC",
   "scripts": {
-    "kill-8080": "lsof -ti:8080 | xargs kill || exit 0",
     "generate:bundle:production": "npm run remove:dist && cross-env NODE_ENV=production webpack --env.plugin=$npm_config_plugin --mode production",
     "generate:bundle:development": "npm run remove:dist && cross-env NODE_ENV=development webpack --env.plugin=$npm_config_plugin --mode development",
     "plugin:development": "cross-env NODE_ENV=development concurrently \"npm run webpack:development --plugin=$npm_config_plugin\" \"npm run watch:webview:json --plugin=$npm_config_plugin\" \"npm run watch:config:json --plugin=$npm_config_plugin\" \"npm run server\"",
@@ -28,7 +27,7 @@
     "generate:webview:development": "npm run generate:bundle:development --plugin=$npm_config_plugin && npm run generate:webview:json:clean --plugin=$npm_config_plugin",
     "watch:webview:json": "npm run remove:json && onchange -i 'src/plugins/**/assets/*.json' 'src/plugins/**/views/**/*.json' -- npm run generate:webview:json --plugin=$npm_config_plugin",
     "watch:config:json": "npm run remove:config && onchange -i 'src/plugins/**/assets/*.json' 'src/plugins/**/views/**/*.json' 'src/plugins/**/server/*' -- npm run generate:config:json --plugin=$npm_config_plugin",
-    "server": "npm run kill-8080 && node server.js",
+    "server": "node server.js",
     "build": "npm run build:webview --plugin=$npm_config_plugin && npm run generate:plugin:json --plugin=$npm_config_plugin",
     "generate:plugin:json": "PLUGIN=$npm_config_plugin node scripts/generatePlugin.js",
     "add:webview:bundles": "node scripts/addBundles.js",

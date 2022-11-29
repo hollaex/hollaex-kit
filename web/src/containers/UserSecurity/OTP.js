@@ -25,8 +25,11 @@ export const renderOTPForm = (
 			/>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1">
-						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1']}</span>
+					<EditWrapper
+						stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1"
+						render={(string) => <span>{string}</span>}
+					>
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_1']}
 					</EditWrapper>
 				</div>
 				<div className="otp_form-section-text">
@@ -45,14 +48,19 @@ export const renderOTPForm = (
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5">
-						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5']}</span>
+					<EditWrapper
+						stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5"
+						render={(string) => <span>{string}</span>}
+					>
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_5']}
 					</EditWrapper>
 				</div>
 				<div className="otp_form-section-text">
-					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3,ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4">
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3">
 						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_3']}
-						<br />
+					</EditWrapper>
+					<br />
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4">
 						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.MESSAGE_4']}
 					</EditWrapper>
 				</div>
@@ -60,8 +68,11 @@ export const renderOTPForm = (
 			</div>
 			<div className="otp_form-section-wrapper">
 				<div className="otp_form-section-title">
-					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.CONTENT.INPUT">
-						<span>{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.INPUT']}</span>
+					<EditWrapper
+						stringId="ACCOUNT_SECURITY.OTP.CONTENT.INPUT"
+						render={(string) => <span>{string}</span>}
+					>
+						{STRINGS['ACCOUNT_SECURITY.OTP.CONTENT.INPUT']}
 					</EditWrapper>
 				</div>
 				<OTPForm onSubmit={activateOTP} />

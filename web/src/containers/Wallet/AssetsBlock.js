@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { isStakingAvailable } from 'config/contracts';
-
 import {
 	// CurrencyBall,
 	ActionNotification,
@@ -22,6 +21,8 @@ import {
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
+import TradeInputGroup from './components/TradeInputGroup';
+import { unique } from 'utils/data';
 
 const AssetsBlock = ({
 	balance,
@@ -55,44 +56,17 @@ const AssetsBlock = ({
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 
-	const findPair = (key) => {
-		let tempPair;
-		const defaultPair = `${key.toLowerCase()}-${BASE_CURRENCY.toLowerCase()}`;
-		if (isMarketAvailable(defaultPair)) {
-			return defaultPair;
-		}
-
-		tempPair = findPairByPairBase(key);
-		if (tempPair) return tempPair;
-
-		tempPair = findPairByPair2(key);
-		if (tempPair) return tempPair;
-	};
-
 	const isMarketAvailable = (pair) => {
-		if (pair) {
-			let flippedPair = pair.split('-');
-			flippedPair.reverse().join('-');
-			const isBroker = !!broker.filter(
-				(item) => item.symbol === pair || item.symbol === flippedPair
-			).length;
-			if (isBroker) {
-				return isBroker;
-			} else {
-				return pair && pairs[pair] && pairs[pair].active;
-			}
-		}
+		return pair && pairs[pair] && pairs[pair].active;
 	};
 
-	const findPairByPairBase = (key) => {
+	const findPair = (key, field) => {
 		const availableMarketsArray = [];
 
-		Object.keys(pairs).map((pairKey) => {
-			const pairObject = pairs[pairKey];
-
+		Object.entries(pairs).map(([pairKey, pairObject]) => {
 			if (
 				pairObject &&
-				pairObject.pair_base === key &&
+				pairObject[field] === key &&
 				isMarketAvailable(pairKey)
 			) {
 				availableMarketsArray.push(pairKey);
@@ -101,32 +75,11 @@ const AssetsBlock = ({
 			return pairKey;
 		});
 
-		return availableMarketsArray[0];
-	};
-
-	const findPairByPair2 = (key) => {
-		const availableMarketsArray = [];
-
-		Object.keys(pairs).map((pairKey) => {
-			const pairObject = pairs[pairKey];
-
-			if (
-				pairObject &&
-				pairObject.pair_2 === key &&
-				isMarketAvailable(pairKey)
-			) {
-				availableMarketsArray.push(pairKey);
-			}
-
-			return pairKey;
-		});
-
-		return availableMarketsArray[0];
+		return availableMarketsArray;
 	};
 
 	const goToTrade = (pair) => {
-		let flippedPair = pair.split('-');
-		flippedPair.reverse().join('-');
+		const flippedPair = getFlippedPair(pair);
 		const isBroker = !!broker.filter(
 			(item) => item.symbol === pair || item.symbol === flippedPair
 		).length;
@@ -137,19 +90,43 @@ const AssetsBlock = ({
 		}
 	};
 
+	const getFlippedPair = (pair) => {
+		let flippedPair = pair.split('-');
+		flippedPair.reverse().join('-');
+		return flippedPair;
+	};
+
+	const getAllAvailableMarkets = (key) => {
+		const quickTrade = broker
+			.filter(({ symbol = '' }) => {
+				const [base, to] = symbol.split('-');
+				return base === key || to === key;
+			})
+			.map(({ symbol }) => symbol);
+
+		const trade = [...findPair(key, 'pair_base'), ...findPair(key, 'pair_2')];
+
+		return unique([...quickTrade, ...trade]);
+	};
+
 	return (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				{totalAssets.length && !loading ? (
-					<EditWrapper stringId="WALLET_ESTIMATED_TOTAL_BALANCE">
-						<div className="wallet-search-improvement">
-							{BASE_CURRENCY ? (
-								<div>
-									<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
-									<div className="font-title">{totalAssets}</div>
-								</div>
-							) : null}
-						</div>
+					<EditWrapper
+						stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+						render={(children) => (
+							<div className="wallet-search-improvement">
+								{BASE_CURRENCY && (
+									<div>
+										<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
+										<div className="font-title">{totalAssets}</div>
+									</div>
+								)}
+							</div>
+						)}
+					>
+						{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
 					</EditWrapper>
 				) : (
 					<div>
@@ -223,16 +200,7 @@ const AssetsBlock = ({
 							index
 						) => {
 							const balanceValue = balance[`${key}_balance`];
-							let brokerPair = '';
-							broker.forEach((item) => {
-								const pairKey = item && item.symbol;
-								const splitPair = pairKey && pairKey.split('-');
-
-								if (splitPair[0] === key || splitPair[1] === key) {
-									brokerPair = pairKey;
-								}
-							});
-							const pair = brokerPair ? brokerPair : findPair(key);
+							const markets = getAllAvailableMarkets(key);
 							const { fullname, symbol = '', display_name, icon_id } =
 								coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -341,16 +309,24 @@ const AssetsBlock = ({
 									</td>
 									{!isMobile && (
 										<td>
-											<ActionNotification
-												stringId="TRADE_TAB_TRADE"
-												text={STRINGS['TRADE_TAB_TRADE']}
-												iconId="BLUE_TRADE_ICON"
-												iconPath={ICONS['BLUE_TRADE_ICON']}
-												onClick={() => goToTrade(pair)}
-												className="csv-action"
-												showActionText={isMobile}
-												disable={!isMarketAvailable(pair)}
-											/>
+											{markets.length > 1 ? (
+												<TradeInputGroup
+													markets={markets}
+													goToTrade={goToTrade}
+													pairs={pairs}
+												/>
+											) : (
+												<ActionNotification
+													stringId="TRADE_TAB_TRADE"
+													text={STRINGS['TRADE_TAB_TRADE']}
+													iconId="BLUE_TRADE_ICON"
+													iconPath={ICONS['BLUE_TRADE_ICON']}
+													onClick={() => goToTrade(markets[0])}
+													className="csv-action"
+													showActionText={isMobile}
+													disable={markets.length === 0}
+												/>
+											)}
 										</td>
 									)}
 									{hasEarn && (

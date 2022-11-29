@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { string, array, object, bool } from 'prop-types';
 import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
+import { convertToFormatted } from 'utils/string';
+
+const defaultRender = (children) => <Fragment>{children}</Fragment>;
+const defaultRenderWrapper = (children) => <div>{children}</div>;
 
 const EditWrapper = ({
 	children,
@@ -13,18 +17,35 @@ const EditWrapper = ({
 	reverse,
 	sectionId,
 	backgroundId,
+	configId,
+	render = defaultRender,
+	strings,
+	renderWrapper = defaultRenderWrapper,
 }) => {
 	const [x = 5, y = 0] = position;
 	const triggerStyles = {
 		transform: `translate(${x}px, ${y}px)`,
 	};
 
+	const getConvertedString = (elements) =>
+		elements && Array.isArray(elements)
+			? elements.map((element, index) => {
+					if (Array.isArray(render) && typeof render[index] === 'function') {
+						return render[index](convertToFormatted(element));
+					} else if (typeof render === 'function') {
+						return render(convertToFormatted(element));
+					} else {
+						return defaultRender(convertToFormatted(element));
+					}
+			  })
+			: render(convertToFormatted(elements));
+
 	return (
 		<div
 			className={classnames('edit-wrapper__container', { reverse: reverse })}
 			style={style}
 		>
-			{children}
+			{renderWrapper(getConvertedString(strings || children))}
 			<div className="edit-wrapper__icons-container" style={triggerStyles}>
 				{stringId && (
 					<div className="edit-wrapper__icon-wrapper" data-string-id={stringId}>
@@ -46,6 +67,17 @@ const EditWrapper = ({
 					<div
 						className="edit-wrapper__icon-wrapper large"
 						data-section-id={sectionId}
+					>
+						<ReactSVG
+							src={STATIC_ICONS['EDIT_SECTION']}
+							className="edit-wrapper__icon"
+						/>
+					</div>
+				)}
+				{configId && (
+					<div
+						className="edit-wrapper__icon-wrapper medium"
+						data-config-id={configId}
 					>
 						<ReactSVG
 							src={STATIC_ICONS['EDIT_SECTION']}

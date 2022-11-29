@@ -69,12 +69,18 @@ const CheckTitle = ({
 					<div className="empty-notification" />
 				)}
 			</div>
-			<EditWrapper stringId={stringId} iconId={iconId}>
-				{title && (
-					<div className={classnames('check_title-label', titleClassName)}>
-						{title}
-					</div>
-				)}
+			<EditWrapper
+				stringId={stringId}
+				iconId={iconId}
+				render={(string) =>
+					string && (
+						<div className={classnames('check_title-label', titleClassName)}>
+							{string}
+						</div>
+					)
+				}
+			>
+				{title}
 			</EditWrapper>
 			<div className="check_title-icon">
 				<Image
@@ -117,8 +123,14 @@ export const PanelInformationRow = ({
 		)}
 	>
 		<span style={{ wordBreak: 'normal' }}>
-			{bold ? <b>{label}</b> : label}:{' '}
-			<span className="information-content">{information}</span>
+			<EditWrapper
+				renderWrapper={(children) => (
+					<div className={classnames({ bold })}>{children}</div>
+				)}
+			>
+				{label}
+			</EditWrapper>
+			: <span className="information-content">{information}</span>
 		</span>
 		<EditWrapper stringId={stringId} />
 	</div>
@@ -153,16 +165,22 @@ export const CustomTabs = ({
 					<div className="check_title-notification">{notifications}</div>
 				)}
 			</div>
-			<EditWrapper stringId={stringId} iconId={iconId}>
-				{title && (
-					<div
-						className={classnames('custom_title-label', {
-							'title-inactive': false,
-						})}
-					>
-						{title}
-					</div>
-				)}
+			<EditWrapper
+				stringId={stringId}
+				iconId={iconId}
+				render={(string) =>
+					string && (
+						<div
+							className={classnames('custom_title-label', {
+								'title-inactive': false,
+							})}
+						>
+							{string}
+						</div>
+					)
+				}
+			>
+				{title}
 			</EditWrapper>
 		</div>
 	);
@@ -185,7 +203,12 @@ export const status = (key) => {
 	}
 };
 
-export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
+export const CustomMobileTabs = ({
+	stringId,
+	title,
+	icon,
+	statusCode = -1,
+}) => {
 	const statusText = status(statusCode);
 	const statusIcon = renderStatusIcon(
 		statusCode,
@@ -202,7 +225,7 @@ export const CustomMobileTabs = ({ title, icon, statusCode = -1 }) => {
 						'ml-3'
 					)}
 				>
-					{title}
+					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 				</div>
 			</div>
 			<div

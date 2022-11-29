@@ -60,13 +60,22 @@ export const publish = async (configs = {}) => {
 };
 
 export const pushVersions = async (configs = {}) => {
-	const { sections = {}, ...rest } = configs;
+	const { pinned_markets, default_sort, ...versioned_configs } = configs;
+	const { sections = {}, ...rest } = versioned_configs;
 	const versions = await getVersions();
 	const uniqid = Date.now();
-	Object.keys(configs).forEach((key) => {
+	Object.keys(versioned_configs).forEach((key) => {
 		versions[key] = `${key}-${uniqid}`;
 	});
-	return { ...rest, meta: { versions, sections: modifySections(sections) } };
+	return {
+		...rest,
+		meta: {
+			versions,
+			sections: modifySections(sections),
+			default_sort,
+			pinned_markets,
+		},
+	};
 };
 
 export const upload = (formData) => {

@@ -1,0 +1,11 @@
+button {
+	&.html5-qrcode-element {
+		background-color: $link;
+	}
+}
+
+a {
+	&.html5-qrcode-element {
+		color: $colors-main-black !important;
+	}
+}

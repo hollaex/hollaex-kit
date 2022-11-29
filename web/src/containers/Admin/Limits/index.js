@@ -40,7 +40,7 @@ class Limits extends Component {
 		isApplyChanges: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (Object.keys(this.props.coins).length) {
 			this.requestLimits(this.props.coins);
 		}

@@ -1,8 +1,14 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
-import { getDecimals } from 'utils/utils';
-import { formatPercentage, formatNumber } from 'utils/currency';
+import { getDecimals, handleUpgrade } from 'utils/utils';
+import {
+	formatCurrencyByIncrementalUnit,
+	formatPercentage,
+	formatNumber,
+	calculateOraclePrice,
+} from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
+import { SORT } from 'actions/appActions';
 
 export const subtract = (a = 0, b = 0) => {
 	const remaining = math.chain(a).subtract(b).done();
@@ -94,6 +100,12 @@ const getChartClose = (state) => state.orderbook.chart_last_close;
 const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
 const getFavourites = (state) => state.app.favourites;
+const getPrices = (state) => state.asset.oraclePrices;
+const getNativeCurrency = (state) => state.app.constants.native_currency;
+const getSortMode = (state) => state.app.sort.mode;
+const getSortDir = (state) => state.app.sort.is_descending;
+const getKitInfo = (state) => state.app.info;
+const getPinnedMarkets = (state) => state.app.pinned_markets;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -277,44 +289,44 @@ export const estimatedQuickTradePriceSelector = createSelector(
 	}
 );
 
-export const sortedPairKeysSelector = createSelector(
-	[getPairs, getTickers, getFavourites],
-	(pairs, tickers, favourites) => {
-		const sortedPairKeys = Object.keys(pairs).sort((a, b) => {
-			const { volume: volumeA = 0, close: closeA = 0 } = tickers[a] || {};
-			const { volume: volumeB = 0, close: closeB = 0 } = tickers[b] || {};
-			const marketCapA = math.multiply(volumeA, closeA);
-			const marketCapB = math.multiply(volumeB, closeB);
-			return marketCapB - marketCapA;
+const pairKeysSelector = createSelector([getPairs], (pairs) =>
+	Object.keys(pairs)
+);
+
+export const selectMarketOptions = createSelector(
+	[pairKeysSelector, getPairs, getCoins],
+	(pairKeys, pairs, coins) => {
+		const markets = pairKeys.map((key) => {
+			const { pair_base, pair_2 } = pairs[key] || {};
+
+			return {
+				key,
+				pairBase: {
+					symbol: coins[pair_base].symbol,
+					fullname: coins[pair_base].fullname,
+				},
+				pair2: {
+					symbol: coins[pair_2].symbol,
+					fullname: coins[pair_2].fullname,
+				},
+			};
 		});
 
-		const pinnedCoins = ['xht'];
-		const favouriteKeys = [];
-		const pinnedKeys = [];
-		const filteredKeys = [];
-
-		sortedPairKeys.forEach((key) => {
-			const { pair_base, pair_2 } = pairs[key];
-			if (favourites.includes(key)) {
-				favouriteKeys.push(key);
-			} else if (
-				pinnedCoins.includes(pair_base) ||
-				pinnedCoins.includes(pair_2)
-			) {
-				pinnedKeys.push(key);
-			} else {
-				filteredKeys.push(key);
-			}
-		});
-
-		return [...favouriteKeys, ...pinnedKeys, ...filteredKeys];
+		return markets;
 	}
 );
 
-export const MarketsSelector = createSelector(
-	[sortedPairKeysSelector, getPairs, getTickers, getCoins],
-	(sortedPairKeys, pairs, tickers, coins) => {
-		const markets = sortedPairKeys.map((key) => {
+export const unsortedMarketsSelector = createSelector(
+	[
+		pairKeysSelector,
+		getPairs,
+		getTickers,
+		getCoins,
+		getPrices,
+		getNativeCurrency,
+	],
+	(pairKeys, pairs, tickers, coins, prices, native_currency) => {
+		const markets = pairKeys.map((key) => {
 			const {
 				pair_base,
 				pair_2,
@@ -327,7 +339,9 @@ export const MarketsSelector = createSelector(
 			const { fullname, symbol = '' } =
 				coins[pair_base || BASE_CURRENCY] || DEFAULT_COIN_DATA;
 			const pairTwo = coins[pair_2] || DEFAULT_COIN_DATA;
-			const { open, close } = tickers[key] || {};
+			const { volume = 0, open, close } = tickers[key] || {};
+			const { [pair_base]: price = 0 } = prices;
+			const baseCoin = coins[native_currency] || DEFAULT_COIN_DATA;
 
 			const priceDifference = open === 0 ? 0 : (close || 0) - (open || 0);
 
@@ -339,6 +353,13 @@ export const MarketsSelector = createSelector(
 			const priceDifferencePercent = isNaN(tickerPercent)
 				? formatPercentage(0)
 				: formatPercentage(tickerPercent);
+
+			const volume_native = calculateOraclePrice(volume, price);
+			const volume_native_text = `${formatCurrencyByIncrementalUnit(
+				volume_native,
+				baseCoin.increment_unit
+			)} ${baseCoin.display_name}`;
+
 			return {
 				key,
 				pair: pairs[key],
@@ -348,15 +369,85 @@ export const MarketsSelector = createSelector(
 				ticker: tickers[key] || {},
 				increment_price,
 				priceDifference,
+				tickerPercent,
 				priceDifferencePercent,
 				display_name,
 				pair_base_display,
 				pair_2_display,
 				icon_id,
+				volume_native,
+				volume_native_text,
 			};
 		});
 
 		return markets;
+	}
+);
+
+const getSortFunction = (mode) => {
+	switch (mode) {
+		case SORT.CHANGE:
+			return (a, b) => math.subtract(b.tickerPercent, a.tickerPercent);
+		case SORT.VOL:
+		default:
+			return (a, b) => math.subtract(b.volume_native, a.volume_native);
+	}
+};
+
+const sortedMarketsSelector = createSelector(
+	[unsortedMarketsSelector, getSortMode, getSortDir],
+	(markets, mode, is_descending) => {
+		const sortedMarkets = markets.sort(getSortFunction(mode, is_descending));
+		return is_descending ? sortedMarkets : [...sortedMarkets].reverse();
+	}
+);
+
+export const pinnedMarketsSelector = createSelector(
+	[getPairs, getKitInfo, getPinnedMarkets],
+	(pairs, info, pinnedMarkets) => {
+		const isBasic = handleUpgrade(info);
+		if (isBasic) {
+			const pinnedCoins = ['xht'];
+			const pinnedMarkets = [];
+			Object.entries(pairs).forEach(([key, { pair_base, pair_2 }]) => {
+				if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+					pinnedMarkets.push(key);
+				}
+			});
+			return pinnedMarkets;
+		} else {
+			return pinnedMarkets;
+		}
+	}
+);
+
+export const MarketsSelector = createSelector(
+	[sortedMarketsSelector, getPairs, getFavourites, pinnedMarketsSelector],
+	(markets, pairs, favourites, pins) => {
+		const favouriteMarkets = [];
+		const pinnedMarkets = [];
+		const restMarkets = [];
+
+		markets
+			.filter(({ key }) => !pins.includes(key))
+			.forEach((market) => {
+				const { key } = market;
+
+				if (favourites.includes(key)) {
+					favouriteMarkets.push(market);
+				} else {
+					restMarkets.push(market);
+				}
+			});
+
+		pins.forEach((pin) => {
+			const market = markets.find(({ key }) => key === pin);
+			if (market) {
+				pinnedMarkets.push(market);
+			}
+		});
+
+		return [...pinnedMarkets, ...favouriteMarkets, ...restMarkets];
 	}
 );
 

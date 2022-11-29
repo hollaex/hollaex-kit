@@ -40,9 +40,10 @@ class Withdraw extends Component {
 		checked: false,
 		currency: '',
 		selectedMethodData: 'address',
+		qrScannerOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
@@ -166,7 +167,8 @@ class Withdraw extends Component {
 			network,
 			ICONS,
 			selectedMethod,
-			handleMethodChange
+			handleMethodChange,
+			this.openQRScanner
 		);
 
 		let initialValues = generateInitialValues(
@@ -326,6 +328,19 @@ class Withdraw extends Component {
 		// }
 	};
 
+	openQRScanner = () => {
+		this.setState({ qrScannerOpen: true });
+	};
+
+	closeQRScanner = () => {
+		this.setState({ qrScannerOpen: false });
+	};
+
+	getQRData = (data) => {
+		const { dispatch } = this.props;
+		dispatch(change(FORM_NAME, 'address', data));
+	};
+
 	onGoBack = () => {
 		this.props.router.push('/wallet');
 	};
@@ -350,6 +365,7 @@ class Withdraw extends Component {
 			currency,
 			checked,
 			selectedMethodData,
+			qrScannerOpen,
 		} = this.state;
 		if (!currency || !checked) {
 			return <div />;
@@ -377,6 +393,9 @@ class Withdraw extends Component {
 			selectedNetwork,
 			email,
 			selectedMethodData,
+			closeQRScanner: this.closeQRScanner,
+			qrScannerOpen,
+			getQRData: this.getQRData,
 		};
 
 		return (

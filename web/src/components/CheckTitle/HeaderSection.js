@@ -24,8 +24,16 @@ const HeaderSection = ({
 				)}
 				<div>
 					<div className="d-flex justify-content-between w-100 f-1">
-						<EditWrapper stringId={stringId} iconId={iconId}>
-							<div className="header_title-text font-weight-bold">{title}</div>
+						<EditWrapper
+							stringId={stringId}
+							iconId={iconId}
+							render={(string) => (
+								<div className="header_title-text font-weight-bold">
+									{string}
+								</div>
+							)}
+						>
+							{title}
 						</EditWrapper>
 						{!!openContactForm && (
 							<div className="header_title-action">

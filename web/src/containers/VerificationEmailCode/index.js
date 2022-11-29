@@ -19,7 +19,7 @@ class VerifyEmailCode extends Component {
 		errorMessage: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const { code } = this.props.params;
 		if (isUUID(code)) {
 			this.props.checkVerificationData({ verification_code: code });
