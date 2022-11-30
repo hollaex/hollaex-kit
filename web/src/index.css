@@ -302,7 +302,7 @@ table th {
 .custom-select-input-style.appbar.ant-select {
   margin: 0 0.4rem !important;
   max-width: 100px !important;
-  min-width: 70px; }
+  min-width: 80px; }
 
 .custom-select-input-style.appbar .ant-select-selector {
   border-color: var(--calculated_base_top-bar-navigation_text-inactive) !important;
