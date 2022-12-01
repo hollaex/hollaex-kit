@@ -1299,6 +1299,8 @@ paths:
                 type: integer
               quote:
                 type: string
+            required:
+              - assets
       responses:
         200:
           description: Success
