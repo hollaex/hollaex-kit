@@ -14,6 +14,7 @@ import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import { Transition } from 'react-transition-group';
 import _get from 'lodash/get';
+import math from 'mathjs';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, EditWrapper } from 'components';
@@ -25,6 +26,7 @@ import { getSparklines } from 'actions/chartAction';
 import { translateError } from './utils';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { generateCoinIconId } from 'utils/icon';
+import { getDecimals } from 'utils/utils';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 
@@ -38,6 +40,7 @@ class QuickTrade extends Component {
 			chartData: {},
 			pairBase: '',
 			pair_2: '',
+			selectedBalance: 0,
 		};
 	}
 
@@ -95,8 +98,38 @@ class QuickTrade extends Component {
 	};
 
 	sourceTotalBalance = (value) => {
+		const {
+			orderLimits: { SIZE },
+			side,
+			flipPair,
+			pairs,
+			symbol,
+			broker,
+		} = this.props;
+		const { market } = this.state;
+		const { increment_size } = market;
+		const brokerPairs = broker && broker.map((br) => br.symbol);
+		const flipedPair = flipPair(symbol);
+		let isUseBroker = false;
+		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
+			if (pairs[symbol] !== undefined || pairs[flipedPair] !== undefined) {
+				isUseBroker = true;
+			} else {
+				isUseBroker = true;
+			}
+		} else {
+			isUseBroker = false;
+		}
+		const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
+		const decimalPoint = getDecimals(
+			side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit
+		);
+		const decimalPointValue = Math.pow(10, decimalPoint);
+		const decimalValue =
+			math.floor(value * decimalPointValue) / decimalPointValue;
 		if (value) {
-			this.props.onChangeSourceAmount(value);
+			this.props.onChangeSourceAmount(decimalValue);
+			this.setState({ selectedBalance: value });
 		}
 	};
 
@@ -143,6 +176,7 @@ class QuickTrade extends Component {
 			chartData,
 			pairBase,
 			pair_2,
+			selectedBalance,
 		} = this.state;
 
 		const {
@@ -441,6 +475,7 @@ class QuickTrade extends Component {
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
 								coins={coins}
+								selectedBalance={selectedBalance}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}

@@ -36,9 +36,11 @@ class InputGroup extends React.PureComponent {
 	onInputChange = (newValue) => {
 		const { onInputChange, decimal } = this.props;
 		const decimalPoint = getDecimals(decimal);
+		const decimalPointValue = Math.pow(10, decimalPoint);
 
 		if (isNumeric(newValue) || isFloat(newValue)) {
-			const value = math.round(newValue, decimalPoint);
+			const value =
+				math.floor(newValue * decimalPointValue) / decimalPointValue;
 			if (isFloat(newValue) && `${newValue}`.endsWith('0')) {
 				onInputChange(newValue);
 			} else if (value) {
