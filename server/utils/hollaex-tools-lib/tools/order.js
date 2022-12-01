@@ -59,7 +59,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		side = 'buy';
 	}
 
-	if (broker) {
+	if (broker && !broker.paused) {
 		return fetchBrokerQuote({
 			symbol: symbol,
 			side: side,

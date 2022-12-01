@@ -18,10 +18,30 @@ const sumQuantities = (orders) =>
 const sumOrderTotal = (orders) =>
     orders.reduce(
         (total, [price, size]) =>
-            math.add(total, math.multiply(math.fraction(size), math.fraction(price))),
+            math.add(
+                total,
+                math.number(math.multiply(math.fraction(size), math.fraction(price)))
+            ),
         0
     );
 
+const roundNumber = (number = 0, decimals = 4) => {
+    if (number === 0 || number === Infinity || isNaN(number)) {
+        return 0;
+    } else if (decimals > 0) {
+        const multipliedNumber = math.multiply(
+            math.fraction(number),
+            math.pow(10, decimals)
+        );
+        const dividedNumber = math.divide(
+            math.floor(multipliedNumber),
+            math.pow(10, decimals)
+        );
+        return math.number(dividedNumber);
+    } else {
+        return math.floor(number);
+    }
+};
 const estimatedQuickTradePriceSelector = ({ pairsOrders, pair, side, size, isFirstAsset }) => {
     const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
         pairsOrders[pair] || {};
@@ -63,12 +83,12 @@ const setPriceEssentials = async (priceEssentials, opts) => {
     if (side === 'buy') {
         if (estimatedPrice) {
             if (isSourceChanged) {
-                targetAmount = math.round(
+                targetAmount = roundNumber(
                     sourceAmount / estimatedPrice,
                     decimalPoint
                 );
             } else {
-                sourceAmount = math.round(
+                sourceAmount = roundNumber(
                     targetAmount * estimatedPrice,
                     decimalPoint
                 );
@@ -83,12 +103,12 @@ const setPriceEssentials = async (priceEssentials, opts) => {
     } else {
         if (estimatedPrice) {
             if (isSourceChanged) {
-                targetAmount = math.round(
+                targetAmount = roundNumber(
                     sourceAmount * estimatedPrice,
                     decimalPoint
                 );
             } else {
-                sourceAmount = math.round(
+                sourceAmount = roundNumber(
                     targetAmount / estimatedPrice,
                     decimalPoint
                 );
@@ -166,5 +186,5 @@ module.exports = {
     estimatedQuickTradePriceSelector,
     setPriceEssentials,
     calculateMarketPriceByTotal,
-    calculateMarketPrice
+    calculateMarketPrice,
 };
