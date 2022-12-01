@@ -7,13 +7,13 @@ const { fetchBrokerQuote } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getKitPairsConfig } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
-const { setPriceEssentials, getDecimals } = require('../../orderbook');
-const { getPublicTrades } = require('./common');
+const { setPriceEssentials, getDecimals, roundNumber } = require('../../orderbook');
+const { getUserBalanceByKitId } = require('./wallet');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -141,6 +141,104 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		} catch (err) {
 			return reject(new Error(err.message));
 		}
+	}
+}
+
+const convertBalance = async (order, user_id, admin_id) => {
+	const { symbol, side, price, size } = order;
+
+	const admin = await getUserByKitId(admin_id);
+	const user = await getUserByKitId(user_id);
+
+	const tierAdmin = getKitTier(admin.verification_level);
+	const tierUser = getKitTier(user.verification_level);
+
+	const makerFee = tierAdmin.fees.maker[symbol];
+	const takerFee = tierUser.fees.taker[symbol];
+
+	return getNodeLib().createBrokerTrade(
+		symbol,
+		side,
+		price,
+		size,
+		admin.network_id,
+		user.network_id,
+		{ maker: makerFee, taker: takerFee }
+	);
+}
+
+const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote }) => {
+	try {
+		if (!quote) quote = 'xht';
+		if (!spread) spread = 0;
+		if (admin_id == null) admin_id = 1;
+
+		const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
+		const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
+
+		const balance = await getUserBalanceByKitId(user_id, opts)
+
+		let symbols = {};
+
+		for (const key of Object.keys(balance)) {
+			if (key.includes('available') && balance[key]) {
+				let symbol = key?.split('_')?.[0]
+				if (symbol && assets.includes(symbol)) {
+					symbols[symbol] = balance[key];
+				}
+			}
+		}
+
+		let convertedAssets = [];
+		for (const coin of Object.keys(symbols)) {
+
+			let symbol = `${coin}-${quote}`;
+			let side = 'sell';
+
+			if (symbol && !subscribedToPair(symbol)) {
+				symbol = `${quote}-${coin}`
+				side = 'buy';
+			}
+
+			if (symbol && !subscribedToPair(symbol)) {
+				continue;
+			}
+
+			const usdtSize = usdtPrices[coin] * math.number(symbols[coin]);
+			const quoteSize = side === 'buy' ? quotePrices[coin] * math.number(symbols[coin]) : math.number(symbols[coin]);
+
+			const pairData = getKitPairsConfig()[symbol] || {};
+			const decimalPoint = getDecimals(pairData.increment_size);
+
+			const size = roundNumber(
+				quoteSize,
+				decimalPoint
+			);
+			const price = side === 'buy' ? (1 / quotePrices[coin]) * (1 + (spread / 100)) : quotePrices[coin] * (1 - (spread / 100));
+
+			if (usdtSize < 1) {
+				try {
+					const orderData = {
+						symbol,
+						side,
+						size,
+						price
+					}
+					const res = await convertBalance(orderData, user_id, admin_id);
+					convertedAssets.push(res.symbol);
+				} catch (err) {
+					loggerOrders.error(
+						'dustUserBalance error',
+						err.message,
+					);
+				}
+			}
+		}
+
+		return convertedAssets;
+
+	} catch (err) {
+		return reject(err);
 	}
 }
 
@@ -855,7 +953,8 @@ module.exports = {
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
 	settleFees,
-	generateOrderFeeData
+	generateOrderFeeData,
+	dustUserBalance
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,

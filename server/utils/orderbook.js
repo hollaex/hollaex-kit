@@ -187,4 +187,5 @@ module.exports = {
     setPriceEssentials,
     calculateMarketPriceByTotal,
     calculateMarketPrice,
+    roundNumber,
 };

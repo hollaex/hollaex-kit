@@ -1275,6 +1275,43 @@ paths:
         - hmac
       x-token-permissions:
         - can_trade
+  /order/dust:
+    x-swagger-router-controller: order
+    post:
+      operationId: dustBalance
+      description: dust
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              assets:
+                type: array
+                items:
+                  type: string
+              spread:
+                type: number
+              admin_id:
+                type: integer
+              quote:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /quick-trade:
     x-swagger-router-controller: order
     get:

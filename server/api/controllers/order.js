@@ -90,6 +90,43 @@ const getQuickTrade = (req, res) => {
 		});
 };
 
+const dustBalance = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance',
+		req.swagger.params.data.value
+	);
+
+
+	const { assets, spread, admin_id, quote } = req.swagger.params.data.value;
+
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.dustUserBalance(user_id, opts, { assets, spread, admin_id, quote })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/dustBalance error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 const getUserOrder = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getUserOrder auth', req.auth);
 	loggerOrders.verbose(
@@ -315,5 +352,6 @@ module.exports = {
 	cancelAllUserOrders,
 	getAdminOrders,
 	adminCancelOrder,
-	getQuickTrade
+	getQuickTrade,
+	dustBalance
 };
