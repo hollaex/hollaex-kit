@@ -562,9 +562,10 @@ const getAllUsersAdmin = (opts = {
 					break;
 			}
 
-		} else {
+		}
+		else {
 			query.where = {
-				$or: [
+				[Op.or]: [
 					{
 						email: {
 							[Op.like]: `%${opts.search}%`
