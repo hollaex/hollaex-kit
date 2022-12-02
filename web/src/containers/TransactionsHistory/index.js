@@ -465,6 +465,7 @@ class TransactionsHistory extends Component {
 				props.filters = filters.trades;
 				props.noData = prepareNoData('NO_ACTIVE_TRADES');
 				props.refetchData = () => this.requestData(activeTab);
+				props.rowKey = ({ history_id }) => history_id;
 				break;
 			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';

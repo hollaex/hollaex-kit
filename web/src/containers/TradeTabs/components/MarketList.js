@@ -126,6 +126,7 @@ const MarketList = ({
 						{markets.map((market, index) => (
 							<MarketRow
 								index={index}
+								key={index}
 								icons={ICONS}
 								handleClick={handleClick}
 								chartData={chartData}

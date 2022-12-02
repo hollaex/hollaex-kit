@@ -35,11 +35,12 @@ const UserPaymentVerificationHome = ({
 						<div className="w-100">
 							{Object.keys(account)
 								.filter((data) => !HIDDEN_KEYS.includes(data))
-								.map((data) => {
+								.map((data, index) => {
 									const stringId = generateId(data);
 									const defaultText = data.replace(/_/g, ' ');
 									return (
 										<PanelInformationRow
+											key={index}
 											stringId={stringId}
 											label={STRINGS[stringId] || defaultText}
 											information={account[data]}

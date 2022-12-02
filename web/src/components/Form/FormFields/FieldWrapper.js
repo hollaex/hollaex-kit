@@ -237,17 +237,20 @@ class FieldWrapper extends Component {
 										...item
 									},
 									index
-								) =>
-									renderWrapper(
-										<ActionNotification
-											key={index}
-											showActionText={true}
-											{...item}
-											className={classnames('pr-0 pl-0 no_bottom', {
-												'with-tick-icon': fullWidth && !invalid && !hideCheck,
-											})}
-										/>
-									)
+								) => (
+									<Fragment key={index}>
+										{renderWrapper(
+											<ActionNotification
+												key={index}
+												showActionText={true}
+												{...item}
+												className={classnames('pr-0 pl-0 no_bottom', {
+													'with-tick-icon': fullWidth && !invalid && !hideCheck,
+												})}
+											/>
+										)}
+									</Fragment>
+								)
 							)}
 						</div>
 					)}

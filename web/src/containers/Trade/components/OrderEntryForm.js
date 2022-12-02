@@ -58,7 +58,7 @@ const Form = ({
 		<div className="trade_order_entry-form d-flex">
 			<form
 				className="trade_order_entry-form_inputs-wrapper"
-				autocomplete="off"
+				autoComplete="off"
 				onSubmit={handleSubmit}
 				onKeyDown={(e) => {
 					if (!submitting && valid && !errorText && isLoggedIn())

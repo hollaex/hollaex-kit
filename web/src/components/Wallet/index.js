@@ -143,6 +143,7 @@ class Wallet extends Component {
 							{loadCount.map((data, index) => {
 								return (
 									<div
+										key={index}
 										className="loading-row-anime"
 										style={{ animationDelay: `.${index}s` }}
 									></div>

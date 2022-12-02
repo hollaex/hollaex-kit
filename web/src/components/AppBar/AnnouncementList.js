@@ -97,7 +97,7 @@ const AnnouncementList = ({
 				</div>
 			</div>
 			{isOpen && (
-				<div className="app-bar-account-menu apply_rtl">
+				<div className="app-bar-account-menu apply_rtl opacity-1">
 					<div className="app-announcement-list">
 						<Scrollbars>
 							<NotificationsList ICONS={ICONS} />

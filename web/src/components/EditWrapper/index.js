@@ -31,11 +31,23 @@ const EditWrapper = ({
 		elements && Array.isArray(elements)
 			? elements.map((element, index) => {
 					if (Array.isArray(render) && typeof render[index] === 'function') {
-						return render[index](convertToFormatted(element));
+						return (
+							<Fragment key={index}>
+								{render[index](convertToFormatted(element))}
+							</Fragment>
+						);
 					} else if (typeof render === 'function') {
-						return render(convertToFormatted(element));
+						return (
+							<Fragment key={index}>
+								{render(convertToFormatted(element))}
+							</Fragment>
+						);
 					} else {
-						return defaultRender(convertToFormatted(element));
+						return (
+							<Fragment key={index}>
+								{defaultRender(convertToFormatted(element))}
+							</Fragment>
+						);
 					}
 			  })
 			: render(convertToFormatted(elements));

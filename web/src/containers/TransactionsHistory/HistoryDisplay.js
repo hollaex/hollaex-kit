@@ -32,6 +32,7 @@ const HistoryDisplay = (props) => {
 		refetchData,
 		icons: ICONS,
 		activeTab,
+		rowKey,
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
@@ -120,9 +121,7 @@ const HistoryDisplay = (props) => {
 					headers={headers}
 					withIcon={withIcon}
 					pageSize={TABLE_PAGE_SIZE}
-					rowKey={(data) => {
-						return data.id;
-					}}
+					rowKey={rowKey}
 					title={title}
 					handleNext={handleNext}
 					jumpToPage={jumpToPage}
