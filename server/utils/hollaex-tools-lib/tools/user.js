@@ -473,7 +473,8 @@ const getAllUsersAdmin = (opts = {
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
-		} else {
+		}
+		else if (opts.type != null) {
 			query.where = {
 				[Op.or]: []
 			};
@@ -561,6 +562,32 @@ const getAllUsersAdmin = (opts = {
 					break;
 			}
 
+		} else {
+			query.where = {
+				$or: [
+					{
+						email: {
+							[Op.like]: `%${opts.search}%`
+						}
+					},
+					{
+						username: {
+							[Op.like]: `%${opts.search}%`
+						}
+					},
+					{
+						full_name: {
+							[Op.like]: `%${opts.search}%`
+						}
+					},
+					{
+						phone_number: {
+							[Op.like]: `%${opts.search}%`
+						}
+					},
+					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
+				]
+			};
 		}
 	} else if (isBoolean(opts.pending) && opts.pending) {
 
