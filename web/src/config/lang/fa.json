@@ -571,7 +571,7 @@
 		}
 	},
 	"TRANSACTION_HISTORY": {
-		"TITLE": "تاریحچه",
+		"TITLE": "تاریخچه",
 		"TITLE_TRADES": "تاریخچه خرید و فروش",
 		"TITLE_DEPOSITS": "تاریخچه واریزی ها",
 		"TITLE_WITHDRAWALS": "تاریخچه برداشت ها",
