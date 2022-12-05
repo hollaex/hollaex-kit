@@ -7,7 +7,7 @@ const { fetchBrokerQuote } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getKitPairsConfig } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -150,11 +150,8 @@ const convertBalance = async (order, user_id, admin_id) => {
 	const admin = await getUserByKitId(admin_id);
 	const user = await getUserByKitId(user_id);
 
-	const tierAdmin = getKitTier(admin.verification_level);
-	const tierUser = getKitTier(user.verification_level);
-
-	const makerFee = tierAdmin.fees.maker[symbol];
-	const takerFee = tierUser.fees.taker[symbol];
+	const makerFee = 0;
+	const takerFee = 0;
 
 	return getNodeLib().createBrokerTrade(
 		symbol,
@@ -195,25 +192,18 @@ const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote 
 			let symbol = `${coin}-${quote}`;
 			let side = 'sell';
 
-			if (symbol && !subscribedToPair(symbol)) {
+			if (symbol && !validatePair(symbol)) {
 				symbol = `${quote}-${coin}`
 				side = 'buy';
 			}
 
-			if (symbol && !subscribedToPair(symbol)) {
+			if (symbol && !validatePair(symbol)) {
 				continue;
 			}
 
-			const usdtSize = usdtPrices[coin] * math.number(symbols[coin]);
-			const quoteSize = side === 'buy' ? quotePrices[coin] * math.number(symbols[coin]) : math.number(symbols[coin]);
+			const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
+			const quoteSize = side === 'buy' ? quotePrices[coin] * math.number(math.fraction(symbols[coin])) : math.number(math.fraction(symbols[coin]));
 
-			const pairData = getKitPairsConfig()[symbol] || {};
-			const decimalPoint = getDecimals(pairData.increment_size);
-
-			const size = roundNumber(
-				quoteSize,
-				decimalPoint
-			);
 			const price = side === 'buy' ? (1 / quotePrices[coin]) * (1 + (spread / 100)) : quotePrices[coin] * (1 - (spread / 100));
 
 			if (usdtSize < 1) {
@@ -221,7 +211,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote 
 					const orderData = {
 						symbol,
 						side,
-						size,
+						size: quoteSize,
 						price
 					}
 					const res = await convertBalance(orderData, user_id, admin_id);
