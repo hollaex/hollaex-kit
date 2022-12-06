@@ -97,10 +97,6 @@ body {
 	}
 }
 
-.blockchain-search {
-	filter: brightness(0) invert(0.8);
-}
-
 input,
 input:focus {
 	outline: none;
@@ -198,7 +194,8 @@ svg {
 	.fiat-kyc,
 	.all-apps,
 	.my-apps,
-	.apps {
+	.apps,
+	.search-blockchain {
 		fill: $colors-black;
 	}
 

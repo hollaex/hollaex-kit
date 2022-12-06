@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { reduxForm, getFormValues } from 'redux-form';
 
 import STRINGS from 'config/localizedStrings';
-import { Button } from '../../components';
+import { Button, EditWrapper, IconTitle } from 'components';
 import { STATIC_ICONS } from 'config/icons';
-import renderFields from '../../components/Form/factoryFields';
+import renderFields from 'components/Form/factoryFields';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { required } from '../Form/validations';
+import { required } from 'components/Form/validations';
 import { getNetworkNameByKey } from 'utils/wallet';
 
 const FORM_NAME = 'CheckDeposit';
@@ -24,6 +24,7 @@ const CheckDeposit = ({
 	valid,
 	error,
 	formValues,
+	icons: ICONS,
 	...props
 }) => {
 	const coinOptions = [];
@@ -113,20 +114,27 @@ const CheckDeposit = ({
 	return (
 		<form className="check-deposit-modal-wrapper" onSubmit={handleSubmit}>
 			<div className="d-flex justify-content-center align-items-center flex-column">
-				<img
-					src={STATIC_ICONS.SEARCH_BLOCKCHAIN}
-					alt="search"
-					className="search-icon mb-4 blockchain-search"
+				<IconTitle
+					stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
+					text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
+					textType="title"
+					iconPath={ICONS['SEARCH_BLOCKCHAIN']}
+					iconId="SEARCH_BLOCKCHAIN"
 				/>
-				<h2>{STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}</h2>
 			</div>
 			<div className="inner-content">
-				<span>{STRINGS['DEPOSIT_STATUS.SEARCH_BLOCKCHAIN_FOR_DEPOSIT']}</span>
+				<div>
+					<EditWrapper stringId="DEPOSIT_STATUS.SEARCH_BLOCKCHAIN_FOR_DEPOSIT">
+						{STRINGS['DEPOSIT_STATUS.SEARCH_BLOCKCHAIN_FOR_DEPOSIT']}
+					</EditWrapper>
+				</div>
 				<div className="mb-5 field-header">
-					{STRINGS['DEPOSIT_STATUS.STATUS_DESCRIPTION']}
+					<EditWrapper stringId="DEPOSIT_STATUS.STATUS_DESCRIPTION">
+						{STRINGS['DEPOSIT_STATUS.STATUS_DESCRIPTION']}
+					</EditWrapper>
 				</div>
 				{renderFields(formFields)}
-				{message ? (
+				{message && (
 					<div className="d-flex">
 						<img
 							src={STATIC_ICONS.VERIFICATION_ICON}
@@ -135,15 +143,23 @@ const CheckDeposit = ({
 						/>
 						<p className="success-msg">{message}</p>
 					</div>
-				) : null}
+				)}
 				{error && <div className="warning_text">{error}</div>}
 			</div>
-			<div className="w-100 buttons-wrapper d-flex justify-content-between mt-3">
-				<Button label="BACK" onClick={onCloseDialog} className="mr-3" />
-				<Button
-					label={STRINGS['SUBMIT']}
-					disabled={pristine || submitting || !valid}
-				/>
+
+			<div className="d-flex justify-content-center align-items-center mt-2">
+				<div className="f-1 d-flex justify-content-end verification-buttons-wrapper">
+					<EditWrapper stringId="BACK" />
+					<Button label={STRINGS['BACK']} onClick={onCloseDialog} />
+				</div>
+				<div className="separator" />
+				<div className="f-1 d-flex justify-content-end verification-buttons-wrapper">
+					<EditWrapper stringId="SUBMIT" />
+					<Button
+						label={STRINGS['SUBMIT']}
+						disabled={pristine || submitting || !valid}
+					/>
+				</div>
 			</div>
 		</form>
 	);

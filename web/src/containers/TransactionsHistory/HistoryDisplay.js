@@ -136,7 +136,7 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				{dialogIsOpen ? (
+				{dialogIsOpen && (
 					<CheckDeposit
 						onCloseDialog={onCloseDialog}
 						onSubmit={requestDeposit}
@@ -145,7 +145,7 @@ const HistoryDisplay = (props) => {
 						initialValues={initialValue}
 						props={props}
 					/>
-				) : null}
+				)}
 			</Dialog>
 		</div>
 	);
