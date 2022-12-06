@@ -960,6 +960,7 @@ class App extends Component {
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog
+					label="successful_dialog"
 					isOpen={isCustomNotification}
 					onCloseDialog={this.onCloseNotification}
 					theme={activeTheme}

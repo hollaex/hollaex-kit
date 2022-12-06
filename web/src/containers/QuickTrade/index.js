@@ -989,8 +989,8 @@ class QuickTradeContainer extends PureComponent {
 				!selectedSource ||
 				!brokerSourceAmount ||
 				!brokerTargetAmount ||
-				sourceError ||
-				targetError ||
+				!!sourceError ||
+				!!targetError ||
 				isBrokerPaused
 			);
 		} else {
@@ -1000,8 +1000,8 @@ class QuickTradeContainer extends PureComponent {
 				!selectedSource ||
 				!targetAmount ||
 				!sourceAmount ||
-				sourceError ||
-				targetError
+				!!sourceError ||
+				!!targetError
 			);
 		}
 	};

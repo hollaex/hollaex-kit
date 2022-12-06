@@ -29,9 +29,10 @@ import AllIconsModal from './components/AllIconsModal';
 import UploadIcon from './components/UploadIcon';
 import SectionsModal from './components/Sections';
 import AddSection from './components/AddSection';
+import ConfigsModal from './components/ConfigsModal';
 import String from './components/String';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { setLanguage } from 'actions/appActions';
+import { setLanguage, setAdminSortData } from 'actions/appActions';
 import {
 	pushTempContent,
 	getTempLanguageKey,
@@ -92,6 +93,7 @@ class OperatorControls extends Component {
 			isAddThemeOpen: false,
 			isSectionsModalOpen: false,
 			isAddSectionOpen: false,
+			isConfigsModalOpen: false,
 			selectedTheme: '',
 			iconsOverwrites,
 			colorOverwrites,
@@ -209,7 +211,7 @@ class OperatorControls extends Component {
 	handleEditButton = ({ target: { dataset = {} } }, source) => {
 		const { isEditModalOpen, isUploadIconOpen } = this.state;
 		const { isEditMode } = this.props;
-		const { stringId, iconId, sectionId } = dataset;
+		const { stringId, iconId, sectionId, configId } = dataset;
 
 		if (isEditMode && !isEditModalOpen && !isUploadIconOpen) {
 			const string_ids_array = stringId ? stringId.split(',') : [];
@@ -232,6 +234,8 @@ class OperatorControls extends Component {
 						this.openUploadIcon();
 					} else if (sectionId) {
 						this.openSectionsModal();
+					} else if (configId) {
+						this.openConfigsModal();
 					}
 				}
 			);
@@ -368,7 +372,7 @@ class OperatorControls extends Component {
 				languageKeys,
 			} = this.state;
 
-			const { defaults, sections } = this.props;
+			const { defaults, sections, pinned_markets, default_sort } = this.props;
 
 			const valid_languages = languageKeys.join();
 			const strings = filterOverwrites(overwrites);
@@ -381,6 +385,8 @@ class OperatorControls extends Component {
 				icons,
 				valid_languages,
 				sections,
+				pinned_markets,
+				default_sort,
 			};
 
 			publish(configs)
@@ -879,6 +885,24 @@ class OperatorControls extends Component {
 		}
 	};
 
+	openConfigsModal = () => {
+		this.setState({
+			isConfigsModalOpen: true,
+		});
+	};
+
+	closeConfigsModal = () => {
+		this.setState({
+			isConfigsModalOpen: false,
+		});
+	};
+
+	updateConfigs = (data) => {
+		const { setAdminSortData } = this.props;
+		setAdminSortData(data);
+		this.enablePublish();
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -908,6 +932,7 @@ class OperatorControls extends Component {
 			iconSearchValue,
 			iconSearchResults,
 			isSectionsModalOpen,
+			isConfigsModalOpen,
 			isAddSectionOpen,
 			injected_html,
 			isRemove,
@@ -1205,6 +1230,14 @@ class OperatorControls extends Component {
 					/>
 				)}
 
+				{isConfigsModalOpen && (
+					<ConfigsModal
+						isOpen={isEditMode && isConfigsModalOpen}
+						onCloseDialog={this.closeConfigsModal}
+						onConfirm={this.updateConfigs}
+					/>
+				)}
+
 				<Modal
 					isOpen={isExitConfirmationOpen}
 					label="operator-controls-modal"
@@ -1315,10 +1348,13 @@ const mapStateToProps = (state) => ({
 	activeLanguage: state.app.language,
 	injected_html: state.app.injected_html,
 	constants: state.app.constants,
+	pinned_markets: state.app.pinned_markets,
+	default_sort: state.app.default_sort,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
+	setAdminSortData: bindActionCreators(setAdminSortData, dispatch),
 });
 
 export default connect(

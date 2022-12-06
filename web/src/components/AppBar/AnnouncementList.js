@@ -4,10 +4,10 @@ import { bindActionCreators } from 'redux';
 import Scrollbars from 'react-custom-scrollbars';
 
 import { EditWrapper, NotificationsList, Image } from 'components';
-import STRINGS from 'config/localizedStrings';
+import STRINGS from '../../config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getAnnouncement } from 'actions/appActions';
-import { LAST_UPDATED_NOTIFICATION_KEY } from 'config/constants';
+import { LAST_UPDATED_NOTIFICATION_KEY } from '../../config/constants';
 
 const AnnouncementList = ({
 	icons: ICONS,
@@ -97,7 +97,7 @@ const AnnouncementList = ({
 				</div>
 			</div>
 			{isOpen && (
-				<div className="app-bar-account-menu apply_rtl">
+				<div className="app-bar-account-menu apply_rtl opacity-1">
 					<div className="app-announcement-list">
 						<Scrollbars>
 							<NotificationsList ICONS={ICONS} />

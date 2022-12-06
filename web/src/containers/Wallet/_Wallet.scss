@@ -391,6 +391,8 @@ $header-margin: 2rem;
 .custom-dropdown-style {
 	.ant-dropdown-menu-item {
 		color: $colors-black;
+		line-height: 1.1rem;
+		font-size: 1rem;
 
 		&.ant-dropdown-menu-item-active {
 			color: $colors-main-black;
@@ -400,5 +402,18 @@ $header-margin: 2rem;
 
 	.ant-dropdown-menu {
 		background-color: $app-background-color;
+		max-height: 10rem;
+		overflow-y: scroll;
+	}
+
+	.app_bar-pair-font {
+		font-size: 0.9rem;
+	}
+
+	.app-bar-add-tab-icons {
+		width: 1.2rem;
+		div {
+			display: flex;
+		}
 	}
 }

@@ -2,9 +2,9 @@ import React from 'react';
 import classnames from 'classnames';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import FieldWrapper from './FieldWrapper';
-import { ActionNotification } from '../../';
-import { ICONS } from '../../../config/constants';
-import STRINGS from '../../../config/localizedStrings';
+import { ActionNotification } from 'components';
+import { ICONS } from 'config/constants';
+import STRINGS from 'config/localizedStrings';
 
 export const renderCopy = (text, onCopy) => {
 	return (
@@ -28,11 +28,36 @@ const DumbField = ({
 	allowCopy = false,
 	onCopy,
 	copyOnClick = false,
+	notification,
 	...rest
 }) => {
+	const multipleNotification = notification && Array.isArray(notification);
+	let notifications;
+
+	if (multipleNotification) {
+		notifications = [...notification];
+
+		if (value && allowCopy) {
+			notifications.push({
+				stringId: 'COPY_TEXT',
+				text: STRINGS['COPY_TEXT'],
+				status: 'information',
+				iconPath: ICONS['COPY_NEW'],
+				iconId: 'COPY_NEW',
+				className: 'copy-wrapper',
+				useSvg: true,
+				onClick: onCopy,
+				renderWrapper: (children) => (
+					<CopyToClipboard text={value}>{children}</CopyToClipboard>
+				),
+			});
+		}
+	}
+
 	return (
 		<FieldWrapper
 			className={classnames('dumb-field-wrapper', className)}
+			notification={notifications}
 			{...rest}
 		>
 			<div className="d-flex justify-content-between">
@@ -45,7 +70,10 @@ const DumbField = ({
 				) : (
 					value
 				)}
-				{value && allowCopy && renderCopy(value, onCopy)}
+				{!multipleNotification &&
+					value &&
+					allowCopy &&
+					renderCopy(value, onCopy)}
 			</div>
 		</FieldWrapper>
 	);

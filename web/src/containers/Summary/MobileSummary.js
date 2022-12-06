@@ -29,6 +29,7 @@ const MobileSummary = ({
 	totalAssets,
 	lastMonthVolume,
 	traderAccTitle,
+	userAccountTitle,
 	onFeesAndLimits,
 	onUpgradeAccount,
 	onAccountTypeChange,
@@ -50,7 +51,7 @@ const MobileSummary = ({
 			)}
 		>
 			<div className="summary-section_1 trader-account-wrapper d-flex w-100">
-				<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
+				<SummaryBlock title={userAccountTitle} wrapperClassname="w-100">
 					<TraderAccounts
 						user={user}
 						coins={coins}

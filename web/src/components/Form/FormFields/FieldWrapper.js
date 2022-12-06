@@ -180,6 +180,11 @@ class FieldWrapper extends Component {
 
 		const displayError = !(active || focused) && (visited || touched) && error;
 		const hasValue = value || value === false;
+		const singleAction =
+			notification &&
+			typeof notification === 'object' &&
+			!Array.isArray(notification);
+		const multipleNotification = notification && Array.isArray(notification);
 		return (
 			<div
 				className={classnames('field-wrapper', className, {
@@ -209,9 +214,10 @@ class FieldWrapper extends Component {
 					emailMsg={emailMsg}
 					onCrossClick={onCrossClick}
 					showCross={showCross}
+					contentClassName={classnames({ padding_zero: multipleNotification })}
 				>
 					{children}
-					{notification && typeof notification === 'object' && (
+					{singleAction && (
 						<ActionNotification
 							{...notification}
 							className={classnames('pr-0 pl-0 no_bottom', {
@@ -219,6 +225,34 @@ class FieldWrapper extends Component {
 							})}
 							showActionText={true}
 						/>
+					)}
+					{multipleNotification && (
+						<div className="multiple-actions-wrapper">
+							{notification.map(
+								(
+									{
+										renderWrapper = (children) => (
+											<Fragment>{children}</Fragment>
+										),
+										...item
+									},
+									index
+								) => (
+									<Fragment key={index}>
+										{renderWrapper(
+											<ActionNotification
+												key={index}
+												showActionText={true}
+												{...item}
+												className={classnames('pr-0 pl-0 no_bottom', {
+													'with-tick-icon': fullWidth && !invalid && !hideCheck,
+												})}
+											/>
+										)}
+									</Fragment>
+								)
+							)}
+						</div>
 					)}
 				</FieldContent>
 				{!ishorizontalfield ? (

@@ -101,8 +101,13 @@
 			"DESTINATION_TAG": "Your {0} destination tag",
 			"MEMO": "Your {0} memo"
 		},
-		"QR_CODE": "This QR Code can be scanned by the person who wants to send you funds",
-		"NO_DATA": "No information available"
+		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",
+		"NO_DATA": "No information available",
+		"QR_CODE_TITLE": "{0} Deposit Information"
+	},
+	"QR_CODE": {
+		"SCAN": "Scan QR code",
+		"SHOW": "Show QR"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Login to {0}",
