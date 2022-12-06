@@ -578,7 +578,7 @@ const changePassword = (req, res) => {
 	const email = req.auth.sub.email;
 	const { old_password, new_password, otp_code } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
-	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
+	const domain = API_HOST;
 
 	loggerUser.verbose(
 		req.uuid,
