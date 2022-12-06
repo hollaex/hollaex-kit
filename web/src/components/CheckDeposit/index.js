@@ -41,16 +41,18 @@ const CheckDeposit = ({
 	const formFields = {};
 	formFields.transaction_id = {
 		type: 'text',
-		placeholder: STRINGS['DEPOSIT_STATUS.SEARCH_FIELD_LABEL'],
+		stringId: 'DEPOSIT_STATUS.TRANSACTION_ID,DEPOSIT_STATUS.SEARCH_FIELD_LABEL',
 		label: STRINGS['DEPOSIT_STATUS.TRANSACTION_ID'],
+		placeholder: STRINGS['DEPOSIT_STATUS.SEARCH_FIELD_LABEL'],
 		validate: [required],
 		fullWidth: true,
 	};
 
 	formFields.currency = {
 		type: 'select',
-		placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],
+		stringId: 'COINS,DEPOSIT_STATUS.CURRENCY_FIELD_LABEL',
 		label: STRINGS['COINS'],
+		placeholder: STRINGS['DEPOSIT_STATUS.CURRENCY_FIELD_LABEL'],
 		options: coinOptions,
 		validate: [required],
 		fullWidth: true,
@@ -70,8 +72,10 @@ const CheckDeposit = ({
 
 		formFields.network = {
 			type: 'select',
-			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
+			stringId:
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
+			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
 			validate: [required],
 			options: networkOptions,
 			fullWidth: true,
@@ -82,11 +86,13 @@ const CheckDeposit = ({
 
 	formFields.address = {
 		type: 'text',
-		placeholder: STRINGS['DEPOSIT_STATUS.ADDRESS_FIELD_LABEL'],
+		stringId:
+			'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL,DEPOSIT_STATUS.ADDRESS_FIELD_LABEL',
 		label:
 			STRINGS[
 				'USER_VERIFICATION.USER_DOCUMENTATION_FORM.FORM_FIELDS.ADDRESS_LABEL'
 			],
+		placeholder: STRINGS['DEPOSIT_STATUS.ADDRESS_FIELD_LABEL'],
 		validate: [required],
 		fullWidth: true,
 	};
@@ -95,7 +101,8 @@ const CheckDeposit = ({
 		if (formValues.currency === 'xrp') {
 			formFields.destination_tag = {
 				type: 'number',
-				stringId: 'DEPOSIT_STATUS.DESTINATION_TAG_LABEL',
+				stringId:
+					'DEPOSIT_STATUS.DESTINATION_TAG_LABEL,DEPOSIT_STATUS.DESTINATION_TAG_PLACEHOLDER',
 				label: STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_LABEL'],
 				placeholder: STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_PLACEHOLDER'],
 				fullWidth: true,
@@ -103,7 +110,7 @@ const CheckDeposit = ({
 		} else if (formValues.currency === 'xlm' || formValues.network === 'xlm') {
 			formFields.destination_tag = {
 				type: 'text',
-				stringId: 'DEPOSIT_STATUS.MEMO_LABEL',
+				stringId: 'DEPOSIT_STATUS.MEMO_LABEL,DEPOSIT_STATUS.MEMO_PLACEHOLDER',
 				label: STRINGS['DEPOSIT_STATUS.MEMO_LABEL'],
 				placeholder: STRINGS['DEPOSIT_STATUS.MEMO_PLACEHOLDER'],
 				fullWidth: true,
