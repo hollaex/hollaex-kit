@@ -4,8 +4,9 @@ const { createServer } = require('http');
 var SwaggerExpress = require('swagger-express-mw');
 const swaggerUi = require('swagger-ui-express');
 const morgan = require('morgan');
-var YAML = require('yamljs');
-var swaggerDoc = YAML.load('./api/swagger/swagger.yaml');
+var YAML = require('js-yaml');
+const fs = require('fs');
+var swaggerDoc = YAML.load(fs.readFileSync('./api/swagger/swagger.yaml', 'utf8'));
 const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('./config/middleware');
 const toolsLib = require('hollaex-tools-lib');
@@ -75,7 +76,7 @@ checkStatus()
 
 		app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
-		SwaggerExpress.create(config, function(err, swaggerExpress) {
+		SwaggerExpress.create(config, function (err, swaggerExpress) {
 			if (err) { throw err; }
 
 			// install middleware

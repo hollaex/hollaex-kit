@@ -13,11 +13,8 @@ import {
 	// formatBaseAmount,
 	roundNumber,
 	formatToCurrency,
-} from '../../../utils/currency';
-import {
-	getDecimals,
-	playBackgroundAudioNotification,
-} from '../../../utils/utils';
+} from 'utils/currency';
+import { getDecimals, playBackgroundAudioNotification } from 'utils/utils';
 import {
 	evaluateOrder,
 	required,
@@ -28,14 +25,14 @@ import {
 	checkMarketPrice,
 	step,
 	normalizeFloat,
-} from '../../../components/Form/validations';
-import { Loader, Tooltip } from '../../../components';
-import { takerFee, DEFAULT_COIN_DATA } from '../../../config/constants';
+} from 'components/Form/validations';
+import { Loader, Tooltip, EditWrapper } from 'components';
+import { takerFee, DEFAULT_COIN_DATA } from 'config/constants';
 
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 import { SIDES, TYPES } from 'config/options';
-import { isLoggedIn } from '../../../utils/token';
-import { openFeesStructureandLimits } from '../../../actions/appActions';
+import { isLoggedIn } from 'utils/token';
+import { openFeesStructureandLimits } from 'actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
 import { setOrderEntryData } from 'actions/orderbookAction';
 
@@ -520,9 +517,13 @@ class OrderEntry extends Component {
 				name: 'size',
 				label: (
 					<div className="d-flex justify-content-between">
-						<div className="d-flex">{STRINGS['SIZE']}</div>
+						<div className="d-flex">
+							<EditWrapper stringId="SIZE">{STRINGS['SIZE']}</EditWrapper>
+						</div>
 						<div>
-							{STRINGS['BALANCE_TEXT']}{' '}
+							<EditWrapper stringId="BALANCE_TEXT">
+								{STRINGS['BALANCE_TEXT']}
+							</EditWrapper>{' '}
 							<span
 								className="pointer text-uppercase blue-link"
 								onClick={() => this.setMax()}
@@ -562,7 +563,11 @@ class OrderEntry extends Component {
 				name: 'post_only',
 				label: (
 					<Tooltip text={STRINGS['POST_ONLY_TOOLTIP']} className="light-theme">
-						<span className="px-1 post-only-txt">{STRINGS['POST_ONLY']}</span>
+						<span className="px-1 post-only-txt">
+							<EditWrapper stringId="POST_ONLY">
+								{STRINGS['POST_ONLY']}
+							</EditWrapper>
+						</span>
 					</Tooltip>
 				),
 				type: 'checkbox',

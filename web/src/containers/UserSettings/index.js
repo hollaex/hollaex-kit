@@ -212,7 +212,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_NOTIFICATION_ICON"
 					// 	icon={ICONS['SETTING_NOTIFICATION_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_NOTIFICATION">
+						{STRINGS['USER_SETTINGS.TITLE_NOTIFICATION']}
+					</EditWrapper>
 				),
 				content: (
 					<NotificationForm
@@ -238,7 +240,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_INTERFACE_ICON"
 					// 	icon={ICONS['SETTING_INTERFACE_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_INTERFACE']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_INTERFACE">
+						{STRINGS['USER_SETTINGS.TITLE_INTERFACE']}
+					</EditWrapper>
 				),
 				content: (
 					<SettingsForm
@@ -264,7 +268,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_LANGUAGE_ICON"
 					// 	icon={ICONS['SETTING_LANGUAGE_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_LANGUAGE">
+						{STRINGS['USER_SETTINGS.TITLE_LANGUAGE']}
+					</EditWrapper>
 				),
 				content: (
 					<LanguageForm
@@ -290,7 +296,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_AUDIO_ICON"
 					// 	icon={ICONS['SETTING_AUDIO_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_AUDIO_CUE">
+						{STRINGS['USER_SETTINGS.TITLE_AUDIO_CUE']}
+					</EditWrapper>
 				),
 				content: (
 					<AudioCueForm
@@ -314,7 +322,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_RISK_ICON"
 					// 	icon={ICONS['SETTING_RISK_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_MANAGE_RISK">
+						{STRINGS['USER_SETTINGS.TITLE_MANAGE_RISK']}
+					</EditWrapper>
 				),
 				content: (
 					<RiskForm
@@ -341,7 +351,9 @@ class UserSettings extends Component {
 					// 	iconId="SETTING_CHAT_ICON"
 					// 	icon={ICONS['SETTING_CHAT_ICON']}
 					// />
-					<div>{STRINGS['USER_SETTINGS.TITLE_CHAT']}</div>
+					<EditWrapper stringId="USER_SETTINGS.TITLE_CHAT">
+						{STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					</EditWrapper>
 				),
 				content: (
 					<UsernameForm

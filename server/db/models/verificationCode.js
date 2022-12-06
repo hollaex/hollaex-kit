@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const VerificationCode = sequelize.define(
 		'VerificationCode',
 		{
@@ -13,7 +13,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'VerificationCodes'
 		}
 	);
 

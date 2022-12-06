@@ -81,15 +81,16 @@ export const renderAvailableBalanceText = (currency, balance, coins) => {
 
 	return (
 		<div className="text">
-			<EditWrapper stringId="AVAILABLE_BALANCE_TEXT">
-				<p>
-					{STRINGS.formatString(
-						STRINGS['AVAILABLE_BALANCE_TEXT'],
-						fullname,
-						available,
-						display_name
-					)}
-				</p>
+			<EditWrapper
+				stringId="AVAILABLE_BALANCE_TEXT"
+				renderWrapper={(children) => <p>{children}</p>}
+			>
+				{STRINGS.formatString(
+					STRINGS['AVAILABLE_BALANCE_TEXT'],
+					fullname,
+					available,
+					display_name
+				)}
 			</EditWrapper>
 		</div>
 	);

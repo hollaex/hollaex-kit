@@ -48,7 +48,7 @@ import StakesAndEarnings from './components/StakesAndEarnings';
 import Variable from './components/Variable';
 
 class Stake extends Component {
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const {
 			loadBlockchainData,
 			getAllPeriods,

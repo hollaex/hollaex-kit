@@ -124,7 +124,8 @@ const deletePlugin = async (req, res) => {
 				'restarting plugin process'
 			);
 
-			process.exit();
+			const { stopPlugin } = require('./index')
+			stopPlugin(plugin);
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -281,7 +282,8 @@ const postPlugin = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			process.exit();
+			const { startPlugin } = require('./index')
+			startPlugin(plugin);
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -464,7 +466,9 @@ const putPlugin = async (req, res) => {
 		);
 
 		if (updatedPlugin.enabled && updatedPlugin.script) {
-			process.exit();
+			const { stopPlugin, startPlugin } = require('./index')
+			stopPlugin(plugin);
+			startPlugin(updatedPlugin.dataValues);
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -604,7 +608,9 @@ const putPluginConfig = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			process.exit();
+			const { stopPlugin, startPlugin } = require('./index')
+			stopPlugin(plugin);
+			startPlugin(updatedPlugin.dataValues);
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -709,7 +715,8 @@ const disablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			process.exit();
+			const { stopPlugin } = require('./index')
+			stopPlugin(plugin);
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -764,7 +771,8 @@ const enablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			process.exit();
+			const { startPlugin } = require('./index')
+			startPlugin(plugin);
 		}
 	} catch (err) {
 		loggerPlugin.error(

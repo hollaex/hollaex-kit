@@ -60,7 +60,7 @@ const LanguageSwitcher = ({ selected, valid_languages, toggle }) => {
 							alt={label}
 							className="mr-2"
 						/>
-						{label}
+						<span className="caps">{value}</span>
 					</div>
 				</Option>
 			))}

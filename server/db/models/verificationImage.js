@@ -1,5 +1,5 @@
 'use strict';
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const VerificationImage = sequelize.define(
 		'VerificationImage',
 		{
@@ -20,7 +20,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'VerificationImages'
 		}
 	);
 

@@ -13,6 +13,7 @@ const TradeBlock = ({
 	action,
 	stringId,
 	title,
+	titleValues,
 	overflowY = false,
 	setRef,
 	alignChildY = false,
@@ -55,7 +56,14 @@ const TradeBlock = ({
 							/>
 						) : null}
 						<div className="trade_block-title-items">
-							<EditWrapper stringId={stringId}>{title}</EditWrapper>
+							{titleValues ? (
+								<div className="d-flex">
+									<EditWrapper stringId={stringId}>{title}</EditWrapper>
+									<React.Fragment>{titleValues}</React.Fragment>
+								</div>
+							) : (
+								<EditWrapper stringId={stringId}>{title}</EditWrapper>
+							)}
 						</div>
 					</div>
 					{!!tool && (

@@ -154,6 +154,8 @@ const icons = {
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 	CLOCK: '/assets/images/clock.svg',
+	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
+	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
 };
 
 export default icons;

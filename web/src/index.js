@@ -63,6 +63,10 @@ import {
 	setHelpdeskInfo,
 	setContracts,
 	setBroker,
+	setAdminSortData,
+	setSortModeChange,
+	setSortModeVolume,
+	SORT,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -91,7 +95,12 @@ const getConfigs = async () => {
 	localStorage.removeItem('initialized');
 	const kitData = await getKitData();
 	const {
-		meta: { versions: remoteVersions = {}, sections = {} } = {},
+		meta: {
+			versions: remoteVersions = {},
+			sections = {},
+			default_sort = SORT.CHANGE,
+			pinned_markets = [],
+		} = {},
 		valid_languages = '',
 		info: { initialized },
 		setup_completed,
@@ -196,6 +205,13 @@ const getConfigs = async () => {
 	store.dispatch(setHomePageSetting(home_page));
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
+	store.dispatch(setAdminSortData({ pinned_markets, default_sort }));
+
+	if (default_sort === SORT.VOL) {
+		store.dispatch(setSortModeVolume());
+	} else {
+		store.dispatch(setSortModeChange());
+	}
 
 	const appConfigs = merge({}, defaultConfig, remoteConfigs, {
 		coin_icons,

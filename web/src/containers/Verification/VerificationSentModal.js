@@ -27,8 +27,11 @@ class VerificationSentModal extends Component {
 					/>
 					<div>
 						<div className="mt-1 mb-5 text-center">
-							<EditWrapper stringId="USER_VERIFICATION.VERIFICATION_SENT_INFO">
-								<div>{STRINGS['USER_VERIFICATION.VERIFICATION_SENT_INFO']}</div>
+							<EditWrapper
+								stringId="USER_VERIFICATION.VERIFICATION_SENT_INFO"
+								render={(string) => <div>{string}</div>}
+							>
+								{STRINGS['USER_VERIFICATION.VERIFICATION_SENT_INFO']}
 							</EditWrapper>
 						</div>
 						<div className="w-100 buttons-wrapper d-flex">

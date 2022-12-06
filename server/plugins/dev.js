@@ -38,7 +38,7 @@ const installLibrary = async (library) => {
 
 	const lib = require(name);
 	return lib;
-	
+
 };
 
 getPluginConfig()
@@ -77,7 +77,7 @@ getPluginConfig()
 			meta: config.meta,
 			configValues: {
 				publicMeta: config.public_meta,
-				meta: config.meta	
+				meta: config.meta
 			},
 			installedLibraries: {}
 		};
@@ -87,17 +87,17 @@ getPluginConfig()
 				'plugins/index/initialization',
 				`Installing packages for plugin ${config.name}`
 			);
-	
+
 			for (const library of config.prescript.install) {
 				context.installedLibraries[library] = await installLibrary(library);
 			}
-	
+
 			loggerPlugin.verbose(
 				'plugins/index/initialization',
 				`Plugin ${config.name} packages installed`
 			);
 		}
-	
+
 		_eval(script, 'dev', context, true);
 	})
 	.catch((err) => {

@@ -58,7 +58,7 @@ class SparkLine extends Component {
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
+	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { data, renderDefaultLine } = this.props;
 		if (data?.close?.length === 1 && renderDefaultLine) {
 			data.close.push(data.close[0]);

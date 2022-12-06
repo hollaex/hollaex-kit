@@ -26,9 +26,10 @@ export const generateHeaders = (onAdjustPortfolio) => {
 							}
 							onClick={percentage.popupWarning ? onAdjustPortfolio : () => {}}
 						>
-							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST">
+								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.ADJUST']}
+							</EditWrapper>
 						</span>
-						<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.ADJUST" />
 					</span>
 				</td>
 			),
@@ -126,20 +127,22 @@ class RiskForm extends Component {
 				title: STRINGS['USER_SETTINGS.CREATE_ORDER_WARING'],
 				content: (
 					<div>
-						<p>
-							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT">
-								{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
-							</EditWrapper>
-						</p>
-						<p>
-							<EditWrapper stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1">
-								{STRINGS.formatString(
-									STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
-									fullname,
-									totalAssets
-								).join('')}
-							</EditWrapper>
-						</p>
+						<EditWrapper
+							stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT"
+							renderWrapper={(children) => <p>{children}</p>}
+						>
+							{STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT']}
+						</EditWrapper>
+						<EditWrapper
+							stringId="USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1"
+							renderWrapper={(children) => <p>{children}</p>}
+						>
+							{STRINGS.formatString(
+								STRINGS['USER_SETTINGS.RISK_MANAGEMENT.INFO_TEXT_1'],
+								fullname,
+								totalAssets
+							)}
+						</EditWrapper>
 						<Table
 							rowClassName="pt-2 pb-2"
 							headers={generateHeaders(onAdjustPortfolio)}

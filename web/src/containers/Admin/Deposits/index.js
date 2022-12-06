@@ -61,7 +61,7 @@ class Deposits extends Component {
 		validateData: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const { initialData, queryParams = {} } = this.props;
 		if (Object.keys(queryParams).length) {
 			this.requestDeposits(
