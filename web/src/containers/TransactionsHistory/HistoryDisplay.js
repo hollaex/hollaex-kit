@@ -44,8 +44,13 @@ const HistoryDisplay = (props) => {
 		setLoading(true);
 		setInitialValues(params);
 		setMessage('');
+		const address = params.address.trim();
+
 		return searchTransaction({
 			...params,
+			address: params.destination_tag
+				? `${address}:${params.destination_tag}`
+				: address,
 			network: params.network ? params.network : params.currency,
 		})
 			.then((res) => {
