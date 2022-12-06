@@ -162,9 +162,10 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 };
 
 export const calculateOraclePrice = (value = 0, price = 0) => {
-	const effectivePrice = price >= 0 ? price : 0;
+	const effectiveValue = !isNaN(value) ? value : 0;
+	const effectivePrice = !isNaN(price) && math.largerEq(price, 0) ? price : 0;
 	return math.number(
-		math.multiply(math.fraction(value), math.fraction(effectivePrice))
+		math.multiply(math.fraction(effectiveValue), math.fraction(effectivePrice))
 	);
 };
 
