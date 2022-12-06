@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SyncOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Input, Select, Alert, Modal } from 'antd';
 import moment from 'moment';
-
-import './index.css';
 
 import {
 	requestDeposits,
@@ -16,11 +15,12 @@ import {
 import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 import ValidateDismiss from './ValidateDismiss';
-import { connect } from 'react-redux';
 
-const InputGroup = Input.Group;
-const Option = Select.Option;
-const Search = Input.Search;
+import './index.css';
+
+const { Group: InputGroup, Search } = Input;
+const { Option } = Select;
+
 // const HEADERS = [
 // 	{ label: 'Type', dataIndex: 'type', key: 'type' },
 // 	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },

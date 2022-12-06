@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Card, Alert, Spin } from 'antd';
-import { isSupport } from '../../../utils/token';
+import { isSupport } from 'utils/token';
 
 import { getFees } from './actions';
-import { connect } from 'react-redux';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 class BlockchainTransaction extends Component {
@@ -38,6 +38,7 @@ class BlockchainTransaction extends Component {
 
 	render() {
 		const { error, data, loading } = this.state;
+		const { coins } = this.props;
 		if (loading) return <Spin size="large" />;
 		return (
 			<div className="app_container-content">
@@ -62,8 +63,7 @@ class BlockchainTransaction extends Component {
 							style={{ textAlign: 'center' }}
 						>
 							{Object.entries(data.fees).map(([currency, amount], index) => {
-								const increment_unit = this.props.coins?.[currency]
-									?.increment_unit;
+								const increment_unit = coins?.[currency]?.increment_unit;
 								return (
 									<div
 										key={index}

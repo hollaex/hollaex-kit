@@ -1,13 +1,13 @@
 import React, { useEffect, useState, Fragment } from 'react';
+import { connect } from 'react-redux';
 import { Spin, Alert, Switch, Divider, Modal, Card } from 'antd';
 import math from 'mathjs';
 
 import BrokerForm from './BrokerForm';
 import { getConstants, updatePlugins } from '../Plugins/action';
 import { getFees } from '../Fees/actions';
-import { validateRequired } from '../../../components/AdminForm/validations';
-import { formatCurrencyByIncrementalUnit } from '../../../utils/currency';
-import { connect } from 'react-redux';
+import { validateRequired } from 'components/AdminForm/validations';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 const generateForm = () => ({
 	trade_master_account_id: {

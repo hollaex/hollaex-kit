@@ -332,9 +332,7 @@ class Transactions extends Component {
 									dismissingItem: dismissingItem && index === indexItem,
 								};
 							})}
-							expandedRowRender={(vals) =>
-								renderRowContent({ ...vals, coins: this.props.coins })
-							}
+							expandedRowRender={(vals) => renderRowContent({ ...vals, coins })}
 							expandRowByClick={true}
 							rowKey={(data) => {
 								return data.id;

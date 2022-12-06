@@ -3,17 +3,10 @@ import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { Table, Spin, Button } from 'antd';
 import { Link } from 'react-router';
-import moment from 'moment';
+import { formatDate } from 'utils';
+import { requestUsers } from './actions';
 
 import './index.css';
-
-import { requestUsers } from './actions';
-import { connect } from 'react-redux';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
-
-// import { generateHeaders } from './constants';
-
-// const renderBoolean = (value) => <Icon type={value ? 'check-circle-o' : 'close-circle'}/>;
 
 class FullListUsers extends Component {
 	constructor(props) {
@@ -128,50 +121,16 @@ class FullListUsers extends Component {
 			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
 		];
 
-		const renderRowContent = ({
-			created_at,
-			crypto_wallet,
-			btc_balance,
-			bch_balance,
-			eth_balance,
-			xrp_balance,
-			fiat_balance,
-		}) => {
-			btc_balance = formatCurrencyByIncrementalUnit(
-				btc_balance,
-				this.props.coins?.['btc']?.increment_unit
-			);
-			bch_balance = formatCurrencyByIncrementalUnit(
-				bch_balance,
-				this.props.coins?.['bch']?.increment_unit
-			);
-			eth_balance = formatCurrencyByIncrementalUnit(
-				eth_balance,
-				this.props.coins?.['eth']?.increment_unit
-			);
-			xrp_balance = formatCurrencyByIncrementalUnit(
-				xrp_balance,
-				this.props.coins?.['xrp']?.increment_unit
-			);
-			fiat_balance = formatCurrencyByIncrementalUnit(
-				fiat_balance,
-				this.props.coins?.['fiat']?.increment_unit
-			);
-
+		const renderRowContent = ({ created_at }) => {
 			return (
 				<div>
-					<div>
-						Created at:{' '}
-						{moment(created_at).format('DD/MMM/YYYY, hh:mmA ').toUpperCase() +
-							new Date(created_at).toTimeString().slice(9)}
-					</div>
+					<div>Created at: {formatDate(created_at)}</div>
 				</div>
 			);
 		};
 
 		const { users, loading, error, currentTablePage } = this.state;
-		// const { coins } = this.props;
-		// const HEADERS = generateHeaders(coins);
+
 		return (
 			<div className="app_container-content admin-user-container">
 				{loading ? (
@@ -208,8 +167,4 @@ class FullListUsers extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	coins: state.app.coins,
-});
-
-export default connect(mapStateToProps)(FullListUsers);
+export default FullListUsers;

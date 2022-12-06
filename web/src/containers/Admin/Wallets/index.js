@@ -71,6 +71,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
+		const { coins } = this.props;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -106,9 +107,9 @@ class Wallets extends Component {
 									showIcon
 								/>
 							) : (
-								Object.entries(balance).map(([name, value, ...rest]) => {
+								Object.entries(balance).map(([name, value]) => {
 									const accesor = name?.split('_')[0]?.toLowerCase();
-									const inc_unit = this.props.coins[accesor]?.increment_unit;
+									const inc_unit = coins[accesor]?.increment_unit;
 									return (
 										<p key={name}>
 											{name.toUpperCase()} :{' '}

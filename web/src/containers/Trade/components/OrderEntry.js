@@ -352,6 +352,7 @@ class OrderEntry extends Component {
 			onRiskyTrade,
 			submit,
 			settings: { risk = {}, notification = {} },
+			totalAsset,
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -367,8 +368,7 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees,
 		};
 
-		let riskySize =
-			(this.props.totalAsset / 100) * risk.order_portfolio_percentage;
+		let riskySize = (totalAsset / 100) * risk.order_portfolio_percentage;
 		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
@@ -709,7 +709,7 @@ const mapStateToProps = (state) => {
 		bids,
 		marketPrice,
 		order_entry_data: state.orderbook.order_entry_data,
-		// totalAsset: state.asset.totalAsset
+		totalAsset: state.asset.totalAsset,
 	};
 };
 
