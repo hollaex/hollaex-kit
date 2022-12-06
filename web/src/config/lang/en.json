@@ -1191,7 +1191,11 @@
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",
 		"ADDRESS_FIELD_LABEL": "Paste your address",
-		"CURRENCY_FIELD_LABEL": "Select the currency"
+		"CURRENCY_FIELD_LABEL": "Select the currency",
+		"DESTINATION_TAG_LABEL": "Tag (optional)",
+		"MEMO_LABEL": "Memo (optional)",
+		"DESTINATION_TAG_PLACEHOLDER": "Paste your tag",
+		"MEMO_PLACEHOLDER": "Paste your memo"
 	},
 	"CANCEL_ORDERS": {
 		"HEADING": "Cancel orders",

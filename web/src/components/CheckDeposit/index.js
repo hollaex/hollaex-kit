@@ -90,6 +90,26 @@ const CheckDeposit = ({
 		fullWidth: true,
 	};
 
+	if (formValues && formValues.currency) {
+		if (formValues.currency === 'xrp') {
+			formFields.destination_tag = {
+				type: 'number',
+				stringId: 'DEPOSIT_STATUS.DESTINATION_TAG_LABEL',
+				label: STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_LABEL'],
+				placeholder: STRINGS['DEPOSIT_STATUS.DESTINATION_TAG_PLACEHOLDER'],
+				fullWidth: true,
+			};
+		} else if (formValues.currency === 'xlm' || formValues.network === 'xlm') {
+			formFields.destination_tag = {
+				type: 'text',
+				stringId: 'DEPOSIT_STATUS.MEMO_LABEL',
+				label: STRINGS['DEPOSIT_STATUS.MEMO_LABEL'],
+				placeholder: STRINGS['DEPOSIT_STATUS.MEMO_PLACEHOLDER'],
+				fullWidth: true,
+			};
+		}
+	}
+
 	return (
 		<form className="check-deposit-modal-wrapper" onSubmit={handleSubmit}>
 			<div className="d-flex justify-content-center align-items-center flex-column">
