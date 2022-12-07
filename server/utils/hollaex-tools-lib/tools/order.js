@@ -3,7 +3,7 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { fetchBrokerQuote } = require('./broker');
+const { fetchBrokerQuote, generateRandomToken } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
@@ -14,6 +14,7 @@ const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials, getDecimals } = require('../../orderbook');
 const { getPublicTrades } = require('./common');
+const { verifyBearerTokenPromise } = require('./security');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -73,7 +74,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					receiving_currency,
 					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
 					quote: brokerQuote?.token,
-					expiry: brokerQuote?.expiry
+					expiry: brokerQuote?.expiry,
+					type: 'broker'
 				}
 				if (spending_amount != null) {
 					const sourceAmount = math.round(
@@ -113,6 +115,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				spending_currency,
 				receiving_currency,
 				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
+				type: 'market'
 			}
 
 			const priceValues = await setPriceEssentials({
@@ -135,6 +138,24 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					responseObj.receiving_amount = null;
 					responseObj.spending_amount = null;
 				}
+			}
+
+			let user_id = null;
+			if (bearerToken) {
+				const auth = await verifyBearerTokenPromise(bearerToken, ip);
+				if (auth) {
+					user_id = auth.sub.id;
+				}
+			}
+
+			if (user_id) {
+				// Generate randomToken to be used during deal execution
+				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice);
+				responseObj.token = randomToken;
+				// set expiry
+				const expiryDate = new Date();
+				expiryDate.setSeconds(expiryDate.getSeconds() + 30);
+				responseObj.expiry = expiryDate;
 			}
 
 			return responseObj;
