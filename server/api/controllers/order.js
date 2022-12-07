@@ -105,10 +105,7 @@ const dustBalance = (req, res) => {
 
 
 	const { assets } = req.swagger.params.data.value;
-
 	const dustConfig = getKitConfig().dust;
-
-	const { spread, admin_id, quote } = dustConfig;
 
 	const user_id = req.auth.sub.id;
 
@@ -118,7 +115,7 @@ const dustBalance = (req, res) => {
 		}
 	};
 
-	toolsLib.order.dustUserBalance(user_id, opts, { assets, spread, admin_id, quote })
+	toolsLib.order.dustUserBalance(user_id, opts, { assets, spread: dustConfig?.spread, maker_id: dustConfig?.maker_id, quote: dustConfig?.quote })
 		.then((result) => {
 			return res.json(result);
 		})

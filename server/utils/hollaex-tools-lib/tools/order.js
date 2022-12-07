@@ -144,10 +144,10 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 }
 
-const convertBalance = async (order, user_id, admin_id) => {
+const convertBalance = async (order, user_id, maker_id) => {
 	const { symbol, side, price, size } = order;
 
-	const admin = await getUserByKitId(admin_id);
+	const admin = await getUserByKitId(maker_id);
 	const user = await getUserByKitId(user_id);
 
 	const makerFee = 0;
@@ -164,11 +164,11 @@ const convertBalance = async (order, user_id, admin_id) => {
 	);
 }
 
-const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote }) => {
+const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote }) => {
 	try {
 		if (!quote) quote = 'xht';
 		if (!spread) spread = 0;
-		if (admin_id == null) admin_id = 1;
+		if (maker_id == null) maker_id = 1;
 
 		const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
 		const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
@@ -205,7 +205,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote 
 						size: quoteSize,
 						price
 					}
-					const res = await convertBalance(orderData, user_id, admin_id);
+					const res = await convertBalance(orderData, user_id, maker_id);
 					convertedAssets.push(res.symbol);
 				} catch (err) {
 					loggerOrders.error(
