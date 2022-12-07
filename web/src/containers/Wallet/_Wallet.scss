@@ -388,6 +388,11 @@ $header-margin: 2rem;
 	color: $dark-font-sub-text-color !important;
 }
 
+.dust-estimated-balance {
+	border-bottom: 1px solid $dark-app-line-divider;
+	text-align: end;
+}
+
 .custom-dropdown-style {
 	.ant-dropdown-menu-item {
 		color: $colors-black;

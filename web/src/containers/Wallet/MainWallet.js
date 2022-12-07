@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { IconTitle, Accordion, MobileBarTabs } from 'components';
 import { TransactionsHistory, Stake } from 'containers';
@@ -16,6 +17,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
+import DustSection from './DustSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
@@ -29,6 +31,7 @@ class Wallet extends Component {
 			isOpen: true,
 			isZeroBalanceHidden:
 				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+			showDustSection: false,
 		};
 	}
 
@@ -178,6 +181,7 @@ class Wallet extends Component {
 						loading={isFetching}
 						contracts={contracts}
 						broker={this.props.broker}
+						goToDustSection={this.goToDustSection}
 					/>
 				),
 				isOpen: true,
@@ -232,8 +236,16 @@ class Wallet extends Component {
 		this.setState({ activeTab });
 	};
 
+	goToDustSection = () => {
+		this.setState({ showDustSection: true });
+	};
+
+	goToWallet = () => {
+		this.setState({ showDustSection: false });
+	};
+
 	render() {
-		const { sections, activeTab, mobileTabs } = this.state;
+		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
 		const { icons: ICONS } = this.props;
 
 		if (mobileTabs.length === 0) {
@@ -253,7 +265,14 @@ class Wallet extends Component {
 						</div>
 					</div>
 				) : (
-					<div className="presentation_container apply_rtl wallet-wrapper">
+					<div
+						className={classnames(
+							'presentation_container',
+							'apply_rtl',
+							'wallet-wrapper',
+							{ settings_container: showDustSection }
+						)}
+					>
 						<IconTitle
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
@@ -261,8 +280,16 @@ class Wallet extends Component {
 							iconId="TAB_WALLET"
 							textType="title"
 						/>
-						<div className="wallet-container">
-							<Accordion sections={sections} />
+						<div
+							className={classnames('wallet-container', {
+								'no-border': showDustSection,
+							})}
+						>
+							{showDustSection ? (
+								<DustSection goToWallet={this.goToWallet} />
+							) : (
+								<Accordion sections={sections} />
+							)}
 						</div>
 					</div>
 				)}

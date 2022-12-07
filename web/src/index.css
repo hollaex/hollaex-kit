@@ -1805,6 +1805,10 @@ table th {
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
   color: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
+.dust-estimated-balance {
+  border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
+  text-align: end; }
+
 .custom-dropdown-style .ant-dropdown-menu-item {
   color: var(--labels_secondary-inactive-label-text-graphics);
   line-height: 1.1rem;

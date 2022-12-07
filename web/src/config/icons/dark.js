@@ -126,6 +126,10 @@ const nestedIcons = {
 		ARROW: '/assets/images/arrow-down.svg',
 	},
 
+	DUST: {
+		TITLE: '/assets/images/my-apps.svg',
+	},
+
 	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',
 	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-dark-02-03.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',

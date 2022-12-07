@@ -8,6 +8,7 @@ import {
 	SearchBox,
 	AssetsBlockForm,
 	EditWrapper,
+	Help,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -41,6 +42,7 @@ const AssetsBlock = ({
 	loading,
 	contracts,
 	broker,
+	goToDustSection,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -143,12 +145,26 @@ const AssetsBlock = ({
 							showCross
 						/>
 					</EditWrapper>
-					<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-						<AssetsBlockForm
-							label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-							handleCheck={handleCheck}
-						/>
-					</EditWrapper>
+					<div className="d-flex">
+						<div className="d-flex px-4 align-items-center">
+							<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+								<Help tip={STRINGS['DUST.TOOLTIP']}>
+									<div
+										className="text-underline pointer blue-link"
+										onClick={goToDustSection}
+									>
+										{STRINGS['DUST.LINK']}
+									</div>
+								</Help>
+							</EditWrapper>
+						</div>
+						<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+							<AssetsBlockForm
+								label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+								handleCheck={handleCheck}
+							/>
+						</EditWrapper>
+					</div>
 				</div>
 			</section>
 			<table className="wallet-assets_block-table">
