@@ -14,8 +14,6 @@ const math = require('mathjs');
 const { has } = require('lodash');
 const { setPriceEssentials, getDecimals, roundNumber } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
-const { setPriceEssentials, getDecimals } = require('../../orderbook');
-const { getPublicTrades } = require('./common');
 const { verifyBearerTokenPromise } = require('./security');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
