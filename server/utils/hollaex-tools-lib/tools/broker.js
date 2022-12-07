@@ -537,5 +537,6 @@ module.exports = {
 	fetchBrokerQuote,
 	reverseTransaction,
 	testBroker,
-	testRebalance
+	testRebalance,
+	generateRandomToken
 };
