@@ -664,7 +664,9 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
-								expandedRowRender={renderRowContent}
+								expandedRowRender={(vals) =>
+									renderRowContent({ ...vals, coins })
+								}
 								expandRowByClick={true}
 							/>
 						</div>
@@ -719,7 +721,9 @@ const Summarycontent = ({
 									current: currentTablePage,
 									onChange: pageChange,
 								}}
-								expandedRowRender={renderRowContent}
+								expandedRowRender={(vals) =>
+									renderRowContent({ ...vals, coins })
+								}
 								expandRowByClick={true}
 							/>
 						</div>
