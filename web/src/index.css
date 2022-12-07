@@ -11293,9 +11293,6 @@ body {
     left: 0;
     top: calc(50% - 0.75rem); }
 
-.blockchain-search {
-  filter: brightness(0) invert(0.8); }
-
 input,
 input:focus {
   outline: none;
@@ -11376,7 +11373,8 @@ svg .stake-page-icon,
 svg .fiat-kyc,
 svg .all-apps,
 svg .my-apps,
-svg .apps {
+svg .apps,
+svg .search-blockchain {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 svg .account-inactive {
