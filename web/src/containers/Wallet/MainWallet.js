@@ -18,7 +18,6 @@ import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
-import { isDustEnabled } from 'containers/Apps/utils';
 
 class Wallet extends Component {
 	constructor(props) {
@@ -46,8 +45,7 @@ class Wallet extends Component {
 			this.props.oraclePrices,
 			this.props.constants,
 			this.props.contracts,
-			this.props.isFetching,
-			this.props.isDustEnabled
+			this.props.isFetching
 		);
 	}
 
@@ -64,8 +62,7 @@ class Wallet extends Component {
 			nextProps.oraclePrices,
 			nextProps.constants,
 			nextProps.contracts,
-			nextProps.isFetching,
-			nextProps.isDustEnabled
+			nextProps.isFetching
 		);
 	}
 
@@ -87,8 +84,7 @@ class Wallet extends Component {
 				this.props.oraclePrices,
 				this.props.constants,
 				this.props.contracts,
-				this.props.isFetching,
-				this.props.isDustEnabled
+				this.props.isFetching
 			);
 		}
 	}
@@ -145,8 +141,7 @@ class Wallet extends Component {
 		oraclePrices,
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {},
-		isFetching,
-		isDustEnabled
+		isFetching
 	) => {
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -183,7 +178,6 @@ class Wallet extends Component {
 						loading={isFetching}
 						contracts={contracts}
 						broker={this.props.broker}
-						isDustEnabled={isDustEnabled}
 					/>
 				),
 				isOpen: true,
@@ -291,7 +285,6 @@ const mapStateToProps = (store) => ({
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	broker: store.app.broker,
-	isDustEnabled: isDustEnabled(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({

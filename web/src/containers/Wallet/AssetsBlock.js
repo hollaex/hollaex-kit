@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { withRouter } from 'react-router';
 import { isStakingAvailable } from 'config/contracts';
 import {
 	// CurrencyBall,
@@ -24,7 +23,6 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
-import { DustLink } from 'containers/Apps/utils';
 
 const AssetsBlock = ({
 	balance,
@@ -43,8 +41,6 @@ const AssetsBlock = ({
 	loading,
 	contracts,
 	broker,
-	isDustEnabled,
-	router,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -147,19 +143,12 @@ const AssetsBlock = ({
 							showCross
 						/>
 					</EditWrapper>
-					<div className="d-flex">
-						{isDustEnabled && (
-							<div className="d-flex px-4 align-items-center">
-								<DustLink router={router} />
-							</div>
-						)}
-						<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-							<AssetsBlockForm
-								label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-								handleCheck={handleCheck}
-							/>
-						</EditWrapper>
-					</div>
+					<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+						<AssetsBlockForm
+							label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+							handleCheck={handleCheck}
+						/>
+					</EditWrapper>
 				</div>
 			</section>
 			<table className="wallet-assets_block-table">
@@ -364,4 +353,4 @@ const AssetsBlock = ({
 	);
 };
 
-export default withRouter(withConfig(AssetsBlock));
+export default withConfig(AssetsBlock);
