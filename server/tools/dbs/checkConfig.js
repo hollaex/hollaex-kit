@@ -55,7 +55,8 @@ Status.findOne()
 			black_list_countries: existingKitConfigurations.black_list_countries || [],
 			onramp: existingKitConfigurations.onramp || {},
 			offramp: existingKitConfigurations.offramp || {},
-			user_payments: existingKitConfigurations.user_payments || {}
+			user_payments: existingKitConfigurations.user_payments || {},
+			dust: {} || {}
 		};
 
 		const secrets = {

@@ -192,19 +192,10 @@ const dustUserBalance = async (user_id, opts, { assets, spread, admin_id, quote 
 			let symbol = `${coin}-${quote}`;
 			let side = 'sell';
 
-			if (symbol && !validatePair(symbol)) {
-				symbol = `${quote}-${coin}`
-				side = 'buy';
-			}
-
-			if (symbol && !validatePair(symbol)) {
-				continue;
-			}
-
 			const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
-			const quoteSize = side === 'buy' ? quotePrices[coin] * math.number(math.fraction(symbols[coin])) : math.number(math.fraction(symbols[coin]));
+			const quoteSize = math.number(math.fraction(symbols[coin]));
 
-			const price = side === 'buy' ? (1 / quotePrices[coin]) * (1 + (spread / 100)) : quotePrices[coin] * (1 - (spread / 100));
+			const price = quotePrices[coin] * (1 - (spread / 100));
 
 			if (usdtSize < 1) {
 				try {

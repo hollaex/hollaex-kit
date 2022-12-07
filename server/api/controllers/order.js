@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');
+const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -103,7 +104,11 @@ const dustBalance = (req, res) => {
 	);
 
 
-	const { assets, spread, admin_id, quote } = req.swagger.params.data.value;
+	const { assets } = req.swagger.params.data.value;
+
+	const dustConfig = getKitConfig().dust;
+
+	const { spread, admin_id, quote } = dustConfig;
 
 	const user_id = req.auth.sub.id;
 

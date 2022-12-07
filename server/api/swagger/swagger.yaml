@@ -1293,12 +1293,6 @@ paths:
                 type: array
                 items:
                   type: string
-              spread:
-                type: number
-              admin_id:
-                type: integer
-              quote:
-                type: string
             required:
               - assets
       responses:
