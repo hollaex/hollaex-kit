@@ -54,7 +54,6 @@ const icons = {
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
-	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	NO_ACTIVE_ORDERS: '/assets/images/no-active-orders-01.svg',
 	NO_ACTIVE_TRADES: '/assets/images/no-recent-trades-01.svg',
 	NO_ACTIVE_DEPOSITS: '/assets/images/no-recent-deposits.svg',
