@@ -180,6 +180,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 		case 'ada':
 			endpoint = 'https://blockchair.com/cardano/transaction/';
 			break;
+		case 'bnb':
+			endpoint = 'https://bscscan.com/tx/';
+			break;
 		default:
 			endpoint = '';
 			break;
