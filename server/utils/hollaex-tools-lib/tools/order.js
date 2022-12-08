@@ -65,7 +65,13 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			symbol: symbol,
 			side: side,
 			bearerToken,
-			ip
+			ip,
+			orderData: {
+				spending_currency,
+				receiving_currency,
+				spending_amount,
+				receiving_amount
+			}
 		})
 			.then((brokerQuote) => {
 				const decimalPoint = getDecimals(broker.increment_size);
@@ -149,8 +155,15 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			}
 
 			if (user_id) {
+				let size;
+				if (`${spending_currency}-${receiving_currency}` === symbol) {
+					size = responseObj.spending_amount;
+				} else {
+					size = responseObj.receiving_amount;
+				}
+
 				// Generate randomToken to be used during deal execution
-				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size);
 				responseObj.token = randomToken;
 				// set expiry
 				const expiryDate = new Date();
