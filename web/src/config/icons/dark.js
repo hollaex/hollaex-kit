@@ -265,6 +265,7 @@ const nestedIcons = {
 	METAMASK: '',
 	MOVE_XHT: '/assets/stake/xht-move.svg',
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
+	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

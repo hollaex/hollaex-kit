@@ -44,8 +44,13 @@ const HistoryDisplay = (props) => {
 		setLoading(true);
 		setInitialValues(params);
 		setMessage('');
+		const address = params.address.trim();
+
 		return searchTransaction({
 			...params,
+			address: params.destination_tag
+				? `${address}:${params.destination_tag}`
+				: address,
 			network: params.network ? params.network : params.currency,
 		})
 			.then((res) => {
@@ -136,7 +141,7 @@ const HistoryDisplay = (props) => {
 				shouldCloseOnOverlayClick={false}
 				style={{ 'z-index': 100 }}
 			>
-				{dialogIsOpen ? (
+				{dialogIsOpen && (
 					<CheckDeposit
 						onCloseDialog={onCloseDialog}
 						onSubmit={requestDeposit}
@@ -145,7 +150,7 @@ const HistoryDisplay = (props) => {
 						initialValues={initialValue}
 						props={props}
 					/>
-				) : null}
+				)}
 			</Dialog>
 		</div>
 	);

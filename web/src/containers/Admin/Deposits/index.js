@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { SyncOutlined } from '@ant-design/icons';
 import { Table, Spin, Button, Input, Select, Alert, Modal } from 'antd';
 import moment from 'moment';
-
-import './index.css';
 
 import {
 	requestDeposits,
@@ -17,9 +16,11 @@ import { renderRowContent, COLUMNS, SELECT_KEYS } from './utils';
 import { Filters } from './Filters';
 import ValidateDismiss from './ValidateDismiss';
 
-const InputGroup = Input.Group;
-const Option = Select.Option;
-const Search = Input.Search;
+import './index.css';
+
+const { Group: InputGroup, Search } = Input;
+const { Option } = Select;
+
 // const HEADERS = [
 // 	{ label: 'Type', dataIndex: 'type', key: 'type' },
 // 	{ label: 'User ID', dataIndex: 'user_id', key: 'user_id' },
@@ -477,7 +478,7 @@ class Deposits extends Component {
 							rowKey={(data) => {
 								return data.id;
 							}}
-							expandedRowRender={renderRowContent}
+							expandedRowRender={(vals) => renderRowContent({ ...vals, coins })}
 							expandRowByClick={true}
 							pagination={{
 								current: currentTablePage,
@@ -505,5 +506,8 @@ class Deposits extends Component {
 		);
 	}
 }
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
 
-export default Deposits;
+export default connect(mapStateToProps)(Deposits);

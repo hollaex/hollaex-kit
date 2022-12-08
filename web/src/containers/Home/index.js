@@ -788,9 +788,9 @@ class Home extends Component {
 				return (
 					<div className="home_carousel_section ">
 						<Spin spinning={this.state.carouselLodaing}>
-							<div class="slideshow-wrapper">
+							<div className="slideshow-wrapper">
 								<div
-									class="parent-slider d-flex"
+									className="parent-slider d-flex"
 									style={{ animationDuration: `${duration}s` }}
 								>
 									{marketsData.map((sec, index) => {

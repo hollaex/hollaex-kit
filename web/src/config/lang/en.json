@@ -1191,7 +1191,11 @@
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",
 		"ADDRESS_FIELD_LABEL": "Paste your address",
-		"CURRENCY_FIELD_LABEL": "Select the currency"
+		"CURRENCY_FIELD_LABEL": "Select the currency",
+		"DESTINATION_TAG_LABEL": "Tag (optional)",
+		"MEMO_LABEL": "Memo (optional)",
+		"DESTINATION_TAG_PLACEHOLDER": "Paste your tag",
+		"MEMO_PLACEHOLDER": "Paste your memo"
 	},
 	"CANCEL_ORDERS": {
 		"HEADING": "Cancel orders",
@@ -1307,5 +1311,9 @@
 	"WITHDRAWALS_FORM_METHOD": "Method",
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
-	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free."
+	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
+	"DUST": {
+		"LINK": "Wallet duster",
+		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto"
+	}
 }
