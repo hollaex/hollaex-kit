@@ -113,7 +113,7 @@ const binanceScript = async () => {
 				}
 			}
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size);
+			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
 			responseObject.token = randomToken;
 			// set expiry
 			const expiryDate = new Date();
@@ -157,7 +157,7 @@ const calculatePrice = (price, side, spread, multiplier = 1) => {
 	return calculatedSize;
 };
 
-const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size) => {
+const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
 	// Generate random token
 	const randomToken = randomString({
 		length: 32,
@@ -171,7 +171,8 @@ const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size
 		symbol,
 		price,
 		side,
-		size
+		size,
+		type
 	};
 
 	client.setexAsync(randomToken, expiryTime, JSON.stringify(tradeData));
@@ -253,7 +254,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			}
 
 			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size);
+				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
 				responseObject.token = randomToken;
 				// set expiry
 				const expiryDate = new Date();

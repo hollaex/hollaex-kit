@@ -3,18 +3,19 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { fetchBrokerQuote, generateRandomToken } = require('./broker');
+const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
-const { setPriceEssentials, getDecimals, roundNumber } = require('../../orderbook');
+const { setPriceEssentials, getDecimals } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
+const { client } = require('./database/redis');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -39,6 +40,50 @@ const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, 
 			return getNodeLib().createOrder(user.network_id, symbol, side, size, type, price, feeData, opts);
 		});
 };
+
+const executeUserOrder = async (user_id, opts, token) => {
+	const storedToken = await client.getAsync(token);
+	if (!storedToken) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+	const { symbol, price, side, size, type } = JSON.parse(storedToken);
+
+	let res;
+	if (type === 'market') {
+		res = await createUserOrderByKitId(user_id, symbol, side, size, type, 0, opts);
+	}
+	else if (type === 'broker') {
+		const brokerPair = await getModel('broker').findOne({ where: { symbol } });
+
+		if (!brokerPair) {
+			throw new Error(BROKER_NOT_FOUND);
+		} else if (brokerPair.paused) {
+			throw new Error(BROKER_PAUSED);
+		}
+
+		const broker = await getUserByKitId(brokerPair.user_id);
+		const user = await getUserByKitId(user_id);
+
+		const tierBroker = getKitTier(broker.verification_level);
+		const tierUser = getKitTier(user.verification_level);
+
+		const makerFee = tierBroker.fees.maker[symbol];
+		const takerFee = tierUser.fees.taker[symbol];
+
+		res = await getNodeLib().createBrokerTrade(
+			symbol,
+			side,
+			price,
+			size,
+			broker.network_id,
+			user.network_id,
+			{ maker: makerFee, taker: takerFee }
+		);
+	}
+
+	res.type = type;
+	return res;
+}
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 
@@ -79,7 +124,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					spending_currency,
 					receiving_currency,
 					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
-					quote: brokerQuote?.token,
+					token: brokerQuote?.token,
 					expiry: brokerQuote?.expiry,
 					type: 'broker'
 				}
@@ -163,7 +208,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				}
 
 				// Generate randomToken to be used during deal execution
-				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size);
+				const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size, 'market');
 				responseObj.token = randomToken;
 				// set expiry
 				const expiryDate = new Date();
@@ -196,6 +241,53 @@ const convertBalance = async (order, user_id, maker_id) => {
 		user.network_id,
 		{ maker: makerFee, taker: takerFee }
 	);
+}
+
+const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
+	if (!quote) quote = 'xht';
+	if (!spread) spread = 0;
+	if (maker_id == null) maker_id = 1;
+
+	const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
+	const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
+
+	const balance = await getUserBalanceByKitId(user_id, opts)
+
+	let symbols = {};
+
+	for (const key of Object.keys(balance)) {
+		if (key.includes('available') && balance[key]) {
+			let symbol = key?.split('_')?.[0]
+			if (symbol && assets.includes(symbol)) {
+				symbols[symbol] = balance[key];
+			}
+		}
+	}
+
+	let estimatedConversions = [];
+	for (const coin of Object.keys(symbols)) {
+
+		let symbol = `${coin}-${quote}`;
+		let side = 'sell';
+
+		const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
+		const quoteSize = math.number(math.fraction(symbols[coin]));
+
+		const price = quotePrices[coin] * (1 - (spread / 100));
+
+		if (usdtSize < 1) {
+			const orderData = {
+				symbol,
+				side,
+				size: quoteSize,
+				price
+			}
+			estimatedConversions.push(orderData);
+
+		}
+	}
+
+	return estimatedConversions;
 }
 
 const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote }) => {
@@ -969,7 +1061,9 @@ module.exports = {
 	getGeneratedFees,
 	settleFees,
 	generateOrderFeeData,
-	dustUserBalance
+	dustUserBalance,
+	executeUserOrder,
+	dustPriceEstimate
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,
