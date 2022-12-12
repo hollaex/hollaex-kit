@@ -28,7 +28,7 @@ const getNodeLib = () => nodeLib;
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
 		const { type } = JSON.parse(message);
-		switch(type) {
+		switch (type) {
 			case 'refreshInit':
 				checkStatus();
 				publisher.publish(
@@ -69,7 +69,8 @@ const checkStatus = () => {
 			black_list_countries: [],
 			onramp: {},
 			offramp: {},
-			user_payments: {}
+			user_payments: {},
+			dust: {}
 		},
 		email: {}
 	};
@@ -180,7 +181,7 @@ const checkStatus = () => {
 							} else {
 								fees.maker[pair] = tier.fees.maker[pair];
 							}
-	
+
 							if (!isNumber(tier.fees.taker[pair])) {
 								fees.taker[pair] = defaultFees.taker;
 							} else {
@@ -244,7 +245,7 @@ const checkStatus = () => {
 				networkNodeLib
 			]);
 		})
-		.then(([ users, networkNodeLib ]) => {
+		.then(([users, networkNodeLib]) => {
 			loggerInit.info('init/checkStatus/activation', users.length, 'users deactivated');
 
 			for (let user of users) {

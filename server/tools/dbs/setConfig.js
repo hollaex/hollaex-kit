@@ -72,7 +72,8 @@ const kit = {
 	black_list_countries: [],
 	onramp: {},
 	offramp: {},
-	user_payments: {}
+	user_payments: {},
+	dust: {}
 };
 
 const secrets = {
