@@ -105,7 +105,7 @@
 	},
 	"LOGIN": {
 		"LOGIN_TO": "{0} нэвтрэх",
-		"CANT_LOGIN": "Нэвтэрч чадахгүй байна уу?",
+		"CANT_LOGIN": "Нууц үгээ мартсан уу?",
 		"NO_ACCOUNT": "Бүртгэлгүй юу?",
 		"CREATE_ACCOUNT": "Энд дарж бүртгүүлээрэй",
 		"HELP": "Тусламж"
@@ -226,7 +226,7 @@
 		"NO_EMAIL": "И-мэйл хүлээн аваагүй юу?",
 		"REQUEST_EMAIL": "Энд дарж и-мэйл дахин авна уу",
 		"HAVE_ACCOUNT": "Бүртгэлтэй юу?",
-		"GOTO_LOGIN": "Энд дарж нэвтрэх хэсэгт очно уу",
+		"GOTO_LOGIN": "Нэвтрэх хэсэгт очих",
 		"AFFILIATION_CODE": "Найзын код (заавал биш)",
 		"AFFILIATION_CODE_PLACEHOLDER": "Найзын кодоо оруулна уу",
 		"TERMS": {
@@ -319,7 +319,7 @@
 				"FULL_NAME_LABEL": "Таны нэр",
 				"FULL_NAME_PLACEHOLDER": "Иргэний үнэмлэх дээрх өөрийн нэрээ бичнэ үү",
 				"GENDER_LABEL": "Хүйс",
-				"GENDER_PLACEHOLDER": "Өөрийн хүйсээ оруулна уу",
+				"GENDER_PLACEHOLDER": "Хүйс оруулах",
 				"GENDER_OPTIONS": { "MAN": "Эрэгтэй", "WOMAN": "Эмэгтэй" },
 				"NATIONALITY_LABEL": "Иргэншил",
 				"NATIONALITY_PLACEHOLDER": "Та өөрийн иргэншилээ бичнэ үү",
@@ -331,7 +331,7 @@
 				"ADDRESS_LABEL": "Хаяг",
 				"ADDRESS_PLACEHOLDER": "Хаяг",
 				"POSTAL_CODE_LABEL": "Зип код",
-				"POSTAL_CODE_PLACEHOLDER": "Зип кодоо оруулна уу",
+				"POSTAL_CODE_PLACEHOLDER": "Зип код оруулна уу",
 				"PHONE_CODE_LABEL": "Улс",
 				"PHONE_CODE_PLACEHOLDER": "Утасны дугаар байршиж буй улсаа бичнэ үү",
 				"PHONE_CODE_DISPLAY": "({0}) {1}",
@@ -340,7 +340,7 @@
 				"CONNECTING_LOADING": "Холбогдож байна",
 				"SMS_SEND": "SМS илгээх",
 				"SMS_CODE_LABEL": "SМS код",
-				"SMS_CODE_PLACEHOLDER": "SМS кодоо оруулна уу"
+				"SMS_CODE_PLACEHOLDER": "SМS код оруулна уу"
 			},
 			"INFORMATION": {
 				"TEXT": "АНХААРУУЛГА: Иргэний үнэмлэх дээрхтэй яг ижлээр нэрээ оруулна уу (овог нэр, өөрийн нэр). Та бизнес эрхэлдэг бол байгууллагын дансны хэрэглэгчийн дэмжлэгтэй холбогдоно уу.",
@@ -535,7 +535,7 @@
 		"TITLE_TRADES": "Арилжааны түүх",
 		"TITLE_DEPOSITS": "Орлогын түүх",
 		"TITLE_WITHDRAWALS": "Зарлагын түүх",
-		"TEXT_DOWNLOAD": "ТҮҮХ ТАТАЖ АВАХ",
+		"TEXT_DOWNLOAD": "ТАТАЖ АВАХ",
 		"TRADES": "Арилжаа",
 		"DEPOSITS": "Орлого",
 		"WITHDRAWALS": "Зарлага"
