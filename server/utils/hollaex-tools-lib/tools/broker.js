@@ -85,8 +85,35 @@ const binanceScript = async () => {
 		};
 		//check if there is user_id, if so, assing token
 		if (user_id) {
+
+			let size;
+			if (orderData) {
+				let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData;
+
+				if (spending_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
+						decimalPoint
+					);
+
+					receiving_amount = sourceAmount;
+
+				} else if (receiving_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
+						decimalPoint
+					);
+					spending_amount = sourceAmount;
+				}
+
+				if (`${spending_currency}-${receiving_currency}` === symbol) {
+					size = spending_amount;
+				} else {
+					size = receiving_amount
+				}
+			}
 			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice);
+			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
 			responseObject.token = randomToken;
 			// set expiry
 			const expiryDate = new Date();
@@ -130,7 +157,7 @@ const calculatePrice = (price, side, spread, multiplier = 1) => {
 	return calculatedSize;
 };
 
-const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price) => {
+const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
 	// Generate random token
 	const randomToken = randomString({
 		length: 32,
@@ -143,7 +170,9 @@ const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price) => {
 		user_id,
 		symbol,
 		price,
-		side
+		side,
+		size,
+		type
 	};
 
 	client.setexAsync(randomToken, expiryTime, JSON.stringify(tradeData));
@@ -152,6 +181,8 @@ const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price) => {
 
 const fetchBrokerQuote = async (brokerQuote) => {
 	const { symbol, side, bearerToken, ip } = brokerQuote;
+
+	const orderData = brokerQuote?.orderData;
 
 	try {
 		let user_id = null;
@@ -174,7 +205,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			if (broker.formula) {
 				//Run formula
 				const resObject = _eval(broker.formula, 'formula', {
-					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, getDecimals, math, rp
+					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, getDecimals, math, rp, orderData
 				}, true);
 
 				return resObject;
@@ -194,8 +225,36 @@ const fetchBrokerQuote = async (brokerQuote) => {
 				price: roundedPrice
 			};
 
+			let size;
+
+			if (orderData) {
+				let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData
+
+				if (spending_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
+						decimalPoint
+					);
+
+					receiving_amount = sourceAmount;
+
+				} else if (receiving_amount != null) {
+					const sourceAmount = math.round(
+						side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
+						decimalPoint
+					);
+					spending_amount = sourceAmount;
+				}
+
+				if (`${spending_currency}-${receiving_currency}` === symbol) {
+					size = spending_amount;
+				} else {
+					size = receiving_amount
+				}
+			}
+
 			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice);
+				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
 				responseObject.token = randomToken;
 				// set expiry
 				const expiryDate = new Date();
@@ -537,5 +596,6 @@ module.exports = {
 	fetchBrokerQuote,
 	reverseTransaction,
 	testBroker,
-	testRebalance
+	testRebalance,
+	generateRandomToken
 };
