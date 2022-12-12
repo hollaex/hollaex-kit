@@ -244,9 +244,9 @@ const convertBalance = async (order, user_id, maker_id) => {
 }
 
 const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
-	if (!quote) quote = 'xht';
-	if (!spread) spread = 0;
-	if (maker_id == null) maker_id = 1;
+	if (quote == null) throw new Error('quote undefined');
+	if (spread == null) throw new Error('spread undefined');
+	if (maker_id == null) throw new Error('maker_id undefined');
 
 	const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
 	const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
@@ -292,9 +292,9 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 
 const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote }) => {
 	try {
-		if (!quote) quote = 'xht';
-		if (!spread) spread = 0;
-		if (maker_id == null) maker_id = 1;
+		if (quote == null) throw new Error('quote undefined');
+		if (spread == null) throw new Error('spread undefined');
+		if (maker_id == null) throw new Error('maker_id undefined');
 
 		const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
 		const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
