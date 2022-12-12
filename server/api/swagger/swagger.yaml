@@ -1275,6 +1275,138 @@ paths:
         - hmac
       x-token-permissions:
         - can_trade
+  /order/dust:
+    x-swagger-router-controller: order
+    post:
+      operationId: dustBalance
+      description: dust
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              assets:
+                type: array
+                items:
+                  type: string
+            required:
+              - assets
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /order/dust/estimate:
+    x-swagger-router-controller: order
+    post:
+      operationId: dustEstimatePrice
+      description: dust
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              assets:
+                type: array
+                items:
+                  type: string
+            required:
+              - assets
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /quick-trade:
+    x-swagger-router-controller: order
+    get:
+      operationId: getQuickTrade
+      description: Get Quick Trade
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: spending_currency
+          description: Currency symbol of the spending currency
+          required: true
+          type: string
+        - in: query
+          name: receiving_currency
+          description: Currency symbol of the receiving currency
+          required: true
+          type: string
+        - in: query
+          name: spending_amount
+          required: false
+          type: string
+        - in: query
+          name: receiving_amount
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /order/execute:
+    x-swagger-router-controller: order
+    post:
+      operationId: orderExecute
+      description: execute order
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+            required:
+              - token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /tiers:
     x-swagger-router-controller: tier
     get:
