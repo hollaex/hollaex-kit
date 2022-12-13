@@ -127,7 +127,9 @@ const nestedIcons = {
 	},
 
 	DUST: {
-		TITLE: '/assets/images/my-apps.svg',
+		TITLE: '/assets/images/duster-wallet-sweeper.svg',
+		CONFIRMATION: 'assets/images/sparkle-dust.svg',
+		SUCCESSFUL: '/assets/images/dust-settlement-complete-sparkle.svg',
 	},
 
 	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',

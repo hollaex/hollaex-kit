@@ -1640,6 +1640,22 @@ table th {
     top: 100%;
     background-color: var(--base_wallet-sidebar-and-popup); } }
 
+.dust-dialog-content {
+  width: 38rem; }
+  .dust-dialog-content .currency-ball-image-wrapper {
+    height: 38px;
+    padding-right: 10px; }
+  .dust-dialog-content .currency-ball {
+    width: 30px;
+    padding-top: 4px; }
+    .dust-dialog-content .currency-ball svg,
+    .dust-dialog-content .currency-ball div:first-child {
+      width: 28px; }
+  .dust-dialog-content .dust-note {
+    color: var(--specials_pending-waiting-caution); }
+  .dust-dialog-content .large-font {
+    font-size: 4rem !important; }
+
 .wallet-container {
   border-top: 1px solid var(--labels_important-active-labels-text-graphics); }
   .wallet-container.no-border {
@@ -1808,6 +1824,12 @@ table th {
 .dust-estimated-balance {
   border-bottom: 1px solid var(--calculated_super-pale_label-text-graphics);
   text-align: end; }
+
+.dust-image-title-wrapper {
+  width: 5.5rem;
+  height: 5.5rem;
+  opacity: 0.04;
+  margin-bottom: 1rem; }
 
 .custom-dropdown-style .ant-dropdown-menu-item {
   color: var(--labels_secondary-inactive-label-text-graphics);
@@ -11378,8 +11400,14 @@ svg .fiat-kyc,
 svg .all-apps,
 svg .my-apps,
 svg .apps,
-svg .search-blockchain {
+svg .search-blockchain,
+svg .sparkle-dust,
+svg .dust-sweeper,
+svg .dust-settlement {
   fill: var(--labels_secondary-inactive-label-text-graphics); }
+
+svg .dust-settlement-green {
+  fill: var(--specials_checks-okay-done); }
 
 svg .account-inactive {
   stroke: var(--labels_secondary-inactive-label-text-graphics); }

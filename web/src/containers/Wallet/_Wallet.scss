@@ -124,6 +124,30 @@ $header-margin: 2rem;
 	}
 }
 
+.dust-dialog-content {
+	width: 38rem;
+	.currency-ball-image-wrapper {
+		height: 38px;
+		padding-right: 10px;
+	}
+	.currency-ball {
+		width: 30px;
+		padding-top: 4px;
+		svg,
+		div:first-child {
+			width: 28px;
+		}
+	}
+
+	.dust-note {
+		color: $colors-notification-pending;
+	}
+
+	.large-font {
+		font-size: $font-size-headline !important;
+	}
+}
+
 .wallet-container {
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
@@ -391,6 +415,13 @@ $header-margin: 2rem;
 .dust-estimated-balance {
 	border-bottom: 1px solid $dark-app-line-divider;
 	text-align: end;
+}
+
+.dust-image-title-wrapper {
+	width: 5.5rem;
+	height: 5.5rem;
+	opacity: 0.04;
+	margin-bottom: 1rem;
 }
 
 .custom-dropdown-style {

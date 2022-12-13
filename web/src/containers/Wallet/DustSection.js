@@ -19,13 +19,10 @@ import {
 } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import {
-	BASE_CURRENCY,
-	DEFAULT_COIN_DATA,
-	CURRENCY_PRICE_FORMAT,
-} from 'config/constants';
+import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
 import DustConfirmation from './components/DustConfirmation';
 import DustSuccess from './components/DustSuccess';
+import { convertDust, getEstimatedDust } from 'actions/walletActions';
 
 const DUST_DEFINITION = {
 	quote: 'usdt',
@@ -34,27 +31,33 @@ const DUST_DEFINITION = {
 
 const CONVERSION_TO = 'xht';
 
-const DustSection = ({
-	goToWallet,
-	icons: ICONS,
-	coins,
-	balances,
-	pricesInNative,
-}) => {
+const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 	const [dustAssets, setDustAssets] = useState([]);
 	const [estimatedDust, setEstimatedDust] = useState(0);
 	const [prices, setPrices] = useState({});
+	const [pricesInConversionTo, setPricesInConversionTo] = useState({});
 	const [selectedAssets, setSelectedAssets] = useState([]);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [showSuccess, setShowSuccess] = useState(false);
+	const [loadingEstimations, setLoadingEstimations] = useState(false);
+	const [estimationData, setEstimationData] = useState({});
+	const [loadingResult, setLoadingResult] = useState(false);
+	const [result, setResult] = useState();
 
 	const getPrices = useCallback(async () => {
 		try {
-			const result = await getOraclePrices({
-				coins,
-				quote: DUST_DEFINITION.quote,
-			});
-			setPrices(result);
+			const result = await Promise.all([
+				getOraclePrices({
+					coins,
+					quote: DUST_DEFINITION.quote,
+				}),
+				getOraclePrices({
+					coins,
+					quote: CONVERSION_TO,
+				}),
+			]);
+			setPrices(result[0]);
+			setPricesInConversionTo(result[1]);
 		} catch (err) {
 			console.error(err);
 		}
@@ -65,15 +68,16 @@ const DustSection = ({
 		let dustValue = 0;
 		Object.entries(coins).forEach(([key, coin = {}]) => {
 			const { [`${key}_available`]: balance } = balances;
-			const { [key]: price } = prices;
-			const { [key]: nativePrice } = pricesInNative;
+			const { [key]: price = 0 } = prices;
+			const { [key]: conversionPrice = 0 } = pricesInConversionTo;
 			const calculatedValue = calculateOraclePrice(balance, price);
+			const convertedValue = calculateOraclePrice(balance, conversionPrice);
 			if (
 				mathjs.smallerEq(calculatedValue, DUST_DEFINITION.criterion) &&
 				mathjs.larger(calculatedValue, 0)
 			) {
-				dust[key] = { ...coin, balance, calculatedValue };
-				dustValue = mathjs.add(dustValue, nativePrice);
+				dust[key] = { ...coin, balance, calculatedValue, convertedValue };
+				dustValue = mathjs.add(dustValue, convertedValue);
 			}
 		});
 
@@ -107,10 +111,7 @@ const DustSection = ({
 		}
 	};
 
-	const { increment_unit, display_name } =
-		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-
-	const { fullname: destination_fullname } =
+	const { fullname: destination_fullname, increment_unit, display_name } =
 		coins[CONVERSION_TO] || DEFAULT_COIN_DATA;
 
 	const totalAssets = STRINGS.formatString(
@@ -119,8 +120,41 @@ const DustSection = ({
 		formatCurrencyByIncrementalUnit(estimatedDust, increment_unit)
 	);
 
+	const handleConvert = () => {
+		setLoadingEstimations(true);
+		getEstimatedDust(selectedAssets)
+			.then((res) => {
+				console.log('res', res);
+				setEstimationData(res);
+				setShowConfirmation(true);
+			})
+			.catch((err) => {
+				console.log('err', err);
+				setEstimationData({});
+			})
+			.finally(() => {
+				setLoadingEstimations(false);
+			});
+	};
+
 	const handleConfirm = () => {
-		window.alert('confirmed');
+		setLoadingResult(true);
+		convertDust(selectedAssets)
+			.then((res) => {
+				console.log('res', res);
+				setResult(res);
+				setShowConfirmation(false);
+				setShowSuccess(true);
+			})
+			.catch((err) => {
+				console.log('err', err);
+				setResult();
+				setShowConfirmation(false);
+				setShowSuccess(false);
+			})
+			.finally(() => {
+				setLoadingResult(false);
+			});
 	};
 
 	return (
@@ -154,7 +188,7 @@ const DustSection = ({
 							<IconTitle
 								stringId="DUST.SECTION.TITLE"
 								text={STRINGS['DUST.SECTION.TITLE']}
-								textType="title"
+								textType="title bold"
 								iconPath={ICONS['DUST_TITLE']}
 							/>
 							<div className="py-4">
@@ -179,17 +213,17 @@ const DustSection = ({
 							</div>
 						</div>
 						<div>
-							<div>
+							<div className="d-flex justify-content-end">
 								<Image
 									iconId="DUST_TITLE"
 									icon={ICONS['DUST_TITLE']}
-									// wrapperClassName="currency-ball"
-									// imageWrapperClassName="currency-ball-image-wrapper"
+									wrapperClassName="dust-image-title-wrapper"
+									imageWrapperClassName="dust-image-title-wrapper"
 								/>
 							</div>
 							<EditWrapper stringId="DUST.ESTIMATED_TOTAL">
 								<div className="dust-estimated-balance">
-									{BASE_CURRENCY && (
+									{CONVERSION_TO && (
 										<div>
 											<div className="bold">
 												{STRINGS['DUST.ESTIMATED_TOTAL']}
@@ -247,10 +281,9 @@ const DustSection = ({
 						<EditWrapper stringId="DUST.CONVERT_ALL" />
 						<Button
 							className="caps"
-							// disabled={!selectedAssets.length}
-							disabled={true}
+							disabled={!selectedAssets.length || loadingEstimations}
 							label={STRINGS['DUST.CONVERT_ALL']}
-							onClick={() => setShowConfirmation(true)}
+							onClick={handleConvert}
 						/>
 					</div>
 				</div>
@@ -272,9 +305,19 @@ const DustSection = ({
 						onBack={() => setShowConfirmation(false)}
 						definition={DUST_DEFINITION}
 						conversion={CONVERSION_TO}
+						coins={coins}
+						data={estimationData}
+						loading={loadingResult}
 					/>
 				)}
-				{showSuccess && <DustSuccess onBack={() => setShowSuccess(false)} />}
+				{showSuccess && (
+					<DustSuccess
+						onBack={() => setShowSuccess(false)}
+						conversion={CONVERSION_TO}
+						coins={coins}
+						data={result}
+					/>
+				)}
 			</Dialog>
 		</div>
 	);

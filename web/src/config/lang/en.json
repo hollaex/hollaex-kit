@@ -1331,7 +1331,16 @@
 			"SUBTITLE": "Assets being converted",
 			"BACK": "back",
 			"CONFIRM": "confirm",
-			"NOTE": "Please note: You can convert dust into {0} once every 24 hours. Only balances valued under {1} {2} will be converted."
+			"GET": "You will get",
+			"FEE": "Conversion fee",
+			"PLEASE": "Please note",
+			"NOTE": "You can convert dust into {0} once every 24 hours. Only balances valued under {1} {2} will be converted."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Dust conversion successful!",
+			"TEXT": "You've received",
+			"VIEW_HISTORY": "view history",
+			"CLOSE": "close"
 		}
 	}
 }
