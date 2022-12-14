@@ -1321,6 +1321,7 @@
 		"BACK": "Back",
 		"ESTIMATED_TOTAL": "Estimated total dust value",
 		"CONVERT_ALL": "convert all",
+		"NO_DUST": "No dust assets!",
 		"SECTION": {
 			"TITLE": "Convert wallet dust",
 			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1}.",

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Checkbox } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import mathjs from 'mathjs';
 import {
 	HeaderSection,
@@ -33,6 +34,7 @@ const CONVERSION_TO = 'xht';
 
 const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 	const [dustAssets, setDustAssets] = useState([]);
+	const [initialized, setInitialized] = useState(false);
 	const [estimatedDust, setEstimatedDust] = useState(0);
 	const [prices, setPrices] = useState({});
 	const [pricesInConversionTo, setPricesInConversionTo] = useState({});
@@ -58,8 +60,10 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 			]);
 			setPrices(result[0]);
 			setPricesInConversionTo(result[1]);
+			setInitialized(true);
 		} catch (err) {
 			console.error(err);
+			setInitialized(true);
 		}
 	}, [coins]);
 
@@ -73,8 +77,8 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 			const calculatedValue = calculateOraclePrice(balance, price);
 			const convertedValue = calculateOraclePrice(balance, conversionPrice);
 			if (
-				mathjs.smallerEq(calculatedValue, DUST_DEFINITION.criterion) &&
-				mathjs.larger(calculatedValue, 0)
+				mathjs.smallerEq(convertedValue, DUST_DEFINITION.criterion) &&
+				mathjs.larger(convertedValue, 0)
 			) {
 				dust[key] = { ...coin, balance, calculatedValue, convertedValue };
 				dustValue = mathjs.add(dustValue, convertedValue);
@@ -228,7 +232,9 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 											<div className="bold">
 												{STRINGS['DUST.ESTIMATED_TOTAL']}
 											</div>
-											<div className="caps">{totalAssets}</div>
+											<div className="caps">
+												{initialized ? totalAssets : <LoadingOutlined />}
+											</div>
 										</div>
 									)}
 								</div>
@@ -236,45 +242,64 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 						</div>
 					</div>
 
-					<table className="wallet-assets_block-table">
-						<thead>
-							<tr className="table-bottom-border">
-								<td />
-								<td />
-								<td />
-								<td />
-							</tr>
-						</thead>
-						<tbody>
-							{dustAssets.map(
-								([key, { fullname, balance, icon_id } = DEFAULT_COIN_DATA]) => {
-									return (
-										<tr key={key} className="table-bottom-border">
-											<td>
-												<Checkbox
-													checked={selectedAssets.includes(key)}
-													onChange={() => toggleAsset(key)}
-												/>
-											</td>
-											<td className="table-icon td-fit" />
-											<td className="td-name td-fit">
-												<div className="d-flex align-items-center">
-													<Image
-														iconId={icon_id}
-														icon={ICONS[icon_id]}
-														wrapperClassName="currency-ball"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
-													<div>{fullname}</div>
-												</div>
-											</td>
-											<td className="caps td-amount">{`${balance} ${key}`}</td>
+					{initialized ? (
+						<Fragment>
+							{dustAssets.length ? (
+								<table className="wallet-assets_block-table">
+									<thead>
+										<tr className="table-bottom-border">
+											<td />
+											<td />
+											<td />
+											<td />
 										</tr>
-									);
-								}
+									</thead>
+									<tbody>
+										{dustAssets.map(
+											([
+												key,
+												{ fullname, balance, icon_id } = DEFAULT_COIN_DATA,
+											]) => {
+												return (
+													<tr key={key} className="table-bottom-border">
+														<td>
+															<Checkbox
+																checked={selectedAssets.includes(key)}
+																onChange={() => toggleAsset(key)}
+															/>
+														</td>
+														<td className="table-icon td-fit" />
+														<td className="td-name td-fit">
+															<div className="d-flex align-items-center">
+																<Image
+																	iconId={icon_id}
+																	icon={ICONS[icon_id]}
+																	wrapperClassName="currency-ball"
+																	imageWrapperClassName="currency-ball-image-wrapper"
+																/>
+																<div>{fullname}</div>
+															</div>
+														</td>
+														<td className="caps td-amount">{`${balance} ${key}`}</td>
+													</tr>
+												);
+											}
+										)}
+									</tbody>
+								</table>
+							) : (
+								<div className="d-flex align-center justify-content-center py-5">
+									<EditWrapper stringId="DUST.CONVERT_ALL">
+										{STRINGS['DUST.NO_DUST']}
+									</EditWrapper>
+								</div>
 							)}
-						</tbody>
-					</table>
+						</Fragment>
+					) : (
+						<div className="d-flex align-center justify-content-center py-5">
+							<LoadingOutlined className="font-title" />
+						</div>
+					)}
 				</div>
 				<div className="d-flex align-center justify-content-center">
 					<div>
