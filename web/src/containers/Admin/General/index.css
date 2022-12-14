@@ -628,3 +628,22 @@ h2,
 	background-color: #288500;
 	color: #ffffff;
 }
+.dust-cofirmation-details {
+	position: relative;
+	border: 1px solid #ffffff;
+}
+
+.dust-cofirmation-details_title {
+	position: absolute;
+	top: 0;
+	transform: translateY(-50%);
+	background-color: var(--admin_panel_modal_background);
+}
+
+.dust-cofirmation_title {
+	font-size: 24px;
+}
+
+.admin-wallet-icon .dust-sweeper {
+	fill: #ffffff;
+}
