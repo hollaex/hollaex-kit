@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import AccordionSection from './AccordionSection';
+import { STATIC_ICONS } from 'config/icons';
+import { Link } from 'react-router';
 
 class Accordion extends Component {
 	state = {
@@ -100,6 +102,26 @@ class Accordion extends Component {
 				className={classnames('accordion_wrapper', isMobile && 'mobile')}
 				ref={this.setRef(wrapperId)}
 			>
+				<div className="header-wrapper">
+					<div className="header-title">All wallet assets</div>
+					<div className="subHeader link-separator">
+						<Link to="digital-asset">ASSET INFO PAGE</Link>
+					</div>
+					{/* <div className='link-separator'>
+                    </div> */}
+					<div className="history-img-wrapper">
+						<div className="subHeader">
+							<Link to="transactions">HISTORY</Link>
+						</div>
+						<div>
+							<img
+								className="img-content"
+								src={`${STATIC_ICONS.CLOCK}`}
+								alt="clock.svg"
+							/>
+						</div>
+					</div>
+				</div>
 				{sections.map((section, index) => (
 					<AccordionSection
 						key={index}

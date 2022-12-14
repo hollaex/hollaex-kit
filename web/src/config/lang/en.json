@@ -1216,7 +1216,9 @@
 		"CHANGE_24H": "Change (24 hours)",
 		"VOLUME_24h": "Volume (24 hours)",
 		"CHART_24H": "Chart (24 hours)",
-		"VIEW_MARKETS": "View Markets"
+		"VIEW_MARKETS": "View Markets",
+		"TRADING_SYMBOL": "Trading Symbol",
+		"TYPE": "Type"
 	},
 	"PAGE_UNDER_CONSTRUCTION": "This page is under construction. Please revisit this page soon.",
 	"UNDEFINED_ERROR_TITLE": "You’ve Encountered an Unidentified Error",
@@ -1315,5 +1317,6 @@
 	"DUST": {
 		"LINK": "Wallet duster",
 		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto"
-	}
+	},
+	"ASSET_INFO_PAGE": "Asset info page"
 }

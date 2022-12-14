@@ -269,6 +269,7 @@ class Summary extends Component {
 										pairs={pairs}
 										activeTheme={activeTheme}
 										router={router}
+										showContent={true}
 									/>
 								</SummaryBlock>
 								{/*<div className="trading-volume-wrapper">

@@ -65,7 +65,7 @@ import chat from './containers/Admin/Chat';
 import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
-import { SmartTarget } from 'components';
+import { DigitalAssets, Hollaextoken, SmartTarget } from 'components';
 
 import {
 	isLoggedIn,
@@ -365,6 +365,11 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route
+					path="digital-asset"
+					name="Digital Asset"
+					component={DigitalAssets}
+				/>
+				<Route
 					path="verification"
 					name="Verification"
 					component={Account}
@@ -406,6 +411,11 @@ export const generateRoutes = (routes = []) => {
 					path="quick-trade/:pair"
 					name="Quick Trade"
 					component={QuickTrade}
+				/>
+				<Route
+					path="assets/coin-info/:token"
+					name="Hollaex Token"
+					component={Hollaextoken}
 				/>
 				<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 				<Route

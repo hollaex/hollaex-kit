@@ -174,6 +174,9 @@ class AddTradeTab extends Component {
 					<div className="trade_tabs-content">
 						{!isMobile && (
 							<div className="d-flex justify-content-end">
+								<span className="trade_tabs-link link-separator">
+									<Link to="">{STRINGS['ASSET_INFO_PAGE']}</Link>
+								</span>
 								{constants &&
 								constants.features &&
 								constants.features.quick_trade ? (

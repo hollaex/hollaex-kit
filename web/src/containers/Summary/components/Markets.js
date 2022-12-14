@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 import _get from 'lodash/get';
@@ -12,6 +13,7 @@ import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
+import AssetsList from '../../TradeTabs/components/AssetsList';
 
 class Markets extends Component {
 	constructor(props) {
@@ -113,12 +115,22 @@ class Markets extends Component {
 		}
 	};
 
+	handleAssetsClick = (pair) => {
+		const { router } = this.props;
+		if (pair && router) {
+			router.push(`/assets/coin-info/${pair}`);
+		}
+	};
+
 	render() {
 		const {
 			showSearch = true,
 			showMarkets = false,
 			router,
 			isHome = false,
+			isFilterDisplay = false,
+			showContent = false,
+			isAsset = false,
 		} = this.props;
 		const { data, chartData, page, pageSize, count } = this.state;
 		if (isHome) {
@@ -127,7 +139,21 @@ class Markets extends Component {
 
 		return (
 			<div>
-				{showSearch && (
+				{showContent && (
+					<div>
+						<div>
+							Want to list your digital assets? Start your own market with your
+							HollaEx <Link className="link-text">white-lable</Link> solutions
+						</div>
+						<div>
+							Visit coin info page{' '}
+							<Link to="digital-asset" className="link-text">
+								here
+							</Link>
+						</div>
+					</div>
+				)}
+				{showSearch && !isFilterDisplay && (
 					<div className="d-flex justify-content-end">
 						<div className={isMobile ? '' : 'w-25 pb-4'}>
 							<SearchBox
@@ -141,12 +167,22 @@ class Markets extends Component {
 						</div>
 					</div>
 				)}
-				<MarketList
-					loading={!data.length ? true : false}
-					markets={data}
-					chartData={chartData}
-					handleClick={this.handleClick}
-				/>
+				{isAsset ? (
+					<AssetsList
+						loading={!data.length ? true : false}
+						markets={data}
+						chartData={chartData}
+						handleClick={this.handleAssetsClick}
+						isAsset={isAsset}
+					/>
+				) : (
+					<MarketList
+						loading={!data.length ? true : false}
+						markets={data}
+						chartData={chartData}
+						handleClick={this.handleClick}
+					/>
+				)}
 				{!showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
 						<EditWrapper

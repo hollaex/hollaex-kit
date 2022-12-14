@@ -1,0 +1,242 @@
+.hollaex-token-wrapper {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.wizard-container .ant-input-affix-wrapper,
+	.wizard-container .ant-input,
+	.ant-input-number,
+	.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+		background-color: #202020;
+	}
+
+	.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
+	.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
+		.ant-select-selector {
+		border-color: #d9d9d9;
+	}
+
+	.subHeader-icon {
+		height: 20px;
+		width: 20px;
+		margin: 1px 3px;
+	}
+
+	.gray-text {
+		color: #b2b3b3;
+	}
+
+	.token-wrapper {
+		width: 65%;
+		height: 80%;
+
+		.image-container {
+			.coins-icon {
+				width: 3.5rem;
+				height: 3.5rem;
+			}
+		}
+
+		.link {
+			color: #5d63ff;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		.header-container {
+			width: 100%;
+			font-size: 16px;
+
+			.title {
+				font-size: 24px;
+				color: #b2b3b3;
+
+				span {
+					color: #ffffff;
+				}
+				.favourite-text {
+					font-size: 12px;
+					color: #707070;
+					padding-right: 10px;
+					opacity: 0;
+				}
+				.star-icon:hover {
+					.favourite-text {
+						opacity: 1;
+					}
+				}
+				.favourite-text-2 {
+					font-size: 12px;
+					color: #b2b3b3;
+					padding-right: 10px;
+				}
+			}
+		}
+
+		.ant-btn {
+			background: #242426;
+			color: #b2b3b3;
+		}
+
+		.hollaex-container {
+			border: 1px solid $colors-super-pale-black;
+
+			.token-container {
+				display: flex;
+				justify-content: space-between;
+
+				.info-container {
+					width: 65%;
+					background-color: #242426;
+					padding: 4rem;
+
+					.header-text {
+						font-size: 16px;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+
+					.sub-text {
+						font-size: 14px;
+						width: 70%;
+						margin-top: 1rem;
+						color: #b2b3b3;
+					}
+
+					.button-container {
+						display: flex;
+						margin-top: 7rem;
+
+						button {
+							width: 100%;
+						}
+
+						.button-2 {
+							margin: 0 10px 0 10px;
+						}
+
+						.button-3 {
+							background-color: #5d63ff;
+							color: #ffffff;
+							border-color: #5d63ff;
+						}
+					}
+				}
+
+				.trade-details-wrapper {
+					width: 40%;
+					padding: 40px 65px 30px 55px;
+					font-family: $en--font-family;
+					background-color: $app-background-color;
+
+					.trade-details-content {
+						height: 450px;
+
+						.dropdown-container {
+							.coin-select {
+								width: 100%;
+								margin-bottom: 2rem;
+							}
+						}
+
+						.pb-30 {
+							padding-bottom: 30px;
+						}
+
+						.pb-35 {
+							padding-bottom: 35px;
+						}
+
+						.pl-6 {
+							padding-left: 6rem;
+						}
+
+						.chart {
+							height: 100px;
+							margin: 10px 0;
+
+							// opacity: 0.4;
+							div:last-child {
+								padding-top: 1rem;
+							}
+
+							.fade-area {
+								position: relative;
+							}
+
+							.fade-area::before {
+								content: '';
+								position: absolute;
+								height: 100px;
+								width: 100%;
+								background-image: linear-gradient(
+									to right,
+									$app-background-color,
+									rgba(0, 0, 0, 0)
+								);
+								z-index: -1;
+							}
+						}
+
+						.trade_tabs-container {
+							margin: 0 !important;
+							width: 100% !important;
+						}
+					}
+
+					.currency-ball-image-wrapper {
+						height: 5rem;
+					}
+
+					.f-size-16 {
+						font-size: 16px;
+						color: $colors-deactivate;
+						font-weight: bold;
+					}
+
+					.f-size-22 {
+						font-size: 22px;
+						font-weight: bold;
+					}
+
+					// .pairs {
+					//     color: $link;
+					//     font-size: 16px;
+					//     text-decoration: underline;
+					// }
+
+					.fullname {
+						color: $colors-deactivate;
+						font-size: 11px;
+						white-space: nowrap;
+					}
+
+					.sub-title {
+						color: $colors-deactivate;
+						font: normal normal 300 11px/15px $en--font-family;
+						letter-spacing: 2.2px;
+						opacity: 1;
+						white-space: nowrap;
+					}
+
+					.white-txt {
+						color: $colors-main-black;
+					}
+				}
+			}
+		}
+	}
+	.paircoins-color {
+		color: #b2b3b3;
+	}
+	.white-text {
+		color: #ffffff;
+	}
+}
+
+@media (max-width: 1024px) {
+	.token-wrapper {
+		width: 100% !important;
+	}
+}

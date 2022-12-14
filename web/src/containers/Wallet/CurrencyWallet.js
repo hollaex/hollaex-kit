@@ -20,6 +20,7 @@ import {
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
+import { Link } from 'react-router';
 
 class Wallet extends Component {
 	state = {
@@ -66,6 +67,16 @@ class Wallet extends Component {
 							this.props.router.push('/transactions');
 						}}
 					/>
+				</div>
+				<div className="link-container mb-0 mt-3">
+					<Link className="link-content" to="wallet">
+						Back
+					</Link>{' '}
+					to wallet page
+				</div>
+				<div className="link-container mb-5">
+					<Link className="link-content">Learn more</Link> about{' '}
+					{symbol.toUpperCase()}
 				</div>
 				{/* <CurrencyBallWithPrice
 					symbol={symbol}

@@ -12,6 +12,7 @@ class MarketRow extends Component {
 			handleClick,
 			loading,
 			index,
+			isAsset = false,
 		} = this.props;
 
 		const {
@@ -23,6 +24,9 @@ class MarketRow extends Component {
 			pair_2_display,
 			icon_id,
 			volume_native_text,
+			symbol,
+			pairTwo,
+			fullname,
 		} = market;
 
 		return (
@@ -42,7 +46,7 @@ class MarketRow extends Component {
 								wrapperClassName="market-list__coin-icons"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							<div>{display_name}</div>
+							<div>{isAsset ? fullname : display_name}</div>
 						</div>
 					) : (
 						<div
@@ -73,30 +77,42 @@ class MarketRow extends Component {
 				<td>
 					<PriceChange market={market} />
 				</td>
-				<td>
-					{!loading ? (
-						<div>
-							{ticker.volume > 0 && (
-								<div>
-									<span className="title-font ml-1 important-text">
-										{volume_native_text}
-									</span>
-								</div>
-							)}
+				{!isAsset && (
+					<td>
+						{!loading ? (
 							<div>
-								<span className="title-font ml-1">{ticker.volume}</span>
-								<span className="title-font ml-2">{pair_base_display}</span>
+								{ticker.volume > 0 && (
+									<div>
+										<span className="title-font ml-1 important-text">
+											{volume_native_text}
+										</span>
+									</div>
+								)}
+								<div>
+									<span className="title-font ml-1">{ticker.volume}</span>
+									<span className="title-font ml-2">{pair_base_display}</span>
+								</div>
 							</div>
-						</div>
-					) : (
-						<div
-							className="loading-anime"
-							style={{
-								animationDelay: `.${index + 1}s`,
-							}}
-						></div>
-					)}
-				</td>
+						) : (
+							<div
+								className="loading-anime"
+								style={{
+									animationDelay: `.${index + 1}s`,
+								}}
+							></div>
+						)}
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="ml-1">{symbol}</div>
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="ml-1">{pairTwo.type}</div>
+					</td>
+				)}
 				<td className="td-chart">
 					<SparkLine
 						data={
