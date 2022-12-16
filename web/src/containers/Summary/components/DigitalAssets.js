@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import withConfig from 'components/ConfigProvider/withConfig';
 import Markets from './Markets';
 import { STATIC_ICONS } from 'config/icons';
+import { Select } from 'antd';
+import { MarketsSelector } from 'containers/Trade/utils';
 
 const DigitalAssets = (props) => {
 	const {
@@ -15,15 +17,34 @@ const DigitalAssets = (props) => {
 		activeTheme,
 		router,
 		pair,
+		markets,
 	} = props;
+	const [options, setOptions] = useState([{ value: 'all', label: 'all' }]);
+	const [selectedSource, setSelectedSource] = useState('');
 
 	useEffect(() => {
 		getSearchResult();
+		handleOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const handleBack = () => {
 		router.goBack();
+	};
+
+	const handleOptions = () => {
+		let optionData = [];
+		let temp = [];
+		markets.forEach((market) => {
+			if (!temp.includes(market?.pairTwo?.symbol)) {
+				temp.push(market?.pairTwo?.symbol);
+				optionData.push({
+					value: market?.pairTwo?.symbol,
+					label: market?.pairTwo?.symbol,
+				});
+			}
+		});
+		setOptions([...options, ...optionData]);
 	};
 
 	const getSearchResult = () => {
@@ -75,6 +96,17 @@ const DigitalAssets = (props) => {
 						</Link>
 					</div>
 				</div>
+				<div className="dropdown-container">
+					<div className="gray-text">Price source:</div>
+					<Select
+						defaultValue={options[0].value}
+						style={{ width: '20rem' }}
+						className="coin-select"
+						placeholder=""
+						onChange={(e) => setSelectedSource(e)}
+						options={options}
+					/>
+				</div>
 				<Markets
 					user={user}
 					coins={coins}
@@ -83,6 +115,7 @@ const DigitalAssets = (props) => {
 					router={router}
 					isFilterDisplay={true}
 					isAsset={true}
+					selectedSource={selectedSource}
 				/>
 			</div>
 		</div>
@@ -99,6 +132,7 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		oraclePrices: state.asset.oraclePrices,
 		tickers: state.app.tickers,
+		markets: MarketsSelector(state),
 	};
 };
 

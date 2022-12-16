@@ -33,6 +33,7 @@ export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
 export { default as Apps } from './Apps';
 export { default as AppDetails } from './AppDetails';
+export { default as DigitalAssets } from './Summary/components/DigitalAssets';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

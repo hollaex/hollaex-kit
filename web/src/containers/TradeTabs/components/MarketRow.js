@@ -13,6 +13,7 @@ class MarketRow extends Component {
 			loading,
 			index,
 			isAsset = false,
+			constants,
 		} = this.props;
 
 		const {
@@ -74,6 +75,15 @@ class MarketRow extends Component {
 						></div>
 					)}
 				</td>
+				{isAsset && (
+					<td>
+						<div>
+							{pairTwo.symbol === constants.native_currency
+								? 'Native'
+								: 'No native source'}
+						</div>
+					</td>
+				)}
 				<td>
 					<PriceChange market={market} />
 				</td>
@@ -105,12 +115,12 @@ class MarketRow extends Component {
 				)}
 				{isAsset && (
 					<td>
-						<div className="ml-1">{symbol}</div>
+						<div className="ml-1">{symbol.toUpperCase()}</div>
 					</td>
 				)}
 				{isAsset && (
 					<td>
-						<div className="ml-1">{pairTwo.type}</div>
+						<div className="ml-1 capitalize">{pairTwo.type}</div>
 					</td>
 				)}
 				<td className="td-chart">

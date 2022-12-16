@@ -43,6 +43,7 @@ const AssetsList = ({
 	setSortModeChange,
 	setSortModeVolume,
 	isAsset = false,
+	constants,
 }) => {
 	const handleClickChange = () => {
 		if (mode === SORT.CHANGE) {
@@ -99,6 +100,13 @@ const AssetsList = ({
 								</div>
 							</th>
 							<th>
+								<div>
+									<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
+										{STRINGS['MARKETS_TABLE.SOURCE']}
+									</EditWrapper>
+								</div>
+							</th>
+							<th>
 								<div onClick={handleClickChange} className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
@@ -140,6 +148,7 @@ const AssetsList = ({
 								market={market}
 								loading={loading}
 								isAsset={isAsset}
+								constants={constants}
 							/>
 						))}
 					</tbody>

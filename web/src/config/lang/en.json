@@ -1218,7 +1218,8 @@
 		"CHART_24H": "Chart (24 hours)",
 		"VIEW_MARKETS": "View Markets",
 		"TRADING_SYMBOL": "Trading Symbol",
-		"TYPE": "Type"
+		"TYPE": "Type",
+		"SOURCE": "SOURCE"
 	},
 	"PAGE_UNDER_CONSTRUCTION": "This page is under construction. Please revisit this page soon.",
 	"UNDEFINED_ERROR_TITLE": "You’ve Encountered an Unidentified Error",

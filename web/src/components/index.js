@@ -58,7 +58,7 @@ export { default as Slider } from './Carousel/Slider';
 export { default as ControlledScrollbar } from './Carousel/ControlledScrollbar';
 export { default as EditWrapper } from './EditWrapper';
 export { default as Hollaextoken } from './Prices/HollaexToken';
-export { default as DigitalAssets } from '../containers/Summary/components/DigitalAssets';
+export { default as WhiteLabel } from './Prices/WhiteLabel';
 
 export { default as AdminHocForm } from './AdminForm/hoc';
 export { default as ModalForm } from './AdminForm/modal';

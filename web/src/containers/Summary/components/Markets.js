@@ -23,6 +23,7 @@ class Markets extends Component {
 			chartData: {},
 			pageSize: 10,
 			page: 0,
+			count: 0,
 			searchValue: '',
 		};
 	}
@@ -38,20 +39,49 @@ class Markets extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { markets } = this.props;
+		const { markets, selectedSource = '' } = this.props;
 		const { page, searchValue } = this.state;
 
-		if (JSON.stringify(markets) !== JSON.stringify(prevProps.markets)) {
+		if (
+			JSON.stringify(markets) !== JSON.stringify(prevProps.markets) ||
+			(selectedSource && selectedSource !== prevProps.selectedSource)
+		) {
 			this.constructData(page, searchValue);
 		}
 	}
 
+	goToPreviousPage = () => {
+		const { page, searchValue } = this.state;
+		this.constructData(page - 1, searchValue);
+	};
+
+	goToNextPage = () => {
+		const { page, searchValue } = this.state;
+		this.constructData(page + 1, searchValue);
+	};
+
 	constructData = (page, searchValue) => {
 		const { pageSize } = this.state;
-		const { markets } = this.props;
-
+		const { markets, selectedSource, isAsset } = this.props;
+		let filteredData = [];
+		let temp = [];
 		const pairs = this.getSearchPairs(searchValue);
-		const filteredData = markets.filter(({ key }) => pairs.includes(key));
+		if (selectedSource && selectedSource !== 'all') {
+			filteredData = markets.filter(
+				({ key }) => key.split('-')[1] === selectedSource
+			);
+		} else {
+			if (isAsset) {
+				filteredData = markets.filter(({ key }) => {
+					if (!temp.includes(key.split('-')[0])) {
+						temp.push(key.split('-')[0]);
+						return pairs.includes(key);
+					}
+				});
+			} else {
+				filteredData = markets.filter(({ key }) => pairs.includes(key));
+			}
+		}
 		const count = filteredData.length;
 
 		const initItem = page * pageSize;
@@ -131,6 +161,7 @@ class Markets extends Component {
 			isFilterDisplay = false,
 			showContent = false,
 			isAsset = false,
+			constants,
 		} = this.props;
 		const { data, chartData, page, pageSize, count } = this.state;
 		if (isHome) {
@@ -143,7 +174,11 @@ class Markets extends Component {
 					<div>
 						<div>
 							Want to list your digital assets? Start your own market with your
-							HollaEx <Link className="link-text">white-lable</Link> solutions
+							HollaEx{' '}
+							<Link className="link-text" to="/white-label">
+								white-lable
+							</Link>{' '}
+							solutions
 						</div>
 						<div>
 							Visit coin info page{' '}
@@ -174,6 +209,15 @@ class Markets extends Component {
 						chartData={chartData}
 						handleClick={this.handleAssetsClick}
 						isAsset={isAsset}
+						constants={constants}
+						page={page}
+						pageSize={pageSize}
+						count={count}
+						goToNextPage={this.goToNextPage}
+						goToPreviousPage={this.goToPreviousPage}
+						showPaginator={
+							count === pageSize || count < pageSize ? false : true
+						}
 					/>
 				) : (
 					<MarketList
@@ -183,7 +227,7 @@ class Markets extends Component {
 						handleClick={this.handleClick}
 					/>
 				)}
-				{!showMarkets && page * pageSize + pageSize < count && (
+				{!isAsset && !showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
 						<EditWrapper
 							stringId="STAKE_DETAILS.VIEW_MORE"

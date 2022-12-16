@@ -235,6 +235,18 @@
 	}
 }
 
+.trade_tabs-container .trade-tab-price_diff_up:before {
+	margin-bottom: 0.5rem;
+}
+
+.info-text {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
+}
+
 @media (max-width: 1024px) {
 	.token-wrapper {
 		width: 100% !important;

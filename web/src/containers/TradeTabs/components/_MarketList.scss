@@ -88,6 +88,9 @@
 					background-color: $app-light-background;
 					color: $colors-black;
 				}
+				.capitalize {
+					text-transform: capitalize;
+				}
 				.td-chart {
 					width: 150px;
 					height: 50px;

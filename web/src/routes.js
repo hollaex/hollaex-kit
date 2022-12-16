@@ -59,13 +59,14 @@ import {
 	Pairs,
 	Fiatmarkets,
 	AdminApps,
+	DigitalAssets,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
-import { DigitalAssets, Hollaextoken, SmartTarget } from 'components';
+import { Hollaextoken, SmartTarget, WhiteLabel } from 'components';
 
 import {
 	isLoggedIn,
@@ -369,6 +370,7 @@ export const generateRoutes = (routes = []) => {
 					name="Digital Asset"
 					component={DigitalAssets}
 				/>
+				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route
 					path="verification"
 					name="Verification"

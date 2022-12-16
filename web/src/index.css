@@ -3694,12 +3694,20 @@ table th {
     background-color: #34363a;
     opacity: 0.5; } }
 
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+  background-color: #202020; }
+
+.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+  border-color: #d9d9d9; }
+
 .digital-market-wrapper {
   display: flex;
   justify-content: center;
   padding-top: 5rem; }
   .digital-market-wrapper .market-wrapper {
     width: 70%; }
+    .digital-market-wrapper .market-wrapper .dropdown-container {
+      margin-bottom: 2rem; }
     .digital-market-wrapper .market-wrapper .gray-text {
       color: #B2B3B3; }
     .digital-market-wrapper .market-wrapper .header-container {
@@ -4300,6 +4308,8 @@ table th {
     .market-list__container .market-list__block .market-list__block-table .table-row:hover {
       background-color: var(--base_secondary-navigation-bar);
       color: var(--labels_secondary-inactive-label-text-graphics); }
+    .market-list__container .market-list__block .market-list__block-table .table-row .capitalize {
+      text-transform: capitalize; }
     .market-list__container .market-list__block .market-list__block-table .table-row .td-chart {
       width: 150px;
       height: 50px; }
@@ -8787,7 +8797,7 @@ table th {
   padding: 0.75rem 0 0.25rem 0; }
 
 .subHeader {
-  color: #5D63FF;
+  color: #5d63ff;
   cursor: pointer;
   margin: 0.5rem 0;
   padding: 0 0.5rem;
@@ -8808,7 +8818,7 @@ table th {
 .img-content {
   width: 15px;
   height: 15px;
-  background-color: #5D63FF;
+  background-color: #5d63ff;
   border-radius: 8px;
   padding: 2px;
   margin-top: 7px; }
@@ -11331,7 +11341,7 @@ a.html5-qrcode-element {
     width: 20px;
     margin: 1px 3px; }
   .hollaex-token-wrapper .gray-text {
-    color: #B2B3B3; }
+    color: #b2b3b3; }
   .hollaex-token-wrapper .token-wrapper {
     width: 65%;
     height: 80%; }
@@ -11339,7 +11349,7 @@ a.html5-qrcode-element {
       width: 3.5rem;
       height: 3.5rem; }
     .hollaex-token-wrapper .token-wrapper .link {
-      color: #5D63FF;
+      color: #5d63ff;
       text-decoration: underline;
       cursor: pointer; }
     .hollaex-token-wrapper .token-wrapper .header-container {
@@ -11347,7 +11357,7 @@ a.html5-qrcode-element {
       font-size: 16px; }
       .hollaex-token-wrapper .token-wrapper .header-container .title {
         font-size: 24px;
-        color: #B2B3B3; }
+        color: #b2b3b3; }
         .hollaex-token-wrapper .token-wrapper .header-container .title span {
           color: #ffffff; }
         .hollaex-token-wrapper .token-wrapper .header-container .title .favourite-text {
@@ -11359,11 +11369,11 @@ a.html5-qrcode-element {
           opacity: 1; }
         .hollaex-token-wrapper .token-wrapper .header-container .title .favourite-text-2 {
           font-size: 12px;
-          color: #B2B3B3;
+          color: #b2b3b3;
           padding-right: 10px; }
     .hollaex-token-wrapper .token-wrapper .ant-btn {
       background: #242426;
-      color: #B2B3B3; }
+      color: #b2b3b3; }
     .hollaex-token-wrapper .token-wrapper .hollaex-container {
       border: 1px solid var(--calculated_super-pale_label-text-graphics); }
       .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container {
@@ -11381,7 +11391,7 @@ a.html5-qrcode-element {
             font-size: 14px;
             width: 70%;
             margin-top: 1rem;
-            color: #B2B3B3; }
+            color: #b2b3b3; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container {
             display: flex;
             margin-top: 7rem; }
@@ -11390,9 +11400,9 @@ a.html5-qrcode-element {
             .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .button-2 {
               margin: 0 10px 0 10px; }
             .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .button-3 {
-              background-color: #5D63FF;
+              background-color: #5d63ff;
               color: #ffffff;
-              border-color: #5D63FF; }
+              border-color: #5d63ff; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper {
           width: 40%;
           padding: 40px 65px 30px 55px;
@@ -11448,9 +11458,19 @@ a.html5-qrcode-element {
           .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .white-txt {
             color: var(--labels_important-active-labels-text-graphics); }
   .hollaex-token-wrapper .paircoins-color {
-    color: #B2B3B3; }
+    color: #b2b3b3; }
   .hollaex-token-wrapper .white-text {
     color: #ffffff; }
+
+.trade_tabs-container .trade-tab-price_diff_up:before {
+  margin-bottom: 0.5rem; }
+
+.info-text {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px; }
 
 @media (max-width: 1024px) {
   .token-wrapper {

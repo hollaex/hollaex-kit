@@ -160,12 +160,22 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0.5;
 	}
 }
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
+	background-color: #202020;
+}
+.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector {
+	border-color: #d9d9d9;
+}
 .digital-market-wrapper {
 	display: flex;
 	justify-content: center;
 	padding-top: 5rem;
 	.market-wrapper {
 		width: 70%;
+		.dropdown-container {
+			margin-bottom: 2rem;
+		}
 		.gray-text {
 			color: #b2b3b3;
 		}
