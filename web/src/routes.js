@@ -365,11 +365,7 @@ export const generateRoutes = (routes = []) => {
 					component={Account}
 					onEnter={requireAuth}
 				/>
-				<Route
-					path="digital-asset"
-					name="Digital Asset"
-					component={DigitalAssets}
-				/>
+				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route
 					path="verification"
@@ -415,7 +411,7 @@ export const generateRoutes = (routes = []) => {
 					component={QuickTrade}
 				/>
 				<Route
-					path="assets/coin-info/:token"
+					path="assets/coin/:token"
 					name="Hollaex Token"
 					component={Hollaextoken}
 				/>

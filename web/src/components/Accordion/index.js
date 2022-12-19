@@ -105,7 +105,7 @@ class Accordion extends Component {
 				<div className="header-wrapper">
 					<div className="header-title">All wallet assets</div>
 					<div className="subHeader link-separator">
-						<Link to="digital-asset">ASSET INFO PAGE</Link>
+						<Link to="assets">ASSET INFO PAGE</Link>
 					</div>
 					{/* <div className='link-separator'>
                     </div> */}

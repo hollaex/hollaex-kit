@@ -148,7 +148,7 @@ class Markets extends Component {
 	handleAssetsClick = (pair) => {
 		const { router } = this.props;
 		if (pair && router) {
-			router.push(`/assets/coin-info/${pair}`);
+			router.push(`/assets/coin/${pair.split('-')[0]}`);
 		}
 	};
 
@@ -182,7 +182,7 @@ class Markets extends Component {
 						</div>
 						<div>
 							Visit coin info page{' '}
-							<Link to="digital-asset" className="link-text">
+							<Link to="assets" className="link-text">
 								here
 							</Link>
 						</div>

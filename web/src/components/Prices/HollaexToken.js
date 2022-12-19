@@ -22,7 +22,10 @@ import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 
 const Hollaextoken = (props) => {
 	let currentPath = window?.location?.pathname.split('/');
-	let currentPair = currentPath[currentPath.length - 1];
+	let currentCoin = currentPath[currentPath.length - 1];
+	let currentPair = Object.keys(props?.pairs).filter((d) =>
+		d?.split('-').includes(currentCoin)
+	)[0];
 	const [data, setData] = useState([]);
 	const [chartData, setChartData] = useState({});
 	const [options, setOptions] = useState([]);
@@ -139,7 +142,7 @@ const Hollaextoken = (props) => {
 	let pairBase_fullName;
 	const tickerDiff = _get(props, 'market.ticker.close') - 0;
 	Object.keys(coins).forEach((data) => {
-		if (coins[data].symbol === pairBase) {
+		if (coins[data].symbol === currentCoin) {
 			pairBase_fullName = coins[data].fullname;
 		}
 	});
@@ -198,8 +201,8 @@ const Hollaextoken = (props) => {
 					<div className="d-flex pb-30">
 						<div className="image-container">
 							<Image
-								iconId={generateCoinIconId(pairBase)}
-								icon={ICONS[generateCoinIconId(pairBase)]}
+								iconId={generateCoinIconId(currentCoin)}
+								icon={ICONS[generateCoinIconId(currentCoin)]}
 								wrapperClassName="coins-icon"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
@@ -208,7 +211,8 @@ const Hollaextoken = (props) => {
 							<div className="title">
 								<div className="d-flex justify-content-between">
 									<div>
-										<span>{pairBase_fullName}</span> {pairBase?.toUpperCase()}
+										<span>{pairBase_fullName}</span>{' '}
+										{currentCoin?.toUpperCase()}
 									</div>
 									<div
 										className="pl-3 pr-2"
@@ -243,8 +247,8 @@ const Hollaextoken = (props) => {
 										alt="wallet-icon"
 									/>
 									<div className="gray-text">
-										Balance: {available_balance[`${pairBase}_available`]}{' '}
-										{pairBase?.toUpperCase()}{' '}
+										Balance: {available_balance[`${currentCoin}_available`]}{' '}
+										{currentCoin?.toUpperCase()}{' '}
 										<Link className="link" to={'/wallet'}>
 											(Open wallet)
 										</Link>
@@ -257,24 +261,24 @@ const Hollaextoken = (props) => {
 						<div className={`token-container ${viewMore ? 'h-100' : ''}`}>
 							<div className="info-container">
 								<div className="header-text">
-									About {pairBase_fullName} ({pairBase?.toUpperCase()})
+									About {pairBase_fullName} ({currentCoin?.toUpperCase()})
 								</div>
 								<div className="sub-text">
-									{pairBase?.toUpperCase()} is the native token for HollaEx and
-									powers the open-source white-label exchange software{' '}
+									{currentCoin?.toUpperCase()} is the native token for HollaEx
+									and powers the open-source white-label exchange software{' '}
 									<span className="link">HollaEx Kit</span>. Holders of{' '}
-									{pairBase?.toUpperCase()} are franted benefits when using the
-									HollaEx system.
+									{currentCoin?.toUpperCase()} are franted benefits when using
+									the HollaEx system.
 								</div>
 								<div className="sub-text">
-									With {pairBase?.toUpperCase()} anyone can create new coins and
-									list tokens on their very own exchange. By donating{' '}
-									{pairBase?.toUpperCase()}, new coins and trading pairs can be
-									activated for trading, distribution, and price discovery.
+									With {currentCoin?.toUpperCase()} anyone can create new coins
+									and list tokens on their very own exchange. By donating{' '}
+									{currentCoin?.toUpperCase()}, new coins and trading pairs can
+									be activated for trading, distribution, and price discovery.
 								</div>
 								{viewMore && (
 									<div className="sub-text">
-										{pairBase?.toUpperCase()} powers the HollaEx exchange
+										{currentCoin?.toUpperCase()} powers the HollaEx exchange
 										ecosystem. It is used for coin activation, coin listing,
 										staking and for discounts on purchases.
 									</div>
@@ -287,7 +291,7 @@ const Hollaextoken = (props) => {
 									</div>
 								) : (
 									<div className="mt-3">
-										{['xht', 'btc', 'eth'].includes(pairBase) ? (
+										{['xht', 'btc', 'eth'].includes(currentCoin) ? (
 											<div className="link text-left mb-4">
 												<Link
 													href="https://etherscan.io/token/0xD3c625F54dec647DB8780dBBe0E880eF21BA4329"
@@ -299,35 +303,37 @@ const Hollaextoken = (props) => {
 										) : (
 											<div>Coming Soon...</div>
 										)}
-										{['xht', 'btc', 'eth'].includes(pairBase) && <div>--</div>}
+										{['xht', 'btc', 'eth'].includes(currentCoin) && (
+											<div>--</div>
+										)}
 										<div>
-											{pairBase === 'xht' && (
+											{currentCoin === 'xht' && (
 												<Link
 													className="link text-left"
 													to="/stake/details/xht?mystaking=true"
 												>
-													Stake {pairBase?.toUpperCase()}
+													Stake {currentCoin?.toUpperCase()}
 												</Link>
 											)}
 										</div>
-										{['xht', 'btc', 'eth'].includes(pairBase) && (
+										{['xht', 'btc', 'eth'].includes(currentCoin) && (
 											<div>
 												<Link
 													className="link text-left"
 													to={`/quick-trade/${currentPair}`}
 												>
-													Quick buy {pairBase?.toUpperCase()}
+													Quick buy {currentCoin?.toUpperCase()}
 												</Link>
 											</div>
 										)}
 										<div>
-											{pairBase === 'xht' && (
+											{currentCoin === 'xht' && (
 												<Link
 													className="link text-left"
 													href="https://www.hollaex.com/hollaex-token-staking"
 													target="blank"
 												>
-													More {pairBase?.toUpperCase()} info
+													More {currentCoin?.toUpperCase()} info
 												</Link>
 											)}
 										</div>
