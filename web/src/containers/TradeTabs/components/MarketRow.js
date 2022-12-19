@@ -120,7 +120,20 @@ class MarketRow extends Component {
 				)}
 				{isAsset && (
 					<td>
-						<div className="ml-1 capitalize">{pairTwo.type}</div>
+						<div className="d-flex">
+							<div className="icon-container">
+								<div
+									className={
+										pairTwo.type === 'blockchain'
+											? 'squarBox'
+											: pairTwo.type === 'fiat'
+											? 'circleIcon'
+											: 'triangleIcon'
+									}
+								></div>
+							</div>
+							<div className="ml-1 capitalize">{pairTwo.type}</div>
+						</div>
 					</td>
 				)}
 				<td className="td-chart">

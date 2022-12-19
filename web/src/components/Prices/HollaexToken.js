@@ -192,7 +192,7 @@ const Hollaextoken = (props) => {
 					className="token-wrapper"
 					style={{
 						height: options.length > 5 ? '100%' : '80%',
-						marginTop: options.length ? '3rem' : '0',
+						marginTop: options.length > 5 ? '10rem' : '3rem',
 					}}
 				>
 					<div className="d-flex pb-30">

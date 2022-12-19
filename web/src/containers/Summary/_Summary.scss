@@ -162,10 +162,25 @@ $trade-tab--arrow-size: 0.4rem;
 }
 .ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
 	background-color: #202020;
+	color: #a8a8b1;
 }
 .ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
-	.ant-select-selector {
+	.ant-select-selector,
+.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
 	border-color: #d9d9d9;
+	background-color: #212121;
+	color: #a8a8b1;
+}
+.ant-select-dropdown,
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+	background-color: #212121;
+	color: #a8a8b1;
+}
+.ant-select-item {
+	color: #a8a8b1;
+}
+.ant-select-dropdown {
+	border: 1px solid #a8a8b1;
 }
 .digital-market-wrapper {
 	display: flex;
