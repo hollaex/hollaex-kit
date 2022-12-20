@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,13 @@ import { setConfig } from 'actions/appActions';
 import { STATIC_ICONS } from 'config/icons';
 import { handleFiatUpgrade as handleDustUpgrade } from 'utils/utils';
 
-const Duster = ({ info, coins, setConfig }) => {
+const Duster = ({
+	info,
+	coins,
+	setConfig,
+	dust = { quote: 'xht' },
+	nativeCurrency,
+}) => {
 	const [openConfirmation, setOpenConfirmation] = useState();
 	const [isCustom, setIsCustom] = useState(false);
 	const [custom, setCustom] = useState();
@@ -21,7 +27,7 @@ const Duster = ({ info, coins, setConfig }) => {
 
 	const handleConfirm = () => {
 		setSubmitting(true);
-		updateConstants({ dust: { quote: isCustom ? custom : 'xht' } })
+		updateConstants({ kit: { dust: { quote: isCustom ? custom : 'xht' } } })
 			.then((res) => {
 				setConfig(res.kit);
 				setOpenConfirmation(false);
@@ -35,6 +41,24 @@ const Duster = ({ info, coins, setConfig }) => {
 				setSubmitting(false);
 			});
 	};
+
+	useEffect(() => {
+		if (dust.quote === 'xht') {
+			setIsCustom(false);
+
+			if (!custom) {
+				if (nativeCurrency && nativeCurrency !== 'xht') {
+					setCustom(nativeCurrency);
+				} else {
+					const firstCoin = Object.entries(coins)[0][0];
+					setCustom(firstCoin);
+				}
+			}
+		} else {
+			setIsCustom(true);
+			setCustom(dust.quote);
+		}
+	}, [dust, coins, custom, nativeCurrency]);
 
 	return (
 		<div className="app_container-content">
@@ -183,6 +207,8 @@ const Duster = ({ info, coins, setConfig }) => {
 const mapStateToProps = (state) => ({
 	info: state.app.constants.info,
 	coins: state.app.coins,
+	dust: state.app.constants.dust,
+	nativeCurrency: state.app.constants.native_currency,
 });
 
 const mapDispatchToProps = (dispatch) => ({
