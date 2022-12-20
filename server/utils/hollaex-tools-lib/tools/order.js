@@ -267,6 +267,8 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 	let estimatedConversions = [];
 	for (const coin of Object.keys(symbols)) {
 
+		if (usdtPrices[coin] < 0 || quotePrices[coin] < 0) continue;
+
 		let symbol = `${coin}-${quote}`;
 		let side = 'sell';
 
@@ -314,6 +316,8 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 
 		let convertedAssets = [];
 		for (const coin of Object.keys(symbols)) {
+
+			if (usdtPrices[coin] < 0 || quotePrices[coin] < 0) continue;
 
 			let symbol = `${coin}-${quote}`;
 			let side = 'sell';
