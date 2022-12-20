@@ -337,7 +337,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 						price
 					}
 					const res = await convertBalance(orderData, user_id, maker_id);
-					convertedAssets.push(res.symbol);
+					convertedAssets.push(res);
 				} catch (err) {
 					loggerOrders.error(
 						'dustUserBalance error',
