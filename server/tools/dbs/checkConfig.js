@@ -56,7 +56,11 @@ Status.findOne()
 			onramp: existingKitConfigurations.onramp || {},
 			offramp: existingKitConfigurations.offramp || {},
 			user_payments: existingKitConfigurations.user_payments || {},
-			dust: {} || {}
+			dust: existingKitConfigurations.dust || {
+				maker_id: 1,
+				quote: 'xht',
+				spread: 0
+			}
 		};
 
 		const secrets = {

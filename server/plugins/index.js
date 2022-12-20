@@ -253,85 +253,91 @@ checkStatus()
 
 		for (const plugin of plugins) {
 			try {
-				loggerPlugin.verbose(
-					'plugins/index/initialization',
-					`starting plugin ${plugin.name}`
-				);
-
-				const context = {
-					configValues: {
-						publicMeta: plugin.public_meta,
-						meta: plugin.meta
-					},
-					pluginLibraries: {
-						app,
-						loggerPlugin,
-						toolsLib
-					},
-					app,
-					toolsLib,
-					lodash,
-					expressValidator,
-					loggerPlugin,
-					multer,
-					moment,
-					mathjs,
-					bluebird,
-					umzug,
-					rp,
-					sequelize,
-					uuid,
-					jwt,
-					momentTz,
-					json2csv,
-					flat,
-					ws,
-					cron,
-					randomString,
-					bcryptjs,
-					expectCt,
-					validator,
-					uglifyEs,
-					otp,
-					latestVersion,
-					geoipLite,
-					nodemailer,
-					wsHeartbeatServer,
-					wsHeartbeatClient,
-					cors,
-					winston,
-					elasticApmNode,
-					winstonElasticsearchApm,
-					tripleBeam,
-					bodyParser,
-					morgan,
-					meta: plugin.meta,
-					publicMeta: plugin.public_meta,
-					installedLibraries: {}
-				};
-
-				if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+				if (plugin.script.includes('cron') || plugin.script.includes('setInterval')) {
+					await startPlugin(plugin);
+				}
+				else {
 					loggerPlugin.verbose(
 						'plugins/index/initialization',
-						`Installing packages for plugin ${plugin.name}`
+						`starting plugin ${plugin.name}`
 					);
 
-					for (const library of plugin.prescript.install) {
-						context.installedLibraries[library] = await installLibrary(library);
+					const context = {
+						configValues: {
+							publicMeta: plugin.public_meta,
+							meta: plugin.meta
+						},
+						pluginLibraries: {
+							app,
+							loggerPlugin,
+							toolsLib
+						},
+						app,
+						toolsLib,
+						lodash,
+						expressValidator,
+						loggerPlugin,
+						multer,
+						moment,
+						mathjs,
+						bluebird,
+						umzug,
+						rp,
+						sequelize,
+						uuid,
+						jwt,
+						momentTz,
+						json2csv,
+						flat,
+						ws,
+						cron,
+						randomString,
+						bcryptjs,
+						expectCt,
+						validator,
+						uglifyEs,
+						otp,
+						latestVersion,
+						geoipLite,
+						nodemailer,
+						wsHeartbeatServer,
+						wsHeartbeatClient,
+						cors,
+						winston,
+						elasticApmNode,
+						winstonElasticsearchApm,
+						tripleBeam,
+						bodyParser,
+						morgan,
+						meta: plugin.meta,
+						publicMeta: plugin.public_meta,
+						installedLibraries: {}
+					};
+
+					if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+						loggerPlugin.verbose(
+							'plugins/index/initialization',
+							`Installing packages for plugin ${plugin.name}`
+						);
+
+						for (const library of plugin.prescript.install) {
+							context.installedLibraries[library] = await installLibrary(library);
+						}
+
+						loggerPlugin.verbose(
+							'plugins/index/initialization',
+							`Plugin ${plugin.name} packages installed`
+						);
 					}
+
+					_eval(plugin.script, plugin.name, context, true);
 
 					loggerPlugin.verbose(
 						'plugins/index/initialization',
-						`Plugin ${plugin.name} packages installed`
+						`Plugin ${plugin.name} running`
 					);
 				}
 
-				_eval(plugin.script, plugin.name, context, true);
-
-				loggerPlugin.verbose(
-					'plugins/index/initialization',
-					`Plugin ${plugin.name} running`
-				);
 			} catch (err) {
 				loggerPlugin.error(
 					'plugins/index/initialization',
