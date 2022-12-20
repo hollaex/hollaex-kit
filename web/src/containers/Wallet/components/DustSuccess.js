@@ -6,16 +6,8 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
-const DustSuccess = ({
-	onBack,
-	router,
-	icons: ICONS,
-	coins,
-	conversion,
-	data = { value: 7.2 },
-}) => {
-	const { increment_unit, display_name } =
-		coins[conversion] || DEFAULT_COIN_DATA;
+const DustSuccess = ({ onBack, router, icons: ICONS, coins, quote, total }) => {
+	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
 		<div className="dust-dialog-content">
@@ -39,7 +31,7 @@ const DustSuccess = ({
 				<EditWrapper stringId="DUST.SUCCESSFUL.TEXT">
 					{STRINGS.formatString(
 						CURRENCY_PRICE_FORMAT,
-						formatCurrencyByIncrementalUnit(data.value, increment_unit),
+						formatCurrencyByIncrementalUnit(total, increment_unit),
 						display_name
 					)}
 				</EditWrapper>

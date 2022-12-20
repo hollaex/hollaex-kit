@@ -2,39 +2,38 @@ import React, { useState, useEffect } from 'react';
 import mathjs from 'mathjs';
 import { IconTitle, Button, EditWrapper, Image } from 'components';
 import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import {
+	calculateOraclePrice,
+	formatCurrencyByIncrementalUnit,
+} from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const FEE_RATIO = 0.05;
+const FEE_RATIO = 0;
 
 const DustConfirmation = ({
-	dustAssets,
-	selectedAssets,
 	onConfirm,
 	onBack,
 	definition,
-	conversion,
+	quote,
 	coins,
 	icons: ICONS,
 	loading,
+	data,
 }) => {
 	const [estimatedValue, setEstimatedValue] = useState(0);
 	const [estimatedFee, setEstimatedFee] = useState(0);
 
 	useEffect(() => {
 		let total = 0;
-		dustAssets.forEach(([key, { convertedValue }]) => {
-			if (selectedAssets.includes(key)) {
-				total = mathjs.add(total, convertedValue);
-			}
+		data.forEach(({ price = 0, size = 0 }) => {
+			total = mathjs.add(total, calculateOraclePrice(size, price));
 		});
 		setEstimatedValue(total);
 		setEstimatedFee(mathjs.multiply(total, FEE_RATIO));
-	}, [selectedAssets, dustAssets]);
+	}, [data]);
 
-	const { increment_unit, display_name } =
-		coins[conversion] || DEFAULT_COIN_DATA;
+	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
 		<div className="dust-dialog-content">
@@ -53,11 +52,12 @@ const DustConfirmation = ({
 				className="d-flex justify-content-around flex-wrap align-center py-4"
 				style={{ gap: '1rem' }}
 			>
-				{selectedAssets.map((key) => {
+				{data.map(({ symbol }) => {
+					const key = symbol?.split('-')[0];
 					const { icon_id, fullname } = coins[key] || DEFAULT_COIN_DATA;
 
 					return (
-						<div className="d-flex align-items-center">
+						<div key={key} className="d-flex align-items-center">
 							<Image
 								iconId={icon_id}
 								icon={ICONS[icon_id]}
@@ -115,7 +115,7 @@ const DustConfirmation = ({
 					<EditWrapper stringId="DUST.CONFIRMATION.NOTE">
 						{STRINGS.formatString(
 							STRINGS['DUST.CONFIRMATION.NOTE'],
-							<span className="caps">{conversion}</span>,
+							<span className="caps">{quote}</span>,
 							definition.criterion,
 							<span className="caps">{definition.quote}</span>
 						)}

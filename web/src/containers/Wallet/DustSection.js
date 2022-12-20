@@ -30,54 +30,63 @@ const DUST_DEFINITION = {
 	criterion: 1,
 };
 
-const CONVERSION_TO = 'xht';
-
-const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
+const DustSection = ({
+	goToWallet,
+	icons: ICONS,
+	coins,
+	balances,
+	dust: { quote = 'xht' } = { quote: 'xht' },
+	pricesInNative,
+}) => {
 	const [dustAssets, setDustAssets] = useState([]);
 	const [initialized, setInitialized] = useState(false);
 	const [estimatedDust, setEstimatedDust] = useState(0);
-	const [prices, setPrices] = useState({});
-	const [pricesInConversionTo, setPricesInConversionTo] = useState({});
+	const [
+		pricesInDustDefinitionQuote,
+		setPricesInDustDefinitionQuote,
+	] = useState({});
+	const [pricesInDustQuote, setPricesInDustQuote] = useState({});
 	const [selectedAssets, setSelectedAssets] = useState([]);
 	const [showConfirmation, setShowConfirmation] = useState(false);
 	const [showSuccess, setShowSuccess] = useState(false);
 	const [loadingEstimations, setLoadingEstimations] = useState(false);
-	const [estimationData, setEstimationData] = useState({});
+	const [estimationData, setEstimationData] = useState([]);
 	const [loadingResult, setLoadingResult] = useState(false);
 	const [result, setResult] = useState();
+	const [error, setError] = useState();
 
 	const getPrices = useCallback(async () => {
 		try {
-			const result = await Promise.all([
+			const response = await Promise.all([
 				getOraclePrices({
 					coins,
 					quote: DUST_DEFINITION.quote,
 				}),
 				getOraclePrices({
 					coins,
-					quote: CONVERSION_TO,
+					quote: quote,
 				}),
 			]);
-			setPrices(result[0]);
-			setPricesInConversionTo(result[1]);
+			setPricesInDustDefinitionQuote(response[0]);
+			setPricesInDustQuote(response[1]);
 			setInitialized(true);
 		} catch (err) {
 			console.error(err);
 			setInitialized(true);
 		}
-	}, [coins]);
+	}, [coins, quote]);
 
 	const calculateDustAssets = () => {
 		const dust = {};
 		let dustValue = 0;
 		Object.entries(coins).forEach(([key, coin = {}]) => {
 			const { [`${key}_available`]: balance } = balances;
-			const { [key]: price = 0 } = prices;
-			const { [key]: conversionPrice = 0 } = pricesInConversionTo;
+			const { [key]: price = 0 } = pricesInDustDefinitionQuote;
+			const { [key]: conversionPrice = 0 } = pricesInDustQuote;
 			const calculatedValue = calculateOraclePrice(balance, price);
 			const convertedValue = calculateOraclePrice(balance, conversionPrice);
 			if (
-				mathjs.smallerEq(convertedValue, DUST_DEFINITION.criterion) &&
+				mathjs.smallerEq(calculatedValue, DUST_DEFINITION.criterion) &&
 				mathjs.larger(convertedValue, 0)
 			) {
 				dust[key] = { ...coin, balance, calculatedValue, convertedValue };
@@ -100,12 +109,12 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 
 	useEffect(() => {
 		getPrices();
-	}, [getPrices]);
+	}, [getPrices, pricesInNative]);
 
 	useEffect(() => {
 		calculateDustAssets();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [prices, balances, coins]);
+	}, [pricesInDustQuote, pricesInDustDefinitionQuote, balances, coins]);
 
 	const toggleAsset = (key) => {
 		if (selectedAssets.includes(key)) {
@@ -116,7 +125,7 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 	};
 
 	const { fullname: destination_fullname, increment_unit, display_name } =
-		coins[CONVERSION_TO] || DEFAULT_COIN_DATA;
+		coins[quote] || DEFAULT_COIN_DATA;
 
 	const totalAssets = STRINGS.formatString(
 		CURRENCY_PRICE_FORMAT,
@@ -127,14 +136,18 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 	const handleConvert = () => {
 		setLoadingEstimations(true);
 		getEstimatedDust(selectedAssets)
-			.then((res) => {
-				console.log('res', res);
-				setEstimationData(res);
+			.then(({ data = [] }) => {
+				setEstimationData(data);
 				setShowConfirmation(true);
 			})
 			.catch((err) => {
-				console.log('err', err);
-				setEstimationData({});
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
+				setEstimationData([]);
+				setError(_error);
+				setTimeout(setError, 4000);
 			})
 			.finally(() => {
 				setLoadingEstimations(false);
@@ -144,17 +157,33 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 	const handleConfirm = () => {
 		setLoadingResult(true);
 		convertDust(selectedAssets)
-			.then((res) => {
-				console.log('res', res);
-				setResult(res);
-				setShowConfirmation(false);
-				setShowSuccess(true);
+			.then(({ data }) => {
+				if (!data?.length) {
+					setResult();
+					setShowConfirmation(false);
+					setShowSuccess(false);
+					setError('Something went wrong');
+					setTimeout(setError, 4000);
+				} else {
+					let total = 0;
+					data.forEach(({ size = 0, price = 0 }) => {
+						total = mathjs.add(total, calculateOraclePrice(size, price));
+					});
+					setResult(total);
+					setShowConfirmation(false);
+					setShowSuccess(true);
+				}
 			})
 			.catch((err) => {
-				console.log('err', err);
+				const _error =
+					err.response && err.response.data
+						? err.response.data.message
+						: err.message;
 				setResult();
 				setShowConfirmation(false);
 				setShowSuccess(false);
+				setError(_error);
+				setTimeout(setError, 4000);
 			})
 			.finally(() => {
 				setLoadingResult(false);
@@ -209,7 +238,7 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 									<EditWrapper stringId="DUST.SECTION.TEXT_2">
 										{STRINGS.formatString(
 											STRINGS['DUST.SECTION.TEXT_2'],
-											<span className="caps">{CONVERSION_TO}</span>,
+											<span className="caps">{quote}</span>,
 											destination_fullname
 										)}
 									</EditWrapper>
@@ -227,7 +256,7 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 							</div>
 							<EditWrapper stringId="DUST.ESTIMATED_TOTAL">
 								<div className="dust-estimated-balance">
-									{CONVERSION_TO && (
+									{quote && (
 										<div>
 											<div className="bold">
 												{STRINGS['DUST.ESTIMATED_TOTAL']}
@@ -300,6 +329,7 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 							<LoadingOutlined className="font-title" />
 						</div>
 					)}
+					<div className="warning_text">{error}</div>
 				</div>
 				<div className="d-flex align-center justify-content-center">
 					<div>
@@ -324,12 +354,10 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 			>
 				{showConfirmation && (
 					<DustConfirmation
-						dustAssets={dustAssets}
-						selectedAssets={selectedAssets}
 						onConfirm={handleConfirm}
 						onBack={() => setShowConfirmation(false)}
 						definition={DUST_DEFINITION}
-						conversion={CONVERSION_TO}
+						quote={quote}
 						coins={coins}
 						data={estimationData}
 						loading={loadingResult}
@@ -338,9 +366,9 @@ const DustSection = ({ goToWallet, icons: ICONS, coins, balances }) => {
 				{showSuccess && (
 					<DustSuccess
 						onBack={() => setShowSuccess(false)}
-						conversion={CONVERSION_TO}
+						quote={quote}
 						coins={coins}
-						data={result}
+						total={result}
 					/>
 				)}
 			</Dialog>
@@ -352,6 +380,7 @@ const mapStateToProps = (state) => ({
 	coins: state.app.coins,
 	balances: state.user.balance,
 	pricesInNative: state.asset.oraclePrices,
+	dust: state.app.constants.dust,
 });
 
 const mapDispatchToProps = (dispatch) => ({
