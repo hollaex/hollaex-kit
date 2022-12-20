@@ -5276,6 +5276,15 @@ definitions:
             type: array
             items:
               type: string
+          dust:
+            type: object
+            properties:
+              quote:
+                type: string
+              maker_id:
+                type: integer
+              spread:
+                type: number
           onramp:
             type: object
           offramp:
