@@ -500,3 +500,7 @@
 	fill: #ffffff;
 	font-size: larger;
 }
+.app_container-content .admin-wallet-icon {
+	margin-right: 1rem;
+	width: 5rem;
+}
