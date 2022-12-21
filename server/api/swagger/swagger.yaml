@@ -4485,6 +4485,26 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/dash-token:
+    x-swagger-router-controller: admin
+    get:
+      operationId: generateDashToken
+      description: Generate a dash token to use for holla dash
+      tags:
+        - Admin
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /broker:
     x-swagger-router-controller: broker
     post:
