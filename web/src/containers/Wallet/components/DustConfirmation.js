@@ -2,10 +2,7 @@ import React, { useState, useEffect } from 'react';
 import mathjs from 'mathjs';
 import { IconTitle, Button, EditWrapper, Image } from 'components';
 import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
-import {
-	calculateOraclePrice,
-	formatCurrencyByIncrementalUnit,
-} from 'utils/currency';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -26,8 +23,8 @@ const DustConfirmation = ({
 
 	useEffect(() => {
 		let total = 0;
-		data.forEach(({ price = 0, size = 0 }) => {
-			total = mathjs.add(total, calculateOraclePrice(size, price));
+		data.forEach(({ quoteSize = 0 }) => {
+			total = mathjs.add(total, quoteSize);
 		});
 		setEstimatedValue(total);
 		setEstimatedFee(mathjs.multiply(total, FEE_RATIO));
