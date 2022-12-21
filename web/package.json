@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.4.6",
+	"version": "2.5.0",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -28,6 +28,7 @@
 		"highcharts-react-official": "3.1.0",
 		"hollaex-web-lib": "0.3.0",
 		"html-to-draftjs": "1.5.0",
+		"html5-qrcode": "2.3.3",
 		"jwt-decode": "2.2.0",
 		"keycode": "2.2.0",
 		"lodash.debounce": "4.0.8",

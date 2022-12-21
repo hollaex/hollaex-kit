@@ -1,4 +1,13 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
+import {
+	SORT,
+	toggleSort,
+	setSortModeChange,
+	setSortModeVolume,
+} from 'actions/appActions';
 import {
 	oneOfType,
 	arrayOf,
@@ -9,7 +18,7 @@ import {
 	string,
 	func,
 } from 'prop-types';
-
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Paginator } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -28,10 +37,49 @@ const MarketList = ({
 	goToPreviousPage,
 	showPaginator = false,
 	loading,
+	mode,
+	is_descending,
+	toggleSort,
+	setSortModeChange,
+	setSortModeVolume,
 }) => {
+	const handleClickChange = () => {
+		if (mode === SORT.CHANGE) {
+			toggleSort();
+		} else {
+			setSortModeChange();
+		}
+	};
+
+	const handleClickVolume = () => {
+		if (mode === SORT.VOL) {
+			toggleSort();
+		} else {
+			setSortModeVolume();
+		}
+	};
+
+	const renderCaret = (cell) => (
+		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+			<CaretUpOutlined
+				className={classnames({
+					'important-text': mode === cell && is_descending,
+				})}
+			/>
+			<CaretDownOutlined
+				className={classnames({
+					'important-text': mode === cell && !is_descending,
+				})}
+			/>
+		</div>
+	);
+
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
+				<div className="d-flex justify-content-end">
+					<EditWrapper configId="MARKET_LIST_CONFIGS" position={[0, 0]} />
+				</div>
 				<table className="market-list__block-table">
 					<thead>
 						<tr className="table-bottom-border">
@@ -50,17 +98,19 @@ const MarketList = ({
 								</div>
 							</th>
 							<th>
-								<div>
+								<div onClick={handleClickChange} className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
 									</EditWrapper>
+									{renderCaret(SORT.CHANGE)}
 								</div>
 							</th>
 							<th>
-								<div>
+								<div onClick={handleClickVolume} className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.VOLUME_24h">
 										{STRINGS['MARKETS_TABLE.VOLUME_24h']}
 									</EditWrapper>
+									{renderCaret(SORT.VOL)}
 								</div>
 							</th>
 							<th>
@@ -76,6 +126,7 @@ const MarketList = ({
 						{markets.map((market, index) => (
 							<MarketRow
 								index={index}
+								key={index}
 								icons={ICONS}
 								handleClick={handleClick}
 								chartData={chartData}
@@ -117,4 +168,22 @@ MarketList.propTypes = {
 	handleClick: func.isRequired,
 };
 
-export default withConfig(MarketList);
+const mapStateToProps = ({
+	app: {
+		sort: { mode, is_descending },
+	},
+}) => ({
+	mode,
+	is_descending,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleSort: bindActionCreators(toggleSort, dispatch),
+	setSortModeVolume: bindActionCreators(setSortModeVolume, dispatch),
+	setSortModeChange: bindActionCreators(setSortModeChange, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(MarketList));

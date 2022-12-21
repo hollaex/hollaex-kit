@@ -37,7 +37,7 @@ const LOGIN_COLUMNS = [
 class Logins extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		if (this.props.userId) {
 			this.handleUserLogins(this.props.userId);
 		}

@@ -86,10 +86,12 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 						) : (
 							<div>
 								<div className="rounded-loading">
-									<div className="inner-round"></div>
+									<div className="inner-round" />
 								</div>
-								<div className="loading-txt">
-									{STRINGS['WALLET.LOADING_ASSETS'].toUpperCase()}
+								<div className="loading-txt caps">
+									<EditWrapper stringId="WALLET.LOADING_ASSETS">
+										{STRINGS['WALLET.LOADING_ASSETS']}
+									</EditWrapper>
 								</div>
 							</div>
 						)}

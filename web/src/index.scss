@@ -97,10 +97,6 @@ body {
 	}
 }
 
-.blockchain-search {
-	filter: brightness(0) invert(0.8);
-}
-
 input,
 input:focus {
 	outline: none;
@@ -198,8 +194,16 @@ svg {
 	.fiat-kyc,
 	.all-apps,
 	.my-apps,
-	.apps {
+	.apps,
+	.search-blockchain,
+	.sparkle-dust,
+	.dust-sweeper,
+	.dust-settlement {
 		fill: $colors-black;
+	}
+
+	.dust-settlement-green {
+		fill: $colors-notifications-green;
 	}
 
 	.account-inactive {

@@ -4,7 +4,7 @@ import { reduxForm } from 'redux-form';
 import renderFields from 'components/Form/factoryFields';
 import { getErrorLocalized } from 'utils/errors';
 import { required, minValue, maxValue } from 'components/Form/validations';
-import { IconTitle, Button } from 'components';
+import { IconTitle, Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -33,7 +33,7 @@ const Form = ({
 		{error && <div className="warning_text">{getErrorLocalized(error)}</div>}
 		<div className="d-flex mt-3">
 			<Button label={STRINGS['BACK_TEXT']} onClick={onClose} />
-			<div className="mx-2"></div>
+			<div className="mx-2" />
 			<Button
 				label={STRINGS['USER_SETTINGS.SET_TXT']}
 				disabled={pristine || submitting || !valid}
@@ -62,12 +62,15 @@ const SetOrderPortfolio = ({ data, icons: ICONS, ...rest }) => {
 				textType="title"
 				underline={true}
 			/>
-			<div className="mt-1">
+			<EditWrapper
+				stringId="USER_SETTINGS.CREATE_ORDER_WARING_TEXT"
+				renderWrapper={(children) => <div className="mt-1">{children}</div>}
+			>
 				{STRINGS.formatString(
 					STRINGS['USER_SETTINGS.CREATE_ORDER_WARING_TEXT'],
 					portfolioPercent
-				).join('')}
-			</div>
+				)}
+			</EditWrapper>
 			<OrderPortfolioForm {...data} {...rest} />
 		</div>
 	);

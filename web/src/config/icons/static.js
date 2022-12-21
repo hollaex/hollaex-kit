@@ -23,6 +23,7 @@ const icons = {
 	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
 	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
 	USER_SECTION_WALLET: '/assets/images/admin-user-wallet.svg',
+	DUST_CONVERTER: '/assets/images/duster-wallet-sweeper.svg',
 	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
 	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
 	HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
@@ -54,7 +55,6 @@ const icons = {
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
-	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	NO_ACTIVE_ORDERS: '/assets/images/no-active-orders-01.svg',
 	NO_ACTIVE_TRADES: '/assets/images/no-recent-trades-01.svg',
 	NO_ACTIVE_DEPOSITS: '/assets/images/no-recent-deposits.svg',
@@ -154,6 +154,8 @@ const icons = {
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 	CLOCK: '/assets/images/clock.svg',
+	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
+	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
 };
 
 export default icons;

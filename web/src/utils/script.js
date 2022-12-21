@@ -55,7 +55,7 @@ const extractAttributes = (node) => {
 	return [];
 };
 
-const stringToHTML = (string) => {
+export const stringToHTML = (string) => {
 	const dom = document.createElement('div');
 	dom.innerHTML = string;
 	return dom;

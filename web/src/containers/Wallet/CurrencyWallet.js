@@ -9,6 +9,7 @@ import {
 	ActionNotification,
 	MobileBarBack,
 	Image,
+	EditWrapper,
 } from 'components';
 import { FLEX_CENTER_CLASSES, DEFAULT_COIN_DATA } from 'config/constants';
 import {
@@ -25,7 +26,7 @@ class Wallet extends Component {
 		currency: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.setCurrency(this.props.routeParams.currency);
 	}
 
@@ -51,7 +52,9 @@ class Wallet extends Component {
 		return (
 			<div className="wallet-header_block">
 				<div className="wallet-header_block-currency_title">
-					{STRINGS.formatString(STRINGS['CURRENCY_BALANCE_TEXT'], fullname)}
+					<EditWrapper stringId="CURRENCY_BALANCE_TEXT">
+						{STRINGS.formatString(STRINGS['CURRENCY_BALANCE_TEXT'], fullname)}
+					</EditWrapper>
 					<ActionNotification
 						stringId="TRADE_HISTORY"
 						text={STRINGS['TRADE_HISTORY']}

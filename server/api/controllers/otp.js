@@ -33,7 +33,7 @@ const activateOtp = (req, res) => {
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/activateOtp/code',
-		req.swagger.params.data
+		code
 	);
 
 	toolsLib.security.checkOtp(id)
@@ -68,7 +68,7 @@ const deactivateOtp = (req, res) => {
 	loggerOtp.verbose(
 		req.uuid,
 		'controllers/otp/deactivateOtp/code',
-		req.swagger.params.data
+		code
 	);
 
 	toolsLib.security.hasUserOtpEnabled(id)

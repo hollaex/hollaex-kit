@@ -3,7 +3,7 @@ module.exports = (sequelize, DataTypes) => {
 	const Plugin = sequelize.define('Plugin', {
 		version: {
 			type: DataTypes.INTEGER,
-			defaultValue:1
+			defaultValue: 1
 		},
 		name: {
 			type: DataTypes.STRING,
@@ -71,7 +71,8 @@ module.exports = (sequelize, DataTypes) => {
 		}
 	}, {
 		timestamps: true,
-		underscored: true
+		underscored: true,
+		tableName: 'Plugins'
 	});
 
 	return Plugin;

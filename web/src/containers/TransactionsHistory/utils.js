@@ -115,9 +115,7 @@ export const generateOrderHistoryHeaders = (
 			renderCell: ({ type = '' }, key, index) => {
 				return (
 					<td key={index} className={classnames('cell_box-type')}>
-						<div>
-							{type ? STRINGS[`TYPES.${type.toUpperCase()}`] : ''}
-						</div>
+						<div>{type ? STRINGS[`TYPES.${type.toUpperCase()}`] : ''}</div>
 					</td>
 				);
 			},
@@ -165,16 +163,16 @@ export const generateOrderHistoryHeaders = (
 				if (pairs[symbol]) {
 					const { increment_price, pair_2_display } = pairs[symbol];
 
-					return price ? 
-						STRINGS.formatString(
-							CURRENCY_PRICE_FORMAT,
-							formatToCurrency(
-								calculatePrice(quick, price, size),
-								increment_price
-							),
-							pair_2_display
-						).join('') :
-						''
+					return price
+						? STRINGS.formatString(
+								CURRENCY_PRICE_FORMAT,
+								formatToCurrency(
+									calculatePrice(quick, price, size),
+									increment_price
+								),
+								pair_2_display
+						  ).join('')
+						: '';
 				} else {
 					return calculatePrice(quick, price, size);
 				}
@@ -185,16 +183,16 @@ export const generateOrderHistoryHeaders = (
 
 					return (
 						<td key={index}>
-							{price ? 
-							STRINGS.formatString(
-								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(
-									calculatePrice(quick, price, size),
-									increment_price
-								),
-								pair_2_display
-							)
-							: ''}
+							{price
+								? STRINGS.formatString(
+										CURRENCY_PRICE_FORMAT,
+										formatToCurrency(
+											calculatePrice(quick, price, size),
+											increment_price
+										),
+										pair_2_display
+								  )
+								: ''}
 						</td>
 					);
 				} else {
@@ -210,16 +208,16 @@ export const generateOrderHistoryHeaders = (
 				if (pairs[symbol]) {
 					const { increment_price, pair_2_display } = pairs[symbol];
 
-					return average ? 
-						STRINGS.formatString(
-							CURRENCY_PRICE_FORMAT,
-							formatToCurrency(
-								calculatePrice(quick, average, size),
-								increment_price
-							),
-							pair_2_display
-						).join('') :
-						''
+					return average
+						? STRINGS.formatString(
+								CURRENCY_PRICE_FORMAT,
+								formatToCurrency(
+									calculatePrice(quick, average, size),
+									increment_price
+								),
+								pair_2_display
+						  ).join('')
+						: '';
 				} else {
 					return calculatePrice(quick, average, size);
 				}
@@ -230,16 +228,16 @@ export const generateOrderHistoryHeaders = (
 
 					return (
 						<td key={index}>
-							{average ? 
-							STRINGS.formatString(
-								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(
-									calculatePrice(quick, average, size),
-									increment_price
-								),
-								pair_2_display
-							)
-							: ''}
+							{average
+								? STRINGS.formatString(
+										CURRENCY_PRICE_FORMAT,
+										formatToCurrency(
+											calculatePrice(quick, average, size),
+											increment_price
+										),
+										pair_2_display
+								  )
+								: ''}
 						</td>
 					);
 				} else {

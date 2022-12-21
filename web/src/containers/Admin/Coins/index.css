@@ -12,6 +12,9 @@
 	color: #ffffff;
 	font-weight: bold;
 }
+.coins-wrapper .coin-ico.light {
+	border-color: #0e1769;
+}
 .coins-wrapper .type-space {
 	height: 36px;
 }

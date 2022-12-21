@@ -4,6 +4,7 @@ export { default as ICONS } from './icons';
 
 export const ENV = process.env.NODE_ENV || 'production';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
+export const LAST_BUILD = process.env.REACT_APP_LAST_BUILD;
 
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS['APP_TITLE'];
@@ -178,6 +179,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 			break;
 		case 'ada':
 			endpoint = 'https://blockchair.com/cardano/transaction/';
+			break;
+		case 'bnb':
+			endpoint = 'https://bscscan.com/tx/';
 			break;
 		default:
 			endpoint = '';

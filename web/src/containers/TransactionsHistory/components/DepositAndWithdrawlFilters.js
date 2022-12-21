@@ -178,7 +178,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 					</Select>
 				</Form.Item>
 				<Form.Item name="size">
-					<Radio.Group buttonStyle="outline" size="small">
+					<Radio.Group size="small">
 						{Object.entries(dateFilters).map(([key, { name }]) => (
 							<Radio.Button key={key} value={key}>
 								{name}
@@ -188,7 +188,6 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 				</Form.Item>
 				<Form.Item
 					name="custom"
-					buttonStyle="outline"
 					size="small"
 					onClick={() => Customselection('custom')}
 					className={customSel ? 'cusStyle1' : 'cusStyle2'}

@@ -37,6 +37,7 @@ export const renderRowImages = ([key, value]) => (
 					style={{ backgroundImage: `url(${value.icon})` }}
 					onClick={() => value.onZoom(value.icon)}
 				>
+					<img src={value.icon} alt={key} />
 					<ZoomInOutlined className="search_icon" key={key} />
 				</div>
 			) : (

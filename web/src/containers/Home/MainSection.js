@@ -47,7 +47,7 @@ const MainSection = ({ style = {}, onClickTrade, onClickDemo }) => {
 							)}
 							onClick={onClickDemo}
 						>
-							{STRINGS['HOME.VIEW_EXCHANGE']}
+							<EditWrapper>{STRINGS['HOME.VIEW_EXCHANGE']}</EditWrapper>
 						</div>
 					</div>
 					<div style={{ display: 'flex', alignSelf: 'center' }}>
@@ -63,7 +63,7 @@ const MainSection = ({ style = {}, onClickTrade, onClickDemo }) => {
 							)}
 							onClick={onClickTrade}
 						>
-							{STRINGS['HOME.TRADE_CRYPTO']}
+							<EditWrapper>{STRINGS['HOME.TRADE_CRYPTO']}</EditWrapper>
 						</div>
 					</div>
 				</div>

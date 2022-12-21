@@ -98,7 +98,7 @@ class App extends Component {
 	ordersQueued = [];
 	limitTimeOut = null;
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		const chatIsClosed = getChatMinimized();
 		this.setState({
 			chatIsClosed,
@@ -960,6 +960,7 @@ class App extends Component {
 					<OperatorControls initialData={this.props.location} />
 				)}
 				<Dialog
+					label="successful_dialog"
 					isOpen={isCustomNotification}
 					onCloseDialog={this.onCloseNotification}
 					theme={activeTheme}

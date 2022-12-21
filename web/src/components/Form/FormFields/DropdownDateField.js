@@ -56,7 +56,7 @@ class DropdownDateField extends Component {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		let limits = {};
 
 		if (this.props.addYears) {

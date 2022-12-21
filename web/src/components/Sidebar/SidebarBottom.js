@@ -1,7 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import STRINGS from 'config/localizedStrings';
-import { ButtonLink, Image } from 'components';
+import { ButtonLink, Image, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const SidebarButton = ({
@@ -21,7 +21,7 @@ const SidebarButton = ({
 					active ? 'bottom-text-acttive bottom-bar-text' : 'bottom-bar-text'
 				}
 			>
-				{title}
+				<EditWrapper>{title}</EditWrapper>
 			</div>
 		</div>
 	);
