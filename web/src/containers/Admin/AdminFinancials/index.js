@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { Tabs } from 'antd';
 
 import Earnings from './Earnings';
+import Duster from './Duster';
 import Wallets from '../Wallets';
 import DepositPage from '../DepositsPage';
 import Transfer from '../Transfers';
+
 import Assets, { getTabParams } from './Assets';
 import './index.css';
 
@@ -60,6 +62,9 @@ const AdminFinancials = ({ router, location }) => {
 				</TabPane>
 				<TabPane tab="Transfers" key="5">
 					<Transfer />
+				</TabPane>
+				<TabPane tab="Duster" key="6">
+					<Duster />
 				</TabPane>
 			</Tabs>
 		</div>

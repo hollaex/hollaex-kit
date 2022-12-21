@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { IconTitle, Accordion, MobileBarTabs } from 'components';
 import { TransactionsHistory, Stake } from 'containers';
@@ -16,9 +17,9 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
+import DustSection from './DustSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
-import { isDustEnabled } from 'containers/Apps/utils';
 
 class Wallet extends Component {
 	constructor(props) {
@@ -30,6 +31,7 @@ class Wallet extends Component {
 			isOpen: true,
 			isZeroBalanceHidden:
 				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+			showDustSection: false,
 		};
 	}
 
@@ -46,8 +48,7 @@ class Wallet extends Component {
 			this.props.oraclePrices,
 			this.props.constants,
 			this.props.contracts,
-			this.props.isFetching,
-			this.props.isDustEnabled
+			this.props.isFetching
 		);
 	}
 
@@ -64,8 +65,7 @@ class Wallet extends Component {
 			nextProps.oraclePrices,
 			nextProps.constants,
 			nextProps.contracts,
-			nextProps.isFetching,
-			nextProps.isDustEnabled
+			nextProps.isFetching
 		);
 	}
 
@@ -87,8 +87,7 @@ class Wallet extends Component {
 				this.props.oraclePrices,
 				this.props.constants,
 				this.props.contracts,
-				this.props.isFetching,
-				this.props.isDustEnabled
+				this.props.isFetching
 			);
 		}
 	}
@@ -145,8 +144,7 @@ class Wallet extends Component {
 		oraclePrices,
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {},
-		isFetching,
-		isDustEnabled
+		isFetching
 	) => {
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -183,7 +181,7 @@ class Wallet extends Component {
 						loading={isFetching}
 						contracts={contracts}
 						broker={this.props.broker}
-						isDustEnabled={isDustEnabled}
+						goToDustSection={this.goToDustSection}
 					/>
 				),
 				isOpen: true,
@@ -238,8 +236,16 @@ class Wallet extends Component {
 		this.setState({ activeTab });
 	};
 
+	goToDustSection = () => {
+		this.setState({ showDustSection: true });
+	};
+
+	goToWallet = () => {
+		this.setState({ showDustSection: false });
+	};
+
 	render() {
-		const { sections, activeTab, mobileTabs } = this.state;
+		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
 		const { icons: ICONS } = this.props;
 
 		if (mobileTabs.length === 0) {
@@ -259,7 +265,14 @@ class Wallet extends Component {
 						</div>
 					</div>
 				) : (
-					<div className="presentation_container apply_rtl wallet-wrapper">
+					<div
+						className={classnames(
+							'presentation_container',
+							'apply_rtl',
+							'wallet-wrapper',
+							{ settings_container: showDustSection }
+						)}
+					>
 						<IconTitle
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
@@ -267,8 +280,16 @@ class Wallet extends Component {
 							iconId="TAB_WALLET"
 							textType="title"
 						/>
-						<div className="wallet-container">
-							<Accordion sections={sections} />
+						<div
+							className={classnames('wallet-container', {
+								'no-border': showDustSection,
+							})}
+						>
+							{showDustSection ? (
+								<DustSection goToWallet={this.goToWallet} />
+							) : (
+								<Accordion sections={sections} />
+							)}
 						</div>
 					</div>
 				)}
@@ -291,7 +312,6 @@ const mapStateToProps = (store) => ({
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	broker: store.app.broker,
-	isDustEnabled: isDustEnabled(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
