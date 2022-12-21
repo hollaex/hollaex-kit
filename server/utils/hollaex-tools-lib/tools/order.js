@@ -273,16 +273,17 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 		let side = 'sell';
 
 		const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
-		const quoteSize = math.number(math.fraction(symbols[coin]));
-
+		const size = math.number(math.fraction(symbols[coin]));
 		const price = quotePrices[coin] * (1 - (spread / 100));
+		const quoteSize = price * size;
 
 		if (usdtSize < 1) {
 			const orderData = {
 				symbol,
 				side,
-				size: quoteSize,
-				price
+				size,
+				price,
+				quoteSize
 			}
 			estimatedConversions.push(orderData);
 
@@ -336,13 +337,16 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 						price
 					}
 					const res = await convertBalance(orderData, user_id, maker_id);
-					convertedAssets.push(res.symbol);
+					convertedAssets.push(res);
 				} catch (err) {
+					convertedAssets.push({ error: err.message, symbol, side, size: quoteSize, price });
 					loggerOrders.error(
 						'dustUserBalance error',
 						err.message,
 					);
 				}
+			} else {
+				convertedAssets.push({ error: 'value is not less than 1 usdt', symbol });
 			}
 		}
 
