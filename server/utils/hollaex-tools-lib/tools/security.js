@@ -1147,7 +1147,7 @@ const isValidScope = (endpointScopes, userScopes) => {
 const generateDashToken = (opts = {
 	additionalHeaders: null
 }) => {
-	getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
+	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
 };
 
 module.exports = {
