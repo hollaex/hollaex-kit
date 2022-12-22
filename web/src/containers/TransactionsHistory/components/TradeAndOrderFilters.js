@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import { Select, Form, Row, DatePicker, Radio } from 'antd';
 import { CaretDownOutlined } from '@ant-design/icons';
 import moment from 'moment';
@@ -45,7 +46,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 				setCustomSel(false);
 				const {
 					[values.size]: { range },
-				} = dateFilters;
+				} = dateFilters();
 				form.setFieldsValue({ range });
 				values.range = range;
 				if (_.range === undefined) {
@@ -177,7 +178,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 				</Form.Item>
 				<Form.Item name="size">
 					<Radio.Group size="small">
-						{Object.entries(dateFilters).map(([key, { name }]) => (
+						{Object.entries(dateFilters()).map(([key, { name }]) => (
 							<Radio.Button key={key} value={key}>
 								{name}
 							</Radio.Button>
@@ -208,4 +209,8 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 	);
 };
 
-export default Filters;
+const mapStateToProps = (state) => ({
+	activeLanguage: state.app.language,
+});
+
+export default connect(mapStateToProps)(Filters);

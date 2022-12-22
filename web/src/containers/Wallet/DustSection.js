@@ -157,19 +157,22 @@ const DustSection = ({
 	const handleConfirm = () => {
 		setLoadingResult(true);
 		convertDust(selectedAssets)
-			.then(({ data }) => {
-				if (!data?.length) {
+			.then(({ data = [] }) => {
+				const convertedAssets = data.filter(({ error }) => !error);
+				const failedAssets = data.filter(({ error }) => error);
+
+				if (!convertedAssets.length) {
 					setResult();
 					setShowConfirmation(false);
 					setShowSuccess(false);
-					setError('Something went wrong');
+					setError(failedAssets);
 					setTimeout(setError, 4000);
 				} else {
 					let total = 0;
-					data.forEach(({ size = 0, price = 0 }) => {
+					convertedAssets.forEach(({ size = 0, price = 0 }) => {
 						total = mathjs.add(total, calculateOraclePrice(size, price));
 					});
-					setResult(total);
+					setResult({ total, error: failedAssets });
 					setShowConfirmation(false);
 					setShowSuccess(true);
 				}
@@ -188,6 +191,23 @@ const DustSection = ({
 			.finally(() => {
 				setLoadingResult(false);
 			});
+	};
+
+	const renderError = () => {
+		if (Array.isArray(error)) {
+			return (
+				<Fragment>
+					{error.map(({ symbol, error: message }) => (
+						<div className="warning_text">
+							<span className="caps">{symbol}</span>
+							<span className="px-2">{message}</span>
+						</div>
+					))}
+				</Fragment>
+			);
+		} else {
+			return <div className="warning_text">{error}</div>;
+		}
 	};
 
 	return (
@@ -329,7 +349,8 @@ const DustSection = ({
 							<LoadingOutlined className="font-title" />
 						</div>
 					)}
-					<div className="warning_text">{error}</div>
+
+					{error && renderError()}
 				</div>
 				<div className="d-flex align-center justify-content-center">
 					<div>
@@ -368,7 +389,7 @@ const DustSection = ({
 						onBack={() => setShowSuccess(false)}
 						quote={quote}
 						coins={coins}
-						total={result}
+						data={result}
 					/>
 				)}
 			</Dialog>
