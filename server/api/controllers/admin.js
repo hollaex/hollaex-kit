@@ -2061,8 +2061,11 @@ const generateDashToken = (req, res) => {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	})
-		.then((token) => {
-			return res.json(token);
+		.then(({ token }) => {
+			if (!token) {
+				throw new Error('We could not generate the token. Please try again.');
+			}
+			return res.json({ token });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/generateDashToken err', err.message);
