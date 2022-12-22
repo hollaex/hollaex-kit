@@ -3,7 +3,7 @@ import STRINGS from 'config/localizedStrings';
 
 export const dateFormat = 'YYYY/MM/DD';
 
-export const dateFilters = {
+export const dateFilters = () => ({
 	all: {
 		name: STRINGS['ALL'],
 		range: [],
@@ -24,4 +24,4 @@ export const dateFilters = {
 		name: STRINGS.formatString(STRINGS['MONTH'], 3),
 		range: [moment(new Date()).subtract(3, 'months'), moment(new Date())] || [],
 	},
-};
+});

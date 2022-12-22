@@ -6,7 +6,14 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
-const DustSuccess = ({ onBack, router, icons: ICONS, coins, quote, total }) => {
+const DustSuccess = ({
+	onBack,
+	router,
+	icons: ICONS,
+	coins,
+	quote,
+	data: { total, error },
+}) => {
 	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
@@ -36,6 +43,17 @@ const DustSuccess = ({ onBack, router, icons: ICONS, coins, quote, total }) => {
 					)}
 				</EditWrapper>
 			</div>
+
+			{error?.length && (
+				<div className="py-2">
+					{error.map(({ symbol, error: message }) => (
+						<div className="warning_text">
+							<span className="caps">{symbol}</span>
+							<span className="px-2">{message}</span>
+						</div>
+					))}
+				</div>
+			)}
 
 			<div className="d-flex mt-4 pt-3">
 				<div className="w-50">
