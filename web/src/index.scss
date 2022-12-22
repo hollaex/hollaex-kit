@@ -195,8 +195,15 @@ svg {
 	.all-apps,
 	.my-apps,
 	.apps,
-	.search-blockchain {
+	.search-blockchain,
+	.sparkle-dust,
+	.dust-sweeper,
+	.dust-settlement {
 		fill: $colors-black;
+	}
+
+	.dust-settlement-green {
+		fill: $colors-notifications-green;
 	}
 
 	.account-inactive {
