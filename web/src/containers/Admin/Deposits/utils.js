@@ -86,6 +86,33 @@ export const renderUser = (id) => (
 	</Tooltip>
 );
 
+export const renderResendContent = (renderData, onOpenModal) => {
+	if (
+		!renderData.status &&
+		!renderData.dismissed &&
+		!renderData.rejected &&
+		!renderData.processing
+	) {
+		return (
+			<div className="d-flex validate-wrapper">
+				<ClockCircleOutlined style={{ margin: '5px' }} />
+				<Tooltip placement="bottom" title="RETRY">
+					<div
+						className="anchor"
+						onClick={(e) => {
+							onOpenModal(renderData, 'retry');
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+					>
+						Retry
+					</div>
+				</Tooltip>
+			</div>
+		);
+	}
+};
+
 export const renderContent = (renderData, onOpenModal) => {
 	if (renderData.status) {
 		return (
@@ -171,6 +198,10 @@ export const COLUMNS = (currency, onOpenModal) => {
 			{
 				title: 'Validate/dismiss',
 				render: (renderData) => renderContent(renderData, onOpenModal),
+			},
+			{
+				title: 'Retry',
+				render: (renderData) => renderResendContent(renderData, onOpenModal),
 			},
 		];
 		return columns.concat(adminColumns);
