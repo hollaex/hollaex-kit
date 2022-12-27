@@ -327,6 +327,7 @@ const AssetsBlock = ({
 										<td>
 											{markets.length > 1 ? (
 												<TradeInputGroup
+													broker={broker}
 													markets={markets}
 													goToTrade={goToTrade}
 													pairs={pairs}
