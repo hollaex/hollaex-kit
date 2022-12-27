@@ -56,7 +56,11 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
-import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
+import {
+	modifyCoinsData,
+	modifyPairsData,
+	modifyBrokerData,
+} from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -240,7 +244,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_BROKER:
 			return {
 				...state,
-				broker: payload.broker,
+				broker: modifyBrokerData(payload.broker, { ...state.coins }),
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =
