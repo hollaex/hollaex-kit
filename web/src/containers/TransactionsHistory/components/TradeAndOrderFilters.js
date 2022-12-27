@@ -21,6 +21,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 			status: null,
 			currency: null,
 			size: 'all',
+			type: 'closed',
 		});
 		setCustomSel(false);
 	}, [activeTab, form]);
@@ -106,7 +107,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 			initialValues={{
 				symbol: null,
 				size: 'all',
-				type: 'active',
+				type: 'closed',
 			}}
 		>
 			<Row gutter={24}>

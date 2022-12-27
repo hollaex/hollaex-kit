@@ -337,8 +337,16 @@ class Withdraw extends Component {
 	};
 
 	getQRData = (data) => {
-		const { dispatch } = this.props;
-		dispatch(change(FORM_NAME, 'address', data));
+		const { currency } = this.state;
+		const { dispatch, selectedNetwork } = this.props;
+
+		if (currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm') {
+			const [address = '', destinationTag = ''] = data?.split(':') || [];
+			dispatch(change(FORM_NAME, 'address', address));
+			dispatch(change(FORM_NAME, 'destination_tag', destinationTag));
+		} else {
+			dispatch(change(FORM_NAME, 'address', data));
+		}
 	};
 
 	onGoBack = () => {

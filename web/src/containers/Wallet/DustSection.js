@@ -198,7 +198,7 @@ const DustSection = ({
 			return (
 				<Fragment>
 					{error.map(({ symbol, error: message }) => (
-						<div className="warning_text">
+						<div key={symbol} className="warning_text">
 							<span className="caps">{symbol}</span>
 							<span className="px-2">{message}</span>
 						</div>

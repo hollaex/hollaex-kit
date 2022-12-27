@@ -24,6 +24,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
+import DustSection from './DustSection';
 
 const AssetsBlock = ({
 	balance,
@@ -43,6 +44,8 @@ const AssetsBlock = ({
 	contracts,
 	broker,
 	goToDustSection,
+	showDustSection,
+	goToWallet,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -111,7 +114,9 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
-	return (
+	return showDustSection ? (
+		<DustSection goToWallet={goToWallet} />
+	) : (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				{totalAssets.length && !loading ? (
@@ -327,6 +332,7 @@ const AssetsBlock = ({
 										<td>
 											{markets.length > 1 ? (
 												<TradeInputGroup
+													broker={broker}
 													markets={markets}
 													goToTrade={goToTrade}
 													pairs={pairs}
