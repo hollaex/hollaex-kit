@@ -70,10 +70,11 @@ class Wallet extends Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		const { searchValue, isZeroBalanceHidden } = this.state;
+		const { searchValue, isZeroBalanceHidden, showDustSection } = this.state;
 		if (
 			searchValue !== prevState.searchValue ||
-			isZeroBalanceHidden !== prevState.isZeroBalanceHidden
+			isZeroBalanceHidden !== prevState.isZeroBalanceHidden ||
+			showDustSection !== prevState.showDustSection
 		) {
 			this.generateSections(
 				this.props.changeSymbol,
@@ -146,6 +147,7 @@ class Wallet extends Component {
 		contracts = {},
 		isFetching
 	) => {
+		const { showDustSection } = this.state;
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -182,6 +184,8 @@ class Wallet extends Component {
 						contracts={contracts}
 						broker={this.props.broker}
 						goToDustSection={this.goToDustSection}
+						showDustSection={showDustSection}
+						goToWallet={this.goToWallet}
 					/>
 				),
 				isOpen: true,
