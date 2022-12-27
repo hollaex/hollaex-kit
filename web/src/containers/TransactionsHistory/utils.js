@@ -1,5 +1,9 @@
 import React from 'react';
-import { InfoCircleTwoTone } from '@ant-design/icons';
+import {
+	InfoCircleTwoTone,
+	PlusSquareOutlined,
+	MinusSquareOutlined,
+} from '@ant-design/icons';
 import { notification } from 'antd';
 import classnames from 'classnames';
 import mathjs from 'mathjs';
@@ -13,7 +17,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
-import { getFormatTimestamp } from 'utils/utils';
+import { getFormatTimestamp, getTimeHeader } from 'utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({
@@ -67,9 +71,29 @@ export const generateOrderHistoryHeaders = (
 	coins,
 	discount,
 	prices = {},
-	ICONS
+	ICONS,
+	type
 ) => {
 	return [
+		{
+			key: 'icon',
+			className: 'sticky-col',
+			renderCell: (
+				{ display_name, icon_id },
+				key,
+				index,
+				isExpandable,
+				isExpanded
+			) => {
+				return (
+					<td key={index}>
+						<div className="d-flex">
+							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
+						</div>
+					</td>
+				);
+			},
+		},
 		{
 			stringId: 'PAIR',
 			label: STRINGS['PAIR'],
@@ -192,7 +216,7 @@ export const generateOrderHistoryHeaders = (
 										),
 										pair_2_display
 								  )
-								: ''}
+								: '@marketPrice'}
 						</td>
 					);
 				} else {
@@ -355,7 +379,7 @@ export const generateOrderHistoryHeaders = (
 		},*/
 		{
 			stringId: 'TIME',
-			label: STRINGS['TIME'],
+			label: getTimeHeader(STRINGS['TIME'], type),
 			key: 'created_at',
 			className: isMobile ? 'text-center' : '',
 			exportToCsv: ({ created_at = '' }) => created_at,
@@ -376,9 +400,29 @@ export const generateTradeHeaders = (
 	coins,
 	discount,
 	prices = {},
-	ICONS
+	ICONS,
+	setActiveTab = () => {}
 ) => {
 	return [
+		{
+			key: 'icon',
+			className: 'sticky-col',
+			renderCell: (
+				{ display_name, icon_id },
+				key,
+				index,
+				isExpandable,
+				isExpanded
+			) => {
+				return (
+					<td key={index}>
+						<div className="d-flex">
+							{isExpanded ? <MinusSquareOutlined /> : <PlusSquareOutlined />}
+						</div>
+					</td>
+				);
+			},
+		},
 		{
 			stringId: 'PAIR',
 			label: STRINGS['PAIR'],
@@ -402,8 +446,8 @@ export const generateTradeHeaders = (
 			},
 		},
 		{
-			stringId: 'TYPE',
-			label: STRINGS['TYPE'],
+			stringId: 'SIDE',
+			label: STRINGS['SIDE'],
 			key: 'side',
 			exportToCsv: ({ side = '' }) => side,
 			renderCell: ({ side = '' }, key, index) => {
@@ -474,17 +518,18 @@ export const generateTradeHeaders = (
 			renderCell: ({ price = 0, size = 0, quick, symbol }, key, index) => {
 				if (pairs[symbol]) {
 					const { pair_2_display, increment_price } = pairs[symbol];
-
 					return (
 						<td key={index}>
-							{STRINGS.formatString(
-								CURRENCY_PRICE_FORMAT,
-								formatToCurrency(
-									calculatePrice(quick, price, size),
-									increment_price
-								),
-								pair_2_display
-							)}
+							{price
+								? STRINGS.formatString(
+										CURRENCY_PRICE_FORMAT,
+										formatToCurrency(
+											calculatePrice(quick, price, size),
+											increment_price
+										),
+										pair_2_display
+								  )
+								: ''}
 						</td>
 					);
 				} else {
@@ -608,6 +653,20 @@ export const generateTradeHeaders = (
 				return (
 					<td key={index} className={isMobile ? 'text-center' : ''}>
 						{getFormatTimestamp(timestamp)}
+					</td>
+				);
+			},
+		},
+		{
+			stringId: 'ORIGIN',
+			label: 'Origin',
+			key: 'Origin',
+			className: isMobile ? 'text-center' : '',
+			exportToCsv: ({ timestamp = '' }) => timestamp,
+			renderCell: ({ timestamp = '', order_id }, key, index) => {
+				return (
+					<td key={index} className={`anchor ${isMobile ? 'text-center' : ''}`}>
+						<span onClick={() => setActiveTab(1)}>View</span>
 					</td>
 				);
 			},

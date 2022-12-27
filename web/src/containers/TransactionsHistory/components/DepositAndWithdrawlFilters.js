@@ -32,7 +32,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 
 	useEffect(() => {
 		form.setFieldsValue({
-			status: null,
+			status: 'all',
 			currency: null,
 			size: 'all',
 		});
