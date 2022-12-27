@@ -178,7 +178,7 @@ const INITIAL_STATE = {
 	tradeTab: 0,
 	broker: {},
 	user_payments: {},
-	onramp: {},
+	onramp: [],
 	offramp: {},
 	sort: {
 		mode: SORT.CHANGE,
