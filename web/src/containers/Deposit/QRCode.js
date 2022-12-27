@@ -4,7 +4,9 @@ import QRCode from 'qrcode.react';
 import { EditWrapper, Button } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const QrCode = ({ closeQRCode, address, currency = '', onCopy }) => {
+const QrCode = ({ closeQRCode, data = '', currency = '', onCopy }) => {
+	const [address = '', destinationTag = ''] = data?.split(':') || [];
+
 	return (
 		<div className="margin-auto">
 			{address && (
@@ -31,6 +33,16 @@ const QrCode = ({ closeQRCode, address, currency = '', onCopy }) => {
 							</span>
 						</CopyToClipboard>
 					</div>
+
+					{destinationTag && (
+						<div className="mb-2">
+							<CopyToClipboard text={destinationTag} onCopy={onCopy}>
+								<span className="blue-link pointer underline-text font-small">
+									{destinationTag}
+								</span>
+							</CopyToClipboard>
+						</div>
+					)}
 
 					<div className="qr-text">
 						<EditWrapper stringId="DEPOSIT.QR_CODE">
