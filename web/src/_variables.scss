@@ -13,12 +13,14 @@ $colors-border-hover: var(--calculated_secondary-border-1);
 $colors-main-border: var(--calculated_important-border);
 $footer-border-color: var(--calculated_footer_border);
 $colors-super-pale-black: var(--calculated_super-pale_label-text-graphics);
+$colors-blue-link: var(--blue_link_dark);
 
 // common colors for deactivate and disabled look
 $colors-deactivate: var(--labels_secondary-inactive-label-text-graphics);
 $colors-deactivate-color1: var(--labels_inactive-button);
 $colors-deactivate-color2: var(--labels_secondary-inactive-label-text-graphics);
 $colors-deactivate-color4: var(--labels_inactive-button);
+$gray-text-color: var(--gray_text_content);
 
 //common colors for notifications and errors
 $colors-notifications-red: var(--specials_notifications-alerts-warnings);

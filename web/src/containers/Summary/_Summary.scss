@@ -160,28 +160,6 @@ $trade-tab--arrow-size: 0.4rem;
 		opacity: 0.5;
 	}
 }
-.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-	background-color: #202020;
-	color: #a8a8b1;
-}
-.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
-	.ant-select-selector,
-.ant-select-item-option-active:not(.ant-select-item-option-disabled) {
-	border-color: #d9d9d9;
-	background-color: #212121;
-	color: #a8a8b1;
-}
-.ant-select-dropdown,
-.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
-	background-color: #212121;
-	color: #a8a8b1;
-}
-.ant-select-item {
-	color: #a8a8b1;
-}
-.ant-select-dropdown {
-	border: 1px solid #a8a8b1;
-}
 .digital-market-wrapper {
 	display: flex;
 	justify-content: center;
@@ -192,27 +170,35 @@ $trade-tab--arrow-size: 0.4rem;
 			margin-bottom: 2rem;
 		}
 		.gray-text {
-			color: #b2b3b3;
+			color: $gray-text-color;
 		}
 		.header-container {
 			padding-bottom: 1rem;
-			border-bottom: 2px solid #bbbbbc;
-			.header-text {
-				font-size: 36px;
-				margin-left: 1rem;
-			}
+			border-bottom: 2px solid $colors-main-border;
 			.link-content {
-				color: #5d63ff;
+				color: $colors-blue-link;
 				text-decoration: underline;
 				cursor: pointer;
 			}
+			.digital-assets-icon {
+				display: flex !important;
+				flex-direction: inherit !important;
+			}
+			.icon_title-wrapper .icon_title-svg svg {
+				width: 3.5rem !important;
+				height: 3.5rem !important;
+				margin-top: 1rem !important;
+			}
+			.icon_title-wrapper .icon_title-svg {
+				width: 3.5rem !important;
+			}
 		}
 		.link-container {
-			color: #5d63ff;
+			color: $colors-blue-link;
 			padding-top: 5px;
 			.link-1,
 			.link-2 {
-				border-right: 1px solid #404043;
+				border-right: 1px solid $footer-border-color;
 				padding-right: 0.5rem;
 				padding-left: 0.5rem;
 			}
@@ -247,7 +233,7 @@ $trade-tab--arrow-size: 0.4rem;
 		border-radius: 3px;
 		border: 1px solid $colors-super-pale-black;
 		.link-text {
-			color: #5d63ff;
+			color: $colors-blue-link;
 			cursor: pointer;
 			text-decoration: underline;
 		}

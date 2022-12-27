@@ -6,14 +6,14 @@ import { withRouter } from 'react-router';
 import _get from 'lodash/get';
 
 import { SearchBox } from 'components';
-import MarketList from '../../TradeTabs/components/MarketList';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
-import AssetsList from '../../TradeTabs/components/AssetsList';
+import AssetsList from 'containers/TradeTabs/components/AssetsList';
+import MarketList from 'containers/TradeTabs/components/MarketList';
 
 class Markets extends Component {
 	constructor(props) {
@@ -64,7 +64,7 @@ class Markets extends Component {
 		const { pageSize } = this.state;
 		const { markets, selectedSource, isAsset } = this.props;
 		let filteredData = [];
-		let temp = [];
+		let nonDublicateCoins = [];
 		const pairs = this.getSearchPairs(searchValue);
 		if (selectedSource && selectedSource !== 'all') {
 			filteredData = markets.filter(
@@ -73,10 +73,11 @@ class Markets extends Component {
 		} else {
 			if (isAsset) {
 				filteredData = markets.filter(({ key }) => {
-					if (!temp.includes(key.split('-')[0])) {
-						temp.push(key.split('-')[0]);
+					if (!nonDublicateCoins.includes(key.split('-')[0])) {
+						nonDublicateCoins.push(key.split('-')[0]);
 						return pairs.includes(key);
 					}
+					return null;
 				});
 			} else {
 				filteredData = markets.filter(({ key }) => pairs.includes(key));
@@ -173,17 +174,24 @@ class Markets extends Component {
 				{showContent && (
 					<div>
 						<div>
-							Want to list your digital assets? Start your own market with your
-							HollaEx{' '}
+							<EditWrapper stringId="SUMMARY_MARKETS.HOLLAEX">
+								{STRINGS['SUMMARY_MARKETS.HOLLAEX']}{' '}
+							</EditWrapper>
 							<Link className="link-text" to="/white-label">
-								white-lable
+								<EditWrapper stringId="SUMMARY_MARKETS.WHITE_LABEL">
+									{STRINGS['SUMMARY_MARKETS.WHITE_LABEL']}
+								</EditWrapper>
 							</Link>{' '}
-							solutions
+							<EditWrapper stringId="SUMMARY_MARKETS.SOLUTION">
+								{STRINGS['SUMMARY_MARKETS.SOLUTION']}
+							</EditWrapper>
 						</div>
 						<div>
-							Visit coin info page{' '}
+							{STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE']}{' '}
 							<Link to="assets" className="link-text">
-								here
+								<EditWrapper stringId="SUMMARY_MARKETS.HERE">
+									{STRINGS['SUMMARY_MARKETS.HERE']}
+								</EditWrapper>
 							</Link>
 						</div>
 					</div>
@@ -204,7 +212,7 @@ class Markets extends Component {
 				)}
 				{isAsset ? (
 					<AssetsList
-						loading={!data.length ? true : false}
+						loading={!data.length}
 						markets={data}
 						chartData={chartData}
 						handleClick={this.handleAssetsClick}
@@ -215,13 +223,11 @@ class Markets extends Component {
 						count={count}
 						goToNextPage={this.goToNextPage}
 						goToPreviousPage={this.goToPreviousPage}
-						showPaginator={
-							count === pageSize || count < pageSize ? false : true
-						}
+						showPaginator={count > pageSize}
 					/>
 				) : (
 					<MarketList
-						loading={!data.length ? true : false}
+						loading={!data.length}
 						markets={data}
 						chartData={chartData}
 						handleClick={this.handleClick}

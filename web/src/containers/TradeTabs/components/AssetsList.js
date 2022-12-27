@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import classnames from 'classnames';
 import {
-	SORT,
 	toggleSort,
 	setSortModeChange,
 	setSortModeVolume,
@@ -18,7 +16,6 @@ import {
 	string,
 	func,
 } from 'prop-types';
-import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 import { Paginator } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -45,37 +42,6 @@ const AssetsList = ({
 	isAsset = false,
 	constants,
 }) => {
-	const handleClickChange = () => {
-		if (mode === SORT.CHANGE) {
-			toggleSort();
-		} else {
-			setSortModeChange();
-		}
-	};
-
-	const handleClickVolume = () => {
-		if (mode === SORT.VOL) {
-			toggleSort();
-		} else {
-			setSortModeVolume();
-		}
-	};
-
-	const renderCaret = (cell) => (
-		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
-			<CaretUpOutlined
-				className={classnames({
-					'important-text': mode === cell && is_descending,
-				})}
-			/>
-			<CaretDownOutlined
-				className={classnames({
-					'important-text': mode === cell && !is_descending,
-				})}
-			/>
-		</div>
-	);
-
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
@@ -107,22 +73,21 @@ const AssetsList = ({
 								</div>
 							</th>
 							<th>
-								<div onClick={handleClickChange} className="d-flex pointer">
+								<div className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
 									</EditWrapper>
-									{renderCaret(SORT.CHANGE)}
 								</div>
 							</th>
 							<th>
-								<div onClick={handleClickVolume} className="d-flex pointer">
+								<div className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
 										{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
 									</EditWrapper>
 								</div>
 							</th>
 							<th>
-								<div onClick={handleClickVolume} className="d-flex pointer">
+								<div className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.TYPE">
 										{STRINGS['MARKETS_TABLE.TYPE']}
 									</EditWrapper>

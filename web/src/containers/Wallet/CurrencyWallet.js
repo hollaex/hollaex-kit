@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
+
 import {
 	IconTitle,
 	// CurrencyBallWithPrice,
@@ -20,7 +22,6 @@ import {
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { STATIC_ICONS } from 'config/icons';
-import { Link } from 'react-router';
 
 class Wallet extends Component {
 	state = {
@@ -70,12 +71,23 @@ class Wallet extends Component {
 				</div>
 				<div className="link-container mb-0 mt-3">
 					<Link className="link-content" to="wallet">
-						Back
+						<EditWrapper stringId="CURRENCY_WALLET.BACK">
+							{STRINGS['CURRENCY_WALLET.BACK']}
+						</EditWrapper>
 					</Link>{' '}
-					to wallet page
+					<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
+						{STRINGS['CURRENCY_WALLET.WALLET_PAGE']}
+					</EditWrapper>
 				</div>
 				<div className="link-container mb-5">
-					<Link className="link-content">Learn more</Link> about{' '}
+					<EditWrapper stringId="CURRENCY_WALLET.LEARN_MORE">
+						<Link to="" className="link-content">
+							{STRINGS['CURRENCY_WALLET.LEARN_MORE']}
+						</Link>
+					</EditWrapper>
+					<EditWrapper stringId="CURRENCY_WALLET.ABOUT">
+						{STRINGS['CURRENCY_WALLET.ABOUT']}{' '}
+					</EditWrapper>{' '}
 					{symbol.toUpperCase()}
 				</div>
 				{/* <CurrencyBallWithPrice

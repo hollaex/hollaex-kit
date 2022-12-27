@@ -4,32 +4,32 @@
 	justify-content: center;
 	align-items: center;
 
-	.wizard-container .ant-input-affix-wrapper,
-	.wizard-container .ant-input,
-	.ant-input-number,
-	.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-		background-color: #202020;
+	.mt-8 {
+		margin-top: 8rem;
+	}
+	.pb-6 {
+		padding-bottom: 6rem;
 	}
 
-	.ant-select:not(.ant-select-disabled):hover .ant-select-selector,
-	.ant-select-focused:not(.ant-select-disabled).ant-select-single:not(.ant-select-customize-input)
-		.ant-select-selector {
-		border-color: #d9d9d9;
+	.icon_title-wrapper .icon_title-svg svg {
+		margin-top: 3px !important;
+	}
+	.icon_title-wrapper {
+		margin-top: 0 !important;
 	}
 
-	.subHeader-icon {
+	.sub-header-icon {
 		height: 20px;
 		width: 20px;
 		margin: 1px 3px;
 	}
 
 	.gray-text {
-		color: #b2b3b3;
+		color: $gray-text-color;
 	}
 
 	.token-wrapper {
 		width: 65%;
-		height: 80%;
 
 		.image-container {
 			.coins-icon {
@@ -39,7 +39,7 @@
 		}
 
 		.link {
-			color: #5d63ff;
+			color: $colors-blue-link;
 			text-decoration: underline;
 			cursor: pointer;
 		}
@@ -50,11 +50,8 @@
 
 			.title {
 				font-size: 24px;
-				color: #b2b3b3;
+				color: $gray-text-color;
 
-				span {
-					color: #ffffff;
-				}
 				.favourite-text {
 					font-size: 12px;
 					color: #707070;
@@ -68,15 +65,15 @@
 				}
 				.favourite-text-2 {
 					font-size: 12px;
-					color: #b2b3b3;
+					color: $gray-text-color;
 					padding-right: 10px;
 				}
 			}
 		}
 
 		.ant-btn {
-			background: #242426;
-			color: #b2b3b3;
+			background: $app-background-color;
+			color: $gray-text-color;
 		}
 
 		.hollaex-container {
@@ -101,25 +98,14 @@
 						font-size: 14px;
 						width: 70%;
 						margin-top: 1rem;
-						color: #b2b3b3;
+						color: $gray-text-color;
 					}
 
 					.button-container {
-						display: flex;
 						margin-top: 7rem;
-
-						button {
-							width: 100%;
-						}
 
 						.button-2 {
 							margin: 0 10px 0 10px;
-						}
-
-						.button-3 {
-							background-color: #5d63ff;
-							color: #ffffff;
-							border-color: #5d63ff;
 						}
 					}
 				}
@@ -132,13 +118,6 @@
 
 					.trade-details-content {
 						height: 450px;
-
-						.dropdown-container {
-							.coin-select {
-								width: 100%;
-								margin-bottom: 2rem;
-							}
-						}
 
 						.pb-30 {
 							padding-bottom: 30px;
@@ -208,7 +187,7 @@
 
 					.fullname {
 						color: $colors-deactivate;
-						font-size: 11px;
+						font-size: 0.65rem;
 						white-space: nowrap;
 					}
 
@@ -219,16 +198,12 @@
 						opacity: 1;
 						white-space: nowrap;
 					}
-
-					.white-txt {
-						color: $colors-main-black;
-					}
 				}
 			}
 		}
 	}
 	.paircoins-color {
-		color: #b2b3b3;
+		color: $gray-text-color;
 	}
 	.white-text {
 		color: #ffffff;

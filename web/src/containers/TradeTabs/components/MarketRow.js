@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { PriceChange, Image } from 'components';
+import { PriceChange, Image, EditWrapper } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 
 class MarketRow extends Component {
 	render() {
@@ -77,11 +78,15 @@ class MarketRow extends Component {
 				</td>
 				{isAsset && (
 					<td>
-						<div>
-							{pairTwo.symbol === constants.native_currency
-								? 'Native'
-								: 'No native source'}
-						</div>
+						{pairTwo.symbol === constants.native_currency ? (
+							<EditWrapper stringId="MARKET_ROW.NATIVE">
+								{STRINGS['MARKET_ROW.NATIVE']}
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="MARKET_ROW.NO_NATIVE">
+								{STRINGS['MARKET_ROW.NO_NATIVE']}
+							</EditWrapper>
+						)}
 					</td>
 				)}
 				<td>
@@ -132,7 +137,7 @@ class MarketRow extends Component {
 									}
 								></div>
 							</div>
-							<div className="ml-1 capitalize">{pairTwo.type}</div>
+							<div className="ml-1 caps-first">{pairTwo.type}</div>
 						</div>
 					</td>
 				)}

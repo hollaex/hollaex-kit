@@ -125,6 +125,30 @@ $header-margin: 2rem;
 }
 
 .wallet-container {
+	.header-wrapper {
+		.icon_title-wrapper {
+			margin-top: 0 !important;
+		}
+	}
+
+	.icon_title-wrapper .icon_title-svg svg {
+		width: 15px !important;
+		height: 15px !important;
+		background-color: $colors-blue-link;
+		border-radius: 8px;
+		padding: 2px;
+		margin-top: 1px;
+	}
+	.icon_title-wrapper {
+		margin: 0rem !important;
+	}
+	.icon_title-text.title {
+		padding: 0rem !important;
+	}
+	.icon_title-svg {
+		width: 0rem !important;
+		height: 0rem !important;
+	}
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
 
@@ -424,5 +448,5 @@ $header-margin: 2rem;
 
 .link-content {
 	text-decoration: underline !important;
-	color: #5d63ff !important;
+	color: $colors-blue-link !important;
 }

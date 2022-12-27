@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
-import { IconTitle, Accordion, MobileBarTabs } from 'components';
+import { IconTitle, Accordion, MobileBarTabs, EditWrapper } from 'components';
 import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
@@ -268,7 +269,39 @@ class Wallet extends Component {
 							textType="title"
 						/>
 						<div className="wallet-container">
-							<Accordion sections={sections} />
+							<div className="header-wrapper">
+								<div className="header-title">
+									<EditWrapper stringId="ACCORDIAN.ACCORDIAN_ASSETS">
+										{STRINGS['ACCORDIAN.ACCORDIAN_ASSETS']}
+									</EditWrapper>
+								</div>
+								<div className="sub-header link-separator">
+									<Link to="assets">
+										<EditWrapper stringId="ACCORDIAN.ACCORDIAN_INFO">
+											{STRINGS['ACCORDIAN.ACCORDIAN_INFO']}
+										</EditWrapper>
+									</Link>
+								</div>
+								<div className="history-img-wrapper">
+									<div className="sub-header">
+										<Link to="transactions">
+											<EditWrapper stringId="ACCORDIAN.ACCORDIAN_HISTORY">
+												{STRINGS['ACCORDIAN.ACCORDIAN_HISTORY']}
+											</EditWrapper>
+										</Link>
+									</div>
+									<div>
+										<IconTitle
+											className=""
+											stringId="DIGITAL_ASSETS_TITLE"
+											iconPath={ICONS['CLOCK']}
+											iconId="ASSET_INFO_COIN"
+											textType="title"
+										/>
+									</div>
+								</div>
+							</div>
+							<Accordion sections={sections} showHeader={false} />
 						</div>
 					</div>
 				)}

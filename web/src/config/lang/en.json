@@ -860,6 +860,12 @@
 	"QUICK_TRADE": "Quick trade",
 	"PRO_TRADE": "Pro trade",
 	"WALLET_TITLE": "Wallet",
+	"CURRENCY_WALLET": {
+		"BACK": "Back",
+		"WALLET_PAGE": "to wallet page",
+		"LEARN_MORE": "Learn more",
+		"ABOUT": "about"
+	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",
 	"WITHDRAWALS_MAX_VALUE_ERROR": "The transaction is too big to send. Try a smaller amount.",
@@ -1221,6 +1227,13 @@
 		"TYPE": "Type",
 		"SOURCE": "SOURCE"
 	},
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx",
+		"WHITE_LABEL": "white-lable",
+		"SOLUTION": "solution",
+		"VISIT_COIN_INFO_PAGE": "Visit coin info page",
+		"HERE": "here"
+	},
 	"PAGE_UNDER_CONSTRUCTION": "This page is under construction. Please revisit this page soon.",
 	"UNDEFINED_ERROR_TITLE": "You’ve Encountered an Unidentified Error",
 	"UNDEFINED_ERROR": "Wow! An unknown error has occurred. This could be a connection issue or a number of other things. You can try again later or try refreshing.",
@@ -1319,5 +1332,52 @@
 		"LINK": "Wallet duster",
 		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto"
 	},
-	"ASSET_INFO_PAGE": "Asset info page"
+	"ASSET_INFO_PAGE": "Asset info page",
+	"MARKET_ROW": {
+		"NATIVE": "Native",
+		"NO_NATIVE": "No native source"
+	},
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "Digital assets",
+		"GO_BACK": "Go back",
+		"ASSETS_INFO": "Below are available assets on the platform.",
+		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
+		"QUICK_TRADE": "QUICKTRADE",
+		"MARKETS": "MARKETS",
+		"WALLET": "WALLET"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "Remove from favourites",
+		"ADD_FAVOURITES": "Add to favourites",
+		"GO_BACK": " Go back",
+		"BALANCE": "Balance:",
+		"OPEN_WALLET": "(Open wallet)",
+		"ABOUT": "About",
+		"HOLLA_INFO": "is the native token for HollaEx and powers the open-source white-label exchange software",
+		"HOLLAEX_KIT_TITLE": "HollaEx Kit",
+		"HOLDER": "Holders of",
+		"HOLLA_INFO2": "are franted benefits when using the HollaEx system.",
+		"WITH": "With",
+		"HOLLA_INFO3": "anyone can create new coins and list tokens on their very own exchange. By donating",
+		"HOLLA_INFO4": ", new coins and trading pairs can be activated for trading, distribution, and price discovery.",
+		"HOLLA_INFO5": "powers the HollaEx exchange ecosystem. It is used for coin activation, coin listing, staking and for discounts on purchases.",
+		"VIEW": "View more",
+		"VIEW_ACTIVITY": "View activity on blockchain",
+		"COMING_SOON": "Coming Soon...",
+		"STAKE": "Stake",
+		"QUICK_BUY": "Quick buy",
+		"MORE": "More",
+		"INFO": "info",
+		"TRADE": "TRADE",
+		"LIST": "Want to list your digital assets?",
+		"START_HOLLAEX": "Start your own market with HollaEx",
+		"WHITE_LABEL": "white-label",
+		"SOLUTION": "solution",
+		"MARKETS_TITLE": "MARKETS"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "All wallet assets",
+		"ACCORDIAN_INFO": "ASSET INFO PAGE",
+		"ACCORDIAN_HISTORY": "HISTORY"
+	}
 }

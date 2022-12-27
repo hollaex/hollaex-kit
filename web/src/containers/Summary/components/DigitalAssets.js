@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
+import { Select } from 'antd';
+
 import withConfig from 'components/ConfigProvider/withConfig';
 import Markets from './Markets';
-import { STATIC_ICONS } from 'config/icons';
-import { Select } from 'antd';
 import { MarketsSelector } from 'containers/Trade/utils';
+import { EditWrapper, IconTitle } from 'components';
+import STRINGS from 'config/localizedStrings';
 
 const DigitalAssets = (props) => {
 	const {
@@ -18,8 +20,11 @@ const DigitalAssets = (props) => {
 		router,
 		pair,
 		markets,
+		icons: ICONS,
 	} = props;
-	const [options, setOptions] = useState([{ value: 'all', label: 'all' }]);
+	const [options, setOptions] = useState([
+		{ value: STRINGS['ALL'], label: STRINGS['ALL'] },
+	]);
 	const [selectedSource, setSelectedSource] = useState('');
 
 	useEffect(() => {
@@ -33,14 +38,15 @@ const DigitalAssets = (props) => {
 	};
 
 	const handleOptions = () => {
-		let optionData = [];
-		let temp = [];
+		const optionData = [];
+		const nonDublicateCoins = [];
 		markets.forEach((market) => {
-			if (!temp.includes(market?.pairTwo?.symbol)) {
-				temp.push(market?.pairTwo?.symbol);
+			const pair_2_symbol = market?.pairTwo?.symbol;
+			if (!nonDublicateCoins.includes(pair_2_symbol)) {
+				nonDublicateCoins.push(pair_2_symbol);
 				optionData.push({
-					value: market?.pairTwo?.symbol,
-					label: market?.pairTwo?.symbol,
+					value: pair_2_symbol,
+					label: pair_2_symbol,
 				});
 			}
 		});
@@ -49,11 +55,10 @@ const DigitalAssets = (props) => {
 
 	const getSearchResult = () => {
 		const result = {};
-		Object.keys(coins).map((key) => {
-			const temp = coins[key];
+		Object.entries(coins).map(([key, obj]) => {
 			const hasCoinBalance = !!balance[`${key}_balance`];
 			if (hasCoinBalance) {
-				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
+				result[key] = { ...obj, oraclePrice: oraclePrices[key] };
 			}
 			return key;
 		});
@@ -65,45 +70,61 @@ const DigitalAssets = (props) => {
 			<div className="market-wrapper">
 				<div className="header-container">
 					<div className="d-flex">
-						<img
-							src={`${STATIC_ICONS.ASSET_INFO_COIN}`}
-							alt="asset-info-coin"
+						<IconTitle
+							className="digital-assets-icon"
+							stringId="DIGITAL_ASSETS_TITLE"
+							text={STRINGS['DIGITAL_ASSETS.DIGITAL_ASSETS_TITLE']}
+							iconPath={ICONS['ASSET_INFO_COIN']}
+							iconId="ASSET_INFO_COIN"
+							textType="title"
 						/>
-						<div className="header-text">Digital assets</div>
 					</div>
-					<div className="link-content" onClick={() => handleBack()}>
-						&lt; Go back
+					<div className="link-content" onClick={handleBack}>
+						<EditWrapper stringId="DIGITAL_ASSETS.GO_BACK">
+							&lt; {STRINGS['DIGITAL_ASSETS.GO_BACK']}
+						</EditWrapper>
 					</div>
 				</div>
 				<div className="d-flex justify-content-between mb-3">
 					<div>
 						<div className="gray-text">
-							Below are available assets on the platform.
+							<EditWrapper stringId="DIGITAL_ASSETS.ASSETS_INFO">
+								{STRINGS['DIGITAL_ASSETS.ASSETS_INFO']}
+							</EditWrapper>
 						</div>
 						<div className="gray-text">
-							You can click an asset on the list below to learn more.
+							<EditWrapper stringId="DIGITAL_ASSETS.ASSETS_INFO_DETAIL">
+								{STRINGS['DIGITAL_ASSETS.ASSETS_INFO_DETAIL']}
+							</EditWrapper>
 						</div>
 					</div>
 					<div className="link-container">
 						<Link className="link-1" to={`/quick-trade/${pair}`}>
-							QUICK TRADE
+							<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
+								{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
+							</EditWrapper>
 						</Link>
 						<Link className="link-2" to="/markets">
-							MARKETS
+							<EditWrapper stringId="DIGITAL_ASSETS.MARKETS">
+								{STRINGS['DIGITAL_ASSETS.MARKETS']}
+							</EditWrapper>
 						</Link>
 						<Link className="link-3" to="/wallet">
-							WALLET
+							<EditWrapper stringId="DIGITAL_ASSETS.WALLET">
+								{STRINGS['DIGITAL_ASSETS.WALLET']}
+							</EditWrapper>
 						</Link>
 					</div>
 				</div>
 				<div className="dropdown-container">
 					<div className="gray-text">Price source:</div>
 					<Select
-						defaultValue={options[0].value}
+						defaultValue={options[0]?.value}
 						style={{ width: '20rem' }}
-						className="coin-select"
+						className="coin-select custom-select-input-style elevated"
+						dropdownClassName="custom-select-style"
 						placeholder=""
-						onChange={(e) => setSelectedSource(e)}
+						onChange={setSelectedSource}
 						options={options}
 					/>
 				</div>

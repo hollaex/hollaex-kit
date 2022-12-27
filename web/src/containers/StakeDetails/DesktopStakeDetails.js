@@ -114,9 +114,8 @@ class StakeDetails extends Component {
 
 	componentDidMount() {
 		this.setBlockNumberInterval();
-		const urlParams = new URLSearchParams(window.location.search);
-		const myParam = urlParams.get('mystaking');
-		if (myParam === 'true') {
+		const urlParams = this.props.router.location.search.includes('mystaking');
+		if (urlParams) {
 			this.setState({ activeKey: TABS.MY_STAKING.key });
 		}
 	}
