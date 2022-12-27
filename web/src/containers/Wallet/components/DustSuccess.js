@@ -17,7 +17,7 @@ const DustSuccess = ({
 	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
-		<div className="dust-dialog-content">
+		<div className="dust-dialog-content margin-auto">
 			<IconTitle
 				stringId="DUST.SUCCESSFUL.TITLE"
 				iconId="DUST_SUCCESSFUL"

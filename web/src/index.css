@@ -1852,6 +1852,9 @@ table th {
   .custom-dropdown-style .app-bar-add-tab-icons div {
     display: flex; }
 
+.dust-convert-button {
+  width: 300px !important; }
+
 .review-wrapper .review-icon {
   width: 8rem;
   height: 8rem;

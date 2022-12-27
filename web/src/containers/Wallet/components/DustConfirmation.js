@@ -33,7 +33,7 @@ const DustConfirmation = ({
 	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
-		<div className="dust-dialog-content">
+		<div className="dust-dialog-content margin-auto">
 			<IconTitle
 				iconId="DUST_CONFIRMATION"
 				iconPath={ICONS['DUST_CONFIRMATION']}
