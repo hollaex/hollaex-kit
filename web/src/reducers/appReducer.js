@@ -44,10 +44,10 @@ import {
 	SET_SORT_MODE,
 	TOGGLE_SORT,
 	SET_ADMIN_SORT,
-} from '../actions/appActions';
-import { THEME_DEFAULT } from '../config/constants';
-import { getLanguage } from '../utils/string';
-import { getTheme } from '../utils/theme';
+} from 'actions/appActions';
+import { THEME_DEFAULT } from 'config/constants';
+import { getLanguage } from 'utils/string';
+import { getTheme } from 'utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
 import {
