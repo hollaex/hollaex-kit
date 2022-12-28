@@ -1299,7 +1299,9 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: array
+            items:
+              type: object
         default:
           description: Error
           schema:
@@ -1332,7 +1334,9 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: array
+            items:
+              type: object
         default:
           description: Error
           schema:
