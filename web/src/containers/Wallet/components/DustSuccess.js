@@ -17,7 +17,7 @@ const DustSuccess = ({
 	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
 	return (
-		<div className="dust-dialog-content">
+		<div className="dust-dialog-content margin-auto">
 			<IconTitle
 				stringId="DUST.SUCCESSFUL.TITLE"
 				iconId="DUST_SUCCESSFUL"
@@ -47,7 +47,7 @@ const DustSuccess = ({
 			{error?.length && (
 				<div className="py-2">
 					{error.map(({ symbol, error: message }) => (
-						<div className="warning_text">
+						<div key={symbol} className="warning_text">
 							<span className="caps">{symbol}</span>
 							<span className="px-2">{message}</span>
 						</div>

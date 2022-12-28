@@ -36,6 +36,7 @@ const ActionNotification = ({
 	rotateIfLtr,
 	rotateIfRtl,
 	showActionText,
+	hideActionText = false,
 	disable = false,
 }) => {
 	// This is to prevent action when edit string or upload icons are clicked
@@ -63,7 +64,7 @@ const ActionNotification = ({
 			)}
 			onClick={onActionClick}
 		>
-			{(showActionText || !isMobile) && (
+			{!hideActionText && (showActionText || !isMobile) && (
 				<div
 					className={classnames(
 						'action_notification-text',

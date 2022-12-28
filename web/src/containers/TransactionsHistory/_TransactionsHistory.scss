@@ -279,3 +279,27 @@
 		color: $colors-notifications-red;
 	}
 }
+
+.flex-row {
+	flex-direction: row;
+}
+
+.expandable-container {
+	display: flex;
+	flex-direction: column;
+
+	div {
+		display: flex;
+		flex-direction: row;
+	}
+
+	p {
+		margin-right: 1rem;
+		font-weight: thin;
+		margin-bottom: 0px;
+	}
+
+	.font-bold {
+		font-weight: bolder;
+	}
+}

@@ -33,6 +33,9 @@ const HistoryDisplay = (props) => {
 		icons: ICONS,
 		activeTab,
 		rowKey,
+		expandableRow,
+		expandableContent,
+		handleExpand,
 	} = props;
 
 	const [dialogIsOpen, setDialogOpen] = useState(false);
@@ -131,6 +134,8 @@ const HistoryDisplay = (props) => {
 					handleNext={handleNext}
 					jumpToPage={jumpToPage}
 					noData={props.noData}
+					expandable={expandableRow && expandableContent()}
+					handleExpand={handleExpand}
 				/>
 			)}
 			<Dialog

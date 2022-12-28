@@ -392,8 +392,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -411,8 +411,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1852,6 +1852,9 @@ table th {
   .custom-dropdown-style .app-bar-add-tab-icons div {
     display: flex; }
 
+.dust-convert-button {
+  width: 300px !important; }
+
 .review-wrapper .review-icon {
   width: 8rem;
   height: 8rem;
@@ -2364,6 +2367,22 @@ table th {
     color: var(--specials_pending-waiting-caution); }
   .transaction-status .rejected {
     color: var(--specials_notifications-alerts-warnings); }
+
+.flex-row {
+  flex-direction: row; }
+
+.expandable-container {
+  display: flex;
+  flex-direction: column; }
+  .expandable-container div {
+    display: flex;
+    flex-direction: row; }
+  .expandable-container p {
+    margin-right: 1rem;
+    font-weight: thin;
+    margin-bottom: 0px; }
+  .expandable-container .font-bold {
+    font-weight: bolder; }
 
 .trade-container {
   flex: 1; }
@@ -3372,8 +3391,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3527,7 +3546,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5779,7 +5798,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8588,14 +8607,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -9314,6 +9333,31 @@ table th {
   margin: 2rem 0 2rem; }
   .table-wrapper tr {
     height: 2rem; }
+  .table-wrapper .sub-tr-bg-white {
+    background-color: #e4e3e3;
+    border-bottom: 1px solid #c3c3c3 !important;
+    opacity: 0.75; }
+  .table-wrapper .anchor {
+    color: #5D63FF;
+    text-decoration: underline;
+    cursor: pointer; }
+  .table-wrapper .sub-tr-bg {
+    background: #383a3e;
+    opacity: 0.75;
+    border-bottom: 1px solid #4b4d51 !important; }
+  .table-wrapper .sub-tr {
+    height: 7rem;
+    border-bottom: 1px solid #4b4d51; }
+    .table-wrapper .sub-tr td {
+      padding: 1rem;
+      vertical-align: top; }
+  .table-wrapper .time-wrapper {
+    display: flex; }
+    .table-wrapper .time-wrapper .type-color {
+      color: #9edec9; }
+    .table-wrapper .time-wrapper p {
+      margin-bottom: 0px;
+      margin-right: 0.5rem; }
   .table-wrapper th,
   .table-wrapper td {
     padding: 0.25rem; }

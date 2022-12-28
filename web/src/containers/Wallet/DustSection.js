@@ -198,7 +198,7 @@ const DustSection = ({
 			return (
 				<Fragment>
 					{error.map(({ symbol, error: message }) => (
-						<div className="warning_text">
+						<div key={symbol} className="warning_text">
 							<span className="caps">{symbol}</span>
 							<span className="px-2">{message}</span>
 						</div>
@@ -352,11 +352,11 @@ const DustSection = ({
 
 					{error && renderError()}
 				</div>
-				<div className="d-flex align-center justify-content-center">
+				<div className="d-flex align-center justify-content-center my-4">
 					<div>
 						<EditWrapper stringId="DUST.CONVERT_ALL" />
 						<Button
-							className="caps"
+							className="caps dust-convert-button"
 							disabled={!selectedAssets.length || loadingEstimations}
 							label={STRINGS['DUST.CONVERT_ALL']}
 							onClick={handleConvert}
