@@ -5,7 +5,13 @@ import { Space, Menu, Dropdown } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
-const TradeInputGroup = ({ markets, goToTrade, icons: ICONS, pairs }) => {
+const TradeInputGroup = ({
+	markets,
+	broker,
+	goToTrade,
+	icons: ICONS,
+	pairs,
+}) => {
 	return (
 		<Dropdown
 			size="small"
@@ -16,8 +22,13 @@ const TradeInputGroup = ({ markets, goToTrade, icons: ICONS, pairs }) => {
 			overlay={
 				<Menu onClick={({ key }) => goToTrade(key)}>
 					{markets.map((market) => {
-						const display_name = pairs[market]?.display_name;
-						const icon_id = pairs[market]?.icon_id;
+						// const display_name = pairs[market]?.display_name;
+						// const icon_id = pairs[market]?.icon_id;
+
+						const { display_name, icon_id } =
+							pairs[market] ||
+							broker.find(({ symbol }) => symbol === market) ||
+							{};
 						return (
 							<Menu.Item className="caps" key={market}>
 								<div className="d-flex align-items-center">

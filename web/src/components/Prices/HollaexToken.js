@@ -9,7 +9,7 @@ import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { formatPercentage } from 'utils/currency';
-import { ButtonLink, EditWrapper, IconTitle, PriceChange } from 'components';
+import { Button, EditWrapper, IconTitle, Image, PriceChange } from 'components';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -194,12 +194,7 @@ const Hollaextoken = (props) => {
 						<div className="title">
 							<div className="d-flex justify-content-between">
 								<div>
-									<EditWrapper stringId={pairBase_fullName}>
-										<span>{pairBase_fullName}</span>{' '}
-									</EditWrapper>
-									<EditWrapper stringId={currentCoinUpper}>
-										{currentCoinUpper}
-									</EditWrapper>
+									<span>{pairBase_fullName}</span> {currentCoinUpper}
 								</div>
 								<div
 									className="pl-3 pr-2"
@@ -227,26 +222,26 @@ const Hollaextoken = (props) => {
 								</div>
 							</div>
 						</div>
-						<div className="d-flex justify-content-between mt-3 mb-4">
+						<div className="d-flex justify-content-between mt-3 mb-4 balance-wrapper">
 							<div className="link" onClick={handleBack}>
 								<EditWrapper stringId="HOLLAEX_TOKEN.GO_BACK">
 									&lt; {STRINGS['HOLLAEX_TOKEN.GO_BACK']}
 								</EditWrapper>
 							</div>
-							<div className="d-flex">
-								<img
-									className="sub-header-icon"
-									src={`${ICONS.TAB_WALLET}`}
-									alt="wallet-icon"
+							<div className="d-flex image-Wrapper">
+								<Image
+									iconId={''}
+									stringId={''}
+									icon={ICONS['TAB_WALLET']}
+									alt={'text'}
+									svgWrapperClassName="action_notification-svg"
 								/>
 								<div className="gray-text">
 									<EditWrapper stringId="HOLLAEX_TOKEN.BALANCE">
 										{STRINGS['HOLLAEX_TOKEN.BALANCE']}
-									</EditWrapper>
+									</EditWrapper>{' '}
 									{available_balance[`${currentCoin}_available`]}{' '}
-									<EditWrapper stringId={currentCoinUpper}>
-										{currentCoinUpper}{' '}
-									</EditWrapper>
+									{currentCoinUpper}{' '}
 									<Link className="link" to={'/wallet'}>
 										<EditWrapper stringId="HOLLAEX_TOKEN.OPEN_WALLET">
 											{STRINGS['HOLLAEX_TOKEN.OPEN_WALLET']}
@@ -267,48 +262,37 @@ const Hollaextoken = (props) => {
 								</EditWrapper>
 							</div>
 							<div className="sub-text">
-								<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO">
-									{currentCoinUpper} {STRINGS['HOLLAEX_TOKEN.HOLLA_INFO']}{' '}
-								</EditWrapper>
+								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO"> */}
+								{currentCoinUpper} {STRINGS['HOLLAEX_TOKEN.HOLLA_INFO']}{' '}
+								{/* </EditWrapper> */}
 								<span className="link">
-									<EditWrapper stringId="HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE">
-										{STRINGS['HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE']}
-									</EditWrapper>
+									{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE"> */}
+									{STRINGS['HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE']}
+									{/* </EditWrapper> */}
 								</span>
-								.
-								<EditWrapper stringId="HOLLAEX_TOKEN.HOLDER">
-									{STRINGS['HOLLAEX_TOKEN.HOLDER']}{' '}
-								</EditWrapper>
-								<EditWrapper stringId={currentCoinUpper}>
-									{currentCoinUpper}
-								</EditWrapper>
-								<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO2">
-									{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO2']}
-								</EditWrapper>
+								.{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLDER"> */}
+								{STRINGS['HOLLAEX_TOKEN.HOLDER']} {/* </EditWrapper> */}{' '}
+								{currentCoinUpper}
+								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO2"> */}
+								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO2']}
+								{/* </EditWrapper> */}
 							</div>
 							<div className="sub-text">
-								<EditWrapper stringId="HOLLAEX_TOKEN.WITH">
-									{STRINGS['HOLLAEX_TOKEN.WITH']}
-								</EditWrapper>
-								<EditWrapper stringId={currentCoinUpper}>
-									{currentCoinUpper}
-								</EditWrapper>
-								<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO3">
-									{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO3']}{' '}
-								</EditWrapper>
-								<EditWrapper stringId={currentCoinUpper}>
-									{currentCoinUpper}
-								</EditWrapper>
-								<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO4">
-									{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO4']}
-								</EditWrapper>
+								{/* <EditWrapper stringId="HOLLAEX_TOKEN.WITH"> */}
+								{STRINGS['HOLLAEX_TOKEN.WITH']}
+								{/* </EditWrapper> */}
+								{currentCoinUpper}
+								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO3"> */}
+								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO3']} {/* </EditWrapper> */}
+								{currentCoinUpper}
+								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO4"> */}
+								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO4']}
+								{/* </EditWrapper> */}
 							</div>
 							{viewMore && (
 								<div className="sub-text">
-									<EditWrapper stringId={currentCoinUpper}>
-										{currentCoinUpper}
-									</EditWrapper>
 									<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO5">
+										{currentCoinUpper}
 										{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO5']}
 									</EditWrapper>
 								</div>
@@ -353,8 +337,6 @@ const Hollaextoken = (props) => {
 											<Link to={`/quick-trade/${currentPair}`}>
 												<EditWrapper stringId="HOLLAEX_TOKEN.QUICK_BUY">
 													{STRINGS['HOLLAEX_TOKEN.QUICK_BUY']}
-												</EditWrapper>
-												<EditWrapper stringId={currentCoinUpper}>
 													{currentCoinUpper}
 												</EditWrapper>
 											</Link>
@@ -369,9 +351,7 @@ const Hollaextoken = (props) => {
 												<EditWrapper stringId="HOLLAEX_TOKEN.MORE">
 													{STRINGS['HOLLAEX_TOKEN.MORE']}
 												</EditWrapper>
-												<EditWrapper stringId={currentCoinUpper}>
-													{currentCoinUpper}
-												</EditWrapper>
+												{currentCoinUpper}
 												<EditWrapper stringId="HOLLAEX_TOKEN.INFO">
 													{STRINGS['HOLLAEX_TOKEN.INFO']}
 												</EditWrapper>
@@ -381,15 +361,18 @@ const Hollaextoken = (props) => {
 								</div>
 							)}
 							<div className="button-container">
-								<ButtonLink
-									label={`TRADE ${handleReplace(
-										selectedPairCoins?.key,
-										'-',
-										'/'
-									)}`}
-									onClick={() => handleTrade(selectedPairCoins?.key)}
-									className="w-100"
-								/>
+								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
+									<Button
+										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${handleReplace(
+											selectedPairCoins?.key,
+											'-',
+											'/'
+										)}`}
+										type="button"
+										onClick={() => handleTrade(selectedPairCoins?.key)}
+										className="w-100"
+									/>
+								</EditWrapper>
 							</div>
 						</div>
 						<div className="trade-details-wrapper">

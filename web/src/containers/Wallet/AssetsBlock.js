@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
-import { withRouter } from 'react-router';
 import { isStakingAvailable } from 'config/contracts';
 import {
 	// CurrencyBall,
@@ -9,6 +8,7 @@ import {
 	SearchBox,
 	AssetsBlockForm,
 	EditWrapper,
+	Help,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -24,7 +24,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import Image from 'components/Image';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
-import { DustLink } from 'containers/Apps/utils';
+import DustSection from './DustSection';
 
 const AssetsBlock = ({
 	balance,
@@ -43,8 +43,9 @@ const AssetsBlock = ({
 	loading,
 	contracts,
 	broker,
-	isDustEnabled,
-	router,
+	goToDustSection,
+	showDustSection,
+	goToWallet,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -113,7 +114,9 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
-	return (
+	return showDustSection ? (
+		<DustSection goToWallet={goToWallet} />
+	) : (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				{totalAssets.length && !loading ? (
@@ -148,11 +151,18 @@ const AssetsBlock = ({
 						/>
 					</EditWrapper>
 					<div className="d-flex">
-						{isDustEnabled && (
-							<div className="d-flex px-4 align-items-center">
-								<DustLink router={router} />
-							</div>
-						)}
+						<div className="d-flex px-4 align-items-center">
+							<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+								<Help tip={STRINGS['DUST.TOOLTIP']}>
+									<div
+										className="text-underline pointer blue-link"
+										onClick={goToDustSection}
+									>
+										{STRINGS['DUST.LINK']}
+									</div>
+								</Help>
+							</EditWrapper>
+						</div>
 						<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
 							<AssetsBlockForm
 								label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
@@ -322,6 +332,7 @@ const AssetsBlock = ({
 										<td>
 											{markets.length > 1 ? (
 												<TradeInputGroup
+													broker={broker}
 													markets={markets}
 													goToTrade={goToTrade}
 													pairs={pairs}
@@ -364,4 +375,4 @@ const AssetsBlock = ({
 	);
 };
 
-export default withRouter(withConfig(AssetsBlock));
+export default withConfig(AssetsBlock);

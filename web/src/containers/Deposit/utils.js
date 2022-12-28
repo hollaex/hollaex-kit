@@ -81,7 +81,7 @@ export const generateFormFields = ({
 					className: 'file_upload_icon',
 					useSvg: true,
 					onClick: openQRCode,
-					showActionText: !isMobile,
+					hideActionText: true,
 				},
 			],
 		};

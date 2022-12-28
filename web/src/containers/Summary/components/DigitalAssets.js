@@ -72,7 +72,7 @@ const DigitalAssets = (props) => {
 					<div className="d-flex">
 						<IconTitle
 							className="digital-assets-icon"
-							stringId="DIGITAL_ASSETS_TITLE"
+							stringId="DIGITAL_ASSETS.DIGITAL_ASSETS_TITLE"
 							text={STRINGS['DIGITAL_ASSETS.DIGITAL_ASSETS_TITLE']}
 							iconPath={ICONS['ASSET_INFO_COIN']}
 							iconId="ASSET_INFO_COIN"
@@ -117,7 +117,11 @@ const DigitalAssets = (props) => {
 					</div>
 				</div>
 				<div className="dropdown-container">
-					<div className="gray-text">Price source:</div>
+					<div className="gray-text">
+						<EditWrapper stringId="DIGITAL_ASSETS.PRICE_SOURCE">
+							{STRINGS['DIGITAL_ASSETS.PRICE_SOURCE']}:
+						</EditWrapper>
+					</div>
 					<Select
 						defaultValue={options[0]?.value}
 						style={{ width: '20rem' }}

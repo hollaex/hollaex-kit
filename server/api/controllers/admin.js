@@ -2049,6 +2049,30 @@ const revokeUserBank = (req, res) => {
 		});
 };
 
+const generateDashToken = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/generateDashToken auth',
+		req.auth
+	);
+
+	toolsLib.security.generateDashToken({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then(({ token }) => {
+			if (!token) {
+				throw new Error('We could not generate the token. Please try again.');
+			}
+			return res.json({ token });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/generateDashToken err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2099,5 +2123,6 @@ module.exports = {
 	getEmailTypes,
 	setUserBank,
 	verifyUserBank,
-	revokeUserBank
+	revokeUserBank,
+	generateDashToken
 };

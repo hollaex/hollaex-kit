@@ -1329,8 +1329,36 @@
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
 	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
 	"DUST": {
+		"TITLE": "Wallet duster",
 		"LINK": "Wallet duster",
-		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto"
+		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "to my wallet",
+		"BACK": "Back",
+		"ESTIMATED_TOTAL": "Estimated total dust value",
+		"CONVERT_ALL": "convert all",
+		"NO_DUST": "No dust assets!",
+		"SECTION": {
+			"TITLE": "Convert wallet dust",
+			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1}.",
+			"TEXT_2": "All conversations will be settled in {0} ({1})."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Convert Dust",
+			"SUBTITLE": "Assets being converted",
+			"BACK": "back",
+			"CONFIRM": "confirm",
+			"GET": "You will get",
+			"FEE": "Conversion fee",
+			"PLEASE": "Please note",
+			"NOTE": "You can convert dust into {0} once every 24 hours. Only balances valued under {1} {2} will be converted."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Dust conversion successful!",
+			"TEXT": "You've received",
+			"VIEW_HISTORY": "view history",
+			"CLOSE": "close"
+		}
 	},
 	"ASSET_INFO_PAGE": "Asset info page",
 	"MARKET_ROW": {
@@ -1344,7 +1372,8 @@
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
 		"QUICK_TRADE": "QUICKTRADE",
 		"MARKETS": "MARKETS",
-		"WALLET": "WALLET"
+		"WALLET": "WALLET",
+		"PRICE_SOURCE": "Price source"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",

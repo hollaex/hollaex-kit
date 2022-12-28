@@ -44,10 +44,10 @@ import {
 	SET_SORT_MODE,
 	TOGGLE_SORT,
 	SET_ADMIN_SORT,
-} from '../actions/appActions';
-import { THEME_DEFAULT } from '../config/constants';
-import { getLanguage } from '../utils/string';
-import { getTheme } from '../utils/theme';
+} from 'actions/appActions';
+import { THEME_DEFAULT } from 'config/constants';
+import { getLanguage } from 'utils/string';
+import { getTheme } from 'utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
 import {
@@ -56,7 +56,11 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
-import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
+import {
+	modifyCoinsData,
+	modifyPairsData,
+	modifyBrokerData,
+} from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -178,7 +182,7 @@ const INITIAL_STATE = {
 	tradeTab: 0,
 	broker: {},
 	user_payments: {},
-	onramp: {},
+	onramp: [],
 	offramp: {},
 	sort: {
 		mode: SORT.CHANGE,
@@ -240,7 +244,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_BROKER:
 			return {
 				...state,
-				broker: payload.broker,
+				broker: modifyBrokerData(payload.broker, { ...state.coins }),
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =

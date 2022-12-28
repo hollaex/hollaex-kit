@@ -244,6 +244,7 @@ class Deposit extends Component {
 			addressRequest,
 			selectedNetwork,
 			router,
+			wallet,
 		} = this.props;
 
 		const {
@@ -256,6 +257,7 @@ class Deposit extends Component {
 			initialValues,
 			showGenerateButton,
 			qrCodeOpen,
+			networks,
 		} = this.state;
 
 		if (!id || !currency || !checked) {
@@ -348,7 +350,7 @@ class Deposit extends Component {
 					{qrCodeOpen && (
 						<QRCode
 							closeQRCode={this.closeQRCode}
-							address={address}
+							data={getWallet(currency, selectedNetwork, wallet, networks)}
 							currency={currency}
 							onCopy={this.onCopy}
 						/>
