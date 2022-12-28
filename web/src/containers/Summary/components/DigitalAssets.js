@@ -116,7 +116,7 @@ const DigitalAssets = (props) => {
 						</Link>
 					</div>
 				</div>
-				<div className="dropdown-container">
+				<div className="mb-4">
 					<div className="gray-text">
 						<EditWrapper stringId="DIGITAL_ASSETS.PRICE_SOURCE">
 							{STRINGS['DIGITAL_ASSETS.PRICE_SOURCE']}:
