@@ -296,3 +296,19 @@ $order_entry-column--width-lg: 20rem;
 	opacity: 1;
 	transition: opacity 1s ease-in;
 }
+
+.open-order-wrapper {
+	.trade__active-orders_cancel-All {
+		.action_notification-wrapper {
+			position: relative;
+		}
+	}
+	.table_body-row {
+		td:nth-child(even) {
+			.action_notification-wrapper {
+				margin-top: 0.75rem;
+				padding-left: 0.25rem;
+			}
+		}
+	}
+}
