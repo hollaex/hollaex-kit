@@ -96,7 +96,7 @@ class OrdersWrapper extends Component {
 					titleClassName="mb-4"
 				>
 					{isLoggedIn() ? (
-						<Fragment>
+						<div className="open-order-wrapper">
 							<Filters
 								pair={activeOrdersMarket}
 								onChange={setActiveOrdersMarket}
@@ -110,7 +110,7 @@ class OrdersWrapper extends Component {
 								onCancel={this.handleCancelOrders}
 								onCancelAll={this.openConfirm}
 							/>
-						</Fragment>
+						</div>
 					) : (
 						<LogoutInfoOrder />
 					)}
