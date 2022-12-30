@@ -32,6 +32,23 @@ $outline-height: 1.5px;
 	.checkfield-input-wrapper {
 		align-items: center;
 	}
+
+	.multiple-actions-wrapper {
+		display: flex;
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		margin: auto 0;
+		right: $valid-icon-size;
+		.action_notification-wrapper {
+			position: static !important;
+		}
+		.action_notification-wrapper:not(:last-child):after {
+			content: '|';
+			padding: 0 0.5rem;
+			color: $colors-main-border;
+		}
+	}
 }
 
 .field-label-wrapper {
@@ -197,7 +214,7 @@ $outline-height: 1.5px;
 		padding-left: 0.25rem;
 	}
 
-	.field-children {
+	.field-children:not(.padding_zero) {
 		&.valid > *:not(:last-child) {
 			padding-right: $valid-icon-size;
 		}
@@ -238,7 +255,7 @@ $outline-height: 1.5px;
 		padding-right: 0.25rem;
 	}
 
-	.field-children {
+	.field-children:not(.padding_zero) {
 		&.valid > *:not(:last-child) {
 			padding-left: $valid-icon-size;
 		}
@@ -265,6 +282,11 @@ $outline-height: 1.5px;
 			&.with-tick-icon {
 				left: $valid-icon-size;
 			}
+		}
+
+		.multiple-actions-wrapper {
+			right: auto;
+			left: $valid-icon-size;
 		}
 	}
 }

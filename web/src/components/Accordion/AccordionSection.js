@@ -55,22 +55,30 @@ const AccordionSection = ({
 						<span>
 							<Image icon={icon} wrapperClassName="sidebar_hub-section-icon" />
 						</span>
-						<EditWrapper stringId={stringId} iconId={iconId}>
-							<span
-								className={classnames(
-									'accordion_section_content_text',
-									titleClassName,
-									{ with_arrow: !disabled && allowClose }
-								)}
-							>
-								{title}{' '}
-								{subtitle && (
-									<span className="accordion_section_content_text-subtitle">
-										{subtitle}
+						<EditWrapper
+							stringId={stringId}
+							iconId={iconId}
+							strings={[title, subtitle]}
+							render={[
+								(string) => (
+									<span
+										className={classnames(
+											'accordion_section_content_text',
+											titleClassName,
+											{ with_arrow: !disabled && allowClose }
+										)}
+									>
+										{string}
 									</span>
-								)}
-							</span>
-						</EditWrapper>
+								),
+								(string) =>
+									string && (
+										<span className="px-2 accordion_section_content_text-subtitle">
+											{string}
+										</span>
+									),
+							]}
+						/>
 					</span>
 					{titleInformation}
 					{notification && (

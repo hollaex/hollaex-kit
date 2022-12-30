@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "2.4.5"
+  version: "2.5.0"
   title: HollaEx Kit
 host: api.hollaex.com
 basePath: /v2
@@ -1275,6 +1275,142 @@ paths:
         - hmac
       x-token-permissions:
         - can_trade
+  /order/dust:
+    x-swagger-router-controller: order
+    post:
+      operationId: dustBalance
+      description: dust
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              assets:
+                type: array
+                items:
+                  type: string
+            required:
+              - assets
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /order/dust/estimate:
+    x-swagger-router-controller: order
+    post:
+      operationId: dustEstimatePrice
+      description: dust
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              assets:
+                type: array
+                items:
+                  type: string
+            required:
+              - assets
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
+  /quick-trade:
+    x-swagger-router-controller: order
+    get:
+      operationId: getQuickTrade
+      description: Get Quick Trade
+      tags:
+        - Order
+      parameters:
+        - in: query
+          name: spending_currency
+          description: Currency symbol of the spending currency
+          required: true
+          type: string
+        - in: query
+          name: receiving_currency
+          description: Currency symbol of the receiving currency
+          required: true
+          type: string
+        - in: query
+          name: spending_amount
+          required: false
+          type: string
+        - in: query
+          name: receiving_amount
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /order/execute:
+    x-swagger-router-controller: order
+    post:
+      operationId: orderExecute
+      description: execute order
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+            required:
+              - token
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - user
   /tiers:
     x-swagger-router-controller: tier
     get:
@@ -3186,6 +3322,7 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
@@ -3246,6 +3383,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/discount:
     x-swagger-router-controller: admin
     put:
@@ -3290,6 +3428,7 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/note:
     x-swagger-router-controller: admin
     put:
@@ -3373,6 +3512,8 @@ paths:
             properties:
               bank_account:
                 type: array
+                items:
+                  type: object
       responses:
         200:
           description: Success
@@ -4348,6 +4489,26 @@ paths:
         - Bearer: []
       x-security-scopes:
         - admin
+  /admin/dash-token:
+    x-swagger-router-controller: admin
+    get:
+      operationId: generateDashToken
+      description: Generate a dash token to use for holla dash
+      tags:
+        - Admin
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Bearer: []
+      x-security-scopes:
+        - admin
   /broker:
     x-swagger-router-controller: broker
     post:
@@ -4698,13 +4859,6 @@ definitions:
         type: string
       code:
         type: string
-  ConfirmChangePassword:
-    type: object
-    required:
-      - code
-    properties:
-      code:
-        type: string
   OperatorResponse:
     type: object
     required:
@@ -4879,36 +5033,6 @@ definitions:
             type: boolean
           popup_order_partially_filled:
             type: boolean
-  UserPut:
-    type: object
-    properties:
-      full_name:
-        type: string
-      gender:
-        type: boolean
-      nationality:
-        type: string
-      dob:
-        type: string
-        format: date-time
-      address:
-        type: object
-        required:
-          - country
-          - address
-          - postal_code
-          - city
-        properties:
-          country:
-            type: string
-          address:
-            type: string
-          postal_code:
-            type: string
-          city:
-            type: string
-      phone_number:
-        type: string
   ChangePassword:
     type: object
     required:
@@ -5003,32 +5127,6 @@ definitions:
         type: string
         maxLength: 50
       card_number:
-        type: string
-  VerificationId:
-    type: object
-    required:
-      - front
-    properties:
-      front:
-        type: string
-      back:
-        type: string
-      proof_of_residency:
-        type: string
-  AnnouncementObject:
-    type: object
-    properties:
-      id:
-        type: number
-        format: int32
-      created_by:
-        type: number
-        format: int32
-      title:
-        type: string
-      message:
-        type: string
-      type:
         type: string
   OrderRequest:
     type: object
@@ -5202,6 +5300,15 @@ definitions:
             type: array
             items:
               type: string
+          dust:
+            type: object
+            properties:
+              quote:
+                type: string
+              maker_id:
+                type: integer
+              spread:
+                type: number
           onramp:
             type: object
           offramp:

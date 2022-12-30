@@ -24,7 +24,7 @@ import RenderContent, {
 	generateFormFields,
 } from './utils';
 import { getWallet } from 'utils/wallet';
-
+import QRCode from './QRCode';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 class Deposit extends Component {
@@ -36,9 +36,10 @@ class Deposit extends Component {
 		dialogIsOpen: false,
 		formFields: {},
 		initialValues: {},
+		qrCodeOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.quoteData.error === BALANCE_ERROR) {
 			this.setState({ depositPrice: this.props.quoteData.data.price });
 		}
@@ -211,6 +212,7 @@ class Deposit extends Component {
 			coins,
 			network,
 			fee,
+			openQRCode: this.openQRCode,
 		});
 
 		const initialValues = {
@@ -221,6 +223,14 @@ class Deposit extends Component {
 		};
 
 		this.setState({ address, formFields, initialValues, showGenerateButton });
+	};
+
+	openQRCode = () => {
+		this.setState({ qrCodeOpen: true });
+	};
+
+	closeQRCode = () => {
+		this.setState({ qrCodeOpen: false });
 	};
 
 	render() {
@@ -234,6 +244,7 @@ class Deposit extends Component {
 			addressRequest,
 			selectedNetwork,
 			router,
+			wallet,
 		} = this.props;
 
 		const {
@@ -245,6 +256,8 @@ class Deposit extends Component {
 			address,
 			initialValues,
 			showGenerateButton,
+			qrCodeOpen,
+			networks,
 		} = this.state;
 
 		if (!id || !currency || !checked) {
@@ -322,6 +335,24 @@ class Deposit extends Component {
 							currency={currency}
 							data={addressRequest}
 							coins={coins}
+						/>
+					)}
+				</Dialog>
+				<Dialog
+					isOpen={qrCodeOpen}
+					label="hollaex-modal"
+					className="app-dialog"
+					onCloseDialog={this.closeQRCode}
+					shouldCloseOnOverlayClick={false}
+					showCloseText={true}
+					style={{ 'z-index': 100 }}
+				>
+					{qrCodeOpen && (
+						<QRCode
+							closeQRCode={this.closeQRCode}
+							data={getWallet(currency, selectedNetwork, wallet, networks)}
+							currency={currency}
+							onCopy={this.onCopy}
 						/>
 					)}
 				</Dialog>

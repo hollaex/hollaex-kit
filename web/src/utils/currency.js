@@ -69,6 +69,15 @@ export const getFormat = (min = 0, fullFormat) => {
 
 export const formatToCurrency = (amount = 0, min = 0, fullFormat = false) => {
 	let formatObj = getFormat(min, fullFormat);
+	return numbro(roundNumber(amount, formatObj.digit)).format(formatObj.format);
+};
+
+export const formatCurrencyByIncrementalUnit = (
+	amount = 0,
+	min = 0,
+	fullFormat = false
+) => {
+	let formatObj = getFormat(min, fullFormat);
 	let _amount = amount;
 	if (min >= 1) {
 		_amount = math.subtract(amount, math.mod(amount, min));
@@ -153,9 +162,10 @@ export const calculatePrice = (value = 0, key = BASE_CURRENCY) => {
 };
 
 export const calculateOraclePrice = (value = 0, price = 0) => {
-	const effectivePrice = price >= 0 ? price : 0;
+	const effectiveValue = !isNaN(value) ? value : 0;
+	const effectivePrice = !isNaN(price) && math.largerEq(price, 0) ? price : 0;
 	return math.number(
-		math.multiply(math.fraction(value), math.fraction(effectivePrice))
+		math.multiply(math.fraction(effectiveValue), math.fraction(effectivePrice))
 	);
 };
 

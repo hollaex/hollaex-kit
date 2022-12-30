@@ -96,7 +96,7 @@ class OrdersWrapper extends Component {
 					titleClassName="mb-4"
 				>
 					{isLoggedIn() ? (
-						<Fragment>
+						<div className="open-order-wrapper">
 							<Filters
 								pair={activeOrdersMarket}
 								onChange={setActiveOrdersMarket}
@@ -110,7 +110,7 @@ class OrdersWrapper extends Component {
 								onCancel={this.handleCancelOrders}
 								onCancelAll={this.openConfirm}
 							/>
-						</Fragment>
+						</div>
 					) : (
 						<LogoutInfoOrder />
 					)}
@@ -134,8 +134,11 @@ class OrdersWrapper extends Component {
 						/>
 						<div>
 							<div>
-								<EditWrapper stringId="CANCEL_ORDERS.SUB_HEADING">
-									<div>{STRINGS['CANCEL_ORDERS.SUB_HEADING']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.SUB_HEADING"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.SUB_HEADING']}
 								</EditWrapper>
 							</div>
 							<div className="mt-3">
@@ -149,8 +152,11 @@ class OrdersWrapper extends Component {
 								</EditWrapper>
 							</div>
 							<div className="mt-1 mb-5">
-								<EditWrapper stringId="CANCEL_ORDERS.INFO_2">
-									<div>{STRINGS['CANCEL_ORDERS.INFO_2']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.INFO_2"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.INFO_2']}
 								</EditWrapper>
 							</div>
 							<div className="w-100 buttons-wrapper d-flex">

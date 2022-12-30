@@ -164,9 +164,9 @@ class AddTradeTab extends Component {
 								icon={ICONS['EXCHANGE_LOGO']}
 								wrapperClassName="app-icon d-flex"
 							/>
-							<div className="text-center trade-tab-app-title">
+							<div className="text-center trade-tab-app-title caps">
 								<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
-									{STRINGS['APP_SUB_TITLE'].toUpperCase()}
+									{STRINGS['APP_SUB_TITLE']}
 								</EditWrapper>
 							</div>
 						</div>
@@ -213,6 +213,7 @@ class AddTradeTab extends Component {
 						<Fragment>
 							{selected === options[0].value ? (
 								<MarketList
+									loading={!data.length ? true : false}
 									markets={data}
 									chartData={chartData}
 									handleClick={handleClick}

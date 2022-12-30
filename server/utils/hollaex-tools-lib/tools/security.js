@@ -47,6 +47,7 @@ const {
 	HMAC_TOKEN_EXPIRY,
 	HMAC_TOKEN_KEY
 } = require(`${SERVER_PATH}/constants`);
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const bcrypt = require('bcryptjs');
@@ -1143,6 +1144,12 @@ const isValidScope = (endpointScopes, userScopes) => {
 	}
 };
 
+const generateDashToken = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
+};
+
 module.exports = {
 	checkCaptcha,
 	resetUserPassword,
@@ -1184,5 +1191,6 @@ module.exports = {
 	checkIp,
 	sendConfirmationEmail,
 	confirmByEmail,
-	calculateSignature
+	calculateSignature,
+	generateDashToken
 };

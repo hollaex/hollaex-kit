@@ -105,7 +105,7 @@
 .admin-earnings-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
 	color: var(--admin_panel_main_font);
-	font-weight: bold;
+	/* font-weight: bold; */
 }
 .admin-earnings-container .ant-tabs-nav .ant-tabs-tab:hover {
 	color: var(--admin_panel_main_font);
@@ -499,4 +499,8 @@
 .settle-modal-page .anticon.anticon-loading svg {
 	fill: #ffffff;
 	font-size: larger;
+}
+.app_container-content .admin-wallet-icon {
+	margin-right: 1rem;
+	width: 5rem;
 }

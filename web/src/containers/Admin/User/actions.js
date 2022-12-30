@@ -31,6 +31,12 @@ export const updateNotes = (values) => {
 	};
 	return requestAuthenticated(`/admin/user/note?user_id=${values.id}`, options);
 };
+
+export const deleteNotes = (id) => {
+	const values = { id, note: '' };
+	return updateNotes(values);
+};
+
 export const requestUserImages = (values, kyc_name) => {
 	const url = `/plugins/${kyc_name}/admin/files?${toQueryString(values)}`;
 	return requestAuthenticated(url, {}, null, PLUGIN_URL)

@@ -43,7 +43,7 @@ const BANK_DATA_DEFAULT = [];
 exports.BANK_DATA_DEFAULT = BANK_DATA_DEFAULT;
 exports.ID_DATA_DEFAULT = ID_DATA_DEFAULT;
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const User = sequelize.define(
 		'User',
 		{
@@ -171,7 +171,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'Users'
 		}
 	);
 

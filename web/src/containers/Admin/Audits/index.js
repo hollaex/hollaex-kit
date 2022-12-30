@@ -68,7 +68,7 @@ const AUDIT_COLUMNS = [
 class Audits extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		if (this.props.userId) {
 			this.handleUserAudits(this.props.userId);
 		}

@@ -8,8 +8,9 @@ import {
 } from '@ant-design/icons';
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
-import { formatCurrency, formatDate } from '../../../utils/index';
 import { isSupport } from 'utils/token';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
+import { formatDate } from 'utils';
 
 /*export const renderBoolean = (value) => (
 	<LegacyIcon type={value ? 'check-circle' : 'close-circle-o'} />
@@ -85,6 +86,33 @@ export const renderUser = (id) => (
 		</Button>
 	</Tooltip>
 );
+
+export const renderResendContent = (renderData, onOpenModal) => {
+	if (
+		!renderData.status &&
+		!renderData.dismissed &&
+		!renderData.rejected &&
+		!renderData.processing
+	) {
+		return (
+			<div className="d-flex validate-wrapper">
+				<ClockCircleOutlined style={{ margin: '5px' }} />
+				<Tooltip placement="bottom" title="RETRY">
+					<div
+						className="anchor"
+						onClick={(e) => {
+							onOpenModal(renderData, 'retry');
+							e.preventDefault();
+							e.stopPropagation();
+						}}
+					>
+						Retry
+					</div>
+				</Tooltip>
+			</div>
+		);
+	}
+};
 
 export const renderContent = (renderData, onOpenModal) => {
 	if (renderData.status) {
@@ -172,6 +200,10 @@ export const COLUMNS = (currency, onOpenModal) => {
 				title: 'Validate/dismiss',
 				render: (renderData) => renderContent(renderData, onOpenModal),
 			},
+			{
+				title: 'Retry',
+				render: (renderData) => renderResendContent(renderData, onOpenModal),
+			},
 		];
 		return columns.concat(adminColumns);
 	}
@@ -197,14 +229,25 @@ export const renderRowContent = ({
 	created_at,
 	currency,
 	fee_coin,
+	coins,
 }) => {
 	return (
 		<div>
 			<div>
-				Amount: {formatCurrency(amount)} {currency}
+				Amount:{' '}
+				{formatCurrencyByIncrementalUnit(
+					amount,
+					coins?.[currency?.toLocaleLowerCase()]?.increment_unit
+				)}{' '}
+				{currency}
 			</div>
 			<div>
-				Fee: {formatCurrency(fee)} {fee_coin}
+				Fee:{' '}
+				{formatCurrencyByIncrementalUnit(
+					fee,
+					coins?.[fee_coin?.toLocaleLowerCase()]?.increment_unit
+				)}{' '}
+				{fee_coin}
 			</div>
 			{address && <div>Address: {address}</div>}
 			<div>Timestamp: {formatDate(created_at)}</div>

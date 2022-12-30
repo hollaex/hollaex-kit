@@ -7,6 +7,7 @@
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
 	"TIMESTAMP_FORMAT": "YYYY/MM/DD HH:mm:ss",
+	"DEFAULT_TIMESTAMP_FORMAT": "DD, MMMM, YYYY",
 	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
 	"NO_ACTIVE_TRADES": "Looks like there aren't any trades yet",
 	"NO_ACTIVE_DEPOSITS": "Looks like there aren't any deposits yet.",
@@ -100,8 +101,13 @@
 			"DESTINATION_TAG": "Your {0} destination tag",
 			"MEMO": "Your {0} memo"
 		},
-		"QR_CODE": "This QR Code can be scanned by the person who wants to send you funds",
-		"NO_DATA": "No information available"
+		"QR_CODE": "This QR code contains the deposit information and can be scanned with a QR code reader.",
+		"NO_DATA": "No information available",
+		"QR_CODE_TITLE": "{0} Deposit Information"
+	},
+	"QR_CODE": {
+		"SCAN": "Scan QR code",
+		"SHOW": "Show QR"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Login to {0}",
@@ -907,6 +913,9 @@
 	"WALLET_BUTTON_BASE_WITHDRAW": "withdraw",
 	"WALLET_BUTTON_CRYPTOCURRENCY_DEPOSIT": "deposit",
 	"WALLET_BUTTON_CRYPTOCURRENCY_WITHDRAW": "send",
+	"24H_MAX": "24H High:",
+	"24H_MIN": "24H Low",
+	"24H_VAL": "24H Vol",
 	"AVAILABLE_BALANCE_TEXT": "Available {0} Balance: {1} {2}",
 	"BALANCE_TEXT": "Balance",
 	"CURRENCY_BALANCE_TEXT": "{0} Balance",
@@ -1182,7 +1191,11 @@
 		"TRANSACTION_ID": "Transaction ID (hash)",
 		"SEARCH_SUCCESS": "Search complete",
 		"ADDRESS_FIELD_LABEL": "Paste your address",
-		"CURRENCY_FIELD_LABEL": "Select the currency"
+		"CURRENCY_FIELD_LABEL": "Select the currency",
+		"DESTINATION_TAG_LABEL": "Tag (optional)",
+		"MEMO_LABEL": "Memo (optional)",
+		"DESTINATION_TAG_PLACEHOLDER": "Paste your tag",
+		"MEMO_PLACEHOLDER": "Paste your memo"
 	},
 	"CANCEL_ORDERS": {
 		"HEADING": "Cancel orders",
@@ -1238,6 +1251,7 @@
 		"DEPTH_CHART": "Depth chart",
 		"COMING_SOON": "coming soon"
 	},
+	"RESET_LAYOUT": "Reset Layout",
 	"WALLET_BALANCE_LOADING": "Balance loading...",
 	"LOADING": "Loading...",
 	"CONNECT_VIA_DESKTOP": {
@@ -1297,5 +1311,37 @@
 	"WITHDRAWALS_FORM_METHOD": "Method",
 	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange user email",
 	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Input user's email on this exchange",
-	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free."
+	"WITHDRAWALS_FORM_MAIL_INFO": "Input a user's HollaEx account email that is on this exchange and transfer for free.",
+	"DUST": {
+		"TITLE": "Wallet duster",
+		"LINK": "Wallet duster",
+		"TOOLTIP": "Convert tiny wallet balances (dust) into crypto",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "to my wallet",
+		"BACK": "Back",
+		"ESTIMATED_TOTAL": "Estimated total dust value",
+		"CONVERT_ALL": "convert all",
+		"NO_DUST": "No dust assets!",
+		"SECTION": {
+			"TITLE": "Convert wallet dust",
+			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1}.",
+			"TEXT_2": "All conversations will be settled in {0} ({1})."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Convert Dust",
+			"SUBTITLE": "Assets being converted",
+			"BACK": "back",
+			"CONFIRM": "confirm",
+			"GET": "You will get",
+			"FEE": "Conversion fee",
+			"PLEASE": "Please note",
+			"NOTE": "You can convert dust into {0} once every 24 hours. Only balances valued under {1} {2} will be converted."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Dust conversion successful!",
+			"TEXT": "You've received",
+			"VIEW_HISTORY": "view history",
+			"CLOSE": "close"
+		}
+	}
 }

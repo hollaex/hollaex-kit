@@ -47,6 +47,12 @@ const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
 const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
+const pluginProcess = path.join(__dirname, "./plugin-process.js");
+const { Worker } = require('worker_threads')
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+let app;
+let activePlugins = {}
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
@@ -102,6 +108,83 @@ const installLibrary = async (library) => {
 	}
 };
 
+const stopPlugin = async (plugin) => {
+	try {
+		loggerPlugin.verbose(
+			'plugins/index/kill_plugin',
+			`killing plugin ${plugin.name}`
+		);
+
+		if (activePlugins[plugin.name]) {
+			activePlugins[plugin.name].process.terminate();
+			activePlugins[plugin.name].active = false;
+		} else {
+			activePlugins[plugin.name] =
+			{
+				name: plugin.name,
+				active: false
+			}
+		}
+
+	} catch (err) {
+		loggerPlugin.error(
+			'plugins/index/kill_plugin',
+			`error while stopping plugin ${plugin.name}`,
+			err.message
+		);
+	}
+}
+
+const startPlugin = async (plugin) => {
+	try {
+		loggerPlugin.verbose(
+			'plugins/index/initialization',
+			`starting plugin ${plugin.name}`
+		);
+
+		if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+			loggerPlugin.verbose(
+				'plugins/index/initialization',
+				`Installing packages for plugin ${plugin.name}`
+			);
+
+			for (const library of plugin.prescript.install) {
+				await installLibrary(library);
+			}
+
+			loggerPlugin.verbose(
+				'plugins/index/initialization',
+				`Plugin ${plugin.name} packages installed`
+			);
+		}
+
+		const pluginData = { PORT: 10011 + plugin.id, plugin }
+		const childProcess = new Worker(pluginProcess, {
+			workerData: JSON.stringify(pluginData)
+		})
+
+		activePlugins[plugin.name] = {
+			process: childProcess,
+			port: pluginData.PORT,
+			name: plugin.name,
+			active: true
+		};
+
+
+		loggerPlugin.verbose(
+			'plugins/index/initialization',
+			`Plugin ${plugin.name} running`
+		);
+	} catch (err) {
+		loggerPlugin.error(
+			'plugins/index/initialization',
+			`error while starting plugin ${plugin.name}`,
+			err.message
+		);
+	}
+}
+
+
 checkStatus()
 	.then(async () => {
 		loggerPlugin.info(
@@ -109,7 +192,7 @@ checkStatus()
 			'Initializing Plugin Server...'
 		);
 
-		const app = express();
+		app = express();
 
 		app.use(morgan(morganType, { stream }));
 		app.listen(PORT);
@@ -119,6 +202,42 @@ checkStatus()
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
 		helmetMiddleware(app);
+		const defaultURL = 'http://localhost:10012';
+
+		const customRouter = function (req) {
+			if (req.path.length > 1 && req.path.includes('/plugins/')) {
+				for (let plugin of Object.values(activePlugins)) {
+					if (req.path.includes(plugin.name) && plugin.active) {
+						return `http://localhost:${plugin.port}`;
+					}
+				}
+			}
+			return defaultURL;
+
+		};
+
+		const options = {
+			target: defaultURL,
+			router: customRouter,
+			changeOrigin: true
+		};
+		const serviceProviderProxy = createProxyMiddleware(options);
+
+		app.use((req, res, next) => {
+			if (req.path.length > 1 && req.path.includes('/plugins/')) {
+				for (let plugin of Object.values(activePlugins)) {
+					if (req.path.includes(plugin.name)) {
+						if (plugin.active) {
+							return serviceProviderProxy.call(serviceProviderProxy, req, res, next);
+						} else {
+							return res.status(404).send();
+						}
+					}
+				}
+			}
+			next();
+		});
+
 
 		app.use('/plugins', routes);
 
@@ -134,85 +253,91 @@ checkStatus()
 
 		for (const plugin of plugins) {
 			try {
-				loggerPlugin.verbose(
-					'plugins/index/initialization',
-					`starting plugin ${plugin.name}`
-				);
-
-				const context = {
-					configValues: {
-						publicMeta: plugin.public_meta,
-						meta: plugin.meta
-					},
-					pluginLibraries: {
-						app,
-						loggerPlugin,
-						toolsLib
-					},
-					app,
-					toolsLib,
-					lodash,
-					expressValidator,
-					loggerPlugin,
-					multer,
-					moment,
-					mathjs,
-					bluebird,
-					umzug,
-					rp,
-					sequelize,
-					uuid,
-					jwt,
-					momentTz,
-					json2csv,
-					flat,
-					ws,
-					cron,
-					randomString,
-					bcryptjs,
-					expectCt,
-					validator,
-					uglifyEs,
-					otp,
-					latestVersion,
-					geoipLite,
-					nodemailer,
-					wsHeartbeatServer,
-					wsHeartbeatClient,
-					cors,
-					winston,
-					elasticApmNode,
-					winstonElasticsearchApm,
-					tripleBeam,
-					bodyParser,
-					morgan,
-					meta: plugin.meta,
-					publicMeta: plugin.public_meta,
-					installedLibraries: {}
-				};
-
-				if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+				if (plugin.script.includes('cron') || plugin.script.includes('setInterval')) {
+					await startPlugin(plugin);
+				}
+				else {
 					loggerPlugin.verbose(
 						'plugins/index/initialization',
-						`Installing packages for plugin ${plugin.name}`
+						`starting plugin ${plugin.name}`
 					);
 
-					for (const library of plugin.prescript.install) {
-						context.installedLibraries[library] = await installLibrary(library);
+					const context = {
+						configValues: {
+							publicMeta: plugin.public_meta,
+							meta: plugin.meta
+						},
+						pluginLibraries: {
+							app,
+							loggerPlugin,
+							toolsLib
+						},
+						app,
+						toolsLib,
+						lodash,
+						expressValidator,
+						loggerPlugin,
+						multer,
+						moment,
+						mathjs,
+						bluebird,
+						umzug,
+						rp,
+						sequelize,
+						uuid,
+						jwt,
+						momentTz,
+						json2csv,
+						flat,
+						ws,
+						cron,
+						randomString,
+						bcryptjs,
+						expectCt,
+						validator,
+						uglifyEs,
+						otp,
+						latestVersion,
+						geoipLite,
+						nodemailer,
+						wsHeartbeatServer,
+						wsHeartbeatClient,
+						cors,
+						winston,
+						elasticApmNode,
+						winstonElasticsearchApm,
+						tripleBeam,
+						bodyParser,
+						morgan,
+						meta: plugin.meta,
+						publicMeta: plugin.public_meta,
+						installedLibraries: {}
+					};
+
+					if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+						loggerPlugin.verbose(
+							'plugins/index/initialization',
+							`Installing packages for plugin ${plugin.name}`
+						);
+
+						for (const library of plugin.prescript.install) {
+							context.installedLibraries[library] = await installLibrary(library);
+						}
+
+						loggerPlugin.verbose(
+							'plugins/index/initialization',
+							`Plugin ${plugin.name} packages installed`
+						);
 					}
+
+					_eval(plugin.script, plugin.name, context, true);
 
 					loggerPlugin.verbose(
 						'plugins/index/initialization',
-						`Plugin ${plugin.name} packages installed`
+						`Plugin ${plugin.name} running`
 					);
 				}
 
-				_eval(plugin.script, plugin.name, context, true);
-
-				loggerPlugin.verbose(
-					'plugins/index/initialization',
-					`Plugin ${plugin.name} running`
-				);
 			} catch (err) {
 				loggerPlugin.error(
 					'plugins/index/initialization',
@@ -245,3 +370,8 @@ checkStatus()
 
 		setTimeout(() => { process.exit(1); }, 5000);
 	});
+
+module.exports = {
+	startPlugin,
+	stopPlugin
+}

@@ -40,10 +40,14 @@ import {
 	SET_RECENT_TRADES_MARKETS,
 	SET_TRADE_TAB,
 	SET_BROKER,
-} from '../actions/appActions';
-import { THEME_DEFAULT } from '../config/constants';
-import { getLanguage } from '../utils/string';
-import { getTheme } from '../utils/theme';
+	SORT,
+	SET_SORT_MODE,
+	TOGGLE_SORT,
+	SET_ADMIN_SORT,
+} from 'actions/appActions';
+import { THEME_DEFAULT } from 'config/constants';
+import { getLanguage } from 'utils/string';
+import { getTheme } from 'utils/theme';
 import { unique } from 'utils/data';
 import { getFavourites, setFavourites } from 'utils/favourites';
 import {
@@ -52,7 +56,11 @@ import {
 	generateFiatWalletTarget,
 } from 'utils/id';
 import { mapPluginsTypeToName } from 'utils/plugin';
-import { modifyCoinsData, modifyPairsData } from 'utils/reducer';
+import {
+	modifyCoinsData,
+	modifyPairsData,
+	modifyBrokerData,
+} from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
 	type: '',
@@ -174,8 +182,14 @@ const INITIAL_STATE = {
 	tradeTab: 0,
 	broker: {},
 	user_payments: {},
-	onramp: {},
+	onramp: [],
 	offramp: {},
+	sort: {
+		mode: SORT.CHANGE,
+		is_descending: true,
+	},
+	pinned_markets: [],
+	default_sort: SORT.CHANGE,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -230,7 +244,7 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 		case SET_BROKER:
 			return {
 				...state,
-				broker: payload.broker,
+				broker: modifyBrokerData(payload.broker, { ...state.coins }),
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =
@@ -375,12 +389,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				if (pairs.includes(key)) {
 					let temp = state.tickers[key] || {};
 					let pairTrade = payload[key][0];
-					let close =
-						pairTrade && pairTrade.price
-							? pairTrade.price
-							: temp.close
-							? temp.close
-							: 0;
+					let close = (
+						pairTrade && pairTrade.price ? pairTrade.price : temp.close
+					)
+						? temp.close
+						: 0;
+					temp.volume += parseFloat(pairTrade?.size ?? 0);
+					if (pairTrade?.side === 'buy' && pairTrade?.price > temp.high) {
+						temp.high = pairTrade?.price;
+					}
+					if (pairTrade?.side === 'sell' && pairTrade?.price < temp.low) {
+						temp.low = pairTrade?.price;
+					}
 					tempTickers[key] = {
 						...temp,
 						close,
@@ -612,6 +632,28 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				tradeTab: payload,
 			};
 		}
+		case SET_SORT_MODE:
+			return {
+				...state,
+				sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
+		case TOGGLE_SORT:
+			return {
+				...state,
+				sort: {
+					...state.sort,
+					is_descending: !state.sort.is_descending,
+				},
+			};
+		case SET_ADMIN_SORT:
+			return {
+				...state,
+				pinned_markets: payload.pinned_markets,
+				default_sort: payload.default_sort,
+			};
 		default:
 			return state;
 	}

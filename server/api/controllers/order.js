@@ -5,6 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');
+const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -47,6 +48,156 @@ const createOrder = (req, res) => {
 			loggerOrders.error(
 				req.uuid,
 				'controllers/order/createOrder error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getQuickTrade = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/createQuickTrade auth',
+		req.auth
+	);
+
+	const bearerToken = req.headers['authorization'];
+	const ip = req.headers['x-real-ip'];
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	const {
+		spending_currency,
+		spending_amount,
+		receiving_amount,
+		receiving_currency,
+	} = req.swagger.params;
+
+	toolsLib.order.getUserQuickTrade(spending_currency?.value, spending_amount?.value, receiving_amount?.value, receiving_currency?.value, bearerToken, ip, opts)
+		.then((order) => {
+			return res.json(order);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/createQuickTrade error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const orderExecute = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/orderExecute auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/orderExecute',
+		req.swagger.params.data.value
+	);
+
+
+	const { token } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.executeUserOrder(user_id, opts, token)
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/orderExecute error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+
+const dustBalance = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustBalance',
+		req.swagger.params.data.value
+	);
+
+
+	const { assets } = req.swagger.params.data.value;
+	const dustConfig = getKitConfig().dust;
+
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.dustUserBalance(user_id, opts, { assets, spread: dustConfig?.spread, maker_id: dustConfig?.maker_id, quote: dustConfig?.quote })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/dustBalance error',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const dustEstimatePrice = (req, res) => {
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustEstimatePrice auth',
+		req.auth
+	);
+	loggerOrders.verbose(
+		req.uuid,
+		'controllers/order/dustEstimatePrice',
+		req.swagger.params.data.value
+	);
+
+
+	const { assets } = req.swagger.params.data.value;
+	const dustConfig = getKitConfig().dust;
+
+	const user_id = req.auth.sub.id;
+
+	const opts = {
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	};
+
+	toolsLib.order.dustPriceEstimate(user_id, opts, { assets, spread: dustConfig?.spread, maker_id: dustConfig?.maker_id, quote: dustConfig?.quote })
+		.then((result) => {
+			return res.json(result);
+		})
+		.catch((err) => {
+			loggerOrders.error(
+				req.uuid,
+				'controllers/order/dustEstimatePrice error',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
@@ -277,5 +428,9 @@ module.exports = {
 	getAllUserOrders,
 	cancelAllUserOrders,
 	getAdminOrders,
-	adminCancelOrder
+	adminCancelOrder,
+	getQuickTrade,
+	dustBalance,
+	orderExecute,
+	dustEstimatePrice
 };

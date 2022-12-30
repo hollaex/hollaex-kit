@@ -142,31 +142,45 @@ class Markets extends Component {
 					</div>
 				)}
 				<MarketList
+					loading={!data.length ? true : false}
 					markets={data}
 					chartData={chartData}
 					handleClick={this.handleClick}
 				/>
 				{!showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
-						<span
-							className="trade-account-link pointer d-flex justify-content-center"
-							onClick={this.handleLoadMore}
+						<EditWrapper
+							stringId="STAKE_DETAILS.VIEW_MORE"
+							renderWrapper={(children) => (
+								<span
+									className="trade-account-link pointer d-flex justify-content-center"
+									onClick={this.handleLoadMore}
+								>
+									{children}
+								</span>
+							)}
 						>
 							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-						</span>
+						</EditWrapper>
 					</div>
 				)}
 				{showMarkets && (
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text market-list__footer">
-						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
-						<div
-							onClick={() => {
-								router.push('/markets');
-							}}
-							className="pt-1"
+						<EditWrapper
+							stringId="MARKETS_TABLE.VIEW_MARKETS"
+							renderWrapper={(children) => (
+								<div
+									onClick={() => {
+										router.push('/markets');
+									}}
+									className="pt-1"
+								>
+									{children}
+								</div>
+							)}
 						>
 							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
-						</div>
+						</EditWrapper>
 					</div>
 				)}
 			</div>

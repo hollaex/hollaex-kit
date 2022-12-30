@@ -17,14 +17,14 @@ const NoVerifiedAccount = ({ icons: ICONS, type = 'deposit' }) => {
 				iconPath={ICONS['FIAT_KYC']}
 				className="flex-direction-column"
 			/>
-			<div className="text-align-center py-4">
-				<EditWrapper stringId="FIAT.UNVERIFIED.TEXT,FIAT.UNVERIFIED.DEPOSIT,FIAT.UNVERIFIED.WITHDRAWAL">
-					{STRINGS.formatString(
-						STRINGS['FIAT.UNVERIFIED.TEXT'],
-						STRINGS[typeId]
-					)}
-				</EditWrapper>
-			</div>
+			<EditWrapper
+				stringId="FIAT.UNVERIFIED.TEXT,FIAT.UNVERIFIED.DEPOSIT,FIAT.UNVERIFIED.WITHDRAWAL"
+				renderWrapper={(children) => (
+					<div className="text-align-center py-4">{children}</div>
+				)}
+			>
+				{STRINGS.formatString(STRINGS['FIAT.UNVERIFIED.TEXT'], STRINGS[typeId])}
+			</EditWrapper>
 		</Fragment>
 	);
 };

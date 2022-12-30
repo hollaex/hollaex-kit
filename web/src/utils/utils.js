@@ -1,3 +1,4 @@
+import React from 'react';
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
@@ -6,6 +7,7 @@ import {
 	TOKEN_TIME,
 	TIMESTAMP_FORMAT,
 	TIMESTAMP_FORMAT_FA,
+	DEFAULT_TIMESTAMP_FORMAT,
 	AUDIOS,
 } from '../config/constants';
 import { getLanguage } from './string';
@@ -48,11 +50,26 @@ export const checkUserSessionExpired = (loginTime) => {
 	return currentTime - loginTime > TOKEN_TIME;
 };
 
+export const getFormattedBOD = (date, format = DEFAULT_TIMESTAMP_FORMAT) => {
+	if (getLanguage() === 'fa') {
+		return formatTimestampFarsi(date, format);
+	}
+	return formatTimestampGregorian(date, format);
+};
+
 export const getFormatTimestamp = (date, format) => {
 	if (getLanguage() === 'fa') {
 		return formatTimestampFarsi(date, format);
 	}
 	return formatTimestampGregorian(date, format);
+};
+
+export const getTimeHeader = (label, type) => {
+	return (
+		<div className="time-wrapper">
+			<p>{label}</p> <p className="type-color">{type}</p>
+		</div>
+	);
 };
 
 export const formatTimestamp = (date, format) => {
