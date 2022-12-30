@@ -3,7 +3,7 @@
 ### Build section
 FROM node:16.18.1-buster-slim as build
 
-RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git python3 build-essential && rm -rf /var/lib/apt/lists/*
 
 ## DISTRIBUTION MODE
 ENV NODE_ENV=production
@@ -22,7 +22,7 @@ FROM node:16.18.1-buster-slim
 
 COPY --from=build /app /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python3 build-essential && rm -rf /var/lib/apt/lists/*
 
 RUN npm install pm2@5.2.0 sequelize-cli@6.5.1 mocha@10.0.0 -g
 
