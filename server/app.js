@@ -40,7 +40,7 @@ checkStatus()
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 		app.use(morgan(morganType, { stream }));
 
-		swaggerDoc.host = API_HOST;
+		// swaggerDoc.host = API_HOST;
 		if (process.env.NODE_ENV === 'production') {
 			swaggerDoc.schemes = ['https'];
 			Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
