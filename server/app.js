@@ -41,22 +41,22 @@ checkStatus()
 		app.use(morgan(morganType, { stream }));
 
 		// swaggerDoc.host = API_HOST;
-		// if (process.env.NODE_ENV === 'production') {
-		// 	swaggerDoc.schemes = ['https'];
-		// 	Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
-		// 		Object.keys(pathContent).forEach((method) => {
-		// 			if (method.indexOf('swagger') === -1) {
-		// 				if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
-		// 					const tags = pathContent[method].tags;
-		// 					const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
-		// 					if (index > -1) {
-		// 						delete pathContent[method];
-		// 					}
-		// 				}
-		// 			}
-		// 		});
-		// 	});
-		// }
+		if (process.env.NODE_ENV === 'production') {
+			swaggerDoc.schemes = ['https'];
+			Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
+				Object.keys(pathContent).forEach((method) => {
+					if (method.indexOf('swagger') === -1) {
+						if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
+							const tags = pathContent[method].tags;
+							const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
+							if (index > -1) {
+								delete pathContent[method];
+							}
+						}
+					}
+				});
+			});
+		}
 
 		var options = {
 			customCss: CUSTOM_CSS,
