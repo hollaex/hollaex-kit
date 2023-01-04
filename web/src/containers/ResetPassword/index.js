@@ -55,12 +55,7 @@ class ResetPassword extends Component {
 	};
 
 	render() {
-		const {
-			languageClasses,
-			activeTheme,
-			icons: ICONS,
-			openContactForm,
-		} = this.props;
+		const { languageClasses, icons: ICONS, openContactForm } = this.props;
 		const { success, showContactForm } = this.state;
 
 		if (success) {
@@ -120,7 +115,6 @@ class ResetPassword extends Component {
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
 					showCloseText={false}
-					theme={activeTheme}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}
@@ -133,7 +127,6 @@ class ResetPassword extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
 	constants: store.app.constants,
 });
 

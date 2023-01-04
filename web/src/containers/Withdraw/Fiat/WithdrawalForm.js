@@ -289,7 +289,6 @@ class Index extends Component {
 	render() {
 		const {
 			user: { id_data = {} } = {},
-			activeTheme,
 			submitting,
 			error,
 			currency,
@@ -356,7 +355,6 @@ class Index extends Component {
 					label="withdraw-modal"
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogOtpOpen}
-					theme={activeTheme}
 					showCloseText={false}
 				>
 					{dialogOtpOpen ? (

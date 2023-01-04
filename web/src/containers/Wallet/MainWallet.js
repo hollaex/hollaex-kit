@@ -322,7 +322,6 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
-	activeTheme: store.app.theme,
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,

@@ -1131,7 +1131,6 @@ const mapStateToProps = (store) => {
 		// quickTradeData: store.orderbook.quickTrade,
 		activeLanguage: store.app.language,
 		info: store.app.info,
-		activeTheme: store.app.theme,
 		constants: store.app.constants,
 		tickers: store.app.tickers,
 		orderLimits: qtlimits,

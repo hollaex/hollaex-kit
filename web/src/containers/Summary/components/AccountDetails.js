@@ -10,7 +10,6 @@ import STRINGS from 'config/localizedStrings';
 
 const AccountDetails = ({
 	user,
-	activeTheme,
 	coins,
 	pairs,
 	selectedAccount,
@@ -56,7 +55,6 @@ const AccountDetails = ({
 					coins={coins}
 					config={config}
 					balance={balance}
-					activeTheme={activeTheme}
 					selectedAccount={selectedAccount}
 					lastMonthVolume={lastMonthVolume}
 					onAccountTypeChange={onAccountTypeChange}
@@ -67,7 +65,6 @@ const AccountDetails = ({
 			) : (
 				<div className="d-flex align-items-center mt-3">
 					<AccountTypesList
-						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						onAccountTypeChange={onAccountTypeChange}
 						config={config}
@@ -80,7 +77,6 @@ const AccountDetails = ({
 						pairs={pairs}
 						balance={balance}
 						config={config}
-						activeTheme={activeTheme}
 						selectedAccount={selectedAccount}
 						lastMonthVolume={lastMonthVolume}
 						onAccountTypeChange={onAccountTypeChange}

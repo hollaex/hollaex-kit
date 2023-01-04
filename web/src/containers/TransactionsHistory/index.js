@@ -575,7 +575,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, coins, icons: ICONS } = this.props;
+		const { id, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -689,7 +689,6 @@ class TransactionsHistory extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
@@ -748,7 +747,6 @@ const mapStateToProps = (store) => ({
 	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
 	discount: store.user.discount || 0,
 });

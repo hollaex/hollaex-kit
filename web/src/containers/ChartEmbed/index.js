@@ -64,7 +64,7 @@ class ChartEmbed extends PureComponent {
 	};
 
 	render() {
-		const { pair, pairData, activeTheme } = this.props;
+		const { pair, pairData } = this.props;
 		const { chartHeight, symbol } = this.state;
 
 		if (symbol !== pair || !pairData) {
@@ -101,11 +101,7 @@ class ChartEmbed extends PureComponent {
 								pair={pair}
 							>
 								{pair && chartHeight > 0 && (
-									<TVChartContainer
-										activeTheme={activeTheme}
-										symbol={symbol}
-										pairData={pairData}
-									/>
+									<TVChartContainer symbol={symbol} pairData={pairData} />
 								)}
 							</TradeBlock>
 						</div>
@@ -122,7 +118,6 @@ const mapStateToProps = (state) => {
 	return {
 		pair,
 		pairData,
-		activeTheme: state.app.theme,
 		isReady: state.app.isReady,
 		constants: state.app.constants,
 	};
