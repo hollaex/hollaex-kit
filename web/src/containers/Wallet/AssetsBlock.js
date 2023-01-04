@@ -164,7 +164,7 @@ const AssetsBlock = ({
 								</Help>
 							</EditWrapper>
 						</div>
-						<div>
+						<div className="d-flex align-items-center">
 							<span>
 								<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
 									{STRINGS['WALLET_HIDE_ZERO_BALANCE']}

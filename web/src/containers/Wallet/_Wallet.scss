@@ -156,6 +156,26 @@ $header-margin: 2rem;
 		border: none !important;
 	}
 
+	.ant-switch {
+		background-color: $app-background-color;
+
+		.ant-switch-handle {
+			&:before {
+				background-color: $colors-black;
+			}
+		}
+	}
+
+	.ant-switch-checked {
+		background-color: $app-background-color;
+
+		.ant-switch-handle {
+			&:before {
+				background-color: $colors-main-black;
+			}
+		}
+	}
+
 	.wallet-header_block {
 		> * {
 			margin-bottom: $header-margin;
