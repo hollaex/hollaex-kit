@@ -234,11 +234,15 @@ class Wallet extends Component {
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
 				content: <TransactionsHistory />,
 			},
-			{
+		];
+
+		if (stake_page) {
+			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
 				content: <Stake />,
-			},
-		];
+			});
+		}
+
 		this.setState({ sections, isOpen, mobileTabs });
 	};
 
