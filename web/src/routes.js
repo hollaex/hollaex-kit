@@ -61,6 +61,7 @@ import {
 	AdminApps,
 } from './containers';
 import chat from './containers/Admin/Chat';
+import { Billing } from 'containers/Admin';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
@@ -478,7 +479,7 @@ export const generateRoutes = (routes = []) => {
 				<Route
 					path="/admin/billing"
 					name="Admin Billing"
-					component={withAdminProps(MoveToDash, 'billing')}
+					component={withAdminProps(Billing, 'billing')}
 				/>
 				<Route
 					path="/admin/chat"

@@ -47,6 +47,10 @@ export const getAllPairs = () => {
 	return axios.get('/admin/pairs/network');
 };
 
+export const getDashToken = () => {
+	return requestAuthenticated(`/admin/dash-token`, { method: 'GET' });
+};
+
 export const getExchange = () => {
 	return axios.get(`/admin/exchange`);
 };

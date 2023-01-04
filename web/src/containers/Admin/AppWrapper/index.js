@@ -47,12 +47,18 @@ import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
 import { requestMyPlugins } from '../Plugins/action';
-import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
+import {
+	setAllPairs,
+	setCoins,
+	setExchange,
+	setDashToken,
+} from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
 import {
 	getAllCoins,
 	getAllPairs,
+	getDashToken,
 	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
@@ -193,9 +199,18 @@ class AppWrapper extends React.Component {
 	// };
 
 	getData = async () => {
+		await this.getDashToken();
 		await this.getExchange();
 		await this.getCoins();
 		await this.getPairs();
+	};
+
+	getDashToken = async () => {
+		const res = await getDashToken();
+		if (res && res.token) {
+			this.props.setDashToken(res.token);
+			localStorage.setItem('DASHTOKEN', res.token);
+		}
 	};
 
 	getExchange = async () => {
@@ -739,6 +754,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
+	setDashToken: bindActionCreators(setDashToken, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);
