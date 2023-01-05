@@ -19,7 +19,6 @@ import GeneralChildContent from './generalChildContent';
 import { RightOutlined } from '@ant-design/icons';
 import { getExchangeBilling } from './action';
 import './Billing.scss';
-// import Image from 'components/Image'
 
 const TabPane = Tabs.TabPane;
 
@@ -121,7 +120,6 @@ const GeneralContent = ({ updatePlanType }) => {
 	const [renderCardContent, setRenderCardcontent] = useState('crypto');
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [value, setValue] = useState(1);
-	console.log('modalWidth', modalWidth);
 
 	const options = ['item', 'method', 'crypto', 'payment'];
 
@@ -160,9 +158,9 @@ const GeneralContent = ({ updatePlanType }) => {
 				{options.map((name, inx) => {
 					return (
 						<Breadcrumb.Item
+							onClick={() => handleBreadcrumb(name)}
 							key={inx}
 							className={name === type ? 'breadcrumb-item-active' : ''}
-							onClick={() => handleBreadcrumb(name)}
 						>
 							{name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
@@ -327,23 +325,27 @@ const GeneralContent = ({ updatePlanType }) => {
 								</span>
 							</div>
 						</div>
-						<div
-							className={'box-container content-wrapper plan-structure-wrapper'}
-						>
-							{TYPES.map((type) => {
-								return <PlanStructure typeData={type} />;
-							})}
-						</div>
-
-						<div className="footer">
-							<p>
-								*A donation towards the HollaEx network is required for new
-								custom coin and trading pair activation
-							</p>
-							<p>
-								*Custom exchange code and technical support are not included in
-								cloud plans and are paid separately
-							</p>
+						<div className="bg-model">
+							<div
+								className={
+									'box-container content-wrapper plan-structure-wrapper'
+								}
+							>
+								{TYPES.map((type) => {
+									return <PlanStructure typeData={type} />;
+								})}
+							</div>
+							<div className="footer">
+								<p>
+									*A donation towards the HollaEx network is required for new
+									custom coin and trading pair activation
+								</p>
+								<p>
+									*Custom exchange code and technical support are not included
+									in cloud plans and are paid separately
+								</p>
+							</div>
+							{renderBtn()}
 						</div>
 					</div>
 				);
@@ -374,6 +376,7 @@ const GeneralContent = ({ updatePlanType }) => {
 							</Space>
 						</Radio.Group>
 						<Subscription />
+						{renderBtn()}
 					</div>
 				);
 			case 'crypto':
@@ -384,7 +387,6 @@ const GeneralContent = ({ updatePlanType }) => {
 							<Space direction="vertical">
 								<Radio value={1}>USDT (TRC20)</Radio>
 								<Radio value={2}>Bitcoin</Radio>
-								{/* <Radio value={3}>XHT (10% discount)</Radio> */}
 								<Radio>
 									<span>XHT </span>
 									<span className="danger"> (10% discount) </span>
@@ -400,6 +402,7 @@ const GeneralContent = ({ updatePlanType }) => {
 							</Space>
 						</Radio.Group>
 						<Subscription />
+						{renderBtn()}
 					</div>
 				);
 			case 'payment':
@@ -414,7 +417,6 @@ const GeneralContent = ({ updatePlanType }) => {
 		if (type === 'item') {
 			setType('method');
 			setModalWidth('65rem');
-			// updatePlanType({ id: exchange.id, plan: type, period: 'year' },);
 		} else if (type === 'method') {
 			setType('crypto');
 			setModalWidth('65rem');
@@ -424,54 +426,29 @@ const GeneralContent = ({ updatePlanType }) => {
 		}
 	};
 
-	const handleBack = (type) => {
-		console.log('type---', type);
-		if (type === 'method') {
+	const handleBack = () => {
+		if (type === 'item') {
+			setOpenPlanModal(false);
+		} else if (type === 'method') {
 			setType('item');
 			setModalWidth('85rem');
 		} else if (type === 'crypto') {
 			setType('method');
+			setModalWidth('65rem');
 		}
 	};
 
 	const renderBtn = () => {
-		switch (type) {
-			case 'item':
-				return (
-					<div className="button-container">
-						<Button type="primary" onClick={() => setOpenPlanModal(false)}>
-							Back
-						</Button>
-						<Button type="primary" onClick={handleNext}>
-							Next
-						</Button>
-					</div>
-				);
-			case 'method':
-				return (
-					<div className="button-container">
-						<Button type="primary" onClick={() => handleBack(type)}>
-							Back
-						</Button>
-						<Button type="primary" onClick={handleNext}>
-							Next
-						</Button>
-					</div>
-				);
-			case 'crypto':
-				return (
-					<div className="button-container">
-						<Button type="primary" onClick={() => handleBack(type)}>
-							Back
-						</Button>
-						<Button type="primary" onClick={handleNext}>
-							Next
-						</Button>
-					</div>
-				);
-			default:
-				return null;
-		}
+		return (
+			<div className="button-container">
+				<Button type="primary" onClick={() => handleBack()}>
+					Back
+				</Button>
+				<Button type="primary" onClick={() => handleNext()}>
+					Next
+				</Button>
+			</div>
+		);
 	};
 
 	const getInvoice = async (params) => {
@@ -510,26 +487,9 @@ const GeneralContent = ({ updatePlanType }) => {
 			</div>
 			{renderCard()}
 
-			{/* <div className='mt-5 card-boder'>
-                <div className='d-flex py-5 mt-1 px-3 ml-3'>
-                    <Image
-                        iconId={`STATIC_ICONS['CARD_SECTION_ICON_1']`}
-                        icon={STATIC_ICONS['CARD_SECTION_ICON_1']}
-                        wrapperClassName={'card_section_logo'}
-                    />
-                    <div className='ml-4'>
-                        <p>Cloud : Crypto Pro</p>
-                        <p>For those looking to start a crypto-to-crypto exchange buisness</p>
-                    </div>
-                </div>
-                <div className='pay-button'>
-                    <Button type='primary' onClick={() => setOpenPlanModal(true)} className='m-2 px-5 py-1' shape='round'>
-                        Pay
-                    </Button>
-                </div>
-            </div> */}
 			<Modal
 				visible={OpenPlanModal}
+				className="bg-model"
 				width={modalWidth}
 				zIndex={1000}
 				onCancel={() => setOpenPlanModal(false)}
@@ -537,7 +497,6 @@ const GeneralContent = ({ updatePlanType }) => {
 			>
 				{renderModelContent()}
 				{renderContent()}
-				{renderBtn()}
 			</Modal>
 
 			<Tabs
