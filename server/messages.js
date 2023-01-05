@@ -194,3 +194,5 @@ exports.SPREAD_MISSING = 'Spread is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
 exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
+exports.INVALID_TOKEN_TYPE = 'invalid token type';
+exports.NO_AUTH_TOKEN = 'no auth token sent';
