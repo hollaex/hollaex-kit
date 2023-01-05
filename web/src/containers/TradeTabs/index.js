@@ -246,7 +246,6 @@ class AddTradeTab extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
 	pairs: store.app.pairs,
 	tickers: store.app.tickers,
 	pair: store.app.pair,

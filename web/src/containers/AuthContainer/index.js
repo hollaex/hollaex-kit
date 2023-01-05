@@ -9,7 +9,6 @@ import { AppFooter, Dialog } from 'components';
 import { HelpfulResourcesForm } from 'containers';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 import { getClasesForLanguage } from 'utils/string';
-import { getThemeClass } from 'utils/theme';
 import {
 	getExchangeInfo,
 	closeNotification,
@@ -86,7 +85,6 @@ class AuthContainer extends Component {
 		const { dialogIsOpen } = this.state;
 		const {
 			activeLanguage,
-			activeTheme,
 			children,
 			constants = { captcha: {} },
 			icons: ICONS = {},
@@ -105,7 +103,6 @@ class AuthContainer extends Component {
 							'auth-wrapper',
 							'w-100',
 							'h-100',
-							getThemeClass(activeTheme),
 							{
 								'layout-mobile': isMobile,
 								'layout-desktop': isBrowser,
@@ -129,7 +126,6 @@ class AuthContainer extends Component {
 						className="app-dialog"
 						onCloseDialog={this.onCloseDialog}
 						shouldCloseOnOverlayClick={false}
-						theme={activeTheme}
 						showCloseText={false}
 						compressed={false}
 						style={{ 'z-index': 100 }}
@@ -144,13 +140,8 @@ class AuthContainer extends Component {
 							)}
 					</Dialog>
 					{!isMobile ? (
-						<div
-							className={classnames(
-								'footer-wrapper',
-								getThemeClass(activeTheme)
-							)}
-						>
-							<AppFooter theme={activeTheme} constants={constants} />
+						<div className={classnames('footer-wrapper')}>
+							<AppFooter constants={constants} />
 						</div>
 					) : null}
 				</div>
@@ -161,7 +152,6 @@ class AuthContainer extends Component {
 
 const mapStateToProps = (store) => ({
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	info: store.app.info,
 	constants: store.app.constants,
 	activeNotification: store.app.activeNotification,

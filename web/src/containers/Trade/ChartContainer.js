@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
 	return {
 		tradeHistory,
 		constants: state.app.constants,
+		activeTheme: state.app.theme,
 	};
 };
 
@@ -22,4 +23,7 @@ const mapDispatchToProps = (dispatch) => ({
 	setChartHigh: bindActionCreators(setChartHigh, dispatch),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(withConfig(ChartContainer));
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(ChartContainer));

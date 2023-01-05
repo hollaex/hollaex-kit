@@ -23,7 +23,7 @@ const BottomLink = () => (
 	</>
 );
 
-const SignupSuccess = ({ icons: ICONS, ...rest }) => {
+const SignupSuccess = ({ icons: ICONS }) => {
 	return (
 		<div
 			className={classnames(
