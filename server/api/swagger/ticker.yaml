@@ -1,0 +1,56 @@
+paths:
+  /ticker:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getTicker
+      tags:
+        - Public
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /ticker/all:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /tickers:
+    x-swagger-router-controller: public
+    get:
+      description: Get historic data, time interval is 5 minutes
+      operationId: getAllTicker
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  
