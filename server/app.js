@@ -71,8 +71,7 @@ checkStatus()
 
 		const initializeSwaggerSecurity = (middleware) => {
 			return middleware.swaggerSecurity({
-				Bearer: toolsLib.security.verifyBearerTokenMiddleware,
-				HmacKey: toolsLib.security.verifyHmacTokenMiddleware
+				Token: toolsLib.security.verifyAuthTokenMiddleware
 			});
 		};
 

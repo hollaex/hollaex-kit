@@ -392,8 +392,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -411,8 +411,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -1660,6 +1660,14 @@ table th {
   border-top: 1px solid var(--labels_important-active-labels-text-graphics); }
   .wallet-container.no-border {
     border: none !important; }
+  .wallet-container .ant-switch {
+    background-color: var(--base_background); }
+    .wallet-container .ant-switch .ant-switch-handle:before {
+      background-color: var(--labels_secondary-inactive-label-text-graphics); }
+  .wallet-container .ant-switch-checked {
+    background-color: var(--base_background); }
+    .wallet-container .ant-switch-checked .ant-switch-handle:before {
+      background-color: var(--labels_important-active-labels-text-graphics); }
   .wallet-container .wallet-header_block > * {
     margin-bottom: 2rem; }
   .wallet-container .wallet-header_block .wallet-header_block-currency_title {
@@ -3340,6 +3348,13 @@ table th {
   opacity: 1;
   transition: opacity 1s ease-in; }
 
+.open-order-wrapper .trade__active-orders_cancel-All .action_notification-wrapper {
+  position: relative; }
+
+.open-order-wrapper .table_body-row td:nth-child(even) .action_notification-wrapper {
+  margin-top: 0.75rem;
+  padding-left: 0.25rem; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }
@@ -3391,8 +3406,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3546,7 +3561,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5798,7 +5813,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8607,14 +8622,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -9338,7 +9353,7 @@ table th {
     border-bottom: 1px solid #c3c3c3 !important;
     opacity: 0.75; }
   .table-wrapper .anchor {
-    color: #5D63FF;
+    color: #5d63ff;
     text-decoration: underline;
     cursor: pointer; }
   .table-wrapper .sub-tr-bg {

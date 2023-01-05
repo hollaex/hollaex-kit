@@ -14,21 +14,17 @@ class ToggleField extends Component {
 	};
 
 	componentDidMount() {
-		const { input, ...rest } = this.props;
+		const { input } = this.props;
 		if (input && (input.value || input.value === false)) {
 			this.setState({ selected: input.value });
-		}
-		if ('isZeroBalanceHidden' in rest) {
-			this.setState({ selected: rest?.isZeroBalanceHidden });
 		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { input, ...rest } = this.props;
+		const { input } = this.props;
 		if (
 			input.value !== nextProps.input.value &&
-			(nextProps.input.value || nextProps.input.value === false) &&
-			!rest.hasOwnProperty('isZeroBalanceHidden')
+			(nextProps.input.value || nextProps.input.value === false)
 		) {
 			this.setState({ selected: nextProps.input.value });
 		}

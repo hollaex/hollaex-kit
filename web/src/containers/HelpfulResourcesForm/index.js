@@ -149,7 +149,6 @@ class HelpfulResourcesForm extends Component {
 const mapStateToProps = (store) => ({
 	email: store.user.email,
 	contactFormData: store.app.contactFormData,
-	activeTheme: store.app.theme,
 	constants: store.app.constants,
 });
 

@@ -12,7 +12,6 @@ class Dialog extends PureComponent {
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
 		children: PropTypes.node.isRequired,
-		disableTheme: PropTypes.bool,
 	};
 
 	onRequestClose = (e) => {
@@ -30,9 +29,7 @@ class Dialog extends PureComponent {
 			shouldCloseOnOverlayClick,
 			showCloseText,
 			dialogId,
-			theme,
 			className,
-			disableTheme,
 			bodyOpenClassName,
 			strings: STRINGS,
 		} = this.props;
@@ -76,10 +73,8 @@ class Dialog extends PureComponent {
 Modal.setAppElement('#root');
 
 Dialog.defaultProps = {
-	disableTheme: false,
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
-	theme: '',
 	className: '',
 	strings: {},
 };

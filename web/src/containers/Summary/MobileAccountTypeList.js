@@ -10,7 +10,6 @@ const MobileAccountTypeList = ({
 	user,
 	coins,
 	config = {},
-	activeTheme,
 	selectedAccount,
 	lastMonthVolume,
 	onAccountTypeChange,
@@ -73,7 +72,6 @@ const MobileAccountTypeList = ({
 									coins={coins}
 									config={config}
 									balance={balance}
-									activeTheme={activeTheme}
 									selectedAccount={selectedAccount}
 									lastMonthVolume={lastMonthVolume}
 									onFeesAndLimits={onFeesAndLimits}
