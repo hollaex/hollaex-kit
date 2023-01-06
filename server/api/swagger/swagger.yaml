@@ -15,15 +15,10 @@ produces:
   - text/plain
 
 securityDefinitions:
-  Bearer:
-    description: JWT authentication
+  Token:
+    description: Auth Token
     type: apiKey
-    name: Authorization
-    in: header
-  HmacKey:
-    description: HMAC API key
-    type: apiKey
-    name: api-key
+    name: token
     in: header
 
 paths:
@@ -265,7 +260,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /reset-password:
@@ -792,8 +789,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -816,7 +815,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/settings:
@@ -842,7 +843,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/change-password:
@@ -868,7 +871,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/username:
@@ -901,7 +906,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/logins:
@@ -967,7 +974,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/affiliation:
@@ -987,7 +996,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/request-withdrawal:
@@ -1015,7 +1026,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/confirm-withdrawal:
@@ -1102,7 +1115,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/activate-otp:
@@ -1134,7 +1149,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/deactivate-otp:
@@ -1166,7 +1183,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/deactivate:
@@ -1186,7 +1205,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /order:
@@ -1211,8 +1232,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1238,8 +1261,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1268,8 +1293,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1299,13 +1326,17 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: array
+            items:
+              type: object
         default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /order/dust/estimate:
@@ -1332,13 +1363,17 @@ paths:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: array
+            items:
+              type: object
         default:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /quick-trade:
@@ -1404,7 +1439,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /tiers:
@@ -1440,7 +1477,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -1492,7 +1531,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/tier:
@@ -1519,7 +1560,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -1544,7 +1587,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/check-transaction:
@@ -1591,7 +1636,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /orders:
@@ -1669,8 +1716,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1701,8 +1750,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1725,8 +1776,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -1764,7 +1817,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/bank:
@@ -1790,7 +1845,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/request-email-confirmation:
@@ -1814,7 +1871,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/token:
@@ -1852,7 +1911,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
     put:
@@ -1899,7 +1960,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
     delete:
@@ -1936,7 +1999,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/tokens:
@@ -1957,7 +2022,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /user/trades:
@@ -2028,8 +2095,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -2138,8 +2207,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -2248,8 +2319,10 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - user
         - hmac
@@ -2278,7 +2351,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
     post:
@@ -2322,7 +2397,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - HmacKey: []
+        - Token: []
+      x-security-types:
+        - hmac
       x-security-scopes:
         - hmac
       x-token-permissions:
@@ -2372,7 +2449,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: [ ]
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - tech
@@ -2406,7 +2485,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/fees/settle:
@@ -2432,7 +2513,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/signup:
@@ -2483,7 +2566,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/network-credentials:
@@ -2518,7 +2603,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/kit:
@@ -2538,7 +2625,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -2566,7 +2655,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - communicator
@@ -2598,7 +2689,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: [ ]
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -2636,7 +2729,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: [ ]
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/email/types:
@@ -2656,7 +2751,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: [ ]
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/operators:
@@ -2700,7 +2797,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/kit/user-meta:
@@ -2741,7 +2840,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -2777,7 +2878,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     delete:
@@ -2801,7 +2904,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/operator/invite:
@@ -2832,7 +2937,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/upload:
@@ -2868,7 +2975,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - communicator
@@ -2895,7 +3004,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -2919,7 +3030,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/pairs:
@@ -2944,7 +3057,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/pairs/network:
@@ -2969,7 +3084,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/pair/fees:
@@ -2995,7 +3112,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/tiers/limits:
@@ -3021,7 +3140,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/coin:
@@ -3047,7 +3168,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -3071,7 +3194,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/coins:
@@ -3097,7 +3222,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/coins/network:
@@ -3122,7 +3249,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /user/check-transaction:
@@ -3170,7 +3299,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /admin/users:
@@ -3253,7 +3384,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3314,7 +3447,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3346,7 +3481,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/user/meta:
@@ -3376,7 +3513,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3421,7 +3560,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3452,7 +3593,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3481,7 +3624,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3520,7 +3665,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3558,7 +3705,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3598,7 +3747,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3673,7 +3824,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3748,7 +3901,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/orders:
@@ -3832,7 +3987,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3864,7 +4021,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3942,7 +4101,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -3979,7 +4140,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4002,7 +4165,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/upgrade-user:
@@ -4028,7 +4193,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4059,7 +4226,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4091,7 +4260,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4122,7 +4293,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4239,7 +4412,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4354,7 +4529,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
         - supervisor
@@ -4382,7 +4559,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/mint:
@@ -4408,7 +4587,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -4432,7 +4613,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/burn:
@@ -4458,7 +4641,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -4482,7 +4667,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /admin/dash-token:
@@ -4502,7 +4689,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /broker:
@@ -4528,7 +4717,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     put:
@@ -4552,7 +4743,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
     get:
@@ -4597,7 +4790,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /broker/execute:
@@ -4632,7 +4827,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /broker/quote:
@@ -4697,7 +4894,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /broker/connect:
@@ -4733,7 +4932,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - admin
   /fiat/deposit:
@@ -4772,7 +4973,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
   /fiat/withdrawal:
@@ -4811,7 +5014,9 @@ paths:
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
-        - Bearer: []
+        - Token: []
+      x-security-types:
+        - bearer
       x-security-scopes:
         - user
 

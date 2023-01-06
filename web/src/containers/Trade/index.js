@@ -487,7 +487,6 @@ class Trade extends PureComponent {
 			orderbookReady,
 			balance,
 			activeLanguage,
-			activeTheme,
 			settings,
 			pairs,
 			coins,
@@ -579,12 +578,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							{pair && chartHeight > 0 && (
-								<TVChartContainer
-									activeTheme={activeTheme}
-									symbol={symbol}
-									// tradeHistory={tradeHistory}
-									pairData={pairData}
-								/>
+								<TVChartContainer symbol={symbol} pairData={pairData} />
 							)}
 						</TradeBlock>
 					</div>
@@ -642,7 +636,6 @@ class Trade extends PureComponent {
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
-							activeTheme={activeTheme}
 							isLoggedIn={isLoggedIn()}
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
@@ -660,7 +653,6 @@ class Trade extends PureComponent {
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
-							activeTheme={activeTheme}
 							isLoggedIn={isLoggedIn()}
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
@@ -678,11 +670,7 @@ class Trade extends PureComponent {
 							className="f-1"
 							tool={key}
 						>
-							<SidebarHub
-								isLogged={isLoggedIn()}
-								pair={pair}
-								theme={activeTheme}
-							/>
+							<SidebarHub isLogged={isLoggedIn()} pair={pair} />
 						</TradeBlock>
 					</div>
 				);
@@ -731,7 +719,6 @@ class Trade extends PureComponent {
 			orderbookReady,
 			balance,
 			activeLanguage,
-			activeTheme,
 			settings,
 			orderLimits,
 			pairs,
@@ -764,7 +751,6 @@ class Trade extends PureComponent {
 						pair={pair}
 						pairData={pairData}
 						activeLanguage={activeLanguage}
-						activeTheme={activeTheme}
 						symbol={symbol}
 						orderLimits={orderLimits}
 					/>
@@ -799,7 +785,6 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
-						activeTheme={activeTheme}
 					/>
 				),
 			},
@@ -909,7 +894,6 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		orderbookReady: true,
 		activeLanguage: state.app.language,
-		activeTheme: state.app.theme,
 		fees: feesDataSelector(state),
 		settings: state.user.settings,
 		orderLimits: state.app.orderLimits,

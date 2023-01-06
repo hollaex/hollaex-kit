@@ -2065,7 +2065,7 @@ const generateDashToken = (req, res) => {
 			if (!token) {
 				throw new Error('We could not generate the token. Please try again.');
 			}
-			return res.json({ token });
+			return res.status(201).json({ token });
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/generateDashToken err', err.message);

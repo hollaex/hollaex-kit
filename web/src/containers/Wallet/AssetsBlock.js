@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { Switch } from 'antd';
 import { isStakingAvailable } from 'config/contracts';
 import {
 	// CurrencyBall,
+	Image,
 	ActionNotification,
 	SearchBox,
-	AssetsBlockForm,
 	EditWrapper,
 	Help,
 } from 'components';
@@ -21,7 +22,6 @@ import {
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
 import DustSection from './DustSection';
@@ -37,7 +37,7 @@ const AssetsBlock = ({
 	navigate,
 	handleSearch,
 	searchResult,
-	handleCheck,
+	onToggle,
 	icons: ICONS,
 	hasEarn,
 	loading,
@@ -46,6 +46,7 @@ const AssetsBlock = ({
 	goToDustSection,
 	showDustSection,
 	goToWallet,
+	isZeroBalanceHidden,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -163,12 +164,18 @@ const AssetsBlock = ({
 								</Help>
 							</EditWrapper>
 						</div>
-						<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-							<AssetsBlockForm
-								label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-								handleCheck={handleCheck}
+						<div className="d-flex align-items-center">
+							<span>
+								<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+									{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+								</EditWrapper>
+							</span>
+							<Switch
+								checked={isZeroBalanceHidden}
+								onClick={onToggle}
+								className="mx-2"
 							/>
-						</EditWrapper>
+						</div>
 					</div>
 				</div>
 			</section>

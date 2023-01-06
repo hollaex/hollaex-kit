@@ -34,10 +34,7 @@ Loader.defaultProps = {
 	className: '',
 };
 
-const mapStateToProps = ({
-	app: { theme: activeTheme, constants: { color = {} } = {} },
-}) => ({
-	activeTheme,
+const mapStateToProps = ({ app: { constants: { color = {} } = {} } }) => ({
 	color,
 });
 

@@ -21,7 +21,6 @@ export { default as CustomTabBar } from './CheckTitle/CustomTabBar';
 export { default as MobileTabBar } from './CheckTitle/MobileTabBar';
 export { default as SidebarBottom } from './Sidebar/SidebarBottom';
 export { default as Wallet } from './Wallet';
-export { default as AssetsBlockForm } from './Wallet/AssetsBlockForm';
 export { default as SidebarHub } from './SidebarHub';
 export { default as Notification } from './Notification';
 export { default as NotificationsList } from './NotificationsList';

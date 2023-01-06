@@ -1668,6 +1668,14 @@ table th {
     padding-top: 7px; }
   .wallet-container.no-border {
     border: none !important; }
+  .wallet-container .ant-switch {
+    background-color: var(--base_background); }
+    .wallet-container .ant-switch .ant-switch-handle:before {
+      background-color: var(--labels_secondary-inactive-label-text-graphics); }
+  .wallet-container .ant-switch-checked {
+    background-color: var(--base_background); }
+    .wallet-container .ant-switch-checked .ant-switch-handle:before {
+      background-color: var(--labels_important-active-labels-text-graphics); }
   .wallet-container .wallet-header_block > * {
     margin-bottom: 2rem; }
   .wallet-container .wallet-header_block .wallet-header_block-currency_title {
@@ -3354,6 +3362,13 @@ table th {
 .general-record-enter-active {
   opacity: 1;
   transition: opacity 1s ease-in; }
+
+.open-order-wrapper .trade__active-orders_cancel-All .action_notification-wrapper {
+  position: relative; }
+
+.open-order-wrapper .table_body-row td:nth-child(even) .action_notification-wrapper {
+  margin-top: 0.75rem;
+  padding-left: 0.25rem; }
 
 .quote-container {
   background-color: var(--base_background);

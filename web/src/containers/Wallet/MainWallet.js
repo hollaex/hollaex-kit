@@ -22,16 +22,21 @@ import HeaderSection from './HeaderSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
+const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
+
 class Wallet extends Component {
 	constructor(props) {
 		super(props);
+
+		const isZeroBalanceHidden =
+			localStorage.getItem(ZERO_BALANCE_KEY) === 'true';
+
 		this.state = {
 			activeTab: 0,
 			sections: [],
 			mobileTabs: [],
 			isOpen: true,
-			isZeroBalanceHidden:
-				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+			isZeroBalanceHidden,
 			showDustSection: false,
 		};
 	}
@@ -94,6 +99,11 @@ class Wallet extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		const { isZeroBalanceHidden } = this.state;
+		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
+	}
+
 	getSearchResult = (coins, balance, oraclePrices) => {
 		const { searchValue = '', isZeroBalanceHidden } = this.state;
 
@@ -129,9 +139,8 @@ class Wallet extends Component {
 		this.setState({ searchValue: value });
 	};
 
-	handleCheck = (_, value) => {
-		this.setState({ isZeroBalanceHidden: value });
-		localStorage.setItem('isZeroBalanceHidden', value);
+	onToggleZeroBalance = (isZeroBalanceHidden) => {
+		this.setState({ isZeroBalanceHidden });
 	};
 
 	generateSections = (
@@ -148,7 +157,7 @@ class Wallet extends Component {
 		contracts = {},
 		isFetching
 	) => {
-		const { showDustSection } = this.state;
+		const { showDustSection, isZeroBalanceHidden } = this.state;
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -175,7 +184,7 @@ class Wallet extends Component {
 						navigate={this.goToPage}
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
-						handleCheck={this.handleCheck}
+						onToggle={this.onToggleZeroBalance}
 						hasEarn={
 							isStakingAvailable(STAKING_INDEX_COIN, contracts) &&
 							stake_page &&
@@ -187,6 +196,7 @@ class Wallet extends Component {
 						goToDustSection={this.goToDustSection}
 						showDustSection={showDustSection}
 						goToWallet={this.goToWallet}
+						isZeroBalanceHidden={isZeroBalanceHidden}
 					/>
 				),
 				isOpen: true,
@@ -225,11 +235,15 @@ class Wallet extends Component {
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
 				content: <TransactionsHistory />,
 			},
-			{
+		];
+
+		if (stake_page) {
+			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
 				content: <Stake />,
-			},
-		];
+			});
+		}
+
 		this.setState({ sections, isOpen, mobileTabs });
 	};
 
@@ -312,7 +326,6 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
-	activeTheme: store.app.theme,
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,

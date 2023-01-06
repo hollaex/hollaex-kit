@@ -1,7 +1,6 @@
 'use strict';
 
 const { createServer } = require('http');
-var SwaggerExpress = require('swagger-express-mw');
 const swaggerUi = require('swagger-ui-express');
 const morgan = require('morgan');
 var YAML = require('js-yaml');
@@ -12,6 +11,8 @@ const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('./c
 const toolsLib = require('hollaex-tools-lib');
 const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
+const swaggerTools = require('swagger-tools');
+const cors = require('cors');
 
 checkStatus()
 	.then(() => {
@@ -20,7 +21,7 @@ checkStatus()
 		);
 
 		var app = require('express')();
-
+		app.use(cors());
 		// listen through pubsub for configuration/init
 
 		//init runs, populates configuration/secrets
@@ -39,31 +40,23 @@ checkStatus()
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 		app.use(morgan(morganType, { stream }));
 
-		var config = {
-			appRoot: './', // required config
-			swaggerSecurityHandlers: {
-				Bearer: toolsLib.security.verifyBearerTokenMiddleware,
-				HmacKey: toolsLib.security.verifyHmacTokenMiddleware
-			}
-		};
-
-		swaggerDoc.host = API_HOST;
-		if (process.env.NODE_ENV === 'production') {
-			swaggerDoc.schemes = ['https'];
-			Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
-				Object.keys(pathContent).forEach((method) => {
-					if (method.indexOf('swagger') === -1) {
-						if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
-							const tags = pathContent[method].tags;
-							const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
-							if (index > -1) {
-								delete pathContent[method];
-							}
-						}
-					}
-				});
-			});
-		}
+		// // swaggerDoc.host = API_HOST;
+		// if (process.env.NODE_ENV === 'production') {
+		// 	swaggerDoc.schemes = ['https'];
+		// 	Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
+		// 		Object.keys(pathContent).forEach((method) => {
+		// 			if (method.indexOf('swagger') === -1) {
+		// 				if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
+		// 					const tags = pathContent[method].tags;
+		// 					const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
+		// 					if (index > -1) {
+		// 						delete pathContent[method];
+		// 					}
+		// 				}
+		// 			}
+		// 		});
+		// 	});
+		// }
 
 		var options = {
 			customCss: CUSTOM_CSS,
@@ -74,13 +67,24 @@ checkStatus()
 			res.redirect('/v2/health');
 		});
 
-		app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+		// app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
-		SwaggerExpress.create(config, function (err, swaggerExpress) {
-			if (err) { throw err; }
+		const initializeSwaggerSecurity = (middleware) => {
+			return middleware.swaggerSecurity({
+				Token: toolsLib.security.verifyAuthTokenMiddleware
+			});
+		};
 
-			// install middleware
-			swaggerExpress.register(app);
+
+		swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
+
+			app.use(middleware.swaggerMetadata());
+			app.use(initializeSwaggerSecurity(middleware));
+
+			app.use(middleware.swaggerValidator({ validateResponse: true }));
+			app.use(middleware.swaggerRouter({
+				useStubs: true, controllers: './api/controllers'
+			}));
 
 			server.listen(PORT, () => {
 				logger.info(`Server running on port: ${PORT}`);

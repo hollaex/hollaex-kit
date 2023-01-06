@@ -38,7 +38,6 @@ const generateSectionsText = (links = {}, ICONS) => {
 
 const AppFooter = ({
 	className,
-	theme,
 	constants = { description: '' },
 	constants: { links = {} },
 	icons: ICONS,
