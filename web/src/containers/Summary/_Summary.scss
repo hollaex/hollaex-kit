@@ -167,13 +167,13 @@ $trade-tab--arrow-size: 0.4rem;
 	.market-wrapper {
 		width: 70%;
 		.gray-text {
-			color: $gray-text-color;
+			color: $colors-black;
 		}
 		.header-container {
 			padding-bottom: 1rem;
 			border-bottom: 2px solid $colors-main-border;
 			.link-content {
-				color: $colors-blue-link;
+				color: $colors-notifications-blue;
 				text-decoration: underline;
 				cursor: pointer;
 			}
@@ -191,7 +191,7 @@ $trade-tab--arrow-size: 0.4rem;
 			}
 		}
 		.link-container {
-			color: $colors-blue-link;
+			color: $colors-notifications-blue;
 			padding-top: 5px;
 			.link-1,
 			.link-2 {
@@ -230,7 +230,7 @@ $trade-tab--arrow-size: 0.4rem;
 		border-radius: 3px;
 		border: 1px solid $colors-super-pale-black;
 		.link-text {
-			color: $colors-blue-link;
+			color: $colors-notifications-blue;
 			cursor: pointer;
 			text-decoration: underline;
 		}

@@ -156,7 +156,6 @@ const icons = {
 	CLOCK: '/assets/images/clock.svg',
 	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
 	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
-	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
 };
 
 export default icons;

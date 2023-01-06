@@ -272,12 +272,12 @@ const nestedIcons = {
 	MOVE_XHT: '/assets/stake/xht-move.svg',
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
 	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
+	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
+	CLOCK: '/assets/images/clock.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',
 	OSKO_LOGO: '/assets/icons/osko-logo.svg',
-	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
-	CLOCK: '/assets/images/clock.svg',
 };
 
 const icons = flatten(nestedIcons, options);

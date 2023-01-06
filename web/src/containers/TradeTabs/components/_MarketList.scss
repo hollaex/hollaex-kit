@@ -89,20 +89,20 @@
 					color: $colors-black;
 				}
 				.icon-container {
-					.squarBox {
+					.squar-box {
 						width: 15px;
 						height: 15px;
 						border: 1px solid;
 						color: $colors-deactivate-color2;
 					}
-					.circleIcon {
+					.circle-icon {
 						width: 15px;
 						height: 15px;
 						border: 1px solid;
 						color: $colors-deactivate-color2;
 						border-radius: 8px;
 					}
-					.triangleIcon {
+					.triangle-icon {
 						width: 0;
 						height: 0;
 						border-left: 15px solid transparent;

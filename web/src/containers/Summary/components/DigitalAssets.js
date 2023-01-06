@@ -23,7 +23,7 @@ const DigitalAssets = (props) => {
 		icons: ICONS,
 	} = props;
 	const [options, setOptions] = useState([
-		{ value: STRINGS['ALL'], label: STRINGS['ALL'] },
+		{ value: 'all', label: STRINGS['ALL'] },
 	]);
 	const [selectedSource, setSelectedSource] = useState('');
 
@@ -55,7 +55,7 @@ const DigitalAssets = (props) => {
 
 	const getSearchResult = () => {
 		const result = {};
-		Object.entries(coins).map(([key, obj]) => {
+		Object.entries(coins).forEach(([key, obj]) => {
 			const hasCoinBalance = !!balance[`${key}_balance`];
 			if (hasCoinBalance) {
 				result[key] = { ...obj, oraclePrice: oraclePrices[key] };
@@ -87,12 +87,12 @@ const DigitalAssets = (props) => {
 				</div>
 				<div className="d-flex justify-content-between mb-3">
 					<div>
-						<div className="gray-text">
+						<div className="secondary-text">
 							<EditWrapper stringId="DIGITAL_ASSETS.ASSETS_INFO">
 								{STRINGS['DIGITAL_ASSETS.ASSETS_INFO']}
 							</EditWrapper>
 						</div>
-						<div className="gray-text">
+						<div className="secondary-text">
 							<EditWrapper stringId="DIGITAL_ASSETS.ASSETS_INFO_DETAIL">
 								{STRINGS['DIGITAL_ASSETS.ASSETS_INFO_DETAIL']}
 							</EditWrapper>
@@ -117,7 +117,7 @@ const DigitalAssets = (props) => {
 					</div>
 				</div>
 				<div className="mb-4">
-					<div className="gray-text">
+					<div className="secondary-text">
 						<EditWrapper stringId="DIGITAL_ASSETS.PRICE_SOURCE">
 							{STRINGS['DIGITAL_ASSETS.PRICE_SOURCE']}:
 						</EditWrapper>

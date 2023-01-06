@@ -154,7 +154,7 @@ $header-margin: 2rem;
 			.action_notification-svg svg {
 				width: 1.25rem;
 				height: 1.25rem;
-				background-color: $colors-blue-link;
+				background-color: $colors-notifications-blue;
 				border-radius: 1rem;
 				padding: 2px;
 			}
@@ -496,7 +496,7 @@ $header-margin: 2rem;
 
 .link-content {
 	text-decoration: underline !important;
-	color: $colors-blue-link !important;
+	color: $colors-notifications-blue !important;
 }
 .dust-convert-button {
 	width: 300px !important;

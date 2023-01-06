@@ -233,8 +233,6 @@ const nestedIcons = {
 	STAKING_PANEL_BACKGROUND: '/assets/stake/stake-unstake-light.png',
 	STAKING_BACKGROUND: '/assets/stake/stake-background-light.png',
 	META_MASK_NOT_FOUND: '/assets/icons/metamask-fox-stake-not-detected.svg',
-	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
-	CLOCK: '/assets/images/clock.svg',
 };
 
 const icons = flatten(nestedIcons, options);

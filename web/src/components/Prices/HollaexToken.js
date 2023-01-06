@@ -15,7 +15,7 @@ import { getSparklines } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
-import { handleReplace } from './Utils';
+import { OnHandleReplace } from './Utils';
 
 const PAIR_2_COINS = ['xht', 'btc', 'eth'];
 const ACTIVITY_BLOCKCHAIN =
@@ -30,8 +30,7 @@ const Hollaextoken = (props) => {
 		router,
 		available_balance,
 	} = props;
-	const currentPath = window?.location?.pathname.split('/');
-	let currentCoin = currentPath[currentPath.length - 1];
+	const currentCoin = router.params.token;
 	const currentCoinUpper = currentCoin?.toUpperCase();
 	const currentPair = Object.keys(props?.pairs).find((d) =>
 		d?.split('-').includes(currentCoin)
@@ -65,10 +64,10 @@ const Hollaextoken = (props) => {
 			return pair?.key === currentPair;
 		});
 		const selectedPairCoin = selectedPair?.[0];
-		let pairBase = selectedPairCoin?.key.split('-')[0];
+		const pairBase = selectedPairCoin?.key.split('-')[0];
 		Object.keys(pairs).forEach((pair) => {
 			if (pair.includes(pairBase)) {
-				const replacedValue = handleReplace(pair, '-', '/');
+				const replacedValue = OnHandleReplace(pair, '-', '/');
 				pairOptions.push({
 					value: replacedValue,
 					label: replacedValue,
@@ -77,7 +76,7 @@ const Hollaextoken = (props) => {
 		});
 		const defaultValue = pairOptions.filter(
 			(filteredValue) =>
-				currentPair !== handleReplace(filteredValue.value, '/', '-')
+				currentPair !== OnHandleReplace(filteredValue.value, '/', '-')
 		);
 		const ChartData = {
 			...chartData[selectedPairCoin?.key],
@@ -131,8 +130,8 @@ const Hollaextoken = (props) => {
 	};
 
 	const handleChange = (value) => {
-		let currentPair = handleReplace(value, '/', '-');
-		let selectedPair = data.filter((pair) => {
+		const currentPair = OnHandleReplace(value, '/', '-');
+		const selectedPair = data.filter((pair) => {
 			return pair?.key === currentPair;
 		});
 		const filteredSelectField = options.filter(({ label }) => label !== value);
@@ -144,8 +143,8 @@ const Hollaextoken = (props) => {
 		router.goBack();
 	};
 
-	let pairBase = selectedPairCoins?.key.split('-')[0];
-	let pair_2 = selectedPairCoins?.key.split('-')[1];
+	const pairBase = selectedPairCoins?.key.split('-')[0];
+	const pair_2 = selectedPairCoins?.key.split('-')[1];
 	let pairBase_fullName;
 	const pair_2_display_name = coins?.[pair_2] && coins?.[pair_2]?.display_name;
 	Object.keys(coins).forEach((data) => {
@@ -324,7 +323,7 @@ const Hollaextoken = (props) => {
 									{PAIR_2_COINS?.includes(currentCoin) && <div>--</div>}
 									<div className="link text-left">
 										{currentCoin === 'xht' && (
-											<Link to="/stake/details/xht?mystaking">
+											<Link to="/stake/details/xht?name=mystaking">
 												<EditWrapper stringId="HOLLAEX_TOKEN.STAKE">
 													{STRINGS['HOLLAEX_TOKEN.STAKE']}
 													{currentCoinUpper}
@@ -363,7 +362,7 @@ const Hollaextoken = (props) => {
 							<div className="button-container">
 								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 									<Button
-										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${handleReplace(
+										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${OnHandleReplace(
 											selectedPairCoins?.key,
 											'-',
 											'/'
@@ -380,7 +379,7 @@ const Hollaextoken = (props) => {
 								<div className="dropdown-container">
 									{options?.length > 1 && (
 										<Select
-											defaultValue={handleReplace(currentPair, '-', '/')}
+											defaultValue={OnHandleReplace(currentPair, '-', '/')}
 											style={{ width: '100%' }}
 											className="coin-select custom-select-input-style elevated w-100 mb-5"
 											dropdownClassName="custom-select-style"
@@ -501,7 +500,7 @@ const Hollaextoken = (props) => {
 								)}
 								{viewMore &&
 									viewMoreContents.map(({ value }, index) => {
-										const replacedValue = handleReplace(value, '/', '-');
+										const replacedValue = OnHandleReplace(value, '/', '-');
 										return (
 											<div className="d-flex paircoins-color" key={index}>
 												<Link
@@ -532,15 +531,13 @@ const Hollaextoken = (props) => {
 				</div>
 				<div className="gray-text d-flex justify-content-center mt-3 pb-5">
 					<EditWrapper stringId="HOLLAEX_TOKEN.START_HOLLAEX">
-						{STRINGS['HOLLAEX_TOKEN.START_HOLLAEX']}{' '}
-					</EditWrapper>
-					<Link className="link pl-2 pr-2" to="/white-label">
-						<EditWrapper stringId="HOLLAEX_TOKEN.WHITE_LABEL">
-							{STRINGS['HOLLAEX_TOKEN.WHITE_LABEL']}
-						</EditWrapper>
-					</Link>{' '}
-					<EditWrapper stringId="HOLLAEX_TOKEN.SOLUTION">
-						{STRINGS['HOLLAEX_TOKEN.SOLUTION']}
+						{STRINGS.formatString(
+							STRINGS['HOLLAEX_TOKEN.START_HOLLAEX'],
+							<Link className="link pl-2 pr-2" to="/white-label">
+								{STRINGS['HOLLAEX_TOKEN.WHITE_LABEL']}
+							</Link>,
+							STRINGS['HOLLAEX_TOKEN.SOLUTION']
+						)}
 					</EditWrapper>
 				</div>
 			</div>

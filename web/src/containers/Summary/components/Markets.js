@@ -175,24 +175,24 @@ class Markets extends Component {
 					<div>
 						<div>
 							<EditWrapper stringId="SUMMARY_MARKETS.HOLLAEX">
-								{STRINGS['SUMMARY_MARKETS.HOLLAEX']}{' '}
-							</EditWrapper>
-							<Link className="link-text" to="/white-label">
-								<EditWrapper stringId="SUMMARY_MARKETS.WHITE_LABEL">
-									{STRINGS['SUMMARY_MARKETS.WHITE_LABEL']}
-								</EditWrapper>
-							</Link>{' '}
-							<EditWrapper stringId="SUMMARY_MARKETS.SOLUTION">
-								{STRINGS['SUMMARY_MARKETS.SOLUTION']}
+								{STRINGS.formatString(
+									STRINGS['SUMMARY_MARKETS.HOLLAEX'],
+									<Link className="link-text" to="/white-label">
+										{STRINGS['SUMMARY_MARKETS.WHITE_LABEL']}
+									</Link>,
+									STRINGS['SUMMARY_MARKETS.SOLUTION']
+								)}
 							</EditWrapper>
 						</div>
 						<div>
-							{STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE']}{' '}
-							<Link to="assets" className="link-text">
-								<EditWrapper stringId="SUMMARY_MARKETS.HERE">
-									{STRINGS['SUMMARY_MARKETS.HERE']}
-								</EditWrapper>
-							</Link>
+							<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
+								{STRINGS.formatString(
+									STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
+									<Link to="assets" className="link-text">
+										{STRINGS['SUMMARY_MARKETS.HERE']}
+									</Link>
+								)}
+							</EditWrapper>
 						</div>
 					</div>
 				)}

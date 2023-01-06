@@ -862,9 +862,9 @@
 	"WALLET_TITLE": "Wallet",
 	"CURRENCY_WALLET": {
 		"BACK": "Back",
-		"WALLET_PAGE": "to wallet page",
+		"WALLET_PAGE": "{0} to wallet page",
 		"LEARN_MORE": "Learn more",
-		"ABOUT": "about"
+		"ABOUT": "{0} about"
 	},
 	"LOGOUT": "Logout",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "The transaction is too small to send. Try a larger amount.",
@@ -1228,10 +1228,10 @@
 		"SOURCE": "SOURCE"
 	},
 	"SUMMARY_MARKETS": {
-		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx",
+		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
 		"WHITE_LABEL": "white-lable",
 		"SOLUTION": "solution",
-		"VISIT_COIN_INFO_PAGE": "Visit coin info page",
+		"VISIT_COIN_INFO_PAGE": "Visit coin info page {0}",
 		"HERE": "here"
 	},
 	"PAGE_UNDER_CONSTRUCTION": "This page is under construction. Please revisit this page soon.",
@@ -1399,7 +1399,7 @@
 		"INFO": "info",
 		"TRADE": "TRADE",
 		"LIST": "Want to list your digital assets?",
-		"START_HOLLAEX": "Start your own market with HollaEx",
+		"START_HOLLAEX": "Start your own market with HollaEx {0} {1}",
 		"WHITE_LABEL": "white-label",
 		"SOLUTION": "solution",
 		"MARKETS_TITLE": "MARKETS"

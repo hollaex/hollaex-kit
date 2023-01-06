@@ -70,23 +70,23 @@ class Wallet extends Component {
 					/>
 				</div>
 				<div className="link-container mb-0 mt-3">
-					<Link className="link-content" to="wallet">
-						<EditWrapper stringId="CURRENCY_WALLET.BACK">
-							{STRINGS['CURRENCY_WALLET.BACK']}
-						</EditWrapper>
-					</Link>{' '}
 					<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
-						{STRINGS['CURRENCY_WALLET.WALLET_PAGE']}
+						{STRINGS.formatString(
+							STRINGS['CURRENCY_WALLET.WALLET_PAGE'],
+							<Link className="link-content" to="wallet">
+								{STRINGS['CURRENCY_WALLET.BACK']}
+							</Link>
+						)}
 					</EditWrapper>
 				</div>
 				<div className="link-container mb-5">
-					<EditWrapper stringId="CURRENCY_WALLET.LEARN_MORE">
-						<Link to="" className="link-content">
-							{STRINGS['CURRENCY_WALLET.LEARN_MORE']}
-						</Link>
-					</EditWrapper>{' '}
 					<EditWrapper stringId="CURRENCY_WALLET.ABOUT">
-						{STRINGS['CURRENCY_WALLET.ABOUT']}{' '}
+						{STRINGS.formatString(
+							STRINGS['CURRENCY_WALLET.ABOUT'],
+							<Link to="" className="link-content">
+								{STRINGS['CURRENCY_WALLET.LEARN_MORE']}
+							</Link>
+						)}
 					</EditWrapper>{' '}
 					{symbol.toUpperCase()}
 				</div>

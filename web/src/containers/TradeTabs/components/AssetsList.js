@@ -73,21 +73,21 @@ const AssetsList = ({
 								</div>
 							</th>
 							<th>
-								<div className="d-flex pointer">
+								<div className="d-flex">
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
 									</EditWrapper>
 								</div>
 							</th>
 							<th>
-								<div className="d-flex pointer">
+								<div className="d-flex">
 									<EditWrapper stringId="MARKETS_TABLE.TRADING_SYMBOL">
 										{STRINGS['MARKETS_TABLE.TRADING_SYMBOL']}
 									</EditWrapper>
 								</div>
 							</th>
 							<th>
-								<div className="d-flex pointer">
+								<div className="d-flex">
 									<EditWrapper stringId="MARKETS_TABLE.TYPE">
 										{STRINGS['MARKETS_TABLE.TYPE']}
 									</EditWrapper>

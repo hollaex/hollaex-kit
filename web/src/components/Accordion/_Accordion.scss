@@ -231,7 +231,7 @@ $main-text--color: $colors-deactivate-color2;
 }
 
 .sub-header {
-	color: $colors-blue-link;
+	color: $colors-notifications-blue;
 	cursor: pointer;
 	margin: 0.5rem 0;
 	padding: 0 0.5rem;
@@ -247,10 +247,6 @@ $main-text--color: $colors-deactivate-color2;
 .sub-header:hover,
 .img-content {
 	opacity: 0.8;
-}
-
-.history-img-wrapper {
-	display: flex;
 }
 
 .header-title {

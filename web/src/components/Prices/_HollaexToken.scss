@@ -26,10 +26,6 @@
 		margin: 1px 3px;
 	}
 
-	.gray-text {
-		color: $gray-text-color;
-	}
-
 	.token-wrapper {
 		width: 65%;
 
@@ -41,7 +37,7 @@
 		}
 
 		.link {
-			color: $colors-blue-link;
+			color: $colors-notifications-blue;
 			text-decoration: underline;
 			cursor: pointer;
 		}
@@ -52,7 +48,7 @@
 
 			.title {
 				font-size: 24px;
-				color: $gray-text-color;
+				color: $colors-black;
 
 				.favourite-text {
 					font-size: 12px;
@@ -69,7 +65,7 @@
 
 				.favourite-text-2 {
 					font-size: 12px;
-					color: $gray-text-color;
+					color: $colors-black;
 					padding-right: 10px;
 				}
 			}
@@ -99,7 +95,7 @@
 
 		.ant-btn {
 			background: $app-background-color;
-			color: $gray-text-color;
+			color: $colors-black;
 		}
 
 		.hollaex-container {
@@ -124,7 +120,7 @@
 						font-size: 14px;
 						width: 70%;
 						margin-top: 1rem;
-						color: $gray-text-color;
+						color: $colors-black;
 					}
 
 					.button-container {
@@ -242,11 +238,11 @@
 	}
 
 	.paircoins-color {
-		color: $gray-text-color;
+		color: $colors-black;
 	}
 
 	.white-text {
-		color: #ffffff;
+		color: $colors-main-black;
 	}
 }
 

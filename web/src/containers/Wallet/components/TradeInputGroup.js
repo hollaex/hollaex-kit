@@ -22,9 +22,6 @@ const TradeInputGroup = ({
 			overlay={
 				<Menu onClick={({ key }) => goToTrade(key)}>
 					{markets.map((market) => {
-						// const display_name = pairs[market]?.display_name;
-						// const icon_id = pairs[market]?.icon_id;
-
 						const { display_name, icon_id } =
 							pairs[market] ||
 							broker.find(({ symbol }) => symbol === market) ||

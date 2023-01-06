@@ -130,10 +130,10 @@ class MarketRow extends Component {
 								<div
 									className={
 										pairTwo.type === 'blockchain'
-											? 'squarBox'
+											? 'squar-box'
 											: pairTwo.type === 'fiat'
-											? 'circleIcon'
-											: 'triangleIcon'
+											? 'circle-icon'
+											: 'triangle-icon'
 									}
 								></div>
 							</div>
