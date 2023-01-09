@@ -1,0 +1,245 @@
+paths:
+  /broker:
+    x-swagger-router-controller: broker
+    post:
+      operationId: createBrokerPair
+      description: Create a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairCreate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+    put:
+      operationId: updateBrokerPair
+      description: Edit a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/BrokerPairUpdate"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+    get:
+      operationId: getBrokerPairs
+      description: Get all broker deals
+      tags:
+        - Broker
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              allOf:
+                - $ref: "#/definitions/BrokerPair"
+                - type: object
+                  properties:
+                    id:
+                      type: integer
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    delete:
+      operationId: deleteBrokerPair
+      description: Delete a broker deal
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/IdObject"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/execute:
+    x-swagger-router-controller: broker
+    post:
+      operationId: executeBrokerDeal
+      description: Execute a broker deal
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+              size:
+                type: number
+                format: double
+            required:
+              - token
+              - size
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+  /broker/quote:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerQuote
+      description: Get Quote Currency
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: symbol
+          description: Currency symbol
+          required: true
+          type: string
+        - in: query
+          name: side
+          description: buy or sell
+          required: true
+          type: string
+          enum: ['buy', 'sell']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /broker/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBroker
+      description: test broker
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              formula:
+                type: string
+              exchange_name:
+                type: string
+              multiplier:
+                type: number
+              spread:
+                type: number
+              symbol:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/connect:
+    x-swagger-router-controller: broker
+    get:
+      operationId: testRebalance
+      description: test connecting rebalance exchange
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_id
+          description: exchange to connect to
+          required: true
+          type: string
+        - in: query
+          name: api_key
+          description: exchang api key
+          required: true
+          type: string
+        - in: query
+          name: api_secret
+          description: exchang api scret
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  

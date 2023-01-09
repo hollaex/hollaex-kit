@@ -1,0 +1,40 @@
+paths:
+  /orderbook:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbook
+      tags:
+        - Public
+      parameters:
+        - name: symbol
+          in: query
+          description: Currency symbol
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /orderbooks:
+    x-swagger-router-controller: public
+    get:
+      description: Returns the top orderbooks
+      operationId: getTopOrderbooks
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OrderbooksResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  

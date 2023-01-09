@@ -1,0 +1,80 @@
+paths:
+  /udf/config:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf config
+      operationId: getConfig
+      tags:
+        - Public
+        - Chart
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/history:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf history HOLCV
+      operationId: getHistory
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: from
+          description: Start Date
+          required: true
+          type: string
+        - in: query
+          name: to
+          description: End data
+          required: true
+          type: string
+        - in: query
+          name: symbol
+          description: trading pair symbol
+          required: true
+          type: string
+        - in: query
+          name: resolution
+          description: time interval resolution (1d 1W etc)
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /udf/symbols:
+    x-swagger-router-controller: public
+    get:
+      description: Get tradingview udf symbols
+      operationId: getSymbols
+      tags:
+        - Public
+        - Chart
+      parameters:
+        - in: query
+          name: symbol
+          description: Trading pair symbol e.g. btc-eur
+          required: true
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  
