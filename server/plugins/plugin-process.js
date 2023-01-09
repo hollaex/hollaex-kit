@@ -42,110 +42,133 @@ const tripleBeam = require('triple-beam');
 const uglifyEs = require('uglify-es');
 const bodyParser = require('body-parser');
 const { isMainThread, workerData } = require('worker_threads');
+const { Plugin } = require('../db/models');
 
+const initPluginProcess = async ({ PORT }) => {
 
-const initPluginProcess = async ({ PORT, plugin }) => {
+	const app = express();
 
-    const app = express();
+	app.use(morgan(morganType, { stream }));
+	app.listen(PORT);
+	app.use(cors());
+	app.use(express.urlencoded({ extended: true }));
+	app.use(express.json());
+	app.use(logEntryRequest);
+	app.use(domainMiddleware);
+	helmetMiddleware(app);
 
-    app.use(morgan(morganType, { stream }));
-    app.listen(PORT);
-    app.use(cors());
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
-    app.use(logEntryRequest);
-    app.use(domainMiddleware);
-    helmetMiddleware(app);
+	const plugins = await Plugin.findAll({
+		where: {
+			enabled: true,
+			script: {
+				[sequelize.Op.not]: null
+			}
+		},
+		raw: true
+	});
 
-    const context = {
-        configValues: {
-            publicMeta: plugin.public_meta,
-            meta: plugin.meta
-        },
-        pluginLibraries: {
-            app,
-            loggerPlugin,
-            toolsLib
-        },
-        app,
-        toolsLib,
-        lodash,
-        expressValidator,
-        loggerPlugin,
-        multer,
-        moment,
-        mathjs,
-        bluebird,
-        umzug,
-        rp,
-        sequelize,
-        uuid,
-        jwt,
-        momentTz,
-        json2csv,
-        flat,
-        ws,
-        cron,
-        randomString,
-        bcryptjs,
-        expectCt,
-        validator,
-        uglifyEs,
-        otp,
-        latestVersion,
-        geoipLite,
-        nodemailer,
-        wsHeartbeatServer,
-        wsHeartbeatClient,
-        cors,
-        winston,
-        elasticApmNode,
-        winstonElasticsearchApm,
-        tripleBeam,
-        bodyParser,
-        morgan,
-        meta: plugin.meta,
-        publicMeta: plugin.public_meta,
-        installedLibraries: {}
-    };
+	for (const plugin of plugins) {
+		try {
+			const context = {
+				configValues: {
+					publicMeta: plugin.public_meta,
+					meta: plugin.meta
+				},
+				pluginLibraries: {
+					app,
+					loggerPlugin,
+					toolsLib
+				},
+				app,
+				toolsLib,
+				lodash,
+				expressValidator,
+				loggerPlugin,
+				multer,
+				moment,
+				mathjs,
+				bluebird,
+				umzug,
+				rp,
+				sequelize,
+				uuid,
+				jwt,
+				momentTz,
+				json2csv,
+				flat,
+				ws,
+				cron,
+				randomString,
+				bcryptjs,
+				expectCt,
+				validator,
+				uglifyEs,
+				otp,
+				latestVersion,
+				geoipLite,
+				nodemailer,
+				wsHeartbeatServer,
+				wsHeartbeatClient,
+				cors,
+				winston,
+				elasticApmNode,
+				winstonElasticsearchApm,
+				tripleBeam,
+				bodyParser,
+				morgan,
+				meta: plugin.meta,
+				publicMeta: plugin.public_meta,
+				installedLibraries: {}
+			};
 
-    if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
-        loggerPlugin.verbose(
-            'plugins/index/initialization',
-            `Installing packages for plugin ${plugin.name}`
-        );
+			if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
+				loggerPlugin.verbose(
+					'plugins/index/initialization',
+					`Installing packages for plugin ${plugin.name}`
+				);
 
-        for (const library of plugin.prescript.install) {
-            const [name, version = 'latest'] = library.split('@');
-            const lib = require(name);
-            context.installedLibraries[library] = lib;
-        }
+				for (const library of plugin.prescript.install) {
+					const [name, version = 'latest'] = library.split('@');
+					const lib = require(name);
+					context.installedLibraries[library] = lib;
+				}
 
-        loggerPlugin.verbose(
-            'plugins/index/initialization',
-            `Plugin ${plugin.name} packages installed`
-        );
-    }
+				loggerPlugin.verbose(
+					'plugins/index/initialization',
+					`Plugin ${plugin.name} packages installed`
+				);
+			}
 
-    try {
-        _eval(plugin.script, plugin.name, context, true);
-    } catch (err) {
-        loggerPlugin.error(
-            'plugins/index/initialization',
-            `error while starting plugin`,
-            err.message
-        );
-    }
-}
+			try {
+				_eval(plugin.script, plugin.name, context, true);
+			} catch (err) {
+				loggerPlugin.error(
+					'plugins/index/initialization',
+					'error while starting plugin',
+					err.message
+				);
+			}
+
+		}
+		catch (err) {
+			loggerPlugin.error(
+				'plugins/index/initialization',
+				`error while starting plugin ${plugin.name}`,
+				err.message
+			);
+		}
+
+	}
+};
 
 if (!isMainThread) {
-    try {
-        initPluginProcess(JSON.parse(workerData));
-    } catch (err) {
-        loggerPlugin.error(
-            'plugins/index/initialization',
-            `error while starting plugin`,
-            err.message
-        );
-    }
+	try {
+		initPluginProcess(JSON.parse(workerData));
+	} catch (err) {
+		loggerPlugin.error(
+			'plugins/index/initialization',
+			'error while starting plugin',
+			err.message
+		);
+	}
 }
