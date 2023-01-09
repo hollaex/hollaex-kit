@@ -64,6 +64,7 @@
 		"request-promise": "4.2.2",
 		"sequelize": "6.24.0",
 		"swagger-ui-express": "4.5.0",
+		"swagger-jsdoc": "6.2.7",
 		"swagger-tools": "0.10.4",
 		"uglify-es": "3.3.9",
 		"umzug": "2.3.0",
