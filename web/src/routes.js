@@ -60,13 +60,15 @@ import {
 	Fiatmarkets,
 	AdminApps,
 	DigitalAssets,
+	Hollaextoken,
+	WhiteLabel,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
-import { Hollaextoken, SmartTarget, WhiteLabel } from 'components';
+import { SmartTarget } from 'components';
 
 import {
 	isLoggedIn,

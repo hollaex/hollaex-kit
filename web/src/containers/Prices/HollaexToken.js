@@ -15,7 +15,7 @@ import { getSparklines } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
-import { OnHandleReplace } from './Utils';
+import { HandleReplace } from 'components/Utils/Utils';
 
 const PAIR_2_COINS = ['xht', 'btc', 'eth'];
 const ACTIVITY_BLOCKCHAIN =
@@ -67,7 +67,7 @@ const Hollaextoken = (props) => {
 		const pairBase = selectedPairCoin?.key.split('-')[0];
 		Object.keys(pairs).forEach((pair) => {
 			if (pair.includes(pairBase)) {
-				const replacedValue = OnHandleReplace(pair, '-', '/');
+				const replacedValue = HandleReplace(pair, '-', '/');
 				pairOptions.push({
 					value: replacedValue,
 					label: replacedValue,
@@ -76,7 +76,7 @@ const Hollaextoken = (props) => {
 		});
 		const defaultValue = pairOptions.filter(
 			(filteredValue) =>
-				currentPair !== OnHandleReplace(filteredValue.value, '/', '-')
+				currentPair !== HandleReplace(filteredValue.value, '/', '-')
 		);
 		const ChartData = {
 			...chartData[selectedPairCoin?.key],
@@ -130,7 +130,7 @@ const Hollaextoken = (props) => {
 	};
 
 	const handleChange = (value) => {
-		const currentPair = OnHandleReplace(value, '/', '-');
+		const currentPair = HandleReplace(value, '/', '-');
 		const selectedPair = data.filter((pair) => {
 			return pair?.key === currentPair;
 		});
@@ -362,7 +362,7 @@ const Hollaextoken = (props) => {
 							<div className="button-container">
 								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 									<Button
-										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${OnHandleReplace(
+										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${HandleReplace(
 											selectedPairCoins?.key,
 											'-',
 											'/'
@@ -379,7 +379,7 @@ const Hollaextoken = (props) => {
 								<div className="dropdown-container">
 									{options?.length > 1 && (
 										<Select
-											defaultValue={OnHandleReplace(currentPair, '-', '/')}
+											defaultValue={HandleReplace(currentPair, '-', '/')}
 											style={{ width: '100%' }}
 											className="coin-select custom-select-input-style elevated w-100 mb-5"
 											dropdownClassName="custom-select-style"
@@ -500,7 +500,7 @@ const Hollaextoken = (props) => {
 								)}
 								{viewMore &&
 									viewMoreContents.map(({ value }, index) => {
-										const replacedValue = OnHandleReplace(value, '/', '-');
+										const replacedValue = HandleReplace(value, '/', '-');
 										return (
 											<div className="d-flex paircoins-color" key={index}>
 												<Link
