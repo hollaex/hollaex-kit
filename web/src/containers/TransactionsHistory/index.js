@@ -4,6 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import { getFormatTimestamp } from 'utils/utils';
 
 import {
 	getOrdersHistory,
@@ -288,6 +289,8 @@ class TransactionsHistory extends Component {
 	};
 
 	getExpandableRowContentForOrderHistory = () => {
+		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
+		let type = temp?.type === 'active' ? 'of Opening' : 'Closed';
 		return {
 			expandedRowRender: (obj) => {
 				return (
@@ -302,12 +305,19 @@ class TransactionsHistory extends Component {
 						</div>
 						<div>
 							<p className="font-bold">Time of last trade :</p>
-							<p>{obj.updated_at}</p>
+							<p>{getFormatTimestamp(obj.updated_at)}</p>
 						</div>
-						<div>
-							<p className="font-bold">Time closed :</p>
-							<p>{obj.price}</p>
-						</div>
+						{type === 'Closed' ? (
+							<div>
+								<p className="font-bold">Time opened :</p>
+								<p>{getFormatTimestamp(obj.created_at)}</p>
+							</div>
+						) : (
+							<div>
+								<p className="font-bold">Time closed :</p>
+								<p>Currently open</p>
+							</div>
+						)}
 					</div>
 				);
 			},
@@ -575,7 +585,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, coins, icons: ICONS } = this.props;
+		const { id, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -689,7 +699,6 @@ class TransactionsHistory extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
@@ -748,7 +757,6 @@ const mapStateToProps = (store) => ({
 	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
 	discount: store.user.discount || 0,
 });
