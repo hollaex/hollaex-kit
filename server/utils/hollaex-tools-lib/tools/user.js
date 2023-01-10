@@ -416,9 +416,19 @@ const checkAffiliation = (affiliationCode, user_id) => {
 };
 
 const getAffiliationCount = (userId) => {
-	return getModel('affiliation').count({
+	return dbQuery.findAndCountAllWithRows('affiliation', {
 		where: {
 			referer_id: userId
+		},
+		include: [
+			{
+				model: getModel('user'),
+				as: 'user',
+				attributes: ['id', 'email']
+			}
+		],
+		attributes: {
+			exclude: ['id', 'referer_id', 'user_id']
 		}
 	});
 };

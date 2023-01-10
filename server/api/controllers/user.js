@@ -691,9 +691,9 @@ const affiliationCount = (req, res) => {
 
 	const user_id = req.auth.sub.id;
 	toolsLib.user.getAffiliationCount(user_id)
-		.then((num) => {
-			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
-			return res.json({ count: num });
+		.then((data) => {
+			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', data.count);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
