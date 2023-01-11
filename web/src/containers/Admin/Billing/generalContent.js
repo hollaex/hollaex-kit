@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
 import {
@@ -11,13 +11,15 @@ import {
 	Switch,
 	Tag,
 	message,
+	Select,
+	Input,
 } from 'antd';
 import Subscription from './subscription';
 import moment from 'moment';
 import { STATIC_ICONS } from 'config/icons';
 import PlanStructure from './planStructure';
 import GeneralChildContent from './generalChildContent';
-import { RightOutlined } from '@ant-design/icons';
+import { ExclamationCircleFilled, RightOutlined } from '@ant-design/icons';
 import {
 	getExchangeBilling,
 	getNewExchangeBilling,
@@ -27,6 +29,9 @@ import {
 import './Billing.scss';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import { getExchange } from '../AdminFinancials/action';
+import { Icon } from '@ant-design/compatible';
+
+const { Option } = Select;
 
 const TabPane = Tabs.TabPane;
 
@@ -34,6 +39,11 @@ const TYPES = [
 	{ type: 'basic', background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'] },
 	{ type: 'crypto', background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'] },
 	{ type: 'fiat', background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'] },
+];
+
+const payOptions = [
+	{ key: 'pay', value: 'Pay from wallet' },
+	{ key: 'transfer', value: 'Transfer crypto payment' },
 ];
 
 const columns = [
@@ -119,27 +129,37 @@ const columns = [
 		},
 	},
 ];
-const GeneralContent = ({ exchange }) => {
+const GeneralContent = ({ exchange, user }) => {
+	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
 	const options = ['item', 'method', 'crypto', 'payment'];
-	const [activeRadio, setActiveRadio] = useState(1);
+	const paymentMethods = [
+		'PayPal',
+		'Bank Wire Transfer',
+		'Cryptocurrency',
+		'Credit Card',
+	];
+	const [activeRadio, setActiveRadio] = useState(3);
 	const [type, setType] = useState('item');
-	const [itemType, setItemType] = useState('basic');
+	// const [itemType, setItemType] = useState('crypto');
 	const [selectedType, setSelectedType] = useState('crypto');
-	const [renderCardContent, setRenderCardcontent] = useState('crypto');
+	const [currency, setCurrency] = useState('usdt');
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 	const [checked, setChecked] = useState(false);
 	const [isMonthly, setIsMonthly] = useState(false);
-	const [isPaymentMethodDisable, setIsPaymentMethodDisable] = useState(true);
+	const [isPaymentMethodDisable, setIsPaymentMethodDisable] = useState([]);
+	const [isExchangeDetails, setExchangeDetails] = useState(true);
 	const [invoceData, setInvoceData] = useState([]);
 	const [priceData, setPriceData] = useState({});
+	const [paymentOptions, setOptions] = useState([]);
+	const [cryptoPayType, setCryptoPay] = useState('');
+	const [isAutomatedKYC, setIsAutomatedKYC] = useState(false);
 
 	useEffect(() => {
 		getData();
 		setIsLoading(true);
-		setRenderCardcontent('crypto');
 		getExchangePrice();
 	}, []);
 
@@ -148,6 +168,25 @@ const GeneralContent = ({ exchange }) => {
 			getInvoice({ is_paid: false });
 		}
 	}, [dashToken]);
+
+	useEffect(() => {
+		if (selectedType === 'basic') {
+			setIsPaymentMethodDisable(['PayPal', 'Bank Wire Transfer']);
+		} else if (selectedType === 'crypto') {
+			setIsPaymentMethodDisable(['Bank Wire Transfer']);
+		}
+	}, [selectedType]);
+
+	useEffect(() => {
+		const balanceAvailable =
+			balance[`${currency.toLowerCase()}_available`] || 0;
+		if (balanceAvailable && balanceAvailable) {
+			setOptions(payOptions);
+		} else {
+			const optionData = payOptions.filter((data) => data.key !== 'pay');
+			setOptions(optionData);
+		}
+	}, [balance, currency]);
 
 	const onChange = (e) => {
 		setActiveRadio(e.target.value);
@@ -179,6 +218,7 @@ const GeneralContent = ({ exchange }) => {
 			setModalWidth('65rem');
 		} else if (name === 'crypto') {
 			setModalWidth('65rem');
+		} else if (name === 'payment') {
 		}
 	};
 
@@ -188,12 +228,135 @@ const GeneralContent = ({ exchange }) => {
 		setActiveRadio(1);
 	};
 
+	const isCloud = () => {
+		const exchangePlans = ['basic', 'crypto', 'fiat'];
+		if (exchangePlans.includes(exchange.plan)) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	const renderFooterImage = () => {
+		// const exchangePlans = ['basic', 'crypto', 'fiat'];
+		// if (isAutomatedKYC) {
+		//     return STATIC_ICONS['KYC_PLUGIN_ICON'];
+		// } else if (exchange.plan === 'boost' && invoiceData.item === 'boost') {
+		//     return STATIC_ICONS['DIY_BOOST_ICON'];
+		// } else if (!exchangePlans.includes(exchange.plan) && invoiceData.item !== 'boost') {
+		//     return STATIC_ICONS['DIY_ICON'];
+		// } else {
+		//     return STATIC_ICONS['CURRENT_PLAN_CLOUD_ICON'];
+		// }
+	};
+
+	const renderFooterInfo = () => {
+		// const exchangePlans = ['basic', 'crypto', 'fiat'];
+		// if (!exchangePlans.includes(exchange.plan)) {
+		//     if (type === 'boost' && invoiceData.item === 'boost') {
+		//         return (
+		//             <div>
+		//                 <div className="sub-title billing-package-text">DIY Boost</div>
+		//                 <span className="bodyContentSmall">HollaEx Yearly DIY Boost</span>
+		//             </div>
+		//         )
+		//     } else {
+		//         return (
+		//             <div>
+		//                 <div className="sub-title billing-package-text">{invoice.item}</div>
+		//                 <span className="bodyContentSmall">{invoice.description}</span>
+		//             </div>
+		//         )
+		//     }
+		// } else if (isAutomatedKYC && !is_active) {
+		//     return (
+		//         <div>
+		//             <div className="sub-title billing-package-text">Automated KYC</div>
+		//             <span className="bodyContentSmall">First time activation and {_get(invoice, 'meta.addon.count', '')} user verifications</span>
+		//         </div>
+		//     )
+		// } else if (is_active) {
+		//     return (
+		//         <div>
+		//             <div className="sub-title billing-package-text">Automated KYC</div>
+		//             <span className="bodyContentSmall">Charge {_get(invoice, 'meta.addon.count', '')} user verifications</span>
+		//         </div>
+		//     )
+		// } else {
+		//     return (
+		//         <div>
+		//             <div className="sub-title billing-package-text">{invoice.item}</div>
+		//             <span className="bodyContentSmall">{invoice.description}</span>
+		//         </div>
+		//     )
+		// }
+	};
+
+	const renderPrice = () => {
+		// let PriceValue = `${_get(invoice, 'currency', '').toUpperCase()} ${_get(invoice, 'amount', '')}`;
+		// if (invoice.method !== 'paypal' &&
+		//     invoice.method !== 'bank' &&
+		//     invoice.method !== 'stripe' &&
+		//     invoice.meta &&
+		//     invoice.meta.amount
+		// ) {
+		//     PriceValue = `${invoice.meta.currency.toUpperCase()} ${invoice.meta.amount}`;
+		// }
+		// if (isEdit || isAutomatedKYC) {
+		//     return (
+		//         <Fragment>
+		//             <div className="sub-title">Payment:</div>{' '}
+		//             <div>{PriceValue}</div>
+		//         </Fragment>
+		//     );
+		// } else {
+		//     return (
+		//         <Fragment>
+		//             <div className="sub-title">{isMonthly ? 'Monthly payment:' : 'Yearly payment:'}</div>{' '}
+		//             <div>{PriceValue}</div>
+		//         </Fragment>
+		//     );
+		// }
+	};
+
+	const renderFooter = () => {
+		return (
+			<div className="cloud-plan-wrapper">
+				<div className="cloud-content">
+					<h3 className="payment-header">
+						{isAutomatedKYC
+							? 'Selected item'
+							: isCloud()
+							? 'Selected cloud plan'
+							: 'Selected DIY plan'}
+					</h3>
+					<div className="cloud-box-container d-flex">
+						<div className="content-align d-flex">
+							<img
+								src={renderFooterImage()}
+								alt="cloud-icon"
+								className="cloud-icon"
+							/>
+							{renderFooterInfo()}
+						</div>
+						<div className="content-align d-flex seperator">
+							<img src={''} alt="Exchange-icon" className="exchange-icon" />
+							<span className="bodyContentSmall">{exchange.display_name}</span>
+						</div>
+						<div className="content-align d-flex">{renderPrice()}</div>
+					</div>
+				</div>
+				<div className="button-container">{renderBtn()}</div>
+			</div>
+		);
+	};
+
 	const getExchangePrice = async () => {
 		try {
 			const res = await getPrice();
 			let priceData = {};
-			Object.keys(res).forEach((key) => {
-				let temp = res[key];
+			Object.keys(res.data).forEach((key) => {
+				let temp = res.data[key];
 				if (!temp.month) {
 					temp.month = {};
 				}
@@ -236,20 +399,20 @@ const GeneralContent = ({ exchange }) => {
 	const storePlanType = () => {
 		if (exchange.type === 'DIY') {
 			updatePlanType(
-				{ id: exchange.id, plan: itemType, period: 'year' },
+				{ id: exchange.id, plan: selectedType, period: 'year' },
 				setType('method')
 			);
 			// setType('payment');
 		} else if (
-			itemType === 'fiat' &&
-			Object.keys(exchange.business_info).length
+			selectedType === 'fiat' &&
+			Object.keys(exchange.business_info)?.length
 		) {
 			// setFiatCompleted(true);
-		} else if (itemType === 'fiat') {
+		} else if (selectedType === 'fiat') {
 			updatePlanType(
 				{
 					id: exchange.id,
-					plan: itemType,
+					plan: selectedType,
 					period: isMonthly ? 'month' : 'year',
 				},
 				() => setType('enterPrise')
@@ -259,7 +422,7 @@ const GeneralContent = ({ exchange }) => {
 			updatePlanType(
 				{
 					id: exchange.id,
-					plan: itemType,
+					plan: selectedType,
 					period: isMonthly ? 'month' : 'year',
 				},
 				() => setType('method')
@@ -270,6 +433,10 @@ const GeneralContent = ({ exchange }) => {
 
 	const handleOnSwith = (isCheck) => {
 		setIsMonthly(isCheck);
+	};
+
+	const handleCryptoPay = (payType) => {
+		setCryptoPay(payType);
 	};
 
 	const renderModelContent = () => {
@@ -291,141 +458,50 @@ const GeneralContent = ({ exchange }) => {
 	};
 
 	const renderCard = () => {
-		switch (renderCardContent) {
-			case 'basic':
-				return (
-					<div className="mt-5 card-boder">
-						<div className="card-design-basic" />
-						<div
-							className="card-wrapper"
-							style={{
-								backgroundImage: `url(${STATIC_ICONS['CLOUD_BASIC_BACKGROUND']})`,
-							}}
-						>
-							<div className="d-flex contentWrapper">
-								<div className="card-icon">
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_BASIC']}
-										className="cloud-background"
-									/>
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_CRYPTO']}
-										className="cloud-icon"
-									/>
-								</div>
-								<div className="payment-text">
-									<div className="d-flex">
-										<p className="white-text">Cloud: </p>
-										<p className="cloud-type">basic</p>
-									</div>
-									<p className="pb-5">
-										Get started fast with a basic test exchange
-									</p>
-								</div>
+		return (
+			<div className="mt-5 card-boder">
+				<div className={`card-design-${selectedType}`} />
+				<div
+					className="card-wrapper"
+					style={{
+						backgroundImage: `url(${STATIC_ICONS['CLOUD_BASIC_BACKGROUND']})`,
+					}}
+				>
+					<div className="d-flex contentWrapper">
+						<div className="card-icon">
+							<ReactSVG
+								src={STATIC_ICONS['CLOUD_BASIC']}
+								className="cloud-background"
+							/>
+							<ReactSVG
+								src={STATIC_ICONS['CLOUD_CRYPTO']}
+								className="cloud-icon"
+							/>
+						</div>
+						<div className="payment-text">
+							<div className="d-flex">
+								<p className="white-text">Cloud: </p>
+								<p className="cloud-type">{selectedType}</p>
 							</div>
+							<p className="pb-5">
+								Get started fast with a basic test exchange
+							</p>
 						</div>
-						<div className="pay-button">
-							<Button
-								type="primary"
-								onClick={() => setOpenPlanModal(true)}
-								className="m-2 px-4 py-1"
-								shape="round"
-							>
-								Pay
-							</Button>
-						</div>
-						{}
 					</div>
-				);
-			case 'crypto':
-				return (
-					<div className="mt-5 card-boder">
-						<div className="card-design-crypto" />
-						<div
-							className="card-wrapper"
-							style={{
-								backgroundImage: `url(${STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']})`,
-							}}
-						>
-							<div className="d-flex contentWrapper">
-								<div className="card-icon">
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_BASIC']}
-										className="cloud-background"
-									/>
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_CRYPTO']}
-										className="cloud-icon"
-									/>
-								</div>
-								<div className="payment-text">
-									<p className="white-text">Cloud: crypto </p>
-									<p className="pb-5">
-										For those looking to start a crypto-to-crypto exchange
-										buisness
-									</p>
-								</div>
-							</div>
-						</div>
-						<div className="pay-button">
-							<Button
-								type="primary"
-								onClick={() => setOpenPlanModal(true)}
-								className="m-2 px-4 py-1"
-								shape="round"
-							>
-								Pay
-							</Button>
-						</div>
-						{}
-					</div>
-				);
-			case 'fiat':
-				return (
-					<div className="mt-5 card-boder">
-						<div className="card-design-fiat" />
-						<div
-							className="card-wrapper"
-							style={{
-								backgroundImage: `url(${STATIC_ICONS['CLOUD_FIAT_BACKGROUND']})`,
-							}}
-						>
-							<div className="d-flex contentWrapper">
-								<div className="card-icon">
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_BASIC']}
-										className="cloud-background"
-									/>
-									<ReactSVG
-										src={STATIC_ICONS['CLOUD_CRYPTO']}
-										className="cloud-icon"
-									/>
-								</div>
-								<div className="payment-text">
-									<p className="white-text">Cloud: fiat-ramp </p>
-									<p className="pb-5">
-										For those that want to start a fiat to crypto exchange that
-										have a bank or fiat payment processor
-									</p>
-								</div>
-							</div>
-						</div>
-						<div className="pay-button">
-							<Button
-								type="primary"
-								onClick={() => setOpenPlanModal(true)}
-								className="m-2 px-4 py-1"
-								shape="round"
-							>
-								Pay
-							</Button>
-						</div>
-						{}
-					</div>
-				);
-			default:
-				return null;
-		}
+				</div>
+				<div className="pay-button">
+					<Button
+						type="primary"
+						onClick={() => setOpenPlanModal(true)}
+						className="m-2 px-4 py-1"
+						shape="round"
+					>
+						Pay
+					</Button>
+				</div>
+				{}
+			</div>
+		);
 	};
 
 	const renderContent = () => {
@@ -487,30 +563,34 @@ const GeneralContent = ({ exchange }) => {
 				return (
 					<div className="radiobtn-container">
 						<p>Select Payment Method</p>
-						<Radio.Group
-							className={'radio-content'}
-							onChange={onChange}
-							value={activeRadio}
-						>
+						<Radio.Group className={'radio-content'} onChange={onChange}>
 							<Space direction="vertical">
-								<Radio value={1} disabled={isPaymentMethodDisable}>
-									PayPal
-								</Radio>
-								<Radio value={2} disabled={isPaymentMethodDisable}>
-									Bank Wire Transfer
-								</Radio>
-								<Radio value={3}>
-									<span>Cryptocurrency </span>
-									<span className="danger"> (up to 10% off) </span>
-									<span>
-										<img
-											src={STATIC_ICONS['FIRE_BALL']}
-											className="fire-icon"
-											alt="fire"
-										/>
-									</span>
-								</Radio>
-								<Radio value={4}>Credit Card</Radio>
+								{paymentMethods.map((method, inx) => {
+									if (method === 'Cryptocurrency') {
+										return (
+											<Radio value={inx}>
+												<span>{method} </span>
+												<span className="danger"> (up to 10% off) </span>
+												<span>
+													<img
+														src={STATIC_ICONS['FIRE_BALL']}
+														className="fire-icon"
+														alt="fire"
+													/>
+												</span>
+											</Radio>
+										);
+									} else {
+										return (
+											<Radio
+												value={inx}
+												disabled={isPaymentMethodDisable.includes(method)}
+											>
+												{method}
+											</Radio>
+										);
+									}
+								})}
 							</Space>
 						</Radio.Group>
 						<Subscription />
@@ -560,6 +640,172 @@ const GeneralContent = ({ exchange }) => {
 					</div>
 				);
 			case 'payment':
+			case 'cryptoPayment':
+				const balanceAvailable =
+					balance[`${currency.toLowerCase()}_available`] || 0;
+				const currencyData = {};
+				return (
+					<div>
+						<div className="steps-content-wrapper">
+							{/* <h3 className="bold">Send crypto payment</h3> */}
+							<div className="d-flex align-center">
+								<div className="f-1">
+									<div>
+										<div className="bold my-mini">Select how to pay:</div>
+										<div className="my-mini">
+											<Select
+												onChange={handleCryptoPay}
+												placeholder="Select payment method"
+											>
+												{paymentOptions.map((item) => (
+													<Option value={item.key} key={item.key}>
+														{item.value}
+													</Option>
+												))}
+											</Select>
+										</div>
+										{cryptoPayType === 'pay' ? (
+											<Fragment>
+												<div className="my-mini">
+													<span className="bold">Selected crypto: </span>
+													<span>{currency ? currency.toUpperCase() : ''}</span>
+												</div>
+												<div className="my-mini">
+													<span className="bold">{`Your ${currency.toUpperCase()} balance: `}</span>
+													<span>
+														{balanceAvailable} {currency.toUpperCase()}
+													</span>
+												</div>
+												{!balanceAvailable ||
+												balanceAvailable < currencyData.amount ? (
+													<div className="crypto-error">
+														<ExclamationCircleFilled /> Insufficient balance
+													</div>
+												) : null}
+												<div className="crypto-payment-divider"></div>
+												<div>
+													<div className="crypto-required-amount">
+														Required amount: {currencyData.amount}{' '}
+														{currencyData.currency
+															? currencyData.currency.toUpperCase()
+															: ''}
+													</div>
+													<div className="small-text">
+														The required amount will be directly deducted from
+														your account wallet balance. Please check the
+														details before proceeding.
+													</div>
+												</div>
+											</Fragment>
+										) : cryptoPayType === 'transfer' ? (
+											<Fragment>
+												<div className="payment-details-wrapper">
+													<div className="my-mini">
+														<span className="bold">Selected crypto: </span>
+														<span>
+															{currencyData
+																? currencyData.currency.toUpperCase()
+																: ''}
+														</span>
+													</div>
+													<div className="my-mini">
+														<span className="bold">
+															Required payment amount:{' '}
+														</span>
+														<span>
+															{currencyData.amount}{' '}
+															{currencyData.currency
+																? currencyData.currency.toUpperCase()
+																: ''}
+														</span>
+													</div>
+													<div className="bodyContentSmall my-mini">
+														{currency === 'btc' && currency === 'eth'
+															? '*10% discount included'
+															: ''}
+													</div>
+													{!isExchangeDetails ? (
+														<Button
+															onClick={() => setExchangeDetails(true)}
+															type="primary"
+														>
+															Show payment address
+														</Button>
+													) : null}
+												</div>
+												{isExchangeDetails ? (
+													<div>
+														<div className="payment-details-wrapper mobile-qr-wrapper no-border d-flex align-center">
+															<div>
+																<div className="bodyContentSmall my-mini">
+																	{currency === 'btc' && currency === 'eth'
+																		? '*10% discount included'
+																		: ''}
+																</div>
+																<div className="currency-content">
+																	<span className="bold my-mini">
+																		Payment address:
+																	</span>
+																	<p>
+																		<Input
+																			ref={(el) => {
+																				// setAddressRef(el);
+																			}}
+																			value={currencyData.address}
+																			readOnly
+																			addonAfter={
+																				<Icon
+																					type="copy"
+																					// onClick={() => handleCopy(addressRef)}
+																				/>
+																			}
+																		/>
+																	</p>
+																</div>
+																<div className="d-flex align-center my-1">
+																	{/* <Timer time={moment(currencyData.expiry).diff(moment(), 'seconds')} />
+																		<div className="timer-divider"></div>
+																		<div className="bodyContentSmall">
+																			You have 24 hours to pay to send your crypto payment. You can always come back and reselect paying with cryptocurrency and pay later.
+																		</div> */}
+																	<div className="warning-text d-flex">
+																		<ExclamationCircleFilled className="warning-icon" />
+																		<div>
+																			<div>
+																				Before sending your payment check and
+																				consider the
+																			</div>
+																			transaction fee and that the required
+																			amount is sufficient.
+																		</div>
+																	</div>
+																</div>
+															</div>
+															{cryptoPayType !== 'pay' ? (
+																<div className="qr-code-wrapper">
+																	{/* <QR value={currencyData.address ? currencyData.address : ''} size={100} /> */}
+																	<div className="bodyContentSmall">
+																		Scan this QR code
+																	</div>
+																</div>
+															) : null}
+														</div>
+														<div className="my-1">
+															After your payment has been received you will be
+															sent an email with your payment details
+														</div>
+													</div>
+												) : null}
+											</Fragment>
+										) : null}
+									</div>
+								</div>
+							</div>
+						</div>
+						{renderFooter()}
+					</div>
+				);
+			case 'payment1':
 				setOpenPlanModal(false);
 				break;
 			default:
@@ -608,8 +854,8 @@ const GeneralContent = ({ exchange }) => {
 
 	const getInvoice = async (params) => {
 		const res = await getExchangeBilling(params);
-		if (res && res?.data) {
-			setInvoceData(res.data);
+		if (res && res?.data && res?.data?.data) {
+			setInvoceData(res?.data?.data);
 		}
 		setIsLoading(false);
 	};
@@ -637,7 +883,7 @@ const GeneralContent = ({ exchange }) => {
 						<div>Below is current your plan. Get more view details on</div>
 						<div className="cloud-plans mx-1">cloud plans here.</div>
 					</div>
-					<p className="description-content">Current Plan : Crypto Pro</p>
+					<p className="description-content">Current Plan : {selectedType}</p>
 				</div>
 			</div>
 			{renderCard()}

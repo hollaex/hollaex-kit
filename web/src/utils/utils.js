@@ -9,9 +9,12 @@ import {
 	TIMESTAMP_FORMAT_FA,
 	DEFAULT_TIMESTAMP_FORMAT,
 	AUDIOS,
+	NETWORK_API_URL,
 } from '../config/constants';
 import { getLanguage } from './string';
 import _orderBy from 'lodash/orderBy';
+import { getDashToken } from './token';
+import axios from 'axios';
 
 const bitcoin = {
 	COIN: 100000000,
@@ -326,4 +329,41 @@ export const constractPaymentOption = (paymentsData) => {
 		tempData.push({ name: key, ...paymentsData[key] });
 	});
 	return _orderBy(tempData, ['orderBy'], ['asc']);
+};
+
+export const _FetchDash = (
+	url,
+	method,
+	data = null,
+	baseURL = NETWORK_API_URL
+) => {
+	return new Promise((resolve, reject) => {
+		const ID_TOKEN = getDashToken();
+		if (ID_TOKEN) {
+			axios.defaults.headers.post['Content-Type'] = 'application/json';
+			axios.defaults.headers.common['Authorization'] = `Bearer ${ID_TOKEN}`;
+		}
+		const config = {
+			baseURL,
+			method,
+			url,
+		};
+		if (data) {
+			config.data = data;
+		}
+		axios(config)
+			.then((res) => {
+				resolve(res);
+			})
+			.catch((err) => {
+				if (err.response === undefined) {
+					reject({
+						data: {
+							message: 'Request Failed',
+						},
+					});
+				}
+				reject(err.response);
+			});
+	});
 };

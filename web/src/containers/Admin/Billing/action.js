@@ -1,31 +1,30 @@
 import querystring from 'query-string';
-import { requestAuthenticated } from 'utils';
+import { _FetchDash } from 'utils/utils';
 
 const toQueryString = (values) => {
 	return querystring.stringify(values);
 };
 
 export const getExchangeBilling = (params) => {
-	return requestAuthenticated(`/invoice?${toQueryString(params)}`, {
-		isDashRequest: true,
-	});
+	return _FetchDash(`/invoice?${toQueryString(params)}`, 'get');
 };
 
 export const setExchangePlan = (body) => {
-	return requestAuthenticated(`/exchange/plan`, {
-		isDashRequest: true,
-		method: 'post',
-		...body,
+	return new Promise(async (resolve, reject) => {
+		try {
+			const res = await _FetchDash('/exchange/plan', 'post', body);
+			resolve(res);
+		} catch (error) {
+			console.log('setExchangePlan : error', error);
+			reject(error);
+		}
 	});
 };
 
 export const getNewExchangeBilling = (exchangeId = '') => {
-	return requestAuthenticated(`/exchange/pay?exchange_id=${exchangeId}`, {
-		isDashRequest: true,
-		method: 'get',
-	});
+	return _FetchDash(`/exchange/pay?exchange_id=${exchangeId}`, 'get');
 };
 
 export const getPrice = () => {
-	return requestAuthenticated(`/exchange/pricing`, { isDashRequest: true });
+	return _FetchDash(`/exchange/pricing`, 'get');
 };

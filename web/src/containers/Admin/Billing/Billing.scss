@@ -301,12 +301,8 @@ button:focus {
 				margin-bottom: 4.2rem !important;
 			}
 
-			.opacity {
-				height: 65rem;
-			}
-
 			// .active-plan-container {
-			// 	height: 65rem;
+			//  height: 65rem;
 			// }
 
 			.plan-container {
@@ -599,4 +595,62 @@ button:focus {
 	width: 2rem;
 	cursor: pointer;
 	margin-left: 0.75rem;
+}
+
+.cloud-plan-wrapper {
+	background-color: #27339d;
+	border-top: 2px dotted #ffffff;
+	position: relative;
+	top: 0.5rem;
+
+	.cloud-content {
+		padding: 2rem;
+	}
+
+	.cloud-box-container {
+		padding: 1rem;
+		justify-content: space-around;
+		background-color: #27339d;
+		border: 1px solid #ffffff;
+
+		.sub-title {
+			white-space: nowrap;
+			font-size: 16px;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		.cloud-icon,
+		.exchange-icon {
+			width: 40px;
+			margin-right: 15px;
+		}
+
+		.content-align {
+			justify-content: center;
+			align-items: center;
+			padding: 0 0.5rem;
+		}
+
+		.seperator {
+			border-left: 1px solid #42454d;
+			border-right: 1px solid #42454d;
+		}
+	}
+
+	.button-container {
+		padding: 0.5rem 1rem;
+
+		.ant-btn {
+			height: 45px;
+			width: 38rem;
+			margin-left: 1rem;
+		}
+	}
+
+	.payment-header {
+		font-size: 16px;
+		font-weight: bold;
+		color: #ffffff;
+	}
 }
