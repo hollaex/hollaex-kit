@@ -15,25 +15,29 @@ import { getSparklines } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
-import { HandleReplace } from 'components/Utils/Utils';
+import { replace } from 'utils/string';
 
 const PAIR_2_COINS = ['xht', 'btc', 'eth'];
 const ACTIVITY_BLOCKCHAIN =
 	'https://etherscan.io/token/0xD3c625F54dec647DB8780dBBe0E880eF21BA4329';
 
-const Hollaextoken = (props) => {
+const CoinPage = ({
+	pairs,
+	tickers,
+	coins,
+	icons: ICONS,
+	router,
+	available_balance,
+	favourites,
+	addToFavourites,
+	removeFromFavourites,
+}) => {
 	const {
-		pairs,
-		tickers,
-		coins,
-		icons: ICONS,
-		router,
-		available_balance,
-	} = props;
-	const currentCoin = router.params.token;
+		params: { token: currentCoin },
+	} = router;
 	const currentCoinUpper = currentCoin?.toUpperCase();
-	const currentPair = Object.keys(props?.pairs).find((d) =>
-		d?.split('-').includes(currentCoin)
+	const currentPair = Object.keys(pairs).find((pair) =>
+		pair.split('-').includes(currentCoin)
 	);
 
 	const [data, setData] = useState([]);
@@ -47,7 +51,7 @@ const Hollaextoken = (props) => {
 
 	useEffect(() => {
 		handleMarket();
-		getSparklines(Object.keys(props?.pairs)).then((chartData) => {
+		getSparklines(Object.keys(pairs)).then((chartData) => {
 			return setChartData(chartData);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -67,7 +71,7 @@ const Hollaextoken = (props) => {
 		const pairBase = selectedPairCoin?.key.split('-')[0];
 		Object.keys(pairs).forEach((pair) => {
 			if (pair.includes(pairBase)) {
-				const replacedValue = HandleReplace(pair, '-', '/');
+				const replacedValue = replace(pair, '-', '/');
 				pairOptions.push({
 					value: replacedValue,
 					label: replacedValue,
@@ -75,8 +79,7 @@ const Hollaextoken = (props) => {
 			}
 		});
 		const defaultValue = pairOptions.filter(
-			(filteredValue) =>
-				currentPair !== HandleReplace(filteredValue.value, '/', '-')
+			(filteredValue) => currentPair !== replace(filteredValue.value, '/', '-')
 		);
 		const ChartData = {
 			...chartData[selectedPairCoin?.key],
@@ -130,7 +133,7 @@ const Hollaextoken = (props) => {
 	};
 
 	const handleChange = (value) => {
-		const currentPair = HandleReplace(value, '/', '-');
+		const currentPair = replace(value, '/', '-');
 		const selectedPair = data.filter((pair) => {
 			return pair?.key === currentPair;
 		});
@@ -159,12 +162,10 @@ const Hollaextoken = (props) => {
 	}
 
 	const isFavourite = (pair) => {
-		const { favourites } = props;
 		return isLoggedIn() && favourites.includes(pair);
 	};
 
 	const toggleFavourite = (pair) => {
-		const { addToFavourites, removeFromFavourites } = props;
 		if (isLoggedIn()) {
 			return isFavourite(pair)
 				? removeFromFavourites(pair)
@@ -307,7 +308,7 @@ const Hollaextoken = (props) => {
 								</div>
 							) : (
 								<div className="mt-3">
-									{PAIR_2_COINS?.includes(currentCoin) ? (
+									{PAIR_2_COINS.includes(currentCoin) ? (
 										<div className="link text-left mb-4">
 											<Link href={ACTIVITY_BLOCKCHAIN} target="blank">
 												<EditWrapper stringId="HOLLAEX_TOKEN.VIEW_ACTIVITY">
@@ -320,7 +321,7 @@ const Hollaextoken = (props) => {
 											{STRINGS['HOLLAEX_TOKEN.COMING_SOON']}
 										</EditWrapper>
 									)}
-									{PAIR_2_COINS?.includes(currentCoin) && <div>--</div>}
+									{PAIR_2_COINS.includes(currentCoin) && <div>--</div>}
 									<div className="link text-left">
 										{currentCoin === 'xht' && (
 											<Link to="/stake/details/xht?name=mystaking">
@@ -331,7 +332,7 @@ const Hollaextoken = (props) => {
 											</Link>
 										)}
 									</div>
-									{PAIR_2_COINS?.includes(currentCoin) && (
+									{PAIR_2_COINS.includes(currentCoin) && (
 										<div className="link text-left">
 											<Link to={`/quick-trade/${currentPair}`}>
 												<EditWrapper stringId="HOLLAEX_TOKEN.QUICK_BUY">
@@ -362,7 +363,7 @@ const Hollaextoken = (props) => {
 							<div className="button-container">
 								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 									<Button
-										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${HandleReplace(
+										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${replace(
 											selectedPairCoins?.key,
 											'-',
 											'/'
@@ -379,7 +380,7 @@ const Hollaextoken = (props) => {
 								<div className="dropdown-container">
 									{options?.length > 1 && (
 										<Select
-											defaultValue={HandleReplace(currentPair, '-', '/')}
+											defaultValue={replace(currentPair, '-', '/')}
 											style={{ width: '100%' }}
 											className="coin-select custom-select-input-style elevated w-100 mb-5"
 											dropdownClassName="custom-select-style"
@@ -500,7 +501,7 @@ const Hollaextoken = (props) => {
 								)}
 								{viewMore &&
 									viewMoreContents.map(({ value }, index) => {
-										const replacedValue = HandleReplace(value, '/', '-');
+										const replacedValue = replace(value, '/', '-');
 										return (
 											<div className="d-flex paircoins-color" key={index}>
 												<Link
@@ -509,7 +510,7 @@ const Hollaextoken = (props) => {
 												>
 													<span>{value.toUpperCase()}</span>
 													<span className="white-text pl-2">
-														{props?.tickers[replacedValue]?.last}
+														{tickers[replacedValue]?.last}
 													</span>
 												</Link>
 												<div className="pl-6 trade_tabs-container h5">
@@ -545,23 +546,21 @@ const Hollaextoken = (props) => {
 	);
 };
 
+const mapStateToProps = (store) => ({
+	pair: store.app.pair,
+	pairs: store.app.pairs,
+	tickers: store.app.tickers,
+	coins: store.app.coins,
+	favourites: store.app.favourites,
+	available_balance: store.user.balance,
+});
+
 const mapDispatchToProps = (dispatch) => ({
 	addToFavourites: bindActionCreators(addToFavourites, dispatch),
 	removeFromFavourites: bindActionCreators(removeFromFavourites, dispatch),
 });
 
-const mapStateToProps = (store) => {
-	return {
-		pair: store.app.pair,
-		pairs: store.app.pairs,
-		tickers: store.app.tickers,
-		coins: store.app.coins,
-		favourites: store.app.favourites,
-		available_balance: store.user.balance,
-	};
-};
-
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(withConfig(Hollaextoken));
+)(withConfig(CoinPage));

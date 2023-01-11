@@ -281,3 +281,7 @@ export const convertToFormatted = (children) => {
 		return children;
 	}
 };
+
+export const replace = (string, from, to) => {
+	return string?.replace(from, to);
+};
