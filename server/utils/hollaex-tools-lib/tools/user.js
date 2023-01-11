@@ -415,10 +415,27 @@ const checkAffiliation = (affiliationCode, user_id) => {
 	// });
 };
 
-const getAffiliationCount = (userId) => {
+const getAffiliationCount = (userId, opts = {
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null
+}) => {
+
+	if (!isInteger(userId)) {
+		throw new Error('Invalid user id');
+	}
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	
 	return dbQuery.findAndCountAllWithRows('affiliation', {
 		where: {
-			referer_id: userId
+			referer_id: userId,
+			created_at: timeframe
 		},
 		include: [
 			{
@@ -429,7 +446,9 @@ const getAffiliationCount = (userId) => {
 		],
 		attributes: {
 			exclude: ['id', 'referer_id', 'user_id']
-		}
+		},
+		order: [ordering],
+		...pagination
 	});
 };
 

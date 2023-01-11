@@ -210,7 +210,7 @@ paths:
     x-swagger-router-controller: user
     get:
       operationId: affiliationCount
-      description: Get the number of affiliated account a user has made
+      description: Get the list and number of affiliated account a user has made
       tags:
         - User
       parameters:

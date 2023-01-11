@@ -703,7 +703,7 @@ const affiliationCount = (req, res) => {
 		end_date: end_date.value
 	})
 		.then((data) => {
-			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', data.count);
+			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount count', data.count);
 			return res.json(data);
 		})
 		.catch((err) => {
