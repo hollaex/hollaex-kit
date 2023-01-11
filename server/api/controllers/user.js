@@ -690,7 +690,18 @@ const affiliationCount = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/affiliationCount auth', req.auth.sub);
 
 	const user_id = req.auth.sub.id;
-	toolsLib.user.getAffiliationCount(user_id)
+
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+
+	toolsLib.user.getAffiliationCount(user_id, {
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+	})
 		.then((data) => {
 			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', data.count);
 			return res.json(data);
