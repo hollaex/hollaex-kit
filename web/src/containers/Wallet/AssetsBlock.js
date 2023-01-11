@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
+import { Switch } from 'antd';
 import { isStakingAvailable } from 'config/contracts';
 import {
 	// CurrencyBall,
+	Image,
 	ActionNotification,
 	SearchBox,
-	AssetsBlockForm,
 	EditWrapper,
+	Help,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -20,9 +22,9 @@ import {
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
 import TradeInputGroup from './components/TradeInputGroup';
 import { unique } from 'utils/data';
+import DustSection from './DustSection';
 
 const AssetsBlock = ({
 	balance,
@@ -35,12 +37,16 @@ const AssetsBlock = ({
 	navigate,
 	handleSearch,
 	searchResult,
-	handleCheck,
+	onToggle,
 	icons: ICONS,
 	hasEarn,
 	loading,
 	contracts,
 	broker,
+	goToDustSection,
+	showDustSection,
+	goToWallet,
+	isZeroBalanceHidden,
 }) => {
 	const sortedSearchResults = Object.entries(searchResult)
 		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
@@ -109,7 +115,9 @@ const AssetsBlock = ({
 		return unique([...quickTrade, ...trade]);
 	};
 
-	return (
+	return showDustSection ? (
+		<DustSection goToWallet={goToWallet} />
+	) : (
 		<div className="wallet-assets_block">
 			<section className="ml-4 pt-4">
 				{totalAssets.length && !loading ? (
@@ -143,12 +151,32 @@ const AssetsBlock = ({
 							showCross
 						/>
 					</EditWrapper>
-					<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-						<AssetsBlockForm
-							label={STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-							handleCheck={handleCheck}
-						/>
-					</EditWrapper>
+					<div className="d-flex">
+						<div className="d-flex px-4 align-items-center">
+							<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+								<Help tip={STRINGS['DUST.TOOLTIP']}>
+									<div
+										className="text-underline pointer blue-link"
+										onClick={goToDustSection}
+									>
+										{STRINGS['DUST.LINK']}
+									</div>
+								</Help>
+							</EditWrapper>
+						</div>
+						<div className="d-flex align-items-center">
+							<span>
+								<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+									{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+								</EditWrapper>
+							</span>
+							<Switch
+								checked={isZeroBalanceHidden}
+								onClick={onToggle}
+								className="mx-2"
+							/>
+						</div>
+					</div>
 				</div>
 			</section>
 			<table className="wallet-assets_block-table">
@@ -311,8 +339,10 @@ const AssetsBlock = ({
 										<td>
 											{markets.length > 1 ? (
 												<TradeInputGroup
+													broker={broker}
 													markets={markets}
 													goToTrade={goToTrade}
+													pairs={pairs}
 												/>
 											) : (
 												<ActionNotification

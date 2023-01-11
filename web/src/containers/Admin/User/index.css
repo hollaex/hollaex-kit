@@ -25,8 +25,16 @@
 .admin-tiers-wrapper .ant-tabs-nav .ant-tabs-tab,
 .user-container .ant-tabs-nav .ant-tabs-tab {
 	font-size: 15px;
+	opacity: 0.6;
 	color: var(--admin_panel_main_font);
+}
+.ant-tabs-tab-active {
+	font-weight: bold !important;
+	opacity: 1 !important;
+}
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
 	font-weight: bold;
+	opacity: 1 !important;
 }
 .user-container .ant-tabs-nav .ant-tabs-tab:hover {
 	color: var(--admin_panel_main_font);

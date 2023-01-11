@@ -124,12 +124,56 @@ $header-margin: 2rem;
 	}
 }
 
+.dust-dialog-content {
+	width: 38rem;
+	.currency-ball-image-wrapper {
+		height: 38px;
+		padding-right: 10px;
+	}
+	.currency-ball {
+		width: 30px;
+		padding-top: 4px;
+		svg,
+		div:first-child {
+			width: 28px;
+		}
+	}
+
+	.dust-note {
+		color: $colors-notification-pending;
+	}
+
+	.large-font {
+		font-size: $font-size-headline !important;
+	}
+}
+
 .wallet-container {
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
 
 	&.no-border {
 		border: none !important;
+	}
+
+	.ant-switch {
+		background-color: $app-background-color;
+
+		.ant-switch-handle {
+			&:before {
+				background-color: $colors-black;
+			}
+		}
+	}
+
+	.ant-switch-checked {
+		background-color: $app-background-color;
+
+		.ant-switch-handle {
+			&:before {
+				background-color: $colors-main-black;
+			}
+		}
 	}
 
 	.wallet-header_block {
@@ -388,9 +432,23 @@ $header-margin: 2rem;
 	color: $dark-font-sub-text-color !important;
 }
 
+.dust-estimated-balance {
+	border-bottom: 1px solid $dark-app-line-divider;
+	text-align: end;
+}
+
+.dust-image-title-wrapper {
+	width: 5.5rem;
+	height: 5.5rem;
+	opacity: 0.08;
+	margin-bottom: 1rem;
+}
+
 .custom-dropdown-style {
 	.ant-dropdown-menu-item {
 		color: $colors-black;
+		line-height: 1.1rem;
+		font-size: 1rem;
 
 		&.ant-dropdown-menu-item-active {
 			color: $colors-main-black;
@@ -400,5 +458,22 @@ $header-margin: 2rem;
 
 	.ant-dropdown-menu {
 		background-color: $app-background-color;
+		max-height: 10rem;
+		overflow-y: scroll;
 	}
+
+	.app_bar-pair-font {
+		font-size: 0.9rem;
+	}
+
+	.app-bar-add-tab-icons {
+		width: 1.2rem;
+		div {
+			display: flex;
+		}
+	}
+}
+
+.dust-convert-button {
+	width: 300px !important;
 }

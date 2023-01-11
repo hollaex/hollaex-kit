@@ -16,12 +16,12 @@ const latestVersion = require('latest-version');
 const npm = require('npm-programmatic');
 const sequelize = require('sequelize');
 const lodash = require('lodash');
-const pluginProcess = path.join(__dirname, "./plugin-process.js");
-const { Worker } = require('worker_threads')
+const pluginProcess = path.join(__dirname, './plugin-process.js');
+const { Worker } = require('worker_threads');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
 let app;
-let activePlugins = {}
+let pluginWorkerThread;
 
 const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
@@ -77,26 +77,49 @@ const installLibrary = async (library) => {
 	}
 };
 
-const stopPlugin = async (plugin) => {
+const restartPluginProcess = async () => {
 	try {
 		loggerPlugin.verbose(
-			'plugins/index/kill_plugin',
-			`killing plugin ${plugin.name}`
+			'plugins/index/kill_plugins',
+			'killing plugins '
 		);
-
-		activePlugins[plugin.name].process.terminate();
-		delete activePlugins[plugin.name];
+		pluginWorkerThread.terminate();
+		startPluginProcess();
 
 	} catch (err) {
 		loggerPlugin.error(
-			'plugins/index/kill_plugin',
-			`error while stopping plugin ${plugin.name}`,
+			'plugins/index/kill_plugins',
+			'error while stopping plugins',
 			err.message
 		);
 	}
-}
+};
 
-const startPlugin = async (plugin) => {
+const startPluginProcess = async () => {
+	const plugins = await Plugin.findAll({
+		where: {
+			enabled: true,
+			script: {
+				[sequelize.Op.not]: null
+			}
+		},
+		raw: true
+	});
+
+
+	for (const plugin of plugins) {
+		await installPlugin(plugin);
+
+	}
+	const pluginData = { PORT: 10012 };
+	const childProcess = new Worker(pluginProcess, {
+		workerData: JSON.stringify(pluginData)
+	});
+
+	pluginWorkerThread = childProcess;
+};
+
+const installPlugin = async (plugin) => {
 	try {
 		loggerPlugin.verbose(
 			'plugins/index/initialization',
@@ -119,22 +142,6 @@ const startPlugin = async (plugin) => {
 			);
 		}
 
-		const pluginData = { PORT: 10011 + plugin.id, plugin }
-		const childProcess = new Worker(pluginProcess, {
-			workerData: JSON.stringify(pluginData)
-		})
-
-		activePlugins[plugin.name] = {
-			process: childProcess,
-			port: pluginData.PORT,
-			name: plugin.name
-		};
-
-
-		loggerPlugin.verbose(
-			'plugins/index/initialization',
-			`Plugin ${plugin.name} running`
-		);
 	} catch (err) {
 		loggerPlugin.error(
 			'plugins/index/initialization',
@@ -142,7 +149,7 @@ const startPlugin = async (plugin) => {
 			err.message
 		);
 	}
-}
+};
 
 
 checkStatus()
@@ -162,19 +169,10 @@ checkStatus()
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
 		helmetMiddleware(app);
-
-
 		const defaultURL = 'http://localhost:10012';
-		const customRouter = function (req) {
-			if (req.path.length > 1 && req.path.includes('/plugins/')) {
-				for (let plugin of Object.values(activePlugins)) {
-					if (req.path.includes(plugin.name)) {
-						return `http://localhost:${plugin.port}`;
-					}
-				}
-			}
-			return defaultURL;
 
+		const customRouter = function (req) {
+			return defaultURL;
 		};
 
 		const options = {
@@ -185,19 +183,7 @@ checkStatus()
 
 		app.use('/plugins', routes, createProxyMiddleware(options));
 
-		const plugins = await Plugin.findAll({
-			where: {
-				enabled: true,
-				script: {
-					[sequelize.Op.not]: null
-				}
-			},
-			raw: true
-		});
-
-		for (const plugin of plugins) {
-			await startPlugin(plugin);
-		}
+		startPluginProcess();
 
 		loggerPlugin.info(
 			'/plugins/index/initialization',
@@ -224,6 +210,5 @@ checkStatus()
 	});
 
 module.exports = {
-	startPlugin,
-	stopPlugin
-}
+	restartPluginProcess
+};

@@ -124,7 +124,6 @@ class Summary extends Component {
 		const {
 			user,
 			balance,
-			activeTheme,
 			pairs,
 			coins,
 			verification_level,
@@ -151,6 +150,14 @@ class Summary extends Component {
 				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 				verification_level
 			);
+
+		const userData = config_level[verification_level] || {};
+		const userAccountTitle =
+			userData.name ||
+			STRINGS.formatString(
+				STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
+				verification_level
+			);
 		return (
 			<div>
 				<div className="summary-container">
@@ -169,7 +176,6 @@ class Summary extends Component {
 							pairs={pairs}
 							coins={coins}
 							config={config_level}
-							activeTheme={activeTheme}
 							selectedAccount={selectedAccount}
 							logout={this.logoutConfirm}
 							balance={balance}
@@ -177,6 +183,7 @@ class Summary extends Component {
 							totalAssets={totalAssets}
 							lastMonthVolume={lastMonthVolume}
 							traderAccTitle={traderAccTitle}
+							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
 							onFeesAndLimits={this.onFeesAndLimits}
@@ -189,13 +196,15 @@ class Summary extends Component {
 							<div id="summary-header-section"></div>
 							<div className="d-flex">
 								<div className="summary-section_1 trader-account-wrapper d-flex">
-									<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
+									<SummaryBlock
+										title={userAccountTitle}
+										wrapperClassname="w-100"
+									>
 										<TraderAccounts
 											user={user}
 											pairs={pairs}
 											coins={coins}
 											config={config_level}
-											activeTheme={activeTheme}
 											onFeesAndLimits={this.onFeesAndLimits}
 											onUpgradeAccount={this.onUpgradeAccount}
 											onInviteFriends={this.onInviteFriends}
@@ -240,7 +249,6 @@ class Summary extends Component {
 											totalAssets={totalAssets}
 											balance={balance}
 											coins={coins}
-											activeTheme={activeTheme}
 										/>
 									</SummaryBlock>
 									{/* </div> */}
@@ -255,7 +263,6 @@ class Summary extends Component {
 										user={user}
 										coins={coins}
 										pairs={pairs}
-										activeTheme={activeTheme}
 										router={router}
 									/>
 								</SummaryBlock>
@@ -283,7 +290,6 @@ class Summary extends Component {
 										user={user}
 										coins={coins}
 										pairs={pairs}
-										activeTheme={activeTheme}
 										config={config_level}
 										currentTradingAccount={currentTradingAccount.symbol}
 										selectedAccount={selectedAccount}
@@ -309,7 +315,6 @@ const mapStateToProps = (state) => ({
 	user: state.user || {},
 	verification_level: state.user.verification_level,
 	balance: state.user.balance,
-	activeTheme: state.app.theme,
 	prices: state.orderbook.prices,
 	price: state.orderbook.price,
 	orders: state.order.activeOrders,

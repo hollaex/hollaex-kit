@@ -8,8 +8,25 @@ const logging = (sql, options) => {
 	// loggerDb.debug(options);
 };
 
-let ssl = process.env.DB_SSL || false;
-ssl = toBool(ssl);
+let requireSSL =  process.env.DB_SSL || false;
+requireSSL = toBool(requireSSL);
+
+let ssl;
+if (requireSSL) {
+	ssl = {
+		require: true,
+		rejectUnauthorized: false
+	};
+}
+
+let replication = {
+	read: [
+		{ host: process.env.DB_HOST }
+	],
+	write: {
+		host: process.env.DB_HOST
+	}
+};
 
 module.exports = {
 	development: {
@@ -22,6 +39,11 @@ module.exports = {
 		dialectOptions: {
 			ssl
 		},
+		define: {
+			createdAt: 'created_at',
+			updatedAt: 'updated_at'
+		},
+		replication,
 		logging
 	},
 	test: {
@@ -34,6 +56,11 @@ module.exports = {
 		dialectOptions: {
 			ssl
 		},
+		define: {
+			createdAt: 'created_at',
+			updatedAt: 'updated_at'
+		},
+		replication,
 		logging
 	},
 	production: {
@@ -46,6 +73,11 @@ module.exports = {
 		dialectOptions: {
 			ssl
 		},
+		define: {
+			createdAt: 'created_at',
+			updatedAt: 'updated_at'
+		},
+		replication,
 		logging
 	}
 };

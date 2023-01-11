@@ -109,7 +109,6 @@ const FeesAndLimits = ({
 };
 
 const mapStateToProps = (state) => ({
-	activeTheme: state.app.theme,
 	pairs: state.app.pairs,
 	coins: state.app.coins,
 	constants: state.app.constants,

@@ -27,7 +27,7 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -578,7 +578,7 @@ const changePassword = (req, res) => {
 	const email = req.auth.sub.email;
 	const { old_password, new_password, otp_code } = req.swagger.params.data.value;
 	const ip = req.headers['x-real-ip'];
-	const domain = `${API_HOST}${req.swagger.swaggerObject.basePath}`;
+	const domain = API_HOST + HOLLAEX_NETWORK_BASE_URL;
 
 	loggerUser.verbose(
 		req.uuid,
@@ -691,9 +691,9 @@ const affiliationCount = (req, res) => {
 
 	const user_id = req.auth.sub.id;
 	toolsLib.user.getAffiliationCount(user_id)
-		.then((num) => {
-			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', num);
-			return res.json({ count: num });
+		.then((data) => {
+			loggerUser.verbose(req.uuid, 'controllers/user/affiliationCount', data.count);
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/affiliationCount', err.message);
@@ -878,7 +878,7 @@ function updateHmacToken(req, res) {
 			return res.status(400).json({ message: 'IP address is not valid.' });
 		}
 	});
-	
+
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
@@ -1033,7 +1033,7 @@ const userCheckTransaction = (req, res) => {
 		});
 };
 
-const addUserBank = (req, res) =>  {
+const addUserBank = (req, res) => {
 	loggerUser.verbose(
 		req.uuid,
 		'controllers/user/addUserBank auth',
@@ -1055,26 +1055,26 @@ const addUserBank = (req, res) =>  {
 			}
 
 			if (!toolsLib.getKitConfig().user_payments) {
-				throw new Error ('Payment system fields are not defined yet');
+				throw new Error('Payment system fields are not defined yet');
 			}
 
 			if (!toolsLib.getKitConfig().user_payments[data.type]) {
-				throw new Error ('Payment system fields are not defined yet');
+				throw new Error('Payment system fields are not defined yet');
 			}
 
 			each(toolsLib.getKitConfig().user_payments[data.type].data, ({ required, key }) => {
 				if (required && !Object.prototype.hasOwnProperty.call(data, key)) {
-					throw new Error (`Missing field: ${key}`);
+					throw new Error(`Missing field: ${key}`);
 				}
 				if (Object.prototype.hasOwnProperty.call(data, key)) {
 					bank_account[key] = data[key];
 				}
 			});
-		
+
 			if (Object.keys(bank_account).length === 0) {
-				throw new Error ('No payment system fields to add');
+				throw new Error('No payment system fields to add');
 			}
-			
+
 			bank_account.id = crypto.randomBytes(8).toString('hex');
 			bank_account.status = VERIFY_STATUS.PENDING;
 

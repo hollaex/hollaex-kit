@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { IconTitle, Accordion, MobileBarTabs } from 'components';
 import { TransactionsHistory, Stake } from 'containers';
@@ -16,19 +17,26 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
+import DustSection from './DustSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
+
+const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
 class Wallet extends Component {
 	constructor(props) {
 		super(props);
+
+		const isZeroBalanceHidden =
+			localStorage.getItem(ZERO_BALANCE_KEY) === 'true';
+
 		this.state = {
 			activeTab: 0,
 			sections: [],
 			mobileTabs: [],
 			isOpen: true,
-			isZeroBalanceHidden:
-				localStorage.getItem('isZeroBalanceHidden') === 'true' ? true : false,
+			isZeroBalanceHidden,
+			showDustSection: false,
 		};
 	}
 
@@ -67,10 +75,11 @@ class Wallet extends Component {
 	}
 
 	componentDidUpdate(_, prevState) {
-		const { searchValue, isZeroBalanceHidden } = this.state;
+		const { searchValue, isZeroBalanceHidden, showDustSection } = this.state;
 		if (
 			searchValue !== prevState.searchValue ||
-			isZeroBalanceHidden !== prevState.isZeroBalanceHidden
+			isZeroBalanceHidden !== prevState.isZeroBalanceHidden ||
+			showDustSection !== prevState.showDustSection
 		) {
 			this.generateSections(
 				this.props.changeSymbol,
@@ -87,6 +96,11 @@ class Wallet extends Component {
 				this.props.isFetching
 			);
 		}
+	}
+
+	componentWillUnmount() {
+		const { isZeroBalanceHidden } = this.state;
+		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
 	}
 
 	getSearchResult = (coins, balance, oraclePrices) => {
@@ -124,9 +138,8 @@ class Wallet extends Component {
 		this.setState({ searchValue: value });
 	};
 
-	handleCheck = (_, value) => {
-		this.setState({ isZeroBalanceHidden: value });
-		localStorage.setItem('isZeroBalanceHidden', value);
+	onToggleZeroBalance = (isZeroBalanceHidden) => {
+		this.setState({ isZeroBalanceHidden });
 	};
 
 	generateSections = (
@@ -143,6 +156,7 @@ class Wallet extends Component {
 		contracts = {},
 		isFetching
 	) => {
+		const { showDustSection, isZeroBalanceHidden } = this.state;
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -169,7 +183,7 @@ class Wallet extends Component {
 						navigate={this.goToPage}
 						searchResult={searchResult}
 						handleSearch={this.handleSearch}
-						handleCheck={this.handleCheck}
+						onToggle={this.onToggleZeroBalance}
 						hasEarn={
 							isStakingAvailable(STAKING_INDEX_COIN, contracts) &&
 							stake_page &&
@@ -178,6 +192,10 @@ class Wallet extends Component {
 						loading={isFetching}
 						contracts={contracts}
 						broker={this.props.broker}
+						goToDustSection={this.goToDustSection}
+						showDustSection={showDustSection}
+						goToWallet={this.goToWallet}
+						isZeroBalanceHidden={isZeroBalanceHidden}
 					/>
 				),
 				isOpen: true,
@@ -216,11 +234,15 @@ class Wallet extends Component {
 				title: STRINGS['WALLET_TAB_TRANSACTIONS'],
 				content: <TransactionsHistory />,
 			},
-			{
+		];
+
+		if (stake_page) {
+			mobileTabs.push({
 				title: STRINGS['ACCOUNTS.TAB_STAKE'],
 				content: <Stake />,
-			},
-		];
+			});
+		}
+
 		this.setState({ sections, isOpen, mobileTabs });
 	};
 
@@ -232,8 +254,16 @@ class Wallet extends Component {
 		this.setState({ activeTab });
 	};
 
+	goToDustSection = () => {
+		this.setState({ showDustSection: true });
+	};
+
+	goToWallet = () => {
+		this.setState({ showDustSection: false });
+	};
+
 	render() {
-		const { sections, activeTab, mobileTabs } = this.state;
+		const { sections, activeTab, mobileTabs, showDustSection } = this.state;
 		const { icons: ICONS } = this.props;
 
 		if (mobileTabs.length === 0) {
@@ -253,7 +283,14 @@ class Wallet extends Component {
 						</div>
 					</div>
 				) : (
-					<div className="presentation_container apply_rtl wallet-wrapper">
+					<div
+						className={classnames(
+							'presentation_container',
+							'apply_rtl',
+							'wallet-wrapper',
+							{ settings_container: showDustSection }
+						)}
+					>
 						<IconTitle
 							stringId="WALLET_TITLE"
 							text={STRINGS['WALLET_TITLE']}
@@ -261,8 +298,16 @@ class Wallet extends Component {
 							iconId="TAB_WALLET"
 							textType="title"
 						/>
-						<div className="wallet-container">
-							<Accordion sections={sections} />
+						<div
+							className={classnames('wallet-container', {
+								'no-border': showDustSection,
+							})}
+						>
+							{showDustSection ? (
+								<DustSection goToWallet={this.goToWallet} />
+							) : (
+								<Accordion sections={sections} />
+							)}
 						</div>
 					</div>
 				)}
@@ -277,7 +322,6 @@ const mapStateToProps = (store) => ({
 	pairs: store.app.pairs,
 	prices: store.orderbook.prices,
 	balance: store.user.balance,
-	activeTheme: store.app.theme,
 	activeLanguage: store.app.language,
 	bankaccount: store.user.userData.bank_account,
 	totalAsset: store.asset.totalAsset,

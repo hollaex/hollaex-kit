@@ -185,7 +185,7 @@ class UserContent extends Component {
 
 		verifyUser(postValues)
 			.then((res) => {
-				refreshData(postValues);
+				refreshData({ ...postValues, email_verified: true });
 				this.setState({ showVerifyEmailModal: false });
 			})
 			.catch((err) => {

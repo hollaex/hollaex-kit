@@ -18,7 +18,11 @@ import Audits from '../Audits';
 import Logins from '../Logins';
 import Verification from '../Verification';
 import DataDisplay, { renderRowInformation } from '../Verification/DataDisplay';
-import { performVerificationLevelUpdate, updateDiscount } from './actions';
+import {
+	performVerificationLevelUpdate,
+	updateDiscount,
+	deleteNotes,
+} from './actions';
 import {
 	validateRequired,
 	validateRange,
@@ -268,8 +272,18 @@ const AboutData = ({
 		Modal.confirm({
 			icon: <ExclamationCircleFilled />,
 			content: <div>Are you sure want to delete this?</div>,
-			onOk() {
-				console.log('OK');
+			onOk: () => {
+				return deleteNotes(userData.id)
+					.then(() => {
+						onChangeSuccess({
+							...userData,
+							note: '',
+						});
+						handleClose();
+					})
+					.catch((err) => {
+						throw new SubmissionError({ _error: err.data.message });
+					});
 			},
 		});
 	};

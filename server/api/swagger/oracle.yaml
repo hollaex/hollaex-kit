@@ -1,0 +1,41 @@
+paths:
+  /oracle/prices:
+    x-swagger-router-controller: public
+    get:
+      operationId: getAssetsPrices
+      description: Convert assets prices
+      tags:
+        - Public
+        - Oracle
+      parameters:
+        - name: assets
+          in: query
+          required: true
+          description: Assets to convert
+          type: array
+          items:
+            type: string
+            minItems: 1
+        - name: quote
+          in: query
+          required: false
+          description: Quote coin to convert to
+          type: string
+        - name: amount
+          in: query
+          required: false
+          description: Amount to convert
+          type: number
+          format: double
+          minimum: 0
+          exclusiveMinimum: true
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/OraclePriceResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  

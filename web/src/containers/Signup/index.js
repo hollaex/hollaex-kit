@@ -161,7 +161,7 @@ class Signup extends Component {
 			return (
 				<div>
 					{isMobile && <MobileBarBack onBackClick={this.onBackActiveEmail} />}
-					<SignupSuccess activeTheme={activeTheme} />
+					<SignupSuccess />
 				</div>
 			);
 		}
@@ -230,7 +230,6 @@ class Signup extends Component {
 					style={{ 'z-index': 100 }}
 					className={classnames(languageClasses)}
 					showCloseText={false}
-					theme={activeTheme}
 				>
 					<ContactForm
 						onSubmitSuccess={this.onCloseDialog}

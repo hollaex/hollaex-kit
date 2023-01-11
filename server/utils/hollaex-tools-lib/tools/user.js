@@ -416,9 +416,19 @@ const checkAffiliation = (affiliationCode, user_id) => {
 };
 
 const getAffiliationCount = (userId) => {
-	return getModel('affiliation').count({
+	return dbQuery.findAndCountAllWithRows('affiliation', {
 		where: {
 			referer_id: userId
+		},
+		include: [
+			{
+				model: getModel('user'),
+				as: 'user',
+				attributes: ['id', 'email']
+			}
+		],
+		attributes: {
+			exclude: ['id', 'referer_id', 'user_id']
 		}
 	});
 };
@@ -592,30 +602,7 @@ const getAllUsersAdmin = (opts = {
 		}
 	} else if (isBoolean(opts.pending) && opts.pending) {
 
-		let pendingQuery = [];
-		// users that have a pending id waiting for admin to confirm
-		const pendingId = {
-			id_data: {
-				status: 1
-			}
-		};
-		// users that have a pending bank waiting for admin to confirm
-		const pendingBank = getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'');
-
-		if (opts.pending_type) {
-			if (opts.pending_type === 'id') {
-				pendingQuery.push(pendingId);
-			} else if (opts.pending_type === 'bank') {
-				pendingQuery.push(pendingBank);
-			}
-		} else {
-			pendingQuery = [pendingId, pendingBank];
-		}
-
 		query = {
-			where: {
-				[Op.or]: pendingQuery
-			},
 			attributes: [
 				'id',
 				'email',
@@ -624,8 +611,36 @@ const getAllUsersAdmin = (opts = {
 				'bank_account',
 				'activated'
 			],
-			order: [ordering]
+			order: [['updated_at', 'desc']]
 		};
+
+
+		if (opts.pending_type) {
+			if (opts.pending_type === 'id') {
+				query.where = {
+					activated: true,
+					id_data: {
+						status: 1 // users that have a pending id waiting for admin to confirm
+					}
+				};
+			} else if (opts.pending_type === 'bank') {
+				query.where = {
+					[Op.and]: [
+						{ activated: true },
+						{
+							id_data: {
+								status: 3 // users that have a pending id waiting for admin to confirm
+							}
+						},
+						getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
+					]
+				};
+			} else {
+				throw new Error('pending type is not defined. You need to select id or bank is pending_type');
+			}
+		} else {
+			throw new Error('pending type is not defined. You need to select id or bank is pending_type');
+		}
 	} else {
 		query = {
 			where: {},

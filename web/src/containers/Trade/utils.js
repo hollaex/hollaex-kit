@@ -1,6 +1,6 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
-import { getDecimals } from 'utils/utils';
+import { getDecimals, handleUpgrade } from 'utils/utils';
 import {
 	formatCurrencyByIncrementalUnit,
 	formatPercentage,
@@ -21,7 +21,10 @@ const sumQuantities = (orders) =>
 const sumOrderTotal = (orders) =>
 	orders.reduce(
 		(total, [price, size]) =>
-			math.add(total, math.multiply(math.fraction(size), math.fraction(price))),
+			math.add(
+				total,
+				math.number(math.multiply(math.fraction(size), math.fraction(price)))
+			),
 		0
 	);
 
@@ -104,6 +107,8 @@ const getPrices = (state) => state.asset.oraclePrices;
 const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
+const getKitInfo = (state) => state.app.info;
+const getPinnedMarkets = (state) => state.app.pinned_markets;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -291,6 +296,29 @@ const pairKeysSelector = createSelector([getPairs], (pairs) =>
 	Object.keys(pairs)
 );
 
+export const selectMarketOptions = createSelector(
+	[pairKeysSelector, getPairs, getCoins],
+	(pairKeys, pairs, coins) => {
+		const markets = pairKeys.map((key) => {
+			const { pair_base, pair_2 } = pairs[key] || {};
+
+			return {
+				key,
+				pairBase: {
+					symbol: coins[pair_base].symbol,
+					fullname: coins[pair_base].fullname,
+				},
+				pair2: {
+					symbol: coins[pair_2].symbol,
+					fullname: coins[pair_2].fullname,
+				},
+			};
+		});
+
+		return markets;
+	}
+);
+
 export const unsortedMarketsSelector = createSelector(
 	[
 		pairKeysSelector,
@@ -377,31 +405,52 @@ const sortedMarketsSelector = createSelector(
 	}
 );
 
+export const pinnedMarketsSelector = createSelector(
+	[getPairs, getKitInfo, getPinnedMarkets],
+	(pairs, info, pinnedMarkets) => {
+		const isBasic = handleUpgrade(info);
+		if (isBasic) {
+			const pinnedCoins = ['xht'];
+			const pinnedMarkets = [];
+			Object.entries(pairs).forEach(([key, { pair_base, pair_2 }]) => {
+				if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
+					pinnedMarkets.push(key);
+				}
+			});
+			return pinnedMarkets;
+		} else {
+			return pinnedMarkets;
+		}
+	}
+);
+
 export const MarketsSelector = createSelector(
-	[sortedMarketsSelector, getPairs, getFavourites],
-	(markets, pairs, favourites) => {
-		const pinnedCoins = ['xht'];
+	[sortedMarketsSelector, getPairs, getFavourites, pinnedMarketsSelector],
+	(markets, pairs, favourites, pins) => {
 		const favouriteMarkets = [];
 		const pinnedMarkets = [];
-		const filteredMarkets = [];
+		const restMarkets = [];
 
-		markets.forEach((market) => {
-			const { key } = market;
-			const { pair_base, pair_2 } = pairs[key];
+		markets
+			.filter(({ key }) => !pins.includes(key))
+			.forEach((market) => {
+				const { key } = market;
 
-			if (favourites.includes(key)) {
-				favouriteMarkets.push(market);
-			} else if (
-				pinnedCoins.includes(pair_base) ||
-				pinnedCoins.includes(pair_2)
-			) {
+				if (favourites.includes(key)) {
+					favouriteMarkets.push(market);
+				} else {
+					restMarkets.push(market);
+				}
+			});
+
+		pins.forEach((pin) => {
+			const market = markets.find(({ key }) => key === pin);
+			if (market) {
 				pinnedMarkets.push(market);
-			} else {
-				filteredMarkets.push(market);
 			}
 		});
 
-		return [...favouriteMarkets, ...pinnedMarkets, ...filteredMarkets];
+		return [...pinnedMarkets, ...favouriteMarkets, ...restMarkets];
 	}
 );
 

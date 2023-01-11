@@ -43,7 +43,7 @@ const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
 				stringId="USER_SETTINGS.GO_TO_RISK_MANAGMENT"
 				render={(string) => (
 					<Link
-						to="/settings?tab=5"
+						to="/settings?tab=4"
 						onClick={() => onClose()}
 						className="blue-link"
 					>

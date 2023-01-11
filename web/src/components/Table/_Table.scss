@@ -14,6 +14,46 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		height: 2rem;
 	}
 
+	.sub-tr-bg-white {
+		background-color: #e4e3e3;
+		border-bottom: 1px solid #c3c3c3 !important;
+		opacity: 0.75;
+	}
+
+	.anchor {
+		color: #5d63ff;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	.sub-tr-bg {
+		background: #383a3e;
+		opacity: 0.75;
+		border-bottom: 1px solid #4b4d51 !important;
+	}
+
+	.sub-tr {
+		height: 7rem;
+		border-bottom: 1px solid #4b4d51;
+		td {
+			padding: 1rem;
+			vertical-align: top;
+		}
+	}
+
+	.time-wrapper {
+		display: flex;
+
+		.type-color {
+			color: #9edec9;
+		}
+
+		p {
+			margin-bottom: 0px;
+			margin-right: 0.5rem;
+		}
+	}
+
 	th,
 	td {
 		padding: 0.25rem;

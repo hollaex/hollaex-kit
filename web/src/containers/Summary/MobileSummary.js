@@ -21,7 +21,6 @@ const MobileSummary = ({
 	pairs,
 	coins,
 	config,
-	activeTheme,
 	selectedAccount,
 	balance,
 	chartData,
@@ -29,6 +28,7 @@ const MobileSummary = ({
 	totalAssets,
 	lastMonthVolume,
 	traderAccTitle,
+	userAccountTitle,
 	onFeesAndLimits,
 	onUpgradeAccount,
 	onAccountTypeChange,
@@ -50,14 +50,13 @@ const MobileSummary = ({
 			)}
 		>
 			<div className="summary-section_1 trader-account-wrapper d-flex w-100">
-				<SummaryBlock title={traderAccTitle} wrapperClassname="w-100">
+				<SummaryBlock title={userAccountTitle} wrapperClassname="w-100">
 					<TraderAccounts
 						user={user}
 						coins={coins}
 						pairs={pairs}
 						config={config}
 						logout={logout}
-						activeTheme={activeTheme}
 						onInviteFriends={onInviteFriends}
 						onFeesAndLimits={onFeesAndLimits}
 						onUpgradeAccount={onUpgradeAccount}
@@ -90,7 +89,6 @@ const MobileSummary = ({
 						totalAssets={totalAssets}
 						balance={balance}
 						coins={coins}
-						activeTheme={activeTheme}
 					/>
 				</SummaryBlock>
 			</div>
@@ -99,12 +97,7 @@ const MobileSummary = ({
 					stringId="SUMMARY.MARKETS"
 					title={STRINGS['SUMMARY.MARKETS']}
 				>
-					<Markets
-						user={user}
-						coins={coins}
-						pairs={pairs}
-						activeTheme={activeTheme}
-					/>
+					<Markets user={user} coins={coins} pairs={pairs} />
 				</SummaryBlock>
 			</div>
 			{/*<div className="trading-volume-wrapper w-100">
@@ -138,7 +131,6 @@ const MobileSummary = ({
 					pairs={pairs}
 					user={user}
 					balance={balance}
-					activeTheme={activeTheme}
 					selectedAccount={selectedAccount}
 					onAccountTypeChange={onAccountTypeChange}
 					onFeesAndLimits={onFeesAndLimits}

@@ -1,3 +1,4 @@
+import { isMobile } from 'react-device-detect';
 import {
 	required,
 	minValue,
@@ -8,6 +9,7 @@ import {
 	normalizeBTCFee,
 } from 'components/Form/validations';
 import STRINGS from 'config/localizedStrings';
+import { STATIC_ICONS } from 'config/icons';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getLanguage } from 'utils/string';
 import { getTheme } from 'utils/theme';
@@ -120,7 +122,8 @@ export const generateFormValues = (
 	selectedNetwork,
 	ICONS = '',
 	selectedMethod,
-	handleMethodChange = () => {}
+	handleMethodChange = () => {},
+	openQRScanner = () => {}
 ) => {
 	const isEmail = selectedMethod && selectedMethod === 'email' ? true : false;
 	const {
@@ -269,6 +272,18 @@ export const generateFormValues = (
 				],
 				fullWidth: true,
 				ishorizontalfield: true,
+				notification: [
+					{
+						stringId: 'QR_CODE.SCAN',
+						text: STRINGS['QR_CODE.SCAN'],
+						status: 'information',
+						iconPath: STATIC_ICONS['QR_CODE_SCAN'],
+						className: 'file_upload_icon',
+						useSvg: true,
+						onClick: openQRScanner,
+						showActionText: !isMobile,
+					},
+				],
 			};
 		}
 		if (isEmail) {
@@ -294,7 +309,7 @@ export const generateFormValues = (
 				fullWidth: true,
 				ishorizontalfield: true,
 			};
-		} else if (symbol === 'xlm' || selectedNetwork === 'xlm') {
+		} else if (!isEmail && (symbol === 'xlm' || selectedNetwork === 'xlm')) {
 			fields.destination_tag = {
 				type: 'text',
 				stringId:

@@ -61,6 +61,8 @@ class TransactionsHistory extends Component {
 		jumpToPage: 0,
 		currency: BASE_CURRENCY,
 		params: {},
+		defaultExpand: false,
+		current_order_id: '',
 	};
 
 	UNSAFE_componentWillMount() {
@@ -156,14 +158,14 @@ class TransactionsHistory extends Component {
 			getUserDeposits,
 			getUserWithdrawals,
 		} = this.props;
-		let open = true;
+		let open = false;
 		let temp = params[`activeTab_${activeTab}`];
-
 		if (temp && temp.type && temp.type === 'active') {
 			open = true;
 		} else if (temp && temp.type && temp.type === 'closed') {
 			open = false;
 		}
+		this.generateHeaders();
 		switch (activeTab) {
 			case 1:
 				getOrdersHistory(RECORD_LIMIT, 1, { ...temp, open });
@@ -197,6 +199,7 @@ class TransactionsHistory extends Component {
 					[`activeTab_${prevState.activeTab}`]: {
 						start_date,
 						end_date,
+						status: 'processing',
 						...rest,
 					},
 				},
@@ -208,6 +211,9 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
+		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
+		let type = temp?.type === 'active' ? 'of Opening' : 'Closed';
+
 		this.setState({
 			headers: {
 				orders: isMobile
@@ -225,7 +231,8 @@ class TransactionsHistory extends Component {
 							coins,
 							discount,
 							prices,
-							ICONS
+							ICONS,
+							type
 					  ),
 				trades: isMobile
 					? generateTradeHeadersMobile(
@@ -236,7 +243,15 @@ class TransactionsHistory extends Component {
 							prices,
 							ICONS
 					  )
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
+					: generateTradeHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS,
+							this.setActiveTab
+					  ),
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,
@@ -252,6 +267,57 @@ class TransactionsHistory extends Component {
 			},
 		});
 	}
+
+	handleExpand = (current_order_id, value, view) => {
+		this.setState({ defaultExpand: value, current_order_id, view });
+	};
+
+	getExpandableRowContentForTrades = () => {
+		return {
+			expandedRowRender: (obj) => {
+				return (
+					<div className="expandable-container flex-row">
+						<p className="font-bold">Order ID :</p>
+						<p>{obj.order_id}</p>
+					</div>
+				);
+			},
+			defaultExpanded: () => false,
+			rowExpandable: () => true,
+		};
+	};
+
+	getExpandableRowContentForOrderHistory = () => {
+		return {
+			expandedRowRender: (obj) => {
+				return (
+					<div className="expandable-container">
+						<div>
+							<p className="font-bold">Order ID :</p>
+							<p>{obj.id}</p>
+						</div>
+						<div>
+							<p className="font-bold">Trigger/stop price :</p>
+							<p>{obj.price}</p>
+						</div>
+						<div>
+							<p className="font-bold">Time of last trade :</p>
+							<p>{obj.updated_at}</p>
+						</div>
+						<div>
+							<p className="font-bold">Time closed :</p>
+							<p>{obj.price}</p>
+						</div>
+					</div>
+				);
+			},
+			defaultExpanded: (data) =>
+				this.state.defaultExpand && this.state.current_order_id === data.id
+					? true
+					: false,
+			rowExpandable: () => true,
+		};
+	};
 
 	generateFilters = () => {
 		const { pairs, coins, icons } = this.props;
@@ -416,10 +482,14 @@ class TransactionsHistory extends Component {
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
+		let sortTrades = trades.data?.sort(
+			(x, y) => new Date(y.timestamp) - new Date(x.timestamp)
+		);
 
 		const props = {
 			symbol,
 			withIcon: true,
+			handleExpand: this.handleExpand,
 		};
 
 		const prepareNoData = (tab) => {
@@ -451,12 +521,14 @@ class TransactionsHistory extends Component {
 				props.filters = filters.orders;
 				props.noData = prepareNoData('NO_ACTIVE_ORDERS');
 				props.refetchData = () => this.requestData(activeTab);
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForOrderHistory;
 				break;
 			case 0:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
-				props.data = trades;
+				props.data = { ...trades, data: sortTrades };
 				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
@@ -465,6 +537,9 @@ class TransactionsHistory extends Component {
 				props.filters = filters.trades;
 				props.noData = prepareNoData('NO_ACTIVE_TRADES');
 				props.refetchData = () => this.requestData(activeTab);
+				props.rowKey = ({ history_id }) => history_id;
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForTrades;
 				break;
 			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
@@ -500,7 +575,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, coins, icons: ICONS } = this.props;
+		const { id, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -609,11 +684,11 @@ class TransactionsHistory extends Component {
 					]}
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
+					handleExpand={this.handleExpand}
 				/>
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
@@ -672,7 +747,6 @@ const mapStateToProps = (store) => ({
 	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
 	discount: store.user.discount || 0,
 });
