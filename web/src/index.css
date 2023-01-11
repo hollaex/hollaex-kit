@@ -11569,12 +11569,6 @@ table th {
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
 
-button.html5-qrcode-element {
-  background-color: var(--specials_buttons-links-and-highlights); }
-
-a.html5-qrcode-element {
-  color: var(--labels_important-active-labels-text-graphics) !important; }
-
 html {
   font-size: 12px !important;
   height: 100%; }

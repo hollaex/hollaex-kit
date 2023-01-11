@@ -107,7 +107,10 @@
 	},
 	"QR_CODE": {
 		"SCAN": "Scan QR code",
-		"SHOW": "Show QR"
+		"SHOW": "Show QR",
+		"NO_RESULT": "No result",
+		"NOT_FOUND": "Not Found",
+		"PERMISSION_DENIED": "Permission Denied"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Login to {0}",
