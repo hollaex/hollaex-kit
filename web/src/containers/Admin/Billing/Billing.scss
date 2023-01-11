@@ -151,6 +151,12 @@ p {
 	}
 }
 
+.payment-button {
+	margin-top: 1rem !important;
+	padding: 0rem 0rem 1rem 0rem !important;
+	justify-content: space-evenly !important;
+}
+
 .app_container-content {
 	.general-content-wrapper {
 		.header-content {
@@ -391,7 +397,8 @@ button:focus {
 		}
 	}
 
-	.item-button {
+	.item-button,
+	.payment-button {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
@@ -419,6 +426,10 @@ button:focus {
 			margin-right: 1rem;
 		}
 	}
+
+	// .payment-button{
+
+	// }
 
 	.subscription-container {
 		display: flex;
@@ -597,6 +608,10 @@ button:focus {
 	margin-left: 0.75rem;
 }
 
+.payment-content-wrapper {
+	padding: 0rem 0rem 1.5rem 1.5rem;
+}
+
 .cloud-plan-wrapper {
 	background-color: #27339d;
 	border-top: 2px dotted #ffffff;
@@ -604,7 +619,17 @@ button:focus {
 	top: 0.5rem;
 
 	.cloud-content {
-		padding: 2rem;
+		padding: 2.5rem;
+	}
+
+	.cloud-background {
+		position: absolute;
+	}
+
+	.cloud-icon {
+		position: relative;
+		margin-left: 0.5rem;
+		margin-top: 1rem;
 	}
 
 	.cloud-box-container {
@@ -612,6 +637,7 @@ button:focus {
 		justify-content: space-around;
 		background-color: #27339d;
 		border: 1px solid #ffffff;
+		height: 8rem;
 
 		.sub-title {
 			white-space: nowrap;
@@ -629,12 +655,26 @@ button:focus {
 		.content-align {
 			justify-content: center;
 			align-items: center;
-			padding: 0 0.5rem;
+			// padding: 0 0.5rem;
+			font-weight: bold;
+			font-size: 16px;
+			margin-left: 3rem;
+		}
+
+		.month-content {
+			margin-right: 2rem;
+			// justify-content: center;
+			align-items: center;
+			font-size: 16px;
+			font-weight: bold;
+			// font-weight: bold;
+			// font-size: 16px;
 		}
 
 		.seperator {
-			border-left: 1px solid #42454d;
-			border-right: 1px solid #42454d;
+			border-left: 1px solid #ffffff;
+			border-right: 1px solid #ffffff;
+			padding: 1rem;
 		}
 	}
 
@@ -643,7 +683,7 @@ button:focus {
 
 		.ant-btn {
 			height: 45px;
-			width: 38rem;
+			width: 27rem;
 			margin-left: 1rem;
 		}
 	}
@@ -652,5 +692,84 @@ button:focus {
 		font-size: 16px;
 		font-weight: bold;
 		color: #ffffff;
+		margin-top: 1rem;
+	}
+}
+
+// .select-field {
+// 	width: 30rem;
+// 	margin-top: 5px;
+// }
+
+.crypto-payment-container {
+	padding: 1rem 2rem;
+
+	h5 {
+		font-weight: bold;
+		color: #ffffff;
+		font-size: 13px;
+	}
+
+	.payment-type-dropdown {
+		margin-bottom: 1rem;
+		.ant-select {
+			width: 40%;
+		}
+
+		.ant-select-arrow {
+			color: #ffffff;
+		}
+	}
+
+	.payment-details {
+		border: 1px solid white;
+		padding: 1rem;
+
+		span {
+			display: flex;
+			align-items: center;
+		}
+
+		h5 {
+			padding-right: 5px;
+		}
+
+		button {
+			span {
+				font-weight: bold;
+				font-size: 13px;
+				color: #ffffff;
+			}
+		}
+	}
+
+	.qr-container {
+		.qr-text-container {
+			border: 1px solid white;
+			padding: 1rem;
+			display: flex;
+
+			.qr-code-wrapper {
+				display: flex;
+			}
+
+			.info-container {
+				display: flex;
+				padding: 1rem;
+				color: red;
+				font-weight: bold;
+				font-size: 14px;
+				width: 75%;
+
+				p {
+					padding-left: 2px;
+					padding-top: 0px !important;
+				}
+			}
+		}
+
+		p {
+			padding-top: 1rem;
+		}
 	}
 }

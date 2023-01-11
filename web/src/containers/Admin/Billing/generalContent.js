@@ -13,13 +13,21 @@ import {
 	message,
 	Select,
 	Input,
+	Tooltip,
 } from 'antd';
+import QR from 'qrcode.react';
+// import { ExclamationCircleFilled, InfoCircleOutlined, CopyOutlined, RightOutlined } from '@ant-design/icons';
 import Subscription from './subscription';
 import moment from 'moment';
 import { STATIC_ICONS } from 'config/icons';
 import PlanStructure from './planStructure';
 import GeneralChildContent from './generalChildContent';
-import { ExclamationCircleFilled, RightOutlined } from '@ant-design/icons';
+import {
+	ExclamationCircleFilled,
+	RightOutlined,
+	InfoCircleOutlined,
+	CopyOutlined,
+} from '@ant-design/icons';
 import {
 	getExchangeBilling,
 	getNewExchangeBilling,
@@ -156,6 +164,7 @@ const GeneralContent = ({ exchange, user }) => {
 	const [paymentOptions, setOptions] = useState([]);
 	const [cryptoPayType, setCryptoPay] = useState('');
 	const [isAutomatedKYC, setIsAutomatedKYC] = useState(false);
+	const [showPayAddress, setShowPayAddress] = useState(false);
 
 	useEffect(() => {
 		getData();
@@ -219,6 +228,7 @@ const GeneralContent = ({ exchange, user }) => {
 		} else if (name === 'crypto') {
 			setModalWidth('65rem');
 		} else if (name === 'payment') {
+			setModalWidth('65rem');
 		}
 	};
 
@@ -332,21 +342,37 @@ const GeneralContent = ({ exchange, user }) => {
 					</h3>
 					<div className="cloud-box-container d-flex">
 						<div className="content-align d-flex">
-							<img
+							{/* <img
 								src={renderFooterImage()}
 								alt="cloud-icon"
 								className="cloud-icon"
-							/>
+							/> */}
+							<div className="card-icon">
+								<ReactSVG
+									src={STATIC_ICONS['CLOUD_BASIC']}
+									className="cloud-background"
+								/>
+								<ReactSVG
+									src={STATIC_ICONS['CLOUD_CRYPTO']}
+									className="cloud-icon"
+								/>
+							</div>
 							{renderFooterInfo()}
 						</div>
 						<div className="content-align d-flex seperator">
-							<img src={''} alt="Exchange-icon" className="exchange-icon" />
-							<span className="bodyContentSmall">{exchange.display_name}</span>
+							<img
+								src={`${STATIC_ICONS['EXCHANGE_ICON']}`}
+								alt="Exchange-icon"
+								className="exchange-icon"
+							/>
+							{/* <span className="bodyContentSmall">{exchange.display_name}</span> */}
+							<span className="bodyContentSmall">texter-1</span>
 						</div>
-						<div className="content-align d-flex">{renderPrice()}</div>
+						{/* <div className="content-align d-flex">{renderPrice()}</div> */}
+						<div className="month-content d-flex">Monthly payment:</div>
 					</div>
 				</div>
-				<div className="button-container">{renderBtn()}</div>
+				<div>{renderBtn('payment-button')}</div>
 			</div>
 		);
 	};
@@ -641,166 +667,80 @@ const GeneralContent = ({ exchange, user }) => {
 				);
 			case 'payment':
 			case 'cryptoPayment':
-				const balanceAvailable =
-					balance[`${currency.toLowerCase()}_available`] || 0;
-				const currencyData = {};
+				// const balanceAvailable =
+				//  balance[`${currency.toLowerCase()}_available`] || 0;
+				// const currencyData = {};
 				return (
-					<div>
-						<div className="steps-content-wrapper">
-							{/* <h3 className="bold">Send crypto payment</h3> */}
-							<div className="d-flex align-center">
-								<div className="f-1">
-									<div>
-										<div className="bold my-mini">Select how to pay:</div>
-										<div className="my-mini">
-											<Select
-												onChange={handleCryptoPay}
-												placeholder="Select payment method"
-											>
-												{paymentOptions.map((item) => (
-													<Option value={item.key} key={item.key}>
-														{item.value}
-													</Option>
-												))}
-											</Select>
-										</div>
-										{cryptoPayType === 'pay' ? (
-											<Fragment>
-												<div className="my-mini">
-													<span className="bold">Selected crypto: </span>
-													<span>{currency ? currency.toUpperCase() : ''}</span>
-												</div>
-												<div className="my-mini">
-													<span className="bold">{`Your ${currency.toUpperCase()} balance: `}</span>
-													<span>
-														{balanceAvailable} {currency.toUpperCase()}
-													</span>
-												</div>
-												{!balanceAvailable ||
-												balanceAvailable < currencyData.amount ? (
-													<div className="crypto-error">
-														<ExclamationCircleFilled /> Insufficient balance
-													</div>
-												) : null}
-												<div className="crypto-payment-divider"></div>
-												<div>
-													<div className="crypto-required-amount">
-														Required amount: {currencyData.amount}{' '}
-														{currencyData.currency
-															? currencyData.currency.toUpperCase()
-															: ''}
-													</div>
-													<div className="small-text">
-														The required amount will be directly deducted from
-														your account wallet balance. Please check the
-														details before proceeding.
-													</div>
-												</div>
-											</Fragment>
-										) : cryptoPayType === 'transfer' ? (
-											<Fragment>
-												<div className="payment-details-wrapper">
-													<div className="my-mini">
-														<span className="bold">Selected crypto: </span>
-														<span>
-															{currencyData
-																? currencyData.currency.toUpperCase()
-																: ''}
-														</span>
-													</div>
-													<div className="my-mini">
-														<span className="bold">
-															Required payment amount:{' '}
-														</span>
-														<span>
-															{currencyData.amount}{' '}
-															{currencyData.currency
-																? currencyData.currency.toUpperCase()
-																: ''}
-														</span>
-													</div>
-													<div className="bodyContentSmall my-mini">
-														{currency === 'btc' && currency === 'eth'
-															? '*10% discount included'
-															: ''}
-													</div>
-													{!isExchangeDetails ? (
-														<Button
-															onClick={() => setExchangeDetails(true)}
-															type="primary"
-														>
-															Show payment address
-														</Button>
-													) : null}
-												</div>
-												{isExchangeDetails ? (
-													<div>
-														<div className="payment-details-wrapper mobile-qr-wrapper no-border d-flex align-center">
-															<div>
-																<div className="bodyContentSmall my-mini">
-																	{currency === 'btc' && currency === 'eth'
-																		? '*10% discount included'
-																		: ''}
-																</div>
-																<div className="currency-content">
-																	<span className="bold my-mini">
-																		Payment address:
-																	</span>
-																	<p>
-																		<Input
-																			ref={(el) => {
-																				// setAddressRef(el);
-																			}}
-																			value={currencyData.address}
-																			readOnly
-																			addonAfter={
-																				<Icon
-																					type="copy"
-																					// onClick={() => handleCopy(addressRef)}
-																				/>
-																			}
-																		/>
-																	</p>
-																</div>
-																<div className="d-flex align-center my-1">
-																	{/* <Timer time={moment(currencyData.expiry).diff(moment(), 'seconds')} />
-																		<div className="timer-divider"></div>
-																		<div className="bodyContentSmall">
-																			You have 24 hours to pay to send your crypto payment. You can always come back and reselect paying with cryptocurrency and pay later.
-																		</div> */}
-																	<div className="warning-text d-flex">
-																		<ExclamationCircleFilled className="warning-icon" />
-																		<div>
-																			<div>
-																				Before sending your payment check and
-																				consider the
-																			</div>
-																			transaction fee and that the required
-																			amount is sufficient.
-																		</div>
-																	</div>
-																</div>
-															</div>
-															{cryptoPayType !== 'pay' ? (
-																<div className="qr-code-wrapper">
-																	{/* <QR value={currencyData.address ? currencyData.address : ''} size={100} /> */}
-																	<div className="bodyContentSmall">
-																		Scan this QR code
-																	</div>
-																</div>
-															) : null}
-														</div>
-														<div className="my-1">
-															After your payment has been received you will be
-															sent an email with your payment details
-														</div>
-													</div>
-												) : null}
-											</Fragment>
-										) : null}
-									</div>
-								</div>
+					<div className="crypto-payment-container">
+						<div>
+							<div className="payment-type-dropdown">
+								<h5>Select how to pay:</h5>
+								<Select
+									onChange={handleCryptoPay}
+									placeholder="Select payment method"
+								>
+									{paymentOptions.map((item) => (
+										<Option value={item.key} key={item.key}>
+											{item.value}
+										</Option>
+									))}
+								</Select>
 							</div>
+							<div className="payment-details">
+								<span>
+									<h5>Selected Crypto :</h5> <p>EFH</p>
+								</span>
+								<span>
+									<h5> Required payment amount:</h5>
+									<p>1.3875 ETH </p>{' '}
+								</span>
+								{showPayAddress ? null : (
+									<Button
+										type="primary"
+										onClick={() => setShowPayAddress(true)}
+									>
+										Show payment address:
+									</Button>
+								)}
+							</div>
+							{showPayAddress ? (
+								<div className="qr-container">
+									<div className="qr-text-container">
+										<div style={{ width: '80%' }}>
+											<div>
+												<h5>Payment Address</h5>
+												<Input.Group compact>
+													<Input
+														style={{ width: '70%' }}
+														defaultValue="git@github.com:ant-design/ant-design.git"
+													/>
+													<Tooltip title="copy git url">
+														<Button icon={<CopyOutlined />} />
+													</Tooltip>
+												</Input.Group>
+											</div>
+											<div className="info-container">
+												<div>
+													<InfoCircleOutlined />
+												</div>
+												<p>
+													Before sending your payment check and consider the
+													transaction fee and that the required amount is
+													sufficient.
+												</p>
+											</div>
+										</div>
+										<div style={{ width: '20%' }}>
+											<QR value={''} size={100} />
+											<div className="bodyContentSmall">Scan this QR code</div>
+										</div>
+									</div>
+									<p>
+										After your payment has been received you will be sent an
+										email with your payment details
+									</p>
+								</div>
+							) : null}
 						</div>
 						{renderFooter()}
 					</div>
@@ -822,6 +762,9 @@ const GeneralContent = ({ exchange, user }) => {
 			setType('crypto');
 			setModalWidth('65rem');
 		} else if (type === 'crypto') {
+			setOpenPlanModal(false);
+			setModalWidth('65rem');
+		} else if (type === 'payment') {
 			setOpenPlanModal(false);
 			setModalWidth('65rem');
 		}

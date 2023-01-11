@@ -165,6 +165,7 @@ const icons = {
 	FIRE_BALL: '/assets/images/fireball-icon.svg',
 	EXCHANGE_LOGO_LIGHT_THEME:
 		'/assets/images/default-exchange-logo-light-theme.svg',
+	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
 };
 
 export default icons;
