@@ -48,10 +48,26 @@ export const TABS = {
 	},
 };
 
+const QUERY_PARAMS = [
+	{ mystaking: 'MY_STAKING' },
+	{ distributions: 'DISTRIBUTIONS' },
+	{ publicinfo: 'PUBLIC_INFO' },
+];
+
 class StakeDetails extends Component {
-	state = {
-		activeKey: TABS.PUBLIC_INFO.key,
-	};
+	constructor(props) {
+		super(props);
+		const {
+			router: {
+				location: { search },
+			},
+		} = this.props;
+		const initial_tab = new URLSearchParams(search).get('name');
+		this.state = {
+			activeKey: TABS.PUBLIC_INFO.key,
+			initial_tab,
+		};
+	}
 
 	UNSAFE_componentWillMount() {
 		const {
@@ -113,7 +129,14 @@ class StakeDetails extends Component {
 	}
 
 	componentDidMount() {
+		const { initial_tab } = this.state;
 		this.setBlockNumberInterval();
+		QUERY_PARAMS.forEach((query) => {
+			const currentTab = query[initial_tab];
+			if (currentTab) {
+				this.setState({ activeKey: currentTab });
+			}
+		});
 	}
 
 	componentWillUnmount() {

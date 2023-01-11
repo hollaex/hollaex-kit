@@ -149,6 +149,22 @@ $header-margin: 2rem;
 }
 
 .wallet-container {
+	.header-wrapper {
+		.image-Wrapper {
+			.action_notification-svg svg {
+				width: 1.25rem;
+				height: 1.25rem;
+				background-color: $colors-notifications-blue;
+				border-radius: 1rem;
+				padding: 2px;
+			}
+		}
+
+		.action_notification-svg {
+			padding-top: 7px;
+		}
+	}
+
 	border-top: $wrapper-border;
 	// border-bottom: $wrapper-border;
 
@@ -474,6 +490,14 @@ $header-margin: 2rem;
 	}
 }
 
+.link-container {
+	font-size: 14px;
+}
+
+.link-content {
+	text-decoration: underline !important;
+	color: $colors-notifications-blue !important;
+}
 .dust-convert-button {
 	width: 300px !important;
 }

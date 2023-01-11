@@ -18,6 +18,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 import AssetsBlock from './AssetsBlock';
 import MobileWallet from './MobileWallet';
 import DustSection from './DustSection';
+import HeaderSection from './HeaderSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
 
@@ -306,7 +307,10 @@ class Wallet extends Component {
 							{showDustSection ? (
 								<DustSection goToWallet={this.goToWallet} />
 							) : (
-								<Accordion sections={sections} />
+								<>
+									<HeaderSection icons={ICONS} />
+									<Accordion sections={sections} showHeader={false} />
+								</>
 							)}
 						</div>
 					</div>
