@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
+import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
+import classnames from 'classnames';
+
 import {
 	IconTitle,
 	// CurrencyBallWithPrice,
@@ -66,6 +68,27 @@ class Wallet extends Component {
 							this.props.router.push('/transactions');
 						}}
 					/>
+				</div>
+				<div className="link-container mb-0 mt-3">
+					<EditWrapper stringId="CURRENCY_WALLET.WALLET_PAGE">
+						{STRINGS.formatString(
+							STRINGS['CURRENCY_WALLET.WALLET_PAGE'],
+							<Link className="link-content" to="wallet">
+								{STRINGS['CURRENCY_WALLET.BACK']}
+							</Link>
+						)}
+					</EditWrapper>
+				</div>
+				<div className="link-container mb-5">
+					<EditWrapper stringId="CURRENCY_WALLET.ABOUT">
+						{STRINGS.formatString(
+							STRINGS['CURRENCY_WALLET.ABOUT'],
+							<Link to="" className="link-content">
+								{STRINGS['CURRENCY_WALLET.LEARN_MORE']}
+							</Link>
+						)}
+					</EditWrapper>{' '}
+					{symbol.toUpperCase()}
 				</div>
 				{/* <CurrencyBallWithPrice
 					symbol={symbol}

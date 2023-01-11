@@ -264,6 +264,7 @@ class Summary extends Component {
 										coins={coins}
 										pairs={pairs}
 										router={router}
+										showContent={true}
 									/>
 								</SummaryBlock>
 								{/*<div className="trading-volume-wrapper">

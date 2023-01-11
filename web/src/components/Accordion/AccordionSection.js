@@ -21,6 +21,7 @@ const AccordionSection = ({
 	showActionText = false,
 	icon = '',
 	iconId,
+	showHeader = true,
 }) => {
 	const onClick = () => {
 		if (!disabled) {
@@ -45,7 +46,7 @@ const AccordionSection = ({
 				disabled: disabled,
 			})}
 		>
-			{
+			{showHeader && (
 				<div {...headerProps}>
 					<span
 						className={classnames('sidebar_hub-icon', {
@@ -55,30 +56,20 @@ const AccordionSection = ({
 						<span>
 							<Image icon={icon} wrapperClassName="sidebar_hub-section-icon" />
 						</span>
-						<EditWrapper
-							stringId={stringId}
-							iconId={iconId}
-							strings={[title, subtitle]}
-							render={[
-								(string) => (
-									<span
-										className={classnames(
-											'accordion_section_content_text',
-											titleClassName,
-											{ with_arrow: !disabled && allowClose }
-										)}
-									>
-										{string}
-									</span>
-								),
-								(string) =>
-									string && (
-										<span className="px-2 accordion_section_content_text-subtitle">
-											{string}
-										</span>
-									),
-							]}
-						/>
+						<span
+							className={classnames(
+								'accordion_section_content_text',
+								titleClassName,
+								{ with_arrow: !disabled && allowClose }
+							)}
+						>
+							<EditWrapper stringId={title}>{title} </EditWrapper>
+							{subtitle && (
+								<span className="accordion_section_content_text-subtitle">
+									<EditWrapper stringId={subtitle}>{subtitle}</EditWrapper>
+								</span>
+							)}
+						</span>
 					</span>
 					{titleInformation}
 					{notification && (
@@ -96,7 +87,7 @@ const AccordionSection = ({
 						/>
 					)}
 				</div>
-			}
+			)}
 			{isOpen && <div className="accordion_section_content">{content}</div>}
 		</div>
 	);

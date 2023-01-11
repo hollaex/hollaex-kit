@@ -14,6 +14,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		height: 2rem;
 	}
 
+	tr:hover {
+		background-color: var(--base_secondary-navigation-bar);
+	}
+
 	.sub-tr-bg-white {
 		background-color: #e4e3e3;
 		border-bottom: 1px solid #c3c3c3 !important;
