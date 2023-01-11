@@ -117,7 +117,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 							user
 						]);
 					})
-					.then(([ networkUser, user ]) => {
+					.then(([networkUser, user]) => {
 						return user.update(
 							{ network_id: networkUser.id },
 							{ fields: ['network_id'], returning: true, transaction }
@@ -131,7 +131,7 @@ const signUpUser = (email, password, opts = { referral: null }) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
 			sendEmail(
 				MAILTYPE.SIGNUP,
 				email,
@@ -161,7 +161,7 @@ const verifyUser = (email, code) => {
 				user
 			]);
 		})
-		.then(([ verificationCode, user ]) => {
+		.then(([verificationCode, user]) => {
 			if (verificationCode.verified) {
 				throw new Error(USER_EMAIL_IS_VERIFIED);
 			}
@@ -173,7 +173,7 @@ const verifyUser = (email, code) => {
 				verificationCode.update({ verified: true }, { fields: ['verified'], returning: true })
 			]);
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			return user;
 		});
 };
@@ -235,7 +235,7 @@ const createUser = (
 					getNodeLib().createUser(email, { additionalHeaders: opts.additionalHeaders })
 				]);
 			})
-			.then(([ kitUser, networkUser ]) => {
+			.then(([kitUser, networkUser]) => {
 				return kitUser.update({
 					network_id: networkUser.id
 				}, { returning: true, fields: ['network_id'], transaction });
@@ -246,11 +246,11 @@ const createUser = (
 				user,
 				getModel('verification code').update(
 					{ verified: true },
-					{ where: { user_id: user.id }, fields: [ 'verified' ] }
+					{ where: { user_id: user.id }, fields: ['verified'] }
 				)
 			]);
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			sendEmail(
 				MAILTYPE.WELCOME,
 				user.email,
@@ -289,13 +289,13 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 				validatePassword(user.password, password)
 			]);
 		})
-		.then(([ user, passwordIsValid ]) => {
+		.then(([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
 
 			if (!user.otp_enabled) {
-				return all([ user, checkCaptcha(captcha, ip) ]);
+				return all([user, checkCaptcha(captcha, ip)]);
 			} else {
 				return all([
 					user,
@@ -309,7 +309,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 				]);
 			}
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			if (ip) {
 				registerUserLogin(user.id, ip, device, domain, origin, referer);
 			}
@@ -431,7 +431,7 @@ const getAffiliationCount = (userId, opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const ordering = orderingQuery(opts.order_by, opts.order);
-	
+
 	return dbQuery.findAndCountAllWithRows('affiliation', {
 		where: {
 			referer_id: userId,
@@ -485,6 +485,7 @@ const getAllUsersAdmin = (opts = {
 	start_date: null,
 	end_date: null,
 	format: null,
+	type: null,
 	additionalHeaders: null
 }) => {
 	const pagination = paginationQuery(opts.limit, opts.page);
@@ -501,7 +502,97 @@ const getAllUsersAdmin = (opts = {
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
-		} else {
+		}
+		else if (opts.type != null) {
+			query.where = {
+				[Op.or]: []
+			};
+
+			switch (opts.type) {
+				case 'id':
+					query.where[Op.or].push(
+						{
+							id: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'email':
+					query.where[Op.or].push(
+						{
+							email: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'crypto_wallet':
+					query.where[Op.or].push(
+						{
+							crypto_wallet: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'createdAt':
+					query.where[Op.or].push(
+						{
+							createdAt: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'updatedAt':
+					query.where[Op.or].push(
+						{
+							updatedAt: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'id_data':
+					query.where[Op.or].push(getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`));
+					break;
+				case 'phone_number':
+					query.where[Op.or].push(
+						{
+							phone_number: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'verification_level':
+					query.where[Op.or].push(
+						{
+							verification_level: {
+								[Op.like]: `%${opts.search}%`
+							}
+						}
+					);
+					break;
+				case 'pending_verification':
+					query.where[Op.or].push(
+						{
+							id_data: {
+								status: 1
+							}
+						}
+					);
+					break;
+				case 'pending_bank':
+					query.where[Op.or].push(getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''));
+					break;
+				default:
+					break;
+			}
+
+		}
+		else {
 			query.where = {
 				[Op.or]: [
 					{
@@ -806,7 +897,7 @@ const unfreezeUserByEmail = (email) => {
 			if (user.activated) {
 				throw new Error(USER_NOT_DEACTIVATED);
 			}
-			return user.update({ activated: true }, { fields: ['activated'], returning: true  });
+			return user.update({ activated: true }, { fields: ['activated'], returning: true });
 		})
 		.then((user) => {
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'unfreezeUser', data: user.id }));
@@ -878,7 +969,7 @@ const updateUserRole = (user_id, role) => {
 			const roleChange = 'is_' + role.toLowerCase();
 
 			if (roles[roleChange]) {
-				throw new Error (`User already has role ${role}`);
+				throw new Error(`User already has role ${role}`);
 			}
 
 			each(roles, (value, key) => {
@@ -952,7 +1043,7 @@ const updateUserSettings = (userOpts = {}, settings = {}) => {
 				settings = joinSettings(user.dataValues.settings, settings);
 			}
 			return user.update({ settings }, {
-				fields: [ 'settings' ],
+				fields: ['settings'],
 				returning: true
 			});
 		})
@@ -1051,7 +1142,7 @@ const updateUserDiscount = (userId, discount) => {
 				user.update({ discount }, { fields: ['discount'] })
 			]);
 		})
-		.then(([ previousDiscountRate, user ]) => {
+		.then(([previousDiscountRate, user]) => {
 			if (user.discount > previousDiscountRate) {
 				sendEmail(
 					MAILTYPE.DISCOUNT_UPDATE,
@@ -1108,7 +1199,7 @@ const deactivateUserOtpById = (userId) => {
 			}
 			return user.update(
 				{ otp_enabled: false },
-				{ fields: [ 'otp_enabled' ] }
+				{ fields: ['otp_enabled'] }
 			);
 		});
 };
@@ -1313,16 +1404,16 @@ const setUsernameById = (userId, username) => {
 		return reject(new Error(INVALID_USERNAME));
 	}
 	return getUserByKitId(userId, false)
-		.then((user) =>{
+		.then((user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
 			if (user.settings.chat.set_username) {
 				throw new Error(USERNAME_CANNOT_BE_CHANGED);
 			}
-			return all([ user, checkUsernameIsTaken(username) ]);
+			return all([user, checkUsernameIsTaken(username)]);
 		})
-		.then(([ user ]) => {
+		.then(([user]) => {
 			return user.update(
 				{
 					username,
@@ -1455,7 +1546,7 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 			where: { email },
 			transaction
 		})
-			.then(async ([ user, created ]) => {
+			.then(async ([user, created]) => {
 				if (created) {
 					const networkUser = await getNodeLib().createUser(email, opts);
 					return all([
@@ -1476,11 +1567,11 @@ const inviteExchangeOperator = (invitingEmail, email, role, opts = {
 				}
 			});
 	})
-		.then(async ([ user, created ]) => {
+		.then(async ([user, created]) => {
 			if (created) {
 				await getModel('verification code').update(
 					{ verified: true },
-					{ where: { user_id: user.id }, fields: [ 'verified' ] }
+					{ where: { user_id: user.id }, fields: ['verified'] }
 				);
 			}
 			sendEmail(
