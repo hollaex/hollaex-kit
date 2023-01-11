@@ -2419,4 +2419,66 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-   
+  /admin/user/affiliation:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getUserAffiliation
+      description: Get the list and number of affiliated account a user has made by admin
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: integer
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+          enum: ['id', 'created_at', 'updated_at']
+        - in: query
+          name: order
+          description: Direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/CountResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin

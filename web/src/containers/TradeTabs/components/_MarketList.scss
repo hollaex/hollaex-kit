@@ -88,6 +88,28 @@
 					background-color: $app-light-background;
 					color: $colors-black;
 				}
+				.icon-container {
+					.squar-box {
+						width: 15px;
+						height: 15px;
+						border: 1px solid;
+						color: $colors-deactivate-color2;
+					}
+					.circle-icon {
+						width: 15px;
+						height: 15px;
+						border: 1px solid;
+						color: $colors-deactivate-color2;
+						border-radius: 8px;
+					}
+					.triangle-icon {
+						width: 0;
+						height: 0;
+						border-left: 15px solid transparent;
+						border-right: 15px solid transparent;
+						border-bottom: 15px solid;
+					}
+				}
 				.td-chart {
 					width: 150px;
 					height: 50px;

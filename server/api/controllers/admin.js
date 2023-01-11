@@ -2073,6 +2073,31 @@ const generateDashToken = (req, res) => {
 		});
 };
 
+const getUserAffiliation = (req, res) => {
+	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserAffiliation auth', req.auth.sub);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+
+	toolsLib.user.getAffiliationCount(user_id, {
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+	})
+		.then((data) => {
+			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserAffiliation count', data.count);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserAffiliation', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2124,5 +2149,6 @@ module.exports = {
 	setUserBank,
 	verifyUserBank,
 	revokeUserBank,
-	generateDashToken
+	generateDashToken,
+	getUserAffiliation
 };
