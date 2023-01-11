@@ -105,6 +105,7 @@ p {
 		color: #000;
 		font-size: 10px;
 		text-align: center;
+		height: 15px;
 	}
 
 	.popular-header-fiat {
@@ -112,11 +113,35 @@ p {
 		height: 15px;
 	}
 
+	.header-container-basic {
+		position: absolute;
+		background-color: #c4c8ac;
+		opacity: 0.1;
+		height: 11rem;
+		width: 23rem;
+	}
+
+	.header-container-crypto {
+		position: absolute;
+		background-color: #5cb5f9;
+		opacity: 0.1;
+		height: 11rem;
+		width: 23rem;
+	}
+
+	.header-container-fiat {
+		position: absolute;
+		background-color: #00ffff;
+		opacity: 0.1;
+		height: 11rem;
+		width: 23rem;
+	}
+
 	.header-container {
 		background-repeat: no-repeat;
 		background-position: center;
-		background-size: 8rem;
-		height: 8rem;
+		background-size: 11rem;
+		height: 11rem;
 		top: 0px;
 		top: 0px;
 		right: 0px;
@@ -270,15 +295,35 @@ button:focus {
 			flex-direction: row;
 			background-color: inherit;
 
+			.opacity-plan-container {
+				opacity: 0.3;
+				margin-top: 4rem !important;
+				margin-bottom: 4.2rem !important;
+			}
+
+			.opacity {
+				height: 65rem;
+			}
+
+			// .active-plan-container {
+			// 	height: 65rem;
+			// }
+
 			.plan-container {
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				margin: 2rem;
 				border: 1px solid #a8a8b1;
+				margin-bottom: 6rem;
+
+				.type-center {
+					text-align: center;
+					padding-top: 1rem;
+				}
 
 				.text-center {
-					text-align: center;
+					margin-left: 22px;
 				}
 
 				li {
@@ -292,6 +337,7 @@ button:focus {
 
 				.inner-container {
 					padding: 2rem;
+					margin-top: 1rem;
 				}
 
 				.radio-container {
@@ -304,9 +350,16 @@ button:focus {
 						padding: 5px;
 						border: 1px solid #2db300;
 						background-color: #2db300;
+
 						path {
 							color: white;
 						}
+					}
+
+					.circle-outline {
+						padding: 1rem;
+						border: 1px solid white;
+						border-radius: 20px;
 					}
 				}
 
@@ -337,20 +390,37 @@ button:focus {
 		}
 
 		.footer {
-			margin: 2rem;
+			margin-left: 4rem;
+			font-size: 16px;
 		}
 	}
 
-	.button-container {
+	.item-button {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
-		padding: 1rem;
+		padding: 0rem 0rem 2rem 1rem;
+		margin-top: 3rem;
+
+		button {
+			width: 47%;
+			background-color: #3a4fff !important;
+			height: 44px;
+		}
+	}
+
+	.method-button,
+	.crypto-button {
+		width: 100%;
+		display: flex;
+		justify-content: space-around;
+		margin-top: 3rem;
 
 		button {
 			width: 49%;
 			background-color: #288500 !important;
-			border-color: #282d64;
+			height: 44px;
+			margin-right: 1rem;
 		}
 	}
 
@@ -358,16 +428,16 @@ button:focus {
 		display: flex;
 		width: 90%;
 		border: 1px solid #75809b;
-		padding: 1rem 0rem;
-		margin: 2rem;
+		padding: 1rem 0rem 1rem 0rem;
+		margin-top: 2rem;
 
 		.plan-card {
 			display: flex;
-			width: 40%;
+			width: 45%;
 		}
 
 		.payment-container {
-			width: 40%;
+			width: 35%;
 			padding: 0rem 1rem 0rem 1rem !important;
 		}
 
@@ -391,6 +461,15 @@ button:focus {
 			span {
 				display: flex;
 				justify-content: center;
+			}
+
+			.cloud-icon {
+				margin-top: 0rem;
+
+				svg {
+					width: 3.5rem;
+					height: 3.5rem;
+				}
 			}
 		}
 
@@ -455,5 +534,69 @@ button:focus {
 		.fire-icon {
 			width: 0.75rem;
 		}
+
+		.get-coins {
+			font-size: 13px;
+			color: #a8a8b1;
+		}
+
+		.get-coin-here {
+			margin-left: 2px;
+			text-decoration: underline;
+			color: #ffffff;
+		}
 	}
+
+	.coin-wrapper {
+		margin-left: 2rem;
+		margin-top: 0rem !important;
+		padding-bottom: 0rem !important;
+		border-bottom: 0rem !important;
+	}
+
+	.button-container button {
+		margin-right: 20px;
+		height: 44px;
+	}
+}
+
+.ant-radio-wrapper-checked span {
+	color: #ffffff !important;
+}
+
+.ant-modal .bg-model .box-container .plan-container li {
+	font-size: 13px !important;
+}
+
+.selected-status {
+	color: #178700;
+	font-weight: bold;
+	margin: 0rem 1rem 0rem 1rem;
+}
+
+.de-select-status-txt {
+	color: #545454;
+}
+
+.ant-modal
+	.bg-model
+	.box-container
+	.plan-container
+	.radio-container
+	.selected-plan {
+	margin-left: 2.5rem;
+}
+
+.requirement-icon {
+	margin: 0.25rem 0rem;
+	width: 2rem;
+}
+
+.de-select-status {
+	border-radius: 50%;
+	border: 1px solid #a8a8b1;
+	height: 2rem;
+	width: 2rem;
+	cursor: pointer;
+	margin-left: 0.75rem;
 }

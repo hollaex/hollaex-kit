@@ -53,12 +53,10 @@ export const requestAuthenticated = (
 	headers,
 	apiUrl,
 	method = 'GET'
-	// isDashRequest = false
 ) => {
-	// const TOKEN = getToken();
-	console.log('args', url, paramOptions, paramOptions.isDashRequest);
-	const TOKEN = paramOptions.isDashRequest ? getDashToken() : getToken();
-	const API_Url = paramOptions.isDashRequest ? NETWORK_API_URL : apiUrl;
+	const { isDashRequest, ...params } = paramOptions;
+	const TOKEN = isDashRequest ? getDashToken() : getToken();
+	const API_Url = isDashRequest ? NETWORK_API_URL : apiUrl;
 
 	const options = {
 		method,
@@ -71,7 +69,7 @@ export const requestAuthenticated = (
 					'Content-Type': 'application/json',
 					authorization: `Bearer ${TOKEN}`,
 			  },
-		...paramOptions,
+		...params,
 	};
 	return request(url, options, API_Url);
 };

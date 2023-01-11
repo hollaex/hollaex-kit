@@ -1,4 +1,5 @@
 import React from 'react';
+import _get from 'lodash/get';
 import { CheckOutlined } from '@ant-design/icons';
 
 export const planData = {
@@ -142,26 +143,33 @@ const PlanStructure = ({
 	handleSelect,
 	priceData,
 	selectedType,
+	setSelectedType,
+	className,
+	dataType,
 }) => {
 	const { type, background } = typeData;
-	// let currentPlan = planData[type];
-	// let planPriceData = priceData[type];
+	const planPriceData = priceData[dataType.type];
+
 	return (
-		<>
-			<div className="plan-container">
+		// <div className={ selectedType === type ? `${className} plan-container opacity` :`${className} plan-container`}>
+		<div className={`${className} plan-container`}>
+			<div>
 				<div className={`popular-header-${type}`}>
 					{type === 'crypto' ? 'MOST POPULAR' : ''}
 				</div>
-				<div className="inner-container">
+				<div>
+					<div className={`header-container-${type}`}></div>
 					<div
 						className="header-container"
 						style={{ backgroundImage: `url(${background})` }}
 					>
-						<h2 className="text-center">{type}</h2>
+						<h2 className="type-center">{type}</h2>
 						<h6 className="text-center">
 							Get started fast with a basic test exchange
 						</h6>
 					</div>
+				</div>
+				<div className="inner-container">
 					<div>
 						<ul>
 							<h6>Cloud</h6>
@@ -187,17 +195,42 @@ const PlanStructure = ({
 						</ul>
 
 						<div className="amount-container">
-							<p className="dollor-size">$700</p>
-							<p>per month</p>
+							{isMonthly ? (
+								<div>
+									<p className="dollor-size">
+										${_get(planPriceData, 'month.price')}
+									</p>
+									<p>per month</p>
+								</div>
+							) : (
+								<div>
+									<p className="dollor-size">
+										${_get(planPriceData, 'year.price')}
+									</p>
+									<p>per year</p>
+								</div>
+							)}
 						</div>
-
-						<div className="radio-container">
-							<CheckOutlined className="selected-plan" />
+						<div
+							className="radio-container"
+							onClick={() => setSelectedType(type)}
+						>
+							{selectedType === type ? (
+								<div>
+									<CheckOutlined className={'selected-plan'} />
+									<div className="selected-status">SELECTED</div>
+								</div>
+							) : (
+								<div>
+									<div className="de-select-status"></div>
+									<div className="de-select-status-txt">Select</div>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };
 

@@ -37,7 +37,7 @@ import {
 	requestInitial,
 	requestConstant,
 } from '../../../actions/appActions';
-import { SESSION_TIME } from '../../../config/constants';
+import { DASH_TOKEN_KEY, SESSION_TIME } from '../../../config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import { checkRole } from '../../../utils/token';
 
@@ -209,7 +209,7 @@ class AppWrapper extends React.Component {
 		const res = await getDashToken();
 		if (res && res.token) {
 			this.props.setDashToken(res.token);
-			localStorage.setItem('DASHTOKEN', res.token);
+			localStorage.setItem(DASH_TOKEN_KEY, res.token);
 		}
 	};
 

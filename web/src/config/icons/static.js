@@ -163,6 +163,8 @@ const icons = {
 	CLOUD_CRYPTO_BACKGROUND: '/assets/images/Mask_Group_69.png',
 	CLOUD_FIAT_BACKGROUND: '/assets/images/cloud_basic_graphic-01.png',
 	FIRE_BALL: '/assets/images/fireball-icon.svg',
+	EXCHANGE_LOGO_LIGHT_THEME:
+		'/assets/images/default-exchange-logo-light-theme.svg',
 };
 
 export default icons;

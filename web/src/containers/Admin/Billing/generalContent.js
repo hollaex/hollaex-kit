@@ -10,6 +10,7 @@ import {
 	Space,
 	Switch,
 	Tag,
+	message,
 } from 'antd';
 import Subscription from './subscription';
 import moment from 'moment';
@@ -17,8 +18,15 @@ import { STATIC_ICONS } from 'config/icons';
 import PlanStructure from './planStructure';
 import GeneralChildContent from './generalChildContent';
 import { RightOutlined } from '@ant-design/icons';
-import { getExchangeBilling } from './action';
+import {
+	getExchangeBilling,
+	getNewExchangeBilling,
+	getPrice,
+	setExchangePlan,
+} from './action';
 import './Billing.scss';
+import { DASH_TOKEN_KEY } from 'config/constants';
+import { getExchange } from '../AdminFinancials/action';
 
 const TabPane = Tabs.TabPane;
 
@@ -111,22 +119,28 @@ const columns = [
 		},
 	},
 ];
-const GeneralContent = ({ updatePlanType }) => {
-	const dashToken = localStorage.getItem('DASHTOKEN');
-	const [OpenPlanModal, setOpenPlanModal] = useState(false);
+const GeneralContent = ({ exchange }) => {
+	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
+	const options = ['item', 'method', 'crypto', 'payment'];
+	const [activeRadio, setActiveRadio] = useState(1);
 	const [type, setType] = useState('item');
-	const [invoceData, setInvoceData] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
+	const [itemType, setItemType] = useState('basic');
+	const [selectedType, setSelectedType] = useState('crypto');
 	const [renderCardContent, setRenderCardcontent] = useState('crypto');
 	const [modalWidth, setModalWidth] = useState('85rem');
-	const [value, setValue] = useState(1);
-
-	const options = ['item', 'method', 'crypto', 'payment'];
+	const [OpenPlanModal, setOpenPlanModal] = useState(false);
+	const [isLoading, setIsLoading] = useState(false);
+	const [checked, setChecked] = useState(false);
+	const [isMonthly, setIsMonthly] = useState(false);
+	const [isPaymentMethodDisable, setIsPaymentMethodDisable] = useState(true);
+	const [invoceData, setInvoceData] = useState([]);
+	const [priceData, setPriceData] = useState({});
 
 	useEffect(() => {
 		getData();
 		setIsLoading(true);
 		setRenderCardcontent('crypto');
+		getExchangePrice();
 	}, []);
 
 	useEffect(() => {
@@ -136,13 +150,29 @@ const GeneralContent = ({ updatePlanType }) => {
 	}, [dashToken]);
 
 	const onChange = (e) => {
-		setValue(e.target.value);
+		setActiveRadio(e.target.value);
+		setChecked(e.target.checked);
+	};
+
+	const handleGetCoins = (coin, symbol) => {
+		return (
+			<div className="get-coins">
+				<div className="d-flex coin-wrapper">
+					Get {coin}
+					<div className="get-coin-here">
+						<Link to={`/trade/${symbol}-usdt`}>here</Link>
+					</div>
+				</div>
+			</div>
+		);
 	};
 
 	const getData = async () => {};
 
 	const handleBreadcrumb = (name) => {
+		setChecked(false);
 		setType(name);
+		setActiveRadio(1);
 		if (name === 'item') {
 			setModalWidth('85rem');
 		} else if (name === 'method') {
@@ -150,6 +180,96 @@ const GeneralContent = ({ updatePlanType }) => {
 		} else if (name === 'crypto') {
 			setModalWidth('65rem');
 		}
+	};
+
+	const handleOnCancel = () => {
+		setOpenPlanModal(false);
+		setChecked(false);
+		setActiveRadio(1);
+	};
+
+	const getExchangePrice = async () => {
+		try {
+			const res = await getPrice();
+			let priceData = {};
+			Object.keys(res).forEach((key) => {
+				let temp = res[key];
+				if (!temp.month) {
+					temp.month = {};
+				}
+				if (!temp.year) {
+					temp.year = {};
+				}
+				priceData[key] = { ...temp };
+			});
+			setPriceData(priceData);
+		} catch (error) {
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			}
+		}
+	};
+
+	const updatePlanType = async (params, callback = () => {}) => {
+		try {
+			const res = await setExchangePlan(params);
+			if (exchange && exchange[0] && exchange[0].id && params.plan !== 'fiat') {
+				const resInvoice = await getNewExchangeBilling(exchange[0].id);
+				if (resInvoice.data) {
+					// setState({ pendingInvoice: resInvoice.data });
+					// getInvoice();
+				}
+			}
+			if (res.data) {
+				getExchange();
+				callback();
+			}
+		} catch (error) {
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			} else {
+				message.error(error.message);
+			}
+		}
+	};
+
+	const storePlanType = () => {
+		if (exchange.type === 'DIY') {
+			updatePlanType(
+				{ id: exchange.id, plan: itemType, period: 'year' },
+				setType('method')
+			);
+			// setType('payment');
+		} else if (
+			itemType === 'fiat' &&
+			Object.keys(exchange.business_info).length
+		) {
+			// setFiatCompleted(true);
+		} else if (itemType === 'fiat') {
+			updatePlanType(
+				{
+					id: exchange.id,
+					plan: itemType,
+					period: isMonthly ? 'month' : 'year',
+				},
+				() => setType('enterPrise')
+			);
+			// setType("enterPrise")
+		} else {
+			updatePlanType(
+				{
+					id: exchange.id,
+					plan: itemType,
+					period: isMonthly ? 'month' : 'year',
+				},
+				() => setType('method')
+			);
+			// setType('payment')
+		}
+	};
+
+	const handleOnSwith = (isCheck) => {
+		setIsMonthly(isCheck);
 	};
 
 	const renderModelContent = () => {
@@ -319,7 +439,7 @@ const GeneralContent = ({ updatePlanType }) => {
 									<span className={'switch-label'}>Pay yearly</span>
 									<div className="green-label save-label">(Save up to 35%)</div>
 								</div>
-								<Switch />
+								<Switch onClick={handleOnSwith} />
 								<span className={'switch-label label-inactive ml-1'}>
 									Pay monthly
 								</span>
@@ -332,20 +452,34 @@ const GeneralContent = ({ updatePlanType }) => {
 								}
 							>
 								{TYPES.map((type) => {
-									return <PlanStructure typeData={type} />;
+									return (
+										<PlanStructure
+											className={
+												selectedType === type.type
+													? ''
+													: 'opacity-plan-container'
+											}
+											selectedType={selectedType}
+											setSelectedType={setSelectedType}
+											typeData={type}
+											dataType={type}
+											priceData={priceData}
+											isMonthly={isMonthly}
+										/>
+									);
 								})}
 							</div>
 							<div className="footer">
 								<p>
-									*A donation towards the HollaEx network is required for new
+									* A donation towards the HollaEx network is required for new
 									custom coin and trading pair activation
 								</p>
 								<p>
-									*Custom exchange code and technical support are not included
+									* Custom exchange code and technical support are not included
 									in cloud plans and are paid separately
 								</p>
 							</div>
-							{renderBtn()}
+							{renderBtn('item-button')}
 						</div>
 					</div>
 				);
@@ -356,11 +490,15 @@ const GeneralContent = ({ updatePlanType }) => {
 						<Radio.Group
 							className={'radio-content'}
 							onChange={onChange}
-							value={value}
+							value={activeRadio}
 						>
 							<Space direction="vertical">
-								<Radio value={1}>PayPal</Radio>
-								<Radio value={2}>Bank Wire Transfer</Radio>
+								<Radio value={1} disabled={isPaymentMethodDisable}>
+									PayPal
+								</Radio>
+								<Radio value={2} disabled={isPaymentMethodDisable}>
+									Bank Wire Transfer
+								</Radio>
 								<Radio value={3}>
 									<span>Cryptocurrency </span>
 									<span className="danger"> (up to 10% off) </span>
@@ -372,22 +510,30 @@ const GeneralContent = ({ updatePlanType }) => {
 										/>
 									</span>
 								</Radio>
-								<Radio value={4}>Credit Card (coming soon!)</Radio>
+								<Radio value={4}>Credit Card</Radio>
 							</Space>
 						</Radio.Group>
 						<Subscription />
-						{renderBtn()}
+						{renderBtn('method-button')}
 					</div>
 				);
 			case 'crypto':
 				return (
 					<div className="radiobtn-container">
 						<p>Pick Crypto</p>
-						<Radio.Group className="my-3" onChange={onChange} value={value}>
+						<Radio.Group
+							className="my-3"
+							onChange={onChange}
+							value={activeRadio}
+						>
 							<Space direction="vertical">
 								<Radio value={1}>USDT (TRC20)</Radio>
+								{activeRadio === 1 && checked && handleGetCoins('USDT', 'btc')}
 								<Radio value={2}>Bitcoin</Radio>
-								<Radio>
+								{activeRadio === 2 &&
+									checked &&
+									handleGetCoins('Bitcoin', 'btc')}
+								<Radio value={3}>
 									<span>XHT </span>
 									<span className="danger"> (10% discount) </span>
 									<span>
@@ -398,11 +544,19 @@ const GeneralContent = ({ updatePlanType }) => {
 										/>
 									</span>
 								</Radio>
+								{activeRadio === 3 && checked && handleGetCoins('XHT', 'xht')}
 								<Radio value={4}>Ethereum</Radio>
+								{activeRadio === 4 &&
+									checked &&
+									handleGetCoins('Ethereum', 'eth')}
+								<Radio value={5}>TRON</Radio>
+								{activeRadio === 5 && checked && handleGetCoins('TRON', 'trx')}
+								<Radio value={6}>XRP</Radio>
+								{activeRadio === 6 && checked && handleGetCoins('XRP', 'xrp')}
 							</Space>
 						</Radio.Group>
 						<Subscription />
-						{renderBtn()}
+						{renderBtn('crypto-button')}
 					</div>
 				);
 			case 'payment':
@@ -417,6 +571,7 @@ const GeneralContent = ({ updatePlanType }) => {
 		if (type === 'item') {
 			setType('method');
 			setModalWidth('65rem');
+			storePlanType();
 		} else if (type === 'method') {
 			setType('crypto');
 			setModalWidth('65rem');
@@ -438,9 +593,9 @@ const GeneralContent = ({ updatePlanType }) => {
 		}
 	};
 
-	const renderBtn = () => {
+	const renderBtn = (type) => {
 		return (
-			<div className="button-container">
+			<div className={`${type}`}>
 				<Button type="primary" onClick={() => handleBack()}>
 					Back
 				</Button>
@@ -492,7 +647,7 @@ const GeneralContent = ({ updatePlanType }) => {
 				className="bg-model"
 				width={modalWidth}
 				zIndex={1000}
-				onCancel={() => setOpenPlanModal(false)}
+				onCancel={handleOnCancel}
 				footer={null}
 			>
 				{renderModelContent()}

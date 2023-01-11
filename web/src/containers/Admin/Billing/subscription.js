@@ -23,7 +23,11 @@ const Subscription = () => {
 
 			<div className="exchange-text">
 				<span>
-					<div className="exchange-name"></div>
+					{/* <div className="exchange-name"></div> */}
+					<ReactSVG
+						src={STATIC_ICONS['EXCHANGE_LOGO_LIGHT_THEME']}
+						className="cloud-icon"
+					/>
 				</span>
 				<h6>exchange-name</h6>
 			</div>
