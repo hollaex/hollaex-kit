@@ -452,6 +452,38 @@ const getAffiliationCount = (userId, opts = {
 	});
 };
 
+const getUserReferer = (userId) => {
+	if (!isInteger(userId)) {
+		throw new Error('Invalid user id');
+	}
+
+	return dbQuery.findOne('affiliation', {
+		where: {
+			user_id: userId
+		},
+		include: [
+			{
+				model: getModel('user'),
+				as: 'referer',
+				attributes: ['id', 'email']
+			}
+		],
+		attributes: {
+			exclude: ['id', 'referer_id', 'user_id']
+		}
+	})
+		.then((data) => {
+			let email = '';
+			if (!data) {
+				email = 'No Referer';
+			} else {
+				email = data.referer.email;
+			}
+			return email;
+		});
+
+};
+
 const isValidUsername = (username) => {
 	return /^[a-z0-9_]{3,15}$/.test(username);
 };
@@ -1784,6 +1816,7 @@ module.exports = {
 	getUserAudits,
 	setUsernameById,
 	getAffiliationCount,
+	getUserReferer,
 	isValidUsername,
 	createUserCryptoAddressByKitId,
 	createAudit,

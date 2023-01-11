@@ -2098,6 +2098,22 @@ const getUserAffiliation = (req, res) => {
 		});
 };
 
+const getUserReferer = (req, res) => {
+	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserReferer auth', req.auth.sub);
+
+	const user_id = req.swagger.params.user_id.value;
+
+	toolsLib.user.getUserReferer(user_id)
+		.then((email) => {
+			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserReferer email', email);
+			return res.json({ email });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserReferer', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2150,5 +2166,6 @@ module.exports = {
 	verifyUserBank,
 	revokeUserBank,
 	generateDashToken,
-	getUserAffiliation
+	getUserAffiliation,
+	getUserReferer
 };

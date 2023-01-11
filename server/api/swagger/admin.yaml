@@ -2482,3 +2482,30 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+  /admin/user/referer:
+    x-swagger-router-controller: admin
+    get:
+      operationId: getUserReferer
+      description: Get the list and number of affiliated account a user has made by admin
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
