@@ -68,4 +68,3 @@ export { default as UnderConstruction } from './Wallet/UnderConstruction';
 export { default as NoVerifiedAccount } from './Wallet/NoVerifiedAccount';
 export { default as Tab } from './Tab';
 export { default as ErrorBoundary } from './ErrorBoundary';
-export { default as QrReader } from './QrReader';
