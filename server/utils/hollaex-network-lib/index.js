@@ -2167,6 +2167,9 @@ class HollaExNetwork {
 		transactionId: null,
 		address: null,
 		status: true,
+		dismissed: false,
+		rejected: false,
+		waiting: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2205,6 +2208,24 @@ class HollaExNetwork {
 			data.status = opts.status;
 		} else {
 			data.status = true;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			data.rejected = opts.rejected;
+		} else {
+			data.rejected = true;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			data.dismissed = opts.dismissed;
+		} else {
+			data.dismissed = true;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			data.waiting = opts.waiting;
+		} else {
+			data.waiting = true;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -2343,6 +2364,9 @@ class HollaExNetwork {
 		transactionId: null,
 		address: null,
 		status: true,
+		dismissed: false,
+		rejected: false,
+		waiting: false,
 		email: true,
 		fee: null,
 		additionalHeaders: null
@@ -2381,6 +2405,24 @@ class HollaExNetwork {
 			data.status = opts.status;
 		} else {
 			data.status = true;
+		}
+
+		if (isBoolean(opts.rejected)) {
+			data.rejected = opts.rejected;
+		} else {
+			data.rejected = true;
+		}
+
+		if (isBoolean(opts.dismissed)) {
+			data.dismissed = opts.dismissed;
+		} else {
+			data.dismissed = true;
+		}
+
+		if (isBoolean(opts.waiting)) {
+			data.waiting = opts.waiting;
+		} else {
+			data.waiting = true;
 		}
 
 		if (isBoolean(opts.email)) {
