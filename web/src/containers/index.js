@@ -33,9 +33,9 @@ export { default as Stake } from './Stake';
 export { default as StakeDetails } from './StakeDetails';
 export { default as Apps } from './Apps';
 export { default as AppDetails } from './AppDetails';
-export { default as DigitalAssets } from './Summary/components/DigitalAssets';
-export { default as Hollaextoken } from './Prices/HollaexToken';
-export { default as WhiteLabel } from './Prices/WhiteLabel';
+export { default as DigitalAssets } from './DigitalAssets';
+export { default as CoinPage } from './CoinPage';
+export { default as WhiteLabel } from './WhiteLabel';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

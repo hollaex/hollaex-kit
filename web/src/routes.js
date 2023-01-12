@@ -60,7 +60,7 @@ import {
 	Fiatmarkets,
 	AdminApps,
 	DigitalAssets,
-	Hollaextoken,
+	CoinPage,
 	WhiteLabel,
 } from './containers';
 import chat from './containers/Admin/Chat';
@@ -414,8 +414,8 @@ export const generateRoutes = (routes = []) => {
 				/>
 				<Route
 					path="assets/coin/:token"
-					name="Hollaex Token"
-					component={Hollaextoken}
+					name="Coin Page"
+					component={CoinPage}
 				/>
 				<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 				<Route

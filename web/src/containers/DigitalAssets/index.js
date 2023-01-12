@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Select } from 'antd';
 
 import withConfig from 'components/ConfigProvider/withConfig';
-import Markets from './Markets';
+import Markets from 'containers/Summary/components/Markets';
 import { MarketsSelector } from 'containers/Trade/utils';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
