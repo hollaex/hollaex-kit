@@ -57,7 +57,6 @@ class MobileOrdersWrapper extends Component {
 			pairData,
 			activeOrders,
 			userTrades,
-			activeTheme,
 			pairs,
 			coins,
 			icons: ICONS,
@@ -80,7 +79,6 @@ class MobileOrdersWrapper extends Component {
 						pairs={pairs}
 						coins={coins}
 						userTrades={userTrades}
-						activeTheme={activeTheme}
 					/>
 				)}
 				<Dialog

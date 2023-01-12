@@ -286,7 +286,6 @@ class Form extends Component {
 			openContactForm,
 			formValues,
 			currentPrice,
-			activeTheme,
 			coins,
 			titleSection,
 			icons: ICONS,
@@ -348,7 +347,6 @@ class Form extends Component {
 							label="withdraw-modal"
 							onCloseDialog={this.onCloseDialog}
 							shouldCloseOnOverlayClick={dialogOtpOpen}
-							theme={activeTheme}
 							showCloseText={false}
 						>
 							{dialogOtpOpen ? (
@@ -375,7 +373,6 @@ class Form extends Component {
 							label="withdraw-modal"
 							onCloseDialog={closeQRScanner}
 							shouldCloseOnOverlayClick={false}
-							theme={activeTheme}
 							showCloseText={true}
 						>
 							{qrScannerOpen && (
@@ -419,7 +416,6 @@ const mapStateToForm = (state) => ({
 		'email',
 		'fee_type'
 	),
-	activeTheme: state.app.theme,
 	coins: state.app.coins,
 	targets: state.app.targets,
 	balance: state.user.balance,

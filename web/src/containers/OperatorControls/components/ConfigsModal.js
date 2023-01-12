@@ -169,7 +169,6 @@ const ConfigsModal = ({
 			isOpen={isOpen}
 			label="operator-controls-modal"
 			className="operator-controls__modal add-theme"
-			disableTheme={true}
 			onCloseDialog={onClose}
 			shouldCloseOnOverlayClick={true}
 			showCloseText={true}

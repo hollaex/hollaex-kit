@@ -52,6 +52,7 @@ class TableRow extends Component {
 		const { isExpanded } = this.state;
 		const isRemoveData = cancelDelayData.filter((data) => data === row.id);
 		const isExpandable = rowExpandable(row);
+		//TODO: hard-coded colors
 		const subTrClsName =
 			activeTheme === 'white' ? 'sub-tr-bg-white' : 'sub-tr-bg';
 

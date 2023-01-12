@@ -124,7 +124,6 @@ class ApiKey extends Component {
 			fetching,
 			otp_enabled,
 			openOtp,
-			activeTheme,
 			icons: ICONS,
 		} = this.props;
 
@@ -173,7 +172,6 @@ class ApiKey extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={this.onCloseDialog}
 				>
 					<ApiKeyModal
@@ -188,7 +186,6 @@ class ApiKey extends Component {
 				<Dialog
 					isOpen={isCodeDialog}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={this.onCloseDialog}
 				>
 					<EmailCodeForm onSubmit={this.onSubmitEmail} pending={pending} />
@@ -208,7 +205,6 @@ const mapStateToProps = (state) => ({
 	tokens: state.user.tokens,
 	fetching: state.user.fetching,
 	error: state.user.error,
-	activeTheme: state.app.theme,
 	constants: state.app.constants,
 });
 

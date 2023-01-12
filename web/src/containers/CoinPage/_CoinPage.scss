@@ -1,0 +1,265 @@
+.hollaex-token-wrapper {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.mt-8 {
+		margin-top: 8rem;
+	}
+
+	.pb-6 {
+		padding-bottom: 6rem;
+	}
+
+	.icon_title-wrapper .icon_title-svg svg {
+		margin-top: 3px !important;
+	}
+
+	.icon_title-wrapper {
+		margin-top: 0 !important;
+	}
+
+	.sub-header-icon {
+		height: 20px;
+		width: 20px;
+		margin: 1px 3px;
+	}
+
+	.token-wrapper {
+		width: 65%;
+
+		.image-container {
+			.coins-icon {
+				width: 3.5rem;
+				height: 3.5rem;
+			}
+		}
+
+		.link {
+			color: $colors-notifications-blue;
+			text-decoration: underline;
+			cursor: pointer;
+		}
+
+		.header-container {
+			width: 100%;
+			font-size: 16px;
+
+			.title {
+				font-size: 24px;
+				color: $colors-black;
+
+				.favourite-text {
+					font-size: 12px;
+					color: #707070;
+					padding-right: 10px;
+					opacity: 0;
+				}
+
+				.star-icon:hover {
+					.favourite-text {
+						opacity: 1;
+					}
+				}
+
+				.favourite-text-2 {
+					font-size: 12px;
+					color: $colors-black;
+					padding-right: 10px;
+				}
+			}
+		}
+
+		.balance-wrapper {
+			.icon_title-wrapper .icon_title-svg svg {
+				width: 5rem !important;
+				height: 2rem !important;
+				margin-top: 0rem !important;
+			}
+
+			.hollaex-token-wrapper .icon_title-wrapper .icon_title-svg svg {
+				margin-top: 0rem !important;
+			}
+
+			.icon_title-wrapper .icon_title-svg {
+				height: 0rem !important;
+			}
+
+			.image-Wrapper {
+				.action_notification-svg {
+					margin-right: 1rem;
+				}
+			}
+		}
+
+		.ant-btn {
+			background: $app-background-color;
+			color: $colors-black;
+		}
+
+		.hollaex-container {
+			border: 1px solid $colors-super-pale-black;
+
+			.token-container {
+				display: flex;
+				justify-content: space-between;
+
+				.info-container {
+					width: 65%;
+					background-color: $quick-trade-block-background;
+					padding: 4rem;
+
+					.header-text {
+						font-size: 16px;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+
+					.sub-text {
+						font-size: 14px;
+						width: 70%;
+						margin-top: 1rem;
+						color: $colors-black;
+					}
+
+					.button-container {
+						margin-top: 7rem;
+
+						.edit-wrapper__container {
+							width: 100%;
+
+							div {
+								width: 100%;
+							}
+
+							.edit-wrapper__icons-container {
+								width: 5%;
+							}
+						}
+
+						.button-2 {
+							margin: 0 10px 0 10px;
+						}
+					}
+				}
+
+				.trade-details-wrapper {
+					width: 40%;
+					padding: 40px 65px 30px 55px;
+					font-family: $en--font-family;
+					background-color: $app-background-color;
+
+					.trade-details-content {
+						height: 450px;
+
+						.pb-30 {
+							padding-bottom: 30px;
+						}
+
+						.pb-35 {
+							padding-bottom: 35px;
+						}
+
+						.pl-6 {
+							padding-left: 6rem;
+						}
+
+						.chart {
+							height: 100px;
+							margin: 10px 0;
+
+							// opacity: 0.4;
+							div:last-child {
+								padding-top: 1rem;
+							}
+
+							.fade-area {
+								position: relative;
+							}
+
+							.fade-area::before {
+								content: '';
+								position: absolute;
+								height: 100px;
+								width: 100%;
+								background-image: linear-gradient(
+									to right,
+									$app-background-color,
+									rgba(0, 0, 0, 0)
+								);
+								z-index: -1;
+							}
+						}
+
+						.trade_tabs-container {
+							margin: 0 !important;
+							width: 100% !important;
+						}
+					}
+
+					.currency-ball-image-wrapper {
+						height: 5rem;
+					}
+
+					.f-size-16 {
+						font-size: 16px;
+						color: $colors-deactivate;
+						font-weight: bold;
+					}
+
+					.f-size-22 {
+						font-size: 22px;
+						font-weight: bold;
+					}
+
+					// .pairs {
+					//     color: $link;
+					//     font-size: 16px;
+					//     text-decoration: underline;
+					// }
+
+					.fullname {
+						color: $colors-deactivate;
+						font-size: 0.65rem;
+						white-space: nowrap;
+					}
+
+					.sub-title {
+						color: $colors-deactivate;
+						font: normal normal 300 11px/15px $en--font-family;
+						letter-spacing: 2.2px;
+						opacity: 1;
+						white-space: nowrap;
+					}
+				}
+			}
+		}
+	}
+
+	.paircoins-color {
+		color: $colors-black;
+	}
+
+	.white-text {
+		color: $colors-main-black;
+	}
+}
+
+.trade_tabs-container .trade-tab-price_diff_up:before {
+	margin-bottom: 0.5rem;
+}
+
+.info-text {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 18px;
+}
+
+@media (max-width: 1024px) {
+	.token-wrapper {
+		width: 100% !important;
+	}
+}

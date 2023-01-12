@@ -16,7 +16,6 @@ const MobileOrders = ({
 	pair,
 	pairData,
 	userTrades,
-	activeTheme,
 	isLoggedIn,
 	pairs,
 	coins,
@@ -60,7 +59,7 @@ const MobileOrders = ({
 					onCancelAll={cancelAllOrders}
 				/>
 			) : (
-				<LogoutInfoOrder activeTheme={activeTheme} />
+				<LogoutInfoOrder />
 			)}
 		</TradeBlock>
 		<TradeBlock

@@ -4,7 +4,7 @@ import { generateGlobalId } from 'utils/id';
 
 export const defaultIconsKey = 'dark';
 
-export const generateCoinIconId = (symbol) => `${symbol.toUpperCase()}_ICON`;
+export const generateCoinIconId = (symbol) => `${symbol?.toUpperCase()}_ICON`;
 
 export const getIconByKey = (
 	key,

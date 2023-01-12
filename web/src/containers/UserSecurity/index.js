@@ -635,7 +635,6 @@ class UserVerification extends Component {
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 					showCloseText={!(otp.error || modalText)}
-					theme={this.props.activeTheme}
 				>
 					{dialogIsOpen && !otp.requesting ? (
 						this.renderModalContent(
@@ -675,7 +674,6 @@ const mapStateToProps = (state) => ({
 	logins: state.wallet.logins,
 	user: state.user,
 	activeLanguage: state.app.language,
-	activeTheme: state.app.theme,
 	constants: state.app.constants,
 });
 

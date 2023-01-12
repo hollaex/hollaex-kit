@@ -59,6 +59,9 @@ import {
 	Pairs,
 	Fiatmarkets,
 	AdminApps,
+	DigitalAssets,
+	CoinPage,
+	WhiteLabel,
 } from './containers';
 import chat from './containers/Admin/Chat';
 
@@ -364,6 +367,8 @@ export const generateRoutes = (routes = []) => {
 					component={Account}
 					onEnter={requireAuth}
 				/>
+				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
+				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route
 					path="verification"
 					name="Verification"
@@ -406,6 +411,11 @@ export const generateRoutes = (routes = []) => {
 					path="quick-trade/:pair"
 					name="Quick Trade"
 					component={QuickTrade}
+				/>
+				<Route
+					path="assets/coin/:token"
+					name="Coin Page"
+					component={CoinPage}
 				/>
 				<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 				<Route
