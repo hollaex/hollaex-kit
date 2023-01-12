@@ -2448,9 +2448,7 @@ class HollaExNetwork {
 		const processing = isBoolean(opts.processing) ? opts.processing : false;
 		const waiting = isBoolean(opts.waiting) ? opts.waiting : false;
 
-		if (!status && !rejected && !dismissed && !processing && !waiting) {
-			return reject(new Error('Must give one parameter to update'));
-		} else if (
+		if (
 			status && (rejected || dismissed || processing || waiting)
 			|| rejected && (status || dismissed || processing || waiting)
 			|| dismissed && (status || rejected || processing || waiting)
