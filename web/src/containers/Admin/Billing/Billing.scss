@@ -305,6 +305,10 @@ button:focus {
 				opacity: 0.3;
 				margin-top: 4rem !important;
 				margin-bottom: 4.2rem !important;
+				height: 65rem !important;
+				.plan-container-wrapper {
+					margin-bottom: 0rem !important;
+				}
 			}
 
 			// .active-plan-container {
@@ -318,6 +322,11 @@ button:focus {
 				margin: 2rem;
 				border: 1px solid #a8a8b1;
 				margin-bottom: 6rem;
+				height: 70rem;
+
+				.plan-container-wrapper {
+					margin-bottom: 5rem;
+				}
 
 				.type-center {
 					text-align: center;
@@ -765,6 +774,21 @@ button:focus {
 					padding-left: 2px;
 					padding-top: 0px !important;
 				}
+			}
+		}
+
+		.scanner-container {
+			width: fit-content;
+			background: black;
+
+			canvas {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+
+			div {
+				font-size: 12px;
 			}
 		}
 

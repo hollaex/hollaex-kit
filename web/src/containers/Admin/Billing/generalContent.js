@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
 import {
@@ -52,6 +52,15 @@ const TYPES = [
 const payOptions = [
 	{ key: 'pay', value: 'Pay from wallet' },
 	{ key: 'transfer', value: 'Transfer crypto payment' },
+];
+
+const cryptoCoins = [
+	{ coin: 'USDT', symbol: 'btc' },
+	{ coin: 'Bitcoin', symbol: 'btc' },
+	{ coin: 'XHT', symbol: 'xht' },
+	{ coin: 'Ethereum', symbol: 'eth' },
+	{ coin: 'TRON', symbol: 'trx' },
+	{ coin: 'XRP', symbol: 'xrp' },
 ];
 
 const columns = [
@@ -147,24 +156,21 @@ const GeneralContent = ({ exchange, user }) => {
 		'Cryptocurrency',
 		'Credit Card',
 	];
-	const [activeRadio, setActiveRadio] = useState(3);
 	const [type, setType] = useState('item');
-	// const [itemType, setItemType] = useState('crypto');
 	const [selectedType, setSelectedType] = useState('crypto');
 	const [currency, setCurrency] = useState('usdt');
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [checked, setChecked] = useState(false);
 	const [isMonthly, setIsMonthly] = useState(false);
 	const [isPaymentMethodDisable, setIsPaymentMethodDisable] = useState([]);
-	const [isExchangeDetails, setExchangeDetails] = useState(true);
 	const [invoceData, setInvoceData] = useState([]);
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
 	const [cryptoPayType, setCryptoPay] = useState('');
 	const [isAutomatedKYC, setIsAutomatedKYC] = useState(false);
 	const [showPayAddress, setShowPayAddress] = useState(false);
+	const [selectedExchangeItem, setSelectedExchangeItem] = useState('');
 
 	useEffect(() => {
 		getData();
@@ -197,9 +203,8 @@ const GeneralContent = ({ exchange, user }) => {
 		}
 	}, [balance, currency]);
 
-	const onChange = (e) => {
-		setActiveRadio(e.target.value);
-		setChecked(e.target.checked);
+	const updateSelectedCoin = (coin) => {
+		setSelectedExchangeItem(coin);
 	};
 
 	const handleGetCoins = (coin, symbol) => {
@@ -218,9 +223,7 @@ const GeneralContent = ({ exchange, user }) => {
 	const getData = async () => {};
 
 	const handleBreadcrumb = (name) => {
-		setChecked(false);
 		setType(name);
-		setActiveRadio(1);
 		if (name === 'item') {
 			setModalWidth('85rem');
 		} else if (name === 'method') {
@@ -234,8 +237,6 @@ const GeneralContent = ({ exchange, user }) => {
 
 	const handleOnCancel = () => {
 		setOpenPlanModal(false);
-		setChecked(false);
-		setActiveRadio(1);
 	};
 
 	const isCloud = () => {
@@ -475,7 +476,9 @@ const GeneralContent = ({ exchange, user }) => {
 							key={inx}
 							className={name === type ? 'breadcrumb-item-active' : ''}
 						>
-							{name.charAt(0).toUpperCase() + name.slice(1)}
+							{name === 'crypto'
+								? type === 'crypto' && 'Crypto'
+								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
 					);
 				})}
@@ -528,6 +531,19 @@ const GeneralContent = ({ exchange, user }) => {
 				{}
 			</div>
 		);
+	};
+
+	const copyQr = async () => {
+		var qrcode = document.getElementById('copyqrcode').value;
+		return await navigator.clipboard.writeText(qrcode);
+	};
+
+	const handlePayMethod = (method) => {
+		if (method === 'Cryptocurrency') {
+			updateSelectedCoin(method);
+		} else {
+			setOpenPlanModal(false);
+		}
 	};
 
 	const renderContent = () => {
@@ -589,33 +605,32 @@ const GeneralContent = ({ exchange, user }) => {
 				return (
 					<div className="radiobtn-container">
 						<p>Select Payment Method</p>
-						<Radio.Group className={'radio-content'} onChange={onChange}>
+						<Radio.Group className={'radio-content'}>
 							<Space direction="vertical">
 								{paymentMethods.map((method, inx) => {
-									if (method === 'Cryptocurrency') {
-										return (
-											<Radio value={inx}>
-												<span>{method} </span>
-												<span className="danger"> (up to 10% off) </span>
-												<span>
-													<img
-														src={STATIC_ICONS['FIRE_BALL']}
-														className="fire-icon"
-														alt="fire"
-													/>
-												</span>
-											</Radio>
-										);
-									} else {
-										return (
-											<Radio
-												value={inx}
-												disabled={isPaymentMethodDisable.includes(method)}
-											>
-												{method}
-											</Radio>
-										);
-									}
+									return (
+										<Radio
+											value={inx}
+											disabled={isPaymentMethodDisable.includes(method)}
+											onChange={() => handlePayMethod(method)}
+										>
+											{method === 'Cryptocurrency' ? (
+												<>
+													<span>{method} </span>
+													<span className="danger"> (up to 10% off) </span>
+													<span>
+														<img
+															src={STATIC_ICONS['FIRE_BALL']}
+															className="fire-icon"
+															alt="fire"
+														/>
+													</span>
+												</>
+											) : (
+												method
+											)}
+										</Radio>
+									);
 								})}
 							</Space>
 						</Radio.Group>
@@ -627,38 +642,38 @@ const GeneralContent = ({ exchange, user }) => {
 				return (
 					<div className="radiobtn-container">
 						<p>Pick Crypto</p>
-						<Radio.Group
-							className="my-3"
-							onChange={onChange}
-							value={activeRadio}
-						>
+						<Radio.Group className="my-3">
 							<Space direction="vertical">
-								<Radio value={1}>USDT (TRC20)</Radio>
-								{activeRadio === 1 && checked && handleGetCoins('USDT', 'btc')}
-								<Radio value={2}>Bitcoin</Radio>
-								{activeRadio === 2 &&
-									checked &&
-									handleGetCoins('Bitcoin', 'btc')}
-								<Radio value={3}>
-									<span>XHT </span>
-									<span className="danger"> (10% discount) </span>
-									<span>
-										<img
-											src={STATIC_ICONS['FIRE_BALL']}
-											className="fire-icon"
-											alt="fire"
-										/>
-									</span>
-								</Radio>
-								{activeRadio === 3 && checked && handleGetCoins('XHT', 'xht')}
-								<Radio value={4}>Ethereum</Radio>
-								{activeRadio === 4 &&
-									checked &&
-									handleGetCoins('Ethereum', 'eth')}
-								<Radio value={5}>TRON</Radio>
-								{activeRadio === 5 && checked && handleGetCoins('TRON', 'trx')}
-								<Radio value={6}>XRP</Radio>
-								{activeRadio === 6 && checked && handleGetCoins('XRP', 'xrp')}
+								{cryptoCoins.map((item, inx) => {
+									return (
+										<>
+											<Radio
+												onChange={() => updateSelectedCoin(item.coin)}
+												name={item.coin}
+												value={inx}
+											>
+												{item.coin === 'XHT' ? (
+													<>
+														<span>{item.coin} </span>
+														<span className="danger"> (10% discount) </span>
+														<span>
+															<img
+																src={STATIC_ICONS['FIRE_BALL']}
+																className="fire-icon"
+																alt="fire"
+															/>
+														</span>
+													</>
+												) : (
+													item.coin
+												)}
+											</Radio>
+											{selectedExchangeItem &&
+												selectedExchangeItem === item.coin &&
+												handleGetCoins(item.coin, item.symbol)}
+										</>
+									);
+								})}
 							</Space>
 						</Radio.Group>
 						<Subscription />
@@ -667,9 +682,6 @@ const GeneralContent = ({ exchange, user }) => {
 				);
 			case 'payment':
 			case 'cryptoPayment':
-				// const balanceAvailable =
-				//  balance[`${currency.toLowerCase()}_available`] || 0;
-				// const currencyData = {};
 				return (
 					<div className="crypto-payment-container">
 						<div>
@@ -688,11 +700,11 @@ const GeneralContent = ({ exchange, user }) => {
 							</div>
 							<div className="payment-details">
 								<span>
-									<h5>Selected Crypto :</h5> <p>EFH</p>
+									<h5>Selected Crypto :</h5> <p>{selectedExchangeItem}</p>
 								</span>
 								<span>
 									<h5> Required payment amount:</h5>
-									<p>1.3875 ETH </p>{' '}
+									<p>{`1.3875 ${selectedExchangeItem}`} </p>
 								</span>
 								{showPayAddress ? null : (
 									<Button
@@ -712,10 +724,14 @@ const GeneralContent = ({ exchange, user }) => {
 												<Input.Group compact>
 													<Input
 														style={{ width: '70%' }}
+														id={'copyqrcode'}
 														defaultValue="git@github.com:ant-design/ant-design.git"
 													/>
-													<Tooltip title="copy git url">
-														<Button icon={<CopyOutlined />} />
+													<Tooltip title="copy QR code">
+														<Button
+															onClick={() => copyQr()}
+															icon={<CopyOutlined />}
+														/>
 													</Tooltip>
 												</Input.Group>
 											</div>
@@ -730,7 +746,7 @@ const GeneralContent = ({ exchange, user }) => {
 												</p>
 											</div>
 										</div>
-										<div style={{ width: '20%' }}>
+										<div className="scanner-container">
 											<QR value={''} size={100} />
 											<div className="bodyContentSmall">Scan this QR code</div>
 										</div>
@@ -754,20 +770,19 @@ const GeneralContent = ({ exchange, user }) => {
 	};
 
 	const handleNext = () => {
+		console.log('selectedExchangeItem', selectedExchangeItem);
 		if (type === 'item') {
 			setType('method');
-			setModalWidth('65rem');
 			storePlanType();
 		} else if (type === 'method') {
-			setType('crypto');
-			setModalWidth('65rem');
+			if (selectedExchangeItem === 'Cryptocurrency') setType('crypto');
+			else setOpenPlanModal(false);
 		} else if (type === 'crypto') {
-			setOpenPlanModal(false);
-			setModalWidth('65rem');
+			setType('payment');
 		} else if (type === 'payment') {
 			setOpenPlanModal(false);
-			setModalWidth('65rem');
 		}
+		setModalWidth('65rem');
 	};
 
 	const handleBack = () => {

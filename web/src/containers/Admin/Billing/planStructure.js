@@ -153,7 +153,7 @@ const PlanStructure = ({
 	return (
 		// <div className={ selectedType === type ? `${className} plan-container opacity` :`${className} plan-container`}>
 		<div className={`${className} plan-container`}>
-			<div>
+			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
 					{type === 'crypto' ? 'MOST POPULAR' : ''}
 				</div>
