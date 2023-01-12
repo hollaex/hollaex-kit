@@ -821,6 +821,8 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
+	"TIME_OPEN": "Time of Opening ",
+	"TIME_CLOSE": "Time Closed",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",

@@ -3340,6 +3340,13 @@ table th {
   opacity: 1;
   transition: opacity 1s ease-in; }
 
+.open-order-wrapper .trade__active-orders_cancel-All .action_notification-wrapper {
+  position: relative; }
+
+.open-order-wrapper .table_body-row td:nth-child(even) .action_notification-wrapper {
+  margin-top: 0.75rem;
+  padding-left: 0.25rem; }
+
 .quote-container {
   background-color: var(--base_background);
   overflow-y: scroll; }
@@ -9333,12 +9340,14 @@ table th {
   margin: 2rem 0 2rem; }
   .table-wrapper tr {
     height: 2rem; }
+  .table-wrapper tr:hover {
+    background-color: var(--base_secondary-navigation-bar); }
   .table-wrapper .sub-tr-bg-white {
     background-color: #e4e3e3;
     border-bottom: 1px solid #c3c3c3 !important;
     opacity: 0.75; }
   .table-wrapper .anchor {
-    color: #5D63FF;
+    color: #5d63ff;
     text-decoration: underline;
     cursor: pointer; }
   .table-wrapper .sub-tr-bg {
