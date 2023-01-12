@@ -64,14 +64,6 @@ export const getFormatTimestamp = (date, format) => {
 	return formatTimestampGregorian(date, format);
 };
 
-export const getTimeHeader = (label, type) => {
-	return (
-		<div className="time-wrapper">
-			<p>{label}</p> <p className="type-color">{type}</p>
-		</div>
-	);
-};
-
 export const formatTimestamp = (date, format) => {
 	return formatTimestampGregorian(date, format);
 };

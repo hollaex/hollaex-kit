@@ -213,7 +213,8 @@ class TransactionsHistory extends Component {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
 		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type = temp?.type === 'active' ? 'of Opening' : 'Closed';
+		let type =
+			temp?.type === 'active' ? STRINGS['TIME_OPEN'] : STRINGS['TIME_CLOSE'];
 
 		this.setState({
 			headers: {
