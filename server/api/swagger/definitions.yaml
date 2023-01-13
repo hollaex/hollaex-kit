@@ -18,6 +18,7 @@ definitions:
       password:
         type: string
         format: password
+        maxLength: 128
       otp_code:
         type: string
       captcha:
@@ -36,6 +37,7 @@ definitions:
     properties:
       new_password:
         type: string
+        maxLength: 128
       code:
         type: string
   OperatorResponse:
@@ -220,8 +222,10 @@ definitions:
     properties:
       old_password:
         type: string
+        maxLength: 128
       new_password:
         type: string
+        maxLength: 128
       otp_code:
         type: string
         description: OTP code when otp is enabled
