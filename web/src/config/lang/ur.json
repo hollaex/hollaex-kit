@@ -42,16 +42,16 @@
 	"NO_OPTIONS": "کوئی آپشن دستیاب نہیں ہے۔",
 	"SECONDS": "سیکنڈ",
 	"VIEW_MARKET": "مارکیٹ کو دیکھیں",
-	"GO_TRADE": "Go Trade",
-	"VIEW_INFO": "View info page",
-	"APPLY_HERE": "Apply Here",
-	"CONVERT": "Convert",
-	"TO": "To",
+	"GO_TRADE": "تجارت پر جائیں۔",
+	"VIEW_INFO": "معلوماتی صفحہ دیکھیں",
+	"APPLY_HERE": "یہاں اپلائی کریں۔",
+	"CONVERT": "تبدیل کریں",
+	"TO": "کو",
 	"HOME": {
-		"MAIN_TITLE": "Cryptocurrency trading exchange",
-		"MAIN_TEXT": "Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.",
-		"TRADE_CRYPTO": "Start trading",
-		"VIEW_EXCHANGE": "View exchange"
+		"MAIN_TITLE": "کریپٹو کرنسی ٹریڈنگ ایکسچینج",
+		"MAIN_TEXT": "آسانی سے کرپٹو اثاثے خریدیں اور بیچیں۔ بس اپنے ای میل کے ساتھ سائن اپ کریں اور بڑے کرپٹو اثاثوں کی 24/7 تجارت کریں۔",
+		"TRADE_CRYPTO": "تجارت شروع کریں۔",
+		"VIEW_EXCHANGE": "تبادلہ دیکھیں"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "LANGUAGE",
