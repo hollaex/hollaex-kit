@@ -2213,19 +2213,19 @@ class HollaExNetwork {
 		if (isBoolean(opts.rejected)) {
 			data.rejected = opts.rejected;
 		} else {
-			data.rejected = true;
+			data.rejected = false;
 		}
 
 		if (isBoolean(opts.dismissed)) {
 			data.dismissed = opts.dismissed;
 		} else {
-			data.dismissed = true;
+			data.dismissed = false;
 		}
 
 		if (isBoolean(opts.waiting)) {
 			data.waiting = opts.waiting;
 		} else {
-			data.waiting = true;
+			data.waiting = false;
 		}
 
 		if (isBoolean(opts.email)) {
@@ -2410,19 +2410,19 @@ class HollaExNetwork {
 		if (isBoolean(opts.rejected)) {
 			data.rejected = opts.rejected;
 		} else {
-			data.rejected = true;
+			data.rejected = false;
 		}
 
 		if (isBoolean(opts.dismissed)) {
 			data.dismissed = opts.dismissed;
 		} else {
-			data.dismissed = true;
+			data.dismissed = false;
 		}
 
 		if (isBoolean(opts.waiting)) {
 			data.waiting = opts.waiting;
 		} else {
-			data.waiting = true;
+			data.waiting = false;
 		}
 
 		if (isBoolean(opts.email)) {
