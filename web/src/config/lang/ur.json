@@ -24,10 +24,10 @@
 	"CANCEL_SUCCESS_TEXT": "کامیابی سے منسوخ ہو گیا!",
 	"ADD_FILES": "فائلیں شامل کریں",
 	"OR_TEXT": "یا",
-	"CONTACT_US_TEXT": "Contact us",
+	"CONTACT_US_TEXT": "ہم سے رابطہ کریں",
 	"HELPFUL_RESOURCES_TEXT": "مددگار وسائل",
 	"HELP_RESOURCE_GUIDE": {
-		"CONTACT_US": "contact us",
+		"CONTACT_US": "ہم سے رابطہ کریں",
 		"TEXT": "بلا جھجھک {0} مزید معلومات اور کسی بھی مسئلے کے لیے ہمیں ای میل بھیجیں۔"
 	},
 	"HELP_TELEGRAM_TEXT": "اوپن API دستاویزات دیکھیں:",
