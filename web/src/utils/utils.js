@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
@@ -9,7 +8,7 @@ import {
 	TIMESTAMP_FORMAT_FA,
 	DEFAULT_TIMESTAMP_FORMAT,
 	AUDIOS,
-} from '../config/constants';
+} from 'config/constants';
 import { getLanguage } from './string';
 import _orderBy from 'lodash/orderBy';
 
