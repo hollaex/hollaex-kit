@@ -30,7 +30,7 @@ import {
 import STRINGS from 'config/localizedStrings';
 import { formatAverage, formatBaseAmount } from 'utils/currency';
 import { getLastMonthVolume } from './components/utils';
-import { getUserReferralCount } from 'actions/userAction';
+import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
 
@@ -42,11 +42,11 @@ class Summary extends Component {
 	};
 
 	componentDidMount() {
-		const { user, tradeVolumes, pairs, prices } = this.props;
+		const { user, tradeVolumes, pairs, prices, getUserReferrals } = this.props;
 
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
-			this.props.getUserReferralCount();
+			getUserReferrals();
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -76,7 +76,7 @@ class Summary extends Component {
 			this.setState({ lastMonthVolume });
 		}
 		if (nextProps.user.id !== this.props.user.id && nextProps.user.id) {
-			this.props.getUserReferralCount();
+			this.props.getUserReferrals();
 		}
 	}
 
@@ -335,7 +335,7 @@ const mapDispatchToProps = (dispatch) => ({
 		dispatch
 	),
 	setNotification: bindActionCreators(setNotification, dispatch),
-	getUserReferralCount: bindActionCreators(getUserReferralCount, dispatch),
+	getUserReferrals: bindActionCreators(getUserReferrals, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
 });
 
