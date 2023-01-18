@@ -28,3 +28,16 @@ export const getNewExchangeBilling = (exchangeId = '') => {
 export const getPrice = () => {
 	return _FetchDash(`/exchange/pricing`, 'get');
 };
+
+export const requestStoreInvoice = (id, data) => {
+	console.log('id', id, 'data', data);
+	// return new Promise(async (resolve, reject) => {
+	//  try {
+	//      // const url = `/invoice?invoice_id=${id}`;
+	//      // const res = await _FetchDash(url, 'put', data);
+	//      // resolve(res);
+	//  } catch (error) {
+	//      reject(error);
+	//  }
+	// });
+};

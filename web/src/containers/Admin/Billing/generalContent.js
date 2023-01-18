@@ -17,14 +17,12 @@ import {
 	Tooltip,
 } from 'antd';
 import QR from 'qrcode.react';
-// import { ExclamationCircleFilled, InfoCircleOutlined, CopyOutlined, RightOutlined } from '@ant-design/icons';
 import Subscription from './subscription';
 import moment from 'moment';
 import { STATIC_ICONS } from 'config/icons';
 import PlanStructure from './planStructure';
 import GeneralChildContent from './generalChildContent';
 import {
-	ExclamationCircleFilled,
 	RightOutlined,
 	InfoCircleOutlined,
 	CopyOutlined,
@@ -34,19 +32,20 @@ import {
 	getNewExchangeBilling,
 	getPrice,
 	setExchangePlan,
+	requestStoreInvoice,
 } from './action';
 import './Billing.scss';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import { getExchange } from '../AdminFinancials/action';
 import {
-	setSelectedExchangeItem,
+	setSelectedPayment,
 	setSelectedType,
 	setType,
 	setSelectedCrypto,
+	setCryptoPaymentType,
 } from '../../../actions/adminBillingActions';
 
 const { Option } = Select;
-
 const TabPane = Tabs.TabPane;
 
 const TYPES = [
@@ -157,12 +156,13 @@ const GeneralContent = ({
 	exchange,
 	user,
 	setSelectedCrypto,
-	selectedExchangeItem,
+	selectedPayment,
 	selectedType,
 	type,
-	setSelectedExchangeItem,
+	setSelectedPayment,
 	setSelectedType,
 	setType,
+	isAutomatedKYC,
 }) => {
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
@@ -173,8 +173,7 @@ const GeneralContent = ({
 		'Cryptocurrency',
 		'Credit Card',
 	];
-	const [currency, setCurrency] = useState('usdt');
-	const [activeBreadCrumb, setActiveBreadCrumb] = useState(true);
+
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -183,9 +182,10 @@ const GeneralContent = ({
 	const [invoceData, setInvoceData] = useState([]);
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
-	const [cryptoPayType, setCryptoPay] = useState('');
-	const [isAutomatedKYC, setIsAutomatedKYC] = useState(false);
 	const [showPayAddress, setShowPayAddress] = useState(false);
+	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
+	const [invoice, setInvoice] = useState({});
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		getData();
@@ -209,14 +209,13 @@ const GeneralContent = ({
 
 	useEffect(() => {
 		const balanceAvailable = 0;
-		// balance[`${currency?.toLowerCase()}_available`] || 0;
 		if (balanceAvailable && balanceAvailable) {
 			setOptions(payOptions);
 		} else {
 			const optionData = payOptions.filter((data) => data.key !== 'pay');
 			setOptions(optionData);
 		}
-	}, [balance, currency]);
+	}, [balance, selectedCrypto]);
 
 	const handleGetCoins = (coin, symbol) => {
 		return (
@@ -233,20 +232,24 @@ const GeneralContent = ({
 
 	const getData = async () => {};
 
-	const handleBreadcrumb = (name, index) => {
+	const handleBreadcrumb = (name) => {
 		if (activeBreadCrumb) {
-			if (type === 'method' && index === 0) {
-				setType('item');
+			if (type !== 'item') {
+				if (type === 'method' && name === 'item') {
+					setType('item');
+				} else if (type === 'crypto' && name !== 'payment') {
+					setType(name);
+				} else if (type === 'payment') {
+					setType(name);
+				}
+			}
+
+			if (name === 'item' || type === 'item') {
 				setModalWidth('85rem');
 			} else {
-				setType('method');
 				setModalWidth('65rem');
 			}
 		}
-	};
-
-	const handleOnCancel = () => {
-		setOpenPlanModal(false);
 	};
 
 	const isCloud = () => {
@@ -255,6 +258,89 @@ const GeneralContent = ({
 			return true;
 		} else {
 			return false;
+		}
+	};
+
+	const storePaymentMethod = async () => {
+		try {
+			if (
+				invoice &&
+				invoice.id &&
+				(selectedPayment === 'paypal' ||
+					selectedPayment === 'bank' ||
+					selectedPayment === 'stripe')
+			) {
+				setLoading(true);
+				let method = '';
+				switch (selectedPayment) {
+					case 'paypal':
+					case 'bank':
+					case 'stripe':
+						method = selectedPayment;
+						break;
+					case 'cryptoCurrency':
+						method = selectedCrypto;
+						break;
+					default:
+						break;
+				}
+				console.log('method123', method);
+				const res = requestStoreInvoice(invoice?.data?.id, { method });
+				if (res.data) {
+					switch (selectedPayment) {
+						case 'paypal':
+							window.location.replace(res.data.meta.redirect_url);
+							message.success('Redirecting to the paypal');
+							setInvoice(res.data);
+							setLoading(false);
+							// onCancel();
+							break;
+						case 'stripe':
+							window.location.replace(res.data.meta.redirect_url);
+							message.success('Redirecting to the payment');
+							setInvoice(res.data);
+							setLoading(false);
+							// onCancel();
+							break;
+						case 'bank':
+							setInvoice(res.data);
+							// setNextType(selectedPayment);
+							break;
+
+						case 'cryptoCurrency':
+							if (res.data.method === 'xht' && res.data.is_paid) {
+								// setNextType('xhtPayment');
+							} else if (res.data.method === 'xht' && !res.data.is_paid) {
+								// setNextType('xhtInSufficient');
+							} else {
+								// setNextType('cryptoPayment');
+							}
+							setInvoice({
+								...invoice,
+								method,
+								meta: { ...invoice.meta, ...res.data },
+							});
+							// setCurrencyAddress(res.data);
+							break;
+						default:
+							break;
+					}
+					getInvoice();
+					setTimeout(() => {
+						setLoading(false);
+					}, 1000);
+				}
+			} else if (selectedPayment === 'cryptoCurrency') {
+				// setNextType(selectedPayment);
+			}
+		} catch (error) {
+			console.error(error);
+			setLoading(false);
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			} else {
+				message.error(error.message);
+			}
 		}
 	};
 
@@ -288,10 +374,8 @@ const GeneralContent = ({
 								alt="Exchange-icon"
 								className="exchange-icon"
 							/>
-							{/* <span className="bodyContentSmall">{exchange.display_name}</span> */}
 							<span className="bodyContentSmall">texter-1</span>
 						</div>
-						{/* <div className="content-align d-flex">{renderPrice()}</div> */}
 						<div className="month-content d-flex">Monthly payment:</div>
 					</div>
 				</div>
@@ -376,6 +460,8 @@ const GeneralContent = ({
 				},
 				() => setType('method')
 			);
+			setType('method');
+			setModalWidth('65rem');
 			// setType('payment')
 		}
 	};
@@ -384,28 +470,32 @@ const GeneralContent = ({
 		setIsMonthly(isCheck);
 	};
 
-	const handleCryptoPay = (payType) => {
-		setCryptoPay(payType);
-	};
-
 	const renderModelContent = () => {
 		return (
 			<Breadcrumb separator={<RightOutlined />}>
 				{options.map((name, inx) => {
 					return (
 						<Breadcrumb.Item
-							onClick={() => handleBreadcrumb(name, inx)}
+							onClick={() => handleBreadcrumb(name)}
 							key={inx}
 							className={name === type ? 'breadcrumb-item-active' : ''}
 						>
 							{name === 'crypto'
-								? type === 'crypto' && 'Crypto'
+								? selectedPayment === 'Cryptocurrency' && 'Crypto'
 								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
 					);
 				})}
 			</Breadcrumb>
 		);
+	};
+
+	const handleOpenModal = () => {
+		setOpenPlanModal(true);
+		setModalWidth('85rem');
+		setType('item');
+		setSelectedPayment('');
+		setSelectedType('crypto');
 	};
 
 	const renderCard = () => {
@@ -443,7 +533,7 @@ const GeneralContent = ({
 				<div className="pay-button">
 					<Button
 						type="primary"
-						onClick={() => setOpenPlanModal(true)}
+						onClick={() => handleOpenModal()}
 						className="m-2 px-4 py-1"
 						shape="round"
 					>
@@ -461,11 +551,7 @@ const GeneralContent = ({
 	};
 
 	const handlePayMethod = (method) => {
-		if (method === 'Cryptocurrency') {
-			setSelectedExchangeItem(method);
-		} else {
-			setOpenPlanModal(false);
-		}
+		setSelectedPayment(method);
 	};
 
 	const renderContent = () => {
@@ -491,7 +577,7 @@ const GeneralContent = ({
 									'box-container content-wrapper plan-structure-wrapper'
 								}
 							>
-								{TYPES.map((type) => {
+								{TYPES.map((type, inx) => {
 									return (
 										<PlanStructure
 											className={
@@ -505,6 +591,7 @@ const GeneralContent = ({
 											dataType={type}
 											priceData={priceData}
 											isMonthly={isMonthly}
+											key={inx}
 										/>
 									);
 								})}
@@ -519,7 +606,7 @@ const GeneralContent = ({
 									in cloud plans and are paid separately
 								</p>
 							</div>
-							{renderBtn('item-button')}
+							{renderBtn('price', 'price-button')}
 						</div>
 					</div>
 				);
@@ -527,12 +614,12 @@ const GeneralContent = ({
 				return (
 					<div className="radiobtn-container">
 						<p>Select Payment Method</p>
-						<Radio.Group className={'radio-content'}>
+						<Radio.Group className={'radio-content'} value={selectedPayment}>
 							<Space direction="vertical">
 								{paymentMethods.map((method, inx) => {
 									return (
 										<Radio
-											value={inx}
+											value={method}
 											disabled={isPaymentMethodDisable.includes(method)}
 											onChange={() => handlePayMethod(method)}
 										>
@@ -557,14 +644,14 @@ const GeneralContent = ({
 							</Space>
 						</Radio.Group>
 						<Subscription />
-						{renderBtn('method-button')}
+						{renderBtn('payment', 'method-button')}
 					</div>
 				);
 			case 'crypto':
 				return (
 					<div className="radiobtn-container">
 						<p>Pick Crypto</p>
-						<Radio.Group className="my-3">
+						<Radio.Group className="my-3" value={selectedCrypto}>
 							<Space direction="vertical">
 								{cryptoCoins.map((item, inx) => {
 									return (
@@ -572,7 +659,7 @@ const GeneralContent = ({
 											<Radio
 												onChange={() => setSelectedCrypto(item.coin)}
 												name={item.coin}
-												value={inx}
+												value={item.coin}
 											>
 												{item.coin === 'XHT' ? (
 													<>
@@ -599,22 +686,22 @@ const GeneralContent = ({
 							</Space>
 						</Radio.Group>
 						<Subscription />
-						{renderBtn('crypto-button')}
+						{renderBtn('cryptoCurrency', 'crypto-button')}
 					</div>
 				);
 			case 'payment':
-			case 'cryptoPayment':
 				return (
 					<div className="crypto-payment-container">
 						<div>
 							<div className="payment-type-dropdown">
 								<h5>Select how to pay:</h5>
-								<Select
-									onChange={handleCryptoPay}
-									placeholder="Select payment method"
-								>
+								<Select placeholder="Select payment method">
 									{paymentOptions.map((item) => (
-										<Option value={item.key} key={item.key}>
+										<Option
+											onChange={() => setCryptoPaymentType(item.value)}
+											value={item.key}
+											key={item.key}
+										>
 											{item.value}
 										</Option>
 									))}
@@ -683,9 +770,6 @@ const GeneralContent = ({
 						{renderFooter()}
 					</div>
 				);
-			case 'payment1':
-				setOpenPlanModal(false);
-				break;
 			default:
 				return <div />;
 		}
@@ -696,8 +780,7 @@ const GeneralContent = ({
 			setType('method');
 			storePlanType();
 		} else if (type === 'method') {
-			console.log('selectedExchangeItem', selectedExchangeItem);
-			if (selectedExchangeItem === 'Cryptocurrency') setType('crypto');
+			if (selectedPayment === 'Cryptocurrency') setType('crypto');
 			else setOpenPlanModal(false);
 		} else if (type === 'crypto') {
 			setType('payment');
@@ -713,24 +796,117 @@ const GeneralContent = ({
 			setOpenPlanModal(false);
 		} else if (type === 'method') {
 			setType('item');
-			setModalWidth('85rem');
 		} else if (type === 'crypto') {
 			setType('method');
-			setModalWidth('65rem');
+		} else if (type === 'payment') {
+			setType('crypto');
 		}
+		setModalWidth('85rem');
 	};
 
-	const renderBtn = (type) => {
-		return (
-			<div className={`${type}`}>
-				<Button type="primary" onClick={() => handleBack()}>
-					Back
-				</Button>
-				<Button type="primary" onClick={() => handleNext()}>
-					Next
-				</Button>
-			</div>
-		);
+	const renderBtn = (type, buttontype) => {
+		switch (type) {
+			case 'price':
+				return (
+					<div className={`${buttontype}`}>
+						<Button block type="primary" onClick={handleBack}>
+							Back
+						</Button>
+						<div className="btn-divider" />
+						<Button
+							block
+							type="primary"
+							onClick={storePlanType}
+							disabled={type === 'diy'}
+						>
+							Next
+						</Button>
+					</div>
+				);
+			case 'payment':
+				return (
+					<div className={`${buttontype}`}>
+						<Button block type="primary" onClick={handleBack}>
+							Back
+						</Button>
+						<div className="btn-divider" />
+						<Button block type="primary" onClick={storePaymentMethod()}>
+							Next
+						</Button>
+					</div>
+				);
+			// case 'paypal':
+			//     return null;
+			// case 'stripe':
+			//     return null;
+			// case 'bank':
+			//     return (
+			//         <div className={`${buttontype}`}>
+			//             <Button block type="primary" onClick={handleBack}>Back</Button>
+			//             <div className='btn-divider' />
+			//             <Button block type="primary" onClick={handleNext}>
+			//                 Proceed
+			//             </Button>
+			//         </div>
+			//     );
+			case 'cryptoCurrency':
+				return (
+					<div className="d-flex">
+						<Button block type="primary" onClick={handleBack}>
+							Back
+						</Button>
+						<div className="btn-divider" />
+						<Button block type="primary" onClick={handleNext}>
+							Next
+						</Button>
+					</div>
+				);
+			// case 'cryptoPayment':
+			//     const balanceAvailable = balance[`${currency.toLowerCase()}_available`] || 0;
+			//     const paymentAmount = currencyData.amount || 0;
+			//     return (
+			//         <div className='d-flex'>
+			//             <Button block type="primary" onClick={handleBack}>
+			//                 Back
+			//             </Button>
+			//             <div className='btn-divider' />
+			//             {cryptoPayType === "pay" ?
+			//                 <Button
+			//                     block type="primary"
+			//                     disabled={cryptoPayType === 'pay' && (!balanceAvailable || balanceAvailable < paymentAmount || loading)}
+			//                     onClick={handleNext}>
+			//                     {cryptoPayType === 'pay' ? 'Proceed' : 'Yes, I have sent the crypto. Continue'}
+			//                 </Button>
+			//                 : <Button block type="primary" onClick={onClose}>
+			//                     Done
+			//                 </Button>
+			//             }
+			//         </div>
+			//     );
+			// case 'xhtPayment':
+			//     return (
+			//         <Button block type="primary" onClick={handleNext}>Confirm payment</Button>
+			//     );
+			// case 'xhtInSufficient':
+			//     return (
+			//         <Button block type="primary" onClick={() => history.push('/credit')}>Go to XHT Balance</Button>
+			//     );
+			// case 'confirmation':
+			//     return (
+			//         <div className={`${type}`}>
+			//             <Button block type="primary" onClick={handleBack}>Back</Button>
+			//             <div className="btn-divider" />
+			//             <Button block type="primary" onClick={onCancel}>Okay</Button>
+			//         </div>
+			//     );
+			// case 'payment-confirm':
+			// case 'kyc-payment-confirm':
+			//     return (
+			//         <Button block type="primary" onClick={onCancel}>Okay</Button>
+			//     );
+			default:
+				return null;
+		}
 	};
 
 	const getInvoice = async (params) => {
@@ -774,7 +950,7 @@ const GeneralContent = ({
 				className="bg-model"
 				width={modalWidth}
 				zIndex={1000}
-				onCancel={handleOnCancel}
+				onCancel={() => setOpenPlanModal(false)}
 				footer={null}
 			>
 				{renderModelContent()}
@@ -806,14 +982,15 @@ const GeneralContent = ({
 };
 
 const mapStateToProps = (store) => ({
-	selectedExchangeItem: store.admin.selectedExchangeItem,
+	selectedPayment: store.admin.selectedPayment,
 	selectedType: store.admin.selectedType,
 	type: store.admin.type,
 	selectedCrypto: store.admin.selectedCrypto,
+	isAutomatedKYC: store.admin.isAutomatedKYC,
 });
 
 export default connect(mapStateToProps, {
-	setSelectedExchangeItem,
+	setSelectedPayment,
 	setSelectedType,
 	setType,
 	setSelectedCrypto,
