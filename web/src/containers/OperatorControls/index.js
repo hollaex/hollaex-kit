@@ -1074,7 +1074,6 @@ class OperatorControls extends Component {
 					isOpen={isEditMode && isEditModalOpen}
 					label="operator-controls-modal"
 					className="operator-controls__modal"
-					disableTheme={true}
 					onCloseDialog={this.closeEditModal}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={true}
@@ -1242,7 +1241,6 @@ class OperatorControls extends Component {
 					isOpen={isExitConfirmationOpen}
 					label="operator-controls-modal"
 					className="operator-controls__modal"
-					disableTheme={true}
 					onCloseDialog={this.closeExitConfirmationModal}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={true}
@@ -1276,7 +1274,6 @@ class OperatorControls extends Component {
 					isOpen={isExitConsoleConfirmationOpen}
 					label="operator-controls-modal"
 					className="operator-controls__modal"
-					disableTheme={true}
 					onCloseDialog={this.closeExitConsoleConfirmationModal}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={true}
@@ -1309,7 +1306,6 @@ class OperatorControls extends Component {
 					isOpen={isPublishConfirmationOpen}
 					label="operator-controls-modal"
 					className="operator-controls__modal"
-					disableTheme={true}
 					onCloseDialog={this.closePublishConfirmationModal}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={true}

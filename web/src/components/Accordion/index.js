@@ -94,7 +94,12 @@ class Accordion extends Component {
 	};
 
 	render() {
-		const { sections, wrapperId, showActionText } = this.props;
+		const {
+			sections,
+			wrapperId,
+			showActionText,
+			showHeader = true,
+		} = this.props;
 		return (
 			<div
 				className={classnames('accordion_wrapper', isMobile && 'mobile')}
@@ -108,6 +113,7 @@ class Accordion extends Component {
 						{...section}
 						isOpen={this.state.openSections.indexOf(index) > -1}
 						showActionText={showActionText}
+						showHeader={showHeader}
 					/>
 				))}
 			</div>

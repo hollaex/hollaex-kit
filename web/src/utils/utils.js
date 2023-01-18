@@ -1,4 +1,3 @@
-import React from 'react';
 import moment from 'moment';
 import momentJ from 'moment-jalaali';
 import math from 'mathjs';
@@ -65,14 +64,6 @@ export const getFormatTimestamp = (date, format) => {
 		return formatTimestampFarsi(date, format);
 	}
 	return formatTimestampGregorian(date, format);
-};
-
-export const getTimeHeader = (label, type) => {
-	return (
-		<div className="time-wrapper">
-			<p>{label}</p> <p className="type-color">{type}</p>
-		</div>
-	);
 };
 
 export const formatTimestamp = (date, format) => {

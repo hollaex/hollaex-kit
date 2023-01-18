@@ -1,0 +1,312 @@
+paths:
+  /health:
+    x-swagger-router-controller: public
+    get:
+      operationId: getHealth
+      description: Get health of server
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /constants:
+    x-swagger-router-controller: public
+    get:
+      operationId: getConstants
+      description: Get the system constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /network/constants:
+    x-swagger-router-controller: public
+    get:
+      operationId: getNetworkConstants
+      description: Get network constants such as pairs and currencies
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /kit:
+    x-swagger-router-controller: public
+    get:
+      operationId: getKitConfigurations
+      description: Get kit configurations
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /support:
+    x-swagger-router-controller: public
+    post:
+      operationId: sendSupportEmail
+      description: Send email to support
+      tags:
+        - Public
+      consumes:
+        - multipart/form-data
+      parameters:
+        - name: email
+          description: user email to contact
+          in: formData
+          required: true
+          type: string
+          format: email
+        - name: category
+          description: Category of the ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 64
+        - name: subject
+          description: Ticket issue subject
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+        - name: description
+          description: Description on the issue for ticket
+          in: formData
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /signup:
+    x-swagger-router-controller: user
+    post:
+      operationId: signUpUser
+      description: User sign up
+      tags:
+        - Public
+      parameters:
+        - name: signup
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify:
+    x-swagger-router-controller: user
+    get:
+      operationId: getVerifyUser
+      description: Get information of verification user, must provide email or verification_code. If you want to resend the email, provide email and resend query parameters
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          description: User's email
+          required: false
+          type: string
+        - name: resend
+          in: query
+          description: Resend email to user
+          required: false
+          type: boolean
+        - name: verification_code
+          in: query
+          description: Verification code
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            type: object
+            properties:
+              verification_code:
+                type: string
+              email:
+                type: string
+              message:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: verifyUser
+      description: User Verification
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - verification_code
+            properties:
+              email:
+                type: string
+              verification_code:
+                type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /login:
+    x-swagger-router-controller: user
+    post:
+      operationId: loginPost
+      description: Login with a particular role. If OTP is enabled, the user must provide an OTP code
+      tags:
+        - Public
+      parameters:
+        - name: authentication
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/UserAuthentication"
+      responses:
+        201:
+          description: Success
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /verify-token:
+    x-swagger-router-controller: user
+    get:
+      operationId: verifyToken
+      description: Verify token
+      tags:
+        - Public
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
+  /reset-password:
+    x-swagger-router-controller: user
+    get:
+      operationId: requestResetPassword
+      description: Request a code to reset password of a user
+      tags:
+        - Public
+      parameters:
+        - name: email
+          in: query
+          required: true
+          type: string
+        - name: captcha
+          in: query
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+    post:
+      operationId: resetPassword
+      description: Reset password of a user
+      tags:
+        - Public
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            $ref: "#/definitions/ResetPassword"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+  /confirm-change-password/{code}:
+    x-swagger-router-controller: user
+    get:
+      produces:
+        - text/html
+      operationId: confirmChangePassword
+      description: Confirm a change password request
+      tags:
+        - Public
+      parameters:
+        - name: code
+          in: path
+          required: true
+          type: string
+      responses:
+        301:
+          description: "301 redirect"
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"

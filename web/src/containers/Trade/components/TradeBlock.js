@@ -21,7 +21,6 @@ const TradeBlock = ({
 	pairData = {},
 	pair,
 	isLoggedIn,
-	activeTheme,
 	icons: ICONS,
 	tool,
 	toggleTool,
@@ -94,9 +93,7 @@ const TradeBlock = ({
 	);
 };
 
-const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
-});
+const mapStateToProps = () => ({});
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleTool: bindActionCreators(toggleTool, dispatch),

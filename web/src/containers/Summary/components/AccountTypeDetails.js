@@ -11,7 +11,6 @@ const AccountTypeDetails = ({
 	pairs,
 	config,
 	className = '',
-	activeTheme,
 	selectedAccount,
 	lastMonthVolume,
 	onFeesAndLimits,
@@ -37,7 +36,6 @@ const AccountTypeDetails = ({
 				coins={coins}
 				pairs={pairs}
 				config={config}
-				activeTheme={activeTheme}
 				account={currentAccount}
 				isAccountDetails={true}
 				onFeesAndLimits={onFeesAndLimits}
