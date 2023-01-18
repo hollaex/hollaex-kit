@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { ReactSVG } from 'react-svg';
 import {
@@ -37,7 +38,12 @@ import {
 import './Billing.scss';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import { getExchange } from '../AdminFinancials/action';
-import { Icon } from '@ant-design/compatible';
+import {
+	setSelectedExchangeItem,
+	setSelectedType,
+	setType,
+	setSelectedCrypto,
+} from '../../../actions/adminBillingActions';
 
 const { Option } = Select;
 
@@ -146,7 +152,18 @@ const columns = [
 		},
 	},
 ];
-const GeneralContent = ({ exchange, user }) => {
+const GeneralContent = ({
+	selectedCrypto,
+	exchange,
+	user,
+	setSelectedCrypto,
+	selectedExchangeItem,
+	selectedType,
+	type,
+	setSelectedExchangeItem,
+	setSelectedType,
+	setType,
+}) => {
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
 	const options = ['item', 'method', 'crypto', 'payment'];
@@ -156,9 +173,8 @@ const GeneralContent = ({ exchange, user }) => {
 		'Cryptocurrency',
 		'Credit Card',
 	];
-	const [type, setType] = useState('item');
-	const [selectedType, setSelectedType] = useState('crypto');
 	const [currency, setCurrency] = useState('usdt');
+	const [activeBreadCrumb, setActiveBreadCrumb] = useState(true);
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
@@ -170,7 +186,6 @@ const GeneralContent = ({ exchange, user }) => {
 	const [cryptoPayType, setCryptoPay] = useState('');
 	const [isAutomatedKYC, setIsAutomatedKYC] = useState(false);
 	const [showPayAddress, setShowPayAddress] = useState(false);
-	const [selectedExchangeItem, setSelectedExchangeItem] = useState('');
 
 	useEffect(() => {
 		getData();
@@ -193,8 +208,8 @@ const GeneralContent = ({ exchange, user }) => {
 	}, [selectedType]);
 
 	useEffect(() => {
-		const balanceAvailable =
-			balance[`${currency.toLowerCase()}_available`] || 0;
+		const balanceAvailable = 0;
+		// balance[`${currency?.toLowerCase()}_available`] || 0;
 		if (balanceAvailable && balanceAvailable) {
 			setOptions(payOptions);
 		} else {
@@ -202,10 +217,6 @@ const GeneralContent = ({ exchange, user }) => {
 			setOptions(optionData);
 		}
 	}, [balance, currency]);
-
-	const updateSelectedCoin = (coin) => {
-		setSelectedExchangeItem(coin);
-	};
 
 	const handleGetCoins = (coin, symbol) => {
 		return (
@@ -222,16 +233,15 @@ const GeneralContent = ({ exchange, user }) => {
 
 	const getData = async () => {};
 
-	const handleBreadcrumb = (name) => {
-		setType(name);
-		if (name === 'item') {
-			setModalWidth('85rem');
-		} else if (name === 'method') {
-			setModalWidth('65rem');
-		} else if (name === 'crypto') {
-			setModalWidth('65rem');
-		} else if (name === 'payment') {
-			setModalWidth('65rem');
+	const handleBreadcrumb = (name, index) => {
+		if (activeBreadCrumb) {
+			if (type === 'method' && index === 0) {
+				setType('item');
+				setModalWidth('85rem');
+			} else {
+				setType('method');
+				setModalWidth('65rem');
+			}
 		}
 	};
 
@@ -248,88 +258,6 @@ const GeneralContent = ({ exchange, user }) => {
 		}
 	};
 
-	const renderFooterImage = () => {
-		// const exchangePlans = ['basic', 'crypto', 'fiat'];
-		// if (isAutomatedKYC) {
-		//     return STATIC_ICONS['KYC_PLUGIN_ICON'];
-		// } else if (exchange.plan === 'boost' && invoiceData.item === 'boost') {
-		//     return STATIC_ICONS['DIY_BOOST_ICON'];
-		// } else if (!exchangePlans.includes(exchange.plan) && invoiceData.item !== 'boost') {
-		//     return STATIC_ICONS['DIY_ICON'];
-		// } else {
-		//     return STATIC_ICONS['CURRENT_PLAN_CLOUD_ICON'];
-		// }
-	};
-
-	const renderFooterInfo = () => {
-		// const exchangePlans = ['basic', 'crypto', 'fiat'];
-		// if (!exchangePlans.includes(exchange.plan)) {
-		//     if (type === 'boost' && invoiceData.item === 'boost') {
-		//         return (
-		//             <div>
-		//                 <div className="sub-title billing-package-text">DIY Boost</div>
-		//                 <span className="bodyContentSmall">HollaEx Yearly DIY Boost</span>
-		//             </div>
-		//         )
-		//     } else {
-		//         return (
-		//             <div>
-		//                 <div className="sub-title billing-package-text">{invoice.item}</div>
-		//                 <span className="bodyContentSmall">{invoice.description}</span>
-		//             </div>
-		//         )
-		//     }
-		// } else if (isAutomatedKYC && !is_active) {
-		//     return (
-		//         <div>
-		//             <div className="sub-title billing-package-text">Automated KYC</div>
-		//             <span className="bodyContentSmall">First time activation and {_get(invoice, 'meta.addon.count', '')} user verifications</span>
-		//         </div>
-		//     )
-		// } else if (is_active) {
-		//     return (
-		//         <div>
-		//             <div className="sub-title billing-package-text">Automated KYC</div>
-		//             <span className="bodyContentSmall">Charge {_get(invoice, 'meta.addon.count', '')} user verifications</span>
-		//         </div>
-		//     )
-		// } else {
-		//     return (
-		//         <div>
-		//             <div className="sub-title billing-package-text">{invoice.item}</div>
-		//             <span className="bodyContentSmall">{invoice.description}</span>
-		//         </div>
-		//     )
-		// }
-	};
-
-	const renderPrice = () => {
-		// let PriceValue = `${_get(invoice, 'currency', '').toUpperCase()} ${_get(invoice, 'amount', '')}`;
-		// if (invoice.method !== 'paypal' &&
-		//     invoice.method !== 'bank' &&
-		//     invoice.method !== 'stripe' &&
-		//     invoice.meta &&
-		//     invoice.meta.amount
-		// ) {
-		//     PriceValue = `${invoice.meta.currency.toUpperCase()} ${invoice.meta.amount}`;
-		// }
-		// if (isEdit || isAutomatedKYC) {
-		//     return (
-		//         <Fragment>
-		//             <div className="sub-title">Payment:</div>{' '}
-		//             <div>{PriceValue}</div>
-		//         </Fragment>
-		//     );
-		// } else {
-		//     return (
-		//         <Fragment>
-		//             <div className="sub-title">{isMonthly ? 'Monthly payment:' : 'Yearly payment:'}</div>{' '}
-		//             <div>{PriceValue}</div>
-		//         </Fragment>
-		//     );
-		// }
-	};
-
 	const renderFooter = () => {
 		return (
 			<div className="cloud-plan-wrapper">
@@ -343,11 +271,6 @@ const GeneralContent = ({ exchange, user }) => {
 					</h3>
 					<div className="cloud-box-container d-flex">
 						<div className="content-align d-flex">
-							{/* <img
-								src={renderFooterImage()}
-								alt="cloud-icon"
-								className="cloud-icon"
-							/> */}
 							<div className="card-icon">
 								<ReactSVG
 									src={STATIC_ICONS['CLOUD_BASIC']}
@@ -358,7 +281,6 @@ const GeneralContent = ({ exchange, user }) => {
 									className="cloud-icon"
 								/>
 							</div>
-							{renderFooterInfo()}
 						</div>
 						<div className="content-align d-flex seperator">
 							<img
@@ -427,7 +349,7 @@ const GeneralContent = ({ exchange, user }) => {
 		if (exchange.type === 'DIY') {
 			updatePlanType(
 				{ id: exchange.id, plan: selectedType, period: 'year' },
-				setType('method')
+				() => setType('method')
 			);
 			// setType('payment');
 		} else if (
@@ -472,7 +394,7 @@ const GeneralContent = ({ exchange, user }) => {
 				{options.map((name, inx) => {
 					return (
 						<Breadcrumb.Item
-							onClick={() => handleBreadcrumb(name)}
+							onClick={() => handleBreadcrumb(name, inx)}
 							key={inx}
 							className={name === type ? 'breadcrumb-item-active' : ''}
 						>
@@ -540,7 +462,7 @@ const GeneralContent = ({ exchange, user }) => {
 
 	const handlePayMethod = (method) => {
 		if (method === 'Cryptocurrency') {
-			updateSelectedCoin(method);
+			setSelectedExchangeItem(method);
 		} else {
 			setOpenPlanModal(false);
 		}
@@ -648,7 +570,7 @@ const GeneralContent = ({ exchange, user }) => {
 									return (
 										<>
 											<Radio
-												onChange={() => updateSelectedCoin(item.coin)}
+												onChange={() => setSelectedCrypto(item.coin)}
 												name={item.coin}
 												value={inx}
 											>
@@ -668,8 +590,8 @@ const GeneralContent = ({ exchange, user }) => {
 													item.coin
 												)}
 											</Radio>
-											{selectedExchangeItem &&
-												selectedExchangeItem === item.coin &&
+											{selectedCrypto &&
+												selectedCrypto === item.coin &&
 												handleGetCoins(item.coin, item.symbol)}
 										</>
 									);
@@ -700,11 +622,11 @@ const GeneralContent = ({ exchange, user }) => {
 							</div>
 							<div className="payment-details">
 								<span>
-									<h5>Selected Crypto :</h5> <p>{selectedExchangeItem}</p>
+									<h5>Selected Crypto :</h5> <p>{selectedCrypto}</p>
 								</span>
 								<span>
 									<h5> Required payment amount:</h5>
-									<p>{`1.3875 ${selectedExchangeItem}`} </p>
+									<p>{`1.3875 ${selectedCrypto}`} </p>
 								</span>
 								{showPayAddress ? null : (
 									<Button
@@ -770,11 +692,11 @@ const GeneralContent = ({ exchange, user }) => {
 	};
 
 	const handleNext = () => {
-		console.log('selectedExchangeItem', selectedExchangeItem);
 		if (type === 'item') {
 			setType('method');
 			storePlanType();
 		} else if (type === 'method') {
+			console.log('selectedExchangeItem', selectedExchangeItem);
 			if (selectedExchangeItem === 'Cryptocurrency') setType('crypto');
 			else setOpenPlanModal(false);
 		} else if (type === 'crypto') {
@@ -783,6 +705,7 @@ const GeneralContent = ({ exchange, user }) => {
 			setOpenPlanModal(false);
 		}
 		setModalWidth('65rem');
+		setActiveBreadCrumb(true);
 	};
 
 	const handleBack = () => {
@@ -882,4 +805,16 @@ const GeneralContent = ({ exchange, user }) => {
 	);
 };
 
-export default GeneralContent;
+const mapStateToProps = (store) => ({
+	selectedExchangeItem: store.admin.selectedExchangeItem,
+	selectedType: store.admin.selectedType,
+	type: store.admin.type,
+	selectedCrypto: store.admin.selectedCrypto,
+});
+
+export default connect(mapStateToProps, {
+	setSelectedExchangeItem,
+	setSelectedType,
+	setType,
+	setSelectedCrypto,
+})(GeneralContent);

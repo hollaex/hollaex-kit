@@ -149,9 +149,9 @@ const PlanStructure = ({
 }) => {
 	const { type, background } = typeData;
 	const planPriceData = priceData[dataType.type];
+	// let currentPlan = planData[type];
 
 	return (
-		// <div className={ selectedType === type ? `${className} plan-container opacity` :`${className} plan-container`}>
 		<div className={`${className} plan-container`}>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
@@ -164,9 +164,7 @@ const PlanStructure = ({
 						style={{ backgroundImage: `url(${background})` }}
 					>
 						<h2 className="type-center">{type}</h2>
-						<h6 className="text-center">
-							Get started fast with a basic test exchange
-						</h6>
+						<h6 className="text-center">{planData[type].description}</h6>
 					</div>
 				</div>
 				<div className="inner-container">
