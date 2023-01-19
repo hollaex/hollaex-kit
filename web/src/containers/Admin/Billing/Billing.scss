@@ -3,10 +3,6 @@ p {
 }
 
 .card-boder {
-	// width: fit-content;
-	// border: 1px solid white;
-	// border-radius: 5px;
-	// width: 25%;
 	margin: 2rem 0rem;
 	border: 1px solid #a8a8b1;
 	border-radius: 10px;
@@ -311,10 +307,6 @@ button:focus {
 				}
 			}
 
-			// .active-plan-container {
-			//  height: 65rem;
-			// }
-
 			.plan-container {
 				display: flex;
 				flex-direction: column;
@@ -436,10 +428,6 @@ button:focus {
 			margin-right: 1rem;
 		}
 	}
-
-	// .payment-button{
-
-	// }
 
 	.subscription-container {
 		display: flex;
@@ -706,11 +694,6 @@ button:focus {
 	}
 }
 
-// .select-field {
-// 	width: 30rem;
-// 	margin-top: 5px;
-// }
-
 .crypto-payment-container {
 	padding: 1rem 2rem;
 
@@ -775,21 +758,34 @@ button:focus {
 					padding-left: 2px;
 					padding-top: 0px !important;
 				}
+
+				.ant-btn {
+					color: #ffffff !important;
+					background: #101a78 !important;
+				}
+
+				.ant-input {
+					background-color: #000 !important;
+					color: #ffffff !important;
+				}
 			}
 		}
 
 		.scanner-container {
-			width: fit-content;
-			background: black;
+			width: 9rem;
+			// background: black;
 
 			canvas {
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				border: 1px solid #ffffff;
 			}
 
 			div {
-				font-size: 12px;
+				// font-size: 12px;
+				font-size: 11px;
+				margin-top: 1rem;
 			}
 		}
 

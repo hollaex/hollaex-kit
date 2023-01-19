@@ -23,7 +23,6 @@ import {
 	InfoCircleOutlined,
 	CopyOutlined,
 } from '@ant-design/icons';
-
 import { STATIC_ICONS } from 'config/icons';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import Subscription from 'containers/Admin/Billing/subscription';
@@ -35,15 +34,18 @@ import {
 	getPrice,
 	setExchangePlan,
 	requestStoreInvoice,
-} from 'containers/Admin/Billing/action';
-import { getExchange } from 'containers/Admin/AdminFinancials/action';
+} from './action';
+import './Billing.scss';
+import { getExchange } from '../AdminFinancials/action';
 import {
 	setSelectedPayment,
 	setSelectedType,
-	setType,
+	setExchangePlanType,
 	setSelectedCrypto,
 	setCryptoPaymentType,
 } from 'actions/adminBillingActions';
+import EnterpriseForm from '../EnterPriseForm';
+import { planData } from './planStructure';
 import './Billing.scss';
 
 const { Option } = Select;
@@ -166,10 +168,10 @@ const GeneralContent = ({
 	setSelectedCrypto,
 	selectedPayment,
 	selectedType,
-	type,
 	setSelectedPayment,
 	setSelectedType,
-	setType,
+	exchangePlanType,
+	setExchangePlanType,
 	isAutomatedKYC,
 }) => {
 	const balance = user?.balance;
@@ -187,6 +189,7 @@ const GeneralContent = ({
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
 	const [invoice, setInvoice] = useState({});
 	const [loading, setLoading] = useState(false);
+	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -209,6 +212,8 @@ const GeneralContent = ({
 		}
 	}, [balance, selectedCrypto]);
 
+	const submitEnterprise = async (formProps) => {};
+
 	const renderCoins = (coin, symbol) => {
 		return (
 			<div className="get-coins">
@@ -225,23 +230,15 @@ const GeneralContent = ({
 	const onHandleBreadcrumb = (name) => {
 		if (activeBreadCrumb) {
 			if (
-				type !== 'item' &&
-				((type === 'method' && name === 'item') ||
-					(type === 'crypto' && name !== 'payment') ||
-					type === 'payment')
+				exchangePlanType !== 'item' &&
+				((exchangePlanType === 'method' && name === 'item') ||
+					(exchangePlanType === 'crypto' && name !== 'payment') ||
+					exchangePlanType === 'payment')
 			) {
-				setType(name);
+				setExchangePlanType(name);
 			}
-			// if (type !== 'item') {
-			// 	if (type === 'method' && name === 'item') {
-			// 	} else if (type === 'crypto' && name !== 'payment') {
-			// 		setType(name);
-			// 	} else if (type === 'payment') {
-			// 		setType(name);
-			// 	}
-			// }
 
-			if (name === 'item' || type === 'item') {
+			if (name === 'item' || exchangePlanType === 'item') {
 				setModalWidth('85rem');
 			} else {
 				setModalWidth('65rem');
@@ -281,7 +278,6 @@ const GeneralContent = ({
 					default:
 						break;
 				}
-
 				const res = requestStoreInvoice(invoice?.data?.id, { method });
 				if (res.data) {
 					switch (selectedPayment) {
@@ -409,7 +405,7 @@ const GeneralContent = ({
 			if (exchange && exchange.id && params.plan !== 'fiat') {
 				const resInvoice = await getNewExchangeBilling(exchange.id);
 				if (resInvoice.data) {
-					// setState({ pendingInvoice: resInvoice.data });
+					// setInvoceData({ pendingInvoice: resInvoice.data });
 					// getInvoice();
 				}
 			}
@@ -430,24 +426,25 @@ const GeneralContent = ({
 		if (exchange.type === 'DIY') {
 			updatePlanType(
 				{ id: exchange.id, plan: selectedType, period: 'year' },
-				() => setType('method')
+				() => setExchangePlanType('method')
 			);
-			// setType('payment');
+			// setExchangePlanType('payment');
 		} else if (
 			selectedType === 'fiat' &&
+			exchange?.business_info &&
 			Object.keys(exchange.business_info)?.length
 		) {
-			// setFiatCompleted(true);
+			setFiatCompleted(true);
 		} else if (selectedType === 'fiat') {
 			updatePlanType(
 				{
 					id: exchange.id,
 					plan: selectedType,
 					period: isMonthly ? 'month' : 'year',
-				},
-				() => setType('enterPrise')
+				}
+				// () => setExchangePlanType('enterPrise')
 			);
-			// setType("enterPrise")
+			setExchangePlanType('fiat');
 		} else {
 			updatePlanType(
 				{
@@ -455,11 +452,11 @@ const GeneralContent = ({
 					plan: selectedType,
 					period: isMonthly ? 'month' : 'year',
 				},
-				() => setType('method')
+				() => setExchangePlanType('method')
 			);
-			setType('method');
+			setExchangePlanType('method');
 			setModalWidth('65rem');
-			// setType('payment')
+			// setExchangePlanType('payment')
 		}
 	};
 
@@ -475,7 +472,9 @@ const GeneralContent = ({
 						<Breadcrumb.Item
 							onClick={() => onHandleBreadcrumb(name)}
 							key={inx}
-							className={name === type ? 'breadcrumb-item-active' : ''}
+							className={
+								name === exchangePlanType ? 'breadcrumb-item-active' : ''
+							}
 						>
 							{name === 'crypto'
 								? selectedPayment === 'Cryptocurrency' && 'Crypto'
@@ -490,7 +489,7 @@ const GeneralContent = ({
 	const handleOpenModal = () => {
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
-		setType('item');
+		setExchangePlanType('item');
 		setSelectedPayment('');
 		setSelectedType('crypto');
 	};
@@ -521,9 +520,7 @@ const GeneralContent = ({
 								<p className="white-text">Cloud: </p>
 								<p className="cloud-type">{selectedType}</p>
 							</div>
-							<p className="pb-5">
-								Get started fast with a basic test exchange
-							</p>
+							<p className="pb-5">{planData?.[selectedType]?.description}</p>
 						</div>
 					</div>
 				</div>
@@ -563,7 +560,7 @@ const GeneralContent = ({
 	};
 
 	const renderContent = () => {
-		switch (type) {
+		switch (exchangePlanType) {
 			case 'item':
 				return (
 					<div>
@@ -603,6 +600,14 @@ const GeneralContent = ({
 										/>
 									);
 								})}
+							</div>
+							<div>
+								{' '}
+								{isFiatFormCompleted ? (
+									<div className="success-msg">
+										You've already submitted a Fiat Ramp form.
+									</div>
+								) : null}
 							</div>
 							<div className="footer">
 								<p>
@@ -778,21 +783,27 @@ const GeneralContent = ({
 						{renderFooter()}
 					</div>
 				);
+			case 'fiat':
+				return (
+					<div className="enterprise-form-wrapper">
+						<EnterpriseForm onSubmitEnterprise={submitEnterprise} />
+					</div>
+				);
 			default:
 				return <div />;
 		}
 	};
 
 	const handleNext = () => {
-		if (type === 'item') {
-			setType('method');
+		if (exchangePlanType === 'item') {
+			setExchangePlanType('method');
 			storePlanType();
-		} else if (type === 'method') {
-			if (selectedPayment === 'cryptoCurrency') setType('crypto');
+		} else if (exchangePlanType === 'method') {
+			if (selectedPayment === 'cryptoCurrency') setExchangePlanType('crypto');
 			else setOpenPlanModal(false);
-		} else if (type === 'crypto') {
-			setType('payment');
-		} else if (type === 'payment') {
+		} else if (exchangePlanType === 'crypto') {
+			setExchangePlanType('payment');
+		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
 		}
 		setModalWidth('65rem');
@@ -800,14 +811,14 @@ const GeneralContent = ({
 	};
 
 	const handleBack = () => {
-		if (type === 'item') {
+		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
-		} else if (type === 'method') {
-			setType('item');
-		} else if (type === 'crypto') {
-			setType('method');
-		} else if (type === 'payment') {
-			setType('crypto');
+		} else if (exchangePlanType === 'method') {
+			setExchangePlanType('item');
+		} else if (exchangePlanType === 'crypto') {
+			setExchangePlanType('method');
+		} else if (exchangePlanType === 'payment') {
+			setExchangePlanType('crypto');
 		}
 		setModalWidth('85rem');
 	};
@@ -843,8 +854,18 @@ const GeneralContent = ({
 						</Button>
 					</div>
 				);
-			// case 'paypal':
-			//     return null;
+			case 'paypal':
+				return (
+					<div className={`${buttontype}`}>
+						<Button block type="primary" onClick={handleBack}>
+							Back
+						</Button>
+						<div className="btn-divider" />
+						<Button block type="primary" onClick={storePaymentMethod()}>
+							Next
+						</Button>
+					</div>
+				);
 			// case 'stripe':
 			//     return null;
 			// case 'bank':
@@ -961,7 +982,7 @@ const GeneralContent = ({
 				onCancel={() => setOpenPlanModal(false)}
 				footer={null}
 			>
-				{renderModelContent()}
+				{exchangePlanType !== 'fiat' && renderModelContent()}
 				{renderContent()}
 			</Modal>
 
@@ -992,7 +1013,7 @@ const GeneralContent = ({
 const mapStateToProps = (store) => ({
 	selectedPayment: store.admin.selectedPayment,
 	selectedType: store.admin.selectedType,
-	type: store.admin.type,
+	exchangePlanType: store.admin.exchangePlanType,
 	selectedCrypto: store.admin.selectedCrypto,
 	isAutomatedKYC: store.admin.isAutomatedKYC,
 });
@@ -1000,6 +1021,6 @@ const mapStateToProps = (store) => ({
 export default connect(mapStateToProps, {
 	setSelectedPayment,
 	setSelectedType,
-	setType,
+	setExchangePlanType,
 	setSelectedCrypto,
 })(GeneralContent);
