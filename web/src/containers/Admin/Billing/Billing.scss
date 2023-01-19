@@ -532,6 +532,10 @@ button:focus {
 			color: #ffffff;
 		}
 
+		.ant-radio-disabled .ant-radio-inner {
+			opacity: 0.3;
+		}
+
 		.danger {
 			color: #f83e18 !important;
 		}

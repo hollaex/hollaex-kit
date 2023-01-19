@@ -328,9 +328,15 @@ export const _FetchDash = (
 	data = null,
 	baseURL = NETWORK_API_URL
 ) => {
+	const tempToken =
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjI4MjYsImVtYWlsIjoicmFtKzQyQGJpdGhvbGxhLmNvbSJ9LCJzY29wZXMiOlsidXNlciIsIm9wZXJhdG9yIl0sImlwIjoiNTkuOTMuMzIuMTI3IiwiaXNzIjoiYml0aG9sbGEuY29tIiwiaWF0IjoxNjc0MTE0OTkzLCJleHAiOjE2NzQyMDEzOTN9.Ob7Ep6MA-jj06QlpLeUYC6DjxOSxgwmUk8fLX6d_TBA';
 	return new Promise((resolve, reject) => {
 		const ID_TOKEN = getDashToken();
-		if (ID_TOKEN) {
+		if (url.includes('plan') || url.includes('pay')) {
+			axios.defaults.headers.post['Content-Type'] = 'application/json';
+			axios.defaults.headers.common['Authorization'] = `Bearer ${tempToken}`;
+		} else if (ID_TOKEN) {
+			console.log('ID_TOKEN', ID_TOKEN);
 			axios.defaults.headers.post['Content-Type'] = 'application/json';
 			axios.defaults.headers.common['Authorization'] = `Bearer ${ID_TOKEN}`;
 		}

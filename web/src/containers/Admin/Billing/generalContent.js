@@ -256,6 +256,22 @@ const GeneralContent = ({
 	};
 
 	const storePaymentMethod = async () => {
+		let invoice = {
+			id: 524,
+			amount: 30000,
+			currency: 'usd',
+			item: 'fiat',
+			description: 'HollaEx Yearly Cloud Hosting',
+			is_paid: false,
+			is_overpaid: false,
+			is_underpaid: false,
+			expiry: '2023-01-26T11:11:34.021Z',
+			method: '',
+			meta: { exchange_id: 1144 },
+			created_at: '2023-01-19T11:11:34.056Z',
+			updated_at: '2023-01-19T11:15:42.657Z',
+			user_id: 2826,
+		};
 		try {
 			if (
 				invoice &&
@@ -268,63 +284,19 @@ const GeneralContent = ({
 				let method = '';
 				switch (selectedPayment) {
 					case 'paypal':
+						setOpenPlanModal(false);
 					case 'bank':
 					case 'stripe':
-						method = selectedPayment;
+						setOpenPlanModal(false);
 						break;
 					case 'cryptoCurrency':
-						method = selectedCrypto;
+						setOpenPlanModal(false);
 						break;
 					default:
 						break;
 				}
-				const res = requestStoreInvoice(invoice?.data?.id, { method });
-				if (res.data) {
-					switch (selectedPayment) {
-						case 'paypal':
-							window.location.replace(res.data.meta.redirect_url);
-							message.success('Redirecting to the paypal');
-							setInvoice(res.data);
-							setLoading(false);
-							// onCancel();
-							break;
-						case 'stripe':
-							window.location.replace(res.data.meta.redirect_url);
-							message.success('Redirecting to the payment');
-							setInvoice(res.data);
-							setLoading(false);
-							// onCancel();
-							break;
-						case 'bank':
-							setInvoice(res.data);
-							// setNextType(selectedPayment);
-							break;
-
-						case 'cryptoCurrency':
-							if (res.data.method === 'xht' && res.data.is_paid) {
-								// setNextType('xhtPayment');
-							} else if (res.data.method === 'xht' && !res.data.is_paid) {
-								// setNextType('xhtInSufficient');
-							} else {
-								// setNextType('cryptoPayment');
-							}
-							setInvoice({
-								...invoice,
-								method,
-								meta: { ...invoice.meta, ...res.data },
-							});
-							// setCurrencyAddress(res.data);
-							break;
-						default:
-							break;
-					}
-					getInvoice();
-					setTimeout(() => {
-						setLoading(false);
-					}, 1000);
-				}
 			} else if (selectedPayment === 'cryptoCurrency') {
-				// setNextType(selectedPayment);
+				setExchangePlanType('crypto');
 			}
 		} catch (error) {
 			console.error(error);
@@ -400,13 +372,18 @@ const GeneralContent = ({
 	};
 
 	const updatePlanType = async (params, callback = () => {}) => {
+		const parObj = {
+			id: 1144,
+			period: 'year',
+			plan: 'fiat',
+		};
 		try {
-			const res = await setExchangePlan(params);
+			const res = await setExchangePlan(parObj);
 			if (exchange && exchange.id && params.plan !== 'fiat') {
-				const resInvoice = await getNewExchangeBilling(exchange.id);
+				const resInvoice = await getNewExchangeBilling(1144);
 				if (resInvoice.data) {
 					// setInvoceData({ pendingInvoice: resInvoice.data });
-					// getInvoice();
+					getInvoice();
 				}
 			}
 			if (res.data) {
@@ -456,6 +433,7 @@ const GeneralContent = ({
 			);
 			setExchangePlanType('method');
 			setModalWidth('65rem');
+			setActiveBreadCrumb(true);
 			// setExchangePlanType('payment')
 		}
 	};
@@ -477,7 +455,7 @@ const GeneralContent = ({
 							}
 						>
 							{name === 'crypto'
-								? selectedPayment === 'Cryptocurrency' && 'Crypto'
+								? selectedPayment === 'cryptoCurrency' && 'Crypto'
 								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
 					);
@@ -544,12 +522,7 @@ const GeneralContent = ({
 		return await navigator.clipboard.writeText(qrcode);
 	};
 
-	const handlePayMethod = (method) => {
-		setSelectedPayment(method);
-	};
-
 	const checkDisabled = (method) => {
-		console.log('checkDisabled', method);
 		if (
 			method === 'bank' ||
 			(selectedType === 'basic' && method === 'paypal')
@@ -634,7 +607,7 @@ const GeneralContent = ({
 										<Radio
 											value={opt.method}
 											disabled={checkDisabled(opt.method)}
-											onChange={() => handlePayMethod(opt.method)}
+											onChange={() => setSelectedPayment(opt.method)}
 										>
 											{opt.method === 'cryptoCurrency' ? (
 												<>
@@ -770,7 +743,9 @@ const GeneralContent = ({
 										</div>
 										<div className="scanner-container">
 											<QR value={''} size={100} />
-											<div className="bodyContentSmall">Scan this QR code</div>
+											<div className="bodyContentSmall">
+												Scannable QR code of payment address
+											</div>
 										</div>
 									</div>
 									<p>
@@ -849,7 +824,7 @@ const GeneralContent = ({
 							Back
 						</Button>
 						<div className="btn-divider" />
-						<Button block type="primary" onClick={storePaymentMethod()}>
+						<Button block type="primary" onClick={storePaymentMethod}>
 							Next
 						</Button>
 					</div>
@@ -866,21 +841,9 @@ const GeneralContent = ({
 						</Button>
 					</div>
 				);
-			// case 'stripe':
-			//     return null;
-			// case 'bank':
-			//     return (
-			//         <div className={`${buttontype}`}>
-			//             <Button block type="primary" onClick={handleBack}>Back</Button>
-			//             <div className='btn-divider' />
-			//             <Button block type="primary" onClick={handleNext}>
-			//                 Proceed
-			//             </Button>
-			//         </div>
-			//     );
 			case 'cryptoCurrency':
 				return (
-					<div className="d-flex">
+					<div className={`${buttontype}`}>
 						<Button block type="primary" onClick={handleBack}>
 							Back
 						</Button>
@@ -890,49 +853,6 @@ const GeneralContent = ({
 						</Button>
 					</div>
 				);
-			// case 'cryptoPayment':
-			//     const balanceAvailable = balance[`${currency.toLowerCase()}_available`] || 0;
-			//     const paymentAmount = currencyData.amount || 0;
-			//     return (
-			//         <div className='d-flex'>
-			//             <Button block type="primary" onClick={handleBack}>
-			//                 Back
-			//             </Button>
-			//             <div className='btn-divider' />
-			//             {cryptoPayType === "pay" ?
-			//                 <Button
-			//                     block type="primary"
-			//                     disabled={cryptoPayType === 'pay' && (!balanceAvailable || balanceAvailable < paymentAmount || loading)}
-			//                     onClick={handleNext}>
-			//                     {cryptoPayType === 'pay' ? 'Proceed' : 'Yes, I have sent the crypto. Continue'}
-			//                 </Button>
-			//                 : <Button block type="primary" onClick={onClose}>
-			//                     Done
-			//                 </Button>
-			//             }
-			//         </div>
-			//     );
-			// case 'xhtPayment':
-			//     return (
-			//         <Button block type="primary" onClick={handleNext}>Confirm payment</Button>
-			//     );
-			// case 'xhtInSufficient':
-			//     return (
-			//         <Button block type="primary" onClick={() => history.push('/credit')}>Go to XHT Balance</Button>
-			//     );
-			// case 'confirmation':
-			//     return (
-			//         <div className={`${type}`}>
-			//             <Button block type="primary" onClick={handleBack}>Back</Button>
-			//             <div className="btn-divider" />
-			//             <Button block type="primary" onClick={onCancel}>Okay</Button>
-			//         </div>
-			//     );
-			// case 'payment-confirm':
-			// case 'kyc-payment-confirm':
-			//     return (
-			//         <Button block type="primary" onClick={onCancel}>Okay</Button>
-			//     );
 			default:
 				return null;
 		}
@@ -982,7 +902,7 @@ const GeneralContent = ({
 				onCancel={() => setOpenPlanModal(false)}
 				footer={null}
 			>
-				{exchangePlanType !== 'fiat' && renderModelContent()}
+				{renderModelContent()}
 				{renderContent()}
 			</Modal>
 
