@@ -6,6 +6,7 @@ import { CaretLeftOutlined } from '@ant-design/icons';
 import { Layout, Menu, Row, Col, Spin, message, Tooltip } from 'antd';
 import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
+import MobileDetect from 'mobile-detect';
 
 import { PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
@@ -16,15 +17,13 @@ import {
 	isSupervisor,
 	isAdmin,
 	getTokenTimestamp,
-} from '../../../utils/token';
-import { checkUserSessionExpired } from '../../../utils/utils';
-import {
-	getExchangeInitialized,
-	getSetupCompleted,
-} from '../../../utils/initialize';
-import { logout } from '../../../actions/authAction';
-import { getMe, setMe } from '../../../actions/userAction';
-import { setPairsData } from '../../../actions/orderbookAction';
+	checkRole,
+} from 'utils/token';
+import { checkUserSessionExpired } from 'utils/utils';
+import { getExchangeInitialized, getSetupCompleted } from 'utils/initialize';
+import { logout } from 'actions/authAction';
+import { getMe, setMe } from 'actions/userAction';
+import { setPairsData } from 'actions/orderbookAction';
 import {
 	setPairs,
 	changePair,
@@ -36,17 +35,14 @@ import {
 	// requestAvailPlugins,
 	requestInitial,
 	requestConstant,
-} from '../../../actions/appActions';
-import { DASH_TOKEN_KEY, SESSION_TIME } from '../../../config/constants';
+} from 'actions/appActions';
+import { DASH_TOKEN_KEY, SESSION_TIME } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
-import { checkRole } from '../../../utils/token';
-
-import MobileDetect from 'mobile-detect';
 import MobileSider from './mobileSider';
 import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
-import { requestMyPlugins } from '../Plugins/action';
+import { requestMyPlugins } from 'containers/Admin/Plugins/action';
 import {
 	setAllPairs,
 	setCoins,
@@ -186,23 +182,14 @@ class AppWrapper extends React.Component {
 		}
 	}
 
-	// getAssets = async () => {
-	// 	try {
-	// 		const res = await getConstants();
-	// 		const { coins, pairs } = res.data;
-	// 		this.props.setCoins(Object.values(coins));
-
-	// 		this.props.setAllPairs(Object.values(pairs));
-	// 	} catch (error) {
-	// 		throw error;
-	// 	}
-	// };
-
 	getData = async () => {
-		await this.getDashToken();
+		const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
 		await this.getExchange();
 		await this.getCoins();
 		await this.getPairs();
+		if (!DASH_TOKEN) {
+			await this.getDashToken();
+		}
 	};
 
 	getDashToken = async () => {

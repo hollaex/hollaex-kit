@@ -16,6 +16,8 @@ export const setToken = (token) => {
 export const removeToken = () => {
 	localStorage.removeItem(TOKEN_KEY);
 	localStorage.removeItem(TOKEN_TIME_KEY);
+	localStorage.removeItem(DASH_TOKEN_KEY);
+	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
 };
 
 export const getTokenTimestamp = () => {

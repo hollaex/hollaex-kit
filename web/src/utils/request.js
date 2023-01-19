@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
-import { API_URL, NETWORK_API_URL } from '../config/constants';
+import { API_URL } from '../config/constants';
 
-import { getToken, getDashToken } from './token';
+import { getToken } from './token';
 
 /**
  * Parses the JSON returned by a network request
@@ -54,10 +54,7 @@ export const requestAuthenticated = (
 	apiUrl,
 	method = 'GET'
 ) => {
-	const { isDashRequest, ...params } = paramOptions;
-	const TOKEN = isDashRequest ? getDashToken() : getToken();
-	const API_Url = isDashRequest ? NETWORK_API_URL : apiUrl;
-
+	const TOKEN = getToken();
 	const options = {
 		method,
 		headers: headers
@@ -69,9 +66,9 @@ export const requestAuthenticated = (
 					'Content-Type': 'application/json',
 					authorization: `Bearer ${TOKEN}`,
 			  },
-		...params,
+		...paramOptions,
 	};
-	return request(url, options, API_Url);
+	return request(url, options, apiUrl);
 };
 
 /**
@@ -83,7 +80,6 @@ export const requestAuthenticated = (
  *
  * @return {object}           The response data
  */
-
 const request = (url, options, apiUrl = API_URL) => {
 	return fetch(`${apiUrl}${url}`, options)
 		.then(checkStatus)
