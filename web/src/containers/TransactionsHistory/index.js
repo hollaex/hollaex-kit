@@ -166,7 +166,6 @@ class TransactionsHistory extends Component {
 		} else if (temp && temp.type && temp.type === 'closed') {
 			open = false;
 		}
-		this.generateHeaders();
 		switch (activeTab) {
 			case 1:
 				getOrdersHistory(RECORD_LIMIT, 1, { ...temp, open });

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { SubmissionError } from 'redux-form';
-import { message, Spin } from 'antd';
+import { Button, message, Spin } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 import {
@@ -145,7 +145,12 @@ const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {
 	}
 };
 
-const PluginConfigureForm = ({ selectedPlugin, requestPlugin, restart }) => {
+const PluginConfigureForm = ({
+	selectedPlugin,
+	requestPlugin,
+	restart,
+	handleStep = () => {},
+}) => {
 	const [isLoading, setLoading] = useState(true);
 	const [metaData, setMetaData] = useState({});
 	const getMetaData = useCallback(() => {
@@ -173,21 +178,33 @@ const PluginConfigureForm = ({ selectedPlugin, requestPlugin, restart }) => {
 	}
 	return (
 		<div className="config-wrapper">
-			<div className="d-flex">
-				<img
-					src={
-						selectedPlugin.icon
-							? selectedPlugin.icon
-							: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
-					}
-					alt="plugin-icons"
-					className="plugins-icon"
-				/>
-				<div className="my-5 mx-3">
-					<h2>{metaData.name}</h2>
-					<div>
-						<b>Version:</b> {metaData.version}
+			<div className="d-flex justify-content-between w-50">
+				<div className="d-flex">
+					<img
+						src={
+							selectedPlugin.icon
+								? selectedPlugin.icon
+								: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+						}
+						alt="plugin-icons"
+						className="plugins-icon"
+					/>
+					<div className="my-5 mx-3">
+						<h2>{metaData.name}</h2>
+						<div>
+							<b>Version:</b> {metaData.version}
+						</div>
 					</div>
+				</div>
+				<div className="mt-5">
+					<Button
+						type={'primary'}
+						size="large"
+						className={'green-btn w-100'}
+						onClick={() => handleStep(1)}
+					>
+						Manually upgrade
+					</Button>
 				</div>
 			</div>
 			<div>{renderContent(selectedPlugin, setMetaData, metaData, restart)}</div>

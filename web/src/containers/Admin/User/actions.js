@@ -251,3 +251,23 @@ export const updateIdData = (body, id) => {
 	};
 	return requestAuthenticated(`/admin/user?user_id=${id}`, options);
 };
+
+export const getUserAffiliation = (user_id) => {
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(
+		`/admin/user/affiliation?user_id=${user_id}`,
+		options
+	);
+};
+
+export const getUserReferer = (user_id) => {
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(
+		`/admin/user/referer?user_id=${user_id}`,
+		options
+	);
+};
