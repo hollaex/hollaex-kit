@@ -92,7 +92,7 @@ export const renderResendContent = (renderData, onOpenModal) => {
 		!renderData.status &&
 		!renderData.dismissed &&
 		!renderData.rejected &&
-		!renderData.processing
+		renderData.waiting
 	) {
 		return (
 			<div className="d-flex validate-wrapper">
