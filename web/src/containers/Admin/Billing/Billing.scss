@@ -741,6 +741,7 @@ button:focus {
 			border: 1px solid white;
 			padding: 1rem;
 			display: flex;
+			background: #101a78 !important;
 
 			.qr-code-wrapper {
 				display: flex;
@@ -758,16 +759,16 @@ button:focus {
 					padding-left: 2px;
 					padding-top: 0px !important;
 				}
+			}
 
-				.ant-btn {
-					color: #ffffff !important;
-					background: #101a78 !important;
-				}
+			.ant-btn {
+				color: #ffffff !important;
+				background: #101a78 !important;
+			}
 
-				.ant-input {
-					background-color: #000 !important;
-					color: #ffffff !important;
-				}
+			.ant-input {
+				background-color: #000 !important;
+				color: #ffffff !important;
 			}
 		}
 
