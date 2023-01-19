@@ -1,6 +1,7 @@
 import PhoneNumber from 'awesome-phonenumber';
 import { DEFAULT_LANGUAGE, THEME_DEFAULT } from '../config/constants';
 import { constructSettings } from '../utils/utils';
+import { ACTION_KEYS } from 'actions/userAction';
 
 const USER_DATA_KEYS = [
 	'full_name',
@@ -26,6 +27,16 @@ const INITIAL_ADDRESS_OBJECT = {
 	fetching: false,
 	success: false,
 	error: false,
+};
+
+const INITIAL_API_OBJECT = {
+	data: [],
+	count: 0,
+	loading: false,
+	fetched: false,
+	page: 1,
+	isRemaining: false,
+	error: '',
 };
 
 const extractuserData = (data) => {
@@ -126,6 +137,9 @@ const INITIAL_STATE = {
 	is_hap: false,
 	meta: {},
 };
+
+const joinData = (stateData = [], payloadData = []) =>
+	stateData.concat(payloadData);
 
 export default function reducer(state = INITIAL_STATE, action) {
 	switch (action.type) {
@@ -468,15 +482,40 @@ export default function reducer(state = INITIAL_STATE, action) {
 					error: action.payload.response,
 				},
 			};
-		case 'REFERRAL_COUNT_FULFILLED':
+		case ACTION_KEYS.REFERRAL_COUNT_PENDING: {
+			const { page = 1 } = action.payload;
+			const data = page > 1 ? state.affiliation.data : INITIAL_API_OBJECT.data;
 			return {
 				...state,
-				affiliation: action.payload,
+				affiliation: {
+					...INITIAL_API_OBJECT,
+					loading: true,
+					data,
+				},
 			};
-		case 'REFERRAL_COUNT_REJECTED':
+		}
+		case ACTION_KEYS.REFERRAL_COUNT_FULFILLED:
 			return {
 				...state,
-				affiliation: {},
+				affiliation: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					count: action.payload.count,
+					page: action.payload.page,
+					isRemaining: action.payload.isRemaining,
+					data: joinData(state.affiliation.data, action.payload.data),
+				},
+			};
+		case ACTION_KEYS.REFERRAL_COUNT_REJECTED:
+			return {
+				...state,
+				affiliation: {
+					...INITIAL_API_OBJECT,
+					loading: false,
+					fetched: true,
+					error: action.payload,
+				},
 			};
 		case 'LOGOUT':
 			return INITIAL_STATE;

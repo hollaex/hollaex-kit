@@ -1163,7 +1163,11 @@
 		"INFO_TEXT": "Refer your friends by giving out this link and receive benefits by onboarding other people.",
 		"COPY_FIELD_LABEL": "Share the link below with friends and earn commissions:",
 		"REFERRED_USER_COUT": "You have referred {0} users",
-		"COPY_LINK_BUTTON": "COPY REFERRAL LINK"
+		"COPY_LINK_BUTTON": "COPY REFERRAL LINK",
+		"VIEW": "view",
+		"TABLE_TITLE": "All successful referrals",
+		"USER": "User / email",
+		"TIME": "Time of sign up"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "To start trading you must login",

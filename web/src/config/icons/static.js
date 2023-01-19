@@ -166,6 +166,7 @@ const icons = {
 	EXCHANGE_LOGO_LIGHT_THEME:
 		'/assets/images/default-exchange-logo-light-theme.svg',
 	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
+	MANUAL_PLUGIN_UPGRADE: '/assets/images/manual-plugin-upgrade.svg',
 };
 
 export default icons;
