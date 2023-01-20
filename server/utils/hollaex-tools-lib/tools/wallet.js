@@ -736,6 +736,7 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
+				format,
 				opts
 			);
 		} else if (type === 'withdrawal') {
@@ -754,6 +755,7 @@ const getUserTransactionsByKitId = (
 				endDate,
 				transactionId,
 				address,
+				format,
 				opts
 			);
 		}
@@ -873,6 +875,7 @@ const getExchangeDeposits = (
 	endDate,
 	transactionId,
 	address,
+	format,
 	opts = {
 		additionalHeaders: null
 	}
@@ -893,6 +896,7 @@ const getExchangeDeposits = (
 		endDate,
 		transactionId,
 		address,
+		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
 	})
 		.then(async (deposits) => {
@@ -903,7 +907,7 @@ const getExchangeDeposits = (
 					const user_kit_id = idDictionary[deposit.user_id];
 					deposit.network_id = deposit.user_id;
 					deposit.user_id = user_kit_id;
-					deposit.User.id = user_kit_id;
+					if (deposit.User) deposit.User.id = user_kit_id;
 				}
 			}
 			return deposits;
@@ -925,6 +929,7 @@ const getExchangeWithdrawals = (
 	endDate,
 	transactionId,
 	address,
+	format,
 	opts = {
 		additionalHeaders: null
 	}
@@ -944,6 +949,7 @@ const getExchangeWithdrawals = (
 		endDate,
 		transactionId,
 		address,
+		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
 	})
 		.then(async (withdrawals) => {
@@ -954,7 +960,7 @@ const getExchangeWithdrawals = (
 					const user_kit_id = idDictionary[withdrawal.user_id];
 					withdrawal.network_id = withdrawal.user_id;
 					withdrawal.user_id = user_kit_id;
-					withdrawal.User.id = user_kit_id;
+					if (withdrawal.User) withdrawal.User.id = user_kit_id;
 				}
 			}
 			return withdrawals;
