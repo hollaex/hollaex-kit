@@ -33,7 +33,6 @@ import {
 	getNewExchangeBilling,
 	getPrice,
 	setExchangePlan,
-	requestStoreInvoice,
 } from './action';
 import './Billing.scss';
 import { getExchange } from '../AdminFinancials/action';
@@ -204,6 +203,8 @@ const GeneralContent = ({
 	const [loading, setLoading] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
 
+	console.log('priceData', priceData);
+
 	useEffect(() => {
 		setIsLoading(true);
 		getExchangePrice();
@@ -250,7 +251,6 @@ const GeneralContent = ({
 			) {
 				setExchangePlanType(name);
 			}
-
 			if (name === 'item' || exchangePlanType === 'item') {
 				setModalWidth('85rem');
 			} else {
@@ -269,6 +269,7 @@ const GeneralContent = ({
 	};
 
 	const storePaymentMethod = async () => {
+		setExchangePlanType('method');
 		let invoice = {
 			id: 524,
 			amount: 30000,
@@ -295,6 +296,7 @@ const GeneralContent = ({
 			) {
 				setLoading(true);
 				let method = '';
+				console.log('selectedPayment', selectedPayment);
 				switch (selectedPayment) {
 					case 'paypal':
 						setOpenPlanModal(false);
@@ -357,7 +359,7 @@ const GeneralContent = ({
 						<div className="month-content d-flex">Monthly payment:</div>
 					</div>
 				</div>
-				<div>{renderBtn('payment-button')}</div>
+				<div>{renderBtn()}</div>
 			</div>
 		);
 	};
@@ -366,6 +368,7 @@ const GeneralContent = ({
 		try {
 			const res = await getPrice();
 			let priceData = {};
+			console.log('res', res);
 			Object.keys(res).forEach((key) => {
 				let temp = res[key];
 				if (!temp.month) {
@@ -381,73 +384,6 @@ const GeneralContent = ({
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 			}
-		}
-	};
-
-	const updatePlanType = async (params, callback = () => {}) => {
-		// const parObj = {
-		//  id: 1144,
-		//  period: 'year',
-		//  plan: 'fiat',
-		// };
-		try {
-			const res = await setExchangePlan(params);
-			if (exchange && exchange.id && params.plan !== 'fiat') {
-				const resInvoice = await getNewExchangeBilling(exchange.id);
-				if (resInvoice.data) {
-					// setInvoceData({ pendingInvoice: resInvoice.data });
-					getInvoice();
-				}
-			}
-			if (res.data) {
-				getExchange();
-				callback();
-			}
-		} catch (error) {
-			if (error.data && error.data.message) {
-				message.error(error.data.message);
-			} else {
-				message.error(error.message);
-			}
-		}
-	};
-	const storePlanType = () => {
-		if (exchange.type === 'DIY') {
-			updatePlanType(
-				{ id: exchange.id, plan: selectedType, period: 'year' },
-				() => setExchangePlanType('method')
-			);
-			// setExchangePlanType('payment');
-		} else if (
-			selectedType === 'fiat' &&
-			exchange?.business_info &&
-			Object.keys(exchange.business_info)?.length
-		) {
-			setFiatCompleted(true);
-		} else if (selectedType === 'fiat') {
-			updatePlanType(
-				{
-					id: exchange.id,
-					plan: selectedType,
-					period: isMonthly ? 'month' : 'year',
-				}
-				// () => setExchangePlanType('enterPrise')
-			);
-			setExchangePlanType('fiat');
-			setModalWidth('55rem');
-		} else {
-			updatePlanType(
-				{
-					id: exchange.id,
-					plan: selectedType,
-					period: isMonthly ? 'month' : 'year',
-				},
-				() => setExchangePlanType('method')
-			);
-			setExchangePlanType('method');
-			setModalWidth('65rem');
-			setActiveBreadCrumb(true);
-			// setExchangePlanType('payment')
 		}
 	};
 
@@ -605,68 +541,29 @@ const GeneralContent = ({
 									in cloud plans and are paid separately
 								</p>
 							</div>
-							{renderBtn('price')}
+							{renderBtn()}
 						</div>
 					</div>
 				);
 			case 'method':
 				return (
-					<div className="radiobtn-container">
-						<p>Select Payment Method</p>
-						<Radio.Group className={'radio-content'} value={selectedPayment}>
-							<Space direction="vertical">
-								{paymentMethods.map((opt, inx) => {
-									return (
-										<Radio
-											value={opt.method}
-											disabled={checkDisabled(opt.method)}
-											onChange={() => setSelectedPayment(opt.method)}
-										>
-											{opt.method === 'cryptoCurrency' ? (
-												<>
-													<span>{opt.label} </span>
-													<span className="danger"> (up to 10% off) </span>
-													<span>
-														<img
-															src={STATIC_ICONS['FIRE_BALL']}
-															className="fire-icon"
-															alt="fire"
-														/>
-													</span>
-												</>
-											) : (
-												<span>{opt.label} </span>
-											)}
-										</Radio>
-									);
-								})}
-							</Space>
-						</Radio.Group>
-						<Subscription
-							isMonthly={isMonthly}
-							planPriceData={subscribtionPaymentPrice}
-						/>
-						{renderBtn('payment')}
-					</div>
-				);
-			case 'crypto':
-				return (
-					<div className="radiobtn-container">
-						<p>Pick Crypto</p>
-						<Radio.Group className="my-3" value={selectedCrypto}>
-							<Space direction="vertical">
-								{cryptoCoins.map((item, inx) => {
-									return (
-										<>
+					<div>
+						{console.log('exchangePlanType', exchangePlanType, priceData)}
+						<div className="radiobtn-container">
+							<p>Select Payment Method</p>
+							<Radio.Group className={'radio-content'} value={selectedPayment}>
+								<Space direction="vertical">
+									{paymentMethods.map((opt, inx) => {
+										return (
 											<Radio
-												onChange={() => setSelectedCrypto(item.coin)}
-												name={item.coin}
-												value={item.coin}
+												value={opt.method}
+												disabled={checkDisabled(opt.method)}
+												onChange={() => setSelectedPayment(opt.method)}
 											>
-												{item.coin === 'XHT' ? (
+												{opt.method === 'cryptoCurrency' ? (
 													<>
-														<span>{item.coin} </span>
-														<span className="danger"> (10% discount) </span>
+														<span>{opt.label} </span>
+														<span className="danger"> (up to 10% off) </span>
 														<span>
 															<img
 																src={STATIC_ICONS['FIRE_BALL']}
@@ -676,28 +573,74 @@ const GeneralContent = ({
 														</span>
 													</>
 												) : (
-													item.coin
+													<span>{opt.label} </span>
 												)}
 											</Radio>
-											{selectedCrypto &&
-												selectedCrypto === item.coin &&
-												renderCoins(item.coin, item.symbol)}
-										</>
-									);
-								})}
-							</Space>
-						</Radio.Group>
-						<Subscription
-							isMonthly={isMonthly}
-							planPriceData={subscribtionPaymentPrice}
-						/>
-						{renderBtn('cryptoCurrency')}
+										);
+									})}
+								</Space>
+							</Radio.Group>
+							<Subscription
+								isMonthly={isMonthly}
+								selectedType={selectedType}
+								planPriceData={priceData[selectedType]}
+							/>
+						</div>
+						{renderBtn()}
+					</div>
+				);
+			case 'crypto':
+				return (
+					<div>
+						<div className="radiobtn-container">
+							<p>Pick Crypto</p>
+							<Radio.Group className="my-3" value={selectedCrypto}>
+								<Space direction="vertical">
+									{cryptoCoins.map((item, inx) => {
+										return (
+											<>
+												<Radio
+													onChange={() => setSelectedCrypto(item.coin)}
+													name={item.coin}
+													value={item.coin}
+												>
+													{item.coin === 'XHT' ? (
+														<>
+															<span>{item.coin} </span>
+															<span className="danger"> (10% discount) </span>
+															<span>
+																<img
+																	src={STATIC_ICONS['FIRE_BALL']}
+																	className="fire-icon"
+																	alt="fire"
+																/>
+															</span>
+														</>
+													) : (
+														item.coin
+													)}
+												</Radio>
+												{selectedCrypto &&
+													selectedCrypto === item.coin &&
+													renderCoins(item.coin, item.symbol)}
+											</>
+										);
+									})}
+								</Space>
+							</Radio.Group>
+							<Subscription
+								isMonthly={isMonthly}
+								selectedType={selectedType}
+								planPriceData={priceData[selectedType]}
+							/>
+						</div>
+						{renderBtn()}
 					</div>
 				);
 			case 'payment':
 				return (
-					<div className="crypto-payment-container">
-						<div>
+					<div>
+						<div className="crypto-payment-container">
 							<div className="payment-type-dropdown">
 								<h5>Select how to pay:</h5>
 								<Select placeholder="Select payment method">
@@ -788,13 +731,16 @@ const GeneralContent = ({
 		}
 	};
 
+	const handleRedirectPayMethod = () => {
+		setOpenPlanModal(false);
+	};
+
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
 			setExchangePlanType('method');
-			storePlanType();
 		} else if (exchangePlanType === 'method') {
-			if (selectedPayment === 'cryptoCurrency') setExchangePlanType('crypto');
-			else setOpenPlanModal(false);
+			if (selectedPayment === 'cryptoCurrency') storePaymentMethod();
+			else handleRedirectPayMethod();
 		} else if (exchangePlanType === 'crypto') {
 			setExchangePlanType('payment');
 		} else if (exchangePlanType === 'payment') {
@@ -817,21 +763,19 @@ const GeneralContent = ({
 		setModalWidth('85rem');
 	};
 
-	const renderBtn = (type) => {
-		<div className="payment-button">
-			<Button block type="primary" onClick={handleBack}>
-				Back
-			</Button>
-			<div className="btn-divider" />
-			<Button
-				block
-				type="primary"
-				onClick={storePlanType}
-				disabled={type === 'diy'}
-			>
-				Next
-			</Button>
-		</div>;
+	const renderBtn = () => {
+		return (
+			<div className="payment-button">
+				<Button block type="primary" onClick={handleBack}>
+					{' '}
+					Back{' '}
+				</Button>
+				<Button block type="primary" onClick={handleNext}>
+					{' '}
+					Next{' '}
+				</Button>
+			</div>
+		);
 	};
 
 	const getInvoice = async (params) => {

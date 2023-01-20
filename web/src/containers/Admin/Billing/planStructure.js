@@ -149,7 +149,6 @@ const PlanStructure = ({
 }) => {
 	const { type, background, name } = typeData;
 	const planPriceData = priceData[dataType.type];
-	// let currentPlan = planData[type];
 
 	return (
 		<div className={`${className} plan-container`}>

@@ -481,10 +481,10 @@ button:focus {
 					width: 2.5rem;
 					height: 3.5rem;
 				}
+			}
 
-				.cloud-icon path {
-					fill: #ffffff;
-				}
+			.cloud-icon path {
+				fill: #ffffff;
 			}
 		}
 
@@ -511,6 +511,7 @@ button:focus {
 
 		.f-16 {
 			font-size: 16px;
+			font-weight: bold;
 		}
 
 		.f-20 {
