@@ -1,0 +1,73 @@
+[
+  {
+    "keyword": "Feature",
+    "name": "Login Page on Sandbox",
+    "line": 1,
+    "id": "login-page-on-sandbox",
+    "tags": [],
+    "uri": "performance.feature",
+    "elements": [
+      {
+        "id": "login-page-on-sandbox;check-web-page-health-through-lighthouse-audit-and-pa11y-audit-on-valid-login-page-display-with-login-fields",
+        "keyword": "Scenario",
+        "line": 3,
+        "name": "check web page health through lighthouse audit and pa11y audit on valid login page display with login fields",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 9357000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 5,
+            "name": "I should see title \"Hollaex\"",
+            "result": {
+              "status": "passed",
+              "duration": 10000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "I should see \"LOGIN\" text displayed",
+            "result": {
+              "status": "passed",
+              "duration": 11000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 7,
+            "name": "I should see \"Alternative Login\" text displayed",
+            "result": {
+              "status": "passed",
+              "duration": 12000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "I should see web audit results",
+            "result": {
+              "status": "failed",
+              "duration": 2863000000,
+              "error_message": "CypressError: `cy.exec('lighthouse [object Object] --output json --chrome-flags=\"--headless\"')` failed because the command exited with a non-zero code.\n\nPass `{failOnNonZeroExit: false}` to ignore exit code failures.\n\nInformation about the failure:\nCode: 1\n\nStderr:\nRuntime error encountered: No Chrome installations found.\nError\n    at new LauncherError (D:\\cypress\\node_modules\\chrome-launcher\\dist\\utils.js:26:22)\n    at new ChromeNotInstalledError (D:\\cypress...\n    at new LauncherError (D:\\cypress\\node_modules\\chrome-launcher\\dist\\utils.js:26:22)\n    at new ChromeNotInstalledError (D:\\cypress...\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:156418:85\nFrom previous event:\n    at Context.exec (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:156391:149)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:170939:15\nFrom previous event:\n    at CommandQueue.runCommand (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:170918:8)\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:171061:19)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:171090:16\nFrom previous event:\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:171061:39)\nFrom previous event:\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:185391:77\nFrom previous event:\n    at CommandQueue.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:185386:21)\n    at CommandQueue.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:171124:15)\n    at cy.<computed> [as then] (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:172120:18)\n    at runnable.fn (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:172338:19)\n    at callFn (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125099:21)\n    at ../driver/node_modules/mocha/lib/runnable.js.Runnable.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125086:7)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179195:30\nFrom previous event:\n    at Object.onRunnableRun (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179180:19)\n    at $Cypress.action (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:168586:28)\n    at Runnable.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:176876:13)\n    at ../driver/node_modules/mocha/lib/runner.js.Runner.runTest (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125758:10)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125884:12\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125667:14)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125677:7\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125579:14)\n    at Hook.<anonymous> (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125640:7)\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179093:24)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179122:13\nFrom previous event:\n    at onNext (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179119:59)\n    at done (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125039:5)\n    at callFn (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125122:7)\n    at ../driver/node_modules/mocha/lib/runnable.js.Runnable.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125086:7)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179195:30\nFrom previous event:\n    at Object.onRunnableRun (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:179180:19)\n    at $Cypress.action (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:168586:28)\n    at Runnable.run (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:176876:13)\n    at next (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125601:10)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:125645:5\n    at timeslice (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:119571:27)"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

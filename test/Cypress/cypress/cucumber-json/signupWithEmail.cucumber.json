@@ -1,0 +1,53 @@
+[
+  {
+    "description": "As a customer\nIn order to use Hollaex\nI want to register with email confirmation successfully. ",
+    "keyword": "Feature",
+    "name": "Signup With Email",
+    "line": 1,
+    "id": "signup-with-email",
+    "tags": [],
+    "uri": "signupWithEmail.feature",
+    "elements": [
+      {
+        "id": "signup-with-email;successfull-login-for-new-user",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Successfull Login for new user",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 20,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 4545000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "I enter credentials",
+            "result": {
+              "status": "passed",
+              "duration": 8426000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 22,
+            "name": "I should be able to login successfully and Verification email should be the same",
+            "result": {
+              "status": "passed",
+              "duration": 7181000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
