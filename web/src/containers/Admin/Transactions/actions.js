@@ -1,5 +1,6 @@
 import querystring from 'query-string';
 import axios from 'axios';
+import moment from 'moment';
 
 import { requestAuthenticated } from '../../../utils';
 
@@ -35,8 +36,8 @@ export const requestDepositsDownload = (query) => {
 			const link = document.createElement('a');
 			link.href = url;
 			type === 'deposit'
-				? link.setAttribute('download', 'deposit.csv')
-				: link.setAttribute('download', 'withdrawal.csv');
+				? link.setAttribute('download', `deposit_${moment().format('YYYY-MM-DD')}.csv`)
+				: link.setAttribute('download', `withdrawal_${moment().format('YYYY-MM-DD')}.csv`);
 			document.body.appendChild(link);
 			link.click();
 		})

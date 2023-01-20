@@ -1,0 +1,53 @@
+[
+  {
+    "description": "As an Admin\nIn order to manage setting\nI want to change the language",
+    "keyword": "Feature",
+    "name": "Setting Feature",
+    "line": 1,
+    "id": "setting-feature",
+    "tags": [],
+    "uri": "setting.feature",
+    "elements": [
+      {
+        "id": "setting-feature;successful-language-changing",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successful language changing",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I logged in Hollaex",
+            "result": {
+              "status": "passed",
+              "duration": 16509000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I change language, it should change",
+            "result": {
+              "status": "failed",
+              "duration": 13230000000,
+              "error_message": "CypressError: Timed out retrying after 10050ms: `cy.click()` failed because this element is `disabled`:\n\n`<button type=\"submit\" class=\"holla-button mdc-button mdc-button--unelevated holla-button-font disabled\" disabled=\"\">save</button>`\n\nFix this problem, or use `{force: true}` to disable error checking.\n    at $Cy.ensureNotDisabled (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:162735:76)\n    at runAllChecks (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:149964:14)\n    at retryActionability (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:150041:16)\nFrom previous event:\n    at whenStable (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:167668:63)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:167165:14\nFrom Your Spec Code:\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\setting.feature:52:27)\n    at Context.resolveAndRunStepDefinition (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\setting.feature:10496:29)\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\setting.feature:9817:35)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I did the test successfully",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

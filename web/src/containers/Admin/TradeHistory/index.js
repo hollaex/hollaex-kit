@@ -96,7 +96,7 @@ class TradeHistory extends Component {
 	};
 
 	requestTradesDownload = (userId) => {
-		return requestTradesDownload({ format: 'csv', userId: userId });
+		return requestTradesDownload({ format: 'csv', user_id: userId });
 	};
 
 	render() {
