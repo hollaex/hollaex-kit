@@ -1,0 +1,253 @@
+[
+  {
+    "description": "As a valid user with a specific role\nIn order to check the access of role\nI want to to try various  functionalities in HollaeX",
+    "keyword": "Feature",
+    "name": "Roles Feature",
+    "line": 1,
+    "id": "roles-feature",
+    "tags": [],
+    "uri": "roles.feature",
+    "elements": [
+      {
+        "id": "roles-feature;communicator",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "COMMUNICATOR",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 7308000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I enter credentials \"communicator\",\"Password\"",
+            "result": {
+              "status": "passed",
+              "duration": 5883000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should be able to login successfully as \"communicator@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 1609000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I have title of 'Communicator'",
+            "result": {
+              "status": "passed",
+              "duration": 5186000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "I must be able to do Communicators tasks",
+            "result": {
+              "status": "passed",
+              "duration": 33565000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "roles-feature;kyc",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "KYC",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 17,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 2154000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 18,
+            "name": "I enter credentials \"kyc\",\"Password\"",
+            "result": {
+              "status": "passed",
+              "duration": 4350000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 19,
+            "name": "I should be able to login successfully as \"kyc@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 1759000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "I have title of 'KYC'",
+            "result": {
+              "status": "passed",
+              "duration": 5197000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "I must be able to do KYCs tasks",
+            "result": {
+              "status": "passed",
+              "duration": 64999000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "roles-feature;supervisor",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "SUPERVISOR",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 25,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 2625000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "I enter credentials \"supervisor\",\"Password\"",
+            "result": {
+              "status": "passed",
+              "duration": 4075000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "I should be able to login successfully as \"supervisor@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 2019000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "I have title of \"Supervisor\"",
+            "result": {
+              "status": "passed",
+              "duration": 4629000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "I must be able to do Supervisors tasks",
+            "result": {
+              "status": "failed",
+              "error_message": "AssertionError: Timed out retrying after 10000ms: Expected to find element: `.ant-input`, but never found it.\n    at ensureExistence (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:162871:25)\n    at $Cy.ensureElExistence (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:162889:12)\n    at ensureExistence (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:150450:25)\n    at onFailFn (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:150490:11)\nFrom previous event:\n    at $Cy.verifyUpcomingAssertions (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:150549:105)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:158796:21\nFrom previous event:\n    at resolveElements (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:158791:81)\n    at whenStable (https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:167668:63)\n    at https://sandbox.hollaex.com/__cypress/runner/cypress_runner.js:167165:14"
+            }
+          }
+        ]
+      },
+      {
+        "id": "roles-feature;support",
+        "keyword": "Scenario",
+        "line": 31,
+        "name": "SUPPORT",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 33,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "passed",
+              "duration": 6317000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I enter credentials \"support\",\"Password\"",
+            "result": {
+              "status": "passed",
+              "duration": 10031000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "I should be able to login successfully as \"support@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 3565000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "I have title of \"Support\"",
+            "result": {
+              "status": "passed",
+              "duration": 6664000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 37,
+            "name": "I must be able to do Supports tasks",
+            "result": {
+              "status": "passed",
+              "duration": 94809000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
