@@ -7,7 +7,11 @@ const cookies = new Cookies();
 
 export const getEmail = () => cookies.get('token::email');
 
-export { default as request, requestAuthenticated } from './request';
+export {
+	default as request,
+	requestAuthenticated,
+	requestDashAuthenticated,
+} from './request';
 
 export const formatDate = (date) => {
 	return (

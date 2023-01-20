@@ -372,15 +372,15 @@ const GeneralContent = ({
 	};
 
 	const updatePlanType = async (params, callback = () => {}) => {
-		const parObj = {
-			id: 1144,
-			period: 'year',
-			plan: 'fiat',
-		};
+		// const parObj = {
+		// 	id: 1144,
+		// 	period: 'year',
+		// 	plan: 'fiat',
+		// };
 		try {
-			const res = await setExchangePlan(parObj);
+			const res = await setExchangePlan(params);
 			if (exchange && exchange.id && params.plan !== 'fiat') {
-				const resInvoice = await getNewExchangeBilling(1144);
+				const resInvoice = await getNewExchangeBilling(exchange.id);
 				if (resInvoice.data) {
 					// setInvoceData({ pendingInvoice: resInvoice.data });
 					getInvoice();

@@ -1,18 +1,23 @@
 import querystring from 'query-string';
-import { _FetchDash } from 'utils/utils';
+import { requestDashAuthenticated } from 'utils';
 
 const toQueryString = (values) => {
 	return querystring.stringify(values);
 };
 
 export const getExchangeBilling = (params) => {
-	return _FetchDash(`/invoice?${toQueryString(params)}`, 'get');
+	return requestDashAuthenticated(`/invoice?${toQueryString(params)}`);
 };
 
-export const setExchangePlan = (body) => {
+export const setExchangePlan = (bodyData) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(bodyData),
+	};
+
 	return new Promise(async (resolve, reject) => {
 		try {
-			const res = await _FetchDash('/exchange/plan', 'post', body);
+			const res = await requestDashAuthenticated('/exchange/plan', options);
 			resolve(res);
 		} catch (error) {
 			console.log('setExchangePlan : error', error);
@@ -22,19 +27,23 @@ export const setExchangePlan = (body) => {
 };
 
 export const getNewExchangeBilling = (exchangeId = '') => {
-	return _FetchDash(`/exchange/pay?exchange_id=${exchangeId}`, 'get');
+	return requestDashAuthenticated(`/exchange/pay?exchange_id=${exchangeId}`);
 };
 
 export const getPrice = () => {
-	return _FetchDash(`/exchange/pricing`, 'get');
+	return requestDashAuthenticated(`/exchange/pricing`);
 };
 
 export const requestStoreInvoice = (id, data) => {
-	console.log('id', id, 'data', data);
+	// console.log('id', id, 'data', data);
+	// const options = {
+	// 	method: 'PUT',
+	// 	body: JSON.stringify(data),
+	// };
 	// return new Promise(async (resolve, reject) => {
 	//  try {
 	//      // const url = `/invoice?invoice_id=${id}`;
-	//      // const res = await _FetchDash(url, 'put', data);
+	//      // const res = await requestDashAuthenticated(url, options);
 	//      // resolve(res);
 	//  } catch (error) {
 	//      reject(error);
