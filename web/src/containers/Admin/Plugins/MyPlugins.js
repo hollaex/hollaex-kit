@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import { Button, Input, Spin, Modal, Radio, message } from 'antd';
 import { Link } from 'react-router';
-import { Button, Input, Spin, Modal, message } from 'antd';
 import _debounce from 'lodash/debounce';
+import { DownloadOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, updatePlugins } from './action';
-import AddThirdPartyPlugin from './AddPlugin';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -13,8 +14,12 @@ class MyPlugins extends Component {
 		this.state = {
 			isVisible: false,
 			step: 1,
+			thirdPartyType: 'upload_json',
 			isConfirm: true,
 			pluginData: {},
+			thirdParty: {},
+			thirdPartyError: '',
+			jsonURL: '',
 			buttonSubmitting: false,
 		};
 	}
@@ -42,8 +47,23 @@ class MyPlugins extends Component {
 		this.setState({
 			isVisible: false,
 			step: 1,
+			thirdParty: {},
+			thirdPartyError: '',
+			jsonURL: '',
 		});
-		this.props.handleCancel();
+	};
+
+	handleStep = (step) => {
+		this.setState({ step });
+	};
+
+	handleChange = (e) => {
+		if (e.target.value === 'upload_json') {
+			this.setState({ thirdPartyType: 'upload_json' });
+		} else {
+			this.setState({ thirdPartyType: 'input_url' });
+		}
+		this.setState({ thirdPartyError: '', jsonURL: '' });
 	};
 
 	handleInput = (e) => {
@@ -62,7 +82,7 @@ class MyPlugins extends Component {
 	handleAddPlugin = async () => {
 		const { restart, myPlugins } = this.props;
 		const body = {
-			...this.props.thirdParty,
+			...this.state.thirdParty,
 			enabled: true,
 		};
 		this.setState({ buttonSubmitting: true });
@@ -116,42 +136,195 @@ class MyPlugins extends Component {
 		}
 	};
 
-	handleStep = (step) => {
-		this.setState({ step });
+	handleURL = (e) => {
+		this.setState({ jsonURL: e.target.value });
+	};
+
+	getJsonFromFile = async (file) => {
+		return await new Promise((resolve, reject) => {
+			const reader = new FileReader();
+			reader.onload = (function () {
+				return function (e) {
+					try {
+						let json = JSON.parse(e.target.result);
+						resolve(json);
+					} catch (err) {
+						message.error(err.toString());
+						reject('Invalid format');
+					}
+				};
+			})(file);
+			reader.readAsText(file);
+		});
+	};
+
+	handleFileChange = async (event) => {
+		const file = event.target.files[0];
+		if (file) {
+			try {
+				const res = await this.getJsonFromFile(file);
+				const check = this.checkJSON(res);
+				if (check) {
+					this.setState({ thirdParty: res, thirdPartyError: '' });
+				} else {
+					this.setState({
+						thirdPartyError:
+							'The file format is not correct. Please make sure it follows JSON standard',
+					});
+				}
+			} catch (err) {
+				this.setState({
+					thirdPartyError:
+						'The file format is not correct. Please make sure it follows JSON standard',
+				});
+			}
+		}
+	};
+
+	checkJSON = (json) => {
+		if (json && json.name && json.version && json.author) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	getJSONFromURL = async () => {
+		try {
+			if (this.state.jsonURL) {
+				const res = await axios.get(this.state.jsonURL);
+				if (res.data) {
+					const check = this.checkJSON(res.data);
+					if (check) {
+						this.setState({ thirdParty: res.data, thirdPartyError: '' });
+						this.handleStep(3);
+					} else {
+						this.setState({
+							thirdPartyError:
+								'The file format is not correct. Please make sure it follows JSON standard',
+						});
+					}
+				}
+			} else {
+				this.setState({ thirdPartyError: 'Enter valid JSON file URL' });
+			}
+		} catch (err) {
+			this.setState({
+				thirdPartyError:
+					'The file format is not correct. Please make sure it follows JSON standard',
+			});
+		}
 	};
 
 	handleBack = () => {
-		this.props.handleSetBack();
+		this.setState({ thirdParty: {}, thirdPartyError: '' });
 		this.handleStep(1);
 	};
 
 	renderPopup = () => {
-		const { step, isConfirm, buttonSubmitting } = this.state;
+		const radioStyle = {
+			display: 'flex',
+			alignItems: 'center',
+			height: '30px',
+			lineHeight: '1.2',
+			padding: '24px 0',
+			margin: 0,
+			paddingLeft: '1px',
+			whiteSpace: 'normal',
+			letterSpacing: '-0.15px',
+		};
 		const {
-			handleChange,
-			handleFileChange,
-			handleURL,
+			step,
 			thirdPartyType,
-			thirdPartyError,
-			getJSONFromURL,
-			updateState,
+			isConfirm,
 			thirdParty,
-		} = this.props;
+			thirdPartyError,
+			buttonSubmitting,
+		} = this.state;
 		switch (step) {
 			case 2:
 				return (
-					<AddThirdPartyPlugin
-						thirdPartyType={thirdPartyType}
-						thirdPartyError={thirdPartyError}
-						thirdParty={thirdParty}
-						handleChange={handleChange}
-						handleFileChange={handleFileChange}
-						handleURL={handleURL}
-						handleBack={this.handleBack}
-						getJSONFromURL={getJSONFromURL}
-						updateState={updateState}
-						handleStep={this.handleStep}
-					/>
+					<div className="admin-plugin-modal-wrapper">
+						<h2>
+							<b>Add third party plugin</b>
+						</h2>
+						<div>
+							<Radio.Group
+								name="thirdPartyType"
+								onChange={this.handleChange}
+								value={thirdPartyType}
+							>
+								<Radio value={'upload_json'} style={radioStyle}>
+									Upload a json file
+								</Radio>
+								{thirdPartyType === 'upload_json' ? (
+									<div className="plugin-file-wrapper">
+										<div className="plugin-file-container">
+											<div className="plugin-img-content">
+												<DownloadOutlined />
+												<label className="upload-link">
+													<span>Upload</span>
+													<input
+														type="file"
+														accept="application/JSON"
+														name="upload"
+														onChange={this.handleFileChange}
+													/>
+												</label>
+											</div>
+										</div>
+									</div>
+								) : null}
+								<Radio value={'input_url'} style={radioStyle}>
+									Input URL path
+								</Radio>
+								{thirdPartyType === 'input_url' ? (
+									<div>
+										<span className="url-path">URL path</span>
+										<Input
+											placeholder="Input URL path"
+											className="mt-2"
+											onChange={this.handleURL}
+										/>
+									</div>
+								) : null}
+							</Radio.Group>
+							{thirdPartyError ? (
+								<div className="field-wrapper error">{thirdPartyError}</div>
+							) : null}
+						</div>
+						<div className="my-4 btn-wrapper d-flex justify-content-between">
+							<Button
+								type="primary"
+								className="add-btn"
+								onClick={this.handleBack}
+							>
+								Back
+							</Button>
+							<Button
+								type="primary"
+								className="add-btn"
+								onClick={() => {
+									if (
+										thirdPartyType === 'upload_json' &&
+										thirdParty.name &&
+										!thirdPartyError
+									) {
+										this.handleStep(3);
+									} else if (thirdPartyType === 'input_url') {
+										this.getJSONFromURL();
+									} else if (
+										thirdPartyType === 'upload_json' &&
+										!thirdParty.name
+									) {
+										this.setState({ thirdPartyError: 'Upload a valid JSON' });
+									}
+								}}
+							>
+								Next
+							</Button>
+						</div>
+					</div>
 				);
 			case 3:
 				return (
