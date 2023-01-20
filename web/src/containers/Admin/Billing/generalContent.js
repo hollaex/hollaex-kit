@@ -52,9 +52,21 @@ const { Option } = Select;
 const TabPane = Tabs.TabPane;
 
 const TYPES = [
-	{ type: 'basic', background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'] },
-	{ type: 'crypto', background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'] },
-	{ type: 'fiat', background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'] },
+	{
+		name: 'Basic',
+		type: 'basic',
+		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
+	},
+	{
+		name: 'Crypto Pro',
+		type: 'crypto',
+		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
+	},
+	{
+		name: 'Fiat Ramp',
+		type: 'fiat',
+		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
+	},
 ];
 
 const payOptions = [
@@ -177,6 +189,7 @@ const GeneralContent = ({
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
 	const options = ['item', 'method', 'crypto', 'payment'];
+	const subscribtionPaymentPrice = priceData?.[selectedType];
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -353,8 +366,8 @@ const GeneralContent = ({
 		try {
 			const res = await getPrice();
 			let priceData = {};
-			Object.keys(res.data).forEach((key) => {
-				let temp = res.data[key];
+			Object.keys(res).forEach((key) => {
+				let temp = res[key];
 				if (!temp.month) {
 					temp.month = {};
 				}
@@ -373,9 +386,9 @@ const GeneralContent = ({
 
 	const updatePlanType = async (params, callback = () => {}) => {
 		// const parObj = {
-		// 	id: 1144,
-		// 	period: 'year',
-		// 	plan: 'fiat',
+		//  id: 1144,
+		//  period: 'year',
+		//  plan: 'fiat',
 		// };
 		try {
 			const res = await setExchangePlan(params);
@@ -398,7 +411,6 @@ const GeneralContent = ({
 			}
 		}
 	};
-
 	const storePlanType = () => {
 		if (exchange.type === 'DIY') {
 			updatePlanType(
@@ -422,6 +434,7 @@ const GeneralContent = ({
 				// () => setExchangePlanType('enterPrise')
 			);
 			setExchangePlanType('fiat');
+			setModalWidth('55rem');
 		} else {
 			updatePlanType(
 				{
@@ -496,7 +509,7 @@ const GeneralContent = ({
 						<div className="payment-text">
 							<div className="d-flex">
 								<p className="white-text">Cloud: </p>
-								<p className="cloud-type">{selectedType}</p>
+								<p className="cloud-type">{planData?.[selectedType]?.title}</p>
 							</div>
 							<p className="pb-5">{planData?.[selectedType]?.description}</p>
 						</div>
@@ -592,7 +605,7 @@ const GeneralContent = ({
 									in cloud plans and are paid separately
 								</p>
 							</div>
-							{renderBtn('price', 'price-button')}
+							{renderBtn('price')}
 						</div>
 					</div>
 				);
@@ -629,8 +642,11 @@ const GeneralContent = ({
 								})}
 							</Space>
 						</Radio.Group>
-						<Subscription />
-						{renderBtn('payment', 'method-button')}
+						<Subscription
+							isMonthly={isMonthly}
+							planPriceData={subscribtionPaymentPrice}
+						/>
+						{renderBtn('payment')}
 					</div>
 				);
 			case 'crypto':
@@ -671,8 +687,11 @@ const GeneralContent = ({
 								})}
 							</Space>
 						</Radio.Group>
-						<Subscription />
-						{renderBtn('cryptoCurrency', 'crypto-button')}
+						<Subscription
+							isMonthly={isMonthly}
+							planPriceData={subscribtionPaymentPrice}
+						/>
+						{renderBtn('cryptoCurrency')}
 					</div>
 				);
 			case 'payment':
@@ -798,64 +817,21 @@ const GeneralContent = ({
 		setModalWidth('85rem');
 	};
 
-	const renderBtn = (type, buttontype) => {
-		switch (type) {
-			case 'price':
-				return (
-					<div className={`${buttontype}`}>
-						<Button block type="primary" onClick={handleBack}>
-							Back
-						</Button>
-						<div className="btn-divider" />
-						<Button
-							block
-							type="primary"
-							onClick={storePlanType}
-							disabled={type === 'diy'}
-						>
-							Next
-						</Button>
-					</div>
-				);
-			case 'payment':
-				return (
-					<div className={`${buttontype}`}>
-						<Button block type="primary" onClick={handleBack}>
-							Back
-						</Button>
-						<div className="btn-divider" />
-						<Button block type="primary" onClick={storePaymentMethod}>
-							Next
-						</Button>
-					</div>
-				);
-			case 'paypal':
-				return (
-					<div className={`${buttontype}`}>
-						<Button block type="primary" onClick={handleBack}>
-							Back
-						</Button>
-						<div className="btn-divider" />
-						<Button block type="primary" onClick={storePaymentMethod()}>
-							Next
-						</Button>
-					</div>
-				);
-			case 'cryptoCurrency':
-				return (
-					<div className={`${buttontype}`}>
-						<Button block type="primary" onClick={handleBack}>
-							Back
-						</Button>
-						<div className="btn-divider" />
-						<Button block type="primary" onClick={handleNext}>
-							Next
-						</Button>
-					</div>
-				);
-			default:
-				return null;
-		}
+	const renderBtn = (type) => {
+		<div className="payment-button">
+			<Button block type="primary" onClick={handleBack}>
+				Back
+			</Button>
+			<div className="btn-divider" />
+			<Button
+				block
+				type="primary"
+				onClick={storePlanType}
+				disabled={type === 'diy'}
+			>
+				Next
+			</Button>
+		</div>;
 	};
 
 	const getInvoice = async (params) => {

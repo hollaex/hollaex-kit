@@ -1,9 +1,10 @@
 import React from 'react';
 import { STATIC_ICONS } from 'config/icons';
 import { ReactSVG } from 'react-svg';
+import _get from 'lodash/get';
 // import Image from 'components/Image'
 
-const Subscription = () => {
+const Subscription = ({ isMonthly, planPriceData }) => {
 	return (
 		<div className="subscription-container">
 			<div className="plan-card">
@@ -32,8 +33,14 @@ const Subscription = () => {
 				<h6>exchange-name</h6>
 			</div>
 			<div className="payment-container">
-				<p className="f-20">Monthly Payment:</p>
-				<p className="f-20">$2,800 USDT</p>
+				<p className="f-20">
+					{isMonthly ? 'Monthly payment:' : 'Yearly payment:'}
+				</p>
+				<p className="f-20">
+					{isMonthly
+						? `USD${_get(planPriceData, 'month.price')}`
+						: `USD ${_get(planPriceData, 'year.price')}`}
+				</p>
 			</div>
 		</div>
 	);

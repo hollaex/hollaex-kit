@@ -147,7 +147,7 @@ const PlanStructure = ({
 	className,
 	dataType,
 }) => {
-	const { type, background } = typeData;
+	const { type, background, name } = typeData;
 	const planPriceData = priceData[dataType.type];
 	// let currentPlan = planData[type];
 
@@ -163,7 +163,7 @@ const PlanStructure = ({
 						className="header-container"
 						style={{ backgroundImage: `url(${background})` }}
 					>
-						<h2 className="type-center">{type}</h2>
+						<h2 className="type-center">{name}</h2>
 						<h6 className="text-center">{planData[type].description}</h6>
 					</div>
 				</div>
@@ -193,7 +193,11 @@ const PlanStructure = ({
 						</ul>
 
 						<div className="amount-container">
-							{isMonthly ? (
+							{type === 'fiat' ? (
+								<div>
+									<p className="dollor-size">Apply</p>
+								</div>
+							) : isMonthly ? (
 								<div>
 									<p className="dollor-size">
 										${_get(planPriceData, 'month.price')}

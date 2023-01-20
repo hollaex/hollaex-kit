@@ -19,13 +19,24 @@ textarea {
 	font-size: 11px;
 }
 
+.ant-form-item {
+	margin-bottom: 20px;
+}
+
+.ant-col-24.ant-form-item-label {
+	padding: 0px 0px 4px;
+}
+
 .ant-form-item-label > label {
 	font-weight: bold;
+	padding: 0px;
 	color: #ffffff;
 	font-size: 16px;
+	height: 30px;
 
 	h4 {
 		color: #ffffff;
+		margin-bottom: 3px;
 	}
 
 	span {
