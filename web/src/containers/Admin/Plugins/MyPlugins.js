@@ -136,6 +136,7 @@ class MyPlugins extends Component {
 			getJSONFromURL,
 			updateState,
 			thirdParty,
+			handleUpdatePlugin,
 		} = this.props;
 		switch (step) {
 			case 2:

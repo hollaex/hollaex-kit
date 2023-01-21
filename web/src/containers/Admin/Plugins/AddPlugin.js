@@ -25,7 +25,7 @@ const AddThirdPartyPlugin = ({
 	getJSONFromURL,
 	updateState,
 	handleStep,
-	handleUpdatePlugin = () => {},
+	handlePlugin = () => {},
 }) => {
 	return (
 		<div className="admin-plugin-modal-wrapper">
@@ -96,7 +96,8 @@ const AddThirdPartyPlugin = ({
 							thirdParty?.name &&
 							!thirdPartyError
 						) {
-							handleUpdatePlugin();
+							handleStep(3);
+							handlePlugin();
 						} else if (thirdPartyType === 'input_url') {
 							getJSONFromURL();
 						} else if (thirdPartyType === 'upload_json' && !thirdParty.name) {
