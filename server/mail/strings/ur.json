@@ -37,11 +37,11 @@
 			"title": "${currency} ڈپازٹ مکمل ہو گیا۔"
 		},
 		"WITHDRAWAL_PENDING": {
-			"html": "<div><p> میرےعزیز ${name} </p><p>You made a withdrawal request for ${amount} ${currency}. Your withdrawal status is pending and will be processed shortly.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ نے واپسی کی درخواست کی۔ ${amount} ${currency}. آپ کی واپسی کی حیثیت زیر التواء ہے اور جلد ہی اس پر کارروائی کی جائے گی۔</p><p>رقم: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br />حالت: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
 			"title": "${currency} واپسی پینڈنg"
 		},
 		"WITHDRAWAL_COMPLETED": {
-			"html": "<div><p> میرےعزیز ${name} </p><p>Your withdrawal request for ${amount} ${currency} is processed.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br />Address: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">Network: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"html": "<div><p> میرےعزیز ${name} </p><p>کے لیے آپ کی واپسی کی درخواست ${amount} ${currency} کارروائی کی ہے.</p><p>Amount: ${amount} ${currency}<br />Fee: ${fee} ${fee_coin}<br />Status: ${status}<br />Address: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
 			"title": "${currency} واپسی مکمل"
 		},
 		"WITHDRAWAL_CANCEL": {
