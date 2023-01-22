@@ -504,7 +504,7 @@ class Plugins extends Component {
 						getJSONFromURL={this.getJSONFromURL}
 						updateState={this.updateState}
 						handleStep={this.handleStep}
-						handleUpdatePlugin={this.handleUpdatePlugin}
+						handlePlugin={this.handleUpdatePlugin}
 					/>
 				);
 			case 3:
