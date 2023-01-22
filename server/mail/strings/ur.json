@@ -1,0 +1,112 @@
+{
+	"ur": {
+		"LOGIN": {
+			"html": "<div> <p> میرےعزیز ${name} </p> <p> ہم نے درج ذیل تفصیلات کے ساتھ آپ کے اکاؤنٹ میں لاگ ان ریکارڈ کیا ہے۔ </p> <div> <div>وقت: ${time}</div> <div>ملک: ${country}</div> <div>ای پی پتہ: ${ip}</div> </div> <p> اگر یہ آپ نہیں تھے، تو براہ کرم اپنا پاس ورڈ تبدیل کریں، دو عنصر کی تصدیق ترتیب دیں، اور فوری طور پر ہم سے رابطہ کریں۔ </p> <p> سلام<br> ${api_name} ٹیم </p> </div>",
+			"title": "لاگ ان کریں"
+		},
+		"SIGNUP": {
+			"html": "<div> <p> میرےعزیز ${name} </p> <p> آپ کو نیچے دیئے گئے بٹن پر کلک کرکے اپنے ای میل اکاؤنٹ کی تصدیق کرنی ہوگی۔<br> اگر آپ کے کوئی سوالات ہیں تو بلا جھجھک اس ای میل کا جواب دے کر ہم سے رابطہ کریں۔</p><p>برائے مہربانی اپنی رجسٹریشن کے ساتھ آگے بڑھنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !اہم; font-size: 14px; min-width: 11rem;\">تصدیق کریں۔</Button></a></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "سائن اپ"
+		},
+		"WELCOME": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>سائن اپ کرنے کے لیے آپ کا شکریہ ${api_name}.</p><p>ٹریڈنگ شروع کرنے کے لیے، آپ کو پہلے اپنے اکاؤنٹ میں کریپٹو کرنسی یا رقم جمع کرنی ہوگی۔ براہ کرم اپنے اکاؤنٹ پر جائیں <a href=\"${link_account}\" target=\"_blank\">account</a> اور ملاحظہ کریں <a href=\"${link_deposit}\" target=\"_blank\">ڑپازٹ</a> page.,</p><p>اگر آپ کے کوئی سوالات یا خدشات ہیں، تو براہ کرم اس ای میل کا جواب دے کر ہم سے رابطہ کریں۔</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "خوش آمدید"
+		},
+		"RESET_PASSWORD": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ نے اپنے اکاؤنٹ کا پاس ورڈ دوبارہ ترتیب دینے کی درخواست کی ہے۔<br />اپنا پاس ورڈ اپ ڈیٹ کرنے کے لیے نیچے دیے گئے لنک پر کلک کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !اہم; font-size: 14px; min-width: 11rem;\">میرا پاس ورڈ ری سیٹ کریں۔</Button></a></div><p>اگر یہ درخواست غلطی سے کی گئی تھی، تو اسے نظر انداز کرنا محفوظ ہے۔ آپ کے اکاؤنٹ میں کوئی تبدیلی نہیں کی جائے گی۔</p><p>درخواست اس سے شروع کی گئی: ${ip}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "پاس ورڈ کی درخواست کو دوبارہ ترتیب دیں۔"
+		},
+		"ACCOUNT_VERIFY": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>مبارک ہو. آپ کا اکاؤنٹ کامیابی کے ساتھ تصدیق شدہ ہے۔</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !اہم; font-size: 14px; min-width: 11rem;\">اب تجارت کریں۔</Button></a></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اکاؤنٹ تصدیق شدہ"
+		},
+		"ACCOUNT_UPGRADE": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>مبارک ہو. آپ کے اکاؤنٹ تک رسائی کی سطح کو اپ گریڈ کیا گیا ہے۔ ${tier} درجے. آپ کو کم فیس، زیادہ نکالنے کی حد اور دیگر پریمیم خصوصیات سے فائدہ ہوگا۔</p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !!اہم; font-size: 14px; min-width: 11rem;\">اب تجارت کریں۔</Button></a></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اکاؤنٹ اپ گریڈ ہو گیا۔"
+		},
+		"DEPOSIT_CANCEL": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>ہم آپ کو تلاش کرنے یا اس پر کارروائی کرنے کے قابل نہیں تھے۔ ${currency} پر جمع کرایا ${date} کے لیے ${amount}. اس طرح، لین دین کو ہمارے سسٹم نے مسترد کر دیا ہے۔</p><p>اگر آپ کے پاس مزید کوئی استفسار ہے، تو آپ اس ای میل کا جواب دے سکتے ہیں۔</p><p>ٹرانزیکشن آئی ڈی: ${txid}<br />رقم: ${amount}<br />حالت: مسترد</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} ڈپازٹ مسترد کر دیا گیا۔"
+		},
+		"DEPOSIT_PENDING": {
+			"html": "<div><div><p> میرےعزیز ${name} </p><p> آپ کے پاس ایک نیا ڈپازٹ ہے۔ ${amount} ${currency} زیر التواء ${api_name} بٹوا. براہ کرم لین دین کی تصدیق ہونے تک انتظار کریں اور آپ کے بٹوے میں آپ کے فنڈز دستیاب ہوں گے۔</p><p>رقم: ${amount} ${currency}<br />حالت: ${status}<br />پتہ: ${address}<br />Transaction ID: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br />Fee: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} ڈپازٹ زیر التواء"
+		},
+		"DEPOSIT_COMPLETED": {
+			"html": "<div><div><p> میرےعزیز ${name} </p><p> آپ کا ${currency} ڑپازٹ ${amount} ${currency} تصدیق شدہ اور مکمل ہے اور یہ آپ کے بٹوے میں دستیاب ہے۔ ${currency} </p><p>رقم: ${amount} ${currency}<br />حالت: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br />فیس: ${fee} ${fee_coin}<br /><ul>${explorers}</ul></div><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} ڈپازٹ مکمل ہو گیا۔"
+		},
+		"WITHDRAWAL_PENDING": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ نے واپسی کی درخواست کی۔ ${amount} ${currency}. آپ کی واپسی کی حیثیت زیر التواء ہے اور جلد ہی اس پر کارروائی کی جائے گی۔</p><p>رقم: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br />حالت: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} واپسی پینڈنg"
+		},
+		"WITHDRAWAL_COMPLETED": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>کے لیے آپ کی واپسی کی درخواست ${amount} ${currency} کارروائی کی ہے.</p><p>Amount: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br />Status: ${status}<br />پتہ: ${address}<br />ٹرانزیکشن آئی ڈی: ${transaction_id}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><ul>${explorers}</ul><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} واپسی مکمل"
+		},
+		"WITHDRAWAL_CANCEL": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>ہم آپ کو تلاش کرنے یا اس پر کارروائی کرنے کے قابل نہیں تھے۔ ${currency} اس تاریخ کو واپسی کی گئی۔ ${date} کے لیے ${amount}. اس طرح ہمارے سسٹم کی طرف سے لین دین کو مسترد کر دیا جاتا ہے اور آپ کی زیر التواء رقم واپس آپ کے بٹوے میں جمع کر دی جاتی ہے ${api_name} بٹوہ.</p><p>اگر آپ کے پاس مزید کوئی استفسار ہے، تو آپ اس ای میل کا جواب دے سکتے ہیں۔</p><p>ٹرانزیکشن آئی ڈی: ${txid}<br />رقم: ${amount}<br />حالت: مسترد</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} واپسی مسترد کر دی گئی۔"
+		},
+		"WITHDRAWAL_REQUEST": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>پ نے کی ہے۔ ${currency} واپسی کی درخواست ${amount} کو ${address}<br /><br />رقم: ${amount} ${currency}<br />فیس: ${fee} ${fee_coin}<br />پتہ: ${address}<br /><span id=\"network\">نیٹ ورک: ${network}</span><br /><br />اس واپسی کی تصدیق کرنے کے لیے، براہ کرم نیچے دیئے گئے بٹن پر کلک کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !اہم; font-size: 14px; min-width: 11rem;\">تصدیق کریں۔</Button></a></div><p>اگر یہ درخواست غلطی سے کی گئی تھی، تو اسے نظر انداز کرنا محفوظ ہے۔ آپ کے اکاؤنٹ میں کوئی تبدیلی نہیں کی جائے گی۔</p><p>سے درخواست شروع کی گئی۔: ${ip}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "${currency} واپسی کی درخواست"
+		},
+		"USER_VERIFICATION": {
+			"html": "<div><h3>صارف کی تصدیق کی ضرورت ہے۔</h3><div>User \"${email}\" تصدیق کے لیے اپنی دستاویزات اپ لوڈ کیں۔ براہ کرم اس کے دستاویزات کی تصدیق کریں۔</div></div>",
+			"title": "صارف کی تصدیق"
+		},
+		"SUSPICIOUS_DEPOSIT": {
+			"html": "<div><h3>مشکوک ڈپازٹ</h3><div>ای میل کے ساتھ کلائنٹ ${email}  موصول ہوا  ${currency} ڈپازٹ جو مشکوک ہے۔<br />ٹرانزیکشن آئی ڈی: ${txid}<h4>ٹرانزیکشن ڈیٹا:</h4><div>${data}</div></div></div>",
+			"title": "مشکوک ڈپازٹ"
+		},
+		"INVALID_ADDRESS": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ کی ${currency}کے لئے واپسی ${amount} ایک غلط ایڈریس پر بھیجا جا رہا تھا اور اسے مسترد کر دیا گیا ہے۔</p><p>پتہ: ${address}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "واپسی کا غلط پتہ"
+		},
+		"USER_DEACTIVATED": {
+			"html": "<div><p>آپ کے اکاؤنٹ ${email} غیر فعال کر دیا گیا ہے. آپ اپنا اکاؤنٹ اس وقت تک استعمال نہیں کر سکیں گے جب تک کہ اسے ایکسچینج ایڈمن کے ذریعے فعال نہیں کر دیا جاتا۔</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اکاونٹ ${type}"
+		},
+		"USER_ACTIVATED": {
+			"html": "<div><p>آپ کے اکاؤنٹ ${email} چالو کر دیا گیا ہے. اب آپ اپنا اکاؤنٹ استعمال کر سکتے ہیں۔</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "اکاونٹ ${type}"
+		},
+		"DISCOUNT_UPDATE": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ کی رعایت کی شرح کو تبدیل کر دیا گیا ہے۔ ${rate}%. یہ شرح آپ کے آرڈر کی فیس پر لاگو ہوگی۔</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "ڈسکاؤنٹ ریٹ میں تبدیلی"
+		},
+		"BANK_VERIFIED": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>زیر التواء بینک اکاؤنٹ کی تصدیق ہو گئی ہے۔ اب آپ کا درست اکاؤنٹ بینک اکاؤنٹ کی ضرورت کے تبادلے کے لیے استعمال کیا جا سکتا ہے۔</p><div><strong>تصدیق شدہ بینک اکاؤنٹس:</strong>${list_detail_bank_account}</div><p><a href=\"${link_verification}\">اپنے موجودہ بینک اکاؤنٹس کو دیکھنے کے لیے، براہ کرم ایکسچینج کی تصدیق والے ٹیب پر جائیں۔</a></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "بینک تصدیق شدہ"
+		},
+		"USER_ID_VERIFICATION_REJECT": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ کی حالیہ شناختی تصدیق پر کارروائی کی گئی ہے اور بدقسمتی سے مسترد کر دی گئی ہے۔ مزید کارروائیوں کے لیے ذیل میں ہمارے ماہر کا پیغام پڑھیں:</p><p>پیغام: ${message}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "آئی ڈی کی تصدیق مسترد کر دی گئی۔"
+		},
+		"USER_BANK_VERIFICATION_REJECT": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ کی نئی بینک رجسٹریشن پر کارروائی ہو گئی ہے اور بدقسمتی سے مسترد کر دی گئی ہے۔ مزید کارروائیوں کے لیے ذیل میں ہمارے ماہر کا پیغام پڑھیں:</p><p>پیغام: ${message}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "بینک کی نئی درخواست مسترد کر دی گئی۔"
+		},
+		"PASSWORD_CHANGED": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>یہ ای میل تصدیق کرتی ہے کہ آپ نے حال ہی میں اپنے اکاؤنٹ کا پاس ورڈ تبدیل کیا ہے۔ مزید کارروائی کی ضرورت نہیں ہے۔<br />اگر آپ نے اس تبدیلی کی اجازت نہیں دی ہے تو براہ کرم ہم سے فوری رابطہ کریں۔<br /></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "پاس ورڈ تبدیل کر دیا گیا۔"
+		},
+		"CHANGE_PASSWORD": {
+			"html": "<div><p> میرےعزیز ${name} </p><p>آپ نے اپنے اکاؤنٹ کا پاس ورڈ تبدیل کرنے کی درخواست کی ہے۔<br />اپنے پاس ورڈ کی تبدیلی کی تصدیق کرنے کے لیے، نیچے دیے گئے لنک پر کلک کریں۔<br /></p><div style=\"padding-top: 10px; margin-bottom: 10px;\"><a href=\"${link}\" target=\"_blank\"><Button style=\"cursor: pointer; background-color: #333333; color: white; border: none; padding: 1rem; text-transform: uppercase; cursor: pointer !important; font-size: 14px; min-width: 11rem;\">Confirm Change My Password</Button></a></div><p>اگر یہ درخواست غلطی سے کی گئی تھی، تو اسے نظر انداز کرنا محفوظ ہے۔ آپ کے اکاؤنٹ میں کوئی تبدیلی نہیں کی جائے گی۔</p><p>درخواست اس سے شروع کی گئی: ${ip}</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "پاس ورڈ کی تصدیق کو تبدیل کریں۔"
+		},
+		"DOC_REJECTED": {
+			"html": "<div><p>میرےعزیز ${email} </p><p>بدقسمتی سے، آپ کے اپ لوڈ کردہ کے وای سی دستاویزات کو مسترد کر دیا گیا ہے۔<br>آپ کے دستاویزات کے مسترد ہونے کی وجوہات ذیل میں درج ہیں۔<br></p><div><ul>${doc_information}</ul></div><p>اگر آپ کو لگتا ہے کہ یہ وجوہات غلط ہیں، تو براہ کرم بلا جھجھک اس ای میل کا جواب دیں۔<br>بصورت دیگر، براہ کرم اپنی شناخت کی تصدیق کے لیے درست دستاویزات دوبارہ اپ لوڈ کریں۔</p><p> سلام<br> ${api_name} ٹیم </p</div>",
+			"title": "کے وای سی دستاویزات مسترد کر دی گئیں۔"
+		},
+		"DOC_VERIFIED": {
+			"html": "<div><p>میرےعزیز ${email} </p><p>آپ کے اپ لوڈ کردہ کے وای سی دستاویزات کو منظور کر لیا گیا ہے۔<br>اب آپ کو ان تمام تبادلے کی خصوصیات تک رسائی حاصل ہے جن کے لیے شناخت کی تصدیق کی ضرورت ہے۔</p><ul>${doc_information}</ul><p>اپنی منظور شدہ دستاویزات دیکھنے کے لیے، اپنے <a href=\"${link}\" target=\"_blank\">تصدیقی صفحہ</a></p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "منظور شدہ دستاویزات"
+		},
+		"CONFIRM_EMAIL": {
+			"html": "<div><p><p>میرےعزیز ${name} </p></p><p>آپ نے اپنے اکاؤنٹس کی سیکیورٹی سے متعلق حساس درخواست کی ہے۔ آپریشن کی توثیق کرنے کے لیے آپ کو اس آپریشن کی اجازت دینے کے لیے نیچے دیا گیا کوڈ استعمال کرنا ہوگا۔<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>اگر آپ نے یہ درخواست نہیں کی ہے تو فوری طور پر اس کی اطلاع دیں اور جلد از جلد اپنی اسناد کو تبدیل کرنے کے لیے آگے بڑھیں۔</p><p> سلام<br> ${api_name} ٹیم </p></div>",
+			"title": "سیکیورٹی کی تصدیق"
+		}
+	}
+}

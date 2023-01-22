@@ -412,6 +412,7 @@ const putPlugin = async (req, res) => {
 						for (const key in plugin[field]) {
 							if (
 								lodash.isPlainObject(plugin[field])
+								&& plugin[field][key]
 								&& plugin[field][key].overwrite === false
 								&& (!value[key] || value[key].overwrite === false)
 							) {

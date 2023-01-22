@@ -84,6 +84,11 @@ const languages = [
 		label: 'Монгол',
 		icon: '/assets/flags/mn.png',
 	},
+	{
+		value: 'ur',
+		label: 'اردو',
+		icon: '/assets/flags/pk.png',
+	},
 ];
 
 export default languages;
