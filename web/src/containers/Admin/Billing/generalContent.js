@@ -30,12 +30,12 @@ import PlanStructure from 'containers/Admin/Billing/planStructure';
 import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
 import {
 	getExchangeBilling,
-	getNewExchangeBilling,
+	// getNewExchangeBilling,
 	getPrice,
-	setExchangePlan,
+	// setExchangePlan,
 } from './action';
 import './Billing.scss';
-import { getExchange } from '../AdminFinancials/action';
+// import { getExchange } from '../AdminFinancials/action';
 import {
 	setSelectedPayment,
 	setSelectedType,
@@ -188,7 +188,7 @@ const GeneralContent = ({
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
 	const options = ['item', 'method', 'crypto', 'payment'];
-	const subscribtionPaymentPrice = priceData?.[selectedType];
+	// const subscribtionPaymentPrice = priceData?.[selectedType];
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -199,14 +199,13 @@ const GeneralContent = ({
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
-	const [invoice, setInvoice] = useState({});
-	const [loading, setLoading] = useState(false);
+	// const [invoice, setInvoice] = useState({});
+	// const [loading, setLoading] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
-
-	console.log('priceData', priceData);
 
 	useEffect(() => {
 		setIsLoading(true);
+		setFiatCompleted(false);
 		getExchangePrice();
 	}, []);
 
@@ -294,13 +293,15 @@ const GeneralContent = ({
 					selectedPayment === 'bank' ||
 					selectedPayment === 'stripe')
 			) {
-				setLoading(true);
-				let method = '';
-				console.log('selectedPayment', selectedPayment);
+				// setLoading(true);
+				// let method = '';
+				// console.log('selectedPayment', selectedPayment);
 				switch (selectedPayment) {
 					case 'paypal':
 						setOpenPlanModal(false);
+						break;
 					case 'bank':
+						break;
 					case 'stripe':
 						setOpenPlanModal(false);
 						break;
@@ -314,8 +315,8 @@ const GeneralContent = ({
 				setExchangePlanType('crypto');
 			}
 		} catch (error) {
-			console.error(error);
-			setLoading(false);
+			// console.error(error);
+			// setLoading(false);
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 			} else {
@@ -368,7 +369,6 @@ const GeneralContent = ({
 		try {
 			const res = await getPrice();
 			let priceData = {};
-			console.log('res', res);
 			Object.keys(res).forEach((key) => {
 				let temp = res[key];
 				if (!temp.month) {
@@ -548,7 +548,6 @@ const GeneralContent = ({
 			case 'method':
 				return (
 					<div>
-						{console.log('exchangePlanType', exchangePlanType, priceData)}
 						<div className="radiobtn-container">
 							<p>Select Payment Method</p>
 							<Radio.Group className={'radio-content'} value={selectedPayment}>
@@ -816,7 +815,7 @@ const GeneralContent = ({
 
 			<Modal
 				visible={OpenPlanModal}
-				className="bg-model"
+				className="bg-model blue-admin-billing-model"
 				width={modalWidth}
 				zIndex={1000}
 				onCancel={() => setOpenPlanModal(false)}
