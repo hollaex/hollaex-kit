@@ -5,6 +5,7 @@ import {
 	SET_EXCHANGE,
 	SET_PRICES_AND_ASSET_PENDING,
 	SET_PRICES_AND_ASSET_FAILURE,
+	SET_DASH_TOKEN,
 } from 'actions/assetActions';
 
 const INITIAL_STATE = {
@@ -14,6 +15,8 @@ const INITIAL_STATE = {
 	allCoins: [],
 	allPairs: [],
 	exchange: {},
+	dashToken:
+		'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOnsiaWQiOjgwLCJlbWFpbCI6InRlY2grbmV0d29ya0BiaXRob2xsYS5jb20ifSwic2NvcGVzIjpbInVzZXIiLCJvcGVyYXRvciJdLCJpcCI6IjYxLjEuMTU0LjIyMCIsImlzcyI6ImJpdGhvbGxhLmNvbSIsImlhdCI6MTY3MjczNDYyNCwiZXhwIjoxNjcyODIxMDI0fQ.kG1nAbi8c5j7yx2IKefh-5VaosLfRjlHfgtlf9iZGCU',
 	isFetching: true,
 };
 
@@ -32,6 +35,9 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, ...payload };
 
 		case SET_EXCHANGE:
+			return { ...state, ...payload };
+
+		case SET_DASH_TOKEN:
 			return { ...state, ...payload };
 
 		default:

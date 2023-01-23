@@ -156,6 +156,16 @@ const icons = {
 	CLOCK: '/assets/images/clock.svg',
 	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
 	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
+	CLOUD_BASIC: '/assets/images/Path 4813.svg',
+	CLOUD_CRYPTO: '/assets/images/Path 4815.svg',
+	CLOUD_FIAT: '/assets/images/Group 5179.svg',
+	CLOUD_BASIC_BACKGROUND: '/assets/images/cloud_fiat_ramp_graphic-01.png',
+	CLOUD_CRYPTO_BACKGROUND: '/assets/images/Mask_Group_69.png',
+	CLOUD_FIAT_BACKGROUND: '/assets/images/cloud_basic_graphic-01.png',
+	FIRE_BALL: '/assets/images/fireball-icon.svg',
+	EXCHANGE_LOGO_LIGHT_THEME:
+		'/assets/images/default-exchange-logo-light-theme.svg',
+	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
 	MANUAL_PLUGIN_UPGRADE: '/assets/images/manual-plugin-upgrade.svg',
 };
 

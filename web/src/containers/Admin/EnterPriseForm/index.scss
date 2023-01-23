@@ -1,0 +1,128 @@
+.has-error {
+	background-color: unset !important;
+}
+
+.enterprise-icon {
+	width: 2rem;
+}
+
+textarea {
+	resize: none;
+}
+
+.d-flex {
+	display: flex;
+}
+
+.content-text-small {
+	color: #a8a8b1;
+	font-size: 11px;
+}
+
+.ant-form-item {
+	margin-bottom: 20px;
+}
+
+.ant-col-24.ant-form-item-label {
+	padding: 0px 0px 4px;
+}
+
+.ant-form-item-label > label {
+	font-weight: bold;
+	padding: 0px;
+	color: #ffffff;
+	font-size: 16px;
+	height: 30px;
+
+	h4 {
+		color: #ffffff;
+		margin-bottom: 3px;
+	}
+
+	span {
+		color: #a8a8b1;
+		font-size: 11px;
+	}
+}
+
+.form-container {
+	width: 70%;
+	margin: 3rem;
+}
+
+.form-container .ant-form-item-control {
+	line-height: normal;
+}
+
+.form-container .ant-radio-group,
+.form-container .ant-input {
+	margin: 0.5rem 0px;
+}
+
+.form-container .budget-options {
+	display: flex;
+	flex-direction: column;
+}
+
+.btn-area {
+	margin: 1.5rem 3rem 0 3rem;
+	padding-bottom: 3rem;
+	display: flex;
+}
+.btn-area > * {
+	flex: 1;
+}
+
+.btn-area .local {
+	line-height: 1;
+}
+
+.btn-area button {
+	font-weight: normal !important;
+}
+
+.btn-area .separator {
+	margin: 0 0.5rem;
+	flex: none;
+}
+
+.warning-text {
+	color: #f83e18;
+}
+
+.fiat-section {
+	color: #fff;
+	padding: 2rem;
+	position: relative;
+	width: 100%;
+	z-index: 1;
+}
+.fiat-section b {
+	font-size: 20px;
+}
+
+.fiat-section .w-75 {
+	width: 75%;
+}
+
+.fiat-section::before {
+	content: '';
+	// background-image: url(${FIAT_MASTER_PLAN_BACKGROUND});
+	background-position: right;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-color: #79ced3;
+	opacity: 0.4;
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	bottom: 0px;
+	left: 0px;
+	z-index: -1;
+}
+
+@media (max-width: 960px) {
+	.form-container {
+		width: 100%;
+	}
+}
