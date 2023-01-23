@@ -4,7 +4,7 @@ const { SERVER_PATH } = require('../../constants');
 const models = require(`${SERVER_PATH}/db/models`);
 const { PROVIDE_TABLE_NAME } = require(`${SERVER_PATH}/messages`);
 const { capitalize, camelCase } = require('lodash');
-var pluralize = require('pluralize')
+var pluralize = require('pluralize');
 const Sequelize = require('sequelize');
 /**
  * Get sequelize model of table.
@@ -96,5 +96,6 @@ module.exports = {
 	getModel,
 	create,
 	destroy,
-	update
+	update,
+	models
 };

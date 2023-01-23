@@ -40,11 +40,15 @@ export const updateBurn = (values) => {
 };
 
 export const getAllCoins = () => {
-	return axios.get('/admin/coins/network');
+	return requestAuthenticated('/admin/coins/network');
 };
 
 export const getAllPairs = () => {
-	return axios.get('/admin/pairs/network');
+	return requestAuthenticated('/admin/pairs/network');
+};
+
+export const getDashToken = () => {
+	return requestAuthenticated(`/admin/dash-token`, { method: 'GET' });
 };
 
 export const getExchange = () => {
