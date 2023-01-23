@@ -16,6 +16,8 @@ import {
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
+import ConfirmPlugin from './ConfirmPlugin';
+import { getPluginMeta } from './action';
 
 import './index.css';
 
@@ -32,6 +34,7 @@ class Plugins extends Component {
 		} = this.props;
 		this.state = {
 			activeTab: '',
+			isConfirm: false,
 			loading: false,
 			constants: {},
 			showSelected: false,
@@ -39,6 +42,7 @@ class Plugins extends Component {
 			type: '',
 			isConfigure: false,
 			pluginData: [],
+			pluginMetaData: {},
 			myPlugins: [],
 			plugin: {},
 			isVisible: false,
@@ -149,6 +153,7 @@ class Plugins extends Component {
 			...plugin,
 			enabled: myPluginsName.includes(plugin.name),
 		}));
+
 		this.setState({
 			pluginData: constructedPluginData,
 			pluginCards: constructedCards,
@@ -194,13 +199,26 @@ class Plugins extends Component {
 		}
 	};
 
-	handleOpenPlugin = (plugin, plugin_type = '') => {
+	handleOpenPlugin = async (plugin, plugin_type = '') => {
 		const { pluginData, myPlugins, isConfigure } = this.state;
+		let metaData = {};
+
+		await getPluginMeta({ name: plugin.name })
+			.then((res) => {
+				if (res) {
+					metaData = res;
+				}
+			})
+			.catch((err) => {
+				metaData = {};
+			});
+
 		if (plugin.version === 0) {
 			this.setState({
 				isVisible: true,
 				showSelected: false,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 		} else if (
 			pluginData.filter((value) => value.name === plugin.name).length ||
@@ -209,6 +227,7 @@ class Plugins extends Component {
 			this.setState({
 				showSelected: true,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 			if (plugin_type === 'add_plugin' && !isConfigure) {
 				this.setState({
@@ -220,6 +239,7 @@ class Plugins extends Component {
 			this.setState({
 				isVisible: true,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 		}
 	};
@@ -289,7 +309,8 @@ class Plugins extends Component {
 	};
 
 	handleUpdatePlugin = () => {
-		this.handleStep(3);
+		this.handleStep(4);
+
 		const body = {
 			...this.state.thirdParty,
 		};
@@ -321,7 +342,7 @@ class Plugins extends Component {
 	};
 
 	handleStep = (step) => {
-		this.setState({ step, isVisible: true });
+		this.setState({ step, isVisible: true, isConfirm: true });
 	};
 
 	handleURL = (e) => {
@@ -422,6 +443,14 @@ class Plugins extends Component {
 		this.setState({ thirdParty: {}, thirdPartyError: '' });
 	};
 
+	handleInput = (e) => {
+		if (e.target.value === 'I UNDERSTAND') {
+			this.setState({ isConfirm: false });
+		} else {
+			this.setState({ isConfirm: true });
+		}
+	};
+
 	renderModalContent = () => {
 		const {
 			selectedPlugin,
@@ -429,6 +458,7 @@ class Plugins extends Component {
 			thirdPartyError,
 			step,
 			thirdParty,
+			pluginMetaData,
 		} = this.state;
 		switch (step) {
 			case 1:
@@ -459,8 +489,8 @@ class Plugins extends Component {
 								)}
 							</div>
 							<div className="ml-4">
-								<div>Name: {selectedPlugin.name}</div>
-								<div>Current version: 1</div>
+								<div>Name: {pluginMetaData.name}</div>
+								<div>Current version: {pluginMetaData.version}</div>
 							</div>
 						</div>
 						<div className="w-85 mt-4">
@@ -494,6 +524,7 @@ class Plugins extends Component {
 			case 2:
 				return (
 					<AddThirdPartyPlugin
+						header={'Upgrade third party plugin'}
 						thirdPartyType={thirdPartyType}
 						thirdPartyError={thirdPartyError}
 						thirdParty={thirdParty}
@@ -504,10 +535,22 @@ class Plugins extends Component {
 						getJSONFromURL={this.getJSONFromURL}
 						updateState={this.updateState}
 						handleStep={this.handleStep}
-						handlePlugin={this.handleUpdatePlugin}
 					/>
 				);
 			case 3:
+				return (
+					<ConfirmPlugin
+						header={'Upgrade third party plugin'}
+						description={`Please acknowledge that you understand the possible ramifications of upgrade an unverified plugin to your exchange.`}
+						pluginData={selectedPlugin}
+						isConfirm={this.state.isConfirm}
+						onHandleBack={this.handleBack}
+						okBtnlabel={'Upgrde'}
+						onHandleChange={this.handleInput}
+						onHandleSubmit={this.handleUpdatePlugin}
+					/>
+				);
+			case 4:
 				return (
 					<div className="p-2 modal-wrapper">
 						<div className="">

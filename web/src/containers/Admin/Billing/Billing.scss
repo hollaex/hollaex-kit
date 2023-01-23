@@ -88,19 +88,19 @@ p {
 	opacity: 0.5;
 }
 
-.app_container-content {
+.admin-billing.app_container-content {
 	.ant-tabs-top > .ant-tabs-nav {
 		margin: 0px !important;
 	}
 
 	.ant-tabs-ink-bar .ant-tabs-ink-bar-animated {
-		width: 9rem !important;
+		width: 7rem !important;
 	}
 
 	.ant-tabs-tab-btn {
 		font-size: 1.5rem !important;
 		justify-content: center;
-		padding: 0rem 3rem 0rem 2.5rem !important;
+		padding: 0rem 2rem 0rem 2.5rem !important;
 	}
 }
 
@@ -251,7 +251,7 @@ button:focus {
 	outline: none;
 }
 
-.ant-modal {
+.blue-admin-billing-model.ant-modal {
 	.ant-modal-body {
 		padding: 0px;
 	}

@@ -9,7 +9,7 @@ const Billing = (props) => {
 	const { exchange, user } = props;
 
 	return (
-		<div className="app_container-content admin-earnings-container w-100">
+		<div className="app_container-content admin-earnings-container w-100 admin-billing">
 			<Tabs defaultActiveKey="0">
 				<TabPane tab="Plans" key="0">
 					<GeneralContent exchange={exchange} user={user} />
