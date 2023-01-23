@@ -2,6 +2,7 @@ import { all } from 'bluebird';
 import querystring from 'query-string';
 import axios from 'axios';
 import store from 'store';
+import moment from 'moment';
 
 import { PLUGIN_URL } from '../../../config/constants';
 import { requestAuthenticated } from '../../../utils';
@@ -144,7 +145,7 @@ export const requestUsersDownload = (values) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
 			link.href = url;
-			link.setAttribute('download', 'users.csv');
+			link.setAttribute('download', `users_${moment().format('YYYY-MM-DD')}.csv`);
 			document.body.appendChild(link);
 			link.click();
 		})

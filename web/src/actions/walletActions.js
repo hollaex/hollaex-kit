@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import querystring from 'query-string';
 // import { all } from 'bluebird';
 
@@ -298,7 +299,7 @@ export const downloadUserTrades = (key, params = {}) => {
 				const url = window.URL.createObjectURL(new Blob([res.data]));
 				const link = document.createElement('a');
 				link.href = url;
-				link.setAttribute('download', `user_${key}.csv`);
+				link.setAttribute('download', `user_${key}_${moment().format('YYYY-MM-DD')}.csv`);
 				document.body.appendChild(link);
 				link.click();
 			})

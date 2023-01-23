@@ -321,6 +321,15 @@ class Deposits extends Component {
 				status: true,
 				dismissed: false,
 			};
+		} else if (statusType === 'retry') {
+			body = {
+				...body,
+				dismissed: false,
+				processing: false,
+				rejected: false,
+				status: false,
+				waiting: false,
+			};
 		} else {
 			body = {
 				...body,
