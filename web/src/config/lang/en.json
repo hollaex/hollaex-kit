@@ -1417,5 +1417,9 @@
 		"ACCORDIAN_ASSETS": "All wallet assets",
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
 		"ACCORDIAN_HISTORY": "HISTORY"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "Page not opening automatically?",
+		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
 	}
 }
