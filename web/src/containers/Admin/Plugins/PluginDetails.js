@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Button, Modal, Divider, Input, Spin, message } from 'antd';
+import { Button, Modal, Divider, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
 
 import { Carousel } from 'components';
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, updatePlugins } from './action';
+import ConfirmPlugin from './ConfirmPlugin';
 
 const PluginDetails = ({
 	handleBreadcrumb,
@@ -16,7 +17,7 @@ const PluginDetails = ({
 	pluginData,
 	isLoading,
 	restart,
-	handleRedirect
+	handleRedirect,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -142,56 +143,17 @@ const PluginDetails = ({
 				);
 			case 'confirm-plugin':
 				return (
-					<div className="admin-plugin-modal-wrapper">
-						<div className="confirm-plugin-wrapper">
-							<h5>
-								<b>Confirm plugin removal</b>
-							</h5>
-							<div>
-								Please acknowledge that you understand the possible
-								ramifications of removing this plugin from your exchange.
-							</div>
-							<div className="d-flex">
-								<img
-									src={
-										pluginData.icon
-											? pluginData.icon
-											: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
-									}
-									alt="plugin-icons"
-									className="plugins-icon"
-								/>
-								<div className="my-5 mx-3">
-									<h2>{pluginData.name}</h2>
-									<div>
-										<b>Version:</b> {pluginData.version}
-									</div>
-								</div>
-							</div>
-							<div>
-								Type 'I UNDERSTAND' to confirm
-								<Input className="mt-2" onChange={handleChange} />
-							</div>
-
-							<div className="my-4 btn-wrapper d-flex justify-content-between">
-								<Button
-									type="primary"
-									className="add-btn"
-									onClick={() => handleType('remove')}
-								>
-									Back
-								</Button>
-								<Button
-									type="primary"
-									className="remove-btn"
-									onClick={() => handleRemove('confirm-plugin')}
-									disabled={isConfirm}
-								>
-									Remove
-								</Button>
-							</div>
-						</div>
-					</div>
+					<ConfirmPlugin
+						header={'Confirm plugin removal'}
+						description={`Please acknowledge that you understand the possible ramifications of removing this plugin from your exchange.`}
+						pluginData={pluginData}
+						isConfirm={isConfirm}
+						isShowThumbnail={true}
+						onHandleBack={() => handleType('remove')}
+						okBtnlabel={'Remove'}
+						onHandleChange={handleChange}
+						onHandleSubmit={() => handleRemove('confirm-plugin')}
+					/>
 				);
 			case 'add':
 			default:

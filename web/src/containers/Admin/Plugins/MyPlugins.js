@@ -6,6 +6,7 @@ import _debounce from 'lodash/debounce';
 import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, updatePlugins } from './action';
 import AddThirdPartyPlugin from './AddPlugin';
+import ConfirmPlugin from './ConfirmPlugin';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -141,6 +142,7 @@ class MyPlugins extends Component {
 			case 2:
 				return (
 					<AddThirdPartyPlugin
+						header={'Add third party plugin'}
 						thirdPartyType={thirdPartyType}
 						thirdPartyError={thirdPartyError}
 						thirdParty={thirdParty}
@@ -155,39 +157,16 @@ class MyPlugins extends Component {
 				);
 			case 3:
 				return (
-					<div className="admin-plugin-modal-wrapper">
-						<div className="confirm-plugin-wrapper">
-							<h2>
-								<b>Add third party plugin</b>
-							</h2>
-							<div>
-								Please acknowledge that you understand the possible
-								ramifications of adding an unverified plugin to your exchange.
-							</div>
-							<div className="mt-5">
-								Type 'I UNDERSTAND' to confirm
-								<Input className="mt-2" onChange={this.handleInput} />
-							</div>
-
-							<div className="my-4 btn-wrapper d-flex justify-content-between">
-								<Button
-									type="primary"
-									className="add-btn"
-									onClick={() => this.handleStep(2)}
-								>
-									Back
-								</Button>
-								<Button
-									type="primary"
-									className="remove-btn"
-									onClick={this.handleAddPlugin}
-									disabled={isConfirm || buttonSubmitting}
-								>
-									Add
-								</Button>
-							</div>
-						</div>
-					</div>
+					<ConfirmPlugin
+						header={'Add third party plugin'}
+						description={`Please acknowledge that you understand the possible ramifications of adding an unverified plugin to your exchange.`}
+						pluginData={this.props.pluginData}
+						isConfirm={isConfirm || buttonSubmitting}
+						onHandleBack={this.handleBack}
+						okBtnlabel={'Add'}
+						onHandleChange={this.handleInput}
+						onHandleSubmit={this.handleAddPlugin}
+					/>
 				);
 			case 1:
 			default:

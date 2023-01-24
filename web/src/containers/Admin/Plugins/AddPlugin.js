@@ -15,6 +15,7 @@ const radioStyle = {
 };
 
 const AddThirdPartyPlugin = ({
+	header = '',
 	handleChange,
 	thirdPartyType,
 	handleFileChange,
@@ -25,12 +26,11 @@ const AddThirdPartyPlugin = ({
 	getJSONFromURL,
 	updateState,
 	handleStep,
-	handlePlugin = () => {},
 }) => {
 	return (
 		<div className="admin-plugin-modal-wrapper">
 			<h2>
-				<b>Add third party plugin</b>
+				<b>{header}</b>
 			</h2>
 			<div>
 				<Radio.Group
@@ -97,7 +97,6 @@ const AddThirdPartyPlugin = ({
 							!thirdPartyError
 						) {
 							handleStep(3);
-							handlePlugin();
 						} else if (thirdPartyType === 'input_url') {
 							getJSONFromURL();
 						} else if (thirdPartyType === 'upload_json' && !thirdParty.name) {

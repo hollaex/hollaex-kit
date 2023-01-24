@@ -22,7 +22,7 @@ const QrCode = ({ closeQRCode, data = '', currency = '', onCopy }) => {
 
 					<div className="qr_code-wrapper d-flex flex-column">
 						<div className="qr-code-bg d-flex justify-content-center align-items-center">
-							<QRCode value={address} />
+							<QRCode includeMargin={true} value={address} />
 						</div>
 					</div>
 

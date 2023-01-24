@@ -3,7 +3,8 @@ import classnames from 'classnames';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { ReactSVG } from 'react-svg';
-import { Select, Switch, Modal, Button, message } from 'antd';
+import { Select, InputNumber, Switch, Modal, Button, message } from 'antd';
+import isNumber from 'lodash.isnumber';
 
 import { updateConstants } from 'containers/Admin/General/action';
 import { setConfig } from 'actions/appActions';
@@ -14,12 +15,14 @@ const Duster = ({
 	info,
 	coins,
 	setConfig,
-	dust = { quote: 'xht' },
+	dust = { quote: 'xht', spread: 1, maker_id: 1 },
 	nativeCurrency,
 }) => {
 	const [openConfirmation, setOpenConfirmation] = useState();
 	const [isCustom, setIsCustom] = useState(false);
 	const [custom, setCustom] = useState();
+	const [spread, setSpread] = useState(dust.spread);
+	const [maker, setMaker] = useState(dust.maker_id);
 	const [submitting, setSubmitting] = useState(false);
 	const isDustUpgrade = handleDustUpgrade(info);
 
@@ -27,7 +30,11 @@ const Duster = ({
 
 	const handleConfirm = () => {
 		setSubmitting(true);
-		updateConstants({ kit: { dust: { quote: isCustom ? custom : 'xht' } } })
+		updateConstants({
+			kit: {
+				dust: { quote: isCustom ? custom : 'xht', spread, maker_id: maker },
+			},
+		})
 			.then((res) => {
 				setConfig(res.kit);
 				setOpenConfirmation(false);
@@ -145,10 +152,35 @@ const Duster = ({
 						</div>
 					</div>
 
+					<div className="w-50 mt-3">
+						<div className="sub-title">Spread</div>
+						<InputNumber
+							name="spread"
+							min={0}
+							value={spread}
+							onChange={setSpread}
+						/>
+					</div>
+
+					<div className="w-50 my-3">
+						<div className="sub-title">Maker Id</div>
+						<InputNumber
+							name="maker"
+							min={0}
+							value={maker}
+							onChange={setMaker}
+						/>
+					</div>
+
 					<Button
 						type="primary"
 						onClick={() => setOpenConfirmation(true)}
-						disabled={isDustUpgrade || (isCustom && !custom)}
+						disabled={
+							isDustUpgrade ||
+							(isCustom && !custom) ||
+							!isNumber(spread) ||
+							!isNumber(maker)
+						}
 						size="large"
 						className="green-btn minimal-btn my-3"
 					>
