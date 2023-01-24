@@ -4,6 +4,7 @@ import {
 	SET_EXCHANGE_PLAN_TYPE,
 	SET_SELECTED_CRYPTO,
 	SET_CRYPTO_PAYMENT_TYPE,
+	SET_TRANSFER_CRYPTO_PAYMENT,
 } from 'actions/adminBillingActions';
 
 const INITIAL_STATE = {
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
 	selectedCrypto: 'XHT',
 	cryptoPaymentType: '',
 	isAutomatedKYC: false,
+	transferCryptoPayment: false,
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -27,6 +29,8 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, selectedCrypto: payload };
 		case SET_CRYPTO_PAYMENT_TYPE:
 			return { ...state, cryptoPaymentType: payload };
+		case SET_TRANSFER_CRYPTO_PAYMENT:
+			return { ...state, transferCryptoPayment: payload };
 		default:
 			return state;
 	}

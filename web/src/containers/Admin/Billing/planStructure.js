@@ -1,137 +1,7 @@
 import React from 'react';
 import _get from 'lodash/get';
 import { CheckOutlined } from '@ant-design/icons';
-
-export const planData = {
-	basic: {
-		title: 'Basic',
-		description: 'Get started fast with a basic test exchange',
-		icon: 'BASIC_PLAN_BACKGROUND',
-		isPopular: false,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Limited features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Download exchange logs',
-				'Full exchange backup',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		amount: {
-			yearly: 75,
-			discount: '25%',
-			monthly: 100,
-			share: '50%',
-		},
-	},
-	crypto: {
-		title: 'Crypto Pro',
-		description:
-			'For those looking to start a crypto-to-crypto exchange business',
-		icon: 'CRYPTO_PRO_PLAN_BACKGROUND',
-		isPopular: true,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Full features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Add custom GitHub repo',
-				'Team management & roles',
-				'Download exchange logs',
-				'Full exchange backup',
-				'Landing page (homepage)',
-				'Remove HollaEx badge',
-				'Referral affiliate link',
-				'Crypto chat box',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		asset_pairs: {
-			title: 'Asset and pairs',
-			points: ['One free custom crypto coin & pair'],
-		},
-		amount: {
-			yearly: 210,
-			discount: '30%',
-			monthly: 300,
-			share: '25%',
-		},
-	},
-	fiat: {
-		title: 'Fiat Ramp',
-		description:
-			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
-		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
-		isPopular: false,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Full features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Add custom GitHub repo',
-				'Full management & system',
-				'Download exchange logs',
-				'Full exchange backup',
-				'Landing page (homepage)',
-				'Remove HollaEx badge',
-				'Referral affiliate link',
-				'Crypto chat box',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		asset_pairs: {
-			title: 'Asset and pairs',
-			points: [
-				'One free custom crypto coin & pair',
-				'One free fiat coin & pair',
-			],
-		},
-		integration: {
-			title: 'Fiat integration & KYC system',
-			points: [
-				'Add fiat bank or payment ramp',
-				'Know your customer (KYC) system',
-			],
-		},
-		amount: {
-			yearly: 850,
-			discount: '35%',
-			monthly: 1000,
-			share: '15%',
-		},
-	},
-};
+import { planData } from './generalContent';
 
 const PlanStructure = ({
 	exchange,
@@ -149,6 +19,7 @@ const PlanStructure = ({
 }) => {
 	const { type, background, name } = typeData;
 	const planPriceData = priceData[dataType.type];
+	let currentPlan = planData[typeData.type];
 
 	return (
 		<div className={`${className} plan-container`}>
@@ -168,7 +39,7 @@ const PlanStructure = ({
 				</div>
 				<div className="inner-container">
 					<div>
-						<ul>
+						{/* <ul>
 							<h6>Cloud</h6>
 							<li>Cloud exchange server hosting</li>
 						</ul>
@@ -189,9 +60,87 @@ const PlanStructure = ({
 						<ul>
 							<h6>Assets and pairs</h6>
 							<li>One free custom crypto coin & pair</li>
-						</ul>
+						</ul> */}
+						<div className="center-wrapper">
+							<div className="inner-content">
+								{_get(currentPlan, 'section') &&
+									_get(currentPlan, 'section').map((subContent, index) => {
+										return (
+											<div key={index}>
+												<div>
+													<div className="plan-header ml-5">
+														{subContent.title}
+													</div>
+													<ul className="sub-txt">
+														{subContent.points.map((val, index) => {
+															return <li key={index}>{val}</li>;
+														})}
+													</ul>
+												</div>
+											</div>
+										);
+									})}
+								{!isMonthly && !_get(currentPlan, 'services.hideOnMonthly') ? (
+									<div>
+										<div className="plan-header ml-5">
+											{_get(currentPlan, 'services.title')}
+										</div>
+										<ul className="sub-txt">
+											{_get(currentPlan, 'services.points') &&
+												Object.values(_get(currentPlan, 'services.points')).map(
+													(item, index) => {
+														return <li key={index}>{item}</li>;
+													}
+												)}
+										</ul>
+									</div>
+								) : isMonthly && !_get(currentPlan, 'services.hideActive') ? (
+									<div>
+										<div className="plan-header ml-5">
+											{_get(currentPlan, 'services.title')}
+										</div>
+										<ul className="sub-txt">
+											{_get(currentPlan, 'services.points') &&
+												Object.values(_get(currentPlan, 'services.points')).map(
+													(item, index) => {
+														return <li key={index}>{item}</li>;
+													}
+												)}
+										</ul>
+									</div>
+								) : null}
+								{_get(currentPlan, 'asset_pairs') ? (
+									<div>
+										<div className="plan-header ml-5">
+											{_get(currentPlan, 'asset_pairs.title')}
+										</div>
+										<ul className="sub-txt">
+											{Object.values(
+												_get(currentPlan, 'asset_pairs.points')
+											).map((item, index) => {
+												return <li key={index}>{item}</li>;
+											})}
+										</ul>
+									</div>
+								) : null}
+								{_get(currentPlan, 'integration') ? (
+									<div>
+										<div className="plan-header ml-5">
+											{_get(currentPlan, 'integration.title')}
+										</div>
+										<ul className="sub-txt">
+											{Object.values(
+												_get(currentPlan, 'integration.points')
+											).map((item, index) => {
+												return <li key={index}>{item}</li>;
+											})}
+										</ul>
+									</div>
+								) : null}
+							</div>
+						</div>
 
-						<div className="amount-container">
+						<div className={`${typeData.type}-amount-container`}>
 							{type === 'fiat' ? (
 								<div>
 									<p className="dollor-size">Apply</p>
