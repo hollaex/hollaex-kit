@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
 import { formValueSelector } from 'redux-form';
 import { connect } from 'react-redux';
@@ -276,7 +275,7 @@ class Deposit extends Component {
 							coins,
 							'DEPOSIT_BITCOIN'
 						)}
-					<div className={classnames('inner_container')}>
+					<div className="inner_container">
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"
