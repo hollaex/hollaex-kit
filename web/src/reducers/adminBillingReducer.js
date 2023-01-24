@@ -5,16 +5,24 @@ import {
 	SET_SELECTED_CRYPTO,
 	SET_CRYPTO_PAYMENT_TYPE,
 	SET_TRANSFER_CRYPTO_PAYMENT,
+	SET_FIAT_SUBMITTED,
+	SET_PAYMENT_ADDRESS_DETAILS,
 } from 'actions/adminBillingActions';
 
 const INITIAL_STATE = {
-	selectedPayment: '',
+	selectedPayment: 'cryptoCurrency',
 	selectedType: 'crypto',
 	exchangePlanType: 'item',
-	selectedCrypto: 'XHT',
+	selectedCrypto: { coin: 'XHT', symbol: 'xht' },
 	cryptoPaymentType: '',
 	isAutomatedKYC: false,
 	transferCryptoPayment: false,
+	fiatSubmission: false,
+	paymentAddressDetails: {
+		address: '',
+		amount: 0,
+		currency: '',
+	},
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -31,6 +39,10 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, cryptoPaymentType: payload };
 		case SET_TRANSFER_CRYPTO_PAYMENT:
 			return { ...state, transferCryptoPayment: payload };
+		case SET_FIAT_SUBMITTED:
+			return { ...state, fiatSubmission: payload };
+		case SET_PAYMENT_ADDRESS_DETAILS:
+			return { ...state, paymentAddressDetails: payload };
 		default:
 			return state;
 	}

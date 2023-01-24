@@ -35,7 +35,6 @@ export const getPrice = () => {
 };
 
 export const requestStoreInvoice = (id, data) => {
-	console.log('id', id, 'data', data);
 	const options = {
 		method: 'PUT',
 		body: JSON.stringify(data),

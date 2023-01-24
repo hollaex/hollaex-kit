@@ -16,6 +16,7 @@ const PlanStructure = ({
 	setSelectedType,
 	className,
 	dataType,
+	onHandleSelectedType,
 }) => {
 	const { type, background, name } = typeData;
 	const planPriceData = priceData[dataType.type];
@@ -163,7 +164,7 @@ const PlanStructure = ({
 						</div>
 						<div
 							className="radio-container"
-							onClick={() => setSelectedType(type)}
+							onClick={() => onHandleSelectedType(type)}
 						>
 							{selectedType === type ? (
 								<div>

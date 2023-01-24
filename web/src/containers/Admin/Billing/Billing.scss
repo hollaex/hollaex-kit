@@ -185,12 +185,6 @@ p {
 	}
 }
 
-// .payment-button {
-// 	margin-top: 1rem !important;
-// 	padding: 0rem 0rem 1rem 0rem !important;
-// 	justify-content: space-evenly !important;
-// }
-
 .app_container-content {
 	.general-content-wrapper {
 		.header-content {
@@ -339,7 +333,8 @@ button:focus {
 				opacity: 0.3;
 				margin-top: 3rem !important;
 				margin-bottom: 2.2rem !important;
-				height: 75rem !important;
+				height: 70rem !important;
+
 				.plan-container-wrapper {
 					margin-bottom: 0rem !important;
 				}
@@ -350,7 +345,7 @@ button:focus {
 				justify-content: center;
 				margin: 1rem 2rem 0rem 2rem;
 				border: 1px solid #a8a8b1;
-				height: 80rem;
+				height: 75rem;
 
 				.plan-container-wrapper {
 					margin-bottom: 5rem;
@@ -377,7 +372,7 @@ button:focus {
 
 				.inner-container {
 					padding: 0rem 2rem 0rem 2rem;
-					// margin-top: 1rem;
+
 					.plan-header {
 						color: #ffffff;
 					}
@@ -406,8 +401,9 @@ button:focus {
 						border-radius: 20px;
 					}
 				}
+
 				.basic-amount-container {
-					margin-top: 28rem !important;
+					margin-top: 27rem !important;
 				}
 
 				.crypto-amount-container {
@@ -452,6 +448,13 @@ button:focus {
 		.footer {
 			margin-left: 4rem;
 			font-size: 15px;
+		}
+
+		.success-msg {
+			text-align: center;
+			font-size: 16px;
+			margin-top: 1rem;
+			color: #00a451;
 		}
 	}
 
@@ -619,7 +622,7 @@ button:focus {
 }
 
 .ant-modal .bg-model .box-container .plan-container li {
-	font-size: 13px !important;
+	font-size: 12px !important;
 }
 
 .selected-status {
@@ -764,6 +767,7 @@ button:focus {
 
 	.payment-type-dropdown {
 		margin-bottom: 1rem;
+
 		.ant-select {
 			width: 40%;
 		}
