@@ -273,11 +273,279 @@ button:focus {
 	outline: none;
 }
 
-.ant-modal {
+.ant-radio-wrapper-checked span {
+	color: #ffffff !important;
+}
+
+.ant-modal .bg-model .box-container .plan-container li {
+	font-size: 12px !important;
+}
+
+.selected-status {
+	color: #178700;
+	font-weight: bold;
+	margin: 0rem 1rem 0rem 1rem;
+}
+
+.de-select-status-txt {
+	color: #545454;
+}
+
+.ant-modal
+	.bg-model
+	.box-container
+	.plan-container
+	.radio-container
+	.selected-plan {
+	margin-left: 2.5rem;
+}
+
+.requirement-icon {
+	margin: 0.25rem 0rem;
+	width: 2rem;
+}
+
+.de-select-status {
+	border-radius: 50%;
+	border: 1px solid #a8a8b1;
+	height: 2rem;
+	width: 2rem;
+	cursor: pointer;
+	margin-left: 0.75rem;
+}
+
+.payment-content-wrapper {
+	padding: 0rem 0rem 1.5rem 1.5rem;
+}
+
+.cloud-plan-wrapper {
+	background-color: #27339d;
+	border-top: 2px dotted #75809b;
+	position: relative;
+	top: 0.5rem;
+
+	.cloud-content {
+		padding: 2.5rem;
+	}
+
+	.cloud-background {
+		position: absolute;
+	}
+
+	.cloud-icon {
+		position: relative;
+		margin-left: 0.5rem;
+		margin-top: 1rem;
+	}
+
+	.cloud-box-container {
+		padding: 1rem;
+		justify-content: space-around;
+		background-color: #27339d;
+		border: 1px solid #75809b;
+		height: 8rem;
+
+		.sub-title {
+			white-space: nowrap;
+			font-size: 16px;
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		.cloud-icon,
+		.exchange-icon {
+			width: 40px;
+			margin-right: 15px;
+		}
+
+		.content-align {
+			justify-content: center;
+			align-items: center;
+			// padding: 0 0.5rem;
+			font-weight: bold;
+			font-size: 16px;
+			margin-left: 3rem;
+		}
+
+		.month-content {
+			margin-right: 2rem;
+			// justify-content: center;
+			align-items: center;
+			font-size: 16px;
+			font-weight: bold;
+			// font-weight: bold;
+			// font-size: 16px;
+		}
+
+		.seperator {
+			border-right: 1px dashed #a8a8b1;
+			border-left: 1px dashed #a8a8b1;
+			padding: 1rem;
+		}
+	}
+
+	.button-container {
+		padding: 0.5rem 1rem;
+
+		.ant-btn {
+			height: 45px;
+			width: 27rem;
+			margin-left: 1rem;
+		}
+	}
+
+	.payment-header {
+		font-size: 16px;
+		font-weight: bold;
+		color: #ffffff;
+		margin-top: 1rem;
+	}
+}
+
+.horizantal-line {
+	border-top: 2px dotted #c4c4c4;
+
+	.plan-header {
+		color: #ffffff;
+		font-size: 16px;
+		margin: 2rem 0rem 0rem 2rem;
+	}
+}
+
+.crypto-payment-container {
+	padding: 1rem 2rem;
+
+	h5 {
+		font-weight: bold;
+		color: #ffffff;
+		font-size: 13px;
+	}
+
+	.payment-type-dropdown {
+		margin-bottom: 1rem;
+
+		.ant-select {
+			width: 40%;
+		}
+
+		.ant-select-arrow {
+			color: #ffffff;
+		}
+	}
+
+	.payment-details {
+		border: 1px solid white;
+		padding: 1rem;
+
+		span {
+			display: flex;
+			align-items: center;
+		}
+
+		h5 {
+			padding-right: 5px;
+		}
+
+		button {
+			span {
+				font-weight: bold;
+				font-size: 13px;
+				color: #ffffff;
+			}
+		}
+	}
+
+	.qr-container {
+		.qr-text-container {
+			border: 1px solid white;
+			padding: 1rem;
+			display: flex;
+			background: #101a78 !important;
+
+			.qr-code-wrapper {
+				display: flex;
+			}
+
+			.info-container {
+				display: flex;
+				padding: 1rem;
+				color: red;
+				font-weight: bold;
+				font-size: 14px;
+				width: 75%;
+
+				p {
+					padding-left: 2px;
+					padding-top: 0px !important;
+				}
+			}
+
+			.ant-btn {
+				color: #ffffff !important;
+				background: #101a78 !important;
+			}
+
+			.ant-input {
+				background-color: #000 !important;
+				color: #ffffff !important;
+			}
+		}
+
+		.scanner-container {
+			width: 9rem;
+			// background: black;
+
+			canvas {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border: 1px solid #ffffff;
+			}
+
+			div {
+				// font-size: 12px;
+				font-size: 11px;
+				margin-top: 1rem;
+			}
+		}
+
+		p {
+			padding-top: 1rem;
+		}
+	}
+}
+
+.configure-modal-container {
+	padding: 1.5rem;
+
+	h4 {
+		color: white;
+	}
+
+	div {
+		display: flex;
+		flex-direction: column;
+
+		label {
+			display: flex;
+			align-items: center;
+			margin: 0.5rem 2rem 1rem 2rem;
+
+			span {
+				font-size: 15px !important;
+			}
+		}
+
+		button {
+			margin-top: 2rem;
+		}
+	}
+}
+
+.blue-admin-billing-model {
 	.ant-modal-body {
 		padding: 0px;
 	}
-
 	.ant-breadcrumb {
 		padding: 1.5rem;
 
@@ -621,274 +889,5 @@ button:focus {
 	.button-container button {
 		margin-right: 20px;
 		height: 44px;
-	}
-}
-
-.ant-radio-wrapper-checked span {
-	color: #ffffff !important;
-}
-
-.ant-modal .bg-model .box-container .plan-container li {
-	font-size: 12px !important;
-}
-
-.selected-status {
-	color: #178700;
-	font-weight: bold;
-	margin: 0rem 1rem 0rem 1rem;
-}
-
-.de-select-status-txt {
-	color: #545454;
-}
-
-.ant-modal
-	.bg-model
-	.box-container
-	.plan-container
-	.radio-container
-	.selected-plan {
-	margin-left: 2.5rem;
-}
-
-.requirement-icon {
-	margin: 0.25rem 0rem;
-	width: 2rem;
-}
-
-.de-select-status {
-	border-radius: 50%;
-	border: 1px solid #a8a8b1;
-	height: 2rem;
-	width: 2rem;
-	cursor: pointer;
-	margin-left: 0.75rem;
-}
-
-.payment-content-wrapper {
-	padding: 0rem 0rem 1.5rem 1.5rem;
-}
-
-.cloud-plan-wrapper {
-	background-color: #27339d;
-	border-top: 2px dotted #75809b;
-	position: relative;
-	top: 0.5rem;
-
-	.cloud-content {
-		padding: 2.5rem;
-	}
-
-	.cloud-background {
-		position: absolute;
-	}
-
-	.cloud-icon {
-		position: relative;
-		margin-left: 0.5rem;
-		margin-top: 1rem;
-	}
-
-	.cloud-box-container {
-		padding: 1rem;
-		justify-content: space-around;
-		background-color: #27339d;
-		border: 1px solid #75809b;
-		height: 8rem;
-
-		.sub-title {
-			white-space: nowrap;
-			font-size: 16px;
-			font-weight: bold;
-			margin-right: 5px;
-		}
-
-		.cloud-icon,
-		.exchange-icon {
-			width: 40px;
-			margin-right: 15px;
-		}
-
-		.content-align {
-			justify-content: center;
-			align-items: center;
-			// padding: 0 0.5rem;
-			font-weight: bold;
-			font-size: 16px;
-			margin-left: 3rem;
-		}
-
-		.month-content {
-			margin-right: 2rem;
-			// justify-content: center;
-			align-items: center;
-			font-size: 16px;
-			font-weight: bold;
-			// font-weight: bold;
-			// font-size: 16px;
-		}
-
-		.seperator {
-			border-right: 1px dashed #a8a8b1;
-			border-left: 1px dashed #a8a8b1;
-			padding: 1rem;
-		}
-	}
-
-	.button-container {
-		padding: 0.5rem 1rem;
-
-		.ant-btn {
-			height: 45px;
-			width: 27rem;
-			margin-left: 1rem;
-		}
-	}
-
-	.payment-header {
-		font-size: 16px;
-		font-weight: bold;
-		color: #ffffff;
-		margin-top: 1rem;
-	}
-}
-
-.horizantal-line {
-	border-top: 2px dotted #c4c4c4;
-
-	.plan-header {
-		color: #ffffff;
-		font-size: 16px;
-		margin: 2rem 0rem 0rem 2rem;
-	}
-}
-
-.crypto-payment-container {
-	padding: 1rem 2rem;
-
-	h5 {
-		font-weight: bold;
-		color: #ffffff;
-		font-size: 13px;
-	}
-
-	.payment-type-dropdown {
-		margin-bottom: 1rem;
-
-		.ant-select {
-			width: 40%;
-		}
-
-		.ant-select-arrow {
-			color: #ffffff;
-		}
-	}
-
-	.payment-details {
-		border: 1px solid white;
-		padding: 1rem;
-
-		span {
-			display: flex;
-			align-items: center;
-		}
-
-		h5 {
-			padding-right: 5px;
-		}
-
-		button {
-			span {
-				font-weight: bold;
-				font-size: 13px;
-				color: #ffffff;
-			}
-		}
-	}
-
-	.qr-container {
-		.qr-text-container {
-			border: 1px solid white;
-			padding: 1rem;
-			display: flex;
-			background: #101a78 !important;
-
-			.qr-code-wrapper {
-				display: flex;
-			}
-
-			.info-container {
-				display: flex;
-				padding: 1rem;
-				color: red;
-				font-weight: bold;
-				font-size: 14px;
-				width: 75%;
-
-				p {
-					padding-left: 2px;
-					padding-top: 0px !important;
-				}
-			}
-
-			.ant-btn {
-				color: #ffffff !important;
-				background: #101a78 !important;
-			}
-
-			.ant-input {
-				background-color: #000 !important;
-				color: #ffffff !important;
-			}
-		}
-
-		.scanner-container {
-			width: 9rem;
-			// background: black;
-
-			canvas {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				border: 1px solid #ffffff;
-			}
-
-			div {
-				// font-size: 12px;
-				font-size: 11px;
-				margin-top: 1rem;
-			}
-		}
-
-		p {
-			padding-top: 1rem;
-		}
-	}
-}
-
-.configure-modal-container {
-	padding: 1.5rem;
-
-	h4 {
-		color: white;
-	}
-
-	div {
-		display: flex;
-		flex-direction: column;
-
-		label {
-			display: flex;
-			align-items: center;
-			margin: 0.5rem 2rem 1rem 2rem;
-
-			span {
-				font-size: 15px !important;
-			}
-		}
-
-		button {
-			margin-top: 2rem;
-		}
 	}
 }
