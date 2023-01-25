@@ -43,6 +43,14 @@ p {
 		.crypto-fiat-plan {
 			padding-bottom: 1rem;
 		}
+
+		.diy-content-wrapper {
+			width: 100%;
+		}
+
+		.boost-content-wrapper {
+			width: 100%;
+		}
 	}
 
 	.cloud-background {
@@ -157,7 +165,7 @@ p {
 
 	.popular-header-basic {
 		background-color: #c4c8ac;
-		height: 3%;
+		height: 2%;
 	}
 
 	.popular-header-crypto {
@@ -165,12 +173,12 @@ p {
 		color: #000;
 		font-size: 10px;
 		text-align: center;
-		height: 3%;
+		height: 2%;
 	}
 
 	.popular-header-fiat {
 		background-color: #00ffff;
-		height: 3%;
+		height: 2%;
 	}
 
 	.header-wrapper {
@@ -526,29 +534,36 @@ p {
 	}
 }
 
-.configure-modal-container {
-	padding: 1.5rem;
-
-	h4 {
-		color: white;
+.configure-modal {
+	.ant-modal-body {
+		padding: 0px !important;
 	}
 
-	div {
-		display: flex;
-		flex-direction: column;
+	.configure-modal-container {
+		padding: 1.5rem;
 
-		label {
-			display: flex;
-			align-items: center;
-			margin: 0.5rem 2rem 1rem 2rem;
-
-			span {
-				font-size: 15px !important;
-			}
+		h4 {
+			color: white;
 		}
 
-		button {
-			margin-top: 2rem;
+		div {
+			display: flex;
+			flex-direction: column;
+
+			label {
+				display: flex;
+				align-items: center;
+				margin: 0.5rem 2rem 1rem 2rem;
+
+				span {
+					font-size: 15px !important;
+					color: white;
+				}
+			}
+
+			button {
+				margin-top: 2rem;
+			}
 		}
 	}
 }
@@ -660,6 +675,10 @@ p {
 				margin-top: 1rem;
 				margin-bottom: 1rem;
 
+				div {
+					text-align: center;
+				}
+
 				.selected-plan {
 					border-radius: 20px;
 					padding: 5px;
@@ -712,7 +731,7 @@ p {
 				justify-content: center;
 				margin: 1rem 2rem 0rem 2rem;
 				border: 1px solid #a8a8b1;
-				height: 75rem;
+				height: 70rem;
 
 				.plan-container-wrapper {
 					width: 22rem;
@@ -737,11 +756,41 @@ p {
 						height: 3%;
 					}
 
+					.popular-header-boost {
+						background-color: #5cb5f9;
+						color: #000;
+						font-size: 10px;
+						text-align: center;
+						height: 2%;
+					}
+
 					.header-wrapper {
 						height: 27%;
+						display: flex;
+						flex-direction: column;
+						border-bottom: 1px solid #a8a8b1;
+
+						.diy-image {
+							width: 5rem;
+							margin-left: auto;
+							margin-right: auto;
+						}
+
+						h6 {
+							padding: 1rem;
+							font-size: 13px;
+							color: #ffffff;
+							text-align: center;
+						}
+
+						h2 {
+							text-align: center;
+							padding-top: 1rem;
+						}
 					}
 
 					.feature-wrapper {
+						padding-top: 1rem;
 						height: 45%;
 					}
 

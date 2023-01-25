@@ -1,6 +1,8 @@
 import React from 'react';
+import { ReactSVG } from 'react-svg';
 import _get from 'lodash/get';
 import { CheckOutlined } from '@ant-design/icons';
+import { STATIC_ICONS } from 'config/icons';
 
 const DIYPlanStructure = ({
 	exchange,
@@ -28,13 +30,10 @@ const DIYPlanStructure = ({
 					{type === 'boost' ? 'MOST POPULAR' : ''}
 				</div>
 				<div className="header-wrapper">
-					<div className={`header-container-${type}`}></div>
-					<div
-						className="header-container"
-						style={{ backgroundImage: `url(${currentPlan?.background})` }}
-					>
-						<h2 className="type-center">{currentPlan?.title}</h2>
-						<h6 className="text-center">{currentPlan.description}</h6>
+					<ReactSVG src={STATIC_ICONS['DIY_ICON']} className="diy-image" />
+					<div>
+						<h2>{currentPlan?.title}</h2>
+						<h6>{currentPlan.description}</h6>
 					</div>
 				</div>
 				<div className="feature-wrapper">
