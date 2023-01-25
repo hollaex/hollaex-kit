@@ -35,18 +35,17 @@ export const getPrice = () => {
 };
 
 export const requestStoreInvoice = (id, data) => {
-	// console.log('id', id, 'data', data);
-	// const options = {
-	// 	method: 'PUT',
-	// 	body: JSON.stringify(data),
-	// };
-	// return new Promise(async (resolve, reject) => {
-	//  try {
-	//      // const url = `/invoice?invoice_id=${id}`;
-	//      // const res = await requestDashAuthenticated(url, options);
-	//      // resolve(res);
-	//  } catch (error) {
-	//      reject(error);
-	//  }
-	// });
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(data),
+	};
+	return new Promise(async (resolve, reject) => {
+		try {
+			const url = `/invoice?invoice_id=${id}`;
+			const res = await requestDashAuthenticated(url, options);
+			resolve(res);
+		} catch (error) {
+			reject(error);
+		}
+	});
 };

@@ -25,13 +25,15 @@ import {
 } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import { DASH_TOKEN_KEY } from 'config/constants';
-import Subscription from 'containers/Admin/Billing/subscription';
 import PlanStructure from 'containers/Admin/Billing/planStructure';
 import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
 import {
 	getExchangeBilling,
+	getNewExchangeBilling,
 	// getNewExchangeBilling,
 	getPrice,
+	requestStoreInvoice,
+	setExchangePlan,
 	// setExchangePlan,
 } from './action';
 import './Billing.scss';
@@ -42,13 +44,148 @@ import {
 	setExchangePlanType,
 	setSelectedCrypto,
 	setCryptoPaymentType,
+	setTransferCryptoPayment,
+	setFiatSubmission,
+	setPaymentAddressDetails,
 } from 'actions/adminBillingActions';
 import EnterpriseForm from '../EnterPriseForm';
-import { planData } from './planStructure';
 import './Billing.scss';
+import { getExchange } from '../AdminFinancials/action';
+import _get from 'lodash/get';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
+
+export const planData = {
+	basic: {
+		title: 'Basic',
+		description: 'Get started fast with a basic test exchange',
+		icon: 'BASIC_PLAN_BACKGROUND',
+		isPopular: false,
+		section: [
+			{
+				title: 'Cloud',
+				points: ['Cloud exchange server hosting'],
+			},
+		],
+		services: {
+			title: 'Limited features',
+			points: [
+				'Theme customization',
+				'Localization',
+				'Custom domain',
+				'Add HollaEx plugins',
+				'Add custom plugins',
+				'Download exchange logs',
+				'Full exchange backup',
+			],
+			hideOnMonthly: false,
+			hideActive: false,
+		},
+		amount: {
+			yearly: 75,
+			discount: '25%',
+			monthly: 100,
+			share: '50%',
+		},
+	},
+	crypto: {
+		title: 'Crypto Pro',
+		description:
+			'For those looking to start a crypto-to-crypto exchange business',
+		icon: 'CRYPTO_PRO_PLAN_BACKGROUND',
+		isPopular: true,
+		section: [
+			{
+				title: 'Cloud',
+				points: ['Cloud exchange server hosting'],
+			},
+		],
+		services: {
+			title: 'Full features',
+			points: [
+				'Theme customization',
+				'Localization',
+				'Custom domain',
+				'Add HollaEx plugins',
+				'Add custom plugins',
+				'Add custom GitHub repo',
+				'Team management & roles',
+				'Download exchange logs',
+				'Full exchange backup',
+				'Landing page (homepage)',
+				'Remove HollaEx badge',
+				'Referral affiliate link',
+				'Crypto chat box',
+			],
+			hideOnMonthly: false,
+			hideActive: false,
+		},
+		asset_pairs: {
+			title: 'Asset and pairs',
+			points: ['One free custom crypto coin & pair'],
+		},
+		amount: {
+			yearly: 210,
+			discount: '30%',
+			monthly: 300,
+			share: '25%',
+		},
+	},
+	fiat: {
+		title: 'Fiat Ramp',
+		description:
+			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
+		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
+		isPopular: false,
+		section: [
+			{
+				title: 'Cloud',
+				points: ['Cloud exchange server hosting'],
+			},
+		],
+		services: {
+			title: 'Full features',
+			points: [
+				'Theme customization',
+				'Localization',
+				'Custom domain',
+				'Add HollaEx plugins',
+				'Add custom plugins',
+				'Add custom GitHub repo',
+				'Full management & system',
+				'Download exchange logs',
+				'Full exchange backup',
+				'Landing page (homepage)',
+				'Remove HollaEx badge',
+				'Referral affiliate link',
+				'Crypto chat box',
+			],
+			hideOnMonthly: false,
+			hideActive: false,
+		},
+		asset_pairs: {
+			title: 'Asset and pairs',
+			points: [
+				'One free custom crypto coin & pair',
+				'One free fiat coin & pair',
+			],
+		},
+		integration: {
+			title: 'Fiat integration & KYC system',
+			points: [
+				'Add fiat bank or payment ramp',
+				'Know your customer (KYC) system',
+			],
+		},
+		amount: {
+			yearly: 850,
+			discount: '35%',
+			monthly: 1000,
+			share: '15%',
+		},
+	},
+};
 
 const TYPES = [
 	{
@@ -74,7 +211,7 @@ const payOptions = [
 ];
 
 const cryptoCoins = [
-	{ coin: 'USDT', symbol: 'btc' },
+	{ coin: 'USDT', symbol: 'usdt' },
 	{ coin: 'Bitcoin', symbol: 'btc' },
 	{ coin: 'XHT', symbol: 'xht' },
 	{ coin: 'Ethereum', symbol: 'eth' },
@@ -88,6 +225,8 @@ const paymentMethods = [
 	{ label: 'Cryptocurrency', method: 'cryptoCurrency' },
 	{ label: 'Credit Card', method: 'stripe' },
 ];
+
+const options = ['item', 'method', 'crypto', 'payment'];
 
 const columns = [
 	{
@@ -184,28 +323,32 @@ const GeneralContent = ({
 	exchangePlanType,
 	setExchangePlanType,
 	isAutomatedKYC,
+	setTransferCryptoPayment,
+	transferCryptoPayment,
+	setFiatSubmission,
+	fiatSubmission,
+	setPaymentAddressDetails,
+	paymentAddressDetails,
 }) => {
 	const balance = user?.balance;
+	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
-	const options = ['item', 'method', 'crypto', 'payment'];
-	// const subscribtionPaymentPrice = priceData?.[selectedType];
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
-	const [isMonthly, setIsMonthly] = useState(false);
+	const [isMonthly, setIsMonthly] = useState(SwitchState);
 	const [invoceData, setInvoceData] = useState([]);
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
-	// const [invoice, setInvoice] = useState({});
-	// const [loading, setLoading] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
+
+	const planPriceData = priceData[selectedType];
 
 	useEffect(() => {
 		setIsLoading(true);
-		setFiatCompleted(false);
 		getExchangePrice();
 	}, []);
 
@@ -223,7 +366,7 @@ const GeneralContent = ({
 			const optionData = payOptions.filter((data) => data.key !== 'pay');
 			setOptions(optionData);
 		}
-	}, [balance, selectedCrypto]);
+	}, [balance, selectedCrypto.coin]);
 
 	const submitEnterprise = async (formProps) => {};
 
@@ -241,6 +384,7 @@ const GeneralContent = ({
 	};
 
 	const onHandleBreadcrumb = (name) => {
+		setIsMonthly(false);
 		if (activeBreadCrumb) {
 			if (
 				exchangePlanType !== 'item' &&
@@ -258,6 +402,14 @@ const GeneralContent = ({
 		}
 	};
 
+	const OnHandleCancel = () => {
+		setOpenPlanModal(false);
+		setTransferCryptoPayment(false);
+		setShowPayAddress(false);
+		setFiatSubmission(false);
+		setSelectedPayment('cryptoCurrency');
+	};
+
 	const isCloud = () => {
 		const exchangePlans = ['basic', 'crypto', 'fiat'];
 		if (exchangePlans.includes(exchange.plan)) {
@@ -268,34 +420,20 @@ const GeneralContent = ({
 	};
 
 	const storePaymentMethod = async () => {
-		setExchangePlanType('method');
-		let invoice = {
-			id: 524,
-			amount: 30000,
-			currency: 'usd',
-			item: 'fiat',
-			description: 'HollaEx Yearly Cloud Hosting',
-			is_paid: false,
-			is_overpaid: false,
-			is_underpaid: false,
-			expiry: '2023-01-26T11:11:34.021Z',
-			method: '',
-			meta: { exchange_id: 1144 },
-			created_at: '2023-01-19T11:11:34.056Z',
-			updated_at: '2023-01-19T11:15:42.657Z',
-			user_id: 2826,
-		};
 		try {
 			if (
-				invoice &&
-				invoice.id &&
+				invoceData[0] &&
+				invoceData[0].id &&
 				(selectedPayment === 'paypal' ||
 					selectedPayment === 'bank' ||
-					selectedPayment === 'stripe')
+					selectedPayment === 'stripe' ||
+					exchangePlanType === 'method' ||
+					'crypto')
 			) {
-				// setLoading(true);
-				// let method = '';
-				// console.log('selectedPayment', selectedPayment);
+				let method =
+					selectedPayment !== 'cryptoCurrency'
+						? selectedPayment
+						: selectedCrypto.symbol;
 				switch (selectedPayment) {
 					case 'paypal':
 						setOpenPlanModal(false);
@@ -305,18 +443,48 @@ const GeneralContent = ({
 					case 'stripe':
 						setOpenPlanModal(false);
 						break;
-					case 'cryptoCurrency':
-						setOpenPlanModal(false);
-						break;
 					default:
 						break;
+				}
+				const res = await requestStoreInvoice(invoceData[0].id, { method });
+				if (res) {
+					switch (selectedPayment) {
+						case 'paypal':
+							window.location.replace(res.meta.redirect_url);
+							message.success('Redirecting to the paypal');
+							setOpenPlanModal(false);
+							break;
+						case 'stripe':
+							window.location.replace(res.meta.redirect_url);
+							message.success('Redirecting to the payment');
+							setOpenPlanModal(false);
+							break;
+						case 'bank':
+							break;
+						case 'crypto':
+							// if (res.method === 'xht' && res.is_paid) {
+							// setNextType('xhtPayment');
+							// } else if (res.method === 'xht' && !res.is_paid) {
+							// setNextType('xhtInSufficient');
+							// } else {
+							// setNextType('cryptoPayment');
+							// }
+							// setInvoice({ ...invoceData[0], method, meta: { ...invoceData[0].meta, ...res } });
+							// setCurrencyAddress(res);
+							break;
+						default:
+							break;
+					}
+					if (exchangePlanType === 'crypto') {
+						setPaymentAddressDetails(res);
+					}
+					getInvoice();
+					setExchangePlanType('payment');
 				}
 			} else if (selectedPayment === 'cryptoCurrency') {
 				setExchangePlanType('crypto');
 			}
 		} catch (error) {
-			// console.error(error);
-			// setLoading(false);
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 			} else {
@@ -327,17 +495,17 @@ const GeneralContent = ({
 
 	const renderFooter = () => {
 		return (
-			<div className="cloud-plan-wrapper">
-				<div className="cloud-content">
-					<h3 className="payment-header">
+			<div>
+				<div className="horizantal-line">
+					<div className="plan-header">
 						{isAutomatedKYC
 							? 'Selected item'
 							: isCloud()
 							? 'Selected cloud plan'
 							: 'Selected DIY plan'}
-					</h3>
-					<div className="cloud-box-container d-flex">
-						<div className="content-align d-flex">
+					</div>
+					<div className="subscription-container">
+						<div className="plan-card">
 							<div className="card-icon">
 								<ReactSVG
 									src={STATIC_ICONS['CLOUD_BASIC']}
@@ -348,19 +516,43 @@ const GeneralContent = ({
 									className="cloud-icon"
 								/>
 							</div>
+							<div>
+								<h6>PLAN SUBSCRIBTION</h6>
+								<p className="f-16">{planData?.[selectedType]?.title}</p>
+								<h6>
+									{isMonthly
+										? 'HollaEx Monthly Cloud Hosting:'
+										: 'HollaEx Yearly Cloud Hosting:'}
+								</h6>
+							</div>
 						</div>
-						<div className="content-align d-flex seperator">
-							<img
-								src={`${STATIC_ICONS['EXCHANGE_ICON']}`}
-								alt="Exchange-icon"
-								className="exchange-icon"
-							/>
-							<span className="bodyContentSmall">texter-1</span>
+						<div className="exchange-text">
+							<span>
+								{/* <div className="exchange-name"></div> */}
+								<ReactSVG
+									src={STATIC_ICONS['EXCHANGE_LOGO_LIGHT_THEME']}
+									className="cloud-icon"
+								/>
+							</span>
+							<h6>{exchange?.name}</h6>
 						</div>
-						<div className="month-content d-flex">Monthly payment:</div>
+						<div className="payment-container">
+							<p className="f-20">
+								{isMonthly ? 'Monthly payment:' : 'Yearly payment:'}
+							</p>
+							<p className="f-20">
+								{exchangePlanType === 'payment'
+									? `${selectedCrypto.symbol.toUpperCase()} ${
+											paymentAddressDetails?.amount
+									  }`
+									: isMonthly
+									? `USD${_get(planPriceData, 'month.price')}`
+									: `USD ${_get(planPriceData, 'year.price')}`}
+							</p>
+						</div>
 					</div>
+					<div>{renderBtn()}</div>
 				</div>
-				<div>{renderBtn()}</div>
 			</div>
 		);
 	};
@@ -384,6 +576,62 @@ const GeneralContent = ({
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
 			}
+		}
+	};
+
+	const updatePlanType = async (params, callback = () => {}) => {
+		try {
+			const res = await setExchangePlan(params);
+			if (exchange && exchange.id && params.plan !== 'fiat') {
+				const resInvoice = await getNewExchangeBilling(197);
+				if (resInvoice) {
+					getInvoice();
+				}
+			}
+			if (res) {
+				getExchange();
+				callback();
+			}
+		} catch (error) {
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			} else {
+				message.error(error.message);
+			}
+		}
+	};
+
+	const storePlanType = () => {
+		if (
+			selectedType === 'fiat' &&
+			exchange?.business_info &&
+			Object.keys(exchange.business_info)?.length
+		) {
+			setFiatCompleted(true);
+		} else if (selectedType === 'fiat') {
+			updatePlanType(
+				{
+					id: exchange.id,
+					plan: selectedType,
+					period: isMonthly ? 'month' : 'year',
+				}
+				// () => setExchangePlanType('enterPrise')
+			);
+			setExchangePlanType('fiat');
+			setModalWidth('55rem');
+		} else {
+			updatePlanType(
+				{
+					id: exchange.id,
+					plan: selectedType,
+					period: isMonthly ? 'month' : 'year',
+				},
+				() => setExchangePlanType('method')
+			);
+			setExchangePlanType('method');
+			setModalWidth('65rem');
+			setActiveBreadCrumb(true);
+			// setExchangePlanType('payment')
 		}
 	};
 
@@ -417,7 +665,6 @@ const GeneralContent = ({
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
 		setExchangePlanType('item');
-		setSelectedPayment('');
 		setSelectedType('crypto');
 	};
 
@@ -431,7 +678,7 @@ const GeneralContent = ({
 						backgroundImage: `url(${STATIC_ICONS['CLOUD_BASIC_BACKGROUND']})`,
 					}}
 				>
-					<div className="d-flex contentWrapper">
+					<div className={`d-flex ${selectedType}-content-wrapper`}>
 						<div className="card-icon">
 							<ReactSVG
 								src={STATIC_ICONS['CLOUD_BASIC']}
@@ -445,9 +692,11 @@ const GeneralContent = ({
 						<div className="payment-text">
 							<div className="d-flex">
 								<p className="white-text">Cloud: </p>
-								<p className="cloud-type">{planData?.[selectedType]?.title}</p>
+								<p className="cloud-type">{exchange.plan}</p>
 							</div>
-							<p className="pb-5">{planData?.[selectedType]?.description}</p>
+							<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
+								{planData?.[selectedType]?.description}
+							</p>
 						</div>
 					</div>
 				</div>
@@ -481,6 +730,16 @@ const GeneralContent = ({
 		return false;
 	};
 
+	const onHandleChange = (item) => {
+		setCryptoPaymentType(item.value);
+		setTransferCryptoPayment(true);
+	};
+
+	const onHandleSelectedType = (type) => {
+		setSelectedType(type);
+		setFiatSubmission(false);
+	};
+
 	const renderContent = () => {
 		switch (exchangePlanType) {
 			case 'item':
@@ -492,7 +751,7 @@ const GeneralContent = ({
 									<span className={'switch-label'}>Pay yearly</span>
 									<div className="green-label save-label">(Save up to 35%)</div>
 								</div>
-								<Switch onClick={handleOnSwith} />
+								<Switch onClick={handleOnSwith} defaultChecked={!SwitchState} />
 								<span className={'switch-label label-inactive ml-1'}>
 									Pay monthly
 								</span>
@@ -519,17 +778,10 @@ const GeneralContent = ({
 											priceData={priceData}
 											isMonthly={isMonthly}
 											key={inx}
+											onHandleSelectedType={onHandleSelectedType}
 										/>
 									);
 								})}
-							</div>
-							<div>
-								{' '}
-								{isFiatFormCompleted ? (
-									<div className="success-msg">
-										You've already submitted a Fiat Ramp form.
-									</div>
-								) : null}
 							</div>
 							<div className="footer">
 								<p>
@@ -541,6 +793,13 @@ const GeneralContent = ({
 									in cloud plans and are paid separately
 								</p>
 							</div>
+							<div>
+								{fiatSubmission && selectedType === 'fiat' && (
+									<div className="success-msg">
+										You've already submitted a Fiat Ramp form.
+									</div>
+								)}
+							</div>
 							{renderBtn()}
 						</div>
 					</div>
@@ -550,7 +809,11 @@ const GeneralContent = ({
 					<div>
 						<div className="radiobtn-container">
 							<p>Select Payment Method</p>
-							<Radio.Group className={'radio-content'} value={selectedPayment}>
+							<Radio.Group
+								className={'radio-content'}
+								value={selectedPayment}
+								defaultValue={'cryptoCurrency'}
+							>
 								<Space direction="vertical">
 									{paymentMethods.map((opt, inx) => {
 										return (
@@ -579,13 +842,8 @@ const GeneralContent = ({
 									})}
 								</Space>
 							</Radio.Group>
-							<Subscription
-								isMonthly={isMonthly}
-								selectedType={selectedType}
-								planPriceData={priceData[selectedType]}
-							/>
 						</div>
-						{renderBtn()}
+						{renderFooter()}
 					</div>
 				);
 			case 'crypto':
@@ -593,13 +851,13 @@ const GeneralContent = ({
 					<div>
 						<div className="radiobtn-container">
 							<p>Pick Crypto</p>
-							<Radio.Group className="my-3" value={selectedCrypto}>
+							<Radio.Group className="my-3" value={selectedCrypto.coin}>
 								<Space direction="vertical">
 									{cryptoCoins.map((item, inx) => {
 										return (
 											<>
 												<Radio
-													onChange={() => setSelectedCrypto(item.coin)}
+													onChange={() => setSelectedCrypto(item)}
 													name={item.coin}
 													value={item.coin}
 												>
@@ -620,20 +878,15 @@ const GeneralContent = ({
 													)}
 												</Radio>
 												{selectedCrypto &&
-													selectedCrypto === item.coin &&
+													selectedCrypto.coin === item.coin &&
 													renderCoins(item.coin, item.symbol)}
 											</>
 										);
 									})}
 								</Space>
 							</Radio.Group>
-							<Subscription
-								isMonthly={isMonthly}
-								selectedType={selectedType}
-								planPriceData={priceData[selectedType]}
-							/>
 						</div>
-						{renderBtn()}
+						{renderFooter()}
 					</div>
 				);
 			case 'payment':
@@ -642,35 +895,38 @@ const GeneralContent = ({
 						<div className="crypto-payment-container">
 							<div className="payment-type-dropdown">
 								<h5>Select how to pay:</h5>
-								<Select placeholder="Select payment method">
-									{paymentOptions.map((item) => (
-										<Option
-											onChange={() => setCryptoPaymentType(item.value)}
-											value={item.key}
-											key={item.key}
-										>
+								{paymentOptions.map((item) => (
+									<Select
+										onChange={() => onHandleChange(item)}
+										placeholder="Select payment method"
+									>
+										<Option value={item.key} key={item.key}>
 											{item.value}
 										</Option>
-									))}
-								</Select>
+									</Select>
+								))}
 							</div>
-							<div className="payment-details">
-								<span>
-									<h5>Selected Crypto :</h5> <p>{selectedCrypto}</p>
-								</span>
-								<span>
-									<h5> Required payment amount:</h5>
-									<p>{`1.3875 ${selectedCrypto}`} </p>
-								</span>
-								{showPayAddress ? null : (
-									<Button
-										type="primary"
-										onClick={() => setShowPayAddress(true)}
-									>
-										Show payment address:
-									</Button>
-								)}
-							</div>
+							{transferCryptoPayment && (
+								<div className="payment-details">
+									<span>
+										<h5>Selected Crypto :</h5> <p>{selectedCrypto.coin}</p>
+									</span>
+									<span>
+										<h5> Required payment amount:</h5>
+										<p>
+											{paymentAddressDetails.amount} {selectedCrypto.coin}{' '}
+										</p>
+									</span>
+									{showPayAddress ? null : (
+										<Button
+											type="primary"
+											onClick={() => setShowPayAddress(true)}
+										>
+											Show payment address:
+										</Button>
+									)}
+								</div>
+							)}
 							{showPayAddress ? (
 								<div className="qr-container">
 									<div className="qr-text-container">
@@ -681,7 +937,10 @@ const GeneralContent = ({
 													<Input
 														style={{ width: '70%' }}
 														id={'copyqrcode'}
-														defaultValue="git@github.com:ant-design/ant-design.git"
+														value={
+															paymentAddressDetails &&
+															paymentAddressDetails.address
+														}
 													/>
 													<Tooltip title="copy QR code">
 														<Button
@@ -730,48 +989,50 @@ const GeneralContent = ({
 		}
 	};
 
-	const handleRedirectPayMethod = () => {
-		setOpenPlanModal(false);
-	};
-
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
-			setExchangePlanType('method');
+			if (selectedType === 'fiat' && isFiatFormCompleted) {
+				setModalWidth('85rem');
+				setFiatSubmission(true);
+			} else {
+				setExchangePlanType('method');
+				storePlanType();
+			}
 		} else if (exchangePlanType === 'method') {
-			if (selectedPayment === 'cryptoCurrency') storePaymentMethod();
-			else handleRedirectPayMethod();
+			if (selectedPayment !== 'cryptoCurrency') storePaymentMethod();
+			else setExchangePlanType('crypto');
 		} else if (exchangePlanType === 'crypto') {
-			setExchangePlanType('payment');
+			storePaymentMethod();
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
 		}
-		setModalWidth('65rem');
 		setActiveBreadCrumb(true);
 	};
 
 	const handleBack = () => {
+		setFiatSubmission(false);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 		} else if (exchangePlanType === 'method') {
+			setModalWidth('85rem');
 			setExchangePlanType('item');
+			setSelectedPayment('cryptoCurrency');
+			setIsMonthly(!SwitchState);
 		} else if (exchangePlanType === 'crypto') {
 			setExchangePlanType('method');
 		} else if (exchangePlanType === 'payment') {
 			setExchangePlanType('crypto');
 		}
-		setModalWidth('85rem');
 	};
 
 	const renderBtn = () => {
 		return (
 			<div className="payment-button">
 				<Button block type="primary" onClick={handleBack}>
-					{' '}
-					Back{' '}
+					Back
 				</Button>
 				<Button block type="primary" onClick={handleNext}>
-					{' '}
-					Next{' '}
+					{exchangePlanType === 'payment' ? 'Done' : 'Next'}
 				</Button>
 			</div>
 		);
@@ -779,8 +1040,8 @@ const GeneralContent = ({
 
 	const getInvoice = async (params) => {
 		const res = await getExchangeBilling(params);
-		if (res && res?.data && res?.data?.data) {
-			setInvoceData(res?.data?.data);
+		if (res && res?.data) {
+			setInvoceData(res?.data);
 		}
 		setIsLoading(false);
 	};
@@ -802,7 +1063,7 @@ const GeneralContent = ({
 					className="cloud-background"
 				/>
 
-				<div className="ml-4  header-content">
+				<div className="ml-4 header-content">
 					<p className="description-header">Payment for Plans</p>
 					<div className="d-flex description-content">
 						<div>Below is current your plan. Get more view details on</div>
@@ -818,7 +1079,7 @@ const GeneralContent = ({
 				className="bg-model blue-admin-billing-model"
 				width={modalWidth}
 				zIndex={1000}
-				onCancel={() => setOpenPlanModal(false)}
+				onCancel={OnHandleCancel}
 				footer={null}
 			>
 				{renderModelContent()}
@@ -855,6 +1116,9 @@ const mapStateToProps = (store) => ({
 	exchangePlanType: store.admin.exchangePlanType,
 	selectedCrypto: store.admin.selectedCrypto,
 	isAutomatedKYC: store.admin.isAutomatedKYC,
+	transferCryptoPayment: store.admin.transferCryptoPayment,
+	fiatSubmission: store.admin.fiatSubmission,
+	paymentAddressDetails: store.admin.paymentAddressDetails,
 });
 
 export default connect(mapStateToProps, {
@@ -862,4 +1126,7 @@ export default connect(mapStateToProps, {
 	setSelectedType,
 	setExchangePlanType,
 	setSelectedCrypto,
+	setTransferCryptoPayment,
+	setFiatSubmission,
+	setPaymentAddressDetails,
 })(GeneralContent);

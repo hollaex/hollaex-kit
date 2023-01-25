@@ -18,6 +18,28 @@ p {
 		bottom: 0px;
 		left: 0px;
 		z-index: -1;
+
+		.basic-content-wrapper {
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+		}
+
+		.crypto-content-wrapper,
+		.fiat-content-wrapper {
+			margin-top: 1rem;
+		}
+
+		.card-icon {
+			margin-top: 1rem;
+		}
+
+		.basic-plan {
+			padding-bottom: 2rem;
+		}
+
+		.crypto-fiat-plan {
+			padding-bottom: 1rem;
+		}
 	}
 
 	.cloud-background {
@@ -88,19 +110,19 @@ p {
 	opacity: 0.5;
 }
 
-.admin-billing.app_container-content {
+.admin-billing {
 	.ant-tabs-top > .ant-tabs-nav {
 		margin: 0px !important;
 	}
 
 	.ant-tabs-ink-bar .ant-tabs-ink-bar-animated {
-		width: 7rem !important;
+		width: 9rem !important;
 	}
 
 	.ant-tabs-tab-btn {
 		font-size: 1.5rem !important;
 		justify-content: center;
-		padding: 0rem 2rem 0rem 2.5rem !important;
+		padding: 0rem 3rem 0rem 2.5rem !important;
 	}
 }
 
@@ -130,7 +152,7 @@ p {
 		background-color: #c4c8ac;
 		opacity: 0.1;
 		height: 11rem;
-		width: 23rem;
+		width: 22rem;
 	}
 
 	.header-container-crypto {
@@ -138,7 +160,7 @@ p {
 		background-color: #5cb5f9;
 		opacity: 0.1;
 		height: 11rem;
-		width: 23rem;
+		width: 23.7rem;
 	}
 
 	.header-container-fiat {
@@ -146,7 +168,7 @@ p {
 		background-color: #00ffff;
 		opacity: 0.1;
 		height: 11rem;
-		width: 23rem;
+		width: 23.7rem;
 	}
 
 	.header-container {
@@ -161,12 +183,6 @@ p {
 		left: 0px;
 		z-index: -1;
 	}
-}
-
-.payment-button {
-	margin-top: 1rem !important;
-	padding: 0rem 0rem 1rem 0rem !important;
-	justify-content: space-evenly !important;
 }
 
 .app_container-content {
@@ -251,7 +267,7 @@ button:focus {
 	outline: none;
 }
 
-.blue-admin-billing-model.ant-modal {
+.ant-modal {
 	.ant-modal-body {
 		padding: 0px;
 	}
@@ -317,7 +333,8 @@ button:focus {
 				opacity: 0.3;
 				margin-top: 3rem !important;
 				margin-bottom: 2.2rem !important;
-				height: 60rem !important;
+				height: 70rem !important;
+
 				.plan-container-wrapper {
 					margin-bottom: 0rem !important;
 				}
@@ -328,7 +345,7 @@ button:focus {
 				justify-content: center;
 				margin: 1rem 2rem 0rem 2rem;
 				border: 1px solid #a8a8b1;
-				height: 65rem;
+				height: 75rem;
 
 				.plan-container-wrapper {
 					margin-bottom: 5rem;
@@ -354,8 +371,11 @@ button:focus {
 				}
 
 				.inner-container {
-					padding: 2rem 2rem 0rem 2rem;
-					margin-top: 1rem;
+					padding: 0rem 2rem 0rem 2rem;
+
+					.plan-header {
+						color: #ffffff;
+					}
 				}
 
 				.radio-container {
@@ -382,7 +402,17 @@ button:focus {
 					}
 				}
 
-				.amount-container {
+				.basic-amount-container {
+					margin-top: 27rem !important;
+				}
+
+				.crypto-amount-container {
+					margin-top: 13rem !important;
+				}
+
+				.fiat-amount-container,
+				.crypto-amount-container,
+				.basic-amount-container {
 					margin-top: 3rem;
 					display: flex;
 					flex-direction: column;
@@ -419,13 +449,20 @@ button:focus {
 			margin-left: 4rem;
 			font-size: 15px;
 		}
+
+		.success-msg {
+			text-align: center;
+			font-size: 16px;
+			margin-top: 1rem;
+			color: #00a451;
+		}
 	}
 
 	.payment-button {
 		width: 100%;
 		display: flex;
 		justify-content: space-around;
-		padding: 0rem 0rem 2rem 1rem;
+		padding: 1rem 1rem 2.5rem 1rem;
 		margin-top: 3rem;
 
 		button {
@@ -440,7 +477,7 @@ button:focus {
 		width: 90%;
 		border: 1px solid #75809b;
 		padding: 1rem 0rem 1rem 0rem;
-		margin-top: 2rem;
+		margin: 0.5rem 0rem 0rem 2rem;
 
 		.plan-card {
 			display: flex;
@@ -449,7 +486,7 @@ button:focus {
 
 		.payment-container {
 			width: 35%;
-			padding: 0rem 1rem 0rem 1rem !important;
+			padding: 0rem 1rem 0rem 2rem !important;
 		}
 
 		p {
@@ -478,7 +515,7 @@ button:focus {
 				margin-top: 0rem;
 
 				svg {
-					width: 2.5rem;
+					width: 2.25rem;
 					height: 3.5rem;
 				}
 			}
@@ -585,7 +622,7 @@ button:focus {
 }
 
 .ant-modal .bg-model .box-container .plan-container li {
-	font-size: 13px !important;
+	font-size: 12px !important;
 }
 
 .selected-status {
@@ -627,7 +664,7 @@ button:focus {
 
 .cloud-plan-wrapper {
 	background-color: #27339d;
-	border-top: 2px dotted #ffffff;
+	border-top: 2px dotted #75809b;
 	position: relative;
 	top: 0.5rem;
 
@@ -649,7 +686,7 @@ button:focus {
 		padding: 1rem;
 		justify-content: space-around;
 		background-color: #27339d;
-		border: 1px solid #ffffff;
+		border: 1px solid #75809b;
 		height: 8rem;
 
 		.sub-title {
@@ -685,8 +722,8 @@ button:focus {
 		}
 
 		.seperator {
-			border-left: 1px solid #ffffff;
-			border-right: 1px solid #ffffff;
+			border-right: 1px dashed #a8a8b1;
+			border-left: 1px dashed #a8a8b1;
 			padding: 1rem;
 		}
 	}
@@ -709,6 +746,16 @@ button:focus {
 	}
 }
 
+.horizantal-line {
+	border-top: 2px dotted #c4c4c4;
+
+	.plan-header {
+		color: #ffffff;
+		font-size: 16px;
+		margin: 2rem 0rem 0rem 2rem;
+	}
+}
+
 .crypto-payment-container {
 	padding: 1rem 2rem;
 
@@ -720,6 +767,7 @@ button:focus {
 
 	.payment-type-dropdown {
 		margin-bottom: 1rem;
+
 		.ant-select {
 			width: 40%;
 		}
