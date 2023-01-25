@@ -26,6 +26,7 @@ import {
 import { STATIC_ICONS } from 'config/icons';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import PlanStructure from 'containers/Admin/Billing/planStructure';
+import DIYPlanStructure from 'containers/Admin/Billing/diyPlanStructure';
 import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
 import {
 	getExchangeBilling,
@@ -47,6 +48,7 @@ import {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
+	setSelectedConfig,
 } from 'actions/adminBillingActions';
 import EnterpriseForm from '../EnterPriseForm';
 import './Billing.scss';
@@ -60,6 +62,7 @@ export const planData = {
 	basic: {
 		title: 'Basic',
 		description: 'Get started fast with a basic test exchange',
+		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
 		icon: 'BASIC_PLAN_BACKGROUND',
 		isPopular: false,
 		section: [
@@ -93,6 +96,7 @@ export const planData = {
 		title: 'Crypto Pro',
 		description:
 			'For those looking to start a crypto-to-crypto exchange business',
+		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
 		icon: 'CRYPTO_PRO_PLAN_BACKGROUND',
 		isPopular: true,
 		section: [
@@ -136,6 +140,7 @@ export const planData = {
 		title: 'Fiat Ramp',
 		description:
 			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
+		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
 		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
 		isPopular: false,
 		section: [
@@ -187,23 +192,56 @@ export const planData = {
 	},
 };
 
-const TYPES = [
-	{
-		name: 'Basic',
-		type: 'basic',
-		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
+export const diyPlanData = {
+	diy: {
+		title: 'Do-it-yourself',
+		description:
+			'For tech savvy people that know their way around a server and can self-host their exchange.',
+		isPopular: false,
+		// icon: DIY_ICON,
+		section: [
+			{
+				title: 'Limited features',
+				points: [
+					'Theme customization',
+					'Localization',
+					'Add HollaEx plugins',
+					'Add custom plugins',
+					'Custom code',
+				],
+			},
+		],
 	},
-	{
-		name: 'Crypto Pro',
-		type: 'crypto',
-		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
+	boost: {
+		title: 'DIY Boost',
+		description:
+			'For expert DIY exchange operators seeking more. Comes fully featured out with reduced revenue sharing, one free custom token and market.',
+		isPopular: true,
+		// icon: DIY_BOOST_ICON,
+		services: {
+			title: 'Full features',
+			points: [
+				'Theme customization',
+				'Localization',
+				'Add HollaEx plugins',
+				'Add custom plugins',
+				'Custom code',
+				'Multiple role management system',
+				'Landing page (homepage)',
+				'Remove HollaEx badge',
+				'Crypto chat box',
+				'Minimum revenue sharing',
+				'Fiat integration',
+			],
+			hideOnMonthly: false,
+			hideActive: false,
+		},
+		asset_pairs: {
+			title: 'Asset and pairs',
+			points: ['One free custom crypto coin & pair'],
+		},
 	},
-	{
-		name: 'Fiat Ramp',
-		type: 'fiat',
-		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
-	},
-];
+};
 
 const payOptions = [
 	{ key: 'pay', value: 'Pay from wallet' },
@@ -225,8 +263,6 @@ const paymentMethods = [
 	{ label: 'Cryptocurrency', method: 'cryptoCurrency' },
 	{ label: 'Credit Card', method: 'stripe' },
 ];
-
-const options = ['item', 'method', 'crypto', 'payment'];
 
 const columns = [
 	{
@@ -311,6 +347,15 @@ const columns = [
 		},
 	},
 ];
+
+const configureTypes = [
+	{ name: 'Cloud Exchange', value: 'cloudExchange' },
+	{ name: 'DIY', value: 'diy' },
+];
+
+const options = ['item', 'method', 'crypto', 'payment'];
+const fiatOptions = ['item', 'apply'];
+
 const GeneralContent = ({
 	selectedCrypto,
 	exchange,
@@ -329,10 +374,13 @@ const GeneralContent = ({
 	fiatSubmission,
 	setPaymentAddressDetails,
 	paymentAddressDetails,
+	selectedConfig,
+	setSelectedConfig,
 }) => {
 	const balance = user?.balance;
 	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
+	const exchangeType = 'diy';
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -344,6 +392,9 @@ const GeneralContent = ({
 	const [showPayAddress, setShowPayAddress] = useState(false);
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
+	const [configure, setConfigure] = useState(false);
+	const [selectedPlanData, setSelectedPlanData] = useState({});
+	const [fiatBreadCrumb, setFiatBreadCrumb] = useState(false);
 
 	const planPriceData = priceData[selectedType];
 
@@ -351,6 +402,15 @@ const GeneralContent = ({
 		setIsLoading(true);
 		getExchangePrice();
 	}, []);
+
+	useEffect(() => {
+		if (exchangeType === 'diy' && selectedConfig === 'diy') {
+			setSelectedPlanData(diyPlanData);
+		} else {
+			setSelectedPlanData(planData);
+			setSelectedConfig('cloudExchange');
+		}
+	}, [selectedConfig, exchangeType === 'diy']);
 
 	useEffect(() => {
 		if (dashToken) {
@@ -394,11 +454,16 @@ const GeneralContent = ({
 			) {
 				setExchangePlanType(name);
 			}
+
 			if (name === 'item' || exchangePlanType === 'item') {
 				setModalWidth('85rem');
-			} else {
-				setModalWidth('65rem');
+				setExchangePlanType('item');
 			}
+			if (name === 'apply' && exchangePlanType === 'fiat') {
+				setExchangePlanType('method');
+				setFiatBreadCrumb(false);
+			}
+			setFiatBreadCrumb(false);
 		}
 	};
 
@@ -528,7 +593,6 @@ const GeneralContent = ({
 						</div>
 						<div className="exchange-text">
 							<span>
-								{/* <div className="exchange-name"></div> */}
 								<ReactSVG
 									src={STATIC_ICONS['EXCHANGE_LOGO_LIGHT_THEME']}
 									className="cloud-icon"
@@ -583,7 +647,7 @@ const GeneralContent = ({
 		try {
 			const res = await setExchangePlan(params);
 			if (exchange && exchange.id && params.plan !== 'fiat') {
-				const resInvoice = await getNewExchangeBilling(197);
+				const resInvoice = await getNewExchangeBilling(exchange.id);
 				if (resInvoice) {
 					getInvoice();
 				}
@@ -591,6 +655,12 @@ const GeneralContent = ({
 			if (res) {
 				getExchange();
 				callback();
+				if (selectedType === 'fiat') {
+					setExchangePlanType('fiat');
+				} else {
+					setModalWidth('65rem');
+					setExchangePlanType('method');
+				}
 			}
 		} catch (error) {
 			if (error.data && error.data.message) {
@@ -628,10 +698,7 @@ const GeneralContent = ({
 				},
 				() => setExchangePlanType('method')
 			);
-			setExchangePlanType('method');
-			setModalWidth('65rem');
 			setActiveBreadCrumb(true);
-			// setExchangePlanType('payment')
 		}
 	};
 
@@ -640,9 +707,10 @@ const GeneralContent = ({
 	};
 
 	const renderModelContent = () => {
+		const breadCrumbOptions = selectedType === 'fiat' ? fiatOptions : options;
 		return (
 			<Breadcrumb separator={<RightOutlined />}>
-				{options.map((name, inx) => {
+				{breadCrumbOptions.map((name, inx) => {
 					return (
 						<Breadcrumb.Item
 							onClick={() => onHandleBreadcrumb(name)}
@@ -651,7 +719,9 @@ const GeneralContent = ({
 								name === exchangePlanType ? 'breadcrumb-item-active' : ''
 							}
 						>
-							{name === 'crypto'
+							{fiatBreadCrumb
+								? name.charAt(0).toUpperCase() + name.slice(1)
+								: name === 'crypto'
 								? selectedPayment === 'cryptoCurrency' && 'Crypto'
 								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
@@ -660,12 +730,18 @@ const GeneralContent = ({
 			</Breadcrumb>
 		);
 	};
-
 	const handleOpenModal = () => {
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
 		setExchangePlanType('item');
 		setSelectedType('crypto');
+	};
+
+	const handleConfig = () => {
+		if (selectedConfig !== 'diy') {
+			setOpenPlanModal(true);
+		}
+		setConfigure(false);
 	};
 
 	const renderCard = () => {
@@ -675,24 +751,47 @@ const GeneralContent = ({
 				<div
 					className="card-wrapper"
 					style={{
-						backgroundImage: `url(${STATIC_ICONS['CLOUD_BASIC_BACKGROUND']})`,
+						backgroundImage: `url(${
+							selectedType === 'basic'
+								? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
+								: selectedType === 'crypto'
+								? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
+								: STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
+						})`,
 					}}
 				>
 					<div className={`d-flex ${selectedType}-content-wrapper`}>
-						<div className="card-icon">
-							<ReactSVG
-								src={STATIC_ICONS['CLOUD_BASIC']}
-								className="cloud-background"
-							/>
-							<ReactSVG
-								src={STATIC_ICONS['CLOUD_CRYPTO']}
-								className="cloud-icon"
-							/>
-						</div>
+						<ReactSVG
+							src={`${
+								selectedType === 'basic'
+									? STATIC_ICONS['CLOUD_PLAN_BASIC']
+									: selectedType === 'crypto'
+									? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
+									: selectedType === 'diy'
+									? STATIC_ICONS['DIY_ICON']
+									: STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
+							}`}
+							className="cloud-background"
+						/>
+
 						<div className="payment-text">
-							<div className="d-flex">
-								<p className="white-text">Cloud: </p>
-								<p className="cloud-type">{exchange.plan}</p>
+							<div className="justify-between">
+								<div className="d-flex">
+									<p className="white-text">Cloud: </p>
+									<p className="cloud-type">{selectedType}</p>
+								</div>
+								{exchangeType === 'diy' ? (
+									<div
+										className="configure-wrapper"
+										onClick={() => setConfigure(true)}
+									>
+										<ReactSVG
+											src={STATIC_ICONS['SETTINGS']}
+											className="setting-icon"
+										/>
+										<p>Configure Plan</p>
+									</div>
+								) : null}
 							</div>
 							<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
 								{planData?.[selectedType]?.description}
@@ -707,10 +806,41 @@ const GeneralContent = ({
 						className="m-2 px-4 py-1"
 						shape="round"
 					>
-						Pay
+						{exchangeType === 'diy' && selectedConfig === 'diy'
+							? 'Boost'
+							: 'Pay'}
 					</Button>
 				</div>
-				{}
+				<Modal
+					visible={configure}
+					onCancel={() => setConfigure(false)}
+					zIndex={1000}
+					width="420px"
+					footer={null}
+					className={'configure-modal'}
+				>
+					<div className="configure-modal-container">
+						<h4>Configure Plan</h4>
+						<div>
+							<Radio.Group className="my-3" value={selectedConfig}>
+								{configureTypes.map((config) => {
+									return (
+										<Radio
+											key={config.value}
+											value={config.value}
+											onChange={(e) => setSelectedConfig(e.target.value)}
+										>
+											{config.name}
+										</Radio>
+									);
+								})}
+							</Radio.Group>
+							<Button type="primary" onClick={handleConfig}>
+								Proceed
+							</Button>
+						</div>
+					</div>
+				</Modal>
 			</div>
 		);
 	};
@@ -763,24 +893,40 @@ const GeneralContent = ({
 									'box-container content-wrapper plan-structure-wrapper'
 								}
 							>
-								{TYPES.map((type, inx) => {
-									return (
-										<PlanStructure
-											className={
-												selectedType === type.type
-													? ''
-													: 'opacity-plan-container'
-											}
-											selectedType={selectedType}
-											setSelectedType={setSelectedType}
-											typeData={type}
-											dataType={type}
-											priceData={priceData}
-											isMonthly={isMonthly}
-											key={inx}
-											onHandleSelectedType={onHandleSelectedType}
-										/>
-									);
+								{Object.keys(selectedPlanData).map((type, inx) => {
+									if (selectedConfig === 'diy') {
+										return (
+											<DIYPlanStructure
+												className={
+													selectedType === type ? '' : 'opacity-plan-container'
+												}
+												selectedType={selectedType}
+												setSelectedType={setSelectedType}
+												type={type}
+												planData={selectedPlanData}
+												onHandleSelectedType={onHandleSelectedType}
+												priceData={priceData}
+												isMonthly={isMonthly}
+												key={inx}
+											/>
+										);
+									} else {
+										return (
+											<PlanStructure
+												className={
+													selectedType === type ? '' : 'opacity-plan-container'
+												}
+												selectedType={selectedType}
+												setSelectedType={setSelectedType}
+												type={type}
+												planData={selectedPlanData}
+												onHandleSelectedType={onHandleSelectedType}
+												priceData={priceData}
+												isMonthly={isMonthly}
+												key={inx}
+											/>
+										);
+									}
 								})}
 							</div>
 							<div className="footer">
@@ -810,9 +956,9 @@ const GeneralContent = ({
 						<div className="radiobtn-container">
 							<p>Select Payment Method</p>
 							<Radio.Group
+								defaultValue={'cryptoCurrency'}
 								className={'radio-content'}
 								value={selectedPayment}
-								defaultValue={'cryptoCurrency'}
 							>
 								<Space direction="vertical">
 									{paymentMethods.map((opt, inx) => {
@@ -991,26 +1137,39 @@ const GeneralContent = ({
 
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
+			if (selectedType === 'fiat') {
+				setFiatBreadCrumb(true);
+			}
 			if (selectedType === 'fiat' && isFiatFormCompleted) {
 				setModalWidth('85rem');
 				setFiatSubmission(true);
 			} else {
-				setExchangePlanType('method');
 				storePlanType();
+				setFiatBreadCrumb(false);
+				if (selectedType === 'fiat') {
+					setFiatBreadCrumb(true);
+				}
 			}
 		} else if (exchangePlanType === 'method') {
-			if (selectedPayment !== 'cryptoCurrency') storePaymentMethod();
-			else setExchangePlanType('crypto');
+			if (selectedPayment !== 'cryptoCurrency') {
+				storePaymentMethod();
+			} else {
+				setExchangePlanType('crypto');
+				setFiatBreadCrumb(false);
+			}
 		} else if (exchangePlanType === 'crypto') {
 			storePaymentMethod();
+			setFiatBreadCrumb(false);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
+			setFiatBreadCrumb(false);
 		}
 		setActiveBreadCrumb(true);
 	};
 
 	const handleBack = () => {
 		setFiatSubmission(false);
+		setFiatBreadCrumb(false);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 		} else if (exchangePlanType === 'method') {
@@ -1066,14 +1225,14 @@ const GeneralContent = ({
 				<div className="ml-4 header-content">
 					<p className="description-header">Payment for Plans</p>
 					<div className="d-flex description-content">
-						<div>Below is current your plan. Get more view details on</div>
-						<div className="cloud-plans mx-1">cloud plans here.</div>
+						<div>
+							Below is current your plan. Get more view details on the available
+						</div>
+						<div className="cloud-plans mx-1">cloud plans.</div>
 					</div>
-					<p className="description-content">Current Plan : {selectedType}</p>
 				</div>
 			</div>
 			{renderCard()}
-
 			<Modal
 				visible={OpenPlanModal}
 				className="bg-model blue-admin-billing-model"
@@ -1119,6 +1278,7 @@ const mapStateToProps = (store) => ({
 	transferCryptoPayment: store.admin.transferCryptoPayment,
 	fiatSubmission: store.admin.fiatSubmission,
 	paymentAddressDetails: store.admin.paymentAddressDetails,
+	selectedConfig: store.admin.selectedConfig,
 });
 
 export default connect(mapStateToProps, {
@@ -1129,4 +1289,5 @@ export default connect(mapStateToProps, {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
+	setSelectedConfig,
 })(GeneralContent);

@@ -7,6 +7,8 @@ import {
 	SET_TRANSFER_CRYPTO_PAYMENT,
 	SET_FIAT_SUBMITTED,
 	SET_PAYMENT_ADDRESS_DETAILS,
+	SET_SELECTED_CONFIG,
+	SET_EXCHANGE,
 } from 'actions/adminBillingActions';
 
 const INITIAL_STATE = {
@@ -23,6 +25,8 @@ const INITIAL_STATE = {
 		amount: 0,
 		currency: '',
 	},
+	selectedConfig: 'cloudExchange',
+	exchange: {},
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -43,6 +47,10 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, fiatSubmission: payload };
 		case SET_PAYMENT_ADDRESS_DETAILS:
 			return { ...state, paymentAddressDetails: payload };
+		case SET_SELECTED_CONFIG:
+			return { ...state, selectedConfig: payload };
+		case SET_EXCHANGE:
+			return { ...state, exchange: payload };
 		default:
 			return state;
 	}

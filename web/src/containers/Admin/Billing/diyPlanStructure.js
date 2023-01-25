@@ -1,8 +1,10 @@
 import React from 'react';
+import { ReactSVG } from 'react-svg';
 import _get from 'lodash/get';
 import { CheckOutlined } from '@ant-design/icons';
+import { STATIC_ICONS } from 'config/icons';
 
-const PlanStructure = ({
+const DIYPlanStructure = ({
 	exchange,
 	planData,
 	type,
@@ -19,20 +21,19 @@ const PlanStructure = ({
 }) => {
 	let currentPlan = planData[type];
 
+	console.log('iscamediyplan', className, type);
+
 	return (
-		<div className={`${className} plan-container`}>
+		<div className={`diy-plan-container`}>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
-					{type === 'crypto' ? 'MOST POPULAR' : ''}
+					{type === 'boost' ? 'MOST POPULAR' : ''}
 				</div>
 				<div className="header-wrapper">
-					<div className={`header-container-${type}`}></div>
-					<div
-						className="header-container"
-						style={{ backgroundImage: `url(${currentPlan?.background})` }}
-					>
-						<h2 className="type-center">{currentPlan?.title}</h2>
-						<h6 className="text-center">{currentPlan.description}</h6>
+					<ReactSVG src={STATIC_ICONS['DIY_ICON']} className="diy-image" />
+					<div>
+						<h2>{currentPlan?.title}</h2>
+						<h6>{currentPlan.description}</h6>
 					</div>
 				</div>
 				<div className="feature-wrapper">
@@ -111,9 +112,9 @@ const PlanStructure = ({
 				</div>
 				<div className="amount-wrapper">
 					<div className={`amount-container`}>
-						{type === 'fiat' ? (
+						{type === 'diy' ? (
 							<div>
-								<p className="dollor-size">Apply</p>
+								<p className="dollor-size">Free</p>
 							</div>
 						) : isMonthly ? (
 							<div>
@@ -153,4 +154,4 @@ const PlanStructure = ({
 	);
 };
 
-export default PlanStructure;
+export default DIYPlanStructure;

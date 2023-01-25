@@ -5,7 +5,7 @@ const { Search } = Input;
 const BillingFilter = () => {
 	const [searchInput, setSearchInput] = useState('');
 	return (
-		<div className="d-flex mt-5">
+		<div className="d-flex mt-5 billing-filter">
 			<Select
 				style={{ width: 150 }}
 				className="mr-3"
