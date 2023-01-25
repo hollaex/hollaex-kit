@@ -17,7 +17,6 @@ import {
 	Select,
 	Input,
 	Tooltip,
-	Checkbox,
 } from 'antd';
 import {
 	RightOutlined,
@@ -788,6 +787,7 @@ const GeneralContent = ({
 					zIndex={1000}
 					width="420px"
 					footer={null}
+					className={'configure-modal'}
 				>
 					<div className="configure-modal-container">
 						<h4>Configure Plan</h4>
@@ -1155,9 +1155,6 @@ const GeneralContent = ({
 
 	return (
 		<div className="general-content-wrapper">
-			<div>
-				<Checkbox onChange={() => setHosting(!hosting)}>Checkbox</Checkbox>
-			</div>
 			<div className="d-flex mt-1 ml-3">
 				<ReactSVG
 					src={STATIC_ICONS['CLOUD_FIAT']}
