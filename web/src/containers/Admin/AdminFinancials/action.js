@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { HOLLAEX_NETWORK_API_URL } from 'config';
 import querystring from 'query-string';
-import { requestAuthenticated } from 'utils';
+import { requestAuthenticated, requestDashAuthenticated } from 'utils';
 
 export const storeMint = (values) => {
 	const options = {
@@ -49,6 +49,18 @@ export const getAllPairs = () => {
 
 export const getDashToken = () => {
 	return requestAuthenticated(`/admin/dash-token`, { method: 'GET' });
+};
+
+export const getDashExchange = () => {
+	return requestDashAuthenticated(`/exchange`, { method: 'GET' });
+};
+
+export const putDashExchange = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestDashAuthenticated(`/exchange`, options);
 };
 
 export const getExchange = () => {

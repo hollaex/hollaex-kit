@@ -352,6 +352,9 @@ const configureTypes = [
 	{ name: 'DIY', value: 'diy' },
 ];
 
+const options = ['item', 'method', 'crypto', 'payment'];
+const fiatOptions = ['item', 'apply'];
+
 const GeneralContent = ({
 	selectedCrypto,
 	exchange,
@@ -376,7 +379,6 @@ const GeneralContent = ({
 	const balance = user?.balance;
 	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
-	const options = ['item', 'method', 'crypto', 'payment'];
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -391,6 +393,7 @@ const GeneralContent = ({
 	const [configure, setConfigure] = useState(false);
 	const [hosting, setHosting] = useState(false);
 	const [selectedPlanData, setSelectedPlanData] = useState({});
+	const [fiatBreadCrumb, setFiatBreadCrumb] = useState(false);
 
 	const planPriceData = priceData[selectedType];
 
@@ -450,11 +453,16 @@ const GeneralContent = ({
 			) {
 				setExchangePlanType(name);
 			}
+
 			if (name === 'item' || exchangePlanType === 'item') {
 				setModalWidth('85rem');
-			} else {
-				setModalWidth('65rem');
+				setExchangePlanType('item');
 			}
+			if (name === 'apply' && exchangePlanType === 'fiat') {
+				setExchangePlanType('method');
+				setFiatBreadCrumb(false);
+			}
+			setFiatBreadCrumb(false);
 		}
 	};
 
@@ -639,7 +647,7 @@ const GeneralContent = ({
 		try {
 			const res = await setExchangePlan(params);
 			if (exchange && exchange.id && params.plan !== 'fiat') {
-				const resInvoice = await getNewExchangeBilling(197);
+				const resInvoice = await getNewExchangeBilling(exchange.id);
 				if (resInvoice) {
 					getInvoice();
 				}
@@ -647,6 +655,12 @@ const GeneralContent = ({
 			if (res) {
 				getExchange();
 				callback();
+				if (selectedType === 'fiat') {
+					setExchangePlanType('fiat');
+				} else {
+					setModalWidth('65rem');
+					setExchangePlanType('method');
+				}
 			}
 		} catch (error) {
 			if (error.data && error.data.message) {
@@ -684,10 +698,7 @@ const GeneralContent = ({
 				},
 				() => setExchangePlanType('method')
 			);
-			setExchangePlanType('method');
-			setModalWidth('65rem');
 			setActiveBreadCrumb(true);
-			// setExchangePlanType('payment')
 		}
 	};
 
@@ -696,9 +707,10 @@ const GeneralContent = ({
 	};
 
 	const renderModelContent = () => {
+		const breadCrumbOptions = selectedType === 'fiat' ? fiatOptions : options;
 		return (
 			<Breadcrumb separator={<RightOutlined />}>
-				{options.map((name, inx) => {
+				{breadCrumbOptions.map((name, inx) => {
 					return (
 						<Breadcrumb.Item
 							onClick={() => onHandleBreadcrumb(name)}
@@ -707,7 +719,9 @@ const GeneralContent = ({
 								name === exchangePlanType ? 'breadcrumb-item-active' : ''
 							}
 						>
-							{name === 'crypto'
+							{fiatBreadCrumb
+								? name.charAt(0).toUpperCase() + name.slice(1)
+								: name === 'crypto'
 								? selectedPayment === 'cryptoCurrency' && 'Crypto'
 								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
@@ -716,7 +730,6 @@ const GeneralContent = ({
 			</Breadcrumb>
 		);
 	};
-
 	const handleOpenModal = () => {
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
@@ -1089,26 +1102,39 @@ const GeneralContent = ({
 
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
+			if (selectedType === 'fiat') {
+				setFiatBreadCrumb(true);
+			}
 			if (selectedType === 'fiat' && isFiatFormCompleted) {
 				setModalWidth('85rem');
 				setFiatSubmission(true);
 			} else {
-				setExchangePlanType('method');
 				storePlanType();
+				setFiatBreadCrumb(false);
+				if (selectedType === 'fiat') {
+					setFiatBreadCrumb(true);
+				}
 			}
 		} else if (exchangePlanType === 'method') {
-			if (selectedPayment !== 'cryptoCurrency') storePaymentMethod();
-			else setExchangePlanType('crypto');
+			if (selectedPayment !== 'cryptoCurrency') {
+				storePaymentMethod();
+			} else {
+				setExchangePlanType('crypto');
+				setFiatBreadCrumb(false);
+			}
 		} else if (exchangePlanType === 'crypto') {
 			storePaymentMethod();
+			setFiatBreadCrumb(false);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
+			setFiatBreadCrumb(false);
 		}
 		setActiveBreadCrumb(true);
 	};
 
 	const handleBack = () => {
 		setFiatSubmission(false);
+		setFiatBreadCrumb(false);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 		} else if (exchangePlanType === 'method') {
