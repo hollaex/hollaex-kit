@@ -26,6 +26,7 @@ import {
 import { STATIC_ICONS } from 'config/icons';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import PlanStructure from 'containers/Admin/Billing/planStructure';
+import DIYPlanStructure from 'containers/Admin/Billing/diyPlanStructure';
 import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
 import {
 	getExchangeBilling,
@@ -379,6 +380,7 @@ const GeneralContent = ({
 	const balance = user?.balance;
 	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
+	const exchangeType = 'diy';
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -391,7 +393,6 @@ const GeneralContent = ({
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
 	const [configure, setConfigure] = useState(false);
-	const [hosting, setHosting] = useState(false);
 	const [selectedPlanData, setSelectedPlanData] = useState({});
 	const [fiatBreadCrumb, setFiatBreadCrumb] = useState(false);
 
@@ -403,13 +404,13 @@ const GeneralContent = ({
 	}, []);
 
 	useEffect(() => {
-		if (hosting && selectedConfig === 'diy') {
+		if (exchangeType === 'diy' && selectedConfig === 'diy') {
 			setSelectedPlanData(diyPlanData);
 		} else {
 			setSelectedPlanData(planData);
 			setSelectedConfig('cloudExchange');
 		}
-	}, [selectedConfig, hosting]);
+	}, [selectedConfig, exchangeType === 'diy']);
 
 	useEffect(() => {
 		if (dashToken) {
@@ -592,7 +593,6 @@ const GeneralContent = ({
 						</div>
 						<div className="exchange-text">
 							<span>
-								{/* <div className="exchange-name"></div> */}
 								<ReactSVG
 									src={STATIC_ICONS['EXCHANGE_LOGO_LIGHT_THEME']}
 									className="cloud-icon"
@@ -734,7 +734,6 @@ const GeneralContent = ({
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
 		setExchangePlanType('item');
-		setSelectedPayment('');
 		setSelectedType('crypto');
 	};
 
@@ -752,28 +751,44 @@ const GeneralContent = ({
 				<div
 					className="card-wrapper"
 					style={{
-						backgroundImage: `url(${STATIC_ICONS['CLOUD_BASIC_BACKGROUND']})`,
+						backgroundImage: `url(${
+							selectedType === 'basic'
+								? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
+								: selectedType === 'crypto'
+								? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
+								: STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
+						})`,
 					}}
 				>
 					<div className={`d-flex ${selectedType}-content-wrapper`}>
-						<div className="card-icon">
-							<ReactSVG
-								src={STATIC_ICONS['CLOUD_BASIC']}
-								className="cloud-background"
-							/>
-							<ReactSVG
-								src={STATIC_ICONS['CLOUD_CRYPTO']}
-								className="cloud-icon"
-							/>
-						</div>
+						<ReactSVG
+							src={`${
+								selectedType === 'basic'
+									? STATIC_ICONS['CLOUD_PLAN_BASIC']
+									: selectedType === 'crypto'
+									? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
+									: selectedType === 'diy'
+									? STATIC_ICONS['DIY_ICON']
+									: STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
+							}`}
+							className="cloud-background"
+						/>
+
 						<div className="payment-text">
 							<div className="justify-between">
 								<div className="d-flex">
 									<p className="white-text">Cloud: </p>
-									<p className="cloud-type">{exchange.plan}</p>
+									<p className="cloud-type">{selectedType}</p>
 								</div>
-								{hosting ? (
-									<div onClick={() => setConfigure(true)}>
+								{exchangeType === 'diy' ? (
+									<div
+										className="configure-wrapper"
+										onClick={() => setConfigure(true)}
+									>
+										<ReactSVG
+											src={STATIC_ICONS['SETTINGS']}
+											className="setting-icon"
+										/>
 										<p>Configure Plan</p>
 									</div>
 								) : null}
@@ -791,7 +806,9 @@ const GeneralContent = ({
 						className="m-2 px-4 py-1"
 						shape="round"
 					>
-						{hosting && selectedConfig === 'diy' ? 'Boost' : 'Pay'}
+						{exchangeType === 'diy' && selectedConfig === 'diy'
+							? 'Boost'
+							: 'Pay'}
 					</Button>
 				</div>
 				<Modal
@@ -877,21 +894,39 @@ const GeneralContent = ({
 								}
 							>
 								{Object.keys(selectedPlanData).map((type, inx) => {
-									return (
-										<PlanStructure
-											className={
-												selectedType === type ? '' : 'opacity-plan-container'
-											}
-											selectedType={selectedType}
-											setSelectedType={setSelectedType}
-											type={type}
-											planData={selectedPlanData}
-											onHandleSelectedType={onHandleSelectedType}
-											priceData={priceData}
-											isMonthly={isMonthly}
-											key={inx}
-										/>
-									);
+									if (selectedConfig === 'diy') {
+										return (
+											<DIYPlanStructure
+												className={
+													selectedType === type ? '' : 'opacity-plan-container'
+												}
+												selectedType={selectedType}
+												setSelectedType={setSelectedType}
+												type={type}
+												planData={selectedPlanData}
+												onHandleSelectedType={onHandleSelectedType}
+												priceData={priceData}
+												isMonthly={isMonthly}
+												key={inx}
+											/>
+										);
+									} else {
+										return (
+											<PlanStructure
+												className={
+													selectedType === type ? '' : 'opacity-plan-container'
+												}
+												selectedType={selectedType}
+												setSelectedType={setSelectedType}
+												type={type}
+												planData={selectedPlanData}
+												onHandleSelectedType={onHandleSelectedType}
+												priceData={priceData}
+												isMonthly={isMonthly}
+												key={inx}
+											/>
+										);
+									}
 								})}
 							</div>
 							<div className="footer">
@@ -1190,10 +1225,11 @@ const GeneralContent = ({
 				<div className="ml-4 header-content">
 					<p className="description-header">Payment for Plans</p>
 					<div className="d-flex description-content">
-						<div>Below is current your plan. Get more view details on</div>
-						<div className="cloud-plans mx-1">cloud plans here.</div>
+						<div>
+							Below is current your plan. Get more view details on the available
+						</div>
+						<div className="cloud-plans mx-1">cloud plans.</div>
 					</div>
-					<p className="description-content">Current Plan : {selectedType}</p>
 				</div>
 			</div>
 			{renderCard()}
