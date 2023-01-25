@@ -115,14 +115,7 @@ export const requestDashAuthenticated = (
  * @return {object}           The response data
  */
 const request = (url, options, apiUrl = API_URL) => {
-	return fetch(`${apiUrl}${url}`, options)
-		.then(checkStatus)
-		.then(parseJSON)
-		.catch((error) => errorHandler(error));
-};
-
-const errorHandler = (error) => {
-	return { error: (error.response && error.response.data) || error.message };
+	return fetch(`${apiUrl}${url}`, options).then(checkStatus).then(parseJSON);
 };
 
 export default request;
