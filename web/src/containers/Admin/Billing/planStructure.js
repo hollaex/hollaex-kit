@@ -1,11 +1,11 @@
 import React from 'react';
 import _get from 'lodash/get';
 import { CheckOutlined } from '@ant-design/icons';
-import { planData } from './generalContent';
 
 const PlanStructure = ({
 	exchange,
-	typeData = {},
+	planData,
+	type,
 	isMonthly,
 	planType,
 	showConfigIcon = false,
@@ -15,12 +15,9 @@ const PlanStructure = ({
 	selectedType,
 	setSelectedType,
 	className,
-	dataType,
 	onHandleSelectedType,
 }) => {
-	const { type, background, name } = typeData;
-	const planPriceData = priceData[dataType.type];
-	let currentPlan = planData[typeData.type];
+	let currentPlan = planData[type];
 
 	return (
 		<div className={`${className} plan-container`}>
@@ -32,36 +29,14 @@ const PlanStructure = ({
 					<div className={`header-container-${type}`}></div>
 					<div
 						className="header-container"
-						style={{ backgroundImage: `url(${background})` }}
+						style={{ backgroundImage: `url(${currentPlan?.background})` }}
 					>
-						<h2 className="type-center">{name}</h2>
-						<h6 className="text-center">{planData[type].description}</h6>
+						<h2 className="type-center">{currentPlan?.title}</h2>
+						<h6 className="text-center">{currentPlan.description}</h6>
 					</div>
 				</div>
 				<div className="inner-container">
 					<div>
-						{/* <ul>
-							<h6>Cloud</h6>
-							<li>Cloud exchange server hosting</li>
-						</ul>
-
-						<ul>
-							<h6>Full Features</h6>
-							<li>Theme customization</li>
-							<li>Localization</li>
-							<li>Custom domain</li>
-							<li>Add HollaEx plugins</li>
-							<li>Add custom plugins</li>
-							<li>Add Github repo</li>
-							<li>Team Management & Roles</li>
-							<li>Download Exchange logs</li>
-							<li>Full exchange Backup</li>
-						</ul>
-
-						<ul>
-							<h6>Assets and pairs</h6>
-							<li>One free custom crypto coin & pair</li>
-						</ul> */}
 						<div className="center-wrapper">
 							<div className="inner-content">
 								{_get(currentPlan, 'section') &&
@@ -141,7 +116,7 @@ const PlanStructure = ({
 							</div>
 						</div>
 
-						<div className={`${typeData.type}-amount-container`}>
+						<div className={`${type}-amount-container`}>
 							{type === 'fiat' ? (
 								<div>
 									<p className="dollor-size">Apply</p>
@@ -149,14 +124,14 @@ const PlanStructure = ({
 							) : isMonthly ? (
 								<div>
 									<p className="dollor-size">
-										${_get(planPriceData, 'month.price')}
+										${_get(priceData[type], 'month.price')}
 									</p>
 									<p>per month</p>
 								</div>
 							) : (
 								<div>
 									<p className="dollor-size">
-										${_get(planPriceData, 'year.price')}
+										${_get(priceData[type], 'year.price')}
 									</p>
 									<p>per year</p>
 								</div>

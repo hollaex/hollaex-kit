@@ -17,6 +17,7 @@ import {
 	Select,
 	Input,
 	Tooltip,
+	Checkbox,
 } from 'antd';
 import {
 	RightOutlined,
@@ -47,6 +48,7 @@ import {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
+	setSelectedConfig,
 } from 'actions/adminBillingActions';
 import EnterpriseForm from '../EnterPriseForm';
 import './Billing.scss';
@@ -60,6 +62,7 @@ export const planData = {
 	basic: {
 		title: 'Basic',
 		description: 'Get started fast with a basic test exchange',
+		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
 		icon: 'BASIC_PLAN_BACKGROUND',
 		isPopular: false,
 		section: [
@@ -93,6 +96,7 @@ export const planData = {
 		title: 'Crypto Pro',
 		description:
 			'For those looking to start a crypto-to-crypto exchange business',
+		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
 		icon: 'CRYPTO_PRO_PLAN_BACKGROUND',
 		isPopular: true,
 		section: [
@@ -136,6 +140,7 @@ export const planData = {
 		title: 'Fiat Ramp',
 		description:
 			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
+		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
 		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
 		isPopular: false,
 		section: [
@@ -187,23 +192,56 @@ export const planData = {
 	},
 };
 
-const TYPES = [
-	{
-		name: 'Basic',
-		type: 'basic',
-		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
+export const diyPlanData = {
+	diy: {
+		title: 'Do-it-yourself',
+		description:
+			'For tech savvy people that know their way around a server and can self-host their exchange.',
+		isPopular: false,
+		// icon: DIY_ICON,
+		section: [
+			{
+				title: 'Limited features',
+				points: [
+					'Theme customization',
+					'Localization',
+					'Add HollaEx plugins',
+					'Add custom plugins',
+					'Custom code',
+				],
+			},
+		],
 	},
-	{
-		name: 'Crypto Pro',
-		type: 'crypto',
-		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
+	boost: {
+		title: 'DIY Boost',
+		description:
+			'For expert DIY exchange operators seeking more. Comes fully featured out with reduced revenue sharing, one free custom token and market.',
+		isPopular: true,
+		// icon: DIY_BOOST_ICON,
+		services: {
+			title: 'Full features',
+			points: [
+				'Theme customization',
+				'Localization',
+				'Add HollaEx plugins',
+				'Add custom plugins',
+				'Custom code',
+				'Multiple role management system',
+				'Landing page (homepage)',
+				'Remove HollaEx badge',
+				'Crypto chat box',
+				'Minimum revenue sharing',
+				'Fiat integration',
+			],
+			hideOnMonthly: false,
+			hideActive: false,
+		},
+		asset_pairs: {
+			title: 'Asset and pairs',
+			points: ['One free custom crypto coin & pair'],
+		},
 	},
-	{
-		name: 'Fiat Ramp',
-		type: 'fiat',
-		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
-	},
-];
+};
 
 const payOptions = [
 	{ key: 'pay', value: 'Pay from wallet' },
@@ -225,8 +263,6 @@ const paymentMethods = [
 	{ label: 'Cryptocurrency', method: 'cryptoCurrency' },
 	{ label: 'Credit Card', method: 'stripe' },
 ];
-
-const options = ['item', 'method', 'crypto', 'payment'];
 
 const columns = [
 	{
@@ -311,6 +347,12 @@ const columns = [
 		},
 	},
 ];
+
+const configureTypes = [
+	{ name: 'Cloud Exchange', value: 'cloudExchange' },
+	{ name: 'DIY', value: 'diy' },
+];
+
 const GeneralContent = ({
 	selectedCrypto,
 	exchange,
@@ -329,10 +371,13 @@ const GeneralContent = ({
 	fiatSubmission,
 	setPaymentAddressDetails,
 	paymentAddressDetails,
+	selectedConfig,
+	setSelectedConfig,
 }) => {
 	const balance = user?.balance;
 	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
+	const options = ['item', 'method', 'crypto', 'payment'];
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -344,6 +389,9 @@ const GeneralContent = ({
 	const [showPayAddress, setShowPayAddress] = useState(false);
 	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
+	const [configure, setConfigure] = useState(false);
+	const [hosting, setHosting] = useState(false);
+	const [selectedPlanData, setSelectedPlanData] = useState({});
 
 	const planPriceData = priceData[selectedType];
 
@@ -351,6 +399,15 @@ const GeneralContent = ({
 		setIsLoading(true);
 		getExchangePrice();
 	}, []);
+
+	useEffect(() => {
+		if (hosting && selectedConfig === 'diy') {
+			setSelectedPlanData(diyPlanData);
+		} else {
+			setSelectedPlanData(planData);
+			setSelectedConfig('cloudExchange');
+		}
+	}, [selectedConfig, hosting]);
 
 	useEffect(() => {
 		if (dashToken) {
@@ -665,7 +722,15 @@ const GeneralContent = ({
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
 		setExchangePlanType('item');
+		setSelectedPayment('');
 		setSelectedType('crypto');
+	};
+
+	const handleConfig = () => {
+		if (selectedConfig !== 'diy') {
+			setOpenPlanModal(true);
+		}
+		setConfigure(false);
 	};
 
 	const renderCard = () => {
@@ -690,9 +755,16 @@ const GeneralContent = ({
 							/>
 						</div>
 						<div className="payment-text">
-							<div className="d-flex">
-								<p className="white-text">Cloud: </p>
-								<p className="cloud-type">{exchange.plan}</p>
+							<div className="justify-between">
+								<div className="d-flex">
+									<p className="white-text">Cloud: </p>
+									<p className="cloud-type">{exchange.plan}</p>
+								</div>
+								{hosting ? (
+									<div onClick={() => setConfigure(true)}>
+										<p>Configure Plan</p>
+									</div>
+								) : null}
 							</div>
 							<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
 								{planData?.[selectedType]?.description}
@@ -707,10 +779,38 @@ const GeneralContent = ({
 						className="m-2 px-4 py-1"
 						shape="round"
 					>
-						Pay
+						{hosting && selectedConfig === 'diy' ? 'Boost' : 'Pay'}
 					</Button>
 				</div>
-				{}
+				<Modal
+					visible={configure}
+					onCancel={() => setConfigure(false)}
+					zIndex={1000}
+					width="420px"
+					footer={null}
+				>
+					<div className="configure-modal-container">
+						<h4>Configure Plan</h4>
+						<div>
+							<Radio.Group className="my-3" value={selectedConfig}>
+								{configureTypes.map((config) => {
+									return (
+										<Radio
+											key={config.value}
+											value={config.value}
+											onChange={(e) => setSelectedConfig(e.target.value)}
+										>
+											{config.name}
+										</Radio>
+									);
+								})}
+							</Radio.Group>
+							<Button type="primary" onClick={handleConfig}>
+								Proceed
+							</Button>
+						</div>
+					</div>
+				</Modal>
 			</div>
 		);
 	};
@@ -763,22 +863,20 @@ const GeneralContent = ({
 									'box-container content-wrapper plan-structure-wrapper'
 								}
 							>
-								{TYPES.map((type, inx) => {
+								{Object.keys(selectedPlanData).map((type, inx) => {
 									return (
 										<PlanStructure
 											className={
-												selectedType === type.type
-													? ''
-													: 'opacity-plan-container'
+												selectedType === type ? '' : 'opacity-plan-container'
 											}
 											selectedType={selectedType}
 											setSelectedType={setSelectedType}
-											typeData={type}
-											dataType={type}
+											type={type}
+											planData={selectedPlanData}
+											onHandleSelectedType={onHandleSelectedType}
 											priceData={priceData}
 											isMonthly={isMonthly}
 											key={inx}
-											onHandleSelectedType={onHandleSelectedType}
 										/>
 									);
 								})}
@@ -810,9 +908,9 @@ const GeneralContent = ({
 						<div className="radiobtn-container">
 							<p>Select Payment Method</p>
 							<Radio.Group
+								defaultValue={'cryptoCurrency'}
 								className={'radio-content'}
 								value={selectedPayment}
-								defaultValue={'cryptoCurrency'}
 							>
 								<Space direction="vertical">
 									{paymentMethods.map((opt, inx) => {
@@ -1057,6 +1155,9 @@ const GeneralContent = ({
 
 	return (
 		<div className="general-content-wrapper">
+			<div>
+				<Checkbox onChange={() => setHosting(!hosting)}>Checkbox</Checkbox>
+			</div>
 			<div className="d-flex mt-1 ml-3">
 				<ReactSVG
 					src={STATIC_ICONS['CLOUD_FIAT']}
@@ -1073,7 +1174,6 @@ const GeneralContent = ({
 				</div>
 			</div>
 			{renderCard()}
-
 			<Modal
 				visible={OpenPlanModal}
 				className="bg-model blue-admin-billing-model"
@@ -1119,6 +1219,7 @@ const mapStateToProps = (store) => ({
 	transferCryptoPayment: store.admin.transferCryptoPayment,
 	fiatSubmission: store.admin.fiatSubmission,
 	paymentAddressDetails: store.admin.paymentAddressDetails,
+	selectedConfig: store.admin.selectedConfig,
 });
 
 export default connect(mapStateToProps, {
@@ -1129,4 +1230,5 @@ export default connect(mapStateToProps, {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
+	setSelectedConfig,
 })(GeneralContent);
