@@ -6,6 +6,7 @@ export const SET_CRYPTO_PAYMENT_TYPE = 'SET_CRYPTO_PAYMENT_TYPE';
 export const SET_TRANSFER_CRYPTO_PAYMENT = 'SET_TRANSFER_CRYPTO_PAYMENT';
 export const SET_FIAT_SUBMITTED = 'SET_FIAT_SUBMITTED';
 export const SET_PAYMENT_ADDRESS_DETAILS = 'SET_PAYMENT_ADDRESS_DETAILS';
+export const SET_SELECTED_CONFIG = 'SET_SELECTED_CONFIG';
 
 export const setSelectedPayment = (data = '') => ({
 	type: SET_SELECTED_PAYMENT,
@@ -44,5 +45,10 @@ export const setFiatSubmission = (data = '') => ({
 
 export const setPaymentAddressDetails = (data = {}) => ({
 	type: SET_PAYMENT_ADDRESS_DETAILS,
+	payload: data,
+});
+
+export const setSelectedConfig = (data = '') => ({
+	type: SET_SELECTED_CONFIG,
 	payload: data,
 });

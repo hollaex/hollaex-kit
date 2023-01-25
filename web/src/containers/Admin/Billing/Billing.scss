@@ -67,6 +67,12 @@ p {
 	.payment-text {
 		margin-left: 1.5rem;
 		margin-top: 1rem;
+
+		.justify-between {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
 	}
 
 	.card-design-basic {
@@ -328,6 +334,7 @@ button:focus {
 			display: flex;
 			flex-direction: row;
 			background-color: inherit;
+			justify-content: center;
 
 			.opacity-plan-container {
 				opacity: 0.3;
@@ -855,6 +862,33 @@ button:focus {
 
 		p {
 			padding-top: 1rem;
+		}
+	}
+}
+
+.configure-modal-container {
+	padding: 1.5rem;
+
+	h4 {
+		color: white;
+	}
+
+	div {
+		display: flex;
+		flex-direction: column;
+
+		label {
+			display: flex;
+			align-items: center;
+			margin: 0.5rem 2rem 1rem 2rem;
+
+			span {
+				font-size: 15px !important;
+			}
+		}
+
+		button {
+			margin-top: 2rem;
 		}
 	}
 }
