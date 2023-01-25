@@ -12,6 +12,7 @@ const QRScanner = ({ closeQRScanner, getQRData }) => {
 	const onUpdate = (err, data) => {
 		if (data) {
 			const { text } = data;
+			setStopStream(true);
 			setResult(text);
 			getQRData(text);
 			setTimeout(closeQRScanner, 2000);
