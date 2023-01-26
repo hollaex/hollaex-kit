@@ -337,7 +337,7 @@ const putPlugin = async (req, res) => {
 
 	try {
 		const plugin = await Plugin.findOne({ where: { name } });
-
+		const pluginData = cloneDeep(plugin.dataValues);
 		if (!plugin) {
 			throw new Error('Plugin not installed');
 		}
@@ -409,18 +409,17 @@ const putPlugin = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (isPlainObject(value)) {
-						for (const key in plugin[field]) {
+						for (const key in pluginData[field]) {
 							if (
-								lodash.isPlainObject(plugin[field])
-								&& plugin[field][key]
-								&& plugin[field][key].overwrite === false
+								lodash.isPlainObject(pluginData[field])
+								&& pluginData[field][key].overwrite === false
 								&& (!value[key] || value[key].overwrite === false)
 							) {
-								value[key] = plugin[field][key];
+								value[key] = pluginData[field][key];
 							}
 						}
 
-						const existingConfig = pick(plugin[field], Object.keys(value));
+						const existingConfig = pick(pluginData[field], Object.keys(value));
 
 						for (const key in value) {
 							if (existingConfig[key] !== undefined) {
@@ -444,14 +443,8 @@ const putPlugin = async (req, res) => {
 			}
 		}
 
-
-		const updatedPlugin = await Plugin.update(pluginConfig, {
-			where: { name },
-			returning: true,
-			plain: true
-		});
-
-		const formattedPlugin = cloneDeep(updatedPlugin[1].dataValues);
+		const updatedPlugin = await plugin.update(pluginConfig);
+		const formattedPlugin = cloneDeep(updatedPlugin.dataValues);
 
 		loggerPlugin.info(
 			req.uuid,
@@ -472,7 +465,7 @@ const putPlugin = async (req, res) => {
 			])
 		);
 
-		if (updatedPlugin[1].dataValues.enabled && updatedPlugin[1].dataValues.script) {
+		if (updatedPlugin.enabled && updatedPlugin.script) {
 			const { restartPluginProcess } = require('./index');
 			restartPluginProcess();
 		}
@@ -567,6 +560,7 @@ const putPluginConfig = async (req, res) => {
 			throw new Error('Plugin not found');
 		}
 
+		const pluginData = cloneDeep(plugin.dataValues);
 		const updatedConfig = {};
 
 		for (const field in configValues) {
@@ -576,7 +570,7 @@ const putPluginConfig = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (value) {
-						const newConfig = plugin[field];
+						const newConfig = pluginData[field];
 
 						for (const key in newConfig) {
 							if (value[key] !== undefined) {
@@ -596,12 +590,7 @@ const putPluginConfig = async (req, res) => {
 			}
 		}
 
-		const updatedPlugin = await Plugin.update(updatedConfig, {
-			fields: Object.keys(updatedConfig),
-			where: { name },
-			returning: true,
-			plain: true
-		});
+		const updatedPlugin = await plugin.update(updatedConfig, { fields: Object.keys(updatedConfig) });
 
 		loggerPlugin.verbose(
 			req.uuid,
@@ -610,7 +599,7 @@ const putPluginConfig = async (req, res) => {
 		);
 
 		res.json(
-			pick(updatedPlugin[1].dataValues, [
+			pick(updatedPlugin.dataValues, [
 				'name',
 				'version',
 				'public_meta',
@@ -714,11 +703,7 @@ const disablePlugin = async (req, res) => {
 			throw new Error('Plugin is already disabled');
 		}
 
-		await Plugin.update({ enabled: false }, {
-			fields: ['enabled'],
-			where: { name }
-		});
-
+		await plugin.update({ enabled: false }, { fields: ['enabled'] });
 
 		loggerPlugin.verbose(
 			req.uuid,
@@ -774,10 +759,7 @@ const enablePlugin = async (req, res) => {
 			throw new Error('Plugin is already enabled');
 		}
 
-		await Plugin.update({ enabled: true }, {
-			fields: ['enabled'],
-			where: { name }
-		});
+		await plugin.update({ enabled: true }, { fields: ['enabled'] });
 
 		loggerPlugin.verbose(
 			req.uuid,
