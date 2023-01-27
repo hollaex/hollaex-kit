@@ -190,7 +190,7 @@ module.exports = function (sequelize, DataTypes) {
 			user.email = user.email.toLowerCase();
 		}
 		const updatedFields = user.changed();
-		if (updatedFields.length > 0 && updatedFields.includes('password'))
+		if (Array.isArray(updatedFields) && updatedFields.includes('password'))
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});
