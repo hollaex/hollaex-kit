@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Table, Spin } from 'antd';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Table, Spin, Alert } from 'antd';
 import { getUserReferer, getUserAffiliation } from './actions';
 import { formatTimestampGregorian, DATETIME_FORMAT } from 'utils/date';
 import './index.css';
@@ -28,21 +28,61 @@ const COLUMNS = [
 	},
 ];
 
+const LIMIT = 50;
+
 const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 	const [loading, setLoading] = useState(true);
 	const [invitedBy, setInvitedBy] = useState();
-	const [affiliation, setAffiliation] = useState({ count: 0, data: [] });
+	const [data, setData] = useState([]);
+	const [currentTablePage, setCurrentTablePage] = useState(1);
+	const [page, setPage] = useState(1);
+	const [count, setCount] = useState();
+	const [isRemaining, setIsRemaining] = useState(true);
+	const [error, setError] = useState();
 	const referralLink = `${process.env.REACT_APP_PUBLIC_URL}/signup?affiliation_code=${affiliation_code}`;
+
+	const requestAffiliations = useCallback(
+		(page, limit) => {
+			getUserAffiliation(userId, page, limit)
+				.then((response) => {
+					setData((prevData) =>
+						page === 1 ? response.data : [...prevData, ...response.data]
+					);
+					setLoading(false);
+					setCurrentTablePage((prevCurrentTablePage) =>
+						page === 1 ? 1 : prevCurrentTablePage
+					);
+					setPage(page);
+					setIsRemaining(response.count > page * limit);
+					setCount(response.count);
+				})
+				.catch((error) => {
+					const message = error.data ? error.data.message : error.message;
+					setLoading(false);
+					setError(message);
+				});
+		},
+		[userId]
+	);
+
+	const onPageChange = (count, pageSize) => {
+		const pageCount = count % 5 === 0 ? 5 : count % 5;
+		const apiPageTemp = Math.floor(count / 5);
+
+		if (LIMIT === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			requestAffiliations(page + 1, LIMIT);
+		}
+
+		setCurrentTablePage(count);
+	};
 
 	useEffect(() => {
 		getUserReferer(userId).then(({ email }) => {
 			setInvitedBy(email);
-			getUserAffiliation(userId).then((response) => {
-				setAffiliation(response);
-				setLoading(false);
-			});
+			setLoading(false);
+			requestAffiliations(1, LIMIT);
 		});
-	}, [userId]);
+	}, [userId, requestAffiliations]);
 
 	if (loading) {
 		return (
@@ -66,7 +106,7 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 				<div className="user-info-separator" />
 				<div className="d-flex">
 					<div className="bold">Total referred: </div>
-					<div className="px-2">{affiliation.count}</div>
+					<div className="px-2">{count}</div>
 				</div>
 				<div className="user-info-separator" />
 				<div className="d-flex">
@@ -75,11 +115,25 @@ const Referrals = ({ userInformation: { id: userId, affiliation_code } }) => {
 				</div>
 			</div>
 			<div>
+				{error && (
+					<Alert
+						message={error}
+						type="error"
+						showIcon
+						onClose={setError}
+						closable={true}
+						closeText="Close"
+					/>
+				)}
 				<div className="bold">Affiliation referral table</div>
 				<Table
 					className="blue-admin-table"
 					columns={COLUMNS}
-					dataSource={affiliation.data}
+					dataSource={data}
+					pagination={{
+						current: currentTablePage,
+						onChange: onPageChange,
+					}}
 				/>
 			</div>
 		</div>
