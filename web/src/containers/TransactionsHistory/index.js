@@ -301,23 +301,12 @@ class TransactionsHistory extends Component {
 						</div>
 						<div>
 							<p className="font-bold">Trigger/stop price :</p>
-							<p>{obj.price}</p>
+							<p>{obj.stop ? obj.stop : `N/A`}</p>
 						</div>
 						<div>
 							<p className="font-bold">Time of last trade :</p>
 							<p>{getFormatTimestamp(obj.updated_at)}</p>
 						</div>
-						{type === 'Closed' ? (
-							<div>
-								<p className="font-bold">Time opened :</p>
-								<p>{getFormatTimestamp(obj.created_at)}</p>
-							</div>
-						) : (
-							<div>
-								<p className="font-bold">Time closed :</p>
-								<p>Currently open</p>
-							</div>
-						)}
 					</div>
 				);
 			},

@@ -195,6 +195,7 @@ Table.defaultProps = {
 	},
 	cssTransitionClassName: '',
 	rowKey: ({ id }) => id,
+	handleExpand: () => {},
 };
 
 export default Table;
