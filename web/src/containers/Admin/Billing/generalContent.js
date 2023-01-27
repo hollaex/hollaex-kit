@@ -17,6 +17,7 @@ import {
 	Select,
 	Input,
 	Tooltip,
+	Form,
 } from 'antd';
 import {
 	RightOutlined,
@@ -48,7 +49,7 @@ import {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
-	setSelectedConfig,
+	setExchangeCardKey,
 } from 'actions/adminBillingActions';
 import EnterpriseForm from '../EnterPriseForm';
 import './Billing.scss';
@@ -374,13 +375,13 @@ const GeneralContent = ({
 	fiatSubmission,
 	setPaymentAddressDetails,
 	paymentAddressDetails,
-	selectedConfig,
-	setSelectedConfig,
+	putExchange,
+	exchangeCardKey,
+	setExchangeCardKey,
 }) => {
 	const balance = user?.balance;
 	const SwitchState = exchange.period === 'year' ? true : false;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
-	const exchangeType = 'diy';
 
 	const [modalWidth, setModalWidth] = useState('85rem');
 	const [OpenPlanModal, setOpenPlanModal] = useState(false);
@@ -395,6 +396,8 @@ const GeneralContent = ({
 	const [configure, setConfigure] = useState(false);
 	const [selectedPlanData, setSelectedPlanData] = useState({});
 	const [fiatBreadCrumb, setFiatBreadCrumb] = useState(false);
+	const [proceedState, setProceedState] = useState(false);
+	const [showCloudPlanDetails, setShowCloudPlanDetails] = useState(false);
 
 	const planPriceData = priceData[selectedType];
 
@@ -404,13 +407,13 @@ const GeneralContent = ({
 	}, []);
 
 	useEffect(() => {
-		if (exchangeType === 'diy' && selectedConfig === 'diy') {
+		if (exchange.plan === 'diy' && exchangeCardKey === 'diy') {
 			setSelectedPlanData(diyPlanData);
 		} else {
 			setSelectedPlanData(planData);
-			setSelectedConfig('cloudExchange');
+			setExchangeCardKey('cloudExchange');
 		}
-	}, [selectedConfig, exchangeType === 'diy']);
+	}, [exchangeCardKey, exchange.plan === 'diy']);
 
 	useEffect(() => {
 		if (dashToken) {
@@ -470,6 +473,7 @@ const GeneralContent = ({
 	const OnHandleCancel = () => {
 		setOpenPlanModal(false);
 		setTransferCryptoPayment(false);
+		setShowCloudPlanDetails(false);
 		setShowPayAddress(false);
 		setFiatSubmission(false);
 		setSelectedPayment('cryptoCurrency');
@@ -708,7 +712,9 @@ const GeneralContent = ({
 
 	const renderModelContent = () => {
 		const breadCrumbOptions = selectedType === 'fiat' ? fiatOptions : options;
-		return (
+		return showCloudPlanDetails ? (
+			<div>Cloud plan details</div>
+		) : (
 			<Breadcrumb separator={<RightOutlined />}>
 				{breadCrumbOptions.map((name, inx) => {
 					return (
@@ -731,17 +737,27 @@ const GeneralContent = ({
 		);
 	};
 	const handleOpenModal = () => {
+		if (exchangeCardKey === 'diy') {
+			setSelectedType('diy');
+		} else {
+			setSelectedType('crypto');
+		}
 		setOpenPlanModal(true);
 		setModalWidth('85rem');
 		setExchangePlanType('item');
-		setSelectedType('crypto');
 	};
 
-	const handleConfig = () => {
-		if (selectedConfig !== 'diy') {
+	const onHandleConfig = (values) => {
+		setExchangeCardKey(values.configure);
+		setProceedState(true);
+		if (values.configure !== 'diy') {
 			setOpenPlanModal(true);
+			setSelectedType('crypto');
+		} else {
+			setSelectedType('diy');
 		}
 		setConfigure(false);
+		putExchange(values.configure === 'diy' ? 'DIY' : 'Cloud');
 	};
 
 	const renderCard = () => {
@@ -760,27 +776,41 @@ const GeneralContent = ({
 						})`,
 					}}
 				>
-					<div className={`d-flex ${selectedType}-content-wrapper`}>
+					<div className={`d-flex ${selectedType}-content-wrapper w-100`}>
 						<ReactSVG
 							src={`${
 								selectedType === 'basic'
 									? STATIC_ICONS['CLOUD_PLAN_BASIC']
 									: selectedType === 'crypto'
 									? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
+									: selectedType === 'fiat'
+									? STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
 									: selectedType === 'diy'
 									? STATIC_ICONS['DIY_ICON']
-									: STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
+									: STATIC_ICONS['DIY_FIRE_MAN_ICON']
 							}`}
-							className="cloud-background"
+							className={
+								selectedType === 'diy' || selectedType === 'boost'
+									? 'diy-background'
+									: 'cloud-background'
+							}
 						/>
 
 						<div className="payment-text">
 							<div className="justify-between">
 								<div className="d-flex">
-									<p className="white-text">Cloud: </p>
-									<p className="cloud-type">{selectedType}</p>
+									{exchangeCardKey !== 'diy' && (
+										<p className="white-text">Cloud: </p>
+									)}
+									<p
+										className={
+											exchangeCardKey === 'diy' ? 'diy-type' : 'cloud-type'
+										}
+									>
+										{selectedType === 'diy' ? 'Do-It-Yourself' : selectedType}
+									</p>
 								</div>
-								{exchangeType === 'diy' ? (
+								{exchange.plan === 'diy' ? (
 									<div
 										className="configure-wrapper"
 										onClick={() => setConfigure(true)}
@@ -795,6 +825,9 @@ const GeneralContent = ({
 							</div>
 							<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
 								{planData?.[selectedType]?.description}
+								{exchangeCardKey === 'diy' &&
+									proceedState &&
+									diyPlanData?.[selectedType]?.description}
 							</p>
 						</div>
 					</div>
@@ -806,9 +839,7 @@ const GeneralContent = ({
 						className="m-2 px-4 py-1"
 						shape="round"
 					>
-						{exchangeType === 'diy' && selectedConfig === 'diy'
-							? 'Boost'
-							: 'Pay'}
+						{exchangeCardKey === 'diy' ? 'Boost' : 'Pay'}
 					</Button>
 				</div>
 				<Modal
@@ -822,22 +853,23 @@ const GeneralContent = ({
 					<div className="configure-modal-container">
 						<h4>Configure Plan</h4>
 						<div>
-							<Radio.Group className="my-3" value={selectedConfig}>
-								{configureTypes.map((config) => {
-									return (
-										<Radio
-											key={config.value}
-											value={config.value}
-											onChange={(e) => setSelectedConfig(e.target.value)}
-										>
-											{config.name}
-										</Radio>
-									);
-								})}
-							</Radio.Group>
-							<Button type="primary" onClick={handleConfig}>
-								Proceed
-							</Button>
+							<Form onFinish={onHandleConfig}>
+								<Form.Item name="configure">
+									<Radio.Group className="my-3" value={exchangeCardKey}>
+										{configureTypes.map((config) => {
+											return (
+												<Radio key={config.value} value={config.value}>
+													{config.name}
+												</Radio>
+											);
+										})}
+									</Radio.Group>
+								</Form.Item>
+
+								<Button type="primary" htmlType="submit">
+									Proceed
+								</Button>
+							</Form>
 						</div>
 					</div>
 				</Modal>
@@ -875,30 +907,39 @@ const GeneralContent = ({
 			case 'item':
 				return (
 					<div>
-						<div className="switch-wrapper">
-							<div className="d-flex">
-								<div className="switch-content">
-									<span className={'switch-label'}>Pay yearly</span>
-									<div className="green-label save-label">(Save up to 35%)</div>
+						{exchangeCardKey !== 'diy' && (
+							<div className="switch-wrapper">
+								<div className="d-flex">
+									<div className="switch-content">
+										<span className={'switch-label'}>Pay yearly</span>
+										<div className="green-label save-label">
+											(Save up to 35%)
+										</div>
+									</div>
+									<Switch
+										onClick={handleOnSwith}
+										defaultChecked={!SwitchState}
+									/>
+									<span className={'switch-label label-inactive ml-1'}>
+										Pay monthly
+									</span>
 								</div>
-								<Switch onClick={handleOnSwith} defaultChecked={!SwitchState} />
-								<span className={'switch-label label-inactive ml-1'}>
-									Pay monthly
-								</span>
 							</div>
-						</div>
+						)}
 						<div className="bg-model">
 							<div
 								className={
-									'box-container content-wrapper plan-structure-wrapper'
+									'box-container content-wrapper plan-structure-wrapper w-100'
 								}
 							>
 								{Object.keys(selectedPlanData).map((type, inx) => {
-									if (selectedConfig === 'diy') {
+									if (exchangeCardKey === 'diy') {
 										return (
 											<DIYPlanStructure
 												className={
-													selectedType === type ? '' : 'opacity-plan-container'
+													selectedType === type
+														? ''
+														: 'opacity-diy-plan-container'
 												}
 												selectedType={selectedType}
 												setSelectedType={setSelectedType}
@@ -914,7 +955,9 @@ const GeneralContent = ({
 										return (
 											<PlanStructure
 												className={
-													selectedType === type ? '' : 'opacity-plan-container'
+													selectedType === type
+														? ''
+														: 'opacity-cloud-plan-container'
 												}
 												selectedType={selectedType}
 												setSelectedType={setSelectedType}
@@ -1170,6 +1213,7 @@ const GeneralContent = ({
 	const handleBack = () => {
 		setFiatSubmission(false);
 		setFiatBreadCrumb(false);
+		setShowCloudPlanDetails(false);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 		} else if (exchangePlanType === 'method') {
@@ -1190,7 +1234,12 @@ const GeneralContent = ({
 				<Button block type="primary" onClick={handleBack}>
 					Back
 				</Button>
-				<Button block type="primary" onClick={handleNext}>
+				<Button
+					block
+					type="primary"
+					onClick={handleNext}
+					disabled={selectedType === 'diy'}
+				>
 					{exchangePlanType === 'payment' ? 'Done' : 'Next'}
 				</Button>
 			</div>
@@ -1228,13 +1277,18 @@ const GeneralContent = ({
 						<div>
 							Below is current your plan. Get more view details on the available
 						</div>
-						<div className="cloud-plans mx-1">cloud plans.</div>
+						<div
+							className="cloud-plans mx-1"
+							onClick={() => setShowCloudPlanDetails(true)}
+						>
+							cloud plans.
+						</div>
 					</div>
 				</div>
 			</div>
 			{renderCard()}
 			<Modal
-				visible={OpenPlanModal}
+				visible={OpenPlanModal || showCloudPlanDetails}
 				className="bg-model blue-admin-billing-model"
 				width={modalWidth}
 				zIndex={1000}
@@ -1278,7 +1332,7 @@ const mapStateToProps = (store) => ({
 	transferCryptoPayment: store.admin.transferCryptoPayment,
 	fiatSubmission: store.admin.fiatSubmission,
 	paymentAddressDetails: store.admin.paymentAddressDetails,
-	selectedConfig: store.admin.selectedConfig,
+	exchangeCardKey: store.admin.exchangeCardKey,
 });
 
 export default connect(mapStateToProps, {
@@ -1289,5 +1343,5 @@ export default connect(mapStateToProps, {
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
-	setSelectedConfig,
+	setExchangeCardKey,
 })(GeneralContent);

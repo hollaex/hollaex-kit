@@ -22,13 +22,11 @@ p {
 		.basic-content-wrapper {
 			margin-top: 1rem;
 			margin-bottom: 1rem;
-			width: 100%;
 		}
 
 		.crypto-content-wrapper,
 		.fiat-content-wrapper {
 			margin-top: 1rem;
-			width: 100%;
 		}
 
 		.card-icon {
@@ -43,18 +41,15 @@ p {
 		.crypto-fiat-plan {
 			padding-bottom: 1rem;
 		}
-
-		.diy-content-wrapper {
-			width: 100%;
-		}
-
-		.boost-content-wrapper {
-			width: 100%;
-		}
 	}
 
 	.cloud-background {
 		width: 20%;
+	}
+
+	.diy-background {
+		width: 11%;
+		margin-top: 2rem;
 	}
 
 	.cloud-icon {
@@ -67,6 +62,19 @@ p {
 		margin-left: 5px;
 		margin-top: 2px;
 		font-weight: bold;
+	}
+
+	.cloud-type::first-letter {
+		text-transform: uppercase;
+	}
+
+	.diy-type::first-letter {
+		text-transform: uppercase;
+	}
+
+	.diy-type {
+		font-weight: bold;
+		color: #ffffff;
 	}
 
 	.white-text {
@@ -98,7 +106,7 @@ p {
 			}
 
 			p {
-				margin-left: 2px;
+				margin: 3px 0px 0px 5px;
 			}
 		}
 	}
@@ -126,23 +134,42 @@ p {
 		justify-content: space-between;
 		padding: 1rem 1rem;
 	}
-}
 
-.ant-tag-green {
-	color: #b7eb8f;
-	background: #1c661c;
-	border-color: #b7eb8f;
-}
+	.pay-button {
+		display: flex;
+		justify-content: flex-end;
+		background-color: #171f6a;
+		border-bottom-left-radius: 1rem;
+		border-bottom-right-radius: 1rem;
+		padding: 0.25rem;
 
-.search-active {
-	.ant-input-search-icon {
-		color: white;
+		.ant-btn-primary {
+			background-color: #3a4fff !important;
+			border-color: #3a4fff;
+		}
+
+		.ant-btn-round {
+			height: 27px !important;
+			width: 6rem !important;
+			font-weight: bold;
+			font-size: 13px !important;
+		}
+
+		button:focus {
+			outline: none;
+		}
 	}
 }
 
-.ant-tag:hover {
-	opacity: 0.5;
-}
+// .ant-tag-green {
+//  color: #b7eb8f;
+//  background: #1c661c;
+//  border-color: #b7eb8f;
+// }
+
+// .ant-tag:hover {
+//  opacity: 0.5;
+// }
 
 .admin-billing {
 	.ant-tabs-top > .ant-tabs-nav {
@@ -269,35 +296,16 @@ p {
 	}
 }
 
-.pay-button {
-	display: flex;
-	justify-content: flex-end;
-	background-color: #171f6a;
-	border-bottom-left-radius: 1rem;
-	border-bottom-right-radius: 1rem;
-	padding: 0.25rem;
-
-	.ant-btn-primary {
-		background-color: #3a4fff !important;
-		border-color: #3a4fff;
-	}
-
-	.ant-btn-round {
-		height: 27px !important;
-		width: 6rem !important;
-		font-weight: bold;
-		font-size: 13px !important;
-	}
-
-	button:focus {
-		outline: none;
-	}
-}
-
 .billing-filter {
 	.ant-input-search {
 		input {
 			background: #1c661c;
+		}
+	}
+
+	.search-active {
+		.ant-input-search-icon {
+			color: white;
 		}
 	}
 }
@@ -308,117 +316,6 @@ p {
 
 .ant-modal .bg-model .box-container .plan-container li {
 	font-size: 12px !important;
-}
-
-.ant-modal
-	.bg-model
-	.box-container
-	.plan-container
-	.radio-container
-	.selected-plan {
-	margin-left: 2.5rem;
-}
-
-.requirement-icon {
-	margin: 0.25rem 0rem;
-	width: 2rem;
-}
-
-.de-select-status {
-	border-radius: 50%;
-	border: 1px solid #a8a8b1;
-	height: 2rem;
-	width: 2rem;
-	cursor: pointer;
-	margin-left: 0.75rem;
-}
-
-.payment-content-wrapper {
-	padding: 0rem 0rem 1.5rem 1.5rem;
-}
-
-.cloud-plan-wrapper {
-	background-color: #27339d;
-	border-top: 2px dotted #75809b;
-	position: relative;
-	top: 0.5rem;
-
-	.cloud-content {
-		padding: 2.5rem;
-	}
-
-	.cloud-background {
-		position: absolute;
-	}
-
-	.cloud-icon {
-		position: relative;
-		margin-left: 0.5rem;
-		margin-top: 1rem;
-	}
-
-	.cloud-box-container {
-		padding: 1rem;
-		justify-content: space-around;
-		background-color: #27339d;
-		border: 1px solid #75809b;
-		height: 8rem;
-
-		.sub-title {
-			white-space: nowrap;
-			font-size: 16px;
-			font-weight: bold;
-			margin-right: 5px;
-		}
-
-		.cloud-icon,
-		.exchange-icon {
-			width: 40px;
-			margin-right: 15px;
-		}
-
-		.content-align {
-			justify-content: center;
-			align-items: center;
-			// padding: 0 0.5rem;
-			font-weight: bold;
-			font-size: 16px;
-			margin-left: 3rem;
-		}
-
-		.month-content {
-			margin-right: 2rem;
-			// justify-content: center;
-			align-items: center;
-			font-size: 16px;
-			font-weight: bold;
-			// font-weight: bold;
-			// font-size: 16px;
-		}
-
-		.seperator {
-			border-right: 1px dashed #a8a8b1;
-			border-left: 1px dashed #a8a8b1;
-			padding: 1rem;
-		}
-	}
-
-	.button-container {
-		padding: 0.5rem 1rem;
-
-		.ant-btn {
-			height: 45px;
-			width: 27rem;
-			margin-left: 1rem;
-		}
-	}
-
-	.payment-header {
-		font-size: 16px;
-		font-weight: bold;
-		color: #ffffff;
-		margin-top: 1rem;
-	}
 }
 
 .horizantal-line {
@@ -512,7 +409,6 @@ p {
 
 		.scanner-container {
 			width: 9rem;
-			// background: black;
 
 			canvas {
 				display: flex;
@@ -522,7 +418,6 @@ p {
 			}
 
 			div {
-				// font-size: 12px;
 				font-size: 11px;
 				margin-top: 1rem;
 			}
@@ -546,15 +441,16 @@ p {
 			color: white;
 		}
 
+		.ant-form-item-control-input {
+			align-items: flex-start;
+		}
+
 		div {
 			display: flex;
 			flex-direction: column;
 
 			label {
-				display: flex;
-				align-items: center;
 				margin: 0.5rem 2rem 1rem 2rem;
-
 				span {
 					font-size: 15px !important;
 					color: white;
@@ -562,7 +458,7 @@ p {
 			}
 
 			button {
-				margin-top: 2rem;
+				width: 100%;
 			}
 		}
 	}
@@ -625,13 +521,13 @@ p {
 		background-color: #282d64;
 
 		.box-container {
-			width: 100%;
 			display: flex;
 			flex-direction: row;
 			background-color: inherit;
 			justify-content: center;
 
-			.opacity-plan-container {
+			.opacity-cloud-plan-container,
+			.opacity-diy-plan-container {
 				opacity: 0.3;
 				margin-top: 3rem !important;
 				margin-bottom: 2.2rem !important;
@@ -641,6 +537,10 @@ p {
 					margin-bottom: 0rem !important;
 					height: 100%;
 				}
+			}
+
+			.opacity-diy-plan-container {
+				height: 56rem !important;
 			}
 
 			.amount-container {
@@ -705,6 +605,15 @@ p {
 					border: 1px solid white;
 					border-radius: 20px;
 				}
+
+				.de-select-status {
+					border-radius: 50%;
+					border: 1px solid #a8a8b1;
+					height: 2rem;
+					width: 2rem;
+					cursor: pointer;
+					margin-left: 0.75rem;
+				}
 			}
 
 			li {
@@ -714,6 +623,7 @@ p {
 			h6 {
 				font-size: 13px;
 				color: #ffffff;
+				padding: 1rem;
 			}
 
 			.type-center {
@@ -824,7 +734,6 @@ p {
 	}
 
 	.payment-button {
-		width: 100%;
 		display: flex;
 		justify-content: space-around;
 		padding: 1rem 1rem 2.5rem 1rem;
@@ -834,6 +743,11 @@ p {
 			width: 47%;
 			background-color: #3a4fff !important;
 			height: 44px;
+		}
+
+		.ant-btn-primary:disabled {
+			opacity: 0.3;
+			color: #fff;
 		}
 	}
 
