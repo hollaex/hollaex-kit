@@ -21,8 +21,6 @@ const DIYPlanStructure = ({
 }) => {
 	let currentPlan = planData[type];
 
-	console.log('iscamediyplan', className, type);
-
 	return (
 		<div className={`diy-plan-container`}>
 			<div className="plan-container-wrapper">

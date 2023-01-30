@@ -150,4 +150,11 @@ const mapStateToProps = (store) => ({
 	activeTheme: store.app.theme,
 });
 
+TableBody.defaultProps = {
+	handleExpand: () => {},
+};
+TableRow.defaultProps = {
+	handleExpand: () => {},
+};
+
 export default connect(mapStateToProps)(TableBody);

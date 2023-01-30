@@ -657,20 +657,6 @@ export const generateTradeHeaders = (
 				);
 			},
 		},
-		{
-			stringId: 'ORIGIN',
-			label: 'Origin',
-			key: 'Origin',
-			className: isMobile ? 'text-center' : '',
-			exportToCsv: ({ timestamp = '' }) => timestamp,
-			renderCell: ({ timestamp = '', order_id }, key, index) => {
-				return (
-					<td key={index} className={`anchor ${isMobile ? 'text-center' : ''}`}>
-						<span onClick={() => setActiveTab(1)}>View</span>
-					</td>
-				);
-			},
-		},
 	];
 };
 
