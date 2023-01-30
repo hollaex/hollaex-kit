@@ -277,7 +277,11 @@ class TransactionsHistory extends Component {
 		return {
 			expandedRowRender: (obj) => {
 				return (
-					<div className="expandable-container flex-row">
+					<div
+						className={`expandable-container flex-row ${
+							isMobile ? 'text-center' : ''
+						}`}
+					>
 						<div>
 							<EditWrapper
 								stringId="TRANSACTION_HISTORY.ORDERID"
@@ -296,12 +300,12 @@ class TransactionsHistory extends Component {
 	};
 
 	getExpandableRowContentForOrderHistory = () => {
-		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type = temp?.type === 'active' ? 'of Opening' : 'Closed';
 		return {
 			expandedRowRender: (obj) => {
 				return (
-					<div className="expandable-container">
+					<div
+						className={`expandable-container ${isMobile ? 'text-center' : ''}`}
+					>
 						<div>
 							<EditWrapper
 								stringId="TRANSACTION_HISTORY.ORDERID"
