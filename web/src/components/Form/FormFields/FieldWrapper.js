@@ -180,7 +180,7 @@ class FieldWrapper extends Component {
 			onCrossClick = () => {},
 		} = this.props;
 
-		const displayError = (active || focused || visited || touched) && error;
+		const displayError = (active || focused) && (visited || touched) && error;
 		const hasValue = value || value === false;
 		const singleAction =
 			notification &&

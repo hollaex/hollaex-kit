@@ -42,5 +42,6 @@ const Form = (props) => (
 
 export default reduxForm({
 	form: 'RequestPasswordForm',
+	touchOnChange: true,
 	validate,
 })(Form);
