@@ -29,6 +29,7 @@ const Billing = (props) => {
 				type,
 			};
 			await putDashExchange(exchangeBody);
+			await getExchange();
 		} catch (error) {
 			if (error.data && error.data.message) {
 				message.error(error.data.message);

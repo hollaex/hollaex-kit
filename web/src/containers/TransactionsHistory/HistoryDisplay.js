@@ -161,4 +161,8 @@ const HistoryDisplay = (props) => {
 	);
 };
 
+HistoryDisplay.defaultProps = {
+	handleExpand: () => {},
+};
+
 export default withConfig(HistoryDisplay);
