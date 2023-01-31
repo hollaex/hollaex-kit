@@ -106,7 +106,7 @@ p {
 			}
 
 			p {
-				margin: 3px 0px 0px 5px;
+				margin: 3px 5px 0px 0px;
 			}
 		}
 	}
@@ -246,6 +246,7 @@ p {
 
 	.feature-wrapper {
 		height: 60%;
+		margin: 1rem;
 	}
 }
 
@@ -266,6 +267,7 @@ p {
 
 		.cloud-plans {
 			text-decoration: underline;
+			cursor: pointer;
 		}
 
 		.description-content {
@@ -486,6 +488,12 @@ p {
 		}
 	}
 
+	.breadcrumb-cloud-plan-details {
+		font-size: 20px;
+		font-weight: bold;
+		padding: 1rem;
+	}
+
 	.switch-wrapper {
 		margin-bottom: 2rem;
 		font-size: 11px;
@@ -526,6 +534,11 @@ p {
 			background-color: inherit;
 			justify-content: center;
 
+			.cloud-plan-container {
+				margin-top: 3rem !important;
+				height: 68rem !important;
+			}
+
 			.opacity-cloud-plan-container,
 			.opacity-diy-plan-container {
 				opacity: 0.3;
@@ -540,7 +553,7 @@ p {
 			}
 
 			.opacity-diy-plan-container {
-				height: 56rem !important;
+				height: 57rem !important;
 			}
 
 			.amount-container {
@@ -636,7 +649,8 @@ p {
 				height: 100%;
 			}
 
-			.plan-container {
+			.plan-container,
+			.cloud-container {
 				flex-direction: column;
 				justify-content: center;
 				margin: 1rem 2rem 0rem 2rem;
@@ -652,12 +666,16 @@ p {
 				}
 			}
 
+			.cloud-container {
+				margin: 0rem;
+			}
+
 			.diy-plan-container {
 				flex-direction: column;
 				justify-content: center;
 				margin: 1rem 2rem 0rem 2rem;
 				border: 1px solid #a8a8b1;
-				height: 60rem;
+				height: 62rem;
 
 				.plan-container-wrapper {
 					width: 25rem;
@@ -701,7 +719,8 @@ p {
 
 					.feature-wrapper {
 						padding-top: 1rem;
-						height: 45%;
+						height: 40%;
+						margin: 3rem;
 					}
 
 					.amount-wrapper {
@@ -733,7 +752,8 @@ p {
 		}
 	}
 
-	.payment-button {
+	.payment-button,
+	.cloud-plan-button {
 		display: flex;
 		justify-content: space-around;
 		padding: 1rem 1rem 2.5rem 1rem;
@@ -751,6 +771,14 @@ p {
 		}
 	}
 
+	.cloud-plan-button {
+		margin: 0rem;
+		padding: 1rem 1rem 1.5rem 1rem;
+		button {
+			width: 100%;
+		}
+	}
+
 	.subscription-container {
 		display: flex;
 		width: 90%;
@@ -761,6 +789,9 @@ p {
 		.plan-card {
 			display: flex;
 			width: 45%;
+			.diy-icon {
+				width: 5rem !important;
+			}
 		}
 
 		.payment-container {
@@ -776,6 +807,7 @@ p {
 			color: #ffffff;
 			font-size: 11px;
 			margin-top: 4px;
+			text-align: center;
 		}
 
 		.exchange-text {

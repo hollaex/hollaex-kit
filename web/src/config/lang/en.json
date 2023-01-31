@@ -547,7 +547,10 @@
 		"TEXT_DOWNLOAD": "DOWNLOAD HISTORY",
 		"TRADES": "Trades",
 		"DEPOSITS": "Deposits",
-		"WITHDRAWALS": "Withdrawals"
+		"WITHDRAWALS": "Withdrawals",
+		"ORDERID": "Order ID",
+		"TRIGGER_STOP_PRICE": "Trigger/stop price",
+		"TIME_OF_LAST_TRADE": "Time of last trade"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",

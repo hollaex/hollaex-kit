@@ -178,9 +178,10 @@ class FieldWrapper extends Component {
 			emailMsg = '',
 			showCross,
 			onCrossClick = () => {},
+			displayError,
 		} = this.props;
-
-		const displayError = (active || focused || visited || touched) && error;
+		const isShowErrorMsg =
+			displayError || ((active || focused) && (visited || touched) && error);
 		const hasValue = value || value === false;
 		const singleAction =
 			notification &&
@@ -190,7 +191,7 @@ class FieldWrapper extends Component {
 		return (
 			<div
 				className={classnames('field-wrapper', className, {
-					error: displayError,
+					error: isShowErrorMsg,
 					inline: !fullWidth,
 					'with-notification': !!notification,
 					'field-valid': !invalid,
@@ -207,7 +208,7 @@ class FieldWrapper extends Component {
 					hideCheck={hideCheck}
 					outlineClassName={outlineClassName}
 					onClick={onClick}
-					displayError={displayError}
+					displayError={isShowErrorMsg}
 					error={error}
 					ishorizontalfield={ishorizontalfield}
 					dateFieldClassName={className}
@@ -259,7 +260,7 @@ class FieldWrapper extends Component {
 				</FieldContent>
 				{!ishorizontalfield ? (
 					<FieldError
-						displayError={displayError}
+						displayError={isShowErrorMsg}
 						error={error}
 						preview={preview}
 					/>
