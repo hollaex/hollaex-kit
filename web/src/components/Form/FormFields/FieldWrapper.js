@@ -133,23 +133,21 @@ export const FieldError = ({
 		})}
 		style={preview ? { height: 'auto' } : {}}
 	>
-		{displayError && error ? (
-			<>
-				<img
-					src={STATIC_ICONS.RED_WARNING}
-					className="field-error-icon"
-					alt="error"
-				/>
-				<EditWrapper
-					stringId={stringId}
-					render={(string) => (
-						<span className="field-error-text">{string}</span>
-					)}
-				>
-					{getErrorLocalized(error)}
-				</EditWrapper>
-			</>
-		) : null}
+		{error && (
+			<img
+				src={STATIC_ICONS.RED_WARNING}
+				className="field-error-icon"
+				alt="error"
+			/>
+		)}
+		{error && (
+			<EditWrapper
+				stringId={stringId}
+				render={(string) => <span className="field-error-text">{string}</span>}
+			>
+				{getErrorLocalized(error)}
+			</EditWrapper>
+		)}
 		{preview && <Fragment>{preview}</Fragment>}
 	</div>
 );
@@ -178,10 +176,9 @@ class FieldWrapper extends Component {
 			emailMsg = '',
 			showCross,
 			onCrossClick = () => {},
-			displayError,
 		} = this.props;
-		const isShowErrorMsg =
-			displayError || ((active || focused) && (visited || touched) && error);
+
+		const displayError = !(active || focused) && (visited || touched) && error;
 		const hasValue = value || value === false;
 		const singleAction =
 			notification &&
@@ -191,7 +188,7 @@ class FieldWrapper extends Component {
 		return (
 			<div
 				className={classnames('field-wrapper', className, {
-					error: isShowErrorMsg,
+					error: displayError,
 					inline: !fullWidth,
 					'with-notification': !!notification,
 					'field-valid': !invalid,
@@ -208,7 +205,7 @@ class FieldWrapper extends Component {
 					hideCheck={hideCheck}
 					outlineClassName={outlineClassName}
 					onClick={onClick}
-					displayError={isShowErrorMsg}
+					displayError={displayError}
 					error={error}
 					ishorizontalfield={ishorizontalfield}
 					dateFieldClassName={className}
@@ -260,7 +257,7 @@ class FieldWrapper extends Component {
 				</FieldContent>
 				{!ishorizontalfield ? (
 					<FieldError
-						displayError={isShowErrorMsg}
+						displayError={displayError}
 						error={error}
 						preview={preview}
 					/>

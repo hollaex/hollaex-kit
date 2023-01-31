@@ -15,7 +15,7 @@ const InputField = (props) => {
 		input,
 		type,
 		placeholder,
-		meta: { error, active, visited, invalid, dirty },
+		meta: { touched, error, active },
 		onClick,
 		fullWidth = false, // eslint-disable-line
 		information,
@@ -31,11 +31,10 @@ const InputField = (props) => {
 		ishorizontalfield,
 		...rest
 	} = props;
-	const displayError = (dirty || (visited && invalid)) && error && !active;
+	const displayError = touched && error && !active;
 	// const displayCheck = !fullWidth && input.value && !displayError && !active;
-	const inputProps = { ...props, displayError };
 	return (
-		<FieldWrapper {...inputProps}>
+		<FieldWrapper {...props}>
 			<div style={{ display: 'flex' }}>
 				{options && renderIcon(options)}
 				<input
@@ -46,7 +45,7 @@ const InputField = (props) => {
 					type={type}
 					{...input}
 					{...rest}
-					onBlur={() => {}}
+					// onBlur={() => {}}
 				/>
 			</div>
 		</FieldWrapper>
