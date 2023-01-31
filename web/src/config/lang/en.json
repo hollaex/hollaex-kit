@@ -1348,7 +1348,7 @@
 		"BACK_TO_WALLET": "to my wallet",
 		"BACK": "Back",
 		"ESTIMATED_TOTAL": "Estimated total dust value",
-		"CONVERT_ALL": "convert all",
+		"CONVERT_ALL": "convert",
 		"NO_DUST": "No dust assets!",
 		"SECTION": {
 			"TITLE": "Convert wallet dust",
