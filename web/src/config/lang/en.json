@@ -106,7 +106,7 @@
 		"QR_CODE_TITLE": "{0} Deposit Information"
 	},
 	"QR_CODE": {
-		"SCAN": "Scan QR code",
+		"SCAN": "Scan",
 		"SHOW": "Show QR",
 		"NO_RESULT": "No result",
 		"NOT_FOUND": "Not Found",
