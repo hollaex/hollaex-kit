@@ -330,7 +330,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 			let side = 'sell';
 
 			const usdtSize = parseNumber(usdtPrices[coin] * symbols[coin]);
-			const quoteSize = parseNumber(symbols[coin]);
+			const size = parseNumber(symbols[coin]);
 			const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)));
 
 			if (usdtSize < 1) {
@@ -338,13 +338,13 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 					const orderData = {
 						symbol,
 						side,
-						size: quoteSize,
+						size,
 						price
 					}
 					const res = await convertBalance(orderData, user_id, maker_id);
 					convertedAssets.push(res);
 				} catch (err) {
-					convertedAssets.push({ error: err.message, symbol, side, size: quoteSize, price });
+					convertedAssets.push({ error: err.message, symbol, side, size, price });
 					loggerOrders.error(
 						'dustUserBalance error',
 						err.message,
