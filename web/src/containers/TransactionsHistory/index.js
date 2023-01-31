@@ -277,9 +277,20 @@ class TransactionsHistory extends Component {
 		return {
 			expandedRowRender: (obj) => {
 				return (
-					<div className="expandable-container flex-row">
-						<p className="font-bold">Order ID :</p>
-						<p>{obj.order_id}</p>
+					<div
+						className={`expandable-container flex-row ${
+							isMobile ? 'text-center' : ''
+						}`}
+					>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.ORDERID"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
+							</EditWrapper>
+							<p>{obj.order_id}</p>
+						</div>
 					</div>
 				);
 			},
@@ -289,22 +300,37 @@ class TransactionsHistory extends Component {
 	};
 
 	getExpandableRowContentForOrderHistory = () => {
-		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type = temp?.type === 'active' ? 'of Opening' : 'Closed';
 		return {
 			expandedRowRender: (obj) => {
 				return (
-					<div className="expandable-container">
+					<div
+						className={`expandable-container ${isMobile ? 'text-center' : ''}`}
+					>
 						<div>
-							<p className="font-bold">Order ID :</p>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.ORDERID"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
+							</EditWrapper>
 							<p>{obj.id}</p>
 						</div>
 						<div>
-							<p className="font-bold">Trigger/stop price :</p>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.TRIGGER_STOP_PRICE"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
+							</EditWrapper>
 							<p>{obj.stop ? obj.stop : `N/A`}</p>
 						</div>
 						<div>
-							<p className="font-bold">Time of last trade :</p>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.TRIGGER_STOP_PRICE"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.TIME_OF_LAST_TRADE']}
+							</EditWrapper>
 							<p>{getFormatTimestamp(obj.updated_at)}</p>
 						</div>
 					</div>

@@ -133,23 +133,21 @@ export const FieldError = ({
 		})}
 		style={preview ? { height: 'auto' } : {}}
 	>
-		{displayError && error ? (
-			<>
-				<img
-					src={STATIC_ICONS.RED_WARNING}
-					className="field-error-icon"
-					alt="error"
-				/>
-				<EditWrapper
-					stringId={stringId}
-					render={(string) => (
-						<span className="field-error-text">{string}</span>
-					)}
-				>
-					{getErrorLocalized(error)}
-				</EditWrapper>
-			</>
-		) : null}
+		{error && (
+			<img
+				src={STATIC_ICONS.RED_WARNING}
+				className="field-error-icon"
+				alt="error"
+			/>
+		)}
+		{error && (
+			<EditWrapper
+				stringId={stringId}
+				render={(string) => <span className="field-error-text">{string}</span>}
+			>
+				{getErrorLocalized(error)}
+			</EditWrapper>
+		)}
 		{preview && <Fragment>{preview}</Fragment>}
 	</div>
 );
@@ -180,7 +178,7 @@ class FieldWrapper extends Component {
 			onCrossClick = () => {},
 		} = this.props;
 
-		const displayError = (active || focused || visited || touched) && error;
+		const displayError = !(active || focused) && (visited || touched) && error;
 		const hasValue = value || value === false;
 		const singleAction =
 			notification &&
