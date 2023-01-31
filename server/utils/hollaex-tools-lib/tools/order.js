@@ -245,8 +245,7 @@ const convertBalance = async (order, user_id, maker_id) => {
 }
 
 const parseNumber = (number) => {
-	const fixedNumber = BigNumber(number.toFixed(10, 1));
-	return BigNumber(fixedNumber).toNumber();
+	return BigNumber(number).precision(10, BigNumber.ROUND_DOWN).toNumber();
 }
 
 const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
