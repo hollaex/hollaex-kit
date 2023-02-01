@@ -5,19 +5,19 @@ import { CheckOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 
 const DIYPlanStructure = ({
-	exchange,
+	dashExchange,
 	planData,
 	type,
 	isMonthly,
-	planType,
-	showConfigIcon = false,
-	handleConfigPlan,
-	handleSelect,
 	priceData,
 	selectedType,
-	setSelectedType,
 	className,
 	onHandleSelectedType,
+	// planType,
+	// showConfigIcon = false,
+	// handleConfigPlan,
+	// handleSelect,
+	// setSelectedType,
 }) => {
 	let currentPlan = planData[type];
 
@@ -131,7 +131,9 @@ const DIYPlanStructure = ({
 						)}
 					</div>
 					<div
-						className="radio-container"
+						className={`radio-container ${
+							dashExchange?.plan === 'boost' ? 'pointer-none' : ''
+						}`}
 						onClick={() => onHandleSelectedType(type)}
 					>
 						{selectedType === type ? (
