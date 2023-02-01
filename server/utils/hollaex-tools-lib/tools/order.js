@@ -16,7 +16,7 @@ const { setPriceEssentials, getDecimals } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
 const { client } = require('./database/redis');
-const BigNumber = require('bignumber.js');
+const { parseNumber } = require('./common');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -244,9 +244,7 @@ const convertBalance = async (order, user_id, maker_id) => {
 	);
 }
 
-const parseNumber = (number) => {
-	return BigNumber(number).precision(10, BigNumber.ROUND_DOWN).toNumber();
-}
+
 
 const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
 	if (quote == null) throw new Error('quote undefined');
@@ -277,10 +275,10 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 		let symbol = `${coin}-${quote}`;
 		let side = 'sell';
 
-		const usdtSize = parseNumber((usdtPrices[coin] * symbols[coin]));
-		const size = parseNumber(symbols[coin]);
-		const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)));
-		const quoteSize = parseNumber(price * size);
+		const usdtSize = parseNumber((usdtPrices[coin] * symbols[coin]), 10);
+		const size = parseNumber(symbols[coin], 10);
+		const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)), 10);
+		const quoteSize = parseNumber(price * size, 10);
 
 		if (usdtSize < 1) {
 			const orderData = {
@@ -328,9 +326,9 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 			let symbol = `${coin}-${quote}`;
 			let side = 'sell';
 
-			const usdtSize = parseNumber(usdtPrices[coin] * symbols[coin]);
-			const size = parseNumber(symbols[coin]);
-			const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)));
+			const usdtSize = parseNumber(usdtPrices[coin] * symbols[coin], 10);
+			const size = parseNumber(symbols[coin], 10);
+			const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)), 10);
 
 			if (usdtSize < 1) {
 				try {
