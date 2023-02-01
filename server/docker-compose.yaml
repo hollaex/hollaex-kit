@@ -52,6 +52,7 @@ services:
       - ./tools:/app/tools
       - ./utils:/app/utils
       - ./init.js:/app/init.js
+      - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
       - hollaex-kit-db
       - hollaex-kit-redis
