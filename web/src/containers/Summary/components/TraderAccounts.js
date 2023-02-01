@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
 import { Image, EditWrapper } from 'components';
@@ -94,6 +95,14 @@ const TraderAccounts = ({
                 </div>} */}
 				{!isAccountDetails && (
 					<Fragment>
+						<Link to="/fees-and-limits">
+							<div className="trade-account-link my-2 caps">
+								<EditWrapper stringId="FEES_AND_LIMITS.LINK">
+									{STRINGS['FEES_AND_LIMITS.LINK']}
+								</EditWrapper>
+							</div>
+						</Link>
+
 						<EditWrapper
 							stringId="REFERRAL_LINK.TITLE"
 							renderWrapper={(children) => (

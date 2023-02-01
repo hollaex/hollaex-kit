@@ -3834,12 +3834,6 @@ table th {
     .summary-container .trader-account-wrapper .trade-account-secondary-txt {
       margin: auto 0;
       width: 60%; }
-  .summary-container .trader-wrapper-icon {
-    width: 5rem;
-    margin-right: 1rem; }
-    .summary-container .trader-wrapper-icon svg .level_icon,
-    .summary-container .trader-wrapper-icon svg .hap-icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .trader-acc-detail-icon {
     width: 8rem;
     margin-right: 1rem; }
@@ -4129,6 +4123,13 @@ table th {
       display: none; }
   .summary-container .trade_tabs-search-outline {
     background: var(--labels_secondary-inactive-label-text-graphics); }
+
+.trader-wrapper-icon {
+  width: 5rem;
+  margin-right: 1rem; }
+  .trader-wrapper-icon svg .level_icon,
+  .trader-wrapper-icon svg .hap-icon {
+    fill: var(--labels_secondary-inactive-label-text-graphics); }
 
 .fee-limits-wrapper {
   width: 38rem; }
