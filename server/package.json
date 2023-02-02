@@ -14,6 +14,7 @@
 	"dependencies": {
 		"bcryptjs": "2.4.3",
 		"bluebird": "3.5.3",
+		"bignumber.js": "9.1.1",
 		"body-parser": "1.19.0",
 		"ccxt": "1.77.49",
 		"chai": "4.2.0",
