@@ -337,7 +337,7 @@ const putPlugin = async (req, res) => {
 
 	try {
 		const plugin = await Plugin.findOne({ where: { name } });
-
+		const pluginData = cloneDeep(plugin.dataValues);
 		if (!plugin) {
 			throw new Error('Plugin not installed');
 		}
@@ -409,17 +409,17 @@ const putPlugin = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (isPlainObject(value)) {
-						for (const key in plugin[field]) {
+						for (const key in pluginData[field]) {
 							if (
-								lodash.isPlainObject(plugin[field])
-								&& plugin[field][key].overwrite === false
+								lodash.isPlainObject(pluginData[field])
+								&& pluginData[field][key].overwrite === false
 								&& (!value[key] || value[key].overwrite === false)
 							) {
-								value[key] = plugin[field][key];
+								value[key] = pluginData[field][key];
 							}
 						}
 
-						const existingConfig = pick(plugin[field], Object.keys(value));
+						const existingConfig = pick(pluginData[field], Object.keys(value));
 
 						for (const key in value) {
 							if (existingConfig[key] !== undefined) {
@@ -560,6 +560,7 @@ const putPluginConfig = async (req, res) => {
 			throw new Error('Plugin not found');
 		}
 
+		const pluginData = cloneDeep(plugin.dataValues);
 		const updatedConfig = {};
 
 		for (const field in configValues) {
@@ -569,7 +570,7 @@ const putPluginConfig = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (value) {
-						const newConfig = plugin[field];
+						const newConfig = pluginData[field];
 
 						for (const key in newConfig) {
 							if (value[key] !== undefined) {

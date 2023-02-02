@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RemoteComponent } from 'RemoteComponent';
 import STRINGS from 'config/localizedStrings';
@@ -11,6 +12,7 @@ import withEdit from 'components/EditProvider/withEdit';
 import renderFields from 'components/Form/factoryFields';
 import { getErrorLocalized } from 'utils/errors';
 import { IconTitle, ErrorBoundary } from 'components';
+import { setSnackNotification } from 'actions/appActions';
 
 const DefaultChildren = ({
 	strings: STRINGS,
@@ -107,6 +109,11 @@ const mapStateToProps = (store) => ({
 	pairsTradesFetched: store.orderbook.pairsTradesFetched,
 });
 
-export default connect(mapStateToProps)(
-	withEdit(withConfig(withRouter(SmartTarget)))
-);
+const mapDispatchToProps = (dispatch) => ({
+	setSnackNotification: bindActionCreators(setSnackNotification, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withEdit(withConfig(withRouter(SmartTarget))));

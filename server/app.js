@@ -82,6 +82,23 @@ checkStatus()
 					});
 				});
 			}
+
+			// Custom error handler that returns JSON
+			app.use(function (err, req, res, next) {
+				if (typeof err !== 'object') {
+					// If the object is not an Error, create a representation that appears to be
+					err = {
+						message: String(err) // Coerce to string
+					};
+				} else {
+					// Ensure that err.message is enumerable (It is not by default)
+					Object.defineProperty(err, 'message', { enumerable: true });
+				}
+				res.statusCode = 500;
+				res.json(err);
+			});
+
+
 			app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
 			server.listen(PORT, () => {

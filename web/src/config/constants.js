@@ -95,6 +95,7 @@ export const TIMESTAMP_FORMAT_FA = STRINGS['TIMESTAMP_FORMAT']
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
+export const DASH_TOKEN_KEY = `${ENV}_${NETWORK}_DASH_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 

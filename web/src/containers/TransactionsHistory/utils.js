@@ -17,7 +17,7 @@ import {
 	CURRENCY_PRICE_FORMAT,
 	DEFAULT_COIN_DATA,
 } from 'config/constants';
-import { getFormatTimestamp, getTimeHeader } from 'utils/utils';
+import { getFormatTimestamp } from 'utils/utils';
 import { formatToCurrency, formatBaseAmount } from 'utils/currency';
 
 notification.config({
@@ -138,8 +138,8 @@ export const generateOrderHistoryHeaders = (
 			exportToCsv: ({ type = '' }) => type,
 			renderCell: ({ type = '' }, key, index) => {
 				return (
-					<td key={index} className={classnames('cell_box-type')}>
-						<div>{type ? STRINGS[`TYPES.${type.toUpperCase()}`] : ''}</div>
+					<td key={index}>
+						{type ? STRINGS[`TYPES.${type.toUpperCase()}`] : ''}
 					</td>
 				);
 			},
@@ -379,7 +379,7 @@ export const generateOrderHistoryHeaders = (
 		},*/
 		{
 			stringId: 'TIME',
-			label: getTimeHeader(STRINGS['TIME'], type),
+			label: type,
 			key: 'created_at',
 			className: isMobile ? 'text-center' : '',
 			exportToCsv: ({ created_at = '' }) => created_at,
@@ -653,20 +653,6 @@ export const generateTradeHeaders = (
 				return (
 					<td key={index} className={isMobile ? 'text-center' : ''}>
 						{getFormatTimestamp(timestamp)}
-					</td>
-				);
-			},
-		},
-		{
-			stringId: 'ORIGIN',
-			label: 'Origin',
-			key: 'Origin',
-			className: isMobile ? 'text-center' : '',
-			exportToCsv: ({ timestamp = '' }) => timestamp,
-			renderCell: ({ timestamp = '', order_id }, key, index) => {
-				return (
-					<td key={index} className={`anchor ${isMobile ? 'text-center' : ''}`}>
-						<span onClick={() => setActiveTab(1)}>View</span>
 					</td>
 				);
 			},

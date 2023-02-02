@@ -14,6 +14,7 @@
 	"dependencies": {
 		"bcryptjs": "2.4.3",
 		"bluebird": "3.5.3",
+		"bignumber.js": "9.1.1",
 		"body-parser": "1.19.0",
 		"ccxt": "1.77.49",
 		"chai": "4.2.0",
@@ -39,7 +40,7 @@
 		"JSONStream": "1.3.5",
 		"jsonwebtoken": "7.4.3",
 		"latest-version": "5.1.0",
-		"lodash": "4.17.20",
+		"lodash": "4.17.21",
 		"mathjs": "11.2.1",
 		"moment": "2.21.0",
 		"moment-timezone": "0.5.28",

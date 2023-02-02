@@ -168,7 +168,7 @@ const getColumns = (
 					className="coin-symbol-wrapper"
 					onClick={() => handlePreview(selectedAsset)}
 				>
-					{balance[`${symbol}_available`] || 0}
+					{balance[`${symbol}_balance`] || 0}
 				</div>
 			);
 		},
@@ -878,7 +878,6 @@ class Assets extends Component {
 			// exchange
 		} = this.state;
 		const { allCoins, constants } = this.props;
-
 		return (
 			<div className="admin-asset-wrapper">
 				{isPreview || isConfigure ? (

@@ -75,6 +75,7 @@ export const getClasesForLanguage = (language = '', type = 'object') => {
 	switch (language) {
 		case 'fa':
 		case 'ar':
+		case 'ur':
 		case TEMP_KEY_LANGUAGE_RTL:
 			return type === 'object' ? RTL_CLASSES_OBJECT : RTL_CLASSES_ARRAY;
 		default:
@@ -86,6 +87,7 @@ export const getFontClassForLanguage = (language = '') => {
 	switch (language) {
 		case 'fa':
 		case 'ar':
+		case 'ur':
 		case TEMP_KEY_LANGUAGE_RTL:
 			return LANGUAGE_RTL;
 		default:
@@ -121,6 +123,7 @@ export const getTempLanguageKey = (key = DEFAULT_LANGUAGE) => {
 	switch (key) {
 		case 'fa':
 		case 'ar':
+		case 'ur':
 			return TEMP_KEY_LANGUAGE_RTL;
 		default:
 			return TEMP_KEY_LANGUAGE_LTR;

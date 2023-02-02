@@ -1,7 +1,8 @@
 import jwtDecode from 'jwt-decode';
-import { TOKEN_KEY } from '../config/constants';
+import { TOKEN_KEY, DASH_TOKEN_KEY } from '../config/constants';
 
 const TOKEN_TIME_KEY = 'time';
+const DASH_TOKEN_TIME_KEY = 'dashTime';
 
 export const getToken = () => {
 	return localStorage.getItem(TOKEN_KEY);
@@ -15,6 +16,8 @@ export const setToken = (token) => {
 export const removeToken = () => {
 	localStorage.removeItem(TOKEN_KEY);
 	localStorage.removeItem(TOKEN_TIME_KEY);
+	localStorage.removeItem(DASH_TOKEN_KEY);
+	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
 };
 
 export const getTokenTimestamp = () => {
@@ -71,4 +74,22 @@ export const isAdmin = () => {
 		role === 'supervisor' ||
 		role === 'communicator'
 	);
+};
+
+export const getDashToken = () => {
+	return localStorage.getItem(DASH_TOKEN_KEY);
+};
+
+export const setDashToken = (token) => {
+	localStorage.setItem(DASH_TOKEN_KEY, token);
+	localStorage.setItem(DASH_TOKEN_TIME_KEY, new Date().getTime());
+};
+
+export const removeDashToken = () => {
+	localStorage.removeItem(DASH_TOKEN_KEY);
+	localStorage.removeItem(DASH_TOKEN_TIME_KEY);
+};
+
+export const getDashTokenTimestamp = () => {
+	return localStorage.getItem(DASH_TOKEN_TIME_KEY);
 };

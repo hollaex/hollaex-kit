@@ -31,6 +31,10 @@ export const password = (value = '') =>
 		? STRINGS['VALIDATIONS.INVALID_PASSWORD_2']
 		: undefined;
 
+export const passwordsMatch = (value, allValues) =>
+	value !== allValues.password
+		? STRINGS['VALIDATIONS.PASSWORDS_DONT_MATCH']
+		: undefined;
 export const username = (value = '') =>
 	!usernameRegEx.test(value) ? STRINGS['INVALID_USERNAME'] : undefined;
 

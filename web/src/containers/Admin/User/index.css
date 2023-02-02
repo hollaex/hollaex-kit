@@ -388,3 +388,12 @@
 	background-color: #27339d;
 	padding: 10px;
 }
+
+.green-badge {
+	background-color: green;
+	color: #c4c4c4;
+	border-radius: 4px;
+	font-size: 1rem;
+	padding: 0.4rem;
+	font-weight: bold;
+}

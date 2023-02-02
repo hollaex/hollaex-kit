@@ -3,6 +3,12 @@ const icons = {
 	PLUGINS_FRESHDESK: '/assets/plugins/plugin-freshdesk.png',
 	PLUGINS_SMS: '/assets/plugins/plugin-sms.png',
 	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
+	SETTINGS_ICON: '/assets/images/settings-icon.png',
+	DIY_ICON: '/assets/images/diy-icon.svg',
+	DIY_FIRE_MAN_ICON: '/assets/images/diy-boost-man-on-fire.svg',
+	CLOUD_PLAN_BASIC: '/assets/images/cloud-plan-basic.svg',
+	CLOUD_PLAN_FIAT_RAMP: '/assets/images/cloud-plan-fiat-ramp.svg',
+	CLOUD_PLAN_CRYPTO_PRO: '/assets/images/cloud-plan-crypto-pro.svg',
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
 	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',
@@ -156,6 +162,17 @@ const icons = {
 	CLOCK: '/assets/images/clock.svg',
 	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
 	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
+	CLOUD_BASIC: '/assets/images/Path 4813.svg',
+	CLOUD_CRYPTO: '/assets/images/Path 4815.svg',
+	CLOUD_FIAT: '/assets/images/Group 5179.svg',
+	CLOUD_BASIC_BACKGROUND: '/assets/images/cloud_fiat_ramp_graphic-01.png',
+	CLOUD_CRYPTO_BACKGROUND: '/assets/images/Mask_Group_69.png',
+	CLOUD_FIAT_BACKGROUND: '/assets/images/cloud_basic_graphic-01.png',
+	FIRE_BALL: '/assets/images/fireball-icon.svg',
+	EXCHANGE_LOGO_LIGHT_THEME:
+		'/assets/images/default-exchange-logo-light-theme.svg',
+	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
+	MANUAL_PLUGIN_UPGRADE: '/assets/images/manual-plugin-upgrade.svg',
 };
 
 export default icons;

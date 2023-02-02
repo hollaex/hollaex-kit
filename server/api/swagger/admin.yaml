@@ -315,6 +315,7 @@ paths:
               password:
                 type: string
                 format: password
+                maxLength: 128
       responses:
         201:
           description: Created
