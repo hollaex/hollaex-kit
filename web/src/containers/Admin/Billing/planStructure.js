@@ -23,10 +23,11 @@ const PlanStructure = ({
 	return (
 		<div
 			className={
-				cloudPlanDetails
+				!cloudPlanDetails
 					? `${className} plan-container`
 					: 'cloud-plan-container cloud-container'
 			}
+			onClick={() => onHandleSelectedType(type)}
 		>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
@@ -138,11 +139,8 @@ const PlanStructure = ({
 							</div>
 						)}
 					</div>
-					{cloudPlanDetails && (
-						<div
-							className="radio-container"
-							onClick={() => onHandleSelectedType(type)}
-						>
+					{!cloudPlanDetails && (
+						<div className="radio-container">
 							{selectedType === type ? (
 								<div>
 									<CheckOutlined className={'selected-plan'} />
