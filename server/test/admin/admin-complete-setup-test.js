@@ -6,7 +6,7 @@ const {
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
 
-describe('tests for /admin/dash-token', function () {
+describe('tests for /admin/complete-setup', function () {
 
     let user, bearerToken;
     before(async () => {
@@ -18,14 +18,13 @@ describe('tests for /admin/dash-token', function () {
 
 
     //Integration Testing
-    it('Integration Test -should respond 201 for "Success"', async () => {
+    it('Integration Test -should return 400 for already setup exchange', async () => {
         const response = await request()
-            .get('/v2/admin/dash-token')
-            .set('Authorization', `Bearer ${bearerToken}`);
+            .get('/v2/admin/complete-setup')
+            .set('Authorization', `Bearer ${bearerToken}`)
 
-        response.should.have.status(201);
+        response.should.have.status(400);
         response.should.be.json;
-        response.body.should.have.property('token');
     });
 
 });

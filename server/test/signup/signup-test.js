@@ -71,6 +71,7 @@ describe('Auth Flow', async () => {
             .send(testUser);
 
         response.should.have.status(500);
+        response.should.be.json;
     });
 
 });
