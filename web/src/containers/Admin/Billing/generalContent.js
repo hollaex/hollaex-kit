@@ -19,6 +19,7 @@ import {
 	Tooltip,
 	Form,
 	Spin,
+	Empty,
 } from 'antd';
 import {
 	RightOutlined,
@@ -46,12 +47,10 @@ import {
 	setSelectedType,
 	setExchangePlanType,
 	setSelectedCrypto,
-	setCryptoPaymentType,
 	setTransferCryptoPayment,
 	setFiatSubmission,
 	setPaymentAddressDetails,
 	setExchangeCardKey,
-	setCloudPlanDetails,
 } from 'actions/adminBillingActions';
 import EnterpriseForm from '../EnterPriseForm';
 import { getExchange } from '../AdminFinancials/action';
@@ -360,17 +359,16 @@ const options = ['item', 'method', 'crypto', 'payment'];
 const fiatOptions = ['item', 'apply'];
 
 const GeneralContent = ({
-	selectedCrypto,
 	dashExchange,
 	user,
+	selectedCrypto,
 	setSelectedCrypto,
 	selectedPayment,
-	selectedType,
 	setSelectedPayment,
+	selectedType,
 	setSelectedType,
 	exchangePlanType,
 	setExchangePlanType,
-	isAutomatedKYC,
 	setTransferCryptoPayment,
 	transferCryptoPayment,
 	setFiatSubmission,
@@ -380,8 +378,6 @@ const GeneralContent = ({
 	putExchange,
 	exchangeCardKey,
 	setExchangeCardKey,
-	setCloudPlanDetails,
-	cloudPlanDetails,
 }) => {
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
@@ -396,11 +392,9 @@ const GeneralContent = ({
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
-	const [activeBreadCrumb, setActiveBreadCrumb] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
 	const [configure, setConfigure] = useState(false);
 	const [selectedPlanData, setSelectedPlanData] = useState({});
-	const [fiatBreadCrumb, setFiatBreadCrumb] = useState(false);
 	const [showCloudPlanDetails, setShowCloudPlanDetails] = useState(false);
 
 	const planPriceData = priceData[selectedType];
@@ -442,18 +436,23 @@ const GeneralContent = ({
 	}, [dashToken]);
 
 	useEffect(() => {
-		if (exchangePlanType === 'item') {
-			setModalWidth('85rem');
-		} else if (exchangePlanType === 'fiat') {
-			setModalWidth('55rem');
-		} else if (exchangePlanType === 'method') {
-			setSelectedPayment('cryptoCurrency');
-			setModalWidth('65rem');
+		if (showCloudPlanDetails) {
+			setModalWidth('75rem');
 		} else {
-			setModalWidth('65rem');
+			if (exchangePlanType === 'item') {
+				setModalWidth('85rem');
+			} else if (exchangePlanType === 'fiat') {
+				setModalWidth('55rem');
+			} else if (exchangePlanType === 'method') {
+				setSelectedPayment('cryptoCurrency');
+				setModalWidth('65rem');
+			} else {
+				setModalWidth('65rem');
+			}
 		}
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [exchangePlanType]);
+	}, [exchangePlanType, showCloudPlanDetails]);
 
 	useEffect(() => {
 		const balanceAvailable = 0;
@@ -464,6 +463,15 @@ const GeneralContent = ({
 			setOptions(optionData);
 		}
 	}, [balance, selectedCrypto.coin]);
+
+	useEffect(() => {
+		if (selectedType === 'boost' || selectedType === 'diy') {
+			setExchangeCardKey('diy');
+		} else {
+			setExchangeCardKey('cloudExchange');
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [selectedType]);
 
 	const submitEnterprise = async (formProps) => {};
 
@@ -482,40 +490,38 @@ const GeneralContent = ({
 
 	const onHandleBreadcrumb = (name) => {
 		setIsMonthly(false);
-		if (activeBreadCrumb) {
-			if (
-				exchangePlanType !== 'item' &&
-				((exchangePlanType === 'method' && name === 'item') ||
-					(exchangePlanType === 'crypto' && name !== 'payment') ||
-					exchangePlanType === 'payment')
-			) {
-				setExchangePlanType(name);
-			}
 
-			if (name === 'item' || exchangePlanType === 'item') {
-				setExchangePlanType('item');
-				setSelectedPayment('');
-			}
-			setFiatBreadCrumb(false);
+		if (
+			exchangePlanType !== 'item' &&
+			((exchangePlanType === 'method' && name === 'item') ||
+				(exchangePlanType === 'crypto' && name !== 'payment') ||
+				exchangePlanType === 'payment')
+		) {
+			setExchangePlanType(name);
+		}
+
+		if (name === 'item' || exchangePlanType === 'item') {
+			setExchangePlanType('item');
+			setSelectedPayment('');
 		}
 	};
 
 	const OnHandleCancel = () => {
 		setOpenPlanModal(false);
-		setCloudPlanDetails(true);
 		setTransferCryptoPayment(false);
-		setShowCloudPlanDetails(false);
 		setShowPayAddress(false);
 		setFiatSubmission(false);
 		setSelectedPayment('');
+		setPaymentAddressDetails({});
 	};
 
 	const onHandleCloudPlans = () => {
 		if (exchangeCardKey === 'diy') {
 			setConfigure(true);
 		} else if (exchangeCardKey === 'cloudExchange') {
+			setOpenPlanModal(true);
+			setExchangePlanType('item');
 			setShowCloudPlanDetails(true);
-			setCloudPlanDetails(false);
 			setIsMonthly(false);
 		}
 	};
@@ -564,6 +570,7 @@ const GeneralContent = ({
 						case 'crypto':
 							if (res.method === 'xht' && res.is_paid) {
 								setExchangePlanType('xhtPayment');
+								setPaymentAddressDetails(res);
 							} else if (res.method === 'xht' && !res.is_paid) {
 								setExchangePlanType('xhtInSufficient');
 							} else {
@@ -704,7 +711,6 @@ const GeneralContent = ({
 				},
 				() => setExchangePlanType('method')
 			);
-			setActiveBreadCrumb(true);
 		}
 	};
 
@@ -730,11 +736,10 @@ const GeneralContent = ({
 									: ''
 							}
 						>
-							{fiatBreadCrumb
-								? name.charAt(0).toUpperCase() + name.slice(1)
-								: name === 'crypto'
+							{name === 'crypto'
 								? selectedPayment === 'cryptoCurrency' &&
-								  exchangePlanType === 'crypto' &&
+								  (exchangePlanType === 'crypto' ||
+										exchangePlanType === 'payment') &&
 								  'Crypto'
 								: name.charAt(0).toUpperCase() + name.slice(1)}
 						</Breadcrumb.Item>
@@ -744,30 +749,8 @@ const GeneralContent = ({
 		);
 	};
 
-	useEffect(() => {
-		if (selectedType === 'boost' || selectedType === 'diy') {
-			setExchangeCardKey('diy');
-		} else {
-			setExchangeCardKey('cloudExchange');
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedType]);
-
 	const handleOpenModal = () => {
-		if (
-			(dashExchange.plan === 'boost' || dashExchange.plan === 'diy') &&
-			dashExchange.type === 'Cloud'
-		) {
-			setSelectedType('basic');
-		} else if (dashExchange.type === 'DIY' && dashExchange.plan === 'boost') {
-			setSelectedType('boost');
-		} else if (dashExchange.type === 'DIY') {
-			setSelectedType('diy');
-			setSelectedPlanData(diyPlanData);
-		} else {
-			setSelectedType(dashExchange?.plan);
-			setSelectedPlanData(planData);
-		}
+		setShowCloudPlanDetails(false);
 		setExchangePlanType('item');
 		setOpenPlanModal(true);
 	};
@@ -787,12 +770,6 @@ const GeneralContent = ({
 				onHandleCloudPlans();
 			}
 
-			if (values.configure !== 'diy' && exchangeCardKey === 'diy') {
-				setShowCloudPlanDetails(true);
-				setCloudPlanDetails(false);
-				setIsMonthly(false);
-			}
-
 			if (values.configure === 'diy') {
 				setSelectedPlanData(diyPlanData);
 			} else {
@@ -808,132 +785,149 @@ const GeneralContent = ({
 			dashExchange.is_paid && moment().isBefore(moment(dashExchange.expiry));
 		return (
 			<div className="mt-5 card-boder">
-				<div className={`card-design-${selectedType}`} />
-				<div
-					className="card-wrapper"
-					style={{
-						backgroundImage: `url(${
-							selectedType === 'basic'
-								? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
-								: selectedType === 'crypto'
-								? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
-								: selectedType === 'fiat'
-								? STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
-								: ''
-						})`,
-					}}
-				>
-					<div className={`d-flex ${selectedType}-content-wrapper w-100`}>
-						<ReactSVG
-							src={`${
-								selectedType === 'basic'
-									? STATIC_ICONS['CLOUD_PLAN_BASIC']
-									: selectedType === 'crypto'
-									? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
-									: selectedType === 'fiat'
-									? STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
-									: selectedType === 'diy'
-									? STATIC_ICONS['DIY_ICON']
-									: STATIC_ICONS['DIY_FIRE_MAN_ICON']
-							}`}
-							className={
-								selectedType === 'diy' || selectedType === 'boost'
-									? 'diy-background'
-									: 'cloud-background'
-							}
-						/>
+				{isEmpty(dashExchange) ? (
+					<Empty
+						image={Empty.PRESENTED_IMAGE_SIMPLE}
+						imageStyle={{ height: 60 }}
+					/>
+				) : (
+					<>
+						<div className={`card-design-${selectedType}`} />
+						<div
+							className="card-wrapper"
+							style={{
+								backgroundImage: `url(${
+									selectedType === 'basic'
+										? STATIC_ICONS['CLOUD_BASIC_BACKGROUND']
+										: selectedType === 'crypto'
+										? STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND']
+										: selectedType === 'fiat'
+										? STATIC_ICONS['CLOUD_FIAT_BACKGROUND']
+										: ''
+								})`,
+							}}
+						>
+							<div className={`d-flex ${selectedType}-content-wrapper w-100`}>
+								<ReactSVG
+									src={`${
+										selectedType === 'basic'
+											? STATIC_ICONS['CLOUD_PLAN_BASIC']
+											: selectedType === 'crypto'
+											? STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO']
+											: selectedType === 'fiat'
+											? STATIC_ICONS['CLOUD_PLAN_FIAT_RAMP']
+											: selectedType === 'diy'
+											? STATIC_ICONS['DIY_ICON']
+											: STATIC_ICONS['DIY_FIRE_MAN_ICON']
+									}`}
+									className={
+										selectedType === 'diy' || selectedType === 'boost'
+											? 'diy-background'
+											: 'cloud-background'
+									}
+								/>
 
-						<div className="payment-text">
-							<div className="justify-between">
-								<div className="d-flex">
-									{exchangeCardKey !== 'diy' && (
-										<p className="white-text">Cloud: </p>
-									)}
+								<div className="payment-text">
+									<div className="justify-between">
+										<div className="d-flex">
+											{exchangeCardKey !== 'diy' && (
+												<p className="white-text">Cloud: </p>
+											)}
+											<p
+												className={
+													exchangeCardKey === 'diy' ? 'diy-type' : 'cloud-type'
+												}
+											>
+												{selectedType === 'diy'
+													? 'Do-It-Yourself'
+													: selectedType}
+											</p>
+										</div>
+
+										<div
+											className={`configure-wrapper ${
+												isPaid ? 'pointer-none' : ''
+											}`}
+											onClick={() => setConfigure(true)}
+										>
+											<p>Configure Plan</p>
+											<ReactSVG
+												src={STATIC_ICONS['SETTINGS']}
+												className="setting-icon"
+											/>
+										</div>
+									</div>
 									<p
-										className={
-											exchangeCardKey === 'diy' ? 'diy-type' : 'cloud-type'
-										}
+										className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}
 									>
-										{selectedType === 'diy' ? 'Do-It-Yourself' : selectedType}
+										{selectedPlanData[selectedType]?.description}
 									</p>
 								</div>
-
-								<div
-									className={`configure-wrapper ${
-										isPaid ? 'pointer-none' : ''
-									}`}
-									onClick={() => setConfigure(true)}
+							</div>
+						</div>
+						<div className={`button-container ${!isPaid ? 'pay-button' : ''}`}>
+							<Fragment>
+								{isPaid && (
+									<div className="anchor" onClick={handleClickScroll}>
+										View last bill
+									</div>
+								)}
+								<Button
+									type="primary"
+									onClick={() => handleOpenModal()}
+									className={`m-2 ${isPaid ? 'paid-btn pointer-none' : ''}`}
+									shape="round"
 								>
-									<p>Configure Plan</p>
-									<ReactSVG
-										src={STATIC_ICONS['SETTINGS']}
-										className="setting-icon"
-									/>
+									{isPaid && <CheckCircleFilled />}
+									{isPaid
+										? 'paid'
+										: exchangeCardKey === 'diy'
+										? 'Boost'
+										: 'Pay'}
+								</Button>
+							</Fragment>
+						</div>
+						<Modal
+							visible={configure}
+							onCancel={() => setConfigure(false)}
+							zIndex={1000}
+							width="420px"
+							footer={null}
+							className={'configure-modal'}
+						>
+							<div className="configure-modal-container">
+								<h4>Configure Plan</h4>
+								<div>
+									<Form
+										onFinish={onHandleConfig}
+										initialValues={{
+											configure:
+												dashExchange?.type?.toLowerCase() === 'diy'
+													? 'diy'
+													: 'cloudExchange',
+										}}
+									>
+										<Form.Item name="configure">
+											<Radio.Group className="my-3" value={exchangeCardKey}>
+												{configureTypes.map((config) => {
+													return (
+														<Radio key={config.value} value={config.value}>
+															{config.name}
+														</Radio>
+													);
+												})}
+											</Radio.Group>
+										</Form.Item>
+
+										<Button type="primary" htmlType="submit">
+											Proceed
+										</Button>
+									</Form>
 								</div>
 							</div>
-							<p className={selectedType ? 'basic-plan' : 'crypto-fiat-plan'}>
-								{selectedPlanData[selectedType]?.description}
-							</p>
-						</div>
-					</div>
-				</div>
-				<div className={`button-container ${!isPaid ? 'pay-button' : ''}`}>
-					<Fragment>
-						{isPaid && (
-							<div className="anchor" onClick={handleClickScroll}>
-								View last bill
-							</div>
-						)}
-						<Button
-							type="primary"
-							onClick={() => handleOpenModal()}
-							className={`m-2 ${isPaid ? 'paid-btn pointer-none' : ''}`}
-							shape="round"
-						>
-							{isPaid && <CheckCircleFilled />}
-							{isPaid ? 'paid' : exchangeCardKey === 'diy' ? 'Boost' : 'Pay'}
-						</Button>
-					</Fragment>
-				</div>
-				<Modal
-					visible={configure}
-					onCancel={() => setConfigure(false)}
-					zIndex={1000}
-					width="420px"
-					footer={null}
-					className={'configure-modal'}
-				>
-					<div className="configure-modal-container">
-						<h4>Configure Plan</h4>
-						<div>
-							<Form
-								onFinish={onHandleConfig}
-								initialValues={{
-									configure:
-										dashExchange?.type?.toLowerCase() === 'diy'
-											? 'diy'
-											: 'cloudExchange',
-								}}
-							>
-								<Form.Item name="configure">
-									<Radio.Group className="my-3" value={exchangeCardKey}>
-										{configureTypes.map((config) => {
-											return (
-												<Radio key={config.value} value={config.value}>
-													{config.name}
-												</Radio>
-											);
-										})}
-									</Radio.Group>
-								</Form.Item>
-
-								<Button type="primary" htmlType="submit">
-									Proceed
-								</Button>
-							</Form>
-						</div>
-					</div>
-				</Modal>
+						</Modal>
+					</>
+				)}
 			</div>
 		);
 	};
@@ -951,11 +945,6 @@ const GeneralContent = ({
 			return true;
 		}
 		return false;
-	};
-
-	const onHandleChange = (item) => {
-		setCryptoPaymentType(item.value);
-		setTransferCryptoPayment(true);
 	};
 
 	const onHandleSelectedType = (type) => {
@@ -1029,7 +1018,7 @@ const GeneralContent = ({
 												onHandleSelectedType={onHandleSelectedType}
 												priceData={priceData}
 												isMonthly={isMonthly}
-												cloudPlanDetails={cloudPlanDetails}
+												cloudPlanDetails={showCloudPlanDetails}
 												key={inx}
 											/>
 										);
@@ -1092,6 +1081,7 @@ const GeneralContent = ({
 												value={opt.method}
 												disabled={checkDisabled(opt.method)}
 												onChange={() => setSelectedPayment(opt.method)}
+												key={inx}
 											>
 												{opt.method === 'cryptoCurrency' ? (
 													<>
@@ -1131,6 +1121,7 @@ const GeneralContent = ({
 													onChange={() => setSelectedCrypto(item)}
 													name={item.coin}
 													value={item.coin}
+													key={inx}
 												>
 													{item.coin === 'XHT' ? (
 														<>
@@ -1168,12 +1159,11 @@ const GeneralContent = ({
 								<h5>Select how to pay:</h5>
 								{paymentOptions.map((item) => (
 									<Select
-										onChange={() => onHandleChange(item)}
+										onChange={() => setTransferCryptoPayment(true)}
 										placeholder="Select payment method"
+										key={item.key}
 									>
-										<Option value={item.key} key={item.key}>
-											{item.value}
-										</Option>
+										<Option value={item.key}>{item.value}</Option>
 									</Select>
 								))}
 							</div>
@@ -1304,64 +1294,54 @@ const GeneralContent = ({
 
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
-			if (selectedType === 'fiat') {
-				setFiatBreadCrumb(true);
-			}
 			if (selectedType === 'fiat' && isFiatFormCompleted) {
 				setModalWidth('85rem');
 				setFiatSubmission(true);
 			} else {
 				storePlanType();
-				setFiatBreadCrumb(false);
-				if (selectedType === 'fiat') {
-					setFiatBreadCrumb(true);
-				}
 			}
 		} else if (exchangePlanType === 'method') {
 			if (selectedPayment !== 'cryptoCurrency') {
 				storePaymentMethod();
 			} else {
 				setExchangePlanType('crypto');
-				setFiatBreadCrumb(false);
 			}
 		} else if (exchangePlanType === 'crypto') {
 			storePaymentMethod();
-			setFiatBreadCrumb(false);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
-			setFiatBreadCrumb(false);
 		}
-		setActiveBreadCrumb(true);
 	};
 
 	const handleBack = () => {
 		setFiatSubmission(false);
-		setFiatBreadCrumb(false);
-		setShowCloudPlanDetails(false);
-		setCloudPlanDetails(true);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 		} else if (exchangePlanType === 'method') {
 			setExchangePlanType('item');
 			setIsMonthly(!isMonthly);
-			setPaymentAddressDetails({ address: '', amount: 0, currency: '' });
+			setPaymentAddressDetails({});
 		} else if (exchangePlanType === 'crypto') {
 			setExchangePlanType('method');
 			setSelectedCrypto({ coin: 'XHT', symbol: 'xht' });
 		} else if (exchangePlanType === 'payment') {
 			setExchangePlanType('crypto');
+			setTransferCryptoPayment(false);
+			setShowPayAddress(false);
 		}
 	};
 
 	const renderBtn = () => {
 		return (
 			<div
-				className={cloudPlanDetails ? 'payment-button' : 'cloud-plan-button'}
+				className={
+					showCloudPlanDetails ? 'cloud-plan-button' : 'payment-button'
+				}
 			>
 				<Button block type="primary" onClick={handleBack}>
 					Back
 				</Button>
-				{cloudPlanDetails && (
+				{!showCloudPlanDetails && (
 					<Button
 						block
 						type="primary"
@@ -1411,18 +1391,28 @@ const GeneralContent = ({
 				<div className="ml-4 header-content">
 					<p className="description-header">Payment for Plans</p>
 					<div className="d-flex description-content">
-						<div>
-							Below is current your plan. Get more view details on the available
-						</div>
-						<div className="cloud-plans mx-1" onClick={onHandleCloudPlans}>
-							cloud plans.
-						</div>
+						{isEmpty(dashExchange) ? (
+							<div>Currently no plans available </div>
+						) : (
+							<>
+								<div>
+									Below is current your plan. Get more view details on the
+									available
+								</div>
+								<div
+									className={`cloud-plans mx-1 }`}
+									onClick={() => onHandleCloudPlans()}
+								>
+									cloud plans.
+								</div>
+							</>
+						)}
 					</div>
 				</div>
 			</div>
 			{renderCard()}
 			<Modal
-				visible={OpenPlanModal || showCloudPlanDetails}
+				visible={OpenPlanModal}
 				className="bg-model blue-admin-billing-model"
 				width={modalWidth}
 				zIndex={1000}
@@ -1463,12 +1453,10 @@ const mapStateToProps = (store) => ({
 	selectedType: store.admin.selectedType,
 	exchangePlanType: store.admin.exchangePlanType,
 	selectedCrypto: store.admin.selectedCrypto,
-	isAutomatedKYC: store.admin.isAutomatedKYC,
 	transferCryptoPayment: store.admin.transferCryptoPayment,
 	fiatSubmission: store.admin.fiatSubmission,
 	paymentAddressDetails: store.admin.paymentAddressDetails,
 	exchangeCardKey: store.admin.exchangeCardKey,
-	cloudPlanDetails: store.admin.cloudPlanDetails,
 });
 
 export default connect(mapStateToProps, {
@@ -1480,5 +1468,4 @@ export default connect(mapStateToProps, {
 	setFiatSubmission,
 	setPaymentAddressDetails,
 	setExchangeCardKey,
-	setCloudPlanDetails,
 })(GeneralContent);
