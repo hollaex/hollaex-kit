@@ -16,11 +16,18 @@ const PlanStructure = ({
 	setSelectedType,
 	className,
 	onHandleSelectedType,
+	cloudPlanDetails,
 }) => {
 	let currentPlan = planData[type];
 
 	return (
-		<div className={`${className} plan-container`}>
+		<div
+			className={
+				cloudPlanDetails
+					? `${className} plan-container`
+					: 'cloud-plan-container cloud-container'
+			}
+		>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
 					{type === 'crypto' ? 'MOST POPULAR' : ''}
@@ -131,22 +138,24 @@ const PlanStructure = ({
 							</div>
 						)}
 					</div>
-					<div
-						className="radio-container"
-						onClick={() => onHandleSelectedType(type)}
-					>
-						{selectedType === type ? (
-							<div>
-								<CheckOutlined className={'selected-plan'} />
-								<div className="selected-status">SELECTED</div>
-							</div>
-						) : (
-							<div>
-								<div className="de-select-status"></div>
-								<div className="de-select-status-txt">Select</div>
-							</div>
-						)}
-					</div>
+					{cloudPlanDetails && (
+						<div
+							className="radio-container"
+							onClick={() => onHandleSelectedType(type)}
+						>
+							{selectedType === type ? (
+								<div>
+									<CheckOutlined className={'selected-plan'} />
+									<div className="selected-status">SELECTED</div>
+								</div>
+							) : (
+								<div>
+									<div className="de-select-status"></div>
+									<div className="de-select-status-txt">Select</div>
+								</div>
+							)}
+						</div>
+					)}
 				</div>
 			</div>
 		</div>

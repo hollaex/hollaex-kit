@@ -7,13 +7,14 @@ import {
 	SET_TRANSFER_CRYPTO_PAYMENT,
 	SET_FIAT_SUBMITTED,
 	SET_PAYMENT_ADDRESS_DETAILS,
-	SET_SELECTED_CONFIG,
-	SET_EXCHANGE,
+	SET_DASH_EXCHANGE,
+	SET_EXCHANGE_CARD_KEY,
+	SET_CLOUD_PLAN_DETAILS,
 } from 'actions/adminBillingActions';
 
 const INITIAL_STATE = {
-	selectedPayment: 'cryptoCurrency',
-	selectedType: 'crypto',
+	selectedPayment: '',
+	selectedType: 'diy',
 	exchangePlanType: 'item',
 	selectedCrypto: { coin: 'XHT', symbol: 'xht' },
 	cryptoPaymentType: '',
@@ -25,8 +26,9 @@ const INITIAL_STATE = {
 		amount: 0,
 		currency: '',
 	},
-	selectedConfig: 'cloudExchange',
-	exchange: {},
+	dashExchange: {},
+	exchangeCardKey: 'diy',
+	cloudPlanDetails: true,
 };
 
 export default (state = INITIAL_STATE, { type, payload }) => {
@@ -47,10 +49,14 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, fiatSubmission: payload };
 		case SET_PAYMENT_ADDRESS_DETAILS:
 			return { ...state, paymentAddressDetails: payload };
-		case SET_SELECTED_CONFIG:
-			return { ...state, selectedConfig: payload };
-		case SET_EXCHANGE:
-			return { ...state, exchange: payload };
+		case SET_EXCHANGE_CARD_KEY:
+			return { ...state, exchangeCardKey: payload };
+		case SET_CLOUD_PLAN_DETAILS: {
+			return { ...state, cloudPlanDetails: payload };
+		}
+		case SET_DASH_EXCHANGE: {
+			return { ...state, dashExchange: payload };
+		}
 		default:
 			return state;
 	}

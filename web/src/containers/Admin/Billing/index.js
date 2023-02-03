@@ -8,7 +8,7 @@ import { setDashExchange } from 'actions/adminBillingActions';
 const TabPane = Tabs.TabPane;
 
 const Billing = (props) => {
-	const { exchange, user, setDashExchange } = props;
+	const { dashExchange, user, setDashExchange } = props;
 
 	useEffect(() => {
 		getExchange();
@@ -22,13 +22,14 @@ const Billing = (props) => {
 	const putExchange = async (type = 'Cloud') => {
 		try {
 			const exchangeBody = {
-				id: exchange.id,
+				id: dashExchange.id,
 				info: {
 					tech: { SERVER_TYPE: type },
 				},
 				type,
 			};
 			await putDashExchange(exchangeBody);
+			await getExchange();
 		} catch (error) {
 			if (error.data && error.data.message) {
 				message.error(error.data.message);
@@ -43,7 +44,7 @@ const Billing = (props) => {
 			<Tabs defaultActiveKey="0">
 				<TabPane tab="Plans" key="0">
 					<GeneralContent
-						exchange={exchange}
+						dashExchange={dashExchange}
 						user={user}
 						putExchange={putExchange}
 					/>
@@ -55,7 +56,7 @@ const Billing = (props) => {
 
 const mapStateToProps = (state) => {
 	return {
-		exchange: state.admin.exchange,
+		dashExchange: state.admin.dashExchange,
 		user: state.user,
 	};
 };

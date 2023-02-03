@@ -10,7 +10,6 @@ const TabController = ({
 	titleIcon,
 	iconId,
 	quicktrade,
-	handleExpand,
 }) => (
 	<div className="tab_controller-wrapper">
 		{(title || titleIcon) && (
@@ -35,7 +34,6 @@ const TabController = ({
 				if (setActiveTab) {
 					tabProps.onClick = () => {
 						setActiveTab(index);
-						handleExpand('', false);
 					};
 				}
 
@@ -47,6 +45,5 @@ const TabController = ({
 
 TabController.defaultProps = {
 	tabs: [],
-	handleExpand: () => {},
 };
 export default TabController;

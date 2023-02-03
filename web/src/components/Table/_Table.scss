@@ -18,25 +18,19 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		background-color: var(--base_secondary-navigation-bar);
 	}
 
-	.sub-tr-bg-white {
-		background-color: #e4e3e3;
-		border-bottom: 1px solid #c3c3c3 !important;
-		opacity: 0.75;
-	}
-
 	.anchor {
 		color: #5d63ff;
 		text-decoration: underline;
 		cursor: pointer;
 	}
 
-	.sub-tr-bg {
-		background: #383a3e;
+	.expandable-row-bg {
+		background: var(--calculated_secondary-border-1) !important;
 		opacity: 0.75;
-		border-bottom: 1px solid #4b4d51 !important;
+		border-bottom: 1px solid var(--calculated_secondary-border-1) !important;
 	}
 
-	.sub-tr {
+	.expandable-row {
 		height: 7rem;
 		border-bottom: 1px solid #4b4d51;
 		td {

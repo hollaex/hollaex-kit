@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import { connect } from 'react-redux';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import classnames from 'classnames';
 
@@ -31,9 +30,7 @@ class TableRow extends Component {
 		const {
 			expandable: { rowExpandable },
 			row,
-			handleExpand,
 		} = this.props;
-		handleExpand(row.order_id, true);
 		const isExpandable = rowExpandable(row);
 		if (isExpandable) {
 			this.setIsExpanded();
@@ -47,21 +44,17 @@ class TableRow extends Component {
 			row,
 			rowIndex,
 			headers,
-			activeTheme,
 		} = this.props;
 		const { isExpanded } = this.state;
 		const isRemoveData = cancelDelayData.filter((data) => data === row.id);
 		const isExpandable = rowExpandable(row);
-		//TODO: hard-coded colors
-		const subTrClsName =
-			activeTheme === 'white' ? 'sub-tr-bg-white' : 'sub-tr-bg';
 
 		return (
 			<Fragment>
 				<tr
 					className={classnames(
 						'table_body-row',
-						`${isExpandable && isExpanded ? subTrClsName : ''}`,
+						`${isExpandable && isExpanded ? 'expandable-row-bg' : ''}`,
 						{
 							'cancel-row-color': !!isRemoveData.length,
 							pointer: isExpandable,
@@ -76,7 +69,7 @@ class TableRow extends Component {
 				</tr>
 				{isExpandable && isExpanded && (
 					<tr
-						className={`sub-tr ${subTrClsName}`}
+						className={`expandable-row expandable-row-bg`}
 						key={`expandable_row_${rowIndex}`}
 					>
 						<td colSpan={headers.length}>
@@ -97,8 +90,6 @@ const TableBody = ({
 	expandable,
 	cssTransitionClassName,
 	rowKey,
-	handleExpand,
-	activeTheme,
 }) => (
 	<tbody
 		className={classnames('table_body-wrapper', {
@@ -121,7 +112,6 @@ const TableBody = ({
 								expandable={expandable}
 								row={row}
 								rowIndex={index}
-								activeTheme={activeTheme}
 							/>
 						</CSSTransition>
 					);
@@ -137,8 +127,6 @@ const TableBody = ({
 						expandable={expandable}
 						row={row}
 						rowIndex={rowIndex}
-						handleExpand={handleExpand}
-						activeTheme={activeTheme}
 					/>
 				))}
 			</Fragment>
@@ -146,15 +134,4 @@ const TableBody = ({
 	</tbody>
 );
 
-const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
-});
-
-TableBody.defaultProps = {
-	handleExpand: () => {},
-};
-TableRow.defaultProps = {
-	handleExpand: () => {},
-};
-
-export default connect(mapStateToProps)(TableBody);
+export default TableBody;

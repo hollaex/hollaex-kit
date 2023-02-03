@@ -21,16 +21,21 @@ const DIYPlanStructure = ({
 }) => {
 	let currentPlan = planData[type];
 
-	console.log('iscamediyplan', className, type);
-
 	return (
-		<div className={`diy-plan-container`}>
+		<div className={`${className} diy-plan-container`}>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
 					{type === 'boost' ? 'MOST POPULAR' : ''}
 				</div>
 				<div className="header-wrapper">
-					<ReactSVG src={STATIC_ICONS['DIY_ICON']} className="diy-image" />
+					<ReactSVG
+						src={`${
+							type === 'diy'
+								? STATIC_ICONS['DIY_ICON']
+								: STATIC_ICONS['DIY_FIRE_MAN_ICON']
+						}`}
+						className="diy-image"
+					/>
 					<div>
 						<h2>{currentPlan?.title}</h2>
 						<h6>{currentPlan.description}</h6>
@@ -111,24 +116,17 @@ const DIYPlanStructure = ({
 					) : null}
 				</div>
 				<div className="amount-wrapper">
-					<div className={`amount-container`}>
-						{type === 'diy' ? (
-							<div>
-								<p className="dollor-size">Free</p>
-							</div>
-						) : isMonthly ? (
-							<div>
-								<p className="dollor-size">
-									${_get(priceData[type], 'month.price')}
-								</p>
-								<p>per month</p>
-							</div>
-						) : (
+					<div className="amount-container">
+						{type === 'boost' ? (
 							<div>
 								<p className="dollor-size">
 									${_get(priceData[type], 'year.price')}
 								</p>
 								<p>per year</p>
+							</div>
+						) : (
+							<div>
+								<p className="dollor-size">Free</p>
 							</div>
 						)}
 					</div>

@@ -5,6 +5,7 @@ const icons = {
 	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
 	SETTINGS_ICON: '/assets/images/settings-icon.png',
 	DIY_ICON: '/assets/images/diy-icon.svg',
+	DIY_FIRE_MAN_ICON: '/assets/images/diy-boost-man-on-fire.svg',
 	CLOUD_PLAN_BASIC: '/assets/images/cloud-plan-basic.svg',
 	CLOUD_PLAN_FIAT_RAMP: '/assets/images/cloud-plan-fiat-ramp.svg',
 	CLOUD_PLAN_CRYPTO_PRO: '/assets/images/cloud-plan-crypto-pro.svg',
