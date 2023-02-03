@@ -103,6 +103,10 @@ p {
 			.setting-icon {
 				width: 15px;
 				height: 15px;
+
+				.b {
+					fill: var(--admin_panel_content_background);
+				}
 			}
 
 			p {
@@ -151,6 +155,9 @@ p {
 			width: 6rem !important;
 			font-weight: bold;
 			font-size: 13px !important;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 		button:focus {
@@ -305,12 +312,11 @@ p {
 
 .billing-filter {
 	.ant-input-search {
-		input {
-			background: #1c661c;
+		background-color: var(--admin_panel_input);
+		.ant-input {
+			background-color: var(--admin_panel_input);
+			color: white;
 		}
-	}
-
-	.search-active {
 		.ant-input-search-icon {
 			color: white;
 		}
