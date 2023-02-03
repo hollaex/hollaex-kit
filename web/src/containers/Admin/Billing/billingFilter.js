@@ -15,7 +15,7 @@ const BillingFilter = () => {
 			<DatePicker className="mr-3" placeholder="End Date" />
 			<Search
 				placeholder=""
-				style={{ width: 200, background: '#1c661c' }}
+				style={{ width: 200 }}
 				onChange={(e) => setSearchInput(e.target.value)}
 				className={`mr-3 ${searchInput.length ? 'search-active' : ''}`}
 			/>
