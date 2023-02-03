@@ -107,10 +107,7 @@
 	},
 	"QR_CODE": {
 		"SCAN": "Scan QR code",
-		"SHOW": "Show QR",
-		"NO_RESULT": "No result",
-		"NOT_FOUND": "Not Found",
-		"PERMISSION_DENIED": "Permission Denied"
+		"SHOW": "Show QR"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Login to {0}",
@@ -199,7 +196,9 @@
 		"FOOTER_TEXT": "Quick trade fees use market taker rates",
 		"FOOTER_TEXT_1": "Sourced from",
 		"GO_TO_TEXT": "Go to",
-		"SOURCE_TEXT": "Broker OTC deal"
+		"SOURCE_TEXT": "Broker OTC deal",
+		"VISIT": "Visit{0}",
+		"ASSET_INFO_PAGE": "Assets info page"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -547,10 +546,7 @@
 		"TEXT_DOWNLOAD": "DOWNLOAD HISTORY",
 		"TRADES": "Trades",
 		"DEPOSITS": "Deposits",
-		"WITHDRAWALS": "Withdrawals",
-		"ORDERID": "Order ID",
-		"TRIGGER_STOP_PRICE": "Trigger/stop price",
-		"TIME_OF_LAST_TRADE": "Time of last trade"
+		"WITHDRAWALS": "Withdrawals"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
@@ -827,8 +823,6 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
-	"TIME_OPEN": "Time of Opening ",
-	"TIME_CLOSE": "Time Closed",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
@@ -1166,11 +1160,7 @@
 		"INFO_TEXT": "Refer your friends by giving out this link and receive benefits by onboarding other people.",
 		"COPY_FIELD_LABEL": "Share the link below with friends and earn commissions:",
 		"REFERRED_USER_COUT": "You have referred {0} users",
-		"COPY_LINK_BUTTON": "COPY REFERRAL LINK",
-		"VIEW": "view",
-		"TABLE_TITLE": "All successful referrals",
-		"USER": "User / email",
-		"TIME": "Time of sign up"
+		"COPY_LINK_BUTTON": "COPY REFERRAL LINK"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "To start trading you must login",
@@ -1241,7 +1231,7 @@
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
-		"WHITE_LABEL": "white-lable",
+		"WHITE_LABEL": "white-label",
 		"SOLUTION": "solution",
 		"VISIT_COIN_INFO_PAGE": "Visit coin info page {0}",
 		"HERE": "here"
@@ -1382,7 +1372,7 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICKTRADE",
+		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source"
@@ -1405,6 +1395,7 @@
 		"VIEW": "View more",
 		"VIEW_ACTIVITY": "View activity on blockchain",
 		"COMING_SOON": "Coming Soon...",
+		"NO_DESCRIPTION": "No description for this asset yet. Coming soon!",
 		"STAKE": "Stake",
 		"QUICK_BUY": "Quick buy",
 		"MORE": "More",
@@ -1420,9 +1411,5 @@
 		"ACCORDIAN_ASSETS": "All wallet assets",
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
 		"ACCORDIAN_HISTORY": "HISTORY"
-	},
-	"ASYNC_LINK": {
-		"TITLE": "Page not opening automatically?",
-		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
 	}
 }

@@ -419,6 +419,7 @@ const GeneralContent = ({
 			setSelectedPlanData(diyPlanData);
 			setSelectedType('diy');
 		}
+		// eslint-disable-next-line
 	}, [dashExchange]);
 
 	useEffect(() => {
@@ -435,6 +436,7 @@ const GeneralContent = ({
 		} else if (exchangePlanType === 'method') {
 			setSelectedPayment('cryptoCurrency');
 		}
+		// eslint-disable-next-line
 	}, [exchangePlanType]);
 
 	useEffect(() => {

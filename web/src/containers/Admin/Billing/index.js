@@ -12,6 +12,7 @@ const Billing = (props) => {
 
 	useEffect(() => {
 		getExchange();
+		// eslint-disable-next-line
 	}, []);
 
 	const getExchange = async () => {
