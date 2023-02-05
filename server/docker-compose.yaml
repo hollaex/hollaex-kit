@@ -27,6 +27,7 @@ services:
       - 10010:10010
       - 10011:10011
       - 10012:10012
+      - 10013:10013
     build:
       context: .
       dockerfile: ./tools/Dockerfile.pm2
@@ -52,6 +53,7 @@ services:
       - ./tools:/app/tools
       - ./utils:/app/utils
       - ./init.js:/app/init.js
+      - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
       - hollaex-kit-db
       - hollaex-kit-redis

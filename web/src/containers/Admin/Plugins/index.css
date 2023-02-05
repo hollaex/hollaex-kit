@@ -462,3 +462,20 @@
 .plugin-list-container .plugin-list .plugin-list-item .premium-plugin {
 	color: #ff8000;
 }
+
+.w-85 {
+	width: 85%;
+}
+
+.w-48 {
+	width: 48% !important;
+}
+
+.Spinner-wrapper svg {
+	color: #ffffff;
+	font-size: 28px;
+}
+
+.spinner-container {
+	padding-right: 1.25rem;
+}

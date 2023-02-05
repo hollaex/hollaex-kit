@@ -1920,7 +1920,8 @@ table th {
 .review-wrapper .review-crypto-mail {
   font-size: 1.8rem;
   border: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-  padding: 1.5rem 12rem; }
+  padding: 1.5rem 12rem;
+  word-break: break-all; }
   .review-wrapper .review-crypto-mail .review-fee_message {
     font-size: 1.1rem; }
 
@@ -8291,6 +8292,10 @@ table th {
     padding-bottom: 0; }
   .dumb-field-wrapper .address-line {
     word-break: break-all; }
+    .dumb-field-wrapper .address-line.single-action {
+      padding-right: 4rem; }
+    .dumb-field-wrapper .address-line.multi-action {
+      padding-right: 6rem; }
   .dumb-field-wrapper .copy-wrapper {
     top: 0;
     position: unset; }
@@ -9598,22 +9603,18 @@ table th {
     height: 2rem; }
   .table-wrapper tr:hover {
     background-color: var(--base_secondary-navigation-bar); }
-  .table-wrapper .sub-tr-bg-white {
-    background-color: #e4e3e3;
-    border-bottom: 1px solid #c3c3c3 !important;
-    opacity: 0.75; }
   .table-wrapper .anchor {
     color: #5d63ff;
     text-decoration: underline;
     cursor: pointer; }
-  .table-wrapper .sub-tr-bg {
-    background: #383a3e;
+  .table-wrapper .expandable-row-bg {
+    background: var(--calculated_secondary-border-1) !important;
     opacity: 0.75;
-    border-bottom: 1px solid #4b4d51 !important; }
-  .table-wrapper .sub-tr {
+    border-bottom: 1px solid var(--calculated_secondary-border-1) !important; }
+  .table-wrapper .expandable-row {
     height: 7rem;
     border-bottom: 1px solid #4b4d51; }
-    .table-wrapper .sub-tr td {
+    .table-wrapper .expandable-row td {
       padding: 1rem;
       vertical-align: top; }
   .table-wrapper .time-wrapper {
@@ -11568,12 +11569,6 @@ table th {
 .help-tooltip .ant-tooltip-inner {
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
-
-button.html5-qrcode-element {
-  background-color: var(--specials_buttons-links-and-highlights); }
-
-a.html5-qrcode-element {
-  color: var(--labels_important-active-labels-text-graphics) !important; }
 
 html {
   font-size: 12px !important;
