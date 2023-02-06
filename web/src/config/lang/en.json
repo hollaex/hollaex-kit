@@ -106,7 +106,7 @@
 		"QR_CODE_TITLE": "{0} Deposit Information"
 	},
 	"QR_CODE": {
-		"SCAN": "Scan QR code",
+		"SCAN": "Scan",
 		"SHOW": "Show QR",
 		"NO_RESULT": "No result",
 		"NOT_FOUND": "Not Found",
@@ -1350,7 +1350,7 @@
 		"BACK_TO_WALLET": "to my wallet",
 		"BACK": "Back",
 		"ESTIMATED_TOTAL": "Estimated total dust value",
-		"CONVERT_ALL": "convert all",
+		"CONVERT_ALL": "convert",
 		"NO_DUST": "No dust assets!",
 		"SECTION": {
 			"TITLE": "Convert wallet dust",

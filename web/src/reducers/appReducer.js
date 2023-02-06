@@ -35,6 +35,7 @@ import {
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
 	SET_CONTRACTS,
+	SET_ALL_CONTRACTS,
 	CHANGE_PAIR,
 	SET_ACTIVE_ORDERS_MARKET,
 	SET_RECENT_TRADES_MARKETS,
@@ -179,6 +180,7 @@ const INITIAL_STATE = {
 	injected_html: {},
 	plugins_injected_html: {},
 	contracts: {},
+	allContracts: {},
 	tradeTab: 0,
 	broker: {},
 	user_payments: {},
@@ -624,6 +626,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				contracts: payload,
+			};
+		}
+		case SET_ALL_CONTRACTS: {
+			return {
+				...state,
+				allContracts: payload,
 			};
 		}
 		case SET_TRADE_TAB: {

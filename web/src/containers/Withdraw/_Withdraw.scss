@@ -53,6 +53,8 @@ $content--margin: 2rem;
 		font-size: $font-size-subhead2;
 		border: 1px solid $colors-deactivate-color2;
 		padding: 1.5rem 12rem;
+		word-break: break-all;
+
 		.review-fee_message {
 			font-size: $font-size-main;
 		}

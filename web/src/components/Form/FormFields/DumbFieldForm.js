@@ -63,7 +63,15 @@ const DumbField = ({
 			<div className="d-flex justify-content-between">
 				{copyOnClick ? (
 					<CopyToClipboard text={value}>
-						<div className="pointer address-line" onClick={onCopy}>
+						<div
+							className={classnames(
+								'pointer',
+								'address-line',
+								{ 'multi-action': multipleNotification },
+								{ 'single-action': !multipleNotification && value && allowCopy }
+							)}
+							onClick={onCopy}
+						>
 							{value}
 						</div>
 					</CopyToClipboard>

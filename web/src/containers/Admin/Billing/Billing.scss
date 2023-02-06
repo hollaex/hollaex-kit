@@ -103,6 +103,10 @@ p {
 			.setting-icon {
 				width: 15px;
 				height: 15px;
+
+				.b {
+					fill: var(--admin_panel_content_background);
+				}
 			}
 
 			p {
@@ -136,8 +140,6 @@ p {
 	}
 
 	.pay-button {
-		display: flex;
-		justify-content: flex-end;
 		background-color: #171f6a;
 		border-bottom-left-radius: 1rem;
 		border-bottom-right-radius: 1rem;
@@ -153,10 +155,20 @@ p {
 			width: 6rem !important;
 			font-weight: bold;
 			font-size: 13px !important;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 		}
 
 		button:focus {
 			outline: none;
+		}
+
+		.anchor {
+			color: #ffffff;
+			text-decoration: underline;
+			cursor: pointer;
+			margin: 0.5rem 18rem 0rem 0rem;
 		}
 	}
 }
@@ -300,12 +312,11 @@ p {
 
 .billing-filter {
 	.ant-input-search {
-		input {
-			background: #1c661c;
+		background-color: var(--admin_panel_input);
+		.ant-input {
+			background-color: var(--admin_panel_input);
+			color: white;
 		}
-	}
-
-	.search-active {
 		.ant-input-search-icon {
 			color: white;
 		}
@@ -321,7 +332,7 @@ p {
 }
 
 .horizantal-line {
-	border-top: 2px dotted #c4c4c4;
+	border-top: 1px dotted #c4c4c4;
 
 	.plan-header {
 		color: #ffffff;
@@ -453,6 +464,7 @@ p {
 
 			label {
 				margin: 0.5rem 2rem 1rem 2rem;
+
 				span {
 					font-size: 15px !important;
 					color: white;
@@ -467,6 +479,19 @@ p {
 }
 
 .blue-admin-billing-model {
+	.steps-content-wrapper {
+		.xht-header {
+			font-weight: 500;
+			font-size: 1.75rem;
+		}
+
+		.link {
+			font-weight: bold;
+			color: #a8a8b1;
+			cursor: pointer;
+		}
+	}
+
 	.ant-modal-body {
 		padding: 0px;
 	}
@@ -774,6 +799,7 @@ p {
 	.cloud-plan-button {
 		margin: 0rem;
 		padding: 1rem 1rem 1.5rem 1rem;
+
 		button {
 			width: 100%;
 		}
@@ -789,6 +815,7 @@ p {
 		.plan-card {
 			display: flex;
 			width: 45%;
+
 			.diy-icon {
 				width: 5rem !important;
 			}
@@ -915,7 +942,8 @@ p {
 			color: #ffffff;
 		}
 
-		.ant-radio-wrapper-checked span {
+		.ant-radio-wrapper-checked span,
+		.danger {
 			color: #ffffff !important;
 		}
 	}
@@ -931,4 +959,41 @@ p {
 		margin-right: 20px;
 		height: 44px;
 	}
+}
+
+.st0 {
+	fill: #00abed !important;
+}
+
+.button-container {
+	display: flex;
+	justify-content: flex-end;
+	background-color: #040e6d;
+	border-bottom-left-radius: 1rem;
+	border-bottom-right-radius: 1rem;
+
+	.anchor {
+		color: #ffffff;
+		text-decoration: underline;
+		cursor: pointer;
+		margin: 1rem 16rem 0rem 0rem;
+	}
+}
+
+.paid-btn {
+	color: #ffffff;
+	background-color: #288500 !important;
+	border: 1px solid #288500 !important;
+	padding: 0rem !important;
+	width: 6rem;
+
+	.anticon {
+		font-size: 18px;
+		margin-top: 2px;
+	}
+}
+
+.pointer-none {
+	pointer-events: none;
+	cursor: not-allowed;
 }
