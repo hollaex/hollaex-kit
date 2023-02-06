@@ -107,7 +107,10 @@
 	},
 	"QR_CODE": {
 		"SCAN": "Scan QR code",
-		"SHOW": "Show QR"
+		"SHOW": "Show QR",
+		"NO_RESULT": "No result",
+		"NOT_FOUND": "Not Found",
+		"PERMISSION_DENIED": "Permission Denied"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Login to {0}",
@@ -546,7 +549,10 @@
 		"TEXT_DOWNLOAD": "DOWNLOAD HISTORY",
 		"TRADES": "Trades",
 		"DEPOSITS": "Deposits",
-		"WITHDRAWALS": "Withdrawals"
+		"WITHDRAWALS": "Withdrawals",
+		"ORDERID": "Order ID",
+		"TRIGGER_STOP_PRICE": "Trigger/stop price",
+		"TIME_OF_LAST_TRADE": "Time of last trade"
 	},
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
@@ -823,6 +829,8 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
+	"TIME_OPEN": "Time of Opening ",
+	"TIME_CLOSE": "Time Closed",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
@@ -1160,7 +1168,11 @@
 		"INFO_TEXT": "Refer your friends by giving out this link and receive benefits by onboarding other people.",
 		"COPY_FIELD_LABEL": "Share the link below with friends and earn commissions:",
 		"REFERRED_USER_COUT": "You have referred {0} users",
-		"COPY_LINK_BUTTON": "COPY REFERRAL LINK"
+		"COPY_LINK_BUTTON": "COPY REFERRAL LINK",
+		"VIEW": "view",
+		"TABLE_TITLE": "All successful referrals",
+		"USER": "User / email",
+		"TIME": "Time of sign up"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "To start trading you must login",
@@ -1411,5 +1423,9 @@
 		"ACCORDIAN_ASSETS": "All wallet assets",
 		"ACCORDIAN_INFO": "ASSET INFO PAGE",
 		"ACCORDIAN_HISTORY": "HISTORY"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "Page not opening automatically?",
+		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
 	}
 }
