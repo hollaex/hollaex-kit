@@ -47,6 +47,16 @@ describe('tests for /admin/users', function () {
 		response.should.be.json;
 	});
 
+	it('Integration Test -should respond 200 for "Success"', async () => {
+		const response = await request()
+			.get(`/v2/admin/users?search=${user.email}&type=email`)
+			.set('Authorization', `Bearer ${bearerToken}`);
+
+		response.should.have.status(200);
+		response.body.data[0].email.should.equal(user.email);
+		response.should.be.json;
+	});
+
 
 	it('Integration Test -should respond 202 for "CSV"', async () => {
 		const response = await request()
