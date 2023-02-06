@@ -40,7 +40,7 @@ describe('tests for /admin/deactivate-otp', function () {
 			.get(`/v2/admin/users?id=${user.id}`)
 			.set('Authorization', `Bearer ${bearerToken}`);
     
-		userData.data.body[1].otp_enabled.should.equal(false);
+		userData.body.data[0].otp_enabled.should.equal(false);
 
 		await request()
 			.put(`/v2/admin/user?user_id=${user.id}`)

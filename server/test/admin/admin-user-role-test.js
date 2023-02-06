@@ -26,6 +26,12 @@ describe('tests for /admin/user/role', function () {
 		response.should.have.status(200);
 		response.body.role.should.equal('support');
 		response.should.be.json;
+
+		await request()
+			.put(`/v2/admin/user/role?user_id=${user.id}`)
+			.set('Authorization', `Bearer ${bearerToken}`)
+			.send({ 'role': 'admin' });
+
 	});
 
 	//Fuz Testing

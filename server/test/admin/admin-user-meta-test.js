@@ -19,7 +19,7 @@ describe('tests for /admin/user/meta', function () {
 
 	//Integration Testing
 	it('Integration Test -should respond 200 for "Success"', async () => {
-		const text = 'esse et laborum';
+		const text = generateFuzz(10);
 		const response = await request()
 			.put(`/v2/admin/user/meta?user_id=${user.id}`)
 			.set('Authorization', `Bearer ${bearerToken}`)

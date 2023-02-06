@@ -17,7 +17,7 @@ describe('tests for /admin/user/discount', function () {
 
 	//Integration Testing
 	it('Integration Test -should respond 200 for "Success"', async () => {
-		const paramNumber = 8.41;
+		const paramNumber = Math.floor(Math.random() * 9) + 1; 
 		const response = await request()
 			.put(`/v2/admin/user/discount?user_id=${user.id}`)
 			.set('Authorization', `Bearer ${bearerToken}`)

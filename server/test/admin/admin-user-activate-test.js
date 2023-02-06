@@ -30,6 +30,14 @@ describe('tests for /admin/user/activate', function () {
 		response.should.have.status(200);
 		response.body.activated.should.equal(false);
 		response.should.be.json;
+
+		await request()
+			.post('/v2/admin/user/activate')
+			.set('Authorization', `Bearer ${bearerToken}`)
+			.send({
+				'user_id': user.id,
+				'activated': true
+			});
 	});
 
 

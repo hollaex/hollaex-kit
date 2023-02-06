@@ -48,6 +48,21 @@ describe('tests for /admin/user/bank', function () {
 		response.should.be.json;
 	});
 
+
+	it('Integration Test -should respond 500 for "invalid schema"', async () => {
+		
+		const response = await request()
+			.post(`/v2/admin/user/bank?id=${user.id}`)
+			.set('Authorization', `Bearer ${bearerToken}`)
+			.send({
+				'bank_account':{}
+			});
+
+		response.should.have.status(500);
+		response.should.be.json;
+	});
+
+
 	//Fuz Testing
 	it('Fuzz Test -should return error', async () => {
 		const response = await request()
