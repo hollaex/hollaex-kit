@@ -479,3 +479,81 @@
 .spinner-container {
 	padding-right: 1.25rem;
 }
+.exchange-plugin-content-wrapper {
+	position: absolute;
+	top: 6rem;
+}
+.exchange-plugin-content-wrapper .exchange-plugin-image {
+	width: 4rem;
+}
+.exchange-plugin-content-wrapper .exchange-plugin-title {
+	font-size: 34px;
+}
+.exchange-plugin-content-wrapper .link-text {
+	text-decoration: underline;
+}
+.exchange-plugin-content-wrapper .blink_me {
+	animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0.4;
+	}
+}
+
+.container-wrapper {
+	position: relative;
+}
+.container-wrapper .info-text-wrapper {
+	position: absolute;
+	top: 5rem;
+	width: 100%;
+}
+.container-wrapper .info-text-wrapper div {
+	text-align: center;
+}
+.container-wrapper .img-wrapper .img-style {
+	width: 65rem;
+	opacity: 0.2;
+}
+.container-wrapper .img-wrapper .expand {
+	-webkit-transform: scale(1.5);
+	transform: scale(1.18);
+	padding-left: 7.2rem;
+	opacity: 1;
+}
+
+.plugin-app-stroe-wrapper .plugin-icon {
+	width: 7rem;
+	padding-top: 10px;
+}
+
+.plugin-app-stroe-wrapper .plugin-title {
+	font-size: 21px;
+	font-weight: bold;
+}
+
+.plugin-app-stroe-wrapper .search-plugin-input input {
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid #ffffff;
+	border-radius: 0px;
+	background-color: var(--admin_panel_input);
+	color: #c4c4c4;
+	box-shadow: none;
+	width: 15rem;
+}
+
+.plugin-list-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100rem;
+}
+.plugin-list-wrapper .plugin-list-item {
+	width: 30rem;
+}
+.plugin-list-wrapper .plugin-list-item .description-content {
+	padding-left: 2rem;
+}

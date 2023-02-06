@@ -552,6 +552,7 @@
 		"TRIGGER_STOP_PRICE": "Trigger/stop price",
 		"TIME_OF_LAST_TRADE": "Time of last trade"
 	},
+
 	"ACCOUNT_SECURITY": {
 		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
 		"OTP": {
@@ -1424,5 +1425,9 @@
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",
 		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
+	},
+
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "To get access reach out to"
 	}
 }

@@ -173,6 +173,14 @@ const icons = {
 		'/assets/images/default-exchange-logo-light-theme.svg',
 	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
 	MANUAL_PLUGIN_UPGRADE: '/assets/images/manual-plugin-upgrade.svg',
+	EXCHANGE_APP_STORE_BACKGROUND_SPLASH:
+		'/assets/images/hollaex-exchange-app-store-background-splash-02.png',
+	HOLLAEX_NETWORK_WHITE: '/assets/images/HollaEx network-icon-white-(s)-01.svg',
+	INSTALL_THIRD_PARTY_PLUGIN: '/assets/images/install-third-party-plugin.svg',
+	OPEN_HOLLAEX_DOC_APP_CREATION:
+		'/assets/images/open-hollaex-doc-app-creation-link.svg',
+	HOLLAEX_EXCHANGE_STORE_PLUGIN_APPS:
+		'/assets/images/hollaex-exchange-store-plugin-apps.svg',
 };
 
 export default icons;

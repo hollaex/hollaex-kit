@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Modal, Divider, Spin, message } from 'antd';
 import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
-
-import { Carousel } from 'components';
+import { connect } from 'react-redux';
+import { Carousel, BlueLink } from 'components';
+import STRINGS from 'config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, updatePlugins } from './action';
+import {
+	addPlugin,
+	updatePlugins,
+	getPluginActivateDetails,
+	getPluginStoreDetails,
+} from './action';
 import ConfirmPlugin from './ConfirmPlugin';
 
 const PluginDetails = ({
@@ -18,14 +24,53 @@ const PluginDetails = ({
 	isLoading,
 	restart,
 	handleRedirect,
+	exchange,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
 	const [isConfirm, setConfirm] = useState(true);
+	// const [isLoading, setLoading] = useState(false);
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
+	const [pluginStoreDetails, setPluginStoreDetails] = useState({});
+	console.log('PluginDetails', selectedPlugin);
+	console.log('PluginDetails: exchange', exchange);
+	console.log('PluginDetails: pluginStoreDetails', pluginStoreDetails);
 
+	const requestPlugin = useCallback(() => {
+		getPluginStoreDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				console.log('getPluginStoreDetails res', res);
+				// setLoading(false);
+				setPluginStoreDetails(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPluginStoreDetails({});
+				}
+				// setLoading(false);
+			});
+	}, [selectedPlugin]);
+
+	useEffect(() => {
+		requestPlugin();
+	}, [requestPlugin]);
+
+	const onHandlePluginActivate = async () => {
+		getPluginActivateDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				console.log('getPluginActivateDetails res', res);
+				// setLoading(false);
+				setPluginStoreDetails(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPluginStoreDetails({});
+				}
+				// setLoading(false);
+			});
+	};
 	const handleAddPlugin = async () => {
 		const body = {
 			...pluginData,
@@ -231,6 +276,10 @@ const PluginDetails = ({
 	};
 
 	const renderButtonContent = () => {
+		// console.log(object);
+		// const tempPluginData = {...pluginData, only_for:[], free_for:['boost', 'crypto','fiat']}
+		const tempPluginData = { ...pluginData };
+
 		if (isAddLoading || isUpdateLoading) {
 			return (
 				<div className="d-flex mt-5">
@@ -294,19 +343,73 @@ const PluginDetails = ({
 				</div>
 			);
 		} else {
-			return (
-				<div className="btn-wrapper">
-					<Button
-						type="primary"
-						className="add-btn"
-						onClick={handleOpenConfirmation}
-						disabled={!Object.keys(pluginData).length}
-					>
-						Add
-					</Button>
-					<div className="small-txt">Free to install</div>
-				</div>
-			);
+			// To-do : check Activation plugin list
+			if (
+				tempPluginData.payment_type === 'free' ||
+				tempPluginData?.free_for?.includes(exchange.plan) ||
+				tempPluginData?.only_for?.includes(exchange.plan)
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={handleOpenConfirmation}
+						>
+							Install
+						</Button>
+						<div className="small-txt">Free to install</div>
+					</div>
+				);
+			} else if (
+				tempPluginData.payment_type !== 'free' &&
+				((!tempPluginData?.free_for?.length &&
+					!tempPluginData?.only_for?.length) ||
+					(!tempPluginData?.free_for?.includes(exchange.plan) &&
+						!tempPluginData?.only_for?.length) ||
+					tempPluginData.name.toLowerCase() === 'exclusive')
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={handleOpenConfirmation}
+							disabled={!Object.keys(pluginData).length}
+						>
+							Buy
+						</Button>
+					</div>
+				);
+			} else if (
+				tempPluginData.payment_type !== 'free' &&
+				tempPluginData?.free_for?.includes(exchange.plan) &&
+				tempPluginData?.only_for?.includes(exchange.plan) &&
+				!tempPluginData?.free_for?.length &&
+				tempPluginData?.only_for?.length
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={onHandlePluginActivate}
+							disabled={!tempPluginData?.only_for?.includes(exchange.plan)}
+						>
+							Activate
+						</Button>
+						{!tempPluginData.only_for.includes(exchange.plan) ? (
+							<div className="ml-2 font-weight-bold">
+								{STRINGS['TERMS_OF_SERVICES.TO_GET_ACCESS']}
+								<BlueLink
+									href="mailto:sales@hollaex.com"
+									text={'sales@hollaex.com'}
+								/>
+							</div>
+						) : null}
+					</div>
+				);
+			}
 		}
 	};
 
@@ -354,13 +457,35 @@ const PluginDetails = ({
 								className="plugin-icon"
 							/>
 							<div className="ml-3 inner-content">
-								<h3>{pluginData.name}</h3>
+								<div>
+									<h3>{pluginData.name}</h3>
+									<p>
+										<b>Version:</b> {pluginData.version}
+									</p>
+								</div>
 								<p>{pluginData.bio}</p>
 								<div>
-									<b>Version:</b> {pluginData.version}
+									<b>Author:</b> {pluginData.author}
+								</div>
+								{pluginData.free_for ? (
+									<div>
+										<b>Free for:</b> {pluginData.free_for.join()}
+									</div>
+								) : null}
+								{pluginData.only_for ? (
+									<div>
+										<b>Only for:</b> {pluginData.only_for.join()}
+									</div>
+								) : null}
+								<div>
+									<b>Payment Type:</b> {pluginData.payment_type}
 								</div>
 								<div>
-									<b>Author:</b> {pluginData.author}
+									<b>Price Tag:</b>{' '}
+									<Button type="priceTag primary" size="small">
+										{' '}
+										Free{' '}
+									</Button>
 								</div>
 								{renderButtonContent()}
 							</div>
@@ -398,4 +523,10 @@ const PluginDetails = ({
 	);
 };
 
-export default PluginDetails;
+const mapStateToProps = (state) => {
+	return {
+		exchange: state.asset.exchange,
+	};
+};
+
+export default connect(mapStateToProps, {})(PluginDetails);

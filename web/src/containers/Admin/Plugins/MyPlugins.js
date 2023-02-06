@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 import { Button, Input, Spin, Modal, message } from 'antd';
 import _debounce from 'lodash/debounce';
 
@@ -7,6 +6,8 @@ import { STATIC_ICONS } from 'config/icons';
 import { addPlugin, updatePlugins } from './action';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
+
+import './index.css';
 
 class MyPlugins extends Component {
 	constructor(props) {
@@ -17,12 +18,8 @@ class MyPlugins extends Component {
 			isConfirm: true,
 			pluginData: {},
 			buttonSubmitting: false,
+			is_zoom: false,
 		};
-	}
-
-	componentDidMount() {
-		// this.props.getMyPlugins();
-		// this.props.getPlugins();
 	}
 
 	searchPlugin = _debounce(this.props.getMyPlugins, 800);
@@ -208,6 +205,11 @@ class MyPlugins extends Component {
 		}
 	};
 
+	// onHandleClickPluginApps = () => {
+	// 	// this.setState({ is_zoom: true })
+	// 	// this.props.onChangeNextType('appStore');
+	// }
+
 	renderList = () => {
 		const {
 			myPlugins,
@@ -215,7 +217,7 @@ class MyPlugins extends Component {
 			handleOpenPlugin,
 			pluginData,
 		} = this.props;
-
+		console.log('myPlugins', myPlugins);
 		return myPlugins.map((item, index) => {
 			const networkPlugin =
 				pluginData.filter((data) => data.name === item.name)[0] || {};
@@ -270,35 +272,100 @@ class MyPlugins extends Component {
 	};
 
 	render() {
-		const { isLoading, isVisible } = this.state;
+		const { isLoading, isVisible, is_zoom } = this.state;
+		const { myPlugins } = this.props;
 		if (isLoading) {
 			return <Spin />;
 		}
 
 		return (
-			<div className="myplugin-container">
-				<div className="header">My exchange plugins</div>
-				<div className="d-flex my-plugin-content">
-					<div>
-						This page displays all your plugins installed. You can also create
-						your own plugin and install them here. To learn more about adding
-						your own custom plugin visit the{' '}
-						<Link to="/">plugin documentation page</Link>.
-					</div>
-					<div>
-						<Button type="primary" onClick={this.handlePlugin}>
-							ADD THIRD PARTY PLUGIN
-						</Button>
-					</div>
-				</div>
-				<div>
-					<div className="plugin-header d-flex align-items-center justify-content-between">
-						<div className="plugin-title">My installed plugins</div>
-						<div className="search-plugin-input">
-							<Input placeholder="Search..." onChange={this.handleSearch} />
+			<div className={!is_zoom ? 'myplugin-container' : ''}>
+				{!is_zoom && (
+					<>
+						<div className="header">My plugins apps</div>
+						<div className="d-flex my-plugin-content">
+							<div>
+								See below for all your installed plugin apps. You can get
+								plugins apps from Exchange Plugin App Store, or create your own.{' '}
+								<div>
+									<span className="underline-text" onClick={this.handlePlugin}>
+										{' '}
+										Install third party plugin.
+									</span>
+									<img
+										src={STATIC_ICONS.INSTALL_THIRD_PARTY_PLUGIN}
+										alt="third-party-plugin"
+										className="ml-2"
+									/>
+								</div>
+							</div>
+							<div>
+								<Button
+									type="primary"
+									onClick={() => this.props.onChangeNextType('appStore')}
+								>
+									EXCHANGE PLUGIN APP STORE
+								</Button>
+							</div>
 						</div>
+					</>
+				)}
+				<div>
+					{!is_zoom ? (
+						<div className="plugin-header d-flex align-items-center justify-content-between">
+							<div className="plugin-title">My installed plugins</div>
+							<div className="search-plugin-input">
+								<Input placeholder="Search..." onChange={this.handleSearch} />
+							</div>
+						</div>
+					) : (
+						<div className="exchange-plugin-content-wrapper w-100">
+							<div className="text-center">
+								<img
+									src={STATIC_ICONS.HOLLAEX_NETWORK_WHITE}
+									alt=""
+									className="exchange-plugin-image"
+								/>
+								<div className="exchange-plugin-title">
+									Exchange Plugin App Store
+								</div>
+								<div>
+									Marketplace to buy, sell and install plugin apps for your
+									crypto platform.
+								</div>
+								<div className="link-text blink_me">Click to enter</div>
+							</div>
+						</div>
+					)}
+					<div
+						className="plugin-list"
+						style={{
+							backgroundImage:
+								STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH,
+							width: '100%',
+						}}
+					>
+						{this.renderList()}
 					</div>
-					<div className="plugin-list">{this.renderList()}</div>
+					<div
+						className="container-wrapper"
+						onClick={() => this.props.onChangeNextType('appStore')}
+					>
+						<div className="info-text-wrapper">
+							{!myPlugins.length && (
+								<div>
+									You currently haven't got any installed plugin apps yet.
+								</div>
+							)}
+							<div>
+								<span className="underline-text">Click here</span> to get the
+								plugins apps.
+							</div>
+						</div>
+						{/* <div className='img-wrapper'>
+							<img src={STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH} style={{ transition: 'transform .3s' }} className={`${is_zoom ? 'expand' : 'img-style'}`} alt='zoom' />
+						</div> */}
+					</div>
 				</div>
 				<Modal
 					visible={isVisible}

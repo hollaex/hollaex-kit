@@ -10,7 +10,7 @@ import {
 } from '../../../components/AdminForm/validations';
 import { updatePluginMeta, getPluginMeta } from './action';
 import { TOKEN_KEY, PLUGIN_URL } from '../../../config/constants';
-import './index.css';
+// import './index.css';
 import PluginMetaForm from './PluginMetaForm';
 
 const renderContent = (selectedPlugin, setMetaData, metaData, restart) => {

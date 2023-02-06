@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Breadcrumb, Modal, message, Button } from 'antd';
+import { Spin, Tabs, Breadcrumb, Modal, message, Button } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
@@ -17,11 +17,12 @@ import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
-import { getPluginMeta, requestActivationsPlugin } from './action';
+import { getPluginMeta } from './action';
 
 import './index.css';
 import PluginAppStore from './PluginAppStore';
 
+const TabPane = Tabs.TabPane;
 const { Item } = Breadcrumb;
 
 class Plugins extends Component {
@@ -33,7 +34,7 @@ class Plugins extends Component {
 			},
 		} = this.props;
 		this.state = {
-			nextType: 'myPlugin',
+			nextType: 'appStore',
 			isConfirm: false,
 			loading: false,
 			constants: {},
@@ -48,8 +49,8 @@ class Plugins extends Component {
 			isVisible: false,
 			isRemovePlugin: false,
 			removePluginName: '',
+			tabKey: plugin ? 'my_plugin' : 'explore',
 			pluginCards: [],
-			ActivatedPluginDetails: [],
 			processing: false,
 			thirdPartyType: 'upload_json',
 			thirdPartyError: '',
@@ -88,24 +89,11 @@ class Plugins extends Component {
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
-			// await this.getActivationsPlugin();
 		} catch (err) {
 			throw err;
 		}
 	};
 
-	getActivationsPlugin = (params = {}) => {
-		return requestActivationsPlugin(params)
-			.then((res) => {
-				if (res && res.data) {
-					console.log('requestActivationsPlugin', res.data);
-					// this.setState({ActivatedPluginDetails})
-				}
-			})
-			.catch((err) => {
-				throw err;
-			});
-	};
 	getMyPlugins = (params = {}) => {
 		console.log('innnwerere');
 		return requestMyPlugins(params)
@@ -207,7 +195,6 @@ class Plugins extends Component {
 	};
 
 	onChangeNextType = (nextType) => {
-		console.log('nextType121212', nextType);
 		this.setState({ nextType });
 	};
 
@@ -636,7 +623,13 @@ class Plugins extends Component {
 		} = this.state;
 		switch (nextType) {
 			case 'appStore':
-				return <PluginAppStore onChangeNextType={this.onChangeNextType} />;
+				return (
+					<PluginAppStore
+						onChangeNextType={this.onChangeNextType}
+						myPlugins={this.state.myPlugins}
+						pluginData={this.state.pluginData}
+					/>
+				);
 			case 'explore':
 				return (
 					<>
@@ -645,16 +638,15 @@ class Plugins extends Component {
 								className="underline-text"
 								onClick={() => this.onChangeNextType('myPlugin')}
 							>{`<Back`}</span>{' '}
-							to get the plugins apps.
+							to my plugins.
 						</div>
 						<PluginList
+							pluginData={pluginData}
 							constants={constants}
 							selectedPlugin={selectedPlugin}
+							handleOpenPlugin={this.handleOpenPlugin}
 							getPlugins={this.getPlugins}
 							pluginCards={pluginCards}
-							handleOpenPlugin={this.handleOpenPlugin}
-							onChangeNextType={this.onChangeNextType}
-							myPlugins={myPlugins}
 						/>
 					</>
 				);
