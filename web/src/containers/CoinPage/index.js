@@ -17,10 +17,6 @@ import { isLoggedIn } from 'utils/token';
 import { addToFavourites, removeFromFavourites } from 'actions/appActions';
 import { replace } from 'utils/string';
 
-const PAIR_2_COINS = ['xht', 'btc', 'eth'];
-const ACTIVITY_BLOCKCHAIN =
-	'https://etherscan.io/token/0xD3c625F54dec647DB8780dBBe0E880eF21BA4329';
-
 const CoinPage = ({
 	pairs,
 	tickers,
@@ -44,8 +40,6 @@ const CoinPage = ({
 	const [chartData, setChartData] = useState({});
 	const [options, setOptions] = useState([]);
 	const [selectedPair, setselectedPair] = useState([]);
-	const [viewMoreContents, setViewMoreContents] = useState([]);
-	const [viewMore, setViewMore] = useState(false);
 	const [lineChartData, setLineChartData] = useState({});
 	const selectedPairCoins = selectedPair && selectedPair?.[0];
 
@@ -78,16 +72,13 @@ const CoinPage = ({
 				});
 			}
 		});
-		const defaultValue = pairOptions.filter(
-			(filteredValue) => currentPair !== replace(filteredValue.value, '/', '-')
-		);
+
 		const ChartData = {
 			...chartData[selectedPairCoin?.key],
 			name: 'Line',
 			type: 'line',
 		};
 		setLineChartData(ChartData);
-		setViewMoreContents(defaultValue);
 		setOptions(pairOptions);
 		setselectedPair(selectedPair);
 	};
@@ -137,8 +128,6 @@ const CoinPage = ({
 		const selectedPair = data.filter((pair) => {
 			return pair?.key === currentPair;
 		});
-		const filteredSelectField = options.filter(({ label }) => label !== value);
-		setViewMoreContents(filteredSelectField);
 		setselectedPair(selectedPair);
 	};
 
@@ -252,8 +241,8 @@ const CoinPage = ({
 						</div>
 					</div>
 				</div>
-				<div className={`hollaex-container ${viewMore ? 'h-100' : ''}`}>
-					<div className={`token-container ${viewMore ? 'h-100' : ''}`}>
+				<div className={`hollaex-container`}>
+					<div className={`token-container`}>
 						<div className="info-container">
 							<div className="header-text">
 								<EditWrapper stringId="HOLLAEX_TOKEN.ABOUT">
@@ -261,105 +250,20 @@ const CoinPage = ({
 									{currentCoinUpper})
 								</EditWrapper>
 							</div>
-							<div className="sub-text">
-								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO"> */}
-								{currentCoinUpper} {STRINGS['HOLLAEX_TOKEN.HOLLA_INFO']}{' '}
-								{/* </EditWrapper> */}
-								<span className="link">
-									{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE"> */}
-									{STRINGS['HOLLAEX_TOKEN.HOLLAEX_KIT_TITLE']}
-									{/* </EditWrapper> */}
-								</span>
-								.{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLDER"> */}
-								{STRINGS['HOLLAEX_TOKEN.HOLDER']} {/* </EditWrapper> */}{' '}
-								{currentCoinUpper}
-								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO2"> */}
-								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO2']}
-								{/* </EditWrapper> */}
-							</div>
-							<div className="sub-text">
-								{/* <EditWrapper stringId="HOLLAEX_TOKEN.WITH"> */}
-								{STRINGS['HOLLAEX_TOKEN.WITH']}
-								{/* </EditWrapper> */}
-								{currentCoinUpper}
-								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO3"> */}
-								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO3']} {/* </EditWrapper> */}
-								{currentCoinUpper}
-								{/* <EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO4"> */}
-								{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO4']}
-								{/* </EditWrapper> */}
-							</div>
-							{viewMore && (
-								<div className="sub-text">
-									<EditWrapper stringId="HOLLAEX_TOKEN.HOLLA_INFO5">
-										{currentCoinUpper}
-										{STRINGS['HOLLAEX_TOKEN.HOLLA_INFO5']}
-									</EditWrapper>
-								</div>
-							)}
-							{!viewMore ? (
+							{coins[currentCoin].description ? (
 								<div
-									className="link text-left mt-3"
-									onClick={() => setViewMore(true)}
-								>
-									<EditWrapper stringId="HOLLAEX_TOKEN.VIEW">
-										{STRINGS['HOLLAEX_TOKEN.VIEW']}
-									</EditWrapper>
-								</div>
+									className="sub-text"
+									dangerouslySetInnerHTML={{
+										__html: `${coins[currentCoin].description}`,
+									}}
+								></div>
 							) : (
-								<div className="mt-3">
-									{PAIR_2_COINS.includes(currentCoin) ? (
-										<div className="link text-left mb-4">
-											<Link href={ACTIVITY_BLOCKCHAIN} target="blank">
-												<EditWrapper stringId="HOLLAEX_TOKEN.VIEW_ACTIVITY">
-													{STRINGS['HOLLAEX_TOKEN.VIEW_ACTIVITY']}
-												</EditWrapper>
-											</Link>
-										</div>
-									) : (
-										<EditWrapper stringId="HOLLAEX_TOKEN.COMING_SOON">
-											{STRINGS['HOLLAEX_TOKEN.COMING_SOON']}
-										</EditWrapper>
-									)}
-									{PAIR_2_COINS.includes(currentCoin) && <div>--</div>}
-									<div className="link text-left">
-										{currentCoin === 'xht' && (
-											<Link to="/stake/details/xht?name=mystaking">
-												<EditWrapper stringId="HOLLAEX_TOKEN.STAKE">
-													{STRINGS['HOLLAEX_TOKEN.STAKE']}
-													{currentCoinUpper}
-												</EditWrapper>
-											</Link>
-										)}
-									</div>
-									{PAIR_2_COINS.includes(currentCoin) && (
-										<div className="link text-left">
-											<Link to={`/quick-trade/${currentPair}`}>
-												<EditWrapper stringId="HOLLAEX_TOKEN.QUICK_BUY">
-													{STRINGS['HOLLAEX_TOKEN.QUICK_BUY']}
-													{currentCoinUpper}
-												</EditWrapper>
-											</Link>
-										</div>
-									)}
-									<div className="link text-left">
-										{currentCoin === 'xht' && (
-											<Link
-												href="https://www.hollaex.com/hollaex-token-staking"
-												target="blank"
-											>
-												<EditWrapper stringId="HOLLAEX_TOKEN.MORE">
-													{STRINGS['HOLLAEX_TOKEN.MORE']}
-												</EditWrapper>
-												{currentCoinUpper}
-												<EditWrapper stringId="HOLLAEX_TOKEN.INFO">
-													{STRINGS['HOLLAEX_TOKEN.INFO']}
-												</EditWrapper>
-											</Link>
-										)}
-									</div>
+								<div className="sub-text">
+									{' '}
+									No description for this asset yet. Coming soon!
 								</div>
 							)}
+
 							<div className="button-container">
 								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
 									<Button
@@ -494,33 +398,6 @@ const CoinPage = ({
 										</div>
 									</div>
 								</div>
-								{viewMore && options?.length > 1 && (
-									<div className="paircoins-color mb-2 mt-3">
-										{STRINGS['HOLLAEX_TOKEN.MARKETS_TITLE']}
-									</div>
-								)}
-								{viewMore &&
-									viewMoreContents.map(({ value }, index) => {
-										const replacedValue = replace(value, '/', '-');
-										return (
-											<div className="d-flex paircoins-color" key={index}>
-												<Link
-													to={`/trade/${replacedValue}`}
-													className="d-flex align-items-center"
-												>
-													<span>{value.toUpperCase()}</span>
-													<span className="white-text pl-2">
-														{tickers[replacedValue]?.last}
-													</span>
-												</Link>
-												<div className="pl-6 trade_tabs-container h5">
-													{selectedPair && selectedPair?.[0] && (
-														<PriceChange market={selectedPair?.[0]} />
-													)}
-												</div>
-											</div>
-										);
-									})}
 							</div>
 						</div>
 					</div>
