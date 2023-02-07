@@ -1,7 +1,7 @@
 const path = require('path');
 
 process.env.NODE_ENV = 'test';
-require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const chai = require('chai'),
 	chaiHTTP = require('chai-http'),
@@ -20,6 +20,13 @@ function generateFuzz(length = 10000) {
 		result += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
 	return result;
+}
+
+function getAdminUser() {
+	return {
+		email: process.env.ADMIN_USER_EMAIL,
+		password: process.env.ADMIN_USER_PASSWORD
+	};
 }
 
 function loginAs(user) {
@@ -44,5 +51,6 @@ function request() {
 module.exports = {
 	loginAs,
 	request,
-	generateFuzz
+	generateFuzz,
+	getAdminUser
 };
