@@ -269,10 +269,6 @@ class TransactionsHistory extends Component {
 		});
 	}
 
-	handleExpand = (current_order_id, value, view) => {
-		this.setState({ defaultExpand: value, current_order_id, view });
-	};
-
 	getExpandableRowContentForTrades = () => {
 		return {
 			expandedRowRender: (obj) => {
@@ -514,7 +510,6 @@ class TransactionsHistory extends Component {
 		const props = {
 			symbol,
 			withIcon: true,
-			handleExpand: this.handleExpand,
 		};
 
 		const prepareNoData = (tab) => {
@@ -709,7 +704,6 @@ class TransactionsHistory extends Component {
 					]}
 					activeTab={activeTab}
 					setActiveTab={this.setActiveTab}
-					handleExpand={this.handleExpand}
 				/>
 				<Dialog
 					isOpen={dialogIsOpen}

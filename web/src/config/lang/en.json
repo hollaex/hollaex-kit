@@ -199,7 +199,9 @@
 		"FOOTER_TEXT": "Quick trade fees use market taker rates",
 		"FOOTER_TEXT_1": "Sourced from",
 		"GO_TO_TEXT": "Go to",
-		"SOURCE_TEXT": "Broker OTC deal"
+		"SOURCE_TEXT": "Broker OTC deal",
+		"VISIT": "Visit{0}",
+		"ASSET_INFO_PAGE": "Assets info page"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -1241,7 +1243,7 @@
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
-		"WHITE_LABEL": "white-lable",
+		"WHITE_LABEL": "white-label",
 		"SOLUTION": "solution",
 		"VISIT_COIN_INFO_PAGE": "Visit coin info page {0}",
 		"HERE": "here"
@@ -1382,7 +1384,7 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICKTRADE",
+		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source"
@@ -1405,6 +1407,7 @@
 		"VIEW": "View more",
 		"VIEW_ACTIVITY": "View activity on blockchain",
 		"COMING_SOON": "Coming Soon...",
+		"NO_DESCRIPTION": "No description for this asset yet. Coming soon!",
 		"STAKE": "Stake",
 		"QUICK_BUY": "Quick buy",
 		"MORE": "More",

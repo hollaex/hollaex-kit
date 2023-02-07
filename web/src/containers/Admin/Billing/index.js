@@ -12,6 +12,7 @@ const Billing = (props) => {
 
 	useEffect(() => {
 		getExchange();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const getExchange = async () => {
@@ -20,6 +21,7 @@ const Billing = (props) => {
 	};
 
 	const putExchange = async (type = 'Cloud') => {
+		let res = {};
 		try {
 			const exchangeBody = {
 				id: dashExchange.id,
@@ -28,7 +30,7 @@ const Billing = (props) => {
 				},
 				type,
 			};
-			await putDashExchange(exchangeBody);
+			res = await putDashExchange(exchangeBody);
 			await getExchange();
 		} catch (error) {
 			if (error.data && error.data.message) {
@@ -37,6 +39,7 @@ const Billing = (props) => {
 				message.error('Failed to update setup configs');
 			}
 		}
+		return res;
 	};
 
 	return (
