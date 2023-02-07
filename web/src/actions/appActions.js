@@ -400,9 +400,6 @@ export const setInfo = (info) => ({
 	},
 });
 
-export const openFeesStructureandLimits = (data = {}) =>
-	setNotification(FEES_STRUCTURE_AND_LIMITS, data, true);
-
 export const openMarketSelector = (data = {}) =>
 	setNotification(MARKET_SELECTOR, data, true);
 

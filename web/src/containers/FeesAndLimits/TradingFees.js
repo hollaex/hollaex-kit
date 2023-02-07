@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Select } from 'antd';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
 import { Image, IconTitle, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
@@ -30,8 +32,12 @@ const TradingFees = ({
 		<div>
 			<div className="settings-form-wrapper">
 				<div className="settings-form apps-form wallet-container">
-					<div className="d-flex justify-content-between pt-3">
-						<div>
+					<div
+						className={classnames('d-flex', 'justify-content-between', 'pt-3', {
+							'flex-direction-column': isMobile,
+						})}
+					>
+						<div className={classnames({ 'mb-4': isMobile })}>
 							<div className="d-flex mr-4">
 								<div>
 									<Image

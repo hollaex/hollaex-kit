@@ -5,9 +5,9 @@ import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
 import { Image, EditWrapper } from 'components';
-import { STATIC_ICONS } from 'config/icons';
+import withConfig from 'components/ConfigProvider/withConfig';
 
-const getLimitValue = (limit, increment_unit) => {
+const getLimitValue = (limit, increment_unit, baseName) => {
 	if (limit === undefined || limit === null || limit === '') {
 		return 'N/A';
 	} else if (limit === 0) {
@@ -23,7 +23,9 @@ const getLimitValue = (limit, increment_unit) => {
 			</EditWrapper>
 		);
 	} else {
-		return increment_unit ? formatToCurrency(limit, increment_unit) : limit;
+		return increment_unit
+			? `${formatToCurrency(limit, increment_unit)} ${baseName}`
+			: `${limit} ${baseName}`;
 	}
 };
 
@@ -62,85 +64,82 @@ const getLimitValue = (limit, increment_unit) => {
 //     );
 // };
 
-const getRows = (coins, level, tiers) => {
-	const { increment_unit } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
+const getRows = (coins, level, tiers, ICONS) => {
+	const { display_name: baseName, increment_unit } =
+		coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 
 	const { /*deposit_limit,*/ withdrawal_limit } = tiers[level] || {};
 
 	return (
 		<Fragment>
-			<tr>
-				<td className="account-limits-coin">
-					<div className="d-flex align-items-center">
-						<Image
-							icon={STATIC_ICONS['WITHDRAW_TIERS_SECTION']}
-							wrapperClassName="limit-status-icon mr-2"
-						/>
-						<div className="ml-2">{STRINGS['SUMMARY.WITHDRAWAL']}</div>
-					</div>
-				</td>
-				<td className="account-limits-maker account-limits-value">
-					{getLimitValue(withdrawal_limit, increment_unit)}
-				</td>
-			</tr>
-			{/*Temporarily remove deposit limit row v 2.1*/}
-			{/*<tr>
-				<td className="account-limits-coin">
-					<div className="d-flex align-items-center">
-						<Image
-							icon={STATIC_ICONS['DEPOSIT_TIERS_SECTION']}
-							wrapperClassName="limit-status-icon mr-2"
-						/>
-						<div className="ml-2">{STRINGS['SUMMARY.DEPOSIT']}</div>
-					</div>
-				</td>
-				<td className="account-limits-maker account-limits-value">
-					{getLimitValue(null, increment_unit)}
-				</td>
-			</tr>*/}
+			{Object.entries(coins).map(([_, { icon_id, display_name }], index) => {
+				return (
+					<tr className="table-row" key={index}>
+						<td className="table-icon td-fit" />
+						<td className="td-name td-fit">
+							<div className="d-flex align-items-center wallet-hover cursor-pointer">
+								<Image
+									iconId={icon_id}
+									icon={ICONS[icon_id]}
+									wrapperClassName="currency-ball"
+									imageWrapperClassName="currency-ball-image-wrapper"
+								/>
+								{display_name}
+							</div>
+						</td>
+						<td>
+							{index === 0 ? (
+								getLimitValue(withdrawal_limit, increment_unit, baseName)
+							) : index === 1 ? (
+								<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT">
+									{
+										STRINGS[
+											'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.LIMIT_TEXT'
+										]
+									}
+								</EditWrapper>
+							) : null}
+						</td>
+					</tr>
+				);
+			})}
 		</Fragment>
 	);
 };
 
-const LimitsBlock = ({ level, coins, tiers, title }) => {
-	const { display_name } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
-
+const LimitsBlock = ({ level, coins, tiers, icons }) => {
 	return (
-		<div>
-			<table className="account-limits">
+		<div className="wallet-assets_block">
+			<table className="wallet-assets_block-table">
 				<thead>
-					<tr>
-						<th className="limit-head-currency content-title" colSpan={3}>
-							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_DESCRIPTION">
-								{STRINGS.formatString(
-									STRINGS['LIMITS_BLOCK.HEADER_ROW_DESCRIPTION'],
-									title
-								)}
+					<tr className="table-bottom-border">
+						<th />
+						<th>
+							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY">
+								{
+									STRINGS[
+										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.CURRENCY'
+									]
+								}
 							</EditWrapper>
 						</th>
-					</tr>
-					<tr>
-						<th className="limit-head-currency">
-							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_TYPE">
-								{STRINGS['LIMITS_BLOCK.HEADER_ROW_TYPE']}
-							</EditWrapper>
-						</th>
-						<th className="limit-head-currency">
-							<EditWrapper stringId="LIMITS_BLOCK.HEADER_ROW_AMOUNT">
-								{STRINGS.formatString(
-									STRINGS['LIMITS_BLOCK.HEADER_ROW_AMOUNT'],
-									display_name
-								)}
+						<th>
+							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT">
+								{
+									STRINGS[
+										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_1.HEADER.LIMIT'
+									]
+								}
 							</EditWrapper>
 						</th>
 					</tr>
 				</thead>
 				<tbody className="account-limits-content font-weight-bold">
-					{getRows(coins, level, tiers)}
+					{getRows(coins, level, tiers, icons)}
 				</tbody>
 			</table>
 		</div>
 	);
 };
 
-export default LimitsBlock;
+export default withConfig(LimitsBlock);

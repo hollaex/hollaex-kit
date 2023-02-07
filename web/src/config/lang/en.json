@@ -1465,7 +1465,12 @@
 				"TITLE": "Withdrawal limits",
 				"TABLE_1": {
 					"TITLE": "Independent withdrawal limit",
-					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:"
+					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
+					"HEADER": {
+						"CURRENCY": "Currency/asset",
+						"LIMIT": "24h limit"
+					},
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
 				},
 				"TABLE_2": {
 					"TITLE": "Collective shared standard withdrawal limit",

@@ -26,7 +26,8 @@ const renderRow = (
 					{display_name}
 				</div>
 			</td>
-			<td>{deposit_text}</td>
+			{/*Temporarily dropped deposit fee for the scope of 2.5 release*/}
+			{/*<td>{deposit_text}</td>*/}
 			<td>{withdrawal_text}</td>
 		</tr>
 	);
@@ -105,15 +106,16 @@ const DepositAndWithdrawalFees = ({ coins, level, icons }) => {
 								}
 							</EditWrapper>
 						</th>
-						<th>
-							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.HEADER.DEPOSIT">
-								{
-									STRINGS[
-										'FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.HEADER.DEPOSIT'
-									]
-								}
-							</EditWrapper>
-						</th>
+						{/*Temporarily dropped deposit fee for the scope of 2.5 release*/}
+						{/*<th>*/}
+						{/*<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.HEADER.DEPOSIT">*/}
+						{/*{*/}
+						{/*STRINGS[*/}
+						{/*'FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.HEADER.DEPOSIT'*/}
+						{/*]*/}
+						{/*}*/}
+						{/*</EditWrapper>*/}
+						{/*</th>*/}
 						<th>
 							<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.HEADER.WITHDRAWAL">
 								{
