@@ -443,7 +443,7 @@ class TransactionsHistory extends Component {
 					orders.isRemaining
 				) {
 					this.props.getOrdersHistory(RECORD_LIMIT, orders.page + 1, {
-						...params,
+						...temp,
 						open: false,
 					});
 					this.setState({ jumpToPage: pageNumber });
@@ -503,9 +503,6 @@ class TransactionsHistory extends Component {
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
-		let sortTrades = trades.data?.sort(
-			(x, y) => new Date(y.timestamp) - new Date(x.timestamp)
-		);
 
 		const props = {
 			symbol,
@@ -548,7 +545,7 @@ class TransactionsHistory extends Component {
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
-				props.data = { ...trades, data: sortTrades };
+				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
