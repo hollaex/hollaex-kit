@@ -242,181 +242,165 @@ const CoinPage = ({
 					</div>
 				</div>
 				<div className={`hollaex-container`}>
-					<div className={`token-container`}>
-						<div className="info-container">
-							<div className="header-text">
-								<EditWrapper stringId="HOLLAEX_TOKEN.ABOUT">
-									{STRINGS['HOLLAEX_TOKEN.ABOUT']} {pairBase_fullName} (
-									{currentCoinUpper})
-								</EditWrapper>
-							</div>
-							{coins[currentCoin].description ? (
-								<div
-									className="sub-text"
-									dangerouslySetInnerHTML={{
-										__html: `${coins[currentCoin].description}`,
-									}}
-								></div>
-							) : (
-								<div className="sub-text">
-									{' '}
-									No description for this asset yet. Coming soon!
-								</div>
-							)}
-
-							<div className="button-container">
-								<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
-									<Button
-										label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${replace(
-											selectedPairCoins?.key,
-											'-',
-											'/'
-										)}`}
-										type="button"
-										onClick={() => handleTrade(selectedPairCoins?.key)}
-										className="w-100"
-									/>
-								</EditWrapper>
-							</div>
+					<div className="info-container">
+						<div className="header-text">
+							<EditWrapper stringId="HOLLAEX_TOKEN.ABOUT">
+								{STRINGS['HOLLAEX_TOKEN.ABOUT']} {pairBase_fullName} (
+								{currentCoinUpper})
+							</EditWrapper>
 						</div>
-						<div className="trade-details-wrapper">
-							<div className="trade-details-content">
-								<div className="dropdown-container">
-									{options?.length > 1 && (
-										<Select
-											defaultValue={replace(currentPair, '-', '/')}
-											style={{ width: '100%' }}
-											className="coin-select custom-select-input-style elevated w-100 mb-5"
-											dropdownClassName="custom-select-style"
-											placeholder=""
-											onChange={handleChange}
-											options={options}
-										/>
-									)}
-								</div>
-								<div className="d-flex">
-									<div>
-										<div className="sub-title caps">
-											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-												{STRINGS['MARKETS_TABLE.LAST_PRICE']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-22 pr-2">{ticker?.last}</div>
-											<div className="fullname important-text">
-												{pair_2_display_name}
-											</div>
-										</div>
-									</div>
-									<div className="pl-6 trade_tabs-container h1">
-										<div className="sub-title caps">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-												{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
-											</EditWrapper>
-										</div>
-										{selectedPair && selectedPair?.[0] && (
-											<PriceChange market={selectedPair?.[0]} />
-										)}
-									</div>
-								</div>
-								<div className="chart w-100">
-									<div className="fade-area"></div>
-									<SparkLine
-										data={
-											!lineChartData ||
-											!lineChartData.close ||
-											(lineChartData &&
-												lineChartData.close &&
-												lineChartData.close.length < 2)
-												? { close: [0.1, 0.1, 0.1], open: [] }
-												: lineChartData
-										}
-										containerProps={{
-											style: { height: '100%', width: '100%' },
-										}}
-										renderDefaultLine
+						{coins[currentCoin].description ? (
+							<div
+								className="sub-text"
+								dangerouslySetInnerHTML={{
+									__html: `${coins[currentCoin].description}`,
+								}}
+							></div>
+						) : (
+							<div className="sub-text">
+								{' '}
+								<EditWrapper stringId="HOLLAEX_TOKEN.NO_DESCRIPTION">
+									{STRINGS['HOLLAEX_TOKEN.NO_DESCRIPTION']}
+								</EditWrapper>
+							</div>
+						)}
+
+						<div className="button-container">
+							<EditWrapper stringId="HOLLAEX_TOKEN.TRADE">
+								<Button
+									label={`${STRINGS['HOLLAEX_TOKEN.TRADE']} ${replace(
+										selectedPairCoins?.key,
+										'-',
+										'/'
+									)}`}
+									type="button"
+									onClick={() => handleTrade(selectedPairCoins?.key)}
+									className="w-100"
+								/>
+							</EditWrapper>
+						</div>
+					</div>
+					<div className="trade-details-wrapper">
+						<div className="trade-details-content">
+							<div className="dropdown-container">
+								{options?.length > 1 && (
+									<Select
+										defaultValue={replace(currentPair, '-', '/')}
+										style={{ width: '100%' }}
+										className="coin-select custom-select-input-style elevated w-100 mb-5"
+										dropdownClassName="custom-select-style"
+										placeholder=""
+										onChange={handleChange}
+										options={options}
 									/>
-								</div>
-								<div className="d-flex pb-35">
-									<div>
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
-												{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.high}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-									<div className="pl-6">
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
-												{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.low}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-								</div>
-								<div className="d-flex pb-35">
-									<div>
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
-												{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.open}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-									<div className="pl-6">
-										<div className="sub-title">
-											<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
-												{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
-											</EditWrapper>
-										</div>
-										<div className="d-flex">
-											<div className="f-size-16 pr-2">{ticker?.close}</div>
-											<div className="fullname">{pair_2_display_name}</div>
-										</div>
-									</div>
-								</div>
+								)}
+							</div>
+							<div className="d-flex">
 								<div>
 									<div className="sub-title caps">
-										<EditWrapper stringId="SUMMARY.VOLUME_24H">
-											{STRINGS['SUMMARY.VOLUME_24H']}
+										<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
+											{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 										</EditWrapper>
 									</div>
 									<div className="d-flex">
-										<div className="f-size-16 pr-2">{ticker?.volume}</div>
-										<div className="fullname">
-											{coins?.[pairBase] && coins?.[pairBase]?.display_name}
+										<div className="f-size-22 pr-2">{ticker?.last}</div>
+										<div className="fullname important-text">
+											{pair_2_display_name}
 										</div>
+									</div>
+								</div>
+								<div className="pl-6 trade_tabs-container h1">
+									<div className="sub-title caps">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
+											{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
+										</EditWrapper>
+									</div>
+									{selectedPair && selectedPair?.[0] && (
+										<PriceChange market={selectedPair?.[0]} />
+									)}
+								</div>
+							</div>
+							<div className="chart w-100">
+								<div className="fade-area"></div>
+								<SparkLine
+									data={
+										!lineChartData ||
+										!lineChartData.close ||
+										(lineChartData &&
+											lineChartData.close &&
+											lineChartData.close.length < 2)
+											? { close: [0.1, 0.1, 0.1], open: [] }
+											: lineChartData
+									}
+									containerProps={{
+										style: { height: '100%', width: '100%' },
+									}}
+									renderDefaultLine
+								/>
+							</div>
+							<div className="d-flex pb-35">
+								<div>
+									<div className="sub-title">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.HIGH_24H">
+											{STRINGS['QUICK_TRADE_COMPONENT.HIGH_24H']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker?.high}</div>
+										<div className="fullname">{pair_2_display_name}</div>
+									</div>
+								</div>
+								<div className="pl-6">
+									<div className="sub-title">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.LOW_24H">
+											{STRINGS['QUICK_TRADE_COMPONENT.LOW_24H']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker?.low}</div>
+										<div className="fullname">{pair_2_display_name}</div>
+									</div>
+								</div>
+							</div>
+							<div className="d-flex pb-35">
+								<div>
+									<div className="sub-title">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_BID">
+											{STRINGS['QUICK_TRADE_COMPONENT.BEST_BID']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker?.open}</div>
+										<div className="fullname">{pair_2_display_name}</div>
+									</div>
+								</div>
+								<div className="pl-6">
+									<div className="sub-title">
+										<EditWrapper stringId="QUICK_TRADE_COMPONENT.BEST_ASK">
+											{STRINGS['QUICK_TRADE_COMPONENT.BEST_ASK']}
+										</EditWrapper>
+									</div>
+									<div className="d-flex">
+										<div className="f-size-16 pr-2">{ticker?.close}</div>
+										<div className="fullname">{pair_2_display_name}</div>
+									</div>
+								</div>
+							</div>
+							<div>
+								<div className="sub-title caps">
+									<EditWrapper stringId="SUMMARY.VOLUME_24H">
+										{STRINGS['SUMMARY.VOLUME_24H']}
+									</EditWrapper>
+								</div>
+								<div className="d-flex">
+									<div className="f-size-16 pr-2">{ticker?.volume}</div>
+									<div className="fullname">
+										{coins?.[pairBase] && coins?.[pairBase]?.display_name}
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-				<div className="gray-text d-flex justify-content-center mt-5">
-					<EditWrapper stringId="HOLLAEX_TOKEN.LIST">
-						{STRINGS['HOLLAEX_TOKEN.LIST']}
-					</EditWrapper>
-				</div>
-				<div className="gray-text d-flex justify-content-center mt-3 pb-5">
-					<EditWrapper stringId="HOLLAEX_TOKEN.START_HOLLAEX">
-						{STRINGS.formatString(
-							STRINGS['HOLLAEX_TOKEN.START_HOLLAEX'],
-							<Link className="link pl-2 pr-2" to="/white-label">
-								{STRINGS['HOLLAEX_TOKEN.WHITE_LABEL']}
-							</Link>,
-							STRINGS['HOLLAEX_TOKEN.SOLUTION']
-						)}
-					</EditWrapper>
 				</div>
 			</div>
 		</div>

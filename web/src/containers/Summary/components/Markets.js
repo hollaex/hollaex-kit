@@ -173,27 +173,14 @@ class Markets extends Component {
 			<div>
 				{showContent && (
 					<div>
-						<div>
-							<EditWrapper stringId="SUMMARY_MARKETS.HOLLAEX">
-								{STRINGS.formatString(
-									STRINGS['SUMMARY_MARKETS.HOLLAEX'],
-									<Link className="link-text" to="/white-label">
-										{STRINGS['SUMMARY_MARKETS.WHITE_LABEL']}
-									</Link>,
-									STRINGS['SUMMARY_MARKETS.SOLUTION']
-								)}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
-								{STRINGS.formatString(
-									STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
-									<Link to="assets" className="link-text">
-										{STRINGS['SUMMARY_MARKETS.HERE']}
-									</Link>
-								)}
-							</EditWrapper>
-						</div>
+						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
+							{STRINGS.formatString(
+								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
+								<Link to="assets" className="link-text">
+									{STRINGS['SUMMARY_MARKETS.HERE']}
+								</Link>
+							)}
+						</EditWrapper>
 					</div>
 				)}
 				{showSearch && !isFilterDisplay && (
