@@ -3,7 +3,6 @@ import {
 	SET_SELECTED_PAYMENT,
 	SET_EXCHANGE_PLAN_TYPE,
 	SET_SELECTED_CRYPTO,
-	SET_CRYPTO_PAYMENT_TYPE,
 	SET_TRANSFER_CRYPTO_PAYMENT,
 	SET_FIAT_SUBMITTED,
 	SET_PAYMENT_ADDRESS_DETAILS,
@@ -17,8 +16,6 @@ const INITIAL_STATE = {
 	selectedType: 'diy',
 	exchangePlanType: 'item',
 	selectedCrypto: { coin: 'XHT', symbol: 'xht' },
-	cryptoPaymentType: '',
-	isAutomatedKYC: false,
 	transferCryptoPayment: false,
 	fiatSubmission: false,
 	paymentAddressDetails: {
@@ -41,8 +38,6 @@ export default (state = INITIAL_STATE, { type, payload }) => {
 			return { ...state, exchangePlanType: payload };
 		case SET_SELECTED_CRYPTO:
 			return { ...state, selectedCrypto: payload };
-		case SET_CRYPTO_PAYMENT_TYPE:
-			return { ...state, cryptoPaymentType: payload };
 		case SET_TRANSFER_CRYPTO_PAYMENT:
 			return { ...state, transferCryptoPayment: payload };
 		case SET_FIAT_SUBMITTED:

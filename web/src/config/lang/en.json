@@ -199,7 +199,9 @@
 		"FOOTER_TEXT": "Quick trade fees use market taker rates",
 		"FOOTER_TEXT_1": "Sourced from",
 		"GO_TO_TEXT": "Go to",
-		"SOURCE_TEXT": "Broker OTC deal"
+		"SOURCE_TEXT": "Broker OTC deal",
+		"VISIT": "Visit{0}",
+		"ASSET_INFO_PAGE": "Assets info page"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -1241,7 +1243,7 @@
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
-		"WHITE_LABEL": "white-lable",
+		"WHITE_LABEL": "white-label",
 		"SOLUTION": "solution",
 		"VISIT_COIN_INFO_PAGE": "Visit coin info page {0}",
 		"HERE": "here"
@@ -1382,7 +1384,7 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICKTRADE",
+		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source"
@@ -1405,8 +1407,9 @@
 		"VIEW": "View more",
 		"VIEW_ACTIVITY": "View activity on blockchain",
 		"COMING_SOON": "Coming Soon...",
+		"NO_DESCRIPTION": "No description for this asset yet. Coming soon!",
 		"STAKE": "Stake",
-		"QUICK_BUY": "Quick buy",
+		"QUICK_BUY": "Quick buy ",
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
@@ -1424,5 +1427,56 @@
 	"ASYNC_LINK": {
 		"TITLE": "Page not opening automatically?",
 		"TEXT": "Your browser could be blocking the page. Try copy and pasting the link below instead:"
+	},
+	"FEES_AND_LIMITS": {
+		"LINK": "view my fees and limits",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Go back",
+			"TO": "to summary"
+		},
+		"TITLE": "Fees & limits",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Trading fees",
+				"TABLE": {
+					"TITLE": "Market trading fees",
+					"SUBTITLE": "Below are markets individual trading fee rules.",
+					"HEADER": {
+						"MARKET": "Market",
+						"MAKER": "Maker trading fees (limit orders)",
+						"TAKER": "Taker trading fees (market orders)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Withdrawal fees",
+				"TABLE": {
+					"TITLE": "Fees deducted upon withdrawal",
+					"SUBTITLE": "Below are all the fees when withdrawing an asset.",
+					"HEADER": {
+						"CURRENCY": "Currency/asset",
+						"DEPOSIT": "Deposit Fee",
+						"WITHDRAWAL": "Withdrawal fee"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Withdrawal limits",
+				"TABLE_1": {
+					"TITLE": "Independent withdrawal limit",
+					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
+					"HEADER": {
+						"CURRENCY": "Currency/asset",
+						"LIMIT": "24h limit"
+					},
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+				},
+				"TABLE_2": {
+					"TITLE": "Collective shared standard withdrawal limit",
+					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+				}
+			}
+		}
 	}
 }

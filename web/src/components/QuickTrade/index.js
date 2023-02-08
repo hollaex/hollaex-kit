@@ -277,6 +277,16 @@ class QuickTrade extends Component {
 							{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
 						</EditWrapper>
 					</div>
+					<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.VISIT">
+							{STRINGS.formatString(
+								STRINGS['QUICK_TRADE_COMPONENT.VISIT'],
+								<Link className="visit-asset-info ml-2" to="assets">
+									{STRINGS['QUICK_TRADE_COMPONENT.ASSET_INFO_PAGE']}
+								</Link>
+							)}
+						</EditWrapper>
+					</div>
 				</div>
 				<div
 					className={classnames('quick_trade-wrapper', 'd-flex', {

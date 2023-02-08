@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
 import { Image, EditWrapper } from 'components';
@@ -9,7 +10,6 @@ const TraderAccounts = ({
 	user = {},
 	config = {},
 	isAccountDetails = false,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	logout,
 	onInviteFriends,
@@ -84,16 +84,16 @@ const TraderAccounts = ({
 						</div>
 					</div>
 				) : null}
-				{/* {!!limitLevel.length && <div
-                    className="trade-account-link mb-2">
-                    <span
-                        className="pointer"
-                        onClick={() => onFeesAndLimits(account)}>
-                        {STRINGS["SUMMARY.VIEW_FEE_STRUCTURE"].toUpperCase()}
-                    </span>
-                </div>} */}
 				{!isAccountDetails && (
 					<Fragment>
+						<Link to="/fees-and-limits">
+							<div className="trade-account-link my-2 caps">
+								<EditWrapper stringId="FEES_AND_LIMITS.LINK">
+									{STRINGS['FEES_AND_LIMITS.LINK']}
+								</EditWrapper>
+							</div>
+						</Link>
+
 						<EditWrapper
 							stringId="REFERRAL_LINK.TITLE"
 							renderWrapper={(children) => (
@@ -106,22 +106,6 @@ const TraderAccounts = ({
 						>
 							{STRINGS['REFERRAL_LINK.TITLE']}
 						</EditWrapper>
-
-						<EditWrapper
-							stringId="SUMMARY.MY_FEES_LIMITS"
-							renderWrapper={(children) => (
-								<div className="trade-account-link mb-2">
-									<span
-										className="pointer caps"
-										onClick={() => onFeesAndLimits(level, user.discount)}
-									>
-										{children}
-									</span>
-								</div>
-							)}
-						>
-							{STRINGS['SUMMARY.MY_FEES_LIMITS']}
-						</EditWrapper>
 					</Fragment>
 				)}
 				{isAccountDetails && (
@@ -129,11 +113,8 @@ const TraderAccounts = ({
 						stringId="SUMMARY.VIEW_FEE_STRUCTURE"
 						renderWrapper={(children) => (
 							<div className="trade-account-link mb-2">
-								<span
-									className="pointer caps"
-									onClick={() => onFeesAndLimits(level, user.discount)}
-								>
-									{children}
+								<span className="pointer caps">
+									<Link to="/fees-and-limits">{children}</Link>
 								</span>
 							</div>
 						)}

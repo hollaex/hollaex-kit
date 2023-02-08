@@ -392,8 +392,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -411,8 +411,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -3422,8 +3422,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3577,7 +3577,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -3834,12 +3834,6 @@ table th {
     .summary-container .trader-account-wrapper .trade-account-secondary-txt {
       margin: auto 0;
       width: 60%; }
-  .summary-container .trader-wrapper-icon {
-    width: 5rem;
-    margin-right: 1rem; }
-    .summary-container .trader-wrapper-icon svg .level_icon,
-    .summary-container .trader-wrapper-icon svg .hap-icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics); }
   .summary-container .trader-acc-detail-icon {
     width: 8rem;
     margin-right: 1rem; }
@@ -4130,6 +4124,13 @@ table th {
   .summary-container .trade_tabs-search-outline {
     background: var(--labels_secondary-inactive-label-text-graphics); }
 
+.trader-wrapper-icon {
+  width: 5rem;
+  margin-right: 1rem; }
+  .trader-wrapper-icon svg .level_icon,
+  .trader-wrapper-icon svg .hap-icon {
+    fill: var(--labels_secondary-inactive-label-text-graphics); }
+
 .fee-limits-wrapper {
   width: 38rem; }
   .fee-limits-wrapper .fee-limits-link {
@@ -4382,11 +4383,11 @@ table th {
       border: 1px solid;
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .market-list__container .market-list__block .market-list__block-table .table-row .icon-container .circle-icon {
-      width: 15px;
-      height: 15px;
+      width: 18px;
+      height: 18px;
       border: 1px solid;
       color: var(--labels_secondary-inactive-label-text-graphics);
-      border-radius: 8px; }
+      border-radius: 10px; }
     .market-list__container .market-list__block .market-list__block-table .table-row .icon-container .triangle-icon {
       width: 0;
       height: 0;
@@ -6037,7 +6038,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8850,14 +8851,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -10128,6 +10129,8 @@ table th {
   .quick_trade-container .info-text {
     font-family: "Open Sans";
     color: var(--labels_secondary-inactive-label-text-graphics); }
+  .quick_trade-container .visit-asset-info {
+    text-decoration: underline; }
 
 .quick_trade-wrapper.width-none {
   min-width: unset !important;
@@ -11540,6 +11543,9 @@ table th {
   background-color: var(--trading_buying-related-elements); }
   .price-change .glance-up.entering:before, .price-change .glance-up.exiting:before {
     border-color: var(--calculated_trading_buying-related-text); }
+
+.hollaex-token-wrapper {
+  font-family: 'Open Sans' !important; }
 
 .tooltip-mark {
   fill: var(--labels_important-active-labels-text-graphics); }

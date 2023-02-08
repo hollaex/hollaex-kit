@@ -15,7 +15,6 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from 'components';
 // import { logout } from '../../actions/authAction';
 import {
-	openFeesStructureandLimits,
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
@@ -82,13 +81,6 @@ class Summary extends Component {
 
 	logoutConfirm = () => {
 		this.props.logoutconfirm();
-	};
-
-	onFeesAndLimits = (tradingAccount, discount) => {
-		this.props.openFeesStructureandLimits({
-			verification_level: tradingAccount,
-			discount: discount,
-		});
 	};
 
 	onAccountTypeChange = (type) => {
@@ -186,7 +178,6 @@ class Summary extends Component {
 							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
-							onFeesAndLimits={this.onFeesAndLimits}
 							onUpgradeAccount={this.onUpgradeAccount}
 							onAccountTypeChange={this.onAccountTypeChange}
 							verification_level={verification_level}
@@ -205,7 +196,6 @@ class Summary extends Component {
 											pairs={pairs}
 											coins={coins}
 											config={config_level}
-											onFeesAndLimits={this.onFeesAndLimits}
 											onUpgradeAccount={this.onUpgradeAccount}
 											onInviteFriends={this.onInviteFriends}
 											verification_level={verification_level}
@@ -296,7 +286,6 @@ class Summary extends Component {
 										selectedAccount={selectedAccount}
 										lastMonthVolume={lastMonthVolume}
 										onAccountTypeChange={this.onAccountTypeChange}
-										onFeesAndLimits={this.onFeesAndLimits}
 										onUpgradeAccount={this.onUpgradeAccount}
 									/>
 								</SummaryBlock>
@@ -330,10 +319,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	openFeesStructureandLimits: bindActionCreators(
-		openFeesStructureandLimits,
-		dispatch
-	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferrals: bindActionCreators(getUserReferrals, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),
