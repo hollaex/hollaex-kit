@@ -62,6 +62,7 @@ import {
 	DigitalAssets,
 	CoinPage,
 	WhiteLabel,
+	FeesAndLimits,
 } from './containers';
 import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
@@ -366,6 +367,12 @@ export const generateRoutes = (routes = []) => {
 					path="summary"
 					name="Summary"
 					component={Account}
+					onEnter={requireAuth}
+				/>
+				<Route
+					path="fees-and-limits"
+					name="Fees and limits"
+					component={FeesAndLimits}
 					onEnter={requireAuth}
 				/>
 				<Route path="assets" name="Digital Asset" component={DigitalAssets} />

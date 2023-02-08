@@ -121,6 +121,12 @@
 						width: 70%;
 						margin-top: 1rem;
 						color: $colors-black;
+
+						a {
+							text-decoration: underline;
+							color: var(--specials_buttons-links-and-highlights);
+							cursor: pointer;
+						}
 					}
 
 					.button-container {

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Loader } from '../../components';
+import { Loader } from 'components';
 
 class Container extends Component {
 	shouldComponentUpdate(nextProps) {
