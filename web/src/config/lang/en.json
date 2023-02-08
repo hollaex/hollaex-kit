@@ -1436,6 +1436,7 @@
 			"TO": "to summary"
 		},
 		"TITLE": "Fees & limits",
+		"SEARCH_PLACEHOLDER": "Search...",
 		"TABS": {
 			"TRADING_FEES": {
 				"TITLE": "Trading fees",

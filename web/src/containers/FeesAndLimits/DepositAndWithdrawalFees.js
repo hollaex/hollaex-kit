@@ -45,52 +45,61 @@ const getFeeText = (data, level) => {
 	return text;
 };
 
-const getRows = (level, coins, icons) => {
+const getRows = (level, coins, icons, search) => {
 	const rowData = [];
-	Object.entries(coins).forEach(([_, coin], c_index) => {
-		const {
-			icon_id,
-			display_name,
-			withdrawal_fees,
-			withdrawal_fee,
-			deposit_fees,
-			symbol,
-		} = coin;
-		if (withdrawal_fees) {
-			Object.keys(withdrawal_fees).forEach((network, n_index) => {
-				const withdrawal_fees_data = withdrawal_fees[network];
-				if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
-					withdrawal_fees_data['symbol'] = symbol;
-				}
-				const withdrawal_text = getFeeText(withdrawal_fees_data, level);
-				const deposit_text =
-					deposit_fees && deposit_fees[network]
-						? getFeeText(deposit_fees[network], level)
-						: 'N/A';
-				const index = `${c_index}_${n_index}`;
+	Object.entries(coins)
+		.filter(([key]) => !search || (search && key.includes(search)))
+		.forEach(([_, coin], c_index) => {
+			const {
+				icon_id,
+				display_name,
+				withdrawal_fees,
+				withdrawal_fee,
+				deposit_fees,
+				symbol,
+			} = coin;
+			if (withdrawal_fees) {
+				Object.keys(withdrawal_fees).forEach((network, n_index) => {
+					const withdrawal_fees_data = withdrawal_fees[network];
+					if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
+						withdrawal_fees_data['symbol'] = symbol;
+					}
+					const withdrawal_text = getFeeText(withdrawal_fees_data, level);
+					const deposit_text =
+						deposit_fees && deposit_fees[network]
+							? getFeeText(deposit_fees[network], level)
+							: 'N/A';
+					const index = `${c_index}_${n_index}`;
 
+					rowData.push(
+						renderRow(
+							icon_id,
+							display_name,
+							deposit_text,
+							withdrawal_text,
+							index,
+							icons
+						)
+					);
+				});
+			} else {
+				const withdrawal_text = `${withdrawal_fee} ${display_name}`;
 				rowData.push(
 					renderRow(
 						icon_id,
 						display_name,
-						deposit_text,
+						'N/A',
 						withdrawal_text,
-						index,
+						c_index,
 						icons
 					)
 				);
-			});
-		} else {
-			const withdrawal_text = `${withdrawal_fee} ${display_name}`;
-			rowData.push(
-				renderRow(icon_id, display_name, 'N/A', withdrawal_text, c_index, icons)
-			);
-		}
-	});
+			}
+		});
 	return rowData;
 };
 
-const DepositAndWithdrawalFees = ({ coins, level, icons }) => {
+const DepositAndWithdrawalFees = ({ coins, level, icons, search }) => {
 	return (
 		<div className="wallet-assets_block">
 			<table className="wallet-assets_block-table">
@@ -127,7 +136,7 @@ const DepositAndWithdrawalFees = ({ coins, level, icons }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{getRows(level, coins, icons)}</tbody>
+				<tbody>{getRows(level, coins, icons, search)}</tbody>
 			</table>
 		</div>
 	);
