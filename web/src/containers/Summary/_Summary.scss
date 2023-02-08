@@ -257,16 +257,6 @@ $trade-tab--arrow-size: 0.4rem;
 			width: 60%;
 		}
 	}
-	.trader-wrapper-icon {
-		width: 5rem;
-		margin-right: 1rem;
-		svg {
-			.level_icon,
-			.hap-icon {
-				fill: $colors-black;
-			}
-		}
-	}
 
 	.trader-acc-detail-icon {
 		width: 8rem;
@@ -697,6 +687,17 @@ $trade-tab--arrow-size: 0.4rem;
 
 	.trade_tabs-search-outline {
 		background: $trade-tabs-inactive-color;
+	}
+}
+
+.trader-wrapper-icon {
+	width: 5rem;
+	margin-right: 1rem;
+	svg {
+		.level_icon,
+		.hap-icon {
+			fill: $colors-black;
+		}
 	}
 }
 

@@ -15,7 +15,6 @@ const AccountDetails = ({
 	selectedAccount,
 	lastMonthVolume,
 	onAccountTypeChange,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	config,
 	verification_level,
@@ -58,7 +57,6 @@ const AccountDetails = ({
 					selectedAccount={selectedAccount}
 					lastMonthVolume={lastMonthVolume}
 					onAccountTypeChange={onAccountTypeChange}
-					onFeesAndLimits={onFeesAndLimits}
 					onUpgradeAccount={onUpgradeAccount}
 					verification_level={verification_level}
 				/>
@@ -80,7 +78,6 @@ const AccountDetails = ({
 						selectedAccount={selectedAccount}
 						lastMonthVolume={lastMonthVolume}
 						onAccountTypeChange={onAccountTypeChange}
-						onFeesAndLimits={onFeesAndLimits}
 						onUpgradeAccount={onUpgradeAccount}
 						verification_level={verification_level}
 					/>
