@@ -122,7 +122,7 @@
 }
 .plugin-list-container .plugin-list,
 .myplugin-container .plugin-list {
-	height: 350px;
+	height: 460px;
 	overflow: auto;
 	overflow-x: hidden;
 }
@@ -506,8 +506,6 @@
 	position: relative;
 }
 .container-wrapper .info-text-wrapper {
-	position: absolute;
-	top: 5rem;
 	width: 100%;
 }
 .container-wrapper .info-text-wrapper div {
@@ -546,6 +544,12 @@
 	width: 15rem;
 }
 
+.plugin-list {
+	height: 465px;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
 .plugin-list-wrapper {
 	display: flex;
 	flex-wrap: wrap;
@@ -556,4 +560,10 @@
 }
 .plugin-list-wrapper .plugin-list-item .description-content {
 	padding-left: 2rem;
+}
+
+.app-store-wrapper .apps-store-background-img {
+	height: 78rem;
+	background-repeat: no-repeat;
+	background-size: cover;
 }

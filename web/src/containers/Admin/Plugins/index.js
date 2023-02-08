@@ -84,7 +84,6 @@ class Plugins extends Component {
 	}
 
 	getPluginsData = async () => {
-		console.log('12121wq');
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
@@ -98,7 +97,6 @@ class Plugins extends Component {
 		return requestActivationsPlugin(params)
 			.then((res) => {
 				if (res && res.data) {
-					console.log('requestActivationsPlugin', res.data);
 					// this.setState({ActivatedPluginDetails})
 				}
 			})
@@ -107,7 +105,6 @@ class Plugins extends Component {
 			});
 	};
 	getMyPlugins = (params = {}) => {
-		console.log('innnwerere');
 		return requestMyPlugins(params)
 			.then((res) => {
 				if (res && res.data) {
@@ -117,7 +114,6 @@ class Plugins extends Component {
 							location: { pathname, query: { plugin } = {} },
 						},
 					} = this.props;
-					console.log('ertererr', res.data);
 					this.setState({ myPlugins: res.data }, () => {
 						const pluginData = res.data.find(({ name }) => name === plugin);
 						if (pluginData) {
@@ -207,7 +203,6 @@ class Plugins extends Component {
 	};
 
 	onChangeNextType = (nextType) => {
-		console.log('nextType121212', nextType);
 		this.setState({ nextType });
 	};
 
@@ -655,6 +650,7 @@ class Plugins extends Component {
 							handleOpenPlugin={this.handleOpenPlugin}
 							onChangeNextType={this.onChangeNextType}
 							myPlugins={myPlugins}
+							pluginData={pluginData}
 						/>
 					</>
 				);
@@ -689,6 +685,7 @@ class Plugins extends Component {
 							restart={this.handleRestart}
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
+							router={this.props.router}
 						/>
 					</div>
 				);

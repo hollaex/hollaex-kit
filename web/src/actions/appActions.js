@@ -67,6 +67,7 @@ export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
+export const SELECTED_PLUGIN = 'SELECTED_PLUGIN';
 export const SET_INFO = 'SET_INFO';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
@@ -371,6 +372,16 @@ export const setPlugins = (enabledPlugins) => {
 		type: SET_PLUGINS,
 		payload: {
 			enabledPlugins,
+		},
+	};
+};
+
+export const setSelectedPlugin = (selectedPlugin) => {
+	console.log('actionsss', selectedPlugin);
+	return {
+		type: SELECTED_PLUGIN,
+		payload: {
+			selectedPlugin,
 		},
 	};
 };

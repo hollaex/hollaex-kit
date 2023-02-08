@@ -56,6 +56,7 @@ import EnterpriseForm from '../EnterPriseForm';
 import { getExchange } from '../AdminFinancials/action';
 import Subscription from './subscription';
 import './Billing.scss';
+import PluginSubscription from './pluginSubscription';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -378,12 +379,14 @@ const GeneralContent = ({
 	putExchange,
 	exchangeCardKey,
 	setExchangeCardKey,
+	pluginData = {},
 }) => {
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
+	const isPluginDataAvail = !isEmpty(pluginData);
 
 	const [modalWidth, setModalWidth] = useState('85rem');
-	const [OpenPlanModal, setOpenPlanModal] = useState(false);
+	const [OpenPlanModal, setOpenPlanModal] = useState(isPluginDataAvail);
 	const [isLoading, setIsLoading] = useState(false);
 	const [isMonthly, setIsMonthly] = useState(
 		dashExchange.period !== 'year' ? true : false
@@ -609,17 +612,29 @@ const GeneralContent = ({
 	const renderFooter = () => {
 		return (
 			<div className="horizantal-line">
-				<Subscription
-					selectedCrypto={selectedCrypto}
-					selectedType={selectedType}
-					planPriceData={planPriceData}
-					isMonthly={isMonthly}
-					dashExchange={dashExchange}
-					selectedPlanData={selectedPlanData}
-					exchangeCardKey={exchangeCardKey}
-					paymentAddressDetails={paymentAddressDetails}
-					exchangePlanType={exchangePlanType}
-				/>
+				{isPluginDataAvail ? (
+					<PluginSubscription
+						pluginData={pluginData}
+						selectedCrypto={selectedCrypto}
+						isMonthly={isMonthly}
+						paymentAddressDetails={paymentAddressDetails}
+						exchangePlanType={exchangePlanType}
+						exchangeCardKey={exchangeCardKey}
+						planPriceData={planPriceData}
+					/>
+				) : (
+					<Subscription
+						selectedCrypto={selectedCrypto}
+						selectedType={selectedType}
+						planPriceData={planPriceData}
+						isMonthly={isMonthly}
+						dashExchange={dashExchange}
+						selectedPlanData={selectedPlanData}
+						exchangeCardKey={exchangeCardKey}
+						paymentAddressDetails={paymentAddressDetails}
+						exchangePlanType={exchangePlanType}
+					/>
+				)}
 				<div>{renderBtn()}</div>
 			</div>
 		);
@@ -956,113 +971,119 @@ const GeneralContent = ({
 		switch (exchangePlanType) {
 			case 'item':
 				return (
-					<div>
-						{exchangeCardKey !== 'diy' && (
-							<div className="switch-wrapper">
-								<div className="d-flex">
-									<div className="switch-content">
-										<span className={'switch-label'}>Pay yearly</span>
-										<div className="green-label save-label">
-											(Save up to 35%)
+					<>
+						{isPluginDataAvail ? (
+							renderFooter()
+						) : (
+							<div>
+								{exchangeCardKey !== 'diy' && (
+									<div className="switch-wrapper">
+										<div className="d-flex">
+											<div className="switch-content">
+												<span className={'switch-label'}>Pay yearly</span>
+												<div className="green-label save-label">
+													(Save up to 35%)
+												</div>
+											</div>
+											<Switch
+												onClick={handleOnSwith}
+												defaultChecked={isMonthly}
+												checked={isMonthly}
+											/>
+											<span className={'switch-label label-inactive ml-1'}>
+												Pay monthly
+											</span>
 										</div>
 									</div>
-									<Switch
-										onClick={handleOnSwith}
-										defaultChecked={isMonthly}
-										checked={isMonthly}
-									/>
-									<span className={'switch-label label-inactive ml-1'}>
-										Pay monthly
-									</span>
+								)}
+								<div className="bg-model">
+									<div
+										className={
+											'box-container content-wrapper plan-structure-wrapper w-100'
+										}
+									>
+										{Object.keys(selectedPlanData).map((type, inx) => {
+											if (exchangeCardKey === 'diy') {
+												return (
+													<DIYPlanStructure
+														className={
+															selectedType === type
+																? ''
+																: 'opacity-diy-plan-container'
+														}
+														selectedType={selectedType}
+														setSelectedType={setSelectedType}
+														type={type}
+														planData={selectedPlanData}
+														onHandleSelectedType={onHandleSelectedType}
+														priceData={priceData}
+														isMonthly={isMonthly}
+														key={inx}
+														dashExchange={dashExchange}
+													/>
+												);
+											} else {
+												return (
+													<PlanStructure
+														className={
+															selectedType === type
+																? ''
+																: 'opacity-cloud-plan-container'
+														}
+														selectedType={selectedType}
+														setSelectedType={setSelectedType}
+														type={type}
+														planData={selectedPlanData}
+														onHandleSelectedType={onHandleSelectedType}
+														priceData={priceData}
+														isMonthly={isMonthly}
+														cloudPlanDetails={showCloudPlanDetails}
+														key={inx}
+													/>
+												);
+											}
+										})}
+									</div>
+									<div className="footer">
+										{exchangeCardKey === 'diy' ? (
+											<div>
+												<div className="mb-1">
+													*DIY exchanges aren't assisted. This means email
+													communications and direct customer support aren't
+													provided. All exchange data management, hosting,
+													exchange upgrading and backups are the responsibility
+													of the operator. However, support services can be
+													purchased separately upon request.
+												</div>
+												<div>
+													*A donation towards the HollaEx network is required
+													for new custom coin and trading pair activation (DIY
+													boost includes 1 free token & market).
+												</div>
+											</div>
+										) : (
+											<div>
+												*A donation towards the HollaEx network is required for
+												new custom coin and trading pair activation
+											</div>
+										)}
+										<div>
+											*Custom exchange code and technical support are not
+											included in cloud plans and are paid separately
+										</div>
+									</div>
+									<div>
+										{fiatSubmission && selectedType === 'fiat' && (
+											<div className="success-msg">
+												You've already submitted a Fiat Ramp form.
+											</div>
+										)}
+									</div>
+									{renderBtn()}
 								</div>
 							</div>
 						)}
-						<div className="bg-model">
-							<div
-								className={
-									'box-container content-wrapper plan-structure-wrapper w-100'
-								}
-							>
-								{Object.keys(selectedPlanData).map((type, inx) => {
-									if (exchangeCardKey === 'diy') {
-										return (
-											<DIYPlanStructure
-												className={
-													selectedType === type
-														? ''
-														: 'opacity-diy-plan-container'
-												}
-												selectedType={selectedType}
-												setSelectedType={setSelectedType}
-												type={type}
-												planData={selectedPlanData}
-												onHandleSelectedType={onHandleSelectedType}
-												priceData={priceData}
-												isMonthly={isMonthly}
-												key={inx}
-												dashExchange={dashExchange}
-											/>
-										);
-									} else {
-										return (
-											<PlanStructure
-												className={
-													selectedType === type
-														? ''
-														: 'opacity-cloud-plan-container'
-												}
-												selectedType={selectedType}
-												setSelectedType={setSelectedType}
-												type={type}
-												planData={selectedPlanData}
-												onHandleSelectedType={onHandleSelectedType}
-												priceData={priceData}
-												isMonthly={isMonthly}
-												cloudPlanDetails={showCloudPlanDetails}
-												key={inx}
-											/>
-										);
-									}
-								})}
-							</div>
-							<div className="footer">
-								{exchangeCardKey === 'diy' ? (
-									<div>
-										<div className="mb-1">
-											*DIY exchanges aren't assisted. This means email
-											communications and direct customer support aren't
-											provided. All exchange data management, hosting, exchange
-											upgrading and backups are the responsibility of the
-											operator. However, support services can be purchased
-											separately upon request.
-										</div>
-										<div>
-											*A donation towards the HollaEx network is required for
-											new custom coin and trading pair activation (DIY boost
-											includes 1 free token & market).
-										</div>
-									</div>
-								) : (
-									<div>
-										*A donation towards the HollaEx network is required for new
-										custom coin and trading pair activation
-									</div>
-								)}
-								<div>
-									*Custom exchange code and technical support are not included
-									in cloud plans and are paid separately
-								</div>
-							</div>
-							<div>
-								{fiatSubmission && selectedType === 'fiat' && (
-									<div className="success-msg">
-										You've already submitted a Fiat Ramp form.
-									</div>
-								)}
-							</div>
-							{renderBtn()}
-						</div>
-					</div>
+					</>
 				);
 			case 'method':
 				return (
@@ -1335,7 +1356,11 @@ const GeneralContent = ({
 		return (
 			<div
 				className={
-					showCloudPlanDetails ? 'cloud-plan-button' : 'payment-button'
+					isPluginDataAvail
+						? 'plugin-btn-wrapper'
+						: showCloudPlanDetails
+						? 'cloud-plan-button'
+						: 'payment-button'
 				}
 			>
 				<Button block type="primary" onClick={handleBack}>
@@ -1347,6 +1372,7 @@ const GeneralContent = ({
 						type="primary"
 						onClick={handleNext}
 						disabled={selectedType === 'diy'}
+						className={isPluginDataAvail ? 'plugin-btn' : ''}
 					>
 						{exchangePlanType === 'payment' ? 'Done' : 'Next'}
 					</Button>
@@ -1457,6 +1483,7 @@ const mapStateToProps = (store) => ({
 	fiatSubmission: store.admin.fiatSubmission,
 	paymentAddressDetails: store.admin.paymentAddressDetails,
 	exchangeCardKey: store.admin.exchangeCardKey,
+	pluginData: store.app.selectedPlugin,
 });
 
 export default connect(mapStateToProps, {

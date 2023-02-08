@@ -162,7 +162,7 @@ const PluginList = ({
 	pluginData,
 }) => {
 	const renderList = () => {
-		return myPlugins.map((item, index) => {
+		return pluginData.map((item, index) => {
 			// const networkPlugin =
 			//     pluginData.filter((data) => data.name === item.name)[0] || {};
 			return (
