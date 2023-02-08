@@ -834,6 +834,21 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.user-status {
+	&.verified {
+		color: $colors-notifications-green;
+	}
+	&.pending {
+		color: $colors-notification-pending;
+	}
+	&.incompleted {
+		color: $colors-notification-pending;
+	}
+	&.rejected {
+		color: $colors-notifications-red;
+	}
+}
+
 @media (max-width: 920px) {
 	.summary-container {
 		.summary-block_wrapper .summary-block-title,

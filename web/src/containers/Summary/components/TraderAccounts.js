@@ -5,6 +5,7 @@ import { ReactSVG } from 'react-svg';
 import { Image, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { renderStatusIcon } from 'components/CheckTitle';
 
 const TraderAccounts = ({
 	user = {},
@@ -34,6 +35,12 @@ const TraderAccounts = ({
 	const icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS['LEVEL_ACCOUNT_ICON_4'];
+
+	const identity_status = user.id_data?.status || 0;
+	const notificationStatus = renderStatusIcon(
+		identity_status,
+		'verification-stauts user-status'
+	);
 
 	return (
 		<div className="d-flex">
@@ -106,6 +113,25 @@ const TraderAccounts = ({
 						>
 							{STRINGS['REFERRAL_LINK.TITLE']}
 						</EditWrapper>
+
+						<Link to="/verification">
+							<div className="d-flex trade-account-link my-2 caps">
+								<div>
+									<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
+										{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+									</EditWrapper>
+								</div>
+								<div className="mx-2">
+									<div className="w-100 d-flex justify-content-end">
+										{!!notificationStatus ? (
+											notificationStatus
+										) : (
+											<div className="empty-notification" />
+										)}
+									</div>
+								</div>
+							</div>
+						</Link>
 					</Fragment>
 				)}
 				{isAccountDetails && (

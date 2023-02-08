@@ -1161,7 +1161,8 @@
 		"MARKETS": "Markets",
 		"CHANGE_24H": "24H Change",
 		"VOLUME_24H": "24H Volume",
-		"VIEW_MORE_MARKETS": "View more markets"
+		"VIEW_MORE_MARKETS": "View more markets",
+		"VIEW_VERIFICATION": "view verification"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Invite your friend",
@@ -1479,5 +1480,11 @@
 				}
 			}
 		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "incomplete",
+		"PENDING": "pending",
+		"REJECTED": "rejected",
+		"VERIFIED": "verified"
 	}
 }
