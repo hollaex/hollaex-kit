@@ -6,6 +6,7 @@ import { Image, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
+import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 
 const TraderAccounts = ({
 	user = {},
@@ -101,10 +102,16 @@ const TraderAccounts = ({
 							</div>
 						</Link>
 
+						<div className="d-flex align-items-center">
+							<DollarOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
+								{STRINGS['SUMMARY.EARN_COMMISSION']}
+							</EditWrapper>
+						</div>
 						<EditWrapper
 							stringId="REFERRAL_LINK.TITLE"
 							renderWrapper={(children) => (
-								<div className="trade-account-link mb-2">
+								<div className="trade-account-link mb-4">
 									<span className="pointer caps" onClick={onInviteFriends}>
 										{children}
 									</span>
@@ -114,22 +121,18 @@ const TraderAccounts = ({
 							{STRINGS['REFERRAL_LINK.TITLE']}
 						</EditWrapper>
 
+						<div className="d-flex align-items-center">
+							<UserOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
+								{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
+							</EditWrapper>
+							<div className="mx-2">{notificationStatus}</div>
+						</div>
 						<Link to="/verification">
-							<div className="d-flex trade-account-link my-2 caps">
-								<div>
-									<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
-										{STRINGS['SUMMARY.VIEW_VERIFICATION']}
-									</EditWrapper>
-								</div>
-								<div className="mx-2">
-									<div className="w-100 d-flex justify-content-end">
-										{!!notificationStatus ? (
-											notificationStatus
-										) : (
-											<div className="empty-notification" />
-										)}
-									</div>
-								</div>
+							<div className="trade-account-link mb-2 caps">
+								<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
+									{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+								</EditWrapper>
 							</div>
 						</Link>
 					</Fragment>

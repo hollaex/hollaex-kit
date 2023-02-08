@@ -1162,7 +1162,9 @@
 		"CHANGE_24H": "24H Change",
 		"VOLUME_24H": "24H Volume",
 		"VIEW_MORE_MARKETS": "View more markets",
-		"VIEW_VERIFICATION": "view verification"
+		"VIEW_VERIFICATION": "view verification",
+		"EARN_COMMISSION": "Earn commissions",
+		"ID_VERIFICATION": "ID verification:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Invite your friend",
