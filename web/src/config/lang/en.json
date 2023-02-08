@@ -1352,7 +1352,7 @@
 		"NO_DUST": "No dust assets!",
 		"SECTION": {
 			"TITLE": "Convert wallet dust",
-			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1}.",
+			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1} or less.",
 			"TEXT_2": "All conversations will be settled in {0} ({1})."
 		},
 		"CONFIRMATION": {
