@@ -567,3 +567,7 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+.admin-content-wrapper:has(.app-store-wrapper) {
+	padding: 0px !important;
+}

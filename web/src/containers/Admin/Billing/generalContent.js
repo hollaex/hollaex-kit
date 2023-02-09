@@ -38,6 +38,7 @@ import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
 import {
 	getExchangeBilling,
 	getNewExchangeBilling,
+	getPluginActivateDetails,
 	getPrice,
 	requestStoreInvoice,
 	setExchangePlan,
@@ -729,12 +730,30 @@ const GeneralContent = ({
 		}
 	};
 
+	const getPluginActivate = async () => {
+		try {
+			const res = await getPluginActivateDetails(pluginData.name);
+			if (res && res.data) {
+				setinvoiceData([res.data]);
+				setExchangePlanType('method');
+				setSelectedType('plugin');
+			}
+		} catch (error) {
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			} else {
+				message.error(error.message);
+			}
+		}
+	};
+
 	const handleOnSwith = (isCheck) => {
 		setIsMonthly(isCheck);
 	};
 
 	const renderModelContent = () => {
 		const breadCrumbOptions = selectedType === 'fiat' ? fiatOptions : options;
+		console.log('bredCrumb', selectedType, fiatOptions, options);
 		return showCloudPlanDetails ? (
 			<div className="breadcrumb-cloud-plan-details">Cloud plan details</div>
 		) : (
@@ -1315,7 +1334,9 @@ const GeneralContent = ({
 
 	const handleNext = () => {
 		if (exchangePlanType === 'item') {
-			if (selectedType === 'fiat' && isFiatFormCompleted) {
+			if (isPluginDataAvail) {
+				getPluginActivate();
+			} else if (selectedType === 'fiat' && isFiatFormCompleted) {
 				setModalWidth('85rem');
 				setFiatSubmission(true);
 			} else {

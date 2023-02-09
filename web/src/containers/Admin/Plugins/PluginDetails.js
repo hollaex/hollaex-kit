@@ -1,43 +1,431 @@
-import React, { useState } from 'react';
-import { ReactSVG } from 'react-svg';
-import { Button, Modal, Spin } from 'antd';
-import { StarFilled, InfoCircleOutlined } from '@ant-design/icons';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Button, Modal, Divider, Spin, message } from 'antd';
+import {
+	StarFilled,
+	ClockCircleOutlined,
+	InfoCircleOutlined,
+} from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { Carousel } from 'components';
+import { ReactSVG } from 'react-svg';
+import { Carousel, BlueLink } from 'components';
+import STRINGS from 'config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
+import {
+	addPlugin,
+	updatePlugins,
+	getPluginActivateDetails,
+	getPluginStoreDetails,
+} from './action';
 import { setSelectedPlugin } from '../../../actions/appActions';
-
-import './plugin.scss';
+import ConfirmPlugin from './ConfirmPlugin';
 
 const PluginDetails = ({
-	pluginData,
+	handleBreadcrumb,
+	selectedNetworkPlugin = {},
 	selectedPlugin = {},
+	handlePluginList,
+	updatePluginList,
+	removePlugin,
+	pluginData,
 	isLoading,
-	setSelectedPlugin,
+	restart,
+	handleRedirect,
+	exchange,
+	activatedPluginDetails,
 	router,
 }) => {
 	const [isOpen, setOpen] = useState(false);
+	const [type, setType] = useState('');
+	const [isConfirm, setConfirm] = useState(true);
+	// const [isLoading, setLoading] = useState(false);
+	const [isAddLoading, setAddLoading] = useState(false);
+	const [isVersionUpdate, setUpdate] = useState(false);
+	const [isUpdateLoading, setUpdateLoading] = useState(false);
+	const [pluginStoreDetails, setPluginStoreDetails] = useState({});
+
+	const checkactivatedPlugin = (name) => {
+		const data = activatedPluginDetails.filter((item) => item.name === name);
+		return data.length ? true : false;
+	};
+
+	const requestPlugin = useCallback(() => {
+		getPluginStoreDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				console.log('getPluginStoreDetails res', res);
+				// setLoading(false);
+				setPluginStoreDetails(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPluginStoreDetails({});
+				}
+				// setLoading(false);
+			});
+	}, [selectedPlugin]);
+
+	useEffect(() => {
+		requestPlugin();
+	}, [requestPlugin]);
+
+	const onHandlePluginActivate = async () => {
+		getPluginActivateDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				console.log('getPluginActivateDetails res', res);
+				// setLoading(false);
+				setPluginStoreDetails(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPluginStoreDetails({});
+				}
+				// setLoading(false);
+			});
+	};
+	const handleAddPlugin = async () => {
+		const body = {
+			...pluginData,
+			enabled: true,
+		};
+		setAddLoading(true);
+		addPlugin(body)
+			.then((res) => {
+				setAddLoading(false);
+				handlePluginList(res);
+				restart(() => message.success('Plugin installed successfully'));
+				handleRedirect();
+			})
+			.catch((err) => {
+				setAddLoading(false);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+	};
+
+	const handleUpdatePlugin = () => {
+		handleClose();
+		const body = {
+			...selectedNetworkPlugin,
+		};
+		setUpdateLoading(true);
+		updatePlugins({ name: pluginData.name }, body)
+			.then((res) => {
+				setUpdateLoading(false);
+				updatePluginList(pluginData);
+				restart(() => message.success('Plugin updated successfully'));
+			})
+			.catch((err) => {
+				setUpdateLoading(false);
+				const _error =
+					err.data && err.data.message ? err.data.message : err.message;
+				message.error(_error);
+			});
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+		setType('');
+		setUpdate(false);
+	};
+
+	const handleAdd = () => {
+		handleClose();
+		handleAddPlugin();
+	};
+
+	const handleType = (type) => {
+		setOpen(true);
+		setType(type);
+	};
+
+	const handleRemove = (type) => {
+		setType(type);
+		removePlugin({ name: pluginData.name });
+		handleClose();
+		restart(() => message.success('Removed plugin successfully'));
+	};
+
+	const handleChange = (e) => {
+		if (e.target.value === 'I UNDERSTAND') {
+			setConfirm(false);
+		} else {
+			setConfirm(true);
+		}
+	};
+
+	const handleUpdate = () => {
+		setOpen(true);
+		setUpdate(true);
+	};
+
+	const renderPopup = () => {
+		switch (type) {
+			case 'remove':
+				return (
+					<div className="admin-plugin-modal-wrapper">
+						<div className="remove-wrapper">
+							<img
+								src={STATIC_ICONS.PLUGIN_REMOVAL_WHITE}
+								alt="Plugin"
+								className="plugin-removal-icon"
+							/>
+							<h5>
+								<b>Plugin removal</b>
+							</h5>
+							<div>
+								Removing a plugin will discontinue any functionality it provides
+								to your exchange. This may have unknown effects on your
+								exchange.
+							</div>
+							<div className="my-4 btn-wrapper d-flex justify-content-between">
+								<Button
+									type="primary"
+									className="add-btn"
+									onClick={handleClose}
+								>
+									Back
+								</Button>
+								<Button
+									type="primary"
+									className="add-btn"
+									onClick={() => handleType('confirm-plugin')}
+								>
+									I understand. Proceed.
+								</Button>
+							</div>
+						</div>
+					</div>
+				);
+			case 'confirm-plugin':
+				return (
+					<ConfirmPlugin
+						header={'Confirm plugin removal'}
+						description={`Please acknowledge that you understand the possible ramifications of removing this plugin from your exchange.`}
+						pluginData={pluginData}
+						isConfirm={isConfirm}
+						isShowThumbnail={true}
+						onHandleBack={() => handleType('remove')}
+						okBtnlabel={'Remove'}
+						onHandleChange={handleChange}
+						onHandleSubmit={() => handleRemove('confirm-plugin')}
+					/>
+				);
+			case 'add':
+			default:
+				return (
+					<div className="admin-plugin-modal-wrapper">
+						<h2>
+							{isVersionUpdate ? <b>Update plugin</b> : <b>Add plugin</b>}
+						</h2>
+						<div className="d-flex mt-4">
+							<img
+								src={
+									pluginData && pluginData.icon
+										? pluginData.icon
+										: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+								}
+								alt="Plugin"
+								className="plugin-icon"
+							/>
+							<div className="mx-3">
+								<div>
+									<b>Name:</b> {pluginData.name}
+								</div>
+								<div className="my-2">
+									<b>Description:</b> {pluginData.description}
+								</div>
+								<div className="my-2">
+									<b>Author:</b> {pluginData.author}
+								</div>
+								{isVersionUpdate ? (
+									<div>
+										<div>
+											<b>Currently installed versions:</b>{' '}
+											{selectedPlugin.version}
+										</div>
+										<div className="my-2 d-flex">
+											<b>Newest version:</b> {pluginData.version}
+										</div>
+									</div>
+								) : (
+									<div>
+										<b>Version:</b> {pluginData.version}
+									</div>
+								)}
+							</div>
+						</div>
+						<Divider />
+						{isVersionUpdate ? (
+							<div>Are you sure you want to update this plugin?</div>
+						) : (
+							<div>Are you sure you want to add this plugin?</div>
+						)}
+						<div className="my-4">
+							{isVersionUpdate ? (
+								<Button
+									type="primary"
+									className="add-btn"
+									onClick={handleUpdatePlugin}
+								>
+									Update
+								</Button>
+							) : (
+								<Button type="primary" className="add-btn" onClick={handleAdd}>
+									Add
+								</Button>
+							)}
+						</div>
+					</div>
+				);
+		}
+	};
+
+	const handleOpenConfirmation = () => {
+		setOpen(true);
+		setUpdate(false);
+	};
 
 	const renderButtonContent = () => {
-		const tempPluginData = {
-			...pluginData,
-			only_for: ['boost', 'crypto'],
-			free_for: [],
-		};
-		if (tempPluginData.payment_type === 'free') {
+		// console.log(object);
+		// const tempPluginData = {...pluginData, only_for:[], free_for:['boost', 'crypto','fiat']}
+		const tempPluginData = { ...pluginData };
+		if (isAddLoading || isUpdateLoading) {
 			return (
-				<div onClick={() => setOpen(true)} className="button-wrapper">
-					<Button type="primary">Install</Button>
-					<p>Free to install</p>
+				<div className="d-flex mt-5">
+					<ClockCircleOutlined />
+					<div>
+						{isUpdateLoading
+							? 'Update is in progress...'
+							: 'Installation in progress...'}
+					</div>
+				</div>
+			);
+		} else if (selectedPlugin.enabled) {
+			return (
+				<div className="btn-wrapper mt-3">
+					<div className="d-flex justify-content-between">
+						<Button
+							type="primary"
+							className="remove-btn mr-2"
+							onClick={() => handleType('remove')}
+						>
+							Remove
+						</Button>
+						<Button
+							type="primary"
+							className="config-btn"
+							onClick={handleBreadcrumb}
+						>
+							Configure
+						</Button>
+					</div>
+					{selectedPlugin.url && (
+						<div className="text-align-center">
+							<a
+								href={selectedPlugin.url}
+								target="_blank"
+								rel="noopener noreferrer"
+								className="underline-text"
+							>
+								Learn more
+							</a>{' '}
+							about this plugin
+						</div>
+					)}
+					<div className="d-flex align-items-center justify-content-end">
+						{selectedNetworkPlugin.version > selectedPlugin.version && (
+							<div className="d-flex align-items-center flex-column">
+								<Button
+									type="primary"
+									className="update-btn"
+									onClick={handleUpdate}
+								>
+									Update
+								</Button>
+								<div className="d-flex">
+									<div className="small-circle"></div>
+									<div className="update-txt">{`v${selectedNetworkPlugin.version} available`}</div>
+								</div>
+							</div>
+						)}
+					</div>
 				</div>
 			);
 		} else {
-			return (
-				<Button onClick={() => setOpen(true)} type="primary">
-					Buy
-				</Button>
-			);
+			// To-do : check Activation plugin list
+			if (
+				tempPluginData.payment_type === 'free' ||
+				tempPluginData?.free_for?.includes(exchange.plan) ||
+				tempPluginData?.only_for?.includes(exchange.plan) ||
+				checkactivatedPlugin(tempPluginData.name)
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={handleOpenConfirmation}
+						>
+							Install
+						</Button>
+						<div className="small-txt">Free to install</div>
+					</div>
+				);
+			} else if (
+				tempPluginData.payment_type !== 'free' &&
+				((!tempPluginData?.free_for?.length &&
+					!tempPluginData?.only_for?.length) ||
+					(!tempPluginData?.free_for?.includes(exchange.plan) &&
+						!tempPluginData?.only_for?.length) ||
+					tempPluginData.name.toLowerCase() === 'exclusive')
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={handleOpenConfirmation}
+							disabled={!Object.keys(pluginData).length}
+						>
+							Buy
+						</Button>
+					</div>
+				);
+			} else if (
+				tempPluginData.payment_type !== 'free' &&
+				tempPluginData?.free_for?.includes(exchange.plan) &&
+				tempPluginData?.only_for?.includes(exchange.plan) &&
+				!tempPluginData?.free_for?.length &&
+				tempPluginData?.only_for?.length
+			) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={onHandlePluginActivate}
+							disabled={!tempPluginData?.only_for?.includes(exchange.plan)}
+						>
+							Activate
+						</Button>
+						{!tempPluginData.only_for.includes(exchange.plan) ? (
+							<div className="ml-2 font-weight-bold">
+								{STRINGS['TERMS_OF_SERVICES.TO_GET_ACCESS']}
+								<BlueLink
+									href="mailto:sales@hollaex.com"
+									text={'sales@hollaex.com'}
+								/>
+							</div>
+						) : null}
+					</div>
+				);
+			}
 		}
+	};
+
+	const onHandleBuy = () => {
+		setSelectedPlugin(selectedPlugin);
+		router.push('/admin/billing');
 	};
 
 	const getCards = () => {
@@ -60,11 +448,6 @@ const PluginDetails = ({
 		));
 	};
 
-	const onHandleBuy = () => {
-		setSelectedPlugin(selectedPlugin);
-		router.push('/admin/billing');
-	};
-
 	if (isLoading) {
 		return (
 			<div className="app_container-content d-flex justify-content-center">
@@ -72,6 +455,7 @@ const PluginDetails = ({
 			</div>
 		);
 	}
+
 	const {
 		name,
 		description,
@@ -82,6 +466,7 @@ const PluginDetails = ({
 		logo,
 		free_for,
 	} = pluginData;
+
 	return (
 		<div>
 			<div className="plugin-details-wrapper">
@@ -156,8 +541,8 @@ const PluginDetails = ({
 											</h6>
 										</div>
 									)}
-									{renderButtonContent()}
 								</div>
+								{renderButtonContent()}
 							</div>
 						</div>
 						<div className="plugin-carousel-wrapper ml-3">
@@ -182,81 +567,11 @@ const PluginDetails = ({
 				</div>
 				<Modal
 					visible={isOpen}
-					onCancel={() => setOpen(false)}
-					width="400px"
-					className="buy-modal"
-					footer={
-						<div className="buy-modal-footer">
-							<div>
-								<p>Do you want proceed with purchase?</p>
-								<Button type="success" onClick={onHandleBuy}>
-									Buy
-								</Button>
-							</div>
-							<h6>
-								*All plugin app purchases are conducted in cryptocurrency only
-							</h6>
-						</div>
-					}
+					width={450}
+					onCancel={handleClose}
+					footer={false}
 				>
-					<div className="buy-modal-container">
-						<h5>Buy plugin app</h5>
-						<div className="buy-content-wrapper">
-							<img src={logo} alt="" className="exchange-plugin-image" />
-							<div>
-								<p>
-									{' '}
-									<p>{`Name:  ${name}`}</p> <h5> {`version | ${version}`}</h5>{' '}
-								</p>
-								<p>{`Description: ${description}`}</p>
-								<p>
-									{' '}
-									{!free_for?.length ? (
-										<>
-											Note: <InfoCircleOutlined />{' '}
-											{free_for?.map((item) => (
-												<p>{item}</p>
-											))}
-										</>
-									) : (
-										''
-									)}{' '}
-								</p>
-								<p>
-									Author:
-									<ReactSVG
-										src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-									/>{' '}
-									{author}
-								</p>
-								<p>
-									{' '}
-									{payment_type && payment_type === 'one-time' ? (
-										<>
-											Type:{' '}
-											<ReactSVG
-												src={STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']}
-											/>{' '}
-											{payment_type}
-										</>
-									) : payment_type === 'credits' ? (
-										<>
-											Type: <ReactSVG src={STATIC_ICONS['CREDITS_PLUGIN']} />{' '}
-											{payment_type}
-										</>
-									) : (
-										''
-									)}{' '}
-								</p>
-								{price && (
-									<p>
-										<p>Price: </p>{' '}
-										<h6> {payment_type === 'free' ? 'Free' : `$ ${price}`}</h6>
-									</p>
-								)}
-							</div>
-						</div>
-					</div>
+					{renderPopup()}
 				</Modal>
 			</div>
 		</div>
@@ -269,4 +584,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { setSelectedPlugin })(PluginDetails);
+export default connect(mapStateToProps, {})(PluginDetails);

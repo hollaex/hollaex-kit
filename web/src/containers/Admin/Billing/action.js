@@ -49,3 +49,7 @@ export const requestStoreInvoice = (id, data) => {
 		}
 	});
 };
+
+export const getPluginActivateDetails = (query) => {
+	return requestDashAuthenticated(`/plugin/activate?name=${query}`, {});
+};

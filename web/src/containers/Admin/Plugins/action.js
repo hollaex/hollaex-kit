@@ -203,6 +203,7 @@ export const getPluginStoreDetails = (query) => {
 		{}
 	);
 };
+
 export const getPluginActivateDetails = (query) => {
 	return requestDashAuthenticated(
 		`/plugin/activate?${querystring.stringify(query)}`,

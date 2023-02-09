@@ -12,15 +12,16 @@ import {
 	requestPlugins,
 	requestMyPlugins,
 	updatePlugins,
+	getPluginMeta,
+	requestActivationsPlugin,
 } from './action';
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
-import { getPluginMeta, requestActivationsPlugin } from './action';
+import PluginAppStore from './PluginAppStore';
 
 import './index.css';
-import PluginAppStore from './PluginAppStore';
 
 const { Item } = Breadcrumb;
 
@@ -49,7 +50,7 @@ class Plugins extends Component {
 			isRemovePlugin: false,
 			removePluginName: '',
 			pluginCards: [],
-			ActivatedPluginDetails: [],
+			activatedPluginDetails: [],
 			processing: false,
 			thirdPartyType: 'upload_json',
 			thirdPartyError: '',
@@ -87,7 +88,7 @@ class Plugins extends Component {
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
-			// await this.getActivationsPlugin();
+			await this.getActivationsPlugin();
 		} catch (err) {
 			throw err;
 		}
@@ -96,14 +97,15 @@ class Plugins extends Component {
 	getActivationsPlugin = (params = {}) => {
 		return requestActivationsPlugin(params)
 			.then((res) => {
-				if (res && res.data) {
-					// this.setState({ActivatedPluginDetails})
+				if (res) {
+					this.setState({ activatedPluginDetails: res });
 				}
 			})
 			.catch((err) => {
 				throw err;
 			});
 	};
+
 	getMyPlugins = (params = {}) => {
 		return requestMyPlugins(params)
 			.then((res) => {
@@ -628,6 +630,7 @@ class Plugins extends Component {
 			thirdPartyType,
 			thirdPartyError,
 			thirdParty,
+			activatedPluginDetails,
 		} = this.state;
 		switch (nextType) {
 			case 'appStore':
@@ -678,6 +681,7 @@ class Plugins extends Component {
 						<PluginConfigure
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
+							activatedPluginDetails={activatedPluginDetails}
 							selectedPlugin={selectedPlugin}
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}

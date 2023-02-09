@@ -67,20 +67,12 @@ const PluginSubscription = ({
 				</div>
 				<div className="payment-container d-flex align-items-center">
 					<p className="f-20">
-						{/* Cost: ${price}* USDT */}
-						{exchangeCardKey === 'diy'
-							? `USD ${_get(planPriceData, 'year.price')}`
-							: exchangePlanType === 'payment'
-							? `${selectedCrypto.symbol.toUpperCase()} ${
-									paymentAddressDetails?.amount
-							  }`
-							: paymentAddressDetails?.amount
+						Cost :
+						{paymentAddressDetails?.amount
 							? `${paymentAddressDetails.currency.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
-							: isMonthly
-							? `USD${_get(planPriceData, 'month.price')}`
-							: `USD ${_get(planPriceData, 'year.price')}`}
+							: `${price}* USDT`}
 					</p>
 				</div>
 			</div>
