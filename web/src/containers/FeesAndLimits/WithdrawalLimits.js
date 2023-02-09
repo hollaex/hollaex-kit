@@ -83,7 +83,7 @@ const WithdrawalLimits = ({
 										'FEES_AND_LIMITS.TABS.WITHDRAWAL_LIMITS.TABLE_2.TITLE'
 									]
 								}
-								textType="title bold"
+								textType="title bold text-align-left"
 								iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_LIMITS']}
 							/>
 							<div className="py-4">
