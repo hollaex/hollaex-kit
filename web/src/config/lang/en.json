@@ -47,6 +47,7 @@
 	"APPLY_HERE": "Apply Here",
 	"CONVERT": "Convert",
 	"TO": "To",
+	"NA": "N/A",
 	"HOME": {
 		"MAIN_TITLE": "Cryptocurrency trading exchange",
 		"MAIN_TEXT": "Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.",
@@ -829,8 +830,6 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
-	"TIME_OPEN": "Time of Opening ",
-	"TIME_CLOSE": "Time Closed",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
