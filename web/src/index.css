@@ -392,8 +392,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -411,8 +411,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -3422,8 +3422,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3577,7 +3577,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -4244,6 +4244,18 @@ table th {
   margin-right: 0.5rem;
   position: relative;
   top: calc(50% - 0.6rem); }
+
+.user-status.verified {
+  color: var(--specials_checks-okay-done); }
+
+.user-status.pending {
+  color: var(--specials_pending-waiting-caution); }
+
+.user-status.incompleted {
+  color: var(--specials_pending-waiting-caution); }
+
+.user-status.rejected {
+  color: var(--specials_notifications-alerts-warnings); }
 
 @media (max-width: 920px) {
   .summary-container .summary-block_wrapper .summary-block-title,
@@ -5778,82 +5790,85 @@ table th {
       background: var(--base_background);
       color: var(--labels_secondary-inactive-label-text-graphics); }
     .hollaex-token-wrapper .token-wrapper .hollaex-container {
-      border: 1px solid var(--calculated_super-pale_label-text-graphics); }
-      .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container {
-        display: flex;
-        justify-content: space-between; }
-        .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container {
-          width: 65%;
-          background-color: var(--calculated_quick_trade-bg);
-          padding: 4rem; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .header-text {
-            font-size: 16px;
-            font-weight: bold;
-            letter-spacing: 1px; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .sub-text {
-            font-size: 14px;
-            width: 70%;
-            margin-top: 1rem;
-            color: var(--labels_secondary-inactive-label-text-graphics); }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container {
-            margin-top: 7rem; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .edit-wrapper__container {
+      border: 1px solid var(--calculated_super-pale_label-text-graphics);
+      display: flex;
+      justify-content: space-between; }
+      .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
+        width: 65%;
+        background-color: var(--calculated_quick_trade-bg);
+        padding: 4rem; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .header-text {
+          font-size: 16px;
+          font-weight: bold;
+          letter-spacing: 1px; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .sub-text {
+          font-size: 14px;
+          width: 100%;
+          margin-top: 1rem;
+          color: var(--labels_secondary-inactive-label-text-graphics); }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .sub-text a {
+            text-decoration: underline;
+            color: var(--specials_buttons-links-and-highlights);
+            cursor: pointer; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container {
+          margin-top: 7rem; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container {
+            width: 100%; }
+            .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container div {
               width: 100%; }
-              .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .edit-wrapper__container div {
-                width: 100%; }
-              .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .edit-wrapper__container .edit-wrapper__icons-container {
-                width: 5%; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .info-container .button-container .button-2 {
-              margin: 0 10px 0 10px; }
-        .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper {
-          width: 40%;
-          padding: 40px 65px 30px 55px;
-          font-family: "Open Sans";
-          background-color: var(--base_background); }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content {
-            height: 450px; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .pb-30 {
-              padding-bottom: 30px; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .pb-35 {
-              padding-bottom: 35px; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .pl-6 {
-              padding-left: 6rem; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .chart {
+            .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .edit-wrapper__container .edit-wrapper__icons-container {
+              width: 5%; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .button-2 {
+            margin: 0 10px 0 10px; }
+      .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
+        width: 40%;
+        padding: 40px 65px 30px 55px;
+        font-family: "Open Sans";
+        background-color: var(--base_background); }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content {
+          height: 450px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-30 {
+            padding-bottom: 30px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-35 {
+            padding-bottom: 35px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pl-6 {
+            padding-left: 6rem; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart {
+            height: 100px;
+            margin: 10px 0; }
+            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart div:last-child {
+              padding-top: 1rem; }
+            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area {
+              position: relative; }
+            .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .chart .fade-area::before {
+              content: '';
+              position: absolute;
               height: 100px;
-              margin: 10px 0; }
-              .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .chart div:last-child {
-                padding-top: 1rem; }
-              .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .chart .fade-area {
-                position: relative; }
-              .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .chart .fade-area::before {
-                content: '';
-                position: absolute;
-                height: 100px;
-                width: 100%;
-                background-image: linear-gradient(to right, var(--base_background), rgba(0, 0, 0, 0));
-                z-index: -1; }
-            .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
-              margin: 0 !important;
-              width: 100% !important; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .currency-ball-image-wrapper {
-            height: 5rem; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .f-size-16 {
-            font-size: 16px;
-            color: var(--labels_secondary-inactive-label-text-graphics);
-            font-weight: bold; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .f-size-22 {
-            font-size: 22px;
-            font-weight: bold; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .fullname {
-            color: var(--labels_secondary-inactive-label-text-graphics);
-            font-size: 0.65rem;
-            white-space: nowrap; }
-          .hollaex-token-wrapper .token-wrapper .hollaex-container .token-container .trade-details-wrapper .sub-title {
-            color: var(--labels_secondary-inactive-label-text-graphics);
-            font: normal normal 300 11px/15px "Open Sans";
-            letter-spacing: 2.2px;
-            opacity: 1;
-            white-space: nowrap; }
+              width: 100%;
+              background-image: linear-gradient(to right, var(--base_background), rgba(0, 0, 0, 0));
+              z-index: -1; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
+            margin: 0 !important;
+            width: 100% !important; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .currency-ball-image-wrapper {
+          height: 5rem; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .f-size-16 {
+          font-size: 16px;
+          color: var(--labels_secondary-inactive-label-text-graphics);
+          font-weight: bold; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .f-size-22 {
+          font-size: 22px;
+          font-weight: bold; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .fullname {
+          color: var(--labels_secondary-inactive-label-text-graphics);
+          font-size: 0.65rem;
+          white-space: nowrap; }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .sub-title {
+          color: var(--labels_secondary-inactive-label-text-graphics);
+          font: normal normal 300 11px/15px "Open Sans";
+          letter-spacing: 2.2px;
+          opacity: 1;
+          white-space: nowrap; }
   .hollaex-token-wrapper .paircoins-color {
     color: var(--labels_secondary-inactive-label-text-graphics); }
   .hollaex-token-wrapper .white-text {
@@ -6038,7 +6053,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8851,14 +8866,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
