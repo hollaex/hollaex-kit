@@ -24,6 +24,7 @@ const Index = ({ config_level, verification_level, router }) => {
 	);
 	const [tabs, setTabs] = useState([]);
 	const [activeTab, setActiveTab] = useState(0);
+	const [search, setSearch] = useState();
 
 	useEffect(() => {
 		const updateTabs = () => {
@@ -31,6 +32,8 @@ const Index = ({ config_level, verification_level, router }) => {
 				selectedLevel,
 				setSelectedLevel,
 				setActiveTab,
+				search,
+				setSearch,
 			};
 
 			const tabs = [
@@ -76,7 +79,7 @@ const Index = ({ config_level, verification_level, router }) => {
 		};
 
 		updateTabs();
-	}, [selectedLevel, config_level]);
+	}, [selectedLevel, config_level, search]);
 
 	const renderContent = (tabs, activeTab) =>
 		tabs[activeTab] && tabs[activeTab].content ? (

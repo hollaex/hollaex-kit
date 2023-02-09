@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Select } from 'antd';
+import { Select, Input } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import { Image, IconTitle, EditWrapper } from 'components';
@@ -16,6 +17,8 @@ const WithdrawalFees = ({
 	setSelectedLevel,
 	options,
 	icons: ICONS,
+	search,
+	setSearch,
 }) => {
 	const accountData = config_level[selectedLevel] || {};
 	const description =
@@ -76,26 +79,59 @@ const WithdrawalFees = ({
 							</div>
 						</div>
 						<div className="w-100 pl-3">
-							<IconTitle
-								stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.TITLE"
-								text={
-									STRINGS['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.TITLE']
-								}
-								textType="title bold"
-								iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_FEES']}
-							/>
-							<div className="py-4">
+							<div
+								className={classnames(
+									'd-flex',
+									'justify-content-between',
+									'align-center',
+									{
+										'flex-direction-column': isMobile,
+									}
+								)}
+							>
 								<div>
-									<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.SUBTITLE">
-										{
+									<IconTitle
+										stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.TITLE"
+										text={
 											STRINGS[
-												'FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.SUBTITLE'
+												'FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.TITLE'
 											]
 										}
-									</EditWrapper>
+										textType="title bold text-align-left"
+										iconPath={ICONS['FEES_AND_LIMITS_WITHDRAWAL_FEES']}
+									/>
+									<div className="py-4">
+										<div>
+											<EditWrapper stringId="FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.SUBTITLE">
+												{
+													STRINGS[
+														'FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.SUBTITLE'
+													]
+												}
+											</EditWrapper>
+										</div>
+									</div>
+								</div>
+								<div>
+									<Input
+										allowClear
+										prefix={<SearchOutlined className="secondary-text" />}
+										placeholder={STRINGS['FEES_AND_LIMITS.SEARCH_PLACEHOLDER']}
+										value={search}
+										onChange={({ target: { value } }) => setSearch(value)}
+										style={{
+											width: 200,
+										}}
+										bordered={false}
+										className="kit-divider"
+									/>
 								</div>
 							</div>
-							<DepositAndWithdrawalFees coins={coins} level={selectedLevel} />
+							<DepositAndWithdrawalFees
+								coins={coins}
+								level={selectedLevel}
+								search={search}
+							/>
 						</div>
 					</div>
 				</div>

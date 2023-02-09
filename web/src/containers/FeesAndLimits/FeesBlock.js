@@ -61,18 +61,20 @@ const getMakerRow = (
 // 	);
 // };
 
-const getRows = (pairs, level, coins, discount, tiers, icons) => {
+const getRows = (pairs, level, coins, discount, tiers, icons, search) => {
 	const rowData = [];
-	Object.keys(pairs).map((pair, index) => {
-		rowData.push(
-			getMakerRow(pairs, coins, pair, level, index, discount, tiers, icons)
-		);
-		return '';
-	});
+	Object.keys(pairs)
+		.filter((pair) => !search || (search && pair.includes(search)))
+		.map((pair, index) => {
+			rowData.push(
+				getMakerRow(pairs, coins, pair, level, index, discount, tiers, icons)
+			);
+			return '';
+		});
 	return rowData;
 };
 
-const FeesBlock = ({ pairs, coins, level, discount, tiers, icons }) => {
+const FeesBlock = ({ pairs, coins, level, discount, tiers, icons, search }) => {
 	return (
 		<div className="wallet-assets_block">
 			<table className="wallet-assets_block-table">
@@ -108,7 +110,9 @@ const FeesBlock = ({ pairs, coins, level, discount, tiers, icons }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{getRows(pairs, level, coins, discount, tiers, icons)}</tbody>
+				<tbody>
+					{getRows(pairs, level, coins, discount, tiers, icons, search)}
+				</tbody>
 			</table>
 		</div>
 	);
