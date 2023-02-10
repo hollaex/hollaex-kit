@@ -24,6 +24,6 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/bitholla/hollaex-kit/tree/master/server/utils/hollaex-network-lib"
+		"url": "https://github.com/hollaex/hollaex-kit/tree/master/server/utils/hollaex-network-lib"
 	}
 }
