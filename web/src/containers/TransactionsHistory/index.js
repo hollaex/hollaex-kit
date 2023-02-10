@@ -211,9 +211,7 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
-		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type =
-			temp?.type === 'active' ? STRINGS['TIME_OPEN'] : STRINGS['TIME_CLOSE'];
+		let type = STRINGS['TIME'];
 
 		this.setState({
 			headers: {
@@ -285,7 +283,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
 							</EditWrapper>
-							<p>{obj.order_id}</p>
+							<p>{(obj.order_id) ? obj.order_id : STRINGS['NA'] }</p>
 						</div>
 					</div>
 				);
@@ -318,7 +316,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
 							</EditWrapper>
-							<p>{obj.stop ? obj.stop : `N/A`}</p>
+							<p>{obj.stop ? obj.stop : STRINGS['NA']}</p>
 						</div>
 						<div>
 							<EditWrapper
