@@ -642,8 +642,7 @@ class Plugins extends Component {
 							<span
 								className="underline-text"
 								onClick={() => this.onChangeNextType('myPlugin')}
-							>{`<Back`}</span>{' '}
-							to get the plugins apps.
+							>{`<Back to my plugin apps`}</span>{' '}
 						</div>
 						<PluginList
 							constants={constants}

@@ -317,28 +317,39 @@ class MyPlugins extends Component {
 							<Input placeholder="Search..." onChange={this.handleSearch} />
 						</div>
 					</div>
+
 					<div
 						className="plugin-list"
 						style={{
 							backgroundImage: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2})`,
 						}}
 					>
-						{this.renderList()}
+						{myPlugins.length ? (
+							<>{this.renderList()}</>
+						) : (
+							<>
+								<div>
+									You currently haven't got any installed plugin apps yet.
+								</div>
+								<div onClick={() => this.props.onChangeNextType('appStore')}>
+									<span className="underline-text">Click here</span> to get the
+									plugins apps.
+								</div>
+							</>
+						)}
 					</div>
+
 					<div
 						className="container-wrapper"
 						onClick={() => this.props.onChangeNextType('appStore')}
 					>
 						<div className="info-text-wrapper">
-							{!myPlugins.length && (
-								<div>
-									You currently haven't got any installed plugin apps yet.
-								</div>
-							)}
-							<div>
-								<span className="underline-text">Click here</span> to get the
-								plugins apps.
-							</div>
+							{myPlugins.length ? (
+								<>
+									<span className="underline-text">Click here</span> to get the
+									plugins apps.
+								</>
+							) : null}
 						</div>
 						{/* <div className='img-wrapper'>
 							<img src={STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH} style={{ transition: 'transform .3s' }} className={`${is_zoom ? 'expand' : 'img-style'}`} alt='zoom' />

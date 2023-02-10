@@ -557,7 +557,18 @@
 }
 .plugin-list-wrapper .plugin-list-item {
 	width: 30rem;
+	cursor: pointer;
 }
+
+.plugin-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.ant-layout-content .content-wrapper {
+	overflow-y: hidden;
+}
+
 .plugin-list-wrapper .plugin-list-item .description-content {
 	padding-left: 2rem;
 }
@@ -570,4 +581,97 @@
 
 .admin-content-wrapper:has(.app-store-wrapper) {
 	padding: 0px !important;
+}
+.plugin-container {
+	padding-left: 20px;
+}
+
+.plugin-container .plugin-content-wrapper {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 5px;
+	font-size: 13px;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper {
+	display: flex;
+	align-items: flex-end;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper h4 {
+	color: white;
+	margin-bottom: 0rem;
+	margin-right: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper h5 {
+	color: white;
+	font-size: 12px;
+	opacity: 0.6;
+	margin-bottom: 0rem;
+}
+.plugin-container .plugin-content-wrapper p {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper p div {
+	display: flex;
+	margin: 0px 3px 0px 5px;
+}
+
+.plugin-container .plugin-content-wrapper div {
+	display: flex;
+	margin-bottom: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper div h6 {
+	color: white;
+	border: 1px solid #00781b8c;
+	border-radius: 12px;
+	padding: 5px;
+	margin-left: 5px;
+}
+
+.plugin-container .plugin-content-wrapper div h6 span {
+	margin: 0px 3px 0px 5px;
+}
+
+.plugin-container .plugin-content-wrapper div h6 span svg {
+	width: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.plugin-container .plugin-content-wrapper .button-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.plugin-container .plugin-content-wrapper .button-wrapper button {
+	background-color: green;
+	border-radius: 15px;
+}
+
+.plugin-container .plugin-content-wrapper .button-wrapper button p {
+	margin: 5px auto 5px auto;
+	opacity: 0.6;
+	font-size: 12px;
+}
+
+.plugin-container .plugin-content-wrapper button {
+	background-color: green;
+	border-radius: 15px;
+	width: 100%;
+}
+
+.plugin-icon {
+	width: 5rem;
+	height: 5rem;
 }

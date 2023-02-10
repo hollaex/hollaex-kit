@@ -210,7 +210,81 @@ const PluginDetails = ({
 						onHandleSubmit={() => handleRemove('confirm-plugin')}
 					/>
 				);
-			case 'add':
+			case 'buy':
+				return (
+					<div className="d-flex">
+						<img
+							src={
+								pluginData && pluginData.icon
+									? pluginData.icon
+									: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+							}
+							alt="Plugin"
+							className="plugin-icon"
+						/>
+						<div className="plugin-container">
+							<div className="plugin-content-wrapper">
+								<div className="title-wrapper">
+									{' '}
+									<h4>{pluginData.name}</h4>{' '}
+									<h5> {`Version: ${pluginData.version}`}</h5>{' '}
+								</div>
+								<p>{`Description: ${pluginData.description}`}</p>
+								<div>
+									{' '}
+									{!pluginData?.free_for?.length ? (
+										<>
+											Note: <InfoCircleOutlined />{' '}
+											{pluginData?.free_for?.map((item) => (
+												<p>{item}</p>
+											))}
+										</>
+									) : (
+										''
+									)}{' '}
+								</div>
+								<p>
+									Author:
+									<ReactSVG
+										src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+									/>{' '}
+									{pluginData.author}
+								</p>
+								<p>
+									{' '}
+									{pluginData.payment_type &&
+									pluginData.payment_type === 'one-time' ? (
+										<>
+											Type:{' '}
+											<ReactSVG
+												src={STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']}
+											/>{' '}
+											{pluginData.payment_type}
+										</>
+									) : pluginData.payment_type === 'credits' ? (
+										<>
+											Type: <ReactSVG src={STATIC_ICONS['CREDITS_PLUGIN']} />{' '}
+											{pluginData.payment_type}
+										</>
+									) : (
+										''
+									)}{' '}
+								</p>
+								{pluginData.price && (
+									<div>
+										<p>Price: </p>{' '}
+										<h6>
+											{' '}
+											{pluginData.payment_type === 'free'
+												? 'Free'
+												: `$ ${pluginData.price}`}
+										</h6>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				);
 			default:
 				return (
 					<div className="admin-plugin-modal-wrapper">
@@ -282,13 +356,13 @@ const PluginDetails = ({
 
 	const handleOpenConfirmation = () => {
 		setOpen(true);
+		setType('buy');
 		setUpdate(false);
 	};
 
 	const renderButtonContent = () => {
-		// console.log(object);
-		// const tempPluginData = {...pluginData, only_for:[], free_for:['boost', 'crypto','fiat']}
-		const tempPluginData = { ...pluginData };
+		const { payment_type, only_for, name, free_for } = pluginData;
+
 		if (isAddLoading || isUpdateLoading) {
 			return (
 				<div className="d-flex mt-5">
@@ -354,10 +428,55 @@ const PluginDetails = ({
 		} else {
 			// To-do : check Activation plugin list
 			if (
-				tempPluginData.payment_type === 'free' ||
-				tempPluginData?.free_for?.includes(exchange.plan) ||
-				tempPluginData?.only_for?.includes(exchange.plan) ||
-				checkactivatedPlugin(tempPluginData.name)
+				payment_type?.toLowerCase() === 'activation' ||
+				(name?.toLowerCase() === 'exclusive' &&
+					only_for?.length &&
+					!only_for?.includes(exchange.plan) &&
+					free_for?.length &&
+					!free_for?.includes(exchange.plan)) ||
+				(only_for?.length &&
+					!only_for?.includes(exchange.plan) &&
+					free_for?.length &&
+					!free_for?.includes(exchange.plan))
+			) {
+				let btnDisabled = false;
+				if (
+					payment_type?.toLowerCase() !== 'activation' &&
+					only_for?.length &&
+					!only_for?.includes(exchange.plan) &&
+					free_for?.length &&
+					!free_for?.includes(exchange.plan)
+				) {
+					btnDisabled = true;
+				}
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={onHandlePluginActivate}
+							disabled={btnDisabled}
+						>
+							Activate
+						</Button>
+						{btnDisabled ? (
+							<div className="ml-2 font-weight-bold">
+								{STRINGS['TERMS_OF_SERVICES.TO_GET_ACCESS']}
+								<BlueLink
+									href="mailto:sales@hollaex.com"
+									text={'sales@hollaex.com'}
+								/>
+							</div>
+						) : null}
+					</div>
+				);
+			} else if (
+				(payment_type === 'free' ||
+					checkactivatedPlugin(name) ||
+					(free_for?.includes(exchange.plan) && !only_for?.length) ||
+					(free_for?.includes(exchange.plan) &&
+						only_for?.includes(exchange.plan))) &&
+				pluginData?.name?.toLowerCase() !== 'exclusive'
 			) {
 				return (
 					<div className="btn-wrapper">
@@ -368,16 +487,16 @@ const PluginDetails = ({
 						>
 							Install
 						</Button>
-						<div className="small-txt">Free to install</div>
+						{pluginData.payment_type === 'free' ? (
+							<div className="small-txt">Free to install</div>
+						) : null}
 					</div>
 				);
 			} else if (
-				tempPluginData.payment_type !== 'free' &&
-				((!tempPluginData?.free_for?.length &&
-					!tempPluginData?.only_for?.length) ||
-					(!tempPluginData?.free_for?.includes(exchange.plan) &&
-						!tempPluginData?.only_for?.length) ||
-					tempPluginData.name.toLowerCase() === 'exclusive')
+				payment_type !== 'free' &&
+				((!free_for?.length && !only_for?.length) ||
+					(!free_for?.includes(exchange.plan) && !only_for?.length) ||
+					name.toLowerCase() === 'exclusive')
 			) {
 				return (
 					<div className="btn-wrapper">
@@ -389,34 +508,6 @@ const PluginDetails = ({
 						>
 							Buy
 						</Button>
-					</div>
-				);
-			} else if (
-				tempPluginData.payment_type !== 'free' &&
-				tempPluginData?.free_for?.includes(exchange.plan) &&
-				tempPluginData?.only_for?.includes(exchange.plan) &&
-				!tempPluginData?.free_for?.length &&
-				tempPluginData?.only_for?.length
-			) {
-				return (
-					<div className="btn-wrapper">
-						<Button
-							type="primary"
-							className="add-btn"
-							onClick={onHandlePluginActivate}
-							disabled={!tempPluginData?.only_for?.includes(exchange.plan)}
-						>
-							Activate
-						</Button>
-						{!tempPluginData.only_for.includes(exchange.plan) ? (
-							<div className="ml-2 font-weight-bold">
-								{STRINGS['TERMS_OF_SERVICES.TO_GET_ACCESS']}
-								<BlueLink
-									href="mailto:sales@hollaex.com"
-									text={'sales@hollaex.com'}
-								/>
-							</div>
-						) : null}
 					</div>
 				);
 			}
@@ -457,6 +548,7 @@ const PluginDetails = ({
 	}
 
 	const {
+		icon,
 		name,
 		description,
 		author,
@@ -465,7 +557,34 @@ const PluginDetails = ({
 		version,
 		logo,
 		free_for,
+		only_for,
 	} = pluginData;
+
+	let isPriceTagHide = true;
+	if (
+		payment_type?.toLowerCase() !== 'activation' &&
+		only_for?.length &&
+		!only_for?.includes(exchange.plan) &&
+		free_for?.length &&
+		!free_for?.includes(exchange.plan)
+	) {
+		isPriceTagHide = false;
+	} else if (price && payment_type.toLowerCase() !== 'activation') {
+		isPriceTagHide = true;
+	}
+
+	let isPriceFreeTag = false;
+
+	if (
+		(payment_type === 'free' ||
+			checkactivatedPlugin(name) ||
+			(free_for?.includes(exchange.plan) && !only_for?.length) ||
+			(free_for?.includes(exchange.plan) &&
+				only_for?.includes(exchange.plan))) &&
+		pluginData?.name?.toLowerCase() !== 'exclusive'
+	) {
+		isPriceFreeTag = true;
+	}
 
 	return (
 		<div>
@@ -475,8 +594,8 @@ const PluginDetails = ({
 						<div className="d-flex">
 							<img
 								src={
-									pluginData && pluginData.icon
-										? pluginData.icon
+									pluginData && icon
+										? icon
 										: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
 								}
 								alt="Plugin"
@@ -486,16 +605,15 @@ const PluginDetails = ({
 								<div className="plugin-content-wrapper">
 									<div className="title-wrapper">
 										{' '}
-										<h4>{pluginData.name}</h4>{' '}
-										<h5> {`Version: ${pluginData.version}`}</h5>{' '}
+										<h4>{name}</h4> <h5> {`Version: ${version}`}</h5>{' '}
 									</div>
-									<p>{`Description: ${pluginData.description}`}</p>
+									<p>{`Description: ${description}`}</p>
 									<div>
 										{' '}
-										{!pluginData?.free_for?.length ? (
+										{!free_for?.length ? (
 											<>
 												Note: <InfoCircleOutlined />{' '}
-												{pluginData?.free_for?.map((item) => (
+												{free_for?.map((item) => (
 													<p>{item}</p>
 												))}
 											</>
@@ -508,39 +626,48 @@ const PluginDetails = ({
 										<ReactSVG
 											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
 										/>{' '}
-										{pluginData.author}
+										{author}
 									</p>
-									<p>
-										{' '}
-										{pluginData.payment_type &&
-										pluginData.payment_type === 'one-time' ? (
-											<>
-												Type:{' '}
-												<ReactSVG
-													src={STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']}
-												/>{' '}
-												{pluginData.type}
-											</>
-										) : pluginData.payment_type === 'credits' ? (
-											<>
-												Type: <ReactSVG src={STATIC_ICONS['CREDITS_PLUGIN']} />{' '}
-												{pluginData.type}
-											</>
-										) : (
-											''
-										)}{' '}
-									</p>
-									{pluginData.price && (
+									{free_for?.length ? (
+										<p>
+											{' '}
+											Free For: <>{free_for.join(' ')}</>{' '}
+										</p>
+									) : null}
+									{only_for?.length ? (
+										<p>
+											{' '}
+											Only For: <>{only_for.join(' ')}</>{' '}
+										</p>
+									) : null}
+
+									{payment_type !== 'free' ? (
+										<p>
+											Payment Type:{' '}
+											<ReactSVG
+												src={
+													payment_type === 'one-time'
+														? STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']
+														: STATIC_ICONS['CREDITS_PLUGIN']
+												}
+											/>{' '}
+											{payment_type}{' '}
+											{payment_type === 'one-time' ? 'activation' : null}
+										</p>
+									) : null}
+									{isPriceTagHide ? (
 										<div>
 											<p>Price: </p>{' '}
 											<h6>
 												{' '}
-												{pluginData.payment_type === 'free'
+												{isPriceFreeTag
 													? 'Free'
-													: `$ ${pluginData.price}`}
+													: payment_type?.toLowerCase() === 'activation'
+													? 'Activation'
+													: `$ ${price}`}
 											</h6>
 										</div>
-									)}
+									) : null}
 								</div>
 								{renderButtonContent()}
 							</div>
