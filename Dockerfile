@@ -1,4 +1,4 @@
-FROM node:16
+FROM node:16.18.1-buster-slim
 
 RUN apt-get update && \
     apt-get install -y curl openssl ca-certificates git python build-essential && \
