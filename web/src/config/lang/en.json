@@ -47,6 +47,7 @@
 	"APPLY_HERE": "Apply Here",
 	"CONVERT": "Convert",
 	"TO": "To",
+	"NA": "N/A",
 	"HOME": {
 		"MAIN_TITLE": "Cryptocurrency trading exchange",
 		"MAIN_TEXT": "Easily buy and sell crypto assets. Simply sign up with your email and trade the major crypto assets 24/7.",
@@ -199,7 +200,9 @@
 		"FOOTER_TEXT": "Quick trade fees use market taker rates",
 		"FOOTER_TEXT_1": "Sourced from",
 		"GO_TO_TEXT": "Go to",
-		"SOURCE_TEXT": "Broker OTC deal"
+		"SOURCE_TEXT": "Broker OTC deal",
+		"VISIT": "Visit{0}",
+		"ASSET_INFO_PAGE": "Assets info page"
 	},
 	"PREVIOUS_PAGE": "previous page",
 	"NEXT_PAGE": "next page",
@@ -828,8 +831,6 @@
 	"FEE": "Fee",
 	"FEES": "Fees",
 	"TIME": "Time",
-	"TIME_OPEN": "Time of Opening ",
-	"TIME_CLOSE": "Time Closed",
 	"MORE": "More",
 	"VIEW": "View",
 	"STATUS": "Status",
@@ -1160,7 +1161,10 @@
 		"MARKETS": "Markets",
 		"CHANGE_24H": "24H Change",
 		"VOLUME_24H": "24H Volume",
-		"VIEW_MORE_MARKETS": "View more markets"
+		"VIEW_MORE_MARKETS": "View more markets",
+		"VIEW_VERIFICATION": "view verification",
+		"EARN_COMMISSION": "Earn commissions",
+		"ID_VERIFICATION": "ID verification:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Invite your friend",
@@ -1242,7 +1246,7 @@
 	},
 	"SUMMARY_MARKETS": {
 		"HOLLAEX": "Want to list your digital assets? Start your own market with your HollaEx {0} {1}",
-		"WHITE_LABEL": "white-lable",
+		"WHITE_LABEL": "white-label",
 		"SOLUTION": "solution",
 		"VISIT_COIN_INFO_PAGE": "Visit coin info page {0}",
 		"HERE": "here"
@@ -1353,7 +1357,7 @@
 		"NO_DUST": "No dust assets!",
 		"SECTION": {
 			"TITLE": "Convert wallet dust",
-			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1}.",
+			"TEXT_1": "Convert all low wallet balances that hold a value of {0} {1} or less.",
 			"TEXT_2": "All conversations will be settled in {0} ({1})."
 		},
 		"CONFIRMATION": {
@@ -1383,7 +1387,7 @@
 		"GO_BACK": "Go back",
 		"ASSETS_INFO": "Below are available assets on the platform.",
 		"ASSETS_INFO_DETAIL": "You can click an asset on the list below to learn more.",
-		"QUICK_TRADE": "QUICKTRADE",
+		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
 		"PRICE_SOURCE": "Price source"
@@ -1395,27 +1399,14 @@
 		"BALANCE": "Balance:",
 		"OPEN_WALLET": "(Open wallet)",
 		"ABOUT": "About",
-		"HOLLA_INFO": "is the native token for HollaEx and powers the open-source white-label exchange software",
-		"HOLLAEX_KIT_TITLE": "HollaEx Kit",
-		"HOLDER": "Holders of",
-		"HOLLA_INFO2": "are franted benefits when using the HollaEx system.",
-		"WITH": "With",
-		"HOLLA_INFO3": "anyone can create new coins and list tokens on their very own exchange. By donating",
-		"HOLLA_INFO4": ", new coins and trading pairs can be activated for trading, distribution, and price discovery.",
-		"HOLLA_INFO5": "powers the HollaEx exchange ecosystem. It is used for coin activation, coin listing, staking and for discounts on purchases.",
 		"VIEW": "View more",
-		"VIEW_ACTIVITY": "View activity on blockchain",
 		"COMING_SOON": "Coming Soon...",
+		"NO_DESCRIPTION": "This digital asset currently has no description.",
 		"STAKE": "Stake",
-		"QUICK_BUY": "Quick buy",
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
-		"LIST": "Want to list your digital assets?",
-		"START_HOLLAEX": "Start your own market with HollaEx {0} {1}",
-		"WHITE_LABEL": "white-label",
-		"SOLUTION": "solution",
-		"MARKETS_TITLE": "MARKETS"
+		"LIST": "Want to list your digital assets?"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "All wallet assets",
@@ -1429,5 +1420,64 @@
 
 	"TERMS_OF_SERVICES": {
 		"TO_GET_ACCESS": "To get access reach out to"
+	},
+
+	"FEES_AND_LIMITS": {
+		"LINK": "view my fees and limits",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Go back",
+			"TO": "to summary"
+		},
+		"TITLE": "Fees & limits",
+		"SEARCH_PLACEHOLDER": "Search...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Trading fees",
+				"TABLE": {
+					"TITLE": "Market trading fees",
+					"SUBTITLE": "Below are markets individual trading fee rules.",
+					"HEADER": {
+						"MARKET": "Market",
+						"MAKER": "Maker trading fees (limit orders)",
+						"TAKER": "Taker trading fees (market orders)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Withdrawal fees",
+				"TABLE": {
+					"TITLE": "Fees deducted upon withdrawal",
+					"SUBTITLE": "Below are all the fees when withdrawing an asset.",
+					"HEADER": {
+						"CURRENCY": "Currency/asset",
+						"DEPOSIT": "Deposit Fee",
+						"WITHDRAWAL": "Withdrawal fee"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Withdrawal limits",
+				"TABLE_1": {
+					"TITLE": "Independent withdrawal limit",
+					"SUBTITLE": "Assets that are separated from the collective limit rule that follow their own independent 24h withdrawal rule:",
+					"HEADER": {
+						"CURRENCY": "Currency/asset",
+						"LIMIT": "24h limit"
+					},
+					"LIMIT_TEXT": "(Assets that all share a collective withdrawal limit amount)"
+				},
+				"TABLE_2": {
+					"TITLE": "Collective shared standard withdrawal limit",
+					"SUBTITLE": "Below are the assets that all share the same standard 24h withdrawal limit amount rule:"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "incomplete",
+		"PENDING": "pending",
+		"REJECTED": "rejected",
+		"VERIFIED": "verified"
 	}
 }

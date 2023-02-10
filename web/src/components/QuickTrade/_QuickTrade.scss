@@ -67,6 +67,9 @@ $title-icon--height: 10rem;
 		font-family: $en--font-family;
 		color: $colors-deactivate;
 	}
+	.visit-asset-info {
+		text-decoration: underline;
+	}
 }
 .quick_trade-wrapper.width-none {
 	min-width: unset !important;

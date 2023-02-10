@@ -29,7 +29,6 @@ const MobileSummary = ({
 	lastMonthVolume,
 	traderAccTitle,
 	userAccountTitle,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	onAccountTypeChange,
 	onInviteFriends,
@@ -58,7 +57,6 @@ const MobileSummary = ({
 						config={config}
 						logout={logout}
 						onInviteFriends={onInviteFriends}
-						onFeesAndLimits={onFeesAndLimits}
 						onUpgradeAccount={onUpgradeAccount}
 						verification_level={verification_level}
 					/>
@@ -133,7 +131,6 @@ const MobileSummary = ({
 					balance={balance}
 					selectedAccount={selectedAccount}
 					onAccountTypeChange={onAccountTypeChange}
-					onFeesAndLimits={onFeesAndLimits}
 					onUpgradeAccount={onUpgradeAccount}
 					verification_level={verification_level}
 				/>

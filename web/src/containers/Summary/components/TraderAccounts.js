@@ -1,15 +1,17 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
 import { Image, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { renderStatusIcon } from 'components/CheckTitle';
+import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 
 const TraderAccounts = ({
 	user = {},
 	config = {},
 	isAccountDetails = false,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	logout,
 	onInviteFriends,
@@ -34,6 +36,12 @@ const TraderAccounts = ({
 	const icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS['LEVEL_ACCOUNT_ICON_4'];
+
+	const identity_status = user.id_data?.status || 0;
+	const notificationStatus = renderStatusIcon(
+		identity_status,
+		'verification-stauts user-status'
+	);
 
 	return (
 		<div className="d-flex">
@@ -84,20 +92,26 @@ const TraderAccounts = ({
 						</div>
 					</div>
 				) : null}
-				{/* {!!limitLevel.length && <div
-                    className="trade-account-link mb-2">
-                    <span
-                        className="pointer"
-                        onClick={() => onFeesAndLimits(account)}>
-                        {STRINGS["SUMMARY.VIEW_FEE_STRUCTURE"].toUpperCase()}
-                    </span>
-                </div>} */}
 				{!isAccountDetails && (
 					<Fragment>
+						<Link to="/fees-and-limits">
+							<div className="trade-account-link my-2 caps">
+								<EditWrapper stringId="FEES_AND_LIMITS.LINK">
+									{STRINGS['FEES_AND_LIMITS.LINK']}
+								</EditWrapper>
+							</div>
+						</Link>
+
+						<div className="d-flex align-items-center">
+							<DollarOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
+								{STRINGS['SUMMARY.EARN_COMMISSION']}
+							</EditWrapper>
+						</div>
 						<EditWrapper
 							stringId="REFERRAL_LINK.TITLE"
 							renderWrapper={(children) => (
-								<div className="trade-account-link mb-2">
+								<div className="trade-account-link mb-4">
 									<span className="pointer caps" onClick={onInviteFriends}>
 										{children}
 									</span>
@@ -107,21 +121,20 @@ const TraderAccounts = ({
 							{STRINGS['REFERRAL_LINK.TITLE']}
 						</EditWrapper>
 
-						<EditWrapper
-							stringId="SUMMARY.MY_FEES_LIMITS"
-							renderWrapper={(children) => (
-								<div className="trade-account-link mb-2">
-									<span
-										className="pointer caps"
-										onClick={() => onFeesAndLimits(level, user.discount)}
-									>
-										{children}
-									</span>
-								</div>
-							)}
-						>
-							{STRINGS['SUMMARY.MY_FEES_LIMITS']}
-						</EditWrapper>
+						<div className="d-flex align-items-center">
+							<UserOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
+								{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
+							</EditWrapper>
+							<div className="mx-2">{notificationStatus}</div>
+						</div>
+						<Link to="/verification">
+							<div className="trade-account-link mb-2 caps">
+								<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
+									{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+								</EditWrapper>
+							</div>
+						</Link>
 					</Fragment>
 				)}
 				{isAccountDetails && (
@@ -129,11 +142,8 @@ const TraderAccounts = ({
 						stringId="SUMMARY.VIEW_FEE_STRUCTURE"
 						renderWrapper={(children) => (
 							<div className="trade-account-link mb-2">
-								<span
-									className="pointer caps"
-									onClick={() => onFeesAndLimits(level, user.discount)}
-								>
-									{children}
+								<span className="pointer caps">
+									<Link to="/fees-and-limits">{children}</Link>
 								</span>
 							</div>
 						)}

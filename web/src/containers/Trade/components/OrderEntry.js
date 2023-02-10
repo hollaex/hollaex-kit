@@ -32,7 +32,6 @@ import { takerFee, DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { SIDES, TYPES } from 'config/options';
 import { isLoggedIn } from 'utils/token';
-import { openFeesStructureandLimits } from 'actions/appActions';
 import { orderbookSelector, marketPriceSelector } from '../utils';
 import { setOrderEntryData } from 'actions/orderbookAction';
 
@@ -586,14 +585,11 @@ class OrderEntry extends Component {
 	};
 
 	onFeeStructureAndLimits = () => {
+		const { router } = this.props;
+
 		if (isLoggedIn()) {
-			const {
-				openFeesStructureandLimits,
-				user: { verification_level, discount = 0 },
-			} = this.props;
-			openFeesStructureandLimits({ verification_level, discount });
+			router.push('/fees-and-limits');
 		} else {
-			const { router } = this.props;
 			router.push('/login');
 		}
 	};
@@ -716,10 +712,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
 	submit: bindActionCreators(submit, dispatch),
 	change: bindActionCreators(change, dispatch),
-	openFeesStructureandLimits: bindActionCreators(
-		openFeesStructureandLimits,
-		dispatch
-	),
 	setOrderEntryData: bindActionCreators(setOrderEntryData, dispatch),
 });
 
