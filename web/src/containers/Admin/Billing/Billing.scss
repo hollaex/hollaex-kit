@@ -313,10 +313,12 @@ p {
 .billing-filter {
 	.ant-input-search {
 		background-color: var(--admin_panel_input);
+
 		.ant-input {
 			background-color: var(--admin_panel_input);
 			color: white;
 		}
+
 		.ant-input-search-icon {
 			color: white;
 		}
@@ -996,4 +998,64 @@ p {
 .pointer-none {
 	pointer-events: none;
 	cursor: not-allowed;
+}
+
+.fiat-application-wrapper {
+	padding: 2rem;
+	position: relative;
+	width: 100%;
+	z-index: 1;
+
+	.text-underline {
+		text-decoration: underline;
+	}
+
+	.submitted-info {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #1890ff;
+		color: #ffffff;
+		width: 100px;
+		text-align: center;
+		border-radius: 13px;
+
+		.anticon {
+			margin-right: 5px;
+		}
+	}
+
+	.title {
+		font-size: 30px;
+		font-weight: bold;
+	}
+
+	.main-info {
+		margin: 1.5rem 0;
+	}
+
+	.btn-wrapper {
+		width: 100%;
+		margin-top: 1.5rem;
+		display: flex;
+		justify-content: space-between;
+
+		.close-btn {
+			width: 30%;
+			border-color: #4c00ff;
+		}
+
+		.view-plan-btn {
+			width: 70%;
+			margin-left: 10px;
+		}
+
+		.w-30 {
+			width: 30%;
+		}
+
+		.w-70 {
+			width: 70%;
+		}
+	}
 }
