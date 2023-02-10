@@ -51,6 +51,8 @@ services:
       - ./test:/app/test
       - ./tools:/app/tools
       - ./utils:/app/utils
+      - /app/utils/hollaex-network-lib/node_modules
+      - /app/utils/hollaex-tools-lib/node_modules
       - ./init.js:/app/init.js
       - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
