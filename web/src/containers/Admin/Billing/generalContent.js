@@ -336,7 +336,7 @@ const columns = (onHandlePendingPay) => {
 								Unpaid{' '}
 							</Tag>
 							<span>
-								<Link onClick={onHandlePendingPay}>Pay</Link>
+								<Link onClick={() => onHandlePendingPay(item)}>Pay</Link>
 							</span>
 						</div>
 					);
@@ -393,6 +393,7 @@ const GeneralContent = ({
 	const [showCloudPlanDetails, setShowCloudPlanDetails] = useState(false);
 	const [pendingPay, setPendingPay] = useState(false);
 	const [hideBreadcrumb, setHideBreadcrumb] = useState(false);
+	const [selectedPendingItem, setSelectedPendingItem] = useState({});
 
 	const planPriceData = priceData[selectedType];
 
@@ -528,11 +529,21 @@ const GeneralContent = ({
 		}
 	};
 
-	const onHandlePendingPay = () => {
+	const onHandlePendingPay = (pendingItem) => {
 		setOpenPlanModal(true);
 		setPendingPay(true);
 		setHideBreadcrumb(false);
 		setExchangePlanType('method');
+		setShowCloudPlanDetails(false);
+		setSelectedPendingItem(pendingItem);
+	};
+
+	const onHandleCloudPlans = () => {
+		setOpenPlanModal(true);
+		setExchangePlanType('item');
+		setShowCloudPlanDetails(true);
+		setIsMonthly(false);
+		setHideBreadcrumb(false);
 	};
 
 	const OnHandleCancel = () => {
@@ -543,18 +554,12 @@ const GeneralContent = ({
 		setSelectedPayment('');
 		setPaymentAddressDetails({});
 		setPendingPay(false);
-	};
-
-	const onHandleCloudPlans = () => {
-		setOpenPlanModal(true);
-		setExchangePlanType('item');
-		setShowCloudPlanDetails(true);
-		setIsMonthly(false);
+		setHideBreadcrumb(false);
 	};
 
 	const handleViewPlan = () => {
 		setExchangePlanType('item');
-		// setHideBreadcrumb(false);
+		setHideBreadcrumb(false);
 	};
 
 	const storePaymentMethod = async () => {
@@ -650,6 +655,8 @@ const GeneralContent = ({
 					exchangeCardKey={exchangeCardKey}
 					paymentAddressDetails={paymentAddressDetails}
 					exchangePlanType={exchangePlanType}
+					selectedPendingItem={selectedPendingItem}
+					pendingPay={pendingPay}
 				/>
 				<div>{renderBtn()}</div>
 			</div>
@@ -751,7 +758,7 @@ const GeneralContent = ({
 
 	const renderModelContent = () => {
 		const breadCrumbOptions =
-			selectedType === 'fiat'
+			selectedType === 'fiat' && pendingPay === false
 				? fiatOptions
 				: pendingPay
 				? pendingPayOption
@@ -1285,13 +1292,16 @@ const GeneralContent = ({
 		setFiatSubmission(false);
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
+			setHideBreadcrumb(false);
 		} else if (exchangePlanType === 'method') {
-			setExchangePlanType('item');
-			setIsMonthly(!isMonthly);
-			setPaymentAddressDetails({});
 			if (pendingPay) {
 				setOpenPlanModal(false);
 				setPendingPay(false);
+				setHideBreadcrumb(true);
+			} else {
+				setExchangePlanType('item');
+				setIsMonthly(!isMonthly);
+				setPaymentAddressDetails({});
 			}
 		} else if (exchangePlanType === 'crypto') {
 			setExchangePlanType('method');
