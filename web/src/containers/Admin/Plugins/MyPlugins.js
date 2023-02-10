@@ -327,7 +327,7 @@ class MyPlugins extends Component {
 						{myPlugins.length ? (
 							<>{this.renderList()}</>
 						) : (
-							<>
+							<div className="installed-plugin">
 								<div>
 									You currently haven't got any installed plugin apps yet.
 								</div>
@@ -335,7 +335,7 @@ class MyPlugins extends Component {
 									<span className="underline-text">Click here</span> to get the
 									plugins apps.
 								</div>
-							</>
+							</div>
 						)}
 					</div>
 

@@ -32,16 +32,18 @@ const PluginDetails = ({
 	handleRedirect,
 	exchange,
 	activatedPluginDetails,
+	getActivationsPlugin,
+	setSelectedPlugin,
 	router,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
 	const [isConfirm, setConfirm] = useState(true);
-	// const [isLoading, setLoading] = useState(false);
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
 	const [pluginStoreDetails, setPluginStoreDetails] = useState({});
+	// const [isLoading, setLoading] = useState(false);
 
 	const checkactivatedPlugin = (name) => {
 		const data = activatedPluginDetails.filter((item) => item.name === name);
@@ -51,15 +53,12 @@ const PluginDetails = ({
 	const requestPlugin = useCallback(() => {
 		getPluginStoreDetails({ name: selectedPlugin.name })
 			.then((res) => {
-				console.log('getPluginStoreDetails res', res);
-				// setLoading(false);
 				setPluginStoreDetails(res);
 			})
 			.catch((err) => {
 				if (!selectedPlugin.enabled) {
 					setPluginStoreDetails({});
 				}
-				// setLoading(false);
 			});
 	}, [selectedPlugin]);
 
@@ -70,20 +69,23 @@ const PluginDetails = ({
 	const onHandlePluginActivate = async () => {
 		getPluginActivateDetails({ name: selectedPlugin.name })
 			.then((res) => {
-				console.log('getPluginActivateDetails res', res);
-				// setLoading(false);
-				setPluginStoreDetails(res);
+				if (
+					res &&
+					res.data &&
+					res.data?.message === 'success' &&
+					res.data?.is_active
+				) {
+					getActivationsPlugin();
+				}
 			})
 			.catch((err) => {
-				if (!selectedPlugin.enabled) {
-					setPluginStoreDetails({});
-				}
-				// setLoading(false);
+				throw err;
 			});
 	};
 	const handleAddPlugin = async () => {
+		const data = pluginStoreDetails ? pluginStoreDetails : pluginData;
 		const body = {
-			...pluginData,
+			...data,
 			enabled: true,
 		};
 		setAddLoading(true);
@@ -234,7 +236,10 @@ const PluginDetails = ({
 									{' '}
 									{!pluginData?.free_for?.length ? (
 										<>
-											Note: <InfoCircleOutlined />{' '}
+											<p>Note:</p>{' '}
+											<div>
+												<InfoCircleOutlined />
+											</div>{' '}
 											{pluginData?.free_for?.map((item) => (
 												<p>{item}</p>
 											))}
@@ -354,15 +359,8 @@ const PluginDetails = ({
 		}
 	};
 
-	const handleOpenConfirmation = () => {
-		setOpen(true);
-		setType('buy');
-		setUpdate(false);
-	};
-
 	const renderButtonContent = () => {
 		const { payment_type, only_for, name, free_for } = pluginData;
-
 		if (isAddLoading || isUpdateLoading) {
 			return (
 				<div className="d-flex mt-5">
@@ -426,7 +424,6 @@ const PluginDetails = ({
 				</div>
 			);
 		} else {
-			// To-do : check Activation plugin list
 			if (
 				payment_type?.toLowerCase() === 'activation' ||
 				(name?.toLowerCase() === 'exclusive' &&
@@ -483,7 +480,7 @@ const PluginDetails = ({
 						<Button
 							type="primary"
 							className="add-btn"
-							onClick={handleOpenConfirmation}
+							onClick={() => handleType('add')}
 						>
 							Install
 						</Button>
@@ -503,7 +500,7 @@ const PluginDetails = ({
 						<Button
 							type="primary"
 							className="add-btn"
-							onClick={handleOpenConfirmation}
+							onClick={() => handleType('buy')}
 							disabled={!Object.keys(pluginData).length}
 						>
 							Buy
@@ -555,7 +552,6 @@ const PluginDetails = ({
 		payment_type,
 		price,
 		version,
-		logo,
 		free_for,
 		only_for,
 	} = pluginData;
@@ -610,9 +606,12 @@ const PluginDetails = ({
 									<p>{`Description: ${description}`}</p>
 									<div>
 										{' '}
-										{!free_for?.length ? (
+										{!!free_for?.length ? (
 											<>
-												Note: <InfoCircleOutlined />{' '}
+												<p>Note:</p>{' '}
+												<div>
+													<InfoCircleOutlined />
+												</div>{' '}
 												{free_for?.map((item) => (
 													<p>{item}</p>
 												))}
@@ -696,7 +695,23 @@ const PluginDetails = ({
 					visible={isOpen}
 					width={450}
 					onCancel={handleClose}
-					footer={false}
+					footer={
+						type === 'buy' ? (
+							<div className="buy-modal-footer">
+								<div>
+									<p>Do you want proceed with purchase?</p>
+									<Button type="success" onClick={onHandleBuy}>
+										Buy
+									</Button>
+								</div>
+								<h6>
+									*All plugin app purchases are conducted in cryptocurrency only
+								</h6>
+							</div>
+						) : (
+							false
+						)
+					}
 				>
 					{renderPopup()}
 				</Modal>
@@ -711,4 +726,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, {})(PluginDetails);
+export default connect(mapStateToProps, { setSelectedPlugin })(PluginDetails);

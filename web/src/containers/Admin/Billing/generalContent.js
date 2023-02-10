@@ -753,7 +753,6 @@ const GeneralContent = ({
 
 	const renderModelContent = () => {
 		const breadCrumbOptions = selectedType === 'fiat' ? fiatOptions : options;
-		console.log('bredCrumb', selectedType, fiatOptions, options);
 		return showCloudPlanDetails ? (
 			<div className="breadcrumb-cloud-plan-details">Cloud plan details</div>
 		) : (

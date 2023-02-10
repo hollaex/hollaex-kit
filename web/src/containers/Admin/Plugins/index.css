@@ -57,10 +57,12 @@
 	padding: 0.25rem 0rem 1rem 0rem;
 	border-bottom: 1px solid rgb(255, 255, 255, 0.4);
 }
+
 .plugin-list-container .small-font {
-	font-size: 9px;
+	font-size: 11px !important;
 	font-weight: bold;
 }
+
 .plugin-list-container .plugin-title,
 .myplugin-container .plugin-title,
 .myplugin-container .header {
@@ -108,10 +110,11 @@
 	font-size: 14px;
 }
 .plugin-list-container .plugin-icon {
-	height: 5rem;
+	height: 6rem;
 	margin: 0rem 1rem 0rem 0.5rem;
 	width: 8rem;
 }
+
 .plugin-list-container .cloud-icon {
 	height: 3rem;
 	width: 3rem;
@@ -507,6 +510,8 @@
 }
 .container-wrapper .info-text-wrapper {
 	width: 100%;
+	text-align: center;
+	margin-top: 8px;
 }
 .container-wrapper .info-text-wrapper div {
 	text-align: center;
@@ -521,17 +526,16 @@
 	padding-left: 7.2rem;
 	opacity: 1;
 }
-
 .plugin-app-stroe-wrapper .plugin-icon {
 	width: 7rem;
-	padding-top: 10px;
+	padding: 5px;
+	height: 6rem !important;
 }
 
 .plugin-app-stroe-wrapper .plugin-title {
-	font-size: 21px;
+	font-size: 16px;
 	font-weight: bold;
 }
-
 .plugin-app-stroe-wrapper .search-plugin-input input {
 	border-left: none;
 	border-right: none;
@@ -622,16 +626,25 @@
 	margin: 0px 3px 0px 5px;
 }
 
+.plugin-app-stroe-wrapper .sub-title-font {
+	font-size: 12px;
+}
+
 .plugin-container .plugin-content-wrapper div {
 	display: flex;
+	align-items: center;
 	margin-bottom: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper div span {
+	margin-left: 10px;
 }
 
 .plugin-container .plugin-content-wrapper div h6 {
 	color: white;
 	border: 1px solid #00781b8c;
 	border-radius: 12px;
-	padding: 5px;
+	padding: 0px 10px 0px 10px;
 	margin-left: 5px;
 }
 
@@ -674,4 +687,67 @@
 .plugin-icon {
 	width: 5rem;
 	height: 5rem;
+}
+
+.buy-modal-footer div p {
+	font-size: 12px;
+	margin: 1rem 0rem 1rem 0rem;
+	text-align: center;
+}
+
+.buy-modal-footer div button {
+	width: 100%;
+	margin-bottom: 4px;
+	background-color: green;
+	border-color: green;
+	color: white;
+}
+
+.buy-modal-footer h6 {
+	text-align: center;
+	font-size: 10px;
+	color: #ffffff;
+	width: 60%;
+	margin: 2px auto 2px auto;
+	opacity: 0.6;
+}
+
+.buy-modal-footer .ant-btn {
+	color: white;
+}
+
+.ant-btn:hover,
+.ant-btn:focus,
+.ant-btn:active {
+	background-color: green;
+	border-color: green;
+}
+
+.description-content .plugin-list-bio {
+	font-size: 11px;
+}
+
+.plugin-list-type {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+	font-size: 11px;
+}
+
+.plugin-list-type p {
+	margin-left: 3px;
+}
+
+.plugin-list-font {
+	font-size: 11px;
+}
+
+.installed-plugin {
+	text-align: center;
+	margin: 1rem;
+}
+
+.underline-text {
+	cursor: pointer;
+	margin: 10px;
 }

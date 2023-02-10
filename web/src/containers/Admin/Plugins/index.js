@@ -28,11 +28,6 @@ const { Item } = Breadcrumb;
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
-		const {
-			router: {
-				location: { query: { plugin } = {} },
-			},
-		} = this.props;
 		this.state = {
 			nextType: 'myPlugin',
 			isConfirm: false,
@@ -638,12 +633,11 @@ class Plugins extends Component {
 			case 'explore':
 				return (
 					<>
-						<div>
-							<span
-								className="underline-text"
-								onClick={() => this.onChangeNextType('myPlugin')}
-							>{`<Back to my plugin apps`}</span>{' '}
-						</div>
+						<div
+							className="underline-text"
+							onClick={() => this.onChangeNextType('myPlugin')}
+						>{`<Back to my plugin apps.`}</div>
+
 						<PluginList
 							constants={constants}
 							selectedPlugin={selectedPlugin}
@@ -680,6 +674,7 @@ class Plugins extends Component {
 						<PluginConfigure
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
+							getActivationsPlugin={this.getActivationsPlugin}
 							activatedPluginDetails={activatedPluginDetails}
 							selectedPlugin={selectedPlugin}
 							handlePluginList={this.handlePluginList}

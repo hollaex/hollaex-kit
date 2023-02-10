@@ -151,6 +151,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Input } from 'antd';
+import { CheckOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 
 const PluginList = ({
@@ -163,8 +164,6 @@ const PluginList = ({
 }) => {
 	const renderList = () => {
 		return pluginData.map((item, index) => {
-			// const networkPlugin =
-			//     pluginData.filter((data) => data.name === item.name)[0] || {};
 			return (
 				<div
 					key={index}
@@ -186,16 +185,19 @@ const PluginList = ({
 							/>
 						</div>
 						<div className="description-content">
-							<div className="d-flex">
-								<div className="plugin-list-title">{item.name}</div>
-								{item.version ? (
-									<div className="plugin-list-author plugin-author-align">
-										v{item.version}
-									</div>
-								) : null}
-							</div>
-							<div className="plugin-list-author">{`By ${item.author}`}</div>
+							<div className="plugin-list-title">{item.name}</div>
 							<div className="plugin-list-bio">{item.bio}</div>
+							{item.enabled ? (
+								<div className="plugin-list-type">
+									<CheckOutlined /> <p>Currently installed</p>
+								</div>
+							) : (
+								<div className="plugin-list-font">
+									{item.payment_type === 'free' || item.price === 0
+										? 'Free'
+										: `$ ${item.price}`}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>
@@ -216,9 +218,9 @@ const PluginList = ({
 							/>
 						</div>
 						<div className="pl-4">
-							<div className="small-font">EXCHANGE STORE</div>
+							<div className="sub-title-font">EXCHANGE STORE</div>
 							<div className="plugin-title">Explore powerful plugin apps</div>
-							<div>
+							<div className="sub-title-font">
 								Efficiently boost your exchange's functionality and user
 								experience.
 							</div>

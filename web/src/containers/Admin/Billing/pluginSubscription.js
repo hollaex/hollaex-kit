@@ -1,7 +1,6 @@
 import React from 'react';
 import { ReactSVG } from 'react-svg';
 import { STATIC_ICONS } from 'config/icons';
-import _get from 'lodash/get';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
@@ -22,7 +21,7 @@ const PluginSubscription = ({
 			<div className="subscription-container">
 				<div className="plugin-plan-card">
 					<div className="card-icon">
-						<img src={logo} className="plugin-icon" />
+						<img src={logo} alt={'logo'} className="plugin-icon" />
 					</div>
 
 					<div>
