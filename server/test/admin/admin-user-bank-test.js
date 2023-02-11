@@ -21,19 +21,19 @@ describe('tests for /admin/user/bank', function () {
 	it('Integration Test -should respond 200 for "Success"', async () => {
 		const bankArray = [
 			{
-				'test': 56503565.59538615
+				'test': generateFuzz(10)
 			},
 			{
-				'test2': 16999729
+				'test2': generateFuzz(10)
 			},
 			{
 				'test3': true,
-				'test4': -99338867.04538773
+				'test4': generateFuzz(10)
 			},
 			{
 				'test5': false,
 				'test6': true,
-				'test7': -90456236
+				'test7': generateFuzz(10)
 			}
 		];
 		const response = await request()
