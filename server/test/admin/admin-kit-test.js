@@ -26,5 +26,33 @@ describe('tests for /admin/kit', function () {
         response.should.be.json;
     });
 
-    //Put
+    it('Integration Test -should respond 200 for "Success"', async () => {
+        const responseOne = await request()
+            .put('/v2/admin/kit')
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                kit: { black_list_countries: ["AD"] }
+            })
+            
+        responseOne.should.have.status(200);
+        responseOne.should.be.json;
+
+        if(!responseOne.body.kit.black_list_countries.includes('AD')){
+            throw new Error('update operation not successfull')
+        }
+        
+        const responseSecond = await request()
+            .put('/v2/admin/kit')
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                kit: { black_list_countries: ["AI"] }
+            })   
+
+        responseSecond.should.have.status(200);
+        responseSecond.should.be.json;
+
+        if(!responseSecond.body.kit.black_list_countries.includes('AI')){
+            throw new Error('update operation not successfull')
+        }
+    });
 });

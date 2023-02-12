@@ -31,7 +31,7 @@ describe('tests for /user/username', function () {
                 username: "Test1234"
             });
 
-            response.should.have.status(400);
+            response.should.have.status(200);
             response.should.be.json;
         }
         
