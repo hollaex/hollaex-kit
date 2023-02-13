@@ -6,20 +6,18 @@ import './index.scss';
 const { TextArea } = Input;
 
 const EnterpriseForm = (props) => {
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		props.form.validateFieldsAndScroll((err, values) => {
-			if (!err) {
+	const [form] = Form.useForm();
+	const handleSubmit = () => {
+		form
+			.validateFields()
+			.then((values) => {
 				const { fiat_system_description, ...rest } = values;
 				let formValues = {
 					...rest,
 				};
-				if (rest.has_fiat_system) {
-					formValues.fiat_system_description = fiat_system_description;
-				}
 				props.onSubmitEnterprise(formValues);
-			}
-		});
+			})
+			.catch((error) => {});
 	};
 
 	return (
@@ -36,9 +34,10 @@ const EnterpriseForm = (props) => {
 				</div>
 			</div>
 			<Form
-				onSubmit={handleSubmit}
+				onFinish={handleSubmit}
 				className="enterprise-form"
 				requiredMark={false}
+				form={form}
 			>
 				<div className="form-container">
 					<Form.Item
@@ -227,7 +226,7 @@ const EnterpriseForm = (props) => {
 				</div>
 				<div className="btn-area">
 					<Button block type="primary" htmlType="submit">
-						Submit
+						submit
 					</Button>
 				</div>
 			</Form>

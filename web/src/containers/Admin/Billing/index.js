@@ -1,11 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { message, Tabs } from 'antd';
+import { message } from 'antd';
 import GeneralContent from './generalContent';
 import { getDashExchange, putDashExchange } from '../AdminFinancials/action';
 import { setDashExchange } from 'actions/adminBillingActions';
-
-const TabPane = Tabs.TabPane;
 
 const Billing = (props) => {
 	const { dashExchange, user, setDashExchange } = props;
@@ -18,6 +16,19 @@ const Billing = (props) => {
 	const getExchange = async () => {
 		const res = await getDashExchange();
 		setDashExchange(res.data[0]);
+	};
+
+	const fiatPutExchange = async (body) => {
+		try {
+			await putDashExchange(body);
+			await getExchange();
+		} catch (error) {
+			if (error.data && error.data.message) {
+				message.error(error.data.message);
+			} else {
+				message.error('Failed to update setup configs');
+			}
+		}
 	};
 
 	const putExchange = async (type = 'Cloud') => {
@@ -44,15 +55,13 @@ const Billing = (props) => {
 
 	return (
 		<div className="app_container-content admin-earnings-container w-100 admin-billing">
-			<Tabs defaultActiveKey="0">
-				<TabPane tab="Plans" key="0">
-					<GeneralContent
-						dashExchange={dashExchange}
-						user={user}
-						putExchange={putExchange}
-					/>
-				</TabPane>
-			</Tabs>
+			<GeneralContent
+				dashExchange={dashExchange}
+				user={user}
+				putExchange={putExchange}
+				fiatPutExchange={fiatPutExchange}
+				getExchange={getExchange}
+			/>
 		</div>
 	);
 };

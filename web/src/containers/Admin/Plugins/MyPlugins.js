@@ -210,11 +210,6 @@ class MyPlugins extends Component {
 		}
 	};
 
-	// onHandleClickPluginApps = () => {
-	// 	// this.setState({ is_zoom: true })
-	// 	// this.props.onChangeNextType('appStore');
-	// }
-
 	renderList = () => {
 		const {
 			myPlugins,
@@ -276,11 +271,8 @@ class MyPlugins extends Component {
 	};
 
 	render() {
-		const { isLoading, isVisible, is_zoom } = this.state;
-		const { myPlugins } = this.props;
-		if (isLoading) {
-			return <Spin />;
-		}
+		const { isVisible, is_zoom } = this.state;
+		const { myPlugins, isPluginFetchLoading } = this.props;
 
 		return (
 			<div className={!is_zoom ? 'myplugin-container' : ''}>
@@ -324,19 +316,29 @@ class MyPlugins extends Component {
 							backgroundImage: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2})`,
 						}}
 					>
-						{myPlugins.length ? (
-							<>{this.renderList()}</>
-						) : (
-							<div className="installed-plugin">
-								<div>
-									You currently haven't got any installed plugin apps yet.
-								</div>
-								<div onClick={() => this.props.onChangeNextType('appStore')}>
-									<span className="underline-text">Click here</span> to get the
-									plugins apps.
-								</div>
-							</div>
-						)}
+						<Spin
+							spinning={isPluginFetchLoading}
+							className="plugin-spinner"
+							size="large"
+						>
+							{myPlugins.length ? (
+								<>{this.renderList()}</>
+							) : (
+								!isPluginFetchLoading && (
+									<div className="installed-plugin">
+										<div>
+											You currently haven't got any installed plugin apps yet.
+										</div>
+										<div
+											onClick={() => this.props.onChangeNextType('appStore')}
+										>
+											<span className="underline-text">Click here</span> to get
+											the plugins apps.
+										</div>
+									</div>
+								)
+							)}
+						</Spin>
 					</div>
 
 					<div

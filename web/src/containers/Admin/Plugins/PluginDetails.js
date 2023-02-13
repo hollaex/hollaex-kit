@@ -640,7 +640,7 @@ const PluginDetails = ({
 										</p>
 									) : null}
 
-									{payment_type !== 'free' ? (
+									{payment_type && payment_type !== 'free' ? (
 										<p>
 											Payment Type:{' '}
 											<ReactSVG
@@ -654,7 +654,7 @@ const PluginDetails = ({
 											{payment_type === 'one-time' ? 'activation' : null}
 										</p>
 									) : null}
-									{isPriceTagHide ? (
+									{price && isPriceTagHide ? (
 										<div>
 											<p>Price: </p>{' '}
 											<h6>
