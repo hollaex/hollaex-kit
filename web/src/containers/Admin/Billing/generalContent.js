@@ -57,6 +57,8 @@ import Subscription from './subscription';
 import './Billing.scss';
 import FiatConfirmation from './FiatConformatiom';
 import PluginSubscription from './pluginSubscription';
+import { requestPlugins } from '../Plugins/action';
+import { setExplorePlugins, setSelectedPlugin } from 'actions/appActions';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
@@ -376,6 +378,9 @@ const GeneralContent = ({
 	setExchangeCardKey,
 	userEmail,
 	pluginData = {},
+	setSelectedPlugin,
+	explorePlugins,
+	setExplorePlugins,
 }) => {
 	const balance = user?.balance;
 	const dashToken = localStorage.getItem(DASH_TOKEN_KEY);
@@ -404,6 +409,8 @@ const GeneralContent = ({
 	useEffect(() => {
 		setIsLoading(true);
 		getExchangePrice();
+		getExplorePlugin();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -475,8 +482,18 @@ const GeneralContent = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedType]);
 
+	const getExplorePlugin = async () => {
+		try {
+			const res = await requestPlugins();
+			if (res && res.data) {
+				setExplorePlugins(res.data);
+			}
+		} catch (error) {
+			throw error;
+		}
+	};
+
 	const submitEnterprise = async (formProps) => {
-		console.log('innnnnnner', formProps);
 		const data = {
 			email: userEmail,
 			category: 'enterprise',
@@ -560,6 +577,7 @@ const GeneralContent = ({
 		setPaymentAddressDetails({});
 		setPendingPay(false);
 		setHideBreadcrumb(false);
+		setSelectedPlugin({});
 	};
 
 	const handleViewPlan = () => {
@@ -648,14 +666,22 @@ const GeneralContent = ({
 	};
 
 	const renderFooter = () => {
+		let pendingPlugin = [];
+		if (selectedPendingItem) {
+			pendingPlugin = explorePlugins.filter(
+				(plugin) => plugin.name === selectedPendingItem?.meta?.activation?.name
+			);
+		}
 		return (
 			<div className="horizantal-line">
-				{isPluginDataAvail ? (
+				{isPluginDataAvail || selectedPendingItem?.item === 'plugin' ? (
 					<PluginSubscription
-						pluginData={pluginData}
+						pluginData={pendingPay ? pendingPlugin[0] : pluginData}
 						selectedCrypto={selectedCrypto}
 						isMonthly={isMonthly}
-						paymentAddressDetails={paymentAddressDetails}
+						paymentAddressDetails={
+							pendingPay ? selectedPendingItem?.meta : paymentAddressDetails
+						}
 						exchangePlanType={exchangePlanType}
 						exchangeCardKey={exchangeCardKey}
 						planPriceData={planPriceData}
@@ -775,7 +801,6 @@ const GeneralContent = ({
 			if (res && res.data) {
 				setinvoiceData([res.data]);
 				setExchangePlanType('method');
-				setSelectedType('plugin');
 			}
 		} catch (error) {
 			if (error.data && error.data.message) {
@@ -792,7 +817,7 @@ const GeneralContent = ({
 
 	const renderModelContent = () => {
 		const breadCrumbOptions =
-			selectedType === 'fiat' && pendingPay === false
+			selectedType === 'fiat' && pendingPay === false && !isPluginDataAvail
 				? fiatOptions
 				: pendingPay
 				? pendingPayOption
@@ -1335,6 +1360,7 @@ const GeneralContent = ({
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 			setHideBreadcrumb(false);
+			setSelectedPlugin({});
 		} else if (exchangePlanType === 'method') {
 			if (pendingPay) {
 				setOpenPlanModal(false);
@@ -1493,6 +1519,7 @@ const mapStateToProps = (store) => ({
 	exchangeCardKey: store.admin.exchangeCardKey,
 	userEmail: store.user.email,
 	pluginData: store.app.selectedPlugin,
+	explorePlugins: store.app.explorePlugins,
 });
 
 export default connect(mapStateToProps, {
@@ -1504,4 +1531,6 @@ export default connect(mapStateToProps, {
 	setFiatSubmission,
 	setPaymentAddressDetails,
 	setExchangeCardKey,
+	setExplorePlugins,
+	setSelectedPlugin,
 })(GeneralContent);
