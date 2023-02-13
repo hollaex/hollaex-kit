@@ -4,15 +4,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
-const PluginSubscription = ({
-	pluginData,
-	selectedCrypto,
-	isMonthly,
-	exchangeCardKey,
-	paymentAddressDetails,
-	exchangePlanType,
-	planPriceData,
-}) => {
+const PluginSubscription = ({ pluginData, paymentAddressDetails }) => {
 	const { logo, price, name, payment_type, author } = pluginData;
 
 	return (

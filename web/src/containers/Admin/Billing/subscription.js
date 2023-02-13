@@ -13,6 +13,8 @@ const Subscription = ({
 	exchangePlanType,
 	selectedPlanData,
 	planPriceData,
+	selectedPendingItem,
+	pendingPay,
 }) => {
 	const isCloud = () => {
 		const exchangePlans = ['basic', 'crypto', 'fiat'];
@@ -79,9 +81,7 @@ const Subscription = ({
 							: 'Yearly payment:'}
 					</p>
 					<p className="f-20">
-						{exchangeCardKey === 'diy'
-							? `USD ${_get(planPriceData, 'year.price')}`
-							: exchangePlanType === 'payment'
+						{exchangePlanType === 'payment'
 							? `${selectedCrypto.symbol.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
@@ -89,6 +89,8 @@ const Subscription = ({
 							? `${paymentAddressDetails.currency.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
+							: pendingPay
+							? selectedPendingItem.amount
 							: isMonthly
 							? `USD${_get(planPriceData, 'month.price')}`
 							: `USD ${_get(planPriceData, 'year.price')}`}
