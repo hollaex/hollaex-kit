@@ -427,7 +427,7 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/trade')) {
 			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
-			return 'Plugins';
+			return 'Plugin apps';
 		} else if (location.pathname.includes('/admin/apps')) {
 			return 'Apps';
 		} else if (location.pathname.includes('/admin/tiers')) {

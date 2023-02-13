@@ -1,0 +1,178 @@
+.buy-modal,
+.plugin-container {
+	.plugin-content-wrapper {
+		display: flex;
+		align-items: flex-start;
+		flex-direction: column;
+		margin-left: 5px;
+		font-size: 13px;
+
+		.title-wrapper {
+			display: flex;
+			align-items: flex-end;
+
+			h5 {
+				color: white;
+				font-size: 12px;
+				margin-left: 2px;
+				opacity: 0.6;
+				padding-bottom: 0rem;
+			}
+		}
+
+		p {
+			display: flex;
+			align-items: center;
+			margin-bottom: 1rem;
+
+			div {
+				display: flex;
+				margin: 0px 3px 0px 5px;
+			}
+		}
+
+		div {
+			display: flex;
+			margin-bottom: 1rem;
+
+			h6 {
+				color: white;
+				border: 1px solid #00781b8c;
+				border-radius: 12px;
+				padding: 5px;
+				margin-left: 5px;
+			}
+
+			span {
+				margin: 0px 3px 0px 5px;
+			}
+
+			svg {
+				width: 1rem;
+			}
+		}
+
+		.button-wrapper {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			button {
+				background-color: green;
+				border-radius: 15px;
+			}
+			p {
+				margin: 5px auto 5px auto;
+				opacity: 0.6;
+				font-size: 12px;
+			}
+		}
+
+		button {
+			background-color: green;
+			border-radius: 15px;
+			width: 100%;
+		}
+	}
+
+	.ant-modal-body {
+		padding-bottom: 10px;
+	}
+
+	.buy-modal-container {
+		display: flex;
+		flex-direction: column;
+
+		h5 {
+			padding-bottom: 1rem;
+		}
+
+		.buy-content-wrapper {
+			display: flex;
+			align-items: flex-start;
+
+			div {
+				margin-left: 5px;
+
+				p {
+					display: flex;
+					align-items: center;
+
+					div {
+						display: flex;
+						margin-right: 3px;
+					}
+
+					span {
+						margin: 0px 3px 0px 5px;
+					}
+
+					svg {
+						width: 1rem;
+					}
+
+					h5 {
+						color: white;
+						font-size: 11px;
+						margin-left: 1rem;
+						opacity: 0.6;
+						padding-bottom: 0rem;
+					}
+
+					h6 {
+						color: white;
+						border: 1px solid #00781b8c;
+						border-radius: 12px;
+						width: 30%;
+						text-align: center;
+						padding-top: 3px;
+						padding-bottom: 3px;
+						margin-left: 5px;
+					}
+				}
+			}
+		}
+
+		h5 {
+			color: white;
+		}
+
+		img {
+			width: 5rem;
+		}
+
+		p {
+			font-size: 11px;
+			margin-bottom: 7px;
+		}
+	}
+
+	.ant-modal-footer {
+		text-align: left;
+
+		.buy-modal-footer {
+			div {
+				p {
+					font-size: 12px;
+					margin: 1rem 0rem 1rem 0rem;
+				}
+
+				button {
+					width: 100%;
+					margin-bottom: 4px;
+					background-color: green;
+					border-color: green;
+					color: white;
+				}
+			}
+
+			h6 {
+				text-align: center;
+				font-size: 10px;
+				color: #ffffff;
+				width: 60%;
+				margin: 2px auto 2px auto;
+				opacity: 0.6;
+			}
+		}
+	}
+}
