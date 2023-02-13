@@ -283,7 +283,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
 							</EditWrapper>
-							<p>{(obj.order_id) ? obj.order_id : STRINGS['NA'] }</p>
+							<p>{obj.order_id ? obj.order_id : STRINGS['NA']}</p>
 						</div>
 					</div>
 				);

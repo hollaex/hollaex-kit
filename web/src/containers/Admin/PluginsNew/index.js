@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Breadcrumb, Modal, message, Button } from 'antd';
+import { Spin, Tabs, Breadcrumb, Modal, message, Button } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
@@ -12,24 +12,29 @@ import {
 	requestPlugins,
 	requestMyPlugins,
 	updatePlugins,
-	getPluginMeta,
-	requestActivationsPlugin,
 } from './action';
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
-import PluginAppStore from './PluginAppStore';
+import { getPluginMeta } from './action';
 
 import './index.css';
+import PluginAppStore from './PluginAppStore';
 
+const TabPane = Tabs.TabPane;
 const { Item } = Breadcrumb;
 
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
+		const {
+			router: {
+				location: { query: { plugin } = {} },
+			},
+		} = this.props;
 		this.state = {
-			nextType: 'myPlugin',
+			nextType: 'appStore',
 			isConfirm: false,
 			loading: false,
 			constants: {},
@@ -44,8 +49,8 @@ class Plugins extends Component {
 			isVisible: false,
 			isRemovePlugin: false,
 			removePluginName: '',
+			tabKey: plugin ? 'my_plugin' : 'explore',
 			pluginCards: [],
-			activatedPluginDetails: [],
 			processing: false,
 			thirdPartyType: 'upload_json',
 			thirdPartyError: '',
@@ -80,28 +85,17 @@ class Plugins extends Component {
 	}
 
 	getPluginsData = async () => {
+		console.log('12121wq');
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
-			await this.getActivationsPlugin();
 		} catch (err) {
 			throw err;
 		}
 	};
 
-	getActivationsPlugin = (params = {}) => {
-		return requestActivationsPlugin(params)
-			.then((res) => {
-				if (res) {
-					this.setState({ activatedPluginDetails: res });
-				}
-			})
-			.catch((err) => {
-				throw err;
-			});
-	};
-
 	getMyPlugins = (params = {}) => {
+		console.log('innnwerere');
 		return requestMyPlugins(params)
 			.then((res) => {
 				if (res && res.data) {
@@ -111,6 +105,7 @@ class Plugins extends Component {
 							location: { pathname, query: { plugin } = {} },
 						},
 					} = this.props;
+					console.log('ertererr', res.data);
 					this.setState({ myPlugins: res.data }, () => {
 						const pluginData = res.data.find(({ name }) => name === plugin);
 						if (pluginData) {
@@ -625,28 +620,33 @@ class Plugins extends Component {
 			thirdPartyType,
 			thirdPartyError,
 			thirdParty,
-			activatedPluginDetails,
 		} = this.state;
 		switch (nextType) {
 			case 'appStore':
-				return <PluginAppStore onChangeNextType={this.onChangeNextType} />;
+				return (
+					<PluginAppStore
+						onChangeNextType={this.onChangeNextType}
+						myPlugins={this.state.myPlugins}
+						pluginData={this.state.pluginData}
+					/>
+				);
 			case 'explore':
 				return (
 					<>
-						<div
-							className="underline-text"
-							onClick={() => this.onChangeNextType('myPlugin')}
-						>{`<Back to my plugin apps.`}</div>
-
+						<div>
+							<span
+								className="underline-text"
+								onClick={() => this.onChangeNextType('myPlugin')}
+							>{`<Back`}</span>{' '}
+							to my plugins.
+						</div>
 						<PluginList
+							pluginData={pluginData}
 							constants={constants}
 							selectedPlugin={selectedPlugin}
+							handleOpenPlugin={this.handleOpenPlugin}
 							getPlugins={this.getPlugins}
 							pluginCards={pluginCards}
-							handleOpenPlugin={this.handleOpenPlugin}
-							onChangeNextType={this.onChangeNextType}
-							myPlugins={myPlugins}
-							pluginData={pluginData}
 						/>
 					</>
 				);
@@ -674,8 +674,6 @@ class Plugins extends Component {
 						<PluginConfigure
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
-							getActivationsPlugin={this.getActivationsPlugin}
-							activatedPluginDetails={activatedPluginDetails}
 							selectedPlugin={selectedPlugin}
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
@@ -683,7 +681,6 @@ class Plugins extends Component {
 							restart={this.handleRestart}
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
-							router={this.props.router}
 						/>
 					</div>
 				);
