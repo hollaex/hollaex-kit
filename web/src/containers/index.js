@@ -36,6 +36,7 @@ export { default as AppDetails } from './AppDetails';
 export { default as DigitalAssets } from './DigitalAssets';
 export { default as CoinPage } from './CoinPage';
 export { default as WhiteLabel } from './WhiteLabel';
+export { default as FeesAndLimits } from './FeesAndLimits';
 
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';

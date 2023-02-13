@@ -20,7 +20,6 @@ export const setExchangePlan = (bodyData) => {
 			const res = await requestDashAuthenticated('/exchange/plan', options);
 			resolve(res);
 		} catch (error) {
-			console.log('setExchangePlan : error', error);
 			reject(error);
 		}
 	});
@@ -49,3 +48,41 @@ export const requestStoreInvoice = (id, data) => {
 		}
 	});
 };
+
+export const postContact = (body) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(body),
+	};
+
+	return new Promise(async (resolve, reject) => {
+		try {
+			const res = await requestDashAuthenticated('/support', options);
+			resolve(res);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
+
+// export const FormRequest = (url, data) => {
+// 	return new Promise((resolve, reject) => {
+// 		const ID_TOKEN = getCookie('id_token');
+// 		if (ID_TOKEN) {
+// 			axios.defaults.headers.common['Content-Type'] =
+// 				'application/x-www-form-urlencoded';
+// 			axios.defaults.headers.common['Authorization'] = ID_TOKEN;
+// 		}
+
+// 		const config = {
+// 			method: 'post',
+// 			url,
+// 		};
+// 		if (data) {
+// 			config.data = data;
+// 		}
+// 		axios(config)
+// 			.then((res) => resolve(res.data))
+// 			.catch((err) => reject(err.response));
+// 	});
+// };

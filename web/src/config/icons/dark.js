@@ -132,6 +132,12 @@ const nestedIcons = {
 		SUCCESSFUL: '/assets/images/dust-settlement-complete-sparkle.svg',
 	},
 
+	FEES_AND_LIMITS: {
+		TRADING_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_LIMITS: '/assets/images/withdraw-tier-section.svg',
+	},
+
 	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',
 	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-dark-02-03.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',

@@ -211,9 +211,7 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
-		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type =
-			temp?.type === 'active' ? STRINGS['TIME_OPEN'] : STRINGS['TIME_CLOSE'];
+		let type = STRINGS['TIME'];
 
 		this.setState({
 			headers: {
@@ -285,7 +283,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
 							</EditWrapper>
-							<p>{obj.order_id}</p>
+							<p>{(obj.order_id) ? obj.order_id : STRINGS['NA'] }</p>
 						</div>
 					</div>
 				);
@@ -318,7 +316,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
 							</EditWrapper>
-							<p>{obj.stop ? obj.stop : `N/A`}</p>
+							<p>{obj.stop ? obj.stop : STRINGS['NA']}</p>
 						</div>
 						<div>
 							<EditWrapper
@@ -443,7 +441,7 @@ class TransactionsHistory extends Component {
 					orders.isRemaining
 				) {
 					this.props.getOrdersHistory(RECORD_LIMIT, orders.page + 1, {
-						...params,
+						...temp,
 						open: false,
 					});
 					this.setState({ jumpToPage: pageNumber });
@@ -503,9 +501,6 @@ class TransactionsHistory extends Component {
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
-		let sortTrades = trades.data?.sort(
-			(x, y) => new Date(y.timestamp) - new Date(x.timestamp)
-		);
 
 		const props = {
 			symbol,
@@ -548,7 +543,7 @@ class TransactionsHistory extends Component {
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
-				props.data = { ...trades, data: sortTrades };
+				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;

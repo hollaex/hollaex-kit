@@ -62,6 +62,7 @@ import {
 	setOrderLimits,
 	setHelpdeskInfo,
 	setContracts,
+	setAllContracts,
 	setBroker,
 	setAdminSortData,
 	setSortModeChange,
@@ -176,6 +177,7 @@ const getConfigs = async () => {
 	store.dispatch(setPairs(constants.pairs));
 	store.dispatch(setPairsData(constants.pairs));
 	store.dispatch(setContracts(getContracts(constants.coins)));
+	store.dispatch(setAllContracts(constants));
 	store.dispatch(setBroker(constants.broker));
 	// store.dispatch(setPricesAndAsset({}, constants.coins));
 
