@@ -45,6 +45,7 @@ import {
 	SET_SORT_MODE,
 	TOGGLE_SORT,
 	SET_ADMIN_SORT,
+	SELECTED_PLUGIN,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -166,6 +167,7 @@ const INITIAL_STATE = {
 	enabledPlugins: [],
 	plugins: [],
 	pluginNames: {},
+	selectedPlugin: {},
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -426,6 +428,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				...state,
 				constants: payload.constants,
 				features: payload.features,
+			};
+
+		case SELECTED_PLUGIN:
+			return {
+				...state,
+				selectedPlugin: payload.selectedPlugin,
 			};
 
 		case SET_PLUGINS: {

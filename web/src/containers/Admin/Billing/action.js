@@ -65,24 +65,6 @@ export const postContact = (body) => {
 	});
 };
 
-// export const FormRequest = (url, data) => {
-// 	return new Promise((resolve, reject) => {
-// 		const ID_TOKEN = getCookie('id_token');
-// 		if (ID_TOKEN) {
-// 			axios.defaults.headers.common['Content-Type'] =
-// 				'application/x-www-form-urlencoded';
-// 			axios.defaults.headers.common['Authorization'] = ID_TOKEN;
-// 		}
-
-// 		const config = {
-// 			method: 'post',
-// 			url,
-// 		};
-// 		if (data) {
-// 			config.data = data;
-// 		}
-// 		axios(config)
-// 			.then((res) => resolve(res.data))
-// 			.catch((err) => reject(err.response));
-// 	});
-// };
+export const getPluginActivateDetails = (query) => {
+	return requestDashAuthenticated(`/plugin/activate?name=${query}`, {});
+};

@@ -14,6 +14,9 @@ const PluginConfigure = ({
 	restart,
 	handleRedirect,
 	handleStep,
+	activatedPluginDetails,
+	getActivationsPlugin,
+	router,
 }) => {
 	const [pluginData, setPlugin] = useState({});
 	const [selectedNetworkPlugin, setNetworkData] = useState({});
@@ -69,12 +72,15 @@ const PluginConfigure = ({
 			pluginData={pluginData}
 			handleBreadcrumb={handleBreadcrumb}
 			selectedPlugin={selectedPlugin}
+			activatedPluginDetails={activatedPluginDetails}
+			getActivationsPlugin={getActivationsPlugin}
 			selectedNetworkPlugin={selectedNetworkPlugin}
 			handlePluginList={handlePluginList}
 			updatePluginList={updatePluginList}
 			removePlugin={removePlugin}
 			restart={restart}
 			handleRedirect={handleRedirect}
+			router={router}
 		/>
 	);
 };

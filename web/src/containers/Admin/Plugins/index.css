@@ -57,10 +57,12 @@
 	padding: 0.25rem 0rem 1rem 0rem;
 	border-bottom: 1px solid rgb(255, 255, 255, 0.4);
 }
+
 .plugin-list-container .small-font {
-	font-size: 9px;
+	font-size: 11px !important;
 	font-weight: bold;
 }
+
 .plugin-list-container .plugin-title,
 .myplugin-container .plugin-title,
 .myplugin-container .header {
@@ -108,10 +110,11 @@
 	font-size: 14px;
 }
 .plugin-list-container .plugin-icon {
-	height: 5rem;
+	height: 6rem;
 	margin: 0rem 1rem 0rem 0.5rem;
 	width: 8rem;
 }
+
 .plugin-list-container .cloud-icon {
 	height: 3rem;
 	width: 3rem;
@@ -122,7 +125,7 @@
 }
 .plugin-list-container .plugin-list,
 .myplugin-container .plugin-list {
-	height: 350px;
+	height: 460px;
 	overflow: auto;
 	overflow-x: hidden;
 }
@@ -478,4 +481,273 @@
 
 .spinner-container {
 	padding-right: 1.25rem;
+}
+.exchange-plugin-content-wrapper {
+	position: absolute;
+	top: 6rem;
+}
+.exchange-plugin-content-wrapper .exchange-plugin-image {
+	width: 4rem;
+}
+.exchange-plugin-content-wrapper .exchange-plugin-title {
+	font-size: 34px;
+}
+.exchange-plugin-content-wrapper .link-text {
+	text-decoration: underline;
+}
+.exchange-plugin-content-wrapper .blink_me {
+	animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+	50% {
+		opacity: 0.4;
+	}
+}
+
+.container-wrapper {
+	position: relative;
+}
+.container-wrapper .info-text-wrapper {
+	width: 100%;
+	text-align: center;
+	margin-top: 8px;
+}
+.container-wrapper .info-text-wrapper div {
+	text-align: center;
+}
+.container-wrapper .img-wrapper .img-style {
+	width: 65rem;
+	opacity: 0.2;
+}
+.container-wrapper .img-wrapper .expand {
+	-webkit-transform: scale(1.5);
+	transform: scale(1.18);
+	padding-left: 7.2rem;
+	opacity: 1;
+}
+.plugin-app-stroe-wrapper .plugin-icon {
+	width: 7rem;
+	padding: 5px;
+	height: 6rem !important;
+}
+
+.plugin-app-stroe-wrapper .plugin-title {
+	font-size: 16px;
+	font-weight: bold;
+}
+.plugin-app-stroe-wrapper .search-plugin-input input {
+	border-left: none;
+	border-right: none;
+	border-top: none;
+	border-bottom: 1px solid #ffffff;
+	border-radius: 0px;
+	background-color: var(--admin_panel_input);
+	color: #c4c4c4;
+	box-shadow: none;
+	width: 15rem;
+}
+
+.plugin-list {
+	height: 465px;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.plugin-list-wrapper {
+	display: flex;
+	flex-wrap: wrap;
+	width: 100rem;
+}
+.plugin-list-wrapper .plugin-list-item {
+	width: 30rem;
+	cursor: pointer;
+}
+
+.plugin-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.ant-layout-content .content-wrapper {
+	overflow-y: hidden;
+}
+
+.plugin-list-wrapper .plugin-list-item .description-content {
+	padding-left: 2rem;
+}
+
+.app-store-wrapper .apps-store-background-img {
+	height: 78rem;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.admin-content-wrapper:has(.app-store-wrapper) {
+	padding: 0px !important;
+}
+.plugin-container {
+	padding-left: 20px;
+}
+
+.plugin-container .plugin-content-wrapper {
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	margin-left: 5px;
+	font-size: 13px;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper {
+	display: flex;
+	align-items: flex-end;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper h4 {
+	color: white;
+	margin-bottom: 0rem;
+	margin-right: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper .title-wrapper h5 {
+	color: white;
+	font-size: 12px;
+	opacity: 0.6;
+	margin-bottom: 0rem;
+}
+.plugin-container .plugin-content-wrapper p {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper p div {
+	display: flex;
+	margin: 0px 3px 0px 5px;
+}
+
+.plugin-app-stroe-wrapper .sub-title-font {
+	font-size: 12px;
+}
+
+.plugin-container .plugin-content-wrapper div {
+	display: flex;
+	align-items: center;
+	margin-bottom: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper div span {
+	margin-left: 10px;
+}
+
+.plugin-container .plugin-content-wrapper div h6 {
+	color: white;
+	border: 1px solid #00781b8c;
+	border-radius: 12px;
+	padding: 0px 10px 0px 10px;
+	margin-left: 5px;
+}
+
+.plugin-container .plugin-content-wrapper div h6 span {
+	margin: 0px 3px 0px 5px;
+}
+
+.plugin-container .plugin-content-wrapper div h6 span svg {
+	width: 1rem;
+}
+
+.plugin-container .plugin-content-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+.plugin-container .plugin-content-wrapper .button-wrapper {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
+
+.plugin-container .plugin-content-wrapper .button-wrapper button {
+	background-color: green;
+	border-radius: 15px;
+}
+
+.plugin-container .plugin-content-wrapper .button-wrapper button p {
+	margin: 5px auto 5px auto;
+	opacity: 0.6;
+	font-size: 12px;
+}
+
+.plugin-container .plugin-content-wrapper button {
+	background-color: green;
+	border-radius: 15px;
+	width: 100%;
+}
+
+.plugin-icon {
+	width: 5rem;
+	height: 5rem;
+}
+
+.buy-modal-footer div p {
+	font-size: 12px;
+	margin: 1rem 0rem 1rem 0rem;
+	text-align: center;
+}
+
+.buy-modal-footer div button {
+	width: 100%;
+	margin-bottom: 4px;
+	background-color: green;
+	border-color: green;
+	color: white;
+}
+
+.buy-modal-footer h6 {
+	text-align: center;
+	font-size: 10px;
+	color: #ffffff;
+	width: 60%;
+	margin: 2px auto 2px auto;
+	opacity: 0.6;
+}
+
+.buy-modal-footer .ant-btn {
+	color: white;
+}
+
+.ant-btn:hover,
+.ant-btn:focus,
+.ant-btn:active {
+	background-color: green;
+	border-color: green;
+}
+
+.description-content .plugin-list-bio {
+	font-size: 11px;
+}
+
+.plugin-list-type {
+	display: flex;
+	align-items: center;
+	margin-top: 5px;
+	font-size: 11px;
+}
+
+.plugin-list-type p {
+	margin-left: 3px;
+}
+
+.plugin-list-font {
+	font-size: 11px;
+}
+
+.installed-plugin {
+	text-align: center;
+	margin: 1rem;
+}
+
+.underline-text {
+	cursor: pointer;
+	margin: 10px;
 }

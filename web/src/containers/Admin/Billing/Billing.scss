@@ -341,6 +341,10 @@ p {
 		font-size: 16px;
 		margin: 2rem 0rem 0rem 2rem;
 	}
+
+	.plugin-plan-footer {
+		margin: 0.5rem 0rem 0rem 2rem;
+	}
 }
 
 .crypto-payment-container {
@@ -779,22 +783,31 @@ p {
 		}
 	}
 
+	.plugin-btn-wrapper button {
+		width: 47%;
+		background-color: #288500 !important;
+		height: 44px;
+	}
+
 	.payment-button,
-	.cloud-plan-button {
+	.cloud-plan-button,
+	.plugin-btn-wrapper {
 		display: flex;
 		justify-content: space-around;
 		padding: 1rem 1rem 2.5rem 1rem;
 		margin-top: 3rem;
 
+		.ant-btn-primary:disabled {
+			opacity: 0.3;
+			color: #fff;
+		}
+	}
+	.payment-button,
+	.cloud-plan-button {
 		button {
 			width: 47%;
 			background-color: #3a4fff !important;
 			height: 44px;
-		}
-
-		.ant-btn-primary:disabled {
-			opacity: 0.3;
-			color: #fff;
 		}
 	}
 
@@ -820,6 +833,56 @@ p {
 
 			.diy-icon {
 				width: 5rem !important;
+			}
+		}
+
+		.plugin-plan-card {
+			display: flex;
+			width: 60%;
+			border-right: 1px dashed;
+
+			.plugin-icon {
+				width: 5rem;
+				height: 5rem;
+			}
+
+			.credits-icon {
+				svg {
+					width: 1.5rem;
+					height: 1.5rem;
+				}
+			}
+
+			.verified-icon {
+				padding: 0px 8px 0px 0px !important;
+				width: 2rem;
+				margin-right: 5px;
+				div {
+					padding: unset !important;
+				}
+				svg {
+					height: 1.5rem;
+					width: 1.5rem;
+				}
+			}
+			.verified-icon:hover {
+				svg {
+					height: 2rem;
+					width: 2rem;
+				}
+			}
+
+			.gray-text {
+				color: #b6b6b6;
+
+				.anticon {
+					display: flex;
+					align-items: center;
+				}
+			}
+
+			.footer-text {
+				height: 2rem;
 			}
 		}
 
