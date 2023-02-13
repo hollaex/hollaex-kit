@@ -29,7 +29,7 @@ describe('tests for /user/withdrawal', function () {
                 secret = await tools.security.createOtp(user.id);
                 await tools.security.setActiveUserOtp(user.id);
             } else {
-                const otpCode = await tools.database.findOne('otp code', { where: { user_id: user.id }, attributes: ['id', 'secret'] });
+                const otpCode = await tools.database.findOne('otp code', { where: { user_id: user.id }, order: [ [ 'created_at', 'DESC' ]], attributes: ['id', 'secret'] });
                 secret = otpCode.secret;
 
             }
