@@ -83,7 +83,9 @@ const PluginDetails = ({
 			});
 	};
 	const handleAddPlugin = async () => {
-		const data = pluginStoreDetails ? pluginStoreDetails : pluginData;
+		const data = Object.keys(pluginStoreDetails)?.length
+			? pluginStoreDetails
+			: pluginData;
 		const body = {
 			...data,
 			enabled: true,
@@ -234,7 +236,7 @@ const PluginDetails = ({
 								<p>{`Description: ${pluginData.description}`}</p>
 								<div>
 									{' '}
-									{!pluginData?.free_for?.length ? (
+									{!!pluginData?.free_for?.length ? (
 										<>
 											<p>Note:</p>{' '}
 											<div>
