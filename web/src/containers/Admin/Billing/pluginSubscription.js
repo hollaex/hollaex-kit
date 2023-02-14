@@ -13,7 +13,11 @@ const PluginSubscription = ({ pluginData, paymentAddressDetails }) => {
 			<div className="subscription-container">
 				<div className="plugin-plan-card">
 					<div className="card-icon">
-						<img src={logo} alt={'logo'} className="plugin-icon" />
+						<img
+							src={logo ? logo : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
+							alt={'logo'}
+							className="plugin-icon"
+						/>
 					</div>
 
 					<div>
