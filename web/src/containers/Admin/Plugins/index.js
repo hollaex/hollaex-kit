@@ -639,7 +639,7 @@ class Plugins extends Component {
 				return (
 					<>
 						<div
-							className="underline-text"
+							className="underline-text m-3 pointer"
 							onClick={() => this.onChangeNextType('myPlugin')}
 						>{`<Back to my plugins.`}</div>
 

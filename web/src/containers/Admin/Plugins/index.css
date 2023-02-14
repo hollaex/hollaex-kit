@@ -752,11 +752,6 @@
 	margin: 1rem;
 }
 
-.underline-text {
-	cursor: pointer;
-	margin: 10px;
-}
-
 .plugin-spinner .ant-spin {
 	text-align: center;
 }

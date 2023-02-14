@@ -397,7 +397,7 @@ const PluginDetails = ({
 								href={selectedPlugin.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="underline-text"
+								className="underline-text pointer"
 							>
 								Learn more
 							</a>{' '}
