@@ -282,7 +282,10 @@ class MyPlugins extends Component {
 						See below for all your installed plugin apps. You can get plugins
 						apps from Exchange Plugin App Store, or create your own.{' '}
 						<div>
-							<span className="underline-text" onClick={this.handlePlugin}>
+							<span
+								className="underline-text pointer"
+								onClick={this.handlePlugin}
+							>
 								{' '}
 								Install third party plugin.
 							</span>
@@ -332,8 +335,10 @@ class MyPlugins extends Component {
 										<div
 											onClick={() => this.props.onChangeNextType('appStore')}
 										>
-											<span className="underline-text">Click here</span> to get
-											the plugins apps.
+											<span className="underline-text m-3 pointer">
+												Click here
+											</span>{' '}
+											to get the plugins apps.
 										</div>
 									</div>
 								)
@@ -348,8 +353,8 @@ class MyPlugins extends Component {
 						<div className="info-text-wrapper">
 							{myPlugins.length ? (
 								<>
-									<span className="underline-text">Click here</span> to get the
-									plugins apps.
+									<span className="underline-text m-3 pointer">Click here</span>{' '}
+									to get the plugins apps.
 								</>
 							) : null}
 						</div>

@@ -5,7 +5,7 @@ const PluginAppStore = ({ onChangeNextType, handlePlugin, handleSearch }) => {
 	return (
 		<div className="app-store-wrapper">
 			<div
-				className="underline-text"
+				className="underline-text m-3 pointer"
 				onClick={() => onChangeNextType('myplugin')}
 			>{`<Back`}</div>{' '}
 			<div
