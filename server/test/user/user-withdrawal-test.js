@@ -29,11 +29,16 @@ describe('tests for /user/withdrawal', function () {
                 secret = await tools.security.createOtp(user.id);
                 await tools.security.setActiveUserOtp(user.id);
             } else {
-                const otpCode = await tools.database.findOne('otp code', { where: { user_id: user.id }, order: [ [ 'created_at', 'DESC' ]], attributes: ['id', 'secret'] });
+                const otpCode = await tools.database.findOne('otp code', { where: {
+                    used: true,
+                    user_id:user.id
+                },
+                attributes: ['id', 'secret'],
+                order: [['updated_at', 'DESC']]
+                });
                 secret = otpCode.secret;
 
             }
-        
             return await tools.security.generateOtp(secret);
         }
 
@@ -46,25 +51,17 @@ describe('tests for /user/withdrawal', function () {
             return code;
         }
 
-        // try {
-        //     await request()
-        //     .post('/v2/admin/admin/deactivate-otp')
-        //     .set('Authorization', `Bearer ${bearerToken}`)
-        //     .send({ user_id: user.id });
-        // } catch (error) {
-        //     console.log(error);
-        // }
-
+  
         const tokenModel = getModel('token');
         let token = await tokenModel.findOne({ user_id: user.id })
 
-        let apiKey = token?.apiKey;
+        let apiKey = token?.key;
         let apiSecret = token?.secret;
-
 
         if(!token){
 
-            const hmac = await request()
+            let hmac;
+            hmac = await request()
 			.post('/v2/user/token')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({
@@ -73,7 +70,7 @@ describe('tests for /user/withdrawal', function () {
 				email_code: await getEmailCode(),
 			});
 
-            apiKey = hmac.body.apiKey;
+            apiKey = hmac.body.key;
             apiSecret = hmac.body.secret;
 
             token = hmac.body;
@@ -92,22 +89,27 @@ describe('tests for /user/withdrawal', function () {
 				whitelisting_enabled: false
 			});
 
-            
+        const body = {
+            network: "trx",
+            address: "TFQ9gxeMEkmKoxgrbnHNdu4e3VdNL11vyy",
+            amount: 1,
+            currency: "usdt"
+        }
+
+        const expires = token.expiry / 1000;
+		const signature = tools.security.calculateSignature(token.secret, 'POST', '/v2/user/withdrawal', expires, body);
         const response = await request()
 			.post('/v2/user/withdrawal')
-			.set('api-key', apiKey)
-			.send({
-                network: "trx",
-                address: "TFQ9gxeMEkmKoxgrbnHNdu4e3VdNL11vyy",
-                amount: 1,
-                currency: "usdt"
-			});
+			.set('Api-key', apiKey)
+			.set('Api-expires', expires)
+			.set('Api-signature', signature)
+			.send(body);
 
             response.should.have.status(200);
             response.should.be.json;
+
+            response.body.should.have.property("transaction_id");
     });
-
-
 
     //delete
 });
