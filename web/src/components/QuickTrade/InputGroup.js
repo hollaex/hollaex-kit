@@ -11,10 +11,9 @@ import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
-import EditWrapper from 'components/EditWrapper';
 import STRINGS from 'config/localizedStrings';
-import { Image } from 'components';
-import { getDecimals } from '../../utils/utils';
+import { Image, EditWrapper } from 'components';
+import { getDecimals } from 'utils/utils';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -58,11 +57,8 @@ class InputGroup extends React.PureComponent {
 			limits,
 			forwardError,
 			availableBalance,
-			estimatedPrice,
 			selectValue,
 			pair,
-			isExistBroker,
-			isShowChartDetails,
 		} = this.props;
 		const keydata = pair.split('-');
 		let error = '';
@@ -80,8 +76,6 @@ class InputGroup extends React.PureComponent {
 			maxValue(limits.MAX)(value)
 		) {
 			error = maxValue(limits.MAX)(value);
-		} else if (!estimatedPrice && !isExistBroker && isShowChartDetails) {
-			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
 		} else if (availableBalance) {
 			error = maxValue(availableBalance)(value);
 		}
@@ -103,6 +97,8 @@ class InputGroup extends React.PureComponent {
 			stringId,
 			coins,
 		} = this.props;
+
+		const error = translateError(this.renderErrorMessage(inputValue));
 
 		return (
 			<div className="py-2">
@@ -170,9 +166,9 @@ class InputGroup extends React.PureComponent {
 							autoFocus={autoFocus}
 						/>
 					</Group>
-					{translateError(this.renderErrorMessage(inputValue)) && (
+					{error && (
 						<FieldError
-							error={translateError(this.renderErrorMessage(inputValue))}
+							error={error}
 							displayError={true}
 							className="input-group__error-wrapper"
 						/>

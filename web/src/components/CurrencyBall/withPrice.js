@@ -10,7 +10,6 @@ const CurrencyBallWithPrice = ({
 	size = 'm',
 	coins = {},
 	min,
-	isExistBroker = false,
 }) => {
 	const { display_name, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
 	const minValue = rest.increment_unit ?? min;
@@ -19,9 +18,7 @@ const CurrencyBallWithPrice = ({
 		<div className="with_price-block_amount d-flex direction_ltr">
 			<CurrencyBall name={display_name} symbol={symbol} size={size} />
 			<div className="with_price-block_amount-value d-flex">
-				{isExistBroker
-					? amount
-					: `${formatCurrencyByIncrementalUnit(amount, minValue)}`}
+				{formatCurrencyByIncrementalUnit(amount, minValue)}
 			</div>
 		</div>
 	);
