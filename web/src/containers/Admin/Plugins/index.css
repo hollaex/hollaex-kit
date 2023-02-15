@@ -32,6 +32,7 @@
 }
 .admin-plugins-wrapper {
 	width: 100%;
+	color: #ffffff;
 }
 .plugin-list-container {
 	color: #ffffff;
@@ -257,6 +258,12 @@
 .plugin-details-wrapper .btn-wrapper .remove-btn,
 .admin-plugin-modal-wrapper .remove-btn {
 	background-color: #780000;
+	border-color: #780000 !important;
+}
+
+.plugin-details-wrapper .btn-wrapper .remove-btn,
+.admin-plugin-modal-wrapper .remove-btn:hover {
+	background-color: #780000 !important;
 }
 .plugin-details-wrapper .btn-wrapper .config-btn {
 	background-color: #00781b;
@@ -516,6 +523,7 @@
 	width: 100%;
 	text-align: center;
 	margin-top: 8px;
+	color: #b6b6b6;
 }
 .container-wrapper .info-text-wrapper div {
 	text-align: center;
@@ -558,6 +566,10 @@
 	background-size: cover;
 }
 
+.plugin-list .ant-spin-container {
+	margin-right: 10px;
+}
+
 .plugin-list-wrapper {
 	display: flex;
 	flex-wrap: wrap;
@@ -581,6 +593,7 @@
 	height: 78rem;
 	background-repeat: no-repeat;
 	background-size: cover;
+	background-position: center;
 }
 
 .admin-content-wrapper:has(.app-store-wrapper) {
@@ -623,7 +636,7 @@
 
 .plugin-container .plugin-content-wrapper p div {
 	display: flex;
-	margin: 0px 3px 0px 5px;
+	margin: 0px 1px 0px 5px;
 }
 
 .plugin-app-stroe-wrapper .sub-title-font {
@@ -632,7 +645,6 @@
 
 .plugin-container .plugin-content-wrapper div {
 	display: flex;
-	align-items: center;
 	margin-bottom: 1rem;
 }
 
@@ -754,4 +766,18 @@
 
 .plugin-spinner .ant-spin {
 	text-align: center;
+}
+
+.plugin-list.show-scroll::-webkit-scrollbar {
+	width: 5px;
+}
+
+.plugin-list.show-scroll::-webkit-scrollbar-track {
+	box-shadow: inset 0 0 0 grey;
+	border-radius: 10px;
+}
+
+.plugin-list.show-scroll::-webkit-scrollbar-thumb {
+	background: #b6b6b6;
+	border-radius: 10px;
 }

@@ -4,7 +4,11 @@ import { STATIC_ICONS } from 'config/icons';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
-const PluginSubscription = ({ pluginData, paymentAddressDetails }) => {
+const PluginSubscription = ({
+	pluginData,
+	paymentAddressDetails,
+	exchangePlanType,
+}) => {
 	const { logo, price, name, payment_type, author } = pluginData;
 
 	return (
@@ -63,16 +67,17 @@ const PluginSubscription = ({ pluginData, paymentAddressDetails }) => {
 				<div className="payment-container d-flex align-items-center">
 					<p className="f-20">
 						Cost :
-						{paymentAddressDetails?.amount
-							? `${paymentAddressDetails.currency.toUpperCase()} ${
+						{paymentAddressDetails?.activation &&
+						paymentAddressDetails?.activation?.price
+							? `${paymentAddressDetails?.activation?.price}* USDT`
+							: !['method', 'item'].includes(exchangePlanType) &&
+							  paymentAddressDetails?.currency
+							? `${paymentAddressDetails?.currency?.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
 							: `${price}* USDT`}
 					</p>
 				</div>
-			</div>
-			<div className="plugin-plan-footer gray-text">
-				*All plugin app purchases are conducted in cryptocurrency only.
 			</div>
 		</div>
 	);

@@ -128,6 +128,14 @@ class MyPlugins extends Component {
 		this.handleStep(1);
 	};
 
+	onHandleRedirect = () => {
+		if (this.props.myPlugins.length) {
+			this.props.router.push(`/admin/plugins/store`);
+		} else {
+			this.props.onChangeNextType('appStore');
+		}
+	};
+
 	renderPopup = () => {
 		const { step, isConfirm, buttonSubmitting } = this.state;
 		const {
@@ -281,11 +289,8 @@ class MyPlugins extends Component {
 					<div>
 						See below for all your installed plugin apps. You can get plugins
 						apps from Exchange Plugin App Store, or create your own.{' '}
-						<div>
-							<span
-								className="underline-text pointer"
-								onClick={this.handlePlugin}
-							>
+						<div className="pt-4 pointer" onClick={this.handlePlugin}>
+							<span className="underline-text" onClick={this.handlePlugin}>
 								{' '}
 								Install third party plugin.
 							</span>
@@ -297,10 +302,7 @@ class MyPlugins extends Component {
 						</div>
 					</div>
 					<div>
-						<Button
-							type="primary"
-							onClick={() => this.props.onChangeNextType('appStore')}
-						>
+						<Button type="primary" onClick={this.onHandleRedirect}>
 							EXCHANGE PLUGIN APP STORE
 						</Button>
 					</div>
@@ -314,9 +316,11 @@ class MyPlugins extends Component {
 					</div>
 
 					<div
-						className="plugin-list"
+						className="plugin-list show-scroll"
 						style={{
-							backgroundImage: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2})`,
+							backgroundImage: myPlugins.length
+								? ''
+								: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2})`,
 						}}
 					>
 						<Spin
@@ -330,15 +334,13 @@ class MyPlugins extends Component {
 								!isPluginFetchLoading && (
 									<div className="installed-plugin">
 										<div>
-											You currently haven't got any installed plugin apps yet.
+											You haven't installed any exchange plugin apps yet.
 										</div>
-										<div
-											onClick={() => this.props.onChangeNextType('appStore')}
-										>
+										<div onClick={this.onHandleRedirect}>
 											<span className="underline-text m-3 pointer">
 												Click here
 											</span>{' '}
-											to get the plugins apps.
+											to find more plugin apps.
 										</div>
 									</div>
 								)
@@ -346,21 +348,15 @@ class MyPlugins extends Component {
 						</Spin>
 					</div>
 
-					<div
-						className="container-wrapper"
-						onClick={() => this.props.onChangeNextType('appStore')}
-					>
+					<div className="container-wrapper" onClick={this.onHandleRedirect}>
 						<div className="info-text-wrapper">
 							{myPlugins.length ? (
 								<>
 									<span className="underline-text m-3 pointer">Click here</span>{' '}
-									to get the plugins apps.
+									to find more plugin apps.
 								</>
 							) : null}
 						</div>
-						{/* <div className='img-wrapper'>
-							<img src={STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH} style={{ transition: 'transform .3s' }} className={`${is_zoom ? 'expand' : 'img-style'}`} alt='zoom' />
-						</div> */}
 					</div>
 				</div>
 				<Modal
