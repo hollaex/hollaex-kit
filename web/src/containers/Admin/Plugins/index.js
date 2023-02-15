@@ -52,11 +52,13 @@ class Plugins extends Component {
 			thirdParty: {},
 			step: 1,
 			jsonURL: '',
+			isLoading: false,
 		};
 		this.removeTimeout = null;
 	}
 
 	componentDidMount() {
+		this.setState({ isLoading: true });
 		this.getPluginsData();
 	}
 
@@ -120,8 +122,10 @@ class Plugins extends Component {
 						}
 					});
 				}
+				this.setState({ isLoading: false });
 			})
 			.catch((err) => {
+				this.setState({ isLoading: false });
 				throw err;
 			});
 	};
@@ -626,6 +630,7 @@ class Plugins extends Component {
 			thirdPartyError,
 			thirdParty,
 			activatedPluginDetails,
+			isLoading,
 		} = this.state;
 		switch (nextType) {
 			case 'appStore':
@@ -634,9 +639,9 @@ class Plugins extends Component {
 				return (
 					<>
 						<div
-							className="underline-text"
+							className="underline-text m-3 pointer"
 							onClick={() => this.onChangeNextType('myPlugin')}
-						>{`<Back to my plugin apps.`}</div>
+						>{`<Back to my plugins.`}</div>
 
 						<PluginList
 							constants={constants}
@@ -712,6 +717,7 @@ class Plugins extends Component {
 						getJSONFromURL={this.getJSONFromURL}
 						updateState={this.updateState}
 						onChangeNextType={this.onChangeNextType}
+						isPluginFetchLoading={isLoading}
 					/>
 				);
 		}

@@ -46,6 +46,7 @@ import {
 	TOGGLE_SORT,
 	SET_ADMIN_SORT,
 	SELECTED_PLUGIN,
+	SET_EXPLORE_PLUGINS,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -168,6 +169,7 @@ const INITIAL_STATE = {
 	plugins: [],
 	pluginNames: {},
 	selectedPlugin: {},
+	explorePlugins: [],
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -434,6 +436,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				selectedPlugin: payload.selectedPlugin,
+			};
+
+		case SET_EXPLORE_PLUGINS:
+			return {
+				...state,
+				explorePlugins: payload.explorePlugins,
 			};
 
 		case SET_PLUGINS: {

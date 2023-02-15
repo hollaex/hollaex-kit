@@ -4,15 +4,7 @@ import { STATIC_ICONS } from 'config/icons';
 import { InfoCircleOutlined } from '@ant-design/icons';
 import { Tooltip } from 'antd';
 
-const PluginSubscription = ({
-	pluginData,
-	selectedCrypto,
-	isMonthly,
-	exchangeCardKey,
-	paymentAddressDetails,
-	exchangePlanType,
-	planPriceData,
-}) => {
+const PluginSubscription = ({ pluginData, paymentAddressDetails }) => {
 	const { logo, price, name, payment_type, author } = pluginData;
 
 	return (
@@ -21,7 +13,11 @@ const PluginSubscription = ({
 			<div className="subscription-container">
 				<div className="plugin-plan-card">
 					<div className="card-icon">
-						<img src={logo} alt={'logo'} className="plugin-icon" />
+						<img
+							src={logo ? logo : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
+							alt={'logo'}
+							className="plugin-icon"
+						/>
 					</div>
 
 					<div>

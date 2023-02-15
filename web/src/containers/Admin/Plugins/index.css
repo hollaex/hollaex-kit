@@ -423,6 +423,9 @@
 	min-width: 7.5rem;
 	text-align: center;
 }
+.my-plugin-content span {
+	margin: 0px;
+}
 .myplugin-container .plugin-list-item .small-circle,
 .plugin-details-wrapper .btn-wrapper .small-circle {
 	height: 10px;
@@ -492,7 +495,8 @@
 .exchange-plugin-content-wrapper .exchange-plugin-title {
 	font-size: 34px;
 }
-.exchange-plugin-content-wrapper .link-text {
+.exchange-plugin-content-wrapper .link-text,
+.plugin-app-stroe-wrapper .link-text {
 	text-decoration: underline;
 }
 .exchange-plugin-content-wrapper .blink_me {
@@ -569,10 +573,6 @@
 	height: 5rem;
 }
 
-.ant-layout-content .content-wrapper {
-	overflow-y: hidden;
-}
-
 .plugin-list-wrapper .plugin-list-item .description-content {
 	padding-left: 2rem;
 }
@@ -638,6 +638,10 @@
 
 .plugin-container .plugin-content-wrapper div span {
 	margin-left: 10px;
+}
+
+.plugin-content-wrapper svg {
+	width: 1.5rem;
 }
 
 .plugin-container .plugin-content-wrapper div h6 {
@@ -732,6 +736,7 @@
 	align-items: center;
 	margin-top: 5px;
 	font-size: 11px;
+	opacity: 0.6;
 }
 
 .plugin-list-type p {
@@ -747,7 +752,6 @@
 	margin: 1rem;
 }
 
-.underline-text {
-	cursor: pointer;
-	margin: 10px;
+.plugin-spinner .ant-spin {
+	text-align: center;
 }

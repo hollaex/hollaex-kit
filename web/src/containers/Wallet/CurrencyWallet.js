@@ -83,7 +83,7 @@ class Wallet extends Component {
 					<EditWrapper stringId="CURRENCY_WALLET.ABOUT">
 						{STRINGS.formatString(
 							STRINGS['CURRENCY_WALLET.ABOUT'],
-							<Link to="" className="link-content">
+							<Link to={`/assets/coin/${symbol}`} className="link-content">
 								{STRINGS['CURRENCY_WALLET.LEARN_MORE']}
 							</Link>
 						)}
