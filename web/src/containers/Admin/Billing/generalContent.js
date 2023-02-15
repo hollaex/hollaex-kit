@@ -558,6 +558,7 @@ const GeneralContent = ({
 		setExchangePlanType('method');
 		setShowCloudPlanDetails(false);
 		setSelectedPendingItem(pendingItem);
+		setSelectedPayment('cryptoCurrency');
 	};
 
 	const onHandleCloudPlans = () => {
