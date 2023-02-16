@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Input } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
@@ -11,6 +11,7 @@ const PluginList = ({
 	pluginData,
 	getPlugins,
 }) => {
+	const [isSearchTerm, setIsSearchTerm] = useState(false);
 	useEffect(() => {
 		return () => {
 			searchPlugin({});
@@ -23,7 +24,9 @@ const PluginList = ({
 		let params = {};
 		if (e.target.value) {
 			params.search = e.target.value;
+			setIsSearchTerm(true);
 		}
+		setIsSearchTerm(!!e.target.value);
 		searchPlugin(params);
 	};
 	const renderList = () => {
@@ -112,11 +115,14 @@ const PluginList = ({
 					{pluginData.length ? (
 						<div className="plugin-list-wrapper">{renderList()}</div>
 					) : (
-						<div className="installed-plugin">No plugin apps found.</div>
+						<div className="installed-plugin">
+							{isSearchTerm ? (
+								<>Can't find any plugin apps by that search term.</>
+							) : (
+								<>No plugin apps found</>
+							)}
+						</div>
 					)}
-				</div>
-				<div className="installed-plugin">
-					Can't find any plugin apps by that search term.
 				</div>
 			</div>
 		</div>
