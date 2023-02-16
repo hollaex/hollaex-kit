@@ -43,6 +43,7 @@ import {
 	MobileHome,
 	Broker,
 	Plugins,
+	PluginStore,
 	// PluginServices,
 	Settings,
 	// Transfer,
@@ -562,6 +563,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugins"
 					name="Admin plugins"
 					component={withAdminProps(Plugins, 'plugins')}
+				/>
+				<Route
+					path="/admin/plugins/store"
+					name="Admin plugins store"
+					component={withAdminProps(PluginStore, 'plugins')}
 				/>
 				<Route
 					path="/admin/apps"

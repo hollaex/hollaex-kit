@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { Input } from 'antd';
 import { CheckOutlined } from '@ant-design/icons';
@@ -10,16 +10,23 @@ const PluginList = ({
 	handleOpenPlugin,
 	pluginData,
 	getPlugins,
-	// handleSearch = () => { },
-	// onChangeNextType,
-	// myPlugins,
 }) => {
+	const [isSearchTerm, setIsSearchTerm] = useState(false);
+	useEffect(() => {
+		return () => {
+			searchPlugin({});
+		};
+		// eslint-disable-next-line
+	}, []);
+
 	const searchPlugin = _debounce(getPlugins, 800);
 	const handleSearch = (e) => {
 		let params = {};
 		if (e.target.value) {
 			params.search = e.target.value;
+			setIsSearchTerm(true);
 		}
+		setIsSearchTerm(!!e.target.value);
 		searchPlugin(params);
 	};
 	const renderList = () => {
@@ -87,7 +94,7 @@ const PluginList = ({
 						</div>
 					</div>
 					<div>
-						<Link href=" https://docs.hollaex.com" target="blank">
+						<Link href="https://docs.hollaex.com/plugins" target="blank">
 							<span className="pr-2 link-text">APP CREATION DOC</span>
 							<img
 								src={STATIC_ICONS.OPEN_HOLLAEX_DOC_APP_CREATION}
@@ -108,7 +115,13 @@ const PluginList = ({
 					{pluginData.length ? (
 						<div className="plugin-list-wrapper">{renderList()}</div>
 					) : (
-						<div className="installed-plugin">No plugin apps found.</div>
+						<div className="installed-plugin">
+							{isSearchTerm ? (
+								<>Can't find any plugin apps by that search term.</>
+							) : (
+								<>No plugin apps found</>
+							)}
+						</div>
 					)}
 				</div>
 			</div>

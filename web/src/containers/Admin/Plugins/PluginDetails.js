@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Divider, Spin, message } from 'antd';
 import {
 	StarFilled,
@@ -19,6 +19,13 @@ import {
 import { setSelectedPlugin } from '../../../actions/appActions';
 import ConfirmPlugin from './ConfirmPlugin';
 
+const exchangeType = {
+	basic: 'Basic',
+	crypto: 'Crypto Pro',
+	fiat: 'Fiat Ramp',
+	boost: 'Boost',
+};
+
 const PluginDetails = ({
 	handleBreadcrumb,
 	selectedNetworkPlugin = {},
@@ -35,6 +42,7 @@ const PluginDetails = ({
 	getActivationsPlugin,
 	setSelectedPlugin,
 	router,
+	onChangeNextType,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -42,30 +50,11 @@ const PluginDetails = ({
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
-	const [pluginStoreDetails, setPluginStoreDetails] = useState({});
-	// const [isLoading, setLoading] = useState(false);
 
 	const checkactivatedPlugin = (name) => {
 		const data = activatedPluginDetails.filter((item) => item.name === name);
 		return data.length ? true : false;
 	};
-
-	const requestPlugin = useCallback(() => {
-		getPluginStoreDetails({ name: selectedPlugin.name })
-			.then((res) => {
-				setPluginStoreDetails(res);
-			})
-			.catch((err) => {
-				if (!selectedPlugin.enabled) {
-					setPluginStoreDetails({});
-				}
-			});
-	}, [selectedPlugin]);
-
-	useEffect(() => {
-		requestPlugin();
-	}, [requestPlugin]);
-
 	const onHandlePluginActivate = async () => {
 		getPluginActivateDetails({ name: selectedPlugin.name })
 			.then((res) => {
@@ -83,7 +72,17 @@ const PluginDetails = ({
 			});
 	};
 	const handleAddPlugin = async () => {
-		const data = pluginStoreDetails ? pluginStoreDetails : pluginData;
+		getPluginStoreDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				handleInstallPlugin(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					throw err;
+				}
+			});
+	};
+	const handleInstallPlugin = async (data) => {
 		const body = {
 			...data,
 			enabled: true,
@@ -234,7 +233,7 @@ const PluginDetails = ({
 								<p>{`Description: ${pluginData.description}`}</p>
 								<div>
 									{' '}
-									{!pluginData?.free_for?.length ? (
+									{!!pluginData?.free_for?.length ? (
 										<>
 											<p>Note:</p>{' '}
 											<div>
@@ -516,6 +515,15 @@ const PluginDetails = ({
 		router.push('/admin/billing');
 	};
 
+	const handleFooterRedirect = () => {
+		let currentLocation = router.getCurrentLocation();
+		if (currentLocation.pathname === '/admin/plugins/store') {
+			return onChangeNextType('explore');
+		} else {
+			return router.push('/admin/plugins/store');
+		}
+	};
+
 	const getCards = () => {
 		const cardData = [
 			{
@@ -573,7 +581,7 @@ const PluginDetails = ({
 
 	if (
 		(payment_type === 'free' ||
-			checkactivatedPlugin(name) ||
+			(checkactivatedPlugin(name) && !free_for?.length && only_for?.length) ||
 			(free_for?.includes(exchange.plan) && !only_for?.length) ||
 			(free_for?.includes(exchange.plan) &&
 				only_for?.includes(exchange.plan))) &&
@@ -612,8 +620,10 @@ const PluginDetails = ({
 												<div>
 													<InfoCircleOutlined />
 												</div>{' '}
-												{free_for?.map((item) => (
-													<p>{item}</p>
+												{free_for?.map((item, inx) => (
+													<p>{`${inx === 0 ? '' : `, `} ${
+														exchangeType[item]
+													}`}</p>
 												))}
 											</>
 										) : (
@@ -628,16 +638,24 @@ const PluginDetails = ({
 										{author}
 									</p>
 									{free_for?.length ? (
-										<p>
-											{' '}
-											Free For: <>{free_for.join(' ')}</>{' '}
-										</p>
+										<div>
+											<p className="mr-2">Free For:</p>{' '}
+											{free_for?.map((item, inx) => (
+												<p>{` ${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
 									) : null}
 									{only_for?.length ? (
-										<p>
-											{' '}
-											Only For: <>{only_for.join(' ')}</>{' '}
-										</p>
+										<div>
+											<p className="mr-2">Only For:</p>
+											{only_for?.map((item, inx) => (
+												<p>{`${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
 									) : null}
 
 									{payment_type && payment_type !== 'free' ? (
@@ -704,9 +722,6 @@ const PluginDetails = ({
 										Buy
 									</Button>
 								</div>
-								<h6>
-									*All plugin app purchases are conducted in cryptocurrency only
-								</h6>
 							</div>
 						) : (
 							false
@@ -715,6 +730,14 @@ const PluginDetails = ({
 				>
 					{renderPopup()}
 				</Modal>
+			</div>
+			<div className="plugin-footer">
+				<span
+					onClick={() => handleFooterRedirect()}
+					className="mx-4 pointer underline-text"
+				>
+					Visit the exchange app store
+				</span>
 			</div>
 		</div>
 	);

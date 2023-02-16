@@ -12,7 +12,6 @@ import {
 	Radio,
 	Space,
 	Switch,
-	Tag,
 	message,
 	Select,
 	Input,
@@ -33,6 +32,10 @@ import { DASH_TOKEN_KEY } from 'config/constants';
 import PlanStructure from 'containers/Admin/Billing/planStructure';
 import DIYPlanStructure from 'containers/Admin/Billing/diyPlanStructure';
 import GeneralChildContent from 'containers/Admin/Billing/generalChildContent';
+import EnterpriseForm from 'containers/Admin/EnterPriseForm';
+import Subscription from 'containers/Admin/Billing/subscription';
+import FiatConfirmation from 'containers/Admin/Billing/FiatConformatiom';
+import PluginSubscription from 'containers/Admin/Billing/pluginSubscription';
 import {
 	getExchangeBilling,
 	getNewExchangeBilling,
@@ -41,7 +44,7 @@ import {
 	postContact,
 	requestStoreInvoice,
 	setExchangePlan,
-} from './action';
+} from 'containers/Admin/Billing/action';
 import {
 	setSelectedPayment,
 	setSelectedType,
@@ -52,307 +55,23 @@ import {
 	setPaymentAddressDetails,
 	setExchangeCardKey,
 } from 'actions/adminBillingActions';
-import EnterpriseForm from '../EnterPriseForm';
-import Subscription from './subscription';
-import './Billing.scss';
-import FiatConfirmation from './FiatConformatiom';
-import PluginSubscription from './pluginSubscription';
-import { requestPlugins } from '../Plugins/action';
+import { requestPlugins } from 'containers/Admin/Plugins/action';
 import { setExplorePlugins, setSelectedPlugin } from 'actions/appActions';
+import {
+	planData,
+	diyPlanData,
+	payOptions,
+	cryptoCoins,
+	paymentMethods,
+	columns,
+	options,
+	fiatOptions,
+	pendingPayOption,
+} from './utils';
+import './Billing.scss';
 
 const { Option } = Select;
 const TabPane = Tabs.TabPane;
-
-export const planData = {
-	basic: {
-		title: 'Basic',
-		description: 'Get started fast with a basic test exchange',
-		background: STATIC_ICONS['CLOUD_BASIC_BACKGROUND'],
-		icon: 'BASIC_PLAN_BACKGROUND',
-		isPopular: false,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Limited features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Download exchange logs',
-				'Full exchange backup',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		amount: {
-			yearly: 75,
-			discount: '25%',
-			monthly: 100,
-			share: '50%',
-		},
-	},
-	crypto: {
-		title: 'Crypto Pro',
-		description:
-			'For those looking to start a crypto-to-crypto exchange business',
-		background: STATIC_ICONS['CLOUD_CRYPTO_BACKGROUND'],
-		icon: 'CRYPTO_PRO_PLAN_BACKGROUND',
-		isPopular: true,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Full features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Add custom GitHub repo',
-				'Team management & roles',
-				'Download exchange logs',
-				'Full exchange backup',
-				'Landing page (homepage)',
-				'Remove HollaEx badge',
-				'Referral affiliate link',
-				'Crypto chat box',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		asset_pairs: {
-			title: 'Asset and pairs',
-			points: ['One free custom crypto coin & pair'],
-		},
-		amount: {
-			yearly: 210,
-			discount: '30%',
-			monthly: 300,
-			share: '25%',
-		},
-	},
-	fiat: {
-		title: 'Fiat Ramp',
-		description:
-			'For those that want to start a fiat to crypto exchange that have a bank or fiat payment processor',
-		background: STATIC_ICONS['CLOUD_FIAT_BACKGROUND'],
-		icon: 'FIAT_MASTER_PLAN_BACKGROUND',
-		isPopular: false,
-		section: [
-			{
-				title: 'Cloud',
-				points: ['Cloud exchange server hosting'],
-			},
-		],
-		services: {
-			title: 'Full features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Custom domain',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Add custom GitHub repo',
-				'Full management & system',
-				'Download exchange logs',
-				'Full exchange backup',
-				'Landing page (homepage)',
-				'Remove HollaEx badge',
-				'Referral affiliate link',
-				'Crypto chat box',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		asset_pairs: {
-			title: 'Asset and pairs',
-			points: [
-				'One free custom crypto coin & pair',
-				'One free fiat coin & pair',
-			],
-		},
-		integration: {
-			title: 'Fiat integration & KYC system',
-			points: [
-				'Add fiat bank or payment ramp',
-				'Know your customer (KYC) system',
-			],
-		},
-		amount: {
-			yearly: 850,
-			discount: '35%',
-			monthly: 1000,
-			share: '15%',
-		},
-	},
-};
-
-export const diyPlanData = {
-	diy: {
-		title: 'Do-it-yourself',
-		description:
-			'For tech savvy people that know their way around a server and can self-host their exchange.',
-		isPopular: false,
-		// icon: DIY_ICON,
-		section: [
-			{
-				title: 'Limited features',
-				points: [
-					'Theme customization',
-					'Localization',
-					'Add HollaEx plugins',
-					'Add custom plugins',
-					'Custom code',
-				],
-			},
-		],
-	},
-	boost: {
-		title: 'DIY Boost',
-		description:
-			'For expert DIY exchange operators seeking more. Comes fully featured out with reduced revenue sharing, one free custom token and market.',
-		isPopular: true,
-		// icon: DIY_BOOST_ICON,
-		services: {
-			title: 'Full features',
-			points: [
-				'Theme customization',
-				'Localization',
-				'Add HollaEx plugins',
-				'Add custom plugins',
-				'Custom code',
-				'Multiple role management system',
-				'Landing page (homepage)',
-				'Remove HollaEx badge',
-				'Crypto chat box',
-				'Minimum revenue sharing',
-				'Fiat integration',
-			],
-			hideOnMonthly: false,
-			hideActive: false,
-		},
-		asset_pairs: {
-			title: 'Asset and pairs',
-			points: ['One free custom crypto coin & pair'],
-		},
-	},
-};
-
-const payOptions = [
-	{ key: 'pay', value: 'Pay from wallet' },
-	{ key: 'transfer', value: 'Transfer crypto payment' },
-];
-
-const cryptoCoins = [
-	{ coin: 'USDT', symbol: 'usdt' },
-	{ coin: 'Bitcoin', symbol: 'btc' },
-	{ coin: 'XHT', symbol: 'xht' },
-	{ coin: 'Ethereum', symbol: 'eth' },
-	{ coin: 'TRON', symbol: 'trx' },
-	{ coin: 'XRP', symbol: 'xrp' },
-];
-
-const paymentMethods = [
-	{ label: 'PayPal', method: 'paypal' },
-	{ label: 'Bank Wire Transfer', method: 'bank' },
-	{ label: 'Cryptocurrency', method: 'cryptoCurrency' },
-	{ label: 'Credit Card', method: 'stripe' },
-];
-
-const columns = (onHandlePendingPay) => {
-	return [
-		{
-			title: 'Item',
-			dataIndex: 'item',
-			key: 'item',
-			render: (item, index) => (
-				<div className="billing-package-text" key={index?.id}>
-					{item}
-				</div>
-			),
-		},
-		{
-			title: 'Description',
-			dataIndex: 'description',
-			key: 'description',
-			render: (description, index) => <div key={index?.id}>{description}</div>,
-		},
-		{
-			title: 'Amount',
-			dataIndex: 'amount',
-			key: 'amount',
-			render: (amount, item) => `${amount} ${item.currency.toUpperCase()}`,
-		},
-		{
-			title: 'Date',
-			dataIndex: 'created_at',
-			key: 'created_at',
-			render: (date, item) => moment(date).format('MMM DD, YYYY'),
-		},
-		{
-			title: 'Time left',
-			dataIndex: 'expiry',
-			key: 'expiry',
-			render: (date, item) =>
-				item.is_paid
-					? '---'
-					: moment(date).diff(moment(), 'days') >= 1
-					? `${moment(date).diff(moment(), 'days')} days`
-					: '0 days',
-		},
-		{
-			title: 'Status',
-			dataIndex: 'is_paid',
-			key: 'is_paid',
-			render: (isPaid, item) => {
-				if (isPaid) {
-					return (
-						<div className="download-text-wrapper">
-							<Tag color="green">Paid</Tag>
-							<div>
-								{/* <Icon type="download" onClick={() => handleDownload(item.id)} style={{ fontSize: '18px', color: '#808080' }} /> */}
-							</div>
-						</div>
-					);
-				} else if (moment().isAfter(moment(item.expiry))) {
-					return <Tag color="red">Expired</Tag>;
-				} else {
-					return (
-						<div>
-							<Tag
-								color="orange"
-								style={{
-									color: '#E87511',
-									background: '#E8751133',
-									borderColor: ' #E87511',
-								}}
-							>
-								Unpaid{' '}
-							</Tag>
-							<span>
-								<Link onClick={() => onHandlePendingPay(item)}>Pay</Link>
-							</span>
-						</div>
-					);
-				}
-			},
-		},
-	];
-};
-
-const options = ['item', 'method', 'crypto', 'payment'];
-const fiatOptions = ['item', 'apply'];
-const pendingPayOption = ['method', 'crypto', 'payment'];
 
 const GeneralContent = ({
 	dashExchange,
@@ -371,7 +90,7 @@ const GeneralContent = ({
 	fiatSubmission,
 	setPaymentAddressDetails,
 	paymentAddressDetails,
-	putExchange,
+	// putExchange,
 	getExchange,
 	fiatPutExchange,
 	exchangeCardKey,
@@ -397,7 +116,7 @@ const GeneralContent = ({
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
 	const [isFiatFormCompleted, setFiatCompleted] = useState(false);
-	// const [configure, setConfigure] = useState(false);
+	const [currencyData, setCurrencyAddress] = useState({});
 	const [selectedPlanData, setSelectedPlanData] = useState({});
 	const [showCloudPlanDetails, setShowCloudPlanDetails] = useState(false);
 	const [pendingPay, setPendingPay] = useState(false);
@@ -464,14 +183,15 @@ const GeneralContent = ({
 	}, [exchangePlanType, showCloudPlanDetails]);
 
 	useEffect(() => {
-		const balanceAvailable = 0;
-		if (balanceAvailable && balanceAvailable) {
+		const balanceAvailable =
+			balance[`${selectedCrypto.coin.toLowerCase()}_available`] || 0;
+		if (balanceAvailable && balanceAvailable >= currencyData?.amount) {
 			setOptions(payOptions);
 		} else {
 			const optionData = payOptions.filter((data) => data.key !== 'pay');
 			setOptions(optionData);
 		}
-	}, [balance, selectedCrypto.coin]);
+	}, [balance, selectedCrypto.coin, currencyData]);
 
 	useEffect(() => {
 		if (selectedType === 'boost' || selectedType === 'diy') {
@@ -526,7 +246,9 @@ const GeneralContent = ({
 				<div className="d-flex coin-wrapper">
 					Get {coin}
 					<div className="get-coin-here">
-						<Link to={`/trade/${symbol}-usdt`}>here</Link>
+						<Link to={`/trade/${symbol}-usdt`} target="_blank">
+							here
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -558,6 +280,7 @@ const GeneralContent = ({
 		setExchangePlanType('method');
 		setShowCloudPlanDetails(false);
 		setSelectedPendingItem(pendingItem);
+		setSelectedPayment('cryptoCurrency');
 	};
 
 	const onHandleCloudPlans = () => {
@@ -568,7 +291,7 @@ const GeneralContent = ({
 		setHideBreadcrumb(false);
 	};
 
-	const OnHandleCancel = () => {
+	const onHandleCancel = () => {
 		setOpenPlanModal(false);
 		setTransferCryptoPayment(false);
 		setShowPayAddress(false);
@@ -577,7 +300,6 @@ const GeneralContent = ({
 		setPaymentAddressDetails({});
 		setPendingPay(false);
 		setHideBreadcrumb(false);
-		setSelectedPlugin({});
 	};
 
 	const handleViewPlan = () => {
@@ -585,7 +307,7 @@ const GeneralContent = ({
 		setHideBreadcrumb(false);
 	};
 
-	const storePaymentMethod = async () => {
+	const storePaymentMethod = async (selectedPendingId) => {
 		setIsLoading(true);
 		try {
 			if (
@@ -611,7 +333,10 @@ const GeneralContent = ({
 					default:
 						break;
 				}
-				const res = await requestStoreInvoice(invoiceData[0].id, { method });
+				const invoiceId = selectedPendingId
+					? selectedPendingId
+					: invoiceData[0].id;
+				const res = await requestStoreInvoice(invoiceId, { method });
 				if (res) {
 					switch (selectedPayment) {
 						case 'paypal':
@@ -640,7 +365,7 @@ const GeneralContent = ({
 								method,
 								meta: { ...invoiceData[0].meta, ...res },
 							});
-							// setCurrencyAddress(res);
+							setCurrencyAddress(res);
 							break;
 						default:
 							break;
@@ -680,11 +405,14 @@ const GeneralContent = ({
 						selectedCrypto={selectedCrypto}
 						isMonthly={isMonthly}
 						paymentAddressDetails={
-							pendingPay ? selectedPendingItem?.meta : paymentAddressDetails
+							paymentAddressDetails?.amount
+								? paymentAddressDetails
+								: selectedPendingItem?.meta
 						}
 						exchangePlanType={exchangePlanType}
 						exchangeCardKey={exchangeCardKey}
 						planPriceData={planPriceData}
+						setExchangePlanType={setExchangePlanType}
 					/>
 				) : (
 					<Subscription
@@ -1349,7 +1077,7 @@ const GeneralContent = ({
 				setExchangePlanType('crypto');
 			}
 		} else if (exchangePlanType === 'crypto') {
-			storePaymentMethod();
+			storePaymentMethod(selectedPendingItem?.id);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
 		}
@@ -1360,7 +1088,7 @@ const GeneralContent = ({
 		if (exchangePlanType === 'item') {
 			setOpenPlanModal(false);
 			setHideBreadcrumb(false);
-			setSelectedPlugin({});
+			// setSelectedPlugin({});
 		} else if (exchangePlanType === 'method') {
 			if (pendingPay) {
 				setOpenPlanModal(false);
@@ -1435,6 +1163,11 @@ const GeneralContent = ({
 		}
 	};
 
+	const handleAfterclose = () => {
+		setExchangePlanType('item');
+		setSelectedPlugin({});
+	};
+
 	return (
 		<div className="general-content-wrapper">
 			<div className="d-flex mt-1 ml-3">
@@ -1476,8 +1209,9 @@ const GeneralContent = ({
 				className="bg-model blue-admin-billing-model"
 				width={modalWidth}
 				zIndex={1000}
-				onCancel={OnHandleCancel}
+				onCancel={onHandleCancel}
 				footer={null}
+				afterClose={handleAfterclose}
 			>
 				{hideBreadcrumb === false && renderModelContent()}
 				<Spin spinning={isLoading}>{renderContent()}</Spin>
