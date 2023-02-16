@@ -16,6 +16,7 @@ const PluginConfigure = ({
 	handleStep,
 	activatedPluginDetails,
 	getActivationsPlugin,
+	onChangeNextType,
 	router,
 }) => {
 	const [pluginData, setPlugin] = useState({});
@@ -81,6 +82,7 @@ const PluginConfigure = ({
 			restart={restart}
 			handleRedirect={handleRedirect}
 			router={router}
+			onChangeNextType={onChangeNextType}
 		/>
 	);
 };

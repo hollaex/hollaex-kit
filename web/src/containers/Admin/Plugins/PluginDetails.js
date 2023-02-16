@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState } from 'react';
 import { Button, Modal, Divider, Spin, message } from 'antd';
 import {
 	StarFilled,
@@ -42,6 +42,7 @@ const PluginDetails = ({
 	getActivationsPlugin,
 	setSelectedPlugin,
 	router,
+	onChangeNextType,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -49,30 +50,11 @@ const PluginDetails = ({
 	const [isAddLoading, setAddLoading] = useState(false);
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
-	const [pluginStoreDetails, setPluginStoreDetails] = useState({});
-	// const [isLoading, setLoading] = useState(false);
 
 	const checkactivatedPlugin = (name) => {
 		const data = activatedPluginDetails.filter((item) => item.name === name);
 		return data.length ? true : false;
 	};
-
-	const requestPlugin = useCallback(() => {
-		getPluginStoreDetails({ name: selectedPlugin.name })
-			.then((res) => {
-				setPluginStoreDetails(res);
-			})
-			.catch((err) => {
-				if (!selectedPlugin.enabled) {
-					setPluginStoreDetails({});
-				}
-			});
-	}, [selectedPlugin]);
-
-	useEffect(() => {
-		requestPlugin();
-	}, [requestPlugin]);
-
 	const onHandlePluginActivate = async () => {
 		getPluginActivateDetails({ name: selectedPlugin.name })
 			.then((res) => {
@@ -90,9 +72,17 @@ const PluginDetails = ({
 			});
 	};
 	const handleAddPlugin = async () => {
-		const data = Object.keys(pluginStoreDetails)?.length
-			? pluginStoreDetails
-			: pluginData;
+		getPluginStoreDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				handleInstallPlugin(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					throw err;
+				}
+			});
+	};
+	const handleInstallPlugin = async (data) => {
 		const body = {
 			...data,
 			enabled: true,
@@ -525,6 +515,15 @@ const PluginDetails = ({
 		router.push('/admin/billing');
 	};
 
+	const handleFooterRedirect = () => {
+		let currentLocation = router.getCurrentLocation();
+		if (currentLocation.pathname === '/admin/plugins/store') {
+			return onChangeNextType('explore');
+		} else {
+			return router.push('/admin/plugins/store');
+		}
+	};
+
 	const getCards = () => {
 		const cardData = [
 			{
@@ -582,7 +581,7 @@ const PluginDetails = ({
 
 	if (
 		(payment_type === 'free' ||
-			checkactivatedPlugin(name) ||
+			(checkactivatedPlugin(name) && !free_for?.length && only_for?.length) ||
 			(free_for?.includes(exchange.plan) && !only_for?.length) ||
 			(free_for?.includes(exchange.plan) &&
 				only_for?.includes(exchange.plan))) &&
@@ -731,6 +730,14 @@ const PluginDetails = ({
 				>
 					{renderPopup()}
 				</Modal>
+			</div>
+			<div className="plugin-footer">
+				<span
+					onClick={() => handleFooterRedirect()}
+					className="mx-4 pointer underline-text"
+				>
+					Visit the exchange app store
+				</span>
 			</div>
 		</div>
 	);
