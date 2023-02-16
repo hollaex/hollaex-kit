@@ -1,7 +1,7 @@
 import React from 'react';
 import { STATIC_ICONS } from 'config/icons';
 
-const PluginAppStore = ({ onChangeNextType, handlePlugin, handleSearch }) => {
+const PluginAppStore = ({ onChangeNextType, router }) => {
 	return (
 		<div className="app-store-wrapper">
 			<div
@@ -9,7 +9,6 @@ const PluginAppStore = ({ onChangeNextType, handlePlugin, handleSearch }) => {
 				onClick={() => onChangeNextType('myplugin')}
 			>{`<Back`}</div>{' '}
 			<div
-				onClick={() => onChangeNextType('explore')}
 				style={{
 					backgroundImage: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH})`,
 				}}
@@ -29,7 +28,12 @@ const PluginAppStore = ({ onChangeNextType, handlePlugin, handleSearch }) => {
 							Marketplace to buy, sell and install plugin apps for your crypto
 							platform.
 						</div>
-						<div className="link-text blink_me">Click to enter</div>
+						<div
+							className="link-text blink_me pointer"
+							onClick={() => router.push(`/admin/plugins/store`)}
+						>
+							Click to enter
+						</div>
 					</div>
 				</div>
 			</div>

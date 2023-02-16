@@ -406,6 +406,12 @@ const GeneralContent = ({
 
 	const planPriceData = priceData[selectedType];
 
+	// useEffect(() => {
+	// 	if (OpenPlanModal) {
+	// 		handleOpenModal();
+	// 	}
+	// }, [])
+
 	useEffect(() => {
 		setIsLoading(true);
 		getExchangePrice();
@@ -526,7 +532,9 @@ const GeneralContent = ({
 				<div className="d-flex coin-wrapper">
 					Get {coin}
 					<div className="get-coin-here">
-						<Link to={`/trade/${symbol}-usdt`}>here</Link>
+						<Link to={`/trade/${symbol}-usdt`} target="_blank">
+							here
+						</Link>
 					</div>
 				</div>
 			</div>
@@ -586,7 +594,7 @@ const GeneralContent = ({
 		setHideBreadcrumb(false);
 	};
 
-	const storePaymentMethod = async () => {
+	const storePaymentMethod = async (selectedPendingId) => {
 		setIsLoading(true);
 		try {
 			if (
@@ -612,7 +620,10 @@ const GeneralContent = ({
 					default:
 						break;
 				}
-				const res = await requestStoreInvoice(invoiceData[0].id, { method });
+				const invoiceId = selectedPendingId
+					? selectedPendingId
+					: invoiceData[0].id;
+				const res = await requestStoreInvoice(invoiceId, { method });
 				if (res) {
 					switch (selectedPayment) {
 						case 'paypal':
@@ -681,11 +692,14 @@ const GeneralContent = ({
 						selectedCrypto={selectedCrypto}
 						isMonthly={isMonthly}
 						paymentAddressDetails={
-							pendingPay ? selectedPendingItem?.meta : paymentAddressDetails
+							paymentAddressDetails?.amount
+								? paymentAddressDetails
+								: selectedPendingItem?.meta
 						}
 						exchangePlanType={exchangePlanType}
 						exchangeCardKey={exchangeCardKey}
 						planPriceData={planPriceData}
+						setExchangePlanType={setExchangePlanType}
 					/>
 				) : (
 					<Subscription
@@ -1350,7 +1364,7 @@ const GeneralContent = ({
 				setExchangePlanType('crypto');
 			}
 		} else if (exchangePlanType === 'crypto') {
-			storePaymentMethod();
+			storePaymentMethod(selectedPendingItem?.id);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
 		}

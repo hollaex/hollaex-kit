@@ -19,6 +19,13 @@ import {
 import { setSelectedPlugin } from '../../../actions/appActions';
 import ConfirmPlugin from './ConfirmPlugin';
 
+const exchangeType = {
+	basic: 'Basic',
+	crypto: 'Crypto Pro',
+	fiat: 'Fiat Ramp',
+	boost: 'Boost',
+};
+
 const PluginDetails = ({
 	handleBreadcrumb,
 	selectedNetworkPlugin = {},
@@ -614,8 +621,10 @@ const PluginDetails = ({
 												<div>
 													<InfoCircleOutlined />
 												</div>{' '}
-												{free_for?.map((item) => (
-													<p>{item}</p>
+												{free_for?.map((item, inx) => (
+													<p>{`${inx === 0 ? '' : `, `} ${
+														exchangeType[item]
+													}`}</p>
 												))}
 											</>
 										) : (
@@ -630,16 +639,24 @@ const PluginDetails = ({
 										{author}
 									</p>
 									{free_for?.length ? (
-										<p>
-											{' '}
-											Free For: <>{free_for.join(' ')}</>{' '}
-										</p>
+										<div>
+											<p className="mr-2">Free For:</p>{' '}
+											{free_for?.map((item, inx) => (
+												<p>{` ${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
 									) : null}
 									{only_for?.length ? (
-										<p>
-											{' '}
-											Only For: <>{only_for.join(' ')}</>{' '}
-										</p>
+										<div>
+											<p className="mr-2">Only For:</p>
+											{only_for?.map((item, inx) => (
+												<p>{`${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
 									) : null}
 
 									{payment_type && payment_type !== 'free' ? (
@@ -706,9 +723,6 @@ const PluginDetails = ({
 										Buy
 									</Button>
 								</div>
-								<h6>
-									*All plugin app purchases are conducted in cryptocurrency only
-								</h6>
 							</div>
 						) : (
 							false

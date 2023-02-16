@@ -4,8 +4,8 @@ import { Spin, Breadcrumb, Modal, message, Button } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
+import PluginList from './PluginList';
 import PluginConfigure from './PluginConfigure';
-import MyPlugins from './MyPlugins';
 import {
 	removePlugin,
 	requestPlugins,
@@ -18,7 +18,6 @@ import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
-import PluginAppStore from './PluginAppStore';
 
 import './index.css';
 
@@ -28,7 +27,7 @@ class Plugins extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			nextType: 'myPlugin',
+			nextType: 'explore',
 			isConfirm: false,
 			loading: false,
 			constants: {},
@@ -466,12 +465,6 @@ class Plugins extends Component {
 		}
 	};
 
-	onHandleBack = () => {
-		this.setState((nextType) => {
-			return { nextType };
-		});
-	};
-
 	renderModalContent = () => {
 		const {
 			selectedPlugin,
@@ -622,32 +615,25 @@ class Plugins extends Component {
 
 	renderContent = () => {
 		const {
+			constants,
 			selectedPlugin,
 			pluginData,
 			isConfigure,
 			nextType,
 			type,
 			myPlugins,
-			removePluginName,
-			thirdPartyType,
-			thirdPartyError,
-			thirdParty,
+			pluginCards,
 			activatedPluginDetails,
-			isLoading,
 		} = this.state;
 		switch (nextType) {
-			case 'appStore':
-				return (
-					<PluginAppStore
-						onChangeNextType={this.onChangeNextType}
-						router={this.props.router}
-					/>
-				);
 			case 'configure':
 				return (
 					<div className="plugins-wrapper">
 						<Breadcrumb separator={<RightOutlined />}>
-							<Item onClick={this.onHandleBack}> My plugins</Item>
+							<Item onClick={() => this.onChangeNextType('explore')}>
+								{' '}
+								Store
+							</Item>
 							<Item
 								onClick={() =>
 									this.setState({ type: 'pluginDetails', isConfigure: false })
@@ -677,34 +663,26 @@ class Plugins extends Component {
 						/>
 					</div>
 				);
-			case 'myPlugin':
+			case 'explore':
 			default:
 				return (
-					<MyPlugins
-						removePluginName={removePluginName}
-						handleOpenPlugin={this.handleOpenPlugin}
-						handlePluginList={this.handlePluginList}
-						getPlugins={this.getPlugins}
-						getMyPlugins={this.getMyPlugins}
-						myPlugins={myPlugins}
-						pluginData={pluginData}
-						restart={this.handleRestart}
-						thirdPartyType={thirdPartyType}
-						thirdPartyError={thirdPartyError}
-						thirdParty={thirdParty}
-						handleStep={this.handleStep}
-						handleURL={this.handleURL}
-						handleChange={this.handleChange}
-						handleFileChange={this.handleFileChange}
-						handleBack={this.handleBack}
-						handleSetBack={this.handleSetBack}
-						handleCancel={this.handleCancel}
-						getJSONFromURL={this.getJSONFromURL}
-						updateState={this.updateState}
-						onChangeNextType={this.onChangeNextType}
-						isPluginFetchLoading={isLoading}
-						router={this.props.router}
-					/>
+					<>
+						<div
+							className="underline-text m-3 pointer"
+							onClick={() => this.props.router.push(`/admin/plugins`)}
+						>{`<Back to my plugins.`}</div>
+
+						<PluginList
+							constants={constants}
+							selectedPlugin={selectedPlugin}
+							getPlugins={this.getPlugins}
+							pluginCards={pluginCards}
+							handleOpenPlugin={this.handleOpenPlugin}
+							onChangeNextType={this.onChangeNextType}
+							myPlugins={myPlugins}
+							pluginData={pluginData}
+						/>
+					</>
 				);
 		}
 	};
