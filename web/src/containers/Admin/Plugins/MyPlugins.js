@@ -16,6 +16,7 @@ class MyPlugins extends Component {
 			isVisible: false,
 			step: 1,
 			isConfirm: true,
+			isSearchTerm: false,
 			pluginData: {},
 			buttonSubmitting: false,
 			is_zoom: false,
@@ -34,6 +35,7 @@ class MyPlugins extends Component {
 		if (e.target.value) {
 			params.search = e.target.value;
 		}
+		this.setState({ isSearchTerm: !!e.target.value });
 		this.searchPlugin(params);
 	};
 
@@ -129,7 +131,7 @@ class MyPlugins extends Component {
 	};
 
 	onHandleRedirect = () => {
-		if (this.props.myPlugins.length) {
+		if (this.props.myPlugins.length || this.state.isSearchTerm) {
 			this.props.router.push(`/admin/plugins/store`);
 		} else {
 			this.props.onChangeNextType('appStore');
@@ -289,21 +291,21 @@ class MyPlugins extends Component {
 					<div>
 						See below for all your installed plugin apps. You can get plugins
 						apps from Exchange Plugin App Store, or create your own.{' '}
-						<div className="pt-4 pointer" onClick={this.handlePlugin}>
-							<span className="underline-text" onClick={this.handlePlugin}>
-								{' '}
-								Install third party plugin.
-							</span>
+						<div className="pt-4 pointer" onClick={this.onHandleRedirect}>
 							<img
-								src={STATIC_ICONS.INSTALL_THIRD_PARTY_PLUGIN}
-								alt="third-party-plugin"
-								className="ml-2"
+								src={STATIC_ICONS.HOLLAEX_EXCHANGE_STORE_PLUGIN_APPS}
+								alt="Plugin"
+								className="store-icon"
 							/>
+							<span className="ml-1 underline-text">
+								{' '}
+								Visit the Exchange App Store
+							</span>
 						</div>
 					</div>
 					<div>
-						<Button type="primary" onClick={this.onHandleRedirect}>
-							EXCHANGE PLUGIN APP STORE
+						<Button type="primary" onClick={this.handlePlugin}>
+							ADD THIRD PARTY PLUGIN.
 						</Button>
 					</div>
 				</div>
@@ -316,7 +318,11 @@ class MyPlugins extends Component {
 					</div>
 
 					<div
-						className="plugin-list show-scroll"
+						className={`plugin-list show-scroll ${
+							myPlugins.length
+								? ''
+								: 'd-flex align-items-center justify-content-center'
+						}`}
 						style={{
 							backgroundImage: myPlugins.length
 								? ''
@@ -334,14 +340,20 @@ class MyPlugins extends Component {
 								!isPluginFetchLoading && (
 									<div className="installed-plugin">
 										<div>
-											You haven't installed any exchange plugin apps yet.
+											{this.state.isSearchTerm ? (
+												<>Can't find any plugin apps by that search term.</>
+											) : (
+												<>You haven't installed any exchange plugin apps yet.</>
+											)}
 										</div>
-										<div onClick={this.onHandleRedirect}>
-											<span className="underline-text m-3 pointer">
-												Click here
-											</span>{' '}
-											to find more plugin apps.
-										</div>
+										{!this.state.isSearchTerm ? (
+											<div onClick={this.onHandleRedirect}>
+												<span className="underline-text m-3 pointer">
+													Click here
+												</span>{' '}
+												to find more plugin apps.
+											</div>
+										) : null}
 									</div>
 								)
 							)}

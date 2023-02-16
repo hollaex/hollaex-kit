@@ -660,6 +660,7 @@ class Plugins extends Component {
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
 							router={this.props.router}
+							onChangeNextType={this.onChangeNextType}
 						/>
 					</div>
 				);
