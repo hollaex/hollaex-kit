@@ -54,7 +54,7 @@ export { PATHS } from './Admin/paths';
 export { default as AdminOrders } from './Admin/ActiveOrders';
 export { default as Broker } from './Admin/Broker';
 export { default as Plugins } from './Admin/Plugins';
-export { default as PluginServices } from './Admin/Plugins/PluginServices';
+export { default as PluginStore } from './Admin/Plugins/PluginStore';
 export { default as Settings } from './Admin/Settings';
 export { default as MobileHome } from './MobileHome';
 export { default as Transfer } from './Admin/Transfers';
