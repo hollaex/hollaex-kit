@@ -4,7 +4,7 @@ const { loggerWebsocket } = require('../config/logger');
 const { checkStatus } = require('../init');
 const { subscriber, publisher } = require('../db/pubsub');
 const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL, INIT_CHANNEL } = require('../constants');
-const { each } = require('lodash');
+const { each, isObject } = require('lodash');
 const { getChannels, resetChannels } = require('./channel');
 const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
 const WebSocket = require('ws');
@@ -70,6 +70,7 @@ const connect = () => {
 			networkNodeLib.ws.on('message', (data) => {
 				if (data !== 'pong') {
 					try {
+						data = JSON.parse(data);
 						handleHubData(data);
 					} catch (err) {
 						loggerWebsocket.error('ws/hub message err', err.message);
