@@ -70,7 +70,6 @@ const connect = () => {
 			networkNodeLib.ws.on('message', (data) => {
 				if (data !== 'pong') {
 					try {
-						data = JSON.parse(data);
 						handleHubData(data);
 					} catch (err) {
 						loggerWebsocket.error('ws/hub message err', err.message);
