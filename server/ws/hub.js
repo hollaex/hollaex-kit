@@ -68,7 +68,7 @@ const connect = () => {
 			});
 
 			networkNodeLib.ws.on('message', (data) => {
-				if (data !== 'pong') {
+				if (data !== 'pong' && data !== 'Welcome to HollaEx Network') {
 					try {
 						data = JSON.parse(data);
 						handleHubData(data);
