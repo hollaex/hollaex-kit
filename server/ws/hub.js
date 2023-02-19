@@ -68,12 +68,12 @@ const connect = () => {
 			});
 
 			networkNodeLib.ws.on('message', (data) => {
-				if (data !== 'pong' && data !== 'Welcome to HollaEx Network') {
+				if (data.toString() !== 'pong' && data.toString() !== 'Welcome to HollaEx Network') {
 					try {
 						data = JSON.parse(data);
 						handleHubData(data);
 					} catch (err) {
-						loggerWebsocket.error('ws/hub message err', err.message);
+						loggerWebsocket.error('ws/hub message err', err.message, data.toString());
 					}
 				}
 			});
