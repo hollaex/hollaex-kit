@@ -39,7 +39,7 @@ const winston = require('winston');
 const elasticApmNode = require('elastic-apm-node');
 const winstonElasticsearchApm = require('winston-elasticsearch-apm');
 const tripleBeam = require('triple-beam');
-const uglifyEs = require('uglify-es');
+const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
 const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
@@ -102,7 +102,7 @@ const initPluginProcess = async ({ PORT }) => {
 				bcryptjs,
 				expectCt,
 				validator,
-				uglifyEs,
+				uglifyJs,
 				otp,
 				latestVersion,
 				geoipLite,
