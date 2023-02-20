@@ -202,7 +202,7 @@ class Plugins extends Component {
 	};
 
 	onChangeNextType = (nextType) => {
-		this.setState({ nextType });
+		this.setState({ nextType, type: '', isConfigure: false });
 	};
 
 	onHandleCard = (key) => {

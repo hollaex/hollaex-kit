@@ -610,14 +610,40 @@
 	padding-left: 2rem;
 }
 
-.app-store-wrapper .apps-store-background-img {
-	height: 78rem;
+.admin-plugin-container {
+	height: 100%;
+}
+
+.admin-plugin-container .ant-spin-nested-loading {
+	height: 100%;
+}
+
+.admin-plugin-container .ant-spin-nested-loading .ant-spin-container {
+	height: 100%;
+}
+
+.admin-plugin-container .app-store-wrapper {
+	height: 100%;
+}
+
+.admin-plugin-container .app-store-wrapper .image-wrapper {
+	height: 100%;
+}
+
+.app-store-wrapper .image-wrapper .apps-store-background-img {
+	z-index: 100;
+	height: 100%;
+	position: relative;
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 }
 
 .admin-content-wrapper:has(.app-store-wrapper) {
+	padding: 0px !important;
+}
+
+.admin-content-wrapper:has(.myplugin-wrapper) {
 	padding: 0px !important;
 }
 .plugin-container {
@@ -630,6 +656,29 @@
 	flex-direction: column;
 	margin-left: 5px;
 	font-size: 13px;
+}
+
+.plugin-container .plugin-content-wrapper .tooltip-container {
+	height: 20px;
+}
+.plugin-container .plugin-content-wrapper .verified-icon {
+	padding: 0px 8px 0px 0px !important;
+	width: 2rem;
+	margin-right: 5px;
+}
+
+.plugin-container .plugin-content-wrapper .verified-icon div {
+	padding: unset !important;
+}
+
+.plugin-container .plugin-content-wrapper .verified-icon svg {
+	height: 1.5rem;
+	width: 1.5rem;
+}
+
+.plugin-container .plugin-content-wrapper .verified-icon:hover svg {
+	height: 2rem;
+	width: 2rem;
 }
 
 .plugin-container .plugin-content-wrapper .title-wrapper {
@@ -801,4 +850,10 @@
 .plugin-list.show-scroll::-webkit-scrollbar-thumb {
 	background: #b6b6b6;
 	border-radius: 10px;
+}
+
+.gradient-bottom {
+	background: transparent
+		linear-gradient(0deg, #2c48ac 0%, #222a7d 24%, #22297b 100%) 0% 0% no-repeat
+		padding-box;
 }

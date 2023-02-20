@@ -31,7 +31,9 @@ const PluginSubscription = ({
 						<div>Save 6%.</div>
 						<div className="d-flex mt-2 gray-text">
 							<InfoCircleOutlined />
-							<div>Requires plugin activation ({name})</div>
+							<div>
+								Requires plugin activation ({price}-{name})
+							</div>
 						</div>
 						<div className="d-flex mt-2 gray-text footer-text">
 							<span className="d-flex">
@@ -69,13 +71,13 @@ const PluginSubscription = ({
 						Cost :
 						{paymentAddressDetails?.activation &&
 						paymentAddressDetails?.activation?.price
-							? `${paymentAddressDetails?.activation?.price}* USDT`
+							? `${paymentAddressDetails?.activation?.price} USDT`
 							: !['method', 'item'].includes(exchangePlanType) &&
 							  paymentAddressDetails?.currency
 							? `${paymentAddressDetails?.currency?.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
-							: `${price}* USDT`}
+							: `${price} USDT`}
 					</p>
 				</div>
 			</div>
