@@ -28,6 +28,10 @@ class MyPlugins extends Component {
 		// this.props.getPlugins();
 	}
 
+	componentWillUnmount() {
+		this.searchPlugin({});
+	}
+
 	searchPlugin = _debounce(this.props.getMyPlugins, 800);
 
 	handleSearch = (e) => {
