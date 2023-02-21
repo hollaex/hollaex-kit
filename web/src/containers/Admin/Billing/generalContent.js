@@ -988,7 +988,12 @@ const GeneralContent = ({
 											</div>
 										</div>
 										<div className="scanner-container">
-											<QR value={''} size={100} />
+											<QR
+												value={
+													paymentAddressDetails && paymentAddressDetails.address
+												}
+												size={100}
+											/>
 											<div className="bodyContentSmall">
 												Scannable QR code of payment address
 											</div>
