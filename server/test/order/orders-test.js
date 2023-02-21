@@ -9,7 +9,7 @@ const tools = require('hollaex-tools-lib');
 
 describe('tests for /orders', function () {
 
-    let user, bearerToken;
+    let user, bearerToken, order_id;
     before(async () => {
         user = await tools.user.getUserByEmail(getAdminUser().email);
         user.should.be.an('object');
@@ -32,7 +32,7 @@ describe('tests for /orders', function () {
            
         response.should.have.status(200);
         response.should.be.json;
-
+        order_id = response.body.id;
     });
     
 
