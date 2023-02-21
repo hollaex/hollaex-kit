@@ -94,8 +94,8 @@ const PluginList = ({
 						</div>
 					</div>
 					<div>
-						<Link href="https://docs.hollaex.com/plugins" target="blank">
-							<span className="pr-2 link-text">APP CREATION DOC</span>
+						<Link href="https://docs.hollaex.com/plugins/develop-plugins" target="blank">
+							<span className="pr-2 link-text">PLUGIN DEVELOPMENT DOC</span>
 							<img
 								src={STATIC_ICONS.OPEN_HOLLAEX_DOC_APP_CREATION}
 								alt="open-hollaex-doc-app-creation-link"
