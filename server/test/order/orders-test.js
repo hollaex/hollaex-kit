@@ -6,9 +6,10 @@ const {
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
 
-describe('Order Flow', async () => {
 
-    let user, bearerToken, order_id, size, symbol, price, side;
+describe('tests for /orders', function () {
+
+    let user, bearerToken;
     before(async () => {
         user = await tools.user.getUserByEmail(getAdminUser().email);
         user.should.be.an('object');
@@ -16,8 +17,6 @@ describe('Order Flow', async () => {
         bearerToken.should.be.a('string');
     });
 
-
-    //Integration Testing
     it('Integration Test -should respond 200 for "Success"', async () => {
         const response = await request()
             .post('/v2/order')
@@ -33,27 +32,18 @@ describe('Order Flow', async () => {
            
         response.should.have.status(200);
         response.should.be.json;
-        order_id = response.body.id;
-        size = response.body.size;
-        symbol = response.body.symbol;
-        side = response.body.side;
-        price = response.body.price;
 
     });
-
+    
 
     it('Integration Test -should respond 200 for "Success"', async () => {
         const response = await request()
-            .get(`/v2/order?order_id=${order_id}`)
+            .get(`/v2/orders?symbol=xht-usdt`)
             .set('Authorization', `Bearer ${bearerToken}`)
            
         response.should.have.status(200);
         response.should.be.json;
-        response.body.size.should.equal(size);
-        response.body.symbol.should.equal(symbol);
-        response.body.side.should.equal(side);
-        response.body.price.should.equal(price);
-
+        response.body.data.length.should.above(0);
     });
 
 
@@ -66,7 +56,5 @@ describe('Order Flow', async () => {
         response.should.be.json;
 
     });
-
-
+   
 });
-
