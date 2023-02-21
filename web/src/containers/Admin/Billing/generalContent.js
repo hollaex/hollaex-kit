@@ -112,6 +112,7 @@ const GeneralContent = ({
 		dashExchange.period !== 'year' ? true : false
 	);
 	const [invoiceData, setinvoiceData] = useState([]);
+	const [activateInvoiceData, setActivateInvoiceData] = useState({});
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
@@ -300,6 +301,7 @@ const GeneralContent = ({
 		setPaymentAddressDetails({});
 		setPendingPay(false);
 		setHideBreadcrumb(false);
+		setActivateInvoiceData({});
 	};
 
 	const handleViewPlan = () => {
@@ -333,7 +335,9 @@ const GeneralContent = ({
 					default:
 						break;
 				}
-				const invoiceId = selectedPendingId
+				const invoiceId = activateInvoiceData.id
+					? activateInvoiceData.id
+					: selectedPendingId
 					? selectedPendingId
 					: invoiceData[0].id;
 				const res = await requestStoreInvoice(invoiceId, { method });
@@ -528,6 +532,7 @@ const GeneralContent = ({
 			const res = await getPluginActivateDetails(pluginData.name);
 			if (res && res.data) {
 				setinvoiceData([res.data]);
+				setActivateInvoiceData(res.data);
 				setExchangePlanType('method');
 			}
 		} catch (error) {
@@ -1080,6 +1085,7 @@ const GeneralContent = ({
 			storePaymentMethod(selectedPendingItem?.id);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
+			setActivateInvoiceData({});
 		}
 	};
 
