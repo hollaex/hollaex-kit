@@ -12,6 +12,7 @@ import zh from './zh.json';
 import pt from './pt.json';
 import tr from './tr.json';
 import mn from './mn.json';
+import ur from './ur.json';
 
 export default {
 	en,
@@ -28,4 +29,5 @@ export default {
 	pt,
 	tr,
 	mn,
+	ur
 };

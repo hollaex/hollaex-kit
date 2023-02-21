@@ -878,7 +878,6 @@ class Assets extends Component {
 			// exchange
 		} = this.state;
 		const { allCoins, constants } = this.props;
-
 		return (
 			<div className="admin-asset-wrapper">
 				{isPreview || isConfigure ? (

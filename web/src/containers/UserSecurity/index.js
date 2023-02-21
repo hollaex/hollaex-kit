@@ -11,7 +11,7 @@ import {
 	otpActivate,
 	otpSetActivated,
 	otpRevoke,
-} from '../../actions/userAction';
+} from 'actions/userAction';
 import {
 	// CustomTabs,
 	CustomMobileTabs,
@@ -25,8 +25,9 @@ import {
 	HeaderSection,
 	Button,
 	TabController,
-} from '../../components';
-import { errorHandler } from '../../components/OtpForm/utils';
+	EditWrapper,
+} from 'components';
+import { errorHandler } from 'components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
@@ -190,7 +191,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
 					// 	icon={ICONS.SECURITY_OTP_ICON}
 					// />
-					<div>{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}</div>
+					<EditWrapper stringId="ACCOUNT_SECURITY.OTP.TITLE">
+						{STRINGS['ACCOUNT_SECURITY.OTP.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 0 && (
 					<OTP
@@ -239,7 +242,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
 					// 	icon={ICONS.SECURITY_CHANGE_PASSWORD_ICON}
 					// />
-					<div>{STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}</div>
+					<EditWrapper stringId="ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE">
+						{STRINGS['ACCOUNT_SECURITY.CHANGE_PASSWORD.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 1 && (
 					<ChangePasswordForm
@@ -272,7 +277,9 @@ class UserVerification extends Component {
 					// 	title={STRINGS['DEVELOPER_SECTION.TITLE']}
 					// 	icon={ICONS.SECURITY_API_ICON}
 					// />
-					<div>{STRINGS['DEVELOPER_SECTION.TITLE']}</div>
+					<EditWrapper stringId="DEVELOPER_SECTION.TITLE">
+						{STRINGS['DEVELOPER_SECTION.TITLE']}
+					</EditWrapper>
 				),
 				content: activeTab === 2 && (
 					<DeveloperSection
@@ -617,7 +624,9 @@ class UserVerification extends Component {
 					openContactForm={openContactForm}
 				>
 					<div className="header-content">
-						<div>{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}</div>
+						<EditWrapper stringId="ACCOUNT_SECURITY.TITLE_TEXT">
+							{STRINGS['ACCOUNT_SECURITY.TITLE_TEXT']}
+						</EditWrapper>
 					</div>
 				</HeaderSection>
 
@@ -626,7 +635,6 @@ class UserVerification extends Component {
 					label="security-modal"
 					onCloseDialog={this.onCloseDialog}
 					showCloseText={!(otp.error || modalText)}
-					theme={this.props.activeTheme}
 				>
 					{dialogIsOpen && !otp.requesting ? (
 						this.renderModalContent(
@@ -666,7 +674,6 @@ const mapStateToProps = (state) => ({
 	logins: state.wallet.logins,
 	user: state.user,
 	activeLanguage: state.app.language,
-	activeTheme: state.app.theme,
 	constants: state.app.constants,
 });
 

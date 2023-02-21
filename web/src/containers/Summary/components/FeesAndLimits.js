@@ -32,21 +32,11 @@ const FeesAndLimits = ({
 	);
 
 	const title = TITLE_OF_ACCOUNT || LEVEL_OF_ACCOUNT;
-
-	const Discount_percentage =
-		discount > 0
-			? STRINGS.formatString(STRINGS['SUMMARY.DISCOUNT'], discount)
-			: null;
 	return (
 		<div className="fee-limits-wrapper">
 			<IconTitle
 				stringId="SUMMARY.TITLE_OF_ACCOUNT,SUMMARY.FEES_AND_LIMIT"
-				text={
-					<label>
-						{STRINGS.formatString(STRINGS['SUMMARY.FEES_AND_LIMIT'], title)}{' '}
-						{Discount_percentage}
-					</label>
-				}
+				text={STRINGS.formatString(STRINGS['SUMMARY.FEES_AND_LIMIT'], title)}
 				iconId={
 					ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 						? `LEVEL_ACCOUNT_ICON_${verification_level}`
@@ -119,7 +109,6 @@ const FeesAndLimits = ({
 };
 
 const mapStateToProps = (state) => ({
-	activeTheme: state.app.theme,
 	pairs: state.app.pairs,
 	coins: state.app.coins,
 	constants: state.app.constants,

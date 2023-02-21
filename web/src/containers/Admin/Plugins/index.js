@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Tabs, Breadcrumb, Modal, message, Button } from 'antd';
+import { Spin, Breadcrumb, Modal, message, Button } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-import PluginList from './PluginList';
 import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import {
@@ -12,26 +11,25 @@ import {
 	requestPlugins,
 	requestMyPlugins,
 	updatePlugins,
+	getPluginMeta,
+	requestActivationsPlugin,
 } from './action';
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
+import ConfirmPlugin from './ConfirmPlugin';
+import PluginAppStore from './PluginAppStore';
 
 import './index.css';
 
-const TabPane = Tabs.TabPane;
 const { Item } = Breadcrumb;
 
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
-		const {
-			router: {
-				location: { query: { plugin } = {} },
-			},
-		} = this.props;
 		this.state = {
-			activeTab: '',
+			nextType: 'myPlugin',
+			isConfirm: false,
 			loading: false,
 			constants: {},
 			showSelected: false,
@@ -39,24 +37,27 @@ class Plugins extends Component {
 			type: '',
 			isConfigure: false,
 			pluginData: [],
+			pluginMetaData: {},
 			myPlugins: [],
 			plugin: {},
 			isVisible: false,
 			isRemovePlugin: false,
 			removePluginName: '',
-			tabKey: plugin ? 'my_plugin' : 'explore',
 			pluginCards: [],
+			activatedPluginDetails: [],
 			processing: false,
 			thirdPartyType: 'upload_json',
 			thirdPartyError: '',
 			thirdParty: {},
 			step: 1,
 			jsonURL: '',
+			isLoading: false,
 		};
 		this.removeTimeout = null;
 	}
 
 	componentDidMount() {
+		this.setState({ isLoading: true });
 		this.getPluginsData();
 	}
 
@@ -83,9 +84,22 @@ class Plugins extends Component {
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
+			await this.getActivationsPlugin();
 		} catch (err) {
 			throw err;
 		}
+	};
+
+	getActivationsPlugin = (params = {}) => {
+		return requestActivationsPlugin(params)
+			.then((res) => {
+				if (res) {
+					this.setState({ activatedPluginDetails: res });
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
 	};
 
 	getMyPlugins = (params = {}) => {
@@ -107,8 +121,10 @@ class Plugins extends Component {
 						}
 					});
 				}
+				this.setState({ isLoading: false });
 			})
 			.catch((err) => {
+				this.setState({ isLoading: false });
 				throw err;
 			});
 	};
@@ -149,6 +165,7 @@ class Plugins extends Component {
 			...plugin,
 			enabled: myPluginsName.includes(plugin.name),
 		}));
+
 		this.setState({
 			pluginData: constructedPluginData,
 			pluginCards: constructedCards,
@@ -159,6 +176,7 @@ class Plugins extends Component {
 	removePlugin = (params = {}) => {
 		this.setState({
 			isRemovePlugin: true,
+			nextType: 'myPlugin',
 			showSelected: false,
 			isConfigure: false,
 			tabKey: 'my_plugin',
@@ -184,8 +202,8 @@ class Plugins extends Component {
 			});
 	};
 
-	tabChange = (activeTab) => {
-		this.setState({ activeTab });
+	onChangeNextType = (nextType) => {
+		this.setState({ nextType });
 	};
 
 	onHandleCard = (key) => {
@@ -194,21 +212,36 @@ class Plugins extends Component {
 		}
 	};
 
-	handleOpenPlugin = (plugin, plugin_type = '') => {
+	handleOpenPlugin = async (plugin, plugin_type = '') => {
 		const { pluginData, myPlugins, isConfigure } = this.state;
+		let metaData = {};
+
+		await getPluginMeta({ name: plugin.name })
+			.then((res) => {
+				if (res) {
+					metaData = res;
+				}
+			})
+			.catch((err) => {
+				metaData = {};
+			});
+
 		if (plugin.version === 0) {
 			this.setState({
 				isVisible: true,
 				showSelected: false,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 		} else if (
 			pluginData.filter((value) => value.name === plugin.name).length ||
 			myPlugins.filter((value) => value.name === plugin.name).length
 		) {
 			this.setState({
+				nextType: 'configure',
 				showSelected: true,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 			if (plugin_type === 'add_plugin' && !isConfigure) {
 				this.setState({
@@ -220,12 +253,14 @@ class Plugins extends Component {
 			this.setState({
 				isVisible: true,
 				selectedPlugin: plugin,
+				pluginMetaData: metaData,
 			});
 		}
 	};
 
 	handleClose = () => {
 		this.setState({
+			nextType: 'myPlugin',
 			showSelected: false,
 			selectedPlugin: {},
 			type: '',
@@ -289,7 +324,8 @@ class Plugins extends Component {
 	};
 
 	handleUpdatePlugin = () => {
-		this.handleStep(3);
+		this.handleStep(4);
+
 		const body = {
 			...this.state.thirdParty,
 		};
@@ -321,7 +357,7 @@ class Plugins extends Component {
 	};
 
 	handleStep = (step) => {
-		this.setState({ step, isVisible: true });
+		this.setState({ step, isVisible: true, isConfirm: true });
 	};
 
 	handleURL = (e) => {
@@ -422,6 +458,20 @@ class Plugins extends Component {
 		this.setState({ thirdParty: {}, thirdPartyError: '' });
 	};
 
+	handleInput = (e) => {
+		if (e.target.value === 'I UNDERSTAND') {
+			this.setState({ isConfirm: false });
+		} else {
+			this.setState({ isConfirm: true });
+		}
+	};
+
+	onHandleBack = () => {
+		this.setState((nextType) => {
+			return { nextType, type: '', isConfigure: false };
+		});
+	};
+
 	renderModalContent = () => {
 		const {
 			selectedPlugin,
@@ -429,6 +479,7 @@ class Plugins extends Component {
 			thirdPartyError,
 			step,
 			thirdParty,
+			pluginMetaData,
 		} = this.state;
 		switch (step) {
 			case 1:
@@ -459,8 +510,8 @@ class Plugins extends Component {
 								)}
 							</div>
 							<div className="ml-4">
-								<div>Name: {selectedPlugin.name}</div>
-								<div>Current version: 1</div>
+								<div>Name: {pluginMetaData.name}</div>
+								<div>Current version: {pluginMetaData.version}</div>
 							</div>
 						</div>
 						<div className="w-85 mt-4">
@@ -494,6 +545,7 @@ class Plugins extends Component {
 			case 2:
 				return (
 					<AddThirdPartyPlugin
+						header={'Upgrade third party plugin'}
 						thirdPartyType={thirdPartyType}
 						thirdPartyError={thirdPartyError}
 						thirdParty={thirdParty}
@@ -504,10 +556,22 @@ class Plugins extends Component {
 						getJSONFromURL={this.getJSONFromURL}
 						updateState={this.updateState}
 						handleStep={this.handleStep}
-						handlePlugin={this.handleUpdatePlugin}
 					/>
 				);
 			case 3:
+				return (
+					<ConfirmPlugin
+						header={'Upgrade third party plugin'}
+						description={`Please acknowledge that you understand the possible ramifications of upgrade an unverified plugin to your exchange.`}
+						pluginData={selectedPlugin}
+						isConfirm={this.state.isConfirm}
+						onHandleBack={this.handleBack}
+						okBtnlabel={'Upgrde'}
+						onHandleChange={this.handleInput}
+						onHandleSubmit={this.handleUpdatePlugin}
+					/>
+				);
+			case 4:
 				return (
 					<div className="p-2 modal-wrapper">
 						<div className="">
@@ -556,39 +620,34 @@ class Plugins extends Component {
 		}
 	};
 
-	render() {
+	renderContent = () => {
 		const {
-			loading,
-			constants,
 			selectedPlugin,
 			pluginData,
 			isConfigure,
-			showSelected,
+			nextType,
 			type,
-			isVisible,
 			myPlugins,
-			tabKey,
 			removePluginName,
-			pluginCards,
-			processing,
 			thirdPartyType,
 			thirdPartyError,
 			thirdParty,
+			activatedPluginDetails,
+			isLoading,
 		} = this.state;
-		if (loading || this.props.pluginsLoading) {
-			return (
-				<div className="app_container-content">
-					<Spin size="large" />
-				</div>
-			);
-		}
-
-		return (
-			<div className="admin-plugins-wrapper">
-				{showSelected ? (
+		switch (nextType) {
+			case 'appStore':
+				return (
+					<PluginAppStore
+						onChangeNextType={this.onChangeNextType}
+						router={this.props.router}
+					/>
+				);
+			case 'configure':
+				return (
 					<div className="plugins-wrapper">
 						<Breadcrumb separator={<RightOutlined />}>
-							<Item onClick={this.handleClose}>Explore</Item>
+							<Item onClick={this.onHandleBack}> My plugins</Item>
 							<Item
 								onClick={() =>
 									this.setState({ type: 'pluginDetails', isConfigure: false })
@@ -605,6 +664,8 @@ class Plugins extends Component {
 						<PluginConfigure
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
+							getActivationsPlugin={this.getActivationsPlugin}
+							activatedPluginDetails={activatedPluginDetails}
 							selectedPlugin={selectedPlugin}
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
@@ -612,49 +673,70 @@ class Plugins extends Component {
 							restart={this.handleRestart}
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
+							router={this.props.router}
 						/>
 					</div>
-				) : (
-					<div className="app_container-content admin-earnings-container admin-plugin-container">
-						<Tabs defaultActiveKey={tabKey}>
-							<TabPane tab="Explore" key="explore">
-								<PluginList
-									pluginData={pluginData}
-									constants={constants}
-									selectedPlugin={selectedPlugin}
-									handleOpenPlugin={this.handleOpenPlugin}
-									getPlugins={this.getPlugins}
-									pluginCards={pluginCards}
-								/>
-							</TabPane>
+				);
+			case 'myPlugin':
+			default:
+				return (
+					<MyPlugins
+						removePluginName={removePluginName}
+						handleOpenPlugin={this.handleOpenPlugin}
+						handlePluginList={this.handlePluginList}
+						getPlugins={this.getPlugins}
+						getMyPlugins={this.getMyPlugins}
+						myPlugins={myPlugins}
+						pluginData={pluginData}
+						restart={this.handleRestart}
+						thirdPartyType={thirdPartyType}
+						thirdPartyError={thirdPartyError}
+						thirdParty={thirdParty}
+						handleStep={this.handleStep}
+						handleURL={this.handleURL}
+						handleChange={this.handleChange}
+						handleFileChange={this.handleFileChange}
+						handleBack={this.handleBack}
+						handleSetBack={this.handleSetBack}
+						handleCancel={this.handleCancel}
+						getJSONFromURL={this.getJSONFromURL}
+						updateState={this.updateState}
+						onChangeNextType={this.onChangeNextType}
+						isPluginFetchLoading={isLoading}
+						router={this.props.router}
+					/>
+				);
+		}
+	};
 
-							<TabPane tab="My plugins" key="my_plugin">
-								<MyPlugins
-									removePluginName={removePluginName}
-									handleOpenPlugin={this.handleOpenPlugin}
-									handlePluginList={this.handlePluginList}
-									getPlugins={this.getPlugins}
-									getMyPlugins={this.getMyPlugins}
-									myPlugins={myPlugins}
-									pluginData={pluginData}
-									restart={this.handleRestart}
-									thirdPartyType={thirdPartyType}
-									thirdPartyError={thirdPartyError}
-									thirdParty={thirdParty}
-									handleStep={this.handleStep}
-									handleURL={this.handleURL}
-									handleChange={this.handleChange}
-									handleFileChange={this.handleFileChange}
-									handleBack={this.handleBack}
-									handleSetBack={this.handleSetBack}
-									handleCancel={this.handleCancel}
-									getJSONFromURL={this.getJSONFromURL}
-									updateState={this.updateState}
-								/>
-							</TabPane>
-						</Tabs>
-					</div>
-				)}
+	render() {
+		const { loading, isVisible, processing, nextType, isLoading } = this.state;
+
+		if (loading || this.props.pluginsLoading) {
+			return (
+				<div className="app_container-content">
+					<Spin size="large" />
+				</div>
+			);
+		}
+		return (
+			<div
+				className={`admin-plugins-wrapper ${
+					nextType === 'myPlugin' ? 'gradient-bottom' : ''
+				}`}
+			>
+				<div
+					className={
+						nextType === 'configure'
+							? 'plugins-wrapper'
+							: 'app_container-content admin-earnings-container admin-plugin-container'
+					}
+					style={{ height: nextType === 'myPlugin' ? 'auto' : '100%' }}
+				>
+					<Spin spinning={isLoading} className="plugin-spinner" size="large">
+						{this.renderContent()}
+					</Spin>
+				</div>
 				<Modal visible={isVisible} footer={null} onCancel={this.onCancelModal}>
 					{this.renderModalContent()}
 				</Modal>

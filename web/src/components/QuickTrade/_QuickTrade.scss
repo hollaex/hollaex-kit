@@ -67,6 +67,9 @@ $title-icon--height: 10rem;
 		font-family: $en--font-family;
 		color: $colors-deactivate;
 	}
+	.visit-asset-info {
+		text-decoration: underline;
+	}
 }
 .quick_trade-wrapper.width-none {
 	min-width: unset !important;
@@ -280,7 +283,7 @@ $title-icon--height: 10rem;
 						$app-background-color,
 						rgba(0, 0, 0, 0)
 					);
-					z-index: 9999;
+					z-index: -1;
 				}
 			}
 			.trade_tabs-container {

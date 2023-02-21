@@ -23,6 +23,7 @@ import STRINGS from 'config/localizedStrings';
 import { limitNumberWithinRange } from 'utils/math';
 
 import ReviewModalContent from './ReviewModalContent';
+import QRScanner from './QRScanner';
 
 export const FORM_NAME = 'WithdrawCryptocurrencyForm';
 
@@ -285,13 +286,15 @@ class Form extends Component {
 			openContactForm,
 			formValues,
 			currentPrice,
-			activeTheme,
 			coins,
 			titleSection,
 			icons: ICONS,
 			selectedNetwork,
 			targets,
 			email,
+			qrScannerOpen,
+			closeQRScanner,
+			getQRData,
 		} = this.props;
 
 		const formData = { ...data, email };
@@ -344,7 +347,6 @@ class Form extends Component {
 							label="withdraw-modal"
 							onCloseDialog={this.onCloseDialog}
 							shouldCloseOnOverlayClick={dialogOtpOpen}
-							theme={activeTheme}
 							showCloseText={false}
 						>
 							{dialogOtpOpen ? (
@@ -364,6 +366,20 @@ class Form extends Component {
 								/>
 							) : (
 								<Loader relative={true} background={false} />
+							)}
+						</Dialog>
+						<Dialog
+							isOpen={qrScannerOpen}
+							label="withdraw-modal"
+							onCloseDialog={closeQRScanner}
+							shouldCloseOnOverlayClick={false}
+							showCloseText={true}
+						>
+							{qrScannerOpen && (
+								<QRScanner
+									closeQRScanner={closeQRScanner}
+									getQRData={getQRData}
+								/>
 							)}
 						</Dialog>
 					</form>
@@ -400,7 +416,6 @@ const mapStateToForm = (state) => ({
 		'email',
 		'fee_type'
 	),
-	activeTheme: state.app.theme,
 	coins: state.app.coins,
 	targets: state.app.targets,
 	balance: state.user.balance,

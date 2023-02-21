@@ -30,7 +30,8 @@ let configuration = {
 		black_list_countries: [],
 		onramp: {},
 		offramp: {},
-		user_payments: {}
+		user_payments: {},
+		dust: {}
 	},
 	email: {}
 };
@@ -51,7 +52,7 @@ subscriber.on('message', (channel, message) => {
 	if (channel === CONFIGURATION_CHANNEL) {
 		const { type, data } = JSON.parse(message);
 
-		switch(type) {
+		switch (type) {
 			case 'initial':
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
@@ -113,7 +114,8 @@ const resetAllConfig = () => {
 			black_list_countries: [],
 			onramp: {},
 			offramp: {},
-			user_payments: {}
+			user_payments: {},
+			dust: {}
 		},
 		email: {}
 	};
@@ -194,7 +196,8 @@ exports.KIT_CONFIG_KEYS = [
 	'black_list_countries',
 	'onramp',
 	'offramp',
-	'user_payments'
+	'user_payments',
+	'dust'
 ];
 
 exports.KIT_SECRETS_KEYS = [
@@ -246,7 +249,7 @@ exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
 
 // Websocket
 exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
-	switch(topic) {
+	switch (topic) {
 		case 'orderbook':
 			return `orderbook:${symbolOrUserId}`;
 		case 'trade':

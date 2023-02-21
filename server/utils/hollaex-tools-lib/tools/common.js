@@ -45,6 +45,7 @@ const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
 const { GET_BROKER } = require('../../../constants');
+const BigNumber = require('bignumber.js');
 // const { Transform } = require('json2csv');
 
 const getKitVersion = () => {
@@ -118,7 +119,7 @@ const getEmail = () => {
 	return GET_EMAIL();
 };
 
-const updateEmail = async ( data ) => {
+const updateEmail = async (data) => {
 	const status = await dbQuery.findOne('status', {
 		attributes: ['id', 'email']
 	});
@@ -719,7 +720,7 @@ const stringIsDate = (date) => {
 	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
 };
 
-const isDatetime = (date, formats = [ moment.ISO_8601 ]) => {
+const isDatetime = (date, formats = [moment.ISO_8601]) => {
 	return moment(date, formats, true).isValid();
 };
 
@@ -791,6 +792,9 @@ const validatePair = (pair) => {
 const getBrokerDeals = () => {
 	return GET_BROKER();
 };
+const parseNumber = (number, precisionValue) => {
+	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
+}
 
 module.exports = {
 	getKitVersion,
@@ -854,5 +858,6 @@ module.exports = {
 	checkExchangeStatus,
 	validateIp,
 	validatePair,
-	getBrokerDeals
+	getBrokerDeals,
+	parseNumber
 };

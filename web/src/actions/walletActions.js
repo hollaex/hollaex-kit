@@ -45,6 +45,8 @@ const ENDPOINTS = {
 	CHECK_TRANSACTION: '/user/check-transaction',
 	FIAT_DEPOSIT: '/fiat/deposit',
 	FIAT_WITHDRAW: '/fiat/withdrawal',
+	DUST: '/order/dust',
+	DUST_ESTIMATION: '/order/dust/estimate',
 };
 
 export const depositFiat = (values) => {
@@ -446,4 +448,14 @@ export const performConfirmWithdrawal = (token) => {
 export const searchTransaction = (params) => {
 	const query = querystring.stringify(params);
 	return axios.get(`${ENDPOINTS.CHECK_TRANSACTION}?${query}`);
+};
+
+export const convertDust = (assets = []) => {
+	const data = { assets };
+	return axios.post(ENDPOINTS.DUST, data);
+};
+
+export const getEstimatedDust = (assets = []) => {
+	const data = { assets };
+	return axios.post(ENDPOINTS.DUST_ESTIMATION, data);
 };

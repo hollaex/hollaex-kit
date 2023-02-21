@@ -19,6 +19,7 @@ import {
 // import UserData from './UserData';
 import BankData from './BankData';
 import AboutData from './AboutData';
+import Referrals from './Referrals';
 import VerifyEmailConfirmation from './VerifyEmailConfirmation';
 import { isSupport, isKYC } from '../../../utils/token';
 import { STATIC_ICONS } from 'config/icons';
@@ -185,7 +186,7 @@ class UserContent extends Component {
 
 		verifyUser(postValues)
 			.then((res) => {
-				refreshData(postValues);
+				refreshData({ ...postValues, email_verified: true });
 				this.setState({ showVerifyEmailModal: false });
 			})
 			.catch((err) => {
@@ -400,6 +401,11 @@ class UserContent extends Component {
 								hideUserColumn={true}
 								showFilters={true}
 							/>
+						</TabPane>
+					)}
+					{!isSupportUser && !isKYC() && (
+						<TabPane tab="Referrals" key="referrals">
+							<Referrals userInformation={userInformation} />
 						</TabPane>
 					)}
 					{!isSupportUser && !isKYC() && (

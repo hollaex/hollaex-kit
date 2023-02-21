@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Tier = sequelize.define(
 		'Tier',
 		{
@@ -43,7 +43,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'Tiers'
 		}
 	);
 

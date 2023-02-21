@@ -52,6 +52,13 @@ const ValidateDismiss = ({
 					? 'Dismiss'
 					: 'Retry'}
 			</div>
+			<div className="my-1">
+				{statusType === 'dismiss'
+					? 'Dismissing this transaction will stop it from being processed.'
+					: statusType === 'validate'
+					? 'Validating this transaction will allow it to get processed.'
+					: null}
+			</div>
 			<div className="my-3">Please check and confirm the details below.</div>
 			<span className="legend">Check & Confirm</span>
 			<div className="confirm-container">

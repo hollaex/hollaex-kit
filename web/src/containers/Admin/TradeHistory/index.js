@@ -52,7 +52,7 @@ const COLUMNS = [
 class TradeHistory extends Component {
 	state = INITIAL_STATE;
 
-	componentWillMount = () => {
+	UNSAFE_componentWillMount = () => {
 		if (this.props.userId) {
 			this.handleTrades(this.props.userId, this.state.page, this.state.limit);
 		}
@@ -96,7 +96,7 @@ class TradeHistory extends Component {
 	};
 
 	requestTradesDownload = (userId) => {
-		return requestTradesDownload({ format: 'csv', userId: userId });
+		return requestTradesDownload({ format: 'csv', user_id: userId });
 	};
 
 	render() {

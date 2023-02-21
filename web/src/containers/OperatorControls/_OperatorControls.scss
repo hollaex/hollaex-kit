@@ -1,4 +1,5 @@
 $operator-controls__panel-main-color: #0000ff;
+$operator-controls__panel-main-color-hover: #ffffff60;
 $operator-controls__panel-text-color: #ffffff;
 $operator-controls__panel-text-color-inactive: #ffffffcc;
 $operator-controls__panel-text-color-pale-inactive: #ffffff80;
@@ -288,6 +289,50 @@ $operator-controls__panel-border-color: #a7a7a7;
 		z-index: 10001 !important;
 		background-color: transparent !important;
 		color: $operator-controls__panel-text-color !important;
+	}
+
+	.divider {
+		border-top: 1px solid $operator-controls__panel-text-color-inactive;
+		margin: 2rem 0;
+		width: 100%;
+	}
+
+	.pinned-markets-table {
+		font-size: 1.2rem;
+		width: 100%;
+	}
+
+	.pinned-markets-table-wrapper {
+		border: 1px solid $operator-controls__panel-text-color-inactive;
+	}
+
+	.market-options-wrapper {
+		border: 1px solid #d9d9d9;
+		border-radius: 4px;
+		margin-top: 0.5rem;
+		max-height: 18rem;
+		overflow-y: auto;
+	}
+
+	.important-text {
+		color: $operator-controls__panel-text-color !important;
+	}
+
+	.secondary-text {
+		color: $operator-controls__panel-text-color-inactive !important;
+	}
+
+	.coin-option {
+		padding: 1rem;
+
+		&:hover {
+			background-color: $operator-controls__panel-main-color-hover;
+		}
+	}
+
+	.coin-full-name {
+		margin-left: 0.4rem;
+		font-size: 1rem;
 	}
 }
 

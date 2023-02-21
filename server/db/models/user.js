@@ -43,7 +43,7 @@ const BANK_DATA_DEFAULT = [];
 exports.BANK_DATA_DEFAULT = BANK_DATA_DEFAULT;
 exports.ID_DATA_DEFAULT = ID_DATA_DEFAULT;
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const User = sequelize.define(
 		'User',
 		{
@@ -171,7 +171,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'Users'
 		}
 	);
 
@@ -188,7 +189,8 @@ module.exports = function(sequelize, DataTypes) {
 		if (user.email) {
 			user.email = user.email.toLowerCase();
 		}
-		if (user._changed.password)
+		const updatedFields = user.changed();
+		if (Array.isArray(updatedFields) && updatedFields.includes('password'))
 			return generateHash(user.password).then((hash) => {
 				user.password = hash;
 			});

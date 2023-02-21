@@ -110,26 +110,27 @@ class PairsSection extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.activePair) {
-			this.handleTrades('buy');
-			this.handleTrades('sell');
-		}
+		this.handleTrades('buy');
+		this.handleTrades('sell');
 	}
 
 	componentDidUpdate(prevProps, prevState) {
-		if (this.props.activePair !== prevProps.activePair) {
+		const { open, pair } = this.props;
+		if (pair !== prevProps.pair || open !== prevProps.open) {
 			this.handleTrades('buy');
 			this.handleTrades('sell');
 		}
 	}
 
 	handleTrades = (side, page = 1, limit = this.state.limit) => {
+		const { pair, userId, open } = this.props;
 		requestActiveOrders({
-			user_id: this.props.userId,
-			symbol: this.props.activePair,
+			user_id: userId,
+			symbol: pair,
 			side,
 			page,
 			limit,
+			open,
 		})
 			.then((res) => {
 				if (res) {

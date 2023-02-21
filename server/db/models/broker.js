@@ -75,7 +75,8 @@ module.exports = function (sequelize, DataTypes) {
 		},
 		{
 			timestamps: true,
-			underscored: true
+			underscored: true,
+			tableName: 'Brokers'
 		}
 	);
 

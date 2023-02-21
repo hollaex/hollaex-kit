@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
 import _get from 'lodash/get';
 
 import { SearchBox } from 'components';
-import MarketList from '../../TradeTabs/components/MarketList';
 import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
+import AssetsList from 'containers/TradeTabs/components/AssetsList';
+import MarketList from 'containers/TradeTabs/components/MarketList';
 
 class Markets extends Component {
 	constructor(props) {
@@ -21,6 +23,7 @@ class Markets extends Component {
 			chartData: {},
 			pageSize: 10,
 			page: 0,
+			count: 0,
 			searchValue: '',
 		};
 	}
@@ -36,20 +39,50 @@ class Markets extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { markets } = this.props;
+		const { markets, selectedSource = '' } = this.props;
 		const { page, searchValue } = this.state;
 
-		if (JSON.stringify(markets) !== JSON.stringify(prevProps.markets)) {
+		if (
+			JSON.stringify(markets) !== JSON.stringify(prevProps.markets) ||
+			(selectedSource && selectedSource !== prevProps.selectedSource)
+		) {
 			this.constructData(page, searchValue);
 		}
 	}
 
+	goToPreviousPage = () => {
+		const { page, searchValue } = this.state;
+		this.constructData(page - 1, searchValue);
+	};
+
+	goToNextPage = () => {
+		const { page, searchValue } = this.state;
+		this.constructData(page + 1, searchValue);
+	};
+
 	constructData = (page, searchValue) => {
 		const { pageSize } = this.state;
-		const { markets } = this.props;
-
+		const { markets, selectedSource, isAsset } = this.props;
+		let filteredData = [];
+		let nonDublicateCoins = [];
 		const pairs = this.getSearchPairs(searchValue);
-		const filteredData = markets.filter(({ key }) => pairs.includes(key));
+		if (selectedSource && selectedSource !== 'all') {
+			filteredData = markets.filter(
+				({ key }) => key.split('-')[1] === selectedSource
+			);
+		} else {
+			if (isAsset) {
+				filteredData = markets.filter(({ key }) => {
+					if (!nonDublicateCoins.includes(key.split('-')[0])) {
+						nonDublicateCoins.push(key.split('-')[0]);
+						return pairs.includes(key);
+					}
+					return null;
+				});
+			} else {
+				filteredData = markets.filter(({ key }) => pairs.includes(key));
+			}
+		}
 		const count = filteredData.length;
 
 		const initItem = page * pageSize;
@@ -113,12 +146,23 @@ class Markets extends Component {
 		}
 	};
 
+	handleAssetsClick = (pair) => {
+		const { router } = this.props;
+		if (pair && router) {
+			router.push(`/assets/coin/${pair.split('-')[0]}`);
+		}
+	};
+
 	render() {
 		const {
 			showSearch = true,
 			showMarkets = false,
 			router,
 			isHome = false,
+			isFilterDisplay = false,
+			showContent = false,
+			isAsset = false,
+			constants,
 		} = this.props;
 		const { data, chartData, page, pageSize, count } = this.state;
 		if (isHome) {
@@ -127,7 +171,19 @@ class Markets extends Component {
 
 		return (
 			<div>
-				{showSearch && (
+				{showContent && (
+					<div>
+						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
+							{STRINGS.formatString(
+								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
+								<Link to="assets" className="link-text">
+									{STRINGS['SUMMARY_MARKETS.HERE']}
+								</Link>
+							)}
+						</EditWrapper>
+					</div>
+				)}
+				{showSearch && !isFilterDisplay && (
 					<div className="d-flex justify-content-end">
 						<div className={isMobile ? '' : 'w-25 pb-4'}>
 							<SearchBox
@@ -141,33 +197,63 @@ class Markets extends Component {
 						</div>
 					</div>
 				)}
-				<MarketList
-					loading={!data.length ? true : false}
-					markets={data}
-					chartData={chartData}
-					handleClick={this.handleClick}
-				/>
-				{!showMarkets && page * pageSize + pageSize < count && (
+				{isAsset ? (
+					<AssetsList
+						loading={!data.length}
+						markets={data}
+						chartData={chartData}
+						handleClick={this.handleAssetsClick}
+						isAsset={isAsset}
+						constants={constants}
+						page={page}
+						pageSize={pageSize}
+						count={count}
+						goToNextPage={this.goToNextPage}
+						goToPreviousPage={this.goToPreviousPage}
+						showPaginator={count > pageSize}
+					/>
+				) : (
+					<MarketList
+						loading={!data.length}
+						markets={data}
+						chartData={chartData}
+						handleClick={this.handleClick}
+					/>
+				)}
+				{!isAsset && !showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
-						<span
-							className="trade-account-link pointer d-flex justify-content-center"
-							onClick={this.handleLoadMore}
+						<EditWrapper
+							stringId="STAKE_DETAILS.VIEW_MORE"
+							renderWrapper={(children) => (
+								<span
+									className="trade-account-link pointer d-flex justify-content-center"
+									onClick={this.handleLoadMore}
+								>
+									{children}
+								</span>
+							)}
 						>
 							{STRINGS['STAKE_DETAILS.VIEW_MORE']}
-						</span>
+						</EditWrapper>
 					</div>
 				)}
 				{showMarkets && (
 					<div className="d-flex justify-content-center app_bar-link blue-link pointer py-2 underline-text market-list__footer">
-						<EditWrapper stringId="MARKETS_TABLE.VIEW_MARKETS" />
-						<div
-							onClick={() => {
-								router.push('/markets');
-							}}
-							className="pt-1"
+						<EditWrapper
+							stringId="MARKETS_TABLE.VIEW_MARKETS"
+							renderWrapper={(children) => (
+								<div
+									onClick={() => {
+										router.push('/markets');
+									}}
+									className="pt-1"
+								>
+									{children}
+								</div>
+							)}
 						>
 							{STRINGS['MARKETS_TABLE.VIEW_MARKETS']}
-						</div>
+						</EditWrapper>
 					</div>
 				)}
 			</div>

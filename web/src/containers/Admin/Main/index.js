@@ -25,7 +25,7 @@ class Main extends Component {
 		pairError: '',
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.getPairsData(this.props.pairs);
 		this.getUserData();
 	}

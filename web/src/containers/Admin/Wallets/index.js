@@ -5,7 +5,7 @@ import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
 import { requestTotalBalance, requestConstants } from './actions';
-import { formatCurrency } from '../../../utils';
+import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 
 class Wallets extends Component {
 	state = {
@@ -18,7 +18,7 @@ class Wallets extends Component {
 		constants: {},
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.requestTotalBalance();
 		this.requestConstants();
 		this.setState({ showSweep: false });
@@ -71,6 +71,7 @@ class Wallets extends Component {
 
 	render() {
 		const { balance, loading, error } = this.state;
+		const { coins } = this.props;
 		return (
 			<div className="app_container-content">
 				{error && (
@@ -107,9 +108,12 @@ class Wallets extends Component {
 								/>
 							) : (
 								Object.entries(balance).map(([name, value]) => {
+									const accesor = name?.split('_')[0]?.toLowerCase();
+									const inc_unit = coins[accesor]?.increment_unit;
 									return (
 										<p key={name}>
-											{name.toUpperCase()} : {formatCurrency(value)}
+											{name.toUpperCase()} :{' '}
+											{formatCurrencyByIncrementalUnit(value, inc_unit)}
 										</p>
 									);
 								})
@@ -124,6 +128,7 @@ class Wallets extends Component {
 
 const mapStateToProps = (state) => ({
 	constants: state.app.constants,
+	coins: state.app.coins,
 });
 
 export default connect(mapStateToProps)(Wallets);

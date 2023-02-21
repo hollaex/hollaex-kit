@@ -5,7 +5,6 @@ import Modal from 'react-modal';
 import { isLoggedIn } from 'utils/token';
 import { MobileBarBack } from 'components';
 import { getClasesForLanguage, getLanguage } from 'utils/string';
-import { getThemeClass } from 'utils/theme';
 import { ICONS } from 'config/constants';
 import { ReactSVG } from 'react-svg';
 
@@ -58,7 +57,6 @@ class Dialog extends PureComponent {
 			children,
 			label,
 			dialogId,
-			theme,
 			className,
 			useFullScreen = false,
 			compressed = false,
@@ -75,7 +73,6 @@ class Dialog extends PureComponent {
 				portalClassName={classnames(
 					className,
 					languageClasses,
-					getThemeClass(theme),
 					'layout-mobile',
 					{
 						compressed,
@@ -103,7 +100,6 @@ Modal.setAppElement('#root');
 Dialog.defaultProps = {
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
-	theme: '',
 	className: '',
 };
 

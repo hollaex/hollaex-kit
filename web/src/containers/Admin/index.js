@@ -28,3 +28,4 @@ export { default as Plugins } from './Plugins';
 export { default as PluginServices } from './Plugins/PluginServices';
 export { default as Settings } from './Settings';
 export { default as Transfer } from './Transfers';
+export { default as Billing } from './Billing';

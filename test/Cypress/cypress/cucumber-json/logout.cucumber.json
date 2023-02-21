@@ -1,0 +1,70 @@
+[
+  {
+    "description": "As a valid customer\nIn order prevent other from accessing the system without verifying their credentials\nI want to logout successfully to HollaeX",
+    "keyword": "Feature",
+    "name": "Logout Feature",
+    "line": 1,
+    "id": "logout-feature",
+    "tags": [],
+    "uri": "logout.feature",
+    "elements": [
+      {
+        "id": "logout-feature;successfull-logout",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successfull Logout",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am in the Hollaex login page",
+            "result": {
+              "status": "failed",
+              "duration": 548000000,
+              "error_message": "CypressError: `cy.visit()` failed trying to load:\n\nhttps://sandbox.hollaex.com/login\n\nThe response we received from your web server was:\n\n  > 403: Forbidden\n\nThis was considered a failure because the status code was not `2xx`.\n\nIf you do not want status codes to cause failures pass the option: `failOnStatusCode: false`\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:158263:84\n    at visitFailedByErr (http://localhost:57821/__cypress/runner/cypress_runner.js:157632:12)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:158243:13\nFrom previous event:\n    at go (http://localhost:57821/__cypress/runner/cypress_runner.js:158241:17)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:158307:20\nFrom previous event:\n    at visit (http://localhost:57821/__cypress/runner/cypress_runner.js:158305:38)\n    at Context.visit (http://localhost:57821/__cypress/runner/cypress_runner.js:158314:14)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:170939:15\nFrom previous event:\n    at CommandQueue.runCommand (http://localhost:57821/__cypress/runner/cypress_runner.js:170918:8)\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:171061:19)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:171090:16\nFrom previous event:\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:171061:39)\nFrom previous event:\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:185391:77\nFrom previous event:\n    at CommandQueue.run (http://localhost:57821/__cypress/runner/cypress_runner.js:185386:21)\n    at CommandQueue.run (http://localhost:57821/__cypress/runner/cypress_runner.js:171124:15)\n    at cy.<computed> [as then] (http://localhost:57821/__cypress/runner/cypress_runner.js:172120:18)\n    at runnable.fn (http://localhost:57821/__cypress/runner/cypress_runner.js:172338:19)\n    at callFn (http://localhost:57821/__cypress/runner/cypress_runner.js:125099:21)\n    at ../driver/node_modules/mocha/lib/runnable.js.Runnable.run (http://localhost:57821/__cypress/runner/cypress_runner.js:125086:7)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:179195:30\nFrom previous event:\n    at Object.onRunnableRun (http://localhost:57821/__cypress/runner/cypress_runner.js:179180:19)\n    at $Cypress.action (http://localhost:57821/__cypress/runner/cypress_runner.js:168586:28)\n    at Runnable.run (http://localhost:57821/__cypress/runner/cypress_runner.js:176876:13)\n    at ../driver/node_modules/mocha/lib/runner.js.Runner.runTest (http://localhost:57821/__cypress/runner/cypress_runner.js:125758:10)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:125884:12\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:125667:14)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:125677:7\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:125579:14)\n    at Hook.<anonymous> (http://localhost:57821/__cypress/runner/cypress_runner.js:125640:7)\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:179093:24)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:179122:13\nFrom previous event:\n    at onNext (http://localhost:57821/__cypress/runner/cypress_runner.js:179119:59)\n    at done (http://localhost:57821/__cypress/runner/cypress_runner.js:125039:5)\n    at callFn (http://localhost:57821/__cypress/runner/cypress_runner.js:125122:7)\n    at ../driver/node_modules/mocha/lib/runnable.js.Runnable.run (http://localhost:57821/__cypress/runner/cypress_runner.js:125086:7)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:179195:30\nFrom previous event:\n    at Object.onRunnableRun (http://localhost:57821/__cypress/runner/cypress_runner.js:179180:19)\n    at $Cypress.action (http://localhost:57821/__cypress/runner/cypress_runner.js:168586:28)\n    at Runnable.run (http://localhost:57821/__cypress/runner/cypress_runner.js:176876:13)\n    at next (http://localhost:57821/__cypress/runner/cypress_runner.js:125601:10)\n    at http://localhost:57821/__cypress/runner/cypress_runner.js:125645:5\n    at timeslice (http://localhost:57821/__cypress/runner/cypress_runner.js:119571:27)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I enter credentials \"Username\",\"Password\"",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should be able to login successfully",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "I should be in \"Account\" page with \"Username\"",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "I should be able to logout successfully",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

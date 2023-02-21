@@ -1,16 +1,16 @@
 'use strict';
 
 const { createServer } = require('http');
-var SwaggerExpress = require('swagger-express-mw');
 const swaggerUi = require('swagger-ui-express');
 const morgan = require('morgan');
-var YAML = require('yamljs');
-var swaggerDoc = YAML.load('./api/swagger/swagger.yaml');
+const swaggerDoc = require('./api/swagger/swagger');
 const { logEntryRequest, stream, logger } = require('./config/logger');
 const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('./config/middleware');
 const toolsLib = require('hollaex-tools-lib');
 const { checkStatus } = require('./init');
 const { API_HOST, CUSTOM_CSS } = require('./constants');
+const swaggerTools = require('swagger-tools');
+const cors = require('cors');
 
 checkStatus()
 	.then(() => {
@@ -18,8 +18,8 @@ checkStatus()
 			'app.js Initializing API Server'
 		);
 
-		var app = require('express')();
-
+		const app = require('express')();
+		app.use(cors());
 		// listen through pubsub for configuration/init
 
 		//init runs, populates configuration/secrets
@@ -38,33 +38,9 @@ checkStatus()
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 		app.use(morgan(morganType, { stream }));
 
-		var config = {
-			appRoot: './', // required config
-			swaggerSecurityHandlers: {
-				Bearer: toolsLib.security.verifyBearerTokenMiddleware,
-				HmacKey: toolsLib.security.verifyHmacTokenMiddleware
-			}
-		};
 
-		swaggerDoc.host = API_HOST;
-		if (process.env.NODE_ENV === 'production') {
-			swaggerDoc.schemes = ['https'];
-			Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
-				Object.keys(pathContent).forEach((method) => {
-					if (method.indexOf('swagger') === -1) {
-						if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
-							const tags = pathContent[method].tags;
-							const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
-							if (index > -1) {
-								delete pathContent[method];
-							}
-						}
-					}
-				});
-			});
-		}
 
-		var options = {
+		const options = {
 			customCss: CUSTOM_CSS,
 			customSiteTitle: 'API Explorer'
 		};
@@ -73,13 +49,57 @@ checkStatus()
 			res.redirect('/v2/health');
 		});
 
-		app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
+		const initializeSwaggerSecurity = (middleware) => {
+			return middleware.swaggerSecurity({
+				Token: toolsLib.security.verifyAuthTokenMiddleware
+			});
+		};
 
-		SwaggerExpress.create(config, function(err, swaggerExpress) {
-			if (err) { throw err; }
+		swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
 
-			// install middleware
-			swaggerExpress.register(app);
+			app.use(middleware.swaggerMetadata());
+			app.use(initializeSwaggerSecurity(middleware));
+
+			app.use(middleware.swaggerValidator({ validateResponse: true }));
+			app.use(middleware.swaggerRouter({
+				useStubs: true, controllers: './api/controllers'
+			}));
+
+			// // swaggerDoc.host = API_HOST;
+			if (process.env.NODE_ENV === 'production') {
+				swaggerDoc.schemes = ['https'];
+				Object.entries(swaggerDoc.paths).forEach(([path, pathContent], index) => {
+					Object.keys(pathContent).forEach((method) => {
+						if (method.indexOf('swagger') === -1) {
+							if (Object.prototype.hasOwnProperty.call(pathContent[method], 'tags')) {
+								const tags = pathContent[method].tags;
+								const index = tags.findIndex((value) => value === 'Admin' || value === 'Notification');
+								if (index > -1) {
+									delete pathContent[method];
+								}
+							}
+						}
+					});
+				});
+			}
+
+			// Custom error handler that returns JSON
+			app.use(function (err, req, res, next) {
+				if (typeof err !== 'object') {
+					// If the object is not an Error, create a representation that appears to be
+					err = {
+						message: String(err) // Coerce to string
+					};
+				} else {
+					// Ensure that err.message is enumerable (It is not by default)
+					Object.defineProperty(err, 'message', { enumerable: true });
+				}
+				res.statusCode = 500;
+				res.json(err);
+			});
+
+
+			app.use('/api/explorer', swaggerUi.serve, swaggerUi.setup(swaggerDoc, options));
 
 			server.listen(PORT, () => {
 				logger.info(`Server running on port: ${PORT}`);

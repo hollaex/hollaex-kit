@@ -642,11 +642,9 @@ class GeneralContent extends Component {
 			) {
 				message.warn('Country is already exist in blacklist');
 			} else {
+				const tempArr = constants.kit.black_list_countries || [];
 				this.handleSubmitName({
-					black_list_countries: [
-						...constants.kit.black_list_countries,
-						selectedCountry.value,
-					],
+					black_list_countries: [...tempArr, selectedCountry.value],
 				});
 			}
 			this.setState({ isVisible: false, selectedCountry: { isFocus: false } });

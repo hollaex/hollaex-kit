@@ -1,9 +1,9 @@
 ### Multi-Stage Build Dockerfile
 
 ### Build section
-FROM node:10.15.3-stretch-slim as build
+FROM node:16.18.1-buster-slim as build
 
-RUN apt-get update && apt-get install -y --no-install-recommends git python build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git python3 build-essential && rm -rf /var/lib/apt/lists/*
 
 ## DISTRIBUTION MODE
 ENV NODE_ENV=production
@@ -18,13 +18,13 @@ WORKDIR /app
 
 RUN npm install
 
-FROM node:10.15.3-stretch-slim
+FROM node:16.18.1-buster-slim
 
 COPY --from=build /app /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python build-essential && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends git iproute2 python3 build-essential && rm -rf /var/lib/apt/lists/*
 
-RUN npm install pm2@3.2.7 sequelize-cli@5.4.0 mocha@6.2.3 -g
+RUN npm install pm2@5.2.0 sequelize-cli@6.5.1 mocha@10.0.0 -g
 
 ## DISTRIBUTION MODE
 ENV NODE_ENV=production

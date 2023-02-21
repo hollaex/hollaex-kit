@@ -26,6 +26,9 @@ const InputField = (props) => {
 		stringId,
 		isEmail,
 		emailMsg,
+		onCrossClick,
+		showCross,
+		ishorizontalfield,
 		...rest
 	} = props;
 	const displayError = touched && error && !active;
@@ -42,7 +45,7 @@ const InputField = (props) => {
 					type={type}
 					{...input}
 					{...rest}
-					onBlur={() => {}}
+					// onBlur={() => {}}
 				/>
 			</div>
 		</FieldWrapper>

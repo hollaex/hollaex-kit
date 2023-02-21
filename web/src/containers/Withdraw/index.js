@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import classnames from 'classnames';
 import math from 'mathjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -40,9 +39,10 @@ class Withdraw extends Component {
 		checked: false,
 		currency: '',
 		selectedMethodData: 'address',
+		qrScannerOpen: false,
 	};
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		if (this.props.verification_level) {
 			this.validateRoute(this.props.routeParams.currency, this.props.coins);
 		}
@@ -166,7 +166,8 @@ class Withdraw extends Component {
 			network,
 			ICONS,
 			selectedMethod,
-			handleMethodChange
+			handleMethodChange,
+			this.openQRScanner
 		);
 
 		let initialValues = generateInitialValues(
@@ -326,6 +327,27 @@ class Withdraw extends Component {
 		// }
 	};
 
+	openQRScanner = () => {
+		this.setState({ qrScannerOpen: true });
+	};
+
+	closeQRScanner = () => {
+		this.setState({ qrScannerOpen: false });
+	};
+
+	getQRData = (data) => {
+		const { currency } = this.state;
+		const { dispatch, selectedNetwork } = this.props;
+
+		if (currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm') {
+			const [address = '', destinationTag = ''] = data?.split(':') || [];
+			dispatch(change(FORM_NAME, 'address', address));
+			dispatch(change(FORM_NAME, 'destination_tag', destinationTag));
+		} else {
+			dispatch(change(FORM_NAME, 'address', data));
+		}
+	};
+
 	onGoBack = () => {
 		this.props.router.push('/wallet');
 	};
@@ -350,6 +372,7 @@ class Withdraw extends Component {
 			currency,
 			checked,
 			selectedMethodData,
+			qrScannerOpen,
 		} = this.state;
 		if (!currency || !checked) {
 			return <div />;
@@ -377,6 +400,9 @@ class Withdraw extends Component {
 			selectedNetwork,
 			email,
 			selectedMethodData,
+			closeQRScanner: this.closeQRScanner,
+			qrScannerOpen,
+			getQRData: this.getQRData,
 		};
 
 		return (
@@ -396,7 +422,7 @@ class Withdraw extends Component {
 					{/* // This commented code can be used if you want to enforce user to have a verified bank account before doing the withdrawal
 					{verification_level >= MIN_VERIFICATION_LEVEL_TO_WITHDRAW &&
 					verification_level <= MAX_VERIFICATION_LEVEL_TO_WITHDRAW ? ( */}
-					<div className={classnames('inner_container')}>
+					<div className="inner_container">
 						<div className="information_block">
 							<div
 								className="information_block-text_wrapper"

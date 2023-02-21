@@ -4,6 +4,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
+import { getFormatTimestamp } from 'utils/utils';
 
 import {
 	getOrdersHistory,
@@ -22,6 +23,7 @@ import {
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
+	EditWrapper,
 } from 'components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from 'config/constants';
 import {
@@ -60,6 +62,8 @@ class TransactionsHistory extends Component {
 		jumpToPage: 0,
 		currency: BASE_CURRENCY,
 		params: {},
+		defaultExpand: false,
+		current_order_id: '',
 	};
 
 	UNSAFE_componentWillMount() {
@@ -155,9 +159,8 @@ class TransactionsHistory extends Component {
 			getUserDeposits,
 			getUserWithdrawals,
 		} = this.props;
-		let open = true;
+		let open = false;
 		let temp = params[`activeTab_${activeTab}`];
-
 		if (temp && temp.type && temp.type === 'active') {
 			open = true;
 		} else if (temp && temp.type && temp.type === 'closed') {
@@ -196,6 +199,7 @@ class TransactionsHistory extends Component {
 					[`activeTab_${prevState.activeTab}`]: {
 						start_date,
 						end_date,
+						status: 'processing',
 						...rest,
 					},
 				},
@@ -207,6 +211,8 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
+		let type = STRINGS['TIME'];
+
 		this.setState({
 			headers: {
 				orders: isMobile
@@ -224,7 +230,8 @@ class TransactionsHistory extends Component {
 							coins,
 							discount,
 							prices,
-							ICONS
+							ICONS,
+							type
 					  ),
 				trades: isMobile
 					? generateTradeHeadersMobile(
@@ -235,7 +242,15 @@ class TransactionsHistory extends Component {
 							prices,
 							ICONS
 					  )
-					: generateTradeHeaders(symbol, pairs, coins, discount, prices, ICONS),
+					: generateTradeHeaders(
+							symbol,
+							pairs,
+							coins,
+							discount,
+							prices,
+							ICONS,
+							this.setActiveTab
+					  ),
 				deposits: generateDepositsHeaders(
 					symbol,
 					coins,
@@ -251,6 +266,77 @@ class TransactionsHistory extends Component {
 			},
 		});
 	}
+
+	getExpandableRowContentForTrades = () => {
+		return {
+			expandedRowRender: (obj) => {
+				return (
+					<div
+						className={`expandable-container flex-row ${
+							isMobile ? 'text-center' : ''
+						}`}
+					>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.ORDERID"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
+							</EditWrapper>
+							<p>{obj.order_id ? obj.order_id : STRINGS['NA']}</p>
+						</div>
+					</div>
+				);
+			},
+			defaultExpanded: () => false,
+			rowExpandable: () => true,
+		};
+	};
+
+	getExpandableRowContentForOrderHistory = () => {
+		return {
+			expandedRowRender: (obj) => {
+				return (
+					<div
+						className={`expandable-container ${isMobile ? 'text-center' : ''}`}
+					>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.ORDERID"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
+							</EditWrapper>
+							<p>{obj.id}</p>
+						</div>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.TRIGGER_STOP_PRICE"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
+							</EditWrapper>
+							<p>{obj.stop ? obj.stop : STRINGS['NA']}</p>
+						</div>
+						<div>
+							<EditWrapper
+								stringId="TRANSACTION_HISTORY.TRIGGER_STOP_PRICE"
+								render={(string) => <p className="font-bold">{string}:</p>}
+							>
+								{STRINGS['TRANSACTION_HISTORY.TIME_OF_LAST_TRADE']}
+							</EditWrapper>
+							<p>{getFormatTimestamp(obj.updated_at)}</p>
+						</div>
+					</div>
+				);
+			},
+			defaultExpanded: (data) =>
+				this.state.defaultExpand && this.state.current_order_id === data.id
+					? true
+					: false,
+			rowExpandable: () => true,
+		};
+	};
 
 	generateFilters = () => {
 		const { pairs, coins, icons } = this.props;
@@ -355,7 +441,7 @@ class TransactionsHistory extends Component {
 					orders.isRemaining
 				) {
 					this.props.getOrdersHistory(RECORD_LIMIT, orders.page + 1, {
-						...params,
+						...temp,
 						open: false,
 					});
 					this.setState({ jumpToPage: pageNumber });
@@ -450,6 +536,8 @@ class TransactionsHistory extends Component {
 				props.filters = filters.orders;
 				props.noData = prepareNoData('NO_ACTIVE_ORDERS');
 				props.refetchData = () => this.requestData(activeTab);
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForOrderHistory;
 				break;
 			case 0:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
@@ -464,6 +552,9 @@ class TransactionsHistory extends Component {
 				props.filters = filters.trades;
 				props.noData = prepareNoData('NO_ACTIVE_TRADES');
 				props.refetchData = () => this.requestData(activeTab);
+				props.rowKey = ({ history_id }) => history_id;
+				props.expandableRow = true;
+				props.expandableContent = this.getExpandableRowContentForTrades;
 				break;
 			case 2:
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_DEPOSITS';
@@ -499,7 +590,7 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, activeTheme, coins, icons: ICONS } = this.props;
+		const { id, coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
@@ -529,7 +620,9 @@ class TransactionsHistory extends Component {
 					tabs={[
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.TRADES']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.TRADES']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.TRADES"
@@ -537,12 +630,17 @@ class TransactionsHistory extends Component {
 								// 	iconId="TRADE_HISTORY"
 								// 	icon={ICONS['TRADE_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.TRADES']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.TRADES"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.TRADES']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['ORDER_HISTORY']
+								<EditWrapper>{STRINGS['ORDER_HISTORY']}</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="ORDER_HISTORY"
@@ -550,12 +648,19 @@ class TransactionsHistory extends Component {
 								// 	iconId="TRADE_HISTORY"
 								// 	icon={ICONS['TRADE_HISTORY']}
 								// />
-								<div>{STRINGS['ORDER_HISTORY']}</div>
+								<EditWrapper
+									stringId="ORDER_HISTORY"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['ORDER_HISTORY']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.DEPOSITS']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.DEPOSITS"
@@ -563,12 +668,19 @@ class TransactionsHistory extends Component {
 								// 	iconId="DEPOSIT_HISTORY"
 								// 	icon={ICONS['DEPOSIT_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.DEPOSITS"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
+								</EditWrapper>
 							),
 						},
 						{
 							title: isMobile ? (
-								STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']
+								<EditWrapper>
+									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								</EditWrapper>
 							) : (
 								// <CheckTitle
 								// 	stringId="TRANSACTION_HISTORY.WITHDRAWALS"
@@ -576,7 +688,12 @@ class TransactionsHistory extends Component {
 								// 	iconId="WITHDRAW_HISTORY"
 								// 	icon={ICONS['WITHDRAW_HISTORY']}
 								// />
-								<div>{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}</div>
+								<EditWrapper
+									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
+								</EditWrapper>
 							),
 						},
 					]}
@@ -586,7 +703,6 @@ class TransactionsHistory extends Component {
 				<Dialog
 					isOpen={dialogIsOpen}
 					label="token-modal"
-					theme={activeTheme}
 					onCloseDialog={onCloseDialog}
 					shouldCloseOnOverlayClick={true}
 					showCloseText={false}
@@ -645,7 +761,6 @@ const mapStateToProps = (store) => ({
 	withdrawals: withdrawalHistorySelector(store),
 	symbol: store.orderbook.symbol,
 	activeLanguage: store.app.language,
-	activeTheme: store.app.theme,
 	cancelData: store.wallet.withdrawalCancelData,
 	discount: store.user.discount || 0,
 });

@@ -3,7 +3,7 @@
 const { checkStatus } = require('../init');
 const express = require('express');
 const morgan = require('morgan');
-const PORT = process.env.PLUGIN_PORT || 10012;
+const PORT = 10013;
 const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
@@ -17,9 +17,15 @@ const npm = require('npm-programmatic');
 const _eval = require('eval');
 const rp = require('request-promise');
 
-const getPluginConfig = () => {
-	return rp('http://host.docker.internal:8080/config.json');
-};
+let pluginName = 'hello';
+if (process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1]) {
+	pluginName = process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1];
+}
+
+loggerPlugin.info(
+	'plugins/index Running dev mode for plugin:',
+	`${pluginName}`
+);
 
 let config, script;
 
@@ -38,16 +44,12 @@ const installLibrary = async (library) => {
 
 	const lib = require(name);
 	return lib;
-	
 };
 
-getPluginConfig()
-	.then((data) => {
-		data = JSON.parse(data);
-		config = data;
-		script = data.script;
-		return checkStatus();
-	})
+config = require(`../dev-plugins/${pluginName}/server/config.json`);
+script = fs.readFileSync(path.resolve(__dirname, `../dev-plugins/${pluginName}/server/script.js`), 'utf8');
+
+checkStatus()
 	.then(async () => {
 		const app = express();
 
@@ -77,7 +79,7 @@ getPluginConfig()
 			meta: config.meta,
 			configValues: {
 				publicMeta: config.public_meta,
-				meta: config.meta	
+				meta: config.meta
 			},
 			installedLibraries: {}
 		};
@@ -87,17 +89,17 @@ getPluginConfig()
 				'plugins/index/initialization',
 				`Installing packages for plugin ${config.name}`
 			);
-	
+
 			for (const library of config.prescript.install) {
 				context.installedLibraries[library] = await installLibrary(library);
 			}
-	
+
 			loggerPlugin.verbose(
 				'plugins/index/initialization',
 				`Plugin ${config.name} packages installed`
 			);
 		}
-	
+
 		_eval(script, 'dev', context, true);
 	})
 	.catch((err) => {

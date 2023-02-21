@@ -34,7 +34,6 @@ class SectionsModal extends Component {
 				isOpen={isOpen}
 				label="operator-controls-modal"
 				className="operator-controls__modal"
-				disableTheme={true}
 				onCloseDialog={onCloseDialog}
 				shouldCloseOnOverlayClick={true}
 				showCloseText={true}

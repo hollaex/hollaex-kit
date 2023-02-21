@@ -36,6 +36,7 @@ class PriceChange extends Component {
 		const {
 			market: { priceDifference, priceDifferencePercent },
 			disableGlance = false,
+			className,
 		} = this.props;
 		const { inProp, tickerDiff } = this.state;
 		const glanceClass = !disableGlance
@@ -51,6 +52,7 @@ class PriceChange extends Component {
 								className={classnames(
 									'title-font',
 									'price-diff',
+									className,
 									state,
 									this.getDirBasedClass(priceDifference),
 									glanceClass

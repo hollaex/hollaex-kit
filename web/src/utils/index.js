@@ -2,14 +2,16 @@ import Cookies from 'universal-cookie';
 import math from 'mathjs';
 import numbro from 'numbro';
 import moment from 'moment';
-// import jwtDecode from 'jwt-decode';
-// import { getToken, setToken, removeToken } from './token';
 
 const cookies = new Cookies();
 
 export const getEmail = () => cookies.get('token::email');
 
-export { default as request, requestAuthenticated } from './request';
+export {
+	default as request,
+	requestAuthenticated,
+	requestDashAuthenticated,
+} from './request';
 
 export const formatDate = (date) => {
 	return (

@@ -60,7 +60,7 @@ const createInitialAdmin = (req, res) => {
 		toolsLib.database.findOne('user', { raw: true }),
 		toolsLib.database.findOne('status', { raw: true })
 	])
-		.then(([ user, status ]) => {
+		.then(([user, status]) => {
 			if (status.initialized) {
 				throw new Error('Exchange is already initialized');
 			}
@@ -111,7 +111,7 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { id, search, type, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -134,6 +134,7 @@ const getUsersAdmin = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value,
+		type: type.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -322,8 +323,7 @@ const activateUser = (req, res) => {
 
 	promiseQuery
 		.then((user) => {
-			const message = `Account ${user.email} has been ${
-				activated ? 'activated' : 'deactivated'
+			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
 			}`;
 			return res.json({ message });
 		})
@@ -1205,8 +1205,8 @@ const getEmailTypes = (req, res) => {
 
 		let arrMailType = Object.keys(data['email'][LANGUAGE_DEFAULT]);
 		arrMailType.sort((a, b) => {
-			if(a < b) { return -1; }
-			if(a > b) { return 1; }
+			if (a < b) { return -1; }
+			if (a > b) { return 1; }
 			return 0;
 		});
 
@@ -1912,7 +1912,7 @@ const setUserBank = (req, res) => {
 			if (!user) {
 				throw new Error('User not found');
 			}
-			
+
 			const existingBankAccounts = user.bank_account;
 
 			let sendEmail = false;
@@ -1938,7 +1938,7 @@ const setUserBank = (req, res) => {
 
 			if (sendEmail) {
 				try {
-					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, updatedUser.settings);
+					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, updatedUser.settings);
 				} catch (err) {
 					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
 				}
@@ -1967,7 +1967,7 @@ const verifyUserBank = (req, res) => {
 		user_id,
 		bank_id
 	);
-	
+
 	toolsLib.user.getUserByKitId(user_id, false)
 		.then((user) => {
 			if (!user) {
@@ -1996,7 +1996,7 @@ const verifyUserBank = (req, res) => {
 		})
 		.then((user) => {
 			try {
-				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED ) }, user.settings);
+				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, user.settings);
 			} catch (err) {
 				loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank email catch', err.message);
 			}
@@ -2046,6 +2046,71 @@ const revokeUserBank = (req, res) => {
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserBank err', err.message);
 			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const generateDashToken = (req, res) => {
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/admin/generateDashToken auth',
+		req.auth
+	);
+
+	toolsLib.security.generateDashToken({
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then(({ token }) => {
+			if (!token) {
+				throw new Error('We could not generate the token. Please try again.');
+			}
+			return res.status(201).json({ token });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/generateDashToken err', err.message);
+			return res.status(err.status || 400).json({ message: err.message });
+		});
+};
+
+const getUserAffiliation = (req, res) => {
+	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserAffiliation auth', req.auth.sub);
+
+	const user_id = req.swagger.params.user_id.value;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+
+	toolsLib.user.getAffiliationCount(user_id, {
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+	})
+		.then((data) => {
+			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserAffiliation count', data.count);
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserAffiliation', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getUserReferer = (req, res) => {
+	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserReferer auth', req.auth.sub);
+
+	const user_id = req.swagger.params.user_id.value;
+
+	toolsLib.user.getUserReferer(user_id)
+		.then((email) => {
+			loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserReferer email', email);
+			return res.json({ email });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserReferer', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -2099,5 +2164,8 @@ module.exports = {
 	getEmailTypes,
 	setUserBank,
 	verifyUserBank,
-	revokeUserBank
+	revokeUserBank,
+	generateDashToken,
+	getUserAffiliation,
+	getUserReferer
 };
