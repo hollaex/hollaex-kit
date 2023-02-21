@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Modal, Divider, Spin, message } from 'antd';
+import { Button, Modal, Divider, Spin, message, Tooltip } from 'antd';
 import {
 	StarFilled,
 	ClockCircleOutlined,
@@ -233,25 +233,33 @@ const PluginDetails = ({
 								<p>{`Description: ${pluginData.description}`}</p>
 								<div>
 									{' '}
-									{!!pluginData?.free_for?.length ? (
+									{!!free_for?.length ? (
 										<>
 											<p>Note:</p>{' '}
 											<div>
-												<InfoCircleOutlined />
+												<InfoCircleOutlined className="pt-2" />
 											</div>{' '}
-											{pluginData?.free_for?.map((item) => (
-												<p>{item}</p>
+											{free_for?.map((item, inx) => (
+												<p>{`${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
 											))}
 										</>
 									) : (
 										''
 									)}{' '}
 								</div>
-								<p>
+								<p className="tooltip-container">
 									Author:
-									<ReactSVG
-										src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-									/>{' '}
+									<Tooltip
+										placement="rightBottom"
+										title={`Verified plugin by ${author}`}
+									>
+										<ReactSVG
+											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+											className="verified-icon"
+										/>
+									</Tooltip>{' '}
 									{pluginData.author}
 								</p>
 								<p>
@@ -274,6 +282,22 @@ const PluginDetails = ({
 										''
 									)}{' '}
 								</p>
+								{only_for?.length ? (
+									<div>
+										<p className="mr-2">Only For:</p>
+										{only_for?.map((item, inx) => (
+											<p>{`${inx === 0 ? '' : `, `} ${exchangeType[item]}`}</p>
+										))}
+									</div>
+								) : null}
+								{free_for?.length ? (
+									<div>
+										<p className="mr-2">Free For:</p>{' '}
+										{free_for?.map((item, inx) => (
+											<p>{` ${inx === 0 ? '' : `, `} ${exchangeType[item]}`}</p>
+										))}
+									</div>
+								) : null}
 								{pluginData.price && (
 									<div>
 										<p>Price: </p>{' '}
@@ -630,11 +654,17 @@ const PluginDetails = ({
 											''
 										)}{' '}
 									</div>
-									<p>
+									<p className="tooltip-container">
 										Author:
-										<ReactSVG
-											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-										/>{' '}
+										<Tooltip
+											placement="rightBottom"
+											title={`Verified plugin by ${author}`}
+										>
+											<ReactSVG
+												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+												className="verified-icon"
+											/>
+										</Tooltip>{' '}
 										{author}
 									</p>
 									{free_for?.length ? (
