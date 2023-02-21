@@ -48,4 +48,14 @@ describe('tests for /order/all', function () {
     });
 
 
+     //Fuz Testing
+     it('Fuzz Test -should return error', async () => {
+        const response = await request()
+        .delete(`/v2/order/all?symbol=${generateFuzz()}`)
+        .set('Authorization', `Bearer ${bearerToken}`)
+
+        response.should.have.status(400);
+    });
+
+
 });

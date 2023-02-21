@@ -6,8 +6,7 @@ const {
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
 
-
-describe('tests for /orderbook', function () {
+describe('tests for /ticker', function () {
 
     let user, bearerToken;
     before(async () => {
@@ -18,24 +17,24 @@ describe('tests for /orderbook', function () {
     });
 
 
-    it('Integration Test -should respond 200 for "Success"', async () => {
+     //Integration Testing
+     it('Integration Test -should respond 200 for "Success"', async () => {
         const response = await request()
-            .get(`/v2/orderbook?symbol=xht-usdt`)
+            .get('/v2/ticker?symbol=xht-usdt')
             .set('Authorization', `Bearer ${bearerToken}`)
+          
            
         response.should.have.status(200);
         response.should.be.json;
     });
 
-
-    //Fuz Testing
+     //Fuz Testing
      it('Fuzz Test -should return error', async () => {
         const response = await request()
-        .get(`/v2/orderbook?symbol=${generateFuzz()}`)
-        .set('Authorization', `Bearer ${bearerToken}`)
+            .get(`/v2/ticker?symbol=${generateFuzz()}`)
+            .set('Authorization', `Bearer ${bearerToken}`)
 
-        response.should.have.status(400);
+        response.should.have.status(403);
     });
-
 
 });

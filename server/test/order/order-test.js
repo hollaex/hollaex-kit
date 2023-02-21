@@ -68,5 +68,23 @@ describe('Order Flow', async () => {
     });
 
 
+      //Fuz Testing
+      it('Fuzz Test -should return error', async () => {
+        const response = await request()
+            .post('/v2/order')
+            .set('Authorization', `Bearer ${bearerToken}`)
+            .send({
+                "side": "buy",
+                "size": 1,
+                "type": "limit",
+                "symbol": "xht-usdt",
+                "price": generateFuzz(),
+                "meta": { "post_only": true},
+            });
+
+        response.should.have.status(500);
+    });
+
+
 });
 
