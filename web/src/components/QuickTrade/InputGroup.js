@@ -3,7 +3,11 @@ import { oneOfType, array, string, func, number, object } from 'prop-types';
 import { Select, Input } from 'antd';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
-import { CaretDownOutlined } from '@ant-design/icons';
+import {
+	CaretDownOutlined,
+	LoadingOutlined,
+	SyncOutlined,
+} from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
@@ -96,7 +100,16 @@ class InputGroup extends React.PureComponent {
 			autoFocus,
 			stringId,
 			coins,
+			loading,
+			expired,
+			disabled,
 		} = this.props;
+
+		const suffix = loading ? (
+			<LoadingOutlined className="secondary-text ml-1" />
+		) : expired ? (
+			<SyncOutlined className="secondary-text ml-1" />
+		) : null;
 
 		const error = translateError(this.renderErrorMessage(inputValue));
 
@@ -164,6 +177,8 @@ class InputGroup extends React.PureComponent {
 							min={limits.MIN}
 							max={limits.MAX}
 							autoFocus={autoFocus}
+							suffix={suffix}
+							disabled={disabled}
 						/>
 					</Group>
 					{error && (

@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-	BrokerLimitsSelector,
-	QuickTradeLimitsSelector,
-} from 'containers/QuickTrade/utils';
 import { isMobile } from 'react-device-detect';
 import { Spin } from 'antd';
 
 import STRINGS from 'config/localizedStrings';
 import { changePair, getExchangeInfo, getTickers } from 'actions/appActions';
 import { getSparklines } from 'actions/chartAction';
-import { isLoggedIn } from 'utils/token';
 import Markets from 'containers/Summary/components/Markets';
 import { Image, QuickTrade, EditWrapper } from 'components';
 
@@ -21,7 +16,6 @@ import { STATIC_ICONS } from 'config/icons';
 import { generateDynamicIconKey } from 'utils/id';
 import { MarketsSelector } from 'containers/Trade/utils';
 import MarketCard from './MarketCard';
-import { getSourceOptions } from 'containers/QuickTrade/components/utils';
 
 // const DECIMALS = 4;
 const MIN_HEIGHT = 450;
@@ -51,159 +45,44 @@ const data = [
 	},
 ];
 class Home extends Component {
-	constructor(props) {
-		super(props);
-
-		const {
-			pair,
-			side,
-			tickerClose,
-			selectedSource,
-			targetOptions,
-			selectedTarget,
-		} = this.calculateSideData();
-
-		this.state = {
-			side,
-			tickerClose,
-			showQuickTradeModal: false,
-			targetOptions,
-			selectedSource,
-			selectedTarget,
-			order: {
-				fetching: false,
-				error: false,
-				data: {},
-			},
-			sourceError: '',
-			targetError: '',
-			height: 0,
-			style: {
-				minHeight: MIN_HEIGHT,
-			},
-			sectionData: {},
-			pair,
-			chartData: {},
-			isTimer: false,
-			isLoading: false,
-			buyPrice: 0,
-			sellPrice: 0,
-			token: '',
-			isAmountChanged: false,
-			isHover: false,
-			hoveredIndex: 0,
-			carouselLodaing: true,
-		};
-		this.goToPair(pair);
-	}
+	state = {
+		height: 0,
+		style: {
+			minHeight: MIN_HEIGHT,
+		},
+		sectionData: {},
+		chartData: {},
+		isLoading: false,
+		isHover: false,
+		hoveredIndex: 0,
+		carouselLoading: true,
+	};
 
 	UNSAFE_componentWillMount() {
-		const { isReady, router, changePair } = this.props;
-		const { pair } = this.state;
-		changePair(pair);
+		const { isReady, router } = this.props;
+
 		if (!isReady) {
 			router.push('/summary');
 		}
 	}
 
-	calculateSideData = () => {
-		const {
-			routeParams,
-			tickers,
-			pairs,
-			router,
-			broker,
-			sourceOptions,
-		} = this.props;
-
-		const pairKeys = Object.keys(pairs);
-		const flippedPair = this.flipPair(routeParams.pair);
-		const brokerPairs = Object.fromEntries(
-			broker.map((data) => [data.symbol, data])
-		);
-
-		let pair;
-		let side;
-		let tickerClose;
-		let originalPair;
-		if (brokerPairs[routeParams.pair] || pairs[routeParams.pair]) {
-			originalPair = routeParams.pair;
-			pair = routeParams.pair;
-			const { close } = tickers[pair] || {};
-			side = 'buy';
-			tickerClose = close;
-		} else if (brokerPairs[flippedPair] || pairs[flippedPair]) {
-			originalPair = routeParams.pair;
-			pair = flippedPair;
-			const { close } = tickers[pair] || {};
-			side = 'sell';
-			tickerClose = 1 / close;
-		} else if (pairKeys.length) {
-			originalPair = pairKeys[0];
-			pair = pairKeys[0];
-			const { close } = tickers[pair] || {};
-			side = 'buy';
-			tickerClose = close;
-		} else {
-			router.push('/summary');
-		}
-
-		const [, selectedSource = sourceOptions[0]] = originalPair.split('-');
-		const targetOptions = this.getTargetOptions(selectedSource);
-		const [selectedTarget = targetOptions[0]] = originalPair.split('-');
-
-		return {
-			pair,
-			side,
-			tickerClose,
-			originalPair,
-			selectedSource,
-			targetOptions,
-			selectedTarget,
-		};
-	};
-
 	componentDidMount() {
-		const { sections, pairs } = this.props;
-		this.props.getExchangeInfo();
-		this.props.getTickers();
+		const { sections, pairs, getExchangeInfo, getTickers } = this.props;
+		getExchangeInfo();
+		getTickers();
 		getSparklines(Object.keys(pairs)).then((chartData) =>
 			this.setState({ chartData })
 		);
 		this.generateSections(sections);
 
 		setTimeout(() => {
-			this.setState({ carouselLodaing: false });
+			this.setState({ carouselLoading: false });
 		}, 3000);
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if (
-			prevState.selectedSource !== this.state.selectedSource ||
-			prevState.selectedTarget !== this.state.selectedTarget
-		) {
-			const { selectedSource, selectedTarget } = this.state;
-			let pair = `${selectedSource}-${selectedTarget}`;
-
-			this.setState({
-				isSelectChange: false,
-				pair,
-			});
-		}
 	}
 
 	goTo = (path) => () => {
 		const { router } = this.props;
 		router.push(path);
-	};
-
-	onReviewQuickTrade = () => {
-		const { pair } = this.props;
-		if (isLoggedIn()) {
-			this.goTo(`/quick-trade/${pair}`)();
-		} else {
-			this.goTo('/login')();
-		}
 	};
 
 	generateSections = (sections) => {
@@ -281,13 +160,9 @@ class Home extends Component {
 		}
 	};
 
-	flipPair = (pair) => {
-		const pairArray = pair.split('-');
-		return pairArray.reverse().join('-');
-	};
-
 	sectionToNav = (sec) => {
-		this.props.router.push(`/trade/${sec?.props?.market?.pair?.code}`);
+		const { router } = this.props;
+		router.push(`/trade/${sec?.props?.market?.pair?.code}`);
 	};
 
 	onMouseOver = (val, hoveredIndex) => {
@@ -356,27 +231,16 @@ class Home extends Component {
 				const {
 					constants: { features: { quick_trade = false } = {} } = {},
 					isReady,
-					pair,
 					pairs,
-					orderLimits,
 				} = this.props;
-
-				const { selectedTarget } = this.state;
 
 				return (
 					pairs &&
 					Object.keys(pairs).length &&
-					selectedTarget &&
-					selectedTarget &&
 					quick_trade &&
 					isReady && (
 						<div className="home-page_section-wrapper">
-							<QuickTrade
-								onReviewQuickTrade={this.onReviewQuickTrade}
-								symbol={pair}
-								orderLimits={orderLimits[pair] || {}}
-								autoFocus={false}
-							/>
+							<QuickTrade autoFocus={false} preview={true} />
 						</div>
 					)
 				);
@@ -434,7 +298,7 @@ class Home extends Component {
 			}
 			case 'carousel_section': {
 				const { markets } = this.props;
-				const { chartData } = this.state;
+				const { chartData, carouselLoading } = this.state;
 				let testMarket = [];
 				let loopCnt = 0;
 				if (markets.length < 12) {
@@ -462,7 +326,7 @@ class Home extends Component {
 
 				return (
 					<div className="home_carousel_section ">
-						<Spin spinning={this.state.carouselLodaing}>
+						<Spin spinning={carouselLoading}>
 							<div className="slideshow-wrapper">
 								<div
 									className="parent-slider d-flex"
@@ -474,22 +338,20 @@ class Home extends Component {
 												className="section"
 												style={{
 													borderRight: `${
-														!this.state.carouselLodaing
-															? '1px solid #60605d'
-															: 'none'
+														!carouselLoading ? '1px solid #60605d' : 'none'
 													}`,
 												}}
 												key={index}
 												onClick={() => this.sectionToNav(sec)}
 											>
-												{!this.state.carouselLodaing ? (
+												{!carouselLoading && (
 													<MarketCard
 														market={sec}
 														onDragStart={this.handleDragStart}
 														role="presentation"
 														chartData={chartData}
 													/>
-												) : null}
+												)}
 											</div>
 										);
 									})}
@@ -504,114 +366,10 @@ class Home extends Component {
 		}
 	};
 
-	onSelectTarget = (selectedTarget) => {
-		const { tickers, pairs, broker } = this.props;
-		const { selectedSource } = this.state;
-		const brokerPairs = broker.map((br) => br.symbol);
-
-		const pairName = `${selectedTarget}-${selectedSource}`;
-		const reversePairName = `${selectedSource}-${selectedTarget}`;
-
-		let tickerClose;
-		let side;
-		let pair;
-		if (pairs[pairName] || brokerPairs.includes(pairName)) {
-			const { close } = tickers[pairName] || {};
-			tickerClose = close;
-			side = 'buy';
-			pair = pairName;
-		} else if (
-			pairs[reversePairName] ||
-			brokerPairs.includes(reversePairName)
-		) {
-			const { close } = tickers[reversePairName] || {};
-			tickerClose = 1 / close;
-			side = 'sell';
-			pair = reversePairName;
-		}
-
-		this.setState({
-			side,
-			tickerClose,
-			selectedTarget,
-			isSelectChange: true,
-			pair,
-		});
-		if (pair) {
-			this.goToPair(pair);
-		}
-	};
-
-	onSelectSource = (selectedSource) => {
-		const { tickers, pairs, broker } = this.props;
-		let targetOptions = this.getTargetOptions(selectedSource);
-		let selectedTarget = targetOptions && targetOptions[0];
-		const pairName = `${selectedTarget}-${selectedSource}`;
-		const reversePairName = `${selectedSource}-${selectedTarget}`;
-		const brokerPairs = broker.map((br) => br.symbol);
-
-		let tickerClose;
-		let side;
-		let pair;
-		if (pairs[pairName] || brokerPairs.includes(pairName)) {
-			const { close } = tickers[pairName] || {};
-			tickerClose = close;
-			side = 'buy';
-			pair = pairName;
-		} else if (
-			pairs[reversePairName] ||
-			brokerPairs.includes(reversePairName)
-		) {
-			const { close } = tickers[reversePairName] || {};
-			tickerClose = 1 / close;
-			side = 'sell';
-			pair = reversePairName;
-		}
-
-		this.setState({
-			side,
-			tickerClose,
-			selectedSource,
-			selectedTarget,
-			targetOptions: targetOptions,
-			isSelectChange: true,
-			pair,
-		});
-		if (pair) {
-			this.goToPair(pair);
-		}
-	};
-
-	getTargetOptions = (sourceKey) => {
-		const { sourceOptions, pairs, broker } = this.props;
-		let brokerPairs = {};
-		broker.forEach((br) => {
-			brokerPairs[br.symbol] = br;
-		});
-
-		return sourceOptions.filter(
-			(key) =>
-				pairs[`${key}-${sourceKey}`] ||
-				pairs[`${sourceKey}-${key}`] ||
-				brokerPairs[`${sourceKey}-${key}`] ||
-				brokerPairs[`${key}-${sourceKey}`]
-		);
-	};
-
-	goToPair = (pair) => {
-		const { changePair } = this.props;
-		changePair(pair);
-	};
-
 	handleDragStart = (e) => e.preventDefault();
 
 	render() {
-		const {
-			// symbol,
-			// quickTradeData,
-			// requestQuickTrade,
-			sections,
-		} = this.props;
+		const { sections } = this.props;
 
 		return (
 			<div className="home_container">
@@ -638,36 +396,14 @@ class Home extends Component {
 }
 
 const mapStateToProps = (store) => {
-	const pair = store.app.pair;
-	const pairData = store.app.pairs[pair] || {};
-	const sourceOptions = getSourceOptions(store.app.pairs, store.app.broker);
-	const broker = store.app.broker || [];
-	let flippedPair = pair.split('-');
-	flippedPair = flippedPair.reverse().join('-');
-	const qtlimits = !!broker.filter(
-		(item) => item.symbol === pair || item.symbol === flippedPair
-	)
-		? BrokerLimitsSelector(store)
-		: QuickTradeLimitsSelector(store);
-
 	return {
-		sourceOptions,
-		pair,
-		pairData,
+		pair: store.app.pair,
 		pairs: store.app.pairs,
 		coins: store.app.coins,
-		// estimatedValue: 100,
-		// symbol: store.orderbook.symbol,
-		// quickTradeData: store.orderbook.quickTrade,
 		activeLanguage: store.app.language,
-		info: store.app.info,
 		constants: store.app.constants,
-		tickers: store.app.tickers,
-		orderLimits: qtlimits,
-		settings: store.user.settings,
 		fetchingAuth: store.auth.fetching,
 		isReady: store.app.isReady,
-		broker,
 		markets: MarketsSelector(store),
 	};
 };

@@ -1,6 +1,7 @@
+import { createSelector } from 'reselect';
 import { unique } from 'utils/data';
 
-export const flipPair = (pair) => pair.split('-').reverse().join('-');
+export const flipPair = (pair) => pair?.split('-').reverse().join('-');
 
 export const getSourceOptions = (pairs = {}, broker = []) => {
 	const coins = [];
@@ -20,3 +21,9 @@ export const getSourceOptions = (pairs = {}, broker = []) => {
 
 	return unique(coins);
 };
+
+const getBroker = (state) => state.app.broker;
+
+export const brokerPairsSelector = createSelector([getBroker], (broker) => {
+	return Object.fromEntries(broker.map((data) => [data.symbol, data]));
+});
