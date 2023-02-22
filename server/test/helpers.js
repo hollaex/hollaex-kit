@@ -11,6 +11,7 @@ chai.use(chaiHTTP);
 chai.should();
 
 const testURL = process.env.TEST_URL || 'http://localhost:10010';
+const testURLPlugin = process.env.TEST_URL || 'http://localhost:10011';
 
 function generateFuzz(length = 10000) {
 	let result = '';
@@ -48,9 +49,16 @@ function request() {
 	return req;
 }
 
+function requestPlugin() {
+	const req = chai.request(testURLPlugin);
+
+	return req;
+}
+
 module.exports = {
 	loginAs,
 	request,
 	generateFuzz,
-	getAdminUser
+	getAdminUser,
+	requestPlugin
 };
