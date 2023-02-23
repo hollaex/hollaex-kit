@@ -97,7 +97,7 @@
 		"lodash.isempty": "4.4.0",
 		"node-sass-chokidar": "1.5.0",
 		"prettier": "2.1.2",
-		"react-scripts": "3.4.3",
+		"react-scripts": "5.0.1",
 		"rimraf": "3.0.2",
 		"surge": "0.21.6"
 	},
