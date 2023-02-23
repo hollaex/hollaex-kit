@@ -64,7 +64,7 @@
 		"redux": "4.0.1",
 		"request": "2.88.0",
 		"request-promise": "4.2.2",
-		"sequelize": "6.24.0",
+		"sequelize": "6.28.2",
 		"swagger-jsdoc": "6.2.7",
 		"swagger-tools": "0.10.4",
 		"swagger-ui-express": "4.5.0",
