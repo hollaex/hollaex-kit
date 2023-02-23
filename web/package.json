@@ -36,7 +36,7 @@
 		"lodash.merge": "4.6.2",
 		"mathjs": "5.10.3",
 		"mobile-detect": "1.4.2",
-		"moment": "2.24.0",
+		"moment": "2.29.4",
 		"moment-jalaali": "0.7.2",
 		"moment-timezone": "0.5.21",
 		"multicoin-address-validator": "0.4.16",
