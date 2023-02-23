@@ -85,7 +85,7 @@
 		"rsvp": "4.8.5",
 		"universal-cookie": "4.0.2",
 		"validate-color": "2.1.0",
-		"validator": "10.11.0",
+		"validator": "13.7.0",
 		"web3": "1.5.1",
 		"ws-heartbeat": "1.2.0"
 	},
