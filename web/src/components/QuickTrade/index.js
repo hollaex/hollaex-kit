@@ -68,12 +68,10 @@ const QuickTrade = ({
 			);
 		});
 
-	const initialPair = Object.keys(pairs)[0];
-	const [, initialSelectedSource = sourceOptions[0]] = initialPair.split('-');
+	const initialPair = (router.params?.pair || Object.keys(pairs)[0]).split('-');
+	const [, initialSelectedSource = sourceOptions[0]] = initialPair;
 	const initialTargetOptions = getTargetOptions(initialSelectedSource);
-	const [initialSelectedTarget = initialTargetOptions[0]] = initialPair.split(
-		'-'
-	);
+	const [initialSelectedTarget = initialTargetOptions[0]] = initialPair;
 
 	const [symbol, setSymbol] = useState();
 	const [chartData, setChartData] = useState({});
@@ -82,6 +80,7 @@ const QuickTrade = ({
 	const [targetAmount, setTargetAmount] = useState();
 	const [selectedSource, setSelectedSource] = useState(initialSelectedSource);
 	const [selectedTarget, setSelectedTarget] = useState(initialSelectedTarget);
+	const [targetOptions, setTargetOptions] = useState(initialTargetOptions);
 	const [showModal, setShowModal] = useState(false);
 	const [isReview, setIsReview] = useState(true);
 	const [loading, setLoading] = useState(false);
@@ -91,6 +90,7 @@ const QuickTrade = ({
 	const [submitting, setSubmitting] = useState(false);
 	const [data, setData] = useState({});
 	const [reversed, setReversed] = useState(false);
+	const [mounted, setMounted] = useState(false);
 
 	const onCloseDialog = (autoHide) => {
 		setIsReview(true);
@@ -116,8 +116,6 @@ const QuickTrade = ({
 			onCloseDialog(true);
 		}
 	};
-
-	const targetOptions = getTargetOptions(selectedSource);
 
 	const flippedPair = flipPair(symbol);
 	const isShowChartDetails = pairs[symbol] || pairs[flippedPair];
@@ -282,7 +280,11 @@ const QuickTrade = ({
 	}, [pairs]);
 
 	useEffect(() => {
-		setSelectedTarget(targetOptions[0]);
+		if (mounted) {
+			const options = getTargetOptions(selectedSource);
+			setTargetOptions(options);
+			setSelectedTarget(options[0]);
+		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSource]);
 
@@ -319,6 +321,10 @@ const QuickTrade = ({
 			setReversed(true);
 		}
 	}, [spending]);
+
+	useEffect(() => {
+		setMounted(true);
+	}, []);
 
 	const { balance: userBalance } = user;
 
