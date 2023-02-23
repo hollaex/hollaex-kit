@@ -1,0 +1,153 @@
+[
+  {
+    "description": "As a customer\nIn order to use Hollaex\nI want to register successfully ",
+    "keyword": "Feature",
+    "name": "Signup Feature",
+    "line": 1,
+    "id": "signup-feature",
+    "tags": [],
+    "uri": "signup.feature",
+    "elements": [
+      {
+        "id": "signup-feature;create-a-new-user-with-aid-of-admin",
+        "keyword": "Scenario",
+        "line": 12,
+        "name": "Create a New User with aid of Admin",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "user on the homepage",
+            "result": {
+              "status": "passed",
+              "duration": 9772000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "user should click \"Signup\"",
+            "result": {
+              "status": "passed",
+              "duration": 1990000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 14,
+            "name": "user fills registration email textbox with \"randomaUsername\",'@testsae.com',and user clicks \"sign up\"",
+            "result": {
+              "status": "passed",
+              "duration": 6029000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "\"randomaUsername\" can not login",
+            "result": {
+              "status": "passed",
+              "duration": 6755000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "\"admin\" confirms  \"randomaUsername\"",
+            "result": {
+              "status": "passed",
+              "duration": 25366000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "\"randomaUsername\" can login",
+            "result": {
+              "status": "passed",
+              "duration": 11357000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "signup-feature;rejection-of-wrong-username-and-password",
+        "keyword": "Scenario",
+        "line": 19,
+        "name": "Rejection of wrong username and password",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "user on the homepage",
+            "result": {
+              "status": "passed",
+              "duration": 2983000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "user should click \"Signup\"",
+            "result": {
+              "status": "passed",
+              "duration": 1782000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 21,
+            "name": "user fills registration email textbox with \"existed\" and \"@testsae.com\"",
+            "result": {
+              "status": "passed",
+              "duration": 5253000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "user enters the \"weakPassword\"",
+            "result": {
+              "status": "passed",
+              "duration": 3291000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 23,
+            "name": "user enters the \"diffrentPassword\" as well",
+            "result": {
+              "status": "passed",
+              "duration": 3319000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "user arbitrary enter \"Wrong Referral code\"",
+            "result": {
+              "status": "passed",
+              "duration": 27000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

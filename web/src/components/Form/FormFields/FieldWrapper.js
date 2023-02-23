@@ -36,7 +36,11 @@ export const FieldContent = ({
 				<div className="d-flex">
 					{label && (
 						<div className="field-label">
-							{label}
+							{typeof label === 'string' ? (
+								<EditWrapper>{label}</EditWrapper>
+							) : (
+								label
+							)}
 							{warning && (
 								<div className="d-flex align-items-baseline field_warning_wrapper">
 									<ExclamationCircleFilled className="field_warning_icon" />
@@ -88,8 +92,13 @@ export const FieldContent = ({
 					<Fragment>
 						<div className="field-label"></div>
 						<div>
-							<EditWrapper stringId={stringId}>
-								<span className="field-error-text">{emailMsg}</span>
+							<EditWrapper
+								stringId={stringId}
+								render={(string) => (
+									<span className="field-error-text">{string}</span>
+								)}
+							>
+								{emailMsg}
 							</EditWrapper>
 						</div>
 					</Fragment>
@@ -132,8 +141,11 @@ export const FieldError = ({
 			/>
 		)}
 		{error && (
-			<EditWrapper stringId={stringId}>
-				<span className="field-error-text">{getErrorLocalized(error)}</span>
+			<EditWrapper
+				stringId={stringId}
+				render={(string) => <span className="field-error-text">{string}</span>}
+			>
+				{getErrorLocalized(error)}
 			</EditWrapper>
 		)}
 		{preview && <Fragment>{preview}</Fragment>}
@@ -168,6 +180,11 @@ class FieldWrapper extends Component {
 
 		const displayError = !(active || focused) && (visited || touched) && error;
 		const hasValue = value || value === false;
+		const singleAction =
+			notification &&
+			typeof notification === 'object' &&
+			!Array.isArray(notification);
+		const multipleNotification = notification && Array.isArray(notification);
 		return (
 			<div
 				className={classnames('field-wrapper', className, {
@@ -197,9 +214,10 @@ class FieldWrapper extends Component {
 					emailMsg={emailMsg}
 					onCrossClick={onCrossClick}
 					showCross={showCross}
+					contentClassName={classnames({ padding_zero: multipleNotification })}
 				>
 					{children}
-					{notification && typeof notification === 'object' && (
+					{singleAction && (
 						<ActionNotification
 							{...notification}
 							className={classnames('pr-0 pl-0 no_bottom', {
@@ -207,6 +225,34 @@ class FieldWrapper extends Component {
 							})}
 							showActionText={true}
 						/>
+					)}
+					{multipleNotification && (
+						<div className="multiple-actions-wrapper">
+							{notification.map(
+								(
+									{
+										renderWrapper = (children) => (
+											<Fragment>{children}</Fragment>
+										),
+										...item
+									},
+									index
+								) => (
+									<Fragment key={index}>
+										{renderWrapper(
+											<ActionNotification
+												key={index}
+												showActionText={true}
+												{...item}
+												className={classnames('pr-0 pl-0 no_bottom', {
+													'with-tick-icon': fullWidth && !invalid && !hideCheck,
+												})}
+											/>
+										)}
+									</Fragment>
+								)
+							)}
+						</div>
 					)}
 				</FieldContent>
 				{!ishorizontalfield ? (

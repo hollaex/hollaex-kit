@@ -57,7 +57,6 @@ class MobileOrdersWrapper extends Component {
 			pairData,
 			activeOrders,
 			userTrades,
-			activeTheme,
 			pairs,
 			coins,
 			icons: ICONS,
@@ -80,7 +79,6 @@ class MobileOrdersWrapper extends Component {
 						pairs={pairs}
 						coins={coins}
 						userTrades={userTrades}
-						activeTheme={activeTheme}
 					/>
 				)}
 				<Dialog
@@ -102,8 +100,11 @@ class MobileOrdersWrapper extends Component {
 						/>
 						<div>
 							<div>
-								<EditWrapper stringId="CANCEL_ORDERS.SUB_HEADING">
-									<div>{STRINGS['CANCEL_ORDERS.SUB_HEADING']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.SUB_HEADING"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.SUB_HEADING']}
 								</EditWrapper>
 							</div>
 							<div className="mt-3">
@@ -117,8 +118,11 @@ class MobileOrdersWrapper extends Component {
 								</EditWrapper>
 							</div>
 							<div className="mt-1 mb-5">
-								<EditWrapper stringId="CANCEL_ORDERS.INFO_2">
-									<div>{STRINGS['CANCEL_ORDERS.INFO_2']}</div>
+								<EditWrapper
+									stringId="CANCEL_ORDERS.INFO_2"
+									render={(string) => <div>{string}</div>}
+								>
+									{STRINGS['CANCEL_ORDERS.INFO_2']}
 								</EditWrapper>
 							</div>
 							<div className="w-100 buttons-wrapper d-flex">

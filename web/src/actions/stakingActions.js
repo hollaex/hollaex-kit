@@ -17,7 +17,7 @@ const CONTRACT_EVENTS = {
 };
 
 export const ETHEREUM_EVENTS = {
-	NETWORK_CHANGE: 'networkChanged',
+	NETWORK_CHANGE: 'chainChanged',
 	ACCOUNT_CHANGE: 'accountsChanged',
 };
 

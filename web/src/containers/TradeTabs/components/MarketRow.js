@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { PriceChange, Image } from 'components';
+import { PriceChange, Image, EditWrapper } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
+import STRINGS from 'config/localizedStrings';
 
 class MarketRow extends Component {
 	render() {
@@ -12,6 +13,8 @@ class MarketRow extends Component {
 			handleClick,
 			loading,
 			index,
+			isAsset = false,
+			constants,
 		} = this.props;
 
 		const {
@@ -22,6 +25,10 @@ class MarketRow extends Component {
 			pair_base_display,
 			pair_2_display,
 			icon_id,
+			volume_native_text,
+			symbol,
+			pairTwo,
+			fullname,
 		} = market;
 
 		return (
@@ -41,7 +48,7 @@ class MarketRow extends Component {
 								wrapperClassName="market-list__coin-icons"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							<div>{display_name}</div>
+							<div>{isAsset ? fullname : display_name}</div>
 						</div>
 					) : (
 						<div
@@ -69,24 +76,71 @@ class MarketRow extends Component {
 						></div>
 					)}
 				</td>
+				{isAsset && (
+					<td>
+						{pairTwo.symbol === constants.native_currency ? (
+							<EditWrapper stringId="MARKET_ROW.NATIVE">
+								{STRINGS['MARKET_ROW.NATIVE']}
+							</EditWrapper>
+						) : (
+							<EditWrapper stringId="MARKET_ROW.NO_NATIVE">
+								{STRINGS['MARKET_ROW.NO_NATIVE']}
+							</EditWrapper>
+						)}
+					</td>
+				)}
 				<td>
 					<PriceChange market={market} />
 				</td>
-				<td>
-					{!loading ? (
-						<div>
-							<span className="title-font ml-1">{ticker.volume}</span>
-							<span className="title-font ml-2">{pair_base_display}</span>
+				{!isAsset && (
+					<td>
+						{!loading ? (
+							<div>
+								{ticker.volume > 0 && (
+									<div>
+										<span className="title-font ml-1 important-text">
+											{volume_native_text}
+										</span>
+									</div>
+								)}
+								<div>
+									<span className="title-font ml-1">{ticker.volume}</span>
+									<span className="title-font ml-2">{pair_base_display}</span>
+								</div>
+							</div>
+						) : (
+							<div
+								className="loading-anime"
+								style={{
+									animationDelay: `.${index + 1}s`,
+								}}
+							></div>
+						)}
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="ml-1">{symbol.toUpperCase()}</div>
+					</td>
+				)}
+				{isAsset && (
+					<td>
+						<div className="d-flex">
+							<div className="icon-container">
+								<div
+									className={
+										pairTwo.type === 'blockchain'
+											? 'squar-box'
+											: pairTwo.type === 'fiat'
+											? 'circle-icon'
+											: 'triangle-icon'
+									}
+								></div>
+							</div>
+							<div className="ml-1 caps-first">{pairTwo.type}</div>
 						</div>
-					) : (
-						<div
-							className="loading-anime"
-							style={{
-								animationDelay: `.${index + 1}s`,
-							}}
-						></div>
-					)}
-				</td>
+					</td>
+				)}
 				<td className="td-chart">
 					<SparkLine
 						data={

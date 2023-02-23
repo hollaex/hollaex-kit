@@ -126,6 +126,18 @@ const nestedIcons = {
 		ARROW: '/assets/images/arrow-down.svg',
 	},
 
+	DUST: {
+		TITLE: '/assets/images/duster-wallet-sweeper.svg',
+		CONFIRMATION: 'assets/images/sparkle-dust.svg',
+		SUCCESSFUL: '/assets/images/dust-settlement-complete-sparkle.svg',
+	},
+
+	FEES_AND_LIMITS: {
+		TRADING_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_FEES: '/assets/images/withdraw-tier-section.svg',
+		WITHDRAWAL_LIMITS: '/assets/images/withdraw-tier-section.svg',
+	},
+
 	DEMO_LOGIN_ICON: '/assets/icons/demo-login-icon-dark.svg',
 	CANCEL_WITHDRAW: '/assets/icons/cancel-withdraw-dark-02-03.svg',
 	CONTACT_US_ICON: '/assets/acounts/help-contact-us-01.svg',
@@ -265,6 +277,9 @@ const nestedIcons = {
 	METAMASK: '',
 	MOVE_XHT: '/assets/stake/xht-move.svg',
 	CONNECT_DESKTOP: '/assets/stake/connect-via-desktop.svg',
+	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
+	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
+	CLOCK: '/assets/images/clock.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

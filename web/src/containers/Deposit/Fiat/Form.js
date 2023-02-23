@@ -233,8 +233,9 @@ const Form = ({
 							return (
 								<div className="d-flex justify-content-start">
 									<div className="bold pl-3 cap-first">
-										{STRINGS[fieldKey] ? STRINGS[fieldKey] : filedName}
-										<EditWrapper stringId={fieldKey} />
+										<EditWrapper stringId={fieldKey}>
+											{STRINGS[fieldKey] ? STRINGS[fieldKey] : filedName}
+										</EditWrapper>
 									</div>
 									<div className="pl-4">{FieldData.value || '-'}</div>
 								</div>
@@ -298,14 +299,10 @@ const Form = ({
 					wrapperClassName="form_currency-ball"
 				/>
 				{titleSection}
-				{(!is_verified) && (
-					<NoVerifiedAccount type="deposit" />
-				)}
-				{is_verified && (
-					<Fragment>{renderContent()}</Fragment>
-				)}
+				{!is_verified && <NoVerifiedAccount type="deposit" />}
+				{is_verified && <Fragment>{renderContent()}</Fragment>}
 			</div>
-			{(!is_verified) && (
+			{!is_verified && (
 				<div className="btn-wrapper">
 					<Button
 						label="Proceed"

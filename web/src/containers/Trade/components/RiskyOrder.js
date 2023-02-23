@@ -39,14 +39,19 @@ const RiskyOrder = ({ data, onConfirm, onClose, icons: ICONS }) => {
 					{STRINGS['USER_SETTINGS.RISKY_WARNING_TEXT_3']}
 				</EditWrapper>
 			</div>
-			<EditWrapper stringId="USER_SETTINGS.GO_TO_RISK_MANAGMENT">
-				<Link
-					to="/settings?tab=5"
-					onClick={() => onClose()}
-					className="blue-link"
-				>
-					{STRINGS['USER_SETTINGS.GO_TO_RISK_MANAGMENT']}
-				</Link>
+			<EditWrapper
+				stringId="USER_SETTINGS.GO_TO_RISK_MANAGMENT"
+				render={(string) => (
+					<Link
+						to="/settings?tab=4"
+						onClick={() => onClose()}
+						className="blue-link"
+					>
+						{string}
+					</Link>
+				)}
+			>
+				{STRINGS['USER_SETTINGS.GO_TO_RISK_MANAGMENT']}
 			</EditWrapper>
 			<div className="mb-2 mt-2">
 				<EditWrapper stringId="TYPE">

@@ -34,7 +34,9 @@ const {
 	INVALID_PASSWORD,
 	INVALID_CREDENTIALS,
 	SAME_PASSWORD,
-	CODE_NOT_FOUND
+	CODE_NOT_FOUND,
+	INVALID_TOKEN_TYPE,
+	NO_AUTH_TOKEN
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -47,6 +49,7 @@ const {
 	HMAC_TOKEN_EXPIRY,
 	HMAC_TOKEN_KEY
 } = require(`${SERVER_PATH}/constants`);
+const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
 const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
 const bcrypt = require('bcryptjs');
@@ -206,12 +209,12 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			return all([ user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword) ]);
+			return all([user, verifyOtpBeforeAction(user.id, otpCode), validatePassword(user.password, oldPassword)]);
 		})
-		.then(([ user, otp, passwordIsValid ]) => {
+		.then(([user, otp, passwordIsValid]) => {
 			if (!otp) {
 				throw new Error(INVALID_OTP_CODE);
-			} 
+			}
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
@@ -479,6 +482,33 @@ const checkUserOtpActive = (userId, otpCode) => {
 		return;
 	});
 };
+
+const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
+
+	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
+		const endpointTypes = req.swagger.operation['x-security-types'];
+		if (has(req.headers, 'authorization') && !endpointTypes.includes('bearer')) {
+			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+		}
+
+		if (has(req.headers, 'api-key') && !endpointTypes.includes('hmac')) {
+			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+		}
+
+		if (!has(req.headers, 'authorization') && !has(req.headers, 'api-key')) {
+			return req.res.status(403).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
+		}
+
+		if (has(req.headers, 'authorization') && endpointTypes.includes('bearer')) {
+			verifyBearerTokenMiddleware(req, authOrSecDef, req.headers['authorization'], cb, isSocket);
+		}
+		else if (has(req.headers, 'api-key') && endpointTypes.includes('hmac')) {
+			verifyHmacTokenMiddleware(req, authOrSecDef, req.headers['api-key'], cb, isSocket);
+		}
+
+	}
+};
+
 
 //Here we setup the security checks for the endpoints
 //that need it (in our case, only /protected). This
@@ -1143,6 +1173,12 @@ const isValidScope = (endpointScopes, userScopes) => {
 	}
 };
 
+const generateDashToken = (opts = {
+	additionalHeaders: null
+}) => {
+	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
+};
+
 module.exports = {
 	checkCaptcha,
 	resetUserPassword,
@@ -1165,6 +1201,7 @@ module.exports = {
 	checkUserOtpActive,
 	verifyBearerTokenPromise,
 	verifyHmacTokenPromise,
+	verifyAuthTokenMiddleware,
 	verifyBearerTokenMiddleware,
 	verifyHmacTokenMiddleware,
 	verifyNetworkHmacToken,
@@ -1184,5 +1221,6 @@ module.exports = {
 	checkIp,
 	sendConfirmationEmail,
 	confirmByEmail,
-	calculateSignature
+	calculateSignature,
+	generateDashToken
 };

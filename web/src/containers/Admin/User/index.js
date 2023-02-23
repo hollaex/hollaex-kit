@@ -44,7 +44,7 @@ class App extends Component {
 		};
 	}
 
-	componentWillMount() {
+	UNSAFE_componentWillMount() {
 		this.getMyPlugins();
 		const { search } = this.props.location;
 		if (search) {

@@ -14,6 +14,7 @@ import Image from 'components/Image';
 import { isMobile } from 'react-device-detect';
 import { Transition } from 'react-transition-group';
 import _get from 'lodash/get';
+import math from 'mathjs';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import { Button, EditWrapper } from 'components';
@@ -25,6 +26,7 @@ import { getSparklines } from 'actions/chartAction';
 import { translateError } from './utils';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { generateCoinIconId } from 'utils/icon';
+import { getDecimals } from 'utils/utils';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 
@@ -38,6 +40,7 @@ class QuickTrade extends Component {
 			chartData: {},
 			pairBase: '',
 			pair_2: '',
+			selectedBalance: 0,
 		};
 	}
 
@@ -95,8 +98,38 @@ class QuickTrade extends Component {
 	};
 
 	sourceTotalBalance = (value) => {
+		const {
+			orderLimits: { SIZE },
+			side,
+			flipPair,
+			pairs,
+			symbol,
+			broker,
+		} = this.props;
+		const { market } = this.state;
+		const { increment_size } = market;
+		const brokerPairs = broker && broker.map((br) => br.symbol);
+		const flipedPair = flipPair(symbol);
+		let isUseBroker = false;
+		if (brokerPairs.includes(symbol) || brokerPairs.includes(flipedPair)) {
+			if (pairs[symbol] !== undefined || pairs[flipedPair] !== undefined) {
+				isUseBroker = true;
+			} else {
+				isUseBroker = true;
+			}
+		} else {
+			isUseBroker = false;
+		}
+		const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
+		const decimalPoint = getDecimals(
+			side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit
+		);
+		const decimalPointValue = Math.pow(10, decimalPoint);
+		const decimalValue =
+			math.floor(value * decimalPointValue) / decimalPointValue;
 		if (value) {
-			this.props.onChangeSourceAmount(value);
+			this.props.onChangeSourceAmount(decimalValue);
+			this.setState({ selectedBalance: value });
 		}
 	};
 
@@ -143,6 +176,7 @@ class QuickTrade extends Component {
 			chartData,
 			pairBase,
 			pair_2,
+			selectedBalance,
 		} = this.state;
 
 		const {
@@ -234,10 +268,24 @@ class QuickTrade extends Component {
 							...FLEX_CENTER_CLASSES
 						)}
 					>
-						{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.TITLE">
+							{STRINGS['QUICK_TRADE_COMPONENT.TITLE']}
+						</EditWrapper>
 					</div>
 					<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
-						{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.INFO">
+							{STRINGS['QUICK_TRADE_COMPONENT.INFO']}
+						</EditWrapper>
+					</div>
+					<div className={classnames('info-text', ...FLEX_CENTER_CLASSES)}>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.VISIT">
+							{STRINGS.formatString(
+								STRINGS['QUICK_TRADE_COMPONENT.VISIT'],
+								<Link className="visit-asset-info ml-2" to="assets">
+									{STRINGS['QUICK_TRADE_COMPONENT.ASSET_INFO_PAGE']}
+								</Link>
+							)}
+						</EditWrapper>
 					</div>
 				</div>
 				<div
@@ -270,9 +318,9 @@ class QuickTrade extends Component {
 								</div>
 								<div className="d-flex">
 									<div>
-										<div className="sub-title">
+										<div className="sub-title caps">
 											<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
-												{STRINGS['MARKETS_TABLE.LAST_PRICE'].toUpperCase()}
+												{STRINGS['MARKETS_TABLE.LAST_PRICE']}
 											</EditWrapper>
 										</div>
 										<div className="d-flex">
@@ -283,11 +331,9 @@ class QuickTrade extends Component {
 										</div>
 									</div>
 									<div className="pl-6 trade_tabs-container">
-										<div className="sub-title">
+										<div className="sub-title caps">
 											<EditWrapper stringId="QUICK_TRADE_COMPONENT.CHANGE_TEXT">
-												{STRINGS[
-													'QUICK_TRADE_COMPONENT.CHANGE_TEXT'
-												].toUpperCase()}
+												{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
 											</EditWrapper>
 										</div>
 										<Transition in={inProp} timeout={1000}>
@@ -374,9 +420,9 @@ class QuickTrade extends Component {
 									</div>
 								</div>
 								<div>
-									<div className="sub-title">
+									<div className="sub-title caps">
 										<EditWrapper stringId="SUMMARY.VOLUME_24H">
-											{STRINGS['SUMMARY.VOLUME_24H'].toUpperCase()}
+											{STRINGS['SUMMARY.VOLUME_24H']}
 										</EditWrapper>
 									</div>
 									<div className="d-flex">
@@ -392,20 +438,28 @@ class QuickTrade extends Component {
 					<div className="d-flex flex-column trade-section">
 						<div className="inner-content">
 							<div className="small-text">
-								<EditWrapper stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT">
-									<div className="mr-2">
-										{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
-									</div>
+								<EditWrapper
+									stringId="QUICK_TRADE_COMPONENT.GO_TO_TEXT"
+									renderWrapper={(children) => (
+										<div className="mr-2">{children}</div>
+									)}
+								>
+									{STRINGS['QUICK_TRADE_COMPONENT.GO_TO_TEXT']}
 								</EditWrapper>{' '}
 								<Link to="/wallet">
 									<span>
-										<div>{STRINGS['WALLET_TITLE']}</div>
+										<EditWrapper stringId="WALLET_TITLE">
+											{STRINGS['WALLET_TITLE']}
+										</EditWrapper>
 									</span>
 								</Link>
 							</div>
 							<div className="small-text">
 								{coins[selectedSource] && coins[selectedSource].display_name}{' '}
-								{STRINGS['BALANCE_TEXT']}:{' '}
+								<EditWrapper stringId="BALANCE_TEXT">
+									{STRINGS['BALANCE_TEXT']}
+								</EditWrapper>
+								:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.sourceTotalBalance(selectedSourceBalance)}
@@ -431,6 +485,7 @@ class QuickTrade extends Component {
 								isShowChartDetails={isShowChartDetails}
 								isExistBroker={isExistBroker}
 								coins={coins}
+								selectedBalance={selectedBalance}
 							/>
 							<InputGroup
 								name={STRINGS['TO']}
@@ -451,7 +506,10 @@ class QuickTrade extends Component {
 							/>
 							<div className="small-text">
 								{coins[selectedTarget] && coins[selectedTarget].display_name}{' '}
-								{STRINGS['BALANCE_TEXT']}:{' '}
+								<EditWrapper stringId="BALANCE_TEXT">
+									{STRINGS['BALANCE_TEXT']}
+								</EditWrapper>
+								:{' '}
 								<span
 									className="ml-2 pointer"
 									onClick={() => this.targetTotalBalance(selectedTargetBalance)}
@@ -491,11 +549,11 @@ class QuickTrade extends Component {
 							</div>
 							<div className="footer-text">
 								<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">
-									<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}</div>
+									{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT']}
 								</EditWrapper>
 								<div>
 									<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT_1">
-										<div>{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}</div>
+										{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}
 									</EditWrapper>
 									:{' '}
 									{!isUseBroker ? (
@@ -504,10 +562,18 @@ class QuickTrade extends Component {
 												{coins[pairBase] && coins[pairBase].display_name}/
 												{coins[pair_2] && coins[pair_2].display_name}{' '}
 											</span>
-											<span>{STRINGS['TYPES_VALUES.market']}</span>
+											<span>
+												<EditWrapper stringId="TYPES_VALUES.market">
+													{STRINGS['TYPES_VALUES.market']}
+												</EditWrapper>
+											</span>
 										</span>
 									) : (
-										<span>{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}</span>
+										<span>
+											<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+												{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT']}
+											</EditWrapper>
+										</span>
 									)}
 								</div>
 							</div>

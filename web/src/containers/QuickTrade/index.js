@@ -989,8 +989,8 @@ class QuickTradeContainer extends PureComponent {
 				!selectedSource ||
 				!brokerSourceAmount ||
 				!brokerTargetAmount ||
-				sourceError ||
-				targetError ||
+				!!sourceError ||
+				!!targetError ||
 				isBrokerPaused
 			);
 		} else {
@@ -1000,8 +1000,8 @@ class QuickTradeContainer extends PureComponent {
 				!selectedSource ||
 				!targetAmount ||
 				!sourceAmount ||
-				sourceError ||
-				targetError
+				!!sourceError ||
+				!!targetError
 			);
 		}
 	};
@@ -1116,7 +1116,6 @@ class QuickTradeContainer extends PureComponent {
 	render() {
 		const {
 			pairData = {},
-			activeTheme,
 			orderLimits,
 			pairs,
 			coins,
@@ -1265,7 +1264,6 @@ class QuickTradeContainer extends PureComponent {
 						onCloseDialog={this.onCloseDialog}
 						shouldCloseOnOverlayClick={false}
 						showCloseText={false}
-						theme={activeTheme}
 						style={{ 'z-index': 100 }}
 					>
 						{isLoading ? (
@@ -1382,7 +1380,6 @@ const mapStateToProps = (store) => {
 		pairs: store.app.pairs,
 		coins: store.app.coins,
 		tickers: store.app.tickers,
-		activeTheme: store.app.theme,
 		activeLanguage: store.app.language,
 		orderLimits: qtlimits,
 		user: store.user,

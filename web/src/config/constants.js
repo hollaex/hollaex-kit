@@ -4,6 +4,7 @@ export { default as ICONS } from './icons';
 
 export const ENV = process.env.NODE_ENV || 'production';
 export const NETWORK = process.env.REACT_APP_NETWORK || 'mainnet';
+export const LAST_BUILD = process.env.REACT_APP_LAST_BUILD;
 
 export const APP_TITLE =
 	process.env.REACT_APP_EXCHANGE_NAME || STRINGS['APP_TITLE'];
@@ -94,6 +95,7 @@ export const TIMESTAMP_FORMAT_FA = STRINGS['TIMESTAMP_FORMAT']
 export const DEFAULT_TRADING_PAIRS = ['xht-usdt'];
 
 export const TOKEN_KEY = `${ENV}_${NETWORK}_TOKEN`;
+export const DASH_TOKEN_KEY = `${ENV}_${NETWORK}_DASH_TOKEN`;
 export const LANGUAGE_KEY = `${ENV}_${NETWORK}_LANGUAGE`;
 export const DEFAULT_LANGUAGE = process.env.REACT_APP_DEFAULT_LANGUAGE || 'en';
 
@@ -178,6 +180,9 @@ export const EXPLORERS_ENDPOINT = (currency) => {
 			break;
 		case 'ada':
 			endpoint = 'https://blockchair.com/cardano/transaction/';
+			break;
+		case 'bnb':
+			endpoint = 'https://bscscan.com/tx/';
 			break;
 		default:
 			endpoint = '';

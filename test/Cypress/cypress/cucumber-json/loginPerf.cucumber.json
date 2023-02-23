@@ -1,0 +1,216 @@
+[
+  {
+    "description": "As a valid customer\nIn order to Trade/ Deposit and withdraw\nI want to login successfully to HollaeX",
+    "keyword": "Feature",
+    "name": "Login Feature",
+    "line": 1,
+    "id": "login-feature",
+    "tags": [],
+    "uri": "loginPerf.feature",
+    "elements": [
+      {
+        "id": "login-feature;successfull-login",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "Successfull Login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 9,
+            "name": "I am in the Hollaex login page within 7392.8 ms",
+            "result": {
+              "status": "passed",
+              "duration": 2495000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 10,
+            "name": "I enter credentials Username,Password",
+            "result": {
+              "status": "passed",
+              "duration": 4928000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "I should be able to login successfully",
+            "result": {
+              "status": "passed",
+              "duration": 694000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;wrong-username-login",
+        "keyword": "Scenario",
+        "line": 13,
+        "name": "Wrong Username Login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 15,
+            "name": "I am in the Hollaex login page within 3000.8 ms",
+            "result": {
+              "status": "passed",
+              "duration": 1914000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "I enter credentials Wrong Username,Password",
+            "result": {
+              "status": "passed",
+              "duration": 4116000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 17,
+            "name": "I should not be able to login successfully and get error",
+            "result": {
+              "status": "passed",
+              "duration": 1347000000
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;wrong-password-login",
+        "keyword": "Scenario",
+        "line": 19,
+        "name": "Wrong Password login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 21,
+            "name": "I am in the Hollaex login page within 0.3 ms",
+            "result": {
+              "status": "failed",
+              "error_message": "AssertionError\n    + expected - actual\n\n    -1313.5\n    +0.3\n\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:44:39)\n    at Context.resolveAndRunStepDefinition (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:10521:29)\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:9842:35)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 22,
+            "name": "I enter credentials Username,wrong Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "I should not be able to login successfully and get error",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;frozen-account-login",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Frozen Account login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 27,
+            "name": "I am in the Hollaex login page within 0.3 ms",
+            "result": {
+              "status": "failed",
+              "error_message": "AssertionError\n    + expected - actual\n\n    -1532.3000000715256\n    +0.3\n\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:44:39)\n    at Context.resolveAndRunStepDefinition (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:10521:29)\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:9842:35)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 28,
+            "name": "I enter credentials Frozen Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 29,
+            "name": "I should not be able to login successfully and get This account is frozen",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      },
+      {
+        "id": "login-feature;2fa-enabled-account-login",
+        "keyword": "Scenario",
+        "line": 31,
+        "name": "2FA enabled Account login",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 33,
+            "name": "I am in the Hollaex login page within 0.3 ms",
+            "result": {
+              "status": "failed",
+              "error_message": "AssertionError\n    + expected - actual\n\n    -1051.1999999284744\n    +0.3\n\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:44:39)\n    at Context.resolveAndRunStepDefinition (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:10521:29)\n    at Context.eval (https://sandbox.hollaex.com/__cypress/tests?p=cypress\\integration\\Gherkin\\loginPerf.feature:9842:35)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 34,
+            "name": "I enter credentials 2FA enabled Username,Password",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 35,
+            "name": "I should be able to login successfully",
+            "result": {
+              "status": "skipped"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "I enter Expired,long,short and then true 2FA code",
+            "result": {
+              "status": "skipped"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

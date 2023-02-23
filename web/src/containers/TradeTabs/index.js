@@ -164,9 +164,9 @@ class AddTradeTab extends Component {
 								icon={ICONS['EXCHANGE_LOGO']}
 								wrapperClassName="app-icon d-flex"
 							/>
-							<div className="text-center trade-tab-app-title">
+							<div className="text-center trade-tab-app-title caps">
 								<EditWrapper stringId="APP_SUB_TITLE" iconId="EXCHANGE_LOGO">
-									{STRINGS['APP_SUB_TITLE'].toUpperCase()}
+									{STRINGS['APP_SUB_TITLE']}
 								</EditWrapper>
 							</div>
 						</div>
@@ -174,6 +174,9 @@ class AddTradeTab extends Component {
 					<div className="trade_tabs-content">
 						{!isMobile && (
 							<div className="d-flex justify-content-end">
+								<span className="trade_tabs-link link-separator">
+									<Link to="/assets">{STRINGS['ASSET_INFO_PAGE']}</Link>
+								</span>
 								{constants &&
 								constants.features &&
 								constants.features.quick_trade ? (
@@ -246,7 +249,6 @@ class AddTradeTab extends Component {
 }
 
 const mapStateToProps = (store) => ({
-	activeTheme: store.app.theme,
 	pairs: store.app.pairs,
 	tickers: store.app.tickers,
 	pair: store.app.pair,

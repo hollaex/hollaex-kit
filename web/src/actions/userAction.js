@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { PLUGIN_URL } from '../config/constants';
+import { PLUGIN_URL } from 'config/constants';
+import querystring from 'query-string';
+
+export const ACTION_KEYS = {
+	REFERRAL_COUNT_PENDING: 'REFERRAL_COUNT_PENDING',
+	REFERRAL_COUNT_FULFILLED: 'REFERRAL_COUNT_FULFILLED',
+	REFERRAL_COUNT_REJECTED: 'REFERRAL_COUNT_REJECTED',
+};
 
 export function getMe() {
 	return {
@@ -279,24 +286,33 @@ export const cleanCreateAddress = () => ({
 	type: 'CLEAN_CREATE_ADDRESS',
 });
 
-export function getUserReferralCount() {
+export const getUserReferrals = (page = 1, limit = 20) => {
+	const params = { page, limit };
+	const query = querystring.stringify(params);
+
 	return (dispatch) => {
+		dispatch({ type: ACTION_KEYS.REFERRAL_COUNT_PENDING, payload: { page } });
+
 		axios
-			.get('/user/affiliation')
+			.get(`/user/affiliation?${query}`)
 			.then((res) => {
 				dispatch({
-					type: 'REFERRAL_COUNT_FULFILLED',
-					payload: res.data,
+					type: ACTION_KEYS.REFERRAL_COUNT_FULFILLED,
+					payload: {
+						...res.data,
+						page,
+						isRemaining: res.data.count > page * limit,
+					},
 				});
 			})
 			.catch((err) => {
 				dispatch({
-					type: 'REFERRAL_COUNT_REJECTED',
+					type: ACTION_KEYS.REFERRAL_COUNT_REJECTED,
 					payload: err.response,
 				});
 			});
 	};
-}
+};
 
 export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 	return (dispatch) => {

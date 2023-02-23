@@ -44,6 +44,8 @@ import STRINGS from 'config/localizedStrings';
 import { playBackgroundAudioNotification } from 'utils/utils';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getViewport } from 'helpers/viewPort';
+import strings from 'config/localizedStrings';
+import { formatCurrency } from 'utils';
 
 const GridLayout = WidthProvider(RGL);
 const TOPBARS_HEIGHT = mathjs.multiply(36, 2);
@@ -485,12 +487,12 @@ class Trade extends PureComponent {
 			orderbookReady,
 			balance,
 			activeLanguage,
-			activeTheme,
 			settings,
 			pairs,
 			coins,
 			discount,
 			fees,
+			tickers,
 			recentTradesMarket,
 			recentTradesMarketData,
 			activeOrdersMarket,
@@ -505,6 +507,42 @@ class Trade extends PureComponent {
 			onAmountClick: this.onAmountClick,
 			orderbookFetched,
 		};
+
+		const chartTitle = (
+			<div className="d-flex flex-1">
+				<div className="vertical-line-seperator" />
+				<div className="trade-daily-value-container">
+					<div className="ml-1">{strings['24H_MAX']}</div>
+					<span className="trade_header_values">
+						{formatCurrency(tickers?.[pair]?.high)}
+						&nbsp;
+						{pairs[1]}
+					</span>
+				</div>
+				<div className="vertical-line-seperator" />
+				<div className="trade-daily-value-container">
+					<div className="trade_block-title-items ml-1">
+						{strings['24H_MIN']}
+					</div>
+					<span className="trade_header_values">
+						{formatCurrency(tickers?.[pair]?.low)}
+						&nbsp;
+						{pairs[1]}
+					</span>
+				</div>
+				<div className="vertical-line-seperator" />
+				<div className="trade-daily-value-container">
+					<div className="trade_block-title-items ml-1">
+						{strings['24H_VAL']}
+					</div>
+					<span className="trade_header_values">
+						{tickers?.[pair]?.volume}
+						&nbsp;
+						{pairs[0]}
+					</span>
+				</div>
+			</div>
+		);
 
 		switch (key) {
 			case 'orderbook': {
@@ -532,6 +570,7 @@ class Trade extends PureComponent {
 						<TradeBlock
 							stringId="TOOLS.CHART"
 							title={STRINGS['TOOLS.CHART']}
+							titleValues={chartTitle}
 							setRef={this.setChartRef}
 							className="f-1 overflow-x"
 							pairData={pairData}
@@ -539,12 +578,7 @@ class Trade extends PureComponent {
 							tool={key}
 						>
 							{pair && chartHeight > 0 && (
-								<TVChartContainer
-									activeTheme={activeTheme}
-									symbol={symbol}
-									// tradeHistory={tradeHistory}
-									pairData={pairData}
-								/>
+								<TVChartContainer symbol={symbol} pairData={pairData} />
 							)}
 						</TradeBlock>
 					</div>
@@ -602,7 +636,6 @@ class Trade extends PureComponent {
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
-							activeTheme={activeTheme}
 							isLoggedIn={isLoggedIn()}
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
@@ -620,7 +653,6 @@ class Trade extends PureComponent {
 							discount={discount}
 							pairs={pairs}
 							coins={coins}
-							activeTheme={activeTheme}
 							isLoggedIn={isLoggedIn()}
 							goToTransactionsHistory={this.goToTransactionsHistory}
 							goToPair={this.goToPair}
@@ -638,11 +670,7 @@ class Trade extends PureComponent {
 							className="f-1"
 							tool={key}
 						>
-							<SidebarHub
-								isLogged={isLoggedIn()}
-								pair={pair}
-								theme={activeTheme}
-							/>
+							<SidebarHub isLogged={isLoggedIn()} pair={pair} />
 						</TradeBlock>
 					</div>
 				);
@@ -691,7 +719,6 @@ class Trade extends PureComponent {
 			orderbookReady,
 			balance,
 			activeLanguage,
-			activeTheme,
 			settings,
 			orderLimits,
 			pairs,
@@ -724,7 +751,6 @@ class Trade extends PureComponent {
 						pair={pair}
 						pairData={pairData}
 						activeLanguage={activeLanguage}
-						activeTheme={activeTheme}
 						symbol={symbol}
 						orderLimits={orderLimits}
 					/>
@@ -759,7 +785,6 @@ class Trade extends PureComponent {
 						pairData={pairData}
 						pairs={pairs}
 						coins={coins}
-						activeTheme={activeTheme}
 					/>
 				),
 			},
@@ -869,7 +894,6 @@ const mapStateToProps = (state) => {
 		balance: state.user.balance,
 		orderbookReady: true,
 		activeLanguage: state.app.language,
-		activeTheme: state.app.theme,
 		fees: feesDataSelector(state),
 		settings: state.user.settings,
 		orderLimits: state.app.orderLimits,
@@ -878,6 +902,7 @@ const mapStateToProps = (state) => {
 		constants: state.app.constants,
 		tools: state.tools,
 		activeTab: state.app.tradeTab,
+		tickers: state.app.tickers,
 	};
 };
 

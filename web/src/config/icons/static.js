@@ -3,6 +3,12 @@ const icons = {
 	PLUGINS_FRESHDESK: '/assets/plugins/plugin-freshdesk.png',
 	PLUGINS_SMS: '/assets/plugins/plugin-sms.png',
 	PLUGINS_VERIFICATION: '/assets/plugins/plugin-verification.png',
+	SETTINGS_ICON: '/assets/images/settings-icon.png',
+	DIY_ICON: '/assets/images/diy-icon.svg',
+	DIY_FIRE_MAN_ICON: '/assets/images/diy-boost-man-on-fire.svg',
+	CLOUD_PLAN_BASIC: '/assets/images/cloud-plan-basic.svg',
+	CLOUD_PLAN_FIAT_RAMP: '/assets/images/cloud-plan-fiat-ramp.svg',
+	CLOUD_PLAN_CRYPTO_PRO: '/assets/images/cloud-plan-crypto-pro.svg',
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
 	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',
@@ -23,6 +29,7 @@ const icons = {
 	SETUP_SECTION_QUICK_TRADE: '/assets/images/setup-section-quick-trade.svg',
 	SETUP_SECTION_CRYPTO_WALLET: '/assets/images/setup-section-crypto-wallet.svg',
 	USER_SECTION_WALLET: '/assets/images/admin-user-wallet.svg',
+	DUST_CONVERTER: '/assets/images/duster-wallet-sweeper.svg',
 	SETUP_SECTION_PRICE_DISCOVERY: '/assets/images/setup-price-discovery.svg',
 	SETUP_QUICK_TRADE: '/assets/images/initialize-quick-trade.svg',
 	HEX_PATTERN_ICON: '/assets/icons/hex-pattern-icon-05.svg',
@@ -54,7 +61,6 @@ const icons = {
 	DEPOSIT_TIERS_SECTION: '/assets/images/deposit-tier-section.svg',
 	WITHDRAW_TIERS_SECTION: '/assets/images/withdraw-tier-section.svg',
 	TAKER_TIERS_SECTION: '/assets/images/taker-tier-section.svg',
-	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	NO_ACTIVE_ORDERS: '/assets/images/no-active-orders-01.svg',
 	NO_ACTIVE_TRADES: '/assets/images/no-recent-trades-01.svg',
 	NO_ACTIVE_DEPOSITS: '/assets/images/no-recent-deposits.svg',
@@ -154,7 +160,32 @@ const icons = {
 	DOLLAR_GEAR: '/assets/images/single-dollar-gear.svg',
 	SWITCH_ASSET_FOR_FEES: '/assets/images/switch-asset-for-fees.svg',
 	CLOCK: '/assets/images/clock.svg',
+	QR_CODE_SHOW: '/assets/images/mini-qr-code.svg',
+	QR_CODE_SCAN: '/assets/images/camera-scan.svg',
+	CLOUD_BASIC: '/assets/images/Path 4813.svg',
+	CLOUD_CRYPTO: '/assets/images/Path 4815.svg',
+	CLOUD_FIAT: '/assets/images/Group 5179.svg',
+	CLOUD_BASIC_BACKGROUND: '/assets/images/cloud_fiat_ramp_graphic-01.png',
+	CLOUD_CRYPTO_BACKGROUND: '/assets/images/Mask_Group_69.png',
+	CLOUD_FIAT_BACKGROUND: '/assets/images/cloud_basic_graphic-01.png',
+	FIRE_BALL: '/assets/images/fireball-icon.svg',
+	EXCHANGE_LOGO_LIGHT_THEME:
+		'/assets/images/default-exchange-logo-light-theme.svg',
+	EXCHANGE_ICON: '/assets/images/hex-pattern-icon-black-06.svg',
 	MANUAL_PLUGIN_UPGRADE: '/assets/images/manual-plugin-upgrade.svg',
+	EXCHANGE_APP_STORE_BACKGROUND_SPLASH:
+		'/assets/images/hollaex-exchange-app-store-background-splash-02.png',
+	EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2:
+		'/assets/images/hollaex-exchange-app-store-background-splash-03.png',
+	HOLLAEX_NETWORK_WHITE: '/assets/images/HollaEx network-icon-white-(s)-01.svg',
+	INSTALL_THIRD_PARTY_PLUGIN: '/assets/images/install-third-party-plugin.svg',
+	OPEN_HOLLAEX_DOC_APP_CREATION:
+		'/assets/images/open-hollaex-doc-app-creation-link.svg',
+	HOLLAEX_EXCHANGE_STORE_PLUGIN_APPS:
+		'/assets/images/hollaex-exchange-store-plugin-apps.svg',
+	VERIFIED_BADGE_PLUGIN_APPS: '/assets/images/verified-badge-plugin-apps.svg',
+	ONE_TIME_ACTIVATION_PLUGIN: '/assets/images/One-time activation-plugin.svg',
+	CREDITS_PLUGIN: '/assets/images/credits-plugin.svg',
 };
 
 export default icons;

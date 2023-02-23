@@ -32,7 +32,9 @@ const TabController = ({
 					}),
 				};
 				if (setActiveTab) {
-					tabProps.onClick = () => setActiveTab(index);
+					tabProps.onClick = () => {
+						setActiveTab(index);
+					};
 				}
 
 				return <div {...tabProps}>{tab.title}</div>;

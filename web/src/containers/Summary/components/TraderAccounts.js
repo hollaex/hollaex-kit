@@ -1,41 +1,47 @@
 import React, { Fragment } from 'react';
-import Image from 'components/Image';
+import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { ReactSVG } from 'react-svg';
-
+import { Image, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { renderStatusIcon } from 'components/CheckTitle';
+import { DollarOutlined, UserOutlined } from '@ant-design/icons';
 
 const TraderAccounts = ({
 	user = {},
 	config = {},
 	isAccountDetails = false,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	logout,
 	onInviteFriends,
 	verification_level,
 	selectedAccount,
-	onStakeToken,
 	icons: ICONS,
 }) => {
 	const level = selectedAccount ? selectedAccount : verification_level;
 	const accountData = config[level] || {};
-	const Title =
+	const title =
 		accountData.name ||
 		STRINGS.formatString(
 			STRINGS['SUMMARY.LEVEL_OF_ACCOUNT'],
 			verification_level
 		);
 
-	let description =
+	const description =
 		accountData.description ||
 		(STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
 			? STRINGS[`SUMMARY.LEVEL_${verification_level}_TXT`]
 			: STRINGS['SUMMARY.LEVEL_TXT_DEFAULT']);
-	let icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
+	const icon = ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		? ICONS[`LEVEL_ACCOUNT_ICON_${verification_level}`]
 		: ICONS['LEVEL_ACCOUNT_ICON_4'];
+
+	const identity_status = user.id_data?.status || 0;
+	const notificationStatus = renderStatusIcon(
+		identity_status,
+		'verification-stauts user-status'
+	);
 
 	return (
 		<div className="d-flex">
@@ -56,10 +62,22 @@ const TraderAccounts = ({
 			</div>
 			<div className="trade-account-secondary-txt summary-content-txt">
 				{isAccountDetails && (
-					<div className="summary-block-title mb-3">{Title}</div>
+					<EditWrapper
+						stringId="SUMMARY.LEVEL_OF_ACCOUNT"
+						renderWrapper={(children) => (
+							<div className="summary-block-title mb-3">{children}</div>
+						)}
+					>
+						{title}
+					</EditWrapper>
 				)}
 				<div className="account-details-content">
-					<div className="mb-2">{description}</div>
+					<EditWrapper
+						stringId="SUMMARY.LEVEL_TXT_DEFAULT"
+						renderWrapper={(children) => <div className="mb-2">{children}</div>}
+					>
+						{description}
+					</EditWrapper>
 				</div>
 				{!isAccountDetails && user.discount ? (
 					<div className="d-flex">
@@ -74,56 +92,94 @@ const TraderAccounts = ({
 						</div>
 					</div>
 				) : null}
-				{/* {!!limitLevel.length && <div
-                    className="trade-account-link mb-2">
-                    <span
-                        className="pointer"
-                        onClick={() => onFeesAndLimits(account)}>
-                        {STRINGS["SUMMARY.VIEW_FEE_STRUCTURE"].toUpperCase()}
-                    </span>
-                </div>} */}
 				{!isAccountDetails && (
 					<Fragment>
-						<div className="trade-account-link mb-2">
-							<span className="pointer" onClick={onInviteFriends}>
-								{STRINGS['REFERRAL_LINK.TITLE'].toUpperCase()}
-							</span>
+						<Link to="/fees-and-limits">
+							<div className="trade-account-link my-2 caps">
+								<EditWrapper stringId="FEES_AND_LIMITS.LINK">
+									{STRINGS['FEES_AND_LIMITS.LINK']}
+								</EditWrapper>
+							</div>
+						</Link>
+
+						<div className="d-flex align-items-center">
+							<DollarOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
+								{STRINGS['SUMMARY.EARN_COMMISSION']}
+							</EditWrapper>
 						</div>
-						<div className="trade-account-link mb-2">
-							<span
-								className="pointer"
-								onClick={() => onFeesAndLimits(level, user.discount)}
-							>
-								{STRINGS['SUMMARY.MY_FEES_LIMITS'].toUpperCase()}
-							</span>
+						<EditWrapper
+							stringId="REFERRAL_LINK.TITLE"
+							renderWrapper={(children) => (
+								<div className="trade-account-link mb-4">
+									<span className="pointer caps" onClick={onInviteFriends}>
+										{children}
+									</span>
+								</div>
+							)}
+						>
+							{STRINGS['REFERRAL_LINK.TITLE']}
+						</EditWrapper>
+
+						<div className="d-flex align-items-center">
+							<UserOutlined className="mr-2" />
+							<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
+								{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
+							</EditWrapper>
+							<div className="mx-2">{notificationStatus}</div>
 						</div>
+						<Link to="/verification">
+							<div className="trade-account-link mb-2 caps">
+								<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
+									{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+								</EditWrapper>
+							</div>
+						</Link>
 					</Fragment>
 				)}
-				{isAccountDetails ? (
-					<div className="trade-account-link mb-2">
-						<span
-							className="pointer"
-							onClick={() => onFeesAndLimits(level, user.discount)}
-						>
-							{STRINGS['SUMMARY.VIEW_FEE_STRUCTURE'].toUpperCase()}
-						</span>
-					</div>
-				) : null}
+				{isAccountDetails && (
+					<EditWrapper
+						stringId="SUMMARY.VIEW_FEE_STRUCTURE"
+						renderWrapper={(children) => (
+							<div className="trade-account-link mb-2">
+								<span className="pointer caps">
+									<Link to="/fees-and-limits">{children}</Link>
+								</span>
+							</div>
+						)}
+					>
+						{STRINGS['SUMMARY.VIEW_FEE_STRUCTURE']}
+					</EditWrapper>
+				)}
 				{!isAccountDetails &&
 					verification_level.level >= 1 &&
 					verification_level.level < 4 && (
-						<div className="trade-account-link mb-2">
-							<span className="pointer" onClick={onUpgradeAccount}>
-								{STRINGS['SUMMARY.UPGRADE_ACCOUNT'].toUpperCase()}
-							</span>
-						</div>
+						<EditWrapper
+							stringId="SUMMARY.UPGRADE_ACCOUNT"
+							renderWrapper={(children) => (
+								<div className="trade-account-link mb-2">
+									<span className="pointer caps" onClick={onUpgradeAccount}>
+										{children}
+									</span>
+								</div>
+							)}
+						>
+							{STRINGS['SUMMARY.UPGRADE_ACCOUNT']}
+						</EditWrapper>
 					)}
-				{!isAccountDetails && isMobile ? (
-					<div className="trade-account-link my-2" onClick={() => logout()}>
-						{STRINGS['LOGOUT'].toUpperCase()}
+				{!isAccountDetails && isMobile && (
+					<div>
+						<EditWrapper
+							stringId="LOGOUT"
+							renderWrapper={(children) => (
+								<div className="trade-account-link my-2 caps" onClick={logout}>
+									{children}
+								</div>
+							)}
+						>
+							{STRINGS['LOGOUT']}
+						</EditWrapper>
 					</div>
-				) : (
-					''
 				)}
 			</div>
 		</div>

@@ -32,7 +32,6 @@ import { getClasesForLanguage, getFontClassForLanguage } from 'utils/string';
 import { ContactForm } from 'containers';
 import { NOTIFICATIONS, openContactForm } from 'actions/appActions';
 import { setMe, updateDocuments, updateUser } from 'actions/userAction';
-import { getThemeClass } from 'utils/theme';
 import MobileVerificationHome from './MobileVerificationHome';
 // import MobileTabs from './MobileTabs';
 import { verifyBankData } from 'actions/verificationActions';
@@ -686,7 +685,7 @@ class Verification extends Component {
 	onLogout = () => this.props.logout('');
 
 	render() {
-		const { activeLanguage, activeTheme, icons: ICONS } = this.props;
+		const { activeLanguage, icons: ICONS } = this.props;
 		const {
 			activeTab,
 			tabs,
@@ -714,7 +713,6 @@ class Verification extends Component {
 				className={classnames(
 					'app_container-main',
 					'my-3',
-					getThemeClass(activeTheme),
 					fontClass,
 					languageClasses[0],
 					{
@@ -726,7 +724,6 @@ class Verification extends Component {
 				{/* {!isMobile && <AppBar
 					isHome={true}
 					token={token}
-					theme={activeTheme}
 					router={router}
 					location={location}
 					user={user}
@@ -746,7 +743,6 @@ class Verification extends Component {
 					onCloseDialog={this.onCloseDialog}
 					shouldCloseOnOverlayClick={dialogType !== 'complete'}
 					showCloseText={false}
-					theme={activeTheme}
 				>
 					{this.renderDialogContent(dialogType)}
 				</Dialog>
@@ -769,7 +765,6 @@ const mapStateToProps = (state) => {
 		ultimate_fiat: state.app.features.ultimate_fiat,
 		activeLanguage: state.app.language,
 		// token: state.auth.token,
-		activeTheme: state.app.theme,
 		user: state.user,
 		enabledPlugins: state.app.enabledPlugins,
 		constants: state.app.constants,

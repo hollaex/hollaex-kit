@@ -3,11 +3,13 @@ import { requestAuthenticated } from '../../../utils';
 const handleError = (err) => err.data;
 
 export const requestActiveOrders = (values = {}) => {
-	const { user_id, symbol = '', side, page = 1, limit = 50 } = values;
+	const { open, user_id, symbol = '', side, page = 1, limit = 50 } = values;
 	let query = `page=${page}&limit=${limit}`;
 	if (user_id) query = `${query}&user_id=${user_id}`;
 	if (symbol) query = `${query}&symbol=${symbol}`;
 	if (side) query = `${query}&side=${side}`;
+	query = `${query}&open=${open}`;
+
 	return requestAuthenticated(`/admin/orders?${query}`)
 		.catch(handleError)
 		.then((data) => {

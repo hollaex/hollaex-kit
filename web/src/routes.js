@@ -43,6 +43,7 @@ import {
 	MobileHome,
 	Broker,
 	Plugins,
+	PluginStore,
 	// PluginServices,
 	Settings,
 	// Transfer,
@@ -59,8 +60,13 @@ import {
 	Pairs,
 	Fiatmarkets,
 	AdminApps,
+	DigitalAssets,
+	CoinPage,
+	WhiteLabel,
+	FeesAndLimits,
 } from './containers';
 import chat from './containers/Admin/Chat';
+import { Billing } from 'containers/Admin';
 
 import store from './store';
 import { verifyToken } from './actions/authAction';
@@ -365,6 +371,14 @@ export const generateRoutes = (routes = []) => {
 					onEnter={requireAuth}
 				/>
 				<Route
+					path="fees-and-limits"
+					name="Fees and limits"
+					component={FeesAndLimits}
+					onEnter={requireAuth}
+				/>
+				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
+				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
+				<Route
 					path="verification"
 					name="Verification"
 					component={Account}
@@ -406,6 +420,11 @@ export const generateRoutes = (routes = []) => {
 					path="quick-trade/:pair"
 					name="Quick Trade"
 					component={QuickTrade}
+				/>
+				<Route
+					path="assets/coin/:token"
+					name="Coin Page"
+					component={CoinPage}
 				/>
 				<Route path="chat" name="Chat" component={Chat} onEnter={requireAuth} />
 				<Route
@@ -478,7 +497,7 @@ export const generateRoutes = (routes = []) => {
 				<Route
 					path="/admin/billing"
 					name="Admin Billing"
-					component={withAdminProps(MoveToDash, 'billing')}
+					component={withAdminProps(Billing, 'billing')}
 				/>
 				<Route
 					path="/admin/chat"
@@ -544,6 +563,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugins"
 					name="Admin plugins"
 					component={withAdminProps(Plugins, 'plugins')}
+				/>
+				<Route
+					path="/admin/plugins/store"
+					name="Admin plugins store"
+					component={withAdminProps(PluginStore, 'plugins')}
 				/>
 				<Route
 					path="/admin/apps"

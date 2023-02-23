@@ -6,7 +6,6 @@ import Ionicon from 'react-ionicons';
 import { Button, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { getClasesForLanguage, getLanguage } from 'utils/string';
-import { getThemeClass } from 'utils/theme';
 import withEdit from 'components/EditProvider/withEdit';
 
 class Dialog extends PureComponent {
@@ -16,7 +15,6 @@ class Dialog extends PureComponent {
 		closeButton: PropTypes.func,
 		onCloseDialog: PropTypes.func,
 		children: PropTypes.node.isRequired,
-		disableTheme: PropTypes.bool,
 	};
 
 	onRequestClose = (e) => {
@@ -35,9 +33,7 @@ class Dialog extends PureComponent {
 			shouldCloseOnOverlayClick,
 			showCloseText,
 			dialogId,
-			theme,
 			className,
-			disableTheme,
 			bodyOpenClassName,
 			isEditMode,
 		} = this.props;
@@ -49,12 +45,9 @@ class Dialog extends PureComponent {
 				contentLabel={label}
 				onRequestClose={this.onRequestClose}
 				shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
-				portalClassName={classnames(
-					className,
-					languageClasses,
-					disableTheme ? '' : getThemeClass(theme),
-					{ 'layout-edit': isEditMode }
-				)}
+				portalClassName={classnames(className, languageClasses, {
+					'layout-edit': isEditMode,
+				})}
 				bodyOpenClassName={bodyOpenClassName}
 			>
 				{showCloseText && !closeButton && (
@@ -84,10 +77,8 @@ class Dialog extends PureComponent {
 Modal.setAppElement('#root');
 
 Dialog.defaultProps = {
-	disableTheme: false,
 	shouldCloseOnOverlayClick: true,
 	showCloseText: true,
-	theme: '',
 	className: '',
 };
 

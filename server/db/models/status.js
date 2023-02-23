@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
 	const Status = sequelize.define(
 		'Status',
 		{
@@ -53,7 +53,8 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		{
-			underscored: true
+			underscored: true,
+			tableName: 'Statuses'
 		}
 	);
 

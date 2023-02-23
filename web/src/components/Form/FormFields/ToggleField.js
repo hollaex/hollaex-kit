@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { FieldContent } from './FieldWrapper';
-
+import { EditWrapper } from 'components';
 import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { FLEX_CENTER_CLASSES } from 'config/constants';
 
@@ -14,21 +14,17 @@ class ToggleField extends Component {
 	};
 
 	componentDidMount() {
-		const { input, ...rest } = this.props;
+		const { input } = this.props;
 		if (input && (input.value || input.value === false)) {
 			this.setState({ selected: input.value });
-		}
-		if ('isZeroBalanceHidden' in rest) {
-			this.setState({ selected: rest?.isZeroBalanceHidden });
 		}
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
-		const { input, ...rest } = this.props;
+		const { input } = this.props;
 		if (
 			input.value !== nextProps.input.value &&
-			(nextProps.input.value || nextProps.input.value === false) &&
-			!rest.hasOwnProperty('isZeroBalanceHidden')
+			(nextProps.input.value || nextProps.input.value === false)
 		) {
 			this.setState({ selected: nextProps.input.value });
 		}
@@ -79,7 +75,9 @@ class ToggleField extends Component {
 						{...rest}
 					>
 						<div className="d-flex justify-content-between">
-							<div className={selected ? '' : 'half-opacity'}>{label}</div>
+							<div className={selected ? '' : 'half-opacity'}>
+								<EditWrapper>{label}</EditWrapper>
+							</div>
 							<Toggle
 								selected={selected}
 								options={options}

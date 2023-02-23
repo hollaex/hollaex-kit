@@ -6,7 +6,7 @@ const lodash = require('lodash');
 const sequelize = require('sequelize');
 const { loggerPlugin } = require('../config/logger');
 const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty, isBoolean } = require('lodash');
-const uglifyEs = require('uglify-es');
+const uglifyJs = require('uglify-js');
 
 const getPlugins = async (req, res) => {
 	const errors = validationResult(req);
@@ -124,7 +124,8 @@ const deletePlugin = async (req, res) => {
 				'restarting plugin process'
 			);
 
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -219,7 +220,12 @@ const postPlugin = async (req, res) => {
 			switch (field) {
 				case 'script':
 					if (value) {
-						const minifiedScript = uglifyEs.minify(value);
+						const minifiedScript = uglifyJs.minify(value, {
+							module: true,
+							output: {
+								quote_style: 1
+							}
+						});
 
 						if (minifiedScript.error) {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
@@ -281,7 +287,8 @@ const postPlugin = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -335,7 +342,7 @@ const putPlugin = async (req, res) => {
 
 	try {
 		const plugin = await Plugin.findOne({ where: { name } });
-
+		const pluginData = cloneDeep(plugin.dataValues);
 		if (!plugin) {
 			throw new Error('Plugin not installed');
 		}
@@ -407,18 +414,17 @@ const putPlugin = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (isPlainObject(value)) {
-						for (const key in plugin[field]) {
+						for (const key in pluginData[field]) {
 							if (
-								lodash.isPlainObject(plugin[field])
-								&& plugin[field][key]
-								&& plugin[field][key].overwrite === false
+								lodash.isPlainObject(pluginData[field])
+								&& pluginData[field][key].overwrite === false
 								&& (!value[key] || value[key].overwrite === false)
 							) {
-								value[key] = plugin[field][key];
+								value[key] = pluginData[field][key];
 							}
 						}
 
-						const existingConfig = pick(plugin[field], Object.keys(value));
+						const existingConfig = pick(pluginData[field], Object.keys(value));
 
 						for (const key in value) {
 							if (existingConfig[key] !== undefined) {
@@ -465,7 +471,8 @@ const putPlugin = async (req, res) => {
 		);
 
 		if (updatedPlugin.enabled && updatedPlugin.script) {
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -558,6 +565,7 @@ const putPluginConfig = async (req, res) => {
 			throw new Error('Plugin not found');
 		}
 
+		const pluginData = cloneDeep(plugin.dataValues);
 		const updatedConfig = {};
 
 		for (const field in configValues) {
@@ -567,7 +575,7 @@ const putPluginConfig = async (req, res) => {
 				case 'meta':
 				case 'public_meta':
 					if (value) {
-						const newConfig = plugin[field];
+						const newConfig = pluginData[field];
 
 						for (const key in newConfig) {
 							if (value[key] !== undefined) {
@@ -605,7 +613,8 @@ const putPluginConfig = async (req, res) => {
 		);
 
 		if (plugin.enabled && plugin.script) {
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -710,7 +719,8 @@ const disablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(
@@ -765,7 +775,8 @@ const enablePlugin = async (req, res) => {
 		res.json({ message: 'Success' });
 
 		if (plugin.script) {
-			process.exit();
+			const { restartPluginProcess } = require('./index');
+			restartPluginProcess();
 		}
 	} catch (err) {
 		loggerPlugin.error(

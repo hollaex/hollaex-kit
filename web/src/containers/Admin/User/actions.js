@@ -32,6 +32,12 @@ export const updateNotes = (values) => {
 	};
 	return requestAuthenticated(`/admin/user/note?user_id=${values.id}`, options);
 };
+
+export const deleteNotes = (id) => {
+	const values = { id, note: '' };
+	return updateNotes(values);
+};
+
 export const requestUserImages = (values, kyc_name) => {
 	const url = `/plugins/${kyc_name}/admin/files?${toQueryString(values)}`;
 	return requestAuthenticated(url, {}, null, PLUGIN_URL)
@@ -145,7 +151,10 @@ export const requestUsersDownload = (values) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
 			link.href = url;
-			link.setAttribute('download', `users_${moment().format('YYYY-MM-DD')}.csv`);
+			link.setAttribute(
+				'download',
+				`users_${moment().format('YYYY-MM-DD')}.csv`
+			);
 			document.body.appendChild(link);
 			link.click();
 		})
@@ -245,4 +254,24 @@ export const updateIdData = (body, id) => {
 		body: JSON.stringify(body),
 	};
 	return requestAuthenticated(`/admin/user?user_id=${id}`, options);
+};
+
+export const getUserAffiliation = (user_id, page = 1, limit = 50) => {
+	const params = { user_id, page, limit };
+	const query = querystring.stringify(params);
+
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(`/admin/user/affiliation?${query}`, options);
+};
+
+export const getUserReferer = (user_id) => {
+	const options = {
+		method: 'GET',
+	};
+	return requestAuthenticated(
+		`/admin/user/referer?user_id=${user_id}`,
+		options
+	);
 };
