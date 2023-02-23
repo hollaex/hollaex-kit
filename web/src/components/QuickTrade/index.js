@@ -33,6 +33,7 @@ import {
 } from 'containers/QuickTrade/utils';
 import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
+import { translateError } from 'components/QuickTrade/utils';
 
 const PAIR2_STATIC_SIZE = 0.000001;
 const SPENDING = {
@@ -89,14 +90,20 @@ const QuickTrade = ({
 	const [error, setError] = useState();
 	const [submitting, setSubmitting] = useState(false);
 	const [data, setData] = useState({});
+	const [reversed, setReversed] = useState(false);
 
-	const onCloseDialog = () => {
+	const onCloseDialog = (autoHide) => {
 		setIsReview(true);
 		setData({});
 		setShowModal(false);
+		if (autoHide) {
+			setTimeout(() => setError(), 5000);
+		} else {
+			setError();
+		}
 	};
 
-	const handleError = (err) => {
+	const handleError = (err, autoClose) => {
 		const error =
 			err.response && err.response.data
 				? err.response.data.message
@@ -104,8 +111,10 @@ const QuickTrade = ({
 					: err.response.data
 				: err.message;
 		setError(error);
-		onCloseDialog();
-		setTimeout(() => setError(), 5000);
+
+		if (autoClose) {
+			onCloseDialog(true);
+		}
 	};
 
 	const targetOptions = getTargetOptions(selectedSource);
@@ -173,13 +182,11 @@ const QuickTrade = ({
 
 	const onExecuteTrade = (token) => {
 		setSubmitting(true);
+		setIsReview(false);
 
 		executeQuickTrade(token)
-			.then((response) => {
-				console.log('response', response);
-				setData({});
-				setShowModal(true);
-				setIsReview(false);
+			.then(({ data }) => {
+				setData(data);
 			})
 			.catch(handleError)
 			.finally(() => {
@@ -254,7 +261,7 @@ const QuickTrade = ({
 						setReceivingAmount(receiving_amount);
 						setSpendingAmount(spending_amount);
 					})
-					.catch(handleError)
+					.catch((err) => handleError(err, true))
 					.finally(() => {
 						setLoading(false);
 					});
@@ -296,7 +303,6 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		setError();
-		setToken();
 		debouncedQuote.current({
 			sourceAmount,
 			targetAmount,
@@ -305,6 +311,14 @@ const QuickTrade = ({
 			spending,
 		});
 	}, [sourceAmount, targetAmount, selectedSource, selectedTarget, spending]);
+
+	useEffect(() => {
+		if (spending === SPENDING.SOURCE) {
+			setReversed(false);
+		} else if (spending === SPENDING.TARGET) {
+			setReversed(true);
+		}
+	}, [spending]);
 
 	const { balance: userBalance } = user;
 
@@ -319,11 +333,18 @@ const QuickTrade = ({
 	const selectedTargetBalance =
 		selectedTarget && userBalance[`${selectedTarget.toLowerCase()}_available`];
 
-	const disabled = !isLoggedIn();
+	const disabled = !isLoggedIn() || !token || loading || submitting;
 	const pairData = pairs[symbol] || {};
 	const decimalPoint = getDecimals(pairData.increment_size);
 	const [loadingSource, loadingTarget] =
 		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
+	const [
+		[spendingAmount, spendingCurrency],
+		[receivingAmount, receivingCurrency],
+	] = [
+		[sourceAmount, selectedSource],
+		[targetAmount, selectedTarget],
+	][reversed ? 'reverse' : 'slice']();
 
 	return (
 		<Fragment>
@@ -408,7 +429,7 @@ const QuickTrade = ({
 
 							{error && (
 								<FieldError
-									error={error}
+									error={translateError(error)}
 									displayError={true}
 									className="input-group__error-wrapper"
 								/>
@@ -450,17 +471,19 @@ const QuickTrade = ({
 						<ReviewOrder
 							onCloseDialog={onCloseDialog}
 							onExecuteTrade={() => onExecuteTrade(token)}
-							selectedSource={selectedSource}
+							selectedSource={spendingCurrency}
 							decimalPoint={decimalPoint}
-							sourceAmount={sourceAmount}
-							targetAmount={targetAmount}
-							selectedTarget={selectedTarget}
+							sourceAmount={spendingAmount}
+							targetAmount={receivingAmount}
+							selectedTarget={receivingCurrency}
 							disabled={submitting}
 						/>
 					) : (
 						<QuoteResult
 							coins={coins}
 							pairData={pairData}
+							fetching={submitting}
+							error={error}
 							data={data}
 							onClose={onCloseDialog}
 							onConfirm={() => goTo('/wallet')}
