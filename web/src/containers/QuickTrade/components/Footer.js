@@ -2,7 +2,7 @@ import React from 'react';
 import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const Footer = (brokerUsed, name) => {
+const Footer = ({ brokerUsed, name }) => {
 	return (
 		<div className="footer-text">
 			<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">

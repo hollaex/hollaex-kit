@@ -192,10 +192,6 @@ const QuickTrade = ({
 			});
 	};
 
-	const forwardSourceError = (sourceError) => {};
-
-	const forwardTargetError = (targetError) => {};
-
 	const sourceTotalBalance = (value) => {
 		const decimalPoint = getDecimals(
 			side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit
@@ -399,7 +395,7 @@ const QuickTrade = ({
 								selectValue={selectedSource}
 								onSelect={onSelectSource}
 								onInputChange={onChangeSourceAmount}
-								forwardError={forwardSourceError}
+								forwardError={() => {}}
 								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
 								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit}
@@ -418,7 +414,7 @@ const QuickTrade = ({
 								selectValue={selectedTarget}
 								onSelect={onSelectTarget}
 								onInputChange={onChangeTargetAmount}
-								forwardError={forwardTargetError}
+								forwardError={() => {}}
 								limits={side === 'buy' ? SIZE : PRICE}
 								decimal={side === 'buy' ? increment_unit : PAIR2_STATIC_SIZE}
 								pair={isUseBroker ? symbol : key ? key : ''}
