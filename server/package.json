@@ -26,7 +26,7 @@
 		"express": "4.16.2",
 		"express-limiter": "1.6.1",
 		"express-validator": "6.7.0",
-		"file-type": "16.5.2",
+		"file-type": "16.5.4",
 		"flat": "5.0.0",
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
