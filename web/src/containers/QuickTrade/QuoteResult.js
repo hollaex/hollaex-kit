@@ -17,7 +17,9 @@ const QuoteResult = ({
 	onClose,
 	onConfirm,
 	pairData,
-	data: { fetching, error, data },
+	fetching,
+	error,
+	data,
 	icons: ICONS,
 }) => {
 	if (fetching) {
