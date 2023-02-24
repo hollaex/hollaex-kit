@@ -43,6 +43,7 @@ const PluginDetails = ({
 	setSelectedPlugin,
 	router,
 	onChangeNextType,
+	setProcessing,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -72,6 +73,7 @@ const PluginDetails = ({
 			});
 	};
 	const handleAddPlugin = async () => {
+		setProcessing();
 		getPluginStoreDetails({ name: selectedPlugin.name })
 			.then((res) => {
 				handleInstallPlugin(res);
@@ -230,25 +232,7 @@ const PluginDetails = ({
 									<h4>{pluginData.name}</h4>{' '}
 									<h5> {`Version: ${pluginData.version}`}</h5>{' '}
 								</div>
-								<p>{`Description: ${pluginData.description}`}</p>
-								<div>
-									{' '}
-									{!!free_for?.length ? (
-										<>
-											<p>Note:</p>{' '}
-											<div>
-												<InfoCircleOutlined className="pt-2" />
-											</div>{' '}
-											{free_for?.map((item, inx) => (
-												<p>{`${inx === 0 ? '' : `, `} ${
-													exchangeType[item]
-												}`}</p>
-											))}
-										</>
-									) : (
-										''
-									)}{' '}
-								</div>
+								<p>{`${pluginData.bio}`}</p>
 								<p className="tooltip-container">
 									Author:
 									<Tooltip
@@ -334,7 +318,7 @@ const PluginDetails = ({
 									<b>Name:</b> {pluginData.name}
 								</div>
 								<div className="my-2">
-									<b>Description:</b> {pluginData.description}
+									{pluginData.description}
 								</div>
 								<div className="my-2">
 									<b>Author:</b> {pluginData.author}
@@ -579,7 +563,7 @@ const PluginDetails = ({
 	const {
 		icon,
 		name,
-		description,
+		bio,
 		author,
 		payment_type,
 		price,
@@ -635,7 +619,7 @@ const PluginDetails = ({
 										{' '}
 										<h4>{name}</h4> <h5> {`Version: ${version}`}</h5>{' '}
 									</div>
-									<p>{`Description: ${description}`}</p>
+									<p>{bio}</p>
 									<div>
 										{' '}
 										{!!free_for?.length ? (
@@ -655,15 +639,20 @@ const PluginDetails = ({
 										)}{' '}
 									</div>
 									<p className="tooltip-container">
-										Author:
+										Author:&nbsp;
 										<Tooltip
 											placement="rightBottom"
 											title={`Verified plugin by ${author}`}
 										>
-											<ReactSVG
-												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-												className="verified-icon"
-											/>
+											{
+											author && author === 'HollaEx' ?
+												<ReactSVG
+													src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+													className="verified-icon"
+												/>
+												:
+												null
+											}
 										</Tooltip>{' '}
 										{author}
 									</p>
@@ -729,13 +718,9 @@ const PluginDetails = ({
 			<div className="plugin-details-wrapper">
 				<div>
 					<div>
-						<div className="about-label">About</div>
+						<div className="about-label">Description</div>
 						<div className="about-contents">
-							<b>OverView</b>
 							<div className="my-3">{pluginData.description}</div>
-							<div className="my-5">
-								<h2>Main features</h2>
-							</div>
 						</div>
 					</div>
 				</div>

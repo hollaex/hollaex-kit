@@ -18,16 +18,6 @@ export const subtract = (a = 0, b = 0) => {
 const sumQuantities = (orders) =>
 	orders.reduce((total, [, size]) => math.add(total, size), 0);
 
-const sumOrderTotal = (orders) =>
-	orders.reduce(
-		(total, [price, size]) =>
-			math.add(
-				total,
-				math.number(math.multiply(math.fraction(size), math.fraction(price)))
-			),
-		0
-	);
-
 const calcMaxCumulative = (askOrders, bidOrders) => {
 	const totalAsks = sumQuantities(askOrders);
 	const totalBids = sumQuantities(bidOrders);
@@ -88,7 +78,6 @@ const calculateOrders = (orders, depth) =>
 	}, []);
 
 const getPairsOrderBook = (state) => state.orderbook.pairsOrderbooks;
-const getQuickTradeOrderBook = (state) => state.quickTrade.pairsOrderbooks;
 const getPair = (state) => state.app.pair;
 const getActiveOrderMarket = (state) => state.app.activeOrdersMarket;
 const getRecentTradesMarket = (state) => state.app.recentTradesMarket;
@@ -207,7 +196,6 @@ export const userTradesSelector = createSelector(
 
 const getSide = (_, { side }) => side;
 const getSize = (_, { size }) => (!!size ? size : 0);
-const getFirstAssetCheck = (_, { isFirstAsset }) => isFirstAsset;
 
 const calculateMarketPrice = (orderSize = 0, orders = []) =>
 	orders.reduce(
@@ -232,31 +220,6 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
 		[0, 0]
 	);
 
-const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
-	orders.reduce(
-		([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
-			if (math.larger(orderSize, accumulatedPrice)) {
-				let currentTotal = math.multiply(size, price);
-				const remainingSize = math.subtract(orderSize, accumulatedPrice);
-				if (math.largerEq(remainingSize, currentTotal)) {
-					return [
-						math.sum(accumulatedPrice, currentTotal),
-						math.sum(accumulatedSize, size),
-					];
-				} else {
-					let remainingBaseSize = math.divide(remainingSize, price);
-					return [
-						math.sum(accumulatedPrice, math.multiply(remainingBaseSize, price)),
-						math.sum(accumulatedSize, remainingBaseSize),
-					];
-				}
-			} else {
-				return [accumulatedPrice, accumulatedSize];
-			}
-		},
-		[0, 0]
-	);
-
 export const estimatedMarketPriceSelector = createSelector(
 	[getPairsOrderBook, getPair, getSide, getSize],
 	(pairsOrders, pair, side, size) => {
@@ -267,27 +230,6 @@ export const estimatedMarketPriceSelector = createSelector(
 			return [0, size];
 		} else {
 			return calculateMarketPrice(size, orders);
-		}
-	}
-);
-
-export const estimatedQuickTradePriceSelector = createSelector(
-	[getQuickTradeOrderBook, getPair, getSide, getSize, getFirstAssetCheck],
-	(pairsOrders, pair, side, size, isFirstAsset) => {
-		const { [side === 'buy' ? 'asks' : 'bids']: orders = [] } =
-			pairsOrders[pair] || {};
-		let totalOrders = sumQuantities(orders);
-		if (!isFirstAsset) {
-			totalOrders = sumOrderTotal(orders);
-		}
-		if (math.larger(size, totalOrders)) {
-			return [0, size];
-		} else if (!isFirstAsset) {
-			const [priceValue, sizeValue] = calculateMarketPriceByTotal(size, orders);
-			return [priceValue / sizeValue, sizeValue];
-		} else {
-			const [priceValue, sizeValue] = calculateMarketPrice(size, orders);
-			return [priceValue / sizeValue, sizeValue];
 		}
 	}
 );
@@ -363,12 +305,15 @@ export const unsortedMarketsSelector = createSelector(
 				baseCoin.increment_unit
 			)} ${baseCoin.display_name}`;
 
+			const fullMarketName = `${fullname}/${pairTwo.fullname}`;
+
 			return {
 				key,
 				pair: pairs[key],
 				symbol,
 				pairTwo,
 				fullname,
+				fullMarketName,
 				ticker: tickers[key] || {},
 				increment_price,
 				priceDifference,

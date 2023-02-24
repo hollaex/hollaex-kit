@@ -1,4 +1,8 @@
 .price-change {
+	&.large {
+		font-size: 2rem;
+		font-weight: 700;
+	}
 	.price-diff {
 		color: $colors-black;
 		padding: 0 5px;
