@@ -300,15 +300,13 @@ class Plugins extends Component {
 
 	handleRestart = (callback) => {
 		this.setProcessing();
-		setTimeout(() => {
-			this.getPluginsData()
-				.then(() => {
-					this.setProcessing(false, callback);
-				})
-				.catch(() => {
-					this.handleRestart(callback);
-				});
-		}, 30000);
+		this.getPluginsData()
+			.then(() => {
+				this.setProcessing(false, callback);
+			})
+			.catch(() => {
+				this.handleRestart(callback);
+			});
 	};
 
 	setProcessing = (processing = true, callback) => {
@@ -674,6 +672,7 @@ class Plugins extends Component {
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
 							router={this.props.router}
+							setProcessing={this.setProcessing}
 						/>
 					</div>
 				);
