@@ -43,6 +43,7 @@ const PluginDetails = ({
 	setSelectedPlugin,
 	router,
 	onChangeNextType,
+	setProcessing,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -72,6 +73,7 @@ const PluginDetails = ({
 			});
 	};
 	const handleAddPlugin = async () => {
+		setProcessing();
 		getPluginStoreDetails({ name: selectedPlugin.name })
 			.then((res) => {
 				handleInstallPlugin(res);
