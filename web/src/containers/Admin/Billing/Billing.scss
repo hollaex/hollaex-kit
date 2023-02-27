@@ -370,6 +370,27 @@ p {
 		}
 	}
 
+	.crypto-error {
+		color: #ff0000;
+		font-size: 12px;
+		font-weight: bold;
+	}
+
+	.crypto-payment-divider {
+		border-bottom: 1px solid #707070;
+		margin: 1rem;
+		width: 5rem;
+	}
+
+	.crypto-required-amount {
+		font-size: 27px;
+	}
+
+	.small-text {
+		font-size: 12px;
+		margin-left: 0px;
+	}
+
 	.payment-details {
 		border: 1px solid white;
 		padding: 1rem;
