@@ -93,8 +93,8 @@ export const SORT = {
 };
 
 export const SORT_EXP = {
-	VOL: 'biggest gainers first',
-	CHANGE: 'most actively traded first',
+	VOL: 'most actively traded first',
+	CHANGE: 'biggest gainers first',
 };
 
 export const setSortModeVolume = () => ({
