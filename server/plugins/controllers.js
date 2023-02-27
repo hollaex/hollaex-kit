@@ -337,7 +337,8 @@ const putPlugin = async (req, res) => {
 		'postscript',
 		'meta',
 		'public_meta',
-		'type'
+		'type',
+		'author'
 	]);
 
 	try {
