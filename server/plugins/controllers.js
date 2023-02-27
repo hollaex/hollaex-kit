@@ -378,7 +378,7 @@ const putPlugin = async (req, res) => {
 			switch (field) {
 				case 'script':
 					if (value) {
-						const minifiedScript = uglifyEs.minify(value);
+						const minifiedScript = uglifyJs.minify(value);
 
 						if (minifiedScript.error) {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
