@@ -239,10 +239,15 @@ const PluginDetails = ({
 										placement="rightBottom"
 										title={`Verified plugin by ${author}`}
 									>
-										<ReactSVG
-											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-											className="verified-icon"
-										/>
+										{
+										author && author === 'HollaEx' ?
+											<ReactSVG
+												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+												className="verified-icon"
+											/>
+											:
+											null
+										}
 									</Tooltip>{' '}
 									{pluginData.author}
 								</p>
@@ -567,6 +572,7 @@ const PluginDetails = ({
 		author,
 		payment_type,
 		price,
+		documentation,
 		version,
 		free_for,
 		only_for,
@@ -656,6 +662,11 @@ const PluginDetails = ({
 										</Tooltip>{' '}
 										{author}
 									</p>
+									{documentation?.length ? (
+										<div>
+											<BlueLink href={documentation} text='Plugin guide'/>
+										</div>
+									) : null}
 									{free_for?.length ? (
 										<div>
 											<p className="mr-2">Free For:</p>{' '}
