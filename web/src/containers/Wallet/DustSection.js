@@ -37,6 +37,7 @@ const DustSection = ({
 	balances,
 	dust: { quote = 'xht' } = { quote: 'xht' },
 	pricesInNative,
+	openContactForm,
 }) => {
 	const [dustAssets, setDustAssets] = useState([]);
 	const [initialized, setInitialized] = useState(false);
