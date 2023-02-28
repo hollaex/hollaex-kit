@@ -42,19 +42,6 @@
 			.crypto-fiat-plan {
 				padding-bottom: 1rem;
 			}
-
-			.paid-btn {
-				color: #ffffff;
-				background-color: #288500 !important;
-				border: 1px solid #288500 !important;
-				padding: 0rem !important;
-				width: 6rem;
-
-				.anticon {
-					font-size: 18px;
-					margin-top: 2px;
-				}
-			}
 		}
 
 		.cloud-background {
@@ -214,6 +201,19 @@
 			text-decoration: underline;
 			cursor: pointer;
 			margin: 1rem 16rem 0rem 0rem;
+		}
+
+		.paid-btn {
+			color: #ffffff;
+			background-color: #288500 !important;
+			border: 1px solid #288500 !important;
+			padding: 0rem !important;
+			width: 6rem;
+
+			.anticon {
+				font-size: 18px;
+				margin-top: 2px;
+			}
 		}
 	}
 
@@ -1098,9 +1098,5 @@
 	.pointer-none {
 		pointer-events: none;
 		cursor: not-allowed;
-	}
-
-	.st0 {
-		fill: #00abed !important;
 	}
 }
