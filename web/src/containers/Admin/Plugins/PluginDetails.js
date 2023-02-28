@@ -61,7 +61,7 @@ const PluginDetails = ({
 				if (
 					res &&
 					res.data &&
-					res.data?.message === 'success' &&
+					res?.message === 'success' &&
 					res.data?.is_active
 				) {
 					getActivationsPlugin();
@@ -447,28 +447,29 @@ const PluginDetails = ({
 				</div>
 			);
 		} else {
-			if (
-				payment_type?.toLowerCase() === 'activation' ||
-				(name?.toLowerCase() === 'exclusive' &&
-					only_for?.length &&
-					!only_for?.includes(exchange.plan) &&
-					free_for?.length &&
-					!free_for?.includes(exchange.plan)) ||
-				(only_for?.length &&
-					!only_for?.includes(exchange.plan) &&
-					free_for?.length &&
-					!free_for?.includes(exchange.plan))
+			let btnDisabled = false;
+			if (payment_type === 'free' || checkactivatedPlugin(name)) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={() => handleType('add')}
+						>
+							Install
+						</Button>
+						{pluginData.payment_type === 'free' ? (
+							<div className="small-txt">Free to install</div>
+						) : null}
+					</div>
+				);
+			} else if (
+				!checkactivatedPlugin(name) &&
+				(payment_type?.toLowerCase() === 'activation' ||
+					free_for?.includes(exchange.plan) ||
+					only_for?.includes(exchange.plan))
 			) {
-				let btnDisabled = false;
-				if (
-					payment_type?.toLowerCase() !== 'activation' &&
-					only_for?.length &&
-					!only_for?.includes(exchange.plan) &&
-					free_for?.length &&
-					!free_for?.includes(exchange.plan)
-				) {
-					btnDisabled = true;
-				}
+				// btnDisabled = payment_type?.toLowerCase() === 'activation';
 				return (
 					<div className="btn-wrapper">
 						<Button
@@ -490,34 +491,7 @@ const PluginDetails = ({
 						) : null}
 					</div>
 				);
-			} else if (
-				(payment_type === 'free' ||
-					checkactivatedPlugin(name) ||
-					(free_for?.includes(exchange.plan) && !only_for?.length) ||
-					(free_for?.includes(exchange.plan) &&
-						only_for?.includes(exchange.plan))) &&
-				pluginData?.name?.toLowerCase() !== 'exclusive'
-			) {
-				return (
-					<div className="btn-wrapper">
-						<Button
-							type="primary"
-							className="add-btn"
-							onClick={() => handleType('add')}
-						>
-							Install
-						</Button>
-						{pluginData.payment_type === 'free' ? (
-							<div className="small-txt">Free to install</div>
-						) : null}
-					</div>
-				);
-			} else if (
-				payment_type !== 'free' &&
-				((!free_for?.length && !only_for?.length) ||
-					(!free_for?.includes(exchange.plan) && !only_for?.length) ||
-					name.toLowerCase() === 'exclusive')
-			) {
+			} else {
 				return (
 					<div className="btn-wrapper">
 						<Button
@@ -600,20 +574,6 @@ const PluginDetails = ({
 	} else if (price && payment_type.toLowerCase() !== 'activation') {
 		isPriceTagHide = true;
 	}
-
-	let isPriceFreeTag = false;
-
-	if (
-		(payment_type === 'free' ||
-			(checkactivatedPlugin(name) && !free_for?.length && only_for?.length) ||
-			(free_for?.includes(exchange.plan) && !only_for?.length) ||
-			(free_for?.includes(exchange.plan) &&
-				only_for?.includes(exchange.plan))) &&
-		pluginData?.name?.toLowerCase() !== 'exclusive'
-	) {
-		isPriceFreeTag = true;
-	}
-
 	return (
 		<div>
 			<div className="plugin-details-wrapper">
@@ -707,7 +667,7 @@ const PluginDetails = ({
 											<p>Price: </p>{' '}
 											<h6>
 												{' '}
-												{isPriceFreeTag
+												{payment_type === 'free'
 													? 'Free'
 													: payment_type?.toLowerCase() === 'activation'
 													? 'Activation'
