@@ -93,8 +93,8 @@ class Earnings extends Component {
 			earningsData: [],
 			feesData: [],
 			isOpen: false,
-			end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
-			start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
+			end_date: moment().add(1, 'hours').format(),
+			start_date: moment().subtract(90, 'days').format(),
 			buttonSubmitting: false,
 			currentScreen: '',
 			userDetails: [],
@@ -196,14 +196,14 @@ class Earnings extends Component {
 
 	setFilterDates = (value) => {
 		if (value && value.length) {
-			const start_date = value[0].format('YYYY-MM-DD hh:mm A');
-			const end_date = value[1].format('YYYY-MM-DD hh:mm A');
+			const start_date = value[0].format();
+			const end_date = value[1].format();
 			this.setState({ start_date, end_date });
 		}
 		if (!value) {
 			this.setState({
-				end_date: moment().add(1, 'hours').format('YYYY-MM-DD hh:mm A'),
-				start_date: moment().subtract(90, 'days').format('YYYY-MM-DD hh:mm A'),
+				end_date: moment().add(1, 'hours').format(),
+				start_date: moment().subtract(90, 'days').format(),
 			});
 		}
 	};

@@ -43,6 +43,7 @@ const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
 const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
+const { checkStatus } = require('../init');
 
 const initPluginProcess = async ({ PORT }) => {
 
@@ -162,13 +163,26 @@ const initPluginProcess = async ({ PORT }) => {
 };
 
 if (!isMainThread) {
-	try {
-		initPluginProcess(JSON.parse(workerData));
-	} catch (err) {
-		loggerPlugin.error(
-			'plugins/index/initialization',
-			'error while starting plugin',
-			err.message
-		);
-	}
+	checkStatus()
+		.then(() => {
+			try {
+				initPluginProcess(JSON.parse(workerData));
+			} catch (err) {
+				loggerPlugin.error(
+					'plugins/index/initialization',
+					'error while starting plugin',
+					err.message
+				);
+			}
+		})
+		.catch(() => {
+			loggerPlugin.error(
+				'plugins/index/initialization',
+				'API Initialization failed',
+				err.message
+			);
+			setTimeout(() => { process.exit(1); }, 1000 * 5);
+		})
+
+
 }
