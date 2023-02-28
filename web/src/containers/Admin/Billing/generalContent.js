@@ -24,6 +24,7 @@ import {
 	InfoCircleOutlined,
 	CopyOutlined,
 	CheckCircleFilled,
+	ExclamationCircleFilled,
 } from '@ant-design/icons';
 import isEmpty from 'lodash.isempty';
 
@@ -112,6 +113,7 @@ const GeneralContent = ({
 		dashExchange.period !== 'year' ? true : false
 	);
 	const [invoiceData, setinvoiceData] = useState([]);
+	const [currentInvoice, setCurrentInvoice] = useState({});
 	const [activateInvoiceData, setActivateInvoiceData] = useState({});
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
@@ -123,6 +125,7 @@ const GeneralContent = ({
 	const [pendingPay, setPendingPay] = useState(false);
 	const [hideBreadcrumb, setHideBreadcrumb] = useState(false);
 	const [selectedPendingItem, setSelectedPendingItem] = useState({});
+	const [cryptoPayType, setCryptoPay] = useState('');
 
 	const planPriceData = priceData[selectedType];
 
@@ -347,15 +350,18 @@ const GeneralContent = ({
 							window.location.replace(res.meta.redirect_url);
 							message.success('Redirecting to the paypal');
 							setOpenPlanModal(false);
+							setCurrentInvoice(res.data);
 							break;
 						case 'stripe':
 							window.location.replace(res.meta.redirect_url);
 							message.success('Redirecting to the payment');
 							setOpenPlanModal(false);
+							setCurrentInvoice(res.data);
 							break;
 						case 'bank':
+							setCurrentInvoice(res.data);
 							break;
-						case 'crypto':
+						case 'cryptoCurrency':
 							if (res.method === 'xht' && res.is_paid) {
 								setExchangePlanType('xhtPayment');
 								setPaymentAddressDetails(res);
@@ -364,10 +370,10 @@ const GeneralContent = ({
 							} else {
 								setExchangePlanType('payment');
 							}
-							setinvoiceData({
-								...invoiceData[0],
+							setCurrentInvoice({
+								...currentInvoice,
 								method,
-								meta: { ...invoiceData[0].meta, ...res },
+								meta: { ...currentInvoice.meta, ...res },
 							});
 							setCurrencyAddress(res);
 							break;
@@ -711,6 +717,10 @@ const GeneralContent = ({
 		setFiatSubmission(false);
 	};
 
+	const handleCryptoPay = (payType) => {
+		setCryptoPay(payType);
+	};
+
 	const renderContent = () => {
 		switch (exchangePlanType) {
 			case 'item':
@@ -917,22 +927,62 @@ const GeneralContent = ({
 					</div>
 				);
 			case 'payment':
+				const balanceAvailable =
+					balance[`${selectedCrypto.coin.toLowerCase()}_available`] || 0;
 				return (
 					<div>
 						<div className="crypto-payment-container">
 							<div className="payment-type-dropdown">
 								<h5>Select how to pay:</h5>
-								{paymentOptions.map((item) => (
-									<Select
-										onChange={() => setTransferCryptoPayment(true)}
-										placeholder="Select payment method"
-										key={item.key}
-									>
-										<Option value={item.key}>{item.value}</Option>
-									</Select>
-								))}
+								<Select
+									onChange={handleCryptoPay}
+									placeholder="Select payment method"
+								>
+									{paymentOptions.map((item) => (
+										<Option value={item.key} key={item.key}>
+											{item.value}
+										</Option>
+									))}
+								</Select>
 							</div>
-							{transferCryptoPayment && (
+							{cryptoPayType === 'pay' ? (
+								<Fragment>
+									<div>
+										<span className="bold">Selected crypto: </span>
+										<span>
+											{selectedCrypto.coin
+												? selectedCrypto.coin.toUpperCase()
+												: ''}
+										</span>
+									</div>
+									<div>
+										<span className="bold">{`Your ${selectedCrypto.coin.toUpperCase()} balance: `}</span>
+										<span>
+											{balanceAvailable} {selectedCrypto.coin.toUpperCase()}
+										</span>
+									</div>
+									{!balanceAvailable ||
+									balanceAvailable < paymentAddressDetails.amount ? (
+										<div className="crypto-error">
+											<ExclamationCircleFilled /> Insufficient balance
+										</div>
+									) : null}
+									<div className="crypto-payment-divider"></div>
+									<div>
+										<div className="crypto-required-amount">
+											Required amount: {paymentAddressDetails.amount}{' '}
+											{paymentAddressDetails.currency
+												? paymentAddressDetails.currency.toUpperCase()
+												: ''}
+										</div>
+										<div className="small-text">
+											The required amount will be directly deducted from your
+											account wallet balance. Please check the details before
+											proceeding.
+										</div>
+									</div>
+								</Fragment>
+							) : cryptoPayType === 'transfer' ? (
 								<div className="payment-details">
 									<span>
 										<h5>Selected Crypto :</h5> <p>{selectedCrypto.coin}</p>
@@ -952,7 +1002,7 @@ const GeneralContent = ({
 										</Button>
 									)}
 								</div>
-							)}
+							) : null}
 							{showPayAddress ? (
 								<div className="qr-container">
 									<div className="qr-text-container">

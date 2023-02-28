@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
@@ -60,6 +60,10 @@ const executeUserOrder = async (user_id, opts, token) => {
 			throw new Error(BROKER_NOT_FOUND);
 		} else if (brokerPair.paused) {
 			throw new Error(BROKER_PAUSED);
+		}
+
+		if(size < brokerPair.min_size || size > brokerPair.max_size) {
+			throw new Error(BROKER_SIZE_EXCEED)
 		}
 
 		const broker = await getUserByKitId(brokerPair.user_id);

@@ -259,3 +259,13 @@
 		width: 100% !important;
 	}
 }
+
+@media (max-width: 768px) {
+	.hollaex-token-wrapper
+		.token-wrapper
+		.hollaex-container
+		.trade-details-wrapper {
+		width: 45%;
+		padding: 40px 50px 30px 50px;
+	}
+}
