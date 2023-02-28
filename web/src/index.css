@@ -5886,6 +5886,11 @@ table th {
   .token-wrapper {
     width: 100% !important; } }
 
+@media (max-width: 768px) {
+  .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
+    width: 45%;
+    padding: 40px 50px 30px 50px; } }
+
 .sidebar-row {
   min-height: 3rem;
   min-width: 10rem; }
