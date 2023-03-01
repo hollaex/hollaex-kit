@@ -39,7 +39,7 @@
 		"is-base64": "1.1.0",
 		"js-yaml": "4.1.0",
 		"json2csv": "4.5.4",
-		"jsonwebtoken": "7.4.3",
+		"jsonwebtoken": "9.0.0",
 		"latest-version": "5.1.0",
 		"lodash": "4.17.21",
 		"mathjs": "11.2.1",
