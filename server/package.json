@@ -43,7 +43,7 @@
 		"latest-version": "5.1.0",
 		"lodash": "4.17.21",
 		"mathjs": "11.2.1",
-		"moment": "2.24.0",
+		"moment": "2.29.4",
 		"moment-timezone": "0.5.28",
 		"morgan": "1.9.0",
 		"multer": "1.4.2",
