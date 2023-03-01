@@ -27,7 +27,7 @@
 		"express-limiter": "1.6.1",
 		"express-validator": "6.7.0",
 		"file-type": "16.5.2",
-		"flat": "5.0.0",
+		"flat": "5.0.1",
 		"geoip-lite": "1.4.1",
 		"helmet": "3.12.0",
 		"hollaex-network-lib": "file:utils/hollaex-network-lib",
