@@ -71,7 +71,7 @@
 		"uglify-js": "3.17.4",
 		"umzug": "2.3.0",
 		"uuid": "3.2.1",
-		"validator": "9.4.1",
+		"validator": "13.7.0",
 		"winston": "3.2.1",
 		"winston-elasticsearch-apm": "0.0.7",
 		"ws": "8.12.1",
