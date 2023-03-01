@@ -8,6 +8,9 @@ const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
 const cors = require('cors');
+const sequelize = require('sequelize');
+const bodyParser = require('body-parser');
+const uglifyJs = require('uglify-js');
 const fs = require('fs');
 const path = require('path');
 const toolsLib = require('hollaex-tools-lib');
@@ -15,7 +18,29 @@ const expressValidator = require('express-validator');
 const lodash = require('lodash');
 const npm = require('npm-programmatic');
 const _eval = require('eval');
+const multer = require('multer');
+const moment = require('moment');
+const mathjs = require('mathjs');
+const bluebird = require('bluebird');
+const umzug = require('umzug');
 const rp = require('request-promise');
+const uuid = require('uuid/v4');
+const jwt = require('jsonwebtoken');
+const momentTz = require('moment-timezone');
+const json2csv = require('json2csv');
+const flat = require('flat');
+const ws = require('ws');
+const cron = require('node-cron');
+const randomString = require('random-string');
+const bcryptjs = require('bcryptjs');
+const expectCt = require('expect-ct');
+const validator = require('validator');
+const otp = require('otp');
+const geoipLite = require('geoip-lite');
+const nodemailer = require('nodemailer');
+const wsHeartbeatServer = require('ws-heartbeat/server');
+const wsHeartbeatClient = require('ws-heartbeat/client');
+const winston = require('winston');
 
 let pluginName = 'hello';
 if (process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1]) {
@@ -68,8 +93,38 @@ checkStatus()
 			module: module,
 			toolsLib,
 			app,
-			loggerPlugin,
+			toolsLib,
+			lodash,
 			expressValidator,
+			loggerPlugin,
+			multer,
+			moment,
+			mathjs,
+			bluebird,
+			umzug,
+			rp,
+			sequelize,
+			uuid,
+			jwt,
+			momentTz,
+			json2csv,
+			flat,
+			ws,
+			cron,
+			randomString,
+			bcryptjs,
+			expectCt,
+			validator,
+			uglifyJs,
+			otp,
+			geoipLite,
+			nodemailer,
+			wsHeartbeatServer,
+			wsHeartbeatClient,
+			cors,
+			winston,
+			bodyParser,
+			morgan,
 			pluginLibraries: {
 				app,
 				toolsLib,

@@ -18,6 +18,7 @@ const PluginConfigure = ({
 	getActivationsPlugin,
 	onChangeNextType,
 	router,
+	setProcessing,
 }) => {
 	const [pluginData, setPlugin] = useState({});
 	const [selectedNetworkPlugin, setNetworkData] = useState({});
@@ -83,6 +84,7 @@ const PluginConfigure = ({
 			handleRedirect={handleRedirect}
 			router={router}
 			onChangeNextType={onChangeNextType}
+			setProcessing={setProcessing}
 		/>
 	);
 };
