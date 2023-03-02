@@ -47,14 +47,11 @@ class TableRow extends Component {
 			row,
 			rowIndex,
 			headers,
-			activeTheme,
 		} = this.props;
 		const { isExpanded } = this.state;
 		const isRemoveData = cancelDelayData.filter((data) => data === row.id);
 		const isExpandable = rowExpandable(row);
-		//TODO: hard-coded colors
-		const subTrClsName =
-			activeTheme === 'white' ? 'sub-tr-bg-white' : 'sub-tr-bg';
+		const subTrClsName = 'new-sub-tr-bg';
 
 		return (
 			<Fragment>

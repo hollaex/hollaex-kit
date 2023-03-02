@@ -6,7 +6,7 @@ const lodash = require('lodash');
 const sequelize = require('sequelize');
 const { loggerPlugin } = require('../config/logger');
 const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty, isBoolean } = require('lodash');
-const uglifyEs = require('uglify-es');
+const uglifyJs = require('uglify-js');
 
 const getPlugins = async (req, res) => {
 	const errors = validationResult(req);
@@ -220,7 +220,12 @@ const postPlugin = async (req, res) => {
 			switch (field) {
 				case 'script':
 					if (value) {
-						const minifiedScript = uglifyEs.minify(value);
+						const minifiedScript = uglifyJs.minify(value, {
+							module: true,
+							output: {
+								quote_style: 1
+							}
+						});
 
 						if (minifiedScript.error) {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);
@@ -332,7 +337,8 @@ const putPlugin = async (req, res) => {
 		'postscript',
 		'meta',
 		'public_meta',
-		'type'
+		'type',
+		'author'
 	]);
 
 	try {
@@ -373,7 +379,7 @@ const putPlugin = async (req, res) => {
 			switch (field) {
 				case 'script':
 					if (value) {
-						const minifiedScript = uglifyEs.minify(value);
+						const minifiedScript = uglifyJs.minify(value);
 
 						if (minifiedScript.error) {
 							throw new Error(`Error while minifying script: ${minifiedScript.error.message}`);

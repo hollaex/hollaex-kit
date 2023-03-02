@@ -30,10 +30,10 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		cursor: pointer;
 	}
 
-	.sub-tr-bg {
-		background: #383a3e;
+	.new-sub-tr-bg {
+		background: var(--calculated_secondary-border-1) !important;
 		opacity: 0.75;
-		border-bottom: 1px solid #4b4d51 !important;
+		border-bottom: 1px solid var(--calculated_secondary-border-1) !important;
 	}
 
 	.sub-tr {

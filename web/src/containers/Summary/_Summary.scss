@@ -257,16 +257,6 @@ $trade-tab--arrow-size: 0.4rem;
 			width: 60%;
 		}
 	}
-	.trader-wrapper-icon {
-		width: 5rem;
-		margin-right: 1rem;
-		svg {
-			.level_icon,
-			.hap-icon {
-				fill: $colors-black;
-			}
-		}
-	}
 
 	.trader-acc-detail-icon {
 		width: 8rem;
@@ -700,6 +690,17 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.trader-wrapper-icon {
+	width: 5rem;
+	margin-right: 1rem;
+	svg {
+		.level_icon,
+		.hap-icon {
+			fill: $colors-black;
+		}
+	}
+}
+
 .fee-limits-wrapper {
 	width: 38rem;
 
@@ -830,6 +831,21 @@ $trade-tab--arrow-size: 0.4rem;
 		margin-right: 0.5rem;
 		position: relative;
 		top: calc(50% - 0.6rem);
+	}
+}
+
+.user-status {
+	&.verified {
+		color: $colors-notifications-green;
+	}
+	&.pending {
+		color: $colors-notification-pending;
+	}
+	&.incompleted {
+		color: $colors-notification-pending;
+	}
+	&.rejected {
+		color: $colors-notifications-red;
 	}
 }
 

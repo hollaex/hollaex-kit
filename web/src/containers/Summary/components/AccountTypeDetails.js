@@ -13,7 +13,6 @@ const AccountTypeDetails = ({
 	className = '',
 	selectedAccount,
 	lastMonthVolume,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	verification_level,
 	balance,
@@ -38,7 +37,6 @@ const AccountTypeDetails = ({
 				config={config}
 				account={currentAccount}
 				isAccountDetails={true}
-				onFeesAndLimits={onFeesAndLimits}
 				verification_level={currentAccount}
 				selectedAccount={currentAccount}
 			/>

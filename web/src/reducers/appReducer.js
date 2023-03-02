@@ -35,6 +35,7 @@ import {
 	SET_INJECTED_VALUES,
 	SET_INJECTED_HTML,
 	SET_CONTRACTS,
+	SET_ALL_CONTRACTS,
 	CHANGE_PAIR,
 	SET_ACTIVE_ORDERS_MARKET,
 	SET_RECENT_TRADES_MARKETS,
@@ -44,6 +45,8 @@ import {
 	SET_SORT_MODE,
 	TOGGLE_SORT,
 	SET_ADMIN_SORT,
+	SELECTED_PLUGIN,
+	SET_EXPLORE_PLUGINS,
 } from 'actions/appActions';
 import { THEME_DEFAULT } from 'config/constants';
 import { getLanguage } from 'utils/string';
@@ -165,6 +168,8 @@ const INITIAL_STATE = {
 	enabledPlugins: [],
 	plugins: [],
 	pluginNames: {},
+	selectedPlugin: {},
+	explorePlugins: [],
 	helpdeskInfo: {
 		has_helpdesk: false,
 		helpdesk_endpoint: '',
@@ -179,6 +184,7 @@ const INITIAL_STATE = {
 	injected_html: {},
 	plugins_injected_html: {},
 	contracts: {},
+	allContracts: {},
 	tradeTab: 0,
 	broker: {},
 	user_payments: {},
@@ -426,6 +432,18 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 				features: payload.features,
 			};
 
+		case SELECTED_PLUGIN:
+			return {
+				...state,
+				selectedPlugin: payload.selectedPlugin,
+			};
+
+		case SET_EXPLORE_PLUGINS:
+			return {
+				...state,
+				explorePlugins: payload.explorePlugins,
+			};
+
 		case SET_PLUGINS: {
 			const enabledPluginsNames = payload.enabledPlugins.map(
 				({ name }) => name
@@ -624,6 +642,12 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				contracts: payload,
+			};
+		}
+		case SET_ALL_CONTRACTS: {
+			return {
+				...state,
+				allContracts: payload,
 			};
 		}
 		case SET_TRADE_TAB: {
