@@ -6,7 +6,7 @@ const COLUMN = 'description';
 module.exports = {
 	up: (queryInterface, Sequelize) =>
 		queryInterface.changeColumn(TABLE, COLUMN, {
-			type: Sequelize.STRING(1000),
+			type: Sequelize.TEXT,
 			allowNull: true
 		}),
 	down: (queryInterface, Sequelize) =>
