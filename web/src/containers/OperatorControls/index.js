@@ -42,6 +42,9 @@ import {
 import { filterThemes } from 'utils/color';
 import { getIconByKey, getAllIconsArray } from 'utils/icon';
 import withEdit from 'components/EditProvider/withEdit';
+import { DASH_TOKEN_KEY } from 'config/constants';
+import { getDashToken } from 'containers/Admin/AdminFinancials/action';
+import { setDashToken } from 'actions/assetActions';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -123,6 +126,10 @@ class OperatorControls extends Component {
 			this.toggleEditMode();
 			this.openThemeSettings();
 		}
+		const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
+		if (!DASH_TOKEN) {
+			this.getDashToken();
+		}
 	}
 
 	componentWillUnmount() {
@@ -146,6 +153,14 @@ class OperatorControls extends Component {
 			});
 		}
 	}
+
+	getDashToken = async () => {
+		const res = await getDashToken();
+		if (res && res.token) {
+			this.props.setDashToken(res.token);
+			localStorage.setItem(DASH_TOKEN_KEY, res.token);
+		}
+	};
 
 	getSelectedLanguages = (languageKeys) => {
 		const isENAvailable = !!languageKeys.find((lang) => lang === 'en');
@@ -1351,6 +1366,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	setAdminSortData: bindActionCreators(setAdminSortData, dispatch),
+	setDashToken: bindActionCreators(setDashToken, dispatch),
 });
 
 export default connect(

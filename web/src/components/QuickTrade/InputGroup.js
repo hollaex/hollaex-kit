@@ -3,7 +3,11 @@ import { oneOfType, array, string, func, number, object } from 'prop-types';
 import { Select, Input } from 'antd';
 import math from 'mathjs';
 import { isNumeric, isFloat } from 'validator';
-import { CaretDownOutlined } from '@ant-design/icons';
+import {
+	CaretDownOutlined,
+	LoadingOutlined,
+	SyncOutlined,
+} from '@ant-design/icons';
 import { isMobile } from 'react-device-detect';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 
@@ -11,10 +15,9 @@ import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
 import withConfig from 'components/ConfigProvider/withConfig';
-import EditWrapper from 'components/EditWrapper';
 import STRINGS from 'config/localizedStrings';
-import { Image } from 'components';
-import { getDecimals } from '../../utils/utils';
+import { Image, EditWrapper } from 'components';
+import { getDecimals } from 'utils/utils';
 
 const { Option } = Select;
 const { Group } = Input;
@@ -58,11 +61,8 @@ class InputGroup extends React.PureComponent {
 			limits,
 			forwardError,
 			availableBalance,
-			estimatedPrice,
 			selectValue,
 			pair,
-			isExistBroker,
-			isShowChartDetails,
 		} = this.props;
 		const keydata = pair.split('-');
 		let error = '';
@@ -80,8 +80,6 @@ class InputGroup extends React.PureComponent {
 			maxValue(limits.MAX)(value)
 		) {
 			error = maxValue(limits.MAX)(value);
-		} else if (!estimatedPrice && !isExistBroker && isShowChartDetails) {
-			error = STRINGS['QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED'];
 		} else if (availableBalance) {
 			error = maxValue(availableBalance)(value);
 		}
@@ -102,7 +100,18 @@ class InputGroup extends React.PureComponent {
 			autoFocus,
 			stringId,
 			coins,
+			loading,
+			expired,
+			disabled,
 		} = this.props;
+
+		const suffix = loading ? (
+			<LoadingOutlined className="secondary-text ml-1" />
+		) : expired ? (
+			<SyncOutlined className="secondary-text ml-1" />
+		) : null;
+
+		const error = translateError(this.renderErrorMessage(inputValue));
 
 		return (
 			<div className="py-2">
@@ -168,11 +177,13 @@ class InputGroup extends React.PureComponent {
 							min={limits.MIN}
 							max={limits.MAX}
 							autoFocus={autoFocus}
+							suffix={suffix}
+							disabled={disabled}
 						/>
 					</Group>
-					{translateError(this.renderErrorMessage(inputValue)) && (
+					{error && (
 						<FieldError
-							error={translateError(this.renderErrorMessage(inputValue))}
+							error={error}
 							displayError={true}
 							className="input-group__error-wrapper"
 						/>

@@ -67,6 +67,8 @@ export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
+export const SET_EXPLORE_PLUGINS = 'SET_EXPLORE_PLUGINS';
+export const SELECTED_PLUGIN = 'SELECTED_PLUGIN';
 export const SET_INFO = 'SET_INFO';
 export const SET_PLUGINS_REQUEST = 'SET_PLUGINS_REQUEST';
 export const SET_PLUGINS_SUCCESS = 'SET_PLUGINS_SUCCESS';
@@ -80,6 +82,7 @@ export const SET_HELPDESK_INFO = 'SET_HELP_INFO';
 export const SET_INJECTED_VALUES = 'SET_INJECTED_VALUES';
 export const SET_INJECTED_HTML = 'SET_INJECTED_HTML';
 export const SET_CONTRACTS = 'SET_CONTRACTS';
+export const SET_ALL_CONTRACTS = 'SET_ALL_CONTRACTS';
 export const SET_TRADE_TAB = 'SET_TRADE_TAB';
 export const SET_SORT_MODE = 'SET_SORT_MODE';
 export const TOGGLE_SORT = 'TOGGLE_SORT';
@@ -90,8 +93,8 @@ export const SORT = {
 };
 
 export const SORT_EXP = {
-	VOL: 'biggest gainers first',
-	CHANGE: 'most actively traded first',
+	VOL: 'most actively traded first',
+	CHANGE: 'biggest gainers first',
 };
 
 export const setSortModeVolume = () => ({
@@ -374,6 +377,24 @@ export const setPlugins = (enabledPlugins) => {
 	};
 };
 
+export const setExplorePlugins = (explorePlugins) => {
+	return {
+		type: SET_EXPLORE_PLUGINS,
+		payload: {
+			explorePlugins,
+		},
+	};
+};
+
+export const setSelectedPlugin = (selectedPlugin) => {
+	return {
+		type: SELECTED_PLUGIN,
+		payload: {
+			selectedPlugin,
+		},
+	};
+};
+
 export const setWebViews = (enabledPlugins) => {
 	return {
 		type: SET_WEB_VIEWS,
@@ -398,9 +419,6 @@ export const setInfo = (info) => ({
 		info,
 	},
 });
-
-export const openFeesStructureandLimits = (data = {}) =>
-	setNotification(FEES_STRUCTURE_AND_LIMITS, data, true);
 
 export const openMarketSelector = (data = {}) =>
 	setNotification(MARKET_SELECTOR, data, true);
@@ -533,3 +551,17 @@ export const setTradeTab = (payload) => ({
 	type: SET_TRADE_TAB,
 	payload,
 });
+
+export const setAllContracts = (payload) => ({
+	type: SET_ALL_CONTRACTS,
+	payload,
+});
+
+export const getNetWorkURL = () => {
+	const {
+		app: {
+			allContracts: { network },
+		},
+	} = store.getState();
+	return network;
+};

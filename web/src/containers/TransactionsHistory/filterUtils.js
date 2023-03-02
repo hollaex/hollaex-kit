@@ -10,18 +10,18 @@ export const dateFilters = () => ({
 	},
 	one_day: {
 		name: STRINGS['ONE_DAY'],
-		range: [moment(new Date()), moment(new Date()).add(1, 'days')] || [],
+		range: [moment().subtract(1, 'days'), moment()] || [],
 	},
 	one_week: {
 		name: STRINGS['ONE_WEEK'],
-		range: [moment(new Date()).subtract(7, 'days'), moment(new Date())] || [],
+		range: [moment().subtract(7, 'days'), moment()] || [],
 	},
 	one_month: {
 		name: STRINGS.formatString(STRINGS['MONTH'], 1),
-		range: [moment(new Date()).subtract(1, 'months'), moment(new Date())] || [],
+		range: [moment().subtract(1, 'months'), moment()] || [],
 	},
 	three_month: {
 		name: STRINGS.formatString(STRINGS['MONTH'], 3),
-		range: [moment(new Date()).subtract(3, 'months'), moment(new Date())] || [],
+		range: [moment().subtract(3, 'months'), moment()] || [],
 	},
 });

@@ -884,7 +884,7 @@ function updateHmacToken(req, res) {
 		ip
 	);
 
-	whitelisted_ips.forEach((ip) => {
+	whitelisted_ips?.forEach((ip) => {
 		if (!toolsLib.validateIp(ip)) {
 			return res.status(400).json({ message: 'IP address is not valid.' });
 		}

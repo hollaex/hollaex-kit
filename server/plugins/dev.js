@@ -3,11 +3,14 @@
 const { checkStatus } = require('../init');
 const express = require('express');
 const morgan = require('morgan');
-const PORT = process.env.PLUGIN_PORT || 10012;
+const PORT = 10013;
 const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
 const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
 const cors = require('cors');
+const sequelize = require('sequelize');
+const bodyParser = require('body-parser');
+const uglifyJs = require('uglify-js');
 const fs = require('fs');
 const path = require('path');
 const toolsLib = require('hollaex-tools-lib');
@@ -15,11 +18,39 @@ const expressValidator = require('express-validator');
 const lodash = require('lodash');
 const npm = require('npm-programmatic');
 const _eval = require('eval');
+const multer = require('multer');
+const moment = require('moment');
+const mathjs = require('mathjs');
+const bluebird = require('bluebird');
+const umzug = require('umzug');
 const rp = require('request-promise');
+const uuid = require('uuid/v4');
+const jwt = require('jsonwebtoken');
+const momentTz = require('moment-timezone');
+const json2csv = require('json2csv');
+const flat = require('flat');
+const ws = require('ws');
+const cron = require('node-cron');
+const randomString = require('random-string');
+const bcryptjs = require('bcryptjs');
+const expectCt = require('expect-ct');
+const validator = require('validator');
+const otp = require('otp');
+const geoipLite = require('geoip-lite');
+const nodemailer = require('nodemailer');
+const wsHeartbeatServer = require('ws-heartbeat/server');
+const wsHeartbeatClient = require('ws-heartbeat/client');
+const winston = require('winston');
 
-const getPluginConfig = () => {
-	return rp('http://host.docker.internal:8080/config.json');
-};
+let pluginName = 'hello';
+if (process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1]) {
+	pluginName = process.argv.slice(2).length && process.argv.slice(2)[0].split('=')[1];
+}
+
+loggerPlugin.info(
+	'plugins/index Running dev mode for plugin:',
+	`${pluginName}`
+);
 
 let config, script;
 
@@ -38,16 +69,12 @@ const installLibrary = async (library) => {
 
 	const lib = require(name);
 	return lib;
-
 };
 
-getPluginConfig()
-	.then((data) => {
-		data = JSON.parse(data);
-		config = data;
-		script = data.script;
-		return checkStatus();
-	})
+config = require(`../dev-plugins/${pluginName}/server/config.json`);
+script = fs.readFileSync(path.resolve(__dirname, `../dev-plugins/${pluginName}/server/script.js`), 'utf8');
+
+checkStatus()
 	.then(async () => {
 		const app = express();
 
@@ -66,8 +93,38 @@ getPluginConfig()
 			module: module,
 			toolsLib,
 			app,
-			loggerPlugin,
+			toolsLib,
+			lodash,
 			expressValidator,
+			loggerPlugin,
+			multer,
+			moment,
+			mathjs,
+			bluebird,
+			umzug,
+			rp,
+			sequelize,
+			uuid,
+			jwt,
+			momentTz,
+			json2csv,
+			flat,
+			ws,
+			cron,
+			randomString,
+			bcryptjs,
+			expectCt,
+			validator,
+			uglifyJs,
+			otp,
+			geoipLite,
+			nodemailer,
+			wsHeartbeatServer,
+			wsHeartbeatClient,
+			cors,
+			winston,
+			bodyParser,
+			morgan,
 			pluginLibraries: {
 				app,
 				toolsLib,
