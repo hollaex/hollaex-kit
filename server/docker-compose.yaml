@@ -76,5 +76,44 @@ services:
     networks:
       - hollaex-kit-network
 
+  hollaex-kit-minio:
+    image: quay.io/minio/minio:RELEASE.2023-02-10T18-48-39Z
+    restart: unless-stopped
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    env_file:
+      - ./tools/hollaex-kit.env.local
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+        reservations:
+          cpus: "0.1"
+          memory: 100M
+    entrypoint: > 
+      /bin/sh -c "
+      minio server --address :9000 --console-address ':9001' /data
+      "
+    networks:
+      - hollaex-kit-network
+      
+  hollaex-kit-minio-createbuckets:
+    image: minio/mc
+    depends_on:
+      - hollaex-kit-minio
+    env_file:
+      - ./tools/hollaex-kit.env.local
+    entrypoint: >
+      /bin/sh -c "
+      sleep 20;
+      mc config host add myminio http://hollaex-kit-minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+      mc mb myminio/hollaex-kit;
+      mc policy download myminio/hollaex-kit;
+      exit 0;
+      "
+    networks:
+      - hollaex-kit-network
+
 networks:
   hollaex-kit-network:
