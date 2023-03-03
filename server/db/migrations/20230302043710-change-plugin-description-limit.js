@@ -12,6 +12,6 @@ module.exports = {
 	down: (queryInterface, Sequelize) =>
 		queryInterface.changeColumn(TABLE, COLUMN, {
 			type: Sequelize.STRING,
-			allowNull: false
+			allowNull: true
 		})
 };
