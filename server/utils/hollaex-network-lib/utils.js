@@ -3,7 +3,7 @@ const crypto = require('crypto');
 const moment = require('moment');
 const { isDate } = require('lodash');
 
-let requestCache = new Map();
+const requestCache = new Map();
 
 const createRequest = (verb, url, headers, opts = { data: null, formData: null }) => {
 	const requestObj = {
@@ -19,25 +19,22 @@ const createRequest = (verb, url, headers, opts = { data: null, formData: null }
 	if (opts.formData) {
 		requestObj.formData = opts.formData;
 	}
-
 	const urlKey = `${verb}-${url}`;
 
-	for (const [url, request] of requestCache.entries()) {
-		if (new Date().getTime() - new Date(request.timestamp).getTime() > 5 * 1000) {
-		  requestCache.delete(url);
-		}
-	}
-	
 	let fetchRequest = null;
-	if (requestCache.has(urlKey)) {
+	if (requestCache.has(urlKey) 
+		&& new Date().getTime() - new Date(requestCache.get(urlKey).timestamp).getTime() < requestCache.get(urlKey).period * 1000) {
 		fetchRequest = requestCache.get(urlKey).request;
 	}
 	else {
 		fetchRequest = rp[verb.toLowerCase()](requestObj);
-		requestCache.set(urlKey, {
-		  timestamp: new Date(),
-		  request: fetchRequest
-		});
+		if(verb === 'GET' && !url.includes('user_id')){
+			requestCache.set(urlKey, {
+				timestamp: new Date(),
+				request: fetchRequest,
+				period: url.includes('chart') ? 40 : 5
+			});
+		}
 	}
 
 	return fetchRequest;
