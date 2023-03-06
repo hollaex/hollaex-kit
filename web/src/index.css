@@ -5749,7 +5749,8 @@ table th {
     width: 20px;
     margin: 1px 3px; }
   .hollaex-token-wrapper .token-wrapper {
-    width: 65%; }
+    width: 65%;
+    height: 100%; }
     .hollaex-token-wrapper .token-wrapper .image-container .coins-icon {
       width: 3.5rem;
       height: 3.5rem; }
@@ -5880,6 +5881,21 @@ table th {
   justify-content: center;
   align-items: center;
   font-size: 18px; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container {
+  display: block; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
+    width: 100%; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container .favourite-content {
+    padding-left: 0px !important; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper .link {
+    text-align: left; }
 
 @media (max-width: 1024px) {
   .token-wrapper {
