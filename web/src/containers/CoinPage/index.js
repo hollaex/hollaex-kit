@@ -49,12 +49,12 @@ const CoinPage = ({
 			return setChartData(chartData);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [pairs]);
 
 	useEffect(() => {
 		handleOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+	}, [data, chartData]);
 
 	const handleOptions = () => {
 		const pairOptions = [];
