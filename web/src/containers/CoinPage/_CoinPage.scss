@@ -28,6 +28,7 @@
 
 	.token-wrapper {
 		width: 65%;
+		height: 100%;
 
 		.image-container {
 			.coins-icon {
@@ -251,6 +252,35 @@
 	justify-content: center;
 	align-items: center;
 	font-size: 18px;
+}
+
+.layout-mobile {
+	.hollaex-token-wrapper .token-wrapper .hollaex-container {
+		display: block;
+
+		.info-container {
+			width: 100%;
+		}
+	}
+
+	.hollaex-token-wrapper .token-wrapper {
+		.header-container {
+			.title {
+				.title-child-container {
+					display: block !important;
+					.favourite-content {
+						padding-left: 0px !important;
+					}
+				}
+			}
+			.balance-wrapper {
+				display: block !important;
+				.link {
+					text-align: left;
+				}
+			}
+		}
+	}
 }
 
 @media (max-width: 1024px) {

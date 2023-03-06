@@ -126,6 +126,7 @@ const GeneralContent = ({
 	const [hideBreadcrumb, setHideBreadcrumb] = useState(false);
 	const [selectedPendingItem, setSelectedPendingItem] = useState({});
 	const [cryptoPayType, setCryptoPay] = useState('');
+	const [activeKey, setActiveKey] = useState('1');
 
 	const planPriceData = priceData[selectedType];
 
@@ -901,7 +902,9 @@ const GeneralContent = ({
 													{item.coin === 'XHT' ? (
 														<>
 															<span>{item.coin} </span>
-															<span className="danger">(discounts may apply)</span>
+															<span className="danger">
+																(discounts may apply)
+															</span>
 															<span>
 																<img
 																	src={STATIC_ICONS['FIRE_BALL']}
@@ -1209,6 +1212,7 @@ const GeneralContent = ({
 
 	const getTableData = (key) => {
 		setIsLoading(true);
+		setActiveKey(key);
 		if (key === '1') {
 			getInvoice({ is_paid: false });
 		} else {
@@ -1217,6 +1221,8 @@ const GeneralContent = ({
 	};
 
 	const handleClickScroll = () => {
+		setActiveKey('2');
+		getInvoice({ is_paid: true });
 		const element = document.getElementById('table-section');
 		if (element) {
 			// 👇 Will scroll smoothly to the top of the next section
@@ -1279,9 +1285,10 @@ const GeneralContent = ({
 			</Modal>
 
 			<Tabs
-				defaultActiveKey={0}
+				defaultActiveKey={activeKey}
 				className="mt-5 tab-border"
 				onChange={getTableData}
+				activeKey={activeKey}
 				id="table-section"
 			>
 				<TabPane tab="Pending" key="1">
