@@ -24,6 +24,7 @@ import {
 	InfoCircleOutlined,
 	CopyOutlined,
 	CheckCircleFilled,
+	ExclamationCircleFilled,
 } from '@ant-design/icons';
 import isEmpty from 'lodash.isempty';
 
@@ -112,6 +113,8 @@ const GeneralContent = ({
 		dashExchange.period !== 'year' ? true : false
 	);
 	const [invoiceData, setinvoiceData] = useState([]);
+	const [currentInvoice, setCurrentInvoice] = useState({});
+	const [activateInvoiceData, setActivateInvoiceData] = useState({});
 	const [priceData, setPriceData] = useState({});
 	const [paymentOptions, setOptions] = useState([]);
 	const [showPayAddress, setShowPayAddress] = useState(false);
@@ -122,6 +125,8 @@ const GeneralContent = ({
 	const [pendingPay, setPendingPay] = useState(false);
 	const [hideBreadcrumb, setHideBreadcrumb] = useState(false);
 	const [selectedPendingItem, setSelectedPendingItem] = useState({});
+	const [cryptoPayType, setCryptoPay] = useState('');
+	const [activeKey, setActiveKey] = useState('1');
 
 	const planPriceData = priceData[selectedType];
 
@@ -300,6 +305,7 @@ const GeneralContent = ({
 		setPaymentAddressDetails({});
 		setPendingPay(false);
 		setHideBreadcrumb(false);
+		setActivateInvoiceData({});
 	};
 
 	const handleViewPlan = () => {
@@ -333,7 +339,9 @@ const GeneralContent = ({
 					default:
 						break;
 				}
-				const invoiceId = selectedPendingId
+				const invoiceId = activateInvoiceData.id
+					? activateInvoiceData.id
+					: selectedPendingId
 					? selectedPendingId
 					: invoiceData[0].id;
 				const res = await requestStoreInvoice(invoiceId, { method });
@@ -343,15 +351,18 @@ const GeneralContent = ({
 							window.location.replace(res.meta.redirect_url);
 							message.success('Redirecting to the paypal');
 							setOpenPlanModal(false);
+							setCurrentInvoice(res.data);
 							break;
 						case 'stripe':
 							window.location.replace(res.meta.redirect_url);
 							message.success('Redirecting to the payment');
 							setOpenPlanModal(false);
+							setCurrentInvoice(res.data);
 							break;
 						case 'bank':
+							setCurrentInvoice(res.data);
 							break;
-						case 'crypto':
+						case 'cryptoCurrency':
 							if (res.method === 'xht' && res.is_paid) {
 								setExchangePlanType('xhtPayment');
 								setPaymentAddressDetails(res);
@@ -360,10 +371,10 @@ const GeneralContent = ({
 							} else {
 								setExchangePlanType('payment');
 							}
-							setinvoiceData({
-								...invoiceData[0],
+							setCurrentInvoice({
+								...currentInvoice,
 								method,
-								meta: { ...invoiceData[0].meta, ...res },
+								meta: { ...currentInvoice.meta, ...res },
 							});
 							setCurrencyAddress(res);
 							break;
@@ -528,6 +539,7 @@ const GeneralContent = ({
 			const res = await getPluginActivateDetails(pluginData.name);
 			if (res && res.data) {
 				setinvoiceData([res.data]);
+				setActivateInvoiceData(res.data);
 				setExchangePlanType('method');
 			}
 		} catch (error) {
@@ -704,6 +716,10 @@ const GeneralContent = ({
 	const onHandleSelectedType = (type) => {
 		setSelectedType(type);
 		setFiatSubmission(false);
+	};
+
+	const handleCryptoPay = (payType) => {
+		setCryptoPay(payType);
 	};
 
 	const renderContent = () => {
@@ -886,7 +902,9 @@ const GeneralContent = ({
 													{item.coin === 'XHT' ? (
 														<>
 															<span>{item.coin} </span>
-															<span className="danger"> (10% discount) </span>
+															<span className="danger">
+																(discounts may apply)
+															</span>
 															<span>
 																<img
 																	src={STATIC_ICONS['FIRE_BALL']}
@@ -912,22 +930,62 @@ const GeneralContent = ({
 					</div>
 				);
 			case 'payment':
+				const balanceAvailable =
+					balance[`${selectedCrypto.coin.toLowerCase()}_available`] || 0;
 				return (
 					<div>
 						<div className="crypto-payment-container">
 							<div className="payment-type-dropdown">
 								<h5>Select how to pay:</h5>
-								{paymentOptions.map((item) => (
-									<Select
-										onChange={() => setTransferCryptoPayment(true)}
-										placeholder="Select payment method"
-										key={item.key}
-									>
-										<Option value={item.key}>{item.value}</Option>
-									</Select>
-								))}
+								<Select
+									onChange={handleCryptoPay}
+									placeholder="Select payment method"
+								>
+									{paymentOptions.map((item) => (
+										<Option value={item.key} key={item.key}>
+											{item.value}
+										</Option>
+									))}
+								</Select>
 							</div>
-							{transferCryptoPayment && (
+							{cryptoPayType === 'pay' ? (
+								<Fragment>
+									<div>
+										<span className="bold">Selected crypto: </span>
+										<span>
+											{selectedCrypto.coin
+												? selectedCrypto.coin.toUpperCase()
+												: ''}
+										</span>
+									</div>
+									<div>
+										<span className="bold">{`Your ${selectedCrypto.coin.toUpperCase()} balance: `}</span>
+										<span>
+											{balanceAvailable} {selectedCrypto.coin.toUpperCase()}
+										</span>
+									</div>
+									{!balanceAvailable ||
+									balanceAvailable < paymentAddressDetails.amount ? (
+										<div className="crypto-error">
+											<ExclamationCircleFilled /> Insufficient balance
+										</div>
+									) : null}
+									<div className="crypto-payment-divider"></div>
+									<div>
+										<div className="crypto-required-amount">
+											Required amount: {paymentAddressDetails.amount}{' '}
+											{paymentAddressDetails.currency
+												? paymentAddressDetails.currency.toUpperCase()
+												: ''}
+										</div>
+										<div className="small-text">
+											The required amount will be directly deducted from your
+											account wallet balance. Please check the details before
+											proceeding.
+										</div>
+									</div>
+								</Fragment>
+							) : cryptoPayType === 'transfer' ? (
 								<div className="payment-details">
 									<span>
 										<h5>Selected Crypto :</h5> <p>{selectedCrypto.coin}</p>
@@ -947,7 +1005,7 @@ const GeneralContent = ({
 										</Button>
 									)}
 								</div>
-							)}
+							) : null}
 							{showPayAddress ? (
 								<div className="qr-container">
 									<div className="qr-text-container">
@@ -983,7 +1041,12 @@ const GeneralContent = ({
 											</div>
 										</div>
 										<div className="scanner-container">
-											<QR value={''} size={100} />
+											<QR
+												value={
+													paymentAddressDetails && paymentAddressDetails.address
+												}
+												size={100}
+											/>
 											<div className="bodyContentSmall">
 												Scannable QR code of payment address
 											</div>
@@ -1080,6 +1143,7 @@ const GeneralContent = ({
 			storePaymentMethod(selectedPendingItem?.id);
 		} else if (exchangePlanType === 'payment') {
 			setOpenPlanModal(false);
+			setActivateInvoiceData({});
 		}
 	};
 
@@ -1148,6 +1212,7 @@ const GeneralContent = ({
 
 	const getTableData = (key) => {
 		setIsLoading(true);
+		setActiveKey(key);
 		if (key === '1') {
 			getInvoice({ is_paid: false });
 		} else {
@@ -1156,6 +1221,8 @@ const GeneralContent = ({
 	};
 
 	const handleClickScroll = () => {
+		setActiveKey('2');
+		getInvoice({ is_paid: true });
 		const element = document.getElementById('table-section');
 		if (element) {
 			// 👇 Will scroll smoothly to the top of the next section
@@ -1218,9 +1285,10 @@ const GeneralContent = ({
 			</Modal>
 
 			<Tabs
-				defaultActiveKey={0}
+				defaultActiveKey={activeKey}
 				className="mt-5 tab-border"
 				onChange={getTableData}
+				activeKey={activeKey}
 				id="table-section"
 			>
 				<TabPane tab="Pending" key="1">

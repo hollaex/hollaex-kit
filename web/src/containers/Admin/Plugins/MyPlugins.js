@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Input, Spin, Modal, message } from 'antd';
+import { Button, Input, Modal, message } from 'antd';
 import _debounce from 'lodash/debounce';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -289,7 +289,9 @@ class MyPlugins extends Component {
 		const { myPlugins, isPluginFetchLoading } = this.props;
 
 		return (
-			<div className={!is_zoom ? 'myplugin-container' : ''}>
+			<div
+				className={`myplugin-wrapper ${!is_zoom ? 'myplugin-container' : ''}`}
+			>
 				<div className="header">My plugins apps</div>
 				<div className="d-flex my-plugin-content">
 					<div>
@@ -309,7 +311,7 @@ class MyPlugins extends Component {
 					</div>
 					<div>
 						<Button type="primary" onClick={this.handlePlugin}>
-							ADD THIRD PARTY PLUGIN.
+							ADD THIRD PARTY PLUGIN
 						</Button>
 					</div>
 				</div>
@@ -333,35 +335,29 @@ class MyPlugins extends Component {
 								: `url(${STATIC_ICONS.EXCHANGE_APP_STORE_BACKGROUND_SPLASH_2})`,
 						}}
 					>
-						<Spin
-							spinning={isPluginFetchLoading}
-							className="plugin-spinner"
-							size="large"
-						>
-							{myPlugins.length ? (
-								<>{this.renderList()}</>
-							) : (
-								!isPluginFetchLoading && (
-									<div className="installed-plugin">
-										<div>
-											{this.state.isSearchTerm ? (
-												<>Can't find any plugin apps by that search term.</>
-											) : (
-												<>You haven't installed any exchange plugin apps yet.</>
-											)}
-										</div>
-										{!this.state.isSearchTerm ? (
-											<div onClick={this.onHandleRedirect}>
-												<span className="underline-text m-3 pointer">
-													Click here
-												</span>{' '}
-												to find more plugin apps.
-											</div>
-										) : null}
+						{myPlugins.length ? (
+							<>{this.renderList()}</>
+						) : (
+							!isPluginFetchLoading && (
+								<div className="installed-plugin">
+									<div>
+										{this.state.isSearchTerm ? (
+											<>Can't find any plugin apps by that search term.</>
+										) : (
+											<>You haven't installed any exchange plugin apps yet.</>
+										)}
 									</div>
-								)
-							)}
-						</Spin>
+									{!this.state.isSearchTerm ? (
+										<div onClick={this.onHandleRedirect}>
+											<span className="underline-text m-3 pointer">
+												Click here
+											</span>{' '}
+											to find more plugin apps.
+										</div>
+									) : null}
+								</div>
+							)
+						)}
 					</div>
 
 					<div className="container-wrapper" onClick={this.onHandleRedirect}>

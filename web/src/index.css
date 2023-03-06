@@ -392,8 +392,8 @@ table th {
     height: auto;
     flex: 1; }
   .app_container.layout-mobile .app_container-content {
-    min-height: calc( 100vh - 10rem);
-    max-height: calc( 100vh - 10rem);
+    min-height: calc( 100vh - 10rem);
+    max-height: calc( 100vh - 10rem);
     max-width: 100vw;
     overflow-y: scroll; }
     .app_container.layout-mobile .app_container-content.chart-embed {
@@ -411,8 +411,8 @@ table th {
       .app_container.layout-mobile .app_container-content .app_container-main.no_bottom_navigation {
         height: 100%; }
   .app_container.layout-mobile .content-with-bar {
-    min-height: calc( 100vh - 17rem);
-    max-height: calc( 100vh - 17rem);
+    min-height: calc( 100vh - 17rem);
+    max-height: calc( 100vh - 17rem);
     max-width: 100vw;
     padding: 1rem;
     margin: 0;
@@ -536,7 +536,6 @@ table th {
   .wallet_section-title-amount,
   .wallet_section-title,
   .trade_tabs-container .trade_tabs-content,
-  .toogle_button-wrapper .toogle-content,
   .trade_block-wrapper .trade_block-content,
   .information_block-text_wrapper .text,
   .qr-text,
@@ -571,7 +570,6 @@ table th {
   .wallet_section-title-amount,
   .wallet_section-title,
   .trade_tabs-container .trade_tabs-content,
-  .toogle_button-wrapper .toogle-content,
   .trade_block-wrapper .trade_block-content,
   .information_block-text_wrapper .text,
   .qr-text,
@@ -3422,8 +3420,8 @@ table th {
 .layout-mobile .quote-container {
   background-color: transparent;
   overflow-y: scroll;
-  min-height: calc( 100vh - 17rem);
-  max-height: calc( 100vh - 17rem); }
+  min-height: calc( 100vh - 17rem);
+  max-height: calc( 100vh - 17rem); }
   .layout-mobile .quote-container .quick_trade-wrapper {
     flex: 1 1;
     min-width: 95vw !important;
@@ -3577,7 +3575,7 @@ table th {
 
 .layout-mobile .presentation_container.verification_container {
   padding-top: 0 !important;
-  max-height: calc( 100vh - 10rem); }
+  max-height: calc( 100vh - 10rem); }
   .layout-mobile .presentation_container.verification_container .header-content {
     font-size: 13px !important; }
 
@@ -5751,7 +5749,8 @@ table th {
     width: 20px;
     margin: 1px 3px; }
   .hollaex-token-wrapper .token-wrapper {
-    width: 65%; }
+    width: 65%;
+    height: 100%; }
     .hollaex-token-wrapper .token-wrapper .image-container .coins-icon {
       width: 3.5rem;
       height: 3.5rem; }
@@ -5821,7 +5820,6 @@ table th {
           .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .button-2 {
             margin: 0 10px 0 10px; }
       .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
-        width: 40%;
         padding: 40px 65px 30px 55px;
         font-family: "Open Sans";
         background-color: var(--base_background); }
@@ -5884,9 +5882,42 @@ table th {
   align-items: center;
   font-size: 18px; }
 
+.layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container {
+  display: block; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
+    width: 100%; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container .favourite-content {
+    padding-left: 0px !important; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper .link {
+    text-align: left; }
+
 @media (max-width: 1024px) {
   .token-wrapper {
     width: 100% !important; } }
+
+@media (max-width: 1400px) {
+  .hollaex-token-wrapper .token-wrapper {
+    width: 80%; } }
+
+@media (max-width: 1200px) {
+  .hollaex-token-wrapper .token-wrapper {
+    width: 100%; }
+    .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
+      padding: 40px 45px 30px 45px; }
+      .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
+        font-size: 2rem; } }
+
+@media (max-width: 768px) {
+  .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
+    padding: 40px 35px 30px 35px; }
+    .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
+      font-size: 1.5rem !important; } }
 
 .sidebar-row {
   min-height: 3rem;
@@ -6053,7 +6084,7 @@ table th {
     padding: 0.3rem 0; }
     .modal-market-menu .app-bar-add-tab-content .scroll-view {
       overflow-y: auto;
-      height: calc( 100vh - 19rem - 8rem); }
+      height: calc( 100vh - 19rem - 8rem); }
   .modal-market-menu .app-bar-tab-overflow-content {
     background-color: var(--base_background);
     color: var(--labels_secondary-inactive-label-text-graphics);
@@ -8866,14 +8897,14 @@ table th {
   right: 0 !important;
   min-width: 100vw;
   max-width: 100vw;
-  min-height: calc( 100vh - 4rem);
-  max-height: calc( 100vh - 4rem);
+  min-height: calc( 100vh - 4rem);
+  max-height: calc( 100vh - 4rem);
   border-radius: 0 !important;
   padding: 0 !important; }
   .layout-mobile .ReactModal__Content .dialog-mobile-content {
     padding: 2.5rem !important;
-    min-height: calc( 100vh - 8rem);
-    max-height: calc( 100vh - 8rem);
+    min-height: calc( 100vh - 8rem);
+    max-height: calc( 100vh - 8rem);
     display: flex; }
 
 .layout-mobile.LogoutModal .ReactModal__Content {
@@ -10117,10 +10148,6 @@ table th {
   font-family: inherit; }
   .language_rtl .quick_trade-wrapper .input_block-title {
     font-family: inherit; }
-  .language_rtl .quick_trade-wrapper .toogle_button-wrapper .toogle-content {
-    font-family: inherit; }
-    .language_rtl .quick_trade-wrapper .toogle_button-wrapper .toogle-content .selected {
-      font-family: inherit; }
 
 .direction_ltr .quick_trade-wrapper {
   font-family: "Raleway"; }
@@ -10162,56 +10189,9 @@ table th {
   height: fit-content;
   height: 550px;
   border: 1px solid var(--calculated_super-pale_label-text-graphics); }
-  .quick_trade-wrapper .review-block-wrapper,
-  .quick_trade-wrapper .input_block-wrapper,
-  .quick_trade-wrapper .toogle_button-wrapper {
+  .quick_trade-wrapper .review-block-wrapper {
     margin: 1rem 0;
     width: auto; }
-  .quick_trade-wrapper .toogle_button-wrapper .toogle-content {
-    padding: 0 1rem;
-    text-transform: uppercase;
-    padding: 0 0.5rem;
-    font-size: 1rem;
-    color: var(--labels_secondary-inactive-label-text-graphics);
-    height: 22px;
-    font-family: "Raleway Medium"; }
-    .quick_trade-wrapper .toogle_button-wrapper .toogle-content .selected {
-      font-family: "Raleway Extrabold";
-      font-weight: bold;
-      color: var(--labels_important-active-labels-text-graphics); }
-    .quick_trade-wrapper .toogle_button-wrapper .toogle-content .toogle-action_button {
-      border: 2px solid var(--labels_important-active-labels-text-graphics);
-      height: 100%;
-      width: 42px;
-      border-radius: 14px;
-      margin: 0 0.5rem;
-      display: flex;
-      align-items: center;
-      position: relative; }
-      .quick_trade-wrapper .toogle_button-wrapper .toogle-content .toogle-action_button.left .toogle-action_button-display {
-        right: calc(100% - 18px); }
-      .quick_trade-wrapper .toogle_button-wrapper .toogle-content .toogle-action_button.right .toogle-action_button-display {
-        right: 0; }
-      .quick_trade-wrapper .toogle_button-wrapper .toogle-content .toogle-action_button .toogle-action_button-display {
-        position: absolute;
-        transition: 0.5s;
-        background: var(--labels_important-active-labels-text-graphics);
-        height: 14px;
-        width: 14px;
-        border-radius: 50%;
-        margin: 2px;
-        top: 0; }
-  .quick_trade-wrapper .toogle_button-wrapper .toogle-side_line {
-    position: relative; }
-    .quick_trade-wrapper .toogle_button-wrapper .toogle-side_line::after {
-      content: '';
-      height: 1px;
-      width: 100%;
-      position: absolute;
-      background-color: var(--calculated_important-border);
-      left: 0;
-      right: 0;
-      top: 50%; }
   .quick_trade-wrapper .review-block-wrapper .currency-wrapper {
     margin: 0.5rem auto;
     font-size: 4rem;
@@ -10225,54 +10205,9 @@ table th {
     color: red;
     margin-top: 0.5rem;
     float: right; }
-  .quick_trade-wrapper .input_block-wrapper {
-    margin-bottom: 0; }
   .quick_trade-wrapper .input_block-title {
     font-size: 1.3rem;
     font-family: "Raleway Medium"; }
-  .quick_trade-wrapper .input_block-content {
-    border-bottom: 2px solid var(--calculated_important-border);
-    width: 100%; }
-    .quick_trade-wrapper .input_block-content.has_error {
-      border-bottom-color: var(--specials_notifications-alerts-warnings); }
-    .quick_trade-wrapper .input_block-content .input_block-input-wrapper {
-      width: auto;
-      position: relative; }
-      .quick_trade-wrapper .input_block-content .input_block-input-wrapper .input_block-inputbox {
-        font-size: 1.8rem;
-        margin: 0.5rem 1.5rem;
-        border: none !important;
-        border-radius: 0 !important;
-        padding: 0 !important;
-        text-align: left;
-        margin-left: 2rem; }
-      .quick_trade-wrapper .input_block-content .input_block-input-wrapper .input_block-currency_ball {
-        position: absolute;
-        left: -0.5rem; }
-      .quick_trade-wrapper .input_block-content .input_block-input-wrapper .react-numeric-input > b {
-        visibility: hidden; }
-    .quick_trade-wrapper .input_block-content.loading {
-      position: relative;
-      border-bottom-color: var(--labels_secondary-inactive-label-text-graphics); }
-      .quick_trade-wrapper .input_block-content.loading:after {
-        content: '';
-        display: block;
-        animation: linear_loading 2s linear infinite;
-        height: 2px;
-        width: 100px;
-        position: absolute;
-        background-color: var(--coin-eur);
-        bottom: -2px;
-        left: 0;
-        right: 0; }
-    .quick_trade-wrapper .input_block-content.loading.btc::after {
-      background-color: var(--coin-btc); }
-    .quick_trade-wrapper .input_block-content.loading.bch::after {
-      background-color: var(--coin-bch); }
-    .quick_trade-wrapper .input_block-content.loading.eth::after {
-      background-color: var(--coin-eth); }
-    .quick_trade-wrapper .input_block-content.loading.ltc::after {
-      background-color: var(--coin-ltc); }
   .quick_trade-wrapper .trade-details-wrapper {
     width: 100%;
     padding: 40px 65px 30px 55px;
@@ -10385,16 +10320,6 @@ table th {
   100% {
     width: 0;
     left: 100%; } }
-
-.layout-mobile .quick_trade-section_wrapper .toogle_button-wrapper .toogle-content {
-  font-size: 13px !important; }
-
-.layout-mobile .quick_trade-section_wrapper .input_block-wrapper .input_block-content .input_block-title {
-  font-size: 13px !important; }
-
-.layout-mobile .quick_trade-section_wrapper .input_block-wrapper .field-error-content {
-  width: auto;
-  font-size: 11px; }
 
 .layout-mobile .quick_trade-section_wrapper .review-block-wrapper .input_block-title {
   font-size: 13px; }
@@ -11508,6 +11433,10 @@ table th {
   color: var(--specials_notifications-alerts-warnings);
   padding-top: 3rem;
   padding-bottom: 3rem; }
+
+.price-change.large {
+  font-size: 2rem;
+  font-weight: 700; }
 
 .price-change .price-diff {
   color: var(--labels_secondary-inactive-label-text-graphics);

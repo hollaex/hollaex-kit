@@ -9,7 +9,7 @@ const PluginSubscription = ({
 	paymentAddressDetails,
 	exchangePlanType,
 }) => {
-	const { logo, price, name, payment_type, author } = pluginData;
+	const { icon, price, name, payment_type, author } = pluginData;
 
 	return (
 		<div className="horizantal-line">
@@ -18,17 +18,16 @@ const PluginSubscription = ({
 				<div className="plugin-plan-card">
 					<div className="card-icon">
 						<img
-							src={logo ? logo : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
-							alt={'logo'}
+							src={icon ? icon : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
+							alt={'icon'}
 							className="plugin-icon"
 						/>
 					</div>
 
 					<div>
-						<div>PLUGIN APP</div>
+						<div>{name}</div>
 						<div className="bold">{`${price}-${name}-${payment_type}`}</div>
-						<div>{`${price} ${name} ${payment_type} for processing iDenfy.`}</div>
-						<div>Save 6%.</div>
+						<div>{`${name} ${payment_type}`}</div>
 						<div className="d-flex mt-2 gray-text">
 							<InfoCircleOutlined />
 							<div>Requires plugin activation ({name})</div>
@@ -69,13 +68,13 @@ const PluginSubscription = ({
 						Cost :
 						{paymentAddressDetails?.activation &&
 						paymentAddressDetails?.activation?.price
-							? `${paymentAddressDetails?.activation?.price}* USDT`
+							? `${paymentAddressDetails?.activation?.price} USDT`
 							: !['method', 'item'].includes(exchangePlanType) &&
 							  paymentAddressDetails?.currency
 							? `${paymentAddressDetails?.currency?.toUpperCase()} ${
 									paymentAddressDetails?.amount
 							  }`
-							: `${price}* USDT`}
+							: `${price} USDT`}
 					</p>
 				</div>
 			</div>

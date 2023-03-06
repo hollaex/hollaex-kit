@@ -300,15 +300,13 @@ class Plugins extends Component {
 
 	handleRestart = (callback) => {
 		this.setProcessing();
-		setTimeout(() => {
-			this.getPluginsData()
-				.then(() => {
-					this.setProcessing(false, callback);
-				})
-				.catch(() => {
-					this.handleRestart(callback);
-				});
-		}, 30000);
+		this.getPluginsData()
+			.then(() => {
+				this.setProcessing(false, callback);
+			})
+			.catch(() => {
+				this.handleRestart(callback);
+			});
 	};
 
 	setProcessing = (processing = true, callback) => {
@@ -468,7 +466,7 @@ class Plugins extends Component {
 
 	onHandleBack = () => {
 		this.setState((nextType) => {
-			return { nextType };
+			return { nextType, type: '', isConfigure: false };
 		});
 	};
 
@@ -674,6 +672,7 @@ class Plugins extends Component {
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
 							router={this.props.router}
+							setProcessing={this.setProcessing}
 						/>
 					</div>
 				);
@@ -710,7 +709,7 @@ class Plugins extends Component {
 	};
 
 	render() {
-		const { loading, isVisible, processing, nextType } = this.state;
+		const { loading, isVisible, processing, nextType, isLoading } = this.state;
 
 		if (loading || this.props.pluginsLoading) {
 			return (
@@ -720,15 +719,22 @@ class Plugins extends Component {
 			);
 		}
 		return (
-			<div className="admin-plugins-wrapper">
+			<div
+				className={`admin-plugins-wrapper ${
+					nextType === 'myPlugin' ? 'gradient-bottom' : ''
+				}`}
+			>
 				<div
 					className={
 						nextType === 'configure'
 							? 'plugins-wrapper'
 							: 'app_container-content admin-earnings-container admin-plugin-container'
 					}
+					style={{ height: nextType === 'myPlugin' ? 'auto' : '100%' }}
 				>
-					{this.renderContent()}
+					<Spin spinning={isLoading} className="plugin-spinner" size="large">
+						{this.renderContent()}
+					</Spin>
 				</div>
 				<Modal visible={isVisible} footer={null} onCancel={this.onCancelModal}>
 					{this.renderModalContent()}

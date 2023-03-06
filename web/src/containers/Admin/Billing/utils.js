@@ -281,7 +281,12 @@ export const columns = (onHandlePendingPay) => {
 								Unpaid{' '}
 							</Tag>
 							<span>
-								<Link onClick={() => onHandlePendingPay(item)}>Pay</Link>
+								<Link
+									onClick={() => onHandlePendingPay(item)}
+									className="text-underline"
+								>
+									Pay
+								</Link>
 							</span>
 						</div>
 					);
