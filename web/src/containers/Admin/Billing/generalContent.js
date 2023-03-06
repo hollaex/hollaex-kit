@@ -901,7 +901,7 @@ const GeneralContent = ({
 													{item.coin === 'XHT' ? (
 														<>
 															<span>{item.coin} </span>
-															<span className="danger"> (10% discount) </span>
+															<span className="danger">(discounts may apply)</span>
 															<span>
 																<img
 																	src={STATIC_ICONS['FIRE_BALL']}
