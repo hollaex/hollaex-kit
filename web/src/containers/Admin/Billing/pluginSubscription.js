@@ -9,7 +9,7 @@ const PluginSubscription = ({
 	paymentAddressDetails,
 	exchangePlanType,
 }) => {
-	const { logo, price, name, payment_type, author } = pluginData;
+	const { icon, price, name, payment_type, author } = pluginData;
 
 	return (
 		<div className="horizantal-line">
@@ -30,9 +30,7 @@ const PluginSubscription = ({
 						<div>{`${name} ${payment_type}`}</div>
 						<div className="d-flex mt-2 gray-text">
 							<InfoCircleOutlined />
-							<div>
-								Requires plugin activation ({name})
-							</div>
+							<div>Requires plugin activation ({name})</div>
 						</div>
 						<div className="d-flex mt-2 gray-text footer-text">
 							<span className="d-flex">

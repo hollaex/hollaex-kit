@@ -149,7 +149,6 @@
 			}
 
 			.trade-details-wrapper {
-				width: 40%;
 				padding: 40px 65px 30px 55px;
 				font-family: $en--font-family;
 				background-color: $app-background-color;
@@ -260,12 +259,35 @@
 	}
 }
 
+@media (max-width: 1400px) {
+	.hollaex-token-wrapper .token-wrapper {
+		width: 80%;
+	}
+}
+
+@media (max-width: 1200px) {
+	.hollaex-token-wrapper .token-wrapper {
+		width: 100%;
+
+		.hollaex-container .trade-details-wrapper {
+			padding: 40px 45px 30px 45px;
+
+			.trade-details-content .trade_tabs-container {
+				font-size: 2rem;
+			}
+		}
+	}
+}
+
 @media (max-width: 768px) {
 	.hollaex-token-wrapper
 		.token-wrapper
 		.hollaex-container
 		.trade-details-wrapper {
-		width: 45%;
-		padding: 40px 50px 30px 50px;
+		padding: 40px 35px 30px 35px;
+
+		.trade-details-content .trade_tabs-container {
+			font-size: 1.5rem !important;
+		}
 	}
 }
