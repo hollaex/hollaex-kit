@@ -18,21 +18,20 @@ const PluginSubscription = ({
 				<div className="plugin-plan-card">
 					<div className="card-icon">
 						<img
-							src={logo ? logo : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
-							alt={'logo'}
+							src={icon ? icon : STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL}
+							alt={'icon'}
 							className="plugin-icon"
 						/>
 					</div>
 
 					<div>
-						<div>PLUGIN APP</div>
+						<div>{name}</div>
 						<div className="bold">{`${price}-${name}-${payment_type}`}</div>
-						<div>{`${price} ${name} ${payment_type} for processing iDenfy.`}</div>
-						<div>Save 6%.</div>
+						<div>{`${name} ${payment_type}`}</div>
 						<div className="d-flex mt-2 gray-text">
 							<InfoCircleOutlined />
 							<div>
-								Requires plugin activation ({price}-{name})
+								Requires plugin activation ({name})
 							</div>
 						</div>
 						<div className="d-flex mt-2 gray-text footer-text">
