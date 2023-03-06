@@ -4,8 +4,13 @@ const moment = require('moment');
 const { isDate } = require('lodash');
 
 const requestCache = new Map();
+const cachePeriods = {
+	'chart': 40,
+	'charts': 40,
+	'oracle': 60
+}
 
-const createRequest = (verb, url, headers, opts = { data: null, formData: null }) => {
+const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
 	const requestObj = {
 		headers,
 		url,
@@ -32,7 +37,7 @@ const createRequest = (verb, url, headers, opts = { data: null, formData: null }
 			requestCache.set(urlKey, {
 				timestamp: new Date(),
 				request: fetchRequest,
-				period: url.includes('chart') ? 40 : 5
+				period: cachePeriods[baseUrl] || 5
 			});
 		}
 	}
