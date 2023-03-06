@@ -49,12 +49,12 @@ const CoinPage = ({
 			return setChartData(chartData);
 		});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [pairs]);
 
 	useEffect(() => {
 		handleOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [data]);
+	}, [data, chartData]);
 
 	const handleOptions = () => {
 		const pairOptions = [];
@@ -181,12 +181,12 @@ const CoinPage = ({
 					</div>
 					<div className="pl-2 header-container">
 						<div className="title">
-							<div className="d-flex justify-content-between">
+							<div className="d-flex justify-content-between title-child-container">
 								<div>
 									<span>{pairBase_fullName}</span> {currentCoinUpper}
 								</div>
 								<div
-									className="pl-3 pr-2"
+									className="pl-3 pr-2 favourite-content"
 									onClick={() => toggleFavourite(selectedPairCoins?.key)}
 								>
 									{isFavourite(selectedPairCoins?.key) ? (
