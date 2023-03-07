@@ -3,7 +3,14 @@ const crypto = require('crypto');
 const moment = require('moment');
 const { isDate } = require('lodash');
 
-const createRequest = (verb, url, headers, opts = { data: null, formData: null }) => {
+const requestCache = new Map();
+const cachePeriods = {
+	'chart': 40,
+	'charts': 40,
+	'oracle': 60
+}
+
+const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
 	const requestObj = {
 		headers,
 		url,
@@ -17,8 +24,25 @@ const createRequest = (verb, url, headers, opts = { data: null, formData: null }
 	if (opts.formData) {
 		requestObj.formData = opts.formData;
 	}
+	const urlKey = `${verb}-${url}`;
 
-	return rp[verb.toLowerCase()](requestObj);
+	let fetchRequest = null;
+	if (requestCache.has(urlKey) 
+		&& new Date().getTime() - new Date(requestCache.get(urlKey).timestamp).getTime() < requestCache.get(urlKey).period * 1000) {
+		fetchRequest = requestCache.get(urlKey).request;
+	}
+	else {
+		fetchRequest = rp[verb.toLowerCase()](requestObj);
+		if(verb === 'GET' && !url.includes('user_id')){
+			requestCache.set(urlKey, {
+				timestamp: new Date(),
+				request: fetchRequest,
+				period: cachePeriods[baseUrl] || 5
+			});
+		}
+	}
+
+	return fetchRequest;
 };
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
