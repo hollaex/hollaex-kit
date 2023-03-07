@@ -147,7 +147,7 @@ type: docker
 name: slack_notify
 
 steps:
-- name: partymaker_version_tag_testnet
+- name: partymaker_version_tag
   image: alpine
   commands:
   - cat version > .tags
@@ -155,7 +155,7 @@ steps:
   when:
     branch: master
 
-- name: partymaker_version_tag
+- name: partymaker_version_tag_testnet
   image: alpine
   commands:
   - echo "$(cat version)-testnet" > .tags
