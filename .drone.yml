@@ -56,17 +56,17 @@ steps:
   when:
     branch: testnet
 
-- name: slack_noti_job_start_testnet
+- name: slack_noti_job_start_master
   image: plugins/slack
   settings:
     channel: deployment
     webhook:
       from_secret: slack_webhook
-    template: "<{{build.link}}|HollaEx Kit Testnet AMD64 Build> - #{{build.number}} started on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}} / {{build.branch}}> by {{build.author}}"
+    template: "<{{build.link}}|HollaEx Kit Master AMD64 Build> - #{{build.number}} started on <https://github.com/{{repo.owner}}/{{repo.name}}/tree/{{build.branch}}|{{repo.name}} / {{build.branch}}> by {{build.author}}"
   when:
     branch: master
 
-- name: docker_tagging_amd64
+- name: docker_tagging_amd64)testnet
   image: alpine
   commands: 
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo " $PACKAGE_VERSION-${DRONE_BRANCH}-$GIT_COMMIT_SHORT" > .tags
@@ -75,7 +75,7 @@ steps:
   when:
     branch: testnet
 
-- name: docker_tagging_amd64
+- name: docker_tagging_amd64_master
   image: alpine
   commands: 
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo " $PACKAGE_VERSION,$PACKAGE_VERSION-amd64" > .tags
