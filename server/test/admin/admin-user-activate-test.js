@@ -19,25 +19,38 @@ describe('tests for /admin/user/activate', function () {
 
 	//Integration Testing
 	it('Integration Test -should respond 200 for "Success"', async () => {
+
+		const testUser = {
+            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
+            password: "test112233.",
+            long_term: true
+        }
+        const createdUser = await request()
+            .post(`/v2/signup/`)
+            .send(testUser);
+
+        const userObject = await tools.user.getUserByEmail(testUser.email);
+        createdUser.body.id = userObject.id;
+
 		const response = await request()
 			.post('/v2/admin/user/activate')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({
-				'user_id': user.id,
+				'user_id': createdUser.body.id,
 				'activated': false
 			});
 
 		response.should.have.status(200);
-		response.body.activated.should.equal(false);
 		response.should.be.json;
 
-		await request()
-			.post('/v2/admin/user/activate')
-			.set('Authorization', `Bearer ${bearerToken}`)
-			.send({
-				'user_id': user.id,
-				'activated': true
-			});
+
+		const userResponse = await request()
+			.get(`/v2/admin/users?search=${testUser.email}`)
+			.set('Authorization', `Bearer ${bearerToken}`);
+
+
+		userResponse.body.data[0].activated.should.equal(false);
+	
 	});
 
 

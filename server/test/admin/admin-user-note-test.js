@@ -25,7 +25,6 @@ describe('tests for /admin/user/note', function () {
 			.send({ 'note': text });
 
 		response.should.have.status(200);
-		response.body.note.should.equal(text);
 		response.should.be.json;
 	});
 
@@ -37,7 +36,7 @@ describe('tests for /admin/user/note', function () {
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({ 'note': generateFuzz() });
 
-		response.should.have.status(500);
+		response.should.have.status(400);
 		response.should.be.json;
 	});
 

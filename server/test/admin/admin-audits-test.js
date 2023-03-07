@@ -20,8 +20,8 @@ describe('tests for /admin/audits', function () {
 	//Integration Testing
 	it('Integration Test -should respond 200 for "Success"', async () => {
 		const response = await request()
+			.get('/v2/admin/audits')
 			.set('Authorization', `Bearer ${bearerToken}`)
-			.get('/v2/admin/audits');
 
 		response.should.have.status(200);
 		response.should.be.json;
@@ -30,8 +30,8 @@ describe('tests for /admin/audits', function () {
 	//Fuz Testing
 	it('Fuzz Test -should return error', async () => {
 		const response = await request()
+			.get(`/v2/admin/audits?format=${generateFuzz()}`)
 			.set('Authorization', `Bearer ${bearerToken}`)
-			.get(`/v2/admin/audits?format=${generateFuzz()}`);
 
 		response.should.have.status(500);
 		response.should.be.json;

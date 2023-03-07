@@ -60,7 +60,7 @@ describe('tests for /admin/user', function () {
 				'nationality': testNationality
 			});
 
-		response.should.have.status(500);
+		response.should.have.status(400);
 		response.should.be.json;
 	});
 

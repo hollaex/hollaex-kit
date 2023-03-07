@@ -25,7 +25,8 @@ describe('tests for /admin/flag-user', function () {
         const createdUser = await request()
             .post(`/v2/signup/`)
             .send(testUser);
-
+        const userObject = await tools.user.getUserByEmail(testUser.email);
+        createdUser.body.id = userObject.id;
 
         const response = await request()
             .post(`/v2/admin/flag-user`)

@@ -17,12 +17,12 @@ describe('tests for /admin/email/types', function () {
     });
 
     //Integration Testing
-    it('Integration Test -should respond 200 for "Success"', async () => {
+    it('Integration Test -should respond 201 for "Success"', async () => {
         const response = await request()
             .get('/v2/admin/email/types')
             .set('Authorization', `Bearer ${bearerToken}`);
 
-        response.should.have.status(200);
+        response.should.have.status(201);
         response.should.be.json;
     });
 

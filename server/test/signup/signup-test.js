@@ -3,7 +3,7 @@ const {
     generateFuzz
 } = require('../helpers');
 
-describe('Auth Flow', async () => {
+describe('Signup Flow', async () => {
 
     // Intergration Testing
     it('Integration Test -should signup successfuly', async () => {

@@ -26,6 +26,8 @@ describe('tests for /admin/deposits', function () {
             .post(`/v2/signup/`)
             .send(testUser);
 
+		const userObject = await tools.user.getUserByEmail(testUser.email);
+        createdUser.body.id = userObject.id;
         const transaction = {
             sender_id: user.id,
             receiver_id: createdUser.body.id,

@@ -28,7 +28,7 @@ describe('tests for /admin/deactivate-otp', function () {
 
 
 		const response = await request()
-			.post('/v2/admin/admin/deactivate-otp')
+			.post('/v2/admin/deactivate-otp')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({ user_id: user.id });
 
@@ -53,7 +53,7 @@ describe('tests for /admin/deactivate-otp', function () {
 	//Fuz Testing
 	it('Fuzz Test -should return error', async () => {
 		const response = await request()
-			.post('/v2/admin/admin/deactivate-otp')
+			.post('/v2/admin/deactivate-otp')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({ user_id: generateFuzz() });
 

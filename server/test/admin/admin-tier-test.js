@@ -19,9 +19,9 @@ describe('tests for /admin/tier', function () {
 
       //Integration Testing
 	it('Integration Test -should respond 200 for Success', async () => {
-        const data = { "level": 0, "name": "dolore", "icon": "aliqua ut ullamco ut magna", "description": "consectetur Lorem veniam", "deposit_limit": 10, "withdrawal_limit": 106, "fees": { "maker": { "default": 10 }, "taker": { "default": 7894791.751768798 } }, "note": "elit" }
+        const data = { "level": Math.floor(Math.random() * 10000), "name": generateFuzz(4), "icon":  generateFuzz(5), "description":  generateFuzz(6),"deposit_limit": 10, "withdrawal_limit": 106, "fees": { "maker": { "default": 10 }, "taker": { "default": 7894791.751768798 } }, "note": "elit" }
 		const response = await request()
-			.post(`/v2/admin/admin/tier`)
+			.post(`/v2/admin/tier`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send(data)
 
@@ -34,9 +34,9 @@ describe('tests for /admin/tier', function () {
 
 
     it('Integration Test -should respond 400 for trying to update limits', async () => {
-        const data = { "level": 0, "name": "dolore", "icon": "aliqua ut ullamco ut magna", "description": "consectetur Lorem veniam", "deposit_limit": 10, "withdrawal_limit": 106, "fees": { "maker": { "default": 10 }, "taker": { "default": 7894791.751768798 } }, "note": "elit" }
+        const data = { "level": 0, "name": generateFuzz(4), "icon":  generateFuzz(5), "description":  generateFuzz(6), "deposit_limit": 10, "withdrawal_limit": 106, "fees": { "maker": { "default": 10 }, "taker": { "default": 7894791.751768798 } }, "note": "elit" }
 		const response = await request()
-			.post(`/v2/admin/admin/tier`)
+			.put(`/v2/admin/tier`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send(data)
 
@@ -50,7 +50,7 @@ describe('tests for /admin/tier', function () {
     it('Fuz Test -should return error', async () => {
         const data = { "level": generateFuzz(), "name": generateFuzz(), "icon": generateFuzz(), "description": generateFuzz(), "deposit_limit": 10, "withdrawal_limit": 106, "fees": { "maker": { "default": 10 }, "taker": { "default": generateFuzz() } }, "note": generateFuzz() }
 		const response = await request()
-			.post(`/v2/admin/admin/tier`)
+			.post(`/v2/admin/tier`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send(data)
 

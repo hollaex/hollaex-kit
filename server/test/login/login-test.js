@@ -6,7 +6,7 @@ const {
 
 const tools = require('hollaex-tools-lib');
 
-describe('Auth Flow', async () => {
+describe('Login Flow', async () => {
 
     // Intergration Testing
     let user, bearerToken, createdUser;

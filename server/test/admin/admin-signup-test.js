@@ -19,13 +19,12 @@ describe('tests for /admin/signup', function () {
     //Integration Testing
     it('should respond 400 for "trying to sign up admin user while exchange is already initialized', async () => {
         const response = await request()
-            .post(`/v2/admin/admin/tier`)
+            .post(`/v2/admin/signup`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
                 "email": "testsadas@gmail.com",
                 "password": "112233"
             })
-
 
         response.should.have.status(400);
         response.should.be.json;
@@ -36,7 +35,7 @@ describe('tests for /admin/signup', function () {
     //Fuz Testing
     it('Fuzz Test -should return error', async () => {
         const response = await request()
-            .post(`/v2/admin/admin/tier`)
+            .post(`/v2/admin/signup`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
                 "email": generateFuzz(),

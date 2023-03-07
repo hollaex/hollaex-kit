@@ -19,7 +19,7 @@ describe('tests for /admin/tiers/limits', function () {
     //Integration Testing
 	it('Integration Test -should respond 400 for invalid tier level', async () => {
 		const response = await request()
-			.put(`/v2/admin/admin/tiers/limits`)
+			.put(`/v2/admin/tiers/limits`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({ "limits": { "cupidatat_b2": { "withdrawal_limit": 19468566.820609286, "irure_9a0": "ex laborum" }, "et0c3": { "withdrawal_limit": 97356120.77642646, "eu72": 6923753, "aliqua6": true, "magna1f_": -84722640.49079436 }, "cillum__6": { "withdrawal_limit": 30286795.163310215, "ipsum_b": false, "aute57": 96712035, "incididunt_6": "ad" }, "commodod5": { "deposit_limit": -99821028.12361288, "aliquip_7bc": 2290190, "ad_4": "proident consectetur qui", "amet_7b": -71289539, "etc30": -84903371.43684195 } } })
 
@@ -34,7 +34,7 @@ describe('tests for /admin/tiers/limits', function () {
     //Fuz Testing
 	it('Fuzz Test -should return error', async () => {
         const response = await request()
-		.put(`/v2/admin/admin/tiers/limits`)
+		.put(`/v2/admin/tiers/limits`)
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({ 
                 
