@@ -208,6 +208,9 @@ kind: pipeline
 type: docker
 name: kit_v2_sandbox_deployment
 
+depends_on:
+  - hollaex_kit_amd64_build
+
 steps:
 - name: slack_noti_job_start
   image: plugins/slack
