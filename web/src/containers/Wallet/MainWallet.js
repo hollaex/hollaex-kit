@@ -21,6 +21,7 @@ import DustSection from './DustSection';
 import HeaderSection from './HeaderSection';
 import { STATIC_ICONS } from 'config/icons';
 import { isStakingAvailable, STAKING_INDEX_COIN } from 'config/contracts';
+import { assetsSelector, searchAssets } from './utils';
 
 const ZERO_BALANCE_KEY = 'isZeroBalanceHidden';
 
@@ -54,7 +55,8 @@ class Wallet extends Component {
 			this.props.oraclePrices,
 			this.props.constants,
 			this.props.contracts,
-			this.props.isFetching
+			this.props.isFetching,
+			this.props.assets
 		);
 	}
 
@@ -71,7 +73,8 @@ class Wallet extends Component {
 			nextProps.oraclePrices,
 			nextProps.constants,
 			nextProps.contracts,
-			nextProps.isFetching
+			nextProps.isFetching,
+			nextProps.assets
 		);
 	}
 
@@ -94,7 +97,8 @@ class Wallet extends Component {
 				this.props.oraclePrices,
 				this.props.constants,
 				this.props.contracts,
-				this.props.isFetching
+				this.props.isFetching,
+				this.props.assets
 			);
 		}
 	}
@@ -103,28 +107,6 @@ class Wallet extends Component {
 		const { isZeroBalanceHidden } = this.state;
 		localStorage.setItem(ZERO_BALANCE_KEY, isZeroBalanceHidden);
 	}
-
-	getSearchResult = (coins, balance, oraclePrices) => {
-		const { searchValue = '', isZeroBalanceHidden } = this.state;
-
-		const result = {};
-		const searchTerm = searchValue.toLowerCase().trim();
-		Object.keys(coins).map((key) => {
-			const temp = coins[key];
-			const { fullname } = coins[key] || DEFAULT_COIN_DATA;
-			const coinName = fullname ? fullname.toLowerCase() : '';
-			const hasCoinBalance = !!balance[`${key}_balance`];
-			const isCoinHidden = isZeroBalanceHidden && !hasCoinBalance;
-			if (
-				!isCoinHidden &&
-				(key.indexOf(searchTerm) !== -1 || coinName.indexOf(searchTerm) !== -1)
-			) {
-				result[key] = { ...temp, oraclePrice: oraclePrices[key] };
-			}
-			return key;
-		});
-		return { ...result };
-	};
 
 	getMobileSlider = (coins, oraclePrices) => {
 		const result = {};
@@ -155,9 +137,11 @@ class Wallet extends Component {
 		oraclePrices,
 		{ features: { stake_page = false } = {} } = {},
 		contracts = {},
-		isFetching
+		isFetching,
+		assets
 	) => {
-		const { showDustSection, isZeroBalanceHidden } = this.state;
+		const { showDustSection, isZeroBalanceHidden, searchValue } = this.state;
+		const { broker, router } = this.props;
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -165,7 +149,6 @@ class Wallet extends Component {
 			display_name,
 			formatCurrencyByIncrementalUnit(total, increment_unit)
 		);
-		const searchResult = this.getSearchResult(coins, balance, oraclePrices);
 
 		const sections = [
 			{
@@ -173,16 +156,12 @@ class Wallet extends Component {
 				title: STRINGS['WALLET_ALL_ASSETS'],
 				content: (
 					<AssetsBlock
-						balance={balance}
-						prices={prices}
 						coins={coins}
 						pairs={pairs}
 						totalAssets={totalAssets}
 						changeSymbol={changeSymbol}
-						onOpenDialog={this.onOpenDialog}
-						bankaccount={bankaccount}
 						navigate={this.goToPage}
-						searchResult={searchResult}
+						assets={searchAssets(assets, searchValue, isZeroBalanceHidden)}
 						handleSearch={this.handleSearch}
 						onToggle={this.onToggleZeroBalance}
 						hasEarn={
@@ -192,7 +171,7 @@ class Wallet extends Component {
 						}
 						loading={isFetching}
 						contracts={contracts}
-						broker={this.props.broker}
+						broker={broker}
 						goToDustSection={this.goToDustSection}
 						showDustSection={showDustSection}
 						goToWallet={this.goToWallet}
@@ -212,7 +191,7 @@ class Wallet extends Component {
 						? 'paper-clip-icon'
 						: 'paper-clip-icon wallet-notification',
 					onClick: () => {
-						this.props.router.push('/transactions');
+						router.push('/transactions');
 					},
 				},
 			},
@@ -333,6 +312,7 @@ const mapStateToProps = (store) => ({
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
 	broker: store.app.broker,
+	assets: assetsSelector(store),
 });
 
 const mapDispatchToProps = (dispatch) => ({
