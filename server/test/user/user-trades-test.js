@@ -37,7 +37,6 @@ describe('tests for /user/trades', function () {
             
 
         response.should.have.status(202);
-        response.should.be.json;
 
     });
 

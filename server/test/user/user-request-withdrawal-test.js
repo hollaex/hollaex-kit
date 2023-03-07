@@ -20,7 +20,7 @@ describe('tests for /user/request-withdrawal', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
         
         await request()
-        .post('/v2/admin/admin/deactivate-otp')
+        .post('/v2/admin/deactivate-otp')
         .set('Authorization', `Bearer ${bearerToken}`)
         .send({ user_id: user.id });
 

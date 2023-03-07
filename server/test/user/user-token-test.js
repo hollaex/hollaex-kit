@@ -5,7 +5,8 @@ const {
     getAdminUser
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
-
+const { getModel } = require('../../utils/hollaex-tools-lib/tools/database/model');
+const { client } = require('../../utils/hollaex-tools-lib/tools/database/redis');
 
 describe('tests for /user/token', function () {
     let user, bearerToken;

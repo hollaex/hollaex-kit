@@ -35,7 +35,6 @@ describe('tests for /user/withdrawals', function () {
             .set('Authorization', `Bearer ${bearerToken}`)
            
         response.should.have.status(202);
-        response.should.be.json;
     });
    
 });

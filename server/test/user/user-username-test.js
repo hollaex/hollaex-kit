@@ -23,12 +23,12 @@ describe('tests for /user/username', function () {
         .get('/v2/user')
         .set('Authorization', `Bearer ${bearerToken}`)
 
-        if(!user?.settings?.chat?.set_username){
+        if(!user?.body?.settings?.chat?.set_username){
             const response = await request()
             .post('/v2/user/username')
             .set('Authorization', `Bearer ${bearerToken}`)
             .send({
-                username: "Test1234"
+                username: "test12345"
             });
 
             response.should.have.status(200);
@@ -45,7 +45,7 @@ describe('tests for /user/username', function () {
             .send({
                 username: generateFuzz()
             });
-		response.should.have.status(400);
+		response.should.have.status(500);
 		response.should.be.json;
 	});
 

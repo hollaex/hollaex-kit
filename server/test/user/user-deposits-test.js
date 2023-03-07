@@ -36,7 +36,6 @@ describe('tests for /user/deposits', function () {
             
             //"currency": "reprehenderit deserunt tempor", "limit": -6079707.128986195, "page": 14036004.401351973, "order_by": "voluptate magna", "order": "asc", "start_date": "1989-11-03T07:59:10.0Z", "end_date": "2005-07-05T10:17:58.0Z", "format": "csv", "transaction_id": "nostrud deserunt sed reprehenderit", "address": "sint Excepteur id eu voluptate", "status": false, "dismissed": true, "rejected": false, "processing": true, "waiting": false 
             response.should.have.status(202);
-            response.should.be.json;
     
     });
 

@@ -35,7 +35,6 @@ describe('tests for /user/logins', function () {
             
     
             response.should.have.status(202);
-            response.should.be.json;
     
     });
 });

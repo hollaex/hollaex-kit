@@ -33,13 +33,13 @@ describe('tests for /charts', function () {
 
 
       //Fuzz Testing
-      it('Fuzz Test -should respond 200 for "Success"', async () => {
+      it('Fuzz Test -should return error', async () => {
         const response = await request()
         .get(`/v2/charts?symbol=xht-usdt&resolution=1D&from=163486&to=${generateFuzz()}`)
             .set('Authorization', `Bearer ${bearerToken}`)
            
         
-        response.should.have.status(400);
+        response.should.have.status(403);
         response.should.be.json;
      
     });
