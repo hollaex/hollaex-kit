@@ -36,25 +36,19 @@ import {
 	requestInitial,
 	requestConstant,
 } from 'actions/appActions';
-import { DASH_TOKEN_KEY, SESSION_TIME } from 'config/constants';
+import { SESSION_TIME } from 'config/constants';
 import { STATIC_ICONS } from 'config/icons';
 import MobileSider from './mobileSider';
 import './index.css';
 import '../../../.././src/admin_theme_variables.css';
 import 'antd/dist/antd.css';
 import { requestMyPlugins } from 'containers/Admin/Plugins/action';
-import {
-	setAllPairs,
-	setCoins,
-	setExchange,
-	setDashToken,
-} from 'actions/assetActions';
+import { setAllPairs, setCoins, setExchange } from 'actions/assetActions';
 // import { allCoins } from '../AdminFinancials/Assets';
 // import { allPairs } from '../Trades/Pairs';
 import {
 	getAllCoins,
 	getAllPairs,
-	getDashToken,
 	// getConstants,
 	getExchange,
 } from '../AdminFinancials/action';
@@ -183,21 +177,9 @@ class AppWrapper extends React.Component {
 	}
 
 	getData = async () => {
-		const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
 		await this.getExchange();
 		await this.getCoins();
 		await this.getPairs();
-		if (!DASH_TOKEN) {
-			await this.getDashToken();
-		}
-	};
-
-	getDashToken = async () => {
-		const res = await getDashToken();
-		if (res && res.token) {
-			this.props.setDashToken(res.token);
-			localStorage.setItem(DASH_TOKEN_KEY, res.token);
-		}
 	};
 
 	getExchange = async () => {
@@ -427,7 +409,7 @@ class AppWrapper extends React.Component {
 		} else if (location.pathname.includes('/admin/trade')) {
 			return 'Markets';
 		} else if (location.pathname.includes('/admin/plugins')) {
-			return 'Plugins';
+			return 'Plugin apps';
 		} else if (location.pathname.includes('/admin/apps')) {
 			return 'Apps';
 		} else if (location.pathname.includes('/admin/tiers')) {
@@ -741,7 +723,6 @@ const mapDispatchToProps = (dispatch) => ({
 	setCoins: bindActionCreators(setCoins, dispatch),
 	setAllPairs: bindActionCreators(setAllPairs, dispatch),
 	setExchange: bindActionCreators(setExchange, dispatch),
-	setDashToken: bindActionCreators(setDashToken, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppWrapper);

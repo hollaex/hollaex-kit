@@ -20,7 +20,6 @@ export const setExchangePlan = (bodyData) => {
 			const res = await requestDashAuthenticated('/exchange/plan', options);
 			resolve(res);
 		} catch (error) {
-			console.log('setExchangePlan : error', error);
 			reject(error);
 		}
 	});
@@ -48,4 +47,24 @@ export const requestStoreInvoice = (id, data) => {
 			reject(error);
 		}
 	});
+};
+
+export const postContact = (body) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(body),
+	};
+
+	return new Promise(async (resolve, reject) => {
+		try {
+			const res = await requestDashAuthenticated('/support', options);
+			resolve(res);
+		} catch (error) {
+			reject(error);
+		}
+	});
+};
+
+export const getPluginActivateDetails = (query) => {
+	return requestDashAuthenticated(`/plugin/activate?name=${query}`, {});
 };

@@ -27,7 +27,7 @@ const PlanStructure = ({
 					? `${className} plan-container`
 					: 'cloud-plan-container cloud-container'
 			}
-			onClick={() => onHandleSelectedType(type)}
+			onClick={() => !cloudPlanDetails && onHandleSelectedType(type)}
 		>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>

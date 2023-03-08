@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Tabs, Breadcrumb, Modal, message, Button } from 'antd';
+import { Spin, Breadcrumb, Modal, message, Button } from 'antd';
 import { LoadingOutlined, RightOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-import PluginList from './PluginList';
 import PluginConfigure from './PluginConfigure';
 import MyPlugins from './MyPlugins';
 import {
@@ -12,28 +11,24 @@ import {
 	requestPlugins,
 	requestMyPlugins,
 	updatePlugins,
+	getPluginMeta,
+	requestActivationsPlugin,
 } from './action';
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
 import ConfirmPlugin from './ConfirmPlugin';
-import { getPluginMeta } from './action';
+import PluginAppStore from './PluginAppStore';
 
 import './index.css';
 
-const TabPane = Tabs.TabPane;
 const { Item } = Breadcrumb;
 
 class Plugins extends Component {
 	constructor(props) {
 		super(props);
-		const {
-			router: {
-				location: { query: { plugin } = {} },
-			},
-		} = this.props;
 		this.state = {
-			activeTab: '',
+			nextType: 'myPlugin',
 			isConfirm: false,
 			loading: false,
 			constants: {},
@@ -48,19 +43,21 @@ class Plugins extends Component {
 			isVisible: false,
 			isRemovePlugin: false,
 			removePluginName: '',
-			tabKey: plugin ? 'my_plugin' : 'explore',
 			pluginCards: [],
+			activatedPluginDetails: [],
 			processing: false,
 			thirdPartyType: 'upload_json',
 			thirdPartyError: '',
 			thirdParty: {},
 			step: 1,
 			jsonURL: '',
+			isLoading: false,
 		};
 		this.removeTimeout = null;
 	}
 
 	componentDidMount() {
+		this.setState({ isLoading: true });
 		this.getPluginsData();
 	}
 
@@ -87,9 +84,22 @@ class Plugins extends Component {
 		try {
 			await this.getPlugins();
 			await this.getMyPlugins();
+			await this.getActivationsPlugin();
 		} catch (err) {
 			throw err;
 		}
+	};
+
+	getActivationsPlugin = (params = {}) => {
+		return requestActivationsPlugin(params)
+			.then((res) => {
+				if (res) {
+					this.setState({ activatedPluginDetails: res });
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
 	};
 
 	getMyPlugins = (params = {}) => {
@@ -111,8 +121,10 @@ class Plugins extends Component {
 						}
 					});
 				}
+				this.setState({ isLoading: false });
 			})
 			.catch((err) => {
+				this.setState({ isLoading: false });
 				throw err;
 			});
 	};
@@ -164,6 +176,7 @@ class Plugins extends Component {
 	removePlugin = (params = {}) => {
 		this.setState({
 			isRemovePlugin: true,
+			nextType: 'myPlugin',
 			showSelected: false,
 			isConfigure: false,
 			tabKey: 'my_plugin',
@@ -189,8 +202,8 @@ class Plugins extends Component {
 			});
 	};
 
-	tabChange = (activeTab) => {
-		this.setState({ activeTab });
+	onChangeNextType = (nextType) => {
+		this.setState({ nextType });
 	};
 
 	onHandleCard = (key) => {
@@ -225,6 +238,7 @@ class Plugins extends Component {
 			myPlugins.filter((value) => value.name === plugin.name).length
 		) {
 			this.setState({
+				nextType: 'configure',
 				showSelected: true,
 				selectedPlugin: plugin,
 				pluginMetaData: metaData,
@@ -246,6 +260,7 @@ class Plugins extends Component {
 
 	handleClose = () => {
 		this.setState({
+			nextType: 'myPlugin',
 			showSelected: false,
 			selectedPlugin: {},
 			type: '',
@@ -285,15 +300,13 @@ class Plugins extends Component {
 
 	handleRestart = (callback) => {
 		this.setProcessing();
-		setTimeout(() => {
-			this.getPluginsData()
-				.then(() => {
-					this.setProcessing(false, callback);
-				})
-				.catch(() => {
-					this.handleRestart(callback);
-				});
-		}, 30000);
+		this.getPluginsData()
+			.then(() => {
+				this.setProcessing(false, callback);
+			})
+			.catch(() => {
+				this.handleRestart(callback);
+			});
 	};
 
 	setProcessing = (processing = true, callback) => {
@@ -451,6 +464,12 @@ class Plugins extends Component {
 		}
 	};
 
+	onHandleBack = () => {
+		this.setState((nextType) => {
+			return { nextType, type: '', isConfigure: false };
+		});
+	};
+
 	renderModalContent = () => {
 		const {
 			selectedPlugin,
@@ -599,39 +618,34 @@ class Plugins extends Component {
 		}
 	};
 
-	render() {
+	renderContent = () => {
 		const {
-			loading,
-			constants,
 			selectedPlugin,
 			pluginData,
 			isConfigure,
-			showSelected,
+			nextType,
 			type,
-			isVisible,
 			myPlugins,
-			tabKey,
 			removePluginName,
-			pluginCards,
-			processing,
 			thirdPartyType,
 			thirdPartyError,
 			thirdParty,
+			activatedPluginDetails,
+			isLoading,
 		} = this.state;
-		if (loading || this.props.pluginsLoading) {
-			return (
-				<div className="app_container-content">
-					<Spin size="large" />
-				</div>
-			);
-		}
-
-		return (
-			<div className="admin-plugins-wrapper">
-				{showSelected ? (
+		switch (nextType) {
+			case 'appStore':
+				return (
+					<PluginAppStore
+						onChangeNextType={this.onChangeNextType}
+						router={this.props.router}
+					/>
+				);
+			case 'configure':
+				return (
 					<div className="plugins-wrapper">
 						<Breadcrumb separator={<RightOutlined />}>
-							<Item onClick={this.handleClose}>Explore</Item>
+							<Item onClick={this.onHandleBack}> My plugins</Item>
 							<Item
 								onClick={() =>
 									this.setState({ type: 'pluginDetails', isConfigure: false })
@@ -648,6 +662,8 @@ class Plugins extends Component {
 						<PluginConfigure
 							handleBreadcrumb={this.handleBreadcrumb}
 							type={type}
+							getActivationsPlugin={this.getActivationsPlugin}
+							activatedPluginDetails={activatedPluginDetails}
 							selectedPlugin={selectedPlugin}
 							handlePluginList={this.handlePluginList}
 							updatePluginList={this.handleUpdatePluginList}
@@ -655,49 +671,71 @@ class Plugins extends Component {
 							restart={this.handleRestart}
 							handleRedirect={this.handleRedirect}
 							handleStep={this.handleStep}
+							router={this.props.router}
+							setProcessing={this.setProcessing}
 						/>
 					</div>
-				) : (
-					<div className="app_container-content admin-earnings-container admin-plugin-container">
-						<Tabs defaultActiveKey={tabKey}>
-							<TabPane tab="Explore" key="explore">
-								<PluginList
-									pluginData={pluginData}
-									constants={constants}
-									selectedPlugin={selectedPlugin}
-									handleOpenPlugin={this.handleOpenPlugin}
-									getPlugins={this.getPlugins}
-									pluginCards={pluginCards}
-								/>
-							</TabPane>
+				);
+			case 'myPlugin':
+			default:
+				return (
+					<MyPlugins
+						removePluginName={removePluginName}
+						handleOpenPlugin={this.handleOpenPlugin}
+						handlePluginList={this.handlePluginList}
+						getPlugins={this.getPlugins}
+						getMyPlugins={this.getMyPlugins}
+						myPlugins={myPlugins}
+						pluginData={pluginData}
+						restart={this.handleRestart}
+						thirdPartyType={thirdPartyType}
+						thirdPartyError={thirdPartyError}
+						thirdParty={thirdParty}
+						handleStep={this.handleStep}
+						handleURL={this.handleURL}
+						handleChange={this.handleChange}
+						handleFileChange={this.handleFileChange}
+						handleBack={this.handleBack}
+						handleSetBack={this.handleSetBack}
+						handleCancel={this.handleCancel}
+						getJSONFromURL={this.getJSONFromURL}
+						updateState={this.updateState}
+						onChangeNextType={this.onChangeNextType}
+						isPluginFetchLoading={isLoading}
+						router={this.props.router}
+					/>
+				);
+		}
+	};
 
-							<TabPane tab="My plugins" key="my_plugin">
-								<MyPlugins
-									removePluginName={removePluginName}
-									handleOpenPlugin={this.handleOpenPlugin}
-									handlePluginList={this.handlePluginList}
-									getPlugins={this.getPlugins}
-									getMyPlugins={this.getMyPlugins}
-									myPlugins={myPlugins}
-									pluginData={pluginData}
-									restart={this.handleRestart}
-									thirdPartyType={thirdPartyType}
-									thirdPartyError={thirdPartyError}
-									thirdParty={thirdParty}
-									handleStep={this.handleStep}
-									handleURL={this.handleURL}
-									handleChange={this.handleChange}
-									handleFileChange={this.handleFileChange}
-									handleBack={this.handleBack}
-									handleSetBack={this.handleSetBack}
-									handleCancel={this.handleCancel}
-									getJSONFromURL={this.getJSONFromURL}
-									updateState={this.updateState}
-								/>
-							</TabPane>
-						</Tabs>
-					</div>
-				)}
+	render() {
+		const { loading, isVisible, processing, nextType, isLoading } = this.state;
+
+		if (loading || this.props.pluginsLoading) {
+			return (
+				<div className="app_container-content">
+					<Spin size="large" />
+				</div>
+			);
+		}
+		return (
+			<div
+				className={`admin-plugins-wrapper ${
+					nextType === 'myPlugin' ? 'gradient-bottom' : ''
+				}`}
+			>
+				<div
+					className={
+						nextType === 'configure'
+							? 'plugins-wrapper'
+							: 'app_container-content admin-earnings-container admin-plugin-container'
+					}
+					style={{ height: nextType === 'myPlugin' ? 'auto' : '100%' }}
+				>
+					<Spin spinning={isLoading} className="plugin-spinner" size="large">
+						{this.renderContent()}
+					</Spin>
+				</div>
 				<Modal visible={isVisible} footer={null} onCancel={this.onCancelModal}>
 					{this.renderModalContent()}
 				</Modal>

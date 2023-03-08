@@ -65,9 +65,11 @@ import {
 	setAllContracts,
 	setBroker,
 	setAdminSortData,
+	setAdminWalletSortData,
 	setSortModeChange,
 	setSortModeVolume,
 	SORT,
+	WALLET_SORT,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -101,6 +103,8 @@ const getConfigs = async () => {
 			sections = {},
 			default_sort = SORT.CHANGE,
 			pinned_markets = [],
+			default_wallet_sort = WALLET_SORT.AMOUNT,
+			pinned_assets = [],
 		} = {},
 		valid_languages = '',
 		info: { initialized },
@@ -208,6 +212,9 @@ const getConfigs = async () => {
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
 	store.dispatch(setAdminSortData({ pinned_markets, default_sort }));
+	store.dispatch(
+		setAdminWalletSortData({ pinned_assets, default_wallet_sort })
+	);
 
 	if (default_sort === SORT.VOL) {
 		store.dispatch(setSortModeVolume());

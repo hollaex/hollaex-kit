@@ -216,7 +216,7 @@ export const generateOrderHistoryHeaders = (
 										),
 										pair_2_display
 								  )
-								: '@marketPrice'}
+								: STRINGS['NA']}
 						</td>
 					);
 				} else {
@@ -261,7 +261,7 @@ export const generateOrderHistoryHeaders = (
 										),
 										pair_2_display
 								  )
-								: ''}
+								: STRINGS['NA']}
 						</td>
 					);
 				} else {

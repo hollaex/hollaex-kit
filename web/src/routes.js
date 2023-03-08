@@ -43,6 +43,7 @@ import {
 	MobileHome,
 	Broker,
 	Plugins,
+	PluginStore,
 	// PluginServices,
 	Settings,
 	// Transfer,
@@ -62,6 +63,7 @@ import {
 	DigitalAssets,
 	CoinPage,
 	WhiteLabel,
+	FeesAndLimits,
 } from './containers';
 import chat from './containers/Admin/Chat';
 import { Billing } from 'containers/Admin';
@@ -368,6 +370,12 @@ export const generateRoutes = (routes = []) => {
 					component={Account}
 					onEnter={requireAuth}
 				/>
+				<Route
+					path="fees-and-limits"
+					name="Fees and limits"
+					component={FeesAndLimits}
+					onEnter={requireAuth}
+				/>
 				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
 				<Route
@@ -555,6 +563,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/plugins"
 					name="Admin plugins"
 					component={withAdminProps(Plugins, 'plugins')}
+				/>
+				<Route
+					path="/admin/plugins/store"
+					name="Admin plugins store"
+					component={withAdminProps(PluginStore, 'plugins')}
 				/>
 				<Route
 					path="/admin/apps"

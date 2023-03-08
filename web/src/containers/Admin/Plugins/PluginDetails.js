@@ -1,11 +1,30 @@
 import React, { useState } from 'react';
-import { Button, Modal, Divider, Spin, message } from 'antd';
-import { StarFilled, ClockCircleOutlined } from '@ant-design/icons';
-
-import { Carousel } from 'components';
+import { Button, Modal, Divider, Spin, message, Tooltip } from 'antd';
+import {
+	StarFilled,
+	ClockCircleOutlined,
+	InfoCircleOutlined,
+} from '@ant-design/icons';
+import { connect } from 'react-redux';
+import { ReactSVG } from 'react-svg';
+import { Carousel, BlueLink } from 'components';
+import STRINGS from 'config/localizedStrings';
 import { STATIC_ICONS } from 'config/icons';
-import { addPlugin, updatePlugins } from './action';
+import {
+	addPlugin,
+	updatePlugins,
+	getPluginActivateDetails,
+	getPluginStoreDetails,
+} from './action';
+import { setSelectedPlugin } from '../../../actions/appActions';
 import ConfirmPlugin from './ConfirmPlugin';
+
+const exchangeType = {
+	basic: 'Basic',
+	crypto: 'Crypto Pro',
+	fiat: 'Fiat Ramp',
+	boost: 'Boost',
+};
 
 const PluginDetails = ({
 	handleBreadcrumb,
@@ -18,6 +37,12 @@ const PluginDetails = ({
 	isLoading,
 	restart,
 	handleRedirect,
+	exchange,
+	activatedPluginDetails,
+	getActivationsPlugin,
+	setSelectedPlugin,
+	router,
+	onChangeNextType,
 }) => {
 	const [isOpen, setOpen] = useState(false);
 	const [type, setType] = useState('');
@@ -26,9 +51,40 @@ const PluginDetails = ({
 	const [isVersionUpdate, setUpdate] = useState(false);
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
 
+	const checkactivatedPlugin = (name) => {
+		const data = activatedPluginDetails.filter((item) => item.name === name);
+		return data.length ? true : false;
+	};
+	const onHandlePluginActivate = async () => {
+		getPluginActivateDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				if (
+					res &&
+					res.data &&
+					res?.message === 'success' &&
+					res.data?.is_active
+				) {
+					getActivationsPlugin();
+				}
+			})
+			.catch((err) => {
+				throw err;
+			});
+	};
 	const handleAddPlugin = async () => {
+		getPluginStoreDetails({ name: selectedPlugin.name })
+			.then((res) => {
+				handleInstallPlugin(res);
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					throw err;
+				}
+			});
+	};
+	const handleInstallPlugin = async (data) => {
 		const body = {
-			...pluginData,
+			...data,
 			enabled: true,
 		};
 		setAddLoading(true);
@@ -155,7 +211,108 @@ const PluginDetails = ({
 						onHandleSubmit={() => handleRemove('confirm-plugin')}
 					/>
 				);
-			case 'add':
+			case 'buy':
+				return (
+					<div className="d-flex">
+						<img
+							src={
+								pluginData && pluginData.icon
+									? pluginData.icon
+									: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
+							}
+							alt="Plugin"
+							className="plugin-icon"
+						/>
+						<div className="plugin-container">
+							<div className="plugin-content-wrapper">
+								<div className="title-wrapper">
+									{' '}
+									<h4>{pluginData.name}</h4>{' '}
+									<h5> {`Version: ${pluginData.version}`}</h5>{' '}
+								</div>
+								<p>{`Description: ${pluginData.description}`}</p>
+								<div>
+									{' '}
+									{!!free_for?.length ? (
+										<>
+											<p>Note:</p>{' '}
+											<div>
+												<InfoCircleOutlined className="pt-2" />
+											</div>{' '}
+											{free_for?.map((item, inx) => (
+												<p>{`${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</>
+									) : (
+										''
+									)}{' '}
+								</div>
+								<p className="tooltip-container">
+									Author:
+									<Tooltip
+										placement="rightBottom"
+										title={`Verified plugin by ${author}`}
+									>
+										<ReactSVG
+											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+											className="verified-icon"
+										/>
+									</Tooltip>{' '}
+									{pluginData.author}
+								</p>
+								<p>
+									{' '}
+									{pluginData.payment_type &&
+									pluginData.payment_type === 'one-time' ? (
+										<>
+											Type:{' '}
+											<ReactSVG
+												src={STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']}
+											/>{' '}
+											{pluginData.payment_type}
+										</>
+									) : pluginData.payment_type === 'credits' ? (
+										<>
+											Type: <ReactSVG src={STATIC_ICONS['CREDITS_PLUGIN']} />{' '}
+											{pluginData.payment_type}
+										</>
+									) : (
+										''
+									)}{' '}
+								</p>
+								{only_for?.length ? (
+									<div>
+										<p className="mr-2">Only For:</p>
+										{only_for?.map((item, inx) => (
+											<p>{`${inx === 0 ? '' : `, `} ${exchangeType[item]}`}</p>
+										))}
+									</div>
+								) : null}
+								{free_for?.length ? (
+									<div>
+										<p className="mr-2">Free For:</p>{' '}
+										{free_for?.map((item, inx) => (
+											<p>{` ${inx === 0 ? '' : `, `} ${exchangeType[item]}`}</p>
+										))}
+									</div>
+								) : null}
+								{pluginData.price && (
+									<div>
+										<p>Price: </p>{' '}
+										<h6>
+											{' '}
+											{pluginData.payment_type === 'free'
+												? 'Free'
+												: `$ ${pluginData.price}`}
+										</h6>
+									</div>
+								)}
+							</div>
+						</div>
+					</div>
+				);
 			default:
 				return (
 					<div className="admin-plugin-modal-wrapper">
@@ -225,12 +382,8 @@ const PluginDetails = ({
 		}
 	};
 
-	const handleOpenConfirmation = () => {
-		setOpen(true);
-		setUpdate(false);
-	};
-
 	const renderButtonContent = () => {
+		const { payment_type, only_for, name, free_for } = pluginData;
 		if (isAddLoading || isUpdateLoading) {
 			return (
 				<div className="d-flex mt-5">
@@ -267,7 +420,7 @@ const PluginDetails = ({
 								href={selectedPlugin.url}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="underline-text"
+								className="underline-text pointer"
 							>
 								Learn more
 							</a>{' '}
@@ -294,19 +447,78 @@ const PluginDetails = ({
 				</div>
 			);
 		} else {
-			return (
-				<div className="btn-wrapper">
-					<Button
-						type="primary"
-						className="add-btn"
-						onClick={handleOpenConfirmation}
-						disabled={!Object.keys(pluginData).length}
-					>
-						Add
-					</Button>
-					<div className="small-txt">Free to install</div>
-				</div>
-			);
+			let btnDisabled = false;
+			if (payment_type === 'free' || checkactivatedPlugin(name)) {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={() => handleType('add')}
+						>
+							Install
+						</Button>
+						{pluginData.payment_type === 'free' ? (
+							<div className="small-txt">Free to install</div>
+						) : null}
+					</div>
+				);
+			} else if (
+				!checkactivatedPlugin(name) &&
+				(payment_type?.toLowerCase() === 'activation' ||
+					free_for?.includes(exchange.plan) ||
+					only_for?.includes(exchange.plan))
+			) {
+				// btnDisabled = payment_type?.toLowerCase() === 'activation';
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={onHandlePluginActivate}
+							disabled={btnDisabled}
+						>
+							Activate
+						</Button>
+						{btnDisabled ? (
+							<div className="ml-2 font-weight-bold">
+								{STRINGS['TERMS_OF_SERVICES.TO_GET_ACCESS']}
+								<BlueLink
+									href="mailto:sales@hollaex.com"
+									text={'sales@hollaex.com'}
+								/>
+							</div>
+						) : null}
+					</div>
+				);
+			} else {
+				return (
+					<div className="btn-wrapper">
+						<Button
+							type="primary"
+							className="add-btn"
+							onClick={() => handleType('buy')}
+							disabled={!Object.keys(pluginData).length}
+						>
+							Buy
+						</Button>
+					</div>
+				);
+			}
+		}
+	};
+
+	const onHandleBuy = () => {
+		setSelectedPlugin(selectedPlugin);
+		router.push('/admin/billing');
+	};
+
+	const handleFooterRedirect = () => {
+		let currentLocation = router.getCurrentLocation();
+		if (currentLocation.pathname === '/admin/plugins/store') {
+			return onChangeNextType('explore');
+		} else {
+			return router.push('/admin/plugins/store');
 		}
 	};
 
@@ -338,6 +550,30 @@ const PluginDetails = ({
 		);
 	}
 
+	const {
+		icon,
+		name,
+		description,
+		author,
+		payment_type,
+		price,
+		version,
+		free_for,
+		only_for,
+	} = pluginData;
+
+	let isPriceTagHide = true;
+	if (
+		payment_type?.toLowerCase() !== 'activation' &&
+		only_for?.length &&
+		!only_for?.includes(exchange.plan) &&
+		free_for?.length &&
+		!free_for?.includes(exchange.plan)
+	) {
+		isPriceTagHide = false;
+	} else if (price && payment_type.toLowerCase() !== 'activation') {
+		isPriceTagHide = true;
+	}
 	return (
 		<div>
 			<div className="plugin-details-wrapper">
@@ -346,21 +582,99 @@ const PluginDetails = ({
 						<div className="d-flex">
 							<img
 								src={
-									pluginData && pluginData.icon
-										? pluginData.icon
+									pluginData && icon
+										? icon
 										: STATIC_ICONS.DEFAULT_PLUGIN_THUMBNAIL
 								}
 								alt="Plugin"
 								className="plugin-icon"
 							/>
-							<div className="ml-3 inner-content">
-								<h3>{pluginData.name}</h3>
-								<p>{pluginData.bio}</p>
-								<div>
-									<b>Version:</b> {pluginData.version}
-								</div>
-								<div>
-									<b>Author:</b> {pluginData.author}
+							<div className="plugin-container">
+								<div className="plugin-content-wrapper">
+									<div className="title-wrapper">
+										{' '}
+										<h4>{name}</h4> <h5> {`Version: ${version}`}</h5>{' '}
+									</div>
+									<p>{`Description: ${description}`}</p>
+									<div>
+										{' '}
+										{!!free_for?.length ? (
+											<>
+												<p>Note:</p>{' '}
+												<div>
+													<InfoCircleOutlined />
+												</div>{' '}
+												{free_for?.map((item, inx) => (
+													<p>{`${inx === 0 ? '' : `, `} ${
+														exchangeType[item]
+													}`}</p>
+												))}
+											</>
+										) : (
+											''
+										)}{' '}
+									</div>
+									<p className="tooltip-container">
+										Author:
+										<Tooltip
+											placement="rightBottom"
+											title={`Verified plugin by ${author}`}
+										>
+											<ReactSVG
+												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+												className="verified-icon"
+											/>
+										</Tooltip>{' '}
+										{author}
+									</p>
+									{free_for?.length ? (
+										<div>
+											<p className="mr-2">Free For:</p>{' '}
+											{free_for?.map((item, inx) => (
+												<p>{` ${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
+									) : null}
+									{only_for?.length ? (
+										<div>
+											<p className="mr-2">Only For:</p>
+											{only_for?.map((item, inx) => (
+												<p>{`${inx === 0 ? '' : `, `} ${
+													exchangeType[item]
+												}`}</p>
+											))}
+										</div>
+									) : null}
+
+									{payment_type && payment_type !== 'free' ? (
+										<p>
+											Payment Type:{' '}
+											<ReactSVG
+												src={
+													payment_type === 'one-time'
+														? STATIC_ICONS['ONE_TIME_ACTIVATION_PLUGIN']
+														: STATIC_ICONS['CREDITS_PLUGIN']
+												}
+											/>{' '}
+											{payment_type}{' '}
+											{payment_type === 'one-time' ? 'activation' : null}
+										</p>
+									) : null}
+									{price && isPriceTagHide ? (
+										<div>
+											<p>Price: </p>{' '}
+											<h6>
+												{' '}
+												{payment_type === 'free'
+													? 'Free'
+													: payment_type?.toLowerCase() === 'activation'
+													? 'Activation'
+													: `$ ${price}`}
+											</h6>
+										</div>
+									) : null}
 								</div>
 								{renderButtonContent()}
 							</div>
@@ -389,13 +703,40 @@ const PluginDetails = ({
 					visible={isOpen}
 					width={450}
 					onCancel={handleClose}
-					footer={false}
+					footer={
+						type === 'buy' ? (
+							<div className="buy-modal-footer">
+								<div>
+									<p>Do you want proceed with purchase?</p>
+									<Button type="success" onClick={onHandleBuy}>
+										Buy
+									</Button>
+								</div>
+							</div>
+						) : (
+							false
+						)
+					}
 				>
 					{renderPopup()}
 				</Modal>
+			</div>
+			<div className="plugin-footer">
+				<span
+					onClick={() => handleFooterRedirect()}
+					className="mx-4 pointer underline-text"
+				>
+					Visit the exchange app store
+				</span>
 			</div>
 		</div>
 	);
 };
 
-export default PluginDetails;
+const mapStateToProps = (state) => {
+	return {
+		exchange: state.asset.exchange,
+	};
+};
+
+export default connect(mapStateToProps, { setSelectedPlugin })(PluginDetails);
