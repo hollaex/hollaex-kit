@@ -36,7 +36,8 @@ const {
 	SAME_PASSWORD,
 	CODE_NOT_FOUND,
 	INVALID_TOKEN_TYPE,
-	NO_AUTH_TOKEN
+	NO_AUTH_TOKEN,
+	HMAC_ROLE_UNAUTHORIZED
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -794,6 +795,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
+					throw new Error(HMAC_ROLE_UNAUTHORIZED);
+				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
@@ -989,10 +993,11 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = (userId, otpCode, ip, name) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
+	const user = await getModel('user').findOne({ where: { id: userId } });
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -1002,7 +1007,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				key,
 				secret,
 				expiry,
-				role: ROLES.USER,
+				role: user.is_admin ? ROLES.ADMIN : ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
 				active: true,
@@ -1017,6 +1022,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({ where: { id: token_id } });
+	const user = await getModel('user').findOne({ where: { id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1028,7 +1034,8 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		...permissions,
 		name,
 		whitelisted_ips,
-		whitelisting_enabled
+		whitelisting_enabled,
+		role: user.is_admin ? ROLES.ADMIN : ROLES.USER,
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1045,7 +1052,8 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_trade',
 			'can_withdraw',
 			'whitelisting_enabled',
-			'whitelisted_ips'
+			'whitelisted_ips',
+			'role'
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
