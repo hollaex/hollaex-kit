@@ -56,7 +56,7 @@ const PluginList = ({
 							<div className="plugin-list-bio">{item.bio}</div>
 							{item.enabled ? (
 								<div className="plugin-list-type">
-									<CheckOutlined /> <p>Currently installed</p>
+									<CheckOutlined /> <div>Currently installed</div>
 								</div>
 							) : (
 								<div className="plugin-list-font">
@@ -94,7 +94,10 @@ const PluginList = ({
 						</div>
 					</div>
 					<div>
-						<Link href="https://docs.hollaex.com/plugins/develop-plugins" target="blank">
+						<Link
+							href="https://docs.hollaex.com/plugins/develop-plugins"
+							target="blank"
+						>
 							<span className="pr-2 link-text">PLUGIN DEVELOPMENT DOC</span>
 							<img
 								src={STATIC_ICONS.OPEN_HOLLAEX_DOC_APP_CREATION}
