@@ -36,8 +36,7 @@ const {
 	SAME_PASSWORD,
 	CODE_NOT_FOUND,
 	INVALID_TOKEN_TYPE,
-	NO_AUTH_TOKEN,
-	HMAC_ROLE_UNAUTHORIZED
+	NO_AUTH_TOKEN
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -796,7 +795,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
 				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
-					throw new Error(HMAC_ROLE_UNAUTHORIZED);
+					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {

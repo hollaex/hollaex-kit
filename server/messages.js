@@ -105,7 +105,6 @@ exports.API_SIGNATURE_NULL = 'Access Denied: API Signature is not provided';
 exports.API_KEY_INVALID = 'Access Denied: Invalid API Key';
 exports.API_KEY_NOT_PERMITTED = 'Unauthorized Access. This key does not have the right permissions to access this endpoint';
 exports.API_KEY_NOT_WHITELISTED = 'Unauthorized Access. The IP address you are reaching this endpoint through is not allowed to access this endpoint';
-exports.HMAC_ROLE_UNAUTHORIZED = 'Unauthorized Access. You do not have admin role for this request';
 exports.API_KEY_EXPIRED = 'Access Denied: API Key is expired';
 exports.API_KEY_INACTIVE = 'Access Denied: API Key is frozen';
 exports.API_SIGNATURE_INVALID = 'Access Denied: Invalid API Signature';
