@@ -45,27 +45,38 @@ const Form = (name, className = '', allowPristine = false) => {
 					</div>
 				)}
 				{renderCustomFooter(formValues)}
-				{secondaryBtnTxt ? (
-					<Button type="primary" onClick={onClose} className={'green-btn'}>
-						{secondaryBtnTxt}
-					</Button>
-				) : null}
-				<FormButton
-					type={buttonType ? buttonType : 'primary'}
-					handleSubmit={handleSubmit(onSubmit)}
-					disabled={
-						disableAllFields ||
-						(allowPristine ? false : fields && pristine) ||
-						submitting ||
-						!valid ||
-						error ||
-						buttonSubmitting
-					}
-					size={small ? 'small' : 'large'}
-					className={small ? `${buttonClass}` : `w-100 ${buttonClass}`}
-					style={small ? { float: 'right' } : null}
-					buttonText={buttonText}
-				/>
+				<div className="d-flex justify-content-between">
+					{secondaryBtnTxt ? (
+						<Button
+							type="primary"
+							onClick={onClose}
+							className={'green-btn btn-48'}
+						>
+							{secondaryBtnTxt}
+						</Button>
+					) : null}
+					<FormButton
+						type={buttonType ? buttonType : 'primary'}
+						handleSubmit={handleSubmit(onSubmit)}
+						disabled={
+							disableAllFields ||
+							(allowPristine ? false : fields && pristine) ||
+							submitting ||
+							!valid ||
+							error ||
+							buttonSubmitting
+						}
+						size={small ? 'small' : 'large'}
+						className={`${small ? buttonClass : buttonClass} ${
+							!secondaryBtnTxt ? 'btn-48' : 'w-100'
+						}`}
+						style={small ? { float: 'right' } : null}
+						buttonText={buttonText}
+						secondaryClassName={
+							secondaryBtnTxt ? 'btn-48' : 'w-100 d-flex justify-content-center'
+						}
+					/>
+				</div>
 			</form>
 		);
 	};
