@@ -51,7 +51,7 @@ describe('tests for /user/withdrawal', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -122,7 +122,7 @@ describe('tests for /user/withdrawal', function () {
     it('Integration Test -should respond 403 for lack of authority for withdraw', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -184,7 +184,7 @@ describe('tests for /user/withdrawal', function () {
     it('Fuzz Test -should return error', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;

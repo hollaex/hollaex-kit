@@ -51,7 +51,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         if(!token){
             const response = await request()
@@ -72,7 +72,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         if(token){
 
@@ -118,7 +118,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id })
+        let token = await tokenModel.findOne({ user_id: user.id, active: true })
 
         if(token){
 
@@ -134,7 +134,7 @@ describe('tests for /user/token', function () {
             response.should.have.status(200);
             response.should.be.json;
 
-            token = await tokenModel.findOne({ user_id: user.id })
+            token = await tokenModel.findOne({ user_id: user.id, active: true })
 
             if(token) { throw new Error('Token cannot exist')}
         }
