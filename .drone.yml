@@ -95,6 +95,28 @@ steps:
     DOCKER_PASSWORD:
       from_secret: docker_password
 
+- name: docker_tagging_arm64v8_master
+  image: alpine
+  commands: 
+    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-arm64v8" > .tags
+    - echo "Current Docker tag is :" && cat .tags
+    - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+  when:
+    branch: master
+
+- name: docker_build_arm64v8
+  image:  plugins/docker
+  settings:
+    repo: bitholla/hollaex-kit
+    dockerfile: Dockerfile.arm64v8
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    branch: master
+
 - name: manifest_creation
   image: docker:18.06.3-dind
   privileged: true
