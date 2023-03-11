@@ -14,6 +14,7 @@ import {
 	getPluginMeta,
 	requestActivationsPlugin,
 } from './action';
+import { setPlugins } from 'actions/appActions';
 import { STATIC_ICONS } from 'config/icons';
 import Spinner from './Spinner';
 import AddThirdPartyPlugin from './AddPlugin';
@@ -191,6 +192,7 @@ class Plugins extends Component {
 						(plugin) => plugin.name !== this.state.removePluginName
 					);
 					this.setState({ removePluginName: '', myPlugins });
+					this.props.setPlugins(myPlugins);
 				}, 2000);
 			})
 			.catch((err) => {
@@ -277,9 +279,11 @@ class Plugins extends Component {
 	};
 
 	handlePluginList = (plugin) => {
+		const allPlugins = [...this.state.myPlugins, plugin];
 		this.setState({
-			myPlugins: [...this.state.myPlugins, plugin],
+			myPlugins: allPlugins,
 		});
+		this.props.setPlugins(allPlugins);
 	};
 
 	handleUpdatePluginList = (plugin) => {
@@ -737,4 +741,4 @@ const mapStateToProps = (state) => ({
 	pluginsLoading: state.app.getPluginLoading,
 });
 
-export default connect(mapStateToProps)(Plugins);
+export default connect(mapStateToProps, { setPlugins })(Plugins);

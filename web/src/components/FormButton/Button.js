@@ -10,9 +10,10 @@ const FormButton = ({
 	style = null,
 	buttonText = '',
 	htmlType = '',
+	secondaryClassName = '',
 }) => {
 	return (
-		<div>
+		<div className={secondaryClassName}>
 			<Button
 				type={type}
 				onClick={handleSubmit}

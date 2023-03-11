@@ -18,7 +18,7 @@ const sequelize = require('sequelize');
 const lodash = require('lodash');
 const pluginProcess = path.join(__dirname, './plugin-process.js');
 const { Worker } = require('worker_threads');
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const proxy = require('express-http-proxy');
 
 let app;
 let pluginWorkerThread;
@@ -170,18 +170,9 @@ checkStatus()
 		app.use(domainMiddleware);
 		helmetMiddleware(app);
 		const defaultURL = 'http://localhost:10012';
-
-		const customRouter = function (req) {
-			return defaultURL;
-		};
-
-		const options = {
-			target: defaultURL,
-			router: customRouter,
-			changeOrigin: true
-		};
-
-		app.use('/plugins', routes, createProxyMiddleware(options));
+	
+		app.use('/plugins', routes);
+		app.use('/', proxy(defaultURL));
 
 		startPluginProcess();
 

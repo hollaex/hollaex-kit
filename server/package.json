@@ -1,5 +1,5 @@
 {
-	"version": "2.5.1",
+	"version": "2.5.2",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -34,6 +34,7 @@
 		"hollaex-tools-lib": "file:utils/hollaex-tools-lib",
 		"http": "0.0.0",
 		"http-proxy-middleware": "2.0.6",
+		"express-http-proxy": "1.6.3",
 		"install": "0.10.4",
 		"ip-range-check": "0.2.0",
 		"is-base64": "1.1.0",

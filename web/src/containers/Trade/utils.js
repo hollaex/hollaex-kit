@@ -371,7 +371,7 @@ export const pinnedMarketsSelector = createSelector(
 
 export const MarketsSelector = createSelector(
 	[sortedMarketsSelector, getPairs, getFavourites, pinnedMarketsSelector],
-	(markets, pairs, favourites, pins) => {
+	(markets, pairs, favourites, pins = []) => {
 		const favouriteMarkets = [];
 		const pinnedMarkets = [];
 		const restMarkets = [];
