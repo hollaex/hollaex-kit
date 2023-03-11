@@ -1952,7 +1952,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'chart');
 	}
 
 	/**
@@ -1989,7 +1989,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'charts');
 	}
 
 	/**
@@ -2658,7 +2658,7 @@ class HollaExNetwork {
 			this.apiExpiresAfter
 		);
 
-		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'oracle');
 	}
 
 	getConstants(opts = {

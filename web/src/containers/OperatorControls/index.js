@@ -30,9 +30,14 @@ import UploadIcon from './components/UploadIcon';
 import SectionsModal from './components/Sections';
 import AddSection from './components/AddSection';
 import ConfigsModal from './components/ConfigsModal';
+import WalletConfigsModal from './components/WalletConfigsModal';
 import String from './components/String';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { setLanguage, setAdminSortData } from 'actions/appActions';
+import {
+	setLanguage,
+	setAdminSortData,
+	setAdminWalletSortData,
+} from 'actions/appActions';
 import {
 	pushTempContent,
 	getTempLanguageKey,
@@ -97,6 +102,7 @@ class OperatorControls extends Component {
 			isSectionsModalOpen: false,
 			isAddSectionOpen: false,
 			isConfigsModalOpen: false,
+			isWalletConfigModalOpen: false,
 			selectedTheme: '',
 			iconsOverwrites,
 			colorOverwrites,
@@ -249,8 +255,10 @@ class OperatorControls extends Component {
 						this.openUploadIcon();
 					} else if (sectionId) {
 						this.openSectionsModal();
-					} else if (configId) {
+					} else if (configId === 'MARKET_LIST_CONFIGS') {
 						this.openConfigsModal();
+					} else if (configId === 'WALLET_LIST_CONFIGS') {
+						this.openWalletConfigsModal();
 					}
 				}
 			);
@@ -387,7 +395,14 @@ class OperatorControls extends Component {
 				languageKeys,
 			} = this.state;
 
-			const { defaults, sections, pinned_markets, default_sort } = this.props;
+			const {
+				defaults,
+				sections,
+				pinned_markets,
+				default_sort,
+				pinned_assets,
+				default_wallet_sort,
+			} = this.props;
 
 			const valid_languages = languageKeys.join();
 			const strings = filterOverwrites(overwrites);
@@ -402,6 +417,8 @@ class OperatorControls extends Component {
 				sections,
 				pinned_markets,
 				default_sort,
+				pinned_assets,
+				default_wallet_sort,
 			};
 
 			publish(configs)
@@ -918,6 +935,24 @@ class OperatorControls extends Component {
 		this.enablePublish();
 	};
 
+	openWalletConfigsModal = () => {
+		this.setState({
+			isWalletConfigsModalOpen: true,
+		});
+	};
+
+	closeWalletConfigsModal = () => {
+		this.setState({
+			isWalletConfigsModalOpen: false,
+		});
+	};
+
+	updateWalletConfigs = (data) => {
+		const { setAdminWalletSortData } = this.props;
+		setAdminWalletSortData(data);
+		this.enablePublish();
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -948,6 +983,7 @@ class OperatorControls extends Component {
 			iconSearchResults,
 			isSectionsModalOpen,
 			isConfigsModalOpen,
+			isWalletConfigsModalOpen,
 			isAddSectionOpen,
 			injected_html,
 			isRemove,
@@ -1252,6 +1288,14 @@ class OperatorControls extends Component {
 					/>
 				)}
 
+				{isWalletConfigsModalOpen && (
+					<WalletConfigsModal
+						isOpen={isEditMode && isWalletConfigsModalOpen}
+						onCloseDialog={this.closeWalletConfigsModal}
+						onConfirm={this.updateWalletConfigs}
+					/>
+				)}
+
 				<Modal
 					isOpen={isExitConfirmationOpen}
 					label="operator-controls-modal"
@@ -1361,11 +1405,14 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	pinned_markets: state.app.pinned_markets,
 	default_sort: state.app.default_sort,
+	pinned_assets: state.app.pinned_assets,
+	default_wallet_sort: state.app.default_wallet_sort,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	setAdminSortData: bindActionCreators(setAdminSortData, dispatch),
+	setAdminWalletSortData: bindActionCreators(setAdminWalletSortData, dispatch),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
 });
 

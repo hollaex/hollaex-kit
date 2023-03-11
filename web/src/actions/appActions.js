@@ -85,17 +85,33 @@ export const SET_CONTRACTS = 'SET_CONTRACTS';
 export const SET_ALL_CONTRACTS = 'SET_ALL_CONTRACTS';
 export const SET_TRADE_TAB = 'SET_TRADE_TAB';
 export const SET_SORT_MODE = 'SET_SORT_MODE';
+export const SET_WALLET_SORT_MODE = 'SET_WALLET_SORT_MODE';
+export const TOGGLE_WALLET_SORT = 'TOGGLE_WALLET_SORT';
 export const TOGGLE_SORT = 'TOGGLE_SORT';
 export const SET_ADMIN_SORT = 'SET_ADMIN_SORT';
+export const SET_ADMIN_WALLET_SORT = 'SET_ADMIN_WALLET_SORT';
 export const SORT = {
 	VOL: 'volume',
 	CHANGE: 'change',
+};
+
+export const WALLET_SORT = {
+	AMOUNT: 'amount',
 };
 
 export const SORT_EXP = {
 	VOL: 'most actively traded first',
 	CHANGE: 'biggest gainers first',
 };
+
+export const WALLET_SORT_EXP = {
+	AMOUNT: 'asset with the most amount',
+};
+
+export const setSortModeAmount = () => ({
+	type: SET_WALLET_SORT_MODE,
+	payload: WALLET_SORT.AMOUNT,
+});
 
 export const setSortModeVolume = () => ({
 	type: SET_SORT_MODE,
@@ -117,6 +133,21 @@ export const setAdminSortData = ({ pinned_markets, default_sort }) => ({
 
 export const toggleSort = () => ({
 	type: TOGGLE_SORT,
+});
+
+export const toggleWalletSort = () => ({
+	type: TOGGLE_WALLET_SORT,
+});
+
+export const setAdminWalletSortData = ({
+	pinned_assets,
+	default_wallet_sort,
+}) => ({
+	type: SET_ADMIN_WALLET_SORT,
+	payload: {
+		pinned_assets,
+		default_wallet_sort,
+	},
 });
 
 export const USER_TYPES = {
