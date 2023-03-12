@@ -2,7 +2,7 @@
 
 const { getPublicData } = require('./publicData');
 const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, ROLES } = require('../constants');
+const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, WS_PUBSUB_WITHDRAWAL_CHANNEL, ROLES } = require('../constants');
 const { each } = require('lodash');
 const toolsLib = require('hollaex-tools-lib');
 const { loggerWebsocket } = require('../config/logger');
@@ -22,13 +22,22 @@ const { sendNetworkWsMessage } = require('./hub');
 const WebSocket = require('ws');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
+subscriber.subscribe(WS_PUBSUB_WITHDRAWAL_CHANNEL);
+
 subscriber.on('message', (channel, data) => {
 	if (channel === WS_PUBSUB_DEPOSIT_CHANNEL) {
 		try {
 			data = JSON.parse(data);
-			handleDepositData(data);
+			handleDepositWithdrawalData(data);
 		} catch (err) {
 			loggerWebsocket.error('ws/sub/subscriber deposit message', err.message);
+		}
+	} else if (channel === WS_PUBSUB_WITHDRAWAL_CHANNEL) {
+		try {
+			data = JSON.parse(data);
+			handleDepositWithdrawalData(data);
+		} catch (err) {
+			loggerWebsocket.error('ws/sub/subscriber withdrawal message', err.message);
 		}
 	}
 });
@@ -74,6 +83,12 @@ const initializeTopic = (topic, ws, symbol) => {
 			}
 			break;
 		case 'deposit':
+			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
+			break;
+		case 'withdrawal':
 			if (!ws.auth.sub) { // throw unauthenticated error if req.auth.sub does not exist
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
@@ -276,9 +291,16 @@ const handleChatData = (action, ws, data) => {
 		});
 };
 
-const handleDepositData = (data) => {
+const handleDepositWithdrawalData = (data) => {
 	switch (data.topic) {
 		case 'deposit':
+			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
+				if (ws.readyState === WebSocket.OPEN) {
+					ws.send(JSON.stringify(data));
+				}
+			});
+			break;
+		case 'withdrawal':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				if (ws.readyState === WebSocket.OPEN) {
 					ws.send(JSON.stringify(data));

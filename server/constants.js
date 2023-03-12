@@ -269,6 +269,7 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	}
 };
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
+exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
 exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 
 // Chat
