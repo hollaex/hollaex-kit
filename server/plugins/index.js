@@ -18,7 +18,7 @@ const sequelize = require('sequelize');
 const lodash = require('lodash');
 const pluginProcess = path.join(__dirname, './plugin-process.js');
 const { Worker } = require('worker_threads');
-const  { createProxyMiddleware,fixRequestBody } = require('http-proxy-middleware');
+const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
 
 let app;
 let pluginWorkerThread;
