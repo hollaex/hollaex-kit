@@ -614,6 +614,9 @@ paths:
                 type: string
               email_code:
                 type: string
+              role:
+                type: string
+                enum: ['supervisor','support','admin','kyc','communicator','user']
       responses:
         200:
           description: Success
@@ -655,6 +658,9 @@ paths:
                 type: string
               email_code:
                 type: string
+              role:
+                type: string
+                enum: ['supervisor','support','admin','kyc','communicator','user']
               permissions:
                 $ref: '#/definitions/TokenPermissions'
               whitelisted_ips:

@@ -827,7 +827,7 @@ const createHmacToken = (req, res) => {
 
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { name, otp_code, email_code } = req.swagger.params.data.value;
+	const { name, otp_code, email_code, role } = req.swagger.params.data.value;
 
 	loggerUser.verbose(
 		req.uuid,
@@ -835,14 +835,15 @@ const createHmacToken = (req, res) => {
 		name,
 		otp_code,
 		email_code,
-		ip
+		ip,
+		role
 	);
 
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
 				// TODO check for the name duplication
-				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name);
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name, role);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -869,7 +870,7 @@ function updateHmacToken(req, res) {
 
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, whitelisting_enabled } = req.swagger.params.data.value;
+	const { token_id, name, otp_code, email_code, permissions, whitelisted_ips, whitelisting_enabled, role } = req.swagger.params.data.value;
 
 	loggerUser.verbose(
 		req.uuid,
@@ -881,7 +882,8 @@ function updateHmacToken(req, res) {
 		permissions,
 		whitelisted_ips,
 		whitelisting_enabled,
-		ip
+		ip,
+		role
 	);
 
 	whitelisted_ips?.forEach((ip) => {
@@ -893,7 +895,7 @@ function updateHmacToken(req, res) {
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
-				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled);
+				return toolsLib.security.updateUserKitHmacToken(userId, otp_code, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled, role);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}

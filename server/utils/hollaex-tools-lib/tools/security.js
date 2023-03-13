@@ -794,7 +794,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
+				if(!scopes.includes(token.role)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
@@ -992,11 +992,10 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = async (userId, otpCode, ip, name) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name, role) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
-	const user = await getModel('user').findOne({ where: { id: userId } });
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -1006,7 +1005,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name) => {
 				key,
 				secret,
 				expiry,
-				role: user.is_admin ? ROLES.ADMIN : ROLES.USER,
+				role: role || ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
 				active: true,
@@ -1018,10 +1017,9 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name) => {
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled, role) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({ where: { id: token_id } });
-	const user = await getModel('user').findOne({ where: { id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1034,7 +1032,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		name,
 		whitelisted_ips,
 		whitelisting_enabled,
-		role: user.is_admin ? ROLES.ADMIN : ROLES.USER,
+		role: role || ROLES.USER,
 	};
 
 	Object.entries(values).forEach((key, value) => {
