@@ -998,7 +998,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role) => {
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
 	if(role !== ROLES.USER && !user.is_admin){
-		role = ROLES.USER;
+		throw new Error(NOT_AUTHORIZED);
 	}
 
 	return checkUserOtpActive(userId, otpCode)
@@ -1026,7 +1026,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 	const token = await findToken({ where: { id: token_id } });
 	const user = await getModel('user').findOne({ where: { id: userId } });
 	if(role !== ROLES.USER && !user.is_admin){
-		role = ROLES.USER;
+		throw new Error(NOT_AUTHORIZED);
 	}
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
