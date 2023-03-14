@@ -141,4 +141,95 @@ describe('tests for /user/token', function () {
 
     });
 
+
+    it('Integration Test -should throw error', async () => {
+
+        const tokenModel = getModel('token');
+        let token = await tokenModel.findOne({ where:{ user_id: user.id, active: true } })
+
+        if(token){
+
+            await request()
+			.delete('/v2/user/token')
+			.set('Authorization', `Bearer ${bearerToken}`)
+			.send({
+                token_id: token.id,
+				otp_code: await getOtpCode(),
+				email_code: await getEmailCode(),
+			});
+          
+        }
+
+
+        await request()
+        .post('/v2/user/token')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send({
+            name: 'tokenTest',
+            otp_code: await getOtpCode(),
+            email_code: await getEmailCode(),
+            role: 'user'
+        });
+        
+        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'user' } })
+
+        let apiKey = token?.key;
+        
+        const expires = token.expiry / 1000;
+		const signature = tools.security.calculateSignature(token.secret, 'GET', '/v2/admin/users', expires);
+        const response = await request()
+			.get('/v2/admin/users')
+			.set('Api-key', apiKey)
+			.set('Api-expires', expires)
+			.set('Api-signature', signature)
+
+            response.should.have.status(403);
+            response.should.be.json;
+    });
+
+
+    it('Integration Test -should respond 200 for "Success"', async () => {
+
+        const tokenModel = getModel('token');
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true } })
+
+        if(token){
+
+            await request()
+			.delete('/v2/user/token')
+			.set('Authorization', `Bearer ${bearerToken}`)
+			.send({
+                token_id: token.id,
+				otp_code: await getOtpCode(),
+				email_code: await getEmailCode(),
+			});
+          
+        }
+
+
+        await request()
+        .post('/v2/user/token')
+        .set('Authorization', `Bearer ${bearerToken}`)
+        .send({
+            name: 'tokenTest',
+            otp_code: await getOtpCode(),
+            email_code: await getEmailCode(),
+            role: 'admin'
+        });
+        
+        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'admin' }})
+        let apiKey = token?.key;
+
+        const expires = token.expiry / 1000;
+		const signature = tools.security.calculateSignature(token.secret, 'GET', '/v2/admin/users', expires);
+        const response = await request()
+			.get('/v2/admin/users')
+			.set('Api-key', apiKey)
+			.set('Api-expires', expires)
+			.set('Api-signature', signature)
+
+            response.should.have.status(200);
+            response.should.be.json;
+    });
+
 });
