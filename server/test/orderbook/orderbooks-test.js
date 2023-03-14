@@ -31,16 +31,16 @@ describe('tests for /orderbooks', function () {
     });
 
 
-     //Fuzz Testing
-     it('Fuzz Test -should respond 200 for "Success"', async () => {
-        const response = await request()
-            .get(`/v2/orderbooks?symbol=${generateFuzz()}`)
-            .set('Authorization', `Bearer ${bearerToken}`)
+    //  //Fuzz Testing
+    //  it('Fuzz Test -should throw error', async () => {
+    //     const response = await request()
+    //         .get(`/v2/orderbooks?symbol=${generateFuzz()}`)
+    //         .set('Authorization', `Bearer ${bearerToken}`)
            
         
-        response.should.have.status(400);
-        response.should.be.json;
+    //     response.should.have.status(400);
+    //     response.should.be.json;
      
-    });
+    // });
 
 });

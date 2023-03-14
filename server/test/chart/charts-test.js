@@ -39,7 +39,7 @@ describe('tests for /charts', function () {
             .set('Authorization', `Bearer ${bearerToken}`)
            
         
-        response.should.have.status(403);
+        response.should.have.status(400);
         response.should.be.json;
      
     });

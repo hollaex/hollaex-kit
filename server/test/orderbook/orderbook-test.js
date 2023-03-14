@@ -30,7 +30,7 @@ describe('tests for /orderbook', function () {
     });
 
      //Fuzz Testing
-     it('Fuzz Test -should respond 200 for "Success"', async () => {
+     it('Fuzz Test -should throw error', async () => {
         const response = await request()
             .get(`/v2/orderbook?symbol=${generateFuzz()}`)
             .set('Authorization', `Bearer ${bearerToken}`)
