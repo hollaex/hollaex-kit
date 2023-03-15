@@ -3,66 +3,28 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { Select } from 'antd';
 
+import { unique } from 'utils/data';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Markets from 'containers/Summary/components/Markets';
-import { MarketsSelector } from 'containers/Trade/utils';
+import Markets from './components/AssetsWrapper';
+import { MarketsSelector } from './components/utils';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const DigitalAssets = (props) => {
-	const {
-		user,
-		coins,
-		balance,
-		oraclePrices,
-		pairs,
-		activeTheme,
-		router,
-		pair,
-		markets,
-		icons: ICONS,
-	} = props;
-	const [options, setOptions] = useState([
-		{ value: 'all', label: STRINGS['ALL'] },
-	]);
+const DigitalAssets = ({ router, pair, markets, icons: ICONS }) => {
+	const DEFAULT_OPTIONS = [{ value: 'all', label: STRINGS['ALL'] }];
+	const [options, setOptions] = useState(DEFAULT_OPTIONS);
 	const [selectedSource, setSelectedSource] = useState('');
 
 	useEffect(() => {
-		getSearchResult();
 		handleOptions();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const handleBack = () => {
-		router.goBack();
-	};
-
 	const handleOptions = () => {
-		const optionData = [];
-		const nonDublicateCoins = [];
-		markets.forEach((market) => {
-			const pair_2_symbol = market?.pairTwo?.symbol;
-			if (!nonDublicateCoins.includes(pair_2_symbol)) {
-				nonDublicateCoins.push(pair_2_symbol);
-				optionData.push({
-					value: pair_2_symbol,
-					label: pair_2_symbol,
-				});
-			}
-		});
-		setOptions([...options, ...optionData]);
-	};
-
-	const getSearchResult = () => {
-		const result = {};
-		Object.entries(coins).forEach(([key, obj]) => {
-			const hasCoinBalance = !!balance[`${key}_balance`];
-			if (hasCoinBalance) {
-				result[key] = { ...obj, oraclePrice: oraclePrices[key] };
-			}
-			return key;
-		});
-		return { ...result };
+		const options = unique(
+			markets.map(({ pairTwo: { symbol } }) => symbol)
+		).map((symbol) => ({ value: symbol, label: symbol }));
+		setOptions([...DEFAULT_OPTIONS, ...options]);
 	};
 
 	return (
@@ -79,7 +41,7 @@ const DigitalAssets = (props) => {
 							textType="title"
 						/>
 					</div>
-					<div className="link-content" onClick={handleBack}>
+					<div className="link-content" onClick={router.goBack}>
 						<EditWrapper stringId="DIGITAL_ASSETS.GO_BACK">
 							&lt; {STRINGS['DIGITAL_ASSETS.GO_BACK']}
 						</EditWrapper>
@@ -132,16 +94,7 @@ const DigitalAssets = (props) => {
 						options={options}
 					/>
 				</div>
-				<Markets
-					user={user}
-					coins={coins}
-					pairs={pairs}
-					activeTheme={activeTheme}
-					router={router}
-					isFilterDisplay={true}
-					isAsset={true}
-					selectedSource={selectedSource}
-				/>
+				<Markets selectedSource={selectedSource} />
 			</div>
 		</div>
 	);
@@ -150,13 +103,6 @@ const DigitalAssets = (props) => {
 const mapStateToProps = (state) => {
 	return {
 		pair: state.app.pair,
-		pairs: state.app.pairs,
-		coins: state.app.coins,
-		user: state.user || {},
-		activeTheme: state.app.theme,
-		balance: state.user.balance,
-		oraclePrices: state.asset.oraclePrices,
-		tickers: state.app.tickers,
 		markets: MarketsSelector(state),
 	};
 };
