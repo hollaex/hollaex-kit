@@ -95,7 +95,7 @@ const HistoryDisplay = (props) => {
 							/>
 						</div>
 					)}
-					{activeTab === 2 ? (
+					{activeTab === 2 && (
 						<ActionNotification
 							stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 							text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
@@ -104,10 +104,10 @@ const HistoryDisplay = (props) => {
 							className={count > 0 ? 'check-deposit-txt' : ''}
 							onClick={openDialog}
 						/>
-					) : null}
+					)}
 					<div className="download-icon">
 						<ActionNotification
-							stringId="RESFRESH"
+							stringId="REFRESH"
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}
