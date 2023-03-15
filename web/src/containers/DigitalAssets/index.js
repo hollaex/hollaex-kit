@@ -112,7 +112,7 @@ const mapStateToProps = (state) => {
 	return {
 		pair: state.app.pair,
 		markets: MarketsSelector(state),
-		showQuickTrade: state.app.constants.features.quick_trade,
+    showQuickTrade: state.app.constants.features.quick_trade,
 	};
 };
 

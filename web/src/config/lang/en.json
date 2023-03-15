@@ -1,7 +1,7 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Open Crypto Exchange",
-	"LOGOUT_CONFIRM_TEXT": "Are you sure?. Do you want to logout",
+	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
 	"ADD_TRADING_PAIR": "Select a market",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0} Withdrawal",
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",

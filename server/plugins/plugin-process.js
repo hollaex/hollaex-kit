@@ -43,6 +43,9 @@ const uglifyJs = require('uglify-js');
 const bodyParser = require('body-parser');
 const { isMainThread, workerData } = require('worker_threads');
 const { Plugin } = require('../db/models');
+const { checkStatus } = require('../init');
+const { sleep } = require('../utils/hollaex-tools-lib/tools/common');
+
 
 const initPluginProcess = async ({ PORT }) => {
 
@@ -123,7 +126,7 @@ const initPluginProcess = async ({ PORT }) => {
 
 			if (plugin.prescript && lodash.isArray(plugin.prescript.install) && !lodash.isEmpty(plugin.prescript.install)) {
 				loggerPlugin.verbose(
-					'plugins/index/initialization',
+					'plugins/plugin-process',
 					`Installing packages for plugin ${plugin.name}`
 				);
 
@@ -134,7 +137,7 @@ const initPluginProcess = async ({ PORT }) => {
 				}
 
 				loggerPlugin.verbose(
-					'plugins/index/initialization',
+					'plugins/plugin-process',
 					`Plugin ${plugin.name} packages installed`
 				);
 			}
@@ -143,7 +146,7 @@ const initPluginProcess = async ({ PORT }) => {
 				_eval(plugin.script, plugin.name, context, true);
 			} catch (err) {
 				loggerPlugin.error(
-					'plugins/index/initialization',
+					'plugins/plugin-process',
 					'error while starting plugin',
 					err.message
 				);
@@ -152,7 +155,7 @@ const initPluginProcess = async ({ PORT }) => {
 		}
 		catch (err) {
 			loggerPlugin.error(
-				'plugins/index/initialization',
+				'plugins/plugin-process',
 				`error while starting plugin ${plugin.name}`,
 				err.message
 			);
@@ -162,13 +165,36 @@ const initPluginProcess = async ({ PORT }) => {
 };
 
 if (!isMainThread) {
-	try {
-		initPluginProcess(JSON.parse(workerData));
-	} catch (err) {
-		loggerPlugin.error(
-			'plugins/index/initialization',
-			'error while starting plugin',
-			err.message
-		);
-	}
+	loggerPlugin.verbose(
+		'plugins/plugin-process',
+		`Plugin thread initializing`
+	);
+	checkStatus()
+		.then(async () => {
+			await sleep(2 * 1000);
+
+			loggerPlugin.verbose(
+				'plugins/plugin-process',
+				`Plugin thread checkStatus complete`
+			);
+			try {
+				initPluginProcess(JSON.parse(workerData));
+			} catch (err) {
+				loggerPlugin.error(
+					'plugins/plugin-process',
+					'error while starting plugin',
+					err.message
+				);
+			}
+		})
+		.catch(() => {
+			loggerPlugin.error(
+				'plugins/plugin-process',
+				'API Initialization failed',
+				err.message
+			);
+			setTimeout(() => { process.exit(1); }, 1000 * 5);
+		})
+
+
 }
