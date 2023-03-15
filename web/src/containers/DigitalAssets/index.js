@@ -21,6 +21,7 @@ const DigitalAssets = (props) => {
 		pair,
 		markets,
 		icons: ICONS,
+		isQuickTradeShow,
 	} = props;
 	const [options, setOptions] = useState([
 		{ value: 'all', label: STRINGS['ALL'] },
@@ -99,11 +100,13 @@ const DigitalAssets = (props) => {
 						</div>
 					</div>
 					<div className="link-container">
-						<Link className="link-1" to={`/quick-trade/${pair}`}>
-							<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
-								{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
-							</EditWrapper>
-						</Link>
+						{isQuickTradeShow && (
+							<Link className="link-1" to={`/quick-trade/${pair}`}>
+								<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
+									{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
+								</EditWrapper>
+							</Link>
+						)}
 						<Link className="link-2" to="/markets">
 							<EditWrapper stringId="DIGITAL_ASSETS.MARKETS">
 								{STRINGS['DIGITAL_ASSETS.MARKETS']}
@@ -158,6 +161,7 @@ const mapStateToProps = (state) => {
 		oraclePrices: state.asset.oraclePrices,
 		tickers: state.app.tickers,
 		markets: MarketsSelector(state),
+		isQuickTradeShow: state.app.constants.features.quick_trade,
 	};
 };
 
