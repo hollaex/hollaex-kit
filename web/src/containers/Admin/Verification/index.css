@@ -103,6 +103,9 @@
 	width: 18rem;
 	height: 3rem;
 }
+.verification-confirm-modal .btn-48 {
+	width: 48%;
+}
 .zoom-image-modal .image-wrapper {
 	height: 50rem;
 }

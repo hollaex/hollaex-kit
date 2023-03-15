@@ -5771,7 +5771,8 @@ table th {
     width: 20px;
     margin: 1px 3px; }
   .hollaex-token-wrapper .token-wrapper {
-    width: 65%; }
+    width: 65%;
+    height: 100%; }
     .hollaex-token-wrapper .token-wrapper .image-container .coins-icon {
       width: 3.5rem;
       height: 3.5rem; }
@@ -5841,7 +5842,6 @@ table th {
           .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container .button-container .button-2 {
             margin: 0 10px 0 10px; }
       .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
-        width: 40%;
         padding: 40px 65px 30px 55px;
         font-family: "Open Sans";
         background-color: var(--base_background); }
@@ -5904,14 +5904,42 @@ table th {
   align-items: center;
   font-size: 18px; }
 
+.layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container {
+  display: block; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .hollaex-container .info-container {
+    width: 100%; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .title .title-child-container .favourite-content {
+    padding-left: 0px !important; }
+
+.layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper {
+  display: block !important; }
+  .layout-mobile .hollaex-token-wrapper .token-wrapper .header-container .balance-wrapper .link {
+    text-align: left; }
+
 @media (max-width: 1024px) {
   .token-wrapper {
     width: 100% !important; } }
 
+@media (max-width: 1400px) {
+  .hollaex-token-wrapper .token-wrapper {
+    width: 80%; } }
+
+@media (max-width: 1200px) {
+  .hollaex-token-wrapper .token-wrapper {
+    width: 100%; }
+    .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
+      padding: 40px 45px 30px 45px; }
+      .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
+        font-size: 2rem; } }
+
 @media (max-width: 768px) {
   .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper {
-    width: 45%;
-    padding: 40px 50px 30px 50px; } }
+    padding: 40px 35px 30px 35px; }
+    .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .trade_tabs-container {
+      font-size: 1.5rem !important; } }
 
 .sidebar-row {
   min-height: 3rem;
