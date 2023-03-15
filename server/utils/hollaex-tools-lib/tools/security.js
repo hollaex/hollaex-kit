@@ -794,7 +794,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if(!scopes.includes(token.role)) {
+				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
@@ -1000,6 +1000,9 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role) => {
 	if(role !== ROLES.USER && !user.is_admin){
 		throw new Error(NOT_AUTHORIZED);
 	}
+	if(role && role !== ROLES.USER && role !== ROLES.ADMIN){
+		throw new Error(NOT_AUTHORIZED);
+	}
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -1026,6 +1029,9 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 	const token = await findToken({ where: { id: token_id } });
 	const user = await getModel('user').findOne({ where: { id: userId } });
 	if(role !== ROLES.USER && !user.is_admin){
+		throw new Error(NOT_AUTHORIZED);
+	}
+	if(role && role !== ROLES.USER && role !== ROLES.ADMIN){
 		throw new Error(NOT_AUTHORIZED);
 	}
 	if (!token) {
