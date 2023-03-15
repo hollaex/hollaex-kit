@@ -1024,16 +1024,10 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role) => {
 		});
 };
 
-async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled, role) {
+async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
 	const token = await findToken({ where: { id: token_id } });
-	const user = await getModel('user').findOne({ where: { id: userId } });
-	if(role !== ROLES.USER && !user.is_admin){
-		throw new Error(NOT_AUTHORIZED);
-	}
-	if(role && role !== ROLES.USER && role !== ROLES.ADMIN){
-		throw new Error(NOT_AUTHORIZED);
-	}
+
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
 	} else if (token.revoked) {
@@ -1045,7 +1039,6 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		name,
 		whitelisted_ips,
 		whitelisting_enabled,
-		role: role || ROLES.USER,
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1063,7 +1056,6 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_withdraw',
 			'whitelisting_enabled',
 			'whitelisted_ips',
-			'role'
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);
