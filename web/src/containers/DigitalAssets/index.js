@@ -10,7 +10,13 @@ import { MarketsSelector } from './components/utils';
 import { EditWrapper, IconTitle } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const DigitalAssets = ({ router, pair, markets, icons: ICONS }) => {
+const DigitalAssets = ({
+	router,
+	pair,
+	markets,
+	icons: ICONS,
+	showQuickTrade,
+}) => {
 	const DEFAULT_OPTIONS = [{ value: 'all', label: STRINGS['ALL'] }];
 	const [options, setOptions] = useState(DEFAULT_OPTIONS);
 	const [selectedSource, setSelectedSource] = useState('');
@@ -61,11 +67,13 @@ const DigitalAssets = ({ router, pair, markets, icons: ICONS }) => {
 						</div>
 					</div>
 					<div className="link-container">
-						<Link className="link-1" to={`/quick-trade/${pair}`}>
-							<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
-								{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
-							</EditWrapper>
-						</Link>
+						{showQuickTrade && (
+							<Link className="link-1" to={`/quick-trade/${pair}`}>
+								<EditWrapper stringId="DIGITAL_ASSETS.QUICK_TRADE">
+									{STRINGS['DIGITAL_ASSETS.QUICK_TRADE']}
+								</EditWrapper>
+							</Link>
+						)}
 						<Link className="link-2" to="/markets">
 							<EditWrapper stringId="DIGITAL_ASSETS.MARKETS">
 								{STRINGS['DIGITAL_ASSETS.MARKETS']}
@@ -104,6 +112,7 @@ const mapStateToProps = (state) => {
 	return {
 		pair: state.app.pair,
 		markets: MarketsSelector(state),
+		showQuickTrade: state.app.constants.features.quick_trade,
 	};
 };
 
