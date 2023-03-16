@@ -219,7 +219,6 @@ class Verification extends Component {
 								secondaryBtnTxt={'Back'}
 								buttonText="Reject"
 								small
-								isConfirmModal={true}
 							/>
 						</div>
 					)}
