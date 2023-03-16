@@ -49,6 +49,10 @@ import {
 	SET_WALLET_SORT_MODE,
 	TOGGLE_WALLET_SORT,
 	SET_ADMIN_WALLET_SORT,
+	DIGITAL_ASSETS_SORT,
+	SET_DIGITAL_ASSETS_SORT_MODE,
+	TOGGLE_DIGITAL_ASSETS_SORT,
+	SET_ADMIN_DIGITAL_ASSETS_SORT,
 	SELECTED_PLUGIN,
 	SET_EXPLORE_PLUGINS,
 } from 'actions/appActions';
@@ -206,6 +210,11 @@ const INITIAL_STATE = {
 	},
 	pinned_assets: [],
 	default_wallet_sort: WALLET_SORT.AMOUNT,
+	digital_assets_sort: {
+		mode: DIGITAL_ASSETS_SORT.CHANGE,
+		is_descending: true,
+	},
+	default_digital_assets_sort: DIGITAL_ASSETS_SORT.CHANGE,
 };
 
 const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
@@ -696,6 +705,14 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					is_descending: true,
 				},
 			};
+		case SET_DIGITAL_ASSETS_SORT_MODE:
+			return {
+				...state,
+				digital_assets_sort: {
+					mode: payload,
+					is_descending: true,
+				},
+			};
 		case TOGGLE_WALLET_SORT:
 			return {
 				...state,
@@ -704,11 +721,25 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 					is_descending: !state.wallet_sort.is_descending,
 				},
 			};
+		case TOGGLE_DIGITAL_ASSETS_SORT:
+			return {
+				...state,
+				digital_assets_sort: {
+					...state.digital_assets_sort,
+					is_descending: !state.digital_assets_sort.is_descending,
+				},
+			};
 		case SET_ADMIN_WALLET_SORT:
 			return {
 				...state,
 				pinned_assets: payload.pinned_assets,
 				default_wallet_sort: payload.default_wallet_sort,
+			};
+		case SET_ADMIN_DIGITAL_ASSETS_SORT:
+			return {
+				...state,
+				pinned_assets: payload.pinned_assets,
+				default_digital_assets_sort: payload.default_digital_assets_sort,
 			};
 		default:
 			return state;

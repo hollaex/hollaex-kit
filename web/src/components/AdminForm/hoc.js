@@ -45,12 +45,14 @@ const Form = (name, className = '', allowPristine = false) => {
 					</div>
 				)}
 				{renderCustomFooter(formValues)}
-				<div className="d-flex justify-content-between">
+				<div
+					className={secondaryBtnTxt ? 'd-flex justify-content-between' : ''}
+				>
 					{secondaryBtnTxt ? (
 						<Button
 							type="primary"
 							onClick={onClose}
-							className={'green-btn btn-48'}
+							className={`green-btn btn-48`}
 						>
 							{secondaryBtnTxt}
 						</Button>
@@ -68,13 +70,11 @@ const Form = (name, className = '', allowPristine = false) => {
 						}
 						size={small ? 'small' : 'large'}
 						className={`${small ? buttonClass : buttonClass} ${
-							!secondaryBtnTxt ? 'btn-48' : 'w-100'
+							secondaryBtnTxt ? 'btn-48' : 'w-100'
 						}`}
 						style={small ? { float: 'right' } : null}
 						buttonText={buttonText}
-						secondaryClassName={
-							secondaryBtnTxt ? 'btn-48' : 'w-100 d-flex justify-content-center'
-						}
+						secondaryClassName={'w-100'}
 					/>
 				</div>
 			</form>
