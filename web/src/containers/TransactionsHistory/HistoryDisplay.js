@@ -95,19 +95,21 @@ const HistoryDisplay = (props) => {
 							/>
 						</div>
 					)}
-					{activeTab === 2 ? (
-						<ActionNotification
-							stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
-							text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
-							iconId="SEARCH"
-							iconPath={STATIC_ICONS.SEARCH}
-							className={count > 0 ? 'check-deposit-txt' : ''}
-							onClick={openDialog}
-						/>
-					) : null}
+					{activeTab === 2 && (
+						<div className="download-icon">
+							<ActionNotification
+								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
+								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
+								iconId="SEARCH"
+								iconPath={STATIC_ICONS.SEARCH}
+								className={count > 0 ? 'check-deposit-txt' : ''}
+								onClick={openDialog}
+							/>
+						</div>
+					)}
 					<div className="download-icon">
 						<ActionNotification
-							stringId="RESFRESH"
+							stringId="REFRESH"
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}

@@ -10,7 +10,7 @@ const getOraclePrices = (state) => state.asset.oraclePrices;
 const getSortMode = (state) => state.app.wallet_sort.mode;
 const getSortDir = (state) => state.app.wallet_sort.is_descending;
 const getKitInfo = (state) => state.app.info;
-const getPinnedAssets = (state) => state.app.pinned_assets;
+export const getPinnedAssets = (state) => state.app.pinned_assets;
 
 export const selectAssetOptions = createSelector([getCoins], (coins) => {
 	const assets = Object.entries(coins).map(([key, { symbol, fullname }]) => {
