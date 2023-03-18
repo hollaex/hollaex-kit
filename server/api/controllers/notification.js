@@ -186,7 +186,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 					topic: 'withdrawal',
 					action: 'insert',
 					user_id: user.network_id,
-					data: depositData,
+					data: data,
 					time: moment().unix()
 				}));
 
