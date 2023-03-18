@@ -262,6 +262,8 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
 			return `deposit:${symbolOrUserId}`;
+		case 'withdrawal':
+			return `withdrawal:${symbolOrUserId}`;
 		case 'chat':
 			return 'chat';
 		default:
