@@ -56,7 +56,7 @@ class MarketRow extends Component {
 							style={{
 								animationDelay: `.${index + 1}s`,
 							}}
-						></div>
+						/>
 					)}
 				</td>
 				<td>
@@ -73,7 +73,7 @@ class MarketRow extends Component {
 							style={{
 								animationDelay: `.${index + 1}s`,
 							}}
-						></div>
+						/>
 					)}
 				</td>
 				{isAsset && (
@@ -114,7 +114,7 @@ class MarketRow extends Component {
 								style={{
 									animationDelay: `.${index + 1}s`,
 								}}
-							></div>
+							/>
 						)}
 					</td>
 				)}
@@ -135,7 +135,7 @@ class MarketRow extends Component {
 											? 'circle-icon'
 											: 'triangle-icon'
 									}
-								></div>
+								/>
 							</div>
 							<div className="ml-1 caps-first">{pairTwo.type}</div>
 						</div>

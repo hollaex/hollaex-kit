@@ -287,14 +287,19 @@ const QuickTrade = ({
 	useEffect(() => {
 		const symbol = `${selectedSource}-${selectedTarget}`;
 		const flippedSymbol = flipPair(symbol);
-		if (
-			pairs[symbol] ||
-			brokerPairs[symbol] ||
-			pairs[flippedSymbol] ||
-			brokerPairs[flippedSymbol]
-		) {
+
+		if (pairs[symbol]) {
 			setSymbol(symbol);
 			goToPair(symbol);
+		} else if (pairs[flippedSymbol]) {
+			setSymbol(flippedSymbol);
+			goToPair(flippedSymbol);
+		} else if (brokerPairs[symbol]) {
+			setSymbol(symbol);
+			goToPair(symbol);
+		} else if (brokerPairs[flippedSymbol]) {
+			setSymbol(flippedSymbol);
+			goToPair(flippedSymbol);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedSource, selectedTarget, pairs, brokerPairs]);

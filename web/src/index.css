@@ -2311,22 +2311,6 @@ table th {
       color: #ffffff;
       border-radius: 20px;
       margin-right: 10px; }
-  .history_block-wrapper .check-deposit-txt {
-    right: 230px !important; }
-    .history_block-wrapper .check-deposit-txt svg {
-      padding-right: 0.3rem;
-      box-sizing: border-box;
-      border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-      height: 100%; }
-  .history_block-wrapper .download-history {
-    right: 85px !important; }
-    .history_block-wrapper .download-history svg {
-      padding-right: 0.1rem;
-      box-sizing: content-box;
-      border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-      height: 100%; }
-  .history_block-wrapper .refresh-history {
-    right: 10px !important; }
   .history_block-wrapper .loader_wrapper {
     top: 0;
     left: 0; }
@@ -2405,6 +2389,44 @@ table th {
     margin-bottom: 0px; }
   .expandable-container .font-bold {
     font-weight: bolder; }
+
+.direction_ltr .history_block-wrapper .check-deposit-txt {
+  right: 230px !important; }
+  .direction_ltr .history_block-wrapper .check-deposit-txt svg {
+    padding-right: 0.3rem;
+    box-sizing: border-box;
+    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    height: 100%; }
+
+.direction_ltr .history_block-wrapper .download-history {
+  right: 85px !important; }
+  .direction_ltr .history_block-wrapper .download-history svg {
+    padding-right: 0.1rem;
+    box-sizing: content-box;
+    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    height: 100%; }
+
+.direction_ltr .history_block-wrapper .refresh-history {
+  right: 10px !important; }
+
+.direction_rtl .history_block-wrapper .check-deposit-txt {
+  left: 150px !important; }
+  .direction_rtl .history_block-wrapper .check-deposit-txt svg {
+    padding-left: 0.3rem;
+    box-sizing: border-box;
+    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    height: 100%; }
+
+.direction_rtl .history_block-wrapper .download-history {
+  left: 65px !important; }
+  .direction_rtl .history_block-wrapper .download-history svg {
+    padding-left: 0.1rem;
+    box-sizing: content-box;
+    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
+    height: 100%; }
+
+.direction_rtl .history_block-wrapper .refresh-history {
+  left: 10px !important; }
 
 .trade-container {
   flex: 1; }

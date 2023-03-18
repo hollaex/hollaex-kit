@@ -66,10 +66,12 @@ import {
 	setBroker,
 	setAdminSortData,
 	setAdminWalletSortData,
+	setAdminDigitalAssetsSortData,
 	setSortModeChange,
 	setSortModeVolume,
 	SORT,
 	WALLET_SORT,
+	DIGITAL_ASSETS_SORT,
 } from 'actions/appActions';
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
@@ -105,6 +107,7 @@ const getConfigs = async () => {
 			pinned_markets = [],
 			default_wallet_sort = WALLET_SORT.AMOUNT,
 			pinned_assets = [],
+			default_digital_assets_sort = DIGITAL_ASSETS_SORT.CHANGE,
 		} = {},
 		valid_languages = '',
 		info: { initialized },
@@ -214,6 +217,12 @@ const getConfigs = async () => {
 	store.dispatch(setAdminSortData({ pinned_markets, default_sort }));
 	store.dispatch(
 		setAdminWalletSortData({ pinned_assets, default_wallet_sort })
+	);
+	store.dispatch(
+		setAdminDigitalAssetsSortData({
+			pinned_assets,
+			default_digital_assets_sort,
+		})
 	);
 
 	if (default_sort === SORT.VOL) {
