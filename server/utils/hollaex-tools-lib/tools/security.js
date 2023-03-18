@@ -992,15 +992,16 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = async (userId, otpCode, ip, name, role) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if(role !== ROLES.USER && !user.is_admin){
+	if(role !== ROLES.USER && !user.is_admin) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-	if(role && role !== ROLES.USER && role !== ROLES.ADMIN){
+	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+		// role can only be admin or user
 		throw new Error(NOT_AUTHORIZED);
 	}
 
