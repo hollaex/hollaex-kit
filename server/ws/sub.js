@@ -12,7 +12,8 @@ const {
 	MULTIPLE_API_KEY,
 	WS_ALREADY_AUTHENTICATED,
 	WS_MISSING_HEADER,
-	WS_INVALID_TOPIC
+	WS_INVALID_TOPIC,
+	NOT_AUTHORIZED
 } = require('../messages');
 const { subscriber } = require('../db/pubsub');
 const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
@@ -29,6 +30,7 @@ subscriber.on('message', (channel, data) => {
 		try {
 			data = JSON.parse(data);
 			handleDepositWithdrawalData(data);
+			notifyAdmin(data)
 		} catch (err) {
 			loggerWebsocket.error('ws/sub/subscriber deposit message', err.message);
 		}
@@ -36,6 +38,7 @@ subscriber.on('message', (channel, data) => {
 		try {
 			data = JSON.parse(data);
 			handleDepositWithdrawalData(data);
+			notifyAdmin(data)
 		} catch (err) {
 			loggerWebsocket.error('ws/sub/subscriber withdrawal message', err.message);
 		}
@@ -98,6 +101,19 @@ const initializeTopic = (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			sendInitialMessages(ws);
 			break;
+		case 'admin':
+			// this channel can only be subscribed by the exchange admin
+			if (!ws.auth.sub) {
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			if (!ws.auth.scopes.includes(ROLES.ADMIN)) {
+				loggerWebsocket.verbose(ws.id, 'ws/sub/initializeTopic abuse admin', ws.auth);
+				throw new Error(NOT_AUTHORIZED);
+			}
+			loggerWebsocket.verbose(ws.id, 'ws/sub/initializeTopic admin', ws.auth);
+			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+
+			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
 	}
@@ -153,6 +169,13 @@ const terminateTopic = (topic, ws, symbol) => {
 		case 'chat':
 			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
+			break;
+		case 'admin':
+			if (!ws.auth.sub) {
+				throw new Error(WS_AUTHENTICATION_REQUIRED);
+			}
+			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws, 'private');
+			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}` }));
 			break;
 		default:
 			throw new Error(WS_INVALID_TOPIC(topic));
@@ -250,6 +273,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
 			removeSubscriber(WEBSOCKET_CHANNEL('withdrawal', ws.auth.sub.networkId), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL('admin'), ws, 'private');
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
@@ -302,12 +326,6 @@ const handleChatData = (action, ws, data) => {
 const handleDepositWithdrawalData = (data) => {
 	switch (data.topic) {
 		case 'deposit':
-			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
-				if (ws.readyState === WebSocket.OPEN) {
-					ws.send(JSON.stringify(data));
-				}
-			});
-			break;
 		case 'withdrawal':
 			each(getChannels()[WEBSOCKET_CHANNEL(data.topic, data.user_id)], (ws) => {
 				if (ws.readyState === WebSocket.OPEN) {
@@ -318,6 +336,14 @@ const handleDepositWithdrawalData = (data) => {
 		default:
 			break;
 	}
+};
+
+const notifyAdmin = (data) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('admin')], (ws) => {
+		if (ws.readyState === WebSocket.OPEN) {
+			ws.send(JSON.stringify(data));
+		}
+	});
 };
 
 module.exports = {
