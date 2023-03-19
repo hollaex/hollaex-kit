@@ -19,6 +19,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -178,6 +179,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/send-email-test:
@@ -291,6 +293,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/signup:
@@ -1117,6 +1120,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1180,6 +1184,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1246,6 +1251,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1293,6 +1299,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1326,6 +1333,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1357,6 +1365,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1398,6 +1407,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1557,6 +1567,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1720,6 +1731,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1754,6 +1766,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1834,6 +1847,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1873,6 +1887,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1898,6 +1913,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/upgrade-user:
@@ -1926,6 +1942,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1993,6 +2010,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2145,6 +2163,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2262,6 +2281,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2292,6 +2312,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/mint:
@@ -2320,6 +2341,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
     put:
@@ -2346,6 +2368,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/burn:
@@ -2374,6 +2397,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
     put:
@@ -2400,6 +2424,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/dash-token:
@@ -2485,6 +2510,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/user/referer:
@@ -2512,5 +2538,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
