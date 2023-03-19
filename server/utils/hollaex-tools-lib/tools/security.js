@@ -838,7 +838,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
 						return {
-							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
+							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
+							scopes: [token.role]
 						};
 					}
 				}
