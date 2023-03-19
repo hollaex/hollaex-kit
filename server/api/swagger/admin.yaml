@@ -74,7 +74,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/tier:
@@ -104,7 +103,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     put:
@@ -132,7 +130,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/check-transaction:
@@ -232,7 +229,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - tech
@@ -269,7 +265,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/fees/settle:
@@ -353,7 +348,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/network-credentials:
@@ -391,7 +385,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/kit:
@@ -414,7 +407,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -445,7 +437,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - communicator
@@ -480,7 +471,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     put:
@@ -521,7 +511,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/email/types:
@@ -544,7 +533,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/operators:
@@ -591,7 +579,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/kit/user-meta:
@@ -635,7 +622,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     put:
@@ -674,7 +660,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     delete:
@@ -701,7 +686,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/operator/invite:
@@ -735,7 +719,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/upload:
@@ -774,7 +757,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - communicator
@@ -804,7 +786,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     put:
@@ -831,7 +812,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/pairs:
@@ -859,7 +839,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/pairs/network:
@@ -887,7 +866,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/pair/fees:
@@ -916,7 +894,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/tiers/limits:
@@ -945,7 +922,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/coin:
@@ -974,7 +950,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
     put:
@@ -1001,7 +976,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/coins:
@@ -1030,7 +1004,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/coins/network:
@@ -1058,7 +1031,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/users:
@@ -1247,7 +1219,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/user/meta:
@@ -1477,7 +1448,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1520,7 +1490,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1676,7 +1645,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/orders:
@@ -2008,7 +1976,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2077,7 +2044,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2481,7 +2447,6 @@ paths:
         - Token: []
       x-security-types:
         - bearer
-        - hmac
       x-security-scopes:
         - admin
   /admin/user/affiliation:
