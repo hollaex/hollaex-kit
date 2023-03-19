@@ -2119,28 +2119,13 @@ const createUserByAdmin = (req, res) => {
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
-	const userId = req.auth.sub.id;
-
-	toolsLib.user.getUserByKitId(userId)
-	.then((user) => {
-		if (!user) {
-			throw new Error(USER_NOT_FOUND);
+	toolsLib.user.createUser(email, password, {
+		role: 'user',
+		id: null,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
-
-		console.log({ISADMIN: user.is_admin})
-
-		if(!user.is_admin) {
-			throw new Error(NOT_AUTHORIZED);
-		}
-		
-		return toolsLib.user.createUser(email, password, {
-			role: 'user',
-			id: null,
-			additionalHeaders: {
-				'x-forwarded-for': req.headers['x-forwarded-for']
-			}
-		})
-	})	
+	})
 	.then(() => {
 		return res.status(201).json({ message: 'Success' });
 	})
@@ -2148,8 +2133,6 @@ const createUserByAdmin = (req, res) => {
 		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
 		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 	});
-
-	
 };
 
 module.exports = {
