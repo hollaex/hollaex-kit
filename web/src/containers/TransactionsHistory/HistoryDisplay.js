@@ -80,7 +80,7 @@ const HistoryDisplay = (props) => {
 
 	return (
 		<div className="history_block-wrapper">
-			{!isMobile && (
+			{!isMobile && !loading && (
 				<div className="title text-capitalize">
 					<EditWrapper stringId={stringId}>{title}</EditWrapper>
 					{count > 0 && (
