@@ -102,7 +102,7 @@ const HistoryDisplay = (props) => {
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
 								iconId="SEARCH"
 								iconPath={STATIC_ICONS.SEARCH}
-								className={count > 0 ? 'check-deposit-txt' : ''}
+								className={count > 0 ? 'check-deposit-txt' : 'right-align'}
 								onClick={openDialog}
 							/>
 						</div>
