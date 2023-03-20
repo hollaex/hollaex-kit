@@ -794,6 +794,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
+					throw new Error(NOT_AUTHORIZED);
+				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
@@ -835,7 +838,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
 						return {
-							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
+							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
+							scopes: [token.role]
 						};
 					}
 				}
@@ -989,10 +993,18 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = (userId, otpCode, ip, name) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
+	const user = await getModel('user').findOne({ where: { id: userId } });
+	if(role !== ROLES.USER && !user.is_admin) {
+		throw new Error(NOT_AUTHORIZED);
+	}
+	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+		// role can only be admin or user
+		throw new Error(NOT_AUTHORIZED);
+	}
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -1002,7 +1014,7 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				key,
 				secret,
 				expiry,
-				role: ROLES.USER,
+				role: role || ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
 				active: true,
@@ -1028,7 +1040,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		...permissions,
 		name,
 		whitelisted_ips,
-		whitelisting_enabled
+		whitelisting_enabled,
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1045,7 +1057,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_trade',
 			'can_withdraw',
 			'whitelisting_enabled',
-			'whitelisted_ips'
+			'whitelisted_ips',
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);

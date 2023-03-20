@@ -52,6 +52,7 @@ import withEdit from 'components/EditProvider/withEdit';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import { getDashToken } from 'containers/Admin/AdminFinancials/action';
 import { setDashToken } from 'actions/assetActions';
+import { checkRole } from 'utils/token';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -135,9 +136,12 @@ class OperatorControls extends Component {
 			this.toggleEditMode();
 			this.openThemeSettings();
 		}
-		const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
-		if (!DASH_TOKEN) {
-			this.getDashToken();
+		const role = checkRole();
+		if (role === 'admin') {
+			const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
+			if (!DASH_TOKEN) {
+				this.getDashToken();
+			}
 		}
 	}
 

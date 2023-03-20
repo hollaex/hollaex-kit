@@ -56,7 +56,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_trade
     post:
@@ -88,7 +87,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_trade
   /order/dust:
@@ -314,7 +312,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /order/all:
@@ -348,7 +345,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_trade
     

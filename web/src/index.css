@@ -3676,6 +3676,9 @@ table th {
 .logout-wrapper {
   width: 32rem; }
 
+.layout-mobile .digital-market-wrapper .link-container {
+  font-size: 10px; }
+
 .layout-mobile .fee-limits-wrapper {
   margin: 1rem auto 3rem; }
   .layout-mobile .fee-limits-wrapper .icon_title-wrapper .icon_title-svg {
@@ -5757,7 +5760,8 @@ table th {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  overflow-y: hidden; }
   .hollaex-token-wrapper .mt-8 {
     margin-top: 8rem; }
   .hollaex-token-wrapper .pb-6 {
