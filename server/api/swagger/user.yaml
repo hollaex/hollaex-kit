@@ -617,6 +617,10 @@ paths:
               role:
                 type: string
                 enum: ['admin', 'user']
+              whitelisted_ips:
+                type: array
+                items:
+                  type: string
       responses:
         200:
           description: Success
