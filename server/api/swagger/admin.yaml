@@ -2605,7 +2605,8 @@ paths:
         - name: user_id
           in: query
           required: true
-          type: string
+          type: number
+          format: int32
       responses:
         201:
           description: Success

@@ -2150,10 +2150,12 @@ const createUserWalletByAdmin = (req, res) => {
 		'crypto',
 		crypto.value,
 		'network',
-		network.value
+		network.value,
+		'user_id',
+		user_id.value
 	);
 
-	toolsLib.user.getUserByKitId(user_id)
+	toolsLib.user.getUserByKitId(user_id.value)
 	.then((user) => {
 		if (!user) {
 			throw new Error(USER_NOT_FOUND);
@@ -2168,7 +2170,7 @@ const createUserWalletByAdmin = (req, res) => {
 			return res.status(404).json({ message: `Invalid crypto: "${crypto.value}"` });
 		}
 	
-		return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto.value, {
+		return toolsLib.user.createUserCryptoAddressByKitId(user_id.value, crypto.value, {
 				network: network.value,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
