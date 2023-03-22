@@ -1,6 +1,6 @@
 # build environment
 FROM node:12.22.7-buster as build
-ENV NODE_OPTIONS=--max_old_space_size=3072
+ENV NODE_OPTIONS=--max_old_space_size=4096
 WORKDIR /app
 COPY package.json /app/package.json
 RUN npm config set unsafe-perm true && \
