@@ -17,10 +17,11 @@ import { openContactForm } from 'actions/appActions';
 import TradingFees from './TradingFees';
 import WithdrawalFees from './WithdrawalFees';
 import WithdrawalLimits from './WithdrawalLimits';
+import { isLoggedIn } from 'utils/token';
 
 const Index = ({ config_level, verification_level, router }) => {
 	const [selectedLevel, setSelectedLevel] = useState(
-		verification_level?.toString()
+		isLoggedIn() ? verification_level?.toString() : Object.keys(config_level)[0]
 	);
 	const [tabs, setTabs] = useState([]);
 	const [activeTab, setActiveTab] = useState(0);
