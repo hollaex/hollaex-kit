@@ -2142,36 +2142,36 @@ const createUserWalletByAdmin = (req, res) => {
 		req.auth.sub
 	);
 
-	const { crypto, network, user_id } = req.swagger.params;
+	const { crypto, network, user_id } = req.swagger.params.data.value;
 
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/createUserWalletByAdmin',
 		'crypto',
-		crypto.value,
+		crypto,
 		'network',
-		network.value,
+		network,
 		'user_id',
-		user_id.value
+		user_id
 	);
 
-	toolsLib.user.getUserByKitId(user_id.value)
+	toolsLib.user.getUserByKitId(user_id)
 	.then((user) => {
 		if (!user) {
 			throw new Error(USER_NOT_FOUND);
 		}
 
-		if (!crypto.value || !toolsLib.subscribedToCoin(crypto.value)) {
+		if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
 			loggerAdmin.error(
 				req.uuid,
 				'controllers/admin/createUserWalletByAdmin',
-				`Invalid crypto: "${crypto.value}"`
+				`Invalid crypto: "${crypto}"`
 			);
-			return res.status(404).json({ message: `Invalid crypto: "${crypto.value}"` });
+			return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
 		}
 	
-		return toolsLib.user.createUserCryptoAddressByKitId(user_id.value, crypto.value, {
-				network: network.value,
+		return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
+				network,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
