@@ -1128,6 +1128,43 @@ paths:
         - kyc
   /admin/user:
     x-swagger-router-controller: admin
+    post:
+      operationId: createUserByAdmin
+      description: Create user by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+                maxLength: 128
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
     put:
       operationId: putUserInfo
       description: Update a user's info
@@ -2541,46 +2578,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
-  /admin/user-create:
-    x-swagger-router-controller: admin
-    post:
-      operationId: createUserByAdmin
-      description: Create user by admin
-      tags:
-        - Admin
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            type: object
-            required:
-              - email
-              - password
-            properties:
-              email:
-                type: string
-              password:
-                type: string
-                format: password
-                maxLength: 128
-      responses:
-        201:
-          description: Created
-          schema:
-            $ref: "#/definitions/MessageResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-        - hmac
-      x-security-scopes:
-        - admin
-  /admin/user-create-address:
+  /admin/user/address:
     x-swagger-router-controller: admin
     get:
       operationId: createUserWalletByAdmin
