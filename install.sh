@@ -536,12 +536,6 @@ else
 
    printf "\nThe dependencies are all set!\n\n" 
 
-   if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
-
-        newgrp docker
-
-   fi
-
 fi
 
 # Parameter support to specify version of the CLI to install.
@@ -556,6 +550,12 @@ if [[ "$IS_APT_UPDATED" ]] || [[ "$IS_BREW_UPDATED" ]]; then
 
     echo "Start configuring your exchange with the command: 'hollaex server --setup'."
     printf "\nTo see the full list of commands, use 'hollaex help'.\n\n"
+
+fi
+
+if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
+
+    newgrp docker
 
 fi
 
