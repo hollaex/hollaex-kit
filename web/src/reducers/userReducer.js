@@ -89,6 +89,8 @@ const INITIAL_STATE = {
 	wallet: [],
 	userData: {
 		timestamp: Date.now(),
+		id_data: {},
+		address: {},
 	},
 	fetching: false,
 	fee: 0,

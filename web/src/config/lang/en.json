@@ -118,6 +118,8 @@
 		"CANT_LOGIN": "Can't login?",
 		"NO_ACCOUNT": "Don't have an account?",
 		"CREATE_ACCOUNT": "Create one here",
+		"LOOKING_PRICES": "Looking for prices?",
+		"VIEW_MARKETS": "View the markets",
 		"HELP": "Help"
 	},
 	"FORM_FIELDS": {
@@ -1178,6 +1180,7 @@
 		"TIME": "Time of sign up"
 	},
 	"NOT_LOGGEDIN": {
+		"TEXT_GENERAL": "To view you must login",
 		"TXT_1": "To start trading you must login",
 		"TXT_2": "{0} or {1}",
 		"LOGIN_HERE": "login here"
@@ -1406,7 +1409,9 @@
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
-		"LIST": "Want to list your digital assets?"
+		"LIST": "Want to list your digital assets?",
+		"WEBSITE": "Website",
+		"EXPLORER": "Explorer"
 	},
 	"ACCORDIAN": {
 		"ACCORDIAN_ASSETS": "All wallet assets",
@@ -1424,6 +1429,7 @@
 
 	"FEES_AND_LIMITS": {
 		"LINK": "view my fees and limits",
+		"COIN_PAGE_LINK": "Trading fees & limits",
 		"BACK": {
 			"PLACEHOLDER": "{0} {1}",
 			"BACK": "Go back",

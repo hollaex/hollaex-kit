@@ -2333,6 +2333,8 @@ table th {
     top: 21px; }
   .history_block-wrapper .download-icon .action_notification-svg svg path {
     fill: var(--specials_buttons-links-and-highlights); }
+  .history_block-wrapper .download-icon .right-align {
+    right: 8% !important; }
   .history_block-wrapper .loader_background {
     filter: opacity(0.25) !important; }
 
@@ -5762,6 +5764,15 @@ table th {
   justify-content: center;
   align-items: center;
   overflow-y: hidden; }
+  .hollaex-token-wrapper .trade_tabs-link {
+    color: var(--specials_buttons-links-and-highlights);
+    margin: 0.5rem 0;
+    padding: 0 0.5rem;
+    text-transform: capitalize; }
+    .hollaex-token-wrapper .trade_tabs-link:hover {
+      opacity: 0.5; }
+  .hollaex-token-wrapper .link-separator {
+    border-right: 1px solid var(--calculated_secondary-border); }
   .hollaex-token-wrapper .mt-8 {
     margin-top: 8rem; }
   .hollaex-token-wrapper .pb-6 {
@@ -11549,6 +11560,22 @@ table th {
 .help-tooltip .ant-tooltip-inner {
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
+
+.not-logged-in_view {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important; }
+  .not-logged-in_view.show-background {
+    background-color: var(--base_wallet-sidebar-and-popup);
+    padding-top: 2rem;
+    padding-bottom: 2rem; }
+  .not-logged-in_view .icon_title-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important; }
+    .not-logged-in_view .icon_title-wrapper .icon_title-text {
+      margin: 0 !important; }
 
 html {
   font-size: 12px !important;

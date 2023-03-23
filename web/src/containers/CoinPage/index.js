@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { Link } from 'react-router';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
 import { Select } from 'antd';
 
 import { StarFilled, StarOutlined } from '@ant-design/icons';
@@ -166,7 +167,15 @@ const CoinPage = ({
 		router.push(`/trade/${pair}`);
 	};
 
-	const { icon_id } = coins[currentCoin];
+	const {
+		icon_id,
+		meta: { website, explorer },
+	} = coins[currentCoin];
+	const topLinks = [
+		{ key: 'HOLLAEX_TOKEN.WEBSITE', link: website },
+		{ key: 'HOLLAEX_TOKEN.EXPLORER', link: explorer },
+	];
+
 	return (
 		<div className="hollaex-token-wrapper">
 			<div className="token-wrapper mt-8">
@@ -243,6 +252,23 @@ const CoinPage = ({
 				</div>
 				<div className={`hollaex-container`}>
 					<div className="info-container">
+						<Fragment>
+							{topLinks.filter(({ link }) => !!link).length !== 0 && (
+								<div className="d-flex justify-content-start pb-4">
+									{topLinks
+										.filter(({ link }) => !!link)
+										.map(({ link, key }, index) => (
+											<span
+												className={classnames('trade_tabs-link', {
+													'link-separator': index !== topLinks.length - 1,
+												})}
+											>
+												<Link to={link}>{STRINGS[key]}</Link>
+											</span>
+										))}
+								</div>
+							)}
+						</Fragment>
 						<div className="header-text">
 							<EditWrapper stringId="HOLLAEX_TOKEN.ABOUT">
 								{STRINGS['HOLLAEX_TOKEN.ABOUT']} {pairBase_fullName} (
@@ -386,7 +412,7 @@ const CoinPage = ({
 									</div>
 								</div>
 							</div>
-							<div>
+							<div className="pb-35">
 								<div className="sub-title caps">
 									<EditWrapper stringId="SUMMARY.VOLUME_24H">
 										{STRINGS['SUMMARY.VOLUME_24H']}
@@ -398,6 +424,13 @@ const CoinPage = ({
 										{coins?.[pairBase] && coins?.[pairBase]?.display_name}
 									</div>
 								</div>
+							</div>
+							<div className="blue-link pointer underline-text">
+								<Link to="fees-and-limits">
+									<EditWrapper stringId="FEES_AND_LIMITS.COIN_PAGE_LINK">
+										{STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK']}
+									</EditWrapper>
+								</Link>
 							</div>
 						</div>
 					</div>
