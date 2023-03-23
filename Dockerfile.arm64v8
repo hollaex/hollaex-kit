@@ -1,4 +1,4 @@
-FROM arm64v8/node:16.18.1-buster-slim
+FROM arm64v8/node:18.15.0-buster-slim
 
 RUN apt-get update && \
     apt-get install -y curl openssl ca-certificates git python build-essential && \

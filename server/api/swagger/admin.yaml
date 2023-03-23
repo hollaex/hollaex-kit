@@ -1128,6 +1128,43 @@ paths:
         - kyc
   /admin/user:
     x-swagger-router-controller: admin
+    post:
+      operationId: createUserByAdmin
+      description: Create user by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+                maxLength: 128
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
     put:
       operationId: putUserInfo
       description: Update a user's info
@@ -2541,36 +2578,40 @@ paths:
         - hmac
       x-security-scopes:
         - admin
-  /admin/user-create:
+  /admin/user/address:
     x-swagger-router-controller: admin
-    post:
-      operationId: createUserByAdmin
-      description: Create user by admin
+    get:
+      operationId: createUserWalletByAdmin
+      description: Create a crypto address for the user by admin
       tags:
-        - Admin
+        - User
+        - Wallet
       parameters:
-        - name: data
-          in: body
+        - name: crypto
+          in: query
           required: true
-          schema:
-            type: object
-            required:
-              - email
-              - password
-            properties:
-              email:
-                type: string
-              password:
-                type: string
-                format: password
-                maxLength: 128
+          type: string
+          minLength: 2
+          maxLength: 15
+        - name: network
+          in: query
+          required: false
+          type: string
+          description: Blockchain network
+          minLength: 2
+          maxLength: 10
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
       responses:
         201:
-          description: Created
+          description: Success
           schema:
-            $ref: "#/definitions/MessageResponse"
+            $ref: "#/definitions/UsersAddressResponse"
         default:
-          description: Error
+          description: "Error"
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
