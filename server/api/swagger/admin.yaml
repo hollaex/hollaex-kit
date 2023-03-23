@@ -19,6 +19,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -178,6 +179,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/send-email-test:
@@ -291,6 +293,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/signup:
@@ -1117,6 +1120,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1124,6 +1128,43 @@ paths:
         - kyc
   /admin/user:
     x-swagger-router-controller: admin
+    post:
+      operationId: createUserByAdmin
+      description: Create user by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+                format: password
+                maxLength: 128
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
     put:
       operationId: putUserInfo
       description: Update a user's info
@@ -1180,6 +1221,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1246,6 +1288,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1293,6 +1336,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1326,6 +1370,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1357,6 +1402,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1398,6 +1444,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1557,6 +1604,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1720,6 +1768,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1754,6 +1803,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1834,6 +1884,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1873,6 +1924,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1898,6 +1950,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/upgrade-user:
@@ -1926,6 +1979,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -1993,6 +2047,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2145,6 +2200,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2262,6 +2318,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
         - supervisor
@@ -2292,6 +2349,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/mint:
@@ -2320,6 +2378,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
     put:
@@ -2346,6 +2405,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/burn:
@@ -2374,6 +2434,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
     put:
@@ -2400,6 +2461,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/dash-token:
@@ -2485,6 +2547,7 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
       x-security-scopes:
         - admin
   /admin/user/referer:
@@ -2512,5 +2575,49 @@ paths:
         - Token: []
       x-security-types:
         - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/user/address:
+    x-swagger-router-controller: admin
+    get:
+      operationId: createUserWalletByAdmin
+      description: Create a crypto address for the user by admin
+      tags:
+        - User
+        - Wallet
+      parameters:
+        - name: crypto
+          in: query
+          required: true
+          type: string
+          minLength: 2
+          maxLength: 15
+        - name: network
+          in: query
+          required: false
+          type: string
+          description: Blockchain network
+          minLength: 2
+          maxLength: 10
+        - name: user_id
+          in: query
+          required: true
+          type: number
+          format: int32
+      responses:
+        201:
+          description: Success
+          schema:
+            $ref: "#/definitions/UsersAddressResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
       x-security-scopes:
         - admin

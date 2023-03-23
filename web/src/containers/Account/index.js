@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { isMobile } from 'react-device-detect';
 
 import { CheckTitle, MobileBarTabs, Loader, EditWrapper } from 'components';
-import { UserSecurity, UserSettings, Summary, Verification } from '../';
+import { UserSecurity, UserSettings, Summary, Verification } from 'containers';
 import STRINGS from 'config/localizedStrings';
 import { openContactForm } from 'actions/appActions';
 
@@ -44,9 +44,7 @@ class Account extends Component {
 	};
 
 	componentDidMount() {
-		if (this.props.id) {
-			this.updateTabs(this.props);
-		}
+		this.updateTabs(this.props);
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
@@ -61,21 +59,6 @@ class Account extends Component {
 			this.updateTabs(nextProps, true);
 		}
 	}
-
-	hasUserVerificationNotifications = (
-		verification_level,
-		bank_account = {},
-		id_data = {}
-	) => {
-		if (
-			verification_level >= 2 &&
-			bank_account.verified &&
-			id_data.status === 3
-		) {
-			return false;
-		}
-		return true;
-	};
 
 	updateTabs = (
 		{
@@ -203,13 +186,11 @@ class Account extends Component {
 	openContactForm = (data) => {
 		this.props.openContactForm(data);
 	};
-	goToVerification = () => this.props.router.push('/verification');
 
 	render() {
-		const { id } = this.props;
 		const { activeTab, tabs } = this.state;
 
-		if (!id || activeTab === -1) {
+		if (activeTab === -1) {
 			return <Loader />;
 		}
 
@@ -228,15 +209,6 @@ class Account extends Component {
 			</div>
 		) : (
 			<div className="presentation_container apply_rtl">
-				{/* <TabController
-					activeTab={activeTab}
-					setActiveTab={this.setActiveTab}
-					tabs={tabs}
-					title={STRINGS["ACCOUNTS.TITLE"]}
-					titleIcon={ICONS["ACCOUNT_LINE"]}
-					iconId="ACCOUNT_LINE"
-					className="account-tab"
-				/> */}
 				<div className="inner_container">
 					{activeTab > -1 && this.renderContent(tabs, activeTab)}
 				</div>

@@ -173,6 +173,7 @@
 			}
 		}
 	}
+
 	color: #ffffff;
 
 	.ant-tabs-top > .ant-tabs-nav {
@@ -231,7 +232,8 @@
 			font-weight: bold;
 		}
 
-		.cloud-plans {
+		.cloud-plans,
+		.text-underline {
 			text-decoration: underline;
 			cursor: pointer;
 		}
@@ -280,6 +282,13 @@
 		.ant-table-cell {
 			padding: 1rem !important;
 		}
+
+		.download-text-wrapper {
+			.ant-tag-green {
+				background-color: rgba(40, 133, 0, 0.8);
+				color: #ffffff;
+			}
+		}
 	}
 
 	.pointer-none {
@@ -296,6 +305,7 @@
 	li {
 		font-size: 12px !important;
 	}
+
 	.steps-content-wrapper {
 		.xht-header {
 			font-weight: 500;
@@ -676,6 +686,7 @@
 			color: #fff;
 		}
 	}
+
 	.payment-button,
 	.cloud-plan-button {
 		button {
@@ -731,14 +742,17 @@
 				padding: 0px 8px 0px 0px !important;
 				width: 2rem;
 				margin-right: 5px;
+
 				div {
 					padding: unset !important;
 				}
+
 				svg {
 					height: 1.5rem;
 					width: 1.5rem;
 				}
 			}
+
 			.verified-icon:hover {
 				svg {
 					height: 2rem;
@@ -757,6 +771,10 @@
 
 			.footer-text {
 				height: 2rem;
+
+				.credits-icon {
+					padding: 1px 0px 0px 2px !important;
+				}
 			}
 		}
 

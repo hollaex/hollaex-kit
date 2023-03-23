@@ -60,7 +60,14 @@ export const publish = async (configs = {}) => {
 };
 
 export const pushVersions = async (configs = {}) => {
-	const { pinned_markets, default_sort, ...versioned_configs } = configs;
+	const {
+		pinned_markets,
+		default_sort,
+		pinned_assets,
+		default_wallet_sort,
+		default_digital_assets_sort,
+		...versioned_configs
+	} = configs;
 	const { sections = {}, ...rest } = versioned_configs;
 	const versions = await getVersions();
 	const uniqid = Date.now();
@@ -74,6 +81,9 @@ export const pushVersions = async (configs = {}) => {
 			sections: modifySections(sections),
 			default_sort,
 			pinned_markets,
+			pinned_assets,
+			default_wallet_sort,
+			default_digital_assets_sort,
 		},
 	};
 };

@@ -762,7 +762,7 @@ class App extends Component {
 										onMenuChange={this.handleMenuChange}
 										isHome={isHome}
 									>
-										{isBrowser && isMenubar && isLoggedIn() && (
+										{isBrowser && isMenubar && (
 											<AppMenuBar
 												menuItems={menuItems}
 												activePath={this.state.activeMenu}

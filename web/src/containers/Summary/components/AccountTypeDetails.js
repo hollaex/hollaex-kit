@@ -40,7 +40,7 @@ const AccountTypeDetails = ({
 				verification_level={currentAccount}
 				selectedAccount={currentAccount}
 			/>
-			{Object.keys(requirement).length && (
+			{Object.keys(requirement).length > 0 && (
 				<div>
 					<div className="requirement-header d-flex justify-content-between">
 						<div>

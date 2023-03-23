@@ -30,9 +30,16 @@ import UploadIcon from './components/UploadIcon';
 import SectionsModal from './components/Sections';
 import AddSection from './components/AddSection';
 import ConfigsModal from './components/ConfigsModal';
+import WalletConfigsModal from './components/WalletConfigsModal';
+import DigitalAssetsConfigsModal from './components/DigitalAssetsConfigsModal';
 import String from './components/String';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { setLanguage, setAdminSortData } from 'actions/appActions';
+import {
+	setLanguage,
+	setAdminSortData,
+	setAdminWalletSortData,
+	setAdminDigitalAssetsSortData,
+} from 'actions/appActions';
 import {
 	pushTempContent,
 	getTempLanguageKey,
@@ -45,6 +52,7 @@ import withEdit from 'components/EditProvider/withEdit';
 import { DASH_TOKEN_KEY } from 'config/constants';
 import { getDashToken } from 'containers/Admin/AdminFinancials/action';
 import { setDashToken } from 'actions/assetActions';
+import { checkRole } from 'utils/token';
 
 const { TabPane } = Tabs;
 const { TextArea } = Input;
@@ -97,6 +105,8 @@ class OperatorControls extends Component {
 			isSectionsModalOpen: false,
 			isAddSectionOpen: false,
 			isConfigsModalOpen: false,
+			isWalletConfigModalOpen: false,
+			isDigitalAssetsConfigsModalOpen: false,
 			selectedTheme: '',
 			iconsOverwrites,
 			colorOverwrites,
@@ -126,9 +136,12 @@ class OperatorControls extends Component {
 			this.toggleEditMode();
 			this.openThemeSettings();
 		}
-		const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
-		if (!DASH_TOKEN) {
-			this.getDashToken();
+		const role = checkRole();
+		if (role === 'admin') {
+			const DASH_TOKEN = localStorage.getItem(DASH_TOKEN_KEY);
+			if (!DASH_TOKEN) {
+				this.getDashToken();
+			}
 		}
 	}
 
@@ -249,8 +262,12 @@ class OperatorControls extends Component {
 						this.openUploadIcon();
 					} else if (sectionId) {
 						this.openSectionsModal();
-					} else if (configId) {
+					} else if (configId === 'MARKET_LIST_CONFIGS') {
 						this.openConfigsModal();
+					} else if (configId === 'WALLET_LIST_CONFIGS') {
+						this.openWalletConfigsModal();
+					} else if (configId === 'DIGITAL_ASSETS_LIST_CONFIGS') {
+						this.openDigitalAssetsConfigsModal();
 					}
 				}
 			);
@@ -387,7 +404,15 @@ class OperatorControls extends Component {
 				languageKeys,
 			} = this.state;
 
-			const { defaults, sections, pinned_markets, default_sort } = this.props;
+			const {
+				defaults,
+				sections,
+				pinned_markets,
+				default_sort,
+				pinned_assets,
+				default_wallet_sort,
+				default_digital_assets_sort,
+			} = this.props;
 
 			const valid_languages = languageKeys.join();
 			const strings = filterOverwrites(overwrites);
@@ -402,6 +427,9 @@ class OperatorControls extends Component {
 				sections,
 				pinned_markets,
 				default_sort,
+				pinned_assets,
+				default_wallet_sort,
+				default_digital_assets_sort,
 			};
 
 			publish(configs)
@@ -918,6 +946,42 @@ class OperatorControls extends Component {
 		this.enablePublish();
 	};
 
+	openWalletConfigsModal = () => {
+		this.setState({
+			isWalletConfigsModalOpen: true,
+		});
+	};
+
+	closeWalletConfigsModal = () => {
+		this.setState({
+			isWalletConfigsModalOpen: false,
+		});
+	};
+
+	updateWalletConfigs = (data) => {
+		const { setAdminWalletSortData } = this.props;
+		setAdminWalletSortData(data);
+		this.enablePublish();
+	};
+
+	openDigitalAssetsConfigsModal = () => {
+		this.setState({
+			isDigitalAssetsConfigsModalOpen: true,
+		});
+	};
+
+	closeDigitalAssetsConfigsModal = () => {
+		this.setState({
+			isDigitalAssetsConfigsModalOpen: false,
+		});
+	};
+
+	updateDigitalAssetsConfigs = (data) => {
+		const { setAdminDigitalAssetsSortData } = this.props;
+		setAdminDigitalAssetsSortData(data);
+		this.enablePublish();
+	};
+
 	render() {
 		const {
 			isPublishEnabled,
@@ -948,6 +1012,8 @@ class OperatorControls extends Component {
 			iconSearchResults,
 			isSectionsModalOpen,
 			isConfigsModalOpen,
+			isWalletConfigsModalOpen,
+			isDigitalAssetsConfigsModalOpen,
 			isAddSectionOpen,
 			injected_html,
 			isRemove,
@@ -1252,6 +1318,22 @@ class OperatorControls extends Component {
 					/>
 				)}
 
+				{isWalletConfigsModalOpen && (
+					<WalletConfigsModal
+						isOpen={isEditMode && isWalletConfigsModalOpen}
+						onCloseDialog={this.closeWalletConfigsModal}
+						onConfirm={this.updateWalletConfigs}
+					/>
+				)}
+
+				{isDigitalAssetsConfigsModalOpen && (
+					<DigitalAssetsConfigsModal
+						isOpen={isEditMode && isDigitalAssetsConfigsModalOpen}
+						onCloseDialog={this.closeDigitalAssetsConfigsModal}
+						onConfirm={this.updateDigitalAssetsConfigs}
+					/>
+				)}
+
 				<Modal
 					isOpen={isExitConfirmationOpen}
 					label="operator-controls-modal"
@@ -1361,11 +1443,19 @@ const mapStateToProps = (state) => ({
 	constants: state.app.constants,
 	pinned_markets: state.app.pinned_markets,
 	default_sort: state.app.default_sort,
+	pinned_assets: state.app.pinned_assets,
+	default_wallet_sort: state.app.default_wallet_sort,
+	default_digital_assets_sort: state.app.default_digital_assets_sort,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	changeLanguage: bindActionCreators(setLanguage, dispatch),
 	setAdminSortData: bindActionCreators(setAdminSortData, dispatch),
+	setAdminWalletSortData: bindActionCreators(setAdminWalletSortData, dispatch),
+	setAdminDigitalAssetsSortData: bindActionCreators(
+		setAdminDigitalAssetsSortData,
+		dispatch
+	),
 	setDashToken: bindActionCreators(setDashToken, dispatch),
 });
 
