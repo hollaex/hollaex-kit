@@ -969,7 +969,8 @@ const formatTokenObject = (tokenData) => ({
 	whitelisting_enabled: tokenData.whitelisting_enabled,
 	can_read: tokenData.can_read,
 	can_trade: tokenData.can_trade,
-	can_withdraw: tokenData.can_withdraw
+	can_withdraw: tokenData.can_withdraw,
+	role: tokenData.role
 });
 
 const getUserKitHmacTokens = (userId) => {
