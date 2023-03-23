@@ -339,57 +339,31 @@ export const generateRoutes = (routes = []) => {
 					name="username"
 					component={Account}
 				/>
-				<Route
-					path="security"
-					name="Security"
-					component={Account}
-					onEnter={requireAuth}
-				/>
+				<Route path="security" name="Security" component={Account} />
 				<Route
 					path="developers"
 					name="Developers"
 					component={Account}
 					onEnter={requireAuth}
 				/>
-				<Route
-					path="settings"
-					name="Settings"
-					component={Account}
-					onEnter={requireAuth}
-				/>
-				<Route path="apps" name="Apps" component={Apps} onEnter={requireAuth} />
+				<Route path="settings" name="Settings" component={Account} />
+				<Route path="apps" name="Apps" component={Apps} />
 				<Route
 					path="apps/details/:app"
 					name="AppDetails"
 					component={AppDetails}
 					onEnter={requireAuth}
 				/>
-				<Route
-					path="summary"
-					name="Summary"
-					component={Account}
-					onEnter={requireAuth}
-				/>
+				<Route path="summary" name="Summary" component={Account} />
 				<Route
 					path="fees-and-limits"
 					name="Fees and limits"
 					component={FeesAndLimits}
-					onEnter={requireAuth}
 				/>
 				<Route path="assets" name="Digital Asset" component={DigitalAssets} />
 				<Route path="white-label" name="WhiteLabel" component={WhiteLabel} />
-				<Route
-					path="verification"
-					name="Verification"
-					component={Account}
-					onEnter={requireAuth}
-				/>
-				<Route
-					path="wallet"
-					name="Wallet"
-					component={MainWallet}
-					onEnter={requireAuth}
-				/>
+				<Route path="verification" name="Verification" component={Account} />
+				<Route path="wallet" name="Wallet" component={MainWallet} />
 				<Route
 					path="wallet/:currency"
 					name="Wallet"
@@ -412,7 +386,6 @@ export const generateRoutes = (routes = []) => {
 					path="transactions"
 					name="Transactions"
 					component={TransactionsHistory}
-					onEnter={requireAuth}
 				/>
 				<Route path="trade/:pair" name="Trade" component={Trade} />
 				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />

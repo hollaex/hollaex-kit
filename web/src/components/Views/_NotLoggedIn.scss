@@ -1,0 +1,22 @@
+.not-logged-in_view {
+	display: flex !important;
+	flex-direction: column !important;
+	align-items: center !important;
+
+	&.show-background {
+		background-color: $app-sidebar-background;
+		padding-top: 2rem;
+		padding-bottom: 2rem;
+	}
+
+	.icon_title-wrapper {
+		display: flex !important;
+		flex-direction: row !important;
+		justify-content: center !important;
+		align-items: center !important;
+
+		.icon_title-text {
+			margin: 0 !important;
+		}
+	}
+}
