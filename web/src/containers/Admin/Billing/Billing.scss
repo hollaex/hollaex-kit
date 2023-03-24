@@ -324,7 +324,7 @@
 
 		.popular-header-basic {
 			background-color: #c4c8ac;
-			height: 2%;
+			height: 4%;
 		}
 
 		.popular-header-crypto {
@@ -332,12 +332,12 @@
 			color: #000;
 			font-size: 10px;
 			text-align: center;
-			height: 2%;
+			height: 4%;
 		}
 
 		.popular-header-fiat {
 			background-color: #00ffff;
-			height: 2%;
+			height: 4%;
 		}
 
 		.header-wrapper {
@@ -349,37 +349,41 @@
 			position: absolute;
 			background-color: #c4c8ac;
 			opacity: 0.1;
-			height: 11rem;
-			width: 22rem;
+			height: 14rem;
+			width: 23rem;
 		}
 
 		.header-container-crypto {
 			position: absolute;
 			background-color: #5cb5f9;
 			opacity: 0.1;
-			height: 11rem;
-			width: 22rem;
+			height: 14rem;
+			width: 23rem;
 		}
 
 		.header-container-fiat {
 			position: absolute;
 			background-color: #00ffff;
 			opacity: 0.1;
-			height: 11rem;
-			width: 22rem;
+			height: 14rem;
+			width: 23rem;
 		}
 
 		.header-container {
 			background-repeat: no-repeat;
 			background-position: center;
-			background-size: 11rem;
-			height: 11rem;
+			background-size: cover;
+			height: 14rem;
 		}
 
 		.feature-wrapper {
 			height: 60%;
 			margin: 1rem;
 		}
+	}
+
+	.content-wrapper {
+		min-height: 450px;
 	}
 
 	.ant-modal-body {
@@ -451,7 +455,7 @@
 
 			.cloud-plan-container {
 				margin-top: 3rem !important;
-				height: 68rem !important;
+				height: 31rem !important;
 			}
 
 			.opacity-cloud-plan-container,
@@ -459,7 +463,7 @@
 				opacity: 0.3;
 				margin-top: 3rem !important;
 				margin-bottom: 2.2rem !important;
-				height: 66rem !important;
+				height: 31rem !important;
 
 				.plan-container-wrapper {
 					margin-bottom: 0rem !important;
@@ -481,11 +485,6 @@
 				border-bottom: 1px solid #a8a8b1;
 				width: 40%;
 
-				div {
-					padding-top: 1rem;
-					padding-bottom: 1rem;
-				}
-
 				.dollor-size {
 					font-size: 25px;
 					padding-bottom: 0rem;
@@ -494,6 +493,7 @@
 				p {
 					font-size: 9px;
 					text-align: center;
+					margin: 10px 0px 10px 0px !important;
 				}
 			}
 
@@ -562,22 +562,38 @@
 			.plan-container-wrapper {
 				margin-bottom: 0rem !important;
 				height: 100%;
+
+				.info-link-content {
+					position: absolute;
+					display: flex;
+					flex-direction: column;
+					margin-top: 3rem;
+					text-align: center;
+					text-decoration: underline;
+					color: #3a4fff;
+					cursor: pointer;
+					pointer-events: visible;
+					margin: 3rem 0rem 0rem 8rem;
+				}
 			}
 
 			.plan-container,
 			.cloud-container {
 				flex-direction: column;
 				justify-content: center;
-				margin: 1rem 2rem 0rem 2rem;
+				margin: 2rem 1rem 0rem 1rem;
 				border: 1px solid #a8a8b1;
-				height: 70rem;
+				height: 33rem;
 
 				.plan-container-wrapper {
-					width: 22rem;
+					width: 23rem;
 				}
 
 				.amount-wrapper {
-					height: 20%;
+					height: 100%;
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
 				}
 			}
 
@@ -656,7 +672,6 @@
 		.footer {
 			margin-left: 4rem;
 			font-size: 15px;
-			margin-top: 1rem;
 		}
 
 		.success-msg {
@@ -679,7 +694,6 @@
 		display: flex;
 		justify-content: space-around;
 		padding: 1rem 1rem 2.5rem 1rem;
-		margin-top: 3rem;
 
 		.ant-btn-primary:disabled {
 			opacity: 0.3;
