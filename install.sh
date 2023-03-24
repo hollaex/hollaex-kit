@@ -135,6 +135,32 @@ if command apt-get -v > /dev/null 2>&1; then
 
     fi
 
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL Client to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_APT_UPDATED ]]; then
+
+            echo "Updating APT list"
+            sudo apt-get update
+        fi
+
+        echo "Installing Docker"
+        if command sudo apt-get install -y postgresql-client; then
+
+            printf "\n\033[92mPSQL Client has been successfully installed!\033[39m\n"
+            echo "Info: $(psql --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL Client.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y postgresql-client'."
+            exit 1;
+
+        fi
+
+    fi
+
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
 
@@ -225,6 +251,34 @@ elif command brew -v > /dev/null 2>&1; then
 
             printf "\n\033[91mFailed to install jq.\033[39m\n"
             echo "Please review the logs and try to manually install it. - 'brew install jq'."
+
+        fi
+
+    fi
+
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL Client to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_BREW_UPDATED ]]; then
+
+            echo "Updating Homebrew list"
+            brew update
+        fi
+
+        if command brew install libpq; then
+
+            printf "\n\033[92mjq has been successfully installed!\033[39m\n"
+
+            echo "Info: $(psql --version)"
+
+            echo "Creating a symlink for the PSQL Client."
+            sudo ln -s $(brew --prefix)/opt/libpq/bin/psql /usr/local/bin/psql
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL Client.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install ligpq'."
 
         fi
 
@@ -349,9 +403,29 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL CLient to operate. Installing it now...\033[39m\n"
+
+        if command sudo yum install -y postgresql; then
+
+            printf "\n\033[92mPSQL CLient(postgresql) has been successfully installed!\033[39m\n"
+
+            echo "Info: "
+            postgresql --version
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL CLient.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo yum install -y postgresql'."
+
+        fi
+
+    fi
+
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -380,6 +454,12 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     if command nslookup -version > /dev/null 2>&1; then
 
         IS_NSLOOKUP_INSTALLED=true
+    
+    fi
+
+    if command psql --version > /dev/null 2>&1; then
+
+        IS_PSQL_CLIENT_INSTALLED=true
     
     fi
     
@@ -429,6 +509,16 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
 
     fi
 
+    if [[ "$IS_PSQL_CLIENT_INSTALLED" ]]; then
+
+        printf "\033[92mpostgresql-client: Installed\033[39m\n"
+
+    else 
+
+        printf "\033[91mpostgresql-client: Not Installed\033[39m\n"
+
+    fi
+
     # curl installation status check
     if [[ "$IS_CURL_INSTALLED" ]]; then
 
@@ -446,12 +536,6 @@ else
 
    printf "\nThe dependencies are all set!\n\n" 
 
-   if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
-
-        newgrp docker
-
-   fi
-
 fi
 
 # Parameter support to specify version of the CLI to install.
@@ -466,6 +550,12 @@ if [[ "$IS_APT_UPDATED" ]] || [[ "$IS_BREW_UPDATED" ]]; then
 
     echo "Start configuring your exchange with the command: 'hollaex server --setup'."
     printf "\nTo see the full list of commands, use 'hollaex help'.\n\n"
+
+fi
+
+if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
+
+    newgrp docker
 
 fi
 
