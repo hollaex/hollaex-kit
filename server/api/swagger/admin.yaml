@@ -2594,6 +2594,7 @@ paths:
             type: object
             required:
               - user_id
+              - crypto
             properties:
               user_id:
                 type: number
