@@ -1,10 +1,12 @@
 import React from 'react';
 import { Select } from 'antd';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 import { CurrencyBall } from '../../../components';
 import { validateRequired } from '../../../components/AdminForm/validations';
 import LANGUAGES from '../../../config/languages';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+import { STATIC_ICONS } from 'config/icons';
 
 const renderCoinOptions = (coins = {}) =>
 	Object.keys(coins).map((symbol, index) => {
@@ -152,3 +154,66 @@ export const publishJSON = [
 		currentkey: 'EXCHANGE_LANDING_PAGE',
 	},
 ];
+
+export const generateHeaders = (handleEditData) => {
+	return [
+		{
+			stringId: 'role',
+			label: 'Keytype',
+			key: 'role',
+			renderCell: ({ id, role }, key) => (
+				<td key={`${key}-${id}-name`}>
+					{
+						<img
+							src={`${
+								role === 'master'
+									? STATIC_ICONS.BLUE_ADMIN_KEY
+									: STATIC_ICONS.WHITE_USER_KEY
+							}`}
+							alt="key"
+							className="key-icon"
+						/>
+					}
+					{<span className="ml-4">{role}</span>}
+				</td>
+			),
+		},
+		{
+			stringId: 'name',
+			label: 'Name',
+			key: 'name',
+			renderCell: (row, key, index, isExpandable, isExpanded) => (
+				<td key={`${key}-${row.id}-name`}>
+					{row.name}
+					{
+						<span className="ml-2">
+							{isExpanded ? <CaretUpOutlined /> : <CaretDownOutlined />}
+						</span>
+					}
+				</td>
+			),
+		},
+		{
+			stringId: 'created',
+			label: 'Date Generated',
+			key: 'created',
+			renderCell: ({ id, created }, key) => (
+				<td key={`${key}-${id}-name`}>{created}</td>
+			),
+		},
+		{
+			stringId: 'revoked',
+			label: 'Revoke',
+			key: 'revoked',
+			renderCell: (row, key) => (
+				<td
+					onClick={() => handleEditData({ type: 'revoke', data: row })}
+					key={`${key}-${row.id}-name`}
+					className="underline-text"
+				>
+					{row.revoked ? 'Revoked' : 'Revoke'}
+				</td>
+			),
+		},
+	];
+};

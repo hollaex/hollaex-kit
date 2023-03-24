@@ -10,11 +10,17 @@ import Description from './Description';
 import InterfaceForm from './InterfaceForm';
 import EmailVerificationForm from './EmailVerificationForm';
 import DisableSignupsConfirmation from './DisableSignupsConfirmation';
+import GenerateAPiKeys from './GenerateApiKeys';
 import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData, setConfig } from '../../../actions/appActions';
+import {
+	tokenGenerated,
+	requestTokens,
+	tokenRevoked,
+} from 'actions/userAction';
 import {
 	upload,
 	updateConstants,
@@ -82,6 +88,7 @@ class GeneralContent extends Component {
 
 	componentDidMount() {
 		this.requestInitial();
+		this.props.requestTokens();
 		this.setState({ isDisable: true });
 	}
 
@@ -779,7 +786,13 @@ class GeneralContent extends Component {
 			defaultEmailData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
+		const {
+			coins,
+			themeOptions,
+			activeTab,
+			handleTabChange,
+			exchange,
+		} = this.props;
 		const generalFields = getGeneralFields(coins);
 
 		if (loading) {
@@ -1206,6 +1219,27 @@ class GeneralContent extends Component {
 								<Link to="/admin/roles">roles page</Link>.
 							</div>
 						</div>
+						{exchange.plan !== 'basic' && <div className="divider"></div>}
+						{exchange.plan !== 'basic' && (
+							<div className="general-wrapper mb-5">
+								<div className="sub-title">API keys</div>
+								<div className="description d-flex flex-column">
+									<span>
+										Generate API keys for programmatic access to your exchange.
+									</span>
+									<span>
+										Note, in order to generate API keys it is required to add a{' '}
+										<p className="underline-text">white listed IP address.</p>
+									</span>
+								</div>
+								<GenerateAPiKeys
+									tokenRevoked={this.props.tokenRevoked}
+									tokenGenerated={tokenGenerated}
+									tokens={this.props.tokens}
+									requestTokens={this.props.requestTokens}
+								/>
+							</div>
+						)}
 					</div>
 				) : null}
 			</div>
@@ -1215,12 +1249,17 @@ class GeneralContent extends Component {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	tokens: state.user.tokens,
 	user: state.user,
 	constants: state.app.constants,
+	exchange: state.asset.exchange,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
+	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
+	requestTokens: bindActionCreators(requestTokens, dispatch),
+	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
 });
 
 export default connect(
