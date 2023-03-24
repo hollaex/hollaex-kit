@@ -329,8 +329,8 @@ elif command yum --version > /dev/null 2>&1; then
 
             fi
 
-            systemctl start docker
-            systemctl enable docker
+            sudo systemctl start docker
+            sudo systemctl enable docker
 
         else
 
@@ -346,7 +346,7 @@ elif command yum --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
 
-        if command curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
+        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
 
             sudo chmod +x /usr/local/bin/docker-compose
 
