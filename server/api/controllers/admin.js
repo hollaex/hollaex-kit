@@ -2204,22 +2204,24 @@ const getWalletsByAdmin = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
-	toolsLib.wallet.getWallets({
-		userId: user_id.value,
-		currency: currency.value,
-		network: network.value,
-		address: address.value,
-		isValid: is_valid.value,
-		limit: limit.value,
-		page: page.value,
-		orderBy: order_by.value,
-		order: order.value,
-		format: format.value,
-		createdAt: created_at.value,
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
+	toolsLib.wallet.getWallets(
+		user_id.value,
+		currency.value,
+		network.value,
+		address.value,
+		is_valid.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		format.value,
+		created_at.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
 		}
-	})
+	)
 		.then((data) => {
 			if (format.value) {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);

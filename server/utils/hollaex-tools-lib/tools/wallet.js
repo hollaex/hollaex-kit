@@ -1145,8 +1145,8 @@ const getWallets = (
 	page,
 	orderBy,
 	order,
-	createdAt,
 	format,
+	createdAt,
 	opts = {
 		additionalHeaders: null
 	}
