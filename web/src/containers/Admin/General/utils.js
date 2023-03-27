@@ -159,7 +159,7 @@ export const generateHeaders = (handleEditData) => {
 	return [
 		{
 			stringId: 'role',
-			label: 'Keytype',
+			label: 'Key type',
 			key: 'role',
 			renderCell: ({ id, role }, key) => (
 				<td key={`${key}-${id}-name`}>
@@ -195,7 +195,7 @@ export const generateHeaders = (handleEditData) => {
 		},
 		{
 			stringId: 'created',
-			label: 'Date Generated',
+			label: 'Date generated',
 			key: 'created',
 			renderCell: ({ id, created }, key) => (
 				<td key={`${key}-${id}-name`}>{created}</td>
@@ -211,7 +211,7 @@ export const generateHeaders = (handleEditData) => {
 					key={`${key}-${row.id}-name`}
 					className="underline-text"
 				>
-					{row.revoked ? 'Revoked' : 'Revoke'}
+					{row.revoked ? 'Revoked' : 'REVOKE'}
 				</td>
 			),
 		},
