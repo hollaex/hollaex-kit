@@ -1135,6 +1135,39 @@ async function validateDeposit(user, amount, currency, network = null) {
 	};
 }
 
+const getWallets = (
+	userId,
+	currency,
+	network,
+	address,
+	isValid,
+	limit,
+	page,
+	orderBy,
+	order,
+	createdAt,
+	format,
+	opts = {
+		additionalHeaders: null
+	}
+) => {
+
+	return getNodeLib().getExchangeWallets({
+		userId,
+		currency,
+		network,
+		address,
+		isValid,
+		limit,
+		page,
+		orderBy,
+		order,
+		createdAt,
+		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
+		...opts
+	});
+};
+
 module.exports = {
 	sendRequestWithdrawalEmail,
 	validateWithdrawal,
@@ -1161,5 +1194,6 @@ module.exports = {
 	updatePendingMint,
 	updatePendingBurn,
 	isValidAddress,
-	validateDeposit
+	validateDeposit,
+	getWallets
 };
