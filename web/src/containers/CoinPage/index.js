@@ -263,7 +263,13 @@ const CoinPage = ({
 													'link-separator': index !== topLinks.length - 1,
 												})}
 											>
-												<Link to={link}>{STRINGS[key]}</Link>
+												<a
+													href={link}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													{STRINGS[key]}
+												</a>
 											</span>
 										))}
 								</div>

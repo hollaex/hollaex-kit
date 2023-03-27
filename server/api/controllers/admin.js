@@ -2135,6 +2135,61 @@ const createUserByAdmin = (req, res) => {
 	});
 };
 
+const createUserWalletByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		req.auth.sub
+	);
+
+	const { crypto, network, user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		'crypto',
+		crypto,
+		'network',
+		network,
+		'user_id',
+		user_id
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+	.then((user) => {
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		}
+
+		if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createUserWalletByAdmin',
+				`Invalid crypto: "${crypto}"`
+			);
+			return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+		}
+	
+		return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
+				network,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			})
+	})
+	.then((data) => { 
+		return res.status(201).json(data); 
+	})
+	.catch((err) => {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/createUserWalletByAdmin',
+			err.message
+		);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2189,5 +2244,6 @@ module.exports = {
 	generateDashToken,
 	getUserAffiliation,
 	getUserReferer,
-	createUserByAdmin
+	createUserByAdmin,
+	createUserWalletByAdmin
 };
