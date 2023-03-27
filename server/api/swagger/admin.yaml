@@ -2636,6 +2636,11 @@ paths:
           type: boolean
           default: false
         - in: query
+          name: network
+          description: Blockchain network of wallet
+          required: false
+          type: string
+        - in: query
           name: format
           description: Specify data format
           required: false
