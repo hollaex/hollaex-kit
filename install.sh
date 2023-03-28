@@ -164,6 +164,14 @@ if command apt-get -v > /dev/null 2>&1; then
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
 
+    echo "Generating /usr/local/bin folder."
+    
+    if [[ ! -d  "/usr/local/bin" ]]; then
+            
+        sudo mkdir -p -m 775 /usr/local/bin
+
+    fi
+
     if ! command curl --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires CURL to operate. Installing it now...\033[39m\n"
@@ -286,12 +294,6 @@ elif command brew -v > /dev/null 2>&1; then
             printf "\n\033[92mjq has been successfully installed!\033[39m\n"
 
             echo "Creating a symlink for the PSQL Client."
-
-            if [[ ! -d  "/usr/local/bin" ]]; then
-            
-                sudo mkdir -p -m 775 /usr/local/bin
-
-            fi
 
             sudo ln -s $(brew --prefix)/opt/libpq/bin/psql /usr/local/bin/psql
 
