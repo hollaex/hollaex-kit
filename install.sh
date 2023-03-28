@@ -199,7 +199,7 @@ elif command brew -v > /dev/null 2>&1; then
 
         fi
 
-        if command brew install install --cask docker; then
+        if command brew install --cask docker; then
 
             printf "\n\033[92mDocker Desktop has been successfully installed!\033[39m\n"
 
