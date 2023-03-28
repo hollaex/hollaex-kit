@@ -164,6 +164,14 @@ if command apt-get -v > /dev/null 2>&1; then
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
 
+    echo "Generating /usr/local/bin folder."
+    
+    if [[ ! -d  "/usr/local/bin" ]]; then
+            
+        sudo mkdir -p -m 775 /usr/local/bin
+
+    fi
+
     if ! command curl --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires CURL to operate. Installing it now...\033[39m\n"
@@ -199,9 +207,24 @@ elif command brew -v > /dev/null 2>&1; then
 
         fi
 
-        echo "Automated installation for Docker on macOS is not supported."
-        echo "Please download 'Docker for Mac' on Official Docker website and proceed to install."
-        echo "Official Installation Page: (docs.docker.com/docker-for-mac/install)."
+        if command brew install --cask docker; then
+
+            printf "\n\033[92mDocker Desktop has been successfully installed!\033[39m\n"
+
+            open /Applications/Docker.app
+
+            echo "Please go through the Docker Desktop setup on GUI."
+
+            # echo "Info: $(docker --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install Docker Desktop.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install --cask docker'."
+            echo -e "You can also visit the official installation page: (docs.docker.com/docker-for-mac/install).\n"
+            exit 1;
+
+        fi
 
     fi
 
@@ -270,10 +293,11 @@ elif command brew -v > /dev/null 2>&1; then
 
             printf "\n\033[92mjq has been successfully installed!\033[39m\n"
 
-            echo "Info: $(psql --version)"
-
             echo "Creating a symlink for the PSQL Client."
+
             sudo ln -s $(brew --prefix)/opt/libpq/bin/psql /usr/local/bin/psql
+
+            echo "Info: $(psql --version)"
 
         else
 
@@ -329,8 +353,8 @@ elif command yum --version > /dev/null 2>&1; then
 
             fi
 
-            systemctl start docker
-            systemctl enable docker
+            sudo systemctl start docker
+            sudo systemctl enable docker
 
         else
 
@@ -346,7 +370,7 @@ elif command yum --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
 
-        if command curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
+        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
 
             sudo chmod +x /usr/local/bin/docker-compose
 
@@ -544,7 +568,7 @@ export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"master"}
 echo "Pulling HollaEx CLI from Github..."
 curl -s https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh > cli_installer.sh && \
     bash cli_installer.sh ${HOLLAEX_INSTALLER_VERSION_TARGET} \
-    rm cli_installer.shs
+    rm cli_installer.sh
 
 if [[ "$IS_APT_UPDATED" ]] || [[ "$IS_BREW_UPDATED" ]]; then
 
