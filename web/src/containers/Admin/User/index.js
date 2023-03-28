@@ -4,7 +4,7 @@ import querystring from 'query-string';
 import { Link } from 'react-router';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
 import { RightOutlined } from '@ant-design/icons';
-import { Table, Spin, Button, notification, Tabs, message } from 'antd';
+import { Table, Spin, Button, notification, Tabs, message, Modal } from 'antd';
 import _get from 'lodash/get';
 
 import './index.css';
@@ -18,6 +18,7 @@ import { requestUser, requestUsersDownload } from './actions';
 import UserContent from './UserContent';
 import { FullListUsers, PendingUsers } from '../ListUsers';
 import { requestMyPlugins } from '../Plugins/action';
+import AddUser from './AddUser';
 // import { isSupport } from '../../../utils/token';
 
 const INITIAL_STATE = {
@@ -41,6 +42,7 @@ class App extends Component {
 		this.state = {
 			...INITIAL_STATE,
 			kycPluginName,
+			isVisible: false,
 		};
 	}
 
@@ -218,6 +220,10 @@ class App extends Component {
 		// }
 	};
 
+	onCancel = () => {
+		this.setState({ isVisible: false });
+	};
+
 	render() {
 		const {
 			userInformation,
@@ -226,6 +232,7 @@ class App extends Component {
 			loading,
 			userInformationList,
 			kycPluginName,
+			isVisible,
 		} = this.state;
 		const { coins, constants, isConfigure, showConfigure } = this.props;
 		const renderBoolean = (value) => (
@@ -335,14 +342,30 @@ class App extends Component {
 					</TabPane>
 
 					<TabPane tab="All Users" key="users">
-						<h2 className="m-top">LIST OF ALL USERS</h2>
+						<div className="user-list-header-wrapper">
+							<h2 className="m-top">LIST OF ALL USERS</h2>
+							<Button onClick={() => this.setState({ isVisible: true })}>
+								{' '}
+								Add new user
+							</Button>
+						</div>
 						<FullListUsers
 							coins={coins}
 							requestUser={this.requestUserData}
 							handleDownload={this.requestUsersDownload}
+							isVisible={this.state.isVisible}
 						/>
 					</TabPane>
 				</Tabs>
+				<Modal
+					visible={isVisible}
+					footer={null}
+					className="add-user-modal"
+					width={'500px'}
+					onCancel={this.onCancel}
+				>
+					<AddUser onCancel={this.onCancel} />
+				</Modal>
 			</div>
 		);
 	}
