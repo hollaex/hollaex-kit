@@ -941,6 +941,18 @@ h2,
 	font-size: 10px;
 }
 
+.generate-api .custom-withdraw {
+	width: 12px;
+	height: 12px;
+	border-radius: 10px;
+	border: 1px solid #ff0000;
+	background-color: #ff0000;
+}
+
+.generate-api .withdraw-text {
+	color: #ff0000;
+}
+
 .generate-api .qr-width {
 	width: 134px;
 }
@@ -1025,6 +1037,10 @@ h2,
 
 .generate-api .authentication-wrapper p {
 	margin-bottom: 0px;
+}
+
+.generate-api .items-center {
+	align-items: center;
 }
 
 .generate-api .disable-table {

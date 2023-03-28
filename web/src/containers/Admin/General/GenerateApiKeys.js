@@ -51,10 +51,15 @@ const GenerateAPiKeys = ({
 			otp: otp_code,
 			name,
 			whitelisted_ips,
-			role,
 		} = userDetails;
 		setLoading(true);
-		return generateToken({ otp_code, name, email_code, whitelisted_ips, role })
+		return generateToken({
+			otp_code,
+			name,
+			email_code,
+			whitelisted_ips,
+			role: 'Admin',
+		})
 			.then(({ data: { key: apiKey, ...rest } }) => {
 				const response = { apiKey, ...rest };
 				tokenGenerated(response);
@@ -184,6 +189,8 @@ const GenerateAPiKeys = ({
 			setCurrentStep('');
 		} else if (currentStep === 'step3') {
 			setCurrentStep('step2');
+		} else if (currentStep === 'step4' && tokenTypeAndData.type === 'revoke') {
+			setCurrentStep('revoke');
 		} else if (currentStep === 'step4') {
 			setCurrentStep('step3');
 		}
@@ -237,7 +244,10 @@ const GenerateAPiKeys = ({
 								Input a white listed IP address that will be associated with
 								this generated API key.
 							</p>
-							<p>This key will only be usable from this IP address</p>
+							<p>
+								This key will only be usable from this IP address. You can add
+								multiple IPs.
+							</p>
 						</div>
 						<div className="generate-api-field-txt">
 							<p>IP address</p>
@@ -268,9 +278,9 @@ const GenerateAPiKeys = ({
 							<p>Select the type of API key</p>
 						</div>
 						<div className="generate-api-select-field">
-							<p>Key type</p>
+							<div className="mt-4 mb-2">Key type</div>
 							<Select
-								placeholder="select key type"
+								placeholder="Select key type"
 								suffixIcon={<CaretDownOutlined />}
 								showArrow={true}
 								onChange={(value) => setSelectedRole(value)}
@@ -319,14 +329,22 @@ const GenerateAPiKeys = ({
 				return (
 					<div className="generate-api-steps-wrapper">
 						<div className="header-txt">
-							<p>
-								A unique code was sent to your email that is required to finish
-								the process.
-							</p>
-							<p>
-								Please input the code sent to your email below along with your
-								2FA code.
-							</p>
+							{tokenTypeAndData.type === 'edit' && (
+								<p>Enter email code and 2FA code to save changes.</p>
+							)}
+							{(tokenTypeAndData.type === 'generate' ||
+								tokenTypeAndData.type === 'revoke') && (
+								<div>
+									<p>
+										A unique code was sent to your email that is required to
+										finish the process.
+									</p>
+									<p>
+										Please input the code sent to your email below along with
+										your 2FA code.
+									</p>
+								</div>
+							)}
 						</div>
 						<div className="generate-api-field-txt">
 							<p>Input code (please check your email)</p>
@@ -373,7 +391,7 @@ const GenerateAPiKeys = ({
 				return (
 					<div className="generate-api-steps-wrapper">
 						<div className="header-txt">
-							<p>Name Your API key</p>
+							<p>Name your API key</p>
 						</div>
 						<div className="generate-api-field-txt">
 							<p>API key name</p>
@@ -400,6 +418,22 @@ const GenerateAPiKeys = ({
 				</Button>
 			</div>
 		);
+	};
+
+	const getModalHeader = () => {
+		if (currentStep === 'revoke') {
+			return '';
+		} else if (currentStep === 'step4' && tokenTypeAndData.type === 'edit') {
+			return 'Save changes to API key';
+		} else {
+			return 'Generate API keys';
+		}
+	};
+
+	const onHandleGenerate = () => {
+		const data = { type: 'generate', data: '' };
+		onHandleModalOpen();
+		setTokenTypeAndData(data);
 	};
 
 	return (
@@ -431,7 +465,7 @@ const GenerateAPiKeys = ({
 									className="key-icon"
 								/>
 								<span
-									onClick={onHandleModalOpen}
+									onClick={onHandleGenerate}
 									className="ml-2 underline-text pointer"
 								>
 									Generate API key.
@@ -472,7 +506,7 @@ const GenerateAPiKeys = ({
 					>
 						<div className="generate-api-container">
 							<h5 className={currentStep === 'revoke' && 'revoke'}>
-								{currentStep === 'revoke' ? '' : 'Generate API keys'}
+								{getModalHeader()}
 							</h5>
 							{renderModalContent()}
 							{footerBtn()}

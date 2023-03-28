@@ -88,9 +88,11 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 							<span className="font-size-small bold">Assigned IP</span>
 							<div className="content-size">
 								<p>IP address that works with this API key is: </p>
-								{editData.whitelisted_ips.map((ipAddress) => {
-									return <span className="ip-field mt-1">{ipAddress}</span>;
-								})}
+								{editData &&
+									editData.whitelisted_ips &&
+									editData.whitelisted_ips.map((ipAddress) => {
+										return <span className="ip-field mt-1">{ipAddress}</span>;
+									})}
 							</div>
 						</div>
 						<div className="ml-5">
@@ -107,6 +109,17 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 							>
 								Withdrawals
 							</Checkbox>
+							{editData &&
+								editData.can_withdraw &&
+								editData.can_withdraw === true && (
+									<div className="d-flex items-centermt-2 ml-1">
+										<div className="custom-withdraw"></div>
+										<div className="content-size">
+											<span className="withdraw-text ml-2">WARNING:</span>{' '}
+											Enabling API Withdrawals is EXTREMELY RISKY!
+										</div>
+									</div>
+								)}
 						</div>
 					</div>
 					<Button
