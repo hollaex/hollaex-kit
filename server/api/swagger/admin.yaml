@@ -2578,7 +2578,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
-  /admin/user/address:
+  /admin/user/wallet:
     x-swagger-router-controller: admin
     get:
       description: Get user wallets for admin
