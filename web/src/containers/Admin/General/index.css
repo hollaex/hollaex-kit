@@ -1001,6 +1001,37 @@ h2,
 	margin-right: 5px;
 }
 
+.generate-api .authentication-wrapper {
+	color: red;
+}
+
+.generate-api .authentication-wrapper a {
+	color: white;
+	text-decoration: underline;
+}
+
+.generate-api .authentication-wrapper div {
+	display: flex;
+	align-items: center;
+}
+
+.generate-api .authentication-wrapper div p {
+	margin-right: 5px;
+}
+
+.generate-api .authentication-wrapper button {
+	margin-top: 0px;
+}
+
+.generate-api .authentication-wrapper p {
+	margin-bottom: 0px;
+}
+
+.generate-api .disable-table {
+	pointer-events: none;
+	opacity: 0.3;
+}
+
 .role-option {
 	padding-left: 5px;
 }

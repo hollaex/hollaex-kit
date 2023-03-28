@@ -3,9 +3,8 @@ import { Button, Checkbox } from 'antd';
 import QR from 'qrcode.react';
 import { STATIC_ICONS } from 'config/icons';
 
-const EditToken = ({ record, displayQR, handleEditData }) => {
+const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	const [editData, setEditData] = useState(record);
-
 	const { apiKey, secret } = record;
 	const { can_read, can_trade, can_withdraw } = editData;
 
@@ -23,7 +22,7 @@ const EditToken = ({ record, displayQR, handleEditData }) => {
 	return (
 		<div className="d-flex p-3 expandable-content">
 			<div className="d-flex flex-column pt-2 scanner-content">
-				{displayQR ? (
+				{displayQR && inx === 0 ? (
 					<>
 						<QR value={apiKey} size={134} className="qr-scanner" />
 						<div className="content-size qr-width text-center pt-2">
@@ -88,8 +87,10 @@ const EditToken = ({ record, displayQR, handleEditData }) => {
 						<div className="ml-5">
 							<span className="font-size-small bold">Assigned IP</span>
 							<div className="content-size">
-								IP address that works with this API key is:{' '}
-								<span className="ip-field">218.144.134.67</span>
+								<p>IP address that works with this API key is: </p>
+								{editData.whitelisted_ips.map((ipAddress) => {
+									return <span className="ip-field mt-1">{ipAddress}</span>;
+								})}
 							</div>
 						</div>
 						<div className="ml-5">
