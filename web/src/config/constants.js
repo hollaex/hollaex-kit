@@ -251,3 +251,15 @@ export const DEFAULT_PAYPAL_PAYMENT_PAYPAL = [
 export const DEFAULT_CUSTOM_PAYMENT_CUSTOM = [
 	{ key: 'payment_info', label: 'Payment Info', required: true },
 ];
+
+export const DEFAULT_PINNED_COINS = [
+	'xht',
+	'btc',
+	'eth',
+	'usdt',
+	'bnb',
+	'xrp',
+	'ada',
+	'trx',
+	'matic',
+];
