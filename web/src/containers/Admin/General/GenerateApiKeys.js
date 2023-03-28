@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Input, Button, Select, message } from 'antd';
-import { CaretDownOutlined } from '@ant-design/icons';
+import { Link } from 'react-router';
+import { Modal, Input, Button, Select, message, Spin } from 'antd';
+import { CaretDownOutlined, WarningOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import { Table } from 'components';
 import {
@@ -17,6 +18,7 @@ const GenerateAPiKeys = ({
 	tokens,
 	requestTokens,
 	tokenRevoked,
+	user,
 }) => {
 	const [isVisible, setIsVisible] = useState(false);
 	const [tokenTypeAndData, setTokenTypeAndData] = useState({});
@@ -25,11 +27,16 @@ const GenerateAPiKeys = ({
 	const [selectedRole, setSelectedRole] = useState('');
 	const [ipAddress, setIPAddress] = useState('');
 	const [displayQR, setDisplayQR] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const ipAddressInput = useRef(null);
 
 	useEffect(() => {
+		if (!tokens.data) {
+			setLoading(true);
+		}
 		setDisplayQR(false);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
@@ -46,6 +53,7 @@ const GenerateAPiKeys = ({
 			whitelisted_ips,
 			role,
 		} = userDetails;
+		setLoading(true);
 		return generateToken({ otp_code, name, email_code, whitelisted_ips, role })
 			.then(({ data: { key: apiKey, ...rest } }) => {
 				const response = { apiKey, ...rest };
@@ -53,9 +61,14 @@ const GenerateAPiKeys = ({
 				requestTokens();
 				setDisplayQR(true);
 				setCurrentStep('');
+				setLoading(false);
 				return response;
 			})
-			.catch((err) => message.error(err.message));
+
+			.catch((err) => {
+				setLoading(false);
+				message.error(err?.response?.data?.message);
+			});
 	};
 
 	const onEditToken = (editData) => {
@@ -70,23 +83,35 @@ const GenerateAPiKeys = ({
 			email_code: userDetails.code,
 		};
 
+		setLoading(true);
 		return editToken({ ...data })
 			.then(({ data }) => {
 				requestTokens();
 				setCurrentStep('');
+				setLoading(false);
 				return data;
 			})
-			.catch((err) => message.error(err.message));
+
+			.catch((err) => {
+				setLoading(false);
+				message.error(err?.response?.data?.message);
+			});
 	};
 
 	const onRemoveToken = (data) => {
+		setLoading(true);
 		return revokeToken(data.id, userDetails.otp, userDetails.code)
 			.then((resp) => {
 				const { data } = resp;
 				tokenRevoked(data);
+				setLoading(false);
 				requestTokens();
 			})
-			.catch((err) => message.error(err.message));
+
+			.catch((err) => {
+				setLoading(false);
+				message.error(err?.response?.data?.message);
+			});
 	};
 
 	const onSubmitToken = () => {
@@ -379,58 +404,82 @@ const GenerateAPiKeys = ({
 
 	return (
 		<div className="generate-api">
-			<div className="mb-5 mt-4">
-				<div className="d-flex">
-					<img
-						src={STATIC_ICONS.BLUE_ADMIN_KEY}
-						alt="key"
-						className="key-icon"
+			{loading ? (
+				<Spin size="medium" />
+			) : (
+				<>
+					{!user.otp_enabled && (
+						<div className="authentication-wrapper">
+							<div>
+								<p>
+									<WarningOutlined />
+								</p>
+								<p>
+									To Generate API key you need to enable the 2-facotr
+									authentication.
+								</p>
+							</div>
+							<Link to="/security">Enable 2FA</Link>
+						</div>
+					)}
+					<div className="mb-5 mt-4">
+						{user.otp_enabled && (
+							<div className="d-flex">
+								<img
+									src={STATIC_ICONS.BLUE_ADMIN_KEY}
+									alt="key"
+									className="key-icon"
+								/>
+								<span
+									onClick={onHandleModalOpen}
+									className="ml-2 underline-text pointer"
+								>
+									Generate API key.
+								</span>
+							</div>
+						)}
+					</div>
+					<Table
+						key={(data) => {
+							return data.id;
+						}}
+						className={!user.otp_enabled && 'disable-table'}
+						rowClassName="pt-2 pb-2"
+						headers={generateHeaders(handleEditData)}
+						data={tokens.data}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						count={tokens.count}
+						expandable={{
+							rowExpandable: () => true,
+							defaultExpanded: (row, index) => index === 0,
+							expandedRowRender: (record, inx) => (
+								<EditToken
+									handleEditData={handleEditData}
+									displayQR={displayQR}
+									record={record}
+									inx={inx}
+								/>
+							),
+						}}
 					/>
-					<span
-						onClick={onHandleModalOpen}
-						className="ml-2 underline-text pointer"
+					<Modal
+						className="generate-api-modal"
+						visible={isVisible}
+						onCancel={() => setIsVisible(false)}
+						footer={null}
 					>
-						Generate API key.
-					</span>
-				</div>
-			</div>
-			<Table
-				key={(data) => {
-					return data.id;
-				}}
-				rowClassName="pt-2 pb-2"
-				headers={generateHeaders(handleEditData)}
-				data={tokens.data}
-				rowKey={(data) => {
-					return data.id;
-				}}
-				count={tokens.count}
-				expandable={{
-					rowExpandable: () => true,
-					defaultExpanded: (row, index) => index === 0,
-					expandedRowRender: (record) => (
-						<EditToken
-							handleEditData={handleEditData}
-							displayQR={displayQR}
-							record={record}
-						/>
-					),
-				}}
-			/>
-			<Modal
-				className="generate-api-modal"
-				visible={isVisible}
-				onCancel={() => setIsVisible(false)}
-				footer={null}
-			>
-				<div className="generate-api-container">
-					<h5 className={currentStep && 'revoke'}>
-						{currentStep ? '' : 'Generate API keys'}
-					</h5>
-					{renderModalContent()}
-					{footerBtn()}
-				</div>
-			</Modal>
+						<div className="generate-api-container">
+							<h5 className={currentStep === 'revoke' && 'revoke'}>
+								{currentStep === 'revoke' ? '' : 'Generate API keys'}
+							</h5>
+							{renderModalContent()}
+							{footerBtn()}
+						</div>
+					</Modal>
+				</>
+			)}
 		</div>
 	);
 };

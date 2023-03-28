@@ -1229,7 +1229,9 @@ class GeneralContent extends Component {
 									</span>
 									<span>
 										Note, in order to generate API keys it is required to add a{' '}
-										<p className="underline-text">white listed IP address.</p>
+										<span className="underline-text">
+											white listed IP address.
+										</span>
 									</span>
 								</div>
 								<GenerateAPiKeys
@@ -1237,6 +1239,7 @@ class GeneralContent extends Component {
 									tokenGenerated={tokenGenerated}
 									tokens={this.props.tokens}
 									requestTokens={this.props.requestTokens}
+									user={this.props.user}
 								/>
 							</div>
 						)}
