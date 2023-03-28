@@ -1135,7 +1135,7 @@ async function validateDeposit(user, amount, currency, network = null) {
 	};
 }
 
-const getWallets = (
+const getWallets = async (
 	userId,
 	currency,
 	network,
@@ -1152,8 +1152,19 @@ const getWallets = (
 	}
 ) => {
 
+	let user;
+	if(userId){
+		user = await getUserByKitId(userId, false);
+
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!user.network_id) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		}
+	}
+	
 	return getNodeLib().getExchangeWallets({
-		userId,
+		userId : userId ? user.network_id : null,
 		currency,
 		network,
 		address,
