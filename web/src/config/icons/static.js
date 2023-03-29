@@ -186,6 +186,11 @@ const icons = {
 	VERIFIED_BADGE_PLUGIN_APPS: '/assets/images/verified-badge-plugin-apps.svg',
 	ONE_TIME_ACTIVATION_PLUGIN: '/assets/images/One-time activation-plugin.svg',
 	CREDITS_PLUGIN: '/assets/images/credits-plugin.svg',
+	WHITE_USER_KEY: '/assets/images/white-user-key.svg',
+	BLUE_ADMIN_KEY: '/assets/images/blue-admin-key.svg',
+	REVOKE_KEY: '/assets/images/revoke-key-red-slash.svg',
+	SMALL_WHITE_KEY: '/assets/images/small-white-key.svg',
+	TRANSPARENT_KEY: '/assets/images/transperent-key.svg',
 };
 
 export default icons;

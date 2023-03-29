@@ -9,6 +9,7 @@ import {
 } from 'containers/Trade/utils';
 import { handleUpgrade } from 'utils/utils';
 import { pinnedAssetsSelector } from 'containers/Wallet/utils';
+import { DEFAULT_PINNED_COINS } from 'config/constants';
 
 const getSortMode = (state) => state.app.digital_assets_sort.mode;
 const getSortDir = (state) => state.app.digital_assets_sort.is_descending;
@@ -34,7 +35,7 @@ const pinnedMarketsSelector = createSelector(
 	(pairs, info, pinnedAssets) => {
 		const isBasic = handleUpgrade(info);
 
-		const pinnedCoins = isBasic ? ['xht'] : pinnedAssets;
+		const pinnedCoins = isBasic ? DEFAULT_PINNED_COINS : pinnedAssets;
 		const pinnedMarkets = [];
 		Object.entries(pairs).forEach(([key, { pair_base, pair_2 }]) => {
 			if (pinnedCoins.includes(pair_base) || pinnedCoins.includes(pair_2)) {
