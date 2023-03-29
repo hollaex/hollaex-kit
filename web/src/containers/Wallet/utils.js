@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { calculateOraclePrice } from 'utils/currency';
 import { WALLET_SORT } from 'actions/appActions';
 import { handleUpgrade } from 'utils/utils';
+import { DEFAULT_PINNED_COINS } from 'config/constants';
 
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
@@ -30,7 +31,7 @@ export const pinnedAssetsSelector = createSelector(
 		const isBasic = handleUpgrade(info);
 
 		if (isBasic) {
-			return ['xht'];
+			return DEFAULT_PINNED_COINS;
 		} else {
 			return pinnedAssets;
 		}

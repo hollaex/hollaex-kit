@@ -170,7 +170,7 @@
 				background-color: $app-background-color;
 
 				.trade-details-content {
-					height: 450px;
+					min-height: 450px;
 
 					.pb-30 {
 						padding-bottom: 30px;
