@@ -4,17 +4,18 @@ import { requestAddUser } from '../User/actions';
 
 const { Item } = Form;
 
-const AddUser = ({ onCancel }) => {
+const AddUser = ({ onCancel, requestFullUsers }) => {
 	const onFinish = (values) => {
 		const { password, confirmPassword, userEmail } = values;
 
 		if (password === confirmPassword) {
-			requestAddUser({ email: userEmail, password: password });
+			requestAddUser({ email: userEmail, password: password }).then((res) => {
+				onCancel();
+				requestFullUsers();
+			});
 		} else {
 			message.error('Password and confirm password should be same');
 		}
-
-		return onCancel();
 	};
 
 	return (
@@ -28,6 +29,7 @@ const AddUser = ({ onCancel }) => {
 				<Item
 					label="Email"
 					name="userEmail"
+					initialValue=""
 					rules={[
 						{
 							required: true,
@@ -41,6 +43,7 @@ const AddUser = ({ onCancel }) => {
 				<Item
 					label="Password"
 					name="password"
+					initialValue=""
 					rules={[
 						{
 							required: true,
@@ -54,6 +57,7 @@ const AddUser = ({ onCancel }) => {
 				<Item
 					label="Confirm Password"
 					name="confirmPassword"
+					initialValue=""
 					rules={[
 						{
 							required: true,
@@ -65,11 +69,7 @@ const AddUser = ({ onCancel }) => {
 				</Item>
 
 				<div className="footer mt-5">
-					<Button
-						className="mr-5"
-						onClick={() => this.setState({ isVisible: false })}
-						type="sucess"
-					>
+					<Button className="mr-5" onClick={onCancel} type="sucess">
 						Back
 					</Button>
 					<Button type="sucess" htmlType="submit">
