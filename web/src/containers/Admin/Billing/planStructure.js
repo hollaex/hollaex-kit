@@ -23,10 +23,11 @@ const PlanStructure = ({
 	return (
 		<div
 			className={
-				cloudPlanDetails
+				!cloudPlanDetails
 					? `${className} plan-container`
 					: 'cloud-plan-container cloud-container'
 			}
+			onClick={() => !cloudPlanDetails && onHandleSelectedType(type)}
 		>
 			<div className="plan-container-wrapper">
 				<div className={`popular-header-${type}`}>
@@ -35,86 +36,21 @@ const PlanStructure = ({
 				<div className="header-wrapper">
 					<div className={`header-container-${type}`}></div>
 					<div
-						className="header-container"
 						style={{ backgroundImage: `url(${currentPlan?.background})` }}
+						className="header-container"
 					>
 						<h2 className="type-center">{currentPlan?.title}</h2>
 						<h6 className="text-center">{currentPlan.description}</h6>
 					</div>
 				</div>
-				<div className="feature-wrapper">
-					{_get(currentPlan, 'section') &&
-						_get(currentPlan, 'section').map((subContent, index) => {
-							return (
-								<div key={index}>
-									<div>
-										<div className="plan-header ml-5">{subContent.title}</div>
-										<ul className="sub-txt">
-											{subContent.points.map((val, index) => {
-												return <li key={index}>{val}</li>;
-											})}
-										</ul>
-									</div>
-								</div>
-							);
-						})}
-					{!isMonthly && !_get(currentPlan, 'services.hideOnMonthly') ? (
-						<div>
-							<div className="plan-header ml-5">
-								{_get(currentPlan, 'services.title')}
-							</div>
-							<ul className="sub-txt">
-								{_get(currentPlan, 'services.points') &&
-									Object.values(_get(currentPlan, 'services.points')).map(
-										(item, index) => {
-											return <li key={index}>{item}</li>;
-										}
-									)}
-							</ul>
-						</div>
-					) : isMonthly && !_get(currentPlan, 'services.hideActive') ? (
-						<div>
-							<div className="plan-header ml-5">
-								{_get(currentPlan, 'services.title')}
-							</div>
-							<ul className="sub-txt">
-								{_get(currentPlan, 'services.points') &&
-									Object.values(_get(currentPlan, 'services.points')).map(
-										(item, index) => {
-											return <li key={index}>{item}</li>;
-										}
-									)}
-							</ul>
-						</div>
-					) : null}
-					{_get(currentPlan, 'asset_pairs') ? (
-						<div>
-							<div className="plan-header ml-5">
-								{_get(currentPlan, 'asset_pairs.title')}
-							</div>
-							<ul className="sub-txt">
-								{Object.values(_get(currentPlan, 'asset_pairs.points')).map(
-									(item, index) => {
-										return <li key={index}>{item}</li>;
-									}
-								)}
-							</ul>
-						</div>
-					) : null}
-					{_get(currentPlan, 'integration') ? (
-						<div>
-							<div className="plan-header ml-5">
-								{_get(currentPlan, 'integration.title')}
-							</div>
-							<ul className="sub-txt">
-								{Object.values(_get(currentPlan, 'integration.points')).map(
-									(item, index) => {
-										return <li key={index}>{item}</li>;
-									}
-								)}
-							</ul>
-						</div>
-					) : null}
+				<div className="info-link-content">
+					<a
+						href="https://www.hollaex.com/pricing"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Learn more
+					</a>
 				</div>
 				<div className="amount-wrapper">
 					<div className={`amount-container`}>
@@ -138,11 +74,8 @@ const PlanStructure = ({
 							</div>
 						)}
 					</div>
-					{cloudPlanDetails && (
-						<div
-							className="radio-container"
-							onClick={() => onHandleSelectedType(type)}
-						>
+					{!cloudPlanDetails && (
+						<div className="radio-container">
 							{selectedType === type ? (
 								<div>
 									<CheckOutlined className={'selected-plan'} />

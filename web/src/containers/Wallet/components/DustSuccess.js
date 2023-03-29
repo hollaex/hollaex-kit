@@ -12,7 +12,7 @@ const DustSuccess = ({
 	icons: ICONS,
 	coins,
 	quote,
-	data: { total, error },
+	data: { total, error = [] },
 }) => {
 	const { increment_unit, display_name } = coins[quote] || DEFAULT_COIN_DATA;
 
@@ -44,7 +44,7 @@ const DustSuccess = ({
 				</EditWrapper>
 			</div>
 
-			{error?.length && (
+			{error.length > 0 && (
 				<div className="py-2">
 					{error.map(({ symbol, error: message }) => (
 						<div key={symbol} className="warning_text">

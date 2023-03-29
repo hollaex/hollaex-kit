@@ -13,7 +13,6 @@ const MobileAccountTypeList = ({
 	selectedAccount,
 	lastMonthVolume,
 	onAccountTypeChange,
-	onFeesAndLimits,
 	onUpgradeAccount,
 	verification_level,
 	balance,
@@ -74,7 +73,6 @@ const MobileAccountTypeList = ({
 									balance={balance}
 									selectedAccount={selectedAccount}
 									lastMonthVolume={lastMonthVolume}
-									onFeesAndLimits={onFeesAndLimits}
 									onUpgradeAccount={onUpgradeAccount}
 								/>
 							</div>

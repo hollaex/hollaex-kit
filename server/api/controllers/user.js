@@ -827,7 +827,7 @@ const createHmacToken = (req, res) => {
 
 	const { id: userId } = req.auth.sub;
 	const ip = req.headers['x-real-ip'];
-	const { name, otp_code, email_code } = req.swagger.params.data.value;
+	const { name, otp_code, email_code, role, whitelisted_ips } = req.swagger.params.data.value;
 
 	loggerUser.verbose(
 		req.uuid,
@@ -835,14 +835,22 @@ const createHmacToken = (req, res) => {
 		name,
 		otp_code,
 		email_code,
-		ip
+		ip,
+		role,
+		whitelisted_ips
 	);
+
+	whitelisted_ips?.forEach((ip) => {
+		if (!toolsLib.validateIp(ip)) {
+			return res.status(400).json({ message: 'IP address is not valid.' });
+		}
+	});
 
 	toolsLib.security.confirmByEmail(userId, email_code)
 		.then((confirmed) => {
 			if (confirmed) {
 				// TODO check for the name duplication
-				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name);
+				return toolsLib.security.createUserKitHmacToken(userId, otp_code, ip, name, role, whitelisted_ips);
 			} else {
 				throw new Error(INVALID_VERIFICATION_CODE);
 			}
@@ -881,10 +889,10 @@ function updateHmacToken(req, res) {
 		permissions,
 		whitelisted_ips,
 		whitelisting_enabled,
-		ip
+		ip,
 	);
 
-	whitelisted_ips.forEach((ip) => {
+	whitelisted_ips?.forEach((ip) => {
 		if (!toolsLib.validateIp(ip)) {
 			return res.status(400).json({ message: 'IP address is not valid.' });
 		}

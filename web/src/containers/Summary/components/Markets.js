@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { withRouter } from 'react-router';
-import _get from 'lodash/get';
 
 import { SearchBox } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -12,7 +11,6 @@ import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getSparklines } from 'actions/chartAction';
 import { EditWrapper } from 'components';
 import { MarketsSelector } from 'containers/Trade/utils';
-import AssetsList from 'containers/TradeTabs/components/AssetsList';
 import MarketList from 'containers/TradeTabs/components/MarketList';
 
 class Markets extends Component {
@@ -39,58 +37,30 @@ class Markets extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { markets, selectedSource = '' } = this.props;
+		const { markets } = this.props;
 		const { page, searchValue } = this.state;
 
-		if (
-			JSON.stringify(markets) !== JSON.stringify(prevProps.markets) ||
-			(selectedSource && selectedSource !== prevProps.selectedSource)
-		) {
+		if (JSON.stringify(markets) !== JSON.stringify(prevProps.markets)) {
 			this.constructData(page, searchValue);
 		}
 	}
 
-	goToPreviousPage = () => {
-		const { page, searchValue } = this.state;
-		this.constructData(page - 1, searchValue);
-	};
-
-	goToNextPage = () => {
-		const { page, searchValue } = this.state;
-		this.constructData(page + 1, searchValue);
-	};
-
 	constructData = (page, searchValue) => {
 		const { pageSize } = this.state;
-		const { markets, selectedSource, isAsset } = this.props;
-		let filteredData = [];
-		let nonDublicateCoins = [];
+		const { markets } = this.props;
+
 		const pairs = this.getSearchPairs(searchValue);
-		if (selectedSource && selectedSource !== 'all') {
-			filteredData = markets.filter(
-				({ key }) => key.split('-')[1] === selectedSource
-			);
-		} else {
-			if (isAsset) {
-				filteredData = markets.filter(({ key }) => {
-					if (!nonDublicateCoins.includes(key.split('-')[0])) {
-						nonDublicateCoins.push(key.split('-')[0]);
-						return pairs.includes(key);
-					}
-					return null;
-				});
-			} else {
-				filteredData = markets.filter(({ key }) => pairs.includes(key));
-			}
-		}
-		const count = filteredData.length;
+
+		const searchResults = markets.filter(({ key }) => pairs.includes(key));
+
+		const count = searchResults.length;
 
 		const initItem = page * pageSize;
 		if (initItem < count) {
-			const data = filteredData.slice(0, initItem + pageSize);
+			const data = searchResults.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
 		} else {
-			this.setState({ data: filteredData, page, count });
+			this.setState({ data: searchResults, page, count });
 		}
 	};
 
@@ -136,67 +106,49 @@ class Markets extends Component {
 	};
 
 	handleClick = (pair) => {
-		const { router, constants } = this.props;
+		const {
+			router,
+			constants: { features: { pro_trade, quick_trade } = {} },
+		} = this.props;
 		if (pair && router) {
-			if (_get(constants, 'features.pro_trade')) {
+			if (pro_trade) {
 				router.push(`/trade/${pair}`);
-			} else if (_get(constants, 'features.quick_trade')) {
+			} else if (quick_trade) {
 				router.push(`/quick-trade/${pair}`);
 			}
 		}
 	};
 
-	handleAssetsClick = (pair) => {
-		const { router } = this.props;
-		if (pair && router) {
-			router.push(`/assets/coin/${pair.split('-')[0]}`);
-		}
-	};
-
 	render() {
+		const { data, chartData, page, pageSize, count } = this.state;
 		const {
 			showSearch = true,
 			showMarkets = false,
 			router,
 			isHome = false,
-			isFilterDisplay = false,
 			showContent = false,
-			isAsset = false,
-			constants,
+			renderContent,
 		} = this.props;
-		const { data, chartData, page, pageSize, count } = this.state;
+
 		if (isHome) {
-			this.props.renderContent(data);
+			renderContent(data);
 		}
 
 		return (
 			<div>
 				{showContent && (
 					<div>
-						<div>
-							<EditWrapper stringId="SUMMARY_MARKETS.HOLLAEX">
-								{STRINGS.formatString(
-									STRINGS['SUMMARY_MARKETS.HOLLAEX'],
-									<Link className="link-text" to="/white-label">
-										{STRINGS['SUMMARY_MARKETS.WHITE_LABEL']}
-									</Link>,
-									STRINGS['SUMMARY_MARKETS.SOLUTION']
-								)}
-							</EditWrapper>
-						</div>
-						<div>
-							<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
-								{STRINGS.formatString(
-									STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
-									<Link to="assets" className="link-text">
-										{STRINGS['SUMMARY_MARKETS.HERE']}
-									</Link>
-								)}
-							</EditWrapper>
-						</div>
+						<EditWrapper stringId="SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE">
+							{STRINGS.formatString(
+								STRINGS['SUMMARY_MARKETS.VISIT_COIN_INFO_PAGE'],
+								<Link to="assets" className="link-text">
+									{STRINGS['SUMMARY_MARKETS.HERE']}
+								</Link>
+							)}
+						</EditWrapper>
 					</div>
 				)}
-				{showSearch && !isFilterDisplay && (
+				{showSearch && (
 					<div className="d-flex justify-content-end">
 						<div className={isMobile ? '' : 'w-25 pb-4'}>
 							<SearchBox
@@ -210,30 +162,15 @@ class Markets extends Component {
 						</div>
 					</div>
 				)}
-				{isAsset ? (
-					<AssetsList
-						loading={!data.length}
-						markets={data}
-						chartData={chartData}
-						handleClick={this.handleAssetsClick}
-						isAsset={isAsset}
-						constants={constants}
-						page={page}
-						pageSize={pageSize}
-						count={count}
-						goToNextPage={this.goToNextPage}
-						goToPreviousPage={this.goToPreviousPage}
-						showPaginator={count > pageSize}
-					/>
-				) : (
-					<MarketList
-						loading={!data.length}
-						markets={data}
-						chartData={chartData}
-						handleClick={this.handleClick}
-					/>
-				)}
-				{!isAsset && !showMarkets && page * pageSize + pageSize < count && (
+
+				<MarketList
+					loading={!data.length}
+					markets={data}
+					chartData={chartData}
+					handleClick={this.handleClick}
+				/>
+
+				{!showMarkets && page * pageSize + pageSize < count && (
 					<div className="text-right">
 						<EditWrapper
 							stringId="STAKE_DETAILS.VIEW_MORE"

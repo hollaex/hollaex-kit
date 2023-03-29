@@ -22,6 +22,7 @@ const {
 	TOKEN_EXPIRED,
 	AUTH_NOT_MATCHED,
 	BROKER_NOT_FOUND,
+	BROKER_SIZE_EXCEED,
 	BROKER_PAUSED,
 	BROKER_ERROR_DELETE_UNPAUSED,
 	BROKER_EXISTS,
@@ -564,6 +565,10 @@ const executeBrokerDeal = async (userId, token, size) => {
 		throw new Error(BROKER_NOT_FOUND);
 	} else if (brokerPair.paused) {
 		throw new Error(BROKER_PAUSED);
+	}
+
+	if(size < brokerPair.min_size || size > brokerPair.max_size) {
+		throw new Error(BROKER_SIZE_EXCEED)
 	}
 
 	const broker = await getUserByKitId(brokerPair.user_id);

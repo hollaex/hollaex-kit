@@ -64,18 +64,18 @@ const generateLoggerConfiguration = (name) => {
 			align(),
 			printf(
 				(info) =>
-					`${info.timestamp} ${info.level}: ${formatObject(info.message)}`
+					`${info.level}: ${formatObject(info.message)}`
 			)
 		),
 		transports: transportsConfig
 	};
-	if (isMainnet) {
-		config.format = combine(
-			all(),
-			timestamp(),
-			json()
-		);
-	}
+	// if (isMainnet) {
+	// 	config.format = combine(
+	// 		all(),
+	// 		timestamp(),
+	// 		json()
+	// 	);
+	// }
 
 	return config;
 };

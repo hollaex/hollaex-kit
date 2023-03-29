@@ -182,6 +182,14 @@ $outline-height: 1.5px;
 
 	.address-line {
 		word-break: break-all;
+
+		&.single-action {
+			padding-right: 4rem;
+		}
+
+		&.multi-action {
+			padding-right: 6rem;
+		}
 	}
 
 	.copy-wrapper {

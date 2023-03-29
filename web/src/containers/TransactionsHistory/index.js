@@ -19,11 +19,11 @@ import {
 	IconTitle,
 	TabController,
 	Loader,
-	// CheckTitle,
 	Dialog,
 	Button,
 	CurrencyBallWithPrice,
 	EditWrapper,
+	NotLoggedIn,
 } from 'components';
 import { FLEX_CENTER_CLASSES, BASE_CURRENCY } from 'config/constants';
 import {
@@ -111,10 +111,6 @@ class TransactionsHistory extends Component {
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
 		const { pairs, coins, prices } = this.props;
-		// if (nextProps.symbol !== this.props.symbol) {
-		// this.requestData(nextProps.symbol);
-		// this.generateHeaders(nextProps.symbol, nextProps.activeLanguage);
-		// } else if (nextProps.activeLanguage !== this.props.activeLanguage) {
 		if (
 			nextProps.activeLanguage !== this.props.activeLanguage ||
 			JSON.stringify(nextProps.prices) !== JSON.stringify(prices)
@@ -211,9 +207,7 @@ class TransactionsHistory extends Component {
 	generateHeaders(symbol, coins, discount, prices) {
 		const { withdrawalPopup } = this;
 		const { pairs, icons: ICONS } = this.props;
-		let temp = this.state.params[`activeTab_${this.state.activeTab}`];
-		let type =
-			temp?.type === 'active' ? STRINGS['TIME_OPEN'] : STRINGS['TIME_CLOSE'];
+		let type = STRINGS['TIME'];
 
 		this.setState({
 			headers: {
@@ -285,7 +279,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.ORDERID']}
 							</EditWrapper>
-							<p>{obj.order_id}</p>
+							<p>{obj.order_id ? obj.order_id : STRINGS['NA']}</p>
 						</div>
 					</div>
 				);
@@ -318,7 +312,7 @@ class TransactionsHistory extends Component {
 							>
 								{STRINGS['TRANSACTION_HISTORY.TRIGGER_STOP_PRICE']}
 							</EditWrapper>
-							<p>{obj.stop ? obj.stop : `N/A`}</p>
+							<p>{obj.stop ? obj.stop : STRINGS['NA']}</p>
 						</div>
 						<div>
 							<EditWrapper
@@ -443,7 +437,7 @@ class TransactionsHistory extends Component {
 					orders.isRemaining
 				) {
 					this.props.getOrdersHistory(RECORD_LIMIT, orders.page + 1, {
-						...params,
+						...temp,
 						open: false,
 					});
 					this.setState({ jumpToPage: pageNumber });
@@ -503,9 +497,6 @@ class TransactionsHistory extends Component {
 		} = this.props;
 		const { headers, activeTab, filters, jumpToPage, params } = this.state;
 		let temp = params[`activeTab_${activeTab}`];
-		let sortTrades = trades.data?.sort(
-			(x, y) => new Date(y.timestamp) - new Date(x.timestamp)
-		);
 
 		const props = {
 			symbol,
@@ -548,7 +539,7 @@ class TransactionsHistory extends Component {
 				props.stringId = 'TRANSACTION_HISTORY.TITLE_TRADES';
 				props.title = `${STRINGS['TRANSACTION_HISTORY.TITLE_TRADES']}`;
 				props.headers = headers.trades;
-				props.data = { ...trades, data: sortTrades };
+				props.data = trades;
 				props.filename = `trade-history-${moment().unix()}`;
 				props.withIcon = false;
 				props.handleNext = this.handleNext;
@@ -595,11 +586,11 @@ class TransactionsHistory extends Component {
 	};
 
 	render() {
-		const { id, coins, icons: ICONS } = this.props;
+		const { coins, icons: ICONS } = this.props;
 		let { activeTab, dialogIsOpen, amount, currency } = this.state;
 		const { onCloseDialog } = this;
 
-		if (!id || Object.keys(coins).length === 0) {
+		if (Object.keys(coins).length === 0) {
 			return <Loader />;
 		}
 
@@ -629,12 +620,6 @@ class TransactionsHistory extends Component {
 									{STRINGS['TRANSACTION_HISTORY.TRADES']}
 								</EditWrapper>
 							) : (
-								// <CheckTitle
-								// 	stringId="TRANSACTION_HISTORY.TRADES"
-								// 	title={STRINGS['TRANSACTION_HISTORY.TRADES']}
-								// 	iconId="TRADE_HISTORY"
-								// 	icon={ICONS['TRADE_HISTORY']}
-								// />
 								<EditWrapper
 									stringId="TRANSACTION_HISTORY.TRADES"
 									render={(string) => <div>{string}</div>}
@@ -647,12 +632,6 @@ class TransactionsHistory extends Component {
 							title: isMobile ? (
 								<EditWrapper>{STRINGS['ORDER_HISTORY']}</EditWrapper>
 							) : (
-								// <CheckTitle
-								// 	stringId="ORDER_HISTORY"
-								// 	title={STRINGS['ORDER_HISTORY']}
-								// 	iconId="TRADE_HISTORY"
-								// 	icon={ICONS['TRADE_HISTORY']}
-								// />
 								<EditWrapper
 									stringId="ORDER_HISTORY"
 									render={(string) => <div>{string}</div>}
@@ -667,12 +646,6 @@ class TransactionsHistory extends Component {
 									{STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
 								</EditWrapper>
 							) : (
-								// <CheckTitle
-								// 	stringId="TRANSACTION_HISTORY.DEPOSITS"
-								// 	title={STRINGS['TRANSACTION_HISTORY.DEPOSITS']}
-								// 	iconId="DEPOSIT_HISTORY"
-								// 	icon={ICONS['DEPOSIT_HISTORY']}
-								// />
 								<EditWrapper
 									stringId="TRANSACTION_HISTORY.DEPOSITS"
 									render={(string) => <div>{string}</div>}
@@ -687,12 +660,6 @@ class TransactionsHistory extends Component {
 									{STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
 								</EditWrapper>
 							) : (
-								// <CheckTitle
-								// 	stringId="TRANSACTION_HISTORY.WITHDRAWALS"
-								// 	title={STRINGS['TRANSACTION_HISTORY.WITHDRAWALS']}
-								// 	iconId="WITHDRAW_HISTORY"
-								// 	icon={ICONS['WITHDRAW_HISTORY']}
-								// />
 								<EditWrapper
 									stringId="TRANSACTION_HISTORY.WITHDRAWALS"
 									render={(string) => <div>{string}</div>}
@@ -748,7 +715,7 @@ class TransactionsHistory extends Component {
 					</div>
 				</Dialog>
 				<div className={classnames('inner_container', 'with_border_top')}>
-					{this.renderActiveTab()}
+					<NotLoggedIn>{this.renderActiveTab()}</NotLoggedIn>
 				</div>
 			</div>
 		);
@@ -759,7 +726,6 @@ const mapStateToProps = (store) => ({
 	prices: store.asset.oraclePrices,
 	pairs: store.app.pairs,
 	coins: store.app.coins,
-	id: store.user.id,
 	orders: orderHistorySelector(store),
 	trades: tradeHistorySelector(store),
 	deposits: depositHistorySelector(store),

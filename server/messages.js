@@ -186,6 +186,7 @@ exports.INVALID_NETWORK = (network, validNetworks) => `Invalid network: ${networ
 exports.NETWORK_REQUIRED = (coin, validNetworks) => `Must specify network for coin: ${coin}${validNetworks ? `. Valid networks: ${validNetworks}` : ''}`;
 exports.AUTH_NOT_MATCHED = 'Auth doesn\'t match';
 exports.BROKER_NOT_FOUND = 'Broker pair could not be found';
+exports.BROKER_SIZE_EXCEED = 'Size should be between minimum and maximum set size of broker'
 exports.BROKER_PAUSED = 'Broker pair is paused';
 exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while unpaused';
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
@@ -196,3 +197,5 @@ exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
 exports.INVALID_TOKEN_TYPE = 'invalid token type';
 exports.NO_AUTH_TOKEN = 'no auth token sent';
+exports.WHITELIST_DISABLE_ADMIN = 'Admin cannot disable whitelisting feature';
+exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';

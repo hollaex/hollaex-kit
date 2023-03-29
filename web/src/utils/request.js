@@ -3,6 +3,8 @@ import { API_URL, NETWORK_API_URL } from '../config/constants';
 
 import { getToken, getDashToken } from './token';
 
+import { getNetWorkURL } from 'actions/appActions';
+import { message } from 'antd';
 /**
  * Parses the JSON returned by a network request
  *
@@ -88,6 +90,8 @@ export const requestDashAuthenticated = (
 	apiUrl = NETWORK_API_URL,
 	method = 'GET'
 ) => {
+	const API_PATH = '/v2';
+	const NETWORK_BASE_API_URL = `${getNetWorkURL()}${API_PATH}` || apiUrl;
 	const TOKEN = getDashToken();
 	const options = {
 		method,
@@ -102,7 +106,7 @@ export const requestDashAuthenticated = (
 			  },
 		...paramOptions,
 	};
-	return request(url, options, apiUrl);
+	return request(url, options, NETWORK_BASE_API_URL);
 };
 
 /**
@@ -115,7 +119,10 @@ export const requestDashAuthenticated = (
  * @return {object}           The response data
  */
 const request = (url, options, apiUrl = API_URL) => {
-	return fetch(`${apiUrl}${url}`, options).then(checkStatus).then(parseJSON);
+	return fetch(`${apiUrl}${url}`, options)
+		.then(checkStatus)
+		.then(parseJSON)
+		.catch((error) => message.error(error.message));
 };
 
 export default request;

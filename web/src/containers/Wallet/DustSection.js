@@ -37,6 +37,7 @@ const DustSection = ({
 	balances,
 	dust: { quote = 'xht' } = { quote: 'xht' },
 	pricesInNative,
+	openContactForm,
 }) => {
 	const [dustAssets, setDustAssets] = useState([]);
 	const [initialized, setInitialized] = useState(false);
@@ -338,7 +339,7 @@ const DustSection = ({
 								</table>
 							) : (
 								<div className="d-flex align-center justify-content-center py-5">
-									<EditWrapper stringId="DUST.CONVERT_ALL">
+									<EditWrapper stringId="DUST.NO_DUST">
 										{STRINGS['DUST.NO_DUST']}
 									</EditWrapper>
 								</div>

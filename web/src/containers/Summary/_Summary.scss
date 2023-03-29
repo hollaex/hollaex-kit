@@ -22,6 +22,11 @@ $trade-tab--arrow-size: 0.4rem;
 }
 
 .layout-mobile {
+	.digital-market-wrapper {
+		.link-container {
+			font-size: 10px;
+		}
+	}
 	.fee-limits-wrapper {
 		margin: 1rem auto 3rem;
 
@@ -255,16 +260,6 @@ $trade-tab--arrow-size: 0.4rem;
 		.trade-account-secondary-txt {
 			margin: auto 0;
 			width: 60%;
-		}
-	}
-	.trader-wrapper-icon {
-		width: 5rem;
-		margin-right: 1rem;
-		svg {
-			.level_icon,
-			.hap-icon {
-				fill: $colors-black;
-			}
 		}
 	}
 
@@ -700,6 +695,17 @@ $trade-tab--arrow-size: 0.4rem;
 	}
 }
 
+.trader-wrapper-icon {
+	width: 5rem;
+	margin-right: 1rem;
+	svg {
+		.level_icon,
+		.hap-icon {
+			fill: $colors-black;
+		}
+	}
+}
+
 .fee-limits-wrapper {
 	width: 38rem;
 
@@ -830,6 +836,21 @@ $trade-tab--arrow-size: 0.4rem;
 		margin-right: 0.5rem;
 		position: relative;
 		top: calc(50% - 0.6rem);
+	}
+}
+
+.user-status {
+	&.verified {
+		color: $colors-notifications-green;
+	}
+	&.pending {
+		color: $colors-notification-pending;
+	}
+	&.incompleted {
+		color: $colors-notification-pending;
+	}
+	&.rejected {
+		color: $colors-notifications-red;
 	}
 }
 

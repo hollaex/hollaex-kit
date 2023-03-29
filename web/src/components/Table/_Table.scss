@@ -18,19 +18,25 @@ $controllers--color-disabled: $colors-deactivate-color2;
 		background-color: var(--base_secondary-navigation-bar);
 	}
 
+	.sub-tr-bg-white {
+		background-color: #e4e3e3;
+		border-bottom: 1px solid #c3c3c3 !important;
+		opacity: 0.75;
+	}
+
 	.anchor {
 		color: #5d63ff;
 		text-decoration: underline;
 		cursor: pointer;
 	}
 
-	.expandable-row-bg {
+	.new-sub-tr-bg {
 		background: var(--calculated_secondary-border-1) !important;
 		opacity: 0.75;
 		border-bottom: 1px solid var(--calculated_secondary-border-1) !important;
 	}
 
-	.expandable-row {
+	.sub-tr {
 		height: 7rem;
 		border-bottom: 1px solid #4b4d51;
 		td {

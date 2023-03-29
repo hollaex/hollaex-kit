@@ -1,8 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { Switch } from 'antd';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+import classnames from 'classnames';
 import { isStakingAvailable } from 'config/contracts';
+import {
+	WALLET_SORT,
+	toggleWalletSort,
+	setSortModeAmount,
+} from 'actions/appActions';
 import {
 	// CurrencyBall,
 	Image,
@@ -27,16 +36,11 @@ import { unique } from 'utils/data';
 import DustSection from './DustSection';
 
 const AssetsBlock = ({
-	balance,
-	prices,
 	coins,
 	pairs,
 	totalAssets,
-	onOpenDialog,
-	bankaccount,
 	navigate,
 	handleSearch,
-	searchResult,
 	onToggle,
 	icons: ICONS,
 	hasEarn,
@@ -47,20 +51,34 @@ const AssetsBlock = ({
 	showDustSection,
 	goToWallet,
 	isZeroBalanceHidden,
+	assets,
+	mode,
+	is_descending,
+	toggleSort,
+	setSortModeAmount,
 }) => {
-	const sortedSearchResults = Object.entries(searchResult)
-		.filter(([key]) => balance.hasOwnProperty(`${key}_balance`))
-		.sort(([key_a], [key_b]) => {
-			const price_a = calculateOraclePrice(
-				balance[`${key_a}_balance`],
-				searchResult[key_a].oraclePrice
-			);
-			const price_b = calculateOraclePrice(
-				balance[`${key_b}_balance`],
-				searchResult[key_b].oraclePrice
-			);
-			return price_a < price_b ? 1 : -1; // descending order
-		});
+	const handleClickAmount = () => {
+		if (mode === WALLET_SORT.AMOUNT) {
+			toggleSort();
+		} else {
+			setSortModeAmount();
+		}
+	};
+
+	const renderCaret = (cell) => (
+		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+			<CaretUpOutlined
+				className={classnames({
+					'important-text': mode === cell && is_descending,
+				})}
+			/>
+			<CaretDownOutlined
+				className={classnames({
+					'important-text': mode === cell && !is_descending,
+				})}
+			/>
+		</div>
+	);
 
 	const isMarketAvailable = (pair) => {
 		return pair && pairs[pair] && pairs[pair].active;
@@ -179,6 +197,9 @@ const AssetsBlock = ({
 					</div>
 				</div>
 			</section>
+			<div className="d-flex justify-content-end">
+				<EditWrapper configId="WALLET_LIST_CONFIGS" position={[0, 0]} />
+			</div>
 			<table className="wallet-assets_block-table">
 				<thead>
 					<tr className="table-bottom-border">
@@ -189,7 +210,10 @@ const AssetsBlock = ({
 							</EditWrapper>
 						</th>
 						<th>
-							<EditWrapper stringId="AMOUNT">{STRINGS['AMOUNT']}</EditWrapper>
+							<div onClick={handleClickAmount} className="d-flex pointer">
+								<EditWrapper stringId="AMOUNT">{STRINGS['AMOUNT']}</EditWrapper>
+								{renderCaret(WALLET_SORT.AMOUNT)}
+							</div>
 						</th>
 						<th className="td-amount" />
 						<th>
@@ -214,7 +238,7 @@ const AssetsBlock = ({
 					</tr>
 				</thead>
 				<tbody>
-					{sortedSearchResults.map(
+					{assets.map(
 						(
 							[
 								key,
@@ -223,38 +247,29 @@ const AssetsBlock = ({
 									allow_deposit,
 									allow_withdrawal,
 									oraclePrice,
-								},
+									balance,
+									fullname,
+									symbol = '',
+									display_name,
+									icon_id,
+								} = DEFAULT_COIN_DATA,
 							],
 							index
 						) => {
-							const balanceValue = balance[`${key}_balance`];
 							const markets = getAllAvailableMarkets(key);
-							const { fullname, symbol = '', display_name, icon_id } =
-								coins[key] || DEFAULT_COIN_DATA;
 							const baseCoin = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 							const balanceText =
 								key === BASE_CURRENCY
-									? formatCurrencyByIncrementalUnit(
-											balanceValue,
-											increment_unit
-									  )
+									? formatCurrencyByIncrementalUnit(balance, increment_unit)
 									: formatCurrencyByIncrementalUnit(
-											calculateOraclePrice(balanceValue, oraclePrice),
+											calculateOraclePrice(balance, oraclePrice),
 											baseCoin.increment_unit
 									  );
 							return (
 								<tr className="table-row table-bottom-border" key={key}>
-									<td className="table-icon td-fit">
-										{/* <Link to={`/wallet/${key.toLowerCase()}`}>
-											<CurrencyBall
-												name={symbol.toUpperCase()}
-												symbol={key}
-												size="s"
-											/>
-										</Link> */}
-									</td>
+									<td className="table-icon td-fit" />
 									<td className="td-name td-fit">
-										{sortedSearchResults && !loading ? (
+										{assets && !loading ? (
 											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
 													<Image
@@ -274,20 +289,17 @@ const AssetsBlock = ({
 												style={{
 													animationDelay: `.${index + 1}s`,
 												}}
-											></div>
+											/>
 										)}
 									</td>
 									<td className="td-amount">
-										{sortedSearchResults &&
-										baseCoin &&
-										!loading &&
-										increment_unit ? (
+										{assets && baseCoin && !loading && increment_unit ? (
 											<div className="d-flex">
 												<div className="mr-4">
 													{STRINGS.formatString(
 														CURRENCY_PRICE_FORMAT,
 														formatCurrencyByIncrementalUnit(
-															balanceValue,
+															balance,
 															increment_unit
 														),
 														display_name
@@ -307,7 +319,7 @@ const AssetsBlock = ({
 												style={{
 													animationDelay: `.${index + 1}s`,
 												}}
-											></div>
+											/>
 										)}
 									</td>
 									<th className="td-amount" />
@@ -382,4 +394,21 @@ const AssetsBlock = ({
 	);
 };
 
-export default withConfig(AssetsBlock);
+const mapStateToProps = ({
+	app: {
+		wallet_sort: { mode, is_descending },
+	},
+}) => ({
+	mode,
+	is_descending,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	toggleSort: bindActionCreators(toggleWalletSort, dispatch),
+	setSortModeAmount: bindActionCreators(setSortModeAmount, dispatch),
+});
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(withConfig(AssetsBlock));

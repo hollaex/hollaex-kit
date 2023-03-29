@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
@@ -16,6 +16,7 @@ const { setPriceEssentials, getDecimals } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
 const { client } = require('./database/redis');
+const { parseNumber } = require('./common');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -59,6 +60,10 @@ const executeUserOrder = async (user_id, opts, token) => {
 			throw new Error(BROKER_NOT_FOUND);
 		} else if (brokerPair.paused) {
 			throw new Error(BROKER_PAUSED);
+		}
+
+		if(size < brokerPair.min_size || size > brokerPair.max_size) {
+			throw new Error(BROKER_SIZE_EXCEED)
 		}
 
 		const broker = await getUserByKitId(brokerPair.user_id);
@@ -243,6 +248,8 @@ const convertBalance = async (order, user_id, maker_id) => {
 	);
 }
 
+
+
 const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quote }) => {
 	if (quote == null) throw new Error('quote undefined');
 	if (spread == null) throw new Error('spread undefined');
@@ -272,10 +279,10 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 		let symbol = `${coin}-${quote}`;
 		let side = 'sell';
 
-		const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
-		const size = math.number(math.fraction(symbols[coin]));
-		const price = quotePrices[coin] * (1 - (spread / 100));
-		const quoteSize = price * size;
+		const usdtSize = parseNumber((usdtPrices[coin] * symbols[coin]), 10);
+		const size = parseNumber(symbols[coin], 10);
+		const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)), 10);
+		const quoteSize = parseNumber(price * size, 10);
 
 		if (usdtSize < 1) {
 			const orderData = {
@@ -323,23 +330,22 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 			let symbol = `${coin}-${quote}`;
 			let side = 'sell';
 
-			const usdtSize = usdtPrices[coin] * math.number(math.fraction(symbols[coin]));
-			const quoteSize = math.number(math.fraction(symbols[coin]));
-
-			const price = quotePrices[coin] * (1 - (spread / 100));
+			const usdtSize = parseNumber(usdtPrices[coin] * symbols[coin], 10);
+			const size = parseNumber(symbols[coin], 10);
+			const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)), 10);
 
 			if (usdtSize < 1) {
 				try {
 					const orderData = {
 						symbol,
 						side,
-						size: quoteSize,
+						size,
 						price
 					}
 					const res = await convertBalance(orderData, user_id, maker_id);
 					convertedAssets.push(res);
 				} catch (err) {
-					convertedAssets.push({ error: err.message, symbol, side, size: quoteSize, price });
+					convertedAssets.push({ error: err.message, symbol, side, size, price });
 					loggerOrders.error(
 						'dustUserBalance error',
 						err.message,

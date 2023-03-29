@@ -15,7 +15,6 @@ import MobileSummary from './MobileSummary';
 import { IconTitle } from 'components';
 // import { logout } from '../../actions/authAction';
 import {
-	openFeesStructureandLimits,
 	// openContactForm,
 	logoutconfirm,
 	setNotification,
@@ -33,6 +32,7 @@ import { getLastMonthVolume } from './components/utils';
 import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
+import { isLoggedIn } from 'utils/token';
 
 class Summary extends Component {
 	state = {
@@ -47,6 +47,8 @@ class Summary extends Component {
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
 			getUserReferrals();
+		} else {
+			this.setCurrentTradeAccount(user);
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -84,13 +86,6 @@ class Summary extends Component {
 		this.props.logoutconfirm();
 	};
 
-	onFeesAndLimits = (tradingAccount, discount) => {
-		this.props.openFeesStructureandLimits({
-			verification_level: tradingAccount,
-			discount: discount,
-		});
-	};
-
 	onAccountTypeChange = (type) => {
 		this.setState({ selectedAccount: type });
 	};
@@ -106,6 +101,11 @@ class Summary extends Component {
 			this.setState({
 				currentTradingAccount,
 				selectedAccount: user.verification_level,
+			});
+		} else if (!isLoggedIn()) {
+			const { config_level } = this.props;
+			this.setState({
+				selectedAccount: Object.keys(config_level)[0] || 0,
 			});
 		}
 	};
@@ -142,7 +142,11 @@ class Summary extends Component {
 
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
-		const level = selectedAccount ? selectedAccount : verification_level;
+		const level = selectedAccount
+			? selectedAccount
+			: isLoggedIn()
+			? verification_level
+			: Object.keys(config_level)[0];
 		const accountData = config_level[level] || {};
 		const traderAccTitle =
 			accountData.name ||
@@ -151,7 +155,10 @@ class Summary extends Component {
 				verification_level
 			);
 
-		const userData = config_level[verification_level] || {};
+		const userData =
+			config_level[
+				isLoggedIn() ? verification_level : Object.keys(config_level)[0]
+			] || {};
 		const userAccountTitle =
 			userData.name ||
 			STRINGS.formatString(
@@ -186,7 +193,6 @@ class Summary extends Component {
 							userAccountTitle={userAccountTitle}
 							affiliation={affiliation}
 							onInviteFriends={this.onInviteFriends}
-							onFeesAndLimits={this.onFeesAndLimits}
 							onUpgradeAccount={this.onUpgradeAccount}
 							onAccountTypeChange={this.onAccountTypeChange}
 							verification_level={verification_level}
@@ -205,7 +211,6 @@ class Summary extends Component {
 											pairs={pairs}
 											coins={coins}
 											config={config_level}
-											onFeesAndLimits={this.onFeesAndLimits}
 											onUpgradeAccount={this.onUpgradeAccount}
 											onInviteFriends={this.onInviteFriends}
 											verification_level={verification_level}
@@ -296,7 +301,6 @@ class Summary extends Component {
 										selectedAccount={selectedAccount}
 										lastMonthVolume={lastMonthVolume}
 										onAccountTypeChange={this.onAccountTypeChange}
-										onFeesAndLimits={this.onFeesAndLimits}
 										onUpgradeAccount={this.onUpgradeAccount}
 									/>
 								</SummaryBlock>
@@ -330,10 +334,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
 	logoutconfirm: bindActionCreators(logoutconfirm, dispatch),
-	openFeesStructureandLimits: bindActionCreators(
-		openFeesStructureandLimits,
-		dispatch
-	),
 	setNotification: bindActionCreators(setNotification, dispatch),
 	getUserReferrals: bindActionCreators(getUserReferrals, dispatch),
 	openContactForm: bindActionCreators(openContactForm, dispatch),

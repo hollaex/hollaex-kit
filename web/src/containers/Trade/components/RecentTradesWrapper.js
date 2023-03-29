@@ -5,9 +5,8 @@ import { bindActionCreators } from 'redux';
 import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import UserTrades from './UserTrades';
-import LogoutInfoOrder from './LogoutInfoOrder';
 import { isLoggedIn } from 'utils/token';
-import { ActionNotification } from 'components';
+import { ActionNotification, NotLoggedIn } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { userTradesSelector } from '../utils';
@@ -50,7 +49,7 @@ const RecentTradesWrapper = ({
 			tool={tool}
 			titleClassName="mb-4"
 		>
-			{isLoggedIn() ? (
+			<NotLoggedIn placeholderKey="NOT_LOGGEDIN.TXT_1" hasBackground={false}>
 				<Fragment>
 					<Filters pair={recentTradesMarket} onChange={setRecentTradesMarket} />
 					<UserTrades
@@ -66,9 +65,7 @@ const RecentTradesWrapper = ({
 						isLoading={!fetched}
 					/>
 				</Fragment>
-			) : (
-				<LogoutInfoOrder />
-			)}
+			</NotLoggedIn>
 		</TradeBlock>
 	);
 };
