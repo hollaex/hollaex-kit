@@ -98,6 +98,7 @@ class Account extends Component {
 		} else if (!phone_number && enabledPlugins.includes('sms')) {
 			verificationPending = true;
 		} else if (
+			bank_account &&
 			!bank_account.filter((acc) => acc.status === 0 || acc.status === 2)
 				.length &&
 			enabledPlugins.includes('bank')

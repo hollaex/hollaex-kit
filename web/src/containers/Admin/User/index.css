@@ -77,6 +77,30 @@
 	border-top: 1px solid grey;
 	height: 25rem;
 }
+.admin-user-modal .title {
+	font-size: 25px;
+	font-weight: bold;
+}
+.admin-user-modal .step-1-container .green-btn,
+.admin-user-modal .step-2-container .green-btn {
+	background-color: #288500 !important;
+	border: 1px #288500 !important;
+	color: #ffffff;
+	width: 48%;
+	height: 40px;
+}
+.admin-user-modal .step-1-container .btn-container,
+.admin-user-modal .step-2-container .btn-container {
+	display: flex;
+	justify-content: space-between;
+}
+.admin-user-modal .step-2-container .width-6 {
+	width: 6rem;
+}
+.admin-user-container .generate-link {
+	text-decoration: underline;
+	cursor: pointer;
+}
 .admin-user-content {
 	margin: 24px 0px;
 }
