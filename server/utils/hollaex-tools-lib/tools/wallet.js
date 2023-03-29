@@ -1152,19 +1152,21 @@ const getWallets = async (
 	}
 ) => {
 
-	let user;
-	if(userId){
-		user = await getUserByKitId(userId, false);
-
-		if (!user) {
+	let network_id = null;
+	if (userId) {
+		// check mapKitIdToNetworkId
+		const idDictionary = await mapKitIdToNetworkId([userId]);
+		if (!has(idDictionary, userId)) {
 			throw new Error(USER_NOT_FOUND);
-		} else if (!user.network_id) {
+		} else if (!idDictionary[userId]) {
 			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = idDictionary[userId];
 		}
 	}
-	
+
 	return getNodeLib().getExchangeWallets({
-		userId : userId ? user.network_id : null,
+		userId: network_id,
 		currency,
 		network,
 		address,
@@ -1176,6 +1178,19 @@ const getWallets = async (
 		createdAt,
 		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
+	})
+	.then(async (wallets) => {
+		if (wallets.data.length > 0) {
+			const networkIds = wallets.data.map((wallet) => wallet.user_id);
+			const idDictionary = await mapNetworkIdToKitId(networkIds);
+			for (let wallet of wallets.data) {
+				const user_kit_id = idDictionary[wallet.user_id];
+				wallet.network_id = wallet.user_id;
+				wallet.user_id = user_kit_id;
+				if (wallet.User) wallet.User.id = user_kit_id;
+			}
+		}
+		return wallets;
 	});
 };
 
