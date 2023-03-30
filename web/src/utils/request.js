@@ -122,7 +122,15 @@ const request = (url, options, apiUrl = API_URL) => {
 	return fetch(`${apiUrl}${url}`, options)
 		.then(checkStatus)
 		.then(parseJSON)
-		.catch((error) => message.error(error.message));
+		.catch((error) =>
+			message.error(
+				error.message
+					? error.message
+					: error.data.message
+					? error.data.message
+					: 'Failed to fetch'
+			)
+		);
 };
 
 export default request;
