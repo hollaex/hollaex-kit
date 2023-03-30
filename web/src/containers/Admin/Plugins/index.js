@@ -673,6 +673,7 @@ class Plugins extends Component {
 							handleStep={this.handleStep}
 							router={this.props.router}
 							setProcessing={this.setProcessing}
+							myPlugins={myPlugins}
 						/>
 					</div>
 				);
