@@ -812,10 +812,20 @@ h2,
 }
 
 .generate-api-modal .generate-api-field-txt .ant-input {
-	width: 60%;
+	width: 46%;
 	font-size: 12px;
 	color: #000000;
 	margin: 5px 0px 5px 0px;
+}
+
+.generate-api-modal
+	.ant-select-single:not(.ant-select-customize-input)
+	.ant-select-selector {
+	width: 92% !important;
+}
+
+.generate-api-modal .ant-select-arrow {
+	right: 24px !important;
 }
 
 .generate-api-modal .generate-api-select-field .ant-select {
@@ -949,8 +959,12 @@ h2,
 	background-color: #ff0000;
 }
 
-.generate-api .withdraw-text {
+.generate-api .warning-text {
 	color: #ff0000;
+}
+
+.generate-api .warning-content {
+	font-size: 7px !important;
 }
 
 .generate-api .qr-width {
@@ -1050,6 +1064,10 @@ h2,
 
 .role-option {
 	padding-left: 5px;
+}
+
+.expandable-content .right-container .border-bottom {
+	border-bottom: 1px solid;
 }
 
 @media screen and (min-width: 2560px) {

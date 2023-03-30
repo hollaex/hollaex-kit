@@ -28,13 +28,11 @@ const GenerateAPiKeys = ({
 	const [ipAddress, setIPAddress] = useState('');
 	const [displayQR, setDisplayQR] = useState(false);
 	const [loading, setLoading] = useState(false);
+	const [unEncryptedSecretKey, setUnEncryptedSecretKey] = useState({});
 
 	const ipAddressInput = useRef(null);
 
 	useEffect(() => {
-		if (!tokens.data) {
-			setLoading(true);
-		}
 		setDisplayQR(false);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
@@ -62,6 +60,7 @@ const GenerateAPiKeys = ({
 		})
 			.then(({ data: { key: apiKey, ...rest } }) => {
 				const response = { apiKey, ...rest };
+				setUnEncryptedSecretKey(response);
 				tokenGenerated(response);
 				requestTokens();
 				setDisplayQR(true);
@@ -282,7 +281,7 @@ const GenerateAPiKeys = ({
 							<Select
 								placeholder="Select key type"
 								suffixIcon={<CaretDownOutlined />}
-								showArrow={true}
+								showArrow={false}
 								onChange={(value) => setSelectedRole(value)}
 								options={[
 									{
@@ -310,7 +309,7 @@ const GenerateAPiKeys = ({
 												label: (
 													<>
 														<img
-															src={STATIC_ICONS.BLUE_ADMIN_KEY}
+															src={STATIC_ICONS.WHITE_USER_KEY}
 															alt="key"
 															className="key-option-icon"
 														/>
@@ -350,7 +349,6 @@ const GenerateAPiKeys = ({
 							<p>Input code (please check your email)</p>
 							<Input
 								name="code"
-								value={userDetails ? userDetails.code : ''}
 								onChange={(e) => handleChange(e)}
 								placeholder="Input code sent to email"
 							/>
@@ -359,7 +357,6 @@ const GenerateAPiKeys = ({
 							<p>2FA code (OTP)</p>
 							<Input
 								name="otp"
-								value={userDetails ? userDetails.otp : ''}
 								onChange={(e) => handleChange(e)}
 								placeholder="Input 6-digit 2FA code"
 							/>
@@ -488,14 +485,28 @@ const GenerateAPiKeys = ({
 						expandable={{
 							rowExpandable: () => true,
 							defaultExpanded: (row, index) => index === 0,
-							expandedRowRender: (record, inx) => (
-								<EditToken
-									handleEditData={handleEditData}
-									displayQR={displayQR}
-									record={record}
-									inx={inx}
-								/>
-							),
+							expandedRowRender: (record, inx) => {
+								let newRecord = {};
+								if (
+									unEncryptedSecretKey &&
+									record.id === unEncryptedSecretKey.id
+								) {
+									newRecord = {
+										...record,
+										secret: unEncryptedSecretKey.secret,
+									};
+								} else {
+									newRecord = { ...record };
+								}
+								return (
+									<EditToken
+										handleEditData={handleEditData}
+										displayQR={displayQR}
+										record={newRecord}
+										inx={inx}
+									/>
+								);
+							},
 						}}
 					/>
 					<Modal

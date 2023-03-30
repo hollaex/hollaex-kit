@@ -167,7 +167,7 @@ export const generateHeaders = (handleEditData) => {
 					{
 						<img
 							src={`${
-								role === 'master'
+								role === 'admin'
 									? STATIC_ICONS.BLUE_ADMIN_KEY
 									: STATIC_ICONS.WHITE_USER_KEY
 							}`}
