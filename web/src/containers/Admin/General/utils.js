@@ -7,6 +7,7 @@ import { validateRequired } from '../../../components/AdminForm/validations';
 import LANGUAGES from '../../../config/languages';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 import { STATIC_ICONS } from 'config/icons';
+import { getFormatTimestamp } from 'utils/utils';
 
 const renderCoinOptions = (coins = {}) =>
 	Object.keys(coins).map((symbol, index) => {
@@ -166,7 +167,7 @@ export const generateHeaders = (handleEditData) => {
 					{
 						<img
 							src={`${
-								role === 'master'
+								role === 'admin'
 									? STATIC_ICONS.BLUE_ADMIN_KEY
 									: STATIC_ICONS.WHITE_USER_KEY
 							}`}
@@ -198,7 +199,7 @@ export const generateHeaders = (handleEditData) => {
 			label: 'Date generated',
 			key: 'created',
 			renderCell: ({ id, created }, key) => (
-				<td key={`${key}-${id}-name`}>{created}</td>
+				<td key={`${key}-${id}-name`}>{getFormatTimestamp(created)}</td>
 			),
 		},
 		{

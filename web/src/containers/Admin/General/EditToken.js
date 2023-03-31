@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Checkbox } from 'antd';
+import React, { useRef, useState } from 'react';
+import { Button, Checkbox, message } from 'antd';
 import QR from 'qrcode.react';
 import { STATIC_ICONS } from 'config/icons';
 
 const EditToken = ({ record, displayQR, handleEditData, inx }) => {
+	const textRef = useRef(null);
 	const [editData, setEditData] = useState(record);
 	const { apiKey, secret } = record;
 	const { can_read, can_trade, can_withdraw } = editData;
@@ -17,6 +18,17 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 			}
 		});
 		return enabled;
+	};
+
+	const onHandleCopy = () => {
+		const range = document.createRange();
+		range.selectNode(textRef.current);
+		const selection = window.getSelection();
+		selection.removeAllRanges();
+		selection.addRange(range);
+		document.execCommand('copy');
+		selection.removeAllRanges();
+		message.success('Text copied');
 	};
 
 	return (
@@ -41,8 +53,16 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 				<div className="d-flex">
 					<div>
 						<span className="sub-title">API Key</span>
-						<div className="underline-text blue-text content-size">
-							{record.apiKey && apiKey}
+						<div className="d-flex border-bottom">
+							<div className=" blue-text content-size" ref={textRef}>
+								{record.apiKey && apiKey}
+							</div>
+							<div
+								className=" blue-text content-size ml-5 pointer"
+								onClick={onHandleCopy}
+							>
+								COPY
+							</div>
 						</div>
 					</div>
 					<div className="ml-5">
@@ -88,9 +108,11 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 							<span className="font-size-small bold">Assigned IP</span>
 							<div className="content-size">
 								<p>IP address that works with this API key is: </p>
-								{editData.whitelisted_ips.map((ipAddress) => {
-									return <span className="ip-field mt-1">{ipAddress}</span>;
-								})}
+								{editData &&
+									editData.whitelisted_ips &&
+									editData.whitelisted_ips.map((ipAddress) => {
+										return <span className="ip-field mt-1">{ipAddress}</span>;
+									})}
 							</div>
 						</div>
 						<div className="ml-5">
@@ -107,6 +129,17 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 							>
 								Withdrawals
 							</Checkbox>
+							{editData &&
+								editData.can_withdraw &&
+								editData.can_withdraw === true && (
+									<div className="d-flex items-center mt-2 ml-1">
+										<div className="custom-withdraw"></div>
+										<div className="content-size warning-content">
+											<span className="warning-text ml-2">WARNING:</span>{' '}
+											Enabling API Withdrawals is EXTREMELY RISKY!
+										</div>
+									</div>
+								)}
 						</div>
 					</div>
 					<Button
