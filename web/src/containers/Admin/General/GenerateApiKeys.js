@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
 import { Modal, Input, Button, Select, message, Spin } from 'antd';
-import { CaretDownOutlined, WarningOutlined } from '@ant-design/icons';
+import {
+	CaretDownOutlined,
+	CaretUpOutlined,
+	WarningOutlined,
+} from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import { Table } from 'components';
 import {
@@ -29,6 +33,7 @@ const GenerateAPiKeys = ({
 	const [displayQR, setDisplayQR] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [unEncryptedSecretKey, setUnEncryptedSecretKey] = useState({});
+	const [isSelectOpen, setIsSelectOpen] = useState(false);
 
 	const ipAddressInput = useRef(null);
 
@@ -227,6 +232,18 @@ const GenerateAPiKeys = ({
 		setCurrentStep('');
 	};
 
+	const suffixIcon = (e) => {
+		return (
+			<div className="suffix-icon-container">
+				{e?.open ? (
+					<CaretDownOutlined onClick={() => setIsSelectOpen(false)} />
+				) : (
+					<CaretUpOutlined onClick={() => setIsSelectOpen(true)} />
+				)}
+			</div>
+		);
+	};
+
 	const renderModalContent = () => {
 		switch (currentStep) {
 			case 'step2':
@@ -280,9 +297,10 @@ const GenerateAPiKeys = ({
 							<div className="mt-4 mb-2">Key type</div>
 							<Select
 								placeholder="Select key type"
-								suffixIcon={<CaretDownOutlined />}
-								showArrow={false}
+								suffixIcon={(e) => suffixIcon(e)}
+								open={isSelectOpen}
 								onChange={(value) => setSelectedRole(value)}
+								onClick={() => setIsSelectOpen(!isSelectOpen)}
 								options={[
 									{
 										label: 'Select Role',
@@ -328,11 +346,11 @@ const GenerateAPiKeys = ({
 				return (
 					<div className="generate-api-steps-wrapper">
 						<div className="header-txt">
-							{tokenTypeAndData.type === 'edit' && (
+							{(tokenTypeAndData.type === 'edit' ||
+								tokenTypeAndData.type === 'revoke') && (
 								<p>Enter email code and 2FA code to save changes.</p>
 							)}
-							{(tokenTypeAndData.type === 'generate' ||
-								tokenTypeAndData.type === 'revoke') && (
+							{tokenTypeAndData.type === 'generate' && (
 								<div>
 									<p>
 										A unique code was sent to your email that is required to
@@ -418,11 +436,11 @@ const GenerateAPiKeys = ({
 	};
 
 	const getModalHeader = () => {
-		if (currentStep === 'revoke') {
-			return '';
+		if (currentStep === 'step4' && tokenTypeAndData.type === 'revoke') {
+			return 'Revoke key';
 		} else if (currentStep === 'step4' && tokenTypeAndData.type === 'edit') {
 			return 'Save changes to API key';
-		} else {
+		} else if (tokenTypeAndData.type === 'generate') {
 			return 'Generate API keys';
 		}
 	};
@@ -465,7 +483,7 @@ const GenerateAPiKeys = ({
 									onClick={onHandleGenerate}
 									className="ml-2 underline-text pointer"
 								>
-									Generate API key.
+									Generate API Key.
 								</span>
 							</div>
 						)}
