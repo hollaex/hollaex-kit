@@ -1230,7 +1230,7 @@ class GeneralContent extends Component {
 									<span>
 										Note, in order to generate API keys it is required to add a{' '}
 										<a
-											href="https://www.google.com/search?q=what+is+a+white+listed+ip+address&sxsrf=AJOqlzWLnIJicPdflLhA32NfsGlorRP80Q%3A1678784900705&ei=hDkQZLC7Kszg2roPy-2GgAU&ved=0ahUKEwiwjaSNidv9AhVMsFYBHcu2AVAQ4dUDCA8&uact=5&oq=what+is+a+white+listed+ip+address&gs_lcp=Cgxnd3Mtd2l6LXNlcnAQAzIHCAAQDRCABDIGCAAQFhAeMgYIABAWEB4yBggAEBYQHjIFCAAQhgMyBQgAEIYDOgQIIxAnOgQIABBDOgUIABCRAjoFCAAQgAQ6CAguEIAEENQCOgcIABCABBAKOggIABAWEB4QCjoICAAQCBAeEA06CAgAEB4QDRAKSgQIQRgAUABY1iBgqCFoAHABeACAAfgBiAG1LJIBBjAuMzAuMpgBAKABAcABAQ&sclient=gws-wiz-serp"
+											href="https://www.techtarget.com/whatis/definition/whitelist"
 											target={'_blank'}
 											rel="noopener noreferrer"
 										>
