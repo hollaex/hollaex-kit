@@ -331,4 +331,79 @@ trigger:
   event:
   - push
 
-  
+---
+kind: secret
+name: slack_webhook
+get:
+  path: devops/data/drone-ci/secret
+  name: slack_webhook
+
+---
+kind: secret
+name: webhook_url
+get:
+  path: devops/data/drone-ci/secret
+  name: webhook_url
+
+---
+kind: secret
+name: discord_webhook_url
+get:
+  path: devops/data/drone-ci/secret
+  name: discord_webhook_url
+
+---
+kind: secret
+name: github_oauth2_token_for_releases
+get:
+  path: devops/data/drone-ci/secret
+  name: github_oauth2_token_for_releases
+
+---
+kind: secret
+name: docker_username
+get:
+  path: devops/data/drone-ci/secret
+  name: docker_username
+
+---
+kind: secret
+name: docker_password
+get:
+  path: devops/data/drone-ci/secret
+  name: docker_password
+
+---
+kind: secret
+name: hollaex_email
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_email
+
+---
+kind: secret
+name: hollaex_password
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_password
+
+---
+kind: secret
+name: hollaex_network_testnet_login_key
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_network_testnet_login_key
+
+---
+kind: secret
+name: next_email
+get:
+  path: devops/data/drone-ci/secret
+  name: next_email
+
+---
+kind: secret
+name: next_password
+get:
+  path: devops/data/drone-ci/secret
+  name: next_password

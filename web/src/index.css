@@ -5861,7 +5861,7 @@ table th {
         font-family: "Open Sans";
         background-color: var(--base_background); }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content {
-          height: 450px; }
+          min-height: 450px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-30 {
             padding-bottom: 30px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-35 {
