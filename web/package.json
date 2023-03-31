@@ -91,6 +91,7 @@
 	},
 	"devDependencies": {
 		"cpy-cli": "3.1.1",
+		"glob": "7.1.7",
 		"husky": "4.3.0",
 		"json-beautify": "1.1.1",
 		"lint-staged": "10.5.1",
@@ -120,7 +121,9 @@
 		"eject": "react-scripts eject",
 		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
 		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
-		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check"
+		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check",
+		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate",
+		"lang:all": "node ./translationRunner.js --translate-all"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",

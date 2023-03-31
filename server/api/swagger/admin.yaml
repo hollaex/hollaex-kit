@@ -2578,33 +2578,33 @@ paths:
         - hmac
       x-security-scopes:
         - admin
-  /admin/user/address:
+  /admin/user/wallet:
     x-swagger-router-controller: admin
-    get:
+    post:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
       tags:
         - User
         - Wallet
       parameters:
-        - name: crypto
-          in: query
+        - name: data
+          in: body
           required: true
-          type: string
-          minLength: 2
-          maxLength: 15
-        - name: network
-          in: query
-          required: false
-          type: string
-          description: Blockchain network
-          minLength: 2
-          maxLength: 10
-        - name: user_id
-          in: query
-          required: true
-          type: number
-          format: int32
+          schema:
+            type: object
+            required:
+              - user_id
+              - crypto
+            properties:
+              user_id:
+                type: number
+                format: int32
+              crypto:
+                type: string
+              network:
+                type: string
+                minLength: 2
+                maxLength: 10
       responses:
         201:
           description: Success

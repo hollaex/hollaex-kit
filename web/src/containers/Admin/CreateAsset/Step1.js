@@ -79,7 +79,7 @@ const Step1 = ({
 									/>
 								</div>
 								<div className="content-description">
-									<div>{selectedCoinData.description}</div>
+									{/* <div>{selectedCoinData.description}</div> */}
 									<div className="provider-content">
 										<b>Provider:</b>{' '}
 										<span className="provider-text">

@@ -64,7 +64,7 @@ class Account extends Component {
 		{
 			verification_level,
 			otp_enabled,
-			bank_account,
+			bank_account = [],
 			id_data,
 			full_name,
 			phone_number,
