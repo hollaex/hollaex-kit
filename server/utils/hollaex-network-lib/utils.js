@@ -2,7 +2,6 @@ const rp = require('request-promise');
 const crypto = require('crypto');
 const moment = require('moment');
 const { isDate } = require('lodash');
-
 const requestCache = new Map();
 const cachePeriods = {
 	'chart': 40,

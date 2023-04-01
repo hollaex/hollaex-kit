@@ -4,7 +4,7 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { USER_NOT_FOUND } = require('../../messages');
+const { USER_NOT_FOUND, NOT_AUTHORIZED } = require('../../messages');
 const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -2114,6 +2114,82 @@ const getUserReferer = (req, res) => {
 		});
 };
 
+const createUserByAdmin = (req, res) => {
+	const { email, password } = req.swagger.params.data.value;
+
+	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
+
+	toolsLib.user.createUser(email, password, {
+		role: 'user',
+		id: null,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+	.then(() => {
+		return res.status(201).json({ message: 'Success' });
+	})
+	.catch((err) => {
+		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
+};
+
+const createUserWalletByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		req.auth.sub
+	);
+
+	const { crypto, network, user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		'crypto',
+		crypto,
+		'network',
+		network,
+		'user_id',
+		user_id
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+	.then((user) => {
+		if (!user) {
+			throw new Error(USER_NOT_FOUND);
+		}
+
+		if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createUserWalletByAdmin',
+				`Invalid crypto: "${crypto}"`
+			);
+			return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+		}
+	
+		return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
+				network,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			})
+	})
+	.then((data) => { 
+		return res.status(201).json(data); 
+	})
+	.catch((err) => {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/createUserWalletByAdmin',
+			err.message
+		);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2167,5 +2243,7 @@ module.exports = {
 	revokeUserBank,
 	generateDashToken,
 	getUserAffiliation,
-	getUserReferer
+	getUserReferer,
+	createUserByAdmin,
+	createUserWalletByAdmin
 };

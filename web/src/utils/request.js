@@ -4,6 +4,7 @@ import { API_URL, NETWORK_API_URL } from '../config/constants';
 import { getToken, getDashToken } from './token';
 
 import { getNetWorkURL } from 'actions/appActions';
+import { message } from 'antd';
 /**
  * Parses the JSON returned by a network request
  *
@@ -118,7 +119,18 @@ export const requestDashAuthenticated = (
  * @return {object}           The response data
  */
 const request = (url, options, apiUrl = API_URL) => {
-	return fetch(`${apiUrl}${url}`, options).then(checkStatus).then(parseJSON);
+	return fetch(`${apiUrl}${url}`, options)
+		.then(checkStatus)
+		.then(parseJSON)
+		.catch((error) =>
+			message.error(
+				error.message
+					? error.message
+					: error.data.message
+					? error.data.message
+					: 'Failed to fetch'
+			)
+		);
 };
 
 export default request;

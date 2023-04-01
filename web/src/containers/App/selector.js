@@ -5,10 +5,11 @@ import { STAKING_INDEX_COIN, isStakingAvailable } from 'config/contracts';
 const getConstants = (state) => state.app.constants;
 const getRemoteRoutes = (state) => state.app.remoteRoutes;
 const getContracts = (state) => state.app.contracts;
+const getToken = (state) => state.auth.token;
 
 export const menuItemsSelector = createSelector(
-	[getConstants, getRemoteRoutes, getContracts],
-	(constants = {}, remoteRoutes = [], contracts = {}) => {
+	[getConstants, getRemoteRoutes, getContracts, getToken],
+	(constants = {}, remoteRoutes = [], contracts = {}, token) => {
 		const { features = {} } = constants;
 		const featureItems = MENU_ITEMS.features
 			.filter(
@@ -42,7 +43,7 @@ export const menuItemsSelector = createSelector(
 			...featureItems,
 			...MENU_ITEMS.middle,
 			...remoteRoutes,
-			...MENU_ITEMS.bottom,
+			...(token ? MENU_ITEMS.bottom : []),
 		];
 
 		return menuItems;

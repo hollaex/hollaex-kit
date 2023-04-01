@@ -802,9 +802,9 @@
 	color: white;
 }
 
-.ant-btn:hover,
-.ant-btn:focus,
-.ant-btn:active {
+.buy-modal-footer .ant-btn:hover,
+.buy-modal-footer .ant-btn:focus,
+.buy-modal-footer .ant-btn:active {
 	background-color: green;
 	border-color: green;
 }

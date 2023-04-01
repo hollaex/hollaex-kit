@@ -22,7 +22,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /user/stats:
@@ -497,7 +496,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /user/create-address:
@@ -616,6 +614,13 @@ paths:
                 type: string
               email_code:
                 type: string
+              role:
+                type: string
+                enum: ['admin', 'user']
+              whitelisted_ips:
+                type: array
+                items:
+                  type: string
       responses:
         200:
           description: Success
@@ -816,7 +821,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /user/deposits:
@@ -928,7 +932,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /user/withdrawals:
@@ -1040,7 +1043,6 @@ paths:
         - hmac
       x-security-scopes:
         - user
-        - hmac
       x-token-permissions:
         - can_read
   /user/withdrawal:
@@ -1114,8 +1116,6 @@ paths:
       security:
         - Token: []
       x-security-types:
-        - hmac
-      x-security-scopes:
         - hmac
       x-token-permissions:
         - can_withdraw

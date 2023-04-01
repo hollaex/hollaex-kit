@@ -12,7 +12,7 @@ steps:
 - name: previous_hollaex_kit_version
   image: byrnedo/alpine-curl
   commands:
-  -  curl https://raw.githubusercontent.com/bitholla/hollaex-kit/master/version > .tags_previous
+  -  curl https://raw.githubusercontent.com/hollaex/hollaex-kit/master/version > .tags_previous
   -  echo "The previous master release tag is :" && cat .tags_previous
 
 - name: version_comparison
@@ -87,13 +87,35 @@ steps:
 - name: docker_build_amd64
   image:  plugins/docker
   settings:
-    repo: bitholla/hollaex-kit
+    repo: hollaex/hollaex-kit
     dockerfile: Dockerfile
   environment:
     DOCKER_USERNAME:
       from_secret: docker_username
     DOCKER_PASSWORD:
       from_secret: docker_password
+
+- name: docker_tagging_arm64v8_master
+  image: alpine
+  commands: 
+    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-arm64v8" > .tags
+    - echo "Current Docker tag is :" && cat .tags
+    - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+  when:
+    branch: master
+
+- name: docker_build_arm64v8
+  image:  plugins/docker
+  settings:
+    repo: hollaex/hollaex-kit
+    dockerfile: Dockerfile.arm64v8
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+  when:
+    branch: master
 
 - name: manifest_creation
   image: docker:18.06.3-dind
@@ -111,10 +133,10 @@ steps:
     - export DOCKER_CLI_EXPERIMENTAL=enabled
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
     - cat .tags 
-    - docker manifest create bitholla/hollaex-kit:$(cat .tags) bitholla/hollaex-kit:$(cat .tags)-amd64 bitholla/hollaex-kit:$(cat .tags)-arm64v8 --amend
-    - docker manifest annotate bitholla/hollaex-kit:$(cat .tags) bitholla/hollaex-kit:$(cat .tags)-amd64 --arch amd64
-    - docker manifest annotate bitholla/hollaex-kit:$(cat .tags) bitholla/hollaex-kit:$(cat .tags)-arm64v8 --arch amd64
-    - docker manifest push bitholla/hollaex-kit:$(cat .tags)
+    - docker manifest create hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 hollaex/hollaex-kit:$(cat .tags)-arm64v8 --amend
+    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 --arch amd64
+    - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch amd64
+    - docker manifest push hollaex/hollaex-kit:$(cat .tags)
   when:
     branch: master
 
@@ -132,7 +154,12 @@ steps:
       {{/success}}
   when:
     status: [success, failure]
-      
+    
+volumes:
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+
 trigger:
   branch:
   - testnet
@@ -175,7 +202,7 @@ steps:
     branch: master
   
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.4
+  image: bitholla/devops-tools:drone_partymaker-220208
   environment:
     WEBHOOK_URL:
       from_secret: webhook_url
@@ -183,7 +210,7 @@ steps:
     status: [success]
 
 - name: notify_to_discord_releases
-  image: bitholla/devops-tools:drone_partymaker-0.1.5
+  image: bitholla/devops-tools:drone_partymaker-220208
   channel: deployment
   settings:
     target: discord
@@ -304,4 +331,79 @@ trigger:
   event:
   - push
 
-  
+---
+kind: secret
+name: slack_webhook
+get:
+  path: devops/data/drone-ci/secret
+  name: slack_webhook
+
+---
+kind: secret
+name: webhook_url
+get:
+  path: devops/data/drone-ci/secret
+  name: webhook_url
+
+---
+kind: secret
+name: discord_webhook_url
+get:
+  path: devops/data/drone-ci/secret
+  name: discord_webhook_url
+
+---
+kind: secret
+name: github_oauth2_token_for_releases
+get:
+  path: devops/data/drone-ci/secret
+  name: github_oauth2_token_for_releases
+
+---
+kind: secret
+name: docker_username
+get:
+  path: devops/data/drone-ci/secret
+  name: docker_username
+
+---
+kind: secret
+name: docker_password
+get:
+  path: devops/data/drone-ci/secret
+  name: docker_password
+
+---
+kind: secret
+name: hollaex_email
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_email
+
+---
+kind: secret
+name: hollaex_password
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_password
+
+---
+kind: secret
+name: hollaex_network_testnet_login_key
+get:
+  path: devops/data/drone-ci/secret
+  name: hollaex_network_testnet_login_key
+
+---
+kind: secret
+name: next_email
+get:
+  path: devops/data/drone-ci/secret
+  name: next_email
+
+---
+kind: secret
+name: next_password
+get:
+  path: devops/data/drone-ci/secret
+  name: next_password

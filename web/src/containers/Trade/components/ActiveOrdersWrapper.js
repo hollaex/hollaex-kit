@@ -5,10 +5,15 @@ import { bindActionCreators } from 'redux';
 import Filters from './Filters';
 import TradeBlock from './TradeBlock';
 import ActiveOrders from './ActiveOrders';
-import LogoutInfoOrder from './LogoutInfoOrder';
 import { cancelOrder, cancelAllOrders } from 'actions/orderAction';
 import { isLoggedIn } from 'utils/token';
-import { ActionNotification, Dialog, IconTitle, Button } from 'components';
+import {
+	ActionNotification,
+	Dialog,
+	IconTitle,
+	Button,
+	NotLoggedIn,
+} from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { activeOrdersSelector } from '../utils';
@@ -95,7 +100,10 @@ class OrdersWrapper extends Component {
 					tool={tool}
 					titleClassName="mb-4"
 				>
-					{isLoggedIn() ? (
+					<NotLoggedIn
+						placeholderKey="NOT_LOGGEDIN.TXT_1"
+						hasBackground={false}
+					>
 						<div className="open-order-wrapper">
 							<Filters
 								pair={activeOrdersMarket}
@@ -111,9 +119,7 @@ class OrdersWrapper extends Component {
 								onCancelAll={this.openConfirm}
 							/>
 						</div>
-					) : (
-						<LogoutInfoOrder />
-					)}
+					</NotLoggedIn>
 				</TradeBlock>
 				<Dialog
 					isOpen={showCancelAllModal}

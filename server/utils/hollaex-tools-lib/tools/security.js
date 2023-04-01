@@ -36,7 +36,9 @@ const {
 	SAME_PASSWORD,
 	CODE_NOT_FOUND,
 	INVALID_TOKEN_TYPE,
-	NO_AUTH_TOKEN
+	NO_AUTH_TOKEN,
+	WHITELIST_DISABLE_ADMIN,
+	WHITELIST_NOT_PROVIDED
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -794,6 +796,9 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
+				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
+					throw new Error(NOT_AUTHORIZED);
+				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
 					const found = token.whitelisted_ips.find((wlip) => {
 						return ipRangeCheck(ip, wlip);
@@ -835,7 +840,8 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 						throw new Error(API_SIGNATURE_INVALID);
 					} else {
 						return {
-							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id }
+							sub: { id: token.user.id, email: token.user.email, networkId: token.user.network_id },
+							scopes: [token.role]
 						};
 					}
 				}
@@ -965,7 +971,8 @@ const formatTokenObject = (tokenData) => ({
 	whitelisting_enabled: tokenData.whitelisting_enabled,
 	can_read: tokenData.can_read,
 	can_trade: tokenData.can_trade,
-	can_withdraw: tokenData.can_withdraw
+	can_withdraw: tokenData.can_withdraw,
+	role: tokenData.role
 });
 
 const getUserKitHmacTokens = (userId) => {
@@ -989,10 +996,22 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = (userId, otpCode, ip, name) => {
+const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER, whitelisted_ips) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
+	const user = await getModel('user').findOne({ where: { id: userId } });
+	if(role !== ROLES.USER && !user.is_admin) {
+		throw new Error(NOT_AUTHORIZED);
+	}
+	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+		// role can only be admin or user
+		throw new Error(NOT_AUTHORIZED);
+	}
+
+	if(!whitelisted_ips && role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_NOT_PROVIDED);
+	}
 
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
@@ -1002,11 +1021,13 @@ const createUserKitHmacToken = (userId, otpCode, ip, name) => {
 				key,
 				secret,
 				expiry,
-				role: ROLES.USER,
+				role: role || ROLES.USER,
 				type: TOKEN_TYPES.HMAC,
 				name,
 				active: true,
-				can_read: true
+				can_read: true,
+				...(role === ROLES.ADMIN && { whitelisted_ips }),
+				...(role === ROLES.ADMIN && { whitelisting_enabled: true })
 			});
 		})
 		.then((token) => {
@@ -1024,11 +1045,15 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
+	if(!whitelisting_enabled && token.role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_DISABLE_ADMIN);
+	}
+
 	const values = {
 		...permissions,
 		name,
 		whitelisted_ips,
-		whitelisting_enabled
+		whitelisting_enabled,
 	};
 
 	Object.entries(values).forEach((key, value) => {
@@ -1045,7 +1070,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 			'can_trade',
 			'can_withdraw',
 			'whitelisting_enabled',
-			'whitelisted_ips'
+			'whitelisted_ips',
 		]
 	});
 	client.hdelAsync(HMAC_TOKEN_KEY, token.key);

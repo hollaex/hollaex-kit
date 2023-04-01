@@ -86,18 +86,18 @@ const getOrderBookLevels = (state) =>
 const getPairsTrades = (state) => state.orderbook.pairsTrades;
 const getActiveOrders = (state) => state.order.activeOrders;
 const getUserTradesData = (state) => state.wallet.trades.data;
-const getPairs = (state) => state.app.pairs;
+export const getPairs = (state) => state.app.pairs;
 const getDepth = (state) => state.orderbook.depth;
 const getChartClose = (state) => state.orderbook.chart_last_close;
 const getTickers = (state) => state.app.tickers;
 const getCoins = (state) => state.app.coins;
-const getFavourites = (state) => state.app.favourites;
+export const getFavourites = (state) => state.app.favourites;
 const getPrices = (state) => state.asset.oraclePrices;
 const getNativeCurrency = (state) => state.app.constants.native_currency;
 const getSortMode = (state) => state.app.sort.mode;
 const getSortDir = (state) => state.app.sort.is_descending;
-const getKitInfo = (state) => state.app.info;
-const getPinnedMarkets = (state) => state.app.pinned_markets;
+export const getKitInfo = (state) => state.app.info;
+export const getPinnedMarkets = (state) => state.app.pinned_markets;
 
 export const orderbookSelector = createSelector(
 	[getPairsOrderBook, getPair, getOrderBookLevels, getPairs, getDepth],
@@ -371,7 +371,7 @@ export const pinnedMarketsSelector = createSelector(
 
 export const MarketsSelector = createSelector(
 	[sortedMarketsSelector, getPairs, getFavourites, pinnedMarketsSelector],
-	(markets, pairs, favourites, pins) => {
+	(markets, pairs, favourites, pins = []) => {
 		const favouriteMarkets = [];
 		const pinnedMarkets = [];
 		const restMarkets = [];

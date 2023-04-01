@@ -3,6 +3,21 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	overflow-y: hidden;
+
+	.trade_tabs-link {
+		color: $link;
+		margin: 0.5rem 0;
+		padding: 0 0.5rem;
+		text-transform: capitalize;
+		&:hover {
+			opacity: 0.5;
+		}
+	}
+
+	.link-separator {
+		border-right: 1px solid $colors-border;
+	}
 
 	.mt-8 {
 		margin-top: 8rem;
@@ -155,7 +170,7 @@
 				background-color: $app-background-color;
 
 				.trade-details-content {
-					height: 450px;
+					min-height: 450px;
 
 					.pb-30 {
 						padding-bottom: 30px;
