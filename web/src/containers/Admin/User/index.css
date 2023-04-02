@@ -397,3 +397,60 @@
 	padding: 0.4rem;
 	font-weight: bold;
 }
+
+.user-container .user-list-header-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.user-container .user-list-header-wrapper button {
+	background-color: green;
+	color: white;
+}
+
+.add-user-modal .header-txt span {
+	font-weight: bold;
+}
+
+.add-user-modal .footer .ant-btn[disabled],
+.add-user-modal .footer .ant-btn[disabled]:hover {
+	background-color: #288500;
+	border-color: #288500;
+	color: #ffffff;
+	opacity: 0.5;
+}
+.add-user-modal .footer {
+	width: 100%;
+	display: flex;
+	margin-top: 2rem;
+}
+
+.add-user-modal .footer button {
+	width: 48%;
+	background-color: #288500;
+	border-color: #288500;
+	color: #ffffff;
+	margin-bottom: 1rem;
+}
+
+.add-user-modal .ant-form-item-label > label {
+	font-size: 12px;
+}
+
+.add-user-modal .ant-input {
+	font-size: 12px;
+}
+
+.add-user-modal .ant-form-item {
+	margin-bottom: 10px;
+}
+
+.add-user-modal .ant-form-vertical .ant-form-item-label {
+	padding: 0 0 2px;
+}
+
+.add-user-modal .ant-form-item-explain,
+.ant-form-item-extra {
+	font-size: 12px;
+}

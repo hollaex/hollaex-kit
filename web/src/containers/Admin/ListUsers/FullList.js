@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Table, Spin, Button } from 'antd';
+import { Table, Spin, Button, Modal } from 'antd';
 import { Link } from 'react-router';
 import { formatDate } from 'utils';
 import { requestUsers } from './actions';
+import AddUser from './AddUser';
 
 import './index.css';
 
@@ -22,6 +23,7 @@ class FullListUsers extends Component {
 			limit: 50,
 			currentTablePage: 1,
 			isRemaining: true,
+			isVisible: false,
 		};
 	}
 
@@ -72,6 +74,10 @@ class FullListUsers extends Component {
 			this.requestFullUsers(page + 1, limit);
 		}
 		this.setState({ currentTablePage: count });
+	};
+
+	onCancel = () => {
+		this.setState({ isVisible: false });
 	};
 
 	render() {
@@ -129,7 +135,7 @@ class FullListUsers extends Component {
 			);
 		};
 
-		const { users, loading, error, currentTablePage } = this.state;
+		const { users, loading, error, currentTablePage, isVisible } = this.state;
 
 		return (
 			<div className="app_container-content admin-user-container">
@@ -138,13 +144,17 @@ class FullListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
-						<div>
+						<div className="user-list-header-wrapper">
 							<span
 								className="pointer"
 								onClick={() => this.props.handleDownload({})}
 							>
 								Download table
 							</span>
+							<Button onClick={() => this.setState({ isVisible: true })}>
+								{' '}
+								Add new user
+							</Button>
 						</div>
 						<Table
 							className="blue-admin-table"
@@ -162,6 +172,18 @@ class FullListUsers extends Component {
 						/>
 					</div>
 				)}
+				<Modal
+					visible={isVisible}
+					footer={null}
+					className="add-user-modal"
+					width={'500px'}
+					onCancel={this.onCancel}
+				>
+					<AddUser
+						onCancel={this.onCancel}
+						requestFullUsers={this.requestFullUsers}
+					/>
+				</Modal>
 			</div>
 		);
 	}

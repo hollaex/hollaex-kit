@@ -336,6 +336,7 @@ class App extends Component {
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
+
 						<FullListUsers
 							coins={coins}
 							requestUser={this.requestUserData}
