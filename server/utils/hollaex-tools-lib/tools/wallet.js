@@ -1190,6 +1190,10 @@ const getWallets = async (
 				if (wallet.User) wallet.User.id = user_kit_id;
 			}
 		}
+		if(format === 'csv'){
+			const csv = parse(wallets.data, Object.keys(wallets.data[0]));
+				return csv;
+		}
 		return wallets;
 	});
 };
