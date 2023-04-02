@@ -77,6 +77,30 @@
 	border-top: 1px solid grey;
 	height: 25rem;
 }
+.admin-user-modal .title {
+	font-size: 25px;
+	font-weight: bold;
+}
+.admin-user-modal .step-1-container .green-btn,
+.admin-user-modal .step-2-container .green-btn {
+	background-color: #288500 !important;
+	border: 1px #288500 !important;
+	color: #ffffff;
+	width: 48%;
+	height: 40px;
+}
+.admin-user-modal .step-1-container .btn-container,
+.admin-user-modal .step-2-container .btn-container {
+	display: flex;
+	justify-content: space-between;
+}
+.admin-user-modal .step-2-container .width-6 {
+	width: 6rem;
+}
+.admin-user-container .generate-link {
+	text-decoration: underline;
+	cursor: pointer;
+}
 .admin-user-content {
 	margin: 24px 0px;
 }
@@ -396,4 +420,61 @@
 	font-size: 1rem;
 	padding: 0.4rem;
 	font-weight: bold;
+}
+
+.user-container .user-list-header-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.user-container .user-list-header-wrapper button {
+	background-color: green;
+	color: white;
+}
+
+.add-user-modal .header-txt span {
+	font-weight: bold;
+}
+
+.add-user-modal .footer .ant-btn[disabled],
+.add-user-modal .footer .ant-btn[disabled]:hover {
+	background-color: #288500;
+	border-color: #288500;
+	color: #ffffff;
+	opacity: 0.5;
+}
+.add-user-modal .footer {
+	width: 100%;
+	display: flex;
+	margin-top: 2rem;
+}
+
+.add-user-modal .footer button {
+	width: 48%;
+	background-color: #288500;
+	border-color: #288500;
+	color: #ffffff;
+	margin-bottom: 1rem;
+}
+
+.add-user-modal .ant-form-item-label > label {
+	font-size: 12px;
+}
+
+.add-user-modal .ant-input {
+	font-size: 12px;
+}
+
+.add-user-modal .ant-form-item {
+	margin-bottom: 10px;
+}
+
+.add-user-modal .ant-form-vertical .ant-form-item-label {
+	padding: 0 0 2px;
+}
+
+.add-user-modal .ant-form-item-explain,
+.ant-form-item-extra {
+	font-size: 12px;
 }
