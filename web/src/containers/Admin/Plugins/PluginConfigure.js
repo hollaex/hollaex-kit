@@ -34,25 +34,25 @@ const PluginConfigure = ({
 		if (isAvailInMyPlugin) {
 			setPlugin(isAvailInMyPlugin);
 			setLoading(false);
-		} else {
-			getPlugin({ name: selectedPlugin.name })
-				.then((res) => {
-					setLoading(false);
-					if (res && selectedPlugin.enabled) {
-						setNetworkData(res);
-					} else if (res && !selectedPlugin.enabled) {
-						setPlugin(res);
-						setNetworkData(res);
-					}
-				})
-				.catch((err) => {
-					if (!selectedPlugin.enabled) {
-						setPlugin({});
-					}
-					setNetworkData({});
-					setLoading(false);
-				});
 		}
+		getPlugin({ name: selectedPlugin.name })
+			.then((res) => {
+				setLoading(false);
+				if (res && selectedPlugin.enabled && !isAvailInMyPlugin) {
+					setNetworkData(res);
+					setPlugin(res);
+				} else if (res && !selectedPlugin.enabled) {
+					setPlugin(res);
+					setNetworkData(res);
+				}
+			})
+			.catch((err) => {
+				if (!selectedPlugin.enabled) {
+					setPlugin({});
+				}
+				setNetworkData({});
+				setLoading(false);
+			});
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPlugin]);
 
