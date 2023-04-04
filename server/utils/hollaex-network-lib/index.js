@@ -406,7 +406,8 @@ class HollaExNetwork {
 		page: null,
 		orderBy: null,
 		order: null,
-		createdAt: null,
+		startDate: null,
+		endDate: null,
 		format: null,
 		additionalHeaders: null
 	}) {
@@ -439,10 +440,14 @@ class HollaExNetwork {
 			path += `&address=${opts.address}`;
 		}
 
-		if (isDatetime(opts.createdAt)) {
-			path += `&created_at=${sanitizeDate(opts.createdAt)}`;
+		if (isDatetime(opts.startDate)) {
+			path += `&start_date=${sanitizeDate(opts.startDate)}`;
 		}
 
+		if (isDatetime(opts.endDate)) {
+			path += `&end_date=${sanitizeDate(opts.endDate)}`;
+		}
+		
 		if (opts.currency) {
 			path += `&currency=${opts.currency}`;
 		}
@@ -459,6 +464,7 @@ class HollaExNetwork {
 			path += `&format=${opts.format}`;
 		}
 
+		console.log({path})
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,

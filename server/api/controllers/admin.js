@@ -2193,7 +2193,7 @@ const createUserWalletByAdmin = (req, res) => {
 const getWalletsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
 
-	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, created_at } = req.swagger.params;
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2215,7 +2215,8 @@ const getWalletsByAdmin = (req, res) => {
 		order_by.value,
 		order.value,
 		format.value,
-		created_at.value,
+		start_date.value,
+		end_date.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
