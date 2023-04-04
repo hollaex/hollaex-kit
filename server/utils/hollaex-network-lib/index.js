@@ -464,7 +464,6 @@ class HollaExNetwork {
 			path += `&format=${opts.format}`;
 		}
 
-		console.log({path})
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
