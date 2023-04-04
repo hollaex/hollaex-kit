@@ -108,7 +108,7 @@ export const generateFormFields = ({
 			const isPercentage = type === 'percentage';
 			const fee_coin = isPercentage ? '' : symbol || currency;
 
-			const fullname = coins[fee_coin]?.fullname;
+			const fullname = coins[fee_coin]?.fullname || '';
 
 			fields.fee = {
 				type: 'number',
