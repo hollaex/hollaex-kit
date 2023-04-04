@@ -674,6 +674,8 @@ class Plugins extends Component {
 							router={this.props.router}
 							setProcessing={this.setProcessing}
 							myPlugins={myPlugins}
+							networkPlugin={pluginData}
+							isNetwork={false}
 						/>
 					</div>
 				);
