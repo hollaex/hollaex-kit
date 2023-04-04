@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 import PluginDetails from './PluginDetails';
 import PluginConfigureForm from './PluginConfigureForm';
-import { getPlugin } from './action';
 
 const PluginConfigure = ({
 	type,
@@ -20,6 +19,8 @@ const PluginConfigure = ({
 	router,
 	setProcessing,
 	myPlugins,
+	networkPlugin,
+	isNetwork = false,
 }) => {
 	const [pluginData, setPlugin] = useState({});
 	const [selectedNetworkPlugin, setNetworkData] = useState({});
@@ -30,28 +31,32 @@ const PluginConfigure = ({
 			myPlugins &&
 			myPlugins
 				.filter((plugin) => plugin.name === selectedPlugin.name)
-				?.reduce((data, plugin) => plugin);
-		if (isAvailInMyPlugin) {
+				?.reduce((data, plugin) => plugin, {});
+		const isAvailInNetPlugin =
+			networkPlugin &&
+			networkPlugin
+				.filter((plugin) => plugin.name === selectedPlugin.name)
+				?.reduce((data, plugin) => plugin, {});
+		if (isAvailInMyPlugin && Object.keys(isAvailInMyPlugin)?.length) {
 			setPlugin(isAvailInMyPlugin);
 			setLoading(false);
-		} else {
-			getPlugin({ name: selectedPlugin.name })
-				.then((res) => {
-					setLoading(false);
-					if (res && selectedPlugin.enabled) {
-						setNetworkData(res);
-					} else if (res && !selectedPlugin.enabled) {
-						setPlugin(res);
-						setNetworkData(res);
-					}
-				})
-				.catch((err) => {
-					if (!selectedPlugin.enabled) {
-						setPlugin({});
-					}
-					setNetworkData({});
-					setLoading(false);
-				});
+		}
+		if (
+			isNetwork &&
+			((isAvailInNetPlugin &&
+				Object.keys(isAvailInNetPlugin)?.length &&
+				selectedPlugin.enabled) ||
+				(isAvailInNetPlugin && !selectedPlugin.enabled))
+		) {
+			setPlugin(isAvailInNetPlugin);
+			setLoading(false);
+		}
+		if (
+			isAvailInNetPlugin &&
+			Object.keys(isAvailInNetPlugin)?.length &&
+			selectedPlugin.enabled
+		) {
+			setNetworkData(isAvailInNetPlugin);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPlugin]);
