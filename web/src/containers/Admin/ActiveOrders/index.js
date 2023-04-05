@@ -3,6 +3,7 @@ import { Row, Select } from 'antd';
 import { connect } from 'react-redux';
 
 import PairsSection from './PairsSection';
+import './index.scss';
 
 const TYPE_OPTIONS = [
 	{ value: true, label: 'Active' },
@@ -31,7 +32,6 @@ const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 
 	return (
 		<div className="app_container-content">
-			{getThisExchangeOrder && <h1>Active Orders</h1>}
 			<div>
 				<Select
 					style={{

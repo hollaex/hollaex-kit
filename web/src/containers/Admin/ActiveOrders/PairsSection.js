@@ -25,7 +25,7 @@ const renderUser = (id) => (
 );
 
 const renderExchangeUser = (id, user) => (
-	<div style={{ alignItems: 'center', display: 'flex' }}>
+	<div className="exchange-user-wrapper">
 		<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
 			<Button type="primary">
 				<Link to={`/admin/user?id=${id}`}>{id}</Link>
