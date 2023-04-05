@@ -1,6 +1,6 @@
 import React from 'react';
 import ActiveOrders from '../ActiveOrders';
-import './index.css';
+import './index.scss';
 
 const ExchangeOrdersContainer = ({ user }) => {
 	return (
