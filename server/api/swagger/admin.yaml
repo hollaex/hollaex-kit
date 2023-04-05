@@ -2619,8 +2619,14 @@ paths:
           type: string
           enum: ['asc', 'desc']
         - in: query
-          name: created_at
-          description: Creation date of queried data
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
           required: false
           type: string
           format: date-time

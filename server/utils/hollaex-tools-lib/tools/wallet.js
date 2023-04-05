@@ -1146,7 +1146,8 @@ const getWallets = async (
 	orderBy,
 	order,
 	format,
-	createdAt,
+	startDate,
+	endDate,
 	opts = {
 		additionalHeaders: null
 	}
@@ -1175,7 +1176,8 @@ const getWallets = async (
 		page,
 		orderBy,
 		order,
-		createdAt,
+		startDate,
+		endDate,
 		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
 	})
