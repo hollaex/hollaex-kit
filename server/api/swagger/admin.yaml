@@ -659,6 +659,7 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+        - supervisor
     delete:
       operationId: deleteKitUserMeta
       description: Delete key in kit user_meta object
@@ -2148,6 +2149,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
+        - support
   /admin/withdrawals:
     x-swagger-router-controller: withdrawal
     get:
@@ -2265,6 +2268,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
+        - support
   /admin/transfer:
     x-swagger-router-controller: admin
     post:
