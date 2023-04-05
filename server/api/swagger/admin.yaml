@@ -1402,7 +1402,6 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
-        - support
         - kyc
   /admin/bank/verify:
     x-swagger-router-controller: admin
@@ -1442,7 +1441,6 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
-        - support
         - kyc
   /admin/bank/revoke:
     x-swagger-router-controller: admin
@@ -1484,7 +1482,6 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
-        - support
         - kyc
   /admin/logins:
     x-swagger-router-controller: admin
