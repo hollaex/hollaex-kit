@@ -504,3 +504,40 @@
 	margin-right: 1rem;
 	width: 5rem;
 }
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-select,
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-input-search {
+	width: 11rem;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.select-content,
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.search-content {
+	width: 11rem;
+	height: 32px;
+	margin-top: 1.6rem;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-picker {
+	width: 15rem;
+}
+.asset-exchange-wallet-wrapper .wallet-filter-wrapper .table-filter-wrapper {
+	display: flex;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.label-content {
+	font-size: 12px;
+}
