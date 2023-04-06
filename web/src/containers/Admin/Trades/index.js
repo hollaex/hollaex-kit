@@ -8,6 +8,7 @@ import PairsSummary from './PairsSummary';
 import { getExchange } from '../AdminFinancials/action';
 import { setExchange } from 'actions/assetActions';
 import OtcDeskContainer from './otcdesk';
+import ExchangeOrdersContainer from '../Orders';
 import './index.css';
 
 const TabPane = Tabs.TabPane;
@@ -85,7 +86,10 @@ const PairsTab = (props) => {
 						getMyExchange={getMyExchange}
 					/>
 				</TabPane>
-				<TabPane tab="OTC desk" key="1">
+				<TabPane tab="Orders" key="1">
+					<ExchangeOrdersContainer user={props.user} />
+				</TabPane>
+				<TabPane tab="OTC desk" key="2">
 					<OtcDeskContainer
 						coins={coinData}
 						pairs={pairData}

@@ -3,6 +3,8 @@
 const { loggerTrades } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
+const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 
 const getUserTrades = (req, res) => {
 	loggerTrades.verbose(
@@ -114,6 +116,10 @@ const getAdminTrades = (req, res) => {
 	if (symbol.value && !toolsLib.subscribedToPair(symbol.value)) {
 		loggerTrades.error(req.uuid, 'controllers/trade/getUserTrades', 'Invalid symbol');
 		return res.status(400).json({ message: 'Invalid symbol' });
+	}
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
 
 	let promiseQuery;

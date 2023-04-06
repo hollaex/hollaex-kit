@@ -1,0 +1,22 @@
+.trade-order {
+	.ant-select-selector {
+		background-color: #202980 !important;
+		color: #fff;
+	}
+	.admin-user-container .ant-table-thead > tr > th {
+		padding: 1rem 1rem !important;
+	}
+
+	.ant-tabs-nav-list {
+		margin-top: 2rem;
+	}
+
+	.ant-tabs-nav {
+		border-bottom: 1px solid #fff;
+	}
+
+	.ant-tabs-top > .ant-tabs-nav .ant-tabs-ink-bar {
+		bottom: 0px !important;
+		top: unset !important;
+	}
+}

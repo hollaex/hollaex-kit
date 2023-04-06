@@ -4,7 +4,8 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { USER_NOT_FOUND, NOT_AUTHORIZED } = require('../../messages');
+const { ROLES } = require('../../constants');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
 const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -120,6 +121,10 @@ const getUsersAdmin = (req, res) => {
 			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
 
 	toolsLib.user.getAllUsersAdmin({
@@ -2193,7 +2198,7 @@ const createUserWalletByAdmin = (req, res) => {
 const getWalletsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
 
-	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, created_at } = req.swagger.params;
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2215,7 +2220,8 @@ const getWalletsByAdmin = (req, res) => {
 		order_by.value,
 		order.value,
 		format.value,
-		created_at.value,
+		start_date.value,
+		end_date.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
