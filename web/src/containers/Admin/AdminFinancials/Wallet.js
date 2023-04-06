@@ -1,5 +1,6 @@
 import { Table } from 'antd';
 import React from 'react';
+import { requestUsersDownload } from '../User/actions';
 import TableFilter from './TableFilter';
 
 const columns = [
@@ -54,14 +55,20 @@ const filterFields = [
 ];
 
 const Wallet = () => {
+	const requestDownload = (params = {}) => {
+		return requestUsersDownload({ ...params, format: 'csv' });
+	};
+
 	return (
 		<div className="asset-exchange-wallet-wrapper">
 			<div>Exchange wallets</div>
-			<div className="wallet-filter-wrapper">
+			<div className="wallet-filter-wrapper mt-3">
 				<TableFilter fields={filterFields} />
 			</div>
-			<div>
-				<div>Download table</div>
+			<div className="mt-5">
+				<div onClick={requestDownload} className="mb-2">
+					Download below CSV table
+				</div>
 				<Table columns={columns} />
 			</div>
 		</div>

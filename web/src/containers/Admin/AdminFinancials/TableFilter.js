@@ -66,7 +66,7 @@ const TableFilter = ({ fields }) => {
 			return field.value !== e;
 		});
 		setOptions([...tempOptions]);
-		setFileldsData([...tempfield, ...fileldsData]);
+		setFileldsData([...fileldsData, ...tempfield]);
 	};
 
 	const onHandleRemove = (e) => {
