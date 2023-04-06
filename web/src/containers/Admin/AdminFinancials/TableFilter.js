@@ -28,7 +28,9 @@ const DateField = ({ handleRemove, value, onHandleFieldChange }) => {
 			<div>
 				<div className="label-content">
 					Wallets created from{' '}
-					<span onClick={() => handleRemove(value)}>(Remove)</span>
+					<span className="underline-text" onClick={() => handleRemove(value)}>
+						(Remove)
+					</span>
 				</div>
 				<DatePicker onChange={onChangeEnd} format={dateFormat} />
 			</div>
@@ -43,10 +45,15 @@ const FieldComponent = ({
 	coinOptions,
 }) => {
 	const { type, label, value, name } = field;
+	const object = { type, label, name };
+
 	const onHandle = (e) => {
-		console.log('onHandleFieldChange', onHandleFieldChange);
 		const { name, value } = e.target;
 		onHandleFieldChange({ [name]: value });
+	};
+
+	const onHandleSelect = (value) => {
+		onHandleFieldChange({ currency: value.toLowerCase() });
 	};
 
 	const handleField = (handleRemove) => {
@@ -56,28 +63,24 @@ const FieldComponent = ({
 					<Select
 						options={value === 'currency' && coinOptions}
 						placeholder={value === 'currency' ? 'Currency' : 'Network'}
-						name={name}
-						{...field}
-						onChange={onHandle}
+						{...object}
+						onChange={onHandleSelect}
 					/>
 				);
 			case 'number':
-				return (
-					<Input type="number" name={name} {...field} onChange={onHandle} />
-				);
+				return <Input type="number" {...object} onChange={onHandle} />;
 			case 'time-picker':
 				return (
 					<DateField
-						{...field}
+						{...object}
 						name={name}
 						handleRemove={handleRemove}
-						value={value}
 						onHandleFieldChange={onHandleFieldChange}
 					/>
 				);
 			default:
 			case 'text':
-				return <Input {...field} name={name} onChange={onHandle} />;
+				return <Input {...object} onChange={onHandle} />;
 		}
 	};
 	return (
@@ -133,8 +136,6 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 	const coinOptions = Object.keys(coins).map((data) => {
 		return { value: data.toUpperCase(), text: data.toUpperCase() };
 	});
-
-	console.log('coinOptions', coinOptions, coins);
 
 	return (
 		<div className="table-filter-wrapper">

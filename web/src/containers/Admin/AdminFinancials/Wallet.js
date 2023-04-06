@@ -9,6 +9,16 @@ const columns = [
 		title: 'User Id',
 		dataIndex: 'user_id',
 		key: 'user_id',
+		render: (user_id, data) => {
+			return (
+				<div className="d-flex">
+					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+						{data.User.id}
+					</Button>
+					<div className="ml-3">{data.User.email}</div>
+				</div>
+			);
+		},
 	},
 	{
 		title: 'Currency',
@@ -24,21 +34,6 @@ const columns = [
 		title: 'Address',
 		dataIndex: 'address',
 		key: 'address',
-	},
-	{
-		title: 'User Id',
-		dataIndex: 'user_id',
-		key: 'user_id',
-		render: (user_id, data) => {
-			return (
-				<div className="d-flex">
-					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-						{data.User.id}
-					</Button>
-					<div className="ml-3">{data.User.email}</div>
-				</div>
-			);
-		},
 	},
 ];
 
@@ -125,7 +120,9 @@ const Wallet = () => {
 				>
 					Download below CSV table
 				</span>
-				<Table columns={columns} dataSource={userData} />
+				<div className="mt-4">
+					<Table columns={columns} dataSource={userData} />
+				</div>
 			</div>
 		</div>
 	);
