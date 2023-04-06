@@ -564,7 +564,7 @@ class Plugins extends Component {
 						pluginData={selectedPlugin}
 						isConfirm={this.state.isConfirm}
 						onHandleBack={this.handleBack}
-						okBtnlabel={'Upgrde'}
+						okBtnlabel={'Upgrade'}
 						onHandleChange={this.handleInput}
 						onHandleSubmit={this.handleUpdatePlugin}
 					/>
