@@ -2,15 +2,12 @@ import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { calculateOraclePrice } from 'utils/currency';
 import { WALLET_SORT } from 'actions/appActions';
-import { handleUpgrade } from 'utils/utils';
-import { DEFAULT_PINNED_COINS } from 'config/constants';
 
 const getCoins = (state) => state.app.coins;
 const getBalances = (state) => state.user.balance;
 const getOraclePrices = (state) => state.asset.oraclePrices;
 const getSortMode = (state) => state.app.wallet_sort.mode;
 const getSortDir = (state) => state.app.wallet_sort.is_descending;
-const getKitInfo = (state) => state.app.info;
 export const getPinnedAssets = (state) => state.app.pinned_assets;
 
 export const selectAssetOptions = createSelector([getCoins], (coins) => {
@@ -24,19 +21,6 @@ export const selectAssetOptions = createSelector([getCoins], (coins) => {
 
 	return assets;
 });
-
-export const pinnedAssetsSelector = createSelector(
-	[getKitInfo, getPinnedAssets],
-	(info, pinnedAssets) => {
-		const isBasic = handleUpgrade(info);
-
-		if (isBasic) {
-			return DEFAULT_PINNED_COINS;
-		} else {
-			return pinnedAssets;
-		}
-	}
-);
 
 const unsortedAssetsSelector = createSelector(
 	[getCoins, getBalances, getOraclePrices],
@@ -81,7 +65,7 @@ export const sortedAssetsSelector = createSelector(
 );
 
 export const assetsSelector = createSelector(
-	[sortedAssetsSelector, pinnedAssetsSelector],
+	[sortedAssetsSelector, getPinnedAssets],
 	(assets, pins = []) => {
 		const pinnedAssets = [];
 		const restAssets = [];
