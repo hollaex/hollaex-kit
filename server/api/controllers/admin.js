@@ -2126,13 +2126,13 @@ const createUserByAdmin = (req, res) => {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	})
-	.then(() => {
-		return res.status(201).json({ message: 'Success' });
-	})
-	.catch((err) => {
-		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	});
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const createUserWalletByAdmin = (req, res) => {
@@ -2156,38 +2156,86 @@ const createUserWalletByAdmin = (req, res) => {
 	);
 
 	toolsLib.user.getUserByKitId(user_id)
-	.then((user) => {
-		if (!user) {
-			throw new Error(USER_NOT_FOUND);
-		}
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
 
-		if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
-			loggerAdmin.error(
-				req.uuid,
-				'controllers/admin/createUserWalletByAdmin',
-				`Invalid crypto: "${crypto}"`
-			);
-			return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
-		}
+			if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+				loggerAdmin.error(
+					req.uuid,
+					'controllers/admin/createUserWalletByAdmin',
+					`Invalid crypto: "${crypto}"`
+				);
+				return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+			}
 	
-		return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
+			return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
 				network,
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
 				}
-			})
-	})
-	.then((data) => { 
-		return res.status(201).json(data); 
-	})
-	.catch((err) => {
+			});
+		})
+		.then((data) => { 
+			return res.status(201).json(data); 
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createUserWalletByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getWalletsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
+
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
 			req.uuid,
-			'controllers/admin/createUserWalletByAdmin',
-			err.message
+			'controllers/admin/getWalletsByAdmin invalid order_by',
+			order_by.value
 		);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	});
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.wallet.getWallets(
+		user_id.value,
+		currency.value,
+		network.value,
+		address.value,
+		is_valid.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		format.value,
+		start_date.value,
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 module.exports = {
@@ -2245,5 +2293,6 @@ module.exports = {
 	getUserAffiliation,
 	getUserReferer,
 	createUserByAdmin,
-	createUserWalletByAdmin
+	createUserWalletByAdmin,
+	getWalletsByAdmin
 };

@@ -2580,6 +2580,100 @@ paths:
         - admin
   /admin/user/wallet:
     x-swagger-router-controller: admin
+    get:
+      description: Get user wallets for admin
+      operationId: getWalletsByAdmin
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: Currency symbol
+          required: false
+          type: string
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: address
+          description: crypto address of the wallet
+          required: false
+          type: string
+        - in: query
+          name: is_valid
+          description: specify whether or not wallet is wallet
+          required: false
+          type: boolean
+          default: true
+        - in: query
+          name: network
+          description: Blockchain network of wallet
+          required: false
+          type: string
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
     post:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
