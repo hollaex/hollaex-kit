@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 
 import Earnings from './Earnings';
@@ -54,11 +53,7 @@ const AdminFinancials = ({ router, location, user }) => {
 					<Wallets router={router} />
 				</TabPane>
 				<TabPane tab="Orders" key="2">
-					<ExchangeOrdersContainer
-						type="orders"
-						user={user}
-						showFilters={true}
-					/>
+					<ExchangeOrdersContainer type="orders" showFilters={true} />
 				</TabPane>
 				<TabPane tab="Deposits" key="3">
 					<DepositPage type="deposit" showFilters={true} />
@@ -80,8 +75,4 @@ const AdminFinancials = ({ router, location, user }) => {
 	);
 };
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-});
-
-export default connect(mapStateToProps)(AdminFinancials);
+export default AdminFinancials;

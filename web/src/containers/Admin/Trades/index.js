@@ -87,7 +87,7 @@ const PairsTab = (props) => {
 					/>
 				</TabPane>
 				<TabPane tab="Orders" key="1">
-					<ExchangeOrdersContainer user={props.user} />
+					<ExchangeOrdersContainer />
 				</TabPane>
 				<TabPane tab="OTC desk" key="2">
 					<OtcDeskContainer
