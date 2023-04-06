@@ -30,21 +30,25 @@ paths:
           description: Start Date
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: to
           description: End data
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: symbol
           description: trading pair symbol
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: resolution
           description: time interval resolution (1d 1W etc)
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -68,6 +72,7 @@ paths:
           description: Trading pair symbol e.g. btc-eur
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success

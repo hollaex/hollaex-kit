@@ -116,6 +116,7 @@ paths:
             properties:
               token:
                 type: string
+                maxLength: 256
               size:
                 type: number
                 format: double
@@ -150,6 +151,7 @@ paths:
           description: Currency symbol
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: side
           description: buy or sell
@@ -181,14 +183,17 @@ paths:
             properties:
               formula:
                 type: string
+                maxLength: 256
               exchange_name:
                 type: string
+                maxLength: 256
               multiplier:
                 type: number
               spread:
                 type: number
               symbol:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -217,16 +222,19 @@ paths:
           description: exchange to connect to
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: api_key
           description: exchang api key
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: api_secret
           description: exchang api scret
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success

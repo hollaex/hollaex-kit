@@ -17,10 +17,13 @@ paths:
                 type: number
               transaction_id:
                 type: string
+                maxLength: 256
               address:
                 type: string
+                maxLength: 256
               currency:
                 type: string
+                maxLength: 256
             required:
               - amount
               - transaction_id
@@ -58,10 +61,13 @@ paths:
                 type: number
               bank_id:
                 type: string
+                maxLength: 256
               currency:
                 type: string
+                maxLength: 256
               captcha:
                 type: string
+                maxLength: 256
             required:
               - amount
               - bank_id

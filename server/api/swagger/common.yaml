@@ -78,6 +78,7 @@ paths:
           in: formData
           required: true
           type: string
+          maxLength: 256
           format: email
         - name: category
           description: Category of the ticket
@@ -141,6 +142,7 @@ paths:
           description: User's email
           required: false
           type: string
+          maxLength: 256
         - name: resend
           in: query
           description: Resend email to user
@@ -151,6 +153,7 @@ paths:
           description: Verification code
           required: false
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -184,8 +187,10 @@ paths:
             properties:
               email:
                 type: string
+                maxLength: 256
               verification_code:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -254,10 +259,12 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
         - name: captcha
           in: query
           required: false
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -301,6 +308,7 @@ paths:
           in: path
           required: true
           type: string
+          maxLength: 256
       responses:
         301:
           description: "301 redirect"

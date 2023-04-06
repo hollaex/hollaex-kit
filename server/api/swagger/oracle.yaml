@@ -15,12 +15,14 @@ paths:
           type: array
           items:
             type: string
+            maxLength: 256
             minItems: 1
         - name: quote
           in: query
           required: false
           description: Quote coin to convert to
           type: string
+          maxLength: 256
         - name: amount
           in: query
           required: false

@@ -195,6 +195,7 @@ paths:
           description: CSV
           schema:
             type: string
+            maxLength: 256
         default:
           description: Error
           schema:
@@ -317,8 +318,10 @@ paths:
             properties:
               message:
                 type: string
+                maxLength: 256
               transaction_id:
                 type: string
+                maxLength: 256
               fee:
                 type: number
         default:
@@ -339,6 +342,7 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -369,6 +373,7 @@ paths:
             properties:
               secret:
                 type: string
+                maxLength: 256
         403:
           description: Access Denied
           schema:
@@ -610,10 +615,13 @@ paths:
             properties:
               name:
                 type: string
+                maxLength: 256
               otp_code:
                 type: string
+                maxLength: 256
               email_code:
                 type: string
+                maxLength: 256
               role:
                 type: string
                 enum: ['admin', 'user']
@@ -621,6 +629,7 @@ paths:
                 type: array
                 items:
                   type: string
+                  maxLength: 256
       responses:
         200:
           description: Success
@@ -658,16 +667,20 @@ paths:
                 format: int32
               name:
                 type: string
+                maxLength: 256
               otp_code:
                 type: string
+                maxLength: 256
               email_code:
                 type: string
+                maxLength: 256
               permissions:
                 $ref: '#/definitions/TokenPermissions'
               whitelisted_ips:
                 type: array
                 items:
                   type: string
+                  maxLength: 256
               whitelisting_enabled:
                 type: boolean
       responses:
@@ -707,8 +720,10 @@ paths:
                 format: int32
               otp_code:
                 type: string
+                maxLength: 256
               email_code:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -760,6 +775,7 @@ paths:
           description: Currency symbol
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -777,6 +793,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -810,6 +827,7 @@ paths:
           description: CSV
           schema:
             type: string
+            maxLength: 256
         default:
           description: Error
           schema:
@@ -836,6 +854,7 @@ paths:
           description: Type of currency of deposits to filter
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -853,6 +872,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -882,11 +902,13 @@ paths:
           description: unique transaction id
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: Address of the withdrawal
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: status
           required: false
@@ -921,6 +943,7 @@ paths:
           description: CSV
           schema:
             type: string
+            maxLength: 256
         default:
           description: Error
           schema:
@@ -947,6 +970,7 @@ paths:
           description: Type of currency of withdrawals to filter
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -964,6 +988,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -993,11 +1018,13 @@ paths:
           description: unique transaction id
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: Address of the withdrawal
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: status
           required: false
@@ -1032,6 +1059,7 @@ paths:
           description: CSV
           schema:
             type: string
+            maxLength: 256
         default:
           description: Error
           schema:
@@ -1091,9 +1119,11 @@ paths:
             properties:
               address:
                 type: string
+                maxLength: 256
                 description: Destination address
               currency:
                 type: string
+                maxLength: 256
                 description: Currency to be withdrawn (btc, eth, etc)
               amount:
                 type: number
@@ -1133,21 +1163,25 @@ paths:
           description: Currency of the transaction
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: transaction_id
           description: Blockchain transaction id
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: crypto address receiving the deposit
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: network
           description: Blockchain network of transaction
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: is_testnet
           description: specify whether or not transaction was on tesntet

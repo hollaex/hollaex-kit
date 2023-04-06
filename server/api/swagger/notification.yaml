@@ -12,6 +12,7 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
         - name: data
           description: Deposit transaction info
           in: body
@@ -40,6 +41,7 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
         - name: data
           description: Withdrawal transaction info
           in: body
