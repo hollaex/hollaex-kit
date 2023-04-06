@@ -80,7 +80,15 @@ const FieldComponent = ({
 				);
 			default:
 			case 'text':
-				return <Input {...object} onChange={onHandle} />;
+				return (
+					<Input
+						placeholder={
+							value === 'user_id' ? 'Input User ID' : 'Input address'
+						}
+						{...object}
+						onChange={onHandle}
+					/>
+				);
 		}
 	};
 	return (
@@ -124,9 +132,9 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 		const tempOptions = fieldsData.filter((field) => {
 			return field.value !== e;
 		});
-		onHandle(e, 'remove');
 		setOptions([...tempfield, ...options]);
 		setFieldsData([...tempOptions]);
+		onHandleRemoveSearch(e);
 	};
 
 	const onHandleFieldChange = (value) => {
@@ -136,6 +144,27 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 	const coinOptions = Object.keys(coins).map((data) => {
 		return { value: data.toUpperCase(), text: data.toUpperCase() };
 	});
+
+	const onHandleRemoveSearch = (e) => {
+		let obj = {};
+		Object.keys(filterData).forEach((name) => {
+			if (name !== e) {
+				obj = { ...obj, [name]: filterData[name] };
+			}
+		});
+		setFilterData(obj);
+		onHandle(obj);
+	};
+
+	const onHandleSearch = () => {
+		let obj = {};
+		Object.keys(filterData).forEach((name) => {
+			if (filterData[name] !== '') {
+				obj = { ...obj, [name]: filterData[name] };
+			}
+		});
+		onHandle(obj);
+	};
 
 	return (
 		<div className="table-filter-wrapper">
@@ -172,7 +201,7 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 						: 'filter-button green-btn'
 				}
 				disabled={Object.keys(filterData).length === 0}
-				onClick={() => onHandle(filterData)}
+				onClick={onHandleSearch}
 			>
 				Search
 			</Button>
