@@ -24,6 +24,17 @@ const renderUser = (id) => (
 	</Tooltip>
 );
 
+const renderExchangeUser = (id, user) => (
+	<div className="exchange-user-wrapper">
+		<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+			<Button type="primary">
+				<Link to={`/admin/user?id=${id}`}>{id}</Link>
+			</Button>
+		</Tooltip>
+		<p className="pl-3 mb-0">{user.email}</p>
+	</div>
+);
+
 const getColumns = (userId, onCancel) => {
 	let columns = [];
 	if (!userId) {
@@ -71,6 +82,48 @@ const getColumns = (userId, onCancel) => {
 			},
 		];
 	}
+	return columns;
+};
+
+const getThisExchangeOrders = (userId, onCancel) => {
+	let columns = [];
+
+	columns = [
+		{ title: 'Side', dataIndex: 'side', key: 'side' },
+		{ title: 'Symbol', dataIndex: 'symbol', key: 'symbol' },
+		{ title: 'Size', dataIndex: 'size', key: 'size', render: formatNum },
+		{ title: 'Price', dataIndex: 'price', key: 'price', render: formatNum },
+		{ title: 'Filled', dataIndex: 'filled', key: 'filled', render: formatNum },
+		{
+			title: 'Time',
+			dataIndex: 'updated_at',
+			key: 'updated_at',
+			render: formatDate,
+		},
+		{
+			title: 'User',
+			dataIndex: 'created_by',
+			key: 'id',
+			render: (v, data) => renderExchangeUser(userId, data.User),
+		},
+		{
+			title: 'Cancel order',
+			dataIndex: '',
+			key: '',
+			render: (e) => (
+				<Tooltip placement="bottom" title={`Cancel order`}>
+					<Button
+						type="primary"
+						onClick={() => onCancel(e)}
+						className="green-btn"
+					>
+						Cancel
+					</Button>
+				</Tooltip>
+			),
+		},
+	];
+
 	return columns;
 };
 
@@ -258,7 +311,10 @@ class PairsSection extends Component {
 			buyCurrentTablePage,
 			sellCurrentTablePage,
 		} = this.state;
-		const COLUMNS = getColumns(this.props.userId, this.onCancelOrder);
+
+		const COLUMNS = this.props.getThisExchangeOrder
+			? getThisExchangeOrders(this.props.userId, this.onCancelOrder)
+			: getColumns(this.props.userId, this.onCancelOrder);
 		return (
 			<div className="f-1 admin-user-container">
 				<Tabs onChange={this.tabChange}>
