@@ -82,9 +82,9 @@ const Wallet = () => {
 		getWallet();
 	}, []);
 
-	const getWallet = async () => {
+	const getWallet = async (values) => {
 		try {
-			const res = await getExchangeWallet();
+			const res = await getExchangeWallet(values);
 			if (res && res.data) {
 				setUserData(res.data);
 			}
@@ -97,21 +97,11 @@ const Wallet = () => {
 		return requestUsersDownload({ ...params, format: 'csv' });
 	};
 
-	const requestUsersWallet = async (values) => {
-		if ('type' === 'remove') {
-		} else {
-			const res = await getExchangeWallet(values);
-			if (res && res.data) {
-				setUserData(res.data);
-			}
-		}
-	};
-
 	return (
 		<div className="asset-exchange-wallet-wrapper">
 			<div className="header-txt">Exchange wallets</div>
 			<div className="wallet-filter-wrapper mt-4">
-				<MultiFilter fields={filterFields} onHandle={requestUsersWallet} />
+				<MultiFilter fields={filterFields} onHandle={getWallet} />
 			</div>
 			<div className="mt-5">
 				<span
