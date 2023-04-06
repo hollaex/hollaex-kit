@@ -1,14 +1,8 @@
 import math from 'mathjs';
 import { createSelector } from 'reselect';
 import { DIGITAL_ASSETS_SORT } from 'actions/appActions';
-import {
-	unsortedMarketsSelector,
-	getPairs,
-	getKitInfo,
-} from 'containers/Trade/utils';
-import { handleUpgrade } from 'utils/utils';
-import { pinnedAssetsSelector } from 'containers/Wallet/utils';
-import { DEFAULT_PINNED_COINS } from 'config/constants';
+import { unsortedMarketsSelector, getPairs } from 'containers/Trade/utils';
+import { getPinnedAssets } from 'containers/Wallet/utils';
 
 const getSortMode = (state) => state.app.digital_assets_sort.mode;
 const getSortDir = (state) => state.app.digital_assets_sort.is_descending;
@@ -30,14 +24,11 @@ const sortedMarketsSelector = createSelector(
 );
 
 const pinnedMarketsSelector = createSelector(
-	[getPairs, getKitInfo, pinnedAssetsSelector],
-	(pairs, info, pinnedAssets) => {
-		const isBasic = handleUpgrade(info);
-
-		const pinnedCoins = isBasic ? DEFAULT_PINNED_COINS : pinnedAssets;
+	[getPairs, getPinnedAssets],
+	(pairs, pinnedAssets) => {
 		const pinnedMarkets = [];
 
-		pinnedCoins.forEach((pin) => {
+		pinnedAssets.forEach((pin) => {
 			for (const key in pairs) {
 				const { pair_base } = pairs[key];
 				if (pin === pair_base) {

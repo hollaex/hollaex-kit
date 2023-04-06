@@ -4,10 +4,7 @@ import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import arrayMove from 'array-move';
 import classnames from 'classnames';
 import { MenuOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import {
-	pinnedAssetsSelector,
-	selectAssetOptions,
-} from 'containers/Wallet/utils';
+import { selectAssetOptions } from 'containers/Wallet/utils';
 import Modal from 'components/Dialog/DesktopDialog';
 import { Button, Radio } from 'antd';
 import {
@@ -50,7 +47,11 @@ const SortableList = SortableContainer(
 	({ items, onRemove, removeDisabled }) => {
 		return (
 			<div className="mt-4 pinned-markets-table-wrapper">
-				<table className="m-3 pinned-markets-table">
+				<table
+					className={classnames('pinned-markets-table', 'm-3', {
+						'disabled-area': removeDisabled,
+					})}
+				>
 					<thead>
 						<tr>
 							<th>Order</th>
@@ -266,7 +267,7 @@ const ConfigsModal = ({
 
 const mapStateToProps = (state) => ({
 	default_digital_assets_sort: state.app.default_digital_assets_sort,
-	pinned_assets: pinnedAssetsSelector(state),
+	pinned_assets: state.app.pinned_assets,
 	info: state.app.info,
 	assets: selectAssetOptions(state),
 });

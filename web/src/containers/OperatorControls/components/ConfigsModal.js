@@ -51,7 +51,11 @@ const SortableList = SortableContainer(
 	({ items, onRemove, removeDisabled }) => {
 		return (
 			<div className="mt-4 pinned-markets-table-wrapper">
-				<table className="m-3 pinned-markets-table">
+				<table
+					className={classnames('pinned-markets-table', 'm-3', {
+						'disabled-area': removeDisabled,
+					})}
+				>
 					<thead>
 						<tr>
 							<th>Order</th>

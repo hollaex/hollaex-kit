@@ -4,7 +4,8 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { USER_NOT_FOUND, NOT_AUTHORIZED } = require('../../messages');
+const { ROLES } = require('../../constants');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
 const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -120,6 +121,10 @@ const getUsersAdmin = (req, res) => {
 			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
 
 	toolsLib.user.getAllUsersAdmin({
