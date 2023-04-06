@@ -117,5 +117,8 @@ export const uploadCoinLogo = (values) => {
 	});
 };
 
-export const getExchangeWallet = () =>
-	requestAuthenticated(`/admin/user/wallet`, { method: 'GET' });
+export const getExchangeWallet = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/user/wallet?${queryValues}`);
+};

@@ -1,42 +1,83 @@
-import { DatePicker, Input, Select } from 'antd';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { DatePicker, Input, Select, Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import moment from 'moment';
 
-const { Search } = Input;
+const dateFormat = 'YYYY/MM/DD';
 
-const DateField = ({ handleRemove, value }) => {
+const DateField = ({ handleRemove, value, onHandleFieldChange }) => {
+	const onChangeStart = (date, dateString) => {
+		onHandleFieldChange({ start_date: moment(dateString).format() });
+	};
+
+	const onChangeEnd = (date, dateString) => {
+		onHandleFieldChange({ end_date: moment(dateString).format() });
+	};
+
 	return (
 		<div className="d-flex">
 			<div>
 				<div className="label-content">Wallets created from</div>
-				<DatePicker className="mr-2" />
+				<DatePicker
+					className="mr-2"
+					onChange={onChangeStart}
+					format={dateFormat}
+				/>
 			</div>
 			<div>
 				<div className="label-content">
 					Wallets created from{' '}
 					<span onClick={() => handleRemove(value)}>(Remove)</span>
 				</div>
-				<DatePicker />
+				<DatePicker onChange={onChangeEnd} format={dateFormat} />
 			</div>
 		</div>
 	);
 };
 
-const FieldComponent = ({ field, handleRemove }) => {
-	const { type, placeHolder, label, value } = field;
-	const object = { placeHolder };
+const FieldComponent = ({
+	field,
+	handleRemove,
+	onHandleFieldChange,
+	coinOptions,
+}) => {
+	const { type, label, value, name } = field;
+	const onHandle = (e) => {
+		console.log('onHandleFieldChange', onHandleFieldChange);
+		const { name, value } = e.target;
+		onHandleFieldChange({ [name]: value });
+	};
+
 	const handleField = (handleRemove) => {
 		switch (type) {
 			case 'select':
-				return <Select {...object} />;
+				return (
+					<Select
+						options={value === 'currency' && coinOptions}
+						placeholder={value === 'currency' ? 'Currency' : 'Network'}
+						name={name}
+						{...field}
+						onChange={onHandle}
+					/>
+				);
 			case 'number':
-				return <Input type="number" {...object} />;
+				return (
+					<Input type="number" name={name} {...field} onChange={onHandle} />
+				);
 			case 'time-picker':
 				return (
-					<DateField {...object} handleRemove={handleRemove} value={value} />
+					<DateField
+						{...field}
+						name={name}
+						handleRemove={handleRemove}
+						value={value}
+						onHandleFieldChange={onHandleFieldChange}
+					/>
 				);
 			default:
 			case 'text':
-				return <Input {...object} />;
+				return <Input {...field} name={name} onChange={onHandle} />;
 		}
 	};
 	return (
@@ -44,7 +85,10 @@ const FieldComponent = ({ field, handleRemove }) => {
 			{type !== 'time-picker' && (
 				<div className="label-content">
 					{label}{' '}
-					<span className="mr-2" onClick={() => handleRemove(value)}>
+					<span
+						className="mr-2 cursor-pointer underline-text"
+						onClick={() => handleRemove(value)}
+					>
 						(Remove)
 					</span>
 				</div>
@@ -54,9 +98,10 @@ const FieldComponent = ({ field, handleRemove }) => {
 	);
 };
 
-const TableFilter = ({ fields }) => {
+const MultiFilter = ({ fields, onHandle, coins }) => {
 	const [options, setOptions] = useState(fields);
-	const [fileldsData, setFileldsData] = useState([]);
+	const [fieldsData, setFieldsData] = useState([]);
+	const [filterData, setFilterData] = useState({});
 
 	const onHandleSelect = (e) => {
 		const tempfield = options.filter((field) => {
@@ -66,41 +111,76 @@ const TableFilter = ({ fields }) => {
 			return field.value !== e;
 		});
 		setOptions([...tempOptions]);
-		setFileldsData([...fileldsData, ...tempfield]);
+		setFieldsData([...fieldsData, ...tempfield]);
 	};
 
 	const onHandleRemove = (e) => {
-		const tempfield = fileldsData.filter((field) => {
+		const tempfield = fieldsData.filter((field) => {
 			return field.value === e;
 		});
-		const tempOptions = fileldsData.filter((field) => {
+		const tempOptions = fieldsData.filter((field) => {
 			return field.value !== e;
 		});
+		onHandle(e, 'remove');
 		setOptions([...tempfield, ...options]);
-		setFileldsData([...tempOptions]);
+		setFieldsData([...tempOptions]);
 	};
+
+	const onHandleFieldChange = (value) => {
+		setFilterData({ ...filterData, ...value });
+	};
+
+	const coinOptions = Object.keys(coins).map((data) => {
+		return { value: data.toUpperCase(), text: data.toUpperCase() };
+	});
+
+	console.log('coinOptions', coinOptions, coins);
 
 	return (
 		<div className="table-filter-wrapper">
 			<div className="d-flex">
-				{fileldsData.map((field) => {
-					return <FieldComponent field={field} handleRemove={onHandleRemove} />;
+				{fieldsData.map((field) => {
+					return (
+						<FieldComponent
+							coinOptions={coinOptions}
+							onHandleFieldChange={onHandleFieldChange}
+							field={field}
+							handleRemove={onHandleRemove}
+						/>
+					);
 				})}
 			</div>
 			{options.length ? (
 				<Select
 					options={options}
-					defaultValue={'add filter'}
-					value={'add filter'}
+					defaultValue={'Add filter'}
+					value={'Add filter'}
 					onChange={onHandleSelect}
-					className={`mr-2 ${fileldsData.length ? 'select-content' : ''}`}
+					className={`mr-2 ${fieldsData.length ? 'select-content' : ''}`}
 				/>
 			) : (
 				''
 			)}
-			<Search className={fileldsData.length ? 'search-content mr-2' : ''} />
+			<Button
+				type="primary"
+				icon={<SearchOutlined />}
+				placeholder="Search"
+				className={
+					fieldsData.length
+						? 'search-content mr-2 filter-button green-btn'
+						: 'filter-button green-btn'
+				}
+				disabled={Object.keys(filterData).length === 0}
+				onClick={() => onHandle(filterData)}
+			>
+				Search
+			</Button>
 		</div>
 	);
 };
 
-export default TableFilter;
+const mapStateToProps = (state) => ({
+	coins: state.app.coins,
+});
+
+export default connect(mapStateToProps)(MultiFilter);

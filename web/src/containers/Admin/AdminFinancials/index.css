@@ -541,3 +541,38 @@
 	.label-content {
 	font-size: 12px;
 }
+.asset-exchange-wallet-wrapper .ant-select-selector {
+	background-color: #22297b !important;
+	color: #fff;
+}
+
+.asset-exchange-wallet-wrapper .search-background {
+	background-color: #008a00;
+	color: #fff;
+}
+
+.asset-exchange-wallet-wrapper .search-background .ant-input {
+	background-color: #008a00;
+}
+
+.asset-exchange-wallet-wrapper .search-background .ant-input-suffix {
+	display: none;
+}
+
+.asset-exchange-wallet-wrapper .cursor-pointer {
+	cursor: pointer;
+}
+
+.asset-exchange-wallet-wrapper .header-txt {
+	font-size: 22px;
+	font-weight: bold;
+	margin-top: 0.5rem;
+}
+
+.asset-exchange-wallet-wrapper .ant-table-container table > thead th {
+	width: 23%;
+}
+
+.asset-exchange-wallet-wrapper .filter-button {
+	min-width: 0%;
+}
