@@ -5218,6 +5218,10 @@ table th {
 .operator-controls__modal .pinned-markets-table {
   font-size: 1.2rem;
   width: 100%; }
+  .operator-controls__modal .pinned-markets-table.disabled-area {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5; }
 
 .operator-controls__modal .pinned-markets-table-wrapper {
   border: 1px solid #ffffffcc; }

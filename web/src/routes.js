@@ -328,12 +328,7 @@ export const generateRoutes = (routes = []) => {
 					name="Reset Password Request"
 					component={ConfirmChangePassword}
 				/>
-				<Route
-					path="account"
-					name="Account"
-					component={Account}
-					onEnter={requireAuth}
-				/>
+				<Route path="account" name="Account" component={Account} />
 				<Route
 					path="account/settings/username"
 					name="username"
