@@ -1,6 +1,7 @@
-import { Table } from 'antd';
-import React from 'react';
+import { message, Table } from 'antd';
+import React, { useEffect, useState } from 'react';
 import { requestUsersDownload } from '../User/actions';
+import { getExchangeWallet } from './action';
 import TableFilter from './TableFilter';
 
 const columns = [
@@ -55,6 +56,23 @@ const filterFields = [
 ];
 
 const Wallet = () => {
+	const [userData, setUserData] = useState([]);
+
+	useEffect(() => {
+		getWallet();
+	}, []);
+
+	const getWallet = async () => {
+		try {
+			const res = await getExchangeWallet();
+			if (res && res.data) {
+				setUserData(res.data);
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
 	const requestDownload = (params = {}) => {
 		return requestUsersDownload({ ...params, format: 'csv' });
 	};
