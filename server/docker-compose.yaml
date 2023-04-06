@@ -110,6 +110,7 @@ services:
       sleep 20;
       mc config host add myminio http://hollaex-kit-minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
       mc mb myminio/hollaex-kit;
+      mc mb myminio/hollaex-kit-private;
       mc policy download myminio/hollaex-kit;
       exit 0;
       "
