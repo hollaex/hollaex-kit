@@ -24,14 +24,14 @@ const renderUser = (id) => (
 	</Tooltip>
 );
 
-const renderExchangeUser = (id, user) => (
+const renderExchangeUser = (user) => (
 	<div className="exchange-user-wrapper">
-		<Tooltip placement="bottom" title={`SEE USER ${id} DETAILS`}>
+		<Tooltip placement="bottom" title={`SEE USER ${user?.id} DETAILS`}>
 			<Button type="primary">
-				<Link to={`/admin/user?id=${id}`}>{id}</Link>
+				<Link to={`/admin/user?id=${user?.id}`}>{user?.id}</Link>
 			</Button>
 		</Tooltip>
-		<p className="pl-3 mb-0">{user.email}</p>
+		<p className="pl-3 mb-0">{user?.email}</p>
 	</div>
 );
 
@@ -72,7 +72,7 @@ const getColumns = (userId, onCancel) => {
 					<Tooltip placement="bottom" title={`Cancel order`}>
 						<Button
 							type="primary"
-							onClick={() => onCancel(e)}
+							onClick={() => onCancel(e, userId)}
 							className="green-btn"
 						>
 							Cancel
@@ -85,7 +85,7 @@ const getColumns = (userId, onCancel) => {
 	return columns;
 };
 
-const getThisExchangeOrders = (userId, onCancel) => {
+const getThisExchangeOrders = (onCancel) => {
 	let columns = [];
 
 	columns = [
@@ -104,7 +104,7 @@ const getThisExchangeOrders = (userId, onCancel) => {
 			title: 'User',
 			dataIndex: 'created_by',
 			key: 'id',
-			render: (v, data) => renderExchangeUser(userId, data.User),
+			render: (v, data) => renderExchangeUser(data.User),
 		},
 		{
 			title: 'Cancel order',
@@ -114,7 +114,7 @@ const getThisExchangeOrders = (userId, onCancel) => {
 				<Tooltip placement="bottom" title={`Cancel order`}>
 					<Button
 						type="primary"
-						onClick={() => onCancel(e)}
+						onClick={() => onCancel(e, e?.User?.id)}
 						className="green-btn"
 					>
 						Cancel
@@ -276,9 +276,9 @@ class PairsSection extends Component {
 		this.setState({ activeTab });
 	};
 
-	onCancelOrder = (order) => {
+	onCancelOrder = (order, userId) => {
 		if (order && order.id) {
-			requestCancelOrders(order.id, this.props.userId).then((res) => {
+			requestCancelOrders(order.id, userId).then((res) => {
 				if (res && res.side === 'buy') {
 					const temp = this.state.buyOrders.data.filter(
 						(val) => val.id !== res.id
@@ -313,7 +313,7 @@ class PairsSection extends Component {
 		} = this.state;
 
 		const COLUMNS = this.props.getThisExchangeOrder
-			? getThisExchangeOrders(this.props.userId, this.onCancelOrder)
+			? getThisExchangeOrders(this.onCancelOrder)
 			: getColumns(this.props.userId, this.onCancelOrder);
 		return (
 			<div className="f-1 admin-user-container">
