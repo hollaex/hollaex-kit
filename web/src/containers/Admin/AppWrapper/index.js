@@ -8,7 +8,7 @@ import { debounce, capitalize } from 'lodash';
 import { ReactSVG } from 'react-svg';
 import MobileDetect from 'mobile-detect';
 
-import { PATHS } from '../paths';
+import { PATHS, ADMIN_PATHS } from '../paths';
 import SetupWizard from '../SetupWizard';
 import {
 	removeToken,
@@ -553,7 +553,12 @@ class AppWrapper extends React.Component {
 			myPlugins,
 			isConfigure,
 		} = this.state;
-		let pathNames = PATHS;
+		let pathNames = [];
+		if (checkRole() === 'admin') {
+			pathNames = ADMIN_PATHS;
+		} else {
+			pathNames = PATHS;
+		}
 
 		if (features.apps) {
 			pathNames = [
