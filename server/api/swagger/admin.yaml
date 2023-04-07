@@ -1835,6 +1835,7 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
         - support
   /admin/user/activate:
     x-swagger-router-controller: admin
@@ -2489,6 +2490,7 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/referer:
     x-swagger-router-controller: admin
     get:
@@ -2516,3 +2518,6 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+        - supervisor
+        - kyc
+        - support

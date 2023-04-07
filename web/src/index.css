@@ -5757,7 +5757,8 @@ table th {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  overflow-y: hidden; }
   .hollaex-token-wrapper .mt-8 {
     margin-top: 8rem; }
   .hollaex-token-wrapper .pb-6 {
