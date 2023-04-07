@@ -79,6 +79,7 @@ import {
 	removeToken,
 	getTokenTimestamp,
 	isAdmin,
+	checkRole,
 } from './utils/token';
 import {
 	getLanguage,
@@ -245,6 +246,9 @@ const noLoggedUserCommonProps = {
 
 function withAdminProps(Component, key) {
 	let adminProps = {};
+	let userRole = checkRole();
+	let availablePaths = ['main', 'user', 'chat'];
+
 	PATHS.map((data) => {
 		const { pathProps = {}, routeKey, ...rest } = data;
 		if (routeKey === key) {
@@ -253,7 +257,11 @@ function withAdminProps(Component, key) {
 		return 0;
 	});
 	return function (matchProps) {
-		return <Component {...adminProps} {...matchProps} />;
+		if (userRole !== 'admin' && !availablePaths.includes(key)) {
+			return <NotFound {...matchProps} />;
+		} else {
+			return <Component {...adminProps} {...matchProps} />;
+		}
 	};
 }
 
@@ -328,12 +336,7 @@ export const generateRoutes = (routes = []) => {
 					name="Reset Password Request"
 					component={ConfirmChangePassword}
 				/>
-				<Route
-					path="account"
-					name="Account"
-					component={Account}
-					onEnter={requireAuth}
-				/>
+				<Route path="account" name="Account" component={Account} />
 				<Route
 					path="account/settings/username"
 					name="username"
