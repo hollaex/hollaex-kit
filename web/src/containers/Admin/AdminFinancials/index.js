@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 
 import Earnings from './Earnings';
@@ -84,8 +83,4 @@ const AdminFinancials = ({ router, location, user }) => {
 	);
 };
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-});
-
-export default connect(mapStateToProps)(AdminFinancials);
+export default AdminFinancials;
