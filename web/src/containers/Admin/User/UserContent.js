@@ -351,22 +351,22 @@ class UserContent extends Component {
 							<UserBalance coins={coins} userData={userInformation} />
 						</TabPane>
 					)}
-					{!isSupportUser && !isKYC() && (
+					{
 						<TabPane tab="Orders" key="orders">
 							<ActiveOrders userId={userInformation.id} />
 						</TabPane>
-					)}
-					{!isSupportUser && !isKYC() && (
+					}
+					{
 						<TabPane tab="Trade history" key="trade">
 							<TradeHistory userId={userInformation.id} />
 						</TabPane>
-					)}
+					}
 					{/* {isAdmin() && (
 						<TabPane tab="Funding" key="deposit">
 							<Balance user_id={id} pairs={pairs} />
 						</TabPane>
 					)} */}
-					{!isSupportUser && !isKYC() && (
+					{
 						<TabPane tab="Deposits" key="deposits">
 							{/*<Deposits*/}
 							{/*initialData={{*/}
@@ -388,8 +388,8 @@ class UserContent extends Component {
 								showFilters={true}
 							/>
 						</TabPane>
-					)}
-					{!isSupportUser && !isKYC() && (
+					}
+					{
 						<TabPane tab="Withdrawal" key="withdrawals">
 							<Transactions
 								initialData={{
@@ -402,13 +402,13 @@ class UserContent extends Component {
 								showFilters={true}
 							/>
 						</TabPane>
-					)}
-					{!isSupportUser && !isKYC() && (
+					}
+					{
 						<TabPane tab="Referrals" key="referrals">
 							<Referrals userInformation={userInformation} />
 						</TabPane>
-					)}
-					{!isSupportUser && !isKYC() && (
+					}
+					{
 						<TabPane tab="Meta" key="meta">
 							<UserMetaForm
 								constants={constants}
@@ -417,7 +417,7 @@ class UserContent extends Component {
 								isConfigure={isConfigure}
 							/>
 						</TabPane>
-					)}
+					}
 				</Tabs>
 				<VerifyEmailConfirmation
 					visible={showVerifyEmailModal}
