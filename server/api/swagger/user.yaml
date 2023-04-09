@@ -195,7 +195,6 @@ paths:
           description: CSV
           schema:
             type: string
-            maxLength: 256
         default:
           description: Error
           schema:
@@ -827,7 +826,6 @@ paths:
           description: CSV
           schema:
             type: string
-            maxLength: 256
         default:
           description: Error
           schema:
@@ -943,7 +941,6 @@ paths:
           description: CSV
           schema:
             type: string
-            maxLength: 256
         default:
           description: Error
           schema:
@@ -1059,7 +1056,6 @@ paths:
           description: CSV
           schema:
             type: string
-            maxLength: 256
         default:
           description: Error
           schema:
