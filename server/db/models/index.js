@@ -42,6 +42,8 @@ model = require(path.join(__dirname, './plugin'))(sequelize, Sequelize.DataTypes
 db[model.name] = model;
 model = require(path.join(__dirname, './broker'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
+model = require(path.join(__dirname, './session'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 
 Object.keys(db).forEach(function (modelName) {
 	if ('associate' in db[modelName]) {

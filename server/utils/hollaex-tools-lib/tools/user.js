@@ -67,7 +67,7 @@ const {
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
-const { isValidPassword } = require('./security');
+const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -324,7 +324,9 @@ const registerUserLogin = (
 		device: null,
 		domain: null,
 		origin: null,
-		referer: null
+		referer: null,
+		token: null,
+		expiry: null
 	}
 ) => {
 	const login = {
@@ -348,8 +350,18 @@ const registerUserLogin = (
 		login.referer = opts.referer;
 	}
 
-	return getModel('login').create(login);
+	return getModel('login').create(login)
+	.then((loginData) => {
+		if(opts.token) {
+			return createSession(opts.token, loginData.id, userId, opts.expiry);
+		}
+	})
+	.catch(err => reject(err))
 };
+
+const updateLoginAttempt = (userId, ip) => {
+	return getModel('login').increment('attempt', { by: 1, where: { user_id: userId, ip }});
+}
 
 /* Public Endpoints*/
 
@@ -1926,5 +1938,6 @@ module.exports = {
 	updateUserMeta,
 	mapNetworkIdToKitId,
 	mapKitIdToNetworkId,
-	updateUserInfo
+	updateUserInfo,
+	updateLoginAttempt
 };

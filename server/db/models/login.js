@@ -27,6 +27,11 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 				defaultValue: ''
 			},
+			attempt: {
+				type: DataTypes.NUMBER,
+				allowNull: false,
+				defaultValue: 0
+			},
 			timestamp: {
 				type: DataTypes.DATE,
 				allowNull: false,

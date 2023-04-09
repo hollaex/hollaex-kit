@@ -369,6 +369,10 @@ const loginPost = (req, res) => {
 			]);
 		})
 		.then(([user, passwordIsValid]) => {
+			if(ip) {
+				toolsLib.user.updateLoginAttempt(user.id, ip);
+			}
+
 			if (!passwordIsValid) {
 				throw new Error(INVALID_CREDENTIALS);
 			}
@@ -389,14 +393,6 @@ const loginPost = (req, res) => {
 			}
 		})
 		.then(([user]) => {
-			if (ip) {
-				toolsLib.user.registerUserLogin(user.id, ip, {
-					device,
-					domain,
-					origin,
-					referer
-				});
-			}
 			const data = {
 				ip,
 				time,
@@ -414,8 +410,10 @@ const loginPost = (req, res) => {
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
-			return res.status(201).json({
-				token: toolsLib.security.issueToken(
+
+			return all([
+				user,
+				toolsLib.security.issueToken(
 					user.id,
 					user.network_id,
 					email,
@@ -427,7 +425,20 @@ const loginPost = (req, res) => {
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
-			});
+			])
+		})
+		.then(([user, token]) => {
+			if (ip) {
+				toolsLib.user.registerUserLogin(user.id, ip, {
+					device,
+					domain,
+					origin,
+					referer,
+					token,
+					expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+				});
+			}
+			return res.status(201).json({ token });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);

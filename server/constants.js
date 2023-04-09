@@ -244,6 +244,7 @@ exports.HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
 exports.INIT_CHANNEL = 'channel:init';
 exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
 exports.HMAC_TOKEN_KEY = 'hmac:token';
+exports.SESSION_TOKEN_KEY = 'session:token';
 exports.EVENTS_CHANNEL = 'channel:events';
 exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
 
