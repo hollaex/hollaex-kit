@@ -796,7 +796,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if(token.role === ROLES.USER && scopes.includes(ROLES.ADMIN)) {
+				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
