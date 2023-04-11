@@ -2243,6 +2243,54 @@ const getWalletsByAdmin = (req, res) => {
 		});
 };
 
+const getUserSessionsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
+
+	const { user_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserSessionsByAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		user_id: user_id.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserSessionsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const revokeUserSessionByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/revokeUserSessionByAdmin/auth', req.auth);
+
+	const { session_id } = req.swagger.params.data.value;
+
+	toolsLib.user.revokeExchangeUserSession(session_id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserSessionByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2299,5 +2347,7 @@ module.exports = {
 	getUserReferer,
 	createUserByAdmin,
 	createUserWalletByAdmin,
-	getWalletsByAdmin
+	getWalletsByAdmin,
+	getUserSessionsByAdmin,
+	revokeUserSessionByAdmin
 };

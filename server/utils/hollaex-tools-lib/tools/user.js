@@ -50,9 +50,11 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	SESSION_NOT_FOUND,
+	SESSION_ALREADY_REVOKED
 } = require(`${SERVER_PATH}/messages`);
-const { publisher } = require('./database/redis');
+const { publisher, client } = require('./database/redis');
 const {
 	CONFIGURATION_CHANNEL,
 	AUDIT_KEYS,
@@ -62,7 +64,8 @@ const {
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
-	AFFILIATION_CODE_LENGTH
+	AFFILIATION_CODE_LENGTH,
+	SESSION_TOKEN_KEY
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -1888,6 +1891,62 @@ const updateUserInfo = async (userId, data = {}) => {
 	return omitUserFields(user.dataValues);
 };
 
+const getExchangeUserSessions = (opts = {
+	user_id: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null
+}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	return dbQuery.findAndCountAllWithRows('login', {
+		where: {
+			...(opts.user_id && {user_id: opts.user_id}),
+			created_at: timeframe
+		},
+		include: [
+			{
+				model: getModel('user'),
+				attributes: ['id', 'email']
+			},
+			{
+				model: getModel('session'),
+				attributes: {
+					exclude: ['token']
+				}
+			}
+		],
+		order: [ordering],
+		...pagination
+	});
+}
+
+const revokeExchangeUserSession = async (sessionId) => {
+	const session = await getModel('session').findOne({ where: { id: sessionId } });
+
+	if(!session) {
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if(!session.status) {
+		throw new Error(SESSION_ALREADY_REVOKED);
+	}
+	client.hdelAsync(SESSION_TOKEN_KEY, session.token);
+
+	const updatedSession = await session.update({ status: false }, {
+		fields: ['status'] 
+	});
+
+	delete updatedSession.dataValues.token;
+	return updatedSession.dataValues;
+}
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1939,5 +1998,7 @@ module.exports = {
 	mapNetworkIdToKitId,
 	mapKitIdToNetworkId,
 	updateUserInfo,
-	updateLoginAttempt
+	updateLoginAttempt,
+	getExchangeUserSessions,
+	revokeExchangeUserSession
 };

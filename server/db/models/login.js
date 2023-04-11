@@ -51,6 +51,7 @@ module.exports = function (sequelize, DataTypes) {
 			foreignKey: 'user_id',
 			targetKey: 'id'
 		});
+		Login.hasOne(models.Session);
 	};
 
 	return Login;
