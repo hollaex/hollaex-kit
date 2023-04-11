@@ -265,6 +265,11 @@ class Deposits extends Component {
 	};
 
 	onClickFilters = () => {
+		console.log(
+			'this.state.queryParams',
+			this.state.queryParams,
+			this.props.queryParams
+		);
 		this.requestDeposits(this.state.queryParams, this.props.queryParams);
 	};
 

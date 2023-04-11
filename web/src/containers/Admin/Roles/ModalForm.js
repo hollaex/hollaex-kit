@@ -86,7 +86,7 @@ export const renderUpgrade = () => {
 				</div>
 				<div className="ml-5 button-wrapper">
 					<a
-						href="https://dash.bitholla.com/billing"
+						href="https://dash.hollaex.com/billing"
 						target="_blank"
 						rel="noopener noreferrer"
 					>

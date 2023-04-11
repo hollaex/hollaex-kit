@@ -9,12 +9,16 @@ const AddUser = ({ onCancel, requestFullUsers }) => {
 		const { password, confirmPassword, userEmail } = values;
 
 		if (password === confirmPassword) {
-			requestAddUser({ email: userEmail, password: password }).then((res) => {
-				onCancel();
-				requestFullUsers();
-			});
+			requestAddUser({ email: userEmail, password: password })
+				.then((res) => {
+					onCancel();
+					requestFullUsers();
+				})
+				.catch((error) => {
+					message.error(error.data.message);
+				});
 		} else {
-			message.error('Password and confirm password should be same');
+			message.error('Password do not match');
 		}
 	};
 
@@ -47,7 +51,9 @@ const AddUser = ({ onCancel, requestFullUsers }) => {
 					rules={[
 						{
 							required: true,
-							message: 'Please input your password!',
+							message:
+								'Invalid password. It has to contain at least 8 characters, at least one digit and one character.',
+							pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
 						},
 					]}
 				>

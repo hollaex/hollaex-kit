@@ -79,6 +79,7 @@ import {
 	removeToken,
 	getTokenTimestamp,
 	isAdmin,
+	checkRole,
 } from './utils/token';
 import {
 	getLanguage,
@@ -245,6 +246,16 @@ const noLoggedUserCommonProps = {
 
 function withAdminProps(Component, key) {
 	let adminProps = {};
+	let restrictedPaths = [
+		'general',
+		'financials',
+		'trade',
+		'plugins',
+		'tiers',
+		'roles',
+		'billing',
+	];
+
 	PATHS.map((data) => {
 		const { pathProps = {}, routeKey, ...rest } = data;
 		if (routeKey === key) {
@@ -253,7 +264,11 @@ function withAdminProps(Component, key) {
 		return 0;
 	});
 	return function (matchProps) {
-		return <Component {...adminProps} {...matchProps} />;
+		if (checkRole() !== 'admin' && restrictedPaths.includes(key)) {
+			return <NotFound {...matchProps} />;
+		} else {
+			return <Component {...adminProps} {...matchProps} />;
+		}
 	};
 }
 

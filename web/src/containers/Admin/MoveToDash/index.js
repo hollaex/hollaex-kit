@@ -26,7 +26,7 @@ const MoveToDash = ({ path }) => {
 			/>
 			<div>
 				<a
-					href={`https://dash.bitholla.com/${data}`}
+					href={`https://dash.hollaex.com/${data}`}
 					target="_blank"
 					rel="noopener noreferrer"
 				>

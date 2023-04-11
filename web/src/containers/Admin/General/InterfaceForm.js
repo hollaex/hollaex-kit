@@ -170,7 +170,7 @@ const InterfaceForm = ({
 									</div>
 									<div className="ml-5 button-wrapper">
 										<a
-											href="https://dash.bitholla.com/billing"
+											href="https://dash.hollaex.com/billing"
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -222,7 +222,7 @@ const InterfaceForm = ({
 									</div>
 									<div className="ml-5 button-wrapper">
 										<a
-											href="https://dash.bitholla.com/billing"
+											href="https://dash.hollaex.com/billing"
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -274,7 +274,7 @@ const InterfaceForm = ({
 									</div>
 									<div className="ml-5 button-wrapper">
 										<a
-											href="https://dash.bitholla.com/billing"
+											href="https://dash.hollaex.com/billing"
 											target="_blank"
 											rel="noopener noreferrer"
 										>
@@ -326,7 +326,7 @@ const InterfaceForm = ({
 									</div>
 									<div className="ml-5 button-wrapper">
 										<a
-											href="https://dash.bitholla.com/billing"
+											href="https://dash.hollaex.com/billing"
 											target="_blank"
 											rel="noopener noreferrer"
 										>

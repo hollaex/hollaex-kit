@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
 import { Tabs } from 'antd';
 
 import Earnings from './Earnings';
@@ -11,6 +10,7 @@ import ExchangeOrdersContainer from '../Orders';
 
 import Assets, { getTabParams } from './Assets';
 import './index.css';
+import Wallet from './Wallet';
 
 const TabPane = Tabs.TabPane;
 
@@ -53,26 +53,29 @@ const AdminFinancials = ({ router, location, user }) => {
 				<TabPane tab="Summary" key="1">
 					<Wallets router={router} />
 				</TabPane>
-				<TabPane tab="Orders" key="2">
+				<TabPane tab="Wallet" key="2">
+					<Wallet />
+				</TabPane>
+				<TabPane tab="Orders" key="3">
 					<ExchangeOrdersContainer
 						type="orders"
 						user={user}
 						showFilters={true}
 					/>
 				</TabPane>
-				<TabPane tab="Deposits" key="3">
+				<TabPane tab="Deposits" key="4">
 					<DepositPage type="deposit" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Withdrawals" key="4">
+				<TabPane tab="Withdrawals" key="5">
 					<DepositPage type="withdrawal" showFilters={true} />
 				</TabPane>
-				<TabPane tab="Earnings" key="5">
+				<TabPane tab="Earnings" key="6">
 					<Earnings />
 				</TabPane>
-				<TabPane tab="Transfers" key="6">
+				<TabPane tab="Transfers" key="7">
 					<Transfer />
 				</TabPane>
-				<TabPane tab="Duster" key="7">
+				<TabPane tab="Duster" key="8">
 					<Duster />
 				</TabPane>
 			</Tabs>
@@ -80,8 +83,4 @@ const AdminFinancials = ({ router, location, user }) => {
 	);
 };
 
-const mapStateToProps = (state) => ({
-	user: state.user,
-});
-
-export default connect(mapStateToProps)(AdminFinancials);
+export default AdminFinancials;

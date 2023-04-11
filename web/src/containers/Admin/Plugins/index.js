@@ -86,7 +86,7 @@ class Plugins extends Component {
 			await this.getMyPlugins();
 			await this.getActivationsPlugin();
 		} catch (err) {
-			throw err;
+			message.error(err.message);
 		}
 	};
 
@@ -98,7 +98,7 @@ class Plugins extends Component {
 				}
 			})
 			.catch((err) => {
-				throw err;
+				console.error(err.message);
 			});
 	};
 
@@ -125,7 +125,7 @@ class Plugins extends Component {
 			})
 			.catch((err) => {
 				this.setState({ isLoading: false });
-				throw err;
+				message.error(err.message);
 			});
 	};
 
@@ -142,8 +142,8 @@ class Plugins extends Component {
 				}
 			})
 			.catch((err) => {
+				console.error(err.message);
 				this.setState({ loading: false });
-				throw err;
 			});
 	};
 
@@ -564,7 +564,7 @@ class Plugins extends Component {
 						pluginData={selectedPlugin}
 						isConfirm={this.state.isConfirm}
 						onHandleBack={this.handleBack}
-						okBtnlabel={'Upgrde'}
+						okBtnlabel={'Upgrade'}
 						onHandleChange={this.handleInput}
 						onHandleSubmit={this.handleUpdatePlugin}
 					/>
