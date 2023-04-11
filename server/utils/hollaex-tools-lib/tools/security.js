@@ -856,7 +856,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 };
 
 
-const createSession = async (token, loginId, userId, expiry) => {
+const createSession = async (token, loginId, userId) => {
 
 	const { getUserRole } = require('./user');
 

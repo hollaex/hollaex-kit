@@ -2747,11 +2747,6 @@ paths:
           type: number
           format: int32
         - in: query
-          name: currency
-          description: Currency symbol
-          required: false
-          type: string
-        - in: query
           name: order_by
           description: Field to order data
           required: false
@@ -2774,22 +2769,6 @@ paths:
           required: false
           type: string
           format: date-time
-        - in: query
-          name: address
-          description: crypto address of the wallet
-          required: false
-          type: string
-        - in: query
-          name: is_valid
-          description: specify whether or not wallet is wallet
-          required: false
-          type: boolean
-          default: true
-        - in: query
-          name: network
-          description: Blockchain network of wallet
-          required: false
-          type: string
       tags:
         - Admin
       responses:
