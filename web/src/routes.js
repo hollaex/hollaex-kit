@@ -258,9 +258,11 @@ function withAdminProps(Component, key) {
 }
 
 function generateRemoteRoutes(remoteRoutes) {
+	const privateRouteProps = { onEnter: requireAuth };
+
 	return (
 		<Fragment>
-			{remoteRoutes.map(({ path, name, target }, index) => (
+			{remoteRoutes.map(({ path, name, target, is_public }, index) => (
 				<Route
 					key={`${name}_remote-route_${index}`}
 					path={path}
@@ -270,7 +272,7 @@ function generateRemoteRoutes(remoteRoutes) {
 							<SmartTarget id={target} />
 						</div>
 					)}
-					onEnter={requireAuth}
+					{...(!is_public && privateRouteProps)}
 				/>
 			))}
 		</Fragment>
