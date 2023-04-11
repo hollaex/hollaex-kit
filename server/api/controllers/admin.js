@@ -5,7 +5,7 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
 const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -2124,20 +2124,38 @@ const createUserByAdmin = (req, res) => {
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
-	toolsLib.user.createUser(email, password, {
-		role: 'user',
-		id: null,
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+
+	if (!toolsLib.security.isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+
+	toolsLib.database.findOne('user', {
+		where: { email },
+		attributes: ['email']
 	})
-		.then(() => {
-			return res.status(201).json({ message: 'Success' });
+	.then((user) => {
+		if (user) {
+			throw new Error(USER_EXISTS);
+		}
+
+		return toolsLib.user.createUser(email, password, {
+			role: 'user',
+			id: null,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
 		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
+	})
+	.then(() => {
+		return res.status(201).json({ message: 'Success' });
+	})
+	.catch((err) => {
+		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
 };
 
 const createUserWalletByAdmin = (req, res) => {
