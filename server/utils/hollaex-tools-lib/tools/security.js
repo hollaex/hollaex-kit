@@ -897,9 +897,10 @@ const verifySession = async (token) => {
 
 	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
 		const sessionData = await dbQuery.findOne('session', { where: { token } });
-		sessionData.update(
+		const updatedSession =  await sessionData.update(
 			{ last_seen: new Date() }
 		);
+		client.hsetAsync(SESSION_TOKEN_KEY, updatedSession.dataValues.token, JSON.stringify(updatedSession.dataValues));
 	}
 }
 
@@ -922,7 +923,7 @@ const findSession = async (token) => {
 			}
 		});
 
-		if(session)
+		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime())
 			client.hsetAsync(SESSION_TOKEN_KEY, hashedToken, JSON.stringify(session));
 
 		loggerAuth.verbose(
