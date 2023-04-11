@@ -1219,34 +1219,42 @@ class GeneralContent extends Component {
 								<Link to="/admin/roles">roles page</Link>.
 							</div>
 						</div>
-						{exchange.plan !== 'basic' && <div className="divider"></div>}
-						{exchange.plan !== 'basic' && (
-							<div className="general-wrapper mb-5">
-								<div className="sub-title">API keys</div>
-								<div className="description d-flex flex-column">
-									<span>
-										Generate API keys for programmatic access to your exchange.
-									</span>
-									<span>
-										Note, in order to generate API keys it is required to add a{' '}
-										<a
-											href="https://www.techtarget.com/whatis/definition/whitelist"
-											target={'_blank'}
-											rel="noopener noreferrer"
-										>
-											white listed IP address.
-										</a>
-									</span>
-								</div>
-								<GenerateAPiKeys
-									tokenRevoked={this.props.tokenRevoked}
-									tokenGenerated={tokenGenerated}
-									tokens={this.props.tokens}
-									requestTokens={this.props.requestTokens}
-									user={this.props.user}
-								/>
-							</div>
-						)}
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
+							{exchange.plan === 'basic' ? (
+								<Link className="sub-title underline-text" to="/admin/billing">
+									Updgrade required
+								</Link>
+							) : (
+								<>
+									<div className="sub-title">API keys</div>
+									<div className="description d-flex flex-column">
+										<span>
+											Generate API keys for programmatic access to your
+											exchange.
+										</span>
+										<span>
+											Note, in order to generate API keys it is required to add
+											a{' '}
+											<a
+												href="https://www.techtarget.com/whatis/definition/whitelist"
+												target={'_blank'}
+												rel="noopener noreferrer"
+											>
+												white listed IP address.
+											</a>
+										</span>
+									</div>
+									<GenerateAPiKeys
+										tokenRevoked={this.props.tokenRevoked}
+										tokenGenerated={tokenGenerated}
+										tokens={this.props.tokens}
+										requestTokens={this.props.requestTokens}
+										user={this.props.user}
+									/>
+								</>
+							)}
+						</div>
 					</div>
 				) : null}
 			</div>
