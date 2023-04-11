@@ -1221,13 +1221,16 @@ class GeneralContent extends Component {
 						</div>
 						<div className="divider"></div>
 						<div className="general-wrapper mb-5">
+							<div className="sub-title">API keys</div>
 							{exchange.plan === 'basic' ? (
-								<Link className="sub-title underline-text" to="/admin/billing">
+								<Link
+									className="sub-title underline-text text-red"
+									to="/admin/billing"
+								>
 									Updgrade required
 								</Link>
 							) : (
 								<>
-									<div className="sub-title">API keys</div>
 									<div className="description d-flex flex-column">
 										<span>
 											Generate API keys for programmatic access to your

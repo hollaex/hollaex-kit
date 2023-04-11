@@ -1097,6 +1097,10 @@ h2,
 	margin-top: 0px;
 }
 
+.general-wrapper .text-red {
+	color: red;
+}
+
 @media screen and (min-width: 2560px) {
 	.generate-api .right-container {
 		padding-left: 14%;
