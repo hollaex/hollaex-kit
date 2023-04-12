@@ -53,7 +53,7 @@ const AddUser = ({ onCancel, requestFullUsers }) => {
 							required: true,
 							message:
 								'Invalid password. It has to contain at least 8 characters, at least one digit and one character.',
-							pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+							pattern: /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
 						},
 					]}
 				>
