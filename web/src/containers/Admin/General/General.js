@@ -786,13 +786,7 @@ class GeneralContent extends Component {
 			defaultEmailData,
 		} = this.state;
 		const { kit = {} } = this.state.constants;
-		const {
-			coins,
-			themeOptions,
-			activeTab,
-			handleTabChange,
-			exchange,
-		} = this.props;
+		const { coins, themeOptions, activeTab, handleTabChange } = this.props;
 		const generalFields = getGeneralFields(coins);
 
 		if (loading) {
@@ -1219,34 +1213,60 @@ class GeneralContent extends Component {
 								<Link to="/admin/roles">roles page</Link>.
 							</div>
 						</div>
-						{exchange.plan !== 'basic' && <div className="divider"></div>}
-						{exchange.plan !== 'basic' && (
-							<div className="general-wrapper mb-5">
-								<div className="sub-title">API keys</div>
-								<div className="description d-flex flex-column">
-									<span>
-										Generate API keys for programmatic access to your exchange.
-									</span>
-									<span>
-										Note, in order to generate API keys it is required to add a{' '}
-										<a
-											href="https://www.techtarget.com/whatis/definition/whitelist"
-											target={'_blank'}
-											rel="noopener noreferrer"
-										>
-											white listed IP address.
-										</a>
-									</span>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
+							<div className="sub-title">API keys</div>
+							{isUpgrade ? (
+								<div className="d-flex">
+									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+										<div>
+											<div className="font-weight-bold">
+												Gnerate your API keys
+											</div>
+											<div>Allow your users to create API keys</div>
+										</div>
+										<div className="ml-5 button-wrapper">
+											<a
+												href="https://dash.hollaex.com/billing"
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												<Button type="primary" className="w-100">
+													Upgrade Now
+												</Button>
+											</a>
+										</div>
+									</div>
 								</div>
-								<GenerateAPiKeys
-									tokenRevoked={this.props.tokenRevoked}
-									tokenGenerated={tokenGenerated}
-									tokens={this.props.tokens}
-									requestTokens={this.props.requestTokens}
-									user={this.props.user}
-								/>
-							</div>
-						)}
+							) : (
+								<>
+									<div className="description d-flex flex-column">
+										<span>
+											Generate API keys for programmatic access to your
+											exchange.
+										</span>
+										<span>
+											Note, in order to generate API keys it is required to add
+											a{' '}
+											<a
+												href="https://www.techtarget.com/whatis/definition/whitelist"
+												target={'_blank'}
+												rel="noopener noreferrer"
+											>
+												white listed IP address.
+											</a>
+										</span>
+									</div>
+									<GenerateAPiKeys
+										tokenRevoked={this.props.tokenRevoked}
+										tokenGenerated={tokenGenerated}
+										tokens={this.props.tokens}
+										requestTokens={this.props.requestTokens}
+										user={this.props.user}
+									/>
+								</>
+							)}
+						</div>
 					</div>
 				) : null}
 			</div>
@@ -1259,7 +1279,6 @@ const mapStateToProps = (state) => ({
 	tokens: state.user.tokens,
 	user: state.user,
 	constants: state.app.constants,
-	exchange: state.asset.exchange,
 });
 
 const mapDispatchToProps = (dispatch) => ({
