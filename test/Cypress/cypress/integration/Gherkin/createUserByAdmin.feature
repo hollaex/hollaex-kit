@@ -16,6 +16,12 @@ Scenario: Admin creates a new user
 	Then the user should be created successfully
 	And I should see a success message
 
+Scenario: The New User Successfull Login
+
+    Given I am in the Hollaex login page
+    When I enter credentials Username,Password
+    Then I should be able to login successfully
+
 	
 Scenario: Non Admin creates a new user
 	When a non-admin user tries to create a new user
