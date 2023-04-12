@@ -191,6 +191,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/send-email-test:
     x-swagger-router-controller: admin
     post:
@@ -309,6 +311,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/signup:
     x-swagger-router-controller: admin
     post:
@@ -1165,6 +1169,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_read
   /admin/user:
     x-swagger-router-controller: admin
     post:
@@ -1205,6 +1211,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putUserInfo
       description: Update a user's info
@@ -1273,6 +1281,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
@@ -1305,6 +1315,8 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/user/meta:
     x-swagger-router-controller: admin
     put:
@@ -1339,6 +1351,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/user/discount:
     x-swagger-router-controller: admin
     put:
@@ -1387,6 +1401,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/user/note:
     x-swagger-router-controller: admin
     put:
@@ -1423,6 +1439,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_withdraw
   /admin/user/balance:
     x-swagger-router-controller: admin
     get:
@@ -1453,6 +1471,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_read
   /admin/user/bank:
     x-swagger-router-controller: admin
     post:
@@ -1496,6 +1516,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -1658,6 +1680,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_read
   /admin/audits:
     x-swagger-router-controller: admin
     get:
@@ -1824,6 +1848,8 @@ paths:
         - admin
         - supervisor
         - support
+      x-token-permissions:
+        - can_read
   /admin/order:
     x-swagger-router-controller: order
     delete:
@@ -1859,6 +1885,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/trades:
     x-swagger-router-controller: trade
     get:
@@ -1944,6 +1972,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/user/activate:
     x-swagger-router-controller: admin
     post:
@@ -1985,6 +2015,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/balance:
     x-swagger-router-controller: admin
     get:
@@ -2008,6 +2040,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/upgrade-user:
     x-swagger-router-controller: admin
     post:
@@ -2039,6 +2073,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/verify-email:
     x-swagger-router-controller: admin
     post:
@@ -2106,6 +2142,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/flag-user:
     x-swagger-router-controller: admin
     post:
@@ -2265,6 +2303,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/withdrawals:
     x-swagger-router-controller: withdrawal
     get:
@@ -2389,6 +2429,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/transfer:
     x-swagger-router-controller: admin
     post:
@@ -2419,6 +2461,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/mint:
     x-swagger-router-controller: admin
     post:
@@ -2448,6 +2492,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putMint
       description: Update pending mint
@@ -2475,6 +2521,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/burn:
     x-swagger-router-controller: admin
     post:
@@ -2504,6 +2552,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putBurn
       description: Update pending burn
@@ -2531,6 +2581,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/dash-token:
     x-swagger-router-controller: admin
     get:
@@ -2618,6 +2670,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_read
   /admin/user/referer:
     x-swagger-router-controller: admin
     get:
@@ -2646,6 +2700,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/user/wallet:
     x-swagger-router-controller: admin
     get:
@@ -2746,6 +2802,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
     post:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
@@ -2791,3 +2849,5 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_withdraw
