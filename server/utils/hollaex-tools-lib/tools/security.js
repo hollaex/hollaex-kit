@@ -905,7 +905,7 @@ const verifySession = async (token) => {
 
 const findSession = async (token) => {
 
-	const hashedToken = crypto.createHash('md5').update(token).digest('hex');;
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
 	let session = await client.hgetAsync(SESSION_TOKEN_KEY, hashedToken)
 	
