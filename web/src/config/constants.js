@@ -224,12 +224,12 @@ export const BASE_CURRENCY = local_base_currnecy
 	? local_base_currnecy.toLowerCase()
 	: 'usdt';
 
-export const API_DOCS_URL = 'https://docs.bitholla.com/';
-export const EXCHANGE_URL = 'https://dash.bitholla.com/';
+export const API_DOCS_URL = 'https://docs.hollaex.com/';
+export const EXCHANGE_URL = 'https://dash.hollaex.com/';
 export const EXCHANGE_EXPIRY_DAYS = 15;
 export const EXCHANGE_EXPIRY_SECONDS = EXCHANGE_EXPIRY_DAYS * 86400;
 export const REQUEST_VAULT_SUPPORTED_COINS =
-	'https://api.vault.bitholla.com/v1/coins';
+	'https://www.hollaex.com/coin-and-market-listing';
 
 export const MAX_NUMBER_BANKS = 3;
 
@@ -250,4 +250,16 @@ export const DEFAULT_PAYPAL_PAYMENT_PAYPAL = [
 ];
 export const DEFAULT_CUSTOM_PAYMENT_CUSTOM = [
 	{ key: 'payment_info', label: 'Payment Info', required: true },
+];
+
+export const DEFAULT_PINNED_COINS = [
+	'xht',
+	'btc',
+	'eth',
+	'usdt',
+	'bnb',
+	'xrp',
+	'ada',
+	'trx',
+	'matic',
 ];

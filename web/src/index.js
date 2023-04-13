@@ -76,7 +76,7 @@ import {
 // import { setPricesAndAsset } from 'actions/assetActions';
 import { hasTheme } from 'utils/theme';
 import { generateRCStrings } from 'utils/string';
-import { LANGUAGE_KEY } from './config/constants';
+import { LANGUAGE_KEY, DEFAULT_PINNED_COINS } from 'config/constants';
 import {
 	consolePluginDevModeInfo,
 	mergePlugins,
@@ -90,6 +90,7 @@ import {
 	setLoadingImage,
 	setLoadingStyle,
 } from 'helpers/boot';
+import { filterPinnedAssets, handleUpgrade } from 'utils/utils';
 
 consoleKitInfo();
 consolePluginDevModeInfo();
@@ -211,16 +212,23 @@ const getConfigs = async () => {
 	setValidLanguages(valid_languages);
 	setExchangeInitialized(initialized);
 	setSetupCompleted(setup_completed);
+
+	const isBasic = handleUpgrade(kitData.info);
+	const pinnedCoins = filterPinnedAssets(
+		isBasic ? DEFAULT_PINNED_COINS : pinned_assets,
+		constants.coins
+	);
+
 	store.dispatch(setHomePageSetting(home_page));
 	store.dispatch(setInjectedValues(injected_values));
 	store.dispatch(setInjectedHTML(injected_html));
 	store.dispatch(setAdminSortData({ pinned_markets, default_sort }));
 	store.dispatch(
-		setAdminWalletSortData({ pinned_assets, default_wallet_sort })
+		setAdminWalletSortData({ pinned_assets: pinnedCoins, default_wallet_sort })
 	);
 	store.dispatch(
 		setAdminDigitalAssetsSortData({
-			pinned_assets,
+			pinned_assets: pinnedCoins,
 			default_digital_assets_sort,
 		})
 	);

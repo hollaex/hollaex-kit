@@ -1,6 +1,6 @@
 import { APP_TITLE } from 'config/constants';
 
-export const PATHS = [
+export const ADMIN_PATHS = [
 	{
 		path: '/admin',
 		// component: Main,
@@ -53,14 +53,14 @@ export const PATHS = [
 		routeKey: 'roles',
 	},
 	// {
-	// 	path: '/admin/hosting',
-	// 	label: 'Hosting',
-	// 	routeKey: 'hosting',
+	//  path: '/admin/hosting',
+	//  label: 'Hosting',
+	//  routeKey: 'hosting',
 	// },
 	// {
-	// 	path: '/admin/billing',
-	// 	label: 'Billing',
-	// 	routeKey: 'billing',
+	//  path: '/admin/billing',
+	//  label: 'Billing',
+	//  routeKey: 'billing',
 	// },
 	{
 		path: '/admin/chat',
@@ -73,105 +73,125 @@ export const PATHS = [
 		routeKey: 'billing',
 	},
 	// {
-	// 	path: '/admin/collateral',
-	// 	label: 'Collateral',
-	// 	routeKey: 'collateral',
+	//  path: '/admin/collateral',
+	//  label: 'Collateral',
+	//  routeKey: 'collateral',
 	// },
 	// {
-	// 	path: '/admin/wallets',
-	// 	// component: Wallets,
-	// 	label: 'Wallets',
-	// 	hideIfSupport: true,
-	// 	hideIfSupervisor: true,
-	// 	hideIfKYC: true,
-	// 	routeKey: 'wallets'
+	//  path: '/admin/wallets',
+	//  // component: Wallets,
+	//  label: 'Wallets',
+	//  hideIfSupport: true,
+	//  hideIfSupervisor: true,
+	//  hideIfKYC: true,
+	//  routeKey: 'wallets'
 	// },
 	// {
-	// 	path: '/admin/fees',
-	// 	label: 'Fees',
-	// 	routeKey: 'fees'
+	//  path: '/admin/fees',
+	//  label: 'Fees',
+	//  routeKey: 'fees'
 	// },
 	// {
-	// 	path: '/admin/transfer',
-	// 	label: 'Transfer',
-	// 	routeKey: 'transfer'
+	//  path: '/admin/transfer',
+	//  label: 'Transfer',
+	//  routeKey: 'transfer'
 	// },
 	// {
-	// 	path: '/admin/deposits',
-	// 	// component: Deposits,
-	// 	label: 'Deposits',
-	// 	hideIfSupport: true,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: false,
-	// 	pathProps: {
-	// 		type: 'deposit',
-	// 		showFilters: true
-	// 	},
-	// 	routeKey: 'deposit'
+	//  path: '/admin/deposits',
+	//  // component: Deposits,
+	//  label: 'Deposits',
+	//  hideIfSupport: true,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: false,
+	//  pathProps: {
+	//      type: 'deposit',
+	//      showFilters: true
+	//  },
+	//  routeKey: 'deposit'
 	// },
 	// {
-	// 	path: '/admin/withdrawals',
-	// 	// component: Deposits,
-	// 	label: 'Withdrawals',
-	// 	pathProps: {
-	// 		type: 'withdrawal',
-	// 		showFilters: true
-	// 	},
-	// 	hideIfSupport: true,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: false,
-	// 	routeKey: 'withdrawal'
+	//  path: '/admin/withdrawals',
+	//  // component: Deposits,
+	//  label: 'Withdrawals',
+	//  pathProps: {
+	//      type: 'withdrawal',
+	//      showFilters: true
+	//  },
+	//  hideIfSupport: true,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: false,
+	//  routeKey: 'withdrawal'
 	// },
 	// {
-	// 	path: '/admin/activeorders',
-	// 	label: 'Active Orders',
-	// 	hideIfSupport: true,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: true,
-	// 	routeKey: 'orders'
+	//  path: '/admin/activeorders',
+	//  label: 'Active Orders',
+	//  hideIfSupport: true,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: true,
+	//  routeKey: 'orders'
 	// },
 	// {
-	// 	path: '/admin/pair',
-	// 	// component: UserFees,
-	// 	label: 'Trading Pairs',
-	// 	hideIfSupport: true,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: true,
-	// 	routeKey: 'pair'
+	//  path: '/admin/pair',
+	//  // component: UserFees,
+	//  label: 'Trading Pairs',
+	//  hideIfSupport: true,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: true,
+	//  routeKey: 'pair'
 	// },
 	// {
-	// 	path: '/admin/coin',
-	// 	// component: Limits,
-	// 	label: 'Coins',
-	// 	hideIfSupport: true,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: true,
-	// 	routeKey: 'coin'
+	//  path: '/admin/coin',
+	//  // component: Limits,
+	//  label: 'Coins',
+	//  hideIfSupport: true,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: true,
+	//  routeKey: 'coin'
 	// },
 	// {
-	// 	path: '/admin/chat',
-	// 	// component: Chat,
-	// 	label: 'Chat',
-	// 	hideIfSupport: false,
-	// 	hideIfKYC: true,
-	// 	hideIfSupervisor: false,
-	// 	routeKey: 'Chat'
+	//  path: '/admin/chat',
+	//  // component: Chat,
+	//  label: 'Chat',
+	//  hideIfSupport: false,
+	//  hideIfKYC: true,
+	//  hideIfSupervisor: false,
+	//  routeKey: 'Chat'
 	// },
 	// {
-	// 	path: '/admin/blockchain',
-	// 	// component: BlockchainTransaction,
-	// 	label: 'Vault',
-	// 	routeKey: 'blockChain'
+	//  path: '/admin/blockchain',
+	//  // component: BlockchainTransaction,
+	//  label: 'Vault',
+	//  routeKey: 'blockChain'
 	// },
 	// {
-	// 	path: '/admin/broker',
-	// 	label: 'Broker',
-	// 	routeKey: 'broker'
+	//  path: '/admin/broker',
+	//  label: 'Broker',
+	//  routeKey: 'broker'
 	// },
 	// {
-	// 	path: '/admin/settings',
-	// 	// component: BlockchainTransaction,
-	// 	label: 'Settings',
-	// 	routeKey: 'settings'
+	//  path: '/admin/settings',
+	//  // component: BlockchainTransaction,
+	//  label: 'Settings',
+	//  routeKey: 'settings'
 	// },
+];
+
+export const PATHS = [
+	{
+		path: '/admin',
+		// component: Main,
+		label: APP_TITLE.toUpperCase(),
+		routeKey: 'main',
+	},
+	{
+		path: '/admin/user',
+		// component: User,
+		label: 'Users',
+		routeKey: 'user',
+	},
+	{
+		path: '/admin/chat',
+		label: 'Chat',
+		routeKey: 'chat',
+	},
 ];

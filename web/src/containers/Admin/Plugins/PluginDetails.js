@@ -52,8 +52,11 @@ const PluginDetails = ({
 	const [isUpdateLoading, setUpdateLoading] = useState(false);
 
 	const checkactivatedPlugin = (name) => {
-		const data = activatedPluginDetails.filter((item) => item.name === name);
-		return data.length ? true : false;
+		const data =
+			activatedPluginDetails &&
+			typeof activatedPluginDetails === 'object' &&
+			activatedPluginDetails?.filter((item) => item?.name === name);
+		return data?.length ? true : false;
 	};
 	const onHandlePluginActivate = async () => {
 		getPluginActivateDetails({ name: selectedPlugin.name })
@@ -346,7 +349,8 @@ const PluginDetails = ({
 											{selectedPlugin.version}
 										</div>
 										<div className="my-2 d-flex">
-											<b>Newest version:</b> {pluginData.version}
+											<b className="mr-2">Newest version:</b>
+											{selectedNetworkPlugin.version}
 										</div>
 									</div>
 								) : (

@@ -28,6 +28,18 @@ let replication = {
 	}
 };
 
+const DB_READ_MODE = process.env.DB_READ_MODE || 'main'; // the default mode that only reads from the main db host
+
+if (DB_READ_MODE === 'replica') {
+	if (process.env.DB_HOST_REPLICA) {
+		replication.read = [{ host: process.env.DB_HOST_REPLICA }]; // only reads from the replica
+	}
+} else if (DB_READ_MODE === 'all') {
+	if (process.env.DB_HOST_REPLICA) {
+		replication.read.push({ host: process.env.DB_HOST_REPLICA }); // reads from main and replica db
+	}
+}
+
 module.exports = {
 	development: {
 		username: process.env.DB_USERNAME,

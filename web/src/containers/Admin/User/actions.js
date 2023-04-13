@@ -275,3 +275,11 @@ export const getUserReferer = (user_id) => {
 		options
 	);
 };
+
+export const requestAddUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated('/admin/user', options);
+};

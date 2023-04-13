@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Spin, Table } from 'antd';
+import { Button, message, Modal, Spin, Table } from 'antd';
 import { SubmissionError } from 'redux-form';
 import { ReactSVG } from 'react-svg';
 
 import { DonutChart, CurrencyBall } from '../../../components';
-import { requestUserBalance } from './actions';
+import { generateCryptoAddress, requestUserBalance } from './actions';
+import { requestUserData } from '../User/actions';
 import { getPrices, generateChartData } from '../../../actions/assetActions';
 import { isSupport } from '../../../utils/token';
 import { calculateBalancePrice } from '../../../utils/currency';
@@ -16,6 +17,9 @@ const INITIAL_STATE = {
 	tableData: [],
 	chartData: [],
 	userInformation: {},
+	showGenerateWalletAddress: false,
+	generateWalletStep: 'step-1',
+	generateAddressParams: {},
 };
 
 class UserBalance extends Component {
@@ -64,7 +68,22 @@ class UserBalance extends Component {
 			this.setState({ tableData });
 		}
 	}
-	renderAddress = ({ network, address, ...rest }) => {
+
+	onHandleParams = (data, network) => {
+		let params = {};
+		if (network) {
+			params = { ...data, network };
+		} else {
+			params = { ...data };
+		}
+		this.setState({
+			showGenerateWalletAddress: true,
+			generateAddressParams: params,
+		});
+	};
+
+	renderAddress = ({ network, address, symbol, ...rest }) => {
+		let params = { user_id: this.state.userInformation.id, crypto: symbol };
 		const networks = network ? network.split(',') : [];
 		if (networks.length) {
 			return (
@@ -77,6 +96,14 @@ class UserBalance extends Component {
 								{rest[`${data}_address`]
 									? rest[`${data}_address`]
 									: 'Not generated'}{' '}
+								{!rest[`${data}_address`] && (
+									<span
+										onClick={() => this.onHandleParams(params, data)}
+										className="generate-link"
+									>
+										(Generate)
+									</span>
+								)}
 							</div>
 						);
 					})}
@@ -85,7 +112,17 @@ class UserBalance extends Component {
 		} else if (address) {
 			return <div>address: {address}</div>;
 		} else {
-			return <div>address: Not generated</div>;
+			return (
+				<div>
+					address: Not generated{' '}
+					<span
+						onClick={() => this.onHandleParams(params)}
+						className="generate-link"
+					>
+						(Generate)
+					</span>
+				</div>
+			);
 		}
 	};
 	getBalanceColumn = () => {
@@ -171,8 +208,111 @@ class UserBalance extends Component {
 		}
 	};
 
+	onHandleGenerate = async (params) => {
+		this.setState({ showGenerateWalletAddress: false });
+		try {
+			let res = await generateCryptoAddress({
+				body: JSON.stringify(params),
+				method: 'POST',
+			});
+			if (res) {
+				requestUserData({ id: params.user_id }).then((res) => {
+					if (res && res.data && res.data[0]) {
+						this.setState({ userInformation: res.data[0] });
+					}
+				});
+			}
+		} catch (error) {
+			message.error(error.message);
+		}
+	};
+
+	GenerateWalletAddress = (key) => {
+		const { generateAddressParams } = this.state;
+		switch (key) {
+			case 'step-2':
+				return (
+					<div className="step-2-container">
+						<div className="title">Generate wallet address</div>
+						<div className="middle-container pt-3">
+							<fieldset style={{ border: '1px solid' }}>
+								<legend style={{ width: 'auto' }} className="ml-3">
+									Check and confirm
+								</legend>
+								<div>
+									<div className="d-flex mt-3 pl-3">
+										<div className="width-6">User:</div>{' '}
+										{generateAddressParams.user_id}
+									</div>
+									<div className="d-flex mt-3 pl-3">
+										<div className="width-6">Assets:</div>{' '}
+										{generateAddressParams.crypto}
+									</div>
+									{generateAddressParams.network && (
+										<div className="d-flex mt-3 pl-3 pb-5">
+											<div className="width-6">Network:</div>
+											{generateAddressParams.network}
+										</div>
+									)}
+								</div>
+							</fieldset>
+						</div>
+						<div className="btn-container">
+							<Button
+								className="green-btn"
+								onClick={() =>
+									this.setState({ showGenerateWalletAddress: false })
+								}
+							>
+								Cancel
+							</Button>
+							<Button
+								className="green-btn"
+								onClick={() => this.onHandleGenerate(generateAddressParams)}
+							>
+								Generate
+							</Button>
+						</div>
+					</div>
+				);
+			default:
+			case 'step-1':
+				return (
+					<div className="step-1-container">
+						<div className="title">Generate wallet address</div>
+						<div className="info mt-3">
+							This will generate crypto address for this assets.
+						</div>
+						<div className="info mt-3">Are you sure you want to proceed?</div>
+						<div className="btn-container">
+							<Button
+								onClick={() =>
+									this.setState({ showGenerateWalletAddress: false })
+								}
+								className="green-btn"
+							>
+								Cancel
+							</Button>
+							<Button
+								onClick={() => this.setState({ generateWalletStep: 'step-2' })}
+								className="green-btn"
+							>
+								Next
+							</Button>
+						</div>
+					</div>
+				);
+		}
+	};
+
 	render() {
-		const { loading, tableData, chartData } = this.state;
+		const {
+			loading,
+			tableData,
+			chartData,
+			generateWalletStep,
+			showGenerateWalletAddress,
+		} = this.state;
 		const { coins } = this.props;
 		const BALANCE_COLUMN = this.getBalanceColumn();
 
@@ -186,6 +326,15 @@ class UserBalance extends Component {
 
 		return (
 			<div className="f-1 admin-user-container">
+				<Modal
+					visible={showGenerateWalletAddress}
+					className="admin-user-modal"
+					footer={false}
+					onCancel={() => this.setState({ showGenerateWalletAddress: false })}
+					afterClose={() => this.setState({ generateWalletStep: 'step-1' })}
+				>
+					{this.GenerateWalletAddress(generateWalletStep)}
+				</Modal>
 				<div className="d-flex align-items-center mb-4">
 					<div>
 						<ReactSVG

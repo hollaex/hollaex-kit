@@ -7,6 +7,7 @@ import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { renderStatusIcon } from 'components/CheckTitle';
 import { DollarOutlined, UserOutlined } from '@ant-design/icons';
+import { isLoggedIn } from 'utils/token';
 
 const TraderAccounts = ({
 	user = {},
@@ -19,7 +20,11 @@ const TraderAccounts = ({
 	selectedAccount,
 	icons: ICONS,
 }) => {
-	const level = selectedAccount ? selectedAccount : verification_level;
+	const level = selectedAccount
+		? selectedAccount
+		: isLoggedIn()
+		? verification_level
+		: Object.keys(config)[0];
 	const accountData = config[level] || {};
 	const title =
 		accountData.name ||
@@ -102,39 +107,47 @@ const TraderAccounts = ({
 							</div>
 						</Link>
 
-						<div className="d-flex align-items-center">
-							<DollarOutlined className="mr-2" />
-							<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
-								{STRINGS['SUMMARY.EARN_COMMISSION']}
-							</EditWrapper>
-						</div>
-						<EditWrapper
-							stringId="REFERRAL_LINK.TITLE"
-							renderWrapper={(children) => (
-								<div className="trade-account-link mb-4">
-									<span className="pointer caps" onClick={onInviteFriends}>
-										{children}
-									</span>
+						{isLoggedIn() && (
+							<Fragment>
+								<div className="d-flex align-items-center">
+									<DollarOutlined className="mr-2" />
+									<EditWrapper stringId="SUMMARY.EARN_COMMISSION">
+										{STRINGS['SUMMARY.EARN_COMMISSION']}
+									</EditWrapper>
 								</div>
-							)}
-						>
-							{STRINGS['REFERRAL_LINK.TITLE']}
-						</EditWrapper>
-
-						<div className="d-flex align-items-center">
-							<UserOutlined className="mr-2" />
-							<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
-								{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
-							</EditWrapper>
-							<div className="mx-2">{notificationStatus}</div>
-						</div>
-						<Link to="/verification">
-							<div className="trade-account-link mb-2 caps">
-								<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
-									{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+								<EditWrapper
+									stringId="REFERRAL_LINK.TITLE"
+									renderWrapper={(children) => (
+										<div className="trade-account-link mb-4">
+											<span className="pointer caps" onClick={onInviteFriends}>
+												{children}
+											</span>
+										</div>
+									)}
+								>
+									{STRINGS['REFERRAL_LINK.TITLE']}
 								</EditWrapper>
-							</div>
-						</Link>
+							</Fragment>
+						)}
+
+						{isLoggedIn() && (
+							<Fragment>
+								<div className="d-flex align-items-center">
+									<UserOutlined className="mr-2" />
+									<EditWrapper stringId="SUMMARY.ID_VERIFICATION">
+										{STRINGS.formatString(STRINGS['SUMMARY.ID_VERIFICATION'])}
+									</EditWrapper>
+									<div className="mx-2">{notificationStatus}</div>
+								</div>
+								<Link to="/verification">
+									<div className="trade-account-link mb-2 caps">
+										<EditWrapper stringId="SUMMARY.VIEW_VERIFICATION">
+											{STRINGS['SUMMARY.VIEW_VERIFICATION']}
+										</EditWrapper>
+									</div>
+								</Link>
+							</Fragment>
+						)}
 					</Fragment>
 				)}
 				{isAccountDetails && (
@@ -167,7 +180,7 @@ const TraderAccounts = ({
 							{STRINGS['SUMMARY.UPGRADE_ACCOUNT']}
 						</EditWrapper>
 					)}
-				{!isAccountDetails && isMobile && (
+				{!isAccountDetails && isMobile && isLoggedIn() && (
 					<div>
 						<EditWrapper
 							stringId="LOGOUT"

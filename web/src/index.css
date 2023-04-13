@@ -2333,6 +2333,8 @@ table th {
     top: 21px; }
   .history_block-wrapper .download-icon .action_notification-svg svg path {
     fill: var(--specials_buttons-links-and-highlights); }
+  .history_block-wrapper .download-icon .right-align {
+    right: 8% !important; }
   .history_block-wrapper .loader_background {
     filter: opacity(0.25) !important; }
 
@@ -3675,6 +3677,9 @@ table th {
 
 .logout-wrapper {
   width: 32rem; }
+
+.layout-mobile .digital-market-wrapper .link-container {
+  font-size: 10px; }
 
 .layout-mobile .fee-limits-wrapper {
   margin: 1rem auto 3rem; }
@@ -5213,6 +5218,10 @@ table th {
 .operator-controls__modal .pinned-markets-table {
   font-size: 1.2rem;
   width: 100%; }
+  .operator-controls__modal .pinned-markets-table.disabled-area {
+    pointer-events: none;
+    cursor: not-allowed;
+    opacity: 0.5; }
 
 .operator-controls__modal .pinned-markets-table-wrapper {
   border: 1px solid #ffffffcc; }
@@ -5757,7 +5766,17 @@ table th {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center; }
+  align-items: center;
+  overflow-y: hidden; }
+  .hollaex-token-wrapper .trade_tabs-link {
+    color: var(--specials_buttons-links-and-highlights);
+    margin: 0.5rem 0;
+    padding: 0 0.5rem;
+    text-transform: capitalize; }
+    .hollaex-token-wrapper .trade_tabs-link:hover {
+      opacity: 0.5; }
+  .hollaex-token-wrapper .link-separator {
+    border-right: 1px solid var(--calculated_secondary-border); }
   .hollaex-token-wrapper .mt-8 {
     margin-top: 8rem; }
   .hollaex-token-wrapper .pb-6 {
@@ -5846,7 +5865,7 @@ table th {
         font-family: "Open Sans";
         background-color: var(--base_background); }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content {
-          height: 450px; }
+          min-height: 450px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-30 {
             padding-bottom: 30px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-35 {
@@ -10134,7 +10153,9 @@ table th {
   height: 100%; }
   .input-group__coin-icons svg {
     margin: 0 auto;
-    display: block; }
+    display: block;
+    width: 100% !important;
+    height: 100% !important; }
     .input-group__coin-icons svg .btc0,
     .input-group__coin-icons svg .btc1 {
       fill: var(--coin-btc); }
@@ -11545,6 +11566,22 @@ table th {
 .help-tooltip .ant-tooltip-inner {
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
+
+.not-logged-in_view {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important; }
+  .not-logged-in_view.show-background {
+    background-color: var(--base_wallet-sidebar-and-popup);
+    padding-top: 2rem;
+    padding-bottom: 2rem; }
+  .not-logged-in_view .icon_title-wrapper {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: center !important;
+    align-items: center !important; }
+    .not-logged-in_view .icon_title-wrapper .icon_title-text {
+      margin: 0 !important; }
 
 html {
   font-size: 12px !important;

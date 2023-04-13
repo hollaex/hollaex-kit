@@ -343,7 +343,13 @@ class Verification extends Component {
 			return;
 		}
 		const { icons: ICONS } = this.props;
-		const { email, bank_account, id_data, phone_number, email_verified } = user;
+		const {
+			email,
+			bank_account = [],
+			id_data = {},
+			phone_number,
+			email_verified,
+		} = user;
 		let bank_status = 0;
 		if (bank_account.length) {
 			if (bank_account.filter((data) => data.status === 3).length) {
