@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 
-import { DonutChart, Carousel } from 'components';
+import { DonutChart, Carousel, EditWrapper, NotLoggedIn } from 'components';
 import STRINGS from 'config/localizedStrings';
 import {
 	BASE_CURRENCY,
@@ -11,8 +11,8 @@ import {
 	SHOW_SUMMARY_ACCOUNT_DETAILS,
 } from 'config/constants';
 import { formatToCurrency } from 'utils/currency';
+import { isLoggedIn } from 'utils/token';
 import AssetCard from './AssetCard';
-import { EditWrapper } from 'components';
 
 const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 	const baseValue = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
@@ -44,6 +44,7 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 						value={value}
 						name={display_name}
 						currencyBalance={currencyBalance}
+						hideBalance={!isLoggedIn()}
 					/>
 				);
 			});
@@ -76,26 +77,28 @@ const AccountAssets = ({ chartData = [], totalAssets, balance, coins }) => {
 					<div className="d-flex justify-content-end">
 						<EditWrapper stringId="ZERO_ASSET,DEPOSIT_ASSETS,OPEN_WALLET" />
 					</div>
-					<div
-						className={classnames('w-100 donut-container mb-4', {
-							'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
-						})}
-					>
-						{chartData.length ? (
-							<DonutChart coins={coins} chartData={chartData} />
-						) : (
-							<div>
-								<div className="rounded-loading">
-									<div className="inner-round" />
+					<NotLoggedIn hasBackground={false}>
+						<div
+							className={classnames('w-100 donut-container mb-4', {
+								'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+							})}
+						>
+							{chartData.length ? (
+								<DonutChart coins={coins} chartData={chartData} />
+							) : (
+								<div>
+									<div className="rounded-loading">
+										<div className="inner-round" />
+									</div>
+									<div className="loading-txt caps">
+										<EditWrapper stringId="WALLET.LOADING_ASSETS">
+											{STRINGS['WALLET.LOADING_ASSETS']}
+										</EditWrapper>
+									</div>
 								</div>
-								<div className="loading-txt caps">
-									<EditWrapper stringId="WALLET.LOADING_ASSETS">
-										{STRINGS['WALLET.LOADING_ASSETS']}
-									</EditWrapper>
-								</div>
-							</div>
-						)}
-					</div>
+							)}
+						</div>
+					</NotLoggedIn>
 					<Carousel
 						items={assetCards()}
 						groupItems={isMobile ? 4 : 7}

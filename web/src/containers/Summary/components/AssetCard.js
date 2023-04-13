@@ -11,6 +11,7 @@ const AssetCard = ({
 	currencyBalance,
 	icons: ICONS,
 	name,
+	hideBalance = false,
 }) => {
 	return (
 		<div className="price-content text-center">
@@ -23,9 +24,9 @@ const AssetCard = ({
 				/>
 			</div>
 			<div className="price-text">
-				{`${name} ${formatAverage(currencyBalance)}`}
+				{`${name} ${hideBalance ? '' : formatAverage(currencyBalance)}`}
 			</div>
-			{symbol !== BASE_CURRENCY && (
+			{!hideBalance && symbol !== BASE_CURRENCY && (
 				<div className="price-text">{`~${formatAverage(balanceFormat)}`}</div>
 			)}
 		</div>

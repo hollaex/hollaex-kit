@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
-import { IconTitle, Accordion, MobileBarTabs } from 'components';
+import { IconTitle, Accordion, MobileBarTabs, NotLoggedIn } from 'components';
 import { TransactionsHistory, Stake } from 'containers';
 import { changeSymbol } from 'actions/orderbookAction';
 import {
@@ -288,7 +288,9 @@ class Wallet extends Component {
 							) : (
 								<>
 									<HeaderSection icons={ICONS} />
-									<Accordion sections={sections} showHeader={false} />
+									<NotLoggedIn>
+										<Accordion sections={sections} showHeader={false} />
+									</NotLoggedIn>
 								</>
 							)}
 						</div>

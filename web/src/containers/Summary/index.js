@@ -32,6 +32,7 @@ import { getLastMonthVolume } from './components/utils';
 import { getUserReferrals } from 'actions/userAction';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { openContactForm } from 'actions/appActions';
+import { isLoggedIn } from 'utils/token';
 
 class Summary extends Component {
 	state = {
@@ -46,6 +47,8 @@ class Summary extends Component {
 		if (user.id) {
 			this.setCurrentTradeAccount(user);
 			getUserReferrals();
+		} else {
+			this.setCurrentTradeAccount(user);
 		}
 		if (tradeVolumes.fetched) {
 			let lastMonthVolume = getLastMonthVolume(
@@ -99,6 +102,11 @@ class Summary extends Component {
 				currentTradingAccount,
 				selectedAccount: user.verification_level,
 			});
+		} else if (!isLoggedIn()) {
+			const { config_level } = this.props;
+			this.setState({
+				selectedAccount: Object.keys(config_level)[0] || 0,
+			});
 		}
 	};
 
@@ -134,7 +142,11 @@ class Summary extends Component {
 
 		const { fullname } = coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = formatAverage(formatBaseAmount(totalAsset));
-		const level = selectedAccount ? selectedAccount : verification_level;
+		const level = selectedAccount
+			? selectedAccount
+			: isLoggedIn()
+			? verification_level
+			: Object.keys(config_level)[0];
 		const accountData = config_level[level] || {};
 		const traderAccTitle =
 			accountData.name ||
@@ -143,7 +155,10 @@ class Summary extends Component {
 				verification_level
 			);
 
-		const userData = config_level[verification_level] || {};
+		const userData =
+			config_level[
+				isLoggedIn() ? verification_level : Object.keys(config_level)[0]
+			] || {};
 		const userAccountTitle =
 			userData.name ||
 			STRINGS.formatString(

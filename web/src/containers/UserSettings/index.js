@@ -29,6 +29,7 @@ import {
 	Loader,
 	TabController,
 	EditWrapper,
+	NotLoggedIn,
 } from 'components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
@@ -38,7 +39,7 @@ import NotificationForm, {
 } from './NotificationForm';
 import AudioCueForm, { generateAudioCueFormValues } from './AudioForm';
 import RiskForm, { generateWarningFormValues } from './RiskForm';
-
+import { isLoggedIn } from 'utils/token';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 
@@ -464,11 +465,18 @@ class UserSettings extends Component {
 	};
 
 	render() {
-		if (this.props.verification_level === 0) {
+		const {
+			icons: ICONS,
+			openContactForm,
+			user: { verification_level },
+		} = this.props;
+
+		if (isLoggedIn() && verification_level === 0) {
 			return <Loader />;
 		}
+
 		const { activeTab, tabs } = this.state;
-		const { icons: ICONS, openContactForm } = this.props;
+
 		return (
 			<div className="presentation_container apply_rtl settings_container">
 				{!isMobile && (
@@ -498,26 +506,29 @@ class UserSettings extends Component {
 						</div>
 					</div>
 				</HeaderSection>
-				{!isMobile ? (
-					<TabController
-						activeTab={activeTab}
-						setActiveTab={this.setActiveTab}
-						tabs={tabs}
-					/>
-				) : (
-					<MobileTabBar
-						activeTab={activeTab}
-						renderContent={this.renderContent}
-						setActiveTab={this.setActiveTab}
-						tabs={tabs}
-					/>
-				)}
-				{!isMobile ? this.renderContent(tabs, activeTab) : null}
-				{isMobile && (
-					<div className="my-4">
-						{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
-					</div>
-				)}
+
+				<NotLoggedIn>
+					{!isMobile ? (
+						<TabController
+							activeTab={activeTab}
+							setActiveTab={this.setActiveTab}
+							tabs={tabs}
+						/>
+					) : (
+						<MobileTabBar
+							activeTab={activeTab}
+							renderContent={this.renderContent}
+							setActiveTab={this.setActiveTab}
+							tabs={tabs}
+						/>
+					)}
+					{!isMobile ? this.renderContent(tabs, activeTab) : null}
+					{isMobile && (
+						<div className="my-4">
+							{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
+						</div>
+					)}
+				</NotLoggedIn>
 			</div>
 		);
 	}

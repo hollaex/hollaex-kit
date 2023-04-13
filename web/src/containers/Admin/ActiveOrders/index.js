@@ -3,13 +3,14 @@ import { Row, Select } from 'antd';
 import { connect } from 'react-redux';
 
 import PairsSection from './PairsSection';
+import './index.scss';
 
 const TYPE_OPTIONS = [
 	{ value: true, label: 'Active' },
 	{ value: false, label: 'Closed' },
 ];
 
-const ActiveOrders = ({ pairs, userId, cancelOrder }) => {
+const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 	const [options, setOptions] = useState([]);
 	const [pair, setPair] = useState(null);
 	const [type, setType] = useState(true);
@@ -31,7 +32,6 @@ const ActiveOrders = ({ pairs, userId, cancelOrder }) => {
 
 	return (
 		<div className="app_container-content">
-			<h1>Active Orders</h1>
 			<div>
 				<Select
 					style={{
@@ -56,7 +56,7 @@ const ActiveOrders = ({ pairs, userId, cancelOrder }) => {
 					userId={userId}
 					pair={pair}
 					open={type}
-					cancelOrder={cancelOrder}
+					getThisExchangeOrder={getThisExchangeOrder}
 				/>
 			</Row>
 		</div>

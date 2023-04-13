@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import classnames from 'classnames';
@@ -6,12 +6,11 @@ import { Link } from 'react-router';
 import { isMobile } from 'react-device-detect';
 import { DEFAULT_URL } from 'config/constants';
 import MenuList from './MenuList';
-import { MobileBarWrapper } from '../';
-import { isLoggedIn } from '../../utils/token';
-import { getTickers, changeTheme, setLanguage } from '../../actions/appActions';
-import { updateUserSettings, setUserData } from '../../actions/userAction';
+import { MobileBarWrapper, EditWrapper, ButtonLink, Image } from 'components';
+import { isLoggedIn } from 'utils/token';
+import { getTickers, changeTheme, setLanguage } from 'actions/appActions';
+import { updateUserSettings, setUserData } from 'actions/userAction';
 import ThemeSwitcher from './ThemeSwitcher';
-import { EditWrapper, ButtonLink, Image } from 'components';
 import withEdit from 'components/EditProvider/withEdit';
 import withConfig from 'components/ConfigProvider/withConfig';
 import AnnouncementList from './AnnouncementList';
@@ -231,6 +230,7 @@ class AppBar extends Component {
 	render() {
 		const {
 			user,
+			constants: { valid_languages } = {},
 			constants = {},
 			children,
 			activePath,
@@ -238,6 +238,8 @@ class AppBar extends Component {
 			menuItems,
 			router,
 			isHome,
+			activeLanguage,
+			changeLanguage,
 		} = this.props;
 		const { securityPending, verificationPending, walletPending } = this.state;
 
@@ -278,15 +280,23 @@ class AppBar extends Component {
 					'no-borders': false,
 				})}
 			>
-				<div
-					id="home-nav-container"
-					className="d-flex align-items-center justify-content-center h-100"
-				>
-					{this.renderIcon()}
+				<div className="d-flex align-items-center">
+					<div
+						id="home-nav-container"
+						className="d-flex align-items-center justify-content-center h-100"
+					>
+						{this.renderIcon()}
+					</div>
+
+					<Fragment>{children}</Fragment>
 				</div>
-				{children}
 				{!isLoggedIn() && (
-					<div id="trade-nav-container">
+					<div id="trade-nav-container" className="mx-2">
+						<LanguageSwitcher
+							selected={activeLanguage}
+							valid_languages={valid_languages}
+							toggle={changeLanguage}
+						/>
 						<ThemeSwitcher
 							selected={selected}
 							options={themeOptions}
@@ -307,9 +317,9 @@ class AppBar extends Component {
 					>
 						<div className="d-flex app_bar-quicktrade-container">
 							<LanguageSwitcher
-								selected={this.props.activeLanguage}
-								valid_languages={this.props.constants.valid_languages}
-								toggle={this.props.changeLanguage}
+								selected={activeLanguage}
+								valid_languages={valid_languages}
+								toggle={changeLanguage}
 							/>
 						</div>
 						<div className="d-flex app_bar-quicktrade-container">

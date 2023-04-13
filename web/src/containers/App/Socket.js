@@ -359,9 +359,13 @@ class Container extends Component {
 					this.props.setBalance(data.data);
 					break;
 				case 'deposit':
-					const show = data.data.status || data.data.currency !== BASE_CURRENCY;
-					data.data.coins = this.props.coins;
-					this.props.setNotification(NOTIFICATIONS.DEPOSIT, data.data, show);
+					if (data.data.status === 'COMPLETED') {
+						// only send the notification when the deposit is confirmed
+						const show =
+							data.data.status || data.data.currency !== BASE_CURRENCY;
+						data.data.coins = this.props.coins;
+						this.props.setNotification(NOTIFICATIONS.DEPOSIT, data.data, show);
+					}
 					break;
 				default:
 					break;

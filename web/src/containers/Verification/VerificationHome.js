@@ -8,6 +8,7 @@ import {
 	HeaderSection,
 	CustomTabBar,
 	MobileTabBar,
+	NotLoggedIn,
 } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { EditWrapper } from 'components';
@@ -52,27 +53,29 @@ const VerificationHome = ({
 					</EditWrapper>
 				</div>
 			</div>
-			<div className="inner-content">
-				{!isMobile ? (
-					<CustomTabBar
-						activeTab={activeTab}
-						setActiveTab={setActiveTab}
-						{...tabProps}
-					/>
-				) : (
-					<MobileTabBar
-						activeTab={activeTab}
-						renderContent={renderContent}
-						setActiveTab={setActiveTab}
-						{...tabProps}
-					/>
-				)}
-				{!isMobile ? (
-					<div className="inner_container">
-						{activeTab > -1 && renderContent(tabs, activeTab)}
-					</div>
-				) : null}
-			</div>
+			<NotLoggedIn>
+				<div className="inner-content">
+					{!isMobile ? (
+						<CustomTabBar
+							activeTab={activeTab}
+							setActiveTab={setActiveTab}
+							{...tabProps}
+						/>
+					) : (
+						<MobileTabBar
+							activeTab={activeTab}
+							renderContent={renderContent}
+							setActiveTab={setActiveTab}
+							{...tabProps}
+						/>
+					)}
+					{!isMobile ? (
+						<div className="inner_container">
+							{activeTab > -1 && renderContent(tabs, activeTab)}
+						</div>
+					) : null}
+				</div>
+			</NotLoggedIn>
 		</div>
 	);
 	// } else {

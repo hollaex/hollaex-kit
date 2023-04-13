@@ -77,7 +77,7 @@ class TableRow extends Component {
 						key={`expandable_row_${rowIndex}`}
 					>
 						<td colSpan={headers.length}>
-							<div>{expandedRowRender(row)}</div>
+							<div>{expandedRowRender(row, rowIndex)}</div>
 						</td>
 					</tr>
 				)}

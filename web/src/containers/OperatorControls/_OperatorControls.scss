@@ -300,6 +300,12 @@ $operator-controls__panel-border-color: #a7a7a7;
 	.pinned-markets-table {
 		font-size: 1.2rem;
 		width: 100%;
+
+		&.disabled-area {
+			pointer-events: none;
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
 	}
 
 	.pinned-markets-table-wrapper {

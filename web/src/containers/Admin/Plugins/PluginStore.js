@@ -561,7 +561,7 @@ class Plugins extends Component {
 						pluginData={selectedPlugin}
 						isConfirm={this.state.isConfirm}
 						onHandleBack={this.handleBack}
-						okBtnlabel={'Upgrde'}
+						okBtnlabel={'Upgrade'}
 						onHandleChange={this.handleInput}
 						onHandleSubmit={this.handleUpdatePlugin}
 					/>
@@ -664,6 +664,9 @@ class Plugins extends Component {
 							router={this.props.router}
 							onChangeNextType={this.onChangeNextType}
 							setProcessing={this.setProcessing}
+							networkPlugin={pluginData}
+							myPlugins={myPlugins}
+							isNetwork={true}
 						/>
 					</div>
 				);
