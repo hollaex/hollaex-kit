@@ -866,8 +866,7 @@ const createSession = async (token, loginId, userId) => {
 	const payloadBuffer = Buffer.from(base64Payload, "base64");
 	const decoded = JSON.parse(payloadBuffer.toString());
 
-	// const hashedToken = await generateHash(token);
-	const hashedToken = token;
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
 	return getModel('session').create({
 		token: hashedToken,
@@ -906,15 +905,14 @@ const verifySession = async (token) => {
 
 const findSession = async (token) => {
 
-	// const hashedToken = await generateHash(token);
-	const hashedToken = token;
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');;
 
 	let session = await client.hgetAsync(SESSION_TOKEN_KEY, hashedToken)
 	
 	if (!session) {
 		loggerAuth.verbose(
 			'security/findSession jwt token not found in redis',
-			token
+			hashedToken
 		);
 
 		session = await dbQuery.findOne('session', {
@@ -928,14 +926,14 @@ const findSession = async (token) => {
 
 		loggerAuth.verbose(
 			'security/findSession token stored in redis',
-			token
+			hashedToken
 		);
 
 		return session;
 	} else {
 		loggerAuth.debug(
 			'security/findSession token found in redis',
-			token
+			hashedToken
 		);
 		return JSON.parse(session);
 	}
