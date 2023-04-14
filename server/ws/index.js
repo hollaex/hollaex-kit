@@ -61,7 +61,7 @@ wss.on('connection', (ws, req) => {
 			} else if (op === 'auth') {
 				loggerWebsocket.info(ws.id, 'ws/index/message auth');
 				const credentials = args[0];
-				const ip = req.socket ? req.socket.remoteAddress : undefined;
+				const ip = req.headers['x-real-ip'];
 				authorizeUser(credentials, ws, ip);
 			} else if (op === 'chat') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
