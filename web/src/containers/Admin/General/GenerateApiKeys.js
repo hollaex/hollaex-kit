@@ -61,7 +61,7 @@ const GenerateAPiKeys = ({
 			name,
 			email_code,
 			whitelisted_ips,
-			role: 'Admin',
+			role: 'admin',
 		})
 			.then(({ data: { key: apiKey, ...rest } }) => {
 				const response = { apiKey, ...rest };
