@@ -1,7 +1,10 @@
 import flatten from 'flat';
+import FIATS from './fiats';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
+	FIATS,
+
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',

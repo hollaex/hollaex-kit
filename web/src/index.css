@@ -10153,7 +10153,9 @@ table th {
   height: 100%; }
   .input-group__coin-icons svg {
     margin: 0 auto;
-    display: block; }
+    display: block;
+    width: 100% !important;
+    height: 100% !important; }
     .input-group__coin-icons svg .btc0,
     .input-group__coin-icons svg .btc1 {
       fill: var(--coin-btc); }

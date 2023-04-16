@@ -61,7 +61,7 @@ const GenerateAPiKeys = ({
 			name,
 			email_code,
 			whitelisted_ips,
-			role: 'Admin',
+			role: 'admin',
 		})
 			.then(({ data: { key: apiKey, ...rest } }) => {
 				const response = { apiKey, ...rest };
@@ -464,7 +464,7 @@ const GenerateAPiKeys = ({
 									<WarningOutlined />
 								</p>
 								<p>
-									To Generate API key you need to enable the 2-facotr
+									To Generate API key you need to enable the 2-factor
 									authentication.
 								</p>
 							</div>
