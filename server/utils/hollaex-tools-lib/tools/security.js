@@ -1037,7 +1037,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id } });
+	const token = await findToken({ where: { id: token_id , user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
