@@ -1,7 +1,10 @@
 const fs = require('fs');
+const path = require('path');
 const beautify = require('json-beautify');
 const merge = require('lodash.merge');
 const isEmpty = require('lodash.isempty');
+const flatten = require('flat');
+const glob = require('glob');
 
 const PLACEHOLDER_REGEX = /[^{}]+(?=})/g;
 const LETTER_REGEX = /[a-zA-Z]/g;
@@ -13,6 +16,14 @@ const ERRORS = {
 	get NOT_TRANSLATED() {
 		return `${this.SIGN} THE STRING IS NOT TRANSLATED`;
 	},
+};
+
+const LANG_PATTERN = 'src/config/lang/**.json';
+
+const getTranslations = async (diff, lang) => {
+	// translation request and response manipulation
+	await new Promise((resolve) => setTimeout(resolve, 3000));
+	return diff;
 };
 
 const removeError = (string = '') => string.split(ERRORS.SIGN)[0];
@@ -142,26 +153,71 @@ const reverseCheck = (base = {}, target = {}) => {
 	return cleanedTarget;
 };
 
-if (!lang) {
-	console.error('No language given');
-	process.exit(1);
-}
-
-if (has('--save-diff')) {
+const autoTranslate = async (targetLangDir, targetLang) => {
+	const exceptions = [
+		'HOUR_FORMAT',
+		'DEFAULT_TIMESTAMP_FORMAT',
+		'TIMESTAMP_FORMAT',
+	];
 	const diff = compare(readFile(baseLangDir), readFile(targetLangDir));
-	saveFile(`diff.json`, diff);
-}
+	const diff_no_error = manipulateObject(diff, removeError);
 
-if (has('--merge-diff')) {
-	const diff = manipulateObject(readFile(diffDir), removeError);
-	const content = merge({}, readFile(targetLangDir), diff);
-	saveFile(targetLangDir, content);
-}
-
-if (has('--reverse-check')) {
-	const cleanedLanguageFile = reverseCheck(
-		readFile(baseLangDir),
-		readFile(targetLangDir)
+	Object.keys(diff_no_error).forEach((key) => {
+		if (exceptions.includes(key)) {
+			delete diff_no_error[key];
+		}
+	});
+	const options = { safe: true };
+	const translations = await getTranslations(
+		flatten(diff_no_error, options),
+		targetLang
 	);
-	saveFile(targetLangDir, cleanedLanguageFile);
+	const content = merge(
+		{},
+		readFile(targetLangDir),
+		flatten.unflatten(translations, options)
+	);
+	saveFile(targetLangDir, content);
+};
+
+if (has('--translate-all')) {
+	const langs = glob.sync(LANG_PATTERN);
+
+	langs
+		.filter((langDir) => !baseLangDir.includes(langDir))
+		.forEach(async (targetLangDir) => {
+			const fileName = targetLangDir
+				.split(path.sep)
+				.find((text) => text.includes('json'));
+			const [lang] = fileName.split('.');
+			await autoTranslate(targetLangDir, lang);
+		});
+} else {
+	if (!lang) {
+		console.error('No language given');
+		process.exit(1);
+	}
+
+	if (has('--save-diff')) {
+		const diff = compare(readFile(baseLangDir), readFile(targetLangDir));
+		saveFile(`diff.json`, diff);
+	}
+
+	if (has('--merge-diff')) {
+		const diff = manipulateObject(readFile(diffDir), removeError);
+		const content = merge({}, readFile(targetLangDir), diff);
+		saveFile(targetLangDir, content);
+	}
+
+	if (has('--reverse-check')) {
+		const cleanedLanguageFile = reverseCheck(
+			readFile(baseLangDir),
+			readFile(targetLangDir)
+		);
+		saveFile(targetLangDir, cleanedLanguageFile);
+	}
+
+	if (has('--auto-translate')) {
+		autoTranslate(targetLangDir, lang);
+	}
 }

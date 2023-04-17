@@ -314,6 +314,11 @@ export const handleFiatUpgrade = (info = {}) => {
 	}
 };
 
+export const filterPinnedAssets = (pinnedAssets, coins) => {
+	const coinKeys = Object.keys(coins);
+	return pinnedAssets.filter((pinnedAsset) => coinKeys.includes(pinnedAsset));
+};
+
 export const constractPaymentOption = (paymentsData) => {
 	const tempData = [];
 	Object.keys(paymentsData).forEach((key) => {

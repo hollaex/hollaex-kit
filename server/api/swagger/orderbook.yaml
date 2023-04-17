@@ -12,6 +12,7 @@ paths:
           description: Currency symbol
           required: false
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success

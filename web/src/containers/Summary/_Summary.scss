@@ -22,6 +22,11 @@ $trade-tab--arrow-size: 0.4rem;
 }
 
 .layout-mobile {
+	.digital-market-wrapper {
+		.link-container {
+			font-size: 10px;
+		}
+	}
 	.fee-limits-wrapper {
 		margin: 1rem auto 3rem;
 

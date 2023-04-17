@@ -23,7 +23,7 @@
 		background-color: $quick-trade-container !important;
 		color: $colors-deactivate !important;
 	}
-	
+
 	.ant-select-arrow {
 		svg {
 			fill: $colors-black !important;
@@ -75,6 +75,8 @@
 	svg {
 		margin: 0 auto;
 		display: block;
+		width: 100% !important;
+		height: 100% !important;
 
 		.btc0,
 		.btc1 {

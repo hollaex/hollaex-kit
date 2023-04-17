@@ -15,7 +15,7 @@ const Billing = (props) => {
 
 	const getExchange = async () => {
 		const res = await getDashExchange();
-		setDashExchange(res.data[0]);
+		setDashExchange(res && res.data && res.data[0]);
 	};
 
 	const fiatPutExchange = async (body) => {

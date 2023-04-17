@@ -277,10 +277,14 @@ class StakeDetails extends Component {
 					<div className="d-flex align-end justify-content-between">
 						<div>
 							<IconTitle
-								text={STRINGS.formatString(
-									STRINGS['STAKE_DETAILS.TOKEN'],
-									fullname
-								)}
+								text={
+									<div>
+										{STRINGS.formatString(
+											STRINGS['STAKE_DETAILS.TOKEN'],
+											fullname
+										)}
+									</div>
+								}
 								iconPath={ICONS[icon_id]}
 								iconId={icon_id}
 								textType="title"

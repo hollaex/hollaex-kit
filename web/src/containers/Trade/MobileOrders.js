@@ -3,9 +3,8 @@ import classnames from 'classnames';
 import TradeBlock from './components/TradeBlock';
 import ActiveOrders from './components/ActiveOrders';
 import UserTrades from './components/UserTrades';
-import { ActionNotification } from 'components';
+import { ActionNotification, NotLoggedIn } from 'components';
 import STRINGS from 'config/localizedStrings';
-import LogoutInfoOrder from './components/LogoutInfoOrder';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const MobileOrders = ({
@@ -50,7 +49,7 @@ const MobileOrders = ({
 			}
 			className="f-1"
 		>
-			{isLoggedIn ? (
+			<NotLoggedIn placeholderKey="NOT_LOGGEDIN.TXT_1" hasBackground={false}>
 				<ActiveOrders
 					pairs={pairs}
 					cancelDelayData={cancelDelayData}
@@ -58,9 +57,7 @@ const MobileOrders = ({
 					onCancel={cancelOrder}
 					onCancelAll={cancelAllOrders}
 				/>
-			) : (
-				<LogoutInfoOrder />
-			)}
+			</NotLoggedIn>
 		</TradeBlock>
 		<TradeBlock
 			title={STRINGS['RECENT_TRADES']}
@@ -80,7 +77,7 @@ const MobileOrders = ({
 			}
 			className="f-1"
 		>
-			{isLoggedIn ? (
+			<NotLoggedIn placeholderKey="NOT_LOGGEDIN.TXT_1" hasBackground={false}>
 				<UserTrades
 					pageSize={10}
 					trades={userTrades}
@@ -91,9 +88,7 @@ const MobileOrders = ({
 					coins={coins}
 					icons={ICONS}
 				/>
-			) : (
-				<LogoutInfoOrder />
-			)}
+			</NotLoggedIn>
 		</TradeBlock>
 	</div>
 );

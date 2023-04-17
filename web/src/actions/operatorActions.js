@@ -65,6 +65,7 @@ export const pushVersions = async (configs = {}) => {
 		default_sort,
 		pinned_assets,
 		default_wallet_sort,
+		default_digital_assets_sort,
 		...versioned_configs
 	} = configs;
 	const { sections = {}, ...rest } = versioned_configs;
@@ -82,6 +83,7 @@ export const pushVersions = async (configs = {}) => {
 			pinned_markets,
 			pinned_assets,
 			default_wallet_sort,
+			default_digital_assets_sort,
 		},
 	};
 };

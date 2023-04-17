@@ -135,8 +135,42 @@ if command apt-get -v > /dev/null 2>&1; then
 
     fi
 
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL Client to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_APT_UPDATED ]]; then
+
+            echo "Updating APT list"
+            sudo apt-get update
+        fi
+
+        echo "Installing Docker"
+        if command sudo apt-get install -y postgresql-client; then
+
+            printf "\n\033[92mPSQL Client has been successfully installed!\033[39m\n"
+            echo "Info: $(psql --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL Client.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo apt-get install -y postgresql-client'."
+            exit 1;
+
+        fi
+
+    fi
+
 # Dependencies installer for macOS with Homebrew.
 elif command brew -v > /dev/null 2>&1; then
+
+    echo "Generating /usr/local/bin folder."
+    
+    if [[ ! -d  "/usr/local/bin" ]]; then
+            
+        sudo mkdir -p -m 775 /usr/local/bin
+
+    fi
 
     if ! command curl --version > /dev/null 2>&1; then
 
@@ -173,9 +207,24 @@ elif command brew -v > /dev/null 2>&1; then
 
         fi
 
-        echo "Automated installation for Docker on macOS is not supported."
-        echo "Please download 'Docker for Mac' on Official Docker website and proceed to install."
-        echo "Official Installation Page: (docs.docker.com/docker-for-mac/install)."
+        if command brew install --cask docker; then
+
+            printf "\n\033[92mDocker Desktop has been successfully installed!\033[39m\n"
+
+            open /Applications/Docker.app
+
+            echo "Please go through the Docker Desktop setup on GUI."
+
+            # echo "Info: $(docker --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install Docker Desktop.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install --cask docker'."
+            echo -e "You can also visit the official installation page: (docs.docker.com/docker-for-mac/install).\n"
+            exit 1;
+
+        fi
 
     fi
 
@@ -230,6 +279,35 @@ elif command brew -v > /dev/null 2>&1; then
 
     fi
 
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL Client to operate. Installing it now...\033[39m\n"
+
+        if [[ ! $IS_BREW_UPDATED ]]; then
+
+            echo "Updating Homebrew list"
+            brew update
+        fi
+
+        if command brew install libpq; then
+
+            printf "\n\033[92mjq has been successfully installed!\033[39m\n"
+
+            echo "Creating a symlink for the PSQL Client."
+
+            sudo ln -s $(brew --prefix)/opt/libpq/bin/psql /usr/local/bin/psql
+
+            echo "Info: $(psql --version)"
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL Client.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'brew install ligpq'."
+
+        fi
+
+    fi
+
 # Dependencies installer for CentOS (RHEL) with Yum.
 elif command yum --version > /dev/null 2>&1; then
 
@@ -275,8 +353,8 @@ elif command yum --version > /dev/null 2>&1; then
 
             fi
 
-            systemctl start docker
-            systemctl enable docker
+            sudo systemctl start docker
+            sudo systemctl enable docker
 
         else
 
@@ -292,7 +370,7 @@ elif command yum --version > /dev/null 2>&1; then
 
         printf "\n\033[93mHollaEx CLI requires Docker-Compose to operate. Installing it now...\033[39m\n"
 
-        if command curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
+        if command sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; then
 
             sudo chmod +x /usr/local/bin/docker-compose
 
@@ -349,9 +427,29 @@ elif command yum --version > /dev/null 2>&1; then
 
     fi
 
+    if ! command psql --version > /dev/null 2>&1; then
+
+        printf "\n\033[93mHollaEx CLI requires PSQL CLient to operate. Installing it now...\033[39m\n"
+
+        if command sudo yum install -y postgresql; then
+
+            printf "\n\033[92mPSQL CLient(postgresql) has been successfully installed!\033[39m\n"
+
+            echo "Info: "
+            postgresql --version
+
+        else
+
+            printf "\n\033[91mFailed to install PSQL CLient.\033[39m\n"
+            echo "Please review the logs and try to manually install it. - 'sudo yum install -y postgresql'."
+
+        fi
+
+    fi
+
 fi
 
-if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1; then
+if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/null 2>&1 || ! command curl --version > /dev/null 2>&1 || ! command jq --version > /dev/null 2>&1 || ! command nslookup -version > /dev/null 2>&1 || ! command psql --version > /dev/null 2>&1; then
 
     if command docker -v > /dev/null 2>&1; then
 
@@ -380,6 +478,12 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
     if command nslookup -version > /dev/null 2>&1; then
 
         IS_NSLOOKUP_INSTALLED=true
+    
+    fi
+
+    if command psql --version > /dev/null 2>&1; then
+
+        IS_PSQL_CLIENT_INSTALLED=true
     
     fi
     
@@ -429,6 +533,16 @@ if ! command docker -v > /dev/null 2>&1 || ! command docker-compose -v > /dev/nu
 
     fi
 
+    if [[ "$IS_PSQL_CLIENT_INSTALLED" ]]; then
+
+        printf "\033[92mpostgresql-client: Installed\033[39m\n"
+
+    else 
+
+        printf "\033[91mpostgresql-client: Not Installed\033[39m\n"
+
+    fi
+
     # curl installation status check
     if [[ "$IS_CURL_INSTALLED" ]]; then
 
@@ -446,12 +560,6 @@ else
 
    printf "\nThe dependencies are all set!\n\n" 
 
-   if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
-
-        newgrp docker
-
-   fi
-
 fi
 
 # Parameter support to specify version of the CLI to install.
@@ -460,12 +568,18 @@ export HOLLAEX_INSTALLER_VERSION_TARGET=${1:-"master"}
 echo "Pulling HollaEx CLI from Github..."
 curl -s https://raw.githubusercontent.com/bitholla/hollaex-cli/master/install.sh > cli_installer.sh && \
     bash cli_installer.sh ${HOLLAEX_INSTALLER_VERSION_TARGET} \
-    rm cli_installer.shs
+    rm cli_installer.sh
 
 if [[ "$IS_APT_UPDATED" ]] || [[ "$IS_BREW_UPDATED" ]]; then
 
     echo "Start configuring your exchange with the command: 'hollaex server --setup'."
     printf "\nTo see the full list of commands, use 'hollaex help'.\n\n"
+
+fi
+
+if [[ "$DOCKER_USERGROUP_ADDED" ]]; then
+
+    newgrp docker
 
 fi
 

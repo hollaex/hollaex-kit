@@ -11,6 +11,7 @@ import {
 	CustomMobileTabs,
 	TabController,
 	MobileTabBar,
+	NotLoggedIn,
 } from 'components';
 import { openContactForm } from 'actions/appActions';
 import All from './All';
@@ -90,22 +91,24 @@ const Index = ({ icons: ICONS, openContactForm }) => {
 				</div>
 			</HeaderSection>
 
-			{!isMobile ? (
-				<TabController
-					activeTab={activeTab}
-					setActiveTab={setActiveTab}
-					tabs={tabs}
-				/>
-			) : (
-				<MobileTabBar
-					activeTab={activeTab}
-					renderContent={renderContent}
-					setActiveTab={setActiveTab}
-					tabs={tabs}
-				/>
-			)}
+			<NotLoggedIn>
+				{!isMobile ? (
+					<TabController
+						activeTab={activeTab}
+						setActiveTab={setActiveTab}
+						tabs={tabs}
+					/>
+				) : (
+					<MobileTabBar
+						activeTab={activeTab}
+						renderContent={renderContent}
+						setActiveTab={setActiveTab}
+						tabs={tabs}
+					/>
+				)}
 
-			{isMobile ? <div className="my-4" /> : renderContent(tabs, activeTab)}
+				{isMobile ? <div className="my-4" /> : renderContent(tabs, activeTab)}
+			</NotLoggedIn>
 		</div>
 	);
 };

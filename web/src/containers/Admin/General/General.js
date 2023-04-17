@@ -10,11 +10,17 @@ import Description from './Description';
 import InterfaceForm from './InterfaceForm';
 import EmailVerificationForm from './EmailVerificationForm';
 import DisableSignupsConfirmation from './DisableSignupsConfirmation';
+import GenerateAPiKeys from './GenerateApiKeys';
 import { EmailSettingsForm } from '../Settings/SettingsForm';
 import { AdminHocForm } from '../../../components';
 import Image from '../../../components/Image';
 import withConfig from '../../../components/ConfigProvider/withConfig';
 import { requestAdminData, setConfig } from '../../../actions/appActions';
+import {
+	tokenGenerated,
+	requestTokens,
+	tokenRevoked,
+} from 'actions/userAction';
 import {
 	upload,
 	updateConstants,
@@ -82,6 +88,7 @@ class GeneralContent extends Component {
 
 	componentDidMount() {
 		this.requestInitial();
+		this.props.requestTokens();
 		this.setState({ isDisable: true });
 	}
 
@@ -1206,6 +1213,60 @@ class GeneralContent extends Component {
 								<Link to="/admin/roles">roles page</Link>.
 							</div>
 						</div>
+						<div className="divider"></div>
+						<div className="general-wrapper mb-5">
+							<div className="sub-title">API keys</div>
+							{isUpgrade ? (
+								<div className="d-flex">
+									<div className="d-flex align-items-center justify-content-between upgrade-section my-4">
+										<div>
+											<div className="font-weight-bold">
+												Gnerate your API keys
+											</div>
+											<div>Allow your users to create API keys</div>
+										</div>
+										<div className="ml-5 button-wrapper">
+											<a
+												href="https://dash.hollaex.com/billing"
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												<Button type="primary" className="w-100">
+													Upgrade Now
+												</Button>
+											</a>
+										</div>
+									</div>
+								</div>
+							) : (
+								<>
+									<div className="description d-flex flex-column">
+										<span>
+											Generate API keys for programmatic access to your
+											exchange.
+										</span>
+										<span>
+											Note, in order to generate API keys it is required to add
+											a{' '}
+											<a
+												href="https://www.techtarget.com/whatis/definition/whitelist"
+												target={'_blank'}
+												rel="noopener noreferrer"
+											>
+												white listed IP address.
+											</a>
+										</span>
+									</div>
+									<GenerateAPiKeys
+										tokenRevoked={this.props.tokenRevoked}
+										tokenGenerated={tokenGenerated}
+										tokens={this.props.tokens}
+										requestTokens={this.props.requestTokens}
+										user={this.props.user}
+									/>
+								</>
+							)}
+						</div>
 					</div>
 				) : null}
 			</div>
@@ -1215,12 +1276,16 @@ class GeneralContent extends Component {
 
 const mapStateToProps = (state) => ({
 	coins: state.app.coins,
+	tokens: state.user.tokens,
 	user: state.user,
 	constants: state.app.constants,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	setConfig: bindActionCreators(setConfig, dispatch),
+	tokenGenerated: bindActionCreators(tokenGenerated, dispatch),
+	requestTokens: bindActionCreators(requestTokens, dispatch),
+	tokenRevoked: bindActionCreators(tokenRevoked, dispatch),
 });
 
 export default connect(

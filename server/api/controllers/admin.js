@@ -4,7 +4,8 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { USER_NOT_FOUND } = require('../../messages');
+const { ROLES } = require('../../constants');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
 const { sendEmail, testSendSMTPEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
@@ -120,6 +121,10 @@ const getUsersAdmin = (req, res) => {
 			order_by.value
 		);
 		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
 
 	toolsLib.user.getAllUsersAdmin({
@@ -2114,6 +2119,148 @@ const getUserReferer = (req, res) => {
 		});
 };
 
+const createUserByAdmin = (req, res) => {
+	const { email, password } = req.swagger.params.data.value;
+
+	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
+
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+
+	if (!toolsLib.security.isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+
+	toolsLib.database.findOne('user', {
+		where: { email },
+		attributes: ['email']
+	})
+	.then((user) => {
+		if (user) {
+			throw new Error(USER_EXISTS);
+		}
+
+		return toolsLib.user.createUser(email, password, {
+			role: 'user',
+			id: null,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		})
+	})
+	.then(() => {
+		return res.status(201).json({ message: 'Success' });
+	})
+	.catch((err) => {
+		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
+};
+
+const createUserWalletByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		req.auth.sub
+	);
+
+	const { crypto, network, user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/createUserWalletByAdmin',
+		'crypto',
+		crypto,
+		'network',
+		network,
+		'user_id',
+		user_id
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+
+			if (!crypto || !toolsLib.subscribedToCoin(crypto)) {
+				loggerAdmin.error(
+					req.uuid,
+					'controllers/admin/createUserWalletByAdmin',
+					`Invalid crypto: "${crypto}"`
+				);
+				return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
+			}
+	
+			return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
+				network,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			});
+		})
+		.then((data) => { 
+			return res.status(201).json(data); 
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/createUserWalletByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getWalletsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
+
+	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getWalletsByAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.wallet.getWallets(
+		user_id.value,
+		currency.value,
+		network.value,
+		address.value,
+		is_valid.value,
+		limit.value,
+		page.value,
+		order_by.value,
+		order.value,
+		format.value,
+		start_date.value,
+		end_date.value,
+		{
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
+		}
+	)
+		.then((data) => {
+			if (format.value) {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2167,5 +2314,8 @@ module.exports = {
 	revokeUserBank,
 	generateDashToken,
 	getUserAffiliation,
-	getUserReferer
+	getUserReferer,
+	createUserByAdmin,
+	createUserWalletByAdmin,
+	getWalletsByAdmin
 };

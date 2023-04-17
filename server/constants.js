@@ -262,6 +262,10 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return `wallet:${symbolOrUserId}`;
 		case 'deposit':
 			return `deposit:${symbolOrUserId}`;
+		case 'withdrawal':
+			return `withdrawal:${symbolOrUserId}`;
+		case 'admin':
+			return 'admin';
 		case 'chat':
 			return 'chat';
 		default:
@@ -269,6 +273,7 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	}
 };
 exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
+exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
 exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
 
 // Chat

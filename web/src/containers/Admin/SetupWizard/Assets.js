@@ -112,7 +112,7 @@ const Assets = ({
 						Don't see your asset?{' '}
 						<span
 							className="step-link"
-							onClick={() => open('https://dash.bitholla.com/financial')}
+							onClick={() => open('https://dash.hollaex.com/financial')}
 						>
 							Create or add your asset here.
 						</span>
@@ -133,7 +133,7 @@ const Assets = ({
 						Don't see your pair?{' '}
 						<span
 							className="step-link"
-							onClick={() => open('https://dash.bitholla.com/trade')}
+							onClick={() => open('https://dash.hollaex.com/trade')}
 						>
 							Create or add your pair here.
 						</span>

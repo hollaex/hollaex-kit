@@ -504,3 +504,75 @@
 	margin-right: 1rem;
 	width: 5rem;
 }
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-select,
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-input-search {
+	width: 11rem;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.select-content,
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.search-content {
+	width: 11rem;
+	height: 32px;
+	margin-top: 1.6rem;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.ant-picker {
+	width: 15rem;
+}
+.asset-exchange-wallet-wrapper .wallet-filter-wrapper .table-filter-wrapper {
+	display: flex;
+}
+.asset-exchange-wallet-wrapper
+	.wallet-filter-wrapper
+	.table-filter-wrapper
+	.label-content {
+	font-size: 12px;
+}
+.asset-exchange-wallet-wrapper .ant-select-selector {
+	background-color: #22297b !important;
+	color: #fff;
+}
+
+.asset-exchange-wallet-wrapper .search-background {
+	background-color: #008a00;
+	color: #fff;
+}
+
+.asset-exchange-wallet-wrapper .search-background .ant-input {
+	background-color: #008a00;
+}
+
+.asset-exchange-wallet-wrapper .search-background .ant-input-suffix {
+	display: none;
+}
+
+.asset-exchange-wallet-wrapper .cursor-pointer {
+	cursor: pointer;
+}
+
+.asset-exchange-wallet-wrapper .header-txt {
+	font-size: 22px;
+	font-weight: bold;
+	margin-top: 0.5rem;
+}
+
+.asset-exchange-wallet-wrapper .ant-table-container table > thead th {
+	width: 23%;
+}
+
+.asset-exchange-wallet-wrapper .filter-button {
+	min-width: 0%;
+}

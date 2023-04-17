@@ -1,26 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import classnames from 'classnames';
+import { CaretUpOutlined, CaretDownOutlined } from '@ant-design/icons';
+
 import {
-	toggleSort,
-	setSortModeChange,
-	setSortModeVolume,
+	DIGITAL_ASSETS_SORT as SORT,
+	toggleDigitalAssetsSort as toggleSort,
+	setDigitalAssetsSortModeChange as setSortModeChange,
 } from 'actions/appActions';
-import {
-	oneOfType,
-	arrayOf,
-	shape,
-	array,
-	object,
-	number,
-	string,
-	func,
-} from 'prop-types';
-import { Paginator } from 'components';
+import { Paginator, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
-import MarketRow from './MarketRow';
-import { EditWrapper } from 'components';
+import MarketRow from 'containers/TradeTabs/components/MarketRow';
 
 const AssetsList = ({
 	markets,
@@ -34,19 +26,43 @@ const AssetsList = ({
 	goToPreviousPage,
 	showPaginator = false,
 	loading,
+	constants,
 	mode,
 	is_descending,
 	toggleSort,
 	setSortModeChange,
-	setSortModeVolume,
-	isAsset = false,
-	constants,
 }) => {
+	const handleClickChange = () => {
+		if (mode === SORT.CHANGE) {
+			toggleSort();
+		} else {
+			setSortModeChange();
+		}
+	};
+
+	const renderCaret = (cell) => (
+		<div className="market-list__caret d-flex flex-direction-column mx-1 secondary-text">
+			<CaretUpOutlined
+				className={classnames({
+					'important-text': mode === cell && is_descending,
+				})}
+			/>
+			<CaretDownOutlined
+				className={classnames({
+					'important-text': mode === cell && !is_descending,
+				})}
+			/>
+		</div>
+	);
+
 	return (
 		<div className="market-list__container">
 			<div className="market-list__block">
 				<div className="d-flex justify-content-end">
-					<EditWrapper configId="MARKET_LIST_CONFIGS" position={[0, 0]} />
+					<EditWrapper
+						configId="DIGITAL_ASSETS_LIST_CONFIGS"
+						position={[0, 0]}
+					/>
 				</div>
 				<table className="market-list__block-table">
 					<thead>
@@ -67,16 +83,17 @@ const AssetsList = ({
 							</th>
 							<th>
 								<div>
-									<EditWrapper stringId="MARKETS_TABLE.LAST_PRICE">
+									<EditWrapper stringId="MARKETS_TABLE.SOURCE">
 										{STRINGS['MARKETS_TABLE.SOURCE']}
 									</EditWrapper>
 								</div>
 							</th>
 							<th>
-								<div className="d-flex">
+								<div onClick={handleClickChange} className="d-flex pointer">
 									<EditWrapper stringId="MARKETS_TABLE.CHANGE_24H">
 										{STRINGS['MARKETS_TABLE.CHANGE_24H']}
 									</EditWrapper>
+									{renderCaret(SORT.CHANGE)}
 								</div>
 							</th>
 							<th>
@@ -112,7 +129,7 @@ const AssetsList = ({
 								chartData={chartData}
 								market={market}
 								loading={loading}
-								isAsset={isAsset}
+								isAsset={true}
 								constants={constants}
 							/>
 						))}
@@ -132,36 +149,19 @@ const AssetsList = ({
 	);
 };
 
-AssetsList.propTypes = {
-	markets: oneOfType([
-		arrayOf(
-			shape({
-				key: string,
-				pair: object,
-				ticker: object,
-				increment_price: number,
-				priceDifference: number,
-				priceDifferencePercent: string,
-			})
-		),
-		array,
-	]).isRequired,
-	chartData: object.isRequired,
-	handleClick: func.isRequired,
-};
-
 const mapStateToProps = ({
 	app: {
-		sort: { mode, is_descending },
+		digital_assets_sort: { mode, is_descending },
+		constants,
 	},
 }) => ({
+	constants,
 	mode,
 	is_descending,
 });
 
 const mapDispatchToProps = (dispatch) => ({
 	toggleSort: bindActionCreators(toggleSort, dispatch),
-	setSortModeVolume: bindActionCreators(setSortModeVolume, dispatch),
 	setSortModeChange: bindActionCreators(setSortModeChange, dispatch),
 });
 

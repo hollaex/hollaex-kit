@@ -1,7 +1,7 @@
 ### Multi-Stage Build Dockerfile
 
 ### Build section
-FROM node:16.18.1-buster-slim as build
+FROM node:18.15.0-buster-slim as build
 
 RUN apt-get update && apt-get install -y --no-install-recommends git python3 build-essential && rm -rf /var/lib/apt/lists/*
 
@@ -18,7 +18,7 @@ WORKDIR /app
 
 RUN npm install
 
-FROM node:16.18.1-buster-slim
+FROM node:18.15.0-buster-slim
 
 COPY --from=build /app /app
 
