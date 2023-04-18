@@ -3,6 +3,7 @@ import { Image, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const renderRow = (
 	icon_id,
@@ -57,6 +58,7 @@ const getRows = (level, coins, icons, search) => {
 				withdrawal_fee,
 				deposit_fees,
 				symbol,
+				network: networks,
 			} = coin;
 			if (withdrawal_fees) {
 				Object.keys(withdrawal_fees).forEach((network, n_index) => {
@@ -64,23 +66,21 @@ const getRows = (level, coins, icons, search) => {
 					if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
 						withdrawal_fees_data['symbol'] = symbol;
 					}
-					const withdrawal_text =
-						coin && coin?.standard
-							? `${getFeeText(
-									withdrawal_fees_data,
-									level
-							  )} (${coin?.standard.replace('-', '').toUpperCase()})`
-							: getFeeText(withdrawal_fees_data, level);
+					const withdrawal_text = getFeeText(withdrawal_fees_data, level);
 					const deposit_text =
 						deposit_fees && deposit_fees[network]
 							? getFeeText(deposit_fees[network], level)
 							: 'N/A';
 					const index = `${c_index}_${n_index}`;
+					const display_text =
+						networks && network
+							? `${display_name} (${getNetworkNameByKey(network)})`
+							: display_name;
 
 					rowData.push(
 						renderRow(
 							icon_id,
-							display_name,
+							display_text,
 							deposit_text,
 							withdrawal_text,
 							index,
