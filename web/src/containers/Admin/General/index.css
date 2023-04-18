@@ -951,6 +951,38 @@ h2,
 	font-size: 10px;
 }
 
+.generate-api .edit-ip {
+	background-color: #293397;
+	border-radius: 1rem;
+	padding-left: 6px;
+	color: #fff;
+	font-size: 9px;
+}
+.generate-api .edit-ip-wrapper .add {
+	margin-top: 1.5rem;
+	color: #5d63ff;
+	cursor: pointer;
+}
+
+.generate-api .edit-ip-wrapper svg path {
+	fill: #fff;
+}
+
+.generate-api .edit-ip-wrapper .kit-divider {
+	margin: 0rem !important;
+}
+
+.generate-api .edit-ip-wrapper .edit-ip-input {
+	color: #fff !important;
+	font-size: 9px !important;
+	margin: 1rem 0rem 0rem 0rem;
+}
+
+.generate-api .edit-icon {
+	display: flex;
+	align-items: center;
+}
+
 .generate-api .custom-withdraw {
 	width: 12px;
 	height: 12px;
