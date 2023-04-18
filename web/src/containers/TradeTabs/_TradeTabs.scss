@@ -88,53 +88,6 @@ $toggle-margin: 2px;
 	}
 	.trade_tab-icons {
 		width: 3rem;
-
-		svg {
-			.btc0,
-			.btc1 {
-				fill: $coin-btc;
-			}
-			.eth0,
-			.eth1 {
-				fill: $coin-eth;
-			}
-			.bch-icon {
-				fill: $coin-bch;
-			}
-			.xrp-icon {
-				fill: $coin-xrp;
-			}
-			.xmr-icon {
-				fill: $coin-xmr;
-			}
-			.ada-icon {
-				fill: $coin-ada;
-			}
-			.bnb-icon {
-				fill: $coin-bnb;
-			}
-			.dai-icon {
-				fill: $coin-dai;
-			}
-			.eos-icon {
-				fill: $coin-eos;
-			}
-			.ltc-icon {
-				fill: $coin-ltc;
-			}
-			.trx-icon {
-				fill: $coin-trx;
-			}
-			.tusd-icon {
-				fill: $coin-tusd;
-			}
-			.xlm-icon {
-				fill: $coin-xlm;
-			}
-			.default-icon {
-				fill: $colors-black !important;
-			}
-		}
 	}
 
 	.trade_tab-pair-title {
@@ -235,65 +188,12 @@ $toggle-margin: 2px;
 		-moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
 
-		svg {
-			.xht-icon-1 {
-				fill: $app-background-color !important;
-			}
-		}
-
 		&:hover {
 			border: 1px solid $colors-border;
 			color: $colors-black;
 			position: relative;
 			bottom: 0.5rem;
 			right: 0.5rem;
-
-			svg {
-				.btc0,
-				.btc1 {
-					fill: $coin-btc;
-				}
-				.eth0,
-				.eth1 {
-					fill: $coin-eth;
-				}
-				.bch-icon {
-					fill: $coin-bch;
-				}
-				.xrp-icon {
-					fill: $coin-xrp;
-				}
-				.xmr-icon {
-					fill: $coin-xmr;
-				}
-				.ada-icon {
-					fill: $coin-ada;
-				}
-				.bnb-icon {
-					fill: $coin-bnb;
-				}
-				.dai-icon {
-					fill: $coin-dai;
-				}
-				.eos-icon {
-					fill: $coin-eos;
-				}
-				.ltc-icon {
-					fill: $coin-ltc;
-				}
-				.trx-icon {
-					fill: $coin-trx;
-				}
-				.tusd-icon {
-					fill: $coin-tusd;
-				}
-				.xlm-icon {
-					fill: $coin-xlm;
-				}
-				.default-icon {
-					fill: $colors-black !important;
-				}
-			}
 		}
 	}
 

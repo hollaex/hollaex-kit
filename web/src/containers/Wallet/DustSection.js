@@ -87,6 +87,7 @@ const DustSection = ({
 			const calculatedValue = calculateOraclePrice(balance, price);
 			const convertedValue = calculateOraclePrice(balance, conversionPrice);
 			if (
+				key !== quote &&
 				mathjs.smallerEq(calculatedValue, DUST_DEFINITION.criterion) &&
 				mathjs.larger(convertedValue, 0)
 			) {
