@@ -84,7 +84,7 @@ const getRows = (coins, level, tiers, ICONS) => {
 									wrapperClassName="currency-ball"
 									imageWrapperClassName="currency-ball-image-wrapper"
 								/>
-								<div className="px-1">{display_name}</div>
+								<div className="px-2">{display_name}</div>
 							</div>
 						</td>
 						<td>
