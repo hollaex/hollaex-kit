@@ -538,12 +538,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 			? req.swagger.operation['x-security-scopes']
 			: BASE_SCOPES;
 
-		let ip;
-		if (isSocket) {
-			ip = req.socket ? req.socket.remoteAddress : undefined;
-		} else {
-			ip = req.headers ? req.headers['x-real-ip'] : undefined;
-		}
+		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 		//validate the 'Authorization' header. it should have the following format:
 		//'Bearer tokenString'
@@ -622,12 +617,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-	let ip;
-	if (isSocket) {
-		ip = req.socket ? req.socket.remoteAddress : undefined;
-	} else {
-		ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	}
+	let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 	loggerAuth.verbose('helpers/auth/checkHmacKey ip', ip);
 
