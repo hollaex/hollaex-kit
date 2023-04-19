@@ -378,16 +378,6 @@ table th {
   min-height: 100vh;
   background-color: var(--base_background);
   color: var(--labels_important-active-labels-text-graphics); }
-  .app_container.btc .app_bar .app_bar-controllers {
-    background-color: var(--coin-btc); }
-  .app_container.eur .app_bar .app_bar-controllers {
-    background-color: var(--coin-eur); }
-  .app_container.bch .app_bar .app_bar-controllers {
-    background-color: var(--coin-bch); }
-  .app_container.eth .app_bar .app_bar-controllers {
-    background-color: var(--coin-eth); }
-  .app_container.ltc .app_bar .app_bar-controllers {
-    background-color: var(--coin-ltc); }
   .app_container.layout-desktop .app_container-content {
     height: auto;
     flex: 1; }
@@ -4006,36 +3996,6 @@ table th {
         width: 3rem; }
         .summary-container .assets-wrapper .coin-price-container .coin-price svg {
           width: 2.5rem; }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc0,
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .btc1 {
-            fill: var(--coin-btc); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth0,
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eth1 {
-            fill: var(--coin-eth); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bch-icon {
-            fill: var(--coin-bch); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xrp-icon {
-            fill: var(--coin-xrp); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xmr-icon {
-            fill: var(--coin-xmr); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ada-icon {
-            fill: var(--coin-ada); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .bnb-icon {
-            fill: var(--coin-bnb); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .dai-icon {
-            fill: var(--coin-dai); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .eos-icon {
-            fill: var(--coin-eos); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .ltc-icon {
-            fill: var(--coin-ltc); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .trx-icon {
-            fill: var(--coin-trx); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .tusd-icon {
-            fill: var(--coin-tusd); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .xlm-icon {
-            fill: var(--coin-xlm); }
-          .summary-container .assets-wrapper .coin-price-container .coin-price svg .default-icon {
-            fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .summary-container .asset_wrapper_width {
     width: 100%; }
   .summary-container .xht_asset_wrapper_width {
@@ -4362,36 +4322,6 @@ table th {
   .market-list__container .market-list__block .market-list__coin-icons svg {
     width: 2.5rem !important;
     height: 2.5rem !important; }
-    .market-list__container .market-list__block .market-list__coin-icons svg .btc0,
-    .market-list__container .market-list__block .market-list__coin-icons svg .btc1 {
-      fill: var(--coin-btc); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .eth0,
-    .market-list__container .market-list__block .market-list__coin-icons svg .eth1 {
-      fill: var(--coin-eth); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .bch-icon {
-      fill: var(--coin-bch); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .xrp-icon {
-      fill: var(--coin-xrp); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .xmr-icon {
-      fill: var(--coin-xmr); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .ada-icon {
-      fill: var(--coin-ada); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .bnb-icon {
-      fill: var(--coin-bnb); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .dai-icon {
-      fill: var(--coin-dai); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .eos-icon {
-      fill: var(--coin-eos); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .ltc-icon {
-      fill: var(--coin-ltc); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .trx-icon {
-      fill: var(--coin-trx); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .tusd-icon {
-      fill: var(--coin-tusd); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .xlm-icon {
-      fill: var(--coin-xlm); }
-    .market-list__container .market-list__block .market-list__coin-icons svg .default-icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .market-list__container .market-list__block .market-list__block-table {
   width: 100%;
@@ -4579,36 +4509,6 @@ table th {
     padding-right: 10px; }
   .trade_tabs-container .trade_tab-icons {
     width: 3rem; }
-    .trade_tabs-container .trade_tab-icons svg .btc0,
-    .trade_tabs-container .trade_tab-icons svg .btc1 {
-      fill: var(--coin-btc); }
-    .trade_tabs-container .trade_tab-icons svg .eth0,
-    .trade_tabs-container .trade_tab-icons svg .eth1 {
-      fill: var(--coin-eth); }
-    .trade_tabs-container .trade_tab-icons svg .bch-icon {
-      fill: var(--coin-bch); }
-    .trade_tabs-container .trade_tab-icons svg .xrp-icon {
-      fill: var(--coin-xrp); }
-    .trade_tabs-container .trade_tab-icons svg .xmr-icon {
-      fill: var(--coin-xmr); }
-    .trade_tabs-container .trade_tab-icons svg .ada-icon {
-      fill: var(--coin-ada); }
-    .trade_tabs-container .trade_tab-icons svg .bnb-icon {
-      fill: var(--coin-bnb); }
-    .trade_tabs-container .trade_tab-icons svg .dai-icon {
-      fill: var(--coin-dai); }
-    .trade_tabs-container .trade_tab-icons svg .eos-icon {
-      fill: var(--coin-eos); }
-    .trade_tabs-container .trade_tab-icons svg .ltc-icon {
-      fill: var(--coin-ltc); }
-    .trade_tabs-container .trade_tab-icons svg .trx-icon {
-      fill: var(--coin-trx); }
-    .trade_tabs-container .trade_tab-icons svg .tusd-icon {
-      fill: var(--coin-tusd); }
-    .trade_tabs-container .trade_tab-icons svg .xlm-icon {
-      fill: var(--coin-xlm); }
-    .trade_tabs-container .trade_tab-icons svg .default-icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_tabs-container .trade_tab-pair-title {
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.1rem;
@@ -4687,44 +4587,12 @@ table th {
     -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
     -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.16); }
-    .trade_tabs-container .trade-tab-list svg .xht-icon-1 {
-      fill: var(--base_background) !important; }
     .trade_tabs-container .trade-tab-list:hover {
       border: 1px solid var(--calculated_secondary-border);
       color: var(--labels_secondary-inactive-label-text-graphics);
       position: relative;
       bottom: 0.5rem;
       right: 0.5rem; }
-      .trade_tabs-container .trade-tab-list:hover svg .btc0,
-      .trade_tabs-container .trade-tab-list:hover svg .btc1 {
-        fill: var(--coin-btc); }
-      .trade_tabs-container .trade-tab-list:hover svg .eth0,
-      .trade_tabs-container .trade-tab-list:hover svg .eth1 {
-        fill: var(--coin-eth); }
-      .trade_tabs-container .trade-tab-list:hover svg .bch-icon {
-        fill: var(--coin-bch); }
-      .trade_tabs-container .trade-tab-list:hover svg .xrp-icon {
-        fill: var(--coin-xrp); }
-      .trade_tabs-container .trade-tab-list:hover svg .xmr-icon {
-        fill: var(--coin-xmr); }
-      .trade_tabs-container .trade-tab-list:hover svg .ada-icon {
-        fill: var(--coin-ada); }
-      .trade_tabs-container .trade-tab-list:hover svg .bnb-icon {
-        fill: var(--coin-bnb); }
-      .trade_tabs-container .trade-tab-list:hover svg .dai-icon {
-        fill: var(--coin-dai); }
-      .trade_tabs-container .trade-tab-list:hover svg .eos-icon {
-        fill: var(--coin-eos); }
-      .trade_tabs-container .trade-tab-list:hover svg .ltc-icon {
-        fill: var(--coin-ltc); }
-      .trade_tabs-container .trade-tab-list:hover svg .trx-icon {
-        fill: var(--coin-trx); }
-      .trade_tabs-container .trade-tab-list:hover svg .tusd-icon {
-        fill: var(--coin-tusd); }
-      .trade_tabs-container .trade-tab-list:hover svg .xlm-icon {
-        fill: var(--coin-xlm); }
-      .trade_tabs-container .trade-tab-list:hover svg .default-icon {
-        fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
   .trade_tabs-container .market-card__sparkline-wrapper {
     padding-top: 10px;
     height: 12rem; }
@@ -7893,28 +7761,6 @@ table th {
         border-left: none; }
       .sidebar_hub-wrapper .currency-selector .tab-action.tab-active:last-child:after {
         border-right: none; }
-      .sidebar_hub-wrapper .currency-selector .tab-action.tab-active.tab-btc .tab-colors {
-        height: 6px;
-        position: relative;
-        background-color: var(--coin-btc); }
-        .sidebar_hub-wrapper .currency-selector .tab-action.tab-active.tab-btc .tab-colors:before {
-          content: '';
-          position: absolute;
-          top: 0;
-          width: 100%;
-          height: 3px;
-          background-color: var(--coin-btc); }
-      .sidebar_hub-wrapper .currency-selector .tab-action.tab-active.tab-eur .tab-colors {
-        height: 6px;
-        position: relative;
-        background-color: var(--coin-eur); }
-        .sidebar_hub-wrapper .currency-selector .tab-action.tab-active.tab-eur .tab-colors:before {
-          content: '';
-          position: absolute;
-          top: 0;
-          width: 100%;
-          height: 3px;
-          background-color: var(--coin-eur); }
   .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section {
     border-top: 1px solid var(--calculated_super-pale_label-text-graphics); }
     .sidebar_hub-wrapper .sidebar_hub-content .sidebar_hub-section:not(:last-child) {
@@ -8040,8 +7886,6 @@ table th {
       position: relative;
       font-size: 1.3rem;
       color: var(--labels_important-active-labels-text-graphics); }
-  .notification-wrapper .notification-buttons-wrapper .button-eur {
-    background-color: var(--coin-eur); }
   .notification-wrapper .notification-information {
     padding: 1rem 0;
     font-size: 1rem; }
@@ -9442,222 +9286,6 @@ table th {
   .currency_ball-wrapper.default-coin {
     border: 1px solid var(--calculated_secondary-border);
     color: var(--labels_secondary-inactive-label-text-graphics); }
-  .currency_ball-wrapper.btc {
-    background-color: var(--coin-btc);
-    border: none !important;
-    color: var(--coin-btc-text) !important; }
-  .currency_ball-wrapper.eur {
-    background-color: var(--coin-eur);
-    border: none !important;
-    color: var(--coin-eur-text) !important; }
-  .currency_ball-wrapper.bch {
-    background-color: var(--coin-bch);
-    border: none !important;
-    color: var(--coin-bch-text) !important; }
-  .currency_ball-wrapper.eth {
-    background-color: var(--coin-eth);
-    border: none !important;
-    color: var(--coin-eth-text) !important; }
-  .currency_ball-wrapper.ltc {
-    background-color: var(--coin-ltc);
-    border: none !important;
-    color: var(--coin-ltc-text) !important; }
-  .currency_ball-wrapper.xrp {
-    background-color: var(--coin-xrp);
-    border: none !important;
-    color: var(--coin-xrp-text) !important; }
-  .currency_ball-wrapper.xht {
-    background-color: var(--coin-xht);
-    border: none !important;
-    color: var(--coin-xht-text) !important; }
-  .currency_ball-wrapper.eos {
-    background-color: var(--coin-eos);
-    border: none !important;
-    color: var(--coin-eos-text) !important; }
-  .currency_ball-wrapper.bnb {
-    background-color: var(--coin-bnb);
-    border: none !important;
-    color: var(--coin-bnb-text) !important; }
-  .currency_ball-wrapper.link {
-    background-color: var(--coin-link);
-    border: none !important;
-    color: var(--coin-link-text) !important; }
-  .currency_ball-wrapper.trx {
-    background-color: var(--coin-trx);
-    border: none !important;
-    color: var(--coin-trx-text) !important; }
-  .currency_ball-wrapper.ada {
-    background-color: var(--coin-ada);
-    border: none !important;
-    color: var(--coin-ada-text) !important; }
-  .currency_ball-wrapper.matic {
-    background-color: var(--coin-matic);
-    border: none !important;
-    color: var(--coin-matic-text) !important; }
-  .currency_ball-wrapper.neo {
-    background-color: var(--coin-neo);
-    border: none !important;
-    color: var(--coin-neo-text) !important; }
-  .currency_ball-wrapper.etc {
-    background-color: var(--coin-etc);
-    border: none !important;
-    color: var(--coin-etc-text) !important; }
-  .currency_ball-wrapper.xlm {
-    background-color: var(--coin-xlm);
-    border: none !important;
-    color: var(--coin-xlm-text) !important; }
-  .currency_ball-wrapper.xmr {
-    background-color: var(--coin-xmr);
-    border: none !important;
-    color: var(--coin-xmr-text) !important; }
-  .currency_ball-wrapper.zec {
-    background-color: var(--coin-zec);
-    border: none !important;
-    color: var(--coin-zec-text) !important; }
-  .currency_ball-wrapper.one {
-    background-color: var(--coin-one);
-    border: none !important;
-    color: var(--coin-one-text) !important; }
-  .currency_ball-wrapper.pax {
-    background-color: var(--coin-pax);
-    border: none !important;
-    color: var(--coin-pax-text) !important; }
-  .currency_ball-wrapper.usdc {
-    background-color: var(--coin-usdc);
-    border: none !important;
-    color: var(--coin-usdc-text) !important; }
-  .currency_ball-wrapper.usdt {
-    background-color: var(--coin-usdt);
-    border: none !important;
-    color: var(--coin-usdt-text) !important; }
-  .currency_ball-wrapper.vet {
-    background-color: var(--coin-vet);
-    border: none !important;
-    color: var(--coin-vet-text) !important; }
-  .currency_ball-wrapper.btt {
-    background-color: var(--coin-btt);
-    border: none !important;
-    color: var(--coin-btt-text) !important; }
-  .currency_ball-wrapper.qtum {
-    background-color: var(--coin-qtum);
-    border: none !important;
-    color: var(--coin-qtum-text) !important; }
-  .currency_ball-wrapper.algo {
-    background-color: var(--coin-algo);
-    border: none !important;
-    color: var(--coin-algo-text) !important; }
-  .currency_ball-wrapper.rvn {
-    background-color: var(--coin-rvn);
-    border: none !important;
-    color: var(--coin-rvn-text) !important; }
-  .currency_ball-wrapper.iota {
-    background-color: var(--coin-iota);
-    border: none !important;
-    color: var(--coin-iota-text) !important; }
-  .currency_ball-wrapper.dash {
-    background-color: var(--coin-dash);
-    border: none !important;
-    color: var(--coin-dash-text) !important; }
-  .currency_ball-wrapper.bsv {
-    background-color: var(--coin-bsv);
-    border: none !important;
-    color: var(--coin-bsv-text) !important; }
-  .currency_ball-wrapper.ont {
-    background-color: var(--coin-ont);
-    border: none !important;
-    color: var(--coin-ont-text) !important; }
-  .currency_ball-wrapper.atom {
-    background-color: var(--coin-atom);
-    border: none !important;
-    color: var(--coin-atom-text) !important; }
-  .currency_ball-wrapper.celr {
-    background-color: var(--coin-celr);
-    border: none !important;
-    color: var(--coin-celr-text) !important; }
-  .currency_ball-wrapper.omg {
-    background-color: var(--coin-omg);
-    border: none !important;
-    color: var(--coin-omg-text) !important; }
-  .currency_ball-wrapper.hot {
-    background-color: var(--coin-hot);
-    border: none !important;
-    color: var(--coin-hot-text) !important; }
-  .currency_ball-wrapper.usd {
-    background-color: var(--coin-usd);
-    border: none !important;
-    color: var(--coin-usd-text) !important; }
-  .currency_ball-wrapper.jpy {
-    background-color: var(--coin-jpy);
-    border: none !important;
-    color: var(--coin-jpy-text) !important; }
-  .currency_ball-wrapper.gbp {
-    background-color: var(--coin-gbp);
-    border: none !important;
-    color: var(--coin-gbp-text) !important; }
-  .currency_ball-wrapper.chf {
-    background-color: var(--coin-chf);
-    border: none !important;
-    color: var(--coin-chf-text) !important; }
-  .currency_ball-wrapper.cad {
-    background-color: var(--coin-cad);
-    border: none !important;
-    color: var(--coin-cad-text) !important; }
-  .currency_ball-wrapper.aud {
-    background-color: var(--coin-aud);
-    border: none !important;
-    color: var(--coin-aud-text) !important; }
-  .currency_ball-wrapper.nzd {
-    background-color: var(--coin-nzd);
-    border: none !important;
-    color: var(--coin-nzd-text) !important; }
-  .currency_ball-wrapper.zar {
-    background-color: var(--coin-zar);
-    border: none !important;
-    color: var(--coin-zar-text) !important; }
-  .currency_ball-wrapper.hkd {
-    background-color: var(--coin-hkd);
-    border: none !important;
-    color: var(--coin-hkd-text) !important; }
-  .currency_ball-wrapper.krw {
-    background-color: var(--coin-krw);
-    border: none !important;
-    color: var(--coin-krw-text) !important; }
-  .currency_ball-wrapper.cny {
-    background-color: var(--coin-cny);
-    border: none !important;
-    color: var(--coin-cny-text) !important; }
-  .currency_ball-wrapper.sgd {
-    background-color: var(--coin-sgd);
-    border: none !important;
-    color: var(--coin-sgd-text) !important; }
-  .currency_ball-wrapper.tusd {
-    background-color: var(--coin-tusd);
-    border: none !important;
-    color: var(--coin-tusd-text) !important; }
-  .currency_ball-wrapper.dai {
-    background-color: var(--coin-dai);
-    border: none !important;
-    color: var(--coin-dai-text) !important; }
-  .currency_ball-wrapper.ama {
-    background-color: var(--coin-ama);
-    border: none !important;
-    color: var(--coin-ama-text) !important; }
-  .currency_ball-wrapper.xtz {
-    background-color: var(--coin-xtz);
-    border: none !important;
-    color: var(--coin-xtz-text) !important; }
-  .currency_ball-wrapper.doge {
-    background-color: var(--coin-doge);
-    border: none !important;
-    color: var(--coin-doge-text) !important; }
-  .currency_ball-wrapper.uni {
-    background-color: var(--coin-uni);
-    border: none !important;
-    color: var(--coin-uni-text) !important; }
-  .currency_ball-wrapper.dot {
-    background-color: var(--coin-dot);
-    border: none !important;
-    color: var(--coin-dot-text) !important; }
   .currency_ball-wrapper.s {
     font-size: 0.6rem;
     width: 1.8rem;
@@ -9839,255 +9467,11 @@ table th {
   fill: var(--specials_buttons-links-and-highlights);
   font-weight: bold; }
 
-.chart_btc,
-.chart_bch,
-.chart_eth,
-.chart_eur,
-.chart_ltc,
-.chart_xrp,
-.chart_xht,
-.chart_eos,
-.chart_bnb,
-.chart_link,
-.chart_trx,
-.chart_ada,
-.chart_matic,
-.chart_neo,
-.chart_etc,
-.chart_xlm,
-.chart_xmr,
-.chart_zec,
-.chart_one,
-.chart_pax,
-.chart_usdc,
-.chart_usdt,
-.chart_vet,
-.chart_btt,
-.chart_qtum,
-.chart_algo,
-.chart_rvn,
-.chart_iota,
-.chart_dash,
-.chart_bsv,
-.chart_ont,
-.chart_atom,
-.chart_celr,
-.chart_omg,
-.chart_hot,
-.chart_usd,
-.chart_jpy,
-.chart_gbp,
-.chart_chf,
-.chart_cad,
-.chart_aud,
-.chart_nzd,
-.chart_zar,
-.chart_hkd,
-.chart_krw,
-.chart_cny,
-.chart_sgd,
-.chart_dai,
-.chart_tusd {
+.chart_slice {
   fill-opacity: 0.7; }
 
 .slice_active {
   fill-opacity: 1; }
-
-.chart_btc {
-  fill: var(--coin-btc);
-  stroke: var(--coin-btc); }
-
-.chart_bch {
-  fill: var(--coin-bch);
-  stroke: var(--coin-bch); }
-
-.chart_eth {
-  fill: var(--coin-eth);
-  stroke: var(--coin-eth); }
-
-.chart_eur {
-  fill: var(--coin-eur);
-  stroke: var(--coin-eur); }
-
-.chart_ltc {
-  fill: var(--coin-ltc);
-  stroke: var(--coin-ltc); }
-
-.chart_xrp {
-  fill: var(--coin-xrp);
-  stroke: var(--coin-xrp); }
-
-.chart_xht {
-  fill: var(--coin-xht);
-  stroke: var(--coin-xht); }
-
-.chart_eos {
-  fill: var(--coin-eos);
-  stroke: var(--coin-eos); }
-
-.chart_bnb {
-  fill: var(--coin-bnb);
-  stroke: var(--coin-bnb); }
-
-.chart_link {
-  fill: var(--coin-link);
-  stroke: var(--coin-link); }
-
-.chart_trx {
-  fill: var(--coin-trx);
-  stroke: var(--coin-trx); }
-
-.chart_ada {
-  fill: var(--coin-ada);
-  stroke: var(--coin-ada); }
-
-.chart_matic {
-  fill: var(--coin-matic);
-  stroke: var(--coin-matic); }
-
-.chart_neo {
-  fill: var(--coin-neo);
-  stroke: var(--coin-neo); }
-
-.chart_etc {
-  fill: var(--coin-etc);
-  stroke: var(--coin-etc); }
-
-.chart_xlm {
-  fill: var(--coin-xlm);
-  stroke: var(--coin-xlm); }
-
-.chart_xmr {
-  fill: var(--coin-xmr);
-  stroke: var(--coin-xmr); }
-
-.chart_zec {
-  fill: var(--coin-zec);
-  stroke: var(--coin-zec); }
-
-.chart_one {
-  fill: var(--coin-one);
-  stroke: var(--coin-one); }
-
-.chart_pax {
-  fill: var(--coin-pax);
-  stroke: var(--coin-pax); }
-
-.chart_usdc {
-  fill: var(--coin-usdc);
-  stroke: var(--coin-usdc); }
-
-.chart_usdt {
-  fill: var(--coin-usdt);
-  stroke: var(--coin-usdt); }
-
-.chart_vet {
-  fill: var(--coin-vet);
-  stroke: var(--coin-vet); }
-
-.chart_btt {
-  fill: var(--coin-btt);
-  stroke: var(--coin-btt); }
-
-.chart_qtum {
-  fill: var(--coin-qtum);
-  stroke: var(--coin-qtum); }
-
-.chart_algo {
-  fill: var(--coin-algo);
-  stroke: var(--coin-algo); }
-
-.chart_rvn {
-  fill: var(--coin-rvn);
-  stroke: var(--coin-rvn); }
-
-.chart_iota {
-  fill: var(--coin-iota);
-  stroke: var(--coin-iota); }
-
-.chart_dash {
-  fill: var(--coin-dash);
-  stroke: var(--coin-dash); }
-
-.chart_bsv {
-  fill: var(--coin-bsv);
-  stroke: var(--coin-bsv); }
-
-.chart_ont {
-  fill: var(--coin-ont);
-  stroke: var(--coin-ont); }
-
-.chart_atom {
-  fill: var(--coin-atom);
-  stroke: var(--coin-atom); }
-
-.chart_celr {
-  fill: var(--coin-celr);
-  stroke: var(--coin-celr); }
-
-.chart_omg {
-  fill: var(--coin-omg);
-  stroke: var(--coin-omg); }
-
-.chart_hot {
-  fill: var(--coin-hot);
-  stroke: var(--coin-hot); }
-
-.chart_usd {
-  fill: var(--coin-usd);
-  stroke: var(--coin-usd); }
-
-.chart_jpy {
-  fill: var(--coin-jpy);
-  stroke: var(--coin-jpy); }
-
-.chart_gbp {
-  fill: var(--coin-gbp);
-  stroke: var(--coin-gbp); }
-
-.chart_chf {
-  fill: var(--coin-chf);
-  stroke: var(--coin-chf); }
-
-.chart_cad {
-  fill: var(--coin-cad);
-  stroke: var(--coin-cad); }
-
-.chart_aud {
-  fill: var(--coin-aud);
-  stroke: var(--coin-aud); }
-
-.chart_nzd {
-  fill: var(--coin-nzd);
-  stroke: var(--coin-nzd); }
-
-.chart_zar {
-  fill: var(--coin-zar);
-  stroke: var(--coin-zar); }
-
-.chart_hkd {
-  fill: var(--coin-hkd);
-  stroke: var(--coin-hkd); }
-
-.chart_krw {
-  fill: var(--coin-krw);
-  stroke: var(--coin-krw); }
-
-.chart_cny {
-  fill: var(--coin-cny);
-  stroke: var(--coin-cny); }
-
-.chart_sgd {
-  fill: var(--coin-sgd);
-  stroke: var(--coin-sgd); }
-
-.chart_tusd {
-  fill: var(--coin-tusd);
-  stroke: var(--coin-tusd); }
-
-.chart_dai {
-  fill: var(--coin-dai);
-  stroke: var(--coin-dai); }
 
 @media (min-width: 1920px) {
   .donut-label-pair {
@@ -10156,36 +9540,6 @@ table th {
     display: block;
     width: 100% !important;
     height: 100% !important; }
-    .input-group__coin-icons svg .btc0,
-    .input-group__coin-icons svg .btc1 {
-      fill: var(--coin-btc); }
-    .input-group__coin-icons svg .eth0,
-    .input-group__coin-icons svg .eth1 {
-      fill: var(--coin-eth); }
-    .input-group__coin-icons svg .bch-icon {
-      fill: var(--coin-bch); }
-    .input-group__coin-icons svg .xrp-icon {
-      fill: var(--coin-xrp); }
-    .input-group__coin-icons svg .xmr-icon {
-      fill: var(--coin-xmr); }
-    .input-group__coin-icons svg .ada-icon {
-      fill: var(--coin-ada); }
-    .input-group__coin-icons svg .bnb-icon {
-      fill: var(--coin-bnb); }
-    .input-group__coin-icons svg .dai-icon {
-      fill: var(--coin-dai); }
-    .input-group__coin-icons svg .eos-icon {
-      fill: var(--coin-eos); }
-    .input-group__coin-icons svg .ltc-icon {
-      fill: var(--coin-ltc); }
-    .input-group__coin-icons svg .trx-icon {
-      fill: var(--coin-trx); }
-    .input-group__coin-icons svg .tusd-icon {
-      fill: var(--coin-tusd); }
-    .input-group__coin-icons svg .xlm-icon {
-      fill: var(--coin-xlm); }
-    .input-group__coin-icons svg .default-icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics) !important; }
 
 .language_rtl .quick_trade-wrapper {
   font-family: inherit; }
@@ -11893,51 +11247,3 @@ svg .session-timeout-0 {
 svg .deposit-complete-02,
 svg .deposit-complete-btc-02 {
   fill: var(--specials_checks-okay-done); }
-
-svg .btc0 {
-  fill: var(--coin-btc); }
-
-svg .btc1 {
-  fill: var(--coin-btc); }
-
-svg .eth0 {
-  fill: var(--coin-eth); }
-
-svg .eth1 {
-  fill: var(--coin-eth); }
-
-svg .bch-icon {
-  fill: var(--coin-bch); }
-
-svg .xrp-icon {
-  fill: var(--coin-xrp); }
-
-svg .xht-icon {
-  fill: var(--coin-xht); }
-
-svg .xmr-icon {
-  fill: var(--coin-xmr); }
-
-svg .xlm-icon {
-  fill: var(--coin-xlm); }
-
-svg .eos-icon {
-  fill: var(--coin-eos); }
-
-svg .trx-icon {
-  fill: var(--coin-trx); }
-
-svg .ada-icon {
-  fill: var(--coin-ada); }
-
-svg .bnb-icon {
-  fill: var(--coin-bnb); }
-
-svg .tusd-icon {
-  fill: var(--coin-tusd); }
-
-svg .dai-icon {
-  fill: var(--coin-dai); }
-
-svg .ltc-icon {
-  fill: var(--coin-ltc); }
