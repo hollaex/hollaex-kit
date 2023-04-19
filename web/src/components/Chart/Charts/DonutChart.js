@@ -230,7 +230,7 @@ class DonutChart extends Component {
 				<g key={i}>
 					<path
 						d={arcj(value)}
-						className={classnames(`chart_${data.symbol}`, {
+						className={classnames(`chart_${data.symbol}`, 'chart_slice', {
 							slice_active: activeSlice,
 						})}
 						onMouseOver={() => this.handleHover(data.symbol)}
