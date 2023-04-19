@@ -37,7 +37,7 @@ const getMakerRow = (
 						wrapperClassName="currency-ball"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
-					{display_name}
+					<div className="px-1">{display_name}</div>
 				</div>
 			</td>
 			<td>{level ? formatPercentage(makersData) : 'N/A'}</td>
