@@ -1395,8 +1395,7 @@ table th {
   padding-right: 10px; }
 
 .home-page_content .trade_tab-icons {
-  width: 4rem;
-  margin-top: 2px; }
+  width: 3rem; }
 
 .live-markets_header {
   font-size: 1.3rem;
@@ -1634,11 +1633,7 @@ table th {
     height: 38px;
     padding-right: 10px; }
   .dust-dialog-content .currency-ball {
-    width: 30px;
-    padding-top: 4px; }
-    .dust-dialog-content .currency-ball svg,
-    .dust-dialog-content .currency-ball div:first-child {
-      width: 28px; }
+    width: 2rem; }
   .dust-dialog-content .dust-note {
     color: var(--specials_pending-waiting-caution); }
   .dust-dialog-content .large-font {
@@ -1670,8 +1665,7 @@ table th {
     font-size: 1.3rem;
     position: relative; }
   .wallet-container .wallet-header_block .coin-icons {
-    width: 50px;
-    padding-top: 4px; }
+    width: 3.5rem; }
   .wallet-container .wallet-header_block .with_price-block_amount-value {
     font-size: 4rem;
     line-height: 4rem; }
@@ -1744,15 +1738,10 @@ table th {
     .wallet-container .wallet-assets_block .search-field {
       background-color: var(--base_wallet-sidebar-and-popup); }
     .wallet-container .wallet-assets_block .currency-ball-image-wrapper {
-      height: 24px !important;
       margin-right: 7px;
-      width: 20px !important; }
+      width: 2rem !important; }
     .wallet-container .wallet-assets_block .currency-ball {
-      width: 30px;
-      padding-top: 4px; }
-      .wallet-container .wallet-assets_block .currency-ball svg,
-      .wallet-container .wallet-assets_block .currency-ball div:first-child {
-        width: 28px; }
+      width: 2rem; }
     .wallet-container .wallet-assets_block .loading-anime {
       width: 100px;
       height: 20px;
@@ -2079,8 +2068,8 @@ table th {
   margin: 1rem; }
 
 .form_currency-ball {
-  width: 30px;
-  height: 30px; }
+  width: 2.5rem;
+  height: 2.5rem; }
 
 .multiple-actions-wrapper .mini-qr {
   fill: var(--specials_buttons-links-and-highlights); }
@@ -2311,12 +2300,9 @@ table th {
     padding-right: 8px;
     padding-bottom: 12px; }
   .history_block-wrapper .table-wrapper .table_body-wrapper.with_icon .coin-icons {
-    width: 30px;
-    padding-top: 4px; }
+    width: 2rem; }
   .history_block-wrapper .table-wrapper .table_body-wrapper .currency-ball {
-    width: 25px;
-    line-height: 10px;
-    margin-top: 6px; }
+    width: 2rem; }
   .history_block-wrapper .ant-picker-clear {
     background: none; }
   .history_block-wrapper .action_notification-wrapper {
@@ -2620,8 +2606,7 @@ table th {
     position: relative; }
     .trade_block-wrapper .trade_block-title .trade_block-icon {
       width: 1.4rem;
-      height: 1.4rem;
-      margin-top: 0.08rem; }
+      height: 1.4rem; }
     .trade_block-wrapper .trade_block-title .trade_block-title-currency {
       color: var(--labels_important-active-labels-text-graphics);
       font-size: 0.9rem;
@@ -3242,9 +3227,7 @@ table th {
   overflow-y: auto;
   flex: 1; }
   .trade_active_orders-wrapper .currency-ball {
-    width: 25px;
-    line-height: 10px;
-    margin-top: 6px; }
+    width: 1.8rem; }
   .trade_active_orders-wrapper .currency-ball-image-wrapper {
     padding-right: 8px;
     padding-bottom: 12px; }
@@ -3993,9 +3976,7 @@ table th {
         height: 26px;
         margin-bottom: 8px; }
       .summary-container .assets-wrapper .coin-price-container .coin-price {
-        width: 3rem; }
-        .summary-container .assets-wrapper .coin-price-container .coin-price svg {
-          width: 2.5rem; }
+        width: 2rem; }
   .summary-container .asset_wrapper_width {
     width: 100%; }
   .summary-container .xht_asset_wrapper_width {
@@ -4317,11 +4298,7 @@ table th {
   padding-right: 7px; }
 
 .market-list__container .market-list__block .market-list__coin-icons {
-  width: 2.8rem;
-  margin: 0.3rem 0.3rem 0 0.3rem; }
-  .market-list__container .market-list__block .market-list__coin-icons svg {
-    width: 2.5rem !important;
-    height: 2.5rem !important; }
+  width: 2rem; }
 
 .market-list__container .market-list__block .market-list__block-table {
   width: 100%;
@@ -4508,7 +4485,7 @@ table th {
     height: 2.2rem;
     padding-right: 10px; }
   .trade_tabs-container .trade_tab-icons {
-    width: 3rem; }
+    width: 2.5rem; }
   .trade_tabs-container .trade_tab-pair-title {
     color: var(--labels_important-active-labels-text-graphics);
     font-size: 1.1rem;
@@ -4609,7 +4586,7 @@ table th {
   .layout-mobile .trade_tabs-container .trade-tab-list {
     margin: 1.5rem 1rem; }
   .layout-mobile .trade_tabs-container .trade_tab-icons {
-    width: 2.25rem; }
+    width: 2rem; }
   .layout-mobile .trade_tabs-container .tabs-pair-details {
     font-size: 1rem;
     width: 28rem; }
@@ -4622,7 +4599,7 @@ table th {
     .layout-mobile .trade_tabs-container .trade-tab-list {
       margin: 1.5rem 1rem; }
     .layout-mobile .trade_tabs-container .trade_tab-icons {
-      width: 2.25rem; }
+      width: 2rem; }
     .layout-mobile .trade_tabs-container .tabs-pair-details {
       font-size: 1.5rem;
       width: 34rem;
@@ -4634,7 +4611,7 @@ table th {
   .trade_tabs-container .trade-tab-list {
     margin: 1.5rem 1rem; }
   .trade_tabs-container .trade_tab-icons {
-    width: 2.25rem; }
+    width: 2rem; }
   .trade_tabs-container .tabs-pair-details {
     font-size: 1rem;
     width: 26rem; }
@@ -5399,8 +5376,7 @@ table th {
   margin-top: 3rem !important; }
 
 .stake-details .currency-ball {
-  width: 30px;
-  padding-top: 4px; }
+  width: 2rem; }
 
 .stake-btn.ant-btn-primary {
   color: var(--specials_buttons-links-and-highlights);
@@ -5649,8 +5625,6 @@ table th {
     margin-top: 8rem; }
   .hollaex-token-wrapper .pb-6 {
     padding-bottom: 6rem; }
-  .hollaex-token-wrapper .icon_title-wrapper .icon_title-svg svg {
-    margin-top: 3px !important; }
   .hollaex-token-wrapper .icon_title-wrapper {
     margin-top: 0 !important; }
   .hollaex-token-wrapper .sub-header-icon {
@@ -9528,12 +9502,12 @@ table th {
     .input-group__container .input-group__select:hover .ant-select-selector {
       color: var(--labels_important-active-labels-text-graphics) !important; }
     .input-group__container .input-group__select:hover .input-group__coin-icons {
-      width: 2.2rem; }
+      width: 1.9rem; }
   .input-group__container:hover {
     border-color: var(--labels_important-active-labels-text-graphics); }
 
 .input-group__coin-icons {
-  width: 1.8rem;
+  width: 1.6rem;
   height: 100%; }
   .input-group__coin-icons svg {
     margin: 0 auto;
@@ -9638,8 +9612,8 @@ table th {
     .quick_trade-wrapper .trade-details-wrapper .currency-ball-image-wrapper {
       height: 5rem; }
     .quick_trade-wrapper .trade-details-wrapper .coins-icon {
-      width: 5rem;
-      height: 5rem; }
+      width: 3.5rem;
+      height: 3.5rem; }
     .quick_trade-wrapper .trade-details-wrapper .f-size-16 {
       font-size: 16px;
       color: var(--labels_secondary-inactive-label-text-graphics);

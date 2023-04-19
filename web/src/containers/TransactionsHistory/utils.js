@@ -110,7 +110,7 @@ export const generateOrderHistoryHeaders = (
 								wrapperClassName="currency-ball"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							<div>{display_name}</div>
+							<div className="px-2">{display_name}</div>
 						</div>
 					</td>
 				);
@@ -439,7 +439,7 @@ export const generateTradeHeaders = (
 								wrapperClassName="currency-ball"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							<div>{display_name}</div>
+							<div className="px-2">{display_name}</div>
 						</div>
 					</td>
 				);
@@ -703,7 +703,7 @@ export const generateWithdrawalsHeaders = (
 								wrapperClassName="coin-icons"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							{data.fullname}
+							<div className="px-2">{data.fullname}</div>
 						</div>
 					</td>
 				);
