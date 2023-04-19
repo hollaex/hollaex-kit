@@ -1037,7 +1037,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id } });
+	const token = await findToken({ where: { id: token_id , user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1045,15 +1045,19 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(!whitelisting_enabled && token.role === ROLES.ADMIN) {
+	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_DISABLE_ADMIN);
+	}
+
+	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
 	const values = {
 		...permissions,
 		name,
-		whitelisted_ips,
-		whitelisting_enabled,
+		...(whitelisted_ips != null && { whitelisted_ips }),
+		...(whitelisting_enabled != null && { whitelisting_enabled }),
 	};
 
 	Object.entries(values).forEach((key, value) => {
