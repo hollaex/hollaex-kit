@@ -687,6 +687,8 @@ class TransactionsHistory extends Component {
 							text={STRINGS.formatString(
 								STRINGS['CANCEL_BASE_WITHDRAWAL'],
 								coins && coins[currency] && coins[currency].fullname
+									? coins[currency].fullname
+									: ''
 							)}
 							textType="title"
 							underline={true}
@@ -697,7 +699,11 @@ class TransactionsHistory extends Component {
 								<div>{STRINGS['CANCEL_WITHDRAWAL_POPUP_CONFIRM']}</div>
 								<div className={classnames(...GROUP_CLASSES)}>
 									<CurrencyBallWithPrice
-										symbol={coins && coins[currency] && coins[currency].symbol}
+										symbol={
+											coins && coins[currency] && coins[currency].symbol
+												? coins[currency].symbol
+												: ''
+										}
 										amount={amount}
 										price={1}
 									/>
