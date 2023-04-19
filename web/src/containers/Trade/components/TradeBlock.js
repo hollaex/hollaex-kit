@@ -54,7 +54,7 @@ const TradeBlock = ({
 								wrapperClassName="trade_block-icon"
 							/>
 						) : null}
-						<div className="trade_block-title-items">
+						<div className="trade_block-title-items px-1">
 							{titleValues ? (
 								<div className="d-flex">
 									<EditWrapper stringId={stringId}>{title}</EditWrapper>
