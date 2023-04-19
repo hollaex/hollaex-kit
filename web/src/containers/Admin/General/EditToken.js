@@ -11,7 +11,7 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	const [ipAddress, setIpAddress] = useState('');
 	const [isEdit, setIsEdit] = useState(false);
 	const { apiKey, secret } = record;
-	const { can_read, can_trade, can_withdraw } = editData;
+	const { can_read, can_withdraw } = editData;
 
 	const onHandleCopy = () => {
 		const range = document.createRange();
@@ -110,7 +110,7 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 					<div className="sub-title mt-5 mb-2">Access</div>
 					<div className="d-flex">
 						<div>
-							<span className="font-size-small bold">Basic access</span>
+							<span className="font-size-small bold">Read access</span>
 							<div className="content-size">
 								<strong>Select what this API key can access.</strong>
 							</div>
@@ -122,18 +122,9 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 										setEditData({ ...editData, can_read: !can_read })
 									}
 								>
-									Reading (wallets balances, etc)
+									Read (wallets, balances, users, etc)
 								</Checkbox>
 							</div>
-							<Checkbox
-								name={'can_trade'}
-								checked={can_trade}
-								onChange={() =>
-									setEditData({ ...editData, can_trade: !can_trade })
-								}
-							>
-								Trading
-							</Checkbox>
 						</div>
 						<div className="ml-5">
 							<span className="font-size-small bold">Assigned IP</span>
@@ -191,9 +182,10 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 							</div>
 						</div>
 						<div className="ml-5">
-							<span className="font-size-small bold">Advanced access</span>
+							<span className="font-size-small bold">Write access</span>
 							<div className="content-size">
-								Fund withdrawal API access (use cautiously)
+								Fund withdrawal, transfer, edit sensitive user info, etc (use
+								cautiously)
 							</div>
 							<Checkbox
 								name="can_withdraw"
@@ -202,14 +194,14 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 									setEditData({ ...editData, can_withdraw: !can_withdraw })
 								}
 							>
-								Withdrawals
+								Write
 							</Checkbox>
 							{editData?.can_withdraw === true && (
 								<div className="d-flex items-center mt-2 ml-1">
 									<div className="custom-withdraw"></div>
 									<div className="content-size warning-content  ml-2">
 										<span className="warning-text">WARNING:</span> Enabling API
-										Withdrawals is EXTREMELY RISKY!
+										Write is EXTREMELY RISKY!
 									</div>
 								</div>
 							)}

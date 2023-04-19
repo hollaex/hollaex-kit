@@ -41,14 +41,12 @@ class MarketRow extends Component {
 					{!loading ? (
 						<div className="d-flex align-items-center">
 							<Image
-								width="32px"
-								height="32px"
 								iconId={icon_id}
 								icon={ICONS[icon_id]}
 								wrapperClassName="market-list__coin-icons"
 								imageWrapperClassName="currency-ball-image-wrapper"
 							/>
-							<div>{isAsset ? fullname : display_name}</div>
+							<div className="px-2">{isAsset ? fullname : display_name}</div>
 						</div>
 					) : (
 						<div
