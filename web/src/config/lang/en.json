@@ -1456,6 +1456,7 @@
 				"TABLE": {
 					"TITLE": "Fees deducted upon withdrawal",
 					"SUBTITLE": "Below are all the fees when withdrawing an asset.",
+					"NOT_ALLOWED": "Not allowed",
 					"HEADER": {
 						"CURRENCY": "Currency/asset",
 						"DEPOSIT": "Deposit Fee",
