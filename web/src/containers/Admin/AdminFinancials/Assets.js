@@ -204,6 +204,7 @@ class Assets extends Component {
 			isTableLoading: true,
 			isFiat: '',
 			assetType: '',
+			currentScreen: 'step1',
 		};
 	}
 
@@ -291,6 +292,12 @@ class Assets extends Component {
 		}
 	}
 
+	updateCurrentScreen = (screen) => {
+		this.setState({
+			currentScreen: screen,
+		});
+	};
+
 	getBalance = async () => {
 		try {
 			const res = await requestTotalBalance();
@@ -320,12 +327,13 @@ class Assets extends Component {
 
 	handleClose = () => {
 		this.setState({
-			isOpenAdd: false,
+			isOpenAdd: this.state.currentScreen === 'step2' ? true : false,
 			isEdit: false,
 			isConfigureEdit: false,
 			isConfirm: false,
 			width: 520,
 			isWithdrawalEdit: false,
+			currentScreen: 'step1',
 			// selectedAsset: {}
 		});
 	};
@@ -857,6 +865,8 @@ class Assets extends Component {
 					handleRefreshCoin={this.handleRefreshCoin}
 					isWithdrawalEdit={this.state.isWithdrawalEdit}
 					assetType={this.state.assetType}
+					currentScreen={this.state.currentScreen}
+					updateCurrentScreen={this.updateCurrentScreen}
 				/>
 			);
 		}

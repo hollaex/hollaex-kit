@@ -123,13 +123,15 @@ class Stake extends Component {
 													<Image
 														iconId={icon_id}
 														icon={ICONS[icon_id]}
-														wrapperClassName="currency-ball pt-2"
+														wrapperClassName="currency-ball"
 														imageWrapperClassName="currency-ball-image-wrapper"
 													/>
-													{fullname}
-													<span className="pl-2 secondary-text">
-														{display_name}
-													</span>
+													<div className="px-2">
+														{fullname}
+														<span className="pl-2 secondary-text">
+															{display_name}
+														</span>
+													</div>
 												</div>
 											</td>
 											<td {...commonCellProps}>
