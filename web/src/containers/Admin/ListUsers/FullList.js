@@ -6,6 +6,7 @@ import { Link } from 'react-router';
 import { formatDate } from 'utils';
 import { requestUsers } from './actions';
 import AddUser from './AddUser';
+import UseFilters from './UserFilters';
 
 import './index.css';
 
@@ -24,6 +25,8 @@ class FullListUsers extends Component {
 			currentTablePage: 1,
 			isRemaining: true,
 			isVisible: false,
+			displayFilterModel: false,
+			filters: null,
 		};
 	}
 
@@ -36,8 +39,8 @@ class FullListUsers extends Component {
 			loading: true,
 			error: '',
 		});
-
-		requestUsers({ page, limit })
+		const { filters } = this.state;
+		requestUsers({ page, limit, ...(filters != null && filters) })
 			.then((res) => {
 				let temp = page === 1 ? res.data : [...this.state.users, ...res.data];
 				let users = temp.sort((a, b) => {
@@ -78,6 +81,13 @@ class FullListUsers extends Component {
 
 	onCancel = () => {
 		this.setState({ isVisible: false });
+	};
+
+	applyFilters = (filters) => {
+		this.setState({ filters }, () => {
+			const { page, limit } = this.state;
+			this.requestFullUsers(page, limit);
+		});
 	};
 
 	render() {
@@ -144,6 +154,17 @@ class FullListUsers extends Component {
 				) : (
 					<div>
 						{error && <p>-{error}-</p>}
+
+						<div>
+							<Button
+								type="primary"
+								onClick={() => this.setState({ displayFilterModel: true })}
+								className="green-btn"
+							>
+								Add filters
+							</Button>
+						</div>
+
 						<div className="user-list-header-wrapper">
 							<span
 								className="pointer"
@@ -184,6 +205,13 @@ class FullListUsers extends Component {
 						requestFullUsers={this.requestFullUsers}
 					/>
 				</Modal>
+				<UseFilters
+					displayFilterModel={this.state.displayFilterModel}
+					setDisplayFilterModel={(value) => {
+						this.setState({ displayFilterModel: value });
+					}}
+					applyFilters={this.applyFilters}
+				/>
 			</div>
 		);
 	}

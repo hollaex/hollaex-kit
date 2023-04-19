@@ -518,165 +518,96 @@ const getAllUsersAdmin = (opts = {
 	end_date: null,
 	format: null,
 	type: null,
+	email: null,
+	username: null,
+	full_name: null,
+	pending_verification: null,
+	dob_start_date: null,
+	dob_end_date: null,
+	gender: null,
+	nationality: null,
+	crypto_wallet: null,
+	verification_level: null,
+	email_verified: null,
+	otp_enabled: null,
+	is_admin: null,
+	is_supervisor: null,
+	is_support: null,
+	is_kyc: null,
+	is_communicator: null,
+	affiliation_rate: null,
+	phone_number: null,
 	additionalHeaders: null
 }) => {
+	const {
+		id,
+		gender,
+		email_verified,
+		otp_enabled,
+		is_admin,
+		is_supervisor,
+		is_support,
+		is_kyc,
+		is_communicator,
+		dob_start_date,
+		dob_end_date
+	} = opts;
+
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	let query = {
 		where: {
-			created_at: timeframe
-		}
+			created_at: timeframe,
+			...(id != null && { id }),
+			...((dob_start_date != null || dob_end_date != null) && { dob: dob_timeframe }),
+			...(email_verified != null && { email_verified }),
+			...(gender != null && { gender }),
+			...(otp_enabled != null && { otp_enabled }),
+			...(is_admin != null && { is_admin }),
+			...(is_supervisor != null && { is_supervisor }),
+			...(is_support != null && { is_support }),
+			...(is_kyc != null && { is_kyc }),
+			...(is_communicator != null && { is_communicator }),
+			[Op.and]: [],
+		},
+		order: [ordering]
 	};
-	if (opts.id || opts.search) {
-		query.attributes = {
-			exclude: ['balance', 'password', 'updated_at']
-		};
-		if (opts.id) {
-			query.where.id = opts.id;
+	query.attributes = {
+		exclude: ['balance', 'password', 'updated_at']
+	};
+	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level', 'affiliation_rate'])).forEach(key => {
+		if(opts[key] != null) {
+			query.where[Op.and].push(
+				{
+					[key]: {
+						[Op.like]: `%${opts[key]}%`
+					}
+				}
+			)
 		}
-		else if (opts.type != null) {
-			query.where = {
-				[Op.or]: []
-			};
+	})
+	
+	//TO DO: 'crypto_wallet',
 
-			switch (opts.type) {
-				case 'id':
-					query.where[Op.or].push(
-						{
-							id: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'email':
-					query.where[Op.or].push(
-						{
-							email: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'crypto_wallet':
-					query.where[Op.or].push(
-						{
-							crypto_wallet: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'createdAt':
-					query.where[Op.or].push(
-						{
-							createdAt: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'updatedAt':
-					query.where[Op.or].push(
-						{
-							updatedAt: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'id_data':
-					query.where[Op.or].push(getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`));
-					break;
-				case 'phone_number':
-					query.where[Op.or].push(
-						{
-							phone_number: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'verification_level':
-					query.where[Op.or].push(
-						{
-							verification_level: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'pending_verification':
-					query.where[Op.or].push(
-						{
-							id_data: {
-								status: 1
-							}
-						}
-					);
-					break;
-				case 'pending_bank':
-					query.where[Op.or].push(getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''));
-					break;
-				default:
-					break;
-			}
-
-		}
-		else {
-			query.where = {
-				[Op.or]: [
-					{
-						email: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						username: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						full_name: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						phone_number: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
-				]
-			};
-		}
-	} else if (isBoolean(opts.pending) && opts.pending) {
-
-		query = {
-			attributes: [
-				'id',
-				'email',
-				'verification_level',
-				'id_data',
-				'bank_account',
-				'activated'
-			],
-			order: [['updated_at', 'desc']]
-		};
-
+	if (isBoolean(opts.pending) && opts.pending) {
+		query.order = [['updated_at', 'desc']];
 
 		if (opts.pending_type) {
 			if (opts.pending_type === 'id') {
 				query.where = {
+					...query.where,
 					activated: true,
 					id_data: {
 						status: 1 // users that have a pending id waiting for admin to confirm
 					}
 				};
 			} else if (opts.pending_type === 'bank') {
+			
 				query.where = {
 					[Op.and]: [
+						...query.where[Op.and],
 						{ activated: true },
 						{
 							id_data: {
@@ -692,14 +623,6 @@ const getAllUsersAdmin = (opts = {
 		} else {
 			throw new Error('pending type is not defined. You need to select id or bank is pending_type');
 		}
-	} else {
-		query = {
-			where: {},
-			attributes: {
-				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator']
-			},
-			order: [ordering]
-		};
 	}
 
 	if (!opts.format) {
@@ -711,12 +634,7 @@ const getAllUsersAdmin = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', query)
 		.then(async ({ count, data }) => {
 			if (opts.id || opts.search) {
-				if (count === 0) {
-					// Need to throw error if query was for one user and the user is not found
-					const error = new Error(USER_NOT_FOUND);
-					error.status = 404;
-					throw error;
-				} else if (data[0].verification_level > 0 && data[0].network_id) {
+				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
 					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
 					data[0].balance = userNetworkData.balance;
 					data[0].wallet = userNetworkData.wallet;

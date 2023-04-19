@@ -289,7 +289,7 @@ class App extends Component {
 		) : (
 			<div className="app_container-content user-container">
 				<Tabs>
-					<TabPane tab="Search" key="search">
+					{/* <TabPane tab="Search" key="search">
 						<h2>SEARCH FOR USER</h2>
 						<Form
 							onSubmit={this.searchUser}
@@ -332,7 +332,7 @@ class App extends Component {
 								columns={COLUMNS}
 							/>
 						</div>
-					</TabPane>
+					</TabPane> */}
 
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
