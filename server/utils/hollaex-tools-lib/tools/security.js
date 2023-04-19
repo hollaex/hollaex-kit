@@ -555,7 +555,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 				if (!verificationError && decodedToken) {
 					loggerAuth.verbose(
 						'helpers/auth/verifyToken verified_token',
+						'ip',
 						ip,
+						'token ip',
 						decodedToken.ip,
 						decodedToken.sub
 					);
