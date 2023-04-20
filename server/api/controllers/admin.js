@@ -132,16 +132,9 @@ const getUsersAdmin = (req, res) => {
 		dob_end_date,
 		gender,
 		nationality,
-		crypto_wallet,
 		verification_level,
 		email_verified,
 		otp_enabled,
-		is_admin,
-		is_supervisor,
-		is_support,
-		is_kyc,
-		is_communicator,
-		affiliation_rate,
 		phone_number
 	
 	} = req.swagger.params;
@@ -179,16 +172,9 @@ const getUsersAdmin = (req, res) => {
 		dob_end_date: dob_end_date.value,
 		gender: gender.value,
 		nationality: nationality.value,
-		crypto_wallet: crypto_wallet.value,
 		verification_level: verification_level.value,
 		email_verified: email_verified.value,
 		otp_enabled: otp_enabled.value,
-		is_admin: is_admin.value,
-		is_supervisor: is_supervisor.value,
-		is_support: is_support.value,
-		is_kyc: is_kyc.value,
-		is_communicator: is_communicator.value,
-		affiliation_rate: affiliation_rate.value,
 		phone_number: phone_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']

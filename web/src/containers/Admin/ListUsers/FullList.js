@@ -168,7 +168,7 @@ class FullListUsers extends Component {
 						<div className="user-list-header-wrapper">
 							<span
 								className="pointer"
-								onClick={() => this.props.handleDownload({})}
+								onClick={() => this.props.handleDownload(this.state.filters)}
 							>
 								Download table
 							</span>

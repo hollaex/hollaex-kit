@@ -289,51 +289,6 @@ class App extends Component {
 		) : (
 			<div className="app_container-content user-container">
 				<Tabs>
-					{/* <TabPane tab="Search" key="search">
-						<h2>SEARCH FOR USER</h2>
-						<Form
-							onSubmit={this.searchUser}
-							buttonText="Search"
-							buttonClass="green-btn"
-							fields={{
-								id: {
-									type: 'number',
-									label: 'Id',
-									placeholder: ' id ',
-									validate: [],
-									min: 1,
-								},
-								input: {
-									type: 'string',
-									label: 'Email or User Name',
-									placeholder: 'email or username',
-									validate: [],
-								},
-							}}
-							initialValues={{ type: 'id' }}
-						/>
-						{userInformationList.length ? (
-							<Table
-								className="mt-4 blue-admin-table admin-user-container"
-								columns={COLUMNS}
-								dataSource={userInformationList}
-								rowKey={(data) => {
-									return data.id;
-								}}
-							/>
-						) : null}
-					</TabPane>
-
-					<TabPane tab="Pending Users" key="pendingUsers">
-						<div className="m-top">
-							<PendingUsers
-								requestUserData={this.requestUserData}
-								requestUsersDownload={this.requestUsersDownload}
-								columns={COLUMNS}
-							/>
-						</div>
-					</TabPane> */}
-
 					<TabPane tab="All Users" key="users">
 						<h2 className="m-top">LIST OF ALL USERS</h2>
 

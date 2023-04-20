@@ -1175,11 +1175,6 @@ paths:
           type: string
           maxLength: 256
         - in: query
-          name: crypto_wallet
-          required: false
-          type: string
-          maxLength: 256
-        - in: query
           name: phone_number
           required: false
           type: string
@@ -1194,30 +1189,6 @@ paths:
           type: boolean
         - in: query
           name: otp_enabled
-          required: false
-          type: boolean
-        - in: query
-          name: is_admin
-          required: false
-          type: boolean
-        - in: query
-          name: is_supervisor
-          required: false
-          type: boolean
-        - in: query
-          name: is_support
-          required: false
-          type: boolean
-        - in: query
-          name: is_kyc
-          required: false
-          type: boolean
-        - in: query
-          name: is_communicator
-          required: false
-          type: boolean
-        - in: query
-          name: affiliation_rate
           required: false
           type: boolean
         - in: query

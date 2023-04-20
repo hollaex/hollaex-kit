@@ -48,16 +48,9 @@ const UseFilters = ({
 		},
 		nationality: { type: 'string', label: 'Nationality' },
 		phone_number: { type: 'string', label: 'Phone Number' },
-		crypto_wallet: { type: 'string', label: 'Crypto Wallet' },
 		verification_level: { type: 'string', label: 'Verification Level' },
 		email_verified: { type: 'boolean', label: 'Email Verified' },
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
-		is_admin: { type: 'boolean', label: 'Admin Role' },
-		is_supervisor: { type: 'boolean', label: 'Supervisor Role' },
-		is_support: { type: 'boolean', label: 'Support Role' },
-		is_kyc: { type: 'boolean', label: 'Kyc Role' },
-		is_communicator: { type: 'boolean', label: 'Communicator Role' },
-		affiliation_rate: { type: 'string', label: 'Affiliation Rate' },
 	};
 
 	const [showAddFilter, setShowAddFilter] = useState(false);

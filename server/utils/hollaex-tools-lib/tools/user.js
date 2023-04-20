@@ -526,16 +526,9 @@ const getAllUsersAdmin = (opts = {
 	dob_end_date: null,
 	gender: null,
 	nationality: null,
-	crypto_wallet: null,
 	verification_level: null,
 	email_verified: null,
 	otp_enabled: null,
-	is_admin: null,
-	is_supervisor: null,
-	is_support: null,
-	is_kyc: null,
-	is_communicator: null,
-	affiliation_rate: null,
 	phone_number: null,
 	additionalHeaders: null
 }) => {
@@ -544,11 +537,6 @@ const getAllUsersAdmin = (opts = {
 		gender,
 		email_verified,
 		otp_enabled,
-		is_admin,
-		is_supervisor,
-		is_support,
-		is_kyc,
-		is_communicator,
 		dob_start_date,
 		dob_end_date
 	} = opts;
@@ -565,11 +553,6 @@ const getAllUsersAdmin = (opts = {
 			...(email_verified != null && { email_verified }),
 			...(gender != null && { gender }),
 			...(otp_enabled != null && { otp_enabled }),
-			...(is_admin != null && { is_admin }),
-			...(is_supervisor != null && { is_supervisor }),
-			...(is_support != null && { is_support }),
-			...(is_kyc != null && { is_kyc }),
-			...(is_communicator != null && { is_communicator }),
 			[Op.and]: [],
 		},
 		order: [ordering]
@@ -577,7 +560,7 @@ const getAllUsersAdmin = (opts = {
 	query.attributes = {
 		exclude: ['balance', 'password', 'updated_at']
 	};
-	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level', 'affiliation_rate'])).forEach(key => {
+	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level',])).forEach(key => {
 		if(opts[key] != null) {
 			query.where[Op.and].push(
 				{
@@ -589,8 +572,6 @@ const getAllUsersAdmin = (opts = {
 		}
 	})
 	
-	//TO DO: 'crypto_wallet',
-
 	if (isBoolean(opts.pending) && opts.pending) {
 		query.order = [['updated_at', 'desc']];
 
