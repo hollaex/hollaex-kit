@@ -538,12 +538,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 			? req.swagger.operation['x-security-scopes']
 			: BASE_SCOPES;
 
-		let ip;
-		if (isSocket) {
-			ip = req.socket ? req.socket.remoteAddress : undefined;
-		} else {
-			ip = req.headers ? req.headers['x-real-ip'] : undefined;
-		}
+		let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 		//validate the 'Authorization' header. it should have the following format:
 		//'Bearer tokenString'
@@ -555,7 +550,9 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 				if (!verificationError && decodedToken) {
 					loggerAuth.verbose(
 						'helpers/auth/verifyToken verified_token',
+						'ip',
 						ip,
+						'token ip',
 						decodedToken.ip,
 						decodedToken.sub
 					);
@@ -620,12 +617,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
 
-	let ip;
-	if (isSocket) {
-		ip = req.socket ? req.socket.remoteAddress : undefined;
-	} else {
-		ip = req.headers ? req.headers['x-real-ip'] : undefined;
-	}
+	let ip = req.headers ? req.headers['x-real-ip'] : undefined;
 
 	loggerAuth.verbose('helpers/auth/checkHmacKey ip', ip);
 
@@ -1037,7 +1029,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id } });
+	const token = await findToken({ where: { id: token_id , user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1045,15 +1037,19 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(!whitelisting_enabled && token.role === ROLES.ADMIN) {
+	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+		throw new Error(WHITELIST_DISABLE_ADMIN);
+	}
+
+	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
 	const values = {
 		...permissions,
 		name,
-		whitelisted_ips,
-		whitelisting_enabled,
+		...(whitelisted_ips != null && { whitelisted_ips }),
+		...(whitelisting_enabled != null && { whitelisting_enabled }),
 	};
 
 	Object.entries(values).forEach((key, value) => {

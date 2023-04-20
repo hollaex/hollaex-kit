@@ -400,9 +400,9 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		},
 		{
-			name: 'Bitcoin.com',
-			baseUrl: 'https://explorer.bitcoin.com',
-			txPath: '/btc/tx'
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/bitcoin/transaction'
 		}
 	],
 	xrp: [
@@ -554,24 +554,19 @@ exports.EXPLORERS = {
 			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
 		}
+	],
+	etc: [
+		{
+			name: 'Ethereum Classic Explorer',
+			baseUrl: 'https://etcblockexplorer.com',
+			txPath: '/tx'
+		}
 	]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
 
 // PLUGIN CONSTANTS START------------------------------ to be moved
-exports.AVAILABLE_PLUGINS = [
-	'xht_fee',
-	'kyc',
-	'sms',
-	'freshdesk',
-	'chat',
-	'bank',
-	'announcement',
-	'zendesk'
-];
-
-exports.REQUIRED_XHT = 100;
 
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min

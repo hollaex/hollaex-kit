@@ -280,7 +280,7 @@ const AssetsBlock = ({
 													/>
 												</Link>
 												<Link to={`/wallet/${key.toLowerCase()}`}>
-													{fullname}
+													<div className="px-2">{fullname}</div>
 												</Link>
 											</div>
 										) : (

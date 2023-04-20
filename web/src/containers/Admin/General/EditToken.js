@@ -1,24 +1,17 @@
 import React, { useRef, useState } from 'react';
-import { Button, Checkbox, message } from 'antd';
+import { Button, Checkbox, message, Input, Tag } from 'antd';
 import QR from 'qrcode.react';
 import { STATIC_ICONS } from 'config/icons';
+import { EditOutlined } from '@ant-design/icons';
+import isEqual from 'lodash.isequal';
 
 const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 	const textRef = useRef(null);
 	const [editData, setEditData] = useState(record);
+	const [ipAddress, setIpAddress] = useState('');
+	const [isEdit, setIsEdit] = useState(false);
 	const { apiKey, secret } = record;
-	const { can_read, can_trade, can_withdraw } = editData;
-
-	const isDisable = (record) => {
-		const accessPermissionKeys = ['can_read', 'can_trade', 'can_withdraw'];
-		let enabled = true;
-		accessPermissionKeys.forEach((item) => {
-			if (record[item] !== editData[item]) {
-				enabled = false;
-			}
-		});
-		return enabled;
-	};
+	const { can_read, can_withdraw } = editData;
 
 	const onHandleCopy = () => {
 		const range = document.createRange();
@@ -29,6 +22,44 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 		document.execCommand('copy');
 		selection.removeAllRanges();
 		message.success('Text copied');
+	};
+
+	const onChangeIp = (e) => {
+		setIpAddress(e);
+	};
+
+	const addIP = () => {
+		setEditData((prevState) => ({
+			...prevState,
+			whitelisted_ips: [
+				...prevState.whitelisted_ips.filter((value) => value !== ipAddress),
+				ipAddress,
+			],
+		}));
+		setIpAddress('');
+	};
+
+	const removeIp = (ip) => {
+		setEditData((prevState) => ({
+			...prevState,
+			whitelisted_ips: [
+				...prevState.whitelisted_ips.filter((value) => value !== ip),
+			],
+		}));
+	};
+
+	const validateIp = () => {
+		const rx = /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/;
+		return rx.test(ipAddress);
+	};
+
+	const onHandleSave = () => {
+		if (editData?.whitelisted_ips?.length > 0) {
+			handleEditData({ type: 'edit', data: editData });
+			setIsEdit(false);
+		} else {
+			message.error('You should have at least one IP');
+		}
 	};
 
 	return (
@@ -79,7 +110,7 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 					<div className="sub-title mt-5 mb-2">Access</div>
 					<div className="d-flex">
 						<div>
-							<span className="font-size-small bold">Basic access</span>
+							<span className="font-size-small bold">Read access</span>
 							<div className="content-size">
 								<strong>Select what this API key can access.</strong>
 							</div>
@@ -91,32 +122,70 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 										setEditData({ ...editData, can_read: !can_read })
 									}
 								>
-									Reading (wallets balances, etc)
+									Read (wallets, balances, users, etc)
 								</Checkbox>
 							</div>
-							<Checkbox
-								name={'can_trade'}
-								checked={can_trade}
-								onChange={() =>
-									setEditData({ ...editData, can_trade: !can_trade })
-								}
-							>
-								Trading
-							</Checkbox>
 						</div>
 						<div className="ml-5">
 							<span className="font-size-small bold">Assigned IP</span>
-							<div className="content-size">
+							<div className="content-size edit-ip-wrapper">
 								<p>IP address that works with this API key is: </p>
-								{editData?.whitelisted_ips?.map((ipAddress) => {
-									return <span className="ip-field mt-1">{ipAddress}</span>;
-								})}
+								{!isEdit && (
+									<div className="d-flex">
+										{editData &&
+											editData?.whitelisted_ips?.map((ipAddress) => {
+												return (
+													<span className="ip-field mt-1">{ipAddress}</span>
+												);
+											})}
+										<EditOutlined
+											className="edit-icon ml-2 mt-1"
+											onClick={() => setIsEdit(true)}
+										/>
+									</div>
+								)}
+								{isEdit && (
+									<div>
+										{editData?.whitelisted_ips?.map((ip) => {
+											return (
+												<Tag
+													key={ip}
+													closable={true}
+													className="edit-ip"
+													onClose={() => removeIp(ip)}
+												>
+													{ip}
+												</Tag>
+											);
+										})}
+										<div>
+											<div className="d-flex">
+												<Input
+													placeholder={
+														'Enter IP address. You can add multiple IPs'
+													}
+													bordered={false}
+													className="edit-ip-input"
+													value={ipAddress}
+													onChange={(e) => onChangeIp(e?.target?.value)}
+												/>
+												{validateIp() && (
+													<div className="add" onClick={addIP}>
+														ADD
+													</div>
+												)}
+											</div>
+											<div className="kit-divider"></div>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 						<div className="ml-5">
-							<span className="font-size-small bold">Advanced access</span>
+							<span className="font-size-small bold">Write access</span>
 							<div className="content-size">
-								Fund withdrawal API access (use cautiously)
+								Fund withdrawal, transfer, edit sensitive user info, etc (use
+								cautiously)
 							</div>
 							<Checkbox
 								name="can_withdraw"
@@ -125,14 +194,14 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 									setEditData({ ...editData, can_withdraw: !can_withdraw })
 								}
 							>
-								Withdrawals
+								Write
 							</Checkbox>
 							{editData?.can_withdraw === true && (
 								<div className="d-flex items-center mt-2 ml-1">
 									<div className="custom-withdraw"></div>
 									<div className="content-size warning-content  ml-2">
 										<span className="warning-text">WARNING:</span> Enabling API
-										Withdrawals is EXTREMELY RISKY!
+										Write is EXTREMELY RISKY!
 									</div>
 								</div>
 							)}
@@ -140,8 +209,8 @@ const EditToken = ({ record, displayQR, handleEditData, inx }) => {
 					</div>
 					<Button
 						type="primary"
-						onClick={() => handleEditData({ type: 'edit', data: editData })}
-						disabled={isDisable(record)}
+						onClick={() => onHandleSave()}
+						disabled={isEqual(record, editData)}
 					>
 						Save
 					</Button>
