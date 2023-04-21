@@ -288,7 +288,7 @@ class StakeDetails extends Component {
 								iconPath={ICONS[icon_id]}
 								iconId={icon_id}
 								textType="title"
-								imageWrapperClassName="currency-ball pt-2"
+								imageWrapperClassName="currency-ball"
 							/>
 							<div>
 								{STRINGS.formatString(

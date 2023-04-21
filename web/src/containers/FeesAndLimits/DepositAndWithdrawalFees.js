@@ -24,7 +24,7 @@ const renderRow = (
 						wrapperClassName="currency-ball"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
-					{display_name}
+					<div className="px-2">{display_name}</div>
 				</div>
 			</td>
 			{/*Temporarily dropped deposit fee for the scope of 2.5 release*/}
@@ -46,7 +46,7 @@ const getFeeText = (data, level) => {
 	return text;
 };
 
-const getRows = (level, coins, icons, search) => {
+const getRows = (level, coins, icons, search, strings) => {
 	const rowData = [];
 	Object.entries(coins)
 		.filter(([key]) => !search || (search && key.includes(search)))
@@ -59,6 +59,7 @@ const getRows = (level, coins, icons, search) => {
 				deposit_fees,
 				symbol,
 				network: networks,
+				allow_withdrawal,
 			} = coin;
 			if (withdrawal_fees) {
 				Object.keys(withdrawal_fees).forEach((network, n_index) => {
@@ -66,7 +67,9 @@ const getRows = (level, coins, icons, search) => {
 					if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
 						withdrawal_fees_data['symbol'] = symbol;
 					}
-					const withdrawal_text = getFeeText(withdrawal_fees_data, level);
+					const withdrawal_text = allow_withdrawal
+						? getFeeText(withdrawal_fees_data, level)
+						: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 					const deposit_text =
 						deposit_fees && deposit_fees[network]
 							? getFeeText(deposit_fees[network], level)
@@ -89,7 +92,9 @@ const getRows = (level, coins, icons, search) => {
 					);
 				});
 			} else {
-				const withdrawal_text = `${withdrawal_fee} ${display_name}`;
+				const withdrawal_text = allow_withdrawal
+					? `${withdrawal_fee} ${display_name}`
+					: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 				rowData.push(
 					renderRow(
 						icon_id,
@@ -142,7 +147,7 @@ const DepositAndWithdrawalFees = ({ coins, level, icons, search }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{getRows(level, coins, icons, search)}</tbody>
+				<tbody>{getRows(level, coins, icons, search, STRINGS)}</tbody>
 			</table>
 		</div>
 	);

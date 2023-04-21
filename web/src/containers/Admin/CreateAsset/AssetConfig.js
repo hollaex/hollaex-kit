@@ -12,6 +12,7 @@ import { UploadOutlined } from '@ant-design/icons';
 import _toUpper from 'lodash/toUpper';
 import _get from 'lodash/get';
 
+import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
 import ColorPicker from '../ColorPicker';
 import {
@@ -450,7 +451,19 @@ const AssetConfig = (props) => {
 						<div className="md-field-wrap">
 							{coinFormData.logo ? (
 								<img
-									src={coinFormData.logo || ''}
+									src={
+										coinFormData.logo.type
+											? STATIC_ICONS['MISSING_ICON']
+											: coinFormData.logo
+											? coinFormData.logo
+											: STATIC_ICONS['COIN_ICONS'][
+													(coinFormData.symbol || '').toLowerCase()
+											  ]
+											? STATIC_ICONS['COIN_ICONS'][
+													(coinFormData.symbol || '').toLowerCase()
+											  ]
+											: STATIC_ICONS['MISSING_ICON']
+									}
 									alt="coin"
 									className="preview-icon"
 								/>
