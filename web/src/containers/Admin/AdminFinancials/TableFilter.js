@@ -28,7 +28,10 @@ const DateField = ({ handleRemove, value, onHandleFieldChange }) => {
 			<div>
 				<div className="label-content">
 					Wallets created from{' '}
-					<span className="underline-text" onClick={() => handleRemove(value)}>
+					<span
+						className="underline-text cursor-pointer"
+						onClick={() => handleRemove(value)}
+					>
 						(Remove)
 					</span>
 				</div>
@@ -56,13 +59,13 @@ const FieldComponent = ({
 		onHandleFieldChange({ currency: value.toLowerCase() });
 	};
 
-	const handleField = (handleRemove) => {
+	const handleField = (handleRemove, value) => {
 		switch (type) {
 			case 'select':
 				return (
 					<Select
-						options={value === 'currency' && coinOptions}
-						placeholder={value === 'currency' ? 'Currency' : 'Network'}
+						options={coinOptions}
+						placeholder={'Currency'}
 						{...object}
 						onChange={onHandleSelect}
 					/>
@@ -76,6 +79,7 @@ const FieldComponent = ({
 						name={name}
 						handleRemove={handleRemove}
 						onHandleFieldChange={onHandleFieldChange}
+						value={value}
 					/>
 				);
 			default:
@@ -91,6 +95,7 @@ const FieldComponent = ({
 				);
 		}
 	};
+
 	return (
 		<div className="mr-2">
 			{type !== 'time-picker' && (
@@ -104,7 +109,7 @@ const FieldComponent = ({
 					</span>
 				</div>
 			)}
-			{handleField(handleRemove)}
+			{handleField(handleRemove, value)}
 		</div>
 	);
 };

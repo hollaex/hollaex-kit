@@ -15,7 +15,7 @@ const columns = [
 					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
 						{data.User.id}
 					</Button>
-					<div className="ml-3">{data.User.email}</div>
+					{/* <div className="ml-3">{data.User.email}</div> */}
 				</div>
 			);
 		},
@@ -63,7 +63,7 @@ const filterFields = [
 		label: 'Network',
 		value: 'network',
 		placeHolder: 'Network',
-		type: 'select',
+		type: 'text',
 		name: 'network',
 	},
 	{
