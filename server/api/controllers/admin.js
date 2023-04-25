@@ -6,7 +6,7 @@ const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { ROLES } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
-const { sendEmail, testSendSMTPEmail } = require('../../mail');
+const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
@@ -2261,6 +2261,88 @@ const getWalletsByAdmin = (req, res) => {
 		});
 };
 
+const sendEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { user_id, mail_type, data } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		'mail_type',
+		mail_type,
+		'user_id',
+		user_id,
+		'data',
+		data
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return sendEmail(
+				mail_type,
+				user.email,
+				data,
+				user.settings
+			);
+		})
+		.then(() => { 
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendEmailByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const sendRawEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { receivers, title, html, text } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		'receivers',
+		receivers,
+		'title',
+		title,
+	);
+
+	sendRawEmail(
+		receivers,
+		title,
+		html,
+		text
+	)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendRawEmailByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2317,5 +2399,7 @@ module.exports = {
 	getUserReferer,
 	createUserByAdmin,
 	createUserWalletByAdmin,
-	getWalletsByAdmin
+	getWalletsByAdmin,
+	sendEmailByAdmin,
+	sendRawEmailByAdmin
 };
