@@ -6,13 +6,17 @@ import moment from 'moment';
 
 const dateFormat = 'YYYY/MM/DD';
 
-const DateField = ({ handleRemove, value, onHandleFieldChange }) => {
+const DateField = ({ handleRemove, name, value, onHandleFieldChange }) => {
 	const onChangeStart = (date, dateString) => {
-		onHandleFieldChange({ start_date: moment(dateString).format() });
+		onHandleFieldChange({
+			start_date: dateString ? moment(dateString).format() : '',
+		});
 	};
 
 	const onChangeEnd = (date, dateString) => {
-		onHandleFieldChange({ end_date: moment(dateString).format() });
+		onHandleFieldChange({
+			end_date: dateString ? moment(dateString).format() : '',
+		});
 	};
 
 	return (
@@ -23,19 +27,24 @@ const DateField = ({ handleRemove, value, onHandleFieldChange }) => {
 					className="mr-2"
 					onChange={onChangeStart}
 					format={dateFormat}
+					value={value?.start_date ? moment(value?.start_date, dateFormat) : ''}
 				/>
 			</div>
 			<div>
 				<div className="label-content">
-					Wallets created from{' '}
+					Wallets created to{' '}
 					<span
 						className="underline-text cursor-pointer"
-						onClick={() => handleRemove(value)}
+						onClick={() => handleRemove(name)}
 					>
 						(Remove)
 					</span>
 				</div>
-				<DatePicker onChange={onChangeEnd} format={dateFormat} />
+				<DatePicker
+					onChange={onChangeEnd}
+					format={dateFormat}
+					value={value?.end_date ? moment(value?.end_date, dateFormat) : ''}
+				/>
 			</div>
 		</div>
 	);
@@ -48,7 +57,7 @@ const FieldComponent = ({
 	coinOptions,
 }) => {
 	const { type, label, value, name } = field;
-	const object = { type, label, name };
+	const object = { type, label, name, value };
 
 	const onHandle = (e) => {
 		const { name, value } = e.target;
@@ -71,7 +80,14 @@ const FieldComponent = ({
 					/>
 				);
 			case 'number':
-				return <Input type="number" {...object} onChange={onHandle} />;
+				return (
+					<Input
+						type="number"
+						{...object}
+						placeholder={'Input User ID'}
+						onChange={onHandle}
+					/>
+				);
 			case 'time-picker':
 				return (
 					<DateField
@@ -79,16 +95,13 @@ const FieldComponent = ({
 						name={name}
 						handleRemove={handleRemove}
 						onHandleFieldChange={onHandleFieldChange}
-						value={value}
 					/>
 				);
 			default:
 			case 'text':
 				return (
 					<Input
-						placeholder={
-							value === 'user_id' ? 'Input User ID' : 'Input address'
-						}
+						placeholder={name === 'network' ? 'Input network' : 'Input address'}
 						{...object}
 						onChange={onHandle}
 					/>
@@ -103,7 +116,7 @@ const FieldComponent = ({
 					{label}{' '}
 					<span
 						className="mr-2 cursor-pointer underline-text"
-						onClick={() => handleRemove(value)}
+						onClick={() => handleRemove(name)}
 					>
 						(Remove)
 					</span>
@@ -114,17 +127,23 @@ const FieldComponent = ({
 	);
 };
 
-const MultiFilter = ({ fields, onHandle, coins }) => {
-	const [options, setOptions] = useState(fields);
+const MultiFilter = ({ fields, filterOptions, onHandle, coins }) => {
+	const [options, setOptions] = useState(filterOptions);
 	const [fieldsData, setFieldsData] = useState([]);
 	const [filterData, setFilterData] = useState({});
 
 	const onHandleSelect = (e) => {
-		const tempfield = options.filter((field) => {
-			return field.value === e;
+		const tempfield = fields.filter((field) => {
+			return field.name === e;
 		});
 		const tempOptions = options.filter((field) => {
-			return field.value !== e;
+			return field.name !== e;
+		});
+		tempOptions.forEach((data) => {
+			data.value = data.name;
+		});
+		tempfield.forEach((data) => {
+			data.value = '';
 		});
 		setOptions([...tempOptions]);
 		setFieldsData([...fieldsData, ...tempfield]);
@@ -132,10 +151,13 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 
 	const onHandleRemove = (e) => {
 		const tempfield = fieldsData.filter((field) => {
-			return field.value === e;
+			return field.name === e;
 		});
 		const tempOptions = fieldsData.filter((field) => {
-			return field.value !== e;
+			return field.name !== e;
+		});
+		tempfield.forEach((data) => {
+			data.value = data.name;
 		});
 		setOptions([...tempfield, ...options]);
 		setFieldsData([...tempOptions]);
@@ -143,6 +165,37 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 	};
 
 	const onHandleFieldChange = (value) => {
+		const updatedFieldsData = [...fieldsData];
+		const key = Object.keys(value)[0];
+		let fieldIndex;
+		const filteredFieldData = updatedFieldsData
+			.filter((item) => {
+				return (
+					item.name === key ||
+					(item.name === 'time' && ['start_date', 'end_date'].includes(key))
+				);
+			})
+			.map((data) => {
+				if (['start_date', 'end_date'].includes(key)) {
+					return { ...data, value: { ...data.value, ...value } };
+				}
+				return { ...data, value: value[key] };
+			});
+		updatedFieldsData.forEach((data, index) => {
+			if (data?.name === filteredFieldData?.[0]?.name) {
+				fieldIndex = index;
+			}
+		});
+		updatedFieldsData[fieldIndex] = filteredFieldData?.[0];
+		const emptyFields = updatedFieldsData.filter(
+			(item) =>
+				item?.value === '' ||
+				(item?.value?.start_date === '' && item?.value?.end_date === '')
+		);
+		if (updatedFieldsData.length === emptyFields.length) {
+			onHandle();
+		}
+		setFieldsData([...updatedFieldsData]);
 		setFilterData({ ...filterData, ...value });
 	};
 
@@ -153,7 +206,10 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 	const onHandleRemoveSearch = (e) => {
 		let obj = {};
 		Object.keys(filterData).forEach((name) => {
-			if (name !== e) {
+			if (
+				name !== e &&
+				!(e === 'time' && ['start_date', 'end_date'].includes(name))
+			) {
 				obj = { ...obj, [name]: filterData[name] };
 			}
 		});
@@ -185,7 +241,7 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 					);
 				})}
 			</div>
-			{options.length ? (
+			{options?.length ? (
 				<Select
 					options={options}
 					defaultValue={'Add filter'}
@@ -205,7 +261,12 @@ const MultiFilter = ({ fields, onHandle, coins }) => {
 						? 'search-content mr-2 filter-button green-btn'
 						: 'filter-button green-btn'
 				}
-				disabled={Object.keys(filterData).length === 0}
+				disabled={
+					Object.keys(filterData).length === 0 ||
+					!Object.values(filterData)
+						.map((field) => field === '')
+						.filter((item) => !item)?.length
+				}
 				onClick={onHandleSearch}
 			>
 				Search
