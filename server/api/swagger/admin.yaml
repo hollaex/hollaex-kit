@@ -514,7 +514,6 @@ paths:
             properties:
               html:
                 type: string
-                maxLength: 256
               title:
                 type: string
                 maxLength: 256
