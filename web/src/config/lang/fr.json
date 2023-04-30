@@ -1,7 +1,7 @@
 {
 	"APP_TITLE": "HollaEx",
 	"APP_SUB_TITLE": "Ouvrir votre Crypto Exchange",
-	"LOGOUT_CONFIRM_TEXT": "Êtes vous sûrs?. Voulez-vous vous déconnecter?",
+	"LOGOUT_CONFIRM_TEXT": "Êtes vous sûrs ?. Voulez-vous vous déconnecter ?",
 	"ADD_TRADING_PAIR": "Ajouter Trading Pair",
 	"CANCEL_BASE_WITHDRAWAL": "Annuler {0} Retrait",
 	"CANCEL_WITHDRAWAL": "Annuler le retrait",
@@ -12,13 +12,13 @@
 	"LOGIN_TEXT": "Connexion",
 	"SIGN_IN": "S'identifier",
 	"SIGNUP_TEXT": "S'enregistrer",
-	"NO_ACTIVE_ORDERS": "No orders detected. Place your orders on the Pro or Quick trade page",
+	"NO_ACTIVE_ORDERS": "Aucun ordre n'a été détecté. Placez vos ordres sur la page Pro ou Quick trade",
 	"REGISTER_TEXT": "S'inscrire",
 	"ACCOUNT_TEXT": "Compte",
 	"CLOSE_TEXT": "Fermer",
 	"COPY_TEXT": "Copier",
 	"COPY_SUCCESS_TEXT": "Copie réussie",
-	"CANCEL_SUCCESS_TEXT": "Annulation réussie!",
+	"CANCEL_SUCCESS_TEXT": "Annulation réussie !",
 	"ADD_FILES": "AJOUTER DES FICHIERS",
 	"OR_TEXT": "Ou",
 	"CONTACT_US_TEXT": "Contactez-nous",
@@ -26,20 +26,20 @@
 	"HELP_TELEGRAM_TEXT": "Consulter pour ouvrir la documentation de l'API:",
 	"HELP_TELEGRAM_LINK": "https://apidocs.hollaex.com",
 	"HELP_TEXT": "aide",
-	"NEED_HELP_TEXT": "Besoin d'aide?",
+	"NEED_HELP_TEXT": "Besoin d'aide ?",
 	"SUCCESS_TEXT": "Réussi",
 	"ERROR_TEXT": "Erreur",
 	"PROCEED": "POURSUIVRE",
 	"EDIT_TEXT": "Editer",
 	"BACK_TEXT": "Retour",
-	"NO_OPTIONS": "Aucune option de disponible",
+	"NO_OPTIONS": "Aucune option disponible",
 	"SECONDS": "secondes",
 	"VIEW_MARKET": "Voir le marché",
 	"GO_TRADE": "Aller dans les échanges",
 	"VIEW_INFO": "Voir la page d'informations",
 	"APPLY_HERE": "Inscrivez-vous ici",
 	"HOME": {
-		"SECTION_1_TITLE": "Bienvenue dans le HollaEx Exchange Kit!",
+		"SECTION_1_TITLE": "Bienvenue dans HollaEx Exchange Kit!",
 		"SECTION_1_TEXT_1": "Créez votre propre échange évolutif de monnaies digitales avec le kit HollaEx et faites parti de l'avenir de la finance",
 		"SECTION_1_TEXT_2": "Nous nous efforçons de faire progresser la technologie financière grâce à un accès simple et abordable aux échanges.»",
 		"SECTION_1_BUTTON_1": "Pour en savoir plus",
@@ -49,7 +49,7 @@
 		"SECTION_3_CARD_2_TITLE": "INTEGRATION BANCAIRE",
 		"SECTION_3_CARD_2_TEXT": "Plugins avec des modules personnalisables disponibles pour l'intégration bancaire. Nous connaissons la finance traditionnelle et pouvons vous aider à rendre votre échange disponible à la population locale ou globale.",
 		"SECTION_3_CARD_3_TITLE": "SÉCURITÉ FORTE",
-		"SECTION_3_CARD_3_TEXT": "HollaEx utilise les meilleurs systèmes de sécurité et les algorithmes les plus sûrs et fiables pour assurer la sécurité des fonds. C'est notre priorité absolue et nous en avons pris soin tout particulièrement",
+		"SECTION_3_CARD_3_TEXT": "HollaEx utilise les meilleurs systèmes de sécurité et les algorithmes les plus sûrs et fiables pour assurer la sécurité des fonds. C'est notre priorité absolue et nous en avons particulièrement pris soin",
 		"SECTION_3_CARD_4_TITLE": "REPORTING AVANCÉS",
 		"SECTION_3_CARD_4_TEXT": "Panneau d'administration avec email et rapports personnalisables pour informer l'administrateur et l'équipe technique de l'état du système et des transactions.",
 		"SECTION_3_CARD_5_TITLE": "SUPPORT",
@@ -59,7 +59,6 @@
 		"SECTION_3_BUTTON_1": "Voir la Demo"
 	},
 	"FOOTER": {
-		"FOOTER_LEGAL": ["Proudly made in Seoul, South Korea", "bitHolla Inc."],
 		"FOOTER_LANGUAGE_TEXT": "LANGUES",
 		"SECTIONS": {
 			"SECTION_1_TITLE": " À PROPOS",
@@ -97,7 +96,7 @@
 			"SECTION_6_LINK_4": "Instagram",
 			"SECTION_6_LINK_5": "Linkedin",
 			"SECTION_6_LINK_6": "Website",
-			"SECTION_6_LINK_7": "Helpdesk",
+			"SECTION_6_LINK_7": "Service d'assistance",
 			"SECTION_6_LINK_8": "Information",
 			"SECTION_6_LINK_9": "YouTube"
 		},
@@ -106,8 +105,8 @@
 	},
 	"ACCOUNTS": {
 		"TITLE": "Compte",
-		"TAB_VERIFICATION": "Verification",
-		"TAB_SECURITY": "Securité",
+		"TAB_VERIFICATION": "Vérification",
+		"TAB_SECURITY": "Sécurité",
 		"TAB_NOTIFICATIONS": "Notifications",
 		"TAB_SETTINGS": "Paramètres",
 		"TAB_PROFILE": "Profil",
@@ -127,13 +126,13 @@
 			"OPTION_BUG": "Rapporter une erreur",
 			"OPTION_PERSONAL_INFO": "Changer vos informations personnelles",
 			"OPTION_BANK_TRANSFER": "Virement bancaire",
-			"OPTION_REQUEST": "Demander une invitation pour le HollaEx Exchange"
+			"OPTION_REQUEST": "Demander une invitation pour HollaEx Exchange"
 		},
 		"SUBJECT_LABEL": "Sujet",
 		"SUBJECT_PLACEHOLDER": "Indiquez le sujet de votre problème",
 		"DESCRIPTION_LABEL": "Description",
 		"DESCRIPTION_PLACEHOLDER": "Décrivez en détails le probème",
-		"ATTACHMENT_LABEL": "Ajouter des documents(3 max)",
+		"ATTACHMENT_LABEL": "Ajouter des documents (3 max)",
 		"ATTACHMENT_PLACEHOLDER": "Ajoutez un fichier si nécessaire pour expliquer le problème. Formats acceptés: PDF, JPG, PNG et GIF",
 		"SUCCESS_MESSAGE": "Cet email a été envoyé à l'équipe technique",
 		"SUCCESS_TITLE": "Message Envoyé",
@@ -144,7 +143,7 @@
 		"CRYPTO_LABELS": {
 			"ADDRESS": "Votre {0} adresse de réception",
 			"DESTINATION_TAG": "Votre {0} destination tag",
-			"MEMO": "Votre {0} memo",
+			"MEMO": "Votre {0} mémo",
 			"BTC": "Votre adresse de réception de Bitcoin",
 			"ETH": "Votre adresse de réception d'Ethereum",
 			"BCH": "Votre adresse de réception de Bitcoin Cash"
@@ -192,7 +191,7 @@
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
-			"OKAY": "Okay",
+			"OKAY": "Ok",
 			"START_TRADING": "Commencez le trading",
 			"SEE_HISTORY": "Voir l'historique"
 		},
@@ -205,7 +204,7 @@
 			"INFORMATION_PENDING_2": "Cela peut prendre entre 10 à 30 minutes. Nous vous enverrons un email une fois que votre {0} est confirmé sur la blockchain."
 		}
 	},
-	"REFERRAL_SUCCESS": { "TITLE": "Demande envoyée", "BUTTON_TEXT": "Okay" },
+	"REFERRAL_SUCCESS": { "TITLE": "Demande envoyée", "BUTTON_TEXT": "Ok" },
 	"OTP_FORM": {
 		"OTP_FORM_TITLE": "Entrez votre code d'authentification pour continuer",
 		"OTP_LABEL": "OTP Code",
@@ -227,8 +226,8 @@
 	"WALLET": {
 		"LOADING_ASSETS": "téléchargement des actifs...",
 		"TOTAL_ASSETS": "Total des actifs",
-		"AVAILABLE_WITHDRAWAL": "Disponible pour trading",
-		"AVAILABLE_TRADING": "Disponible en retrait",
+		"AVAILABLE_WITHDRAWAL": "Disponible pour retrait",
+		"AVAILABLE_TRADING": "Disponible pour le trading",
 		"ORDERS_PLURAL": "Transactions",
 		"ORDERS_SINGULAR": "Transaction",
 		"HOLD_ORDERS": "Vous avez {0} ouverts {1}, ce qui entraîne une retenue de {2} {3} placée sur votre {4} de solde"
@@ -236,7 +235,7 @@
 	"REQUEST_RESET_PASSWORD": {
 		"TITLE": "Compte de récupération",
 		"SUBTITLE": "Récupérez votre compte ci-dessous",
-		"SUPPORT": "Contactez Support",
+		"SUPPORT": "Contactez le Support",
 		"BUTTON": "Envoyer le lien de récupération"
 	},
 	"REQUEST_RESET_PASSWORD_SUCCESS": {
@@ -254,9 +253,9 @@
 	},
 	"SIGN_UP": {
 		"SIGNUP_TO": "Inscrivez-vous pour {0}",
-		"NO_EMAIL": "Vous n'avez pas reçu l'e-mail?",
+		"NO_EMAIL": "Vous n'avez pas reçu l'e-mail ?",
 		"REQUEST_EMAIL": "Demandez-en un autre ici",
-		"HAVE_ACCOUNT": "Vous avez déjà un compte?",
+		"HAVE_ACCOUNT": "Vous avez déjà un compte ?",
 		"GOTO_LOGIN": "Aller à la page Connexion",
 		"AFFILIATION_CODE": "Code de parrainage (facultatif)",
 		"AFFILIATION_CODE_PLACEHOLDER": "Saisissez votre code de parrainage",
@@ -384,7 +383,7 @@
 				"SMS_CODE_PLACEHOLDER": "Saisissez votre code SMS"
 			},
 			"INFORMATION": {
-				"TEXT": "IMPORTANT: Entrez votre nom dans les champs exactement comme il apparaît sur votre pièce d'identité (prénom complet + deuxièmes prénoms / initiales et nom (s) complet (s)). Êtes-vous une entreprise? Contactez le service client pour un compte d'entreprise.",
+				"TEXT": "IMPORTANT: Entrez votre nom dans les champs exactement comme il apparaît sur votre pièce d'identité (prénom complet + deuxièmes prénoms / initiales et nom(s) complet(s)). Êtes-vous une entreprise? Contactez le service client pour un compte d'entreprise.",
 				"TITLE_PERSONAL_INFORMATION": "Informations personnelles",
 				"TITLE_PHONE": "Téléphone",
 				"PHONE_VERIFICATION_TXT": "Indiquer des coordonnées valides nous aidera grandement à résoudre les conflits tout en empêchant les transactions indésirables sur votre compte.",
@@ -427,7 +426,7 @@
 				"IDENTITY_DOCUMENT": "Document d'identité",
 				"PROOF_OF_RESIDENCY": "Justificatif de domicile",
 				"ID_SECTION": {
-					"TITLE": "Veuillez vous assurer que vos documents soumis sont:",
+					"TITLE": "Veuillez vous assurer que vos documents soumis sont :",
 					"LIST_ITEM_1": "DE HAUTE QUALITÉ (images en couleur, résolution 300dpi ou plus)",
 					"LIST_ITEM_2": "VISIBLE ENTIÈREMENT (les filigranes sont autorisés).",
 					"LIST_ITEM_3": "VALIDE, avec la date d'expiration clairement visible.",
@@ -502,7 +501,7 @@
 		"RISKY_WARNING_TEXT_3": " Veuillez vérifier que vous souhaitez effectivement effectuer cette transaction.",
 		"GO_TO_RISK_MANAGMENT": "ALLEZ À LA GESTION DES RISQUES",
 		"CREATE_ORDER_WARING_TEXT": "Créez une fenêtre d'avertissement lorsque votre transaction utilise plus de {0} de votre portefeuille",
-		"ORDER_PORTFOLIO_LABEL": "Montant en pourcentage du portefeuille:",
+		"ORDER_PORTFOLIO_LABEL": "Montant en pourcentage du portefeuille :",
 		"NOTIFICATION_FORM": {
 			"TRADE_POPUPS": "Avertissement transactions",
 			"POPUP_ORDER_CONFIRMATION": "Demander une confirmation avant de soumettre la transaction",
@@ -536,16 +535,16 @@
 		"TITLE_TRADES": "Historique des échanges",
 		"TITLE_DEPOSITS": "Historique des dépôts",
 		"TITLE_WITHDRAWALS": "Historique des retraits",
-		"TEXT_DOWNLOAD": "TÉLÉCHARGER L'HISTOIRIQUE",
+		"TEXT_DOWNLOAD": "TÉLÉCHARGER L'HISTORIQUE",
 		"TRADES": "Échanges",
 		"DEPOSITS": "Dépôts",
 		"WITHDRAWALS": "Retraits"
 	},
 	"ACCOUNT_SECURITY": {
-		"TITLE_TEXT": "Adjust the security settings for your account. From Two-factor authentication, password, API keys and other security related functions.",
+		"TITLE_TEXT": "Ajustez les paramètres de sécurité de votre compte. De l'authentification à deux facteurs au mot de passe, en passant par les clés API et d'autres fonctions liées à la sécurité.",
 		"OTP": {
 			"TITLE": "Authentification à deux facteurs",
-			"OTP_ENABLED": "otp activé",
+			"OTP_ENABLED": "OTP activé",
 			"OTP_DISABLED": "VEUILLEZ ACTIVER 2FA",
 			"ENABLED_TEXTS": {
 				"TEXT_1": "Exiger OTP lors de la connexion",
@@ -566,12 +565,12 @@
 				"WARNING": "Nous vous recommandons vivement de configurer l'authentification à 2 facteurs (2FA). Cela augmentera considérablement la sécurité de vos fonds.",
 				"ENABLE": "Activer l'authentification à deux facteurs ",
 				"DISABLE": "Désactiver l'authentification à deux facteurs",
-				"SECRET_1": "Enter yor secret key",
-				"SECRET_2": "Please enter your secret key to confirm you wrote it down.",
-				"SECRET_3": "This secret key will help you recover your account if you lost access to your phone.",
-				"INPUT_1": "Secret Key",
-				"TITLE_2": "Enter One-Time Password (OTP)",
-				"MESSAGE_6": "Please enter your 6-digit one-time password below.",
+				"SECRET_1": "Entrez votre clé secrète",
+				"SECRET_2": "Veuillez saisir votre clé secrète pour confirmer que vous l'avez écrite.",
+				"SECRET_3": "Cette clé secrète vous aidera à récupérer votre compte si vous avez perdu l'accès à votre téléphone.",
+				"INPUT_1": "Clé Secrète",
+				"TITLE_2": "Entrez votre One-Time Password (OTP)",
+				"MESSAGE_6": "Veuillez saisir votre mot de passe unique à 6 chiffres ci-dessous.",
 				"INPUT_2": "One-Time Password (OTP)"
 			},
 			"FORM": {
@@ -584,7 +583,7 @@
 			"ACTIVE": "ACTIF",
 			"DIALOG": {
 				"SUCCESS": "vous avez changé votre mot de passe",
-				"EMAIL_CONFIRMATION": "Un email vous est envoyé pour autoriser le changement de mot de passe."
+				"EMAIL_CONFIRMATION": "Un email vous a été envoyé pour autoriser le changement de mot de passe."
 			},
 			"FORM": {
 				"BUTTON": "Changer le mot de passe",
@@ -603,25 +602,25 @@
 			}
 		},
 		"LOGIN": {
-			"TITLE": "Login History",
+			"TITLE": "Historique des connexions",
 			"CONTENT": {
-				"TITLE": "Logins History",
-				"MESSAGE": "Below is login history list with details IP, country and time details. If you see any suspicious activity you should change your password and contact support"
+				"TITLE": "Historique des connexions",
+				"MESSAGE": "Vous trouverez ci-dessous la liste de l'historique des connexions avec les détails de l'IP, du pays et l'heure. Si vous constatez une activité suspecte, vous devez changer votre mot de passe et contacter le service d'assistance."
 			}
 		},
 		"FREEZE": {
-			"TITLE": "Freeze Account",
+			"TITLE": "Geler le compte",
 			"CONTENT": {
-				"MESSAGE_1": "Freezing your account will stop whitdrawals and halts all tradings.",
-				"WARNING_1": "Use only if you fear that your account has been compromised",
-				"TITLE_1": "Freeze your Account",
-				"TITLE_2": "Account freezing",
-				"MESSAGE_2": "Freezing your account may help guard your account from cyber attacks.",
-				"MESSAGE_3": "The following will occur if you choose to freeze your account:",
-				"MESSAGE_4": "1. Pending withdrawals will be canceled.",
-				"MESSAGE_5": "2. All tradings will be halted and unfilled orders will be canceled.",
-				"MESSAGE_6": "3. Containing support will be required to reactivate your account.",
-				"WARNING_2": "Do you really want to freeze your account?"
+				"MESSAGE_1": "Le gel de votre compte bloque les retraits et interrompt toutes les transactions.",
+				"WARNING_1": "A n'utiliser seulement au cas où vous craignez que votre compte n'ait été compromis.",
+				"TITLE_1": "Geler votre compte",
+				"TITLE_2": "Gel du compte",
+				"MESSAGE_2": "Le gel de votre compte peut contribuer à le protéger contre les cyberattaques.",
+				"MESSAGE_3": "Si vous décidez de geler votre compte, les étapes suivantes se produiront :",
+				"MESSAGE_4": "1. Les retraits en cours seront annulés.",
+				"MESSAGE_5": "2. Toutes les transactions seront interrompues et les ordres non exécutés seront annulés.",
+				"MESSAGE_6": "3. Vous devrez contacter le service d'assistance pour réactiver votre compte.",
+				"WARNING_2": "Voulez-vous vraiment geler votre compte ?"
 			}
 		}
 	},
@@ -667,10 +666,10 @@
 	"LOADING": "Chargement",
 	"CHART_TEXTS": {
 		"d": "Date",
-		"o": "Open",
-		"h": "High",
-		"l": "Low",
-		"c": "Close",
+		"o": "Ouverture",
+		"h": "Haut",
+		"l": "Bas",
+		"c": "Fermeture",
 		"v": "Volume"
 	},
 	"QUICK_TRADE": "Échange rapide / Quick trade",
@@ -686,7 +685,7 @@
 	"WITHDRAWALS_FORM_ADDRESS_LABEL": "Adresse de destination",
 	"WITHDRAWALS_FORM_ADDRESS_PLACEHOLDER": "Entrez l'adresse",
 	"WITHDRAWALS_FORM_DESTINATION_TAG_LABEL": "Destination tag (facultatif)",
-	"WITHDRAWALS_FORM_MEMO_LABEL": "Memo (facultatif)",
+	"WITHDRAWALS_FORM_MEMO_LABEL": "Mémo (facultatif)",
 	"WITHDRAWALS_FORM_DESTINATION_TAG_PLACEHOLDER": "Entrez destination tag",
 	"WITHDRAWALS_FORM_AMOUNT_LABEL": "{0} montant à retirer",
 	"WITHDRAWALS_FORM_AMOUNT_PLACEHOLDER": "Saisissez le montant de {0} que vous souhaitez retirer",
@@ -700,8 +699,8 @@
 		"MESSAGE_ABOUT_SEND": "Vous êtes sur le point d'envoyer",
 		"MESSAGE_BTC_WARNING": "Veuillez vous assurer de l'exactitude de cette adresse, car {0} les transferts sont irréversibles",
 		"MESSAGE_ABOUT_WITHDRAW": "Vous êtes sur le point d'effectuer un virement sur votre compte bancaire",
-		"MESSAGE_FEE": "Frais de transaction de {0} ({1}) inclus dedans",
-		"MESSAGE_FEE_BASE": "Frais de transaction de {0} inclus dedans",
+		"MESSAGE_FEE": "Frais de transaction de {0} ({1}) inclus",
+		"MESSAGE_FEE_BASE": "Frais de transaction de {0} inclus",
 		"BASE_MESSAGE_1": "Vous ne pouvez effectuer de retrait que sur un compte bancaire dont le nom correspond au nom enregistré avec votre compte",
 		"BASE_MESSAGE_2": "Montant minimum de retrait",
 		"BASE_MESSAGE_3": "Montant maximum du retrait quotidien",
@@ -756,7 +755,7 @@
 	"RESUBMIT": "soumettre à nouveau",
 	"VERIFICATION_NOTIFICATION_SKIP_TITLE": "Documents manquants!",
 	"VERIFICATION_NOTIFICATION_SKIP_TEXT": "Pour obtenir un accès complet aux fonctions de retrait et de dépôt, vous devez soumettre vos documents d'identité sur la page dédiée à votre compte et informations personnelles.",
-	"VERIFICATION_NOTIFICATION_SUCCESS_TITLE": "Success!",
+	"VERIFICATION_NOTIFICATION_SUCCESS_TITLE": "Succès !",
 	"VERIFICATION_NOTIFICATION_SUCCESS_TEXT": "Vous recevrez une notification par email lorsque vos informations auront été traitées. Le traitement peut généralement prendre 1 à 3 jours.",
 	"VERIFICATION_NOTIFICATION_BUTTON": "PROCÉDER À L'ÉCHANGE",
 	"ERROR_USER_ALREADY_VERIFIED": "Utilisateur déjà vérifié",
@@ -813,7 +812,7 @@
 		"CREATED": "Date de création",
 		"REVOKE": "Révoquer",
 		"REVOKED": "Révoqué",
-		"REVOKE_TOOLTIP": "Vous devez activer 2FA pour révoquer le token "
+		"REVOKE_TOOLTIP": "Vous devez activer la 2FA pour révoquer le token "
 	},
 	"CHAT": {
 		"CHAT_TEXT": "chat",
@@ -851,7 +850,7 @@
 		"LABEL_PAIR_MAKER_FEE": "{0} Frais du Maker",
 		"LABEL_PAIR_TAKER_FEE": "{0} Frais du Taker",
 		"UNLIMITED": "Illimité",
-		"BLOCKED": "Disabled"
+		"BLOCKED": "Désactivé"
 	},
 	"WALLET_ADDRESS_TITLE": "Générer {0} portefeuille",
 	"WALLET_ADDRESS_GENERATE": "Générer",
@@ -880,7 +879,7 @@
 	"SUMMARY": {
 		"TITLE": "Tableau de bord",
 		"TINY_PINK_SHRIMP_TRADER": "Trader Crevettes Roses",
-		"TINY_PINK_SHRIMP_TRADER_ACCOUNT": "Compte du Trader Crevettes Roses ",
+		"TINY_PINK_SHRIMP_TRADER_ACCOUNT": "Compte du Trader Crevettes Roses",
 		"LITTLE_RED_SNAPPER_TRADER": "Trader Petit Poisson Rouge",
 		"LITTLE_RED_SNAPPER_TRADER_ACCOUNT": "Compte du Trader Petit Poisson Rouge",
 		"CUNNING_BLUE_KRAKEN_TRADING": "Échange Kraken Bleu Rusé",
@@ -920,7 +919,7 @@
 		"DEPOSIT": "Dépôts",
 		"TAKER": "Taker",
 		"MAKER": "Maker",
-		"WEBSITE": "website",
+		"WEBSITE": "site web",
 		"VIP_TRADER_ACCOUNT_ELIGIBLITY": "Éligibilité à la mise à niveau du compte VIP Trader",
 		"PRO_TRADER_ACCOUNT_ELIGIBLITY": "Éligibilité à la mise à niveau du compte Pro Trader",
 		"TRADER_ACCOUNT_ELIGIBILITY": "Éligibilité du compte de niveau {0}",
@@ -939,7 +938,7 @@
 		"LEVEL_7_TXT": "Il vous suffit de négocier mensuellement plus de 500 000 USD ou d'avoir un solde supérieur à 300 000 XHT et de bénéficier de frais de transactions inférieurs. Augmentation du montant de retrait.",
 		"LEVEL_8_TXT": "Il vous suffit de négocier mensuellement plus de 600000 USD ou d'avoir un solde de plus de 400000 XHT et de profiter de frais de transactions inférieurs.",
 		"LEVEL_9_TXT": "Il vous suffit de négocier mensuellement plus de 2000000 USD ou d'avoir un solde supérieur à 1000000 XHT et de profiter de frais de transactions inférieurs.",
-		"LEVEL_10_TXT": "The compte whale trader vous rapporte de l'argent pour la création de marché. Pour obtenir ce compte spécial, veuillez nous contacter.",
+		"LEVEL_10_TXT": "Le compte whale trader vous rapporte de l'argent pour la création de marché. Pour obtenir ce compte spécial, veuillez nous contacter.",
 		"CURRENT_TXT": "Actuel",
 		"TRADER_ACCOUNT_XHT_TEXT": "Votre compte est en période de prévente de XHT, cela signifie que vous pouvez obtenir XHT pour 0,10 $ par XHT. Tous les dépôts seront convertis en XHT une fois la transaction effacée.",
 		"TRADER_ACCOUNT_TITLE": "Compte - Période de prévente",
@@ -982,7 +981,7 @@
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Pour commencer à trader, vous devez vous connecter",
 		"TXT_2": "{0} ou {1}",
-		"LOGIN_HERE": "lConnectez-vous ici"
+		"LOGIN_HERE": "Connectez-vous ici"
 	},
 	"USER_LEVEL": "Niveau de l'utilisateur",
 	"LIMIT_AMOUNT": "montant limite",
