@@ -514,7 +514,6 @@ paths:
             properties:
               html:
                 type: string
-                maxLength: 256
               title:
                 type: string
                 maxLength: 256
@@ -2849,5 +2848,120 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_withdraw
+  /admin/send-email:
+    x-swagger-router-controller: admin
+    post:
+      operationId: sendEmailByAdmin
+      description: Send email by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - mail_type
+              - data
+            properties:
+              user_id:
+                type: number
+                format: int32
+              data:
+                type: object
+              mail_type:
+                type: string
+                enum: [
+                  'welcome',
+                  'login',
+                  'signup',
+                  'reset_password',
+                  'change_password',
+                  'password_changed',
+                  'user_verification_reject',
+                  'account_upgrade',
+                  'account_verify',
+                  'withdrawal_request',
+                  'deposit_cancel',
+                  'deposit',
+                  'withdrawal',
+                  'contactForm',
+                  'suspicious_deposit',
+                  'user_verification',
+                  'user_deactivated',
+                  'invalid_address',
+                  'invitedOperator',
+                  'alert',
+                  'discount_update',
+                  'bank_verified',
+                  'confirm_email']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_withdraw
+  /admin/send-email/raw:
+    x-swagger-router-controller: admin
+    post:
+      operationId: sendRawEmailByAdmin
+      description: Send email by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - receivers
+              - html
+            properties:
+              receivers:
+                type: array
+                items:
+                  type: string
+                  maxLength: 256
+              title:
+                type: string
+                maxLength: 256
+              html:
+                type: string
+              text:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
       x-token-permissions:
         - can_withdraw
