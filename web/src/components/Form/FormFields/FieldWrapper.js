@@ -7,8 +7,8 @@ import { STATIC_ICONS } from 'config/icons';
 import { ActionNotification, EditWrapper } from 'components';
 import { getErrorLocalized } from 'utils/errors';
 
-const Warning = ({ text }) => (
-	<div className="d-flex align-items-baseline field_warning_wrapper">
+const Warning = ({ text, className = '' }) => (
+	<div className={classnames('d-flex', 'align-items-baseline', className)}>
 		<ExclamationCircleFilled className="field_warning_icon" />
 		<div className="field_warning_text">{text}</div>
 	</div>
@@ -18,14 +18,17 @@ const renderWarning = (warning) => {
 	if (warning) {
 		if (Array.isArray(warning)) {
 			return (
-				<Fragment>
-					{warning.map((msg) => (
-						<Warning text={msg} />
+				<div className="field_warning_wrapper">
+					{warning.map((msg, index) => (
+						<Warning
+							text={msg}
+							className={classnames({ 'mt-2': index !== 0 })}
+						/>
 					))}
-				</Fragment>
+				</div>
 			);
 		} else {
-			return <Warning text={warning} />;
+			return <Warning text={warning} className="field_warning_wrapper" />;
 		}
 	} else {
 		return null;
