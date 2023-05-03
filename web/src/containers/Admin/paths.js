@@ -176,6 +176,14 @@ export const ADMIN_PATHS = [
 	// },
 ];
 
+export const SUPERVISOR_PATH = [
+	{
+		path: '/admin/financials',
+		label: 'Assets',
+		routeKey: 'financials',
+	},
+];
+
 export const PATHS = [
 	{
 		path: '/admin',
