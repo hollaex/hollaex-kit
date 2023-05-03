@@ -254,6 +254,7 @@ function withAdminProps(Component, key) {
 		'tiers',
 		'roles',
 		'billing',
+		'fiat',
 	];
 
 	PATHS.map((data) => {
@@ -264,7 +265,11 @@ function withAdminProps(Component, key) {
 		return 0;
 	});
 	return function (matchProps) {
-		if (checkRole() !== 'admin' && restrictedPaths.includes(key)) {
+		if (
+			checkRole() !== 'admin' &&
+			restrictedPaths.includes(key) &&
+			!(checkRole() === 'supervisor' && key === 'financials')
+		) {
 			return <NotFound {...matchProps} />;
 		} else {
 			return <Component {...adminProps} {...matchProps} />;
