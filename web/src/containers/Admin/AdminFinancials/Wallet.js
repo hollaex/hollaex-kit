@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { message, Table, Button } from 'antd';
+import { message, Table, Button, Spin } from 'antd';
 import { requestUsersDownload } from '../User/actions';
 import MultiFilter from './TableFilter';
 import { getExchangeWallet } from './action';
@@ -105,8 +105,10 @@ const filterOptions = [
 
 const Wallet = () => {
 	const [userData, setUserData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
+		setIsLoading(true);
 		getWallet();
 	}, []);
 
@@ -115,9 +117,11 @@ const Wallet = () => {
 			const res = await getExchangeWallet(values);
 			if (res && res.data) {
 				setUserData(res.data);
+				setIsLoading(false);
 			}
 		} catch (error) {
 			message.error(error.data.message);
+			setIsLoading(false);
 		}
 	};
 
@@ -133,6 +137,8 @@ const Wallet = () => {
 					fields={filterFields}
 					filterOptions={filterOptions}
 					onHandle={getWallet}
+					setIsLoading={setIsLoading}
+					isLoading={isLoading}
 				/>
 			</div>
 			<div className="mt-5">
@@ -143,7 +149,9 @@ const Wallet = () => {
 					Download below CSV table
 				</span>
 				<div className="mt-4">
-					<Table columns={columns} dataSource={userData} />
+					<Spin spinning={isLoading}>
+						<Table columns={columns} dataSource={userData} />
+					</Spin>
 				</div>
 			</div>
 		</div>
