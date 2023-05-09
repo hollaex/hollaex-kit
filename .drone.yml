@@ -95,6 +95,33 @@ steps:
     DOCKER_PASSWORD:
       from_secret: docker_password
 
+- name: dct_signing
+  image: docker:20.10-dind
+  privileged: true
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE:
+      from_secret: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+    DOCKER_CONTENT_TRUST_PRIVATE_KEY:
+      from_secret: DOCKER_CONTENT_TRUST_PRIVATE_KEY
+
+  volumes:
+    - name: docker
+      path: /var/run/docker.sock
+  commands:
+    - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
+    - docker pull hollaex/hollaex-kit:$(cat .tags)
+    - export DOCKER_CONTENT_TRUST=1
+    - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
+    - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+    - chmod 600 $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+    - docker trust key load $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key --name bitholla-cicd
+    - docker trust sign hollaex/hollaex-kit:$(cat .tags)
+
 - name: docker_tagging_arm64v8_master
   image: alpine
   commands: 
@@ -407,3 +434,17 @@ name: next_password
 get:
   path: devops/data/drone-ci/secret
   name: next_password
+
+---
+kind: secret
+name: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+get:
+  path: devops/data/drone-ci/secret
+  name: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+
+---
+kind: secret
+name: DOCKER_CONTENT_TRUST_PRIVATE_KEY
+get:
+  path: devops/data/drone-ci/secret
+  name: DOCKER_CONTENT_TRUST_PRIVATE_KEY
