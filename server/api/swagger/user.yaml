@@ -184,7 +184,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -893,7 +893,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
         - in: query
           name: transaction_id
@@ -1008,7 +1008,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
         - in: query
           name: transaction_id

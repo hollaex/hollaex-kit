@@ -11,6 +11,7 @@ const NotLoggedIn = ({
 	placeholderKey = 'NOT_LOGGEDIN.TEXT_GENERAL',
 	children,
 	hasBackground = true,
+	wrapperClassName = '',
 }) => {
 	const SignUpLink = (
 		<Link
@@ -33,26 +34,28 @@ const NotLoggedIn = ({
 	return isLoggedIn() ? (
 		<Fragment>{children}</Fragment>
 	) : (
-		<div
-			className={classnames('not-logged-in_view', {
-				'show-background': hasBackground,
-			})}
-		>
-			<IconTitle
-				iconId="DEMO_LOGIN_ICON"
-				iconPath={ICONS['DEMO_LOGIN_ICON']}
-				textType="title"
-				className="w-100 d-flex justify-content-center"
-			/>
-			<div className="text-center my-3">
-				<div className="xht-order-heading">{STRINGS[placeholderKey]}</div>
-				<div className="xht-order-content">
-					<div className="my-2">
-						{STRINGS.formatString(
-							STRINGS['NOT_LOGGEDIN.TXT_2'],
-							SignUpLink,
-							LoginLink
-						)}
+		<div className={wrapperClassName}>
+			<div
+				className={classnames('not-logged-in_view', {
+					'show-background': hasBackground,
+				})}
+			>
+				<IconTitle
+					iconId="DEMO_LOGIN_ICON"
+					iconPath={ICONS['DEMO_LOGIN_ICON']}
+					textType="title"
+					className="w-100 d-flex justify-content-center"
+				/>
+				<div className="text-center my-3">
+					<div className="xht-order-heading">{STRINGS[placeholderKey]}</div>
+					<div className="xht-order-content">
+						<div className="my-2">
+							{STRINGS.formatString(
+								STRINGS['NOT_LOGGEDIN.TXT_2'],
+								SignUpLink,
+								LoginLink
+							)}
+						</div>
 					</div>
 				</div>
 			</div>
