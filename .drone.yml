@@ -344,7 +344,7 @@ steps:
     WEBHOOK_URL:
       from_secret: webhook_url
   when:
-    status: [success]
+    status: [success, failure]
 
 - name: notify_to_discord_releases
   image: bitholla/devops-tools:drone_partymaker-220208
