@@ -197,3 +197,5 @@ exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
 exports.INVALID_TOKEN_TYPE = 'invalid token type';
 exports.NO_AUTH_TOKEN = 'no auth token sent';
+exports.WHITELIST_DISABLE_ADMIN = 'Admin cannot disable whitelisting feature';
+exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';

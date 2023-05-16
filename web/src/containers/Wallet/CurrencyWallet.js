@@ -100,11 +100,9 @@ class Wallet extends Component {
 						iconId={icon_id}
 						icon={ICONS[icon_id]}
 						wrapperClassName="coin-icons"
-						width="32px"
-						height="32px"
 						imageWrapperClassName="currency-ball-image-wrapper"
 					/>
-					<div className="with_price-block_amount-value">
+					<div className="with_price-block_amount-value px-2">
 						{`${formatToCurrency(balanceValue, min)}`}
 					</div>
 				</div>

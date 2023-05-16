@@ -512,6 +512,19 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		startDate,
 		endDate,
 		...opts
+	})
+	.then(async (orders) => {
+		if (orders.data.length > 0) {
+			const networkIds = orders.data.map((order) => order.created_by);
+			const idDictionary = await mapNetworkIdToKitId(networkIds);
+			for (let order of orders.data) {
+				const user_kit_id = idDictionary[order.created_by];
+				order.network_id = order.created_by;
+				order.created_by = user_kit_id;
+				if (order.User) order.User.id = user_kit_id;
+			}
+		}
+		return orders;
 	});
 };
 
@@ -541,6 +554,19 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 		startDate,
 		endDate,
 		...opts
+	})
+	.then(async (orders) => {
+		if (orders.data.length > 0) {
+			const networkIds = orders.data.map((order) => order.created_by);
+			const idDictionary = await mapNetworkIdToKitId(networkIds);
+			for (let order of orders.data) {
+				const user_kit_id = idDictionary[order.created_by];
+				order.network_id = order.created_by;
+				order.created_by = user_kit_id;
+				if (order.User) order.User.id = user_kit_id;
+			}
+		}
+		return orders;
 	});
 };
 

@@ -54,7 +54,7 @@ const getAdminDeposits = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

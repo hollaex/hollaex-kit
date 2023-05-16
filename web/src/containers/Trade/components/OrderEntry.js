@@ -587,11 +587,7 @@ class OrderEntry extends Component {
 	onFeeStructureAndLimits = () => {
 		const { router } = this.props;
 
-		if (isLoggedIn()) {
-			router.push('/fees-and-limits');
-		} else {
-			router.push('/login');
-		}
+		router.push('/fees-and-limits');
 	};
 
 	render() {
@@ -602,6 +598,7 @@ class OrderEntry extends Component {
 			pair_base,
 			pair_2,
 			pair_2_display,
+			pair_base_display,
 			price,
 			coins,
 			size,
@@ -653,6 +650,7 @@ class OrderEntry extends Component {
 						increment_price={increment_price}
 						formatToCurrency={formatToCurrency}
 						onFeeStructureAndLimits={this.onFeeStructureAndLimits}
+						symbol={side === 'buy' ? pair_base_display : pair_2_display}
 					/>
 				</Form>
 			</div>

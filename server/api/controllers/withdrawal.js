@@ -3,7 +3,8 @@
 const { loggerWithdrawals } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { all } = require('bluebird');
-const { USER_NOT_FOUND } = require('../../messages');
+const { ROLES } = require('../../constants');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isEmail } = require('validator');
 
@@ -266,6 +267,10 @@ const getAdminWithdrawals = (req, res) => {
 		address
 	} = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+
 	toolsLib.wallet.getUserWithdrawalsByKitId(
 		user_id.value,
 		currency.value,
@@ -290,7 +295,7 @@ const getAdminWithdrawals = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

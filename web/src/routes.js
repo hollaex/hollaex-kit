@@ -71,7 +71,7 @@ import { Billing } from 'containers/Admin';
 import store from './store';
 import { verifyToken } from './actions/authAction';
 import { setLanguage } from './actions/appActions';
-import { SmartTarget } from 'components';
+import { SmartTarget, NotLoggedIn } from 'components';
 
 import {
 	isLoggedIn,
@@ -79,6 +79,7 @@ import {
 	removeToken,
 	getTokenTimestamp,
 	isAdmin,
+	checkRole,
 } from './utils/token';
 import {
 	getLanguage,
@@ -245,6 +246,17 @@ const noLoggedUserCommonProps = {
 
 function withAdminProps(Component, key) {
 	let adminProps = {};
+	let restrictedPaths = [
+		'general',
+		'financials',
+		'trade',
+		'plugins',
+		'tiers',
+		'roles',
+		'billing',
+		'fiat',
+	];
+
 	PATHS.map((data) => {
 		const { pathProps = {}, routeKey, ...rest } = data;
 		if (routeKey === key) {
@@ -253,26 +265,49 @@ function withAdminProps(Component, key) {
 		return 0;
 	});
 	return function (matchProps) {
-		return <Component {...adminProps} {...matchProps} />;
+		if (
+			checkRole() !== 'admin' &&
+			restrictedPaths.includes(key) &&
+			!(checkRole() === 'supervisor' && key === 'financials')
+		) {
+			return <NotFound {...matchProps} />;
+		} else {
+			return <Component {...adminProps} {...matchProps} />;
+		}
 	};
 }
 
 function generateRemoteRoutes(remoteRoutes) {
+	const privateRouteProps = { onEnter: requireAuth };
+
 	return (
 		<Fragment>
-			{remoteRoutes.map(({ path, name, target }, index) => (
-				<Route
-					key={`${name}_remote-route_${index}`}
-					path={path}
-					name={name}
-					component={() => (
-						<div>
-							<SmartTarget id={target} />
-						</div>
-					)}
-					onEnter={requireAuth}
-				/>
-			))}
+			{remoteRoutes.map(
+				({ path, name, target, is_public, token_required }, index) => (
+					<Route
+						key={`${name}_remote-route_${index}`}
+						path={path}
+						name={name}
+						component={() => {
+							const Wrapper = token_required ? NotLoggedIn : Fragment;
+							const props = token_required
+								? {
+										wrapperClassName:
+											'pt-4 presentation_container apply_rtl settings_container',
+								  }
+								: {};
+							return (
+								<div>
+									<Wrapper {...props}>
+										<SmartTarget id={target} />
+									</Wrapper>
+								</div>
+							);
+						}}
+						{...(!is_public && privateRouteProps)}
+					/>
+				)
+			)}
 		</Fragment>
 	);
 }
@@ -328,12 +363,7 @@ export const generateRoutes = (routes = []) => {
 					name="Reset Password Request"
 					component={ConfirmChangePassword}
 				/>
-				<Route
-					path="account"
-					name="Account"
-					component={Account}
-					onEnter={requireAuth}
-				/>
+				<Route path="account" name="Account" component={Account} />
 				<Route
 					path="account/settings/username"
 					name="username"

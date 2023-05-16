@@ -263,7 +263,13 @@ const CoinPage = ({
 													'link-separator': index !== topLinks.length - 1,
 												})}
 											>
-												<Link to={link}>{STRINGS[key]}</Link>
+												<a
+													href={link}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													{STRINGS[key]}
+												</a>
 											</span>
 										))}
 								</div>
@@ -425,12 +431,14 @@ const CoinPage = ({
 									</div>
 								</div>
 							</div>
-							<div className="blue-link pointer underline-text">
-								<Link to="fees-and-limits">
-									<EditWrapper stringId="FEES_AND_LIMITS.COIN_PAGE_LINK">
-										{STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK']}
-									</EditWrapper>
-								</Link>
+							<div className="pb-35">
+								<div className="blue-link pointer underline-text">
+									<Link to="fees-and-limits">
+										<EditWrapper stringId="FEES_AND_LIMITS.COIN_PAGE_LINK">
+											{STRINGS['FEES_AND_LIMITS.COIN_PAGE_LINK']}
+										</EditWrapper>
+									</Link>
+								</div>
 							</div>
 						</div>
 					</div>

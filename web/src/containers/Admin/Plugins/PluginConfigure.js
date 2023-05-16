@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 
 import PluginDetails from './PluginDetails';
 import PluginConfigureForm from './PluginConfigureForm';
-import { getPlugin, getInstalledPlugin } from './action';
 
 const PluginConfigure = ({
 	type,
@@ -19,42 +18,47 @@ const PluginConfigure = ({
 	onChangeNextType,
 	router,
 	setProcessing,
+	myPlugins,
+	networkPlugin,
+	isNetwork = false,
 }) => {
 	const [pluginData, setPlugin] = useState({});
 	const [selectedNetworkPlugin, setNetworkData] = useState({});
 	const [isLoading, setLoading] = useState(true);
 
 	const requestPlugin = useCallback(() => {
-		if (selectedPlugin.enabled) {
-			getInstalledPlugin({ name: selectedPlugin.name })
-				.then((res) => {
-					setLoading(false);
-					if (res) {
-						setPlugin(res);
-					}
-				})
-				.catch((err) => {
-					setPlugin(selectedPlugin);
-					setLoading(false);
-				});
+		const isAvailInMyPlugin =
+			myPlugins &&
+			myPlugins
+				.filter((plugin) => plugin.name === selectedPlugin.name)
+				?.reduce((data, plugin) => plugin, {});
+		const isAvailInNetPlugin =
+			networkPlugin &&
+			networkPlugin
+				.filter((plugin) => plugin.name === selectedPlugin.name)
+				?.reduce((data, plugin) => plugin, {});
+		if (isAvailInMyPlugin && Object.keys(isAvailInMyPlugin)?.length) {
+			setPlugin(isAvailInMyPlugin);
+			setLoading(false);
 		}
-		getPlugin({ name: selectedPlugin.name })
-			.then((res) => {
-				setLoading(false);
-				if (res && selectedPlugin.enabled) {
-					setNetworkData(res);
-				} else if (res && !selectedPlugin.enabled) {
-					setPlugin(res);
-					setNetworkData(res);
-				}
-			})
-			.catch((err) => {
-				if (!selectedPlugin.enabled) {
-					setPlugin({});
-				}
-				setNetworkData({});
-				setLoading(false);
-			});
+		if (
+			isNetwork &&
+			((isAvailInNetPlugin &&
+				Object.keys(isAvailInNetPlugin)?.length &&
+				selectedPlugin.enabled) ||
+				(isAvailInNetPlugin && !selectedPlugin.enabled))
+		) {
+			setPlugin(isAvailInNetPlugin);
+			setLoading(false);
+		}
+		if (
+			isAvailInNetPlugin &&
+			Object.keys(isAvailInNetPlugin)?.length &&
+			selectedPlugin.enabled
+		) {
+			setNetworkData(isAvailInNetPlugin);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [selectedPlugin]);
 
 	useEffect(() => {

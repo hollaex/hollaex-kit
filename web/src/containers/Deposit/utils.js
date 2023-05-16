@@ -46,13 +46,25 @@ export const generateFormFields = ({
 			label: getNetworkNameByKey(network),
 		}));
 
+		const { min } = coins[currency];
+		const warning = [STRINGS['DEPOSIT_FORM_NETWORK_WARNING']];
+		if (min) {
+			warning.push(
+				STRINGS.formatString(
+					STRINGS['DEPOSIT_FORM_MIN_WARNING'],
+					min,
+					currency.toUpperCase()
+				)
+			);
+		}
+
 		fields.network = {
 			type: 'select',
 			stringId:
-				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,DEPOSIT_FORM_NETWORK_WARNING',
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,DEPOSIT_FORM_NETWORK_WARNING,DEPOSIT_FORM_MIN_WARNING',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
-			warning: STRINGS['DEPOSIT_FORM_NETWORK_WARNING'],
+			warning,
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,
@@ -108,7 +120,7 @@ export const generateFormFields = ({
 			const isPercentage = type === 'percentage';
 			const fee_coin = isPercentage ? '' : symbol || currency;
 
-			const fullname = coins[fee_coin]?.fullname;
+			const fullname = coins[fee_coin]?.fullname || '';
 
 			fields.fee = {
 				type: 'number',

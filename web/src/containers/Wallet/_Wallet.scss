@@ -131,12 +131,7 @@ $header-margin: 2rem;
 		padding-right: 10px;
 	}
 	.currency-ball {
-		width: 30px;
-		padding-top: 4px;
-		svg,
-		div:first-child {
-			width: 28px;
-		}
+		width: 2rem;
 	}
 
 	.dust-note {
@@ -204,8 +199,7 @@ $header-margin: 2rem;
 		.wallet-header_block {
 		}
 		.coin-icons {
-			width: 50px;
-			padding-top: 4px;
+			width: 3.5rem;
 		}
 		.with_price-block_amount-value {
 			font-size: $font-size-headline;
@@ -326,17 +320,11 @@ $header-margin: 2rem;
 			background-color: $app-sidebar-background;
 		}
 		.currency-ball-image-wrapper {
-			height: 24px !important;
 			margin-right: 7px;
-			width: 20px !important;
+			width: 2rem !important;
 		}
 		.currency-ball {
-			width: 30px;
-			padding-top: 4px;
-			svg,
-			div:first-child {
-				width: 28px;
-			}
+			width: 2rem;
 		}
 		.loading-anime {
 			width: 100px;

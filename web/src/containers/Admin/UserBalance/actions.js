@@ -8,3 +8,10 @@ export const requestUserBalance = (id) =>
 		.then((data) => {
 			return data;
 		});
+
+export const generateCryptoAddress = (paramOptions) =>
+	requestAuthenticated(`/admin/user/wallet`, paramOptions)
+		.catch(handleError)
+		.then((data) => {
+			return data;
+		});
