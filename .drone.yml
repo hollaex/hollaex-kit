@@ -53,8 +53,6 @@ steps:
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-${DRONE_BRANCH}-$GIT_COMMIT_SHORT-amd64" > .tags
     - echo "Current Docker tag is :" && cat .tags
     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
-  when:
-    branch: testnet
 
 - name: docker_build_amd64
   image:  plugins/docker
