@@ -145,7 +145,7 @@ const getUsersAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -481,7 +481,7 @@ const getAdminUserLogins = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -546,7 +546,7 @@ const getUserAudits = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -2247,7 +2247,7 @@ const getWalletsByAdmin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
