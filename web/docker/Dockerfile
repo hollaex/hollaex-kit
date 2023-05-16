@@ -9,7 +9,7 @@ RUN npm config set unsafe-perm true && \
 COPY . /app
 RUN npm run build
 
-FROM nginx:1.16.0-alpine
+FROM nginx:1.24.0-alpine
 RUN apk add --update \
     curl \
     && rm -rf /var/cache/apk/*

@@ -127,7 +127,14 @@ const FieldComponent = ({
 	);
 };
 
-const MultiFilter = ({ fields, filterOptions, onHandle, coins }) => {
+const MultiFilter = ({
+	fields,
+	filterOptions,
+	onHandle,
+	coins,
+	setIsLoading,
+	isLoading,
+}) => {
 	const [options, setOptions] = useState(filterOptions);
 	const [fieldsData, setFieldsData] = useState([]);
 	const [filterData, setFilterData] = useState({});
@@ -219,6 +226,7 @@ const MultiFilter = ({ fields, filterOptions, onHandle, coins }) => {
 
 	const onHandleSearch = () => {
 		let obj = {};
+		setIsLoading(true);
 		Object.keys(filterData).forEach((name) => {
 			if (filterData[name] !== '') {
 				obj = { ...obj, [name]: filterData[name] };
@@ -262,6 +270,7 @@ const MultiFilter = ({ fields, filterOptions, onHandle, coins }) => {
 						: 'filter-button green-btn'
 				}
 				disabled={
+					isLoading ||
 					Object.keys(filterData).length === 0 ||
 					!Object.values(filterData)
 						.map((field) => field === '')

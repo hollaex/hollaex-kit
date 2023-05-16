@@ -4,9 +4,36 @@ import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
-import { ActionNotification } from '../../';
-import { getErrorLocalized } from '../../../utils/errors';
-import { EditWrapper } from 'components';
+import { ActionNotification, EditWrapper } from 'components';
+import { getErrorLocalized } from 'utils/errors';
+
+const Warning = ({ text, className = '' }) => (
+	<div className={classnames('d-flex', 'align-items-baseline', className)}>
+		<ExclamationCircleFilled className="field_warning_icon" />
+		<div className="field_warning_text">{text}</div>
+	</div>
+);
+
+const renderWarning = (warning) => {
+	if (warning) {
+		if (Array.isArray(warning)) {
+			return (
+				<div className="field_warning_wrapper">
+					{warning.map((msg, index) => (
+						<Warning
+							text={msg}
+							className={classnames({ 'mt-2': index !== 0 })}
+						/>
+					))}
+				</div>
+			);
+		} else {
+			return <Warning text={warning} className="field_warning_wrapper" />;
+		}
+	} else {
+		return null;
+	}
+};
 
 export const FieldContent = ({
 	stringId,
@@ -41,12 +68,7 @@ export const FieldContent = ({
 							) : (
 								label
 							)}
-							{warning && (
-								<div className="d-flex align-items-baseline field_warning_wrapper">
-									<ExclamationCircleFilled className="field_warning_icon" />
-									<div className="field_warning_text">{warning}</div>
-								</div>
-							)}
+							{renderWarning(warning)}
 						</div>
 					)}
 					<EditWrapper stringId={stringId} />
