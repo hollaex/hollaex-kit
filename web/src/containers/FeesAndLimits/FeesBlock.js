@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Image, EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -31,12 +31,7 @@ const getMakerRow = (
 			<td className="table-icon td-fit" />
 			<td className="td-name td-fit">
 				<div className="d-flex align-items-center wallet-hover cursor-pointer">
-					<Image
-						iconId={icon_id}
-						icon={ICONS[icon_id]}
-						wrapperClassName="currency-ball"
-						imageWrapperClassName="currency-ball-image-wrapper"
-					/>
+					<Coin iconId={icon_id} />
 					<div className="px-2">{display_name}</div>
 				</div>
 			</td>
