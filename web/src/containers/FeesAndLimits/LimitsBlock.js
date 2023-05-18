@@ -4,7 +4,7 @@ import React, { Fragment } from 'react';
 import { DEFAULT_COIN_DATA, BASE_CURRENCY } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { formatToCurrency } from 'utils/currency';
-import { Image, EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
 
 const getLimitValue = (limit, increment_unit, baseName) => {
@@ -78,12 +78,7 @@ const getRows = (coins, level, tiers, ICONS) => {
 						<td className="table-icon td-fit" />
 						<td className="td-name td-fit">
 							<div className="d-flex align-items-center wallet-hover cursor-pointer">
-								<Image
-									iconId={icon_id}
-									icon={ICONS[icon_id]}
-									wrapperClassName="currency-ball"
-									imageWrapperClassName="currency-ball-image-wrapper"
-								/>
+								<Coin iconId={icon_id} />
 								<div className="px-2">{display_name}</div>
 							</div>
 						</td>

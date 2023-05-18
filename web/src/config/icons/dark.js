@@ -13,10 +13,6 @@ const nestedIcons = {
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
 	},
 
-	TRADE: {
-		HISTORY: '/assets/images/trade-history.svg',
-	},
-
 	QUICK_TRADE: {
 		ICON: '/assets/images/quick-trade.svg',
 		TAB_ACTIVE: '/assets/images/quick-trade-tab-active.svg',

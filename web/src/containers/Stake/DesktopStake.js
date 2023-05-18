@@ -29,9 +29,9 @@ import {
 	Button,
 	ProgressBar,
 	Help,
+	Coin,
 } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
 import { open } from 'helpers/link';
 
 import {
@@ -322,12 +322,7 @@ class Stake extends Component {
 											<td />
 											<td onClick={goToSymbol} className="td-name td-fit">
 												<div className="d-flex align-items-center">
-													<Image
-														iconId={icon_id}
-														icon={ICONS[icon_id]}
-														wrapperClassName="currency-ball"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
+													<Coin iconId={icon_id} />
 													<div className="px-2">
 														{fullname}
 														<span className="pl-2 secondary-text">

@@ -126,13 +126,6 @@ $header-margin: 2rem;
 
 .dust-dialog-content {
 	width: 38rem;
-	.currency-ball-image-wrapper {
-		height: 38px;
-		padding-right: 10px;
-	}
-	.currency-ball {
-		width: 2rem;
-	}
 
 	.dust-note {
 		color: $colors-notification-pending;
@@ -195,19 +188,9 @@ $header-margin: 2rem;
 			font-size: $font-size-subhead3;
 			position: relative;
 		}
-
-		.wallet-header_block {
-		}
-		.coin-icons {
-			width: 3.5rem;
-		}
 		.with_price-block_amount-value {
 			font-size: $font-size-headline;
 			line-height: $font-size-headline;
-		}
-		.currency-ball-image-wrapper {
-			height: 38px;
-			padding-right: 10px;
 		}
 	}
 	.paper-clip-icon {
@@ -319,13 +302,7 @@ $header-margin: 2rem;
 		.search-field {
 			background-color: $app-sidebar-background;
 		}
-		.currency-ball-image-wrapper {
-			margin-right: 7px;
-			width: 2rem !important;
-		}
-		.currency-ball {
-			width: 2rem;
-		}
+
 		.loading-anime {
 			width: 100px;
 			height: 20px;
@@ -468,13 +445,6 @@ $header-margin: 2rem;
 
 	.app_bar-pair-font {
 		font-size: 0.9rem;
-	}
-
-	.app-bar-add-tab-icons {
-		width: 1.2rem;
-		div {
-			display: flex;
-		}
 	}
 }
 
