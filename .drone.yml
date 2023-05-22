@@ -224,6 +224,7 @@ steps:
   commands:
     - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
     - export DOCKER_CLI_EXPERIMENTAL=enabled
+    - TAG=$(cat .tags | tr -d ' ' | cut -f1 -d ',') && echo $TAG > .tags
     - docker pull hollaex/hollaex-kit:$(cat .tags)
     - export DOCKER_CONTENT_TRUST=1
     - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
@@ -238,8 +239,6 @@ steps:
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-arm64v8" > .tags
     - echo "Current Docker tag is :" && cat .tags
     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
-  when:
-    branch: master
 
 - name: docker_build_arm64v8
   image:  plugins/docker
