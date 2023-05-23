@@ -20,7 +20,6 @@ const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
 const { getUsername, changeUsername } = require('./chat/username');
 const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
 const { sendNetworkWsMessage } = require('./hub');
-const { mapNetworkIdToKitId } = require('../utils/hollaex-tools-lib/tools/user');
 const WebSocket = require('ws');
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
@@ -339,14 +338,7 @@ const handleDepositWithdrawalData = (data) => {
 	}
 };
 
-const notifyAdmin = async (data) => {
-	const networkId = data?.user_id || data?.data?.user_id;
-	if (networkId) {
-		let idDictionary = await mapNetworkIdToKitId([networkId]);
-		if (data?.user_id) data.user_id = idDictionary[networkId];
-		if (data?.data?.user_id) data.data.user_id = idDictionary[networkId];
-	}
-
+const notifyAdmin = (data) => {
 	each(getChannels()[WEBSOCKET_CHANNEL('admin')], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify(data));
