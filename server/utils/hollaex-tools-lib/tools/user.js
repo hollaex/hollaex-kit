@@ -560,6 +560,40 @@ const getAllUsersAdmin = (opts = {
 	query.attributes = {
 		exclude: ['balance', 'password', 'updated_at']
 	};
+
+	if (opts.search) {
+		query.attributes = {
+			exclude: ['balance', 'password', 'updated_at']
+		};
+		if (opts.id) {
+			query.where.id = opts.id;
+		}
+		query.where = {
+			[Op.or]: [
+				{
+					email: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				{
+					username: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				{
+					full_name: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				{
+					phone_number: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
+			]
+		};
+	}
 	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level',])).forEach(key => {
 		if(opts[key] != null) {
 			query.where[Op.and].push(
