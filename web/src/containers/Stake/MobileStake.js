@@ -6,9 +6,14 @@ import { Button as AntBtn } from 'antd';
 import { openConnectViaDesktop } from 'actions/appActions';
 
 import STRINGS from 'config/localizedStrings';
-import { IconTitle, HeaderSection, EditWrapper, Button } from 'components';
+import {
+	IconTitle,
+	HeaderSection,
+	EditWrapper,
+	Button,
+	Coin,
+} from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import Image from 'components/Image';
 
 import Account from './components/Account';
 import ConnectWrapper from './components/ConnectWrapper';
@@ -120,12 +125,7 @@ class Stake extends Component {
 											<td />
 											<td className="td-name td-fit">
 												<div className="d-flex align-items-center">
-													<Image
-														iconId={icon_id}
-														icon={ICONS[icon_id]}
-														wrapperClassName="currency-ball"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
+													<Coin iconId={icon_id} />
 													<div className="px-2">
 														{fullname}
 														<span className="pl-2 secondary-text">

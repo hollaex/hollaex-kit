@@ -14,9 +14,8 @@ import { DEFAULT_COIN_DATA } from 'config/constants';
 import { minValue, maxValue } from 'components/Form/validations';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from './utils';
-import withConfig from 'components/ConfigProvider/withConfig';
 import STRINGS from 'config/localizedStrings';
-import { Image, EditWrapper } from 'components';
+import { EditWrapper, Coin } from 'components';
 import { getDecimals } from 'utils/utils';
 
 const { Option } = Select;
@@ -96,7 +95,6 @@ class InputGroup extends React.PureComponent {
 			selectValue,
 			onSelect,
 			limits = {},
-			icons: ICONS,
 			autoFocus,
 			stringId,
 			coins,
@@ -152,12 +150,7 @@ class InputGroup extends React.PureComponent {
 									>
 										<div className="d-flex align-items-center quick-trade-select-wrapper">
 											<div className="input-group__coin-icons-wrap">
-												<Image
-													iconId={icon_id}
-													icon={ICONS[icon_id]}
-													wrapperClassName="input-group__coin-icons"
-													imageWrapperClassName="currency-ball-image-wrapper"
-												/>
+												<Coin iconId={icon_id} type="CS6" />
 											</div>
 											<span className="pl-1">{display_name}</span>
 										</div>
@@ -204,4 +197,4 @@ InputGroup.propTypes = {
 	limits: object,
 };
 
-export default withConfig(InputGroup);
+export default InputGroup;

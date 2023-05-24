@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import mathjs from 'mathjs';
-import { EditWrapper, Image } from 'components';
+import { EditWrapper, Coin } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
@@ -46,11 +46,7 @@ const AmountPreview = ({
 			</div>
 			<div className="d-flex align-center pt-2">
 				<div>
-					<Image
-						iconId={icon_id}
-						icon={ICONS[icon_id]}
-						wrapperClassName="stake-currency-ball"
-					/>
+					<Coin iconId={icon_id} type="CS12" />
 				</div>
 				<div className="stake-amount pl-2">
 					<div>{formatToken(amount)}</div>
