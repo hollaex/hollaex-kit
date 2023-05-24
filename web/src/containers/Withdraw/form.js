@@ -304,7 +304,6 @@ class Form extends Component {
 			currency === 'xrp' || currency === 'xlm' || selectedNetwork === 'xlm';
 
 		const coinObject = coins[currency];
-		const { icon_id } = coinObject || DEFAULT_COIN_DATA;
 
 		const GENERAL_ID = 'REMOTE_COMPONENT__FIAT_WALLET_WITHDRAW';
 		const currencySpecificId = `${GENERAL_ID}__${currency.toUpperCase()}`;
@@ -323,10 +322,8 @@ class Form extends Component {
 						<div className="withdraw-form">
 							<div className="d-flex">
 								<Image
-									iconId={icon_id}
+									iconId="WITHDRAW"
 									icon={ICONS['WITHDRAW']}
-									height="30px"
-									width="30px"
 									wrapperClassName="form_currency-ball margin-aligner"
 								/>
 								{titleSection}

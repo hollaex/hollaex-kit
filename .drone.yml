@@ -35,6 +35,116 @@ trigger:
   event:
     - pull_request
 
+# ---
+
+# kind: pipeline
+# type: docker
+# name: hollaex_kit_amd64_build_deployment
+
+# platform:
+#   os: linux
+#   arch: amd64
+
+# steps:
+
+# - name: docker_tagging_amd64_testnet
+#   image: alpine
+#   commands: 
+#     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-${DRONE_BRANCH}-$GIT_COMMIT_SHORT-amd64" > .tags
+#     - echo "Current Docker tag is :" && cat .tags
+#     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+
+# - name: docker_build_amd64
+#   image:  plugins/docker
+#   settings:
+#     repo: hollaex/hollaex-kit
+#     dockerfile: Dockerfile
+#   environment:
+#     DOCKER_USERNAME:
+#       from_secret: docker_username
+#     DOCKER_PASSWORD:
+#       from_secret: docker_password
+
+# - name: dct_signing
+#   image: docker:20.10-dind
+#   privileged: true
+#   environment:
+#     DOCKER_USERNAME:
+#       from_secret: docker_username
+#     DOCKER_PASSWORD:
+#       from_secret: docker_password
+#     DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE:
+#       from_secret: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+#     DOCKER_CONTENT_TRUST_PRIVATE_KEY:
+#       from_secret: DOCKER_CONTENT_TRUST_PRIVATE_KEY
+
+#   volumes:
+#     - name: docker
+#       path: /var/run/docker.sock
+#   commands:
+#     - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
+#     - export DOCKER_CLI_EXPERIMENTAL=enabled
+#     - docker pull hollaex/hollaex-kit:$(cat .tags)
+#     - export DOCKER_CONTENT_TRUST=1
+#     - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
+#     - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+#     - chmod 600 $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+#     - docker trust key load $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key --name bitholla-cicd
+#     - docker trust sign hollaex/hollaex-kit:$(cat .tags)
+
+# - name: docker_tagging_arm64v8_testnet
+#   image: alpine
+#   commands: 
+#     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-${DRONE_BRANCH}-$GIT_COMMIT_SHORT-arm64v8" > .tags
+#     - echo "Current Docker tag is :" && cat .tags
+#     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+
+
+# - name: docker_build_arm64v8
+#   image:  plugins/docker
+#   settings:
+#     repo: hollaex/hollaex-kit
+#     dockerfile: Dockerfile.arm64v8
+#   environment:
+#     DOCKER_USERNAME:
+#       from_secret: docker_username
+#     DOCKER_PASSWORD:
+#       from_secret: docker_password
+
+
+# - name: manifest_creation
+#   image: docker:18.06.3-dind
+#   privileged: true
+#   environment:
+#     DOCKER_USERNAME:
+#       from_secret: docker_username
+#     DOCKER_PASSWORD:
+#       from_secret: docker_password
+#   volumes:
+#     - name: docker
+#       path: /var/run/docker.sock
+#   commands:
+#     - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
+#     - export DOCKER_CLI_EXPERIMENTAL=enabled
+#     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(grep version package.json | cut -c 15- | rev | cut -c 3- | rev)" && echo "$PACKAGE_VERSION" > .tags
+#     - cat .tags 
+#     - docker manifest create hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 hollaex/hollaex-kit:$(cat .tags)-arm64v8 --amend
+#     - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 --arch amd64
+#     - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-arm64v8 --arch amd64
+#     - docker manifest push hollaex/hollaex-kit:$(cat .tags)
+
+    
+# volumes:
+#   - name: docker
+#     host:
+#       path: /var/run/docker.sock
+
+# trigger:
+#   branch:
+#   - deployment
+#   event:
+#   - push
+
 ---
 
 kind: pipeline
@@ -95,14 +205,40 @@ steps:
     DOCKER_PASSWORD:
       from_secret: docker_password
 
+- name: dct_signing
+  image: docker:20.10-dind
+  privileged: true
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
+    DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE:
+      from_secret: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+    DOCKER_CONTENT_TRUST_PRIVATE_KEY:
+      from_secret: DOCKER_CONTENT_TRUST_PRIVATE_KEY
+
+  volumes:
+    - name: docker
+      path: /var/run/docker.sock
+  commands:
+    - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
+    - export DOCKER_CLI_EXPERIMENTAL=enabled
+    - TAG=$(cat .tags | tr -d ' ' | cut -f1 -d ',') && echo $TAG > .tags
+    - docker pull hollaex/hollaex-kit:$(cat .tags)
+    - export DOCKER_CONTENT_TRUST=1
+    - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
+    - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+    - chmod 600 $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
+    - docker trust key load $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key --name bitholla-cicd
+    - docker trust sign hollaex/hollaex-kit:$(cat .tags)
+
 - name: docker_tagging_arm64v8_master
   image: alpine
   commands: 
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-arm64v8" > .tags
     - echo "Current Docker tag is :" && cat .tags
     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
-  when:
-    branch: master
 
 - name: docker_build_arm64v8
   image:  plugins/docker
@@ -202,15 +338,15 @@ steps:
     branch: master
   
 - name: slack_noti_to_releases
-  image: bitholla/devops-tools:drone_partymaker-220208
+  image: bitholla/devops-tools:drone_partymaker-0.1.5
   environment:
     WEBHOOK_URL:
       from_secret: webhook_url
   when:
-    status: [success]
+    status: [success, failure]
 
 - name: notify_to_discord_releases
-  image: bitholla/devops-tools:drone_partymaker-220208
+  image: bitholla/devops-tools:drone_partymaker-0.1.5
   channel: deployment
   settings:
     target: discord
@@ -407,3 +543,17 @@ name: next_password
 get:
   path: devops/data/drone-ci/secret
   name: next_password
+
+---
+kind: secret
+name: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+get:
+  path: devops/data/drone-ci/secret
+  name: DOCKER_CONTENT_TRUST_REPOSITORY_PASSPHRASE
+
+---
+kind: secret
+name: DOCKER_CONTENT_TRUST_PRIVATE_KEY
+get:
+  path: devops/data/drone-ci/secret
+  name: DOCKER_CONTENT_TRUST_PRIVATE_KEY

@@ -21,7 +21,6 @@ body {
 	color: $colors-main-black;
 	font-size: $font-size-main !important;
 	font-family: $en--font-family !important;
-	height: 100%;
 	transition: all 0.3s;
 }
 
@@ -153,16 +152,7 @@ a {
 }
 
 svg {
-	.tab-summary0,
-	.tab-wallet0,
-	.tab-setting0,
-	.tab-verify0,
-	.tab-security0,
-	.tab-history-st,
-	.help-question,
-	.tab-signout,
 	.tab-api0,
-	.trade-history-1,
 	.deposit-history-3,
 	.withdrawals-history-3,
 	.verification-email,
@@ -175,9 +165,7 @@ svg {
 	.interface-setting,
 	.chat-setting,
 	.audio-setting,
-	.risk-setting,
 	.st1,
-	.trade-history-1,
 	.account-recovery-success-2,
 	.password-reset-2,
 	.transaction-history-1,
@@ -190,16 +178,23 @@ svg {
 	.incoming-btc-01,
 	.incoming-coin-01,
 	.coin-btc-5,
-	.stake-page-icon,
-	.fiat-kyc,
-	.all-apps,
-	.my-apps,
-	.apps,
 	.search-blockchain,
 	.sparkle-dust,
 	.dust-sweeper,
 	.dust-settlement {
 		fill: $colors-black;
+	}
+
+	.fill_secondary-color {
+		fill: $colors-black;
+	}
+
+	.fill_main-color {
+		fill: $colors-main-black;
+	}
+
+	.stroke_none {
+		stroke: none;
 	}
 
 	.dust-settlement-green {
@@ -214,7 +209,6 @@ svg {
 	.withdraw-3,
 	.deposit-bitcoin-2,
 	.deposit-bitcoin-3,
-	.trade-history-3,
 	.deposit-history-1,
 	.withdrawals-history-1,
 	.risk-order-warning,
@@ -226,7 +220,6 @@ svg {
 	.st0,
 	.st9,
 	.st10,
-	.trade-history-3,
 	.contact-us-icon,
 	.xht-coin-stack,
 	.account-recovery-1,
@@ -257,7 +250,6 @@ svg {
 	.account-summary1,
 	.hap-icon,
 	.expired_icon,
-	.default-icon,
 	.connect-loading,
 	.note-kyc,
 	.partial-fill,
@@ -303,20 +295,13 @@ svg {
 		fill: $colors-main-black;
 	}
 
-	.trade-history-2,
-	.trade-history-4,
-	.trade-history-5,
 	.deposit-history-2,
 	.deposit-history-4,
 	.withdrawals-history-2,
 	.withdrawals-history-4,
-	.trade-history-2,
-	.trade-history-4,
-	.trade-history-5,
 	.transaction-history-4,
 	.wallet-coins-1,
-	.quick-trade-3,
-	.stake-page-icon {
+	.quick-trade-3 {
 		stroke: none;
 	}
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
 import { NotificationWraper, NotificationContent } from './Notification';
-import { Button, Loader, EditWrapper, Image } from 'components';
+import { Button, Loader, EditWrapper, Coin } from 'components';
 
 const GenerateAddressNotification = ({
 	type,
@@ -35,11 +35,9 @@ const GenerateAddressNotification = ({
 			<NotificationContent>
 				{!error ? (
 					<div className="notification-content-header d-flex align-items-center">
-						<Image
-							iconId={icon_id}
-							icon={ICONS[icon_id]}
-							wrapperClassName="form_currency-ball mr-3"
-						/>
+						<div className="mr-3">
+							<Coin iconId={icon_id} type="CS9" />
+						</div>
 						<EditWrapper stringId="WALLET_ADDRESS_MESSAGE">
 							{STRINGS['WALLET_ADDRESS_MESSAGE']}
 						</EditWrapper>

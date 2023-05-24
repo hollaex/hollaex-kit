@@ -2,19 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import _get from 'lodash/get';
-import { Image, EditWrapper, PriceChange } from 'components';
-import withConfig from 'components/ConfigProvider/withConfig';
+import { Coin, EditWrapper, PriceChange } from 'components';
 import STRINGS from 'config/localizedStrings';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 
-const Details = ({
-	icons: ICONS,
-	coins,
-	constants,
-	market,
-	router,
-	lineChartData,
-}) => {
+const Details = ({ coins, constants, market, router, lineChartData }) => {
 	const { icon_id, key, fullMarketName, ticker = {} } = market;
 	const [pairBase, pair_2] = market.key.split('-');
 
@@ -28,12 +20,7 @@ const Details = ({
 		<div className="trade-details-wrapper">
 			<div className="trade-details-content">
 				<div className="d-flex pb-30">
-					<Image
-						iconId={icon_id}
-						icon={ICONS[icon_id]}
-						wrapperClassName="coins-icon"
-						imageWrapperClassName="currency-ball-image-wrapper"
-					/>
+					<Coin iconId={icon_id} type="CS11" />
 					<div className="pl-2">
 						<div className="pairs pointer" onClick={() => handleClick(key)}>
 							{coins[pairBase] && coins[pairBase].display_name}/
@@ -155,4 +142,4 @@ const mapStateToProps = (store) => ({
 	constants: store.app.constants,
 });
 
-export default connect(mapStateToProps)(withRouter(withConfig(Details)));
+export default connect(mapStateToProps)(withRouter(Details));

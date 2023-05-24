@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
+import { isMobile } from 'react-device-detect';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { object, string, func } from 'prop-types';
-import Image from 'components/Image';
 import classnames from 'classnames';
 import { StarFilled, StarOutlined } from '@ant-design/icons';
 
-import { Slider, PriceChange } from 'components';
+import { Slider, PriceChange, Coin } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
-import withConfig from 'components/ConfigProvider/withConfig';
 import { formatToCurrency } from 'utils/currency';
 import SearchBox from './SearchBox';
 import { removeFromFavourites, addToFavourites } from 'actions/appActions';
@@ -166,7 +165,6 @@ class MarketSelector extends Component {
 	render() {
 		const {
 			wrapperClassName,
-			icons: ICONS,
 			constants,
 			markets: allMarkets,
 			pair: activeMarket,
@@ -233,11 +231,9 @@ class MarketSelector extends Component {
 											onClick={() => this.onMarketClick(key)}
 										>
 											<div className="d-flex align-items-center">
-												<Image
+												<Coin
 													iconId={pair.icon_id}
-													icon={ICONS[pair.icon_id]}
-													wrapperClassName="app-bar-add-tab-icons"
-													imageWrapperClassName="currency-ball-image-wrapper"
+													type={isMobile ? 'CS5' : 'CS2'}
 												/>
 												<div className="app_bar-pair-font">{display_name}:</div>
 												<div className="title-font ml-1 app-bar_add-tab-price">
@@ -306,7 +302,4 @@ const mapStateToProps = (store) => {
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(withConfig(MarketSelector));
+export default connect(mapStateToProps, mapDispatchToProps)(MarketSelector);
