@@ -283,7 +283,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			throw new Error(BROKER_PAUSED);
 		}
 		if (broker.type === 'dynamic') {
-			const selectedExchange = setExchange(broker.exchange_name);
+			const selectedExchange = setExchange({ exchange: broker.exchange_name });
 			return getQuoteDynamicBroker(selectedExchange, side, broker, user_id, orderData);
 		} else {
 			return await getQuoteManualBroker(broker, side, user_id, orderData);
@@ -549,6 +549,11 @@ const updateBrokerPair = async (id, data) => {
 	});
 };
 
+const fetchTrackedExchangeMarkets = async (exchange) => {
+	const selectedExchage = setExchange({ exchange });
+	return selectedExchage.fetchMarkets();
+}
+
 const deleteBrokerPair = async (id) => {
 	const brokerPair = await getModel('broker').findOne({ where: { id } });
 
@@ -615,5 +620,6 @@ module.exports = {
 	reverseTransaction,
 	testBroker,
 	testRebalance,
-	generateRandomToken
+	generateRandomToken,
+	fetchTrackedExchangeMarkets
 };

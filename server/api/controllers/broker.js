@@ -39,6 +39,31 @@ const getBrokerQuote = (req, res) => {
 		});
 };
 
+const getTrackedExchangeMarkets = (req, res) => {
+
+	loggerBroker.verbose(
+		req.uuid,
+		'controllers/broker/getTrackedExchangeMarkets get',
+		req.auth
+	);
+	const {
+		exchange_name
+	} = req.swagger.params;
+
+	toolsLib.broker.fetchTrackedExchangeMarkets(exchange_name.value)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerBroker.error(
+				req.uuid,
+				'controllers/broker/getTrackedExchangeMarkets err',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
@@ -350,5 +375,6 @@ module.exports = {
 	updateBrokerPair,
 	deleteBrokerPair,
 	getBrokerPairs,
-	executeBrokerDeal
+	executeBrokerDeal,
+	getTrackedExchangeMarkets
 };

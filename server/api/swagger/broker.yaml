@@ -167,6 +167,31 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+  /broker/market:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getTrackedExchangeMarkets
+      description: Get tracked exchange markets
+      tags:
+        - Broker
+      parameters:
+        - in: query
+          name: exchange_name
+          description: exchange name
+          required: true
+          type: string
+          maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            type: array
+            items:
+              type: object
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
   /broker/test:
     x-swagger-router-controller: broker
     post:

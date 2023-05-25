@@ -54,6 +54,8 @@ export const createTestBroker = (values) => {
 	return requestAuthenticated('/broker/test', options);
 };
 
+export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/market?exchange_name=${exchange_name}`);
+
 export const updateBroker = (values) => {
 	const options = {
 		method: 'PUT',

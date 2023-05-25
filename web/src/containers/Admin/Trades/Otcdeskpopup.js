@@ -19,7 +19,7 @@ import {
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
-import { createTestBroker, getBrokerConnect } from './actions';
+import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets } from './actions';
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
@@ -104,6 +104,9 @@ const Otcdeskpopup = ({
 	const [formula, setFormula] = useState('');
 	const [hedgeApi, setHedgeApi] = useState('bitmex');
 	const [selelctedPlatform, setSelectedPlatform] = useState('binance');
+	const [selectedExchange, setSelectedExchange] = useState('binance');
+	const [exchangeMarkets, setExchangeMarkets] = useState([]);
+	const [selectedMarket, setSelectedMarket] = useState();
 	const [apiData, setApi] = useState({});
 	const [spreadMul, setSpreadMul] = useState({});
 	const [MarketPop, SetMarketPop] = useState(false);
@@ -684,7 +687,7 @@ const Otcdeskpopup = ({
 											value={previewData && previewData.type}
 										>
 											<Option value="manual">Manually set (static)</Option>
-											<Option value="dynamic">Dynamic (coming soon)</Option>
+											<Option value="dynamic">Dynamic</Option>
 										</Select>
 									</div>
 								</div>
@@ -770,32 +773,76 @@ const Otcdeskpopup = ({
 												</div>
 											</div>
 										)}
-										<div className="mt-3 ml-3">
+										{/* <div className="mt-3 ml-3">
 											<div>Select price source:</div>
 											<div className="mt-2 error">
 												<ExclamationCircleFilled /> Coming soon for upgraded
 												HollaEx operators.
 											</div>
-										</div>
-										{/* <div className={isUpgrade ? 'Datahide mt-3' : ''}>
+										</div> */}
+										{<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 											<div>Platform price source</div>
 											<div className="select-box">
+												
 												<Select
-													defaultValue={selelctedPlatform}
-													onChange={setPlatform}
+													defaultValue={selectedExchange}
+													onChange={async (value) => {
+														setSelectedExchange(value);
+														const markets = await getTrackedExchangeMarkets(value);
+														setExchangeMarkets(markets);
+													}}
 												>
-													<Option value="bitmex">HollaEx Pro</Option>
+													<Option value="hollaex">Hollaex Pro</Option>
 													<Option value="binance">Binance</Option>
-													<Option value="chainlink">
-														Chainlink (Coming soon)
-													</Option>
-													<Option value="custom">Custom</Option>
+													<Option value="bitfinex">Bitfinex</Option>
+													<Option value="kraken">Kraken</Option>
+													<Option value="uniswap">Uniswap</Option>
 												</Select>
 											</div>
-										</div> */}
+										</div>}
+
+										{<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+											<div className="mt-4">Track market price</div>
+											<div className="select-box">
+												
+												<Select
+													defaultValue={selectedMarket}
+													placeholder={"Select market"}
+													onChange={async (value) => {
+														setSelectedMarket(value)
+													}}
+												>
+														{exchangeMarkets.map((item, index) => {
+															return (
+																<Option value={item.id} key={index}>
+																	{item.symbol}
+																</Option>
+															);
+														})}
+												</Select>
+											</div>
+										</div>}
+
 										{!chainlink && !customlink && (
 											<div>
-												{/* <div className={isUpgrade ? 'Datahide mt-3' : ''}>
+												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+													<div className="mt-4">Track market price</div>
+													<div className="select-box">
+														<Select
+															defaultValue={''}
+															onClick={() => {}}
+														>
+															{/* {pairs.map((item, index) => {
+																return (
+																	<Option value={item.name} key={index}>
+																		{item.name}
+																	</Option>
+																);
+															})} */}
+														</Select>
+													</div>
+												</div>
+												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 													<div className="mt-4">Market pair</div>
 													<div className="select-box">
 														<Select
@@ -811,10 +858,10 @@ const Otcdeskpopup = ({
 															})}
 														</Select>
 													</div>
-												</div> */}
+												</div>
 												{!isUpgrade && (
 													<div>
-														{/* <div className="mt-3 ">Spread percentage</div>
+														<div className="mt-3 ">Spread percentage</div>
 														<Input
 															type="number"
 															placeholder="Input the % spread"
@@ -881,7 +928,7 @@ const Otcdeskpopup = ({
 															value={
 																previewData && previewData.quote_expiry_time
 															}
-														/> */}
+														/>
 													</div>
 												)}
 											</div>
