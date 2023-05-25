@@ -197,7 +197,6 @@ export const filterOverwrites = (overwrites) => {
 };
 
 const EXCLUSIONS = [
-	'FOOTER.FOOTER_LEGAL',
 	'LEGAL.PRIVACY_POLICY.TEXTS',
 	'LEGAL.GENERAL_TERMS.TEXTS',
 	'TYPES',

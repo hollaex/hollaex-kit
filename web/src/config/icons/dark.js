@@ -1,17 +1,16 @@
 import flatten from 'flat';
+import FIATS from './fiats';
 
 const options = { safe: true, delimiter: '_' };
 const nestedIcons = {
+	FIATS,
+
 	EXCHANGE: {
 		LOGO: '',
 		FAV_ICON: '/favicon.ico',
 		LOADER: '/assets/dark-spinner.gif',
 		BOARDING_IMAGE: '/assets/dark-background.jpg',
 		LANDING_PAGE: '/assets/images/hollaex-background.png',
-	},
-
-	TRADE: {
-		HISTORY: '/assets/images/trade-history.svg',
 	},
 
 	QUICK_TRADE: {

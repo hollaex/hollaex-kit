@@ -1,8 +1,9 @@
 import React from 'react';
-import { Image, EditWrapper } from 'components';
+import { Coin, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { formatPercentage } from 'utils/currency';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { getNetworkNameByKey } from 'utils/wallet';
 
 const renderRow = (
 	icon_id,
@@ -17,13 +18,8 @@ const renderRow = (
 			<td className="table-icon td-fit" />
 			<td className="td-name td-fit">
 				<div className="d-flex align-items-center wallet-hover cursor-pointer">
-					<Image
-						iconId={icon_id}
-						icon={ICONS[icon_id]}
-						wrapperClassName="currency-ball"
-						imageWrapperClassName="currency-ball-image-wrapper"
-					/>
-					{display_name}
+					<Coin iconId={icon_id} />
+					<div className="px-2">{display_name}</div>
 				</div>
 			</td>
 			{/*Temporarily dropped deposit fee for the scope of 2.5 release*/}
@@ -45,7 +41,7 @@ const getFeeText = (data, level) => {
 	return text;
 };
 
-const getRows = (level, coins, icons, search) => {
+const getRows = (level, coins, icons, search, strings) => {
 	const rowData = [];
 	Object.entries(coins)
 		.filter(([key]) => !search || (search && key.includes(search)))
@@ -57,6 +53,8 @@ const getRows = (level, coins, icons, search) => {
 				withdrawal_fee,
 				deposit_fees,
 				symbol,
+				network: networks,
+				allow_withdrawal,
 			} = coin;
 			if (withdrawal_fees) {
 				Object.keys(withdrawal_fees).forEach((network, n_index) => {
@@ -64,23 +62,23 @@ const getRows = (level, coins, icons, search) => {
 					if (!Object.keys(withdrawal_fees_data).includes('symbol')) {
 						withdrawal_fees_data['symbol'] = symbol;
 					}
-					const withdrawal_text =
-						coin && coin?.standard
-							? `${getFeeText(
-									withdrawal_fees_data,
-									level
-							  )} (${coin?.standard.replace('-', '').toUpperCase()})`
-							: getFeeText(withdrawal_fees_data, level);
+					const withdrawal_text = allow_withdrawal
+						? getFeeText(withdrawal_fees_data, level)
+						: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 					const deposit_text =
 						deposit_fees && deposit_fees[network]
 							? getFeeText(deposit_fees[network], level)
 							: 'N/A';
 					const index = `${c_index}_${n_index}`;
+					const display_text =
+						networks && network
+							? `${display_name} (${getNetworkNameByKey(network)})`
+							: display_name;
 
 					rowData.push(
 						renderRow(
 							icon_id,
-							display_name,
+							display_text,
 							deposit_text,
 							withdrawal_text,
 							index,
@@ -89,7 +87,9 @@ const getRows = (level, coins, icons, search) => {
 					);
 				});
 			} else {
-				const withdrawal_text = `${withdrawal_fee} ${display_name}`;
+				const withdrawal_text = allow_withdrawal
+					? `${withdrawal_fee} ${display_name}`
+					: strings['FEES_AND_LIMITS.TABS.WITHDRAWAL_FEES.TABLE.NOT_ALLOWED'];
 				rowData.push(
 					renderRow(
 						icon_id,
@@ -142,7 +142,7 @@ const DepositAndWithdrawalFees = ({ coins, level, icons, search }) => {
 						</th>
 					</tr>
 				</thead>
-				<tbody>{getRows(level, coins, icons, search)}</tbody>
+				<tbody>{getRows(level, coins, icons, search, STRINGS)}</tbody>
 			</table>
 		</div>
 	);

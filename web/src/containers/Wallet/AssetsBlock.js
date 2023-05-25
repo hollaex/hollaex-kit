@@ -14,7 +14,7 @@ import {
 } from 'actions/appActions';
 import {
 	// CurrencyBall,
-	Image,
+	Coin,
 	ActionNotification,
 	SearchBox,
 	EditWrapper,
@@ -272,15 +272,10 @@ const AssetsBlock = ({
 										{assets && !loading ? (
 											<div className="d-flex align-items-center wallet-hover cursor-pointer">
 												<Link to={`/wallet/${key.toLowerCase()}`}>
-													<Image
-														iconId={icon_id}
-														icon={ICONS[icon_id]}
-														wrapperClassName="currency-ball"
-														imageWrapperClassName="currency-ball-image-wrapper"
-													/>
+													<Coin iconId={icon_id} />
 												</Link>
 												<Link to={`/wallet/${key.toLowerCase()}`}>
-													{fullname}
+													<div className="px-2">{fullname}</div>
 												</Link>
 											</div>
 										) : (

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 25.4.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.2" baseProfile="tiny" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 182 182"
+	 overflow="visible" xml:space="preserve">
+<g id="Asia-Pacific">
+	<g id="Taiwan" transform="translate(-199.000000, -799.000000)">
+		<g transform="translate(200.000000, 800.000000)">
+			<path id="Oval-17" fill-rule="evenodd" fill="#CA4638" d="M90,0c49.7,0,90,40.3,90,90s-40.3,90-90,90S0,139.7,0,90h90V0z"/>
+			<path id="Oval-17-copy" fill-rule="evenodd" fill="#346DA6" d="M90,0C40.3,0,0,40.3,0,90h90V0z"/>
+			<g id="taiwan" transform="translate(12.000000, 15.000000)">
+				<path id="four_rays" fill-rule="evenodd" fill="#FFFFFF" d="M50,39l-8,30l-8-30l8-30 M42,47l30-8l-30-8l-30,8"/>
+				
+					<g id="Group" transform="translate(42.117508, 42.246955) rotate(30.000000) translate(-42.117508, -42.246955) translate(11.617508, 11.746955)">
+					<path id="four_rays_00000040559430882393237790000012777893101818004665_" fill-rule="evenodd" fill="#FFFFFF" d="M36.8,27.7
+						l-8,30l-8-30l8-30 M28.8,35.7l30-8l-30-8l-30,8"/>
+				</g>
+				
+					<g id="Group_00000053517883240467878730000009301616773695873422_" transform="translate(42.189596, 42.263050) rotate(60.000000) translate(-42.189596, -42.263050) translate(11.689596, 11.763050)">
+					<path id="four_rays_00000011021262507797127050000015113709943544243644_" fill-rule="evenodd" fill="#FFFFFF" d="M35.6,29
+						l-8,30l-8-30l8-30 M27.6,37l30-8l-30-8l-30,8"/>
+				</g>
+				<circle id="Oval" fill-rule="evenodd" fill="#346DA6" cx="42" cy="39" r="17"/>
+				
+					<circle id="Oval_00000181084335627984260310000009662596550529272228_" fill-rule="evenodd" fill="#FFFFFF" cx="42" cy="39" r="15"/>
+			</g>
+		</g>
+	</g>
+</g>
+</svg>

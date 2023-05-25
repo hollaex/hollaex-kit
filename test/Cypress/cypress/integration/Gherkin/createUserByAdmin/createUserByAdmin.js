@@ -72,6 +72,21 @@ And ('I should see a success message',()=>{  cy.get(selector1).click()
    cy.get(':nth-child(2) > .align-items-center > :nth-child(4)').contains(username)
    cy.get(':nth-child(2) > .about-info-content > :nth-child(2)').contains('Verified')})
 
+Given ('I am in the Hollaex login page',()=>{
+  cy.visit(Cypress.env('LOGIN_PAGE'))
+})
+
+When ('I enter credentials Username,Password',()=>{
+  cy.get('.holla-button').should('be.visible').should('be.disabled')
+  cy.get('[name="email"]').clear().type(username)
+  cy.get('[name="password"]').clear().type(Cypress.env('PASSWORD'))
+  })
+
+Then ('I should be able to login successfully',()=>{
+   cy.get('.holla-button').should('be.visible').should('be.enabled').click()
+   cy.get('.warning_text').should('not.exist') 
+   cy.get('#trade-nav-container > :nth-child(4) > :nth-child(2)').contains(username)
+})   
 When ('a non-admin user tries to create a new user',()=>{
    const emailAddresses = [
      'tester+supervisor@hollaex.email',

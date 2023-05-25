@@ -69,3 +69,4 @@ export { default as NoVerifiedAccount } from './Wallet/NoVerifiedAccount';
 export { default as Tab } from './Tab';
 export { default as ErrorBoundary } from './ErrorBoundary';
 export { default as NotLoggedIn } from './Views/NotLoggedIn';
+export { default as Coin } from './Coin';

@@ -27,10 +27,6 @@
 		padding-bottom: 6rem;
 	}
 
-	.icon_title-wrapper .icon_title-svg svg {
-		margin-top: 3px !important;
-	}
-
 	.icon_title-wrapper {
 		margin-top: 0 !important;
 	}
@@ -44,13 +40,6 @@
 	.token-wrapper {
 		width: 65%;
 		height: 100%;
-
-		.image-container {
-			.coins-icon {
-				width: 3.5rem;
-				height: 3.5rem;
-			}
-		}
 
 		.link {
 			color: $colors-notifications-blue;
@@ -214,10 +203,6 @@
 						margin: 0 !important;
 						width: 100% !important;
 					}
-				}
-
-				.currency-ball-image-wrapper {
-					height: 5rem;
 				}
 
 				.f-size-16 {

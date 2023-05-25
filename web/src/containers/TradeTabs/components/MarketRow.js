@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PriceChange, Image, EditWrapper } from 'components';
+import { PriceChange, EditWrapper, Coin } from 'components';
 import SparkLine from './SparkLine';
 import { formatToCurrency } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -7,7 +7,6 @@ import STRINGS from 'config/localizedStrings';
 class MarketRow extends Component {
 	render() {
 		const {
-			icons: ICONS,
 			market,
 			chartData,
 			handleClick,
@@ -40,15 +39,8 @@ class MarketRow extends Component {
 				<td className="sticky-col">
 					{!loading ? (
 						<div className="d-flex align-items-center">
-							<Image
-								width="32px"
-								height="32px"
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="market-list__coin-icons"
-								imageWrapperClassName="currency-ball-image-wrapper"
-							/>
-							<div>{isAsset ? fullname : display_name}</div>
+							<Coin iconId={icon_id} />
+							<div className="px-2">{isAsset ? fullname : display_name}</div>
 						</div>
 					) : (
 						<div

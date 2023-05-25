@@ -5,8 +5,8 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
-const { sendEmail, testSendSMTPEmail } = require('../../mail');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
+const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
@@ -145,7 +145,7 @@ const getUsersAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -481,7 +481,7 @@ const getAdminUserLogins = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -546,7 +546,7 @@ const getUserAudits = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -2124,20 +2124,38 @@ const createUserByAdmin = (req, res) => {
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
 
-	toolsLib.user.createUser(email, password, {
-		role: 'user',
-		id: null,
-		additionalHeaders: {
-			'x-forwarded-for': req.headers['x-forwarded-for']
-		}
+	if (!email || typeof email !== 'string' || !isEmail(email)) {
+		throw new Error(PROVIDE_VALID_EMAIL);
+	}
+
+	if (!toolsLib.security.isValidPassword(password)) {
+		throw new Error(INVALID_PASSWORD);
+	}
+
+	toolsLib.database.findOne('user', {
+		where: { email },
+		attributes: ['email']
 	})
-		.then(() => {
-			return res.status(201).json({ message: 'Success' });
+	.then((user) => {
+		if (user) {
+			throw new Error(USER_EXISTS);
+		}
+
+		return toolsLib.user.createUser(email, password, {
+			role: 'user',
+			id: null,
+			additionalHeaders: {
+				'x-forwarded-for': req.headers['x-forwarded-for']
+			}
 		})
-		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
+	})
+	.then(() => {
+		return res.status(201).json({ message: 'Success' });
+	})
+	.catch((err) => {
+		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+	});
 };
 
 const createUserWalletByAdmin = (req, res) => {
@@ -2229,7 +2247,7 @@ const getWalletsByAdmin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -2239,6 +2257,88 @@ const getWalletsByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const sendEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { user_id, mail_type, data } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		'mail_type',
+		mail_type,
+		'user_id',
+		user_id,
+		'data',
+		data
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return sendEmail(
+				mail_type,
+				user.email,
+				data,
+				user.settings
+			);
+		})
+		.then(() => { 
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendEmailByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const sendRawEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { receivers, title, html, text } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		'receivers',
+		receivers,
+		'title',
+		title,
+	);
+
+	sendRawEmail(
+		receivers,
+		title,
+		html,
+		text
+	)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendRawEmailByAdmin',
+				err.message
+			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -2349,5 +2449,7 @@ module.exports = {
 	createUserWalletByAdmin,
 	getWalletsByAdmin,
 	getUserSessionsByAdmin,
-	revokeUserSessionByAdmin
+	revokeUserSessionByAdmin,
+	sendEmailByAdmin,
+	sendRawEmailByAdmin
 };

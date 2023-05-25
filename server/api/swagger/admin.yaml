@@ -47,20 +47,25 @@ paths:
                 enum: ['Cloud', 'DIY', 'Enterprise']
               name:
                 type: string
+                maxLength: 256
               display_name:
                 type: string
+                maxLength: 256
               url:
                 type: string
+                maxLength: 256
               business_info:
                 type: object
               pairs:
                 type: array
                 items:
                   type: string
+                  maxLength: 256
               coins:
                 type: array
                 items:
                   type: string
+                  maxLength: 256
       responses:
         200:
           description: Success
@@ -145,21 +150,25 @@ paths:
           description: Currency of the transaction
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: transaction_id
           description: Blockchain transaction id
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: crypto address receiving the deposit
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: network
           description: Blockchain network of transaction
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: is_testnet
           description: specify whether or not transaction was on tesntet
@@ -182,6 +191,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/send-email-test:
     x-swagger-router-controller: admin
     post:
@@ -208,14 +219,18 @@ paths:
                 properties:
                   password:
                     type: string
+                    maxLength: 256
                   port:
                     type: number
                   server:
                     type: string
+                    maxLength: 256
                   user:
                     type: string
+                    maxLength: 256
               receiver:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -296,6 +311,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/signup:
     x-swagger-router-controller: admin
     post:
@@ -315,6 +332,7 @@ paths:
             properties:
               email:
                 type: string
+                maxLength: 256
               password:
                 type: string
                 format: password
@@ -370,8 +388,10 @@ paths:
             properties:
               api_key:
                 type: string
+                maxLength: 256
               api_secret:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -453,11 +473,13 @@ paths:
           description: "language"
           required: true
           type: string
+          maxLength: 256
         - in: query
           name: type
           description: "mail type"
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -494,10 +516,13 @@ paths:
                 type: string
               title:
                 type: string
+                maxLength: 256
               language:
                 type: string
+                maxLength: 256
               type:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -560,6 +585,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: Direction to order
@@ -602,6 +628,7 @@ paths:
             properties:
               name:
                 type: string
+                maxLength: 256
               type:
                 type: string
                 enum: [string, number, boolean, date-time]
@@ -609,6 +636,7 @@ paths:
                 type: boolean
               description:
                 type: string
+                maxLength: 512
       responses:
         200:
           description: Success
@@ -640,6 +668,7 @@ paths:
             properties:
               name:
                 type: string
+                maxLength: 256
               type:
                 type: string
                 enum: [string, number, boolean, date-time]
@@ -647,6 +676,7 @@ paths:
                 type: boolean
               description:
                 type: string
+                maxLength: 512
       responses:
         200:
           description: Success
@@ -674,6 +704,7 @@ paths:
           description: Name of field
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -701,11 +732,13 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
           description: Email of user to invite
         - name: role
           in: query
           required: true
           type: string
+          maxLength: 256
           description: Role of user
       responses:
         200:
@@ -742,6 +775,7 @@ paths:
           in: formData
           required: true
           type: string
+          maxLength: 256
       responses:
         200:
           description: Success
@@ -825,6 +859,7 @@ paths:
           in: query
           required: false
           type: string
+          maxLength: 256
       tags:
         - Admin
       responses:
@@ -854,6 +889,7 @@ paths:
           in: query
           required: false
           type: string
+          maxLength: 256
       responses:
         "200":
           description: Success
@@ -991,6 +1027,7 @@ paths:
           in: query
           required: false
           type: string
+          maxLength: 256
           description: Leave blank to get all coins
       responses:
         200:
@@ -1019,6 +1056,7 @@ paths:
           in: query
           required: false
           type: string
+          maxLength: 256
       responses:
         "200":
           description: Success
@@ -1050,10 +1088,12 @@ paths:
           in: query
           required: false
           type: string
+          maxLength: 256
         - name: type
           in: query
           required: false
           type: string
+          maxLength: 256
         - name: pending
           in: query
           required: false
@@ -1080,6 +1120,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: Direction to order
@@ -1102,7 +1143,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -1127,6 +1168,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_read
   /admin/user:
     x-swagger-router-controller: admin
     post:
@@ -1146,6 +1189,7 @@ paths:
             properties:
               email:
                 type: string
+                maxLength: 256
               password:
                 type: string
                 format: password
@@ -1166,6 +1210,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putUserInfo
       description: Update a user's info
@@ -1184,12 +1230,15 @@ paths:
             properties:
               full_name:
                 type: string
+                maxLength: 256
               gender:
                 type: boolean
               nationality:
                 type: string
+                maxLength: 256
               phone_number:
                 type: string
+                maxLength: 256
               dob:
                 type: ['string', 'null']
                 format: date-time
@@ -1198,12 +1247,16 @@ paths:
                 properties:
                   country:
                     type: string
+                    maxLength: 256
                   address:
                     type: string
+                    maxLength: 256
                   postal_code:
                     type: string
+                    maxLength: 256
                   city:
                     type: string
+                    maxLength: 256
               id_data:
                 type: object
                 properties:
@@ -1227,6 +1280,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/user/role:
     x-swagger-router-controller: admin
     put:
@@ -1259,6 +1314,8 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/user/meta:
     x-swagger-router-controller: admin
     put:
@@ -1293,6 +1350,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/user/discount:
     x-swagger-router-controller: admin
     put:
@@ -1341,6 +1400,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/user/note:
     x-swagger-router-controller: admin
     put:
@@ -1377,6 +1438,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_withdraw
   /admin/user/balance:
     x-swagger-router-controller: admin
     get:
@@ -1407,6 +1470,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_read
   /admin/user/bank:
     x-swagger-router-controller: admin
     post:
@@ -1450,6 +1515,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -1472,6 +1539,7 @@ paths:
                 format: int32
               bank_id:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -1511,8 +1579,10 @@ paths:
                 format: int32
               bank_id:
                 type: string
+                maxLength: 256
               message:
                 type: string
+                maxLength: 256
       responses:
         200:
           description: Success
@@ -1559,6 +1629,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -1581,7 +1652,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       tags:
         - Admin
@@ -1608,6 +1679,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_read
   /admin/audits:
     x-swagger-router-controller: admin
     get:
@@ -1637,6 +1710,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -1659,7 +1733,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       tags:
         - Admin
@@ -1728,11 +1802,13 @@ paths:
           description: Currency symbol
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order_by
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -1771,6 +1847,8 @@ paths:
         - admin
         - supervisor
         - support
+      x-token-permissions:
+        - can_read
   /admin/order:
     x-swagger-router-controller: order
     delete:
@@ -1783,6 +1861,7 @@ paths:
           in: query
           required: true
           type: string
+          maxLength: 256
         - name: user_id
           in: query
           required: true
@@ -1805,6 +1884,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/trades:
     x-swagger-router-controller: trade
     get:
@@ -1834,11 +1915,13 @@ paths:
           description: Currency symbol
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order_by
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -1888,6 +1971,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/user/activate:
     x-swagger-router-controller: admin
     post:
@@ -1929,6 +2014,8 @@ paths:
         - supervisor
         - support
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/balance:
     x-swagger-router-controller: admin
     get:
@@ -1952,6 +2039,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/upgrade-user:
     x-swagger-router-controller: admin
     post:
@@ -1983,6 +2072,8 @@ paths:
         - admin
         - supervisor
         - kyc
+      x-token-permissions:
+        - can_withdraw
   /admin/verify-email:
     x-swagger-router-controller: admin
     post:
@@ -2050,6 +2141,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_withdraw
   /admin/flag-user:
     x-swagger-router-controller: admin
     post:
@@ -2098,6 +2191,7 @@ paths:
           description: Currency type
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: user_id
           description: Id of the user
@@ -2108,11 +2202,13 @@ paths:
           description: unique transaction id
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: Address of the deposit
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -2132,6 +2228,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -2179,7 +2276,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -2205,6 +2302,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/withdrawals:
     x-swagger-router-controller: withdrawal
     get:
@@ -2218,6 +2317,7 @@ paths:
           description: Currency type
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: user_id
           description: Id of the user
@@ -2228,11 +2328,13 @@ paths:
           description: unique transaction id
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: address
           description: Address of the withdrawal
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -2252,6 +2354,7 @@ paths:
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -2299,7 +2402,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -2325,6 +2428,8 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_read
   /admin/transfer:
     x-swagger-router-controller: admin
     post:
@@ -2355,6 +2460,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/mint:
     x-swagger-router-controller: admin
     post:
@@ -2384,6 +2491,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putMint
       description: Update pending mint
@@ -2411,6 +2520,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/burn:
     x-swagger-router-controller: admin
     post:
@@ -2440,6 +2551,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
     put:
       operationId: putBurn
       description: Update pending burn
@@ -2467,6 +2580,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/dash-token:
     x-swagger-router-controller: admin
     get:
@@ -2554,6 +2669,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+      x-token-permissions:
+        - can_read
   /admin/user/referer:
     x-swagger-router-controller: admin
     get:
@@ -2582,6 +2699,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
   /admin/user/wallet:
     x-swagger-router-controller: admin
     get:
@@ -2611,11 +2730,13 @@ paths:
           description: Currency symbol
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order_by
           description: Field to order data
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: order
           description: direction to order
@@ -2639,6 +2760,7 @@ paths:
           description: crypto address of the wallet
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: is_valid
           description: specify whether or not wallet is wallet
@@ -2650,6 +2772,7 @@ paths:
           description: Blockchain network of wallet
           required: false
           type: string
+          maxLength: 256
         - in: query
           name: format
           description: Specify data format
@@ -2678,6 +2801,8 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+      x-token-permissions:
+        - can_read
     post:
       operationId: createUserWalletByAdmin
       description: Create a crypto address for the user by admin
@@ -2699,6 +2824,7 @@ paths:
                 format: int32
               crypto:
                 type: string
+                maxLength: 256
               network:
                 type: string
                 minLength: 2
@@ -2722,6 +2848,123 @@ paths:
         - supervisor
         - kyc
         - support
+      x-token-permissions:
+        - can_withdraw
+  /admin/send-email:
+    x-swagger-router-controller: admin
+    post:
+      operationId: sendEmailByAdmin
+      description: Send email by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+              - mail_type
+              - data
+            properties:
+              user_id:
+                type: number
+                format: int32
+              data:
+                type: object
+              mail_type:
+                type: string
+                enum: [
+                  'welcome',
+                  'login',
+                  'signup',
+                  'reset_password',
+                  'change_password',
+                  'password_changed',
+                  'user_verification_reject',
+                  'account_upgrade',
+                  'account_verify',
+                  'withdrawal_request',
+                  'deposit_cancel',
+                  'deposit',
+                  'withdrawal',
+                  'contactForm',
+                  'suspicious_deposit',
+                  'user_verification',
+                  'user_deactivated',
+                  'invalid_address',
+                  'invitedOperator',
+                  'alert',
+                  'discount_update',
+                  'bank_verified',
+                  'confirm_email']
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_withdraw
+  /admin/send-email/raw:
+    x-swagger-router-controller: admin
+    post:
+      operationId: sendRawEmailByAdmin
+      description: Send email by admin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - receivers
+              - html
+            properties:
+              receivers:
+                type: array
+                items:
+                  type: string
+                  maxLength: 256
+              title:
+                type: string
+                maxLength: 256
+              html:
+                type: string
+              text:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: "Error"
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_withdraw
   /admin/user/session:
     x-swagger-router-controller: admin
     get:
