@@ -605,6 +605,21 @@ exports.VERIFY_STATUS = {
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
 
+// BROKER CONSTANTS START
+
+exports.EXCHANGE_PLAN_INTERVAL_TIME = {
+	FIAT: 5,
+	BOOST: 5,
+	CRYPTO: 60
+};
+exports.EXCHANGE_PLAN_PRICE_SOURCE = {
+	FIAT: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	BOOST: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	CRYPTO: ['hollaex', 'binance']
+};
+
+// BROKER CONSTANTS END
+
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');

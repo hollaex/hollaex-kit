@@ -6,7 +6,7 @@ const ccxt = require('ccxt');
 const rp = require('request-promise');
 const randomString = require('random-string');
 const dbQuery = require('./database/query');
-const { SERVER_PATH } = require('../constants');
+const { SERVER_PATH, EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require('../constants');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -17,6 +17,9 @@ const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
+
+const connectedExchanges = {};
+
 
 const {
 	TOKEN_EXPIRED,
@@ -29,6 +32,8 @@ const {
 	BROKER_FORMULA_NOT_FOUND,
 	SPREAD_MISSING,
 	MANUAL_BROKER_CREATE_ERROR,
+	DYNAMIC_BROKER_CREATE_ERROR,
+	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
 	EXCHANGE_NOT_FOUND,
 	SYMBOL_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 
@@ -60,89 +65,164 @@ const getDecimals = (value = 0) => {
 	return str.split('-')[1] || 0;
 };
 
-const binanceScript = async () => {
-	const BINANCE_URL = 'https://api3.binance.com/api/v3/ticker/price';
+const determineRefreshInterval = (plan) => {
+	if(plan === 'crypto') {
+		return EXCHANGE_PLAN_INTERVAL_TIME.CRYTO;
+	}
+	else if (plan === 'fiat') {
+		return EXCHANGE_PLAN_INTERVAL_TIME.FIAT;
+	}
+	else if (plan === 'boost') {
+		return EXCHANGE_PLAN_INTERVAL_TIME.BOOST;
+	}
+}
 
+const determinePriceSource = (plan) => {
+	if(plan === 'crypto') {
+		return EXCHANGE_PLAN_PRICE_SOURCE.CRYTO;
+	}
+	else if (plan === 'fiat') {
+		return EXCHANGE_PLAN_PRICE_SOURCE.FIAT;
+	}
+	else if (plan === 'boost') {
+		return EXCHANGE_PLAN_PRICE_SOURCE.BOOST;
+	}
+}
+const setExchange = (data) => {
+    if (connectedExchanges[data.id]) {
+        return connectedExchanges[data.id].exchange
+    }
+    const exchangeClass = ccxt[data.exchange];
+
+    const exchange = new exchangeClass({
+        timeout: 5000,
+        ...(data.api_key && { 'apiKey': data.api_key }),
+        ...(data.api_secret && { 'secret': data.api_secret }),
+    })
+
+    if (data.id) {
+        connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
+    }
+
+    return exchange;
+}
+
+const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = null,
+	orderData = {
+		spending_currency: null,
+		receiving_currency: null,
+		spending_amount: null,
+		receiving_amount: null
+	}) => {
+
+	const { symbol, tracked_symbol, spread, quote_expiry_time, refresh_interval } = broker;
 	// Get the price from redis
-	const formattedSymbol = symbol.split('-').join('').toUpperCase();
-	const quotePrice = await client.getAsync('prices');
+	const formattedSymbol = tracked_symbol.split('-').join('').toUpperCase();
+	const userCachekey = `${broker.id}-${symbol}`;
+	let marketTicker = await client.getAsync(userCachekey);
 
-	const runScript = (prices) => {
-		//Calculate the price
-		const foundSymbol = JSON.parse(prices).find((data) => data.symbol === formattedSymbol);
-		if (!foundSymbol) {
-			throw new Error('Pair not found');
-		}
-		const baseCurrencyPrice = calculatePrice(foundSymbol.price, side, spread, multiplier);
+	if (!marketTicker) { 
+		marketTicker = await selectedExchange.fetchTicker(formattedSymbol);
+		client.setexAsync(userCachekey, refresh_interval, marketTicker);
+	 }
 
-		const decimalPoint = getDecimals(broker.increment_size);
-		const roundedPrice = math.round(
-			baseCurrencyPrice,
-			decimalPoint
-		);
+	//Calculate the price
+	const foundSymbol = JSON.parse(marketTicker);
+	if (!foundSymbol) {
+		throw new Error('Pair not found');
+	}
+	const baseCurrencyPrice = calculatePrice(foundSymbol.last, side, spread);
 
-		const responseObject = {
-			price: roundedPrice
-		};
-		//check if there is user_id, if so, assing token
-		if (user_id) {
+	const decimalPoint = getDecimals(broker.increment_size);
+	const roundedPrice = math.round(
+		baseCurrencyPrice,
+		decimalPoint
+	);
 
-			let size;
-			if (orderData) {
-				let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData;
-
-				if (spending_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
-						decimalPoint
-					);
-
-					receiving_amount = sourceAmount;
-
-				} else if (receiving_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
-						decimalPoint
-					);
-					spending_amount = sourceAmount;
-				}
-
-				if (`${spending_currency}-${receiving_currency}` === symbol) {
-					size = spending_amount;
-				} else {
-					size = receiving_amount
-				}
-			}
-			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
-			responseObject.token = randomToken;
-			// set expiry
-			const expiryDate = new Date();
-			expiryDate.setSeconds(expiryDate.getSeconds() + broker.quote_expiry_time || 30);
-			responseObject.expiry = expiryDate;
-		}
-
-		return responseObject;
+	const responseObject = {
+		price: roundedPrice
 	};
 
-	// If it doesn't exist, fetch all market from Binance 
-	if (!quotePrice) {
-		return rp(BINANCE_URL)
-			.then((res) => {
-				//Store all market prices in Redis with 1 minute expiry time
-				//response is a stringfied object.
-				client.setexAsync('prices', 60, res);
+	//check if there is user_id, if so, assing token
+	if (user_id) {
 
-				return runScript(res);
-			})
-			.catch((err) => {
-				throw new Error(err);
-			});
+		const size = calculateSize(orderData);
 
-	} else {
-		return runScript(quotePrice);
+		// Generate randomToken to be used during deal execution
+		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
+		responseObject.token = randomToken;
+		// set expiry
+		const expiryDate = new Date();
+		expiryDate.setSeconds(expiryDate.getSeconds() + quote_expiry_time || 30);
+		responseObject.expiry = expiryDate;
 	}
+
+	return responseObject;
+
 };
+
+const getQuoteManualBroker = async (broker, side, user_id = null, orderData = {
+	spending_currency: null,
+	receiving_currency: null,
+	spending_amount: null,
+	receiving_amount: null
+}) => {
+	const { symbol, quote_expiry_time, sell_price, buy_price, increment_size  } = broker;
+
+	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
+
+	const decimalPoint = getDecimals(increment_size);
+	const roundedPrice = math.round(
+		baseCurrencyPrice,
+		decimalPoint
+	);
+	const responseObject = {
+		price: roundedPrice
+	};
+
+	const size = calculateSize(orderData);
+
+	if (user_id) {
+		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
+		responseObject.token = randomToken;
+		// set expiry
+		const expiryDate = new Date();
+		expiryDate.setSeconds(expiryDate.getSeconds() + quote_expiry_time || 30);
+		responseObject.expiry = expiryDate;
+	}
+	return responseObject;
+}
+
+const calculateSize = (orderData) => {
+	let size = null;
+
+	if (orderData) {
+		let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData
+
+		if (spending_amount != null) {
+			const sourceAmount = math.round(
+				side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
+				decimalPoint
+			);
+
+			receiving_amount = sourceAmount;
+
+		} else if (receiving_amount != null) {
+			const sourceAmount = math.round(
+				side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
+				decimalPoint
+			);
+			spending_amount = sourceAmount;
+		}
+
+		if (`${spending_currency}-${receiving_currency}` === symbol) {
+			size = spending_amount;
+		} else {
+			size = receiving_amount
+		}
+	}
+	return size;
+}
 
 const calculatePrice = (price, side, spread, multiplier = 1) => {
 	// Calculate the price
@@ -203,66 +283,10 @@ const fetchBrokerQuote = async (brokerQuote) => {
 			throw new Error(BROKER_PAUSED);
 		}
 		if (broker.type === 'dynamic') {
-			if (broker.formula) {
-				//Run formula
-				const resObject = _eval(broker.formula, 'formula', {
-					symbol, side, user_id, client, broker, calculatePrice, generateRandomToken, getDecimals, math, rp, orderData
-				}, true);
-
-				return resObject;
-
-			} else {
-				throw new Error(BROKER_FORMULA_NOT_FOUND);
-			}
+			const selectedExchange = setExchange(broker.exchange_name);
+			return getQuoteDynamicBroker(selectedExchange, side, broker, user_id, orderData);
 		} else {
-			const baseCurrencyPrice = side === 'buy' ? broker.sell_price : broker.buy_price;
-
-			const decimalPoint = getDecimals(broker.increment_size);
-			const roundedPrice = math.round(
-				baseCurrencyPrice,
-				decimalPoint
-			);
-			const responseObject = {
-				price: roundedPrice
-			};
-
-			let size;
-
-			if (orderData) {
-				let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData
-
-				if (spending_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
-						decimalPoint
-					);
-
-					receiving_amount = sourceAmount;
-
-				} else if (receiving_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
-						decimalPoint
-					);
-					spending_amount = sourceAmount;
-				}
-
-				if (`${spending_currency}-${receiving_currency}` === symbol) {
-					size = spending_amount;
-				} else {
-					size = receiving_amount
-				}
-			}
-
-			if (user_id) {
-				const randomToken = generateRandomToken(user_id, symbol, side, broker.quote_expiry_time, roundedPrice, size, 'broker');
-				responseObject.token = randomToken;
-				// set expiry
-				const expiryDate = new Date();
-				expiryDate.setSeconds(expiryDate.getSeconds() + broker.quote_expiry_time || 30);
-				responseObject.expiry = expiryDate;
-			}
-			return responseObject;
+			return await getQuoteManualBroker(broker, side, user_id, orderData);
 		}
 
 	} catch (err) {
@@ -400,45 +424,34 @@ const createBrokerPair = async (brokerPair) => {
 			if (deal) {
 				throw new Error(BROKER_EXISTS);
 			}
+			const exchangeInfo = toolsLib.getKitConfig();
+
 			const {
-				formula,
 				exchange_name,
 				spread,
-				multiplier,
-				type
+				quote_expiry_time,
+				tracked_symbol,
+				type,
 			} = brokerPair;
 
-			if (exchange_name && type === 'manual') {
-				throw new Error(MANUAL_BROKER_CREATE_ERROR);
+			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !refresh_interval || !tracked_symbol)) {
+				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
 
-			if (exchange_name && !spread) {
-				throw new Error(SPREAD_MISSING);
+			if (type !== 'manual' && exchangeInfo.plan === 'basic') {
+				throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 			}
 
-			let adminFormula = null;
-
-			if (type === 'dynamic') {
-				// If it is a custom script(users send their own formula)
-				if (formula) {
-					adminFormula = formula;
-				}
-				// If user selects a exchange
-				else if (exchange_name === 'binance') {
-					const binanceFormula = `
-					const spread = ${spread}; 
-					const multiplier = ${multiplier || 1}; 
-					module.exports = (${binanceScript.toString()})()
-				`;
-
-					adminFormula = binanceFormula;
-				} else {
-					throw new Error(EXCHANGE_NOT_FOUND);
-				}
+			if (type === 'dynamic' && !determinePriceSource(exchangeInfo.plan).includes(exchange_name)) {
+				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
+
+			if(type === 'dynamic') {
+				brokerPair.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
+			}
+			
 			const newBrokerObject = {
-				...brokerPair,
-				formula: adminFormula
+				...brokerPair
 			};
 
 

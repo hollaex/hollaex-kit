@@ -14,6 +14,10 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
+			tracked_smybol: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
@@ -59,9 +63,28 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 30,
 				allowNull: true
 			},
+			spread: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
+			},
+			multiplier: {
+				type: DataTypes.INTEGER,
+				defaultValue: 1,
+				allowNull: true
+			},
+			exchange_name: {
+				type: DataTypes.STRING,
+				allowNull: true,
+			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
 				allowNull: true,
+			},
+			refresh_interval: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
 			},
 			account: {
 				type: DataTypes.JSONB,
