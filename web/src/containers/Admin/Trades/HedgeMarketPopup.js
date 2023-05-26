@@ -9,6 +9,10 @@ const Pophedge = ({
 	chooseMarket,
 	marketLink,
 	handleCustomPrice,
+	hedgeMarkets,
+	setHedgeSymbol,
+	hedgeSymbol,
+	hedgeApi
 }) => {
 	return (
 		<>
@@ -25,8 +29,7 @@ const Pophedge = ({
 					<Input
 						placeholder="Search market name or symbols"
 						id="marketkey mb-2"
-						onChange={handleMarkSearch}
-						value={marketLink}
+						value={hedgeSymbol}
 					/>
 					<div className="email-option-wrapper mt-5">
 						<div className="d-flex table-header email-header">
@@ -35,17 +38,17 @@ const Pophedge = ({
 							<div>PRICE</div>
 						</div>
 						<div className="overflow">
-							{ManageArr.map((data, index) => {
+							{hedgeMarkets.map((data, index) => {
 								return (
 									<div
 										key={index}
 										className="email-option"
-										onClick={() => chooseMarket(data)}
+										onClick={() => setHedgeSymbol(data.symbol)}
 									>
 										<div className="d-flex w-85">
-											<div className="w-50">{data.exchange}</div>
-											<div className="w-50">{data.pair}</div>
-											<div className="w-50 preview_text">{data.price}</div>
+											<div className="w-50">{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}</div>
+											<div className="w-50">{data.symbol}</div>
+											<div className="w-50 preview_text">{'-'}</div>
 										</div>
 									</div>
 								);

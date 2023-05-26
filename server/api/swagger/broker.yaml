@@ -206,9 +206,6 @@ paths:
           schema:
             type: object
             properties:
-              formula:
-                type: string
-                maxLength: 256
               exchange_name:
                 type: string
                 maxLength: 256

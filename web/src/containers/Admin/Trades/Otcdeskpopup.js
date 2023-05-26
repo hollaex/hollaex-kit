@@ -102,12 +102,18 @@ const Otcdeskpopup = ({
 	const [chainlink, setChainlink] = useState(false);
 	const [customlink, setCustomlink] = useState(false);
 	const [formula, setFormula] = useState('');
-	const [hedgeApi, setHedgeApi] = useState('bitmex');
+	const [hedgeApi, setHedgeApi] = useState('hollaex');
 	const [selelctedPlatform, setSelectedPlatform] = useState('binance');
 	const [selectedExchange, setSelectedExchange] = useState('binance');
 	const [exchangeMarkets, setExchangeMarkets] = useState([]);
+	const [hedgeMarkets, setHedgeMarkets] = useState([]);
 	const [selectedMarket, setSelectedMarket] = useState();
+	const [priceResult, setPriceResult] = useState();
+	const [displayAdvancedModal, setDisplayAdvancedModal] = useState(false);
 	const [apiData, setApi] = useState({});
+	const [hedgeBaseCoinBalance, setHedgeBaseCoinBalance] = useState();
+	const [hedgeQuoteCoinBalance, setHedgeQuoteCoinBalance] = useState();
+	const [hedgeSymbol, setHedgeSymbol] = useState();
 	const [spreadMul, setSpreadMul] = useState({});
 	const [MarketPop, SetMarketPop] = useState(false);
 	const [connectLoading, setLoading] = useState(false);
@@ -134,13 +140,23 @@ const Otcdeskpopup = ({
 		if (isEdit && editData && editData.account) {
 			setHedgeSwitch(true);
 			setConnectpop(true);
-			if (Object.keys(editData.account)[0] === 'bitmex') {
-				setHedgeApi('bitmex');
-			} else {
-				setHedgeApi('binance');
-			}
+			setHedgeApi(Object.keys(editData.account)?.[0]);
 		}
 	}, [isEdit, editData, isExistsPair]);
+
+	useEffect(() => {
+		handleSelectedExchange(selectedExchange);
+	}, [previewData, selectedCoinType])
+
+	useEffect(() => {
+		if (previewData) {
+			const pair = `${previewData?.pair_base?.toUpperCase()}/${previewData?.pair_2?.toUpperCase()}`
+			const foundPair = exchangeMarkets?.markets?.find(data => data.symbol === pair);
+			if (foundPair) setSelectedMarket(foundPair.symbol);
+			else setSelectedMarket()
+		}
+	}, [exchangeMarkets, selectedCoinType])
+
 
 	const handleCloseOtcChild = () => {
 		setHedgeSwitch(false);
@@ -148,7 +164,7 @@ const Otcdeskpopup = ({
 		setChainlink(false);
 		setFormula('');
 		setCustomlink(false);
-		setHedgeApi('bitmex');
+		setHedgeApi('hollaex');
 		setApi({});
 		setSpreadMul({});
 		setSelectedPlatform('binance');
@@ -163,7 +179,8 @@ const Otcdeskpopup = ({
 		handleClosePopup();
 	};
 
-	const isUpgrade = handleUpgrade(kit.info);
+	// const isUpgrade = handleUpgrade(kit.info);
+	const isUpgrade = false;
 	const handleEditInput = () => {
 		if (searchRef && searchRef.current && searchRef.current.focus) {
 			searchRef.current.focus();
@@ -179,14 +196,24 @@ const Otcdeskpopup = ({
 		}
 	};
 
+	const handlePriceResult = async () => {
+		if(spreadMul.spread && selectedExchange && selectedMarket) {
+			const result = await createTestBroker({ exchange_name: selectedExchange, spread: spreadMul.spread, symbol: selectedMarket })
+			setPriceResult(result);
+		}
+	}
 	const getConnect = async (e) => {
 		setLoading(true);
 		let selectedApiType = hedgeApi;
-		if (hedgeApi === 'bitmex') {
-			selectedApiType = 'hollaex';
-		}
 		try {
-			await getBrokerConnect(selectedApiType, apiData.apikey, apiData.seckey);
+			const balance = await getBrokerConnect(selectedApiType, apiData.apikey, apiData.seckey);
+			const baseCoinBalance = balance[previewData?.pair_base?.toUpperCase()];
+			const quoteCoinBalance = balance[previewData?.pair_2?.toUpperCase()];
+			setHedgeBaseCoinBalance(baseCoinBalance?.total);
+			setHedgeQuoteCoinBalance(quoteCoinBalance?.total);
+			const markets = await getTrackedExchangeMarkets(selectedApiType);
+			setHedgeMarkets(markets)
+
 			setTimeout(() => {
 				setLoading(false);
 				setConnectpop(e);
@@ -344,6 +371,14 @@ const Otcdeskpopup = ({
 		handlePreviewChange(selectedCoinType, 'type');
 		moveToStep('with-balance');
 	};
+
+	const handleSelectedExchange = async (value) => {
+		setSelectedExchange(value);
+		if(value !== exchangeMarkets.exchange) {
+			const markets = await getTrackedExchangeMarkets(value);
+			setExchangeMarkets({ exchange:value, markets });
+		}
+	}
 
 	const renderModalContent = () => {
 		switch (type) {
@@ -662,6 +697,63 @@ const Otcdeskpopup = ({
 					<>
 						{!MarketPop ? (
 							<div className="otc-Container coin-pricing-container">
+								{displayAdvancedModal && 
+									<Modal
+										maskClosable={false}
+										closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+										bodyStyle={{
+											backgroundColor: '#27339D',
+											marginTop: 60,
+										}}
+										visible={displayAdvancedModal}
+										footer={null}
+										onCancel={() => {
+											setDisplayAdvancedModal(false);
+										}}
+									>
+										<h2 style={{ fontWeight: '600', color: 'white' }}>Advanced</h2>
+									
+										<div>Price formula</div>
+										<div style={{ backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10 }}> </div>
+									
+										<div
+											style={{
+												display: 'flex',
+												flexDirection: 'row',
+												gap: 15,
+												justifyContent: 'space-between',
+											}}
+										>
+											<Button
+												onClick={() => {
+													setDisplayAdvancedModal(false);
+												}}
+												style={{
+													backgroundColor: '#288500',
+													color: 'white',
+													flex: 1,
+													height: 35,
+												}}
+												type="default"
+											>
+												Back
+											</Button>
+											<Button
+												onClick={() => {
+													setDisplayAdvancedModal(false);
+												}}
+												style={{
+													backgroundColor: '#288500',
+													color: 'white',
+													flex: 1,
+													height: 35,
+												}}
+												type="default"
+											>
+												Ok
+											</Button>
+										</div>
+									</Modal>}
 								<div className="title pb-3">Set coin pricing</div>
 								<div className="d-flex align-items-center coin-container mb-4 coin-image">
 									<div className="d-flex align-items-center mr-4 ">
@@ -787,9 +879,7 @@ const Otcdeskpopup = ({
 												<Select
 													defaultValue={selectedExchange}
 													onChange={async (value) => {
-														setSelectedExchange(value);
-														const markets = await getTrackedExchangeMarkets(value);
-														setExchangeMarkets(markets);
+														handleSelectedExchange(value);
 													}}
 												>
 													<Option value="hollaex">Hollaex Pro</Option>
@@ -806,13 +896,13 @@ const Otcdeskpopup = ({
 											<div className="select-box">
 												
 												<Select
-													defaultValue={selectedMarket}
+													value={selectedMarket}
 													placeholder={"Select market"}
 													onChange={async (value) => {
 														setSelectedMarket(value)
 													}}
 												>
-														{exchangeMarkets.map((item, index) => {
+														{exchangeMarkets?.markets?.map((item, index) => {
 															return (
 																<Option value={item.id} key={index}>
 																	{item.symbol}
@@ -840,7 +930,10 @@ const Otcdeskpopup = ({
 												value={previewData && previewData.spread}
 											/>
 											
-											<div className="mt-5 mb-5">Price refresh interval: 1 minute (<span style={{ textDecoration:'underline' }}>Upgrade</span> to increase refresh rate) </div>
+											<div className="mt-5 mb-5">Price refresh interval: 1 minute (<span style={{ 
+												textDecoration:'underline',
+												cursor:'pointer'
+											}}>Upgrade</span> to increase refresh rate) </div>
 
 											<div className="mt-3 ">Price quote expiry time (seconds)</div>
 											<Input
@@ -854,14 +947,18 @@ const Otcdeskpopup = ({
 														'quote_expiry_time'
 													)
 												}
-												value={previewData && previewData.multiplier}
+												value={previewData && previewData.quote_expiry_time}
 											/>
 
 										<div className="mt-5">Result (price displayed to user)</div>
-										<div className="mb-5" style={{ textDecoration:'underline' }}>Show price result</div>
-
+										<div onClick={() => { handlePriceResult(); }} style={{ cursor:'pointer', textDecoration:'underline' }}> Show price result</div>
+										<div className="mb-5" style={{  opacity: priceResult ? 1 : 0 }}>
+											Buy @ {priceResult?.buy_price} and Sell @ {priceResult?.sell_price} <span onClick={() => { handlePriceResult(); }} style={{ cursor:'pointer', textDecoration:'underline' }}>(Refresh)</span>
+										</div>
 										
-										<div className="mt-5" style={{ textDecoration:'underline' }}>Advanced</div>
+										<div
+										onClick={() => { setDisplayAdvancedModal(true) }}
+										className="mt-5" style={{ cursor:'pointer', textDecoration:'underline' }}>Advanced</div>
 											
 										</div>
 
@@ -877,7 +974,10 @@ const Otcdeskpopup = ({
 											<Button
 												type="primary"
 												className="green-btn"
-												onClick={handleSetPriceNext}
+												onClick={() => {
+													// handleSetPriceNext 
+													moveToStep('hedge');
+												}}
 												disabled={
 													chainlink ||
 													(!isExistsPair &&
@@ -886,7 +986,7 @@ const Otcdeskpopup = ({
 														formula === '') ||
 													isUpgrade ||
 													((!isExistsPair || !isEdit) && !spreadMul.spread) ||
-													((!isExistsPair || !isEdit) && !spreadMul.multiplier)
+													((!isExistsPair || !isEdit) && !spreadMul.quote_expiry_time)
 												}
 											>
 												Next
@@ -900,6 +1000,9 @@ const Otcdeskpopup = ({
 								MarketPop={MarketPop}
 								handleMarkSearch={handleMarkSearch}
 								ManageArr={ManageArr}
+								hedgeMarkets={hedgeMarkets}
+								hedgeApi={hedgeApi}
+								setHedgeSymbol={setHedgeSymbol}
 								chooseMarket={chooseMarket}
 								marketLink={marketLink}
 								handleCustomPrice={handleCustomPrice}
@@ -1062,12 +1165,6 @@ const Otcdeskpopup = ({
 											? previewData && previewData.buy_price
 											: brokerPriceData.buy_price}
 									</div>
-									{hedgeSwitch && (
-										<div>
-											Rebalancing symbol:{' '}
-											{previewData && previewData.rebalancing_symbol}
-										</div>
-									)}
 									{!isManual && (
 										<div>
 											<div>
@@ -1075,9 +1172,19 @@ const Otcdeskpopup = ({
 												{previewData && previewData.exchange_name}
 											</div>
 											<div>Spread: {previewData && previewData.spread}</div>
-											<div>
-												Multiplier: {previewData && previewData.multiplier}
-											</div>
+											{/* <div>
+												Multiplier: {previewData && previewData.refresh_interval}
+											</div> */}
+										</div>
+									)}
+								</div>
+								<div className="right-content">
+									<div className="title font-weight-bold">Hedge</div>
+									{!hedgeSwitch && 'Off'}
+									{hedgeSwitch && (
+										<div>
+											Hedging symbol:{' '}
+											{previewData && previewData.rebalancing_symbol}
 										</div>
 									)}
 								</div>
@@ -1379,27 +1486,24 @@ const Otcdeskpopup = ({
 											<div>
 												<div className="select-box">
 													<Select
-														defaultValue={hedgeApi}
+														value={hedgeApi}
 														onChange={handleSelApi}
 													>
-														<Option value="bitmex">HollaEx Pro</Option>
+														<Option value="hollaex">Hollaex Pro</Option>
 														<Option value="binance">Binance</Option>
+														<Option value="bitfinex">Bitfinex</Option>
+														<Option value="kraken">Kraken</Option>
+														<Option value="uniswap">Uniswap</Option>
 													</Select>
 												</div>
-												{hedgeApi === 'bitmex' ? (
 													<div className="mt-3 mb-3">
-														Enter HollaEx account API keys
+														Enter {hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)} account API keys
 													</div>
-												) : (
-													<div className="mt-3 mb-3">
-														Enter Binance account API keys
-													</div>
-												)}
 											</div>
 										) : (
 											<div>
 												Connecting{' '}
-												{hedgeApi === 'binance' ? 'Binance' : 'HollaEx Pro'}{' '}
+												{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}{' '}
 												account...
 											</div>
 										)}
@@ -1507,11 +1611,11 @@ const Otcdeskpopup = ({
 															{getFullName(
 																previewData && previewData.pair_base
 															)}
-															: {pairBaseBalance}
+															: {hedgeBaseCoinBalance}
 														</div>
 														<div>
 															{getFullName(previewData && previewData.pair_2)}:{' '}
-															{pair2Balance}
+															{hedgeQuoteCoinBalance}
 														</div>
 													</div>
 												)}
@@ -1519,7 +1623,7 @@ const Otcdeskpopup = ({
 										</div>
 										<div className="mt-4 mb-1">Hedging market source</div>
 										<div className="select-box">
-											<Select
+											{/* <Select
 												defaultValue={marketLink}
 												onClick={handleMarkethedge}
 											>
@@ -1530,7 +1634,13 @@ const Otcdeskpopup = ({
 														</Option>
 													);
 												})}
-											</Select>
+											</Select> */}
+
+											<Input
+												placeholder='Select hedge symbol'
+												onClick={handleMarkethedge}
+												value={hedgeSymbol}
+												/>
 											<div className="d-flex  mt-1">
 												<div className="pr-2 grey-text-color">
 													<ExclamationCircleOutlined />
@@ -1585,6 +1695,10 @@ const Otcdeskpopup = ({
 								chooseMarket={chooseMarket}
 								marketLink={marketLink}
 								handleCustomPrice={handleCustomPrice}
+								hedgeMarkets={hedgeMarkets}
+								hedgeApi={hedgeApi}
+								setHedgeSymbol={setHedgeSymbol}
+								hedgeSymbol={hedgeSymbol}
 							/>
 						)}
 					</div>

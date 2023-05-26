@@ -92,6 +92,10 @@ const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
         return connectedExchanges[data.id].exchange
     }
+	else if (connectedExchanges[data.exchange]) {
+        return connectedExchanges[data.exchange].exchange
+    }
+
     const exchangeClass = ccxt[data.exchange];
 
     const exchange = new exchangeClass({
@@ -103,6 +107,10 @@ const setExchange = (data) => {
     if (data.id) {
         connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
     }
+	else if (data.exchange) {
+        connectedExchanges[data.exchange] = { exchange };
+    }
+
 
     return exchange;
 }
@@ -295,41 +303,22 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { formula, exchange_name, spread, multiplier, symbol } = data;
+	const { exchange_name, spread, multiplier, symbol } = data;
 	try {
-		//if formula is sent, run it.
-		if (formula) {
-			const resObject = _eval(formula, 'formula', {
-				calculatePrice, generateRandomToken, getDecimals, math, rp
-			}, true);
-
-			return resObject;
-		} else {
-			if (!exchange_name) {
-				throw new Error(EXCHANGE_NOT_FOUND);
-			}
-			if (!spread) {
-				throw new Error(SPREAD_MISSING);
-			}
-			if (!symbol) {
-				throw new Error(SYMBOL_NOT_FOUND);
-			}
-			if (exchange_name === 'binance') {
-				const formattedSymbol = symbol.split('-').join('').toUpperCase();
-
-				return rp(`https://api3.binance.com/api/v3/ticker/price?symbol=${formattedSymbol}`)
-					.then((res) => {
-						const multipliedPrice = parseFloat(JSON.parse(res).price) * (multiplier || 1);
-						return {
-							buy_price: multipliedPrice * (1 - (spread / 100)),
-							sell_price: multipliedPrice * (1 + (spread / 100))
-						};
-					})
-					.catch((err) => {
-						throw new Error(err);
-					});
-			}
+		if (!exchange_name) {
 			throw new Error(EXCHANGE_NOT_FOUND);
+		}
+		if (!spread) {
+			throw new Error(SPREAD_MISSING);
+		}
+		if (!symbol) {
+			throw new Error(SYMBOL_NOT_FOUND);
+		}
+		const exchange = setExchange({ exchange: exchange_name });
+		const marketTicker = await exchange.fetchTicker(symbol);
+		return {
+			buy_price: marketTicker.last * (1 - (spread / 100)),
+			sell_price: marketTicker.last * (1 + (spread / 100))
 		}
 	} catch (err) {
 		throw new Error(err);
@@ -341,11 +330,7 @@ const testRebalance = async (data) => {
 	const { exchange_id, api_key, api_secret } = data;
 
 	try {
-		const exchangeClass = ccxt[exchange_id];
-		const exchange = new exchangeClass({
-			'apiKey': api_key,
-			'secret': api_secret
-		});
+		const exchange = setExchange({ exchange: exchange_id, api_key, api_secret })
 		const userBalance = await exchange.fetchBalance();
 		return userBalance;
 	} catch (err) {
