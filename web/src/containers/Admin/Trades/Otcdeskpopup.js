@@ -823,174 +823,48 @@ const Otcdeskpopup = ({
 											</div>
 										</div>}
 
-										{!chainlink && !customlink && (
-											<div>
-												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
-													<div className="mt-4">Track market price</div>
-													<div className="select-box">
-														<Select
-															defaultValue={''}
-															onClick={() => {}}
-														>
-															{/* {pairs.map((item, index) => {
-																return (
-																	<Option value={item.name} key={index}>
-																		{item.name}
-																	</Option>
-																);
-															})} */}
-														</Select>
-													</div>
-												</div>
-												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
-													<div className="mt-4">Market pair</div>
-													<div className="select-box">
-														<Select
-															defaultValue={marketLink}
-															onClick={handleMarkethedge}
-														>
-															{pairs.map((item, index) => {
-																return (
-																	<Option value={item.name} key={index}>
-																		{item.name}
-																	</Option>
-																);
-															})}
-														</Select>
-													</div>
-												</div>
-												{!isUpgrade && (
-													<div>
-														<div className="mt-3 ">Spread percentage</div>
-														<Input
-															type="number"
-															placeholder="Input the % spread"
-															id="spreadkey"
-															className="Formulabox"
-															suffix={'%'}
-															onChange={(e) =>
-																handleSpreadMul(
-																	parseFloat(e.target.value),
-																	'spread'
-																)
-															}
-															value={previewData && previewData.spread}
-														/>
-														<div className="mt-2 grey-text-color Formulabox d-flex">
-															<div className="mr-2">
-																<ExclamationCircleOutlined />
-															</div>
-															<div>
-																A large spread percentage will widen the
-																distance of your set best bid & ask price. A
-																smaller percentage will narrow the price spread.
-															</div>
-														</div>
-														<div className="mt-3 ">Multiplier</div>
-														<Input
-															type="number"
-															placeholder="Input the multiplier"
-															className="Formulabox"
-															suffix={'*'}
-															onChange={(e) =>
-																handleSpreadMul(
-																	parseFloat(e.target.value),
-																	'multiplier'
-																)
-															}
-															value={previewData && previewData.multiplier}
-														/>
-														<div className="mt-2 grey-text-color Formulabox d-flex">
-															<div className="mr-2">
-																<ExclamationCircleOutlined />
-															</div>
-															<div>
-																A multiplier will multiply the price source. For
-																example, inputting a 2 in the multiplier field
-																will set your deal's price 2x of the price
-																source.
-															</div>
-														</div>
-														<div className="mt-3 ">
-															Price quote expiry time (seconds)
-														</div>
-														<Input
-															type="number"
-															defaultValue={30}
-															placeholder="Input the multiplier"
-															className="Formulabox expiry-time-field"
-															onChange={(e) =>
-																handleSpreadMul(
-																	parseInt(e.target.value),
-																	'quote_expiry_time'
-																)
-															}
-															value={
-																previewData && previewData.quote_expiry_time
-															}
-														/>
-													</div>
-												)}
-											</div>
-										)}
-										{chainlink && !customlink && (
-											<div>
-												<div className="mt-4">
-													Select from Defi price source
-												</div>
-												<div className="mt-2 error">
-													<ExclamationCircleFilled /> Coming soon for upgraded
-													HollaEx operators.
-												</div>
-											</div>
-										)}
-										{customlink && !chainlink && (
-											<div>
-												<div className="mt-4">Formulate price and source</div>
-												<TextArea
-													placeholder="Input your formula"
-													name="description"
-													rows={5}
-													onChange={onhandleFormula}
-													className="Formulabox mt-2"
-													value={previewData && previewData.formula}
-												/>
-												<div className="mt-4 warning-message grey-text-color">
-													{' '}
-													<InfoCircleOutlined /> For advanced users with
-													experience with exchange trading APIs
-												</div>
-												{formula === '' && (
-													<div className="mt-3 errmes">
-														<b>Error:</b> Can't source and formulate price.
-														Please check your custom price or select another
-														platform price source.
-													</div>
-												)}
-												{selelctedPlatform !== 'chainlink' && (
-													<div>
-														<div className="mt-3 ">
-															Price quote expiry time (seconds)
-														</div>
-														<Input
-															type="number"
-															defaultValue={30}
-															placeholder="Input the multiplier"
-															className="Formulabox expiry-time-field"
-															onChange={(e) =>
-																handleSpreadMul(
-																	parseInt(e.target.value),
-																	'quote_expiry_time'
-																)
-															}
-															value={
-																previewData && previewData.quote_expiry_time
-															}
-														/>
-													</div>
-												)}
-											</div>
-										)}
+										<div>
+											<div className="mt-3 ">Percentage price spread <ExclamationCircleOutlined /></div>
+											<Input
+												type="number"
+												placeholder="Input % spread"
+												id="spreadkey"
+												className="Formulabox"
+												suffix={'%'}
+												onChange={(e) =>
+													handleSpreadMul(
+														parseFloat(e.target.value),
+														'spread'
+													)
+												}
+												value={previewData && previewData.spread}
+											/>
+											
+											<div className="mt-5 mb-5">Price refresh interval: 1 minute (<span style={{ textDecoration:'underline' }}>Upgrade</span> to increase refresh rate) </div>
+
+											<div className="mt-3 ">Price quote expiry time (seconds)</div>
+											<Input
+												type="number"
+												placeholder="Input quote expiry time"
+												className="Formulabox"
+												suffix={'*'}
+												onChange={(e) =>
+													handleSpreadMul(
+														parseFloat(e.target.value),
+														'quote_expiry_time'
+													)
+												}
+												value={previewData && previewData.multiplier}
+											/>
+
+										<div className="mt-5">Result (price displayed to user)</div>
+										<div className="mb-5" style={{ textDecoration:'underline' }}>Show price result</div>
+
+										
+										<div className="mt-5" style={{ textDecoration:'underline' }}>Advanced</div>
+											
+										</div>
+
 										<div className="btn-wrapper pt-3">
 											<Button
 												type="primary"
