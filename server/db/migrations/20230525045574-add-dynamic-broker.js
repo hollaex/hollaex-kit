@@ -6,7 +6,7 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface
-        .addColumn(TABLE, 'tracked_smybol', {
+        .addColumn(TABLE, 'tracked_symbol', {
 		  type: Sequelize.STRING,
           allowNull: true
         }),
@@ -38,7 +38,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     return Promise.all([
-	    queryInterface.removeColumn(TABLE, 'tracked_smybol'),
+	    queryInterface.removeColumn(TABLE, 'tracked_symbol'),
       queryInterface.removeColumn(TABLE, 'spread'),
       queryInterface.removeColumn(TABLE, 'multiplier'),
       queryInterface.removeColumn(TABLE, 'exchange_name'),

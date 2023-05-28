@@ -14,7 +14,7 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			tracked_smybol: {
+			tracked_symbol: {
 				type: DataTypes.STRING,
 				allowNull: true,
 			},
