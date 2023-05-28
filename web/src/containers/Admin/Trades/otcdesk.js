@@ -22,7 +22,8 @@ const defaultPreviewValues = {
 	min_size: 0.0001,
 	max_size: 0.001,
 	increment_size: 0.0001,
-	quote_expiry_time: 30
+	quote_expiry_time: 30,
+	exchange_name: 'binance'
 };
 
 const renderUser = (id) => (
@@ -72,7 +73,6 @@ const OtcDeskContainer = ({
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
-
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
@@ -127,18 +127,8 @@ const OtcDeskContainer = ({
 				pair_base: exchange && exchange.coins && exchange.coins[0],
 				pair_2: exchange && exchange.coins && exchange.coins[1],
 			};
-			const existPairData = brokerData.filter(
-				(data) =>
-					data.symbol ===
-					`${pairPreviewData.pair_base}-${pairPreviewData.pair_2}`
-			);
-			if (isOpen && existPairData.length) {
-				setIsExistPair(true);
-				setPreviewData({ ...pairPreviewData, ...existPairData[0] });
-			} else {
-				setIsExistPair(false);
-				setPreviewData(pairPreviewData);
-			}
+			setIsExistPair(false);
+			setPreviewData(pairPreviewData);
 		} else if (isOpen && isEdit) {
 			let pairPreviewData = {
 				...editData,
@@ -467,9 +457,9 @@ const OtcDeskContainer = ({
 								) : (
 									<div className="d-flex">
 										<div>Dynamic</div>
-										<div className="ml-3 text-underline" onClick={handlePrice}>
+										{/* <div className="ml-3 text-underline" onClick={handlePrice}>
 											(Get price)
-										</div>
+										</div> */}
 									</div>
 								)}
 							</div>

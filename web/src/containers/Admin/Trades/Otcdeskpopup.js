@@ -132,11 +132,6 @@ const Otcdeskpopup = ({
 	const [errMsg, setErrorMsg] = useState('');
 
 	useEffect(() => {
-		if(selectedExchange === 'binance') {
-			handlePreviewChange('binance', 'exchange_name');
-		}
-	}, [])
-	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
 			isExistsPair
@@ -181,6 +176,7 @@ const Otcdeskpopup = ({
 		setApi({});
 		setSpreadMul({});
 		setSelectedPlatform('binance');
+		setSelectedExchange('binance');
 		SetMarketPop(false);
 		setLoading(false);
 		setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);

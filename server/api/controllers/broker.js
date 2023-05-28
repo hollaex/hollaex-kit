@@ -88,6 +88,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
+		tracked_symbol,
 		multiplier
 	} = req.swagger.params.data.value;
 
@@ -110,6 +111,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
+		tracked_symbol,
 		multiplier
 	);
 
@@ -129,6 +131,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
+		tracked_symbol,
 		multiplier
 	})
 		.then((data) => {

@@ -6,11 +6,12 @@ const ccxt = require('ccxt');
 const rp = require('request-promise');
 const randomString = require('random-string');
 const dbQuery = require('./database/query');
-const { SERVER_PATH, EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require('../constants');
+const { SERVER_PATH } = require('../constants');
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier } = require('./common');
+const { validatePair, getKitTier, getKitConfig } = require('./common');
 const _eval = require('eval');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
@@ -409,7 +410,7 @@ const createBrokerPair = async (brokerPair) => {
 			if (deal) {
 				throw new Error(BROKER_EXISTS);
 			}
-			const exchangeInfo = toolsLib.getKitConfig();
+			const exchangeInfo = getKitConfig().info;
 
 			const {
 				exchange_name,
@@ -417,9 +418,10 @@ const createBrokerPair = async (brokerPair) => {
 				quote_expiry_time,
 				tracked_symbol,
 				type,
+				account,
 			} = brokerPair;
 
-			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !refresh_interval || !tracked_symbol)) {
+			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol)) {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
 
@@ -435,6 +437,19 @@ const createBrokerPair = async (brokerPair) => {
 				brokerPair.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
 			}
 			
+			if (account) {
+				for (const [key, value] of Object.entries(account)) {
+					if (!value.hasOwnProperty('apiKey')) {
+						value.apiKey = brokerPair.account[key].apiKey;
+					}
+		
+					if (!value.hasOwnProperty('apiSecret')) {
+						value.apiSecret = brokerPair.account[key].apiSecret;
+					}
+				}
+			}
+			
+
 			const newBrokerObject = {
 				...brokerPair
 			};
