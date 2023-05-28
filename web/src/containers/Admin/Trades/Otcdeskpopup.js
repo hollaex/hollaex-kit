@@ -374,6 +374,16 @@ const Otcdeskpopup = ({
 		}
 	}
 
+	const renderExchangeOptions = () => (
+		<>
+			<Option value="hollaex">Hollaex Pro</Option>
+			<Option value="binance">Binance</Option>
+			{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="coinbase">Coinbase</Option>}
+			{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex2">Bitfinex</Option>}
+			{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
+			{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
+		</>
+	)
 	const renderModalContent = () => {
 		switch (type) {
 			case 'step1':
@@ -900,11 +910,7 @@ const Otcdeskpopup = ({
 														handlePreviewChange(value, 'exchange_name');
 													}}
 												>
-													<Option value="hollaex">Hollaex Pro</Option>
-													<Option value="binance">Binance</Option>
-													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex2">Bitfinex</Option>}
-													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
-													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
+													{renderExchangeOptions()}
 												</Select>
 											</div>
 										</div>}
@@ -1519,11 +1525,7 @@ const Otcdeskpopup = ({
 														value={hedgeApi}
 														onChange={handleSelApi}
 													>
-														<Option value="hollaex">Hollaex Pro</Option>
-														<Option value="binance">Binance</Option>
-														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex2">Bitfinex</Option>}
-														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
-														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
+														{renderExchangeOptions()}
 													</Select>
 												</div>
 													<div className="mt-3 mb-3">
