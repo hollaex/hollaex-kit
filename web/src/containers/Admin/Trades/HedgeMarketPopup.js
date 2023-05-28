@@ -12,7 +12,8 @@ const Pophedge = ({
 	hedgeMarkets,
 	setHedgeSymbol,
 	hedgeSymbol,
-	hedgeApi
+	hedgeApi,
+	hedge
 }) => {
 	return (
 		<>
@@ -63,13 +64,13 @@ const Pophedge = ({
 							It is highly recommended to use matching market pair price sources
 						</div>
 					</div>
-					<div className="main-subHeading mt-3 text-align-center grey-text-color">
+					{/* <div className="main-subHeading mt-3 text-align-center grey-text-color">
 						Can't find what you are looking for? Make a{' '}
 						<span className="anchor" onClick={handleCustomPrice}>
 							custom price
 						</span>
 						.
-					</div>
+					</div> */}
 					<div className="btn-wrapper pt-3">
 						<Button
 							type="primary"
@@ -82,7 +83,7 @@ const Pophedge = ({
 						<Button
 							type="primary"
 							className="green-btn"
-							onClick={() => chooseMarket({}, 'confirm')}
+							onClick={() => chooseMarket({}, 'confirm', hedge)}
 						>
 							Confirm
 						</Button>

@@ -22,6 +22,7 @@ const defaultPreviewValues = {
 	min_size: 0.0001,
 	max_size: 0.001,
 	increment_size: 0.0001,
+	quote_expiry_time: 30
 };
 
 const renderUser = (id) => (
@@ -661,14 +662,38 @@ const OtcDeskContainer = ({
 				tempPreviewData['pair_2'] = coinSecondaryData[0].symbol;
 			}
 		}
-		if (name === 'accountVal' || name === 'apikey' || name === 'seckey') {
-			const accountName = tempPreviewData?.accountVal
-				? tempPreviewData?.accountVal
-				: 'bitmex';
+		if (name === 'accountVal') {
+			const accountName = value || 'hollaex';
+
+
 			tempPreviewData.account = {
 				[accountName]: {
 					apiKey: tempPreviewData?.apikey,
 					apiSecret: tempPreviewData?.seckey,
+				},
+			};
+		}
+		if (name === 'apikey') {
+			const accountName = tempPreviewData?.accountVal
+			? tempPreviewData?.accountVal
+			: 'hollaex';
+
+			tempPreviewData.account = {
+				[accountName]: {
+					apiKey: value,
+					apiSecret: tempPreviewData?.seckey,
+				},
+			};
+		}
+		if (name === 'seckey') {
+			const accountName = tempPreviewData?.accountVal
+			? tempPreviewData?.accountVal
+			: 'hollaex';
+
+			tempPreviewData.account = {
+				[accountName]: {
+					apiKey: tempPreviewData?.apikey,
+					apiSecret: value,
 				},
 			};
 		}

@@ -8,6 +8,7 @@ import {
 	InputNumber,
 	Radio,
 	Spin,
+	message
 } from 'antd';
 import {
 	ExclamationCircleFilled,
@@ -23,6 +24,7 @@ import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets } from '.
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
+import _toLower from 'lodash/toLower';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { TextArea } = Input;
@@ -145,6 +147,12 @@ const Otcdeskpopup = ({
 	}, [isEdit, editData, isExistsPair]);
 
 	useEffect(() => {
+		if (previewData.spread || previewData.quote_expiry_time) {
+			setSpreadMul({
+				spread: previewData.spread,
+				quote_expiry_time: previewData.quote_expiry_time
+			})
+		}
 		handleSelectedExchange(selectedExchange);
 	}, [previewData, selectedCoinType])
 
@@ -152,7 +160,7 @@ const Otcdeskpopup = ({
 		if (previewData) {
 			const pair = `${previewData?.pair_base?.toUpperCase()}/${previewData?.pair_2?.toUpperCase()}`
 			const foundPair = exchangeMarkets?.markets?.find(data => data.symbol === pair);
-			if (foundPair) setSelectedMarket(foundPair.symbol);
+			if (foundPair) { setSelectedMarket(foundPair.symbol); handlePreviewChange(foundPair.symbol, 'tracked_symbol');}
 			else setSelectedMarket()
 		}
 	}, [exchangeMarkets, selectedCoinType])
@@ -179,8 +187,9 @@ const Otcdeskpopup = ({
 		handleClosePopup();
 	};
 
-	// const isUpgrade = handleUpgrade(kit.info);
-	const isUpgrade = false;
+	const isUpgrade = handleUpgrade(kit.info);
+	const noHedgeOption = kit?.info?.plan == null || _toLower(kit?.info?.plan) === 'basic' || _toLower(kit?.info?.plan) === 'crypto';
+
 	const handleEditInput = () => {
 		if (searchRef && searchRef.current && searchRef.current.focus) {
 			searchRef.current.focus();
@@ -245,14 +254,17 @@ const Otcdeskpopup = ({
 	// };
 
 	const onhandleFormula = (e) => {
-		setFormula(e.target.value);
-		handlePreviewChange(JSON.stringify(formula), 'formula');
+		handlePreviewChange(e.target.value, 'formula');
 	};
 	const handleHedgeSwitch = (e) => {
 		setHedgeSwitch(e);
 		setConnectpop(false);
 		setIsDisconnect(false);
 	};
+
+	const calculateConversion = (fn, price) => {
+        return new Function(`const x = ${price}; return ${fn}`)();
+    }
 	const handleConnect = (e) => {
 		getConnect(e);
 	};
@@ -277,37 +289,21 @@ const Otcdeskpopup = ({
 	};
 	const handleSelApi = (e) => {
 		setHedgeApi(e);
-		handlePreviewChange(hedgeApi, 'accountVal');
+		handlePreviewChange(e, 'accountVal');
 	};
 	const handleMarkSearch = (e) => {
 		setMatketLink(e.target.value);
 	};
-	const chooseMarket = (d = {}, isConfirm = '') => {
+	const chooseMarket = (d = {}, isConfirm = '', isHedge) => {
 		if (isConfirm === 'confirm') {
-			handlePreviewChange(marketLink.split('=')[1], 'rebalancing_symbol');
+			if(!isHedge) {
+				handlePreviewChange(selectedMarket, 'tracked_symbol');
+			} else {
+				handlePreviewChange(hedgeSymbol, 'rebalance_symbol');
+			}
 			SetMarketPop(false);
 		} else if (isConfirm === 'back') {
 			SetMarketPop(false);
-			setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);
-			setMatketLink(
-				`https://api.hollaex.com/v2/ticker?symbol=${
-					pairs && pairs[0] && pairs[0].name
-				}`
-			);
-		} else {
-			const currentPair = d.pair.replace('/', '-').toLowerCase();
-			setSelHedgingMkt(currentPair);
-			let temp = marketLink.replace(
-				`?symbol=${selHedgingMkt}`,
-				`?symbol=${currentPair}`
-			);
-			if (marketLink.includes(pairs[0].name)) {
-				temp = marketLink.replace(
-					`?symbol=${pairs[0].name}`,
-					`?symbol=${currentPair}`
-				);
-			}
-			setMatketLink(temp);
 		}
 	};
 	const renderErrorMsg = () => {
@@ -356,7 +352,7 @@ const Otcdeskpopup = ({
 		if (hedgeSwitch) {
 			handlePreviewChange(marketLink.split('=')[1], 'rebalancing_symbol');
 		}
-		moveToStep('preview');
+		moveToStep('with-balance');
 	};
 
 	const handleDisconnect = () => {
@@ -369,7 +365,7 @@ const Otcdeskpopup = ({
 
 	const handleManualNext = () => {
 		handlePreviewChange(selectedCoinType, 'type');
-		moveToStep('with-balance');
+		moveToStep('hedge');
 	};
 
 	const handleSelectedExchange = async (value) => {
@@ -713,9 +709,25 @@ const Otcdeskpopup = ({
 									>
 										<h2 style={{ fontWeight: '600', color: 'white' }}>Advanced</h2>
 									
-										<div>Price formula</div>
-										<div style={{ backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10 }}> </div>
-									
+										{/* <div>Price formula</div> */}
+                						<div style={{ marginBottom: 10 }}>
+                						    <label>Value:x (price)</label>
+                						    <div style={{ marginTop: 10, marginBottom: 10 }}>
+                						        <div>add: '+'</div>
+                						        <div>sub: '-'</div>
+                						        <div>div: '/'</div>
+                						        <div>mlt: '*'</div>
+                						        <div>mod: '%'</div>
+                						        <div>exp: '^'</div>
+                						    </div>
+                						    <div style={{ fontStyle: "italic" }}>example: 3^x*12/5*9+9.4*2</div>
+											
+                						    <TextArea value={formula} style={{ color:'white', backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10,  marginTop: 10 }} value={formula} onChange={(e) => {
+												
+												setFormula(e.target.value);
+											 }} placeholder="Create formula" rows={3} />
+                						</div>
+
 										<div
 											style={{
 												display: 'flex',
@@ -740,7 +752,14 @@ const Otcdeskpopup = ({
 											</Button>
 											<Button
 												onClick={() => {
+													try {
+														calculateConversion(formula, 10)
+													} catch (err) {
+														message.error('Conversion formula is not in correct format');
+														return;
+													}
 													setDisplayAdvancedModal(false);
+													onhandleFormula(formula);
 												}}
 												style={{
 													backgroundColor: '#288500',
@@ -884,9 +903,9 @@ const Otcdeskpopup = ({
 												>
 													<Option value="hollaex">Hollaex Pro</Option>
 													<Option value="binance">Binance</Option>
-													<Option value="bitfinex">Bitfinex</Option>
-													<Option value="kraken">Kraken</Option>
-													<Option value="uniswap">Uniswap</Option>
+													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex">Bitfinex</Option>}
+													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
+													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
 												</Select>
 											</div>
 										</div>}
@@ -895,31 +914,23 @@ const Otcdeskpopup = ({
 											<div className="mt-4">Track market price</div>
 											<div className="select-box">
 												
-												<Select
-													value={selectedMarket}
-													placeholder={"Select market"}
-													onChange={async (value) => {
-														setSelectedMarket(value)
-													}}
-												>
-														{exchangeMarkets?.markets?.map((item, index) => {
-															return (
-																<Option value={item.id} key={index}>
-																	{item.symbol}
-																</Option>
-															);
-														})}
-												</Select>
+											<Input
+												placeholder='Select track market symbol'
+												onClick={handleMarkethedge}
+												value={selectedMarket}
+												/>
+
 											</div>
 										</div>}
 
 										<div>
 											<div className="mt-3 ">Percentage price spread <ExclamationCircleOutlined /></div>
 											<Input
+											
 												type="number"
 												placeholder="Input % spread"
 												id="spreadkey"
-												className="Formulabox"
+												className={`Formulabox ${isUpgrade && 'Datahide'}`}
 												suffix={'%'}
 												onChange={(e) =>
 													handleSpreadMul(
@@ -930,16 +941,18 @@ const Otcdeskpopup = ({
 												value={previewData && previewData.spread}
 											/>
 											
-											<div className="mt-5 mb-5">Price refresh interval: 1 minute (<span style={{ 
+											{!isUpgrade && <div className="mt-5 mb-5">Price refresh interval: 
+											{_toLower(kit?.info?.plan) === 'crypto' ? '1 minute ' : '5 seconds '}
+											 (<span style={{ 
 												textDecoration:'underline',
 												cursor:'pointer'
-											}}>Upgrade</span> to increase refresh rate) </div>
+											}}>Upgrade</span> to increase refresh rate) </div>}
 
 											<div className="mt-3 ">Price quote expiry time (seconds)</div>
 											<Input
 												type="number"
 												placeholder="Input quote expiry time"
-												className="Formulabox"
+												className={`Formulabox ${isUpgrade && 'Datahide'}`}
 												suffix={'*'}
 												onChange={(e) =>
 													handleSpreadMul(
@@ -951,14 +964,14 @@ const Otcdeskpopup = ({
 											/>
 
 										<div className="mt-5">Result (price displayed to user)</div>
-										<div onClick={() => { handlePriceResult(); }} style={{ cursor:'pointer', textDecoration:'underline' }}> Show price result</div>
+										<div onClick={() => { handlePriceResult(); }} className={`${isUpgrade && 'Datahide'}`} style={{ cursor:'pointer', textDecoration:'underline' }}> Show price result</div>
 										<div className="mb-5" style={{  opacity: priceResult ? 1 : 0 }}>
 											Buy @ {priceResult?.buy_price} and Sell @ {priceResult?.sell_price} <span onClick={() => { handlePriceResult(); }} style={{ cursor:'pointer', textDecoration:'underline' }}>(Refresh)</span>
 										</div>
 										
-										<div
+										{!isUpgrade && <div
 										onClick={() => { setDisplayAdvancedModal(true) }}
-										className="mt-5" style={{ cursor:'pointer', textDecoration:'underline' }}>Advanced</div>
+										className="mt-5" style={{ cursor:'pointer', textDecoration:'underline' }}>Advanced</div>}
 											
 										</div>
 
@@ -1000,12 +1013,14 @@ const Otcdeskpopup = ({
 								MarketPop={MarketPop}
 								handleMarkSearch={handleMarkSearch}
 								ManageArr={ManageArr}
-								hedgeMarkets={hedgeMarkets}
-								hedgeApi={hedgeApi}
-								setHedgeSymbol={setHedgeSymbol}
+								hedgeMarkets={exchangeMarkets?.markets}
+								hedgeApi={exchangeMarkets?.exchange}
+								setHedgeSymbol={setSelectedMarket}
 								chooseMarket={chooseMarket}
 								marketLink={marketLink}
 								handleCustomPrice={handleCustomPrice}
+								hedgeSymbol={selectedMarket}
+								hedge={false}
 							/>
 						)}
 					</>
@@ -1465,6 +1480,7 @@ const Otcdeskpopup = ({
 												Off
 											</span>
 											<Switch
+												disabled={noHedgeOption}
 												checked={hedgeSwitch}
 												onClick={handleHedgeSwitch}
 											/>
@@ -1479,6 +1495,21 @@ const Otcdeskpopup = ({
 											</span>
 										</div>
 									</div>
+
+									{noHedgeOption && (
+											<div className="upgrade d-flex pt-3 pb-3">
+												<div>
+													<div>Hedge your deals</div>
+													<div>Automatic 24/7 buy and sell rebalancing</div>
+												</div>
+												<div>
+													<Button className="green-btn" type="primary">
+														Upgrade
+													</Button>
+												</div>
+											</div>
+									)}
+
 								</div>
 								{hedgeSwitch && !connectpop && (
 									<>
@@ -1491,9 +1522,9 @@ const Otcdeskpopup = ({
 													>
 														<Option value="hollaex">Hollaex Pro</Option>
 														<Option value="binance">Binance</Option>
-														<Option value="bitfinex">Bitfinex</Option>
-														<Option value="kraken">Kraken</Option>
-														<Option value="uniswap">Uniswap</Option>
+														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex">Bitfinex</Option>}
+														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
+														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
 													</Select>
 												</div>
 													<div className="mt-3 mb-3">
@@ -1565,7 +1596,7 @@ const Otcdeskpopup = ({
 								{connectpop && (
 									<>
 										<div className="mt-3 mb-3">
-											{hedgeApi === 'binance' ? 'Binance' : 'HollaEx Pro'}{' '}
+											{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1) + ' '}
 											account: {hedgeApi}
 										</div>
 										<div className="binancewrapper">
@@ -1699,6 +1730,7 @@ const Otcdeskpopup = ({
 								hedgeApi={hedgeApi}
 								setHedgeSymbol={setHedgeSymbol}
 								hedgeSymbol={hedgeSymbol}
+								hedge={true}
 							/>
 						)}
 					</div>
