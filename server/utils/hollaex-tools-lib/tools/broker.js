@@ -124,7 +124,7 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 		receiving_amount: null
 	}) => {
 
-	const { symbol, tracked_symbol, spread, quote_expiry_time, refresh_interval } = broker;
+	const { symbol, tracked_symbol, spread, quote_expiry_time, refresh_interval, formula } = broker;
 	// Get the price from redis
 	const formattedSymbol = tracked_symbol.split('-').join('').toUpperCase();
 	const userCachekey = `${broker.id}-${symbol}`;
@@ -140,7 +140,7 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 	if (!foundSymbol) {
 		throw new Error('Pair not found');
 	}
-	const baseCurrencyPrice = calculatePrice(foundSymbol.last, side, spread);
+	const baseCurrencyPrice = calculatePrice(foundSymbol.last, side, spread, formula);
 
 	const decimalPoint = getDecimals(broker.increment_size);
 	const roundedPrice = math.round(
@@ -233,9 +233,15 @@ const calculateSize = (orderData) => {
 	return size;
 }
 
-const calculatePrice = (price, side, spread, multiplier = 1) => {
+const calculatePriceConversion = (fn, price) => {
+    return new Function(`const x = ${price}; return ${fn}`)();
+}
+
+const calculatePrice = (price, side, spread, multiplier = 1, formula) => {
 	// Calculate the price
-	const multipliedPrice = parseFloat(price) * multiplier;
+	const convertedPrice = formula ? calculatePriceConversion(formula, price) : price;
+
+	const multipliedPrice = parseFloat(convertedPrice) * multiplier;
 	let calculatedSize;
 
 	if (side === 'buy') {
