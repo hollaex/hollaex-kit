@@ -132,6 +132,11 @@ const Otcdeskpopup = ({
 	const [errMsg, setErrorMsg] = useState('');
 
 	useEffect(() => {
+		if(selectedExchange === 'binance') {
+			handlePreviewChange('binance', 'exchange_name');
+		}
+	}, [])
+	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
 			isExistsPair
@@ -253,8 +258,8 @@ const Otcdeskpopup = ({
 	// 	}
 	// };
 
-	const onhandleFormula = (e) => {
-		handlePreviewChange(e.target.value, 'formula');
+	const onhandleFormula = (value) => {
+		handlePreviewChange(value, 'formula');
 	};
 	const handleHedgeSwitch = (e) => {
 		setHedgeSwitch(e);
@@ -299,7 +304,7 @@ const Otcdeskpopup = ({
 			if(!isHedge) {
 				handlePreviewChange(selectedMarket, 'tracked_symbol');
 			} else {
-				handlePreviewChange(hedgeSymbol, 'rebalance_symbol');
+				handlePreviewChange(hedgeSymbol, 'rebalancing_symbol');
 			}
 			SetMarketPop(false);
 		} else if (isConfirm === 'back') {
@@ -349,9 +354,6 @@ const Otcdeskpopup = ({
 	};
 
 	const handleHedgeNext = () => {
-		if (hedgeSwitch) {
-			handlePreviewChange(marketLink.split('=')[1], 'rebalancing_symbol');
-		}
 		moveToStep('with-balance');
 	};
 
@@ -722,8 +724,7 @@ const Otcdeskpopup = ({
                 						    </div>
                 						    <div style={{ fontStyle: "italic" }}>example: 3^x*12/5*9+9.4*2</div>
 											
-                						    <TextArea value={formula} style={{ color:'white', backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10,  marginTop: 10 }} value={formula} onChange={(e) => {
-												
+                						    <TextArea value={formula} style={{ color:'white', backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10,  marginTop: 10 }} onChange={(e) => {
 												setFormula(e.target.value);
 											 }} placeholder="Create formula" rows={3} />
                 						</div>
@@ -898,12 +899,14 @@ const Otcdeskpopup = ({
 												<Select
 													defaultValue={selectedExchange}
 													onChange={async (value) => {
+														setSelectedExchange();
 														handleSelectedExchange(value);
+														handlePreviewChange(value, 'exchange_name');
 													}}
 												>
 													<Option value="hollaex">Hollaex Pro</Option>
 													<Option value="binance">Binance</Option>
-													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex">Bitfinex</Option>}
+													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex2">Bitfinex</Option>}
 													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
 													{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
 												</Select>
@@ -1522,7 +1525,7 @@ const Otcdeskpopup = ({
 													>
 														<Option value="hollaex">Hollaex Pro</Option>
 														<Option value="binance">Binance</Option>
-														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex">Bitfinex</Option>}
+														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="bitfinex2">Bitfinex</Option>}
 														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="kraken">Kraken</Option>}
 														{_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>}
 													</Select>
@@ -1710,7 +1713,6 @@ const Otcdeskpopup = ({
 										onClick={handleHedgeNext}
 										disabled={
 											hedgeSwitch &&
-											!isEdit &&
 											(!apiData.apikey || !apiData.seckey || !connectpop)
 										}
 									>

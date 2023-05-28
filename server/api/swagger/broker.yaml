@@ -11,7 +11,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/BrokerPairCreate"
+            $ref: "#/definitions/BrokerPair"
       responses:
         200:
           description: Success

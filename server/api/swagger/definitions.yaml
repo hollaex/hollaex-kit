@@ -1462,6 +1462,8 @@ definitions:
         type: ['number', 'null']
       rebalancing_symbol:
         type: ['string', 'null']
+      tracked_symbol:
+        type: ['string', 'null']
       account:
         type: ['object', 'null']
       formula:
