@@ -1164,7 +1164,9 @@ const revokeUserSession = (req, res) => {
 
 	const { session_id } = req.swagger.params.data.value;
 
-	toolsLib.user.revokeExchangeUserSession(session_id)
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.revokeExchangeUserSession(session_id, user_id)
 		.then((data) => {
 			return res.json(data);
 		})

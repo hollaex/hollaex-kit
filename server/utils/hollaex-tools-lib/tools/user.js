@@ -1926,8 +1926,18 @@ const getExchangeUserSessions = (opts = {
 	});
 }
 
-const revokeExchangeUserSession = async (sessionId) => {
-	const session = await getModel('session').findOne({ where: { id: sessionId } });
+const revokeExchangeUserSession = async (sessionId, userId = null) => {
+	const session = await getModel('session').findOne({ 
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				attributes: ['user_id'],
+				...(userId && { where: { user_id: userId } })
+			}
+		],
+		where: { id: sessionId } });
+
 
 	if(!session) {
 		throw new Error(SESSION_NOT_FOUND);
