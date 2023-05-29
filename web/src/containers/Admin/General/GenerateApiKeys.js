@@ -39,10 +39,10 @@ const GenerateAPiKeys = ({
 	}, []);
 
 	useEffect(() => {
-		if (currentStep === 'step4') {
+		if (currentStep === 'step4' && isVisible) {
 			sendEmailCode();
 		}
-	}, [currentStep]);
+	}, [currentStep, isVisible]);
 
 	const onGenerateToken = () => {
 		const {
@@ -86,6 +86,7 @@ const GenerateAPiKeys = ({
 			},
 			otp_code: userDetails.otp,
 			email_code: userDetails.code,
+			whitelisted_ips: editData.whitelisted_ips,
 		};
 
 		setLoading(true);

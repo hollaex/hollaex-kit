@@ -42,26 +42,14 @@ $notification-size: 1.5rem;
 			height: $check-title-img-size;
 			width: $check-title-img-size;
 
-			.trade-history-3,
 			.deposit-history-1,
 			.withdrawals-history-1 {
 				fill: $colors-main-black;
 			}
 
-			.trade-history-1,
 			.deposit-history-3,
 			.withdrawals-history-3 {
 				fill: $colors-black;
-			}
-
-			.trade-history-2,
-			.trade-history-4,
-			.trade-history-5,
-			.deposit-history-2,
-			.deposit-history-4,
-			.withdrawals-history-2,
-			.withdrawals-history-4 {
-				stroke: none;
 			}
 		}
 		.st0,
@@ -95,8 +83,7 @@ $notification-size: 1.5rem;
 			.language-setting,
 			.interface-setting,
 			.chat-setting,
-			.audio-setting,
-			.risk-setting {
+			.audio-setting {
 				fill: $colors-black;
 			}
 		}
@@ -261,7 +248,7 @@ $notification-size: 1.5rem;
 				.interface-setting,
 				.chat-setting,
 				.audio-setting,
-				.risk-setting {
+				.fill_secondary-color {
 					fill: $colors-main-black;
 				}
 			}
@@ -327,7 +314,7 @@ $notification-size: 1.5rem;
 		.interface-setting,
 		.chat-setting,
 		.audio-setting,
-		.risk-setting {
+		.fill_secondary-color {
 			fill: $colors-main-black;
 		}
 	}

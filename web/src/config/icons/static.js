@@ -15,7 +15,6 @@ const icons = {
 	DEFAULT_PLUGINS: '/assets/plugins/default-plugin.png',
 	HOLLAEX_INIT_LOGO: '/assets/images/hollaex-icon-01.svg',
 	CANDLES_LOGO: '/assets/images/Light-theme-candles.svg',
-	WALLET_BTC_ICON: '/assets/images/wallet-only-btc-icon.svg',
 	SET_ADMIN_NETWORK_KEYS: '/assets/images/set-admin-network-keys.svg',
 	SET_ADMIN_EMAIL: '/assets/images/set-admin-email.svg',
 	SET_ADMIN_PASSWORD: '/assets/images/set-admin-password.svg',

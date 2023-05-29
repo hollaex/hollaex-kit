@@ -82,13 +82,6 @@ $toggle-margin: 2px;
 		font-size: 1.2rem;
 		width: 32rem;
 	}
-	.currency-ball-image-wrapper {
-		height: 2.2rem;
-		padding-right: 10px;
-	}
-	.trade_tab-icons {
-		width: 2.5rem;
-	}
 
 	.trade_tab-pair-title {
 		color: $colors-main-black;
@@ -220,9 +213,7 @@ $toggle-margin: 2px;
 			.trade-tab-list {
 				margin: 1.5rem 1rem;
 			}
-			.trade_tab-icons {
-				width: 2rem;
-			}
+
 			.tabs-pair-details {
 				font-size: 1rem;
 				width: 28rem;
@@ -239,9 +230,7 @@ $toggle-margin: 2px;
 			.trade-tab-list {
 				margin: 1.5rem 1rem;
 			}
-			.trade_tab-icons {
-				width: 2rem;
-			}
+
 			.tabs-pair-details {
 				font-size: 1.5rem;
 				width: 34rem;
@@ -259,9 +248,7 @@ $toggle-margin: 2px;
 		.trade-tab-list {
 			margin: 1.5rem 1rem;
 		}
-		.trade_tab-icons {
-			width: 2rem;
-		}
+
 		.tabs-pair-details {
 			font-size: 1rem;
 			width: 26rem;
@@ -274,9 +261,6 @@ $toggle-margin: 2px;
 
 @media screen and (max-width: $bp-xs) {
 	.trade_tabs-container {
-		.trade_tab-icons {
-			width: 1.5rem;
-		}
 		.tabs-pair-details {
 			font-size: 1rem;
 			width: 20.5rem;

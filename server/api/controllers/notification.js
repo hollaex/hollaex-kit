@@ -89,7 +89,7 @@ const handleCurrencyDeposit = (req, res) => {
 				publisher.publish(WS_PUBSUB_DEPOSIT_CHANNEL, JSON.stringify({
 					topic: 'deposit',
 					action: 'insert',
-					user_id: user.network_id,
+					user_id: user.id,
 					data: depositData,
 					time: moment().unix()
 				}));
@@ -185,7 +185,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 				publisher.publish(WS_PUBSUB_WITHDRAWAL_CHANNEL, JSON.stringify({
 					topic: 'withdrawal',
 					action: 'insert',
-					user_id: user.network_id,
+					user_id: user.id,
 					data: data,
 					time: moment().unix()
 				}));

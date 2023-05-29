@@ -1,0 +1,15 @@
+/*This is to keep changes backward compatible for Guardarian, Simplex and Strip plugins*/
+.currency-ball-image-wrapper {
+	@include size(1.6rem !important);
+}
+
+.input-group__coin-icons {
+	@include size(1.6rem);
+
+	svg {
+		margin: 0 auto;
+		display: block;
+		width: 100% !important;
+		height: 100% !important;
+	}
+}
