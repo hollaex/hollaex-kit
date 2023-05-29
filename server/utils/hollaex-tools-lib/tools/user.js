@@ -65,7 +65,6 @@ const {
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
-	SESSION_TOKEN_KEY
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -1937,7 +1936,7 @@ const revokeExchangeUserSession = async (sessionId) => {
 	if(!session.status) {
 		throw new Error(SESSION_ALREADY_REVOKED);
 	}
-	client.hdelAsync(SESSION_TOKEN_KEY, session.token);
+	client.delAsync(session.token);
 
 	const updatedSession = await session.update({ status: false }, {
 		fields: ['status'] 

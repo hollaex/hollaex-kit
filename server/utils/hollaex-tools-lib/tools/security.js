@@ -50,7 +50,6 @@ const {
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
 	HMAC_TOKEN_KEY,
-	SESSION_TOKEN_KEY
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
@@ -891,7 +890,7 @@ const verifySession = async (token) => {
 		const updatedSession =  await sessionData.update(
 			{ last_seen: new Date() }
 		);
-		client.hsetAsync(SESSION_TOKEN_KEY, updatedSession.dataValues.token, JSON.stringify(updatedSession.dataValues));
+		client.setexAsync(updatedSession.dataValues.token, new Date(updatedSession.dataValues.expiry_date).getTime() / 1000, JSON.stringify(updatedSession.dataValues));
 	}
 }
 
@@ -899,7 +898,7 @@ const findSession = async (token) => {
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
-	let session = await client.hgetAsync(SESSION_TOKEN_KEY, hashedToken)
+	let session = await client.getAsync(hashedToken)
 	
 	if (!session) {
 		loggerAuth.verbose(
@@ -914,7 +913,7 @@ const findSession = async (token) => {
 		});
 
 		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime())
-			client.hsetAsync(SESSION_TOKEN_KEY, hashedToken, JSON.stringify(session));
+			client.setexAsync(hashedToken, new Date(session.expiry_date).getTime() / 1000, JSON.stringify(session));
 
 		loggerAuth.verbose(
 			'security/findSession token stored in redis',
