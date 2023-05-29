@@ -1124,6 +1124,56 @@ const addUserBank = (req, res) => {
 		});
 };
 
+const getUserSessions = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getUserSessions/auth', req.auth);
+
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	const user_id = req.auth.sub.id;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserSessions invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		user_id: user_id,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserSessions', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const revokeUserSession = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/revokeUserSession/auth', req.auth);
+
+	const { session_id } = req.swagger.params.data.value;
+
+	toolsLib.user.revokeExchangeUserSession(session_id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/revokeUserSession', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1149,5 +1199,7 @@ module.exports = {
 	getUserStats,
 	userCheckTransaction,
 	requestEmailConfirmation,
-	addUserBank
+	addUserBank,
+	revokeUserSession,
+	getUserSessions
 };
