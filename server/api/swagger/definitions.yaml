@@ -1469,7 +1469,7 @@ definitions:
       formula:
         type: ['string', 'null']
       exchange_name:
-        type: string
+        type: ['string', 'null']
         maxLength: 256
       spread:
         type: number

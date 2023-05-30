@@ -966,6 +966,7 @@ const OtcDeskContainer = ({
 					markets={markets}
 					isEdit={isEdit}
 					editData={editData}
+					setEditData={setEditData}
 				/>
 			)}
 		</div>

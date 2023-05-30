@@ -35,6 +35,7 @@ const {
 	MANUAL_BROKER_CREATE_ERROR,
 	DYNAMIC_BROKER_CREATE_ERROR,
 	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
+	DYNAMIC_BROKER_UNSUPPORTED,
 	EXCHANGE_NOT_FOUND,
 	SYMBOL_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
 
@@ -88,6 +89,7 @@ const determinePriceSource = (plan) => {
 	else if (plan === 'boost') {
 		return EXCHANGE_PLAN_PRICE_SOURCE.BOOST;
 	}
+	else return [];
 }
 const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
@@ -438,7 +440,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if (type === 'dynamic' && !determinePriceSource(exchangeInfo.plan).includes(exchange_name)) {
-				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
+				throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 			}
 
 			if(type === 'dynamic') {
@@ -497,18 +499,30 @@ const updateBrokerPair = async (id, data) => {
 	const {
 		exchange_name,
 		spread,
-		multiplier,
+		quote_expiry_time,
+		tracked_symbol,
 		type,
-		account } = data;
-	if (exchange_name && type === 'manual') {
-		throw new Error(MANUAL_BROKER_CREATE_ERROR);
+		account,
+	} = data;
+
+	const exchangeInfo = getKitConfig().info;
+
+	if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol)) {
+		throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 	}
 
-	if (exchange_name && !spread) {
-		throw new Error(SPREAD_MISSING);
+	if (type !== 'manual' && exchangeInfo.plan === 'basic') {
+		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 	}
 
-	//Validate account JSONB object
+	if (type === 'dynamic' && !determinePriceSource(exchangeInfo.plan).includes(exchange_name)) {
+		throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
+	}
+
+	if(type === 'dynamic') {
+		data.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
+	}
+
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
 			if (!value.hasOwnProperty('apiKey')) {
@@ -526,18 +540,6 @@ const updateBrokerPair = async (id, data) => {
 	};
 
 	validateBrokerPair(updatedPair);
-	if (exchange_name === 'binance') {
-
-		const binanceFormula = `
-			const spread = ${spread}; 
-			const multiplier = ${multiplier || 1}; 
-			module.exports = (${binanceScript.toString()})()
-		`;
-
-		updatedPair.formula = binanceFormula;
-	} else if (exchange_name && exchange_name !== 'binance') {
-		throw new Error(EXCHANGE_NOT_FOUND);
-	}
 
 	return brokerPair.update(updatedPair, {
 		fields: [
@@ -552,7 +554,11 @@ const updateBrokerPair = async (id, data) => {
 			'quote_expiry_time',
 			'rebalancing_symbol',
 			'account',
-			'formula'
+			'formula',
+			'spread',
+			'exchange_name',
+			'tracked_symbol'
+
 		]
 	});
 };

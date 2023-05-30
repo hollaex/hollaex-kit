@@ -194,6 +194,7 @@ exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
 exports.SPREAD_MISSING = 'Spread is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
 exports.DYNAMIC_BROKER_CREATE_ERROR = 'Cannot create a dynamic broker without required fields';
+exports.DYNAMIC_BROKER_UNSUPPORTED = 'Selected exchange is not supported by your exchange plan';
 exports.DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR = 'Cannot create a dynamic broker with Basic plan';
 exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';

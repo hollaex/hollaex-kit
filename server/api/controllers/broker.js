@@ -317,7 +317,10 @@ function getBrokerPairs(req, res) {
 		'increment_size',
 		'type',
 		'quote_expiry_time',
-		'rebalancing_symbol'
+		'rebalancing_symbol',
+		'spread',
+		'tracked_symbol',
+		'exchange_name'
 	];
 
 
@@ -326,6 +329,7 @@ function getBrokerPairs(req, res) {
 			return res.json(brokerPairs);
 		})
 		.catch((err) => {
+			console.log({GG: err.message})
 			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/getBrokerDeals err',

@@ -76,6 +76,7 @@ const Otcdeskpopup = ({
 	markets,
 	isEdit,
 	editData,
+	setEditData
 }) => {
 	let ManageArr = [];
 	pairs &&
@@ -153,7 +154,11 @@ const Otcdeskpopup = ({
 				quote_expiry_time: previewData.quote_expiry_time
 			})
 		}
-		handleSelectedExchange(selectedExchange);
+
+		if (previewData.tracked_symbol) { setSelectedMarket(previewData.tracked_symbol) }
+		if (previewData.exchange_name) { handleSelectedExchange(previewData.exchange_name); }
+		else handleSelectedExchange(selectedExchange);
+		if (previewData.rebalancing_symbol) { setHedgeSymbol(previewData.rebalancing_symbol); }
 	}, [previewData, selectedCoinType])
 
 	useEffect(() => {
@@ -177,6 +182,7 @@ const Otcdeskpopup = ({
 		setSpreadMul({});
 		setSelectedPlatform('binance');
 		setSelectedExchange('binance');
+		setEditData({});
 		SetMarketPop(false);
 		setLoading(false);
 		setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);
@@ -878,7 +884,7 @@ const Otcdeskpopup = ({
 									</div>
 								) : (
 									<div className="mt-4 ">
-										{isUpgrade && !chainlink && !customlink && (
+										{isUpgrade  && (
 											<div className="upgrade d-flex mt-4 pt-3 pb-3">
 												<div>
 													<div>Upgrade for smart pricing</div>
@@ -1450,7 +1456,7 @@ const Otcdeskpopup = ({
 							<Button
 								className="green-btn"
 								type="primary"
-								onClick={() => handleBack('coin-pricing')}
+								onClick={() => moveToStep('hedge')}
 							>
 								Back
 							</Button>
@@ -1700,7 +1706,7 @@ const Otcdeskpopup = ({
 									<Button
 										className="green-btn"
 										type="primary"
-										onClick={() => handleBack('with-balance')}
+										onClick={() => handleBack('coin-pricing')}
 									>
 										Back
 									</Button>
@@ -1711,7 +1717,7 @@ const Otcdeskpopup = ({
 										onClick={handleHedgeNext}
 										disabled={
 											hedgeSwitch &&
-											(!apiData.apikey || !apiData.seckey || !connectpop)
+											((!apiData.apikey || !apiData.seckey || !connectpop) && !previewData.account)
 										}
 									>
 										Next
