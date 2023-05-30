@@ -124,7 +124,7 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 		receiving_amount: null
 	}) => {
 
-	const { symbol, tracked_symbol, spread, quote_expiry_time, refresh_interval, formula } = broker;
+	const { symbol, tracked_symbol, spread, quote_expiry_time, refresh_interval, formula, multiplier } = broker;
 	// Get the price from redis
 	const formattedSymbol = tracked_symbol.split('-').join('').toUpperCase();
 	const userCachekey = `${broker.id}-${symbol}`;
@@ -132,6 +132,7 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 
 	if (!marketTicker) { 
 		marketTicker = await selectedExchange.fetchTicker(formattedSymbol);
+		marketTicker = JSON.stringify(marketTicker)
 		client.setexAsync(userCachekey, refresh_interval, marketTicker);
 	 }
 
@@ -140,7 +141,8 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 	if (!foundSymbol) {
 		throw new Error('Pair not found');
 	}
-	const baseCurrencyPrice = calculatePrice(foundSymbol.last, side, spread, formula);
+
+	const baseCurrencyPrice = calculatePrice(foundSymbol.last, side, spread, multiplier, formula);
 
 	const decimalPoint = getDecimals(broker.increment_size);
 	const roundedPrice = math.round(
@@ -155,7 +157,7 @@ const getQuoteDynamicBroker = async (selectedExchange, side, broker, user_id = n
 	//check if there is user_id, if so, assing token
 	if (user_id) {
 
-		const size = calculateSize(orderData);
+		const size = calculateSize(orderData, side, responseObject, decimalPoint, symbol);
 
 		// Generate randomToken to be used during deal execution
 		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
@@ -189,7 +191,7 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData = {
 		price: roundedPrice
 	};
 
-	const size = calculateSize(orderData);
+	const size = calculateSize(orderData, side, responseObject, decimalPoint, symbol);
 
 	if (user_id) {
 		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
@@ -202,7 +204,7 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData = {
 	return responseObject;
 }
 
-const calculateSize = (orderData) => {
+const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) => {
 	let size = null;
 
 	if (orderData) {
