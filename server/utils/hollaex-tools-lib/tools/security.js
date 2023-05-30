@@ -38,7 +38,8 @@ const {
 	INVALID_TOKEN_TYPE,
 	NO_AUTH_TOKEN,
 	WHITELIST_DISABLE_ADMIN,
-	WHITELIST_NOT_PROVIDED
+	WHITELIST_NOT_PROVIDED,
+	SESSION_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -873,7 +874,13 @@ const verifySession = async (token) => {
 
 	const session = await findSession(token);
 
-	if (!session || !session.status) {
+	if (!session) {
+		loggerAuth.error(
+			'security/verifySession session not found');
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if (!session.status) {
 		loggerAuth.error(
 			'security/verifySession invalid session',
 			session.status
