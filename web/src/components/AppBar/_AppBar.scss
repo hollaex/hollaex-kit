@@ -229,24 +229,6 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-tab-close,
 	.app-bar-currency-icon,
 	.app-bar-account-icon svg {
-		.btc0,
-		.btc1,
-		.eth0,
-		.eth1,
-		.bch-icon,
-		.xrp-icon,
-		.xht-icon,
-		.xmr-icon,
-		.xlm-icon,
-		.eos-icon,
-		.trx-icon,
-		.ada-icon,
-		.bnb-icon,
-		.tusd-icon,
-		.dai-icon,
-		.ltc-icon {
-			fill: $app-bar-icon-inactive;
-		}
 		.tab-close,
 		.plus {
 			stroke: $app-bar-icon-inactive;
@@ -369,16 +351,7 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 				.trade-active-2,
 				.quick-trade-tab-active,
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
-				.tab-history-st,
-				.help-question,
-				.tab-signout,
-				.tab-api0,
-				.apps {
+				.tab-api0 {
 					fill: $colors-black;
 				}
 			}
@@ -392,12 +365,8 @@ $app-menu-width: calc(100vw - 40rem);
 			color: $colors-notifications-red;
 
 			svg {
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
-				.tab-api0 {
+				.tab-api0,
+				.fill_secondary-color {
 					fill: $colors-notifications-red;
 				}
 			}
@@ -411,14 +380,9 @@ $app-menu-width: calc(100vw - 40rem);
 				}
 				.trade-active-2,
 				.quick-trade-tab-active,
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
 				.tab-api0,
 				.account-active-1,
-				.stake-page-icon {
+				.fill_secondary-color {
 					fill: $colors-main-black;
 				}
 			}
@@ -433,12 +397,8 @@ $app-menu-width: calc(100vw - 40rem);
 			// padding-left: 0;
 
 			svg {
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
-				.tab-api0 {
+				.tab-api0,
+				.fill_secondary-color {
 					fill: $colors-notifications-red;
 				}
 			}
@@ -450,12 +410,8 @@ $app-menu-width: calc(100vw - 40rem);
 			// padding-left: 0;
 
 			svg {
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
-				.tab-api0 {
+				.tab-api0,
+				.fill_secondary-color {
 					fill: $colors-notification-inactive-red;
 				}
 			}
@@ -653,13 +609,8 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 			.trade-active-2,
 			.quick-trade-tab-active,
-			.tab-history-st,
-			.tab-summary0,
-			.tab-wallet0,
-			.tab-setting0,
-			.tab-verify0,
-			.tab-security0,
-			.tab-api0 {
+			.tab-api0,
+			.fill_secondary-color {
 				fill: $base_top-bar-navigation_text-inactive;
 			}
 		}
@@ -677,13 +628,8 @@ $app-menu-width: calc(100vw - 40rem);
 			}
 			.trade-active-2,
 			.quick-trade-tab-active,
-			.tab-history-st,
-			.tab-summary0,
-			.tab-wallet0,
-			.tab-setting0,
-			.tab-verify0,
-			.tab-security0,
-			.tab-api0 {
+			.tab-api0,
+			.fill_secondary-color {
 				fill: $base_top-bar-navigation_text;
 			}
 		}
@@ -696,12 +642,8 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $colors-notifications-red;
 
 		svg {
-			.tab-summary0,
-			.tab-wallet0,
-			.tab-setting0,
-			.tab-verify0,
-			.tab-security0,
-			.tab-api0 {
+			.tab-api0,
+			.fill_secondary-color {
 				fill: $colors-notifications-red;
 			}
 		}
@@ -711,12 +653,8 @@ $app-menu-width: calc(100vw - 40rem);
 			color: $colors-notifications-red;
 
 			svg {
-				.tab-summary0,
-				.tab-wallet0,
-				.tab-setting0,
-				.tab-verify0,
-				.tab-security0,
-				.tab-api0 {
+				.tab-api0,
+				.fill_secondary-color {
 					fill: $colors-notifications-red;
 				}
 			}
@@ -729,12 +667,8 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $colors-notification-inactive-red;
 
 		svg {
-			.tab-summary0,
-			.tab-wallet0,
-			.tab-setting0,
-			.tab-verify0,
-			.tab-security0,
-			.tab-api0 {
+			.tab-api0,
+			.fill_secondary-color {
 				fill: $colors-notification-inactive-red;
 			}
 		}
@@ -745,12 +679,8 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $colors-notification-inactive-red;
 
 		svg {
-			.tab-summary0,
-			.tab-wallet0,
-			.tab-setting0,
-			.tab-verify0,
-			.tab-security0,
-			.tab-api0 {
+			.tab-api0,
+			.fill_secondary-color {
 				fill: $colors-notification-inactive-red;
 			}
 		}
@@ -864,24 +794,6 @@ $app-menu-width: calc(100vw - 40rem);
 	.app-bar-tab-close,
 	.app-bar-currency-icon,
 	.app-bar-account-icon svg {
-		.btc0,
-		.btc1,
-		.eth0,
-		.eth1,
-		.bch-icon,
-		.xrp-icon,
-		.xht-icon,
-		.xmr-icon,
-		.xlm-icon,
-		.eos-icon,
-		.trx-icon,
-		.ada-icon,
-		.bnb-icon,
-		.tusd-icon,
-		.dai-icon,
-		.ltc-icon {
-			fill: $app-bar-icon-inactive;
-		}
 		.tab-close,
 		.plus {
 			stroke: $app-bar-icon-inactive;
@@ -977,24 +889,6 @@ $app-menu-width: calc(100vw - 40rem);
 		color: $colors-black;
 
 		svg {
-			.btc0,
-			.btc1,
-			.eth0,
-			.eth1,
-			.bch-icon,
-			.xrp-icon,
-			.xht-icon,
-			.xmr-icon,
-			.xlm-icon,
-			.eos-icon,
-			.trx-icon,
-			.ada-icon,
-			.bnb-icon,
-			.tusd-icon,
-			.dai-icon,
-			.ltc-icon {
-				fill: $colors-main-black;
-			}
 			.tab-close,
 			.plus,
 			.double-arrow {
@@ -1127,25 +1021,6 @@ $app-menu-width: calc(100vw - 40rem);
 			color: $colors-black;
 
 			svg {
-				.btc0,
-				.btc1,
-				.eth0,
-				.eth1,
-				.bch-icon,
-				.xrp-icon,
-				.xht-icon,
-				.xmr-icon,
-				.xlm-icon,
-				.eos-icon,
-				.trx-icon,
-				.ada-icon,
-				.bnb-icon,
-				.tusd-icon,
-				.dai-icon,
-				.ltc-icon,
-				.default-icon {
-					fill: $colors-black !important;
-				}
 				.st0 {
 					fill: $colors-black !important;
 					stroke-width: 0rem;
@@ -1159,62 +1034,6 @@ $app-menu-width: calc(100vw - 40rem);
 		width: 1rem;
 	}
 
-	.currency-ball-image-wrapper {
-		height: 17px;
-		padding-bottom: 7px;
-	}
-	.app-bar-add-tab-icons {
-		width: 1.2rem;
-		margin: 0.6rem 0.3rem 0 0.3rem;
-	}
-
-	.app-bar-tab-setting,
-	.app-bar-add-tab-icons {
-		svg {
-			.btc0,
-			.btc1,
-			.eth0,
-			.eth1,
-			.bch-icon,
-			.xrp-icon,
-			.xht-icon,
-			.xmr-icon,
-			.xlm-icon,
-			.eos-icon,
-			.trx-icon,
-			.ada-icon,
-			.bnb-icon,
-			.tusd-icon,
-			.dai-icon,
-			.ltc-icon,
-			.default-icon {
-				fill: $app-bar-menu-list-color !important;
-			}
-			.plus,
-			.minus {
-				stroke: $app-bar-menu-list-color !important;
-				stroke-width: 0.2rem;
-			}
-			.st0 {
-				fill: $base_top-bar-navigation_text;
-				stroke-width: 0rem;
-			}
-			.icon-check-1 {
-				stroke: $base_top-bar-navigation_text;
-			}
-			.xht-icon-1 {
-				fill: $dark-app-background-color !important;
-			}
-		}
-
-		.app-price-diff-down {
-			color: $sell;
-		}
-
-		.app-price-diff-up {
-			color: $buy;
-		}
-	}
 	.app-price-diff-down {
 		color: $sell;
 	}
@@ -1351,10 +1170,6 @@ $app-menu-width: calc(100vw - 40rem);
 			width: 6rem;
 			max-width: 6rem;
 			/* (40 -6) / 5 */
-		}
-
-		.app-bar-add-tab-icons {
-			width: 1.5rem !important;
 		}
 
 		.app-bar-add-tab-content-list {

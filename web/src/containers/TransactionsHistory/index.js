@@ -340,7 +340,6 @@ class TransactionsHistory extends Component {
 			filters: {
 				orders: (
 					<TradeAndOrderFilters
-						icons={icons}
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="orders"
@@ -349,7 +348,6 @@ class TransactionsHistory extends Component {
 				),
 				trades: (
 					<TradeAndOrderFilters
-						icons={icons}
 						pairs={pairs}
 						onSearch={this.onSearch}
 						formName="trades"

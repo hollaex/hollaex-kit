@@ -1,6 +1,6 @@
 import React from 'react';
 import { isMobile } from 'react-device-detect';
-import { ActionNotification, Image } from 'components';
+import { ActionNotification, Coin } from 'components';
 import { Space, Menu, Dropdown } from 'antd';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -29,12 +29,7 @@ const TradeInputGroup = ({
 						return (
 							<Menu.Item className="caps" key={market}>
 								<div className="d-flex align-items-center">
-									<Image
-										iconId={icon_id}
-										icon={ICONS[icon_id]}
-										wrapperClassName="app-bar-add-tab-icons"
-										imageWrapperClassName="currency-ball-image-wrapper"
-									/>
+									<Coin iconId={icon_id} type={isMobile ? 'CS5' : 'CS2'} />
 									<div className="app_bar-pair-font">{display_name}</div>
 								</div>
 							</Menu.Item>

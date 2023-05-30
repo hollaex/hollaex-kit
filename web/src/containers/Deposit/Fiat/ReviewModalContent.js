@@ -1,8 +1,7 @@
 import React from 'react';
-import { Button, EditWrapper, Image } from 'components';
+import { Button, EditWrapper, Coin } from 'components';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
-import withConfig from 'components/ConfigProvider/withConfig';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { generateDynamicStringKey } from 'utils/id';
 
@@ -15,7 +14,6 @@ const ReviewModalContent = ({
 	transactionId,
 	currency,
 	loading,
-	icons: ICONS,
 	account,
 	onramp,
 	method,
@@ -70,11 +68,7 @@ const ReviewModalContent = ({
 			<div>
 				<div className="py-1 dop_preview">{data}</div>
 
-				<Image
-					iconId={icon_id}
-					icon={ICONS[icon_id]}
-					wrapperClassName="form_currency-ball"
-				/>
+				<Coin iconId={icon_id} type="CS9" />
 
 				<div className="py-1 dop_preview">
 					<div className="d-flex justify-content-start">
@@ -152,4 +146,4 @@ const ReviewModalContent = ({
 	);
 };
 
-export default withConfig(ReviewModalContent);
+export default ReviewModalContent;
