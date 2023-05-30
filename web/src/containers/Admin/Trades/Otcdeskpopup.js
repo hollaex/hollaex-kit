@@ -120,6 +120,7 @@ const Otcdeskpopup = ({
 	const [spreadMul, setSpreadMul] = useState({});
 	const [MarketPop, SetMarketPop] = useState(false);
 	const [connectLoading, setLoading] = useState(false);
+	const [spin, setSpin] = useState(false);
 	const [selHedgingMkt, setSelHedgingMkt] = useState(
 		pairs && pairs[0] && pairs[0].name
 	);
@@ -214,9 +215,11 @@ const Otcdeskpopup = ({
 
 	const handlePriceResult = async () => {
 		if(spreadMul.spread && selectedExchange && selectedMarket) {
+			setSpin(true);
 			const result = await createTestBroker({ exchange_name: selectedExchange, spread: spreadMul.spread, symbol: selectedMarket })
 			setPriceResult(result);
-		}
+			setSpin(false);
+		} else { message.warning('Please input spread and tracked symbol') }
 	}
 	const getConnect = async (e) => {
 		setLoading(true);
@@ -976,9 +979,10 @@ const Otcdeskpopup = ({
 
 										<div className="mt-5">Result (price displayed to user)</div>
 										<div onClick={() => { handlePriceResult(); }} className={`${isUpgrade && 'Datahide'}`} style={{ cursor:'pointer', textDecoration:'underline' }}> Show price result</div>
-										<div className="mb-5" style={{  opacity: priceResult ? 1 : 0 }}>
+										{spin ? <Spin indicator={antIcon} /> : <div className="mb-5" style={{  opacity: priceResult ? 1 : 0 }}>
 											Buy @ {priceResult?.buy_price} and Sell @ {priceResult?.sell_price} <span onClick={() => { handlePriceResult(); }} style={{ cursor:'pointer', textDecoration:'underline' }}>(Refresh)</span>
-										</div>
+										</div>}
+										
 										
 										{!isUpgrade && <div
 										onClick={() => { setDisplayAdvancedModal(true) }}
