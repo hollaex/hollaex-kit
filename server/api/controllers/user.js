@@ -427,16 +427,16 @@ const loginPost = (req, res) => {
 				)
 			])
 		})
-		.then(([user, token]) => {
+		.then(async ([user, token]) => {
 			if (ip) {
-				toolsLib.user.registerUserLogin(user.id, ip, {
-					device,
-					domain,
-					origin,
-					referer,
-					token,
-					expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
-				});
+				await toolsLib.user.registerUserLogin(user.id, ip, {
+						device,
+						domain,
+						origin,
+						referer,
+						token,
+						expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+					});
 			}
 			return res.status(201).json({ token });
 		})

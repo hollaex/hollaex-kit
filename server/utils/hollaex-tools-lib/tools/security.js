@@ -919,14 +919,15 @@ const findSession = async (token) => {
 			}
 		});
 
-		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime())
+		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
 			client.setexAsync(hashedToken, new Date(session.expiry_date).getTime() / 1000, JSON.stringify(session));
 
-		loggerAuth.verbose(
-			'security/findSession token stored in redis',
-			hashedToken
-		);
-
+			loggerAuth.verbose(
+				'security/findSession token stored in redis',
+				hashedToken
+			);
+		}
+			
 		return session;
 	} else {
 		loggerAuth.debug(
