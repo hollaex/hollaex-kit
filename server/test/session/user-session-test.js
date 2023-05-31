@@ -82,9 +82,7 @@ describe('User Session', async () => {
             .get(`/v2/user/balance`)
             .set('Authorization', `Bearer ${loginData.body.token}`)
             
-
         assert.equal(userBalance.body.message, 'Access denied: Token is already revoked', 'wrong message');
-       
     });
   
     //Fuz Testing
