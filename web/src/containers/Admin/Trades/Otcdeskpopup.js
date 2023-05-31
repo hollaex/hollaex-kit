@@ -270,6 +270,11 @@ const Otcdeskpopup = ({
 		setHedgeSwitch(e);
 		setConnectpop(false);
 		setIsDisconnect(false);
+
+		if (e === false) {
+			setApi({});
+			handlePreviewChange(null, 'remove_account');
+		}
 	};
 
 	const calculateConversion = (fn, price) => {

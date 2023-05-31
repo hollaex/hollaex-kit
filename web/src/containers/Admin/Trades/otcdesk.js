@@ -711,6 +711,9 @@ const OtcDeskContainer = ({
 			}
 		}
 		tempPreviewData = { ...tempPreviewData, [name]: value };
+		if (name === 'remove_account') {
+			tempPreviewData.account = null;
+		}
 		setPreviewData(tempPreviewData);
 		setCoinSecondary(coinSecondaryData);
 		if (name === 'paused') {
