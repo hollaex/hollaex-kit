@@ -352,6 +352,7 @@ const testRebalance = async (data) => {
 
 const reverseTransaction = async (orderData) => {
 	const { userId, symbol, side, size } = orderData;
+	console.log({ userId, symbol, side, size})
 	const notifyUser = async (data) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
@@ -369,31 +370,26 @@ const reverseTransaction = async (orderData) => {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 		const decimalPoint = getDecimals(broker.increment_size);
 
-		if (broker.account && broker.account.hasOwnProperty('binance')) {
-			const binanceInfo = broker.account.binance;
-			const exchangeId = 'binance'
-				, exchangeClass = ccxt[exchangeId]
-				, exchange = new exchangeClass({
-					'apiKey': binanceInfo.apiKey,
-					'secret': binanceInfo.apiSecret
-				});
+		if (broker.account) {
+			const objectKeys = Object.keys(broker.account);
+			const exchangeKey = objectKeys[0];
 
-			const formattedSymbol = symbol.split('-').join('').toUpperCase();
-			const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
+			if (exchangeKey) {
+				const exchange = setExchange({ 
+					exchange: exchangeKey, 
+					api_key: broker.account[exchangeKey].apiKey,
+					api_secret: broker.account[exchangeKey].apiSecret
+				})
 
-			const orderbook = await exchange.fetchOrderBook(formattedSymbol);
-
-			const roundedPrice = math.round(
-				side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99,
-				decimalPoint
-			);
-
-			if (side === 'buy') {
-				exchange.createLimitBuyOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
-					.then((res) => { notifyUser(res); })
-					.catch((err) => { notifyUser(err); });
-			} else if (side == 'sell') {
-				exchange.createLimitSellOrder(formattedRebalancingSymbol || formattedSymbol, size, roundedPrice)
+				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
+	
+				const marketTicker = await exchange.fetchTicker(symbol);
+	
+				const roundedPrice = math.round(
+					side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99,
+					decimalPoint
+				);
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', size, roundedPrice)
 					.then((res) => { notifyUser(res); })
 					.catch((err) => { notifyUser(err); });
 			}
