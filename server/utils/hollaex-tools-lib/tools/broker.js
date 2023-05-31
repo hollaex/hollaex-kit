@@ -352,7 +352,6 @@ const testRebalance = async (data) => {
 
 const reverseTransaction = async (orderData) => {
 	const { userId, symbol, side, size } = orderData;
-	console.log({ userId, symbol, side, size})
 	const notifyUser = async (data) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
