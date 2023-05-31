@@ -200,4 +200,5 @@ exports.NO_AUTH_TOKEN = 'no auth token sent';
 exports.WHITELIST_DISABLE_ADMIN = 'Admin cannot disable whitelisting feature';
 exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';
 exports.SESSION_NOT_FOUND = 'Session not found';
-exports.SESSION_ALREADY_REVOKED = 'Session already revoked'
+exports.SESSION_ALREADY_REVOKED = 'Session already revoked';
+exports.WRONG_USER_SESSION = 'this session does not belong to you';

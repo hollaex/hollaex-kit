@@ -52,7 +52,8 @@ const {
 	VERIFICATION_CODE_USED,
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
-	SESSION_ALREADY_REVOKED
+	SESSION_ALREADY_REVOKED,
+	WRONG_USER_SESSION
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -1946,6 +1947,11 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	if(!session.status) {
 		throw new Error(SESSION_ALREADY_REVOKED);
 	}
+
+	if (userId && session.login.user_id !== userId) {
+		throw new Error(WRONG_USER_SESSION);
+	}
+
 	client.delAsync(session.token);
 
 	const updatedSession = await session.update({ status: false }, {
