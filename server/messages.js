@@ -202,3 +202,4 @@ exports.INVALID_TOKEN_TYPE = 'invalid token type';
 exports.NO_AUTH_TOKEN = 'no auth token sent';
 exports.WHITELIST_DISABLE_ADMIN = 'Admin cannot disable whitelisting feature';
 exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';
+exports.UNISWAP_PRICE_NOT_FOUND = 'Uniswap could not find price for this pair';

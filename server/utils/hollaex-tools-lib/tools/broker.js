@@ -7,7 +7,7 @@ const rp = require('request-promise');
 const randomString = require('random-string');
 const dbQuery = require('./database/query');
 const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
+const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE, UNISWAP_COINS } = require(`${SERVER_PATH}/constants`)
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
@@ -18,6 +18,8 @@ const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
+const { constructSimpleSDK, SwapSide } = require('@paraswap/sdk')
+const axios = require('axios')
 
 const connectedExchanges = {};
 
@@ -37,7 +39,9 @@ const {
 	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
 	DYNAMIC_BROKER_UNSUPPORTED,
 	EXCHANGE_NOT_FOUND,
-	SYMBOL_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+	SYMBOL_NOT_FOUND,
+	UNISWAP_PRICE_NOT_FOUND	
+} = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
 	if (brokerPair.type === 'manual' && math.compare(brokerPair.buy_price, 0) !== 1) {
@@ -241,6 +245,10 @@ const calculatePriceConversion = (fn, price) => {
     return new Function(`const x = ${price}; return ${fn}`)();
 }
 
+const calculateFormula = (fn) => {
+    return new Function(`return ${fn}`)();
+}
+
 const calculatePrice = (price, side, spread, multiplier = 1, formula) => {
 	// Calculate the price
 	const convertedPrice = formula ? calculatePriceConversion(formula, price) : price;
@@ -254,7 +262,37 @@ const calculatePrice = (price, side, spread, multiplier = 1, formula) => {
 		calculatedSize = multipliedPrice * (1 - (spread / 100))
 	}
 
+	
+	// const exchanges = [ 'hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'];
+
+	// let formula = '3*binance_btc-usdt*uniswap_wbtc-usdt';
+	// const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
+	
+	// const variables = formula.match(regex);
+
+	// for(market of variables) {
+	// 	const exchangePair = market.split('_');
+	// 	console.log(exchangePair)
+	
+	// 	if(exchangePair.length === 2 && exchanges.includes(exchangePair[0])) {
+	// 		if(exchangePair[0] !== 'uniswap') {
+	// 			const selectedExchange = setExchange(exchangePair[0]);
+	// 			const marketTicker = await selectedExchange.fetchTicker(exchangePair[1]);
+	// 			formula = formula.replace(market, marketTicker.last);
+			
+	// 		} else {
+	// 			const coins = exchangePair[1].split('-');
+	// 			// const price = testBrokerUniswap()
+	// 			formula =formula.replace(market, price);
+	// 		}
+	// 	}
+	// }
+	// const result = calculateFormula(formula)
+		
+
 	return calculatedSize;
+
+	
 };
 
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
@@ -330,6 +368,48 @@ const testBroker = async (data) => {
 		return {
 			buy_price: marketTicker.last * (1 - (spread / 100)),
 			sell_price: marketTicker.last * (1 + (spread / 100))
+		}
+	} catch (err) {
+		throw new Error(err);
+	}
+
+};
+const getBrokerUniswapTokens = async () => {
+	return UNISWAP_COINS;
+}
+
+const testBrokerUniswap = async (data) => {
+	const { base_coin, spread, quote_coin  } = data;
+	try {
+		if (!base_coin || !quote_coin || !UNISWAP_COINS[base_coin] || !UNISWAP_COINS[quote_coin]) {
+			throw new Error(SYMBOL_NOT_FOUND);
+		}
+		if (!spread) {
+			throw new Error(SPREAD_MISSING);
+		}
+
+		const paraSwapMin = constructSimpleSDK({ chainId: 1, axios });
+		const includeDEXS = '[Uniswap V3]';
+
+		const priceRoute = await paraSwapMin.swap.getRate({
+			srcToken: UNISWAP_COINS[base_coin].token,
+			srcDecimals: UNISWAP_COINS[base_coin].decimals,
+			destToken: UNISWAP_COINS[quote_coin].token,
+			destDecimals: UNISWAP_COINS[quote_coin].decimals,
+			amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
+			side: SwapSide.SELL,
+			includeDEXS
+		  })
+
+		if (!priceRoute.destAmount) {
+			throw new Error(UNISWAP_PRICE_NOT_FOUND)
+		}
+
+		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
+
+		return {
+			buy_price: price * (1 - (spread / 100)),
+			sell_price: price * (1 + (spread / 100))
 		}
 	} catch (err) {
 		throw new Error(err);
@@ -630,5 +710,7 @@ module.exports = {
 	testBroker,
 	testRebalance,
 	generateRandomToken,
-	fetchTrackedExchangeMarkets
+	fetchTrackedExchangeMarkets,
+	testBrokerUniswap,
+	getBrokerUniswapTokens
 };

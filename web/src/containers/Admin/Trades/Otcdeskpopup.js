@@ -20,7 +20,7 @@ import {
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
-import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets } from './actions';
+import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets, createTestUniswap, getBrokerUniswapTokens } from './actions';
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
@@ -110,6 +110,9 @@ const Otcdeskpopup = ({
 	const [selectedExchange, setSelectedExchange] = useState('binance');
 	const [exchangeMarkets, setExchangeMarkets] = useState([]);
 	const [hedgeMarkets, setHedgeMarkets] = useState([]);
+	const [displayUniswap, setDisplayUniswap] = useState(false);
+	const [uniswapCoins, setUniswapCoins] = useState()
+	const [selectedUniswapPairs, setSelectedUniswapPairs]= useState({})
 	const [selectedMarket, setSelectedMarket] = useState();
 	const [priceResult, setPriceResult] = useState();
 	const [displayAdvancedModal, setDisplayAdvancedModal] = useState(false);
@@ -171,6 +174,9 @@ const Otcdeskpopup = ({
 		}
 	}, [exchangeMarkets, selectedCoinType])
 
+	useEffect(() => {
+		getBrokerUniswapTokens().then(res => { setUniswapCoins(Object.keys(res)) })
+	}, [])
 
 	const handleCloseOtcChild = () => {
 		setHedgeSwitch(false);
@@ -186,6 +192,8 @@ const Otcdeskpopup = ({
 		setEditData({});
 		SetMarketPop(false);
 		setLoading(false);
+		setSelectedUniswapPairs({});
+		setDisplayUniswap(false);
 		setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);
 		setMatketLink(
 			`https://api.hollaex.com/v2/ticker?symbol=${
@@ -214,7 +222,15 @@ const Otcdeskpopup = ({
 	};
 
 	const handlePriceResult = async () => {
-		if(spreadMul.spread && selectedExchange && selectedMarket) {
+		if(displayUniswap && selectedUniswapPairs.base_coin && selectedUniswapPairs.quote_coin && spreadMul.spread ){
+			setSpin(true);
+			const result = await createTestUniswap({ ...selectedUniswapPairs, spread: spreadMul.spread })
+			setPriceResult(result);
+			setSpin(false);
+			return;
+		} else { message.warning('Please select base and quite coin for uniswap and spread')}
+
+		if(!displayUniswap && spreadMul.spread && selectedExchange && selectedMarket) {
 			setSpin(true);
 			const result = await createTestBroker({ exchange_name: selectedExchange, spread: spreadMul.spread, symbol: selectedMarket })
 			setPriceResult(result);
@@ -382,10 +398,16 @@ const Otcdeskpopup = ({
 
 	const handleSelectedExchange = async (value) => {
 		setSelectedExchange(value);
-		if(value !== exchangeMarkets.exchange) {
-			const markets = await getTrackedExchangeMarkets(value);
-			setExchangeMarkets({ exchange:value, markets });
+
+		if (value === 'uniswap') {
+			setDisplayUniswap(true);
+		} else {
+			if(value !== exchangeMarkets.exchange) {
+				const markets = await getTrackedExchangeMarkets(value);
+				setExchangeMarkets({ exchange:value, markets });
+			}
 		}
+		
 	}
 
 	const renderExchangeOptions = () => (
@@ -919,6 +941,8 @@ const Otcdeskpopup = ({
 												<Select
 													defaultValue={selectedExchange}
 													onChange={async (value) => {
+														setSelectedUniswapPairs({});
+														setDisplayUniswap(false);
 														setSelectedExchange();
 														handleSelectedExchange(value);
 														handlePreviewChange(value, 'exchange_name');
@@ -929,7 +953,7 @@ const Otcdeskpopup = ({
 											</div>
 										</div>}
 
-										{<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+										{!displayUniswap && <div className={isUpgrade ? 'Datahide mt-3' : ''}>
 											<div className="mt-4">Track market price</div>
 											<div className="select-box">
 												
@@ -941,6 +965,34 @@ const Otcdeskpopup = ({
 
 											</div>
 										</div>}
+
+										{displayUniswap && <div style={{ display: "flex", flexDirection: "row", gap: 10, marginTop: 15 }}>
+                                        <Select
+                                            showSearch
+                                            value={selectedUniswapPairs?.base_coin || null}
+                                            placeholder="Select Base Coin"
+                                            style={{ color: "black", width: "100%" }}
+                                            notFoundContent={'Not Found'}
+                                            onChange={(value) => { setSelectedUniswapPairs({...selectedUniswapPairs, base_coin: value}); handlePreviewChange(value, 'uniswap_base_coin'); }}
+                                        >
+                                            {uniswapCoins.map(coin => <Option value={coin}>{coin}</Option>)}
+
+                                        </Select>
+
+										<Select
+                                            showSearch
+                                            value={selectedUniswapPairs?.quote_coin || null}
+                                            placeholder="Select Quote Coin"
+                                            style={{ color: "black", width: "100%" }}
+                                            notFoundContent={'Not Found'}
+											onChange={(value) => { setSelectedUniswapPairs({...selectedUniswapPairs, quote_coin: value}); handlePreviewChange(value, 'uniswap_quote_coin'); }}
+                                        >
+                                            {uniswapCoins.map(coin => <Option value={coin}>{coin}</Option>)}
+
+                                        </Select>
+
+                                    </div>}
+
 
 										<div>
 											<div className="mt-3 ">Percentage price spread <ExclamationCircleOutlined /></div>
