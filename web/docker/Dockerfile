@@ -1,6 +1,6 @@
 # build environment
-FROM node:12.22.12-buster-slim as build
-ENV NODE_OPTIONS=--max_old_space_size=1200
+FROM 18.16.0-buster-slim as build
+ENV NODE_OPTIONS=--max_old_space_size=4096
 ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
 COPY package.json /app/package.json
