@@ -4,8 +4,7 @@ ENV NODE_OPTIONS=--max_old_space_size=4096
 ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
 COPY package.json /app/package.json
-RUN npm config set unsafe-perm true && \
-    npm install -g node-gyp && \
+RUN npm install -g node-gyp && \
     npm install --loglevel=error
 COPY . /app
 RUN npm run build
