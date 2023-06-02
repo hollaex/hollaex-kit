@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import {
-	Image,
+	Coin,
 	NoVerifiedAccount,
 	Button,
 	EditWrapper,
@@ -291,13 +291,12 @@ const Form = ({
 		);
 	};
 
+	const { icon_id } = coins[currency] || DEFAULT_COIN_DATA;
+
 	return (
 		<div className="withdraw-form-wrapper">
 			<div className="withdraw-form">
-				<Image
-					icon={ICONS[`${currency.toUpperCase()}_ICON`]}
-					wrapperClassName="form_currency-ball"
-				/>
+				<Coin iconId={icon_id} type="CS9" />
 				{titleSection}
 				{!is_verified && <NoVerifiedAccount type="deposit" />}
 				{is_verified && <Fragment>{renderContent()}</Fragment>}

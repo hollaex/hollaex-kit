@@ -6,12 +6,12 @@ import moment from 'moment';
 
 import { dateFilters } from '../filterUtils';
 import STRINGS from 'config/localizedStrings';
-import { Image } from 'hollaex-web-lib';
+import { Coin } from 'components';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
-const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
+const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 	const [form] = Form.useForm();
 	const [click, setClick] = useState([]);
 	const [customSel, setCustomSel] = useState(false);
@@ -162,14 +162,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab, icons: ICONS }) => {
 							([_, { name, pair_base_display, pair_2_display, icon_id }]) => (
 								<Option key={name} value={name}>
 									<div className="d-flex filter-option">
-										<Image
-											width="16px"
-											height="16px"
-											iconId={icon_id}
-											icon={ICONS[icon_id]}
-											wrapperClassName="coin-icons"
-											imageWrapperClassName="currency-ball-image-wrapper"
-										/>
+										<Coin iconId={icon_id} type="CS1" />
 										<div>{`${pair_base_display}-${pair_2_display}`}</div>
 									</div>
 								</Option>

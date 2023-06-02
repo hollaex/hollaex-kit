@@ -10,7 +10,7 @@ import math from 'mathjs';
 import STRINGS from 'config/localizedStrings';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { formatPercentage } from 'utils/currency';
-import { Button, EditWrapper, IconTitle, Image, PriceChange } from 'components';
+import { Button, EditWrapper, Image, PriceChange, Coin } from 'components';
 import SparkLine from 'containers/TradeTabs/components/SparkLine';
 import { getSparklines } from 'actions/chartAction';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -180,13 +180,8 @@ const CoinPage = ({
 		<div className="hollaex-token-wrapper">
 			<div className="token-wrapper mt-8">
 				<div className="d-flex pb-30">
-					<div className="image-container">
-						<IconTitle
-							iconId={icon_id}
-							iconPath={ICONS[icon_id]}
-							wrapperClassName="coins-icon"
-							imageWrapperClassName="currency-ball-image-wrapper"
-						/>
+					<div>
+						<Coin iconId={icon_id} type="CS11" />
 					</div>
 					<div className="pl-2 header-container">
 						<div className="title">

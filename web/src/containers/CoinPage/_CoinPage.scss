@@ -41,13 +41,6 @@
 		width: 65%;
 		height: 100%;
 
-		.image-container {
-			.coins-icon {
-				width: 3.5rem;
-				height: 3.5rem;
-			}
-		}
-
 		.link {
 			color: $colors-notifications-blue;
 			text-decoration: underline;
@@ -210,10 +203,6 @@
 						margin: 0 !important;
 						width: 100% !important;
 					}
-				}
-
-				.currency-ball-image-wrapper {
-					height: 5rem;
 				}
 
 				.f-size-16 {
