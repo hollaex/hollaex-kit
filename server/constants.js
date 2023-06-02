@@ -54,7 +54,6 @@ subscriber.on('message', (channel, message) => {
 
 		switch (type) {
 			case 'initial':
-				data.configuration.kit.info.plan = 'boost'
 				updateAllConfig(data.configuration, data.secrets, data.frozenUsers);
 				break;
 			case 'update':
