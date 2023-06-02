@@ -1,10 +1,9 @@
 # build environment
 FROM node:12.22.7-buster as build
-ENV NODE_OPTIONS=--max_old_space_size=4096
+ENV NODE_OPTIONS=--max_old_space_size=2048
 ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
 COPY package.json /app/package.json
-RUN echo -997 > /proc/1/oom_score_adj
 RUN npm config set unsafe-perm true && \
     npm install -g node-gyp && \
     npm install --loglevel=error
