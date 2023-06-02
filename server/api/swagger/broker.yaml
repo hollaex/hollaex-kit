@@ -231,6 +231,65 @@ paths:
         - bearer
       x-security-scopes:
         - admin
+  /broker/uniswap:
+    x-swagger-router-controller: broker
+    get:
+      operationId: getBrokerUniswapTokens
+      description: get broker uniswap
+      tags:
+        - Broker
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
+  /broker/uniswap/test:
+    x-swagger-router-controller: broker
+    post:
+      operationId: testBrokerUniswap
+      description: test broker uniswap
+      tags:
+        - Broker
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              spread:
+                type: number
+              base_coin:
+                type: string
+                maxLength: 256
+              quote_coin:
+                type: string
+                maxLength: 256
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /broker/connect:
     x-swagger-router-controller: broker
     get:

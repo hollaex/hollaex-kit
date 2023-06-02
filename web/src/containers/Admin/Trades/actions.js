@@ -54,6 +54,17 @@ export const createTestBroker = (values) => {
 	return requestAuthenticated('/broker/test', options);
 };
 
+export const createTestUniswap = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/uniswap/test', options);
+};
+
+export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);
+
 export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/market?exchange_name=${exchange_name}`);
 
 export const updateBroker = (values) => {
