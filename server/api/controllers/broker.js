@@ -178,37 +178,6 @@ const testBroker = (req, res) => {
 		});
 };
 
-const testBrokerFormula = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/testBrokerFormula get',
-		req.auth
-	);
-
-	const {
-		formula,
-	} = req.swagger.params.data.value;
-
-	toolsLib.broker.calculatePrice(
-		null,
-		null,
-		1,
-		formula,
-		5,
-		'test:broker'
-	)
-		.then((priceValue) => {
-			return res.json({price: priceValue });
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/testBrokerFormula err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
 
 const testBrokerUniswap = (req, res) => {
 	loggerBroker.verbose(
@@ -465,6 +434,5 @@ module.exports = {
 	executeBrokerDeal,
 	getTrackedExchangeMarkets,
 	testBrokerUniswap,
-	getBrokerUniswapTokens,
-	testBrokerFormula
+	getBrokerUniswapTokens
 };

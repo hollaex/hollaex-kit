@@ -288,38 +288,6 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-  /broker/formula/test:
-    x-swagger-router-controller: broker
-    post:
-      operationId: testBrokerFormula
-      description: test broker formula
-      tags:
-        - Broker
-      parameters:
-        - name: data
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              formula:
-                type: string
-                maxLength: 1024
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
-      security:
-        - Token: []
-      x-security-types:
-        - bearer
-      x-security-scopes:
-        - admin
   /broker/connect:
     x-swagger-router-controller: broker
     get:

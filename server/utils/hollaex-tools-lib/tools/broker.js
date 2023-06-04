@@ -558,7 +558,7 @@ const fetchBrokerPair = (symbol) => {
 	return getModel('broker').findOne({ where: { symbol } });
 };
 
-async function fetchBrokerPairs(attributes, bearerToken, ip) {
+const fetchBrokerPairs = async (attributes, bearerToken, ip) => {
 	let userId = null;
 	if (bearerToken) {
 		const auth = await verifyBearerTokenPromise(bearerToken, ip);
@@ -572,7 +572,15 @@ async function fetchBrokerPairs(attributes, bearerToken, ip) {
 	}
 
 
-	return await getModel('broker').findAll({ attributes });
+	const brokers = await getModel('broker').findAll({ attributes });
+	brokers.forEach(broker => {
+		for (const [key, value] of Object.entries(broker.account || [])) {
+			value.apiKey =  '*****',
+			value.apiSecret = '*********'
+		}
+	})
+
+	return brokers;
 }
 
 const updateBrokerPair = async (id, data) => {
