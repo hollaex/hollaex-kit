@@ -155,17 +155,15 @@ const testBroker = (req, res) => {
 	);
 
 	const {
-		exchange_name,
+		formula,
 		spread,
-		multiplier,
-		symbol
+		increment_size
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
-		exchange_name,
+		formula,
 		spread,
-		multiplier,
-		symbol
+		increment_size
 	})
 		.then((data) => {
 			return res.json(data);
@@ -196,7 +194,7 @@ const testBrokerFormula = (req, res) => {
 		null,
 		1,
 		formula,
-		60,
+		5,
 		'test:broker'
 	)
 		.then((priceValue) => {

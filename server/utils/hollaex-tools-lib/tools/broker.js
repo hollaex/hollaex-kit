@@ -37,7 +37,8 @@ const {
 	DYNAMIC_BROKER_UNSUPPORTED,
 	EXCHANGE_NOT_FOUND,
 	SYMBOL_NOT_FOUND,
-	UNISWAP_PRICE_NOT_FOUND	
+	UNISWAP_PRICE_NOT_FOUND,
+	FORMULA_MARKET_PAIR_ERROR
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -343,22 +344,29 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { exchange_name, spread, symbol } = data;
+	const { formula, spread, increment_size } = data;
 	try {
-		if (!exchange_name) {
-			throw new Error(EXCHANGE_NOT_FOUND);
+		if (spread == null) {
+			throw new Error(BROKER_FORMULA_NOT_FOUND);
 		}
-		if (!spread) {
+
+		if (spread == null) {
 			throw new Error(SPREAD_MISSING);
 		}
-		if (!symbol) {
-			throw new Error(SYMBOL_NOT_FOUND);
-		}
-		const exchange = setExchange({ exchange: exchange_name });
-		const marketTicker = await exchange.fetchTicker(symbol);
+	
+		const price = await calculatePrice(
+			null,
+			spread,
+			1,
+			formula,
+			5,
+			'test:broker'
+		);
+
+		const decimalPoint = getDecimals(increment_size);
 		return {
-			buy_price: marketTicker.last * (1 - (spread / 100)),
-			sell_price: marketTicker.last * (1 + (spread / 100))
+			buy_price: math.round(price * (1 - (spread / 100)), decimalPoint),
+			sell_price: math.round(price * (1 + (spread / 100)), decimalPoint)
 		}
 	} catch (err) {
 		throw new Error(err);
@@ -483,7 +491,7 @@ const createBrokerPair = async (brokerPair) => {
 				]
 			}
 		})
-		.then((deal) => {
+		.then(async (deal) => {
 			if (deal) {
 				throw new Error(BROKER_EXISTS);
 			}
@@ -496,9 +504,10 @@ const createBrokerPair = async (brokerPair) => {
 				tracked_symbol,
 				type,
 				account,
+				formula
 			} = brokerPair;
 
-			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol)) {
+			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol || !formula)) {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
 
@@ -525,7 +534,13 @@ const createBrokerPair = async (brokerPair) => {
 					}
 				}
 			}
-			
+
+			if (formula) {
+				const brokerPrice = await testBroker({ formula, spread:0 });
+				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
+					throw new Error(FORMULA_MARKET_PAIR_ERROR);
+				}
+			}
 
 			const newBrokerObject = {
 				...brokerPair
@@ -570,11 +585,12 @@ const updateBrokerPair = async (id, data) => {
 		tracked_symbol,
 		type,
 		account,
+		formula
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
 
-	if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol)) {
+	if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol || !formula)) {
 		throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 	}
 
@@ -601,6 +617,14 @@ const updateBrokerPair = async (id, data) => {
 			}
 		}
 	}
+
+	if (formula) {
+		const brokerPrice = await testBroker({ formula, spread });
+		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
+			throw new Error(FORMULA_MARKET_PAIR_ERROR);
+		}
+	}
+
 	const updatedPair = {
 		...brokerPair.get({ plain: true }),
 		...data,

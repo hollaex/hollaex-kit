@@ -161,6 +161,7 @@ const Otcdeskpopup = ({
 		}
 
 		if (previewData.tracked_symbol) { setSelectedMarket(previewData.tracked_symbol) }
+		if (previewData.formula) { setFormula(previewData.formula); }
 		if (previewData.exchange_name) { handleSelectedExchange(previewData.exchange_name); }
 		else handleSelectedExchange(selectedExchange);
 		if (previewData.rebalancing_symbol) { setHedgeSymbol(previewData.rebalancing_symbol); }
@@ -170,26 +171,29 @@ const Otcdeskpopup = ({
 		if (previewData) {
 			const pair = `${previewData?.pair_base?.toUpperCase()}/${previewData?.pair_2?.toUpperCase()}`
 			const foundPair = exchangeMarkets?.markets?.find(data => data.symbol === pair);
-			if (foundPair) { setSelectedMarket(foundPair.symbol); handlePreviewChange(foundPair.symbol, 'tracked_symbol');}
+			if (foundPair) { 
+				setSelectedMarket(foundPair.symbol); handlePreviewChange(foundPair.symbol, 'tracked_symbol');
+				const symbol = foundPair.symbol.replace('/','-').toLowerCase();
+				setFormulaVariable(`${selectedExchange}_${symbol}`);
+			}
 			else setSelectedMarket()
 		}
 	}, [exchangeMarkets, selectedCoinType])
 
-	// useEffect(() => {
-	// 	getBrokerUniswapTokens().then(res => { setUniswapCoins(Object.keys(res)) })
-	// }, [])
 
 	const handleCloseOtcChild = () => {
 		setHedgeSwitch(false);
 		setConnectpop(false);
 		setChainlink(false);
 		setFormula('');
+		setFormulaVariable();
 		setCustomlink(false);
 		setHedgeApi('hollaex');
 		setApi({});
 		setSpreadMul({});
 		setSelectedPlatform('binance');
 		setSelectedExchange('binance');
+		setPriceResult();
 		setEditData({});
 		SetMarketPop(false);
 		setLoading(false);
@@ -230,13 +234,18 @@ const Otcdeskpopup = ({
 		// 	setSpin(false);
 		// 	return;
 		// } else { message.warning('Please select base and quite coin for uniswap and spread')}
+		try {
+			if(!displayUniswap && spreadMul.spread && selectedExchange && selectedMarket) {
+				setSpin(true);
+				const result = await createTestBroker({ formula, increment_size: previewData.increment_size, spread: spreadMul.spread })
+				setPriceResult(result);
+			
+			} else { message.warning('Please input spread and tracked symbol') }
+		} catch (error) {
+			message.error(error.message)
+		}
 
-		if(!displayUniswap && spreadMul.spread && selectedExchange && selectedMarket) {
-			setSpin(true);
-			const result = await createTestBroker({ exchange_name: selectedExchange, spread: spreadMul.spread, symbol: selectedMarket })
-			setPriceResult(result);
-			setSpin(false);
-		} else { message.warning('Please input spread and tracked symbol') }
+		setSpin(false);
 	}
 	const getConnect = async (e) => {
 		setLoading(true);
@@ -331,8 +340,8 @@ const Otcdeskpopup = ({
 			if(!isHedge) {
 				handlePreviewChange(selectedMarket, 'tracked_symbol');
 				const symbol = selectedMarket.replace('/','-').toLowerCase();
-				setFormulaVariable(`${selectedMarket}${symbol}`);
-				setFormula(`${selectedMarket}${symbol}`);
+				setFormulaVariable(`${selectedExchange}_${symbol}`);
+				if(!formula) setFormula(`${selectedExchange}_${symbol}`);
 			} else {
 				handlePreviewChange(hedgeSymbol, 'rebalancing_symbol');
 			}
@@ -756,6 +765,7 @@ const Otcdeskpopup = ({
 										}}
 									>
 										<h2 style={{ fontWeight: '600', color: 'white' }}>Advanced</h2>
+										<div style={{ fontWeight: '400', color: 'white' }}>You can add different markets into formula in the format below</div>
 									
 										{/* <div>Price formula</div> */}
                 						<div style={{ marginBottom: 10 }}>
@@ -768,7 +778,7 @@ const Otcdeskpopup = ({
                 						        <div>mod: '%'</div>
                 						        <div>exp: '^'</div>
                 						    </div>
-                						    <div style={{ fontStyle: "italic" }}>example: 3^x*12/5*9+9.4*2</div>
+                						    <div style={{ fontStyle: "italic" }}>example: 3^{`${selectedExchange}_${selectedMarket.replace('/','-').toLowerCase()}`}*12/5*9+9.4*2</div>
 											
                 						    <TextArea value={formula} style={{ color:'white', backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10,  marginTop: 10 }} onChange={(e) => {
 												setFormula(e.target.value);
@@ -786,6 +796,7 @@ const Otcdeskpopup = ({
 											<Button
 												onClick={() => {
 													setDisplayAdvancedModal(false);
+													setFormula(previewData.formula);
 												}}
 												style={{
 													backgroundColor: '#288500',
@@ -801,9 +812,11 @@ const Otcdeskpopup = ({
 												onClick={async () => {
 													try {
 														setSpin(true);
-														await testDynamicBrokerFormula({ formula })
+														const result = await createTestBroker({ formula, increment_size: previewData.increment_size, spread: spreadMul.spread || 0 })
+														setPriceResult(result);
 													} catch (err) {
 														message.error(err.message);
+														setSpin(false);
 														return;
 													}
 													setSpin(false);
@@ -952,7 +965,7 @@ const Otcdeskpopup = ({
 														setSelectedExchange();
 														handleSelectedExchange(value);
 														handlePreviewChange(value, 'exchange_name');
-														setFormulaVariable(`${value}_`);
+														if(!formula) setFormulaVariable(`${value}_`);
 													}}
 												>
 													{renderExchangeOptions()}
@@ -1053,7 +1066,7 @@ const Otcdeskpopup = ({
 											if(selectedMarket && selectedExchange) {
 												const symbol = selectedMarket.replace('/','-').toLowerCase();
 												setFormulaVariable(`${selectedExchange}_${symbol}`);
-												setFormula(`${selectedExchange}_${symbol}`);
+												if(!formula) setFormula(`${selectedExchange}_${symbol}`);
 											}
 										}}
 										className="mt-5" style={{ cursor:'pointer', textDecoration:'underline' }}>Advanced</div>}

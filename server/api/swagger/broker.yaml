@@ -206,16 +206,14 @@ paths:
           schema:
             type: object
             properties:
-              exchange_name:
-                type: string
-                maxLength: 256
-              multiplier:
-                type: number
               spread:
                 type: number
-              symbol:
+              increment_size:
+                type: number
+                format: double
+              formula:
                 type: string
-                maxLength: 256
+                maxLength: 1024
       responses:
         200:
           description: Success
