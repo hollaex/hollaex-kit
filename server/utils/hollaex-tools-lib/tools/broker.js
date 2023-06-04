@@ -97,10 +97,7 @@ const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
         return connectedExchanges[data.id].exchange
     }
-	else if (connectedExchanges[data.exchange]) {
-        return connectedExchanges[data.exchange].exchange
-    }
-
+	
     const exchangeClass = ccxt[data.exchange];
 
     const exchange = new exchangeClass({
@@ -112,10 +109,6 @@ const setExchange = (data) => {
     if (data.id) {
         connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
     }
-	else if (data.exchange) {
-        connectedExchanges[data.exchange] = { exchange };
-    }
-
 
     return exchange;
 }
@@ -251,7 +244,7 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 		const exchangePair = variable.split('_');
 	
 		if(exchangePair.length === 2 && EXCHANGE_PLAN_PRICE_SOURCE.ALL.includes(exchangePair[0])) {
-			const selectedExchange = setExchange({ exchange: exchangePair[0] });
+			const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 				
 			let marketPrice;
 
@@ -666,7 +659,7 @@ const updateBrokerPair = async (id, data) => {
 };
 
 const fetchTrackedExchangeMarkets = async (exchange) => {
-	const selectedExchage = setExchange({ exchange });
+	const selectedExchage = setExchange({ id: `${exchange}-broker:fetch-markets`, exchange });
 	return selectedExchage.fetchMarkets();
 }
 
