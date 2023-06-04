@@ -9,7 +9,7 @@ const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${S
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig } = require('./common');
+const { validatePair, getKitTier, getKitConfig, getAssetsPrices } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -236,7 +236,10 @@ const isFairPriceForBroker = async (broker) => {
 
 	//relative difference
 	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ( (priceFromOracle + priceFromOracle) / 2));
-	if( priceFromOracle !== -1 && percDiff > 0.2) return false;
+
+	// If difference more than 20 percent, price is not fair.
+	const priceDifferenceTreshold = 0.2;
+	if( priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
 }
 
@@ -267,7 +270,7 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 			}
 			else {
 				const coins = exchangePair[1].split('-');
-				const conversions = await client.getOraclePrice([coins[0]], { quote: coins[1], amount: 1 });
+				const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
 				marketPrice =  conversions[coins[0]];
 				if(marketPrice === -1) return -1;
 			}

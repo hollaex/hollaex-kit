@@ -69,7 +69,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 		const broker = await getUserByKitId(brokerPair.user_id);
 		const user = await getUserByKitId(user_id);
 
-		const isFairPrice = await isFairPriceForBroker(broker);
+		const isFairPrice = await isFairPriceForBroker(brokerPair);
 
 		if (!isFairPrice) {
 			throw new Error(FAIR_PRICE_BROKER_ERROR);
