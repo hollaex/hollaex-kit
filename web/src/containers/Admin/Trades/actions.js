@@ -46,12 +46,7 @@ export const createBroker = (values) => {
 	return requestAuthenticated('/broker', options);
 };
 export const createTestBroker = (values) => {
-	const options = {
-		method: 'POST',
-		body: JSON.stringify(values),
-	};
-
-	return requestAuthenticated('/broker/test', options);
+	return axios.post('/broker/test', { ...values })
 };
 
 export const createTestUniswap = (values) => {
@@ -61,15 +56,6 @@ export const createTestUniswap = (values) => {
 	};
 
 	return requestAuthenticated('/broker/uniswap/test', options);
-};
-
-export const testDynamicBrokerFormula = (values) => {
-	const options = {
-		method: 'POST',
-		body: JSON.stringify(values),
-	};
-
-	return requestAuthenticated('/broker/formula/test', options);
 };
 
 export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);

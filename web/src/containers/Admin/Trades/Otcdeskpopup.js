@@ -20,7 +20,7 @@ import {
 
 import { STATIC_ICONS } from 'config/icons';
 import Coins from '../Coins';
-import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets, createTestUniswap, getBrokerUniswapTokens, testDynamicBrokerFormula } from './actions';
+import { createTestBroker, getBrokerConnect, getTrackedExchangeMarkets, createTestUniswap, getBrokerUniswapTokens } from './actions';
 import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
@@ -148,7 +148,9 @@ const Otcdeskpopup = ({
 		if (isEdit && editData && editData.account) {
 			setHedgeSwitch(true);
 			setConnectpop(true);
-			setHedgeApi(Object.keys(editData.account)?.[0]);
+			const hedgeExchange = Object.keys(editData.account)?.[0];
+			setHedgeApi(hedgeExchange);
+			getTrackedExchangeMarkets(hedgeExchange).then(markets => setHedgeMarkets(markets));
 		}
 	}, [isEdit, editData, isExistsPair]);
 
@@ -175,6 +177,7 @@ const Otcdeskpopup = ({
 				setSelectedMarket(foundPair.symbol); handlePreviewChange(foundPair.symbol, 'tracked_symbol');
 				const symbol = foundPair.symbol.replace('/','-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
+				if(!formula) setFormula(`${selectedExchange}_${symbol}`);
 			}
 			else setSelectedMarket()
 		}
@@ -238,7 +241,7 @@ const Otcdeskpopup = ({
 			if(!displayUniswap && spreadMul.spread && selectedExchange && selectedMarket) {
 				setSpin(true);
 				const result = await createTestBroker({ formula, increment_size: previewData.increment_size, spread: spreadMul.spread })
-				setPriceResult(result);
+				setPriceResult(result.data);
 			
 			} else { message.warning('Please input spread and tracked symbol') }
 		} catch (error) {
@@ -813,9 +816,9 @@ const Otcdeskpopup = ({
 													try {
 														setSpin(true);
 														const result = await createTestBroker({ formula, increment_size: previewData.increment_size, spread: spreadMul.spread || 0 })
-														setPriceResult(result);
+														setPriceResult(result.data);
 													} catch (err) {
-														message.error(err.message);
+														message.error(err.response.data.message);
 														setSpin(false);
 														return;
 													}
