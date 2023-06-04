@@ -380,7 +380,6 @@ function getBrokerPairs(req, res) {
 			return res.json(brokerPairs);
 		})
 		.catch((err) => {
-			console.log({GG: err.message})
 			loggerBroker.error(
 				req.uuid,
 				'controllers/broker/getBrokerDeals err',
