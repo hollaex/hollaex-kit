@@ -81,7 +81,7 @@ const determineRefreshInterval = (plan) => {
 	}
 }
 
-const determinePriceSource = (plan) => {
+const getPriceSourceExchanges = (plan) => {
 	if(plan === 'crypto') {
 		return EXCHANGE_PLAN_PRICE_SOURCE.CRYTO;
 	}
@@ -242,8 +242,9 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 
 	for (let variable of variables) {
 		const exchangePair = variable.split('_');
-	
-		if(exchangePair.length === 2 && EXCHANGE_PLAN_PRICE_SOURCE.ALL.includes(exchangePair[0])) {
+		const exchangeInfo = getKitConfig().info;
+		
+		if(exchangePair.length === 2 && getPriceSourceExchanges(exchangeInfo.plan).includes(exchangePair[0])) {
 			const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 				
 			let marketPrice;
@@ -511,7 +512,7 @@ const createBrokerPair = async (brokerPair) => {
 				throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 			}
 
-			if (type === 'dynamic' && !determinePriceSource(exchangeInfo.plan).includes(exchange_name)) {
+			if (type === 'dynamic' && !getPriceSourceExchanges(exchangeInfo.plan).includes(exchange_name)) {
 				throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 			}
 
@@ -602,7 +603,7 @@ const updateBrokerPair = async (id, data) => {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 	}
 
-	if (type === 'dynamic' && !determinePriceSource(exchangeInfo.plan).includes(exchange_name)) {
+	if (type === 'dynamic' && !getPriceSourceExchanges(exchangeInfo.plan).includes(exchange_name)) {
 		throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 	}
 
