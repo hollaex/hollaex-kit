@@ -63,6 +63,15 @@ export const createTestUniswap = (values) => {
 	return requestAuthenticated('/broker/uniswap/test', options);
 };
 
+export const testDynamicBrokerFormula = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/broker/formula/test', options);
+};
+
 export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);
 
 export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/market?exchange_name=${exchange_name}`);

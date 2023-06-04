@@ -3,9 +3,9 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
+const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, FAIR_PRICE_BROKER_ERROR } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
@@ -68,6 +68,12 @@ const executeUserOrder = async (user_id, opts, token) => {
 
 		const broker = await getUserByKitId(brokerPair.user_id);
 		const user = await getUserByKitId(user_id);
+
+		const isFairPrice = await isFairPriceForBroker(broker);
+
+		if (!isFairPrice) {
+			throw new Error(FAIR_PRICE_BROKER_ERROR);
+		}
 
 		const tierBroker = getKitTier(broker.verification_level);
 		const tierUser = getKitTier(user.verification_level);

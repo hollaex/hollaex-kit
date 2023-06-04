@@ -36,7 +36,7 @@ const Pophedge = ({
 						<div className="d-flex table-header email-header">
 							<div>EXCHANGE</div>
 							<div>MARKET</div>
-							<div>PRICE</div>
+							{/* <div>PRICE</div> */}
 						</div>
 						<div className="overflow">
 							{hedgeMarkets.map((data, index) => {
@@ -49,7 +49,7 @@ const Pophedge = ({
 										<div className="d-flex w-85">
 											<div className="w-50">{hedgeApi.charAt(0).toUpperCase() + hedgeApi.slice(1)}</div>
 											<div className="w-50">{data.symbol}</div>
-											<div className="w-50 preview_text">{'-'}</div>
+											{/* <div className="w-50 preview_text">{'-'}</div> */}
 										</div>
 									</div>
 								);
