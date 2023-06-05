@@ -14,10 +14,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.STRING,
 				allowNull: false,
 			},
-			tracked_symbol: {
-				type: DataTypes.STRING,
-				allowNull: true,
-			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
 				allowNull: false,
@@ -73,10 +69,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.INTEGER,
 				defaultValue: 1,
 				allowNull: true
-			},
-			exchange_name: {
-				type: DataTypes.STRING,
-				allowNull: true,
 			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
