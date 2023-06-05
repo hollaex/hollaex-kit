@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input, Modal, Button } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 
@@ -15,6 +15,7 @@ const Pophedge = ({
 	hedgeApi,
 	hedge
 }) => {
+	const [filter, setFilter] = useState();
 	return (
 		<>
 			<Modal
@@ -31,6 +32,7 @@ const Pophedge = ({
 						placeholder="Search market name or symbols"
 						id="marketkey mb-2"
 						value={hedgeSymbol}
+						onChange={(e) => { setFilter(e.target.value) }}
 					/>
 					<div className="email-option-wrapper mt-5">
 						<div className="d-flex table-header email-header">
@@ -39,7 +41,7 @@ const Pophedge = ({
 							{/* <div>PRICE</div> */}
 						</div>
 						<div className="overflow">
-							{hedgeMarkets.map((data, index) => {
+							{hedgeMarkets.filter(m => filter ? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase()) : true).map((data, index) => {
 								return (
 									<div
 										key={index}
