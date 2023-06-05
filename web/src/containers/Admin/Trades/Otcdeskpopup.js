@@ -864,9 +864,8 @@ const Otcdeskpopup = ({
 									<div className="mb-1 pt-4 coin-pricing-Heading">Type</div>
 									<div className="select-box">
 										<Select
-											defaultValue={selectedCoinType}
 											onChange={setPricing}
-											value={previewData && previewData.type}
+											value={previewData && previewData.type || 'manual'}
 										>
 											<Option value="manual">Manually set (static)</Option>
 											<Option value="dynamic">Dynamic</Option>
