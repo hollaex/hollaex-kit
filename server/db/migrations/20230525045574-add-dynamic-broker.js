@@ -6,11 +6,6 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface
-        .addColumn(TABLE, 'tracked_symbol', {
-		  type: Sequelize.STRING,
-          allowNull: true
-        }),
-      queryInterface
         .addColumn(TABLE, 'spread', {
           type: Sequelize.INTEGER,
           defaultValue: 0,
@@ -20,11 +15,6 @@ module.exports = {
         .addColumn(TABLE, 'multiplier', {
           type: Sequelize.INTEGER,
 		      defaultValue: 1,
-          allowNull: true
-        }),
-        queryInterface
-        .addColumn(TABLE, 'exchange_name', {
-          type: Sequelize.STRING,
           allowNull: true
         }),
         queryInterface
@@ -38,10 +28,8 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     return Promise.all([
-	    queryInterface.removeColumn(TABLE, 'tracked_symbol'),
       queryInterface.removeColumn(TABLE, 'spread'),
       queryInterface.removeColumn(TABLE, 'multiplier'),
-      queryInterface.removeColumn(TABLE, 'exchange_name'),
       queryInterface.removeColumn(TABLE, 'refresh_interval'),
     ]);
   }

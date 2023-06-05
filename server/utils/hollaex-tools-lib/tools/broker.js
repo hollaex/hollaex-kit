@@ -495,25 +495,19 @@ const createBrokerPair = async (brokerPair) => {
 			const exchangeInfo = getKitConfig().info;
 
 			const {
-				exchange_name,
 				spread,
 				quote_expiry_time,
-				tracked_symbol,
 				type,
 				account,
 				formula
 			} = brokerPair;
 
-			if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol || !formula)) {
+			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
 
 			if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 				throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
-			}
-
-			if (type === 'dynamic' && !getPriceSourceExchanges(exchangeInfo.plan).includes(exchange_name)) {
-				throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 			}
 
 			if(type === 'dynamic') {
@@ -584,10 +578,8 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 	const {
-		exchange_name,
 		spread,
 		quote_expiry_time,
-		tracked_symbol,
 		type,
 		account,
 		formula
@@ -595,7 +587,7 @@ const updateBrokerPair = async (id, data) => {
 
 	const exchangeInfo = getKitConfig().info;
 
-	if (type !== 'manual' && (!exchange_name || !spread || !quote_expiry_time || !tracked_symbol || !formula)) {
+	if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
 		throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 	}
 
@@ -603,9 +595,6 @@ const updateBrokerPair = async (id, data) => {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 	}
 
-	if (type === 'dynamic' && !getPriceSourceExchanges(exchangeInfo.plan).includes(exchange_name)) {
-		throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
-	}
 
 	if(type === 'dynamic') {
 		data.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
@@ -652,9 +641,6 @@ const updateBrokerPair = async (id, data) => {
 			'account',
 			'formula',
 			'spread',
-			'exchange_name',
-			'tracked_symbol'
-
 		]
 	});
 };

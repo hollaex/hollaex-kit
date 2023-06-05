@@ -136,7 +136,8 @@ const Otcdeskpopup = ({
 	const [brokerPriceData, setBrokerPrice] = useState({});
 	const [isDisconnect, setIsDisconnect] = useState(false);
 	const [errMsg, setErrorMsg] = useState('');
-
+	const kitPlan = _toLower(kit?.info?.plan);
+	const selectableExchanges = ["hollaex" ,"binance" , kitPlan !== 'crypto' && "coinbase" , kitPlan !== 'crypto' && "bitfinex2" ,kitPlan !== 'crypto' && "kraken"];
 	useEffect(() => {
 		if (
 			(isEdit && editData && editData.type === 'dynamic' && editData.formula) ||
@@ -177,7 +178,7 @@ const Otcdeskpopup = ({
 				setSelectedMarket(foundPair.symbol); handlePreviewChange(foundPair.symbol, 'tracked_symbol');
 				const symbol = foundPair.symbol.replace('/','-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
-				if(!formula) setFormula(`${selectedExchange}_${symbol}`);
+				if(!formula) { setFormula(`${selectedExchange}_${symbol}`); handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');}
 			}
 			else setSelectedMarket()
 		}
@@ -769,10 +770,11 @@ const Otcdeskpopup = ({
 									>
 										<h2 style={{ fontWeight: '600', color: 'white' }}>Advanced</h2>
 										<div style={{ fontWeight: '400', color: 'white' }}>You can add different markets into formula in the format below</div>
-									
 										{/* <div>Price formula</div> */}
                 						<div style={{ marginBottom: 10 }}>
-                						    <label>Value:{formulaVariable} (price)</label>
+                						    <label>Value:<span style={{ fontWeight: '600' }}>{formulaVariable} </span> (price)</label>
+											<div style={{ fontWeight: '400', color: 'white' }} >Selectable exchanges: <span style={{ fontWeight: '600' }}>{selectableExchanges.filter(e => e).join(', ')}</span></div>
+
                 						    <div style={{ marginTop: 10, marginBottom: 10 }}>
                 						        <div>add: '+'</div>
                 						        <div>sub: '-'</div>
@@ -956,7 +958,7 @@ const Otcdeskpopup = ({
 												HollaEx operators.
 											</div>
 										</div> */}
-										{<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+										{!formula && <div className={isUpgrade ? 'Datahide mt-3' : ''}>
 											<div>Platform price source</div>
 											<div className="select-box">
 												
@@ -968,7 +970,7 @@ const Otcdeskpopup = ({
 														setSelectedExchange();
 														handleSelectedExchange(value);
 														handlePreviewChange(value, 'exchange_name');
-														if(!formula) setFormulaVariable(`${value}_`);
+														setFormulaVariable(`${value}_`);
 													}}
 												>
 													{renderExchangeOptions()}
@@ -976,7 +978,7 @@ const Otcdeskpopup = ({
 											</div>
 										</div>}
 
-										{!displayUniswap && <div className={isUpgrade ? 'Datahide mt-3' : ''}>
+										{(!displayUniswap && !formula)  &&<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 											<div className="mt-4">Track market price</div>
 											<div className="select-box">
 												
@@ -988,6 +990,8 @@ const Otcdeskpopup = ({
 
 											</div>
 										</div>}
+
+										{formula && <div className="mt-3 mb-2">Formula: <span style={{ fontWeight:'600' }}>{formula}</span></div>}
 
 										{displayUniswap && <div style={{ display: "flex", flexDirection: "row", gap: 10, marginTop: 15 }}>
                                         <Select
