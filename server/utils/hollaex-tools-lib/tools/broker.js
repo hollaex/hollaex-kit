@@ -251,7 +251,7 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 
 			// isOracle is only used for fair price check.
 			if (!isOracle) {
-				const formattedSymbol = exchangePair[1].split('-').join('').toUpperCase();
+				const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
 				const userCachekey = `${brokerId}-${exchangePair[1]}`;
 				marketPrice = await client.getAsync(userCachekey);
 			
@@ -457,7 +457,7 @@ const reverseTransaction = async (orderData) => {
 					api_secret: broker.account[exchangeKey].apiSecret
 				})
 
-				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('').toUpperCase();
+				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 	
 				const marketTicker = await exchange.fetchTicker(symbol);
 	
