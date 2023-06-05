@@ -180,7 +180,7 @@ const Otcdeskpopup = ({
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
 				if(!formula) { setFormula(`${selectedExchange}_${symbol}`); handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');}
 			}
-			else setSelectedMarket()
+			else { setSelectedMarket(); setFormulaVariable(); setFormula(); }
 		}
 	}, [exchangeMarkets, selectedCoinType])
 
@@ -239,12 +239,16 @@ const Otcdeskpopup = ({
 		// 	return;
 		// } else { message.warning('Please select base and quite coin for uniswap and spread')}
 		try {
-			if(!displayUniswap && spreadMul.spread && selectedExchange && selectedMarket) {
+			if(!spreadMul.spread) {
+				message.warning('Please input spread ');
+				return;
+			}
+			if(!displayUniswap && selectedExchange && (selectedMarket || formula)) {
 				setSpin(true);
 				const result = await createTestBroker({ formula, increment_size: previewData.increment_size, spread: spreadMul.spread })
 				setPriceResult(result.data);
 			
-			} else { message.warning('Please input spread and tracked symbol') }
+			} else { message.warning('Please input formula') }
 		} catch (error) {
 			message.error(error.message)
 		}
@@ -772,7 +776,7 @@ const Otcdeskpopup = ({
 										<div style={{ fontWeight: '400', color: 'white' }}>You can add different markets into formula in the format below</div>
 										{/* <div>Price formula</div> */}
                 						<div style={{ marginBottom: 10 }}>
-                						    <label>Value:<span style={{ fontWeight: '600' }}>{formulaVariable} </span> (price)</label>
+                						    <label>Value: <span style={{ fontWeight: '600' }}>{(selectedExchange && selectedMarket) ? formulaVariable : 'hollaex_xht-usdt'} </span> (price)</label>
 											<div style={{ fontWeight: '400', color: 'white' }} >Selectable exchanges: <span style={{ fontWeight: '600' }}>{selectableExchanges.filter(e => e).join(', ')}</span></div>
 
                 						    <div style={{ marginTop: 10, marginBottom: 10 }}>
@@ -783,7 +787,7 @@ const Otcdeskpopup = ({
                 						        <div>mod: '%'</div>
                 						        <div>exp: '^'</div>
                 						    </div>
-                						    <div style={{ fontStyle: "italic" }}>example: 3^{`${selectedExchange}_${selectedMarket.replace('/','-').toLowerCase()}`}*12/5*9+9.4*2</div>
+                						    <div style={{ fontStyle: "italic" }}>example: 3^{ (selectedExchange && selectedMarket) ? `${selectedExchange}_${selectedMarket.replace('/','-').toLowerCase()}`: 'hollaex_xht-usdt'}*12/5*9+9.4*2</div>
 											
                 						    <TextArea value={formula} style={{ color:'white', backgroundColor:"black", border:"1px solid white", width: 400, height: 120, marginBottom: 10,  marginTop: 10 }} onChange={(e) => {
 												setFormula(e.target.value);
@@ -869,7 +873,7 @@ const Otcdeskpopup = ({
 										</Select>
 									</div>
 								</div>
-								{isManual && !isExistsPair ? (
+								{isManual ? (
 									<div>
 										<div className="pricing-container mt-4">
 											<div>
