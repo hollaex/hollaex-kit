@@ -8,7 +8,7 @@ import _debounce from 'lodash/debounce';
 import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
-import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
+import { getBroker, createBroker, deleteBroker, updateBroker, createTestBroker } from './actions';
 import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
@@ -433,7 +433,7 @@ const OtcDeskContainer = ({
 		{
 			title: 'Price (displayed to user)',
 			key: 'price',
-			render: ({ sell_price, buy_price, symbol, type }) => {
+			render: ({ sell_price, buy_price, symbol, type, formula, increment_size, spread, id }) => {
 				return (
 					<div>
 						{type === 'dynamic' ? (
@@ -450,16 +450,16 @@ const OtcDeskContainer = ({
 												buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
 											</div>
 										</div>
-										<div className="ml-3 text-underline" onClick={handlePrice}>
+										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
 											(Get price)
 										</div>
 									</div>
 								) : (
 									<div className="d-flex">
 										<div>Dynamic</div>
-										{/* <div className="ml-3 text-underline" onClick={handlePrice}>
+										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
 											(Get price)
-										</div> */}
+										</div>
 									</div>
 								)}
 							</div>
@@ -831,12 +831,25 @@ const OtcDeskContainer = ({
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 
-	const handlePrice = () => {
-		setPriceLoading(true);
-		setPriceActive(true);
-		setTimeout(() => {
+	const handlePrice = async (formula, increment_size, spread, id) => {
+		try {
+			setPriceLoading(true);
+			setPriceActive(true);
+			const result = await createTestBroker({ formula, increment_size, spread });
+
+			setBrokerData((prevState) => {
+				const newState = [...prevState];
+				const Index = newState.findIndex(b => b.id === id);
+				newState[Index].buy_price = result.data.buy_price;
+				newState[Index].sell_price = result.data.sell_price;
+				return newState;
+			})
+
 			setPriceLoading(false);
-		}, 2000);
+		} catch (error) {
+			message.error(error.message);
+		}
+		
 	};
 
 	if (isLoading) {
