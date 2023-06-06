@@ -2669,6 +2669,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
+        - support
       x-token-permissions:
         - can_read
   /admin/user/referer:
@@ -2699,6 +2701,9 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
+        - kyc
+        - support
       x-token-permissions:
         - can_read
   /admin/user/wallet:
