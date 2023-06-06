@@ -143,7 +143,7 @@ const checkStatus = () => {
 			}
 
 			configuration.broker = deals;
-
+			configuration.broker.forEach(deal => { delete deal?.dataValues?.account; delete deal?.dataValues?.formula; })
 			for (let tier of tiers) {
 				const makerDiff = difference(exchangePairs, Object.keys(tier.fees.maker));
 				const takerDiff = difference(exchangePairs, Object.keys(tier.fees.taker));
