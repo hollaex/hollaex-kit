@@ -25,6 +25,7 @@ import Pophedge from './HedgeMarketPopup';
 import { handleUpgrade } from 'utils/utils';
 import { formatToCurrency } from 'utils/currency';
 import _toLower from 'lodash/toLower';
+import { Link } from 'react-router';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const { TextArea } = Input;
@@ -948,8 +949,11 @@ const Otcdeskpopup = ({
 													<div>Source dynamic prices automatically</div>
 												</div>
 												<div>
-													<Button className="green-btn" type="primary">
-														Upgrade
+													<Button
+														className="green-btn" type="primary">
+															<Link to={'admin/billing'}>
+																Upgrade
+															</Link>
 													</Button>
 												</div>
 											</div>
@@ -1047,7 +1051,9 @@ const Otcdeskpopup = ({
 											 (<span style={{ 
 												textDecoration:'underline',
 												cursor:'pointer'
-											}}>Upgrade</span> to increase refresh rate) </div>}
+											}}
+											>
+												<Link to={'admin/billing'}>Upgrade</Link></span> to increase refresh rate) </div>}
 
 											<div className="mt-3 ">Price quote expiry time (seconds)</div>
 											<Input
@@ -1611,8 +1617,11 @@ const Otcdeskpopup = ({
 													<div>Automatic 24/7 buy and sell rebalancing</div>
 												</div>
 												<div>
-													<Button className="green-btn" type="primary">
-														Upgrade
+													<Button
+														className="green-btn" type="primary">
+															<Link to={'admin/billing'}>
+																Upgrade
+															</Link>
 													</Button>
 												</div>
 											</div>
