@@ -14,22 +14,21 @@ const Warning = ({ text, className = '' }) => (
 	</div>
 );
 
-const renderWarning = (warning) => {
-	if (warning) {
-		if (Array.isArray(warning)) {
-			return (
-				<div className="field_warning_wrapper">
-					{warning.map((msg, index) => (
-						<Warning
-							text={msg}
-							className={classnames({ 'mt-2': index !== 0 })}
-						/>
-					))}
-				</div>
-			);
-		} else {
-			return <Warning text={warning} className="field_warning_wrapper" />;
-		}
+const WarningContainer = ({ warning, warnings }) => {
+	if (warnings && Array.isArray(warnings)) {
+		return (
+			<div className="field_warning_wrapper">
+				{warnings.map((msg, index) => (
+					<Warning
+						key={index}
+						text={msg}
+						className={classnames({ 'mt-2': index !== 0 })}
+					/>
+				))}
+			</div>
+		);
+	} else if (warning) {
+		return <Warning text={warning} className="field_warning_wrapper" />;
 	} else {
 		return null;
 	}
@@ -53,6 +52,7 @@ export const FieldContent = ({
 	ishorizontalfield = false,
 	dateFieldClassName,
 	warning,
+	warnings,
 	preview,
 	isEmail,
 	emailMsg,
@@ -68,10 +68,14 @@ export const FieldContent = ({
 							) : (
 								label
 							)}
-							{renderWarning(warning)}
+							<WarningContainer warning={warning} warnings={warnings} />
 						</div>
 					)}
-					<EditWrapper stringId={stringId} />
+					<EditWrapper
+						stringId={stringId}
+						warning={warning}
+						warnings={warnings}
+					/>
 				</div>
 				<div className={classnames('field-content')}>
 					<div
@@ -180,6 +184,7 @@ class FieldWrapper extends Component {
 			children,
 			label,
 			warning,
+			warnings,
 			stringId,
 			input: { value },
 			meta: { active = false, error = '', touched = false, invalid = false },
@@ -220,6 +225,7 @@ class FieldWrapper extends Component {
 					stringId={stringId}
 					label={label}
 					warning={warning}
+					warnings={warnings}
 					valid={!invalid}
 					hasValue={hasValue}
 					focused={active || focused}
