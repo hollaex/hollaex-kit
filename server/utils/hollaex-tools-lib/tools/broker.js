@@ -222,7 +222,7 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 		const exchangePair = variable.split('_');
 		const exchangeInfo = getKitConfig().info;
 
-		if (exchangePair.length !== 2)
+		if (exchangePair?.length !== 2)
 			throw new Error(FORMULA_MARKET_PAIR_ERROR + ' ' + exchangePair);
 		
 		if (!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
