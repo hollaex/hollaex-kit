@@ -59,6 +59,8 @@ exports.QUICK_TRADE_QUOTE_INVALID = 'Invalid quote';
 exports.QUICK_TRADE_QUOTE_CALCULATING_ERROR = 'Error calculating the quote';
 exports.QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED =
 	'The order with the current size can not be filled';
+exports.QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR =
+	'The order with the current price can not be filled';
 exports.QUICK_TRADE_INSUFFICIENT_BALANCE =
 	'Insufficient balance to perform the order';
 exports.QUICK_TRADE_DISABLED = 'Broker service is currently disabled';

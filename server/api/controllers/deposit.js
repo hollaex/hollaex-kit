@@ -30,6 +30,10 @@ const getAdminDeposits = (req, res) => {
 		format
 	} = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+
 	toolsLib.wallet.getUserDepositsByKitId(
 		user_id.value,
 		currency.value,

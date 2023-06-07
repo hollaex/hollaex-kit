@@ -25,7 +25,7 @@ definitions:
         maxLength: 256
       captcha:
         type: string
-        maxLength: 1024
+        maxLength: 5000
       referral:
         type: string
         maxLength: 256
