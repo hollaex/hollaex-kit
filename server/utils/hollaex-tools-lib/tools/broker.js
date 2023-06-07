@@ -67,30 +67,6 @@ const getDecimals = (value = 0) => {
 	return str.split('-')[1] || 0;
 };
 
-const determineRefreshInterval = (plan) => {
-	if(plan === 'crypto') {
-		return EXCHANGE_PLAN_INTERVAL_TIME.CRYTO;
-	}
-	else if (plan === 'fiat') {
-		return EXCHANGE_PLAN_INTERVAL_TIME.FIAT;
-	}
-	else if (plan === 'boost') {
-		return EXCHANGE_PLAN_INTERVAL_TIME.BOOST;
-	}
-}
-
-const getPriceSourceExchanges = (plan) => {
-	if(plan === 'crypto') {
-		return EXCHANGE_PLAN_PRICE_SOURCE.CRYTO;
-	}
-	else if (plan === 'fiat') {
-		return EXCHANGE_PLAN_PRICE_SOURCE.FIAT;
-	}
-	else if (plan === 'boost') {
-		return EXCHANGE_PLAN_PRICE_SOURCE.BOOST;
-	}
-	else return [];
-}
 const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
         return connectedExchanges[data.id].exchange
@@ -242,7 +218,7 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 		const exchangePair = variable.split('_');
 		const exchangeInfo = getKitConfig().info;
 		
-		if(exchangePair.length === 2 && getPriceSourceExchanges(exchangeInfo.plan).includes(exchangePair[0])) {
+		if(exchangePair.length === 2 && (EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0])) {
 			const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 				
 			let marketPrice;
@@ -505,7 +481,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if(type === 'dynamic') {
-				brokerPair.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
+				brokerPair.refresh_interval = EXCHANGE_PLAN_INTERVAL_TIME[exchangeInfo.plan] || 60;
 			}
 			
 			if (account) {
@@ -591,7 +567,7 @@ const updateBrokerPair = async (id, data) => {
 
 
 	if(type === 'dynamic') {
-		data.refresh_interval = determineRefreshInterval(exchangeInfo.plan);
+		data.refresh_interval = EXCHANGE_PLAN_INTERVAL_TIME[exchangeInfo.plan] || 60;
 	}
 
 	if (account) {
@@ -656,56 +632,12 @@ const deleteBrokerPair = async (id) => {
 	return brokerPair.destroy();
 };
 
-const executeBrokerDeal = async (userId, token, size) => {
-	const storedToken = await client.getAsync(token);
-	if (!storedToken) {
-		throw new Error(TOKEN_EXPIRED);
-	}
-	const { user_id, symbol, price, side } = JSON.parse(storedToken);
-
-	if (user_id !== userId) {
-		throw new Error(AUTH_NOT_MATCHED);
-	}
-
-	const brokerPair = await getModel('broker').findOne({ where: { symbol } });
-
-	if (!brokerPair) {
-		throw new Error(BROKER_NOT_FOUND);
-	} else if (brokerPair.paused) {
-		throw new Error(BROKER_PAUSED);
-	}
-
-	if(size < brokerPair.min_size || size > brokerPair.max_size) {
-		throw new Error(BROKER_SIZE_EXCEED)
-	}
-
-	const broker = await getUserByKitId(brokerPair.user_id);
-	const user = await getUserByKitId(userId);
-
-	const tierBroker = getKitTier(broker.verification_level);
-	const tierUser = getKitTier(user.verification_level);
-
-	const makerFee = tierBroker.fees.maker[symbol];
-	const takerFee = tierUser.fees.taker[symbol];
-
-	return getNodeLib().createBrokerTrade(
-		symbol,
-		side,
-		price,
-		size,
-		broker.network_id,
-		user.network_id,
-		{ maker: makerFee, taker: takerFee }
-	);
-};
-
 module.exports = {
 	createBrokerPair,
 	fetchBrokerPair,
 	fetchBrokerPairs,
 	updateBrokerPair,
 	deleteBrokerPair,
-	executeBrokerDeal,
 	fetchBrokerQuote,
 	reverseTransaction,
 	testBroker,

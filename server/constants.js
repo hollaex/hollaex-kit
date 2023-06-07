@@ -608,14 +608,14 @@ exports.VERIFY_STATUS = {
 // BROKER CONSTANTS START
 
 exports.EXCHANGE_PLAN_INTERVAL_TIME = {
-	FIAT: 5,
-	BOOST: 5,
-	CRYPTO: 60
+	crypto: 5,
+	fiat: 5,
+	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	FIAT: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	BOOST: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	CRYPTO: ['hollaex', 'binance'],
+	fiat: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	boost: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	crypto: ['hollaex', 'binance'],
 	ALL: [ 'hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
 };
 

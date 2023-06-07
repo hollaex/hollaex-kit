@@ -6,39 +6,6 @@ const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
-const getBrokerQuote = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/getBrokerQuote get',
-		req.auth
-	);
-	const bearerToken = req.headers['authorization'];
-	const ip = req.headers['x-real-ip'];
-
-	const {
-		symbol,
-		side
-	} = req.swagger.params;
-
-	toolsLib.broker.fetchBrokerQuote({
-		symbol: symbol.value,
-		side: side.value,
-		bearerToken,
-		ip
-	})
-		.then((brokerQuote) => {
-			return res.json(brokerQuote);
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/getBrokerQuote err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 const getTrackedExchangeMarkets = (req, res) => {
 
 	loggerBroker.verbose(
@@ -338,46 +305,12 @@ function getBrokerPairs(req, res) {
 
 }
 
-const executeBrokerDeal = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/executeBrokerDeal auth',
-		req.auth
-	);
-
-	const { token, size } = req.swagger.params.data.value;
-
-	const userId = req.auth.sub.id;
-
-	toolsLib.broker.executeBrokerDeal(userId, token, size)
-		.then((data) => {
-			loggerBroker.verbose(
-				req.uuid,
-				'controllers/broker/executeBrokerDeal done',
-				data
-			);
-			const { symbol, side, size, price } = data;
-			toolsLib.broker.reverseTransaction({ userId, symbol, side, size });
-			res.json(data);
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/executeBrokerDeal err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 module.exports = {
-	getBrokerQuote,
 	testBroker,
 	testRebalance,
 	createBrokerPair,
 	updateBrokerPair,
 	deleteBrokerPair,
 	getBrokerPairs,
-	executeBrokerDeal,
 	getTrackedExchangeMarkets
 };
