@@ -15,6 +15,7 @@ const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
+const { isArray } = require('lodash');
 
 const connectedExchanges = {};
 
@@ -213,6 +214,9 @@ const isFairPriceForBroker = async (broker) => {
 const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_interval, brokerId, isOracle = false) => {
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
 	const variables = formula.match(regex);
+
+	if (!isArray(variables)) 
+		throw new Error(FORMULA_MARKET_PAIR_ERROR);
 
 	for (let variable of variables) {
 		const exchangePair = variable.split('_');
