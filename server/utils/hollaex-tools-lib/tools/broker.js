@@ -202,11 +202,11 @@ const isFairPriceForBroker = async (broker) => {
 	const priceFromOracle = await calculatePrice(null, null, 1, broker.formula, null, broker.id, true);
 
 	//relative difference
-	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ( (priceFromOracle + priceFromOracle) / 2));
+	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromOracle + priceFromOracle) / 2));
 
 	// If difference more than 20 percent, price is not fair.
 	const priceDifferenceTreshold = 0.2;
-	if( priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
+	if (priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
 }
 
@@ -218,10 +218,10 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 		const exchangePair = variable.split('_');
 		const exchangeInfo = getKitConfig().info;
 
-		if(exchangePair.length !== 2)
+		if (exchangePair.length !== 2)
 			throw new Error(FORMULA_MARKET_PAIR_ERROR + ' ' + exchangePair);
 		
-		if(!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
+		if (!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
 		const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
