@@ -179,58 +179,6 @@ const testBroker = (req, res) => {
 };
 
 
-const testBrokerUniswap = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/testBrokerUniswap get',
-		req.auth
-	);
-
-	const {
-		base_coin,
-		spread,
-		quote_coin
-	} = req.swagger.params.data.value;
-
-	toolsLib.broker.testBrokerUniswap({
-		base_coin,
-		spread,
-		quote_coin
-	})
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/testBrokerUniswap err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
-const getBrokerUniswapTokens = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/getBrokerUniswapTokens get',
-		req.auth
-	);
-
-	toolsLib.broker.getBrokerUniswapTokens()
-		.then((data) => {
-			return res.json(data);
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/getBrokerUniswapTokens err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-}
-
 const testRebalance = (req, res) => {
 	loggerBroker.verbose(
 		req.uuid,
@@ -431,7 +379,5 @@ module.exports = {
 	deleteBrokerPair,
 	getBrokerPairs,
 	executeBrokerDeal,
-	getTrackedExchangeMarkets,
-	testBrokerUniswap,
-	getBrokerUniswapTokens
+	getTrackedExchangeMarkets
 };

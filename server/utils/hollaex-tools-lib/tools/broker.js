@@ -15,8 +15,6 @@ const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
-const { constructSimpleSDK, SwapSide } = require('@paraswap/sdk')
-const axios = require('axios')
 
 const connectedExchanges = {};
 
@@ -332,7 +330,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 		if (broker.type === 'dynamic') {
 			return getQuoteDynamicBroker(side, broker, user_id, orderData);
 		} else {
-			return await getQuoteManualBroker(broker, side, user_id, orderData);
+			return getQuoteManualBroker(broker, side, user_id, orderData);
 		}
 
 	} catch (err) {
@@ -370,10 +368,6 @@ const testBroker = async (data) => {
 	}
 
 };
-const getBrokerUniswapTokens = async () => {
-	return [];
-}
-
 const testBrokerUniswap = async (data) => {
 	const { base_coin, spread, quote_coin  } = data;
 	const UNISWAP_COINS = {}
@@ -719,7 +713,6 @@ module.exports = {
 	generateRandomToken,
 	fetchTrackedExchangeMarkets,
 	testBrokerUniswap,
-	getBrokerUniswapTokens,
 	isFairPriceForBroker,
 	calculatePrice
 };
