@@ -167,7 +167,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
-  /broker/market:
+  /broker/markets:
     x-swagger-router-controller: broker
     get:
       operationId: getTrackedExchangeMarkets
@@ -192,6 +192,12 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /broker/test:
     x-swagger-router-controller: broker
     post:

@@ -60,7 +60,7 @@ export const createTestUniswap = (values) => {
 
 export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);
 
-export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/market?exchange_name=${exchange_name}`);
+export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
 
 export const updateBroker = (values) => {
 	const options = {

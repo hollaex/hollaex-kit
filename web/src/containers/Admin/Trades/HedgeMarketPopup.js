@@ -41,7 +41,7 @@ const Pophedge = ({
 							{/* <div>PRICE</div> */}
 						</div>
 						<div className="overflow">
-							{hedgeMarkets.filter(m => filter ? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase()) : true).map((data, index) => {
+							{hedgeMarkets?.filter(m => filter ? m?.symbol?.toLowerCase()?.includes(filter?.toLowerCase()) : true).map((data, index) => {
 								return (
 									<div
 										key={index}
