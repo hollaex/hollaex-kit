@@ -523,17 +523,23 @@ class Assets extends Component {
 	handleDelete = async (symbol) => {
 		const { coins, exchange } = this.state;
 		this.setState({ submitting: true });
+		const pairedCoins = exchange.pairs.filter((data) => {
+			let pairData = data.split('-');
+			return pairData[0] === symbol || pairData[1] === symbol;
+		});
 		try {
 			let formProps = {
 				id: exchange.id,
 				coins: coins
 					.filter((data) => data.symbol !== symbol)
 					.map((data) => data.symbol),
-				pairs: exchange.pairs.filter((data) => {
+			};
+			if (pairedCoins.length) {
+				formProps.pairs = exchange.pairs.filter((data) => {
 					let pairData = data.split('-');
 					return pairData[0] !== symbol && pairData[1] !== symbol;
-				}),
-			};
+				});
+			}
 			await updateExchange(formProps);
 			await this.getMyExchange();
 			await this.getCoins();

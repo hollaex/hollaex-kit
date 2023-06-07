@@ -267,7 +267,7 @@ const getAdminWithdrawals = (req, res) => {
 		address
 	} = req.swagger.params;
 
-	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
 
