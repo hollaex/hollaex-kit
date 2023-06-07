@@ -217,35 +217,37 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 	for (let variable of variables) {
 		const exchangePair = variable.split('_');
 		const exchangeInfo = getKitConfig().info;
-		
-		if(exchangePair.length === 2 && (EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0])) {
-			const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
-				
-			let marketPrice;
 
-			// isOracle is only used for fair price check.
-			if (!isOracle) {
-				const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
-				const userCachekey = `${brokerId}-${exchangePair[1]}`;
-				marketPrice = await client.getAsync(userCachekey);
-			
-				if (!marketPrice) { 
-					const ticker = await selectedExchange.fetchTicker(formattedSymbol);
-					marketPrice = ticker.last
-					if (refresh_interval)
-						client.setexAsync(userCachekey, refresh_interval, ticker.last);
-				}
+		if(exchangePair.length !== 2)
+			throw new Error(FORMULA_MARKET_PAIR_ERROR + ' ' + exchangePair);
+		
+		if(!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
+			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
+
+		const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
+		let marketPrice;
+
+		// isOracle is only used for fair price check.
+		if (!isOracle) {
+			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
+			const userCachekey = `${brokerId}-${exchangePair[1]}`;
+			marketPrice = await client.getAsync(userCachekey);
+		
+			if (!marketPrice) { 
+				const ticker = await selectedExchange.fetchTicker(formattedSymbol);
+				marketPrice = ticker.last
+				if (refresh_interval)
+					client.setexAsync(userCachekey, refresh_interval, ticker.last);
 			}
-			else {
-				const coins = exchangePair[1].split('-');
-				const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
-				marketPrice =  conversions[coins[0]];
-				if(marketPrice === -1) return -1;
-			}
-			formula = formula.replace(variable, marketPrice);
-		} else {
-			throw new Error(FORMULA_MARKET_PAIR_ERROR + ' ' + exchangePair)
 		}
+		else {
+			const coins = exchangePair[1].split('-');
+			const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
+			marketPrice =  conversions[coins[0]];
+			if(marketPrice === -1) return -1;
+		}
+		formula = formula.replace(variable, marketPrice);
+		
 	}
 	const convertedPrice = calculateFormula(formula);
 	let multipliedPrice = math.multiply(convertedPrice, multiplier);
