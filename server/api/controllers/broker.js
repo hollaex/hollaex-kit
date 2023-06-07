@@ -268,9 +268,6 @@ function getBrokerPairs(req, res) {
 		req.auth
 	);
 
-	const bearerToken = req.headers['authorization'];
-	const ip = req.headers['x-real-ip'];
-
 	const attributes = [
 		'id',
 		'user_id',
@@ -286,11 +283,12 @@ function getBrokerPairs(req, res) {
 		'rebalancing_symbol',
 		'spread',
 		'tracked_symbol',
-		'exchange_name'
+		'exchange_name',
+		'formula'
 	];
 
 
-	toolsLib.broker.fetchBrokerPairs(attributes, bearerToken, ip)
+	toolsLib.broker.fetchBrokerPairs(attributes)
 		.then((brokerPairs) => {
 			return res.json(brokerPairs);
 		})
