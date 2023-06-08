@@ -476,11 +476,11 @@ const QuickTrade = ({
 						<ReviewOrder
 							onCloseDialog={onCloseDialog}
 							onExecuteTrade={() => onExecuteTrade(token)}
-							selectedSource={spendingCurrency}
+							selectedSource={selectedSource}
 							decimalPoint={decimalPoint}
-							sourceAmount={spendingAmount}
-							targetAmount={receivingAmount}
-							selectedTarget={receivingCurrency}
+							sourceAmount={sourceAmount}
+							targetAmount={targetAmount}
+							selectedTarget={selectedTarget}
 							disabled={submitting}
 						/>
 					) : (
