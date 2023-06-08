@@ -493,11 +493,11 @@ const createBrokerPair = async (brokerPair) => {
 			if (account) {
 				for (const [key, value] of Object.entries(account)) {
 					if (!value.hasOwnProperty('apiKey')) {
-						value.apiKey = brokerPair.account[key].apiKey;
+						value.apiKey = brokerPair?.account[key]?.apiKey;
 					}
 		
 					if (!value.hasOwnProperty('apiSecret')) {
-						value.apiSecret = brokerPair.account[key].apiSecret;
+						value.apiSecret = brokerPair?.account[key]?.apiSecret;
 					}
 				}
 			}
@@ -542,17 +542,12 @@ const updateBrokerPair = async (id, data) => {
 
 	const {
 		spread,
-		quote_expiry_time,
 		type,
 		account,
 		formula
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
-
-	if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
-		throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
-	}
 
 	if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
@@ -566,11 +561,11 @@ const updateBrokerPair = async (id, data) => {
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
 			if (!value.hasOwnProperty('apiKey')) {
-				value.apiKey = brokerPair.account[key].apiKey;
+				value.apiKey = brokerPair?.account[key]?.apiKey;
 			}
 
 			if (!value.hasOwnProperty('apiSecret')) {
-				value.apiSecret = brokerPair.account[key].apiSecret;
+				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
 		}
 	}

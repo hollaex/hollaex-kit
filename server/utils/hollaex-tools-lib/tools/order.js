@@ -153,6 +153,11 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					);
 					responseObj.spending_amount = sourceAmount;
 				}
+				
+				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
+				if(baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
+					throw new Error(BROKER_SIZE_EXCEED)
+				}
 
 				return responseObj;
 			})
