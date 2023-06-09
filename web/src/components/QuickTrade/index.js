@@ -228,39 +228,38 @@ const QuickTrade = ({
 		spending,
 	}) => {
 		if (spending) {
-			const spending_amount =
-				spending === SPENDING.SOURCE ? sourceAmount : targetAmount;
-			const [spending_currency, receiving_currency] =
-				spending === SPENDING.SOURCE
-					? [selectedSource, selectedTarget]
-					: [selectedTarget, selectedSource];
-			const [setSpendingAmount, setReceivingAmount] =
-				spending === SPENDING.SOURCE
-					? [setSourceAmount, setTargetAmount]
-					: [setTargetAmount, setSourceAmount];
+			const spending_amount = sourceAmount;
+			const receiving_amount = targetAmount;
 
-			if (spending_amount && spending_currency && receiving_currency) {
+			const [spending_currency, receiving_currency] = [selectedSource, selectedTarget];
+			const amount = spending === SPENDING.SOURCE ? spending_amount : receiving_amount;
+			const amountPayload = spending === SPENDING.SOURCE ? { spending_amount } : { receiving_amount };
+		
+			if (amount && spending_currency && receiving_currency) {
 				setLoading(true);
-				setReceivingAmount();
+				setTargetAmount();
+				setSourceAmount();
 				setToken();
+				setError();
 
 				getQuickTrade({
-					spending_amount,
+					...amountPayload,
 					spending_currency,
 					receiving_currency,
 				})
 					.then(({ data: { token, spending_amount, receiving_amount } }) => {
 						setSpending();
 						setToken(token);
-						setReceivingAmount(receiving_amount);
-						setSpendingAmount(spending_amount);
+						setTargetAmount(receiving_amount);
+						setSourceAmount(spending_amount);
 					})
 					.catch((err) => handleError(err, true))
 					.finally(() => {
 						setLoading(false);
 					});
 			} else {
-				setReceivingAmount();
+				setTargetAmount();
+				setSourceAmount();
 				setSpending();
 				setToken();
 			}
@@ -305,7 +304,6 @@ const QuickTrade = ({
 	}, [selectedSource, selectedTarget, pairs, brokerPairs]);
 
 	useEffect(() => {
-		setError();
 		debouncedQuote.current({
 			sourceAmount,
 			targetAmount,
@@ -478,11 +476,11 @@ const QuickTrade = ({
 						<ReviewOrder
 							onCloseDialog={onCloseDialog}
 							onExecuteTrade={() => onExecuteTrade(token)}
-							selectedSource={spendingCurrency}
+							selectedSource={selectedSource}
 							decimalPoint={decimalPoint}
-							sourceAmount={spendingAmount}
-							targetAmount={receivingAmount}
-							selectedTarget={receivingCurrency}
+							sourceAmount={sourceAmount}
+							targetAmount={targetAmount}
+							selectedTarget={selectedTarget}
 							disabled={submitting}
 						/>
 					) : (

@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
@@ -147,6 +147,11 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					);
 					responseObj.spending_amount = sourceAmount;
 				}
+				
+				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
+				if (baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
+					throw new Error(BROKER_SIZE_EXCEED)
+				}
 
 				return responseObj;
 			})
@@ -182,8 +187,16 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				isSourceChanged: spending_amount != null ? true : false,
 			}, opts);
 
-			if (spending_amount != null) responseObj.receiving_amount = priceValues.estimatedPrice == 0 ? null : priceValues.targetAmount;
-			else if (receiving_amount != null) responseObj.spending_amount = priceValues.estimatedPrice == 0 ? null : priceValues.sourceAmount;
+			if (priceValues.estimatedPrice === 0) {
+				throw new Error(QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED);
+			}
+
+			if (priceValues.targetAmount === 0 || priceValues.sourceAmount === 0) {
+				throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
+			}
+
+			if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
+			else if (receiving_amount != null) responseObj.spending_amount = priceValues.sourceAmount;
 
 			//Check if the estimated price is 50% greater than the last trade
 			const lastTrades = await getPublicTrades(symbol);
@@ -191,8 +204,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				const lastPrice = math.number(lastTrades[symbol][0].price) * 1.50
 
 				if (priceValues.estimatedPrice > lastPrice) {
-					responseObj.receiving_amount = null;
-					responseObj.spending_amount = null;
+					throw new Error(QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR);
 				}
 			}
 
