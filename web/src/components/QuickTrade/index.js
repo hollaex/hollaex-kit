@@ -419,7 +419,7 @@ const QuickTrade = ({
 								onInputChange={onChangeTargetAmount}
 								forwardError={() => {}}
 								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={side === 'buy' ? increment_unit : PAIR2_STATIC_SIZE}
+								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit}
 								pair={isUseBroker ? symbol : key ? key : ''}
 								coins={coins}
 								loading={loadingTarget}
