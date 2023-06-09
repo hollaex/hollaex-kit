@@ -240,6 +240,7 @@ const QuickTrade = ({
 				setTargetAmount();
 				setSourceAmount();
 				setToken();
+				setError();
 
 				getQuickTrade({
 					...amountPayload,
@@ -303,7 +304,6 @@ const QuickTrade = ({
 	}, [selectedSource, selectedTarget, pairs, brokerPairs]);
 
 	useEffect(() => {
-		setError();
 		debouncedQuote.current({
 			sourceAmount,
 			targetAmount,
