@@ -66,6 +66,7 @@ const {
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
+	LOGIN_TIME_OUT
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -79,6 +80,7 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
+const geoip = require('geoip-lite');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -329,7 +331,8 @@ const registerUserLogin = (
 		origin: null,
 		referer: null,
 		token: null,
-		expiry: null
+		expiry: null,
+		status: true,
 	}
 ) => {
 	const login = {
@@ -353,17 +356,37 @@ const registerUserLogin = (
 		login.referer = opts.referer;
 	}
 
+	if (isBoolean(opts.status)) {
+		login.status = opts.status;
+	}
+	const geo = geoip.lookup(ip);
+	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
 	.then((loginData) => {
-		if(opts.token) {
+		if(opts.token && opts.status) {
 			return createSession(opts.token, loginData.id, userId, opts.expiry);
 		}
 	})
 	.catch(err => reject(err))
 };
 
-const updateLoginAttempt = (userId, ip) => {
-	return getModel('login').increment('attempt', { by: 1, where: { user_id: userId, ip }});
+const updateLoginAttempt = (loginId) => {
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+}
+
+const updateLoginStatus = (loginId) => {
+	return getModel('login').update( { status: true }, { where: { id: loginId } });
+}
+
+const findUserPastLogin = (user) => {
+	return getModel('login').findOne({
+		where: {
+			user_id: user.id,
+			updated_at: {
+				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
+			},
+		}
+	});
 }
 
 /* Public Endpoints*/
@@ -2015,5 +2038,7 @@ module.exports = {
 	updateUserInfo,
 	updateLoginAttempt,
 	getExchangeUserSessions,
-	revokeExchangeUserSession
+	revokeExchangeUserSession,
+	updateLoginStatus,
+	findUserPastLogin
 };

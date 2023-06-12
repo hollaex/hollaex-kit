@@ -32,6 +32,16 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false,
 				defaultValue: 0
 			},
+			status: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+				defaultValue: true
+			},
+			country: {
+				type: DataTypes.STRING,
+				allowNull: true,
+				defaultValue: ''
+			},
 			timestamp: {
 				type: DataTypes.DATE,
 				allowNull: false,

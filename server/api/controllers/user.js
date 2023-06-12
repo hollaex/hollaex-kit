@@ -25,9 +25,10 @@ const {
 	INVALID_PASSWORD,
 	USER_EXISTS,
 	USER_EMAIL_IS_VERIFIED,
-	INVALID_VERIFICATION_CODE
+	INVALID_VERIFICATION_CODE,
+	LOGIN_NOT_ALLOW
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -291,6 +292,32 @@ const verifyUser = (req, res) => {
 		});
 };
 
+
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status = true) => {
+	const loginData = await toolsLib.user.findUserPastLogin(user);
+
+	// Create login record in case of either there is no login record past 5 minutes 
+	// OR there is a successful login past 5 minute but the current attempt is failure
+	if (!loginData || (loginData?.status == true && status == false)) {
+		return toolsLib.user.registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	} 
+	else if (loginData.status == false && status == true) {
+		await toolsLib.user.updateLoginStatus(loginData.id);
+		await toolsLib.security.createSession(token, loginData.id, user.id);
+	}
+	else if (loginData.status == false && status == false) {
+		toolsLib.user.updateLoginAttempt(loginData.id);
+	}
+}
+
 const loginPost = (req, res) => {
 	const {
 		password,
@@ -351,7 +378,7 @@ const loginPost = (req, res) => {
 		.then(() => {
 			return toolsLib.user.getUserByEmail(email);
 		})
-		.then((user) => {
+		.then(async (user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
@@ -363,17 +390,20 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
+			const loginData = await toolsLib.user.findUserPastLogin(user);
+
+			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+				throw new Error(LOGIN_NOT_ALLOW);
+			}
+
 			return all([
 				user,
 				toolsLib.security.validatePassword(user.password, password)
 			]);
 		})
-		.then(([user, passwordIsValid]) => {
-			if(ip) {
-				toolsLib.user.updateLoginAttempt(user.id, ip);
-			}
-
+		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
+				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				throw new Error(INVALID_CREDENTIALS);
 			}
 
@@ -382,8 +412,9 @@ const loginPost = (req, res) => {
 			} else {
 				return all([
 					user,
-					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
+					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then(async (validOtp) => {
 						if (!validOtp) {
+							await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 							throw new Error(INVALID_OTP_CODE);
 						} else {
 							return toolsLib.security.checkCaptcha(captcha, ip);
@@ -429,14 +460,7 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, token]) => {
 			if (ip) {
-				await toolsLib.user.registerUserLogin(user.id, ip, {
-						device,
-						domain,
-						origin,
-						referer,
-						token,
-						expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
-					});
+				await createUserLogin(user, ip, device, domain, origin, referer, token, long_term);
 			}
 			return res.status(201).json({ token });
 		})

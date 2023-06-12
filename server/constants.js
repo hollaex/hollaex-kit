@@ -605,6 +605,11 @@ exports.VERIFY_STATUS = {
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
 
+// Login timeout  START------------------------------
+exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
+exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+// Login timeout  END------------------------------
+
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {
 		content:url('${exports.GET_KIT_CONFIG().logo_image}}');
