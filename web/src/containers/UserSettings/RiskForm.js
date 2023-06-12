@@ -5,7 +5,6 @@ import renderFields from 'components/Form/factoryFields';
 import STRINGS from 'config/localizedStrings';
 import { formatBaseAmount } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
-import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 import { EditWrapper } from 'components';
 
 export const generateHeaders = (onAdjustPortfolio) => {
@@ -63,7 +62,7 @@ export const generateHeaders = (onAdjustPortfolio) => {
 	];
 };
 
-export const generateWarningFormValues = () => ({
+export const generateWarningFormValues = (DEFAULT_TOGGLE_OPTIONS) => ({
 	popup_warning: {
 		type: 'toggle',
 		stringId: 'USER_SETTINGS.RISK_MANAGEMENT.WARNING_POP_UP',

@@ -89,8 +89,8 @@ const QuickTrade = ({
 	const [error, setError] = useState();
 	const [submitting, setSubmitting] = useState(false);
 	const [data, setData] = useState({});
-	const [reversed, setReversed] = useState(false);
 	const [mounted, setMounted] = useState(false);
+	// const [reversed, setReversed] = useState(false);
 
 	const onCloseDialog = (autoHide) => {
 		setIsReview(true);
@@ -231,10 +231,17 @@ const QuickTrade = ({
 			const spending_amount = sourceAmount;
 			const receiving_amount = targetAmount;
 
-			const [spending_currency, receiving_currency] = [selectedSource, selectedTarget];
-			const amount = spending === SPENDING.SOURCE ? spending_amount : receiving_amount;
-			const amountPayload = spending === SPENDING.SOURCE ? { spending_amount } : { receiving_amount };
-		
+			const [spending_currency, receiving_currency] = [
+				selectedSource,
+				selectedTarget,
+			];
+			const amount =
+				spending === SPENDING.SOURCE ? spending_amount : receiving_amount;
+			const amountPayload =
+				spending === SPENDING.SOURCE
+					? { spending_amount }
+					: { receiving_amount };
+
 			if (amount && spending_currency && receiving_currency) {
 				setLoading(true);
 				setTargetAmount();
@@ -315,9 +322,9 @@ const QuickTrade = ({
 
 	useEffect(() => {
 		if (spending === SPENDING.SOURCE) {
-			setReversed(false);
+			// setReversed(false);
 		} else if (spending === SPENDING.TARGET) {
-			setReversed(true);
+			// setReversed(true);
 		}
 	}, [spending]);
 
@@ -343,13 +350,13 @@ const QuickTrade = ({
 	const decimalPoint = getDecimals(pairData.increment_size);
 	const [loadingSource, loadingTarget] =
 		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
-	const [
-		[spendingAmount, spendingCurrency],
-		[receivingAmount, receivingCurrency],
-	] = [
-		[sourceAmount, selectedSource],
-		[targetAmount, selectedTarget],
-	][reversed ? 'reverse' : 'slice']();
+	// const [
+	// 	[spendingAmount, spendingCurrency],
+	// 	[receivingAmount, receivingCurrency],
+	// ] = [
+	// 	[sourceAmount, selectedSource],
+	// 	[targetAmount, selectedTarget],
+	// ][reversed ? 'reverse' : 'slice']();
 
 	return (
 		<Fragment>
