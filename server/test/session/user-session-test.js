@@ -84,6 +84,54 @@ describe('User Session', async () => {
             
         assert.equal(userBalance.body.message, 'Access denied: Token is already revoked', 'wrong message');
     });
+
+    it('Integration -should increment attempt for wrong password', async () => {
+
+        let { createdUser } = await createSessionAndLogin();
+        createdUser.password = 'test324253.'
+
+        let loginData = await request()
+            .post(`/v2/login/`)
+            .set('x-real-ip', IP)
+            .send(createdUser);
+            
+        assert.equal(loginData.body.message, 'Credentials incorrect You have 1/5 attempts left', 'wrong message content');
+
+        loginData = await request()
+            .post(`/v2/login/`)
+            .set('x-real-ip', IP)
+            .send(createdUser);
+            
+        assert.equal(loginData.body.message, 'Credentials incorrect You have 2/5 attempts left', 'wrong message content');
+
+        loginData = await request()
+            .post(`/v2/login/`)
+            .set('x-real-ip', IP)
+            .send(createdUser);
+            
+        assert.equal(loginData.body.message, 'Credentials incorrect You have 3/5 attempts left', 'wrong message content');
+
+        loginData = await request()
+        .post(`/v2/login/`)
+        .set('x-real-ip', IP)
+        .send(createdUser);
+        
+        assert.equal(loginData.body.message, 'Credentials incorrect You have 4/5 attempts left', 'wrong message content');
+
+        loginData = await request()
+        .post(`/v2/login/`)
+        .set('x-real-ip', IP)
+        .send(createdUser);
+        
+        assert.equal(loginData.body.message, 'Credentials incorrect You have 5/5 attempts left', 'wrong message content');
+
+        loginData = await request()
+        .post(`/v2/login/`)
+        .set('x-real-ip', IP)
+        .send(createdUser);
+        
+        assert.equal(loginData.body.message, 'You attempted to login too many times, please wait for a while to try again', 'wrong message content');
+    });
   
     //Fuz Testing
     it('Fuzz Test -should return error', async () => {
