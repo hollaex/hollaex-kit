@@ -413,13 +413,14 @@ const loginPost = (req, res) => {
 			} else {
 				return all([
 					user,
-					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then(async (validOtp) => {
-						if (!validOtp) {
-							await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-							throw new Error(INVALID_OTP_CODE + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
-						} else {
-							return toolsLib.security.checkCaptcha(captcha, ip);
-						}
+					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code)
+					.then(async () => {
+						return toolsLib.security.checkCaptcha(captcha, ip);
+					})
+					.catch(async (err) => {
+						const loginData = await toolsLib.user.findUserLatestLogin(user);
+						await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+						throw new Error(err.message + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
 					})
 				]);
 			}
