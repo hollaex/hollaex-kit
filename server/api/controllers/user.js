@@ -314,7 +314,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 		await toolsLib.security.createSession(token, loginData.id, user.id);
 	}
 	else if (loginData.status == false && status == false) {
-		toolsLib.user.updateLoginAttempt(loginData.id);
+		await toolsLib.user.updateLoginAttempt(loginData.id);
 	}
 }
 
@@ -392,7 +392,7 @@ const loginPost = (req, res) => {
 
 			const loginData = await toolsLib.user.findUserLatestLogin(user);
 
-			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+			if (loginData && loginData.attempt + 1 === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
 				throw new Error(LOGIN_NOT_ALLOW);
 			}
 
@@ -404,9 +404,10 @@ const loginPost = (req, res) => {
 		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-				throw new Error(INVALID_CREDENTIALS);
+				const loginData = await toolsLib.user.findUserLatestLogin(user);
+				throw new Error(INVALID_CREDENTIALS + ` You have ${loginData.attempt + 1}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
 			}
-
+			return all([user]);
 			if (!user.otp_enabled) {
 				return all([user, toolsLib.security.checkCaptcha(captcha, ip)]);
 			} else {
