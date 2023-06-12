@@ -380,8 +380,7 @@ const updateLoginStatus = (loginId) => {
 
 const findUserLatestLogin = (user) => {
 	return getModel('login').findOne({
-		limit: 1,
-		order: [ [ 'created_at', 'DESC' ]],
+		order: [ [ 'timestamp', 'DESC' ]],
 		where: {
 			user_id: user.id,
 			updated_at: {
