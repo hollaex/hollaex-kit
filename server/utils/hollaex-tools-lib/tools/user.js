@@ -378,10 +378,12 @@ const updateLoginStatus = (loginId) => {
 	return getModel('login').update( { status: true }, { where: { id: loginId } });
 }
 
-const findUserPastLogin = (user) => {
+const findUserLatestLogin = (user) => {
 	return getModel('login').findOne({
 		where: {
 			user_id: user.id,
+			limit: 1,
+			order: [ [ 'created_at', 'DESC' ]],
 			updated_at: {
 				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
 			},
@@ -2040,5 +2042,5 @@ module.exports = {
 	getExchangeUserSessions,
 	revokeExchangeUserSession,
 	updateLoginStatus,
-	findUserPastLogin
+	findUserLatestLogin
 };

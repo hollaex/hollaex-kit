@@ -294,7 +294,7 @@ const verifyUser = (req, res) => {
 
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status = true) => {
-	const loginData = await toolsLib.user.findUserPastLogin(user);
+	const loginData = await toolsLib.user.findUserLatestLogin(user);
 
 	// Create login record in case of either there is no login record past 5 minutes 
 	// OR there is a successful login past 5 minute but the current attempt is failure
@@ -390,7 +390,7 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
-			const loginData = await toolsLib.user.findUserPastLogin(user);
+			const loginData = await toolsLib.user.findUserLatestLogin(user);
 
 			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
 				throw new Error(LOGIN_NOT_ALLOW);
