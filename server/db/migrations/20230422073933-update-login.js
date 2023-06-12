@@ -8,7 +8,7 @@ module.exports = {
 			queryInterface.addColumn(TABLE, 'attempt', {
 				type: Sequelize.INTEGER,
 				allowNull: true,
-				defaultValue: 0
+				defaultValue: 1
 			}),
 			queryInterface.addColumn(TABLE, 'status', {
 				type: Sequelize.BOOLEAN,

@@ -392,7 +392,7 @@ const loginPost = (req, res) => {
 
 			const loginData = await toolsLib.user.findUserLatestLogin(user);
 
-			if (loginData && loginData.attempt + 1 === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
 				throw new Error(LOGIN_NOT_ALLOW);
 			}
 
@@ -405,7 +405,7 @@ const loginPost = (req, res) => {
 			if (!passwordIsValid) {
 				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user);
-				throw new Error(INVALID_CREDENTIALS + ` You have ${loginData.attempt + 1}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
+				throw new Error(INVALID_CREDENTIALS + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
 			}
 
 			if (!user.otp_enabled) {
@@ -416,7 +416,7 @@ const loginPost = (req, res) => {
 					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then(async (validOtp) => {
 						if (!validOtp) {
 							await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-							throw new Error(INVALID_OTP_CODE + ` You have ${loginData.attempt + 1}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
+							throw new Error(INVALID_OTP_CODE + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
 						} else {
 							return toolsLib.security.checkCaptcha(captcha, ip);
 						}

@@ -30,7 +30,7 @@ module.exports = function (sequelize, DataTypes) {
 			attempt: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
-				defaultValue: 0
+				defaultValue: 1
 			},
 			status: {
 				type: DataTypes.BOOLEAN,
