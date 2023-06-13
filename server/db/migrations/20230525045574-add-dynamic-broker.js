@@ -11,12 +11,6 @@ module.exports = {
           defaultValue: 0,
           allowNull: true
         }),
-      queryInterface
-        .addColumn(TABLE, 'multiplier', {
-          type: Sequelize.INTEGER,
-		      defaultValue: 1,
-          allowNull: true
-        }),
         queryInterface
         .addColumn(TABLE, 'refresh_interval', {
           type: Sequelize.INTEGER,
@@ -29,7 +23,6 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     return Promise.all([
       queryInterface.removeColumn(TABLE, 'spread'),
-      queryInterface.removeColumn(TABLE, 'multiplier'),
       queryInterface.removeColumn(TABLE, 'refresh_interval'),
     ]);
   }

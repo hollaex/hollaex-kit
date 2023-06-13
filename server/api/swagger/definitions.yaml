@@ -1473,8 +1473,6 @@ definitions:
         maxLength: 256
       spread:
         type: number
-      multiplier:
-        type: number
   BrokerPairCreate:
     type: object
     required:
@@ -1520,8 +1518,6 @@ definitions:
         type: string
         maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

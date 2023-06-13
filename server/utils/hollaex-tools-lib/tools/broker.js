@@ -98,7 +98,7 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null,
 
 	const { symbol, spread, quote_expiry_time, refresh_interval, formula, multiplier, id } = broker;
 
-	const baseCurrencyPrice = await calculatePrice(side, spread, multiplier, formula, refresh_interval, id);
+	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
 
 	const decimalPoint = getDecimals(broker.increment_size);
 	const roundedPrice = math.round(
@@ -198,9 +198,9 @@ const calculateFormula = (fn) => {
 
 const isFairPriceForBroker = async (broker) => {
 	// with ccxt
-	const priceFromMarkets = await calculatePrice(null, null, 1, broker.formula, null, broker.id, false);
+	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
 	// with oracle
-	const priceFromOracle = await calculatePrice(null, null, 1, broker.formula, null, broker.id, true);
+	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
 
 	//relative difference
 	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromOracle + priceFromOracle) / 2));
@@ -211,7 +211,7 @@ const isFairPriceForBroker = async (broker) => {
 	else return true;
 }
 
-const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_interval, brokerId, isOracle = false) => {
+const calculatePrice = async (side, spread, formula, refresh_interval, brokerId, isOracle = false) => {
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
 	const variables = formula.match(regex);
 
@@ -254,12 +254,12 @@ const calculatePrice = async (side, spread, multiplier = 1, formula, refresh_int
 		
 	}
 	const convertedPrice = calculateFormula(formula);
-	let multipliedPrice = math.multiply(convertedPrice, multiplier);
+	let multipliedPrice;
 
 	if (side === 'buy') {
-		multipliedPrice = math.multiply(multipliedPrice, (1 + (spread / 100)));
+		multipliedPrice = math.multiply(convertedPrice, (1 + (spread / 100)));
 	} else if (side === 'sell') {
-		multipliedPrice = math.multiply(multipliedPrice, (1 - (spread / 100)));
+		multipliedPrice = math.multiply(convertedPrice, (1 - (spread / 100)));
 	}
 	
 	return multipliedPrice;
@@ -334,7 +334,6 @@ const testBroker = async (data) => {
 		const price = await calculatePrice(
 			null,
 			spread,
-			1,
 			formula,
 			5,
 			'test:broker'

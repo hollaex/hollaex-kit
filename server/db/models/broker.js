@@ -65,11 +65,6 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 0,
 				allowNull: true
 			},
-			multiplier: {
-				type: DataTypes.INTEGER,
-				defaultValue: 1,
-				allowNull: true
-			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
 				allowNull: true,

@@ -55,8 +55,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		tracked_symbol,
-		multiplier
+		tracked_symbol
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -78,8 +77,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		tracked_symbol,
-		multiplier
+		tracked_symbol
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -98,8 +96,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		tracked_symbol,
-		multiplier
+		tracked_symbol
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -199,8 +196,7 @@ function updateBrokerPair(req, res) {
 		account,
 		formula,
 		exchange_name,
-		spread,
-		multiplier } = req.swagger.params.data.value;
+		spread } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
 		req.uuid,
@@ -220,8 +216,7 @@ function updateBrokerPair(req, res) {
 		account,
 		formula,
 		exchange_name,
-		spread,
-		multiplier
+		spread
 	);
 
 	toolsLib.broker.updateBrokerPair(id, req.swagger.params.data.value)
