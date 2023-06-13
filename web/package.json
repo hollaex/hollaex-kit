@@ -9,7 +9,6 @@
 		"@paciolan/remote-component": "2.11.0",
 		"@simonwep/pickr": "1.8.1",
 		"antd": "4.6.2",
-		"antd-mobile": "2.2.3",
 		"array-move": "3.0.1",
 		"awesome-phonenumber": "2.64.0",
 		"axios": "0.21.1",
@@ -88,6 +87,7 @@
 		"ws-heartbeat": "1.2.0"
 	},
 	"devDependencies": {
+		"@craco/craco": "5.8.0",
 		"cpy-cli": "3.1.1",
 		"glob": "7.1.7",
 		"husky": "4.3.0",
@@ -110,7 +110,7 @@
 		"start-js": "react-scripts --max_old_space_size=3072 start",
 		"start": "npm install && npm-run-all -p watch-css start-js",
 		"dev:plugin": "REACT_APP_PLUGIN_DEV_MODE=true REACT_APP_PLUGIN=$npm_config_plugin npm run start",
-		"build": "react-scripts --max_old_space_size=3072 build",
+		"build": "craco --max_old_space_size=3072 build",
 		"pre-build": "npm run remove-build && npm install",
 		"build:demo": "REACT_APP_SERVER_ENDPOINT=https://api.sandbox.hollaex.com npm run build",
 		"publish:demo": "surge build",
