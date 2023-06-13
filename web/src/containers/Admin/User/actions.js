@@ -1,4 +1,4 @@
-import { all } from 'bluebird';
+import { all } from 'rsvp';
 import querystring from 'query-string';
 import axios from 'axios';
 import store from 'store';
