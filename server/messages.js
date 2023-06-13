@@ -12,7 +12,7 @@ exports.USER_NOT_VERIFIED = 'User is not verified';
 exports.USER_NOT_ACTIVATED = 'User is not activated';
 exports.USER_EXISTS = 'User already exists';
 exports.USER_REGISTERED = 'User successfully registered';
-exports.INVALID_CREDENTIALS = 'Credentials incorrect';
+exports.INVALID_CREDENTIALS = 'Incorrect credentials.';
 exports.USER_VERIFIED = 'User is now verified';
 exports.INVALID_PASSWORD =
 	'Invalid password. It has to contain at least 8 characters, at least one digit and one character.';

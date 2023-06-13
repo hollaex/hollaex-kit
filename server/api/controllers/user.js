@@ -318,6 +318,13 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	}
 }
 
+const createAttemptMessage = (loginData) => {
+	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
+	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
+	{ return '' };
+	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`
+}
+
 const loginPost = (req, res) => {
 	const {
 		password,
@@ -390,12 +397,6 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
-			const loginData = await toolsLib.user.findUserLatestLogin(user);
-
-			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
-				throw new Error(LOGIN_NOT_ALLOW);
-			}
-
 			return all([
 				user,
 				toolsLib.security.validatePassword(user.password, password)
@@ -405,7 +406,8 @@ const loginPost = (req, res) => {
 			if (!passwordIsValid) {
 				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user);
-				throw new Error(INVALID_CREDENTIALS + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
+				const message = createAttemptMessage(loginData);
+				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
 			if (!user.otp_enabled) {
@@ -418,14 +420,20 @@ const loginPost = (req, res) => {
 						return toolsLib.security.checkCaptcha(captcha, ip);
 					})
 					.catch(async (err) => {
-						const loginData = await toolsLib.user.findUserLatestLogin(user);
 						await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-						throw new Error(err.message + ` You have ${loginData.attempt}/${NUMBER_OF_ALLOWED_ATTEMPTS} attempts left`);
+						const loginData = await toolsLib.user.findUserLatestLogin(user);
+						const message = createAttemptMessage(loginData);
+						throw new Error(err.message + message);
 					})
 				]);
 			}
 		})
-		.then(([user]) => {
+		.then(async ([user]) => {
+			const loginData = await toolsLib.user.findUserLatestLogin(user);
+			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+				throw new Error(LOGIN_NOT_ALLOW);
+			}
+
 			const data = {
 				ip,
 				time,
