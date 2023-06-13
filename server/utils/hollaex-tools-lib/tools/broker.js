@@ -253,16 +253,15 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		formula = formula.replace(variable, marketPrice);
 		
 	}
-	const convertedPrice = calculateFormula(formula);
-	let multipliedPrice;
+	let convertedPrice = calculateFormula(formula);
 
 	if (side === 'buy') {
-		multipliedPrice = math.multiply(convertedPrice, (1 + (spread / 100)));
+		convertedPrice = math.multiply(convertedPrice, (1 + (spread / 100)));
 	} else if (side === 'sell') {
-		multipliedPrice = math.multiply(convertedPrice, (1 - (spread / 100)));
+		convertedPrice = math.multiply(convertedPrice, (1 - (spread / 100)));
 	}
 	
-	return multipliedPrice;
+	return convertedPrice;
 };
 
 const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size, type) => {
