@@ -1933,8 +1933,8 @@ const getExchangeUserSessions = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('login', {
 		where: {
-			...(opts.user_id && {user_id: opts.user_id}),
-			...(opts.status && {status: opts.status}),
+			...(opts.user_id && { user_id: opts.user_id }),
+			...(opts.status != null && { status: opts.status }),
 			timestamp: timeframe
 		},
 		include: [
