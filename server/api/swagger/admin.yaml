@@ -2972,6 +2972,11 @@ paths:
       operationId: getUserSessionsByAdmin
       parameters:
         - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
           name: user_id
           description: User id
           required: false
