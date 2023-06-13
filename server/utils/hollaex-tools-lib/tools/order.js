@@ -161,9 +161,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 				return responseObj;
 			})
-			.catch((err) => {
-				return reject(new Error(err.message));
-			});
 	}
 	else {
 		try {
