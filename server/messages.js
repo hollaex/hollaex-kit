@@ -209,3 +209,5 @@ exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';
 exports.UNISWAP_PRICE_NOT_FOUND = 'Uniswap could not find price for this pair';
 exports.FORMULA_MARKET_PAIR_ERROR = 'Market pair(s) in the formula is in wrong format';
 exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detected';
+exports.COIN_INPUT_MISSING = 'Coin inputs are missing';
+exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';

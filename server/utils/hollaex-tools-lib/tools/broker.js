@@ -37,7 +37,9 @@ const {
 	EXCHANGE_NOT_FOUND,
 	SYMBOL_NOT_FOUND,
 	UNISWAP_PRICE_NOT_FOUND,
-	FORMULA_MARKET_PAIR_ERROR
+	FORMULA_MARKET_PAIR_ERROR,
+	COIN_INPUT_MISSING,
+	AMOUNTS_MISSING
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -88,15 +90,9 @@ const setExchange = (data) => {
     return exchange;
 }
 
-const getQuoteDynamicBroker = async (side, broker, user_id = null,
-	orderData = {
-		spending_currency: null,
-		receiving_currency: null,
-		spending_amount: null,
-		receiving_amount: null
-	}) => {
+const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) => {
 
-	const { symbol, spread, quote_expiry_time, refresh_interval, formula, multiplier, id } = broker;
+	const { symbol, spread, quote_expiry_time, refresh_interval, formula, id } = broker;
 
 	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
 
@@ -128,12 +124,7 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null,
 
 };
 
-const getQuoteManualBroker = async (broker, side, user_id = null, orderData = {
-	spending_currency: null,
-	receiving_currency: null,
-	spending_amount: null,
-	receiving_amount: null
-}) => {
+const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => {
 	const { symbol, quote_expiry_time, sell_price, buy_price, increment_size  } = broker;
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
@@ -161,32 +152,37 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData = {
 }
 
 const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) => {
+	if (orderData == null) {
+		throw new Error(COIN_INPUT_MISSING);
+	}
+
 	let size = null;
+	let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData;
 
-	if (orderData) {
-		let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData
+	if (spending_currency == null && receiving_currency == null) {
+		throw new Error(AMOUNTS_MISSING);
+	}
 
-		if (spending_amount != null) {
-			const sourceAmount = math.round(
-				side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
-				decimalPoint
-			);
+	if (spending_amount != null) {
+		const sourceAmount = math.round(
+			side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
+			decimalPoint
+		);
 
-			receiving_amount = sourceAmount;
+		receiving_amount = sourceAmount;
 
-		} else if (receiving_amount != null) {
-			const sourceAmount = math.round(
-				side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
-				decimalPoint
-			);
-			spending_amount = sourceAmount;
-		}
+	} else if (receiving_amount != null) {
+		const sourceAmount = math.round(
+			side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
+			decimalPoint
+		);
+		spending_amount = sourceAmount;
+	}
 
-		if (`${spending_currency}-${receiving_currency}` === symbol) {
-			size = spending_amount;
-		} else {
-			size = receiving_amount
-		}
+	if (`${spending_currency}-${receiving_currency}` === symbol) {
+		size = spending_amount;
+	} else {
+		size = receiving_amount
 	}
 	return size;
 }
@@ -287,9 +283,7 @@ const generateRandomToken = (user_id, symbol, side, expiryTime = 30, price, size
 };
 
 const fetchBrokerQuote = async (brokerQuote) => {
-	const { symbol, side, bearerToken, ip } = brokerQuote;
-
-	const orderData = brokerQuote?.orderData;
+	const { symbol, side, bearerToken, ip, orderData } = brokerQuote;
 
 	try {
 		let user_id = null;
