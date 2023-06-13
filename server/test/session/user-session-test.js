@@ -95,35 +95,35 @@ describe('User Session', async () => {
             .set('x-real-ip', IP)
             .send(createdUser);
             
-        assert.equal(loginData.body.message, 'Credentials incorrect You have 1/5 attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials.', 'wrong message content');
 
         loginData = await request()
             .post(`/v2/login/`)
             .set('x-real-ip', IP)
             .send(createdUser);
             
-        assert.equal(loginData.body.message, 'Credentials incorrect You have 2/5 attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials. You have 3 more attempts left', 'wrong message content');
 
         loginData = await request()
             .post(`/v2/login/`)
             .set('x-real-ip', IP)
             .send(createdUser);
             
-        assert.equal(loginData.body.message, 'Credentials incorrect You have 3/5 attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials. You have 2 more attempts left', 'wrong message content');
 
         loginData = await request()
         .post(`/v2/login/`)
         .set('x-real-ip', IP)
         .send(createdUser);
         
-        assert.equal(loginData.body.message, 'Credentials incorrect You have 4/5 attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials. You have 1 more attempts left', 'wrong message content');
 
         loginData = await request()
         .post(`/v2/login/`)
         .set('x-real-ip', IP)
         .send(createdUser);
         
-        assert.equal(loginData.body.message, 'Credentials incorrect You have 5/5 attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials. You attempted to login too many times, please wait for a while to try again', 'wrong message content');
 
         loginData = await request()
         .post(`/v2/login/`)
