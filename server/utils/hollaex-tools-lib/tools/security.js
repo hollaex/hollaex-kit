@@ -893,7 +893,8 @@ const verifySession = async (token) => {
 	}
 
 	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
-		const sessionData = await dbQuery.findOne('session', { where: { token } });
+		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
 		const updatedSession =  await sessionData.update(
 			{ last_seen: new Date() }
 		);
