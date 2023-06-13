@@ -296,7 +296,7 @@ const verifyUser = (req, res) => {
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
 	const loginData = await toolsLib.user.findUserLatestLogin(user, status);
 
-	if (!loginData || (loginData?.status == true && status == true)) {
+	if (!loginData || loginData?.status == true) {
 		return toolsLib.user.registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -307,7 +307,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
 	} 
-	else if (loginData.status == false && status == false) {
+	else if (loginData.status == false) {
 		await toolsLib.user.updateLoginAttempt(loginData.id);
 	}
 }
