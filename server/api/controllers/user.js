@@ -307,10 +307,6 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
 	} 
-	else if (loginData.status == false && status == true) {
-		await toolsLib.user.updateLoginStatus(loginData.id);
-		await toolsLib.security.createSession(token, loginData.id, user.id);
-	}
 	else if (loginData.status == false && status == false) {
 		await toolsLib.user.updateLoginAttempt(loginData.id);
 	}
