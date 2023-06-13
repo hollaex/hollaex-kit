@@ -293,12 +293,10 @@ const verifyUser = (req, res) => {
 };
 
 
-const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status = true) => {
-	const loginData = await toolsLib.user.findUserLatestLogin(user);
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
+	const loginData = await toolsLib.user.findUserLatestLogin(user, status);
 
-	// Create login record in case of either there is no login record past 5 minutes 
-	// OR there is a successful login past 5 minute but the current attempt is failure
-	if (!loginData || (loginData?.status == true && status == false)) {
+	if (!loginData || (loginData?.status == true && status == true)) {
 		return toolsLib.user.registerUserLogin(user.id, ip, {
 			device,
 			domain,
@@ -321,8 +319,9 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 const createAttemptMessage = (loginData) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
 	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
-	{ return '' };
-	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`
+	{ return '' }
+	else if(currentNumberOfAttemps === 0) return ' ' + LOGIN_NOT_ALLOW;
+	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
 }
 
 const loginPost = (req, res) => {
@@ -397,8 +396,8 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
-			const loginData = await toolsLib.user.findUserLatestLogin(user);
-			if (loginData && loginData.attempt + 1 === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+			const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
 				throw new Error(LOGIN_NOT_ALLOW);
 			}
 
@@ -410,7 +409,7 @@ const loginPost = (req, res) => {
 		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
 				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-				const loginData = await toolsLib.user.findUserLatestLogin(user);
+				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 				const message = createAttemptMessage(loginData);
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
@@ -426,7 +425,7 @@ const loginPost = (req, res) => {
 					})
 					.catch(async (err) => {
 						await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-						const loginData = await toolsLib.user.findUserLatestLogin(user);
+						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 						const message = createAttemptMessage(loginData);
 						throw new Error(err.message + message);
 					})
@@ -470,7 +469,7 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, token]) => {
 			if (ip) {
-				await createUserLogin(user, ip, device, domain, origin, referer, token, long_term);
+				await createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
 			}
 			return res.status(201).json({ token });
 		})

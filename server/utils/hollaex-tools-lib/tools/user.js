@@ -378,11 +378,12 @@ const updateLoginStatus = (loginId) => {
 	return getModel('login').update( { status: true }, { where: { id: loginId } });
 }
 
-const findUserLatestLogin = (user) => {
+const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
 		order: [ [ 'timestamp', 'DESC' ]],
 		where: {
 			user_id: user.id,
+			...(status != null && { status }),
 			updated_at: {
 				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
 			},
