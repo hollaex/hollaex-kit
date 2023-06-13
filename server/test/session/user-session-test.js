@@ -116,7 +116,7 @@ describe('User Session', async () => {
         .set('x-real-ip', IP)
         .send(createdUser);
         
-        assert.equal(loginData.body.message, 'Incorrect credentials. You have 1 more attempts left', 'wrong message content');
+        assert.equal(loginData.body.message, 'Incorrect credentials. You have 1 more attempt left', 'wrong message content');
 
         loginData = await request()
         .post(`/v2/login/`)
