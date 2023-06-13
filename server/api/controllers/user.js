@@ -397,6 +397,11 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
+			const loginData = await toolsLib.user.findUserLatestLogin(user);
+			if (loginData && loginData.attempt + 1 === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+				throw new Error(LOGIN_NOT_ALLOW);
+			}
+
 			return all([
 				user,
 				toolsLib.security.validatePassword(user.password, password)
@@ -428,12 +433,7 @@ const loginPost = (req, res) => {
 				]);
 			}
 		})
-		.then(async ([user]) => {
-			const loginData = await toolsLib.user.findUserLatestLogin(user);
-			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
-				throw new Error(LOGIN_NOT_ALLOW);
-			}
-
+		.then(([user]) => {
 			const data = {
 				ip,
 				time,
