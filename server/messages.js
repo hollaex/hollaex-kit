@@ -211,3 +211,4 @@ exports.FORMULA_MARKET_PAIR_ERROR = 'Market pair(s) in the formula is in wrong f
 exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detected';
 exports.COIN_INPUT_MISSING = 'Coin inputs are missing';
 exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';
+exports.AMOUNT_NEGATIVE_ERROR = 'Amount cannot be negative';
