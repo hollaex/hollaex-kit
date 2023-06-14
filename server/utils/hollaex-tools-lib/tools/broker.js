@@ -442,7 +442,8 @@ const createBrokerPair = async (brokerPair) => {
 				quote_expiry_time,
 				type,
 				account,
-				formula
+				formula,
+				increment_size
 			} = brokerPair;
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
@@ -470,7 +471,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if (formula) {
-				const brokerPrice = await testBroker({ formula, spread:0 });
+				const brokerPrice = await testBroker({ formula, spread, increment_size });
 				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 					throw new Error(FORMULA_MARKET_PAIR_ERROR);
 				}
@@ -511,7 +512,8 @@ const updateBrokerPair = async (id, data) => {
 		spread,
 		type,
 		account,
-		formula
+		formula,
+		increment_size
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -538,7 +540,7 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 	if (formula) {
-		const brokerPrice = await testBroker({ formula, spread });
+		const brokerPrice = await testBroker({ formula, spread, increment_size });
 		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 			throw new Error(FORMULA_MARKET_PAIR_ERROR);
 		}
