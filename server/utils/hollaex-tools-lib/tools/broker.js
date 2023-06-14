@@ -16,7 +16,7 @@ const { verifyBearerTokenPromise } = require('./security');
 const { Op } = require('sequelize');
 const { loggerBroker } = require('../../../config/logger');
 const { isArray } = require('lodash');
-
+const BigNumber = require('bignumber.js');
 const connectedExchanges = {};
 
 
@@ -58,18 +58,6 @@ const validateBrokerPair = (brokerPair) => {
 	}
 };
 
-const getDecimals = (value = 0) => {
-	if (Math.floor(value) === value) return 0;
-
-	let str = value.toString();
-	if (str.indexOf('.') !== -1 && str.indexOf('-') !== -1) {
-		return str.split('-')[1] || 0;
-	} else if (str.indexOf('.') !== -1) {
-		return str.split('.')[1].length || 0;
-	}
-	return str.split('-')[1] || 0;
-};
-
 const setExchange = (data) => {
     if (connectedExchanges[data.id]) {
         return connectedExchanges[data.id].exchange
@@ -96,12 +84,8 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 
 	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
 
-	const decimalPoint = getDecimals(broker.increment_size);
-	const roundedPrice = math.round(
-		baseCurrencyPrice,
-		decimalPoint
-	);
-
+	const decimalPoint = new BigNumber(broker.increment_size).dp();
+	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
 	const responseObject = {
 		price: roundedPrice
 	};
@@ -129,11 +113,9 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
 
-	const decimalPoint = getDecimals(increment_size);
-	const roundedPrice = math.round(
-		baseCurrencyPrice,
-		decimalPoint
-	);
+	const decimalPoint = new BigNumber(increment_size).dp();
+	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
+	
 	const responseObject = {
 		price: roundedPrice
 	};
@@ -164,18 +146,13 @@ const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) =>
 	}
 
 	if (spending_amount != null) {
-		const sourceAmount = math.round(
-			side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price,
-			decimalPoint
-		);
-
+		const sourceAmount = new BigNumber(side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price)
+				.decimalPlaces(decimalPoint).toNumber();
 		receiving_amount = sourceAmount;
 
 	} else if (receiving_amount != null) {
-		const sourceAmount = math.round(
-			side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price,
-			decimalPoint
-		);
+		const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price)
+		.decimalPlaces(decimalPoint).toNumber();
 		spending_amount = sourceAmount;
 	}
 
@@ -252,9 +229,9 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 	let convertedPrice = calculateFormula(formula);
 
 	if (side === 'buy') {
-		convertedPrice = math.multiply(convertedPrice, (1 + (spread / 100)));
+		convertedPrice = new BigNumber(convertedPrice).multipliedBy((1 + (spread / 100))).toNumber();
 	} else if (side === 'sell') {
-		convertedPrice = math.multiply(convertedPrice, (1 - (spread / 100)));
+		convertedPrice =  new BigNumber(convertedPrice).multipliedBy((1 - (spread / 100))).toNumber();
 	}
 	
 	return convertedPrice;
@@ -332,10 +309,10 @@ const testBroker = async (data) => {
 			'test:broker'
 		);
 
-		const decimalPoint = getDecimals(increment_size);
+		const decimalPoint = new BigNumber(increment_size).dp();
 		return {
-			buy_price: math.round(price * (1 - (spread / 100)), decimalPoint),
-			sell_price: math.round(price * (1 + (spread / 100)), decimalPoint)
+			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
+			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
 		}
 	} catch (err) {
 		throw new Error(err);
@@ -412,7 +389,7 @@ const reverseTransaction = async (orderData) => {
 
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
-		const decimalPoint = getDecimals(broker.increment_size);
+		const decimalPoint = new BigNumber(broker.increment_size).dp();
 
 		if (broker.account) {
 			const objectKeys = Object.keys(broker.account);
@@ -429,10 +406,8 @@ const reverseTransaction = async (orderData) => {
 	
 				const marketTicker = await exchange.fetchTicker(symbol);
 	
-				const roundedPrice = math.round(
-					side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99,
-					decimalPoint
-				);
+				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
+				.decimalPlaces(decimalPoint).toNumber();
 				exchange.createOrder(formattedRebalancingSymbol, 'limit', size, roundedPrice)
 					.then((res) => { notifyUser(res); })
 					.catch((err) => { notifyUser(err); });

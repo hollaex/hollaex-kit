@@ -17,6 +17,7 @@ const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber } = require('./common');
+const BigNumber = require('bignumber.js');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -98,8 +99,8 @@ const executeUserOrder = async (user_id, opts, token) => {
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 
-	if (spending_amount) spending_amount = math.number(spending_amount);
-	if (receiving_amount) receiving_amount = math.number(receiving_amount);
+	if (spending_amount) spending_amount = new BigNumber(spending_amount).toNumber();
+	if (receiving_amount) receiving_amount = new BigNumber(receiving_amount).toNumber();
 
 	if (receiving_amount < 0 || spending_amount < 0) {
 		throw new Error(AMOUNT_NEGATIVE_ERROR);
@@ -133,7 +134,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			}
 		})
 			.then((brokerQuote) => {
-				const decimalPoint = getDecimals(broker.increment_size);
+				const decimalPoint = new BigNumber(broker.increment_size).dp();
 				const responseObj = {
 					spending_currency,
 					receiving_currency,
@@ -143,17 +144,14 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					type: 'broker'
 				}
 				if (spending_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price,
-						decimalPoint
-					);
+					const sourceAmount = new BigNumber(side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price)
+					.decimalPlaces(decimalPoint).toNumber();
+
 					responseObj.receiving_amount = sourceAmount;
 
 				} else if (receiving_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price,
-						decimalPoint
-					);
+					const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price)
+					.decimalPlaces(decimalPoint).toNumber();
 					responseObj.spending_amount = sourceAmount;
 				}
 				
@@ -207,7 +205,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			//Check if the estimated price is 50% greater than the last trade
 			const lastTrades = await getPublicTrades(symbol);
 			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
-				const lastPrice = math.number(lastTrades[symbol][0].price) * 1.50
+				const lastPrice = new BigNumber(lastTrades[symbol][0].price).multipliedBy(1.50).toNumber();
 
 				if (priceValues.estimatedPrice > lastPrice) {
 					throw new Error(QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR);
