@@ -57,7 +57,7 @@ class FullListUsers extends Component {
 				});
 			})
 			.catch((error) => {
-				const message = error.message;
+				const message = error.data.message;
 				this.setState({
 					loading: false,
 					error: message,
