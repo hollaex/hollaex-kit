@@ -43,15 +43,15 @@ const {
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
-	if (brokerPair.type === 'manual' && math.compare(brokerPair.buy_price, 0) !== 1) {
+	if (brokerPair.type === 'manual' && new BigNumber(brokerPair.buy_price).comparedTo(0) !== 1) {
 		throw new Error('Broker buy price must be bigger than zero.');
-	} else if (brokerPair.type === 'manual' && math.compare(brokerPair.sell_price, 0) !== 1) {
+	} else if (brokerPair.type === 'manual' && new BigNumber(brokerPair.sell_price).comparedTo(0) !== 1) {
 		throw new Error('Broker sell price must be bigger than zero.');
-	} else if (math.compare(brokerPair.min_size, 0) !== 1) {
+	} else if (new BigNumber(brokerPair.min_size).comparedTo(0) !== 1) {
 		throw new Error('Broker minimum order size must be bigger than zero.');
-	} else if (math.compare(brokerPair.max_size, brokerPair.min_size) !== 1) {
+	} else if (new BigNumber(brokerPair.max_size).comparedTo(new BigNumber(brokerPair.min_size)) !== 1) {
 		throw new Error('Broker maximum order size must be bigger than minimum order size.');
-	} else if (math.compare(brokerPair.increment_size, 0) !== 1) {
+	} else if (new BigNumber(brokerPair.increment_size).comparedTo(0) !== 1) {
 		throw new Error('Broker order price increment must be bigger than zero.');
 	} else if (brokerPair.symbol && !validatePair(brokerPair.symbol)) {
 		throw new Error('invalid symbol');
