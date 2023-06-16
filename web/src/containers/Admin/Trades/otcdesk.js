@@ -440,7 +440,7 @@ const OtcDeskContainer = ({
 							<div>
 								{priceLoading ? (
 									<div>Getting price...</div>
-								) : priceActive ? (
+								) : (priceActive && buy_price > 0 && sell_price > 0) ? (
 									<div className="d-flex">
 										<div>
 											<div>
