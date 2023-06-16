@@ -1048,12 +1048,15 @@ const Otcdeskpopup = ({
 											
 											{!isUpgrade && <div className="mt-5 mb-5">Price refresh interval: 
 											{_toLower(kit?.info?.plan) === 'crypto' ? ' 1 minute ' : ' 5 seconds '}
-											 (<span style={{ 
+											{_toLower(kit?.info?.plan) === 'crypto' && <>
+											(<span style={{ 
 												textDecoration:'underline',
 												cursor:'pointer'
 											}}
 											>
-												<Link to={'admin/billing'}>Upgrade</Link></span> to increase refresh rate) </div>}
+												<Link to={'admin/billing'}>Upgrade</Link></span> to increase refresh rate)
+											</>}
+											 </div>}
 
 											<div className="mt-3 ">Price quote expiry time (seconds)</div>
 											<Input
