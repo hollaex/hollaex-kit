@@ -181,7 +181,7 @@ const Otcdeskpopup = ({
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
 				if(!formula) { setFormula(`${selectedExchange}_${symbol}`); handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');}
 			}
-			else { setSelectedMarket(); setFormulaVariable(); setFormula(); }
+			else { if(!previewData.formula) { setSelectedMarket(); setFormulaVariable(); setFormula(); }}
 		}
 	}, [exchangeMarkets, selectedCoinType])
 
@@ -1047,7 +1047,7 @@ const Otcdeskpopup = ({
 											/>
 											
 											{!isUpgrade && <div className="mt-5 mb-5">Price refresh interval: 
-											{_toLower(kit?.info?.plan) === 'crypto' ? '1 minute ' : '5 seconds '}
+											{_toLower(kit?.info?.plan) === 'crypto' ? ' 1 minute ' : ' 5 seconds '}
 											 (<span style={{ 
 												textDecoration:'underline',
 												cursor:'pointer'
