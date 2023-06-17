@@ -157,6 +157,7 @@ exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
+exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -336,17 +337,21 @@ const ROLES = {
 };
 
 exports.DEFAULT_FEES = {
-	zero: {
-		maker: 0.2,
-		taker: 0.2
+	fiat: {
+		maker: 0,
+		taker: 0
 	},
-	lite: {
+	boost: {
+		maker: 0,
+		taker: 0
+	},
+	crypto: {
 		maker: 0.05,
 		taker: 0.1
 	},
-	member: {
-		maker: 0,
-		taker: 0
+	basic: {
+		maker: 0.2,
+		taker: 0.2
 	}
 };
 
