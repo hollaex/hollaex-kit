@@ -3334,6 +3334,99 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
+
+
+	/**
+	 * Get a broker quote from network
+	 * @param {number} userId; - Optional Network id of user.
+	 * @param {string} spendingCurrency - Currency user wants to convert from.
+	 * @param {number} spendingAmount - Optional Amount user wants to spend.
+	 * @param {string} receivingCurrency - Currency user wants to convert to.
+	 * @param {number} receivingAmount - Optional Amount user wants to receive.
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object with quote data.
+	 */
+	 getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!spendingCurrency) {
+			return reject(parameterError('spendingCurrency', 'cannot be null'));
+		} else if (!receivingCurrency) {
+			return reject(parameterError('receivingCurrency', 'cannot be null'));
+		}
+
+		const verb = 'GET';
+		let path = `${this.baseUrl}/network/${this.exchange_id}/broker/quote?`;
+
+		if (isNumber(userId)) {
+			path += `&user_id=${userId}`;
+		}
+		if (isString(spendingCurrency)) {
+			path += `&spending_currency=${spendingCurrency}`;
+		}
+		if (isNumber(spendingAmount)) {
+			path += `&spending_amount=${spendingAmount}`;
+		}
+		if (isString(receivingCurrency)) {
+			path += `&receiving_currency=${receivingCurrency}`;
+		}
+		if (isNumber(receivingAmount)) {
+			path += `&receiving_amount=${receivingAmount}`;
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers);
+	}
+
+	/**
+	 * Execute the broker quote to network for a user
+	 * @param {number} userId; - Optional Network id of user.
+	 * @param {string} spending_currency - Currency user wants to convert from.
+	 * @param {number} spending_amount - Optional Amount user wants to spend.
+	 * @param {string} receiving_currency - Currency user wants to convert to.
+	 * @param {number} receiving_amount - Optional Amount user wants to receive.
+	 * @param {object} opts - Optional parameters.
+	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
+	 * @return {object} Object of the trade data.
+	 */
+	 executeQuote(token, opts = {
+		additionalHeaders: null
+	}) {
+		checkKit(this.exchange_id);
+
+		if (!token) {
+			return reject(parameterError('token', 'cannot be null'));
+		}
+
+		const verb = 'POST';
+		const path = `${this.baseUrl}/network/${this.exchange_id}/broker/execute`;
+
+		const data = {
+			token
+		}
+
+		const headers = generateHeaders(
+			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
+			this.apiSecret,
+			verb,
+			path,
+			this.apiExpiresAfter,
+			data
+		);
+
+		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
+	}
+
 	/**
 	 * Connect to websocket
 	 * @param {array} events - Array of events to connect to
