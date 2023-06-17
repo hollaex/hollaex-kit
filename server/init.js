@@ -52,6 +52,7 @@ const checkStatus = () => {
 		coins: {},
 		pairs: {},
 		tiers: {},
+		quicktrade: [],
 		kit: {
 			info: {},
 			color: {},
@@ -200,7 +201,15 @@ const checkStatus = () => {
 			quickTrades = await QuickTrade.findAll();
 			quickTradePairs = quickTrades.map((q) => q.symbol);
 
-			configuration.quicktrade = quickTrades.filter((qt) => qt.active);
+			// build the data for client
+			quickTrades.forEach((qt) => {
+				let item = {
+					type: qt.type,
+					symbol: qt.symbol
+				};
+				configuration.quicktrade.push(item)
+			})
+
 			
 			for (let tier of tiers) {
 				if (!('maker' in tier.fees)) {
