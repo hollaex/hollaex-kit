@@ -197,7 +197,7 @@ steps:
 - name: docker_tagging_amd64_deployment
   image: alpine
   commands: 
-    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " " > .tags
+    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo "2.7.0-testnet-86884d5" > .tags
     - echo "Current Docker tag is :" && cat .tags
     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
   when:
