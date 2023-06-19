@@ -128,6 +128,12 @@ const Step1 = ({
 			content: renderContent(),
 		},
 		{
+			key: 'fiatAssets',
+			name: 'Fiat Assets',
+			description: 'For fiat enabled plans only',
+			content: renderContent(),
+		},
+		{
 			key: 'otherAssets',
 			name: 'Other Assets',
 			description: 'Assets offered by other providers',
