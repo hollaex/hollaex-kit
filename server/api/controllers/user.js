@@ -293,24 +293,6 @@ const verifyUser = (req, res) => {
 };
 
 
-const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
-	const loginData = await toolsLib.user.findUserLatestLogin(user, status);
-
-	if (!loginData || loginData?.status == true) {
-		return toolsLib.user.registerUserLogin(user.id, ip, {
-			device,
-			domain,
-			origin,
-			referer,
-			token,
-			status,
-			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
-		});
-	} 
-	else if (loginData.status == false) {
-		await toolsLib.user.updateLoginAttempt(loginData.id);
-	}
-}
 
 const createAttemptMessage = (loginData) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
@@ -404,7 +386,7 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
-				await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 				const message = createAttemptMessage(loginData);
 				throw new Error(INVALID_CREDENTIALS + message);
@@ -420,7 +402,7 @@ const loginPost = (req, res) => {
 						return toolsLib.security.checkCaptcha(captcha, ip);
 					})
 					.catch(async (err) => {
-						await createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 						const message = createAttemptMessage(loginData);
 						throw new Error(err.message + message);
@@ -465,7 +447,7 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, token]) => {
 			if (ip) {
-				await createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
+				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
 			}
 			return res.status(201).json({ token });
 		})

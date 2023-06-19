@@ -66,7 +66,9 @@ const {
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
 	AFFILIATION_CODE_LENGTH,
-	LOGIN_TIME_OUT
+	LOGIN_TIME_OUT,
+	TOKEN_TIME_LONG,
+	TOKEN_TIME_NORMAL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -381,6 +383,26 @@ const updateLoginAttempt = (loginId) => {
 const updateLoginStatus = (loginId) => {
 	return getModel('login').update( { status: true }, { where: { id: loginId } });
 }
+
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
+	const loginData = await findUserLatestLogin(user, status);
+
+	if (!loginData || loginData?.status == true) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	} 
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+	}
+}
+
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
@@ -1981,5 +2003,6 @@ module.exports = {
 	getExchangeUserSessions,
 	revokeExchangeUserSession,
 	updateLoginStatus,
-	findUserLatestLogin
+	findUserLatestLogin,
+	createUserLogin
 };
