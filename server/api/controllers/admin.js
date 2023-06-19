@@ -112,7 +112,32 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, type, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { 
+		id, 
+		search,
+		type,
+		pending,
+		pending_type,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		format,
+		email,
+		username,
+		full_name,
+		dob_start_date,
+		dob_end_date,
+		gender,
+		nationality,
+		verification_level,
+		email_verified,
+		otp_enabled,
+		phone_number
+	
+	} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -140,6 +165,17 @@ const getUsersAdmin = (req, res) => {
 		end_date: end_date.value,
 		format: format.value,
 		type: type.value,
+		email: email.value,
+		username: username.value,
+		full_name: full_name.value,
+		dob_start_date: dob_start_date.value,
+		dob_end_date: dob_end_date.value,
+		gender: gender.value,
+		nationality: nationality.value,
+		verification_level: verification_level.value,
+		email_verified: email_verified.value,
+		otp_enabled: otp_enabled.value,
+		phone_number: phone_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

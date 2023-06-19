@@ -8,7 +8,7 @@ import _debounce from 'lodash/debounce';
 import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
-import { getBroker, createBroker, deleteBroker, updateBroker } from './actions';
+import { getBroker, createBroker, deleteBroker, updateBroker, createTestBroker } from './actions';
 import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
@@ -22,6 +22,8 @@ const defaultPreviewValues = {
 	min_size: 0.0001,
 	max_size: 0.001,
 	increment_size: 0.0001,
+	quote_expiry_time: 30,
+	exchange_name: 'binance'
 };
 
 const renderUser = (id) => (
@@ -71,7 +73,6 @@ const OtcDeskContainer = ({
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
-
 	// const max_message = useRef(null);
 	// const min_message = useRef(null);
 	// const paused_message = useRef(null);
@@ -126,18 +127,8 @@ const OtcDeskContainer = ({
 				pair_base: exchange && exchange.coins && exchange.coins[0],
 				pair_2: exchange && exchange.coins && exchange.coins[1],
 			};
-			const existPairData = brokerData.filter(
-				(data) =>
-					data.symbol ===
-					`${pairPreviewData.pair_base}-${pairPreviewData.pair_2}`
-			);
-			if (isOpen && existPairData.length) {
-				setIsExistPair(true);
-				setPreviewData({ ...pairPreviewData, ...existPairData[0] });
-			} else {
-				setIsExistPair(false);
-				setPreviewData(pairPreviewData);
-			}
+			setIsExistPair(false);
+			setPreviewData(pairPreviewData);
 		} else if (isOpen && isEdit) {
 			let pairPreviewData = {
 				...editData,
@@ -442,14 +433,14 @@ const OtcDeskContainer = ({
 		{
 			title: 'Price (displayed to user)',
 			key: 'price',
-			render: ({ sell_price, buy_price, symbol, type }) => {
+			render: ({ sell_price, buy_price, symbol, type, formula, increment_size, spread, id }) => {
 				return (
 					<div>
 						{type === 'dynamic' ? (
 							<div>
 								{priceLoading ? (
 									<div>Getting price...</div>
-								) : priceActive ? (
+								) : (priceActive && buy_price > 0 && sell_price > 0) ? (
 									<div className="d-flex">
 										<div>
 											<div>
@@ -459,14 +450,14 @@ const OtcDeskContainer = ({
 												buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
 											</div>
 										</div>
-										<div className="ml-3 text-underline" onClick={handlePrice}>
+										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
 											(Get price)
 										</div>
 									</div>
 								) : (
 									<div className="d-flex">
 										<div>Dynamic</div>
-										<div className="ml-3 text-underline" onClick={handlePrice}>
+										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
 											(Get price)
 										</div>
 									</div>
@@ -661,14 +652,38 @@ const OtcDeskContainer = ({
 				tempPreviewData['pair_2'] = coinSecondaryData[0].symbol;
 			}
 		}
-		if (name === 'accountVal' || name === 'apikey' || name === 'seckey') {
-			const accountName = tempPreviewData?.accountVal
-				? tempPreviewData?.accountVal
-				: 'bitmex';
+		if (name === 'accountVal') {
+			const accountName = value || 'hollaex';
+
+
 			tempPreviewData.account = {
 				[accountName]: {
 					apiKey: tempPreviewData?.apikey,
 					apiSecret: tempPreviewData?.seckey,
+				},
+			};
+		}
+		if (name === 'apikey') {
+			const accountName = tempPreviewData?.accountVal
+			? tempPreviewData?.accountVal
+			: 'hollaex';
+
+			tempPreviewData.account = {
+				[accountName]: {
+					apiKey: value,
+					apiSecret: tempPreviewData?.seckey,
+				},
+			};
+		}
+		if (name === 'seckey') {
+			const accountName = tempPreviewData?.accountVal
+			? tempPreviewData?.accountVal
+			: 'hollaex';
+
+			tempPreviewData.account = {
+				[accountName]: {
+					apiKey: tempPreviewData?.apikey,
+					apiSecret: value,
 				},
 			};
 		}
@@ -696,6 +711,9 @@ const OtcDeskContainer = ({
 			}
 		}
 		tempPreviewData = { ...tempPreviewData, [name]: value };
+		if (name === 'remove_account') {
+			tempPreviewData.account = null;
+		}
 		setPreviewData(tempPreviewData);
 		setCoinSecondary(coinSecondaryData);
 		if (name === 'paused') {
@@ -813,12 +831,25 @@ const OtcDeskContainer = ({
 			return price_a < price_b ? 1 : -1; // descending order
 		});
 
-	const handlePrice = () => {
-		setPriceLoading(true);
-		setPriceActive(true);
-		setTimeout(() => {
+	const handlePrice = async (formula, increment_size, spread, id) => {
+		try {
+			setPriceLoading(true);
+			setPriceActive(true);
+			const result = await createTestBroker({ formula, increment_size, spread });
+
+			setBrokerData((prevState) => {
+				const newState = [...prevState];
+				const Index = newState.findIndex(b => b.id === id);
+				newState[Index].buy_price = result.data.buy_price;
+				newState[Index].sell_price = result.data.sell_price;
+				return newState;
+			})
+
 			setPriceLoading(false);
-		}, 2000);
+		} catch (error) {
+			message.error(error.message);
+		}
+		
 	};
 
 	if (isLoading) {
@@ -951,6 +982,7 @@ const OtcDeskContainer = ({
 					markets={markets}
 					isEdit={isEdit}
 					editData={editData}
+					setEditData={setEditData}
 				/>
 			)}
 		</div>

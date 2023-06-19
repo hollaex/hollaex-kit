@@ -1140,6 +1140,57 @@ paths:
           type: string
           format: date-time
         - in: query
+          name: email
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: username
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: full_name
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: dob_start_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: dob_end_date
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: gender
+          required: false
+          type: boolean
+        - in: query
+          name: nationality
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: phone_number
+          required: false
+          type: string
+          maxLength: 256
+        - in: query
+          name: verification_level
+          required: false
+          type: number
+        - in: query
+          name: email_verified
+          required: false
+          type: boolean
+        - in: query
+          name: otp_enabled
+          required: false
+          type: boolean
+        - in: query
           name: format
           description: Specify data format
           required: false
@@ -2669,6 +2720,8 @@ paths:
       x-security-scopes:
         - admin
         - supervisor
+        - kyc
+        - support
       x-token-permissions:
         - can_read
   /admin/user/referer:
@@ -2699,6 +2752,9 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
+        - kyc
+        - support
       x-token-permissions:
         - can_read
   /admin/user/wallet:

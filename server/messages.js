@@ -59,6 +59,10 @@ exports.QUICK_TRADE_QUOTE_INVALID = 'Invalid quote';
 exports.QUICK_TRADE_QUOTE_CALCULATING_ERROR = 'Error calculating the quote';
 exports.QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED =
 	'The order with the current size can not be filled';
+exports.QUICK_TRADE_VALUE_IS_TOO_SMALL =
+	'The order with the current size is too small to be filled';
+exports.QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR =
+	'The order with the current price can not be filled';
 exports.QUICK_TRADE_INSUFFICIENT_BALANCE =
 	'Insufficient balance to perform the order';
 exports.QUICK_TRADE_DISABLED = 'Broker service is currently disabled';
@@ -193,6 +197,9 @@ exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
 exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
 exports.SPREAD_MISSING = 'Spread is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
+exports.DYNAMIC_BROKER_CREATE_ERROR = 'Cannot create a dynamic broker without required fields';
+exports.DYNAMIC_BROKER_UNSUPPORTED = 'Selected exchange is not supported by your exchange plan';
+exports.DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR = 'Cannot create a dynamic broker with Basic plan';
 exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
 exports.INVALID_TOKEN_TYPE = 'invalid token type';
@@ -203,3 +210,9 @@ exports.SESSION_NOT_FOUND = 'Session not found';
 exports.SESSION_ALREADY_REVOKED = 'Session already revoked';
 exports.WRONG_USER_SESSION = 'this session does not belong to you';
 exports.LOGIN_NOT_ALLOW = 'You attempted to login too many times, please wait for a while to try again';
+exports.UNISWAP_PRICE_NOT_FOUND = 'Uniswap could not find price for this pair';
+exports.FORMULA_MARKET_PAIR_ERROR = 'Market pair(s) in the formula is in wrong format';
+exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detected';
+exports.COIN_INPUT_MISSING = 'Coin inputs are missing';
+exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';
+exports.AMOUNT_NEGATIVE_ERROR = 'Amount cannot be negative';

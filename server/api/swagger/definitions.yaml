@@ -25,7 +25,7 @@ definitions:
         maxLength: 256
       captcha:
         type: string
-        maxLength: 1024
+        maxLength: 5000
       referral:
         type: string
         maxLength: 256
@@ -1462,16 +1462,16 @@ definitions:
         type: ['number', 'null']
       rebalancing_symbol:
         type: ['string', 'null']
+      tracked_symbol:
+        type: ['string', 'null']
       account:
         type: ['object', 'null']
       formula:
         type: ['string', 'null']
       exchange_name:
-        type: string
+        type: ['string', 'null']
         maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairCreate:
     type: object
@@ -1518,8 +1518,6 @@ definitions:
         type: string
         maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

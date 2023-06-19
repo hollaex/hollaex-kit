@@ -264,7 +264,7 @@ paths:
           in: query
           required: false
           type: string
-          maxLength: 1024
+          maxLength: 5000
       responses:
         200:
           description: Success

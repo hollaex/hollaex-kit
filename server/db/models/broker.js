@@ -27,6 +27,7 @@ module.exports = function (sequelize, DataTypes) {
 			paused: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
+				defaultValue: false
 			},
 			user_id: {
 				type: DataTypes.INTEGER,
@@ -59,9 +60,19 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 30,
 				allowNull: true
 			},
+			spread: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
+			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
 				allowNull: true,
+			},
+			refresh_interval: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
 			},
 			account: {
 				type: DataTypes.JSONB,
