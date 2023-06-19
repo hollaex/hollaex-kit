@@ -43,6 +43,7 @@ db[model.name] = model;
 model = require(path.join(__dirname, './broker'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
 model = require(path.join(__dirname, './session'))(sequelize, Sequelize.DataTypes);
+db[model.name] = model;
 model = require(path.join(__dirname, './quickTrade'))(sequelize, Sequelize.DataTypes);
 db[model.name] = model;
 

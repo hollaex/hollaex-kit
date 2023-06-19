@@ -1224,6 +1224,7 @@ const toggleFlaggedUserById = (userId) => {
 
 const getUserLogins = (opts = {
 	userId: null,
+	status: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1237,7 +1238,8 @@ const getUserLogins = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.status != null && { status: opts.status })
 		},
 		attributes: {
 			exclude: ['id', 'origin', 'referer']
@@ -1851,7 +1853,6 @@ const updateUserInfo = async (userId, data = {}) => {
 
 const getExchangeUserSessions = (opts = {
 	user_id: null,
-	status: null,
 	limit: null,
 	page: null,
 	order_by: null,
@@ -1867,7 +1868,6 @@ const getExchangeUserSessions = (opts = {
 	return dbQuery.findAndCountAllWithRows('login', {
 		where: {
 			...(opts.user_id && { user_id: opts.user_id }),
-			...(opts.status != null && { status: opts.status }),
 			timestamp: timeframe
 		},
 		include: [

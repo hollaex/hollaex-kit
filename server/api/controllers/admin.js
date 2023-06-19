@@ -477,7 +477,7 @@ const getAdminUserLogins = (req, res) => {
 		'controllers/admin/getAdminUserLogins/auth',
 		req.auth
 	);
-	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+	const { user_id, status, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -508,6 +508,7 @@ const getAdminUserLogins = (req, res) => {
 
 	toolsLib.user.getUserLogins({
 		userId: user_id.value,
+		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -2382,7 +2383,7 @@ const sendRawEmailByAdmin = (req, res) => {
 const getUserSessionsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
 
-	const { status, user_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { user_id, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2395,7 +2396,6 @@ const getUserSessionsByAdmin = (req, res) => {
 
 	toolsLib.user.getExchangeUserSessions({
 		user_id: user_id.value,
-		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,

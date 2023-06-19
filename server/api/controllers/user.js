@@ -672,7 +672,7 @@ const getUserLogins = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserLogins auth', req.auth.sub);
 
 	const user_id = req.auth.sub.id;
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, status, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerUser.error(
@@ -703,6 +703,7 @@ const getUserLogins = (req, res) => {
 
 	toolsLib.user.getUserLogins({
 		userId: user_id,
+		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -1156,7 +1157,7 @@ const addUserBank = (req, res) => {
 const getUserSessions = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/getUserSessions/auth', req.auth);
 
-	const { limit, status, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { limit, page, order_by, order, start_date, end_date } = req.swagger.params;
 
 	const user_id = req.auth.sub.id;
 
@@ -1171,7 +1172,6 @@ const getUserSessions = (req, res) => {
 
 	toolsLib.user.getExchangeUserSessions({
 		user_id: user_id,
-		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,

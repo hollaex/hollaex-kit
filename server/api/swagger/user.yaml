@@ -152,6 +152,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
           name: page
           description: Page of data to  retrieve
           required: false
@@ -483,11 +488,6 @@ paths:
       description: Get user sessions
       operationId: getUserSessions
       parameters:
-        - in: query
-          name: status
-          description: fetch successful or failed logins
-          required: false
-          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"

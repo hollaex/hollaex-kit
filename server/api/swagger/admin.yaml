@@ -1664,6 +1664,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -3027,11 +3032,6 @@ paths:
       description: Get user sessions for admin
       operationId: getUserSessionsByAdmin
       parameters:
-        - in: query
-          name: status
-          description: fetch successful or failed logins
-          required: false
-          type: boolean
         - in: query
           name: user_id
           description: User id
