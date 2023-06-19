@@ -194,25 +194,25 @@ steps:
   when:
     branch: master
 
-- name: docker_tagging_amd64_deployment
-  image: alpine
-  commands: 
-    - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo "2.7.0-testnet-86884d5" > .tags
-    - echo "Current Docker tag is :" && cat .tags
-    - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
-  when:
-    branch: deployment
+# - name: docker_tagging_amd64_deployment
+#   image: alpine
+#   commands: 
+#     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo "2.7.0-testnet-86884d5" > .tags
+#     - echo "Current Docker tag is :" && cat .tags
+#     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+#   when:
+#     branch: deployment
 
-# - name: docker_build_amd64
-#   image:  plugins/docker
-#   settings:
-#     repo: hollaex/hollaex-kit
-#     dockerfile: Dockerfile
-#   environment:
-#     DOCKER_USERNAME:
-#       from_secret: docker_username
-#     DOCKER_PASSWORD:
-#       from_secret: docker_password
+- name: docker_build_amd64
+  image:  plugins/docker
+  settings:
+    repo: hollaex/hollaex-kit
+    dockerfile: Dockerfile
+  environment:
+    DOCKER_USERNAME:
+      from_secret: docker_username
+    DOCKER_PASSWORD:
+      from_secret: docker_password
 
 - name: dct_signing
   image: docker:20.10-dind
@@ -287,20 +287,20 @@ steps:
   when:
     branch: master
 
-# - name: slack_noti_job_end
-#   image: plugins/slack
-#   settings:
-#     channel: deployment
-#     webhook:
-#       from_secret: slack_webhook
-#     template: >
-#       {{#success build.status}}
-#         Successfully <{{build.link}}|built> the AMD64 Docker Image. 
-#       {{else}}
-#         <{{build.link}}|Failed to build the AMD64 Docker Image.>
-#       {{/success}}
-#   when:
-#     status: [success, failure]
+- name: slack_noti_job_end
+  image: plugins/slack
+  settings:
+    channel: deployment
+    webhook:
+      from_secret: slack_webhook
+    template: >
+      {{#success build.status}}
+        Successfully <{{build.link}}|built> the AMD64 Docker Image. 
+      {{else}}
+        <{{build.link}}|Failed to build the AMD64 Docker Image.>
+      {{/success}}
+  when:
+    status: [success, failure]
     
 volumes:
   - name: docker
@@ -309,7 +309,6 @@ volumes:
 
 trigger:
   branch:
-  - deployment
   - testnet
   - master
   event:
