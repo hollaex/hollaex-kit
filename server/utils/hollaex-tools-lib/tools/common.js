@@ -44,7 +44,7 @@ const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
-const { GET_BROKER } = require('../../../constants');
+const { GET_BROKER, GET_QUICKTRADE } = require('../../../constants');
 const BigNumber = require('bignumber.js');
 // const { Transform } = require('json2csv');
 
@@ -755,14 +755,14 @@ const getNetworkConstants = (opts = {
 const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
 const getDefaultFees = () => {
-	const { info: { type, collateral_level } } = getKitConfig();
+	const { info: { type, plan } } = getKitConfig();
 	if (type === 'Enterprise') {
 		return {
 			maker: 0,
 			taker: 0
 		};
 	} else {
-		return DEFAULT_FEES[collateral_level];
+		return DEFAULT_FEES[plan];
 	}
 };
 
@@ -792,6 +792,11 @@ const validatePair = (pair) => {
 const getBrokerDeals = () => {
 	return GET_BROKER();
 };
+
+const getQuickTrades = () => {
+	return GET_QUICKTRADE();
+};
+
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
@@ -859,5 +864,6 @@ module.exports = {
 	validateIp,
 	validatePair,
 	getBrokerDeals,
+	getQuickTrades,
 	parseNumber
 };
