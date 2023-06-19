@@ -359,6 +359,10 @@ const registerUserLogin = (
 	if (isBoolean(opts.status)) {
 		login.status = opts.status;
 	}
+
+	if (opts.status === false) {
+		login.attempt = 1;
+	}
 	const geo = geoip.lookup(ip);
 	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
