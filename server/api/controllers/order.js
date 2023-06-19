@@ -115,6 +115,8 @@ const orderExecute = (req, res) => {
 
 	toolsLib.order.executeUserOrder(user_id, opts, token)
 		.then((result) => {
+			const { symbol, side, size } = result;
+			toolsLib.broker.reverseTransaction({ userId: user_id, symbol, side, size });
 			return res.json(result);
 		})
 		.catch((err) => {

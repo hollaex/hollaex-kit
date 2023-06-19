@@ -6,38 +6,30 @@ const { publisher } = require('../../db/pubsub');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
-const getBrokerQuote = (req, res) => {
+const getTrackedExchangeMarkets = (req, res) => {
+
 	loggerBroker.verbose(
 		req.uuid,
-		'controllers/broker/getBrokerQuote get',
+		'controllers/broker/getTrackedExchangeMarkets get',
 		req.auth
 	);
-	const bearerToken = req.headers['authorization'];
-	const ip = req.headers['x-real-ip'];
-
 	const {
-		symbol,
-		side
+		exchange_name
 	} = req.swagger.params;
 
-	toolsLib.broker.fetchBrokerQuote({
-		symbol: symbol.value,
-		side: side.value,
-		bearerToken,
-		ip
-	})
-		.then((brokerQuote) => {
-			return res.json(brokerQuote);
+	toolsLib.broker.fetchTrackedExchangeMarkets(exchange_name.value)
+		.then((data) => {
+			return res.json(data);
 		})
 		.catch((err) => {
 			loggerBroker.error(
 				req.uuid,
-				'controllers/broker/getBrokerQuote err',
+				'controllers/broker/getTrackedExchangeMarkets err',
 				err.message
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-};
+}
 
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
@@ -63,7 +55,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		multiplier
+		tracked_symbol
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -85,7 +77,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		multiplier
+		tracked_symbol
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -104,7 +96,7 @@ const createBrokerPair = (req, res) => {
 		formula,
 		exchange_name,
 		spread,
-		multiplier
+		tracked_symbol
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -128,18 +120,14 @@ const testBroker = (req, res) => {
 
 	const {
 		formula,
-		exchange_name,
 		spread,
-		multiplier,
-		symbol
+		increment_size
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
 		formula,
-		exchange_name,
 		spread,
-		multiplier,
-		symbol
+		increment_size
 	})
 		.then((data) => {
 			return res.json(data);
@@ -153,6 +141,7 @@ const testBroker = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
 
 const testRebalance = (req, res) => {
 	loggerBroker.verbose(
@@ -207,8 +196,7 @@ function updateBrokerPair(req, res) {
 		account,
 		formula,
 		exchange_name,
-		spread,
-		multiplier } = req.swagger.params.data.value;
+		spread } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
 		req.uuid,
@@ -228,8 +216,7 @@ function updateBrokerPair(req, res) {
 		account,
 		formula,
 		exchange_name,
-		spread,
-		multiplier
+		spread
 	);
 
 	toolsLib.broker.updateBrokerPair(id, req.swagger.params.data.value)
@@ -276,9 +263,6 @@ function getBrokerPairs(req, res) {
 		req.auth
 	);
 
-	const bearerToken = req.headers['authorization'];
-	const ip = req.headers['x-real-ip'];
-
 	const attributes = [
 		'id',
 		'user_id',
@@ -291,11 +275,15 @@ function getBrokerPairs(req, res) {
 		'increment_size',
 		'type',
 		'quote_expiry_time',
-		'rebalancing_symbol'
+		'rebalancing_symbol',
+		'spread',
+		'tracked_symbol',
+		'exchange_name',
+		'formula'
 	];
 
 
-	toolsLib.broker.fetchBrokerPairs(attributes, bearerToken, ip)
+	toolsLib.broker.fetchBrokerPairs(attributes)
 		.then((brokerPairs) => {
 			return res.json(brokerPairs);
 		})
@@ -310,45 +298,12 @@ function getBrokerPairs(req, res) {
 
 }
 
-const executeBrokerDeal = (req, res) => {
-	loggerBroker.verbose(
-		req.uuid,
-		'controllers/broker/executeBrokerDeal auth',
-		req.auth
-	);
-
-	const { token, size } = req.swagger.params.data.value;
-
-	const userId = req.auth.sub.id;
-
-	toolsLib.broker.executeBrokerDeal(userId, token, size)
-		.then((data) => {
-			loggerBroker.verbose(
-				req.uuid,
-				'controllers/broker/executeBrokerDeal done',
-				data
-			);
-			const { symbol, side, size, price } = data;
-			toolsLib.broker.reverseTransaction({ userId, symbol, side, size });
-			res.json(data);
-		})
-		.catch((err) => {
-			loggerBroker.error(
-				req.uuid,
-				'controllers/broker/executeBrokerDeal err',
-				err.message
-			);
-			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-		});
-};
-
 module.exports = {
-	getBrokerQuote,
 	testBroker,
 	testRebalance,
 	createBrokerPair,
 	updateBrokerPair,
 	deleteBrokerPair,
 	getBrokerPairs,
-	executeBrokerDeal
+	getTrackedExchangeMarkets
 };

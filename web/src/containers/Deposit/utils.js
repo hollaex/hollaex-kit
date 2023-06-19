@@ -47,9 +47,9 @@ export const generateFormFields = ({
 		}));
 
 		const { min } = coins[currency];
-		const warning = [STRINGS['DEPOSIT_FORM_NETWORK_WARNING']];
+		const warnings = [STRINGS['DEPOSIT_FORM_NETWORK_WARNING']];
 		if (min) {
-			warning.push(
+			warnings.push(
 				STRINGS.formatString(
 					STRINGS['DEPOSIT_FORM_MIN_WARNING'],
 					min,
@@ -64,7 +64,7 @@ export const generateFormFields = ({
 				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,DEPOSIT_FORM_NETWORK_WARNING,DEPOSIT_FORM_MIN_WARNING',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
-			warning,
+			warnings,
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,

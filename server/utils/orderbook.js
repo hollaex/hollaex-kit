@@ -1,17 +1,7 @@
 'use strict';
 const { getOrderbook, getKitPairsConfig } = require('./hollaex-tools-lib/tools/common');
 const math = require('mathjs');
-const getDecimals = (value = 0) => {
-    if (Math.floor(value) === value) return 0;
-
-    let str = value.toString();
-    if (str.indexOf('.') !== -1 && str.indexOf('-') !== -1) {
-        return str.split('-')[1] || 0;
-    } else if (str.indexOf('.') !== -1) {
-        return str.split('.')[1].length || 0;
-    }
-    return str.split('-')[1] || 0;
-};
+const BigNumber = require('bignumber.js');
 const sumQuantities = (orders) =>
     orders.reduce((total, [, size]) => math.add(total, size), 0);
 
@@ -70,7 +60,7 @@ const setPriceEssentials = async (priceEssentials, opts) => {
     const pairData = getKitPairsConfig()[pair] || {};
     let priceValues = {};
 
-    const decimalPoint = getDecimals(pairData.increment_size);
+    const decimalPoint = new BigNumber(pairData.increment_size).dp();
     let [estimatedPrice] = estimatedQuickTradePriceSelector({
         pairsOrders,
         pair,
@@ -180,7 +170,6 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
         [0, 0]
     );
 module.exports = {
-    getDecimals,
     sumQuantities,
     sumOrderTotal,
     estimatedQuickTradePriceSelector,

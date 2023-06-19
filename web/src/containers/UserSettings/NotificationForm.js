@@ -5,12 +5,12 @@ import renderFields from 'components/Form/factoryFields';
 import { Button, IconTitle, EditWrapper } from 'components';
 import { getErrorLocalized } from 'utils/errors';
 import STRINGS from 'config/localizedStrings';
-import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
+// import { DEFAULT_TOGGLE_OPTIONS } from 'config/options';
 
-export const generateNotificationFormValues = () => ({
+export const generateNotificationFormValues = (DEFAULT_TOGGLE_OPTIONS) => ({
 	popup_order_confirmation: {
 		type: 'toggle',
-		stringId: 'USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION',
+		stringId: 'DEFAULT_TOGGLE_OPTIONS.ON',
 		label: STRINGS['USER_SETTINGS.NOTIFICATION_FORM.POPUP_ORDER_CONFIRMATION'],
 		className: 'toggle-wrapper',
 		options: DEFAULT_TOGGLE_OPTIONS,
