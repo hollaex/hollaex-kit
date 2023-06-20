@@ -852,7 +852,7 @@ const freezeUserById = (userId) => {
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
-		.then((user) => {
+		.then(async (user) => {
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
@@ -862,6 +862,19 @@ const freezeUserById = (userId) => {
 				},
 				user.settings
 			);
+
+			const sessions = await getModel('session').findAll({ 
+				include: [
+					{
+						model: getModel('login'),
+						as: 'login',
+						attributes: ['user_id'],
+						where: { user_id: userId }
+					}
+				]});
+
+			sessions.forEach(session => client.delAsync(session.token));
+				
 			return user;
 		});
 };
