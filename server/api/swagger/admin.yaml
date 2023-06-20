@@ -3026,7 +3026,7 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
-  /admin/user/session:
+  /admin/user/sessions:
     x-swagger-router-controller: admin
     get:
       description: Get user sessions for admin

@@ -482,7 +482,7 @@ paths:
         - bearer
       x-security-scopes:
         - user
-  /user/session:
+  /user/sessions:
     x-swagger-router-controller: user
     get:
       description: Get user sessions
