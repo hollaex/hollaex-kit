@@ -69,7 +69,7 @@ const OtcDeskContainer = ({
 	const [pair2Balance, setPair2Balance] = useState(0);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [selectedCoinType, setSelectedCoinType] = useState('manual');
-	const [priceLoading, setPriceLoading] = useState(false);
+	const [priceLoading, setPriceLoading] = useState();
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
@@ -433,14 +433,14 @@ const OtcDeskContainer = ({
 		{
 			title: 'Price (displayed to user)',
 			key: 'price',
-			render: ({ sell_price, buy_price, symbol, type, formula, increment_size, spread, id }) => {
+			render: ({ sell_price, buy_price, symbol, type, formula, increment_size, spread, id, price_active }) => {
 				return (
 					<div>
 						{type === 'dynamic' ? (
 							<div>
-								{priceLoading ? (
+								{priceLoading === id ? (
 									<div>Getting price...</div>
-								) : (priceActive && buy_price > 0 && sell_price > 0) ? (
+								) : price_active ? (
 									<div className="d-flex">
 										<div>
 											<div>
@@ -833,7 +833,7 @@ const OtcDeskContainer = ({
 
 	const handlePrice = async (formula, increment_size, spread, id) => {
 		try {
-			setPriceLoading(true);
+			setPriceLoading(id);
 			setPriceActive(true);
 			const result = await createTestBroker({ formula, increment_size, spread });
 
@@ -842,6 +842,7 @@ const OtcDeskContainer = ({
 				const Index = newState.findIndex(b => b.id === id);
 				newState[Index].buy_price = result.data.buy_price;
 				newState[Index].sell_price = result.data.sell_price;
+				newState[Index].price_active = true;
 				return newState;
 			})
 

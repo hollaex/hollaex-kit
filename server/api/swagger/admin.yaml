@@ -3026,7 +3026,7 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
-  /admin/user/session:
+  /admin/user/sessions:
     x-swagger-router-controller: admin
     get:
       description: Get user sessions for admin
@@ -3038,6 +3038,11 @@ paths:
           required: false
           type: number
           format: int32
+        - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"

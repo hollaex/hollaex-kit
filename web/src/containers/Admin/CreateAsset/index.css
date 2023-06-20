@@ -93,6 +93,14 @@
 	text-align: center;
 	margin-top: 1rem;
 }
+.create-asset-container .create-new-link .btn-content {
+	margin-top: 1rem;
+	margin-bottom: 0.5rem;
+	color: #fff;
+	background-color: #3a4fff;
+	border-color: #3a4fff;
+	width: 100%;
+}
 .create-asset-container .grey-warning {
 	background-color: #545454;
 	color: #ffffff;
@@ -113,6 +121,29 @@
 }
 .create-asset-container .grey-warning .fiat-icon {
 	width: 4rem;
+}
+.create-asset-container .grey-warning .image-crypto .fiat-icon {
+	width: 5rem;
+}
+.red-warning {
+	background-color: #460000;
+	color: #ffffff;
+	display: flex;
+	padding: 1rem 2rem 1rem 1rem;
+	margin-top: 2rem;
+}
+.red-warning .icon-wrapper {
+	margin-right: 1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.red-warning .image-crypto .fiat-icon {
+	width: 5rem;
+}
+.red-warning .link-content {
+	color: #3a4fff;
+	cursor: pointer;
 }
 .create-asset-container .coin-limit-wrap h3,
 .create-asset-container .coin-limit-wrap .fee-wrapper,

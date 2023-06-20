@@ -31,7 +31,7 @@ describe('User Session', async () => {
             .send(createdUser);
 
         const userSessions = await request()
-            .get(`/v2/user/session`)
+            .get(`/v2/user/sessions`)
             .set('Authorization', `Bearer ${loginData.body.token}`)
         
         return { userSessions, createdUser, loginData };
@@ -59,7 +59,7 @@ describe('User Session', async () => {
         bearerToken.should.be.a('string');
 
         const userSessions = await request()
-            .get(`/v2/user/session`)
+            .get(`/v2/user/sessions`)
             .set('Authorization', `Bearer ${bearerToken}`)
         
         assert.equal(userSessions.body.message, 'Access denied: Session not found', 'wrong message');
@@ -136,7 +136,7 @@ describe('User Session', async () => {
     //Fuz Testing
     it('Fuzz Test -should return error', async () => {
         const userSessions = await request()
-            .get(`/v2/user/session`)
+            .get(`/v2/user/sessions`)
             .set('Authorization', `Bearer ${generateFuzz()}`)
 
         userSessions.should.have.status(403);
