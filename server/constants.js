@@ -610,6 +610,11 @@ exports.VERIFY_STATUS = {
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
 
+// Login timeout  START------------------------------
+exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
+exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+// Login timeout  END------------------------------
+
 // BROKER CONSTANTS START
 
 exports.EXCHANGE_PLAN_INTERVAL_TIME = {

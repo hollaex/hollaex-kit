@@ -38,7 +38,8 @@ const {
 	INVALID_TOKEN_TYPE,
 	NO_AUTH_TOKEN,
 	WHITELIST_DISABLE_ADMIN,
-	WHITELIST_NOT_PROVIDED
+	WHITELIST_NOT_PROVIDED,
+	SESSION_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -49,7 +50,7 @@ const {
 	SECRET,
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
-	HMAC_TOKEN_KEY
+	HMAC_TOKEN_KEY,
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
@@ -545,7 +546,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (token && token.indexOf('Bearer ') === 0) {
 			const tokenString = token.split(' ')[1];
 
-			jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+			jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 				//check if the JWT was verified correctly
 				if (!verificationError && decodedToken) {
 					loggerAuth.verbose(
@@ -588,6 +589,11 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						return sendError(DEACTIVATED_USER);
 					}
 
+					try {
+						await verifySession(tokenString);
+					} catch (err) {
+						return sendError(err.message);
+					}
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
@@ -840,6 +846,98 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 			});
 	}
 };
+
+
+const createSession = async (token, loginId, userId) => {
+
+	const { getUserRole } = require('./user');
+
+	const userRole = await getUserRole({ kit_id: userId });
+
+	const base64Payload = token.split(".")[1];
+	const payloadBuffer = Buffer.from(base64Payload, "base64");
+	const decoded = JSON.parse(payloadBuffer.toString());
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	return getModel('session').create({
+		token: hashedToken,
+		role: userRole,
+		login_id: loginId,
+		status: true,
+		last_seen: new Date(),
+		expiry_date: new Date(decoded.exp * 1000)
+	})
+}
+
+const verifySession = async (token) => {
+
+	const session = await findSession(token);
+
+	if (!session) {
+		loggerAuth.error(
+			'security/verifySession session not found');
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if (!session.status) {
+		loggerAuth.error(
+			'security/verifySession invalid session',
+			session.status
+		);
+		throw new Error(TOKEN_REVOKED);
+	}
+
+	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+
+	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
+		const updatedSession =  await sessionData.update(
+			{ last_seen: new Date() }
+		);
+		client.setexAsync(updatedSession.dataValues.token, new Date(updatedSession.dataValues.expiry_date).getTime() / 1000, JSON.stringify(updatedSession.dataValues));
+	}
+}
+
+const findSession = async (token) => {
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	let session = await client.getAsync(hashedToken)
+	
+	if (!session) {
+		loggerAuth.verbose(
+			'security/findSession jwt token not found in redis',
+			hashedToken
+		);
+
+		session = await dbQuery.findOne('session', {
+			where: {
+				token: hashedToken
+			}
+		});
+
+		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+			client.setexAsync(hashedToken, new Date(session.expiry_date).getTime() / 1000, JSON.stringify(session));
+
+			loggerAuth.verbose(
+				'security/findSession token stored in redis',
+				hashedToken
+			);
+		}
+			
+		return session;
+	} else {
+		loggerAuth.debug(
+			'security/findSession token found in redis',
+			hashedToken
+		);
+		return JSON.parse(session);
+	}
+}
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -1243,5 +1341,7 @@ module.exports = {
 	sendConfirmationEmail,
 	confirmByEmail,
 	calculateSignature,
-	generateDashToken
+	generateDashToken,
+	createSession,
+	verifySession
 };

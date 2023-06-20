@@ -50,9 +50,12 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	SESSION_NOT_FOUND,
+	SESSION_ALREADY_REVOKED,
+	WRONG_USER_SESSION
 } = require(`${SERVER_PATH}/messages`);
-const { publisher } = require('./database/redis');
+const { publisher, client } = require('./database/redis');
 const {
 	CONFIGURATION_CHANNEL,
 	AUDIT_KEYS,
@@ -62,12 +65,15 @@ const {
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
-	AFFILIATION_CODE_LENGTH
+	AFFILIATION_CODE_LENGTH,
+	LOGIN_TIME_OUT,
+	TOKEN_TIME_LONG,
+	TOKEN_TIME_NORMAL
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
-const { isValidPassword } = require('./security');
+const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -76,6 +82,7 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
+const geoip = require('geoip-lite');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -324,7 +331,10 @@ const registerUserLogin = (
 		device: null,
 		domain: null,
 		origin: null,
-		referer: null
+		referer: null,
+		token: null,
+		expiry: null,
+		status: true,
 	}
 ) => {
 	const login = {
@@ -348,8 +358,64 @@ const registerUserLogin = (
 		login.referer = opts.referer;
 	}
 
-	return getModel('login').create(login);
+	if (isBoolean(opts.status)) {
+		login.status = opts.status;
+	}
+
+	if (opts.status === false) {
+		login.attempt = 1;
+	}
+	const geo = geoip.lookup(ip);
+	if (geo?.country) login.country = geo.country;
+	return getModel('login').create(login)
+	.then((loginData) => {
+		if(opts.token && opts.status) {
+			return createSession(opts.token, loginData.id, userId, opts.expiry);
+		}
+	})
+	.catch(err => reject(err))
 };
+
+const updateLoginAttempt = (loginId) => {
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+}
+
+const updateLoginStatus = (loginId) => {
+	return getModel('login').update( { status: true }, { where: { id: loginId } });
+}
+
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
+	const loginData = await findUserLatestLogin(user, status);
+
+	if (!loginData || loginData?.status == true) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	} 
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+	}
+}
+
+
+const findUserLatestLogin = (user, status) => {
+	return getModel('login').findOne({
+		order: [ [ 'timestamp', 'DESC' ]],
+		where: {
+			user_id: user.id,
+			...(status != null && { status }),
+			updated_at: {
+				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
+			},
+		}
+	});
+}
 
 /* Public Endpoints*/
 
@@ -1184,6 +1250,7 @@ const toggleFlaggedUserById = (userId) => {
 
 const getUserLogins = (opts = {
 	userId: null,
+	status: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1197,7 +1264,8 @@ const getUserLogins = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.status != null && { status: opts.status })
 		},
 		attributes: {
 			exclude: ['id', 'origin', 'referer']
@@ -1809,6 +1877,82 @@ const updateUserInfo = async (userId, data = {}) => {
 	return omitUserFields(user.dataValues);
 };
 
+const getExchangeUserSessions = (opts = {
+	user_id: null,
+	status: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null
+}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	return dbQuery.findAndCountAllWithRows('session', {
+		where: {
+			...(opts.status != null && { status: opts.status }),
+			created_at: timeframe
+		},
+		attributes: {
+			exclude: ['token']
+		},
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				...(opts.user_id && { where: { user_id: opts.user_id } }),
+				include: [
+					{
+						model: getModel('user'),
+						attributes: ['id', 'email']
+					},
+				]
+			}
+		],
+		order: [ordering],
+		...pagination
+	});
+}
+
+const revokeExchangeUserSession = async (sessionId, userId = null) => {
+	const session = await getModel('session').findOne({ 
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				attributes: ['user_id'],
+				...(userId && { where: { user_id: userId } })
+			}
+		],
+		where: { id: sessionId } });
+
+
+	if(!session) {
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if(!session.status) {
+		throw new Error(SESSION_ALREADY_REVOKED);
+	}
+
+	if (userId && session.login.user_id !== userId) {
+		throw new Error(WRONG_USER_SESSION);
+	}
+
+	client.delAsync(session.token);
+
+	const updatedSession = await session.update({ status: false }, {
+		fields: ['status'] 
+	});
+
+	delete updatedSession.dataValues.token;
+	return updatedSession.dataValues;
+}
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1859,5 +2003,11 @@ module.exports = {
 	updateUserMeta,
 	mapNetworkIdToKitId,
 	mapKitIdToNetworkId,
-	updateUserInfo
+	updateUserInfo,
+	updateLoginAttempt,
+	getExchangeUserSessions,
+	revokeExchangeUserSession,
+	updateLoginStatus,
+	findUserLatestLogin,
+	createUserLogin
 };
