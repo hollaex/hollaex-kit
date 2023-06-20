@@ -2428,6 +2428,41 @@ const revokeUserSessionByAdmin = (req, res) => {
 		});
 }
 
+const getQuickTradeConfig = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getQuickTradeConfig/auth', req.auth);
+
+	const { symbol, active, type, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getQuickTradeConfig invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		symbol: symbol.value,
+		active: active.value,
+		type: type.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value
+		}
+	)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getQuickTradeConfig', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2488,5 +2523,6 @@ module.exports = {
 	getUserSessionsByAdmin,
 	revokeUserSessionByAdmin,
 	sendEmailByAdmin,
-	sendRawEmailByAdmin
+	sendRawEmailByAdmin,
+	getQuickTradeConfig
 };
