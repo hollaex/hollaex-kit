@@ -258,7 +258,15 @@
 	margin-left: 10px;
 }
 .admin-asset-wrapper .balance-column {
-	width: 18rem;
+	width: 30rem;
+}
+.admin-asset-wrapper .balance-column .plan-img {
+	width: 2rem;
+	height: 2rem;
+	padding-right: 5px;
+}
+.admin-asset-wrapper .balance-column .text-link {
+	color: #3a4fff !important;
 }
 .admin-asset-wrapper .link {
 	color: #0000ff;

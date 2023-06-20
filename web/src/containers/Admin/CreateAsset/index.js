@@ -674,6 +674,7 @@ class CreateAsset extends Component {
 						handleScreenChange={this.handleScreenChange}
 						activeTab={activeTab}
 						handleResetAsset={this.handleResetAsset}
+						onClose={this.props.onClose}
 					/>
 				);
 			case 'step3':
@@ -772,6 +773,7 @@ class CreateAsset extends Component {
 						isPresentCoin={isPresentCoin}
 						coins={this.props.coins}
 						selectedCoinSymbol={selectedCoinSymbol}
+						exchange={this.props.exchangeData}
 					/>
 				);
 			case 'edit-color':
