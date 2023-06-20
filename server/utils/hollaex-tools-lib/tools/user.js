@@ -877,7 +877,7 @@ const freezeUserById = (userId) => {
 			});
 			sessions.forEach(session => { 
 				session.update({ status: false }, { fields: ['status'] }); 
-				client.delAsync(session.token)
+				client.delAsync(session.token);
 			});
 
 			return user;
