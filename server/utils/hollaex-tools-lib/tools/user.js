@@ -866,10 +866,10 @@ const freezeUserById = (userId) => {
 					]
 				});
 	
-				for (const session of sessions) {
-					await session.update({ status: false }, { fields: ['status'] }); 
-					client.delAsync(session.token);
-				}
+			for (const session of sessions) {
+				await session.update({ status: false }, { fields: ['status'] }); 
+				client.delAsync(session.token);
+			}
 
 
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
