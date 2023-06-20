@@ -1879,6 +1879,7 @@ const updateUserInfo = async (userId, data = {}) => {
 
 const getExchangeUserSessions = (opts = {
 	user_id: null,
+	status: null,
 	limit: null,
 	page: null,
 	order_by: null,
@@ -1891,21 +1892,25 @@ const getExchangeUserSessions = (opts = {
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	return dbQuery.findAndCountAllWithRows('login', {
+	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
-			...(opts.user_id && { user_id: opts.user_id }),
-			timestamp: timeframe
+			...(opts.status != null && { status: opts.status }),
+			created_at: timeframe
+		},
+		attributes: {
+			exclude: ['token']
 		},
 		include: [
 			{
-				model: getModel('user'),
-				attributes: ['id', 'email']
-			},
-			{
-				model: getModel('session'),
-				attributes: {
-					exclude: ['token']
-				}
+				model: getModel('login'),
+				as: 'login',
+				...(opts.user_id && { where: { user_id: opts.user_id } }),
+				include: [
+					{
+						model: getModel('user'),
+						attributes: ['id', 'email']
+					},
+				]
 			}
 		],
 		order: [ordering],

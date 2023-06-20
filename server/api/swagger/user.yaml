@@ -495,6 +495,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
+        - in: query
           name: page
           description: Page of data to retrieve
           required: false
