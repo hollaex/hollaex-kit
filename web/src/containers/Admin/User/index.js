@@ -1,22 +1,18 @@
 import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
-import { Link } from 'react-router';
-import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { RightOutlined } from '@ant-design/icons';
-import { Table, Spin, Button, notification, Tabs, message } from 'antd';
+import { Spin, notification, Tabs, message } from 'antd';
 import _get from 'lodash/get';
 
 import './index.css';
 import { connect } from 'react-redux';
 
 import './index.css';
-import { AdminHocForm } from '../../../components';
 
 import { requestUser, requestUsersDownload } from './actions';
 
 import UserContent from './UserContent';
-import { FullListUsers, PendingUsers } from '../ListUsers';
+import { FullListUsers } from '../ListUsers';
 import { requestMyPlugins } from '../Plugins/action';
 // import { isSupport } from '../../../utils/token';
 
@@ -27,8 +23,6 @@ const INITIAL_STATE = {
 	userInformationList: [],
 	kycPluginName: 'kyc',
 };
-
-const Form = AdminHocForm('USER_REQUEST_FORM');
 
 const TabPane = Tabs.TabPane;
 
@@ -224,43 +218,9 @@ class App extends Component {
 			userImages,
 			userBalance,
 			loading,
-			userInformationList,
 			kycPluginName,
 		} = this.state;
 		const { coins, constants, isConfigure, showConfigure } = this.props;
-		const renderBoolean = (value) => (
-			<LegacyIcon type={value ? 'check-circle-o' : 'close-circle'} />
-		);
-
-		const renderLink = (value) => (
-			<Button
-				type="primary"
-				// onClick={() => this.requestUserData({ id: value })}
-				className="green-btn"
-			>
-				<Link to={`/admin/user?id=${value}`}>
-					GO
-					<RightOutlined />
-				</Link>
-			</Button>
-		);
-
-		const COLUMNS = [
-			{ title: 'ID', dataIndex: 'id', key: 'id' },
-			{ title: 'Email', dataIndex: 'email', key: 'email' },
-			{
-				title: 'Verification Level',
-				dataIndex: 'verification_level',
-				key: 'verification_level',
-			},
-			{
-				title: 'Activated',
-				dataIndex: 'activated',
-				key: 'activated',
-				render: renderBoolean,
-			},
-			{ title: 'See Data', dataIndex: 'id', key: 'data', render: renderLink },
-		];
 
 		if (loading) {
 			return (
