@@ -53,9 +53,7 @@ const createBrokerPair = (req, res) => {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -75,9 +73,7 @@ const createBrokerPair = (req, res) => {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -94,9 +90,7 @@ const createBrokerPair = (req, res) => {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -195,7 +189,6 @@ function updateBrokerPair(req, res) {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -215,7 +208,6 @@ function updateBrokerPair(req, res) {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread
 	);
 
@@ -276,9 +268,8 @@ function getBrokerPairs(req, res) {
 		'type',
 		'quote_expiry_time',
 		'rebalancing_symbol',
+		'account',
 		'spread',
-		'tracked_symbol',
-		'exchange_name',
 		'formula'
 	];
 
