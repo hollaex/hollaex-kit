@@ -130,13 +130,12 @@ const Otcdeskpopup = ({
 	const [connectLoading, setLoading] = useState(false);
 	const [spin, setSpin] = useState(false);
 	const [formulaVariable, setFormulaVariable] = useState();
-	const [setSelHedgingMkt] = useState(pairs && pairs[0] && pairs[0].name);
 	const [marketLink, setMatketLink] = useState(
 		`https://api.hollaex.com/v2/ticker?symbol=${
 			pairs && pairs[0] && pairs[0].name
 		}`
 	);
-	const [brokerPriceData, setBrokerPrice] = useState({});
+	const [brokerPriceData] = useState({});
 	const [isDisconnect, setIsDisconnect] = useState(false);
 	const [errMsg, setErrorMsg] = useState('');
 	const kitPlan = _toLower(kit?.info?.plan);
@@ -186,6 +185,7 @@ const Otcdeskpopup = ({
 		if (previewData.rebalancing_symbol) {
 			setHedgeSymbol(previewData.rebalancing_symbol);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [previewData, selectedCoinType]);
 
 	useEffect(() => {
@@ -211,6 +211,7 @@ const Otcdeskpopup = ({
 				}
 			}
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [exchangeMarkets, selectedCoinType]);
 
 	const handleCloseOtcChild = () => {
@@ -231,7 +232,7 @@ const Otcdeskpopup = ({
 		setLoading(false);
 		setSelectedUniswapPairs({});
 		setDisplayUniswap(false);
-		setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);
+		setHedgeSymbol();
 		setMatketLink(
 			`https://api.hollaex.com/v2/ticker?symbol=${
 				pairs && pairs[0] && pairs[0].name
@@ -249,15 +250,6 @@ const Otcdeskpopup = ({
 	const handleEditInput = () => {
 		if (searchRef && searchRef.current && searchRef.current.focus) {
 			searchRef.current.focus();
-		}
-	};
-
-	const createTestBrokerData = async (body) => {
-		try {
-			const res = await createTestBroker(body);
-			setBrokerPrice(res);
-		} catch (error) {
-			console.log('error', error);
 		}
 	};
 
@@ -390,7 +382,7 @@ const Otcdeskpopup = ({
 				handlePreviewChange(selectedMarket, 'tracked_symbol');
 				const symbol = selectedMarket.replace('/', '-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
-				if (!formula) setFormula(`${selectedExchange}_${symbol}`);
+				if (!formula) { setFormula(`${selectedExchange}_${symbol}`); handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula'); };
 			} else {
 				handlePreviewChange(hedgeSymbol, 'rebalancing_symbol');
 			}
@@ -420,25 +412,11 @@ const Otcdeskpopup = ({
 		setCustomlink(true);
 		setChainlink(false);
 		SetMarketPop(false);
-		setSelHedgingMkt(pairs && pairs[0] && pairs[0].name);
 		setMatketLink(
 			`https://api.hollaex.com/v2/ticker?symbol=${
 				pairs && pairs[0] && pairs[0].name
 			}`
 		);
-	};
-
-	const handleSetPriceNext = () => {
-		const { pair_base, pair_2, spread = 0.2, multiplier = 2 } = previewData;
-		createTestBrokerData({
-			symbol: `${pair_base}-${pair_2}`,
-			exchange_name: 'binance',
-			spread,
-			multiplier,
-		});
-		moveToStep('PricingValue');
-		handlePreviewChange(selelctedPlatform, 'exchange_name');
-		handlePreviewChange(selectedCoinType, 'type');
 	};
 
 	const handleHedgeNext = () => {
@@ -1248,8 +1226,10 @@ const Otcdeskpopup = ({
 															setFormulaVariable(
 																`${selectedExchange}_${symbol}`
 															);
-															if (!formula)
+															if (!formula) {
 																setFormula(`${selectedExchange}_${symbol}`);
+																handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
+															}
 														}
 													}}
 													className="mt-5"
