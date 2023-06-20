@@ -863,7 +863,9 @@ const freezeUserById = (userId) => {
 				user.settings
 			);
 
-			const sessions = await getModel('session').findAll({ 
+			const sessions = await getModel('session').findAll(
+			{ 
+				where: { status: true },
 				include: [
 					{
 						model: getModel('login'),
@@ -871,10 +873,13 @@ const freezeUserById = (userId) => {
 						attributes: ['user_id'],
 						where: { user_id: userId }
 					}
-				]});
+				]
+			});
+			sessions.forEach(session => { 
+				session.update({ status: false }, { fields: ['status'] }); 
+				client.delAsync(session.token)
+			});
 
-			sessions.forEach(session => client.delAsync(session.token));
-				
 			return user;
 		});
 };
