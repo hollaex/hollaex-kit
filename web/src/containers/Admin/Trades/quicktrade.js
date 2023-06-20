@@ -13,6 +13,12 @@ import { SettingOutlined } from '@ant-design/icons';
 
 
 
+const quickTradeTypes = {
+    'network': 'HollaEx Network Swap',
+    'broker': 'OTC Desk',
+    'pro': 'Orderbook',
+}
+
 const QuickTradeTab = ({
 	coins,
 	pairs,
@@ -27,6 +33,7 @@ const QuickTradeTab = ({
 	constants,
 	markets,
 	getTickers,
+    quickTradeData
 }) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -143,46 +150,49 @@ const QuickTradeTab = ({
 			</div>
 
 			<div style={{ marginTop: 50 }}>
-                <div style={{ display: 'flex', flexDirection:'column', gap: 10,  paddingBottom: 20 }}>
+                <div style={{ display: 'flex', flexDirection:'row', gap: 10,  paddingBottom: 20 }}>
 
-                    <div
-                        style={{
-                            height: 90,
-                            width: 200,
-                            textAlign:'center',
-                            border:"1px solid #74B0E4",
-                            borderTop:"7px solid #74B0E4",
-                            display: 'flex',
-                            flexDirection:'column',
-                            justifyContent:'center',
-                            color: '#b2b2b2',
-                            position: 'relative'
-                        }}
-                    >
-                        <div style={{ fontSize: 16, marginBottom: 3 }}>BTC/USDT</div>
-                        <div>HollaEx Network Swap</div>
-
-                        <div 
-                            style={{ 
-                                height:30,
-                                width: 30,
-                                borderRadius: '100%',
-                                backgroundColor: '#288500',
-                                cursor: 'pointer',
-                                position: 'absolute',
-                                right: -5,
-                                bottom: -5,
-                                textAlign: 'center',
+                    {quickTradeData?.map(data => {
+                        return(
+                            <div
+                            style={{
+                                height: 90,
+                                width: 200,
+                                textAlign:'center',
+                                border:"1px solid #74B0E4",
+                                borderTop:"7px solid #74B0E4",
                                 display: 'flex',
+                                flexDirection:'column',
                                 justifyContent:'center',
-                                alignItems: 'center',
-                                color: 'white',
-                                fontSize: 17
-                            }}>
-                            <SettingOutlined />
+                                color: '#b2b2b2',
+                                position: 'relative'
+                            }}
+                        >
+                            <div style={{ fontSize: 16, marginBottom: 3 }}>{data.symbol.split('-').join('/').toUpperCase()}</div>
+                            <div>{quickTradeTypes[data.type]}</div>
+    
+                            <div 
+                                style={{ 
+                                    height:30,
+                                    width: 30,
+                                    borderRadius: '100%',
+                                    backgroundColor: '#288500',
+                                    cursor: 'pointer',
+                                    position: 'absolute',
+                                    right: -5,
+                                    bottom: -5,
+                                    textAlign: 'center',
+                                    display: 'flex',
+                                    justifyContent:'center',
+                                    alignItems: 'center',
+                                    color: 'white',
+                                    fontSize: 17
+                                }}>
+                                <SettingOutlined />
+                            </div>
                         </div>
-                    </div>
-                    
+                        )
+                    })}
                 </div>
 			</div>
 		

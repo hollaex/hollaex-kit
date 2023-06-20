@@ -19,6 +19,7 @@ const PairsTab = (props) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [coinData, setCoinData] = useState([]);
 	const [pairData, setPairData] = useState([]);
+	const [quickTradeData, setQuickTradeData] = useState([]);
 	const tabParams = getTabParams();
 
 	useEffect(() => {
@@ -37,6 +38,7 @@ const PairsTab = (props) => {
 		});
 		setCoinData(exchangeCoins);
 		setPairData(exchangePairs);
+		setQuickTradeData(props.quicktrade);
 	}, [props.coins, props.pairs, props.exchange.coins, props.exchange.pairs]);
 
 	useEffect(() => {
@@ -108,6 +110,7 @@ const PairsTab = (props) => {
 						exchange={props.exchange}
 						user={props.user}
 						balanceData={props.user && props.user.balance}
+						quickTradeData={quickTradeData}
 					/>
 				</TabPane>
 			</Tabs>
@@ -120,6 +123,7 @@ const mapStateToProps = (state) => ({
 	coins: state.asset.allCoins,
 	pairs: state.asset.allPairs,
 	user: state.user,
+	quicktrade: state.app.allContracts.quicktrade
 });
 
 const mapDispatchToProps = (dispatch) => ({
