@@ -1,0 +1,56 @@
+.remove-confirmation-wrapper {
+	color: #ffffff;
+
+	.sub-text {
+		color: #a8a8b1 !important;
+		margin-top: 0.5rem;
+	}
+
+	.coin {
+		display: flex;
+		margin-top: 1rem;
+	}
+
+	.flex-container {
+		display: flex;
+		justify-content: space-between;
+		width: 8rem;
+	}
+
+	.x-mark {
+		position: relative;
+	}
+
+	.x-mark::before {
+		content: 'X';
+		font-size: 22px;
+		display: block;
+		width: 50px;
+		text-align: center;
+		color: #ffffff;
+		position: absolute;
+		/* right: 14px; */
+		left: 95%;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.coin-item {
+		display: flex;
+		align-items: center;
+		margin-left: 1rem;
+	}
+
+	.btn-wrapper {
+		display: flex;
+		justify-content: space-between;
+		margin-top: 2rem;
+	}
+
+	.btn-wrapper {
+		.ant-btn {
+			width: 45%;
+			height: 2.5rem;
+		}
+	}
+}

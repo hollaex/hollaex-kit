@@ -1,6 +1,7 @@
 import { Button, Spin } from 'antd';
 import React from 'react';
 import Coins from '../Coins';
+import './confirmation.scss';
 
 const RemoveConfirmation = ({
 	onCancel,
