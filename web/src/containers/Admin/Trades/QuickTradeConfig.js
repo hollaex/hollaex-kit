@@ -246,7 +246,7 @@ const QuickTradeTab = ({
                           <Radio style={{ color:'white' }} disabled={!disableNetwork} 
                           value={'network'}><span style={{ color: !disableNetwork ? 'grey' : 'white' }}>HollaEx Network Swap</span></Radio>
                           <Radio style={{ color:'white' }} disabled={!disableOrderbook} value={'pro'}><span style={{ color: !disableOrderbook ? 'grey' : 'white' }}>Orderbook</span></Radio>
-                          <Radio style={{ color:'white' }} disabled={!disableBroker} value={'broker'}> <span style={{ color: !disableBroker ? 'grey' : 'white' }}>OTC Desk</span> <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline', color:'white' }}>(Go to OTC Desk page)</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!disableBroker} value={'broker'}><span style={{ color: !disableBroker ? 'grey' : 'white' }}>OTC Desk</span> <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline', color:'white' }}>(Go to OTC Desk page)</span></Radio>
                         </Space>
                     </Radio.Group>
 
