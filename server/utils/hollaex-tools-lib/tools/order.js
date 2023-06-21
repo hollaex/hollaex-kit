@@ -5,7 +5,7 @@ const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
 const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
 const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
@@ -92,7 +92,12 @@ const executeUserOrder = async (user_id, opts, token) => {
 			{ maker: makerFee, taker: takerFee }
 		);
 	}
-
+	else if (type === 'network') {
+		res = await getNodeLib.executeQuote(storedToken);
+	}
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
+	}
 	res.type = type;
 	return res;
 }
@@ -111,16 +116,28 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	let symbol = originalPair;
 	let side = 'sell';
 
-	// find if broker exists
-	let broker = await getModel('broker').findOne({ where: { symbol: originalPair } });
+	const QuickTradeModel = getModel('quickTrade');
+	
+	let quickTradeConfig = await QuickTradeModel.findOne({ where: { symbol: originalPair } });
 
-	if (!broker) {
-		broker = await getModel('broker').findOne({ where: { symbol: flippedPair } });
+	if (!quickTradeConfig) {
+		quickTradeConfig = await QuickTradeModel.findOne({ where: { symbol: flippedPair } });
 		symbol = flippedPair;
 		side = 'buy';
+	} else {
+		throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 	}
 
-	if (broker && !broker.paused) {
+	if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'broker') {
+		const broker = await getModel('broker').findOne({ where: { symbol } });
+
+		if (!broker) {
+			throw new Error(BROKER_NOT_FOUND);
+		}
+		if (broker.paused) {
+			throw new Error(BROKER_PAUSED);
+		}
+
 		return fetchBrokerQuote({
 			symbol: symbol,
 			side: side,
@@ -163,15 +180,9 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				return responseObj;
 			})
 	}
-	else {
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
 		try {
-			symbol = originalPair;
-			side = 'sell';
-			if (!subscribedToPair(symbol)) {
-				side = 'buy';
-				symbol = flippedPair;
-			}
-
+		
 			if (!subscribedToPair(symbol)) {
 				return reject(new Error(INVALID_SYMBOL(symbol)));
 			}
@@ -241,6 +252,49 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		} catch (err) {
 			return reject(new Error(err.message));
 		}
+	}
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'network') {
+
+		let user_id = null;
+		if (bearerToken) {
+			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			if (auth) {
+				user_id = auth.sub.id;
+			}
+		}
+
+		const priceValues = await getNodeLib().getQuote(
+			user_id,
+			spending_currency,
+			spending_amount,
+			receiving_currency,
+			receiving_amount
+		);
+
+		if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
+		else if (receiving_amount != null) responseObj.spending_amount = priceValues.sourceAmount;
+
+		if (user_id) {
+			let size;
+			if (`${spending_currency}-${receiving_currency}` === symbol) {
+				size = responseObj.spending_amount;
+			} else {
+				size = responseObj.receiving_amount;
+			}
+
+			// Generate randomToken to be used during deal execution
+			const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size, 'network');
+			responseObj.token = randomToken;
+			// set expiry
+			const expiryDate = new Date();
+			expiryDate.setSeconds(expiryDate.getSeconds() + 30);
+			responseObj.expiry = expiryDate;
+		}
+
+		return responseObj;
+	} 
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
 }
 
