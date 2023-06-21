@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table, Button, message, Spin, Tooltip, Switch, Input, Modal, Radio, Space } from 'antd';
-import _debounce from 'lodash/debounce';
-import { Link } from 'react-router';
+import { Button, message, Switch, Input, Modal, Radio, Space } from 'antd';
 import { updateQuickTradeConfig, updateConstants } from './actions';
 
 
@@ -23,20 +21,10 @@ const quickTradeTypes = {
 const QuickTradeTab = ({
 	coins,
 	pairs,
-	allCoins,
-	exchange,
-	user,
-	coinData,
-	balanceData,
-	oraclePrices,
-	setPricesAndAsset,
-	setBroker,
-	constants,
-	markets,
-	getTickers,
     quickTradeData,
     features,
-    brokers
+    brokers,
+    networkQuickTrades
 }) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -49,6 +37,12 @@ const QuickTradeTab = ({
     const [filter, setFilter] = useState();
     const [hasQuickTrade, setHasQuickTrade] = useState(features.quick_trade);
 
+    const disableNetwork = networkQuickTrades?.find((e) => {
+        const [ base, quote ] = e.symbol.split('-');
+        return coins[base] && coins[quote] && e.symbol === selectedConfig?.symbol
+    });
+    const disableBroker = brokers?.find(broker => broker.symbol === selectedConfig?.symbol);
+    const disableOrderbook = pairs?.find(pair => pair.name === selectedConfig?.symbol);
 
     const handleCloseConfigModal = () => {
         setDisplayConfigModal(false);
@@ -134,6 +128,7 @@ const QuickTradeTab = ({
                                     });
                                     message.success('Changes saved.')
                                     setHasQuickTrade(value);
+                                    setIsActive(value);
                                 } catch (err) {
                                     message.error(err?.data?.message)
                                 }
@@ -248,9 +243,10 @@ const QuickTradeTab = ({
                     <Radio.Group 
                         onChange={(e) => { setSelectedType(e.target.value)}} value={editMode ? selectedType : selectedConfig?.type}>
                         <Space direction="vertical">
-                          <Radio style={{ color:'white' }} value={'network'}>HollaEx Network Swap</Radio>
-                          <Radio style={{ color:'white' }} value={'pro'}>Orderbook</Radio>
-                          <Radio style={{ color:'white' }} disabled={!brokers?.find(broker => broker.symbol === selectedConfig?.symbol)}  value={'broker'}>OTC Desk <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline' }}>(Go to OTC Desk page)</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!disableNetwork} 
+                          value={'network'}><span style={{ color: !disableNetwork ? 'grey' : 'white' }}>HollaEx Network Swap</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!disableOrderbook} value={'pro'}><span style={{ color: !disableOrderbook ? 'grey' : 'white' }}>Orderbook</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!disableBroker} value={'broker'}> <span style={{ color: !disableBroker ? 'grey' : 'white' }}>OTC Desk</span> <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline', color:'white' }}>(Go to OTC Desk page)</span></Radio>
                         </Space>
                     </Radio.Group>
 
