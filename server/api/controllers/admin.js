@@ -4,13 +4,14 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { ROLES } = require('../../constants');
+const { INIT_CHANNEL, ROLES } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
+const { publisher } = require('../../db/pubsub');
 const crypto = require('crypto');
 
 const VERIFY_STATUS = {
@@ -2429,37 +2430,23 @@ const revokeUserSessionByAdmin = (req, res) => {
 		});
 }
 
-const getQuickTradeConfig = (req, res) => {
-	loggerAdmin.verbose(req.uuid, 'controllers/admin/getQuickTradeConfig/auth', req.auth);
+const updateQuickTradeConfig = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
 
-	const { symbol, active, type, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { id, type, active } = req.swagger.params;
 
-	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerAdmin.error(
-			req.uuid,
-			'controllers/admin/getQuickTradeConfig invalid order_by',
-			order_by.value
-		);
-		return res.status(400).json({ message: 'Invalid order by' });
-	}
-
-	toolsLib.user.getExchangeUserSessions({
-		symbol: symbol.value,
+	toolsLib.order.updateQuickTradeConfig({
+		id: id.value,
 		active: active.value,
 		type: type.value,
-		limit: limit.value,
-		page: page.value,
-		order_by: order_by.value,
-		order: order.value,
-		start_date: start_date.value,
-		end_date: end_date.value
 		}
 	)
 		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json(data);
 		})
 		.catch((err) => {
-			loggerAdmin.error(req.uuid, 'controllers/admin/getQuickTradeConfig', err.message);
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateQuickTradeConfig', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -2525,5 +2512,5 @@ module.exports = {
 	revokeUserSessionByAdmin,
 	sendEmailByAdmin,
 	sendRawEmailByAdmin,
-	getQuickTradeConfig
+	updateQuickTradeConfig
 };

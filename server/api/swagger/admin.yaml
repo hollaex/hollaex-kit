@@ -3222,8 +3222,6 @@ paths:
               id:
                 type: number
                 format: int32
-              symbol:
-                type: string
               type:
                 type: string
               active:
