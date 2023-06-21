@@ -193,7 +193,8 @@ const QuickTradeTab = ({
                                 justifyContent:'center',
                                 color: '#b2b2b2',
                                 position: 'relative',
-                                opacity:  (hasQuickTrade && data.active) ? 1 : 0.4
+                                opacity:  (hasQuickTrade && data.active) ? 1 : 0.4,
+                                cursor: 'default'
                             }}
                         >
                             {!data.active && <div>[X] DISABLED</div>}
@@ -306,7 +307,7 @@ const QuickTradeTab = ({
                         </Button>
                     </div>
 
-                    <div style={{ textAlign: 'center' }}>Do you want to disable this Quick Trade market? Disable it <span style={{ cursor:'pointer', textDecoration:'underline' }} onClick={() => { setDisplayWarning(true); }}>here</span>.</div>
+                    <div style={{ textAlign: 'center' }}>Do you want to {selectedConfig?.active ? 'disable' : 'enable'} this Quick Trade market? {selectedConfig?.active ? 'Disable' : 'Enable'} it <span style={{ cursor:'pointer', textDecoration:'underline' }} onClick={() => { setDisplayWarning(true); }}>here</span>.</div>
 			    </Modal>
 
 
@@ -323,9 +324,9 @@ const QuickTradeTab = ({
                         setDisplayWarning(false);
                     }}
                     >
-                    <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>Disable  {selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()} Quick Trade market</div>
+                    <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>{selectedConfig?.active ? 'Disable' : 'Enable'} {selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()} Quick Trade market</div>
 
-                    <div style={{ marginBottom: 30, padding: 30, backgroundColor: "#222C89" }} >The market will be inaccessible to your users. Do you want to proceed?</div>
+                    <div style={{ marginBottom: 30, padding: 30, backgroundColor: "#222C89" }} >The market will be {selectedConfig?.active ? 'inaccessible' : 'accessible'} to your users. Do you want to proceed?</div>
 
                     <div
                         style={{
@@ -352,15 +353,15 @@ const QuickTradeTab = ({
                         <Button
                             onClick={async () => {
                                 try {
-                                    await updateQuickTradeConfig({ symbol: selectedConfig.symbol, active: false });
+                                    await updateQuickTradeConfig({ symbol: selectedConfig.symbol, active: !selectedConfig.active });
                                     setQuickTradeConfig(prevState => {
                                         const newState = [...prevState];
                                         const Index = newState.findIndex(config => config.symbol === selectedConfig.symbol);
-                                        newState[Index].active = false;
+                                        newState[Index].active = !selectedConfig.active;
                                         return newState;
                                     })
 
-                                    message.success('Market disabled.')
+                                    message.success(`Changes saved.`)
 
                                 } catch(err) {
                                     message.error(err.message);
@@ -369,14 +370,14 @@ const QuickTradeTab = ({
                                 handleCloseConfigModal();
                             }}
                             style={{
-                                backgroundColor: '#780000',
+                                backgroundColor: selectedConfig?.active ? '#780000': '#288500',
                                 color: 'white',
                                 flex: 1,
                                 height: 35,
                             }}
                             type="default"
                         >
-                            Proceed and Disable
+                            Proceed and {selectedConfig?.active ? 'Disable' : 'Enable'}
                         </Button>
                     </div>
 			    </Modal>
