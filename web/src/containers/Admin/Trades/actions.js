@@ -88,6 +88,14 @@ export const deleteBroker = (id) => {
 	return requestAuthenticated('/broker', options);
 };
 
+export const updateConstants = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/admin/kit`, options);
+};
+
 export const getBrokerQuote = (symbol, side) =>
 	requestAuthenticated(`/broker/quote?symbol=${symbol}&side=${side}`);
 

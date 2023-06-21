@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { Table, Button, message, Spin, Tooltip, Switch, Input, Modal, Radio, Space } from 'antd';
 import _debounce from 'lodash/debounce';
 import { Link } from 'react-router';
-import { updateQuickTradeConfig } from './actions';
+import { updateQuickTradeConfig, updateConstants } from './actions';
 
 
 import { setPricesAndAsset } from 'actions/assetActions';
@@ -34,7 +34,8 @@ const QuickTradeTab = ({
 	constants,
 	markets,
 	getTickers,
-    quickTradeData
+    quickTradeData,
+    features
 }) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -45,6 +46,7 @@ const QuickTradeTab = ({
     const [editMode, setEditMode] = useState(false);
     const [selectedType, setSelectedType] = useState();
     const [filter, setFilter] = useState();
+    const [hasQuickTrade, setHasQuickTrade] = useState(features.quick_trade);
 
     const handleCloseConfigModal = () => {
         setDisplayConfigModal(false);
@@ -90,13 +92,9 @@ const QuickTradeTab = ({
                         </div>
                         <div className="main-subHeading">
                             matching Public Orderbook or your personal{' '}
-							<a
-								target="_blank"
-								href="https://docs.hollaex.com/how-tos/otc-broker"
-								rel="noopener noreferrer"
-							>
+							<span style={{ textDecoration: 'underline' }}>
 								OTC Desk.
-							</a>
+							</span>
                         </div>
 					</div>
 				</div>
@@ -121,8 +119,23 @@ const QuickTradeTab = ({
                             }
                         >Off</span>
                         <Switch
-                            checked={false}
-                            onClick={() => {}}
+                            checked={hasQuickTrade}
+                            onClick={async (value) => {
+                                try {
+                                    await updateConstants({
+                                        kit: {
+                                            features: {
+                                                ...features,
+                                                quick_trade: value
+                                            },
+                                        },
+                                    });
+                                    message.success('Changes saved.')
+                                    setHasQuickTrade(value);
+                                } catch (err) {
+                                    message.error(err.message)
+                                }
+                            }}
                             className="mx-2"
                         />
                         <span
@@ -180,7 +193,7 @@ const QuickTradeTab = ({
                                 justifyContent:'center',
                                 color: '#b2b2b2',
                                 position: 'relative',
-                                opacity: data.active ? 1 : 0.4
+                                opacity:  (hasQuickTrade && data.active) ? 1 : 0.4
                             }}
                         >
                             {!data.active && <div>[X] DISABLED</div>}
@@ -234,7 +247,7 @@ const QuickTradeTab = ({
                         <Space direction="vertical">
                           <Radio style={{ color:'white' }} value={'network'}>HollaEx Network Swap</Radio>
                           <Radio style={{ color:'white' }} value={'pro'}>Orderbook</Radio>
-                          <Radio style={{ color:'white' }} value={'broker'}>OTC Desk (Go to OTC Desk page)</Radio>
+                          <Radio style={{ color:'white' }} value={'broker'}>OTC Desk <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline' }}>(Go to OTC Desk page)</span></Radio>
                         </Space>
                     </Radio.Group>
 
@@ -312,7 +325,7 @@ const QuickTradeTab = ({
                     >
                     <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>Disable  {selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()} Quick Trade market</div>
 
-                    <div style={{ marginBottom: 30 }} >The market will be inaccessible to your users. Do you want to proceed?</div>
+                    <div style={{ marginBottom: 30, padding: 30, backgroundColor: "#222C89" }} >The market will be inaccessible to your users. Do you want to proceed?</div>
 
                     <div
                         style={{
