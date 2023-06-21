@@ -24,7 +24,8 @@ const QuickTradeTab = ({
     quickTradeData,
     features,
     brokers,
-    networkQuickTrades
+    networkQuickTrades,
+    handleTabChange
 }) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -88,7 +89,7 @@ const QuickTradeTab = ({
                         </div>
                         <div className="main-subHeading">
                             matching Public Orderbook or your personal{' '}
-							<span style={{ textDecoration: 'underline' }}>
+							<span onClick={() => { handleTabChange('2'); }} style={{ cursor:'pointer', textDecoration: 'underline' }}>
 								OTC Desk.
 							</span>
                         </div>
@@ -246,7 +247,7 @@ const QuickTradeTab = ({
                           <Radio style={{ color:'white' }} disabled={!disableNetwork} 
                           value={'network'}><span style={{ color: !disableNetwork ? 'grey' : 'white' }}>HollaEx Network Swap</span></Radio>
                           <Radio style={{ color:'white' }} disabled={!disableOrderbook} value={'pro'}><span style={{ color: !disableOrderbook ? 'grey' : 'white' }}>Orderbook</span></Radio>
-                          <Radio style={{ color:'white' }} disabled={!disableBroker} value={'broker'}><span style={{ color: !disableBroker ? 'grey' : 'white' }}>OTC Desk</span> <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline', color:'white' }}>(Go to OTC Desk page)</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!disableBroker} value={'broker'}><span style={{ color: !disableBroker ? 'grey' : 'white' }}>OTC Desk</span> <span onClick={(e) => { e.preventDefault(); handleTabChange('2'); handleCloseConfigModal(); }} style={{ textDecoration:'underline', color:'white' }}>(Go to OTC Desk page)</span></Radio>
                         </Space>
                     </Radio.Group>
 

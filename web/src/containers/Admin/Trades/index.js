@@ -42,7 +42,7 @@ const PairsTab = (props) => {
 	}, [props.coins, props.pairs, props.exchange.coins, props.exchange.pairs, props.quicktrade]);
 
 	useEffect(() => {
-		if (tabParams) {
+		if (tabParams?.tab) {
 			setActiveTab(tabParams.tab);
 		}
 	}, [tabParams]);
@@ -103,6 +103,7 @@ const PairsTab = (props) => {
 					/>
 				</TabPane>
 				<TabPane tab="Quick Trade" key="3">
+				
 					<QuickTradeTab
 						coins={props.coinObjects}
 						pairs={pairData}
@@ -114,6 +115,7 @@ const PairsTab = (props) => {
 						features={props.features}
 						brokers={props.broker}
 						networkQuickTrades={props.networkQuickTrades}
+						handleTabChange={handleTabChange}
 					/>
 				</TabPane>
 			</Tabs>
