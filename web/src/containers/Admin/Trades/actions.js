@@ -71,6 +71,15 @@ export const updateBroker = (values) => {
 	return requestAuthenticated('/broker', options);
 };
 
+export const updateQuickTradeConfig = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/quicktrade/config', options);
+};
+
 export const deleteBroker = (id) => {
 	const options = {
 		method: 'DELETE',

@@ -8,7 +8,7 @@ import PairsSummary from './PairsSummary';
 import { getExchange } from '../AdminFinancials/action';
 import { setExchange } from 'actions/assetActions';
 import OtcDeskContainer from './otcdesk';
-import QuickTradeTab from './quicktrade';
+import QuickTradeTab from './QuickTradeConfig';
 import ExchangeOrdersContainer from '../Orders';
 import './index.css';
 

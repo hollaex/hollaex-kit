@@ -2433,13 +2433,9 @@ const revokeUserSessionByAdmin = (req, res) => {
 const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
 
-	const { id, type, active } = req.swagger.params;
+	const { symbol, type, active } = req.swagger.params.data.value;
 
-	toolsLib.order.updateQuickTradeConfig({
-		id: id.value,
-		active: active.value,
-		type: type.value,
-		}
+	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }
 	)
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));

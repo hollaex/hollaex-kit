@@ -244,10 +244,10 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 }
 
-const updateQuickTradeConfig = async ({ id, type, active }) => {
-	const QuickTrade = getModel('quicktrade');
+const updateQuickTradeConfig = async ({ symbol, type, active }) => {
+	const QuickTrade = getModel('quickTrade');
 
-	const quickTradeData = await QuickTrade.findOne({ where: { id } });
+	const quickTradeData = await QuickTrade.findOne({ where: { symbol } });
 
 	if (!quickTradeData) {
 		throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
@@ -258,7 +258,7 @@ const updateQuickTradeConfig = async ({ id, type, active }) => {
 		type,
 		active
 	}
-	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'] });
+	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
 }
 
 const convertBalance = async (order, user_id, maker_id) => {

@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Table, Button, message, Spin, Tooltip, Switch, Input } from 'antd';
+import { Table, Button, message, Spin, Tooltip, Switch, Input, Modal, Radio, Space } from 'antd';
 import _debounce from 'lodash/debounce';
 import { Link } from 'react-router';
+import { updateQuickTradeConfig } from './actions';
 
 
 import { setPricesAndAsset } from 'actions/assetActions';
 import { getTickers, setBroker } from 'actions/appActions';
 import { MarketsSelector } from 'containers/Trade/utils';
-import { SettingOutlined } from '@ant-design/icons';
+import { SettingOutlined, CloseOutlined } from '@ant-design/icons';
 
 
 
@@ -37,7 +38,19 @@ const QuickTradeTab = ({
 }) => {
 
     const [isActive, setIsActive] = useState(false);
+    const [displayConfigModal, setDisplayConfigModal] = useState(false);
+    const [displayWarning, setDisplayWarning] = useState(false);
+    const [quickTradeConfig, setQuickTradeConfig] = useState(quickTradeData);
+    const [selectedConfig, setSelectedConfig] = useState();
+    const [editMode, setEditMode] = useState(false);
+    const [selectedType, setSelectedType] = useState();
 
+    const handleCloseConfigModal = () => {
+        setDisplayConfigModal(false);
+        setSelectedConfig();
+        setEditMode(false);
+        setSelectedType(false);
+    }
 	return (
 		<div className="otcDeskContainer">
 			<div className="header-container">
@@ -152,7 +165,7 @@ const QuickTradeTab = ({
 			<div style={{ marginTop: 50 }}>
                 <div style={{ display: 'flex', flexDirection:'row', gap: 10,  paddingBottom: 20 }}>
 
-                    {quickTradeData?.map(data => {
+                    {quickTradeConfig?.map(data => {
                         return(
                             <div
                             style={{
@@ -172,6 +185,7 @@ const QuickTradeTab = ({
                             <div>{quickTradeTypes[data.type]}</div>
     
                             <div 
+                                onClick={() => { setSelectedConfig(data); setDisplayConfigModal(true); setEditMode(true);  setSelectedType(data.type); }}
                                 style={{ 
                                     height:30,
                                     width: 30,
@@ -195,8 +209,146 @@ const QuickTradeTab = ({
                     })}
                 </div>
 			</div>
-		
-		
+				<Modal
+                    maskClosable={false}
+                    closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+                    bodyStyle={{
+                        backgroundColor: '#27339D',
+                    }}
+                    visible={displayConfigModal}
+                    footer={null}
+                    onCancel={() => {
+                        handleCloseConfigModal();
+                    }}
+                    >
+                    <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Configure Quick Trade CUSTOM/USDT</div>
+
+                    <div style={{ marginBottom: 30 }} >Change liquidity and price source for BTC/USDT Quick Trade market.</div>
+
+                    <div style={{ marginBottom: 30 }}>
+                    <Radio.Group 
+                        onChange={(e) => { setSelectedType(e.target.value)}} value={editMode ? selectedType : selectedConfig?.type}>
+                        <Space direction="vertical">
+                          <Radio style={{ color:'white' }} value={'network'}>HollaEx Network Swap</Radio>
+                          <Radio style={{ color:'white' }} value={'pro'}>Orderbook</Radio>
+                          <Radio style={{ color:'white' }} value={'broker'}>OTC Desk (Go to OTC Desk page)</Radio>
+                        </Space>
+                    </Radio.Group>
+
+                    </div>
+
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: 15,
+                            justifyContent: 'space-between',
+                            marginBottom: 20
+                        }}
+                    >
+                        <Button
+                            onClick={() => {
+                                handleCloseConfigModal();
+                            }}
+                            style={{
+                                backgroundColor: '#288500',
+                                color: 'white',
+                                flex: 1,
+                                height: 35,
+                            }}
+                            type="default"
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            onClick={async () => {
+                                try {
+                                    await updateQuickTradeConfig({ symbol: selectedConfig.symbol, type: selectedType });
+                                    setQuickTradeConfig(prevState => {
+                                        const newState = [...prevState];
+                                        const Index = newState.findIndex(config => config.symbol === selectedConfig.symbol);
+                                        newState[Index].type = selectedType;
+                                        return newState;
+                                    })
+
+                                    message.success('Changes applied.')
+
+                                } catch(err) {
+                                    message.error(err.message);
+                                }
+                                handleCloseConfigModal();
+                            }}
+                            style={{
+                                backgroundColor: '#288500',
+                                color: 'white',
+                                flex: 1,
+                                height: 35,
+                            }}
+                            type="default"
+                        >
+                            Confirm
+                        </Button>
+                    </div>
+
+                    <div style={{ textAlign: 'center' }}>Do you want to disable this Quick Trade market? Disable it <span onClick={() => { setDisplayWarning(true); }}>here</span>.</div>
+			    </Modal>
+
+
+                <Modal
+                    maskClosable={false}
+                    closeIcon={<CloseOutlined style={{ color: 'white' }} />}
+                    bodyStyle={{
+                        backgroundColor: '#27339D',
+                    }}
+                    style={{ marginTop: 20 }}
+                    visible={displayWarning}
+                    footer={null}
+                    onCancel={() => {
+                        setDisplayWarning(false);
+                    }}
+                    >
+                    <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>Disable BTC/USDT Quick Trade market</div>
+
+                    <div style={{ marginBottom: 30 }} >The market will be inaccessible to your users. Do you want to proceed?</div>
+
+                    <div
+                        style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: 15,
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Button
+                            onClick={() => {
+                                setDisplayWarning(false);
+                            }}
+                            style={{
+                                backgroundColor: '#288500',
+                                color: 'white',
+                                flex: 1,
+                                height: 35,
+                            }}
+                            type="default"
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            onClick={() => {
+                            
+                            }}
+                            style={{
+                                backgroundColor: '#780000',
+                                color: 'white',
+                                flex: 1,
+                                height: 35,
+                            }}
+                            type="default"
+                        >
+                            Proceed and Disable
+                        </Button>
+                    </div>
+			    </Modal>
 		</div>
 	);
 };
