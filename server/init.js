@@ -205,7 +205,8 @@ const checkStatus = () => {
 			quickTrades.forEach((qt) => {
 				let item = {
 					type: qt.type,
-					symbol: qt.symbol
+					symbol: qt.symbol,
+					active: qt.active
 				};
 				configuration.quicktrade.push(item)
 			})
