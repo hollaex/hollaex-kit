@@ -169,7 +169,15 @@ class CreateAsset extends Component {
 				(val) =>
 					!coinKeys.includes(val.symbol) &&
 					val.verified &&
-					_toLower(val.issuer) !== 'hollaex'
+					_toLower(val.type) === 'fiat'
+			);
+		} else if (activeKey === '2') {
+			coins = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.issuer) !== 'hollaex' &&
+					_toLower(val.type) !== 'fiat'
 			);
 		}
 		const selectedCoinData = coins[0] || {};
@@ -426,11 +434,10 @@ class CreateAsset extends Component {
 	};
 
 	handleSearch = (e) => {
-		const { coins = [] } = this.props;
 		const searchValue = e.target.value ? e.target.value.toLowerCase() : '';
 		let coinData = [];
+		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
 		if (this.state.activeTab === '0') {
-			const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
 			let hollaexCoins = this.props.coins.filter(
 				(val) =>
 					!coinKeys.includes(val.symbol) &&
@@ -438,8 +445,21 @@ class CreateAsset extends Component {
 					_toLower(val.issuer) === 'hollaex'
 			);
 			coinData = [...hollaexCoins];
+		} else if (this.state.activeTab === '1') {
+			coinData = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.type) === 'fiat'
+			);
 		} else {
-			coinData = [...coins];
+			coinData = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.issuer) !== 'hollaex' &&
+					_toLower(val.type) !== 'fiat'
+			);
 		}
 		const filteredData =
 			coinData &&
