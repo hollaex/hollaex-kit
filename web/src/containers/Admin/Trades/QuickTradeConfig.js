@@ -35,7 +35,8 @@ const QuickTradeTab = ({
 	markets,
 	getTickers,
     quickTradeData,
-    features
+    features,
+    brokers
 }) => {
 
     const [isActive, setIsActive] = useState(false);
@@ -47,6 +48,7 @@ const QuickTradeTab = ({
     const [selectedType, setSelectedType] = useState();
     const [filter, setFilter] = useState();
     const [hasQuickTrade, setHasQuickTrade] = useState(features.quick_trade);
+
 
     const handleCloseConfigModal = () => {
         setDisplayConfigModal(false);
@@ -133,7 +135,7 @@ const QuickTradeTab = ({
                                     message.success('Changes saved.')
                                     setHasQuickTrade(value);
                                 } catch (err) {
-                                    message.error(err.message)
+                                    message.error(err?.data?.message)
                                 }
                             }}
                             className="mx-2"
@@ -248,7 +250,7 @@ const QuickTradeTab = ({
                         <Space direction="vertical">
                           <Radio style={{ color:'white' }} value={'network'}>HollaEx Network Swap</Radio>
                           <Radio style={{ color:'white' }} value={'pro'}>Orderbook</Radio>
-                          <Radio style={{ color:'white' }} value={'broker'}>OTC Desk <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline' }}>(Go to OTC Desk page)</span></Radio>
+                          <Radio style={{ color:'white' }} disabled={!brokers?.find(broker => broker.symbol === selectedConfig?.symbol)}  value={'broker'}>OTC Desk <span onClick={(e) => { e.preventDefault(); }} style={{ textDecoration:'underline' }}>(Go to OTC Desk page)</span></Radio>
                         </Space>
                     </Radio.Group>
 
@@ -291,7 +293,7 @@ const QuickTradeTab = ({
                                     message.success('Changes applied.')
 
                                 } catch(err) {
-                                    message.error(err.message);
+                                    message.error(err?.data?.message);
                                 }
                                 handleCloseConfigModal();
                             }}
@@ -364,7 +366,7 @@ const QuickTradeTab = ({
                                     message.success(`Changes saved.`)
 
                                 } catch(err) {
-                                    message.error(err.message);
+                                    message.error(err?.data?.message);
                                 }
                                 setDisplayWarning(false);
                                 handleCloseConfigModal();

@@ -112,6 +112,7 @@ const PairsTab = (props) => {
 						balanceData={props.user && props.user.balance}
 						quickTradeData={quickTradeData}
 						features={props.features}
+						brokers={props.broker}
 					/>
 				</TabPane>
 			</Tabs>
@@ -125,6 +126,7 @@ const mapStateToProps = (state) => ({
 	pairs: state.asset.allPairs,
 	user: state.user,
 	quicktrade: state.app.allContracts.quicktrade,
+	broker: state.app.broker,
 	features: state.app.constants.features
 });
 
