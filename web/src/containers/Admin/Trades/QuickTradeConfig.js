@@ -44,6 +44,7 @@ const QuickTradeTab = ({
     const [selectedConfig, setSelectedConfig] = useState();
     const [editMode, setEditMode] = useState(false);
     const [selectedType, setSelectedType] = useState();
+    const [filter, setFilter] = useState();
 
     const handleCloseConfigModal = () => {
         setDisplayConfigModal(false);
@@ -136,7 +137,7 @@ const QuickTradeTab = ({
             <div className="header-container" style={{ marginTop: 30 }}>
 				<div className="d-flex justify-content-center">
 					<div>
-						<div className="main-Heading">Active Quick Trade markets (70)</div>
+						<div className="main-Heading">Active Quick Trade markets ({quickTradeConfig.filter(config => config.active).length})</div>
 					</div>
 				</div>
 			</div>
@@ -151,13 +152,13 @@ const QuickTradeTab = ({
                             style={{ marginTop: 10 }}
 			        	    size="small"
 			        	    placeholder={'Search markets'}
-			        	    onChange={() => { }}
+			        	    onChange={(e) => { setFilter(e.target.value); }}
 			            />
 					</div>
 				</div>
                 <div className="d-flex justify-content-center">
 					<div className="ml-4" style={{ fontSize: 17 }}>
-                        [X] Disabled markets (1)
+                        [X] Disabled markets ({quickTradeConfig.filter(config => !config.active).length})
 					</div>
 				</div>
 			</div>
@@ -165,7 +166,7 @@ const QuickTradeTab = ({
 			<div style={{ marginTop: 50 }}>
                 <div style={{ display: 'flex', flexDirection:'row', gap: 10,  paddingBottom: 20 }}>
 
-                    {quickTradeConfig?.map(data => {
+                    {quickTradeConfig?.filter(data => filter ? data.symbol?.split('-')?.join('/').toLowerCase().includes(filter.toLowerCase()) : true).map(data => {
                         return(
                             <div
                             style={{
@@ -178,9 +179,11 @@ const QuickTradeTab = ({
                                 flexDirection:'column',
                                 justifyContent:'center',
                                 color: '#b2b2b2',
-                                position: 'relative'
+                                position: 'relative',
+                                opacity: data.active ? 1 : 0.4
                             }}
                         >
+                            {!data.active && <div>[X] DISABLED</div>}
                             <div style={{ fontSize: 16, marginBottom: 3 }}>{data.symbol.split('-').join('/').toUpperCase()}</div>
                             <div>{quickTradeTypes[data.type]}</div>
     
@@ -221,7 +224,7 @@ const QuickTradeTab = ({
                         handleCloseConfigModal();
                     }}
                     >
-                    <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Configure Quick Trade CUSTOM/USDT</div>
+                    <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Configure Quick Trade {selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()}</div>
 
                     <div style={{ marginBottom: 30 }} >Change liquidity and price source for BTC/USDT Quick Trade market.</div>
 
@@ -290,7 +293,7 @@ const QuickTradeTab = ({
                         </Button>
                     </div>
 
-                    <div style={{ textAlign: 'center' }}>Do you want to disable this Quick Trade market? Disable it <span onClick={() => { setDisplayWarning(true); }}>here</span>.</div>
+                    <div style={{ textAlign: 'center' }}>Do you want to disable this Quick Trade market? Disable it <span style={{ cursor:'pointer', textDecoration:'underline' }} onClick={() => { setDisplayWarning(true); }}>here</span>.</div>
 			    </Modal>
 
 
@@ -307,7 +310,7 @@ const QuickTradeTab = ({
                         setDisplayWarning(false);
                     }}
                     >
-                    <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>Disable BTC/USDT Quick Trade market</div>
+                    <div style={{ fontWeight: '600', color: 'white', fontSize:20, marginBottom: 20 }}>Disable  {selectedConfig?.symbol?.split('-')?.join('/')?.toUpperCase()} Quick Trade market</div>
 
                     <div style={{ marginBottom: 30 }} >The market will be inaccessible to your users. Do you want to proceed?</div>
 
@@ -334,8 +337,23 @@ const QuickTradeTab = ({
                             Back
                         </Button>
                         <Button
-                            onClick={() => {
-                            
+                            onClick={async () => {
+                                try {
+                                    await updateQuickTradeConfig({ symbol: selectedConfig.symbol, active: false });
+                                    setQuickTradeConfig(prevState => {
+                                        const newState = [...prevState];
+                                        const Index = newState.findIndex(config => config.symbol === selectedConfig.symbol);
+                                        newState[Index].active = false;
+                                        return newState;
+                                    })
+
+                                    message.success('Market disabled.')
+
+                                } catch(err) {
+                                    message.error(err.message);
+                                }
+                                setDisplayWarning(false);
+                                handleCloseConfigModal();
                             }}
                             style={{
                                 backgroundColor: '#780000',
