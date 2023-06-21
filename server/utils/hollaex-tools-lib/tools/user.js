@@ -852,7 +852,26 @@ const freezeUserById = (userId) => {
 			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			const sessions = await getModel('session').findAll(
+				{ 
+					where: { status: true },
+					include: [
+						{
+							model: getModel('login'),
+							as: 'login',
+							attributes: ['user_id'],
+							where: { user_id: userId }
+						}
+					]
+				});
+	
+			for (const session of sessions) {
+				await session.update({ status: false }, { fields: ['status'] }); 
+				client.delAsync(session.token);
+			}
+
+
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
