@@ -7,7 +7,7 @@ const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require(
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, validatePair } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getNetworkQuickTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -93,7 +93,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 		);
 	}
 	else if (type === 'network') {
-		res = await getNodeLib.executeQuote(storedToken);
+		res = await getNodeLib().executeQuote(token, opts);
 	}
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
@@ -254,15 +254,25 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'network') {
 
 		let user_id = null;
+		let network_id = null;
 		if (bearerToken) {
 			const auth = await verifyBearerTokenPromise(bearerToken, ip);
 			if (auth) {
 				user_id = auth.sub.id;
+				network_id = auth.sub.networkId;
 			}
 		}
 
+		const responseObj = {
+			spending_currency,
+			receiving_currency,
+			spending_amount,
+			receiving_amount,
+			type: 'network'
+		}
+
 		const priceValues = await getNodeLib().getQuote(
-			user_id,
+			network_id,
 			spending_currency,
 			spending_amount,
 			receiving_currency,
@@ -270,8 +280,24 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			opts
 		);
 
-		if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
-		else if (receiving_amount != null) responseObj.spending_amount = priceValues.sourceAmount;
+		const networkBrokers = getNetworkQuickTrades();
+		const networkBroker = networkBrokers.find(broker => broker.symbol === symbol);
+		const decimalPoint = new BigNumber(networkBroker.increment_size).dp();
+		if (spending_amount != null) {
+			const sourceAmount = new BigNumber(side === 'buy' ? spending_amount /  priceValues.price : spending_amount *  priceValues.price)
+			.decimalPlaces(decimalPoint).toNumber();
+
+			responseObj.receiving_amount = sourceAmount;
+
+		} else if (receiving_amount != null) {
+			const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount *  priceValues.price : receiving_amount /  priceValues.price)
+			.decimalPlaces(decimalPoint).toNumber();
+			responseObj.spending_amount = sourceAmount;
+		}
+		
+		if (priceValues.price === 0 || responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
+		}
 
 		if (user_id) {
 			let size;
@@ -281,13 +307,19 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				size = responseObj.receiving_amount;
 			}
 
-			// Generate randomToken to be used during deal execution
-			const randomToken = generateRandomToken(user_id, symbol, side, 30, priceValues?.estimatedPrice, size, 'network');
-			responseObj.token = randomToken;
-			// set expiry
-			const expiryDate = new Date();
-			expiryDate.setSeconds(expiryDate.getSeconds() + 30);
-			responseObj.expiry = expiryDate;
+			responseObj.expiry = priceValues.expiry;
+			responseObj.token = priceValues.token;
+
+			const tradeData = {
+				user_id,
+				symbol,
+				price: priceValues.price,
+				side,
+				size,
+				type: 'network'
+			};
+
+			client.setexAsync(priceValues.token, 30, JSON.stringify(tradeData));
 		}
 
 		return responseObj;
