@@ -266,7 +266,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			spending_currency,
 			spending_amount,
 			receiving_currency,
-			receiving_amount
+			receiving_amount,
+			opts
 		);
 
 		if (spending_amount != null) responseObj.receiving_amount = priceValues.targetAmount;
