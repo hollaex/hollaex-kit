@@ -1935,7 +1935,8 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}).then((sessions) => {
+	})
+	.then((sessions) => {
 		if (opts.format && opts.format === 'csv') {
 			if (sessions.data.length === 0) {
 				throw new Error(NO_DATA_FOR_CSV);
