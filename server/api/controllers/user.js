@@ -1139,7 +1139,7 @@ const addUserBank = (req, res) => {
 const getUserSessions = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/getUserSessions/auth', req.auth);
 
-	const { limit, status, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { limit, status, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	const user_id = req.auth.sub.id;
 
@@ -1160,11 +1160,18 @@ const getUserSessions = (req, res) => {
 		order_by: order_by.value,
 		order: order.value,
 		start_date: start_date.value,
-		end_date: end_date.value
+		end_date: end_date.value,
+		format: format.value
 		}
 	)
 		.then((data) => {
-			return res.json(data);
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/getUserSessions', err.message);

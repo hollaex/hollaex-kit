@@ -2383,7 +2383,7 @@ const sendRawEmailByAdmin = (req, res) => {
 const getUserSessionsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
 
-	const { user_id, status, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { user_id, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -2402,11 +2402,18 @@ const getUserSessionsByAdmin = (req, res) => {
 		order_by: order_by.value,
 		order: order.value,
 		start_date: start_date.value,
-		end_date: end_date.value
+		end_date: end_date.value,
+		format: format.value
 		}
 	)
 		.then((data) => {
-			return res.json(data);
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getUserSessionsByAdmin', err.message);
