@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Table, Spin, Button, Modal } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import { Link } from 'react-router';
 import { formatDate } from 'utils';
 import { requestUsers } from './actions';
@@ -149,50 +149,49 @@ class FullListUsers extends Component {
 
 		return (
 			<div className="app_container-content admin-user-container">
-				{loading ? (
-					<Spin size="large" />
-				) : (
+				<div>
+					{error && <p>-{error}-</p>}
+
 					<div>
-						{error && <p>-{error}-</p>}
-
-						<div>
-							<Button
-								type="primary"
-								onClick={() => this.setState({ displayFilterModel: true })}
-								className="green-btn"
-							>
-								Add filters
-							</Button>
-						</div>
-
-						<div className="user-list-header-wrapper">
-							<span
-								className="pointer"
-								onClick={() => this.props.handleDownload(this.state.filters)}
-							>
-								Download table
-							</span>
-							<Button onClick={() => this.setState({ isVisible: true })}>
-								{' '}
-								Add new user
-							</Button>
-						</div>
-						<Table
-							className="blue-admin-table"
-							columns={COLUMNS}
-							dataSource={users}
-							expandedRowRender={renderRowContent}
-							expandRowByClick={true}
-							rowKey={(data) => {
-								return data.id;
-							}}
-							pagination={{
-								current: currentTablePage,
-								onChange: this.pageChange,
-							}}
-						/>
+					<UseFilters
+						displayFilterModel={this.state.displayFilterModel}
+						setDisplayFilterModel={(value) => {
+							this.setState({ displayFilterModel: value });
+						}}
+						applyFilters={this.applyFilters}
+						loading={loading}
+					/>
 					</div>
-				)}
+
+					<div className="user-list-header-wrapper">
+						<span
+							className="pointer"
+							onClick={() => this.props.handleDownload(this.state.filters)}
+						>
+							Download table
+						</span>
+						<Button onClick={() => this.setState({ isVisible: true })}>
+							{' '}
+							Add new user
+						</Button>
+					</div>
+					<Table
+						loading={loading} 
+						className="blue-admin-table"
+						columns={COLUMNS}
+						dataSource={users}
+						expandedRowRender={renderRowContent}
+						expandRowByClick={true}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						pagination={{
+							current: currentTablePage,
+							onChange: this.pageChange,
+						}}
+					/>
+				</div>
+					
 				<Modal
 					visible={isVisible}
 					footer={null}
@@ -205,13 +204,7 @@ class FullListUsers extends Component {
 						requestFullUsers={this.requestFullUsers}
 					/>
 				</Modal>
-				<UseFilters
-					displayFilterModel={this.state.displayFilterModel}
-					setDisplayFilterModel={(value) => {
-						this.setState({ displayFilterModel: value });
-					}}
-					applyFilters={this.applyFilters}
-				/>
+		
 			</div>
 		);
 	}
