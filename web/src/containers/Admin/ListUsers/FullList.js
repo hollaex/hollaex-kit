@@ -149,6 +149,22 @@ class FullListUsers extends Component {
 
 		return (
 			<div className="app_container-content admin-user-container">
+				<div style={{ display: 'flex', flexDirection:'row', justifyContent: 'space-between' }}>
+					<div  style={{ marginTop: 20, marginBottom: 10, fontSize: 15, color: '#ccc' }}>Find users by their email and verification status below, or narrow down your search by adding more filter.</div>
+					<Button  
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							marginTop: 20
+						}}
+						onClick={() => this.setState({ isVisible: true })}>
+						{' '}
+						Add new user
+					</Button>
+				</div>
+				<hr style={{ border:"1px solid #ccc", marginBottom: 20 }}/>
+				
+			
 				<div>
 					{error && <p>-{error}-</p>}
 
@@ -170,10 +186,6 @@ class FullListUsers extends Component {
 						>
 							Download table
 						</span>
-						<Button onClick={() => this.setState({ isVisible: true })}>
-							{' '}
-							Add new user
-						</Button>
 					</div>
 					<Table
 						loading={loading} 
