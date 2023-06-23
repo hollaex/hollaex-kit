@@ -528,6 +528,12 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
       tags:
         - User
       responses:
@@ -535,6 +541,10 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:
