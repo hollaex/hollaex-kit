@@ -280,22 +280,9 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			opts
 		);
 
-		const networkBrokers = getNetworkQuickTrades();
-		const networkBroker = networkBrokers.find(broker => broker.symbol === symbol);
-		const decimalPoint = new BigNumber(networkBroker.increment_size).dp();
-		if (spending_amount != null) {
-			const sourceAmount = new BigNumber(side === 'buy' ? spending_amount /  priceValues.price : spending_amount *  priceValues.price)
-			.decimalPlaces(decimalPoint).toNumber();
-
-			responseObj.receiving_amount = sourceAmount;
-
-		} else if (receiving_amount != null) {
-			const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount *  priceValues.price : receiving_amount /  priceValues.price)
-			.decimalPlaces(decimalPoint).toNumber();
-			responseObj.spending_amount = sourceAmount;
-		}
-		
-		if (priceValues.price === 0 || responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+		responseObj.spending_amount = priceValues.spending_amount;
+		responseObj.receiving_amount = priceValues.receiving_amount;
+		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
 			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
 		}
 
