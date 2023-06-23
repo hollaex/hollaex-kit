@@ -7,6 +7,7 @@ import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
 import { withRouter, browserHistory } from 'react-router';
 import debounce from 'lodash.debounce';
+import { SwapOutlined } from '@ant-design/icons';
 
 import { changePair } from 'actions/appActions';
 import { isLoggedIn } from 'utils/token';
@@ -25,7 +26,7 @@ import ReviewOrder from 'containers/QuickTrade/components/ReviewOrder';
 import { flipPair } from 'containers/QuickTrade/components/utils';
 import {
 	getSourceOptions,
-	brokerPairsSelector,
+	quicktradePairSelector,
 } from 'containers/QuickTrade/components/utils';
 import {
 	QuickTradeLimitsSelector,
@@ -40,6 +41,11 @@ const SPENDING = {
 	SOURCE: 'SOURCE',
 	TARGET: 'TARGET',
 };
+const TYPES = {
+	PRO: 'pro',
+	BROKER: 'broker',
+	NETWORK: 'network',
+};
 
 const QuickTrade = ({
 	pair,
@@ -50,9 +56,10 @@ const QuickTrade = ({
 	autoFocus = true,
 	coins,
 	user,
-	brokerPairs,
+	quicktradePairs,
 	preview,
 	router,
+	router: { params },
 	changePair,
 }) => {
 	const getTargetOptions = (source) =>
@@ -60,15 +67,13 @@ const QuickTrade = ({
 			const pairKey = `${key}-${source}`;
 			const flippedKey = flipPair(pairKey);
 
-			return (
-				pairs[pairKey] ||
-				pairs[flippedKey] ||
-				brokerPairs[pairKey] ||
-				brokerPairs[flippedKey]
-			);
+			return quicktradePairs[pairKey] || quicktradePairs[flippedKey];
 		});
 
-	const initialPair = (router.params?.pair || Object.keys(pairs)[0]).split('-');
+	const queryPair = (
+		quicktradePairs[params?.pair] || quicktradePairs[flipPair(params?.pair)]
+	)?.symbol;
+	const initialPair = (queryPair || Object.keys(quicktradePairs)[0]).split('-');
 	const [, initialSelectedSource = sourceOptions[0]] = initialPair;
 	const initialTargetOptions = getTargetOptions(initialSelectedSource);
 	const [initialSelectedTarget = initialTargetOptions[0]] = initialPair;
@@ -118,13 +123,14 @@ const QuickTrade = ({
 	};
 
 	const flippedPair = flipPair(symbol);
-	const isShowChartDetails = pairs[symbol] || pairs[flippedPair];
-	const side =
-		pairs[symbol] || brokerPairs[symbol]
-			? 'buy'
-			: pairs[flippedPair] || brokerPairs[flippedPair]
-			? 'sell'
-			: undefined;
+	const isShowChartDetails =
+		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
+		TYPES.PRO;
+	const side = quicktradePairs[symbol]
+		? 'buy'
+		: quicktradePairs[flippedPair]
+		? 'sell'
+		: undefined;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -134,7 +140,7 @@ const QuickTrade = ({
 
 	const { key, increment_size, display_name } = market || {};
 
-	const isUseBroker = brokerPairs[symbol] || brokerPairs[flippedPair];
+	const isUseBroker = quicktradePairs[symbol] || quicktradePairs[flippedPair];
 	const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
 
 	const onChangeSourceAmount = (value) => {
@@ -294,21 +300,15 @@ const QuickTrade = ({
 		const symbol = `${selectedSource}-${selectedTarget}`;
 		const flippedSymbol = flipPair(symbol);
 
-		if (pairs[symbol]) {
+		if (quicktradePairs[symbol]) {
 			setSymbol(symbol);
 			goToPair(symbol);
-		} else if (pairs[flippedSymbol]) {
-			setSymbol(flippedSymbol);
-			goToPair(flippedSymbol);
-		} else if (brokerPairs[symbol]) {
-			setSymbol(symbol);
-			goToPair(symbol);
-		} else if (brokerPairs[flippedSymbol]) {
+		} else if (quicktradePairs[flippedSymbol]) {
 			setSymbol(flippedSymbol);
 			goToPair(flippedSymbol);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [selectedSource, selectedTarget, pairs, brokerPairs]);
+	}, [selectedSource, selectedTarget, quicktradePairs]);
 
 	useEffect(() => {
 		debouncedQuote.current({
@@ -357,6 +357,11 @@ const QuickTrade = ({
 	// 	[sourceAmount, selectedSource],
 	// 	[targetAmount, selectedTarget],
 	// ][reversed ? 'reverse' : 'slice']();
+
+	const onSwap = () => {
+		onSelectSource(selectedTarget);
+		onSelectTarget(selectedSource);
+	};
 
 	return (
 		<Fragment>
@@ -416,6 +421,18 @@ const QuickTrade = ({
 								loading={loadingSource}
 								disabled={loadingSource}
 							/>
+							<div className="d-flex">
+								<div className="swap-wrapper">
+									<div className="swap-container">
+										<div className="pointer blue-link" onClick={onSwap}>
+											<SwapOutlined className="px-2" rotate={90} />
+											<EditWrapper stringId={'SWAP'}>
+												{STRINGS['SWAP']}
+											</EditWrapper>
+										</div>
+									</div>
+								</div>
+							</div>
 							<InputGroup
 								name={STRINGS['TO']}
 								stringId={'TO'}
@@ -512,12 +529,12 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (store) => {
 	const {
-		app: { pair, broker, pairs },
+		app: { pair, quicktrade, pairs },
 	} = store;
-	const sourceOptions = getSourceOptions(store.app.pairs, store.app.broker);
+	const sourceOptions = getSourceOptions(store.app.quicktrade);
 
 	const flippedPair = flipPair(pair);
-	const qtlimits = !!broker.filter(
+	const qtlimits = !!quicktrade.filter(
 		({ symbol }) => symbol === pair || symbol === flippedPair
 	)
 		? BrokerLimitsSelector(store)
@@ -525,7 +542,7 @@ const mapStateToProps = (store) => {
 
 	return {
 		pair,
-		brokerPairs: brokerPairsSelector(store),
+		quicktradePairs: quicktradePairSelector(store),
 		sourceOptions,
 		pairs,
 		coins: store.app.coins,

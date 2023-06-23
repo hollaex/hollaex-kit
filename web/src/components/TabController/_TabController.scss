@@ -44,9 +44,7 @@ $tab_controller-item-min-width: 8rem;
 			opacity: 0.7;
 		}
 	}
-	.tab-trade {
-		padding: 0 1px 12px !important;
-	}
+
 	.tab_item-active {
 		border-bottom: $tab-selected-line-height solid $link;
 		color: $tab-active;

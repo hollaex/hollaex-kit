@@ -3,7 +3,7 @@ import math from 'mathjs';
 
 const getTickers = (state) => state.app.tickers;
 const getOrderLimits = (state) => state.app.orderLimits;
-const getBroker = (state) => state.app.broker;
+const getQuicktrade = (state) => state.app.quicktrade;
 const getPair = (state) => state.app.pair;
 
 export const QuickTradeLimitsSelector = createSelector(
@@ -26,10 +26,10 @@ export const QuickTradeLimitsSelector = createSelector(
 );
 
 export const BrokerLimitsSelector = createSelector(
-	[getBroker, getPair],
-	(broker, pair) => {
+	[getQuicktrade, getPair],
+	(quicktrade, pair) => {
 		let brokerObj = {};
-		broker.forEach(
+		quicktrade.forEach(
 			(item) => (brokerObj = { ...brokerObj, [item.symbol]: item })
 		);
 		let flippedPair = pair.split('-');

@@ -302,6 +302,9 @@ $title-icon--height: 10rem;
 			}
 		}
 	}
+	.swap-wrapper {
+		width: 100% !important;
+	}
 }
 .mobile_dropdown-section {
 	border-top: solid;
@@ -349,5 +352,17 @@ $title-icon--height: 10rem;
 				}
 			}
 		}
+		.swap-wrapper {
+			width: 250px;
+		}
 	}
+}
+
+.swap-container {
+	border-left: $colors-black dotted 2px;
+}
+
+.swap-wrapper {
+	width: 310px;
+	padding: 0 1rem;
 }

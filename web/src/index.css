@@ -5846,8 +5846,6 @@ table th {
     font-size: 14px; }
     .tab_controller-tabs .tab_item svg path {
       opacity: 0.7; }
-  .tab_controller-tabs .tab-trade {
-    padding: 0 1px 12px !important; }
   .tab_controller-tabs .tab_item-active {
     border-bottom: 4px solid var(--specials_buttons-links-and-highlights);
     color: var(--labels_important-active-labels-text-graphics); }
@@ -9218,6 +9216,9 @@ table th {
   .layout-mobile .quick_trade-wrapper .trade-section .inner-content .small-text {
     font-size: 13px !important; }
 
+.layout-mobile .swap-wrapper {
+  width: 100% !important; }
+
 .mobile_dropdown-section {
   border-top: solid; }
 
@@ -9250,7 +9251,16 @@ table th {
         .quick_trade-wrapper .trade-section .inner-content .py-2 .input-group__error-wrapper {
           width: 250px; }
         .quick_trade-wrapper .trade-section .inner-content .input-group__container .quick-trade-select-wrapper .pl-1 {
-          font-size: 10px; } }
+          font-size: 10px; }
+    .quick_trade-wrapper .swap-wrapper {
+      width: 250px; } }
+
+.swap-container {
+  border-left: var(--labels_secondary-inactive-label-text-graphics) dotted 2px; }
+
+.swap-wrapper {
+  width: 310px;
+  padding: 0 1rem; }
 
 .legal-container {
   width: 100%; }
