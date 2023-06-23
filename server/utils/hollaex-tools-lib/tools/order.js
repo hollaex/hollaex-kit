@@ -7,7 +7,7 @@ const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require(
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, getNetworkQuickTrades, validatePair } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -287,22 +287,11 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		}
 
 		if (user_id) {
-			let size;
-			if (`${spending_currency}-${receiving_currency}` === symbol) {
-				size = responseObj.spending_amount;
-			} else {
-				size = responseObj.receiving_amount;
-			}
-
 			responseObj.expiry = priceValues.expiry;
 			responseObj.token = priceValues.token;
 
 			const tradeData = {
 				user_id,
-				symbol,
-				price: priceValues.price,
-				side,
-				size,
 				type: 'network'
 			};
 
