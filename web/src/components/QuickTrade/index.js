@@ -28,10 +28,6 @@ import {
 	getSourceOptions,
 	quicktradePairSelector,
 } from 'containers/QuickTrade/components/utils';
-import {
-	QuickTradeLimitsSelector,
-	BrokerLimitsSelector,
-} from 'containers/QuickTrade/utils';
 import { getQuickTrade, executeQuickTrade } from 'actions/quickTradeActions';
 import { FieldError } from 'components/Form/FormFields/FieldWrapper';
 import { translateError } from 'components/QuickTrade/utils';
@@ -49,7 +45,6 @@ const TYPES = {
 
 const QuickTrade = ({
 	pair,
-	orderLimits: { SIZE, PRICE } = {},
 	pairs,
 	markets,
 	sourceOptions,
@@ -126,11 +121,6 @@ const QuickTrade = ({
 	const isShowChartDetails =
 		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
 		TYPES.PRO;
-	const side = quicktradePairs[symbol]
-		? 'buy'
-		: quicktradePairs[flippedPair]
-		? 'sell'
-		: undefined;
 
 	const market = markets.find(
 		({ pair: { pair_base, pair_2 } }) =>
@@ -138,10 +128,9 @@ const QuickTrade = ({
 			(pair_2 === selectedSource && pair_base === selectedTarget)
 	);
 
-	const { key, increment_size, display_name } = market || {};
+	const { key, display_name } = market || {};
 
 	const isUseBroker = quicktradePairs[symbol] || quicktradePairs[flippedPair];
-	const increment_unit = isUseBroker ? SIZE && SIZE.STEP : increment_size;
 
 	const onChangeSourceAmount = (value) => {
 		setSpending(SPENDING.SOURCE);
@@ -200,7 +189,7 @@ const QuickTrade = ({
 
 	const sourceTotalBalance = (value) => {
 		const decimalPoint = getDecimals(
-			side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit
+			coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
 		);
 		const decimalPointValue = Math.pow(10, decimalPoint);
 		const decimalValue =
@@ -411,9 +400,10 @@ const QuickTrade = ({
 								onSelect={onSelectSource}
 								onInputChange={onChangeSourceAmount}
 								forwardError={() => {}}
-								limits={side === 'buy' ? PRICE : SIZE}
 								autoFocus={autoFocus}
-								decimal={side === 'buy' ? PAIR2_STATIC_SIZE : increment_unit}
+								decimal={
+									coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+								}
 								availableBalance={selectedSourceBalance}
 								pair={isUseBroker ? symbol : key ? key : ''}
 								coins={coins}
@@ -421,7 +411,7 @@ const QuickTrade = ({
 								loading={loadingSource}
 								disabled={loadingSource}
 							/>
-							<div className="d-flex">
+							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
 									<div className="swap-container">
 										<div className="pointer blue-link" onClick={onSwap}>
@@ -442,8 +432,9 @@ const QuickTrade = ({
 								onSelect={onSelectTarget}
 								onInputChange={onChangeTargetAmount}
 								forwardError={() => {}}
-								limits={side === 'buy' ? SIZE : PRICE}
-								decimal={side === 'buy' ? increment_unit : PAIR2_STATIC_SIZE}
+								decimal={
+									coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+								}
 								pair={isUseBroker ? symbol : key ? key : ''}
 								coins={coins}
 								loading={loadingTarget}
@@ -529,16 +520,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (store) => {
 	const {
-		app: { pair, quicktrade, pairs },
+		app: { pair, pairs },
 	} = store;
 	const sourceOptions = getSourceOptions(store.app.quicktrade);
-
-	const flippedPair = flipPair(pair);
-	const qtlimits = !!quicktrade.filter(
-		({ symbol }) => symbol === pair || symbol === flippedPair
-	)
-		? BrokerLimitsSelector(store)
-		: QuickTradeLimitsSelector(store);
 
 	return {
 		pair,
@@ -549,7 +533,6 @@ const mapStateToProps = (store) => {
 		constants: store.app.constants,
 		markets: MarketsSelector(store),
 		user: store.user,
-		orderLimits: qtlimits,
 	};
 };
 

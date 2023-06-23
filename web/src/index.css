@@ -9216,7 +9216,7 @@ table th {
   .layout-mobile .quick_trade-wrapper .trade-section .inner-content .small-text {
     font-size: 13px !important; }
 
-.layout-mobile .swap-wrapper {
+.layout-mobile .swap-wrapper, .layout-mobile .swap-wrapper-wrapper {
   width: 100% !important; }
 
 .mobile_dropdown-section {
