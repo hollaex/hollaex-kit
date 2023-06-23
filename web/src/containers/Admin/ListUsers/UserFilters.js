@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import {
 	Button,
 	Input,
-	Modal,
 	Select,
 	message,
 	Slider,
 	Switch,
 	DatePicker,
 } from 'antd';
-import { DeleteOutlined, SearchOutlined, CloseOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './UserFilters.scss';
 
@@ -41,8 +40,6 @@ const UseFilters = ({
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
 	};
 
-	const [showAddFilter, setShowAddFilter] = useState(false);
-	const [displayFilterModel, setDisplayFilterModel] = useState(false);
 	const [filters, setFilters] = useState([
 		{ field: 'id', type: 'string', label: 'User ID', value: null },
 	]);
@@ -52,10 +49,6 @@ const UseFilters = ({
 
 	const hasPendingTypeId = filters?.find((f) => f.field === 'pending_type' && f.value === 'id');
 	const hasPendingTypeBank = filters?.find((f) => f.field === 'pending_type' && f.value === 'bank');
-
-	const goBack = () => {
-		setDisplayFilterModel(false);
-	};
 
 	const handleFilters = () => {
 		const queryFilters = {};
@@ -110,101 +103,11 @@ const UseFilters = ({
 				onClick={() => { addPendingType('pending_type', 'bank', 'Bank') }}
 				style={{ background: "#202980", borderColor: hasPendingTypeBank ? 'white' : "#ccc", color: hasPendingTypeBank ? 'white' : "#ccc"}} >Pending User Bank Verification</Button>
 		</div>
-						
-			<Modal
-				maskClosable={false}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-				bodyStyle={{
-					backgroundColor: '#27339D',
-					marginTop: 60,
-				}}
-				visible={showAddFilter}
-				footer={null}
-				onCancel={() => {
-					setShowAddFilter(false);
-				}}
-			>
-				<div style={{ fontWeight: '600', color: 'white' }}>Select Field </div>
-
-				<div style={{ color: 'white', marginTop: 30, marginBottom: 40 }}>
-					<label>Field</label>
-					<Select
-						showSearch
-						style={{ width: '100%', marginTop: 10 }}
-						placeholder="Select field"
-						value={field}
-						onChange={(value) => {
-							setField(value);
-						}}
-					>
-						{Object.keys(fieldKeyValue).map((key) => (
-							<Option value={key}>{fieldKeyValue[key].label}</Option>
-						))}
-					</Select>
-				</div>
-
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						gap: 15,
-						justifyContent: 'space-between',
-					}}
-				>
-					<Button
-						onClick={() => {
-							setShowAddFilter(false);
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Back
-					</Button>
-					<Button
-						onClick={() => {
-							const found = filters.find((f) => f.field === field);
-
-							if (found) {
-								message.error('Filter already exists');
-							} else {
-								setShowAddFilter(false);
-								const fieldValue = {
-									field,
-									type: fieldKeyValue[field].type,
-									label: fieldKeyValue[field].label,
-									value: fieldKeyValue[field].value,
-									options: fieldKeyValue[field]?.options,
-								};
-								setFilters((prevState) => {
-									prevState.push(fieldValue);
-									return [...prevState];
-								});
-							}
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Ok
-					</Button>
-				</div>
-			</Modal>
-
-	
 
 		 <div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
-			{filters.filter(f => !f.displayNone).map((filter, index) => {
+			{filters.map((filter, index) => {
 						return (
-							<div style={{ color: 'white', marginBottom: 10, display: 'flex',  flexDirection: 'column' }}>
+							<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
 								<label>
 									<DeleteOutlined
 										onClick={() => {
@@ -288,83 +191,6 @@ const UseFilters = ({
 					})}
 		 </div>
 		
-			<Modal
-				maskClosable={false}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-				bodyStyle={{
-					backgroundColor: '#27339D',
-				}}
-				visible={displayFilterModel}
-				footer={null}
-				onCancel={() => {
-					setDisplayFilterModel(false);
-				}}
-			>
-				<div style={{ fontWeight: '600', color: 'white' }}>Add Filters</div>
-
-				
-
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'flex-end',
-						marginTop: 15,
-						marginBottom: 25,
-					}}
-				>
-					<div style={{}}>
-						<Button
-							onClick={() => {
-								setShowAddFilter(true);
-							}}
-							style={{ backgroundColor: '#E97C00', color: 'white', flex: 1 }}
-						>
-							Add Filter
-						</Button>
-					</div>
-				</div>
-
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						gap: 15,
-						justifyContent: 'space-between',
-					}}
-				>
-					<Button
-						onClick={() => {
-							goBack();
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Back
-					</Button>
-					<Button
-						onClick={() => {
-							handleFilters();
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Apply Filters
-					</Button>
-				</div>
-			</Modal>
-
-
 			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20}}> 
 				<div>
 				<Select
@@ -380,7 +206,6 @@ const UseFilters = ({
 					if (found) {
 						message.error('Filter already exists');
 					} else {
-						setShowAddFilter(false);
 						const fieldValue = {
 							field: value,
 							type: fieldKeyValue[value].type,

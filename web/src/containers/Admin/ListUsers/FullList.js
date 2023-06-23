@@ -169,14 +169,14 @@ class FullListUsers extends Component {
 					{error && <p>-{error}-</p>}
 
 					<div>
-					<UseFilters
-						displayFilterModel={this.state.displayFilterModel}
-						setDisplayFilterModel={(value) => {
-							this.setState({ displayFilterModel: value });
-						}}
-						applyFilters={this.applyFilters}
-						loading={loading}
-					/>
+						<UseFilters
+							displayFilterModel={this.state.displayFilterModel}
+							setDisplayFilterModel={(value) => {
+								this.setState({ displayFilterModel: value });
+							}}
+							applyFilters={this.applyFilters}
+							loading={loading}
+						/>
 					</div>
 
 					<div className="user-list-header-wrapper">
