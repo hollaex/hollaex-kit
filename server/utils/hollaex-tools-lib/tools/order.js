@@ -93,7 +93,11 @@ const executeUserOrder = async (user_id, opts, token) => {
 		);
 	}
 	else if (type === 'network') {
-		res = await getNodeLib().executeQuote(token, opts);
+		const user = await getUserByKitId(user_id);
+		const tierUser = getKitTier(user.verification_level);
+		const fee = tierUser.fees.taker[symbol];
+
+		res = await getNodeLib().executeQuote(token, user.network_id, fee, opts);
 	}
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
@@ -292,6 +296,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 			const tradeData = {
 				user_id,
+				symbol,
 				type: 'network'
 			};
 
