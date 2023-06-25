@@ -1904,7 +1904,8 @@ const getExchangeUserSessions = (opts = {
 	order_by: null,
 	order: null,
 	start_date: null,
-	end_date: null
+	end_date: null,
+	format: null
 }) => {
 
 	const pagination = paginationQuery(opts.limit, opts.page);
@@ -1933,7 +1934,18 @@ const getExchangeUserSessions = (opts = {
 			}
 		],
 		order: [ordering],
-		...pagination
+		...(!opts.format && pagination),
+	})
+	.then((sessions) => {
+		if (opts.format && opts.format === 'csv') {
+			if (sessions.data.length === 0) {
+				throw new Error(NO_DATA_FOR_CSV);
+			}
+			const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+			return csv;
+		} else {
+			return sessions;
+		}
 	});
 }
 

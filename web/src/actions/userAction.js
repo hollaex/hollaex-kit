@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import { PLUGIN_URL } from 'config/constants';
 import querystring from 'query-string';
 
@@ -338,4 +339,101 @@ export const getUserLogins = ({ limit = 50, page = 1, ...rest }) => {
 				});
 			});
 	};
+};
+
+export const getSessions = ({ page = 1, limit = 20, ...rest }) => {
+	const params = { page, limit, status: true };
+	const query = querystring.stringify(params);
+
+	return axios.get(`/user/sessions?${query}`);
+};
+
+export const downloadSessions = () => {
+	const queryData = {
+		format: 'csv',
+		status: true,
+	};
+
+	const query = querystring.stringify(queryData);
+	return axios
+		.get(`/user/sessions?${query}`)
+		.then(({ data }) => {
+			const url = window.URL.createObjectURL(new Blob([data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`sessions_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		})
+		.catch((err) => {});
+};
+
+export const revokeSession = (session_id) =>
+	axios.post('/user/revoke-session', { session_id });
+
+export const downloadLogins = (params = {}) => {
+	const queryData = {
+		format: 'csv',
+	};
+
+	if (params && params.start_date) {
+		queryData.start_date = params.start_date;
+	}
+
+	if (params && params.end_date) {
+		queryData.end_date = params.end_date;
+	}
+
+	if (params && params.status) {
+		if (params.status === 'failed') {
+			queryData.status = false;
+		} else if (params.status === 'success') {
+			queryData.status = true;
+		}
+	}
+
+	const query = querystring.stringify(queryData);
+	return axios
+		.get(`/user/logins?${query}`)
+		.then(({ data }) => {
+			const url = window.URL.createObjectURL(new Blob([data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`logins_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		})
+		.catch((err) => {});
+};
+
+export const getLogins = ({ page = 1, limit = 20, ...params }) => {
+	const queryData = { page, limit };
+
+	if (params && params.start_date) {
+		queryData.start_date = params.start_date;
+	}
+
+	if (params && params.end_date) {
+		queryData.end_date = params.end_date;
+	}
+
+	if (params && params.status) {
+		if (params.status === 'failed') {
+			queryData.status = false;
+		} else if (params.status === 'success') {
+			queryData.status = true;
+		}
+	}
+
+	const query = querystring.stringify(queryData);
+
+	return axios.get(`/user/logins?${query}`);
 };

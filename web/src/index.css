@@ -904,6 +904,14 @@ table th {
   min-width: 5rem;
   max-width: 5rem; }
 
+.session-login-date {
+  min-width: 7rem;
+  max-width: 8rem; }
+
+.expander-handle {
+  min-width: 1rem;
+  max-width: 1rem; }
+
 .tokens-icon,
 .tokens-revoke {
   min-width: 3rem;
@@ -1120,6 +1128,26 @@ table th {
   flex-basis: 0;
   flex-grow: 1;
   padding-right: 1rem; }
+
+.session-dialog-content {
+  width: 38rem; }
+  .session-dialog-content .icon_title-wrapper {
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 0.5rem; }
+    .session-dialog-content .icon_title-wrapper .icon_title-text.title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 0.5rem; }
+    .session-dialog-content .icon_title-wrapper .icon_title-svg {
+      height: 3rem;
+      width: 3rem; }
+      .session-dialog-content .icon_title-wrapper .icon_title-svg svg {
+        height: 3rem;
+        width: 3rem; }
+
+.download-logins .action_notification-svg svg path {
+  fill: var(--specials_buttons-links-and-highlights); }
 
 .signup_success-wrapper {
   text-align: center; }
@@ -2028,34 +2056,44 @@ table th {
 .multiple-actions-wrapper .mini-qr {
   fill: var(--specials_buttons-links-and-highlights); }
 
-.transaction-history-wrapper .ant-row {
+.transaction-history-wrapper .ant-row,
+.login-history-section-wrapper .ant-row {
   margin-left: 0 !important;
   margin-right: 0 !important;
   padding: 0.5rem; }
 
-.transaction-history-wrapper .ant-form-item {
+.transaction-history-wrapper .ant-form-item,
+.login-history-section-wrapper .ant-form-item {
   margin-bottom: 0; }
 
-.transaction-history-wrapper .ant-radio-button-wrapper {
+.transaction-history-wrapper .ant-radio-button-wrapper,
+.login-history-section-wrapper .ant-radio-button-wrapper {
   color: var(--labels_secondary-inactive-label-text-graphics);
   background-color: transparent !important;
   border: none !important; }
-  .transaction-history-wrapper .ant-radio-button-wrapper:active, .transaction-history-wrapper .ant-radio-button-wrapper:hover {
+  .transaction-history-wrapper .ant-radio-button-wrapper:active, .transaction-history-wrapper .ant-radio-button-wrapper:hover,
+  .login-history-section-wrapper .ant-radio-button-wrapper:active,
+  .login-history-section-wrapper .ant-radio-button-wrapper:hover {
     color: var(--labels_important-active-labels-text-graphics); }
 
-.transaction-history-wrapper #trades-filters_size * {
+.transaction-history-wrapper #trades-filters_size *,
+.login-history-section-wrapper #trades-filters_size * {
   transition: 0.2s; }
 
 .transaction-history-wrapper .ant-radio-button-wrapper-checked::before,
-.transaction-history-wrapper .ant-radio-button-wrapper::before {
+.transaction-history-wrapper .ant-radio-button-wrapper::before,
+.login-history-section-wrapper .ant-radio-button-wrapper-checked::before,
+.login-history-section-wrapper .ant-radio-button-wrapper::before {
   background-color: transparent !important; }
 
-.transaction-history-wrapper .ant-radio-button-wrapper-checked {
+.transaction-history-wrapper .ant-radio-button-wrapper-checked,
+.login-history-section-wrapper .ant-radio-button-wrapper-checked {
   color: var(--labels_important-active-labels-text-graphics);
   border: var(--labels_important-active-labels-text-graphics) 1px solid !important;
   border-radius: 0.2rem; }
 
-.transaction-history-wrapper .ant-picker {
+.transaction-history-wrapper .ant-picker,
+.login-history-section-wrapper .ant-picker {
   color: var(--labels_secondary-inactive-label-text-graphics);
   background-color: transparent;
   border-bottom: 1px solid var(--calculated_secondary-border);
@@ -2064,58 +2102,75 @@ table th {
   border-right: none;
   margin: 0 3px; }
 
-.transaction-history-wrapper .ant-picker-separator {
+.transaction-history-wrapper .ant-picker-separator,
+.login-history-section-wrapper .ant-picker-separator {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
-.transaction-history-wrapper .ant-picker-input > input {
+.transaction-history-wrapper .ant-picker-input > input,
+.login-history-section-wrapper .ant-picker-input > input {
   color: var(--labels_important-active-labels-text-graphics); }
 
 .transaction-history-wrapper .ant-picker-focused,
 .transaction-history-wrapper .ant-picker:hover,
-.transaction-history-wrapper .ant-picker:active {
+.transaction-history-wrapper .ant-picker:active,
+.login-history-section-wrapper .ant-picker-focused,
+.login-history-section-wrapper .ant-picker:hover,
+.login-history-section-wrapper .ant-picker:active {
   border-color: var(--calculated_important-border); }
 
-.transaction-history-wrapper .ant-picker-clear {
+.transaction-history-wrapper .ant-picker-clear,
+.login-history-section-wrapper .ant-picker-clear {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
-.transaction-history-wrapper .ant-picker-active-bar {
+.transaction-history-wrapper .ant-picker-active-bar,
+.login-history-section-wrapper .ant-picker-active-bar {
   background: var(--specials_buttons-links-and-highlights); }
 
-.transaction-history-wrapper .ant-form-item-label > label {
+.transaction-history-wrapper .ant-form-item-label > label,
+.login-history-section-wrapper .ant-form-item-label > label {
   color: var(--labels_important-active-labels-text-graphics); }
 
-.transaction-history-wrapper .ant-radio-group {
+.transaction-history-wrapper .ant-radio-group,
+.login-history-section-wrapper .ant-radio-group {
   margin-top: 0;
   padding: 0 15px;
   border-left: 1px var(--calculated_secondary-border) solid; }
 
-.transaction-history-wrapper .ant-btn-ghost {
+.transaction-history-wrapper .ant-btn-ghost,
+.login-history-section-wrapper .ant-btn-ghost {
   color: var(--labels_secondary-inactive-label-text-graphics);
   border-color: var(--labels_secondary-inactive-label-text-graphics); }
   .transaction-history-wrapper .ant-btn-ghost:hover,
-  .transaction-history-wrapper .ant-btn-ghost :active {
+  .transaction-history-wrapper .ant-btn-ghost :active,
+  .login-history-section-wrapper .ant-btn-ghost:hover,
+  .login-history-section-wrapper .ant-btn-ghost :active {
     color: var(--labels_important-active-labels-text-graphics);
     border-color: var(--labels_important-active-labels-text-graphics); }
-  .transaction-history-wrapper .ant-btn-ghost.active_search_button {
+  .transaction-history-wrapper .ant-btn-ghost.active_search_button,
+  .login-history-section-wrapper .ant-btn-ghost.active_search_button {
     animation: shine 2s linear infinite alternate;
     animation-fill-mode: both;
     color: var(--labels_secondary-inactive-label-text-graphics);
     box-shadow: 0 0 8px 0.1px var(--base_wallet-sidebar-and-popup);
     position: relative; }
 
-.transaction-history-wrapper .cusStyle1 .ant-form-item-control-input-content {
+.transaction-history-wrapper .cusStyle1 .ant-form-item-control-input-content,
+.login-history-section-wrapper .cusStyle1 .ant-form-item-control-input-content {
   color: var(--labels_important-active-labels-text-graphics);
   border: var(--labels_important-active-labels-text-graphics) 1px solid !important;
   border-radius: 0.2rem;
   cursor: pointer;
   padding: 0 5px; }
 
-.transaction-history-wrapper .cusStyle2 {
+.transaction-history-wrapper .cusStyle2,
+.login-history-section-wrapper .cusStyle2 {
   color: var(--labels_secondary-inactive-label-text-graphics); }
-  .transaction-history-wrapper .cusStyle2 .ant-form-item-control-input-content {
+  .transaction-history-wrapper .cusStyle2 .ant-form-item-control-input-content,
+  .login-history-section-wrapper .cusStyle2 .ant-form-item-control-input-content {
     padding: 0 5px; }
 
-.transaction-history-wrapper .cusStyle2:hover {
+.transaction-history-wrapper .cusStyle2:hover,
+.login-history-section-wrapper .cusStyle2:hover {
   cursor: pointer; }
 
 @keyframes shine {
@@ -10346,6 +10401,26 @@ table th {
     display: block;
     width: 100% !important;
     height: 100% !important; }
+
+.intensity-bar-container {
+  height: 0.8rem !important; }
+
+.single-intensity-bar {
+  height: 100% !important;
+  margin: 0 1px !important;
+  border-right: transparent 3px solid; }
+
+.low-intensity {
+  border-color: var(--specials_chat-messages); }
+
+.medium-intensity {
+  border-color: var(--specials_my-username-in-chat); }
+
+.high-intensity {
+  border-color: var(--specials_pending-waiting-caution); }
+
+.extreme-intensity {
+  border-color: var(--specials_notifications-alerts-warnings); }
 
 html {
   font-size: 12px !important;

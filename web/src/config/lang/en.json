@@ -1488,5 +1488,71 @@
 		"PENDING": "pending",
 		"REJECTED": "rejected",
 		"VERIFIED": "verified"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "Login History",
+		"CONTENT": {
+			"TITLE": "Login Attempts Record",
+			"SUBTITLE": "Historical record of all failed login attempts on your account and their potential origin.",
+			"DOWNLOAD_HISTORY": "DOWNLOAD_HISTORY",
+			"FILTER": {
+				"STATUS": "Status",
+				"ALL": "All",
+				"FAILED": "Failed",
+				"SUCCESS": "Success"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Last seen",
+						"DESCRIPTION": "(Most recent first)"
+					},
+					"FAILED_ATTEMPTS": "Failed Attempts",
+					"COUNTRY": "Country",
+					"IP_ADDRESS": "IP Address"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "Failed login: {0}x",
+					"SUCCESS": "Success",
+					"DEVICE": "Device"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "Sessions",
+		"CONTENT": {
+			"TITLE": "Active sessions",
+			"SUBTITLE": {
+				"TEXT": "Below are your account's active sessions. To end an active session, click {0} and it will log that session out.",
+				"LINK": "Revoke"
+			},
+			"DOWNLOAD": "Download",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Last seen",
+						"DESCRIPTION": "(Most recent first)"
+					},
+					"SESSION_STARTED": "Session started",
+					"SESSION_EXPIRY": "Session expiry",
+					"STATUS": "Status"
+				},
+				"CELL": {
+					"ACTIVE": "Active",
+					"COUNTRY": "Country",
+					"IP_ADDRESS": "IP Address",
+					"DEVICE": "Device",
+					"LOGIN_TIME": "Successful login time"
+				}
+			},
+			"NOTIFICATION": "Session revoked/logged out",
+			"MODAL": {
+				"TITLE": "Revoke session",
+				"PROMPT": "Are you sure you want to revoke and logout of this session?",
+				"BACK": "BACK",
+				"CONFIRM": "CONFIRM"
+			}
+		}
 	}
 }

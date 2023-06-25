@@ -157,6 +157,12 @@ $chat-message-background-odd: var(--base_secondary-navigation-bar);
 $chat-message-color: var(--specials_chat-messages);
 $chat-box-border: $colors-main-border;
 
+// intensity color
+$low-intensity: var(--specials_chat-messages);
+$medium-intensity: var(--specials_my-username-in-chat);
+$high-intensity: var(--specials_pending-waiting-caution);
+$extreme-intensity: var(--specials_notifications-alerts-warnings);
+
 // this is for transaction history- ToDo: need to customize for common theme
 $history-color-buy: var(--trading_buying-related-elements);
 $history-color-sell: var(--trading_selling-related-elements);

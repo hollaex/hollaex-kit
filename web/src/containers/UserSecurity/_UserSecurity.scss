@@ -96,6 +96,16 @@
 	max-width: 5rem;
 }
 
+.session-login-date {
+	min-width: 7rem;
+	max-width: 8rem;
+}
+
+.expander-handle {
+	min-width: 1rem;
+	max-width: 1rem;
+}
+
 .tokens-icon,
 .tokens-revoke {
 	min-width: 3rem;
@@ -427,4 +437,36 @@ $padding-input: 4rem;
 	flex-basis: 0;
 	flex-grow: 1;
 	padding-right: 1rem;
+}
+
+.session-dialog-content {
+	width: 38rem;
+
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+		margin-top: 0.5rem;
+
+		.icon_title-text.title {
+			font-size: 2rem;
+			font-weight: bold;
+			margin: 0.5rem;
+		}
+
+		.icon_title-svg {
+			height: 3rem;
+			width: 3rem;
+
+			svg {
+				height: 3rem;
+				width: 3rem;
+			}
+		}
+	}
+}
+
+.download-logins {
+	.action_notification-svg svg path {
+		fill: $link;
+	}
 }

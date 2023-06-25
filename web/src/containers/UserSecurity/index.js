@@ -32,6 +32,8 @@ import { errorHandler } from 'components/OtpForm/utils';
 import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
+import Sessions from './Sessions';
+import Logins from './Logins';
 // import { FreezeSection } from './FreezeSection';
 import { isLoggedIn } from 'utils/token';
 
@@ -341,6 +343,32 @@ class UserSecurity extends Component {
 					/>
 				)
 			}*/
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'SESSIONS.TAB'}
+						title={STRINGS['SESSIONS.TAB']}
+					/>
+				) : (
+					<EditWrapper stringId="SESSIONS.TAB">
+						{STRINGS['SESSIONS.TAB']}
+					</EditWrapper>
+				),
+				content: activeTab === 3 && <Sessions />,
+			},
+			{
+				title: isMobile ? (
+					<CustomMobileTabs
+						stringId={'LOGINS_HISTORY.TAB'}
+						title={STRINGS['LOGINS_HISTORY.TAB']}
+					/>
+				) : (
+					<EditWrapper stringId="LOGINS_HISTORY.TAB">
+						{STRINGS['LOGINS_HISTORY.TAB']}
+					</EditWrapper>
+				),
+				content: activeTab === 4 && <Logins />,
+			},
 		];
 
 		this.setState({ tabs });
