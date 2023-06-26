@@ -68,7 +68,8 @@ const {
 	AFFILIATION_CODE_LENGTH,
 	LOGIN_TIME_OUT,
 	TOKEN_TIME_LONG,
-	TOKEN_TIME_NORMAL
+	TOKEN_TIME_NORMAL,
+	VERIFY_STATUS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
@@ -681,7 +682,7 @@ const getAllUsersAdmin = (opts = {
 	if (isBoolean(opts.pending) && opts.pending) {
 		query.order = [['updated_at', 'desc']];
 
-		if (opts.kyc || opts.pending_type === 'id') {
+		if ((opts.kyc && Object.values(VERIFY_STATUS).includes(opts.kyc)) || opts.pending_type === 'id') {
 			query.where[Op.and] = [
 				...query.where[Op.and],
 				{ activated: true },

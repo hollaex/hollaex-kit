@@ -11,7 +11,7 @@ import {
 import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './UserFilters.scss';
-
+import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 const UseFilters = ({
 	applyFilters,
 }) => {
@@ -29,13 +29,27 @@ const UseFilters = ({
 			type: 'dropdown',
 			label: 'Gender',
 			options: [
+				{ label: 'None', value: -1 },
 				{ label: 'Male', value: 0 },
 				{ label: 'Female', value: 1 },
 			],
 		},
-		nationality: { type: 'string', label: 'Nationality' },
+		nationality: { 
+			type: 'dropdown',
+			label: 'Nationality',
+			options: COUNTRIES_OPTIONS 
+		},
 		phone_number: { type: 'string', label: 'Phone Number' },
-		verification_level: { type: 'string', label: 'Verification Level' },
+		verification_level:{
+			type: 'dropdown',
+			label: 'Verification Level',
+			options: [
+				{ label: 'None', value: -1 },
+				{ label: 1, value: 1 },
+				{ label: 2, value: 2 },
+				{ label: 3, value: 3 },
+			],
+		},
 		email_verified: { type: 'boolean', label: 'Email Verified' },
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
 	};
@@ -44,16 +58,27 @@ const UseFilters = ({
 		{ field: 'id', type: 'string', label: 'User ID', value: null },
 	]);
 
+	const kycFields = [
+		{ key: -1, value: 'None' },
+		{ key: 0, value: 'Not complete' },
+		{ key: 1, value: 'Pending' },
+		{ key: 2, value: 'Rejected' },
+		{ key: 3, value: 'Approved' },
+	]
+	
+	const [selectedKyc, setSelectedKyc] = useState();
+
 	const [field, setField] = useState();
 	const dateFormat = 'YYYY/MM/DD';
 
-	const hasPendingTypeId = filters?.find((f) => f.field === 'pending_type' && f.value === 'id');
-	const hasPendingTypeBank = filters?.find((f) => f.field === 'pending_type' && f.value === 'bank');
-
-	const handleFilters = () => {
+	const hasPendingTypeBank = filters?.find((f) => f.field === 'bank');
+	const canReset = filters?.find(filter => filter.value != null && filter.value !== '');
+	
+	const handleFilters = (selectedFilters = null) => {
 		const queryFilters = {};
 
-		filters.forEach((filter) => {
+		if (!selectedFilters) selectedFilters = filters;
+		selectedFilters.forEach((filter) => {
 			if (filter.value != null && filter.value !== '') queryFilters[filter.field] = filter.value;
 		});
 
@@ -66,8 +91,9 @@ const UseFilters = ({
 		if (found) {
 			setFilters((prevState) => {
 				prevState = prevState.filter((f) => f.field !== field || f.value !== value);
-				if (!prevState.find(f => f.field === 'pending_type'))
+				if (!prevState.find(f => ['bank', 'kyc'].includes(f.field)))
 					prevState = prevState.filter((f) => f.field !== 'pending');
+				handleFilters(prevState);
 				return [...prevState];
 			});
 		} else {
@@ -81,6 +107,7 @@ const UseFilters = ({
 				prevState.push(fieldValue);
 				const found = filters.find((f) => f.field === 'pending');
 				if (!found) { prevState.push( {field:'pending', label: 'Pending', value: true,  type: 'boolean', displayNone: true  }); }
+				handleFilters(prevState);
 				return [...prevState];
 			});
 		}
@@ -95,12 +122,35 @@ const UseFilters = ({
 			marginTop:15,
 			marginBottom:15,
 		}}>
+				<Select
+					showSearch
+					className='select-box user-scroll-box'
+					style={{ width: 200 }}
+					value={selectedKyc}
+					placeholder="User ID Verification"
+					onChange={(e) => {
+						if (e === -1) {
+							setSelectedKyc();
+							setFilters((prevState) => {
+								prevState = prevState.filter((f) => f.field !== 'kyc');
+								if (!prevState.find(f => ['bank', 'kyc'].includes(f.field)))
+									prevState = prevState.filter((f) => f.field !== 'pending');
+								handleFilters(prevState);
+								return [...prevState];
+							});
+						} else{
+							setSelectedKyc(e);
+							addPendingType('kyc', e, 'Id')
+						}
+					}}
+				>
+					{kycFields.map((f) => (
+						<Option value={f.key}>{f.value}</Option>
+					))}
+				</Select>
 
 			<Button 
-				onClick={() => { addPendingType('pending_type', 'id', 'Id') }}  
-				style={{ background: "#202980", borderColor: hasPendingTypeId ? 'white' : "#ccc", color: hasPendingTypeId ? 'white' : "#ccc"}} >Pending User ID Verification</Button>
-			<Button 
-				onClick={() => { addPendingType('pending_type', 'bank', 'Bank') }}
+				onClick={() => { addPendingType('bank', 1, 'Bank') }}
 				style={{ background: "#202980", borderColor: hasPendingTypeBank ? 'white' : "#ccc", color: hasPendingTypeBank ? 'white' : "#ccc"}} >Pending User Bank Verification</Button>
 		</div>
 
@@ -109,14 +159,15 @@ const UseFilters = ({
 						return (
 							<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
 								<label>
+									{filter.label}:{' '}
 									<DeleteOutlined
+										style={{ float: 'right', position:'relative', top: 4 }}
 										onClick={() => {
 											let newFilters = [...filters];
 											newFilters = newFilters.filter((f, i) => i !== index);
 											setFilters(newFilters);
 										}}
-									/>{' '}
-									{filter.label}:{' '}
+									/>
 								</label>
 								{filter.type === 'string' && (
 									<Input
@@ -164,7 +215,11 @@ const UseFilters = ({
 										value={filter.value}
 										onChange={(e) => {
 											const newFilters = [...filters];
-											newFilters[index].value = e;
+											if (e === -1) {
+												newFilters[index].value = null
+											} else {
+												newFilters[index].value = e;
+											}
 											setFilters(newFilters);
 										}}
 									>
@@ -245,13 +300,19 @@ const UseFilters = ({
 					</Button>
 					<div
 						onClick={() => {
-							setFilters([{ field: 'id', type: 'string', label: 'User ID', value: null }]);
+							if	(canReset) {
+								setFilters([{ field: 'id', type: 'string', label: 'User ID', value: null }]);
+								setSelectedKyc();
+								handleFilters([]);
+							}
+							
 						}}
 						style={{
 							marginTop: 5,
 							textAlign:'center',
 							cursor:'pointer',
-							textDecoration:'underline'
+							textDecoration:'underline',
+							color: canReset ? 'white' : 'grey'
 						}}
 					>
 						Reset
