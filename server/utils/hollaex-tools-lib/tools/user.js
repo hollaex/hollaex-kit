@@ -687,6 +687,7 @@ const getAllUsersAdmin = (opts = {
 			} else if (opts.pending_type === 'bank') {
 			
 				query.where = {
+					...query.where,
 					[Op.and]: [
 						...query.where[Op.and],
 						{ activated: true },

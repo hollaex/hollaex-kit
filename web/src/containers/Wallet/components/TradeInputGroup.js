@@ -7,7 +7,7 @@ import withConfig from 'components/ConfigProvider/withConfig';
 
 const TradeInputGroup = ({
 	markets,
-	broker,
+	quicktrade,
 	goToTrade,
 	icons: ICONS,
 	pairs,
@@ -24,7 +24,7 @@ const TradeInputGroup = ({
 					{markets.map((market) => {
 						const { display_name, icon_id } =
 							pairs[market] ||
-							broker.find(({ symbol }) => symbol === market) ||
+							quicktrade.find(({ symbol }) => symbol === market) ||
 							{};
 						return (
 							<Menu.Item className="caps" key={market}>

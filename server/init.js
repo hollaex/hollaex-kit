@@ -53,6 +53,7 @@ const checkStatus = () => {
 		pairs: {},
 		tiers: {},
 		quicktrade: [],
+		networkQuickTrades: [],
 		kit: {
 			info: {},
 			color: {},
@@ -145,7 +146,7 @@ const checkStatus = () => {
 			}
 
 			configuration.broker = deals;
-
+			configuration.networkQuickTrades = Object.values(exchange.brokers);
 			const brokerPairs = deals.map((d) => d.symbol);
 			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange

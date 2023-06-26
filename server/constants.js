@@ -158,6 +158,7 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
 exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
 	'description',

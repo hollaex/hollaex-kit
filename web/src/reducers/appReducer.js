@@ -41,6 +41,7 @@ import {
 	SET_RECENT_TRADES_MARKETS,
 	SET_TRADE_TAB,
 	SET_BROKER,
+	SET_QUICKTRADE,
 	SORT,
 	SET_SORT_MODE,
 	TOGGLE_SORT,
@@ -71,6 +72,7 @@ import {
 	modifyCoinsData,
 	modifyPairsData,
 	modifyBrokerData,
+	modifyQuickTradeData,
 } from 'utils/reducer';
 
 const EMPTY_NOTIFICATION = {
@@ -195,6 +197,7 @@ const INITIAL_STATE = {
 	allContracts: {},
 	tradeTab: 0,
 	broker: {},
+	quicktrade: [],
 	user_payments: {},
 	onramp: [],
 	offramp: {},
@@ -270,6 +273,13 @@ const reducer = (state = INITIAL_STATE, { type, payload = {} }) => {
 			return {
 				...state,
 				broker: modifyBrokerData(payload.broker, { ...state.coins }),
+			};
+		case SET_QUICKTRADE:
+			return {
+				...state,
+				quicktrade: modifyQuickTradeData(payload.quicktrade, {
+					...state.coins,
+				}),
 			};
 		case SET_NOTIFICATION: {
 			const newNotification =

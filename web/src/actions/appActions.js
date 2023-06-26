@@ -65,6 +65,7 @@ export const SET_USER_PAYMENTS = 'SET_USER_PAYMENTS';
 export const SET_ONRAMP = 'SET_ONRAMP';
 export const SET_OFFRAMP = 'SET_OFFRAMP';
 export const SET_BROKER = 'SET_BROKER';
+export const SET_QUICKTRADE = 'SET_QUICKTRADE';
 export const SET_CONFIG = 'SET_CONFIG';
 export const SET_PLUGINS = 'SET_PLUGINS';
 export const SET_EXPLORE_PLUGINS = 'SET_EXPLORE_PLUGINS';
@@ -412,6 +413,13 @@ export const setBroker = (broker) => ({
 	type: SET_BROKER,
 	payload: {
 		broker,
+	},
+});
+
+export const setQuickTrade = (quicktrade) => ({
+	type: SET_QUICKTRADE,
+	payload: {
+		quicktrade,
 	},
 });
 
