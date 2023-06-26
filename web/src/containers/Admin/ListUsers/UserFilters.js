@@ -30,8 +30,8 @@ const UseFilters = ({
 			label: 'Gender',
 			options: [
 				{ label: 'None', value: -1 },
-				{ label: 'Male', value: 0 },
-				{ label: 'Female', value: 1 },
+				{ label: 'Male', value: false },
+				{ label: 'Female', value: true },
 			],
 		},
 		nationality: { 
