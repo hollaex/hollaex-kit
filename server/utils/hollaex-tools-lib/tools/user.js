@@ -596,6 +596,8 @@ const getAllUsersAdmin = (opts = {
 	email_verified: null,
 	otp_enabled: null,
 	phone_number: null,
+	kyc: null,
+	bank: null,
 	additionalHeaders: null
 }) => {
 	const {
@@ -660,7 +662,7 @@ const getAllUsersAdmin = (opts = {
 			]
 		};
 	}
-	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level',])).forEach(key => {
+	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number'])).forEach(key => {
 		if(opts[key] != null) {
 			query.where[Op.and].push(
 				{
@@ -672,38 +674,31 @@ const getAllUsersAdmin = (opts = {
 		}
 	})
 	
+	if (isNumber(opts.verification_level)) {
+		query.where[Op.and].push({ verification_level: opts.verification_level });
+	}
+
 	if (isBoolean(opts.pending) && opts.pending) {
 		query.order = [['updated_at', 'desc']];
 
-		if (opts.pending_type) {
-			if (opts.pending_type === 'id') {
-				query.where = {
-					...query.where,
-					activated: true,
+		if (opts.kyc || opts.pending_type === 'id') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				{
 					id_data: {
-						status: 1 // users that have a pending id waiting for admin to confirm
+						status: opts.kyc != null ? opts.kyc : 1 // users that have a pending id waiting for admin to confirm
 					}
-				};
-			} else if (opts.pending_type === 'bank') {
-			
-				query.where = {
-					...query.where,
-					[Op.and]: [
-						...query.where[Op.and],
-						{ activated: true },
-						{
-							id_data: {
-								status: 3 // users that have a pending id waiting for admin to confirm
-							}
-						},
-						getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
-					]
-				};
-			} else {
-				throw new Error('pending type is not defined. You need to select id or bank is pending_type');
-			}
-		} else {
-			throw new Error('pending type is not defined. You need to select id or bank is pending_type');
+				},
+			]
+		}
+
+		if (opts.bank || opts.pending_type === 'bank') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
+			]
 		}
 	}
 
