@@ -216,3 +216,5 @@ exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detecte
 exports.COIN_INPUT_MISSING = 'Coin inputs are missing';
 exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';
 exports.AMOUNT_NEGATIVE_ERROR = 'Amount cannot be negative';
+exports.QUICK_TRADE_CONFIG_NOT_FOUND = 'Quick trade config not found';
+exports.QUICK_TRADE_TYPE_NOT_SUPPORTED = 'Quick trade type not supported';

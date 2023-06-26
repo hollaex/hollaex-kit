@@ -4,13 +4,14 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { ROLES } = require('../../constants');
+const { INIT_CHANNEL, ROLES } = require('../../constants');
 const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
+const { publisher } = require('../../db/pubsub');
 const crypto = require('crypto');
 
 const VERIFY_STATUS = {
@@ -2436,6 +2437,23 @@ const revokeUserSessionByAdmin = (req, res) => {
 		});
 }
 
+const updateQuickTradeConfig = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
+
+	const { symbol, type, active } = req.swagger.params.data.value;
+
+	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }
+	)
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateQuickTradeConfig', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2496,5 +2514,6 @@ module.exports = {
 	getUserSessionsByAdmin,
 	revokeUserSessionByAdmin,
 	sendEmailByAdmin,
-	sendRawEmailByAdmin
+	sendRawEmailByAdmin,
+	updateQuickTradeConfig
 };

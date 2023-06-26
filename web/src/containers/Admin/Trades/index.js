@@ -8,6 +8,7 @@ import PairsSummary from './PairsSummary';
 import { getExchange } from '../AdminFinancials/action';
 import { setExchange } from 'actions/assetActions';
 import OtcDeskContainer from './otcdesk';
+import QuickTradeTab from './QuickTradeConfig';
 import ExchangeOrdersContainer from '../Orders';
 import './index.css';
 
@@ -18,6 +19,7 @@ const PairsTab = (props) => {
 	const [activeTab, setActiveTab] = useState('0');
 	const [coinData, setCoinData] = useState([]);
 	const [pairData, setPairData] = useState([]);
+	const [quickTradeData, setQuickTradeData] = useState([]);
 	const tabParams = getTabParams();
 
 	useEffect(() => {
@@ -36,10 +38,11 @@ const PairsTab = (props) => {
 		});
 		setCoinData(exchangeCoins);
 		setPairData(exchangePairs);
-	}, [props.coins, props.pairs, props.exchange.coins, props.exchange.pairs]);
+		setQuickTradeData(props.quicktrade);
+	}, [props.coins, props.pairs, props.exchange.coins, props.exchange.pairs, props.quicktrade]);
 
 	useEffect(() => {
-		if (tabParams) {
+		if (tabParams?.tab) {
 			setActiveTab(tabParams.tab);
 		}
 	}, [tabParams]);
@@ -99,6 +102,22 @@ const PairsTab = (props) => {
 						balanceData={props.user && props.user.balance}
 					/>
 				</TabPane>
+				<TabPane tab="Quick Trade" key="3">
+				
+					<QuickTradeTab
+						coins={props.coinObjects}
+						pairs={pairData}
+						allCoins={props.coins}
+						exchange={props.exchange}
+						user={props.user}
+						balanceData={props.user && props.user.balance}
+						quickTradeData={quickTradeData}
+						features={props.features}
+						brokers={props.broker}
+						networkQuickTrades={props.networkQuickTrades}
+						handleTabChange={handleTabChange}
+					/>
+				</TabPane>
 			</Tabs>
 		</div>
 	);
@@ -109,6 +128,12 @@ const mapStateToProps = (state) => ({
 	coins: state.asset.allCoins,
 	pairs: state.asset.allPairs,
 	user: state.user,
+	quicktrade: state.app.allContracts.quicktrade,
+	networkQuickTrades: state.app.allContracts.networkQuickTrades,
+	coinObjects: state.app.allContracts.coins,
+	broker: state.app.broker,
+	features: state.app.constants.features
+	
 });
 
 const mapDispatchToProps = (dispatch) => ({

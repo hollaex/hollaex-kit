@@ -3141,3 +3141,42 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+  /admin/quicktrade/config:
+    x-swagger-router-controller: admin
+    put:
+      description: Update user quick trade config for admin
+      operationId: updateQuickTradeConfig
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - symbol
+            properties:
+              symbol:
+                type: string
+              type:
+                type: string
+                enum: ['pro', 'broker', 'network']
+              active:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin

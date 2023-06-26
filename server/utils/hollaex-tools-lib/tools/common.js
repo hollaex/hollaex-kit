@@ -44,7 +44,7 @@ const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}
 const rp = require('request-promise');
 const { isEmail: isValidEmail } = require('validator');
 const moment = require('moment');
-const { GET_BROKER, GET_QUICKTRADE } = require('../../../constants');
+const { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } = require('../../../constants');
 const BigNumber = require('bignumber.js');
 // const { Transform } = require('json2csv');
 
@@ -797,6 +797,10 @@ const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
+const getNetworkQuickTrades = () => {
+	return GET_NETWORK_QUICKTRADE();
+}
+
 const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
@@ -865,5 +869,6 @@ module.exports = {
 	validatePair,
 	getBrokerDeals,
 	getQuickTrades,
-	parseNumber
+	getNetworkQuickTrades,
+	parseNumber,
 };
