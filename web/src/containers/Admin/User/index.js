@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { SubmissionError } from 'redux-form';
 import querystring from 'query-string';
-import { Spin, notification, Tabs, message } from 'antd';
+import { Spin, notification, message } from 'antd';
 import _get from 'lodash/get';
 
 import './index.css';
@@ -23,8 +23,6 @@ const INITIAL_STATE = {
 	userInformationList: [],
 	kycPluginName: 'kyc',
 };
-
-const TabPane = Tabs.TabPane;
 
 class App extends Component {
 	constructor(props) {
@@ -248,17 +246,11 @@ class App extends Component {
 			/>
 		) : (
 			<div className="app_container-content user-container">
-				<Tabs>
-					<TabPane tab="All Users" key="users">
-						<h2 className="m-top">LIST OF ALL USERS</h2>
-
-						<FullListUsers
-							coins={coins}
-							requestUser={this.requestUserData}
-							handleDownload={this.requestUsersDownload}
-						/>
-					</TabPane>
-				</Tabs>
+				<FullListUsers
+					coins={coins}
+					requestUser={this.requestUserData}
+					handleDownload={this.requestUsersDownload}
+				/>
 			</div>
 		);
 	}
