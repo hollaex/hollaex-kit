@@ -1191,6 +1191,14 @@ paths:
           required: false
           type: boolean
         - in: query
+          name: kyc
+          required: false
+          type: integer
+        - in: query
+          name: bank
+          required: false
+          type: integer
+        - in: query
           name: format
           description: Specify data format
           required: false
