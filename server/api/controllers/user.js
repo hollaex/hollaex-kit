@@ -26,7 +26,8 @@ const {
 	USER_EXISTS,
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE,
-	LOGIN_NOT_ALLOW
+	LOGIN_NOT_ALLOW,
+	NO_IP_FOUND
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
@@ -446,9 +447,10 @@ const loginPost = (req, res) => {
 			])
 		})
 		.then(async ([user, token]) => {
-			if (ip) {
-				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
+			if (!ip) {
+				throw new Error(NO_IP_FOUND)
 			}
+			await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
 			return res.status(201).json({ token });
 		})
 		.catch((err) => {
@@ -1196,6 +1198,27 @@ const revokeUserSession = (req, res) => {
 		});
 }
 
+const userLogout = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/userLogout/auth', req.auth);
+
+	const user_id = req.auth.sub.id;
+
+	const bearer = req.headers['authorization'];
+	const tokenString = bearer.split(' ')[1];
+
+	toolsLib.security.findSession(tokenString)
+		.then((session) => {
+			return toolsLib.user.revokeExchangeUserSession(session.id, user_id);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/userLogout', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1223,5 +1246,6 @@ module.exports = {
 	requestEmailConfirmation,
 	addUserBank,
 	revokeUserSession,
-	getUserSessions
+	getUserSessions,
+	userLogout
 };
