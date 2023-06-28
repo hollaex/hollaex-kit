@@ -1343,5 +1343,6 @@ module.exports = {
 	calculateSignature,
 	generateDashToken,
 	createSession,
-	verifySession
+	verifySession,
+	findSession
 };

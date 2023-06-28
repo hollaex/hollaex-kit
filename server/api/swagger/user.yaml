@@ -1313,4 +1313,25 @@ paths:
         - bearer
       x-security-scopes:
         - user
-    
+  /logout:
+    x-swagger-router-controller: user
+    get:
+      operationId: userLogout
+      description: Logout and revoke the user session
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user
