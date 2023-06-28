@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { getFormatTimestamp } from 'utils/utils';
@@ -15,8 +15,12 @@ const SessionData = ({ login: { country, ip, device, timestamp } }) => {
 					</EditWrapper>
 				</div>
 				<div className="d-flex secondary-text px-1">
-					<div>{flag}</div>
-					<div className="px-1">{name}</div>
+					{country && (
+						<Fragment>
+							<div>{flag}</div>
+							<div className="px-1">{name}</div>
+						</Fragment>
+					)}
 				</div>
 			</div>
 			<div className="d-flex">

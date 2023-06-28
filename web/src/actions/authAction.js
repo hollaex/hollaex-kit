@@ -76,7 +76,7 @@ const setTokenInApp = (token, setInStore = false) => {
 	}
 };
 
-const cleatTokenInApp = (router, path = '/') => {
+const clearTokenInApp = (router, path = '/') => {
 	axios.defaults.headers.common['Authorization'] = {};
 	removeToken();
 	localStorage.removeItem('deposit_initial_display');
@@ -108,7 +108,7 @@ export function verifyToken(token) {
 				dispatch({
 					type: 'VERIFY_TOKEN_REJECTED',
 				});
-				cleatTokenInApp(browserHistory, '/login');
+				clearTokenInApp(browserHistory, '/login');
 			});
 	};
 }
@@ -120,8 +120,11 @@ export const logout = (message = '') => (dispatch) => {
 			message,
 		},
 	});
-	cleatTokenInApp(browserHistory, '/login');
+	requestLogout();
+	clearTokenInApp(browserHistory, '/login');
 };
+
+export const requestLogout = () => axios.get('/logout');
 
 export const setLogoutMessage = (message = '') => ({
 	type: 'SET_LOGOUT_MESSAGE',

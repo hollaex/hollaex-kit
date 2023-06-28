@@ -71,8 +71,12 @@ export const generateHeaders = () => {
 				return (
 					<td key={`${key}-${timestamp}-country`} className="text-center">
 						<div className="d-flex">
-							<div>{flag}</div>
-							<div className="px-1">{name}</div>
+							{country && (
+								<Fragment>
+									<div>{flag}</div>
+									<div className="px-1">{name}</div>
+								</Fragment>
+							)}
 						</div>
 					</td>
 				);
