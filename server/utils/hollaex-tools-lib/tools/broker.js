@@ -393,7 +393,7 @@ const reverseTransaction = async (orderData) => {
 		const quickTrades = getQuickTrades();
 		let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
 
-		if (quickTradeConfig.type === 'broker' && broker && broker.account) {
+		if (quickTradeConfig && quickTradeConfig.type === 'broker' && broker && broker.account) {
 			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
