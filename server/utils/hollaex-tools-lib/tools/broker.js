@@ -391,7 +391,7 @@ const reverseTransaction = async (orderData) => {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
 		const quickTrades = getQuickTrades();
-		let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
+		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
 
 		if (quickTradeConfig && quickTradeConfig.type === 'broker' && broker && broker.account) {
 			const decimalPoint = new BigNumber(broker.increment_size).dp();
