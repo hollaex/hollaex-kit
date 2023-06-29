@@ -389,9 +389,9 @@ const reverseTransaction = async (orderData) => {
 
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
-		const decimalPoint = new BigNumber(broker.increment_size).dp();
 
-		if (broker.account) {
+		if (broker && broker.account) {
+			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
 
@@ -408,7 +408,7 @@ const reverseTransaction = async (orderData) => {
 	
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', size, roundedPrice)
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
 					.then((res) => { notifyUser(res); })
 					.catch((err) => { notifyUser(err); });
 			}
