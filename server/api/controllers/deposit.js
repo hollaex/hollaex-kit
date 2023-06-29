@@ -1,6 +1,7 @@
 'use strict';
 
 const { loggerDeposits } = require('../../config/logger');
+const { ROLES } = require('../../constants');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 

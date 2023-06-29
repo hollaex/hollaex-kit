@@ -9,7 +9,7 @@ const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${S
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig, getAssetsPrices } = require('./common');
+const { validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -389,9 +389,12 @@ const reverseTransaction = async (orderData) => {
 
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
-		const decimalPoint = new BigNumber(broker.increment_size).dp();
 
-		if (broker.account) {
+		const quickTrades = getQuickTrades();
+		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
+
+		if (quickTradeConfig && quickTradeConfig.type === 'broker' && broker && broker.account) {
+			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
 
@@ -408,7 +411,7 @@ const reverseTransaction = async (orderData) => {
 	
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', size, roundedPrice)
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
 					.then((res) => { notifyUser(res); })
 					.catch((err) => { notifyUser(err); });
 			}
