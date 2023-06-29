@@ -9,7 +9,7 @@ const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${S
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig, getAssetsPrices } = require('./common');
+const { validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -390,7 +390,10 @@ const reverseTransaction = async (orderData) => {
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
 
-		if (broker && broker.account) {
+		const quickTrades = getQuickTrades();
+		let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
+
+		if (quickTradeConfig.type === 'broker' && broker && broker.account) {
 			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
