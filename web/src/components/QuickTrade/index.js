@@ -130,7 +130,12 @@ const QuickTrade = ({
 
 	const { key, display_name } = market || {};
 
-	const isUseBroker = quicktradePairs[symbol] || quicktradePairs[flippedPair];
+	const isUseBroker =
+		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
+		TYPES.BROKER;
+	const isNetwork =
+		(quicktradePairs[symbol] || quicktradePairs[flippedPair])?.type ===
+		TYPES.NETWORK;
 
 	const onChangeSourceAmount = (value) => {
 		setSpending(SPENDING.SOURCE);
@@ -473,7 +478,11 @@ const QuickTrade = ({
 									className={!isMobile ? 'w-50' : 'w-100'}
 								/>
 							</div>
-							<Footer brokerUsed={isUseBroker} name={display_name} />
+							<Footer
+								brokerUsed={isUseBroker}
+								name={display_name}
+								isNetwork={isNetwork}
+							/>
 						</div>
 					</div>
 				</div>
