@@ -170,6 +170,8 @@ const calculateFormula = (fn) => {
 }
 
 const isFairPriceForBroker = async (broker) => {
+	if (broker !== 'dynamic') return true;
+
 	// with ccxt
 	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
 	// with oracle
@@ -373,8 +375,8 @@ const testRebalance = async (data) => {
 };
 
 const reverseTransaction = async (orderData) => {
-	const { userId, symbol, side, size } = orderData;
-	const notifyUser = async (data) => {
+	const { symbol, side, size } = orderData;
+	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
 			MAILTYPE.ALERT,
@@ -393,7 +395,7 @@ const reverseTransaction = async (orderData) => {
 		const quickTrades = getQuickTrades();
 		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
 
-		if (quickTradeConfig && quickTradeConfig.type === 'broker' && broker && broker.account) {
+		if (quickTradeConfig && quickTradeConfig.type === 'broker' && quickTradeConfig.active && broker && !broker.paused && broker.account) {
 			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
@@ -412,8 +414,7 @@ const reverseTransaction = async (orderData) => {
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
 				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
-					.then((res) => { notifyUser(res); })
-					.catch((err) => { notifyUser(err); });
+					.catch((err) => { notifyUser(err, broker.user_id); });
 			}
 		}
 	} catch (err) {
