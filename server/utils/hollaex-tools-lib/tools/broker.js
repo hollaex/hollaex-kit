@@ -414,7 +414,7 @@ const reverseTransaction = async (orderData) => {
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
 				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
-					.catch((err) => { notifyUser(err, broker.user_id); });
+					.catch((err) => { notifyUser(err.message, broker.user_id); });
 			}
 		}
 	} catch (err) {
