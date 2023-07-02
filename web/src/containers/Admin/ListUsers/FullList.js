@@ -145,7 +145,7 @@ class FullListUsers extends Component {
 			);
 		};
 
-		const { users, loading, error, currentTablePage, isVisible } = this.state;
+		const { users, loading, error, currentTablePage, total, isVisible } = this.state;
 
 		return (
 			<div className="app_container-content admin-user-container">
@@ -186,6 +186,7 @@ class FullListUsers extends Component {
 						>
 							Download table
 						</span>
+						<span>Total: {total || '-'}</span>
 					</div>
 					<Table
 						loading={loading} 
