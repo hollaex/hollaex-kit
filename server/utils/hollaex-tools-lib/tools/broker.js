@@ -180,7 +180,7 @@ const isFairPriceForBroker = async (broker) => {
 	//relative difference
 	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
 
-	// If difference more than 20 percent, price is not fair.
+	// If difference more than 10 percent, price is not fair.
 	const priceDifferenceTreshold = 10;
 	if (priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
