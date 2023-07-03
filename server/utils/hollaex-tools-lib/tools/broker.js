@@ -541,11 +541,11 @@ const updateBrokerPair = async (id, data) => {
 
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
-			if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*')) {
+			if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*****')) {
 				value.apiKey = brokerPair?.account[key]?.apiKey;
 			}
 
-			if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*')) {
+			if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*********')) {
 				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
 		}
