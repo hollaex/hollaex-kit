@@ -467,11 +467,11 @@ const createBrokerPair = async (brokerPair) => {
 			
 			if (account) {
 				for (const [key, value] of Object.entries(account)) {
-					if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*')) {
+					if (!value.hasOwnProperty('apiKey')) {
 						value.apiKey = brokerPair?.account[key]?.apiKey;
 					}
 		
-					if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*')) {
+					if (!value.hasOwnProperty('apiSecret')) {
 						value.apiSecret = brokerPair?.account[key]?.apiSecret;
 					}
 				}
