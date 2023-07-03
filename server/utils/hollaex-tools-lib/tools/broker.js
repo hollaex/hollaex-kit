@@ -178,10 +178,10 @@ const isFairPriceForBroker = async (broker) => {
 	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
 
 	//relative difference
-	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromOracle + priceFromOracle) / 2));
+	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
 
-	// If difference more than 20 percent, price is not fair.
-	const priceDifferenceTreshold = 0.2;
+	// If difference more than 10 percent, price is not fair.
+	const priceDifferenceTreshold = 10;
 	if (priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
 }
@@ -414,7 +414,7 @@ const reverseTransaction = async (orderData) => {
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
 				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
-					.catch((err) => { notifyUser(err, broker.user_id); });
+					.catch((err) => { notifyUser(err.message, broker.user_id); });
 			}
 		}
 	} catch (err) {
