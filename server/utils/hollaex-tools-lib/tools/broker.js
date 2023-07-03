@@ -411,6 +411,7 @@ const reverseTransaction = async (orderData) => {
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 	
 				const marketTicker = await exchange.fetchTicker(symbol);
+
 				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
 				.decimalPlaces(decimalPoint).toNumber();
 				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
