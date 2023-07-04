@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link } from 'react-router';
+import moment from 'moment';
 import classnames from 'classnames';
 import { isMobile } from 'react-device-detect';
 import math from 'mathjs';
@@ -90,7 +91,8 @@ const QuickTrade = ({
 	const [submitting, setSubmitting] = useState(false);
 	const [data, setData] = useState({});
 	const [mounted, setMounted] = useState(false);
-	// const [reversed, setReversed] = useState(false);
+	const [expiry, setExpiry] = useState();
+	const [time, setTime] = useState(moment());
 
 	const onCloseDialog = (autoHide) => {
 		setIsReview(true);
@@ -221,32 +223,24 @@ const QuickTrade = ({
 	};
 
 	const getQuote = ({
-		sourceAmount,
-		targetAmount,
-		selectedSource,
-		selectedTarget,
+		sourceAmount: spending_amount,
+		targetAmount: receiving_amount,
+		selectedSource: spending_currency,
+		selectedTarget: receiving_currency,
 		spending,
 	}) => {
 		if (spending) {
-			const spending_amount = sourceAmount;
-			const receiving_amount = targetAmount;
-
-			const [spending_currency, receiving_currency] = [
-				selectedSource,
-				selectedTarget,
-			];
-			const amount =
-				spending === SPENDING.SOURCE ? spending_amount : receiving_amount;
-			const amountPayload =
+			const [amount, amountPayload] =
 				spending === SPENDING.SOURCE
-					? { spending_amount }
-					: { receiving_amount };
+					? [spending_amount, { spending_amount }]
+					: [receiving_amount, { receiving_amount }];
 
 			if (amount && spending_currency && receiving_currency) {
 				setLoading(true);
 				setTargetAmount();
 				setSourceAmount();
 				setToken();
+				setExpiry();
 				setError();
 
 				getQuickTrade({
@@ -254,12 +248,17 @@ const QuickTrade = ({
 					spending_currency,
 					receiving_currency,
 				})
-					.then(({ data: { token, spending_amount, receiving_amount } }) => {
-						setSpending();
-						setToken(token);
-						setTargetAmount(receiving_amount);
-						setSourceAmount(spending_amount);
-					})
+					.then(
+						({
+							data: { token, spending_amount, receiving_amount, expiry },
+						}) => {
+							setSpending();
+							setToken(token);
+							setExpiry(expiry);
+							setTargetAmount(receiving_amount);
+							setSourceAmount(spending_amount);
+						}
+					)
 					.catch((err) => handleError(err, true))
 					.finally(() => {
 						setLoading(false);
@@ -269,6 +268,7 @@ const QuickTrade = ({
 				setSourceAmount();
 				setSpending();
 				setToken();
+				setExpiry();
 			}
 		}
 	};
@@ -315,16 +315,17 @@ const QuickTrade = ({
 	}, [sourceAmount, targetAmount, selectedSource, selectedTarget, spending]);
 
 	useEffect(() => {
-		if (spending === SPENDING.SOURCE) {
-			// setReversed(false);
-		} else if (spending === SPENDING.TARGET) {
-			// setReversed(true);
-		}
-	}, [spending]);
-
-	useEffect(() => {
 		setMounted(true);
 	}, []);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setTime(moment());
+			return () => clearInterval(interval);
+		}, 1000);
+	}, []);
+
+	const isExpired = time.isAfter(moment(expiry));
 
 	const { balance: userBalance } = user;
 
@@ -339,22 +340,16 @@ const QuickTrade = ({
 	const selectedTargetBalance =
 		selectedTarget && userBalance[`${selectedTarget.toLowerCase()}_available`];
 
-	const disabled = !isLoggedIn() || !token || loading || submitting;
+	const disabled =
+		!isLoggedIn() || !token || loading || submitting || isExpired;
 	const pairData = pairs[symbol] || {};
-	const decimalPoint = getDecimals(pairData.increment_size);
 	const [loadingSource, loadingTarget] =
 		spending === SPENDING.SOURCE ? [false, loading] : [loading, false];
-	// const [
-	// 	[spendingAmount, spendingCurrency],
-	// 	[receivingAmount, receivingCurrency],
-	// ] = [
-	// 	[sourceAmount, selectedSource],
-	// 	[targetAmount, selectedTarget],
-	// ][reversed ? 'reverse' : 'slice']();
 
-	const onSwap = () => {
+	const onSwap = (selectedSource, selectedTarget) => {
 		onSelectSource(selectedTarget);
-		onSelectTarget(selectedSource);
+		// ToDo: to remove that jump issue from the swap, the use Effect logic shuold be integrated to the select function
+		setTimeout(() => onSelectTarget(selectedSource), 0.1);
 	};
 
 	return (
@@ -419,7 +414,10 @@ const QuickTrade = ({
 							<div className="d-flex swap-wrapper-wrapper">
 								<div className="swap-wrapper">
 									<div className="swap-container">
-										<div className="pointer blue-link" onClick={onSwap}>
+										<div
+											className="pointer blue-link"
+											onClick={() => onSwap(selectedSource, selectedTarget)}
+										>
 											<SwapOutlined className="px-2" rotate={90} />
 											<EditWrapper stringId={'SWAP'}>
 												{STRINGS['SWAP']}
@@ -452,13 +450,19 @@ const QuickTrade = ({
 								onClick={targetTotalBalance}
 							/>
 
-							{error && (
+							{error ? (
 								<FieldError
 									error={translateError(error)}
 									displayError={true}
 									className="input-group__error-wrapper"
 								/>
-							)}
+							) : isExpired ? (
+								<FieldError
+									error={STRINGS['QUICK_TRADE_QUOTE_EXPIRED']}
+									displayError={true}
+									className="input-group__error-wrapper"
+								/>
+							) : null}
 
 							<div
 								className={classnames(
@@ -501,7 +505,12 @@ const QuickTrade = ({
 							onCloseDialog={onCloseDialog}
 							onExecuteTrade={() => onExecuteTrade(token)}
 							selectedSource={selectedSource}
-							decimalPoint={decimalPoint}
+							sourceDecimalPoint={
+								coins[selectedSource]?.increment_unit || PAIR2_STATIC_SIZE
+							}
+							targetDecimalPoint={
+								coins[selectedTarget]?.increment_unit || PAIR2_STATIC_SIZE
+							}
 							sourceAmount={sourceAmount}
 							targetAmount={targetAmount}
 							selectedTarget={selectedTarget}
