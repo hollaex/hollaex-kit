@@ -74,9 +74,7 @@ const UseFilters = ({
 	};
 
 	const defaultFilters = [
-		{ field: 'email', type: 'string', label: 'Email', value: null },
-		{ field: 'kyc', type: 'dropdown', label: 'User Id Verification', value: null, options: fieldKeyValue.kyc.options },
-		{ field: 'bank', type: 'dropdown', label: 'Bank Verification', value: null, options: fieldKeyValue.bank.options },
+		{ field: 'email', type: 'string', label: 'Email', value: null }
 	];
 
 	const [filters, setFilters] = useState(defaultFilters);
@@ -118,105 +116,105 @@ const UseFilters = ({
 	
 	}
 	return (
-		<>
-		 <div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
-			{filters.map((filter, index) => {
-						return (
-							<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
-								<label>
-									{filter.label}:{' '}
-									<DeleteOutlined
-										style={{ float: 'right', position:'relative', top: 4 }}
-										onClick={() => {
-											let newFilters = [...filters];
-											newFilters = newFilters.filter((f, i) => i !== index);
-											setFilters(newFilters);
-										}}
-									/>
-								</label>
-								{filter.type === 'string' && (
-									<Input
-										value={filter.value}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e.target.value;
-											setFilters(newFilters);
-										}}
-										style={{  width: 200 }}
-										placeholder={filter.label}
-									/>
-								)}
-								{filter.type === 'range' && (
-									<Slider
-										range
-										defaultValue={[1, 10]}
-										value={filter.value}
-										style={{ width: 200, backgroundColor:"red" }}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e;
-											setFilters(newFilters);
-										}}
-									/>
-								)}
-								{filter.type === 'boolean' && (
-									<Switch
-										size="small"
-										checked={filter.value}
-										style={{ marginLeft: 10, width: 50, marginTop: 7 }}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e;
-											setFilters(newFilters);
-										}}
-									/>
-								)}
-								{filter.type === 'dropdown' && (
-									<Select
-										showSearch
-										className='select-box'
-										style={{ width: 200,}}
-										placeholder="Select value"
-										value={filter.value}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											if (['kyc', 'bank'].includes(filter.field)) {
-												addPendingType(e, index);
+		<div style={{ display: 'flex', flexDirection:'row', gap: 10 }}>
+		 	<div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
+				{filters.map((filter, index) => {
+					return (
+						<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
+							<label>
+								{filter.label}:{' '}
+								<DeleteOutlined
+									style={{ float: 'right', position:'relative', top: 4 }}
+									onClick={() => {
+										let newFilters = [...filters];
+										newFilters = newFilters.filter((f, i) => i !== index);
+										setFilters(newFilters);
+									}}
+								/>
+							</label>
+							{filter.type === 'string' && (
+								<Input
+									value={filter.value}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e.target.value;
+										setFilters(newFilters);
+									}}
+									style={{  width: 200 }}
+									placeholder={filter.label}
+								/>
+							)}
+							{filter.type === 'range' && (
+								<Slider
+									range
+									defaultValue={[1, 10]}
+									value={filter.value}
+									style={{ width: 200, backgroundColor:"red" }}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e;
+										setFilters(newFilters);
+									}}
+								/>
+							)}
+							{filter.type === 'boolean' && (
+								<Switch
+									size="small"
+									checked={filter.value}
+									style={{ marginLeft: 10, width: 50, marginTop: 7 }}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e;
+										setFilters(newFilters);
+									}}
+								/>
+							)}
+							{filter.type === 'dropdown' && (
+								<Select
+									showSearch
+									className='select-box'
+									style={{ width: 200,}}
+									placeholder="Select value"
+									value={filter.value}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										if (['kyc', 'bank'].includes(filter.field)) {
+											addPendingType(e, index);
+										} else {
+											if (e === -1) {
+												newFilters[index].value = null
 											} else {
-												if (e === -1) {
-													newFilters[index].value = null
-												} else {
-													newFilters[index].value = e;
-												}
-												setFilters(newFilters);
+												newFilters[index].value = e;
 											}
-
-										}}
-									>
-										{filter?.options.map((f) => (
-											<Option value={f.value}>{f.label}</Option>
-										))}
-									</Select>
-								)}
-								{filter.type === 'date' && (
-									<DatePicker
-										suffixIcon={null} 
-										className='date-box'
-										style={{ width: 200, backgroundColor: '#202980', color: 'white'}}
-										onChange={(date, dateString) => {
-											const newFilters = [...filters];
-											newFilters[index].value = moment(dateString).format();
 											setFilters(newFilters);
-										}}
-										format={dateFormat}
-									/>
-								)}
-							</div>
-						);
+										}
+
+									}}
+								>
+									{filter?.options.map((f) => (
+										<Option value={f.value}>{f.label}</Option>
+									))}
+								</Select>
+							)}
+							{filter.type === 'date' && (
+								<DatePicker
+									suffixIcon={null} 
+									className='date-box'
+									style={{ width: 200, backgroundColor: '#202980', color: 'white'}}
+									onChange={(date, dateString) => {
+										const newFilters = [...filters];
+										newFilters[index].value = moment(dateString).format();
+										setFilters(newFilters);
+									}}
+									format={dateFormat}
+								/>
+							)}
+						</div>
+					);
 					})}
-		 </div>
+		 	</div>
 		
-			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20}}> 
+			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 6}}> 
 				<div>
 				<Select
 					className='select-box'
@@ -266,7 +264,7 @@ const UseFilters = ({
 						}}
 						type="default"
 						>
-						Apply
+						Search
 					</Button>
 					<div
 						onClick={() => {
@@ -294,7 +292,7 @@ const UseFilters = ({
 			</div>
 	
 		
-		</>
+		</div>
 	);
 };
 
