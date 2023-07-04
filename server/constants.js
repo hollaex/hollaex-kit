@@ -624,10 +624,10 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	boost: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	crypto: ['hollaex', 'binance'],
-	ALL: [ 'hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	crypto: ['hollaex', 'oracle', 'binance'],
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
 };
 
 
