@@ -204,11 +204,10 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		if (!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
-		const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
+		const selectedExchange = exchangePair[0] !== 'oracle' && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 		let marketPrice;
 
-		// isOracle is only used for fair price check.
-		if (!isOracle) {
+		if (!isOracle && exchangePair[0] !== 'oracle') {
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
 			const userCachekey = `${brokerId}-${exchangePair[1]}`;
 			marketPrice = await client.getAsync(userCachekey);
@@ -222,8 +221,15 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		}
 		else {
 			const coins = exchangePair[1].split('-');
-			const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
-			marketPrice =  conversions[coins[0]];
+			const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+			marketPrice = await client.getAsync(userCachekey);
+
+			if (!marketPrice) {
+				const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
+				marketPrice =  conversions[coins[0]];
+				if (refresh_interval)
+					client.setexAsync(userCachekey, refresh_interval, marketPrice);
+			}
 			if(marketPrice === -1) return -1;
 		}
 		formula = formula.replace(variable, marketPrice);

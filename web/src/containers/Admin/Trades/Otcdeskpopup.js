@@ -142,6 +142,7 @@ const Otcdeskpopup = ({
 	const selectableExchanges = [
 		'hollaex',
 		'binance',
+		'oracle',
 		kitPlan !== 'crypto' && 'coinbase',
 		kitPlan !== 'crypto' && 'bitfinex2',
 		kitPlan !== 'crypto' && 'kraken',
@@ -446,14 +447,14 @@ const Otcdeskpopup = ({
 		if (value === 'uniswap') {
 			setDisplayUniswap(true);
 		} else {
-			if (value !== exchangeMarkets.exchange) {
+			if (value !== exchangeMarkets.exchange && value !== 'oracle') {
 				const markets = await getTrackedExchangeMarkets(value);
 				setExchangeMarkets({ exchange: value, markets });
 			}
 		}
 	};
 
-	const renderExchangeOptions = () => (
+	const renderExchangeOptions = (hasOracle = true) => (
 		<>
 			<Option value="hollaex">Hollaex Pro</Option>
 			<Option value="binance">Binance</Option>
@@ -466,6 +467,7 @@ const Otcdeskpopup = ({
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="kraken">Kraken</Option>
 			)}
+			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
 		</>
 	);
@@ -824,6 +826,7 @@ const Otcdeskpopup = ({
 													{selectableExchanges.filter((e) => e).join(', ')}
 												</span>
 											</div>
+											<hr/>
 
 											<div style={{ marginTop: 10, marginBottom: 10 }}>
 												<div>add: '+'</div>
@@ -1055,7 +1058,7 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{!displayUniswap && !formula && (
+										{!displayUniswap && !formula && selectedExchange !== 'oracle' && (
 											<div className={isUpgrade ? 'Datahide mt-3' : ''}>
 												<div className="mt-4">Track market price</div>
 												<div className="select-box">
@@ -1260,8 +1263,13 @@ const Otcdeskpopup = ({
 												type="primary"
 												className="green-btn"
 												onClick={() => {
-													// handleSetPriceNext
-													moveToStep('hedge');
+													if (!formula) {
+														message.warning('Please input formula in Advanced section');
+													}
+													else {
+														// handleSetPriceNext
+														moveToStep('hedge');
+													}
 												}}
 												disabled={
 													chainlink ||
@@ -1789,7 +1797,7 @@ const Otcdeskpopup = ({
 											<div>
 												<div className="select-box">
 													<Select value={hedgeApi} onChange={handleSelApi}>
-														{renderExchangeOptions()}
+														{renderExchangeOptions(false)}
 													</Select>
 												</div>
 												<div className="mt-3 mb-3">
