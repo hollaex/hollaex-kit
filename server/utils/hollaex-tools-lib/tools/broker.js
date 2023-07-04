@@ -171,7 +171,7 @@ const calculateFormula = (fn) => {
 }
 
 const isFairPriceForBroker = async (broker) => {
-	if (broker !== 'dynamic') return true;
+	if (broker.type !== 'dynamic') return true;
 
 	// with ccxt
 	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
