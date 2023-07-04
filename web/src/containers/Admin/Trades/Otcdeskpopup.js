@@ -1267,7 +1267,6 @@ const Otcdeskpopup = ({
 														message.warning('Please input formula in Advanced section');
 													}
 													else {
-														// handleSetPriceNext
 														moveToStep('hedge');
 													}
 												}}
