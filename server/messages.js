@@ -196,6 +196,7 @@ exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while u
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
 exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
 exports.SPREAD_MISSING = 'Spread is missing';
+exports.REBALANCE_SYMBOL_MISSING = 'Rebalance symbol for hedge account is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
 exports.DYNAMIC_BROKER_CREATE_ERROR = 'Cannot create a dynamic broker without required fields';
 exports.DYNAMIC_BROKER_UNSUPPORTED = 'Selected exchange is not supported by your exchange plan';

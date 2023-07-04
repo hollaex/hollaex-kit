@@ -240,6 +240,10 @@ const Otcdeskpopup = ({
 		);
 		handleClosePopup();
 	};
+	useEffect(() => {
+		if (!isOpen) handleCloseOtcChild();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isOpen])
 
 	const isUpgrade = handleUpgrade(kit.info);
 	const noHedgeOption =
