@@ -219,4 +219,7 @@ exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';
 exports.AMOUNT_NEGATIVE_ERROR = 'Amount cannot be negative';
 exports.QUICK_TRADE_CONFIG_NOT_FOUND = 'Quick trade config not found';
 exports.QUICK_TRADE_TYPE_NOT_SUPPORTED = 'Quick trade type not supported';
+exports.PRICE_NOT_FOUND = 'Price could not found';
+exports.INVALID_PRICE = 'Invalid price';
+exports.INVALID_SIZE = 'Invalid size';
 exports.NO_IP_FOUND = 'Request can not be processed';

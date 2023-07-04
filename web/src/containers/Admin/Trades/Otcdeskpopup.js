@@ -283,7 +283,7 @@ const Otcdeskpopup = ({
 				message.warning('Please input formula');
 			}
 		} catch (error) {
-			message.error(error.message);
+			message.error(error.response.data.message);
 		}
 
 		setSpin(false);

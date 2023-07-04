@@ -40,7 +40,8 @@ const {
 	FORMULA_MARKET_PAIR_ERROR,
 	COIN_INPUT_MISSING,
 	AMOUNTS_MISSING,
-	REBALANCE_SYMBOL_MISSING
+	REBALANCE_SYMBOL_MISSING,
+	PRICE_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -225,7 +226,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 			marketPrice = await client.getAsync(userCachekey);
 
 			if (!marketPrice) {
-				const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
+				const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
 				marketPrice =  conversions[coins[0]];
 				if (refresh_interval)
 					client.setexAsync(userCachekey, refresh_interval, marketPrice);
@@ -317,6 +318,10 @@ const testBroker = async (data) => {
 			5,
 			'test:broker'
 		);
+
+		if (price < 0) {
+			throw new Error(PRICE_NOT_FOUND);
+		}
 
 		const decimalPoint = new BigNumber(increment_size).dp();
 		return {
