@@ -39,7 +39,8 @@ const {
 	UNISWAP_PRICE_NOT_FOUND,
 	FORMULA_MARKET_PAIR_ERROR,
 	COIN_INPUT_MISSING,
-	AMOUNTS_MISSING
+	AMOUNTS_MISSING,
+	REBALANCE_SYMBOL_MISSING
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -447,7 +448,8 @@ const createBrokerPair = async (brokerPair) => {
 				type,
 				account,
 				formula,
-				increment_size
+				increment_size,
+				rebalancing_symbol
 			} = brokerPair;
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
@@ -471,6 +473,10 @@ const createBrokerPair = async (brokerPair) => {
 					if (!value.hasOwnProperty('apiSecret')) {
 						value.apiSecret = brokerPair?.account[key]?.apiSecret;
 					}
+				}
+
+				if (!rebalancing_symbol) {
+					throw new Error(REBALANCE_SYMBOL_MISSING);
 				}
 			}
 
@@ -517,7 +523,8 @@ const updateBrokerPair = async (id, data) => {
 		type,
 		account,
 		formula,
-		increment_size
+		increment_size,
+		rebalancing_symbol
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
@@ -533,13 +540,17 @@ const updateBrokerPair = async (id, data) => {
 
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
-			if (!value.hasOwnProperty('apiKey')) {
+			if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*****')) {
 				value.apiKey = brokerPair?.account[key]?.apiKey;
 			}
 
-			if (!value.hasOwnProperty('apiSecret')) {
+			if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*********')) {
 				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
+		}
+		
+		if (!rebalancing_symbol) {
+			throw new Error(REBALANCE_SYMBOL_MISSING);
 		}
 	}
 
