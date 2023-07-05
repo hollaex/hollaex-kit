@@ -175,7 +175,7 @@ const QuickTradeTab = ({
 			</div>
 
 			<div style={{ marginTop: 50 }}>
-                <div style={{ display: 'flex', flexDirection:'row', gap: 10,  paddingBottom: 20 }}>
+                <div style={{ display: 'flex', flexDirection:'row', gap: 10,  paddingBottom: 20, flexWrap: 'wrap' }}>
 
                     {quickTradeConfig?.filter(data => filter ? data.symbol?.split('-')?.join('/').toLowerCase().includes(filter.toLowerCase()) : true).map(data => {
                         return(
