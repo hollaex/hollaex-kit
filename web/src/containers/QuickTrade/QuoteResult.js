@@ -62,7 +62,7 @@ const QuoteResult = ({
 			</div>
 		);
 	} else {
-		const [pair_base] = data && data.symbol && data.symbol.split('-');
+		const [pair_base] = data?.symbol?.split('-') || [];
 		const { display_name } = coins[pair_base] || DEFAULT_COIN_DATA;
 
 		return (
