@@ -22,6 +22,25 @@ const UseFilters = ({
 		username: { type: 'string', label: 'User Name' },
 		full_name: { type: 'string', label: 'Full Name' },
 		start_date: { type: 'date', label: 'User Creation Date Start' },
+		kyc: {
+			type: 'dropdown',
+			label: 'User Id Verification',
+			options: [
+				{ value: -1, label: 'None' },
+				{ value: 0, label: 'Not complete' },
+				{ value: 1, label: 'Pending' },
+				{ value: 2, label: 'Rejected' },
+				{ value: 3, label: 'Approved' },
+			],
+		},
+		bank: {
+			type: 'dropdown',
+			label: 'Bank Verification',
+			options: [
+				{ label: 'None', value: -1 },
+				{ label: 'Pending', value: 1 }
+			],
+		},
 		end_date: { type: 'date', label: 'User Creation Date End' },
 		dob_start_date: { type: 'date', label: 'User DOB Date Start' },
 		dob_end_date: { type: 'date', label: 'User DOB Date End' },
@@ -54,24 +73,16 @@ const UseFilters = ({
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
 	};
 
-	const [filters, setFilters] = useState([
-		{ field: 'id', type: 'string', label: 'User ID', value: null },
-	]);
+	const defaultFilters = [
+		{ field: 'email', type: 'string', label: 'Email', value: null }
+	];
 
-	const kycFields = [
-		{ key: -1, value: 'None' },
-		{ key: 0, value: 'Not complete' },
-		{ key: 1, value: 'Pending' },
-		{ key: 2, value: 'Rejected' },
-		{ key: 3, value: 'Approved' },
-	]
-	
-	const [selectedKyc, setSelectedKyc] = useState();
+	const [filters, setFilters] = useState(defaultFilters);
+
 
 	const [field, setField] = useState();
 	const dateFormat = 'YYYY/MM/DD';
 
-	const hasPendingTypeBank = filters?.find((f) => f.field === 'bank');
 	const canReset = filters?.find(filter => filter.value != null && filter.value !== '');
 	
 	const handleFilters = (selectedFilters = null) => {
@@ -85,168 +96,125 @@ const UseFilters = ({
 		applyFilters(queryFilters);
 	};
 
-	const addPendingType = (field, value, label) => {
-		const found = filters.find((f) => f.field === field && f.value === value);
-
-		if (found) {
+	const addPendingType = (value, Index) => {
+		if (value === -1) {
 			setFilters((prevState) => {
-				prevState = prevState.filter((f) => f.field !== field || f.value !== value);
-				if (!prevState.find(f => ['bank', 'kyc'].includes(f.field)))
+				prevState[Index].value = null;
+				if (!prevState.find(f => ['bank', 'kyc'].includes(f.field) && f.value))
 					prevState = prevState.filter((f) => f.field !== 'pending');
-				handleFilters(prevState);
 				return [...prevState];
 			});
 		} else {
-			const fieldValue = {
-				field,
-				label,
-				value,
-				displayNone: true 
-			};
+		
 			setFilters((prevState) => {
-				prevState.push(fieldValue);
+				prevState[Index].value = value;
 				const found = filters.find((f) => f.field === 'pending');
 				if (!found) { prevState.push( {field:'pending', label: 'Pending', value: true,  type: 'boolean', displayNone: true  }); }
-				handleFilters(prevState);
 				return [...prevState];
 			});
 		}
 	
 	}
 	return (
-		<>
-		<div>ƒ⇣ Filters</div>
-		<div style={{
-			display: 'flex',
-			gap: 10,
-			marginTop:15,
-			marginBottom:15,
-		}}>
-				<Select
-					showSearch
-					className='select-box user-scroll-box'
-					style={{ width: 200 }}
-					value={selectedKyc}
-					placeholder="User ID Verification"
-					onChange={(e) => {
-						if (e === -1) {
-							setSelectedKyc();
-							setFilters((prevState) => {
-								prevState = prevState.filter((f) => f.field !== 'kyc');
-								if (!prevState.find(f => ['bank', 'kyc'].includes(f.field)))
-									prevState = prevState.filter((f) => f.field !== 'pending');
-								handleFilters(prevState);
-								return [...prevState];
-							});
-						} else{
-							setSelectedKyc(e);
-							addPendingType('kyc', e, 'Id')
-						}
-					}}
-				>
-					{kycFields.map((f) => (
-						<Option value={f.key}>{f.value}</Option>
-					))}
-				</Select>
-
-			<Button 
-				onClick={() => { addPendingType('bank', 1, 'Bank') }}
-				style={{ background: "#202980", borderColor: hasPendingTypeBank ? 'white' : "#ccc", color: hasPendingTypeBank ? 'white' : "#ccc"}} >Pending User Bank Verification</Button>
-		</div>
-
-		 <div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
-			{filters.map((filter, index) => {
-						return (
-							<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
-								<label>
-									{filter.label}:{' '}
-									<DeleteOutlined
-										style={{ float: 'right', position:'relative', top: 4 }}
-										onClick={() => {
-											let newFilters = [...filters];
-											newFilters = newFilters.filter((f, i) => i !== index);
-											setFilters(newFilters);
-										}}
-									/>
-								</label>
-								{filter.type === 'string' && (
-									<Input
-										value={filter.value}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e.target.value;
-											setFilters(newFilters);
-										}}
-										style={{  width: 200 }}
-										placeholder={filter.label}
-									/>
-								)}
-								{filter.type === 'range' && (
-									<Slider
-										range
-										defaultValue={[1, 10]}
-										value={filter.value}
-										style={{ width: 200, backgroundColor:"red" }}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e;
-											setFilters(newFilters);
-										}}
-									/>
-								)}
-								{filter.type === 'boolean' && (
-									<Switch
-										size="small"
-										checked={filter.value}
-										style={{ marginLeft: 10, width: 50, marginTop: 7 }}
-										onChange={(e) => {
-											const newFilters = [...filters];
-											newFilters[index].value = e;
-											setFilters(newFilters);
-										}}
-									/>
-								)}
-								{filter.type === 'dropdown' && (
-									<Select
-										showSearch
-										className='select-box'
-										style={{ width: 200,}}
-										placeholder="Select value"
-										value={filter.value}
-										onChange={(e) => {
-											const newFilters = [...filters];
+		<div style={{ display: 'flex', flexDirection:'row', gap: 10 }}>
+		 	<div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
+				{filters.map((filter, index) => {
+					return (
+						<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
+							<label>
+								{filter.label}:{' '}
+								<DeleteOutlined
+									style={{ float: 'right', position:'relative', top: 4 }}
+									onClick={() => {
+										let newFilters = [...filters];
+										newFilters = newFilters.filter((f, i) => i !== index);
+										setFilters(newFilters);
+									}}
+								/>
+							</label>
+							{filter.type === 'string' && (
+								<Input
+									value={filter.value}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e.target.value;
+										setFilters(newFilters);
+									}}
+									style={{  width: 200 }}
+									placeholder={filter.label}
+								/>
+							)}
+							{filter.type === 'range' && (
+								<Slider
+									range
+									defaultValue={[1, 10]}
+									value={filter.value}
+									style={{ width: 200, backgroundColor:"red" }}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e;
+										setFilters(newFilters);
+									}}
+								/>
+							)}
+							{filter.type === 'boolean' && (
+								<Switch
+									size="small"
+									checked={filter.value}
+									style={{ marginLeft: 10, width: 50, marginTop: 7 }}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										newFilters[index].value = e;
+										setFilters(newFilters);
+									}}
+								/>
+							)}
+							{filter.type === 'dropdown' && (
+								<Select
+									showSearch
+									className='select-box'
+									style={{ width: 200,}}
+									placeholder="Select value"
+									value={filter.value}
+									onChange={(e) => {
+										const newFilters = [...filters];
+										if (['kyc', 'bank'].includes(filter.field)) {
+											addPendingType(e, index);
+										} else {
 											if (e === -1) {
 												newFilters[index].value = null
 											} else {
 												newFilters[index].value = e;
 											}
 											setFilters(newFilters);
-										}}
-									>
-										{filter?.options.map((f) => (
-											<Option value={f.value}>{f.label}</Option>
-										))}
-									</Select>
-								)}
-								{filter.type === 'date' && (
-									<DatePicker
-										suffixIcon={null} 
-										className='date-box'
-										style={{ width: 200, backgroundColor: '#202980', color: 'white'}}
-										onChange={(date, dateString) => {
-											const newFilters = [...filters];
-											newFilters[index].value = moment(dateString).format();
-											setFilters(newFilters);
-										}}
-										format={dateFormat}
-									/>
-								)}
-							</div>
-						);
+										}
+
+									}}
+								>
+									{filter?.options.map((f) => (
+										<Option value={f.value}>{f.label}</Option>
+									))}
+								</Select>
+							)}
+							{filter.type === 'date' && (
+								<DatePicker
+									suffixIcon={null} 
+									className='date-box'
+									style={{ width: 200, backgroundColor: '#202980', color: 'white'}}
+									onChange={(date, dateString) => {
+										const newFilters = [...filters];
+										newFilters[index].value = moment(dateString).format();
+										setFilters(newFilters);
+									}}
+									format={dateFormat}
+								/>
+							)}
+						</div>
+					);
 					})}
-		 </div>
+		 	</div>
 		
-			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20}}> 
+			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 6}}> 
 				<div>
 				<Select
 					className='select-box'
@@ -296,13 +264,12 @@ const UseFilters = ({
 						}}
 						type="default"
 						>
-						Apply
+						Search
 					</Button>
 					<div
 						onClick={() => {
 							if	(canReset) {
-								setFilters([{ field: 'id', type: 'string', label: 'User ID', value: null }]);
-								setSelectedKyc();
+								setFilters(defaultFilters);
 								handleFilters([]);
 							}
 							
@@ -325,7 +292,7 @@ const UseFilters = ({
 			</div>
 	
 		
-		</>
+		</div>
 	);
 };
 
