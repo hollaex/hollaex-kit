@@ -13,6 +13,7 @@ module.exports = function (sequelize, DataTypes) {
 			symbol: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true
 			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
