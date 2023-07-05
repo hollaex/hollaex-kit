@@ -94,6 +94,14 @@ const QuickTrade = ({
 	const [expiry, setExpiry] = useState();
 	const [time, setTime] = useState(moment());
 
+	const resetForm = () => {
+		setTargetAmount();
+		setSourceAmount();
+		setSpending();
+		setToken();
+		setExpiry();
+	};
+
 	const onCloseDialog = (autoHide) => {
 		setIsReview(true);
 		setData({});
@@ -187,6 +195,7 @@ const QuickTrade = ({
 		executeQuickTrade(token)
 			.then(({ data }) => {
 				setData(data);
+				resetForm();
 			})
 			.catch(handleError)
 			.finally(() => {
@@ -264,11 +273,7 @@ const QuickTrade = ({
 						setLoading(false);
 					});
 			} else {
-				setTargetAmount();
-				setSourceAmount();
-				setSpending();
-				setToken();
-				setExpiry();
+				resetForm();
 			}
 		}
 	};
