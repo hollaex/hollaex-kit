@@ -110,6 +110,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
+	await client.delAsync(token);
 	res.type = type;
 	return res;
 }
