@@ -1912,7 +1912,10 @@ const getExchangeUserSessions = (opts = {
 	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
 			...(opts.status != null && { status: opts.status }),
-			created_at: timeframe
+			created_at: timeframe,
+			expiry_date: {
+				[Op.gt]: new Date()
+			},
 		},
 		attributes: {
 			exclude: ['token']
