@@ -1861,8 +1861,7 @@ const Otcdeskpopup = ({
 											</div>
 											<div className="main-subHeading grey-text-color mb-5 ">
 												You can leave this off if you don't have funds in an
-												account else where. Learn more about
-												<span className="ml-1 anchor">hedging here.</span>
+												account else where.
 											</div>
 										</>
 									)}
