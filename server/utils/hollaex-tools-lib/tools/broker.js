@@ -152,7 +152,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 	if (spending_amount != null) {
 		const incrementUnit = side === 'buy' ? baseCoinInfo.increment_unit : quoteCointInfo.increment_unit;
-		const targetedAmount = side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price
+		const targetedAmount = side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price;
 
 		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
