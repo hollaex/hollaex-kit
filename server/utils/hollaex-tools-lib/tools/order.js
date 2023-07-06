@@ -3,11 +3,11 @@
 const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
 const { SERVER_PATH } = require('../constants');
 const { getModel } = require('./database/model');
-const { fetchBrokerQuote, generateRandomToken, executeBrokerDeal } = require('./broker');
+const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL } = require(`${SERVER_PATH}/messages`);
+const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, validatePair } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, validatePair } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
@@ -17,6 +17,7 @@ const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
 const { client } = require('./database/redis');
 const { parseNumber } = require('./common');
+const BigNumber = require('bignumber.js');
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -49,6 +50,14 @@ const executeUserOrder = async (user_id, opts, token) => {
 	}
 	const { symbol, price, side, size, type } = JSON.parse(storedToken);
 
+	if (size < 0) {
+		throw new Error(INVALID_SIZE);
+	} 
+
+	if (price < 0) {
+		throw new Error(INVALID_PRICE);
+	} 
+
 	let res;
 	if (type === 'market') {
 		res = await createUserOrderByKitId(user_id, symbol, side, size, type, 0, opts);
@@ -69,6 +78,12 @@ const executeUserOrder = async (user_id, opts, token) => {
 		const broker = await getUserByKitId(brokerPair.user_id);
 		const user = await getUserByKitId(user_id);
 
+		const isFairPrice = await isFairPriceForBroker(brokerPair);
+
+		if (!isFairPrice) {
+			throw new Error(FAIR_PRICE_BROKER_ERROR);
+		}
+
 		const tierBroker = getKitTier(broker.verification_level);
 		const tierUser = getKitTier(user.verification_level);
 
@@ -85,32 +100,55 @@ const executeUserOrder = async (user_id, opts, token) => {
 			{ maker: makerFee, taker: takerFee }
 		);
 	}
+	else if (type === 'network') {
+		const user = await getUserByKitId(user_id);
+		const tierUser = getKitTier(user.verification_level);
+		const fee = tierUser.fees.taker[symbol];
 
+		res = await getNodeLib().executeQuote(token, user.network_id, fee, opts);
+	}
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
+	}
+	await client.delAsync(token);
 	res.type = type;
 	return res;
 }
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 
-	if (spending_amount) spending_amount = math.number(spending_amount);
-	if (receiving_amount) receiving_amount = math.number(receiving_amount);
+	if (spending_amount) spending_amount = new BigNumber(spending_amount).toNumber();
+	if (receiving_amount) receiving_amount = new BigNumber(receiving_amount).toNumber();
 
+	if (receiving_amount < 0 || spending_amount < 0) {
+		throw new Error(AMOUNT_NEGATIVE_ERROR);
+	}
 	const originalPair = `${spending_currency}-${receiving_currency}`;
 	const flippedPair = `${receiving_currency}-${spending_currency}`;
 
 	let symbol = originalPair;
 	let side = 'sell';
 
-	// find if broker exists
-	let broker = await getModel('broker').findOne({ where: { symbol: originalPair } });
+	const quickTrades = getQuickTrades();
+	let quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === originalPair);
 
-	if (!broker) {
-		broker = await getModel('broker').findOne({ where: { symbol: flippedPair } });
+	if (!quickTradeConfig) {
+		quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === flippedPair);
 		symbol = flippedPair;
 		side = 'buy';
 	}
+	if (!quickTradeConfig) throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
 
-	if (broker && !broker.paused) {
+	if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'broker') {
+		const broker = await getModel('broker').findOne({ where: { symbol } });
+
+		if (!broker) {
+			throw new Error(BROKER_NOT_FOUND);
+		}
+		if (broker.paused) {
+			throw new Error(BROKER_PAUSED);
+		}
+
 		return fetchBrokerQuote({
 			symbol: symbol,
 			side: side,
@@ -124,7 +162,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			}
 		})
 			.then((brokerQuote) => {
-				const decimalPoint = getDecimals(broker.increment_size);
+				const decimalPoint = new BigNumber(broker.increment_size).dp();
 				const responseObj = {
 					spending_currency,
 					receiving_currency,
@@ -134,17 +172,14 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					type: 'broker'
 				}
 				if (spending_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price,
-						decimalPoint
-					);
+					const sourceAmount = new BigNumber(side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price)
+					.decimalPlaces(decimalPoint).toNumber();
+
 					responseObj.receiving_amount = sourceAmount;
 
 				} else if (receiving_amount != null) {
-					const sourceAmount = math.round(
-						side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price,
-						decimalPoint
-					);
+					const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price)
+					.decimalPlaces(decimalPoint).toNumber();
 					responseObj.spending_amount = sourceAmount;
 				}
 				
@@ -153,21 +188,16 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					throw new Error(BROKER_SIZE_EXCEED)
 				}
 
+				if (responseObj.receiving_amount < 0 || responseObj.spending_amount < 0) {
+					throw new Error(PRICE_NOT_FOUND);
+				}
+
 				return responseObj;
 			})
-			.catch((err) => {
-				return reject(new Error(err.message));
-			});
 	}
-	else {
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
 		try {
-			symbol = originalPair;
-			side = 'sell';
-			if (!subscribedToPair(symbol)) {
-				side = 'buy';
-				symbol = flippedPair;
-			}
-
+		
 			if (!subscribedToPair(symbol)) {
 				return reject(new Error(INVALID_SYMBOL(symbol)));
 			}
@@ -201,7 +231,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			//Check if the estimated price is 50% greater than the last trade
 			const lastTrades = await getPublicTrades(symbol);
 			if (Array.isArray(lastTrades[symbol]) && lastTrades[symbol].length > 0) {
-				const lastPrice = math.number(lastTrades[symbol][0].price) * 1.50
+				const lastPrice = new BigNumber(lastTrades[symbol][0].price).multipliedBy(1.50).toNumber();
 
 				if (priceValues.estimatedPrice > lastPrice) {
 					throw new Error(QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR);
@@ -238,6 +268,76 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			return reject(new Error(err.message));
 		}
 	}
+	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'network') {
+
+		let user_id = null;
+		let network_id = null;
+		if (bearerToken) {
+			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			if (auth) {
+				user_id = auth.sub.id;
+				network_id = auth.sub.networkId;
+			}
+		}
+
+		const responseObj = {
+			spending_currency,
+			receiving_currency,
+			spending_amount,
+			receiving_amount,
+			type: 'network'
+		}
+
+		const priceValues = await getNodeLib().getQuote(
+			network_id,
+			spending_currency,
+			spending_amount,
+			receiving_currency,
+			receiving_amount,
+			opts
+		);
+
+		responseObj.spending_amount = priceValues.spending_amount;
+		responseObj.receiving_amount = priceValues.receiving_amount;
+		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
+		}
+
+		if (user_id) {
+			responseObj.expiry = priceValues.expiry;
+			responseObj.token = priceValues.token;
+
+			const tradeData = {
+				user_id,
+				symbol,
+				type: 'network'
+			};
+
+			client.setexAsync(priceValues.token, 30, JSON.stringify(tradeData));
+		}
+
+		return responseObj;
+	} 
+	else {
+		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
+	}
+}
+
+const updateQuickTradeConfig = async ({ symbol, type, active }) => {
+	const QuickTrade = getModel('quickTrade');
+
+	const quickTradeData = await QuickTrade.findOne({ where: { symbol } });
+
+	if (!quickTradeData) {
+		throw new Error(QUICK_TRADE_CONFIG_NOT_FOUND);
+	}
+
+	const updatedConfig = {
+		...quickTradeData.dataValues,
+		type,
+		active
+	}
+	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
 }
 
 const convertBalance = async (order, user_id, maker_id) => {
@@ -1115,7 +1215,8 @@ module.exports = {
 	generateOrderFeeData,
 	dustUserBalance,
 	executeUserOrder,
-	dustPriceEstimate
+	dustPriceEstimate,
+	updateQuickTradeConfig
 	// getUserTradesByKitIdStream,
 	// getUserTradesByNetworkIdStream,
 	// getAllTradesNetworkStream,

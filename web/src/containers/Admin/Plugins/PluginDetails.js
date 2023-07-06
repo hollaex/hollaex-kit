@@ -452,7 +452,7 @@ const PluginDetails = ({
 			);
 		} else {
 			let btnDisabled = false;
-			if (payment_type === 'free' || checkactivatedPlugin(name)) {
+			if (checkactivatedPlugin(name)) {
 				return (
 					<div className="btn-wrapper">
 						<Button

@@ -181,9 +181,15 @@ class UserSettings extends Component {
 		const languageFormValue = generateLanguageFormValues(
 			constants.valid_languages
 		);
-		const notificationFormValues = generateNotificationFormValues();
-		const audioFormValues = generateAudioCueFormValues();
-		const warningFormValues = generateWarningFormValues();
+		const DEFAULT_TOGGLE_OPTIONS = [
+			{ value: true, label: STRINGS['DEFAULT_TOGGLE_OPTIONS.ON'] },
+			{ value: false, label: STRINGS['DEFAULT_TOGGLE_OPTIONS.OFF'] },
+		];
+		const notificationFormValues = generateNotificationFormValues(
+			DEFAULT_TOGGLE_OPTIONS
+		);
+		const audioFormValues = generateAudioCueFormValues(DEFAULT_TOGGLE_OPTIONS);
+		const warningFormValues = generateWarningFormValues(DEFAULT_TOGGLE_OPTIONS);
 
 		let audioFormInitialValues = {
 			all: true,

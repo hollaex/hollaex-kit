@@ -2,7 +2,7 @@ import React from 'react';
 import { EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 
-const Footer = ({ brokerUsed, name }) => {
+const Footer = ({ brokerUsed, name, isNetwork }) => {
 	return (
 		<div className="footer-text">
 			<EditWrapper stringId="QUICK_TRADE_COMPONENT.FOOTER_TEXT">
@@ -13,7 +13,13 @@ const Footer = ({ brokerUsed, name }) => {
 					{STRINGS['QUICK_TRADE_COMPONENT.FOOTER_TEXT_1']}
 				</EditWrapper>
 				:{' '}
-				{!brokerUsed ? (
+				{isNetwork ? (
+					<span>
+						<EditWrapper stringId="QUICK_TRADE_COMPONENT.SOURCE_TEXT">
+							{STRINGS['QUICK_TRADE_COMPONENT.SOURCE_TEXT_NETWORK']}
+						</EditWrapper>
+					</span>
+				) : !brokerUsed ? (
 					<span>
 						<span>{name} </span>
 						<span>

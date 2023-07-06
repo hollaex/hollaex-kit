@@ -1466,12 +1466,7 @@ definitions:
         type: ['object', 'null']
       formula:
         type: ['string', 'null']
-      exchange_name:
-        type: string
-        maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairCreate:
     type: object
@@ -1514,12 +1509,7 @@ definitions:
       formula:
         type: string
         maxLength: 256
-      exchange_name:
-        type: string
-        maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

@@ -11,7 +11,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: "#/definitions/BrokerPairCreate"
+            $ref: "#/definitions/BrokerPair"
       responses:
         200:
           description: Success
@@ -74,6 +74,12 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
     delete:
       operationId: deleteBrokerPair
       description: Delete a broker deal
@@ -100,34 +106,27 @@ paths:
         - bearer
       x-security-scopes:
         - admin
-  /broker/execute:
+  /broker/markets:
     x-swagger-router-controller: broker
-    post:
-      operationId: executeBrokerDeal
-      description: Execute a broker deal
+    get:
+      operationId: getTrackedExchangeMarkets
+      description: Get tracked exchange markets
       tags:
         - Broker
       parameters:
-        - name: data
-          in: body
+        - in: query
+          name: exchange_name
+          description: exchange name
           required: true
-          schema:
-            type: object
-            properties:
-              token:
-                type: string
-                maxLength: 256
-              size:
-                type: number
-                format: double
-            required:
-              - token
-              - size
+          type: string
+          maxLength: 256
       responses:
         200:
           description: Success
           schema:
-            $ref: "#/definitions/ObjectResponse"
+            type: array
+            items:
+              type: object
         default:
           description: Error
           schema:
@@ -137,36 +136,7 @@ paths:
       x-security-types:
         - bearer
       x-security-scopes:
-        - user
-  /broker/quote:
-    x-swagger-router-controller: broker
-    get:
-      operationId: getBrokerQuote
-      description: Get Quote Currency
-      tags:
-        - Broker
-      parameters:
-        - in: query
-          name: symbol
-          description: Currency symbol
-          required: true
-          type: string
-          maxLength: 256
-        - in: query
-          name: side
-          description: buy or sell
-          required: true
-          type: string
-          enum: ['buy', 'sell']
-      responses:
-        200:
-          description: Success
-          schema:
-            $ref: "#/definitions/ObjectResponse"
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/MessageResponse"
+        - admin
   /broker/test:
     x-swagger-router-controller: broker
     post:
@@ -181,19 +151,14 @@ paths:
           schema:
             type: object
             properties:
-              formula:
-                type: string
-                maxLength: 256
-              exchange_name:
-                type: string
-                maxLength: 256
-              multiplier:
-                type: number
               spread:
                 type: number
-              symbol:
+              increment_size:
+                type: number
+                format: double
+              formula:
                 type: string
-                maxLength: 256
+                maxLength: 1024
       responses:
         200:
           description: Success

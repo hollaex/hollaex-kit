@@ -9,6 +9,7 @@ const icons = {
 	CLOUD_PLAN_BASIC: '/assets/images/cloud-plan-basic.svg',
 	CLOUD_PLAN_FIAT_RAMP: '/assets/images/cloud-plan-fiat-ramp.svg',
 	CLOUD_PLAN_CRYPTO_PRO: '/assets/images/cloud-plan-crypto-pro.svg',
+	CLOUD_PLAN_CRYPTO_PRO_FIAT_RAMP: '/assets/images/stacked-pro-on-fiat.svg',
 	PLUGINS_ZENDESK: '/assets/plugins/plugin-zendesk.png',
 	PLUGINS_BANK: '/assets/plugins/plugin-bank.png',
 	PLUGINS_VAULT: '/assets/plugins/plugin-vault.png',

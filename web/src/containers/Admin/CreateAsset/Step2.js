@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Input } from 'antd';
+import { Input, Button } from 'antd';
 
 import { STATIC_ICONS } from 'config/icons';
 
@@ -11,6 +11,7 @@ const Step2 = ({
 	handleSelectCoin,
 	handleScreenChange,
 	handleResetAsset,
+	onClose,
 }) => {
 	const handleCreateNew = () => {
 		handleScreenChange('step3');
@@ -20,9 +21,9 @@ const Step2 = ({
 	return (
 		<Fragment>
 			<div className="first-title">
-				{activeTab === '0' ? 'HollaEx assets' : 'Other assets'}
+				{activeTab === '0' ? 'HollaEx assets' : 'Assets'}
 			</div>
-			<div className="title">Select a coin</div>
+			<div className="title">Select an asset</div>
 			<Input
 				placeholder={'Search name or paste token contract address'}
 				onChange={handleSearch}
@@ -54,6 +55,9 @@ const Step2 = ({
 					))}
 			</div>
 			<div className="create-new-link">
+				<Button className="btn-content" onClick={onClose}>
+					Back
+				</Button>
 				<div>Can't find what your looking for?</div>
 				<span className="anchor" onClick={handleCreateNew}>
 					Create a brand new asset
