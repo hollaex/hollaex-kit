@@ -847,6 +847,9 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
+			if (user.is_admin) {
+				throw new Error(CANNOT_DEACTIVATE_ADMIN);
+			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then(async (user) => {
@@ -888,7 +891,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.id === 1) {
+			if (user.is_admin) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
