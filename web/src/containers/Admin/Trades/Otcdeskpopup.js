@@ -666,7 +666,7 @@ const Otcdeskpopup = ({
 								{previewData && previewData.max_size}
 							</div>
 						</div>
-						<div className="edit-wrapper">
+						{/* <div className="edit-wrapper">
 							<div className="sub-title">Tradable increment</div>
 							<Button
 								type="primary"
@@ -687,7 +687,7 @@ const Otcdeskpopup = ({
 							<div className="full-width">
 								{previewData && previewData.increment_size}
 							</div>
-						</div>
+						</div> */}
 						<div className="edit-wrapper"></div>
 						<div className="btn-wrapper">
 							<Button
@@ -1439,9 +1439,9 @@ const Otcdeskpopup = ({
 								</div>
 								<div className="right-content">
 									<div className="title font-weight-bold">Parameters</div>
-									<div>
+									{/* <div>
 										Increment size: {previewData && previewData.increment_size}
-									</div>
+									</div> */}
 									<div>Max size: {previewData && previewData.max_size}</div>
 									<div>Min size: {previewData && previewData.min_size}</div>
 								</div>
