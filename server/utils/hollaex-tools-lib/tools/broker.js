@@ -85,8 +85,12 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 	const { symbol, spread, quote_expiry_time, refresh_interval, formula, id } = broker;
 
 	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
+	
+	if (baseCurrencyPrice < 0) {
+		throw new Error(PRICE_NOT_FOUND);
+	}
 
-	const decimalPoint = new BigNumber(broker.increment_size).dp();
+	const decimalPoint = new BigNumber(baseCurrencyPrice).dp();
 	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
 	const responseObject = {
 		price: roundedPrice
@@ -111,11 +115,11 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 };
 
 const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => {
-	const { symbol, quote_expiry_time, sell_price, buy_price, increment_size  } = broker;
+	const { symbol, quote_expiry_time, sell_price, buy_price  } = broker;
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
 
-	const decimalPoint = new BigNumber(increment_size).dp();
+	const decimalPoint = new BigNumber(baseCurrencyPrice).dp();
 	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
 	
 	const responseObject = {
@@ -301,7 +305,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { formula, spread, increment_size } = data;
+	const { formula, spread } = data;
 	try {
 		if (spread == null) {
 			throw new Error(BROKER_FORMULA_NOT_FOUND);
@@ -323,7 +327,7 @@ const testBroker = async (data) => {
 			throw new Error(PRICE_NOT_FOUND);
 		}
 
-		const decimalPoint = new BigNumber(increment_size).dp();
+		const decimalPoint = new BigNumber(price).dp();
 		return {
 			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
 			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
@@ -408,7 +412,6 @@ const reverseTransaction = async (orderData) => {
 		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
 
 		if (quickTradeConfig && quickTradeConfig.type === 'broker' && quickTradeConfig.active && broker && !broker.paused && broker.account) {
-			const decimalPoint = new BigNumber(broker.increment_size).dp();
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
 
@@ -423,9 +426,8 @@ const reverseTransaction = async (orderData) => {
 	
 				const marketTicker = await exchange.fetchTicker(symbol);
 	
-				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
-				.decimalPlaces(decimalPoint).toNumber();
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, roundedPrice)
+				const spreadedPrice = side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99;
+				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, spreadedPrice)
 					.catch((err) => { notifyUser(err.message, broker.user_id); });
 			}
 		}
