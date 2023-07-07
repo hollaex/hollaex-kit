@@ -1987,6 +1987,33 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	return updatedSession.dataValues;
 }
 
+const getAllBalancesAdmin = (opts = {
+	user_id: null,
+	currency: null,
+	format: null,
+	additionalHeaders: null
+}) => {
+
+	return getNodeLib().getBalances({ 
+		userId: opts.user_id,
+		currency: opts.currency,
+		format: opts.format,
+		additionalHeaders: opts.additionalHeaders 
+	})
+		.then((balances) => {
+			if (opts.format && opts.format === 'csv') {
+				if (balances.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(balances.data, Object.keys(balances.data[0]));
+				return csv;
+			} else {
+				return balances;
+			}
+		});
+}
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2043,5 +2070,6 @@ module.exports = {
 	revokeExchangeUserSession,
 	updateLoginStatus,
 	findUserLatestLogin,
-	createUserLogin
+	createUserLogin,
+	getAllBalancesAdmin
 };
