@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { message, Table, Button, Spin } from 'antd';
-import { requestUsersDownload } from '../User/actions';
 import MultiFilter from './TableFilter';
-import { getExchangeWallet } from './action';
+import { getExchangeWallet, getExchangeWalletCsv } from './action';
 
 const columns = [
 	{
@@ -106,6 +105,7 @@ const filterOptions = [
 const Wallet = () => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [queryValues, setQueryValues] = useState({});
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -114,6 +114,7 @@ const Wallet = () => {
 
 	const getWallet = async (values = {}) => {
 		try {
+			setQueryValues(values);
 			const res = await getExchangeWallet(values);
 			if (res && res.data) {
 				setUserData(res.data);
@@ -125,8 +126,8 @@ const Wallet = () => {
 		}
 	};
 
-	const requestDownload = (params = {}) => {
-		return requestUsersDownload({ ...params, format: 'csv' });
+	const requestDownload = () => {
+		return getExchangeWalletCsv({ ...queryValues, format: 'csv' });
 	};
 
 	return (
@@ -143,7 +144,7 @@ const Wallet = () => {
 			</div>
 			<div className="mt-5">
 				<span
-					onClick={requestDownload}
+					onClick={(e) => { requestDownload(); }}
 					className="mb-2 underline-text cursor-pointer"
 				>
 					Download below CSV table

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { HOLLAEX_NETWORK_API_URL } from 'config';
 import querystring from 'query-string';
 import { requestAuthenticated, requestDashAuthenticated } from 'utils';
+import moment from 'moment';
 
 export const storeMint = (values) => {
 	const options = {
@@ -123,8 +124,44 @@ export const getExchangeWallet = (values) => {
 	return requestAuthenticated(`/admin/user/wallet?${queryValues}`);
 };
 
+export const getExchangeWalletCsv = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return axios({
+		method: 'GET',
+		url: `/admin/user/wallet?${queryValues}`,
+		})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`wallets_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((err) => {});
+};
+
 export const getExchangeBalances = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
-	return requestAuthenticated(`/admin/balances?${queryValues}`);
+	return axios({
+		method: 'GET',
+		url: `/admin/balances?${queryValues}`,
+		})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`balances_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((err) => {});
 };
