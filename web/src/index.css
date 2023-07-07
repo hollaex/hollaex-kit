@@ -2515,7 +2515,6 @@ table th {
 
 .layout-mobile .trade_input-wrapper .trade_input-input-wrapper .trade_input-input-currency {
   height: 4.5rem !important;
-  width: 3.5rem !important;
   font-size: 1.2rem; }
 
 .layout-mobile .trade_order_entry-review > div {
@@ -8072,7 +8071,6 @@ table th {
         outline: none;
         border: 1.5px solid var(--specials_buttons-links-and-highlights); }
   .trade_input-wrapper .trade_input-input-currency {
-    width: 2.5rem;
     height: 2.5rem;
     position: absolute;
     top: 0;
@@ -9216,7 +9214,8 @@ table th {
   .layout-mobile .quick_trade-wrapper .trade-section .inner-content .small-text {
     font-size: 13px !important; }
 
-.layout-mobile .swap-wrapper, .layout-mobile .swap-wrapper-wrapper {
+.layout-mobile .swap-wrapper,
+.layout-mobile .swap-wrapper-wrapper {
   width: 100% !important; }
 
 .mobile_dropdown-section {
