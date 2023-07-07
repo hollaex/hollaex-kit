@@ -3,6 +3,7 @@ import { message, Table, Button, Spin } from 'antd';
 import { requestUserBalancesDownload } from '../User/actions';
 import MultiFilter from './TableFilter';
 import { getExchangeBalances } from './action';
+import { Link } from 'react-router';
 
 const columns = [
 	{
@@ -13,9 +14,10 @@ const columns = [
 			return (
 				<div className="d-flex">
 					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-						{data.User.id}
+						<Link to={`/admin/user?id=${data.User.id}`}>
+							{data.User.id}
+						</Link>
 					</Button>
-					{/* <div className="ml-3">{data.User.email}</div> */}
 				</div>
 			);
 		},
