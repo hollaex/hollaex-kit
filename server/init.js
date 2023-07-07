@@ -125,7 +125,7 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size', 'increment_size']}),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
 					QuickTrade.findAll(),
 					status.dataValues
 				]);

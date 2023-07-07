@@ -53,8 +53,6 @@ const validateBrokerPair = (brokerPair) => {
 		throw new Error('Broker minimum order size must be bigger than zero.');
 	} else if (new BigNumber(brokerPair.max_size).comparedTo(new BigNumber(brokerPair.min_size)) !== 1) {
 		throw new Error('Broker maximum order size must be bigger than minimum order size.');
-	} else if (new BigNumber(brokerPair.increment_size).comparedTo(0) !== 1) {
-		throw new Error('Broker order price increment must be bigger than zero.');
 	} else if (brokerPair.symbol && !validatePair(brokerPair.symbol)) {
 		throw new Error('invalid symbol');
 	}
@@ -437,11 +435,7 @@ const reverseTransaction = async (orderData) => {
 				})
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
-	
-				const marketTicker = await exchange.fetchTicker(symbol);
-	
-				const spreadedPrice = side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99;
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, spreadedPrice)
+				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
 					.catch((err) => { notifyUser(err.message, broker.user_id); });
 			}
 		}
@@ -475,7 +469,6 @@ const createBrokerPair = async (brokerPair) => {
 				type,
 				account,
 				formula,
-				increment_size,
 				rebalancing_symbol
 			} = brokerPair;
 
@@ -508,7 +501,7 @@ const createBrokerPair = async (brokerPair) => {
 			}
 
 			if (formula) {
-				const brokerPrice = await testBroker({ formula, spread, increment_size });
+				const brokerPrice = await testBroker({ formula, spread });
 				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 					throw new Error(FORMULA_MARKET_PAIR_ERROR);
 				}
@@ -550,7 +543,6 @@ const updateBrokerPair = async (id, data) => {
 		type,
 		account,
 		formula,
-		increment_size,
 		rebalancing_symbol
 	} = data;
 
@@ -582,7 +574,7 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 	if (formula) {
-		const brokerPrice = await testBroker({ formula, spread, increment_size });
+		const brokerPrice = await testBroker({ formula, spread });
 		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 			throw new Error(FORMULA_MARKET_PAIR_ERROR);
 		}
@@ -602,7 +594,6 @@ const updateBrokerPair = async (id, data) => {
 			'sell_price',
 			'min_size',
 			'max_size',
-			'increment_size',
 			'paused',
 			'type',
 			'quote_expiry_time',
