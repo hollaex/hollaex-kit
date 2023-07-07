@@ -47,7 +47,6 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
@@ -67,7 +66,6 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
@@ -84,7 +82,6 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
@@ -115,13 +112,11 @@ const testBroker = (req, res) => {
 	const {
 		formula,
 		spread,
-		increment_size
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
 		formula,
 		spread,
-		increment_size
 	})
 		.then((data) => {
 			return res.json(data);
@@ -181,7 +176,6 @@ function updateBrokerPair(req, res) {
 		sell_price,
 		min_size,
 		max_size,
-		increment_size,
 		paused,
 		user_id,
 		type,
@@ -200,7 +194,6 @@ function updateBrokerPair(req, res) {
 		sell_price,
 		min_size,
 		max_size,
-		increment_size,
 		paused,
 		user_id,
 		type,
@@ -264,7 +257,6 @@ function getBrokerPairs(req, res) {
 		'paused',
 		'min_size',
 		'max_size',
-		'increment_size',
 		'type',
 		'quote_expiry_time',
 		'rebalancing_symbol',

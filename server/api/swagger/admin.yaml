@@ -3188,3 +3188,47 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+  /admin/balances:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange balances of users for admin
+      operationId: getBalancesAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: currency
+          in: query
+          required: false
+          type: string
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read

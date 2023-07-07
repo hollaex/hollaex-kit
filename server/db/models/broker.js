@@ -47,10 +47,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.DOUBLE,
 				allowNull: false
 			},
-			increment_size: {
-				type: DataTypes.DOUBLE,
-				allowNull: false
-			},
 			type: {
 				type: DataTypes.ENUM('manual', 'dynamic'),
 				defaultValue: 'manual',
