@@ -1987,6 +1987,57 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	return updatedSession.dataValues;
 }
 
+const getAllBalancesAdmin = async (opts = {
+	user_id: null,
+	currency: null,
+	format: null,
+	additionalHeaders: null
+}) => {
+
+	let network_id = null;
+	if (opts.user_id) {
+		// check mapKitIdToNetworkId
+		const idDictionary = await mapKitIdToNetworkId([opts.user_id]);
+		if (!has(idDictionary, opts.user_id)) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!idDictionary[opts.user_id]) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = idDictionary[opts.user_id];
+		}
+	}
+
+	return getNodeLib().getBalances({ 
+		userId: network_id,
+		currency: opts.currency,
+		format: opts.format,
+		additionalHeaders: opts.additionalHeaders 
+	})
+		.then(async (balances) => {
+			if (balances.data.length > 0) {
+				const networkIds = balances.data.map((balance) => balance.user_id).filter(id => id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let balance of balances.data) {
+					const user_kit_id = idDictionary[balance.user_id];
+					balance.network_id = balance.user_id;
+					balance.user_id = user_kit_id;
+					if (balance.User) balance.User.id = user_kit_id;
+				}
+			}
+
+			if (opts.format && opts.format === 'all') {
+				if (balances.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(balances.data, Object.keys(balances.data[0]));
+				return csv;
+			} else {
+				return balances;
+			}
+		});
+}
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -2043,5 +2094,6 @@ module.exports = {
 	revokeExchangeUserSession,
 	updateLoginStatus,
 	findUserLatestLogin,
-	createUserLogin
+	createUserLogin,
+	getAllBalancesAdmin
 };

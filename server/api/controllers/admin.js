@@ -2458,6 +2458,43 @@ const updateQuickTradeConfig = (req, res) => {
 		});
 };
 
+const getBalancesAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
+
+	const { 
+		user_id, 
+		currency,
+		format
+	} = req.swagger.params;
+
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+
+	toolsLib.user.getAllBalancesAdmin({
+		user_id: user_id.value,
+		currency: currency.value,
+		format: format.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			if (format.value === 'all') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
 module.exports = {
 	createInitialAdmin,
 	getAdminKit,
@@ -2519,5 +2556,6 @@ module.exports = {
 	revokeUserSessionByAdmin,
 	sendEmailByAdmin,
 	sendRawEmailByAdmin,
-	updateQuickTradeConfig
+	updateQuickTradeConfig,
+	getBalancesAdmin
 };

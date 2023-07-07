@@ -122,3 +122,9 @@ export const getExchangeWallet = (values) => {
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return requestAuthenticated(`/admin/user/wallet?${queryValues}`);
 };
+
+export const getExchangeBalances = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/balances?${queryValues}`);
+};
