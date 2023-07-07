@@ -162,7 +162,6 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			}
 		})
 			.then((brokerQuote) => {
-				const decimalPoint = new BigNumber(broker.increment_size).dp();
 				const responseObj = {
 					spending_currency,
 					receiving_currency,
@@ -172,15 +171,9 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					type: 'broker'
 				}
 				if (spending_amount != null) {
-					const sourceAmount = new BigNumber(side === 'buy' ? spending_amount / brokerQuote.price : spending_amount * brokerQuote.price)
-					.decimalPlaces(decimalPoint).toNumber();
-
-					responseObj.receiving_amount = sourceAmount;
-
+					responseObj.receiving_amount = brokerQuote.receiving_amount;
 				} else if (receiving_amount != null) {
-					const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount * brokerQuote.price : receiving_amount / brokerQuote.price)
-					.decimalPlaces(decimalPoint).toNumber();
-					responseObj.spending_amount = sourceAmount;
+					responseObj.spending_amount = brokerQuote.spending_amount;;
 				}
 				
 				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
