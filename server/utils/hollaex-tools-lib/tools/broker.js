@@ -88,10 +88,12 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 		price: baseCurrencyPrice
 	};
 
+	const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
+	responseObject.receiving_amount = receiving_amount;
+	responseObject.spending_amount = spending_amount;
+
 	//check if there is user_id, if so, assing token
 	if (user_id) {
-
-		const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
 
 		// Generate randomToken to be used during deal execution
 		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, baseCurrencyPrice, size, 'broker');
@@ -100,8 +102,6 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 		const expiryDate = new Date();
 		expiryDate.setSeconds(expiryDate.getSeconds() + quote_expiry_time || 30);
 		responseObject.expiry = expiryDate;
-		responseObject.receiving_amount = receiving_amount;
-		responseObject.spending_amount = spending_amount;
 	}
 
 	return responseObject;
@@ -117,8 +117,11 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 		price: baseCurrencyPrice
 	};
 
+	const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
+	responseObject.receiving_amount = receiving_amount;
+	responseObject.spending_amount = spending_amount;
+
 	if (user_id) {
-		const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
 
 		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, baseCurrencyPrice, size, 'broker');
 		responseObject.token = randomToken;
@@ -126,8 +129,6 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 		const expiryDate = new Date();
 		expiryDate.setSeconds(expiryDate.getSeconds() + quote_expiry_time || 30);
 		responseObject.expiry = expiryDate;
-		responseObject.receiving_amount = receiving_amount;
-		responseObject.spending_amount = spending_amount;
 	}
 	return responseObject;
 }
