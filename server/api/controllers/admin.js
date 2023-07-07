@@ -2464,19 +2464,9 @@ const getBalancesAdmin = (req, res) => {
 	const { 
 		user_id, 
 		currency,
-		limit,
-		order_by,
 		format
 	} = req.swagger.params;
 
-	if (order_by.value && typeof order_by.value !== 'string') {
-		loggerAdmin.error(
-			req.uuid,
-			'controllers/admin/getBalancesAdmin invalid order_by',
-			order_by.value
-		);
-		return res.status(400).json({ message: 'Invalid order by' });
-	}
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -2485,7 +2475,6 @@ const getBalancesAdmin = (req, res) => {
 	toolsLib.user.getAllBalancesAdmin({
 		user_id: user_id.value,
 		currency: currency.value,
-		limit: limit.value,
 		format: format.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
