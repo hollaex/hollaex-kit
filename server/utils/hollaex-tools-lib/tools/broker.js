@@ -434,6 +434,7 @@ const reverseTransaction = async (orderData) => {
 					api_secret: broker.account[exchangeKey].apiSecret
 				})
 
+				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
 				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
 					.catch((err) => { notifyUser(err.message, broker.user_id); });
 			}
