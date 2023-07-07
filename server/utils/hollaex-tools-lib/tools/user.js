@@ -2015,7 +2015,7 @@ const getAllBalancesAdmin = async (opts = {
 	})
 		.then(async (balances) => {
 			if (balances.data.length > 0) {
-				const networkIds = balances.data.map((balance) => balance.user_id);
+				const networkIds = balances.data.map((balance) => balance.user_id).filter(id => id);
 				const idDictionary = await mapNetworkIdToKitId(networkIds);
 				for (let balance of balances.data) {
 					const user_kit_id = idDictionary[balance.user_id];
@@ -2025,7 +2025,7 @@ const getAllBalancesAdmin = async (opts = {
 				}
 			}
 
-			if (opts.format && opts.format === 'csv') {
+			if (opts.format && opts.format === 'all') {
 				if (balances.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}

@@ -2481,7 +2481,7 @@ const getBalancesAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value === 'csv') {
+			if (format.value === 'all') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
