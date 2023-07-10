@@ -3047,6 +3047,18 @@ paths:
           type: number
           format: int32
         - in: query
+          name: session_id
+          description: Session id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: last_seen
+          description: last seen
+          required: false
+          type: string
+          enum: ['1', '24']
+        - in: query
           name: status
           description: fetch active or revoke sessions
           required: false

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import MultiFilter from '../../Admin/AdminFinancials/TableFilter';
 import { message, Table, Button, Spin, Modal } from 'antd';
 import { getExchangeSessions, getExchangeSessionsCsv, revokeSession } from './actions';
 import { formatDate } from 'utils';
@@ -18,7 +17,6 @@ const SessionTable = () => {
         limit: 50,
         currentTablePage: 1,
         isRemaining: true,
-        total: 0
     })
  
     const [displayRevokeModal, setDisplayRevokeModal] = useState(false);
@@ -82,7 +80,7 @@ const SessionTable = () => {
             key: 'status',
             render: (user_id, data) => {
                 let revokeStatus = new Date().getTime() < new Date(data?.expiry_date).getTime();
-                if(data.status == false) revokeStatus = false;
+                if(data.status === false) revokeStatus = false;
                 
                 return (
                     <div className="d-flex" style={{ gap: 20 }}>
@@ -105,14 +103,14 @@ const SessionTable = () => {
     ];
 
     const fieldKeyValue = {
-        id: { type: 'string', label: 'Session ID' },
+        session_id: { type: 'string', label: 'Session ID' },
         last_seen:{
             type: 'dropdown',
             label: 'Time seen within',
             options: [
                 { label: 'None', value: -1 },
-                { label: 'Last 24 hours', value: 24 },
                 { label: 'Last 1 hour', value: 1 },
+                { label: 'Last 24 hours', value: 24 },
             ],
         },
         status:{
@@ -144,26 +142,31 @@ const SessionTable = () => {
 	useEffect(() => {
 		setIsLoading(true);
 		requestSessions(queryFilters.page, queryFilters.limit);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+    useEffect(() => {
+        requestSessions(queryFilters.page, queryFilters.limit);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [queryValues])
 
 	const requestDownload = () => {
 		return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
 	};
 
-    const renderRowContent = ({ created_at }) => {
+    const renderRowContent = ({ login }) => {
         return (
             <div>
-                <div style={{ fontWeight: 'bold' }}>Country:</div>
-                <div style={{ fontWeight: 'bold' }}>IP Address:</div>
-                <div style={{ fontWeight: 'bold' }}>Device:</div>
+                <div><span style={{ fontWeight: 'bold' }}>Country:</span> {COUNTRIES_OPTIONS.find(country => country?.value === login?.country)?.name || '-'}</div>
+                <div><span style={{ fontWeight: 'bold' }}>IP Address:</span> {login?.ip}</div>
+                <div><span style={{ fontWeight: 'bold' }}>Device:</span> {login?.device}</div>
             </div>
         );
     };
 
     const requestSessions = (page = 1, limit = 50 ) => {
         setIsLoading(true);
-		getExchangeSessions({ page, limit })
+		getExchangeSessions({ page, limit, ...queryValues })
 			.then((response) => {
                 setUserData(
                     page === 1
@@ -181,7 +184,7 @@ const SessionTable = () => {
                 setIsLoading(false);
 			})
 			.catch((error) => {
-				const message = error.message;
+				// const message = error.message;
                 setIsLoading(false);
 			});
 	};
@@ -208,19 +211,26 @@ const SessionTable = () => {
             <div>
 			    <div style={{ marginTop: 20 }}>
                     <SessionFilters
-                        applyFilters={() => {}}
+                        applyFilters={(filters) => {
+                            setQueryValues(filters);
+                        }}
                         fieldKeyValue={fieldKeyValue}
                         defaultFilters={defaultFilters}
                     />
 			    
 			    </div>
 			    <div className="mt-5">
-			    	<span
-			    		onClick={(e) => { requestDownload(); }}
-			    		className="mb-2 underline-text cursor-pointer"
-			    	>
-			    		Download below CSV table
-			    	</span>
+                    <div style={{ display:'flex', justifyContent:'space-between' }}>
+                        <span
+			    	    	onClick={(e) => { requestDownload(); }}
+			    	    	className="mb-2 underline-text cursor-pointer"
+                            style={{ cursor:'pointer' }}
+			    	    >
+			    	    	Download below CSV table
+			    	    </span>
+                        <span>Total: {queryFilters.total || '-'}</span>
+                    </div>
+			    	
 			    	<div className="mt-4 ">
 			    		<Spin spinning={isLoading}>
 			    			<Table 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Tabs, message } from 'antd';
+import { Tabs } from 'antd';
 import LoginTable from './LoginTable';
 import SessionTable from './SessionTable';
 

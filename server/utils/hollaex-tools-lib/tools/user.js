@@ -1898,6 +1898,8 @@ const updateUserInfo = async (userId, data = {}) => {
 
 const getExchangeUserSessions = (opts = {
 	user_id: null,
+	session_id: null,
+	last_seen: null,
 	status: null,
 	limit: null,
 	page: null,
@@ -1914,11 +1916,28 @@ const getExchangeUserSessions = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
-			...(opts.status != null && { status: opts.status }),
+			...(opts.session_id && { id: opts.session_id }),
+			...(opts.status == true && { 
+				status: opts.status,
+				expiry_date: {
+					[Op.gt]: new Date()
+				}
+			}),
+			...(opts.status == false && {
+				[Op.or]: [
+					{ 
+						status: opts.status,
+						expiry_date: {
+							[Op.lt]: new Date()
+						}
+					}]
+			}),
 			created_at: timeframe,
-			expiry_date: {
-				[Op.gt]: new Date()
-			},
+			...(opts.last_seen && { last_seen: 
+				{
+					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
+				}
+			 }),
 		},
 		attributes: {
 			exclude: ['token']
