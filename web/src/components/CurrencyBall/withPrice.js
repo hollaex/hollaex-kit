@@ -11,8 +11,8 @@ const CurrencyBallWithPrice = ({
 	coins = {},
 	min,
 }) => {
-	const { display_name, ...rest } = coins[symbol] || DEFAULT_COIN_DATA;
-	const minValue = rest.increment_unit ?? min;
+	const { display_name, increment_unit } = coins[symbol] || DEFAULT_COIN_DATA;
+	const minValue = min ?? increment_unit;
 
 	return (
 		<div className="with_price-block_amount d-flex direction_ltr">

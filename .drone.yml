@@ -87,9 +87,9 @@ trigger:
 #     - docker pull hollaex/hollaex-kit:$(cat .tags)
 #     - export DOCKER_CONTENT_TRUST=1
 #     - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
-#     - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
-#     - chmod 600 $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
-#     - docker trust key load $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key --name bitholla-cicd
+#     - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key
+#     - chmod 600 $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key
+#     - docker trust key load $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key --name bitholla-cicd
 #     - docker trust sign hollaex/hollaex-kit:$(cat .tags)
 
 # - name: docker_tagging_arm64v8_testnet
@@ -194,6 +194,15 @@ steps:
   when:
     branch: master
 
+# - name: docker_tagging_amd64_deployment
+#   image: alpine
+#   commands: 
+#     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo "2.7.0-testnet-86884d5" > .tags
+#     - echo "Current Docker tag is :" && cat .tags
+#     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+#   when:
+#     branch: deployment
+
 - name: docker_build_amd64
   image:  plugins/docker
   settings:
@@ -228,9 +237,9 @@ steps:
     - docker pull hollaex/hollaex-kit:$(cat .tags)
     - export DOCKER_CONTENT_TRUST=1
     - mkdir $${HOME}/.docker/trust && mkdir $${HOME}/.docker/trust/private
-    - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
-    - chmod 600 $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key
-    - docker trust key load $${HOME}/.docker/trust/private/88ce8696c017268731701ad17ae8b59dda7c31a3b750e986282c66c74ecb0d32.key --name bitholla-cicd
+    - echo -n $${DOCKER_CONTENT_TRUST_PRIVATE_KEY} | base64 -d > $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key
+    - chmod 600 $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key
+    - docker trust key load $${HOME}/.docker/trust/private/2aa7f2853b764c97de67db773c493d379ee655d7d78ff909d68c04a442fe3b69.key --name bitholla-cicd
     - docker trust sign hollaex/hollaex-kit:$(cat .tags)
 
 - name: docker_tagging_arm64v8_master
@@ -239,6 +248,8 @@ steps:
     - export TZ=UTC-9 && export GIT_COMMIT_SHORT="$(echo $DRONE_COMMIT | cut -c 1-7)" && export PACKAGE_VERSION="$(cat version)" && echo " $PACKAGE_VERSION-arm64v8" > .tags
     - echo "Current Docker tag is :" && cat .tags
     - echo "dockerTag:$(cat .tags)" > .dockerTag.yml
+  when:
+    branch: master
 
 - name: docker_build_arm64v8
   image:  plugins/docker

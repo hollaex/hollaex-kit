@@ -3,27 +3,27 @@ import { unique } from 'utils/data';
 
 export const flipPair = (pair) => pair?.split('-').reverse().join('-');
 
-export const getSourceOptions = (pairs = {}, broker = []) => {
+export const getSourceOptions = (quicktrade = []) => {
 	const coins = [];
-	Object.entries(pairs).forEach(([, { pair_base, pair_2 }]) => {
-		coins.push(pair_base);
-		coins.push(pair_2);
-	});
-	broker.forEach((data) => {
-		const brokerCoin = data.symbol.split('-');
-		if (!coins.includes(brokerCoin[0])) {
-			coins.push(brokerCoin[0]);
-		}
-		if (!coins.includes(brokerCoin[1])) {
-			coins.push(brokerCoin[1]);
-		}
-	});
+
+	quicktrade
+		.filter(({ active }) => !!active)
+		.forEach(({ symbol }) => {
+			coins.push(...symbol.split('-'));
+		});
 
 	return unique(coins);
 };
 
-const getBroker = (state) => state.app.broker;
+const getQuickTrade = (state) => state.app.quicktrade;
 
-export const brokerPairsSelector = createSelector([getBroker], (broker) => {
-	return Object.fromEntries(broker.map((data) => [data.symbol, data]));
-});
+export const quicktradePairSelector = createSelector(
+	[getQuickTrade],
+	(quicktrade) => {
+		return Object.fromEntries(
+			quicktrade
+				.filter(({ active }) => !!active)
+				.map((data) => [data.symbol, data])
+		);
+	}
+);

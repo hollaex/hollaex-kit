@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { RightOutlined } from '@ant-design/icons';
 import { Icon as LegacyIcon } from '@ant-design/compatible';
-import { Table, Spin, Button, Modal } from 'antd';
+import { Table, Button, Modal } from 'antd';
 import { Link } from 'react-router';
 import { formatDate } from 'utils';
 import { requestUsers } from './actions';
 import AddUser from './AddUser';
+import UseFilters from './UserFilters';
 
 import './index.css';
 
@@ -24,6 +25,8 @@ class FullListUsers extends Component {
 			currentTablePage: 1,
 			isRemaining: true,
 			isVisible: false,
+			displayFilterModel: false,
+			filters: null,
 		};
 	}
 
@@ -36,8 +39,8 @@ class FullListUsers extends Component {
 			loading: true,
 			error: '',
 		});
-
-		requestUsers({ page, limit })
+		const { filters } = this.state;
+		requestUsers({ page, limit, ...(filters != null && filters) })
 			.then((res) => {
 				let temp = page === 1 ? res.data : [...this.state.users, ...res.data];
 				let users = temp.sort((a, b) => {
@@ -54,7 +57,7 @@ class FullListUsers extends Component {
 				});
 			})
 			.catch((error) => {
-				const message = error.message;
+				const message = error.data.message;
 				this.setState({
 					loading: false,
 					error: message,
@@ -78,6 +81,13 @@ class FullListUsers extends Component {
 
 	onCancel = () => {
 		this.setState({ isVisible: false });
+	};
+
+	applyFilters = (filters) => {
+		this.setState({ filters }, () => {
+			const { page, limit } = this.state;
+			this.requestFullUsers(page, limit);
+		});
 	};
 
 	render() {
@@ -135,43 +145,66 @@ class FullListUsers extends Component {
 			);
 		};
 
-		const { users, loading, error, currentTablePage, isVisible } = this.state;
+		const { users, loading, error, currentTablePage, total, isVisible } = this.state;
 
 		return (
 			<div className="app_container-content admin-user-container">
-				{loading ? (
-					<Spin size="large" />
-				) : (
+				<div style={{ display: 'flex', flexDirection:'row', justifyContent: 'space-between' }}>
+					<div  style={{ marginTop: 20, marginBottom: 10, fontSize: 15, color: '#ccc' }}>Find users by their email and verification status below, or narrow down your search by adding more filter.</div>
+					<Button  
+						style={{
+							backgroundColor: '#288500',
+							color: 'white',
+							marginTop: 20
+						}}
+						onClick={() => this.setState({ isVisible: true })}>
+						{' '}
+						Add new user
+					</Button>
+				</div>
+				<hr style={{ border:"1px solid #ccc", marginBottom: 20 }}/>
+				
+			
+				<div>
+					{error && <p>-{error}-</p>}
+
 					<div>
-						{error && <p>-{error}-</p>}
-						<div className="user-list-header-wrapper">
-							<span
-								className="pointer"
-								onClick={() => this.props.handleDownload({})}
-							>
-								Download table
-							</span>
-							<Button onClick={() => this.setState({ isVisible: true })}>
-								{' '}
-								Add new user
-							</Button>
-						</div>
-						<Table
-							className="blue-admin-table"
-							columns={COLUMNS}
-							dataSource={users}
-							expandedRowRender={renderRowContent}
-							expandRowByClick={true}
-							rowKey={(data) => {
-								return data.id;
+						<UseFilters
+							displayFilterModel={this.state.displayFilterModel}
+							setDisplayFilterModel={(value) => {
+								this.setState({ displayFilterModel: value });
 							}}
-							pagination={{
-								current: currentTablePage,
-								onChange: this.pageChange,
-							}}
+							applyFilters={this.applyFilters}
+							loading={loading}
 						/>
 					</div>
-				)}
+
+					<div className="user-list-header-wrapper">
+						<span
+							className="pointer"
+							onClick={() => this.props.handleDownload(this.state.filters)}
+						>
+							Download table
+						</span>
+						<span>Total: {total || '-'}</span>
+					</div>
+					<Table
+						loading={loading} 
+						className="blue-admin-table"
+						columns={COLUMNS}
+						dataSource={users}
+						expandedRowRender={renderRowContent}
+						expandRowByClick={true}
+						rowKey={(data) => {
+							return data.id;
+						}}
+						pagination={{
+							current: currentTablePage,
+							onChange: this.pageChange,
+						}}
+					/>
+				</div>
+					
 				<Modal
 					visible={isVisible}
 					footer={null}
@@ -184,6 +217,7 @@ class FullListUsers extends Component {
 						requestFullUsers={this.requestFullUsers}
 					/>
 				</Modal>
+		
 			</div>
 		);
 	}

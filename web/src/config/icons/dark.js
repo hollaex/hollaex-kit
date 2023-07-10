@@ -279,6 +279,7 @@ const nestedIcons = {
 	SEARCH_BLOCKCHAIN: '/assets/images/search-blockchain.svg',
 	ASSET_INFO_COIN: '/assets/images/digital-assets-coins.svg',
 	CLOCK: '/assets/images/clock.svg',
+	REVOKE_SESSION: '/assets/images/signout.svg',
 
 	//should move this to the plugin itself once the functionality is added
 	GENERATE_REFERENCE_NUMBER: '/assets/icons/generate-reference-number-01.svg',

@@ -46,7 +46,7 @@ const AssetsBlock = ({
 	hasEarn,
 	loading,
 	contracts,
-	broker,
+	quicktrade,
 	goToDustSection,
 	showDustSection,
 	goToWallet,
@@ -104,8 +104,9 @@ const AssetsBlock = ({
 
 	const goToTrade = (pair) => {
 		const flippedPair = getFlippedPair(pair);
-		const isBroker = !!broker.filter(
-			(item) => item.symbol === pair || item.symbol === flippedPair
+		const isBroker = !!quicktrade.filter(
+			({ symbol, active }) =>
+				!!active && (symbol === pair || symbol === flippedPair)
 		).length;
 		if (pair && isBroker) {
 			return navigate(`/quick-trade/${pair}`);
@@ -121,10 +122,10 @@ const AssetsBlock = ({
 	};
 
 	const getAllAvailableMarkets = (key) => {
-		const quickTrade = broker
-			.filter(({ symbol = '' }) => {
+		const quickTrade = quicktrade
+			.filter(({ symbol = '', active }) => {
 				const [base, to] = symbol.split('-');
-				return base === key || to === key;
+				return active && (base === key || to === key);
 			})
 			.map(({ symbol }) => symbol);
 
@@ -346,7 +347,7 @@ const AssetsBlock = ({
 										<td>
 											{markets.length > 1 ? (
 												<TradeInputGroup
-													broker={broker}
+													quicktrade={quicktrade}
 													markets={markets}
 													goToTrade={goToTrade}
 													pairs={pairs}
@@ -392,10 +393,12 @@ const AssetsBlock = ({
 const mapStateToProps = ({
 	app: {
 		wallet_sort: { mode, is_descending },
+		quicktrade,
 	},
 }) => ({
 	mode,
 	is_descending,
+	quicktrade,
 });
 
 const mapDispatchToProps = (dispatch) => ({
