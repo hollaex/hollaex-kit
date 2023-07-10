@@ -31,6 +31,17 @@ export const getExchangeSessionsCsv = (values) => {
 		.catch((err) => {});
 };
 
+export const revokeSession = (sessionId) => {
+	return axios({
+		method: 'POST',
+		url: `/admin/user/revoke-session`,
+		data:{
+			session_id: sessionId
+		}
+	})
+};
+
+
 export const getExchangeLogins = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';

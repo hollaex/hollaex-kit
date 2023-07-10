@@ -20,7 +20,8 @@ const SessionFilters = ({
 	const { Option } = Select;
 
 
-	const [filters, setFilters] = useState(defaultFilters);
+    const copiedDefault = JSON.parse(JSON.stringify(defaultFilters));
+	const [filters, setFilters] = useState(copiedDefault);
 
 
 	const [field, setField] = useState();
@@ -133,7 +134,7 @@ const SessionFilters = ({
 					})}
 		 	</div>
 		
-			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 6}}> 
+			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 7}}> 
 				<div>
 				<Select
 					className='select-box'
@@ -188,7 +189,7 @@ const SessionFilters = ({
 					<div
 						onClick={() => {
 							if	(canReset) {
-								setFilters(defaultFilters);
+								setFilters(copiedDefault);
 								handleFilters([]);
 							}
 							

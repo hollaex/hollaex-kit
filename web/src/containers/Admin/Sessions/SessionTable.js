@@ -1,120 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import MultiFilter from '../../Admin/AdminFinancials/TableFilter';
 import { message, Table, Button, Spin, Modal } from 'antd';
-import { getExchangeSessions, getExchangeSessionsCsv } from './actions';
+import { getExchangeSessions, getExchangeSessionsCsv, revokeSession } from './actions';
 import { formatDate } from 'utils';
 import { CloseOutlined } from '@ant-design/icons';
 import SessionFilters from './SessionFilters';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
-
-const columns = [
-	{
-		title: 'ID',
-		dataIndex: 'id',
-		key: 'id',
-		render: (user_id, data) => {
-			return (
-				<div className="d-flex">
-					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-						{data?.id}
-					</Button>
-					{/* <div className="ml-3">{data.User.email}</div> */}
-				</div>
-			);
-		},
-	},
-	{
-		title: 'Last seen (Most recent first)',
-		dataIndex: 'last_seen',
-		key: 'last_seen',
-        render: (user_id, data) => {
-			return (
-				<div className="d-flex">
-				    {formatDate(data?.last_seen)}
-				</div>
-			);
-		},
-	},
-	{
-		title: 'Session started',
-		dataIndex: 'created_at',
-		key: 'created_at',
-        render: (user_id, data) => {
-			return (
-				<div className="d-flex">
-				    {formatDate(data?.created_at)}
-				</div>
-			);
-		},
-	},
-	{
-		title: 'Session Expiry',
-		dataIndex: 'expiry_date',
-		key: 'expiry_date',
-        render: (user_id, data) => {
-			return (
-				<div className="d-flex">
-				    {formatDate(data?.expiry_date)}
-				</div>
-			);
-		},
-	},
-    {
-		title: 'Status',
-		dataIndex: 'status',
-		key: 'status',
-        render: (user_id, data) => {
-			return (
-				<div className="d-flex" style={{ gap: 20 }}>
-				    <div style={{ position:'relative', top: 6, color: '#ccc' }}>Active</div>
-                    <Button
-                        onClick={(e) => {
-                            e.stopPropagation();
-                        }}
-                        className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-						Revoke
-					</Button>
-				</div>
-			);
-		},
-	},
-];
-
-const fieldKeyValue = {
-    id: { type: 'string', label: 'Session ID' },
-    last_seen:{
-        type: 'dropdown',
-        label: 'Time seen within',
-        options: [
-            { label: 'None', value: -1 },
-            { label: 'Last 24 hours', value: 24 },
-            { label: 'Last 1 hour', value: 1 },
-        ],
-    },
-    status:{
-        type: 'dropdown',
-        label: 'Status',
-        options: [
-            { label: 'None', value: -1 },
-            { label: 'Active', value: true },
-            { label: 'Expired', value: false },
-        ],
-    },
-};
-
-const defaultFilters = [
-    { 
-        field: 'status',  
-        type: 'dropdown',
-        label: 'Status',
-        value: null,
-        options: [
-            { label: 'None', value: -1 },
-            { label: 'Active', value: true },
-            { label: 'Expired', value: false },
-        ],
-    }
-];
 
 const SessionTable = () => {
     const [userData, setUserData] = useState([]);
@@ -126,30 +17,135 @@ const SessionTable = () => {
         pageSize: 10,
         limit: 50,
         currentTablePage: 1,
-        isRemaining: true
+        isRemaining: true,
+        total: 0
     })
  
     const [displayRevokeModal, setDisplayRevokeModal] = useState(false);
 
+    const [selectedSession, setSelectedSession] = useState();
+    const columns = [
+        {
+            title: 'ID',
+            dataIndex: 'id',
+            key: 'id',
+            render: (user_id, data) => {
+                return (
+                    <div className="d-flex">
+                        <Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+                            {data?.id}
+                        </Button>
+                        {/* <div className="ml-3">{data.User.email}</div> */}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Last seen (Most recent first)',
+            dataIndex: 'last_seen',
+            key: 'last_seen',
+            render: (user_id, data) => {
+                return (
+                    <div className="d-flex">
+                        {formatDate(data?.last_seen)}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Session started',
+            dataIndex: 'created_at',
+            key: 'created_at',
+            render: (user_id, data) => {
+                return (
+                    <div className="d-flex">
+                        {formatDate(data?.created_at)}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Session Expiry',
+            dataIndex: 'expiry_date',
+            key: 'expiry_date',
+            render: (user_id, data) => {
+                return (
+                    <div className="d-flex">
+                        {formatDate(data?.expiry_date)}
+                    </div>
+                );
+            },
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            key: 'status',
+            render: (user_id, data) => {
+                let revokeStatus = new Date().getTime() < new Date(data?.expiry_date).getTime();
+                if(data.status == false) revokeStatus = false;
+                
+                return (
+                    <div className="d-flex" style={{ gap: 20 }}>
+                        <div style={{ position:'relative', top: 6, color: '#ccc' }}> {revokeStatus ? 'Active' : 'Expired'}</div>
+                        {revokeStatus &&  
+                        <Button
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedSession(data);
+                                setDisplayRevokeModal(true);
+                            }}
+                            className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
+                            Revoke
+                        </Button>}
+                       
+                    </div>
+                );
+            },
+        },
+    ];
+
+    const fieldKeyValue = {
+        id: { type: 'string', label: 'Session ID' },
+        last_seen:{
+            type: 'dropdown',
+            label: 'Time seen within',
+            options: [
+                { label: 'None', value: -1 },
+                { label: 'Last 24 hours', value: 24 },
+                { label: 'Last 1 hour', value: 1 },
+            ],
+        },
+        status:{
+            type: 'dropdown',
+            label: 'Status',
+            options: [
+                { label: 'None', value: -1 },
+                { label: 'Active', value: true },
+                { label: 'Expired', value: false },
+            ],
+        },
+    };
+    
+    const defaultFilters = [
+        { 
+            field: 'status',  
+            type: 'dropdown',
+            label: 'Status',
+            value: null,
+            options: [
+                { label: 'None', value: -1 },
+                { label: 'Active', value: true },
+                { label: 'Expired', value: false },
+            ],
+        }
+    ];
+
+
 	useEffect(() => {
 		setIsLoading(true);
-		getSession();
+		requestSessions(queryFilters.page, queryFilters.limit);
 	}, []);
 
-	const getSession = async (values = {}) => {
-		try {
-			setQueryValues(values);
-			const res = await getExchangeSessions(values);
-			if (res && res.data) {
-                console.log(res.data)
-				setUserData(res.data);
-				setIsLoading(false);
-			}
-		} catch (error) {
-			message.error(error.data.message);
-			setIsLoading(false);
-		}
-	};
 
 	const requestDownload = () => {
 		return getExchangeSessionsCsv({ ...queryValues, format: 'csv' });
@@ -165,15 +161,46 @@ const SessionTable = () => {
         );
     };
 
+    const requestSessions = (page = 1, limit = 50 ) => {
+        setIsLoading(true);
+		getExchangeSessions({ page, limit })
+			.then((response) => {
+                setUserData(
+                    page === 1
+                    ? response.data
+                    : [...userData, ...response.data]);
+
+				setQueryFilters({
+                    total: response.count,
+					fetched: true,
+					page,
+					currentTablePage: page === 1 ? 1 : queryFilters.currentTablePage,
+					isRemaining: response.count > page * limit,
+                })
+
+                setIsLoading(false);
+			})
+			.catch((error) => {
+				const message = error.message;
+                setIsLoading(false);
+			});
+	};
+
+
     const pageChange = (count, pageSize) => {
-		const { page, limit, isRemaining } = this.state;
+		const { page, limit, isRemaining } = queryFilters;
 		const pageCount = count % 5 === 0 ? 5 : count % 5;
 		const apiPageTemp = Math.floor(count / 5);
-		// if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
-		// 	this.requestFullUsers(page + 1, limit);
-		// }
-		// this.setState({ currentTablePage: count });
+		if (limit === pageSize * pageCount && apiPageTemp >= page && isRemaining) {
+			requestSessions(page + 1, limit);
+		}
+        setQueryFilters({...queryFilters, currentTablePage: count  })
 	};
+
+    const handleSessionModal = () => {
+        setDisplayRevokeModal(false);
+        setSelectedSession();
+    }
 	
 	return (
 		<div>
@@ -223,14 +250,12 @@ const SessionTable = () => {
                     visible={displayRevokeModal}
                     footer={null}
                     onCancel={() => {
-                        // handleCloseConfigModal();
+                        handleSessionModal();
                     }}
                     >
-                    <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Confi</div>
-
-                    <div style={{ marginBottom: 30 }} >Change liquidity and price source for BTC/USDT Quick Trade market.</div>
-
-
+                    <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Revoke session</div>
+                    <div style={{ marginBottom: 30 }} >Are you sure you want to revoke this session from User 321 (email@dada.com) ?</div>
+                    <div style={{ marginBottom: 20 }}>This will log the user out.</div>
                     <div
                         style={{
                             display: 'flex',
@@ -242,7 +267,7 @@ const SessionTable = () => {
                     >
                         <Button
                             onClick={() => {
-                                // handleCloseConfigModal();
+                                handleSessionModal();
                             }}
                             style={{
                                 backgroundColor: '#288500',
@@ -256,7 +281,22 @@ const SessionTable = () => {
                         </Button>
                         <Button
                             onClick={async () => {
-                            
+                                try {
+                                    const res = await revokeSession(selectedSession.id);
+                                    setUserData(prevState => {
+                                        const newState = [...prevState];
+                                        const Index = newState.findIndex(session => session.id === res.data.id);
+                                        if (Index > 0) {
+                                            newState[Index].status = false;
+                                        }
+
+                                        return newState;
+                                    })
+                                    message.success('Session revoked.');
+                                    handleSessionModal();
+                                } catch (error) {
+                                    message.error(error.message);
+                                }
                             }}
                             style={{
                                 backgroundColor: '#288500',
