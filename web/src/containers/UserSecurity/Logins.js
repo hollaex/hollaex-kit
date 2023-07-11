@@ -20,6 +20,7 @@ const INITIAL_LOGINS_STATE = {
 	data: [],
 	page: 1,
 	isRemaining: false,
+	title: '',
 };
 const RECORD_LIMIT = 20;
 
@@ -38,6 +39,7 @@ const Logins = ({ icons: ICONS }) => {
 					data: prevLogins.data.concat(data),
 					page,
 					isRemaining: count > page * RECORD_LIMIT,
+					title: `login-attempts-table-${JSON.stringify(params)}`,
 				}));
 				setFetching(false);
 			})
@@ -105,6 +107,7 @@ const Logins = ({ icons: ICONS }) => {
 			<LoginFilters onSearch={onSearch} formName="login-attempts" />
 			<div>
 				<Table
+					title={logins.title}
 					rowClassName="pt-2 pb-2"
 					showHeaderNoData={true}
 					headers={generateHeaders()}
