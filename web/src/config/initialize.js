@@ -11,7 +11,7 @@ axios.defaults.baseURL = API_URL;
 axios.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error?.response?.status === 403 && isLoggedIn()) {
+		if (error?.response?.status === 401 && isLoggedIn()) {
 			store.dispatch(logout(ERROR_TOKEN_EXPIRED));
 		}
 

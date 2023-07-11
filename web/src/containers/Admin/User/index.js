@@ -132,9 +132,6 @@ class App extends Component {
 				}
 			})
 			.catch((err) => {
-				if (err.status === 403) {
-					// return this.logout();
-				}
 				this.setState({ loading: false });
 				// throw new SubmissionError({ _error: err.data.message });
 			});
