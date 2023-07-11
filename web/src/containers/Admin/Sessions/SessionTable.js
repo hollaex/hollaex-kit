@@ -103,7 +103,6 @@ const SessionTable = () => {
     ];
 
     const fieldKeyValue = {
-        session_id: { type: 'string', label: 'Session ID' },
         last_seen:{
             type: 'dropdown',
             label: 'Time seen within',

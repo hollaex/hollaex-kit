@@ -1902,7 +1902,6 @@ const updateUserInfo = async (userId, data = {}) => {
 
 const getExchangeUserSessions = (opts = {
 	user_id: null,
-	session_id: null,
 	last_seen: null,
 	status: null,
 	limit: null,
@@ -1920,7 +1919,6 @@ const getExchangeUserSessions = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
-			...(opts.session_id && { id: opts.session_id }),
 			...(opts.status == true && { 
 				status: opts.status,
 				expiry_date: {
