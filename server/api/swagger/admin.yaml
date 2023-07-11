@@ -1677,6 +1677,16 @@ paths:
           required: false
           type: boolean
         - in: query
+          name: country
+          description: country of the login
+          required: false
+          type: string
+        - in: query
+          name: ip
+          description: ip of the login
+          required: false
+          type: string
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false

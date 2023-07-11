@@ -157,7 +157,7 @@ const SessionTable = () => {
     const renderRowContent = ({ login }) => {
         return (
             <div>
-                <div><span style={{ fontWeight: 'bold' }}>Country:</span> {COUNTRIES_OPTIONS.find(country => country?.value === login?.country)?.name || '-'}</div>
+                <div><span style={{ fontWeight: 'bold' }}>Country:</span> {COUNTRIES_OPTIONS.find(country => country?.value === login?.country)?.label || '-'}</div>
                 <div><span style={{ fontWeight: 'bold' }}>IP Address:</span> {login?.ip}</div>
                 <div><span style={{ fontWeight: 'bold' }}>Device:</span> {login?.device}</div>
             </div>

@@ -69,3 +69,26 @@ export const getExchangeLoginsCsv = (values) => {
 		})
 		.catch((err) => {});
 };
+
+export const requestUserLogins = (values) => {
+	const queryValues =
+		values && Object.keys(values).length ? querystring.stringify(values) : '';
+	return requestAuthenticated(`/admin/logins?${queryValues}`)
+};
+
+export const requestUserLoginsDownload = (values) => {
+	const query = querystring.stringify(values);
+	return axios({
+		method: 'GET',
+		url: `/admin/logins?${query}`,
+	})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', 'loginuser.csv');
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((err) => {});
+};

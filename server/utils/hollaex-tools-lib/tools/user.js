@@ -1270,6 +1270,8 @@ const toggleFlaggedUserById = (userId) => {
 const getUserLogins = (opts = {
 	userId: null,
 	status: null,
+	country: null,
+	ip: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1284,10 +1286,12 @@ const getUserLogins = (opts = {
 	let options = {
 		where: {
 			timestamp: timeframe,
-			...(opts.status != null && { status: opts.status })
+			...(opts.status != null && { status: opts.status }),
+			...(opts.country != null && { country: opts.country }),
+			...(opts.ip != null && { ip: { [Op.like]: `%${opts.ip}%` } })
 		},
 		attributes: {
-			exclude: ['id', 'origin', 'referer']
+			exclude: ['origin', 'referer']
 		},
 		order: [ordering]
 	};

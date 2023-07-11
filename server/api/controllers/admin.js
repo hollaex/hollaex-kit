@@ -482,7 +482,7 @@ const getAdminUserLogins = (req, res) => {
 		'controllers/admin/getAdminUserLogins/auth',
 		req.auth
 	);
-	const { user_id, status, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
@@ -514,6 +514,8 @@ const getAdminUserLogins = (req, res) => {
 	toolsLib.user.getUserLogins({
 		userId: user_id.value,
 		status: status.value,
+		country: country.value,
+		ip: ip.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
