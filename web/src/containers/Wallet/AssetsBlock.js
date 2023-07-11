@@ -104,13 +104,15 @@ const AssetsBlock = ({
 
 	const goToTrade = (pair) => {
 		const flippedPair = getFlippedPair(pair);
-		const isBroker = !!quicktrade.filter(
-			({ symbol, active }) =>
-				!!active && (symbol === pair || symbol === flippedPair)
+		const isQuickTrade = !!quicktrade.filter(
+			({ symbol, active, type }) =>
+				!!active &&
+				type !== 'pro' &&
+				(symbol === pair || symbol === flippedPair)
 		).length;
-		if (pair && isBroker) {
+		if (pair && isQuickTrade) {
 			return navigate(`/quick-trade/${pair}`);
-		} else if (pair && !isBroker) {
+		} else if (pair && !isQuickTrade) {
 			return navigate(`/trade/${pair}`);
 		}
 	};
