@@ -264,7 +264,7 @@ const SessionTable = () => {
                     }}
                     >
                     <div style={{ fontWeight: '600', color: 'white', fontSize: 18, marginBottom: 20 }}>Revoke session</div>
-                    <div style={{ marginBottom: 30 }} >Are you sure you want to revoke this session ?</div>
+                    <div style={{ marginBottom: 30 }} >Are you sure you want to revoke this session?</div>
                     <div style={{ marginBottom: 20 }}>This will log the user out.</div>
                     <div
                         style={{
