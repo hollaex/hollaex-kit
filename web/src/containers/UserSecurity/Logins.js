@@ -14,6 +14,7 @@ import STRINGS from 'config/localizedStrings';
 import { getLogins, downloadLogins } from 'actions/userAction';
 import { generateHeaders } from './LoginHeaders';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
@@ -54,6 +55,10 @@ const Logins = ({ icons: ICONS }) => {
 		requestLogins(1, params);
 	}, [requestLogins, params]);
 
+	const refresh = () => {
+		setParams({ ...params });
+	};
+
 	const handleNext = (pageCount, pageNumber) => {
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
 		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
@@ -85,17 +90,28 @@ const Logins = ({ icons: ICONS }) => {
 				stringId="LOGINS_HISTORY.CONTENT.TITLE"
 				title={STRINGS['LOGINS_HISTORY.CONTENT.TITLE']}
 				notification={
-					!isMobile && (
+					<div className="login-history_notifications-wrapper">
+						{!isMobile && (
+							<ActionNotification
+								stringId="LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY"
+								text={STRINGS['LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY']}
+								iconId="DATA"
+								iconPath={ICONS['DATA']}
+								className="download-logins"
+								onClick={() => downloadLogins(params)}
+								disable={fetching || logins.count <= 0}
+							/>
+						)}
 						<ActionNotification
-							stringId="LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY"
-							text={STRINGS['LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY']}
-							iconId="DATA"
-							iconPath={ICONS['DATA']}
-							className="download-logins"
-							onClick={() => downloadLogins(params)}
-							disable={fetching || logins.count <= 0}
+							stringId="REFRESH"
+							text={STRINGS['REFRESH']}
+							iconId="REFRESH"
+							iconPath={STATIC_ICONS['REFRESH']}
+							className="refresh-history"
+							onClick={refresh}
+							disable={fetching}
 						/>
-					)
+					</div>
 				}
 			>
 				<div className="header-content">
