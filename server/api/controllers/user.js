@@ -455,7 +455,7 @@ const loginPost = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
-			return res.status(err.statusCode || 403).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err) });
 		});
 };
 

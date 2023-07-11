@@ -378,7 +378,7 @@ paths:
               secret:
                 type: string
                 maxLength: 256
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -412,7 +412,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -446,7 +446,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -603,8 +603,12 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        403:
+        401:
           description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -693,7 +697,7 @@ paths:
           description: Created
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
