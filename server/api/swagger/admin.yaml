@@ -3057,12 +3057,6 @@ paths:
           type: number
           format: int32
         - in: query
-          name: session_id
-          description: Session id
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: last_seen
           description: last seen
           required: false
