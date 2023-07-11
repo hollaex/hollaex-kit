@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { message, Table, Button, Spin, Modal } from 'antd';
+import { Table, Button, Spin } from 'antd';
 import { requestUserLogins, requestUserLoginsDownload } from './actions';
 import { formatDate } from 'utils';
 import SessionFilters from './SessionFilters';
