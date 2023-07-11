@@ -12,9 +12,7 @@ import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import './UserFilters.scss';
 import { COUNTRIES_OPTIONS } from '../../../utils/countries';
-const UseFilters = ({
-	applyFilters,
-}) => {
+const UseFilters = ({ applyFilters }) => {
 	const { Option } = Select;
 	const fieldKeyValue = {
 		id: { type: 'string', label: 'User ID' },
@@ -38,7 +36,7 @@ const UseFilters = ({
 			label: 'Bank Verification',
 			options: [
 				{ label: 'None', value: -1 },
-				{ label: 'Pending', value: 1 }
+				{ label: 'Pending', value: 1 },
 			],
 		},
 		end_date: { type: 'date', label: 'User Creation Date End' },
@@ -53,13 +51,13 @@ const UseFilters = ({
 				{ label: 'Female', value: true },
 			],
 		},
-		nationality: { 
+		nationality: {
 			type: 'dropdown',
 			label: 'Nationality',
-			options: COUNTRIES_OPTIONS 
+			options: COUNTRIES_OPTIONS,
 		},
 		phone_number: { type: 'string', label: 'Phone Number' },
-		verification_level:{
+		verification_level: {
 			type: 'dropdown',
 			label: 'Verification Level',
 			options: [
@@ -74,23 +72,26 @@ const UseFilters = ({
 	};
 
 	const defaultFilters = [
-		{ field: 'email', type: 'string', label: 'Email', value: null }
+		{ field: 'id', type: 'string', label: 'ID', value: null },
+		{ field: 'email', type: 'string', label: 'Email', value: null },
 	];
 
 	const [filters, setFilters] = useState(defaultFilters);
 
-
 	const [field, setField] = useState();
 	const dateFormat = 'YYYY/MM/DD';
 
-	const canReset = filters?.find(filter => filter.value != null && filter.value !== '');
-	
+	const canReset = filters?.find(
+		(filter) => filter.value != null && filter.value !== ''
+	);
+
 	const handleFilters = (selectedFilters = null) => {
 		const queryFilters = {};
 
 		if (!selectedFilters) selectedFilters = filters;
 		selectedFilters.forEach((filter) => {
-			if (filter.value != null && filter.value !== '') queryFilters[filter.field] = filter.value;
+			if (filter.value != null && filter.value !== '')
+				queryFilters[filter.field] = filter.value;
 		});
 
 		applyFilters(queryFilters);
@@ -100,31 +101,53 @@ const UseFilters = ({
 		if (value === -1) {
 			setFilters((prevState) => {
 				prevState[Index].value = null;
-				if (!prevState.find(f => ['bank', 'kyc'].includes(f.field) && f.value))
+				if (
+					!prevState.find((f) => ['bank', 'kyc'].includes(f.field) && f.value)
+				)
 					prevState = prevState.filter((f) => f.field !== 'pending');
 				return [...prevState];
 			});
 		} else {
-		
 			setFilters((prevState) => {
 				prevState[Index].value = value;
 				const found = filters.find((f) => f.field === 'pending');
-				if (!found) { prevState.push( {field:'pending', label: 'Pending', value: true,  type: 'boolean', displayNone: true  }); }
+				if (!found) {
+					prevState.push({
+						field: 'pending',
+						label: 'Pending',
+						value: true,
+						type: 'boolean',
+						displayNone: true,
+					});
+				}
 				return [...prevState];
 			});
 		}
-	
-	}
+	};
 	return (
-		<div style={{ display: 'flex', flexDirection:'row', gap: 10 }}>
-		 	<div style={{ display: 'flex',  flexDirection: 'row', gap: 10, flexWrap: 'wrap' }}>
+		<div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					gap: 10,
+					flexWrap: 'wrap',
+				}}
+			>
 				{filters.map((filter, index) => {
 					return (
-						<div style={{ color: 'white', marginBottom: 10, display: filter.displayNone ? 'none' :  'flex',  flexDirection: 'column' }}>
+						<div
+							style={{
+								color: 'white',
+								marginBottom: 10,
+								display: filter.displayNone ? 'none' : 'flex',
+								flexDirection: 'column',
+							}}
+						>
 							<label>
 								{filter.label}:{' '}
 								<DeleteOutlined
-									style={{ float: 'right', position:'relative', top: 4 }}
+									style={{ float: 'right', position: 'relative', top: 4 }}
 									onClick={() => {
 										let newFilters = [...filters];
 										newFilters = newFilters.filter((f, i) => i !== index);
@@ -140,7 +163,7 @@ const UseFilters = ({
 										newFilters[index].value = e.target.value;
 										setFilters(newFilters);
 									}}
-									style={{  width: 200 }}
+									style={{ width: 200 }}
 									placeholder={filter.label}
 								/>
 							)}
@@ -149,7 +172,7 @@ const UseFilters = ({
 									range
 									defaultValue={[1, 10]}
 									value={filter.value}
-									style={{ width: 200, backgroundColor:"red" }}
+									style={{ width: 200, backgroundColor: 'red' }}
 									onChange={(e) => {
 										const newFilters = [...filters];
 										newFilters[index].value = e;
@@ -172,8 +195,8 @@ const UseFilters = ({
 							{filter.type === 'dropdown' && (
 								<Select
 									showSearch
-									className='select-box'
-									style={{ width: 200,}}
+									className="select-box"
+									style={{ width: 200 }}
 									placeholder="Select value"
 									value={filter.value}
 									onChange={(e) => {
@@ -182,13 +205,12 @@ const UseFilters = ({
 											addPendingType(e, index);
 										} else {
 											if (e === -1) {
-												newFilters[index].value = null
+												newFilters[index].value = null;
 											} else {
 												newFilters[index].value = e;
 											}
 											setFilters(newFilters);
 										}
-
 									}}
 								>
 									{filter?.options.map((f) => (
@@ -198,9 +220,13 @@ const UseFilters = ({
 							)}
 							{filter.type === 'date' && (
 								<DatePicker
-									suffixIcon={null} 
-									className='date-box'
-									style={{ width: 200, backgroundColor: '#202980', color: 'white'}}
+									suffixIcon={null}
+									className="date-box"
+									style={{
+										width: 200,
+										backgroundColor: '#202980',
+										color: 'white',
+									}}
 									onChange={(date, dateString) => {
 										const newFilters = [...filters];
 										newFilters[index].value = moment(dateString).format();
@@ -211,45 +237,55 @@ const UseFilters = ({
 							)}
 						</div>
 					);
-					})}
-		 	</div>
-		
-			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 6}}> 
+				})}
+			</div>
+
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					gap: 10,
+					marginTop: 20,
+					position: 'relative',
+					top: 6,
+				}}
+			>
 				<div>
-				<Select
-					className='select-box'
-					showSearch
-					style={{ width: 150 }}
-					placeholder="Add filter"
-					value={field}
-					onChange={(value) => {
-						setField(null);
-						const found = filters.find((f) => f.field === value);
+					<Select
+						className="select-box"
+						showSearch
+						style={{ width: 150 }}
+						placeholder="Add filter"
+						value={field}
+						onChange={(value) => {
+							setField(null);
+							const found = filters.find((f) => f.field === value);
 
-					if (found) {
-						message.error('Filter already exists');
-					} else {
-						const fieldValue = {
-							field: value,
-							type: fieldKeyValue[value].type,
-							label: fieldKeyValue[value].label,
-							value: fieldKeyValue[value].value,
-							options: fieldKeyValue[value]?.options,
-						};
-						setFilters((prevState) => {
-							prevState.push(fieldValue);
-							return [...prevState];
-						});
-					}
+							if (found) {
+								message.error('Filter already exists');
+							} else {
+								const fieldValue = {
+									field: value,
+									type: fieldKeyValue[value].type,
+									label: fieldKeyValue[value].label,
+									value: fieldKeyValue[value].value,
+									options: fieldKeyValue[value]?.options,
+								};
+								setFilters((prevState) => {
+									prevState.push(fieldValue);
+									return [...prevState];
+								});
+							}
+						}}
+					>
+						{Object.keys(fieldKeyValue)
+							.filter((key) => !filters.find((filter) => filter.field === key))
+							.map((key) => (
+								<Option value={key}>{fieldKeyValue[key].label}</Option>
+							))}
+					</Select>
+				</div>
 
-					}}
-				>
-					{Object.keys(fieldKeyValue).filter(key => !filters.find(filter => filter.field === key)).map((key) => (
-						<Option value={key}>{fieldKeyValue[key].label}</Option>
-					))}
-				</Select>
-				</div >
-				
 				<div>
 					<Button
 						onClick={() => {
@@ -263,23 +299,22 @@ const UseFilters = ({
 							height: 35,
 						}}
 						type="default"
-						>
+					>
 						Search
 					</Button>
 					<div
 						onClick={() => {
-							if	(canReset) {
+							if (canReset) {
 								setFilters(defaultFilters);
 								handleFilters([]);
 							}
-							
 						}}
 						style={{
 							marginTop: 5,
-							textAlign:'center',
-							cursor:'pointer',
-							textDecoration:'underline',
-							color: canReset ? 'white' : 'grey'
+							textAlign: 'center',
+							cursor: 'pointer',
+							textDecoration: 'underline',
+							color: canReset ? 'white' : 'grey',
 						}}
 					>
 						Reset
@@ -287,11 +322,7 @@ const UseFilters = ({
 				</div>
 			</div>
 
-			<div style={{ marginLeft: 30 }}>
-
-			</div>
-	
-		
+			<div style={{ marginLeft: 30 }}></div>
 		</div>
 	);
 };
