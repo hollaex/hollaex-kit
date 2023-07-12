@@ -21,14 +21,14 @@ const LoginTable = () => {
 
     const columns = [
         {
-            title: 'ID',
-            dataIndex: 'id',
-            key: 'id',
+            title: 'User ID',
+            dataIndex: 'user_id',
+            key: 'user_id',
             render: (user_id, data) => {
                 return (
                     <div className="d-flex">
                         <Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
-                            {data?.id}
+                            {data?.user_id}
                         </Button>
                         {/* <div className="ml-3">{data.User.email}</div> */}
                     </div>
