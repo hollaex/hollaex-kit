@@ -484,6 +484,10 @@ const getAdminUserLogins = (req, res) => {
 	);
 	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
 			req.uuid,
@@ -2392,6 +2396,10 @@ const getUserSessionsByAdmin = (req, res) => {
 
 	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
 			req.uuid,
