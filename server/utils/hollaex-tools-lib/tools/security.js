@@ -883,7 +883,9 @@ const createSession = async (token, loginId, userId) => {
 }
 
 const getExpirationDateInSeconds = (expiryDate) => {
-	const duration = moment.duration(moment(moment(expiryDate)).diff(new Date().getTime()));
+	const end = moment(expiryDate);
+	const now = moment(new Date());
+	const duration = moment.duration(moment(end).diff(now));
 	return Number(duration.asSeconds().toFixed(0));
 }
 
