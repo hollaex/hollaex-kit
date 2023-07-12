@@ -41,6 +41,7 @@ export { default as FeesAndLimits } from './FeesAndLimits';
 // ADMIN PAGE
 export { default as AdminDashboard } from './Admin/Dashboard';
 export { default as User } from './Admin/User';
+export { default as Session } from './Admin/Sessions';
 export { default as AppWrapper } from './Admin/AppWrapper';
 export { default as Main } from './Admin/Main';
 export { default as DepositsPage } from './Admin/DepositsPage';

@@ -1,5 +1,5 @@
 # build environment
-FROM node:14-buster-slim as build
+FROM node:14.21.1-buster as build
 ENV NODE_OPTIONS=--max_old_space_size=4096
 ENV GENERATE_SOURCEMAP=false
 WORKDIR /app
