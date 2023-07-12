@@ -23,6 +23,7 @@ import {
 } from 'actions/userAction';
 import { NOTIFICATIONS } from 'actions/appActions';
 import { generateHeaders } from './SessionHeaders';
+import { STATIC_ICONS } from 'config/icons';
 
 const INITIAL_SESSIONS_STATE = {
 	count: 0,
@@ -102,6 +103,11 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 		requestSessions();
 	}, [requestSessions]);
 
+	const refresh = () => {
+		setSessions(INITIAL_SESSIONS_STATE);
+		requestSessions();
+	};
+
 	const handleNext = (pageCount, pageNumber) => {
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
 		const apiPageTemp = Math.floor((pageNumber + 1) / 2);
@@ -116,22 +122,33 @@ const Sessions = ({ icons: ICONS, setSnackNotification, setNotification }) => {
 	};
 
 	return (
-		<div className="mt-4 mb-4 apply_rtl dev-section-wrapper">
+		<div className="mt-4 mb-4 apply_rtl dev-section-wrapper login-history-section-wrapper">
 			<HeaderSection
 				stringId="SESSIONS.CONTENT.TITLE"
 				title={STRINGS['SESSIONS.CONTENT.TITLE']}
 				notification={
-					!isMobile && (
+					<div className="login-history_notifications-wrapper">
+						{!isMobile && (
+							<ActionNotification
+								stringId="SESSIONS.CONTENT.DOWNLOAD"
+								text={STRINGS['SESSIONS.CONTENT.DOWNLOAD']}
+								iconId="DATA"
+								iconPath={ICONS['DATA']}
+								className="download-logins"
+								onClick={downloadSessions}
+								disable={fetching || sessions.count <= 0}
+							/>
+						)}
 						<ActionNotification
-							stringId="SESSIONS.CONTENT.DOWNLOAD"
-							text={STRINGS['SESSIONS.CONTENT.DOWNLOAD']}
-							iconId="DATA"
-							iconPath={ICONS['DATA']}
-							className="download-logins"
-							onClick={downloadSessions}
-							disable={fetching || sessions.count <= 0}
+							stringId="REFRESH"
+							text={STRINGS['REFRESH']}
+							iconId="REFRESH"
+							iconPath={STATIC_ICONS['REFRESH']}
+							className="refresh-history"
+							onClick={refresh}
+							disable={fetching}
 						/>
-					)
+					</div>
 				}
 			>
 				<div className="header-content">
