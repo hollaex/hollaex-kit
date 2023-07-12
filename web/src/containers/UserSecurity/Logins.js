@@ -14,12 +14,14 @@ import STRINGS from 'config/localizedStrings';
 import { getLogins, downloadLogins } from 'actions/userAction';
 import { generateHeaders } from './LoginHeaders';
 import withConfig from 'components/ConfigProvider/withConfig';
+import { STATIC_ICONS } from 'config/icons';
 
 const INITIAL_LOGINS_STATE = {
 	count: 0,
 	data: [],
 	page: 1,
 	isRemaining: false,
+	title: '',
 };
 const RECORD_LIMIT = 20;
 
@@ -38,6 +40,7 @@ const Logins = ({ icons: ICONS }) => {
 					data: prevLogins.data.concat(data),
 					page,
 					isRemaining: count > page * RECORD_LIMIT,
+					title: `login-attempts-table-${JSON.stringify(params)}`,
 				}));
 				setFetching(false);
 			})
@@ -51,6 +54,10 @@ const Logins = ({ icons: ICONS }) => {
 		setLogins(INITIAL_LOGINS_STATE);
 		requestLogins(1, params);
 	}, [requestLogins, params]);
+
+	const refresh = () => {
+		setParams({ ...params });
+	};
 
 	const handleNext = (pageCount, pageNumber) => {
 		const pageTemp = pageNumber % 2 === 0 ? 2 : 1;
@@ -83,17 +90,28 @@ const Logins = ({ icons: ICONS }) => {
 				stringId="LOGINS_HISTORY.CONTENT.TITLE"
 				title={STRINGS['LOGINS_HISTORY.CONTENT.TITLE']}
 				notification={
-					!isMobile && (
+					<div className="login-history_notifications-wrapper">
+						{!isMobile && (
+							<ActionNotification
+								stringId="LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY"
+								text={STRINGS['LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY']}
+								iconId="DATA"
+								iconPath={ICONS['DATA']}
+								className="download-logins"
+								onClick={() => downloadLogins(params)}
+								disable={fetching || logins.count <= 0}
+							/>
+						)}
 						<ActionNotification
-							stringId="LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY"
-							text={STRINGS['LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY']}
-							iconId="DATA"
-							iconPath={ICONS['DATA']}
-							className="download-logins"
-							onClick={() => downloadLogins(params)}
-							disable={fetching || logins.count <= 0}
+							stringId="REFRESH"
+							text={STRINGS['REFRESH']}
+							iconId="REFRESH"
+							iconPath={STATIC_ICONS['REFRESH']}
+							className="refresh-history"
+							onClick={refresh}
+							disable={fetching}
 						/>
-					)
+					</div>
 				}
 			>
 				<div className="header-content">
@@ -105,6 +123,7 @@ const Logins = ({ icons: ICONS }) => {
 			<LoginFilters onSearch={onSearch} formName="login-attempts" />
 			<div>
 				<Table
+					title={logins.title}
 					rowClassName="pt-2 pb-2"
 					showHeaderNoData={true}
 					headers={generateHeaders()}

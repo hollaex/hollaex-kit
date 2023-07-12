@@ -1677,6 +1677,16 @@ paths:
           required: false
           type: boolean
         - in: query
+          name: country
+          description: country of the login
+          required: false
+          type: string
+        - in: query
+          name: ip
+          description: ip of the login
+          required: false
+          type: string
+        - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
           required: false
@@ -3046,6 +3056,12 @@ paths:
           required: false
           type: number
           format: int32
+        - in: query
+          name: last_seen
+          description: last seen
+          required: false
+          type: string
+          enum: ['1', '24']
         - in: query
           name: status
           description: fetch active or revoke sessions

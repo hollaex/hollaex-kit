@@ -1270,6 +1270,8 @@ const toggleFlaggedUserById = (userId) => {
 const getUserLogins = (opts = {
 	userId: null,
 	status: null,
+	country: null,
+	ip: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1284,10 +1286,12 @@ const getUserLogins = (opts = {
 	let options = {
 		where: {
 			timestamp: timeframe,
-			...(opts.status != null && { status: opts.status })
+			...(opts.status != null && { status: opts.status }),
+			...(opts.country != null && { country: opts.country }),
+			...(opts.ip != null && { ip: { [Op.like]: `%${opts.ip}%` } })
 		},
 		attributes: {
-			exclude: ['id', 'origin', 'referer']
+			exclude: ['origin', 'referer']
 		},
 		order: [ordering]
 	};
@@ -1898,6 +1902,7 @@ const updateUserInfo = async (userId, data = {}) => {
 
 const getExchangeUserSessions = (opts = {
 	user_id: null,
+	last_seen: null,
 	status: null,
 	limit: null,
 	page: null,
@@ -1914,11 +1919,27 @@ const getExchangeUserSessions = (opts = {
 
 	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
-			...(opts.status != null && { status: opts.status }),
+			...(opts.status == true && { 
+				status: opts.status,
+				expiry_date: {
+					[Op.gt]: new Date()
+				}
+			}),
+			...(opts.status == false && {
+				[Op.or]: [
+					{ 
+						status: opts.status,
+						expiry_date: {
+							[Op.lt]: new Date()
+						}
+					}]
+			}),
 			created_at: timeframe,
-			expiry_date: {
-				[Op.gt]: new Date()
-			},
+			...(opts.last_seen && { last_seen: 
+				{
+					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
+				}
+			 }),
 		},
 		attributes: {
 			exclude: ['token']
