@@ -633,7 +633,7 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 	});
 };
 
-const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -671,7 +671,16 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 				if (order.User) order.User.id = user_kit_id;
 			}
 		}
-		return orders;
+
+		if (format && format === 'csv') {
+			if (orders.data.length === 0) {
+				throw new Error(NO_DATA_FOR_CSV);
+			}
+			const csv = parse(orders.data, Object.keys(orders.data[0]));
+			return csv;
+		} else {
+			return orders;
+		}
 	});
 };
 

@@ -275,7 +275,7 @@ const cancelUserOrder = (req, res) => {
 const getAllUserOrders = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getAllUserOrders auth', req.auth);
 	const user_id = req.auth.sub.id;
-	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getAllUserOrdersByKitId(
 		user_id,
@@ -289,6 +289,7 @@ const getAllUserOrders = (req, res) => {
 		order.value,
 		start_date.value,
 		end_date.value,
+		format.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
@@ -296,7 +297,13 @@ const getAllUserOrders = (req, res) => {
 		}
 	)
 		.then((order) => {
-			return res.json(order);
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-orders.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(order);
+			} else {
+				return res.json(order);
+			}
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getAllUserOrders error', err.message);
