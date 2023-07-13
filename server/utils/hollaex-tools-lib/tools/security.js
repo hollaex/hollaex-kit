@@ -882,6 +882,13 @@ const createSession = async (token, loginId, userId) => {
 	})
 }
 
+const getExpirationDateInSeconds = (expiryDate) => {
+	const end = moment(expiryDate);
+	const now = moment(new Date());
+	const duration = moment.duration(moment(end).diff(now));
+	return Number(duration.asSeconds().toFixed(0));
+}
+
 const verifySession = async (token) => {
 
 	const session = await findSession(token);
@@ -910,7 +917,8 @@ const verifySession = async (token) => {
 		const updatedSession =  await sessionData.update(
 			{ last_seen: new Date() }
 		);
-		client.setexAsync(updatedSession.dataValues.token, new Date(updatedSession.dataValues.expiry_date).getTime() / 1000, JSON.stringify(updatedSession.dataValues));
+		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
+		client.setexAsync(updatedSession.dataValues.token, expirationInSeconds, JSON.stringify(updatedSession.dataValues));
 	}
 }
 
@@ -933,7 +941,8 @@ const findSession = async (token) => {
 		});
 
 		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
-			client.setexAsync(hashedToken, new Date(session.expiry_date).getTime() / 1000, JSON.stringify(session));
+			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
+			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
 
 			loggerAuth.verbose(
 				'security/findSession token stored in redis',
