@@ -857,7 +857,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		.then((data) => {
 			if (format.value === 'csv') {
 				const parsedData = data && Object.values(data)[0];
-				if (parsedData.length === 0) {
+				if (!parsedData || parsedData?.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
 				const csv = parse(parsedData, Object.keys(parsedData[0]));
