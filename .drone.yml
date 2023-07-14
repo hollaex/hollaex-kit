@@ -278,7 +278,7 @@ steps:
   commands:
     - docker login -u $${DOCKER_USERNAME} -p $${DOCKER_PASSWORD}
     - export DOCKER_CLI_EXPERIMENTAL=enabled
-    - echo "$PACKAGE_VERSION" > .tags
+    - export PACKAGE_VERSION="$(cat version)" && echo "$PACKAGE_VERSION" > .tags
     - cat .tags 
     - docker manifest create hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 hollaex/hollaex-kit:$(cat .tags)-arm64v8 --amend
     - docker manifest annotate hollaex/hollaex-kit:$(cat .tags) hollaex/hollaex-kit:$(cat .tags)-amd64 --arch amd64
