@@ -301,7 +301,7 @@ const PluginDetails = ({
 										))}
 									</div>
 								) : null}
-								{pluginData.price && (
+								{
 									<div>
 										<p>Price: </p>{' '}
 										<h6>
@@ -311,7 +311,7 @@ const PluginDetails = ({
 												: `$ ${pluginData.price}`}
 										</h6>
 									</div>
-								)}
+								}
 							</div>
 						</div>
 					</div>
@@ -468,10 +468,11 @@ const PluginDetails = ({
 					</div>
 				);
 			} else if (
-				!checkactivatedPlugin(name) &&
-				(payment_type?.toLowerCase() === 'activation' ||
-					free_for?.includes(exchange.plan) ||
-					only_for?.includes(exchange.plan))
+				(!checkactivatedPlugin(name) &&
+					(payment_type?.toLowerCase() === 'activation' ||
+						free_for?.includes(exchange.plan) ||
+						only_for?.includes(exchange.plan))) ||
+				payment_type === 'free'
 			) {
 				// btnDisabled = payment_type?.toLowerCase() === 'activation';
 				return (

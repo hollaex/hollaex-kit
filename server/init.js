@@ -146,12 +146,14 @@ const checkStatus = () => {
 			}
 
 			configuration.broker = deals;
-			configuration.networkQuickTrades = Object.values(exchange.brokers);
+			configuration.networkQuickTrades = [];
+
 			const brokerPairs = deals.map((d) => d.symbol);
 			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange
 				const [ base, quote ] = e.split('-');
 				if (configuration.coins[base] && configuration.coins[quote]) {
+					configuration.networkQuickTrades.push(exchange.brokers[e])
 					return e;
 				}
 			});
@@ -228,7 +230,6 @@ const checkStatus = () => {
 						maker: {},
 						taker: {}
 					};
-					console.log(DEFAULT_FEES[exchange.plan])
 					const defaultFees = DEFAULT_FEES[exchange.plan]
 						? DEFAULT_FEES[exchange.plan]
 						: { maker: 0.2, taker: 0.2 }

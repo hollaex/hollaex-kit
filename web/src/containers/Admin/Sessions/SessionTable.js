@@ -234,7 +234,24 @@ const SessionTable = () => {
 						>
 							Download below CSV table
 						</span>
-						<span>Total: {queryFilters.total || '-'}</span>
+                        <div>
+                            <span>
+                                <Button
+						                onClick={() => { requestSessions(queryFilters.page, queryFilters.limit); }}
+						                style={{
+						                	backgroundColor: '#288500',
+						                	color: 'white',
+						                	flex: 1,
+						                	height: 35,
+                                            marginRight:10
+						                }}
+						                type="default"
+						            >
+						                Refresh
+					            </Button>
+                            </span>
+                            <span>Total: {queryFilters.total || '-'}</span>
+                        </div>
 					</div>
 
 					<div className="mt-4 ">
