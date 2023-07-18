@@ -414,7 +414,7 @@ const loginPost = (req, res) => {
 					.catch(async (err) => {
 						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-						const message =createAttemptMessage(loginData, user, domain);
+						const message = createAttemptMessage(loginData, user, domain);
 						throw new Error(err.message + message);
 					})
 				]);
