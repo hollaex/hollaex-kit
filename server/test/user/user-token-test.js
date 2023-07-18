@@ -51,7 +51,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true }})
 
         if(!token){
             const response = await request()
