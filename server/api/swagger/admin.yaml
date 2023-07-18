@@ -1165,6 +1165,11 @@ paths:
           type: string
           format: date-time
         - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
+        - in: query
           name: gender
           required: false
           type: boolean
