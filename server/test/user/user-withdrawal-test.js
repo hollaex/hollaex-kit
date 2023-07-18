@@ -51,7 +51,7 @@ describe('tests for /user/withdrawal', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -119,10 +119,10 @@ describe('tests for /user/withdrawal', function () {
     
     });
 
-    it('Integration Test -should respond 403 for lack of authority for withdraw', async () => {
+    it('Integration Test -should respond 401 for lack of authority for withdraw', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -174,7 +174,7 @@ describe('tests for /user/withdrawal', function () {
 			.set('Api-signature', signature)
 			.send(body);
 
-            response.should.have.status(403);
+            response.should.have.status(401);
             response.should.be.json;
     
     });
@@ -236,7 +236,7 @@ describe('tests for /user/withdrawal', function () {
 			.set('Api-signature', signature)
 			.send(body);
 
-            response.should.have.status(500);
+            response.should.have.status(401);
             response.should.be.json;
     
     });

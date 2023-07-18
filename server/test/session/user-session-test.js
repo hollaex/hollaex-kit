@@ -45,9 +45,9 @@ describe('User Session', async () => {
         userSessions.should.be.json;
         let user = await tools.user.getUserByEmail(createdUser.email);
         assert.equal(userSessions.body.data.length, 1, 'body length is wrong');
-        assert.equal(userSessions.body.data[0].user_id, user.id, 'wrong user id');
-        assert.equal(userSessions.body.data[0].ip, IP, 'wrong ip');
-        assert.equal(moment(userSessions.body.data[0].Session.expiry_date).startOf('day').diff(moment().startOf('day'), 'days'), 30, 'wrong expiration date');
+        assert.equal(userSessions.body.data[0].login.user_id, user.id, 'wrong user id');
+        assert.equal(userSessions.body.data[0].login.ip, IP, 'wrong ip');
+        assert.equal(moment(userSessions.body.data[0].expiry_date).startOf('day').diff(moment().startOf('day'), 'days'), 30, 'wrong expiration date');
         
     });
 
@@ -55,7 +55,7 @@ describe('User Session', async () => {
 
         let user = await tools.user.getUserByEmail(getAdminUser().email);
         user.should.be.an('object');
-        let bearerToken = await loginAs(user);
+        let bearerToken = await loginAs(user, false);
         bearerToken.should.be.a('string');
 
         const userSessions = await request()
@@ -63,7 +63,7 @@ describe('User Session', async () => {
             .set('Authorization', `Bearer ${bearerToken}`)
         
         assert.equal(userSessions.body.message, 'Access denied: Session not found', 'wrong message');
-        userSessions.should.have.status(403);
+        userSessions.should.have.status(401);
     });
 
 
@@ -75,7 +75,7 @@ describe('User Session', async () => {
             .post(`/v2/user/revoke-session`)
             .set('Authorization', `Bearer ${loginData.body.token}`)
             .send({
-				'session_id': userSessions.body.data[0].Session.id
+				'session_id': userSessions.body.data[0].id
 			});
     
         const userBalance = await request()
@@ -139,6 +139,6 @@ describe('User Session', async () => {
             .get(`/v2/user/sessions`)
             .set('Authorization', `Bearer ${generateFuzz()}`)
 
-        userSessions.should.have.status(403);
+        userSessions.should.have.status(401);
     });
 });

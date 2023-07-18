@@ -28,11 +28,12 @@ describe('Login Flow', async () => {
     it('Integration -should login successfuly', async () => {
         user = await tools.user.getUserByEmail(createdUser.email);
         user.should.be.an('object');
-        bearerToken = loginAs(user);
+        bearerToken = await loginAs(user);
         bearerToken.should.be.a('string');
 
         const response = await request()
             .post(`/v2/login/`)
+            .set('x-real-ip', '1.1.1.1')
             .send(createdUser);
 
         response.should.have.status(201);

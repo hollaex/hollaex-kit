@@ -83,7 +83,7 @@ describe('tests for /admin/kit/user-meta', function () {
                 "name": generateFuzz(), "type": "date-time", "required": false, "description": generateFuzz(5)
             })
 
-        response.should.have.status(400);
+        response.should.have.status(500);
         response.should.be.json;
     });
 

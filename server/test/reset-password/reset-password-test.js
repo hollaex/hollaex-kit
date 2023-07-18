@@ -96,7 +96,7 @@ describe('Auth Flow', async () => {
         let user, bearerToken;
         user = await tools.user.getUserByEmail(testUser.email);
         user.should.be.an('object');
-        bearerToken = loginAs(user);
+        bearerToken = await loginAs(user);
         bearerToken.should.be.a('string');
 
         response = await request()
@@ -130,7 +130,7 @@ describe('Auth Flow', async () => {
         let user, bearerToken;
         user = await tools.user.getUserByEmail(testUser.email);
         user.should.be.an('object');
-        bearerToken = loginAs(user);
+        bearerToken = await loginAs(user);
         bearerToken.should.be.a('string');
 
         response = await request()
