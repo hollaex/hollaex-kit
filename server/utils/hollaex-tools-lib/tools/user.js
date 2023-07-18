@@ -599,6 +599,7 @@ const getAllUsersAdmin = (opts = {
 	phone_number: null,
 	kyc: null,
 	bank: null,
+	id_number: null,
 	additionalHeaders: null
 }) => {
 	const {
@@ -607,7 +608,8 @@ const getAllUsersAdmin = (opts = {
 		email_verified,
 		otp_enabled,
 		dob_start_date,
-		dob_end_date
+		dob_end_date,
+		id_number
 	} = opts;
 
 	const pagination = paginationQuery(opts.limit, opts.page);
@@ -664,11 +666,11 @@ const getAllUsersAdmin = (opts = {
 		};
 	}
 	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number'])).forEach(key => {
-		if(opts[key] != null) {
+		if (opts[key] != null) {
 			query.where[Op.and].push(
 				{
 					[key]: {
-						[Op.like]: `%${opts[key]}%`
+						[Op.iLike]: `%${opts[key].toLowerCase()}%`
 					}
 				}
 			)
@@ -701,6 +703,16 @@ const getAllUsersAdmin = (opts = {
 				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
 			]
 		}
+	}
+
+	if (id_number) {
+		query.where[Op.and].push(
+			{
+				id_data: {
+					number: id_number
+				}
+			}
+		)
 	}
 
 	if (!opts.format) {

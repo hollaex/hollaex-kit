@@ -138,7 +138,8 @@ const getUsersAdmin = (req, res) => {
 		otp_enabled,
 		phone_number,
 		kyc,
-		bank
+		bank,
+		id_number
 	
 	} = req.swagger.params;
 
@@ -181,6 +182,7 @@ const getUsersAdmin = (req, res) => {
 		phone_number: phone_number.value,
 		kyc: kyc.value,
 		bank: bank.value,
+		id_number: id_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

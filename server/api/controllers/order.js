@@ -5,6 +5,8 @@ const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');
+const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
 
 const createOrder = (req, res) => {
@@ -345,6 +347,10 @@ const getAdminOrders = (req, res) => {
 		start_date,
 		end_date
 	} = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
 
 	let promiseQuery;
 

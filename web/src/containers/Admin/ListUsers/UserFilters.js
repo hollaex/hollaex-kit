@@ -19,6 +19,7 @@ const UseFilters = ({ applyFilters }) => {
 		email: { type: 'string', label: 'Email' },
 		username: { type: 'string', label: 'User Name' },
 		full_name: { type: 'string', label: 'Full Name' },
+		id_number: { type: 'string', label: 'ID number' },
 		start_date: { type: 'date', label: 'User Creation Date Start' },
 		kyc: {
 			type: 'dropdown',
