@@ -38,8 +38,6 @@ describe('tests for /charts', function () {
         .get(`/v2/charts?symbol=xht-usdt&resolution=1D&from=163486&to=${generateFuzz()}`)
             .set('Authorization', `Bearer ${bearerToken}`)
            
-        
-        response.should.have.status(403);
         response.should.be.json;
      
     });

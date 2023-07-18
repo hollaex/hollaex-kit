@@ -25,7 +25,7 @@ function generateFuzz(length = 10000) {
 
 function getAdminUser() {
 	return {
-		email: process?.argv?.slice(5)?.[0]?.split('=')?.[1],
+		email: process?.argv?.slice(5)?.[0]?.split('=')?.[1] || process?.argv?.[2]?.split('=')?.[1]
 	};
 }
 
