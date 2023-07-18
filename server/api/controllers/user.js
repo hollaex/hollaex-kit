@@ -295,11 +295,20 @@ const verifyUser = (req, res) => {
 
 
 
-const createAttemptMessage = (loginData) => {
+const createAttemptMessage = (loginData, user, domain) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
 	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
 	{ return '' }
-	else if(currentNumberOfAttemps === 0) return ' ' + LOGIN_NOT_ALLOW;
+	else if(currentNumberOfAttemps === 0) { 
+		sendEmail(
+			MAILTYPE.LOCKED_ACCOUNT,
+			user.email,
+			{},
+			user.settings,
+			domain);
+
+		return ' ' + LOGIN_NOT_ALLOW; 
+	};
 	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
 }
 
@@ -389,7 +398,7 @@ const loginPost = (req, res) => {
 			if (!passwordIsValid) {
 				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-				const message = createAttemptMessage(loginData);
+				const message = createAttemptMessage(loginData, user, domain);
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
@@ -405,7 +414,7 @@ const loginPost = (req, res) => {
 					.catch(async (err) => {
 						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-						const message = createAttemptMessage(loginData);
+						const message =createAttemptMessage(loginData, user, domain);
 						throw new Error(err.message + message);
 					})
 				]);
