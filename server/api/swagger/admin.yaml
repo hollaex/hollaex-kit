@@ -3130,6 +3130,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/revoke-session:
     x-swagger-router-controller: admin
     post:
@@ -3165,6 +3166,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:

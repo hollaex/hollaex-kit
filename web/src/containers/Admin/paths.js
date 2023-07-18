@@ -187,6 +187,11 @@ export const SUPERVISOR_PATH = [
 		label: 'Assets',
 		routeKey: 'financials',
 	},
+	{
+		path: '/admin/sessions',
+		label: 'Sessions',
+		routeKey: 'session',
+	},
 ];
 
 export const PATHS = [
