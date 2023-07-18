@@ -2186,26 +2186,26 @@ const createUserByAdmin = (req, res) => {
 		where: { email },
 		attributes: ['email']
 	})
-	.then((user) => {
-		if (user) {
-			throw new Error(USER_EXISTS);
-		}
-
-		return toolsLib.user.createUser(email, password, {
-			role: 'user',
-			id: null,
-			additionalHeaders: {
-				'x-forwarded-for': req.headers['x-forwarded-for']
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
 			}
+
+			return toolsLib.user.createUser(email, password, {
+				role: 'user',
+				id: null,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			});
 		})
-	})
-	.then(() => {
-		return res.status(201).json({ message: 'Success' });
-	})
-	.catch((err) => {
-		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	});
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const createUserWalletByAdmin = (req, res) => {
@@ -2422,7 +2422,7 @@ const getUserSessionsByAdmin = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value
-		}
+	}
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
@@ -2452,7 +2452,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserSessionByAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
@@ -2506,7 +2506,7 @@ const getBalancesAdmin = (req, res) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 module.exports = {
 	createInitialAdmin,
