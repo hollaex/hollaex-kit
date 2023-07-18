@@ -345,7 +345,8 @@ const getAdminOrders = (req, res) => {
 		order_by,
 		order,
 		start_date,
-		end_date
+		end_date,
+		format
 	} = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
