@@ -9,6 +9,7 @@ import {
 	Radio,
 	Spin,
 	message,
+	Tooltip
 } from 'antd';
 import {
 	ExclamationCircleFilled,
@@ -1129,7 +1130,10 @@ const Otcdeskpopup = ({
 
 										<div>
 											<div className="mt-3 ">
-												Percentage price spread <ExclamationCircleOutlined />
+												Percentage price spread
+												<Tooltip  placement="rightBottom" title={"Profit margin to add on top of your price"} >
+        										   <ExclamationCircleOutlined style={{ marginLeft: 3 }}/>
+        										</Tooltip>
 											</div>
 											<Input
 												type="number"

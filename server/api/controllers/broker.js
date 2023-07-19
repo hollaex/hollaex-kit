@@ -29,7 +29,7 @@ const getTrackedExchangeMarkets = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
@@ -227,7 +227,7 @@ function deleteBrokerPair(req, res) {
 	);
 
 	toolsLib.broker.deleteBrokerPair(req.swagger.params.data.value.id)
-		.then((data) => {
+		.then(() => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json({ message: 'Successfully deleted broker pair.' });
 		})
