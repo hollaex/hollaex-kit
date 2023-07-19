@@ -267,11 +267,21 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:
@@ -1165,6 +1175,11 @@ paths:
           type: string
           format: date-time
         - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
+        - in: query
           name: gender
           required: false
           type: boolean
@@ -1901,6 +1916,12 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
       tags:
         - Admin
       responses:
@@ -3057,12 +3078,6 @@ paths:
           type: number
           format: int32
         - in: query
-          name: session_id
-          description: Session id
-          required: false
-          type: number
-          format: int32
-        - in: query
           name: last_seen
           description: last seen
           required: false
@@ -3136,6 +3151,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/user/revoke-session:
     x-swagger-router-controller: admin
     post:
@@ -3171,6 +3187,7 @@ paths:
         - hmac
       x-security-scopes:
         - admin
+        - supervisor
   /admin/quicktrade/config:
     x-swagger-router-controller: admin
     put:

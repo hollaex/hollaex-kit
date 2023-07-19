@@ -254,15 +254,17 @@ const PluginDetails = ({
 								</div>
 								<p className="tooltip-container">
 									Author:
-									<Tooltip
-										placement="rightBottom"
-										title={`Verified plugin by ${author}`}
-									>
-										<ReactSVG
-											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-											className="verified-icon"
-										/>
-									</Tooltip>{' '}
+									{author === 'HollaEx' ? (
+										<Tooltip
+											placement="rightBottom"
+											title={`Verified plugin by ${author}`}
+										>
+											<ReactSVG
+												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+												className="verified-icon"
+											/>
+										</Tooltip>
+									) : null}{' '}
 									{pluginData.author}
 								</p>
 								<p>
@@ -301,7 +303,7 @@ const PluginDetails = ({
 										))}
 									</div>
 								) : null}
-								{pluginData.price && (
+								{
 									<div>
 										<p>Price: </p>{' '}
 										<h6>
@@ -311,7 +313,7 @@ const PluginDetails = ({
 												: `$ ${pluginData.price}`}
 										</h6>
 									</div>
-								)}
+								}
 							</div>
 						</div>
 					</div>
@@ -468,10 +470,11 @@ const PluginDetails = ({
 					</div>
 				);
 			} else if (
-				!checkactivatedPlugin(name) &&
-				(payment_type?.toLowerCase() === 'activation' ||
-					free_for?.includes(exchange.plan) ||
-					only_for?.includes(exchange.plan))
+				(!checkactivatedPlugin(name) &&
+					(payment_type?.toLowerCase() === 'activation' ||
+						free_for?.includes(exchange.plan) ||
+						only_for?.includes(exchange.plan))) ||
+				payment_type === 'free'
 			) {
 				// btnDisabled = payment_type?.toLowerCase() === 'activation';
 				return (
@@ -620,15 +623,17 @@ const PluginDetails = ({
 									</div>
 									<p className="tooltip-container">
 										Author:
-										<Tooltip
-											placement="rightBottom"
-											title={`Verified plugin by ${author}`}
-										>
-											<ReactSVG
-												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-												className="verified-icon"
-											/>
-										</Tooltip>{' '}
+										{author === 'HollaEx' ? (
+											<Tooltip
+												placement="rightBottom"
+												title={`Verified plugin by ${author}`}
+											>
+												<ReactSVG
+													src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+													className="verified-icon"
+												/>
+											</Tooltip>
+										) : null}{' '}
 										{author}
 									</p>
 									{free_for?.length ? (

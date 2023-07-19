@@ -107,6 +107,10 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>${name} عزیز </p></p><p>حساب شما به دلیل تلاش های زیاد برای ورود به سیستم برای ${login_timeout} دقیقه قفل شده است.<br />اگر این تلاش‌ها را برای ورود انجام ندادید، فوراً این را گزارش دهید و در اسرع وقت نسبت به تغییر اعتبار خود اقدام کنید.</p><p> با احترام<br> تیم ${api_name} </p></div>",
+			"title": "حساب شما قفل شده است"
+		}
     }
 }

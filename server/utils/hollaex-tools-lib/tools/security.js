@@ -491,15 +491,15 @@ const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fals
 	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
 		const endpointTypes = req.swagger.operation['x-security-types'];
 		if (has(req.headers, 'authorization') && !endpointTypes.includes('bearer')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
 		}
 
 		if (has(req.headers, 'api-key') && !endpointTypes.includes('hmac')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
 		}
 
 		if (!has(req.headers, 'authorization') && !has(req.headers, 'api-key')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
 		}
 
 		if (has(req.headers, 'authorization') && endpointTypes.includes('bearer')) {
@@ -522,7 +522,11 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 
@@ -613,7 +617,11 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 	// Swagger endpoint scopes
@@ -684,7 +692,11 @@ const verifyNetworkHmacToken = (req) => {
 
 const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
-		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+		let statusCode = 401;
+		if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+			statusCode = 403;
+		}
+		return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 	};
 
 	const token = req.headers['authorization'];
@@ -870,6 +882,13 @@ const createSession = async (token, loginId, userId) => {
 	})
 }
 
+const getExpirationDateInSeconds = (expiryDate) => {
+	const end = moment(expiryDate);
+	const now = moment(new Date());
+	const duration = moment.duration(moment(end).diff(now));
+	return Number(duration.asSeconds().toFixed(0));
+}
+
 const verifySession = async (token) => {
 
 	const session = await findSession(token);
@@ -898,7 +917,8 @@ const verifySession = async (token) => {
 		const updatedSession =  await sessionData.update(
 			{ last_seen: new Date() }
 		);
-		client.setexAsync(updatedSession.dataValues.token, new Date(updatedSession.dataValues.expiry_date).getTime() / 1000, JSON.stringify(updatedSession.dataValues));
+		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
+		client.setexAsync(updatedSession.dataValues.token, expirationInSeconds, JSON.stringify(updatedSession.dataValues));
 	}
 }
 
@@ -921,7 +941,8 @@ const findSession = async (token) => {
 		});
 
 		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
-			client.setexAsync(hashedToken, new Date(session.expiry_date).getTime() / 1000, JSON.stringify(session));
+			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
+			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
 
 			loggerAuth.verbose(
 				'security/findSession token stored in redis',

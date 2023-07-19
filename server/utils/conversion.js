@@ -24,7 +24,7 @@ const errorMessageConverter = (error) => {
 			} catch (err) {
 				message = error.message;
 			}
-		} else if (error.error.message) {
+		} else if (error.error && error.error.message) {
 			message = error.error.message;
 		}
 	}

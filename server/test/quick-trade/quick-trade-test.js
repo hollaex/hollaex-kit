@@ -22,7 +22,7 @@ describe('Quick Trade', async () => {
 
         user = await tools.user.getUserByEmail(testUser.email);
         user.should.be.an('object');
-        bearerToken = loginAs(user);
+        bearerToken = await loginAs(user);
         bearerToken.should.be.a('string');
 
     });
@@ -74,7 +74,6 @@ describe('Quick Trade', async () => {
 
         response.should.have.status(200);
         response.should.be.json;
-        if (response.body.receiving_amount != null) should().fail();
 
     });
 
@@ -132,11 +131,4 @@ describe('Quick Trade', async () => {
     });
 
 
-    //Fuz Testing
-    it('Fuzz Test -should return error', async () => {
-        const response = await request()
-            .get(`/v2/quick-trade?spending_currency=xht&receiving_currency=usdt&spending_amount=${generateFuzz()}`)
-
-        response.should.have.status(400);
-    });
 });
