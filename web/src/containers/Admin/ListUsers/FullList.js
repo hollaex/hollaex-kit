@@ -150,7 +150,7 @@ class FullListUsers extends Component {
 		return (
 			<div className="app_container-content admin-user-container">
 				<div style={{ display: 'flex', flexDirection:'row', justifyContent: 'space-between' }}>
-					<div  style={{ marginTop: 20, marginBottom: 10, fontSize: 15, color: '#ccc' }}>Find users by their email and verification status below, or narrow down your search by adding more filter.</div>
+					<div  style={{ marginTop: 20, marginBottom: 10, fontSize: 15, color: '#ccc' }}>Find users by their email and verification status below, or narrow down your search by adding more filters.</div>
 					<Button  
 						style={{
 							backgroundColor: '#288500',
