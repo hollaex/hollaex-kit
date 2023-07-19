@@ -32,7 +32,9 @@ checkStatus()
 
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
-		rateLimitMiddleware(app);
+		if (process.env.NODE_ENV !== 'test') {
+   			rateLimitMiddleware(app);
+		}
 		helmetMiddleware(app);
 
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';

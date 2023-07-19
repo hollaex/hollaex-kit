@@ -41,7 +41,8 @@ const {
 	COIN_INPUT_MISSING,
 	AMOUNTS_MISSING,
 	REBALANCE_SYMBOL_MISSING,
-	PRICE_NOT_FOUND
+	PRICE_NOT_FOUND,
+	QUOTE_EXPIRY_TIME_ERROR
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -477,6 +478,10 @@ const createBrokerPair = async (brokerPair) => {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
 			}
 
+			if (quote_expiry_time < 10) {
+				throw new Error(QUOTE_EXPIRY_TIME_ERROR);
+			}
+
 			if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 				throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 			}
@@ -544,13 +549,17 @@ const updateBrokerPair = async (id, data) => {
 		type,
 		account,
 		formula,
-		rebalancing_symbol
+		rebalancing_symbol,
+		quote_expiry_time
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
 
 	if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
+	}
+	if (quote_expiry_time < 10) {
+		throw new Error(QUOTE_EXPIRY_TIME_ERROR);
 	}
 
 
