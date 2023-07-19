@@ -267,11 +267,21 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:

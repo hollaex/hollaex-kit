@@ -5,13 +5,14 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { INIT_CHANNEL, ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
 const { publisher } = require('../../db/pubsub');
+const { parse } = require('json2csv');
 const crypto = require('crypto');
 
 const VERIFY_STATUS = {
@@ -848,7 +849,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		req.auth
 	);
 
-	const { start_date, end_date } = req.swagger.params;
+	const { start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
 		additionalHeaders: {
@@ -856,7 +857,19 @@ const getExchangeGeneratedFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			return res.json(data);
+			if (format.value === 'csv') {
+				const parsedData = data && Object.values(data)[0];
+				if (!parsedData || parsedData?.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(parsedData, Object.keys(parsedData[0]));
+
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(csv);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerAdmin.error(
