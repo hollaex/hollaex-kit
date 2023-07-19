@@ -136,6 +136,8 @@ const SessionFilters = ({
 		
 			<div style={{ display:'flex', flexDirection:'row', gap: 10, marginTop:20, position:'relative', top: 7}}> 
 				<div>
+				{Object.keys(fieldKeyValue).filter(key => !filters.find(filter => filter.field === key))?.length !== 0 
+				&&
 				<Select
 					className='select-box'
 					showSearch
@@ -167,7 +169,7 @@ const SessionFilters = ({
 					{Object.keys(fieldKeyValue).filter(key => !filters.find(filter => filter.field === key)).map((key) => (
 						<Option value={key}>{fieldKeyValue[key].label}</Option>
 					))}
-				</Select>
+				</Select>}
 				</div >
 				
 				<div>
