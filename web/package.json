@@ -125,8 +125,8 @@
 		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
 		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
 		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check",
-		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate",
-		"lang:all": "node ./translationRunner.js --translate-all"
+		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate --ignore-equals",
+		"lang:all": "node ./translationRunner.js --translate-all --ignore-equals"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",
