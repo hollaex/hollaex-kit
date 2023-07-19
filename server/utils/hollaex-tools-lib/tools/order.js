@@ -7,12 +7,12 @@ const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require(
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE } = require(`${SERVER_PATH}/messages`);
 const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades, validatePair } = require('./common');
+const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
 const { reject } = require('bluebird');
 const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
 const math = require('mathjs');
 const { has } = require('lodash');
-const { setPriceEssentials, getDecimals } = require('../../orderbook');
+const { setPriceEssentials } = require('../../orderbook');
 const { getUserBalanceByKitId } = require('./wallet');
 const { verifyBearerTokenPromise } = require('./security');
 const { client } = require('./database/redis');
@@ -72,7 +72,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 		}
 
 		if(size < brokerPair.min_size || size > brokerPair.max_size) {
-			throw new Error(BROKER_SIZE_EXCEED)
+			throw new Error(BROKER_SIZE_EXCEED);
 		}
 
 		const broker = await getUserByKitId(brokerPair.user_id);
@@ -113,7 +113,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 	await client.delAsync(token);
 	res.type = type;
 	return res;
-}
+};
 
 const getUserQuickTrade = async (spending_currency, spending_amount, receiving_amount, receiving_currency, bearerToken, ip, opts) => {
 
@@ -169,16 +169,16 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 					token: brokerQuote?.token,
 					expiry: brokerQuote?.expiry,
 					type: 'broker'
-				}
+				};
 				if (spending_amount != null) {
 					responseObj.receiving_amount = brokerQuote.receiving_amount;
 				} else if (receiving_amount != null) {
-					responseObj.spending_amount = brokerQuote.spending_amount;;
+					responseObj.spending_amount = brokerQuote.spending_amount;
 				}
 				
 				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
 				if (baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
-					throw new Error(BROKER_SIZE_EXCEED)
+					throw new Error(BROKER_SIZE_EXCEED);
 				}
 
 				if (responseObj.receiving_amount < 0 || responseObj.spending_amount < 0) {
@@ -186,7 +186,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				}
 
 				return responseObj;
-			})
+			});
 	}
 	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
 		try {
@@ -200,7 +200,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				receiving_currency,
 				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
 				type: 'market'
-			}
+			};
 
 			const priceValues = await setPriceEssentials({
 				pair: symbol,
@@ -279,7 +279,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			spending_amount,
 			receiving_amount,
 			type: 'network'
-		}
+		};
 
 		const priceValues = await getNodeLib().getQuote(
 			network_id,
@@ -314,7 +314,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}
-}
+};
 
 const updateQuickTradeConfig = async ({ symbol, type, active }) => {
 	const QuickTrade = getModel('quickTrade');
@@ -329,9 +329,9 @@ const updateQuickTradeConfig = async ({ symbol, type, active }) => {
 		...quickTradeData.dataValues,
 		type,
 		active
-	}
+	};
 	return quickTradeData.update(updatedConfig, { fields: ['type', 'active'], returning: true });
-}
+};
 
 const convertBalance = async (order, user_id, maker_id) => {
 	const { symbol, side, price, size } = order;
@@ -351,7 +351,7 @@ const convertBalance = async (order, user_id, maker_id) => {
 		user.network_id,
 		{ maker: makerFee, taker: takerFee }
 	);
-}
+};
 
 
 
@@ -363,13 +363,13 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 	const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
 	const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
 
-	const balance = await getUserBalanceByKitId(user_id, opts)
+	const balance = await getUserBalanceByKitId(user_id, opts);
 
 	let symbols = {};
 
 	for (const key of Object.keys(balance)) {
 		if (key.includes('available') && balance[key]) {
-			let symbol = key?.split('_')?.[0]
+			let symbol = key?.split('_')?.[0];
 			if (symbol && assets.includes(symbol)) {
 				symbols[symbol] = balance[key];
 			}
@@ -396,14 +396,14 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 				size,
 				price,
 				quoteSize
-			}
+			};
 			estimatedConversions.push(orderData);
 
 		}
 	}
 
 	return estimatedConversions;
-}
+};
 
 const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote }) => {
 	try {
@@ -414,13 +414,13 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 		const usdtPrices = await getAssetsPrices(assets, 'usdt', 1, opts);
 		const quotePrices = await getAssetsPrices(assets, quote, 1, opts);
 
-		const balance = await getUserBalanceByKitId(user_id, opts)
+		const balance = await getUserBalanceByKitId(user_id, opts);
 
 		let symbols = {};
 
 		for (const key of Object.keys(balance)) {
 			if (key.includes('available') && balance[key]) {
-				let symbol = key?.split('_')?.[0]
+				let symbol = key?.split('_')?.[0];
 				if (symbol && assets.includes(symbol)) {
 					symbols[symbol] = balance[key];
 				}
@@ -446,7 +446,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 						side,
 						size,
 						price
-					}
+					};
 					const res = await convertBalance(orderData, user_id, maker_id);
 					convertedAssets.push(res);
 				} catch (err) {
@@ -466,7 +466,7 @@ const dustUserBalance = async (user_id, opts, { assets, spread, maker_id, quote 
 	} catch (err) {
 		return reject(err);
 	}
-}
+};
 
 const createUserOrderByEmail = (email, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -618,19 +618,19 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		endDate,
 		...opts
 	})
-	.then(async (orders) => {
-		if (orders.data.length > 0) {
-			const networkIds = orders.data.map((order) => order.created_by);
-			const idDictionary = await mapNetworkIdToKitId(networkIds);
-			for (let order of orders.data) {
-				const user_kit_id = idDictionary[order.created_by];
-				order.network_id = order.created_by;
-				order.created_by = user_kit_id;
-				if (order.User) order.User.id = user_kit_id;
+		.then(async (orders) => {
+			if (orders.data.length > 0) {
+				const networkIds = orders.data.map((order) => order.created_by);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let order of orders.data) {
+					const user_kit_id = idDictionary[order.created_by];
+					order.network_id = order.created_by;
+					order.created_by = user_kit_id;
+					if (order.User) order.User.id = user_kit_id;
+				}
 			}
-		}
-		return orders;
-	});
+			return orders;
+		});
 };
 
 const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, format, opts = {
@@ -660,28 +660,28 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 		endDate,
 		...opts
 	})
-	.then(async (orders) => {
-		if (orders.data.length > 0) {
-			const networkIds = orders.data.map((order) => order.created_by);
-			const idDictionary = await mapNetworkIdToKitId(networkIds);
-			for (let order of orders.data) {
-				const user_kit_id = idDictionary[order.created_by];
-				order.network_id = order.created_by;
-				order.created_by = user_kit_id;
-				if (order.User) order.User.id = user_kit_id;
+		.then(async (orders) => {
+			if (orders.data.length > 0) {
+				const networkIds = orders.data.map((order) => order.created_by);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let order of orders.data) {
+					const user_kit_id = idDictionary[order.created_by];
+					order.network_id = order.created_by;
+					order.created_by = user_kit_id;
+					if (order.User) order.User.id = user_kit_id;
+				}
 			}
-		}
 
-		if (format && format === 'csv') {
-			if (orders.data.length === 0) {
-				throw new Error(NO_DATA_FOR_CSV);
+			if (format && format === 'csv') {
+				if (orders.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(orders.data, Object.keys(orders.data[0]));
+				return csv;
+			} else {
+				return orders;
 			}
-			const csv = parse(orders.data, Object.keys(orders.data[0]));
-			return csv;
-		} else {
-			return orders;
-		}
-	});
+		});
 };
 
 const getAllUserOrdersByEmail = (email, symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
