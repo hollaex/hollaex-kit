@@ -599,7 +599,7 @@ const cancelUserOrderByNetworkId = (networkId, orderId, opts = {
 	return getNodeLib().cancelOrder(networkId, orderId, opts);
 };
 
-const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, opts = {
+const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, order, startDate, endDate, format, opts = {
 	additionalHeaders: null
 }) => {
 	if (symbol && !subscribedToPair(symbol)) {
@@ -616,6 +616,7 @@ const getAllExchangeOrders = (symbol, side, status, open, limit, page, orderBy, 
 		order,
 		startDate,
 		endDate,
+		format,
 		...opts
 	})
 		.then(async (orders) => {
@@ -658,6 +659,7 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 		order,
 		startDate,
 		endDate,
+		format,
 		...opts
 	})
 		.then(async (orders) => {
