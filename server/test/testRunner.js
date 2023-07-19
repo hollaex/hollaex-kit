@@ -99,11 +99,11 @@ const execute = async () => {
         await mochaRun(__dirname + "/user/user-withdrawal-test.js");
         await mochaRun(__dirname + "/user/user-withdrawals-test.js");
       
-        process.exit(1);
+        process.exit(0);
     } 
     catch(err) {
         console.log(err);
-        process.exit(0);
+        process.exit(1);
     }
 }
 
