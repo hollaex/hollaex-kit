@@ -223,3 +223,4 @@ exports.PRICE_NOT_FOUND = 'Price could not found';
 exports.INVALID_PRICE = 'Invalid price';
 exports.INVALID_SIZE = 'Invalid size';
 exports.NO_IP_FOUND = 'Request can not be processed';
+exports.QUOTE_EXPIRY_TIME_ERROR= 'Quote expiry time cannot be smaller than 10';
