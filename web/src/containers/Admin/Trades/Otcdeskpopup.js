@@ -1181,7 +1181,7 @@ const Otcdeskpopup = ({
 											)}
 
 											<div className="mt-3 ">
-												Price quote expiry time in seconds <span style={{ }}>(30 seconds is recommended)</span>.
+												Price quote expiry time in seconds <span>(30 seconds is recommended)</span>.
 											</div>
 											<Input
 												type="number"
