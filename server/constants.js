@@ -157,6 +157,8 @@ exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
 exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
+exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -336,17 +338,21 @@ const ROLES = {
 };
 
 exports.DEFAULT_FEES = {
-	zero: {
-		maker: 0.2,
-		taker: 0.2
+	fiat: {
+		maker: 0,
+		taker: 0
 	},
-	lite: {
+	boost: {
+		maker: 0,
+		taker: 0
+	},
+	crypto: {
 		maker: 0.05,
 		taker: 0.1
 	},
-	member: {
-		maker: 0,
-		taker: 0
+	basic: {
+		maker: 0.2,
+		taker: 0.2
 	}
 };
 
@@ -400,9 +406,9 @@ exports.EXPLORERS = {
 			txPath: '/tx'
 		},
 		{
-			name: 'Bitcoin.com',
-			baseUrl: 'https://explorer.bitcoin.com',
-			txPath: '/btc/tx'
+			name: 'BlockChair',
+			baseUrl: 'https://blockchair.com',
+			txPath: '/bitcoin/transaction'
 		}
 	],
 	xrp: [
@@ -554,24 +560,19 @@ exports.EXPLORERS = {
 			baseUrl: 'https://polygonscan.com',
 			txPath: '/tx'
 		}
+	],
+	etc: [
+		{
+			name: 'Ethereum Classic Explorer',
+			baseUrl: 'https://etcblockexplorer.com',
+			txPath: '/tx'
+		}
 	]
 };
 
 // EMAIL CONSTANTS END --------------------------------------------------
 
 // PLUGIN CONSTANTS START------------------------------ to be moved
-exports.AVAILABLE_PLUGINS = [
-	'xht_fee',
-	'kyc',
-	'sms',
-	'freshdesk',
-	'chat',
-	'bank',
-	'announcement',
-	'zendesk'
-];
-
-exports.REQUIRED_XHT = 100;
 
 exports.SMS_CODE_KEY = 'user:sms';
 exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
@@ -609,6 +610,28 @@ exports.VERIFY_STATUS = {
 	COMPLETED: 3
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
+
+// Login timeout  START------------------------------
+exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
+exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+// Login timeout  END------------------------------
+
+// BROKER CONSTANTS START
+
+exports.EXCHANGE_PLAN_INTERVAL_TIME = {
+	crypto: 5,
+	fiat: 5,
+	boost: 60
+};
+exports.EXCHANGE_PLAN_PRICE_SOURCE = {
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
+	crypto: ['hollaex', 'oracle', 'binance'],
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+};
+
+
+// BROKER CONSTANTS END
 
 exports.CUSTOM_CSS = `
 	.topbar-wrapper img {

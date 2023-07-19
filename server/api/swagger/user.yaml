@@ -152,6 +152,11 @@ paths:
           type: number
           format: int32
         - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
           name: page
           description: Page of data to  retrieve
           required: false
@@ -184,7 +189,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
       responses:
         200:
@@ -373,7 +378,7 @@ paths:
               secret:
                 type: string
                 maxLength: 256
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -407,7 +412,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -441,7 +446,7 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -477,6 +482,115 @@ paths:
         - bearer
       x-security-scopes:
         - user
+  /user/sessions:
+    x-swagger-router-controller: user
+    get:
+      description: Get user sessions
+      operationId: getUserSessions
+      parameters:
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
+  /user/revoke-session:
+    x-swagger-router-controller: user
+    post:
+      description: Revoke user session
+      operationId: revokeUserSession
+      tags:
+        - User
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - session_id
+            properties:
+              session_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - user
   /user/balance:
     x-swagger-router-controller: user
     get:
@@ -489,8 +603,12 @@ paths:
           description: Success
           schema:
             $ref: "#/definitions/ObjectResponse"
-        403:
+        401:
           description: Access Denied
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
           schema:
             $ref: "#/definitions/MessageResponse"
       security:
@@ -579,7 +697,7 @@ paths:
           description: Created
           schema:
             $ref: "#/definitions/MessageResponse"
-        403:
+        401:
           description: Access Denied
           schema:
             $ref: "#/definitions/MessageResponse"
@@ -893,7 +1011,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
         - in: query
           name: transaction_id
@@ -1008,7 +1126,7 @@ paths:
           name: format
           description: Specify data format
           required: false
-          enum: ['csv']
+          enum: ['csv', 'all']
           type: string
         - in: query
           name: transaction_id
@@ -1199,4 +1317,25 @@ paths:
         - bearer
       x-security-scopes:
         - user
-    
+  /logout:
+    x-swagger-router-controller: user
+    get:
+      operationId: userLogout
+      description: Logout and revoke the user session
+      tags:
+        - User
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - user

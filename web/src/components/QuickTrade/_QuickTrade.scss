@@ -151,13 +151,7 @@ $title-icon--height: 10rem;
 				width: 100% !important;
 			}
 		}
-		.currency-ball-image-wrapper {
-			height: 5rem;
-		}
-		.coins-icon {
-			width: 5rem;
-			height: 5rem;
-		}
+
 		.f-size-16 {
 			font-size: 16px;
 			color: $colors-deactivate;
@@ -308,6 +302,10 @@ $title-icon--height: 10rem;
 			}
 		}
 	}
+	.swap-wrapper,
+	.swap-wrapper-wrapper {
+		width: 100% !important;
+	}
 }
 .mobile_dropdown-section {
 	border-top: solid;
@@ -355,5 +353,17 @@ $title-icon--height: 10rem;
 				}
 			}
 		}
+		.swap-wrapper {
+			width: 250px;
+		}
 	}
+}
+
+.swap-container {
+	border-left: $colors-black dotted 2px;
+}
+
+.swap-wrapper {
+	width: 310px;
+	padding: 0 1rem;
 }

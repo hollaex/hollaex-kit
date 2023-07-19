@@ -96,6 +96,16 @@
 	max-width: 5rem;
 }
 
+.session-login-date {
+	min-width: 7rem;
+	max-width: 8rem;
+}
+
+.expander-handle {
+	min-width: 1rem;
+	max-width: 1rem;
+}
+
 .tokens-icon,
 .tokens-revoke {
 	min-width: 3rem;
@@ -427,4 +437,87 @@ $padding-input: 4rem;
 	flex-basis: 0;
 	flex-grow: 1;
 	padding-right: 1rem;
+}
+
+.session-dialog-content {
+	width: 38rem;
+
+	.icon_title-wrapper {
+		flex-direction: row;
+		justify-content: flex-start;
+		margin-top: 0.5rem;
+
+		.icon_title-text.title {
+			font-size: 2rem;
+			font-weight: bold;
+			margin: 0.5rem;
+		}
+
+		.icon_title-svg {
+			height: 3rem;
+			width: 3rem;
+
+			svg {
+				height: 3rem;
+				width: 3rem;
+			}
+		}
+	}
+}
+
+.download-logins {
+	.action_notification-svg svg path {
+		fill: $link;
+	}
+}
+
+.login-history-section-wrapper {
+	.refresh-history {
+		.action_notification-svg svg path {
+			fill: $link;
+		}
+	}
+
+	.action_notification-wrapper {
+		position: unset;
+	}
+
+	.header_title-action {
+		position: absolute;
+		top: 0.25rem;
+		right: 0;
+	}
+}
+
+.direction_rtl {
+	.login-history-section-wrapper {
+		.header_title-action {
+			flex-direction: row-reverse;
+			left: 0;
+		}
+	}
+}
+
+.login-history_notifications-wrapper {
+	display: flex;
+	flex-direction: inherit;
+}
+
+.login-history_notifications-wrapper > div:not(:last-child)::after {
+	padding: 0 0.8rem;
+	content: '|';
+	color: $colors-black;
+}
+
+.direction_rtl {
+	.login-history_notifications-wrapper > div:not(:last-child)::after {
+		padding: 0;
+		content: '';
+	}
+
+	.login-history_notifications-wrapper > div:not(:last-child)::before {
+		padding: 0 0.8rem;
+		content: '|';
+		color: $colors-black;
+	}
 }

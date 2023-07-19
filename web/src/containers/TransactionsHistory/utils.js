@@ -10,7 +10,7 @@ import mathjs from 'mathjs';
 import { isMobile } from 'react-device-detect';
 
 import STRINGS from 'config/localizedStrings';
-import { Image } from 'components';
+import { Coin } from 'components';
 import {
 	EXPLORERS_ENDPOINT,
 	BASE_CURRENCY,
@@ -104,13 +104,8 @@ export const generateOrderHistoryHeaders = (
 				return (
 					<td key={index} className="text-uppercase sticky-col">
 						<div className="d-flex align-items-center">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="currency-ball"
-								imageWrapperClassName="currency-ball-image-wrapper"
-							/>
-							<div>{display_name}</div>
+							<Coin iconId={icon_id} />
+							<div className="px-2">{display_name}</div>
 						</div>
 					</td>
 				);
@@ -433,13 +428,8 @@ export const generateTradeHeaders = (
 				return (
 					<td key={index} className="text-uppercase sticky-col">
 						<div className="d-flex align-items-center">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="currency-ball"
-								imageWrapperClassName="currency-ball-image-wrapper"
-							/>
-							<div>{display_name}</div>
+							<Coin iconId={icon_id} />
+							<div className="px-2">{display_name}</div>
 						</div>
 					</td>
 				);
@@ -697,13 +687,8 @@ export const generateWithdrawalsHeaders = (
 				return (
 					<td key={index} className="coin-cell sticky-col">
 						<div className="d-flex align-items-center">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="coin-icons"
-								imageWrapperClassName="currency-ball-image-wrapper"
-							/>
-							{data.fullname}
+							<Coin iconId={icon_id} />
+							<div className="px-2">{data.fullname}</div>
 						</div>
 					</td>
 				);

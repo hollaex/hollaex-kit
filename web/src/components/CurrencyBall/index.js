@@ -25,7 +25,7 @@ const CurrencyBall = ({ name, symbol, size, className }) => (
 			...FLEX_CENTER_CLASSES,
 			'currency_ball-wrapper',
 			'default-coin',
-			symbol,
+			`currency_ball-${symbol}`,
 			getSizeClass(size),
 			className
 		)}

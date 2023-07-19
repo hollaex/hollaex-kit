@@ -1,10 +1,6 @@
 .quick-trade-select-wrapper {
 	.input-group__coin-icons-wrap {
 		display: flex;
-		.currency-ball-image-wrapper {
-			height: 18px;
-			padding-right: 5px;
-		}
 	}
 }
 .input-group__container {
@@ -33,14 +29,7 @@
 		width: 2.5rem;
 		display: flex;
 	}
-	.currency-ball-image-wrapper {
-		height: 15px;
-		padding-right: 5px;
 
-		&:hover {
-			height: 20px;
-		}
-	}
 	&:focus-within {
 		border-color: $link !important;
 		.ant-input {
@@ -57,70 +46,9 @@
 		.ant-select-selector {
 			color: $colors-main-black !important;
 		}
-
-		.input-group__coin-icons {
-			width: 2.2rem;
-		}
 	}
 
 	&:hover {
 		border-color: $colors-main-black;
-	}
-}
-
-.input-group__coin-icons {
-	width: 1.8rem;
-	height: 100%;
-
-	svg {
-		margin: 0 auto;
-		display: block;
-		width: 100% !important;
-		height: 100% !important;
-
-		.btc0,
-		.btc1 {
-			fill: $coin-btc;
-		}
-		.eth0,
-		.eth1 {
-			fill: $coin-eth;
-		}
-		.bch-icon {
-			fill: $coin-bch;
-		}
-		.xrp-icon {
-			fill: $coin-xrp;
-		}
-		.xmr-icon {
-			fill: $coin-xmr;
-		}
-		.ada-icon {
-			fill: $coin-ada;
-		}
-		.bnb-icon {
-			fill: $coin-bnb;
-		}
-		.dai-icon {
-			fill: $coin-dai;
-		}
-		.eos-icon {
-			fill: $coin-eos;
-		}
-		.ltc-icon {
-			fill: $coin-ltc;
-		}
-		.trx-icon {
-			fill: $coin-trx;
-		}
-		.tusd-icon {
-			fill: $coin-tusd;
-		}
-		.xlm-icon {
-			fill: $coin-xlm;
-		}
-		.default-icon {
-			fill: $colors-black !important;
-		}
 	}
 }

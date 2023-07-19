@@ -46,13 +46,21 @@ export const createBroker = (values) => {
 	return requestAuthenticated('/broker', options);
 };
 export const createTestBroker = (values) => {
+	return axios.post('/broker/test', { ...values })
+};
+
+export const createTestUniswap = (values) => {
 	const options = {
 		method: 'POST',
 		body: JSON.stringify(values),
 	};
 
-	return requestAuthenticated('/broker/test', options);
+	return requestAuthenticated('/broker/uniswap/test', options);
 };
+
+export const getBrokerUniswapTokens = () => requestAuthenticated(`/broker/uniswap`);
+
+export const getTrackedExchangeMarkets = (exchange_name) => requestAuthenticated(`/broker/markets?exchange_name=${exchange_name}`);
 
 export const updateBroker = (values) => {
 	const options = {
@@ -63,12 +71,29 @@ export const updateBroker = (values) => {
 	return requestAuthenticated('/broker', options);
 };
 
+export const updateQuickTradeConfig = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/quicktrade/config', options);
+};
+
 export const deleteBroker = (id) => {
 	const options = {
 		method: 'DELETE',
 		body: JSON.stringify(id),
 	};
 	return requestAuthenticated('/broker', options);
+};
+
+export const updateConstants = (values) => {
+	const options = {
+		method: 'PUT',
+		body: JSON.stringify(values),
+	};
+	return requestAuthenticated(`/admin/kit`, options);
 };
 
 export const getBrokerQuote = (symbol, side) =>

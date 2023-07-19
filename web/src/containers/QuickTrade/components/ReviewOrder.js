@@ -7,7 +7,8 @@ const ReviewOrder = ({
 	onCloseDialog,
 	onExecuteTrade,
 	selectedSource,
-	decimalPoint,
+	sourceDecimalPoint,
+	targetDecimalPoint,
 	sourceAmount,
 	targetAmount,
 	selectedTarget,
@@ -30,13 +31,13 @@ const ReviewOrder = ({
 						symbol={selectedSource}
 						text={STRINGS['SPEND_AMOUNT']}
 						amount={sourceAmount}
-						decimalPoint={decimalPoint}
+						decimalPoint={sourceDecimalPoint}
 					/>
 					<ReviewBlock
 						symbol={selectedTarget}
 						text={STRINGS['ESTIMATE_RECEIVE_AMOUNT']}
 						amount={targetAmount}
-						decimalPoint={decimalPoint}
+						decimalPoint={targetDecimalPoint}
 					/>
 				</div>
 				<footer className="d-flex pt-4">

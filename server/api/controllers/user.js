@@ -25,9 +25,11 @@ const {
 	INVALID_PASSWORD,
 	USER_EXISTS,
 	USER_EMAIL_IS_VERIFIED,
-	INVALID_VERIFICATION_CODE
+	INVALID_VERIFICATION_CODE,
+	LOGIN_NOT_ALLOW,
+	NO_IP_FOUND
 } = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL } = require('../../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
@@ -291,6 +293,25 @@ const verifyUser = (req, res) => {
 		});
 };
 
+
+
+const createAttemptMessage = (loginData, user, domain) => {
+	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
+	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
+	{ return '' }
+	else if(currentNumberOfAttemps === 0) { 
+		sendEmail(
+			MAILTYPE.LOCKED_ACCOUNT,
+			user.email,
+			{},
+			user.settings,
+			domain);
+
+		return ' ' + LOGIN_NOT_ALLOW; 
+	};
+	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
+}
+
 const loginPost = (req, res) => {
 	const {
 		password,
@@ -351,7 +372,7 @@ const loginPost = (req, res) => {
 		.then(() => {
 			return toolsLib.user.getUserByEmail(email);
 		})
-		.then((user) => {
+		.then(async (user) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
@@ -363,14 +384,22 @@ const loginPost = (req, res) => {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
 
+			const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
+				throw new Error(LOGIN_NOT_ALLOW);
+			}
+
 			return all([
 				user,
 				toolsLib.security.validatePassword(user.password, password)
 			]);
 		})
-		.then(([user, passwordIsValid]) => {
+		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
-				throw new Error(INVALID_CREDENTIALS);
+				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+				const message = createAttemptMessage(loginData, user, domain);
+				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
 			if (!user.otp_enabled) {
@@ -378,25 +407,20 @@ const loginPost = (req, res) => {
 			} else {
 				return all([
 					user,
-					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code).then((validOtp) => {
-						if (!validOtp) {
-							throw new Error(INVALID_OTP_CODE);
-						} else {
-							return toolsLib.security.checkCaptcha(captcha, ip);
-						}
+					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code)
+					.then(async () => {
+						return toolsLib.security.checkCaptcha(captcha, ip);
+					})
+					.catch(async (err) => {
+						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+						const message = createAttemptMessage(loginData, user, domain);
+						throw new Error(err.message + message);
 					})
 				]);
 			}
 		})
 		.then(([user]) => {
-			if (ip) {
-				toolsLib.user.registerUserLogin(user.id, ip, {
-					device,
-					domain,
-					origin,
-					referer
-				});
-			}
 			const data = {
 				ip,
 				time,
@@ -414,8 +438,10 @@ const loginPost = (req, res) => {
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
-			return res.status(201).json({
-				token: toolsLib.security.issueToken(
+
+			return all([
+				user,
+				toolsLib.security.issueToken(
 					user.id,
 					user.network_id,
 					email,
@@ -427,11 +453,18 @@ const loginPost = (req, res) => {
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
-			});
+			])
+		})
+		.then(async ([user, token]) => {
+			if (!ip) {
+				throw new Error(NO_IP_FOUND)
+			}
+			await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
+			return res.status(201).json({ token });
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/loginPost catch', err.message);
-			return res.status(err.statusCode || 403).json({ message: errorMessageConverter(err) });
+			return res.status(err.statusCode || 401).json({ message: errorMessageConverter(err) });
 		});
 };
 
@@ -632,7 +665,7 @@ const getUserLogins = (req, res) => {
 	loggerUser.debug(req.uuid, 'controllers/user/getUserLogins auth', req.auth.sub);
 
 	const user_id = req.auth.sub.id;
-	const { limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { limit, status, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerUser.error(
@@ -663,6 +696,7 @@ const getUserLogins = (req, res) => {
 
 	toolsLib.user.getUserLogins({
 		userId: user_id,
+		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -672,7 +706,7 @@ const getUserLogins = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -1113,6 +1147,87 @@ const addUserBank = (req, res) => {
 		});
 };
 
+const getUserSessions = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/getUserSessions/auth', req.auth);
+
+	const { limit, status, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	const user_id = req.auth.sub.id;
+
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerUser.error(
+			req.uuid,
+			'controllers/user/getUserSessions invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		user_id: user_id,
+		status: status.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+		}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/getUserSessions', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const revokeUserSession = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/revokeUserSession/auth', req.auth);
+
+	const { session_id } = req.swagger.params.data.value;
+
+	const user_id = req.auth.sub.id;
+
+	toolsLib.user.revokeExchangeUserSession(session_id, user_id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/revokeUserSession', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+}
+
+const userLogout = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/userLogout/auth', req.auth);
+
+	const user_id = req.auth.sub.id;
+
+	const bearer = req.headers['authorization'];
+	const tokenString = bearer.split(' ')[1];
+
+	toolsLib.security.findSession(tokenString)
+		.then((session) => {
+			return toolsLib.user.revokeExchangeUserSession(session.id, user_id);
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/userLogout', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1138,5 +1253,8 @@ module.exports = {
 	getUserStats,
 	userCheckTransaction,
 	requestEmailConfirmation,
-	addUserBank
+	addUserBank,
+	revokeUserSession,
+	getUserSessions,
+	userLogout
 };

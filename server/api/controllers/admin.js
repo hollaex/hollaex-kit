@@ -4,13 +4,15 @@ const { loggerAdmin } = require('../../config/logger');
 const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
-const { ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
-const { sendEmail, testSendSMTPEmail } = require('../../mail');
+const { INIT_CHANNEL, ROLES } = require('../../constants');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV } = require('../../messages');
+const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
+const { publisher } = require('../../db/pubsub');
+const { parse } = require('json2csv');
 const crypto = require('crypto');
 
 const VERIFY_STATUS = {
@@ -112,7 +114,35 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { id, search, type, pending, pending_type, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const { 
+		id, 
+		search,
+		type,
+		pending,
+		pending_type,
+		limit,
+		page,
+		order_by,
+		order,
+		start_date,
+		end_date,
+		format,
+		email,
+		username,
+		full_name,
+		dob_start_date,
+		dob_end_date,
+		gender,
+		nationality,
+		verification_level,
+		email_verified,
+		otp_enabled,
+		phone_number,
+		kyc,
+		bank,
+		id_number
+	
+	} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
@@ -140,12 +170,26 @@ const getUsersAdmin = (req, res) => {
 		end_date: end_date.value,
 		format: format.value,
 		type: type.value,
+		email: email.value,
+		username: username.value,
+		full_name: full_name.value,
+		dob_start_date: dob_start_date.value,
+		dob_end_date: dob_end_date.value,
+		gender: gender.value,
+		nationality: nationality.value,
+		verification_level: verification_level.value,
+		email_verified: email_verified.value,
+		otp_enabled: otp_enabled.value,
+		phone_number: phone_number.value,
+		kyc: kyc.value,
+		bank: bank.value,
+		id_number: id_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -441,8 +485,12 @@ const getAdminUserLogins = (req, res) => {
 		'controllers/admin/getAdminUserLogins/auth',
 		req.auth
 	);
-	const { user_id, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
+	const { user_id, status, country, ip, limit, page, start_date, order_by, order, end_date, format } = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
 			req.uuid,
@@ -472,6 +520,9 @@ const getAdminUserLogins = (req, res) => {
 
 	toolsLib.user.getUserLogins({
 		userId: user_id.value,
+		status: status.value,
+		country: country.value,
+		ip: ip.value,
 		limit: limit.value,
 		page: page.value,
 		orderBy: order_by.value,
@@ -481,7 +532,7 @@ const getAdminUserLogins = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-logins.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -546,7 +597,7 @@ const getUserAudits = (req, res) => {
 		format: format.value
 	})
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-audits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -798,7 +849,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		req.auth
 	);
 
-	const { start_date, end_date } = req.swagger.params;
+	const { start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
 		additionalHeaders: {
@@ -806,7 +857,19 @@ const getExchangeGeneratedFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			return res.json(data);
+			if (format.value === 'csv') {
+				const parsedData = data && Object.values(data)[0];
+				if (!parsedData || parsedData?.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(parsedData, Object.keys(parsedData[0]));
+
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(csv);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -2136,26 +2199,26 @@ const createUserByAdmin = (req, res) => {
 		where: { email },
 		attributes: ['email']
 	})
-	.then((user) => {
-		if (user) {
-			throw new Error(USER_EXISTS);
-		}
-
-		return toolsLib.user.createUser(email, password, {
-			role: 'user',
-			id: null,
-			additionalHeaders: {
-				'x-forwarded-for': req.headers['x-forwarded-for']
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
 			}
+
+			return toolsLib.user.createUser(email, password, {
+				role: 'user',
+				id: null,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			});
 		})
-	})
-	.then(() => {
-		return res.status(201).json({ message: 'Success' });
-	})
-	.catch((err) => {
-		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	});
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const createUserWalletByAdmin = (req, res) => {
@@ -2247,7 +2310,7 @@ const getWalletsByAdmin = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -2257,6 +2320,203 @@ const getWalletsByAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getWalletsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const sendEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { user_id, mail_type, data } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendEmailByAdmin',
+		'mail_type',
+		mail_type,
+		'user_id',
+		user_id,
+		'data',
+		data
+	);
+
+	toolsLib.user.getUserByKitId(user_id)
+		.then((user) => {
+			if (!user) {
+				throw new Error(USER_NOT_FOUND);
+			}
+			return sendEmail(
+				mail_type,
+				user.email,
+				data,
+				user.settings
+			);
+		})
+		.then(() => { 
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendEmailByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const sendRawEmailByAdmin = (req, res) => {
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		req.auth.sub
+	);
+
+	const { receivers, title, html, text } = req.swagger.params.data.value;
+
+	loggerAdmin.info(
+		req.uuid,
+		'controllers/admin/sendRawEmailByAdmin',
+		'receivers',
+		receivers,
+		'title',
+		title,
+	);
+
+	sendRawEmail(
+		receivers,
+		title,
+		html,
+		text
+	)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(
+				req.uuid,
+				'controllers/admin/sendRawEmailByAdmin',
+				err.message
+			);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getUserSessionsByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
+
+	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+	
+	if (order_by.value && typeof order_by.value !== 'string') {
+		loggerAdmin.error(
+			req.uuid,
+			'controllers/admin/getUserSessionsByAdmin invalid order_by',
+			order_by.value
+		);
+		return res.status(400).json({ message: 'Invalid order by' });
+	}
+
+	toolsLib.user.getExchangeUserSessions({
+		user_id: user_id.value,
+		last_seen: last_seen.value,
+		status: status.value,
+		limit: limit.value,
+		page: page.value,
+		order_by: order_by.value,
+		order: order.value,
+		start_date: start_date.value,
+		end_date: end_date.value,
+		format: format.value
+	}
+	)
+		.then((data) => {
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-logins.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getUserSessionsByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const revokeUserSessionByAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/revokeUserSessionByAdmin/auth', req.auth);
+
+	const { session_id } = req.swagger.params.data.value;
+
+	toolsLib.user.revokeExchangeUserSession(session_id)
+		.then((data) => {
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserSessionByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const updateQuickTradeConfig = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
+
+	const { symbol, type, active } = req.swagger.params.data.value;
+
+	toolsLib.order.updateQuickTradeConfig({ symbol, active, type }
+	)
+		.then((data) => {
+			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
+			return res.json(data);
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/updateQuickTradeConfig', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const getBalancesAdmin = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
+
+	const { 
+		user_id, 
+		currency,
+		format
+	} = req.swagger.params;
+
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+
+	toolsLib.user.getAllBalancesAdmin({
+		user_id: user_id.value,
+		currency: currency.value,
+		format: format.value,
+		additionalHeaders: {
+			'x-forwarded-for': req.headers['x-forwarded-for']
+		}
+	})
+		.then((data) => {
+			if (format.value === 'all') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(data);
+			} else {
+				return res.json(data);
+			}
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -2317,5 +2577,11 @@ module.exports = {
 	getUserReferer,
 	createUserByAdmin,
 	createUserWalletByAdmin,
-	getWalletsByAdmin
+	getWalletsByAdmin,
+	getUserSessionsByAdmin,
+	revokeUserSessionByAdmin,
+	sendEmailByAdmin,
+	sendRawEmailByAdmin,
+	updateQuickTradeConfig,
+	getBalancesAdmin
 };

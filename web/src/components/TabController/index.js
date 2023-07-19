@@ -9,7 +9,6 @@ const TabController = ({
 	title,
 	titleIcon,
 	iconId,
-	quicktrade,
 }) => (
 	<div className="tab_controller-wrapper">
 		{(title || titleIcon) && (
@@ -27,7 +26,6 @@ const TabController = ({
 					className: classnames('tab_item', {
 						'tab_item-active': index === activeTab,
 						'tab_item-deactive': index !== activeTab,
-						'tab-trade': quicktrade === true,
 						pointer: setActiveTab,
 					}),
 				};

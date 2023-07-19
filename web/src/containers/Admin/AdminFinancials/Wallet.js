@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { message, Table, Button } from 'antd';
-import { requestUsersDownload } from '../User/actions';
+import { message, Table, Button, Spin } from 'antd';
 import MultiFilter from './TableFilter';
-import { getExchangeWallet } from './action';
+import { getExchangeWallet, getExchangeWalletCsv } from './action';
 
 const columns = [
 	{
@@ -15,7 +14,7 @@ const columns = [
 					<Button className="ant-btn green-btn ant-tooltip-open ant-btn-primary">
 						{data.User.id}
 					</Button>
-					<div className="ml-3">{data.User.email}</div>
+					{/* <div className="ml-3">{data.User.email}</div> */}
 				</div>
 			);
 		},
@@ -40,78 +39,120 @@ const columns = [
 const filterFields = [
 	{
 		label: 'User ID',
-		value: 'user_id',
-		placeHolder: 'Input User ID',
+		value: '',
+		placeholder: 'Input User ID',
 		type: 'number',
 		name: 'user_id',
 	},
 	{
 		label: 'Address',
-		value: 'address',
-		placeHolder: 'Input address',
+		value: '',
+		placeholder: 'Input address',
 		type: 'text',
 		name: 'address',
 	},
 	{
 		label: 'Currency',
-		value: 'currency',
-		placeHolder: 'Currency',
+		value: '',
+		placeholder: 'Currency',
 		type: 'select',
 		name: 'currency',
 	},
 	{
 		label: 'Network',
-		value: 'network',
-		placeHolder: 'Network',
-		type: 'select',
+		value: '',
+		placeholder: 'Network',
+		type: 'text',
 		name: 'network',
 	},
 	{
 		label: 'Time',
 		name: 'time',
-		value: 'time',
-		placeHolder: 'Network',
+		value: '',
+		placeholder: 'Time',
 		type: 'time-picker',
+	},
+];
+
+const filterOptions = [
+	{
+		label: 'User ID',
+		value: 'user_id',
+		name: 'user_id',
+	},
+	{
+		label: 'Address',
+		value: 'address',
+		name: 'address',
+	},
+	{
+		label: 'Currency',
+		value: 'currency',
+		name: 'currency',
+	},
+	{
+		label: 'Network',
+		value: 'network',
+		name: 'network',
+	},
+	{
+		label: 'Time',
+		value: 'time',
+		name: 'time',
 	},
 ];
 
 const Wallet = () => {
 	const [userData, setUserData] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+	const [queryValues, setQueryValues] = useState({});
 
 	useEffect(() => {
+		setIsLoading(true);
 		getWallet();
 	}, []);
 
-	const getWallet = async (values) => {
+	const getWallet = async (values = {}) => {
 		try {
+			setQueryValues(values);
 			const res = await getExchangeWallet(values);
 			if (res && res.data) {
 				setUserData(res.data);
+				setIsLoading(false);
 			}
 		} catch (error) {
-			message.error(error.message);
+			message.error(error.data.message);
+			setIsLoading(false);
 		}
 	};
 
-	const requestDownload = (params = {}) => {
-		return requestUsersDownload({ ...params, format: 'csv' });
+	const requestDownload = () => {
+		return getExchangeWalletCsv({ ...queryValues, format: 'csv' });
 	};
 
 	return (
 		<div className="asset-exchange-wallet-wrapper">
 			<div className="header-txt">Exchange wallets</div>
 			<div className="wallet-filter-wrapper mt-4">
-				<MultiFilter fields={filterFields} onHandle={getWallet} />
+				<MultiFilter
+					fields={filterFields}
+					filterOptions={filterOptions}
+					onHandle={getWallet}
+					setIsLoading={setIsLoading}
+					isLoading={isLoading}
+				/>
 			</div>
 			<div className="mt-5">
 				<span
-					onClick={requestDownload}
+					onClick={(e) => { requestDownload(); }}
 					className="mb-2 underline-text cursor-pointer"
 				>
 					Download below CSV table
 				</span>
 				<div className="mt-4">
-					<Table columns={columns} dataSource={userData} />
+					<Spin spinning={isLoading}>
+						<Table columns={columns} dataSource={userData} />
+					</Spin>
 				</div>
 			</div>
 		</div>

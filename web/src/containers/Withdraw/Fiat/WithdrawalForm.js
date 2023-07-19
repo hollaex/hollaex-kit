@@ -12,12 +12,12 @@ import {
 import renderFields from 'components/Form/factoryFields';
 import ReviewModalContent from './ReviewModalContent';
 import {
-	Image,
 	Button,
 	IconTitle,
 	EditWrapper,
 	Dialog,
 	OtpForm,
+	Coin,
 } from 'components';
 import { DEFAULT_COIN_DATA } from 'config/constants';
 import { getDecimals } from 'utils/utils';
@@ -313,11 +313,7 @@ class Index extends Component {
 		return (
 			<div className="withdraw-form-wrapper">
 				<div className="withdraw-form">
-					<Image
-						iconId={icon_id}
-						icon={ICONS[icon_id]}
-						wrapperClassName="form_currency-ball"
-					/>
+					<Coin iconId={icon_id} type="CS9" />
 					{titleSection}
 					{(!is_verified || !has_verified_bank_account) && (
 						<Fragment>

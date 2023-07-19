@@ -4,9 +4,35 @@ import classnames from 'classnames';
 import { ReactSVG } from 'react-svg';
 
 import { STATIC_ICONS } from 'config/icons';
-import { ActionNotification } from '../../';
-import { getErrorLocalized } from '../../../utils/errors';
-import { EditWrapper } from 'components';
+import { ActionNotification, EditWrapper } from 'components';
+import { getErrorLocalized } from 'utils/errors';
+
+const Warning = ({ text, className = '' }) => (
+	<div className={classnames('d-flex', 'align-items-baseline', className)}>
+		<ExclamationCircleFilled className="field_warning_icon" />
+		<div className="field_warning_text">{text}</div>
+	</div>
+);
+
+const WarningContainer = ({ warning, warnings }) => {
+	if (warnings && Array.isArray(warnings)) {
+		return (
+			<div className="field_warning_wrapper">
+				{warnings.map((msg, index) => (
+					<Warning
+						key={index}
+						text={msg}
+						className={classnames({ 'mt-2': index !== 0 })}
+					/>
+				))}
+			</div>
+		);
+	} else if (warning) {
+		return <Warning text={warning} className="field_warning_wrapper" />;
+	} else {
+		return null;
+	}
+};
 
 export const FieldContent = ({
 	stringId,
@@ -26,6 +52,7 @@ export const FieldContent = ({
 	ishorizontalfield = false,
 	dateFieldClassName,
 	warning,
+	warnings,
 	preview,
 	isEmail,
 	emailMsg,
@@ -41,15 +68,14 @@ export const FieldContent = ({
 							) : (
 								label
 							)}
-							{warning && (
-								<div className="d-flex align-items-baseline field_warning_wrapper">
-									<ExclamationCircleFilled className="field_warning_icon" />
-									<div className="field_warning_text">{warning}</div>
-								</div>
-							)}
+							<WarningContainer warning={warning} warnings={warnings} />
 						</div>
 					)}
-					<EditWrapper stringId={stringId} />
+					<EditWrapper
+						stringId={stringId}
+						warning={warning}
+						warnings={warnings}
+					/>
 				</div>
 				<div className={classnames('field-content')}>
 					<div
@@ -158,6 +184,7 @@ class FieldWrapper extends Component {
 			children,
 			label,
 			warning,
+			warnings,
 			stringId,
 			input: { value },
 			meta: { active = false, error = '', touched = false, invalid = false },
@@ -198,6 +225,7 @@ class FieldWrapper extends Component {
 					stringId={stringId}
 					label={label}
 					warning={warning}
+					warnings={warnings}
 					valid={!invalid}
 					hasValue={hasValue}
 					focused={active || focused}

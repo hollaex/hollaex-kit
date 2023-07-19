@@ -12,7 +12,7 @@ exports.USER_NOT_VERIFIED = 'User is not verified';
 exports.USER_NOT_ACTIVATED = 'User is not activated';
 exports.USER_EXISTS = 'User already exists';
 exports.USER_REGISTERED = 'User successfully registered';
-exports.INVALID_CREDENTIALS = 'Credentials incorrect';
+exports.INVALID_CREDENTIALS = 'Incorrect credentials.';
 exports.USER_VERIFIED = 'User is now verified';
 exports.INVALID_PASSWORD =
 	'Invalid password. It has to contain at least 8 characters, at least one digit and one character.';
@@ -59,6 +59,10 @@ exports.QUICK_TRADE_QUOTE_INVALID = 'Invalid quote';
 exports.QUICK_TRADE_QUOTE_CALCULATING_ERROR = 'Error calculating the quote';
 exports.QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED =
 	'The order with the current size can not be filled';
+exports.QUICK_TRADE_VALUE_IS_TOO_SMALL =
+	'The order with the current size is too small to be filled';
+exports.QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR =
+	'The order with the current price can not be filled';
 exports.QUICK_TRADE_INSUFFICIENT_BALANCE =
 	'Insufficient balance to perform the order';
 exports.QUICK_TRADE_DISABLED = 'Broker service is currently disabled';
@@ -186,16 +190,36 @@ exports.INVALID_NETWORK = (network, validNetworks) => `Invalid network: ${networ
 exports.NETWORK_REQUIRED = (coin, validNetworks) => `Must specify network for coin: ${coin}${validNetworks ? `. Valid networks: ${validNetworks}` : ''}`;
 exports.AUTH_NOT_MATCHED = 'Auth doesn\'t match';
 exports.BROKER_NOT_FOUND = 'Broker pair could not be found';
-exports.BROKER_SIZE_EXCEED = 'Size should be between minimum and maximum set size of broker'
+exports.BROKER_SIZE_EXCEED = 'Size should be between minimum and maximum set size of broker';
 exports.BROKER_PAUSED = 'Broker pair is paused';
 exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while unpaused';
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
 exports.BROKER_FORMULA_NOT_FOUND = 'Broker formula not found';
 exports.SPREAD_MISSING = 'Spread is missing';
+exports.REBALANCE_SYMBOL_MISSING = 'Rebalance symbol for hedge account is missing';
 exports.MANUAL_BROKER_CREATE_ERROR = 'Manual broker cannot select an exchange';
+exports.DYNAMIC_BROKER_CREATE_ERROR = 'Cannot create a dynamic broker without required fields';
+exports.DYNAMIC_BROKER_UNSUPPORTED = 'Selected exchange is not supported by your exchange plan';
+exports.DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR = 'Cannot create a dynamic broker with Basic plan';
 exports.EXCHANGE_NOT_FOUND = 'Exchange not found';
 exports.SYMBOL_NOT_FOUND = 'Symbol not found';
 exports.INVALID_TOKEN_TYPE = 'invalid token type';
 exports.NO_AUTH_TOKEN = 'no auth token sent';
 exports.WHITELIST_DISABLE_ADMIN = 'Admin cannot disable whitelisting feature';
 exports.WHITELIST_NOT_PROVIDED = 'Admin needs to provide whitelisted IP(s)';
+exports.SESSION_NOT_FOUND = 'Session not found';
+exports.SESSION_ALREADY_REVOKED = 'Session already revoked';
+exports.WRONG_USER_SESSION = 'this session does not belong to you';
+exports.LOGIN_NOT_ALLOW = 'You attempted to login too many times, please wait for a while to try again';
+exports.UNISWAP_PRICE_NOT_FOUND = 'Uniswap could not find price for this pair';
+exports.FORMULA_MARKET_PAIR_ERROR = 'Market pair(s) in the formula is in wrong format';
+exports.FAIR_PRICE_BROKER_ERROR = 'Order not executed, Price abnormality detected';
+exports.COIN_INPUT_MISSING = 'Coin inputs are missing';
+exports.AMOUNTS_MISSING = 'Coin amount inputs are missing';
+exports.AMOUNT_NEGATIVE_ERROR = 'Amount cannot be negative';
+exports.QUICK_TRADE_CONFIG_NOT_FOUND = 'Quick trade config not found';
+exports.QUICK_TRADE_TYPE_NOT_SUPPORTED = 'Quick trade type not supported';
+exports.PRICE_NOT_FOUND = 'Price could not found';
+exports.INVALID_PRICE = 'Invalid price';
+exports.INVALID_SIZE = 'Invalid size';
+exports.NO_IP_FOUND = 'Request can not be processed';

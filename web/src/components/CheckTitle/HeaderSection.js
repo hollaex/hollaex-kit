@@ -13,6 +13,7 @@ const HeaderSection = ({
 	iconId,
 	stringId,
 	icons: ICONS,
+	notification,
 }) => {
 	return (
 		<div className="header_title-wrapper d-flex flex-column w-100 f-1">
@@ -48,6 +49,9 @@ const HeaderSection = ({
 									onClick={openContactForm}
 								/>
 							</div>
+						)}
+						{!openContactForm && notification && (
+							<div className="header_title-action">{notification}</div>
 						)}
 					</div>
 					{children && <div className="header_title-children">{children}</div>}

@@ -587,11 +587,7 @@ class OrderEntry extends Component {
 	onFeeStructureAndLimits = () => {
 		const { router } = this.props;
 
-		if (isLoggedIn()) {
-			router.push('/fees-and-limits');
-		} else {
-			router.push('/login');
-		}
+		router.push('/fees-and-limits');
 	};
 
 	render() {

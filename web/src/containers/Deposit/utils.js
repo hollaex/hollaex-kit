@@ -46,13 +46,25 @@ export const generateFormFields = ({
 			label: getNetworkNameByKey(network),
 		}));
 
+		const { min } = coins[currency];
+		const warnings = [STRINGS['DEPOSIT_FORM_NETWORK_WARNING']];
+		if (min) {
+			warnings.push(
+				STRINGS.formatString(
+					STRINGS['DEPOSIT_FORM_MIN_WARNING'],
+					min,
+					currency.toUpperCase()
+				)
+			);
+		}
+
 		fields.network = {
 			type: 'select',
 			stringId:
-				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,DEPOSIT_FORM_NETWORK_WARNING',
+				'WITHDRAWALS_FORM_NETWORK_LABEL,WITHDRAWALS_FORM_NETWORK_PLACEHOLDER,DEPOSIT_FORM_NETWORK_WARNING,DEPOSIT_FORM_MIN_WARNING',
 			label: STRINGS['WITHDRAWALS_FORM_NETWORK_LABEL'],
 			placeholder: STRINGS['WITHDRAWALS_FORM_NETWORK_PLACEHOLDER'],
-			warning: STRINGS['DEPOSIT_FORM_NETWORK_WARNING'],
+			warnings,
 			validate: [required],
 			fullWidth: true,
 			options: networkOptions,

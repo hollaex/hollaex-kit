@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import mathjs from 'mathjs';
-import { IconTitle, Button, EditWrapper, Image } from 'components';
+import { IconTitle, Button, EditWrapper, Coin } from 'components';
 import { DEFAULT_COIN_DATA, CURRENCY_PRICE_FORMAT } from 'config/constants';
 import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import STRINGS from 'config/localizedStrings';
@@ -55,12 +55,7 @@ const DustConfirmation = ({
 
 					return (
 						<div key={key} className="d-flex align-items-center">
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="currency-ball"
-								imageWrapperClassName="currency-ball-image-wrapper"
-							/>
+							<Coin iconId={icon_id} />
 							<div>{fullname}</div>
 						</div>
 					);

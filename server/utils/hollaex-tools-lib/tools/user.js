@@ -50,9 +50,12 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	SESSION_NOT_FOUND,
+	SESSION_ALREADY_REVOKED,
+	WRONG_USER_SESSION
 } = require(`${SERVER_PATH}/messages`);
-const { publisher } = require('./database/redis');
+const { publisher, client } = require('./database/redis');
 const {
 	CONFIGURATION_CHANNEL,
 	AUDIT_KEYS,
@@ -62,12 +65,16 @@ const {
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
-	AFFILIATION_CODE_LENGTH
+	AFFILIATION_CODE_LENGTH,
+	LOGIN_TIME_OUT,
+	TOKEN_TIME_LONG,
+	TOKEN_TIME_NORMAL,
+	VERIFY_STATUS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
-const { isValidPassword } = require('./security');
+const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -76,6 +83,7 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
+const geoip = require('geoip-lite');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -324,7 +332,10 @@ const registerUserLogin = (
 		device: null,
 		domain: null,
 		origin: null,
-		referer: null
+		referer: null,
+		token: null,
+		expiry: null,
+		status: true,
 	}
 ) => {
 	const login = {
@@ -348,8 +359,64 @@ const registerUserLogin = (
 		login.referer = opts.referer;
 	}
 
-	return getModel('login').create(login);
+	if (isBoolean(opts.status)) {
+		login.status = opts.status;
+	}
+
+	if (opts.status === false) {
+		login.attempt = 1;
+	}
+	const geo = geoip.lookup(ip);
+	if (geo?.country) login.country = geo.country;
+	return getModel('login').create(login)
+	.then((loginData) => {
+		if(opts.token && opts.status) {
+			return createSession(opts.token, loginData.id, userId, opts.expiry);
+		}
+	})
+	.catch(err => reject(err))
 };
+
+const updateLoginAttempt = (loginId) => {
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+}
+
+const updateLoginStatus = (loginId) => {
+	return getModel('login').update( { status: true }, { where: { id: loginId } });
+}
+
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
+	const loginData = await findUserLatestLogin(user, status);
+
+	if (!loginData || loginData?.status == true) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	} 
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+	}
+}
+
+
+const findUserLatestLogin = (user, status) => {
+	return getModel('login').findOne({
+		order: [ [ 'timestamp', 'DESC' ]],
+		where: {
+			user_id: user.id,
+			...(status != null && { status }),
+			updated_at: {
+				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
+			},
+		}
+	});
+}
 
 /* Public Endpoints*/
 
@@ -518,188 +585,134 @@ const getAllUsersAdmin = (opts = {
 	end_date: null,
 	format: null,
 	type: null,
+	email: null,
+	username: null,
+	full_name: null,
+	pending_verification: null,
+	dob_start_date: null,
+	dob_end_date: null,
+	gender: null,
+	nationality: null,
+	verification_level: null,
+	email_verified: null,
+	otp_enabled: null,
+	phone_number: null,
+	kyc: null,
+	bank: null,
+	id_number: null,
 	additionalHeaders: null
 }) => {
+	const {
+		id,
+		gender,
+		email_verified,
+		otp_enabled,
+		dob_start_date,
+		dob_end_date,
+		id_number
+	} = opts;
+
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	let query = {
 		where: {
-			created_at: timeframe
-		}
+			created_at: timeframe,
+			...(id != null && { id }),
+			...((dob_start_date != null || dob_end_date != null) && { dob: dob_timeframe }),
+			...(email_verified != null && { email_verified }),
+			...(gender != null && { gender }),
+			...(otp_enabled != null && { otp_enabled }),
+			[Op.and]: [],
+		},
+		order: [ordering]
 	};
-	if (opts.id || opts.search) {
+	query.attributes = {
+		exclude: ['balance', 'password', 'updated_at']
+	};
+
+	if (opts.search) {
 		query.attributes = {
 			exclude: ['balance', 'password', 'updated_at']
 		};
 		if (opts.id) {
 			query.where.id = opts.id;
 		}
-		else if (opts.type != null) {
-			query.where = {
-				[Op.or]: []
-			};
-
-			switch (opts.type) {
-				case 'id':
-					query.where[Op.or].push(
-						{
-							id: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'email':
-					query.where[Op.or].push(
-						{
-							email: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'crypto_wallet':
-					query.where[Op.or].push(
-						{
-							crypto_wallet: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'createdAt':
-					query.where[Op.or].push(
-						{
-							createdAt: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'updatedAt':
-					query.where[Op.or].push(
-						{
-							updatedAt: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'id_data':
-					query.where[Op.or].push(getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`));
-					break;
-				case 'phone_number':
-					query.where[Op.or].push(
-						{
-							phone_number: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'verification_level':
-					query.where[Op.or].push(
-						{
-							verification_level: {
-								[Op.like]: `%${opts.search}%`
-							}
-						}
-					);
-					break;
-				case 'pending_verification':
-					query.where[Op.or].push(
-						{
-							id_data: {
-								status: 1
-							}
-						}
-					);
-					break;
-				case 'pending_bank':
-					query.where[Op.or].push(getModel('sequelize').literal('bank_account @> \'[{"status":1}]\''));
-					break;
-				default:
-					break;
-			}
-
-		}
-		else {
-			query.where = {
-				[Op.or]: [
-					{
-						email: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						username: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						full_name: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					{
-						phone_number: {
-							[Op.like]: `%${opts.search}%`
-						}
-					},
-					getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
-				]
-			};
-		}
-	} else if (isBoolean(opts.pending) && opts.pending) {
-
-		query = {
-			attributes: [
-				'id',
-				'email',
-				'verification_level',
-				'id_data',
-				'bank_account',
-				'activated'
-			],
-			order: [['updated_at', 'desc']]
-		};
-
-
-		if (opts.pending_type) {
-			if (opts.pending_type === 'id') {
-				query.where = {
-					activated: true,
-					id_data: {
-						status: 1 // users that have a pending id waiting for admin to confirm
+		query.where = {
+			[Op.or]: [
+				{
+					email: {
+						[Op.like]: `%${opts.search}%`
 					}
-				};
-			} else if (opts.pending_type === 'bank') {
-				query.where = {
-					[Op.and]: [
-						{ activated: true },
-						{
-							id_data: {
-								status: 3 // users that have a pending id waiting for admin to confirm
-							}
-						},
-						getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
-					]
-				};
-			} else {
-				throw new Error('pending type is not defined. You need to select id or bank is pending_type');
-			}
-		} else {
-			throw new Error('pending type is not defined. You need to select id or bank is pending_type');
-		}
-	} else {
-		query = {
-			where: {},
-			attributes: {
-				exclude: ['password', 'is_admin', 'is_support', 'is_supervisor', 'is_kyc', 'is_communicator']
-			},
-			order: [ordering]
+				},
+				{
+					username: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				{
+					full_name: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				{
+					phone_number: {
+						[Op.like]: `%${opts.search}%`
+					}
+				},
+				getModel('sequelize').literal(`id_data ->> 'number'='${opts.search}'`)
+			]
 		};
+	}
+	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number'])).forEach(key => {
+		if (opts[key] != null) {
+			query.where[Op.and].push(
+				{
+					[key]: {
+						[Op.iLike]: `%${opts[key].toLowerCase()}%`
+					}
+				}
+			)
+		}
+	})
+	
+	if (isNumber(opts.verification_level)) {
+		query.where[Op.and].push({ verification_level: opts.verification_level });
+	}
+
+	if (isBoolean(opts.pending) && opts.pending) {
+		query.order = [['updated_at', 'desc']];
+
+		if ((opts.kyc && Object.values(VERIFY_STATUS).includes(opts.kyc)) || opts.pending_type === 'id') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				{
+					id_data: {
+						status: opts.kyc != null ? opts.kyc : 1 // users that have a pending id waiting for admin to confirm
+					}
+				},
+			]
+		}
+
+		if (opts.bank || opts.pending_type === 'bank') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
+			]
+		}
+	}
+
+	if (id_number) {
+		query.where[Op.and].push(
+			{
+				id_data: {
+					number: id_number
+				}
+			}
+		)
 	}
 
 	if (!opts.format) {
@@ -711,12 +724,7 @@ const getAllUsersAdmin = (opts = {
 	return dbQuery.findAndCountAllWithRows('user', query)
 		.then(async ({ count, data }) => {
 			if (opts.id || opts.search) {
-				if (count === 0) {
-					// Need to throw error if query was for one user and the user is not found
-					const error = new Error(USER_NOT_FOUND);
-					error.status = 404;
-					throw error;
-				} else if (data[0].verification_level > 0 && data[0].network_id) {
+				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
 					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
 					data[0].balance = userNetworkData.balance;
 					data[0].wallet = userNetworkData.wallet;
@@ -851,9 +859,31 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
+			if (user.is_admin) {
+				throw new Error(CANNOT_DEACTIVATE_ADMIN);
+			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			const sessions = await getModel('session').findAll(
+				{ 
+					where: { status: true },
+					include: [
+						{
+							model: getModel('login'),
+							as: 'login',
+							attributes: ['user_id'],
+							where: { user_id: userId }
+						}
+					]
+				});
+	
+			for (const session of sessions) {
+				await session.update({ status: false }, { fields: ['status'] }); 
+				client.delAsync(session.token);
+			}
+
+
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
@@ -873,7 +903,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.id === 1) {
+			if (user.is_admin) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -1251,6 +1281,9 @@ const toggleFlaggedUserById = (userId) => {
 
 const getUserLogins = (opts = {
 	userId: null,
+	status: null,
+	country: null,
+	ip: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1264,10 +1297,13 @@ const getUserLogins = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.status != null && { status: opts.status }),
+			...(opts.country != null && { country: opts.country }),
+			...(opts.ip != null && { ip: { [Op.like]: `%${opts.ip}%` } })
 		},
 		attributes: {
-			exclude: ['id', 'origin', 'referer']
+			exclude: ['origin', 'referer']
 		},
 		order: [ordering]
 	};
@@ -1876,6 +1912,165 @@ const updateUserInfo = async (userId, data = {}) => {
 	return omitUserFields(user.dataValues);
 };
 
+const getExchangeUserSessions = (opts = {
+	user_id: null,
+	last_seen: null,
+	status: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	return dbQuery.findAndCountAllWithRows('session', {
+		where: {
+			...(opts.status == true && { 
+				status: opts.status,
+				expiry_date: {
+					[Op.gt]: new Date()
+				}
+			}),
+			...(opts.status == false && {
+				[Op.or]: [
+					{ 
+						status: opts.status,
+						expiry_date: {
+							[Op.lt]: new Date()
+						}
+					}]
+			}),
+			created_at: timeframe,
+			...(opts.last_seen && { last_seen: 
+				{
+					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
+				}
+			 }),
+		},
+		attributes: {
+			exclude: ['token']
+		},
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				...(opts.user_id && { where: { user_id: opts.user_id } }),
+				include: [
+					{
+						model: getModel('user'),
+						attributes: ['id', 'email']
+					},
+				]
+			}
+		],
+		order: [ordering],
+		...(!opts.format && pagination),
+	})
+	.then((sessions) => {
+		if (opts.format && opts.format === 'csv') {
+			if (sessions.data.length === 0) {
+				throw new Error(NO_DATA_FOR_CSV);
+			}
+			const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+			return csv;
+		} else {
+			return sessions;
+		}
+	});
+}
+
+const revokeExchangeUserSession = async (sessionId, userId = null) => {
+	const session = await getModel('session').findOne({ 
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				attributes: ['user_id'],
+				...(userId && { where: { user_id: userId } })
+			}
+		],
+		where: { id: sessionId } });
+
+
+	if(!session) {
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if(!session.status) {
+		throw new Error(SESSION_ALREADY_REVOKED);
+	}
+
+	if (userId && session.login.user_id !== userId) {
+		throw new Error(WRONG_USER_SESSION);
+	}
+
+	client.delAsync(session.token);
+
+	const updatedSession = await session.update({ status: false }, {
+		fields: ['status'] 
+	});
+
+	delete updatedSession.dataValues.token;
+	return updatedSession.dataValues;
+}
+
+const getAllBalancesAdmin = async (opts = {
+	user_id: null,
+	currency: null,
+	format: null,
+	additionalHeaders: null
+}) => {
+
+	let network_id = null;
+	if (opts.user_id) {
+		// check mapKitIdToNetworkId
+		const idDictionary = await mapKitIdToNetworkId([opts.user_id]);
+		if (!has(idDictionary, opts.user_id)) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!idDictionary[opts.user_id]) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = idDictionary[opts.user_id];
+		}
+	}
+
+	return getNodeLib().getBalances({ 
+		userId: network_id,
+		currency: opts.currency,
+		format: opts.format,
+		additionalHeaders: opts.additionalHeaders 
+	})
+		.then(async (balances) => {
+			if (balances.data.length > 0) {
+				const networkIds = balances.data.map((balance) => balance.user_id).filter(id => id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let balance of balances.data) {
+					const user_kit_id = idDictionary[balance.user_id];
+					balance.network_id = balance.user_id;
+					balance.user_id = user_kit_id;
+					if (balance.User) balance.User.id = user_kit_id;
+				}
+			}
+
+			if (opts.format && opts.format === 'all') {
+				if (balances.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(balances.data, Object.keys(balances.data[0]));
+				return csv;
+			} else {
+				return balances;
+			}
+		});
+}
+
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1926,5 +2121,12 @@ module.exports = {
 	updateUserMeta,
 	mapNetworkIdToKitId,
 	mapKitIdToNetworkId,
-	updateUserInfo
+	updateUserInfo,
+	updateLoginAttempt,
+	getExchangeUserSessions,
+	revokeExchangeUserSession,
+	updateLoginStatus,
+	findUserLatestLogin,
+	createUserLogin,
+	getAllBalancesAdmin
 };

@@ -9,7 +9,6 @@ import {
 import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router';
 import { isSupport } from 'utils/token';
-import { formatCurrencyByIncrementalUnit } from 'utils/currency';
 import { formatDate } from 'utils';
 
 /*export const renderBoolean = (value) => (
@@ -234,20 +233,10 @@ export const renderRowContent = ({
 	return (
 		<div>
 			<div>
-				Amount:{' '}
-				{formatCurrencyByIncrementalUnit(
-					amount,
-					coins?.[currency?.toLocaleLowerCase()]?.increment_unit
-				)}{' '}
-				{currency}
+				Amount: {amount} {currency}
 			</div>
 			<div>
-				Fee:{' '}
-				{formatCurrencyByIncrementalUnit(
-					fee,
-					coins?.[fee_coin?.toLocaleLowerCase()]?.increment_unit
-				)}{' '}
-				{fee_coin}
+				Fee: {fee} {fee_coin}
 			</div>
 			{address && <div>Address: {address}</div>}
 			<div>Timestamp: {formatDate(created_at)}</div>

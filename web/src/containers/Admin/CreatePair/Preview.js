@@ -1,9 +1,10 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router';
-import { Button, message } from 'antd';
+import { Button, message, Modal } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import Coins from '../Coins';
+import RemoveConfirmation from '../Confirmation';
 import { renderStatus } from '../Trades/Pairs';
 import { updateExchange } from '../AdminFinancials/action';
 
@@ -24,34 +25,35 @@ const Preview = ({
 	exchange,
 	pairs,
 	getMyExchange,
-	buttonSubmitting = false
+	buttonSubmitting = false,
 }) => {
+	const [isVisible, setIsVisible] = useState(false);
+
 	const pair_base_data =
 		allCoins.filter((data) => data.symbol === formData.pair_base)[0] || {};
 	const pair2_data =
 		allCoins.filter((data) => data.symbol === formData.pair_2)[0] || {};
-	
+
 	const handlePreviewNext = async (previewFormData) => {
 		if (isExistPair) {
 			try {
 				let formProps = {
 					id: exchange.id,
-					pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`]
-				}
+					pairs: [...pairs, `${formData.pair_base}-${formData.pair_2}`],
+				};
 				await updateExchange(formProps);
 				await getMyExchange();
 				onClose();
 				message.success('Pairs added successfully');
 			} catch (error) {
-				let errMsg = error.data && error.data.message
-					? error.data.message
-					: error.message;
+				let errMsg =
+					error.data && error.data.message ? error.data.message : error.message;
 				message.error(errMsg);
 			}
 		} else {
 			handleNext(previewFormData);
 		}
-	}
+	};
 
 	return (
 		<div>
@@ -72,14 +74,14 @@ const Preview = ({
 					</div>
 				</Fragment>
 			) : null}
-			{isPreview || isConfigure
-				?
+			{isPreview || isConfigure ? (
 				<div className="d-flex">
-					<div className="title">Manage {formData.pair_base}/{formData.pair_2}</div>
+					<div className="title">
+						Manage {formData.pair_base}/{formData.pair_2}
+					</div>
 					<div>{renderStatus(pair_base_data, user_id)}</div>
 				</div>
-				: null
-			}
+			) : null}
 			<div
 				className={
 					!isPreview && !isConfigure
@@ -174,11 +176,7 @@ const Preview = ({
 						<div>Min size: {formData.min_size}</div>
 						{isConfigure ? (
 							<div>
-								<Button
-									type="primary"
-									className="green-btn"
-									onClick={onEdit}
-								>
+								<Button type="primary" className="green-btn" onClick={onEdit}>
 									Edit
 								</Button>
 							</div>
@@ -191,15 +189,15 @@ const Preview = ({
 								<div className="btn-wrapper">
 									<Button
 										type="danger"
-										onClick={() => onDelete(formData)}
+										onClick={() => setIsVisible(true)}
 										disabled={buttonSubmitting}
 									>
 										Remove
 									</Button>
 									<div className="separator"></div>
 									<div className="description-small remove">
-										Removing this market will permanently delete this market from
-										your exchange. Use with caution!
+										Removing this market will permanently delete this market
+										from your exchange. Use with caution!
 									</div>
 								</div>
 							</div>
@@ -233,6 +231,20 @@ const Preview = ({
 						Next
 					</Button>
 				</div>
+			) : null}
+			{isVisible ? (
+				<Modal
+					visible={isVisible}
+					footer={null}
+					onCancel={() => setIsVisible(false)}
+				>
+					<RemoveConfirmation
+						onCancel={setIsVisible}
+						onHandleRemoveMarket={onDelete}
+						removePair={formData}
+						removeContent={'Markets'}
+					/>
+				</Modal>
 			) : null}
 		</div>
 	);

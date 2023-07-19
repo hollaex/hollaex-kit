@@ -49,6 +49,9 @@ const Step4 = ({
 						<Radio style={radioStyle} value={'bnb'}>
 							BSC (Binance Smart Chain)
 						</Radio>
+						<Radio style={radioStyle} value={'matic'}>
+							Polygon (matic)
+						</Radio>
 						<Radio style={radioStyle} value={'other'}>
 							other
 						</Radio>

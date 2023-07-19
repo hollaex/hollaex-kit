@@ -9,6 +9,7 @@ import {
 	EditWrapper,
 	IconTitle,
 	Image,
+	Coin,
 	Button,
 	Dialog,
 } from 'components';
@@ -87,6 +88,7 @@ const DustSection = ({
 			const calculatedValue = calculateOraclePrice(balance, price);
 			const convertedValue = calculateOraclePrice(balance, conversionPrice);
 			if (
+				key !== quote &&
 				mathjs.smallerEq(calculatedValue, DUST_DEFINITION.criterion) &&
 				mathjs.larger(convertedValue, 0)
 			) {
@@ -321,12 +323,7 @@ const DustSection = ({
 														<td className="table-icon td-fit" />
 														<td className="td-name td-fit">
 															<div className="d-flex align-items-center">
-																<Image
-																	iconId={icon_id}
-																	icon={ICONS[icon_id]}
-																	wrapperClassName="currency-ball"
-																	imageWrapperClassName="currency-ball-image-wrapper"
-																/>
+																<Coin iconId={icon_id} />
 																<div>{fullname}</div>
 															</div>
 														</td>

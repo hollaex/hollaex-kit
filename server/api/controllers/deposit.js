@@ -1,6 +1,8 @@
 'use strict';
 
 const { loggerDeposits } = require('../../config/logger');
+const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 
@@ -30,6 +32,10 @@ const getAdminDeposits = (req, res) => {
 		format
 	} = req.swagger.params;
 
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
+
 	toolsLib.wallet.getUserDepositsByKitId(
 		user_id.value,
 		currency.value,
@@ -54,7 +60,7 @@ const getAdminDeposits = (req, res) => {
 		}
 	)
 		.then((data) => {
-			if (format.value) {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users-deposits.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);

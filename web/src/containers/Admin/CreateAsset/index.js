@@ -48,7 +48,6 @@ class CreateAsset extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			currentScreen: 'step1',
 			searchValue: '',
 			selectedCoin: '',
 			selectedCoinData: {},
@@ -74,6 +73,7 @@ class CreateAsset extends Component {
 	}
 
 	componentDidMount() {
+		const { updateCurrentScreen } = this.props;
 		this.getTiers();
 		let constructedData = {};
 		if (this.state.withdrawalFees) {
@@ -99,21 +99,21 @@ class CreateAsset extends Component {
 		}
 		if (this.props.isEdit) {
 			this.setState({
-				currentScreen: 'step3',
 				coinFormData: {
 					..._cloneDeep(default_coin_data),
 					...this.props.editAsset,
 				},
 			});
+			updateCurrentScreen('step3');
 		}
 		if (this.props.isConfigureEdit) {
 			this.setState({
-				currentScreen: this.props.editConfigureScreen,
 				coinFormData: {
 					..._cloneDeep(default_coin_data),
 					...this.props.editAsset,
 				},
 			});
+			updateCurrentScreen(this.props.editConfigureScreen);
 		}
 	}
 
@@ -169,7 +169,15 @@ class CreateAsset extends Component {
 				(val) =>
 					!coinKeys.includes(val.symbol) &&
 					val.verified &&
-					_toLower(val.issuer) !== 'hollaex'
+					_toLower(val.type) === 'fiat'
+			);
+		} else if (activeKey === '2') {
+			coins = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.issuer) !== 'hollaex' &&
+					_toLower(val.type) !== 'fiat'
 			);
 		}
 		const selectedCoinData = coins[0] || {};
@@ -353,7 +361,7 @@ class CreateAsset extends Component {
 		} else {
 			this.props.handleWidth();
 		}
-		this.setState({ currentScreen: screen });
+		this.props.updateCurrentScreen(screen);
 	};
 
 	handleFileChange = async (event, name) => {
@@ -421,26 +429,53 @@ class CreateAsset extends Component {
 		this.setState({
 			selectedCoin: coin.symbol,
 			selectedCoinData: coin,
-			currentScreen: 'step1',
 		});
+		this.props.updateCurrentScreen('step1');
 	};
 
 	handleSearch = (e) => {
-		const { coins = [] } = this.props;
 		const searchValue = e.target.value ? e.target.value.toLowerCase() : '';
-		const filteredData = coins.filter((coin) => {
-			return (
-				coin.symbol.toLowerCase().includes(searchValue) ||
-				coin.fullname.toLowerCase().includes(searchValue) ||
-				(coin.address && coin.address.includes(searchValue))
+		let coinData = [];
+		const coinKeys = this.props.exchangeCoins.map((data) => data.symbol);
+		if (this.state.activeTab === '0') {
+			let hollaexCoins = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.issuer) === 'hollaex'
 			);
-		});
+			coinData = [...hollaexCoins];
+		} else if (this.state.activeTab === '1') {
+			coinData = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.type) === 'fiat'
+			);
+		} else {
+			coinData = this.props.coins.filter(
+				(val) =>
+					!coinKeys.includes(val.symbol) &&
+					val.verified &&
+					_toLower(val.issuer) !== 'hollaex' &&
+					_toLower(val.type) !== 'fiat'
+			);
+		}
+		const filteredData =
+			coinData &&
+			coinData.filter((coin) => {
+				return (
+					coin.symbol.toLowerCase().includes(searchValue) ||
+					coin.fullname.toLowerCase().includes(searchValue) ||
+					(coin.address && coin.address.includes(searchValue))
+				);
+			});
 		this.setState({ searchValue, coins: filteredData });
 	};
 
 	handleBack = (isFinalBack = false) => {
 		const { id, type } = this.state.coinFormData || {};
-		if (this.state.currentScreen === 'final') {
+		if (this.props.currentScreen === 'final') {
 			if (this.state.savePresetAsset && isFinalBack) {
 				this.handleScreenChange('step7');
 			} else if (id && !isFinalBack) {
@@ -448,7 +483,7 @@ class CreateAsset extends Component {
 			} else {
 				this.handleScreenChange('step9');
 			}
-		} else if (this.state.currentScreen === 'step7') {
+		} else if (this.props.currentScreen === 'step7') {
 			if (type === 'blockchain') {
 				this.handleScreenChange('step4');
 				// this.handleRevertAsset();
@@ -499,7 +534,7 @@ class CreateAsset extends Component {
 			currentCoins: { ...this.state.currentCoins, [selectedTier]: tierValues },
 		});
 		const { id, type } = this.state.coinFormData || {};
-		if (this.state.currentScreen === 'step1') {
+		if (this.props.currentScreen === 'step1') {
 			if (id) {
 				/* if (this.props.isExchangeWizard) {
 					this.setState({
@@ -527,7 +562,7 @@ class CreateAsset extends Component {
 				this.handleScreenChange('step3');
 				// }
 			}
-		} else if (this.state.currentScreen === 'step3') {
+		} else if (this.props.currentScreen === 'step3') {
 			if (type !== 'blockchain') {
 				if (!this.props.isConfigureEdit && !this.props.isEdit) {
 					this.setState({
@@ -545,7 +580,7 @@ class CreateAsset extends Component {
 			} else {
 				this.handleScreenChange('step4');
 			}
-		} else if (this.state.currentScreen === 'step4') {
+		} else if (this.props.currentScreen === 'step4') {
 			this.setState({ prevCoinData: this.state.coinFormData });
 			// if (network === 'ethereum') {
 			//     const filterData = this.props.coins.filter((data) => data.symbol === 'eth');
@@ -569,23 +604,23 @@ class CreateAsset extends Component {
 			// } else {
 			this.handleScreenChange('step7');
 			// }
-		} else if (this.state.currentScreen === 'step5') {
+		} else if (this.props.currentScreen === 'step5') {
 			// if (type !== 'fiat') {
 			this.handleScreenChange('step7');
 			// } else {
 			//     this.handleScreenChange('step6');
 			// }
-		} else if (this.state.currentScreen === 'step6') {
+		} else if (this.props.currentScreen === 'step6') {
 			this.handleScreenChange('step7');
-		} else if (this.state.currentScreen === 'step7') {
+		} else if (this.props.currentScreen === 'step7') {
 			this.handleScreenChange('step8');
-		} else if (this.state.currentScreen === 'step8') {
+		} else if (this.props.currentScreen === 'step8') {
 			this.handleScreenChange('step9');
-		} else if (this.state.currentScreen === 'step9') {
+		} else if (this.props.currentScreen === 'step9') {
 			this.handleScreenChange('final');
-		} else if (this.state.currentScreen === 'coin-pro') {
+		} else if (this.props.currentScreen === 'coin-pro') {
 			this.handleConfirmation();
-		} else if (this.state.currentScreen === 'step18') {
+		} else if (this.props.currentScreen === 'step18') {
 			this.handleScreenChange('edit_withdrawal_fees');
 		}
 	};
@@ -659,6 +694,7 @@ class CreateAsset extends Component {
 						handleScreenChange={this.handleScreenChange}
 						activeTab={activeTab}
 						handleResetAsset={this.handleResetAsset}
+						onClose={this.props.onClose}
 					/>
 				);
 			case 'step3':
@@ -757,6 +793,7 @@ class CreateAsset extends Component {
 						isPresentCoin={isPresentCoin}
 						coins={this.props.coins}
 						selectedCoinSymbol={selectedCoinSymbol}
+						exchange={this.props.exchangeData}
 					/>
 				);
 			case 'edit-color':
@@ -917,7 +954,7 @@ class CreateAsset extends Component {
 	render() {
 		return (
 			<div className="create-asset-container">
-				{this.renderContent(this.state.currentScreen)}
+				{this.renderContent(this.props.currentScreen)}
 			</div>
 		);
 	}

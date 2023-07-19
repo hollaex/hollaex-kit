@@ -1,11 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router';
-import { Modal, Input, Button, Select, message, Spin } from 'antd';
-import {
-	CaretDownOutlined,
-	CaretUpOutlined,
-	WarningOutlined,
-} from '@ant-design/icons';
+import { Modal, Input, Button, message, Spin } from 'antd';
+import { WarningOutlined } from '@ant-design/icons';
 import { STATIC_ICONS } from 'config/icons';
 import { Table } from 'components';
 import {
@@ -28,12 +24,12 @@ const GenerateAPiKeys = ({
 	const [tokenTypeAndData, setTokenTypeAndData] = useState({});
 	const [currentStep, setCurrentStep] = useState('');
 	const [userDetails, setUserDetails] = useState({});
-	const [selectedRole, setSelectedRole] = useState('');
 	const [ipAddress, setIPAddress] = useState('');
 	const [displayQR, setDisplayQR] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const [unEncryptedSecretKey, setUnEncryptedSecretKey] = useState({});
-	const [isSelectOpen, setIsSelectOpen] = useState(false);
+	// const [selectedRole, setSelectedRole] = useState('');
+	// const [isSelectOpen, setIsSelectOpen] = useState(false);
 
 	const ipAddressInput = useRef(null);
 
@@ -43,10 +39,10 @@ const GenerateAPiKeys = ({
 	}, []);
 
 	useEffect(() => {
-		if (currentStep === 'step4') {
+		if (currentStep === 'step4' && isVisible) {
 			sendEmailCode();
 		}
-	}, [currentStep]);
+	}, [currentStep, isVisible]);
 
 	const onGenerateToken = () => {
 		const {
@@ -90,6 +86,7 @@ const GenerateAPiKeys = ({
 			},
 			otp_code: userDetails.otp,
 			email_code: userDetails.code,
+			whitelisted_ips: editData.whitelisted_ips,
 		};
 
 		setLoading(true);
@@ -164,7 +161,7 @@ const GenerateAPiKeys = ({
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setUserDetails({ ...userDetails, role: selectedRole, [name]: value });
+		setUserDetails({ ...userDetails, role: 'admin', [name]: value });
 	};
 
 	const handleNext = () => {
@@ -211,7 +208,7 @@ const GenerateAPiKeys = ({
 			)
 				isEnabled = false;
 		} else if (currentStep === 'step3') {
-			if (selectedRole && selectedRole !== '') isEnabled = false;
+			isEnabled = false;
 		} else if (currentStep === 'step4') {
 			if (
 				userDetails.code &&
@@ -232,17 +229,17 @@ const GenerateAPiKeys = ({
 		setCurrentStep('');
 	};
 
-	const suffixIcon = (e) => {
-		return (
-			<div className="suffix-icon-container">
-				{e?.open ? (
-					<CaretDownOutlined onClick={() => setIsSelectOpen(false)} />
-				) : (
-					<CaretUpOutlined onClick={() => setIsSelectOpen(true)} />
-				)}
-			</div>
-		);
-	};
+	// const suffixIcon = (e) => {
+	// 	return (
+	// 		<div className="suffix-icon-container">
+	// 			{e?.open ? (
+	// 				<CaretDownOutlined onClick={() => setIsSelectOpen(false)} />
+	// 			) : (
+	// 				<CaretUpOutlined onClick={() => setIsSelectOpen(true)} />
+	// 			)}
+	// 		</div>
+	// 	);
+	// };
 
 	const renderModalContent = () => {
 		switch (currentStep) {
@@ -295,7 +292,15 @@ const GenerateAPiKeys = ({
 						</div>
 						<div className="generate-api-select-field">
 							<div className="mt-4 mb-2">Key type</div>
-							<Select
+							<div>
+								<img
+									src={STATIC_ICONS.BLUE_ADMIN_KEY}
+									alt="key"
+									className="key-option-icon"
+								/>
+								Admin
+							</div>
+							{/* <Select
 								placeholder="Select key type"
 								suffixIcon={(e) => suffixIcon(e)}
 								open={isSelectOpen}
@@ -338,7 +343,7 @@ const GenerateAPiKeys = ({
 										],
 									},
 								]}
-							/>
+							/> */}
 						</div>
 					</div>
 				);

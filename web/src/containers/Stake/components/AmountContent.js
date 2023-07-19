@@ -4,7 +4,7 @@ import {
 	EditWrapper,
 	Button,
 	IconTitle,
-	Image,
+	Coin,
 	ActionNotification,
 } from 'components';
 import Ionicon from 'react-ionicons';
@@ -94,13 +94,7 @@ const AmountContent = ({
 						type="number"
 						value={amount}
 						onChange={setAmount}
-						prefix={
-							<Image
-								iconId={icon_id}
-								icon={ICONS[icon_id]}
-								wrapperClassName="currency-ball"
-							/>
-						}
+						prefix={<Coin iconId={icon_id} type="CS9" />}
 					/>
 					<div>
 						{error && <span className="field_warning_wrapper">{error}</span>}

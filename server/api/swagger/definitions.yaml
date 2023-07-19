@@ -25,7 +25,7 @@ definitions:
         maxLength: 256
       captcha:
         type: string
-        maxLength: 1024
+        maxLength: 5000
       referral:
         type: string
         maxLength: 256
@@ -484,10 +484,8 @@ definitions:
             properties:
               head:
                 type: string
-                maxLength: 256
               body:
                 type: string
-                maxLength: 256
           injected_values:
             type: array
             items:
@@ -499,10 +497,8 @@ definitions:
               properties:
                 tag:
                   type: string
-                  maxLength: 256
                 target:
                   type: string
-                  maxLength: 256
                 attributes:
                   type: object
           black_list_countries:
@@ -1470,12 +1466,7 @@ definitions:
         type: ['object', 'null']
       formula:
         type: ['string', 'null']
-      exchange_name:
-        type: string
-        maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairCreate:
     type: object
@@ -1518,12 +1509,7 @@ definitions:
       formula:
         type: string
         maxLength: 256
-      exchange_name:
-        type: string
-        maxLength: 256
       spread:
-        type: number
-      multiplier:
         type: number
   BrokerPairUpdate:
     allOf:

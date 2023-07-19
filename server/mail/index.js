@@ -56,6 +56,7 @@ const sendEmail = (
 		case MAILTYPE.WITHDRAWAL_REQUEST:
 		case MAILTYPE.BANK_VERIFIED:
 		case MAILTYPE.CONFIRM_EMAIL:
+		case MAILTYPE.LOCKED_ACCOUNT:
 		case MAILTYPE.DEPOSIT:
 		case MAILTYPE.WITHDRAWAL:
 		case MAILTYPE.DOC_REJECTED:
@@ -89,6 +90,25 @@ const sendEmail = (
 	return send(payload);
 };
 
+const sendRawEmail = (
+	receivers,
+	title,
+	html,
+	text
+) => {
+	let from = SUPPORT_SOURCE();
+	
+	const payload = {
+		from,
+		to: receivers,
+		subject: `${API_NAME()} ${title || ''}`,
+		html,
+		text: text || ''
+	};
+
+	return send(payload);
+};
+
 const send = (params) => {
 	return sendSMTPEmail(params)
 		.then((info) => {
@@ -119,5 +139,6 @@ const testSendSMTPEmail = (receiver = '', smtp = {}) => {
 
 module.exports = {
 	sendEmail,
-	testSendSMTPEmail
+	testSendSMTPEmail,
+	sendRawEmail
 };
