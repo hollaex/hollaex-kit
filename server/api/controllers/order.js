@@ -368,6 +368,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -386,6 +387,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
