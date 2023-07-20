@@ -60,10 +60,12 @@ const dropPlaceholders = (string = '') =>
 
 const hasLetters = (string = '') => LETTER_REGEX.test(string);
 
+const trim = (string) => (string && string.trim ? string.trim() : string);
+
 const equalityCheck = (base, target) =>
 	has('--ignore-equals')
 		? false
-		: base === target && hasLetters(dropPlaceholders(base));
+		: trim(base) === trim(target) && hasLetters(dropPlaceholders(base));
 
 const validatePlaceholder = (string) => !isNaN(Number(string));
 
