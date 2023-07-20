@@ -21,7 +21,7 @@ describe('tests for /admin/transfer', function () {
     //Integration Testing
     it('Integration Test -should return 200 for success', async () => {
         const testUser = {
-           email: getNewUserCredentials().email,
+            email: getNewUserCredentials().email,
             password:  getNewUserCredentials().password,
             long_term: true
         }
