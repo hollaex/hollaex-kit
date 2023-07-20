@@ -29,6 +29,14 @@ function getAdminUser() {
 	};
 }
 
+function getNewUserCredentials() {
+	return {
+	  	email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
+     	password: "test112233.",
+	};
+}
+
+
 async function loginAs(user, session = true) {
 	const token = await tools.security.issueToken(
 		user.id,
@@ -76,4 +84,5 @@ module.exports = {
 	generateFuzz,
 	getAdminUser,
 	requestPlugin,
+	getNewUserCredentials
 };
