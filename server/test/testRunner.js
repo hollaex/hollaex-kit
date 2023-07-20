@@ -2,7 +2,7 @@ const mocha = require("mocha");
 
 const mochaRun = async (path) => {
     return new Promise((resolve, reject) => {
-    const mochaEngine = new mocha({ });
+    const mochaEngine = new mocha({ timeout: 5000 });
         mochaEngine.addFile(path);
         mochaEngine.run(failures => {
             if (!failures) {
