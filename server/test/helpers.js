@@ -32,7 +32,7 @@ function getAdminUser() {
 
 function getNewUserCredentials() {
 	return {
-	  	email: `${_.shuffle('test_auth'.split('')).join()}.${Math.floor(Math.random() * 10000)}@mail.com`,
+	  	email: `${_.shuffle('test_auth'.split('')).join('')}.${Math.floor(Math.random() * 10000)}@mail.com`,
      	password: "test112233.",
 	};
 }
