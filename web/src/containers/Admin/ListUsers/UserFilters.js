@@ -72,7 +72,7 @@ const UseFilters = ({ applyFilters }) => {
 				{ label: 7, value: 7 },
 				{ label: 8, value: 8 },
 				{ label: 9, value: 9 },
-				{ label: 10, value: 10 }
+				{ label: 10, value: 10 },
 			],
 		},
 		email_verified: { type: 'boolean', label: 'Email Verified' },
@@ -259,42 +259,45 @@ const UseFilters = ({ applyFilters }) => {
 				}}
 			>
 				<div>
+					{Object.keys(fieldKeyValue).filter(
+						(key) => !filters.find((filter) => filter.field === key)
+					)?.length !== 0 && (
+						<Select
+							className="select-box"
+							showSearch
+							style={{ width: 150 }}
+							placeholder="Add filter"
+							value={field}
+							onChange={(value) => {
+								setField(null);
+								const found = filters.find((f) => f.field === value);
 
-					{Object.keys(fieldKeyValue)
-							.filter((key) => !filters.find((filter) => filter.field === key))?.length !== 0 && 
-					<Select
-						className="select-box"
-						showSearch
-						style={{ width: 150 }}
-						placeholder="Add filter"
-						value={field}
-						onChange={(value) => {
-							setField(null);
-							const found = filters.find((f) => f.field === value);
-
-							if (found) {
-								message.error('Filter already exists');
-							} else {
-								const fieldValue = {
-									field: value,
-									type: fieldKeyValue[value].type,
-									label: fieldKeyValue[value].label,
-									value: fieldKeyValue[value].value,
-									options: fieldKeyValue[value]?.options,
-								};
-								setFilters((prevState) => {
-									prevState.push(fieldValue);
-									return [...prevState];
-								});
-							}
-						}}
-					>
-						{Object.keys(fieldKeyValue)
-							.filter((key) => !filters.find((filter) => filter.field === key))
-							.map((key) => (
-								<Option value={key}>{fieldKeyValue[key].label}</Option>
-							))}
-					</Select>}
+								if (found) {
+									message.error('Filter already exists');
+								} else {
+									const fieldValue = {
+										field: value,
+										type: fieldKeyValue[value].type,
+										label: fieldKeyValue[value].label,
+										value: fieldKeyValue[value].value,
+										options: fieldKeyValue[value]?.options,
+									};
+									setFilters((prevState) => {
+										prevState.push(fieldValue);
+										return [...prevState];
+									});
+								}
+							}}
+						>
+							{Object.keys(fieldKeyValue)
+								.filter(
+									(key) => !filters.find((filter) => filter.field === key)
+								)
+								.map((key) => (
+									<Option value={key}>{fieldKeyValue[key].label}</Option>
+								))}
+						</Select>
+					)}
 				</div>
 
 				<div>

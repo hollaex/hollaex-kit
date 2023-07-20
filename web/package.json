@@ -90,11 +90,14 @@
 		"ws-heartbeat": "1.2.0"
 	},
 	"devDependencies": {
+		"@google-cloud/translate": "7.2.2",
 		"cpy-cli": "3.1.1",
 		"glob": "7.1.7",
 		"husky": "4.3.0",
 		"json-beautify": "1.1.1",
 		"lint-staged": "10.5.1",
+		"lodash.chunk": "4.2.0",
+		"lodash.flatten": "4.4.0",
 		"lodash.isempty": "4.4.0",
 		"node-sass-chokidar": "1.5.0",
 		"prettier": "2.1.2",
@@ -122,8 +125,8 @@
 		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
 		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
 		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check",
-		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate",
-		"lang:all": "node ./translationRunner.js --translate-all"
+		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate --ignore-equals",
+		"lang:all": "node ./translationRunner.js --translate-all --ignore-equals"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",

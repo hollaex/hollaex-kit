@@ -9,7 +9,7 @@ import {
 	Radio,
 	Spin,
 	message,
-	Tooltip
+	Tooltip,
 } from 'antd';
 import {
 	ExclamationCircleFilled,
@@ -245,7 +245,7 @@ const Otcdeskpopup = ({
 	useEffect(() => {
 		if (!isOpen) handleCloseOtcChild();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [isOpen])
+	}, [isOpen]);
 
 	const isUpgrade = handleUpgrade(kit.info);
 	const noHedgeOption =
@@ -388,7 +388,10 @@ const Otcdeskpopup = ({
 				handlePreviewChange(selectedMarket, 'tracked_symbol');
 				const symbol = selectedMarket.replace('/', '-').toLowerCase();
 				setFormulaVariable(`${selectedExchange}_${symbol}`);
-				if (!formula) { setFormula(`${selectedExchange}_${symbol}`); handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula'); };
+				if (!formula) {
+					setFormula(`${selectedExchange}_${symbol}`);
+					handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
+				}
 			} else {
 				handlePreviewChange(hedgeSymbol, 'rebalancing_symbol');
 			}
@@ -827,7 +830,7 @@ const Otcdeskpopup = ({
 													{selectableExchanges.filter((e) => e).join(', ')}
 												</span>
 											</div>
-											<hr/>
+											<hr />
 
 											<div style={{ marginTop: 10, marginBottom: 10 }}>
 												<div>add: '+'</div>
@@ -1059,18 +1062,20 @@ const Otcdeskpopup = ({
 											</div>
 										)}
 
-										{!displayUniswap && !formula && selectedExchange !== 'oracle' && (
-											<div className={isUpgrade ? 'Datahide mt-3' : ''}>
-												<div className="mt-4">Track market price</div>
-												<div className="select-box">
-													<Input
-														placeholder="Select track market symbol"
-														onClick={handleMarkethedge}
-														value={selectedMarket}
-													/>
+										{!displayUniswap &&
+											!formula &&
+											selectedExchange !== 'oracle' && (
+												<div className={isUpgrade ? 'Datahide mt-3' : ''}>
+													<div className="mt-4">Track market price</div>
+													<div className="select-box">
+														<Input
+															placeholder="Select track market symbol"
+															onClick={handleMarkethedge}
+															value={selectedMarket}
+														/>
+													</div>
 												</div>
-											</div>
-										)}
+											)}
 
 										{formula && (
 											<div className="mt-3 mb-2">
@@ -1131,9 +1136,14 @@ const Otcdeskpopup = ({
 										<div>
 											<div className="mt-3 ">
 												Percentage price spread
-												<Tooltip  placement="rightBottom" title={"Profit margin to add on top of your price"} >
-        										   <ExclamationCircleOutlined style={{ marginLeft: 3 }}/>
-        										</Tooltip>
+												<Tooltip
+													placement="rightBottom"
+													title={'Profit margin to add on top of your price'}
+												>
+													<ExclamationCircleOutlined
+														style={{ marginLeft: 3 }}
+													/>
+												</Tooltip>
 											</div>
 											<Input
 												type="number"
@@ -1171,7 +1181,7 @@ const Otcdeskpopup = ({
 											)}
 
 											<div className="mt-3 ">
-												Price quote expiry time (seconds)
+												Price quote expiry time in seconds <span>(30 seconds is recommended)</span>.
 											</div>
 											<Input
 												type="number"
@@ -1239,7 +1249,10 @@ const Otcdeskpopup = ({
 															);
 															if (!formula) {
 																setFormula(`${selectedExchange}_${symbol}`);
-																handlePreviewChange(`${selectedExchange}_${symbol}`, 'formula');
+																handlePreviewChange(
+																	`${selectedExchange}_${symbol}`,
+																	'formula'
+																);
 															}
 														}
 													}}
@@ -1267,10 +1280,15 @@ const Otcdeskpopup = ({
 												type="primary"
 												className="green-btn"
 												onClick={() => {
-													if (!formula) {
-														message.warning('Please input formula in Advanced section');
+													if (spreadMul.quote_expiry_time < 10) {
+														message.error('Quote Expiry time cannot be smaller than 10')
+														return;
 													}
-													else {
+													if (!formula) {
+														message.warning(
+															'Please input formula in Advanced section'
+														);
+													} else {
 														moveToStep('hedge');
 													}
 												}}

@@ -286,8 +286,12 @@ class Earnings extends Component {
 							<span
 								size="small"
 								className="download-btn"
-								onClick={() => { if (earningsData.length > 0) this.handleDownload() }}
-								style= {{ cursor: earningsData.length === 0 ? 'not-allowed' : 'pointer' }}
+								onClick={() => {
+									if (earningsData.length > 0) this.handleDownload();
+								}}
+								style={{
+									cursor: earningsData.length === 0 ? 'not-allowed' : 'pointer',
+								}}
 							>
 								Download
 							</span>
