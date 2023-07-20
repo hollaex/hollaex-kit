@@ -9,6 +9,7 @@ const chai = require('chai'),
 
 chai.use(chaiHTTP);
 chai.should();
+const _ = require("lodash"); 
 
 const testURL = process.env.TEST_URL || 'http://localhost:10010';
 const testURLPlugin = process.env.TEST_URL || 'http://localhost:10011';
@@ -31,7 +32,7 @@ function getAdminUser() {
 
 function getNewUserCredentials() {
 	return {
-	  	email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
+	  	email: `${_.shuffle('test_auth'.split('')).join()}.${Math.floor(Math.random() * 10000)}@mail.com`,
      	password: "test112233.",
 	};
 }
