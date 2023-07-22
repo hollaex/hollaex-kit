@@ -2,7 +2,8 @@ const {
     request,
     generateFuzz,
     loginAs,
-    getAdminUser
+    getAdminUser,
+    getNewUserCredentials
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
 
@@ -20,8 +21,8 @@ describe('tests for /admin/transfer', function () {
     //Integration Testing
     it('Integration Test -should return 200 for success', async () => {
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         const createdUser = await request()

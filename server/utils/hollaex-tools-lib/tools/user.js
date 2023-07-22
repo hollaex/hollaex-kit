@@ -16,7 +16,6 @@ const {
 	isNil,
 	isArray,
 	isInteger,
-	keyBy,
 	isEmpty,
 	uniq
 } = require('lodash');
@@ -369,21 +368,21 @@ const registerUserLogin = (
 	const geo = geoip.lookup(ip);
 	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
-	.then((loginData) => {
-		if(opts.token && opts.status) {
-			return createSession(opts.token, loginData.id, userId, opts.expiry);
-		}
-	})
-	.catch(err => reject(err))
+		.then((loginData) => {
+			if(opts.token && opts.status) {
+				return createSession(opts.token, loginData.id, userId, opts.expiry);
+			}
+		})
+		.catch(err => reject(err));
 };
 
 const updateLoginAttempt = (loginId) => {
 	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
-}
+};
 
 const updateLoginStatus = (loginId) => {
 	return getModel('login').update( { status: true }, { where: { id: loginId } });
-}
+};
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
 	const loginData = await findUserLatestLogin(user, status);
@@ -402,7 +401,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
-}
+};
 
 
 const findUserLatestLogin = (user, status) => {
@@ -416,7 +415,7 @@ const findUserLatestLogin = (user, status) => {
 			},
 		}
 	});
-}
+};
 
 /* Public Endpoints*/
 
@@ -673,9 +672,9 @@ const getAllUsersAdmin = (opts = {
 						[Op.iLike]: `%${opts[key].toLowerCase()}%`
 					}
 				}
-			)
+			);
 		}
-	})
+	});
 	
 	if (isNumber(opts.verification_level)) {
 		query.where[Op.and].push({ verification_level: opts.verification_level });
@@ -693,7 +692,7 @@ const getAllUsersAdmin = (opts = {
 						status: opts.kyc != null ? opts.kyc : 1 // users that have a pending id waiting for admin to confirm
 					}
 				},
-			]
+			];
 		}
 
 		if (opts.bank || opts.pending_type === 'bank') {
@@ -701,7 +700,7 @@ const getAllUsersAdmin = (opts = {
 				...query.where[Op.and],
 				{ activated: true },
 				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
-			]
+			];
 		}
 	}
 
@@ -712,7 +711,7 @@ const getAllUsersAdmin = (opts = {
 					number: id_number
 				}
 			}
-		)
+		);
 	}
 
 	if (!opts.format) {
@@ -865,24 +864,7 @@ const freezeUserById = (userId) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then(async (user) => {
-			const sessions = await getModel('session').findAll(
-				{ 
-					where: { status: true },
-					include: [
-						{
-							model: getModel('login'),
-							as: 'login',
-							attributes: ['user_id'],
-							where: { user_id: userId }
-						}
-					]
-				});
-	
-			for (const session of sessions) {
-				await session.update({ status: false }, { fields: ['status'] }); 
-				client.delAsync(session.token);
-			}
-
+			await revokeAllUserSessions(userId);
 
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
@@ -1951,7 +1933,7 @@ const getExchangeUserSessions = (opts = {
 				{
 					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
 				}
-			 }),
+			}),
 		},
 		attributes: {
 			exclude: ['token']
@@ -1972,18 +1954,18 @@ const getExchangeUserSessions = (opts = {
 		order: [ordering],
 		...(!opts.format && pagination),
 	})
-	.then((sessions) => {
-		if (opts.format && opts.format === 'csv') {
-			if (sessions.data.length === 0) {
-				throw new Error(NO_DATA_FOR_CSV);
+		.then((sessions) => {
+			if (opts.format && opts.format === 'csv') {
+				if (sessions.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+				return csv;
+			} else {
+				return sessions;
 			}
-			const csv = parse(sessions.data, Object.keys(sessions.data[0]));
-			return csv;
-		} else {
-			return sessions;
-		}
-	});
-}
+		});
+};
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	const session = await getModel('session').findOne({ 
@@ -2018,7 +2000,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 
 	delete updatedSession.dataValues.token;
 	return updatedSession.dataValues;
-}
+};
 
 const getAllBalancesAdmin = async (opts = {
 	user_id: null,
@@ -2068,7 +2050,53 @@ const getAllBalancesAdmin = async (opts = {
 				return balances;
 			}
 		});
-}
+};
+
+// set all active sessions of the user to false and remove them from redis
+const revokeAllUserSessions = async (userId) => {
+
+	const sessions = await getModel('session').findAll(
+		{
+			where: { status: true },
+			include: [
+				{
+					model: getModel('login'),
+					as: 'login',
+					attributes: ['user_id'],
+					where: { user_id: userId }
+				}
+			]
+		});
+
+	for (const session of sessions) {
+		await session.update({ status: false }, { fields: ['status'] });
+		client.delAsync(session.token);
+	}
+	return true;
+};
+
+const deleteKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	await revokeAllUserSessions(userId);
+	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
+	return user.update(
+		{ email: user.email + '_deleted', activated: false },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+};
 
 
 module.exports = {
@@ -2128,5 +2156,6 @@ module.exports = {
 	updateLoginStatus,
 	findUserLatestLogin,
 	createUserLogin,
-	getAllBalancesAdmin
+	getAllBalancesAdmin,
+	deleteKitUser
 };

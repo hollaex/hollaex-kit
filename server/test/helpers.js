@@ -9,6 +9,7 @@ const chai = require('chai'),
 
 chai.use(chaiHTTP);
 chai.should();
+const _ = require("lodash"); 
 
 const testURL = process.env.TEST_URL || 'http://localhost:10010';
 const testURLPlugin = process.env.TEST_URL || 'http://localhost:10011';
@@ -28,6 +29,14 @@ function getAdminUser() {
 		email: process?.argv?.slice(5)?.[0]?.split('=')?.[1] || process?.argv?.[2]?.split('=')?.[1]
 	};
 }
+
+function getNewUserCredentials() {
+	return {
+	  	email: `${_.shuffle('test_auth'.split('')).join('')}.${Math.floor(Math.random() * 10000)}@mail.com`,
+     	password: "test112233.",
+	};
+}
+
 
 async function loginAs(user, session = true) {
 	const token = await tools.security.issueToken(
@@ -76,4 +85,5 @@ module.exports = {
 	generateFuzz,
 	getAdminUser,
 	requestPlugin,
+	getNewUserCredentials
 };
