@@ -16,7 +16,6 @@ const {
 	isNil,
 	isArray,
 	isInteger,
-	keyBy,
 	isEmpty,
 	uniq
 } = require('lodash');
@@ -369,21 +368,21 @@ const registerUserLogin = (
 	const geo = geoip.lookup(ip);
 	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
-	.then((loginData) => {
-		if(opts.token && opts.status) {
-			return createSession(opts.token, loginData.id, userId, opts.expiry);
-		}
-	})
-	.catch(err => reject(err))
+		.then((loginData) => {
+			if(opts.token && opts.status) {
+				return createSession(opts.token, loginData.id, userId, opts.expiry);
+			}
+		})
+		.catch(err => reject(err));
 };
 
 const updateLoginAttempt = (loginId) => {
 	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
-}
+};
 
 const updateLoginStatus = (loginId) => {
 	return getModel('login').update( { status: true }, { where: { id: loginId } });
-}
+};
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
 	const loginData = await findUserLatestLogin(user, status);
@@ -402,7 +401,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
-}
+};
 
 
 const findUserLatestLogin = (user, status) => {
@@ -416,7 +415,7 @@ const findUserLatestLogin = (user, status) => {
 			},
 		}
 	});
-}
+};
 
 /* Public Endpoints*/
 
@@ -673,9 +672,9 @@ const getAllUsersAdmin = (opts = {
 						[Op.iLike]: `%${opts[key].toLowerCase()}%`
 					}
 				}
-			)
+			);
 		}
-	})
+	});
 	
 	if (isNumber(opts.verification_level)) {
 		query.where[Op.and].push({ verification_level: opts.verification_level });
@@ -693,7 +692,7 @@ const getAllUsersAdmin = (opts = {
 						status: opts.kyc != null ? opts.kyc : 1 // users that have a pending id waiting for admin to confirm
 					}
 				},
-			]
+			];
 		}
 
 		if (opts.bank || opts.pending_type === 'bank') {
@@ -701,7 +700,7 @@ const getAllUsersAdmin = (opts = {
 				...query.where[Op.and],
 				{ activated: true },
 				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
-			]
+			];
 		}
 	}
 
@@ -712,7 +711,7 @@ const getAllUsersAdmin = (opts = {
 					number: id_number
 				}
 			}
-		)
+		);
 	}
 
 	if (!opts.format) {
@@ -1951,7 +1950,7 @@ const getExchangeUserSessions = (opts = {
 				{
 					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
 				}
-			 }),
+			}),
 		},
 		attributes: {
 			exclude: ['token']
@@ -1972,18 +1971,18 @@ const getExchangeUserSessions = (opts = {
 		order: [ordering],
 		...(!opts.format && pagination),
 	})
-	.then((sessions) => {
-		if (opts.format && opts.format === 'csv') {
-			if (sessions.data.length === 0) {
-				throw new Error(NO_DATA_FOR_CSV);
+		.then((sessions) => {
+			if (opts.format && opts.format === 'csv') {
+				if (sessions.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+				return csv;
+			} else {
+				return sessions;
 			}
-			const csv = parse(sessions.data, Object.keys(sessions.data[0]));
-			return csv;
-		} else {
-			return sessions;
-		}
-	});
-}
+		});
+};
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	const session = await getModel('session').findOne({ 
@@ -2018,7 +2017,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 
 	delete updatedSession.dataValues.token;
 	return updatedSession.dataValues;
-}
+};
 
 const getAllBalancesAdmin = async (opts = {
 	user_id: null,
@@ -2068,7 +2067,7 @@ const getAllBalancesAdmin = async (opts = {
 				return balances;
 			}
 		});
-}
+};
 
 
 module.exports = {
