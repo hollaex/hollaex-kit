@@ -864,24 +864,7 @@ const freezeUserById = (userId) => {
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
 		.then(async (user) => {
-			const sessions = await getModel('session').findAll(
-				{ 
-					where: { status: true },
-					include: [
-						{
-							model: getModel('login'),
-							as: 'login',
-							attributes: ['user_id'],
-							where: { user_id: userId }
-						}
-					]
-				});
-	
-			for (const session of sessions) {
-				await session.update({ status: false }, { fields: ['status'] }); 
-				client.delAsync(session.token);
-			}
-
+			await revokeAllUserSessions(userId);
 
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
@@ -2069,6 +2052,52 @@ const getAllBalancesAdmin = async (opts = {
 		});
 };
 
+// set all active sessions of the user to false and remove them from redis
+const revokeAllUserSessions = async (userId) => {
+
+	const sessions = await getModel('session').findAll(
+		{
+			where: { status: true },
+			include: [
+				{
+					model: getModel('login'),
+					as: 'login',
+					attributes: ['user_id'],
+					where: { user_id: userId }
+				}
+			]
+		});
+
+	for (const session of sessions) {
+		await session.update({ status: false }, { fields: ['status'] });
+		client.delAsync(session.token);
+	}
+	return true;
+};
+
+const deleteKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	await revokeAllUserSessions(userId);
+	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
+	return user.update(
+		{ email: user.email + '_deleted', activated: false },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+};
+
 
 module.exports = {
 	loginUser,
@@ -2127,5 +2156,6 @@ module.exports = {
 	updateLoginStatus,
 	findUserLatestLogin,
 	createUserLogin,
-	getAllBalancesAdmin
+	getAllBalancesAdmin,
+	deleteKitUser
 };

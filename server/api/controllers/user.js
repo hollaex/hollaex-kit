@@ -1226,6 +1226,38 @@ const userLogout = (req, res) => {
 		});
 };
 
+const userDelete = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/userDelete/auth', req.auth);
+
+	const { email_code } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/userDelete',
+		'user_id',
+		user_id,
+		'email_code',
+		email_code
+	);
+
+	toolsLib.security.confirmByEmail(user_id, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.user.deleteKitUser(user_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/userDelete', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
 module.exports = {
 	signUpUser,
 	getVerifyUser,
@@ -1254,5 +1286,6 @@ module.exports = {
 	addUserBank,
 	revokeUserSession,
 	getUserSessions,
-	userLogout
+	userLogout,
+	userDelete
 };
