@@ -13,7 +13,7 @@ var sequelize = new Sequelize(
 	config
 );
 
-var db = {};
+var db: any = {};
 var model;
 
 model = require(path.join(__dirname, './affiliation'))(sequelize, Sequelize.DataTypes);

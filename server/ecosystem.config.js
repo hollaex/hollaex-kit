@@ -3,11 +3,11 @@ const ignore_watch = ['logs', 'node_modules', './**/*node_modules', 'tools', 'db
 const max_memory_restart = '4000M';
 const node_args = ['--max_old_space_size=4096'];
 const mode = process.env.DEPLOYMENT_MODE || 'all';
-const { initializeMode } = require('./utils');
+import { initializeMode } from './utils';
 
 const api = {
 	name      : 'api',
-	script    : 'app.js',
+	script    : 'ts-node-esm app.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,

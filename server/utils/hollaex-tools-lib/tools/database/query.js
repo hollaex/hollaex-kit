@@ -9,7 +9,7 @@ const { convertSequelizeCountAndRows } = require('./helpers');
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findOne = (table, query = {}, model) => {
+const findOne = (table, query = {}, model = null) => {
 	if (model) {
 		return model.findOne(query);
 	} else {

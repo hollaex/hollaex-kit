@@ -12,6 +12,7 @@
 	],
 	"main": "app.js",
 	"dependencies": {
+		"@types/validator": "^13.7.17",
 		"bcryptjs": "2.4.3",
 		"bignumber.js": "9.1.1",
 		"bluebird": "3.5.3",
@@ -37,6 +38,7 @@
 		"install": "0.10.4",
 		"ip-range-check": "0.2.0",
 		"is-base64": "1.1.0",
+		"js-to-ts-converter": "^0.18.2",
 		"js-yaml": "4.1.0",
 		"json2csv": "4.5.4",
 		"JSONStream": "1.3.5",
@@ -72,12 +74,12 @@
 		"uglify-js": "3.17.4",
 		"umzug": "2.3.0",
 		"uuid": "3.2.1",
-		"validator": "9.4.1",
 		"winston": "3.2.1",
 		"winston-elasticsearch-apm": "0.0.7",
 		"ws": "8.12.1",
 		"ws-heartbeat": "1.1.0",
-		"yamljs": "0.3.0"
+		"yamljs": "0.3.0",
+		"ts-node": "10.9.1"
 	},
 	"devDependencies": {
 		"chai": "4.2.0",
@@ -93,7 +95,7 @@
 	"scripts": {
 		"undomigrate": "sequelize db:migrate:undo:all",
 		"migrate": "sequelize db:migrate",
-		"start": "node app.js",
+		"start": "ts-node-esm app.ts",
 		"test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --recursive --timeout 5000",
 		"test-ci": "NODE_ENV=test node ./test/testRunner.js",
 		"dev:plugin": "docker exec -it server_hollaex-kit-server_1 node plugins/dev.js"

@@ -5,11 +5,11 @@ const {
 	INVALID_CREDENTIALS
 } = require('../messages');
 
-const toBool = (value) => {
+export const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;
 };
 
-const errorMessageConverter = (error) => {
+export const errorMessageConverter = (error) => {
 	let message = error.message;
 
 	if (error.name === 'SequelizeValidationError') {
@@ -30,9 +30,4 @@ const errorMessageConverter = (error) => {
 	}
 
 	return message;
-};
-
-module.exports = {
-	toBool,
-	errorMessageConverter
 };

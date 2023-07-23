@@ -1,13 +1,13 @@
 'use strict';
 
-const { toBool } = require('./utils/conversion');
-const { cloneDeep } = require('lodash');
-const redis = require('redis');
+import { toBool } from './utils/conversion';
+import { cloneDeep } from 'lodash';
+import redis from 'redis'
 const config = require('./config/redis');
 const subscriber = redis.createClient(config.pubsub);
 
 // CONFIGURATION CONSTANTS START--------------------------------------------------
-const CONFIGURATION_CHANNEL = 'channel:configuration';
+export const CONFIGURATION_CHANNEL = 'channel:configuration';
 
 let configuration = {
 	coins: {},
@@ -33,6 +33,9 @@ let configuration = {
 		user_payments: {},
 		dust: {}
 	},
+	broker: {},
+	quicktrade: {},
+	networkQuickTrades: {},
 	email: {}
 };
 
@@ -117,6 +120,9 @@ const resetAllConfig = () => {
 			user_payments: {},
 			dust: {}
 		},
+		broker: {},
+		quicktrade: {},
+		networkQuickTrades: {},
 		email: {}
 	};
 };
@@ -149,31 +155,31 @@ const updateFrozenUser = (action, userId) => {
 	}
 };
 
-exports.GET_COINS = () => cloneDeep(configuration.coins);
-exports.GET_PAIRS = () => cloneDeep(configuration.pairs);
-exports.GET_TIERS = () => cloneDeep(configuration.tiers);
-exports.GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
-exports.GET_KIT_SECRETS = () => cloneDeep(secrets);
-exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
-exports.GET_EMAIL = () => cloneDeep(configuration.email);
-exports.GET_BROKER = () => cloneDeep(configuration.broker);
-exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
-exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
+export const GET_COINS = () => cloneDeep(configuration.coins);
+export const GET_PAIRS = () => cloneDeep(configuration.pairs);
+export const GET_TIERS = () => cloneDeep(configuration.tiers);
+export const GET_KIT_CONFIG = () => cloneDeep(configuration.kit);
+export const GET_KIT_SECRETS = () => cloneDeep(secrets);
+export const GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
+export const GET_EMAIL = () => cloneDeep(configuration.email);
+export const GET_BROKER = () => cloneDeep(configuration.broker);
+export const GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+export const GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
-exports.USER_META_KEYS = [
+export const USER_META_KEYS = [
 	'description',
 	'type',
 	'required'
 ];
 
-exports.VALID_USER_META_TYPES = [
+export const VALID_USER_META_TYPES = [
 	'string',
 	'number',
 	'boolean',
 	'date-time'
 ];
 
-exports.KIT_CONFIG_KEYS = [
+export const KIT_CONFIG_KEYS = [
 	'captcha',
 	'api_name',
 	'description',
@@ -202,7 +208,7 @@ exports.KIT_CONFIG_KEYS = [
 	'dust'
 ];
 
-exports.KIT_SECRETS_KEYS = [
+export const KIT_SECRETS_KEYS = [
 	'allowed_domains',
 	'admin_whitelist',
 	'emails',
@@ -211,7 +217,7 @@ exports.KIT_SECRETS_KEYS = [
 	'smtp'
 ];
 
-exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
+export const COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'icons',
 	'strings',
 	'color',
@@ -230,27 +236,26 @@ exports.COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 
 // MAIN CONSTANTS START--------------------------------------------------
 
-exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
-exports.API_HOST = process.env.API_HOST || 'localhost';
-exports.DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
-exports.NODE_ENV = process.env.NODE_ENV;
-exports.HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK_URL || (process.env.NETWORK === 'testnet' ? 'https://api.testnet.hollaex.network' : 'https://api.hollaex.network');
-exports.HOLLAEX_NETWORK_BASE_URL = '/v2';
-exports.HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
+export const APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
+export const API_HOST = process.env.API_HOST || 'localhost';
+export const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
+export const NODE_ENV = process.env.NODE_ENV;
+export const HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK_URL || (process.env.NETWORK === 'testnet' ? 'https://api.testnet.hollaex.network' : 'https://api.hollaex.network');
+export const HOLLAEX_NETWORK_BASE_URL = '/v2';
+export const HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
 
 // MAIN CONSTANTS END --------------------------------------------------
 
 // CHANNEL CONSTANTS START --------------------------------------------------
 
 // API
-exports.INIT_CHANNEL = 'channel:init';
-exports.WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
-exports.HMAC_TOKEN_KEY = 'hmac:token';
-exports.EVENTS_CHANNEL = 'channel:events';
-exports.CONFIGURATION_CHANNEL = CONFIGURATION_CHANNEL;
+export const INIT_CHANNEL = 'channel:init';
+export const WITHDRAWALS_REQUEST_KEY = 'withdrawals:request';
+export const HMAC_TOKEN_KEY = 'hmac:token';
+export const EVENTS_CHANNEL = 'channel:events';
 
 // Websocket
-exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+export const WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 	switch (topic) {
 		case 'orderbook':
 			return `orderbook:${symbolOrUserId}`;
@@ -274,22 +279,22 @@ exports.WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
 			return;
 	}
 };
-exports.WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
-exports.WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
-exports.WS_HUB_CHANNEL = 'channel:websocket:hub';
+export const WS_PUBSUB_DEPOSIT_CHANNEL = 'channel:ws:deposit';
+export const WS_PUBSUB_WITHDRAWAL_CHANNEL = 'channel:ws:withdrawal';
+export const WS_HUB_CHANNEL = 'channel:websocket:hub';
 
 // Chat
-exports.CHAT_MAX_MESSAGES = 50;
-exports.CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
+export const CHAT_MAX_MESSAGES = 50;
+export const CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
 
 // CHANNEL CONSTANTS END --------------------------------------------------
 
 // UTIL CONSTANTS START --------------------------------------------------
 
-exports.AFFILIATION_CODE_LENGTH = 6;
-exports.SEND_CONTACT_US_EMAIL = true;
+export const AFFILIATION_CODE_LENGTH = 6;
+export const SEND_CONTACT_US_EMAIL = true;
 //CSV Report keys
-exports.AUDIT_KEYS = [
+export const AUDIT_KEYS = [
 	'id',
 	'admin_id',
 	'event',
@@ -306,7 +311,7 @@ exports.AUDIT_KEYS = [
 
 // ACCOUNTS CONSTANTS START --------------------------------------------------
 
-exports.SETTING_KEYS = [
+export const SETTING_KEYS = [
 	'language',
 	'notification',
 	'interface',
@@ -316,7 +321,7 @@ exports.SETTING_KEYS = [
 	'app'
 ];
 
-exports.OMITTED_USER_FIELDS = [
+export const OMITTED_USER_FIELDS = [
 	'password',
 	'note',
 	'is_admin',
@@ -327,7 +332,7 @@ exports.OMITTED_USER_FIELDS = [
 	'flagged'
 ];
 
-const ROLES = {
+export const ROLES = {
 	SUPERVISOR: 'supervisor',
 	SUPPORT: 'support',
 	ADMIN: 'admin',
@@ -337,7 +342,7 @@ const ROLES = {
 	HMAC: 'hmac'
 };
 
-exports.DEFAULT_FEES = {
+export const DEFAULT_FEES = {
 	fiat: {
 		maker: 0,
 		taker: 0
@@ -356,39 +361,38 @@ exports.DEFAULT_FEES = {
 	}
 };
 
-exports.ROLES = ROLES;
-exports.BASE_SCOPES = [ROLES.USER];
-exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
+export const BASE_SCOPES = [ROLES.USER];
+export const DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 // ACCOUNTS CONSTANTS END --------------------------------------------------
 
 // SECURITY CONSTANTS START --------------------------------------------------
 
-exports.TOKEN_TIME_NORMAL = '24h';
-exports.TOKEN_TIME_LONG = '30d';
+export const TOKEN_TIME_NORMAL = '24h';
+export const TOKEN_TIME_LONG = '30d';
 
-exports.TOKEN_TYPES = {
+export const TOKEN_TYPES = {
 	HMAC: 'hmac'
 };
-exports.HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
-exports.SECRET = process.env.SECRET || 'shhhh';
-exports.ISSUER = process.env.ISSUER || 'hollaex.com';
-exports.CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
-exports.SECRET_MASK = '************************';
-exports.SALT_ROUNDS = 10;
+export const HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
+export const SECRET = process.env.SECRET || 'shhhh';
+export const ISSUER = process.env.ISSUER || 'hollaex.com';
+export const CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
+export const SECRET_MASK = '************************';
+export const SALT_ROUNDS = 10;
 
 // SECURITY CONSTANTS END --------------------------------------------------
 
 // EMAIL CONSTANTS START --------------------------------------------------
 
-exports.CONFIRMATION = {
+export const CONFIRMATION = {
 	btc: 1,
 	eth: 15,
 	bch: 2,
 	trx: 10
 };
 
-exports.EXPLORERS = {
+export const EXPLORERS = {
 	btc: [
 		{
 			name: 'Blockchain.info',
@@ -574,12 +578,12 @@ exports.EXPLORERS = {
 
 // PLUGIN CONSTANTS START------------------------------ to be moved
 
-exports.SMS_CODE_KEY = 'user:sms';
-exports.SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
+export const SMS_CODE_KEY = 'user:sms';
+export const SMS_CODE_EXPIRATION_TIME = 6 * 60; // seconds -> 6 min
 
-exports.S3_LINK_EXPIRATION_TIME = 300; // seconds
+export const S3_LINK_EXPIRATION_TIME = 300; // seconds
 
-exports.ID_FIELDS = [
+export const ID_FIELDS = [
 	'type',
 	'number',
 	'issued_date',
@@ -587,7 +591,7 @@ exports.ID_FIELDS = [
 	'status'
 ];
 
-exports.USER_FIELD_ADMIN_LOG = [
+export const USER_FIELD_ADMIN_LOG = [
 	'full_name',
 	'email',
 	'dob',
@@ -601,9 +605,9 @@ exports.USER_FIELD_ADMIN_LOG = [
 	'username'
 ];
 
-exports.ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
+export const ADDRESS_FIELDS = ['city', 'address', 'country', 'postal_code'];
 
-exports.VERIFY_STATUS = {
+export const VERIFY_STATUS = {
 	EMPTY: 0,
 	PENDING: 1,
 	REJECTED: 2,
@@ -612,18 +616,18 @@ exports.VERIFY_STATUS = {
 // PLUGIN CONSTANTS END ------------------------------ to be moved
 
 // Login timeout  START------------------------------
-exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
-exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+export const LOGIN_TIME_OUT = 1000 * 5 * 60;
+export const NUMBER_OF_ALLOWED_ATTEMPTS = 5;
 // Login timeout  END------------------------------
 
 // BROKER CONSTANTS START
 
-exports.EXCHANGE_PLAN_INTERVAL_TIME = {
+export const EXCHANGE_PLAN_INTERVAL_TIME = {
 	crypto: 5,
 	fiat: 5,
 	boost: 60
 };
-exports.EXCHANGE_PLAN_PRICE_SOURCE = {
+export const EXCHANGE_PLAN_PRICE_SOURCE = {
 	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
 	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
@@ -633,9 +637,9 @@ exports.EXCHANGE_PLAN_PRICE_SOURCE = {
 
 // BROKER CONSTANTS END
 
-exports.CUSTOM_CSS = `
+export const CUSTOM_CSS = `
 	.topbar-wrapper img {
-		content:url('${exports.GET_KIT_CONFIG().logo_image}}');
+		content:url('${GET_KIT_CONFIG().logo_image}}');
 		height: 2rem;
 	}
 	.swagger-ui .opblock.opblock-get .opblock-summary-method {

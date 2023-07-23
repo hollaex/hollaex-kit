@@ -23,7 +23,7 @@ const { isNumber, difference } = require('lodash');
 
 let nodeLib;
 
-const getNodeLib = () => nodeLib;
+export const getNodeLib = () => nodeLib;
 
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {
@@ -45,7 +45,7 @@ subscriber.on('message', (channel, message) => {
 
 subscriber.subscribe(INIT_CHANNEL);
 
-const checkStatus = () => {
+export const checkStatus = () => {
 	loggerInit.verbose('init/checkStatus', 'checking exchange status');
 
 	let configuration = {
@@ -54,6 +54,7 @@ const checkStatus = () => {
 		tiers: {},
 		quicktrade: [],
 		networkQuickTrades: [],
+		broker: {},
 		kit: {
 			info: {},
 			color: {},
@@ -326,12 +327,12 @@ const stop = () => {
 	publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'stop' }));
 };
 
-const checkActivation = (name, url, activation_code, version, constants = {}) => {
-	const body = {
+export const checkActivation = (name, url, activation_code, version, constants = {}) => {
+	const body: any = {
 		name,
 		url,
 		activation_code,
-		constants
+		constants,
 	};
 	if (version) {
 		// only sends version if its set
@@ -345,10 +346,4 @@ const checkActivation = (name, url, activation_code, version, constants = {}) =>
 		json: true
 	};
 	return rp(options);
-};
-
-module.exports = {
-	checkStatus,
-	checkActivation,
-	getNodeLib
 };

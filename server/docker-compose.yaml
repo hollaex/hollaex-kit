@@ -1,17 +1,18 @@
 version: '3'
+name: hollaex-typescript
 services:
-  hollaex-kit-redis:
+  hollaex-typescript-kit-redis:
     image: redis:5.0.5-alpine
     depends_on:
-      - hollaex-kit-db
+      - hollaex-typescript-kit-db
     networks:
-      - hollaex-kit-network
+      - hollaex-typescript-kit-network
     ports:
       - 6379:6379
     environment:
       - REDIS_PASSWORD=bitholla
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
-  hollaex-kit-db:
+  hollaex-typescript-kit-db:
     image: postgres:10.9
     ports:
       - 5432:5432
@@ -20,9 +21,9 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=root
     networks:
-      - hollaex-kit-network
-  hollaex-kit-server:
-    image: hollaex-kit-server
+      - hollaex-typescript-kit-network
+  hollaex-typescript-kit-server:
+    image: hollaex-typescript-kit-server
     ports:
       - 10010:10010
       - 10011:10011
@@ -44,9 +45,9 @@ services:
       - ./plugins:/app/plugins
       - ./mail:/app/mail
       - ./ws:/app/ws
-      - ./app.js:/app/app.js
+      - ./app.ts:/app/app.ts
       - ./ecosystem.config.js:/app/ecosystem.config.js
-      - ./constants.js:/app/constants.js
+      - ./constants.ts:/app/constants.ts
       - ./messages.js:/app/messages.js
       - ./logs:/app/logs
       - ./test:/app/test
@@ -54,14 +55,14 @@ services:
       - ./utils:/app/utils
       - /app/utils/hollaex-network-lib/node_modules
       - /app/utils/hollaex-tools-lib/node_modules
-      - ./init.js:/app/init.js
+      - ./init.ts:/app/init.ts
       - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
-      - hollaex-kit-db
-      - hollaex-kit-redis
+      - hollaex-typescript-kit-db
+      - hollaex-typescript-kit-redis
     networks:
-      - hollaex-kit-network
-  hollaex-kit-nginx:
+      - hollaex-typescript-kit-network
+  hollaex-typescript-kit-nginx:
     image: nginx:1.15.8-alpine
     volumes:
       - ./tools/nginx:/etc/nginx
@@ -73,9 +74,9 @@ services:
     environment:
       - NGINX_PORT=80
     depends_on:
-      - hollaex-kit-server
+      - hollaex-typescript-kit-server
     networks:
-      - hollaex-kit-network
+      - hollaex-typescript-kit-network
 
 networks:
-  hollaex-kit-network:
+  hollaex-typescript-kit-network:

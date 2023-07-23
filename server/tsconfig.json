@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
-    "target": "es2019",                          
+    "target": "es6",                          
     "module": "commonjs",                    
     "lib": ["es2020"],                     
     "allowJs": true,
     "outDir": "./build",                          
     "rootDir": "./",
-    "strict": true,         
-    "noImplicitAny": true,
+    "strict": false,
+    "noImplicitAny": false,
     "esModuleInterop": true,
     "resolveJsonModule": true
   },

@@ -1,52 +1,69 @@
-'use strict';
+import dbQuery from './database/query';
+import {
+  SECRET_MASK,
+  KIT_CONFIG_KEYS,
+  KIT_SECRETS_KEYS,
+  COMMUNICATOR_AUTHORIZED_KIT_CONFIG,
+  ROLES,
+  CONFIGURATION_CHANNEL,
+  INIT_CHANNEL,
+  SEND_CONTACT_US_EMAIL,
+  GET_EMAIL,
+  GET_COINS,
+  GET_PAIRS,
+  GET_TIERS,
+  GET_KIT_CONFIG,
+  GET_KIT_SECRETS,
+  GET_FROZEN_USERS,
+  HOLLAEX_NETWORK_ENDPOINT,
+  HOLLAEX_NETWORK_BASE_URL,
+  USER_META_KEYS,
+  VALID_USER_META_TYPES,
+  DOMAIN,
+  DEFAULT_FEES,
+} from '../../../constants';
 
-const { SERVER_PATH } = require('../constants');
-const dbQuery = require('./database/query');
-const {
-	SECRET_MASK,
-	KIT_CONFIG_KEYS,
-	KIT_SECRETS_KEYS,
-	COMMUNICATOR_AUTHORIZED_KIT_CONFIG,
-	ROLES,
-	CONFIGURATION_CHANNEL,
-	INIT_CHANNEL,
-	SEND_CONTACT_US_EMAIL,
-	GET_EMAIL,
-	GET_COINS,
-	GET_PAIRS,
-	GET_TIERS,
-	GET_KIT_CONFIG,
-	GET_KIT_SECRETS,
-	GET_FROZEN_USERS,
-	HOLLAEX_NETWORK_ENDPOINT,
-	HOLLAEX_NETWORK_BASE_URL,
-	USER_META_KEYS,
-	VALID_USER_META_TYPES,
-	DOMAIN,
-	DEFAULT_FEES
-} = require(`${SERVER_PATH}/constants`);
-const {
-	COMMUNICATOR_CANNOT_UPDATE,
-	MASK_VALUE_GIVEN,
-	SUPPORT_DISABLED,
-	NO_NEW_DATA
-} = require(`${SERVER_PATH}/messages`);
-const { each, difference, isPlainObject, isString, pick, isNil, omit } = require('lodash');
-const { publisher } = require('./database/redis');
-const { sendEmail: sendSmtpEmail } = require(`${SERVER_PATH}/mail`);
-const { sendSMTPEmail: nodemailerEmail } = require(`${SERVER_PATH}/mail/utils`);
-const { errorMessageConverter: handleCatchError } = require(`${SERVER_PATH}/utils/conversion`);
-const { TemplateEmail } = require(`${SERVER_PATH}/mail/templates/helpers/common`);
-const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { reject, resolve } = require('bluebird');
-const flatten = require('flat');
-const { checkStatus: checkExchangeStatus, getNodeLib } = require(`${SERVER_PATH}/init`);
-const rp = require('request-promise');
-const { isEmail: isValidEmail } = require('validator');
-const moment = require('moment');
-const { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } = require('../../../constants');
-const BigNumber = require('bignumber.js');
-// const { Transform } = require('json2csv');
+import {
+  COMMUNICATOR_CANNOT_UPDATE,
+  MASK_VALUE_GIVEN,
+  SUPPORT_DISABLED,
+  NO_NEW_DATA,
+} from '../../../messages';
+
+import {
+  each,
+  difference,
+  isPlainObject,
+  isString,
+  pick,
+  isNil,
+  omit,
+} from 'lodash';
+
+import { publisher } from './database/redis';
+import { sendEmail as sendSmtpEmail } from '../../../mail';
+import { sendSMTPEmail as nodemailerEmail } from '../../../mail/utils';
+import {
+  errorMessageConverter as handleCatchError,
+} from '../../../utils/conversion';
+
+import { TemplateEmail } from '../../../mail/templates/helpers/common';
+import { MAILTYPE } from '../../../mail/strings';
+import { reject, resolve } from 'bluebird';
+import flatten from 'flat';
+import {
+  checkStatus as checkExchangeStatus,
+  getNodeLib,
+} from '../../../init';
+
+import rp from 'request-promise';
+import isValidEmail from 'validator/lib/isEmail';
+import moment from 'moment';
+
+import { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } from '../../../constants';
+
+import BigNumber from 'bignumber.js';
+
 
 const getKitVersion = () => {
 	return dbQuery.findOne('status', {
@@ -164,7 +181,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data = {}, scopes) => {
+const updateKitConfigSecrets = (data: any = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -191,12 +208,12 @@ const updateKitConfigSecrets = (data = {}, scopes) => {
 		attributes: ['id', 'kit', 'secrets']
 	})
 		.then((status) => {
-			const updatedKitConfig = {};
+			const updatedKitConfig: any = {};
 			if (data.kit && Object.keys(data.kit).length > 0) {
-				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit, role);
+				updatedKitConfig.kit = joinKitConfig(status.dataValues.kit, data.kit);
 			}
 			if (data.secrets && Object.keys(data.secrets).length > 0) {
-				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets, role);
+				updatedKitConfig.secrets = joinKitSecrets(status.dataValues.secrets, data.secrets);
 			}
 			return status.update(updatedKitConfig, {
 				fields: [
@@ -229,7 +246,7 @@ const updateKitSecrets = (secrets, scopes) => {
 	return updateKitConfigSecrets({ secrets }, scopes);
 };
 
-const joinKitConfig = (existingKitConfig = {}, newKitConfig = {}) => {
+const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
 	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
@@ -529,7 +546,7 @@ const sleep = (ms) => {
 const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
 	const { emails } = getKitSecrets();
 
-	const params = {
+	const params: any = {
 		from: opts.from ? opts.from : `${getKitConfig().api_name} Support <${emails.sender}>`,
 		to: to.split(','),
 		subject,
@@ -716,9 +733,6 @@ const deleteKitUserMeta = async (name) => {
 	return updatedStatus.kit.user_meta;
 };
 
-const stringIsDate = (date) => {
-	return (typeof date === 'string' && new Date(date) !== 'Invalid Date') && !isNaN(new Date(date));
-};
 
 const isDatetime = (date, formats = [moment.ISO_8601]) => {
 	return moment(date, formats, true).isValid();
@@ -853,7 +867,6 @@ module.exports = {
 	updateKitUserMeta,
 	deleteKitUserMeta,
 	kitUserMetaFieldIsValid,
-	stringIsDate,
 	errorMessageConverter,
 	getDomain,
 	isDatetime,
