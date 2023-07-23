@@ -1,5 +1,5 @@
 'use strict';
-const { ROLES } = require('../../constants');
+import { ROLES } from '../../constants';
 
 module.exports = function (sequelize, DataTypes) {
 	const Session = sequelize.define(

@@ -1,9 +1,7 @@
 'use strict';
-const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../../constants');
-const {
-	generateHash,
-	generateAffiliationCode
-} = require('../../utils/security');
+import { DEFAULT_ORDER_RISK_PERCENTAGE } from '../../constants';
+import { generateHash, generateAffiliationCode } from '../../utils/security';
+
 
 const ID_DATA_DEFAULT = {
 	status: 0,

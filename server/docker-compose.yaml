@@ -48,6 +48,7 @@ services:
       - ./app.ts:/app/app.ts
       - ./ecosystem.config.js:/app/ecosystem.config.js
       - ./constants.ts:/app/constants.ts
+      - ./tsconfig.json:/app/tsconfig.json
       - ./messages.js:/app/messages.js
       - ./logs:/app/logs
       - ./test:/app/test

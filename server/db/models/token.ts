@@ -1,6 +1,6 @@
 'use strict';
 
-const { ROLES, TOKEN_TYPES } = require('../../constants');
+import { ROLES, TOKEN_TYPES } from '../../constants';
 
 module.exports = function (sequelize, DataTypes) {
 	const Token = sequelize.define('Token', {
