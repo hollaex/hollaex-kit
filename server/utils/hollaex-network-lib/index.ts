@@ -1,36 +1,52 @@
 'use strict';
 
-const moment = require('moment');
-const {
-	isBoolean,
-	isPlainObject,
-	isNumber,
-	isString,
-	isArray,
-	isBuffer,
-	omit,
-	isNull,
-	isEmpty,
-	snakeCase
-} = require('lodash');
-const {
-	createRequest,
-	generateHeaders,
-	checkKit,
-	createSignature,
-	parameterError,
-	isDatetime,
-	sanitizeDate,
-	isUrl
-} = require('./utils');
-const WebSocket = require('ws');
-const { setWsHeartbeat } = require('ws-heartbeat/client');
-const { reject } = require('bluebird');
-const FileType = require('file-type');
+import moment from 'moment';
+import {
+  isBoolean,
+  isPlainObject,
+  isNumber,
+  isString,
+  isArray,
+  isBuffer,
+  omit,
+  isNull,
+  isEmpty,
+  snakeCase,
+} from 'lodash';
+import {
+  createRequest,
+  generateHeaders,
+  checkKit,
+  createSignature,
+  parameterError,
+  isDatetime,
+  sanitizeDate,
+  isUrl,
+} from './utils';
+import WebSocket from 'ws';
+import { setWsHeartbeat } from 'ws-heartbeat/client';
+import { reject } from 'bluebird';
+import FileType from 'file-type';
 
 class HollaExNetwork {
+	apiUrl: string;
+	baseUrl: string;
+	apiKey: string;
+	apiSecret: string;
+	apiExpiresAfter: number;
+	headers: { 'content-type': string; Accept: string; 'api-key': string; };
+	activation_code: any;
+	exchange_id: any;
+	wsUrl: any;
+	ws: any;
+	wsEvents: any[];
+	wsReconnect: boolean;
+	wsReconnectInterval: number;
+	wsEventListeners: null;
+	wsConnected: () => boolean;
+
 	constructor(
-		opts = {
+		opts: any = {
 			apiUrl: 'https://api.hollaex.network',
 			baseUrl: '/v2',
 			apiKey: '',
@@ -198,7 +214,7 @@ class HollaExNetwork {
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
 			verb, path,
-			this.apiExpiresAfter
+			this.apiExpiresAfter,
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
@@ -506,7 +522,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/withdraw?user_id=${userId}`;
-		const data = { address, currency, amount };
+		const data: any = { address, currency, amount };
 		if (opts.network) {
 			data.network = opts.network;
 		}
@@ -1312,7 +1328,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/order?user_id=${userId}`;
-		const data = { symbol, side, size, type, price };
+		const data: any = { symbol, side, size, type, price };
 
 		if (isPlainObject(feeData.fee_structure)) {
 			data.fee_structure = feeData.fee_structure;
@@ -1728,7 +1744,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/transfer`;
-		const data = {
+		const data: any = {
 			sender_id: senderId,
 			receiver_id: receiverId,
 			currency,
@@ -2203,7 +2219,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
-		const data = {
+		const data: any = {
 			user_id: userId,
 			currency,
 			amount
@@ -2322,7 +2338,7 @@ class HollaExNetwork {
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/mint`;
-		const data = {
+		const data: any = {
 			transaction_id: transactionId,
 			status,
 			rejected,
@@ -2400,7 +2416,7 @@ class HollaExNetwork {
 
 		const verb = 'POST';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
-		const data = {
+		const data: any = {
 			user_id: userId,
 			currency,
 			amount
@@ -2519,7 +2535,7 @@ class HollaExNetwork {
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/burn`;
-		const data = {
+		const data: any = {
 			transaction_id: transactionId,
 			status,
 			rejected,
@@ -2637,7 +2653,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with converted assets.
 	 */
-	getOraclePrices(assets = [], opts = {
+	getOraclePrices(assets: any = [], opts = {
 		quote: 'usdt',
 		amount: 1,
 		additionalHeaders: null
@@ -2735,7 +2751,7 @@ class HollaExNetwork {
 
 		const verb = 'PUT';
 		const path = `${this.baseUrl}/network/${this.exchange_id}/exchange`;
-		const data = {
+		const data: any = {
 			id: this.exchange_id
 		};
 
@@ -2813,7 +2829,7 @@ class HollaExNetwork {
 	createCoin(
 		symbol,
 		fullname,
-		opts = {
+		opts: any = {
 			code: null,
 			withdrawalFee: null,
 			min: null,
@@ -2842,7 +2858,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/coin`;
-		const data = {
+		const data: any = {
 			symbol,
 			fullname
 		};
@@ -2978,7 +2994,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/coin`;
-		const data = {};
+		const data: any = {};
 
 		for (const field in fields) {
 			const value = fields[field];
@@ -3080,7 +3096,7 @@ class HollaExNetwork {
 		name,
 		baseCoin,
 		quoteCoin,
-		opts = {
+		opts: any = {
 			code: null,
 			active: null,
 			minSize: null,
@@ -3108,7 +3124,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/pair`;
-		const data = {
+		const data: any = {
 			name,
 			pair_base: baseCoin,
 			pair_2: quoteCoin
@@ -3229,7 +3245,7 @@ class HollaExNetwork {
 		const path = `${this.baseUrl}/network/${
 			this.exchange_id
 		}/pair`;
-		const data = {};
+		const data: any = {};
 
 		for (const field in fields) {
 			const value = fields[field];
@@ -3583,4 +3599,4 @@ class HollaExNetwork {
 	}
 }
 
-module.exports = HollaExNetwork;
+export default HollaExNetwork;

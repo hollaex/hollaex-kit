@@ -9,8 +9,8 @@ const cachePeriods = {
 	'oracle': 60
 }
 
-const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
-	const requestObj = {
+const createRequest = (verb, url, headers, opts: any = { data: null, formData: null }, baseUrl = null) => {
+	const requestObj: any = {
 		headers,
 		url,
 		json: true
@@ -54,7 +54,7 @@ const createSignature = (secret = '', verb, path, expires, data = '') => {
 	return signature;
 };
 
-const generateHeaders = (headers, secret, verb, path, expiresAfter, data) => {
+const generateHeaders = (headers, secret, verb, path, expiresAfter, data = null) => {
 	const expires = moment().unix() + expiresAfter;
 	const signature = createSignature(secret, verb, path, expires, data);
 	const header = {
@@ -96,7 +96,7 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
-module.exports = {
+export {
 	createRequest,
 	createSignature,
 	generateHeaders,
