@@ -1,13 +1,13 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constants');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const {
-	subscribedToCoin,
-	getKitCoin,
-	getKitCoins,
-	getKitCoinsConfig
-} = require('./common');
+import { getNodeLib } from '../../..//init';
+import {
+  subscribedToCoin,
+  getKitCoin,
+  getKitCoins,
+  getKitCoinsConfig,
+} from './common';
+
 
 const getNetworkCoins = (
 	opts = {
@@ -71,7 +71,8 @@ const updateCoin = async (
 	return getNodeLib().updateCoin(code, fields, opts);
 };
 
-module.exports = {
+
+export {
 	subscribedToCoin,
 	getKitCoin,
 	getKitCoins,

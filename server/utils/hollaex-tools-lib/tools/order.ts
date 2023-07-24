@@ -1229,7 +1229,7 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 	return feeData;
 };
 
-module.exports = {
+export {
 	getAllExchangeOrders,
 	createUserOrderByKitId,
 	getUserQuickTrade,

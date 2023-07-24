@@ -1,7 +1,7 @@
 'use strict';
 
-const moment = require('moment');
-const { Op } = require('sequelize');
+import moment from 'moment';
+import { Op } from 'sequelize';
 
 /**
  * Returns object for sequelize pagination query. Default is { limit: 50, offset: 1 }
@@ -9,7 +9,7 @@ const { Op } = require('sequelize');
  * @param {number} page - Page to retrieve. Default: 1.
  * @returns {object} Sequelize pagination object with keys limit, offset.
  */
-const paginationQuery = (limit = 50, page = 1) => {
+export const paginationQuery = (limit = 50, page = 1) => {
 	let _limit = 50;
 	let _page = 1;
 	if (limit) {
@@ -37,7 +37,7 @@ const paginationQuery = (limit = 50, page = 1) => {
  * @param {string} endDate - End date to filter by in timestamp format (ISO 8601).
  * @returns {object} Sequelize timeframe object.
  */
-const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
+export const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
 	let timestamp = {
 		[Op.gte]: startDate,
 		[Op.lte]: endDate
@@ -51,7 +51,7 @@ const timeframeQuery = (startDate = 0, endDate = moment().valueOf()) => {
  * @param {string} order - Order to put query. Can be desc (descending) or asc (ascending).
  * @returns {array} Sequelize ordering array.
  */
-const orderingQuery = (orderBy = 'id', order = 'desc') => {
+export const orderingQuery = (orderBy = 'id', order = 'desc') => {
 	return [orderBy, order === 'asc' || order === 'desc' ? order : 'desc'];
 };
 
@@ -60,7 +60,7 @@ const orderingQuery = (orderBy = 'id', order = 'desc') => {
  * @param {object} data - Original data from sequelize findAndCountAll query.
  * @returns {object} Formatted query result with count and data.
  */
-const convertSequelizeCountAndRows = (data) => {
+export const convertSequelizeCountAndRows = (data) => {
 	return {
 		count: data.count,
 		data: data.rows.map((row) => {
@@ -69,11 +69,4 @@ const convertSequelizeCountAndRows = (data) => {
 			return item;
 		})
 	};
-};
-
-module.exports = {
-	paginationQuery,
-	timeframeQuery,
-	orderingQuery,
-	convertSequelizeCountAndRows
 };

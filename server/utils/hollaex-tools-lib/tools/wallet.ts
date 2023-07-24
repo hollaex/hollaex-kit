@@ -1,40 +1,39 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constants');
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
-const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { WITHDRAWALS_REQUEST_KEY } = require(`${SERVER_PATH}/constants`);
-const { verifyOtpBeforeAction } = require('./security');
-const { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } = require('./common');
-const {
-	INVALID_OTP_CODE,
-	INVALID_WITHDRAWAL_TOKEN,
-	EXPIRED_WITHDRAWAL_TOKEN,
-	INVALID_COIN,
-	INVALID_AMOUNT,
-	DEPOSIT_DISABLED_FOR_COIN,
-	WITHDRAWAL_DISABLED_FOR_COIN,
-	UPGRADE_VERIFICATION_LEVEL,
-	NO_DATA_FOR_CSV,
-	USER_NOT_FOUND,
-	USER_NOT_REGISTERED_ON_NETWORK,
-	INVALID_NETWORK,
-	NETWORK_REQUIRED
-} = require(`${SERVER_PATH}/messages`);
-const { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
-const { findTier } = require('./tier');
-const { client } = require('./database/redis');
-const crypto = require('crypto');
-const uuid = require('uuid/v4');
-const { all, reject } = require('bluebird');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const moment = require('moment');
-const math = require('mathjs');
-const { parse } = require('json2csv');
-const { loggerWithdrawals } = require(`${SERVER_PATH}/config/logger`);
-const { has } = require('lodash');
-const WAValidator = require('multicoin-address-validator');
-const { isEmail } = require('validator');
+import { sendEmail } from '../../../mail';
+import { MAILTYPE } from '../../../mail/strings';
+import { WITHDRAWALS_REQUEST_KEY } from '../../../constants';
+import { verifyOtpBeforeAction } from './security';
+import { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } from './common';
+import {
+  INVALID_OTP_CODE,
+  INVALID_WITHDRAWAL_TOKEN,
+  EXPIRED_WITHDRAWAL_TOKEN,
+  INVALID_COIN,
+  INVALID_AMOUNT,
+  DEPOSIT_DISABLED_FOR_COIN,
+  WITHDRAWAL_DISABLED_FOR_COIN,
+  UPGRADE_VERIFICATION_LEVEL,
+  NO_DATA_FOR_CSV,
+  USER_NOT_FOUND,
+  USER_NOT_REGISTERED_ON_NETWORK,
+  INVALID_NETWORK,
+  NETWORK_REQUIRED,
+} from '../../../messages';
+import { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } from './user';
+import { findTier } from './tier';
+import { client } from './database/redis';
+import crypto from 'crypto';
+import { v4 as uuid } from 'uuid';
+import { all, reject } from 'bluebird';
+import { getNodeLib } from '../../../init';
+import moment from 'moment';
+import math from 'mathjs';
+import { parse } from 'json2csv';
+import { loggerWithdrawals } from '../../../config/logger';
+import { has } from 'lodash';
+import WAValidator from 'multicoin-address-validator';
+import isEmail from 'validator/lib/isEmail';
 
 const isValidAddress = (currency, address, network) => {
 	if (network === 'eth' || network === 'ethereum') {
@@ -494,7 +493,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		return;
 	}
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, null);
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -766,6 +765,7 @@ const getUserTransactionsByKitId = (
 				if (transactions.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(transactions.data, Object.keys(transactions.data[0]));
 				return csv;
 			} else {
@@ -1127,7 +1127,7 @@ async function validateDeposit(user, amount, currency, network = null) {
 		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 	}
 
-	const { fee, fee_coin } = getDepositFee(currency, network, amount, user.verification_level);
+	const { fee, fee_coin }: any = getDepositFee(currency, network, amount, user.verification_level);
 
 	return {
 		fee,
@@ -1193,6 +1193,7 @@ const getWallets = async (
 			}
 		}
 		if(format === 'csv'){
+			// @ts-ignore
 			const csv = parse(wallets.data, Object.keys(wallets.data[0]));
 				return csv;
 		}
@@ -1200,7 +1201,7 @@ const getWallets = async (
 	});
 };
 
-module.exports = {
+export {
 	sendRequestWithdrawalEmail,
 	validateWithdrawal,
 	validateWithdrawalToken,

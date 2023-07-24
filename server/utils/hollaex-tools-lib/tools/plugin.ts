@@ -1,8 +1,8 @@
 'use strict';
 
-const dbQuery = require('./database/query');
-const { paginationQuery } = require('./database/helpers');
-const { Op } = require('sequelize');
+import * as dbQuery from './database/query';
+import { paginationQuery } from './database/helpers';
+import { Op } from 'sequelize';
 
 const getPaginatedPlugins = (limit, page, search) => {
 	const options = {
@@ -35,7 +35,7 @@ const getPaginatedPlugins = (limit, page, search) => {
 		};
 	}
 
-	return dbQuery.findAndCountAll('plugin', options)
+	return dbQuery.findAndCountAll('plugin', options, null)
 		.then((data) => {
 			return {
 				count: data.count,
@@ -55,7 +55,7 @@ const getPlugin = (name, opts = {}) => {
 	});
 };
 
-module.exports = {
+export {
 	getPaginatedPlugins,
 	getPlugin
 };

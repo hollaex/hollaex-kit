@@ -1,7 +1,8 @@
 'use strict';
+import { getModel } from './model';
+import { convertSequelizeCountAndRows } from './helpers';
 
-const Model = (table) => require('./model').getModel(table);
-const { convertSequelizeCountAndRows } = require('./helpers');
+export const Model = (table) => getModel(table);
 
 /**
  * Returns Promise with Sequelize findOne query result.
@@ -9,7 +10,7 @@ const { convertSequelizeCountAndRows } = require('./helpers');
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findOne = (table, query = {}, model = null) => {
+export const findOne = (table, query = {}, model = null) => {
 	if (model) {
 		return model.findOne(query);
 	} else {
@@ -23,7 +24,7 @@ const findOne = (table, query = {}, model = null) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findAll = (table, query = {}, model) => {
+export const findAll = (table, query = {}, model = null) => {
 	if (model) {
 		return model.findAll(query);
 	} else {
@@ -37,7 +38,7 @@ const findAll = (table, query = {}, model) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query.
  */
-const findAndCountAll = (table, query = {}, model) => {
+export const findAndCountAll = (table, query = {}, model = null) => {
 	if (model) {
 		return model.findAndCountAll(query);
 	} else {
@@ -51,17 +52,10 @@ const findAndCountAll = (table, query = {}, model) => {
  * @param {object} query - Sequelize query object.
  * @returns {Promise} Promise with result of query in count/data format.
  */
-const findAndCountAllWithRows = (table, query = {}, model) => {
+export const findAndCountAllWithRows = (table, query = {}, model = null) => {
 	if (model) {
 		return model.findAndCountAll(query).then(convertSequelizeCountAndRows);
 	} else {
 		return Model(table).findAndCountAll(query).then(convertSequelizeCountAndRows);
 	}
-};
-
-module.exports = {
-	findOne,
-	findAll,
-	findAndCountAll,
-	findAndCountAllWithRows
 };

@@ -1,29 +1,14 @@
 'use strict';
 
-const common = require('./common');
-const database = require('./database');
-const order = require('./order');
-const plugin = require('./plugin');
-const user = require('./user');
-const wallet = require('./wallet');
-const tier = require('./tier');
-const security = require('./security');
-const coin = require('./coin');
-const pair = require('./pair');
-const exchange = require('./exchange');
-const broker = require('./broker');
-
-module.exports = {
-	...common,
-	database,
-	order,
-	plugin,
-	user,
-	wallet,
-	tier,
-	security,
-	coin,
-	pair,
-	exchange,
-	broker
-};
+export * as common from './common';
+export * as database from './database';
+export * as order from './order';
+export * as plugin from './plugin';
+export * as user from './user';
+export * as wallet from './wallet';
+export * as tier from './tier';
+export * as security from './security';
+export * as coin from './coin';
+export * as pair from './pair';
+export * as exchange from './exchange';
+export * as broker from './broker';

@@ -1,7 +1,7 @@
 'use strict';
 
 import { getModel } from './database/model';
-import dbQuery from './database/query';
+import * as dbQuery from './database/query';
 import {
   has,
   omit,
@@ -223,7 +223,7 @@ const createUser = (
 					});
 				}
 
-				const options = {
+				const options: any = {
 					email,
 					password,
 					settings: INITIAL_SETTINGS(),
@@ -318,7 +318,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 		})
 		.then(([user]) => {
 			if (ip) {
-				registerUserLogin(user.id, ip, device, domain, origin, referer);
+				registerUserLogin(user.id, ip, { device, domain, origin, referer });
 			}
 			return user;
 		});
@@ -327,7 +327,7 @@ const loginUser = (email, password, otp_code, captcha, ip, device, domain, origi
 const registerUserLogin = (
 	userId,
 	ip,
-	opts = {
+	opts: any = {
 		device: null,
 		domain: null,
 		origin: null,
@@ -337,7 +337,7 @@ const registerUserLogin = (
 		status: true,
 	}
 ) => {
-	const login = {
+	const login: any = {
 		user_id: userId,
 		ip
 	};
@@ -370,7 +370,7 @@ const registerUserLogin = (
 	return getModel('login').create(login)
 		.then((loginData) => {
 			if(opts.token && opts.status) {
-				return createSession(opts.token, loginData.id, userId, opts.expiry);
+				return createSession(opts.token, loginData.id, userId);
 			}
 		})
 		.catch(err => reject(err));
@@ -515,7 +515,7 @@ const getAffiliationCount = (userId, opts = {
 		},
 		order: [ordering],
 		...pagination
-	});
+	}, null);
 };
 
 const getUserReferer = (userId) => {
@@ -568,7 +568,7 @@ const getAllUsers = () => {
 		attributes: {
 			exclude: OMITTED_USER_FIELDS
 		}
-	});
+	}, null);
 };
 
 const getAllUsersAdmin = (opts = {
@@ -615,7 +615,7 @@ const getAllUsersAdmin = (opts = {
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 	const dob_timeframe = timeframeQuery(dob_start_date, dob_end_date);
 	const ordering = orderingQuery(opts.order_by, opts.order);
-	let query = {
+	let query: any = {
 		where: {
 			created_at: timeframe,
 			...(id != null && { id }),
@@ -720,7 +720,7 @@ const getAllUsersAdmin = (opts = {
 		query.attributes.exclude.push('settings');
 	}
 
-	return dbQuery.findAndCountAllWithRows('user', query)
+	return dbQuery.findAndCountAllWithRows('user', query, null)
 		.then(async ({ count, data }) => {
 			if (opts.id || opts.search) {
 				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
@@ -755,14 +755,14 @@ const getAllUsersAdmin = (opts = {
 		});
 };
 
-const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
+const getUser = (identifier: any = {}, rawData = true, networkData = false, opts = {
 	additionalHeaders: null
 }) => {
 	if (!identifier.email && !identifier.kit_id && !identifier.network_id) {
 		return reject(new Error(PROVIDE_USER_CREDENTIALS));
 	}
 
-	const where = {};
+	const where: any = {};
 	if (identifier.email) {
 		where.email = identifier.email;
 	} else if (identifier.kit_id) {
@@ -1277,7 +1277,7 @@ const getUserLogins = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
-	let options = {
+	let options: any = {
 		where: {
 			timestamp: timeframe,
 			...(opts.status != null && { status: opts.status }),
@@ -1295,7 +1295,7 @@ const getUserLogins = (opts = {
 
 	if (opts.userId) options.where.user_id = opts.userId;
 
-	return dbQuery.findAndCountAllWithRows('login', options)
+	return dbQuery.findAndCountAllWithRows('login', options, null)
 		.then((logins) => {
 			if (opts.format && opts.format === 'csv') {
 				if (logins.data.length === 0) {
@@ -1332,7 +1332,7 @@ const bankComparison = (bank1, bank2, description) => {
 	return description;
 };
 
-const createAuditDescription = (userId, prevData = {}, newData = {}) => {
+const createAuditDescription = (userId, prevData: any = {}, newData: any = {}) => {
 	let description = {
 		userId,
 		note: `Change in user ${userId} information`,
@@ -1380,7 +1380,7 @@ const createAudit = (adminId, event, ip, opts = {
 	newUserData: null,
 	domain: null
 }) => {
-	const options = {
+	const options: any = {
 		admin_id: adminId,
 		event,
 		description: createAuditDescription(opts.userId, opts.prevUserData, opts.newUserData),
@@ -1410,7 +1410,7 @@ const getUserAudits = (opts = {
 	const pagination = paginationQuery(opts.limit, opts.page);
 	const timeframe = timeframeQuery(opts.startDate, opts.endDate);
 	const ordering = orderingQuery(opts.orderBy, opts.order);
-	let options = {
+	let options: any = {
 		where: {
 			timestamp: timeframe
 		},
@@ -1423,7 +1423,7 @@ const getUserAudits = (opts = {
 
 	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
-	return dbQuery.findAndCountAllWithRows('audit', options)
+	return dbQuery.findAndCountAllWithRows('audit', options, null)
 		.then((audits) => {
 			if (opts.format && opts.format === 'csv') {
 				if (audits.data.length === 0) {
@@ -1552,7 +1552,7 @@ const getExchangeOperators = (opts = {
 		...pagination
 	};
 
-	return dbQuery.findAndCountAllWithRows('user', options);
+	return dbQuery.findAndCountAllWithRows('user', options, null);
 };
 
 const inviteExchangeOperator = (invitingEmail, email, role, opts = {
@@ -1703,7 +1703,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 
 			networkIds = uniq(networkIds);
 
-			const opts = {
+			const opts: any = {
 				attributes: ['id', 'network_id'],
 				raw: true
 			};
@@ -1734,7 +1734,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				};
 			}
 
-			const users = await dbQuery.findAll('user', opts);
+			const users = await dbQuery.findAll('user', opts, null);
 
 			users.forEach((user) => {
 				if (user.network_id) {
@@ -1766,7 +1766,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 
 			kitIds = uniq(kitIds);
 
-			const opts = {
+			const opts: any = {
 				attributes: ['id', 'network_id'],
 				raw: true
 			};
@@ -1795,7 +1795,7 @@ const [mapNetworkIdToKitId, mapKitIdToNetworkId] = (() => {
 				};
 			}
 
-			const users = await dbQuery.findAll('user', opts);
+			const users = await dbQuery.findAll('user', opts, null);
 
 			users.forEach((user) => {
 				if (user.network_id) {
@@ -1953,7 +1953,7 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	})
+	}, null)
 		.then((sessions) => {
 			if (opts.format && opts.format === 'csv') {
 				if (sessions.data.length === 0) {
@@ -2099,7 +2099,7 @@ const deleteKitUser = async (userId) => {
 };
 
 
-module.exports = {
+export {
 	loginUser,
 	getUserTier,
 	createUser,

@@ -1,4 +1,4 @@
-import dbQuery from './database/query';
+import * as dbQuery from './database/query';
 import {
   SECRET_MASK,
   KIT_CONFIG_KEYS,
@@ -65,7 +65,7 @@ import { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } from '../../../con
 import BigNumber from 'bignumber.js';
 
 
-export const getKitVersion = () => {
+const getKitVersion = () => {
 	return dbQuery.findOne('status', {
 		raw: true,
 		attributes: ['id', 'kit_version']
@@ -78,28 +78,28 @@ export const getKitVersion = () => {
  * @param {string} url - Ids of frozen users.
  * @returns {boolean} True if url is valid. False if not.
  */
-export const isUrl = (url) => {
+const isUrl = (url) => {
 	const pattern = /^(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/;
 	return pattern.test(url);
 };
 
-export const subscribedToCoin = (coin) => {
+const subscribedToCoin = (coin) => {
 	return getKitCoins().includes(coin);
 };
 
-export const subscribedToPair = (pair) => {
+const subscribedToPair = (pair) => {
 	return getKitPairs().includes(pair);
 };
 
-export const getKitTiers = () => {
+const getKitTiers = () => {
 	return GET_TIERS();
 };
 
-export const getKitTier = (tier) => {
+const getKitTier = (tier) => {
 	return GET_TIERS()[tier];
 };
 
-export const isValidTierLevel = (level) => {
+const isValidTierLevel = (level) => {
 	const levels = Object.keys(getKitTiers()).map((tier) => parseInt(tier));
 	if (!levels.includes(level)) {
 		return false;
@@ -108,35 +108,35 @@ export const isValidTierLevel = (level) => {
 	}
 };
 
-export const getTierLevels = () => {
+const getTierLevels = () => {
 	return Object.keys(getKitTiers());
 };
 
-export const getKitConfig = () => {
+const getKitConfig = () => {
 	return GET_KIT_CONFIG();
 };
 
-export const getKitSecrets = () => {
+const getKitSecrets = () => {
 	return GET_KIT_SECRETS();
 };
 
-export const getKitCoin = (coin) => {
+const getKitCoin = (coin) => {
 	return getKitCoinsConfig()[coin];
 };
 
-export const getKitCoinsConfig = () => {
+const getKitCoinsConfig = () => {
 	return GET_COINS();
 };
 
-export const getKitCoins = () => {
+const getKitCoins = () => {
 	return Object.keys(getKitCoinsConfig());
 };
 
-export const getEmail = () => {
+const getEmail = () => {
 	return GET_EMAIL();
 };
 
-export const updateEmail = async (data) => {
+const updateEmail = async (data) => {
 	const status = await dbQuery.findOne('status', {
 		attributes: ['id', 'email']
 	});
@@ -154,23 +154,23 @@ export const updateEmail = async (data) => {
 };
 
 
-export const getKitPair = (pair) => {
+const getKitPair = (pair) => {
 	return getKitPairsConfig()[pair];
 };
 
-export const getKitPairsConfig = () => {
+const getKitPairsConfig = () => {
 	return GET_PAIRS();
 };
 
-export const getKitPairs = () => {
+const getKitPairs = () => {
 	return Object.keys(getKitPairsConfig());
 };
 
-export const getFrozenUsers = () => {
+const getFrozenUsers = () => {
 	return GET_FROZEN_USERS();
 };
 
-export const maskSecrets = (secrets) => {
+const maskSecrets = (secrets) => {
 	each(secrets, (secret, secretKey) => {
 		if (secretKey === 'captcha') {
 			secret.secret_key = SECRET_MASK;
@@ -181,7 +181,7 @@ export const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-export const updateKitConfigSecrets = (data: any = {}, scopes) => {
+const updateKitConfigSecrets = (data: any = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -238,15 +238,15 @@ export const updateKitConfigSecrets = (data: any = {}, scopes) => {
 		});
 };
 
-export const updateKitConfig = (kit, scopes) => {
+const updateKitConfig = (kit, scopes) => {
 	return updateKitConfigSecrets({ kit }, scopes);
 };
 
-export const updateKitSecrets = (secrets, scopes) => {
+const updateKitSecrets = (secrets, scopes) => {
 	return updateKitConfigSecrets({ secrets }, scopes);
 };
 
-export const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
+const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
 	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
@@ -296,7 +296,7 @@ export const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {
 	return joinedKitConfig;
 };
 
-export const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
+const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
@@ -323,7 +323,7 @@ export const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	return joinedKitSecrets;
 };
 
-export const sendEmailToSupport = (email, category, subject, description) => {
+const sendEmailToSupport = (email, category, subject, description) => {
 	if (!SEND_CONTACT_US_EMAIL) {
 		return reject(new Error(SUPPORT_DISABLED));
 	}
@@ -338,7 +338,7 @@ export const sendEmailToSupport = (email, category, subject, description) => {
 	return resolve();
 };
 
-export const getNetworkKeySecret = () => {
+const getNetworkKeySecret = () => {
 	return dbQuery.findOne('status', {
 		raw: true,
 		attributes: ['id', 'api_key', 'api_secret']
@@ -351,7 +351,7 @@ export const getNetworkKeySecret = () => {
 		});
 };
 
-export const setExchangeInitialized = () => {
+const setExchangeInitialized = () => {
 	return dbQuery.findOne('status')
 		.then((status) => {
 			if (status.dataValues.initialized === true) {
@@ -370,7 +370,7 @@ export const setExchangeInitialized = () => {
 		});
 };
 
-export const setExchangeSetupCompleted = () => {
+const setExchangeSetupCompleted = () => {
 	return dbQuery.findOne('status')
 		.then((status) => {
 			if (status.dataValues.kit.setup_completed) {
@@ -395,7 +395,7 @@ export const setExchangeSetupCompleted = () => {
 		});
 };
 
-export const updateNetworkKeySecret = (apiKey, apiSecret) => {
+const updateNetworkKeySecret = (apiKey, apiSecret) => {
 	if (!apiKey || !apiSecret) {
 		return reject(new Error('Must provide both key and secret'));
 	}
@@ -416,7 +416,7 @@ export const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-export const getAssetsPrices = (assets = [], quote, amount, opts = {
+const getAssetsPrices = (assets = [], quote, amount, opts = {
 	additionalHeaders: null
 }) => {
 	for (let asset of assets) {
@@ -432,74 +432,74 @@ export const getAssetsPrices = (assets = [], quote, amount, opts = {
 	return getNodeLib().getOraclePrices(assets, { quote, amount, ...opts });
 };
 
-export const storeImageOnNetwork = async (image, name, opts = {
+const storeImageOnNetwork = async (image, name, opts = {
 	additionalHeaders: null
 }) => {
 
 	return getNodeLib().uploadIcon(image, name, opts);
 };
 
-export const getPublicTrades = (symbol, opts = {
+const getPublicTrades = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getPublicTrades({ symbol, ...opts });
 };
 
-export const getOrderbook = (symbol, opts = {
+const getOrderbook = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbook(symbol, opts);
 };
 
-export const getOrderbooks = (opts = {
+const getOrderbooks = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbooks(opts);
 };
 
-export const getChart = (from, to, symbol, resolution, opts = {
+const getChart = (from, to, symbol, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getChart(from, to, symbol, resolution, opts);
 };
 
-export const getCharts = (from, to, resolution, opts = {
+const getCharts = (from, to, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
-export const getUdfConfig = (opts = {
+const getUdfConfig = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfConfig(opts);
 };
 
-export const getUdfHistory = (from, to, symbol, resolution, opts = {
+const getUdfHistory = (from, to, symbol, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfHistory(from, to, symbol, resolution, opts);
 };
 
-export const getUdfSymbols = (symbol, opts = {
+const getUdfSymbols = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
-export const getTicker = (symbol, opts = {
+const getTicker = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getTicker(symbol, opts);
 };
 
-export const getTickers = (opts = {
+const getTickers = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getTickers(opts);
 };
 
-export const getTradesHistory = (
+const getTradesHistory = (
 	symbol,
 	side,
 	limit,
@@ -525,7 +525,7 @@ export const getTradesHistory = (
 	});
 };
 
-export const sendEmail = (
+const sendEmail = (
 	type,
 	receiver,
 	data,
@@ -535,15 +535,15 @@ export const sendEmail = (
 	return sendSmtpEmail(MAILTYPE[type], receiver, data, userSettings, domain);
 };
 
-export const isEmail = (email) => {
+const isEmail = (email) => {
 	return isValidEmail(email);
 };
 
-export const sleep = (ms) => {
+const sleep = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-export const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
+const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
 	const { emails }: any = getKitSecrets();
 
 	const params: any = {
@@ -570,9 +570,9 @@ export const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null
 	return nodemailerEmail(params);
 };
 
-export const emailHtmlBoilerplate = (html) => TemplateEmail({}, html);
+const emailHtmlBoilerplate = (html) => TemplateEmail({}, html);
 
-export const kitUserMetaFieldIsValid = (field, data) => {
+const kitUserMetaFieldIsValid = (field, data) => {
 	const missingUserMetaKeys = difference(USER_META_KEYS, Object.keys(data));
 	if (missingUserMetaKeys.length > 0) {
 		return {
@@ -605,7 +605,7 @@ export const kitUserMetaFieldIsValid = (field, data) => {
 	return { success: true };
 };
 
-export const addKitUserMeta = async (name, type, description, required = false) => {
+const addKitUserMeta = async (name, type, description, required = false) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (existingUserMeta[name]) {
@@ -650,7 +650,7 @@ export const addKitUserMeta = async (name, type, description, required = false) 
 	return updatedStatus.kit.user_meta;
 };
 
-export const updateKitUserMeta = async (name, data = {
+const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
@@ -703,7 +703,7 @@ export const updateKitUserMeta = async (name, data = {
 	return updatedStatus.kit.user_meta;
 };
 
-export const deleteKitUserMeta = async (name) => {
+const deleteKitUserMeta = async (name) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -734,15 +734,15 @@ export const deleteKitUserMeta = async (name) => {
 };
 
 
-export const isDatetime = (date, formats = [moment.ISO_8601]) => {
+const isDatetime = (date, formats = [moment.ISO_8601]) => {
 	return moment(date, formats, true).isValid();
 };
 
-export const errorMessageConverter = (err) => {
+const errorMessageConverter = (err) => {
 	return handleCatchError(err);
 };
 
-export const getDomain = () => {
+const getDomain = () => {
 	return DOMAIN;
 };
 
@@ -760,15 +760,15 @@ export const getDomain = () => {
 // 	);
 // };
 
-export const getNetworkConstants = (opts = {
+const getNetworkConstants = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getConstants(opts);
 };
 
-export const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
+const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
-export const getDefaultFees = () => {
+const getDefaultFees = () => {
 	const { info: { type, plan } }: any = getKitConfig();
 	if (type === 'Enterprise') {
 		return {
@@ -780,7 +780,7 @@ export const getDefaultFees = () => {
 	}
 };
 
-export const validateIp = (ip) => {
+const validateIp = (ip) => {
 	const regex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/(16|24|32))$/;
 	if (!regex.test(ip)) {
 		return false;
@@ -788,7 +788,7 @@ export const validateIp = (ip) => {
 	return true;
 };
 
-export const validatePair = (pair) => {
+const validatePair = (pair) => {
 	const regex = /([a-z]){2,8}-([a-z]{2,8})/;
 	if (!regex.test(pair)) {
 		return false;
@@ -803,18 +803,85 @@ export const validatePair = (pair) => {
 	return true;
 };
 
-export const getBrokerDeals = () => {
+const getBrokerDeals = () => {
 	return GET_BROKER();
 };
 
-export const getQuickTrades = () => {
+const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
-export const getNetworkQuickTrades = () => {
+const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
 }
 
-export const parseNumber = (number, precisionValue) => {
+const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
+
+export {
+	getKitVersion,
+	isUrl,
+	getKitConfig,
+	getKitSecrets,
+	subscribedToCoin,
+	getKitTier,
+	getKitTiers,
+	getKitCoin,
+	getKitCoins,
+	getKitCoinsConfig,
+	subscribedToPair,
+	getKitPair,
+	getFrozenUsers,
+	getKitPairs,
+	getKitPairsConfig,
+	maskSecrets,
+	updateKitConfig,
+	updateKitSecrets,
+	updateKitConfigSecrets,
+	sendEmailToSupport,
+	getNetworkKeySecret,
+	setExchangeInitialized,
+	setExchangeSetupCompleted,
+	updateNetworkKeySecret,
+	isValidTierLevel,
+	getTierLevels,
+	getAssetsPrices,
+	storeImageOnNetwork,
+	getPublicTrades,
+	getOrderbook,
+	getOrderbooks,
+	getChart,
+	getCharts,
+	getUdfConfig,
+	getUdfHistory,
+	getUdfSymbols,
+	getTicker,
+	getTickers,
+	getTradesHistory,
+	sendEmail,
+	isEmail,
+	sleep,
+	sendCustomEmail,
+	addKitUserMeta,
+	updateKitUserMeta,
+	deleteKitUserMeta,
+	kitUserMetaFieldIsValid,
+	errorMessageConverter,
+	getDomain,
+	isDatetime,
+	// getCsvParser,
+	emailHtmlBoilerplate,
+	getNetworkConstants,
+	getNetworkEndpoint,
+	getDefaultFees,
+	getEmail,
+	updateEmail,
+	checkExchangeStatus,
+	validateIp,
+	validatePair,
+	getBrokerDeals,
+	getQuickTrades,
+	getNetworkQuickTrades,
+	parseNumber,
+};

@@ -33,7 +33,11 @@ interface Configuration {
     user_payments: Record<string, any>;
     dust: Record<string, any>;
 	api_name: string,
-	logo_image: any
+	logo_image: any,
+	valid_languages: any,
+	new_user_is_activated: any,
+	email_verification_required: any,
+	native_currency: any
   };
   broker: Record<string, any>;
   quicktrade: Record<string, any>;
@@ -65,7 +69,11 @@ let configuration: Configuration = {
     user_payments: {},
     dust: {},
 	api_name: null,
-	logo_image: null
+	logo_image: null,
+	valid_languages: null,
+	new_user_is_activated: null,
+	email_verification_required: null,
+	native_currency: null
   },
   broker: {},
   quicktrade: {},
@@ -165,7 +173,11 @@ const resetAllConfig = () => {
 			user_payments: {},
 			dust: {},
 			api_name: null,
-			logo_image: null
+			logo_image: null,
+			valid_languages: null,
+			new_user_is_activated: null,
+			email_verification_required: null,
+			native_currency: null
 		},
 		broker: {},
 		quicktrade: {},

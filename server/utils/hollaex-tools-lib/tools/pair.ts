@@ -1,17 +1,16 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constants');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const {
-	subscribedToCoin,
-	getKitCoin,
-	getKitCoins,
-	getKitCoinsConfig,
-	subscribedToPair,
-	getKitPair,
-	getKitPairs,
-	getKitPairsConfig
-} = require('./common');
+import { getNodeLib } from '../../../init';
+import {
+  subscribedToCoin,
+  getKitCoin,
+  getKitCoins,
+  getKitCoinsConfig,
+  subscribedToPair,
+  getKitPair,
+  getKitPairs,
+  getKitPairsConfig,
+} from './common';
 
 const getNetworkPairs = (
 	opts = {
@@ -76,7 +75,7 @@ const updatePair = async (
 	);
 };
 
-module.exports = {
+export {
 	subscribedToPair,
 	getKitPair,
 	getKitPairs,

@@ -12,6 +12,7 @@
 	],
 	"main": "app.js",
 	"dependencies": {
+		"@types/json2csv": "^5.0.3",
 		"@types/validator": "^13.7.17",
 		"bcryptjs": "2.4.3",
 		"bignumber.js": "9.1.1",
@@ -82,7 +83,13 @@
 		"yamljs": "0.3.0"
 	},
 	"devDependencies": {
+		"@types/bluebird": "^3.5.38",
+		"@types/flat": "^5.0.2",
+		"@types/geoip-lite": "^1.4.1",
 		"@types/lodash": "^4.14.195",
+		"@types/pluralize": "^0.0.30",
+		"@types/random-string": "^0.0.28",
+		"@types/uuid": "^9.0.2",
 		"chai": "4.2.0",
 		"eslint": "8.41.0",
 		"husky": "4.3.8",

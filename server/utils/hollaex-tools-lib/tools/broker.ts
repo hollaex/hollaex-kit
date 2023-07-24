@@ -1,49 +1,58 @@
 'use strict';
 
-const { getModel } = require('./database/model');
-const math = require('mathjs');
-const ccxt = require('ccxt');
-const randomString = require('random-string');
-const { SERVER_PATH } = require('../constants');
-const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${SERVER_PATH}/constants`)
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { client } = require('./database/redis');
-const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
-const { sendEmail } = require('../../../mail');
-const { MAILTYPE } = require('../../../mail/strings');
-const { verifyBearerTokenPromise } = require('./security');
-const { Op } = require('sequelize');
-const { loggerBroker } = require('../../../config/logger');
-const { isArray } = require('lodash');
-const BigNumber = require('bignumber.js');
-const connectedExchanges = {};
+import { getModel } from './database/model';
+import ccxt from 'ccxt';
+import randomString from 'random-string';
+import {
+  EXCHANGE_PLAN_INTERVAL_TIME,
+  EXCHANGE_PLAN_PRICE_SOURCE,
+} from '../../../constants';
+import { getNodeLib } from '../../../init';
+import { client } from './database/redis';
+import { getUserByKitId } from './user';
+import {
+  validatePair,
+  getKitTier,
+  getKitConfig,
+  getAssetsPrices,
+  getQuickTrades,
+  getKitCoin,
+} from './common';
+import { sendEmail } from '../../../mail';
+import { MAILTYPE } from '../../../mail/strings';
+import { verifyBearerTokenPromise } from './security';
+import { Op } from 'sequelize';
+import { loggerBroker } from '../../../config/logger';
+import { isArray } from 'lodash';
+import BigNumber from 'bignumber.js';
+const connectedExchanges: any = {};
 
 
-const {
-	TOKEN_EXPIRED,
-	AUTH_NOT_MATCHED,
-	BROKER_NOT_FOUND,
-	BROKER_SIZE_EXCEED,
-	BROKER_PAUSED,
-	BROKER_ERROR_DELETE_UNPAUSED,
-	BROKER_EXISTS,
-	BROKER_FORMULA_NOT_FOUND,
-	SPREAD_MISSING,
-	MANUAL_BROKER_CREATE_ERROR,
-	DYNAMIC_BROKER_CREATE_ERROR,
-	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
-	DYNAMIC_BROKER_UNSUPPORTED,
-	EXCHANGE_NOT_FOUND,
-	SYMBOL_NOT_FOUND,
-	UNISWAP_PRICE_NOT_FOUND,
-	FORMULA_MARKET_PAIR_ERROR,
-	COIN_INPUT_MISSING,
-	AMOUNTS_MISSING,
-	REBALANCE_SYMBOL_MISSING,
-	PRICE_NOT_FOUND,
-	QUOTE_EXPIRY_TIME_ERROR
-} = require(`${SERVER_PATH}/messages`);
+import {
+  TOKEN_EXPIRED,
+  AUTH_NOT_MATCHED,
+  BROKER_NOT_FOUND,
+  BROKER_SIZE_EXCEED,
+  BROKER_PAUSED,
+  BROKER_ERROR_DELETE_UNPAUSED,
+  BROKER_EXISTS,
+  BROKER_FORMULA_NOT_FOUND,
+  SPREAD_MISSING,
+  MANUAL_BROKER_CREATE_ERROR,
+  DYNAMIC_BROKER_CREATE_ERROR,
+  DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
+  DYNAMIC_BROKER_UNSUPPORTED,
+  EXCHANGE_NOT_FOUND,
+  SYMBOL_NOT_FOUND,
+  UNISWAP_PRICE_NOT_FOUND,
+  FORMULA_MARKET_PAIR_ERROR,
+  COIN_INPUT_MISSING,
+  AMOUNTS_MISSING,
+  REBALANCE_SYMBOL_MISSING,
+  PRICE_NOT_FOUND,
+  QUOTE_EXPIRY_TIME_ERROR,
+} from '../../../messages';
+
 
 const validateBrokerPair = (brokerPair) => {
 	if (brokerPair.type === 'manual' && new BigNumber(brokerPair.buy_price).comparedTo(0) !== 1) {
@@ -85,7 +94,7 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 
 	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
 
-	const responseObject = {
+	const responseObject: any = {
 		price: baseCurrencyPrice
 	};
 
@@ -114,7 +123,7 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
 
-	const responseObject = {
+	const responseObject: any = {
 		price: baseCurrencyPrice
 	};
 
@@ -293,7 +302,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 	try {
 		let user_id = null;
 		if (bearerToken) {
-			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			const auth: any = await verifyBearerTokenPromise(bearerToken, ip);
 			if (auth) {
 				user_id = auth.sub.id;
 			}
@@ -362,28 +371,28 @@ const testBrokerUniswap = async (data) => {
 			throw new Error(SPREAD_MISSING);
 		}
 
-		const paraSwapMin = constructSimpleSDK({ chainId: 1, axios });
-		const includeDEXS = '[Uniswap V3]';
+		// const paraSwapMin = constructSimpleSDK({ chainId: 1, axios });
+		// const includeDEXS = '[Uniswap V3]';
 
-		const priceRoute = await paraSwapMin.swap.getRate({
-			srcToken: UNISWAP_COINS[base_coin].token,
-			srcDecimals: UNISWAP_COINS[base_coin].decimals,
-			destToken: UNISWAP_COINS[quote_coin].token,
-			destDecimals: UNISWAP_COINS[quote_coin].decimals,
-			amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
-			side: SwapSide.SELL,
-			includeDEXS
-		  })
+		// const priceRoute = await paraSwapMin.swap.getRate({
+		// 	srcToken: UNISWAP_COINS[base_coin].token,
+		// 	srcDecimals: UNISWAP_COINS[base_coin].decimals,
+		// 	destToken: UNISWAP_COINS[quote_coin].token,
+		// 	destDecimals: UNISWAP_COINS[quote_coin].decimals,
+		// 	amount: Math.pow(10, UNISWAP_COINS[base_coin].decimals),
+		// 	side: SwapSide.SELL,
+		// 	includeDEXS
+		//   })
 
-		if (!priceRoute.destAmount) {
-			throw new Error(UNISWAP_PRICE_NOT_FOUND)
-		}
+		// if (!priceRoute.destAmount) {
+		// 	throw new Error(UNISWAP_PRICE_NOT_FOUND)
+		// }
 
-		const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
+		// const price = math.divide(priceRoute.destAmount,Math.pow(10, UNISWAP_COINS[quote_coin].decimals))
 
 		return {
-			buy_price: price * (1 - (spread / 100)),
-			sell_price: price * (1 + (spread / 100))
+			// buy_price: price * (1 - (spread / 100)),
+			// sell_price: price * (1 + (spread / 100))
 		}
 	} catch (err) {
 		throw new Error(err);
@@ -632,7 +641,7 @@ const deleteBrokerPair = async (id) => {
 	return brokerPair.destroy();
 };
 
-module.exports = {
+export {
 	createBrokerPair,
 	fetchBrokerPair,
 	fetchBrokerPairs,

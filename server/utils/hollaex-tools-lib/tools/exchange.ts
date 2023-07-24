@@ -1,9 +1,8 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constants');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { publisher } = require('./database/redis');
-const { INIT_CHANNEL } = require(`${SERVER_PATH}/constants`);
+import { getNodeLib } from '../../../init';
+import { publisher } from './database/redis';
+import { INIT_CHANNEL } from '../../../constants';
 
 const getExchangeConfig = async (
 	opts = {
@@ -43,7 +42,7 @@ const updateExchangeConfig = async (
 	return result;
 };
 
-module.exports = {
+export {
 	getExchangeConfig,
 	updateExchangeConfig
 };

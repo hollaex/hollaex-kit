@@ -1,14 +1,20 @@
 'use strict';
 
-const { SERVER_PATH } = require('../constants');
-const dbQuery = require('./database/query');
-const { getModel } = require('./database');
-const { getKitTiers, getKitPairs, subscribedToPair, getTierLevels, getDefaultFees } = require('./common');
-const { reject, all } = require('bluebird');
-const { difference, omit, isNumber, each, isString, isBoolean } = require('lodash');
-const { publisher } = require('./database/redis');
-const { CONFIGURATION_CHANNEL } = require(`${SERVER_PATH}/constants`);
-const flatten = require('flat');
+import * as dbQuery from './database/query';
+import { getModel } from './database/model';
+import {
+  getKitTiers,
+  getKitPairs,
+  subscribedToPair,
+  getTierLevels,
+  getDefaultFees,
+} from './common';
+import { reject, all } from 'bluebird';
+import { difference, omit, isNumber, each, isString, isBoolean } from 'lodash';
+import { publisher } from './database/redis';
+import { CONFIGURATION_CHANNEL } from '../../../constants';
+import flatten from 'flat';
+
 
 const findTier = (level) => {
 	return dbQuery.findOne('tier', {
@@ -24,7 +30,7 @@ const findTier = (level) => {
 		});
 };
 
-const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees = {}, note = '') => {
+const createTier = (level, name, icon, description, deposit_limit, withdrawal_limit, fees: any = {}, note = '') => {
 	const existingTiers = getKitTiers();
 
 	if (existingTiers[level]) {
@@ -114,7 +120,7 @@ const updateTier = (level, updateData) => {
 
 	return findTier(level)
 		.then((tier) => {
-			const newData = {};
+			const newData: any = {};
 
 			if (isString(updateData.name)) {
 				newData.name = updateData.name;
@@ -210,6 +216,7 @@ const updatePairFees = (pair, fees) => {
 };
 
 const updateTiersLimits = (limits) => {
+	// @ts-ignore
 	if (!Object.keys(limits).length === 0) {
 		return reject(new Error('No new limits given'));
 	}
@@ -258,7 +265,7 @@ const updateTiersLimits = (limits) => {
 		});
 };
 
-module.exports = {
+export {
 	findTier,
 	createTier,
 	updateTier,
