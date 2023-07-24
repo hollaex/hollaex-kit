@@ -9,7 +9,7 @@ describe('tests for /user', function () {
 
 
      //Integration Testing
-     it('Integration Test -should respond 401 after removing user', async () => {
+     it('Integration Test -should respond 401 after trying to login with removed user', async () => {
           const testUser = {
             email: getNewUserCredentials().email,
             password:  getNewUserCredentials().password,
