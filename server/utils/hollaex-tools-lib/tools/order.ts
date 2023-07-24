@@ -1,23 +1,59 @@
 'use strict';
 
-const { getUserByKitId, getUserByEmail, getUserByNetworkId, mapNetworkIdToKitId, mapKitIdToNetworkId } = require('./user');
-const { SERVER_PATH } = require('../constants');
-const { getModel } = require('./database/model');
-const { fetchBrokerQuote, generateRandomToken, isFairPriceForBroker } = require('./broker');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { INVALID_SYMBOL, NO_DATA_FOR_CSV, USER_NOT_FOUND, USER_NOT_REGISTERED_ON_NETWORK, TOKEN_EXPIRED, BROKER_NOT_FOUND, BROKER_PAUSED, BROKER_SIZE_EXCEED, QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED, QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR, QUICK_TRADE_VALUE_IS_TOO_SMALL, FAIR_PRICE_BROKER_ERROR, AMOUNT_NEGATIVE_ERROR, QUICK_TRADE_CONFIG_NOT_FOUND, QUICK_TRADE_TYPE_NOT_SUPPORTED, PRICE_NOT_FOUND, INVALID_PRICE, INVALID_SIZE } = require(`${SERVER_PATH}/messages`);
-const { parse } = require('json2csv');
-const { subscribedToPair, getKitTier, getDefaultFees, getAssetsPrices, getPublicTrades, getQuickTrades } = require('./common');
-const { reject } = require('bluebird');
-const { loggerOrders } = require(`${SERVER_PATH}/config/logger`);
-const math = require('mathjs');
-const { has } = require('lodash');
-const { setPriceEssentials } = require('../../orderbook');
-const { getUserBalanceByKitId } = require('./wallet');
-const { verifyBearerTokenPromise } = require('./security');
-const { client } = require('./database/redis');
-const { parseNumber } = require('./common');
-const BigNumber = require('bignumber.js');
+import {
+  getUserByKitId,
+  getUserByEmail,
+  getUserByNetworkId,
+  mapNetworkIdToKitId,
+  mapKitIdToNetworkId,
+} from './user';
+import { SERVER_PATH } from '../constants';
+import { getModel } from './database/model';
+import {
+  fetchBrokerQuote,
+  generateRandomToken,
+  isFairPriceForBroker,
+} from './broker';
+import { getNodeLib } from `${SERVER_PATH}/init`;
+import {
+  INVALID_SYMBOL,
+  NO_DATA_FOR_CSV,
+  USER_NOT_FOUND,
+  USER_NOT_REGISTERED_ON_NETWORK,
+  TOKEN_EXPIRED,
+  BROKER_NOT_FOUND,
+  BROKER_PAUSED,
+  BROKER_SIZE_EXCEED,
+  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED,
+  QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR,
+  QUICK_TRADE_VALUE_IS_TOO_SMALL,
+  FAIR_PRICE_BROKER_ERROR,
+  AMOUNT_NEGATIVE_ERROR,
+  QUICK_TRADE_CONFIG_NOT_FOUND,
+  QUICK_TRADE_TYPE_NOT_SUPPORTED,
+  PRICE_NOT_FOUND,
+  INVALID_PRICE,
+  INVALID_SIZE,
+} from `${SERVER_PATH}/messages`;
+import { parse } from 'json2csv';
+import {
+  subscribedToPair,
+  getKitTier,
+  getDefaultFees,
+  getAssetsPrices,
+  getPublicTrades,
+  getQuickTrades,
+} from './common';
+import { reject } from 'bluebird';
+import { loggerOrders } from `${SERVER_PATH}/config/logger`;
+import math from 'mathjs';
+import { has } from 'lodash';
+import { setPriceEssentials } from '../../orderbook';
+import { getUserBalanceByKitId } from './wallet';
+import { verifyBearerTokenPromise } from './security';
+import { client } from './database/redis';
+import { parseNumber } from './common';
+import BigNumber from 'bignumber.js';
 
 const createUserOrderByKitId = (userKitId, symbol, side, size, type, price = 0, opts = { stop: null, meta: null, additionalHeaders: null }) => {
 	if (symbol && !subscribedToPair(symbol)) {

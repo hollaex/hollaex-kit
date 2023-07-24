@@ -9,42 +9,86 @@ const subscriber = redis.createClient(config.pubsub);
 // CONFIGURATION CONSTANTS START--------------------------------------------------
 export const CONFIGURATION_CHANNEL = 'channel:configuration';
 
-let configuration = {
-	coins: {},
-	pairs: {},
-	tiers: {},
-	kit: {
-		info: {},
-		color: {},
-		interface: {},
-		icons: {},
-		strings: {},
-		links: {},
-		captcha: {},
-		defaults: {},
-		features: {},
-		meta: {},
-		user_meta: {},
-		injected_values: [],
-		injected_html: {},
-		black_list_countries: [],
-		onramp: {},
-		offramp: {},
-		user_payments: {},
-		dust: {}
-	},
-	broker: {},
-	quicktrade: {},
-	networkQuickTrades: {},
-	email: {}
+interface Configuration {
+  coins: Record<string, any>;
+  pairs: Record<string, any>;
+  tiers: Record<string, any>;
+  kit: {
+    info: Record<string, any>;
+    color: Record<string, any>;
+    interface: Record<string, any>;
+    icons: Record<string, any>;
+    strings: Record<string, any>;
+    links: Record<string, any>;
+    captcha: Record<string, any>;
+    defaults: Record<string, any>;
+    features: Record<string, any>;
+    meta: Record<string, any>;
+    user_meta: Record<string, any>;
+    injected_values: any[];
+    injected_html: Record<string, any>;
+    black_list_countries: string[];
+    onramp: Record<string, any>;
+    offramp: Record<string, any>;
+    user_payments: Record<string, any>;
+    dust: Record<string, any>;
+	api_name: string,
+	logo_image: any
+  };
+  broker: Record<string, any>;
+  quicktrade: Record<string, any>;
+  networkQuickTrades: Record<string, any>;
+  email: Record<string, any>;
+}
+
+let configuration: Configuration = {
+  coins: {},
+  pairs: {},
+  tiers: {},
+  kit: {
+    info: {},
+    color: {},
+    interface: {},
+    icons: {},
+    strings: {},
+    links: {},
+    captcha: {},
+    defaults: {},
+    features: {},
+    meta: {},
+    user_meta: {},
+    injected_values: [],
+    injected_html: {},
+    black_list_countries: [],
+    onramp: {},
+    offramp: {},
+    user_payments: {},
+    dust: {},
+	api_name: null,
+	logo_image: null
+  },
+  broker: {},
+  quicktrade: {},
+  networkQuickTrades: {},
+  email: {},
 };
 
-let secrets = {
-	security: {},
-	accounts: {},
-	captcha: {},
-	emails: {},
-	smtp: {}
+interface Secrets {
+  security: Record<string, any>;
+  accounts: Record<string, any>;
+  captcha: Record<string, any>;
+  emails: Record<string, any>;
+  smtp: Record<string, any>;
+  admin_whitelist: Array<any>
+}
+
+let secrets: Secrets = {
+  security: {},
+  accounts: {},
+  captcha: {},
+  emails: {},
+  smtp: {},
+  admin_whitelist: []
 };
 
 let frozenUsers = {};
@@ -94,7 +138,8 @@ const resetAllConfig = () => {
 		accounts: {},
 		captcha: {},
 		emails: {},
-		smtp: {}
+		smtp: {},
+		admin_whitelist: []
 	};
 	configuration = {
 		coins: {},
@@ -118,7 +163,9 @@ const resetAllConfig = () => {
 			onramp: {},
 			offramp: {},
 			user_payments: {},
-			dust: {}
+			dust: {},
+			api_name: null,
+			logo_image: null
 		},
 		broker: {},
 		quicktrade: {},

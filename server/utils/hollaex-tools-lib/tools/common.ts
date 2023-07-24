@@ -65,7 +65,7 @@ import { GET_BROKER, GET_QUICKTRADE, GET_NETWORK_QUICKTRADE } from '../../../con
 import BigNumber from 'bignumber.js';
 
 
-const getKitVersion = () => {
+export const getKitVersion = () => {
 	return dbQuery.findOne('status', {
 		raw: true,
 		attributes: ['id', 'kit_version']
@@ -78,28 +78,28 @@ const getKitVersion = () => {
  * @param {string} url - Ids of frozen users.
  * @returns {boolean} True if url is valid. False if not.
  */
-const isUrl = (url) => {
+export const isUrl = (url) => {
 	const pattern = /^(^|\s)((https?:\/\/)?[\w-]+(\.[\w-]+)+\.?(:\d+)?(\/\S*)?)$/;
 	return pattern.test(url);
 };
 
-const subscribedToCoin = (coin) => {
+export const subscribedToCoin = (coin) => {
 	return getKitCoins().includes(coin);
 };
 
-const subscribedToPair = (pair) => {
+export const subscribedToPair = (pair) => {
 	return getKitPairs().includes(pair);
 };
 
-const getKitTiers = () => {
+export const getKitTiers = () => {
 	return GET_TIERS();
 };
 
-const getKitTier = (tier) => {
+export const getKitTier = (tier) => {
 	return GET_TIERS()[tier];
 };
 
-const isValidTierLevel = (level) => {
+export const isValidTierLevel = (level) => {
 	const levels = Object.keys(getKitTiers()).map((tier) => parseInt(tier));
 	if (!levels.includes(level)) {
 		return false;
@@ -108,35 +108,35 @@ const isValidTierLevel = (level) => {
 	}
 };
 
-const getTierLevels = () => {
+export const getTierLevels = () => {
 	return Object.keys(getKitTiers());
 };
 
-const getKitConfig = () => {
+export const getKitConfig = () => {
 	return GET_KIT_CONFIG();
 };
 
-const getKitSecrets = () => {
+export const getKitSecrets = () => {
 	return GET_KIT_SECRETS();
 };
 
-const getKitCoin = (coin) => {
+export const getKitCoin = (coin) => {
 	return getKitCoinsConfig()[coin];
 };
 
-const getKitCoinsConfig = () => {
+export const getKitCoinsConfig = () => {
 	return GET_COINS();
 };
 
-const getKitCoins = () => {
+export const getKitCoins = () => {
 	return Object.keys(getKitCoinsConfig());
 };
 
-const getEmail = () => {
+export const getEmail = () => {
 	return GET_EMAIL();
 };
 
-const updateEmail = async (data) => {
+export const updateEmail = async (data) => {
 	const status = await dbQuery.findOne('status', {
 		attributes: ['id', 'email']
 	});
@@ -154,23 +154,23 @@ const updateEmail = async (data) => {
 };
 
 
-const getKitPair = (pair) => {
+export const getKitPair = (pair) => {
 	return getKitPairsConfig()[pair];
 };
 
-const getKitPairsConfig = () => {
+export const getKitPairsConfig = () => {
 	return GET_PAIRS();
 };
 
-const getKitPairs = () => {
+export const getKitPairs = () => {
 	return Object.keys(getKitPairsConfig());
 };
 
-const getFrozenUsers = () => {
+export const getFrozenUsers = () => {
 	return GET_FROZEN_USERS();
 };
 
-const maskSecrets = (secrets) => {
+export const maskSecrets = (secrets) => {
 	each(secrets, (secret, secretKey) => {
 		if (secretKey === 'captcha') {
 			secret.secret_key = SECRET_MASK;
@@ -181,7 +181,7 @@ const maskSecrets = (secrets) => {
 	return secrets;
 };
 
-const updateKitConfigSecrets = (data: any = {}, scopes) => {
+export const updateKitConfigSecrets = (data: any = {}, scopes) => {
 	let role = 'admin';
 
 	if (!data.kit && !data.secrets) {
@@ -238,15 +238,15 @@ const updateKitConfigSecrets = (data: any = {}, scopes) => {
 		});
 };
 
-const updateKitConfig = (kit, scopes) => {
+export const updateKitConfig = (kit, scopes) => {
 	return updateKitConfigSecrets({ kit }, scopes);
 };
 
-const updateKitSecrets = (secrets, scopes) => {
+export const updateKitSecrets = (secrets, scopes) => {
 	return updateKitConfigSecrets({ secrets }, scopes);
 };
 
-const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
+export const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
 	const newKeys = difference(Object.keys(newKitConfig), KIT_CONFIG_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid kit keys given: ${newKeys}`);
@@ -296,7 +296,7 @@ const joinKitConfig = (existingKitConfig: any = {}, newKitConfig: any = {}) => {
 	return joinedKitConfig;
 };
 
-const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
+export const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	const newKeys = difference(Object.keys(newKitSecrets), KIT_SECRETS_KEYS);
 	if (newKeys.length > 0) {
 		throw new Error(`Invalid secret keys given: ${newKeys}`);
@@ -323,7 +323,7 @@ const joinKitSecrets = (existingKitSecrets = {}, newKitSecrets = {}) => {
 	return joinedKitSecrets;
 };
 
-const sendEmailToSupport = (email, category, subject, description) => {
+export const sendEmailToSupport = (email, category, subject, description) => {
 	if (!SEND_CONTACT_US_EMAIL) {
 		return reject(new Error(SUPPORT_DISABLED));
 	}
@@ -338,7 +338,7 @@ const sendEmailToSupport = (email, category, subject, description) => {
 	return resolve();
 };
 
-const getNetworkKeySecret = () => {
+export const getNetworkKeySecret = () => {
 	return dbQuery.findOne('status', {
 		raw: true,
 		attributes: ['id', 'api_key', 'api_secret']
@@ -351,7 +351,7 @@ const getNetworkKeySecret = () => {
 		});
 };
 
-const setExchangeInitialized = () => {
+export const setExchangeInitialized = () => {
 	return dbQuery.findOne('status')
 		.then((status) => {
 			if (status.dataValues.initialized === true) {
@@ -370,7 +370,7 @@ const setExchangeInitialized = () => {
 		});
 };
 
-const setExchangeSetupCompleted = () => {
+export const setExchangeSetupCompleted = () => {
 	return dbQuery.findOne('status')
 		.then((status) => {
 			if (status.dataValues.kit.setup_completed) {
@@ -395,7 +395,7 @@ const setExchangeSetupCompleted = () => {
 		});
 };
 
-const updateNetworkKeySecret = (apiKey, apiSecret) => {
+export const updateNetworkKeySecret = (apiKey, apiSecret) => {
 	if (!apiKey || !apiSecret) {
 		return reject(new Error('Must provide both key and secret'));
 	}
@@ -416,7 +416,7 @@ const updateNetworkKeySecret = (apiKey, apiSecret) => {
 		});
 };
 
-const getAssetsPrices = (assets = [], quote, amount, opts = {
+export const getAssetsPrices = (assets = [], quote, amount, opts = {
 	additionalHeaders: null
 }) => {
 	for (let asset of assets) {
@@ -432,74 +432,74 @@ const getAssetsPrices = (assets = [], quote, amount, opts = {
 	return getNodeLib().getOraclePrices(assets, { quote, amount, ...opts });
 };
 
-const storeImageOnNetwork = async (image, name, opts = {
+export const storeImageOnNetwork = async (image, name, opts = {
 	additionalHeaders: null
 }) => {
 
 	return getNodeLib().uploadIcon(image, name, opts);
 };
 
-const getPublicTrades = (symbol, opts = {
+export const getPublicTrades = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getPublicTrades({ symbol, ...opts });
 };
 
-const getOrderbook = (symbol, opts = {
+export const getOrderbook = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbook(symbol, opts);
 };
 
-const getOrderbooks = (opts = {
+export const getOrderbooks = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getOrderbooks(opts);
 };
 
-const getChart = (from, to, symbol, resolution, opts = {
+export const getChart = (from, to, symbol, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getChart(from, to, symbol, resolution, opts);
 };
 
-const getCharts = (from, to, resolution, opts = {
+export const getCharts = (from, to, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getCharts(from, to, resolution, opts);
 };
 
-const getUdfConfig = (opts = {
+export const getUdfConfig = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfConfig(opts);
 };
 
-const getUdfHistory = (from, to, symbol, resolution, opts = {
+export const getUdfHistory = (from, to, symbol, resolution, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfHistory(from, to, symbol, resolution, opts);
 };
 
-const getUdfSymbols = (symbol, opts = {
+export const getUdfSymbols = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getUdfSymbols(symbol, opts);
 };
 
-const getTicker = (symbol, opts = {
+export const getTicker = (symbol, opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getTicker(symbol, opts);
 };
 
-const getTickers = (opts = {
+export const getTickers = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getTickers(opts);
 };
 
-const getTradesHistory = (
+export const getTradesHistory = (
 	symbol,
 	side,
 	limit,
@@ -525,7 +525,7 @@ const getTradesHistory = (
 	});
 };
 
-const sendEmail = (
+export const sendEmail = (
 	type,
 	receiver,
 	data,
@@ -535,16 +535,16 @@ const sendEmail = (
 	return sendSmtpEmail(MAILTYPE[type], receiver, data, userSettings, domain);
 };
 
-const isEmail = (email) => {
+export const isEmail = (email) => {
 	return isValidEmail(email);
 };
 
-const sleep = (ms) => {
+export const sleep = (ms) => {
 	return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
-	const { emails } = getKitSecrets();
+export const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text: null, bcc: null }) => {
+	const { emails }: any = getKitSecrets();
 
 	const params: any = {
 		from: opts.from ? opts.from : `${getKitConfig().api_name} Support <${emails.sender}>`,
@@ -570,9 +570,9 @@ const sendCustomEmail = (to, subject, html, opts = { from: null, cc: null, text:
 	return nodemailerEmail(params);
 };
 
-const emailHtmlBoilerplate = (html) => TemplateEmail({}, html);
+export const emailHtmlBoilerplate = (html) => TemplateEmail({}, html);
 
-const kitUserMetaFieldIsValid = (field, data) => {
+export const kitUserMetaFieldIsValid = (field, data) => {
 	const missingUserMetaKeys = difference(USER_META_KEYS, Object.keys(data));
 	if (missingUserMetaKeys.length > 0) {
 		return {
@@ -605,7 +605,7 @@ const kitUserMetaFieldIsValid = (field, data) => {
 	return { success: true };
 };
 
-const addKitUserMeta = async (name, type, description, required = false) => {
+export const addKitUserMeta = async (name, type, description, required = false) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (existingUserMeta[name]) {
@@ -650,7 +650,7 @@ const addKitUserMeta = async (name, type, description, required = false) => {
 	return updatedStatus.kit.user_meta;
 };
 
-const updateKitUserMeta = async (name, data = {
+export const updateKitUserMeta = async (name, data = {
 	type: null,
 	description: null,
 	required: null
@@ -703,7 +703,7 @@ const updateKitUserMeta = async (name, data = {
 	return updatedStatus.kit.user_meta;
 };
 
-const deleteKitUserMeta = async (name) => {
+export const deleteKitUserMeta = async (name) => {
 	const existingUserMeta = getKitConfig().user_meta;
 
 	if (!existingUserMeta[name]) {
@@ -734,15 +734,15 @@ const deleteKitUserMeta = async (name) => {
 };
 
 
-const isDatetime = (date, formats = [moment.ISO_8601]) => {
+export const isDatetime = (date, formats = [moment.ISO_8601]) => {
 	return moment(date, formats, true).isValid();
 };
 
-const errorMessageConverter = (err) => {
+export const errorMessageConverter = (err) => {
 	return handleCatchError(err);
 };
 
-const getDomain = () => {
+export const getDomain = () => {
 	return DOMAIN;
 };
 
@@ -760,16 +760,16 @@ const getDomain = () => {
 // 	);
 // };
 
-const getNetworkConstants = (opts = {
+export const getNetworkConstants = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().getConstants(opts);
 };
 
-const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
+export const getNetworkEndpoint = () => HOLLAEX_NETWORK_ENDPOINT;
 
-const getDefaultFees = () => {
-	const { info: { type, plan } } = getKitConfig();
+export const getDefaultFees = () => {
+	const { info: { type, plan } }: any = getKitConfig();
 	if (type === 'Enterprise') {
 		return {
 			maker: 0,
@@ -780,7 +780,7 @@ const getDefaultFees = () => {
 	}
 };
 
-const validateIp = (ip) => {
+export const validateIp = (ip) => {
 	const regex = /^([0-9]{1,3}\.){3}[0-9]{1,3}($|\/(16|24|32))$/;
 	if (!regex.test(ip)) {
 		return false;
@@ -788,7 +788,7 @@ const validateIp = (ip) => {
 	return true;
 };
 
-const validatePair = (pair) => {
+export const validatePair = (pair) => {
 	const regex = /([a-z]){2,8}-([a-z]{2,8})/;
 	if (!regex.test(pair)) {
 		return false;
@@ -803,85 +803,18 @@ const validatePair = (pair) => {
 	return true;
 };
 
-const getBrokerDeals = () => {
+export const getBrokerDeals = () => {
 	return GET_BROKER();
 };
 
-const getQuickTrades = () => {
+export const getQuickTrades = () => {
 	return GET_QUICKTRADE();
 };
 
-const getNetworkQuickTrades = () => {
+export const getNetworkQuickTrades = () => {
 	return GET_NETWORK_QUICKTRADE();
 }
 
-const parseNumber = (number, precisionValue) => {
+export const parseNumber = (number, precisionValue) => {
 	return BigNumber(number).precision(precisionValue, BigNumber.ROUND_DOWN).toNumber();
 }
-
-module.exports = {
-	getKitVersion,
-	isUrl,
-	getKitConfig,
-	getKitSecrets,
-	subscribedToCoin,
-	getKitTier,
-	getKitTiers,
-	getKitCoin,
-	getKitCoins,
-	getKitCoinsConfig,
-	subscribedToPair,
-	getKitPair,
-	getFrozenUsers,
-	getKitPairs,
-	getKitPairsConfig,
-	maskSecrets,
-	updateKitConfig,
-	updateKitSecrets,
-	updateKitConfigSecrets,
-	sendEmailToSupport,
-	getNetworkKeySecret,
-	setExchangeInitialized,
-	setExchangeSetupCompleted,
-	updateNetworkKeySecret,
-	isValidTierLevel,
-	getTierLevels,
-	getAssetsPrices,
-	storeImageOnNetwork,
-	getPublicTrades,
-	getOrderbook,
-	getOrderbooks,
-	getChart,
-	getCharts,
-	getUdfConfig,
-	getUdfHistory,
-	getUdfSymbols,
-	getTicker,
-	getTickers,
-	getTradesHistory,
-	sendEmail,
-	isEmail,
-	sleep,
-	sendCustomEmail,
-	addKitUserMeta,
-	updateKitUserMeta,
-	deleteKitUserMeta,
-	kitUserMetaFieldIsValid,
-	errorMessageConverter,
-	getDomain,
-	isDatetime,
-	// getCsvParser,
-	emailHtmlBoilerplate,
-	getNetworkConstants,
-	getNetworkEndpoint,
-	getDefaultFees,
-	getEmail,
-	updateEmail,
-	checkExchangeStatus,
-	validateIp,
-	validatePair,
-	getBrokerDeals,
-	getQuickTrades,
-	getNetworkQuickTrades,
-	parseNumber,
-};

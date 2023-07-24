@@ -1,28 +1,35 @@
 'use strict';
 
-const { loggerAdmin } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { cloneDeep, pick } = require('lodash');
-const { all } = require('bluebird');
-const { INIT_CHANNEL, ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV } = require('../../messages');
-const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
-const { errorMessageConverter } = require('../../utils/conversion');
-const { isDate } = require('moment');
-const { isEmail } = require('validator');
-const { publisher } = require('../../db/pubsub');
-const { parse } = require('json2csv');
-const crypto = require('crypto');
+import { loggerAdmin } from '../../config/logger';
+import * as toolsLib from 'hollaex-tools-lib';
+import { cloneDeep, pick } from 'lodash';
+import { all } from 'bluebird';
+import { INIT_CHANNEL, ROLES } from '../../constants';
+import {
+  USER_NOT_FOUND,
+  API_KEY_NOT_PERMITTED,
+  PROVIDE_VALID_EMAIL,
+  INVALID_PASSWORD,
+  USER_EXISTS,
+  NO_DATA_FOR_CSV,
+} from '../../messages';
+import { sendEmail, testSendSMTPEmail, sendRawEmail } from '../../mail';
+import { MAILTYPE } from '../../mail/strings';
+import { errorMessageConverter } from '../../utils/conversion';
+import { isDate } from 'moment';
+import isEmail from 'validator/lib/isEmail';
+import { publisher } from '../../db/pubsub';
+import { parse } from 'json2csv';
+import * as crypto from 'crypto';
 
-const VERIFY_STATUS = {
-	EMPTY: 0,
-	PENDING: 1,
-	REJECTED: 2,
-	COMPLETED: 3
-};
+enum VERIFY_STATUS {
+  EMPTY = 0,
+  PENDING = 1,
+  REJECTED = 2,
+  COMPLETED = 3,
+}
 
-const getAdminKit = (req, res) => {
+export const getAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getAdminKit', req.auth.sub);
 	try {
 		const data = cloneDeep({
@@ -39,7 +46,7 @@ const getAdminKit = (req, res) => {
 	}
 };
 
-const putNetworkCredentials = (req, res) => {
+export const putNetworkCredentials = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putNetworkCredentials auth', req.auth.sub);
 
 	const { api_key, api_secret } = req.swagger.params.data.value;
@@ -54,7 +61,7 @@ const putNetworkCredentials = (req, res) => {
 		});
 };
 
-const createInitialAdmin = (req, res) => {
+export const createInitialAdmin = (req, res) => {
 	const { email, password } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createInitialAdmin email', email);
@@ -90,7 +97,7 @@ const createInitialAdmin = (req, res) => {
 		});
 };
 
-const putAdminKit = (req, res) => {
+export const putAdminKit = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putAdminKit', req.auth.sub);
 	const data = req.swagger.params.data.value;
 
@@ -111,7 +118,7 @@ const putAdminKit = (req, res) => {
 		});
 };
 
-const getUsersAdmin = (req, res) => {
+export const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
 	const { 
@@ -203,7 +210,7 @@ const getUsersAdmin = (req, res) => {
 		});
 };
 
-const putUserRole = (req, res) => {
+export const putUserRole = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putUserRole/auth',
@@ -227,7 +234,7 @@ const putUserRole = (req, res) => {
 		});
 };
 
-const putUserMeta = (req, res) => {
+export const putUserMeta = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putUserMeta auth',
@@ -267,7 +274,7 @@ const putUserMeta = (req, res) => {
 		});
 };
 
-const putUserNote = (req, res) => {
+export const putUserNote = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/userNote/auth',
@@ -291,7 +298,7 @@ const putUserNote = (req, res) => {
 		});
 };
 
-const putUserDiscount = (req, res) => {
+export const putUserDiscount = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putUserDiscount auth',
@@ -328,7 +335,7 @@ const putUserDiscount = (req, res) => {
 		});
 };
 
-const getAdminUserBalance = (req, res) => {
+export const getAdminUserBalance = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getAdminUserBalance/auth',
@@ -354,7 +361,7 @@ const getAdminUserBalance = (req, res) => {
 		});
 };
 
-const activateUser = (req, res) => {
+export const activateUser = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/activateUser auth',
@@ -386,7 +393,7 @@ const activateUser = (req, res) => {
 		});
 };
 
-const getAdminBalance = (req, res) => {
+export const getAdminBalance = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getAdminUserBalance/auth',
@@ -411,7 +418,7 @@ const getAdminBalance = (req, res) => {
 		});
 };
 
-const upgradeUser = (req, res) => {
+export const upgradeUser = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/upgradeUser auth',
@@ -436,7 +443,7 @@ const upgradeUser = (req, res) => {
 		});
 };
 
-const verifyEmailUser = (req, res) => {
+export const verifyEmailUser = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/verifyEmailUser auth',
@@ -465,7 +472,7 @@ const verifyEmailUser = (req, res) => {
 		});
 };
 
-const flagUser = (req, res) => {
+export const flagUser = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/flagUser/auth', req.auth);
 	const { user_id } = req.swagger.params.data.value;
 
@@ -479,7 +486,7 @@ const flagUser = (req, res) => {
 		});
 };
 
-const getAdminUserLogins = (req, res) => {
+export const getAdminUserLogins = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getAdminUserLogins/auth',
@@ -550,7 +557,7 @@ const getAdminUserLogins = (req, res) => {
 		});
 };
 
-const getUserAudits = (req, res) => {
+export const getUserAudits = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getUserAudits/auth',
@@ -615,7 +622,7 @@ const getUserAudits = (req, res) => {
 		});
 };
 
-const getCoins = (req, res) => {
+export const getCoins = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/coin/getCoins/auth',
@@ -649,7 +656,7 @@ const getCoins = (req, res) => {
 	}
 };
 
-const getPairs = (req, res) => {
+export const getPairs = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/coin/getPairs/auth',
@@ -683,7 +690,7 @@ const getPairs = (req, res) => {
 	}
 };
 
-const transferFund = (req, res) => {
+export const transferFund = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/transferFund auth',
@@ -710,7 +717,7 @@ const transferFund = (req, res) => {
 		});
 };
 
-const completeExchangeSetup = (req, res) => {
+export const completeExchangeSetup = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/completeExchangeSetup auth',
@@ -731,7 +738,7 @@ const completeExchangeSetup = (req, res) => {
 		});
 };
 
-const uploadImage = (req, res) => {
+export const uploadImage = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/uploadImage auth',
@@ -759,7 +766,7 @@ const uploadImage = (req, res) => {
 		});
 };
 
-const getOperators = (req, res) => {
+export const getOperators = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getOperators auth',
@@ -796,7 +803,7 @@ const getOperators = (req, res) => {
 		});
 };
 
-const inviteNewOperator = (req, res) => {
+export const inviteNewOperator = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/inviteNewOperator auth',
@@ -842,7 +849,7 @@ const inviteNewOperator = (req, res) => {
 		});
 };
 
-const getExchangeGeneratedFees = (req, res) => {
+export const getExchangeGeneratedFees = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getExchangeGeneratedFees auth',
@@ -881,7 +888,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		});
 };
 
-const settleFees = (req, res) => {
+export const settleFees = (req, res) => {
 	const { user_id } = req.swagger.params;
 	loggerAdmin.verbose(
 		req.uuid,
@@ -909,7 +916,7 @@ const settleFees = (req, res) => {
 		});
 };
 
-const mintAsset = (req, res) => {
+export const mintAsset = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/mintAsset auth',
@@ -981,7 +988,7 @@ const mintAsset = (req, res) => {
 		});
 };
 
-const putMint = (req, res) => {
+export const putMint = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putMint auth',
@@ -1054,7 +1061,7 @@ const putMint = (req, res) => {
 		});
 };
 
-const burnAsset = (req, res) => {
+export const burnAsset = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/burnAsset auth',
@@ -1126,7 +1133,7 @@ const burnAsset = (req, res) => {
 		});
 };
 
-const putBurn = (req, res) => {
+export const putBurn = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putBurn auth',
@@ -1199,7 +1206,7 @@ const putBurn = (req, res) => {
 		});
 };
 
-const postKitUserMeta = (req, res) => {
+export const postKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/postKitUserMeta', req.auth.sub);
 
 	const { name, type, required, description } = req.swagger.params.data.value;
@@ -1227,7 +1234,7 @@ const postKitUserMeta = (req, res) => {
 		});
 };
 
-const getEmail = (req, res) => {
+export const getEmail = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmail', req.auth.sub);
 	const { language, type } = req.swagger.params;
 	try {
@@ -1243,7 +1250,7 @@ const getEmail = (req, res) => {
 };
 
 
-const putEmail = (req, res) => {
+export const putEmail = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putEmail', req.auth.sub);
 
 	const { language, type, html, title } = req.swagger.params.data.value;
@@ -1263,7 +1270,7 @@ const putEmail = (req, res) => {
 
 };
 
-const getEmailTypes = (req, res) => {
+export const getEmailTypes = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getEmailTypes', req.auth.sub);
 	const LANGUAGE_DEFAULT = 'en';
 	try {
@@ -1286,7 +1293,7 @@ const getEmailTypes = (req, res) => {
 	}
 };
 
-const putKitUserMeta = (req, res) => {
+export const putKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/putKitUserMeta', req.auth.sub);
 
 	const { name, type, required, description } = req.swagger.params.data.value;
@@ -1314,7 +1321,7 @@ const putKitUserMeta = (req, res) => {
 		});
 };
 
-const deleteKitUserMeta = (req, res) => {
+export const deleteKitUserMeta = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/deleteKitUserMeta', req.auth.sub);
 
 	const name = req.swagger.params.name.value;
@@ -1336,7 +1343,7 @@ const deleteKitUserMeta = (req, res) => {
 		});
 };
 
-const adminCheckTransaction = (req, res) => {
+export const adminCheckTransaction = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/adminCheckTransaction auth',
@@ -1369,7 +1376,7 @@ const adminCheckTransaction = (req, res) => {
 		});
 };
 
-const createPair = (req, res) => {
+export const createPair = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/createPair auth',
@@ -1456,7 +1463,7 @@ const createPair = (req, res) => {
 		});
 };
 
-const updatePair = (req, res) => {
+export const updatePair = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/updatePair auth',
@@ -1534,7 +1541,7 @@ const updatePair = (req, res) => {
 		});
 };
 
-const createCoin = (req, res) => {
+export const createCoin = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/createCoin auth',
@@ -1627,7 +1634,7 @@ const createCoin = (req, res) => {
 		});
 };
 
-const updateCoin = (req, res) => {
+export const updateCoin = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/updateCoin auth',
@@ -1736,7 +1743,7 @@ const updateCoin = (req, res) => {
 		});
 };
 
-const getExchange = (req, res) => {
+export const getExchange = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getExchange auth',
@@ -1761,7 +1768,7 @@ const getExchange = (req, res) => {
 		});
 };
 
-const updateExchange = (req, res) => {
+export const updateExchange = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/updateExchange auth',
@@ -1834,7 +1841,7 @@ const updateExchange = (req, res) => {
 		});
 };
 
-const getNetworkCoins = (req, res) => {
+export const getNetworkCoins = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getNetworkCoins auth',
@@ -1862,7 +1869,7 @@ const getNetworkCoins = (req, res) => {
 		});
 };
 
-const getNetworkPairs = (req, res) => {
+export const getNetworkPairs = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/getNetworkPairs auth',
@@ -1890,7 +1897,7 @@ const getNetworkPairs = (req, res) => {
 		});
 };
 
-const putUserInfo = (req, res) => {
+export const putUserInfo = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/putUserInfo auth',
@@ -1933,7 +1940,7 @@ const putUserInfo = (req, res) => {
 		});
 };
 
-const emailConfigTest = (req, res) => {
+export const emailConfigTest = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/emailConfigTest auth',
@@ -1962,7 +1969,7 @@ const emailConfigTest = (req, res) => {
 		});
 };
 
-const setUserBank = (req, res) => {
+export const setUserBank = (req, res) => {
 
 	const { bank_account } = req.swagger.params.data.value;
 	const id = req.swagger.params.id.value;
@@ -2024,7 +2031,7 @@ const setUserBank = (req, res) => {
 		});
 };
 
-const verifyUserBank = (req, res) => {
+export const verifyUserBank = (req, res) => {
 
 	const { user_id, bank_id } = req.swagger.params.data.value;
 
@@ -2076,7 +2083,7 @@ const verifyUserBank = (req, res) => {
 		});
 };
 
-const revokeUserBank = (req, res) => {
+export const revokeUserBank = (req, res) => {
 	const { user_id, bank_id, message } = req.swagger.params.data.value;
 
 	loggerAdmin.verbose(
@@ -2117,7 +2124,7 @@ const revokeUserBank = (req, res) => {
 		});
 };
 
-const generateDashToken = (req, res) => {
+export const generateDashToken = (req, res) => {
 	loggerAdmin.verbose(
 		req.uuid,
 		'controllers/admin/generateDashToken auth',
@@ -2141,7 +2148,7 @@ const generateDashToken = (req, res) => {
 		});
 };
 
-const getUserAffiliation = (req, res) => {
+export const getUserAffiliation = (req, res) => {
 	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserAffiliation auth', req.auth.sub);
 
 	const user_id = req.swagger.params.user_id.value;
@@ -2166,7 +2173,7 @@ const getUserAffiliation = (req, res) => {
 		});
 };
 
-const getUserReferer = (req, res) => {
+export const getUserReferer = (req, res) => {
 	loggerAdmin.debug(req.uuid, 'controllers/admin/getUserReferer auth', req.auth.sub);
 
 	const user_id = req.swagger.params.user_id.value;
@@ -2182,7 +2189,7 @@ const getUserReferer = (req, res) => {
 		});
 };
 
-const createUserByAdmin = (req, res) => {
+export const createUserByAdmin = (req, res) => {
 	const { email, password } = req.swagger.params.data.value;
 
 	loggerAdmin.info(req.uuid, 'controllers/admin/createUserByAdmin email', email);
@@ -2221,7 +2228,7 @@ const createUserByAdmin = (req, res) => {
 		});
 };
 
-const createUserWalletByAdmin = (req, res) => {
+export const createUserWalletByAdmin = (req, res) => {
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/createUserWalletByAdmin',
@@ -2276,7 +2283,7 @@ const createUserWalletByAdmin = (req, res) => {
 		});
 };
 
-const getWalletsByAdmin = (req, res) => {
+export const getWalletsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getWalletsByAdmin/auth', req.auth);
 
 	const { user_id, currency, network, address, is_valid, limit, page, order_by, order, format, start_date, end_date } = req.swagger.params;
@@ -2324,7 +2331,7 @@ const getWalletsByAdmin = (req, res) => {
 		});
 };
 
-const sendEmailByAdmin = (req, res) => {
+export const sendEmailByAdmin = (req, res) => {
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/sendEmailByAdmin',
@@ -2369,7 +2376,7 @@ const sendEmailByAdmin = (req, res) => {
 		});
 };
 
-const sendRawEmailByAdmin = (req, res) => {
+export const sendRawEmailByAdmin = (req, res) => {
 	loggerAdmin.info(
 		req.uuid,
 		'controllers/admin/sendRawEmailByAdmin',
@@ -2406,7 +2413,7 @@ const sendRawEmailByAdmin = (req, res) => {
 		});
 };
 
-const getUserSessionsByAdmin = (req, res) => {
+export const getUserSessionsByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUserSessionsByAdmin/auth', req.auth);
 
 	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
@@ -2452,7 +2459,7 @@ const getUserSessionsByAdmin = (req, res) => {
 		});
 };
 
-const revokeUserSessionByAdmin = (req, res) => {
+export const revokeUserSessionByAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/revokeUserSessionByAdmin/auth', req.auth);
 
 	const { session_id } = req.swagger.params.data.value;
@@ -2467,7 +2474,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 		});
 };
 
-const updateQuickTradeConfig = (req, res) => {
+export const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
 
 	const { symbol, type, active } = req.swagger.params.data.value;
@@ -2484,7 +2491,7 @@ const updateQuickTradeConfig = (req, res) => {
 		});
 };
 
-const getBalancesAdmin = (req, res) => {
+export const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
 
 	const { 
@@ -2519,69 +2526,4 @@ const getBalancesAdmin = (req, res) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-};
-
-module.exports = {
-	createInitialAdmin,
-	getAdminKit,
-	putAdminKit,
-	getUsersAdmin,
-	putUserRole,
-	putUserNote,
-	getAdminUserBalance,
-	activateUser,
-	getAdminBalance,
-	upgradeUser,
-	flagUser,
-	getAdminUserLogins,
-	getUserAudits,
-	getCoins,
-	getPairs,
-	transferFund,
-	completeExchangeSetup,
-	putNetworkCredentials,
-	uploadImage,
-	getOperators,
-	inviteNewOperator,
-	getExchangeGeneratedFees,
-	mintAsset,
-	burnAsset,
-	verifyEmailUser,
-	settleFees,
-	putMint,
-	putBurn,
-	putUserDiscount,
-	deleteKitUserMeta,
-	postKitUserMeta,
-	putKitUserMeta,
-	putUserMeta,
-	adminCheckTransaction,
-	createPair,
-	updatePair,
-	createCoin,
-	updateCoin,
-	getExchange,
-	getNetworkCoins,
-	getNetworkPairs,
-	updateExchange,
-	putUserInfo,
-	getEmail,
-	putEmail,
-	emailConfigTest,
-	getEmailTypes,
-	setUserBank,
-	verifyUserBank,
-	revokeUserBank,
-	generateDashToken,
-	getUserAffiliation,
-	getUserReferer,
-	createUserByAdmin,
-	createUserWalletByAdmin,
-	getWalletsByAdmin,
-	getUserSessionsByAdmin,
-	revokeUserSessionByAdmin,
-	sendEmailByAdmin,
-	sendRawEmailByAdmin,
-	updateQuickTradeConfig,
-	getBalancesAdmin
 };

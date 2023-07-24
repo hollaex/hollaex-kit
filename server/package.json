@@ -82,6 +82,7 @@
 		"yamljs": "0.3.0"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.14.195",
 		"chai": "4.2.0",
 		"eslint": "8.41.0",
 		"husky": "4.3.8",

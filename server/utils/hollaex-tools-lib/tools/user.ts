@@ -1,91 +1,91 @@
 'use strict';
 
-const { getModel } = require('./database/model');
-const dbQuery = require('./database/query');
-const {
-	has,
-	omit,
-	pick,
-	each,
-	differenceWith,
-	isEqual,
-	isString,
-	isNumber,
-	isBoolean,
-	isPlainObject,
-	isNil,
-	isArray,
-	isInteger,
-	isEmpty,
-	uniq
-} = require('lodash');
-const { isEmail } = require('validator');
-const randomString = require('random-string');
-const { SERVER_PATH } = require('../constants');
-const {
-	SIGNUP_NOT_AVAILABLE,
-	PROVIDE_VALID_EMAIL,
-	USER_EXISTS,
-	INVALID_PASSWORD,
-	INVALID_VERIFICATION_CODE,
-	USER_NOT_FOUND,
-	USER_NOT_VERIFIED,
-	USER_NOT_ACTIVATED,
-	INVALID_CREDENTIALS,
-	INVALID_OTP_CODE,
-	USERNAME_CANNOT_BE_CHANGED,
-	USERNAME_IS_TAKEN,
-	INVALID_USERNAME,
-	ACCOUNT_NOT_VERIFIED,
-	INVALID_VERIFICATION_LEVEL,
-	USER_EMAIL_NOT_VERIFIED,
-	USER_EMAIL_IS_VERIFIED,
-	NO_DATA_FOR_CSV,
-	PROVIDE_USER_CREDENTIALS,
-	PROVIDE_KIT_ID,
-	PROVIDE_NETWORK_ID,
-	CANNOT_DEACTIVATE_ADMIN,
-	USER_ALREADY_DEACTIVATED,
-	USER_NOT_DEACTIVATED,
-	CANNOT_CHANGE_ADMIN_ROLE,
-	VERIFICATION_CODE_USED,
-	USER_NOT_REGISTERED_ON_NETWORK,
-	SESSION_NOT_FOUND,
-	SESSION_ALREADY_REVOKED,
-	WRONG_USER_SESSION
-} = require(`${SERVER_PATH}/messages`);
-const { publisher, client } = require('./database/redis');
-const {
-	CONFIGURATION_CHANNEL,
-	AUDIT_KEYS,
-	USER_FIELD_ADMIN_LOG,
-	ADDRESS_FIELDS,
-	ID_FIELDS,
-	SETTING_KEYS,
-	OMITTED_USER_FIELDS,
-	DEFAULT_ORDER_RISK_PERCENTAGE,
-	AFFILIATION_CODE_LENGTH,
-	LOGIN_TIME_OUT,
-	TOKEN_TIME_LONG,
-	TOKEN_TIME_NORMAL,
-	VERIFY_STATUS
-} = require(`${SERVER_PATH}/constants`);
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
-const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
-const { isValidPassword, createSession } = require('./security');
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { all, reject } = require('bluebird');
-const { Op } = require('sequelize');
-const { paginationQuery, timeframeQuery, orderingQuery } = require('./database/helpers');
-const { parse } = require('json2csv');
-const flatten = require('flat');
-const uuid = require('uuid/v4');
-const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
-const geoip = require('geoip-lite');
+import { getModel } from './database/model';
+import dbQuery from './database/query';
+import {
+  has,
+  omit,
+  pick,
+  each,
+  differenceWith,
+  isEqual,
+  isString,
+  isNumber,
+  isBoolean,
+  isPlainObject,
+  isNil,
+  isArray,
+  isInteger,
+  isEmpty,
+  uniq,
+} from 'lodash';
+import isEmail from 'validator/lib/isEmail';
+import randomString from 'random-string';
+import {
+  SIGNUP_NOT_AVAILABLE,
+  PROVIDE_VALID_EMAIL,
+  USER_EXISTS,
+  INVALID_PASSWORD,
+  INVALID_VERIFICATION_CODE,
+  USER_NOT_FOUND,
+  USER_NOT_VERIFIED,
+  USER_NOT_ACTIVATED,
+  INVALID_CREDENTIALS,
+  INVALID_OTP_CODE,
+  USERNAME_CANNOT_BE_CHANGED,
+  USERNAME_IS_TAKEN,
+  INVALID_USERNAME,
+  ACCOUNT_NOT_VERIFIED,
+  INVALID_VERIFICATION_LEVEL,
+  USER_EMAIL_NOT_VERIFIED,
+  USER_EMAIL_IS_VERIFIED,
+  NO_DATA_FOR_CSV,
+  PROVIDE_USER_CREDENTIALS,
+  PROVIDE_KIT_ID,
+  PROVIDE_NETWORK_ID,
+  CANNOT_DEACTIVATE_ADMIN,
+  USER_ALREADY_DEACTIVATED,
+  USER_NOT_DEACTIVATED,
+  CANNOT_CHANGE_ADMIN_ROLE,
+  VERIFICATION_CODE_USED,
+  USER_NOT_REGISTERED_ON_NETWORK,
+  SESSION_NOT_FOUND,
+  SESSION_ALREADY_REVOKED,
+  WRONG_USER_SESSION,
+} from '../../../messages';
+import { publisher, client } from './database/redis';
+import {
+  CONFIGURATION_CHANNEL,
+  AUDIT_KEYS,
+  USER_FIELD_ADMIN_LOG,
+  ADDRESS_FIELDS,
+  ID_FIELDS,
+  SETTING_KEYS,
+  OMITTED_USER_FIELDS,
+  DEFAULT_ORDER_RISK_PERCENTAGE,
+  AFFILIATION_CODE_LENGTH,
+  LOGIN_TIME_OUT,
+  TOKEN_TIME_LONG,
+  TOKEN_TIME_NORMAL,
+  VERIFY_STATUS,
+} from '../../../constants';
+import { sendEmail } from '../../../mail';
+import { MAILTYPE } from '../../../mail/strings';
+import { getKitConfig, isValidTierLevel, getKitTier, isDatetime } from './common';
+import { isValidPassword, createSession } from './security';
+import { getNodeLib } from '../../../init';
+import { all, reject } from 'bluebird';
+import { Op } from 'sequelize';
+import { paginationQuery, timeframeQuery, orderingQuery } from './database/helpers';
+import { parse } from 'json2csv';
+import flatten from 'flat';
+import uuid from 'uuid/v4';
+import { checkCaptcha, validatePassword, verifyOtpBeforeAction } from './security';
+import geoip from 'geoip-lite';
 
-let networkIdToKitId = {};
-let kitIdToNetworkId = {};
+
+let networkIdToKitId: any = {};
+let kitIdToNetworkId: any = {};
 /* Onboarding*/
 
 const signUpUser = (email, password, opts = { referral: null }) => {

@@ -1,74 +1,81 @@
 'use strict';
 
-const rp = require('request-promise');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
-const { intersection, has } = require('lodash');
-const { isEmail } = require('validator');
-const ipRangeCheck = require('ip-range-check');
-const { SERVER_PATH } = require('../constants');
-const {
-	INVALID_CAPTCHA,
-	USER_NOT_FOUND,
-	TOKEN_OTP_MUST_BE_ENABLED,
-	INVALID_OTP_CODE,
-	ACCESS_DENIED,
-	NOT_AUTHORIZED,
-	TOKEN_EXPIRED,
-	INVALID_TOKEN,
-	MISSING_HEADER,
-	DEACTIVATED_USER,
-	TOKEN_NOT_FOUND,
-	TOKEN_REVOKED,
-	MULTIPLE_API_KEY,
-	API_KEY_NULL,
-	API_REQUEST_EXPIRED,
-	API_SIGNATURE_NULL,
-	API_KEY_INACTIVE,
-	API_KEY_INVALID,
-	API_KEY_EXPIRED,
-	API_KEY_OUT_OF_SCOPE,
-	API_KEY_NOT_PERMITTED,
-	API_KEY_NOT_WHITELISTED,
-	API_SIGNATURE_INVALID,
-	INVALID_PASSWORD,
-	INVALID_CREDENTIALS,
-	SAME_PASSWORD,
-	CODE_NOT_FOUND,
-	INVALID_TOKEN_TYPE,
-	NO_AUTH_TOKEN,
-	WHITELIST_DISABLE_ADMIN,
-	WHITELIST_NOT_PROVIDED,
-	SESSION_NOT_FOUND
-} = require(`${SERVER_PATH}/messages`);
-const {
-	NODE_ENV,
-	CAPTCHA_ENDPOINT,
-	BASE_SCOPES,
-	ROLES,
-	ISSUER,
-	SECRET,
-	TOKEN_TYPES,
-	HMAC_TOKEN_EXPIRY,
-	HMAC_TOKEN_KEY,
-} = require(`${SERVER_PATH}/constants`);
-const { getNodeLib } = require(`${SERVER_PATH}/init`);
-const { resolve, reject, promisify } = require('bluebird');
-const { getKitSecrets, getKitConfig, getFrozenUsers, getNetworkKeySecret } = require('./common');
-const bcrypt = require('bcryptjs');
-const { all } = require('bluebird');
-const { sendEmail } = require(`${SERVER_PATH}/mail`);
-const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
-const { getModel } = require('./database/model');
-const dbQuery = require('./database/query');
-const otp = require('otp');
-const { client } = require('./database/redis');
-const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
-const moment = require('moment');
-const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
-const geoip = require('geoip-lite');
+import rp from 'request-promise';
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { intersection, has } from 'lodash';
+import isEmail from 'validator/lib/isEmail';
+import ipRangeCheck from 'ip-range-check';
+import {
+  INVALID_CAPTCHA,
+  USER_NOT_FOUND,
+  TOKEN_OTP_MUST_BE_ENABLED,
+  INVALID_OTP_CODE,
+  ACCESS_DENIED,
+  NOT_AUTHORIZED,
+  TOKEN_EXPIRED,
+  INVALID_TOKEN,
+  MISSING_HEADER,
+  DEACTIVATED_USER,
+  TOKEN_NOT_FOUND,
+  TOKEN_REVOKED,
+  MULTIPLE_API_KEY,
+  API_KEY_NULL,
+  API_REQUEST_EXPIRED,
+  API_SIGNATURE_NULL,
+  API_KEY_INACTIVE,
+  API_KEY_INVALID,
+  API_KEY_EXPIRED,
+  API_KEY_NOT_PERMITTED,
+  API_KEY_NOT_WHITELISTED,
+  API_SIGNATURE_INVALID,
+  INVALID_PASSWORD,
+  INVALID_CREDENTIALS,
+  SAME_PASSWORD,
+  CODE_NOT_FOUND,
+  INVALID_TOKEN_TYPE,
+  NO_AUTH_TOKEN,
+  WHITELIST_DISABLE_ADMIN,
+  WHITELIST_NOT_PROVIDED,
+  SESSION_NOT_FOUND,
+} from '../../..//messages';
+import {
+  NODE_ENV,
+  CAPTCHA_ENDPOINT,
+  BASE_SCOPES,
+  ROLES,
+  ISSUER,
+  SECRET,
+  TOKEN_TYPES,
+  HMAC_TOKEN_EXPIRY,
+  HMAC_TOKEN_KEY,
+} from '../../..//constants';
+import { getNodeLib } from '../../..//init';
+import { resolve, reject, promisify } from 'bluebird';
+import {
+  getKitSecrets,
+  getKitConfig,
+  getFrozenUsers,
+  getNetworkKeySecret,
+} from './common';
+import bcrypt from 'bcryptjs';
+import { all } from 'bluebird';
+import { sendEmail } from '../../..//mail';
+import { MAILTYPE } from '../../..//mail/strings';
+import { getModel } from './database/model';
+import dbQuery from './database/query';
+import otp from 'otp';
+import { client } from './database/redis';
+import { loggerAuth } from '../../..//config/logger';
+import moment from 'moment';
+import {
+  generateHash,
+  generateRandomString,
+} from '../../..//utils/security';
+import geoip from 'geoip-lite';
 
-const getCountryFromIp = (ip) => {
+
+export const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
 	if (!geo) {
 		return '';
@@ -76,7 +83,7 @@ const getCountryFromIp = (ip) => {
 	return geo.country;
 };
 
-const checkIp = async (remoteip = '') => {
+export const checkIp = async (remoteip = '') => {
 	const dataGeofence = getKitConfig().black_list_countries;
 	if (dataGeofence && dataGeofence.length > 0 && remoteip) {
 		if (dataGeofence.includes(getCountryFromIp(remoteip))) {
@@ -86,7 +93,7 @@ const checkIp = async (remoteip = '') => {
 	return;
 };
 
-const checkCaptcha = (captcha = '', remoteip = '') => {
+export const checkCaptcha = (captcha = '', remoteip = '') => {
 	if (!captcha) {
 		if (NODE_ENV === 'development') {
 			return resolve();
@@ -117,15 +124,15 @@ const checkCaptcha = (captcha = '', remoteip = '') => {
 		});
 };
 
-const validatePassword = (userPassword, inputPassword) => {
+export const validatePassword = (userPassword, inputPassword) => {
 	return bcrypt.compare(inputPassword, userPassword);
 };
 
-const isValidPassword = (value) => {
+export const isValidPassword = (value) => {
 	return /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(value);
 };
 
-const resetUserPassword = (resetPasswordCode, newPassword) => {
+export const resetUserPassword = (resetPasswordCode, newPassword) => {
 	if (!isValidPassword(newPassword)) {
 		return reject(new Error(INVALID_PASSWORD));
 	}
@@ -175,7 +182,7 @@ async function confirmByEmail(userId, givenCode) {
 	return true;
 }
 
-const confirmChangeUserPassword = (code, domain) => {
+export const confirmChangeUserPassword = (code, domain) => {
 	return getChangePasswordCode(code)
 		.then((data) => {
 			const dataValues = JSON.parse(data);
@@ -200,7 +207,7 @@ const confirmChangeUserPassword = (code, domain) => {
 		});
 };
 
-const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode) => {
+export const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode) => {
 	if (oldPassword === newPassword) {
 		return reject(new Error(SAME_PASSWORD));
 	}
@@ -235,11 +242,11 @@ const changeUserPassword = (email, oldPassword, newPassword, ip, domain, otpCode
 		});
 };
 
-const getChangePasswordCode = (code) => {
+export const getChangePasswordCode = (code) => {
 	return client.getAsync(`ChangePasswordCode:${code}`)
 		.then((data) => {
 			if (!data) {
-				const error = new Error(CODE_NOT_FOUND);
+				const error: any = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
@@ -247,7 +254,7 @@ const getChangePasswordCode = (code) => {
 		});
 };
 
-const createChangePasswordCode = (userId, newPassword) => {
+export const createChangePasswordCode = (userId, newPassword) => {
 	//Generate new random code
 	const code = crypto.randomBytes(20).toString('hex');
 	//Code is expire in 5 mins
@@ -263,11 +270,11 @@ const createChangePasswordCode = (userId, newPassword) => {
 		});
 };
 
-const getResetPasswordCode = (code) => {
+export const getResetPasswordCode = (code) => {
 	return client.getAsync(`ResetPasswordCode:${code}`)
 		.then((user_id) => {
 			if (!user_id) {
-				const error = new Error(CODE_NOT_FOUND);
+				const error: any = new Error(CODE_NOT_FOUND);
 				error.status = 404;
 				throw error;
 			}
@@ -275,7 +282,7 @@ const getResetPasswordCode = (code) => {
 		});
 };
 
-const createResetPasswordCode = (userId) => {
+export const createResetPasswordCode = (userId) => {
 	//Generate new random code
 	const code = crypto.randomBytes(20).toString('hex');
 
@@ -286,7 +293,7 @@ const createResetPasswordCode = (userId) => {
 		});
 };
 
-const sendResetPasswordCode = (email, captcha, ip, domain) => {
+export const sendResetPasswordCode = (email, captcha, ip, domain) => {
 	if (typeof email !== 'string' || !isEmail(email)) {
 		return reject(new Error(USER_NOT_FOUND));
 	}
@@ -310,7 +317,7 @@ const sendResetPasswordCode = (email, captcha, ip, domain) => {
 		});
 };
 
-const generateOtp = (secret, epoch = 0) => {
+export const generateOtp = (secret, epoch = 0) => {
 	const options = {
 		name: getKitConfig().api_name,
 		secret,
@@ -320,12 +327,12 @@ const generateOtp = (secret, epoch = 0) => {
 	return totp;
 };
 
-const verifyOtp = (userSecret, userDigits) => {
+export const verifyOtp = (userSecret, userDigits) => {
 	const serverDigits = [generateOtp(userSecret, 30), generateOtp(userSecret), generateOtp(userSecret, -30)];
 	return serverDigits.includes(userDigits);
 };
 
-const hasUserOtpEnabled = (id) => {
+export const hasUserOtpEnabled = (id) => {
 	return dbQuery.findOne('user', {
 		where: { id },
 		attributes: ['otp_enabled']
@@ -334,7 +341,7 @@ const hasUserOtpEnabled = (id) => {
 	});
 };
 
-const verifyUserOtpCode = (user_id, otp_code) => {
+export const verifyUserOtpCode = (user_id, otp_code) => {
 	return dbQuery.findOne('otp code', {
 		where: {
 			used: true,
@@ -354,7 +361,7 @@ const verifyUserOtpCode = (user_id, otp_code) => {
 		});
 };
 
-const verifyOtpBeforeAction = (user_id, otp_code) => {
+export const verifyOtpBeforeAction = (user_id, otp_code) => {
 	return hasUserOtpEnabled(user_id).then((otp_enabled) => {
 		if (otp_enabled) {
 			return verifyUserOtpCode(user_id, otp_code);
@@ -364,7 +371,7 @@ const verifyOtpBeforeAction = (user_id, otp_code) => {
 	});
 };
 
-const checkOtp = (userId) => {
+export const checkOtp = (userId) => {
 	return hasUserOtpEnabled(userId).then((otp_enabled) => {
 		if (otp_enabled) {
 			throw new Error('OTP is already enabled');
@@ -377,7 +384,7 @@ const checkOtp = (userId) => {
 	Function generate the otp secret.
 	Return the otp secret.
  */
-const generateOtpSecret = () => {
+export const generateOtpSecret = () => {
 	const seed = otp({
 		name: getKitConfig().api_name
 	});
@@ -389,7 +396,7 @@ const generateOtpSecret = () => {
 	Param 1(integer): user id
 	Return a promise with the otp code row from the db.
  */
-const findUserOtp = (user_id) => {
+export const findUserOtp = (user_id) => {
 	return dbQuery.findOne('otp code', {
 		where: {
 			used: false,
@@ -404,7 +411,7 @@ const findUserOtp = (user_id) => {
 	Param 1(integer): user id
 	Return a promise with the otp secret created.
  */
-const createOtp = (user_id) => {
+export const createOtp = (user_id) => {
 	const secret = generateOtpSecret();
 	return getModel('otp code').create({
 		user_id,
@@ -422,7 +429,7 @@ const createOtp = (user_id) => {
 
   Return a promise with the updated user.
  */
-const updateUserOtpEnabled = (id, otp_enabled = false, transaction) => {
+export const updateUserOtpEnabled = (id, otp_enabled = false, transaction) => {
 	return dbQuery.findOne('user', {
 		where: { id },
 		attributes: ['id', 'otp_enabled']
@@ -439,7 +446,7 @@ const updateUserOtpEnabled = (id, otp_enabled = false, transaction) => {
 	Param 1(integer): user id
 	Return a promise with the user updated.
  */
-const setActiveUserOtp = (user_id) => {
+export const setActiveUserOtp = (user_id) => {
 	return getModel('sequelize').transaction((transaction) => {
 		return findUserOtp(user_id)
 			.then((otp) => {
@@ -454,7 +461,7 @@ const setActiveUserOtp = (user_id) => {
 	});
 };
 
-const userHasOtpEnabled = (userId) => {
+export const userHasOtpEnabled = (userId) => {
 	return dbQuery.findOne('user', {
 		where: { id: userId },
 		raw: true,
@@ -468,7 +475,7 @@ const userHasOtpEnabled = (userId) => {
 		});
 };
 
-const checkUserOtpActive = (userId, otpCode) => {
+export const checkUserOtpActive = (userId, otpCode) => {
 	return all([
 		dbQuery.findOne('user', {
 			where: { id: userId },
@@ -486,7 +493,7 @@ const checkUserOtpActive = (userId, otpCode) => {
 	});
 };
 
-const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
+export const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
 
 	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
 		const endpointTypes = req.swagger.operation['x-security-types'];
@@ -517,8 +524,8 @@ const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fals
 //that need it (in our case, only /protected). This
 //function will be called every time a request to a protected
 //endpoint is received
-const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
-	const sendError = (msg) => {
+export const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = false) => {
+	export const sendError = (msg) => {
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
@@ -612,7 +619,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 	}
 };
 
-const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false) => {
+export const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false) => {
 	const sendError = (msg) => {
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
@@ -659,7 +666,7 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 	}
 };
 
-const verifyNetworkHmacToken = (req) => {
+export const verifyNetworkHmacToken = (req) => {
 	const givenApiKey = req.headers ? req.headers['api-key'] : undefined;
 	const apiSignature = req.headers ? req.headers['api-signature'] : undefined;
 	const apiExpires = req.headers ? req.headers['api-expires'] : undefined;
@@ -690,7 +697,7 @@ const verifyNetworkHmacToken = (req) => {
 };
 
 
-const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
+export const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
 		let statusCode = 401;
 		if (msg.indexOf(NOT_AUTHORIZED) > -1) {
@@ -745,7 +752,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 	}
 };
 
-const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
+export const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	if (token && token.indexOf('Bearer ') === 0) {
 		const tokenString = token.split(' ')[1];
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
@@ -796,7 +803,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
+export const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {
@@ -860,7 +867,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 };
 
 
-const createSession = async (token, loginId, userId) => {
+export const createSession = async (token, loginId, userId) => {
 
 	const { getUserRole } = require('./user');
 
@@ -882,14 +889,14 @@ const createSession = async (token, loginId, userId) => {
 	})
 }
 
-const getExpirationDateInSeconds = (expiryDate) => {
+export const getExpirationDateInSeconds = (expiryDate) => {
 	const end = moment(expiryDate);
 	const now = moment(new Date());
 	const duration = moment.duration(moment(end).diff(now));
 	return Number(duration.asSeconds().toFixed(0));
 }
 
-const verifySession = async (token) => {
+export const verifySession = async (token) => {
 
 	const session = await findSession(token);
 
@@ -922,7 +929,7 @@ const verifySession = async (token) => {
 	}
 }
 
-const findSession = async (token) => {
+export const findSession = async (token) => {
 
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
@@ -966,7 +973,7 @@ const findSession = async (token) => {
  * @param {array} userScopes - Scopes of the user.
  * @returns {boolean} True if user scope is authorized for endpoint. False if not.
  */
-const userScopeIsValid = (endpointScopes, userScopes) => {
+export const userScopeIsValid = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
 		return false;
 	} else {
@@ -980,7 +987,7 @@ const userScopeIsValid = (endpointScopes, userScopes) => {
  * @param {array} userId - Id of user.
  * @returns {boolean} True if user account is deactivated. False if not.
  */
-const userIsDeactivated = (deactivatedUsers, userId) => {
+export const userIsDeactivated = (deactivatedUsers, userId) => {
 	if (deactivatedUsers[userId]) {
 		return true;
 	} else {
@@ -988,7 +995,7 @@ const userIsDeactivated = (deactivatedUsers, userId) => {
 	}
 };
 
-const checkAdminIp = (whiteListedIps = [], ip = '') => {
+export const checkAdminIp = (whiteListedIps = [], ip = '') => {
 	if (whiteListedIps.length === 0) {
 		return true; // no ip restriction for admin
 	} else {
@@ -996,7 +1003,7 @@ const checkAdminIp = (whiteListedIps = [], ip = '') => {
 	}
 };
 
-const issueToken = (
+export const issueToken = (
 	id,
 	networkId,
 	email,
@@ -1048,7 +1055,7 @@ const issueToken = (
 	return token;
 };
 
-const createHmacSignature = (secret, verb, path, expires, data = '') => {
+export const createHmacSignature = (secret, verb, path, expires, data = '') => {
 	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
 
 	const signature = crypto
@@ -1058,7 +1065,7 @@ const createHmacSignature = (secret, verb, path, expires, data = '') => {
 	return signature;
 };
 
-const maskToken = (token = '') => {
+export const maskToken = (token = '') => {
 	return token.substr(0, 3) + '********';
 };
 /*
@@ -1069,7 +1076,7 @@ const maskToken = (token = '') => {
 
   Retuns a json objecet
 */
-const formatTokenObject = (tokenData) => ({
+export const formatTokenObject = (tokenData) => ({
 	id: tokenData.id,
 	name: tokenData.name,
 	apiKey: tokenData.key,
@@ -1086,7 +1093,7 @@ const formatTokenObject = (tokenData) => ({
 	role: tokenData.role
 });
 
-const getUserKitHmacTokens = (userId) => {
+export const getUserKitHmacTokens = (userId) => {
 	return dbQuery.findAndCountAllWithRows('token', {
 		where: {
 			user_id: userId,
@@ -1097,7 +1104,7 @@ const getUserKitHmacTokens = (userId) => {
 			exclude: ['user_id', 'updated_at']
 		},
 		order: [['created_at', 'DESC'], ['id', 'ASC']]
-	})
+	}, null)
 		.then(({ count, data }) => {
 			const result = {
 				count: count,
@@ -1107,7 +1114,7 @@ const getUserKitHmacTokens = (userId) => {
 		});
 };
 
-const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER, whitelisted_ips) => {
+export const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.USER, whitelisted_ips) => {
 	const key = crypto.randomBytes(20).toString('hex');
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
@@ -1164,7 +1171,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
-	const values = {
+	const values: any = {
 		...permissions,
 		name,
 		...(whitelisted_ips != null && { whitelisted_ips }),
@@ -1173,6 +1180,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 
 	Object.entries(values).forEach((key, value) => {
 		if (value === undefined) {
+			// @ts-ignore
 			delete values[key];
 		}
 	});
@@ -1192,7 +1200,7 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 	return formatTokenObject(newToken);
 }
 
-const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
+export const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 	return checkUserOtpActive(userId, otpCode)
 		.then(() => {
 			return dbQuery.findOne('token', {
@@ -1222,11 +1230,11 @@ const deleteUserKitHmacToken = (userId, otpCode, tokenId) => {
 		});
 };
 
-const findToken = (query) => {
+export const findToken = (query) => {
 	return dbQuery.findOne('token', query);
 };
 
-const findTokenByApiKey = (apiKey) => {
+export const findTokenByApiKey = (apiKey) => {
 	return client.hgetAsync(HMAC_TOKEN_KEY, apiKey)
 		.then(async (token) => {
 			if (!token) {
@@ -1277,7 +1285,7 @@ const findTokenByApiKey = (apiKey) => {
 		});
 };
 
-const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
+export const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
 	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
 
 	const signature = crypto
@@ -1288,7 +1296,7 @@ const calculateSignature = (secret = '', verb, path, nonce, data = '') => {
 	return signature;
 };
 
-const checkHmacSignature = (
+export const checkHmacSignature = (
 	secret,
 	{ body, headers, method, originalUrl }
 ) => {
@@ -1305,7 +1313,7 @@ const checkHmacSignature = (
 	return calculatedSignature === signature;
 };
 
-const isValidScope = (endpointScopes, userScopes) => {
+export const isValidScope = (endpointScopes, userScopes) => {
 	if (intersection(endpointScopes, userScopes).length === 0) {
 		return false;
 	} else {
@@ -1313,57 +1321,8 @@ const isValidScope = (endpointScopes, userScopes) => {
 	}
 };
 
-const generateDashToken = (opts = {
+export const generateDashToken = (opts = {
 	additionalHeaders: null
 }) => {
 	return getNodeLib().generateDashToken({ additionalHeaders: opts.additionalHeaders });
-};
-
-module.exports = {
-	checkCaptcha,
-	resetUserPassword,
-	isValidPassword,
-	validatePassword,
-	sendResetPasswordCode,
-	changeUserPassword,
-	confirmChangeUserPassword,
-	hasUserOtpEnabled,
-	verifyOtpBeforeAction,
-	verifyOtp,
-	checkOtp,
-	generateOtp,
-	generateOtpSecret,
-	findUserOtp,
-	setActiveUserOtp,
-	updateUserOtpEnabled,
-	createOtp,
-	userHasOtpEnabled,
-	checkUserOtpActive,
-	verifyBearerTokenPromise,
-	verifyHmacTokenPromise,
-	verifyAuthTokenMiddleware,
-	verifyBearerTokenMiddleware,
-	verifyHmacTokenMiddleware,
-	verifyNetworkHmacToken,
-	userScopeIsValid,
-	userIsDeactivated,
-	findToken,
-	issueToken,
-	getUserKitHmacTokens,
-	createUserKitHmacToken,
-	updateUserKitHmacToken,
-	deleteUserKitHmacToken,
-	checkHmacSignature,
-	createHmacSignature,
-	isValidScope,
-	verifyBearerTokenExpressMiddleware,
-	getCountryFromIp,
-	checkIp,
-	sendConfirmationEmail,
-	confirmByEmail,
-	calculateSignature,
-	generateDashToken,
-	createSession,
-	verifySession,
-	findSession
 };
