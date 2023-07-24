@@ -890,7 +890,7 @@ const settleFees = (req, res) => {
 		user_id.value
 	);
 
-	toolsLib.order.settleFees({
+	toolsLib.order.settleFeesExchange({
 		user_id: user_id.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']

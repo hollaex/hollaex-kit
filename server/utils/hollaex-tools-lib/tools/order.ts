@@ -161,8 +161,8 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				receiving_amount
 			}
 		})
-			.then((brokerQuote) => {
-				const responseObj = {
+			.then((brokerQuote: any) => {
+				const responseObj: any = {
 					spending_currency,
 					receiving_currency,
 					...(spending_amount != null ? { spending_amount } : { receiving_amount }),
@@ -195,7 +195,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				return reject(new Error(INVALID_SYMBOL(symbol)));
 			}
 
-			const responseObj = {
+			const responseObj: any = {
 				spending_currency,
 				receiving_currency,
 				...(spending_amount != null ? { spending_amount } : { receiving_amount }),
@@ -273,7 +273,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 			}
 		}
 
-		const responseObj = {
+		const responseObj: any = {
 			spending_currency,
 			receiving_currency,
 			spending_amount,
@@ -790,7 +790,7 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 		return reject(new Error(INVALID_SYMBOL(symbol)));
 	}
 
-	const params = {
+	const params: any = {
 		symbol,
 		limit,
 		page,
@@ -861,7 +861,7 @@ const getAllUserTradesByKitId = async (userKitId, symbol, limit, page, orderBy, 
 		throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
 	}
 
-	const params = {
+	const params: any = {
 		symbol,
 		limit,
 		page,
@@ -1032,7 +1032,7 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 		return reject(new Error(USER_NOT_REGISTERED_ON_NETWORK));
 	}
 
-	const params = {
+	const params: any = {
 		symbol,
 		limit,
 		page,
@@ -1071,8 +1071,9 @@ const getGeneratedFees = (startDate, endDate, opts = {
 	});
 };
 
-const settleFees = async (opts = {
-	additionalHeaders: null
+const settleFeesExchange = async (opts = {
+	additionalHeaders: null,
+	user_id: null
 }) => {
 	let network_id = null;
 	if (opts.user_id) {
@@ -1215,7 +1216,7 @@ module.exports = {
 	getAllUserOrdersByNetworkId,
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
-	settleFees,
+	settleFeesExchange,
 	generateOrderFeeData,
 	dustUserBalance,
 	executeUserOrder,
