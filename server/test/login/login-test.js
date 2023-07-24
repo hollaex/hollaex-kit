@@ -1,7 +1,8 @@
 const {
     request,
     loginAs,
-    generateFuzz
+    generateFuzz,
+    getNewUserCredentials
 } = require('../helpers');
 
 const tools = require('hollaex-tools-lib');
@@ -12,8 +13,8 @@ describe('Login Flow', async () => {
     let user, bearerToken, createdUser;
     it('Integration -should signup successfuly', async () => {
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         const response = await request()

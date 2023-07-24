@@ -1,7 +1,8 @@
 const {
     request,
     loginAs,
-    generateFuzz
+    generateFuzz,
+    getNewUserCredentials
 } = require('../helpers');
 
 const tools = require('hollaex-tools-lib');
@@ -12,8 +13,8 @@ describe('Auth Flow', async () => {
     it('Unit Test -should throw error for same password', async () => {
 
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         let response = await request()
@@ -37,8 +38,8 @@ describe('Auth Flow', async () => {
     it('Unit Test -should throw error for invalid password', async () => {
 
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         let response = await request()
@@ -60,8 +61,8 @@ describe('Auth Flow', async () => {
     it('Unit Test -should throw error for invalid crendetials ', async () => {
 
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         let response = await request()
@@ -83,8 +84,8 @@ describe('Auth Flow', async () => {
     it('Integration Test -should send password change email successfuly', async () => {
 
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         let response = await request()
@@ -117,8 +118,8 @@ describe('Auth Flow', async () => {
     it('Fuzz Test -should return error', async () => {
 
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         let response = await request()
