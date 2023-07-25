@@ -59,3 +59,11 @@ export const findAndCountAllWithRows = (table, query = {}, model = null) => {
 		return Model(table).findAndCountAll(query).then(convertSequelizeCountAndRows);
 	}
 };
+
+export default {
+	Model,
+	findOne,
+	findAll,
+	findAndCountAll,
+	findAndCountAllWithRows
+}

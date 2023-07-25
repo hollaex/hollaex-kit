@@ -1,6 +1,13 @@
 'use strict';
 
-export * as helpers from './helpers';
-export * as model from './model';
-export * as query from './query';
-export * as redis from './redis';
+import helpers from './helpers';
+import model from './model';
+import query from './query';
+import redis from './redis';
+
+export = {
+    ...helpers,
+	...model,
+	...query,
+	...redis
+}

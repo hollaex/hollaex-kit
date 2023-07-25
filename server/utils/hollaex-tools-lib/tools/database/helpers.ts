@@ -70,3 +70,10 @@ export const convertSequelizeCountAndRows = (data) => {
 		})
 	};
 };
+
+export default {
+	paginationQuery,
+	timeframeQuery,
+	orderingQuery,
+	convertSequelizeCountAndRows
+}

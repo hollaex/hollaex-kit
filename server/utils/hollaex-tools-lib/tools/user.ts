@@ -571,7 +571,7 @@ const getAllUsers = () => {
 	}, null);
 };
 
-const getAllUsersAdmin = (opts = {
+const getAllUsersAdmin = (opts: any = {
 	id: null,
 	search: null,
 	pending: null,

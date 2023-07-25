@@ -570,7 +570,7 @@ const withdrawalBelowLimitSameCoin = async (userId, currency, limit, amount = 0)
 	return;
 };
 
-const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts = {
+const transferAssetByKitIds = (senderId, receiverId, currency, amount, description = 'Admin Transfer', email = true, opts: any = {
 	transactionId: null,
 	additionalHeaders: null
 }) => {
@@ -1007,7 +1007,7 @@ const mintAssetByNetworkId = (
 
 const updatePendingMint = (
 	transactionId,
-	opts = {
+	opts: any = {
 		status: null,
 		dismissed: null,
 		rejected: null,
@@ -1062,7 +1062,7 @@ const burnAssetByNetworkId = (
 
 const updatePendingBurn = (
 	transactionId,
-	opts = {
+	opts: any = {
 		status: null,
 		dismissed: null,
 		rejected: null,

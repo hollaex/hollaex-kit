@@ -869,6 +869,7 @@ const getExchangeGeneratedFees = (req, res) => {
 				if (!parsedData || parsedData?.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(parsedData, Object.keys(parsedData[0]));
 
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);

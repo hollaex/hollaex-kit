@@ -89,4 +89,12 @@ export const associateModel = (model, association, associatedModel, options = {}
 	model.associate(models);
 };
 
-export default models;
+export default {
+	createModel,
+	associateModel,
+	getModel,
+	create,
+	destroy,
+	update,
+	models
+};

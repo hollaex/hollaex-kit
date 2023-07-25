@@ -13,7 +13,7 @@ const getExchangeConfig = async (
 };
 
 const updateExchangeConfig = async (
-	fields = {
+	fields: any = {
 		info: null,
 		isPublic: null,
 		type: null,
@@ -24,7 +24,7 @@ const updateExchangeConfig = async (
 		pairs: null,
 		coins: null
 	},
-	opts = {
+	opts: any = {
 		additionalHeaders: null,
 		skip_refresh: null
 	}
