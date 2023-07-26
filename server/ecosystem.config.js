@@ -7,7 +7,7 @@ const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : 'ts-node-esm app.ts',
+	script    : 'app.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -62,7 +62,7 @@ var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
 	if (m === 'all') {
-		apps = [api, ws, plugins];
+		apps = [api];
 		break;
 	} else if (m === 'api') {
 		apps.push(api);
