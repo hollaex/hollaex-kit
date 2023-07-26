@@ -1,10 +1,11 @@
 'use strict';
 
-const { loggerDeposits } = require('../../config/logger');
-const { ROLES } = require('../../constants');
-const { API_KEY_NOT_PERMITTED } = require('../../messages');
-const toolsLib = require('hollaex-tools-lib');
-const { errorMessageConverter } = require('../../utils/conversion');
+import { loggerDeposits } from '../../config/logger';
+import { ROLES } from '../../constants';
+import { API_KEY_NOT_PERMITTED } from '../../messages';
+import toolsLib from 'hollaex-tools-lib';
+import { errorMessageConverter } from '../../utils/conversion';
+
 
 const getAdminDeposits = (req, res) => {
 	loggerDeposits.verbose(

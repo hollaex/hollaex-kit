@@ -1,13 +1,14 @@
 'use strict';
 
-const { loggerOrders, loggerUser } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { isPlainObject, isNumber } = require('lodash');
-const { errorMessageConverter } = require('../../utils/conversion');
-const { isUUID } = require('validator');
-const { ROLES } = require('../../constants');
-const { API_KEY_NOT_PERMITTED } = require('../../messages');
-const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
+import { loggerOrders, loggerUser } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { isPlainObject, isNumber } from 'lodash';
+import { errorMessageConverter } from '../../utils/conversion';
+import isUUID from  'validator/lib/isUUID';
+import { ROLES } from '../../constants';
+import { API_KEY_NOT_PERMITTED } from '../../messages';
+import { getKitConfig } from '../../utils/hollaex-tools-lib/tools/common';
+
 
 const createOrder = (req, res) => {
 	loggerOrders.verbose(
@@ -24,7 +25,7 @@ const createOrder = (req, res) => {
 	const user_id = req.auth.sub.id;
 	let order = req.swagger.params.order.value;
 
-	const opts = {
+	const opts: any = {
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}

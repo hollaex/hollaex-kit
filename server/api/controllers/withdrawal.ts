@@ -1,12 +1,16 @@
 'use strict';
 
-const { loggerWithdrawals } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { all } = require('bluebird');
-const { ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED } = require('../../messages');
-const { errorMessageConverter } = require('../../utils/conversion');
-const { isEmail } = require('validator');
+import { loggerWithdrawals } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { all } from 'bluebird';
+import { ROLES } from '../../constants';
+import {
+  USER_NOT_FOUND,
+  API_KEY_NOT_PERMITTED,
+} from '../../messages';
+import { errorMessageConverter } from '../../utils/conversion';
+import isEmail from 'validator/lib/isEmail';
+
 
 const getWithdrawalFee = (req, res) => {
 	const currency = req.swagger.params.currency.value;

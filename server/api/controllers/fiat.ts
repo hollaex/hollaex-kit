@@ -1,7 +1,7 @@
 'use strict';
 
-const { loggerFiat } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
+import { loggerFiat } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
 
 const createDepositRequest = (req, res) => {
 	loggerFiat.verbose(
@@ -37,7 +37,7 @@ const createDepositRequest = (req, res) => {
 				throw new Error('User not found');
 			}
 			
-			const { fee } = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
+			const { fee }: any = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
 			const { count: depositCount } = await toolsLib.wallet.getUserDepositsByKitId(
 				userId,
@@ -46,7 +46,17 @@ const createDepositRequest = (req, res) => {
 				false,
 				false,
 				false,
-				false
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
 			);
 
 			if (depositCount > 3) {
@@ -143,7 +153,17 @@ const createWithdrawalRequest = (req, res) => {
 				false,
 				false,
 				false,
-				false
+				false,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
+				undefined,
 			);
 
 			if (withdrawalCount > 3) {

@@ -1,10 +1,11 @@
 'use strict';
 
 const packageJson = require('../../package.json');
-const { API_HOST, HOLLAEX_NETWORK_ENDPOINT } = require('../../constants');
-const { loggerPublic } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { errorMessageConverter } = require('../../utils/conversion');
+import { API_HOST, HOLLAEX_NETWORK_ENDPOINT } from '../../constants';
+import { loggerPublic } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { errorMessageConverter } from '../../utils/conversion';
+
 
 const getHealth = (req, res) => {
 	try {

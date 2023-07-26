@@ -1,10 +1,11 @@
 'use strict';
 
-const { loggerBroker } = require('../../config/logger');
-const { INIT_CHANNEL } = require('../../constants');
-const { publisher } = require('../../db/pubsub');
-const toolsLib = require('hollaex-tools-lib');
-const { errorMessageConverter } = require('../../utils/conversion');
+import { loggerBroker } from '../../config/logger';
+import { INIT_CHANNEL } from '../../constants';
+import { publisher } from '../../db/pubsub';
+import toolsLib from 'hollaex-tools-lib';
+import { errorMessageConverter } from '../../utils/conversion';
+
 
 const getTrackedExchangeMarkets = (req, res) => {
 

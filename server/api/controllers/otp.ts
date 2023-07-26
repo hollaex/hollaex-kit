@@ -1,9 +1,10 @@
 'use strict';
 
-const { INVALID_OTP_CODE } = require('../../messages');
-const { loggerOtp } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { errorMessageConverter } = require('../../utils/conversion');
+import { INVALID_OTP_CODE } from '../../messages';
+import { loggerOtp } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { errorMessageConverter } from '../../utils/conversion';
+
 
 const requestOtp = (req, res) => {
 	loggerOtp.verbose(req.uuid, 'controllers/otp/requestOtp', req.auth);
@@ -79,7 +80,7 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.verifyOtpBeforeAction(id, code);
 		})
 		.then(() => {
-			return toolsLib.security.updateUserOtpEnabled(id, false);
+			return toolsLib.security.updateUserOtpEnabled(id, false, undefined);
 		})
 		.then(() => {
 			return res.json({ message: 'OTP disabled' });

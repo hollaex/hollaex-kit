@@ -1,10 +1,10 @@
 'use strict';
 
-const { loggerTrades } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { errorMessageConverter } = require('../../utils/conversion');
-const { ROLES } = require('../../constants');
-const { API_KEY_NOT_PERMITTED } = require('../../messages');
+import { loggerTrades } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { errorMessageConverter } from '../../utils/conversion';
+import { ROLES } from '../../constants';
+import { API_KEY_NOT_PERMITTED } from '../../messages';
 
 const getUserTrades = (req, res) => {
 	loggerTrades.verbose(

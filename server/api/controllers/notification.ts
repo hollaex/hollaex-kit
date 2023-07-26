@@ -1,13 +1,18 @@
 'use strict';
 
-const { loggerNotification } = require('../../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
-const { publisher } = require('../../db/pubsub');
-const { INIT_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, EVENTS_CHANNEL, WS_PUBSUB_WITHDRAWAL_CHANNEL } = require('../../constants');
-const moment = require('moment');
-const { errorMessageConverter } = require('../../utils/conversion');
+import { loggerNotification } from '../../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { sendEmail } from '../../mail';
+import { MAILTYPE } from '../../mail/strings';
+import { publisher } from '../../db/pubsub';
+import {
+  INIT_CHANNEL,
+  WS_PUBSUB_DEPOSIT_CHANNEL,
+  EVENTS_CHANNEL,
+  WS_PUBSUB_WITHDRAWAL_CHANNEL,
+} from '../../constants';
+import moment from 'moment';
+import { errorMessageConverter } from '../../utils/conversion';
 
 const applyKitChanges = (req, res) => {
 	const ip = req.headers ? req.headers['x-real-ip'] : undefined;

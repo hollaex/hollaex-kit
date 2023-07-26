@@ -1261,7 +1261,7 @@ const toggleFlaggedUserById = (userId) => {
 		});
 };
 
-const getUserLogins = (opts = {
+const getUserLogins = (opts: any = {
 	userId: null,
 	status: null,
 	country: null,
@@ -1894,7 +1894,7 @@ const updateUserInfo = async (userId, data = {}) => {
 	return omitUserFields(user.dataValues);
 };
 
-const getExchangeUserSessions = (opts = {
+const getExchangeUserSessions = (opts: any = {
 	user_id: null,
 	last_seen: null,
 	status: null,

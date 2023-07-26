@@ -1,44 +1,55 @@
 'use strict';
 
-const { isEmail, isUUID } = require('validator');
-const toolsLib = require('hollaex-tools-lib');
-const crypto = require('crypto');
-const { sendEmail } = require('../../mail');
-const { MAILTYPE } = require('../../mail/strings');
-const { loggerUser } = require('../../config/logger');
-const { errorMessageConverter } = require('../../utils/conversion');
-const {
-	USER_VERIFIED,
-	PROVIDE_VALID_EMAIL_CODE,
-	USER_REGISTERED,
-	USER_NOT_FOUND,
-	USER_EMAIL_NOT_VERIFIED,
-	VERIFICATION_EMAIL_MESSAGE,
-	TOKEN_REMOVED,
-	INVALID_CREDENTIALS,
-	USER_NOT_VERIFIED,
-	USER_NOT_ACTIVATED,
-	SIGNUP_NOT_AVAILABLE,
-	PROVIDE_VALID_EMAIL,
-	INVALID_PASSWORD,
-	USER_EXISTS,
-	USER_EMAIL_IS_VERIFIED,
-	INVALID_VERIFICATION_CODE,
-	LOGIN_NOT_ALLOW,
-	NO_IP_FOUND
-} = require('../../messages');
-const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
-const { all } = require('bluebird');
-const { each } = require('lodash');
-const { publisher } = require('../../db/pubsub');
-const { isDate } = require('moment');
+import isEmail from 'validator/lib/isEmail';
+import isUUID from 'validator/lib/isUUID';
+import toolsLib from 'hollaex-tools-lib';
+import crypto from 'crypto';
+import { sendEmail } from '../../mail';
+import { MAILTYPE } from '../../mail/strings';
+import { loggerUser } from '../../config/logger';
+import { errorMessageConverter } from '../../utils/conversion';
+import {
+  USER_VERIFIED,
+  PROVIDE_VALID_EMAIL_CODE,
+  USER_REGISTERED,
+  USER_NOT_FOUND,
+  USER_EMAIL_NOT_VERIFIED,
+  VERIFICATION_EMAIL_MESSAGE,
+  TOKEN_REMOVED,
+  INVALID_CREDENTIALS,
+  USER_NOT_VERIFIED,
+  USER_NOT_ACTIVATED,
+  SIGNUP_NOT_AVAILABLE,
+  PROVIDE_VALID_EMAIL,
+  INVALID_PASSWORD,
+  USER_EXISTS,
+  USER_EMAIL_IS_VERIFIED,
+  INVALID_VERIFICATION_CODE,
+  LOGIN_NOT_ALLOW,
+  NO_IP_FOUND,
+} from '../../messages';
+import {
+  DEFAULT_ORDER_RISK_PERCENTAGE,
+  EVENTS_CHANNEL,
+  API_HOST,
+  DOMAIN,
+  TOKEN_TIME_NORMAL,
+  TOKEN_TIME_LONG,
+  HOLLAEX_NETWORK_BASE_URL,
+  NUMBER_OF_ALLOWED_ATTEMPTS,
+} from '../../constants';
+import { all } from 'bluebird';
+import { each } from 'lodash';
+import { publisher } from '../../db/pubsub';
+import { isDate } from 'moment';
 
-const VERIFY_STATUS = {
-	EMPTY: 0,
-	PENDING: 1,
-	REJECTED: 2,
-	COMPLETED: 3
-};
+
+enum VERIFY_STATUS {
+  EMPTY = 0,
+  PENDING = 1,
+  REJECTED = 2,
+  COMPLETED = 3,
+}
 
 const INITIAL_SETTINGS = () => {
 	return {
@@ -637,7 +648,7 @@ const confirmChangePassword = (req, res) => {
 		ip
 	);
 
-	toolsLib.security.confirmChangeUserPassword(code)
+	toolsLib.security.confirmChangeUserPassword(code, undefined)
 		.then(() => res.redirect(301, `${DOMAIN}/change-password-confirm/${code}?isSuccess=true`))
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/confirmChangeUserPassword', err.message);
@@ -1097,7 +1108,7 @@ const addUserBank = (req, res) => {
 		return res.status(400).json({ message: 'No type is selected' });
 	}
 
-	let bank_account = {};
+	let bank_account: any = {};
 
 	toolsLib.user.getUserByEmail(email, false)
 		.then(async (user) => {

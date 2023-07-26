@@ -1,8 +1,9 @@
 'use strict';
 
-const toolsLib = require('hollaex-tools-lib');
-const { loggerTier } = require('../../config/logger');
-const { errorMessageConverter } = require('../../utils/conversion');
+import toolsLib from 'hollaex-tools-lib';
+import { loggerTier } from '../../config/logger';
+import { errorMessageConverter } from '../../utils/conversion';
+
 
 const getTiers = (req, res) => {
 	try {

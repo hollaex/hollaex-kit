@@ -3,11 +3,11 @@ const ignore_watch = ['logs', 'node_modules', './**/*node_modules', 'tools', 'db
 const max_memory_restart = '4000M';
 const node_args = ['--max_old_space_size=4096'];
 const mode = process.env.DEPLOYMENT_MODE || 'all';
-import { initializeMode } from './utils';
+const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : 'ts-node-esm app.ts',
+	script    : './app.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -16,7 +16,10 @@ const api = {
 	instance_var: 'INSTANCE_ID',
 	instances : '1',
 	max_memory_restart,
-	node_args,
+	"node_args": [
+                "ts-node-dev",
+                "--poll"
+            ],
 	env: {
 		COMMON_VARIABLE: 'true',
 		PORT: process.env.PORT || 10010
@@ -78,5 +81,5 @@ module.exports = {
 		* Application configuration section
 		* http://pm2.keymetrics.io/docs/usage/application-declaration/
 	*/
-	apps
+	apps:[api]
 };

@@ -37,7 +37,8 @@ interface Configuration {
 	valid_languages: any,
 	new_user_is_activated: any,
 	email_verification_required: any,
-	native_currency: any
+	native_currency: any,
+	status: any
   };
   broker: Record<string, any>;
   quicktrade: Record<string, any>;
@@ -73,7 +74,8 @@ let configuration: Configuration = {
 	valid_languages: null,
 	new_user_is_activated: null,
 	email_verification_required: null,
-	native_currency: null
+	native_currency: null,
+	status: null
   },
   broker: {},
   quicktrade: {},
@@ -177,7 +179,8 @@ const resetAllConfig = () => {
 			valid_languages: null,
 			new_user_is_activated: null,
 			email_verification_required: null,
-			native_currency: null
+			native_currency: null,
+			status: null
 		},
 		broker: {},
 		quicktrade: {},

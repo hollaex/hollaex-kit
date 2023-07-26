@@ -191,7 +191,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 	};
 }
 
-const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts = {
+const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts: any = {
 	network: null,
 	otpCode: null,
 	fee: null,
@@ -791,7 +791,7 @@ const getUserDepositsByKitId = (
 	transactionId,
 	address,
 	format,
-	opts = {
+	opts: any = {
 		additionalHeaders: null
 	}
 ) => {
@@ -971,7 +971,7 @@ const mintAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
-	opts = {
+	opts: any = {
 		description: null,
 		transactionId: null,
 		status: null,
@@ -1026,7 +1026,7 @@ const burnAssetByKitId = async (
 	kitId,
 	currency,
 	amount,
-	opts = {
+	opts: any = {
 		description: null,
 		transactionId: null,
 		status: null,
