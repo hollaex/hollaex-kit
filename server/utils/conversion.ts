@@ -1,9 +1,6 @@
 'use strict';
 
-const {
-	INVALID_CAPTCHA,
-	INVALID_CREDENTIALS
-} = require('../messages');
+import { INVALID_CAPTCHA, INVALID_CREDENTIALS } from '../messages';
 
 export const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;

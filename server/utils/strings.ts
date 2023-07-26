@@ -1,5 +1,5 @@
 'use strict';
-const toolsLib = require('hollaex-tools-lib');
+import toolsLib from 'hollaex-tools-lib';
 const DEFAULT_LANGUAGE = () => toolsLib.getKitConfig().defaults.language;
 const VALID_LANGUAGES = () => toolsLib.getKitConfig().valid_languages;
 
@@ -10,6 +10,6 @@ const getValidLanguage = (language = DEFAULT_LANGUAGE()) => {
 	return DEFAULT_LANGUAGE();
 };
 
-module.exports = {
+export {
 	getValidLanguage
 };

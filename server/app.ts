@@ -1,16 +1,16 @@
 'use strict';
 
-const { createServer } = require('http');
-const swaggerUi = require('swagger-ui-express');
-const morgan = require('morgan');
-const swaggerDoc = require('./api/swagger/swagger');
-const { logEntryRequest, stream, logger } = require('./config/logger');
-const { domainMiddleware, helmetMiddleware, rateLimitMiddleware } = require('./config/middleware');
-const toolsLib = require('hollaex-tools-lib');
-const { checkStatus } = require('./init');
-const { API_HOST, CUSTOM_CSS } = require('./constants');
-const swaggerTools = require('swagger-tools');
-const cors = require('cors');
+import { createServer } from 'http';
+import swaggerUi from 'swagger-ui-express';
+import morgan from 'morgan';
+import swaggerDoc from './api/swagger/swagger';
+import { logEntryRequest, stream, logger } from './config/logger';
+import { domainMiddleware, helmetMiddleware, rateLimitMiddleware } from './config/middleware';
+import toolsLib from 'hollaex-tools-lib';
+import { checkStatus } from './init';
+import { API_HOST, CUSTOM_CSS } from './constants';
+import swaggerTools from 'swagger-tools';
+import cors from 'cors';
 
 checkStatus()
 	.then(() => {

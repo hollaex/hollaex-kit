@@ -755,7 +755,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	if (token && token.indexOf('Bearer ') === 0) {
 		const tokenString = token.split(' ')[1];
-		const jwtVerifyAsync = promisify(jwt.verify, jwt);
+		const jwtVerifyAsync: any = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
 			.then((decodedToken: any) => {
