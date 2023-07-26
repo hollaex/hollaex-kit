@@ -1,25 +1,26 @@
 'use strict';
 
-const Network = require('hollaex-network-lib');
-const { all } = require('bluebird');
-const moment = require('moment');
-const rp = require('request-promise');
-const { loggerInit } = require('./config/logger');
-const { Op } = require('sequelize');
-const { User, Status, Tier, Broker, QuickTrade } = require('./db/models');
+import Network from 'hollaex-network-lib';
+import { all } from 'bluebird';
+import moment from 'moment';
+import rp from 'request-promise';
+import { loggerInit } from './config/logger';
+import { Op } from 'sequelize';
+import { User, Status, Tier, Broker, QuickTrade } from './db/models';
 const packageJson = require('./package.json');
 
-const { subscriber, publisher } = require('./db/pubsub');
-const {
-	INIT_CHANNEL,
-	CONFIGURATION_CHANNEL,
-	DEFAULT_FEES,
-	WS_HUB_CHANNEL,
-	HOLLAEX_NETWORK_ENDPOINT,
-	HOLLAEX_NETWORK_BASE_URL,
-	HOLLAEX_NETWORK_PATH_ACTIVATE
-} = require('./constants');
-const { isNumber, difference } = require('lodash');
+import { subscriber, publisher } from './db/pubsub';
+import {
+  INIT_CHANNEL,
+  CONFIGURATION_CHANNEL,
+  DEFAULT_FEES,
+  WS_HUB_CHANNEL,
+  HOLLAEX_NETWORK_ENDPOINT,
+  HOLLAEX_NETWORK_BASE_URL,
+  HOLLAEX_NETWORK_PATH_ACTIVATE
+} from './constants';
+
+import { isNumber, difference } from 'lodash';
 
 let nodeLib;
 
@@ -185,7 +186,7 @@ export const checkStatus = () => {
 			difference(exchangePairs, quickTradePairs).forEach((symbol) => {
 				newQuickTrades[symbol] = { symbol, type: 'pro' };
 			});
-			difference(brokerPairs, quickTradePairs).forEach((symbol) => {
+			difference(brokerPairs, quickTradePairs).forEach((symbol: any) => {
 				// it would override the symbol in the previous condition
 				newQuickTrades[symbol] = { symbol, type: 'broker' };
 			});

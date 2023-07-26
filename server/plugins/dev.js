@@ -93,6 +93,7 @@ checkStatus()
 			module: module,
 			toolsLib,
 			app,
+			// eslint-disable-next-line no-dupe-keys
 			toolsLib,
 			lodash,
 			expressValidator,
