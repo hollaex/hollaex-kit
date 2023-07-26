@@ -15,6 +15,7 @@ const TYPES = {
 	CS10: 'CS10',
 	CS11: 'CS11',
 	CS12: 'CS12',
+	CS13: 'CS13',
 };
 
 const getPropsForType = (type) => {
@@ -62,6 +63,10 @@ const getPropsForType = (type) => {
 		case TYPES.CS12:
 			return {
 				wrapperClassName: 'cs-12',
+			};
+		case TYPES.CS13:
+			return {
+				wrapperClassName: 'cs-13',
 			};
 		default:
 			return {
