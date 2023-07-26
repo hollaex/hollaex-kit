@@ -3,11 +3,11 @@
 import * as dbQuery from './database/query';
 import { getModel } from './database/model';
 import {
-  getKitTiers,
-  getKitPairs,
-  subscribedToPair,
-  getTierLevels,
-  getDefaultFees,
+	getKitTiers,
+	getKitPairs,
+	subscribedToPair,
+	getTierLevels,
+	getDefaultFees,
 } from './common';
 import { reject, all } from 'bluebird';
 import { difference, omit, isNumber, each, isString, isBoolean } from 'lodash';
@@ -226,7 +226,7 @@ const updateTiersLimits = (limits) => {
 	if (difference(tiersToUpdate, getTierLevels()).length > 0) {
 		return reject(new Error('Invalid tier level given'));
 	}
-
+	// @ts-ignore
 	if (Object.values(flatten(limits)).some((limit) => limit < 0 && limit !== -1)) {
 		return reject(new Error('Limits can be either -1 or GTE 0'));
 	}
@@ -241,7 +241,7 @@ const updateTiersLimits = (limits) => {
 
 			return tier.update(
 				{ deposit_limit, withdrawal_limit },
-				{ fields: [ 'deposit_limit', 'withdrawal_limit' ], transaction }
+				{ fields: ['deposit_limit', 'withdrawal_limit'], transaction }
 			);
 		}));
 	})
