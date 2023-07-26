@@ -1,7 +1,7 @@
 'use strict';
-const { getOrderbook, getKitPairsConfig } = require('./hollaex-tools-lib/tools/common');
-const math = require('mathjs');
-const BigNumber = require('bignumber.js');
+import { getOrderbook, getKitPairsConfig } from './hollaex-tools-lib/tools/common';
+import math from 'mathjs';
+import BigNumber from 'bignumber.js';
 const sumQuantities = (orders) =>
     orders.reduce((total, [, size]) => math.add(total, size), 0);
 
@@ -10,6 +10,7 @@ const sumOrderTotal = (orders) =>
         (total, [price, size]) =>
             math.add(
                 total,
+                // @ts-ignore
                 math.number(math.multiply(math.fraction(size), math.fraction(price)))
             ),
         0
@@ -19,11 +20,11 @@ const roundNumber = (number = 0, decimals = 4) => {
     if (number === 0 || number === Infinity || isNaN(number)) {
         return 0;
     } else if (decimals > 0) {
-        const multipliedNumber = math.multiply(
+        const multipliedNumber: any = math.multiply(
             math.fraction(number),
             math.pow(10, decimals)
         );
-        const dividedNumber = math.divide(
+        const dividedNumber: any = math.divide(
             math.floor(multipliedNumber),
             math.pow(10, decimals)
         );
@@ -126,7 +127,7 @@ const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
     orders.reduce(
         ([accumulatedPrice, accumulatedSize], [price = 0, size = 0]) => {
             if (math.larger(orderSize, accumulatedPrice)) {
-                let currentTotal = math.multiply(size, price);
+                let currentTotal: any = math.multiply(size, price);
                 const remainingSize = math.subtract(orderSize, accumulatedPrice);
                 if (math.largerEq(remainingSize, currentTotal)) {
                     return [
@@ -136,7 +137,9 @@ const calculateMarketPriceByTotal = (orderSize = 0, orders = []) =>
                 } else {
                     let remainingBaseSize = math.divide(remainingSize, price);
                     return [
+                        // @ts-ignore
                         math.sum(accumulatedPrice, math.multiply(remainingBaseSize, price)),
+                        // @ts-ignore
                         math.sum(accumulatedSize, remainingBaseSize),
                     ];
                 }
@@ -154,11 +157,13 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
                 const remainingSize = math.subtract(orderSize, accumulatedSize);
                 if (math.largerEq(remainingSize, size)) {
                     return [
+                        // @ts-ignore
                         math.sum(accumulatedPrice, math.multiply(size, price)),
                         math.sum(accumulatedSize, size),
                     ];
                 } else {
                     return [
+                        // @ts-ignore
                         math.sum(accumulatedPrice, math.multiply(remainingSize, price)),
                         math.sum(accumulatedSize, remainingSize),
                     ];
@@ -169,7 +174,7 @@ const calculateMarketPrice = (orderSize = 0, orders = []) =>
         },
         [0, 0]
     );
-module.exports = {
+export {
     sumQuantities,
     sumOrderTotal,
     estimatedQuickTradePriceSelector,

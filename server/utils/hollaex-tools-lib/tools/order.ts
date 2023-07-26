@@ -7,14 +7,13 @@ import {
   mapNetworkIdToKitId,
   mapKitIdToNetworkId,
 } from './user';
-import { SERVER_PATH } from '../constants';
 import { getModel } from './database/model';
 import {
   fetchBrokerQuote,
   generateRandomToken,
   isFairPriceForBroker,
 } from './broker';
-import { getNodeLib } from `${SERVER_PATH}/init`;
+import { getNodeLib } from '../../../init';
 import {
   INVALID_SYMBOL,
   NO_DATA_FOR_CSV,
@@ -34,7 +33,7 @@ import {
   PRICE_NOT_FOUND,
   INVALID_PRICE,
   INVALID_SIZE,
-} from `${SERVER_PATH}/messages`;
+} from '../../../messages';
 import { parse } from 'json2csv';
 import {
   subscribedToPair,
@@ -45,7 +44,7 @@ import {
   getQuickTrades,
 } from './common';
 import { reject } from 'bluebird';
-import { loggerOrders } from `${SERVER_PATH}/config/logger`;
+import { loggerOrders } from '../../../config/logger';
 import math from 'mathjs';
 import { has } from 'lodash';
 import { setPriceEssentials } from '../../orderbook';
@@ -269,7 +268,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 			let user_id = null;
 			if (bearerToken) {
-				const auth = await verifyBearerTokenPromise(bearerToken, ip);
+				const auth: any = await verifyBearerTokenPromise(bearerToken, ip);
 				if (auth) {
 					user_id = auth.sub.id;
 				}
@@ -302,7 +301,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		let user_id = null;
 		let network_id = null;
 		if (bearerToken) {
-			const auth = await verifyBearerTokenPromise(bearerToken, ip);
+			const auth: any = await verifyBearerTokenPromise(bearerToken, ip);
 			if (auth) {
 				user_id = auth.sub.id;
 				network_id = auth.sub.networkId;
@@ -714,6 +713,7 @@ const getAllUserOrdersByKitId = async (userKitId, symbol, side, status, open, li
 				if (orders.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(orders.data, Object.keys(orders.data[0]));
 				return csv;
 			} else {
@@ -874,6 +874,7 @@ const getAllTradesNetwork = (symbol, limit, page, orderBy, order, startDate, end
 				if (trades.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(trades.data, Object.keys(trades.data[0]));
 				return csv;
 			} else {
@@ -918,6 +919,7 @@ const getAllUserTradesByKitId = async (userKitId, symbol, limit, page, orderBy, 
 				if (trades.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(trades.data, Object.keys(trades.data[0]));
 				return csv;
 			} else {
@@ -1089,6 +1091,7 @@ const getAllUserTradesByNetworkId = (networkId, symbol, limit, page, orderBy, or
 				if (trades.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(trades.data, Object.keys(trades.data[0]));
 				return csv;
 			} else {

@@ -758,7 +758,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
-			.then((decodedToken) => {
+			.then((decodedToken: any) => {
 				loggerAuth.verbose(
 					'helpers/auth/verifyToken verified_token',
 					ip,

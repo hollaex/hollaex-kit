@@ -502,10 +502,12 @@ const createBrokerPair = async (brokerPair) => {
 			if (account) {
 				for (const [key, value] of Object.entries(account)) {
 					if (!value.hasOwnProperty('apiKey')) {
+						// @ts-ignore
 						value.apiKey = brokerPair?.account[key]?.apiKey;
 					}
 		
 					if (!value.hasOwnProperty('apiSecret')) {
+						// @ts-ignore
 						value.apiSecret = brokerPair?.account[key]?.apiSecret;
 					}
 				}
@@ -539,7 +541,9 @@ const fetchBrokerPairs = async (attributes) => {
 	const brokers = await getModel('broker').findAll({ attributes });
 	brokers.forEach(broker => {
 		for (const [key, value] of Object.entries(broker.account || [])) {
+			// @ts-ignore
 			value.apiKey =  '*****',
+			// @ts-ignore
 			value.apiSecret = '*********'
 		}
 	})
@@ -578,11 +582,14 @@ const updateBrokerPair = async (id, data) => {
 
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
+			// @ts-ignore
 			if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*****')) {
+				// @ts-ignore
 				value.apiKey = brokerPair?.account[key]?.apiKey;
 			}
-
+			// @ts-ignore
 			if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*********')) {
+				// @ts-ignore
 				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
 		}

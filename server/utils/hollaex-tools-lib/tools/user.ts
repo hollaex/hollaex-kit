@@ -743,10 +743,11 @@ const getAllUsersAdmin = (opts: any = {
 						id_data = user.id_data;
 						user.id_data = {};
 					}
-					const result = flatten(user, { safe: true });
+					const result: any = flatten(user, { safe: true });
 					if (id_data) result.id_data = id_data;
 					return result;
 				});
+				// @ts-ignore
 				const csv = parse(flatData, Object.keys(flatData[0]));
 				return csv;
 			} else {
@@ -1301,6 +1302,7 @@ const getUserLogins = (opts: any = {
 				if (logins.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(logins.data, Object.keys(logins.data[0]));
 				return csv;
 			} else {
@@ -1959,6 +1961,7 @@ const getExchangeUserSessions = (opts: any = {
 				if (sessions.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(sessions.data, Object.keys(sessions.data[0]));
 				return csv;
 			} else {
@@ -2044,6 +2047,7 @@ const getAllBalancesAdmin = async (opts = {
 				if (balances.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
+				// @ts-ignore
 				const csv = parse(balances.data, Object.keys(balances.data[0]));
 				return csv;
 			} else {

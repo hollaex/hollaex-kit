@@ -143,7 +143,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 		throw new Error(UPGRADE_VERIFICATION_LEVEL(1));
 	}
 
-	const { fee, fee_coin } = getWithdrawalFee(currency, network, amount, user.verification_level);
+	const { fee, fee_coin }: any = getWithdrawalFee(currency, network, amount, user.verification_level);
 
 	const balance = await getNodeLib().getUserBalance(user.network_id);
 
@@ -493,7 +493,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		return;
 	}
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, null);
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, undefined);
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',

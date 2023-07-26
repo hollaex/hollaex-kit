@@ -356,7 +356,7 @@ export const CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
 export const AFFILIATION_CODE_LENGTH = 6;
 export const SEND_CONTACT_US_EMAIL = true;
 //CSV Report keys
-export const AUDIT_KEYS = [
+export const AUDIT_KEYS: any = [
 	'id',
 	'admin_id',
 	'event',
