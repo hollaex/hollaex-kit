@@ -52,11 +52,7 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	OtpCode.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-	});
+
 
 	return OtpCode;
 }

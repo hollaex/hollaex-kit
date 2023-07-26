@@ -61,11 +61,7 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	ResetPasswordCode.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-	});
+
 
 	return ResetPasswordCode;
 }

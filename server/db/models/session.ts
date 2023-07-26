@@ -80,12 +80,7 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Session.belongsTo(Login, {
-		as: 'login',
-		foreignKey: 'login_id',
-		targetKey: 'id',
-		onDelete: 'CASCADE',
-	});
+
 
 	return Session;
 }

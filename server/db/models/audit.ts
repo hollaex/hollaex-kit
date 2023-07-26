@@ -82,11 +82,6 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Audit.belongsTo(User, {
-		as: 'admin',
-		foreignKey: 'admin_id',
-		targetKey: 'id',
-	});
 
 	return Audit;
 }

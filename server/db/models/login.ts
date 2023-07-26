@@ -108,13 +108,7 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Login.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-	});
 
-	Login.hasOne(Session);
 
 	return Login;
 }

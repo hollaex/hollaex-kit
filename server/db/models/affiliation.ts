@@ -69,19 +69,6 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Affiliation.belongsTo(User, {
-		as: 'user',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-		onDelete: 'CASCADE',
-	});
-
-	Affiliation.belongsTo(User, {
-		as: 'referer',
-		foreignKey: 'referer_id',
-		targetKey: 'id',
-		onDelete: 'CASCADE',
-	});
 
 	return Affiliation;
 }

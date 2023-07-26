@@ -301,21 +301,7 @@ export default (sequelize: Sequelize) => {
 			});
 	});
 
-	User.hasMany(Token);
-	User.hasMany(VerificationCode);
-	User.hasMany(Broker);
-	User.hasMany(VerificationImage, {
-		foreignKey: 'user_id',
-		as: 'images',
-	});
-	User.hasMany(OtpCode);
-	User.hasMany(Login);
-	User.hasMany(Affiliation, {
-		foreignKey: 'user_id',
-	});
-	User.hasMany(Affiliation, {
-		foreignKey: 'referer_id',
-	});
+
 
 	return User;
 };

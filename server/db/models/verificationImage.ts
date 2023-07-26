@@ -64,11 +64,7 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	VerificationImage.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-	});
+
 
 	return VerificationImage;
 }

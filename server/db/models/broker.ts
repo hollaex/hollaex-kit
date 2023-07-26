@@ -126,12 +126,6 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Broker.belongsTo(User, {
-		as: 'user',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-		onDelete: 'CASCADE',
-	});
 
 	return Broker;
 }

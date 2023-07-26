@@ -64,10 +64,97 @@ db[model.name] = model;
 model = require(path.join(__dirname, './quickTrade')).default(sequelize);
 db[model.name] = model;
 
-Object.keys(db).forEach(function (modelName) {
-	if ('associate' in db[modelName]) {
-		db[modelName].associate(db);
-	}
+
+User.hasMany(Token);
+User.hasMany(VerificationCode);
+User.hasMany(Broker);
+User.hasMany(VerificationImage, {
+	foreignKey: 'user_id',
+	as: 'images',
+});
+User.hasMany(OtpCode);
+User.hasMany(Login);
+User.hasMany(Affiliation, {
+	foreignKey: 'user_id',
+});
+User.hasMany(Affiliation, {
+	foreignKey: 'referer_id',
+});
+
+
+Affiliation.belongsTo(User, {
+	as: 'user',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+	onDelete: 'CASCADE',
+});
+
+Affiliation.belongsTo(User, {
+	as: 'referer',
+	foreignKey: 'referer_id',
+	targetKey: 'id',
+	onDelete: 'CASCADE',
+});
+
+Audit.belongsTo(User, {
+	as: 'admin',
+	foreignKey: 'admin_id',
+	targetKey: 'id',
+});
+
+Login.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+});
+
+Login.hasOne(Session);
+
+OtpCode.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+});
+
+ResetPasswordCode.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+});
+
+
+Broker.belongsTo(User, {
+	as: 'user',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+	onDelete: 'CASCADE',
+});
+
+Session.belongsTo(Login, {
+	as: 'login',
+	foreignKey: 'login_id',
+	targetKey: 'id',
+	onDelete: 'CASCADE',
+});
+
+
+Token.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+	as: 'user',
+});
+
+VerificationCode.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
+});
+
+VerificationImage.belongsTo(User, {
+	onDelete: 'CASCADE',
+	foreignKey: 'user_id',
+	targetKey: 'id',
 });
 
 db.sequelize = sequelize;

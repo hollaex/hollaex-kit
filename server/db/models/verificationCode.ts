@@ -58,11 +58,6 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	VerificationCode.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-	});
 
 	// Add any associations here if needed
 

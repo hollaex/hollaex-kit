@@ -122,12 +122,6 @@ export default function (sequelize: Sequelize) {
 		}
 	);
 
-	Token.belongsTo(User, {
-		onDelete: 'CASCADE',
-		foreignKey: 'user_id',
-		targetKey: 'id',
-		as: 'user',
-	});
 
 	return Token;
 }
