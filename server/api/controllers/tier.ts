@@ -125,7 +125,7 @@ const updateTiersLimits = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	getTiers,
 	postTier,
 	putTier,

@@ -117,7 +117,7 @@ const deactivateOtpAdmin = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	requestOtp,
 	activateOtp,
 	deactivateOtp,

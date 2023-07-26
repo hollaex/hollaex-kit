@@ -1269,7 +1269,7 @@ const userDelete = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	signUpUser,
 	getVerifyUser,
 	verifyUser,

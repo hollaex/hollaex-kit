@@ -176,7 +176,7 @@ const getAdminTrades = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	getUserTrades,
 	getAdminTrades
 };

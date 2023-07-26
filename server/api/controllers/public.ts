@@ -386,7 +386,7 @@ const getAssetsPrices = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	getHealth,
 	getConstants,
 	getKitConfigurations,

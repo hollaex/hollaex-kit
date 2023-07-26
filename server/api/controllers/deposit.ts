@@ -142,7 +142,7 @@ const getUserDeposits = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	getAdminDeposits,
 	getUserDeposits
 };

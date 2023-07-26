@@ -408,7 +408,7 @@ const cancelWithdrawal = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	requestWithdrawal,
 	getWithdrawalFee,
 	performWithdrawal,

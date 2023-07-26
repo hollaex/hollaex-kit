@@ -440,7 +440,7 @@ const adminCancelOrder = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	createOrder,
 	getUserOrder,
 	cancelUserOrder,

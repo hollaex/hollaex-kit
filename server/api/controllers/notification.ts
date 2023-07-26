@@ -224,7 +224,7 @@ const handleCurrencyWithdrawal = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	applyKitChanges,
 	handleCurrencyDeposit,
 	handleCurrencyWithdrawal

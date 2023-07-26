@@ -222,7 +222,7 @@ const createWithdrawalRequest = (req, res) => {
 		});
 };
 
-module.exports = {
+export {
 	createDepositRequest,
 	createWithdrawalRequest
 };

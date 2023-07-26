@@ -282,7 +282,7 @@ function getBrokerPairs(req, res) {
 
 }
 
-module.exports = {
+export {
 	testBroker,
 	testRebalance,
 	createBrokerPair,
