@@ -11,13 +11,13 @@ const packageJson = require('./package.json');
 
 import { subscriber, publisher } from './db/pubsub';
 import {
-  INIT_CHANNEL,
-  CONFIGURATION_CHANNEL,
-  DEFAULT_FEES,
-  WS_HUB_CHANNEL,
-  HOLLAEX_NETWORK_ENDPOINT,
-  HOLLAEX_NETWORK_BASE_URL,
-  HOLLAEX_NETWORK_PATH_ACTIVATE
+	INIT_CHANNEL,
+	CONFIGURATION_CHANNEL,
+	DEFAULT_FEES,
+	WS_HUB_CHANNEL,
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE
 } from './constants';
 
 import { isNumber, difference } from 'lodash';
@@ -92,7 +92,7 @@ export const checkStatus = () => {
 	let version = packageJson.version; // current exchange version
 
 	return Status.findOne({})
-		.then((status) => {
+		.then((status: any) => {
 			loggerInit.info('init/checkStatus');
 			if (!status) {
 				stop();
@@ -127,7 +127,7 @@ export const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size'] }),
 					QuickTrade.findAll(),
 					status.dataValues
 				]);
@@ -153,7 +153,7 @@ export const checkStatus = () => {
 			const brokerPairs = deals.map((d) => d.symbol);
 			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange
-				const [ base, quote ] = e.split('-');
+				const [base, quote] = e.split('-');
 				if (configuration.coins[base] && configuration.coins[quote]) {
 					configuration.networkQuickTrades.push(exchange.brokers[e])
 					return e;
@@ -216,7 +216,7 @@ export const checkStatus = () => {
 				configuration.quicktrade.push(item)
 			})
 
-			
+
 			for (let tier of tiers) {
 				if (!('maker' in tier.fees)) {
 					tier.fees.maker = {};

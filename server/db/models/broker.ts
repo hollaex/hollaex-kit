@@ -1,8 +1,44 @@
-'use strict';
+import {
+	Association,
+	DataTypes,
+	Model,
+	Sequelize,
+	InferAttributes,
+	InferCreationAttributes,
+	CreationOptional,
+	NonAttribute,
+	ForeignKey,
+} from 'sequelize';
+import { User } from './user';
 
-module.exports = function (sequelize, DataTypes) {
-	const Broker = sequelize.define(
-		'Broker',
+export class Broker extends Model<InferAttributes<Broker>, InferCreationAttributes<Broker>> {
+	declare id: CreationOptional<number>;
+	declare symbol: string;
+	declare buy_price: number;
+	declare sell_price: number;
+	declare paused: boolean;
+	declare user_id: ForeignKey<User['id']>;
+	declare min_size: number;
+	declare max_size: number;
+	declare type: 'manual' | 'dynamic';
+	declare quote_expiry_time: number | null;
+	declare spread: number | null;
+	declare rebalancing_symbol: string | null;
+	declare refresh_interval: number | null;
+	declare account: any | null;
+	declare formula: string | null;
+	declare createdAt: CreationOptional<Date>;
+	declare updatedAt: CreationOptional<Date>;
+
+	declare user?: NonAttribute<User>;
+
+	declare static associations: {
+		user: Association<Broker, User>;
+	};
+}
+
+export default function (sequelize: Sequelize) {
+	Broker.init(
 		{
 			id: {
 				type: DataTypes.INTEGER,
@@ -13,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
 			symbol: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				unique: true
+				unique: true,
 			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
@@ -28,7 +64,7 @@ module.exports = function (sequelize, DataTypes) {
 			paused: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
-				defaultValue: false
+				defaultValue: false,
 			},
 			user_id: {
 				type: DataTypes.INTEGER,
@@ -36,31 +72,31 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false,
 				references: {
 					model: 'Users',
-					key: 'id'
-				}
+					key: 'id',
+				},
 			},
 			min_size: {
 				type: DataTypes.DOUBLE,
-				allowNull: false
+				allowNull: false,
 			},
 			max_size: {
 				type: DataTypes.DOUBLE,
-				allowNull: false
+				allowNull: false,
 			},
 			type: {
 				type: DataTypes.ENUM('manual', 'dynamic'),
 				defaultValue: 'manual',
-				allowNull: false
+				allowNull: false,
 			},
 			quote_expiry_time: {
 				type: DataTypes.INTEGER,
 				defaultValue: 30,
-				allowNull: true
+				allowNull: true,
 			},
 			spread: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,
-				allowNull: true
+				allowNull: true,
 			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
@@ -69,7 +105,7 @@ module.exports = function (sequelize, DataTypes) {
 			refresh_interval: {
 				type: DataTypes.INTEGER,
 				defaultValue: 0,
-				allowNull: true
+				allowNull: true,
 			},
 			account: {
 				type: DataTypes.JSONB,
@@ -77,25 +113,25 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			formula: {
 				type: DataTypes.TEXT,
-				allowNull: true
+				allowNull: true,
 			},
-
+			createdAt: DataTypes.DATE,
+			updatedAt: DataTypes.DATE,
 		},
 		{
 			timestamps: true,
 			underscored: true,
-			tableName: 'Brokers'
+			tableName: 'Brokers',
+			sequelize,
 		}
 	);
 
-	Broker.associate = (models) => {
-		Broker.belongsTo(models.User, {
-			as: 'user',
-			foreignKey: 'user_id',
-			targetKey: 'id',
-			onDelete: 'CASCADE'
-		});
-	};
+	Broker.belongsTo(User, {
+		as: 'user',
+		foreignKey: 'user_id',
+		targetKey: 'id',
+		onDelete: 'CASCADE',
+	});
 
 	return Broker;
-};
+}

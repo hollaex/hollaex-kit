@@ -1,68 +1,120 @@
-'use strict';
-module.exports = function (sequelize, DataTypes) {
-	const Login = sequelize.define(
-		'Login',
+import {
+	Association,
+	DataTypes,
+	Model,
+	Sequelize,
+	InferAttributes,
+	InferCreationAttributes,
+	CreationOptional,
+	NonAttribute,
+	ForeignKey,
+} from 'sequelize';
+import { User } from './user';
+import { Session } from './session';
+
+export class Login extends Model<InferAttributes<Login>, InferCreationAttributes<Login>> {
+	declare id: CreationOptional<number>;
+	declare ip: string;
+	declare device: string | null;
+	declare domain: string | null;
+	declare origin: string | null;
+	declare referer: string | null;
+	declare attempt: number;
+	declare status: boolean;
+	declare country: string | null;
+	declare timestamp: Date;
+	declare user_id: ForeignKey<User['id']>;
+	declare created_at: CreationOptional<Date>;
+	declare updated_at: CreationOptional<Date>;
+
+	declare user?: NonAttribute<User>;
+
+	declare static associations: {
+		user: Association<Login, User>;
+		session: Association<Login, Session>;
+	};
+}
+
+export default function (sequelize: Sequelize) {
+	Login.init(
 		{
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: DataTypes.INTEGER,
+			},
 			ip: {
 				type: DataTypes.STRING,
-				allowNull: false
+				allowNull: false,
 			},
 			device: {
-				type: DataTypes.STRING(1000),
+				type: new DataTypes.STRING(1000),
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			domain: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			origin: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			referer: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			attempt: {
 				type: DataTypes.INTEGER,
 				allowNull: false,
-				defaultValue: 0
+				defaultValue: 0,
+			},
+			user_id: {
+				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id',
+				},
 			},
 			status: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
-				defaultValue: true
+				defaultValue: true,
 			},
 			country: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			timestamp: {
 				type: DataTypes.DATE,
 				allowNull: false,
-				defaultValue: DataTypes.NOW
-			}
+				defaultValue: DataTypes.NOW,
+			},
+			created_at: DataTypes.DATE,
+			updated_at: DataTypes.DATE,
 		},
 		{
 			timestamps: false,
 			underscored: true,
-			tableName: 'Logins'
+			tableName: 'Logins',
+			sequelize,
 		}
 	);
 
-	Login.associate = (models) => {
-		Login.belongsTo(models.User, {
-			onDelete: 'CASCADE',
-			foreignKey: 'user_id',
-			targetKey: 'id'
-		});
-		Login.hasOne(models.Session);
-	};
+	Login.belongsTo(User, {
+		onDelete: 'CASCADE',
+		foreignKey: 'user_id',
+		targetKey: 'id',
+	});
+
+	Login.hasOne(Session);
 
 	return Login;
-};
+}

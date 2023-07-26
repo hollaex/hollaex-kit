@@ -1,37 +1,74 @@
-'use strict';
-module.exports = function (sequelize, DataTypes) {
-	const VerificationImage = sequelize.define(
-		'VerificationImage',
+import {
+	DataTypes,
+	Model,
+	Sequelize,
+	InferAttributes,
+	InferCreationAttributes,
+	CreationOptional,
+	ForeignKey,
+	NonAttribute,
+} from 'sequelize';
+import { User } from './user';
+
+export class VerificationImage extends Model<InferAttributes<VerificationImage>, InferCreationAttributes<VerificationImage>> {
+	declare id: CreationOptional<number>;
+	declare front: string;
+	declare back: string | null;
+	declare proof_of_residency: string | null;
+	declare user_id: ForeignKey<User['id']>;
+	declare user?: NonAttribute<User>;
+	declare created_at: CreationOptional<Date>;
+	declare updated_at: CreationOptional<Date>;
+}
+
+export default function (sequelize: Sequelize) {
+	VerificationImage.init(
 		{
+			id: {
+				allowNull: false,
+				autoIncrement: true,
+				primaryKey: true,
+				type: DataTypes.INTEGER,
+			},
 			front: {
 				type: DataTypes.STRING,
 				allowNull: false,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			back: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
+				defaultValue: '',
 			},
 			proof_of_residency: {
 				type: DataTypes.STRING,
 				allowNull: true,
-				defaultValue: ''
-			}
+				defaultValue: '',
+			},
+			user_id: {
+				type: DataTypes.INTEGER,
+				onDelete: 'CASCADE',
+				allowNull: false,
+				references: {
+					model: 'Users',
+					key: 'id',
+				},
+			},
+			created_at: DataTypes.DATE,
+			updated_at: DataTypes.DATE,
 		},
 		{
 			underscored: true,
-			tableName: 'VerificationImages'
+			tableName: 'VerificationImages',
+			sequelize,
 		}
 	);
 
-	VerificationImage.associate = (models) => {
-		VerificationImage.belongsTo(models.User, {
-			onDelete: 'CASCADE',
-			foreignKey: 'user_id',
-			targetKey: 'id'
-		});
-	};
+	VerificationImage.belongsTo(User, {
+		onDelete: 'CASCADE',
+		foreignKey: 'user_id',
+		targetKey: 'id',
+	});
 
 	return VerificationImage;
-};
+}
