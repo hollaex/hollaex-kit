@@ -42,12 +42,12 @@ if (DB_READ_MODE === 'replica') {
 
 module.exports = {
 	development: {
-		username: process.env.DB_USERNAME || 'admin',
-		password: process.env.DB_PASSWORD || 'root',
-		database: process.env.DB_NAME || 'hollaex',
-		host: process.env.DB_HOST || 'hollaex-kit-db',
-		dialect: process.env.DB_DIALECT || 'postgres',
-		port: process.env.DB_PORT || '5432',
+		username: process.env.DB_USERNAME,
+		password: process.env.DB_PASSWORD,
+		database: process.env.DB_NAME,
+		host: process.env.DB_HOST,
+		dialect: process.env.DB_DIALECT,
+		port: process.env.DB_PORT,
 		dialectOptions: {
 			ssl
 		},
