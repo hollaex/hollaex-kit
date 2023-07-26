@@ -7,7 +7,7 @@ const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : './app.ts',
+	script    : 'ts-node-esm app.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -16,10 +16,7 @@ const api = {
 	instance_var: 'INSTANCE_ID',
 	instances : '1',
 	max_memory_restart,
-	"node_args": [
-                "ts-node-dev",
-                "--poll"
-            ],
+	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
 		PORT: process.env.PORT || 10010
@@ -81,5 +78,5 @@ module.exports = {
 		* Application configuration section
 		* http://pm2.keymetrics.io/docs/usage/application-declaration/
 	*/
-	apps:[api]
+	apps
 };
