@@ -24,6 +24,7 @@ module.exports = {
 		const statusModel = models[TABLE];
 		const status = await statusModel.findOne({});
 
+		if(!status?.email) return;
 		const emailTemplates = {
 			...status.email,
 		};
