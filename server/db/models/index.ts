@@ -176,7 +176,8 @@ export {
 	Plugin,
 	Broker,
 	Session,
-	QuickTrade
+	QuickTrade,
+	sequelize
 }
 
 export default db;

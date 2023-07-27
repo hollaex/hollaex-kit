@@ -40,6 +40,7 @@ services:
       - ip -4 route list match 0/0 | awk '{print $$3 " host.docker.internal"}' >> /etc/hosts && cat /etc/hosts && pm2-runtime start ecosystem.config.js --env development;
     volumes:
       - ./api:/app/api
+      - ./build:/app/build
       - ./config:/app/config
       - ./db:/app/db
       - ./plugins:/app/plugins

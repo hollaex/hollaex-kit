@@ -10,7 +10,7 @@
 		"cryptocurrency",
 		"hollaex"
 	],
-	"main": "app.js",
+	"main": "app.ts",
 	"dependencies": {
 		"@types/json2csv": "5.0.3",
 		"bcryptjs": "2.4.3",
@@ -117,8 +117,8 @@
 			"db",
 			"config",
 			"test",
-			"app.js",
-			"constants.js"
+			"app.ts",
+			"constants.ts"
 		]
 	},
 	"husky": {
