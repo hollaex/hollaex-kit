@@ -2,14 +2,14 @@
 
 import { getNodeLib } from '../../../init';
 import {
-  subscribedToCoin,
-  getKitCoin,
-  getKitCoins,
-  getKitCoinsConfig,
-  subscribedToPair,
-  getKitPair,
-  getKitPairs,
-  getKitPairsConfig,
+	subscribedToCoin,
+	getKitCoin,
+	getKitCoins,
+	getKitCoinsConfig,
+	subscribedToPair,
+	getKitPair,
+	getKitPairs,
+	getKitPairsConfig,
 } from './common';
 
 const getNetworkPairs = (

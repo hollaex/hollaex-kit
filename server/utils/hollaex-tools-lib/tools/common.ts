@@ -1,50 +1,50 @@
 import * as dbQuery from './database/query';
 import {
-  SECRET_MASK,
-  KIT_CONFIG_KEYS,
-  KIT_SECRETS_KEYS,
-  COMMUNICATOR_AUTHORIZED_KIT_CONFIG,
-  ROLES,
-  CONFIGURATION_CHANNEL,
-  INIT_CHANNEL,
-  SEND_CONTACT_US_EMAIL,
-  GET_EMAIL,
-  GET_COINS,
-  GET_PAIRS,
-  GET_TIERS,
-  GET_KIT_CONFIG,
-  GET_KIT_SECRETS,
-  GET_FROZEN_USERS,
-  HOLLAEX_NETWORK_ENDPOINT,
-  HOLLAEX_NETWORK_BASE_URL,
-  USER_META_KEYS,
-  VALID_USER_META_TYPES,
-  DOMAIN,
-  DEFAULT_FEES,
+	SECRET_MASK,
+	KIT_CONFIG_KEYS,
+	KIT_SECRETS_KEYS,
+	COMMUNICATOR_AUTHORIZED_KIT_CONFIG,
+	ROLES,
+	CONFIGURATION_CHANNEL,
+	INIT_CHANNEL,
+	SEND_CONTACT_US_EMAIL,
+	GET_EMAIL,
+	GET_COINS,
+	GET_PAIRS,
+	GET_TIERS,
+	GET_KIT_CONFIG,
+	GET_KIT_SECRETS,
+	GET_FROZEN_USERS,
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	USER_META_KEYS,
+	VALID_USER_META_TYPES,
+	DOMAIN,
+	DEFAULT_FEES,
 } from '../../../constants';
 
 import {
-  COMMUNICATOR_CANNOT_UPDATE,
-  MASK_VALUE_GIVEN,
-  SUPPORT_DISABLED,
-  NO_NEW_DATA,
+	COMMUNICATOR_CANNOT_UPDATE,
+	MASK_VALUE_GIVEN,
+	SUPPORT_DISABLED,
+	NO_NEW_DATA,
 } from '../../../messages';
 
 import {
-  each,
-  difference,
-  isPlainObject,
-  isString,
-  pick,
-  isNil,
-  omit,
+	each,
+	difference,
+	isPlainObject,
+	isString,
+	pick,
+	isNil,
+	omit,
 } from 'lodash';
 
 import { publisher } from './database/redis';
 import { sendEmail as sendSmtpEmail } from '../../../mail';
 import { sendSMTPEmail as nodemailerEmail } from '../../../mail/utils';
 import {
-  errorMessageConverter as handleCatchError,
+	errorMessageConverter as handleCatchError,
 } from '../../../utils/conversion';
 
 import { TemplateEmail } from '../../../mail/templates/helpers/common';
@@ -52,8 +52,8 @@ import { MAILTYPE } from '../../../mail/strings';
 import { reject, resolve } from 'bluebird';
 import flatten from 'flat';
 import {
-  checkStatus as checkExchangeStatus,
-  getNodeLib,
+	checkStatus as checkExchangeStatus,
+	getNodeLib,
 } from '../../../init';
 
 import rp from 'request-promise';

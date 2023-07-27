@@ -4,7 +4,7 @@ import { loggerOrders, loggerUser } from '../../config/logger';
 import toolsLib from 'hollaex-tools-lib';
 import { isPlainObject, isNumber } from 'lodash';
 import { errorMessageConverter } from '../../utils/conversion';
-import isUUID from  'validator/lib/isUUID';
+import isUUID from 'validator/lib/isUUID';
 import { ROLES } from '../../constants';
 import { API_KEY_NOT_PERMITTED } from '../../messages';
 import { getKitConfig } from '../../utils/hollaex-tools-lib/tools/common';

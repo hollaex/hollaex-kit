@@ -9,34 +9,34 @@ import { MAILTYPE } from '../../mail/strings';
 import { loggerUser } from '../../config/logger';
 import { errorMessageConverter } from '../../utils/conversion';
 import {
-  USER_VERIFIED,
-  PROVIDE_VALID_EMAIL_CODE,
-  USER_REGISTERED,
-  USER_NOT_FOUND,
-  USER_EMAIL_NOT_VERIFIED,
-  VERIFICATION_EMAIL_MESSAGE,
-  TOKEN_REMOVED,
-  INVALID_CREDENTIALS,
-  USER_NOT_VERIFIED,
-  USER_NOT_ACTIVATED,
-  SIGNUP_NOT_AVAILABLE,
-  PROVIDE_VALID_EMAIL,
-  INVALID_PASSWORD,
-  USER_EXISTS,
-  USER_EMAIL_IS_VERIFIED,
-  INVALID_VERIFICATION_CODE,
-  LOGIN_NOT_ALLOW,
-  NO_IP_FOUND,
+	USER_VERIFIED,
+	PROVIDE_VALID_EMAIL_CODE,
+	USER_REGISTERED,
+	USER_NOT_FOUND,
+	USER_EMAIL_NOT_VERIFIED,
+	VERIFICATION_EMAIL_MESSAGE,
+	TOKEN_REMOVED,
+	INVALID_CREDENTIALS,
+	USER_NOT_VERIFIED,
+	USER_NOT_ACTIVATED,
+	SIGNUP_NOT_AVAILABLE,
+	PROVIDE_VALID_EMAIL,
+	INVALID_PASSWORD,
+	USER_EXISTS,
+	USER_EMAIL_IS_VERIFIED,
+	INVALID_VERIFICATION_CODE,
+	LOGIN_NOT_ALLOW,
+	NO_IP_FOUND,
 } from '../../messages';
 import {
-  DEFAULT_ORDER_RISK_PERCENTAGE,
-  EVENTS_CHANNEL,
-  API_HOST,
-  DOMAIN,
-  TOKEN_TIME_NORMAL,
-  TOKEN_TIME_LONG,
-  HOLLAEX_NETWORK_BASE_URL,
-  NUMBER_OF_ALLOWED_ATTEMPTS,
+	DEFAULT_ORDER_RISK_PERCENTAGE,
+	EVENTS_CHANNEL,
+	API_HOST,
+	DOMAIN,
+	TOKEN_TIME_NORMAL,
+	TOKEN_TIME_LONG,
+	HOLLAEX_NETWORK_BASE_URL,
+	NUMBER_OF_ALLOWED_ATTEMPTS,
 } from '../../constants';
 import { all } from 'bluebird';
 import { each } from 'lodash';
@@ -45,10 +45,10 @@ import { isDate } from 'moment';
 
 
 enum VERIFY_STATUS {
-  EMPTY = 0,
-  PENDING = 1,
-  REJECTED = 2,
-  COMPLETED = 3,
+	EMPTY = 0,
+	PENDING = 1,
+	REJECTED = 2,
+	COMPLETED = 3,
 }
 
 const INITIAL_SETTINGS = () => {
@@ -306,9 +306,8 @@ const verifyUser = (req, res) => {
 
 const createAttemptMessage = (loginData, user, domain) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
-	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
-	{ return ''; }
-	else if(currentNumberOfAttemps === 0) { 
+	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1) { return ''; }
+	else if (currentNumberOfAttemps === 0) {
 		sendEmail(
 			MAILTYPE.LOCKED_ACCOUNT,
 			user.email,
@@ -316,7 +315,7 @@ const createAttemptMessage = (loginData, user, domain) => {
 			user.settings,
 			domain);
 
-		return ' ' + LOGIN_NOT_ALLOW; 
+		return ' ' + LOGIN_NOT_ALLOW;
 	}
 	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
 };

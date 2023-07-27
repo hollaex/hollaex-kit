@@ -1,47 +1,47 @@
 'use strict';
 
 import {
-  getUserByKitId,
-  getUserByEmail,
-  getUserByNetworkId,
-  mapNetworkIdToKitId,
-  mapKitIdToNetworkId,
+	getUserByKitId,
+	getUserByEmail,
+	getUserByNetworkId,
+	mapNetworkIdToKitId,
+	mapKitIdToNetworkId,
 } from './user';
 import { getModel } from './database/model';
 import {
-  fetchBrokerQuote,
-  generateRandomToken,
-  isFairPriceForBroker,
+	fetchBrokerQuote,
+	generateRandomToken,
+	isFairPriceForBroker,
 } from './broker';
 import { getNodeLib } from '../../../init';
 import {
-  INVALID_SYMBOL,
-  NO_DATA_FOR_CSV,
-  USER_NOT_FOUND,
-  USER_NOT_REGISTERED_ON_NETWORK,
-  TOKEN_EXPIRED,
-  BROKER_NOT_FOUND,
-  BROKER_PAUSED,
-  BROKER_SIZE_EXCEED,
-  QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED,
-  QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR,
-  QUICK_TRADE_VALUE_IS_TOO_SMALL,
-  FAIR_PRICE_BROKER_ERROR,
-  AMOUNT_NEGATIVE_ERROR,
-  QUICK_TRADE_CONFIG_NOT_FOUND,
-  QUICK_TRADE_TYPE_NOT_SUPPORTED,
-  PRICE_NOT_FOUND,
-  INVALID_PRICE,
-  INVALID_SIZE,
+	INVALID_SYMBOL,
+	NO_DATA_FOR_CSV,
+	USER_NOT_FOUND,
+	USER_NOT_REGISTERED_ON_NETWORK,
+	TOKEN_EXPIRED,
+	BROKER_NOT_FOUND,
+	BROKER_PAUSED,
+	BROKER_SIZE_EXCEED,
+	QUICK_TRADE_ORDER_CAN_NOT_BE_FILLED,
+	QUICK_TRADE_ORDER_CURRENT_PRICE_ERROR,
+	QUICK_TRADE_VALUE_IS_TOO_SMALL,
+	FAIR_PRICE_BROKER_ERROR,
+	AMOUNT_NEGATIVE_ERROR,
+	QUICK_TRADE_CONFIG_NOT_FOUND,
+	QUICK_TRADE_TYPE_NOT_SUPPORTED,
+	PRICE_NOT_FOUND,
+	INVALID_PRICE,
+	INVALID_SIZE,
 } from '../../../messages';
 import { parse } from 'json2csv';
 import {
-  subscribedToPair,
-  getKitTier,
-  getDefaultFees,
-  getAssetsPrices,
-  getPublicTrades,
-  getQuickTrades,
+	subscribedToPair,
+	getKitTier,
+	getDefaultFees,
+	getAssetsPrices,
+	getPublicTrades,
+	getQuickTrades,
 } from './common';
 import { reject } from 'bluebird';
 import { loggerOrders } from '../../../config/logger';
@@ -87,11 +87,11 @@ const executeUserOrder = async (user_id, opts, token) => {
 
 	if (size < 0) {
 		throw new Error(INVALID_SIZE);
-	} 
+	}
 
 	if (price < 0) {
 		throw new Error(INVALID_PRICE);
-	} 
+	}
 
 	let res;
 	if (type === 'market') {
@@ -106,7 +106,7 @@ const executeUserOrder = async (user_id, opts, token) => {
 			throw new Error(BROKER_PAUSED);
 		}
 
-		if(size < brokerPair.min_size || size > brokerPair.max_size) {
+		if (size < brokerPair.min_size || size > brokerPair.max_size) {
 			throw new Error(BROKER_SIZE_EXCEED);
 		}
 
@@ -210,7 +210,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 				} else if (receiving_amount != null) {
 					responseObj.spending_amount = brokerQuote.spending_amount;
 				}
-				
+
 				const baseCoinSize = side === 'buy' ? responseObj.receiving_amount : responseObj.spending_amount;
 				if (baseCoinSize < broker.min_size || baseCoinSize > broker.max_size) {
 					throw new Error(BROKER_SIZE_EXCEED);
@@ -225,7 +225,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 	}
 	else if (quickTradeConfig && quickTradeConfig.active && quickTradeConfig.type === 'pro') {
 		try {
-		
+
 			if (!subscribedToPair(symbol)) {
 				return reject(new Error(INVALID_SYMBOL(symbol)));
 			}
@@ -327,7 +327,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 
 		responseObj.spending_amount = priceValues.spending_amount;
 		responseObj.receiving_amount = priceValues.receiving_amount;
-		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) { 
+		if (responseObj.spending_amount === 0 || responseObj.receiving_amount === 0) {
 			throw new Error(QUICK_TRADE_VALUE_IS_TOO_SMALL);
 		}
 
@@ -345,7 +345,7 @@ const getUserQuickTrade = async (spending_currency, spending_amount, receiving_a
 		}
 
 		return responseObj;
-	} 
+	}
 	else {
 		throw new Error(QUICK_TRADE_TYPE_NOT_SUPPORTED);
 	}

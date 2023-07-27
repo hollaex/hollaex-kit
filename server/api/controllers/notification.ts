@@ -6,10 +6,10 @@ import { sendEmail } from '../../mail';
 import { MAILTYPE } from '../../mail/strings';
 import { publisher } from '../../db/pubsub';
 import {
-  INIT_CHANNEL,
-  WS_PUBSUB_DEPOSIT_CHANNEL,
-  EVENTS_CHANNEL,
-  WS_PUBSUB_WITHDRAWAL_CHANNEL,
+	INIT_CHANNEL,
+	WS_PUBSUB_DEPOSIT_CHANNEL,
+	EVENTS_CHANNEL,
+	WS_PUBSUB_WITHDRAWAL_CHANNEL,
 } from '../../constants';
 import moment from 'moment';
 import { errorMessageConverter } from '../../utils/conversion';
@@ -98,7 +98,7 @@ const handleCurrencyDeposit = (req, res) => {
 					data: depositData,
 					time: moment().unix()
 				}));
-				
+
 
 				publisher.publish(EVENTS_CHANNEL, JSON.stringify({
 					type: 'deposit',

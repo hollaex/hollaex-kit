@@ -6,19 +6,19 @@ import { WITHDRAWALS_REQUEST_KEY } from '../../../constants';
 import { verifyOtpBeforeAction } from './security';
 import { subscribedToCoin, getKitCoin, getKitSecrets, getKitConfig, sleep } from './common';
 import {
-  INVALID_OTP_CODE,
-  INVALID_WITHDRAWAL_TOKEN,
-  EXPIRED_WITHDRAWAL_TOKEN,
-  INVALID_COIN,
-  INVALID_AMOUNT,
-  DEPOSIT_DISABLED_FOR_COIN,
-  WITHDRAWAL_DISABLED_FOR_COIN,
-  UPGRADE_VERIFICATION_LEVEL,
-  NO_DATA_FOR_CSV,
-  USER_NOT_FOUND,
-  USER_NOT_REGISTERED_ON_NETWORK,
-  INVALID_NETWORK,
-  NETWORK_REQUIRED,
+	INVALID_OTP_CODE,
+	INVALID_WITHDRAWAL_TOKEN,
+	EXPIRED_WITHDRAWAL_TOKEN,
+	INVALID_COIN,
+	INVALID_AMOUNT,
+	DEPOSIT_DISABLED_FOR_COIN,
+	WITHDRAWAL_DISABLED_FOR_COIN,
+	UPGRADE_VERIFICATION_LEVEL,
+	NO_DATA_FOR_CSV,
+	USER_NOT_FOUND,
+	USER_NOT_REGISTERED_ON_NETWORK,
+	INVALID_NETWORK,
+	NETWORK_REQUIRED,
 } from '../../../messages';
 import { getUserByKitId, mapNetworkIdToKitId, mapKitIdToNetworkId } from './user';
 import { findTier } from './tier';
@@ -80,7 +80,7 @@ const getWithdrawalFee = (currency, network, amount, level) => {
 	if (network === 'fiat') {
 		if (coinConfiguration.withdrawal_fees && coinConfiguration.withdrawal_fees[currency]) {
 			let value = coinConfiguration.withdrawal_fees[currency].value;
-			fee_coin =  coinConfiguration.withdrawal_fees[currency].symbol;
+			fee_coin = coinConfiguration.withdrawal_fees[currency].symbol;
 			if (coinConfiguration.withdrawal_fees[currency].levels && coinConfiguration.withdrawal_fees[currency].levels[level]) {
 				value = coinConfiguration.withdrawal_fees[currency].levels[level];
 			}
@@ -127,7 +127,7 @@ async function validateWithdrawal(user, address, amount, currency, network = nul
 			} else if (!coinConfiguration.network.split(',').includes(network)) {
 				throw new Error(INVALID_NETWORK(network, coinConfiguration.network));
 			}
-		} else if (network)  {
+		} else if (network) {
 			throw new Error(`Invalid ${currency} network given: ${network}`);
 		}
 		if (!isValidAddress(currency, address, network)) {
@@ -216,7 +216,7 @@ const sendRequestWithdrawalEmail = (user_id, address, amount, currency, opts: an
 				fee = withdrawal.fee;
 				fee_coin = withdrawal.fee_coin;
 			}
-			
+
 
 			return withdrawalRequestEmail(
 				user,
@@ -336,7 +336,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 				findTier(user.verification_level)
 			]);
 		})
-		.then(async ([ user, tier ]) => {
+		.then(async ([user, tier]) => {
 			const limit = tier.withdrawal_limit;
 			if (limit === -1) {
 				throw new Error('Withdrawals are disabled for this coin');
@@ -346,7 +346,7 @@ const performWithdrawal = (userId, address, currency, amount, opts = {
 					await withdrawalBelowLimit(user.network_id, currency, limit, amount);
 				} else {
 					await withdrawalBelowLimitSameCoin(user.network_id, currency, limit, amount);
-				}	
+				}
 			}
 			return getNodeLib().performWithdrawal(user.network_id, address, currency, amount, opts);
 		});
@@ -415,7 +415,7 @@ const get24HourAccumulatedWithdrawals = async (userId, currency) => {
 	if (currency) {
 		// specific currency accumulated withdrawal is only needed
 		totalWithdrawalAmount = withdrawalData[currency];
-		
+
 	} else {
 		for (let withdrawalCurrency in withdrawalAmount) {
 			loggerWithdrawals.debug(
@@ -586,7 +586,7 @@ const transferAssetByKitIds = (senderId, receiverId, currency, amount, descripti
 		mapKitIdToNetworkId([senderId]),
 		mapKitIdToNetworkId([receiverId])
 	])
-		.then(([ sender, receiver ]) => {
+		.then(([sender, receiver]) => {
 			if (!has(sender, senderId) || !has(receiver, receiverId)) {
 				throw new Error(USER_NOT_FOUND);
 			} else if (!sender[senderId] || !receiver[receiverId]) {
@@ -1087,7 +1087,7 @@ const getDepositFee = (currency, network, amount, level) => {
 	let fee_coin = currency;
 	if (deposit_fees && deposit_fees[currency]) {
 		let value = deposit_fees[currency].value;
-		fee_coin =  deposit_fees[currency].symbol;
+		fee_coin = deposit_fees[currency].symbol;
 		if (deposit_fees[currency].levels && deposit_fees[currency].levels[level]) {
 			value = deposit_fees[currency].levels[level];
 		}
@@ -1181,24 +1181,24 @@ const getWallets = async (
 		format: (format && (format === 'csv' || format === 'all')) ? 'all' : null, // for csv get all data
 		...opts
 	})
-	.then(async (wallets) => {
-		if (wallets.data.length > 0) {
-			const networkIds = wallets.data.map((wallet) => wallet.user_id);
-			const idDictionary = await mapNetworkIdToKitId(networkIds);
-			for (let wallet of wallets.data) {
-				const user_kit_id = idDictionary[wallet.user_id];
-				wallet.network_id = wallet.user_id;
-				wallet.user_id = user_kit_id;
-				if (wallet.User) wallet.User.id = user_kit_id;
+		.then(async (wallets) => {
+			if (wallets.data.length > 0) {
+				const networkIds = wallets.data.map((wallet) => wallet.user_id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let wallet of wallets.data) {
+					const user_kit_id = idDictionary[wallet.user_id];
+					wallet.network_id = wallet.user_id;
+					wallet.user_id = user_kit_id;
+					if (wallet.User) wallet.User.id = user_kit_id;
+				}
 			}
-		}
-		if(format === 'csv'){
-			// @ts-ignore
-			const csv = parse(wallets.data, Object.keys(wallets.data[0]));
+			if (format === 'csv') {
+				// @ts-ignore
+				const csv = parse(wallets.data, Object.keys(wallets.data[0]));
 				return csv;
-		}
-		return wallets;
-	});
+			}
+			return wallets;
+		});
 };
 
 export {

@@ -2,10 +2,10 @@
 
 import { getNodeLib } from '../../..//init';
 import {
-  subscribedToCoin,
-  getKitCoin,
-  getKitCoins,
-  getKitCoinsConfig,
+	subscribedToCoin,
+	getKitCoin,
+	getKitCoins,
+	getKitCoinsConfig,
 } from './common';
 
 

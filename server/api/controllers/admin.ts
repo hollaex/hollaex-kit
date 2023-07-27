@@ -6,12 +6,12 @@ import { cloneDeep, pick } from 'lodash';
 import { all } from 'bluebird';
 import { INIT_CHANNEL, ROLES } from '../../constants';
 import {
-  USER_NOT_FOUND,
-  API_KEY_NOT_PERMITTED,
-  PROVIDE_VALID_EMAIL,
-  INVALID_PASSWORD,
-  USER_EXISTS,
-  NO_DATA_FOR_CSV,
+	USER_NOT_FOUND,
+	API_KEY_NOT_PERMITTED,
+	PROVIDE_VALID_EMAIL,
+	INVALID_PASSWORD,
+	USER_EXISTS,
+	NO_DATA_FOR_CSV,
 } from '../../messages';
 import { sendEmail, testSendSMTPEmail, sendRawEmail } from '../../mail';
 import { MAILTYPE } from '../../mail/strings';
@@ -23,10 +23,10 @@ import { parse } from 'json2csv';
 import * as crypto from 'crypto';
 
 enum VERIFY_STATUS {
-  EMPTY = 0,
-  PENDING = 1,
-  REJECTED = 2,
-  COMPLETED = 3,
+	EMPTY = 0,
+	PENDING = 1,
+	REJECTED = 2,
+	COMPLETED = 3,
 }
 
 const getAdminKit = (req, res) => {
@@ -121,8 +121,8 @@ const putAdminKit = (req, res) => {
 const getUsersAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getUsers/auth', req.auth);
 
-	const { 
-		id, 
+	const {
+		id,
 		search,
 		type,
 		pending,
@@ -148,7 +148,7 @@ const getUsersAdmin = (req, res) => {
 		kyc,
 		bank,
 		id_number
-	
+
 	} = req.swagger.params;
 
 	if (order_by.value && typeof order_by.value !== 'string') {
@@ -380,7 +380,7 @@ const activateUser = (req, res) => {
 	promiseQuery
 		.then((user) => {
 			const message = `Account ${user.email} has been ${activated ? 'activated' : 'deactivated'
-			}`;
+				}`;
 			return res.json({ message });
 		})
 		.catch((err) => {
@@ -497,7 +497,7 @@ const getAdminUserLogins = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (start_date.value && !isDate(start_date.value)) {
 		loggerAdmin.error(
 			req.uuid,
@@ -2263,7 +2263,7 @@ const createUserWalletByAdmin = (req, res) => {
 				);
 				return res.status(404).json({ message: `Invalid crypto: "${crypto}"` });
 			}
-	
+
 			return toolsLib.user.createUserCryptoAddressByKitId(user_id, crypto, {
 				network,
 				additionalHeaders: {
@@ -2271,8 +2271,8 @@ const createUserWalletByAdmin = (req, res) => {
 				}
 			});
 		})
-		.then((data) => { 
-			return res.status(201).json(data); 
+		.then((data) => {
+			return res.status(201).json(data);
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -2364,7 +2364,7 @@ const sendEmailByAdmin = (req, res) => {
 				user.settings
 			);
 		})
-		.then(() => { 
+		.then(() => {
 			return res.json({ message: 'Success' });
 		})
 		.catch((err) => {
@@ -2422,7 +2422,7 @@ const getUserSessionsByAdmin = (req, res) => {
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
 	}
-	
+
 	if (order_by.value && typeof order_by.value !== 'string') {
 		loggerAdmin.error(
 			req.uuid,
@@ -2495,8 +2495,8 @@ const updateQuickTradeConfig = (req, res) => {
 const getBalancesAdmin = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/getBalancesAdmin/auth', req.auth);
 
-	const { 
-		user_id, 
+	const {
+		user_id,
 		currency,
 		format
 	} = req.swagger.params;

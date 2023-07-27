@@ -3,71 +3,71 @@
 import { getModel } from './database/model';
 import * as dbQuery from './database/query';
 import {
-  has,
-  omit,
-  pick,
-  each,
-  differenceWith,
-  isEqual,
-  isString,
-  isNumber,
-  isBoolean,
-  isPlainObject,
-  isNil,
-  isArray,
-  isInteger,
-  isEmpty,
-  uniq,
+	has,
+	omit,
+	pick,
+	each,
+	differenceWith,
+	isEqual,
+	isString,
+	isNumber,
+	isBoolean,
+	isPlainObject,
+	isNil,
+	isArray,
+	isInteger,
+	isEmpty,
+	uniq,
 } from 'lodash';
 import isEmail from 'validator/lib/isEmail';
 import randomString from 'random-string';
 import {
-  SIGNUP_NOT_AVAILABLE,
-  PROVIDE_VALID_EMAIL,
-  USER_EXISTS,
-  INVALID_PASSWORD,
-  INVALID_VERIFICATION_CODE,
-  USER_NOT_FOUND,
-  USER_NOT_VERIFIED,
-  USER_NOT_ACTIVATED,
-  INVALID_CREDENTIALS,
-  INVALID_OTP_CODE,
-  USERNAME_CANNOT_BE_CHANGED,
-  USERNAME_IS_TAKEN,
-  INVALID_USERNAME,
-  ACCOUNT_NOT_VERIFIED,
-  INVALID_VERIFICATION_LEVEL,
-  USER_EMAIL_NOT_VERIFIED,
-  USER_EMAIL_IS_VERIFIED,
-  NO_DATA_FOR_CSV,
-  PROVIDE_USER_CREDENTIALS,
-  PROVIDE_KIT_ID,
-  PROVIDE_NETWORK_ID,
-  CANNOT_DEACTIVATE_ADMIN,
-  USER_ALREADY_DEACTIVATED,
-  USER_NOT_DEACTIVATED,
-  CANNOT_CHANGE_ADMIN_ROLE,
-  VERIFICATION_CODE_USED,
-  USER_NOT_REGISTERED_ON_NETWORK,
-  SESSION_NOT_FOUND,
-  SESSION_ALREADY_REVOKED,
-  WRONG_USER_SESSION,
+	SIGNUP_NOT_AVAILABLE,
+	PROVIDE_VALID_EMAIL,
+	USER_EXISTS,
+	INVALID_PASSWORD,
+	INVALID_VERIFICATION_CODE,
+	USER_NOT_FOUND,
+	USER_NOT_VERIFIED,
+	USER_NOT_ACTIVATED,
+	INVALID_CREDENTIALS,
+	INVALID_OTP_CODE,
+	USERNAME_CANNOT_BE_CHANGED,
+	USERNAME_IS_TAKEN,
+	INVALID_USERNAME,
+	ACCOUNT_NOT_VERIFIED,
+	INVALID_VERIFICATION_LEVEL,
+	USER_EMAIL_NOT_VERIFIED,
+	USER_EMAIL_IS_VERIFIED,
+	NO_DATA_FOR_CSV,
+	PROVIDE_USER_CREDENTIALS,
+	PROVIDE_KIT_ID,
+	PROVIDE_NETWORK_ID,
+	CANNOT_DEACTIVATE_ADMIN,
+	USER_ALREADY_DEACTIVATED,
+	USER_NOT_DEACTIVATED,
+	CANNOT_CHANGE_ADMIN_ROLE,
+	VERIFICATION_CODE_USED,
+	USER_NOT_REGISTERED_ON_NETWORK,
+	SESSION_NOT_FOUND,
+	SESSION_ALREADY_REVOKED,
+	WRONG_USER_SESSION,
 } from '../../../messages';
 import { publisher, client } from './database/redis';
 import {
-  CONFIGURATION_CHANNEL,
-  AUDIT_KEYS,
-  USER_FIELD_ADMIN_LOG,
-  ADDRESS_FIELDS,
-  ID_FIELDS,
-  SETTING_KEYS,
-  OMITTED_USER_FIELDS,
-  DEFAULT_ORDER_RISK_PERCENTAGE,
-  AFFILIATION_CODE_LENGTH,
-  LOGIN_TIME_OUT,
-  TOKEN_TIME_LONG,
-  TOKEN_TIME_NORMAL,
-  VERIFY_STATUS,
+	CONFIGURATION_CHANNEL,
+	AUDIT_KEYS,
+	USER_FIELD_ADMIN_LOG,
+	ADDRESS_FIELDS,
+	ID_FIELDS,
+	SETTING_KEYS,
+	OMITTED_USER_FIELDS,
+	DEFAULT_ORDER_RISK_PERCENTAGE,
+	AFFILIATION_CODE_LENGTH,
+	LOGIN_TIME_OUT,
+	TOKEN_TIME_LONG,
+	TOKEN_TIME_NORMAL,
+	VERIFY_STATUS,
 } from '../../../constants';
 import { sendEmail } from '../../../mail';
 import { MAILTYPE } from '../../../mail/strings';
@@ -369,7 +369,7 @@ const registerUserLogin = (
 	if (geo?.country) login.country = geo.country;
 	return getModel('login').create(login)
 		.then((loginData) => {
-			if(opts.token && opts.status) {
+			if (opts.token && opts.status) {
 				return createSession(opts.token, loginData.id, userId);
 			}
 		})
@@ -377,11 +377,11 @@ const registerUserLogin = (
 };
 
 const updateLoginAttempt = (loginId) => {
-	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId } });
 };
 
 const updateLoginStatus = (loginId) => {
-	return getModel('login').update( { status: true }, { where: { id: loginId } });
+	return getModel('login').update({ status: true }, { where: { id: loginId } });
 };
 
 const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
@@ -397,7 +397,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 			status,
 			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 		});
-	} 
+	}
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
@@ -406,7 +406,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
-		order: [ [ 'timestamp', 'DESC' ]],
+		order: [['timestamp', 'DESC']],
 		where: {
 			user_id: user.id,
 			...(status != null && { status }),
@@ -675,7 +675,7 @@ const getAllUsersAdmin = (opts: any = {
 			);
 		}
 	});
-	
+
 	if (isNumber(opts.verification_level)) {
 		query.where[Op.and].push({ verification_level: opts.verification_level });
 	}
@@ -1915,7 +1915,7 @@ const getExchangeUserSessions = (opts: any = {
 
 	return dbQuery.findAndCountAllWithRows('session', {
 		where: {
-			...(opts.status == true && { 
+			...(opts.status == true && {
 				status: opts.status,
 				expiry_date: {
 					[Op.gt]: new Date()
@@ -1923,7 +1923,7 @@ const getExchangeUserSessions = (opts: any = {
 			}),
 			...(opts.status == false && {
 				[Op.or]: [
-					{ 
+					{
 						status: opts.status,
 						expiry_date: {
 							[Op.lt]: new Date()
@@ -1931,9 +1931,10 @@ const getExchangeUserSessions = (opts: any = {
 					}]
 			}),
 			created_at: timeframe,
-			...(opts.last_seen && { last_seen: 
+			...(opts.last_seen && {
+				last_seen:
 				{
-					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
+					[Op.gt]: new Date().setHours(new Date().getHours() - Number(opts.last_seen))
 				}
 			}),
 		},
@@ -1971,7 +1972,7 @@ const getExchangeUserSessions = (opts: any = {
 };
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
-	const session = await getModel('session').findOne({ 
+	const session = await getModel('session').findOne({
 		include: [
 			{
 				model: getModel('login'),
@@ -1980,14 +1981,15 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 				...(userId && { where: { user_id: userId } })
 			}
 		],
-		where: { id: sessionId } });
+		where: { id: sessionId }
+	});
 
 
-	if(!session) {
+	if (!session) {
 		throw new Error(SESSION_NOT_FOUND);
 	}
 
-	if(!session.status) {
+	if (!session.status) {
 		throw new Error(SESSION_ALREADY_REVOKED);
 	}
 
@@ -1998,7 +2000,7 @@ const revokeExchangeUserSession = async (sessionId, userId = null) => {
 	client.delAsync(session.token);
 
 	const updatedSession = await session.update({ status: false }, {
-		fields: ['status'] 
+		fields: ['status']
 	});
 
 	delete updatedSession.dataValues.token;
@@ -2025,11 +2027,11 @@ const getAllBalancesAdmin = async (opts = {
 		}
 	}
 
-	return getNodeLib().getBalances({ 
+	return getNodeLib().getBalances({
 		userId: network_id,
 		currency: opts.currency,
 		format: opts.format,
-		additionalHeaders: opts.additionalHeaders 
+		additionalHeaders: opts.additionalHeaders
 	})
 		.then(async (balances) => {
 			if (balances.data.length > 0) {

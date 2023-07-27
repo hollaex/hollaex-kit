@@ -142,7 +142,7 @@ const getAdminTrades = (req, res) => {
 			}
 		);
 	} else {
-		promiseQuery = 	toolsLib.order.getAllTradesNetwork(
+		promiseQuery = toolsLib.order.getAllTradesNetwork(
 			symbol.value,
 			limit.value,
 			page.value,

@@ -33,7 +33,7 @@ checkStatus()
 		app.use(logEntryRequest);
 		app.use(domainMiddleware);
 		if (process.env.NODE_ENV !== 'test') {
-   			rateLimitMiddleware(app);
+			rateLimitMiddleware(app);
 		}
 		helmetMiddleware(app);
 

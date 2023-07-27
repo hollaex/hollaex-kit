@@ -10,95 +10,95 @@ const subscriber = redis.createClient(config.pubsub);
 export const CONFIGURATION_CHANNEL = 'channel:configuration';
 
 interface Configuration {
-  coins: Record<string, any>;
-  pairs: Record<string, any>;
-  tiers: Record<string, any>;
-  kit: {
-    info: Record<string, any>;
-    color: Record<string, any>;
-    interface: Record<string, any>;
-    icons: Record<string, any>;
-    strings: Record<string, any>;
-    links: Record<string, any>;
-    captcha: Record<string, any>;
-    defaults: Record<string, any>;
-    features: Record<string, any>;
-    meta: Record<string, any>;
-    user_meta: Record<string, any>;
-    injected_values: any[];
-    injected_html: Record<string, any>;
-    black_list_countries: string[];
-    onramp: Record<string, any>;
-    offramp: Record<string, any>;
-    user_payments: Record<string, any>;
-    dust: Record<string, any>;
-	api_name: string,
-	logo_image: any,
-	valid_languages: any,
-	new_user_is_activated: any,
-	email_verification_required: any,
-	native_currency: any,
-	status: any
-  };
-  broker: Record<string, any>;
-  quicktrade: Record<string, any>;
-  networkQuickTrades: Record<string, any>;
-  email: Record<string, any>;
+	coins: Record<string, any>;
+	pairs: Record<string, any>;
+	tiers: Record<string, any>;
+	kit: {
+		info: Record<string, any>;
+		color: Record<string, any>;
+		interface: Record<string, any>;
+		icons: Record<string, any>;
+		strings: Record<string, any>;
+		links: Record<string, any>;
+		captcha: Record<string, any>;
+		defaults: Record<string, any>;
+		features: Record<string, any>;
+		meta: Record<string, any>;
+		user_meta: Record<string, any>;
+		injected_values: any[];
+		injected_html: Record<string, any>;
+		black_list_countries: string[];
+		onramp: Record<string, any>;
+		offramp: Record<string, any>;
+		user_payments: Record<string, any>;
+		dust: Record<string, any>;
+		api_name: string,
+		logo_image: any,
+		valid_languages: any,
+		new_user_is_activated: any,
+		email_verification_required: any,
+		native_currency: any,
+		status: any
+	};
+	broker: Record<string, any>;
+	quicktrade: Record<string, any>;
+	networkQuickTrades: Record<string, any>;
+	email: Record<string, any>;
 }
 
 let configuration: Configuration = {
-  coins: {},
-  pairs: {},
-  tiers: {},
-  kit: {
-    info: {},
-    color: {},
-    interface: {},
-    icons: {},
-    strings: {},
-    links: {},
-    captcha: {},
-    defaults: {},
-    features: {},
-    meta: {},
-    user_meta: {},
-    injected_values: [],
-    injected_html: {},
-    black_list_countries: [],
-    onramp: {},
-    offramp: {},
-    user_payments: {},
-    dust: {},
-	api_name: null,
-	logo_image: null,
-	valid_languages: null,
-	new_user_is_activated: null,
-	email_verification_required: null,
-	native_currency: null,
-	status: null
-  },
-  broker: {},
-  quicktrade: {},
-  networkQuickTrades: {},
-  email: {},
+	coins: {},
+	pairs: {},
+	tiers: {},
+	kit: {
+		info: {},
+		color: {},
+		interface: {},
+		icons: {},
+		strings: {},
+		links: {},
+		captcha: {},
+		defaults: {},
+		features: {},
+		meta: {},
+		user_meta: {},
+		injected_values: [],
+		injected_html: {},
+		black_list_countries: [],
+		onramp: {},
+		offramp: {},
+		user_payments: {},
+		dust: {},
+		api_name: null,
+		logo_image: null,
+		valid_languages: null,
+		new_user_is_activated: null,
+		email_verification_required: null,
+		native_currency: null,
+		status: null
+	},
+	broker: {},
+	quicktrade: {},
+	networkQuickTrades: {},
+	email: {},
 };
 
 interface Secrets {
-  security: Record<string, any>;
-  accounts: Record<string, any>;
-  captcha: Record<string, any>;
-  emails: Record<string, any>;
-  smtp: Record<string, any>;
-  admin_whitelist: Array<any>
+	security: Record<string, any>;
+	accounts: Record<string, any>;
+	captcha: Record<string, any>;
+	emails: Record<string, any>;
+	smtp: Record<string, any>;
+	admin_whitelist: Array<any>
 }
 
 let secrets: Secrets = {
-  security: {},
-  accounts: {},
-  captcha: {},
-  emails: {},
-  smtp: {},
-  admin_whitelist: []
+	security: {},
+	accounts: {},
+	captcha: {},
+	emails: {},
+	smtp: {},
+	admin_whitelist: []
 };
 
 let frozenUsers = {};
@@ -693,7 +693,7 @@ export const EXCHANGE_PLAN_PRICE_SOURCE = {
 	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
 	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
 	crypto: ['hollaex', 'oracle', 'binance'],
-	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+	ALL: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
 };
 
 

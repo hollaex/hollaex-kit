@@ -7,7 +7,7 @@ import redis from './redis';
 
 export = {
     ...helpers,
-	...model,
-	...query,
-	...redis
+    ...model,
+    ...query,
+    ...redis
 }

@@ -5,8 +5,8 @@ import toolsLib from 'hollaex-tools-lib';
 import { all } from 'bluebird';
 import { ROLES } from '../../constants';
 import {
-  USER_NOT_FOUND,
-  API_KEY_NOT_PERMITTED,
+	USER_NOT_FOUND,
+	API_KEY_NOT_PERMITTED,
 } from '../../messages';
 import { errorMessageConverter } from '../../utils/conversion';
 import isEmail from 'validator/lib/isEmail';
@@ -103,9 +103,9 @@ const performWithdrawal = (req, res) => {
 
 	toolsLib.wallet.validateWithdrawalToken(token)
 		.then((withdrawal) => {
-			return all([ withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id) ]);
+			return all([withdrawal, toolsLib.user.getUserByKitId(withdrawal.user_id)]);
 		})
-		.then(async ([ withdrawal, user ]) => {
+		.then(async ([withdrawal, user]) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
@@ -161,7 +161,7 @@ const performWithdrawal = (req, res) => {
 				]);
 			}
 		})
-		.then(([ { transaction_id }, { fee } ]) => {
+		.then(([{ transaction_id }, { fee }]) => {
 			return res.json({
 				message: 'Withdrawal successful',
 				fee,

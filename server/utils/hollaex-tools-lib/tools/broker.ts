@@ -4,19 +4,19 @@ import { getModel } from './database/model';
 import ccxt from 'ccxt';
 import randomString from 'random-string';
 import {
-  EXCHANGE_PLAN_INTERVAL_TIME,
-  EXCHANGE_PLAN_PRICE_SOURCE,
+	EXCHANGE_PLAN_INTERVAL_TIME,
+	EXCHANGE_PLAN_PRICE_SOURCE,
 } from '../../../constants';
 import { getNodeLib } from '../../../init';
 import { client } from './database/redis';
 import { getUserByKitId } from './user';
 import {
-  validatePair,
-  getKitTier,
-  getKitConfig,
-  getAssetsPrices,
-  getQuickTrades,
-  getKitCoin,
+	validatePair,
+	getKitTier,
+	getKitConfig,
+	getAssetsPrices,
+	getQuickTrades,
+	getKitCoin,
 } from './common';
 import { sendEmail } from '../../../mail';
 import { MAILTYPE } from '../../../mail/strings';
@@ -29,28 +29,28 @@ const connectedExchanges: any = {};
 
 
 import {
-  TOKEN_EXPIRED,
-  AUTH_NOT_MATCHED,
-  BROKER_NOT_FOUND,
-  BROKER_SIZE_EXCEED,
-  BROKER_PAUSED,
-  BROKER_ERROR_DELETE_UNPAUSED,
-  BROKER_EXISTS,
-  BROKER_FORMULA_NOT_FOUND,
-  SPREAD_MISSING,
-  MANUAL_BROKER_CREATE_ERROR,
-  DYNAMIC_BROKER_CREATE_ERROR,
-  DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
-  DYNAMIC_BROKER_UNSUPPORTED,
-  EXCHANGE_NOT_FOUND,
-  SYMBOL_NOT_FOUND,
-  UNISWAP_PRICE_NOT_FOUND,
-  FORMULA_MARKET_PAIR_ERROR,
-  COIN_INPUT_MISSING,
-  AMOUNTS_MISSING,
-  REBALANCE_SYMBOL_MISSING,
-  PRICE_NOT_FOUND,
-  QUOTE_EXPIRY_TIME_ERROR,
+	TOKEN_EXPIRED,
+	AUTH_NOT_MATCHED,
+	BROKER_NOT_FOUND,
+	BROKER_SIZE_EXCEED,
+	BROKER_PAUSED,
+	BROKER_ERROR_DELETE_UNPAUSED,
+	BROKER_EXISTS,
+	BROKER_FORMULA_NOT_FOUND,
+	SPREAD_MISSING,
+	MANUAL_BROKER_CREATE_ERROR,
+	DYNAMIC_BROKER_CREATE_ERROR,
+	DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR,
+	DYNAMIC_BROKER_UNSUPPORTED,
+	EXCHANGE_NOT_FOUND,
+	SYMBOL_NOT_FOUND,
+	UNISWAP_PRICE_NOT_FOUND,
+	FORMULA_MARKET_PAIR_ERROR,
+	COIN_INPUT_MISSING,
+	AMOUNTS_MISSING,
+	REBALANCE_SYMBOL_MISSING,
+	PRICE_NOT_FOUND,
+	QUOTE_EXPIRY_TIME_ERROR,
 } from '../../../messages';
 
 
@@ -69,23 +69,23 @@ const validateBrokerPair = (brokerPair) => {
 };
 
 const setExchange = (data) => {
-    if (connectedExchanges[data.id]) {
-        return connectedExchanges[data.id].exchange
-    }
-	
-    const exchangeClass = ccxt[data.exchange];
+	if (connectedExchanges[data.id]) {
+		return connectedExchanges[data.id].exchange
+	}
 
-    const exchange = new exchangeClass({
-        timeout: 5000,
-        ...(data.api_key && { 'apiKey': data.api_key }),
-        ...(data.api_secret && { 'secret': data.api_secret }),
-    })
+	const exchangeClass = ccxt[data.exchange];
 
-    if (data.id) {
-        connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
-    }
+	const exchange = new exchangeClass({
+		timeout: 5000,
+		...(data.api_key && { 'apiKey': data.api_key }),
+		...(data.api_secret && { 'secret': data.api_secret }),
+	})
 
-    return exchange;
+	if (data.id) {
+		connectedExchanges[data.id] = { exchange, api_key: data.api_key, api_secret: data.api_secret };
+	}
+
+	return exchange;
 }
 
 const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) => {
@@ -119,7 +119,7 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 };
 
 const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => {
-	const { symbol, quote_expiry_time, sell_price, buy_price  } = broker;
+	const { symbol, quote_expiry_time, sell_price, buy_price } = broker;
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
 
@@ -176,7 +176,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 		const incrementUnit = side === 'buy' ? quoteCointInfo.increment_unit : baseCoinInfo.increment_unit
 		const targetedAmount = side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price;
 
-		if (incrementUnit < 1) { 
+		if (incrementUnit < 1) {
 			const decimalPoint = new BigNumber(incrementUnit).dp();
 			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
 			spending_amount = sourceAmount;
@@ -195,7 +195,7 @@ const calculateSize = (orderData, side, responseObject, symbol) => {
 
 
 const calculateFormula = (fn) => {
-    return new Function(`return ${fn}`)();
+	return new Function(`return ${fn}`)();
 }
 
 const isFairPriceForBroker = async (broker) => {
@@ -207,7 +207,7 @@ const isFairPriceForBroker = async (broker) => {
 	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
 
 	//relative difference
-	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
+	const percDiff = 100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets + priceFromOracle) / 2));
 
 	// If difference more than 10 percent, price is not fair.
 	const priceDifferenceTreshold = 10;
@@ -219,7 +219,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 	const regex = /([a-zA-Z]+(?:_[a-zA-Z]+)+(?:-[a-zA-Z]+))/g;
 	const variables = formula.match(regex);
 
-	if (!isArray(variables)) 
+	if (!isArray(variables))
 		throw new Error(FORMULA_MARKET_PAIR_ERROR);
 
 	for (let variable of variables) {
@@ -228,7 +228,7 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 
 		if (exchangePair?.length !== 2)
 			throw new Error(FORMULA_MARKET_PAIR_ERROR + ' ' + exchangePair);
-		
+
 		if (!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
@@ -239,8 +239,8 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
 			const userCachekey = `${brokerId}-${exchangePair[1]}`;
 			marketPrice = await client.getAsync(userCachekey);
-		
-			if (!marketPrice) { 
+
+			if (!marketPrice) {
 				const ticker = await selectedExchange.fetchTicker(formattedSymbol);
 				marketPrice = ticker.last
 				if (refresh_interval)
@@ -254,23 +254,23 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 
 			if (!marketPrice) {
 				const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
-				marketPrice =  conversions[coins[0]];
+				marketPrice = conversions[coins[0]];
 				if (refresh_interval)
 					client.setexAsync(userCachekey, refresh_interval, marketPrice);
 			}
-			if(marketPrice === -1) return -1;
+			if (marketPrice === -1) return -1;
 		}
 		formula = formula.replace(variable, marketPrice);
-		
+
 	}
 	let convertedPrice = calculateFormula(formula);
 
 	if (side === 'buy') {
 		convertedPrice = new BigNumber(convertedPrice).multipliedBy((1 + (spread / 100))).toNumber();
 	} else if (side === 'sell') {
-		convertedPrice =  new BigNumber(convertedPrice).multipliedBy((1 - (spread / 100))).toNumber();
+		convertedPrice = new BigNumber(convertedPrice).multipliedBy((1 - (spread / 100))).toNumber();
 	}
-	
+
 	return convertedPrice;
 };
 
@@ -337,7 +337,7 @@ const testBroker = async (data) => {
 		if (spread == null) {
 			throw new Error(SPREAD_MISSING);
 		}
-	
+
 		const price = await calculatePrice(
 			null,
 			spread,
@@ -361,7 +361,7 @@ const testBroker = async (data) => {
 
 };
 const testBrokerUniswap = async (data) => {
-	const { base_coin, spread, quote_coin  } = data;
+	const { base_coin, spread, quote_coin } = data;
 	const UNISWAP_COINS = {}
 	try {
 		if (!base_coin || !quote_coin || !UNISWAP_COINS[base_coin] || !UNISWAP_COINS[quote_coin]) {
@@ -439,8 +439,8 @@ const reverseTransaction = async (orderData) => {
 			const exchangeKey = objectKeys[0];
 
 			if (exchangeKey) {
-				const exchange = setExchange({ 
-					exchange: exchangeKey, 
+				const exchange = setExchange({
+					exchange: exchangeKey,
 					api_key: broker.account[exchangeKey].apiKey,
 					api_secret: broker.account[exchangeKey].apiSecret
 				})
@@ -495,17 +495,17 @@ const createBrokerPair = async (brokerPair) => {
 				throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
 			}
 
-			if(type === 'dynamic') {
+			if (type === 'dynamic') {
 				brokerPair.refresh_interval = EXCHANGE_PLAN_INTERVAL_TIME[exchangeInfo.plan] || 60;
 			}
-			
+
 			if (account) {
 				for (const [key, value] of Object.entries(account)) {
 					if (!value.hasOwnProperty('apiKey')) {
 						// @ts-ignore
 						value.apiKey = brokerPair?.account[key]?.apiKey;
 					}
-		
+
 					if (!value.hasOwnProperty('apiSecret')) {
 						// @ts-ignore
 						value.apiSecret = brokerPair?.account[key]?.apiSecret;
@@ -542,9 +542,9 @@ const fetchBrokerPairs = async (attributes) => {
 	brokers.forEach(broker => {
 		for (const [key, value] of Object.entries(broker.account || [])) {
 			// @ts-ignore
-			value.apiKey =  '*****',
-			// @ts-ignore
-			value.apiSecret = '*********'
+			value.apiKey = '*****',
+				// @ts-ignore
+				value.apiSecret = '*********'
 		}
 	})
 
@@ -576,7 +576,7 @@ const updateBrokerPair = async (id, data) => {
 	}
 
 
-	if(type === 'dynamic') {
+	if (type === 'dynamic') {
 		data.refresh_interval = EXCHANGE_PLAN_INTERVAL_TIME[exchangeInfo.plan] || 60;
 	}
 
@@ -593,7 +593,7 @@ const updateBrokerPair = async (id, data) => {
 				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
 		}
-		
+
 		if (!rebalancing_symbol) {
 			throw new Error(REBALANCE_SYMBOL_MISSING);
 		}

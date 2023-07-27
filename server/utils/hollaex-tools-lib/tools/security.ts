@@ -7,56 +7,56 @@ import { intersection, has } from 'lodash';
 import isEmail from 'validator/lib/isEmail';
 import ipRangeCheck from 'ip-range-check';
 import {
-  INVALID_CAPTCHA,
-  USER_NOT_FOUND,
-  TOKEN_OTP_MUST_BE_ENABLED,
-  INVALID_OTP_CODE,
-  ACCESS_DENIED,
-  NOT_AUTHORIZED,
-  TOKEN_EXPIRED,
-  INVALID_TOKEN,
-  MISSING_HEADER,
-  DEACTIVATED_USER,
-  TOKEN_NOT_FOUND,
-  TOKEN_REVOKED,
-  MULTIPLE_API_KEY,
-  API_KEY_NULL,
-  API_REQUEST_EXPIRED,
-  API_SIGNATURE_NULL,
-  API_KEY_INACTIVE,
-  API_KEY_INVALID,
-  API_KEY_EXPIRED,
-  API_KEY_NOT_PERMITTED,
-  API_KEY_NOT_WHITELISTED,
-  API_SIGNATURE_INVALID,
-  INVALID_PASSWORD,
-  INVALID_CREDENTIALS,
-  SAME_PASSWORD,
-  CODE_NOT_FOUND,
-  INVALID_TOKEN_TYPE,
-  NO_AUTH_TOKEN,
-  WHITELIST_DISABLE_ADMIN,
-  WHITELIST_NOT_PROVIDED,
-  SESSION_NOT_FOUND,
+	INVALID_CAPTCHA,
+	USER_NOT_FOUND,
+	TOKEN_OTP_MUST_BE_ENABLED,
+	INVALID_OTP_CODE,
+	ACCESS_DENIED,
+	NOT_AUTHORIZED,
+	TOKEN_EXPIRED,
+	INVALID_TOKEN,
+	MISSING_HEADER,
+	DEACTIVATED_USER,
+	TOKEN_NOT_FOUND,
+	TOKEN_REVOKED,
+	MULTIPLE_API_KEY,
+	API_KEY_NULL,
+	API_REQUEST_EXPIRED,
+	API_SIGNATURE_NULL,
+	API_KEY_INACTIVE,
+	API_KEY_INVALID,
+	API_KEY_EXPIRED,
+	API_KEY_NOT_PERMITTED,
+	API_KEY_NOT_WHITELISTED,
+	API_SIGNATURE_INVALID,
+	INVALID_PASSWORD,
+	INVALID_CREDENTIALS,
+	SAME_PASSWORD,
+	CODE_NOT_FOUND,
+	INVALID_TOKEN_TYPE,
+	NO_AUTH_TOKEN,
+	WHITELIST_DISABLE_ADMIN,
+	WHITELIST_NOT_PROVIDED,
+	SESSION_NOT_FOUND,
 } from '../../..//messages';
 import {
-  NODE_ENV,
-  CAPTCHA_ENDPOINT,
-  BASE_SCOPES,
-  ROLES,
-  ISSUER,
-  SECRET,
-  TOKEN_TYPES,
-  HMAC_TOKEN_EXPIRY,
-  HMAC_TOKEN_KEY,
+	NODE_ENV,
+	CAPTCHA_ENDPOINT,
+	BASE_SCOPES,
+	ROLES,
+	ISSUER,
+	SECRET,
+	TOKEN_TYPES,
+	HMAC_TOKEN_EXPIRY,
+	HMAC_TOKEN_KEY,
 } from '../../..//constants';
 import { getNodeLib } from '../../..//init';
 import { resolve, reject, promisify } from 'bluebird';
 import {
-  getKitSecrets,
-  getKitConfig,
-  getFrozenUsers,
-  getNetworkKeySecret,
+	getKitSecrets,
+	getKitConfig,
+	getFrozenUsers,
+	getNetworkKeySecret,
 } from './common';
 import bcrypt from 'bcryptjs';
 import { all } from 'bluebird';
@@ -69,8 +69,8 @@ import { client } from './database/redis';
 import { loggerAuth } from '../../..//config/logger';
 import moment from 'moment';
 import {
-  generateHash,
-  generateRandomString,
+	generateHash,
+	generateRandomString,
 } from '../../..//utils/security';
 import geoip from 'geoip-lite';
 
@@ -813,7 +813,7 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 	} else {
 		return findTokenByApiKey(apiKey)
 			.then((token) => {
-				if(token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
+				if (token.role !== ROLES.ADMIN && scopes.includes(ROLES.ADMIN)) {
 					throw new Error(NOT_AUTHORIZED);
 				}
 				if (token.whitelisting_enabled && token.whitelisted_ips.length > 0) {
@@ -914,14 +914,14 @@ const verifySession = async (token) => {
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+	if (new Date(session.expiry_date).getTime() < new Date().getTime()) {
 		throw new Error(TOKEN_EXPIRED);
 	}
 
-	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+	if (new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
 		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
-		const updatedSession =  await sessionData.update(
+		const updatedSession = await sessionData.update(
 			{ last_seen: new Date() }
 		);
 		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
@@ -934,7 +934,7 @@ const findSession = async (token) => {
 	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
 
 	let session = await client.getAsync(hashedToken)
-	
+
 	if (!session) {
 		loggerAuth.verbose(
 			'security/findSession jwt token not found in redis',
@@ -947,7 +947,7 @@ const findSession = async (token) => {
 			}
 		});
 
-		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+		if (session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
 			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
 			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
 
@@ -956,7 +956,7 @@ const findSession = async (token) => {
 				hashedToken
 			);
 		}
-			
+
 		return session;
 	} else {
 		loggerAuth.debug(
@@ -1119,15 +1119,15 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 	const secret = crypto.randomBytes(25).toString('hex');
 	const expiry = Date.now() + HMAC_TOKEN_EXPIRY;
 	const user = await getModel('user').findOne({ where: { id: userId } });
-	if(role !== ROLES.USER && !user.is_admin) {
+	if (role !== ROLES.USER && !user.is_admin) {
 		throw new Error(NOT_AUTHORIZED);
 	}
-	if(role !== ROLES.USER && role !== ROLES.ADMIN) {
+	if (role !== ROLES.USER && role !== ROLES.ADMIN) {
 		// role can only be admin or user
 		throw new Error(NOT_AUTHORIZED);
 	}
 
-	if(!whitelisted_ips && role === ROLES.ADMIN) {
+	if (!whitelisted_ips && role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_NOT_PROVIDED);
 	}
 
@@ -1155,7 +1155,7 @@ const createUserKitHmacToken = async (userId, otpCode, ip, name, role = ROLES.US
 
 async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permissions, whitelisted_ips, whitelisting_enabled) {
 	await checkUserOtpActive(userId, otpCode);
-	const token = await findToken({ where: { id: token_id , user_id: userId } });
+	const token = await findToken({ where: { id: token_id, user_id: userId } });
 
 	if (!token) {
 		throw new Error(TOKEN_NOT_FOUND);
@@ -1163,11 +1163,11 @@ async function updateUserKitHmacToken(userId, otpCode, ip, token_id, name, permi
 		throw new Error(TOKEN_REVOKED);
 	}
 
-	if(whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
+	if (whitelisted_ips && whitelisted_ips.length == 0 && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 
-	if(whitelisting_enabled == false && token.role === ROLES.ADMIN) {
+	if (whitelisting_enabled == false && token.role === ROLES.ADMIN) {
 		throw new Error(WHITELIST_DISABLE_ADMIN);
 	}
 

@@ -36,7 +36,7 @@ const createDepositRequest = (req, res) => {
 			if (!user) {
 				throw new Error('User not found');
 			}
-			
+
 			const { fee }: any = toolsLib.wallet.validateDeposit(user, amount, currency, 'fiat');
 
 			const { count: depositCount } = await toolsLib.wallet.getUserDepositsByKitId(
@@ -172,7 +172,7 @@ const createWithdrawalRequest = (req, res) => {
 
 			// fee_coin is always the same as currency in fiat
 			const { fee } = await toolsLib.wallet.validateWithdrawal(user, bank_id, amount, currency, 'fiat');
-			
+
 			let bankFormat = '';
 
 			Object.keys(bank).forEach((key, i) => {
