@@ -133,6 +133,7 @@ exports.SMS_SUCCESS = 'SMS has been sent';
 exports.PHONE_VERIFIED = 'Phone number has been verified';
 
 exports.WS_WELCOME = 'Welcome!';
+exports.WS_UNSUPPORTED_OPERATION = 'unsupported message type';
 exports.WS_EMPTY_MESSAGE = 'message can not be empty';
 exports.WS_WRONG_CHANNEL_FROMAT = 'channel format is incorrect. The format is <event>:<exchange>:<symbol>';
 exports.WS_EXCHANGE_NOT_SUPPORTED = 'exchange is not supported';
