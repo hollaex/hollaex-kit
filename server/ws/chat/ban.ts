@@ -1,21 +1,22 @@
 'use strict';
-const { storeData, restoreData } = require('./utils');
-const { getUserIdByUsername } = require('./username');
-const { loggerChat } = require('../../config/logger');
-const { getChannels } = require('../channel');
-const { each } = require('lodash');
-const { WEBSOCKET_CHANNEL } = require('../../constants');
+import { storeData, restoreData } from './utils';
+import { getUserIdByUsername } from './username';
+import { loggerChat } from '../../config/logger';
+import { getChannels } from '../channel';
+import { each } from 'lodash';
+import { WEBSOCKET_CHANNEL } from '../../constants';
+
 
 const BANS_KEY = 'WS:BANS';
 
-let BANS = {};
+let BANS: any = {};
 
 const banUser = (username) => {
 	if (username) {
 		getUserIdByUsername(username).then((id) => {
 			BANS[id] = username;
 			storeData(BANS_KEY, BANS);
-			each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
 				sendBannedUsers(ws);
 			});
 		});
@@ -27,7 +28,7 @@ const unbanUser = (user_id) => {
 		BANS[user_id] = 0;
 		delete BANS[user_id];
 		storeData(BANS_KEY, BANS);
-		each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+		each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
 			sendBannedUsers(ws);
 		});
 	}
@@ -54,7 +55,7 @@ restoreData(BANS_KEY).then((bans = {}) => {
 	BANS = bans;
 });
 
-module.exports = {
+export {
 	banUser,
 	unbanUser,
 	isUserBanned,

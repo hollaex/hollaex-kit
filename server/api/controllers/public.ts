@@ -1,6 +1,6 @@
 'use strict';
 
-const packageJson = require('../../package.json');
+import packageJson from '../../package.json';
 import { API_HOST, HOLLAEX_NETWORK_ENDPOINT } from '../../constants';
 import { loggerPublic } from '../../config/logger';
 import toolsLib from 'hollaex-tools-lib';
@@ -10,6 +10,7 @@ import { errorMessageConverter } from '../../utils/conversion';
 const getHealth = (req, res) => {
 	try {
 		return res.json({
+			// @ts-ignore
 			name: toolsLib.getKitConfig().api_name || packageJson.name,
 			version: packageJson.version,
 			host: API_HOST,
@@ -63,7 +64,7 @@ const getKitConfigurations = (req, res) => {
 };
 
 const sendSupportEmail = (req, res) => {
-	const { email, category, subject, description }  = req.swagger.params;
+	const { email, category, subject, description } = req.swagger.params;
 	toolsLib.sendEmailToSupport(email.value, category.value, subject.value, description.value)
 		.then(() => {
 			return res.json({ message: 'Email was sent to support' });
@@ -357,7 +358,7 @@ const getSymbols = (req, res) => {
 const getAssetsPrices = (req, res) => {
 	const { assets, quote, amount } = req.swagger.params;
 
-	if(quote.value && typeof quote.value !== 'string'){
+	if (quote.value && typeof quote.value !== 'string') {
 		loggerPublic.error(
 			req.uuid,
 			'controllers/public/getAssetsPrices invalid quote',

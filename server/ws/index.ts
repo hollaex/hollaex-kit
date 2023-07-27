@@ -1,21 +1,22 @@
 'use strict';
 
-const wss = require('./server');
-const uuid = require('uuid/v4');
-const { loggerWebsocket } = require('../config/logger');
-const {
+import wss from './server';
+import { v4 as uuid } from 'uuid';
+import { loggerWebsocket } from '../config/logger';
+import {
 	WS_EMPTY_MESSAGE,
 	WS_WRONG_INPUT,
 	WS_WELCOME,
 	WS_UNSUPPORTED_OPERATION,
 	WS_USER_AUTHENTICATED
-} = require('../messages');
-const { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData } = require('./sub');
-const { connect, hubConnected } = require('./hub');
-const { setWsHeartbeat } = require('ws-heartbeat/server');
-const WebSocket = require('ws');
+} from '../messages';
+import { initializeTopic, terminateTopic, authorizeUser, terminateClosedChannels, handleChatData } from './sub';
+import { connect, hubConnected } from './hub';
+import { setWsHeartbeat } from 'ws-heartbeat/server';
+import WebSocket from 'ws';
 
-wss.on('connection', (ws, req) => {
+
+wss.on('connection', (ws: any, req: any) => {
 	// attaching unique id and authorization to the socket
 	ws.id = uuid();
 	ws.auth = req.auth;
@@ -30,7 +31,7 @@ wss.on('connection', (ws, req) => {
 		}
 	}
 
-	ws.on('message', (message) => {
+	ws.on('message', (message: any) => {
 		try {
 			// throw error if empty message
 			if (!message || message.length === 0) {
@@ -48,13 +49,13 @@ wss.on('connection', (ws, req) => {
 				ws.send(JSON.stringify({ message: 'pong' }));
 			} else if (op === 'subscribe') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach((arg) => {
+				args.forEach((arg: any) => {
 					let [topic, symbol] = arg.split(':');
 					initializeTopic(topic, ws, symbol);
 				});
 			} else if (op === 'unsubscribe') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach((arg) => {
+				args.forEach((arg: any) => {
 					let [topic, symbol] = arg.split(':');
 					terminateTopic(topic, ws, symbol);
 				});
@@ -65,14 +66,14 @@ wss.on('connection', (ws, req) => {
 				authorizeUser(credentials, ws, ip);
 			} else if (op === 'chat') {
 				loggerWebsocket.info(ws.id, 'ws/index/message', message);
-				args.forEach((arg) => {
+				args.forEach((arg: any) => {
 					const { action, data } = arg;
 					handleChatData(action, ws, data);
 				});
 			} else {
 				throw new Error(WS_UNSUPPORTED_OPERATION);
 			}
-		} catch (err) {
+		} catch (err: any) {
 			if (err && err.message) {
 				loggerWebsocket.error(ws.id, 'ws/index/message catch', err.message);
 				ws.send(JSON.stringify({ error: err.message }));
@@ -91,6 +92,6 @@ wss.on('connection', (ws, req) => {
 });
 
 // If no message received within a minute, close connection
-setWsHeartbeat(wss, () => {}, 60000);
+setWsHeartbeat(wss, () => { }, 60000);
 
 connect();

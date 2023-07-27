@@ -7,7 +7,7 @@ import rp from 'request-promise';
 import { loggerInit } from './config/logger';
 import { Op } from 'sequelize';
 import { User, Status, Tier, Broker, QuickTrade } from './db/models';
-const packageJson = require('./package.json');
+import packageJson from './package.json';
 
 import { subscriber, publisher } from './db/pubsub';
 import {

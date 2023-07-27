@@ -7,7 +7,7 @@ const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : 'app.ts',
+	script    : './build/app.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -26,7 +26,7 @@ const api = {
 const ws = {
 	// ws application
 	name      : 'ws',
-	script    : 'ws/index.js',
+	script    : './build/ws/index.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -42,7 +42,7 @@ const ws = {
 const plugins = {
 	// plugins application
 	name      : 'plugins',
-	script    : 'plugins/index.js',
+	script    : './build/plugins/index.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -62,7 +62,7 @@ var apps = [];
 const modes = initializeMode(mode);
 for (let m of modes) {
 	if (m === 'all') {
-		apps = [api];
+		apps = [api, ws, plugins];
 		break;
 	} else if (m === 'api') {
 		apps.push(api);

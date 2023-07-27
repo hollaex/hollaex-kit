@@ -1,17 +1,18 @@
 'use strict';
 
-const WebSocket = require('ws');
-const { loggerWebsocket } = require('../config/logger');
-const toolsLib = require('hollaex-tools-lib');
-const { MULTIPLE_API_KEY } = require('../messages');
-const url = require('url');
-const { hubConnected } = require('./hub');
+import WebSocket, { Server } from 'ws';
+import { loggerWebsocket } from '../config/logger';
+import toolsLib from 'hollaex-tools-lib';
+import { MULTIPLE_API_KEY } from '../messages';
+import url from 'url';
+import { hubConnected } from './hub';
+
 
 const PORT = process.env.WEBSOCKET_PORT || 10080;
 
-const wss = new WebSocket.Server({
-	port: PORT,
-	verifyClient: (info, next) => {
+const wss: Server = new WebSocket.Server({
+	port: Number(PORT),
+	verifyClient: (info: any, next) => {
 		try {
 			if (!hubConnected()) {
 				throw new Error('Hub websocket is disconnected');
@@ -64,4 +65,4 @@ const wss = new WebSocket.Server({
 loggerWebsocket.verbose(`Ẃebsocket server listening on port: ${PORT}`);
 
 
-module.exports = wss;
+export default wss;

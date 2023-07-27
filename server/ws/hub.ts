@@ -1,13 +1,13 @@
 'use strict';
 
-const { loggerWebsocket } = require('../config/logger');
-const { checkStatus } = require('../init');
-const { subscriber, publisher } = require('../db/pubsub');
-const { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL, INIT_CHANNEL } = require('../constants');
-const { each } = require('lodash');
-const { getChannels, resetChannels } = require('./channel');
-const { updateOrderbookData, updateTradeData, resetPublicData } = require('./publicData');
-const WebSocket = require('ws');
+import WebSocket from 'ws';
+import { loggerWebsocket } from '../config/logger';
+import { checkStatus } from '../init';
+import { subscriber, publisher } from '../db/pubsub';
+import { WS_HUB_CHANNEL, WEBSOCKET_CHANNEL, INIT_CHANNEL } from '../constants';
+import { each } from 'lodash';
+import { getChannels, resetChannels } from './channel';
+import { updateOrderbookData, updateTradeData, resetPublicData } from './publicData';
 
 let networkNodeLib = null;
 let wsConnected = false;
@@ -149,7 +149,7 @@ const handleHubData = (data) => {
 
 const closeAllClients = () => {
 	each(getChannels(), (channel) => {
-		each(channel, (ws) => {
+		each(channel, (ws: any) => {
 			if (ws.readyState !== WebSocket.CONNECTING) {
 				ws.close();
 			}
@@ -159,7 +159,7 @@ const closeAllClients = () => {
 	resetPublicData();
 };
 
-module.exports = {
+export {
 	sendNetworkWsMessage,
 	connect,
 	hubConnected

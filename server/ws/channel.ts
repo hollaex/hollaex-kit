@@ -46,7 +46,7 @@ const resetChannels = () => {
 	channels = {};
 };
 
-module.exports = {
+export {
 	getChannels,
 	addSubscriber,
 	removeSubscriber,

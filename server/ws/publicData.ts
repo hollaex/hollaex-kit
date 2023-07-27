@@ -28,7 +28,7 @@ const updateTradeData = (data) => {
 	}
 };
 
-module.exports = {
+export {
 	getPublicData,
 	resetPublicData,
 	updateOrderbookData,

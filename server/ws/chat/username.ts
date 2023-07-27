@@ -1,6 +1,6 @@
 'use strict';
 
-const { User } = require('../../db/models');
+import { User } from '../../db/models';
 const DAY = 1000 * 60 * 60 * 24;
 
 let usernames = {};
@@ -49,7 +49,7 @@ const getUserIdByUsername = (username) => {
 	});
 };
 
-module.exports = {
+export {
 	getUsername,
 	getUserIdByUsername,
 	changeUsername

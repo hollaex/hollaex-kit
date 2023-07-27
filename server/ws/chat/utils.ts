@@ -8,7 +8,7 @@ const storeData = (key = '', data = []) => {
 const restoreData = (key = '') => {
 	return redis.getAsync(key).then((data) => {
 		if (!data) {
-			if(key === 'WS:BANS') return {};
+			if (key === 'WS:BANS') return {};
 			return [];
 		}
 		data = JSON.parse(data);
@@ -16,7 +16,7 @@ const restoreData = (key = '') => {
 	});
 };
 
-module.exports = {
+export {
 	storeData,
 	restoreData
 };

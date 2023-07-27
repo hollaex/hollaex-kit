@@ -1,16 +1,17 @@
 'use strict';
-const { debounce, each } = require('lodash');
-const {
+import { debounce, each } from 'lodash';
+import {
 	CHAT_MESSAGE_CHANNEL,
 	CHAT_MAX_MESSAGES,
 	WEBSOCKET_CHANNEL
-} = require('../../constants');
-const { storeData, restoreData } = require('./utils');
-const { isUserBanned } = require('./ban');
-const moment = require('moment');
-const { subscriber, publisher } = require('../../db/pubsub');
-const { getChannels } = require('../channel');
-const WebSocket = require('ws');
+} from '../../constants';
+import { storeData, restoreData } from './utils';
+import { isUserBanned } from './ban';
+import moment from 'moment';
+import { subscriber, publisher } from '../../db/pubsub';
+import { getChannels } from '../channel';
+import WebSocket from 'ws';
+
 
 const MESSAGES_KEY = 'WS:MESSAGES';
 let MESSAGES = [];
@@ -68,7 +69,7 @@ const deleteMessage = (idToDelete) => {
 };
 
 const publishChatMessage = (event, data) => {
-	each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify({
 				topic: 'chat',
@@ -88,7 +89,7 @@ restoreData(MESSAGES_KEY).then((messages) => {
 	MESSAGES = messages;
 });
 
-module.exports = {
+export {
 	getMessages,
 	addMessage,
 	deleteMessage,

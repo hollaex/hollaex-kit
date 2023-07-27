@@ -1,12 +1,18 @@
 'use strict';
 
-const { getPublicData } = require('./publicData');
-const { addSubscriber, removeSubscriber, getChannels } = require('./channel');
-const { WEBSOCKET_CHANNEL, WS_PUBSUB_DEPOSIT_CHANNEL, WS_PUBSUB_WITHDRAWAL_CHANNEL, ROLES } = require('../constants');
-const { each } = require('lodash');
-const toolsLib = require('hollaex-tools-lib');
-const { loggerWebsocket } = require('../config/logger');
-const {
+import WebSocket from 'ws';
+import { getPublicData } from './publicData';
+import { addSubscriber, removeSubscriber, getChannels } from './channel';
+import {
+	WEBSOCKET_CHANNEL,
+	WS_PUBSUB_DEPOSIT_CHANNEL,
+	WS_PUBSUB_WITHDRAWAL_CHANNEL,
+	ROLES
+} from '../constants';
+import { each } from 'lodash';
+import toolsLib from 'hollaex-tools-lib';
+import { loggerWebsocket } from '../config/logger';
+import {
 	WS_AUTHENTICATION_REQUIRED,
 	WS_USER_AUTHENTICATED,
 	MULTIPLE_API_KEY,
@@ -14,13 +20,12 @@ const {
 	WS_MISSING_HEADER,
 	WS_INVALID_TOPIC,
 	NOT_AUTHORIZED
-} = require('../messages');
-const { subscriber } = require('../db/pubsub');
-const { sendInitialMessages, addMessage, deleteMessage } = require('./chat');
-const { getUsername, changeUsername } = require('./chat/username');
-const { sendBannedUsers, banUser, unbanUser } = require('./chat/ban');
-const { sendNetworkWsMessage } = require('./hub');
-const WebSocket = require('ws');
+} from '../messages';
+import { subscriber } from '../db/pubsub';
+import { sendInitialMessages, addMessage, deleteMessage } from './chat';
+import { getUsername, changeUsername } from './chat/username';
+import { sendBannedUsers, banUser, unbanUser } from './chat/ban';
+import { sendNetworkWsMessage } from './hub';
 
 subscriber.subscribe(WS_PUBSUB_DEPOSIT_CHANNEL);
 subscriber.subscribe(WS_PUBSUB_WITHDRAWAL_CHANNEL);
@@ -98,7 +103,7 @@ const initializeTopic = (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			break;
 		case 'chat':
-			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
 			sendInitialMessages(ws);
 			break;
 		case 'admin':
@@ -111,7 +116,7 @@ const initializeTopic = (topic, ws, symbol) => {
 				throw new Error(NOT_AUTHORIZED);
 			}
 			loggerWebsocket.verbose(ws.id, 'ws/sub/initializeTopic admin', ws.auth);
-			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
 
 			break;
 		default:
@@ -167,14 +172,14 @@ const terminateTopic = (topic, ws, symbol) => {
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
 			break;
 		case 'chat':
-			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'admin':
 			if (!ws.auth.sub) {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws, 'private');
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}` }));
 			break;
 		default:
@@ -211,7 +216,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
+		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url, undefined, undefined);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;
@@ -224,7 +229,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 const terminateClosedChannels = (ws) => {
 	try {
-		removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
+		removeSubscriber(WEBSOCKET_CHANNEL('chat', undefined), ws);
 	} catch (err) {
 		loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 	}
@@ -273,7 +278,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
 			removeSubscriber(WEBSOCKET_CHANNEL('withdrawal', ws.auth.sub.networkId), ws, 'private');
-			removeSubscriber(WEBSOCKET_CHANNEL('admin'), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL('admin', undefined), ws, 'private');
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
@@ -339,14 +344,14 @@ const handleDepositWithdrawalData = (data) => {
 };
 
 const notifyAdmin = (data) => {
-	each(getChannels()[WEBSOCKET_CHANNEL('admin')], (ws) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('admin', undefined)], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify(data));
 		}
 	});
 };
 
-module.exports = {
+export {
 	initializeTopic,
 	terminateTopic,
 	authorizeUser,
