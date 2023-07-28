@@ -7,7 +7,7 @@ const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : './build/app.js',
+	script    : 'app.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -26,13 +26,16 @@ const api = {
 const ws = {
 	// ws application
 	name      : 'ws',
-	script    : './build/ws/index.js',
+	script    : './ws/index.ts',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
 	ignore_watch: ignore_watch.concat(['tools', 'queue']),
+	exec_mode : 'cluster',
+	instance_var: 'INSTANCE_ID',
+	instances : '1',
 	max_memory_restart,
-	node_args,
+	// node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
 		PORT: process.env.WEBSOCKET_PORT || 10080
