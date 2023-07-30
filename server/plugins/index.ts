@@ -1,24 +1,25 @@
 'use strict';
 
-const { checkStatus } = require('../init');
-const express = require('express');
+import { checkStatus } from '../init';
+import express from 'express';
 const PORT = process.env.PLUGIN_PORT || 10011;
-const morgan = require('morgan');
+import morgan from 'morgan';
 const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
-const { logEntryRequest, stream, loggerPlugin } = require('../config/logger');
-const cors = require('cors');
-const { domainMiddleware, helmetMiddleware } = require('../config/middleware');
-const routes = require('./routes');
-const { Plugin } = require('../db/models');
-const path = require('path');
-const fs = require('fs');
-const latestVersion = require('latest-version');
-const npm = require('npm-programmatic');
-const sequelize = require('sequelize');
-const lodash = require('lodash');
+import { logEntryRequest, stream, loggerPlugin } from '../config/logger';
+import cors from 'cors';
+import { domainMiddleware, helmetMiddleware } from '../config/middleware';
+import routes from './routes';
+import { Plugin } from '../db/models';
+import path from 'path';
+import fs from 'fs';
+import latestVersion from 'latest-version';
+import sequelize from 'sequelize';
+import lodash from 'lodash';
 const pluginProcess = path.join(__dirname, './plugin-process.js');
-const { Worker } = require('worker_threads');
-const  { createProxyMiddleware, fixRequestBody } = require('http-proxy-middleware');
+import { Worker } from 'worker_threads';
+import { createProxyMiddleware, fixRequestBody } from 'http-proxy-middleware';
+
+const npm = require('npm-programmatic');
 
 let app;
 let pluginWorkerThread;
@@ -27,6 +28,7 @@ const getInstalledLibrary = async (name, version) => {
 	const jsonFilePath = path.resolve(__dirname, '../node_modules', name, 'package.json');
 
 	const fileData = fs.readFileSync(jsonFilePath);
+	// @ts-ignore
 	const parsedFileData = JSON.parse(fileData);
 
 	loggerPlugin.verbose(
@@ -160,7 +162,7 @@ checkStatus()
 		);
 
 		app = express();
-
+		// @ts-ignore
 		app.use(morgan(morganType, { stream }));
 		app.listen(PORT);
 		app.use(cors());
@@ -169,9 +171,9 @@ checkStatus()
 		helmetMiddleware(app);
 		app.use(express.urlencoded({ extended: true }));
 		app.use(express.json());
-	
+
 		const defaultURL = 'http://localhost:10012';
-	
+
 		const customRouter = function (req) {
 			return defaultURL;
 		};
@@ -212,6 +214,6 @@ checkStatus()
 		setTimeout(() => { process.exit(1); }, 5000);
 	});
 
-module.exports = {
+export {
 	restartPluginProcess
 };

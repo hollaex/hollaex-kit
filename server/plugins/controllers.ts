@@ -1,12 +1,12 @@
 'use strict';
 
-const { Plugin } = require('../db/models');
-const { validationResult } = require('express-validator');
-const lodash = require('lodash');
-const sequelize = require('sequelize');
-const { loggerPlugin } = require('../config/logger');
-const { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty, isBoolean } = require('lodash');
-const uglifyJs = require('uglify-js');
+import { Plugin } from '../db/models';
+import { validationResult } from 'express-validator';
+import lodash, { omit, pick, isUndefined, isPlainObject, cloneDeep, isString, isEmpty, isBoolean } from 'lodash';
+import sequelize from 'sequelize';
+import { loggerPlugin } from '../config/logger';
+import uglifyJs from 'uglify-js';
+
 
 const getPlugins = async (req, res) => {
 	const errors = validationResult(req);
@@ -27,7 +27,7 @@ const getPlugins = async (req, res) => {
 	);
 
 	try {
-		const options = {
+		const options: any = {
 			raw: true,
 			attributes: {
 				exclude: [
@@ -57,7 +57,7 @@ const getPlugins = async (req, res) => {
 
 		const formattedData = {
 			count: data.count,
-			data: data.rows.map((plugin) => {
+			data: data.rows.map((plugin: any) => {
 				plugin.enabled_admin_view = !!plugin.admin_view;
 				return lodash.omit(plugin, ['admin_view']);
 			})
@@ -265,7 +265,7 @@ const postPlugin = async (req, res) => {
 		}
 
 		const plugin = await Plugin.create(pluginConfig);
-		const formattedPlugin = cloneDeep(plugin.dataValues);
+		const formattedPlugin: any = cloneDeep(plugin.dataValues);
 
 		loggerPlugin.info(
 			req.uuid,
@@ -450,7 +450,7 @@ const putPlugin = async (req, res) => {
 		}
 
 		const updatedPlugin = await plugin.update(pluginConfig);
-		const formattedPlugin = cloneDeep(updatedPlugin.dataValues);
+		const formattedPlugin: any = cloneDeep(updatedPlugin.dataValues);
 
 		loggerPlugin.info(
 			req.uuid,
@@ -595,7 +595,7 @@ const putPluginConfig = async (req, res) => {
 					break;
 			}
 		}
-
+		// @ts-ignore
 		const updatedPlugin = await plugin.update(updatedConfig, { fields: Object.keys(updatedConfig) });
 
 		loggerPlugin.verbose(
@@ -790,7 +790,7 @@ const enablePlugin = async (req, res) => {
 	}
 };
 
-module.exports = {
+export {
 	getPlugins,
 	deletePlugin,
 	postPlugin,

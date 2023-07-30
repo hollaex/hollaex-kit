@@ -1,8 +1,8 @@
 'use strict';
 
-const express = require('express');
-const router = express.Router();
-const {
+import express from 'express';
+import { Router } from 'express';
+import {
 	getPlugins,
 	deletePlugin,
 	postPlugin,
@@ -12,10 +12,12 @@ const {
 	getPluginScript,
 	disablePlugin,
 	enablePlugin
-} = require('./controllers');
-const { checkSchema, query, body } = require('express-validator');
-const toolsLib = require('hollaex-tools-lib');
-const lodash = require('lodash');
+} from './controllers';
+import { checkSchema, query, body } from 'express-validator';
+import toolsLib from 'hollaex-tools-lib';
+import lodash from 'lodash';
+
+const router: Router = express.Router();
 
 router.get(
 	'/',
@@ -53,6 +55,7 @@ router.post(
 		body('logo').isString().optional({ nullable: true }),
 		body('admin_view').isString().optional({ nullable: true }),
 		body('web_view').isArray().optional({ nullable: true }),
+		// @ts-ignore
 		checkSchema({
 			prescript: {
 				in: ['body'],
@@ -135,6 +138,7 @@ router.put(
 		body('logo').isString().optional({ nullable: true }),
 		body('admin_view').isString().optional({ nullable: true }),
 		body('web_view').isArray().optional({ nullable: true }),
+		// @ts-ignore
 		checkSchema({
 			prescript: {
 				in: ['body'],
@@ -214,6 +218,7 @@ router.put(
 	[
 		toolsLib.security.verifyBearerTokenExpressMiddleware(['admin']),
 		body('name').isString().notEmpty().trim().toLowerCase(),
+		// @ts-ignore
 		checkSchema({
 			meta: {
 				in: ['body'],
@@ -267,4 +272,4 @@ router.get(
 	enablePlugin
 );
 
-module.exports = router;
+export default router;
