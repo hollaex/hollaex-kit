@@ -162,7 +162,6 @@ checkStatus()
 		);
 
 		app = express();
-		// @ts-ignore
 		app.use(morgan(morganType, { stream }));
 		app.listen(PORT);
 		app.use(cors());

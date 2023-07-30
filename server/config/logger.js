@@ -1,16 +1,20 @@
 'use strict';
 
-import winston, { format, transports } from 'winston';
-import { SPLAT } from 'triple-beam';
-import { v4 as uuid } from 'uuid';
-import apm from 'elastic-apm-node';
+const winston = require('winston');
+
+const LEVEL = Symbol.for('level');
+const { format, transports } = winston;
+// eslint-disable-next-line no-unused-vars
+const { combine, timestamp, colorize, printf, align, json } = format;
+const { SPLAT } = require('triple-beam');
+const uuid = require('uuid/v4');
+const apm = require('elastic-apm-node');
 const ElasticsearchApm = require('winston-elasticsearch-apm');
-import { isObject } from 'lodash';
-import { APM_ENABLED } from '../constants';
-const { combine, timestamp, colorize, printf, align } = format;
+const { isObject } = require('lodash');
+const { APM_ENABLED } = require('../constants');
+
 const emitters = require('events');
 emitters.EventEmitter.defaultMaxListeners = 50;
-const LEVEL = Symbol.for('level');
 
 if (APM_ENABLED) {
 	apm.start();
@@ -48,7 +52,7 @@ const filterOnly = (level) => {
 // eslint-disable-next-line no-unused-vars
 const generateLoggerConfiguration = (name) => {
 	const transportsConfig = [
-		new transports.Console({ level: LOG_LEVEL })
+		new transports.Console({ level: LOG_LEVEL } )
 	];
 
 	if (APM_ENABLED) {
@@ -102,7 +106,7 @@ const LOGGER_NAMES = {
 	fiat: 'fiat'
 };
 
-winston.loggers.add('default', generateLoggerConfiguration('all'));
+winston.loggers.add('default', generateLoggerConfiguration('all', false));
 
 // eslint-disable-next-line no-unused-vars
 Object.entries(LOGGER_NAMES).forEach(([key, value], index) => {
@@ -134,30 +138,29 @@ const stream = {
 	}
 };
 
-export const loggerWebsocket = winston.loggers.get(LOGGER_NAMES.websocket);
-export const loggerDb = winston.loggers.get(LOGGER_NAMES.db);
-export const loggerRedis = winston.loggers.get(LOGGER_NAMES.redis);
-export const loggerAdmin = winston.loggers.get(LOGGER_NAMES.admin);
-export const loggerEmail = winston.loggers.get(LOGGER_NAMES.email);
-export const loggerOrders = winston.loggers.get(LOGGER_NAMES.orders);
-export const loggerOtp = winston.loggers.get(LOGGER_NAMES.otp);
-export const loggerTrades = winston.loggers.get(LOGGER_NAMES.trades);
-export const loggerDeposits = winston.loggers.get(LOGGER_NAMES.deposits);
-export const loggerWithdrawals = winston.loggers.get(LOGGER_NAMES.withdrawals);
-export const loggerUser = winston.loggers.get(LOGGER_NAMES.user);
-export const loggerNotification = winston.loggers.get(LOGGER_NAMES.notification);
-export const loggerChat = winston.loggers.get(LOGGER_NAMES.chat);
-export const loggerAuth = winston.loggers.get(LOGGER_NAMES.auth);
-export const loggerInit = winston.loggers.get(LOGGER_NAMES.init);
-export const loggerPlugin = winston.loggers.get(LOGGER_NAMES.plugin);
-export const loggerPublic = winston.loggers.get(LOGGER_NAMES.public);
-export const loggerTier = winston.loggers.get(LOGGER_NAMES.tier);
-export const loggerBroker = winston.loggers.get(LOGGER_NAMES.broker);
-export const loggerFiat = winston.loggers.get(LOGGER_NAMES.fiat);
-
-export {
+module.exports = {
 	logEntryRequest,
 	stream,
 	logger,
 	apm,
+	loggerWebsocket: winston.loggers.get(LOGGER_NAMES.websocket),
+	loggerDb: winston.loggers.get(LOGGER_NAMES.db),
+	loggerRedis: winston.loggers.get(LOGGER_NAMES.redis),
+	loggerAdmin: winston.loggers.get(LOGGER_NAMES.admin),
+	loggerEmail: winston.loggers.get(LOGGER_NAMES.email),
+	loggerOrders: winston.loggers.get(LOGGER_NAMES.orders),
+	loggerOtp: winston.loggers.get(LOGGER_NAMES.otp),
+	loggerTrades: winston.loggers.get(LOGGER_NAMES.trades),
+	loggerDeposits: winston.loggers.get(LOGGER_NAMES.deposits),
+	loggerWithdrawals: winston.loggers.get(LOGGER_NAMES.withdrawals),
+	loggerUser: winston.loggers.get(LOGGER_NAMES.user),
+	loggerNotification: winston.loggers.get(LOGGER_NAMES.notification),
+	loggerChat: winston.loggers.get(LOGGER_NAMES.chat),
+	loggerAuth: winston.loggers.get(LOGGER_NAMES.auth),
+	loggerInit: winston.loggers.get(LOGGER_NAMES.init),
+	loggerPlugin: winston.loggers.get(LOGGER_NAMES.plugin),
+	loggerPublic: winston.loggers.get(LOGGER_NAMES.public),
+	loggerTier: winston.loggers.get(LOGGER_NAMES.tier),
+	loggerBroker: winston.loggers.get(LOGGER_NAMES.broker),
+	loggerFiat: winston.loggers.get(LOGGER_NAMES.loggerFiat)
 };

@@ -38,7 +38,6 @@ checkStatus()
 		helmetMiddleware(app);
 
 		const morganType = process.env.NODE_ENV === 'development' ? 'dev' : 'combined';
-		// @ts-ignore
 		app.use(morgan(morganType, { stream }));
 
 
