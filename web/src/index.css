@@ -359,6 +359,9 @@ table th {
 .margin-auto {
   margin: auto; }
 
+.row-reverse {
+  flex-direction: row-reverse; }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);
@@ -1604,6 +1607,49 @@ table th {
 .layout-mobile .currency-list-container .button-container .holla-button {
   font-size: 13px !important; }
 
+.layout-mobile .currency-list-container .donut-container {
+  height: 30rem !important;
+  width: 100%; }
+
+.layout-mobile .currency-list-container .rounded-loading {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid #808080;
+  background-color: var(--calculated_secondary-border) !important;
+  animation: outer-round-anim 3s ease infinite; }
+
+.layout-mobile .currency-list-container .inner-round {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 1px solid #808080; }
+
+.layout-mobile .currency-list-container .loading-wrapper {
+  height: 16rem;
+  flex-direction: column; }
+  .layout-mobile .currency-list-container .loading-wrapper .d-none {
+    display: none; }
+  .layout-mobile .currency-list-container .loading-wrapper .loading-txt {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 5rem; }
+
+.layout-mobile .currency-list-container .dot-flashing {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #34363a;
+  color: #34363a;
+  animation: dotFlashing 3s infinite; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important;
   line-height: 1.2rem !important; }
@@ -1727,6 +1773,9 @@ table th {
     background-color: var(--base_wallet-sidebar-and-popup);
     padding: 20px;
     overflow-y: auto; }
+    .wallet-container .wallet-assets_block .donut-container {
+      width: 18rem !important;
+      min-width: 18rem !important; }
     .wallet-container .wallet-assets_block .td-wallet {
       min-width: 225px; }
       .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
@@ -5667,8 +5716,19 @@ table th {
         padding: 40px 65px 30px 55px;
         font-family: "Open Sans";
         background-color: var(--base_background); }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .coin-bg {
+          opacity: 0.2; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content {
           min-height: 450px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .header-text {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .sub-text {
+            font-size: 14px;
+            width: 100%;
+            margin-top: 1rem;
+            color: var(--labels_secondary-inactive-label-text-graphics); }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-30 {
             padding-bottom: 30px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-35 {

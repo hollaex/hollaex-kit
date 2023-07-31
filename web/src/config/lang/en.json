@@ -1385,10 +1385,6 @@
 		}
 	},
 	"ASSET_INFO_PAGE": "Asset info page",
-	"MARKET_ROW": {
-		"NATIVE": "Native",
-		"NO_NATIVE": "No native source"
-	},
 	"DIGITAL_ASSETS": {
 		"DIGITAL_ASSETS_TITLE": "Digital assets",
 		"GO_BACK": "Go back",
@@ -1397,7 +1393,11 @@
 		"QUICK_TRADE": "QUICK TRADE",
 		"MARKETS": "MARKETS",
 		"WALLET": "WALLET",
-		"PRICE_SOURCE": "Price source"
+		"PRICE_SOURCE": "Price source",
+		"ORDERBOOK": "Orderbook",
+		"NETWORK": "Network Broker OTC",
+		"BROKER": "Local Broker OTC",
+		"BROKERAGE": "NA - (Brokerage)"
 	},
 	"HOLLAEX_TOKEN": {
 		"REMOVE_FAVOURITES": "Remove from favourites",
@@ -1413,6 +1413,13 @@
 		"MORE": "More",
 		"INFO": "info",
 		"TRADE": "TRADE",
+		"QUICK_TRADE": "QUICK TRADE {0}",
+		"PRICES": {
+			"TITLE": "Prices",
+			"QUICK_TRADE": "Quick Trade",
+			"SUBTITLE": "To view buy and sell prices for {0} visit {1}",
+			"FOOTER": "Market taker trading fees are applied to all trades executed through the Quick Trade."
+		},
 		"LIST": "Want to list your digital assets?",
 		"WEBSITE": "Website",
 		"EXPLORER": "Explorer"

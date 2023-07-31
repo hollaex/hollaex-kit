@@ -3,6 +3,7 @@ import defaultThemes from 'config/colors';
 import Color from 'color';
 
 const COIN_SIZES = [
+	25 /*cs-13*/,
 	4.75 /*cs-12*/,
 	3.5 /*cs-11*/,
 	3 /*cs-10*/,

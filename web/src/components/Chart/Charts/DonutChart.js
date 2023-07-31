@@ -48,15 +48,18 @@ class DonutChart extends Component {
 	}
 
 	UNSAFE_componentWillReceiveProps(nextProps) {
+		const { chartData, currentCurrency } = this.props;
 		if (
-			JSON.stringify(this.props.chartData) !==
-			JSON.stringify(nextProps.chartData)
+			JSON.stringify(chartData) !== JSON.stringify(nextProps.chartData) ||
+			currentCurrency !== nextProps.currentCurrency
 		) {
-			this.setState({ isData: this.checkData(nextProps.chartData) });
+			this.setState({
+				isData: this.checkData(nextProps.chartData, nextProps.currentCurrency),
+			});
 		}
 	}
 
-	checkData = (data = []) => {
+	checkData = (data = [], currency) => {
 		let largerValue = 0;
 		let largerId = '';
 		data.forEach((value) => {
@@ -65,7 +68,7 @@ class DonutChart extends Component {
 				largerValue = parseFloat(value.balancePercentage);
 			}
 		});
-		this.setState({ higherId: largerId, hoverId: largerId });
+		this.setState({ higherId: largerId, hoverId: currency || largerId });
 
 		const checkFilter = data.filter((value) => value.balance > 0);
 		return !!checkFilter.length;
@@ -76,7 +79,8 @@ class DonutChart extends Component {
 	};
 
 	handleOut = () => {
-		this.setState({ hoverId: this.state.higherId });
+		const { currentCurrency } = this.props;
+		this.setState({ hoverId: currentCurrency || this.state.higherId });
 	};
 
 	handleResize = () => {

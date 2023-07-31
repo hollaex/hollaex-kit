@@ -26,7 +26,6 @@ const AssetsList = ({
 	goToPreviousPage,
 	showPaginator = false,
 	loading,
-	constants,
 	mode,
 	is_descending,
 	toggleSort,
@@ -130,7 +129,6 @@ const AssetsList = ({
 								market={market}
 								loading={loading}
 								isAsset={true}
-								constants={constants}
 							/>
 						))}
 					</tbody>
@@ -152,10 +150,8 @@ const AssetsList = ({
 const mapStateToProps = ({
 	app: {
 		digital_assets_sort: { mode, is_descending },
-		constants,
 	},
 }) => ({
-	constants,
 	mode,
 	is_descending,
 });
