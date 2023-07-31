@@ -27,8 +27,8 @@ export class Broker extends Model<InferAttributes<Broker>, InferCreationAttribut
 	declare refresh_interval: number | null;
 	declare account: any | null;
 	declare formula: string | null;
-	declare createdAt: CreationOptional<Date>;
-	declare updatedAt: CreationOptional<Date>;
+	declare created_at: CreationOptional<Date>;
+	declare updated_at: CreationOptional<Date>;
 
 	declare user?: NonAttribute<User>;
 
@@ -115,8 +115,8 @@ export default function (sequelize: Sequelize) {
 				type: DataTypes.TEXT,
 				allowNull: true,
 			},
-			createdAt: DataTypes.DATE,
-			updatedAt: DataTypes.DATE,
+			created_at: DataTypes.DATE,
+			updated_at: DataTypes.DATE,
 		},
 		{
 			timestamps: true,

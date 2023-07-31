@@ -24,8 +24,6 @@ export class Login extends Model<InferAttributes<Login>, InferCreationAttributes
 	declare country: string | null;
 	declare timestamp: Date;
 	declare user_id: ForeignKey<User['id']>;
-	declare created_at: CreationOptional<Date>;
-	declare updated_at: CreationOptional<Date>;
 
 	declare user?: NonAttribute<User>;
 
@@ -97,8 +95,6 @@ export default function (sequelize: Sequelize) {
 				allowNull: false,
 				defaultValue: DataTypes.NOW,
 			},
-			created_at: DataTypes.DATE,
-			updated_at: DataTypes.DATE,
 		},
 		{
 			timestamps: false,

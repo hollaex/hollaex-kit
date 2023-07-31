@@ -24,8 +24,6 @@ export class Audit extends Model<InferAttributes<Audit>, InferCreationAttributes
 	declare domain: string | null;
 	declare timestamp: Date;
 	declare admin?: NonAttribute<User>;
-	declare created_at: CreationOptional<Date>;
-	declare updated_at: CreationOptional<Date>;
 
 	declare static associations: {
 		admin: Association<Audit, User>;
@@ -71,8 +69,6 @@ export default function (sequelize: Sequelize) {
 				allowNull: false,
 				type: DataTypes.DATE,
 			},
-			created_at: DataTypes.DATE,
-			updated_at: DataTypes.DATE,
 		},
 		{
 			timestamps: false,
