@@ -16,7 +16,8 @@
             "warn",
             "tab",
             {
-                "SwitchCase": 1   
+                "SwitchCase": 1,
+                "ignoredNodes": ["ConditionalExpression"],
             }
         ],
         "linebreak-style": [
