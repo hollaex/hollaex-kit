@@ -1,18 +1,18 @@
 version: '3'
-name: hollaex-typescript
+name: hollaex
 services:
-  hollaex-typescript-kit-redis:
+  hollaex-kit-redis:
     image: redis:5.0.5-alpine
     depends_on:
-      - hollaex-typescript-kit-db
+      - hollaex-kit-db
     networks:
-      - hollaex-typescript-kit-network
+      - hollaex-kit-network
     ports:
       - 6379:6379
     environment:
       - REDIS_PASSWORD=bitholla
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
-  hollaex-typescript-kit-db:
+  hollaex-kit-db:
     image: postgres:10.9
     ports:
       - 5432:5432
@@ -21,9 +21,9 @@ services:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=root
     networks:
-      - hollaex-typescript-kit-network
-  hollaex-typescript-kit-server:
-    image: hollaex-typescript-kit-server
+      - hollaex-kit-network
+  hollaex-kit-server:
+    image: hollaex-kit-server
     ports:
       - 10010:10010
       - 10011:10011
@@ -60,11 +60,11 @@ services:
       - ./init.ts:/app/init.ts
       - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
-      - hollaex-typescript-kit-db
-      - hollaex-typescript-kit-redis
+      - hollaex-kit-db
+      - hollaex-kit-redis
     networks:
-      - hollaex-typescript-kit-network
-  hollaex-typescript-kit-nginx:
+      - hollaex-kit-network
+  hollaex-kit-nginx:
     image: nginx:1.15.8-alpine
     volumes:
       - ./tools/nginx:/etc/nginx
@@ -76,9 +76,9 @@ services:
     environment:
       - NGINX_PORT=80
     depends_on:
-      - hollaex-typescript-kit-server
+      - hollaex-kit-server
     networks:
-      - hollaex-typescript-kit-network
+      - hollaex-kit-network
 
 networks:
-  hollaex-typescript-kit-network:
+  hollaex-kit-network:
