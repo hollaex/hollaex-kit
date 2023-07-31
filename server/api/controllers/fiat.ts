@@ -46,17 +46,7 @@ const createDepositRequest = (req, res) => {
 				false,
 				false,
 				false,
-				false,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
+				false
 			);
 
 			if (depositCount > 3) {
@@ -153,17 +143,7 @@ const createWithdrawalRequest = (req, res) => {
 				false,
 				false,
 				false,
-				false,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
-				undefined,
+				false
 			);
 
 			if (withdrawalCount > 3) {

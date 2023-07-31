@@ -530,7 +530,7 @@ const sendEmail = (
 	receiver,
 	data,
 	userSettings = {},
-	domain
+	domain?: any
 ) => {
 	return sendSmtpEmail(MAILTYPE[type], receiver, data, userSettings, domain);
 };

@@ -182,7 +182,7 @@ async function confirmByEmail(userId, givenCode) {
 	return true;
 }
 
-const confirmChangeUserPassword = (code, domain) => {
+const confirmChangeUserPassword = (code, domain?: any) => {
 	return getChangePasswordCode(code)
 		.then((data) => {
 			const dataValues = JSON.parse(data);
@@ -429,7 +429,7 @@ const createOtp = (user_id) => {
 
   Return a promise with the updated user.
  */
-const updateUserOtpEnabled = (id, otp_enabled = false, transaction) => {
+const updateUserOtpEnabled = (id, otp_enabled = false, transaction?: any) => {
 	return dbQuery.findOne('user', {
 		where: { id },
 		attributes: ['id', 'otp_enabled']
@@ -803,7 +803,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 	}
 };
 
-const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body, scopes = BASE_SCOPES, permissions = [], ip = undefined) => {
+const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, originalUrl, body?: any, scopes = BASE_SCOPES, permissions = [], ip?: any) => {
 	if (!apiKey) {
 		return reject(new Error(API_KEY_NULL));
 	} else if (!apiSignature) {

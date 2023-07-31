@@ -59,7 +59,5 @@ export default function (sequelize: Sequelize) {
 	);
 
 
-	// Add any associations here if needed
-
 	return VerificationCode;
 }

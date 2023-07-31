@@ -317,7 +317,7 @@ export const HMAC_TOKEN_KEY = 'hmac:token';
 export const EVENTS_CHANNEL = 'channel:events';
 
 // Websocket
-export const WEBSOCKET_CHANNEL = (topic, symbolOrUserId) => {
+export const WEBSOCKET_CHANNEL = (topic, symbolOrUserId?: any) => {
 	switch (topic) {
 		case 'orderbook':
 			return `orderbook:${symbolOrUserId}`;

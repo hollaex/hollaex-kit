@@ -54,7 +54,7 @@ const createSignature = (secret = '', verb, path, expires, data = '') => {
 	return signature;
 };
 
-const generateHeaders = (headers, secret, verb, path, expiresAfter, data = undefined) => {
+const generateHeaders = (headers, secret, verb, path, expiresAfter, data?: any) => {
 	const expires = moment().unix() + expiresAfter;
 	const signature = createSignature(secret, verb, path, expires, data);
 	const header = {

@@ -368,7 +368,7 @@ const performWithdrawalNetwork = (networkId, address, currency, amount, opts = {
 	return getNodeLib().performWithdrawal(networkId, address, currency, amount, opts);
 };
 
-const get24HourAccumulatedWithdrawals = async (userId, currency) => {
+const get24HourAccumulatedWithdrawals = async (userId, currency?: any) => {
 	const withdrawals = await getNodeLib().getUserWithdrawals(userId, {
 		currency,
 		dismissed: false,
@@ -493,7 +493,7 @@ const withdrawalBelowLimit = async (userId, currency, limit, amount = 0) => {
 		return;
 	}
 
-	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId, undefined);
+	const last24HourWithdrawalAmount = await get24HourAccumulatedWithdrawals(userId);
 
 	loggerWithdrawals.verbose(
 		'toolsLib/wallet/withdrawalBelowLimit',
@@ -775,22 +775,22 @@ const getUserTransactionsByKitId = (
 };
 
 const getUserDepositsByKitId = (
-	kitId,
-	currency,
-	status,
-	dismissed,
-	rejected,
-	processing,
-	waiting,
-	limit,
-	page,
-	orderBy,
-	order,
-	startDate,
-	endDate,
-	transactionId,
-	address,
-	format,
+	kitId?: any,
+	currency?: any,
+	status?: any,
+	dismissed?: any,
+	rejected?: any,
+	processing?: any,
+	waiting?: any,
+	limit?: any,
+	page?: any,
+	orderBy?: any,
+	order?: any,
+	startDate?: any,
+	endDate?: any,
+	transactionId?: any,
+	address?: any,
+	format?: any,
 	opts: any = {
 		additionalHeaders: null
 	}
@@ -818,23 +818,23 @@ const getUserDepositsByKitId = (
 };
 
 const getUserWithdrawalsByKitId = (
-	kitId,
-	currency,
-	status,
-	dismissed,
-	rejected,
-	processing,
-	waiting,
-	limit,
-	page,
-	orderBy,
-	order,
-	startDate,
-	endDate,
-	transactionId,
-	address,
-	format,
-	opts = {
+	kitId?: any,
+	currency?: any,
+	status?: any,
+	dismissed?: any,
+	rejected?: any,
+	processing?: any,
+	waiting?: any,
+	limit?: any,
+	page?: any,
+	orderBy?: any,
+	order?: any,
+	startDate?: any,
+	endDate?: any,
+	transactionId?: any,
+	address?: any,
+	format?: any,
+	opts: any = {
 		additionalHeaders: null
 	}
 ) => {

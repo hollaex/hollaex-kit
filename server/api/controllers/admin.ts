@@ -2014,7 +2014,7 @@ const setUserBank = (req, res) => {
 
 			if (sendEmail) {
 				try {
-					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, updatedUser.settings, undefined);
+					toolsLib.sendEmail('BANK_VERIFIED', updatedUser.email, { bankAccounts: updatedUser.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, updatedUser.settings);
 				} catch (err) {
 					loggerAdmin.error(req.uuid, 'controllers/admin/setUserBank err', err.message);
 				}
@@ -2072,7 +2072,7 @@ const verifyUserBank = (req, res) => {
 		})
 		.then((user) => {
 			try {
-				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, user.settings, undefined);
+				toolsLib.sendEmail('BANK_VERIFIED', user.email, { bankAccounts: user.bank_account.filter((account) => account.status === VERIFY_STATUS.COMPLETED) }, user.settings);
 			} catch (err) {
 				loggerAdmin.error(req.uuid, 'controllers/admin/verifyUserBank email catch', err.message);
 			}
@@ -2116,7 +2116,7 @@ const revokeUserBank = (req, res) => {
 			);
 		})
 		.then((user) => {
-			toolsLib.sendEmail('USER_VERIFICATION_REJECT', user.email, { type: 'bank', message }, user.settings, undefined);
+			toolsLib.sendEmail('USER_VERIFICATION_REJECT', user.email, { type: 'bank', message }, user.settings);
 			return res.json(user.bank_account);
 		})
 		.catch((err) => {

@@ -16,7 +16,7 @@ const banUser = (username) => {
 		getUserIdByUsername(username).then((id) => {
 			BANS[id] = username;
 			storeData(BANS_KEY, BANS);
-			each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
+			each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
 				sendBannedUsers(ws);
 			});
 		});
@@ -28,7 +28,7 @@ const unbanUser = (user_id) => {
 		BANS[user_id] = 0;
 		delete BANS[user_id];
 		storeData(BANS_KEY, BANS);
-		each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
+		each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
 			sendBannedUsers(ws);
 		});
 	}

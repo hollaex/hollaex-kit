@@ -80,7 +80,7 @@ const deactivateOtp = (req, res) => {
 			return toolsLib.security.verifyOtpBeforeAction(id, code);
 		})
 		.then(() => {
-			return toolsLib.security.updateUserOtpEnabled(id, false, undefined);
+			return toolsLib.security.updateUserOtpEnabled(id, false);
 		})
 		.then(() => {
 			return res.json({ message: 'OTP disabled' });

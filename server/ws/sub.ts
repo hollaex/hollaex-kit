@@ -103,7 +103,7 @@ const initializeTopic = (topic, ws, symbol) => {
 			addSubscriber(WEBSOCKET_CHANNEL(topic, ws.auth.sub.networkId), ws);
 			break;
 		case 'chat':
-			addSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			sendInitialMessages(ws);
 			break;
 		case 'admin':
@@ -116,7 +116,7 @@ const initializeTopic = (topic, ws, symbol) => {
 				throw new Error(NOT_AUTHORIZED);
 			}
 			loggerWebsocket.verbose(ws.id, 'ws/sub/initializeTopic admin', ws.auth);
-			addSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
+			addSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 
 			break;
 		default:
@@ -172,14 +172,14 @@ const terminateTopic = (topic, ws, symbol) => {
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.networkId}` }));
 			break;
 		case 'chat':
-			removeSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws);
+			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws);
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}:${ws.auth.sub.id}` }));
 			break;
 		case 'admin':
 			if (!ws.auth.sub) {
 				throw new Error(WS_AUTHENTICATION_REQUIRED);
 			}
-			removeSubscriber(WEBSOCKET_CHANNEL(topic, undefined), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL(topic), ws, 'private');
 			ws.send(JSON.stringify({ message: `Unsubscribed from channel ${topic}` }));
 			break;
 		default:
@@ -216,7 +216,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 		// get authenticated user data and set as ws.auth.
 		// Function will throw an error if there is an issue which will be caught below
-		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url, undefined, undefined);
+		const auth = await toolsLib.security.verifyHmacTokenPromise(hmacKey, apiSignature, apiExpires, method, url);
 
 		// If authentication was successful, set ws.auth to new auth object and send authenticated message
 		ws.auth = auth;
@@ -229,7 +229,7 @@ const authorizeUser = async (credentials, ws, ip) => {
 
 const terminateClosedChannels = (ws) => {
 	try {
-		removeSubscriber(WEBSOCKET_CHANNEL('chat', undefined), ws);
+		removeSubscriber(WEBSOCKET_CHANNEL('chat'), ws);
 	} catch (err) {
 		loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 	}
@@ -278,7 +278,7 @@ const terminateClosedChannels = (ws) => {
 		try {
 			removeSubscriber(WEBSOCKET_CHANNEL('deposit', ws.auth.sub.networkId), ws, 'private');
 			removeSubscriber(WEBSOCKET_CHANNEL('withdrawal', ws.auth.sub.networkId), ws, 'private');
-			removeSubscriber(WEBSOCKET_CHANNEL('admin', undefined), ws, 'private');
+			removeSubscriber(WEBSOCKET_CHANNEL('admin'), ws, 'private');
 		} catch (err) {
 			loggerWebsocket.debug(ws.id, 'ws/sub/terminateClosedChannels', err.message);
 		}
@@ -344,7 +344,7 @@ const handleDepositWithdrawalData = (data) => {
 };
 
 const notifyAdmin = (data) => {
-	each(getChannels()[WEBSOCKET_CHANNEL('admin', undefined)], (ws) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('admin')], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify(data));
 		}

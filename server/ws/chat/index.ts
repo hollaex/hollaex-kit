@@ -69,7 +69,7 @@ const deleteMessage = (idToDelete) => {
 };
 
 const publishChatMessage = (event, data) => {
-	each(getChannels()[WEBSOCKET_CHANNEL('chat', undefined)], (ws) => {
+	each(getChannels()[WEBSOCKET_CHANNEL('chat')], (ws) => {
 		if (ws.readyState === WebSocket.OPEN) {
 			ws.send(JSON.stringify({
 				topic: 'chat',
