@@ -19,7 +19,6 @@ if (APM_ENABLED) {
 	apm.start();
 }
 
-
 const isMainnet = process.env.NODE_ENV === 'production';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'verbose';
 
