@@ -19,6 +19,7 @@ import {
 	SearchBox,
 	EditWrapper,
 	Help,
+	DonutChart,
 } from 'components';
 import {
 	formatCurrencyByIncrementalUnit,
@@ -56,6 +57,7 @@ const AssetsBlock = ({
 	is_descending,
 	toggleSort,
 	setSortModeAmount,
+	chartData,
 }) => {
 	const handleClickAmount = () => {
 		if (mode === WALLET_SORT.AMOUNT) {
@@ -140,66 +142,160 @@ const AssetsBlock = ({
 		<DustSection goToWallet={goToWallet} />
 	) : (
 		<div className="wallet-assets_block">
-			<section className="ml-4 pt-4">
-				{totalAssets.length && !loading ? (
-					<EditWrapper
-						stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
-						render={(children) => (
-							<div className="wallet-search-improvement">
-								{BASE_CURRENCY && (
+			{isMobile ? (
+				<section className="ml-4 pt-4">
+					{totalAssets.length && !loading ? (
+						<EditWrapper
+							stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+							render={(children) => (
+								<div className="wallet-search-improvement">
+									{BASE_CURRENCY && (
+										<div>
+											<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
+											<div className="font-title">{totalAssets}</div>
+										</div>
+									)}
+								</div>
+							)}
+						>
+							{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+						</EditWrapper>
+					) : (
+						<div>
+							<div className="mb-2">{STRINGS['WALLET_BALANCE_LOADING']}</div>
+							<div className="loading-anime" />
+						</div>
+					)}
+					<div className="d-flex justify-content-between zero-balance-wrapper">
+						<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+							<SearchBox
+								name="search-assets"
+								placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
+								handleSearch={handleSearch}
+								showCross
+							/>
+						</EditWrapper>
+						<div className="d-flex">
+							<div className="d-flex px-4 align-items-center">
+								<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+									<Help tip={STRINGS['DUST.TOOLTIP']}>
+										<div
+											className="text-underline pointer blue-link"
+											onClick={goToDustSection}
+										>
+											{STRINGS['DUST.LINK']}
+										</div>
+									</Help>
+								</EditWrapper>
+							</div>
+							<div className="d-flex align-items-center">
+								<span>
+									<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+										{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+									</EditWrapper>
+								</span>
+								<Switch
+									checked={isZeroBalanceHidden}
+									onClick={onToggle}
+									className="mx-2"
+								/>
+							</div>
+						</div>
+					</div>
+				</section>
+			) : (
+				<section>
+					<div className="d-flex align-items-center justify-content-between">
+						<div className="d-flex align-items-center">
+							<div
+								className={classnames('donut-container mb-4', {
+									'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+								})}
+							>
+								{chartData.length ? (
+									<DonutChart
+										coins={coins}
+										chartData={chartData}
+										showOpenWallet={false}
+									/>
+								) : (
 									<div>
-										<div>{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}</div>
-										<div className="font-title">{totalAssets}</div>
+										<div className="rounded-loading">
+											<div className="inner-round" />
+										</div>
 									</div>
 								)}
 							</div>
-						)}
-					>
-						{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
-					</EditWrapper>
-				) : (
-					<div>
-						<div className="mb-2">{STRINGS['WALLET_BALANCE_LOADING']}</div>
-						<div className="loading-anime"></div>
-					</div>
-				)}
-				<div className="d-flex justify-content-between zero-balance-wrapper">
-					<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
-						<SearchBox
-							name="search-assets"
-							placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
-							handleSearch={handleSearch}
-							showCross
-						/>
-					</EditWrapper>
-					<div className="d-flex">
-						<div className="d-flex px-4 align-items-center">
-							<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
-								<Help tip={STRINGS['DUST.TOOLTIP']}>
-									<div
-										className="text-underline pointer blue-link"
-										onClick={goToDustSection}
+							{totalAssets.length && !loading ? (
+								<div>
+									<EditWrapper
+										stringId="WALLET_ESTIMATED_TOTAL_BALANCE"
+										render={(children) => (
+											<div className="wallet-search-improvement">
+												{BASE_CURRENCY && (
+													<div>
+														<div>
+															{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+														</div>
+														<div className="font-title">{totalAssets}</div>
+													</div>
+												)}
+											</div>
+										)}
 									>
-										{STRINGS['DUST.LINK']}
+										{STRINGS['WALLET_ESTIMATED_TOTAL_BALANCE']}
+									</EditWrapper>
+									<div className="d-flex align-items-center">
+										<EditWrapper stringId="DUST.TOOLTIP,DUST.LINK">
+											<Help tip={STRINGS['DUST.TOOLTIP']}>
+												<div
+													className="text-underline pointer blue-link"
+													onClick={goToDustSection}
+												>
+													{STRINGS['DUST.LINK']}
+												</div>
+											</Help>
+										</EditWrapper>
 									</div>
-								</Help>
-							</EditWrapper>
+								</div>
+							) : (
+								<div>
+									<div className="mb-2">
+										{STRINGS['WALLET_BALANCE_LOADING']}
+									</div>
+									<div className="loading-anime" />
+								</div>
+							)}
 						</div>
-						<div className="d-flex align-items-center">
-							<span>
-								<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
-									{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
-								</EditWrapper>
-							</span>
-							<Switch
-								checked={isZeroBalanceHidden}
-								onClick={onToggle}
-								className="mx-2"
-							/>
+						<div className="d-flex justify-content-between zero-balance-wrapper row-reverse">
+							<div className="d-flex">
+								<div className="d-flex align-items-center">
+									<span>
+										<EditWrapper stringId="WALLET_HIDE_ZERO_BALANCE">
+											{STRINGS['WALLET_HIDE_ZERO_BALANCE']}
+										</EditWrapper>
+									</span>
+									<Switch
+										checked={isZeroBalanceHidden}
+										onClick={onToggle}
+										className="mx-2"
+									/>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</section>
+					<div className="d-flex row-reverse">
+						<EditWrapper stringId="WALLET_ASSETS_SEARCH_TXT">
+							<SearchBox
+								name="search-assets"
+								placeHolder={`${STRINGS['WALLET_ASSETS_SEARCH_TXT']}...`}
+								handleSearch={handleSearch}
+								showCross
+							/>
+						</EditWrapper>
+					</div>
+				</section>
+			)}
 			<div className="d-flex justify-content-end">
 				<EditWrapper configId="WALLET_LIST_CONFIGS" position={[0, 0]} />
 			</div>
@@ -397,10 +493,12 @@ const mapStateToProps = ({
 		wallet_sort: { mode, is_descending },
 		quicktrade,
 	},
+	asset: { chartData },
 }) => ({
 	mode,
 	is_descending,
 	quicktrade,
+	chartData,
 });
 
 const mapDispatchToProps = (dispatch) => ({
