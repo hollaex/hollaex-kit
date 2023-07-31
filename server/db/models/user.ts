@@ -93,13 +93,13 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
 	declare updated_at: CreationOptional<Date>;
 
 	declare static associations: {
-		Token: Association<User, any>;
-		VerificationCode: Association<User, any>;
-		Broker: Association<User, any>;
-		VerificationImage: Association<User, any>;
-		OtpCode: Association<User, any>;
-		Login: Association<User, any>;
-		Affiliation: Association<User, any>;
+		Token: Association<User, Token>;
+		VerificationCode: Association<User, VerificationCode>;
+		Broker: Association<User, Broker>;
+		OtpCode: Association<User, OtpCode>;
+		Login: Association<User, Login>;
+		Affiliation: Association<User, Affiliation>;
+		images: Association<User, VerificationImage>;
 	};
 }
 
