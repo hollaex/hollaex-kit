@@ -112,7 +112,7 @@
 		"start": "ts-node-esm app.ts",
 		"test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --recursive --timeout 5000",
 		"test-ci": "NODE_ENV=test ts-node ./test/testRunner",
-		"dev:plugin": "docker exec -it server_hollaex-kit-server_1 node plugins/dev.js"
+		"dev:plugin": "docker exec -it server_hollaex-kit-server_1 ts-node plugins/dev.ts"
 	},
 	"nyc": {
 		"exclude": [
