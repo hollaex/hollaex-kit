@@ -28,7 +28,7 @@ import { v4 as uuid } from 'uuid';
 import { all, reject } from 'bluebird';
 import { getNodeLib } from '../../../init';
 import moment from 'moment';
-import math from 'mathjs';
+import * as math from 'mathjs'
 import { parse } from 'json2csv';
 import { loggerWithdrawals } from '../../../config/logger';
 import { has } from 'lodash';

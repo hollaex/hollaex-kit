@@ -45,7 +45,7 @@ import {
 } from './common';
 import { reject } from 'bluebird';
 import { loggerOrders } from '../../../config/logger';
-import math from 'mathjs';
+import * as math from 'mathjs'
 import { has } from 'lodash';
 import { setPriceEssentials } from '../../orderbook';
 import { getUserBalanceByKitId } from './wallet';

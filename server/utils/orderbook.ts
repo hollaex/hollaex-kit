@@ -1,6 +1,6 @@
 'use strict';
 import { getOrderbook, getKitPairsConfig } from './hollaex-tools-lib/tools/common';
-import math from 'mathjs';
+import * as math from 'mathjs'
 import BigNumber from 'bignumber.js';
 const sumQuantities = (orders) =>
     orders.reduce((total, [, size]) => math.add(total, size), 0);
