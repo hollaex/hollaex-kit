@@ -1,8 +1,7 @@
-import crypto from 'crypto';
-import moment from 'moment';
-import { isDate } from 'lodash';
 const rp = require('request-promise');
-
+const crypto = require('crypto');
+const moment = require('moment');
+const { isDate } = require('lodash');
 const requestCache = new Map();
 const cachePeriods = {
 	'chart': 40,
@@ -10,8 +9,8 @@ const cachePeriods = {
 	'oracle': 60
 }
 
-const createRequest = (verb, url, headers, opts: any = { data: null, formData: null }, baseUrl = null) => {
-	const requestObj: any = {
+const createRequest = (verb, url, headers, opts = { data: null, formData: null }, baseUrl = null) => {
+	const requestObj = {
 		headers,
 		url,
 		json: true
@@ -27,13 +26,13 @@ const createRequest = (verb, url, headers, opts: any = { data: null, formData: n
 	const urlKey = `${verb}-${url}`;
 
 	let fetchRequest = null;
-	if (requestCache.has(urlKey)
+	if (requestCache.has(urlKey) 
 		&& new Date().getTime() - new Date(requestCache.get(urlKey).timestamp).getTime() < requestCache.get(urlKey).period * 1000) {
 		fetchRequest = requestCache.get(urlKey).request;
 	}
 	else {
 		fetchRequest = rp[verb.toLowerCase()](requestObj);
-		if (verb === 'GET' && !url.includes('user_id')) {
+		if(verb === 'GET' && !url.includes('user_id')){
 			requestCache.set(urlKey, {
 				timestamp: new Date(),
 				request: fetchRequest,
@@ -47,6 +46,7 @@ const createRequest = (verb, url, headers, opts: any = { data: null, formData: n
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
 	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
+
 	const signature = crypto
 		.createHmac('sha256', secret)
 		.update(verb + path + expires + stringData)
@@ -54,7 +54,7 @@ const createSignature = (secret = '', verb, path, expires, data = '') => {
 	return signature;
 };
 
-const generateHeaders = (headers, secret, verb, path, expiresAfter, data = null) => {
+const generateHeaders = (headers, secret, verb, path, expiresAfter, data) => {
 	const expires = moment().unix() + expiresAfter;
 	const signature = createSignature(secret, verb, path, expires, data);
 	const header = {
@@ -78,7 +78,7 @@ const parameterError = (parameter, msg) => {
 	return new Error(`Parameter ${parameter} error: ${msg}`);
 };
 
-const isDatetime = (date, formats = [moment.ISO_8601]) => {
+const isDatetime = (date, formats = [ moment.ISO_8601 ]) => {
 	return moment(date, formats, true).isValid();
 };
 
@@ -96,7 +96,7 @@ const isUrl = (url) => {
 	return pattern.test(url);
 };
 
-export {
+module.exports = {
 	createRequest,
 	createSignature,
 	generateHeaders,
