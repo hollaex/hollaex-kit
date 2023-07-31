@@ -4,7 +4,6 @@ const winston = require('winston');
 
 const LEVEL = Symbol.for('level');
 const { format, transports } = winston;
-// eslint-disable-next-line no-unused-vars
 const { combine, timestamp, colorize, printf, align, json } = format;
 const { SPLAT } = require('triple-beam');
 const uuid = require('uuid/v4');
@@ -20,7 +19,7 @@ if (APM_ENABLED) {
 	apm.start();
 }
 
-// eslint-disable-next-line no-unused-vars
+
 const isMainnet = process.env.NODE_ENV === 'production';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'verbose';
 
@@ -40,7 +39,6 @@ const all = format((info) => {
 });
 
 // used for filtering specific logs. currently not used.
-// eslint-disable-next-line no-unused-vars
 const filterOnly = (level) => {
 	return format((info) => {
 		if (info[LEVEL] === level) {
@@ -49,7 +47,7 @@ const filterOnly = (level) => {
 	})();
 };
 
-// eslint-disable-next-line no-unused-vars
+
 const generateLoggerConfiguration = (name) => {
 	const transportsConfig = [
 		new transports.Console({ level: LOG_LEVEL } )
@@ -108,7 +106,6 @@ const LOGGER_NAMES = {
 
 winston.loggers.add('default', generateLoggerConfiguration('all', false));
 
-// eslint-disable-next-line no-unused-vars
 Object.entries(LOGGER_NAMES).forEach(([key, value], index) => {
 	winston.loggers.add(value, generateLoggerConfiguration(value));
 });
@@ -132,7 +129,6 @@ const logEntryRequest = (req, res, next) => {
 };
 
 const stream = {
-	// eslint-disable-next-line no-unused-vars
 	write: (message, encoding) => {
 		logger.info(message);
 	}
