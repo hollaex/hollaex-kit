@@ -1,5 +1,4 @@
 version: '3'
-name: hollaex
 services:
   hollaex-kit-redis:
     image: redis:5.0.5-alpine
