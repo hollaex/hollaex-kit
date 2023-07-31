@@ -47,12 +47,6 @@ const createRequest = (verb, url, headers, opts: any = { data: null, formData: n
 
 const createSignature = (secret = '', verb, path, expires, data = '') => {
 	const stringData = typeof data === 'string' ? data : JSON.stringify(data);
-	console.log({ secret })
-	console.log({ data })
-	console.log({ verb })
-	console.log({ expires })
-	console.log({ path })
-	console.log({ stringData })
 	const signature = crypto
 		.createHmac('sha256', secret)
 		.update(verb + path + expires + stringData)
