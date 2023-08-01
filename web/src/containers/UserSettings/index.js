@@ -11,6 +11,8 @@ import {
 	openContactForm,
 	openRiskPortfolioOrderWarning,
 	closeNotification,
+	setNotification,
+	NOTIFICATIONS,
 } from 'actions/appActions';
 import { logout } from 'actions/authAction';
 import {
@@ -18,6 +20,7 @@ import {
 	setUserData,
 	setUsername,
 	setUsernameStore,
+	deleteUser,
 } from 'actions/userAction';
 import {
 	IconTitle,
@@ -30,6 +33,9 @@ import {
 	TabController,
 	EditWrapper,
 	NotLoggedIn,
+	Dialog,
+	StrictConfirmationForm,
+	EmailCodeForm,
 } from 'components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
 import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
@@ -47,9 +53,11 @@ class UserSettings extends Component {
 	state = {
 		sections: [],
 		tabs: [],
-		dialogIsOpen: false,
+		isOpen: false,
+		isEmailCodeForm: false,
 		modalText: '',
 		activeTab: 0,
+		pending: false,
 	};
 
 	componentDidMount() {
@@ -470,12 +478,51 @@ class UserSettings extends Component {
 		browserHistory.push('/settings');
 	};
 
+	onOpen = () => this.setState({ isOpen: true });
+
+	onClose = () => this.setState({ isOpen: false, isEmailCodeForm: false });
+
+	openEmailCodeForm = () => this.setState({ isEmailCodeForm: true });
+
+	onError = (err) => {
+		this.onClose();
+		const message =
+			err.response && err.response.data && err.response.data.message
+				? err.response.data.message
+				: err.message || JSON.stringify(err);
+		this.props.setNotification(NOTIFICATIONS.ERROR, message);
+	};
+
+	onSubmitDeletion = ({ otp_code, email_code }) => {
+		this.setState({ pending: true });
+
+		deleteUser(email_code, otp_code)
+			.then(this.onClose)
+			.catch(this.onError)
+			.finally(() => this.setState({ pending: false }));
+	};
+
+	renderDeleteUser = () => (
+		<div className="mb-3">
+			<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK">
+				{STRINGS.formatString(
+					STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT'],
+					<span onClick={this.onOpen} className="underline-text pointer">
+						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK']}
+					</span>
+				)}
+			</EditWrapper>
+		</div>
+	);
+
 	render() {
 		const {
 			icons: ICONS,
 			openContactForm,
 			user: { verification_level },
 		} = this.props;
+
+		const { isOpen, isEmailCodeForm, pending } = this.state;
 
 		if (isLoggedIn() && verification_level === 0) {
 			return <Loader />;
@@ -510,8 +557,67 @@ class UserSettings extends Component {
 								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
 							</EditWrapper>
 						</div>
+						{!isMobile && this.renderDeleteUser()}
 					</div>
 				</HeaderSection>
+
+				{isOpen && (
+					<Dialog
+						isOpen={isOpen}
+						label="delete-account-modal"
+						onCloseDialog={this.onClose}
+						shouldCloseOnOverlayClick={false}
+						showCloseText={true}
+						compressed={false}
+					>
+						{isEmailCodeForm ? (
+							<EmailCodeForm
+								onSubmit={this.onSubmitDeletion}
+								onClickHelp={openContactForm}
+								pending={pending}
+							/>
+						) : (
+							<StrictConfirmationForm
+								onClose={this.onClose}
+								onSubmit={this.openEmailCodeForm}
+							>
+								<div className="text-center warning_text py-4 font-title">
+									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TITLE">
+										{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TITLE']}
+									</EditWrapper>
+								</div>
+
+								<div>
+									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_1">
+										{
+											STRINGS[
+												'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_1'
+											]
+										}
+									</EditWrapper>
+								</div>
+								<div className="my-3">
+									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_2">
+										{STRINGS.formatString(
+											STRINGS[
+												'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_2'
+											],
+											<span>
+												"
+												{
+													STRINGS[
+														'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.KEY'
+													]
+												}
+												"
+											</span>
+										)}
+									</EditWrapper>
+								</div>
+							</StrictConfirmationForm>
+						)}
+					</Dialog>
+				)}
 
 				<NotLoggedIn>
 					{!isMobile ? (
@@ -528,10 +634,11 @@ class UserSettings extends Component {
 							tabs={tabs}
 						/>
 					)}
-					{!isMobile ? this.renderContent(tabs, activeTab) : null}
+					{!isMobile && this.renderContent(tabs, activeTab)}
 					{isMobile && (
-						<div className="my-4">
+						<div className="my-4 text-center">
 							{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
+							{this.renderDeleteUser()}
 						</div>
 					)}
 				</NotLoggedIn>
@@ -568,6 +675,7 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch),
+	setNotification: bindActionCreators(setNotification, dispatch),
 });
 
 export default connect(

@@ -185,7 +185,8 @@
 		"TITLE": "Input you security codes",
 		"LABEL": "Input code (please check your email)",
 		"PLACEHOLDER": "Input the code sent to your email",
-		"FORM_TITLE": "A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below along with your OTP code.",
+		"FORM_TITLE_TEXT": "A unique code was sent to your email that is required to finish the process. Please input the code sent to your email below{0}.",
+		"OTP_NOTE": " along with your OTP code",
 		"BUTTON": "submit",
 		"ERROR_INVALID": "The code you've entered is incorrect. Please try again",
 		"OTP_LABEL": "2FA Code (OTP)",
@@ -495,6 +496,21 @@
 			"ADJUST": "(ADJUST PERCENTAGE)",
 			"ACTIVATE_RISK_MANAGEMENT": "Activate Risk Management",
 			"WARNING_POP_UP": "Warning pop ups"
+		},
+		"DELETE_ACCOUNT": {
+			"ACCESS": {
+				"TEXT": "Want to delete your account? Click {0}.",
+				"LINK": "here"
+			},
+			"CONFIRMATION": {
+				"TITLE": "Delete Account",
+				"TEXT_1": "Deleting your account will permanently remove all your data from the exchange. This action is irreversible.",
+				"TEXT_2": "TYPE {0} to confirm account deletion.",
+				"KEY": "I UNDERSTAND",
+				"DELETE": "DELETE",
+				"CANCEL": "Cancel",
+				"PLACEHOLDER": "Type here"
+			}
 		}
 	},
 	"USER_APPS": {
