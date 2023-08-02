@@ -1,6 +1,6 @@
 'use strict';
 
-const { ROLES, TOKEN_TYPES } = require('../../constants');
+const { ROLES, TOKEN_TYPES } = require('../../migration-constants');
 const TABLE_NAME = 'Tokens';
 
 module.exports = {

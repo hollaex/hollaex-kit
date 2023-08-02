@@ -35,7 +35,7 @@ const {
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE
-} = require('../../constants');
+} = require('../../migration-constants');
 
 const { generateUserObject } = require('../seedsHelper');
 

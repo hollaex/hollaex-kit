@@ -7,7 +7,7 @@ const {
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE,
 	DEFAULT_FEES
-} = require('../../constants');
+} = require('../../migration-constants');
 
 const checkActivation = (activation_code) => {
 	const body = {

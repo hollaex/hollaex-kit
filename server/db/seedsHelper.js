@@ -5,7 +5,7 @@ const {
 	generateAffiliationCode
 } = require('../utils/security');
 
-const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../constants');
+const { DEFAULT_ORDER_RISK_PERCENTAGE } = require('../migration-constants');
 
 const ID_DATA_DEFAULT = {
 	status: 0,

@@ -1,12 +1,15 @@
 'use strict';
 
-import { INVALID_CAPTCHA, INVALID_CREDENTIALS } from '../messages';
+const {
+	INVALID_CAPTCHA,
+	INVALID_CREDENTIALS
+} = require('../messages');
 
-export const toBool = (value) => {
+const toBool = (value) => {
 	return value === 'true' ? true : value === 'false' ? false : value;
 };
 
-export const errorMessageConverter = (error) => {
+const errorMessageConverter = (error) => {
 	let message = error.message;
 
 	if (error.name === 'SequelizeValidationError') {
@@ -27,4 +30,9 @@ export const errorMessageConverter = (error) => {
 	}
 
 	return message;
+};
+
+module.exports = {
+	toBool,
+	errorMessageConverter
 };

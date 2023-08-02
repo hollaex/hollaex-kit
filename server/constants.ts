@@ -1,7 +1,16 @@
 'use strict';
 
-import { toBool } from './utils/conversion';
 import { cloneDeep } from 'lodash';
+import {
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE,
+	DEFAULT_FEES,
+	TOKEN_TYPES,
+	ROLES,
+	APM_ENABLED,
+	DEFAULT_ORDER_RISK_PERCENTAGE
+} from './migration-constants';
 import redis from 'redis'
 const config = require('./config/redis');
 const subscriber = redis.createClient(config.pubsub);
@@ -294,17 +303,24 @@ export const COMMUNICATOR_AUTHORIZED_KIT_CONFIG = [
 	'injected_html',
 	'features'
 ];
+
+export {
+	HOLLAEX_NETWORK_ENDPOINT,
+	HOLLAEX_NETWORK_BASE_URL,
+	HOLLAEX_NETWORK_PATH_ACTIVATE,
+	DEFAULT_FEES,
+	TOKEN_TYPES,
+	ROLES,
+	APM_ENABLED,
+	DEFAULT_ORDER_RISK_PERCENTAGE
+}
 // CONFIGURATION CONSTANTS END --------------------------------------------------
 
 // MAIN CONSTANTS START--------------------------------------------------
 
-export const APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
 export const API_HOST = process.env.API_HOST || 'localhost';
 export const DOMAIN = process.env.DOMAIN || (process.env.NODE_ENV === 'production' ? 'https://hollaex.com' : 'http://localhost:3000');
 export const NODE_ENV = process.env.NODE_ENV;
-export const HOLLAEX_NETWORK_ENDPOINT = process.env.NETWORK_URL || (process.env.NETWORK === 'testnet' ? 'https://api.testnet.hollaex.network' : 'https://api.hollaex.network');
-export const HOLLAEX_NETWORK_BASE_URL = '/v2';
-export const HOLLAEX_NETWORK_PATH_ACTIVATE = '/exchange/activate';
 
 // MAIN CONSTANTS END --------------------------------------------------
 
@@ -394,37 +410,8 @@ export const OMITTED_USER_FIELDS = [
 	'flagged'
 ];
 
-export const ROLES = {
-	SUPERVISOR: 'supervisor',
-	SUPPORT: 'support',
-	ADMIN: 'admin',
-	KYC: 'kyc',
-	COMMUNICATOR: 'communicator',
-	USER: 'user',
-	HMAC: 'hmac'
-};
-
-export const DEFAULT_FEES = {
-	fiat: {
-		maker: 0,
-		taker: 0
-	},
-	boost: {
-		maker: 0,
-		taker: 0
-	},
-	crypto: {
-		maker: 0.05,
-		taker: 0.1
-	},
-	basic: {
-		maker: 0.2,
-		taker: 0.2
-	}
-};
 
 export const BASE_SCOPES = [ROLES.USER];
-export const DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
 
 // ACCOUNTS CONSTANTS END --------------------------------------------------
 
@@ -433,9 +420,7 @@ export const DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percenta
 export const TOKEN_TIME_NORMAL = '24h';
 export const TOKEN_TIME_LONG = '30d';
 
-export const TOKEN_TYPES = {
-	HMAC: 'hmac'
-};
+
 export const HMAC_TOKEN_EXPIRY = 5 * 12 * 30 * 24 * 60 * 60 * 1000; // 5 years
 export const SECRET = process.env.SECRET || 'shhhh';
 export const ISSUER = process.env.ISSUER || 'hollaex.com';

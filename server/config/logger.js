@@ -10,7 +10,7 @@ const uuid = require('uuid/v4');
 const apm = require('elastic-apm-node');
 const ElasticsearchApm = require('winston-elasticsearch-apm');
 const { isObject } = require('lodash');
-const { APM_ENABLED } = require('../constants');
+const { APM_ENABLED } = require('../migration-constants');
 
 const emitters = require('events');
 emitters.EventEmitter.defaultMaxListeners = 50;
