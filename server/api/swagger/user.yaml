@@ -37,8 +37,12 @@ paths:
             type: object
             required:
               - email_code
+              - otp_code
             properties:
               email_code:
+                type: string
+                maxLength: 256
+              otp_code:
                 type: string
                 maxLength: 256
       responses:

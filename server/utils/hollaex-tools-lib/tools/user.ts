@@ -52,6 +52,7 @@ import {
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
 	WRONG_USER_SESSION,
+	USER_ALREADY_DELETED,
 } from '../../../messages';
 import { publisher, client } from './database/redis';
 import {
@@ -2104,6 +2105,35 @@ const deleteKitUser = async (userId) => {
 	);
 };
 
+const restoreKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!user.email.includes('_deleted')) {
+		throw new Error(USER_ALREADY_DELETED);
+	}
+
+	const userEmail = user.email.split('_deleted')[0];
+
+	return user.update(
+		{ email: userEmail, activated: true },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+};
+
+
 
 export {
 	loginUser,
@@ -2163,5 +2193,6 @@ export {
 	findUserLatestLogin,
 	createUserLogin,
 	getAllBalancesAdmin,
-	deleteKitUser
+	deleteKitUser,
+	restoreKitUser
 };

@@ -27,6 +27,7 @@ import {
 	INVALID_VERIFICATION_CODE,
 	LOGIN_NOT_ALLOW,
 	NO_IP_FOUND,
+	INVALID_OTP_CODE,
 } from '../../messages';
 import {
 	DEFAULT_ORDER_RISK_PERCENTAGE,
@@ -1239,7 +1240,7 @@ const userLogout = (req, res) => {
 const userDelete = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/userDelete/auth', req.auth);
 
-	const { email_code } = req.swagger.params.data.value;
+	const { email_code, otp_code } = req.swagger.params.data.value;
 	const user_id = req.auth.sub.id;
 
 	loggerUser.verbose(
@@ -1250,8 +1251,14 @@ const userDelete = (req, res) => {
 		'email_code',
 		email_code
 	);
+	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
+		.then((validOtp) => {
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
 
-	toolsLib.security.confirmByEmail(user_id, email_code)
+			return toolsLib.security.confirmByEmail(user_id, email_code);
+		})
 		.then((confirmed) => {
 			if (confirmed) {
 				return toolsLib.user.deleteKitUser(user_id);

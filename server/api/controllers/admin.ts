@@ -2529,6 +2529,26 @@ const getBalancesAdmin = (req, res) => {
 		});
 };
 
+const restoreUserAccount = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/user/restoreUserAccount/auth', req.auth);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/user/restoreUserAccount',
+		'user_id',
+		user_id,
+	);
+	toolsLib.user.restoreKitUser(user_id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/user/restoreUserAccount', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
 
 export {
 	createInitialAdmin,
@@ -2592,5 +2612,6 @@ export {
 	sendEmailByAdmin,
 	sendRawEmailByAdmin,
 	updateQuickTradeConfig,
-	getBalancesAdmin
+	getBalancesAdmin,
+	restoreUserAccount
 };
