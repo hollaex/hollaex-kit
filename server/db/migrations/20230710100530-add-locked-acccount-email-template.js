@@ -1,5 +1,5 @@
 'use strict';
-const TABLE = 'Status';
+const TABLE = 'Statuses';
 
 const languages = {
 		'en':  require('../../mail/strings/en.json').en.LOCKED_ACCOUNT,
@@ -15,16 +15,18 @@ const languages = {
 		'vi':  require('../../mail/strings/vi.json').vi.LOCKED_ACCOUNT,
 		'zh':  require('../../mail/strings/zh.json').zh.LOCKED_ACCOUNT,
 }
-const models = require('../models');
 
 
 module.exports = {
 	async up(queryInterface) {
 
-		const statusModel = models[TABLE];
-		const status = await statusModel.findOne({});
+		const statusData = await queryInterface.rawSelect(TABLE, { plain: false }, ['id']);
+
+		if(!statusData || statusData?.length === 0) return;
+		const status = statusData[0];
 
 		if(!status?.email) return;
+
 		const emailTemplates = {
 			...status.email,
 		};
@@ -42,9 +44,9 @@ module.exports = {
 		}
 
 		if (!hasTemplate) {
-			await statusModel.update(
+			await queryInterface.bulkUpdate(
+				TABLE, 
 				{ email: emailTemplates },
-				{ where: { id: status.id } }
 			);
 		}
 		
