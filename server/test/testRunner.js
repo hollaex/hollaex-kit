@@ -108,6 +108,8 @@ const execute = async () => {
         await mochaRunWithSleep(__dirname + "/user/user-withdrawal-fee-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-withdrawal-test.js");
         await mochaRunWithSleep(__dirname + "/user/user-withdrawals-test.js");
+        await mochaRunWithSleep(__dirname + "/user/user-delete-test.js");
+
       
         process.exit(0);
     } 
