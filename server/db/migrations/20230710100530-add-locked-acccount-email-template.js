@@ -27,7 +27,6 @@ module.exports = {
 
 		if(!status?.email) return;
 
-		if(!status?.email) return;
 		const emailTemplates = {
 			...status.email,
 		};
