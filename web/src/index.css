@@ -3015,7 +3015,16 @@ table th {
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover,
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover,
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover {
-      color: var(--labels_important-active-labels-text-graphics) !important; }
+      color: var(--labels_important-active-labels-text-graphics) !important;
+      font-weight: bold; }
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover .secondary-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover .secondary-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover .secondary-text {
+        color: var(--labels_important-active-labels-text-graphics) !important;
+        font-weight: bold; }
   .trade_orderbook-wrapper .fill {
     background-repeat: no-repeat;
     background-size: 0;
