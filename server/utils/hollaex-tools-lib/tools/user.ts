@@ -52,7 +52,7 @@ import {
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
 	WRONG_USER_SESSION,
-	USER_ALREADY_DELETED,
+	USER_ALREADY_RECOVERED,
 } from '../../../messages';
 import { publisher, client } from './database/redis';
 import {
@@ -2122,7 +2122,7 @@ const restoreKitUser = async (userId) => {
 	}
 
 	if (!user.email.includes('_deleted')) {
-		throw new Error(USER_ALREADY_DELETED);
+		throw new Error(USER_ALREADY_RECOVERED);
 	}
 
 	const userEmail = user.email.split('_deleted')[0];

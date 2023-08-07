@@ -101,7 +101,7 @@ const QuickTradeTab = ({
 					<div>
 						<div className="main-Heading">Display Quick Trade page</div>
 						<div className="main-subHeading">
-                            Allow your to buy and sell through the Quick Trade interface.
+                            Allow your users to buy and sell through the Quick Trade interface.
 						</div>
 					</div>
 				</div>
