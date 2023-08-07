@@ -567,6 +567,13 @@ exports.EXPLORERS = {
 			baseUrl: 'https://etcblockexplorer.com',
 			txPath: '/tx'
 		}
+	],
+	arb: [
+		{
+			name: 'Arbiscan Explorer',
+			baseUrl: 'https://arbiscan.io',
+			txPath: '/tx'
+		}
 	]
 };
 

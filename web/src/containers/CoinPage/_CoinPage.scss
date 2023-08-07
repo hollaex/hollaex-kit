@@ -158,8 +158,25 @@
 				font-family: $en--font-family;
 				background-color: $app-background-color;
 
+				.coin-bg {
+					opacity: 0.2;
+				}
+
 				.trade-details-content {
 					min-height: 450px;
+
+					.header-text {
+						font-size: 16px;
+						font-weight: bold;
+						letter-spacing: 1px;
+					}
+
+					.sub-text {
+						font-size: 14px;
+						width: 100%;
+						margin-top: 1rem;
+						color: $colors-black;
+					}
 
 					.pb-30 {
 						padding-bottom: 30px;

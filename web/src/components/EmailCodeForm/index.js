@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
 import { required, validateOtp } from 'components/Form/validations';
 import renderFields from 'components/Form/factoryFields';
@@ -30,6 +31,8 @@ class Form extends Component {
 		}
 	};
 	setFormValues = () => {
+		const { otp_enabled } = this.props;
+
 		const formValues = {
 			email_code: {
 				type: 'text',
@@ -40,7 +43,10 @@ class Form extends Component {
 				validate: [required],
 				fullWidth: true,
 			},
-			otp_code: {
+		};
+
+		if (otp_enabled) {
+			formValues.otp_code = {
 				type: 'number',
 				stringId:
 					'EMAIL_CODE_FORM.OTP_LABEL,EMAIL_CODE_FORM.OTP_PLACEHOLDER,EMAIL_CODE_FORM.ERROR_INVALID',
@@ -51,8 +57,8 @@ class Form extends Component {
 					validateOtp(STRINGS['EMAIL_CODE_FORM.ERROR_INVALID']),
 				],
 				fullWidth: true,
-			},
-		};
+			};
+		}
 
 		this.setState({ formValues });
 	};
@@ -73,6 +79,7 @@ class Form extends Component {
 			valid,
 			icons: ICONS,
 			pending,
+			otp_enabled,
 		} = this.props;
 		const { formValues } = this.state;
 
@@ -86,8 +93,11 @@ class Form extends Component {
 				/>
 				<div className="otp_form-title-wrapper">
 					<span className="otp_form-title-text">
-						<EditWrapper stringId="EMAIL_CODE_FORM.FORM_TITLE">
-							{STRINGS['EMAIL_CODE_FORM.FORM_TITLE']}
+						<EditWrapper stringId="EMAIL_CODE_FORM.FORM_TITLE_TEXT,EMAIL_CODE_FORM.OTP_NOTE">
+							{STRINGS.formatString(
+								STRINGS['EMAIL_CODE_FORM.FORM_TITLE_TEXT'],
+								otp_enabled ? STRINGS['EMAIL_CODE_FORM.OTP_NOTE'] : ''
+							)}
 						</EditWrapper>
 					</span>
 				</div>
@@ -107,6 +117,12 @@ class Form extends Component {
 	}
 }
 
-export default reduxForm({
-	form: 'EmailCodeForm',
-})(withConfig(Form));
+const mapStateToProps = (state) => ({
+	otp_enabled: state.user.otp_enabled,
+});
+
+export default connect(mapStateToProps)(
+	reduxForm({
+		form: 'EmailCodeForm',
+	})(withConfig(Form))
+);
