@@ -58,6 +58,7 @@ class UserSettings extends Component {
 		modalText: '',
 		activeTab: 0,
 		pending: false,
+		showDangerZone: false,
 	};
 
 	componentDidMount() {
@@ -502,18 +503,54 @@ class UserSettings extends Component {
 			.finally(() => this.setState({ pending: false }));
 	};
 
-	renderDeleteUser = () => (
-		<div className="mb-3">
-			<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK">
-				{STRINGS.formatString(
-					STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT'],
-					<span onClick={this.onOpen} className="underline-text pointer">
-						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK']}
-					</span>
-				)}
-			</EditWrapper>
-		</div>
-	);
+	renderDeleteUser = () => {
+		const { showDangerZone } = this.state;
+
+		return showDangerZone ? (
+			<div className="danger-zone p-4 important-text">
+				<div className="bold pb-2">
+					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE">
+						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE']}
+					</EditWrapper>
+				</div>
+				<div>
+					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT">
+						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT']}
+					</EditWrapper>
+				</div>
+				<div>
+					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK">
+						{STRINGS.formatString(
+							STRINGS[
+								'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH'
+							],
+							<span onClick={this.onOpen} className="underline-text pointer">
+								{
+									STRINGS[
+										'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK'
+									]
+								}
+							</span>
+						)}
+					</EditWrapper>
+				</div>
+			</div>
+		) : (
+			<div className="mb-3">
+				<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK">
+					{STRINGS.formatString(
+						STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT'],
+						<span
+							onClick={() => this.setState({ showDangerZone: true })}
+							className="underline-text pointer"
+						>
+							{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK']}
+						</span>
+					)}
+				</EditWrapper>
+			</div>
+		);
+	};
 
 	render() {
 		const {

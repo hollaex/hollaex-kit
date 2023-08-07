@@ -500,7 +500,13 @@
 		"DELETE_ACCOUNT": {
 			"ACCESS": {
 				"TEXT": "Want to delete your account? Click {0}.",
-				"LINK": "here"
+				"LINK": "here",
+				"DANGER_ZONE": {
+					"TITLE": "Danger Zone",
+					"TEXT": "Deleting your account will make both your account and funds inaccessible.",
+					"LINK": "Proceed",
+					"LINK_PH": "{0}."
+				}
 			},
 			"CONFIRMATION": {
 				"TITLE": "Delete Account",
