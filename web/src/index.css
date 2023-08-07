@@ -362,6 +362,10 @@ table th {
 .row-reverse {
   flex-direction: row-reverse; }
 
+.danger-zone {
+  border-top: var(--specials_notifications-alerts-warnings) 4px solid;
+  background-color: var(--calculated_specials_notifications-alerts-pale); }
+
 .app_container {
   min-height: 100vh;
   background-color: var(--base_background);

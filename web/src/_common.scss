@@ -361,3 +361,8 @@ table th {
 .row-reverse {
 	flex-direction: row-reverse;
 }
+
+.danger-zone {
+	border-top: $colors-notifications-red 4px solid;
+	background-color: $calculated_specials_notifications-alerts-pale;
+}
