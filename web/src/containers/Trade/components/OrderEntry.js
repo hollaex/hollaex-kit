@@ -13,7 +13,6 @@ import {
 	// formatBaseAmount,
 	roundNumber,
 	formatToCurrency,
-	calculateOraclePrice,
 } from 'utils/currency';
 import { getDecimals, playBackgroundAudioNotification } from 'utils/utils';
 import {
@@ -353,7 +352,6 @@ class OrderEntry extends Component {
 			submit,
 			settings: { risk = {}, notification = {} },
 			totalAsset,
-			oraclePrices,
 		} = this.props;
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
@@ -369,18 +367,8 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees,
 		};
 
-		const riskySize = formatNumber(
-			mathjs.multiply(
-				mathjs.divide(totalAsset, 100),
-				risk.order_portfolio_percentage
-			),
-			getDecimals(increment_size)
-		);
-		const calculatedOrderValue = calculateOraclePrice(
-			size,
-			oraclePrices[pair_base]
-		);
-		const isRiskyOrder = mathjs.largerEq(calculatedOrderValue, riskySize);
+		let riskySize = (totalAsset / 100) * risk.order_portfolio_percentage;
+		riskySize = formatNumber(riskySize, getDecimals(increment_size));
 
 		if (type === 'market') {
 			delete order.price;
@@ -389,7 +377,7 @@ class OrderEntry extends Component {
 		}
 		if (notification.popup_order_confirmation) {
 			openCheckOrder(order, () => {
-				if (risk.popup_warning && isRiskyOrder) {
+				if (risk.popup_warning && riskySize <= size) {
 					order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 					onRiskyTrade(order, () => {
 						submit(FORM_NAME);
@@ -398,7 +386,7 @@ class OrderEntry extends Component {
 					submit(FORM_NAME);
 				}
 			});
-		} else if (risk.popup_warning && isRiskyOrder) {
+		} else if (risk.popup_warning && riskySize <= size) {
 			order['order_portfolio_percentage'] = risk.order_portfolio_percentage;
 			onRiskyTrade(order, () => {
 				submit(FORM_NAME);
@@ -716,7 +704,6 @@ const mapStateToProps = (state) => {
 		marketPrice,
 		order_entry_data: state.orderbook.order_entry_data,
 		totalAsset: state.asset.totalAsset,
-		oraclePrices: state.asset.oraclePrices,
 	};
 };
 
