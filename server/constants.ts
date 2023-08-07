@@ -18,41 +18,216 @@ const subscriber = redis.createClient(config.pubsub);
 // CONFIGURATION CONSTANTS START--------------------------------------------------
 export const CONFIGURATION_CHANNEL = 'channel:configuration';
 
-interface Configuration {
-	coins: Record<string, any>;
-	pairs: Record<string, any>;
-	tiers: Record<string, any>;
-	kit: {
-		info: Record<string, any>;
-		color: Record<string, any>;
-		interface: Record<string, any>;
-		icons: Record<string, any>;
-		strings: Record<string, any>;
-		links: Record<string, any>;
-		captcha: Record<string, any>;
-		defaults: Record<string, any>;
-		features: Record<string, any>;
-		meta: Record<string, any>;
-		user_meta: Record<string, any>;
-		injected_values: any[];
-		injected_html: Record<string, any>;
-		black_list_countries: string[];
-		onramp: Record<string, any>;
-		offramp: Record<string, any>;
-		user_payments: Record<string, any>;
-		dust: Record<string, any>;
-		api_name: string,
-		logo_image: any,
-		valid_languages: any,
-		new_user_is_activated: any,
-		email_verification_required: any,
-		native_currency: any,
-		status: any
+export interface Coin {
+	id: number;
+	fullname: string;
+	symbol: string;
+	active: boolean;
+	verified: boolean;
+	allow_deposit: boolean;
+	allow_withdrawal: boolean;
+	withdrawal_fee: number;
+	min: number;
+	max: number;
+	increment_unit: number;
+	logo: string;
+	code: string;
+	is_public: boolean;
+	meta: any;
+	estimated_price: number;
+	description: string;
+	type: string;
+	network: string;
+	standard: string;
+	issuer: string;
+	withdrawal_fees: {
+		max: number;
+		min: number;
+		type: string;
+		value: number;
+		levels: any
+		symbol: string
 	};
-	broker: Record<string, any>;
-	quicktrade: Record<string, any>;
-	networkQuickTrades: Record<string, any>;
-	email: Record<string, any>;
+	display_name: string;
+	deposit_fees: {
+		max: number;
+		min: number;
+		type: string;
+		value: number;
+		levels: any;
+		symbol: string;
+	};
+	created_at: string;
+	updated_at: string;
+	created_by: number;
+	owner_id: number;
+}
+
+export interface Pair {
+	id: number;
+	name: string;
+	pair_base: string;
+	pair_2: string;
+	min_size: number;
+	max_size: number;
+	min_price: number;
+	max_price: number;
+	increment_size: number;
+	increment_price: number;
+	active: boolean;
+	verified: boolean;
+	code: string;
+	is_public: boolean;
+	estimated_price: number;
+	circuit_breaker: boolean;
+	created_at: string;
+	updated_at: string;
+	created_by: number;
+}
+
+export interface Tier {
+	id: number;
+	name: string;
+	icon: string;
+	description: string;
+	deposit_limit: number;
+	withdrawal_limit: number;
+	fees: {
+		maker: { [key: string]: number };
+		taker: { [key: string]: number };
+	};
+	note: string;
+	native_currency_limit: boolean;
+	created_at: string;
+	updated_at: string;
+}
+
+export interface QuickTrade {
+	type: string;
+	symbol: string;
+	active: boolean;
+}
+
+export interface NetworkQuickTrade {
+	symbol: string;
+	min_size: number;
+	max_size: number;
+	increment_size: number;
+	quote_expiry_time: number;
+}
+
+export interface Broker {
+	id: number;
+	symbol: string;
+	buy_price: number;
+	sell_price: number;
+	paused: boolean;
+	min_size: number;
+	max_size: number;
+}
+
+export interface MetaSection {
+	heading: any;
+	market_list: any;
+	quick_trade: any;
+	card_section: any;
+	carousel_section: any;
+}
+
+export interface Versions {
+	color: string;
+	icons: string;
+	strings: string;
+	sections: string;
+	logo_image: string;
+}
+
+export interface Features {
+	apps: boolean;
+	chat: boolean;
+	home_page: boolean;
+	pro_trade: boolean;
+	stake_page: boolean;
+	quick_trade: boolean;
+	ultimate_fiat: boolean;
+}
+
+export interface UserMeta {
+	[key: string]: {
+		type: string;
+		required: boolean;
+		description: string;
+	};
+}
+
+export interface Info {
+	name: string;
+	active: boolean;
+	exchange_id: number;
+	user_id: number;
+	url: string;
+	is_trial: boolean;
+	created_at: string;
+	expiry: string;
+	collateral_level: string;
+	type: string;
+	plan: string | 'basic';
+	period: string;
+	status: boolean;
+	initialized: boolean;
+}
+
+
+export interface MetaObject {
+	meta: {
+		sections: MetaSection;
+		versions: Versions;
+		default_sort: string;
+		pinned_markets: any[];
+	};
+	color: { [key: string]: Record<string, string> };
+	icons: { [key: string]: Record<string, string> };
+	links: { [key: string]: string };
+	title: string;
+	captcha: { site_key: string };
+	strings: { [key: string]: any };
+	api_name: string;
+	defaults: {
+		theme: string;
+		country: string;
+		language: string;
+	};
+	features: Features;
+	interface: any;
+	user_meta: UserMeta;
+	logo_image: string;
+	description: string;
+	injected_html: any;
+	injected_values: any[];
+	native_currency: string;
+	setup_completed: boolean;
+	valid_languages: string;
+	black_list_countries: string[];
+	onramp: any;
+	offramp: any;
+	status: any;
+	user_payments: any;
+	dust: any;
+	new_user_is_activated: boolean;
+	email_verification_required: boolean;
+	info: Info;
+}
+
+
+interface Configuration {
+	coins: { [key: string]: Coin };
+	pairs: { [key: string]: Pair };
+	tiers: { [key: string]: Tier };
+	quicktrade: QuickTrade[];
+	networkQuickTrades: NetworkQuickTrade[];
+	broker: Broker[];
+	kit: MetaObject
+	email: { [key: string]: any }
 }
 
 let configuration: Configuration = {
@@ -60,16 +235,50 @@ let configuration: Configuration = {
 	pairs: {},
 	tiers: {},
 	kit: {
-		info: {},
+		info: {
+			name: '',
+			active: false,
+			exchange_id: 0,
+			user_id: 0,
+			url: '',
+			is_trial: false,
+			created_at: '',
+			expiry: '',
+			collateral_level: '',
+			type: '',
+			plan: '',
+			period: '',
+			status: false,
+			initialized: false
+		},
 		color: {},
 		interface: {},
 		icons: {},
 		strings: {},
 		links: {},
-		captcha: {},
-		defaults: {},
-		features: {},
-		meta: {},
+		captcha: {
+			site_key: ''
+		},
+		defaults: {
+			theme: '',
+			country: '',
+			language: ''
+		},
+		features: {
+			apps: false,
+			chat: false,
+			home_page: false,
+			pro_trade: false,
+			stake_page: false,
+			quick_trade: false,
+			ultimate_fiat: false
+		},
+		meta: {
+			sections: undefined,
+			versions: undefined,
+			default_sort: '',
+			pinned_markets: []
+		},
 		user_meta: {},
 		injected_values: [],
 		injected_html: {},
@@ -84,30 +293,73 @@ let configuration: Configuration = {
 		new_user_is_activated: null,
 		email_verification_required: null,
 		native_currency: null,
-		status: null
+		status: null,
+		title: '',
+		description: '',
+		setup_completed: false
 	},
-	broker: {},
-	quicktrade: {},
-	networkQuickTrades: {},
+	broker: [],
+	quicktrade: [],
+	networkQuickTrades: [],
 	email: {},
 };
 
+export interface SmtpConfig {
+	port: number;
+	user: string;
+	server: string;
+	password: string;
+}
+
+export interface EmailsConfig {
+	audit: string;
+	sender: string;
+	timezone: string;
+	send_email_to_support: boolean;
+}
+
+export interface CaptchaConfig {
+	secret_key: string;
+}
+
+export interface SecurityConfig {
+	token_time: string;
+	withdrawal_token_expiry: number;
+}
+
 interface Secrets {
-	security: Record<string, any>;
-	accounts: Record<string, any>;
-	captcha: Record<string, any>;
-	emails: Record<string, any>;
-	smtp: Record<string, any>;
-	admin_whitelist: Array<any>
+	smtp: SmtpConfig;
+	emails: EmailsConfig;
+	captcha: CaptchaConfig;
+	security: SecurityConfig;
+	admin_whitelist: Array<any>;
+	allowed_domains: Array<any>;
+	accounts: Record<string, any>
 }
 
 let secrets: Secrets = {
-	security: {},
+	security: {
+		token_time: '',
+		withdrawal_token_expiry: 0
+	},
 	accounts: {},
-	captcha: {},
-	emails: {},
-	smtp: {},
-	admin_whitelist: []
+	captcha: {
+		secret_key: ''
+	},
+	emails: {
+		audit: '',
+		sender: '',
+		timezone: '',
+		send_email_to_support: false
+	},
+	smtp: {
+		port: 0,
+		user: '',
+		server: '',
+		password: ''
+	},
+	admin_whitelist: [],
+	allowed_domains: []
 };
 
 let frozenUsers = {};
@@ -146,6 +398,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
@@ -153,28 +406,78 @@ const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 const resetAllConfig = () => {
 	frozenUsers = {};
 	secrets = {
-		security: {},
+		security: {
+			token_time: '',
+			withdrawal_token_expiry: 0
+		},
 		accounts: {},
-		captcha: {},
-		emails: {},
-		smtp: {},
-		admin_whitelist: []
+		captcha: {
+			secret_key: ''
+		},
+		emails: {
+			audit: '',
+			sender: '',
+			timezone: '',
+			send_email_to_support: false
+		},
+		smtp: {
+			port: 0,
+			user: '',
+			server: '',
+			password: ''
+		},
+		admin_whitelist: [],
+		allowed_domains: []
 	};
 	configuration = {
 		coins: {},
 		pairs: {},
 		tiers: {},
 		kit: {
-			info: {},
+			info: {
+				name: '',
+				active: false,
+				exchange_id: 0,
+				user_id: 0,
+				url: '',
+				is_trial: false,
+				created_at: '',
+				expiry: '',
+				collateral_level: '',
+				type: '',
+				plan: '',
+				period: '',
+				status: false,
+				initialized: false
+			},
 			color: {},
 			interface: {},
 			icons: {},
 			strings: {},
 			links: {},
-			captcha: {},
-			defaults: {},
-			features: {},
-			meta: {},
+			captcha: {
+				site_key: ''
+			},
+			defaults: {
+				theme: '',
+				country: '',
+				language: ''
+			},
+			features: {
+				apps: false,
+				chat: false,
+				home_page: false,
+				pro_trade: false,
+				stake_page: false,
+				quick_trade: false,
+				ultimate_fiat: false
+			},
+			meta: {
+				sections: undefined,
+				versions: undefined,
+				default_sort: '',
+				pinned_markets: []
+			},
 			user_meta: {},
 			injected_values: [],
 			injected_html: {},
@@ -189,11 +492,14 @@ const resetAllConfig = () => {
 			new_user_is_activated: null,
 			email_verification_required: null,
 			native_currency: null,
-			status: null
+			status: null,
+			title: '',
+			description: '',
+			setup_completed: false
 		},
-		broker: {},
-		quicktrade: {},
-		networkQuickTrades: {},
+		broker: [],
+		quicktrade: [],
+		networkQuickTrades: [],
 		email: {}
 	};
 };

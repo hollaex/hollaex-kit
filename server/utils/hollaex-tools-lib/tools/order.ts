@@ -1148,8 +1148,8 @@ const generateOrderFeeData = (userTier, symbol, opts = { discount: 0 }) => {
 		throw new Error(`User tier ${userTier} not found`);
 	}
 
-	let makerFee = tier.fees.maker[symbol];
-	let takerFee = tier.fees.taker[symbol];
+	let makerFee: any = tier.fees.maker[symbol];
+	let takerFee: any = tier.fees.taker[symbol];
 
 	loggerOrders.debug(
 		'generateOrderFeeData',

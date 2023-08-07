@@ -2,6 +2,7 @@
 import { getOrderbook, getKitPairsConfig } from './hollaex-tools-lib/tools/common';
 import * as math from 'mathjs'
 import BigNumber from 'bignumber.js';
+import { Pair } from '../constants';
 const sumQuantities = (orders) =>
     orders.reduce((total, [, size]) => math.add(total, size), 0);
 
@@ -58,10 +59,10 @@ const setPriceEssentials = async (priceEssentials, opts) => {
     const pair = priceEssentials.pair;
     const side = priceEssentials.side;
     const isSourceChanged = priceEssentials.isSourceChanged;
-    const pairData = getKitPairsConfig()[pair] || {};
+    const pairData: Pair = getKitPairsConfig()[pair];
     let priceValues = {};
 
-    const decimalPoint = new BigNumber(pairData.increment_size).dp();
+    const decimalPoint = new BigNumber(pairData ? pairData.increment_size : null).dp();
     let [estimatedPrice] = estimatedQuickTradePriceSelector({
         pairsOrders,
         pair,
