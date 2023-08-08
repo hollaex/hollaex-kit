@@ -4054,6 +4054,7 @@ table th {
   .summary-container .account-details-wrapper .account-type-icon {
     width: 4rem; }
   .summary-container .account-details-wrapper .account-type-menu {
+    opacity: 0.65;
     border-top: 1px solid var(--calculated_secondary-border);
     color: var(--specials_buttons-links-and-highlights);
     cursor: pointer;
@@ -4063,17 +4064,18 @@ table th {
       color: var(--labels_secondary-inactive-label-text-graphics);
       text-transform: lowercase; }
   .summary-container .account-details-wrapper .account-type-menu-active {
+    opacity: 1 !important;
     border-top: 2px solid var(--labels_important-active-labels-text-graphics);
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    border-bottom: 2px solid var(--labels_important-active-labels-text-graphics);
+    color: var(--labels_important-active-labels-text-graphics);
     font-size: 1rem;
     text-transform: uppercase; }
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
-      color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--labels_important-active-labels-text-graphics);
       text-transform: lowercase; }
     .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics); }
-  .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
+      fill: var(--labels_important-active-labels-text-graphics); }
+  .summary-container .account-details-wrapper .account-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
     border-bottom: 1px solid var(--calculated_secondary-border);
