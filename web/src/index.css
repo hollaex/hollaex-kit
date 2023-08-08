@@ -6945,6 +6945,10 @@ table th {
   .buttons-section-header .holla-button {
     font-size: 1.2rem !important; } }
 
+.tools-button .selector-trigger.app_bar-pair-tab.tools {
+  min-width: 10rem !important;
+  max-width: 10rem !important; }
+
 .check_title-container {
   transition: 0.3s;
   display: flex;

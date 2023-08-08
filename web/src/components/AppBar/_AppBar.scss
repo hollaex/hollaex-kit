@@ -1288,3 +1288,14 @@ $app-menu-width: calc(100vw - 40rem);
 		}
 	}
 }
+
+.tools-button {
+	.selector-trigger {
+		&.app_bar-pair-tab {
+			&.tools {
+				min-width: 10rem !important;
+				max-width: 10rem !important;
+			}
+		}
+	}
+}

@@ -3,6 +3,7 @@
 	"APP_SUB_TITLE": "Open Crypto Exchange",
 	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
 	"ADD_TRADING_PAIR": "Select a market",
+	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0} Withdrawal",
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
