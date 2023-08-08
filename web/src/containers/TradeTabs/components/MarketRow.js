@@ -93,7 +93,7 @@ class MarketRow extends Component {
 							{STRINGS['DIGITAL_ASSETS.BROKERAGE']}
 						</EditWrapper>
 					) : (
-						<PriceChange market={market} />
+						<PriceChange market={market} key={key} />
 					)}
 				</td>
 				{!isAsset && (

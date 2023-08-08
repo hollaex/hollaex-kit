@@ -90,6 +90,7 @@ class PairTabs extends Component {
 		const { location, favourites, markets } = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
+			key,
 			pair: { increment_price } = {},
 			ticker: { close } = {},
 			display_name,
@@ -148,7 +149,7 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} />
+											<PriceChange market={market} key={key} />
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
