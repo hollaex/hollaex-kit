@@ -709,7 +709,10 @@
 		"COMPLETED": "Matured",
 		"COMPLETED_TOOLTIP": "Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.",
 		"CONNECT_ERROR": "Please check your wallet",
-		"INSTALL_METAMASK": "You must install Metamask into your browser: https://metamask.io/download.html",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Install MetaMask",
+			"PROMPT": "You must install Metamask into your browser: {0}"
+		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
