@@ -1152,42 +1152,6 @@ table th {
         height: 3rem;
         width: 3rem; }
 
-.download-logins .action_notification-svg svg path {
-  fill: var(--specials_buttons-links-and-highlights); }
-
-.login-history-section-wrapper .refresh-history .action_notification-svg svg path {
-  fill: var(--specials_buttons-links-and-highlights); }
-
-.login-history-section-wrapper .action_notification-wrapper {
-  position: unset; }
-
-.login-history-section-wrapper .header_title-action {
-  position: absolute;
-  top: 0.25rem;
-  right: 0; }
-
-.direction_rtl .login-history-section-wrapper .header_title-action {
-  flex-direction: row-reverse;
-  left: 0; }
-
-.login-history_notifications-wrapper {
-  display: flex;
-  flex-direction: inherit; }
-
-.login-history_notifications-wrapper > div:not(:last-child)::after {
-  padding: 0 0.8rem;
-  content: '|';
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
-.direction_rtl .login-history_notifications-wrapper > div:not(:last-child)::after {
-  padding: 0;
-  content: ''; }
-
-.direction_rtl .login-history_notifications-wrapper > div:not(:last-child)::before {
-  padding: 0 0.8rem;
-  content: '|';
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
 .signup_success-wrapper {
   text-align: center; }
   .signup_success-wrapper .signup_success-content {
