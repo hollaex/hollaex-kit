@@ -718,6 +718,30 @@ const getUserTransactionsByKitId = (
 					});
 				});
 		}
+		return promiseQuery
+			.then(async (transactions) => {
+				if (transactions.data.length > 0) {
+					const networkIds = transactions.data.map((deposit) => deposit.user_id);
+					const idDictionary = await mapNetworkIdToKitId(networkIds);
+					for (let deposit of transactions.data) {
+						const user_kit_id = idDictionary[deposit.user_id];
+						deposit.network_id = deposit.user_id;
+						deposit.user_id = user_kit_id;
+						if (deposit.User) deposit.User.id = user_kit_id;
+					}
+				}
+
+				if (format && format === 'csv') {
+					if (transactions.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					// @ts-ignore
+					const csv = parse(transactions.data, Object.keys(transactions.data[0]));
+					return csv;
+				} else {
+					return transactions;
+				}
+			});
 	} else {
 		if (type === 'deposit') {
 			promiseQuery = getExchangeDeposits(
