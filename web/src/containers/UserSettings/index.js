@@ -11,8 +11,6 @@ import {
 	openContactForm,
 	openRiskPortfolioOrderWarning,
 	closeNotification,
-	setNotification,
-	NOTIFICATIONS,
 } from 'actions/appActions';
 import { logout } from 'actions/authAction';
 import {
@@ -20,7 +18,6 @@ import {
 	setUserData,
 	setUsername,
 	setUsernameStore,
-	deleteUser,
 } from 'actions/userAction';
 import {
 	IconTitle,
@@ -33,12 +30,9 @@ import {
 	TabController,
 	EditWrapper,
 	NotLoggedIn,
-	Dialog,
-	StrictConfirmationForm,
-	EmailCodeForm,
 } from 'components';
 import SettingsForm, { generateFormValues } from './SettingsForm';
-import UsernameForm, { generateUsernameFormValues } from './UsernameForm';
+import AccountForm, { generateUsernameFormValues } from './AccountForm';
 import LanguageForm, { generateLanguageFormValues } from './LanguageForm';
 import NotificationForm, {
 	generateNotificationFormValues,
@@ -53,12 +47,7 @@ class UserSettings extends Component {
 	state = {
 		sections: [],
 		tabs: [],
-		isOpen: false,
-		isEmailCodeForm: false,
-		modalText: '',
 		activeTab: 0,
-		pending: false,
-		showDangerZone: false,
 	};
 
 	componentDidMount() {
@@ -357,22 +346,22 @@ class UserSettings extends Component {
 			{
 				title: isMobile ? (
 					<CustomMobileTabs
-						title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+						title={STRINGS['USER_SETTINGS.TITLE_ACCOUNT']}
 						icon={ICONS['SETTING_CHAT_ICON']}
 					/>
 				) : (
 					// <CustomTabs
-					// 	stringId="USER_SETTINGS.TITLE_CHAT"
-					// 	title={STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					// 	stringId="USER_SETTINGS.TITLE_ACCOUNT"
+					// 	title={STRINGS['USER_SETTINGS.TITLE_ACCOUNT']}
 					// 	iconId="SETTING_CHAT_ICON"
 					// 	icon={ICONS['SETTING_CHAT_ICON']}
 					// />
-					<EditWrapper stringId="USER_SETTINGS.TITLE_CHAT">
-						{STRINGS['USER_SETTINGS.TITLE_CHAT']}
+					<EditWrapper stringId="USER_SETTINGS.TITLE_ACCOUNT">
+						{STRINGS['USER_SETTINGS.TITLE_ACCOUNT']}
 					</EditWrapper>
 				),
 				content: (
-					<UsernameForm
+					<AccountForm
 						onSubmit={this.onSubmitUsername}
 						formFields={usernameFormValues}
 						initialValues={{ username }}
@@ -479,87 +468,12 @@ class UserSettings extends Component {
 		browserHistory.push('/settings');
 	};
 
-	onOpen = () => this.setState({ isOpen: true });
-
-	onClose = () => this.setState({ isOpen: false, isEmailCodeForm: false });
-
-	openEmailCodeForm = () => this.setState({ isEmailCodeForm: true });
-
-	onError = (err) => {
-		this.onClose();
-		const message =
-			err.response && err.response.data && err.response.data.message
-				? err.response.data.message
-				: err.message || JSON.stringify(err);
-		this.props.setNotification(NOTIFICATIONS.ERROR, message);
-	};
-
-	onSubmitDeletion = ({ otp_code, email_code }) => {
-		this.setState({ pending: true });
-
-		deleteUser(email_code, otp_code)
-			.then(this.onClose)
-			.catch(this.onError)
-			.finally(() => this.setState({ pending: false }));
-	};
-
-	renderDeleteUser = () => {
-		const { showDangerZone } = this.state;
-
-		return showDangerZone ? (
-			<div className="danger-zone p-4 important-text">
-				<div className="bold pb-2">
-					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE">
-						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE']}
-					</EditWrapper>
-				</div>
-				<div>
-					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT">
-						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT']}
-					</EditWrapper>
-				</div>
-				<div>
-					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK">
-						{STRINGS.formatString(
-							STRINGS[
-								'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH'
-							],
-							<span onClick={this.onOpen} className="underline-text pointer">
-								{
-									STRINGS[
-										'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK'
-									]
-								}
-							</span>
-						)}
-					</EditWrapper>
-				</div>
-			</div>
-		) : (
-			<div className="mb-3">
-				<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK">
-					{STRINGS.formatString(
-						STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.TEXT'],
-						<span
-							onClick={() => this.setState({ showDangerZone: true })}
-							className="underline-text pointer"
-						>
-							{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.LINK']}
-						</span>
-					)}
-				</EditWrapper>
-			</div>
-		);
-	};
-
 	render() {
 		const {
 			icons: ICONS,
 			openContactForm,
 			user: { verification_level },
 		} = this.props;
-
-		const { isOpen, isEmailCodeForm, pending } = this.state;
 
 		if (isLoggedIn() && verification_level === 0) {
 			return <Loader />;
@@ -594,67 +508,8 @@ class UserSettings extends Component {
 								{STRINGS['USER_SETTINGS.TITLE_TEXT_2']}
 							</EditWrapper>
 						</div>
-						{!isMobile && this.renderDeleteUser()}
 					</div>
 				</HeaderSection>
-
-				{isOpen && (
-					<Dialog
-						isOpen={isOpen}
-						label="delete-account-modal"
-						onCloseDialog={this.onClose}
-						shouldCloseOnOverlayClick={false}
-						showCloseText={true}
-						compressed={false}
-					>
-						{isEmailCodeForm ? (
-							<EmailCodeForm
-								onSubmit={this.onSubmitDeletion}
-								onClickHelp={openContactForm}
-								pending={pending}
-							/>
-						) : (
-							<StrictConfirmationForm
-								onClose={this.onClose}
-								onSubmit={this.openEmailCodeForm}
-							>
-								<div className="text-center warning_text py-4 font-title">
-									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TITLE">
-										{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TITLE']}
-									</EditWrapper>
-								</div>
-
-								<div>
-									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_1">
-										{
-											STRINGS[
-												'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_1'
-											]
-										}
-									</EditWrapper>
-								</div>
-								<div className="my-3">
-									<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_2">
-										{STRINGS.formatString(
-											STRINGS[
-												'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.TEXT_2'
-											],
-											<span>
-												"
-												{
-													STRINGS[
-														'USER_SETTINGS.DELETE_ACCOUNT.CONFIRMATION.KEY'
-													]
-												}
-												"
-											</span>
-										)}
-									</EditWrapper>
-								</div>
-							</StrictConfirmationForm>
-						)}
-					</Dialog>
-				)}
 
 				<NotLoggedIn>
 					{!isMobile ? (
@@ -675,7 +530,6 @@ class UserSettings extends Component {
 					{isMobile && (
 						<div className="my-4 text-center">
 							{/* <Button label={STRINGS["ACCOUNTS.TAB_SIGNOUT"]} onClick={this.logout} /> */}
-							{this.renderDeleteUser()}
 						</div>
 					)}
 				</NotLoggedIn>
@@ -712,7 +566,6 @@ const mapDispatchToProps = (dispatch) => ({
 	),
 	closeNotification: bindActionCreators(closeNotification, dispatch),
 	logout: bindActionCreators(logout, dispatch),
-	setNotification: bindActionCreators(setNotification, dispatch),
 });
 
 export default connect(
