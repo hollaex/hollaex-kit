@@ -58,7 +58,7 @@ export const MENU_ITEMS = {
 			id: 'chat',
 			path: '/chat',
 			icon_id: 'CHAT',
-			string_id: 'USER_SETTINGS.TITLE_ACCOUNT',
+			string_id: 'USER_SETTINGS.TITLE_CHAT',
 			hide_from_appbar: true,
 			hide_from_sidebar: true,
 			hide_from_menulist: true,

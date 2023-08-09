@@ -85,7 +85,7 @@ class UserSettings extends Component {
 			this.setState({ activeTab: 4 });
 		} else if (
 			window.location.search &&
-			window.location.search.includes('chat')
+			window.location.search.includes('account')
 		) {
 			this.setState({ activeTab: 5 });
 		}
@@ -148,7 +148,7 @@ class UserSettings extends Component {
 		} else if (this.state.activeTab === 4) {
 			currentTab = 'manageRisk';
 		} else if (this.state.activeTab === 5) {
-			currentTab = 'chat';
+			currentTab = 'account';
 		}
 		this.props.router.push(`/settings?${currentTab}`);
 	};
