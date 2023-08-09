@@ -24,7 +24,7 @@ import { isNumber, difference } from 'lodash';
 
 let nodeLib;
 
-export const getNodeLib = () => nodeLib;
+export const getNodeLib = (): Network => nodeLib;
 
 subscriber.on('message', (channel, message) => {
 	if (channel === INIT_CHANNEL) {

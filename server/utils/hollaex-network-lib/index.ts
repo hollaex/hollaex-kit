@@ -2,26 +2,26 @@
 
 import moment from 'moment';
 import {
-  isBoolean,
-  isPlainObject,
-  isNumber,
-  isString,
-  isArray,
-  isBuffer,
-  omit,
-  isNull,
-  isEmpty,
-  snakeCase,
+	isBoolean,
+	isPlainObject,
+	isNumber,
+	isString,
+	isArray,
+	isBuffer,
+	omit,
+	isNull,
+	isEmpty,
+	snakeCase,
 } from 'lodash';
 import {
-  createRequest,
-  generateHeaders,
-  checkKit,
-  createSignature,
-  parameterError,
-  isDatetime,
-  sanitizeDate,
-  isUrl,
+	createRequest,
+	generateHeaders,
+	checkKit,
+	createSignature,
+	parameterError,
+	isDatetime,
+	sanitizeDate,
+	isUrl,
 } from './utils';
 import WebSocket from 'ws';
 import { setWsHeartbeat } from 'ws-heartbeat/client';
@@ -90,7 +90,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Your exchange values
 	 */
-	async init(opts = {
+	async init(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.activation_code);
@@ -120,7 +120,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Created user's values on network
 	 */
-	createUser(email, opts = {
+	createUser(email, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -130,9 +130,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/signup`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/signup`;
 		const data = { email };
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -161,7 +160,7 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of trades on the page. Data is an array of trades
 	 */
 	getTrades(
-		opts = {
+		opts: any = {
 			symbol: null,
 			limit: null,
 			page: null,
@@ -237,7 +236,7 @@ class HollaExNetwork {
 	 */
 	getUserTrades(
 		userId,
-		opts = {
+		opts: any = {
 			symbol: null,
 			limit: null,
 			page: null,
@@ -309,7 +308,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} User network data
 	 */
-	getUser(userId, opts = {
+	getUser(userId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -319,9 +318,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/user?user_id=${userId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/user?user_id=${userId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -339,7 +337,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of users for the exchange on the network. Data is an array of users
 	 */
-	getUsers(opts = {
+	getUsers(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -365,7 +363,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with new address
 	 */
-	createUserCryptoAddress(userId, crypto, opts = {
+	createUserCryptoAddress(userId, crypto, opts: any = {
 		network: null,
 		additionalHeaders: null
 	}) {
@@ -412,7 +410,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of Wallets on the page. Data is an array of Wallets
 	 */
-	getExchangeWallets(opts = {
+	getExchangeWallets(opts: any = {
 		userId: null,
 		currency: null,
 		network: null,
@@ -429,9 +427,8 @@ class HollaExNetwork {
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/wallets?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/wallets?`;
 
 		if (opts.userId) {
 			path += `&user_id=${opts.userId}`;
@@ -463,7 +460,7 @@ class HollaExNetwork {
 		if (isDatetime(opts.endDate)) {
 			path += `&end_date=${sanitizeDate(opts.endDate)}`;
 		}
-		
+
 		if (opts.currency) {
 			path += `&currency=${opts.currency}`;
 		}
@@ -502,7 +499,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Withdrawal made on the network
 	 */
-	performWithdrawal(userId, address, currency, amount, opts = {
+	performWithdrawal(userId, address, currency, amount, opts: any = {
 		network: null,
 		additionalHeaders: null
 	}) {
@@ -519,9 +516,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/withdraw?user_id=${userId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/withdraw?user_id=${userId}`;
 		const data: any = { address, currency, amount };
 		if (opts.network) {
 			data.network = opts.network;
@@ -546,7 +542,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Withdrawal canceled on the network
 	 */
-	cancelWithdrawal(userId, withdrawalId, opts = {
+	cancelWithdrawal(userId, withdrawalId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -558,9 +554,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'DELETE';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/withdraw?user_id=${userId}&id=${withdrawalId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/withdraw?user_id=${userId}&id=${withdrawalId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -594,7 +589,7 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of deposits on the page. Data is an array of deposits
 	 */
 	getDeposits(
-		opts = {
+		opts: any = {
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -616,9 +611,8 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/deposits?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/deposits?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -715,7 +709,7 @@ class HollaExNetwork {
 	 */
 	getUserDeposits(
 		userId,
-		opts = {
+		opts: any = {
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -742,9 +736,8 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/deposits?user_id=${userId}`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/deposits?user_id=${userId}`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -839,7 +832,7 @@ class HollaExNetwork {
 	 * @return {object} Fields: Count, Data. Count is the number of withdrawals on the page. Data is an array of withdrawals
 	 */
 	getWithdrawals(
-		opts = {
+		opts: any = {
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -861,9 +854,8 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/withdrawals?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/withdrawals?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -960,7 +952,7 @@ class HollaExNetwork {
 	 */
 	getUserWithdrawals(
 		userId,
-		opts = {
+		opts: any = {
 			currency: null,
 			status: null,
 			dismissed: null,
@@ -987,9 +979,8 @@ class HollaExNetwork {
 
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/withdrawals?user_id=${userId}`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/withdrawals?user_id=${userId}`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -1068,7 +1059,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getBalance(opts = {
+	getBalance(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1094,7 +1085,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Available, pending, and total balance for all currencies for your exchange on the network
 	 */
-	getUserBalance(userId, opts = {
+	getUserBalance(userId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1127,7 +1118,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Fields: Count, Data. Count is the number of rows on the page. Data is an array of balances for assets
 	 */
-	getBalances(opts = {
+	getBalances(opts: any = {
 		userId: null,
 		currency: null,
 		format: null,
@@ -1182,7 +1173,7 @@ class HollaExNetwork {
 		makerId,
 		takerId,
 		feeStructure,
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
@@ -1209,9 +1200,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/trade`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/trade`;
 
 		const data = {
 			side,
@@ -1243,7 +1233,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Order on the network with current data e.g. side, size, filled, etc.
 	 */
-	getOrder(userId, orderId, opts = {
+	getOrder(userId, orderId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1255,9 +1245,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/order?user_id=${userId}&order_id=${orderId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1296,11 +1285,11 @@ class HollaExNetwork {
 		size,
 		type,
 		price = 0,
-		feeData = {
+		feeData: any = {
 			fee_structure: null,
 			fee_coin: null
 		},
-		opts = {
+		opts: any = {
 			stop: null,
 			meta: null,
 			additionalHeaders: null
@@ -1325,9 +1314,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/order?user_id=${userId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/order?user_id=${userId}`;
 		const data: any = { symbol, side, size, type, price };
 
 		if (isPlainObject(feeData.fee_structure)) {
@@ -1366,7 +1354,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Value of canceled order on the network with values side, size, filled, etc.
 	 */
-	cancelOrder(userId, orderId, opts = {
+	cancelOrder(userId, orderId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1378,9 +1366,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'DELETE';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/order?user_id=${userId}&order_id=${orderId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/order?user_id=${userId}&order_id=${orderId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1409,7 +1396,7 @@ class HollaExNetwork {
 	 * @return {array} Array of queried orders
 	 */
 	getOrders(
-		opts = {
+		opts: any = {
 			symbol: null,
 			side: null,
 			status: null,
@@ -1503,7 +1490,7 @@ class HollaExNetwork {
 	 */
 	getUserOrders(
 		userId,
-		opts = {
+		opts: any = {
 			symbol: null,
 			side: null,
 			status: null,
@@ -1591,7 +1578,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of canceled orders
 	 */
-	cancelAllOrders(userId, opts = {
+	cancelAllOrders(userId, opts: any = {
 		symbol: null,
 		additionalHeaders: null
 	}) {
@@ -1603,9 +1590,8 @@ class HollaExNetwork {
 
 		const verb = 'DELETE';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/order/all?user_id=${userId}`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/order/all?user_id=${userId}`;
 		if (opts.symbol) {
 			path += `&symbol=${opts.symbol}`;
 		}
@@ -1628,7 +1614,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with field data that contains stats info
 	 */
-	getUserStats(userId, opts = {
+	getUserStats(userId, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1638,9 +1624,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/user/stats?user_id=${userId}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/user/stats?user_id=${userId}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1668,7 +1653,7 @@ class HollaExNetwork {
 		transactionId,
 		address,
 		network,
-		opts = {
+		opts: any = {
 			isTestnet: null,
 			additionalHeaders: null
 		}
@@ -1721,7 +1706,7 @@ class HollaExNetwork {
 		receiverId,
 		currency,
 		amount,
-		opts = {
+		opts: any = {
 			transactionId: null,
 			description: null,
 			email: null,
@@ -1741,9 +1726,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/transfer`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/transfer`;
 		const data: any = {
 			sender_id: senderId,
 			receiver_id: receiverId,
@@ -1792,7 +1776,7 @@ class HollaExNetwork {
 	 * @return {object} Count and data format.
 	 */
 	getTradesHistory(
-		opts = {
+		opts: any = {
 			symbol: null,
 			side: null,
 			limit: null,
@@ -1807,9 +1791,8 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
 
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/trades/history?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/trades/history?`;
 
 		if (isNumber(opts.limit)) {
 			path += `&limit=${opts.limit}`;
@@ -1863,7 +1846,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with trades
 	 */
-	getPublicTrades(opts = {
+	getPublicTrades(opts: any = {
 		symbol: null,
 		additionalHeaders: null
 	}) {
@@ -1893,7 +1876,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with orderbook
 	 */
-	getOrderbook(symbol, opts = {
+	getOrderbook(symbol, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1903,9 +1886,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/orderbook`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/orderbook`;
 
 		if (symbol) {
 			path += `?symbol=${symbol}`;
@@ -1928,14 +1910,13 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with orderbook
 	 */
-	getOrderbooks(opts = {
+	getOrderbooks(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/orderbooks`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/orderbooks`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -1958,7 +1939,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with trade history info
 	 */
-	getChart(from, to, symbol, resolution, opts = {
+	getChart(from, to, symbol, resolution, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -1974,9 +1955,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/chart?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1997,7 +1977,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of objects with trade history info
 	 */
-	getCharts(from, to, resolution, opts = {
+	getCharts(from, to, resolution, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2011,9 +1991,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/charts?from=${from}&to=${to}&resolution=${resolution}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/charts?from=${from}&to=${to}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2031,14 +2010,13 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf config
 	 */
-	getUdfConfig(opts = {
+	getUdfConfig(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/udf/config`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/udf/config`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2060,7 +2038,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf history HOLCV
 	 */
-	getUdfHistory(from, to, symbol, resolution, opts = {
+	getUdfHistory(from, to, symbol, resolution, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2076,9 +2054,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/udf/history?from=${from}&to=${to}&symbol=${symbol}&resolution=${resolution}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2097,7 +2074,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with TradingView udf symbols
 	 */
-	getUdfSymbols(symbol, opts = {
+	getUdfSymbols(symbol, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2107,9 +2084,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/udf/symbols?symbol=${symbol}`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/udf/symbols?symbol=${symbol}`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2128,7 +2104,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with historical data
 	 */
-	getTicker(symbol, opts = {
+	getTicker(symbol, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2161,14 +2137,13 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with historical data for all symbols
 	 */
-	getTickers(opts = {
+	getTickers(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/tickers`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/tickers`;
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -2195,7 +2170,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with created mint's data.
 	 */
-	mintAsset(userId, currency, amount, opts = {
+	mintAsset(userId, currency, amount, opts: any = {
 		description: null,
 		transactionId: null,
 		address: null,
@@ -2301,7 +2276,7 @@ class HollaExNetwork {
 	 */
 	updatePendingMint(
 		transactionId,
-		opts = {
+		opts: any = {
 			status: null,
 			dismissed: null,
 			rejected: null,
@@ -2392,7 +2367,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with created burn's data.
 	 */
-	burnAsset(userId, currency, amount, opts = {
+	burnAsset(userId, currency, amount, opts: any = {
 		description: null,
 		transactionId: null,
 		address: null,
@@ -2498,7 +2473,7 @@ class HollaExNetwork {
 	 */
 	updatePendingBurn(
 		transactionId,
-		opts = {
+		opts: any = {
 			status: null,
 			dismissed: null,
 			rejected: null,
@@ -2583,7 +2558,7 @@ class HollaExNetwork {
 	 * @return {object} Object with generated fees
 	 */
 	getGeneratedFees(
-		opts = {
+		opts: any = {
 			startDate: null,
 			endDate: null,
 			additionalHeaders: null
@@ -2620,7 +2595,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with settled fees.
 	 */
-	settleFees(opts = {
+	settleFees(opts: any = {
 		user_id: null,
 		additionalHeaders: null
 	}) {
@@ -2653,7 +2628,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with converted assets.
 	 */
-	getOraclePrices(assets: any = [], opts = {
+	getOraclePrices(assets: any = [], opts: any = {
 		quote: 'usdt',
 		amount: 1,
 		additionalHeaders: null
@@ -2667,9 +2642,8 @@ class HollaExNetwork {
 		assets = assets.join(',');
 
 		const verb = 'GET';
-		let path = `${this.baseUrl}/oracle/prices?exchange_id=${
-			this.exchange_id
-		}&assets=${assets}`;
+		let path = `${this.baseUrl}/oracle/prices?exchange_id=${this.exchange_id
+			}&assets=${assets}`;
 
 		if (isString(opts.quote)) {
 			path += `&quote=${opts.quote}`;
@@ -2694,7 +2668,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data: null, formData: null }, 'oracle');
 	}
 
-	getConstants(opts = {
+	getConstants(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2712,7 +2686,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers);
 	}
 
-	getExchange(opts = {
+	getExchange(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -2743,7 +2717,7 @@ class HollaExNetwork {
 			pairs: null,
 			coins: null
 		},
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
@@ -2804,16 +2778,15 @@ class HollaExNetwork {
 	}
 
 	getAllCoins(
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/coin/all`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/coin/all`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -2855,9 +2828,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/coin`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/coin`;
 		const data: any = {
 			symbol,
 			fullname
@@ -2927,8 +2899,8 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
-	getCoins (
-		opts = {
+	getCoins(
+		opts: any = {
 			search: null,
 			additionalHeaders: null
 		}
@@ -2936,9 +2908,8 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 
 		const verb = 'GET';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/coins?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/coins?`;
 
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
@@ -2976,7 +2947,7 @@ class HollaExNetwork {
 			allowDeposit: null,
 			allowWithdrawal: null
 		},
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
@@ -2991,9 +2962,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/coin`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/coin`;
 		const data: any = {};
 
 		for (const field in fields) {
@@ -3070,16 +3040,15 @@ class HollaExNetwork {
 	}
 
 	getAllPairs(
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
 		checkKit(this.exchange_id);
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/pair/all`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/pair/all`;
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
@@ -3121,9 +3090,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/pair`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/pair`;
 		const data: any = {
 			name,
 			pair_base: baseCoin,
@@ -3186,8 +3154,8 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
-	getPairs (
-		opts = {
+	getPairs(
+		opts: any = {
 			search: null,
 			additionalHeaders: null
 		}
@@ -3195,9 +3163,8 @@ class HollaExNetwork {
 		checkKit(this.exchange_id);
 
 		const verb = 'GET';
-		let path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/pairs?`;
+		let path = `${this.baseUrl}/network/${this.exchange_id
+			}/pairs?`;
 
 		if (isString(opts.search)) {
 			path += `&search=${opts.search}`;
@@ -3227,7 +3194,7 @@ class HollaExNetwork {
 			isPublic: null,
 			circuitBreaker: null
 		},
-		opts = {
+		opts: any = {
 			additionalHeaders: null
 		}
 	) {
@@ -3242,9 +3209,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'PUT';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/pair`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/pair`;
 		const data: any = {};
 
 		for (const field in fields) {
@@ -3292,7 +3258,7 @@ class HollaExNetwork {
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { data });
 	}
 
-	async uploadIcon(image, name, opts = {
+	async uploadIcon(image, name, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3310,9 +3276,8 @@ class HollaExNetwork {
 		}
 
 		const verb = 'POST';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/icon`;
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/icon`;
 
 		const formData = {
 			file: {
@@ -3333,22 +3298,21 @@ class HollaExNetwork {
 			verb,
 			path,
 			this.apiExpiresAfter,
-			omit(formData, [ 'file' ])
+			omit(formData, ['file'])
 		);
 
 		return createRequest(verb, `${this.apiUrl}${path}`, headers, { formData });
 	}
 
-	async generateDashToken(opts = {
+	async generateDashToken(opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
 
 		const verb = 'GET';
-		const path = `${this.baseUrl}/network/${
-			this.exchange_id
-		}/jwt`;
-		
+		const path = `${this.baseUrl}/network/${this.exchange_id
+			}/jwt`;
+
 
 
 		const headers = generateHeaders(
@@ -3375,7 +3339,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with quote data.
 	 */
-	getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts = {
+	getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3425,7 +3389,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object of the trade data.
 	 */
-	executeQuote(token, user_id, fee, opts = {
+	executeQuote(token, user_id, fee, opts: any = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3462,7 +3426,7 @@ class HollaExNetwork {
 	connect(events = []) {
 		checkKit(this.exchange_id);
 
-		const [ protocol, baseUrl ] = this.apiUrl.split('://');
+		const [protocol, baseUrl] = this.apiUrl.split('://');
 		this.wsUrl =
 			protocol === 'https'
 				? `wss://${baseUrl}/stream?exchange_id=${this.exchange_id}`
