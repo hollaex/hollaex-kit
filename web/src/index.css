@@ -329,6 +329,9 @@ table th {
 .secondary-text {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.blue-icon svg path {
+  fill: var(--specials_buttons-links-and-highlights); }
+
 .kit-divider {
   margin: 1rem 0;
   border-bottom: solid 1px var(--labels_secondary-inactive-label-text-graphics); }
@@ -2391,10 +2394,6 @@ table th {
     background: none; }
   .history_block-wrapper .action_notification-wrapper {
     top: 21px; }
-  .history_block-wrapper .download-icon .action_notification-svg svg path {
-    fill: var(--specials_buttons-links-and-highlights); }
-  .history_block-wrapper .download-icon .right-align {
-    right: 8% !important; }
   .history_block-wrapper .loader_background {
     filter: opacity(0.25) !important; }
 
@@ -2451,43 +2450,14 @@ table th {
   .expandable-container .font-bold {
     font-weight: bolder; }
 
-.direction_ltr .history_block-wrapper .check-deposit-txt {
-  right: 230px !important; }
-  .direction_ltr .history_block-wrapper .check-deposit-txt svg {
-    padding-right: 0.3rem;
-    box-sizing: border-box;
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_ltr .history_block-wrapper .download-history {
-  right: 85px !important; }
-  .direction_ltr .history_block-wrapper .download-history svg {
-    padding-right: 0.1rem;
-    box-sizing: content-box;
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_ltr .history_block-wrapper .refresh-history {
-  right: 10px !important; }
-
-.direction_rtl .history_block-wrapper .check-deposit-txt {
-  left: 150px !important; }
-  .direction_rtl .history_block-wrapper .check-deposit-txt svg {
-    padding-left: 0.3rem;
-    box-sizing: border-box;
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_rtl .history_block-wrapper .download-history {
-  left: 65px !important; }
-  .direction_rtl .history_block-wrapper .download-history svg {
-    padding-left: 0.1rem;
-    box-sizing: content-box;
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_rtl .history_block-wrapper .refresh-history {
-  left: 10px !important; }
+.action_notification-container {
+  display: flex; }
+  .action_notification-container .action_notification-wrapper {
+    position: unset; }
+  .action_notification-container > div:not(:last-child)::after {
+    padding: 0 0.8rem;
+    content: '|';
+    color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .trade-container {
   flex: 1; }
