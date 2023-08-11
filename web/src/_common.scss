@@ -319,6 +319,12 @@ table th {
 	color: $colors-black;
 }
 
+.blue-icon {
+	svg path {
+		fill: $link;
+	}
+}
+
 .kit-divider {
 	margin: 1rem 0;
 	border-bottom: solid 1px $colors-black;
