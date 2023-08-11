@@ -417,7 +417,10 @@ const CoinPage = ({
 											</EditWrapper>
 										</div>
 										{selectedPair && selectedPair?.[0] && (
-											<PriceChange market={selectedPair?.[0]} />
+											<PriceChange
+												market={selectedPair?.[0]}
+												key={selectedPair?.[0]?.key}
+											/>
 										)}
 									</div>
 								</div>

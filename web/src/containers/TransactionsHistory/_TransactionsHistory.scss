@@ -177,14 +177,7 @@
 	.action_notification-wrapper {
 		top: 21px;
 	}
-	.download-icon {
-		.action_notification-svg svg path {
-			fill: $link;
-		}
-		.right-align {
-			right: 8% !important;
-		}
-	}
+
 	.loader_background {
 		filter: opacity(0.25) !important;
 	}
@@ -268,58 +261,16 @@
 	}
 }
 
-.direction_ltr {
-	.history_block-wrapper {
-		.check-deposit-txt {
-			right: 230px !important;
-			& svg {
-				padding-right: 0.3rem;
-				box-sizing: border-box;
-				border-right: 1px solid $trade-fill-indicator-text;
-				height: 100%;
-			}
-		}
+.action_notification-container {
+	display: flex;
 
-		.download-history {
-			right: 85px !important;
-			& svg {
-				padding-right: 0.1rem;
-				box-sizing: content-box;
-				border-right: 1px solid $trade-fill-indicator-text;
-				height: 100%;
-			}
-		}
-
-		.refresh-history {
-			right: 10px !important;
-		}
+	.action_notification-wrapper {
+		position: unset;
 	}
-}
 
-.direction_rtl {
-	.history_block-wrapper {
-		.check-deposit-txt {
-			left: 150px !important;
-			& svg {
-				padding-left: 0.3rem;
-				box-sizing: border-box;
-				border-left: 1px solid $trade-fill-indicator-text;
-				height: 100%;
-			}
-		}
-
-		.download-history {
-			left: 65px !important;
-			& svg {
-				padding-left: 0.1rem;
-				box-sizing: content-box;
-				border-left: 1px solid $trade-fill-indicator-text;
-				height: 100%;
-			}
-		}
-
-		.refresh-history {
-			left: 10px !important;
-		}
+	> div:not(:last-child)::after {
+		padding: 0 0.8rem;
+		content: '|';
+		color: $trade-fill-indicator-text;
 	}
 }

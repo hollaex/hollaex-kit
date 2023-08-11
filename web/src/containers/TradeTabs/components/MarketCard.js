@@ -52,7 +52,7 @@ class MarketCard extends Component {
 							</div>
 							<div className="d-flex justify-content-end align-center">
 								<div className="d-flex justify-content-end">
-									<PriceChange market={market} />
+									<PriceChange market={market} key={key} />
 								</div>
 								<div className=" ml-2 trade_tab-pair-volume">
 									<span className="pr-2">Vol:</span>
