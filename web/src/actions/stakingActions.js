@@ -1,9 +1,12 @@
+import React from 'react';
 import { web3, CONTRACT_ADDRESSES, CONTRACTS } from 'config/contracts';
 import mathjs from 'mathjs';
 import { hash } from 'rsvp';
 import store from 'store';
 import { openMetamaskError } from 'actions/appActions';
+import { METAMASK_LINK } from 'config/constants';
 import STRINGS from 'config/localizedStrings';
+import { open } from 'helpers/link';
 
 const commonConfigs = {
 	type: '0x2',
@@ -144,8 +147,25 @@ export const connectWallet = () => {
 				store.dispatch(openMetamaskError(message));
 			}
 		} else {
-			const message = STRINGS['STAKE.INSTALL_METAMASK'];
-			store.dispatch(openMetamaskError(message));
+			const renderMessage = () => (
+				<div>
+					<div className="bold py-1">
+						{STRINGS['STAKE.INSTALL_METAMASK_DETAILS.TITLE']}
+					</div>
+					<div>
+						{STRINGS.formatString(
+							STRINGS['STAKE.INSTALL_METAMASK_DETAILS.PROMPT'],
+							<span
+								className="underline-text pointer"
+								onClick={() => open(METAMASK_LINK)}
+							>
+								{METAMASK_LINK}
+							</span>
+						)}
+					</div>
+				</div>
+			);
+			store.dispatch(openMetamaskError(renderMessage()));
 		}
 	};
 };

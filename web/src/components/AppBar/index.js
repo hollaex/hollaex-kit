@@ -74,13 +74,7 @@ class AppBar extends Component {
 			if (!user.otp_enabled) {
 				securityPending += 1;
 			}
-			if (
-				user.verification_level < 1 &&
-				!full_name &&
-				enabledPlugins.includes('kyc')
-			) {
-				verificationPending += 1;
-			}
+
 			if (
 				(id_data.status === 0 || id_data.status === 2) &&
 				enabledPlugins.includes('kyc')

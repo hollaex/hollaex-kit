@@ -241,7 +241,7 @@ class MarketSelector extends Component {
 												</div>
 											</div>
 											<div className="d-flex align-items-center mr-4">
-												<PriceChange market={market} />
+												<PriceChange market={market} key={key} />
 											</div>
 										</div>
 									</div>

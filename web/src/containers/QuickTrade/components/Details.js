@@ -49,7 +49,7 @@ const Details = ({ coins, constants, market, router, lineChartData }) => {
 								{STRINGS['QUICK_TRADE_COMPONENT.CHANGE_TEXT']}
 							</EditWrapper>
 						</div>
-						<PriceChange market={market} large />
+						<PriceChange market={market} key={key} large />
 					</div>
 				</div>
 				<div className="chart w-100">
