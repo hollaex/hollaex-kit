@@ -79,6 +79,7 @@ const setExchange = (data) => {
 		timeout: 5000,
 		...(data.api_key && { 'apiKey': data.api_key }),
 		...(data.api_secret && { 'secret': data.api_secret }),
+		options: { "defaultType": "spot" }
 	})
 
 	if (data.id) {
