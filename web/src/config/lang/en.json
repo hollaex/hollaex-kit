@@ -3,6 +3,7 @@
 	"APP_SUB_TITLE": "Open Crypto Exchange",
 	"LOGOUT_CONFIRM_TEXT": "Are you sure you want to logout?",
 	"ADD_TRADING_PAIR": "Select a market",
+	"TRADE_TOOLS": "Tools",
 	"CANCEL_BASE_WITHDRAWAL": "Cancel {0} Withdrawal",
 	"CANCEL_WITHDRAWAL": "Cancel Withdrawal",
 	"CANCEL_WITHDRAWAL_POPUP_CONFIRM": "Do you want to cancel your pending withdrawal of:",
@@ -459,6 +460,7 @@
 		"TITLE_INTERFACE": "Interface",
 		"TITLE_LANGUAGE": "Language",
 		"TITLE_CHAT": "Chat",
+		"TITLE_ACCOUNT": "Account",
 		"TITLE_AUDIO_CUE": "Audio Cues",
 		"TITLE_MANAGE_RISK": "Manage Risk",
 		"ORDERBOOK_LEVEL": "Orderbook Levels (Max 20)",
@@ -731,7 +733,10 @@
 		"COMPLETED": "Matured",
 		"COMPLETED_TOOLTIP": "Stake is mature. Continue staking to earn more rewards or unstake to claim rewards.",
 		"CONNECT_ERROR": "Please check your wallet",
-		"INSTALL_METAMASK": "You must install Metamask into your browser: https://metamask.io/download.html",
+		"INSTALL_METAMASK_DETAILS": {
+			"TITLE": "Install MetaMask",
+			"PROMPT": "You must install Metamask into your browser: {0}"
+		},
 		"INSTALL_METAMASK_TITLE": "MetaMask not detected",
 		"REWARDS": {
 			"0": { "CARD": "Earn rewards (no bonuses)", "TEXT": "regular rewards." },
