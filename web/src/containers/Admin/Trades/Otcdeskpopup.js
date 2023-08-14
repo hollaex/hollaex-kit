@@ -147,6 +147,7 @@ const Otcdeskpopup = ({
 		kitPlan !== 'crypto' && 'coinbase',
 		kitPlan !== 'crypto' && 'bitfinex2',
 		kitPlan !== 'crypto' && 'kraken',
+		kitPlan !== 'crypto' && 'bybit',
 	];
 	useEffect(() => {
 		if (
@@ -470,6 +471,9 @@ const Otcdeskpopup = ({
 			)}
 			{_toLower(kit?.info?.plan) !== 'crypto' && (
 				<Option value="kraken">Kraken</Option>
+			)}
+			{_toLower(kit?.info?.plan) !== 'crypto' && (
+				<Option value="bybit">Bybit</Option>
 			)}
 			{hasOracle && <Option value="oracle">Hollaex Oracle</Option>}
 			{/* {_toLower(kit?.info?.plan) !== 'crypto' && <Option value="uniswap">Uniswap</Option>} */}
