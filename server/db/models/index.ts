@@ -177,7 +177,8 @@ export {
 	Broker,
 	Session,
 	QuickTrade,
-	sequelize
+	sequelize,
+	Sequelize
 }
 
 export default db;
