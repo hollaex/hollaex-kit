@@ -450,7 +450,7 @@ const reverseTransaction = async (orderData) => {
 
 				if (exchangeKey === 'bybit') {
 					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
-					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.10 : orderbook['bids'][0][0] * 0.90;
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
 
 					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
 						.catch((err) => { notifyUser(err.message, broker.user_id); });
