@@ -174,7 +174,7 @@ const Filters = ({ coins = {}, onSearch, formName, activeTab }) => {
 						<Option value={null}>{STRINGS['ALL']}</Option>
 						{Object.entries(coins).map(([_, { symbol, fullname, icon_id }]) => (
 							<Option key={symbol} value={symbol}>
-								<div className="d-flex filter-option">
+								<div className="d-flex gap-1">
 									<Coin iconId={icon_id} type="CS1" />
 									<div>{fullname}</div>
 								</div>
