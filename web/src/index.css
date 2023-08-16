@@ -7070,7 +7070,10 @@ table th {
   padding: 0.5rem;
   font-size: 1.2rem; }
   .mobile_tab-wrapper .custom_tab_icon-mobile {
-    width: 4rem; }
+    width: 4rem !important; }
+    .mobile_tab-wrapper .custom_tab_icon-mobile svg {
+      width: 4rem !important;
+      height: 4rem !important; }
   .mobile_tab-wrapper .custom_tab_status-icon {
     width: 1.7rem; }
   .mobile_tab-wrapper .mobile-tab-title {

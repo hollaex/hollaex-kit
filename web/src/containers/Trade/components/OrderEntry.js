@@ -34,6 +34,7 @@ import STRINGS from 'config/localizedStrings';
 import { SIDES, TYPES } from 'config/options';
 import { isLoggedIn } from 'utils/token';
 import { orderbookSelector, marketPriceSelector } from '../utils';
+import { estimatedMarketPriceSelector } from 'containers/Trade/utils';
 import { setOrderEntryData } from 'actions/orderbookAction';
 
 const ORDER_OPTIONS = () => [
@@ -346,6 +347,7 @@ class OrderEntry extends Component {
 			price,
 			size,
 			pair_base,
+			pair_2,
 			increment_size,
 			increment_price,
 			openCheckOrder,
@@ -354,11 +356,14 @@ class OrderEntry extends Component {
 			settings: { risk = {}, notification = {} },
 			totalAsset,
 			oraclePrices,
+			estimatedPrice,
 		} = this.props;
+
 		const orderTotal = mathjs.add(
 			mathjs.fraction(this.state.orderPrice),
 			mathjs.fraction(this.state.orderFees)
 		);
+
 		const order = {
 			type,
 			side,
@@ -369,6 +374,8 @@ class OrderEntry extends Component {
 			orderFees: this.state.orderFees,
 		};
 
+		const isMarket = type === 'market';
+
 		const riskySize = formatNumber(
 			mathjs.multiply(
 				mathjs.divide(totalAsset, 100),
@@ -376,13 +383,15 @@ class OrderEntry extends Component {
 			),
 			getDecimals(increment_size)
 		);
+
 		const calculatedOrderValue = calculateOraclePrice(
-			size,
-			oraclePrices[pair_base]
+			isMarket ? estimatedPrice : mathjs.multiply(size, price),
+			oraclePrices[pair_2]
 		);
+
 		const isRiskyOrder = mathjs.largerEq(calculatedOrderValue, riskySize);
 
-		if (type === 'market') {
+		if (isMarket) {
 			delete order.price;
 		} else if (price) {
 			order.price = formatNumber(price, getDecimals(increment_price));
@@ -689,6 +698,9 @@ const mapStateToProps = (state) => {
 		increment_price,
 	} = state.app.pairs[pair] || { pair_base: '', pair_2: '' };
 	const marketPrice = marketPriceSelector(state);
+	const [estimatedPrice] = estimatedMarketPriceSelector(state, {
+		...formValues,
+	});
 
 	return {
 		...formValues,
@@ -717,6 +729,7 @@ const mapStateToProps = (state) => {
 		order_entry_data: state.orderbook.order_entry_data,
 		totalAsset: state.asset.totalAsset,
 		oraclePrices: state.asset.oraclePrices,
+		estimatedPrice,
 	};
 };
 
