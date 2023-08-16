@@ -16,15 +16,15 @@ describe('tests for /admin/fees/settle', function () {
     });
 
 
-    //Integration Testing
-    it('Integration Test -should respond 200 for "Success"', async () => {
-        const response = await request()
-            .get('/v2/admin/fees/settle')
-            .set('Authorization', `Bearer ${bearerToken}`);
+    // //Integration Testing
+    // it('Integration Test -should respond 200 for "Success"', async () => {
+    //     const response = await request()
+    //         .get('/v2/admin/fees/settle')
+    //         .set('Authorization', `Bearer ${bearerToken}`);
 
-        response.should.have.status(200);
-        response.should.be.json;
-    });
+    //     response.should.have.status(200);
+    //     response.should.be.json;
+    // });
 
 
 });

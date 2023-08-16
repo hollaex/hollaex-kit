@@ -283,3 +283,26 @@ export const requestAddUser = (values) => {
 	};
 	return requestAuthenticated('/admin/user', options);
 };
+
+export const requestUserBalancesDownload = (values) => {
+	let path = '/admin/balances';
+	if (values) {
+		path = `/admin/balances?${toQueryString(values)}`;
+	}
+	return axios({
+		method: 'GET',
+		url: path,
+	})
+		.then((res) => {
+			const url = window.URL.createObjectURL(new Blob([res.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute(
+				'download',
+				`balances_${moment().format('YYYY-MM-DD')}.csv`
+			);
+			document.body.appendChild(link);
+			link.click();
+		})
+		.catch((err) => {});
+};

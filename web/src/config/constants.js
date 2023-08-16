@@ -263,3 +263,4 @@ export const DEFAULT_PINNED_COINS = [
 	'trx',
 	'matic',
 ];
+export const METAMASK_LINK = 'https://metamask.io/download';

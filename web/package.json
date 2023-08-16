@@ -1,6 +1,6 @@
 {
 	"name": "hollaex-kit",
-	"version": "2.6.6",
+	"version": "2.7.3",
 	"private": true,
 	"dependencies": {
 		"@ant-design/compatible": "1.0.5",
@@ -87,12 +87,15 @@
 		"ws-heartbeat": "1.2.0"
 	},
 	"devDependencies": {
+		"@google-cloud/translate": "7.2.2",
 		"@craco/craco": "5.8.0",
 		"cpy-cli": "3.1.1",
 		"glob": "7.1.7",
 		"husky": "4.3.0",
 		"json-beautify": "1.1.1",
 		"lint-staged": "10.5.1",
+		"lodash.chunk": "4.2.0",
+		"lodash.flatten": "4.4.0",
 		"lodash.isempty": "4.4.0",
 		"node-sass-chokidar": "1.5.0",
 		"prettier": "2.1.2",
@@ -107,10 +110,10 @@
 		"watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
 		"copy-cname": "cpy CNAME build/",
 		"remove-build": "rimraf ./build",
-		"start-js": "react-scripts --max_old_space_size=3072 start",
+		"start-js": "react-scripts --max_old_space_size=4096 start",
 		"start": "npm install && npm-run-all -p watch-css start-js",
 		"dev:plugin": "REACT_APP_PLUGIN_DEV_MODE=true REACT_APP_PLUGIN=$npm_config_plugin npm run start",
-		"build": "craco --max_old_space_size=3072 build",
+		"build": "craco --max_old_space_size=4096 build",
 		"pre-build": "npm run remove-build && npm install",
 		"build:demo": "REACT_APP_SERVER_ENDPOINT=https://api.sandbox.hollaex.com npm run build",
 		"publish:demo": "surge build",
@@ -120,8 +123,8 @@
 		"lang:diff": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --save-diff",
 		"lang:merge": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --merge-diff",
 		"lang:rc": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --reverse-check",
-		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate",
-		"lang:all": "node ./translationRunner.js --translate-all"
+		"lang:auto": "REACT_APP_LANG=$npm_config_lang node ./translationRunner.js --auto-translate --ignore-equals",
+		"lang:all": "node ./translationRunner.js --translate-all --ignore-equals"
 	},
 	"description": "Cryptocurrency exchange platfrom",
 	"main": "index.js",

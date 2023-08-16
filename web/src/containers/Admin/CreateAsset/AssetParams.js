@@ -10,7 +10,6 @@ const AssetParams = ({
 	handleNext,
 	handleMetaChange,
 }) => {
-
 	const handleMoveNext = () => {
 		if (!coinFormData.id) {
 			handleNext();
@@ -86,10 +85,11 @@ const AssetParams = ({
 					: null
 				} */}
 				<div className="field-wrap">
-					<div className="sub-title">Minimum Withdrawal Amount</div>
+					<div className="sub-title">Minimum Amount</div>
 					<div className="description">
 						<div>
-							Sell the minimum amount allowed to be withdrawn for this coins
+							Sell the minimum amount allowed to be deposited or withdrawn for
+							this coins
 						</div>
 					</div>
 					<InputNumber
@@ -99,10 +99,11 @@ const AssetParams = ({
 					/>
 				</div>
 				<div className="field-wrap">
-					<div className="sub-title">Maximum Withdrawal Amount</div>
+					<div className="sub-title">Maximum Amount</div>
 					<div className="description">
 						<div>
-							Sell the maximum amount allowed to be withdrawn for this coins
+							Sell the maximum amount allowed to be deposited or withdrawn for
+							this coins
 						</div>
 					</div>
 					<InputNumber
@@ -111,7 +112,7 @@ const AssetParams = ({
 						value={coinFormData.max}
 					/>
 				</div>
-				<div className='field-wrap last'>
+				<div className="field-wrap last">
 					<div className="sub-title">Increment Amount</div>
 					<div className="description">
 						<div>
@@ -143,23 +144,30 @@ const AssetParams = ({
 							if (editParams) {
 								handleScreenChange('edit-params');
 							} else {
-								handleScreenChange('step8')
+								handleScreenChange('step8');
 							}
 						}}
 					>
 						Back
 					</Button>
 					<div className="separator"></div>
-					{editParams
-						?
-						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+					{editParams ? (
+						<Button
+							type="primary"
+							className="green-btn"
+							onClick={handleMoveNext}
+						>
 							Next
 						</Button>
-						:
-						<Button type="primary" className="green-btn" onClick={handleMoveNext}>
+					) : (
+						<Button
+							type="primary"
+							className="green-btn"
+							onClick={handleMoveNext}
+						>
 							Confirm
 						</Button>
-					}
+					)}
 				</div>
 			</div>
 		</Fragment>

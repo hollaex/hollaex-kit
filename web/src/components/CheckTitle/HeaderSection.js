@@ -13,6 +13,7 @@ const HeaderSection = ({
 	iconId,
 	stringId,
 	icons: ICONS,
+	notification,
 }) => {
 	return (
 		<div className="header_title-wrapper d-flex flex-column w-100 f-1">
@@ -22,7 +23,7 @@ const HeaderSection = ({
 						<Image icon={icon} wrapperClassName="header_title-icon" />
 					</div>
 				)}
-				<div>
+				<div className="w-100">
 					<div className="d-flex justify-content-between w-100 f-1">
 						{title && (
 							<EditWrapper
@@ -49,6 +50,7 @@ const HeaderSection = ({
 								/>
 							</div>
 						)}
+						{!openContactForm && notification && <div>{notification}</div>}
 					</div>
 					{children && <div className="header_title-children">{children}</div>}
 				</div>

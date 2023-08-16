@@ -6,6 +6,9 @@ import { getPinnedAssets } from 'containers/Wallet/utils';
 
 const getSortMode = (state) => state.app.digital_assets_sort.mode;
 const getSortDir = (state) => state.app.digital_assets_sort.is_descending;
+const getSelectedSource = (_, props) => props.selectedSource;
+const getQuickTrade = (state) => state.app.quicktrade;
+const getCoins = (state) => state.app.coins;
 
 const getSortFunction = (mode) => {
 	switch (mode) {
@@ -56,5 +59,91 @@ export const MarketsSelector = createSelector(
 		});
 
 		return [...pinnedMarkets, ...restMarkets];
+	}
+);
+
+export const dataSelector = createSelector(
+	[getSelectedSource, MarketsSelector, getPairs, getQuickTrade, getCoins],
+	(selectedSource, markets, pairs, quicktrade, coins) => {
+		const data = {};
+
+		if (!selectedSource || selectedSource === 'all') {
+			markets.forEach((market) => {
+				const [coinKey] = market.key.split('-');
+
+				if (!Object.keys(data).includes(coinKey)) {
+					data[coinKey] = { ...market, pairBase: coins[coinKey] };
+				}
+			});
+
+			quicktrade
+				.filter(({ active, type }) => !!active && type !== 'pro')
+				.forEach(({ symbol, type }) => {
+					const [coinKey, sourceKey] = symbol.split('-');
+					if (!Object.keys(data).includes(coinKey)) {
+						data[coinKey] = {
+							key: symbol,
+							symbol: coinKey,
+							sourceType: type,
+							ticker: {},
+							pairTwo: coins[sourceKey],
+							pairBase: coins[coinKey],
+							...coins[coinKey],
+						};
+					}
+				});
+		} else if (selectedSource === 'pro') {
+			markets.forEach((market) => {
+				const [coinKey] = market.key.split('-');
+
+				if (!Object.keys(data).includes(coinKey)) {
+					data[coinKey] = { ...market, pairBase: coins[coinKey] };
+				}
+			});
+		} else if (selectedSource === 'network') {
+			quicktrade
+				.filter(({ active, type }) => !!active && type === 'network')
+				.forEach(({ symbol, type }) => {
+					const [coinKey, sourceKey] = symbol.split('-');
+					if (!Object.keys(data).includes(coinKey)) {
+						data[coinKey] = {
+							key: symbol,
+							symbol: coinKey,
+							sourceType: type,
+							ticker: {},
+							pairTwo: coins[sourceKey],
+							pairBase: coins[coinKey],
+							...coins[coinKey],
+						};
+					}
+				});
+		} else if (selectedSource === 'broker') {
+			quicktrade
+				.filter(({ active, type }) => !!active && type === 'broker')
+				.forEach(({ symbol, type }) => {
+					const [coinKey, sourceKey] = symbol.split('-');
+					if (!Object.keys(data).includes(coinKey)) {
+						data[coinKey] = {
+							key: symbol,
+							symbol: coinKey,
+							sourceType: type,
+							ticker: {},
+							pairTwo: coins[sourceKey],
+							pairBase: coins[coinKey],
+							...coins[coinKey],
+						};
+					}
+				});
+		} else {
+			markets.forEach((market) => {
+				const [coinKey, sourceKey] = market.key.split('-');
+
+				if (sourceKey === selectedSource) {
+					data[coinKey] = market;
+				}
+			});
+		}
+
+		return Object.values(data);
 	}
 );

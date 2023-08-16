@@ -25,6 +25,9 @@ $colors-notifications-red: var(--specials_notifications-alerts-warnings);
 $colors-notification-inactive-red: var(
 	--calculated_specials_notifications-alerts-inactive
 );
+$calculated_specials_notifications-alerts-pale: var(
+	--calculated_specials_notifications-alerts-pale
+);
 $colors-notification-alert-text: var(
 	--calculated_specials_notifications-alerts-text
 );
@@ -156,6 +159,12 @@ $chat-message-background-even: var(--base_background);
 $chat-message-background-odd: var(--base_secondary-navigation-bar);
 $chat-message-color: var(--specials_chat-messages);
 $chat-box-border: $colors-main-border;
+
+// intensity color
+$low-intensity: var(--specials_chat-messages);
+$medium-intensity: var(--specials_my-username-in-chat);
+$high-intensity: var(--specials_pending-waiting-caution);
+$extreme-intensity: var(--specials_notifications-alerts-warnings);
 
 // this is for transaction history- ToDo: need to customize for common theme
 $history-color-buy: var(--trading_buying-related-elements);

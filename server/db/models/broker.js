@@ -13,6 +13,7 @@ module.exports = function (sequelize, DataTypes) {
 			symbol: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true
 			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
@@ -27,6 +28,7 @@ module.exports = function (sequelize, DataTypes) {
 			paused: {
 				type: DataTypes.BOOLEAN,
 				allowNull: false,
+				defaultValue: false
 			},
 			user_id: {
 				type: DataTypes.INTEGER,
@@ -45,10 +47,6 @@ module.exports = function (sequelize, DataTypes) {
 				type: DataTypes.DOUBLE,
 				allowNull: false
 			},
-			increment_size: {
-				type: DataTypes.DOUBLE,
-				allowNull: false
-			},
 			type: {
 				type: DataTypes.ENUM('manual', 'dynamic'),
 				defaultValue: 'manual',
@@ -59,9 +57,19 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 30,
 				allowNull: true
 			},
+			spread: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
+			},
 			rebalancing_symbol: {
 				type: DataTypes.STRING,
 				allowNull: true,
+			},
+			refresh_interval: {
+				type: DataTypes.INTEGER,
+				defaultValue: 0,
+				allowNull: true
 			},
 			account: {
 				type: DataTypes.JSONB,

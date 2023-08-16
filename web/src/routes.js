@@ -32,6 +32,7 @@ import {
 	AppDetails,
 	// ADMIN
 	User,
+	Session,
 	AppWrapper as AdminContainer,
 	// Main,
 	// DepositsPage,
@@ -476,6 +477,11 @@ export const generateRoutes = (routes = []) => {
 					path="/admin/user"
 					name="Admin User"
 					component={withAdminProps(User, 'user')}
+				/>
+				<Route
+					path="/admin/sessions"
+					name="Admin Session"
+					component={withAdminProps(Session, 'session')}
 				/>
 				<Route
 					path="/admin/financials"

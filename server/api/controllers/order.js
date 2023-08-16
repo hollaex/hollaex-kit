@@ -5,6 +5,8 @@ const toolsLib = require('hollaex-tools-lib');
 const { isPlainObject, isNumber } = require('lodash');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isUUID } = require('validator');
+const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const { getKitConfig } = require('../../utils/hollaex-tools-lib/tools/common');
 
 const createOrder = (req, res) => {
@@ -115,6 +117,8 @@ const orderExecute = (req, res) => {
 
 	toolsLib.order.executeUserOrder(user_id, opts, token)
 		.then((result) => {
+			const { symbol, side, size } = result;
+			toolsLib.broker.reverseTransaction({ symbol, side, size });
 			return res.json(result);
 		})
 		.catch((err) => {
@@ -273,7 +277,7 @@ const cancelUserOrder = (req, res) => {
 const getAllUserOrders = (req, res) => {
 	loggerOrders.verbose(req.uuid, 'controllers/order/getAllUserOrders auth', req.auth);
 	const user_id = req.auth.sub.id;
-	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date } = req.swagger.params;
+	const { symbol, side, status, open, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getAllUserOrdersByKitId(
 		user_id,
@@ -287,6 +291,7 @@ const getAllUserOrders = (req, res) => {
 		order.value,
 		start_date.value,
 		end_date.value,
+		format.value,
 		{
 			additionalHeaders: {
 				'x-forwarded-for': req.headers['x-forwarded-for']
@@ -294,7 +299,13 @@ const getAllUserOrders = (req, res) => {
 		}
 	)
 		.then((order) => {
-			return res.json(order);
+			if (format.value === 'csv') {
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-orders.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(order);
+			} else {
+				return res.json(order);
+			}
 		})
 		.catch((err) => {
 			loggerOrders.error(req.uuid, 'controllers/order/getAllUserOrders error', err.message);
@@ -334,8 +345,13 @@ const getAdminOrders = (req, res) => {
 		order_by,
 		order,
 		start_date,
-		end_date
+		end_date,
+		format
 	} = req.swagger.params;
+
+	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1 && !user_id.value) {
+		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
+	}
 
 	let promiseQuery;
 
@@ -352,6 +368,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']
@@ -370,6 +387,7 @@ const getAdminOrders = (req, res) => {
 			order.value,
 			start_date.value,
 			end_date.value,
+			format.value,
 			{
 				additionalHeaders: {
 					'x-forwarded-for': req.headers['x-forwarded-for']

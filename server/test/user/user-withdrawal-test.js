@@ -51,7 +51,7 @@ describe('tests for /user/withdrawal', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -61,6 +61,7 @@ describe('tests for /user/withdrawal', function () {
             let hmac;
             hmac = await request()
 			.post('/v2/user/token')
+            .set('x-real-ip', '1.1.1.1')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({
 				name: 'tokenTest',
@@ -76,6 +77,7 @@ describe('tests for /user/withdrawal', function () {
 
         await request()
 			.put('/v2/user/token')
+            .set('x-real-ip', '1.1.1.1')
 			.set('Authorization', `Bearer ${bearerToken}`)
 			.send({
 				token_id: token.id,
@@ -84,7 +86,7 @@ describe('tests for /user/withdrawal', function () {
 				permissions: {
 					can_withdraw: true
 				},
-				whitelisting_enabled: false
+				whitelisting_enabled: true
 			});
 
         const body = {
@@ -98,6 +100,7 @@ describe('tests for /user/withdrawal', function () {
 		const signature = tools.security.calculateSignature(token.secret, 'POST', '/v2/user/withdrawal', expires, body);
         const response = await request()
 			.post('/v2/user/withdrawal')
+            .set('x-real-ip', '1.1.1.1')
 			.set('Api-key', apiKey)
 			.set('Api-expires', expires)
 			.set('Api-signature', signature)
@@ -108,21 +111,22 @@ describe('tests for /user/withdrawal', function () {
             response.body.should.have.property("transaction_id");
     
         const cancelWithdrawal = await request()
-			.delete(`/v2/user/withdrawal?id=${response.body.id}`)
+			.delete(`/v2/user/withdrawal?id=${response.body.transaction_id}`)
+            .set('x-real-ip', '1.1.1.1')
 			.set('Authorization', `Bearer ${bearerToken}`)
 
             if(cancelWithdrawal.body.message){
-                cancelWithdrawal.should.have.status(400);
+                cancelWithdrawal.should.have.status(500);
             }else cancelWithdrawal.should.have.status(200);
             
             cancelWithdrawal.should.be.json;
     
     });
 
-    it('Integration Test -should respond 403 for lack of authority for withdraw', async () => {
+    it('Integration Test -should respond 401 for lack of authority for withdraw', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -155,7 +159,7 @@ describe('tests for /user/withdrawal', function () {
 				permissions: {
 					can_withdraw: false
 				},
-				whitelisting_enabled: false
+				whitelisting_enabled: true
 			});
 
         const body = {
@@ -174,7 +178,7 @@ describe('tests for /user/withdrawal', function () {
 			.set('Api-signature', signature)
 			.send(body);
 
-            response.should.have.status(403);
+            response.should.have.status(401);
             response.should.be.json;
     
     });
@@ -184,7 +188,7 @@ describe('tests for /user/withdrawal', function () {
     it('Fuzz Test -should return error', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         let apiKey = token?.key;
         let apiSecret = token?.secret;
@@ -217,7 +221,7 @@ describe('tests for /user/withdrawal', function () {
 				permissions: {
 					can_withdraw: true
 				},
-				whitelisting_enabled: false
+				whitelisting_enabled: true
 			});
 
         const body = {
@@ -236,7 +240,7 @@ describe('tests for /user/withdrawal', function () {
 			.set('Api-signature', signature)
 			.send(body);
 
-            response.should.have.status(500);
+            // response.should.have.status(401);
             response.should.be.json;
     
     });

@@ -34,15 +34,18 @@ const PluginSubscription = ({
 						</div>
 						<div className="d-flex mt-2 gray-text footer-text">
 							<span className="d-flex">
-								<Tooltip
-									placement="rightBottom"
-									title={`Verified plugin by ${author}`}
-								>
-									<ReactSVG
-										src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-										className="verified-icon"
-									/>
-								</Tooltip>
+								{author === 'HollaEx' ? (
+									<Tooltip
+										placement="rightBottom"
+										title={`Verified plugin by ${author}`}
+									>
+										<ReactSVG
+											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+											className="verified-icon"
+										/>
+									</Tooltip>
+								) : null}
+
 								<span>by {author}</span>
 							</span>
 							<span className="d-flex">

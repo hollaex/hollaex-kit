@@ -30,7 +30,7 @@ module.exports = {
 		return checkActivation(process.env.ACTIVATION_CODE)
 			.then((exchange) => {
 
-				const minFees = DEFAULT_FEES[exchange.collateral_level];
+				const minFees = DEFAULT_FEES[exchange.plan];
 				const fees = {
 					maker: {},
 					taker: {}

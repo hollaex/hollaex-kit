@@ -31,7 +31,7 @@ const wss = new WebSocket.Server({
 				toolsLib.security.verifyBearerTokenMiddleware(info.req, null, bearerToken, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
-						return next(false, 403, err.message);
+						return next(false, 401, err.message);
 					} else {
 						return next(true);
 					}
@@ -46,7 +46,7 @@ const wss = new WebSocket.Server({
 				toolsLib.security.verifyHmacTokenMiddleware(info.req, null, hmacKey, (err) => {
 					if (err) {
 						loggerWebsocket.error('ws/server', err);
-						return next(false, 403, err.message);
+						return next(false, 401, err.message);
 					} else {
 						return next(true);
 					}

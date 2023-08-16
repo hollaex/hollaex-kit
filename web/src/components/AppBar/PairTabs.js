@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import { browserHistory } from 'react-router';
 import { Dropdown } from 'antd';
-import { Slider } from 'components';
+import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import _get from 'lodash/get';
 
 import TabList from './TabList';
 import MarketSelector from './MarketSelector';
 import ToolsSelector from './ToolsSelector';
 import STRINGS from 'config/localizedStrings';
-import { EditWrapper, PriceChange } from 'components';
+import { Slider, EditWrapper, PriceChange } from 'components';
 import withConfig from 'components/ConfigProvider/withConfig';
-import { CaretDownOutlined, CaretUpOutlined } from '@ant-design/icons';
 import { formatToCurrency } from 'utils/currency';
 import { MarketsSelector } from 'containers/Trade/utils';
 
@@ -91,6 +90,7 @@ class PairTabs extends Component {
 		const { location, favourites, markets } = this.props;
 		const market = markets.find(({ key }) => key === activePairTab) || {};
 		const {
+			key,
 			pair: { increment_price } = {},
 			ticker: { close } = {},
 			display_name,
@@ -149,7 +149,7 @@ class PairTabs extends Component {
 											<div className="title-font ml-1">
 												{formatToCurrency(close, increment_price)}
 											</div>
-											<PriceChange market={market} />
+											<PriceChange market={market} key={key} />
 										</div>
 									) : (
 										<div className="d-flex align-items-center">
@@ -204,8 +204,10 @@ class PairTabs extends Component {
 										this.setState({ isToolsSelectorVisible: visible });
 									}}
 								>
-									<div className="selector-trigger narrow app_bar-pair-tab d-flex align-items-center justify-content-between w-100 h-100">
-										<div>Tools</div>
+									<div className="selector-trigger narrow app_bar-pair-tab tools d-flex align-items-center justify-content-between w-100 h-100">
+										<div className="text_overflow">
+											{STRINGS['TRADE_TOOLS']}
+										</div>
 										{isToolsSelectorVisible ? (
 											<CaretUpOutlined style={{ fontSize: '14px' }} />
 										) : (

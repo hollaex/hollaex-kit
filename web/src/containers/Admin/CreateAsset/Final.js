@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { Button } from 'antd';
+import { Button, Modal } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 import { STATIC_ICONS } from 'config/icons';
@@ -10,6 +10,9 @@ import { getNetworkLabelByKey } from 'utils/wallet';
 import { formatPercentage } from 'utils/currency';
 import { Link } from 'react-router';
 import { getTabParams } from '../AdminFinancials/Assets';
+import RemoveConfirmation from '../Confirmation';
+
+const basicCoins = ['btc', 'xht', 'eth', 'usdt'];
 
 const Final = ({
 	isPreview = false,
@@ -31,7 +34,19 @@ const Final = ({
 	exchange = {},
 	constants = {},
 	allCoins = {},
+	isLoading,
 }) => {
+	let isUpdateRequired = false;
+	if (
+		(exchange &&
+			exchange.plan === 'basic' &&
+			!basicCoins.includes(coinFormData.symbol)) ||
+		(exchange &&
+			exchange.plan === 'crypto' &&
+			coinFormData.type !== 'blockchain')
+	) {
+		isUpdateRequired = true;
+	}
 	const { meta = {}, type } = coinFormData;
 	let coinData = {};
 	allCoins.forEach((item) => {
@@ -45,6 +60,7 @@ const Final = ({
 	const { withdrawal_fees = {}, deposit_fees = {} } = coinData;
 	const { onramp = {} } = constants;
 	const [isUpgrade, setIsUpgrade] = useState(false);
+	const [isVisible, setIsVisible] = useState(false);
 	const tabParams = getTabParams();
 
 	useEffect(() => {
@@ -150,9 +166,37 @@ const Final = ({
 			<div className="title">
 				{isPreview || isConfigure
 					? `Manage ${coinFormData.symbol}`
-					: 'Create or add a new coin'}
+					: 'Add Asset'}
 			</div>
-			{!isPreview && !isConfigure ? (
+			{isUpdateRequired ? (
+				<div className="red-warning">
+					<div className="icon-wrapper">
+						<div className="image-crypto">
+							<img
+								className="fiat-icon"
+								src={STATIC_ICONS['CLOUD_PLAN_CRYPTO_PRO_FIAT_RAMP']}
+								alt="new_coin"
+							/>
+						</div>
+					</div>
+					<div>
+						Only upgraded plans can freely add other digital assets. Visit the
+						billing page and upgrade your exchange plan to either{' '}
+						<Link className="link-content" to="/billing">
+							Crypto Pro
+						</Link>
+						,{' '}
+						<Link className="link-content" to="/billing">
+							Fiat Ramp
+						</Link>{' '}
+						or{' '}
+						<Link className="link-content" to="/billing">
+							Boost
+						</Link>
+						.
+					</div>
+				</div>
+			) : !isPreview && !isConfigure ? (
 				type === 'fiat' ? (
 					<div className="grey-warning">
 						<div className="icon-wrapper">
@@ -516,7 +560,7 @@ const Final = ({
 					<div className="btn-wrapper">
 						<Button
 							type="danger"
-							onClick={() => handleDelete(coinFormData.symbol)}
+							onClick={() => setIsVisible(true)}
 							disabled={submitting}
 						>
 							Remove
@@ -536,6 +580,11 @@ const Final = ({
 					</Button>
 					<div className="separator"></div>
 					<Button
+						type="primary"
+						onClick={handleConfirmation}
+						disabled={isUpdateRequired}
+					/>
+					<Button
 						className="green-btn"
 						type="primary"
 						onClick={handleConfirmation}
@@ -543,6 +592,21 @@ const Final = ({
 						Confirm
 					</Button>
 				</div>
+			) : null}
+			{isVisible ? (
+				<Modal
+					visible={isVisible}
+					footer={null}
+					onCancel={() => setIsVisible(false)}
+				>
+					<RemoveConfirmation
+						onCancel={setIsVisible}
+						onHandleRemoveAsset={handleDelete}
+						removeCoin={coinFormData}
+						removeContent={'Assets'}
+						isLoading={isLoading}
+					/>
+				</Modal>
 			) : null}
 		</Fragment>
 	);

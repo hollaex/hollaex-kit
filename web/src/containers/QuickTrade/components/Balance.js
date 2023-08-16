@@ -5,7 +5,8 @@ import STRINGS from 'config/localizedStrings';
 const Balance = ({ balance = 0, text, onClick }) => {
 	return (
 		<div className="small-text">
-			{text}{' '}
+			{text}
+			&nbsp;
 			<EditWrapper stringId="BALANCE_TEXT">
 				{STRINGS['BALANCE_TEXT']}
 			</EditWrapper>
