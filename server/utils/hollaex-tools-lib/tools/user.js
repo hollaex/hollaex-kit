@@ -410,7 +410,7 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
-		order: [ [ 'id', 'DESC' ]],
+		order: [ [ 'id', 'DESC' ], ['status', 'ASC']],
 		where: {
 			user_id: user.id,
 			...(status != null && { status }),
