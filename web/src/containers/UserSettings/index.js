@@ -347,7 +347,7 @@ class UserSettings extends Component {
 				title: isMobile ? (
 					<CustomMobileTabs
 						title={STRINGS['USER_SETTINGS.TITLE_ACCOUNT']}
-						icon={ICONS['SETTING_CHAT_ICON']}
+						icon={ICONS['ACCOUNT_LINE']}
 					/>
 				) : (
 					// <CustomTabs
