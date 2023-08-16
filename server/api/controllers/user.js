@@ -375,6 +375,7 @@ const loginPost = (req, res) => {
 			} else if (!user.activated) {
 				throw new Error(USER_NOT_ACTIVATED);
 			}
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost email is valid', email);
 
 			const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
