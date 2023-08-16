@@ -373,6 +373,7 @@ const registerUserLogin = (
 		if(opts.token && opts.status) {
 			return createSession(opts.token, loginData.id, userId, opts.expiry);
 		}
+		return loginData;
 	})
 	.catch(err => reject(err))
 };
@@ -402,6 +403,8 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
+	
+	return null;
 }
 
 

@@ -361,6 +361,7 @@ const loginPost = (req, res) => {
 
 	toolsLib.security.checkIp(ip)
 		.then(() => {
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost ip is valid', email);
 			return toolsLib.user.getUserByEmail(email);
 		})
 		.then(async (user) => {
@@ -379,7 +380,7 @@ const loginPost = (req, res) => {
 			if (loginData && loginData.attempt === NUMBER_OF_ALLOWED_ATTEMPTS && loginData.status == false) {
 				throw new Error(LOGIN_NOT_ALLOW);
 			}
-
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost login is allowed', email);
 			return all([
 				user,
 				toolsLib.security.validatePassword(user.password, password)
@@ -387,6 +388,7 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, passwordIsValid]) => {
 			if (!passwordIsValid) {
+				loggerUser.verbose(req.uuid, 'controllers/user/loginPost password is not valid', email);
 				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 				const message = createAttemptMessage(loginData);
@@ -400,9 +402,11 @@ const loginPost = (req, res) => {
 					user,
 					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code)
 					.then(async () => {
+						loggerUser.verbose(req.uuid, 'controllers/user/loginPost otp verified', email);
 						return toolsLib.security.checkCaptcha(captcha, ip);
 					})
 					.catch(async (err) => {
+						loggerUser.verbose(req.uuid, 'controllers/user/loginPost otp not verified', email);
 						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
 						const message = createAttemptMessage(loginData);
@@ -412,6 +416,7 @@ const loginPost = (req, res) => {
 			}
 		})
 		.then(([user]) => {
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost user password and otp is valid', email);
 			const data = {
 				ip,
 				time,
@@ -429,6 +434,8 @@ const loginPost = (req, res) => {
 			if (!service) {
 				sendEmail(MAILTYPE.LOGIN, email, data, user.settings, domain);
 			}
+
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost email sent', email);
 
 			return all([
 				user,
@@ -448,9 +455,12 @@ const loginPost = (req, res) => {
 		})
 		.then(async ([user, token]) => {
 			if (!ip) {
+				loggerUser.verbose(req.uuid, 'controllers/user/loginPost ip not found', email);
 				throw new Error(NO_IP_FOUND)
 			}
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost token created', email);
 			await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
+			loggerUser.verbose(req.uuid, 'controllers/user/loginPost login record created', email);
 			return res.status(201).json({ token });
 		})
 		.catch((err) => {
