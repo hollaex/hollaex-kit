@@ -43,7 +43,7 @@ import { all } from 'bluebird';
 import { each } from 'lodash';
 import { publisher } from '../../db/pubsub';
 import { isDate } from 'moment';
-
+import DeviceDetector from "node-device-detector";
 
 enum VERIFY_STATUS {
 	EMPTY = 0,
@@ -51,6 +51,12 @@ enum VERIFY_STATUS {
 	REJECTED = 2,
 	COMPLETED = 3,
 }
+
+const detector = new DeviceDetector({
+	clientIndexes: true,
+	deviceIndexes: true,
+	deviceAliasCode: false,
+});
 
 const INITIAL_SETTINGS = () => {
 	return {
@@ -334,7 +340,19 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const device = req.headers['user-agent'];
+	const userAgent = req.headers['user-agent']
+	const result = detector.detect(userAgent);
+
+	let device: any = [
+		result.device.brand,
+		result.device.model,
+		result.device.type,
+		result.client.name,
+		result.client.type,
+		result.os.name];
+
+	device = device.filter(Boolean).join(' ').trim();
+
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
