@@ -414,11 +414,11 @@ const findUserLatestLogin = (user, status) => {
 		where: {
 			user_id: user.id,
 			...(status != null && { status }),
-			updated_at: {
-				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
-			},
 		}
-	});
+	}).then(loginData => {
+		if(loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
+		return null;
+	})
 }
 
 /* Public Endpoints*/
