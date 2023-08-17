@@ -82,10 +82,10 @@ const generateUserObject = (
 		affiliation_code: generateAffiliationCode(),
 		created_at: now,
 		updated_at: now,
-		settings: JSON.stringify(SETTINGS_DATA_DEFAULT),
-		bank_account: JSON.stringify(BANK_DATA_DEFAULT),
-		id_data: JSON.stringify(ID_DATA_DEFAULT),
-		address: JSON.stringify(ADDRESS_DATA_DEFAULT),
+		settings: SETTINGS_DATA_DEFAULT,
+		bank_account: BANK_DATA_DEFAULT,
+		id_data: ID_DATA_DEFAULT,
+		address: ADDRESS_DATA_DEFAULT,
 		...opts
 	};
 };

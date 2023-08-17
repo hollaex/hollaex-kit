@@ -18,7 +18,7 @@ const languages = {
 
 
 module.exports = {
-	async up(queryInterface) {
+	async up(queryInterface, Sequelize) {
 
 		const statusData = await queryInterface.rawSelect(TABLE, { plain: false }, ['id']);
 
@@ -47,6 +47,9 @@ module.exports = {
 			await queryInterface.bulkUpdate(
 				TABLE, 
 				{ email: emailTemplates },
+				{}, 
+				{},
+				{ email: { type: new Sequelize.JSON() } }
 			);
 		}
 		
