@@ -97,7 +97,7 @@ export default function (sequelize: Sequelize) {
 			},
 		},
 		{
-			timestamps: false,
+			timestamps: true,
 			underscored: true,
 			tableName: 'Logins',
 			sequelize,
