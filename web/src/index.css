@@ -256,7 +256,7 @@ table th {
 .custom-select-style.ant-select-dropdown {
   background-color: var(--base_background); }
 
-.filter-option {
+.gap-1 {
   gap: 1rem; }
 
 .filter-dropdown {
