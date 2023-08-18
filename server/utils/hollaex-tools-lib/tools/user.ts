@@ -373,8 +373,9 @@ const registerUserLogin = (
 			if (opts.token && opts.status) {
 				return createSession(opts.token, loginData.id, userId);
 			}
+			return loginData;
 		})
-		.catch(err => reject(err));
+		.catch(err => reject(err))
 };
 
 const updateLoginAttempt = (loginId) => {
@@ -402,21 +403,23 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
-};
+
+	return null;
+}
 
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
-		order: [['timestamp', 'DESC']],
+		order: [['id', 'DESC'], ['status', 'ASC']],
 		where: {
 			user_id: user.id,
 			...(status != null && { status }),
-			updated_at: {
-				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
-			},
 		}
-	});
-};
+	}).then(loginData => {
+		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
+		return null;
+	})
+}
 
 /* Public Endpoints*/
 
