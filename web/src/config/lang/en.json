@@ -506,8 +506,8 @@
 				"DANGER_ZONE": {
 					"TITLE": "Danger Zone",
 					"TEXT": "Deleting your account will make both your account and funds inaccessible.",
-					"LINK": "Proceed",
-					"LINK_PH": "{0}."
+					"PROCEED": "Proceed",
+					"CANCEL": "Cancel"
 				}
 			},
 			"CONFIRMATION": {

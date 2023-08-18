@@ -1181,7 +1181,8 @@ const Otcdeskpopup = ({
 											)}
 
 											<div className="mt-3 ">
-												Price quote expiry time in seconds <span>(30 seconds is recommended)</span>.
+												Price quote expiry time in seconds{' '}
+												<span>(30 seconds is recommended)</span>.
 											</div>
 											<Input
 												type="number"
@@ -1281,7 +1282,9 @@ const Otcdeskpopup = ({
 												className="green-btn"
 												onClick={() => {
 													if (spreadMul.quote_expiry_time < 10) {
-														message.error('Quote Expiry time cannot be smaller than 10')
+														message.error(
+															'Quote Expiry time cannot be smaller than 10'
+														);
 														return;
 													}
 													if (!formula) {

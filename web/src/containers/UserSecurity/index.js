@@ -29,7 +29,10 @@ import {
 	NotLoggedIn,
 } from 'components';
 import { errorHandler } from 'components/OtpForm/utils';
-import ChangePasswordForm, { generateFormValues } from './ChangePasswordForm';
+import ChangePasswordForm, {
+	generateFormValues,
+	selector as passwordSelector,
+} from './ChangePasswordForm';
 import { OTP, renderOTPForm } from './OTP';
 import { DeveloperSection } from './DeveloperSection';
 import Sessions from './Sessions';
@@ -113,7 +116,11 @@ class UserSecurity extends Component {
 		) {
 			this.calculateTabs(this.props.user, this.state.activeTab);
 		}
-		if (this.state.activeTab !== prevState.activeTab) {
+		if (
+			this.state.activeTab !== prevState.activeTab ||
+			JSON.stringify(prevProps.passwordFormValues) !==
+				JSON.stringify(this.props.passwordFormValues)
+		) {
 			this.setState({
 				error: undefined,
 			});
@@ -711,6 +718,10 @@ const mapStateToProps = (state) => ({
 	user: state.user,
 	activeLanguage: state.app.language,
 	constants: state.app.constants,
+	passwordFormValues: passwordSelector(
+		state,
+		...Object.keys(generateFormValues())
+	),
 });
 
 const mapDispatchToProps = (dispatch) => ({

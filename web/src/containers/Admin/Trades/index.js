@@ -39,7 +39,13 @@ const PairsTab = (props) => {
 		setCoinData(exchangeCoins);
 		setPairData(exchangePairs);
 		setQuickTradeData(props.quicktrade);
-	}, [props.coins, props.pairs, props.exchange.coins, props.exchange.pairs, props.quicktrade]);
+	}, [
+		props.coins,
+		props.pairs,
+		props.exchange.coins,
+		props.exchange.pairs,
+		props.quicktrade,
+	]);
 
 	useEffect(() => {
 		if (tabParams?.tab) {
@@ -103,7 +109,6 @@ const PairsTab = (props) => {
 					/>
 				</TabPane>
 				<TabPane tab="Quick Trade" key="3">
-				
 					<QuickTradeTab
 						coins={props.coinObjects}
 						pairs={pairData}
@@ -132,8 +137,7 @@ const mapStateToProps = (state) => ({
 	networkQuickTrades: state.app.allContracts.networkQuickTrades,
 	coinObjects: state.app.allContracts.coins,
 	broker: state.app.broker,
-	features: state.app.constants.features
-	
+	features: state.app.constants.features,
 });
 
 const mapDispatchToProps = (dispatch) => ({
