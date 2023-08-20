@@ -724,40 +724,57 @@ const getAllUsersAdmin = (opts: any = {
 		query.attributes.exclude.push('settings');
 	}
 
-	return dbQuery.findAndCountAllWithRows('user', query, null)
-		.then(async ({ count, data }) => {
-			if (opts.id || opts.search) {
-				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
-					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
-					data[0].balance = userNetworkData.balance;
-					data[0].wallet = userNetworkData.wallet;
-					return { count, data };
-				}
-			}
-			return { count, data };
-		})
-		.then(async (users) => {
-			if (opts.format && opts.format === 'csv') {
-				if (users.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const flatData = users.data.map((user) => {
-					let id_data;
-					if (user.id_data) {
-						id_data = user.id_data;
-						user.id_data = {};
+	if (opts.format) {
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		return dbQuery.fetchAllRecords('user', query)
+			.then(async ({ count, data }: any) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
 					}
-					const result: any = flatten(user, { safe: true });
-					if (id_data) result.id_data = id_data;
-					return result;
-				});
-				// @ts-ignore
-				const csv = parse(flatData, Object.keys(flatData[0]));
-				return csv;
-			} else {
-				return users;
-			}
-		});
+				}
+				return { count, data };
+			})
+			.then(async (users) => {
+				if (opts.format && opts.format === 'csv') {
+					if (users.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = users.data.map((user) => {
+						let id_data;
+						if (user.id_data) {
+							id_data = user.id_data;
+							user.id_data = {};
+						}
+						const result: any = flatten(user, { safe: true });
+						if (id_data) result.id_data = id_data;
+						return result;
+					});
+					// @ts-ignore
+					const csv = parse(flatData, Object.keys(flatData[0]));
+					return csv;
+				} else {
+					return users;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('user', query)
+			.then(async ({ count, data }) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
+					}
+				}
+				return { count, data };
+			})
+	}
+
 };
 
 const getUser = (identifier: any = {}, rawData = true, networkData = false, opts = {
@@ -1300,19 +1317,27 @@ const getUserLogins = (opts: any = {
 
 	if (opts.userId) options.where.user_id = opts.userId;
 
-	return dbQuery.findAndCountAllWithRows('login', options, null)
-		.then((logins) => {
-			if (opts.format && opts.format === 'csv') {
-				if (logins.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+
+	if (opts.format) {
+		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'createdAt', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
+		return dbQuery.fetchAllRecords('login', options)
+			.then((logins: any) => {
+				if (opts.format && opts.format === 'csv') {
+					if (logins.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					// @ts-ignore
+					const csv = parse(logins.data, Object.keys(logins.data[0]));
+					return csv;
+				} else {
+					return logins;
 				}
-				// @ts-ignore
-				const csv = parse(logins.data, Object.keys(logins.data[0]));
-				return csv;
-			} else {
-				return logins;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('login', options);
+	}
+
 };
 
 const bankComparison = (bank1, bank2, description) => {
@@ -1429,19 +1454,25 @@ const getUserAudits = (opts = {
 
 	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
-	return dbQuery.findAndCountAllWithRows('audit', options, null)
-		.then((audits) => {
-			if (opts.format && opts.format === 'csv') {
-				if (audits.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('audit', options)
+			.then((audits: any) => {
+				if (opts.format && opts.format === 'csv') {
+					if (audits.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
+					const csv = parse(flatData, AUDIT_KEYS);
+					return csv;
+				} else {
+					return audits;
 				}
-				const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
-				const csv = parse(flatData, AUDIT_KEYS);
-				return csv;
-			} else {
-				return audits;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('audit', options)
+	}
+
 };
 
 const checkUsernameIsTaken = (username) => {
@@ -1917,7 +1948,7 @@ const getExchangeUserSessions = (opts: any = {
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	return dbQuery.findAndCountAllWithRows('session', {
+	const query: any = {
 		where: {
 			...(opts.status == true && {
 				status: opts.status,
@@ -1960,19 +1991,27 @@ const getExchangeUserSessions = (opts: any = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	}, null)
-		.then((sessions) => {
-			if (opts.format && opts.format === 'csv') {
-				if (sessions.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	}
+
+	if (opts.format) {
+		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'timestamp', 'created_at', 'updated_at'];
+		return dbQuery.fetchAllRecords('session', query)
+			.then((sessions: any) => {
+				if (opts.format && opts.format === 'csv') {
+					if (sessions.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					// @ts-ignore
+					const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+					return csv;
+				} else {
+					return sessions;
 				}
-				// @ts-ignore
-				const csv = parse(sessions.data, Object.keys(sessions.data[0]));
-				return csv;
-			} else {
-				return sessions;
-			}
-		});
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('session', query);
+	}
+
 };
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
@@ -2034,7 +2073,7 @@ const getAllBalancesAdmin = async (opts = {
 	return getNodeLib().getBalances({
 		userId: network_id,
 		currency: opts.currency,
-		format: opts.format,
+		format: (opts.format && (opts.format === 'csv' || opts.format === 'all')) ? 'all' : null, // for csv get all data,
 		additionalHeaders: opts.additionalHeaders
 	})
 		.then(async (balances) => {
@@ -2049,7 +2088,7 @@ const getAllBalancesAdmin = async (opts = {
 				}
 			}
 
-			if (opts.format && opts.format === 'all') {
+			if (opts.format && opts.format === 'csv') {
 				if (balances.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}

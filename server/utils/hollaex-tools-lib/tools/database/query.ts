@@ -1,6 +1,12 @@
 'use strict';
 import { getModel } from './model';
 import { convertSequelizeCountAndRows } from './helpers';
+import QueryStream from 'pg-query-stream';
+import { sequelize } from '../../../../db/models';
+import { PROVIDE_TABLE_NAME } from '../../../../messages';
+import pluralize from 'pluralize';
+import { Op } from 'sequelize';
+const moment = require('moment');
 
 export const Model = (table) => getModel(table);
 
@@ -60,10 +66,67 @@ export const findAndCountAllWithRows = (table, query = {}, model = null) => {
 	}
 };
 
+export const fetchAllRecords = async (table: string = '', query, opts = null) => {
+	if (table.length === 0) {
+		throw new Error(PROVIDE_TABLE_NAME);
+	}
+
+	const modelName = pluralize(table
+		.split(' ')
+		.map((word) => `${word[0].toUpperCase()}${word.slice(1)}`)
+		.join(''));
+
+	['created_at', 'timestamp'].forEach(timeframe => {
+		if (query?.where?.[timeframe]) {
+			query.where[timeframe] = {
+				[Op.gte]: moment(query.where[timeframe][Op.gte]).toISOString(),
+				[Op.lte]: moment(query.where[timeframe][Op.lte]).toISOString(),
+			}
+		}
+	})
+
+	const sql = sequelize.dialect.queryGenerator.selectQuery(modelName, {
+		where: query.where,
+		attributes: query.attributes,
+		order: query.order,
+	});
+
+	console.log(sql)
+
+	const client = await sequelize.connectionManager.getConnection({ type: 'SELECT' });
+	const streamQuery: QueryStream = new QueryStream(sql);
+
+	return new Promise((resolve, reject) => {
+		let result = {
+			count: 0,
+			data: []
+		};
+
+		const stream = client.query(streamQuery);
+
+		stream
+			.on('data', (data) => {
+				result.data.push(data);
+			})
+			.on('end', () => {
+				sequelize.connectionManager.releaseConnection(client);
+				result.count = result.data.length;
+				resolve(result);
+			})
+			.on('error', (err) => {
+				stream.destroy();
+				sequelize.connectionManager.releaseConnection(client);
+				reject(err);
+			});
+	});
+}
+
+
 export default {
 	Model,
 	findOne,
 	findAll,
 	findAndCountAll,
-	findAndCountAllWithRows
+	findAndCountAllWithRows,
+	fetchAllRecords
 }
