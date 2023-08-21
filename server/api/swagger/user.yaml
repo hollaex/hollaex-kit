@@ -37,7 +37,6 @@ paths:
             type: object
             required:
               - email_code
-              - otp_code
             properties:
               email_code:
                 type: string
