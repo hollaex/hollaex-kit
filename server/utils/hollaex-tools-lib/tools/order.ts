@@ -419,10 +419,10 @@ const dustPriceEstimate = async (user_id, opts, { assets, spread, maker_id, quot
 		let symbol = `${coin}-${quote}`;
 		let side = 'sell';
 
-		const usdtSize = parseNumber((usdtPrices[coin] * symbols[coin]), 10);
+		const usdtSize = parseNumber((new BigNumber(usdtPrices[coin]).multipliedBy(symbols[coin])), 10);
 		const size = parseNumber(symbols[coin], 10);
-		const price = parseNumber(quotePrices[coin] * (1 - (spread / 100)), 10);
-		const quoteSize = parseNumber(price * size, 10);
+		const price = parseNumber(new BigNumber(quotePrices[coin]).multipliedBy((1 - (spread / 100))), 10);
+		const quoteSize = parseNumber(new BigNumber(price).multipliedBy(size), 10);
 
 		if (usdtSize < 1) {
 			const orderData = {
