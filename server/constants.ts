@@ -9,7 +9,9 @@ import {
 	TOKEN_TYPES,
 	ROLES,
 	APM_ENABLED,
-	DEFAULT_ORDER_RISK_PERCENTAGE
+	DEFAULT_ORDER_RISK_PERCENTAGE,
+	SALT_ROUNDS,
+	AFFILIATION_CODE_LENGTH
 } from './migration-constants';
 import redis from 'redis'
 const config = require('./config/redis');
@@ -618,7 +620,9 @@ export {
 	TOKEN_TYPES,
 	ROLES,
 	APM_ENABLED,
-	DEFAULT_ORDER_RISK_PERCENTAGE
+	DEFAULT_ORDER_RISK_PERCENTAGE,
+	AFFILIATION_CODE_LENGTH,
+	SALT_ROUNDS
 }
 // CONFIGURATION CONSTANTS END --------------------------------------------------
 
@@ -675,7 +679,6 @@ export const CHAT_MESSAGE_CHANNEL = 'channel:chat:message';
 
 // UTIL CONSTANTS START --------------------------------------------------
 
-export const AFFILIATION_CODE_LENGTH = 6;
 export const SEND_CONTACT_US_EMAIL = true;
 //CSV Report keys
 export const AUDIT_KEYS: any = [
@@ -732,7 +735,6 @@ export const SECRET = process.env.SECRET || 'shhhh';
 export const ISSUER = process.env.ISSUER || 'hollaex.com';
 export const CAPTCHA_ENDPOINT = 'https://www.google.com/recaptcha/api/siteverify';
 export const SECRET_MASK = '************************';
-export const SALT_ROUNDS = 10;
 
 // SECURITY CONSTANTS END --------------------------------------------------
 

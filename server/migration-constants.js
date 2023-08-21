@@ -38,3 +38,5 @@ exports.ROLES = {
 };
 exports.APM_ENABLED = toBool(process.env.APM_ENABLED) || false; // apm is used for sending logs etc
 exports.DEFAULT_ORDER_RISK_PERCENTAGE = 90; // used in settings in percentage to display popups on big relative big orders of user
+exports.AFFILIATION_CODE_LENGTH = 6;
+exports.SALT_ROUNDS = 10;
