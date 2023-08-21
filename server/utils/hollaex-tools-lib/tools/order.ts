@@ -1111,7 +1111,7 @@ const getGeneratedFees = (startDate, endDate, opts = {
 	});
 };
 
-const settleFeesExchange = async (opts = {
+const settleFees = async (opts = {
 	additionalHeaders: null,
 	user_id: null
 }) => {
@@ -1256,7 +1256,7 @@ export {
 	getAllUserOrdersByNetworkId,
 	cancelAllUserOrdersByNetworkId,
 	getGeneratedFees,
-	settleFeesExchange,
+	settleFees,
 	generateOrderFeeData,
 	dustUserBalance,
 	executeUserOrder,
