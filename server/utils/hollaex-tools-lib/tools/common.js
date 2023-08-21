@@ -71,11 +71,15 @@ const subscribedToCoin = (coin) => {
 };
 
 const subscribedToPair = (pair) => {
-	return getKitPairs().includes(pair);
+	return (getKitPairs().includes(pair) || getQuickTradePairs().includes(pair));
 };
 
 const getKitTiers = () => {
 	return GET_TIERS();
+};
+
+const getQuickTradePairs = () => {
+	return (getQuickTrades() || []).map(config => config.symbol);
 };
 
 const getKitTier = (tier) => {
@@ -871,4 +875,5 @@ module.exports = {
 	getQuickTrades,
 	getNetworkQuickTrades,
 	parseNumber,
+	getQuickTradePairs
 };
