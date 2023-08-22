@@ -35,10 +35,10 @@ const {
 	HOLLAEX_NETWORK_ENDPOINT,
 	HOLLAEX_NETWORK_BASE_URL,
 	HOLLAEX_NETWORK_PATH_ACTIVATE
-} = require('../../constants');
+} = require('../../migration-constants');
 
 const { generateUserObject } = require('../seedsHelper');
-
+const Sequelize = require('sequelize');
 const checkActivation = (activation_code) => {
 	const body = {
 		activation_code
@@ -77,11 +77,37 @@ module.exports = {
 						}
 					);
 
-					await queryInterface.bulkInsert('Users', [user], {});
+					await queryInterface.bulkInsert('Users', [user], {},
+						{
+						id: { type: new Sequelize.INTEGER() },
+						email: { type: new Sequelize.STRING() },
+						password: { type: new Sequelize.STRING() },
+						network_id: { type: new Sequelize.INTEGER() },
+						full_name: { type: new Sequelize.STRING() },
+						gender: { type: new Sequelize.BOOLEAN() },
+						email_verified: { type: new Sequelize.BOOLEAN() },
+						verification_level: { type: new Sequelize.INTEGER() },
+						nationality: { type: new Sequelize.STRING() },
+						phone_number: { type: new Sequelize.STRING() },
+						activated: { type: new Sequelize.BOOLEAN() },
+						is_admin: { type: new Sequelize.BOOLEAN() },
+						is_supervisor: { type: new Sequelize.BOOLEAN() },
+						is_support: { type: new Sequelize.BOOLEAN() },
+						is_kyc: { type: new Sequelize.BOOLEAN() },
+						is_communicator: { type: new Sequelize.BOOLEAN() },
+						username: { type: new Sequelize.STRING() },
+						affiliation_code: { type: new Sequelize.STRING() },
+						created_at: { type: new Sequelize.DATE() },
+						updated_at: { type: new Sequelize.DATE() },
+						settings: { type: new Sequelize.JSON() },
+						bank_account: { type: new Sequelize.JSON() },
+						id_data: { type: new Sequelize.JSON() },
+						address: { type: new Sequelize.JSON() },
+					});
 				}
 
-				const status = [{
-					kit: JSON.stringify({
+				const status = {
+					kit: {
 						api_name: API_NAME || '',
 						description: '',
 						color: {},
@@ -124,8 +150,8 @@ module.exports = {
 						features: {},
 						meta: {},
 						user_meta: {}
-					}),
-					secrets: JSON.stringify({
+					},
+					secrets: {
 						allowed_domains: ALLOWED_DOMAINS ? ALLOWED_DOMAINS.split(',') : [],
 						admin_whitelist: ADMIN_WHITELIST_IP ? ADMIN_WHITELIST_IP.split(',') : [],
 						security: {
@@ -147,14 +173,24 @@ module.exports = {
 							user: SMTP_USER,
 							password: SMTP_PASSWORD
 						}
-					}),
+					},
 					activation_code: ACTIVATION_CODE,
 					initialized: user ? true : false,
 					api_key: API_KEY,
 					api_secret: API_SECRET,
 					kit_version: KIT_VERSION
-				}];
-				return queryInterface.bulkInsert(TABLE, status, {});
+				};
+
+				return queryInterface.bulkUpdate(TABLE, status, {}, {}, {
+					kit: { type: new Sequelize.JSON() },
+					secrets: { type: new Sequelize.JSON() },
+					activation_code: { type: new Sequelize.STRING() },
+					initialized: { type: new Sequelize.BOOLEAN() },
+					api_key: { type: new Sequelize.STRING() },
+					api_secret: { type: new Sequelize.STRING() },
+					kit_version: { type: new Sequelize.STRING() },
+				});
+				
 			});
 	},
 	down: (queryInterface) => {

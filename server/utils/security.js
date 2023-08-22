@@ -5,17 +5,17 @@ const crypto = require('crypto');
 const randomString = require('random-string');
 
 const generateHash = (password) => {
-	const { SALT_ROUNDS } = require('../constants');
+	const { SALT_ROUNDS } = require('../migration-constants');
 	return bcrypt.hash(password, SALT_ROUNDS);
 };
 
 const generateHashSync = (password) => {
-	const { SALT_ROUNDS } = require('../constants');
+	const { SALT_ROUNDS } = require('../migration-constants');
 	return bcrypt.hashSync(password, SALT_ROUNDS);
 };
 
 const generateAffiliationCode = () => {
-	const { AFFILIATION_CODE_LENGTH } = require('../constants');
+	const { AFFILIATION_CODE_LENGTH } = require('../migration-constants');
 	return randomString({
 		length: AFFILIATION_CODE_LENGTH,
 		numeric: true,

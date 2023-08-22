@@ -12,7 +12,7 @@ services:
       - REDIS_PASSWORD=bitholla
     command : ["sh", "-c", "redis-server --requirepass $${REDIS_PASSWORD}"]
   hollaex-kit-db:
-    image: postgres:10.9
+    image: postgres:15.4
     ports:
       - 5432:5432
     environment:
@@ -44,9 +44,11 @@ services:
       - ./plugins:/app/plugins
       - ./mail:/app/mail
       - ./ws:/app/ws
-      - ./app.js:/app/app.js
+      - ./app.ts:/app/app.ts
       - ./ecosystem.config.js:/app/ecosystem.config.js
-      - ./constants.js:/app/constants.js
+      - ./constants.ts:/app/constants.ts
+      - ./migration-constants.js:/app/migration-constants.js
+      - ./tsconfig.json:/app/tsconfig.json
       - ./messages.js:/app/messages.js
       - ./logs:/app/logs
       - ./test:/app/test
@@ -54,7 +56,7 @@ services:
       - ./utils:/app/utils
       - /app/utils/hollaex-network-lib/node_modules
       - /app/utils/hollaex-tools-lib/node_modules
-      - ./init.js:/app/init.js
+      - ./init.ts:/app/init.ts
       - ../plugins/src/plugins:/app/dev-plugins
     depends_on:
       - hollaex-kit-db

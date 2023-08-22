@@ -1,5 +1,5 @@
 'use strict';
-const { ROLES } = require('../../constants');
+const { ROLES } = require('../../migration-constants');
 module.exports = {
 	up: (queryInterface, Sequelize) => {
 		return queryInterface.createTable('Sessions', {

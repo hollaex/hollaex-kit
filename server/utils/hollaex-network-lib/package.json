@@ -1,8 +1,8 @@
 {
 	"name": "hollaex-network-lib",
-	"version": "2.6.0",
+	"version": "2.6.1",
 	"description": "hollaex network api and websocket library for nodejs",
-	"main": "index.js",
+	"main": "index.ts",
 	"dependencies": {
 		"file-type": "16.5.2",
 		"is-base64": "1.1.0",
@@ -19,8 +19,8 @@
 		"mocha": "5.2.0"
 	},
 	"scripts": {
-		"start": "node index.js",
-		"test": "mocha test/test.js --timeout 10000"
+		"start": "node index.ts",
+		"test": "mocha test/test.ts --timeout 10000"
 	},
 	"repository": {
 		"type": "git",
