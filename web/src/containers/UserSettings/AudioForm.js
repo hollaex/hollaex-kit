@@ -155,12 +155,19 @@ class AudioCueForm extends Component {
 	}
 
 	callback = (selected) => {
-		let formFields = { ...this.state.formFields };
-		Object.keys(formFields).map((key) => {
-			formFields[key].disabled = !selected;
-			return null;
-		});
-		this.setState({ formFields });
+		setTimeout(
+			() =>
+				this.setState(({ formFields: prevFormFields }) => {
+					const formFields = { ...prevFormFields };
+
+					Object.keys(formFields).forEach((key) => {
+						formFields[key].disabled = !selected;
+					});
+
+					return { formFields };
+				}),
+			1
+		);
 	};
 
 	render() {

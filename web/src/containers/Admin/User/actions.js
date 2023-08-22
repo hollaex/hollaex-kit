@@ -1,4 +1,4 @@
-import { all } from 'bluebird';
+import { all } from 'rsvp';
 import querystring from 'query-string';
 import axios from 'axios';
 import store from 'store';
@@ -292,7 +292,6 @@ export const requestAddUser = (values) => {
 	};
 	return requestAuthenticated('/admin/user', options);
 };
-
 
 export const requestUserBalancesDownload = (values) => {
 	let path = '/admin/balances';

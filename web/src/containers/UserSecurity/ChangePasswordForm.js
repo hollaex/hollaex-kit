@@ -1,11 +1,14 @@
 import React from 'react';
-import { reduxForm } from 'redux-form';
+import { reduxForm, formValueSelector } from 'redux-form';
 import { isMobile } from 'react-device-detect';
 
 import renderFields from 'components/Form/factoryFields';
 import { Button, EditWrapper } from 'components';
 import STRINGS from 'config/localizedStrings';
 import { password, required } from 'components/Form/validations';
+
+const FORM_NAME = 'ChangePasswordForm';
+export const selector = formValueSelector(FORM_NAME);
 
 const validate = (values) => {
 	const errors = {};
@@ -88,6 +91,6 @@ const Form = ({
 );
 
 export default reduxForm({
-	form: 'ChangePasswordForm',
+	form: FORM_NAME,
 	validate,
 })(Form);

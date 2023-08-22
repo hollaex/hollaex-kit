@@ -62,12 +62,7 @@ class AppBar extends Component {
 		if (!Object.keys(userData).length && user.id) {
 			userData = user;
 		}
-		const {
-			phone_number,
-			full_name,
-			id_data = {},
-			bank_account = [],
-		} = userData;
+		const { phone_number, id_data = {}, bank_account = [] } = userData;
 		let securityPending = 0;
 		let verificationPending = 0;
 		if (user.id) {

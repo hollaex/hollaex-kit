@@ -83,31 +83,39 @@ class Form extends Component {
 
 		return showDangerZone ? (
 			<div className="danger-zone p-4 important-text">
-				<div className="bold pb-2">
+				<div className="bold">
 					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE">
 						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TITLE']}
 					</EditWrapper>
 				</div>
-				<div>
+				<div className="secondary-text py-2">
 					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT">
 						{STRINGS['USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.TEXT']}
 					</EditWrapper>
 				</div>
-				<div>
-					<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH,USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK">
-						{STRINGS.formatString(
-							STRINGS[
-								'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK_PH'
-							],
-							<span onClick={this.onOpen} className="underline-text pointer">
-								{
-									STRINGS[
-										'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.LINK'
-									]
-								}
-							</span>
-						)}
-					</EditWrapper>
+				<div className="d-flex gap-1">
+					<div
+						onClick={() => this.setState({ showDangerZone: false })}
+						className="underline-text pointer"
+					>
+						<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.CANCEL">
+							{
+								STRINGS[
+									'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.CANCEL'
+								]
+							}
+						</EditWrapper>
+					</div>
+
+					<div onClick={this.onOpen} className="underline-text pointer">
+						<EditWrapper stringId="USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.PROCEED">
+							{
+								STRINGS[
+									'USER_SETTINGS.DELETE_ACCOUNT.ACCESS.DANGER_ZONE.PROCEED'
+								]
+							}
+						</EditWrapper>
+					</div>
 				</div>
 			</div>
 		) : (

@@ -77,8 +77,7 @@ const filterOptions = [
 		label: 'Currency',
 		value: 'currency',
 		name: 'currency',
-	}
-
+	},
 ];
 
 const Balances = () => {
@@ -89,7 +88,6 @@ const Balances = () => {
 	// 	getBalances();
 	// }, []);
 
-
 	const requestDownload = (fieldValues = {}) => {
 		return getExchangeBalances({ ...fieldValues, format: 'csv' });
 	};
@@ -97,7 +95,11 @@ const Balances = () => {
 	return (
 		<div className="asset-exchange-wallet-wrapper">
 			<div className="header-txt">Exchange balances</div>
-			<div style={{ color: '#ccc', marginTop: 5 }}>In this section you can download all current balances of the users. Apply the filters and click download to proceed. Please note that this function could take some time to complete. </div>
+			<div style={{ color: '#ccc', marginTop: 5 }}>
+				In this section you can download all current balances of the users.
+				Apply the filters and click download to proceed. Please note that this
+				function could take some time to complete.{' '}
+			</div>
 			<div className="wallet-filter-wrapper mt-4">
 				<MultiFilter
 					fields={filterFields}
@@ -106,7 +108,7 @@ const Balances = () => {
 					setIsLoading={setIsLoading}
 					isLoading={isLoading}
 					buttonText={'Download'}
-					alwaysEnabled = {true}
+					alwaysEnabled={true}
 					onDownload={requestDownload}
 				/>
 			</div>
