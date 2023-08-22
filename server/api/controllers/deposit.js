@@ -2,6 +2,7 @@
 
 const { loggerDeposits } = require('../../config/logger');
 const { ROLES } = require('../../constants');
+const { API_KEY_NOT_PERMITTED } = require('../../messages');
 const toolsLib = require('hollaex-tools-lib');
 const { errorMessageConverter } = require('../../utils/conversion');
 

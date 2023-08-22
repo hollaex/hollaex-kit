@@ -256,7 +256,7 @@ table th {
 .custom-select-style.ant-select-dropdown {
   background-color: var(--base_background); }
 
-.filter-option {
+.gap-1 {
   gap: 1rem; }
 
 .filter-dropdown {
@@ -329,6 +329,9 @@ table th {
 .secondary-text {
   color: var(--labels_secondary-inactive-label-text-graphics); }
 
+.blue-icon svg path {
+  fill: var(--specials_buttons-links-and-highlights); }
+
 .kit-divider {
   margin: 1rem 0;
   border-bottom: solid 1px var(--labels_secondary-inactive-label-text-graphics); }
@@ -358,6 +361,13 @@ table th {
 
 .margin-auto {
   margin: auto; }
+
+.row-reverse {
+  flex-direction: row-reverse; }
+
+.danger-zone {
+  border-top: var(--specials_notifications-alerts-warnings) 4px solid;
+  background-color: var(--calculated_specials_notifications-alerts-pale); }
 
 .app_container {
   min-height: 100vh;
@@ -1146,42 +1156,6 @@ table th {
         height: 3rem;
         width: 3rem; }
 
-.download-logins .action_notification-svg svg path {
-  fill: var(--specials_buttons-links-and-highlights); }
-
-.login-history-section-wrapper .refresh-history .action_notification-svg svg path {
-  fill: var(--specials_buttons-links-and-highlights); }
-
-.login-history-section-wrapper .action_notification-wrapper {
-  position: unset; }
-
-.login-history-section-wrapper .header_title-action {
-  position: absolute;
-  top: 0.25rem;
-  right: 0; }
-
-.direction_rtl .login-history-section-wrapper .header_title-action {
-  flex-direction: row-reverse;
-  left: 0; }
-
-.login-history_notifications-wrapper {
-  display: flex;
-  flex-direction: inherit; }
-
-.login-history_notifications-wrapper > div:not(:last-child)::after {
-  padding: 0 0.8rem;
-  content: '|';
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
-.direction_rtl .login-history_notifications-wrapper > div:not(:last-child)::after {
-  padding: 0;
-  content: ''; }
-
-.direction_rtl .login-history_notifications-wrapper > div:not(:last-child)::before {
-  padding: 0 0.8rem;
-  content: '|';
-  color: var(--labels_secondary-inactive-label-text-graphics); }
-
 .signup_success-wrapper {
   text-align: center; }
   .signup_success-wrapper .signup_success-content {
@@ -1604,6 +1578,49 @@ table th {
 .layout-mobile .currency-list-container .button-container .holla-button {
   font-size: 13px !important; }
 
+.layout-mobile .currency-list-container .donut-container {
+  height: 30rem !important;
+  width: 100%; }
+
+.layout-mobile .currency-list-container .rounded-loading {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  border: 1px solid #808080;
+  background-color: var(--calculated_secondary-border) !important;
+  animation: outer-round-anim 3s ease infinite; }
+
+.layout-mobile .currency-list-container .inner-round {
+  background-color: var(--base_wallet-sidebar-and-popup);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin: 0 auto;
+  border: 1px solid #808080; }
+
+.layout-mobile .currency-list-container .loading-wrapper {
+  height: 16rem;
+  flex-direction: column; }
+  .layout-mobile .currency-list-container .loading-wrapper .d-none {
+    display: none; }
+  .layout-mobile .currency-list-container .loading-wrapper .loading-txt {
+    text-align: center;
+    margin-bottom: 1rem;
+    margin-top: 5rem; }
+
+.layout-mobile .currency-list-container .dot-flashing {
+  position: relative;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #34363a;
+  color: #34363a;
+  animation: dotFlashing 3s infinite; }
+
 .layout-mobile .wallet-container .action_notification-wrapper .action_notification-text {
   font-size: 1.2rem !important;
   line-height: 1.2rem !important; }
@@ -1727,6 +1744,9 @@ table th {
     background-color: var(--base_wallet-sidebar-and-popup);
     padding: 20px;
     overflow-y: auto; }
+    .wallet-container .wallet-assets_block .donut-container {
+      width: 18rem !important;
+      min-width: 18rem !important; }
     .wallet-container .wallet-assets_block .td-wallet {
       min-width: 225px; }
       .wallet-container .wallet-assets_block .td-wallet .deposit-withdrawal-wrapper {
@@ -2342,10 +2362,6 @@ table th {
     background: none; }
   .history_block-wrapper .action_notification-wrapper {
     top: 21px; }
-  .history_block-wrapper .download-icon .action_notification-svg svg path {
-    fill: var(--specials_buttons-links-and-highlights); }
-  .history_block-wrapper .download-icon .right-align {
-    right: 8% !important; }
   .history_block-wrapper .loader_background {
     filter: opacity(0.25) !important; }
 
@@ -2402,43 +2418,14 @@ table th {
   .expandable-container .font-bold {
     font-weight: bolder; }
 
-.direction_ltr .history_block-wrapper .check-deposit-txt {
-  right: 230px !important; }
-  .direction_ltr .history_block-wrapper .check-deposit-txt svg {
-    padding-right: 0.3rem;
-    box-sizing: border-box;
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_ltr .history_block-wrapper .download-history {
-  right: 85px !important; }
-  .direction_ltr .history_block-wrapper .download-history svg {
-    padding-right: 0.1rem;
-    box-sizing: content-box;
-    border-right: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_ltr .history_block-wrapper .refresh-history {
-  right: 10px !important; }
-
-.direction_rtl .history_block-wrapper .check-deposit-txt {
-  left: 150px !important; }
-  .direction_rtl .history_block-wrapper .check-deposit-txt svg {
-    padding-left: 0.3rem;
-    box-sizing: border-box;
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_rtl .history_block-wrapper .download-history {
-  left: 65px !important; }
-  .direction_rtl .history_block-wrapper .download-history svg {
-    padding-left: 0.1rem;
-    box-sizing: content-box;
-    border-left: 1px solid var(--labels_secondary-inactive-label-text-graphics);
-    height: 100%; }
-
-.direction_rtl .history_block-wrapper .refresh-history {
-  left: 10px !important; }
+.action_notification-container {
+  display: flex; }
+  .action_notification-container .action_notification-wrapper {
+    position: unset; }
+  .action_notification-container > div:not(:last-child)::after {
+    padding: 0 0.8rem;
+    content: '|';
+    color: var(--labels_secondary-inactive-label-text-graphics); }
 
 .trade-container {
   flex: 1; }
@@ -2966,7 +2953,16 @@ table th {
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover,
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover,
     .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover {
-      color: var(--labels_important-active-labels-text-graphics) !important; }
+      color: var(--labels_important-active-labels-text-graphics) !important;
+      font-weight: bold; }
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-price:hover .secondary-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell-amount:hover .secondary-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover .important-text,
+      .trade_orderbook-wrapper .price-row-wrapper .trade_orderbook-cell_total:hover .secondary-text {
+        color: var(--labels_important-active-labels-text-graphics) !important;
+        font-weight: bold; }
   .trade_orderbook-wrapper .fill {
     background-repeat: no-repeat;
     background-size: 0;
@@ -3996,6 +3992,7 @@ table th {
   .summary-container .account-details-wrapper .account-type-icon {
     width: 4rem; }
   .summary-container .account-details-wrapper .account-type-menu {
+    opacity: 0.65;
     border-top: 1px solid var(--calculated_secondary-border);
     color: var(--specials_buttons-links-and-highlights);
     cursor: pointer;
@@ -4005,17 +4002,18 @@ table th {
       color: var(--labels_secondary-inactive-label-text-graphics);
       text-transform: lowercase; }
   .summary-container .account-details-wrapper .account-type-menu-active {
+    opacity: 1 !important;
     border-top: 2px solid var(--labels_important-active-labels-text-graphics);
-    border-bottom: 1px solid var(--labels_important-active-labels-text-graphics);
-    color: var(--labels_secondary-inactive-label-text-graphics);
+    border-bottom: 2px solid var(--labels_important-active-labels-text-graphics);
+    color: var(--labels_important-active-labels-text-graphics);
     font-size: 1rem;
     text-transform: uppercase; }
     .summary-container .account-details-wrapper .account-type-menu-active .account-current {
-      color: var(--labels_secondary-inactive-label-text-graphics);
+      color: var(--labels_important-active-labels-text-graphics);
       text-transform: lowercase; }
     .summary-container .account-details-wrapper .account-type-menu-active .trader-account-icon svg .level_icon {
-      fill: var(--labels_secondary-inactive-label-text-graphics); }
-  .summary-container .account-details-wrapper .accounnt-type-menu-last-active {
+      fill: var(--labels_important-active-labels-text-graphics); }
+  .summary-container .account-details-wrapper .account-type-menu-last-active {
     border-bottom: none !important; }
   .summary-container .account-details-wrapper .requirement-header {
     border-bottom: 1px solid var(--calculated_secondary-border);
@@ -5667,8 +5665,19 @@ table th {
         padding: 40px 65px 30px 55px;
         font-family: "Open Sans";
         background-color: var(--base_background); }
+        .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .coin-bg {
+          opacity: 0.2; }
         .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content {
           min-height: 450px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .header-text {
+            font-size: 16px;
+            font-weight: bold;
+            letter-spacing: 1px; }
+          .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .sub-text {
+            font-size: 14px;
+            width: 100%;
+            margin-top: 1rem;
+            color: var(--labels_secondary-inactive-label-text-graphics); }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-30 {
             padding-bottom: 30px; }
           .hollaex-token-wrapper .token-wrapper .hollaex-container .trade-details-wrapper .trade-details-content .pb-35 {
@@ -6874,6 +6883,10 @@ table th {
   .buttons-section-header .holla-button {
     font-size: 1.2rem !important; } }
 
+.tools-button .selector-trigger.app_bar-pair-tab.tools {
+  min-width: 10rem !important;
+  max-width: 10rem !important; }
+
 .check_title-container {
   transition: 0.3s;
   display: flex;
@@ -7057,7 +7070,10 @@ table th {
   padding: 0.5rem;
   font-size: 1.2rem; }
   .mobile_tab-wrapper .custom_tab_icon-mobile {
-    width: 4rem; }
+    width: 4rem !important; }
+    .mobile_tab-wrapper .custom_tab_icon-mobile svg {
+      width: 4rem !important;
+      height: 4rem !important; }
   .mobile_tab-wrapper .custom_tab_status-icon {
     width: 1.7rem; }
   .mobile_tab-wrapper .mobile-tab-title {

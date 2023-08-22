@@ -19,6 +19,7 @@ const UseFilters = ({ applyFilters }) => {
 		email: { type: 'string', label: 'Email' },
 		username: { type: 'string', label: 'User Name' },
 		full_name: { type: 'string', label: 'Full Name' },
+		id_number: { type: 'string', label: 'ID number' },
 		start_date: { type: 'date', label: 'User Creation Date Start' },
 		kyc: {
 			type: 'dropdown',
@@ -65,6 +66,13 @@ const UseFilters = ({ applyFilters }) => {
 				{ label: 1, value: 1 },
 				{ label: 2, value: 2 },
 				{ label: 3, value: 3 },
+				{ label: 4, value: 4 },
+				{ label: 5, value: 5 },
+				{ label: 6, value: 6 },
+				{ label: 7, value: 7 },
+				{ label: 8, value: 8 },
+				{ label: 9, value: 9 },
+				{ label: 10, value: 10 },
 			],
 		},
 		email_verified: { type: 'boolean', label: 'Email Verified' },
@@ -251,39 +259,45 @@ const UseFilters = ({ applyFilters }) => {
 				}}
 			>
 				<div>
-					<Select
-						className="select-box"
-						showSearch
-						style={{ width: 150 }}
-						placeholder="Add filter"
-						value={field}
-						onChange={(value) => {
-							setField(null);
-							const found = filters.find((f) => f.field === value);
+					{Object.keys(fieldKeyValue).filter(
+						(key) => !filters.find((filter) => filter.field === key)
+					)?.length !== 0 && (
+						<Select
+							className="select-box"
+							showSearch
+							style={{ width: 150 }}
+							placeholder="Add filter"
+							value={field}
+							onChange={(value) => {
+								setField(null);
+								const found = filters.find((f) => f.field === value);
 
-							if (found) {
-								message.error('Filter already exists');
-							} else {
-								const fieldValue = {
-									field: value,
-									type: fieldKeyValue[value].type,
-									label: fieldKeyValue[value].label,
-									value: fieldKeyValue[value].value,
-									options: fieldKeyValue[value]?.options,
-								};
-								setFilters((prevState) => {
-									prevState.push(fieldValue);
-									return [...prevState];
-								});
-							}
-						}}
-					>
-						{Object.keys(fieldKeyValue)
-							.filter((key) => !filters.find((filter) => filter.field === key))
-							.map((key) => (
-								<Option value={key}>{fieldKeyValue[key].label}</Option>
-							))}
-					</Select>
+								if (found) {
+									message.error('Filter already exists');
+								} else {
+									const fieldValue = {
+										field: value,
+										type: fieldKeyValue[value].type,
+										label: fieldKeyValue[value].label,
+										value: fieldKeyValue[value].value,
+										options: fieldKeyValue[value]?.options,
+									};
+									setFilters((prevState) => {
+										prevState.push(fieldValue);
+										return [...prevState];
+									});
+								}
+							}}
+						>
+							{Object.keys(fieldKeyValue)
+								.filter(
+									(key) => !filters.find((filter) => filter.field === key)
+								)
+								.map((key) => (
+									<Option value={key}>{fieldKeyValue[key].label}</Option>
+								))}
+						</Select>
+					)}
 				</div>
 
 				<div>

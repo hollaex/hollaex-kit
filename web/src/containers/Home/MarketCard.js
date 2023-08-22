@@ -49,7 +49,7 @@ const MarketCard = ({ icons: ICONS, market, chartData }) => {
 					<div className="d-flex flex-direction-column align-start mr-2">
 						<div className="d-flex justify-content-end align-center pl-5 ml-5">
 							<div className="d-flex justify-content-end">
-								<PriceChange market={market} disableGlance={true} />
+								<PriceChange market={market} key={key} disableGlance={true} />
 							</div>
 						</div>
 						<div className="market-card__sparkline-wrapper w-100">

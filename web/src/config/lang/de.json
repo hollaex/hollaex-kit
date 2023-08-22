@@ -56,7 +56,11 @@
 		"SECTION_3_CARD_5_TEXT": "Wir kümmern uns um Ihre Bedürfnisse und haben einen Online-Profi, der Ihnen bei Ihren Problemen und Anfragen helfen kann.",
 		"SECTION_3_CARD_6_TITLE": "KYC-INTEGRATION",
 		"SECTION_3_CARD_6_TEXT": "Flexible und integrierbare Module zur Anwendung von KYC- und Benutzerverifizierungsmethoden in verschiedenen Rechtsordnungen.",
-		"SECTION_3_BUTTON_1": "Demo ansehen"
+		"SECTION_3_BUTTON_1": "Demo ansehen",
+		"MAIN_TITLE": "Kryptowährungshandelsbörse",
+		"MAIN_TEXT": "Kaufen und verkaufen Sie ganz einfach Krypto-Assets. Melden Sie sich einfach mit Ihrer E-Mail-Adresse an und handeln Sie rund um die Uhr mit den wichtigsten Krypto-Assets.",
+		"TRADE_CRYPTO": "Mit dem handel beginnen",
+		"VIEW_EXCHANGE": "Austausch ansehen"
 	},
 	"FOOTER": {
 		"FOOTER_LANGUAGE_TEXT": "SPRACHE",
@@ -101,7 +105,9 @@
 			"SECTION_6_LINK_9": "YouTube"
 		},
 		"CLICK_HERE": "klicken Sie hier",
-		"VISIT_HERE": "besuchen Sie hier"
+		"VISIT_HERE": "besuchen Sie hier",
+		"TERMS_OF_SERVICE": "Nutzungsbedingungen",
+		"PRIVACY_POLICY": "Datenschutz-Bestimmungen"
 	},
 	"ACCOUNTS": {
 		"TITLE": "Konto",
@@ -114,7 +120,10 @@
 		"TAB_SUMMARY": "Zusammenfassung",
 		"TAB_HISTORY": "Verlauf",
 		"TAB_API": "API",
-		"TAB_SIGNOUT": "Abmelden"
+		"TAB_SIGNOUT": "Abmelden",
+		"TAB_APPS": "Apps",
+		"TAB_STAKE": "Einsatz",
+		"TAB_FIAT": "Fiat kontrolliert"
 	},
 	"CONTACT_FORM": {
 		"CATEGORY_LABEL": "Kategorie",
@@ -151,14 +160,17 @@
 		"INCREASE_LIMIT": "Möchten Sie Ihr Tageslimit erhöhen?",
 		"QR_CODE": "Dieser QR-Code kann von der Person gescannt werden, die Ihnen Geld senden möchte",
 		"NO_DATA": "Keine Informationen verfügbar",
-		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}"
+		"FULL_MESSAGE_LIMIT": "{0}: {1} {2} {3}",
+		"QR_CODE_TITLE": "{0} Einzahlungsinformationen"
 	},
 	"LOGIN": {
 		"LOGIN_TO": "Bei {0} anmelden",
 		"CANT_LOGIN": "Sie können sich nicht anmelden?",
 		"NO_ACCOUNT": "Sie haben noch kein Konto?",
 		"CREATE_ACCOUNT": "Erstellen Sie hier ein Konto",
-		"HELP": "Hilfe"
+		"HELP": "Hilfe",
+		"LOOKING_PRICES": "Auf der Suche nach Preisen?",
+		"VIEW_MARKETS": "Sehen Sie sich die Märkte an"
 	},
 	"FORM_FIELDS": {
 		"EMAIL_LABEL": "E-Mail",
@@ -187,7 +199,9 @@
 		"USER_EXIST": "E-Mail wurde bereits registriert",
 		"ACCEPT_TERMS": "Sie haben den Nutzungsbedingungen und der Datenschutzrichtlinie nicht zugestimmt",
 		"STEP": "Ungültiger Wert, Schritt ist {0}",
-		"ONLY_NUMBERS": "Wert kann nur Zahlen enthalten"
+		"ONLY_NUMBERS": "Wert kann nur Zahlen enthalten",
+		"MIN_VALUE_NE": "Der Wert muss höher als {0} sein.",
+		"MAX_VALUE_NE": "Der Wert muss niedriger als {0} sein."
 	},
 	"NOTIFICATIONS": {
 		"BUTTONS": {
@@ -212,14 +226,30 @@
 		"OTP_TITLE": "Authentifizierungscode",
 		"OTP_HELP": "Hilfe",
 		"OTP_BUTTON": "einreichen",
-		"ERROR_INVALID": "Ungültiger OTP-Code"
+		"ERROR_INVALID": "Ungültiger OTP-Code",
+		"OTP_FORM_INFO": "Geben Sie Ihren 6-stelligen Code ein, um fortzufahren",
+		"OTP_FORM_SUBNOTE_LINE_1": "Ihr Code wird auch als Zwei-Faktor-Authentifikator (2FA) oder OTP-Code bezeichnet.",
+		"OTP_FORM_SUBNOTE_LINE_2": "Wenn Sie Ihren Code verloren haben, wenden Sie sich bitte an den Support."
 	},
 	"QUICK_TRADE_COMPONENT": {
 		"TITLE": "Quick",
 		"TOTAL_COST": "Gesamtkosten",
-		"BUTTON": "Überprüfung {0} Auftrag",
+		"BUTTON": "Überprüfen Sie die Bestellung",
 		"INPUT": "{0} bis {1}",
-		"TRADE_TITLE": "{0} {1}"
+		"TRADE_TITLE": "{0} {1}",
+		"INFO": "Der schnellste und einfachste Weg, mit Ihren Kryptowährungen zu handeln",
+		"CHANGE_TEXT": "ändern",
+		"HIGH_24H": "24H HOCH",
+		"LOW_24H": "24H NIEDRIG",
+		"BEST_BID": "BESTES ANGEBOT",
+		"BEST_ASK": "FRAGEN SIE AM BESTEN",
+		"FOOTER_TEXT": "Bei den Quick-Trade-Gebühren werden Market-Taker-Kurse verwendet",
+		"FOOTER_TEXT_1": "Bezogen von",
+		"GO_TO_TEXT": "Gehe zu",
+		"SOURCE_TEXT": "Broker-OTC-Deal",
+		"SOURCE_TEXT_NETWORK": "Netzwerk-Broker-OTC-Deal",
+		"VISIT": "Besuchen Sie{0}",
+		"ASSET_INFO_PAGE": "Infoseite zu Vermögenswerten"
 	},
 	"PREVIOUS_PAGE": "vorherige Seite",
 	"NEXT_PAGE": "nächste Seite",
@@ -272,7 +302,9 @@
 	},
 	"VERIFICATION_EMAIL_REQUEST": {
 		"TITLE": "E-Mail-Anfrage erneut senden",
-		"BUTTON": "E-Mail anfordern"
+		"BUTTON": "E-Mail anfordern",
+		"SUBTITLE": "Stellen Sie unten eine weitere Anfrage zur E-Mail-Bestätigung",
+		"SUPPORT": "Kontaktieren Sie Support"
 	},
 	"VERIFICATION_EMAIL_REQUEST_SUCCESS": {
 		"TITLE": "E-Mail erneut senden",
@@ -432,7 +464,9 @@
 					"LIST_ITEM_3": "GÜLTIG, mit deutlich sichtbarem Gültigkeitsdatum, sind.",
 					"WARNING_1": "Es wird nur ein gültiger Reisepass akzeptiert; Fotos in hoher Qualität oder gescannte Bilder dieser Dokumente sind akzeptabel:",
 					"WARNING_2": "Stellen Sie sicher, dass Sie Ihre eigenen Dokumente hochladen. Jede Verwendung von falschen oder gefälschten Dokumenten hat rechtliche Konsequenzen und führt zur sofortigen Sperrung Ihres Kontos.",
-					"WARNING_3": "Reichen Sie bitte nicht den Reisepass als Wohnsitznachweis ein."
+					"WARNING_3": "Reichen Sie bitte nicht den Reisepass als Wohnsitznachweis ein.",
+					"LIST_ITEM_0": "Die Gesamtgröße aller Dokumente sollte {0}MB nicht überschreiten",
+					"VIOLATION_ERROR": "Die Gesamtgröße aller Ihrer hochgeladenen Dokumente überschreitet das Upload-Limit von {0}MB. Bitte laden Sie kleinere Dateien hoch, um fortzufahren."
 				},
 				"POR": {
 					"SECTION_1_TEXT_1": "Um Verzögerungen bei der Verifizierung Ihres Kontos zu vermeiden, stellen Sie bitte sicher:",
@@ -481,7 +515,18 @@
 			"LIST_ITEM_1": "Erhöhte Abhebungslimits",
 			"LIST_ITEM_2": "Erhöhte Einzahlungslimits",
 			"LIST_ITEM_3": "Niedrigere Gebühren"
-		}
+		},
+		"EMAIL_VERIFICATION": "Senden Sie E-Mail-Verifizierung",
+		"VERIFICATION_SENT": "Bestätigung gesendet",
+		"VERIFICATION_SENT_INFO": "Überprüfen Sie Ihre E-Mails und klicken Sie auf den Link, um die E-Mail-Adresse zu bestätigen.",
+		"OKAY": "Okay",
+		"TITLE_PAYMENT": "Zahlungsmethoden hinzufügen",
+		"PAYMENT_VERIFICATION": "Zahlungsüberprüfung",
+		"START_PAYMENT_VERIFICATION": "Bestätigung starten",
+		"PAYMENT_VERIFICATION_TEXT_1": "Geben Sie unten Ihre Zahlungskontodaten ein.",
+		"PAYMENT_VERIFICATION_TEXT_2": "Nach der Verifizierung stehen Ihrem Konto weitere Auszahlungs- und Einzahlungsmethoden für verschiedene Währungen zur Verfügung.",
+		"ADD_ANOTHER_PAYMENT_METHOD": "Fügen Sie eine weitere Zahlungsmethode hinzu",
+		"PAYMENT_VERIFICATION_HELP_TEXT": "Damit dieser Abschnitt überprüft werden kann, müssen Sie den Abschnitt {0} ausfüllen."
 	},
 	"USER_SETTINGS": {
 		"TITLE_TEXT_1": "Ändern Sie die Einstellungen Ihres Kontos. Von Schnittstelle, Benachrichtigungen, Benutzername und anderen Anpassungen.",
@@ -538,7 +583,10 @@
 		"TEXT_DOWNLOAD": "DOWNLOAD-HISTORIE",
 		"TRADES": "Trades",
 		"DEPOSITS": "Einzahlungen",
-		"WITHDRAWALS": "Abhebungen"
+		"WITHDRAWALS": "Abhebungen",
+		"ORDERID": "Auftragsnummer",
+		"TRIGGER_STOP_PRICE": "Trigger-/Stopppreis",
+		"TIME_OF_LAST_TRADE": "Zeitpunkt des letzten Handels"
 	},
 	"ACCOUNT_SECURITY": {
 		"OTP": {
@@ -591,6 +639,28 @@
 					"label": "Neues Passwort bestätigen",
 					"placeholder": "Geben Sie Ihr neues Passwort erneut ein"
 				}
+			}
+		},
+		"TITLE_TEXT": "Passen Sie die Sicherheitseinstellungen für Ihr Konto an. Von Zwei-Faktor-Authentifizierung, Passwort, API-Schlüsseln und anderen sicherheitsrelevanten Funktionen.",
+		"LOGIN": {
+			"TITLE": "Anmeldeverlauf",
+			"IP_ADDRESS": "IP Adresse",
+			"TIME": "Terminzeit",
+			"CONTENT": { "TITLE": "Anmeldeverlauf" }
+		},
+		"FREEZE": {
+			"TITLE": "Konto einfrieren",
+			"CONTENT": {
+				"MESSAGE_1": "Durch das Einfrieren Ihres Kontos werden keine Auszahlungen mehr vorgenommen und alle Transaktionen werden gestoppt.",
+				"WARNING_1": "Verwenden Sie es nur, wenn Sie befürchten, dass Ihr Konto kompromittiert wurde",
+				"TITLE_1": "Sperren Sie Ihr Konto",
+				"TITLE_2": "Kontosperre",
+				"MESSAGE_2": "Das Einfrieren Ihres Kontos kann dazu beitragen, Ihr Konto vor Cyberangriffen zu schützen.",
+				"MESSAGE_3": "Wenn Sie Ihr Konto sperren möchten, geschieht Folgendes:",
+				"MESSAGE_4": "1. Ausstehende Auszahlungen werden storniert.",
+				"MESSAGE_5": "2. Der gesamte Handel wird gestoppt und nicht ausgeführte Aufträge werden storniert.",
+				"MESSAGE_6": "3. Für die Reaktivierung Ihres Kontos ist ein Support erforderlich.",
+				"WARNING_2": "Möchten Sie Ihr Konto wirklich sperren?"
 			}
 		}
 	},
@@ -648,7 +718,7 @@
 	"LOGOUT": "Abmelden",
 	"WITHDRAWALS_MIN_VALUE_ERROR": "Die Transaktion ist zu klein zum Senden. Versuchen Sie es mit einem größeren Betrag.",
 	"WITHDRAWALS_MAX_VALUE_ERROR": "Die Transaktion ist zu groß, um sie zu senden. Versuchen Sie einen kleineren Betrag.",
-	"WITHDRAWALS_LOWER_BALANCE": "Ihr Guthaben reicht nicht aus, um diese Transaktion zu senden.",
+	"WITHDRAWALS_LOWER_BALANCE": "Unzureichendes Guthaben, um fortzufahren. Für diese Transaktion ist {0} erforderlich.",
 	"WITHDRAWALS_BTC_INVALID_ADDRESS": "Die Bitcoin-Adresse ist ungültig. Bitte sorgfältig prüfen und erneut eingeben",
 	"WITHDRAWALS_ETH_INVALID_ADDRESS": "Die Ethereum-Adresse ist ungültig. Bitte sorgfältig prüfen und erneut eingeben",
 	"WITHDRAWALS_BUTTON_TEXT": "Abhebung überprüfen",
@@ -681,7 +751,10 @@
 		"CONFIRM_VIA_EMAIL_3": "die Abhebung über Ihre E-Mail innerhalb von 5 Minuten.",
 		"WITHDRAW_CONFIRM_SUCCESS_1": "Ihre Abhebungsanfrage ist bestätigt. Sie wird in Kürze bearbeitet.",
 		"WITHDRAW_CONFIRM_SUCCESS_2": "Um Ihren Abhebungsstatus zu sehen, besuchen Sie bitte Ihre Abhebungs-Historienseite",
-		"GO_WITHDRAWAL_HISTORY": "Zur Abhebungsverlaufsseite gehen"
+		"GO_WITHDRAWAL_HISTORY": "Zur Abhebungsverlaufsseite gehen",
+		"MESSAGE_FEE_COIN": "Transaktionsgebühr von {0}",
+		"WITHDRAWALS_FORM_ERROR_TITLE": "Falsche Übertragungsinformationen",
+		"WITHDRAWALS_FORM_ERROR": "Ihre Überweisung ist fehlgeschlagen. Das Senden von Geldern an eine E-Mail erfordert, dass der Benutzer über ein Konto bei dieser Börse verfügt. Überprüfen Sie, ob die E-Mail-Adresse korrekt ist, und versuchen Sie es erneut."
 	},
 	"WALLET_BUTTON_BASE_DEPOSIT": "einzahlen",
 	"WALLET_BUTTON_BASE_WITHDRAW": "abheben",
@@ -794,7 +867,8 @@
 		"CHAT_MESSAGE_BOX_PLACEHOLDER": "Mitteilungen",
 		"SIGN_UP_CHAT": "Zum Chatten anmelden",
 		"JOIN_CHAT": "Benutzername für den Chat festlegen",
-		"TROLLBOX": "Trollbox ({0})"
+		"TROLLBOX": "Trollbox ({0})",
+		"SET_USERNAME": "BENUTZERNAME AUF CHAT EINSTELLEN"
 	},
 	"INVALID_USERNAME": "Der Benutzername muss zwischen 3 und 15 Zeichen lang sein. Enthält nur Kleinbuchstaben, Zahlen und Unterstrich",
 	"USERNAME_TAKEN": "Dieser Benutzername ist bereits vergeben. Bitte versuchen Sie einen anderen.",
@@ -939,19 +1013,35 @@
 		"LEARN_MORE_WAVE_AUCTION": "Erfahren Sie mehr über die Wave Auktion",
 		"WAVE_NUMBER": "Wellennummer",
 		"DISCOUNT": "( {0}% Rabatt )",
-		"MY_FEES_LIMITS": " Meine Gebühren und Limits"
+		"MY_FEES_LIMITS": " Meine Gebühren und Limits",
+		"DEPOSIT_AND_WITHDRAWAL_FEES": "Ein- und Auszahlungsgebühren",
+		"DEPOSITS": "Einlagen",
+		"WITHDRAWALS": "Abhebungen",
+		"TITLE_OF_ACCOUNT": "{0} Konto",
+		"MARKETS": "Märkte",
+		"CHANGE_24H": "24-Stunden-Wechsel",
+		"VOLUME_24H": "24-Stunden-Volumen",
+		"VIEW_MORE_MARKETS": "Weitere Märkte anzeigen",
+		"VIEW_VERIFICATION": "Überprüfung anzeigen",
+		"EARN_COMMISSION": "Verdienen Sie Provisionen",
+		"ID_VERIFICATION": "Ausweisüberprüfung:"
 	},
 	"REFERRAL_LINK": {
 		"TITLE": "Freunde einladen",
 		"INFO_TEXT": "Empfehlen Sie Ihre Freunde, indem Sie diesen Link weitergeben und erhalten Sie Vorteile, wenn Sie andere Personen einladen.",
 		"COPY_FIELD_LABEL": "Teilen Sie den untenstehenden Link mit Freunden und verdienen Sie Provisionen:",
 		"REFERRED_USER_COUT": "Sie haben {0} Benutzer empfohlen.",
-		"COPY_LINK_BUTTON": "EMPFEHLUNGSLINK KOPIEREN"
+		"COPY_LINK_BUTTON": "EMPFEHLUNGSLINK KOPIEREN",
+		"VIEW": "Sicht",
+		"TABLE_TITLE": "Alle erfolgreichen Empfehlungen",
+		"USER": "Benutzer Email",
+		"TIME": "Zeitpunkt der Anmeldung"
 	},
 	"NOT_LOGGEDIN": {
 		"TXT_1": "Um den Handel zu starten, müssen Sie sich anmelden",
 		"TXT_2": "{0} or {1}",
-		"LOGIN_HERE": "hier anmelden"
+		"LOGIN_HERE": "hier anmelden",
+		"TEXT_GENERAL": "Zum Anzeigen müssen Sie sich anmelden"
 	},
 	"USER_LEVEL": "User Level",
 	"LIMIT_AMOUNT": "Grenzwertbetrag",
@@ -973,5 +1063,658 @@
 		"LEARN_MORE": "Mehr erfahren",
 		"APPLY_TODAY": "Heute bewerben"
 	},
-	"OPEN_WALLET": "Offener Geldbeutel"
+	"OPEN_WALLET": "Offener Geldbeutel",
+	"NO_ACTIVE_TRADES": "Es sieht so aus, als gäbe es noch keine Trades",
+	"NO_ACTIVE_DEPOSITS": "Es sieht so aus, als gäbe es noch keine Einzahlungen.",
+	"NO_ACTIVE_WITHDRAWALS": "Es sieht so aus, als gäbe es noch keine Abhebungen",
+	"HELP_RESOURCE_GUIDE": {
+		"CONTACT_US": "kontaktiere uns",
+		"TEXT": "Für weitere Informationen und bei Problemen wenden Sie sich bitte an {0}, indem Sie uns eine E-Mail senden"
+	},
+	"CONVERT": "Konvertieren",
+	"SWAP": "Schalten",
+	"TO": "Zu",
+	"NA": "N / A",
+	"QR_CODE": {
+		"SCAN": "Scan",
+		"SHOW": "QR anzeigen",
+		"NO_RESULT": "Kein Ergebnis",
+		"NOT_FOUND": "Nicht gefunden",
+		"PERMISSION_DENIED": "Zugriff verweigert"
+	},
+	"EMAIL_CODE_FORM": {
+		"TITLE": "Geben Sie Ihre Sicherheitscodes ein",
+		"LABEL": "Eingabecode (bitte überprüfen Sie Ihre E-Mail)",
+		"PLACEHOLDER": "Geben Sie den an Ihre E-Mail gesendeten Code ein",
+		"FORM_TITLE": "An Ihre E-Mail-Adresse wurde ein eindeutiger Code gesendet, der zum Abschließen des Vorgangs erforderlich ist. Bitte geben Sie unten den an Ihre E-Mail-Adresse gesendeten Code zusammen mit Ihrem OTP-Code ein.",
+		"BUTTON": "einreichen",
+		"ERROR_INVALID": "Der von Ihnen eingegebene Code ist falsch. Bitte versuche es erneut",
+		"OTP_LABEL": "2FA-Code (OTP)",
+		"OTP_PLACEHOLDER": "Geben Sie Ihren 6-stelligen Zwei-Faktor-Authentifizierungscode ein"
+	},
+	"USER_APPS": {
+		"TITLE": "Ihre Exchange-Apps",
+		"SUBTITLE": "Informationen zu Ihren Exchange-Kontoanwendungen und zusätzlichen Funktionen finden Sie unten.",
+		"ALL_APPS": {
+			"TAB_TITLE": "Alle Apps",
+			"TITLE": "Apps austauschen",
+			"SUBTITLE": "Erhalten Sie mehr Funktionalität von Ihrem Exchange-Konto, indem Sie einfach unten eine App auswählen und auf die Schaltfläche „Hinzufügen“ klicken.",
+			"SEARCH_PLACEHOLDER": "Apps suchen...",
+			"ADD": {
+				"SUCCESSFUL": "Sie haben erfolgreich eine neue App hinzugefügt!",
+				"FAILED": "Etwas ist schief gelaufen"
+			}
+		},
+		"MY_APPS": {
+			"TAB_TITLE": "Meine Applikationen",
+			"TITLE": "Meine Exchange-Apps",
+			"SUBTITLE": "Nachfolgend finden Sie Ihre aktiven Austauschanträge. Sie können auf klicken, um die Informationen und Funktionen jeder Anwendung zu erweitern und sie hinzuzufügen/zu entfernen. Apps wurden entwickelt, um Ihrem Austauscherlebnis mehr Funktionalität zu verleihen."
+		},
+		"TABLE": {
+			"APP_NAME": "App Name",
+			"DESCRIPTION": "Beschreibung",
+			"ACTION": "Aktion",
+			"CONFIGURE": "Konfigurieren",
+			"VIEW_APP": "App ansehen",
+			"ADD": "Hinzufügen",
+			"NOT_FOUND": "Kann diese App nicht finden...",
+			"RETRY": "Versuchen Sie es mit einem anderen Suchbegriff"
+		},
+		"APP_DETAILS": {
+			"BACK_PLACEHOLDER": "{0} {1}",
+			"BACK_TO_APPS": "zu meinen Apps",
+			"BACK": "Zurück"
+		},
+		"CONFIGURE": {
+			"TITLE": "App konfigurieren",
+			"SUBTITLE": "Konfigurieren Sie Ihre App unten:",
+			"REMOVE": "App entfernen",
+			"TEXT": "Wenn Sie Probleme mit Ihrer App haben, kontaktieren Sie uns bitte, indem Sie unten auf „Hilfe“ klicken.",
+			"BACK": "ZURÜCK",
+			"HELP": "HILFE"
+		},
+		"REMOVE": {
+			"TITLE": "App entfernen",
+			"SUBTITLE": "Dadurch wird die App aus Ihrer Liste „Meine Apps“ entfernt.",
+			"TEXT": "Möchten Sie diese App wirklich entfernen?",
+			"BACK": "ZURÜCK",
+			"CONFIRM": "BESTÄTIGEN"
+		}
+	},
+	"STAKE": {
+		"NETWORK_WARNING": "Inkompatibles Netzwerk. Bitte ändern Sie Ihr Netzwerk zu {0}",
+		"EARN": "Verdienen",
+		"TITLE": "Einsatz",
+		"MODAL_TITLE": "Setzen Sie ein und verdienen Sie {0}",
+		"REVIEW_MODAL_TITLE": "Einsatz prüfen und bestätigen",
+		"AVAILABLE_TOKEN": "{0} ({1}) zum Abstecken verfügbar: {2}",
+		"DEFI_TITLE": "Abstecken von DeFi-Vermögenswerten",
+		"DEFI_TEXT": "Beim Abstecken im DeFi-Stil wird Ihr eigenes Wallet außerhalb der Börse verwendet. Um zu beginnen, müssen Sie eine Verbindung herstellen. Sobald die Verbindung hergestellt ist, können Sie direkt von Ihrem Wallet aus einsetzen und Geld verdienen.",
+		"GET_STAKES": "Holen Sie sich Einsätze",
+		"CURRENT_ETH_BLOCK": "Aktueller ETH-Block: {0}",
+		"ON_EXCHANGE_XHT": "Bei Umtausch {0} Saldo: {1} {2}",
+		"LOGIN_HERE": "Hier anmelden",
+		"MOVE_XHT": "Verschiebe {0}",
+		"ESTIMATED_STAKED": "Geschätzter Wert des Gesamteinsatzes",
+		"ESTIMATED_EARNINGS": "Geschätzter Wert des Verdienstes",
+		"CONNECT_WALLET": "Wallet verbinden",
+		"BACK": "Zurück",
+		"NEXT": "Nächste",
+		"REVIEW": "Rezension",
+		"ESTIMATED": "OST.",
+		"BLOCK": "Block",
+		"CANCEL": "Stornieren",
+		"PROCEED": "Fortfahren",
+		"GO_TO_WALLET": "Gehe zur Brieftasche",
+		"AMOUNT_LABEL": "Zu setzender Betrag",
+		"PERIOD_SUBTITLE": "Je länger Sie einsetzen, desto mehr werden Sie belohnt. Wählen Sie unten die Einsatzdauer aus.",
+		"STAKE_AND_EARN_DETAILS": "Setzen Sie für ~{0} ein und verdienen Sie {1}",
+		"PREDICTED_EARNINGS": "Voraussichtlicher Gewinn",
+		"VARIABLE_TITLE": "Variable*",
+		"VARIABLE_TEXT": "*{0} über die Funktionsweise des variablen Zinssatzes.",
+		"READ_MORE": "Weiterlesen",
+		"CURRENT_BLOCK": "Aktueller Block: {0}",
+		"END_BLOCK": "Endblock: {0}",
+		"DURATION": "Dauer",
+		"END_ON_BLOCK": "Ende am Block: {0}",
+		"SLASHING_TITLE": "Slashing (frühzeitiger Abbau)",
+		"SLASHING_TEXT_1": "{0} % Ihres Einsatzprinzips",
+		"SLASHING_TEXT_2": "Alle Einnahmen verfallen",
+		"REVIEW_NOTE": "Die Dauer wird anhand des Timings der Ethereum-Blöcke gemessen. Bitte überprüfen und bestätigen Sie die oben genannten Details, bevor Sie Einsätze tätigen, da eine vorzeitige Aufhebung des Einsatzes dazu führt, dass ein Prozentsatz Ihres Einsatzes abgezogen wird und Einnahmen verfallen.",
+		"WAITING_TITLE": "Auf Bestätigung warten",
+		"WAITING_TEXT": "Bestätigen Sie diese Transaktion in Ihrem Wallet",
+		"PENDING_TEXT": "Transaktion ausstehend...",
+		"CHECKING_ALLOWANCE": "{0}-Zulage wird geprüft...",
+		"WAITING_PROMPT": "{0} {1} {2}",
+		"WAITING_STAKE": "Bestätigen Sie den Einsatzbetrag",
+		"WAITING_WITHDRAW": "Ausgaben zulassen",
+		"WAITING_UNSTAKE": "Unstake",
+		"WAITING_STAKE_ING": "Absteckung steht aus",
+		"WAITING_WITHDRAW_ING": "Bearbeitung der Genehmigung von Ausgaben",
+		"WAITING_UNSTAKE_ING": "Abstecken",
+		"SUCCESSFUL_STAKE_TITLE": "Sie haben {0} erfolgreich gestaket",
+		"SUCCESSFUL_STAKE_AMOUNT": "Abgesteckter Betrag",
+		"SUCCESSFUL_STAKE_DURATION_KEY": "Dauer",
+		"SUCCESSFUL_STAKE_DURATION_DEF": "Endet am Block {0} ({1})",
+		"SUCCESSFUL_STAKE_DESTINATION": "Ziel",
+		"SUCCESSFUL_UNSTAKE_ADDRESS": "Meine Adresse",
+		"OKAY": "Okay",
+		"ERROR_TITLE": "Fehler: {0} wurde abgelehnt",
+		"ERROR_SUBTITLE": "Wenn dies ein Fehler war, können Sie zurückgehen und es erneut versuchen",
+		"SUCCESSFUL_UNSTAKE_TITLE": "Sie haben den Einsatz von {0} erfolgreich aufgehoben.",
+		"SUCCESSFUL_UNSTAKE_AMOUNT": "Insgesamt zu erhalten",
+		"EARNINGS": "Verdienste",
+		"ORIGINAL_AMOUNT": "Ursprünglicher Betrag",
+		"CONNECT_A_WALLET": "Stellen Sie eine Verbindung zu einer Brieftasche her",
+		"CONNECT_WALLET_TABLE": "{0}, um historische Pfahlereignisse anzuzeigen",
+		"ZERO_STAKES": "Null Einsätze",
+		"PENDING_TRANSACTIONS": "Ausstehend {0} {1}",
+		"VIEW_ON": "Sehen Sie sich die {0} an",
+		"BLOCKCHAIN": "Blockchain",
+		"VIEW_POT": "Verteilung POT anzeigen",
+		"COMPLETED": "Gereift",
+		"COMPLETED_TOOLTIP": "Der Einsatz ist ausgereift. Setzen Sie den Einsatz fort, um mehr Belohnungen zu verdienen, oder brechen Sie den Einsatz ab, um Belohnungen zu erhalten.",
+		"CONNECT_ERROR": "Bitte überprüfen Sie Ihren Geldbeutel",
+		"INSTALL_METAMASK": "Sie müssen Metamask in Ihrem Browser installieren: https://metamask.io/download.html",
+		"INSTALL_METAMASK_TITLE": "MetaMask nicht erkannt"
+	},
+	"UNSTAKE": {
+		"TITLE": "Unstake",
+		"EARLY_TITLE": "Den Einsatz frühzeitig aufheben",
+		"EARLY_WARNING_TITLE": "Sieht so aus, als würden Sie versuchen, den Einsatz vorzeitig aufzuheben",
+		"EARLY_WARNING_TEXT_1": "Dies könnte dazu führen, dass ein Prozentsatz Ihres ursprünglichen Kapitaleinsatzes abgezogen wird und alle Einnahmen verfallen.",
+		"EARLY_WARNING_TEXT_2": "Sind Sie sicher, dass Sie fortfahren möchten?",
+		"BACK": "GEH ZURÜCK",
+		"REVIEW": "STANGE ENTFERNEN",
+		"DURATION": "OST. Reifedauer",
+		"CANCEL": "Stornieren",
+		"PROCEED": "Fortfahren",
+		"EARNINGS_FORFEITED": "Verdienst entfällt",
+		"PRICE_FORMAT": "{0} {1}",
+		"EST_PENDING": "OST. ausstehend: {0}",
+		"AMOUNT_SLASHED": "Betrag gekürzt*",
+		"AMOUNT_TO_RECEIVE": "Zu erhaltender Betrag",
+		"SLASH_FOOTNOTE": "*Alle gekürzten Beträge werden an die verbleibenden Spieler verteilt. Berücksichtigen Sie bitte den gekürzten Betrag des ursprünglichen Kapitals, die einbehaltenen Einnahmen und die verbleibende Laufzeit und stellen Sie fest, ob der Wertverlust durch die vorzeitige Aufhebung des Einsatzes die Kosten wert ist.",
+		"AMOUNT_NOTE": "Die Beträge werden an Ihre Wallet-Adresse ausgezahlt",
+		"TOTAL_EARNT": "Gesamtverdient",
+		"PENDING_EARNINGS": "Ausstehende Einnahmen*",
+		"PENDING_EARNINGS_FOOTNOTE": "*Ausstehende Einnahmen sind Beträge, die noch nicht verrechnet wurden und für deren Addition zu Ihrem Gesamtempfangsbetrag eine Blockchain-Transaktion erforderlich ist."
+	},
+	"STAKE_TABLE": {
+		"CURRENCY": "Währung",
+		"AVAILABLE": "Zum Abstecken verfügbar",
+		"TOTAL": "Gesamteinsatz",
+		"REWARD_RATE": "Belohnungssatz",
+		"EARNINGS": "Verdienste",
+		"STAKE": "Einsatz",
+		"VARIABLE": "Variable"
+	},
+	"STAKE_LIST": {
+		"AMOUNT": "EINGESETZTE BETRÄGE",
+		"DURATION": "OST. REIFUNGSDAUER",
+		"START": "Mit dem Abstecken begonnen",
+		"END": "ENDE EINSATZ",
+		"EARNINGS": "VERDIENSTE",
+		"STAKE": "EINSATZ"
+	},
+	"STAKE_DETAILS": {
+		"BACK_SUBTITLE": "{0} zur Absteckseite",
+		"GO_BACK": "Geh zurück",
+		"CONTRACT_SUBTITLE": "Token-Vertrag: {0}",
+		"VIEW_MORE": "MEHR SEHEN",
+		"VIEW": "Sicht",
+		"TOKEN": "{0} Token",
+		"TABS": {
+			"PUBLIC_INFO": "Öffentliche Informationen",
+			"DISTRIBUTIONS": "Verteilungen",
+			"MY_STAKING": "Mein Einsatz"
+		},
+		"PUBLIC_INFO": {
+			"TITLE": "Absteckinformationen",
+			"SUBTITLE": "Nachfolgend finden Sie eine Absteck-Tokenomik für {0} ({1}).",
+			"TOTAL_DISTRIBUTED_REWARDS": "Insgesamt verteilte Belohnungen ({0})",
+			"POT_BALANCE": "POT-Guthaben",
+			"UNCLAIMED_REWARDS": "Nicht beanspruchte Belohnungen",
+			"TOTAL_STAKED": "Gesamteinsatz",
+			"REWARD_RATE": "Belohnungssatz",
+			"MY_STAKE": "Mein Anteil ({0}%)",
+			"MY_STAKE_PERCENTLESS": "Mein Anteil",
+			"OTHER_STAKE": "Anderer Anteil ({0} %)",
+			"EVENTS_TITLE": "Kürzlich verteilte Belohnungen"
+		},
+		"DISTRIBUTIONS": {
+			"TITLE": "{0} Belohnungen verteilt",
+			"SUBTITLE": "Nachfolgend finden Sie eine historische Liste der Ausschüttungen an Staker von {0}.",
+			"TIME": "Zeit verteilt",
+			"TRANSACTION_ID": "Transaktions-ID",
+			"AMOUNT": "Ausgeschütteter Betrag"
+		},
+		"MY_STAKING": {
+			"TITLE": "Mein Einsatz",
+			"SUBTITLE": "Nachfolgend werden Informationen und einige historische Ereignisse im Zusammenhang mit Ihrem {0}-Einsatz angezeigt.",
+			"EVENTS_TITLE": "Historische Pfahlereignisse",
+			"TIME": "Zeit",
+			"EVENT": "Fall",
+			"TRANSACTION_ID": "Transaktions-ID",
+			"AMOUNT": "Menge"
+		}
+	},
+	"MOVE_XHT": {
+		"TITLE": "XHT verschieben",
+		"TEXT_1": "Um XHT zu setzen, müssen Sie Ihr XHT zunächst in Ihr eigenes Wallet übertragen.",
+		"TEXT_2": "Ihre aktuell verbundene Wallet-Adresse lautet:",
+		"LABEL": "Wallet-Adresse",
+		"TEXT_3": "Es ist wichtig zu überprüfen, ob die oben genannte Wallet-Adresse sicher ist. XHT wird an die oben genannte Wallet-Adresse verschoben."
+	},
+	"MOVE_AMOUNT": {
+		"TITLE": "Eingabebetrag",
+		"PROMPT": "Geben Sie den Betrag ein, den Sie verschieben möchten.",
+		"BALANCE": "{0} Saldo: {1}",
+		"LABEL": "Zu verschiebender Betrag",
+		"FEE": "Transaktionsgebühr: {0} {1}"
+	},
+	"SIDES_VERBS": { "buy": "gekauft", "sell": "verkauft" },
+	"AVERAGE": "Durchschnitt",
+	"ORDER_HISTORY": "Bestellverlauf",
+	"ESTIMATED_PRICE": "Schätzpreis",
+	"CURRENCY_WALLET": {
+		"BACK": "Zurück",
+		"WALLET_PAGE": "{0} zur Wallet-Seite",
+		"LEARN_MORE": "Erfahren Sie mehr",
+		"ABOUT": "{0} ungefähr"
+	},
+	"WITHDRAWALS_FORM_NETWORK_LABEL": "Netzwerk",
+	"DEPOSIT_FORM_NETWORK_WARNING": "Stellen Sie sicher, dass das ausgewählte Netzwerk mit dem Wallet-Netzwerk des Absenders kompatibel ist",
+	"DEPOSIT_FORM_MIN_WARNING": "Es werden nur Einzahlungen von {0} {1} oder mehr akzeptiert. Alle Einzahlungen unterhalb dieser Mindestschwelle führen zu einem dauerhaften Verlust der Mittel.",
+	"DEPOSIT_FORM_TITLE_WARNING_DESTINATION_TAG": "Geben Sie sowohl Adresse als auch Tag ein, die für eine erfolgreiche Einzahlung auf Ihr Konto erforderlich sind.",
+	"WITHDRAW_PAGE_DESTINATION_TAG_NONE": "Keiner",
+	"WITHDRAW_PAGE_DESTINATION_TAG_MESSAGE": "Ziel-Tag: {0}",
+	"WITHDRAW_PAGE_NETWORK_TYPE_MESSAGE": "{0} Adressnetzwerktyp: {1}",
+	"WITHDRAWALS_FORM_NETWORK_WARNING": "Stellen Sie sicher, dass das ausgewählte Netzwerk mit dem Ziel-Wallet kompatibel ist",
+	"WITHDRAWALS_FORM_FEE_WARNING": "{0} ({1}) ist eine Voraussetzung für die Auszahlung dieses Vermögenswerts",
+	"WITHDRAWALS_FORM_DESTINATION_TAG_WARNING": "Überprüfen Sie, ob für die Empfangsadresse ein Tag erforderlich ist. Auch bekannt als Memo, digitale ID, Etikett und Notizen.",
+	"WITHDRAWALS_FORM_NETWORK_PLACEHOLDER": "Wählen Sie ein Netzwerk aus",
+	"WITHDRAWALS_FORM_FEE_COMMON_LABEL_COIN": "Transaktionsgebühr ({0})",
+	"24H_MAX": "24-Stunden-Hoch:",
+	"24H_MIN": "24-Stunden-Tief",
+	"24H_VAL": "24H Vol",
+	"WALLET_HIDE_ZERO_BALANCE": "Nullsaldo ausblenden",
+	"WALLET_ESTIMATED_TOTAL_BALANCE": "Geschätzter Gesamtsaldo",
+	"WALLET_ASSETS_SEARCH_TXT": "Suchen",
+	"ORDER_ENTRY_ADVANCED": "Fortschrittlich",
+	"QUICK_TRADE_SUCCESS": "Erfolg!",
+	"QUICK_TRADE_INSUFFICIENT_FUND": "Unzureichende Mittel",
+	"QUICK_TRADE_INSUFFICIENT_FUND_MESSAGE": "Ihr Guthaben reicht nicht aus, um diese Transaktion abzuschließen.",
+	"QUICK_TRADE_BROKER_NOT_AVAILABLE_MESSAGE": "Der Broker-OTC-Deal ist derzeit nicht verfügbar.",
+	"ABOUT_LINK": "Über {0}",
+	"DEVELOPERS_TOKEN": {
+		"API_KEY": "API-Schlüssel",
+		"SECRET_KEY": "Geheimer Schlüssel",
+		"ACCESS": "Zugang",
+		"BASIC_ACCESS": "Grundlegender Zugang",
+		"BASIC_ACCESS_PROMPT": "Wählen Sie aus, worauf dieser API-Schlüssel zugreifen kann.",
+		"READING_ACCESS": "Lesen (Geldbörsenguthaben usw.)",
+		"TRADING_ACCESS": "Handel",
+		"IP_ACCESS": "IP-Zugriff",
+		"IP_ACCESS_PROMPT": "Konfigurieren Sie, welche IP-Adresse mit diesem API-Schlüssel funktioniert.",
+		"ANY_IP_ADDRESS": "Beliebige IP-Adresse",
+		"ONLY_TRUSTED_IPS": "Nur vertrauenswürdige IPs",
+		"ADD_IP_PH": "Geben Sie die IP-Adresse ein. Sie können mehrere IPs hinzufügen",
+		"ADD_IP": "Hinzufügen",
+		"ADVANCED_ACCESS": "Erweiterter Zugriff",
+		"ADVANCED_ACCESS_PROMPT": "Erfordert die Aktivierung vertrauenswürdiger IPs.",
+		"WITHDRAWAL_ACCESS": "Abhebungen",
+		"SAVE": "Speichern",
+		"BEWARE": "Seien Sie vorsichtig, das Zulassen von Abhebungen birgt gewisse Risiken!"
+	},
+	"CUMULATIVE_AMOUNT_SYMBOL": "Gesamt",
+	"POST_ONLY": "Nur posten",
+	"CLEAR": "Klar",
+	"ORDER_TYPE": "Typ",
+	"ORDER_MODE": "Bestellmodus",
+	"TRIGGER_CONDITIONS": "Auslösebedingungen",
+	"TRANSACTION_STATUS": {
+		"PENDING": "Ausstehend",
+		"REJECTED": "Abgelehnt",
+		"COMPLETED": "Vollendet"
+	},
+	"DEPOSIT_STATUS": {
+		"NEW": "Neu",
+		"SEARCH_FIELD_LABEL": "Fügen Sie Ihre Transaktions-ID ein",
+		"CHECK_DEPOSIT_STATUS": "Überprüfen Sie den Einzahlungsstatus",
+		"SEARCH_BLOCKCHAIN_FOR_DEPOSIT": "Suchen Sie in der Blockchain nach Ihrer Einzahlung",
+		"STATUS_DESCRIPTION": "Sie können den Status Ihrer Einzahlung überprüfen, indem Sie unten die Transaktions-ID (Hash) übergeben.",
+		"TRANSACTION_ID": "Transaktions-ID (Hash)",
+		"SEARCH_SUCCESS": "Suche abgeschlossen",
+		"ADDRESS_FIELD_LABEL": "Fügen Sie Ihre Adresse ein",
+		"CURRENCY_FIELD_LABEL": "Wählen Sie die Währung aus",
+		"DESTINATION_TAG_LABEL": "Tag (optional)",
+		"MEMO_LABEL": "Notiz (optional)",
+		"DESTINATION_TAG_PLACEHOLDER": "Fügen Sie Ihr Tag ein",
+		"MEMO_PLACEHOLDER": "Fügen Sie Ihr Memo ein"
+	},
+	"CANCEL_ORDERS": {
+		"HEADING": "Bestellungen stornieren",
+		"SUB_HEADING": "Alle Bestellungen stornieren",
+		"INFO_1": "Dadurch werden Ihre offenen Bestellungen für den Markt {0} storniert.",
+		"INFO_2": "Sind Sie sicher, dass Sie alle Ihre offenen Bestellungen stornieren möchten?"
+	},
+	"AMOUNT_IN": "Betrag in",
+	"LIMITS_BLOCK": {
+		"HEADER_ROW_DESCRIPTION": "24-Stunden-Einzahlungs- und Auszahlungskontingent für alle Vermögenswerte ({0})",
+		"HEADER_ROW_TYPE": "Typ (Alle Vermögenswerte)",
+		"HEADER_ROW_AMOUNT": "24h-Betrag ({0})"
+	},
+	"MARKETS_TABLE": {
+		"TITLE": "Live-Märkte",
+		"MARKETS": "Märkte",
+		"LAST_PRICE": "Letzter Preis",
+		"CHANGE_24H": "Wechsel (24 Stunden)",
+		"VOLUME_24h": "Volumen (24 Stunden)",
+		"CHART_24H": "Diagramm (24 Stunden)",
+		"VIEW_MARKETS": "Märkte anzeigen",
+		"TRADING_SYMBOL": "Handelssymbol",
+		"TYPE": "Typ",
+		"SOURCE": "QUELLE"
+	},
+	"SUMMARY_MARKETS": {
+		"HOLLAEX": "Möchten Sie Ihre digitalen Assets auflisten? Starten Sie Ihren eigenen Markt mit Ihrem HollaEx {0} {1}",
+		"WHITE_LABEL": "weißes Etikett",
+		"SOLUTION": "Lösung",
+		"VISIT_COIN_INFO_PAGE": "Besuchen Sie die Münzinfoseite {0}",
+		"HERE": "Hier"
+	},
+	"PAGE_UNDER_CONSTRUCTION": "Diese Seite befindet sich im Aufbau. Bitte besuchen Sie diese Seite bald erneut.",
+	"UNDEFINED_ERROR_TITLE": "Es ist ein unbekannter Fehler aufgetreten",
+	"UNDEFINED_ERROR": "Wow! Ein unbekannter Fehler ist aufgetreten. Dies könnte ein Verbindungsproblem oder eine Reihe anderer Dinge sein. Sie können es später erneut versuchen oder eine Aktualisierung durchführen.",
+	"POST_ONLY_TOOLTIP": "Nur-Post-Orders werden nur als Limit-Order ausgeführt.",
+	"REFRESH": "Aktualisierung",
+	"FEE_REDUCTION": "Gebührenermäßigung",
+	"FEE_REDUCTION_DESCRIPTION": "*Auf Ihr Konto wird ein Gebührenrabatt angewendet. Die Ermäßigung wird auf die Handelsgebühren basierend auf Ihrem Konto angewendet.",
+	"CHANGE_PASSWORD_FAILED": "Das Ändern des Passworts ist fehlgeschlagen",
+	"MARKET_OPTIONS": { "LIST": "Aufführen", "CARD": "Karte" },
+	"ALL": "Alle",
+	"ASSET_TXT": "Anlage",
+	"ONE_DAY": "1 Tag",
+	"ONE_WEEK": "1 Woche",
+	"MONTH": "{0} Monat",
+	"START_DATE": "Startdatum",
+	"END_DATE": "Endtermin",
+	"REGULAR": "Regulär",
+	"STOPS": "Stoppt",
+	"VIEW_ALL": "Alle ansehen",
+	"TRIGGER_PRICE": "Auslösepreis",
+	"SPEND_AMOUNT": "Betrag ausgeben",
+	"ESTIMATE_RECEIVE_AMOUNT": "Geschätzter Empfangsbetrag",
+	"TOOLS": {
+		"ORDERBOOK": "Auftragsbuch",
+		"CHART": "Diagramm",
+		"PUBLIC_SALES": "Öffentlicher Verkauf",
+		"ORDER_ENTRY": "Auftragserfassung",
+		"RECENT_TRADES": "Aktuelle Trades",
+		"OPEN_ORDERS": "Offene Bestellungen",
+		"WALLET": "Geldbörse",
+		"DEPTH_CHART": "Tiefenkarte",
+		"COMING_SOON": "demnächst"
+	},
+	"RESET_LAYOUT": "Layout zurücksetzen",
+	"WALLET_BALANCE_LOADING": "Balance wird geladen...",
+	"CONNECT_VIA_DESKTOP": {
+		"TITLE": "Verbindung über Desktop herstellen",
+		"SUBTITLE": "DeFi-Einsätze über Ihre Mobilgeräte werden derzeit nicht unterstützt.",
+		"TEXT": "Um Ihr Wallet anzuschließen, verwenden Sie bitte einen Desktop-/Laptop-Computer."
+	},
+	"ORDER_HISTORY_CLOSED": "Geschlossen",
+	"FIAT": {
+		"UNVERIFIED": {
+			"TITLE": "Vollständige Überprüfung",
+			"TEXT": "Um eine {0} zu erstellen, müssen Sie Ihre Verifizierung durchführen, einschließlich der Verifizierung Ihrer Bankdaten. Bitte klicken Sie unten auf die Schaltfläche „Weiter“.",
+			"DEPOSIT": "Kaution",
+			"WITHDRAWAL": "Rückzug"
+		},
+		"REVIEW_DEPOSIT": {
+			"TITLE": "Überprüfen und bestätigen Sie die Einzahlungsdetails",
+			"SUBTITLE": "Bitte überprüfen Sie die unten stehenden Einzahlungsdetails, um sicherzustellen, dass alles korrekt ist.",
+			"FORMAT": "{0} {1}",
+			"AMOUNT": "Einzuzahlender Betrag",
+			"FEE": "Kautionsgebühr",
+			"TRANSACTION_ID": "Transaktions-ID",
+			"NOTE": "Um Verzögerungen zu vermeiden, stellen Sie sicher, dass der Betrag, die Rechnung und die Transaktions-ID Ihrer Einzahlung mit den oben genannten Angaben übereinstimmen. Sollten Probleme auftreten, wenden Sie sich bitte an den Support.",
+			"BACK": "Zurück",
+			"PROCEED": "Fortfahren"
+		}
+	},
+	"DEPOSIT_FEE_NOTE": "Beachten Sie, dass der Gesamtbetrag, der auf Ihr Konto eingezahlt wird, der Betrag abzüglich der Einzahlungsgebühr ist",
+	"AMOUNT_LABEL": "Geben Sie den eingezahlten Betrag ein (muss mit dem tatsächlichen Betrag identisch sein)",
+	"TRANSACTION_ID_LABEL": "Geben Sie die Transaktions-ID der Einzahlung ein",
+	"FEE_LABEL": "Einzahlungsgebühr",
+	"AMOUNT_FORMAT": "{0} {1}",
+	"PENDING_DEPOSIT_TITLE": "Anzahlung steht noch aus",
+	"PENDING_DEPOSIT_TEXT_1": "Ihre Einzahlung steht jetzt zur Überprüfung in der Warteschlange und bleibt bis zur Freigabe im Status „Ausstehend“.",
+	"PENDING_DEPOSIT_TEXT_2": "In der Regel werden Einzahlungen innerhalb von 24 Stunden abgewickelt, es kann jedoch bis zu 48 Stunden dauern, bis der Einzahlungsbetrag abzüglich der Gebühr Ihrem Guthaben gutgeschrieben wird.",
+	"DEPOSIT_HOME_NOTE": "Um eine Einzahlung vorzunehmen, geben Sie bitte den Betrag ein, den Sie von Ihrem eigenen Bankkonto einzahlen möchten. Um Verzögerungen zu vermeiden, stellen Sie sicher, dass der unten eingegebene Betrag mit dem tatsächlichen Betrag übereinstimmt, den Sie von Ihrem Bankkonto überweisen werden oder haben.",
+	"DEPOSIT_TXID_NOTE": "Um Verzögerungen bei Ihrer Einzahlung zu vermeiden, geben Sie bitte bei der Bankeinzahlung in der Notiz oder Nachricht Ihrer Transaktion die oben angezeigte eindeutige Notiz ein. Stellen Sie sicher, dass der unten stehende Betrag mit dem übereinstimmt, was Sie tatsächlich von Ihrer Bank eingezahlt haben, und dass Sie die von Ihrer Bank nach Durchführung der Transaktion bereitgestellte Transaktions-ID angeben.",
+	"DEPOSIT_BANK_TEXT": "Verwenden Sie die untenstehenden Bankdaten, um Ihre Einzahlung zu tätigen.",
+	"MIN_DEPOSIT": "Mindesteinzahlung",
+	"MAX_DEPOSIT": "Maximale Einzahlung",
+	"BACK": "Zurück",
+	"DONE": "Erledigt",
+	"PENDING_WITHDRAWAL_TITLE": "Auszahlung steht bevor",
+	"PENDING_WITHDRAWAL_TEXT_1": "Ihre Auszahlung steht jetzt zur Überprüfung in der Warteschlange und bleibt bis zur Freigabe im Status „Ausstehend“.",
+	"DEPOSIT_AMOUNT_MIN_VALIDATION": "Die Transaktion ist zu klein zum Senden. Versuchen Sie es mit einer größeren Menge.",
+	"DEPOSIT_AMOUNT_MAX_VALIDATION": "Die Transaktion ist zu groß zum Senden. Versuchen Sie es mit einer kleineren Menge.",
+	"ACCOUNT_NAME": "Kontobezeichnung",
+	"ACCOUNT_NUMBER": "Accountnummer",
+	"BANK_NAME": "Bank Name",
+	"VERIFY_BANK_WITHDRAW": "Um eine Auszahlung vorzunehmen, müssen Sie Ihre Verifizierung durchführen, einschließlich der Verifizierung Ihrer Bankdaten. Bitte klicken Sie unten auf die Schaltfläche „Weiter“.",
+	"VERIFICATION_TITLE": "Vollständige Überprüfung",
+	"WITHDRAW_NOTE": "Bitte beachten Sie: Sie können nur auf ein Konto abheben, das auf Ihren Namen lautet.",
+	"USER_PAYMENT": { "TITLE": "Zahlungen" },
+	"QUOTE_CONFIRMATION_MSG_TEXT_1": "Bitte überprüfen Sie Ihre Bestellung und bestätigen Sie diese unten.",
+	"QUOTE_CONFIRMATION_MSG_TEXT_2": "Bei den zu erhaltenden Beträgen handelt es sich um Schätzungen, in denen die Handelsgebühr nicht enthalten ist",
+	"ORDER_EXPIRED_MSG": "Bestellung abgelaufen. Bitte aktualisieren!",
+	"WITHDRAWALS_FORM_METHOD": "Methode",
+	"WITHDRAWALS_FORM_ADDRESS_EXCHANGE": "Exchange-Benutzer-E-Mail",
+	"WITHDRAWALS_FORM_EXCHANGE_PLACEHOLDER": "Geben Sie die E-Mail-Adresse des Benutzers für diesen Austausch ein",
+	"WITHDRAWALS_FORM_MAIL_INFO": "Geben Sie die E-Mail-Adresse des HollaEx-Kontos eines Benutzers ein, der sich auf dieser Börse befindet, und übertragen Sie kostenlos.",
+	"DUST": {
+		"TITLE": "Staubwedel für Geldbörsen",
+		"LINK": "Staubwedel für Geldbörsen",
+		"TOOLTIP": "Wandeln Sie winzige Wallet-Guthaben (Staub) in Krypto um",
+		"BACK_PLACEHOLDER": "{0} {1}",
+		"BACK_TO_WALLET": "zu meinem Portemonnaie",
+		"BACK": "Zurück",
+		"ESTIMATED_TOTAL": "Geschätzter Gesamtstaubwert",
+		"CONVERT_ALL": "Konvertieren",
+		"NO_DUST": "Kein Staubvermögen!",
+		"SECTION": {
+			"TITLE": "Geldbeutelstaub umwandeln",
+			"TEXT_1": "Wandeln Sie alle niedrigen Wallet-Guthaben um, die einen Wert von {0} {1} oder weniger haben.",
+			"TEXT_2": "Alle Gespräche werden in {0} ({1}) abgewickelt."
+		},
+		"CONFIRMATION": {
+			"TITLE": "Staub umwandeln",
+			"SUBTITLE": "Vermögenswerte werden umgewandelt",
+			"BACK": "zurück",
+			"CONFIRM": "bestätigen",
+			"GET": "Sie erhalten",
+			"FEE": "Umrechnungsgebühr",
+			"PLEASE": "bitte beachten Sie",
+			"NOTE": "Sie können Staub einmal alle 24 Stunden in {0} umwandeln. Nur Guthaben mit einem Wert unter {1} {2} werden umgerechnet."
+		},
+		"SUCCESSFUL": {
+			"TITLE": "Staubumwandlung erfolgreich!",
+			"TEXT": "Sie haben erhalten",
+			"VIEW_HISTORY": "siehe Verlauf",
+			"CLOSE": "schließen"
+		}
+	},
+	"ASSET_INFO_PAGE": "Asset-Infoseite",
+	"MARKET_ROW": { "NATIVE": "Einheimisch", "NO_NATIVE": "Keine native Quelle" },
+	"DIGITAL_ASSETS": {
+		"DIGITAL_ASSETS_TITLE": "Digitale Vermögenswerte",
+		"GO_BACK": "Geh zurück",
+		"ASSETS_INFO": "Nachfolgend finden Sie die verfügbaren Assets auf der Plattform.",
+		"ASSETS_INFO_DETAIL": "Sie können auf ein Asset in der Liste unten klicken, um mehr zu erfahren.",
+		"QUICK_TRADE": "SCHNELLER HANDEL",
+		"MARKETS": "MÄRKTE",
+		"WALLET": "GELDBÖRSE",
+		"PRICE_SOURCE": "Preisquelle"
+	},
+	"HOLLAEX_TOKEN": {
+		"REMOVE_FAVOURITES": "Von den Favoriten entfernen",
+		"ADD_FAVOURITES": "Zu Favoriten hinzufügen",
+		"GO_BACK": " Geh zurück",
+		"BALANCE": "Gleichgewicht:",
+		"OPEN_WALLET": "(Öffnen Sie die Brieftasche)",
+		"ABOUT": "Um",
+		"VIEW": "Mehr sehen",
+		"COMING_SOON": "Demnächst...",
+		"NO_DESCRIPTION": "Für dieses digitale Asset gibt es derzeit keine Beschreibung.",
+		"STAKE": "Einsatz",
+		"MORE": "Mehr",
+		"INFO": "die Info",
+		"TRADE": "HANDELN",
+		"LIST": "Möchten Sie Ihre digitalen Assets auflisten?",
+		"WEBSITE": "Webseite",
+		"EXPLORER": "Forscher"
+	},
+	"ACCORDIAN": {
+		"ACCORDIAN_ASSETS": "Alle Wallet-Assets",
+		"ACCORDIAN_INFO": "ASSET-INFO-SEITE",
+		"ACCORDIAN_HISTORY": "GESCHICHTE"
+	},
+	"ASYNC_LINK": {
+		"TITLE": "Seite öffnet sich nicht automatisch?",
+		"TEXT": "Möglicherweise blockiert Ihr Browser die Seite. Versuchen Sie stattdessen, den folgenden Link zu kopieren und einzufügen:"
+	},
+	"TERMS_OF_SERVICES": {
+		"TO_GET_ACCESS": "Um Zugriff zu erhalten, wenden Sie sich an"
+	},
+	"FEES_AND_LIMITS": {
+		"LINK": "Sehen Sie sich meine Gebühren und Limits an",
+		"COIN_PAGE_LINK": "Handelsgebühren und -limits",
+		"BACK": {
+			"PLACEHOLDER": "{0} {1}",
+			"BACK": "Geh zurück",
+			"TO": "zur Zusammenfassung"
+		},
+		"TITLE": "Gebühren und Limits",
+		"SEARCH_PLACEHOLDER": "Suchen...",
+		"TABS": {
+			"TRADING_FEES": {
+				"TITLE": "Handelsgebühren",
+				"TABLE": {
+					"TITLE": "Markthandelsgebühren",
+					"SUBTITLE": "Nachfolgend finden Sie die Regeln für die Handelsgebühren der einzelnen Märkte.",
+					"HEADER": {
+						"MARKET": "Markt",
+						"MAKER": "Maker-Handelsgebühren (Limit-Orders)",
+						"TAKER": "Taker-Handelsgebühren (Market Orders)"
+					}
+				}
+			},
+			"WITHDRAWAL_FEES": {
+				"TITLE": "Abhebegebühren",
+				"TABLE": {
+					"TITLE": "Gebühren werden bei der Auszahlung abgezogen",
+					"SUBTITLE": "Nachfolgend finden Sie alle Gebühren beim Abheben eines Vermögenswerts.",
+					"NOT_ALLOWED": "Nicht erlaubt",
+					"HEADER": {
+						"CURRENCY": "Währung/Vermögenswert",
+						"DEPOSIT": "Einzahlungsgebühr",
+						"WITHDRAWAL": "Abhebegebühr"
+					}
+				}
+			},
+			"WITHDRAWAL_LIMITS": {
+				"TITLE": "Auszahlungslimits",
+				"TABLE_1": {
+					"TITLE": "Unabhängiges Auszahlungslimit",
+					"SUBTITLE": "Von der kollektiven Limitregel getrennte Vermögenswerte, die ihrer eigenen unabhängigen 24-Stunden-Abhebungsregel folgen:",
+					"HEADER": {
+						"CURRENCY": "Währung/Vermögenswert",
+						"LIMIT": "24-Stunden-Limit"
+					},
+					"LIMIT_TEXT": "(Vermögenswerte, die alle ein gemeinsames Auszahlungslimit haben)"
+				},
+				"TABLE_2": {
+					"TITLE": "Gemeinsames gemeinsames Standard-Auszahlungslimit",
+					"SUBTITLE": "Nachfolgend sind die Vermögenswerte aufgeführt, für die alle die gleiche Standardregel für das 24-Stunden-Auszahlungslimit haben:"
+				}
+			}
+		}
+	},
+	"STATUS_TEXT": {
+		"INCOMPLETE": "unvollständig",
+		"PENDING": "ausstehend",
+		"REJECTED": "abgelehnt",
+		"VERIFIED": "verifiziert"
+	},
+	"LOGINS_HISTORY": {
+		"TAB": "Anmeldeverlauf",
+		"CONTENT": {
+			"TITLE": "Aufzeichnung der Anmeldeversuche",
+			"SUBTITLE": "Historische Aufzeichnung aller fehlgeschlagenen Anmeldeversuche für Ihr Konto und deren mögliche Ursache.",
+			"DOWNLOAD_HISTORY": "DOWNLOAD_HISTORY",
+			"FILTER": {
+				"STATUS": "Status",
+				"ALL": "Alle",
+				"FAILED": "Fehlgeschlagen",
+				"SUCCESS": "Erfolg"
+			},
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Zuletzt gesehen",
+						"DESCRIPTION": "(Neueste zuerst)"
+					},
+					"FAILED_ATTEMPTS": "Fehlgeschlagene Versuche",
+					"COUNTRY": "Land",
+					"IP_ADDRESS": "IP Adresse"
+				},
+				"CELL": {
+					"FAILED_LOGIN": "Anmeldung fehlgeschlagen: {0}x",
+					"SUCCESS": "Erfolg",
+					"DEVICE": "Gerät"
+				}
+			}
+		}
+	},
+	"SESSIONS": {
+		"TAB": "Sitzungen",
+		"CONTENT": {
+			"TITLE": "Aktive Sitzungen",
+			"SUBTITLE": {
+				"TEXT": "Nachfolgend finden Sie die aktiven Sitzungen Ihres Kontos. Um eine aktive Sitzung zu beenden, klicken Sie auf {0} und die Sitzung wird abgemeldet.",
+				"LINK": "Widerrufen"
+			},
+			"DOWNLOAD": "Herunterladen",
+			"TABLE": {
+				"HEADER": {
+					"LAST_SEEN": {
+						"TITLE": "Zuletzt gesehen",
+						"DESCRIPTION": "(Neueste zuerst)"
+					},
+					"SESSION_STARTED": "Sitzung gestartet",
+					"SESSION_EXPIRY": "Sitzungsablauf",
+					"STATUS": "Status"
+				},
+				"CELL": {
+					"ACTIVE": "Aktiv",
+					"COUNTRY": "Land",
+					"IP_ADDRESS": "IP Adresse",
+					"DEVICE": "Gerät",
+					"LOGIN_TIME": "Erfolgreiche Anmeldezeit"
+				}
+			},
+			"NOTIFICATION": "Sitzung widerrufen/abgemeldet",
+			"MODAL": {
+				"TITLE": "Sitzung widerrufen",
+				"PROMPT": "Sind Sie sicher, dass Sie diese Sitzung widerrufen und abmelden möchten?",
+				"BACK": "ZURÜCK",
+				"CONFIRM": "BESTÄTIGEN"
+			}
+		}
+	}
 }

@@ -12,14 +12,12 @@ const {
 	PROVIDE_VALID_EMAIL_CODE,
 	USER_REGISTERED,
 	USER_NOT_FOUND,
-	SERVICE_NOT_SUPPORTED,
 	USER_EMAIL_NOT_VERIFIED,
 	VERIFICATION_EMAIL_MESSAGE,
 	TOKEN_REMOVED,
 	INVALID_CREDENTIALS,
 	USER_NOT_VERIFIED,
 	USER_NOT_ACTIVATED,
-	INVALID_OTP_CODE,
 	SIGNUP_NOT_AVAILABLE,
 	PROVIDE_VALID_EMAIL,
 	INVALID_PASSWORD,
@@ -295,13 +293,22 @@ const verifyUser = (req, res) => {
 
 
 
-const createAttemptMessage = (loginData) => {
+const createAttemptMessage = (loginData, user, domain) => {
 	const currentNumberOfAttemps = NUMBER_OF_ALLOWED_ATTEMPTS - loginData.attempt;
 	if (currentNumberOfAttemps === NUMBER_OF_ALLOWED_ATTEMPTS - 1)
-	{ return '' }
-	else if(currentNumberOfAttemps === 0) return ' ' + LOGIN_NOT_ALLOW;
+	{ return ''; }
+	else if(currentNumberOfAttemps === 0) { 
+		sendEmail(
+			MAILTYPE.LOCKED_ACCOUNT,
+			user.email,
+			{},
+			user.settings,
+			domain);
+
+		return ' ' + LOGIN_NOT_ALLOW; 
+	}
 	return ` You have ${currentNumberOfAttemps} more ${currentNumberOfAttemps === 1 ? 'attempt' : 'attempts'} left`;
-}
+};
 
 const loginPost = (req, res) => {
 	const {
@@ -389,7 +396,7 @@ const loginPost = (req, res) => {
 			if (!passwordIsValid) {
 				await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
 				const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-				const message = createAttemptMessage(loginData);
+				const message = createAttemptMessage(loginData, user, domain);
 				throw new Error(INVALID_CREDENTIALS + message);
 			}
 
@@ -399,15 +406,15 @@ const loginPost = (req, res) => {
 				return all([
 					user,
 					toolsLib.security.verifyOtpBeforeAction(user.id, otp_code)
-					.then(async () => {
-						return toolsLib.security.checkCaptcha(captcha, ip);
-					})
-					.catch(async (err) => {
-						await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
-						const loginData = await toolsLib.user.findUserLatestLogin(user, false);
-						const message = createAttemptMessage(loginData);
-						throw new Error(err.message + message);
-					})
+						.then(async () => {
+							return toolsLib.security.checkCaptcha(captcha, ip);
+						})
+						.catch(async (err) => {
+							await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, null, long_term, false);
+							const loginData = await toolsLib.user.findUserLatestLogin(user, false);
+							const message = createAttemptMessage(loginData, user, domain);
+							throw new Error(err.message + message);
+						})
 				]);
 			}
 		})
@@ -444,11 +451,11 @@ const loginPost = (req, res) => {
 					user.is_communicator,
 					long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
 				)
-			])
+			]);
 		})
 		.then(async ([user, token]) => {
 			if (!ip) {
-				throw new Error(NO_IP_FOUND)
+				throw new Error(NO_IP_FOUND);
 			}
 			await toolsLib.user.createUserLogin(user, ip, device, domain, origin, referer, token, long_term, true);
 			return res.status(201).json({ token });
@@ -1164,7 +1171,7 @@ const getUserSessions = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value
-		}
+	}
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
@@ -1196,7 +1203,7 @@ const revokeUserSession = (req, res) => {
 			loggerUser.error(req.uuid, 'controllers/user/revokeUserSession', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const userLogout = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/userLogout/auth', req.auth);
@@ -1215,6 +1222,38 @@ const userLogout = (req, res) => {
 		})
 		.catch((err) => {
 			loggerUser.error(req.uuid, 'controllers/user/userLogout', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const userDelete = (req, res) => {
+	loggerUser.verbose(req.uuid, 'controllers/user/userDelete/auth', req.auth);
+
+	const { email_code } = req.swagger.params.data.value;
+	const user_id = req.auth.sub.id;
+
+	loggerUser.verbose(
+		req.uuid,
+		'controllers/user/userDelete',
+		'user_id',
+		user_id,
+		'email_code',
+		email_code
+	);
+
+	toolsLib.security.confirmByEmail(user_id, email_code)
+		.then((confirmed) => {
+			if (confirmed) {
+				return toolsLib.user.deleteKitUser(user_id);
+			} else {
+				throw new Error(INVALID_VERIFICATION_CODE);
+			}
+		})
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerUser.error(req.uuid, 'controllers/user/userDelete', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -1247,5 +1286,6 @@ module.exports = {
 	addUserBank,
 	revokeUserSession,
 	getUserSessions,
-	userLogout
+	userLogout,
+	userDelete
 };

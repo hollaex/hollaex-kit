@@ -5,13 +5,14 @@ const toolsLib = require('hollaex-tools-lib');
 const { cloneDeep, pick } = require('lodash');
 const { all } = require('bluebird');
 const { INIT_CHANNEL, ROLES } = require('../../constants');
-const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS } = require('../../messages');
+const { USER_NOT_FOUND, API_KEY_NOT_PERMITTED, PROVIDE_VALID_EMAIL, INVALID_PASSWORD, USER_EXISTS, NO_DATA_FOR_CSV } = require('../../messages');
 const { sendEmail, testSendSMTPEmail, sendRawEmail } = require('../../mail');
 const { MAILTYPE } = require('../../mail/strings');
 const { errorMessageConverter } = require('../../utils/conversion');
 const { isDate } = require('moment');
 const { isEmail } = require('validator');
 const { publisher } = require('../../db/pubsub');
+const { parse } = require('json2csv');
 const crypto = require('crypto');
 
 const VERIFY_STATUS = {
@@ -138,7 +139,8 @@ const getUsersAdmin = (req, res) => {
 		otp_enabled,
 		phone_number,
 		kyc,
-		bank
+		bank,
+		id_number
 	
 	} = req.swagger.params;
 
@@ -181,6 +183,7 @@ const getUsersAdmin = (req, res) => {
 		phone_number: phone_number.value,
 		kyc: kyc.value,
 		bank: bank.value,
+		id_number: id_number.value,
 		additionalHeaders: {
 			'x-forwarded-for': req.headers['x-forwarded-for']
 		}
@@ -846,7 +849,7 @@ const getExchangeGeneratedFees = (req, res) => {
 		req.auth
 	);
 
-	const { start_date, end_date } = req.swagger.params;
+	const { start_date, end_date, format } = req.swagger.params;
 
 	toolsLib.order.getGeneratedFees(start_date.value, end_date.value, {
 		additionalHeaders: {
@@ -854,7 +857,19 @@ const getExchangeGeneratedFees = (req, res) => {
 		}
 	})
 		.then((data) => {
-			return res.json(data);
+			if (format.value === 'csv') {
+				const parsedData = data && Object.values(data)[0];
+				if (!parsedData || parsedData?.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(parsedData, Object.keys(parsedData[0]));
+
+				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-fees.csv`);
+				res.set('Content-Type', 'text/csv');
+				return res.status(202).send(csv);
+			} else {
+				return res.json(data);
+			}
 		})
 		.catch((err) => {
 			loggerAdmin.error(
@@ -2184,26 +2199,26 @@ const createUserByAdmin = (req, res) => {
 		where: { email },
 		attributes: ['email']
 	})
-	.then((user) => {
-		if (user) {
-			throw new Error(USER_EXISTS);
-		}
-
-		return toolsLib.user.createUser(email, password, {
-			role: 'user',
-			id: null,
-			additionalHeaders: {
-				'x-forwarded-for': req.headers['x-forwarded-for']
+		.then((user) => {
+			if (user) {
+				throw new Error(USER_EXISTS);
 			}
+
+			return toolsLib.user.createUser(email, password, {
+				role: 'user',
+				id: null,
+				additionalHeaders: {
+					'x-forwarded-for': req.headers['x-forwarded-for']
+				}
+			});
 		})
-	})
-	.then(() => {
-		return res.status(201).json({ message: 'Success' });
-	})
-	.catch((err) => {
-		loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
-		return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
-	});
+		.then(() => {
+			return res.status(201).json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/admin/createUserByAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
 };
 
 const createUserWalletByAdmin = (req, res) => {
@@ -2420,7 +2435,7 @@ const getUserSessionsByAdmin = (req, res) => {
 		start_date: start_date.value,
 		end_date: end_date.value,
 		format: format.value
-		}
+	}
 	)
 		.then((data) => {
 			if (format.value === 'csv') {
@@ -2450,7 +2465,7 @@ const revokeUserSessionByAdmin = (req, res) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/revokeUserSessionByAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const updateQuickTradeConfig = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/admin/updateQuickTradeConfig/auth', req.auth);
@@ -2504,7 +2519,7 @@ const getBalancesAdmin = (req, res) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 module.exports = {
 	createInitialAdmin,

@@ -220,7 +220,7 @@ table th {
 	}
 }
 
-.filter-option {
+.gap-1 {
 	gap: 1rem;
 }
 
@@ -319,6 +319,12 @@ table th {
 	color: $colors-black;
 }
 
+.blue-icon {
+	svg path {
+		fill: $link;
+	}
+}
+
 .kit-divider {
 	margin: 1rem 0;
 	border-bottom: solid 1px $colors-black;
@@ -356,4 +362,13 @@ table th {
 
 .margin-auto {
 	margin: auto;
+}
+
+.row-reverse {
+	flex-direction: row-reverse;
+}
+
+.danger-zone {
+	border-top: $colors-notifications-red 4px solid;
+	background-color: $calculated_specials_notifications-alerts-pale;
 }

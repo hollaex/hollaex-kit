@@ -51,7 +51,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true }})
 
         if(!token){
             const response = await request()
@@ -72,7 +72,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         if(token){
 
@@ -86,7 +86,7 @@ describe('tests for /user/token', function () {
 				permissions: {
 					can_withdraw: false
 				},
-				whitelisting_enabled: false
+				whitelisting_enabled: true
 			});
 
             responseFirst.should.have.status(200);
@@ -104,7 +104,7 @@ describe('tests for /user/token', function () {
 				permissions: {
 					can_withdraw: true
 				},
-				whitelisting_enabled: false
+				whitelisting_enabled: true
 			});
 
             responseSecond.should.have.status(200);
@@ -118,7 +118,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ user_id: user.id, active: true })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, role: 'user', active: true, revoked: false } })
 
         if(token){
 
@@ -134,7 +134,7 @@ describe('tests for /user/token', function () {
             response.should.have.status(200);
             response.should.be.json;
 
-            token = await tokenModel.findOne({ user_id: user.id, active: true })
+            token = await tokenModel.findOne({ where: { id: token.id } })
 
             if(token) { throw new Error('Token cannot exist')}
         }
@@ -145,7 +145,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should throw error', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ where:{ user_id: user.id, active: true } })
+        let token = await tokenModel.findOne({ where:{ user_id: user.id, active: true, revoked: false } })
 
         if(token){
 
@@ -171,7 +171,7 @@ describe('tests for /user/token', function () {
             role: 'user'
         });
         
-        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'user' } })
+        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'user', revoked: false } })
 
         let apiKey = token?.key;
         
@@ -191,7 +191,7 @@ describe('tests for /user/token', function () {
     it('Integration Test -should respond 200 for "Success"', async () => {
 
         const tokenModel = getModel('token');
-        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true } })
+        let token = await tokenModel.findOne({ where: { user_id: user.id, active: true, revoked: false } })
 
         if(token){
 
@@ -214,16 +214,18 @@ describe('tests for /user/token', function () {
             name: 'tokenTest',
             otp_code: await getOtpCode(),
             email_code: await getEmailCode(),
-            role: 'admin'
+            role: 'admin',
+            whitelisted_ips: ['1.1.1.1']
         });
         
-        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'admin' }})
+        token = await tokenModel.findOne({ where: { user_id: user.id, active: true, role: 'admin', revoked: false }})
         let apiKey = token?.key;
 
         const expires = token.expiry / 1000;
 		const signature = tools.security.calculateSignature(token.secret, 'GET', '/v2/admin/users', expires);
         const response = await request()
 			.get('/v2/admin/users')
+            .set('x-real-ip', '1.1.1.1')
 			.set('Api-key', apiKey)
 			.set('Api-expires', expires)
 			.set('Api-signature', signature)

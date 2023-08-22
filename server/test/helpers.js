@@ -2,13 +2,14 @@ const path = require('path');
 
 process.env.NODE_ENV = 'test';
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
-
+const crypto = require('crypto');
 const chai = require('chai'),
 	chaiHTTP = require('chai-http'),
 	tools = require('hollaex-tools-lib');
 
 chai.use(chaiHTTP);
 chai.should();
+const _ = require("lodash"); 
 
 const testURL = process.env.TEST_URL || 'http://localhost:10010';
 const testURLPlugin = process.env.TEST_URL || 'http://localhost:10011';
@@ -25,12 +26,20 @@ function generateFuzz(length = 10000) {
 
 function getAdminUser() {
 	return {
-		email: process?.argv?.slice(5)?.[0]?.split('=')?.[1]
+		email: process?.argv?.slice(5)?.[0]?.split('=')?.[1] || process?.argv?.[2]?.split('=')?.[1]
 	};
 }
 
-function loginAs(user) {
-	return tools.security.issueToken(
+function getNewUserCredentials() {
+	return {
+	  	email: `${_.shuffle('test_auth'.split('')).join('')}.${Math.floor(Math.random() * 10000)}@mail.com`,
+     	password: "test112233.",
+	};
+}
+
+
+async function loginAs(user, session = true) {
+	const token = await tools.security.issueToken(
 		user.id,
 		user.network_id,
 		user.email,
@@ -40,6 +49,22 @@ function loginAs(user) {
 		user.is_supervisor,
 		user.is_kyc,
 		user.is_communicator);
+
+	if(session) {
+		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+		await tools.database.getModel('session').create({
+			token: hashedToken,
+			role: 'admin',
+			login_id: 1,
+			status: true,
+			last_seen: new Date(),
+			expiry_date:  new Date().setDate(new Date().getDate() + 1)
+		})
+
+	}
+	
+	return token;
 }
 
 function request() {
@@ -59,5 +84,6 @@ module.exports = {
 	request,
 	generateFuzz,
 	getAdminUser,
-	requestPlugin
+	requestPlugin,
+	getNewUserCredentials
 };

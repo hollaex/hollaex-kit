@@ -62,25 +62,14 @@ class AppBar extends Component {
 		if (!Object.keys(userData).length && user.id) {
 			userData = user;
 		}
-		const {
-			phone_number,
-			full_name,
-			id_data = {},
-			bank_account = [],
-		} = userData;
+		const { phone_number, id_data = {}, bank_account = [] } = userData;
 		let securityPending = 0;
 		let verificationPending = 0;
 		if (user.id) {
 			if (!user.otp_enabled) {
 				securityPending += 1;
 			}
-			if (
-				user.verification_level < 1 &&
-				!full_name &&
-				enabledPlugins.includes('kyc')
-			) {
-				verificationPending += 1;
-			}
+
 			if (
 				(id_data.status === 0 || id_data.status === 2) &&
 				enabledPlugins.includes('kyc')

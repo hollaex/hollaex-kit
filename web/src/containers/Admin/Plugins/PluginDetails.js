@@ -254,15 +254,17 @@ const PluginDetails = ({
 								</div>
 								<p className="tooltip-container">
 									Author:
-									<Tooltip
-										placement="rightBottom"
-										title={`Verified plugin by ${author}`}
-									>
-										<ReactSVG
-											src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-											className="verified-icon"
-										/>
-									</Tooltip>{' '}
+									{author === 'HollaEx' ? (
+										<Tooltip
+											placement="rightBottom"
+											title={`Verified plugin by ${author}`}
+										>
+											<ReactSVG
+												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+												className="verified-icon"
+											/>
+										</Tooltip>
+									) : null}{' '}
 									{pluginData.author}
 								</p>
 								<p>
@@ -621,15 +623,17 @@ const PluginDetails = ({
 									</div>
 									<p className="tooltip-container">
 										Author:
-										<Tooltip
-											placement="rightBottom"
-											title={`Verified plugin by ${author}`}
-										>
-											<ReactSVG
-												src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
-												className="verified-icon"
-											/>
-										</Tooltip>{' '}
+										{author === 'HollaEx' ? (
+											<Tooltip
+												placement="rightBottom"
+												title={`Verified plugin by ${author}`}
+											>
+												<ReactSVG
+													src={STATIC_ICONS['VERIFIED_BADGE_PLUGIN_APPS']}
+													className="verified-icon"
+												/>
+											</Tooltip>
+										) : null}{' '}
 										{author}
 									</p>
 									{free_for?.length ? (

@@ -136,7 +136,7 @@ const MultiFilter = ({
 	isLoading,
 	buttonText = null,
 	alwaysEnabled = false,
-	onDownload = null
+	onDownload = null,
 }) => {
 	const [options, setOptions] = useState(filterOptions);
 	const [fieldsData, setFieldsData] = useState([]);
@@ -274,12 +274,12 @@ const MultiFilter = ({
 						: 'filter-button green-btn'
 				}
 				disabled={
-					!alwaysEnabled && 
+					!alwaysEnabled &&
 					(isLoading ||
-					Object.keys(filterData).length === 0 ||
-					!Object.values(filterData)
-						.map((field) => field === '')
-						.filter((item) => !item)?.length)
+						Object.keys(filterData).length === 0 ||
+						!Object.values(filterData)
+							.map((field) => field === '')
+							.filter((item) => !item)?.length)
 				}
 				onClick={onHandleSearch}
 			>

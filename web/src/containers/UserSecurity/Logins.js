@@ -90,14 +90,14 @@ const Logins = ({ icons: ICONS }) => {
 				stringId="LOGINS_HISTORY.CONTENT.TITLE"
 				title={STRINGS['LOGINS_HISTORY.CONTENT.TITLE']}
 				notification={
-					<div className="login-history_notifications-wrapper">
+					<div className="action_notification-container">
 						{!isMobile && (
 							<ActionNotification
 								stringId="LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY"
 								text={STRINGS['LOGINS_HISTORY.CONTENT.DOWNLOAD_HISTORY']}
 								iconId="DATA"
 								iconPath={ICONS['DATA']}
-								className="download-logins"
+								className="blue-icon"
 								onClick={() => downloadLogins(params)}
 								disable={fetching || logins.count <= 0}
 							/>
@@ -107,7 +107,7 @@ const Logins = ({ icons: ICONS }) => {
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}
-							className="refresh-history"
+							className="blue-icon"
 							onClick={refresh}
 							disable={fetching}
 						/>
