@@ -1,5 +1,5 @@
 const watch = process.env.NODE_ENV === 'production' ? false : true;
-const ignore_watch = ['logs', 'node_modules', './**/*node_modules', 'tools', 'db/functions', 'db/triggers', 'storage', 'package.json', 'package.json.*', 'package-lock.json', 'package-lock.json.*'];
+const ignore_watch = ['logs', 'node_modules', './**/*node_modules', 'tools', 'build', 'db/functions', 'db/triggers', 'storage', 'package.json', 'package.json.*', 'package-lock.json', 'package-lock.json.*'];
 const max_memory_restart = '4000M';
 const node_args = ['--max_old_space_size=4096'];
 const mode = process.env.DEPLOYMENT_MODE || 'all';
@@ -7,7 +7,7 @@ const { initializeMode } = require('./utils');
 
 const api = {
 	name      : 'api',
-	script    : 'app.ts',
+	script    : './build/app.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -26,7 +26,7 @@ const api = {
 const ws = {
 	// ws application
 	name      : 'ws',
-	script    : './ws/index.ts',
+	script    : './build/ws/index.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
@@ -35,7 +35,7 @@ const ws = {
 	instance_var: 'INSTANCE_ID',
 	instances : '1',
 	max_memory_restart,
-	// node_args,
+	node_args,
 	env: {
 		COMMON_VARIABLE: 'true',
 		PORT: process.env.WEBSOCKET_PORT || 10080
@@ -45,7 +45,7 @@ const ws = {
 const plugins = {
 	// plugins application
 	name      : 'plugins',
-	script    : './plugins/index.ts',
+	script    : './build/plugins/index.js',
 	error_file: '/dev/null',
 	out_file: '/dev/null',
 	watch,
