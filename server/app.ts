@@ -64,7 +64,7 @@ checkStatus()
 
 			app.use(middleware.swaggerValidator({ validateResponse: true }));
 			app.use(middleware.swaggerRouter({
-				useStubs: true, controllers: './api/controllers'
+				useStubs: true, controllers: './build/api/controllers'
 			}));
 
 			// // swaggerDoc.host = API_HOST;
