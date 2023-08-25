@@ -2226,5 +2226,6 @@ module.exports = {
 	createUserLogin,
 	getAllBalancesAdmin,
 	deleteKitUser,
-	restoreKitUser
+	restoreKitUser,
+	revokeAllUserSessions
 };
