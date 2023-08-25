@@ -25,13 +25,15 @@ const {
 	USER_EMAIL_IS_VERIFIED,
 	INVALID_VERIFICATION_CODE,
 	LOGIN_NOT_ALLOW,
-	NO_IP_FOUND
+	NO_IP_FOUND,
+	INVALID_OTP_CODE,
 } = require('../../messages');
 const { DEFAULT_ORDER_RISK_PERCENTAGE, EVENTS_CHANNEL, API_HOST, DOMAIN, TOKEN_TIME_NORMAL, TOKEN_TIME_LONG, HOLLAEX_NETWORK_BASE_URL, NUMBER_OF_ALLOWED_ATTEMPTS } = require('../../constants');
 const { all } = require('bluebird');
 const { each } = require('lodash');
 const { publisher } = require('../../db/pubsub');
 const { isDate } = require('moment');
+const DeviceDetector = require('node-device-detector');
 
 const VERIFY_STATUS = {
 	EMPTY: 0,
@@ -39,6 +41,13 @@ const VERIFY_STATUS = {
 	REJECTED: 2,
 	COMPLETED: 3
 };
+
+const detector = new DeviceDetector({
+	clientIndexes: true,
+	deviceIndexes: true,
+	deviceAliasCode: false,
+});
+
 
 const INITIAL_SETTINGS = () => {
 	return {
@@ -323,7 +332,19 @@ const loginPost = (req, res) => {
 	} = req.swagger.params.authentication.value;
 
 	const ip = req.headers['x-real-ip'];
-	const device = req.headers['user-agent'];
+	const userAgent = req.headers['user-agent']
+	const result = detector.detect(userAgent);
+
+	let device = [
+		result.device.brand,
+		result.device.model,
+		result.device.type,
+		result.client.name,
+		result.client.type,
+		result.os.name];
+
+	device = device.filter(Boolean).join(' ').trim();
+
 	const domain = req.headers['x-real-origin'];
 	const origin = req.headers.origin;
 	const referer = req.headers.referer;
@@ -1229,7 +1250,7 @@ const userLogout = (req, res) => {
 const userDelete = (req, res) => {
 	loggerUser.verbose(req.uuid, 'controllers/user/userDelete/auth', req.auth);
 
-	const { email_code } = req.swagger.params.data.value;
+	const { email_code, otp_code } = req.swagger.params.data.value;
 	const user_id = req.auth.sub.id;
 
 	loggerUser.verbose(
@@ -1240,8 +1261,14 @@ const userDelete = (req, res) => {
 		'email_code',
 		email_code
 	);
+	toolsLib.security.verifyOtpBeforeAction(user_id, otp_code)
+		.then((validOtp) => {
+			if (!validOtp) {
+				throw new Error(INVALID_OTP_CODE);
+			}
 
-	toolsLib.security.confirmByEmail(user_id, email_code)
+			return toolsLib.security.confirmByEmail(user_id, email_code);
+		})
 		.then((confirmed) => {
 			if (confirmed) {
 				return toolsLib.user.deleteKitUser(user_id);
@@ -1257,6 +1284,7 @@ const userDelete = (req, res) => {
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
+
 
 module.exports = {
 	signUpUser,

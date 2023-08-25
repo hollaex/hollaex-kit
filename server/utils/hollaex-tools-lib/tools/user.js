@@ -52,7 +52,8 @@ const {
 	USER_NOT_REGISTERED_ON_NETWORK,
 	SESSION_NOT_FOUND,
 	SESSION_ALREADY_REVOKED,
-	WRONG_USER_SESSION
+	WRONG_USER_SESSION,
+	USER_ALREADY_RECOVERED,
 } = require(`${SERVER_PATH}/messages`);
 const { publisher, client } = require('./database/redis');
 const {
@@ -372,6 +373,7 @@ const registerUserLogin = (
 			if(opts.token && opts.status) {
 				return createSession(opts.token, loginData.id, userId, opts.expiry);
 			}
+			return loginData;
 		})
 		.catch(err => reject(err));
 };
@@ -401,21 +403,23 @@ const createUserLogin = async (user, ip, device, domain, origin, referer, token,
 	else if (loginData.status == false) {
 		await updateLoginAttempt(loginData.id);
 	}
+
+	return null;
 };
 
 
 const findUserLatestLogin = (user, status) => {
 	return getModel('login').findOne({
-		order: [ [ 'timestamp', 'DESC' ]],
+		order: [['id', 'DESC'], ['status', 'ASC']],
 		where: {
 			user_id: user.id,
 			...(status != null && { status }),
-			updated_at: {
-				[Op.gte]: new Date(new Date().getTime() - LOGIN_TIME_OUT)
-			},
 		}
-	});
-};
+	}).then(loginData => {
+		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
+		return null;
+	})
+}
 
 /* Public Endpoints*/
 
@@ -720,39 +724,55 @@ const getAllUsersAdmin = (opts = {
 		query.attributes.exclude.push('settings');
 	}
 
-	return dbQuery.findAndCountAllWithRows('user', query)
-		.then(async ({ count, data }) => {
-			if (opts.id || opts.search) {
-				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
-					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
-					data[0].balance = userNetworkData.balance;
-					data[0].wallet = userNetworkData.wallet;
-					return { count, data };
-				}
-			}
-			return { count, data };
-		})
-		.then(async (users) => {
-			if (opts.format && opts.format === 'csv') {
-				if (users.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const flatData = users.data.map((user) => {
-					let id_data;
-					if (user.id_data) {
-						id_data = user.id_data;
-						user.id_data = {};
+	if (opts.format) {
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		return dbQuery.fetchAllRecords('user', query)
+			.then(async ({ count, data }) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
 					}
-					const result = flatten(user, { safe: true });
-					if (id_data) result.id_data = id_data;
-					return result;
-				});
-				const csv = parse(flatData, Object.keys(flatData[0]));
-				return csv;
-			} else {
-				return users;
-			}
-		});
+				}
+				return { count, data };
+			})
+			.then(async (users) => {
+				if (opts.format && opts.format === 'csv') {
+					if (users.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = users.data.map((user) => {
+						let id_data;
+						if (user.id_data) {
+							id_data = user.id_data;
+							user.id_data = {};
+						}
+						const result = flatten(user, { safe: true });
+						if (id_data) result.id_data = id_data;
+						return result;
+					});
+					const csv = parse(flatData, Object.keys(flatData[0]));
+					return csv;
+				} else {
+					return users;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('user', query)
+			.then(async ({ count, data }) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
+					}
+				}
+				return { count, data };
+			})
+	}
 };
 
 const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
@@ -1295,18 +1315,24 @@ const getUserLogins = (opts = {
 
 	if (opts.userId) options.where.user_id = opts.userId;
 
-	return dbQuery.findAndCountAllWithRows('login', options)
-		.then((logins) => {
-			if (opts.format && opts.format === 'csv') {
-				if (logins.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	if (opts.format) {
+		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'createdAt', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
+		return dbQuery.fetchAllRecords('login', options)
+			.then((logins) => {
+				if (opts.format && opts.format === 'csv') {
+					if (logins.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(logins.data, Object.keys(logins.data[0]));
+					return csv;
+				} else {
+					return logins;
 				}
-				const csv = parse(logins.data, Object.keys(logins.data[0]));
-				return csv;
-			} else {
-				return logins;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('login', options);
+	}
 };
 
 const bankComparison = (bank1, bank2, description) => {
@@ -1423,19 +1449,24 @@ const getUserAudits = (opts = {
 
 	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
-	return dbQuery.findAndCountAllWithRows('audit', options)
-		.then((audits) => {
-			if (opts.format && opts.format === 'csv') {
-				if (audits.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('audit', options)
+			.then((audits) => {
+				if (opts.format && opts.format === 'csv') {
+					if (audits.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
+					const csv = parse(flatData, AUDIT_KEYS);
+					return csv;
+				} else {
+					return audits;
 				}
-				const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
-				const csv = parse(flatData, AUDIT_KEYS);
-				return csv;
-			} else {
-				return audits;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('audit', options)
+	}
 };
 
 const checkUsernameIsTaken = (username) => {
@@ -1911,9 +1942,9 @@ const getExchangeUserSessions = (opts = {
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
-	return dbQuery.findAndCountAllWithRows('session', {
+	const query = {
 		where: {
-			...(opts.status == true && { 
+			...(opts.status == true && {
 				status: opts.status,
 				expiry_date: {
 					[Op.gt]: new Date()
@@ -1921,7 +1952,7 @@ const getExchangeUserSessions = (opts = {
 			}),
 			...(opts.status == false && {
 				[Op.or]: [
-					{ 
+					{
 						status: opts.status,
 						expiry_date: {
 							[Op.lt]: new Date()
@@ -1929,9 +1960,10 @@ const getExchangeUserSessions = (opts = {
 					}]
 			}),
 			created_at: timeframe,
-			...(opts.last_seen && { last_seen: 
+			...(opts.last_seen && {
+				last_seen:
 				{
-					[Op.gt]:  new Date().setHours(new Date().getHours() -  Number(opts.last_seen))
+					[Op.gt]: new Date().setHours(new Date().getHours() - Number(opts.last_seen))
 				}
 			}),
 		},
@@ -1953,18 +1985,27 @@ const getExchangeUserSessions = (opts = {
 		],
 		order: [ordering],
 		...(!opts.format && pagination),
-	})
-		.then((sessions) => {
-			if (opts.format && opts.format === 'csv') {
-				if (sessions.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	}
+
+	if (opts.format) {
+		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'timestamp', 'created_at', 'updated_at'];
+		return dbQuery.fetchAllRecords('session', query)
+			.then((sessions) => {
+				if (opts.format && opts.format === 'csv') {
+					if (sessions.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+
+					const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+					return csv;
+				} else {
+					return sessions;
 				}
-				const csv = parse(sessions.data, Object.keys(sessions.data[0]));
-				return csv;
-			} else {
-				return sessions;
-			}
-		});
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('session', query);
+	}
+
 };
 
 const revokeExchangeUserSession = async (sessionId, userId = null) => {
@@ -2025,7 +2066,7 @@ const getAllBalancesAdmin = async (opts = {
 	return getNodeLib().getBalances({ 
 		userId: network_id,
 		currency: opts.currency,
-		format: opts.format,
+		format: (opts.format && (opts.format === 'csv' || opts.format === 'all')) ? 'all' : null, // for csv get all data,
 		additionalHeaders: opts.additionalHeaders 
 	})
 		.then(async (balances) => {
@@ -2040,7 +2081,7 @@ const getAllBalancesAdmin = async (opts = {
 				}
 			}
 
-			if (opts.format && opts.format === 'all') {
+			if (opts.format && opts.format === 'csv') {
 				if (balances.data.length === 0) {
 					throw new Error(NO_DATA_FOR_CSV);
 				}
@@ -2098,6 +2139,33 @@ const deleteKitUser = async (userId) => {
 	);
 };
 
+const restoreKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!user.email.includes('_deleted')) {
+		throw new Error(USER_ALREADY_RECOVERED);
+	}
+
+	const userEmail = user.email.split('_deleted')[0];
+
+	return user.update(
+		{ email: userEmail, activated: true },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+};
 
 module.exports = {
 	loginUser,
@@ -2157,5 +2225,6 @@ module.exports = {
 	findUserLatestLogin,
 	createUserLogin,
 	getAllBalancesAdmin,
-	deleteKitUser
+	deleteKitUser,
+	restoreKitUser
 };

@@ -1591,6 +1591,40 @@ paths:
         - kyc
       x-token-permissions:
         - can_withdraw
+  /admin/user/restore:
+    x-swagger-router-controller: admin
+    post:
+      operationId: restoreUserAccount
+      description: restore a user account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:

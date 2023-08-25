@@ -89,7 +89,7 @@ const Balances = () => {
 	// }, []);
 
 	const requestDownload = (fieldValues = {}) => {
-		return getExchangeBalances({ ...fieldValues, format: 'all' });
+		return getExchangeBalances({ ...fieldValues, format: 'csv' });
 	};
 
 	return (
