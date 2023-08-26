@@ -131,6 +131,7 @@ class Transactions extends Component {
 		return requestDepositsDownload({
 			...values,
 			...queryParams,
+			...this.state.queryParams,
 			format: 'csv',
 		});
 	};

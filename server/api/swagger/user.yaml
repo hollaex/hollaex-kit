@@ -41,6 +41,9 @@ paths:
               email_code:
                 type: string
                 maxLength: 256
+              otp_code:
+                type: string
+                maxLength: 256
       responses:
         200:
           description: Success

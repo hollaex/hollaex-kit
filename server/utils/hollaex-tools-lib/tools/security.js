@@ -67,6 +67,7 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
+const { revokeAllUserSessions } = require('./user')
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -188,7 +189,8 @@ const confirmChangeUserPassword = (code, domain) => {
 		.then(([user, dataValues]) => {
 			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			await revokeAllUserSessions(user.id);
 			sendEmail(
 				MAILTYPE.PASSWORD_CHANGED,
 				user.email,

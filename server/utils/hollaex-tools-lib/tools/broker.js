@@ -70,6 +70,7 @@ const setExchange = (data) => {
         timeout: 5000,
         ...(data.api_key && { 'apiKey': data.api_key }),
         ...(data.api_secret && { 'secret': data.api_secret }),
+		options: { "defaultType": "spot" }
     })
 
     if (data.id) {
@@ -437,8 +438,17 @@ const reverseTransaction = async (orderData) => {
 				})
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
-				exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
-					.catch((err) => { notifyUser(err.message, broker.user_id); });
+				if (exchangeKey === 'bybit') {
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
+				else {
+					exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
 			}
 		}
 	} catch (err) {

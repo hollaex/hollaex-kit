@@ -191,7 +191,8 @@ class Earnings extends Component {
 	};
 
 	handleDownload = () => {
-		return getFeesDownload({ format: 'csv' });
+		const { start_date, end_date } = this.state;
+		return getFeesDownload({ format: 'csv', start_date, end_date });
 	};
 
 	setFilterDates = (value) => {
