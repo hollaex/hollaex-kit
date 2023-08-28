@@ -13,7 +13,7 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 const SessionTable = () => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [queryValues, setQueryValues] = useState({});
+	const [queryValues, setQueryValues] = useState({ last_seen: 1 });
 	const [queryFilters, setQueryFilters] = useState({
 		total: 0,
 		page: 1,
