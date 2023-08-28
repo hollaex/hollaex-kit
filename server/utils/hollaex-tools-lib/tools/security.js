@@ -706,7 +706,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 	if (token && token.indexOf('Bearer ') === 0) {
 		let tokenString = token.split(' ')[1];
 
-		jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+		jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 			if (!verificationError && decodedToken) {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
@@ -736,6 +736,11 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(DEACTIVATED_USER);
 				}
 
+				try {
+					await verifySession(tokenString);
+				} catch (err) {
+					return sendError(err.message);
+				}
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -753,7 +758,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
-			.then((decodedToken) => {
+			.then(async (decodedToken) => {
 				loggerAuth.verbose(
 					'helpers/auth/verifyToken verified_token',
 					ip,
@@ -790,6 +795,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					);
 					throw new Error(DEACTIVATED_USER);
 				}
+				await verifySession(tokenString);
 				return decodedToken;
 			});
 	} else {
