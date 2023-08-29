@@ -67,7 +67,6 @@ const { loggerAuth } = require(`${SERVER_PATH}/config/logger`);
 const moment = require('moment');
 const { generateHash, generateRandomString } = require(`${SERVER_PATH}/utils/security`);
 const geoip = require('geoip-lite');
-const { revokeAllUserSessions } = require('./user')
 
 const getCountryFromIp = (ip) => {
 	const geo = geoip.lookup(ip);
@@ -190,6 +189,8 @@ const confirmChangeUserPassword = (code, domain) => {
 			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
 		.then(async (user) => {
+			const { revokeAllUserSessions } = require('./user');
+
 			await revokeAllUserSessions(user.id);
 			sendEmail(
 				MAILTYPE.PASSWORD_CHANGED,
@@ -706,7 +707,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 	if (token && token.indexOf('Bearer ') === 0) {
 		let tokenString = token.split(' ')[1];
 
-		jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+		jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 			if (!verificationError && decodedToken) {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
@@ -736,6 +737,11 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(DEACTIVATED_USER);
 				}
 
+				try {
+					await verifySession(tokenString);
+				} catch (err) {
+					return sendError(err.message);
+				}
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -753,7 +759,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
-			.then((decodedToken) => {
+			.then(async (decodedToken) => {
 				loggerAuth.verbose(
 					'helpers/auth/verifyToken verified_token',
 					ip,
@@ -790,6 +796,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					);
 					throw new Error(DEACTIVATED_USER);
 				}
+				await verifySession(tokenString);
 				return decodedToken;
 			});
 	} else {
