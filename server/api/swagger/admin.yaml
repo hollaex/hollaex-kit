@@ -3116,7 +3116,7 @@ paths:
           description: last seen
           required: false
           type: string
-          enum: ['1', '24']
+          enum: ['1h', '24h']
         - in: query
           name: status
           description: fetch active or revoke sessions

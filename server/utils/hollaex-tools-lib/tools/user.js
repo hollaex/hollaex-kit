@@ -84,6 +84,7 @@ const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
 const geoip = require('geoip-lite');
+const moment = require('moment');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -1942,6 +1943,12 @@ const getExchangeUserSessions = (opts = {
 	const ordering = orderingQuery(opts.order_by, opts.order);
 	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
 
+	let lastSeenHour;
+
+	if (opts.last_seen) {
+		lastSeenHour = opts.last_seen.split('h')[0];
+	}
+			
 	const query = {
 		where: {
 			...(opts.status == true && {
@@ -1963,7 +1970,7 @@ const getExchangeUserSessions = (opts = {
 			...(opts.last_seen && {
 				last_seen:
 				{
-					[Op.gt]: new Date().setHours(new Date().getHours() - Number(opts.last_seen))
+					[Op.gt]: moment().subtract(lastSeenHour, 'hours').toDate()
 				}
 			}),
 		},
