@@ -423,7 +423,7 @@ const PluginDetails = ({
 					{selectedPlugin.url && (
 						<div className="text-align-center">
 							<a
-								href={selectedPlugin.url}
+								href={selectedPlugin.documentation}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="underline-text pointer"
@@ -560,13 +560,14 @@ const PluginDetails = ({
 	const {
 		icon,
 		name,
-		description,
 		author,
 		payment_type,
 		price,
 		version,
 		free_for,
 		only_for,
+		url,
+		bio
 	} = pluginData;
 
 	let isPriceTagHide = true;
@@ -602,7 +603,7 @@ const PluginDetails = ({
 										{' '}
 										<h4>{name}</h4> <h5> {`Version: ${version}`}</h5>{' '}
 									</div>
-									<p>{`Description: ${description}`}</p>
+									<p>{`Bio: ${bio}`}</p>
 									<div>
 										{' '}
 										{!!free_for?.length ? (
@@ -635,6 +636,9 @@ const PluginDetails = ({
 											</Tooltip>
 										) : null}{' '}
 										{author}
+									</p>
+									<p className="tooltip-container">
+										<a href={url} className="underline-text pointer">Website</a>
 									</p>
 									{free_for?.length ? (
 										<div>
@@ -698,13 +702,9 @@ const PluginDetails = ({
 			<div className="plugin-details-wrapper">
 				<div>
 					<div>
-						<div className="about-label">About</div>
+						<div className="about-label">Description</div>
 						<div className="about-contents">
-							<b>OverView</b>
 							<div className="my-3">{pluginData.description}</div>
-							<div className="my-5">
-								<h2>Main features</h2>
-							</div>
 						</div>
 					</div>
 				</div>
