@@ -13,7 +13,7 @@ import { COUNTRIES_OPTIONS } from '../../../utils/countries';
 const SessionTable = () => {
 	const [userData, setUserData] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [queryValues, setQueryValues] = useState({});
+	const [queryValues, setQueryValues] = useState({ last_seen: '1h' });
 	const [queryFilters, setQueryFilters] = useState({
 		total: 0,
 		page: 1,
@@ -105,8 +105,8 @@ const SessionTable = () => {
 			label: 'Time seen within',
 			options: [
 				{ label: 'None', value: -1 },
-				{ label: 'Last 1 hour', value: 1 },
-				{ label: 'Last 24 hours', value: 24 },
+				{ label: 'Last 1 hour', value: '1h' },
+				{ label: 'Last 24 hours', value: '24h' },
 			],
 		},
 		status: {
@@ -130,6 +130,17 @@ const SessionTable = () => {
 				{ label: 'None', value: -1 },
 				{ label: 'Active', value: true },
 				{ label: 'Expired', value: false },
+			],
+		},
+		{
+			field: 'last_seen',
+			type: 'dropdown',
+			label: 'Time seen within',
+			value: '1h',
+			options: [
+				{ label: 'None', value: -1 },
+				{ label: 'Last 1 hour', value: '1h' },
+				{ label: 'Last 24 hours', value: '24h' },
 			],
 		},
 	];
