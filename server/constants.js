@@ -80,6 +80,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
