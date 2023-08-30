@@ -1970,7 +1970,7 @@ const getExchangeUserSessions = (opts = {
 			...(opts.last_seen && {
 				last_seen:
 				{
-					[Op.gt]: moment().subtract(lastSeenHour, 'hours').toDate()
+					[Op.gt]: moment().subtract(lastSeenHour, 'hours')
 				}
 			}),
 		},
