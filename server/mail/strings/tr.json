@@ -113,7 +113,7 @@
 			"title": "Hesabınız Kilitlendi"
 		},
 			"USER_DELETED": {
-			"html": "<div><p>Hesap silme talebi devam ediyor. Hesabınızdaki bilgiler hizmet şartlarına göre kaldırılacaktır.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
+			"html": "<div><p><p></p></p><p>Hesap silme talebi devam ediyor. Hesabınızdaki bilgiler hizmet şartlarına göre kaldırılacaktır.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "Hesap Silme Talebi"
 		}
 	}
