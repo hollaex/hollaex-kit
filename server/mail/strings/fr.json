@@ -113,7 +113,7 @@
 			"title": "Votre compte a été verrouillé"
 		},
         "USER_DELETED": {
-			"html": "<div><p><p>Bonjour ${name} </p></p><pLa demande de suppression de compte est en cours. Les informations de votre compte seront supprimées conformément aux conditions de service.</p><p> Cordialement<br> l'équipe de ${api_name} </p></div>",
+			"html": "<div><p><p>Bonjour ${name} </p></p><p>La demande de suppression de compte est en cours. Les informations de votre compte seront supprimées conformément aux conditions de service.</p><p> Cordialement<br> l'équipe de ${api_name} </p></div>",
 			"title": "Demande de suppression de compte"
 		}
     }
