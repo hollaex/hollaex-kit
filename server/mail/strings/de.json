@@ -113,7 +113,7 @@
 			"title": "Ihr Konto ist gesperrt"
 		},
         "USER_DELETED": {
-			"html": "<div><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
+			"html": "<div><p><p>Lieber ${name} </p></p><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
 			"title": "Antrag auf Kontolöschung"
 		}
     }
