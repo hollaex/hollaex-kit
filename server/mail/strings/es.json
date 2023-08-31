@@ -111,6 +111,10 @@
         "LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Estimado ${name} </p></p><p>Su cuenta se ha bloqueado durante ${login_timeout} minutos debido a demasiados intentos de inicio de sesión.<br />Si lo hizo no haga estos intentos de inicio de sesión, infórmelo de inmediato y proceda a cambiar sus credenciales lo antes posible.</p><p> Saludos<br> equipo de ${api_name} </p></div>",
 			"title": "Tu cuenta bloqueada"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>La solicitud de eliminación de cuenta está en curso. La información de su cuenta se eliminará de acuerdo con los términos de servicio.</p><p> Saludos<br> equipo de ${api_name} </p></div>",
+			"title": "Solicitud de eliminación de cuenta"
 		}
     }
 }

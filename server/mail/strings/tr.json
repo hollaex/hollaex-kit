@@ -111,6 +111,10 @@
 		"LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Sayın ${name} </p></p><p>Hesabınız çok fazla giriş denemesi nedeniyle ${login_timeout} dakika süreyle kilitlendi.<br />Eğer bu giriş denemelerini yapmadıysanız, bunu hemen bildirin ve kimlik bilgilerinizi mümkün olan en kısa sürede değiştirmeye devam edin.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
 			"title": "Hesabınız Kilitlendi"
+		},
+			"USER_DELETED": {
+			"html": "<div><p><p></p></p><p>Hesap silme talebi devam ediyor. Hesabınızdaki bilgiler hizmet şartlarına göre kaldırılacaktır.</p><p> Saygılarımızla<br> ${api_name} ekibi </p></div>",
+			"title": "Hesap Silme Talebi"
 		}
 	}
 }

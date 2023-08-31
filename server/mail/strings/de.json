@@ -111,6 +111,10 @@
         "LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Lieber ${name} </p></p><p>Ihr Konto wurde wegen zu vieler Anmeldeversuche für ${login_timeout} Minuten gesperrt.<br />Wenn ja Machen Sie diese Anmeldeversuche nicht, melden Sie dies sofort und ändern Sie Ihre Anmeldeinformationen so schnell wie möglich.</p><p> Grüße<br> ${api_name} Team </p></div>",
 			"title": "Ihr Konto ist gesperrt"
+		},
+        "USER_DELETED": {
+			"html": "<div><p>Der Antrag auf Kontolöschung wird derzeit bearbeitet. Die Informationen in Ihrem Konto werden gemäß den Nutzungsbedingungen entfernt.</p><p> Grüße<br> ${api_name} Team </p></div>",
+			"title": "Antrag auf Kontolöschung"
 		}
     }
 }

@@ -111,6 +111,10 @@
         "LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Kính gửi ${name} </p></p><p>Tài khoản của bạn đã bị khóa trong ${login_timeout} phút do đăng nhập quá nhiều lần.<br />Nếu bạn đã làm vậy không thực hiện những nỗ lực đăng nhập này, hãy báo cáo điều này ngay lập tức và tiến hành thay đổi thông tin đăng nhập của bạn càng sớm càng tốt.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
 			"title": "Tài khoản của bạn bị khóa"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>Yêu cầu xóa tài khoản đang được tiến hành. Thông tin trên tài khoản của bạn sẽ bị xóa theo điều khoản dịch vụ.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
+			"title": "Yêu cầu xóa tài khoản"
 		}
     }
 }
