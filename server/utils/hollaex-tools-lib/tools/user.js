@@ -2140,14 +2140,15 @@ const deleteKitUser = async (userId) => {
 	}
 	await revokeAllUserSessions(userId);
 	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
+	const userEmail = user.email;
 	const updatedUser = await user.update(
-		{ email: user.email + '_deleted', activated: false },
+		{ email: userEmail + '_deleted', activated: false },
 		{ fields: ['email', 'activated'], returning: true }
 	);
 
 	sendEmail(
 			MAILTYPE.USER_DELETED,
-			user.email,
+			userEmail,
 			{},
 			user.settings
 	);
