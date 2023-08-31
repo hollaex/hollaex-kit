@@ -29,7 +29,7 @@ const getTrackedExchangeMarkets = (req, res) => {
 			);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
-}
+};
 
 const createBrokerPair = (req, res) => {
 	loggerBroker.verbose(
@@ -47,15 +47,12 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	} = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -69,15 +66,12 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	);
 
 	toolsLib.broker.createBrokerPair({
@@ -88,15 +82,12 @@ const createBrokerPair = (req, res) => {
 		user_id,
 		min_size,
 		max_size,
-		increment_size,
 		type,
 		quote_expiry_time,
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread,
-		tracked_symbol
 	})
 		.then((data) => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
@@ -121,13 +112,11 @@ const testBroker = (req, res) => {
 	const {
 		formula,
 		spread,
-		increment_size
 	} = req.swagger.params.data.value;
 
 	toolsLib.broker.testBroker({
 		formula,
 		spread,
-		increment_size
 	})
 		.then((data) => {
 			return res.json(data);
@@ -187,7 +176,6 @@ function updateBrokerPair(req, res) {
 		sell_price,
 		min_size,
 		max_size,
-		increment_size,
 		paused,
 		user_id,
 		type,
@@ -195,7 +183,6 @@ function updateBrokerPair(req, res) {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread } = req.swagger.params.data.value;
 
 	loggerBroker.verbose(
@@ -207,7 +194,6 @@ function updateBrokerPair(req, res) {
 		sell_price,
 		min_size,
 		max_size,
-		increment_size,
 		paused,
 		user_id,
 		type,
@@ -215,7 +201,6 @@ function updateBrokerPair(req, res) {
 		rebalancing_symbol,
 		account,
 		formula,
-		exchange_name,
 		spread
 	);
 
@@ -242,7 +227,7 @@ function deleteBrokerPair(req, res) {
 	);
 
 	toolsLib.broker.deleteBrokerPair(req.swagger.params.data.value.id)
-		.then((data) => {
+		.then(() => {
 			publisher.publish(INIT_CHANNEL, JSON.stringify({ type: 'refreshInit' }));
 			return res.json({ message: 'Successfully deleted broker pair.' });
 		})
@@ -272,13 +257,11 @@ function getBrokerPairs(req, res) {
 		'paused',
 		'min_size',
 		'max_size',
-		'increment_size',
 		'type',
 		'quote_expiry_time',
 		'rebalancing_symbol',
+		'account',
 		'spread',
-		'tracked_symbol',
-		'exchange_name',
 		'formula'
 	];
 

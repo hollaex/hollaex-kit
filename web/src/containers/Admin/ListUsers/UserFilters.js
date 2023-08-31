@@ -2,39 +2,44 @@ import React, { useState } from 'react';
 import {
 	Button,
 	Input,
-	Modal,
 	Select,
 	message,
 	Slider,
 	Switch,
 	DatePicker,
 } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, SearchOutlined } from '@ant-design/icons';
 import moment from 'moment';
-
-const UseFilters = ({
-	displayFilterModel,
-	setDisplayFilterModel,
-	applyFilters,
-}) => {
+import './UserFilters.scss';
+import { COUNTRIES_OPTIONS } from '../../../utils/countries';
+const UseFilters = ({ applyFilters }) => {
 	const { Option } = Select;
 	const fieldKeyValue = {
 		id: { type: 'string', label: 'User ID' },
 		email: { type: 'string', label: 'Email' },
 		username: { type: 'string', label: 'User Name' },
 		full_name: { type: 'string', label: 'Full Name' },
-		pending: { type: 'boolean', label: 'Pending' },
-		pending_type: {
+		id_number: { type: 'string', label: 'ID number' },
+		start_date: { type: 'date', label: 'User Creation Date Start' },
+		kyc: {
 			type: 'dropdown',
-			label: 'Pending Type',
-			value: 'id',
+			label: 'User Id Verification',
 			options: [
-				{ label: 'id', value: 'id' },
-				{ label: 'bank', value: 'bank' },
+				{ value: -1, label: 'None' },
+				{ value: 0, label: 'Not complete' },
+				{ value: 1, label: 'Pending' },
+				{ value: 2, label: 'Rejected' },
+				{ value: 3, label: 'Approved' },
 			],
 		},
-		start_date: { type: 'date', label: 'User Creation Date Start' },
+		bank: {
+			type: 'dropdown',
+			label: 'Bank Verification',
+			options: [
+				{ label: 'None', value: -1 },
+				{ label: 'Pending', value: 1 },
+			],
+		},
 		end_date: { type: 'date', label: 'User Creation Date End' },
 		dob_start_date: { type: 'date', label: 'User DOB Date Start' },
 		dob_end_date: { type: 'date', label: 'User DOB Date End' },
@@ -42,155 +47,121 @@ const UseFilters = ({
 			type: 'dropdown',
 			label: 'Gender',
 			options: [
-				{ label: 'Male', value: 0 },
-				{ label: 'Female', value: 1 },
+				{ label: 'None', value: -1 },
+				{ label: 'Male', value: false },
+				{ label: 'Female', value: true },
 			],
 		},
-		nationality: { type: 'string', label: 'Nationality' },
+		nationality: {
+			type: 'dropdown',
+			label: 'Nationality',
+			options: COUNTRIES_OPTIONS,
+		},
 		phone_number: { type: 'string', label: 'Phone Number' },
-		verification_level: { type: 'string', label: 'Verification Level' },
+		verification_level: {
+			type: 'dropdown',
+			label: 'Verification Level',
+			options: [
+				{ label: 'None', value: -1 },
+				{ label: 1, value: 1 },
+				{ label: 2, value: 2 },
+				{ label: 3, value: 3 },
+				{ label: 4, value: 4 },
+				{ label: 5, value: 5 },
+				{ label: 6, value: 6 },
+				{ label: 7, value: 7 },
+				{ label: 8, value: 8 },
+				{ label: 9, value: 9 },
+				{ label: 10, value: 10 },
+			],
+		},
 		email_verified: { type: 'boolean', label: 'Email Verified' },
 		otp_enabled: { type: 'boolean', label: 'OTP Enabled' },
 	};
 
-	const [showAddFilter, setShowAddFilter] = useState(false);
-	const [filters, setFilters] = useState([
-		{ field: 'id', type: 'string', label: 'User ID', value: null },
-	]);
+	const defaultFilters = [
+		{ field: 'id', type: 'string', label: 'ID', value: null },
+		{ field: 'email', type: 'string', label: 'Email', value: null },
+	];
+
+	const [filters, setFilters] = useState(defaultFilters);
 
 	const [field, setField] = useState();
 	const dateFormat = 'YYYY/MM/DD';
 
-	const goBack = () => {
-		setDisplayFilterModel(false);
-	};
+	const canReset = filters?.find(
+		(filter) => filter.value != null && filter.value !== ''
+	);
 
-	const handleFilters = () => {
+	const handleFilters = (selectedFilters = null) => {
 		const queryFilters = {};
 
-		filters.forEach((filter) => {
-			if (filter.value != null && filter.value !== '') queryFilters[filter.field] = filter.value;
+		if (!selectedFilters) selectedFilters = filters;
+		selectedFilters.forEach((filter) => {
+			if (filter.value != null && filter.value !== '')
+				queryFilters[filter.field] = filter.value;
 		});
 
 		applyFilters(queryFilters);
-		setDisplayFilterModel(false);
 	};
 
+	const addPendingType = (value, Index) => {
+		if (value === -1) {
+			setFilters((prevState) => {
+				prevState[Index].value = null;
+				if (
+					!prevState.find((f) => ['bank', 'kyc'].includes(f.field) && f.value)
+				)
+					prevState = prevState.filter((f) => f.field !== 'pending');
+				return [...prevState];
+			});
+		} else {
+			setFilters((prevState) => {
+				prevState[Index].value = value;
+				const found = filters.find((f) => f.field === 'pending');
+				if (!found) {
+					prevState.push({
+						field: 'pending',
+						label: 'Pending',
+						value: true,
+						type: 'boolean',
+						displayNone: true,
+					});
+				}
+				return [...prevState];
+			});
+		}
+	};
 	return (
-		<>
-			<Modal
-				maskClosable={false}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-				bodyStyle={{
-					backgroundColor: '#27339D',
-					marginTop: 60,
-				}}
-				visible={showAddFilter}
-				footer={null}
-				onCancel={() => {
-					setShowAddFilter(false);
+		<div style={{ display: 'flex', flexDirection: 'row', gap: 10 }}>
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					gap: 10,
+					flexWrap: 'wrap',
 				}}
 			>
-				<div style={{ fontWeight: '600', color: 'white' }}>Select Field </div>
-
-				<div style={{ color: 'white', marginTop: 30, marginBottom: 40 }}>
-					<label>Field</label>
-					<Select
-						showSearch
-						style={{ width: '100%', marginTop: 10 }}
-						placeholder="Select field"
-						value={field}
-						onChange={(value) => {
-							setField(value);
-						}}
-					>
-						{Object.keys(fieldKeyValue).map((key) => (
-							<Option value={key}>{fieldKeyValue[key].label}</Option>
-						))}
-					</Select>
-				</div>
-
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						gap: 15,
-						justifyContent: 'space-between',
-					}}
-				>
-					<Button
-						onClick={() => {
-							setShowAddFilter(false);
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Back
-					</Button>
-					<Button
-						onClick={() => {
-							const found = filters.find((f) => f.field === field);
-
-							if (found) {
-								message.error('Filter already exists');
-							} else {
-								setShowAddFilter(false);
-								const fieldValue = {
-									field,
-									type: fieldKeyValue[field].type,
-									label: fieldKeyValue[field].label,
-									value: fieldKeyValue[field].value,
-									options: fieldKeyValue[field]?.options,
-								};
-								setFilters((prevState) => {
-									prevState.push(fieldValue);
-									return [...prevState];
-								});
-							}
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Ok
-					</Button>
-				</div>
-			</Modal>
-			<Modal
-				maskClosable={false}
-				closeIcon={<CloseOutlined style={{ color: 'white' }} />}
-				bodyStyle={{
-					backgroundColor: '#27339D',
-				}}
-				visible={displayFilterModel}
-				footer={null}
-				onCancel={() => {
-					setDisplayFilterModel(false);
-				}}
-			>
-				<div style={{ fontWeight: '600', color: 'white' }}>Add Filters</div>
-
 				{filters.map((filter, index) => {
 					return (
-						<div style={{ color: 'white', margin: '20px 0' }}>
+						<div
+							style={{
+								color: 'white',
+								marginBottom: 10,
+								display: filter.displayNone ? 'none' : 'flex',
+								flexDirection: 'column',
+							}}
+						>
 							<label>
+								{filter.label}:{' '}
 								<DeleteOutlined
+									style={{ float: 'right', position: 'relative', top: 4 }}
 									onClick={() => {
 										let newFilters = [...filters];
 										newFilters = newFilters.filter((f, i) => i !== index);
 										setFilters(newFilters);
 									}}
-								/>{' '}
-								{filter.label}:{' '}
+								/>
 							</label>
 							{filter.type === 'string' && (
 								<Input
@@ -200,7 +171,7 @@ const UseFilters = ({
 										newFilters[index].value = e.target.value;
 										setFilters(newFilters);
 									}}
-									style={{ marginTop: 10 }}
+									style={{ width: 200 }}
 									placeholder={filter.label}
 								/>
 							)}
@@ -209,6 +180,7 @@ const UseFilters = ({
 									range
 									defaultValue={[1, 10]}
 									value={filter.value}
+									style={{ width: 200, backgroundColor: 'red' }}
 									onChange={(e) => {
 										const newFilters = [...filters];
 										newFilters[index].value = e;
@@ -220,7 +192,7 @@ const UseFilters = ({
 								<Switch
 									size="small"
 									checked={filter.value}
-									style={{ marginLeft: 10 }}
+									style={{ marginLeft: 10, width: 50, marginTop: 7 }}
 									onChange={(e) => {
 										const newFilters = [...filters];
 										newFilters[index].value = e;
@@ -231,13 +203,22 @@ const UseFilters = ({
 							{filter.type === 'dropdown' && (
 								<Select
 									showSearch
-									style={{ width: '100%', marginTop: 10 }}
+									className="select-box"
+									style={{ width: 200 }}
 									placeholder="Select value"
 									value={filter.value}
 									onChange={(e) => {
 										const newFilters = [...filters];
-										newFilters[index].value = e;
-										setFilters(newFilters);
+										if (['kyc', 'bank'].includes(filter.field)) {
+											addPendingType(e, index);
+										} else {
+											if (e === -1) {
+												newFilters[index].value = null;
+											} else {
+												newFilters[index].value = e;
+											}
+											setFilters(newFilters);
+										}
 									}}
 								>
 									{filter?.options.map((f) => (
@@ -247,7 +228,13 @@ const UseFilters = ({
 							)}
 							{filter.type === 'date' && (
 								<DatePicker
-									style={{ marginLeft: 10 }}
+									suffixIcon={null}
+									className="date-box"
+									style={{
+										width: 200,
+										backgroundColor: '#202980',
+										color: 'white',
+									}}
 									onChange={(date, dateString) => {
 										const newFilters = [...filters];
 										newFilters[index].value = moment(dateString).format();
@@ -259,54 +246,66 @@ const UseFilters = ({
 						</div>
 					);
 				})}
+			</div>
 
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						justifyContent: 'flex-end',
-						marginTop: 15,
-						marginBottom: 25,
-					}}
-				>
-					<div style={{}}>
-						<Button
-							onClick={() => {
-								setShowAddFilter(true);
+			<div
+				style={{
+					display: 'flex',
+					flexDirection: 'row',
+					gap: 10,
+					marginTop: 20,
+					position: 'relative',
+					top: 6,
+				}}
+			>
+				<div>
+					{Object.keys(fieldKeyValue).filter(
+						(key) => !filters.find((filter) => filter.field === key)
+					)?.length !== 0 && (
+						<Select
+							className="select-box"
+							showSearch
+							style={{ width: 150 }}
+							placeholder="Add filter"
+							value={field}
+							onChange={(value) => {
+								setField(null);
+								const found = filters.find((f) => f.field === value);
+
+								if (found) {
+									message.error('Filter already exists');
+								} else {
+									const fieldValue = {
+										field: value,
+										type: fieldKeyValue[value].type,
+										label: fieldKeyValue[value].label,
+										value: fieldKeyValue[value].value,
+										options: fieldKeyValue[value]?.options,
+									};
+									setFilters((prevState) => {
+										prevState.push(fieldValue);
+										return [...prevState];
+									});
+								}
 							}}
-							style={{ backgroundColor: '#E97C00', color: 'white', flex: 1 }}
 						>
-							Add Filter
-						</Button>
-					</div>
+							{Object.keys(fieldKeyValue)
+								.filter(
+									(key) => !filters.find((filter) => filter.field === key)
+								)
+								.map((key) => (
+									<Option value={key}>{fieldKeyValue[key].label}</Option>
+								))}
+						</Select>
+					)}
 				</div>
 
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						gap: 15,
-						justifyContent: 'space-between',
-					}}
-				>
-					<Button
-						onClick={() => {
-							goBack();
-						}}
-						style={{
-							backgroundColor: '#288500',
-							color: 'white',
-							flex: 1,
-							height: 35,
-						}}
-						type="default"
-					>
-						Back
-					</Button>
+				<div>
 					<Button
 						onClick={() => {
 							handleFilters();
 						}}
+						icon={<SearchOutlined />}
 						style={{
 							backgroundColor: '#288500',
 							color: 'white',
@@ -315,11 +314,30 @@ const UseFilters = ({
 						}}
 						type="default"
 					>
-						Apply Filters
+						Search
 					</Button>
+					<div
+						onClick={() => {
+							if (canReset) {
+								setFilters(defaultFilters);
+								handleFilters([]);
+							}
+						}}
+						style={{
+							marginTop: 5,
+							textAlign: 'center',
+							cursor: 'pointer',
+							textDecoration: 'underline',
+							color: canReset ? 'white' : 'grey',
+						}}
+					>
+						Reset
+					</div>
 				</div>
-			</Modal>
-		</>
+			</div>
+
+			<div style={{ marginLeft: 30 }}></div>
+		</div>
 	);
 };
 

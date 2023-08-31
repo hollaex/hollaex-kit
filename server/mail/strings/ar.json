@@ -107,6 +107,14 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>عزيزي $ {name} </p></p><p>تم قفل حسابك لمدة $ {login_timeout} دقيقة بسبب محاولات تسجيل دخول كثيرة للغاية.<br />إذا لم تقم بمحاولات تسجيل الدخول هذه ، فأبلغ عن ذلك على الفور وتابع لتغيير بيانات الاعتماد الخاصة بك في أقرب وقت ممكن.</p><p> يعتبر<br> ${api_name} team </p></div>",
+			"title": "حسابك مغلق"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>طلب حذف الحساب قيد التقدم. ستتم إزالة المعلومات الموجودة في حسابك وفقًا لشروط الخدمة.</p><p> يعتبر<br> ${api_name} team </p></div>",
+			"title": "طلب حذف الحساب"
+		}
     }
 }

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 
 import withConfig from 'components/ConfigProvider/withConfig';
 import { getSparklines } from 'actions/chartAction';
-import { MarketsSelector } from './utils';
+import { dataSelector } from './utils';
 import AssetsList from 'containers/DigitalAssets/components/AssetsList';
 
 class Markets extends Component {
@@ -30,13 +30,10 @@ class Markets extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const { markets, selectedSource = '' } = this.props;
+		const { data } = this.props;
 		const { page } = this.state;
 
-		if (
-			JSON.stringify(markets) !== JSON.stringify(prevProps.markets) ||
-			(selectedSource && selectedSource !== prevProps.selectedSource)
-		) {
+		if (JSON.stringify(data) !== JSON.stringify(prevProps.data)) {
 			this.constructData(page);
 		}
 	}
@@ -53,32 +50,15 @@ class Markets extends Component {
 
 	constructData = (page) => {
 		const { pageSize } = this.state;
-		const { markets, selectedSource, pairs } = this.props;
-		let filteredData = [];
-		let nonDublicateCoins = [];
+		const { data: allData } = this.props;
 
-		if (!selectedSource || selectedSource === 'all') {
-			filteredData = markets.filter(({ key }) => {
-				if (!nonDublicateCoins.includes(key.split('-')[0])) {
-					nonDublicateCoins.push(key.split('-')[0]);
-					return Object.keys(pairs).includes(key);
-				}
-				return null;
-			});
-		} else {
-			filteredData = markets.filter(
-				({ key }) => key.split('-')[1] === selectedSource
-			);
-		}
-
-		const count = filteredData.length;
-
+		const count = allData.length;
 		const initItem = page * pageSize;
 		if (initItem < count) {
-			const data = filteredData.slice(0, initItem + pageSize);
+			const data = allData.slice(0, initItem + pageSize);
 			this.setState({ data, page, count });
 		} else {
-			this.setState({ data: filteredData, page, count });
+			this.setState({ data: allData, page, count });
 		}
 	};
 
@@ -125,13 +105,10 @@ class Markets extends Component {
 	}
 }
 
-const mapStateToProps = (state) => ({
-	user: state.user || {},
+const mapStateToProps = (state, props) => ({
 	pairs: state.app.pairs,
-	coins: state.app.coins,
-	tickers: state.app.tickers,
 	constants: state.app.constants,
-	markets: MarketsSelector(state),
+	data: dataSelector(state, props),
 });
 
 export default connect(mapStateToProps)(withRouter(withConfig(Markets)));

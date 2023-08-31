@@ -80,6 +80,7 @@ subscriber.on('message', (channel, message) => {
 
 const updateAllConfig = (newConfigurations, newSecrets, newFrozenUsers) => {
 	configuration = newConfigurations;
+	if (!configuration?.kit?.info?.plan) configuration.kit.info.plan = 'basic';
 	secrets = newSecrets;
 	frozenUsers = newFrozenUsers;
 };
@@ -158,6 +159,7 @@ exports.GET_FROZEN_USERS = () => cloneDeep(frozenUsers);
 exports.GET_EMAIL = () => cloneDeep(configuration.email);
 exports.GET_BROKER = () => cloneDeep(configuration.broker);
 exports.GET_QUICKTRADE = () => cloneDeep(configuration.quicktrade);
+exports.GET_NETWORK_QUICKTRADE = () => cloneDeep(configuration.networkQuickTrades);
 
 exports.USER_META_KEYS = [
 	'description',
@@ -566,6 +568,13 @@ exports.EXPLORERS = {
 			baseUrl: 'https://etcblockexplorer.com',
 			txPath: '/tx'
 		}
+	],
+	arb: [
+		{
+			name: 'Arbiscan Explorer',
+			baseUrl: 'https://arbiscan.io',
+			txPath: '/tx'
+		}
 	]
 };
 
@@ -610,6 +619,11 @@ exports.VERIFY_STATUS = {
 };
 // PLUGIN CONSTANTS END ------------------------------ to be moved
 
+// Login timeout  START------------------------------
+exports.LOGIN_TIME_OUT = 1000 * 5 * 60;
+exports.NUMBER_OF_ALLOWED_ATTEMPTS = 5;
+// Login timeout  END------------------------------
+
 // BROKER CONSTANTS START
 
 exports.EXCHANGE_PLAN_INTERVAL_TIME = {
@@ -618,10 +632,10 @@ exports.EXCHANGE_PLAN_INTERVAL_TIME = {
 	boost: 60
 };
 exports.EXCHANGE_PLAN_PRICE_SOURCE = {
-	fiat: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	boost: ['hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap'],
-	crypto: ['hollaex', 'binance'],
-	ALL: [ 'hollaex', 'binance', 'bitfinex', 'coinbase', 'kraken', 'uniswap']
+	fiat: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap'],
+	boost: ['hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap'],
+	crypto: ['hollaex', 'oracle', 'binance'],
+	ALL: [ 'hollaex', 'oracle', 'binance', 'bitfinex', 'coinbase', 'kraken', 'bybit', 'uniswap']
 };
 
 

@@ -13,6 +13,7 @@ module.exports = function (sequelize, DataTypes) {
 			symbol: {
 				type: DataTypes.STRING,
 				allowNull: false,
+				unique: true
 			},
 			buy_price: {
 				type: DataTypes.DOUBLE,
@@ -43,10 +44,6 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: false
 			},
 			max_size: {
-				type: DataTypes.DOUBLE,
-				allowNull: false
-			},
-			increment_size: {
 				type: DataTypes.DOUBLE,
 				allowNull: false
 			},

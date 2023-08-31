@@ -63,6 +63,13 @@
 		.trade_orderbook-cell-amount:hover,
 		.trade_orderbook-cell_total:hover {
 			color: $colors-main-black !important;
+			font-weight: bold;
+
+			.important-text,
+			.secondary-text {
+				color: $colors-main-black !important;
+				font-weight: bold;
+			}
 		}
 	}
 

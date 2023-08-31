@@ -27,6 +27,21 @@ module.exports = function (sequelize, DataTypes) {
 				allowNull: true,
 				defaultValue: ''
 			},
+			attempt: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				defaultValue: 0
+			},
+			status: {
+				type: DataTypes.BOOLEAN,
+				allowNull: false,
+				defaultValue: true
+			},
+			country: {
+				type: DataTypes.STRING,
+				allowNull: true,
+				defaultValue: ''
+			},
 			timestamp: {
 				type: DataTypes.DATE,
 				allowNull: false,
@@ -34,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
 			}
 		},
 		{
-			timestamps: false,
+			timestamps: true,
 			underscored: true,
 			tableName: 'Logins'
 		}
@@ -46,6 +61,7 @@ module.exports = function (sequelize, DataTypes) {
 			foreignKey: 'user_id',
 			targetKey: 'id'
 		});
+		Login.hasOne(models.Session);
 	};
 
 	return Login;

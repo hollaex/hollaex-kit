@@ -9,7 +9,7 @@ const { EXCHANGE_PLAN_INTERVAL_TIME, EXCHANGE_PLAN_PRICE_SOURCE } = require(`${S
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { client } = require('./database/redis');
 const { getUserByKitId } = require('./user');
-const { validatePair, getKitTier, getKitConfig, getAssetsPrices } = require('./common');
+const { validatePair, getKitTier, getKitConfig, getAssetsPrices, getQuickTrades, getKitCoin } = require('./common');
 const { sendEmail } = require('../../../mail');
 const { MAILTYPE } = require('../../../mail/strings');
 const { verifyBearerTokenPromise } = require('./security');
@@ -39,7 +39,10 @@ const {
 	UNISWAP_PRICE_NOT_FOUND,
 	FORMULA_MARKET_PAIR_ERROR,
 	COIN_INPUT_MISSING,
-	AMOUNTS_MISSING
+	AMOUNTS_MISSING,
+	REBALANCE_SYMBOL_MISSING,
+	PRICE_NOT_FOUND,
+	QUOTE_EXPIRY_TIME_ERROR
 } = require(`${SERVER_PATH}/messages`);
 
 const validateBrokerPair = (brokerPair) => {
@@ -51,8 +54,6 @@ const validateBrokerPair = (brokerPair) => {
 		throw new Error('Broker minimum order size must be bigger than zero.');
 	} else if (new BigNumber(brokerPair.max_size).comparedTo(new BigNumber(brokerPair.min_size)) !== 1) {
 		throw new Error('Broker maximum order size must be bigger than minimum order size.');
-	} else if (new BigNumber(brokerPair.increment_size).comparedTo(0) !== 1) {
-		throw new Error('Broker order price increment must be bigger than zero.');
 	} else if (brokerPair.symbol && !validatePair(brokerPair.symbol)) {
 		throw new Error('invalid symbol');
 	}
@@ -69,6 +70,7 @@ const setExchange = (data) => {
         timeout: 5000,
         ...(data.api_key && { 'apiKey': data.api_key }),
         ...(data.api_secret && { 'secret': data.api_secret }),
+		options: { "defaultType": "spot" }
     })
 
     if (data.id) {
@@ -84,19 +86,19 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 
 	const baseCurrencyPrice = await calculatePrice(side, spread, formula, refresh_interval, id);
 
-	const decimalPoint = new BigNumber(broker.increment_size).dp();
-	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
 	const responseObject = {
-		price: roundedPrice
+		price: baseCurrencyPrice
 	};
+
+	const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
+	responseObject.receiving_amount = receiving_amount;
+	responseObject.spending_amount = spending_amount;
 
 	//check if there is user_id, if so, assing token
 	if (user_id) {
 
-		const size = calculateSize(orderData, side, responseObject, decimalPoint, symbol);
-
 		// Generate randomToken to be used during deal execution
-		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
+		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, baseCurrencyPrice, size, 'broker');
 		responseObject.token = randomToken;
 		// set expiry
 		const expiryDate = new Date();
@@ -109,21 +111,21 @@ const getQuoteDynamicBroker = async (side, broker, user_id = null, orderData) =>
 };
 
 const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => {
-	const { symbol, quote_expiry_time, sell_price, buy_price, increment_size  } = broker;
+	const { symbol, quote_expiry_time, sell_price, buy_price  } = broker;
 
 	const baseCurrencyPrice = side === 'buy' ? sell_price : buy_price;
 
-	const decimalPoint = new BigNumber(increment_size).dp();
-	const roundedPrice = new BigNumber(baseCurrencyPrice).decimalPlaces(decimalPoint).toNumber();
-	
 	const responseObject = {
-		price: roundedPrice
+		price: baseCurrencyPrice
 	};
 
-	const size = calculateSize(orderData, side, responseObject, decimalPoint, symbol);
+	const { size, receiving_amount, spending_amount } = calculateSize(orderData, side, responseObject, symbol);
+	responseObject.receiving_amount = receiving_amount;
+	responseObject.spending_amount = spending_amount;
 
 	if (user_id) {
-		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, roundedPrice, size, 'broker');
+
+		const randomToken = generateRandomToken(user_id, symbol, side, quote_expiry_time, baseCurrencyPrice, size, 'broker');
 		responseObject.token = randomToken;
 		// set expiry
 		const expiryDate = new Date();
@@ -133,7 +135,7 @@ const getQuoteManualBroker = async (broker, side, user_id = null, orderData) => 
 	return responseObject;
 }
 
-const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) => {
+const calculateSize = (orderData, side, responseObject, symbol) => {
 	if (orderData == null) {
 		throw new Error(COIN_INPUT_MISSING);
 	}
@@ -141,19 +143,38 @@ const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) =>
 	let size = null;
 	let { spending_currency, receiving_currency, spending_amount, receiving_amount } = orderData;
 
+	const coins = symbol.split('-');
+	const baseCoinInfo = getKitCoin(coins[0]);
+	const quoteCointInfo = getKitCoin(coins[1]);
+
 	if (spending_currency == null && receiving_currency == null) {
 		throw new Error(AMOUNTS_MISSING);
 	}
 
 	if (spending_amount != null) {
-		const sourceAmount = new BigNumber(side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price)
-				.decimalPlaces(decimalPoint).toNumber();
-		receiving_amount = sourceAmount;
+		const incrementUnit = side === 'buy' ? baseCoinInfo.increment_unit : quoteCointInfo.increment_unit;
+		const targetedAmount = side === 'buy' ? spending_amount / responseObject.price : spending_amount * responseObject.price;
+
+		if (incrementUnit < 1) {
+			const decimalPoint = new BigNumber(incrementUnit).dp();
+			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			receiving_amount = sourceAmount;
+		} else {
+			receiving_amount = targetedAmount - (targetedAmount % incrementUnit);
+		}
+
 
 	} else if (receiving_amount != null) {
-		const sourceAmount = new BigNumber(side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price)
-		.decimalPlaces(decimalPoint).toNumber();
-		spending_amount = sourceAmount;
+		const incrementUnit = side === 'buy' ? quoteCointInfo.increment_unit : baseCoinInfo.increment_unit
+		const targetedAmount = side === 'buy' ? receiving_amount * responseObject.price : receiving_amount / responseObject.price;
+
+		if (incrementUnit < 1) { 
+			const decimalPoint = new BigNumber(incrementUnit).dp();
+			const sourceAmount = new BigNumber(targetedAmount).decimalPlaces(decimalPoint).toNumber();
+			spending_amount = sourceAmount;
+		} else {
+			spending_amount = targetedAmount - (targetedAmount % incrementUnit);
+		}
 	}
 
 	if (`${spending_currency}-${receiving_currency}` === symbol) {
@@ -161,7 +182,7 @@ const calculateSize = (orderData, side, responseObject, decimalPoint, symbol) =>
 	} else {
 		size = receiving_amount
 	}
-	return size;
+	return { size, spending_amount, receiving_amount };
 }
 
 
@@ -170,16 +191,18 @@ const calculateFormula = (fn) => {
 }
 
 const isFairPriceForBroker = async (broker) => {
+	if (broker.type !== 'dynamic') return true;
+
 	// with ccxt
 	const priceFromMarkets = await calculatePrice(null, null, broker.formula, null, broker.id, false);
 	// with oracle
 	const priceFromOracle = await calculatePrice(null, null, broker.formula, null, broker.id, true);
 
 	//relative difference
-	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromOracle + priceFromOracle) / 2));
+	const percDiff =  100 * Math.abs((priceFromMarkets - priceFromOracle) / ((priceFromMarkets  + priceFromOracle) / 2));
 
-	// If difference more than 20 percent, price is not fair.
-	const priceDifferenceTreshold = 0.2;
+	// If difference more than 10 percent, price is not fair.
+	const priceDifferenceTreshold = 10;
 	if (priceFromOracle !== -1 && percDiff > priceDifferenceTreshold) return false;
 	else return true;
 }
@@ -201,11 +224,10 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		if (!(EXCHANGE_PLAN_PRICE_SOURCE[exchangeInfo.plan] || [])?.includes(exchangePair[0]))
 			throw new Error(DYNAMIC_BROKER_UNSUPPORTED);
 
-		const selectedExchange = setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
+		const selectedExchange = exchangePair[0] !== 'oracle' && setExchange({ id: `${exchangePair[0]}-broker:fetch-markets`, exchange: exchangePair[0] });
 		let marketPrice;
 
-		// isOracle is only used for fair price check.
-		if (!isOracle) {
+		if (!isOracle && exchangePair[0] !== 'oracle') {
 			const formattedSymbol = exchangePair[1].split('-').join('/').toUpperCase();
 			const userCachekey = `${brokerId}-${exchangePair[1]}`;
 			marketPrice = await client.getAsync(userCachekey);
@@ -219,8 +241,15 @@ const calculatePrice = async (side, spread, formula, refresh_interval, brokerId,
 		}
 		else {
 			const coins = exchangePair[1].split('-');
-			const conversions = await getAssetsPrices([coins[0]], { quote: coins[1], amount: 1 });
-			marketPrice =  conversions[coins[0]];
+			const userCachekey = `${brokerId}-${exchangePair[0]}-${exchangePair[1]}`;
+			marketPrice = await client.getAsync(userCachekey);
+
+			if (!marketPrice) {
+				const conversions = await getAssetsPrices([coins[0]], coins[1], 1);
+				marketPrice =  conversions[coins[0]];
+				if (refresh_interval)
+					client.setexAsync(userCachekey, refresh_interval, marketPrice);
+			}
 			if(marketPrice === -1) return -1;
 		}
 		formula = formula.replace(variable, marketPrice);
@@ -291,7 +320,7 @@ const fetchBrokerQuote = async (brokerQuote) => {
 };
 
 const testBroker = async (data) => {
-	const { formula, spread, increment_size } = data;
+	const { formula, spread } = data;
 	try {
 		if (spread == null) {
 			throw new Error(BROKER_FORMULA_NOT_FOUND);
@@ -309,7 +338,11 @@ const testBroker = async (data) => {
 			'test:broker'
 		);
 
-		const decimalPoint = new BigNumber(increment_size).dp();
+		if (price < 0) {
+			throw new Error(PRICE_NOT_FOUND);
+		}
+
+		const decimalPoint = new BigNumber(price).dp();
 		return {
 			buy_price: new BigNumber(price * (1 - (spread / 100))).decimalPlaces(decimalPoint).toNumber(),
 			sell_price: new BigNumber(price * (1 + (spread / 100))).decimalPlaces(decimalPoint).toNumber()
@@ -373,8 +406,8 @@ const testRebalance = async (data) => {
 };
 
 const reverseTransaction = async (orderData) => {
-	const { userId, symbol, side, size } = orderData;
-	const notifyUser = async (data) => {
+	const { symbol, side, size } = orderData;
+	const notifyUser = async (data, userId) => {
 		const user = await getUserByKitId(userId);
 		sendEmail(
 			MAILTYPE.ALERT,
@@ -389,9 +422,11 @@ const reverseTransaction = async (orderData) => {
 
 	try {
 		const broker = await getModel('broker').findOne({ where: { symbol } });
-		const decimalPoint = new BigNumber(broker.increment_size).dp();
 
-		if (broker.account) {
+		const quickTrades = getQuickTrades();
+		const quickTradeConfig = quickTrades.find(quickTrade => quickTrade.symbol === symbol);
+
+		if (quickTradeConfig && quickTradeConfig.type === 'broker' && quickTradeConfig.active && broker && !broker.paused && broker.account) {
 			const objectKeys = Object.keys(broker.account);
 			const exchangeKey = objectKeys[0];
 
@@ -403,14 +438,17 @@ const reverseTransaction = async (orderData) => {
 				})
 
 				const formattedRebalancingSymbol = broker.rebalancing_symbol && broker.rebalancing_symbol.split('-').join('/').toUpperCase();
-	
-				const marketTicker = await exchange.fetchTicker(symbol);
-	
-				const roundedPrice = new BigNumber(side === 'buy' ? marketTicker.last * 1.01 : marketTicker.last * 0.99)
-				.decimalPlaces(decimalPoint).toNumber();
-				exchange.createOrder(formattedRebalancingSymbol, 'limit', size, roundedPrice)
-					.then((res) => { notifyUser(res); })
-					.catch((err) => { notifyUser(err); });
+				if (exchangeKey === 'bybit') {
+					const orderbook = await exchange.fetchOrderBook(formattedRebalancingSymbol);
+					const price = side === 'buy' ? orderbook['asks'][0][0] * 1.01 : orderbook['bids'][0][0] * 0.99;
+
+					exchange.createOrder(formattedRebalancingSymbol, 'limit', side, size, price)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
+				else {
+					exchange.createOrder(formattedRebalancingSymbol, 'market', side, size)
+						.catch((err) => { notifyUser(err.message, broker.user_id); });
+				}
 			}
 		}
 	} catch (err) {
@@ -443,11 +481,15 @@ const createBrokerPair = async (brokerPair) => {
 				type,
 				account,
 				formula,
-				increment_size
+				rebalancing_symbol
 			} = brokerPair;
 
 			if (type !== 'manual' && (!spread || !quote_expiry_time || !formula)) {
 				throw new Error(DYNAMIC_BROKER_CREATE_ERROR);
+			}
+
+			if (quote_expiry_time < 10) {
+				throw new Error(QUOTE_EXPIRY_TIME_ERROR);
 			}
 
 			if (type !== 'manual' && exchangeInfo.plan === 'basic') {
@@ -468,10 +510,14 @@ const createBrokerPair = async (brokerPair) => {
 						value.apiSecret = brokerPair?.account[key]?.apiSecret;
 					}
 				}
+
+				if (!rebalancing_symbol) {
+					throw new Error(REBALANCE_SYMBOL_MISSING);
+				}
 			}
 
 			if (formula) {
-				const brokerPrice = await testBroker({ formula, spread, increment_size });
+				const brokerPrice = await testBroker({ formula, spread });
 				if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 					throw new Error(FORMULA_MARKET_PAIR_ERROR);
 				}
@@ -513,13 +559,17 @@ const updateBrokerPair = async (id, data) => {
 		type,
 		account,
 		formula,
-		increment_size
+		rebalancing_symbol,
+		quote_expiry_time
 	} = data;
 
 	const exchangeInfo = getKitConfig().info;
 
 	if (type !== 'manual' && exchangeInfo.plan === 'basic') {
 		throw new Error(DYNAMIC_BROKER_EXCHANGE_PLAN_ERROR);
+	}
+	if (quote_expiry_time < 10) {
+		throw new Error(QUOTE_EXPIRY_TIME_ERROR);
 	}
 
 
@@ -529,18 +579,22 @@ const updateBrokerPair = async (id, data) => {
 
 	if (account) {
 		for (const [key, value] of Object.entries(account)) {
-			if (!value.hasOwnProperty('apiKey')) {
+			if (!value.hasOwnProperty('apiKey') || value?.apiKey?.includes('*****')) {
 				value.apiKey = brokerPair?.account[key]?.apiKey;
 			}
 
-			if (!value.hasOwnProperty('apiSecret')) {
+			if (!value.hasOwnProperty('apiSecret') || value?.apiSecret?.includes('*********')) {
 				value.apiSecret = brokerPair?.account[key]?.apiSecret;
 			}
+		}
+		
+		if (!rebalancing_symbol) {
+			throw new Error(REBALANCE_SYMBOL_MISSING);
 		}
 	}
 
 	if (formula) {
-		const brokerPrice = await testBroker({ formula, spread, increment_size });
+		const brokerPrice = await testBroker({ formula, spread });
 		if (!Number(brokerPrice.sell_price) || !Number(brokerPrice.buy_price)) {
 			throw new Error(FORMULA_MARKET_PAIR_ERROR);
 		}
@@ -560,7 +614,6 @@ const updateBrokerPair = async (id, data) => {
 			'sell_price',
 			'min_size',
 			'max_size',
-			'increment_size',
 			'paused',
 			'type',
 			'quote_expiry_time',

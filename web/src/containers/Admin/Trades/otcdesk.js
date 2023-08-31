@@ -8,7 +8,13 @@ import _debounce from 'lodash/debounce';
 import { Link } from 'react-router';
 
 import { STATIC_ICONS } from 'config/icons';
-import { getBroker, createBroker, deleteBroker, updateBroker, createTestBroker } from './actions';
+import {
+	getBroker,
+	createBroker,
+	deleteBroker,
+	updateBroker,
+	createTestBroker,
+} from './actions';
 import { formatToCurrency, calculateOraclePrice } from 'utils/currency';
 import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import { setPricesAndAsset } from 'actions/assetActions';
@@ -23,7 +29,7 @@ const defaultPreviewValues = {
 	max_size: 0.001,
 	increment_size: 0.0001,
 	quote_expiry_time: 30,
-	exchange_name: 'binance'
+	exchange_name: 'binance',
 };
 
 const renderUser = (id) => (
@@ -69,7 +75,7 @@ const OtcDeskContainer = ({
 	const [pair2Balance, setPair2Balance] = useState(0);
 	const [selectedEmailData, setSelectedEmailData] = useState({});
 	const [selectedCoinType, setSelectedCoinType] = useState('manual');
-	const [priceLoading, setPriceLoading] = useState(false);
+	const [priceLoading, setPriceLoading] = useState();
 	const [priceActive, setPriceActive] = useState(false);
 	const [inventoryBalanceData, setBalanceData] = useState({});
 	const [isShowBalance, setIsShowBalance] = useState(false);
@@ -433,14 +439,24 @@ const OtcDeskContainer = ({
 		{
 			title: 'Price (displayed to user)',
 			key: 'price',
-			render: ({ sell_price, buy_price, symbol, type, formula, increment_size, spread, id }) => {
+			render: ({
+				sell_price,
+				buy_price,
+				symbol,
+				type,
+				formula,
+				increment_size,
+				spread,
+				id,
+				price_active,
+			}) => {
 				return (
 					<div>
 						{type === 'dynamic' ? (
 							<div>
-								{priceLoading ? (
+								{priceLoading === id ? (
 									<div>Getting price...</div>
-								) : (priceActive && buy_price > 0 && sell_price > 0) ? (
+								) : price_active ? (
 									<div className="d-flex">
 										<div>
 											<div>
@@ -450,14 +466,24 @@ const OtcDeskContainer = ({
 												buy @ {buy_price} {symbol.split('-')[1].toUpperCase()}
 											</div>
 										</div>
-										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
+										<div
+											className="ml-3 text-underline"
+											onClick={() => {
+												handlePrice(formula, increment_size, spread, id);
+											}}
+										>
 											(Get price)
 										</div>
 									</div>
 								) : (
 									<div className="d-flex">
 										<div>Dynamic</div>
-										<div className="ml-3 text-underline" onClick={() => { handlePrice(formula, increment_size, spread, id); }}>
+										<div
+											className="ml-3 text-underline"
+											onClick={() => {
+												handlePrice(formula, increment_size, spread, id);
+											}}
+										>
 											(Get price)
 										</div>
 									</div>
@@ -655,7 +681,6 @@ const OtcDeskContainer = ({
 		if (name === 'accountVal') {
 			const accountName = value || 'hollaex';
 
-
 			tempPreviewData.account = {
 				[accountName]: {
 					apiKey: tempPreviewData?.apikey,
@@ -665,8 +690,8 @@ const OtcDeskContainer = ({
 		}
 		if (name === 'apikey') {
 			const accountName = tempPreviewData?.accountVal
-			? tempPreviewData?.accountVal
-			: 'hollaex';
+				? tempPreviewData?.accountVal
+				: 'hollaex';
 
 			tempPreviewData.account = {
 				[accountName]: {
@@ -677,8 +702,8 @@ const OtcDeskContainer = ({
 		}
 		if (name === 'seckey') {
 			const accountName = tempPreviewData?.accountVal
-			? tempPreviewData?.accountVal
-			: 'hollaex';
+				? tempPreviewData?.accountVal
+				: 'hollaex';
 
 			tempPreviewData.account = {
 				[accountName]: {
@@ -833,23 +858,27 @@ const OtcDeskContainer = ({
 
 	const handlePrice = async (formula, increment_size, spread, id) => {
 		try {
-			setPriceLoading(true);
+			setPriceLoading(id);
 			setPriceActive(true);
-			const result = await createTestBroker({ formula, increment_size, spread });
+			const result = await createTestBroker({
+				formula,
+				increment_size,
+				spread,
+			});
 
 			setBrokerData((prevState) => {
 				const newState = [...prevState];
-				const Index = newState.findIndex(b => b.id === id);
+				const Index = newState.findIndex((b) => b.id === id);
 				newState[Index].buy_price = result.data.buy_price;
 				newState[Index].sell_price = result.data.sell_price;
+				newState[Index].price_active = true;
 				return newState;
-			})
+			});
 
 			setPriceLoading(false);
 		} catch (error) {
 			message.error(error.message);
 		}
-		
 	};
 
 	if (isLoading) {

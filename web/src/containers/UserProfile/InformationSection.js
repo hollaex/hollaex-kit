@@ -1,16 +1,14 @@
 import React from 'react';
-import Ionicon from 'react-ionicons';
+import { ClockCircleOutlined } from '@ant-design/icons';
 import STRINGS from 'config/localizedStrings';
 
 export const InformationSection = ({ text, onChangeValue, onChangeText }) => (
 	<div className="information_section d-flex flex-column">
 		{text && (
 			<div className="information_text-wrapper d-flex align-items-center">
-				<Ionicon
-					icon="ios-time-outline"
-					fontSize="16px"
-					color="white"
-					className="information_svg"
+				<ClockCircleOutlined
+					style={{ fontSize: '16px' }}
+					className="information_svg secondary-text"
 				/>
 				<div className="information_text-text">{text}</div>
 			</div>

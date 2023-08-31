@@ -107,6 +107,14 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>Kính gửi ${name} </p></p><p>Tài khoản của bạn đã bị khóa trong ${login_timeout} phút do đăng nhập quá nhiều lần.<br />Nếu bạn đã làm vậy không thực hiện những nỗ lực đăng nhập này, hãy báo cáo điều này ngay lập tức và tiến hành thay đổi thông tin đăng nhập của bạn càng sớm càng tốt.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
+			"title": "Tài khoản của bạn bị khóa"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>Yêu cầu xóa tài khoản đang được tiến hành. Thông tin trên tài khoản của bạn sẽ bị xóa theo điều khoản dịch vụ.</p><p> Trân trọng<br> nhóm ${api_name} </p></div>",
+			"title": "Yêu cầu xóa tài khoản"
+		}
     }
 }

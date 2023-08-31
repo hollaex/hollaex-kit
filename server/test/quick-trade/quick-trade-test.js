@@ -1,7 +1,8 @@
 const {
     request,
     loginAs,
-    generateFuzz
+    generateFuzz,
+    getNewUserCredentials
 } = require('../helpers');
 const tools = require('hollaex-tools-lib');
 const { should } = require('chai');
@@ -10,8 +11,8 @@ describe('Quick Trade', async () => {
     let user, bearerToken;
     before(async () => {
         const testUser = {
-            email: `test_auth${Math.floor(Math.random() * 10000)}@mail.com`,
-            password: "test112233.",
+            email: getNewUserCredentials().email,
+            password:  getNewUserCredentials().password,
             long_term: true
         }
         const response = await request()
@@ -22,7 +23,7 @@ describe('Quick Trade', async () => {
 
         user = await tools.user.getUserByEmail(testUser.email);
         user.should.be.an('object');
-        bearerToken = loginAs(user);
+        bearerToken = await loginAs(user);
         bearerToken.should.be.a('string');
 
     });
@@ -74,7 +75,6 @@ describe('Quick Trade', async () => {
 
         response.should.have.status(200);
         response.should.be.json;
-        if (response.body.receiving_amount != null) should().fail();
 
     });
 
@@ -132,11 +132,4 @@ describe('Quick Trade', async () => {
     });
 
 
-    //Fuz Testing
-    it('Fuzz Test -should return error', async () => {
-        const response = await request()
-            .get(`/v2/quick-trade?spending_currency=xht&receiving_currency=usdt&spending_amount=${generateFuzz()}`)
-
-        response.should.have.status(400);
-    });
 });

@@ -107,6 +107,14 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>${name}님, 친애하는 </p></p><p>너무 많은 로그인 시도로 인해 귀하의 계정이 ${login_timeout}분 동안 잠겼습니다.<br />잠긴 경우 이러한 로그인 시도를 하지 말고 즉시 보고하고 가능한 한 빨리 자격 증명을 변경하십시오.</p><p> 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"title": "귀하의 계정이 잠겼습니다"
+		},
+        "USER_DELETED": {
+			"html":  "<div><p><p></p></p><p>계정 삭제 요청이 진행 중입니다. 귀하의 계정 정보는 서비스 약관에 따라 삭제됩니다.</p><p> 감사합니다.<br> ${api_name} 팀 </p></div>",
+			"title": "계정 삭제 요청"
+		}
     }
 }

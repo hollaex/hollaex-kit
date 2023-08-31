@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import PairsSection from './PairsSection';
 import './index.scss';
 
-const TYPE_OPTIONS = [
-	{ value: true, label: 'Active' },
-	{ value: false, label: 'Closed' },
-];
+const TYPE_OPTIONS = [{ value: true, label: 'Active' }];
 
 const ActiveOrders = ({ pairs, userId, getThisExchangeOrder }) => {
 	const [options, setOptions] = useState([]);

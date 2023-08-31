@@ -263,7 +263,11 @@ $notification-size: 1.5rem;
 	font-size: 1.2rem;
 
 	.custom_tab_icon-mobile {
-		width: 4rem;
+		width: 4rem !important;
+		svg {
+			width: 4rem !important;
+			height: 4rem !important;
+		}
 		// color: #292b2c;
 	}
 

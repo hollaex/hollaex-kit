@@ -107,6 +107,14 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>Yang terhormat ${name} </p></p><p>Akun Anda telah dikunci selama ${login_timeout} menit karena terlalu banyak upaya login.<br />Jika Anda tidak melakukan upaya masuk ini, segera laporkan dan lanjutkan untuk mengubah kredensial Anda sesegera mungkin.</p><p> Salam<br> ${api_name} tim </p></div>",
+			"title": "Akun Anda Terkunci"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>Permintaan penghapusan akun sedang berlangsung. Informasi di akun Anda akan dihapus sesuai dengan persyaratan layanan.</p><p> Salam<br> ${api_name} tim </p></div>",
+			"title": "Permintaan Penghapusan Akun"
+		}
     }
 }

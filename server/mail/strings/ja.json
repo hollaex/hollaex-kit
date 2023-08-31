@@ -107,6 +107,14 @@
         "CONFIRM_EMAIL": {
             "html": "<div><p><p>Dear ${name} </p></p><p>You have made sensitive request related to your accounts security. To verify the operation you would require to use to code below to authorize this operation.<br /><p style=\"font-size: 1.2rem; text-align: center;\">${code}</p>If you did not make this request, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
             "title": "Security Verification"
-        }
+        },
+        "LOCKED_ACCOUNT": {
+			"html": "<div><p><p>${name} 様 </p></p><p>ログイン試行が多すぎたため、あなたのアカウントは ${login_timeout} 分間ロックされました。<br />もしそうなら このようなログイン試行を行わない場合は、直ちに報告し、できるだけ早く認証情報の変更に進んでください。</p><p> よろしく<br> ${api_name} チーム </p></div>",
+			"title": "あなたのアカウントはロックされています"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p></p></p><p>アカウント削除のリクエストが進行中です。 あなたのアカウントの情報は利用規約に従って削除されます。</p><p> よろしく<br> ${api_name} チーム </p></div>",
+			"title": "アカウント削除リクエスト"
+		}
     }
 }

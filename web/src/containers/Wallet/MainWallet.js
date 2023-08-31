@@ -141,7 +141,7 @@ class Wallet extends Component {
 		assets
 	) => {
 		const { showDustSection, isZeroBalanceHidden, searchValue } = this.state;
-		const { broker, router } = this.props;
+		const { router } = this.props;
 		const { increment_unit, display_name } =
 			coins[BASE_CURRENCY] || DEFAULT_COIN_DATA;
 		const totalAssets = STRINGS.formatString(
@@ -171,7 +171,6 @@ class Wallet extends Component {
 						}
 						loading={isFetching}
 						contracts={contracts}
-						broker={broker}
 						goToDustSection={this.goToDustSection}
 						showDustSection={showDustSection}
 						goToWallet={this.goToWallet}
@@ -313,7 +312,6 @@ const mapStateToProps = (store) => ({
 	oraclePrices: store.asset.oraclePrices,
 	isFetching: store.asset.isFetching,
 	contracts: store.app.contracts,
-	broker: store.app.broker,
 	assets: assetsSelector(store),
 });
 

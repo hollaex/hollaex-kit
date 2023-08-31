@@ -16,7 +16,6 @@ const {
 	isNil,
 	isArray,
 	isInteger,
-	keyBy,
 	isEmpty,
 	uniq
 } = require('lodash');
@@ -50,9 +49,13 @@ const {
 	USER_NOT_DEACTIVATED,
 	CANNOT_CHANGE_ADMIN_ROLE,
 	VERIFICATION_CODE_USED,
-	USER_NOT_REGISTERED_ON_NETWORK
+	USER_NOT_REGISTERED_ON_NETWORK,
+	SESSION_NOT_FOUND,
+	SESSION_ALREADY_REVOKED,
+	WRONG_USER_SESSION,
+	USER_ALREADY_RECOVERED,
 } = require(`${SERVER_PATH}/messages`);
-const { publisher } = require('./database/redis');
+const { publisher, client } = require('./database/redis');
 const {
 	CONFIGURATION_CHANNEL,
 	AUDIT_KEYS,
@@ -62,12 +65,16 @@ const {
 	SETTING_KEYS,
 	OMITTED_USER_FIELDS,
 	DEFAULT_ORDER_RISK_PERCENTAGE,
-	AFFILIATION_CODE_LENGTH
+	AFFILIATION_CODE_LENGTH,
+	LOGIN_TIME_OUT,
+	TOKEN_TIME_LONG,
+	TOKEN_TIME_NORMAL,
+	VERIFY_STATUS
 } = require(`${SERVER_PATH}/constants`);
 const { sendEmail } = require(`${SERVER_PATH}/mail`);
 const { MAILTYPE } = require(`${SERVER_PATH}/mail/strings`);
 const { getKitConfig, isValidTierLevel, getKitTier, isDatetime } = require('./common');
-const { isValidPassword } = require('./security');
+const { isValidPassword, createSession } = require('./security');
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { all, reject } = require('bluebird');
 const { Op } = require('sequelize');
@@ -76,6 +83,8 @@ const { parse } = require('json2csv');
 const flatten = require('flat');
 const uuid = require('uuid/v4');
 const { checkCaptcha, validatePassword, verifyOtpBeforeAction } = require('./security');
+const geoip = require('geoip-lite');
+const moment = require('moment');
 
 let networkIdToKitId = {};
 let kitIdToNetworkId = {};
@@ -324,7 +333,10 @@ const registerUserLogin = (
 		device: null,
 		domain: null,
 		origin: null,
-		referer: null
+		referer: null,
+		token: null,
+		expiry: null,
+		status: true,
 	}
 ) => {
 	const login = {
@@ -348,8 +360,67 @@ const registerUserLogin = (
 		login.referer = opts.referer;
 	}
 
-	return getModel('login').create(login);
+	if (isBoolean(opts.status)) {
+		login.status = opts.status;
+	}
+
+	if (opts.status === false) {
+		login.attempt = 1;
+	}
+	const geo = geoip.lookup(ip);
+	if (geo?.country) login.country = geo.country;
+	return getModel('login').create(login)
+		.then((loginData) => {
+			if(opts.token && opts.status) {
+				return createSession(opts.token, loginData.id, userId, opts.expiry);
+			}
+			return loginData;
+		})
+		.catch(err => reject(err));
 };
+
+const updateLoginAttempt = (loginId) => {
+	return getModel('login').increment('attempt', { by: 1, where: { id: loginId }});
+};
+
+const updateLoginStatus = (loginId) => {
+	return getModel('login').update( { status: true }, { where: { id: loginId } });
+};
+
+const createUserLogin = async (user, ip, device, domain, origin, referer, token, long_term, status) => {
+	const loginData = await findUserLatestLogin(user, status);
+
+	if (!loginData || loginData?.status == true) {
+		return registerUserLogin(user.id, ip, {
+			device,
+			domain,
+			origin,
+			referer,
+			token,
+			status,
+			expiry: long_term ? TOKEN_TIME_LONG : TOKEN_TIME_NORMAL
+		});
+	} 
+	else if (loginData.status == false) {
+		await updateLoginAttempt(loginData.id);
+	}
+
+	return null;
+};
+
+
+const findUserLatestLogin = (user, status) => {
+	return getModel('login').findOne({
+		order: [['id', 'DESC'], ['status', 'ASC']],
+		where: {
+			user_id: user.id,
+			...(status != null && { status }),
+		}
+	}).then(loginData => {
+		if (loginData && new Date().getTime() - new Date(loginData.updated_at).getTime() < LOGIN_TIME_OUT) return loginData;
+		return null;
+	})
+}
 
 /* Public Endpoints*/
 
@@ -530,6 +601,9 @@ const getAllUsersAdmin = (opts = {
 	email_verified: null,
 	otp_enabled: null,
 	phone_number: null,
+	kyc: null,
+	bank: null,
+	id_number: null,
 	additionalHeaders: null
 }) => {
 	const {
@@ -538,7 +612,8 @@ const getAllUsersAdmin = (opts = {
 		email_verified,
 		otp_enabled,
 		dob_start_date,
-		dob_end_date
+		dob_end_date,
+		id_number
 	} = opts;
 
 	const pagination = paginationQuery(opts.limit, opts.page);
@@ -594,50 +669,54 @@ const getAllUsersAdmin = (opts = {
 			]
 		};
 	}
-	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number', 'verification_level',])).forEach(key => {
-		if(opts[key] != null) {
+	Object.keys(pick(opts, ['email', 'nationality', 'username', 'full_name', 'phone_number'])).forEach(key => {
+		if (opts[key] != null) {
 			query.where[Op.and].push(
 				{
 					[key]: {
-						[Op.like]: `%${opts[key]}%`
+						[Op.iLike]: `%${opts[key].toLowerCase()}%`
 					}
 				}
-			)
+			);
 		}
-	})
+	});
 	
+	if (isNumber(opts.verification_level)) {
+		query.where[Op.and].push({ verification_level: opts.verification_level });
+	}
+
 	if (isBoolean(opts.pending) && opts.pending) {
 		query.order = [['updated_at', 'desc']];
 
-		if (opts.pending_type) {
-			if (opts.pending_type === 'id') {
-				query.where = {
-					...query.where,
-					activated: true,
+		if ((opts.kyc && Object.values(VERIFY_STATUS).includes(opts.kyc)) || opts.pending_type === 'id') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				{
 					id_data: {
-						status: 1 // users that have a pending id waiting for admin to confirm
+						status: opts.kyc != null ? opts.kyc : 1 // users that have a pending id waiting for admin to confirm
 					}
-				};
-			} else if (opts.pending_type === 'bank') {
-			
-				query.where = {
-					[Op.and]: [
-						...query.where[Op.and],
-						{ activated: true },
-						{
-							id_data: {
-								status: 3 // users that have a pending id waiting for admin to confirm
-							}
-						},
-						getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
-					]
-				};
-			} else {
-				throw new Error('pending type is not defined. You need to select id or bank is pending_type');
-			}
-		} else {
-			throw new Error('pending type is not defined. You need to select id or bank is pending_type');
+				},
+			];
 		}
+
+		if (opts.bank || opts.pending_type === 'bank') {
+			query.where[Op.and] = [
+				...query.where[Op.and],
+				{ activated: true },
+				getModel('sequelize').literal('bank_account @> \'[{"status":1}]\'') // users that have a pending bank waiting for admin to confirm
+			];
+		}
+	}
+
+	if (id_number) {
+		query.where[Op.and].push(
+			{
+				id_data: {
+					number: id_number
+				}
+			}
+		);
 	}
 
 	if (!opts.format) {
@@ -646,39 +725,55 @@ const getAllUsersAdmin = (opts = {
 		query.attributes.exclude.push('settings');
 	}
 
-	return dbQuery.findAndCountAllWithRows('user', query)
-		.then(async ({ count, data }) => {
-			if (opts.id || opts.search) {
-				if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
-					const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
-					data[0].balance = userNetworkData.balance;
-					data[0].wallet = userNetworkData.wallet;
-					return { count, data };
-				}
-			}
-			return { count, data };
-		})
-		.then(async (users) => {
-			if (opts.format && opts.format === 'csv') {
-				if (users.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
-				}
-				const flatData = users.data.map((user) => {
-					let id_data;
-					if (user.id_data) {
-						id_data = user.id_data;
-						user.id_data = {};
+	if (opts.format) {
+		query.attributes = ['id', 'email', 'password', 'full_name', 'gender', 'nationality', 'dob', 'phone_number', 'crypto_wallet', 'verification_level', 'note', 'created_at', 'updated_at', 'is_admin', 'is_supervisor', 'is_support', 'is_kyc', 'is_communicator', 'otp_enabled', 'address', 'bank_account', 'id_data', 'activated', 'settings', 'username', 'flagged', 'affiliation_code', 'affiliation_rate', 'network_id', 'email_verified', 'discount', 'meta'];
+		return dbQuery.fetchAllRecords('user', query)
+			.then(async ({ count, data }) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
 					}
-					const result = flatten(user, { safe: true });
-					if (id_data) result.id_data = id_data;
-					return result;
-				});
-				const csv = parse(flatData, Object.keys(flatData[0]));
-				return csv;
-			} else {
-				return users;
-			}
-		});
+				}
+				return { count, data };
+			})
+			.then(async (users) => {
+				if (opts.format && opts.format === 'csv') {
+					if (users.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = users.data.map((user) => {
+						let id_data;
+						if (user.id_data) {
+							id_data = user.id_data;
+							user.id_data = {};
+						}
+						const result = flatten(user, { safe: true });
+						if (id_data) result.id_data = id_data;
+						return result;
+					});
+					const csv = parse(flatData, Object.keys(flatData[0]));
+					return csv;
+				} else {
+					return users;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('user', query)
+			.then(async ({ count, data }) => {
+				if (opts.id || opts.search) {
+					if (count > 0 && data[0].verification_level > 0 && data[0].network_id) {
+						const userNetworkData = await getNodeLib().getUser(data[0].network_id, { additionalHeaders: opts.additionalHeaders });
+						data[0].balance = userNetworkData.balance;
+						data[0].wallet = userNetworkData.wallet;
+						return { count, data };
+					}
+				}
+				return { count, data };
+			})
+	}
 };
 
 const getUser = (identifier = {}, rawData = true, networkData = false, opts = {
@@ -784,9 +879,14 @@ const freezeUserById = (userId) => {
 			if (!user.activated) {
 				throw new Error(USER_ALREADY_DEACTIVATED);
 			}
+			if (user.is_admin) {
+				throw new Error(CANNOT_DEACTIVATE_ADMIN);
+			}
 			return user.update({ activated: false }, { fields: ['activated'], returning: true });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			await revokeAllUserSessions(userId);
+
 			publisher.publish(CONFIGURATION_CHANNEL, JSON.stringify({ type: 'freezeUser', data: user.id }));
 			sendEmail(
 				MAILTYPE.USER_DEACTIVATED,
@@ -806,7 +906,7 @@ const freezeUserByEmail = (email) => {
 			if (!user) {
 				throw new Error(USER_NOT_FOUND);
 			}
-			if (user.id === 1) {
+			if (user.is_admin) {
 				throw new Error(CANNOT_DEACTIVATE_ADMIN);
 			}
 			if (!user.activated) {
@@ -1184,6 +1284,9 @@ const toggleFlaggedUserById = (userId) => {
 
 const getUserLogins = (opts = {
 	userId: null,
+	status: null,
+	country: null,
+	ip: null,
 	limit: null,
 	page: null,
 	orderBy: null,
@@ -1197,10 +1300,13 @@ const getUserLogins = (opts = {
 	const ordering = orderingQuery(opts.orderBy, opts.order);
 	let options = {
 		where: {
-			timestamp: timeframe
+			timestamp: timeframe,
+			...(opts.status != null && { status: opts.status }),
+			...(opts.country != null && { country: opts.country }),
+			...(opts.ip != null && { ip: { [Op.like]: `%${opts.ip}%` } })
 		},
 		attributes: {
-			exclude: ['id', 'origin', 'referer']
+			exclude: ['origin', 'referer']
 		},
 		order: [ordering]
 	};
@@ -1210,18 +1316,24 @@ const getUserLogins = (opts = {
 
 	if (opts.userId) options.where.user_id = opts.userId;
 
-	return dbQuery.findAndCountAllWithRows('login', options)
-		.then((logins) => {
-			if (opts.format && opts.format === 'csv') {
-				if (logins.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	if (opts.format) {
+		options.attributes = ['id', 'user_id', 'ip', 'device', 'domain', 'timestamp', 'createdAt', 'attempt', 'status', 'country', 'updated_at', 'created_at'];
+		return dbQuery.fetchAllRecords('login', options)
+			.then((logins) => {
+				if (opts.format && opts.format === 'csv') {
+					if (logins.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const csv = parse(logins.data, Object.keys(logins.data[0]));
+					return csv;
+				} else {
+					return logins;
 				}
-				const csv = parse(logins.data, Object.keys(logins.data[0]));
-				return csv;
-			} else {
-				return logins;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('login', options);
+	}
 };
 
 const bankComparison = (bank1, bank2, description) => {
@@ -1338,19 +1450,24 @@ const getUserAudits = (opts = {
 
 	if (isNumber(opts.userId)) options.where.description = getModel('sequelize').literal(`description ->> 'user_id' = '${opts.userId}'`);
 
-	return dbQuery.findAndCountAllWithRows('audit', options)
-		.then((audits) => {
-			if (opts.format && opts.format === 'csv') {
-				if (audits.data.length === 0) {
-					throw new Error(NO_DATA_FOR_CSV);
+	if (opts.format) {
+		return dbQuery.fetchAllRecords('audit', options)
+			.then((audits) => {
+				if (opts.format && opts.format === 'csv') {
+					if (audits.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+					const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
+					const csv = parse(flatData, AUDIT_KEYS);
+					return csv;
+				} else {
+					return audits;
 				}
-				const flatData = audits.data.map((audit) => flatten(audit, { maxDepth: 2 }));
-				const csv = parse(flatData, AUDIT_KEYS);
-				return csv;
-			} else {
-				return audits;
-			}
-		});
+			});
+	}
+	else {
+		return dbQuery.findAndCountAllWithRows('audit', options)
+	}
 };
 
 const checkUsernameIsTaken = (username) => {
@@ -1809,6 +1926,264 @@ const updateUserInfo = async (userId, data = {}) => {
 	return omitUserFields(user.dataValues);
 };
 
+const getExchangeUserSessions = (opts = {
+	user_id: null,
+	last_seen: null,
+	status: null,
+	limit: null,
+	page: null,
+	order_by: null,
+	order: null,
+	start_date: null,
+	end_date: null,
+	format: null
+}) => {
+
+	const pagination = paginationQuery(opts.limit, opts.page);
+	const ordering = orderingQuery(opts.order_by, opts.order);
+	const timeframe = timeframeQuery(opts.start_date, opts.end_date);
+
+	let lastSeenHour;
+
+	if (opts.last_seen) {
+		lastSeenHour = opts.last_seen.split('h')[0];
+	}
+			
+	const query = {
+		where: {
+			...(opts.status == true && {
+				status: opts.status,
+				expiry_date: {
+					[Op.gt]: new Date()
+				}
+			}),
+			...(opts.status == false && {
+				[Op.or]: [
+					{
+						status: opts.status,
+						expiry_date: {
+							[Op.lt]: new Date()
+						}
+					}]
+			}),
+			created_at: timeframe,
+			...(opts.last_seen && {
+				last_seen:
+				{
+					[Op.gt]: moment().subtract(lastSeenHour, 'hours').toDate()
+				}
+			}),
+		},
+		attributes: {
+			exclude: ['token']
+		},
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				...(opts.user_id && { where: { user_id: opts.user_id } }),
+				include: [
+					{
+						model: getModel('user'),
+						attributes: ['id', 'email']
+					},
+				]
+			}
+		],
+		order: [ordering],
+		...(!opts.format && pagination),
+	}
+
+	if (opts.format) {
+		query.attributes = ['id', 'login_id', 'status', 'last_seen', 'expiry_date', 'role', 'timestamp', 'created_at', 'updated_at'];
+		return dbQuery.fetchAllRecords('session', query)
+			.then((sessions) => {
+				if (opts.format && opts.format === 'csv') {
+					if (sessions.data.length === 0) {
+						throw new Error(NO_DATA_FOR_CSV);
+					}
+
+					const csv = parse(sessions.data, Object.keys(sessions.data[0]));
+					return csv;
+				} else {
+					return sessions;
+				}
+			});
+	} else {
+		return dbQuery.findAndCountAllWithRows('session', query);
+	}
+
+};
+
+const revokeExchangeUserSession = async (sessionId, userId = null) => {
+	const session = await getModel('session').findOne({ 
+		include: [
+			{
+				model: getModel('login'),
+				as: 'login',
+				attributes: ['user_id'],
+				...(userId && { where: { user_id: userId } })
+			}
+		],
+		where: { id: sessionId } });
+
+
+	if(!session) {
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if(!session.status) {
+		throw new Error(SESSION_ALREADY_REVOKED);
+	}
+
+	if (userId && session.login.user_id !== userId) {
+		throw new Error(WRONG_USER_SESSION);
+	}
+
+	client.delAsync(session.token);
+
+	const updatedSession = await session.update({ status: false }, {
+		fields: ['status'] 
+	});
+
+	delete updatedSession.dataValues.token;
+	return updatedSession.dataValues;
+};
+
+const getAllBalancesAdmin = async (opts = {
+	user_id: null,
+	currency: null,
+	format: null,
+	additionalHeaders: null
+}) => {
+
+	let network_id = null;
+	if (opts.user_id) {
+		// check mapKitIdToNetworkId
+		const idDictionary = await mapKitIdToNetworkId([opts.user_id]);
+		if (!has(idDictionary, opts.user_id)) {
+			throw new Error(USER_NOT_FOUND);
+		} else if (!idDictionary[opts.user_id]) {
+			throw new Error(USER_NOT_REGISTERED_ON_NETWORK);
+		} else {
+			network_id = idDictionary[opts.user_id];
+		}
+	}
+
+	return getNodeLib().getBalances({ 
+		userId: network_id,
+		currency: opts.currency,
+		format: (opts.format && (opts.format === 'csv' || opts.format === 'all')) ? 'all' : null, // for csv get all data,
+		additionalHeaders: opts.additionalHeaders 
+	})
+		.then(async (balances) => {
+			if (balances.data.length > 0) {
+				const networkIds = balances.data.map((balance) => balance.user_id).filter(id => id);
+				const idDictionary = await mapNetworkIdToKitId(networkIds);
+				for (let balance of balances.data) {
+					const user_kit_id = idDictionary[balance.user_id];
+					balance.network_id = balance.user_id;
+					balance.user_id = user_kit_id;
+					if (balance.User) balance.User.id = user_kit_id;
+				}
+			}
+
+			if (opts.format && opts.format === 'csv') {
+				if (balances.data.length === 0) {
+					throw new Error(NO_DATA_FOR_CSV);
+				}
+				const csv = parse(balances.data, Object.keys(balances.data[0]));
+				return csv;
+			} else {
+				return balances;
+			}
+		});
+};
+
+// set all active sessions of the user to false and remove them from redis
+const revokeAllUserSessions = async (userId) => {
+
+	const sessions = await getModel('session').findAll(
+		{
+			where: { status: true },
+			include: [
+				{
+					model: getModel('login'),
+					as: 'login',
+					attributes: ['user_id'],
+					where: { user_id: userId }
+				}
+			]
+		});
+
+	for (const session of sessions) {
+		await session.update({ status: false }, { fields: ['status'] });
+		client.delAsync(session.token);
+	}
+	return true;
+};
+
+const deleteKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+	await revokeAllUserSessions(userId);
+	// we simply add _deleted at the end of users email. This way he won't be able to login anymore and he can create another account.
+	const userEmail = user.email;
+	const updatedUser = await user.update(
+		{ email: userEmail + '_deleted', activated: false },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+
+	sendEmail(
+			MAILTYPE.USER_DELETED,
+			userEmail,
+			{},
+			user.settings
+	);
+	
+	return updatedUser;
+};
+
+const restoreKitUser = async (userId) => {
+	const user = await dbQuery.findOne('user', {
+		where: {
+			id: userId
+		},
+		attributes: [
+			'id',
+			'email',
+			'activated'
+		]
+	});
+
+	if (!user) {
+		throw new Error(USER_NOT_FOUND);
+	}
+
+	if (!user.email.includes('_deleted')) {
+		throw new Error(USER_ALREADY_RECOVERED);
+	}
+
+	const userEmail = user.email.split('_deleted')[0];
+
+	return user.update(
+		{ email: userEmail, activated: true },
+		{ fields: ['email', 'activated'], returning: true }
+	);
+};
+
 module.exports = {
 	loginUser,
 	getUserTier,
@@ -1859,5 +2234,15 @@ module.exports = {
 	updateUserMeta,
 	mapNetworkIdToKitId,
 	mapKitIdToNetworkId,
-	updateUserInfo
+	updateUserInfo,
+	updateLoginAttempt,
+	getExchangeUserSessions,
+	revokeExchangeUserSession,
+	updateLoginStatus,
+	findUserLatestLogin,
+	createUserLogin,
+	getAllBalancesAdmin,
+	deleteKitUser,
+	restoreKitUser,
+	revokeAllUserSessions
 };

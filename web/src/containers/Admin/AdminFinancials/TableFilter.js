@@ -134,6 +134,9 @@ const MultiFilter = ({
 	coins,
 	setIsLoading,
 	isLoading,
+	buttonText = null,
+	alwaysEnabled = false,
+	onDownload = null,
 }) => {
 	const [options, setOptions] = useState(filterOptions);
 	const [fieldsData, setFieldsData] = useState([]);
@@ -232,7 +235,8 @@ const MultiFilter = ({
 				obj = { ...obj, [name]: filterData[name] };
 			}
 		});
-		onHandle(obj);
+		if (!onDownload) onHandle(obj);
+		else onDownload(obj);
 	};
 
 	return (
@@ -270,15 +274,16 @@ const MultiFilter = ({
 						: 'filter-button green-btn'
 				}
 				disabled={
-					isLoading ||
-					Object.keys(filterData).length === 0 ||
-					!Object.values(filterData)
-						.map((field) => field === '')
-						.filter((item) => !item)?.length
+					!alwaysEnabled &&
+					(isLoading ||
+						Object.keys(filterData).length === 0 ||
+						!Object.values(filterData)
+							.map((field) => field === '')
+							.filter((item) => !item)?.length)
 				}
 				onClick={onHandleSearch}
 			>
-				Search
+				{buttonText || 'Search'}
 			</Button>
 		</div>
 	);

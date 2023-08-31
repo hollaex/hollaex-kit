@@ -81,39 +81,37 @@ const HistoryDisplay = (props) => {
 	return (
 		<div className="history_block-wrapper">
 			{!isMobile && !loading && (
-				<div className="title text-capitalize">
-					<EditWrapper stringId={stringId}>{title}</EditWrapper>
-					{count > 0 && (
-						<div className="download-icon">
+				<div className="d-flex justify-content-between title text-capitalize">
+					<div>
+						<EditWrapper stringId={stringId}>{title}</EditWrapper>
+					</div>
+					<div className="action_notification-container">
+						{count > 0 && (
 							<ActionNotification
 								stringId="TRANSACTION_HISTORY.TEXT_DOWNLOAD"
 								text={STRINGS['TRANSACTION_HISTORY.TEXT_DOWNLOAD']}
 								iconId="DATA"
 								iconPath={ICONS['DATA']}
-								className="download-history"
+								className="blue-icon"
 								onClick={handleDownload}
 							/>
-						</div>
-					)}
-					{activeTab === 2 && (
-						<div className="download-icon">
+						)}
+						{activeTab === 2 && (
 							<ActionNotification
 								stringId="DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS"
 								text={STRINGS['DEPOSIT_STATUS.CHECK_DEPOSIT_STATUS']}
 								iconId="SEARCH"
 								iconPath={STATIC_ICONS.SEARCH}
-								className={count > 0 ? 'check-deposit-txt' : 'right-align'}
+								className="blue-icon"
 								onClick={openDialog}
 							/>
-						</div>
-					)}
-					<div className="download-icon">
+						)}
 						<ActionNotification
 							stringId="REFRESH"
 							text={STRINGS['REFRESH']}
 							iconId="REFRESH"
 							iconPath={STATIC_ICONS['REFRESH']}
-							className="refresh-history"
+							className="blue-icon"
 							onClick={refetchData}
 						/>
 					</div>

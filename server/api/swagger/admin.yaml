@@ -267,11 +267,21 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv']
+          type: string
       responses:
         200:
           description: Success
           schema:
             $ref: "#/definitions/FeesResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
         default:
           description: Error
           schema:
@@ -1165,6 +1175,11 @@ paths:
           type: string
           format: date-time
         - in: query
+          name: id_number
+          required: false
+          type: string
+          maxLength: 50
+        - in: query
           name: gender
           required: false
           type: boolean
@@ -1190,6 +1205,14 @@ paths:
           name: otp_enabled
           required: false
           type: boolean
+        - in: query
+          name: kyc
+          required: false
+          type: integer
+        - in: query
+          name: bank
+          required: false
+          type: integer
         - in: query
           name: format
           description: Specify data format
@@ -1568,6 +1591,40 @@ paths:
         - kyc
       x-token-permissions:
         - can_withdraw
+  /admin/user/restore:
+    x-swagger-router-controller: admin
+    post:
+      operationId: restoreUserAccount
+      description: restore a user account
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - user_id
+            properties:
+              user_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/MessageResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+      x-security-scopes:
+        - admin
   /admin/bank/verify:
     x-swagger-router-controller: admin
     post:
@@ -1663,6 +1720,21 @@ paths:
           required: false
           type: number
           format: int32
+        - in: query
+          name: status
+          description: fetch successful or failed logins
+          required: false
+          type: boolean
+        - in: query
+          name: country
+          description: country of the login
+          required: false
+          type: string
+        - in: query
+          name: ip
+          description: ip of the login
+          required: false
+          type: string
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
@@ -1878,6 +1950,12 @@ paths:
           required: false
           type: string
           format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
       tags:
         - Admin
       responses:
@@ -3021,3 +3099,209 @@ paths:
         - admin
       x-token-permissions:
         - can_withdraw
+  /admin/user/sessions:
+    x-swagger-router-controller: admin
+    get:
+      description: Get user sessions for admin
+      operationId: getUserSessionsByAdmin
+      parameters:
+        - in: query
+          name: user_id
+          description: User id
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: last_seen
+          description: last seen
+          required: false
+          type: string
+          enum: ['1h', '24h']
+        - in: query
+          name: status
+          description: fetch active or revoke sessions
+          required: false
+          type: boolean
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      tags:
+        - Admin
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/user/revoke-session:
+    x-swagger-router-controller: admin
+    post:
+      description: Revoke user session By admin
+      operationId: revokeUserSessionByAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - session_id
+            properties:
+              session_id:
+                type: number
+                format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+        - supervisor
+  /admin/quicktrade/config:
+    x-swagger-router-controller: admin
+    put:
+      description: Update user quick trade config for admin
+      operationId: updateQuickTradeConfig
+      tags:
+        - Admin
+      parameters:
+        - name: data
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - symbol
+            properties:
+              symbol:
+                type: string
+              type:
+                type: string
+                enum: ['pro', 'broker', 'network']
+              active:
+                type: boolean
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/balances:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange balances of users for admin
+      operationId: getBalancesAdmin
+      tags:
+        - Admin
+      parameters:
+        - name: user_id
+          in: query
+          required: false
+          type: number
+        - name: currency
+          in: query
+          required: false
+          type: string
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read

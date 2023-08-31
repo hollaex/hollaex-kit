@@ -38,7 +38,8 @@ const {
 	INVALID_TOKEN_TYPE,
 	NO_AUTH_TOKEN,
 	WHITELIST_DISABLE_ADMIN,
-	WHITELIST_NOT_PROVIDED
+	WHITELIST_NOT_PROVIDED,
+	SESSION_NOT_FOUND
 } = require(`${SERVER_PATH}/messages`);
 const {
 	NODE_ENV,
@@ -49,7 +50,7 @@ const {
 	SECRET,
 	TOKEN_TYPES,
 	HMAC_TOKEN_EXPIRY,
-	HMAC_TOKEN_KEY
+	HMAC_TOKEN_KEY,
 } = require(`${SERVER_PATH}/constants`);
 const { getNodeLib } = require(`${SERVER_PATH}/init`);
 const { resolve, reject, promisify } = require('bluebird');
@@ -187,7 +188,10 @@ const confirmChangeUserPassword = (code, domain) => {
 		.then(([user, dataValues]) => {
 			return user.update({ password: dataValues.password }, { fields: ['password'], hooks: false });
 		})
-		.then((user) => {
+		.then(async (user) => {
+			const { revokeAllUserSessions } = require('./user');
+
+			await revokeAllUserSessions(user.id);
 			sendEmail(
 				MAILTYPE.PASSWORD_CHANGED,
 				user.email,
@@ -490,15 +494,15 @@ const verifyAuthTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fals
 	if (req.swagger && req.swagger.operation['security'].length > 0 && req.swagger.operation['security'][0].Token) {
 		const endpointTypes = req.swagger.operation['x-security-types'];
 		if (has(req.headers, 'authorization') && !endpointTypes.includes('bearer')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
 		}
 
 		if (has(req.headers, 'api-key') && !endpointTypes.includes('hmac')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(INVALID_TOKEN_TYPE) });
 		}
 
 		if (!has(req.headers, 'authorization') && !has(req.headers, 'api-key')) {
-			return req.res.status(403).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
+			return req.res.status(401).json({ message: ACCESS_DENIED(NO_AUTH_TOKEN) });
 		}
 
 		if (has(req.headers, 'authorization') && endpointTypes.includes('bearer')) {
@@ -521,7 +525,11 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 
@@ -545,7 +553,7 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 		if (token && token.indexOf('Bearer ') === 0) {
 			const tokenString = token.split(' ')[1];
 
-			jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+			jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 				//check if the JWT was verified correctly
 				if (!verificationError && decodedToken) {
 					loggerAuth.verbose(
@@ -588,6 +596,11 @@ const verifyBearerTokenMiddleware = (req, authOrSecDef, token, cb, isSocket = fa
 						return sendError(DEACTIVATED_USER);
 					}
 
+					try {
+						await verifySession(tokenString);
+					} catch (err) {
+						return sendError(err.message);
+					}
 					req.auth = decodedToken;
 					return cb(null);
 				} else {
@@ -607,7 +620,11 @@ const verifyHmacTokenMiddleware = (req, definition, apiKey, cb, isSocket = false
 		if (isSocket) {
 			return cb(new Error(ACCESS_DENIED(msg)));
 		} else {
-			return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+			let statusCode = 401;
+			if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+				statusCode = 403;
+			}
+			return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 		}
 	};
 	// Swagger endpoint scopes
@@ -678,7 +695,11 @@ const verifyNetworkHmacToken = (req) => {
 
 const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, next) => {
 	const sendError = (msg) => {
-		return req.res.status(403).json({ message: ACCESS_DENIED(msg) });
+		let statusCode = 401;
+		if (msg.indexOf(NOT_AUTHORIZED) > -1) {
+			statusCode = 403;
+		}
+		return req.res.status(statusCode).json({ message: ACCESS_DENIED(msg) });
 	};
 
 	const token = req.headers['authorization'];
@@ -686,7 +707,7 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 	if (token && token.indexOf('Bearer ') === 0) {
 		let tokenString = token.split(' ')[1];
 
-		jwt.verify(tokenString, SECRET, (verificationError, decodedToken) => {
+		jwt.verify(tokenString, SECRET, async (verificationError, decodedToken) => {
 			if (!verificationError && decodedToken) {
 
 				const issuerMatch = decodedToken.iss == ISSUER;
@@ -716,6 +737,11 @@ const verifyBearerTokenExpressMiddleware = (scopes = BASE_SCOPES) => (req, res, 
 					return sendError(DEACTIVATED_USER);
 				}
 
+				try {
+					await verifySession(tokenString);
+				} catch (err) {
+					return sendError(err.message);
+				}
 				req.auth = decodedToken;
 				return next();
 			} else {
@@ -733,7 +759,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 		const jwtVerifyAsync = promisify(jwt.verify, jwt);
 
 		return jwtVerifyAsync(tokenString, SECRET)
-			.then((decodedToken) => {
+			.then(async (decodedToken) => {
 				loggerAuth.verbose(
 					'helpers/auth/verifyToken verified_token',
 					ip,
@@ -770,6 +796,7 @@ const verifyBearerTokenPromise = (token, ip, scopes = BASE_SCOPES) => {
 					);
 					throw new Error(DEACTIVATED_USER);
 				}
+				await verifySession(tokenString);
 				return decodedToken;
 			});
 	} else {
@@ -840,6 +867,107 @@ const verifyHmacTokenPromise = (apiKey, apiSignature, apiExpires, method, origin
 			});
 	}
 };
+
+
+const createSession = async (token, loginId, userId) => {
+
+	const { getUserRole } = require('./user');
+
+	const userRole = await getUserRole({ kit_id: userId });
+
+	const base64Payload = token.split(".")[1];
+	const payloadBuffer = Buffer.from(base64Payload, "base64");
+	const decoded = JSON.parse(payloadBuffer.toString());
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	return getModel('session').create({
+		token: hashedToken,
+		role: userRole,
+		login_id: loginId,
+		status: true,
+		last_seen: new Date(),
+		expiry_date: new Date(decoded.exp * 1000)
+	})
+}
+
+const getExpirationDateInSeconds = (expiryDate) => {
+	const end = moment(expiryDate);
+	const now = moment(new Date());
+	const duration = moment.duration(moment(end).diff(now));
+	return Number(duration.asSeconds().toFixed(0));
+}
+
+const verifySession = async (token) => {
+
+	const session = await findSession(token);
+
+	if (!session) {
+		loggerAuth.error(
+			'security/verifySession session not found');
+		throw new Error(SESSION_NOT_FOUND);
+	}
+
+	if (!session.status) {
+		loggerAuth.error(
+			'security/verifySession invalid session',
+			session.status
+		);
+		throw new Error(TOKEN_REVOKED);
+	}
+
+	if(new Date(session.expiry_date).getTime() < new Date().getTime()) {
+		throw new Error(TOKEN_EXPIRED);
+	}
+
+	if(new Date(session.last_seen).getTime() + 1000 * 60 * 5 < new Date().getTime()) {
+		const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+		const sessionData = await dbQuery.findOne('session', { where: { token: hashedToken } });
+		const updatedSession =  await sessionData.update(
+			{ last_seen: new Date() }
+		);
+		const expirationInSeconds = getExpirationDateInSeconds(updatedSession.dataValues.expiry_date);
+		client.setexAsync(updatedSession.dataValues.token, expirationInSeconds, JSON.stringify(updatedSession.dataValues));
+	}
+}
+
+const findSession = async (token) => {
+
+	const hashedToken = crypto.createHash('md5').update(token).digest('hex');
+
+	let session = await client.getAsync(hashedToken)
+	
+	if (!session) {
+		loggerAuth.verbose(
+			'security/findSession jwt token not found in redis',
+			hashedToken
+		);
+
+		session = await dbQuery.findOne('session', {
+			where: {
+				token: hashedToken
+			}
+		});
+
+		if(session && session.status && new Date(session.expiry_date).getTime() > new Date().getTime()) {
+			const expirationInSeconds = getExpirationDateInSeconds(session.expiry_date);
+			client.setexAsync(hashedToken, expirationInSeconds, JSON.stringify(session));
+
+			loggerAuth.verbose(
+				'security/findSession token stored in redis',
+				hashedToken
+			);
+		}
+			
+		return session;
+	} else {
+		loggerAuth.debug(
+			'security/findSession token found in redis',
+			hashedToken
+		);
+		return JSON.parse(session);
+	}
+}
 
 /**
  * Function that checks to see if user's scope is valid for the endpoint.
@@ -1243,5 +1371,8 @@ module.exports = {
 	sendConfirmationEmail,
 	confirmByEmail,
 	calculateSignature,
-	generateDashToken
+	generateDashToken,
+	createSession,
+	verifySession,
+	findSession
 };

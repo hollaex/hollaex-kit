@@ -35,6 +35,11 @@ export const ADMIN_PATHS = [
 		routeKey: 'trade',
 	},
 	{
+		path: '/admin/sessions',
+		label: 'Sessions',
+		routeKey: 'session',
+	},
+	{
 		path: '/admin/plugins',
 		// component: BlockchainTransaction,
 		label: 'Plugins',
@@ -181,6 +186,11 @@ export const SUPERVISOR_PATH = [
 		path: '/admin/financials',
 		label: 'Assets',
 		routeKey: 'financials',
+	},
+	{
+		path: '/admin/sessions',
+		label: 'Sessions',
+		routeKey: 'session',
 	},
 ];
 

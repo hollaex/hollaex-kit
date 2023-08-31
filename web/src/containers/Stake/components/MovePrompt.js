@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import Ionicon from 'react-ionicons';
+import { CloseOutlined } from '@ant-design/icons';
 import { EditWrapper, Button, IconTitle, ActionNotification } from 'components';
 import STRINGS from 'config/localizedStrings';
 import withConfig from 'components/ConfigProvider/withConfig';
@@ -27,10 +27,9 @@ const MovePrompt = ({
 		<Fragment>
 			<ActionNotification
 				text={
-					<Ionicon
-						icon="md-close"
-						fontSize="24px"
-						className="action_notification-image"
+					<CloseOutlined
+						style={{ fontSize: '24px' }}
+						className="action_notification-image secondary-text"
 					/>
 				}
 				onClick={onClose}

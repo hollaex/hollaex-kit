@@ -53,6 +53,7 @@ const checkStatus = () => {
 		pairs: {},
 		tiers: {},
 		quicktrade: [],
+		networkQuickTrades: [],
 		kit: {
 			info: {},
 			color: {},
@@ -124,7 +125,7 @@ const checkStatus = () => {
 						status.constants
 					),
 					Tier.findAll(),
-					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size', 'increment_size']}),
+					Broker.findAll({ attributes: ['id', 'symbol', 'buy_price', 'sell_price', 'paused', 'min_size', 'max_size']}),
 					QuickTrade.findAll(),
 					status.dataValues
 				]);
@@ -145,12 +146,14 @@ const checkStatus = () => {
 			}
 
 			configuration.broker = deals;
+			configuration.networkQuickTrades = [];
 
 			const brokerPairs = deals.map((d) => d.symbol);
 			const networkBrokerPairs = Object.keys(exchange.brokers).filter((e) => {
 				// only add the network pair if both coins in the market are already subscribed in the exchange
 				const [ base, quote ] = e.split('-');
 				if (configuration.coins[base] && configuration.coins[quote]) {
+					configuration.networkQuickTrades.push(exchange.brokers[e])
 					return e;
 				}
 			});
@@ -205,7 +208,8 @@ const checkStatus = () => {
 			quickTrades.forEach((qt) => {
 				let item = {
 					type: qt.type,
-					symbol: qt.symbol
+					symbol: qt.symbol,
+					active: qt.active
 				};
 				configuration.quicktrade.push(item)
 			})
@@ -226,7 +230,6 @@ const checkStatus = () => {
 						maker: {},
 						taker: {}
 					};
-					console.log(DEFAULT_FEES[exchange.plan])
 					const defaultFees = DEFAULT_FEES[exchange.plan]
 						? DEFAULT_FEES[exchange.plan]
 						: { maker: 0.2, taker: 0.2 }
