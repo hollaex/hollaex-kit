@@ -416,6 +416,9 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{login_timeout\}/g, LOGIN_TIME_OUT / (1000 * 60)  || '');
 	}
+	else if (type === MAILTYPE.USER_DELETED) {
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+	}
 
 	return html;
 };

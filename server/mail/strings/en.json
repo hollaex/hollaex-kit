@@ -111,6 +111,10 @@
 		"LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Dear ${name} </p></p><p>Your account has been locked for ${login_timeout} minutes due to too many login attempts.<br />If you did not make these login attempts, report this immediately and proceed to change your credentials as soon as possible.</p><p> Regards<br> ${api_name} team </p></div>",
 			"title": "Your account Locked"
+		},
+		"USER_DELETED": {
+			"html": "<div><p><p></p></p><p>The request for account deletion is in progress. The information on your account is going to be removed according to the terms of service.</p><p> Regards<br> ${api_name} team </p></div>",
+			"title": "Account Deletion Request"
 		}
 	}
 }
