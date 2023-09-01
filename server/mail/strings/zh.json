@@ -107,6 +107,10 @@
         "LOCKED_ACCOUNT": {
 			"html": "<div><p><p>亲爱的${name} </p></p><p>由于登录尝试次数过多，您的帐户已被锁定 ${login_timeout} 分钟。<br />如果您这样做 不要进行这些登录尝试，请立即报告此情况并尽快更改您的凭据。</p><p>此致<br>${api_name}团队</p></div>",
 			"title": "您的帐户已锁定"
+		},
+		"USER_DELETED": {
+			"html": "<div><p><p>亲爱的${name} </p></p><p>删除帐户的请求正在进行中。 根据服务条款，您帐户上的信息将被删除。。</p><p>此致<br>${api_name}团队</p></div>",
+			"title": "帐户删除请求"
 		}
     }
 }

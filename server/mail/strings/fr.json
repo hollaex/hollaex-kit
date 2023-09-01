@@ -111,6 +111,10 @@
         "LOCKED_ACCOUNT": {
 			"html": "<div><p><p>Bonjour ${name} </p></p><p>Votre compte a été verrouillé pendant ${login_timeout} minutes en raison d'un trop grand nombre de tentatives de connexion.<br />Si vous n'a pas effectué ces tentatives de connexion, signalez-le immédiatement et procédez à la modification de vos informations d'identification dès que possible.</p><p> Cordialement<br> l'équipe de ${api_name} </p></div>",
 			"title": "Votre compte a été verrouillé"
+		},
+        "USER_DELETED": {
+			"html": "<div><p><p>Bonjour ${name} </p></p><p>La demande de suppression de compte est en cours. Les informations de votre compte seront supprimées conformément aux conditions de service.</p><p> Cordialement<br> l'équipe de ${api_name} </p></div>",
+			"title": "Demande de suppression de compte"
 		}
     }
 }

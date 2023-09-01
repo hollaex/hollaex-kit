@@ -2507,7 +2507,7 @@ const getBalancesAdmin = (req, res) => {
 		}
 	})
 		.then((data) => {
-			if (format.value === 'all') {
+			if (format.value === 'csv') {
 				res.setHeader('Content-disposition', `attachment; filename=${toolsLib.getKitConfig().api_name}-users.csv`);
 				res.set('Content-Type', 'text/csv');
 				return res.status(202).send(data);
@@ -2517,6 +2517,27 @@ const getBalancesAdmin = (req, res) => {
 		})
 		.catch((err) => {
 			loggerAdmin.error(req.uuid, 'controllers/admin/getBalancesAdmin', err.message);
+			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
+		});
+};
+
+const restoreUserAccount = (req, res) => {
+	loggerAdmin.verbose(req.uuid, 'controllers/user/restoreUserAccount/auth', req.auth);
+
+	const { user_id } = req.swagger.params.data.value;
+
+	loggerAdmin.verbose(
+		req.uuid,
+		'controllers/user/restoreUserAccount',
+		'user_id',
+		user_id,
+	);
+	toolsLib.user.restoreKitUser(user_id)
+		.then(() => {
+			return res.json({ message: 'Success' });
+		})
+		.catch((err) => {
+			loggerAdmin.error(req.uuid, 'controllers/user/restoreUserAccount', err.message);
 			return res.status(err.statusCode || 400).json({ message: errorMessageConverter(err) });
 		});
 };
@@ -2583,5 +2604,6 @@ module.exports = {
 	sendEmailByAdmin,
 	sendRawEmailByAdmin,
 	updateQuickTradeConfig,
-	getBalancesAdmin
+	getBalancesAdmin,
+	restoreUserAccount
 };

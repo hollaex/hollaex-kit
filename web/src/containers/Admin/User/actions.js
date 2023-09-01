@@ -196,6 +196,15 @@ export const verifyUser = (values) => {
 	return requestAuthenticated('/admin/verify-email', options);
 };
 
+export const recoverUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/restore', options);
+};
+
 export const performVerificationLevelUpdate = (values) => {
 	const options = {
 		method: 'POST',
