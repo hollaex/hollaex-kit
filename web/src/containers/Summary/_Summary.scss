@@ -513,6 +513,7 @@ $trade-tab--arrow-size: 0.4rem;
 			width: 4rem;
 		}
 		.account-type-menu {
+			opacity: 0.65;
 			border-top: 1px solid $colors-border;
 			color: $link;
 			cursor: pointer;
@@ -527,26 +528,27 @@ $trade-tab--arrow-size: 0.4rem;
 		}
 
 		.account-type-menu-active {
+			opacity: 1 !important;
 			border-top: 2px solid $sidebar-color-active;
-			border-bottom: 1px solid $sidebar-color-active;
-			color: $colors-black;
+			border-bottom: 2px solid $sidebar-color-active;
+			color: $colors-main-black;
 			font-size: 1rem;
 			text-transform: uppercase;
 
 			.account-current {
-				color: $colors-black;
+				color: $colors-main-black;
 				text-transform: lowercase;
 			}
 			.trader-account-icon {
 				svg {
 					.level_icon {
-						fill: $colors-black;
+						fill: $colors-main-black;
 					}
 				}
 			}
 		}
 
-		.accounnt-type-menu-last-active {
+		.account-type-menu-last-active {
 			border-bottom: none !important;
 		}
 		.requirement-header {

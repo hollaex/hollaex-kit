@@ -5,6 +5,7 @@ exports.INSUFFICIENT_BALANCE_ORDER =
 exports.MISSING_ORDER = 'Missing order';
 exports.INVALID_USER_ID = 'Invalid user.';
 exports.USER_NOT_FOUND = 'User not found';
+exports.USER_ALREADY_RECOVERED = 'User already recovered';
 exports.USER_NOT_REGISTERED_ON_NETWORK = 'User is not registered on the network';
 exports.USER_EMAIL_NOT_VERIFIED = 'User email is not verified';
 exports.SIGNUP_NOT_AVAILABLE = 'Sign up not available';
@@ -133,6 +134,7 @@ exports.SMS_SUCCESS = 'SMS has been sent';
 exports.PHONE_VERIFIED = 'Phone number has been verified';
 
 exports.WS_WELCOME = 'Welcome!';
+exports.WS_UNSUPPORTED_OPERATION = 'unsupported message type';
 exports.WS_EMPTY_MESSAGE = 'message can not be empty';
 exports.WS_WRONG_CHANNEL_FROMAT = 'channel format is incorrect. The format is <event>:<exchange>:<symbol>';
 exports.WS_EXCHANGE_NOT_SUPPORTED = 'exchange is not supported';
@@ -190,7 +192,7 @@ exports.INVALID_NETWORK = (network, validNetworks) => `Invalid network: ${networ
 exports.NETWORK_REQUIRED = (coin, validNetworks) => `Must specify network for coin: ${coin}${validNetworks ? `. Valid networks: ${validNetworks}` : ''}`;
 exports.AUTH_NOT_MATCHED = 'Auth doesn\'t match';
 exports.BROKER_NOT_FOUND = 'Broker pair could not be found';
-exports.BROKER_SIZE_EXCEED = 'Size should be between minimum and maximum set size of broker'
+exports.BROKER_SIZE_EXCEED = 'Size should be between minimum and maximum set size of broker';
 exports.BROKER_PAUSED = 'Broker pair is paused';
 exports.BROKER_ERROR_DELETE_UNPAUSED = 'Broker pair could not be deleted while unpaused';
 exports.BROKER_EXISTS = 'A deal for this symbol alreadys exists';
@@ -223,3 +225,4 @@ exports.PRICE_NOT_FOUND = 'Price could not found';
 exports.INVALID_PRICE = 'Invalid price';
 exports.INVALID_SIZE = 'Invalid size';
 exports.NO_IP_FOUND = 'Request can not be processed';
+exports.QUOTE_EXPIRY_TIME_ERROR= 'Quote expiry time cannot be smaller than 10';

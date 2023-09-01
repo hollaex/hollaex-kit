@@ -5,7 +5,14 @@ const merge = require('lodash.merge');
 const isEmpty = require('lodash.isempty');
 const flatten = require('flat');
 const glob = require('glob');
+const sliceIntoChunks = require('lodash.chunk');
+const flattenArray = require('lodash.flatten');
+const { Translate } = require('@google-cloud/translate').v2;
 
+const projectId = 'bitholla-develop';
+const translate = new Translate({ projectId });
+
+const TRANSLATION_CHUNK_SIZE = 10;
 const PLACEHOLDER_REGEX = /[^{}]+(?=})/g;
 const LETTER_REGEX = /[a-zA-Z]/g;
 const ERRORS = {
@@ -20,10 +27,30 @@ const ERRORS = {
 
 const LANG_PATTERN = 'src/config/lang/**.json';
 
+const callTranslationService = async (key, string, lang) => {
+	try {
+		const [translation] = await translate.translate(string, lang);
+		return [key, translation];
+	} catch (error) {
+		console.error(error);
+		return [key, pushError(string, ERRORS.NOT_TRANSLATED)];
+	}
+};
+
 const getTranslations = async (diff, lang) => {
-	// translation request and response manipulation
-	await new Promise((resolve) => setTimeout(resolve, 3000));
-	return diff;
+	const chunks = sliceIntoChunks(Object.entries(diff), TRANSLATION_CHUNK_SIZE);
+	const responses = [];
+
+	for (const chunk of chunks) {
+		const responseChunk = await Promise.all(
+			chunk.map(([key, string]) => {
+				return callTranslationService(key, string, lang);
+			})
+		);
+		responses.push(responseChunk);
+	}
+
+	return Object.fromEntries(flattenArray(responses));
 };
 
 const removeError = (string = '') => string.split(ERRORS.SIGN)[0];
@@ -33,10 +60,12 @@ const dropPlaceholders = (string = '') =>
 
 const hasLetters = (string = '') => LETTER_REGEX.test(string);
 
+const trim = (string) => (string && string.trim ? string.trim() : string);
+
 const equalityCheck = (base, target) =>
 	has('--ignore-equals')
 		? false
-		: base === target && hasLetters(dropPlaceholders(base));
+		: trim(base) === trim(target) && hasLetters(dropPlaceholders(base));
 
 const validatePlaceholder = (string) => !isNaN(Number(string));
 
@@ -54,7 +83,7 @@ const validatePlaceholders = (matches = []) => {
 	}
 };
 
-const pushError = (string, error) => `${string} ${error}`;
+const pushError = (string, error) => `${string}${error}`;
 
 const saveFile = (output, content) => {
 	fs.writeFileSync(output, beautify(content, null, 4, 100));
@@ -158,6 +187,7 @@ const autoTranslate = async (targetLangDir, targetLang) => {
 		'HOUR_FORMAT',
 		'DEFAULT_TIMESTAMP_FORMAT',
 		'TIMESTAMP_FORMAT',
+		'STAKE.REWARDS',
 	];
 	const diff = compare(readFile(baseLangDir), readFile(targetLangDir));
 	const diff_no_error = manipulateObject(diff, removeError);
@@ -175,7 +205,7 @@ const autoTranslate = async (targetLangDir, targetLang) => {
 	const content = merge(
 		{},
 		readFile(targetLangDir),
-		flatten.unflatten(translations, options)
+		manipulateObject(flatten.unflatten(translations, options), removeError)
 	);
 	saveFile(targetLangDir, content);
 };

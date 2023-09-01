@@ -25,6 +25,52 @@ $header-margin: 2rem;
 				font-size: $font-size-mobile-txt !important;
 			}
 		}
+
+		.donut-container {
+			height: 30rem !important;
+			width: 100%;
+		}
+		.rounded-loading {
+			width: 80px;
+			height: 80px;
+			border-radius: 50%;
+			text-align: center;
+			margin: 0 auto;
+			display: flex;
+			align-items: center;
+			border: 1px solid #808080;
+			background-color: $colors-border !important;
+			animation: outer-round-anim 3s ease infinite;
+		}
+		.inner-round {
+			background-color: $app-sidebar-background;
+			width: 50px;
+			height: 50px;
+			border-radius: 50%;
+			margin: 0 auto;
+			border: 1px solid #808080;
+		}
+		.loading-wrapper {
+			height: 16rem;
+			flex-direction: column;
+			.d-none {
+				display: none;
+			}
+			.loading-txt {
+				text-align: center;
+				margin-bottom: 1rem;
+				margin-top: 5rem;
+			}
+		}
+		.dot-flashing {
+			position: relative;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			background-color: #34363a;
+			color: #34363a;
+			animation: dotFlashing 3s infinite;
+		}
 	}
 	.wallet-container {
 		.action_notification-wrapper {
@@ -232,6 +278,10 @@ $header-margin: 2rem;
 	}
 
 	.wallet-assets_block {
+		.donut-container {
+			width: 18rem !important;
+			min-width: 18rem !important;
+		}
 		// border-top: $wrapper-border;
 		background-color: $app-sidebar-background;
 		padding: 20px;

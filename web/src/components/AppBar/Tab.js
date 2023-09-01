@@ -14,6 +14,7 @@ const Tab = ({
 	market = {},
 }) => {
 	const {
+		key,
 		pair: { increment_price } = {},
 		ticker: { close } = {},
 		display_name,
@@ -43,7 +44,7 @@ const Tab = ({
 					<div className="title-font ml-1">
 						{formatToCurrency(close, increment_price)}
 					</div>
-					<PriceChange market={market} />
+					<PriceChange market={market} key={key} />
 				</div>
 			</div>
 		</div>

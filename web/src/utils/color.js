@@ -194,6 +194,11 @@ const pushCalculatedColors = (themeData) => {
 		)
 			.alpha(0.75)
 			.string(),
+		'calculated_specials_notifications-alerts-pale': Color(
+			themeData['specials_notifications-alerts-warnings']
+		)
+			.alpha(0.25)
+			.string(),
 		'calculated_specials_notifications-alerts-text': Color(
 			themeData['specials_notifications-alerts-warnings']
 		).isLight()

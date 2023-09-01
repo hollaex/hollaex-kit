@@ -1,4 +1,4 @@
-import { all } from 'bluebird';
+import { all } from 'rsvp';
 import querystring from 'query-string';
 import axios from 'axios';
 import store from 'store';
@@ -196,6 +196,15 @@ export const verifyUser = (values) => {
 	return requestAuthenticated('/admin/verify-email', options);
 };
 
+export const recoverUser = (values) => {
+	const options = {
+		method: 'POST',
+		body: JSON.stringify(values),
+	};
+
+	return requestAuthenticated('/admin/user/restore', options);
+};
+
 export const performVerificationLevelUpdate = (values) => {
 	const options = {
 		method: 'POST',
@@ -283,7 +292,6 @@ export const requestAddUser = (values) => {
 	};
 	return requestAuthenticated('/admin/user', options);
 };
-
 
 export const requestUserBalancesDownload = (values) => {
 	let path = '/admin/balances';

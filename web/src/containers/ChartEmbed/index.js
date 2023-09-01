@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import EventListener from 'react-event-listener';
 import classnames from 'classnames';
 import { bindActionCreators } from 'redux';
-import { changePair } from 'actions/appActions';
 
+import { changePair } from 'actions/appActions';
 import TradeBlock from 'containers/Trade/components/TradeBlock';
 import TVChartContainer from 'containers/Trade/ChartContainer';
 

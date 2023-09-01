@@ -1388,6 +1388,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1403,6 +1404,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1451,6 +1453,10 @@ class HollaExNetwork {
 			path += `&open=${opts.open}`;
 		}
 
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
+		}
+
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,
 			this.apiSecret,
@@ -1475,6 +1481,7 @@ class HollaExNetwork {
 	 * @param {string} opts.order - Ascending (asc) or descending (desc).
 	 * @param {string} opts.startDate - Start date of query in ISO8601 format.
 	 * @param {string} opts.endDate - End date of query in ISO8601 format.
+	 * @param {string} opts.format - Custom format of data set. Enum: ['all']
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {array} Array of queried orders
 	 */
@@ -1491,6 +1498,7 @@ class HollaExNetwork {
 			order: null,
 			startDate: null,
 			endDate: null,
+			format: null,
 			additionalHeaders: null
 		}
 	) {
@@ -1542,6 +1550,10 @@ class HollaExNetwork {
 
 		if (isBoolean(opts.open)) {
 			path += `&open=${opts.open}`;
+		}
+
+		if (isString(opts.format)) {
+			path += `&format=${opts.format}`;
 		}
 
 		const headers = generateHeaders(
@@ -3347,7 +3359,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object with quote data.
 	 */
-	 getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts = {
+	getQuote(userId, spendingCurrency, spendingAmount, receivingCurrency, receivingAmount, opts = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3397,7 +3409,7 @@ class HollaExNetwork {
 	 * @param {object} opts.additionalHeaders - Object storing addtional headers to send with request.
 	 * @return {object} Object of the trade data.
 	 */
-	 executeQuote(token, user_id, fee, opts = {
+	executeQuote(token, user_id, fee, opts = {
 		additionalHeaders: null
 	}) {
 		checkKit(this.exchange_id);
@@ -3413,7 +3425,7 @@ class HollaExNetwork {
 			token,
 			user_id,
 			fee
-		}
+		};
 
 		const headers = generateHeaders(
 			isPlainObject(opts.additionalHeaders) ? { ...this.headers, ...opts.additionalHeaders } : this.headers,

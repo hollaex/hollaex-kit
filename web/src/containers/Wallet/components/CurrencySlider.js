@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Button } from '../../../components';
-import { calculatePrice } from '../../../utils/currency';
-import { BASE_CURRENCY, DEFAULT_COIN_DATA } from '../../../config/constants';
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import { isMobile } from 'react-device-detect';
+import { Button, DonutChart } from 'components';
+import { calculatePrice } from 'utils/currency';
+import { BASE_CURRENCY, DEFAULT_COIN_DATA } from 'config/constants';
 import Currency from './Currency';
 import Arrow from './Arrow';
-import STRINGS from '../../../config/localizedStrings';
+import STRINGS from 'config/localizedStrings';
 
 class CurrencySlider extends Component {
 	state = {
@@ -56,7 +59,14 @@ class CurrencySlider extends Component {
 		);
 
 	render() {
-		const { balance, prices, navigate, coins, searchResult } = this.props;
+		const {
+			balance,
+			prices,
+			navigate,
+			coins,
+			searchResult,
+			chartData,
+		} = this.props;
 		const { currentCurrency } = this.state;
 		const balanceValue = balance[`${currentCurrency}_balance`];
 		const baseBalance =
@@ -67,6 +77,29 @@ class CurrencySlider extends Component {
 
 		return (
 			<div className="d-flex flex-column justify-content-end currency-list-container f-1">
+				{isMobile && (
+					<div
+						className={classnames('donut-container mb-4', {
+							'd-flex align-items-center justify-content-center loading-wrapper': !chartData.length,
+						})}
+					>
+						{chartData.length ? (
+							<DonutChart
+								coins={coins}
+								chartData={chartData}
+								showOpenWallet={false}
+								currentCurrency={currentCurrency}
+							/>
+						) : (
+							<div>
+								<div className="rounded-loading">
+									<div className="inner-round" />
+								</div>
+							</div>
+						)}
+					</div>
+				)}
+
 				<div className="d-flex mb-5 flex-row">
 					<div className="d-flex align-items-center arrow-container">
 						<Arrow className="left" onClick={() => this.previousCurrency()} />
@@ -86,32 +119,38 @@ class CurrencySlider extends Component {
 					</div>
 				</div>
 
-				<div className="mb-4 button-container">
-					<div className="d-flex justify-content-between flew-row ">
-						{allow_deposit && (
-							<Button
-								className="mr-4"
-								label={STRINGS.formatString(
-									STRINGS['RECEIVE_CURRENCY'],
-									fullname
-								).join('')}
-								onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
-							/>
-						)}
-						{allow_withdrawal && (
-							<Button
-								label={STRINGS.formatString(
-									STRINGS['SEND_CURRENCY'],
-									fullname
-								).join('')}
-								onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
-							/>
-						)}
+				{!isMobile && (
+					<div className="mb-4 button-container">
+						<div className="d-flex justify-content-between flew-row ">
+							{allow_deposit && (
+								<Button
+									className="mr-4"
+									label={STRINGS.formatString(
+										STRINGS['RECEIVE_CURRENCY'],
+										fullname
+									).join('')}
+									onClick={() => navigate(`wallet/${currentCurrency}/deposit`)}
+								/>
+							)}
+							{allow_withdrawal && (
+								<Button
+									label={STRINGS.formatString(
+										STRINGS['SEND_CURRENCY'],
+										fullname
+									).join('')}
+									onClick={() => navigate(`wallet/${currentCurrency}/withdraw`)}
+								/>
+							)}
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		);
 	}
 }
 
-export default CurrencySlider;
+const mapStateToProps = ({ asset: { chartData } }) => ({
+	chartData,
+});
+
+export default connect(mapStateToProps)(CurrencySlider);

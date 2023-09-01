@@ -161,7 +161,7 @@ const Filters = ({ pairs, onSearch, formName, activeTab }) => {
 						{Object.entries(pairs).map(
 							([_, { name, pair_base_display, pair_2_display, icon_id }]) => (
 								<Option key={name} value={name}>
-									<div className="d-flex filter-option">
+									<div className="d-flex gap-1">
 										<Coin iconId={icon_id} type="CS1" />
 										<div>{`${pair_base_display}-${pair_2_display}`}</div>
 									</div>

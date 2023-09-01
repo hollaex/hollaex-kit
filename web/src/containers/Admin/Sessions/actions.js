@@ -9,14 +9,13 @@ export const getExchangeSessions = (values) => {
 	return requestAuthenticated(`/admin/user/sessions?${queryValues}`);
 };
 
-
 export const getExchangeSessionsCsv = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
 		url: `/admin/user/sessions?${queryValues}`,
-		})
+	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
@@ -35,12 +34,11 @@ export const revokeSession = (sessionId) => {
 	return axios({
 		method: 'POST',
 		url: `/admin/user/revoke-session`,
-		data:{
-			session_id: sessionId
-		}
-	})
+		data: {
+			session_id: sessionId,
+		},
+	});
 };
-
 
 export const getExchangeLogins = (values) => {
 	const queryValues =
@@ -48,14 +46,13 @@ export const getExchangeLogins = (values) => {
 	return requestAuthenticated(`/admin/user/sessions?${queryValues}`);
 };
 
-
 export const getExchangeLoginsCsv = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
 	return axios({
 		method: 'GET',
 		url: `/admin/user/sessions?${queryValues}`,
-		})
+	})
 		.then((res) => {
 			const url = window.URL.createObjectURL(new Blob([res.data]));
 			const link = document.createElement('a');
@@ -73,7 +70,7 @@ export const getExchangeLoginsCsv = (values) => {
 export const requestUserLogins = (values) => {
 	const queryValues =
 		values && Object.keys(values).length ? querystring.stringify(values) : '';
-	return requestAuthenticated(`/admin/logins?${queryValues}`)
+	return requestAuthenticated(`/admin/logins?${queryValues}`);
 };
 
 export const requestUserLoginsDownload = (values) => {

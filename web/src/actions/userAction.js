@@ -437,3 +437,8 @@ export const getLogins = ({ page = 1, limit = 20, ...params }) => {
 
 	return axios.get(`/user/logins?${query}`);
 };
+
+export const deleteUser = (email_code, otp_code) =>
+	axios.delete('/user', {
+		data: { otp_code, email_code },
+	});

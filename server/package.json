@@ -1,5 +1,5 @@
 {
-	"version": "2.7.2",
+	"version": "2.8.0",
 	"private": false,
 	"description": "HollaEx Kit",
 	"keywords": [
@@ -35,7 +35,6 @@
 		"hollaex-tools-lib": "file:utils/hollaex-tools-lib",
 		"http": "0.0.0",
 		"http-proxy-middleware": "2.0.6",
-		"express-http-proxy": "1.6.3",
 		"install": "0.10.4",
 		"ip-range-check": "0.2.0",
 		"is-base64": "1.1.0",
@@ -51,6 +50,7 @@
 		"multer": "1.4.2",
 		"multicoin-address-validator": "0.5.5",
 		"node-cron": "2.0.3",
+		"node-device-detector": "2.0.16",
 		"nodemailer": "6.4.6",
 		"npm": "8.19.2",
 		"npm-programmatic": "0.0.12",
@@ -82,8 +82,7 @@
 	},
 	"devDependencies": {
 		"chai": "4.2.0",
-		"eslint": "8.5.0",
-		"eslint-plugin-unused-imports": "2.0.0",
+		"eslint": "8.41.0",
 		"husky": "4.3.8",
 		"lint-staged": "12.1.4",
 		"mocha": "3.5.3",
@@ -96,6 +95,7 @@
 		"migrate": "sequelize db:migrate",
 		"start": "node app.js",
 		"test": "NODE_ENV=test nyc --reporter=html --reporter=text mocha --recursive --timeout 5000",
+		"test-ci": "NODE_ENV=test node ./test/testRunner.js",
 		"dev:plugin": "docker exec -it server_hollaex-kit-server_1 node plugins/dev.js"
 	},
 	"nyc": {

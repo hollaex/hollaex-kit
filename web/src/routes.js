@@ -419,7 +419,13 @@ export const generateRoutes = (routes = []) => {
 					component={TransactionsHistory}
 				/>
 				<Route path="trade/:pair" name="Trade" component={Trade} />
+				<Route path="trade" name="Trade Tabs" component={AddTradeTabs} />
 				<Route path="markets" name="Trade Tabs" component={AddTradeTabs} />
+				<Route
+					path="quick-trade"
+					name="Quick Trade"
+					component={QuickTrade}
+				/>
 				<Route
 					path="quick-trade/:pair"
 					name="Quick Trade"

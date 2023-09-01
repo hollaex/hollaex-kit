@@ -1,6 +1,6 @@
 'use strict';
 
-const { CONFIRMATION, EXPLORERS, DOMAIN, GET_KIT_CONFIG, GET_EMAIL } = require('../../constants');
+const { CONFIRMATION, EXPLORERS, DOMAIN, GET_KIT_CONFIG, GET_EMAIL, LOGIN_TIME_OUT } = require('../../constants');
 const DEFAULT_LANGUAGE = () => GET_KIT_CONFIG().defaults.language;
 const API_NAME = () => GET_KIT_CONFIG().api_name;
 const { TemplateEmail } = require('./helpers/common');
@@ -410,6 +410,15 @@ const replaceHTMLContent = (type, html = '', email, data, language, domain) => {
 		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 		html = html.replace(/\$\{doc_information\}/g, data.doc_information || '');
 		html = html.replace(/\$\{link\}/g, data.link || '');
+	}
+	else if (type === MAILTYPE.LOCKED_ACCOUNT) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
+		html = html.replace(/\$\{login_timeout\}/g, LOGIN_TIME_OUT / (1000 * 60)  || '');
+	}
+	else if (type === MAILTYPE.USER_DELETED) {
+		html = html.replace(/\$\{name\}/g, email || '');
+		html = html.replace(/\$\{api_name\}/g, API_NAME() || '');
 	}
 
 	return html;

@@ -12,7 +12,7 @@ const Sessions = () => {
 	const handleTabChange = (key) => {
 		setActiveTab(key);
 	};
-	
+
 	return (
 		<div className="admin-earnings-container w-100">
 			<Tabs
@@ -21,15 +21,13 @@ const Sessions = () => {
 				onChange={handleTabChange}
 			>
 				<TabPane tab="Sessions" key="0">
-					<SessionTable/>
+					<SessionTable />
 				</TabPane>
 				<TabPane tab="Logins" key="1">
-					<LoginTable/>
+					<LoginTable />
 				</TabPane>
-
 			</Tabs>
-
-		</div>		
+		</div>
 	);
 };
 
@@ -40,4 +38,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Sessions);
-
