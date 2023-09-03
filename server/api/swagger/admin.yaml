@@ -3305,3 +3305,522 @@ paths:
         - admin
       x-token-permissions:
         - can_read
+  /admin/stakes:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange stakes for admin
+      operationId: getExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the stake.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: name
+          description: The name of the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: The ID of the creator of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: The currency associated with the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: account_id
+          description: The ID of the account used for stake rewards and fund transfers.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: apy
+          description: Annual percentage yield as a reward percentage for stakers.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: duration
+          description: The duration of the stake in days, months, years, or infinite.
+          required: false
+          type: string
+        - in: query
+          name: slashing
+          description: Whether the stake pool has slashing rules.
+          required: false
+          type: boolean
+        - in: query
+          name: slashing_percentage
+          description: The percentage of slashing applied if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: slashing_reward
+          description: The percentage of reward slashed if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: early_unstake
+          description: Whether early unstaking is allowed.
+          required: false
+          type: boolean
+        - in: query
+          name: min_amount
+          description: The minimum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: max_amount
+          description: The maximum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: status
+          description: The status of the stake pool.
+          required: false
+          type: string
+          enum: [uninitialized, active, paused, terminated]
+        - in: query
+          name: onboarding
+          description: Whether users can onboard and add funds to the stake pool.
+          required: false
+          type: boolean
+        - in: query
+          name: disclaimer
+          description: Custom text displayed to users before staking.
+          required: false
+          type: string
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
+    post:
+      description: Create exchange stakes for admin
+      operationId: createExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: name
+          description: The name of the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: The ID of the creator of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: The currency associated with the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: account_id
+          description: The ID of the account used for stake rewards and fund transfers.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: apy
+          description: Annual percentage yield as a reward percentage for stakers.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: duration
+          description: The duration of the stake in days, months, years, or infinite.
+          required: false
+          type: string
+        - in: query
+          name: slashing
+          description: Whether the stake pool has slashing rules.
+          required: false
+          type: boolean
+        - in: query
+          name: slashing_percentage
+          description: The percentage of slashing applied if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: slashing_reward
+          description: The percentage of reward slashed if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: early_unstake
+          description: Whether early unstaking is allowed.
+          required: false
+          type: boolean
+        - in: query
+          name: min_amount
+          description: The minimum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: max_amount
+          description: The maximum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: status
+          description: The status of the stake pool.
+          required: false
+          type: string
+          enum: [uninitialized, active, paused, terminated]
+        - in: query
+          name: onboarding
+          description: Whether users can onboard and add funds to the stake pool.
+          required: false
+          type: boolean
+        - in: query
+          name: disclaimer
+          description: Custom text displayed to users before staking.
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    put:
+      description: Update exchange stakes for admin
+      operationId: updateExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: name
+          description: The name of the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: user_id
+          description: The ID of the creator of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: currency
+          description: The currency associated with the stake pool.
+          required: false
+          type: string
+        - in: query
+          name: account_id
+          description: The ID of the account used for stake rewards and fund transfers.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: apy
+          description: Annual percentage yield as a reward percentage for stakers.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: duration
+          description: The duration of the stake in days, months, years, or infinite.
+          required: false
+          type: string
+        - in: query
+          name: slashing
+          description: Whether the stake pool has slashing rules.
+          required: false
+          type: boolean
+        - in: query
+          name: slashing_percentage
+          description: The percentage of slashing applied if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: slashing_reward
+          description: The percentage of reward slashed if enabled.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: early_unstake
+          description: Whether early unstaking is allowed.
+          required: false
+          type: boolean
+        - in: query
+          name: min_amount
+          description: The minimum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: max_amount
+          description: The maximum amount that can be staked.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: status
+          description: The status of the stake pool.
+          required: false
+          type: string
+          enum: [uninitialized, active, paused, terminated]
+        - in: query
+          name: onboarding
+          description: Whether users can onboard and add funds to the stake pool.
+          required: false
+          type: boolean
+        - in: query
+          name: disclaimer
+          description: Custom text displayed to users before staking.
+          required: false
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+    delete:
+      description: delete exchange stakes for admin
+      operationId: deleteExchangeStakes
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the stake.
+          required: false
+          type: number
+          format: int32
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+  /admin/stakers:
+    x-swagger-router-controller: admin
+    get:
+      description: Get exchange stakers of users for admin
+      operationId: getExchangeStakers
+      tags:
+        - Admin
+      parameters:
+        - in: query
+          name: id
+          description: Unique identifier for the staker entry.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: user_id
+          description: The ID of the user who has locked funds and staked.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: stake_id
+          description: The ID of the stake pool.
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: amount
+          description: The amount staked by the user.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: currency
+          description: The currency in which the user staked.
+          required: false
+          type: string
+        - in: query
+          name: reward
+          description: The amount the user has received as rewards.
+          required: false
+          type: number
+          format: double
+        - in: query
+          name: slashed
+          description: The amount slashed.
+        - in: query
+          name: limit
+          description: "Number of elements to return. Default: 50. Maximun: 100"
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: page
+          description: Page of data to retrieve
+          required: false
+          type: number
+          format: int32
+        - in: query
+          name: order_by
+          description: Field to order data
+          required: false
+          type: string
+        - in: query
+          name: order
+          description: direction to order
+          required: false
+          type: string
+          enum: ['asc', 'desc']
+        - in: query
+          name: start_date
+          description: Starting date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: end_date
+          description: Ending date of queried data
+          required: false
+          type: string
+          format: date-time
+        - in: query
+          name: format
+          description: Specify data format
+          required: false
+          enum: ['csv', 'all']
+          type: string
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/ObjectResponse"
+        202:
+          description: CSV
+          schema:
+            type: string
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/MessageResponse"
+      security:
+        - Token: []
+      x-security-types:
+        - bearer
+        - hmac
+      x-security-scopes:
+        - admin
+      x-token-permissions:
+        - can_read
