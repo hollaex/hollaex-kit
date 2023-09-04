@@ -11,6 +11,7 @@ module.exports = {
 			},
 			name: {
 				type: Sequelize.STRING,
+				unique: true,
 				allowNull: false,
 			},
 			user_id: {
@@ -24,7 +25,8 @@ module.exports = {
 			},
 			currency: {
 				type: Sequelize.STRING,
-				allowNull: true,
+				unique: true,
+				allowNull: false
 			},
 			account_id: {
 				type: Sequelize.INTEGER,
@@ -37,43 +39,57 @@ module.exports = {
 			},
 			apy: {
 				type: Sequelize.DOUBLE,
-				allowNull: true,
+				allowNull: false
 			},
 			duration: {
 				type: Sequelize.INTEGER,
-				allowNull: true,
+				allowNull: true
 			},
 			slashing: {
 				type: Sequelize.BOOLEAN,
-				allowNull: true,
+				allowNull: false
 			},
-			slashing_percentage: {
+			slashing_principle_percentage: {
 				type: Sequelize.INTEGER,
-				allowNull: true,
+				allowNull: false,
+				defaultValue: 0,
+			},
+			slashing_earning_percentage: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: 0,
 			},
 			slashing_reward: {
 				type: Sequelize.INTEGER,
-				allowNull: true,
+				allowNull: false,
+				defaultValue: 0,
+			},
+			slashing_reward: {
+				type: Sequelize.INTEGER,
+				allowNull: false,
+				defaultValue: 0,
 			},
 			early_unstake: {
 				type: Sequelize.BOOLEAN,
-				allowNull: true,
+				allowNull: false
 			},
 			min_amount: {
 				type: Sequelize.DOUBLE,
-				allowNull: true,
+				allowNull: false
 			},
 			max_amount: {
 				type: Sequelize.DOUBLE,
-				allowNull: true,
+				allowNull: false
 			},
 			status: {
-				type: Sequelize.STRING,
-				allowNull: true,
+				type: Sequelize.ENUM('uninitialized', 'active', 'paused', 'terminated'),
+				allowNull: false,
+				defaultValue: 'uninitialized',
 			},
 			onboarding: {
 				type: Sequelize.BOOLEAN,
-				allowNull: true,
+				allowNull: false,
+				defaultValue: false
 			},
 			disclaimer: {
 				type: Sequelize.STRING,

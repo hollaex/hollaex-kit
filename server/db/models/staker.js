@@ -2,12 +2,6 @@ module.exports = function (sequelize, DataTypes) {
 	const Staker = sequelize.define(
 		'Staker',
 		{
-			id: {
-				allowNull: false,
-				autoIncrement: true,
-				primaryKey: true,
-				type: DataTypes.INTEGER
-			},
 			user_id: {
 				type: DataTypes.INTEGER,
                 onDelete: 'CASCADE',
@@ -32,19 +26,21 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			currency: {
 				type: DataTypes.STRING,
-				allowNull: true
+				allowNull: false
 			},
 			reward: {
 				type: DataTypes.DOUBLE,
-				allowNull: true
+				allowNull: false,
+				defaultValue: 0
 			},
 			slashed: {
 				type: DataTypes.DOUBLE,
-				allowNull: true
+				allowNull: false,
+				defaultValue: 0
 			},
 			status: {
-				type: DataTypes.STRING,
-				allowNull: true
+				type: DataTypes.ENUM('staking', 'unstaking', 'closed', 'active'),
+				allowNull: false
 			},
 			closing: {
 				type: DataTypes.DATE,

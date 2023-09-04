@@ -33,19 +33,21 @@ module.exports = {
 			},
 			currency: {
 				type: Sequelize.STRING,
-				allowNull: true,
+				allowNull: false,
 			},
 			reward: {
 				type: Sequelize.DOUBLE,
-				allowNull: true,
+				allowNull: false,
+				defaultValue: 0
 			},
 			slashed: {
 				type: Sequelize.DOUBLE,
-				allowNull: true,
+				allowNull: false,
+				defaultValue: 0
 			},
 			status: {
-				type: Sequelize.STRING,
-				allowNull: true,
+				type: Sequelize.ENUM('staking', 'unstaking', 'closed', 'active'),
+				allowNull: false
 			},
 			closing: {
 				type: Sequelize.DATE,

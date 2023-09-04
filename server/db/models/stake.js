@@ -2,14 +2,9 @@ module.exports = function (sequelize, DataTypes) {
 	const Stake = sequelize.define(
 		'Stake',
 		{
-			id: {
-				allowNull: false,
-				autoIncrement: true,
-				primaryKey: true,
-				type: DataTypes.INTEGER
-			},
 			name: {
 				type: DataTypes.STRING,
+				unique: true,
 				allowNull: false
 			},
 			user_id: {
@@ -23,7 +18,8 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			currency: {
 				type: DataTypes.STRING,
-				allowNull: true
+				unique: true,
+				allowNull: false
 			},
 			account_id: {
 				type: DataTypes.INTEGER,
@@ -36,7 +32,7 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			apy: {
 				type: DataTypes.DOUBLE,
-				allowNull: true
+				allowNull: false
 			},
 			duration: {
 				type: DataTypes.INTEGER,
@@ -44,35 +40,44 @@ module.exports = function (sequelize, DataTypes) {
 			},
 			slashing: {
 				type: DataTypes.BOOLEAN,
-				allowNull: true
+				allowNull: false
 			},
-			slashing_percentage: {
+			slashing_principle_percentage: {
 				type: DataTypes.INTEGER,
-				allowNull: true
+				allowNull: false,
+				defaultValue: 0,
+			},
+			slashing_earning_percentage: {
+				type: DataTypes.INTEGER,
+				allowNull: false,
+				defaultValue: 0,
 			},
 			slashing_reward: {
 				type: DataTypes.INTEGER,
-				allowNull: true
+				allowNull: false,
+				defaultValue: 0,
 			},
 			early_unstake: {
 				type: DataTypes.BOOLEAN,
-				allowNull: true
+				allowNull: false
 			},
 			min_amount: {
 				type: DataTypes.DOUBLE,
-				allowNull: true
+				allowNull: false
 			},
 			max_amount: {
 				type: DataTypes.DOUBLE,
-				allowNull: true
+				allowNull: false
 			},
 			status: {
-				type: DataTypes.STRING,
-				allowNull: true
+				type: DataTypes.ENUM('uninitialized', 'active', 'paused', 'terminated'),
+				allowNull: false,
+				defaultValue: 'uninitialized',
 			},
 			onboarding: {
 				type: DataTypes.BOOLEAN,
-				allowNull: true
+				allowNull: false,
+				defaultValue: false
 			},
 			disclaimer: {
 				type: DataTypes.STRING,

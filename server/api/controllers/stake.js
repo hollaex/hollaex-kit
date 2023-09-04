@@ -9,7 +9,7 @@ const { errorMessageConverter } = require('../../utils/conversion');
 const getExchangeStakes = (req, res) => {
 	loggerAdmin.verbose(req.uuid, 'controllers/stake/getExchangeStakes/auth', req.auth);
 
-	const { user_id, last_seen, status, limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
+	const {  limit, page, order_by, order, start_date, end_date, format } = req.swagger.params;
 
 	if (format.value && req.auth.scopes.indexOf(ROLES.ADMIN) === -1) {
 		return res.status(403).json({ message: API_KEY_NOT_PERMITTED });
@@ -25,9 +25,6 @@ const getExchangeStakes = (req, res) => {
 	}
 
 	toolsLib.stake.getExchangeStakes({
-		user_id: user_id.value,
-		last_seen: last_seen.value,
-		status: status.value,
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
