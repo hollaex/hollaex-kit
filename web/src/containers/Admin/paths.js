@@ -35,6 +35,11 @@ export const ADMIN_PATHS = [
 		routeKey: 'trade',
 	},
 	{
+		path: '/admin/stakes',
+		label: 'Stakes',
+		routeKey: 'stake',
+	},
+	{
 		path: '/admin/sessions',
 		label: 'Sessions',
 		routeKey: 'session',
@@ -186,6 +191,11 @@ export const SUPERVISOR_PATH = [
 		path: '/admin/financials',
 		label: 'Assets',
 		routeKey: 'financials',
+	},
+	{
+		path: '/admin/stakes',
+		label: 'Stakes',
+		routeKey: 'stake',
 	},
 	{
 		path: '/admin/sessions',
