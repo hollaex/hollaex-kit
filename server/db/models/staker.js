@@ -39,7 +39,7 @@ module.exports = function (sequelize, DataTypes) {
 				defaultValue: 0
 			},
 			status: {
-				type: DataTypes.ENUM('staking', 'unstaking', 'closed', 'active'),
+				type: DataTypes.ENUM('staking', 'unstaking', 'closed'),
 				allowNull: false
 			},
 			closing: {

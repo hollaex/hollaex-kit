@@ -46,7 +46,7 @@ module.exports = {
 				defaultValue: 0
 			},
 			status: {
-				type: Sequelize.ENUM('staking', 'unstaking', 'closed', 'active'),
+				type: Sequelize.ENUM('staking', 'unstaking', 'closed'),
 				allowNull: false
 			},
 			closing: {
