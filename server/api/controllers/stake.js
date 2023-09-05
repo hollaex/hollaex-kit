@@ -24,7 +24,7 @@ const getExchangeStakes = (req, res) => {
 		return res.status(400).json({ message: 'Invalid order by' });
 	}
 
-	toolsLib.stake.getExchangeStakes({
+	toolsLib.stake.getExchangeStakePools({
 		limit: limit.value,
 		page: page.value,
 		order_by: order_by.value,
@@ -49,6 +49,26 @@ const getExchangeStakes = (req, res) => {
 		});
 };
 
+const createExchangeStakes = (req, res) => {
+
+}
+
+const updateExchangeStakes = (req, res) => {
+
+}
+
+const deleteExchangeStakes = (req, res) => {
+
+}
+
+const getExchangeStakers = (req, res) => {
+
+}
+
 module.exports = {
 	getExchangeStakes,
+	createExchangeStakes,
+	updateExchangeStakes,
+	deleteExchangeStakes,
+	getExchangeStakers
 };

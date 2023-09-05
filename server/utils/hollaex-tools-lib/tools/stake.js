@@ -94,7 +94,7 @@ const validateExchangeStake = (stake) => {
 	} 
 }
 
-const getExchangeStakesPools = async (opts = {
+const getExchangeStakePools = async (opts = {
     limit: null,
     page: null,
     order_by: null,
@@ -315,7 +315,7 @@ const getExchangeStakers = (
 
 
 module.exports = {
-	getExchangeStakesPools,
+	getExchangeStakePools,
     createExchangeStakePool,
     updateExchangeStakePool,
     getExchangeStakers

@@ -3672,6 +3672,9 @@ paths:
         - in: query
           name: slashed
           description: The amount slashed.
+          required: false
+          type: number
+          format: double
         - in: query
           name: limit
           description: "Number of elements to return. Default: 50. Maximun: 100"
